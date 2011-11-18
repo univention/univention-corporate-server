@@ -387,7 +387,7 @@ class Client(object):
 			except AttributeError: pass
 			except KeyError: pass
 		else:
-			raise "Unknown os/type='%s'" % (domain.os_type,)
+			raise ValueError( "Unknown os/type='%s'" % (domain.os_type,) )
 		try: domain.bootloader = root.findtext('bootloader')
 		except AttributeError: pass
 		try: domain.bootloader_args = root.findtext('bootloader_args')

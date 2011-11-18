@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (1.0.70-1) unstable; urgency=low
+
+  * support setting boot medium for paravirtual domains
+  * name of KVM instances can not be changed; Bug #24711
+  * reset form values before setting values of domain; Bug #24712
+  * drive grid: sort default action and set icon class for edit
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Nov 2011 12:23:53 +0100
+
 univention-virtual-machine-manager-daemon (1.0.69-3) unstable; urgency=low
 
   * Remove "Restart" action (Bug #22893).

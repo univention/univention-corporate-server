@@ -71,18 +71,19 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				label: this._('Pool')
 			}],
 			actions: [{
+				name: 'edit',
+				label: this._('Edit'),
+				iconClass: 'umcIconEdit',
+				isMultiAction: false,
+				isStandardAction: true,
+				callback: dojo.hitch(this, '_editDrive')
+			}, {
 				name: 'delete',
 				label: this._('Delete'),
 				isMultiAction: false,
 				isStandardAction: true,
 				iconClass: 'umcIconDelete',
 				callback: dojo.hitch(this, '_removeDrive')
-			}, {
-				name: 'edit',
-				label: this._('Edit'),
-				isMultiAction: false,
-				isStandardAction: true,
-				callback: dojo.hitch(this, '_editDrive')
 			}, {
 				name: 'add',
 				label: this._('Add drive'),

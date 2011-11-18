@@ -739,7 +739,16 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
  			canExecute: function(item) {
  				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu';
  			}
-		}, {
+ 		}, /* { FIXME: not yet fully supported
+			name: 'restart',
+			label: this._( 'Restart' ),
+			isStandardAction: false,
+			isMultiAction: true,
+			callback: dojo.hitch(this, '_changeState', 'RESTART'),
+			canExecute: function(item) {
+				return item.state == 'RUNNING' || item.state == 'IDLE';
+			}
+		}, */ {
 			name: 'clone',
 			label: this._( 'Clone' ),
 			isStandardAction: false,

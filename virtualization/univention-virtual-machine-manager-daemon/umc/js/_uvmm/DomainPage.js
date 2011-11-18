@@ -185,13 +185,17 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				type: 'TextBox',
 				label: this._('Memory')
 			}, {
-				name: 'boot',
+				name: 'boot_hvm',
 				type: 'MultiInput',
 				label: this._('Boot order'),
 				subtypes: [{
 					type: 'ComboBox',
 					staticValues: types.bootDevices
-				}]
+				}, ]
+			}, {
+				name: 'boot_pv',
+				type: 'ComboBox',
+				label: this._('Boot device'),
 			}, {
 				name: 'os_type',
 				type: 'HiddenInput'
@@ -234,7 +238,8 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 					[ 'arch', 'vcpus' ],
 					[ 'maxMem', 'domain_type', 'os_type', 'type' ],
 					'rtc_offset',
-					'boot'
+					'boot_hvm',
+					'boot_pv'
 				]
 			}, {
 				label: this._('Remote access'),
@@ -360,19 +365,33 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 
 		if (!valid) {
 			umc.dialog.alert(this._('The entered data is not valid. Please correct your input.'));
+			return;
 		}
-		else {
-			this.standby(true);
-			umc.tools.umcpCommand('uvmm/domain/put', {
-				nodeURI: this._domain.domainURI.split('#')[0],
-				domain: values
-			}).then(dojo.hitch(this, function() {
-				this.onClose();
-				this.standby(false);
-			}), dojo.hitch(this, function() {
-				this.standby(false);
-			}));
+		// special handling for boot devices
+		var paravirtual = this._domain.type == 'xen-xen';
+		if ( paravirtual ) {
+			var disks = [], boot_medium = null;
+			dojo.forEach( this._domain.disks, function( disk ) {
+				if ( values.boot_pv == disk.source ) {
+					disks.unshift( disk );
+				} else {
+					disks.push( disk );
+				}
+			} );
+		} else {
+			values.boot = values.boot_hvm;
 		}
+
+		this.standby(true);
+		umc.tools.umcpCommand('uvmm/domain/put', {
+			nodeURI: this._domain.domainURI.split('#')[0],
+			domain: values
+		}).then(dojo.hitch(this, function() {
+			this.onClose();
+			this.standby(false);
+		}), dojo.hitch(this, function() {
+			this.standby(false);
+		}));
 	},
 
 	load: function(id) {
@@ -388,12 +407,30 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			this._domain.domainURI = id;
 
 			if (data) {
+				var types = umc.modules._uvmm.types;
 				this.moduleWidget.set( 'title', 'UVMM: ' + this._domain.name );
+
 				// set values to form
+				this._generalForm.clearFormValues();
 				this._generalForm.setFormValues(this._domain);
+				this._advancedForm.clearFormValues();
 				this._advancedForm.setFormValues(this._domain);
 
-				// we need to add pseud ids for the network interfaces
+				// special handling for boot devices
+				var paravirtual = this._domain.type == 'xen-xen';
+				this._advancedForm._widgets.boot_pv.set( 'visible', paravirtual );
+				this._advancedForm._widgets.boot_hvm.set( 'visible', ! paravirtual );
+				if ( paravirtual ) {
+					this._advancedForm._widgets.boot_pv.staticValues = dojo.map( this._domain.disks, function( disk ) {
+						return { id : disk.source, label: types.blockDevices[ disk.device ] + ': ' + disk.volumeFilename };
+					} );
+					this._advancedForm._widgets.boot_pv._setStaticValues();
+					this._advancedForm._widgets.boot_pv.set( 'value', this._domain.boot );
+				} else {
+					this._advancedForm._widgets.boot_hvm.set( 'value', this._domain.boot );
+				}
+
+				// we need to add pseudo ids for the network interfaces
 				dojo.forEach(this._domain.interfaces, function(idev, i) {
 					idev.$id$ = i + 1;
 				});
@@ -416,7 +453,12 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 					this._generalPage.clearNotes();
 				}
 				this.disabled = disabled;
-				this._generalForm._widgets.name.set( 'disabled', disabled );
+				// name should not be editable on KVM domains
+				if ( types.getNodeType( this._domain.domainURI ) == 'qemu' ) {
+					this._generalForm._widgets.name.set( 'disabled', true );
+				} else {
+					this._generalForm._widgets.name.set( 'disabled', disabled );
+				}
 				this._driveGrid.set( 'disabled', disabled );
 				this._interfaceGrid.set( 'disabled', disabled );
 				umc.tools.forIn( this._advancedForm._widgets, dojo.hitch( this, function( iid, iwidget ) {
