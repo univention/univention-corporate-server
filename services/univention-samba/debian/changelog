@@ -1,3 +1,9 @@
+univention-samba (6.0.17-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:57:13 +0100
+
 univention-samba (6.0.16-1) unstable; urgency=low
 
   * Use ldap/server/port in smb.conf (Bug #23999)
