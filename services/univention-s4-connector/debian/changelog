@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.76-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:54:57 +0100
+
 univention-s4-connector (6.0.75-1) unstable; urgency=low
 
   * In some cases samba4 and bind9 need a restart to complete
