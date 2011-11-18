@@ -1,3 +1,9 @@
+univention-base-files (1.0.40-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:15:05 +0100
+
 univention-base-files (1.0.39-1) unstable; urgency=low
 
   * added template for /etc/lsb-release (Bug #24628) 

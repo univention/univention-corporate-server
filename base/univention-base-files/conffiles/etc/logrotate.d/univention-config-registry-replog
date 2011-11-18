@@ -1,13 +1,23 @@
 @%@UCRWARNING=# @%@
 
-/var/log/univention/config-registry.replog {
 @!@
 import univention.lib.ucrLogrotate
 
+# replog
 name = "ucr-replog"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
+print "/var/log/univention/config-registry.replog {"
 for setting in settings.keys():
         print "\t%s" % settings[setting]
+print "}"
+
+# dpkg-divert 
+name = "dpkg-divert"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+print "/var/log/univention/%s.log {" % name
+for setting in settings.keys():
+	print "\t%s" % settings[setting]
+print "}"
 @!@
-}
