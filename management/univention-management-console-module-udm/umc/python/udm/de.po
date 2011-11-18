@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-15 14:59+0100\n"
+"POT-Creation-Date: 2011-11-18 13:51+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,35 +12,35 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/udm/__init__.py:294
+#: umc/python/udm/__init__.py:295
 #, python-format
 msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:407 umc/python/udm/udm_ldap.py:273
+#: umc/python/udm/__init__.py:408 umc/python/udm/udm_ldap.py:277
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
 "Es konnte kein UDM-modul für das übergeordnete Objekt %s gefunden werden"
 
-#: umc/python/udm/__init__.py:221
+#: umc/python/udm/__init__.py:222
 msgid "Could not identify the given LDAP object"
 msgstr "Das LDAP-Object konnte nicht identifiziert werden"
 
-#: umc/python/udm/__init__.py:210
+#: umc/python/udm/__init__.py:211
 msgid "Invalid object LDAP DN"
 msgstr "Ungültige LDAP DN"
 
-#: umc/python/udm/__init__.py:252 umc/python/udm/__init__.py:284
+#: umc/python/udm/__init__.py:253 umc/python/udm/__init__.py:285
 msgid "Invalid object definition"
 msgstr "Ungültige Objektdefinition"
 
-#: umc/python/udm/__init__.py:290
+#: umc/python/udm/__init__.py:291
 msgid "LDAP DN of object missing"
 msgstr "Die LDAP-DN des Objektes fehlt"
 
-#: umc/python/udm/__init__.py:325
+#: umc/python/udm/__init__.py:326
 msgid "LDAP object could not be identified"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
@@ -62,20 +62,20 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurde angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:604
+#: umc/python/udm/udm_ldap.py:603
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/__init__.py:464
+#: umc/python/udm/__init__.py:465
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/__init__.py:675 umc/python/udm/udm_ldap.py:224
+#: umc/python/udm/__init__.py:676 umc/python/udm/udm_ldap.py:224
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/__init__.py:216
+#: umc/python/udm/__init__.py:217
 msgid "The destination is missing"
 msgstr "Das Ziel fehlt"
 
@@ -88,12 +88,12 @@ msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
 "überein (erwartet: %s, gefunden: %s)"
 
-#: umc/python/udm/udm_ldap.py:233 umc/python/udm/udm_ldap.py:240
+#: umc/python/udm/udm_ldap.py:235 umc/python/udm/udm_ldap.py:244
 #, python-format
 msgid "The property %s has an invalid value: %s"
 msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
 
-#: umc/python/udm/__init__.py:225
+#: umc/python/udm/__init__.py:226
 msgid "This object can not be moved"
 msgstr "Das Objekt kann nicht verschoben werden"
 
@@ -178,6 +178,6 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "einen Univention Partner."
 
-#: umc/python/udm/__init__.py:468
+#: umc/python/udm/__init__.py:469
 msgid "text file"
 msgstr "Textdatei"

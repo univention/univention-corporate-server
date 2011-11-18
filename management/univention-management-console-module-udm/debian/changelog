@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.240-1) unstable; urgency=low
+
+  * added translations (Bug #23199)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 18 Nov 2011 13:52:55 +0100
+
 univention-management-console-module-udm (1.0.239-1) unstable; urgency=low
 
   * added multi-edit mode (Bug #23199)
