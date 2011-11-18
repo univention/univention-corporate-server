@@ -5,11 +5,16 @@ import univention.lib.ucrLogrotate
 
 name = "managed-client"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-
 print "/var/log/univention/%s.log {" % name
-
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
+print "}"
+
+name = "check_connection"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+print "/var/log/univention/%s.log {" % name
+for setting in settings.keys():
+	print "\t%s" % settings[setting]
+print "}"
 @!@
-}
 

@@ -1,3 +1,9 @@
+univention-server (7.0.15-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:32:48 +0100
+
 univention-server (7.0.14-1) unstable; urgency=low
 
   * Added a UCR variable server/password/change to disable the password
