@@ -1,3 +1,10 @@
+univention-python (6.0.19-1) unstable; urgency=low
+
+  * getPolicies: support evaluating policies just for a list of policies
+    without an object; Bug #24722
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Nov 2011 15:05:18 +0100
+
 univention-python (6.0.18-1) unstable; urgency=low
 
   * another fix in default values for gtPolicies; Bug #22439

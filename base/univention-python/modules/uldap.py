@@ -327,17 +327,19 @@ class access:
 		if policies is None:
 			policies = []
 		_d=univention.debug.function('uldap.getPolicies dn=%s policies=%s attrs=%s result=%s fixedattrs=%s' % (dn, policies, attrs, result, fixedattrs))
-		if not dn:
+		if not dn and not policies: # if policies is set apply a fictionally referenced list of policies
 			return {}
+
 		# get current dn
 		if attrs and 'univentionPolicyReference' in attrs:
 			policies=attrs['univentionPolicyReference']
 		elif not policies and not attrs:
 			policies=self.getAttr(dn, 'univentionPolicyReference')
 
-		parent_dn=self.parentDn(dn)
-		if parent_dn:
-			result=self.getPolicies(parent_dn, result=result, fixedattrs=fixedattrs)
+		if dn:
+			parent_dn=self.parentDn(dn)
+			if parent_dn:
+				result=self.getPolicies(parent_dn, result=result, fixedattrs=fixedattrs)
 
 		for pdn in policies:
 			pattrs=self.get(pdn)
