@@ -10,23 +10,37 @@ html, body
     border: 0;
 	margin: 0;
 	padding: 0;
-	background-color: #FFFFFF;
+	color: #414142;
+	overflow-y: hidden;
+	font-family: Helvetica,"Helvetica Neue",Arial,Geneva,sans-serif;
+}
+
+html {
+    background: url("../images/bg/page.png") repeat-y scroll center center #EEEEEF;
 }
 
 h1 {
 	margin-top: 0;
 	padding-top: 75px;
-	font-weight: bold;
+	border-bottom: 1px solid #989A9C;
+	margin: 15px 0;
+	padding: 0 0 10px 7px;
+}
+
+#contentfooter {
+	border-bottom: 1px solid #414142;
+	bottom: 30px;
+	width: 900px;
+	position: absolute;
 }
 
 #wrapper {
 	margin-left: auto;
 	margin-right: auto;
-	width: 901px;
-	padding-left: 45px;
-	padding-right: 45px;
-	background-image: url('../images/background.png');
-	background-repeat: repeat-y;
+	width: 900px;
+	background: #fff;
+	margin-top: 34px;
+	padding: 20px 30px;
 
 	/**
 	 * Necessary for a CSS footer to work:
@@ -35,7 +49,6 @@ h1 {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin-bottom: -80px;
 }
 
 #header {
@@ -43,8 +56,9 @@ h1 {
 	left:0;
 	top:0;
 	width:100%;
-	height: 35px;
-	background-color: #000000;
+	height: 34px;
+	background: url("../images/bg/top.png") repeat-x scroll center top transparent;
+	overflow: hidden;
 }
 
 #header #header-wrapper {
@@ -62,8 +76,17 @@ h1 {
 }
 
 #header span {
-	margin-right: 20px;
-	font-weight: bold;
+	font-size: 15px;
+	padding: 9px;
+	vertical-align: middle;
+}
+
+#logo {
+	background-image: url("../images/univention_logo.png") !important;
+	background-position: 10px 0 !important;
+	background-repeat: no-repeat !important;
+	height: 18px !important;
+	width: 165px !important;
 }
 
 #header form {
@@ -74,15 +97,6 @@ h1 {
 	 */
 	zoom:1;
 	*display:inline;
-}
-
-#footer {
-	height: 80px;
-	width: 991px;
-	margin-left: auto;
-	margin-right: auto;
-	background-image: url('../images/footer.png');
-	background-repeat: no-repeat;
 }
 
 table.content {

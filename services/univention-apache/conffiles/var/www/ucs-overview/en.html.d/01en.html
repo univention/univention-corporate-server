@@ -47,32 +47,37 @@ print """
 		<!-- @start header -->
 		<div id="header">
 			<div id="header-wrapper">
-				<span>Host: %(host)s</span>
+			  <div style="float: left;">
+				<a href="http://www.univention.de"><img src="images/univention_logo.png" /></a>
+			  </div>
+			  <div style="float: right;">
+				<span>Host: %(host)s.%(domainname)s</span>
 				<form name="jump" id="lang" action="GO">
 				<select name="lang" id="language" onchange="location=document.jump.lang.options[document.jump.lang.selectedIndex].value;" value="GO">
 					<option selected="selected" value="en.html">english</option>
 					<option value="de.html">deutsch</option>
 				</select>
 				</form>
+			  </div>
 			</div>
 		</div>
 		<!-- @end header -->
 
 		<!-- @start wrapper -->
 		<div id="wrapper">
-				<!-- @start content-head -->
-				<div id="content-head">
+			<!-- @start content-head -->
+			<div id="content-head">
 				<!-- @start header-title -->
 				<h1>Univention Corporate Server</h1>
 				<!-- @end header-title -->
-				<h2>Welcome to %(role)s %(host)s</h2>
-	""" % {'role': role, 'host': baseConfig.get('hostname') }
+				<div>Welcome to %(role)s %(host)s</div>
+	""" % {'role': role, 'host': baseConfig.get('hostname'), 'domainname': baseConfig.get('domainname'), }
 @!@
-				</div>
-				<!-- @end content-head -->
+			</div>
+			<!-- @end content-head -->
 
-				<!-- @start content -->
-				<div id="content">
+			<!-- @start content -->
+			<div id="content">
 			<table class="content">
 
 
@@ -82,9 +87,6 @@ if not baseConfig.get('server/role', None) == "domaincontroller_master" and base
 	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/en.html"><img src="../icon/about.png" alt="" style="border: 0;" /></a></td>'
 	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/en.html">@%@ldap/master@%@</a></td>'
 	print'<td class="overview">Domaincontroller Master of UCS domain @%@domainname@%@</td>'
-	print'</tr>'
-	print'<tr>'
-	print'<td></td>'
 	print'</tr>'
 @!@
 

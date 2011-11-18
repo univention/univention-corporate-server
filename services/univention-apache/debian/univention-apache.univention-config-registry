@@ -48,6 +48,7 @@ Subfile: var/www/ucs-overview/de.html.d/01de.html
 Variables: server/role
 Variables: ldap/master
 Variables: hostname
+Variables: domainname
 
 Type: subfile
 Multifile: var/www/ucs-overview/de.html
@@ -65,6 +66,7 @@ Subfile: var/www/ucs-overview/en.html.d/01en.html
 Variables: server/role
 Variables: ldap/master
 Variables: hostname
+Variables: domainname
 
 Type: subfile
 Multifile: var/www/ucs-overview/en.html
