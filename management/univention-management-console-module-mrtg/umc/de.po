@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Show system usage statistics"
-msgstr "System-Statistiken anzeigen"
+msgstr "Systemstatistiken anzeigen"
 
 msgid "Statistics"
 msgstr "Statistiken"

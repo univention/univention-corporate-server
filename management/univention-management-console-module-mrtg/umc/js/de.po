@@ -27,7 +27,7 @@ msgstr "Speicherbenutzung"
 
 #: umc/js/mrtg.js:46
 msgid "Number of active terminal server sessions"
-msgstr "Anzahl der aktiven Terminalserver Sitzungen"
+msgstr "Anzahl der aktiven Terminalserver-Sitzungen"
 
 #: umc/js/mrtg.js:67
 msgid "Previous day"
