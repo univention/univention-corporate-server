@@ -289,7 +289,11 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				dprint(silent, 'Starting errata update at %s...' % (time.ctime()), debug=True)
 				dprint(silent, 'Starting errata update')
 				time.sleep(1)
-				retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-update',  'net'], shell=False, env=os.environ)
+				if configRegistry.is_true('local/repository', False):
+					# Repository update is already complete
+					retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-update',  'net', '--no-repository-update'], shell=False, env=os.environ)
+				else:
+					retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-update',  'net'], shell=False, env=os.environ)
 				if retcode:
 					dprint(silent, 'exitcode of univention-errata-update: %s' % retcode, debug=True)
 					dprint(silent, 'ERROR: update failed. Please check /var/log/univention/errata-updates.log\n')

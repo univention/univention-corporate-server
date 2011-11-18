@@ -1,3 +1,12 @@
+univention-updater (7.0.109-1) unstable; urgency=low
+
+  * If univention-errata-update was called by univention-upgrade the
+    repository is already up to date or the Admin decided not to update
+    the local repository. So in this case don't call repository-update
+    again from errata-update (Bug #23453)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 11:52:11 +0100
+
 univention-updater (7.0.108-1) unstable; urgency=low
 
   * more hylafax preup changes (Bug #24619) 

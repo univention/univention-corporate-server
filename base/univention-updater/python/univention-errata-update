@@ -96,11 +96,11 @@ def remove_temporary_sources_list ():
 		os.remove(TMPSOURCE)
 
 def usage(fd=sys.stdout):
-	print >> fd, 'univention-errata-update: tool for including errata updates into local repository'
+	print >> fd, 'univention-errata-update: tool for installing errata updates'
 	print >> fd, 'copyright (c) 2004-2011 Univention GmbH, Germany'
 	print >> fd, ''
 	print >> fd, 'Syntax:'
-	print >> fd, '  univention-errata-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check]'
+	print >> fd, '  univention-errata-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check] [--no-repository-update]'
 	print >> fd, '  univention-errata-update [--help] '
 	print >> fd, ''
 
@@ -128,6 +128,7 @@ if __name__ == '__main__':
 	fp_debug = open(LOGFILE, 'a+')
 	call_upgrade=True
 	file=''
+	repository_update=True
 
 	dprint( '***** Starting univention-errata-update at %s\n' % time.ctime(), [fp_debug] )
 
@@ -150,7 +151,7 @@ if __name__ == '__main__':
 		fp_debug.close()
 		sys.exit(1)
 
-	longopts=['file=', 'silent', 'noupdate', 'check' ]
+	longopts=['file=', 'silent', 'noupdate', 'check', 'no-repository-update' ]
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -169,6 +170,8 @@ if __name__ == '__main__':
 				fp_debug.close()
 				sys.exit(1)
 			file = os.path.abspath( file )
+		if opt == '--no-repository-update':
+			repository_update=False
 		if opt == '--silent':
 			sys.stdout = open(os.path.devnull, 'w+')
 		if opt == '--noupdate':
@@ -195,38 +198,40 @@ if __name__ == '__main__':
 		configRegistry = ucr.ConfigRegistry()
 		configRegistry.load()
 
-		local_repository = False
-		# update local repository
-		if configRegistry.is_true('local/repository', False):
-			local_repository = True
-			# if there is no _new_ repository server -> exit
-			if configRegistry.has_key( 'repository/local/old' ):
+		if repository_update:
+			# from univention-upgrade a repository update had already been done
+			local_repository = False
+			# update local repository
+			if configRegistry.is_true('local/repository', False):
+				local_repository = True
+				# if there is no _new_ repository server -> exit
+				if configRegistry.has_key( 'repository/local/old' ):
+					update_status( status='FAILED', errorsource='SETTINGS' )
+					dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0', [fp_debug,sys.stderr] )
+					sys.exit( 1 )
+
+				# ... via mirror synchronsiation
+				if command == 'net':
+					dprint( 'Update local repository server ...', [fp_debug] )
+					ret = subprocess.call( ['univention-repository-update', 'net', '--errata-only'], stdout=fp_debug, stderr=fp_debug )
+					if ret:
+						update_status( status='FAILED', errorsource='PREPARATION' )
+						dprint( 'Error: Update of local repository server failed', [fp_debug,sys.stderr] )
+						sys.exit( 1 )
+				# ... via tar archive
+				elif command == 'local' and file:
+					repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
+					ret = subprocess.call( ['tar','xzf', file], cwd=os.path.join(repo_path, 'mirror'), stdout=fp_debug, stderr=fp_debug )
+					if ret:
+						update_status( status='FAILED', errorsource='PREPARATION' )
+						dprint( 'Error: Failed to extract errata update archive.', [fp_debug,sys.stderr] )
+						sys.exit( 1 )
+
+			# without a local repository the local mode is not supported
+			elif command == 'local':
 				update_status( status='FAILED', errorsource='SETTINGS' )
-				dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0', [fp_debug,sys.stderr] )
+				dprint( 'Error: The local mode can just be used on repository servers', [fp_debug,sys.stderr] )
 				sys.exit( 1 )
-
-			# ... via mirror synchronsiation
-			if command == 'net':
-				dprint( 'Update local repository server ...', [fp_debug] )
-				ret = subprocess.call( ['univention-repository-update', 'net', '--errata-only'], stdout=fp_debug, stderr=fp_debug )
-				if ret:
-					update_status( status='FAILED', errorsource='PREPARATION' )
-					dprint( 'Error: Update of local repository server failed', [fp_debug,sys.stderr] )
-					sys.exit( 1 )
-			# ... via tar archive
-			elif command == 'local' and file:
-				repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-				ret = subprocess.call( ['tar','xzf', file], cwd=os.path.join(repo_path, 'mirror'), stdout=fp_debug, stderr=fp_debug )
-				if ret:
-					update_status( status='FAILED', errorsource='PREPARATION' )
-					dprint( 'Error: Failed to extract errata update archive.', [fp_debug,sys.stderr] )
-					sys.exit( 1 )
-
-		# without a local repository the local mode is not supported
-		elif command == 'local':
-			update_status( status='FAILED', errorsource='SETTINGS' )
-			dprint( 'Error: The local mode can just be used on repository servers', [fp_debug,sys.stderr] )
-			sys.exit( 1 )
 
 		# install errata updates
 		filename = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
