@@ -318,10 +318,25 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			description: this._( 'Edit the %s.', this.objectNameSingular ),
 			iconClass: 'umcIconEdit',
 			isStandardAction: true,
-			isMultiAction: false,
+			isMultiAction: true,
 			callback: dojo.hitch(this, function(ids, items) {
-				if (items.length && items[0].objectType) {
+				if (items.length == 1 && items[0].objectType) {
 					this.createDetailPage(items[0].objectType, ids[0]);
+				}
+				else if (items.length >= 1 && items[0].objectType) {
+					// make sure that all objects do have the same type
+					var sameType = true;
+					dojo.forEach(items, function(iitem) {
+						sameType = sameType && iitem.objectType == items[0].objectType;
+						return sameType;
+					});
+					if (!sameType) {
+						umc.dialog.alert(this._('Only objects of the same type can be edited together'));
+						return;
+					}
+
+					// everything ok, load detail page
+					this.createDetailPage(items[0].objectType, ids);
 				}
 			})
 		}, {

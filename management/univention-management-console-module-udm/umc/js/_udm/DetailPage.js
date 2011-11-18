@@ -37,6 +37,7 @@ dojo.require("dojo.string");
 dojo.require("dojo.DeferredList");
 dojo.require("umc.i18n");
 dojo.require("umc.modules._udm.Template");
+dojo.require("umc.modules._udm.OverwriteLabel");
 dojo.require("umc.render");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.ContainerWidget");
@@ -68,9 +69,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 	//		The object type of the UDM object that is edited.
 	objectType: null,
 
-	// ldapName: String?
+	// ldapName: String?|String[]?
 	//		The LDAP DN of the object that is edited. This property needs not to be set
-	//		when a new object is edited.
+	//		when a new object is edited. Can also be a list of LDAP DNs for multi-edit
+	//		mode.
 	ldapName: null,
 
 	// newObjectOptions:
@@ -133,10 +135,13 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 	ldapBase: null,
 
+	_multiEdit: false,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
 		this.standbyOpacity = 1;
+		this._multiEdit = dojo.isArray(this.ldapName);
 	},
 
 	buildRendering: function() {
@@ -152,15 +157,26 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// for the layout of the selected object type, then we can render the page
 		var params = {
 			objectType: this.objectType,
-			objectDN: this.ldapName || null
+			// when editing multiple items, get the properties as for a new object
+			objectDN: this._multiEdit ? null : this.ldapName || null
 		};
 
+		// prepare parallel queries
 		var commands = [
 			this.umcpCommand('udm/properties', params),
-			this.umcpCommand('udm/layout', params),
-			this.umcpCommand('udm/policies', params),
-			umc.tools.ucr( [ 'ldap/base' ] )
+			this.umcpCommand('udm/layout', params)
 		];
+		if (!this._multiEdit) {
+			// query policies for normal edit
+			commands.push(this.umcpCommand('udm/policies', params));
+		}
+		else {
+			// for multi-edit, mimic an empty list of policies
+			var deferred = new dojo.Deferred();
+			deferred.resolve({result:[]});
+			commands.push(deferred);
+		}
+		commands.push(umc.tools.ucr( [ 'ldap/base' ] ));
 
 		// in case an object template has been chosen, add the umcp request for the template
 		var objTemplate = dojo.getObject('objectTemplate', false, this.newObjectOptions);
@@ -239,11 +255,18 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				}];
 				iprop.type = 'MultiInput';
 			}
+
+			// handle editable items
 			if ( iprop.readonly ) {
 				iprop.disabled = true;
 			} else {
 				iprop.disabled = this.ldapName === undefined ? false : ! iprop.editable;
 			}
+			if (this._multiEdit && iprop.identifies) {
+				// in multi-edit mode, one cannot edit the 'name' field, i.e., the identifier
+				iprop.disabled = true;
+			}
+
 			properties.push(iprop);
 			optionMap[ iprop.id ] = iprop.options;
 		}, this);
@@ -283,7 +306,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				return false;
 			}
 		} );
-		if ( option_prop && option_prop.widgets.length > 0 ) {
+		if ( option_prop && option_prop.widgets.length > 0 && !this._multiEdit ) {
 			var optiontab = {
 				label: this._( '[Options]' ),
 				description: this._( 'Options describing the basic features of the UDM object' ),
@@ -336,15 +359,15 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 		// find property identifying the object
 		umc.tools.forIn( widgets, function( name, widget ) {
-							 if ( widget.identifies ) {
-								 // connect to onChange and modify title using this.parentWidget.set( 'title', ... )
-								 this.connect( widget, 'onChange', dojo.hitch( this, function( value ) {
-									 value = dojo.isArray( value ) ? value.join( " " ) : value;
-									 this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ': ' + value );
-								 } ) );
-								 return false; // break out of forIn
-							 }
-						 }, this );
+			if ( widget.identifies ) {
+				// connect to onChange and modify title using this.parentWidget.set( 'title', ... )
+				this.connect( widget, 'onChange', dojo.hitch( this, function( value ) {
+					value = dojo.isArray( value ) ? value.join( " " ) : value;
+					this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ': ' + value );
+				} ) );
+				return false; // break out of forIn
+			}
+		}, this );
 
 		// render the layout for each subtab
 		this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab
@@ -389,7 +412,17 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}, this);
 		this._layoutMap = layout;
 
-		if ( '$options$' in widgets ) {
+		if (this._multiEdit) {
+			// in multi-edit mode, hook a 'overwrite?' checkbox after each widget
+			umc.tools.forIn(widgets, function(iname, iwidget) {
+				if (iwidget.$refLabel$ && !iwidget.disabled) {
+					iwidget.$refOverwrite$ = this.adopt(umc.modules._udm.OverwriteLabel, {});
+					dojo.place(iwidget.$refOverwrite$.domNode, iwidget.$refLabel$.domNode);
+				}
+			}, this);
+		}
+
+		if ( '$options$' in widgets && !this._multiEdit) {
 			// required when creating a new object
 			this._optionsWidget.set( 'value', option_values );
 		}
@@ -583,7 +616,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		this.set('content', this._form);
 
 		// initiate the template mechanism (only for new objects)
-		if (!this.ldapName) {
+		if (!this.ldapName && !this._multiEdit) {
 			// search for given default values in the properties... these will be replaced
 			// by the template mechanism
 			var template = {};
@@ -613,7 +646,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}
 
 		// load form data
-		if (this.ldapName) {
+		if (this.ldapName && !this._multiEdit) {
 			this._form.load(this.ldapName).then(dojo.hitch(this, function(vals) {
 				// save the original data we received from the server
 				this._receivedObjOrigData = vals;
@@ -974,6 +1007,11 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				return true;
 			}
 
+			// in multi-edit mode, ignore widgets that are not marked to be overwritten
+			if (this._multiEdit && (!iwidget.$refOverwrite$ || !iwidget.$refOverwrite$.get('value'))) {
+				return true;
+			}
+
 			// check whether a required property is set or a property is invalid
 			var tmpVal = dojo.toJson(iwidget.get('value'));
 			var isEmpty = tmpVal == '""' || tmpVal == '[]' || tmpVal == '{}';
@@ -983,7 +1021,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				errMessage += '<li>' + iwidget.label + '</li>';
 				this._setWidgetInvalid(iname);
 			}
-
 		}, this);
 		errMessage += '</ul>';
 
@@ -1111,21 +1148,54 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// summary:
 		//		Save the user changes for the edited object.
 
-		var deffered = null;
-		if (this.newObjectOptions) {
-			deffered = this.moduleStore.add(vals, this.newObjectOptions);
+		var deferred = null;
+		if (this._multiEdit) {
+			// save the changes for each object once
+			var transaction = this.moduleStore.transaction();
+			dojo.forEach(this.ldapName, function(idn) {
+				// shallow copy with corrected DN
+				var ivals = dojo.mixin({}, vals);
+				ivals[this.moduleStore.idProperty] = idn;
+				this.moduleStore.put(ivals);
+			}, this);
+			deferred = transaction.commit();
+		}
+		else if (this.newObjectOptions) {
+			deferred = this.moduleStore.add(vals, this.newObjectOptions);
 		}
 		else {
-			deffered = this.moduleStore.put(vals);
+			deferred = this.moduleStore.put(vals);
 		}
-		deffered.then(dojo.hitch(this, function(result) {
+		deferred.then(dojo.hitch(this, function(result) {
+			// see whether saving was successfull
 			this.standby(false);
-			if (result.success) {
+			var success = true;
+			var msg = '';
+			if (dojo.isArray(result)) {
+				msg = '<p>' + this._('The following UDM objects could not be saved:') + '</p><ul>';
+				dojo.forEach(result, function(iresult) {
+					success = success && iresult.success;
+					if (!iresult.success) {
+						msg += dojo.replace('<li>{' + this.moduleStore.idProperty + '}: {details}</li>', iresult);
+					}
+				}, this);
+				msg += '</ul>';
+			}
+			else {
+				success = result.success;
+				if (!result.success) {
+					msg = this._('The UDM object could not be saved: %(details)s', result);
+				}
+			}
+
+			if (success) {
+				// everything ok, close page
 				this.onCloseTab();
 				this.onSave(result.$dn$, this.objectType);
 			}
 			else {
-				umc.dialog.alert(this._('The UDM object could not be saved: %(details)s', result));
+				// print error message to user
+				umc.dialog.alert(msg);
 			}
 		}), dojo.hitch(this, function() {
 			this.standby(false);
@@ -1139,7 +1209,15 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// get all form values and see which values are new
 		var vals = this.getValues();
 		var newVals = {};
-		if (this.newObjectOptions) {
+		if (this._multiEdit) {
+			// in multi-edit mode, get all marked entries
+			umc.tools.forIn(this._form._widgets, dojo.hitch(this, function(iname, iwidget) {
+				if (iwidget.$refOverwrite$ && iwidget.$refOverwrite$.get('value')) {
+					newVals[iname] = iwidget.get('value');
+				}
+			}));
+		}
+		else if (this.newObjectOptions) {
 			// get only non-empty values
 			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
 				if (!(dojo.isArray(ival) && !ival.length) && ival) {

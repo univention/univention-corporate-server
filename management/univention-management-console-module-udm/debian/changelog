@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.239-1) unstable; urgency=low
+
+  * added multi-edit mode (Bug #23199)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 18 Nov 2011 13:46:17 +0100
+
 univention-management-console-module-udm (1.0.238-1) unstable; urgency=low
 
   * modify/create: if value is empty and the attribute is not required it
