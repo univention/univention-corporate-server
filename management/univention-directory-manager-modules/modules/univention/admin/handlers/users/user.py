@@ -633,7 +633,7 @@ property_descriptions={
 			default = '<username>'
 		),
 	'sambaUserWorkstations': univention.admin.property(
-			short_description=_('Allow the authentication only on these windows hosts'),
+			short_description=_('Allow the authentication only on these Microsoft Windows hosts'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -2061,13 +2061,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					if len(self['password']) < int(pwhistoryPolicy['pwLength']):
 						for i,j in self.alloc:
 							univention.admin.allocators.release(self.lo, self.position, i, j)
-						raise univention.admin.uexceptions.pwToShort, _('The password is too short, at least %d characters!')% int(pwhistoryPolicy['pwLength'])
+						raise univention.admin.uexceptions.pwToShort, _('The password is too short, at least %d characters needed!')% int(pwhistoryPolicy['pwLength'])
 			else:
 				if self['overridePWLength'] != '1':
 					if len(self['password']) < self.password_length:
 						for i,j in self.alloc:
 							univention.admin.allocators.release(self.lo, self.position, i, j)
-						raise univention.admin.uexceptions.pwToShort, _('The password is too short, at least %d character!') %self.password_length
+						raise univention.admin.uexceptions.pwToShort, _('The password is too short, at least %d characters needed!') %self.password_length
 			if pwhistoryPolicy != None and pwhistoryPolicy['pwQualityCheck'] != None and pwhistoryPolicy['pwQualityCheck'].lower() in ['true', '1']:
 				if self['overridePWLength'] != '1':
 					pwdCheck = univention.password.Check(self.lo)

@@ -240,7 +240,7 @@ msgstr "Boot"
 
 #: dhcp_boot.py:138
 msgid "Boot settings"
-msgstr "Boot-Informationen"
+msgstr "Boot-Einstellungen"
 
 #: dhcp_dns.py:45 dhcp_dns.py:75
 msgid "Domain name"
@@ -280,11 +280,11 @@ msgstr "DDNS Aktualisierungen"
 
 #: dhcp_dnsupdate.py:49 dhcp_dnsupdate.py:121
 msgid "DDNS update style"
-msgstr "DDNS Update Stil"
+msgstr "DDNS Update-Stil"
 
 #: dhcp_dnsupdate.py:50 dhcp_dnsupdate.py:131
 msgid "DDNS forward update"
-msgstr "DDNS Forward Update durchführen"
+msgstr "DDNS Forward-Update durchführen"
 
 #: dhcp_dnsupdate.py:51 dhcp_dnsupdate.py:141
 msgid "Update static leases"
@@ -311,7 +311,7 @@ msgid ""
 "Domain name that will be appended to the client's hostname to form a fully-"
 "qualified domain-name (FQDN)"
 msgstr ""
-"Domänenname, der an den Rechnernamen angehängt wird, um den eindeutigen "
+"Domänenname, der an den Rechnernamen angehängt wird, um den vollständigen "
 "Namen (FQDN) zu bilden"
 
 #: dhcp_dnsupdate.py:102
@@ -390,7 +390,7 @@ msgstr ""
 
 #: dhcp_leasetime.py:97
 msgid "Minimum granted lease time"
-msgstr "Minimal garantierte Lease-Zeit"
+msgstr "Minimal gewährte Lease-Zeit"
 
 #: dhcp_leasetime.py:148
 msgid "Lease Time"

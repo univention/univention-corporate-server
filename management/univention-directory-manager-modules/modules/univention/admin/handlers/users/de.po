@@ -77,7 +77,7 @@ msgstr "Benutzer"
 
 #: user.py:78
 msgid "Add, edit and delete users"
-msgstr "Hinzufügen, bearbeiten und löschen von Benutzern"
+msgstr "Hinzufügen, Bearbeiten und Löschen von Benutzern"
 
 #: user.py:79
 msgid "Add"
@@ -332,8 +332,8 @@ msgid "Path to the home directory on the home share"
 msgstr "Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #: user.py:636
-msgid "Allow the authentication only on these windows hosts"
-msgstr "Anmeldung nur an diesen Windows Rechnern zulassen"
+msgid "Allow the authentication only on these Microsoft Windows hosts"
+msgstr "Anmeldung nur an diesen Microsoft Windows-Rechnern zulassen"
 
 #: user.py:647
 msgid "Samba User Login Times"
@@ -361,7 +361,7 @@ msgstr "Herausgeber Land"
 
 #: user.py:681
 msgid "Certificate Issuer Country"
-msgstr "Land des Zertifikat Herausgebers"
+msgstr "Land des Zertifikat-Herausgebers"
 
 #: user.py:691
 msgid "Issuer State"
@@ -369,7 +369,7 @@ msgstr "Herausgeber Staat"
 
 #: user.py:692
 msgid "Certificate Issuer State"
-msgstr "Staat des Zertifikat Herausgebers"
+msgstr "Staat des Zertifikat-Herausgebers"
 
 #: user.py:702
 msgid "Issuer Location"
@@ -377,7 +377,7 @@ msgstr "Herausgeber Ort"
 
 #: user.py:703
 msgid "Certificate Issuer Location"
-msgstr "Ort des Zertifikat Herausgebers"
+msgstr "Ort des Zertifikat-Herausgebers"
 
 #: user.py:713
 msgid "Issuer Organisation"
@@ -385,7 +385,7 @@ msgstr "Herausgeber Organisation"
 
 #: user.py:714
 msgid "Certificate Issuer Organisation"
-msgstr "Organisation des Zertifikat Herausgebers"
+msgstr "Organisation des Zertifikat-Herausgebers"
 
 #: user.py:724
 msgid "Issuer Organisational Unit"
@@ -393,7 +393,7 @@ msgstr "Herausgeber Organisationseinheit"
 
 #: user.py:725
 msgid "Certificate Issuer Organisational Unit"
-msgstr "Organisationseinheit des Zertifikat Herausgebers"
+msgstr "Organisationseinheit des Zertifikat-Herausgebers"
 
 #: user.py:735
 msgid "Issuer Common Name"
@@ -401,7 +401,7 @@ msgstr "Herausgeber Allgemeiner Name"
 
 #: user.py:736
 msgid "Certificate Issuer Common Name"
-msgstr "Allgemeiner Name des Zertifikat Herausgebers"
+msgstr "Allgemeiner Name des Zertifikat-Herausgebers"
 
 #: user.py:746 user.py:823
 msgid "Issuer Mail"
@@ -409,7 +409,7 @@ msgstr "Herausgeber E-Mail-Adresse"
 
 #: user.py:747 user.py:824
 msgid "Certificate Issuer Mail"
-msgstr "E-Mail-Adresse des Zertifikat Herausgebers"
+msgstr "E-Mail-Adresse des Zertifikat-Herausgebers"
 
 #: user.py:757
 msgid "Subject Country"
@@ -417,7 +417,7 @@ msgstr "Inhaber Land"
 
 #: user.py:758
 msgid "Certificate Subject Country"
-msgstr "LAnd des Zertifikat Inhabers"
+msgstr "Land des Zertifikat-Inhabers"
 
 #: user.py:768
 msgid "Subject State"
@@ -425,7 +425,7 @@ msgstr "Inhaber Staat"
 
 #: user.py:769
 msgid "Certificate Subject State"
-msgstr "Staat des Zertifikat Inhaber"
+msgstr "Staat des Zertifikat-Inhaber"
 
 #: user.py:779
 msgid "Subject Location"
@@ -433,7 +433,7 @@ msgstr "Inhaber Ort"
 
 #: user.py:780
 msgid "Certificate Subject Location"
-msgstr "Ort des Zertifikat Inhaber"
+msgstr "Ort des Zertifikat-Inhaber"
 
 #: user.py:790
 msgid "Subject Organisation"
@@ -441,7 +441,7 @@ msgstr "Inhaber Organisation"
 
 #: user.py:791
 msgid "Certificate Subject Organisation"
-msgstr "Organisation des Zertifikat Inhabers"
+msgstr "Organisation des Zertifikat-Inhabers"
 
 #: user.py:801
 msgid "Subject Organisational Unit"
@@ -449,7 +449,7 @@ msgstr "Inhaber Organisationseinheit"
 
 #: user.py:802
 msgid "Certificate Subject Organisational Unit"
-msgstr "Organisationseinheit des Zertifikat Inhabers"
+msgstr "Organisationseinheit des Zertifikat-Inhabers"
 
 #: user.py:812
 msgid "Subject Common Name"
@@ -457,7 +457,7 @@ msgstr "Inhaber Allgemeiner Name"
 
 #: user.py:813
 msgid "Certificate Subject Common Name"
-msgstr "Allgemeiner Name des Zertifikat Inhaber"
+msgstr "Allgemeiner Name des Zertifikat-Inhaber"
 
 #: user.py:834
 msgid "Valid from"
@@ -584,12 +584,7 @@ msgstr ""
 
 #: user.py:2064
 #, python-format
-msgid "The password is too short, at least %d characters!"
-msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
-
-#: user.py:2070
-#, python-format
-msgid "The password is too short, at least %d character!"
+msgid "The password is too short, at least %d characters needed!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
 #: user.py:2435

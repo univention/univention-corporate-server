@@ -44,7 +44,7 @@ msgstr "Netzwerk"
 
 #: network.py:50
 msgid "Add, edit and delete networks"
-msgstr "Hinzufügen, bearbeiten und löschen von Netzwerken"
+msgstr "Hinzufügen, Bearbeiten und Löschen von Netzwerken"
 
 #: network.py:51
 msgid "Add"
@@ -76,7 +76,7 @@ msgstr "Netzmaske"
 
 #: network.py:86
 msgid "Next IP address"
-msgstr "nächste IP-Adresse"
+msgstr "Nächste IP-Adresse"
 
 #: network.py:95
 msgid "IP address range"

@@ -92,11 +92,11 @@ msgstr "Samba Gruppentyp"
 
 #: group.py:127
 msgid "Samba privileges"
-msgstr "Samba Privilegien"
+msgstr "Samba-Privilegien"
 
 #: group.py:128
 msgid "Manage samba privileges"
-msgstr "Samba Privilegien verwalten"
+msgstr "Samba-Privilegien verwalten"
 
 #: group.py:138
 msgid "Description"
@@ -124,11 +124,11 @@ msgstr "enthaltene Gruppe"
 
 #: group.py:204
 msgid "Users that are allowed to send e-mails to the group"
-msgstr "Benutzer die berechtigt sind E-Mails an diese Gruppe zu versenden"
+msgstr "Benutzer, die berechtigt sind E-Mails an diese Gruppe zu versenden"
 
 #: group.py:215
 msgid "Groups that are allowed to send e-mails to the group"
-msgstr "Gruppen die berechtigt sind E-Mails an diese Gruppe zu versenden"
+msgstr "Gruppen, die berechtigt sind E-Mails an diese Gruppe zu versenden"
 
 #: group.py:228
 msgid "General"

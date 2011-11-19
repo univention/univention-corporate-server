@@ -309,7 +309,7 @@ msgstr "Wert ist nicht änderbar"
 #: extended_attribute.py:274
 msgid "Disabling this option will only allow hooks to change the value"
 msgstr ""
-"Das Deaktivieren dieser Option führt dazu, daß der Wert nur noch über Hooks "
+"Das Deaktivieren dieser Option führt dazu, dass der Wert nur noch über Hooks "
 "änderbar ist."
 
 #: extended_attribute.py:284
@@ -493,9 +493,9 @@ msgstr "Max. Benutzerkonten"
 
 #: license.py:106
 msgid ""
-"Maximum number of user accounts managed with the Univention infrastructure"
+"Maximum number of user accounts managed with the UCS infrastructure"
 msgstr ""
-"Maximale Anzahl von Benutzerkonten, die mit der Univention Infrastruktur "
+"Maximale Anzahl von Benutzerkonten, die mit der UCS Infrastruktur "
 "verwaltet werden."
 
 #: license.py:115
@@ -504,9 +504,9 @@ msgstr "Max. Clients"
 
 #: license.py:116
 msgid ""
-"Maximum number of client hosts managed with the Univention infrastructure"
+"Maximum number of client hosts managed with the UCS infrastructure"
 msgstr ""
-"Maximale Anzahl von Client-Rechnern, die mit der Univention Infrastruktur "
+"Maximale Anzahl von Client-Rechnern, die mit der UCS Infrastruktur "
 "verwaltet werden."
 
 #: license.py:125
@@ -515,10 +515,10 @@ msgstr "Max. Groupware-Konten"
 
 #: license.py:126
 msgid ""
-"Maximum number of groupware accounts managed with the Univention "
+"Maximum number of groupware accounts managed with the UCS "
 "infrastructure"
 msgstr ""
-"Maximale Anzahl von Groupware-Konten, die mit der Univention Infrastruktur "
+"Maximale Anzahl von Groupware-Konten, die mit der UCS Infrastruktur "
 "verwaltet werden."
 
 #: license.py:135
@@ -761,11 +761,11 @@ msgstr ""
 
 #: umc_operationset.py:50
 msgid "Settings: UMC operation set"
-msgstr "Einstellungen: UMC Operationen"
+msgstr "Einstellungen: UMC-Operationen"
 
 #: umc_operationset.py:51
 msgid "List of Operations for UMC"
-msgstr "Liste von UMC Operationen"
+msgstr "Liste von UMC-Operationen"
 
 #: umc_operationset.py:66 umc_operationset.py:67 usertemplate.py:72
 msgid "Description"
@@ -773,11 +773,11 @@ msgstr "Beschreibung"
 
 #: umc_operationset.py:77
 msgid "UMC commands"
-msgstr "UMC Kommandos"
+msgstr "UMC-Kommandos"
 
 #: umc_operationset.py:78
 msgid "List of UMC command names or patterns"
-msgstr "Liste von UMC Kommando- und Optionenmuster"
+msgstr "Liste von UMC-Kommando- und Optionenmuster"
 
 #: umc_operationset.py:88
 msgid "Flavor"
@@ -788,8 +788,8 @@ msgid ""
 "Defines a specific flavor of the UMC module. If given the operations are "
 "permitted only if the flavor matches."
 msgstr ""
-"Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist "
-"müssen Operationen diese setzen ansonsten werden sie zurückgewiesen"
+"Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist, "
+"müssen Operationen diese setzen, ansonsten werden sie zurückgewiesen"
 
 #: user.py:49
 msgid "Preferences: Univention Directory Manager user settings"

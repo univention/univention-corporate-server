@@ -50,7 +50,7 @@ msgstr "Die Eigenschaft %s wird benötigt."
 
 #: __init__.py:358
 msgid "Moving not possible: old and new DN are identical."
-msgstr "Verschieben ist nicht möglich: alter und neuer DN sind identisch."
+msgstr "Verschieben ist nicht möglich: Alter und neuer DN sind identisch."
 
 #: __init__.py:360
 msgid "Moving into one's own sub container not allowed."
@@ -67,7 +67,7 @@ msgstr "Zielobjekt kann keine Unterobjekte haben."
 msgid "Unable to move object %s (%s) in subtree, trying to revert changes."
 msgstr ""
 "Das Object %s (%s) im Teilbaum kann nicht verschoben werden, Versuche den "
-"Ausgangzustand wiederherzustellen"
+"Ausgangzustand wiederherzustellen."
 
 #: __init__.py:1484 __init__.py:1503
 msgid "Reverse zone and IP address are incompatible."
@@ -79,7 +79,7 @@ msgstr "DNS-Alias ist bereits verwendet."
 
 #: __init__.py:2008
 msgid ""
-"The DHCP entry for this host should contain the zone DN, the IP address and "
+"The DHCP entry for this host should contain the zone LDAP-DN, the IP address and "
 "the MAC address."
 msgstr ""
 "Der DHCP-Eintrag für diesen Rechner sollte die Zonen LDAP-DN, die IP- und "
@@ -88,9 +88,9 @@ msgstr ""
 #: __init__.py:2042
 msgid ""
 "The DNS alias entry for this host should contain the zone name, the alias "
-"zone container DN and the alias."
+"zone container LDAP-DN and the alias."
 msgstr ""
-"der DNS-Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN "
+"Der DNS-Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN "
 "des Alias-Zonencontainers und den Alias-Namen enthalten."
 
 #: __init__.py:2302

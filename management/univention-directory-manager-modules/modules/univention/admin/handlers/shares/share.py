@@ -248,7 +248,7 @@ property_descriptions={
 		),
 	'sambaDosFilemode': univention.admin.property(
 			short_description=_('Users with write access may modify permissions'),
-			long_description=_('users who has write access to a file or directory are able to change the permissions '),
+			long_description=_('users who have write access to a file or directory are able to change the permissions '),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['samba'],
@@ -259,7 +259,7 @@ property_descriptions={
 		),
 	'sambaHideUnreadable': univention.admin.property(
 			short_description=_('Hide unreadable files/directories'),
-			long_description=_('Files and directories with no read access are hidden'),
+			long_description=_('Files and directories with no read access are hidden. New files and directories receive permissions of the superordinate directory.'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['samba'],
@@ -443,7 +443,7 @@ property_descriptions={
 		),
 	'sambaCscPolicy': univention.admin.property(
 			short_description=_('Client-side caching policy'),
-			long_description=_('The way clients capable of offline caching will cache the files in the share.'),
+			long_description=_('The way clients are capable of offline caching will cache the files in the share.'),
 			syntax=cscPolicy,
 			multivalue=0,
 			options=['samba'],
@@ -504,7 +504,7 @@ property_descriptions={
 		),
 	'sambaForceGroup': univention.admin.property(
 			short_description=_('Force group'),
-			long_description=_('This specifies a UNIX group name that will be assigned as the default primary group for all users connecting to this service. This is useful for sharing files by ensuring that all access to files on service will use the named group for their permissions checking. Thus, by assigning permissions for this group to the files and directories within this service the Samba administrator can restrict or allow sharing of these files.'),
+			long_description=_('This specifies a UNIX group name that will be assigned as the default primary group for all users connecting to this service. This is useful for sharing files by ensuring that all access to files on the service will use the named group for their permissions checking. Thus, by assigning permissions for this group to the files and directories within this service the Samba administrator can restrict or allow sharing of these files.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=['samba'],

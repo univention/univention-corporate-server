@@ -2036,7 +2036,7 @@ class simpleComputer( simpleLdap ):
 					if not self.oldinfo.has_key( 'dhcpEntryZone' ) or not entry in self.oldinfo[ 'dhcpEntryZone' ]:
 						self.__changes[ 'dhcpEntryZone' ][ 'add' ].append( entry )
 				else:
-					raise univention.admin.uexceptions.invalidDhcpEntry, _('The DHCP entry for this host should contain the zone DN, the IP address and the MAC address.')
+					raise univention.admin.uexceptions.invalidDhcpEntry, _('The DHCP entry for this host should contain the zone LDAP-DN, the IP address and the MAC address.')
 
 		if self.hasChanged( 'dnsEntryZoneForward' ):
 			if self.oldinfo.has_key( 'dnsEntryZoneForward' ):
@@ -2070,7 +2070,7 @@ class simpleComputer( simpleLdap ):
 					if not self.oldinfo.has_key( 'dnsEntryZoneAlias' ) or not entry in self.oldinfo[ 'dnsEntryZoneAlias' ]:
 						self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ].append( entry )
 				else:
-					raise univention.admin.uexceptions.invalidDNSAliasEntry, _('The DNS alias entry for this host should contain the zone name, the alias zone container DN and the alias.')
+					raise univention.admin.uexceptions.invalidDNSAliasEntry, _('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.')
 
 		if len ( self[ 'mac' ] ) < 2 and len( self[ 'ip' ] ) < 2:
 			self.__multiip = False

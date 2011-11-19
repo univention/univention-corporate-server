@@ -103,7 +103,7 @@ property_descriptions={
 		),
 	'accounts': univention.admin.property(
 			short_description=_('Max. user accounts'),
-			long_description=_('Maximum number of user accounts managed with the Univention infrastructure'),
+			long_description=_('Maximum number of user accounts managed with the UCS infrastructure'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -113,7 +113,7 @@ property_descriptions={
 		),
 	'clients': univention.admin.property(
 			short_description=_('Max. clients'),
-			long_description=_('Maximum number of client hosts managed with the Univention infrastructure'),
+			long_description=_('Maximum number of client hosts managed with the UCS infrastructure'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -123,7 +123,7 @@ property_descriptions={
 		),
 	'groupwareaccounts': univention.admin.property(
 			short_description=_('Max. groupware accounts'),
-			long_description=_('Maximum number of groupware accounts managed with the Univention infrastructure'),
+			long_description=_('Maximum number of groupware accounts managed with the UCS infrastructure'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -133,7 +133,7 @@ property_descriptions={
 		),
 	'desktops': univention.admin.property(
 			short_description=_('Max. desktops'),
-			long_description=_('Maximum number of Univention desktop accounts managed with the Univention infrastructure'),
+			long_description=_('Maximum number of Univention desktop accounts managed with the UCS infrastructure'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],

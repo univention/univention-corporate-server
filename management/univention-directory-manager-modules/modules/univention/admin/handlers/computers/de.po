@@ -117,7 +117,7 @@ msgstr "Rechner: Domänencontroller Backup"
 #: memberserver.py:58 mobileclient.py:58 windows_domaincontroller.py:58
 #: windows.py:58
 msgid "Posix account"
-msgstr "Posix Konto"
+msgstr "Posix-Konto"
 
 #: domaincontroller_backup.py:62 domaincontroller_master.py:62
 #: domaincontroller_slave.py:62 macos.py:59 managedclient.py:62

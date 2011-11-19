@@ -80,7 +80,7 @@ msgstr "Mail-Home-Server"
 
 #: folder.py:126
 msgid "E-Mail address"
-msgstr "Mail-Adresse"
+msgstr "E-Mail-Adresse"
 
 #: folder.py:146 folder.py:147
 msgid "Access Rights"
@@ -120,7 +120,7 @@ msgstr "Berechtigte Benutzer"
 
 #: lists.py:121
 msgid "Users that are allowed to send e-mails to the list"
-msgstr "Benutzer die berechtigt sind E-Mails an diese Liste zu versenden"
+msgstr "Benutzer, die berechtigt sind, E-Mails an diese Liste zu versenden"
 
 #: lists.py:124
 msgid "Allowed groups"
@@ -128,7 +128,7 @@ msgstr "Berechtigte Gruppen"
 
 #: lists.py:124
 msgid "Groups that are allowed to send e-mails to the list"
-msgstr "Gruppen die berechtigt sind E-Mails an diese Liste zu versenden"
+msgstr "Gruppen, die berechtigt sind, E-Mails an diese Liste zu versenden"
 
 #: mail.py:50 mail.py:54
 msgid "Mail"
