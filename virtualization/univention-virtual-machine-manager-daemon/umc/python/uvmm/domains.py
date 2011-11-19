@@ -107,9 +107,14 @@ class Domains( object ):
 			json[ 'maxMem' ] = MemorySize.num2str( json[ 'maxMem' ] )
 			# disks
 			for disk in json[ 'disks' ]:
-				disk[ 'volumeFilename' ] = os.path.basename( disk[ 'source' ] )
-				disk[ 'pool' ] = self.get_pool_name( uri, os.path.dirname( disk[ 'source' ] ) )
+				if disk[ 'type' ] != Disk.TYPE_BLOCK:
+					disk[ 'volumeFilename' ] = os.path.basename( disk[ 'source' ] )
+					disk[ 'pool' ] = self.get_pool_name( uri, os.path.dirname( disk[ 'source' ] ) )
+				else:
+					disk[ 'volumeFilename' ] = disk[ 'source' ]
+					disk[ 'pool' ] = None
 				disk[ 'paravirtual' ] = disk[ 'target_bus' ] in ( 'virtio', 'xen' )
+				disk[ 'volumeType' ] = disk[ 'type' ]
 				if isinstance( disk[ 'size' ], ( int, long ) ):
 					disk[ 'size' ] = MemorySize.num2str( disk[ 'size' ] )
 
@@ -145,6 +150,17 @@ class Domains( object ):
 					continue
 				json[ key ] = json[ 'annotations' ][ key ]
 
+			# profile (MUST be after mapping annotations)
+			profile_dn = json.get( 'profile' )
+			profile = None
+			if profile_dn:
+				for dn, pro in self.profiles:
+					if dn == profile_dn:
+						profile = pro
+						break
+				if profile:
+					json[ 'profileData' ] = object2dict( profile )
+
 			# type
 			json[ 'type' ] = '%(domain_type)s-%(os_type)s' % json
 
@@ -164,14 +180,17 @@ class Domains( object ):
 			drive.device = disk[ 'device' ]
 			drive.driver_type = disk[ 'driver_type' ]
 			pool_path = self.get_pool_path( node_uri, disk.get( 'pool' ) )
+			file_pool = self.is_file_pool( node_uri, disk.get( 'pool' ) )
+
 			if pool_path:
 				drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
+			elif not file_pool and disk.get( 'volumeType', Disk.TYPE_BLOCK ) and disk[ 'volumeFilename' ]:
+				drive.source = disk[ 'volumeFilename' ]
 			elif 'source' in disk and disk[ 'source' ]:
 				drive.source = disk[ 'source' ]
 			else:
 				raise ValueError( _( 'No valid source for disk "%s" found' ) % drive.device )
 
-			file_pool = self.is_file_pool( node_uri, disk.get( 'pool' ) )
 			if file_pool:
 				drive.type = Disk.TYPE_FILE
 			else:
@@ -247,16 +266,17 @@ class Domains( object ):
 			node_uri, domain_uuid = urlparse.urldefrag( domain[ 'domainURI' ] )
 			domain_info.uuid = domain_uuid
 
+		profile = None
 		if not domain_info.uuid:
 			profile_dn = domain.get( 'profile' )
-			profile = None
 			for dn, pro in self.profiles:
 				if dn == profile_dn:
 					profile = pro
 					break
-			if profile is None:
+			else:
 				raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
 			domain_info.annotations[ 'profile' ] = profile_dn
+			domain_info.annotations[ 'os' ] = getattr( profile, 'os' )
 
 		domain_info.name = domain[ 'name' ]
 		if 'arch' in domain:
@@ -292,7 +312,7 @@ class Domains( object ):
 
 		# check configuration for para-virtualized machines
 		if domain_info.os_type == 'xen':
-			if profile.advkernelconf != True: # use pyGrub
+			if profile and getattr( profile, 'advkernelconf', None ) != True: # use pyGrub
 				domain_info.bootloader = '/usr/bin/pygrub'
 				domain_info.bootloader_args = '-q' # Bug #19249: PyGrub timeout
 			else:
@@ -312,7 +332,7 @@ class Domains( object ):
 		if 'boot' in domain:
 			domain_info.boot = domain[ 'boot' ]
 		elif profile:
-			domain_info.boot = profile.bootdev
+			domain_info.boot = getattr( profile, 'bootdev', None )
 		else:
 			raise UMC_CommandError( 'Could not determine the list of boot devices for domain' )
 
@@ -343,8 +363,8 @@ class Domains( object ):
 		# drives
 		domain_info.disks = self._create_disks( request.options[ 'nodeURI' ], domain[ 'disks' ], domain_info )
 		verify_device_files( domain_info )
-		# on PV machines we should move the CDROM drive to first position
-		if domain_info.os_type == 'xen':
+		# on _new_ PV machines we should move the CDROM drive to first position
+		if domain_info.uuid is None and domain_info.os_type == 'xen':
 			non_disks, disks = [], []
 			for dev in domain_info.disks:
 				if dev.device == Disk.DEVICE_DISK:

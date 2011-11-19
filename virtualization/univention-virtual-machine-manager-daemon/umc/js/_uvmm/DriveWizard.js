@@ -147,7 +147,7 @@ dojo.declare("umc.modules._uvmm.DriveWizard", [ umc.widgets.Wizard, umc.i18n.Mix
 					type: 'TextBox',
 					required: true,
 					label: this._('Size (default unit MB)'),
-					value: '12GB'
+					value: this.domain.profileData && this.domain.profileData.diskspace ? this.domain.profileData.diskspace : '12.0 GB'
 				}, {
 					name: 'pool_exists',
 					type: 'ComboBox',

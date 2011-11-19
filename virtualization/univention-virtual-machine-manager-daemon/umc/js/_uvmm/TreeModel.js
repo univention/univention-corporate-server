@@ -46,7 +46,7 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 
 	constructor: function(args) {
 		dojo.mixin(this, args);
-	
+
 		this.root = {
 			id: '$root$',
 			label: 'UCS Virtual Machine Manager',
@@ -77,7 +77,7 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 			return;
 		}
 
-		this.umcpCommand('uvmm/query', { 
+		this.umcpCommand('uvmm/query', {
 			type: parentItem.type == 'root' ? 'group' : 'node',
 			domainPattern: '*',
 			nodePattern: '*'
@@ -94,6 +94,10 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 				return node;
 			} ) );
 		}));
+	},
+
+	onChange: function() {
+		this.inherited( arguments );
 	}
 });
 

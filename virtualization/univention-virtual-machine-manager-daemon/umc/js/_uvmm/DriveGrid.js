@@ -95,6 +95,14 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		});
 	},
 
+	buildRendering: function() {
+		this.inherited( arguments );
+
+		// deactivate sorting
+		this._grid.canSort = function( col ) {
+			return false;
+		};
+	},
 
 	_editDrive: function( ids, items ) {
 		var disk = items[ 0 ];
@@ -176,6 +184,9 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 			}],
 			layout: [ '__message', 'device', 'pool', 'volumeFilename', 'paravirtual' ]
 		});
+
+		// hide pool for block devices
+		form._widgets.pool.set( 'visible', disk.type != 'block' );
 
 		dialog = new dijit.Dialog({
 			title: this._('Edit drive'),

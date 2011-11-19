@@ -248,7 +248,9 @@ dojo.require("umc.tools");
 				type: 'node',
 				nodePattern: '*'
 			}).then(function(data) {
-				return data.result;
+				return dojo.filter( data.result, function( node ) {
+					return node.available;
+				} );
 			});
 		},
 		getProfiles: function(options) {

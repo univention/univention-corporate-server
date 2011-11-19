@@ -378,6 +378,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 					disks.push( disk );
 				}
 			} );
+			values.disks = disks;
 		} else {
 			values.boot = values.boot_hvm;
 		}
@@ -421,11 +422,12 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				this._advancedForm._widgets.boot_pv.set( 'visible', paravirtual );
 				this._advancedForm._widgets.boot_hvm.set( 'visible', ! paravirtual );
 				if ( paravirtual ) {
-					this._advancedForm._widgets.boot_pv.staticValues = dojo.map( this._domain.disks, function( disk ) {
+					var block_devices = dojo.map( this._domain.disks, function( disk ) {
 						return { id : disk.source, label: types.blockDevices[ disk.device ] + ': ' + disk.volumeFilename };
 					} );
-					this._advancedForm._widgets.boot_pv._setStaticValues();
-					this._advancedForm._widgets.boot_pv.set( 'value', this._domain.boot );
+					block_devices.unshift( { id: '', label: '' } );
+					this._advancedForm._widgets.boot_pv.set( 'staticValues', block_devices );
+					this._advancedForm._widgets.boot_pv.set( 'value', block_devices[ 1 ].id );
 				} else {
 					this._advancedForm._widgets.boot_hvm.set( 'value', this._domain.boot );
 				}
@@ -442,6 +444,20 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				this._driveGrid.set('domain', this._domain);
 				this._interfaceGrid.set('domain', this._domain);
 
+				var qcow2_images = 0;
+				var snapshots_possible = dojo.every( this._domain.disks, function( disk ) {
+					if ( disk.driver_type == 'qcow2' ) {
+						++qcow2_images;
+						return true;
+					}
+					return disk.driver_type == 'qcow2' || disk.readonly;
+				} );
+				if ( snapshots_possible && qcow2_images > 0 ) {
+					this.showChild( this._snapshotPage );
+				} else {
+					this.hideChild( this._snapshotPage );
+				}
+;
 				// deactivate most input field when domain is running
 				var disabled = false;
 				if ( this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' ) {

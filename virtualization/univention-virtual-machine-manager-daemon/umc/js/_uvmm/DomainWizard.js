@@ -196,6 +196,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 
 			if ( null !== nextName ) {
 				this._driveGrid.domain = this.getValues();
+				this._driveGrid.domain.profileData = this._profile;
 			}
 		}
 

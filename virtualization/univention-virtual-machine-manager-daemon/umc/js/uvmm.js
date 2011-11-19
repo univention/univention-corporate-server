@@ -194,9 +194,8 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		titlePane.addChild(treePane);
 
 		// add a context menu to edit/delete items
-		/*
 		var menu = dijit.Menu({});
-		menu.addChild(new dijit.MenuItem({
+/*		menu.addChild(new dijit.MenuItem({
 			label: this._( 'Edit' ),
 			iconClass: 'umcIconEdit',
 			onClick: dojo.hitch(this, function(e) {
@@ -209,17 +208,17 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			onClick: dojo.hitch(this, function() {
 				this.removeObjects(this._navContextItem.id);
 			})
-		}));
+		}));*/
 		menu.addChild(new dijit.MenuItem({
 			label: this._( 'Reload' ),
 			iconClass: 'umcIconRefresh',
 			onClick: dojo.hitch(this, function() {
 				this._tree.reload();
 			})
-		}));*/
+		}));
 
 		// when we right-click anywhere on the tree, make sure we open the menu
-		//menu.bindDomNode(this._tree.domNode);
+		menu.bindDomNode(this._tree.domNode);
 
 		// remember on which item the context menu has been opened
 		/*this.connect(menu, '_openMyself', function(e) {
@@ -286,6 +285,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_migrateDomain: function( ids ) {
 		var dialog = null, form = null;
+		var types = umc.modules._uvmm.types;
 
 		if ( ids.length > 1 ) {
 			var uniqueNodes = {}, count = 0;
@@ -324,15 +324,16 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 
 		var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
+		var sourceScheme = types.getNodeType( sourceURI )
 		form = new umc.widgets.Form({
 			widgets: [{
 				name: 'name',
 				type: 'ComboBox',
 				label: this._('Please select the destination server:'),
 				dynamicValues: function() {
-					return umc.modules._uvmm.types.getNodes().then( function( items ) {
+					return types.getNodes().then( function( items ) {
 						return dojo.filter( items, function( item ) {
-							return item.id != sourceURI;
+							return item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
 						} );
 					} );
 				}
