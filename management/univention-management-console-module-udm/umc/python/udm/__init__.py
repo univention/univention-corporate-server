@@ -125,7 +125,7 @@ class Instance( Base ):
 			# return a user friendly message
 			check_license(ldap_connection)
 		except udm_errors.licenseNotFound:
-			message = _('License not found. During this session add and modify of objects are disabled.')
+			message = _('License not found. During this session add and modify are disabled.')
 		except udm_errors.licenseAccounts:
 			message = _('You have too many user accounts for your license. During this session add and modify are disabled.')
 		except udm_errors.licenseClients:

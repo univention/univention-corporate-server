@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.244-3) unstable; urgency=low
+
+  * Adapted caption and translation (Bug #24724)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 19 Nov 2011 01:02:04 +0100
+
 univention-management-console-module-udm (1.0.244-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)

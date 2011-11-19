@@ -15,7 +15,7 @@ msgstr ""
 #: umc/js/_udm/DetailPage.js:1125
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
-msgstr ""
+msgstr "%(attribute)s: %(message)s\n"
 
 #: umc/js/udm.js:414
 #, python-format
