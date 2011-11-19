@@ -129,7 +129,9 @@ if [ "$1" = "configure" ]; then
 			univention-config-registry set windows/wins-support=yes
 		else
 			univention-config-registry set windows/wins-support?no
-			univention-config-registry set windows/wins-server?$ldap_master
+			if [ -n "$ldap_master" ]; then
+				univention-config-registry set windows/wins-server?$ldap_master
+			fi
 		fi
 	elif [ -n "$2" ]; then
 		/etc/init.d/samba crestart

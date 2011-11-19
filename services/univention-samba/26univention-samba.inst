@@ -154,23 +154,36 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	if [ $? != 0 ]; then
 		$JOIN_CMD -U${samba_account}%${samba_pwd} -S${ldap_master}
 		if [ $? != 0 ]; then
-			echo "ERROR: Failed to join via $JOIN_CMD. Please run \"$JOIN_CMD\" manually."
+			echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
+			exit 1
+		else
+			#The join against the ldap_master was successful, set him as wins server
+			univention-config-registry set windows/wins-server?"${ldap_master}"
 		fi
 	fi
+
+	# restart samba
+	/etc/init.d/samba stop
+	test -x /etc/init.d/winbind && /etc/init.d/winbind stop
+	sleep 1
+	/etc/init.d/samba start
+	test -x /etc/init.d/winbind && /etc/init.d/winbind start
+	sleep 1
 	
 	# set default printer permissions
 	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
 	net rpc rights -U${samba_account}%${samba_pwd} grant Administrator SePrintOperatorPrivilege
 
+else
+	# stop samba
+	restart=0
+	samba_pid=`pidof smbd`
+	if [ -n "$samba_pid" ]; then
+		/etc/init.d/samba stop >/dev/null 2>&1
+		killall smbd nmbd >/dev/null 2>&1
+	fi
 fi
 
-# stop samba
-restart=0
-samba_pid=`pidof smbd`
-if [ -n "$samba_pid" ]; then
-	/etc/init.d/samba stop >/dev/null 2>&1
-	killall smbd nmbd >/dev/null 2>&1
-fi
 
 SAMBA_DRIVERS="/var/lib/samba/drivers"
 mkdir -p $SAMBA_DRIVERS
@@ -203,7 +216,7 @@ if [ -n "$nfsd_pid" ]; then
 fi
 
 if [ $winbind_was_running -eq 1 ]; then
-	/etc/init.d/winbind start >/dev/null 2>&1
+	/etc/init.d/winbind restart >/dev/null 2>&1
 fi
 
 ucs_addServiceToLocalhost 'Samba 3' "$@"
