@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.74-1) unstable; urgency=low
+
+  * update node info in tree when clicking on it; Bug #24731
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 19 Nov 2011 12:09:06 +0100
+
 univention-virtual-machine-manager-daemon (1.0.73-1) unstable; urgency=low
 
   * fixed traceback when creating xen instances; Bug #24729

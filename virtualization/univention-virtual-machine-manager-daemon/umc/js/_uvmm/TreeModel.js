@@ -70,6 +70,14 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 		return item.id;
 	},
 
+	_cutDomain: function( fqdn ) {
+		var dot = fqdn.indexOf( '.' );
+		if ( dot != -1 ) {
+			return fqdn.substr( 0, dot );
+		}
+		return fqdn;
+	},
+
 	getChildren: function(parentItem, onComplete) {
 		// we only have three levels: root, groups, nodes
 		if (parentItem.type == 'node') {
@@ -85,19 +93,24 @@ dojo.declare('umc.modules._uvmm.TreeModel', null, {
 			// sort items alphabetically
 			var results = dojo.isArray(data.result) ? data.result : [];
 			results.sort(umc.tools.cmpObjects('label'));
-			onComplete(dojo.map( results, function( node ) {
+			onComplete( dojo.map( results, dojo.hitch( this, function( node ) {
 				// cut off domain name
-				var dot = node.label.indexOf( '.' );
-				if ( dot != -1 ) {
-					node.label = node.label.substr( 0, dot );
-				}
+				node.label = this._cutDomain( node.label );
 				return node;
-			} ) );
+			} ) ) );
 		}));
 	},
 
-	onChange: function() {
-		this.inherited( arguments );
+	changes: function( nodes ) {
+		dojo.forEach( nodes, dojo.hitch( this, function( node ) {
+			// cut off domain name
+			node.label = this._cutDomain( node.label );
+			this.onChange( node );
+		} ) );
+	},
+
+	onChange: function( item ) {
+		// event stub
 	}
 });
 

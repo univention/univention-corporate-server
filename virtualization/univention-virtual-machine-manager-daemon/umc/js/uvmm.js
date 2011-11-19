@@ -931,6 +931,16 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		this._grid.filter(vals);
 
+		// update tree
+		if ( treeType == 'node' && treeID ) {
+			umc.tools.umcpCommand( 'uvmm/node/query', { nodePattern: treeID } ).then( dojo.hitch( this, function( response ) {
+				this._tree.model.changes( response.result );
+			} ) );
+		} else if ( treeType == 'root' ) {
+			umc.tools.umcpCommand( 'uvmm/node/query', { nodePattern: "*" } ).then( dojo.hitch( this, function( response ) {
+				this._tree.model.changes( response.result );
+			} ) );
+		}
 		// update the grid columns
 		this._grid.setColumnsAndActions(this._getGridColumns(vals.type), this._getGridActions(vals.type));
 	},
