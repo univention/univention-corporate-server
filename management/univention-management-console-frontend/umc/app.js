@@ -452,10 +452,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			menu.addChild(new dijit.MenuItem({
 				label: this._('License'),
 				onClick : function() {
-					umc.tools.umcpCommand( 'udm/license/info' ).then( function( data ) {
-						var dlg = umc.modules._udm.LicenseDialog( { licenseInfo : data.result } );
-						dlg.show();
-					} );
+					var dlg = umc.modules._udm.LicenseDialog();
+					dlg.show();
 				}
 			}));
 		}

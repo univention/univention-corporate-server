@@ -28,27 +28,22 @@
  */
 /*global dojo dijit dojox umc console */
 
-dojo.provide("umc.widgets.ImageUploader");
+dojo.provide("umc.widgets.InfoUploader");
 
 dojo.require("umc.widgets.Uploader");
-dojo.require("umc.widgets.Image");
-dojo.require("umc.tools");
+dojo.require("umc.widgets.Text");
 
-dojo.declare("umc.widgets.ImageUploader", [ umc.widgets.Uploader ], {
-	'class': 'umcImageUploader',
+dojo.declare("umc.widgets.InfoUploader", [ umc.widgets.Uploader ], {
+	'class': 'umcInfoUploader',
 
 	i18nClass: 'umc.app',
 
-	// imageType: String
-	//		Image type: 'jpeg', 'png'
-	imageType: 'jpeg',
+	maxSize: 512000,
 
-	maxSize: 262400,
-
-	_image: null,
+	_text: null,
 
 	constructor: function() {
-		this.buttonLabel = this._('Upload new image');
+		this.buttonLabel = this._( 'Upload' );
 	},
 
 	postMixInProperties: function() {
@@ -61,14 +56,15 @@ dojo.declare("umc.widgets.ImageUploader", [ umc.widgets.Uploader ], {
 		this.inherited(arguments);
 
 		// create an image widget
-		this._image = new umc.widgets.Image({
-			imageType: this.imageType
+		this._text = new umc.widgets.Text({
+			label: '',
+			content: ''
 		});
-		this.addChild(this._image, 0);
+		this.addChild(this._text, 0);
 	},
 
 	updateView: function(value, data) {
-		this._image.set('value', value);
+		this._text.set( 'content', value );
 	}
 });
 
