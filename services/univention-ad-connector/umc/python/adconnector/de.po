@@ -6,33 +6,82 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-09 15:52+0100\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2011-11-20 15:43+0100\n"
 "PO-Revision-Date: 2011-11-09 15:54+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-"Language: \n"
 
-#: __init__.py:136
+#: umc/python/adconnector/__init__.py:292
+msgid "Active Directory Connector is already running. Nothing to do."
+msgstr ""
+"Der Active Directory Connector ist bereits aktiv. Keine Aktion notwendig."
+
+#: umc/python/adconnector/__init__.py:294
+msgid "Active Directory Connector is already stopped. Nothing to do."
+msgstr ""
+"Der Active Directory Connector ist bereits gestoppt. Keine Aktion notwendig."
+
+#: umc/python/adconnector/__init__.py:136
 #, python-format
 msgid ""
-"An error occured while saving .htaccess (filename=%(fn)s ; exception=%"
-"(exception)s)"
+"An error occured while saving .htaccess (filename=%(fn)s ; exception="
+"%(exception)s)"
 msgstr ""
-"Ein Fehler ist beim Speicher der Datei .htaccess aufgetreten (filename=%(fn)"
-"s ; exception=%(exception)s)"
+"Ein Fehler ist beim Speicher der Datei .htaccess aufgetreten (filename="
+"%(fn)s ; exception=%(exception)s)"
 
-#: __init__.py:168
+#: umc/python/adconnector/__init__.py:260
+msgid "Certificate has been uploaded successfully."
+msgstr "Zertifikat wurde erfolgreich installiert."
+
+#: umc/python/adconnector/__init__.py:264
+msgid "Certificate upload or conversion failed."
+msgstr "Zertifikatsinstallation oder -konvertierung fehlgeschlagen."
+
+#: umc/python/adconnector/__init__.py:248
+#, python-format
+msgid "Copying of %s/%s to %s/%s failed (exception=%s)"
+msgstr "Das Kopieren von %s/%s nach %s/%s ist fehlgeschlagen (exception=%s)"
+
+#: umc/python/adconnector/__init__.py:252
+#, python-format
+msgid "Creation of certificate failed (%s)"
+msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
+
+#: umc/python/adconnector/__init__.py:168
 #, python-format
 msgid "Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)"
 msgstr ""
 "Speichern des Replikationspasswortes fehlgeschlagen (filename=%(fn)s ; "
 "exception=%(exception)s)"
 
-#: __init__.py:174
+#: umc/python/adconnector/__init__.py:310
+msgid "Switching running state of Active Directory Connector failed."
+msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
+
+#: umc/python/adconnector/__init__.py:218
+msgid ""
+"The LDAP base of the given Active Directory server could not be determined. "
+"Maybe the full-qualified hostname is wrong or unresolvable."
+msgstr ""
+"Die LDAP-Basis des angegebenen Active Directory Servers konnte nicht "
+"ermittelt werden. Vielleicht ist der vollqualifizierte Name falsch "
+"geschrieben oder nicht auflösbar."
+
+#: umc/python/adconnector/__init__.py:314
+msgid "UCS Active Directory Connector has been started."
+msgstr "Der UCS Active Directory Connector wurde gestartet."
+
+#: umc/python/adconnector/__init__.py:316
+msgid "UCS Active Directory Connector has been stopped."
+msgstr "Der UCS Active Directory Connector wurde beendet."
+
+#: umc/python/adconnector/__init__.py:174
 msgid ""
 "UCS Active Directory Connector settings have been saved and a new "
 "certificate for the Active Directory server has been created."
@@ -40,60 +89,14 @@ msgstr ""
 "Die UCS Active Directory Connector Einstellungen wurden gespeichert und ein "
 "neues Zertifikat wurde für den Active Directory Server erzeugt."
 
-#: __init__.py:182
+#: umc/python/adconnector/__init__.py:182
 msgid "UCS Active Directory Connector settings have been saved."
 msgstr "Die UCS Active Directory Connector Einstellungen wurden gespeichert."
 
-#: __init__.py:218
-msgid ""
-"The LDAP base of the given Active Directory server could not be determined. "
-"Maybe the full-qualified hostname is wrong or unresolvable."
-msgstr "Die LDAP-Basis des angegebenen Active Directory Servers konnte nicht ermittelt werden. Vielleicht ist der vollqualifizierte Name falsch geschrieben oder nicht auflösbar."
-
-#: __init__.py:248
-#, python-format
-msgid "Copying of %s/%s to %s/%s failed (exception=%s)"
-msgstr "Das Kopieren von %s/%s nach %s/%s ist fehlgeschlagen (exception=%s)"
-
-#: __init__.py:252
-#, python-format
-msgid "Creation of certificate failed (%s)"
-msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
-
-#: __init__.py:263
-msgid "Certificate has been uploaded successfully."
-msgstr "Zertifikat wurde erfolgreich installiert."
-
-#: __init__.py:267
-msgid "Certificate upload or conversion failed."
-msgstr "Zertifikatsinstallation oder -konvertierung fehlgeschlagen."
-
-#: __init__.py:295
-msgid "Active Directory Connector is already running. Nothing to do."
-msgstr ""
-"Der Active Directory Connector ist bereits aktiv. Keine Aktion notwendig."
-
-#: __init__.py:297
-msgid "Active Directory Connector is already stopped. Nothing to do."
-msgstr ""
-"Der Active Directory Connector ist bereits gestoppt. Keine Aktion notwendig."
-
-#: __init__.py:300
+#: umc/python/adconnector/__init__.py:297
 #, python-format
 msgid ""
 "Unknown command (\"%s\") Please report error to your local administrator"
 msgstr ""
 "Unbekanntes Kommando (\"%s\"). Bitte den Fehler beim lokalen Administrator "
 "melden."
-
-#: __init__.py:313
-msgid "Switching running state of Active Directory Connector failed."
-msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
-
-#: __init__.py:317
-msgid "UCS Active Directory Connector has been started."
-msgstr "Der UCS Active Directory Connector wurde gestartet."
-
-#: __init__.py:319
-msgid "UCS Active Directory Connector has been stopped."
-msgstr "Der UCS Active Directory Connector wurde beendet."

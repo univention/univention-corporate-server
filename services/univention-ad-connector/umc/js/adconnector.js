@@ -65,14 +65,23 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 				name: 'configured',
 				type: 'Text'
 			}, {
-				name: 'certificate',
-				type: 'Text'
-			}, {
 				name: 'running',
 				type: 'Text'
 			}, {
 				name: 'certificateUpload',
-				type: 'Upload'
+				type: 'InfoUploader',
+				command: 'adconnector/upload/certificate',
+				onUploaded: dojo.hitch( this, function( result ) {
+					if ( dojo.isString( result ) ) {
+						return;
+					}
+					if ( result.success ) {
+						umc.dialog.notify( this._( 'The certificate was imported successfully' ) );
+						this.showHideElements();
+					} else {
+						umc.dialog.alert( this._( 'Failed to import the certificate' ) + ': ' + result.message );
+					}
+				} )
 			}, {
 				name: 'download',
 				type: 'Text',
@@ -104,10 +113,10 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 						title: this._( 'UCS Active Directory Connector Wizard' )
 					} );
 					dlg.show();
-					this.connect( dlg, 'onClose', function() {
+					this.connect( dlg, 'onSaved', dojo.hitch( this, function() {
 						dlg.destroyRecursive();
 						this.showHideElements();
-					} );
+					} ) );
 				} )
 			}
 		];
@@ -123,7 +132,7 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 			layout: [ 'running', 'start', 'stop' ]
 		}, {
 			label: this._( 'Active Directory Server configuration' ),
-			layout: [ 'certificate', 'download' ]
+			layout: [ 'certificateUpload', 'download' ]
 		}  ], this._widgets, this._buttons );
 
 		this._page.addChild( _container );
@@ -140,9 +149,9 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 				this._widgets.configured.set( 'content', this._( 'The configuration process has not been started yet or is incomplete.' ) );
 			}
 			if ( ! response.result.certificate ) {
-				this._widgets.certificate.set( 'content', this._( 'The Active Directory certificate has not been installed yet.' ) );
+				this._widgets.certificateUpload.set( 'value', this._( 'The Active Directory certificate has not been installed yet.' ) );
 			} else {
-				this._widgets.certificate.set( 'content', this._( 'The Active Directory certificate has been sucessfully installed.' ) );
+				this._widgets.certificateUpload.set( 'value', this._( 'The Active Directory certificate has been successfully installed.' ) );
 			}
 			if ( response.result.running ) {
 				this._widgets.running.set( 'content', this._( 'UCS Active Directory Connector is currently running.' ) );
@@ -183,7 +192,7 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 			}, {
 				name: 'guess',
 				type: 'CheckBox',
-				label: this._( 'Determine LDAP configuration' )
+				label: this._( 'Automatic determination of the LDAP configuration' )
 			}],
 			layout: [ 'LDAP_Host', 'guess' ]
 		}, {
@@ -319,6 +328,7 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 			} else {
 				umc.dialog.notify( response.result.message );
 			}
+			this.standby( false );
 		} ) );
 	}
 });
@@ -344,7 +354,7 @@ dojo.declare("umc.modules._adconnector.WizardDialog", [ dijit.Dialog, umc.widget
 			} );
 			this.set( 'content', this._wizard );
 			this.connect( this._wizard, 'onFinished', function() {
-				this.hide();
+				this.onSaved();
 			} );
 			this.connect( this._wizard, 'onCancel', function() {
 				this.hide();
@@ -352,5 +362,8 @@ dojo.declare("umc.modules._adconnector.WizardDialog", [ dijit.Dialog, umc.widget
 			} );
 			this._wizard.startup();
 		} ) );
+	},
+
+	onSaved: function() {
 	}
 });

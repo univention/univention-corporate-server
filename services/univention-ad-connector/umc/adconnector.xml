@@ -18,5 +18,7 @@
 	</command>
 	<command name="adconnector/service" function="service">
 	</command>
+	<command name="adconnector/upload/certificate" function="upload_certificate">
+	</command>
 	</module>
 </umc>

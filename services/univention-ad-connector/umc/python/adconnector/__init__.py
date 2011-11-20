@@ -252,10 +252,7 @@ class Instance( Base ):
 				raise ConnectorError( _('Creation of certificate failed (%s)') % ssldir )
 
 
-	def upload_cert( self, request ):
-		self.required_options( request, 'certFile' )
-		MODULE.info( 'upload_cert: options=%s' % request.options )
-
+	def upload_certificate( self, request ):
 		def _return( pid, status, bufstdout, bufstderr, request, fn ):
 			success = True
 			if status == 0:
@@ -267,12 +264,12 @@ class Instance( Base ):
 				message = _( 'Certificate upload or conversion failed.' )
 				MODULE.process( 'Certificate upload or conversion failed. status=%s\nSTDOUT:\n%s\n\nSTDERR:\n%s' % ( status, '\n'.join( bufstdout ), '\n'.join( bufstderr ) ) )
 
-			self.finished( requiest.id, { 'success' : success, 'message' : message } )
+			self.finished( request.id, [ { 'success' : success, 'message' : message } ] )
 
-		upload = request.options[ 'certfile' ]
+		upload = request.options[ 0 ][ 'tmpfile' ]
 		now = time.strftime( '%Y%m%d_%H%M%S', time.localtime() )
 		fn = '/etc/univention/connector/ad/ad_cert_%s.pem' % now
-		cmd = '/usr/bin/openssl x509 -inform der -outform pem -in %s -out %s 2>&1' % ( upload[ 'tmpfile' ], fn )
+		cmd = '/usr/bin/openssl x509 -inform der -outform pem -in %s -out %s 2>&1' % ( upload, fn )
 
 		MODULE.info( 'Converting certificate into correct format: %s' % cmd )
 		proc = notifier.popen.Shell( cmd, stdout = True, stderr = True )

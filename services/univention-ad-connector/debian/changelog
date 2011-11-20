@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.33-1) unstable; urgency=low
+
+  * add upload widget for the certificate; Bug #22893
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 20 Nov 2011 13:35:16 +0100
+
 univention-ad-connector (6.0.32-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 
