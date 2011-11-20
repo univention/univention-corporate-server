@@ -175,26 +175,29 @@ class Instance( Base ):
 
 	@LDAP_Connection
 	def license_import( self, request, ldap_connection = None, ldap_position = None ):
-		self.required_options( request, 'license' )
-		lic = request.options[ 'license' ]
-		if lic.startswith( 'file:' ):
-			lic_file = None # FIXME not yet supported
+		filename = None
+		if isinstance( request.options, ( list, tuple ) ):
+			# file upload
+			filename = request.options[ 0 ][ 'tmpfile' ]
 		else:
+			self.required_options( request, 'license' )
+			lic = request.options[ 'license' ]
 			lic_file = tempfile.NamedTemporaryFile( delete = False )
 			lic_file.write( lic )
 			lic_file.close()
+			filename = lic_file.name
 
-		importer = LicenseImport( open( lic_file.name, 'rb' ) )
-		os.unlink( lic_file.name )
+		importer = LicenseImport( open( filename, 'rb' ) )
+		os.unlink( filename )
 		# check license
 		try:
 			importer.check( ldap_position.getBase() )
 		except LicenseError, e:
-			self.finished( request.id, { 'success' : False, 'message' : str( e ) } )
+			self.finished( request.id, [ { 'success' : False, 'message' : str( e ) } ] )
 			return
 		# write license
 		importer.write( self._user_dn, self._password )
-		self.finished( request.id, { 'success' : True } )
+		self.finished( request.id, [ { 'success' : True } ] )
 
 	def move( self, request ):
 		"""Moves LDAP objects.

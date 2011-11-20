@@ -37,6 +37,7 @@ dojo.require("dojox.widget.Dialog");
 dojo.require("umc.dialog");
 dojo.require("umc.i18n");
 dojo.require("umc.render");
+dojo.require("umc.tools");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.StandbyMixin");
 
@@ -58,10 +59,6 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 
 	licenseInfo: null,
 
-	_limitInfo: function( limit ) {
-		return this._( '%s (used: %s)', this.licenseInfo.licenses[ limit ] === null ? this._( 'unlimited' ) : this.licenseInfo.licenses[ limit ], this.licenseInfo.real[ limit] );
-	},
-
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -78,51 +75,35 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 			} )
 			} ) );
 
-		// content: license info and upload widgets
-		var product = '';
-		if ( this.licenseInfo.oemProductTypes.length === 0 ) {
-			product = this.licenseInfo.licenseTypes.join( ', ' );
-		} else {
-			product = this.licenseInfo.oemProductTypes.join( ', ' );
-		}
-		var free_license_info = '';
-		if ( this.licenseInfo.baseDN == 'Free for personal use edition' ) {
-			free_license_info = this._( '<p>The "free for personal use" edition of Univention Corporate Server (UCS) is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>' );
-		}
-
-		// substract system accounts
-		this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
-		var keys = {
-			title : this._( 'Current license' ),
-			labelBase : this._( 'LDAP base' ),
-			base: this.licenseInfo.baseDN,
-			labelUser : this._( 'User accounts' ),
-			user: this._limitInfo( 'account' ),
-			labelClients : this._( 'Clients' ),
-			clients: this._limitInfo( 'client' ),
-			labelDesktops : this._( 'Desktops' ),
-			desktops: this._limitInfo( 'desktop' ),
-			labelEndDate : this._( 'Expiry date' ),
-			endDate: this._( this.licenseInfo.endDate ),
-			labelProduct : this._( 'Valid product types' ),
-			product: product
-		};
-
-		var message = dojo.cache( "umc.modules._udm", "license.html" );
 		var widgets = [
 			{
 				type : 'Text',
 				name : 'message',
 				style : 'width: 100%',
-				content : dojo.replace( message, keys )
+				content : ''
 			}, {
 				type : 'TextArea',
 				name : 'licenseText',
 				label : this._( 'License text' )
 			}, {
+				type : 'Uploader',
+				name : 'licenseUpload',
+				label : this._( 'License upload' ),
+				command: 'udm/license/import',
+				onUploaded: dojo.hitch( function( result ) {
+					if ( dojo.isString( result ) ) {
+						return;
+					}
+					if ( result.success ) {
+						umc.dialog.notify( this._( 'License was imported successfully' ) );
+					} else {
+						umc.dialog.alert( this._( 'Failed to import license' ) + ': ' + result.message );
+					}
+				} )
+			}, {
 				type : 'Text',
 				name : 'ffpu',
-				content : this.licenseInfo.baseDN == 'Free for personal use edition' ? free_license_info : ''
+				content : ''
 			}, {
 				type : 'Text',
 				name : 'titleImport',
@@ -149,7 +130,7 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 
 		this._widgets = umc.render.widgets( widgets );
 		var _buttons = umc.render.buttons( buttons );
-		var _container = umc.render.layout( [ 'message', 'titleImport', [ 'licenseText', 'btnLicenseText' ], 'ffpu' ], this._widgets, _buttons );
+		var _container = umc.render.layout( [ 'message', 'titleImport', 'licenseUpload', [ 'licenseText', 'btnLicenseText' ], 'ffpu' ], this._widgets, _buttons );
 
 		var _content = new umc.widgets.ContainerWidget( {
 			scrollable: true,
@@ -165,6 +146,65 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 		// attach layout to dialog
 		this.set( 'content', this._container );
 		this.set( 'title', this._( 'UCS license' ) );
+
+		this.updateLicense();
+	},
+
+	_limitInfo: function( limit ) {
+		return this._( '%s (used: %s)', this.licenseInfo.licenses[ limit ] === null ? this._( 'unlimited' ) : this.licenseInfo.licenses[ limit ], this.licenseInfo.real[ limit] );
+	},
+
+	updateLicense: function() {
+		this.standby( true );
+		umc.tools.umcpCommand( 'udm/license/info' ).then( dojo.hitch( this, function( response ) {
+			this.licenseInfo = response.result;
+			this.showLicense();
+			this.standby( false );
+		} ), dojo.hitch( this, function() {
+			this.standby( false );
+			umc.dialog.alert( this._( 'Updating the license information has failed' ) );
+		} ) );
+	},
+
+	showLicense: function() {
+		if ( ! this.licenseInfo ) {
+			return;
+		}
+		// content: license info and upload widgets
+		var product = '';
+		if ( this.licenseInfo.oemProductTypes.length === 0 ) {
+			product = this.licenseInfo.licenseTypes.join( ', ' );
+		} else {
+			product = this.licenseInfo.oemProductTypes.join( ', ' );
+		}
+		var free_license_info = '';
+		if ( this.licenseInfo.baseDN == 'Free for personal use edition' ) {
+			free_license_info = this._( '<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>' );
+		}
+
+		// substract system accounts
+		this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
+		var keys = {
+			title : this._( 'Current license' ),
+			labelBase : this._( 'LDAP base' ),
+			base: this.licenseInfo.baseDN,
+			labelUser : this._( 'User accounts' ),
+			user: this._limitInfo( 'account' ),
+			labelClients : this._( 'Clients' ),
+			clients: this._limitInfo( 'client' ),
+			labelDesktops : this._( 'Desktops' ),
+			desktops: this._limitInfo( 'desktop' ),
+			labelEndDate : this._( 'Expiry date' ),
+			endDate: this._( this.licenseInfo.endDate ),
+			labelProduct : this._( 'Valid product types' ),
+			product: product
+		};
+
+		var message = dojo.cache( "umc.modules._udm", "license.html" );
+		this._widgets.message.set( 'content', dojo.replace( message, keys ) );
+		this._widgets.ffpu.set( 'content', this.licenseInfo.baseDN == 'Free for personal use edition' ? free_license_info : '' );
+
+		this.layout();
 	},
 
 	close: function() {

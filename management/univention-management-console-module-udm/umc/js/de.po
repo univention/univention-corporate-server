@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-18 22:49+0100\n"
-"PO-Revision-Date: 2011-11-06 10:24+0100\n"
+"POT-Creation-Date: 2011-11-20 11:53+0100\n"
+"PO-Revision-Date: 2011-11-20 10:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -27,7 +27,7 @@ msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d sind ausgewählt"
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
 
-#: umc/js/_udm/LicenseDialog.js:62
+#: umc/js/_udm/LicenseDialog.js:154
 #, python-format
 msgid "%s (used: %s)"
 msgstr "%s (genutzt: %s)"
@@ -62,9 +62,9 @@ msgstr ""
 "Erzeuge den %s Report für %d Objekte.</p><p>The Aktion kann einen Moment "
 "dauern</p>"
 
-#: umc/js/_udm/LicenseDialog.js:90
+#: umc/js/_udm/LicenseDialog.js:182
 msgid ""
-"<p>The \"free for personal use\" edition of Univention Corporate Server (UCS) is a "
+"<p>The \"free for personal use\" edition of Univention Corporate Server is a "
 "special software license which allows users free use of the Univention "
 "Corporate Server and software products based on it for private purposes acc. "
 "to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can "
@@ -82,10 +82,10 @@ msgid ""
 "consult our forum, which can be found on the Internet at http://forum."
 "univention.de/.</p>"
 msgstr ""
-"<p>Die \"Free For Personal Use\" Ausgabe von Univention Corporate Server (UCS) ist "
-"eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 BGB die "
-"kostenlose Nutzung von Univention Corporate Server und darauf basierenden "
-"Softwareprodukten für private Zwecke ermöglicht wird.</p>\n"
+"<p>Die \"Free For Personal Use\" Ausgabe von Univention Corporate Server "
+"(UCS) ist eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § "
+"13 BGB die kostenlose Nutzung von Univention Corporate Server und darauf "
+"basierenden Softwareprodukten für private Zwecke ermöglicht wird.</p>\n"
 "\n"
 "<p>Im Rahmen dieser Lizenz darf UCS von unseren Servern heruntergeladen, "
 "installiert und genutzt werden. Es ist jedoch nicht erlaubt, die Software "
@@ -160,11 +160,11 @@ msgstr "Abbrechen"
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/_udm/LicenseDialog.js:101
+#: umc/js/_udm/LicenseDialog.js:193
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/_udm/CreateReportDialog.js:161 umc/js/_udm/LicenseDialog.js:74
+#: umc/js/_udm/CreateReportDialog.js:161 umc/js/_udm/LicenseDialog.js:71
 #: umc/js/_udm/NewObjectDialog.js:227
 msgid "Close"
 msgstr "Schließen"
@@ -189,7 +189,7 @@ msgstr "Report erstellen"
 msgid "Creating the report ..."
 msgstr "Erstelle den Report ..."
 
-#: umc/js/_udm/LicenseDialog.js:96
+#: umc/js/_udm/LicenseDialog.js:188
 msgid "Current license"
 msgstr "Aktuelle Lizenz"
 
@@ -222,7 +222,7 @@ msgstr "Zugehörige Objekte löschen."
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/_udm/LicenseDialog.js:103
+#: umc/js/_udm/LicenseDialog.js:195
 msgid "Desktops"
 msgstr "Desktops"
 
@@ -243,37 +243,41 @@ msgstr "%s bearbeiten"
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/_udm/LicenseDialog.js:105
+#: umc/js/_udm/LicenseDialog.js:197
 msgid "Expiry date"
 msgstr "Ablaufdatum"
+
+#: umc/js/_udm/LicenseDialog.js:100
+msgid "Failed to import license"
+msgstr "Dier Lizenzimport ist fehlgeschlagen"
 
 #: umc/js/udm.js:948
 msgid "Failed to move the following objects:"
 msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
 
-#: umc/js/_udm/CreateReportDialog.js:151
-msgid ""
-"The report could not be created. Details for the problems "
-"can be found in the log files."
-msgstr ""
-"Der Report konnte nicht erstellt werden. Weitere "
-"Informationen sind in den Logdateien zu finden."
-
 #: umc/js/_udm/DetailPage.js:540
 msgid "Inherited"
 msgstr "Ererbt"
 
-#: umc/js/_udm/LicenseDialog.js:97
+#: umc/js/_udm/LicenseDialog.js:189
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
-#: umc/js/_udm/LicenseDialog.js:130
+#: umc/js/_udm/LicenseDialog.js:111
 msgid "License import"
 msgstr "Lizenzimport"
 
-#: umc/js/_udm/LicenseDialog.js:121
+#: umc/js/_udm/LicenseDialog.js:87
 msgid "License text"
 msgstr "Lizenztext"
+
+#: umc/js/_udm/LicenseDialog.js:91
+msgid "License upload"
+msgstr "Lizenz hochladen"
+
+#: umc/js/_udm/LicenseDialog.js:98
+msgid "License was imported successfully"
+msgstr "Die Lizenz wurde erfolgreich importiert"
 
 #: umc/js/_udm/DetailPage.js:444
 msgid ""
@@ -281,10 +285,11 @@ msgid ""
 "cannot be edited directly. In order to edit a policy, click on the \"edit\" "
 "button to open a particular policy in a new tab."
 msgstr ""
-"Liste aller für das Objekt geltender Eigenschaften, die durch Richtlinien ererbt werden. Die "
-"Werte können nicht direkt geändert werden, sondern müssen an den "
-"entsprechenden Richtlinien gesetzt werden. Über den Schalter \"bearbeiten\" "
-"wird ein neuer Reiter mit der entsprechenden Richtlinie geöffnet."
+"Liste aller für das Objekt geltender Eigenschaften, die durch Richtlinien "
+"ererbt werden. Die Werte können nicht direkt geändert werden, sondern müssen "
+"an den entsprechenden Richtlinien gesetzt werden. Über den Schalter "
+"\"bearbeiten\" wird ein neuer Reiter mit der entsprechenden Richtlinie "
+"geöffnet."
 
 #: umc/js/udm.js:910
 #, python-format
@@ -351,7 +356,8 @@ msgstr "Nur Objekte des gleichen Typs können zusammen bearbeitet werden"
 
 #: umc/js/udm.js:345
 msgid "Open a new tab in order to edit the UDM-object"
-msgstr "Öffnet einen neuen Reiter, in dem das UDM-Objekt bearbeitet werden kann."
+msgstr ""
+"Öffnet einen neuen Reiter, in dem das UDM-Objekt bearbeitet werden kann."
 
 #: umc/js/_udm/DetailPage.js:312
 msgid "Options describing the basic features of the UDM object"
@@ -380,8 +386,10 @@ msgid "Please confirm the removal of the selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen des/der ausgewählten %s!"
 
 #: umc/js/udm.js:872
+#, python-format
 msgid "Please select a LDAP position to move %d selected %s to:"
-msgstr "Bitte wählen sie eine LDAP-Position aus, an die %d %s verschoben werden:"
+msgstr ""
+"Bitte wählen sie eine LDAP-Position aus, an die %d %s verschoben werden:"
 
 #: umc/js/udm.js:1181
 msgid ""
@@ -526,17 +534,25 @@ msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
 
-#: umc/js/_udm/LicenseDialog.js:142
+#: umc/js/_udm/LicenseDialog.js:123
 msgid "The import of the license has failed: "
 msgstr "Der Import der Lizenz ist fehlgeschlagen: "
 
-#: umc/js/_udm/LicenseDialog.js:144
+#: umc/js/_udm/LicenseDialog.js:125
 msgid "The license has been imported succussfully"
 msgstr "Die Lizenz wurde erfolgreich importiert"
 
 #: umc/js/udm.js:520 umc/js/_udm/MultiObjectSelect.js:99
 msgid "The object property on which the query is filtered."
 msgstr "Die Objekteigenschaft, nach der gesucht wird."
+
+#: umc/js/_udm/CreateReportDialog.js:151
+msgid ""
+"The report could not be created. Details for the problems can be found in "
+"the log files."
+msgstr ""
+"Der Report konnte nicht erstellt werden. Weitere Informationen sind in den "
+"Logdateien zu finden."
 
 #: umc/js/_udm/CreateReportDialog.js:98
 msgid "The report template that should be used for the report."
@@ -564,7 +580,7 @@ msgstr "Typ"
 msgid "Type: <i>%(type)s</i>"
 msgstr "Typ: <i>%(type)s</i>"
 
-#: umc/js/_udm/LicenseDialog.js:167
+#: umc/js/_udm/LicenseDialog.js:148
 msgid "UCS license"
 msgstr "UCS Lizenz"
 
@@ -576,15 +592,19 @@ msgstr "UDM-Objekt"
 msgid "UDM objects"
 msgstr "UDM-Objekte"
 
-#: umc/js/_udm/LicenseDialog.js:135
+#: umc/js/_udm/LicenseDialog.js:165
+msgid "Updating the license information has failed"
+msgstr "Die Aktualisierung der Lizenzinformationen ist fehlgeschlagen"
+
+#: umc/js/_udm/LicenseDialog.js:116
 msgid "Upload"
 msgstr "Hochladen"
 
-#: umc/js/_udm/LicenseDialog.js:99
+#: umc/js/_udm/LicenseDialog.js:191
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
-#: umc/js/_udm/LicenseDialog.js:107
+#: umc/js/_udm/LicenseDialog.js:199
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
@@ -673,7 +693,7 @@ msgstr "Freigabe"
 msgid "shares"
 msgstr "Freigaben"
 
-#: umc/js/_udm/LicenseDialog.js:62
+#: umc/js/_udm/LicenseDialog.js:154
 msgid "unlimited"
 msgstr "unbegrenzt"
 
