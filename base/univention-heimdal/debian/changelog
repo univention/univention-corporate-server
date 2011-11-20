@@ -1,3 +1,10 @@
+univention-heimdal (5.0.21-1) unstable; urgency=low
+
+  * Set des-cbc-md5 to the second position of the default_tkt_enctypes
+    otherwise a join of a S3 member is not possible (Bug #23999)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 20 Nov 2011 13:44:29 +0100
+
 univention-heimdal (5.0.20-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 
