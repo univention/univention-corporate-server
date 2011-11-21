@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.75-1) unstable; urgency=low
+
+  * Fix starting UVMMd (Bug #24524)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Nov 2011 19:59:36 +0100
+
 univention-virtual-machine-manager-daemon (1.0.74-1) unstable; urgency=low
 
   * update node info in tree when clicking on it; Bug #24731

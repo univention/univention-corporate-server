@@ -291,10 +291,15 @@ rm -rf /etc/pki/libvirt/private/clientkey.pem
 ln -sf "/etc/univention/ssl/$hostname.$domainname/private.key" /etc/pki/libvirt/private/clientkey.pem
 
 if [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
-	ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
+	ln -s ../univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
+	for ((i=6; i>0; i--)) # runsvdir(8) checks every 5 seconds for new services, give it 6 seconds
+	do
+		[ -s /etc/runit/univention-virtual-machine-manager-daemon/supervise/pid ] && break
+		sleep 1
+	done
+else
+	invoke-rc.d univention-virtual-machine-manager-daemon restart
 fi
-
-invoke-rc.d univention-virtual-machine-manager-daemon restart 
 
 joinscript_save_current_version
 

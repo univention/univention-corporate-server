@@ -68,7 +68,7 @@ case "$1" in
 
 	if dpkg --compare-versions "$2" lt-nl 0.9.147; then
         if [ -f "/usr/share/univention-join/.joined" ] && [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
-            ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
+            ln -s ../univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
         fi
     fi
 
@@ -84,13 +84,8 @@ case "$1" in
     ;;
 esac
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]
-then
-    /usr/lib/univention-install/44univention-virtual-machine-manager-daemon.inst || true
-fi
-
-# don't restart too fast
-sleep 5
+. /usr/share/univention-lib/base.sh
+call_joinscript 44univention-virtual-machine-manager-daemon.inst || true
 
 #DEBHELPER#
 

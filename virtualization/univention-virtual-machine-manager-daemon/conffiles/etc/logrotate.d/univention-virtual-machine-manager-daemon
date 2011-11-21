@@ -13,7 +13,7 @@ for setting in settings.keys():
 	delaycompress
 	sharedscripts
 	postrotate
-		if [ -e /etc/runit/univention-virtual-machine-manager-daemon/supervise/pid ]
+		if [ -s /etc/runit/univention-virtual-machine-manager-daemon/supervise/pid ]
 		then
 			sv hup univention-virtual-machine-manager-daemon
 		elif [ -e /var/run/uvmmd.pid ]

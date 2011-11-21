@@ -67,11 +67,7 @@ DIETIME=10              # Time to wait for the server to die, in seconds
 set -e
 
 running() {
-	if sv status /etc/runit/univention-virtual-machine-manager-daemon | grep ^run: > /dev/null 2>&1; then
-		return 0
-	else
-		return 1
-	fi
+	sv status /etc/runit/univention-virtual-machine-manager-daemon | grep -q ^run
 }
 
 
@@ -80,7 +76,7 @@ case "$1" in
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart $NAME $NAME/autostart
+			check_autostart "$NAME" "$NAME/autostart"
 		fi
 
 		log_daemon_msg "Starting $DESC " "$NAME"
@@ -96,7 +92,7 @@ case "$1" in
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart $NAME $NAME/autostart
+			check_autostart "$NAME" "$NAME/autostart"
 		fi
 		log_daemon_msg "Restarting $DESC" "$NAME"
 		sv restart univention-virtual-machine-manager-daemon
@@ -106,10 +102,10 @@ case "$1" in
         # check ucr autostart setting
         if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
             . "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart $NAME $NAME/autostart
+			check_autostart "$NAME" "$NAME/autostart"
         fi
 		if running ; then
-            $0 restart
+            "$0" restart
         else
             log_action_msg "sv status return no running $NAME, don't need to restart."
         fi
