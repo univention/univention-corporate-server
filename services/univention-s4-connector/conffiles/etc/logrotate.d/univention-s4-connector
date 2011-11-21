@@ -10,16 +10,16 @@ for setting in settings.keys():
 	print "\t%s" % settings[setting]
 print "}"
 
-name = "*-s4.log"
+name = "s4"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s {" % name
+print "/var/log/univention/*-%s.log {" % name
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
 print "}"
 
-name = "*-s4-status.log"
+name = "s4-status"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s {" % name
+print "/var/log/univention/*-%s.log {" % name
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
 print "}"

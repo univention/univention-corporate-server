@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.79-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 16:26:15 +0100
+
 univention-s4-connector (6.0.78-1) unstable; urgency=low
 
   * add each keytype only once when constructing krb5Keys from
