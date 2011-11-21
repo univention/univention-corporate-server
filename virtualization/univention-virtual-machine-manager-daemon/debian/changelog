@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.76-1) unstable; urgency=low
+
+  * fixed logrotate template (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 16:23:54 +0100
+
 univention-virtual-machine-manager-daemon (1.0.75-2) unstable; urgency=low
 
   * Remove UVMMd-restart from 45uvmm-umc join script (Bug #24524)
