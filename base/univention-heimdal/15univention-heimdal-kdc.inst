@@ -43,16 +43,22 @@ test -n "`grep "univention-heimdal-kdc v${VERSION} successful" /usr/lib/univenti
 
 eval "$(univention-config-registry shell)"
 
-if [ "$server_role" = "domaincontroller_master" ]; then
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add txt _kerberos $kerberos_realm
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos tcp 0 100 88 $hostname.$domainname.
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos udp 0 100 88 $hostname.$domainname.
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos-adm tcp 0 100 88 $hostname.$domainname.
-fi
+samba4dcs=$(univention-ldapsearch -x -LLL "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -ne 's|^cn: ||p')
 
-if [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos tcp 0 100 88 $hostname.$domainname.
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos udp 0 100 88 $hostname.$domainname.
+if [ -z "$samba4dcs" ]; then
+	# Register in DNS onyl if no S4 is configured
+	# By default S4 KDCs and OpenLDAP/KDCs should not be mixed
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add txt _kerberos $kerberos_realm
+		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos tcp 0 100 88 $hostname.$domainname.
+		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos udp 0 100 88 $hostname.$domainname.
+		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos-adm tcp 0 100 88 $hostname.$domainname.
+	fi
+
+	if [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
+		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos tcp 0 100 88 $hostname.$domainname.
+		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv kerberos udp 0 100 88 $hostname.$domainname.
+	fi
 fi
 
 

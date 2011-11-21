@@ -50,8 +50,7 @@ if [ -z "$kerberos_realm" ]; then
 	univention-config-registry set "kerberos/realm?$realm"
 fi
 
-univention-config-registry set kerberos/kdc?$hostname.$domainname \
-								kerberos/kpasswdserver?$ldap_master
+univention-config-registry set kerberos/kpasswdserver?$ldap_master
 
 eval "$(univention-config-registry shell kerberos/realm)"
 

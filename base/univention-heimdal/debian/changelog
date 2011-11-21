@@ -1,3 +1,10 @@
+univention-heimdal (5.0.22-1) unstable; urgency=low
+
+  * Register in DNS only if no S4 server was installed. By default S4
+    KDCs and OpenLDAP/Heimdal KDCs should not be mixed (Bug #24753)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Nov 2011 14:02:01 +0100
+
 univention-heimdal (5.0.21-1) unstable; urgency=low
 
   * Set des-cbc-md5 to the second position of the default_tkt_enctypes
