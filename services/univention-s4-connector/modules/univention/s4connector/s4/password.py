@@ -75,7 +75,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 				assert krb.version == 3
 
 				for k in krb.ctr.keys:
-					if k.keytype not in keytypes
+					if k.keytype not in keytypes:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr3.key.keytype: %s" % k.keytype)
 						key = heimdal.keyblock_raw(context, k.keytype, k.value)
 						# keys.append(heimdal.asn1_encode_key(key, krb.ctr.salt.string, kvno))
@@ -92,7 +92,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 				assert krb.version == 4
 
 				for k in krb.ctr.keys:
-					if k.keytype not in keytypes
+					if k.keytype not in keytypes:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr4.key.keytype: %s" % k.keytype)
 						key = heimdal.keyblock_raw(context, k.keytype, k.value)
 						krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
