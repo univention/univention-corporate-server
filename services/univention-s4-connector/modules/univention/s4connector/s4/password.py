@@ -54,6 +54,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 	sc_blob = supplementalCredentials
 
 	keys = []
+	keytypes = []
 	context = heimdal.context()
 
 	if up_blob:
@@ -73,26 +74,30 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 				krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
 				assert krb.version == 3
 
-				for k in krb.ctr.keys:	
-					ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr3.key.keytype: %s" % k.keytype)
-					key = heimdal.keyblock_raw(context, k.keytype, k.value)
-					# keys.append(heimdal.asn1_encode_key(key, krb.ctr.salt.string, kvno))
-					## asn1_encode_key expects a krb5SaltObject
-					## (krb5SaltObject *salt)->salt.saltvalue.data = krb.ctr.salt.string		# see source4/dsdb/samdb/ldb_modules/password_hash.c:setup_kerberos_keys
-					## (krb5SaltObject *salt)->salt.saltvalue.length = strlen(krb.ctr.salt.string)	# const char **krb.ctr.salt.string; package_PrimaryKerberosString krb.ctr.salt
-					## something like:
-					krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
-					keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
+				for k in krb.ctr.keys:
+					if k.keytype not in keytypes
+						ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr3.key.keytype: %s" % k.keytype)
+						key = heimdal.keyblock_raw(context, k.keytype, k.value)
+						# keys.append(heimdal.asn1_encode_key(key, krb.ctr.salt.string, kvno))
+						## asn1_encode_key expects a krb5SaltObject
+						## (krb5SaltObject *salt)->salt.saltvalue.data = krb.ctr.salt.string		# see source4/dsdb/samdb/ldb_modules/password_hash.c:setup_kerberos_keys
+						## (krb5SaltObject *salt)->salt.saltvalue.length = strlen(krb.ctr.salt.string)	# const char **krb.ctr.salt.string; package_PrimaryKerberosString krb.ctr.salt
+						## something like:
+						krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
+						keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
+						keytypes.append(k.keytype)
 			elif p.name == "Primary:Kerberos-Newer-Keys":
 				krb_blob = binascii.unhexlify(p.data)
 				krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
 				assert krb.version == 4
 
-				for k in krb.ctr.keys:	
-					ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr4.key.keytype: %s" % k.keytype)
-					key = heimdal.keyblock_raw(context, k.keytype, k.value)
-					krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
-					keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
+				for k in krb.ctr.keys:
+					if k.keytype not in keytypes
+						ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr4.key.keytype: %s" % k.keytype)
+						key = heimdal.keyblock_raw(context, k.keytype, k.value)
+						krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
+						keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
+						keytypes.append(k.keytype)
 
 	return keys
 
