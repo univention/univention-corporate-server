@@ -1,3 +1,9 @@
+univention-updater (7.0.112-1) unstable; urgency=low
+
+  * UMC: replace class=dijitHidden declarations with visible=false (Bug #24141)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 21 Nov 2011 17:15:17 +0100
+
 univention-updater (7.0.111-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)

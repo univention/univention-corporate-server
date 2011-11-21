@@ -252,7 +252,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		 			var release = element.get('value');
 		 			this.runReleaseUpdate(release);
 		 		}),
-		 		'class':	'dijitHidden'
+		 		visible:	false
            	},
            	{
    	            name:		'run_errata_update',
@@ -260,7 +260,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
      			callback:	dojo.hitch(this, function() {
      				this.runErrataUpdate();
      			}),
-		 		'class':	'dijitHidden'
+		 		visible:	false
            	},
            	{
    	            name:		'run_packages_update',
