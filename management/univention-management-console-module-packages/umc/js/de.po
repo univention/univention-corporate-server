@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-packages\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-02 11:31+0100\n"
+"POT-Creation-Date: 2011-11-21 14:47+0100\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,184 +12,172 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_packages/SearchForm.js:30
+#: umc/js/_packages/SearchForm.js:58
 msgid "--- all ---"
 msgstr "--- alle ---"
 
-#: umc/js/packages.js:211
+#: umc/js/packages.js:239
 #, python-format
 msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
-#: umc/js/packages.js:387
+#: umc/js/packages.js:415
 msgid "<p>You're currently {verb} the '{id}' package:</p>"
 msgstr "<p>Das Paket '{id}' wird momentan {verb}</p>"
 
-#: umc/js/packages.js:147
-msgid "Back to overview"
+#: umc/js/packages.js:175
+msgid "Back to search"
 msgstr "Zurück zur Suche"
 
-#: umc/js/packages.js:259
+#: umc/js/packages.js:287
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/js/packages.js:71
-#: umc/js/packages.js:240
+#: umc/js/packages.js:99 umc/js/packages.js:268
 msgid "Deinstall"
 msgstr "Deinstallieren"
 
-#: umc/js/packages.js:308
+#: umc/js/packages.js:336
 msgid "Description"
 msgstr "Paketbeschreibung"
 
-#: umc/js/packages.js:188
+#: umc/js/packages.js:216
 msgid "Details for package '{package}'"
 msgstr "Details für Paket '{package}'"
 
-#: umc/js/packages.js:391
+#: umc/js/packages.js:419
 msgid "Do you really want to {verb} the '{id}' package?"
 msgstr "Möchten Sie wirklich das Paket '{id}' {verb}?"
 
-#: umc/js/packages.js:58
-#: umc/js/packages.js:230
+#: umc/js/packages.js:86 umc/js/packages.js:258
 msgid "Install"
 msgstr "Installieren"
 
-#: umc/js/packages.js:110
+#: umc/js/packages.js:138
 msgid "Installation status"
 msgstr "Paketstatus"
 
-#: umc/js/_packages/SearchForm.js:44
+#: umc/js/_packages/SearchForm.js:72
 msgid "Installed packages only"
 msgstr "Nur installierte Pakete anzeigen"
 
-#: umc/js/packages.js:313
+#: umc/js/packages.js:341
 msgid "Installed version"
 msgstr "Installierte Version"
 
-#: umc/js/packages.js:309
+#: umc/js/packages.js:337
 msgid "Is installed"
 msgstr "installiert"
 
-#: umc/js/packages.js:310
+#: umc/js/packages.js:338
 msgid "Is upgradeable"
 msgstr "aktualisierbar"
 
-#: umc/js/packages.js:338
-#: umc/js/packages.js:396
+#: umc/js/packages.js:366 umc/js/packages.js:424
 msgid "No"
 msgstr "Nein"
 
-#: umc/js/packages.js:26
+#: umc/js/packages.js:54
 msgid ""
 "On this page, you see all software packages available on your system, and "
 "you can install, deinstall or update them."
-msgstr "Dieses Modul zeigt die auf dem System verfügbaren Softwarepakete an und ermöglicht "
-"es, diese zu installieren, zu deinstallieren oder zu aktualisieren."
+msgstr ""
+"Dieses Modul zeigt die auf dem System verfügbaren Softwarepakete an und "
+"ermöglicht es, diese zu installieren, zu deinstallieren oder zu "
+"aktualisieren."
 
-#: umc/js/packages.js:115
-msgid "Package description"
-msgstr "Paketbeschreibung"
-
-#: umc/js/_packages/SearchForm.js:28
+#: umc/js/_packages/SearchForm.js:56
 msgid "Package categories"
 msgstr "Kategorien"
 
-#: umc/js/_packages/SearchForm.js:57
+#: umc/js/packages.js:143 umc/js/_packages/SearchForm.js:85
 msgid "Package description"
 msgstr "Paketbeschreibung"
 
-#: umc/js/packages.js:263
+#: umc/js/packages.js:291
 msgid "Package details"
 msgstr "Paketdetails"
 
-#: umc/js/packages.js:25
-#: umc/js/packages.js:27
+#: umc/js/packages.js:53 umc/js/packages.js:55
 msgid "Package management"
 msgstr "Paketverwaltung"
 
-#: umc/js/packages.js:101
-#: umc/js/packages.js:305
-#: umc/js/_packages/SearchForm.js:56
+#: umc/js/packages.js:129 umc/js/packages.js:333
+#: umc/js/_packages/SearchForm.js:84
 msgid "Package name"
 msgstr "Paketname"
 
-#: umc/js/packages.js:311
+#: umc/js/packages.js:339
 msgid "Package size"
 msgstr "Paketgröße"
 
-#: umc/js/packages.js:32
+#: umc/js/packages.js:60
 msgid "Packages"
 msgstr "Pakete"
 
-#: umc/js/_packages/SearchForm.js:66
+#: umc/js/_packages/SearchForm.js:94
 msgid "Pattern"
 msgstr "Suchbegriff"
 
-#: umc/js/packages.js:312
+#: umc/js/packages.js:340
 msgid "Priority"
 msgstr "Priorität"
 
-#: umc/js/_packages/SearchForm.js:83
-msgid "Reset"
-msgstr "Rücksetzen"
-
-#: umc/js/_packages/SearchForm.js:79
+#: umc/js/_packages/SearchForm.js:107
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/js/_packages/SearchForm.js:53
+#: umc/js/_packages/SearchForm.js:81
 msgid "Search key"
 msgstr "Suche nach"
 
-#: umc/js/packages.js:106
-#: umc/js/packages.js:306
+#: umc/js/packages.js:134 umc/js/packages.js:334
 msgid "Section"
 msgstr "Kategorie"
 
-#: umc/js/packages.js:307
+#: umc/js/packages.js:335
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: umc/js/packages.js:471
+#: umc/js/packages.js:499
 msgid "The current installer job is now finished."
 msgstr "Die aktuelle Installation ist abgeschlossen"
 
-#: umc/js/packages.js:84
-#: umc/js/packages.js:250
+#: umc/js/packages.js:112 umc/js/packages.js:278
 msgid "Upgrade"
 msgstr "Aktualisieren"
 
-#: umc/js/packages.js:46
+#: umc/js/packages.js:74
 msgid "View Details"
 msgstr "Details anzeigen"
 
-#: umc/js/packages.js:336
-#: umc/js/packages.js:401
+#: umc/js/packages.js:364 umc/js/packages.js:429
 msgid "Yes"
 msgstr "Ja"
 
-#: umc/js/packages.js:382
+#: umc/js/packages.js:410
 msgid "install"
 msgstr "installieren"
 
-#: umc/js/packages.js:382
+#: umc/js/packages.js:410
 msgid "installing"
 msgstr "installiert"
 
-#: umc/js/packages.js:383
+#: umc/js/packages.js:411
 msgid "uninstall"
 msgstr "deinstallieren"
 
-#: umc/js/packages.js:383
+#: umc/js/packages.js:411
 msgid "uninstalling"
 msgstr "deinstalliert"
 
-#: umc/js/packages.js:384
+#: umc/js/packages.js:412
 msgid "upgrade"
 msgstr "aktualisieren"
 
-#: umc/js/packages.js:384
+#: umc/js/packages.js:412
 msgid "upgrading"
 msgstr "aktualisiert"
 
+#~ msgid "Reset"
+#~ msgstr "Rücksetzen"

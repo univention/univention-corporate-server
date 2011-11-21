@@ -172,7 +172,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._back = new umc.widgets.Button({
 			region:			'bottom',
 			name:			'back',
-			label:			this._( 'Back to overview' ),
+			label:			this._( 'Back to search' ),
 			callback:		dojo.hitch(this, function() {
 				this._switch_to_progress(false);
 			})
