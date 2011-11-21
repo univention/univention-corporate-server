@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-18 14:53+0100\n"
+"POT-Creation-Date: 2011-11-21 19:02+0100\n"
 "PO-Revision-Date: 2011-11-17 22:01+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -88,8 +88,8 @@ msgid ""
 "a local directory, an LVM partition or a share (e.g. using iSCSI, NFS or "
 "CIFS)."
 msgstr ""
-"Jedes Festplatten-Image liegt in einem so genannten Speicherbereich. Dies kann "
-"ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
+"Jedes Festplatten-Image liegt in einem so genannten Speicherbereich. Dies "
+"kann ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
 "Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. "
 
 #: umc/python/uvmm/wizards.py:502
@@ -219,16 +219,17 @@ msgid "Drive type"
 msgstr "Laufwerksart"
 
 #: umc/python/uvmm/wizards.py:108
+#, fuzzy
 msgid ""
 "Each hard drive image is located within a so called storage pool, which "
 "might be a local directory, a device, an LVM volume or any type of share (e."
 "g. mounted via iSCSI, NFS or CIFS). The newly create image will have the "
-"specified name and size provided by the following settings. Currently this "
-"has been set to default images. It has to be ensured that there is enough "
+"specified name and size provided by the following settings. Currently these "
+"was been set to default images. It has to be ensured that there is enough "
 "space left in the defined storage pool."
 msgstr ""
-"Jedes Festplatten-Image liegt in einem so genannten Speicherbereich. Dies kann "
-"ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
+"Jedes Festplatten-Image liegt in einem so genannten Speicherbereich. Dies "
+"kann ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
 "Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Das "
 "neu angelegte Festplatten-Image wird mit dem angegebenen Namen und der Größe "
 "aus den folgenden Einstellungen erzeugt. Es sollte sichergestellt werden, "
@@ -241,8 +242,8 @@ msgid ""
 "g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list "
 "of available images is updated."
 msgstr ""
-"Jedes Festplatten-Image liegt in einem so genannten Speicherbereich. Dies kann "
-"ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
+"Jedes Festplatten-Image liegt in einem so genannten Speicherbereich. Dies "
+"kann ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
 "Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Wird "
 "ein Speicherbereich ausgewählt, wird die Liste der verfügbaren Festplatten-"
 "Images aktualisiert."
@@ -301,7 +302,7 @@ msgstr "Das Bearbeiten der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 msgid "Failed to remove network interface: %s"
 msgstr "Entfernen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 
-#: umc/python/uvmm/domains.py:272
+#: umc/python/uvmm/domains.py:292
 #, python-format
 msgid "Failed to retrieve details for the server %(nodeURI)s"
 msgstr ""
@@ -352,9 +353,9 @@ msgstr ""
 "Version zugreifbar sind. Diese Technik ist Voraussetzung für das effiziente "
 "Erstellen von Sicherungspunkten/Snapshots von virtuellen Maschinen.  Nur bei "
 "Verwendung von Festplatten-Images im <i>Erweiterten Format</i> können "
-"Sicherungspunkte erstellt werden. Alternativ kann auch im <i>Einfachen Format "
-"(raw)</i> auf ein Festplatten-Image zugegriffen werden. <p>Auf Xen-Systemen "
-"steht nur das <i>Einfache Format</i> zur Verfügung."
+"Sicherungspunkte erstellt werden. Alternativ kann auch im <i>Einfachen "
+"Format (raw)</i> auf ein Festplatten-Image zugegriffen werden. <p>Auf Xen-"
+"Systemen steht nur das <i>Einfache Format</i> zur Verfügung."
 
 #: umc/python/uvmm/wizards.py:319
 msgid ""
@@ -388,7 +389,7 @@ msgstr "Image-Datei nicht gefunden"
 msgid "Image size"
 msgstr "Image-Größe"
 
-#: umc/python/uvmm/domains.py:405
+#: umc/python/uvmm/domains.py:425
 msgid "Invalid domain state"
 msgstr "Ungültiger Domain Status"
 
@@ -430,7 +431,7 @@ msgstr ""
 "virtuelle Instanzen anzulegen. Stellen Sie sicher, daß der LDAP-Server "
 "erreichbar ist."
 
-#: umc/python/uvmm/domains.py:172
+#: umc/python/uvmm/domains.py:192
 #, python-format
 msgid "No valid source for disk \"%s\" found"
 msgstr "Es fehlt eine gültige Quelle für das Gerät \"%s\""
@@ -439,12 +440,17 @@ msgstr "Es fehlt eine gültige Quelle für das Gerät \"%s\""
 msgid "Paravirtual drive"
 msgstr "Paravirtualisiertes Laufwerk"
 
+#: umc/python/uvmm/profiles.py:68
+msgid "Paravirtualization (XEN)"
+msgstr "Paravirtualisierung (XEN)"
+
 #: umc/python/uvmm/drive.py:234
+#, fuzzy
 msgid ""
 "Paravirtualization is a special variant of virtualization in which the "
 "virtualized operating system is adapted to the underlying virtualization "
 "technology. This improves the performance. Linux systems usually support "
-"paravirtualiuation out of the box. For Microsoft Windows systems additional support "
+"paravirtualization out of the box. For Windows systems additional support "
 "drivers need to be installed, see the <a href=\"http://wiki.univention.de/"
 "index.php?title=UVMM_Technische_Details\"> Univention wiki </a> for details "
 "(currently only available in German)."
@@ -453,16 +459,13 @@ msgstr ""
 "virtualisierten Betriebssysteme werden dabei auf eine "
 "Virtualisierungstechnik angepasst, was die Performance verbessert. Linux-"
 "Systeme sind in der Regel standardmässig mit entsprechender Unterstützung "
-"versehen. Auf Microsoft Windows-Systemen müssen entsprechende Unterstützungstreiber "
-"installiert werden, siehe <a href=\"http://wiki.univention.de/index.php?"
-"title=UVMM_Technische_Details\"> Univention Wiki. </a>"
+"versehen. Auf Microsoft Windows-Systemen müssen entsprechende "
+"Unterstützungstreiber installiert werden, siehe <a href=\"http://wiki."
+"univention.de/index.php?title=UVMM_Technische_Details\"> Univention Wiki. </"
+"a>"
 
-#: umc/python/uvmm/profiles.py:68
-msgid "Paravirtualization (XEN)"
-msgstr "Paravirtualisierung (XEN)"
-
-#: umc/python/uvmm/nodes.py:79 umc/python/uvmm/treeview.py:206
-#: umc/python/uvmm/__init__.py:116
+#: umc/python/uvmm/__init__.py:116 umc/python/uvmm/treeview.py:206
+#: umc/python/uvmm/nodes.py:79
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
@@ -511,7 +514,8 @@ msgstr ""
 
 #: umc/python/uvmm/wizards.py:790
 msgid ""
-"The chosen name for the virtual instance is not unique. Please choose another name."
+"The chosen name for the virtual instance is not unique. Please choose "
+"another name."
 msgstr ""
 "Der gewählte Name ist nicht eindeutig, daher sollte ein anderer Name gewählt "
 "werden."
@@ -527,9 +531,9 @@ msgstr ""
 "können Sie das UMC Dienste-Modul verwenden."
 
 #: umc/python/uvmm/drive.py:198
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> was removed "
+"The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> removed "
 "successfully."
 msgstr ""
 "Das Laufwerk <i>%(drive)s</i> wurde ausgehängt und die Datei <i>%(image)s</"
@@ -571,8 +575,8 @@ msgid ""
 "The drive will be detached from the virtual instance.<br/>Additionally the "
 "associated image <i>%(image)s</i> may be deleted permanently."
 msgstr ""
-"Das Laufwerk wird aus der virtellen Instanz ausgehängt.<br/>Zusätzlich kann das "
-"verknüpfte Image <i>%(image)s</i> permanent gelöscht werden."
+"Das Laufwerk wird aus der virtellen Instanz ausgehängt.<br/>Zusätzlich kann "
+"das verknüpfte Image <i>%(image)s</i> permanent gelöscht werden."
 
 #: umc/python/uvmm/wizards.py:124
 msgid "The following drive will be created:"
@@ -646,10 +650,19 @@ msgstr ""
 "verwendet. Es sollte eventuell ein anderes Image verwendet werden, da "
 "ansonsten Probleme nicht ausgeschlossen werden können."
 
-#: umc/python/uvmm/wizards.py:459 umc/python/uvmm/wizards.py:493
+#: umc/python/uvmm/wizards.py:493
+#, fuzzy
 msgid ""
-"The selected image is already used by this virtual instance and therefore can "
+"The selected image is already used by this virtual instance and therefor can "
 "not be used."
+msgstr ""
+"Das ausgewählte Image wird bereits von dieser virtuellen Instanz verwendet "
+"und kann daher nicht verwendet werden."
+
+#: umc/python/uvmm/wizards.py:459
+msgid ""
+"The selected image is already used by this virtual instance and therefore "
+"can not be used."
 msgstr ""
 "Das ausgewählte Image wird bereits von dieser virtuellen Instanz verwendet "
 "und kann daher nicht verwendet werden."
@@ -714,12 +727,12 @@ msgid ""
 "called eth0 is setup for such a case on each UVMM node. If a virtual "
 "instance should have more than one bridging network interface, additional "
 "network interfaces on the physical server must be configured first. The "
-"second type is <i>NAT</i> that provides a private network for virtual instances "
-"on the physical server and permits access to the external network. This "
-"network type is useful for computers with varying network connections like "
-"notebooks. For such an interface the network configuration of the UVMM node "
-"needs to be modified. This is done automatically by the UVMM service when "
-"starting the virtual instance. Further details about the network "
+"second type is <i>NAT</i> that provides a private network for virtual "
+"instances on the physical server and permits access to the external network. "
+"This network type is useful for computers with varying network connections "
+"like notebooks. For such an interface the network configuration of the UVMM "
+"node needs to be modified. This is done automatically by the UVMM service "
+"when starting the virtual instance. Further details about the network "
 "configuration can be found in <a href=\"http://sdb.univention.de/1172\" "
 "target=\"_blank\">this article</a>."
 msgstr ""
@@ -742,7 +755,7 @@ msgstr ""
 msgid "Type"
 msgstr "Typ"
 
-#: umc/python/uvmm/domains.py:274
+#: umc/python/uvmm/domains.py:294
 #, python-format
 msgid "Unknown physical server %(nodeURI)s"
 msgstr "Unbekannter physikalischer Server %(nodeURI)s"
@@ -751,7 +764,7 @@ msgstr "Unbekannter physikalischer Server %(nodeURI)s"
 msgid "Unknown profile"
 msgstr "Unbekanntes Profil"
 
-#: umc/python/uvmm/domains.py:258
+#: umc/python/uvmm/domains.py:277
 msgid "Unknown profile given"
 msgstr "Unbekanntes profil wurde angegeben"
 

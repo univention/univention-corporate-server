@@ -1725,6 +1725,7 @@ def domain_clone(uri, domain, name, subst):
 
 			# /domain/devices/interface[]
 			domain_devices_interfaces = domain_devices.findall('interface')
+			default_mac = subst.get( 'mac', 'clone' ) # clone or auto
 			for domain_devices_interface in domain_devices_interfaces:
 				# /domain/devices/interface/mac @address
 				domain_devices_interface_mac = domain_devices_interface.find('mac')
@@ -1733,7 +1734,12 @@ def domain_clone(uri, domain, name, subst):
 				try:
 					new_mac = subst[key]
 				except KeyError, e:
-					logger.debug('Keeping MAC address %s' % (mac_address,))
+					if default_mac == 'auto':
+						logger.debug('Auto-generating MAC address for %s (default)' % (mac_address,))
+						del domain_devices_interface_mac.attrib['address']
+					else:
+						logger.debug('Keeping MAC address %s (default)' % (mac_address,))
+						# nothing to do for mode 'auto'
 				else:
 					if new_mac:
 						logger.debug('Changing MAC from %s to %s' % (mac_address, new_mac))

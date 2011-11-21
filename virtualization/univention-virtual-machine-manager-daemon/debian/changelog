@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.77-1) unstable; urgency=low
+
+  * clone: support setting a mode for the MAC addresses (cloning or
+    auto-generating); Bug #24767
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Nov 2011 17:12:23 +0100
+
 univention-virtual-machine-manager-daemon (1.0.76-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 

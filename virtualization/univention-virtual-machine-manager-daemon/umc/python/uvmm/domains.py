@@ -439,13 +439,13 @@ class Domains( object ):
 	def domain_clone( self, request ):
 		"""Clones an existing domain.
 
-		options: { 'domainURI': <domain uri>, 'cloneName': <name of clone> }
+		options: { 'domainURI': <domain uri>, 'cloneName': <name of clone>, 'macAddress' : (clone|auto) }
 
 		return: 
 		"""
 		self.required_options( request, 'domainURI', 'cloneName' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_CLONE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, name = request.options[ 'cloneName' ] )
+		self.uvmm.send( 'DOMAIN_CLONE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, name = request.options[ 'cloneName' ], subst = { 'mac' : request.options.get( 'macAddress', 'clone' ) } )
 
 	def domain_remove( self, request ):
 		"""Removes a domain. Optional a list of volumes can bes specified that should be removed

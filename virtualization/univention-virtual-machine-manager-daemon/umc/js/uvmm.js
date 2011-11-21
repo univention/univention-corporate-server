@@ -587,12 +587,13 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			form.destroyRecursive();
 		};
 
-		var _createClone = dojo.hitch(this, function(name) {
+		var _createClone = dojo.hitch(this, function( name, mac_address ) {
 			// send the UMCP command
 			this.updateProgress(0, 1);
 			umc.tools.umcpCommand('uvmm/domain/clone', {
 				domainURI: ids[ 0 ],
-				cloneName: name
+				cloneName: name,
+				macAddress: mac_address
 			}).then(dojo.hitch(this, function() {
 				this.moduleStore.onChange();
 				this.updateProgress(1, 1);
@@ -609,17 +610,26 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				label: this._('Please enter the name for the clone:'),
 				regExp: '^[^./][^/]*$',
 				invalidMessage: this._('A valid clone name cannot contain "/" and may not start with "." .')
-			}],
+			}, {
+				name: 'mac_address',
+				type: 'ComboBox',
+				label: this._( 'MAC addresses' ),
+				staticValues: [
+					{ id : 'clone', label : this._( 'Clone MAC addresses' ) },
+					{ id : 'auto', label : this._( 'Generate new MAC addresses' ) }
+				]
+			} ],
 			buttons: [{
 				name: 'submit',
 				label: this._('Create'),
 				style: 'float: right;',
 				callback: function() {
 					var nameWidget = form.getWidget('name');
+					var macWidget = form.getWidget('mac_address');
 					if (nameWidget.isValid()) {
 						var name = nameWidget.get('value');
 						_cleanup();
-						_createClone( name );
+						_createClone( name, macWidget.get( 'value' ) );
 					}
 				}
 			}, {
@@ -627,7 +637,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				label: this._('Cancel'),
 				callback: _cleanup
 			}],
-			layout: [ 'name' ]
+			layout: [ 'name', 'mac_address' ]
 		});
 
 		dialog = new dijit.Dialog({

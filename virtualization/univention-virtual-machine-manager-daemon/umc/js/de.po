@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-18 14:53+0100\n"
-"PO-Revision-Date: 2011-11-18 12:22+0100\n"
+"POT-Creation-Date: 2011-11-21 19:02+0100\n"
+"PO-Revision-Date: 2011-11-21 17:10+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -94,7 +94,7 @@ msgstr ""
 "Der Name für die virtuelle Instanz wird benötigt and sollte nicht der "
 "vorgeschlagenen Namenspräfix entsprechen"
 
-#: umc/js/uvmm.js:610
+#: umc/js/uvmm.js:612
 msgid "A valid clone name cannot contain \"/\" and may not start with \".\" ."
 msgstr ""
 "Ein gültiger Klonname darf keine \"/\" enthalten und kann nicht mit \".\" "
@@ -115,17 +115,17 @@ msgstr ""
 "Ein gültiger Sicherungspunktname darf keine \"/\" enthalten und kann nicht "
 "mit \".\" beginnen."
 
-#: umc/js/_uvmm/DriveGrid.js:272 umc/js/_uvmm/DriveWizard.js:61
+#: umc/js/_uvmm/DriveWizard.js:61 umc/js/_uvmm/DriveGrid.js:283
 msgid "Add a new drive"
 msgstr "Ein neues Laufwerk hinzufügen"
 
-#: umc/js/_uvmm/DriveGrid.js:89 umc/js/_uvmm/DomainWizard.js:136
-#: umc/js/_uvmm/DriveWizard.js:52
+#: umc/js/_uvmm/DomainWizard.js:136 umc/js/_uvmm/DriveWizard.js:52
+#: umc/js/_uvmm/DriveGrid.js:89
 msgid "Add drive"
 msgstr "Laufwerk hinzufügen"
 
-#: umc/js/_uvmm/InterfaceWizard.js:52 umc/js/_uvmm/InterfaceGrid.js:96
-#: umc/js/_uvmm/InterfaceGrid.js:171
+#: umc/js/_uvmm/InterfaceGrid.js:96 umc/js/_uvmm/InterfaceGrid.js:171
+#: umc/js/_uvmm/InterfaceWizard.js:52
 msgid "Add network interface"
 msgstr "Hinzufügen einer Netzwerkschnittstelle"
 
@@ -137,7 +137,7 @@ msgstr "Erweitert"
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/js/_uvmm/DriveGrid.js:103
+#: umc/js/_uvmm/DriveGrid.js:111
 msgid ""
 "All image files are stored in so-called storage pools. They can be stored in "
 "a local directory, an LVM partition or a share (e.g. using iSCSI, NFS or "
@@ -218,14 +218,14 @@ msgstr "CDROM-Laufwerk"
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: umc/js/uvmm.js:656 umc/js/uvmm.js:675
+#: umc/js/uvmm.js:667 umc/js/uvmm.js:686
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
-#: umc/js/uvmm.js:354 umc/js/uvmm.js:468 umc/js/uvmm.js:541 umc/js/uvmm.js:626
-#: umc/js/_uvmm/DriveGrid.js:174 umc/js/_uvmm/DriveGrid.js:201
-#: umc/js/_uvmm/SnapshotGrid.js:135 umc/js/_uvmm/SnapshotGrid.js:161
-#: umc/js/_uvmm/SnapshotGrid.js:198 umc/js/_uvmm/InterfaceGrid.js:116
+#: umc/js/uvmm.js:355 umc/js/uvmm.js:469 umc/js/uvmm.js:542 umc/js/uvmm.js:637
+#: umc/js/_uvmm/InterfaceGrid.js:116 umc/js/_uvmm/SnapshotGrid.js:135
+#: umc/js/_uvmm/SnapshotGrid.js:161 umc/js/_uvmm/SnapshotGrid.js:198
+#: umc/js/_uvmm/DriveGrid.js:182 umc/js/_uvmm/DriveGrid.js:212
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -233,9 +233,13 @@ msgstr "Abbrechen"
 msgid "Choose existing image"
 msgstr "Auswahl einer vorhandenen Image-Datei"
 
-#: umc/js/uvmm.js:753
+#: umc/js/uvmm.js:764
 msgid "Clone"
 msgstr "Klonen"
+
+#: umc/js/uvmm.js:618
+msgid "Clone MAC addresses"
+msgstr "MAC-Adressen klonen"
 
 #: umc/js/_uvmm/DomainPage.js:113
 msgid "Contact"
@@ -245,11 +249,11 @@ msgstr "Kontakt"
 msgid "Coordinated Universal Time"
 msgstr "Koordinierte Weltzeit (UTC)"
 
-#: umc/js/uvmm.js:614 umc/js/_uvmm/SnapshotGrid.js:123
+#: umc/js/uvmm.js:624 umc/js/_uvmm/SnapshotGrid.js:123
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/uvmm.js:633
+#: umc/js/uvmm.js:644
 msgid "Create a clone"
 msgstr "Erstellen eines Klons"
 
@@ -270,7 +274,7 @@ msgstr "Erstellen einer virtuellen Instanz: (Profil: %s)"
 msgid "Create new snapshot"
 msgstr "Neuen Sicherungspunkt erstellen"
 
-#: umc/js/uvmm.js:793
+#: umc/js/uvmm.js:804
 msgid "Create virtual instance"
 msgstr "Erstellen einer virtuellen Instanz"
 
@@ -290,17 +294,17 @@ msgstr "Datum"
 msgid "Default (RealTek RTL-8139)"
 msgstr "Voreinstellung (RealTek RTL-8139)"
 
-#: umc/js/uvmm.js:207 umc/js/_uvmm/DriveGrid.js:82
-#: umc/js/_uvmm/DriveGrid.js:197 umc/js/_uvmm/SnapshotGrid.js:57
-#: umc/js/_uvmm/SnapshotGrid.js:194
+#: umc/js/uvmm.js:206 umc/js/_uvmm/SnapshotGrid.js:57
+#: umc/js/_uvmm/SnapshotGrid.js:194 umc/js/_uvmm/DriveGrid.js:82
+#: umc/js/_uvmm/DriveGrid.js:208
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/_uvmm/DomainPage.js:122 umc/js/_uvmm/DomainWizard.js:115
+#: umc/js/_uvmm/DomainWizard.js:115 umc/js/_uvmm/DomainPage.js:122
 msgid "Description"
 msgstr "Beschreibung"
 
-#: umc/js/_uvmm/DriveGrid.js:194
+#: umc/js/_uvmm/DriveGrid.js:205
 msgid "Detach"
 msgstr "Aushängen"
 
@@ -328,11 +332,11 @@ msgstr "Laufwerk Image-Datei"
 msgid "Drive type"
 msgstr "Laufwerktyp"
 
-#: umc/js/_uvmm/InterfaceWizard.js:72 umc/js/_uvmm/InterfaceGrid.js:65
+#: umc/js/_uvmm/InterfaceGrid.js:65 umc/js/_uvmm/InterfaceWizard.js:72
 msgid "Driver"
 msgstr "Treiber"
 
-#: umc/js/_uvmm/DomainPage.js:290 umc/js/_uvmm/DomainWizard.js:64
+#: umc/js/_uvmm/DomainWizard.js:64 umc/js/_uvmm/DomainPage.js:290
 msgid "Drives"
 msgstr "Laufwerke"
 
@@ -344,7 +348,7 @@ msgstr "Niederländisch"
 msgid "Dutch-Belgium"
 msgstr "Niederländisch-Belgien"
 
-#: umc/js/_uvmm/DriveGrid.js:145 umc/js/_uvmm/DriveWizard.js:85
+#: umc/js/_uvmm/DriveWizard.js:85 umc/js/_uvmm/DriveGrid.js:153
 msgid ""
 "Each image is located within a so called storage pool, which might be a "
 "local directory, a device, an LVM volume or any type of share (e.g. mounted "
@@ -367,16 +371,16 @@ msgstr ""
 "Speicherbereich ausgewählt, wird die Liste der verfügbaren ISO-Images "
 "aktualisiert."
 
-#: umc/js/uvmm.js:200 umc/js/uvmm.js:694 umc/js/_uvmm/DriveGrid.js:75
-#: umc/js/_uvmm/InterfaceGrid.js:81
+#: umc/js/uvmm.js:199 umc/js/uvmm.js:705 umc/js/_uvmm/InterfaceGrid.js:81
+#: umc/js/_uvmm/DriveGrid.js:75
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/_uvmm/DriveGrid.js:181
+#: umc/js/_uvmm/DriveGrid.js:192
 msgid "Edit drive"
 msgstr "Laufwerk bearbeiten"
 
-#: umc/js/uvmm.js:698
+#: umc/js/uvmm.js:709
 msgid "Edit the configuration of the virtual instance"
 msgstr "Konfiguration der virtuellen Instanzen bearbeiten"
 
@@ -404,7 +408,7 @@ msgstr "Erweitertes Format (qcow2)"
 msgid "Faroese"
 msgstr "Färöisch"
 
-#: umc/js/_uvmm/DriveGrid.js:157 umc/js/_uvmm/DriveWizard.js:106
+#: umc/js/_uvmm/DriveWizard.js:106 umc/js/_uvmm/DriveGrid.js:165
 msgid "Filename"
 msgstr "Dateiname"
 
@@ -457,6 +461,10 @@ msgstr "Allgemein"
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
+#: umc/js/uvmm.js:619
+msgid "Generate new MAC addresses"
+msgstr "Neue MAC-Adressen erzeugen"
+
 #: umc/js/_uvmm/types.js:97
 msgid "German"
 msgstr "Deutsch"
@@ -473,7 +481,7 @@ msgstr "Global verfügbar"
 msgid "Hard drive"
 msgstr "Festplatte"
 
-#: umc/js/_uvmm/DriveGrid.js:104
+#: umc/js/_uvmm/DriveGrid.js:112
 msgid ""
 "Hard drive images can be administrated in two ways on KVM systems; by "
 "default images are saved in the <i>Extended format (qcow2)</i>. This format "
@@ -569,6 +577,10 @@ msgstr "Lokale Zeitzone"
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
+#: umc/js/uvmm.js:616
+msgid "MAC addresses"
+msgstr "MAC-Adressen"
+
 #: umc/js/_uvmm/InterfaceWizard.js:95
 msgid "MAC addresss"
 msgstr "MAC-Adresse"
@@ -589,15 +601,15 @@ msgstr "Speicher"
 msgid "Memory (default unit MB)"
 msgstr "Größe des Arbeitsspeichers (Standardeinheit MB)"
 
-#: umc/js/uvmm.js:661
+#: umc/js/uvmm.js:672
 msgid "Memory usage"
 msgstr "Arbeitsspeichernutzung"
 
-#: umc/js/uvmm.js:342 umc/js/uvmm.js:775
+#: umc/js/uvmm.js:343 umc/js/uvmm.js:786
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: umc/js/uvmm.js:361 umc/js/uvmm.js:548
+#: umc/js/uvmm.js:362 umc/js/uvmm.js:549
 msgid "Migrate domain"
 msgstr "Migriere virtuelle Instanz"
 
@@ -605,8 +617,8 @@ msgstr "Migriere virtuelle Instanz"
 msgid "NAT"
 msgstr "NAT"
 
-#: umc/js/uvmm.js:652 umc/js/uvmm.js:671 umc/js/_uvmm/SnapshotGrid.js:50
-#: umc/js/_uvmm/DomainPage.js:105 umc/js/_uvmm/DomainWizard.js:111
+#: umc/js/uvmm.js:663 umc/js/uvmm.js:682 umc/js/_uvmm/DomainWizard.js:111
+#: umc/js/_uvmm/SnapshotGrid.js:50 umc/js/_uvmm/DomainPage.js:105
 msgid "Name"
 msgstr "Name"
 
@@ -635,15 +647,15 @@ msgstr "Keine Sicherungspunkte wurden ausgewählt!"
 msgid "Norwegian"
 msgstr "Norwegisch"
 
-#: umc/js/uvmm.js:446
+#: umc/js/uvmm.js:447
 msgid "Not removable"
 msgstr "Nicht löschbar"
 
-#: umc/js/_uvmm/DomainPage.js:180 umc/js/_uvmm/DomainWizard.js:126
+#: umc/js/_uvmm/DomainWizard.js:126 umc/js/_uvmm/DomainPage.js:180
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: umc/js/uvmm.js:767
+#: umc/js/uvmm.js:778
 msgid "Open a view to the virtual instance {label} on {nodeName}"
 msgstr "Öffne eine Anzeige der virtuellen Instanz {label} auf {nodeName}"
 
@@ -659,11 +671,11 @@ msgstr "Paravirtualisiertes Gerät (virtio)"
 msgid "Paravirtual device (xen)"
 msgstr "Paravirtualisiertes Gerät (xen)"
 
-#: umc/js/_uvmm/DriveGrid.js:163
+#: umc/js/_uvmm/DriveGrid.js:171
 msgid "Paravirtual drive"
 msgstr "Paravirtualisiertes Laufwerk"
 
-#: umc/js/_uvmm/DriveGrid.js:105
+#: umc/js/_uvmm/DriveGrid.js:113
 msgid ""
 "Paravirtualisation is a special variant of virtualisation in which the "
 "virtualised operating system is adapted to the underlying virtualisation "
@@ -685,7 +697,7 @@ msgstr ""
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/js/uvmm.js:724
+#: umc/js/uvmm.js:735
 msgid "Pause"
 msgstr "Pausieren"
 
@@ -693,7 +705,7 @@ msgstr "Pausieren"
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
-#: umc/js/uvmm.js:608
+#: umc/js/uvmm.js:610
 msgid "Please enter the name for the clone:"
 msgstr "Geben die den Namen für den Klon ein:"
 
@@ -701,15 +713,15 @@ msgstr "Geben die den Namen für den Klon ein:"
 msgid "Please enter the name for the snapshot:"
 msgstr "Geben Sie den Namen für den Sicherungspunkt ein:"
 
-#: umc/js/uvmm.js:901
+#: umc/js/uvmm.js:912
 msgid "Please select a valid search type."
 msgstr "Bitte wählen Sie einen gültigen Suchtypen."
 
-#: umc/js/uvmm.js:331
+#: umc/js/uvmm.js:332
 msgid "Please select the destination server:"
 msgstr "Auswahl des Zielservers"
 
-#: umc/js/uvmm.js:241
+#: umc/js/uvmm.js:240
 msgid "Please wait, your requests are being processed..."
 msgstr "Bitte warten Sie, Ihre Anfrage wird bearbeitet..."
 
@@ -717,8 +729,8 @@ msgstr "Bitte warten Sie, Ihre Anfrage wird bearbeitet..."
 msgid "Polish"
 msgstr "Polnisch"
 
-#: umc/js/_uvmm/DriveGrid.js:71 umc/js/_uvmm/DriveGrid.js:144
 #: umc/js/_uvmm/DriveWizard.js:84 umc/js/_uvmm/DriveWizard.js:154
+#: umc/js/_uvmm/DriveGrid.js:71 umc/js/_uvmm/DriveGrid.js:152
 msgid "Pool"
 msgstr "Speicherbereich"
 
@@ -738,7 +750,7 @@ msgstr "Profile"
 msgid "RTC reference"
 msgstr "RTC-Referenz"
 
-#: umc/js/uvmm.js:214
+#: umc/js/uvmm.js:213
 msgid "Reload"
 msgstr "Neu laden"
 
@@ -746,16 +758,16 @@ msgstr "Neu laden"
 msgid "Remote access"
 msgstr "VNC-Fernzugriff"
 
-#: umc/js/uvmm.js:784 umc/js/_uvmm/InterfaceGrid.js:89
+#: umc/js/uvmm.js:795 umc/js/_uvmm/InterfaceGrid.js:89
 #: umc/js/_uvmm/InterfaceGrid.js:112
 msgid "Remove"
 msgstr "Löschen"
 
-#: umc/js/uvmm.js:475
+#: umc/js/uvmm.js:476
 msgid "Remove a virtual instance"
 msgstr "Löschen einer virtuellen Instanz"
 
-#: umc/js/uvmm.js:744
+#: umc/js/uvmm.js:755
 msgid "Restart"
 msgstr "Neu starten"
 
@@ -767,15 +779,11 @@ msgstr "Wiederherstellen"
 msgid "Russian"
 msgstr "Russisch"
 
-#: umc/js/_uvmm/DriveGrid.js:167 umc/js/_uvmm/DomainPage.js:91
+#: umc/js/_uvmm/DriveGrid.js:175 umc/js/_uvmm/DomainPage.js:91
 #: umc/js/_uvmm/DomainPage.js:161 umc/js/_uvmm/DomainPage.js:269
 #: umc/js/_uvmm/DomainPage.js:328
 msgid "Save"
 msgstr "Speichern"
-
-#: umc/js/uvmm.js:734
-msgid "Suspend"
-msgstr "Speichern & Beenden"
 
 #: umc/js/uvmm.js:110
 msgid "Search for virtual instances and physical servers"
@@ -802,18 +810,18 @@ msgstr "Soll die Netzwerkschnittstelle %d entfernt werden?"
 msgid "Should the network interface be removed?"
 msgstr "Soll die Netzwerkschnittstelle entfernt werden?"
 
-#: umc/js/_uvmm/DriveGrid.js:205
+#: umc/js/_uvmm/DriveGrid.js:216
 msgid ""
 "Should the selected drive be deleted or detached from the virtual instance?"
 msgstr ""
 "Soll das ausgewählte Laufwerk gelöscht oder nur bei der virtuellen Instanz "
 "ausgehängt werden?"
 
-#: umc/js/uvmm.js:377
+#: umc/js/uvmm.js:378
 msgid "Should the selected virtual instance {label} be removed?"
 msgstr "Soll die ausgewählte virtuelle Instanz {label} gelöscht werden?"
 
-#: umc/js/uvmm.js:715
+#: umc/js/uvmm.js:726
 msgid "Shut off the virtual instance"
 msgstr "Ausschalten einer virtuellen Instanz"
 
@@ -841,7 +849,7 @@ msgstr "Sicherungspunkte"
 msgid "Snapshots settings"
 msgstr "Einstellungen für Sicherungspunkte"
 
-#: umc/js/_uvmm/InterfaceWizard.js:85 umc/js/_uvmm/InterfaceGrid.js:62
+#: umc/js/_uvmm/InterfaceGrid.js:62 umc/js/_uvmm/InterfaceWizard.js:85
 msgid "Source"
 msgstr "Quelle"
 
@@ -849,29 +857,33 @@ msgstr "Quelle"
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: umc/js/uvmm.js:702
+#: umc/js/uvmm.js:713
 msgid "Start"
 msgstr "Starten"
 
-#: umc/js/uvmm.js:704
+#: umc/js/uvmm.js:715
 msgid "Start the virtual instance"
 msgstr "Starten einer virtuellen Instanz"
 
-#: umc/js/uvmm.js:877
+#: umc/js/uvmm.js:888
 msgid "State: {state}<br>Server: {node}"
 msgstr "Status: {state}<br>Server: {node}"
 
-#: umc/js/uvmm.js:713 umc/js/uvmm.js:718
+#: umc/js/uvmm.js:724 umc/js/uvmm.js:729
 msgid "Stop"
 msgstr "Beenden"
 
-#: umc/js/uvmm.js:718
+#: umc/js/uvmm.js:729
 msgid ""
 "Stopping virtual instances will turn them off without shutting down the "
 "operating system. Should the operation be continued?"
 msgstr ""
 "Das Beenden der virtuellen Instanz schaltet diese aus ohne das "
 "Betriebssystem zuvor herunterzufahren. Soll die Aktion fortgesetzt werden?"
+
+#: umc/js/uvmm.js:745
+msgid "Suspend"
+msgstr "Speichern & Beenden"
 
 #: umc/js/_uvmm/types.js:125
 msgid "Swedish"
@@ -881,7 +893,7 @@ msgstr "Schwedisch"
 msgid "Thai"
 msgstr "Thailand"
 
-#: umc/js/_uvmm/DomainPage.js:367 umc/js/_uvmm/DriveWizard.js:219
+#: umc/js/_uvmm/DriveWizard.js:219 umc/js/_uvmm/DomainPage.js:367
 msgid "The entered data is not valid. Please correct your input."
 msgstr ""
 "Die eingegebenen Daten sind nicht gültig. Bitte korrigieren Sie ihre Eingabe."
@@ -899,7 +911,7 @@ msgid "The memory size format is not valid (e.g. 3GB or 1024 MB)"
 msgstr ""
 "Das Format der angegebenen Speichergröße is ungültig (bspw. 3GB oder 1024 MB)"
 
-#: umc/js/_uvmm/DriveGrid.js:218
+#: umc/js/_uvmm/DriveGrid.js:229
 msgid ""
 "The selected drive is a CD-ROM and should be detached from the virtual "
 "instance. If the volume is delete no other instance can use it anymore."
@@ -908,7 +920,7 @@ msgstr ""
 "werden. Wird das Image gelöscht können auch andere Instanzen nicht mehr "
 "darauf zugreifen."
 
-#: umc/js/_uvmm/DriveGrid.js:220
+#: umc/js/_uvmm/DriveGrid.js:231
 msgid ""
 "The selected drive seems to be attached to other virtual instances and "
 "therefor should not be deleted."
@@ -984,12 +996,12 @@ msgstr ""
 "wird. Weitere Details zur Netzwerkkonfiguration sind in <a href=\"http://sdb."
 "univention.de/1172\" target=\"_blank\">diesem Artikel</a> zu finden."
 
-#: umc/js/_uvmm/DriveGrid.js:59 umc/js/_uvmm/InterfaceWizard.js:58
-#: umc/js/_uvmm/InterfaceGrid.js:59
+#: umc/js/_uvmm/InterfaceGrid.js:59 umc/js/_uvmm/InterfaceWizard.js:58
+#: umc/js/_uvmm/DriveGrid.js:59
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/uvmm.js:442
+#: umc/js/uvmm.js:443
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -1001,7 +1013,7 @@ msgstr "Verwenden eines lokalen Gerätes"
 msgid "VNC password"
 msgstr "VNC-Passwort"
 
-#: umc/js/uvmm.js:762
+#: umc/js/uvmm.js:773
 msgid "View"
 msgstr "Anzeigen"
 
@@ -1022,7 +1034,7 @@ msgstr "Virtualisierungstechnik"
 msgid "What type of drive should be created?"
 msgstr "Welche Art von Laufwerk soll erstellt werden?"
 
-#: umc/js/_uvmm/DomainPage.js:451
+#: umc/js/_uvmm/DomainPage.js:467
 msgid ""
 "While the virtual instance is running most of the settings can not be "
 "changed."
@@ -1034,7 +1046,7 @@ msgstr ""
 msgid "automatic"
 msgstr "Automatisch"
 
-#: umc/js/uvmm.js:460
+#: umc/js/uvmm.js:461
 msgid "delete"
 msgstr "Löschen"
 
@@ -1058,11 +1070,11 @@ msgstr "ausgeschaltet"
 msgid "shut off (crashed)"
 msgstr "ausgeschaltet (abgestürzt)"
 
-#: umc/js/_uvmm/DriveGrid.js:61 umc/js/_uvmm/InterfaceGrid.js:67
+#: umc/js/_uvmm/InterfaceGrid.js:67 umc/js/_uvmm/DriveGrid.js:61
 msgid "unknown"
 msgstr "Unbekannt"
 
-#: umc/js/uvmm.js:436 umc/js/uvmm.js:446
+#: umc/js/uvmm.js:437 umc/js/uvmm.js:447
 msgid "{volumeFilename} (Pool: {pool})"
 msgstr "{volumeFilename} (Speicherbereich: {pool})"
 
@@ -1590,9 +1602,6 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 #~ msgid "Storage pool"
 #~ msgstr "Speicherbereich"
 
-#~ msgid "Suspend"
-#~ msgstr "Speichern & Beenden"
-
 #~ msgid "TUN"
 #~ msgstr "TUN"
 
@@ -1604,8 +1613,8 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 #~ "werden."
 
 #~ msgid ""
-#~ "The connection to the UCS Virtual Machine Manager service could "
-#~ "not be established. Please verify that it is started. You may use the UMC "
+#~ "The connection to the UCS Virtual Machine Manager service could not be "
+#~ "established. Please verify that it is started. You may use the UMC "
 #~ "service module therefor."
 #~ msgstr ""
 #~ "Die Verbindung zum UCS Virtual Machine Manager-Dienst konnte nicht "
