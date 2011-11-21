@@ -471,7 +471,7 @@ msgid ""
 "and password for login."
 msgstr ""
 "Willkommen bei Univention Management Console. Bitte geben Sie Benutzername "
-"und Passwort Ihres Domänen-Kontos an."
+"und Passwort Ihres Domänen-Kontos ein."
 
 #: umc/widgets/UnixAccessRights.js:91
 msgid "Write"
