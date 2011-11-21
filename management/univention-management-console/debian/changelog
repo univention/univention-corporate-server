@@ -1,3 +1,9 @@
+univention-management-console (4.0.89-1) unstable; urgency=low
+
+  * fixed logrotate configuration (Bug #18002)  
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 16:21:05 +0100
+
 univention-management-console (4.0.88-2) unstable; urgency=low
 
   * add system info module to dependencies
