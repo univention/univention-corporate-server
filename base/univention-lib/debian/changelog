@@ -1,3 +1,9 @@
+univention-lib (1.0.40-1) unstable; urgency=low
+
+  * shell/umc.sh: fixed loop in umc_frontend_new_hash (Bug #24330)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 21 Nov 2011 17:28:41 +0100
+
 univention-lib (1.0.39-1) unstable; urgency=low
 
   * Delay and really kill udm-cli (Bug #24517)

@@ -43,14 +43,11 @@ umc_frontend_new_hash () {
 		f="/usr/share/univention-management-console-frontend/$ifile"
 		[ -w "$f" ] && sed -i 's/\$\(.*\)\$/$'$timestamp'$/' "$f"
 	done
+
 	# update the symlinks to the js/css directories
 	for idir in css js; do
-		for f in /usr/share/univention-management-console-frontend/${idir}_\$*\$; do
-			if [ -e "$f" ]; then
-				rm -f "$f" || true
-				ln -fs "$idir" "/usr/share/univention-management-console-frontend/${idir}_\$${timestamp}\$" || true
-			fi
-		done
+		rm -f "/usr/share/univention-management-console-frontend/${idir}_\$*\$" || true
+		ln -s "$idir" "/usr/share/univention-management-console-frontend/${idir}_\$${timestamp}\$" || true
 	done
 
 	return 0
