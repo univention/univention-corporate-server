@@ -239,7 +239,8 @@ dojo.require("umc.tools");
 			}
 			var list = [ { id: 'raw', label: _('Simple format (raw)') } ];
 			if (options.domain_type == 'kvm') {
-				list.push({ id: 'qcow2', label: _('Extended format (qcow2)') });
+				// add qcow2 as pre-selected item
+				list.push({ id: 'qcow2', label: _('Extended format (qcow2)'), preselected: true });
 			}
 			return list;
 		},
