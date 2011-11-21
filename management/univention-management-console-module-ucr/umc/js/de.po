@@ -60,7 +60,7 @@ msgstr "Löschen"
 
 #: umc/js/ucr.js:78
 msgid "Deleting the selected UCR variables"
-msgstr "Löschen der ausgewählten UCR-Variable"
+msgstr "Löschen der ausgewählten UCR-Variablen"
 
 #: umc/js/ucr.js:149
 msgid "Description"

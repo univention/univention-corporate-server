@@ -35,4 +35,4 @@ msgstr "Die UCR-variable %s ist nur lesbar und kann nicht entfernt werden"
 #: __init__.py:154
 #, python-format
 msgid "The UCR variable %(key)s could not be found"
-msgstr "Die UCR-Variable %(key)s kann nicht gefunden werden"
+msgstr "Die UCR-Variable %(key)s konnte nicht gefunden werden"
