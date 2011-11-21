@@ -13,7 +13,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def getMsgIds(self):
 		return { '0011-1': [ uub.RESULT_WARN, 'failed to open/read file' ],
-				 '0011-2': [ uub.RESULT_ERROR, 'source package name differs in debian/control an debian/changelog' ],
+				 '0011-2': [ uub.RESULT_ERROR, 'source package name differs in debian/control and debian/changelog' ],
 				 '0011-3': [ uub.RESULT_WARN, 'wrong section - should be "Univention"' ],
 				 '0011-4': [ uub.RESULT_WARN, 'wrong priority - should be "optional"' ],
 				 '0011-5': [ uub.RESULT_ERROR, 'wrong maintainer - should be "Univention GmbH <packages@univention.de>"' ],
