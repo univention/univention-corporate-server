@@ -1,9 +1,8 @@
 univention-join (4.0.28-1.1) unstable; urgency=low
 
-  * Non-maintainer upload.
   * adapted captions and translations (Bug #24724) 
 
- -- Lukas Walter <lwalter@mammut.knut.univention.de>  Mon, 21 Nov 2011 13:28:30 +0100
+ -- Lukas Walter <walter@univention.de>  Mon, 21 Nov 2011 13:28:30 +0100
 
 univention-join (4.0.28-1) unstable; urgency=low
 
