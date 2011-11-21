@@ -615,7 +615,6 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			this._tree.watch('path', dojo.hitch(this, function(attr, oldVal, newVal) {
 				// register for changes of the selected item (= path)
 				// only take them into account in case the tree is not reloading
-				console.log('### path:', newVal);
 				if (!this._reloadingPath) {
 					this.filter();
 				}
