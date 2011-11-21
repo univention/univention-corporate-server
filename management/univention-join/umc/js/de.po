@@ -115,7 +115,7 @@ msgid ""
 "button. This will join your system into the domain."
 msgstr ""
 "Bitte geben Sie das Passwort des Domänen-Administrators ein und drücken dann "
-"auf den Knopf 'Domänenbeitritt starten'. Dies gliedert Ihr System in die "
+"auf die Schaltfläche 'Domänenbeitritt starten'. Dies gliedert Ihr System in die "
 "Domäne ein."
 
 #: umc/js/join.js:503
