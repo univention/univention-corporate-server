@@ -1,3 +1,9 @@
+univention-updater (7.0.112-2) unstable; urgency=low
+
+  * Re-add missing "install" (Bug #24172)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Nov 2011 16:25:08 +0100
+
 univention-updater (7.0.112-1) unstable; urgency=low
 
   * UMC: replace class=dijitHidden declarations with visible=false (Bug #24141)
