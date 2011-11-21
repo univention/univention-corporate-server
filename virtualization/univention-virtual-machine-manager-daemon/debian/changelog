@@ -1,6 +1,6 @@
-univention-virtual-machine-manager-daemon (1.0.78-1) unstable; urgency=low
+univention-virtual-machine-manager-daemon (1.0.78-2) unstable; urgency=low
 
-  * pre-select qcow2 if available; Bug #24769
+  * pre-select qcow2 if available; Bug #24766
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 21 Nov 2011 17:29:04 +0100
 
