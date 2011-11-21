@@ -666,9 +666,9 @@ property_descriptions={
 			identifies=0
 	),
 	'userCertificate': univention.admin.property(
-			short_description=_("PKI user certificate"),
+			short_description=_("PKI user certificate (DER format)"),
 			long_description=_( 'Public key infrastructure - user certificate ' ),
-			syntax=univention.admin.syntax.binaryfile,
+			syntax=univention.admin.syntax.Base64Upload,
 			multivalue=0,
 			required=0,
 			dontsearch=1,
@@ -1087,16 +1087,16 @@ def shift(string, offset):
 	return string
 
 def load_certificate(user_certificate):
-	certificate=base64.encodestring(string.join(user_certificate))
+	"""Import a certificate in DER format"""
+	certificate = base64.decodestring( user_certificate )
 
 	tempf=tempfile.mktemp()
 	fh=open(tempf,'w')
-	c='-----BEGIN CERTIFICATE-----\n%s-----END CERTIFICATE-----\n' % certificate
-	fh.write(c)
+	fh.write( certificate )
 	fh.close()
 
-	x509 = X509.load_cert(tempf)
-	os.unlink(tempf)
+	x509 = X509.load_cert( tempf, format = X509.FORMAT_DER )
+	os.unlink( tempf )
 	if not x509:
 		return {}
 
@@ -1226,7 +1226,13 @@ mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
 mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
 
-mapping.register('userCertificate', 'userCertificate;binary')
+def unmapCertificate( value ):
+	return base64.encodestring( value[ 0 ] )
+
+def mapCertificate( value ):
+	return base64.decodestring( value )
+
+mapping.register('userCertificate', 'userCertificate;binary', mapCertificate, unmapCertificate )
 mapping.register('jpegPhoto', 'jpegPhoto', None, univention.admin.mapping.ListToString)
 
 class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
@@ -1572,7 +1578,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 	def reload_certificate(self):
 
-		if self.info.has_key('userCertificate') and len(self.info['userCertificate'][0]) > 0:
+		if self.info.get( 'userCertificate' ):
 			values=load_certificate(self.info['userCertificate'])
 			if not values:
 				self.__certificate_clean()

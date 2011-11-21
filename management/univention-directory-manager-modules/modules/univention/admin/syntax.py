@@ -338,19 +338,22 @@ class OneAndAHalfString( string ):
 class FiveThirdsString( string ):
 	size = 'FiveThirds'
 
-class file(string):
-	pass
-
-class binaryfile(file):
+# upload classes
+class Upload( ISyntax ):
 	@classmethod
-	def tostring(self, text):
-		if text and text[0]:
-			encoded=base64.encodestring(text[0])
-			return encoded
-		else:
-			return ''
+	def parse( self, value ):
+		return value
 
-class jpegPhoto(file):
+class Base64Upload( Upload ):
+	@classmethod
+	def parse( self, value ):
+		try:
+			dummy = base64.decodestring( value )
+		except:
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( value ) )
+		return value
+
+class jpegPhoto( Upload ):
 	@classmethod
 	def tostring(self, text):
 		if text and text[0]:

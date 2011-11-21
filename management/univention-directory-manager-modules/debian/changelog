@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.197-1) unstable; urgency=low
+
+  * modification to make user certificate import work; Bug #23983
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Nov 2011 12:47:02 +0100
+
 univention-directory-manager-modules (7.0.196-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)
