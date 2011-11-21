@@ -43,8 +43,6 @@ umc_init
 umc_operation_create "uvmm-all" "UCS Virtual Machine Manager" "" "uvmm/*"
 umc_policy_append "default-umc-all" "uvmm-all"
 
-invoke-rc.d univention-virtual-machine-manager-daemon restart
-
 joinscript_save_current_version
 
 exit 0

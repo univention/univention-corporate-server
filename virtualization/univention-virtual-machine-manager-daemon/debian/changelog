@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.75-2) unstable; urgency=low
+
+  * Remove UVMMd-restart from 45uvmm-umc join script (Bug #24524)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Nov 2011 10:32:47 +0100
+
 univention-virtual-machine-manager-daemon (1.0.75-1) unstable; urgency=low
 
   * Fix starting UVMMd (Bug #24524)
