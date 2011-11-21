@@ -337,12 +337,13 @@ class UDM_Module( object ):
 		MODULE.info( 'Modifying object %s with superordinate %s' % ( ldap_object[ '$dn$' ], superordinate ) )
 		obj = self.module.object( None, ldap_connection, ldap_position, dn = ldap_object.get( '$dn$' ), superordinate = superordinate )
 		del ldap_object[ '$dn$' ]
-		if '$options$' in ldap_object:
-			obj.options = filter( lambda option: ldap_object[ '$options$' ][ option ] == True, ldap_object[ '$options$' ].keys() )
-			del ldap_object[ '$options$' ]
 
 		try:
 			obj.open()
+			if '$options$' in ldap_object:
+				obj.options = filter( lambda option: ldap_object[ '$options$' ][ option ] == True, ldap_object[ '$options$' ].keys() )
+				MODULE.info( 'Setting new options to %s' % str( obj.options ) )
+				del ldap_object[ '$options$' ]
 			MODULE.info( 'Modifying LDAP object %s' % obj.dn )
 			if '$policies$' in ldap_object:
 				obj.policies = ldap_object[ '$policies$' ].values()

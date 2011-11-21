@@ -347,7 +347,6 @@ class Instance( Base ):
 		"""
 
 		def _thread( request ):
-			MODULE.info( 'Thread for udm/get request is running' )
 			result = []
 			for ldap_dn in request.options:
 				if request.flavor == 'users/self':

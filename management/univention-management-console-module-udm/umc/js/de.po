@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-20 11:53+0100\n"
-"PO-Revision-Date: 2011-11-20 10:01+0100\n"
+"POT-Creation-Date: 2011-11-21 14:34+0100\n"
+"PO-Revision-Date: 2011-11-21 12:41+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -254,6 +254,10 @@ msgstr "Dier Lizenzimport ist fehlgeschlagen"
 #: umc/js/udm.js:948
 msgid "Failed to move the following objects:"
 msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
+
+#: umc/js/_udm/CertificateUploader.js:72
+msgid "Failed to upload certificate"
+msgstr "Fehler beim Hochladen des Zertifikates"
 
 #: umc/js/_udm/DetailPage.js:540
 msgid "Inherited"
@@ -596,7 +600,7 @@ msgstr "UDM-Objekte"
 msgid "Updating the license information has failed"
 msgstr "Die Aktualisierung der Lizenzinformationen ist fehlgeschlagen"
 
-#: umc/js/_udm/LicenseDialog.js:116
+#: umc/js/_udm/LicenseDialog.js:116 umc/js/_udm/CertificateUploader.js:46
 msgid "Upload"
 msgstr "Hochladen"
 

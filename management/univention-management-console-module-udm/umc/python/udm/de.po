@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-18 17:29+0100\n"
+"POT-Creation-Date: 2011-11-21 14:34+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:411 umc/python/udm/udm_ldap.py:277
+#: umc/python/udm/__init__.py:410 umc/python/udm/udm_ldap.py:277
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
@@ -62,15 +62,15 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:603
+#: umc/python/udm/udm_ldap.py:604
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/__init__.py:468
+#: umc/python/udm/__init__.py:467
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/__init__.py:679 umc/python/udm/udm_ldap.py:224
+#: umc/python/udm/__init__.py:678 umc/python/udm/udm_ldap.py:224
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
@@ -178,6 +178,6 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "Ihren Univention Partner."
 
-#: umc/python/udm/__init__.py:472
+#: umc/python/udm/__init__.py:471
 msgid "text file"
 msgstr "Textdatei"
