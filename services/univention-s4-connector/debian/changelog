@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.77-1) unstable; urgency=low
+
+  * sync NThash extracted from krb5keys to userPassword
+    if sambaNTPassword is missing in UCS (Bug #24437)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Nov 2011 11:38:11 +0100
+
 univention-s4-connector (6.0.76-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 

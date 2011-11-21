@@ -303,6 +303,22 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 
 	return sc_blob
 
+def extract_NThash_from_krb5key(ucs_krb5key):
+
+	NThash = None
+
+	for k in ucs_krb5key:
+		(keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
+
+		enctype = keyblock.keytype()
+		enctype_id = enctype.toint()
+		if enctype_id == 23:
+			krb5_arcfour_hmac_md5 = keyblock.keyvalue()
+			NThash = binascii.b2a_hex(krb5_arcfour_hmac_md5)
+			break
+
+	return NThash
+
 def _append_length(a, str):
 	l = len(str)
 	a.append(chr((l & 0xff)))
@@ -366,7 +382,12 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	krb5Key = res[0][1].get('krb5Key', [])
 
 	if not ucsNThash:
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Failed to get Password-Hash from UCS")
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaNTPassword missing in UCS LDAP, trying krb5Key")
+		ucsNThash = extract_NThash_from_krb5key(krb5Key)
+
+	if not ucsNThash:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Failed to get NT Password-Hash from UCS LDAP")
+
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
 
 	res=s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet','objectSid'])
