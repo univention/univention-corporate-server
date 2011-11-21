@@ -1,3 +1,9 @@
+univention-installer (7.0.148-1) unstable; urgency=low
+
+  * remove u-virtual-machine-manager-schema from package_list (Bug #24763)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 21 Nov 2011 17:57:56 +0100
+
 univention-installer (7.0.147-1) unstable; urgency=low
 
   * fixed 02_disk_check.sh (Bug #24516)

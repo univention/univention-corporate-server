@@ -106,7 +106,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Management server for KVM or Xen'),
-					'Packages': ['univention-virtual-machine-manager-daemon', 'univention-virtual-machine-manager-schema'],
+					'Packages': ['univention-virtual-machine-manager-daemon'],
 					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
