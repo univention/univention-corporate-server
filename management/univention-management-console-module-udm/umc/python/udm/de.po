@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-21 14:34+0100\n"
+"POT-Creation-Date: 2011-11-21 17:55+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:410 umc/python/udm/udm_ldap.py:277
+#: umc/python/udm/__init__.py:410 umc/python/udm/udm_ldap.py:285
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
@@ -62,7 +62,7 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:604
+#: umc/python/udm/udm_ldap.py:612
 msgid "None"
 msgstr "Keins"
 
@@ -88,7 +88,7 @@ msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
 "überein (erwartet: %s, gefunden: %s)"
 
-#: umc/python/udm/udm_ldap.py:235 umc/python/udm/udm_ldap.py:244
+#: umc/python/udm/udm_ldap.py:238 umc/python/udm/udm_ldap.py:252
 #, python-format
 msgid "The property %s has an invalid value: %s"
 msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"

@@ -226,6 +226,9 @@ class UDM_Module( object ):
 			# check each element if 'value' is a list
 			if isinstance(value, (tuple, list)) and property_obj.multivalue:
 				if not value and not property_obj.required:
+					MODULE.info( 'Setting of property ignored (is empty)' )
+					if property_name in obj.info:
+						del obj.info[ property_name ]
 					continue
 				subResults = []
 				for ival in value:
@@ -233,10 +236,15 @@ class UDM_Module( object ):
 						subResults.append( property_obj.syntax.parse( ival ) )
 					except ( udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError ), e:
 						raise UMC_OptionTypeError( _( 'The property %s has an invalid value: %s' ) % ( property_obj.short_description, str( e ) ) )
-				obj[ property_name ] = subResults
+				if subResults: # empty list represents removing of the attribute (handlers/__init__.py def diff)
+					MODULE.info( 'Setting of property ignored (is empty)' )
+					obj[ property_name ] = subResults
 			# otherwise we have a single value
 			else:
-				if not value and not property_obj.required:
+				# None and empty string represents removing of the attribute (handlers/__init__.py def diff)
+				if ( value is None or value == '' ) and not property_obj.required:
+					if property_name in obj.info:
+						del obj.info[ property_name ]
 					continue
 				try:
 					obj[ property_name ] = property_obj.syntax.parse( value )
@@ -293,7 +301,7 @@ class UDM_Module( object ):
 
 			obj.create()
 		except udm_errors.base, e:
-			MODULE.process( 'Failed to create LDAP object: %s: %s' % ( e.__class__.__name__, str( e ) ) )
+			MODULE.warn( 'Failed to create LDAP object: %s: %s' % ( e.__class__.__name__, str( e ) ) )
 			raise UDM_Error( e.message, obj.dn )
 
 		return obj.dn
@@ -312,7 +320,7 @@ class UDM_Module( object ):
 			obj.move( dest )
 			return dest
 		except udm_errors.base, e:
-			MODULE.process( 'Failed to remove LDAP object %s' % ldap_dn )
+			MODULE.warn( 'Failed to remove LDAP object %s: %s: %s' % ( ldap_dn, e.__class__.__name__, str( e ) ) )
 			raise UDM_Error( str( e ) )
 
 	@LDAP_Connection
@@ -327,7 +335,7 @@ class UDM_Module( object ):
 			if cleanup:
 				udm_objects.performCleanup( obj )
 		except udm_errors.base, e:
-			MODULE.process( 'Failed to remove LDAP object %s' % ldap_dn )
+			MODULE.warn( 'Failed to remove LDAP object %s: %s: %s' % ( ldap_dn, e.__class__.__name__, str( e ) ) )
 			raise UDM_Error( str( e ) )
 
 	@LDAP_Connection
@@ -353,7 +361,7 @@ class UDM_Module( object ):
 
 			obj.modify()
 		except udm_errors.base, e:
-			MODULE.process( 'Failed to modify LDAP object %s: %s: %s' % ( obj.dn, e.__class__.__name__, str( e ) ) )
+			MODULE.warn( 'Failed to modify LDAP object %s: %s: %s' % ( obj.dn, e.__class__.__name__, str( e ) ) )
 			raise UDM_Error( e.message )
 
 	@LDAP_Connection

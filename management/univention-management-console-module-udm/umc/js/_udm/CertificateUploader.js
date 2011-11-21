@@ -43,7 +43,8 @@ dojo.declare("umc.modules._udm.CertificateUploader", [ umc.widgets.Uploader ], {
 	_text: null,
 
 	constructor: function() {
-		this.buttonLabel = this._( 'Upload' );
+		this.buttonLabel = this._( 'Upload certificate' );
+		this.clearButtonLabel = this._( 'Remove certificate' );
 	},
 
 	postMixInProperties: function() {
