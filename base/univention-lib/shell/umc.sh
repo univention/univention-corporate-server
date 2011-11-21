@@ -46,7 +46,7 @@ umc_frontend_new_hash () {
 
 	# update the symlinks to the js/css directories
 	for idir in css js; do
-		rm -f "/usr/share/univention-management-console-frontend/${idir}_\$*\$" || true
+		rm -f "/usr/share/univention-management-console-frontend/${idir}_\$"*\$ || true
 		ln -s "$idir" "/usr/share/univention-management-console-frontend/${idir}_\$${timestamp}\$" || true
 	done
 
