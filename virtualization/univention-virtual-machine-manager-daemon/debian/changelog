@@ -1,8 +1,9 @@
 univention-virtual-machine-manager-daemon (1.0.75-2) unstable; urgency=low
 
   * Remove UVMMd-restart from 45uvmm-umc join script (Bug #24524)
+  * Change cloning to keep MAC address by default (Bug #21299)
 
- -- Philipp Hahn <hahn@univention.de>  Mon, 21 Nov 2011 10:32:47 +0100
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Nov 2011 10:40:22 +0100
 
 univention-virtual-machine-manager-daemon (1.0.75-1) unstable; urgency=low
 

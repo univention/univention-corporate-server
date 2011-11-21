@@ -1730,12 +1730,17 @@ def domain_clone(uri, domain, name, subst):
 				domain_devices_interface_mac = domain_devices_interface.find('mac')
 				mac_address = domain_devices_interface_mac.attrib['address']
 				key = 'mac#%s' % (mac_address,)
-				new_mac = subst.get(key)
-				if new_mac:
-					logger.debug('Changing MAC to %s' % (new_mac,))
-					domain_devices_interface_mac.attrib['address'] = new_mac
+				try:
+					new_mac = subst[key]
+				except KeyError, e:
+					logger.debug('Keeping MAC address %s' % (mac_address,))
 				else:
-					del domain_devices_interface_mac.attrib['address']
+					if new_mac:
+						logger.debug('Changing MAC from %s to %s' % (mac_address, new_mac))
+						domain_devices_interface_mac.attrib['address'] = new_mac
+					else:
+						logger.debug('Auto-generating MAC for %s' % (mac_address,))
+						del domain_devices_interface_mac.attrib['address']
 
 			# /domain/devices/disk[]
 			domain_devices_disks = domain_devices.findall('disk')
