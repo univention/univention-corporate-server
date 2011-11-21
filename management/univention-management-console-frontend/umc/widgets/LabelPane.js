@@ -82,13 +82,19 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 				}));
 			}
 			this.content.watch('visible', dojo.hitch(this, function(attr, oldVal, newVal) {
-				 dojo.toggleClass(this.domNode, 'dijitHidden', !newVal);
+				dojo.toggleClass(this.domNode, 'dijitHidden', !newVal);
 			}));
 		}
 		else if (!dojo.isString(this.label)) {
 			this.label = '';
 		}
 	},
+
+	buildRendering: function() {
+		this.inherited(arguments);
+
+		dojo.toggleClass(this.domNode, 'dijitHidden', this.content.visible === false);
+	}, 
 
 	_setLabelAttr: function(label) {
 		if (dojo.getObject('content.isLabelDisplayed', false, this)) {

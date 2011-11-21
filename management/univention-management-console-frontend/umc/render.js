@@ -239,16 +239,8 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 						widget.$isRendered$ = true;
 					}
 					else if (widget) {
-						// add the widget or button surrounded with a LabelPane
-						label = new umc.widgets.LabelPane({
-							label: widget.label,
-							content: widget,
-							disabled: widget.disabled,
-							style: (widget.align ? 'float: ' + widget.align +';' : '' ) + (widget.style || '')
-						});
 						// add show and hide function to widget
 						dojo.mixin( widget, {
-							visible: true,
 							show: function() {
 								this.set( 'visible', true );
 							},
@@ -257,11 +249,31 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 							},
 							$refLabel$: label
 						} );
+
+						// add the widget or button surrounded with a LabelPane
+						label = new umc.widgets.LabelPane({
+							label: widget.label,
+							content: widget,
+							disabled: widget.disabled,
+							style: (widget.align ? 'float: ' + widget.align +';' : '' ) + (widget.style || '')
+						});
+
 						// add to layout
 						elContainer.addChild( label );
 						widget.$isRendered$ = true;
 					} else if (button) {
 						if (nWidgetsWithLabel) {
+							// add show and hide function to widget
+							dojo.mixin( button, {
+								show: function() {
+									this.set( 'visible', true );
+								},
+								hide: function() {
+									this.set( 'visible', false );
+								},
+								$refLabel$: label
+							} );
+
 							// if buttons are displayed along with widgets, we need to add a '&nbps;'
 							// as label in order to display them on the same height
 							label = new umc.widgets.LabelPane({
@@ -271,18 +283,6 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 								style: button.align ? 'float: ' + button.align : ''
 							});
 							elContainer.addChild(label);
-
-							// add show and hide function to widget
-							dojo.mixin( button, {
-								visible: true,
-								show: function() {
-									this.set( 'visible', true );
-								},
-								hide: function() {
-									this.set( 'visible', false );
-								},
-								$refLabel$: label
-							} );
 						} else {
 							// if there are only buttons in the row, we do not need a label
 							if (button.align) {
@@ -290,7 +290,6 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 							}
 							// but then we should have show/hide methods to be consistent
 							dojo.mixin( button, {
-								visible: true,
 								show: function() {
 									this.set( 'visible', true );
 								},
@@ -302,6 +301,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 									dojo.toggleClass(this.domNode, 'dijitHidden', !newVal);
 								}
 							} );
+							button._setVisibleAttr(button.visible); // make sure that the button is set correctly
 							elContainer.addChild(button);
 						}
 						button.$isRendered$ = true;
