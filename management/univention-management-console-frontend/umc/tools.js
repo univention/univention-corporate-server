@@ -45,7 +45,8 @@ dojo.mixin(umc.tools, {
 		domainname: '',
 		overview: true,
 		displayUsername: true,
-		width: null
+		width: null,
+		setupGui: false
 	},
 
 	status: function(/*String?*/ key, /*Mixed?*/ value) {

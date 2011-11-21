@@ -198,7 +198,7 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 
 		// update text and disable/enable username input field
 		var msg = '';
-		if (umc.tools.status('username')) {
+		if (umc.tools.status('setupGui')) {
 			// user has already logged in before, show message for relogin
 			msg = this._('Your session has been closed due to inactivity. Please login again.');
 			// disable username field

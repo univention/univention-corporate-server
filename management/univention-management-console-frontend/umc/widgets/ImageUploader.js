@@ -49,6 +49,7 @@ dojo.declare("umc.widgets.ImageUploader", [ umc.widgets.Uploader ], {
 
 	constructor: function() {
 		this.buttonLabel = this._('Upload new image');
+		this.clearButtonLabel = this._('Clear image data');
 	},
 
 	postMixInProperties: function() {

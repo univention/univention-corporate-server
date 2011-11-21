@@ -1,9 +1,17 @@
+univention-management-console-frontend (1.0.217-1) unstable; urgency=low
+
+  * fixed login problems
+  * Uploader: fixed IE problems
+  * Uploader: added remove button
+  (Bug #23333)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 21 Nov 2011 14:31:21 +0100
+
 univention-management-console-frontend (1.0.216-1.1) unstable; urgency=low
 
-  * Non-maintainer upload.
   * adapted captions and translations (Bug #24724)
 
- -- Lukas Walter <lwalter@mammut.knut.univention.de>  Mon, 21 Nov 2011 13:25:22 +0100
+ -- Lukas Walter <walter@univention.de>  Mon, 21 Nov 2011 13:25:22 +0100
 
 univention-management-console-frontend (1.0.216-1) unstable; urgency=low
 

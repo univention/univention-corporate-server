@@ -33,6 +33,7 @@ dojo.provide("umc.widgets.Uploader");
 dojo.require("dojox.form.Uploader");
 dojo.require("dojox.form.uploader.plugins.IFrame");
 dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.Button");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
@@ -52,6 +53,10 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	// buttonLabel: String
 	//		The label that is displayed on the upload button.
 	buttonLabel: 'Upload',
+
+	// buttonLabel: String
+	//		The label that is displayed on the upload button.
+	clearButtonLabel: 'Clear data',
 
 	// data: Object
 	//		An object containing the file data that has been uploaded.
@@ -74,6 +79,9 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	// reference to the dojox.form.Uploader instance
 	_uploader: null,
 
+	// internal reference to 'clear' button
+	_clearButton: null,
+
 	// internal reference to the original user specified label
 	_origButtonLabel: null,
 
@@ -82,6 +90,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 
 	constructor: function() {
 		this.buttonLabel = this._('Upload');
+		this.clearButtonLabel = this._('Clear data');
 	},
 
 	postMixInProperties: function() {
@@ -96,12 +105,25 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		
 		this._uploader = new dojox.form.Uploader({
 			url: '/umcp/upload' + (this.command ? '/' + this.command : ''),
-			label: this.buttonLabel
+			label: this.buttonLabel,
+			getForm: function() {
+				// make sure that the Uploader does not find any of our encapsulating forms
+				return null;
+			}
 		});
 		dojo.addClass(this._uploader.button.domNode, 'umcButton');
 		this._uploader.button.set('iconClass', 'umcIconAdd');
 		dojo.style(this._uploader.button.domNode, 'display', 'inline-block');
 		this.addChild(this._uploader);
+
+		this._clearButton = new umc.widgets.Button({
+			label: this.clearButtonLabel,
+			iconClass: 'umcIconDelete',
+			callback: dojo.hitch(this, function() {
+				this.set('data', null);
+			})
+		});
+		this.addChild(this._clearButton);
 	},
 	
 	postCreate: function() {
@@ -144,13 +166,13 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		this.connect(this._uploader, 'onError', '_resetLabel');
 
 		// update the view
-		this.updateView(this.value, this.data);
+		this.set('value', this.value);
 	},
 
 	_setDataAttr: function(newVal) {
 		this.data = newVal;
 		this._settingData = true;
-		this.set( 'value', newVal && 'content' in newVal ? newVal.content : null );
+		this.set( 'value', newVal && 'content' in newVal ? newVal.content : '' );
 		this._settingData = false;
 	},
 
@@ -159,6 +181,9 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 			this.data = null;
 		}
 		this.value = newVal;
+
+		// decide whether to show/hide remove button
+		dojo.toggleClass(this._clearButton.domNode, 'dijitHidden', !(dojo.isString(this.value) && this.value != ""));
 
 		// send events
 		this.onChange(newVal);

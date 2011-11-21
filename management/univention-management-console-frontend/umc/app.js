@@ -349,11 +349,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		return this._categories; // Object[]
 	},
 
-	_isSetupGUI: false,
 	_categoryPane: null,
 	setupGui: function() {
 		// make sure that we have not build the GUI before
-		if (this._isSetupGUI) {
+		if (umc.tools.status('setupGui')) {
 			return;
 		}
 
@@ -561,7 +560,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		dojo.subscribe('/umc/tabs/focus', dojo.hitch(this, 'focusTab'));
 
 		// set a flag that GUI has been build up
-		this._isSetupGUI = true;
+		umc.tools.status('setupGui', true);
 		this.onGuiDone();
 	},
 
