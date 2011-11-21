@@ -33,4 +33,6 @@
 # provide root access to the UMC module
 univention-management-console-acls allow --host "*" --user root --command "printers/*"
 
+#DEBHELPER#
+
 exit 0

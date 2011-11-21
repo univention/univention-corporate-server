@@ -1,3 +1,9 @@
+univention-printserver (5.0.20-2) unstable; urgency=low
+
+  * add #DEBHELPER# to postinst of UMC module; Bug #24769
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Nov 2011 17:35:29 +0100
+
 univention-printserver (5.0.20-1) unstable; urgency=low
 
   * apply patch from Frank Greif <fg@it25.de> containing quota support; Bug #22902
