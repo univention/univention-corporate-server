@@ -376,7 +376,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			label: this._('Move to...'),
 			description: this._( 'Move objects to a different LDAP position.' ),
 			isMultiAction: true,
-			callback: dojo.hitch(this, 'moveObjects')
+			callback: dojo.hitch(this, function(ids) {
+				this.moveObjects(ids);
+			})
 		}];
 
 		// the navigation needs a slightly modified store that uses the UMCP query
@@ -610,9 +612,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 					this._tree.set('path', [ this._tree.model.root ]);
 				}
 			});
-			this._tree.watch('path', dojo.hitch(this, function() {
+			this._tree.watch('path', dojo.hitch(this, function(attr, oldVal, newVal) {
 				// register for changes of the selected item (= path)
 				// only take them into account in case the tree is not reloading
+				console.log('### path:', newVal);
 				if (!this._reloadingPath) {
 					this.filter();
 				}
