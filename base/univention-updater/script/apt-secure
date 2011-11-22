@@ -62,7 +62,7 @@ rewrite () {
 	local key=$1
 	local value=$2
 	set -- $2 # IFS
-	declare -a new_args=("--trivial-only=no" "--assume-yes" "--quiet=1")
+	declare -a new_args=()
 	while [ $# -ge 1 ]
 	do
 		declare -a arg=("$1")
@@ -78,16 +78,22 @@ rewrite () {
 			# Remove several options for overwrite later
 			--force-yes) continue ;;
 			-y|--yes|--assume-yes) continue ;;
-			--trivial-only) continue ;;
-			-+(q)|--quiet|--silent) continue ;;
+			--trivial-only*) continue ;;
+			-+(q)|--quiet*|--silent*) continue ;;
 			-o)
-			arg+=("$1")
-			shift || return 2
-			case "${arg[1]}" in
-				APT::Get::Force-Yes*) continue ;;
-				APT::Get::Trivial-Only*) continue ;;
-			esac
-			;;
+				arg+=("$1")
+				shift || return 2
+				case "${arg[1]}" in
+					APT::Get::Force-Yes*) continue ;;
+					APT::Get::Trivial-Only*) continue ;;
+				esac
+				;;
+			# Keep all other options unmodified
+			-*) ;;
+			# Only modify specific command
+			upgrade|dist-upgrade|install) new_args+=("--trivial-only=no" "--assume-yes" "--quiet=1") ;;
+			# Keep all other commands unmodified
+			*) return 0 ;;
 		esac
 		# otherwise keep options
 		new_args+=("${arg[@]}")

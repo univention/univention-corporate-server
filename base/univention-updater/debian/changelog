@@ -1,3 +1,9 @@
+univention-updater (7.0.112-4) unstable; urgency=low
+
+  * Make apt-secure idempotent (Bug #24172)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Nov 2011 21:19:57 +0100
+
 univention-updater (7.0.112-3) unstable; urgency=low
 
   * Update univention.updater.commands for secure-apt (Bug #24172)
