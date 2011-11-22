@@ -15,6 +15,7 @@ Build-Depends: debhelper (>> 7),
  foomatic-db-engine,
  foomatic-db
 Standards-Version: 3.8.2
+XS-Python-Version: 2.6
 
 Package: univention-printserver
 Architecture: all
@@ -83,6 +84,7 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server
 Recommends: univention-printserver (= ${source:Version})
+XB-Python-Version: ${python:Versions}
 Description: UMC module for printer administration
  This package contains the UMC module for the administration
  of configured printers.

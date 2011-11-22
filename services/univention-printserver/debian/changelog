@@ -1,3 +1,9 @@
+univention-printserver (5.0.21-2) unstable; urgency=low
+
+  * set python version to 2.6 in debian/control (Bug #22902)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 22 Nov 2011 13:59:49 +0100
+
 univention-printserver (5.0.21-1) unstable; urgency=low
 
   * applied patch from Frank Greif <fg@it25.de> containing QuotaDialog.js and
