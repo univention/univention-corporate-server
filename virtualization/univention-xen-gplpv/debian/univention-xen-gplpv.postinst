@@ -44,8 +44,8 @@ if [ ! -d "$pool" ]; then
 	mkdir -p "$pool"
 fi
 
-if [ ! -L "$pool/$iso" ]; then
-	ln -s "/usr/share/univention-xen-gplpv/$iso" "$pool/$iso"
+if [ ! -e "$pool/$iso" -a ! -L "$pool/$iso" ]; then
+	cp "/usr/share/univention-xen-gplpv/$iso" "$pool/$iso"
 fi
 
 exit 0

@@ -1,3 +1,9 @@
+univention-xen-gplpv (11.0.308-2) unstable; urgency=low
+
+  * copy iso to pool (Bug #23454) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 12:41:18 +0100
+
 univention-xen-gplpv (11.0.308-1) unstable; urgency=low
 
   * Initial Release (Bug #23454)
