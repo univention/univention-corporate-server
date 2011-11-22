@@ -61,13 +61,13 @@ class Check:
 
 	def _systemPolicy(self):
 		if self.ConfigRegistry.get('password/quality/credit/digits', '0'):
-			cracklib.dig_credit=int(self.ConfigRegistry.get('password/quality/credit/digits', '0'))*-1
+			cracklib.DIG_CREDIT=int(self.ConfigRegistry.get('password/quality/credit/digits', '0'))*-1
 		if self.ConfigRegistry.get('password/quality/credit/upper', '0'):
-			cracklib.up_credit=int(self.ConfigRegistry.get('password/quality/credit/upper', '0'))*-1
+			cracklib.UP_CREDIT=int(self.ConfigRegistry.get('password/quality/credit/upper', '0'))*-1
 		if self.ConfigRegistry.get('password/quality/credit/lower', '0'):
-			cracklib.low_credit=int(self.ConfigRegistry.get('password/quality/credit/lower', '0'))*-1
+			cracklib.LOW_CREDIT=int(self.ConfigRegistry.get('password/quality/credit/lower', '0'))*-1
 		if self.ConfigRegistry.get('password/quality/credit/other', '0'):
-			cracklib.oth_credit=int(self.ConfigRegistry.get('password/quality/credit/other', '0'))*-1
+			cracklib.OTH_CREDIT=int(self.ConfigRegistry.get('password/quality/credit/other', '0'))*-1
 		self.forbidden_chars=self.ConfigRegistry.get('password/quality/forbidden/chars', '')
 		self.required_chars=self.ConfigRegistry.get('password/quality/required/chars', '')
 
@@ -75,11 +75,11 @@ class Check:
 		if self.ConfigRegistry.get('password/quality/length/min', None):
 			self.min_length=int(self.ConfigRegistry.get('password/quality/length/min'))
 		if self.ConfigRegistry.get('password/quality/ascii_lowercase', None):
-			cracklib.ascii_lowercase=self.ConfigRegistry.get('password/quality/ascii_lowercase')
+			cracklib.ASCII_LOWERCASE=self.ConfigRegistry.get('password/quality/ascii_lowercase')
 		if self.ConfigRegistry.get('password/quality/ascii_uppercase', None):
-			cracklib.ascii_uppercase=self.ConfigRegistry.get('password/quality/ascii_uppercase')
+			cracklib.ASCII_UPPERCASE=self.ConfigRegistry.get('password/quality/ascii_uppercase')
 		if self.ConfigRegistry.get('password/quality/diff_ok', None):
-			cracklib.diff_ok=int(self.ConfigRegistry.get('password/quality/diff_ok'))
+			cracklib.DIFF_OK=int(self.ConfigRegistry.get('password/quality/diff_ok'))
 
 	def _userPolicy(self, username):
 		self.username=username
@@ -105,7 +105,7 @@ class Check:
 			if len(password) < self.min_length:
 				raise ValueError('Password is too short')
 		else:
-			cracklib.min_length=4 # this seems to be the lowest valid value
+			cracklib.MIN_LENGTH=4 # this seems to be the lowest valid value
 
 		# Todo: check history
 
@@ -120,7 +120,7 @@ class Check:
 				else:
 					raise ValueError('Password does not contain one of required characters: "%s"' % self.required_chars)
 
-			cracklib.min_length=self.min_length
+			cracklib.MIN_LENGTH=self.min_length
 
 			if cracklib.VeryFascistCheck(password) == password:
 				return True
