@@ -31,7 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import subprocess
+import threading
+import notifier
+import notifier.threads
 import re
 import csv
 import univention.info_tools as uit
@@ -41,7 +43,6 @@ import util
 import os
 import copy
 import univention.config_registry
-import psutil
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
@@ -51,6 +52,33 @@ _ = umc.Translation('univention-management-console-module-setup').translate
 PATH_SYS_CLASS_NET = '/sys/class/net'
 
 class Instance(umcm.Base):
+	def __init__(self):
+		umcm.Base.__init__(self)
+		self._finishedLock = threading.Lock()
+		self._finishedResult = True
+
+	def _check_thread_error( self, thread, result, request ):
+		"""Checks if the thread returned an exception. In that case in
+		error response is send and the function returns True. Otherwise
+		False is returned."""
+		if not isinstance( result, BaseException ):
+			return False
+
+		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
+		MODULE.process( 'An internal error occurred: %s' % msg )
+		self.finished( request.id, None, msg, False )
+		return True
+
+	def _thread_finished( self, thread, result, request ):
+		"""This method is invoked when a threaded request function is
+		finished. The result is send back to the client. If the result
+		is an instance of BaseException an error is returned."""
+		if request:
+			if self._check_thread_error( thread, result, request ):
+				return
+
+			self.finished( request.id, result )
+
 	def load(self, request):
 		'''Return a dict with all necessary values for system-setup read from the current
 		status of the system.'''
@@ -61,39 +89,73 @@ class Instance(umcm.Base):
 		'''Reconfigures the system according to the values specified in the dict given as
 		option named "values".'''
 
-		values = request.options.get('values')
-		if not values:
-			MODULE.error( 'No property "values" given for save().' )
-			self.finished(request.id, False)
+		def _thread(request, obj, values, username, password):
+			# acquire the lock until the scripts have been executed
+			obj._finishedLock.acquire()
+
+			if not values:
+				MODULE.error( 'No property "values" given for save().' )
+				obj._finishedLock.release()
+				return False
+
+			# write the profile file and run setup scripts
+			orgValues = util.load_values()
+			util.pre_save(values, orgValues)
+			MODULE.info('saving profile values')
+			util.write_profile(values)
+			
+			if orgValues['server/role'] == 'basesystem' or os.path.exists('/var/univention-join/joined'):
+				# on a joined system or on a basesystem, we can run the join scripts
+				MODULE.info('runnning system setup scripts')
+				util.run_scripts()
+			else:
+				# unjoined system and not a basesystem -> run the join script
+				MODULE.info('runnning system setup join script')
+				util.run_joinscript(username, password)
+
+			# done :)
+			obj._finishedLock.release()
+			return True
+
+		thread = notifier.threads.Simple( 'check_finished', 
+			notifier.Callback( _thread, request, self, request.options.get('values'), request.options.get('username'), request.options.get('password')),
+			notifier.Callback( self._thread_finished, None ) )
+		thread.run()
+
+		self.finished(request.id, True)
+
+	def check_finished(self, request):
+		'''Check whether the join/setup scripts are finished. This method implements a long
+		polling request, i.e., the request is only finished at the moment when all scripts
+		have been executed. When the connection breaks down on the client side (due to
+		timeout), the error may be ignored and a new try can be started.'''
+		def _thread(request, obj):
+			# acquire the lock in order to wait for the join/setup scripts to finish
+			obj._finishedLock.acquire()
+			obj._finishedLock.release()
+
+			# scripts are done, return final result
+			return obj._finishedResult
+			
+		thread = notifier.threads.Simple( 'check_finished', 
+			notifier.Callback( _thread, request, self ),
+			notifier.Callback( self._thread_finished, request ) )
+		thread.run() 
+
+	def shutdown_browser(self, request):
+		if self._username != '__systemsetup__':
+			MODULE.warn('Tried to shut down the web browser, however, system is not in appliance mode.')
+			self.finished(request.id, False, message=_('Not allowed to shut down the web browser.'))
 			return
 
-		# write the profile file and run setup scripts
-		orgValues = util.load_values()
-		util.pre_save(values, orgValues)
-		util.write_profile(values)
-		
-		if orgValues['server/role'] == 'basesystem' or os.path.exists('/var/univention-join/joined'):
-			# on a joined system or on a basesystem, we can run the join scripts
-			MODULE.info('runnning system setup scripts')
-			util.run_scripts()
-		else:
-			# unjoined system and not a basesystem -> run the join script
-			MODULE.info('runnning system setup join script')
-			util.run_joinscript(request.options.get('username'), request.options.get('password'))
-
-		if self._username == '__systemsetup__':
-			# shut down the browser in appliance mode
-			MODULE.info('Appliance mode: try to shut down the browser')
-			if util.shutdown_browser():
-				MODULE.info('... shutting down successful')
-				self.finished(request.id, True)
-			else:
-				MODULE.info('... shutting down operation failed')
-				self.finished(request.id, False, message=_('Failed to shut down the web browser.'))
-		else:
-			# finish request
+		# shut down the browser in appliance mode
+		MODULE.info('Appliance mode: try to shut down the browser')
+		if util.shutdown_browser():
+			MODULE.info('... shutting down successful')
 			self.finished(request.id, True)
-
+		else:
+			MODULE.warn('... shutting down operation failed')
+			self.finished(request.id, False, message=_('Failed to shut down the web browser.'))
 
 	def validate(self, request):
 		'''Validate the specified values given in the dict as option named "values".
