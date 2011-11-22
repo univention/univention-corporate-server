@@ -1,0 +1,4 @@
+virtio-win-1.1.16.iso usr/share/univention-kvm-virtio/
+virtio-win-1.1.16.vfd usr/share/univention-kvm-virtio/
+COPYING usr/share/doc/univention-kvm-virtio/
+LICENSE usr/share/doc/univention-kvm-virtio/
