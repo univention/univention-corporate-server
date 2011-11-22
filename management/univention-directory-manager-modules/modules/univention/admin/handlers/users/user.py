@@ -888,7 +888,6 @@ layout = [
 			[ 'username', 'description' ],
 			'password',
  			[ 'overridePWHistory', 'overridePWLength' ] ,
-			'primaryGroup',
 			'mailPrimaryAddress',
 			] ),
 		Group( _( 'Personal information' ), layout = [
@@ -904,6 +903,9 @@ layout = [
 			] ),
 		] ),
 	Tab( _( 'Groups' ), _( 'Groups' ), layout = [
+		Group( _( 'Primary group' ), layout = [
+			'primaryGroup',
+		] ),
 		Group( _( 'Additional groups' ), layout = [
 			'groups',
 			] ),

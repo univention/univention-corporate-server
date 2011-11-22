@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.198-1) unstable; urgency=low
+
+  * Move primary group from tab 'General' to 'Group' (Bug #23709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Nov 2011 21:26:33 +0100
+
 univention-directory-manager-modules (7.0.197-1) unstable; urgency=low
 
   * modification to make user certificate import work; Bug #23983
