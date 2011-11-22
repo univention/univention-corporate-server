@@ -1,3 +1,9 @@
+univention-updater (7.0.112-3) unstable; urgency=low
+
+  * Update univention.updater.commands for secure-apt (Bug #24172)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Nov 2011 17:29:54 +0100
+
 univention-updater (7.0.112-2) unstable; urgency=low
 
   * Re-add missing "install" (Bug #24172)
