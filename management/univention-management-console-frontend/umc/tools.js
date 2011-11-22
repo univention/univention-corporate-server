@@ -140,6 +140,15 @@ dojo.mixin(umc.tools, {
 					this._dialog.destroyRecursive();
 					this.finishedDeferred.resolve(data);
 				}), dojo.hitch(this, function(error) {
+					var result = this.parseError(error);
+
+					// handle login case
+					if (401 == result.status || 411 == result.status) {
+						// special cases during login, only show a notification
+						umc.dialog.login();
+						umc.dialog.notify(umc.tools._statusMessages[result.status]);
+					}
+
 					// error case
 					var elapsedTime = ((new Date()).getTime() - this._lastRequestTime) / 1000.0;
 					if (elapsedTime < this.failureInterval) {
