@@ -1,3 +1,9 @@
+univention-kvm-virtio (1.1.16-2) unstable; urgency=low
+
+  * copy images (Bug #23589) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 12:45:30 +0100
+
 univention-kvm-virtio (1.1.16-1) unstable; urgency=low
 
   * Initial Release (Bug #23589) 

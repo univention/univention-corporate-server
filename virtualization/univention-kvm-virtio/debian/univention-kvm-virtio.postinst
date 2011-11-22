@@ -45,7 +45,7 @@ fi
 
 for iso in $isos; do
 	if [ ! -L "$pool/$iso" -a ! -e "$pool/$iso" ]; then
-		ln -s "/usr/share/univention-kvm-virtio/$iso" "$pool/$iso"
+		cp "/usr/share/univention-kvm-virtio/$iso" "$pool/$iso"
 	fi
 done
 
