@@ -1,3 +1,11 @@
+univention-snmpd (4.0.0-6) unstable; urgency=low
+
+  * Listen on all interfaces, as in UCS 2.4 (Bug #22576)
+  * Add UCR header to snmpd.conf
+  * Add rules for Univention Firewall	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 22 Nov 2011 10:18:41 +0100
+
 univention-snmpd (4.0.0-5) unstable; urgency=low
 
   * Update templates for /etc/default/snmpd  since the old versions are incompatible
