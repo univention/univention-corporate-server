@@ -891,6 +891,7 @@ sambaSID: S-1-5-11
 sambaGroupType: 2
 gidNumber: 5020
 uniqueMember: cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@
+uniqueMember: cn=Windows Hosts,cn=groups,@%@ldap/base@%@
 
 dn: cn=World Authority,cn=groups,@%@ldap/base@%@
 objectClass: top

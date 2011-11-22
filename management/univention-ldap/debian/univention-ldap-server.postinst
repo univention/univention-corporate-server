@@ -227,7 +227,8 @@ if [ "$1" = "configure" -a "$server_role" = "domaincontroller_master" ] && dpkg 
 
 	univention-directory-manager groups/group modify \
 		--dn "cn=Authenticated Users,cn=groups,$ldap_base" \
-   		--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base"
+   		--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base" \
+   		--append nestedGroup="cn=Windows Hosts,cn=groups,$ldap_base"
 
 fi
 

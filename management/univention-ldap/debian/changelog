@@ -1,3 +1,10 @@
+univention-ldap (8.0.74-1) unstable; urgency=low
+
+  * Added Windows Hosts to Authenticated Users to give all Windows
+    clients read permissions to the GPOs (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Nov 2011 10:29:58 +0100
+
 univention-ldap (8.0.73-1) unstable; urgency=low
 
   * removed convert_univentionMailSharedFolderDeliveryAddress from
