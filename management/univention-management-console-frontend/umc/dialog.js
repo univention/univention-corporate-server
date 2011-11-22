@@ -61,14 +61,14 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 
 		// show dialog
 		this._loginDialog.show();
-		this.loggingIn = true;
+		umc.tools.status('loggingIn', true);
 
 		// connect to the dialog's onLogin event
 		var deferred = new dojo.Deferred();
 		var signalHandle = dojo.connect(this._loginDialog, 'onLogin', dojo.hitch(this, function(username) {
 			// disconnect from onLogin handle
 			dojo.disconnect(signalHandle);
-			this.loggingIn = false;
+			umc.tools.status('loggingIn', false);
 
 			// submit the username to the deferred callback
 			deferred.callback(username);

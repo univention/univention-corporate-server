@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.219-1) unstable; urgency=low
+
+  * umc.tools.umcpCommand: added long-polling functionality (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 22 Nov 2011 20:44:53 +0100
+
 univention-management-console-frontend (1.0.218-1) unstable; urgency=low
 
   * LabelPane, umc.render: support visible property already at declaration

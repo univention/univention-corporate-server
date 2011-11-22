@@ -183,7 +183,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		this.value = newVal;
 
 		// decide whether to show/hide remove button
-		dojo.toggleClass(this._clearButton.domNode, 'dijitHidden', !(dojo.isString(this.value) && this.value != ""));
+		dojo.toggleClass(this._clearButton.domNode, 'dijitHidden', !(dojo.isString(this.value) && this.value !== ""));
 
 		// send events
 		this.onChange(newVal);

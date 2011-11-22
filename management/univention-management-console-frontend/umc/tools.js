@@ -26,12 +26,13 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global console MyError dojo dojox dijit umc setTimeout */
 
 dojo.provide("umc.tools");
 
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
+dojo.require("dijit.Dialog");
 
 dojo.mixin(umc.tools, new umc.i18n.Mixin({
 	// use the framework wide translation file
@@ -46,7 +47,8 @@ dojo.mixin(umc.tools, {
 		overview: true,
 		displayUsername: true,
 		width: null,
-		setupGui: false
+		setupGui: false,
+		loggingIn: false
 	},
 
 	status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -79,11 +81,101 @@ dojo.mixin(umc.tools, {
 		return undefined;
 	},
 
+	// handler class for long polling scenario
+	_PollingHandler: function(url, content, finishedDeferred, opts) {
+		return {
+			finishedDeferred: finishedDeferred,
+
+			// url to which 
+			url: url,
+
+			// JSON data that is being sent
+			content: content,
+
+			// in seconds, will be multiplied with the number of retries
+			timeoutRetry: dojo.getObject('timeoutRetry', false, opts) || 2,
+
+			// in seconds, maximal time interval to wait between reestablishing a connection
+			maxTimeoutRetry: dojo.getObject('maxTimeoutRetry', false, opts) || 30,
+
+			// in seconds, specifies the time interval in which a request is considered
+			// to have failed
+			failureInterval: dojo.getObject('failureInterval', false, opts) || 10,
+
+			// number of seconds after which an information ist displayed to the user
+			// in case the connection could not be established; if negative, no message
+			// will be shown.
+			messageInterval: dojo.getObject('messageInterval', false, opts) || 120,
+
+			// message that is displayed to the user in case the 
+			message: dojo.getObject('message', false, opts) || umc.tools._('So far, the connection to the server could not be established after {time} seconds. This can be a normal behavior. In any case, the process will continue to establish the connection.'),
+
+			_startTime: (new Date()).getTime(),
+
+			_lastRequestTime: 0,
+
+			_firstErrorTime: 0,
+
+			_nErrors: 0,
+
+			// information dialog to display to the user
+			_dialog: new dijit.Dialog({
+				title: umc.tools._('Information'),
+				style: 'max-width: 400px'
+			}),
+
+			sendRequest: function() {
+				this._lastRequestTime = (new Date()).getTime();
+				dojo.xhrPost({
+					url: this.url,
+					preventCache: true,
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					postData: this.content
+				}).then(dojo.hitch(this, function(data) {
+					// request finished
+					this._dialog.hide();
+					this._dialog.destroyRecursive();
+					this.finishedDeferred.resolve(data);
+				}), dojo.hitch(this, function(error) {
+					// error case
+					var elapsedTime = ((new Date()).getTime() - this._lastRequestTime) / 1000.0;
+					if (elapsedTime < this.failureInterval) {
+						// the server could not been reached within a short time interval 
+						// -> that is an error
+						++this._nErrors;
+						if (this._nErrors == 1) {
+							// log the error time
+							this._firstErrorTime = (new Date()).getTime();
+						}
+						var elapsedErrorTime = ((new Date()).getTime() - this._firstErrorTime) / 1000.0;
+						if (this.messageInterval > 0 && elapsedErrorTime > this.messageInterval && !this._dialog.get('open')) {
+							// show message to user
+							this._dialog.set('content', dojo.replace(this.message, { time: Math.round(elapsedErrorTime) }));
+							this._dialog.show();
+						}
+					}
+					else {
+						// probably the request got a timeout
+						this._nErrors = 0;
+						this._firstErrorTime = 0;
+					}
+
+					// try again
+					setTimeout(dojo.hitch(this, 'sendRequest'), 1000 * Math.min(this.timeoutRetry * this._nErrors, this.maxTimeoutRetry));
+				}));
+			}
+		};
+	},
+
 	umcpCommand: function(
 		/*String*/ commandStr,
 		/*Object?*/ dataObj,
 		/*Boolean?*/ handleErrors,
-		/*String?*/ flavor) {
+		/*String?*/ flavor,
+		/*Object?*/ longPollingOptions) {
 
 		// summary:
 		//		Encapsulates an AJAX call for a given UMCP command.
@@ -91,93 +183,79 @@ dojo.mixin(umc.tools, {
 		//		A deferred object.
 
 		// when logging in, ignore all except the AUTH command
-		if (umc.dialog.loggingIn && !(/^auth$/i).test(commandStr)) {
+		if (this.status('loggingIn') && !(/^auth$/i).test(commandStr)) {
 			console.log(this._('WARNING: Ignoring command "%s" since user is logging in', commandStr));
 			var deferred = new dojo.Deferred();
-			deferred.errback();
+			deferred.reject();
 			return deferred;
 		}
 
 		// set default values for parameters
 		dataObj = dataObj || {};
 		handleErrors = undefined === handleErrors || handleErrors;
-
 		// build the URL for the UMCP command
 		var url = '/umcp/command/' + commandStr;
-
-		// check special case for 'get' and 'auth' commands .. there we don't
-		// need to add 'command'
 		if ((/^(get\/|set$|auth)/i).test(commandStr)) {
+			// special case for 'get' and 'auth' commands .. here we do not need to add 'command'
 			url = '/umcp/' + commandStr;
 		}
 
-		var body = {
+		// build message body
+		var _body = {
 			 options: dataObj
 		};
-		if ( flavor !== undefined && flavor !== null ) {
-			body.flavor = flavor;
+		if (dojo.isString(flavor)) {
+			_body.flavor = flavor;
 		}
+		var body = dojo.toJson(_body);
 
-		// make the AJAX call
-		var call = dojo.xhrPost({
-			url: url,
-			preventCache: true,
-			handleAs: 'json',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			postData: dojo.toJson(body)
-		});
+		if (longPollingOptions) {
+			// long polling AJAX call
 
-		// handle XHR errors unless not specified otherwise
-		if (handleErrors) {
-			call = call.then(function(data) {
-				// do not modify the data
-				if ( data && data.message ) {
-					if ( parseInt(data.status, 10) == 200 ) {
-						umc.dialog.notify( data.message );
-					} else {
-						umc.dialog.alert( data.message );
-					}
-				}
+			// new handler
+			var finishedDeferred = new dojo.Deferred();
+			var handler = new this._PollingHandler(url, body, finishedDeferred, longPollingOptions);
+			handler.sendRequest();
 
-				return data; // Object
-			}, function(error) {
-				// handle errors
-				umc.tools.handleErrorStatus(dojo.getObject('status', false, error), error);
-
-				// propagate the error
-				throw error;
+			return finishedDeferred; // dojo.Deferred
+		}
+		else {
+			// normal AJAX call
+			var call = dojo.xhrPost({
+				url: url,
+				preventCache: true,
+				handleAs: 'json',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				postData: body
 			});
-		}
 
-		// return the Deferred object
-		return call; // Deferred
-	},
+			// handle XHR errors unless not specified otherwise
+			if (handleErrors) {
+				call = call.then(function(data) {
+					// do not modify the data
+					if ( data && data.message ) {
+						if ( parseInt(data.status, 10) == 200 ) {
+							umc.dialog.notify( data.message );
+						} else {
+							umc.dialog.alert( data.message );
+						}
+					}
 
-	xhrPostJSON: function(/*Object*/ dataObj, /*String*/ url, /*function*/ xhrHandler, /*Boolean?*/ handleErrors) {
-		// perpare XHR property object with our standard JSON configuration
-		var xhrArgs = {
-			url: url,
-			preventCache: true,
-			handleAs: 'json',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			postData: dojo.toJson(dataObj),
-			handle: function(dataOrError, ioargs) {
-				// handle XHR errors unless not specified otherwise
-				if (undefined === handleErrors || handleErrors) {
-					umc.tools.handleErrorStatus(dojo.getObject('xhr.status', false, ioargs));
-				}
+					return data; // Object
+				}, function(error) {
+					// handle errors
+					umc.tools.handleErrorStatus(error);
 
-				// call custom callback
-				xhrHandler(dataOrError, ioargs);
+					// propagate the error
+					throw error; // Error
+				});
 			}
-		};
 
-		// send off the data
-		var xhrs = dojo.xhrPost(xhrArgs);
+			// return the Deferred object
+			return call; // Deferred
+		}
 	},
 
 	// _statusMessages:
@@ -242,18 +320,30 @@ dojo.mixin(umc.tools, {
 		591: umc.tools._( 'Could not process the request.' )
 	},
 
-	handleErrorStatus: function(_status, error) {
-		var status = _status;
+	parseError: function(error) {
+		var status = dojo.getObject('status', false, error);
 		var message = '';
 		try {
 			var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
 			// replace all newlines with '<br>'
 			jsonResponse = jsonResponse.replace(/\n/g, '<br>');
 			var response = dojo.fromJson(jsonResponse);
-			status = parseInt(dojo.getObject('status', false, response) || _status, 10) || status;
+			status = parseInt(dojo.getObject('status', false, response) || error.status, 10) || status;
 			message = dojo.getObject('message', false, response) || '';
 		}
 		catch (_err) { }
+
+		return {
+			status: status,
+			message: message
+		};
+	},
+
+	handleErrorStatus: function(error) {
+		// parse the error
+		var result = this.parseError(error);
+		var status = result.status;
+		var message = result.message;
 
 		// handle the different status codes
 		if (undefined !== status && status in this._statusMessages) {
