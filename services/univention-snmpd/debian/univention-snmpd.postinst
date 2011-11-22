@@ -34,7 +34,7 @@
 ucr set security/packetfilter/package/univention-printserver/tcp/161/all="ACCEPT" \
 	security/packetfilter/package/univention-printserver/tcp/161/all/en="SNMP" \
 	security/packetfilter/package/univention-printserver/udp/161/all="ACCEPT" \
-	security/packetfilter/package/univention-printserver/udp/161/all/en="SNMP"
+	security/packetfilter/package/univention-printserver/udp/161/all/en="SNMP" \
         security/packetfilter/package/univention-printserver/tcp/162/all="ACCEPT" \
 	security/packetfilter/package/univention-printserver/tcp/162/all/en="SNMP" \
 	security/packetfilter/package/univention-printserver/udp/162/all="ACCEPT" \

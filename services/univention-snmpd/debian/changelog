@@ -1,6 +1,12 @@
+univention-snmpd (4.0.0-8) unstable; urgency=low
+
+  * Fix postinst (Bug #22576) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 22 Nov 2011 11:08:32 +0100
+
 univention-snmpd (4.0.0-7) unstable; urgency=low
 
-  * Fix description  (Bug #22576)
+  * Fix description (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 22 Nov 2011 10:48:37 +0100
 
