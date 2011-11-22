@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-14 13:29+0100\n"
+"POT-Creation-Date: 2011-11-22 19:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,11 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/setup/__init__.py:186
+#: umc/python/setup/__init__.py:248
 msgid " (virtual)"
 msgstr " (virtuell)"
 
-#: umc/python/setup/__init__.py:318
+#: umc/python/setup/__init__.py:380
 msgid ""
 "A default entry with the identifier \"default\" needs to be specified for "
 "each network device."
@@ -24,7 +24,7 @@ msgstr ""
 "Ein Standardeintrag mit dem Bezeichner \"default\" muss für jedes "
 "Netzwerkgerät angegeben werden."
 
-#: umc/python/setup/__init__.py:134
+#: umc/python/setup/__init__.py:196
 msgid ""
 "A valid netbios name can not be longer than 15 characters. If samba is "
 "installed, the hostname should be shortened."
@@ -32,20 +32,20 @@ msgstr ""
 "Ein gültiger NetBIOS Name darf nicht länger als 15 Zeichen sein. Wenn Samba "
 "installiert wird, sollte der Rechnername gekürzt werden"
 
-#: umc/python/setup/__init__.py:305
+#: umc/python/setup/__init__.py:367
 #, python-format
 msgid "A virtual device cannot be specified alone: %s"
 msgstr "Ein virtuelles Netzwerkgerät kann nicht alleine definiert werden: %s"
 
-#: umc/python/setup/__init__.py:320
+#: umc/python/setup/__init__.py:382
 msgid "At least one IPv4 address needs to be specified."
 msgstr "Zumindest eine IPv4-Adresse muss angegeben werden."
 
-#: umc/python/setup/__init__.py:316
+#: umc/python/setup/__init__.py:378
 msgid "At least one IPv6 address needs to be specified."
 msgstr "Zumindest eine IPv6-Adresse muss angegeben werden."
 
-#: umc/python/setup/__init__.py:322
+#: umc/python/setup/__init__.py:384
 msgid ""
 "At least one domain name server needs to be given if DHCP or SLAAC is not "
 "specified."
@@ -53,69 +53,73 @@ msgstr ""
 "Zumindest ein Domänen-DNS-Server muss angegeben werden wenn DHCP oder SLAAC "
 "nicht ausgewählt sind."
 
-#: umc/python/setup/__init__.py:314
+#: umc/python/setup/__init__.py:376
 msgid ""
 "At least one network device (either IPv4 or IPv6) needs to be configured."
 msgstr ""
 "Zumindest ein Netzwerkgerät (entweder IPv4 oder IPv6) muss konfiguriert sein."
 
-#: umc/python/setup/__init__.py:157
+#: umc/python/setup/__init__.py:219
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/__init__.py:224
+#: umc/python/setup/__init__.py:286
 msgid "Domain name server"
 msgstr "Domänen-DNS-Server"
 
-#: umc/python/setup/__init__.py:157
+#: umc/python/setup/__init__.py:219
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: umc/python/setup/__init__.py:224
+#: umc/python/setup/__init__.py:286
 msgid "External name server"
 msgstr "Externer DNS-Server"
 
-#: umc/python/setup/__init__.py:92
+#: umc/python/setup/__init__.py:158
 msgid "Failed to shut down the web browser."
 msgstr "Der Beendevorgang des Web-Browsers ist fehlgeschlagen."
 
-#: umc/python/setup/__init__.py:143
+#: umc/python/setup/__init__.py:205
 msgid "Hostname is equal to domain name."
 msgstr "Systemname ist gleich Domänennamen."
 
-#: umc/python/setup/__init__.py:188
+#: umc/python/setup/__init__.py:250
 #, python-format
 msgid "IPv4 address is not valid [%s%s]: \"%s\""
 msgstr "IPv4-Adresse ist nicht gültig [%s%s]: \"%s\""
 
-#: umc/python/setup/__init__.py:190
+#: umc/python/setup/__init__.py:252
 #, python-format
 msgid "IPv4 netmask is not valid [%s%s]: \"%s\""
 msgstr "IPv4-Netzmaske ist nicht gültig [%s%s]: \"%s\""
 
-#: umc/python/setup/__init__.py:219
+#: umc/python/setup/__init__.py:281
 #, python-format
 msgid "IPv6 address is not valid [%s]: %s"
 msgstr "IPv6-Adresse ist nicht gültig [%s]: %s"
 
-#: umc/python/setup/__init__.py:221
+#: umc/python/setup/__init__.py:283
 #, python-format
 msgid "IPv6 prefix is not valid [%s]: %s"
 msgstr "IPv6-Präfix ist nicht gültig [%s]: %s"
 
-#: umc/python/setup/__init__.py:155
+#: umc/python/setup/__init__.py:217
 msgid "Location"
 msgstr "Ort"
 
-#: umc/python/setup/__init__.py:157
+#: umc/python/setup/__init__.py:148
+msgid "Not allowed to shut down the web browser."
+msgstr "Keine Berechtigung, um den Web-Browsers herunter zu fahren."
+
+#: umc/python/setup/__init__.py:219
 msgid "Organization"
 msgstr "Organisation"
 
-#: umc/python/setup/__init__.py:159
+#: umc/python/setup/__init__.py:221
 msgid "Please enter a valid email address"
 msgstr "Bitte geben Sie eine gültige E-Mail-Adresse ein"
 
-#: umc/python/setup/__init__.py:136
+#: umc/python/setup/__init__.py:198
 msgid ""
 "Please enter a valid fully qualified domain name in lowercase (e.g. host."
 "example.com)."
@@ -123,26 +127,26 @@ msgstr ""
 "Bitte geben Sie einen klein-geschriebenen und vollständigen Rechnernamen an "
 "(z.B. host.example.com)."
 
-#: umc/python/setup/__init__.py:155
+#: umc/python/setup/__init__.py:217
 msgid "State"
 msgstr "Land"
 
-#: umc/python/setup/__init__.py:149
+#: umc/python/setup/__init__.py:211
 msgid "The LDAP base may not contain any blanks (e.g., dc=test,dc=net)."
 msgstr ""
 "Die LDAP-Basis darf keine Leerzeichen enthalten (z.B., dc=test,dc=net)."
 
-#: umc/python/setup/__init__.py:156
+#: umc/python/setup/__init__.py:218
 #, python-format
 msgid "The following value is too long, only 128 characters allowed: %s"
 msgstr "Der folgende Wert ist zu lang, es sind nur 128 Zeichen erlaubt: %s"
 
-#: umc/python/setup/__init__.py:158
+#: umc/python/setup/__init__.py:220
 #, python-format
 msgid "The following value is too long, only 64 characters allowed: %s"
 msgstr "Der folgende Wert ist zu lang, es sind nur 64 Zeichen erlaubt: %s"
 
-#: umc/python/setup/__init__.py:133
+#: umc/python/setup/__init__.py:195
 msgid ""
 "The hostname is not a valid fully qualified domain name in lowercase (e.g. "
 "host.example.com)."
@@ -150,17 +154,17 @@ msgstr ""
 "Der Rechnernamen muss vollständig und klein geschrieben sein (z.B. host."
 "example.com)."
 
-#: umc/python/setup/__init__.py:141
+#: umc/python/setup/__init__.py:203
 msgid ""
 "The length of fully qualified domain name is greater than 63 characters."
 msgstr "Die Länge von System und Domänennamen ist größer als 63 Zeichen."
 
-#: umc/python/setup/__init__.py:146
+#: umc/python/setup/__init__.py:208
 msgid ""
 "The length of the windows domain name needs to be smaller than 14 characters."
 msgstr "Die Länge des Windows Domain Names ist größer als 14 Zeichen."
 
-#: umc/python/setup/__init__.py:151
+#: umc/python/setup/__init__.py:213
 msgid ""
 "The root password is too short. For security reasons, your password must "
 "contain at least 8 characters."
@@ -168,16 +172,16 @@ msgstr ""
 "Das Root-Passwort ist zu kurz, aus Sicherheitsgründen sollte esmindestens 8 "
 "Zeichen lang sein."
 
-#: umc/python/setup/__init__.py:152
+#: umc/python/setup/__init__.py:214
 msgid "The root password may only contain ascii characters."
 msgstr "Für das Root-Passwort sind nur ASCII-Zeichen erlaubt."
 
-#: umc/python/setup/__init__.py:228
+#: umc/python/setup/__init__.py:290
 #, python-format
 msgid "The specified IP address (%s) is not valid: %s"
 msgstr "Die angegebenen IP-Adresse (%s) ist nicht gültig: %s"
 
-#: umc/python/setup/__init__.py:215
+#: umc/python/setup/__init__.py:277
 #, python-format
 msgid ""
 "The specified IPv6 identifier may only consit of letters and numbers: %s"
@@ -185,26 +189,26 @@ msgstr ""
 "Der angegebene IPv6-Bezeichner kann nur aus Buchstaben und Zahlen bestehen: "
 "%s"
 
-#: umc/python/setup/__init__.py:231
+#: umc/python/setup/__init__.py:293
 #, python-format
 msgid "The specified gateway IPv4 address is not valid: %s"
 msgstr "Die angegebene Gateway-IPv4-Adresse ist nicht gültig: %s"
 
-#: umc/python/setup/__init__.py:232
+#: umc/python/setup/__init__.py:294
 #, python-format
 msgid "The specified gateway IPv6 address is not valid: %s"
 msgstr "Die angegebene Gateway-IPv6-Adresse is nicht gültig: %s"
 
-#: umc/python/setup/__init__.py:235
+#: umc/python/setup/__init__.py:297
 #, python-format
 msgid ""
 "The specified proxy address is not valid (e.g., http://10.201.1.1:8080): %s"
 msgstr "Die Proxy-Adresse ist nicht gültig (z.B. http://10.201.1.1:8080): %s"
 
-#: umc/python/setup/__init__.py:145
+#: umc/python/setup/__init__.py:207
 msgid "The windows domain name can only consist of upper case characters."
 msgstr "Die Windows-Domäne kann nur aus Großbuchstaben bestehen."
 
-#: umc/python/setup/__init__.py:147
+#: umc/python/setup/__init__.py:209
 msgid "The windows domain name is not valid."
 msgstr "Die Windows-Domäne ist nicht gültig."

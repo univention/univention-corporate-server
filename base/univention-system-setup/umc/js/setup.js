@@ -265,7 +265,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var applianceMode = umc.tools.status('username') == '__systemsetup__';
 
 		// only submit data to server if there are changes and the system is joined
-		if (!nchanges && (joined || role == 'basesystem')) {
+		if (!nchanges && !applianceMode && (joined || role == 'basesystem')) {
 			umc.dialog.alert(this._('No changes have been made.'));
 			return;
 		}
@@ -463,7 +463,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return umc.dialog.confirm(msg, [{
 					name: 'apply',
 					'default': true,
-					label: this._('Apply changes')
+					label: this._('Continue')
 				}]).then(dojo.hitch(this, function(response) {
 					return this.umcpCommand('setup/browser/shutdown').then(dojo.hitch(this, function() {
 						this.standby(false);
