@@ -1,3 +1,10 @@
+univention-ldap (8.0.75-1) unstable; urgency=low
+
+  * Set set_lk_max_objects, set_lk_max_locks and set_lk_max_lockers in
+    DB_CONFIG by default to 9000 (Bug #24791)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Nov 2011 14:19:16 +0100
+
 univention-ldap (8.0.74-1) unstable; urgency=low
 
   * Added Windows Hosts to Authenticated Users to give all Windows
