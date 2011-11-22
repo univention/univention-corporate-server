@@ -43,32 +43,38 @@ if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 fi
 
 wait_for_dns(){
-	if [ "$server_role" != "domaincontroller_master" ]; then
-		continue=1
-		while [ $continue = "1" ];do
-			echo "wait for named ?"
-			timeout=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
-			if [ -n "$timeout" ]; then
-				continue=0
-			else
-				sleep 1
-			fi;
-		done
-	
-		# Wait for SRV records too
-		continue=1
-		while [ $continue = "1" ];do
-			echo "wait for named ?"
-			timeout=`LC_ALL=C host -t SRV -W 1 _ldap._tcp.$domainname 2>&1| grep "has SRV record"`
-			if [ -n "$timeout" ]; then
-				continue=0
-			else
-				sleep 1
-			fi;
-		done
+	echo -n "Wait for bind9: "
+	count=0
+	while [ $count -le 600 ]; do
+		timeout=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
+		if [ -n "$timeout" ]; then
+			echo " done"
+			break
+		else
+			echo -n "."
+			# restart bind every 200 seconds
+			expr $count % 200 >/dev/null || /etc/init.d/bind9 restart
+			sleep 1
+		fi;
+		count=$((count+1))
+	done
 
-		nscd -i hosts
-	fi
+	count=0
+	while [ $count -le 600 ]; do
+		timeout=$(LC_ALL=C host -t SRV -W 1 _ldap._tcp.$domainname 2>&1| grep "has SRV record")
+		if [ -n "$timeout" ]; then
+			echo " done"
+			break
+		else
+			echo -n "."
+			# restart bind every 200 seconds
+			expr $count % 200 >/dev/null || /etc/init.d/bind9 restart
+			sleep 1
+		fi;
+		count=$((count+1))
+	done
+
+	nscd -i hosts
 }
 
 univention-config-registry set dns/backend?ldap

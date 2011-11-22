@@ -1,3 +1,9 @@
+univention-bind (6.0.34-1) unstable; urgency=low
+
+  * also wait on DC master for bind (Bug #23284)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 22 Nov 2011 20:50:30 +0100
+
 univention-bind (6.0.33-1) unstable; urgency=low
 
   * Create local.conf files in postinst if they don't exist (Bug #24557)
