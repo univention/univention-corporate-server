@@ -61,6 +61,12 @@ if ! kadmin -l dump | grep -q "^krbtgt/"; then
 
 fi
 
+hdbdir='/var/lib/heimdal-kdc'	## configured by heimdal/debian/rules
+kstash_file="${hdbdir}/m-key"	## created by kstash in heimdal-kdc.postinst
+if [ -f "$kstash_file" ]; then
+	mv "${kstash_file}" "${kstash_file}.DISABLED"
+fi
+
 # we need to reinitialize the keytab module
 if [ -e "/var/lib/univention-ldap-listener/handlers/keytab" ]; then
 	rm /var/lib/univention-ldap-listener/handlers/keytab
