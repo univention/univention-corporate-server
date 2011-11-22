@@ -1,3 +1,10 @@
+univention-printserver (5.0.21-1) unstable; urgency=low
+
+  * applied patch from Frank Greif <fg@it25.de> containing QuotaDialog.js and
+    icon files (Bug #22902)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 22 Nov 2011 12:07:54 +0100
+
 univention-printserver (5.0.20-2) unstable; urgency=low
 
   * add #DEBHELPER# to postinst of UMC module; Bug #24769
