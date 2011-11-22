@@ -1,3 +1,9 @@
+univention-installer (7.0.149-1) unstable; urgency=low
+
+  * remove univention-nagios-client from package_list (Bug #24763)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Nov 2011 12:16:20 +0100
+
 univention-installer (7.0.148-1) unstable; urgency=low
 
   * remove u-virtual-machine-manager-schema from package_list (Bug #24763)

@@ -195,7 +195,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Network monitoring (Nagios)'),
-					'Packages': ['univention-nagios-server', 'univention-nagios-client'],
+					'Packages': ['univention-nagios-server'],
 					'Edition': [ 'ucs' ],
 					'Active': [ 'domaincontroller_master' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
