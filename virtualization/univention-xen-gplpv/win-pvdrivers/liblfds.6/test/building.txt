@@ -1,0 +1,25 @@
+building test
+=============
+
+Windows (user-mode)
+===================
+1. Use Microsoft Visual Studio 2008 or Visual C++ 2008 Express Edition
+   to load "test.sln".
+
+2. Use Microsoft Windows SDK and GNUmake to run makefile.windows (obviously
+   you'll need to have run the appropriate vcvars*.bat first; you can build
+   for both IA64, 64-bit and 32-bit - just run the correct vcvars batch file).
+
+   Targets are "rel", "dbg" and "clean".  You need to clean between switching
+   targets.
+
+Windows (kernel)
+================
+No build supported, since this is a command line utility.
+
+Linux
+=====
+Use GNUmake to run "makefile.linux".  Targets are "rel", "dbg" and
+"clean".  You need to clean between switching targets.
+
+

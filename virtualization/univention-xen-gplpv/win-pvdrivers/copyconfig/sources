@@ -1,0 +1,8 @@
+!INCLUDE ..\common.inc
+TARGETNAME=copyconfig
+TARGETTYPE=PROGRAM
+UMTYPE=console
+UMENTRY=main
+UMBASE=0x400000
+SOURCES=copyconfig.c
+USE_MSVCRT=1

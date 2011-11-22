@@ -1,0 +1,5 @@
+univention-xen-gplpv (11.0.308-1) unstable; urgency=low
+
+  * Initial Release (Bug #23454)
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Sep 2011 15:06:55 +0200

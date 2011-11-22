@@ -1,0 +1,64 @@
+##### paths #####
+BINDIR = bin
+INCDIR = ../inc
+LIBDIR = ../bin
+OBJDIR = obj
+SRCDIR = src
+
+##### misc #####
+QUIETLY = 1>nul 2>nul
+
+##### sources, objects and libraries #####
+BINNAME = test
+BINARY  = $(BINDIR)\$(BINNAME).exe
+SRCDIRS = .
+SOURCES = abstraction_cpu_count.c test_abstraction.c abstraction_thread_start.c abstraction_thread_wait.c benchmark_freelist.c benchmark_queue.c benchmark_ringbuffer.c benchmark_stack.c test_freelist.c main.c misc.c test_queue.c test_ringbuffer.c test_slist.c test_stack.c
+OBJECTS = $(patsubst %.c,$(OBJDIR)/%.obj,$(notdir $(SOURCES)))
+SYSLIBS = kernel32.lib
+USRLIBS = liblfds.lib
+
+##### tools #####
+MAKE    = make
+MFLAGS  = 
+
+CC      = cl
+CFBASE  = /nologo /W4 /WX /c "-I$(SRCDIR)" "-I$(INCLUDE)" "-I$(INCDIR)" "/Fd$(BINDIR)\$(BINNAME).pdb" /D UNICODE /D _UNICODE /DWIN32_LEAN_AND_MEAN /D_CRT_SECURE_NO_WARNINGS
+CFREL   = /Ox /DNDEBUG /MT
+CFDBG   = /Od /Gm /Zi /D_DEBUG /MTd
+
+LD      = link
+LFBASE  = "/libpath:$(LIB)" "/libpath:$(LIBDIR)" /nologo /subsystem:console /nodefaultlib /nxcompat /wx
+LFREL   = /incremental:no
+LFDBG   = /debug "/pdb:$(BINDIR)\$(BINNAME).pdb"
+
+##### variants #####
+CFLAGS  = $(CFBASE) $(CFDBG)
+LFLAGS  = $(LFBASE) $(LFDBG)
+CLIB    = libcmtd.lib
+
+ifeq ($(MAKECMDGOALS),rel)
+  CFLAGS  = $(CFBASE) $(CFREL)
+  LFLAGS  = $(LFBASE) $(LFREL)
+  CLIB    = libcmt.lib
+endif
+
+##### search paths #####
+vpath %.c $(patsubst %,$(SRCDIR)/%;,$(SRCDIRS))
+
+##### implicit rules #####
+$(OBJDIR)/%.obj : %.c
+	$(CC) $(CFLAGS) "/Fo$@" $<
+
+##### explicit rules #####
+$(BINARY) : $(OBJECTS)
+	$(LD) $(LFLAGS) $(CLIB) $(SYSLIBS) $(USRLIBS) $(OBJECTS) /out:$(BINARY)
+
+##### phony #####
+.PHONY : clean rel dbg
+
+clean : 
+	@erase /Q $(OBJDIR)\*.obj $(BINDIR)\$(BINNAME).* $(QUIETLY)
+
+rel : $(BINARY)
+dbg : $(BINARY)
+
