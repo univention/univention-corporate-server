@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (1.0.2-1) unstable; urgency=low
+
+  * added recommends to univention-kvm-virtio and univention-xen-gplpv
+    (Bug #23589 #23454)
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 12:49:15 +0100
+
 univention-virtual-machine-manager-node (1.0.1-6) unstable; urgency=low
 
   * added firewall rules for VNC (Bug #23577)
