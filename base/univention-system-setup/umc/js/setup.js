@@ -236,6 +236,40 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			return matched;
 		};
 
+		// confirm dialog to continue with boot process
+		var _shutDownBrowser = dojo.hitch(this, function(msg, hasCancel) {
+			var choices = [{
+				name: 'apply',
+				'default': true,
+				label: this._('Continue')
+			}];
+			if (hasCancel) {
+				// show continue and cancel buttons
+				choices = [{
+					name: 'cancel',
+					'default': true,
+					label: this._('Cancel')
+				}, {
+					name: 'apply',
+					label: this._('Continue')
+				}];
+			}
+
+			return umc.dialog.confirm(msg, choices).then(dojo.hitch(this, function(response) {
+				if (response == 'cancel') {
+					// do not continue
+					return;
+				}
+
+				// otherwise send the UMCP command to shut down the web browser
+				return this.umcpCommand('setup/browser/shutdown').then(dojo.hitch(this, function() {
+					this.standby(false);
+				}), dojo.hitch(this, function() {
+					this.standby(false);
+				}));
+			}));
+		});
+
 		// get all entries that have changed and collect a summary of all changes
 		var values = {};
 		var nchanges = 0;
@@ -264,8 +298,14 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var role = this._orgValues['server/role'];
 		var applianceMode = umc.tools.status('username') == '__systemsetup__';
 
+		if (!nchanges && applianceMode && !(joined || role == 'basesystem')) {
+			// no changes have been made we can shut down the web browser directly
+			_shutDownBrowser(this._('No changes have been made. Please confirm to continue with the boot process.'), true);
+			return
+		}
+
 		// only submit data to server if there are changes and the system is joined
-		if (!nchanges && !applianceMode && (joined || role == 'basesystem')) {
+		if (!nchanges && (joined || role == 'basesystem')) {
 			umc.dialog.alert(this._('No changes have been made.'));
 			return;
 		}
@@ -457,22 +497,6 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				this.load(); // sets 'standby(false)'
 			});
 
-			// confirm dialog to continue with boot process
-			var _shutDownBrowser = dojo.hitch(this, function() {
-				var msg = this._('Please confirm to continue with the boot process.');
-				return umc.dialog.confirm(msg, [{
-					name: 'apply',
-					'default': true,
-					label: this._('Continue')
-				}]).then(dojo.hitch(this, function(response) {
-					return this.umcpCommand('setup/browser/shutdown').then(dojo.hitch(this, function() {
-						this.standby(false);
-					}), dojo.hitch(this, function() {
-						this.standby(false);
-					}));
-				}));
-			});
-
 			// show the correct dialogs
 			var deferred = null;
 			if (joined || role == 'basesystem') {
@@ -498,7 +522,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// in appliance mode, notify that the boot process will continue
 			if (applianceMode) {
 				deferred = deferred.then(function() {
-					return _shutDownBrowser();
+					return _shutDownBrowser(this._('Please confirm to continue with the boot process.'));
 				});
 			}
 			else {

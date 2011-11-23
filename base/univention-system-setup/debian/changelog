@@ -1,3 +1,9 @@
+univention-system-setup (5.0.64-1) unstable; urgency=low
+
+  * UMC: added dialog in appliance mode without for no changes (Bug #24751)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Nov 2011 12:13:43 +0100
+
 univention-system-setup (5.0.63-1) unstable; urgency=low
 
   * UMC: added use of long polling requests, added dialog to continue with the
