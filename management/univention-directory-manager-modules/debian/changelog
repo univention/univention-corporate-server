@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.199-1) unstable; urgency=low
+
+  * Move title, firstname and lastname to the top of 'Basic settings'
+    (Bug #23709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Nov 2011 16:09:19 +0100
+
 univention-directory-manager-modules (7.0.198-1) unstable; urgency=low
 
   * Move primary group from tab 'General' to 'Group' (Bug #23709)

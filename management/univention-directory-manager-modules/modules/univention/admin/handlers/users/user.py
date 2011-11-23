@@ -885,13 +885,13 @@ default_property_descriptions=copy.deepcopy(property_descriptions) # for later r
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ),	layout = [
 		Group( _( 'User account' ), layout = [
+			[ 'title', 'firstname', 'lastname'],
 			[ 'username', 'description' ],
 			'password',
  			[ 'overridePWHistory', 'overridePWLength' ] ,
 			'mailPrimaryAddress',
 			] ),
 		Group( _( 'Personal information' ), layout = [
-			[ 'title', 'firstname', 'lastname'],
 			'displayName',
 			'organisation',
 			'birthday',
