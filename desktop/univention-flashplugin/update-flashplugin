@@ -37,8 +37,8 @@ set -e
 eval "$(univention-config-registry shell)"
 
 DOWNLOAD_DIR=/var/cache/flashplugin-nonfree
-DOWNLOAD_FILE=install_flash_player_10_linux
-DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/current/install_flash_player_10_linux.tar.gz
+DOWNLOAD_FILE=install_flash_player_11_linux.i386
+DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/pdc/11.1.102.55/install_flash_player_11_linux.i386.tar.gz
 TARGET_DIR=/usr/lib/flashplugin-nonfree
 
 fp_exit_with_error() {
@@ -108,6 +108,7 @@ safe_move FP9_plugin_beta_112006.tar.gz
 safe_move install_flash_player_7_linux.tar.gz
 safe_move install_flash_player_9_linux.tar.gz
 safe_move install_flash_player_10_linux.tar.gz
+safe_move install_flash_player_11_linux.tar.gz
 rmdir $OLDDIR 2> /dev/null || true
 
 if [ -e /usr/bin/nspluginwrapper ] ; then

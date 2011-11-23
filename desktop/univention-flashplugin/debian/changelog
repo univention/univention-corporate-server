@@ -1,3 +1,9 @@
+univention-flashplugin (6.0.1-1) unstable; urgency=low
+
+  * Download new flash player 11.1.102.55 (Bug #24817)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Nov 2011 17:18:32 +0100
+
 univention-flashplugin (6.0.0-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
