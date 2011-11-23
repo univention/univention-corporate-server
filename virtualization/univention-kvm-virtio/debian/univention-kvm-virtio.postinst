@@ -32,7 +32,8 @@
 
 #DEBHELPER#
 
-isos="kvm-windows-drivers_(virtio-1.1.16).iso kvm-windows-drivers_(virtio-1.1.16).vfd"
+iso="KVM Windows drivers (virtio 1.1.16).iso"
+vfd="KVM Windows drivers (virtio 1.1.16).vfd"
 pool="$(ucr get uvmm/pool/default/path)"
 
 if [ -z "$pool" ]; then
@@ -43,11 +44,13 @@ if [ ! -d "$pool" ]; then
 	mkdir -p "$pool"
 fi
 
-for iso in $isos; do
-	if [ ! -L "$pool/$iso" -a ! -e "$pool/$iso" ]; then
-		cp "/usr/share/univention-kvm-virtio/$iso" "$pool/$iso"
-	fi
-done
+if [ ! -L "$pool/$iso" -a ! -e "$pool/$iso" ]; then
+	cp "/usr/share/univention-kvm-virtio/$iso" "$pool/$iso"
+fi
+
+if [ ! -L "$pool/$vfd" -a ! -e "$pool/$vfd" ]; then
+	cp "/usr/share/univention-kvm-virtio/$vfd" "$pool/$vfd"
+fi
 
 exit 0
 
