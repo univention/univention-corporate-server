@@ -242,50 +242,46 @@ fi
 # check if univention-fax-* is installed
 if [ ! "$update_fax_check" = "no" -a ! "$update_fax_check" = "false" -a ! "$update_fax_check" = "1" ]; then
 	fax_is_installed=false
-	for package in univention-fax-common univention-fax-client univention-fax-server; do
+	fax_packages="capi4hylafax hylafax-server hylafax-client univention-fax-common univention-fax-client univention-fax-server"
+	for package in $fax_packages; do
 		dpkgQuery="$(dpkg-query -W -f='${Status}\n' $package 2>/dev/null)"
 		if [ "$dpkgQuery" = "install ok installed" -o "$dpkgQuery" = "hold ok installed" ]; then
 			fax_is_installed=true
 		fi
 	done
 
-	# restore /var/spool/hylafax/etc/setup.cache
-	if [ -e "/etc/hylafax/setup.cache" -a ! -e "/var/spool/hylafax/etc/setup.cache" ]; then
-		cp /etc/hylafax/setup.cache /var/spool/hylafax/etc/setup.cache
-	fi
-
-	# delete /etc/hylafax/config.faxCAPI, this causes update erros
-	# it is just a link to /etc/hylafax/modem.conf and will be
-	# recreated during the update
-	if [ -e "/var/spool/hylafax/etc/config.faxCAPI" ]; then
-		rm /var/spool/hylafax/etc/config.faxCAPI
-	fi
-
 	if [ "$fax_is_installed" = "true" ]; then
 
-		# There are no *.debian files for 
-		# the hylafx configs
-		# and after removing univention-fax-server these files
-		# are gone. This breaks the update. 
-		faxconfigs=$(dpkg -L univention-fax-server 2>/dev/null| grep 'univention/templates/files/etc/'| sed 's|/etc/univention/templates/files||')
-		for i in $faxconfigs; do
-			if [ -e "$i" -a ! -d "$i" ]; then
-				if [ ! -e "$i.debian" ]; then
-					cp "$i" "$i".debian
-				fi
+		# remove those files
+		if [ -L "/var/spool/hylafax/etc/config.faxCAPI" ]; then
+			rm -f /var/spool/hylafax/etc/config.faxCAPI
+		fi
+		if [ -L "/etc/hylafax/config.faxCAPI" ]; then
+			if [ "$(readlink /etc/hylafax/config.faxCAPI)" = "/etc/hylafax/modem.conf" ]; then
+				rm -f /etc/hylafax/config.faxCAPI
 			fi
-		done
+		fi
 
-		echo "WARNING: univention-fax-* packages are installed!"
+		echo "WARNING: univention-fax-* or hylafax packages are installed!"
 		echo
 		echo "UCS 3.0 no longer provides these packages:"
-		echo
 		echo "   * univention-fax-common"
 		echo "   * univention-fax-client"
 		echo "   * univention-fax-server"
 		echo 
-		echo "Please remove those packages in order to upgrade the system to UCS"
-		echo "3.0. The update process will stop here."
+		echo "And the following packages must be removed before the update:"
+		echo "   * hylafax-server"
+		echo "   * hylafax-client"
+		echo "   * capi4hylafax"
+		echo 
+		echo "Please remove those packages in order to upgrade the system to UCS 3.0-0:"
+		echo "   -> apt-get remove --purge hylafax-server hylafax-client \\"
+		echo "     capi4hylafax univention-fax-common univention-fax-client \\"
+		echo "     univention-fax-server"
+		echo 
+		echo "The update process will stop here. Information about the installation and" 
+		echo "configuration of fax services in UCS 3.0 can be found in the"
+		echo "Univention Wiki: http://wiki.univention.de/index.php?title=HylaFAX_setup"
 		echo
 		echo "This check can be disabled by setting the Univention Configuration Registry"
 		echo "variable \"update/fax/check\" to \"no\"."

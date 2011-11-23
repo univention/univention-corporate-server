@@ -1,3 +1,9 @@
+univention-updater (7.0.113-1) unstable; urgency=low
+
+  * do not allow update with univention-fax and/or hylafax packages (Bug #24619)  
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Nov 2011 11:34:15 +0100
+
 univention-updater (7.0.112-6) unstable; urgency=low
 
   * Also redirect stdout when purging the old firmwares (Bug #22508)
