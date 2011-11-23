@@ -34,7 +34,7 @@ override_dh_auto_build:
 	mkdir -p cdroot/debug
 	cp msi-packages/*.msi cdroot
 	cp msi-packages/debug/*.msi cdroot/debug
-	genisoimage  -J -R -o xen-windows-drivers_\(gplpv-0.11.0.308\).iso cdroot
+	genisoimage  -J -R -o Xen\ Windows\ drivers\ \(gplpv\ 308\).iso cdroot
 
 override_dh_auto_clean:
 	dh_auto_clean
