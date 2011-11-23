@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2011-11-21 19:02+0100\n"
-"PO-Revision-Date: 2011-11-17 22:01+0100\n"
+"PO-Revision-Date: 2011-11-23 07:21+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -219,7 +219,6 @@ msgid "Drive type"
 msgstr "Laufwerksart"
 
 #: umc/python/uvmm/wizards.py:108
-#, fuzzy
 msgid ""
 "Each hard drive image is located within a so called storage pool, which "
 "might be a local directory, a device, an LVM volume or any type of share (e."
@@ -445,14 +444,13 @@ msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
 #: umc/python/uvmm/drive.py:234
-#, fuzzy
 msgid ""
 "Paravirtualization is a special variant of virtualization in which the "
 "virtualized operating system is adapted to the underlying virtualization "
 "technology. This improves the performance. Linux systems usually support "
 "paravirtualization out of the box. For Windows systems additional support "
 "drivers need to be installed, see the <a href=\"http://wiki.univention.de/"
-"index.php?title=UVMM_Technische_Details\"> Univention wiki </a> for details "
+"index.php?title=UVMM_Technische_Details\">Univention wiki</a> for details "
 "(currently only available in German)."
 msgstr ""
 "Paravirtualisierung ist eine spezielle Variante der Virtualisierung. Die "
@@ -461,8 +459,8 @@ msgstr ""
 "Systeme sind in der Regel standardmässig mit entsprechender Unterstützung "
 "versehen. Auf Microsoft Windows-Systemen müssen entsprechende "
 "Unterstützungstreiber installiert werden, siehe <a href=\"http://wiki."
-"univention.de/index.php?title=UVMM_Technische_Details\"> Univention Wiki. </"
-"a>"
+"univention.de/index.php?title=UVMM_Technische_Details\">Univention Wiki</"
+"a>."
 
 #: umc/python/uvmm/__init__.py:116 umc/python/uvmm/treeview.py:206
 #: umc/python/uvmm/nodes.py:79
@@ -531,7 +529,7 @@ msgstr ""
 "können Sie das UMC Dienste-Modul verwenden."
 
 #: umc/python/uvmm/drive.py:198
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> removed "
 "successfully."
@@ -651,12 +649,11 @@ msgstr ""
 "ansonsten Probleme nicht ausgeschlossen werden können."
 
 #: umc/python/uvmm/wizards.py:493
-#, fuzzy
 msgid ""
 "The selected image is already used by this virtual instance and therefor can "
 "not be used."
 msgstr ""
-"Das ausgewählte Image wird bereits von dieser virtuellen Instanz verwendet "
+"Das ausgewählte Image wird bereits von dieser virtuellen Maschine verwendet "
 "und kann daher nicht verwendet werden."
 
 #: umc/python/uvmm/wizards.py:459

@@ -174,7 +174,7 @@ class Storages( object ):
 			if not volume[ 'domainURI' ] in _tmp_cache:
 				success, result = self.uvmm.send( 'DOMAIN_INFO', None, uri = node_uri, domain = domain_uuid )
 				if not success:
-					raise UMC_OptionTypeError( _( 'Could not retrieve details for domain %s' % domain_uuid ) )
+					raise UMC_OptionTypeError(_('Could not retrieve details for domain %s') % domain_uuid)
 				_tmp_cache[ volume[ 'domainURI' ] ] = result
 
 			domain = _tmp_cache[ volume[ 'domainURI' ] ]

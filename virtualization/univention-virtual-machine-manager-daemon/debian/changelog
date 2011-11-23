@@ -1,6 +1,8 @@
 univention-virtual-machine-manager-daemon (1.0.78-3) unstable; urgency=low
 
+  * Fix fuzzy translation.
   * Update copyright years.
+  * umc/python/uvmm/storages.py: Fix translation error.
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 22 Nov 2011 23:08:22 +0100
 
