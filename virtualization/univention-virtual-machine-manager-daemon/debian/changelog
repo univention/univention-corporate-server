@@ -1,9 +1,13 @@
 univention-virtual-machine-manager-daemon (1.0.78-3) unstable; urgency=low
 
+  * debian/{control,rules}: Add ucslint (Bug #22092)
+  * debian/rules: Add missing call to univention-install-config-registry.
   * Fix fuzzy translation.
   * src/univention/uvmm/*.py, umc/python/uvmm/*.py: Remove she-bang lines.
+  * scripts-dev/: Ignore ucslint.
   * Update copyright years.
   * umc/python/uvmm/storages.py: Fix translation error.
+  * runit/uvmmd/run: Fix copyright.
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 22 Nov 2011 23:08:22 +0100
 

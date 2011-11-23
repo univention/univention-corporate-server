@@ -12,3 +12,6 @@ Variables: logrotate/.*
 Type: file
 File: etc/cron.d/univention-virtual-machine-manager-daemon
 Variables: uvmm/check/interval
+
+Type: file
+File: etc/runit/univention-virtual-machine-manager-daemon/run

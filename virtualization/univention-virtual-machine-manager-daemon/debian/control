@@ -6,6 +6,7 @@ Uploaders: Philipp Hahn <hahn@univention.de>,
  Andreas Büsching <buesching@univention.de>,
 Standards-Version: 3.7.2
 Build-Depends: debhelper (>= 7.0.50~),
+ ucslint,
  python-support,
  python2.6-dev,
  univention-config-dev,

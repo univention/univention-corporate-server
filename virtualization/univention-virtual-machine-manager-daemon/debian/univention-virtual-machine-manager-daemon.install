@@ -4,4 +4,3 @@ src/univention-virtual-machine-manager-daemon src/univention-virtual-machine-man
 uvmmd-check.sh usr/lib/univention-virtual-machine-manager-daemon
 uvmmd-nodes.py uvmmd-ldap.py usr/lib/univention-directory-listener/system
 44univention-virtual-machine-manager-daemon.inst usr/lib/univention-install
-conffiles/etc/runit/ etc/
