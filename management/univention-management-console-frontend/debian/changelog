@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.221-1) unstable; urgency=low
+
+  * PasswordInputBox: fixed method isValid() in case the widget is set to
+    required (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Nov 2011 14:09:43 +0100
+
 univention-management-console-frontend (1.0.220-1) unstable; urgency=low
 
   * moved automatic login functionality in umc.dialog.login in order to allow

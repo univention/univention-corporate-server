@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-23 11:06+0100\n"
+"POT-Creation-Date: 2011-11-23 12:55+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "%d Einträge von %d ausgewählt"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/app.js:438 umc/about.js:54
+#: umc/app.js:440 umc/about.js:54
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -79,7 +79,7 @@ msgstr "Die Authentisierung schlug fehl. Bitte melden Sie sich erneut an."
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/app.js:526 umc/widgets/Wizard.js:84
+#: umc/app.js:528 umc/widgets/Wizard.js:84
 #: umc/widgets/MultiObjectSelect.js:284
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -96,11 +96,11 @@ msgstr "Bilddaten leeren"
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/dialog.js:261
+#: umc/dialog.js:265
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:490
+#: umc/app.js:492
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -116,7 +116,7 @@ msgstr "Die Anfrage konnte nicht bearbeitet werden."
 msgid "Current manual (PDF)"
 msgstr "Aktuelles Handbuch (PDF)"
 
-#: umc/app.js:518
+#: umc/app.js:520
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -153,11 +153,11 @@ msgstr "Hello %(last)s, %(first)s!"
 msgid "Hello %s %s!"
 msgstr "Hello %s %s!"
 
-#: umc/app.js:422 umc/help.js:60
+#: umc/app.js:424 umc/help.js:60
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/app.js:470
+#: umc/app.js:472
 #, python-format
 msgid "Host: %(host)s.%(domain)s"
 msgstr "Host: %(host)s.%(domain)s"
@@ -215,7 +215,7 @@ msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/app.js:430
+#: umc/app.js:432
 msgid "License"
 msgstr "Lizenz"
 
@@ -228,7 +228,7 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:519
+#: umc/app.js:521
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -236,7 +236,7 @@ msgstr "Abmelden"
 msgid "Manual and documentation"
 msgstr "Handbücher und Dokumentation"
 
-#: umc/app.js:498
+#: umc/app.js:500
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -256,11 +256,11 @@ msgstr "Kein Objekt ausgewählt"
 msgid "Note"
 msgstr "Hinweis"
 
-#: umc/dialog.js:166
+#: umc/dialog.js:170
 msgid "Notification"
 msgstr "Benachrichtigung"
 
-#: umc/dialog.js:169
+#: umc/dialog.js:173
 msgid "Ok"
 msgstr "Ok"
 
@@ -268,7 +268,7 @@ msgstr "Ok"
 msgid "Others"
 msgstr "Andere"
 
-#: umc/app.js:359 umc/app.js:360
+#: umc/app.js:361 umc/app.js:362
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -326,7 +326,7 @@ msgstr "Weiterführende Informationen"
 msgid "Support and assistance"
 msgstr "Unterstützung und Support"
 
-#: umc/app.js:371
+#: umc/app.js:373
 #, python-format
 msgid "The SSL certificate will expire in %d days and should be renewed!"
 msgstr ""
@@ -363,7 +363,7 @@ msgstr "The total cost was %.2f EUR!"
 msgid "The username of your domain account."
 msgstr "Der Benutzername Ihres Domänen-Kontos."
 
-#: umc/app.js:483
+#: umc/app.js:485
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -403,7 +403,7 @@ msgstr ""
 "oder\n"
 "Administration unterstützen."
 
-#: umc/app.js:362
+#: umc/app.js:364
 msgid ""
 "Univention Management Console is a modularly designed, web-based application "
 "for the administration of objects in your Univention Corporate Server domain "
@@ -417,7 +417,7 @@ msgstr ""
 "Voreinstellungen und Berechtigungen, finden Sie hier umfangreiche Funktionen "
 "zur UCS-Domänenadministration und für die Konfiguration dieses Servers."
 
-#: umc/app.js:447
+#: umc/app.js:449
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
@@ -449,7 +449,7 @@ msgstr "Neues Bild hochladen"
 msgid "Uploading..."
 msgstr "Datenübertragung..."
 
-#: umc/app.js:507
+#: umc/app.js:509
 #, python-format
 msgid "User: %s"
 msgstr "Benutzer: %s"

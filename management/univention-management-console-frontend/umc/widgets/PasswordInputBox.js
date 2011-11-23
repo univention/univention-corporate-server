@@ -156,13 +156,14 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 
 	isValid: function() {
 		var res = this.inherited(arguments);
-		if (undefined === res || null === res) {
-			// compare passwords
-			var pw1 = this._firstWidget.get('value');
-			var pw2 = this._secondWidget.get('value');
-			return pw1 == pw2;
+		if (undefined !== res && null !== res) {
+			return res;
 		}
-		return res;
+
+		// compare passwords
+		var pw1 = this._firstWidget.get('value');
+		var pw2 = this._secondWidget.get('value');
+		return pw1 == pw2 && !(this.required === true && !pw1);
 	}
 });
 

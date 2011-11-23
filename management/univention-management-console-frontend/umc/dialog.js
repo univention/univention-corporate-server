@@ -55,8 +55,6 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		//		A dojo.Deferred object that is called upon successful login.
 		//		The callback receives the authorized username as parameter.
 
-		console.log('###login start:', (new Date()).getTime());
-
 		if (this._loginDeferred && this._loginDeferred.fired < 0) {
 			// a login attempt is currently running
 			return this._loginDeferred;
@@ -126,7 +124,6 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 			});
 		}));
 
-		console.log('###login end:', (new Date()).getTime());
 		return this._loginDeferred;
 	},
 
