@@ -267,6 +267,7 @@ class Domains( object ):
 			node_uri, domain_uuid = urlparse.urldefrag( domain[ 'domainURI' ] )
 			domain_info.uuid = domain_uuid
 
+		# annotations
 		profile = None
 		if not domain_info.uuid:
 			profile_dn = domain.get( 'profile' )
@@ -277,7 +278,13 @@ class Domains( object ):
 			else:
 				raise UMC_OptionTypeError( _( 'Unknown profile given' ) )
 			domain_info.annotations[ 'profile' ] = profile_dn
+			MODULE.info( 'Creating new domain using profile %s' % str( object2dict( profile ) ) )
 			domain_info.annotations[ 'os' ] = getattr( profile, 'os' )
+		else:
+			domain_info.annotations[ 'os' ] = domain.get( 'os', '' )
+		domain_info.annotations[ 'contact' ] = domain.get( 'contact', '' )
+		domain_info.annotations[ 'description' ] = domain.get( 'description', '' )
+
 
 		domain_info.name = domain[ 'name' ]
 		if 'arch' in domain:
@@ -352,11 +359,6 @@ class Domains( object ):
 				raise UMC_CommandError( 'Could not determine the keyboard layout for the VNC access' )
 			gfx.passord = domain.get( 'vnc_password', None )
 			domain_info.graphics = [gfx,]
-
-		# annotations
-		domain_info.annotations[ 'os' ] = domain.get( 'os', '' )
-		domain_info.annotations[ 'description' ] = domain.get( 'description', '' )
-		domain_info.annotations[ 'contact' ] = domain.get( 'contact', '' )
 
 		# RTC offset
 		domain_info.rtc_offset = domain.get( 'rtc_offset', '' )
