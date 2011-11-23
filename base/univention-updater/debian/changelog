@@ -1,3 +1,9 @@
+univention-updater (7.0.113-2) unstable; urgency=low
+
+  * Make apt-secure work again (Bug #24172)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Nov 2011 14:01:48 +0100
+
 univention-updater (7.0.113-1) unstable; urgency=low
 
   * do not allow update with univention-fax and/or hylafax packages (Bug #24619)  
