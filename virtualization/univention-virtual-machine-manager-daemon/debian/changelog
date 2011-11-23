@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.81-1) unstable; urgency=low
+
+  * renaming virtual instances is deactivated for Xen also; Bug #24711
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Nov 2011 11:26:53 +0100
+
 univention-virtual-machine-manager-daemon (1.0.80-1) unstable; urgency=low
 
   * renamed options for cloning the MAC addresses; Bug #24767

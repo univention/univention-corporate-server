@@ -469,12 +469,14 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 					this._generalPage.clearNotes();
 				}
 				this.disabled = disabled;
-				// name should not be editable on KVM domains
-				if ( types.getNodeType( this._domain.domainURI ) == 'qemu' ) {
-					this._generalForm._widgets.name.set( 'disabled', true );
-				} else {
-					this._generalForm._widgets.name.set( 'disabled', disabled );
-				}
+				// name should not be editable
+				this._generalForm._widgets.name.set( 'disabled', true );
+				// currently this does not work for xen also (Bug #24829) -> otherwise the following block just deactivates the name for KVM
+				// if ( types.getNodeType( this._domain.domainURI ) == 'qemu' ) {
+				// 	this._generalForm._widgets.name.set( 'disabled', true );
+				// } else {
+				// 	this._generalForm._widgets.name.set( 'disabled', disabled );
+				// }
 				this._driveGrid.set( 'disabled', disabled );
 				this._interfaceGrid.set( 'disabled', disabled );
 				umc.tools.forIn( this._advancedForm._widgets, dojo.hitch( this, function( iid, iwidget ) {
