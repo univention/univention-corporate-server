@@ -367,6 +367,12 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			}
 		});
 
+		// only show forwarder for master, backup, and slave
+		var role = _vals['server/role'];
+		var showForwarder = role == 'domaincontroller_master' || role == 'domaincontroller_backup' || role == 'domaincontroller_slave';
+		this._form.getWidget('dns/forwarder').set('visible', showForwarder);
+
+		// set values
 		this._form.setFormValues(vals);
 	},
 

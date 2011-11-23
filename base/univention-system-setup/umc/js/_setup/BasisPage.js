@@ -64,21 +64,23 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			type: 'TextBox',
 			name: 'fqdn',
 			label: this._('Fully qualified domain name (e.g., master.example.com)'),
+			required: true
 		}, {
 			type: 'TextBox',
 			name: 'ldap/base',
 			label: this._('LDAP base'),
-			depends: 'fqdn'
+			depends: 'fqdn',
+			required: true
 		}, {
 			type: 'TextBox',
 			name: 'windows/domain',
 			label: this._('Windows domain'),
-			depends: 'fqdn'
+			depends: 'fqdn',
+			required: true
 		}, {
 			type: 'PasswordInputBox',
 			name: 'root_password',
-			label: this._('Root password'),
-			required: true
+			label: this._('Root password')
 		}];
 
 		var layout = [{
@@ -123,21 +125,26 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		// block for setting the values onChange events for FQDN widget
 		this._form.getWidget('fqdn').set('blockOnChange', true);
 
-		// in appliance mode, clear the fields for FQDN, LDAP base and Windows domain
+		// decide which files are visible/required/empty/disabled in which scenario
 		var role = _vals['server/role'];
 		var joined = _vals['joined'];
-		var applianceMode = umc.tools.status('username') == '__systemsetup__';
-		joined = Math.random() > 0.5;
-		if (applianceMode && !(joined || role == 'basesystem')) {
-			// in appliance mode, we need empty fields for fqdn, LDAP base, and Windows domain
-			// that are required
-			dojo.forEach(['fqdn', 'ldap/base', 'windows/domain', 'root_password'], function(iname) {
-				vals[iname] = '';
-				this._form.getWidget(iname).set('disabled', false);
-				this._form.getWidget(iname).set('required', true);
-			}, this);
+		var userSystemSetup = umc.tools.status('username') == '__systemsetup__';
+		var _set = dojo.hitch(this, function(iname, disabled, required, empty, visible) {
+			var widget = this._form.getWidget(iname);
+			widget.set('disabled', disabled);
+			if (required === false || required === true) {
+				widget.set('required', required);
+			}
+			vals[iname] = empty === true ? '' : vals[iname];
+			widget.set('visible', visible !== false);
+		});
+		_set('fqdn', joined && role != 'basesystem', true, !joined);
+		_set('windows/domain', joined && role != 'basesystem', role != 'basesystem', !joined);
+		_set('ldap/base', joined && role != 'basesystem', role != 'basesystem', !joined, role == 'domaincontroller_master' || role == 'basesystem');
+		_set('root_password', false, !joined && userSystemSetup);
 
-			// add dynamic value computation from FQDN fro windows domain and LDAP base
+		if (role != 'basesystem' && !joined) {
+			// add dynamic value computation from FQDN for windows domain
 			this._form.getWidget('windows/domain').set('dynamicValue', function(deps) {
 				var l = (deps.fqdn || '').split('.');
 				if (l.length) {
@@ -145,6 +152,9 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 				}
 				return '';
 			});
+		}
+		if (role == 'domaincontroller_master' && !joined) {
+			// add dynamic value computation from FQDN for LDAP base
 			this._form.getWidget('ldap/base').set('dynamicValue', function(deps) {
 				var l = (deps.fqdn || '').split('.');
 				return dojo.map(l.slice(1), function(part) {
@@ -152,18 +162,6 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 				}).join(',');
 			});
 
-		}
-		else {
-			// in appliance mode, we need empty fields for fqdn, LDAP base, and Windows domain
-			// that are required
-			dojo.forEach(['fqdn', 'ldap/base', 'windows/domain', 'root_password'], function(iname) {
-				this._form.getWidget(iname).set('disabled', true);
-				this._form.getWidget(iname).set('required', false);
-			}, this);
-
-			// add dynamic value computation from FQDN fro windows domain and LDAP base
-			this._form.getWidget('windows/domain').set('dynamicValue', null);
-			this._form.getWidget('ldap/base').set('dynamicValue', null);
 		}
 
 		this._form.setFormValues(vals);

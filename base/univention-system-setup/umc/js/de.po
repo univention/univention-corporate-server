@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-23 09:28+0100\n"
+"POT-Creation-Date: 2011-11-23 19:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "A virtual network device cannot be used for DHCP."
 msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 
-#: umc/js/_setup/BasisPage.js:87
+#: umc/js/_setup/BasisPage.js:90
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
@@ -40,11 +40,11 @@ msgstr "Automatische Konfiguration (SLAAC)"
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/js/_setup/BasisPage.js:59
+#: umc/js/_setup/BasisPage.js:57
 msgid "Basic settings"
 msgstr "Basis-Einstellungen"
 
-#: umc/js/_setup/CertificatePage.js:98
+#: umc/js/_setup/CertificatePage.js:100
 msgid "Business unit"
 msgstr "Abteilung"
 
@@ -53,15 +53,15 @@ msgstr "Abteilung"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_setup/CertificatePage.js:63
+#: umc/js/_setup/CertificatePage.js:65
 msgid "Certificate"
 msgstr "Zertifikat"
 
-#: umc/js/_setup/CertificatePage.js:64
+#: umc/js/_setup/CertificatePage.js:66
 msgid "Certificate settings"
 msgstr "Zertifikateinstellungen"
 
-#: umc/js/_setup/CertificatePage.js:178
+#: umc/js/_setup/CertificatePage.js:180
 msgid ""
 "Changes in the SSL certificate settings will result in generating new root "
 "SSL certificates. Note that this will require an update of all host "
@@ -72,7 +72,7 @@ msgstr ""
 "Domäne aktualisiert werden müssen, da das alte Root-Zertifkat nicht mehr "
 "gültig sein wird."
 
-#: umc/js/_setup/CertificatePage.js:74
+#: umc/js/_setup/CertificatePage.js:76
 msgid "Common name for the root SSL certificate"
 msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 
@@ -80,7 +80,7 @@ msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: umc/js/_setup/CertificatePage.js:80
+#: umc/js/_setup/CertificatePage.js:82
 msgid "Country"
 msgstr "Land"
 
@@ -96,7 +96,7 @@ msgstr "Deaktiviert"
 msgid "Default system locale"
 msgstr "Standard-System-Sprachdefinition"
 
-#: umc/js/_setup/NetworkPage.js:482
+#: umc/js/_setup/NetworkPage.js:488
 msgid "Domain name server"
 msgstr "Domänen-DNS-Server"
 
@@ -108,11 +108,11 @@ msgstr "Domänen-DNS-Server (max. 3)"
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: umc/js/_setup/CertificatePage.js:102
+#: umc/js/_setup/CertificatePage.js:104
 msgid "Email address"
 msgstr "E-Mailadresse"
 
-#: umc/js/_setup/NetworkPage.js:486
+#: umc/js/_setup/NetworkPage.js:492
 msgid "External name server"
 msgstr "Externer DNS-Server "
 
@@ -124,7 +124,7 @@ msgstr "Externer DNS-Server "
 msgid "Finish"
 msgstr "Beenden"
 
-#: umc/js/_setup/BasisPage.js:110
+#: umc/js/_setup/BasisPage.js:113
 msgid ""
 "For Active Directory domains the fully qualified domain name must have at "
 "least two dots (e.g. host.example.com). This warning is shown only once, the "
@@ -135,27 +135,27 @@ msgstr ""
 "Warnung, die Einstellungen können mit dem aktuell gewählten Namen "
 "gespeichert werden."
 
-#: umc/js/_setup/BasisPage.js:153
+#: umc/js/_setup/BasisPage.js:186
 msgid "Fully qualified domain name"
 msgstr "Vollständiger Rechername"
 
-#: umc/js/_setup/BasisPage.js:68
+#: umc/js/_setup/BasisPage.js:66
 msgid "Fully qualified domain name (e.g., master.example.com)"
 msgstr "Vollständiger Rechername (z.B., master.example.com)"
 
-#: umc/js/_setup/NetworkPage.js:145 umc/js/_setup/NetworkPage.js:474
+#: umc/js/_setup/NetworkPage.js:145 umc/js/_setup/NetworkPage.js:480
 msgid "Gateway (IPv4)"
 msgstr ""
 
-#: umc/js/_setup/NetworkPage.js:149 umc/js/_setup/NetworkPage.js:478
+#: umc/js/_setup/NetworkPage.js:149 umc/js/_setup/NetworkPage.js:484
 msgid "Gateway (IPv6)"
 msgstr ""
 
-#: umc/js/_setup/BasisPage.js:58
+#: umc/js/_setup/BasisPage.js:56
 msgid "General"
 msgstr "Allgemein"
 
-#: umc/js/_setup/CertificatePage.js:106
+#: umc/js/_setup/CertificatePage.js:108
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -163,11 +163,11 @@ msgstr "Allgemeine Einstellungen"
 msgid "Global network settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: umc/js/_setup/NetworkPage.js:165 umc/js/_setup/NetworkPage.js:490
+#: umc/js/_setup/NetworkPage.js:165 umc/js/_setup/NetworkPage.js:496
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
-#: umc/js/_setup/BasisPage.js:84
+#: umc/js/_setup/BasisPage.js:87
 msgid "Host and domain settings"
 msgstr "Recher- und Domänen-Einstellungen"
 
@@ -175,7 +175,7 @@ msgstr "Recher- und Domänen-Einstellungen"
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
-#: umc/js/_setup/NetworkPage.js:169 umc/js/_setup/NetworkPage.js:494
+#: umc/js/_setup/NetworkPage.js:169 umc/js/_setup/NetworkPage.js:500
 msgid "IPv4 network devices"
 msgstr "IPv4-Netzwerkgeräte"
 
@@ -183,11 +183,11 @@ msgstr "IPv4-Netzwerkgeräte"
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
-#: umc/js/_setup/NetworkPage.js:502
+#: umc/js/_setup/NetworkPage.js:508
 msgid "IPv6 interfaces with autoconfiguration (SLAAC)"
 msgstr "IPv6-Netzwerkgeräte mit automatische Konfiguration (SLAAC)"
 
-#: umc/js/_setup/NetworkPage.js:172 umc/js/_setup/NetworkPage.js:498
+#: umc/js/_setup/NetworkPage.js:172 umc/js/_setup/NetworkPage.js:504
 msgid "IPv6 network devices"
 msgstr "IPv6-Netzwerkgeräte"
 
@@ -227,7 +227,7 @@ msgstr ""
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: umc/js/_setup/BasisPage.js:72 umc/js/_setup/BasisPage.js:157
+#: umc/js/_setup/BasisPage.js:71 umc/js/_setup/BasisPage.js:190
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
@@ -239,11 +239,11 @@ msgstr "Sprache"
 msgid "Language settings"
 msgstr "Spracheinstellungen"
 
-#: umc/js/_setup/CertificatePage.js:90
+#: umc/js/_setup/CertificatePage.js:92
 msgid "Location"
 msgstr "Ort"
 
-#: umc/js/_setup/CertificatePage.js:109
+#: umc/js/_setup/CertificatePage.js:111
 msgid "Location settings"
 msgstr "Standorteinstellungen"
 
@@ -259,7 +259,7 @@ msgstr "Netzwerk"
 msgid "Network settings"
 msgstr "Netzwerk-Einstellungen"
 
-#: umc/js/_setup/BasisPage.js:165
+#: umc/js/_setup/BasisPage.js:198
 msgid "New root password"
 msgstr "Neues Root-Passwort"
 
@@ -274,17 +274,19 @@ msgstr "Es wurden keine Änderungen vorgenommen."
 #: umc/js/setup.js:303
 msgid ""
 "No changes have been made. Please confirm to continue with the boot process."
-msgstr "Es wurden keine Änderungen vorgenommen. Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
+msgstr ""
+"Es wurden keine Änderungen vorgenommen. Bitte bestätigen Sie, um mit dem "
+"Boot-Prozess fortzufahren."
 
-#: umc/js/_setup/NetworkPage.js:503
+#: umc/js/_setup/NetworkPage.js:509
 msgid "No device"
 msgstr "Kein Gerät"
 
-#: umc/js/_setup/CertificatePage.js:94
+#: umc/js/_setup/CertificatePage.js:96
 msgid "Organization"
 msgstr "Organisation"
 
-#: umc/js/_setup/CertificatePage.js:112
+#: umc/js/_setup/CertificatePage.js:114
 msgid "Organization settings"
 msgstr "Einstellungen über die Organisation"
 
@@ -312,11 +314,11 @@ msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/js/_setup/BasisPage.js:80
+#: umc/js/_setup/BasisPage.js:83
 msgid "Root password"
 msgstr "Root-Passwort"
 
-#: umc/js/_setup/CertificatePage.js:207
+#: umc/js/_setup/CertificatePage.js:211
 msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"
 
@@ -332,7 +334,7 @@ msgstr ""
 msgid "Software settings"
 msgstr "Software-Einstellungen"
 
-#: umc/js/_setup/CertificatePage.js:86
+#: umc/js/_setup/CertificatePage.js:88
 msgid "State"
 msgstr "Bundesland"
 
@@ -389,11 +391,11 @@ msgstr "Zeitzonen- und Tastatureinstellungen"
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/_setup/BasisPage.js:76 umc/js/_setup/BasisPage.js:161
+#: umc/js/_setup/BasisPage.js:77 umc/js/_setup/BasisPage.js:194
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: umc/js/_setup/NetworkPage.js:83 umc/js/_setup/NetworkPage.js:446
+#: umc/js/_setup/NetworkPage.js:83 umc/js/_setup/NetworkPage.js:452
 msgid "virtual"
 msgstr "virtuell"
 

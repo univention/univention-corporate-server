@@ -296,9 +296,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// initiate some local check variables
 		var joined = this._orgValues['joined'];
 		var role = this._orgValues['server/role'];
-		var applianceMode = umc.tools.status('username') == '__systemsetup__';
+		var userSystemSetup = umc.tools.status('username') == '__systemsetup__';
 
-		if (!nchanges && applianceMode && (joined || role == 'basesystem')) {
+		if (!nchanges && userSystemSetup && (joined || role == 'basesystem')) {
 			// no changes have been made we can shut down the web browser directly
 			_shutDownBrowser(this._('No changes have been made. Please confirm to continue with the boot process.'), true);
 			return
@@ -519,8 +519,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				});
 			}
 
-			// in appliance mode, notify that the boot process will continue
-			if (applianceMode) {
+			// as user __systemsetup__, notify that the boot process will continue
+			if (userSystemSetup) {
 				deferred = deferred.then(function() {
 					return _shutDownBrowser(this._('Please confirm to continue with the boot process.'));
 				});

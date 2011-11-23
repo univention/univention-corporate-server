@@ -55,6 +55,8 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 
 	_noteShowed: false,
 
+	_doShowNote: false,
+
 	_orgVals: null,
 
 	postMixInProperties: function() {
@@ -173,7 +175,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	},
 
 	_showNote: function() {
-		if (!this._noteShowed) {
+		if (!this._noteShowed && this._doShowNote) {
 			this._noteShowed = true;
 			this.addNote(this._('Changes in the SSL certificate settings will result in generating new root SSL certificates. Note that this will require an update of all host certificates in the domain as the old root certificate is no longer valid.'));
 		}
@@ -183,6 +185,8 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 		this._form.setFormValues(_vals);
 		this._orgVals = dojo.clone(_vals);
 		this.clearNotes();
+
+		this._doShowNote = _vals['joined'];
 
 		// reset the flag indicating whether certificate note has been shown or not
 		// we do not need to show the note in appliance mode
