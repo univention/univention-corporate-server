@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-isos="virtio-win-1.1.16.iso virtio-win-1.1.16.vfd"
+isos="kvm-windows-drivers_(virtio-1.1.16).iso kvm-windows-drivers_(virtio-1.1.16).vfd"
 pool="$(ucr get uvmm/pool/default/path)"
 
 if [ -z "$pool" ]; then
