@@ -139,7 +139,7 @@ msgstr "Druckername"
 #: umc/js/_printers/QuotaPage.js:28
 #: umc/js/_printers/QuotaPage.js:39
 msgid "Printer quota"
-msgstr "Druckername"
+msgstr "Druckerquota"
 
 #: umc/js/_printers/DetailPage.js:229
 #: umc/js/_printers/OverviewPage.js:103
