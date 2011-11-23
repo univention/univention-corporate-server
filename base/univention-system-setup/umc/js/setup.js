@@ -298,7 +298,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var role = this._orgValues['server/role'];
 		var applianceMode = umc.tools.status('username') == '__systemsetup__';
 
-		if (!nchanges && applianceMode && !(joined || role == 'basesystem')) {
+		if (!nchanges && applianceMode && (joined || role == 'basesystem')) {
 			// no changes have been made we can shut down the web browser directly
 			_shutDownBrowser(this._('No changes have been made. Please confirm to continue with the boot process.'), true);
 			return
