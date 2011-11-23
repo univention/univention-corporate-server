@@ -64,6 +64,15 @@ h1 {
 	text-align: right;
 }
 
+#header-left {
+	float: left;
+	margin-left: 10px;
+}
+#header-right {
+	float: right;
+	margin-right: 10px;
+}
+
 #header {
 	color: #FFFFFF;
 }

@@ -47,10 +47,10 @@ print """
 		<!-- @start header -->
 		<div id="header">
 			<div id="header-wrapper">
-			  <div style="float: left;">
+			  <div id="header-left">
 				<a href="http://www.univention.de"><img src="images/univention_logo.png" /></a>
 			  </div>
-			  <div style="float: right;">
+			  <div id="header-right">
 				<span>Host: %(host)s.%(domainname)s</span>
 				<form name="jump" id="lang" action="GO">
 				<select name="lang" id="language" onchange="location=document.jump.lang.options[document.jump.lang.selectedIndex].value;" value="GO">
