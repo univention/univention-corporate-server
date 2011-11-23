@@ -1,3 +1,12 @@
+univention-system-setup (5.0.65-1) unstable; urgency=low
+
+  * allow Host=* for user __systemsetup__ (Bug #23870)
+  * UMC: adjusted setting of disabled/required/value properties for the fields
+    FQDN, LDAP base, Windows domain, root password in appliance mode
+    (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Nov 2011 15:53:30 +0100
+
 univention-system-setup (5.0.64-1) unstable; urgency=low
 
   * UMC: added dialog in appliance mode without for no changes (Bug #24751)

@@ -50,8 +50,6 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
-	_showWarning: true,
-
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -65,19 +63,22 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		var widgets = [{
 			type: 'TextBox',
 			name: 'fqdn',
-			label: this._('Fully qualified domain name (e.g., master.example.com)')
+			label: this._('Fully qualified domain name (e.g., master.example.com)'),
 		}, {
 			type: 'TextBox',
 			name: 'ldap/base',
-			label: this._('LDAP base')
+			label: this._('LDAP base'),
+			depends: 'fqdn'
 		}, {
 			type: 'TextBox',
 			name: 'windows/domain',
-			label: this._('Windows domain')
+			label: this._('Windows domain'),
+			depends: 'fqdn'
 		}, {
 			type: 'PasswordInputBox',
 			name: 'root_password',
-			label: this._('Root password')
+			label: this._('Root password'),
+			required: true
 		}];
 
 		var layout = [{
@@ -115,26 +116,58 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	},
 
 	setValues: function(_vals) {
-		this._showWarning = true;
 		var vals = dojo.mixin({}, _vals);
 		vals.fqdn = vals.hostname + '.' + vals.domainname;
 		vals.root_password = '';
 
-		// disable certain widgets depending on the role and the join status
+		// block for setting the values onChange events for FQDN widget
+		this._form.getWidget('fqdn').set('blockOnChange', true);
+
+		// in appliance mode, clear the fields for FQDN, LDAP base and Windows domain
 		var role = _vals['server/role'];
 		var joined = _vals['joined'];
-		if (role == 'basesystem' || !joined) {
-			this._form.getWidget('fqdn').set('disabled', false);
-			this._form.getWidget('ldap/base').set('disabled', false);
-			this._form.getWidget('windows/domain').set('disabled', false);
+		var applianceMode = umc.tools.status('username') == '__systemsetup__';
+		joined = Math.random() > 0.5;
+		if (applianceMode && !(joined || role == 'basesystem')) {
+			// in appliance mode, we need empty fields for fqdn, LDAP base, and Windows domain
+			// that are required
+			dojo.forEach(['fqdn', 'ldap/base', 'windows/domain', 'root_password'], function(iname) {
+				vals[iname] = '';
+				this._form.getWidget(iname).set('disabled', false);
+				this._form.getWidget(iname).set('required', true);
+			}, this);
+
+			// add dynamic value computation from FQDN fro windows domain and LDAP base
+			this._form.getWidget('windows/domain').set('dynamicValue', function(deps) {
+				var l = (deps.fqdn || '').split('.');
+				if (l.length) {
+					return String(l[1]).toUpperCase();
+				}
+				return '';
+			});
+			this._form.getWidget('ldap/base').set('dynamicValue', function(deps) {
+				var l = (deps.fqdn || '').split('.');
+				return dojo.map(l.slice(1), function(part) {
+					return 'cn=' + part;
+				}).join(',');
+			});
+
 		}
 		else {
-			this._form.getWidget('fqdn').set('disabled', true);
-			this._form.getWidget('ldap/base').set('disabled', true);
-			this._form.getWidget('windows/domain').set('disabled', true);
+			// in appliance mode, we need empty fields for fqdn, LDAP base, and Windows domain
+			// that are required
+			dojo.forEach(['fqdn', 'ldap/base', 'windows/domain', 'root_password'], function(iname) {
+				this._form.getWidget(iname).set('disabled', true);
+				this._form.getWidget(iname).set('required', false);
+			}, this);
+
+			// add dynamic value computation from FQDN fro windows domain and LDAP base
+			this._form.getWidget('windows/domain').set('dynamicValue', null);
+			this._form.getWidget('ldap/base').set('dynamicValue', null);
 		}
 
 		this._form.setFormValues(vals);
+		this._form.getWidget('fqdn').set('blockOnChange', false);
 	},
 
 	getValues: function() {
