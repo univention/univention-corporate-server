@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager
 #  makefile
 #
-# Copyright 2010,2011 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #

@@ -1,6 +1,6 @@
 # UCS Virtual Machine Manager Daemon.
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.333-1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-14 12:42+0100\n"
-"PO-Revision-Date: 2011-11-14 12:50+0100\n"
+"PO-Revision-Date: 2011-11-23 08:57+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"

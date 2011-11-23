@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.78-3) unstable; urgency=low
+
+  * Update copyright years.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Nov 2011 23:08:22 +0100
+
 univention-virtual-machine-manager-daemon (1.0.78-2) unstable; urgency=low
 
   * pre-select qcow2 if available; Bug #24766

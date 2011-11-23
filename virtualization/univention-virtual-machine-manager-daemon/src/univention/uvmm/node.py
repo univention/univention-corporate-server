@@ -4,7 +4,7 @@
 # UCS Virtual Machine Manager Daemon
 #  node handler
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
