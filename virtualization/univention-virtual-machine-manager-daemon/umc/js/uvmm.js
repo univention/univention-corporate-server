@@ -615,7 +615,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				type: 'ComboBox',
 				label: this._( 'MAC addresses' ),
 				staticValues: [
-					{ id : 'clone', label : this._( 'Clone MAC addresses' ) },
+					{ id : 'clone', label : this._( 'Inherit MAC addresses' ) },
 					{ id : 'auto', label : this._( 'Generate new MAC addresses' ) }
 				]
 			} ],

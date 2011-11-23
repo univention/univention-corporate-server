@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.80-1) unstable; urgency=low
+
+  * renamed options for cloning the MAC addresses; Bug #24767
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Nov 2011 10:56:40 +0100
+
 univention-virtual-machine-manager-daemon (1.0.79-1) unstable; urgency=low
 
   * clicking on the group will update all nodes (fixed typo); Bug #24731

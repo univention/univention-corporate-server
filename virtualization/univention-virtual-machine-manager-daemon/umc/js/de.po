@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-21 19:02+0100\n"
-"PO-Revision-Date: 2011-11-21 17:10+0100\n"
+"POT-Creation-Date: 2011-11-23 12:46+0100\n"
+"PO-Revision-Date: 2011-11-23 10:54+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -237,10 +237,6 @@ msgstr "Auswahl einer vorhandenen Image-Datei"
 msgid "Clone"
 msgstr "Klonen"
 
-#: umc/js/uvmm.js:618
-msgid "Clone MAC addresses"
-msgstr "MAC-Adressen klonen"
-
 #: umc/js/_uvmm/DomainPage.js:113
 msgid "Contact"
 msgstr "Kontakt"
@@ -400,7 +396,7 @@ msgstr "Englisch-Großbritannien"
 msgid "Estonian"
 msgstr "Estländisch"
 
-#: umc/js/_uvmm/types.js:242
+#: umc/js/_uvmm/types.js:243
 msgid "Extended format (qcow2)"
 msgstr "Erweitertes Format (qcow2)"
 
@@ -537,6 +533,10 @@ msgstr "Image"
 #: umc/js/_uvmm/DriveWizard.js:95
 msgid "Image format"
 msgstr "Image-Format"
+
+#: umc/js/uvmm.js:618
+msgid "Inherit MAC addresses"
+msgstr "MAC-Adressen übernehmen"
 
 #: umc/js/_uvmm/types.js:152
 msgid "Intel PRO/1000"
