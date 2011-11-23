@@ -1,3 +1,10 @@
+univention-updater (7.0.114-1) unstable; urgency=low
+
+  * renamed set-apache-permissions to enable-apache2-umc (Bug #22904)
+  * added disable-apache2-umc
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 23 Nov 2011 15:02:30 +0100
+
 univention-updater (7.0.113-2) unstable; urgency=low
 
   * Make apt-secure work again (Bug #24172)

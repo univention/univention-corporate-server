@@ -19,7 +19,8 @@ bash_completion.d/univention-updater etc/bash_completion.d/
 script/univention-install usr/sbin/
 script/reboot.at var/lib/univention-updater/
 script/univention-updater-check usr/share/univention-updater/
-script/set-apache-permissions usr/share/univention-updater/
+script/disable-apache2-umc usr/share/univention-updater/
+script/enable-apache2-umc usr/share/univention-updater/
 script/univention-updater-umc-dist-upgrade usr/share/univention-updater/
 script/univention-updater-umc-univention-install usr/share/univention-updater/
 script/univention-removed usr/share/univention-updater/
