@@ -74,13 +74,20 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		this._checkSessionTimer = new dojox.timing.Timer(1000);
 		this._checkSessionTimer.onTick = dojo.hitch(this, function() {
 			if (!dojo.isString(dojo.cookie('UMCSessionId'))) {
-				this.login(props.username, props.password);
+				this._checkSessionTimer.stop();
+				umc.dialog.login().then(dojo.hitch(this, function() {
+					this._checkSessionTimer.start();
+				}));
 			}
 		});
 
 		// save some config properties
 		umc.tools.status('width', props.width);
 		umc.tools.status('displayUsername', umc.tools.isTrue(props.displayUsername));
+		// username will be overriden by final authenticated username
+		umc.tools.status('username', props.username);
+		// password has been given in the query string... in this case we may cache it, as well
+		umc.tools.status('password', props.password);
 
 		if (dojo.isString(props.module)) {
 			// a startup module is specified
@@ -99,16 +106,16 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			umc.tools.status('overview', umc.tools.isTrue(props.overview));
 		}
 
-		if (dojo.isString(props.username) && dojo.isString(props.password)) {
+		if (props.username && props.password && dojo.isString(props.username) && dojo.isString(props.password)) {
 			// username and password are given, try to login directly
-			this.login(props.username, props.password);
+			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
 			return;
 		}
 
 		// check whether we still have a app cookie
 		var sessionCookie = dojo.cookie('UMCSessionId');
 		if (undefined === sessionCookie) {
-			this.login();
+			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
 		}
 		else {
 			this.onLogin(dojo.cookie('UMCUsername'));
@@ -123,26 +130,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		});
 	},
 
-	login: function(/*String*/ username, /*String*/ password) {
-		// summary:
-		//		Show the login dialog. If username and password are specified, login
-		//		with these credentials.
-		this._checkSessionTimer.stop();
-
-		// if username and password are specified, try to authenticate directly
-		if (dojo.isString(username) && dojo.isString(password)) {
-			umc.tools.umcpCommand('auth', {
-				username: username,
-				password: password
-			}).then(dojo.hitch(this, function(data) {
-				this.onLogin(username);
-			}));
-		}
-		else {
-			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
-		}
-	},
-
 	onLogin: function(username) {
 		// save the username internally and as cookie
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
@@ -151,17 +138,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		// restart the timer for session checking
 		this._checkSessionTimer.start();
 
-		// try to set the locale... switch off automatic error handling
-		// in case we cannot set the locale, we probably need to login
-		umc.tools.umcpCommand('set', {
-			locale: dojo.locale.replace('-', '_')
-		}, false ).then( dojo.hitch( this, function( data ) {
-			// everything went well
-			this.loadModules();
-		} ), dojo.hitch( this, function() {
-			// error occurred, probably we need to login since we are not authorized
-			this.login();
-		} ) );
+		// load the modules
+		this.loadModules();
 	},
 
 	// _tabContainer:
@@ -236,7 +214,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			return;
 		}
 
-		umc.tools.umcpCommand('get/modules/list').then(dojo.hitch(this, function(data) {
+		umc.tools.umcpCommand('get/modules/list', null, false).then(dojo.hitch(this, function(data) {
 			// get all categories
 			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(icat) {
 				this._categories.push(icat);
@@ -286,6 +264,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			// loading is done
 			this.onModulesLoaded();
 			this._modulesLoaded = true;
+		}), dojo.hitch(this, function(error) {
+			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
 		}));
 	},
 

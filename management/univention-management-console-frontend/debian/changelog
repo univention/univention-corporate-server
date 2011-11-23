@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.220-1) unstable; urgency=low
+
+  * moved automatic login functionality in umc.dialog.login in order to allow
+    long polling with automatic login (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Nov 2011 12:12:11 +0100
+
 univention-management-console-frontend (1.0.219-1) unstable; urgency=low
 
   * umc.tools.umcpCommand: added long-polling functionality (Bug #22904)

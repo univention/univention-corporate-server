@@ -70,12 +70,15 @@ dojo.mixin(umc.tools, {
 		//		If given, only the value for the specified property is returned.
 
 		if (undefined === key) {
+			// return the whole dictionary
 			return this._status;
 		}
 		if (dojo.isString(key)) {
 			if (undefined === value) {
+				// return the specified key
 				return this._status[key];
 			}
+			// set the value
 			this._status[key] = value;
 		}
 		return undefined;
@@ -140,7 +143,7 @@ dojo.mixin(umc.tools, {
 					this._dialog.destroyRecursive();
 					this.finishedDeferred.resolve(data);
 				}), dojo.hitch(this, function(error) {
-					var result = this.parseError(error);
+					var result = umc.tools.parseError(error);
 
 					// handle login case
 					if (401 == result.status || 411 == result.status) {

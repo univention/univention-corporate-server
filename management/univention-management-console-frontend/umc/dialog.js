@@ -46,6 +46,8 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 
 	_loginDialog: null, // internal reference to the login dialog
 
+	_loginDeferred: null,
+
 	login: function() {
 		// summary:
 		//		Show the login screen.
@@ -53,28 +55,79 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		//		A dojo.Deferred object that is called upon successful login.
 		//		The callback receives the authorized username as parameter.
 
-		// create the login dialog for the first time
-		if (!this._loginDialog) {
-			this._loginDialog = new umc.widgets.LoginDialog({});
-			this._loginDialog.startup();
+		console.log('###login start:', (new Date()).getTime());
+
+		if (this._loginDeferred && this._loginDeferred.fired < 0) {
+			// a login attempt is currently running
+			return this._loginDeferred;
 		}
 
-		// show dialog
-		this._loginDialog.show();
-		umc.tools.status('loggingIn', true);
+		// if username and password are specified via the query string, try to authenticate directly
+		this._loginDeferred = null;
+		var username = umc.tools.status('username');
+		var password = umc.tools.status('password');
+		if (username && password && dojo.isString(username) && dojo.isString(password)) {
+			// try to authenticate
+			this._loginDeferred = umc.tools.umcpCommand('auth', {
+				username: username,
+				password: password
+			}, false).then(function() {
+				return username;
+			}, function() {
+				// reset password since it is not correct
+				umc.tools.status('password', null);
+				throw new Error('Username and password could not be authenticated.');
+			});
+		}
+		else {
+			// reject deferred to force login
+			this._loginDeferred = new dojo.Deferred();
+			this._loginDeferred.reject();
+		}
 
-		// connect to the dialog's onLogin event
-		var deferred = new dojo.Deferred();
-		var signalHandle = dojo.connect(this._loginDialog, 'onLogin', dojo.hitch(this, function(username) {
-			// disconnect from onLogin handle
-			dojo.disconnect(signalHandle);
-			umc.tools.status('loggingIn', false);
+		this._loginDeferred = this._loginDeferred.then(null, dojo.hitch(umc.dialog, function() {
+			// auto authentication could not be executed or failed...
 
-			// submit the username to the deferred callback
-			deferred.callback(username);
+			if (!this._loginDialog) {
+				// create the login dialog for the first time
+				this._loginDialog = new umc.widgets.LoginDialog({});
+				this._loginDialog.startup();
+			}
+
+			// show dialog
+			this._loginDialog.show();
+			umc.tools.status('loggingIn', true);
+
+			// connect to the dialog's onLogin event
+			var deferred = new dojo.Deferred();
+			var signalHandle = dojo.connect(this._loginDialog, 'onLogin', dojo.hitch(umc.dialog, function(username) {
+				// disconnect from onLogin handle
+				dojo.disconnect(signalHandle);
+				umc.tools.status('loggingIn', false);
+
+				// submit the username to the deferred callback
+				deferred.callback(username);
+			}));
+			return deferred;
 		}));
 
-		return deferred;
+		// after login, set the locale and make sure that the username is passed
+		// over to the next callback
+		this._loginDeferred = this._loginDeferred.then(dojo.hitch(umc.dialog, function(username) {
+			// set the locale
+			return umc.tools.umcpCommand('set', {
+				locale: dojo.locale.replace('-', '_')
+			}, false).then(function() {
+				// make sure the username is handed over to the next callback
+				return username;
+			}, function() {
+				// error... login again
+				return umc.dialog.login();
+			});
+		}));
+
+		console.log('###login end:', (new Date()).getTime());
+		return this._loginDeferred;
 	},
 
 	loginOpened: function() {
