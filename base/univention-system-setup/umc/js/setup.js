@@ -301,7 +301,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		if (!nchanges && userSystemSetup && (joined || role == 'basesystem')) {
 			// no changes have been made we can shut down the web browser directly
 			_shutDownBrowser(this._('No changes have been made. Please confirm to continue with the boot process.'), true);
-			return
+			return;
 		}
 
 		// only submit data to server if there are changes and the system is joined
@@ -521,9 +521,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// as user __systemsetup__, notify that the boot process will continue
 			if (userSystemSetup) {
-				deferred = deferred.then(function() {
+				deferred = deferred.then(dojo.hitch(this, function() {
 					return _shutDownBrowser(this._('Please confirm to continue with the boot process.'));
-				});
+				}));
 			}
 			else {
 				deferred = deferred.then(function() {
