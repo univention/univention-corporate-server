@@ -30,6 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+NORESTART=""
+
+if [ -z "$1" -o "$1" = "-h" -o "$1" = "--help" ] ; then
+	echo "$(basename "$0") [--help] [--no-restart]"
+	exit 1
+fi
+
+if [ "$1" = "--no-restart" ] ; then
+	NORESTART="no-restart"
+fi
+
 for prog in univention-management-console-server \
             univention-management-console-web-server \
 			apache2 \
@@ -38,7 +49,7 @@ for prog in univention-management-console-server \
 	if [ -f "/usr/sbin/$prog" ] && [ ! -x "/usr/sbin/$prog" ]; then
 		/usr/sbin/dpkg-statoverride --remove "/usr/sbin/$prog" >/dev/null 2>&1
 	 	chmod +x "/usr/sbin/$prog"
-	 	"/etc/init.d/$prog" restart >/dev/null 2>&1
+		[ -z "$NORESTART" ] && "/etc/init.d/$prog" restart >/dev/null 2>&1
 	fi
 done
 

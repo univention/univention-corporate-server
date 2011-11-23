@@ -1,3 +1,9 @@
+univention-updater (7.0.114-2) unstable; urgency=low
+
+  * added --no-restart to enable-apache2-umc (Bug #22904)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 23 Nov 2011 16:10:47 +0100
+
 univention-updater (7.0.114-1) unstable; urgency=low
 
   * renamed set-apache-permissions to enable-apache2-umc (Bug #22904)
