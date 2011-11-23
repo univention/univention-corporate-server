@@ -34,10 +34,10 @@
 
 # configure firewall
 ucr set \
-	security/packetfilter/package/univention-base-files/tcp/20/all=ACCEPT \
-	security/packetfilter/package/univention-base-files/tcp/20/all/en="FTP" \
-	security/packetfilter/package/univention-base-files/tcp/21/all=ACCEPT \
-	security/packetfilter/package/univention-base-files/tcp/21/all/en="FTP"
+	security/packetfilter/package/univention-ftp/tcp/20/all=ACCEPT \
+	security/packetfilter/package/univention-ftp/tcp/20/all/en="FTP" \
+	security/packetfilter/package/univention-ftp/tcp/21/all=ACCEPT \
+	security/packetfilter/package/univention-ftp/tcp/21/all/en="FTP"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0

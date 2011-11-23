@@ -1,3 +1,9 @@
+univention-ftp (5.0.1-5) unstable; urgency=low
+
+  * fixed firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 23 Nov 2011 15:33:23 +0100
+
 univention-ftp (5.0.1-4) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
