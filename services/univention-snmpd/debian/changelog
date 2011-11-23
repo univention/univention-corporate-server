@@ -1,3 +1,9 @@
+univention-snmpd (4.0.0-9) unstable; urgency=low
+
+  * fixed firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 23 Nov 2011 17:35:04 +0100
+
 univention-snmpd (4.0.0-8) unstable; urgency=low
 
   * Fix postinst (Bug #22576) 
