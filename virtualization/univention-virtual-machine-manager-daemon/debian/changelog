@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.79-1) unstable; urgency=low
+
+  * clicking on the group will update all nodes (fixed typo); Bug #24731
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Nov 2011 10:46:42 +0100
+
 univention-virtual-machine-manager-daemon (1.0.78-3) unstable; urgency=low
 
   * debian/{control,rules}: Add ucslint (Bug #22092)

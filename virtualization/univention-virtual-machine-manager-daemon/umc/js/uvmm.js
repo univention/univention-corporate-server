@@ -946,7 +946,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			umc.tools.umcpCommand( 'uvmm/node/query', { nodePattern: treeID } ).then( dojo.hitch( this, function( response ) {
 				this._tree.model.changes( response.result );
 			} ) );
-		} else if ( treeType == 'root' ) {
+		} else if ( treeType == 'group' ) {
 			umc.tools.umcpCommand( 'uvmm/node/query', { nodePattern: "*" } ).then( dojo.hitch( this, function( response ) {
 				this._tree.model.changes( response.result );
 			} ) );
