@@ -1,0 +1,24 @@
+https://forge.univention.org/bugzilla/show_bug.cgi?id=23172
+
+--- a/horde-webmail/lib/Horde/Browser.php	2009-12-15 19:17:04.000000000 +0100
++++ a/horde-webmail/lib/Horde/Browser.php	2011-11-23 17:50:36.000000000 +0100
+@@ -447,6 +447,19 @@
+             }
+ 
+             switch ($this->_majorVersion) {
++            case 9:
++                $this->setFeature('javascript', 1.4);
++                $this->setFeature('dom');
++                $this->setFeature('iframes');
++                $this->setFeature('utf');
++                $this->setFeature('rte');
++                $this->setFeature('homepage');
++                $this->setFeature('accesskey');
++                $this->setFeature('optgroup');
++                $this->setFeature('xmlhttpreq');
++                $this->setFeature('dataurl');
++                break;
++
+             case 8:
+                 $this->setFeature('javascript', 1.4);
+                 $this->setFeature('dom');

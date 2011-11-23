@@ -1,3 +1,9 @@
+horde-webmailer (1.2.5~2.2.16-1) unstable; urgency=low
+
+  * add support for IE9 (Bug #23172)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 23 Nov 2011 17:54:46 +0100
+
 horde-webmailer (1.2.5~2.2.15-3) unstable; urgency=low
 
   * fix patch path (Bug #22027)

@@ -30,6 +30,7 @@ t_Prefs_HK_GW_FixLDAPAuthForIngo.diff
 t_SyncML_HK_UV_Nokia_convertServer2Client.diff
 univention_horde_ticket_7802.diff
 univention_issue4174_smtp_auth_login_by_uid.diff
+univention_IE9_support.diff
 univention_imap_tls.diff
 02_CVE-2010-3077-CVE-2010-3694.patch
 03_CVE-2010-3693.patch
