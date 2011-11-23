@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.82-1) unstable; urgency=low
+
+  * domain/query: ignore domain with uuid
+    00000000-0000-0000-0000-000000000000 (xen's domain-0); Bug #24812
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Nov 2011 11:40:14 +0100
+
 univention-virtual-machine-manager-daemon (1.0.81-1) unstable; urgency=low
 
   * renaming virtual instances is deactivated for Xen also; Bug #24711

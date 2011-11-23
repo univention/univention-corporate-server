@@ -73,6 +73,8 @@ class Domains( object ):
 				for node_uri, domains in data.items():
 					uri = urlparse.urlsplit( node_uri )
 					for domain in domains:
+						if domain[ 'uuid' ] == '00000000-0000-0000-0000-000000000000': # ignore domain-0 of Xen
+							continue
 						domain_uri = '%s#%s' % ( node_uri, domain[ 'uuid' ] )
 						domain_list.append( { 'id' : domain_uri, 'label' : domain[ 'name' ], 'nodeName' : uri.netloc, 'state' : domain[ 'state' ], 'type' : 'domain',
 											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ], 'vnc' : domain[ 'vnc' ], 'suspended' : bool( domain[ 'suspended' ] ) } )
