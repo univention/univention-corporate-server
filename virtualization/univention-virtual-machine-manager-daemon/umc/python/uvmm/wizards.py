@@ -1,4 +1,3 @@
-#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # UCS Virtual Machine Manager
