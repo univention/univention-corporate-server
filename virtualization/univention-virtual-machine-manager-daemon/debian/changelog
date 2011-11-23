@@ -8,6 +8,7 @@ univention-virtual-machine-manager-daemon (1.0.78-3) unstable; urgency=low
   * Update copyright years.
   * umc/python/uvmm/storages.py: Fix translation error.
   * runit/uvmmd/run: Fix copyright.
+  * Update manual pages and documentation (Bug #21299,19575,23931)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 22 Nov 2011 23:08:22 +0100
 
@@ -26,7 +27,7 @@ univention-virtual-machine-manager-daemon (1.0.77-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (1.0.76-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 16:23:54 +0100
 
@@ -73,7 +74,7 @@ univention-virtual-machine-manager-daemon (1.0.72-2) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (1.0.72-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 17:02:00 +0100
 
@@ -295,13 +296,13 @@ univention-virtual-machine-manager-daemon (1.0.45-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (1.0.44-1) unstable; urgency=low
 
-  * UMC: merged translations from 2.4 (Bug #22893) 
+  * UMC: merged translations from 2.4 (Bug #22893)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Nov 2011 02:18:22 +0100
 
 univention-virtual-machine-manager-daemon (1.0.43-1) unstable; urgency=low
 
-  * UMC: added domain wizard (Bug #22893) 
+  * UMC: added domain wizard (Bug #22893)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Nov 2011 01:38:50 +0100
 
@@ -320,7 +321,7 @@ univention-virtual-machine-manager-daemon (1.0.41-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (1.0.40-1) unstable; urgency=low
 
-  * UMC: added support for adding drives and saving domain details (Bug #22893) 
+  * UMC: added support for adding drives and saving domain details (Bug #22893)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 09 Nov 2011 22:56:43 +0100
 
@@ -577,7 +578,7 @@ univention-virtual-machine-manager-daemon (1.0.3-2) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (1.0.3-1) unstable; urgency=low
 
-  * modified logrotate configuration (Bug #18002) 
+  * modified logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 12:51:00 +0200
 
@@ -1007,7 +1008,7 @@ univention-virtual-machine-manager-daemon (0.9.204-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.203-2) unstable; urgency=low
 
-  * changed default value for uvmm/check/timeout in postinst script from 5 to 
+  * changed default value for uvmm/check/timeout in postinst script from 5 to
     10 seconds (Bug #21998)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Mar 2011 16:49:55 +0100

@@ -510,7 +510,7 @@ class Client(object):
 		Return the names of all storage-volumes on the virtualization server
 		specified by <uri> in the storage-pool named <pool>.
 		<type> can be used to limit the volumes to a specific type; valid
-		values are 0=Disk.DEVICE_DISK, 1=Disk.DEVICE_CDROM, 2=Disk.DEVICE_FLOPPY
+		values are 'disk', 'cdrom', 'floppy'
 		Examples:
 			%prog volumes xen://server.domain.name/ default
 		"""

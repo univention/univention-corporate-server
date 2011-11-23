@@ -64,9 +64,12 @@ To disable this feature pass an empty argument, e.g. \fB''\fP.
 \fBunivention\-virtual\-machine\-manager groups\fP
 Return the names of groups of virtualization server.
 .TP
-\fBunivention\-virtual\-machine\-manager nodes\fP \fIgroup\fP
+\fBunivention\-virtual\-machine\-manager nodes\fP \fIgroup\fP [\fIuri-pattern\fP]
 Return the list of uris used to specify the virtualization server,
 which belong to the given \fIgroup\fP.
+The optional \fIuri-pattern\fP is a
+.BR glob (7)
+pattern, which can be used to filter the servers based on their uri.
 .TP
 \fBunivention\-virtual\-machine\-manager add\fP \fIuri\fP
 Add the virtualization server specified by \fIuri\fP to the UVMM.
@@ -85,6 +88,12 @@ virtualization server corresponding to \fIuri\fP. The frequency is given in
 .TP
 \fBunivention\-virtual\-machine\-manager bye\fP
 End the connection. Only useful for debugging.
+.TP
+\fBunivention\-virtual\-machine\-manager domains\fP \fIuri\fP [\fIname-pattern\fP]
+Query virtualization server specifies by \fIuri\fP for all domains.
+The optional \fIname-pattern\fP is a
+.BR gob (7)
+patterm, which can be used to filter the domains based on their name.
 
 .SS Domain management
 .TP
@@ -98,10 +107,12 @@ Undefine the domain \fIdomain\fP on the virtualization server specifies by
 \fIuri\fP.
 .TP
 \fBunivention\-virtual\-machine\-manager query\fP \fIuri\fP
-Query virtualization server specifies by \fIuri\fP for all its domains and
-storage pools.
+Query virtualization server specifies by \fIuri\fP for all its domains.
 .TP
-\fBunivention\-virtual\-machine\-manager\state\fP  \fIuri\fP \fIdomain\fP \fIstate\fP
+\fBunivention\-virtual\-machine\-manager domain_info\fP \fIuri\fP \fIdomain\fP
+Query virtualization server specifies by \fIuri\fP for just the domains \fIdomain\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager state\fP  \fIuri\fP \fIdomain\fP \fIstate\fP
 Change the state of domain \fIdomain\fP on the virtualization server specifies by
 \fIuri\fP to the given state \fIstate\fP, which can be one of
 \fBRUN\fP, \fBPAUSE\fP, \fBSUSPEND\fP, \fBRESTART\fP, \fBSHUTDOWN\fP.
@@ -121,6 +132,35 @@ from the file \fIstatefile\fP.
 .TP
 \fBunivention\-virtual\-machine\-manager domain_update\fP \fIdomain\fP
 Trigger an update of the domain specified by its UUID \fIdomain\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager domain_clone\fP \fIuri\fP \fIdomain\fP \fIname\fP \fIsubst\fP
+On the virtualization server specified by \fIuri\fP create a clone named \fIname\fP of the domain specified by its UUID \fIdomain\fP.
+\fIsubst\fP can be used to pass in additional parameters:
+.RS 7
+.TP
+\fBmac#\fP\fIold-mac\fP\fB=\fP[\fInew-mac\fP]
+Replace the MAC address of the old interface given by \fIold-mac\fP with the explicitly given \fInew-mac\fP address or generate a new random address, if \fInew-mac\fP is not given.
+The default is to keep the MAC address unmodified.
+.TP
+\fBcopy#\fP\fIdev\fP\fB=\fP\fImethod\fP
+Specify \fImethod\fP to handle hard-disk specified by \fIdev\fP (e.g. \fBhda\fP, \fBvdb\fP, \fBxvdc\fP).
+\fImethod\fP can be one of \fBcopy\fP, \fBcow\fP (copy-on-write using qcow2) or \fBshare\fP.
+The default is disk device dependent.
+.TP
+\fBname#\fP\fIdev\fP\fB=\fP\fIname\fP
+Specify an explicit \fIname\fP for hard-disk copying or cloning.
+The default is to replace the name of the old virtual machine with the name of the new virtual machine or use a random name based on the name of the new virtual machine.
+.RE
+.TP
+\fBunivention\-virtual\-machine\-manager snap_create\fP \fIuri\fP \fIdomain\fP \fIsnapshot\fP
+On the virtualization server specified by \fIuri\fP create a snapshot named \fIsnapshot\fP of the domain specified by its UUID \fIdomain\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager snap_delete\fP \fIuri\fP \fIdomain\fP \fIsnapshot\fP
+On the virtualization server specified by \fIuri\fP delete the snapshot named \fIsnapshot\fP of the domain specified by its UUID \fIdomain\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager snap_revert\fP \fIuri\fP \fIdomain\fP \fIsnapshot\fP
+On the virtualization server specified by \fIuri\fP revert the domain specified by its UUID \fIdomain\fP back to the snapshot named \fIsnapshot\fP.
+This will destroy the current state of the domain!
 
 .SS Storage management
 .TP
@@ -137,7 +177,7 @@ in the storage-pool named \fIpool\fP on the virtualization server specified by
 Return the names of all storage-volumes on the virtualization server
 specified by \fIuri\fP in the storage-pool named \fIpool\fP.
 \fItype\fP can be used to limit the volumes to a specific type; valid
-values are \fB0\fP=Disk.DEVICE_DISK, \fB1\fP=Disk.DEVICE_CDROM, \fB2\fP=Disk.DEVICE_FLOPPY
+values are \fBdisk\fP, \fBcdrom\fP, \fBfloppy\fP.
 
 .SH EXAMPLES
 .TP

@@ -40,14 +40,11 @@ Default \fIPORT\fP is \fB2106\fP.
 .SS LDAP options
 .TP
 \fB\-c\fP \fICACHE\fP, \fB\-\-cache=\fP\fICACHE\fP
-Cache LDAP data in the given directory.
-Used when the LDAP-server is unavailable during runtime.
+Cache LDAP data and Virtual machine information in the given directory.
+Used when the LDAP-server or virtualization host is unavailable during runtime.
 .TP
-\fB\-b \fBldap://\fP\fIHOST\fP\fB:\fP\fIPORT\fP\fB/\fP\fIBASE\fP|\fB''\fP, \fB\-\-ldap\-base \fBldap://\fP\fIHOST\fP\fB:\fP\fIPORT\fP\fB/\fP\fIBASE\fP|\fB''\fP
-Base-LDAP-uri for searching the hosts to manage.
-All nodes matching \fB(univentionService=* Host)\fP will be added as managed
-nodes.
-An empty argument (e.g. \fB''\fP) can be used to disable automatically adding any host.
+\fB\-C\fP, \fB\-\-clean\fP
+Do not load cached state on startup.
 .SS Daemon options
 .TP
 \fB\-p\fP \fIPIDFILE\fP, \fB\-\-pidfile=\fP\fIPIDFILE\fP
