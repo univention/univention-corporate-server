@@ -60,6 +60,9 @@ PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
 PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
 PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
+CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
+CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
+
 
 # list of all needed UCR variables
 UCR_VARIABLES = [
@@ -125,7 +128,7 @@ def load_values():
 	packages.sort()
 	values['packages'] = ' '.join(packages)
 
-	return values;
+	return values
 
 def pre_save(newValues, oldValues):
 	'''Modify the final dict before saving it to the profile file.'''
@@ -178,7 +181,9 @@ def run_scripts():
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
-	f.close();
+
+	# make sure that UMC servers and apache will not be restartet
+	subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f)
 
 	for root, dirs, files in os.walk(PATH_SETUP_SCRIPTS): 
 		# ignore the root
@@ -192,13 +197,17 @@ def run_scripts():
 			ipath = os.path.join(root, ifile)
 
 			# launch script
-			os.system('%s >> %s 2>&1' % (ipath, LOG_FILE))
+			subprocess.call(ipath, stdout=f, stderr=f)
+
+	# enable execution of servers again
+	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
+
+	f.close()
 
 def run_joinscript(_username = None, password = None):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
-	f.close();
 
 	# write password file
 	if _username and password:
@@ -212,13 +221,15 @@ def run_joinscript(_username = None, password = None):
 		username = reg.sub('_', _username)
 
 		# run join scripts
-		os.system('%s --dcaccount "%s" --password_file "%s" >> %s 2>&1' % (PATH_JOIN_SCRIPT, username, PATH_PASSWORD_FILE, LOG_FILE))
+		subprocess.call([PATH_JOIN_SCRIPT, '--dcaccount', username, '--password_file', PATH_PASSWORD_FILE], stdout=f, stderr=f)
 
 		# remove password file
 		os.remove(PATH_PASSWORD_FILE)
 	else:
 		# run join scripts
-		os.system('%s >> %s 2>&1' % (PATH_JOIN_SCRIPT, LOG_FILE))
+		subprocess.call(PATH_JOIN_SCRIPT, stdout=f, stderr=f)
+
+	f.close()
 
 def shutdown_browser():
 	try:

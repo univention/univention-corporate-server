@@ -102,7 +102,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 fi
 
 # do not allow the UMC or webserver to be restarted
-chmod -x /usr/sbin/univention-management-console-server /usr/sbin/univention-management-console-web-server /usr/sbin/apache2
+/usr/share/univention-updater/disable-apache2-umc
 
 # cleanup secrets
 echo -n "$(makepasswd)" > /etc/ldap.secret
@@ -163,7 +163,7 @@ fi
 rm -f /var/lib/univention-ldap/root.secret
 
 # allow execution of servers again
-chmod +x /usr/sbin/univention-management-console-server /usr/sbin/univention-management-console-web-server /usr/sbin/apache2
+/usr/share/univention-updater/enable-apache2-umc --no-restart
 
 exit 0
 

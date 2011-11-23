@@ -1,3 +1,13 @@
+univention-system-setup (5.0.66-1) unstable; urgency=low
+
+  * UMC: replace os.system() calls with subprocess.call()
+  * UMC: use the scripts {disable,enable}-apache2-umc to make sure the UMC
+    servers as well as apache are not restarted during execution of any setup
+    scripts
+  (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Nov 2011 16:51:23 +0100
+
 univention-system-setup (5.0.65-1) unstable; urgency=low
 
   * allow Host=* for user __systemsetup__ (Bug #23870)
