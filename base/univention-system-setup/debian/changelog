@@ -1,3 +1,9 @@
+univention-system-setup (4.0.11-1) unstable; urgency=low
+
+  * do not set overwrite nameserver of DNS reverse zones on domain change (Bug #23706)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 23 Nov 2011 16:33:28 +0100
+
 univention-system-setup (4.0.10-2) unstable; urgency=low
 
   * add mapping for ox/mail/domain/primary (Bug #21203)
