@@ -1,3 +1,9 @@
+univention-xen-gplpv (11.0.308-3) unstable; urgency=low
+
+  * changed iso name (Bug #23454) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Nov 2011 09:13:06 +0100
+
 univention-xen-gplpv (11.0.308-2) unstable; urgency=low
 
   * copy iso to pool (Bug #23454) 
