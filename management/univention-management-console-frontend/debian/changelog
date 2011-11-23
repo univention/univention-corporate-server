@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.222-1) unstable; urgency=low
+
+  * PasswordInputBox: enabled dynamic setting of required/label
+  * LabelPane: watch changes on the property required
+  (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Nov 2011 16:01:00 +0100
+
 univention-management-console-frontend (1.0.221-1) unstable; urgency=low
 
   * PasswordInputBox: fixed method isValid() in case the widget is set to

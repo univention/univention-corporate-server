@@ -66,7 +66,19 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 	_secondWidget: null,
 
 	_setLabelAttr: function(newLabel) {
-		
+		this.label = newLabel;
+		if (this._firstWidget && this._secondWidget) {
+			this._firstWidget.set('label', this.label);
+			this._secondWidget.set('label', this._('%(label)s (retype)', this));
+		}
+	},
+
+	_setRequiredAttr: function(newVal) {
+		this.required = newVal;
+		if (this._firstWidget && this._secondWidget) {
+			this._firstWidget.set('required', this.required);
+			this._secondWidget.set('required', this.required);
+		}
 	},
 
 	_setValueAttr: function(newVal) {
@@ -87,18 +99,17 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 		this._firstWidget = this.adopt(umc.widgets.PasswordBox, {
 			required: this.required,
 			disabled: this.disabled,
-			label: this.label,
 			name: this.name + '_1',
 			validator: dojo.hitch(this, '_checkValidity', 1)
 		});
 		this._secondWidget = this.adopt(umc.widgets.PasswordBox, {
 			required: this.required,
 			disabled: this.disabled,
-			label: this._('%(label)s (retype)', this),
 			name: this.name + '_2',
 			validator: dojo.hitch(this, '_checkValidity', 2),
 			invalidMessage: this._('The passwords do not match, please retype again.')
 		});
+		this._setLabelAttr(this.label);
 
 		// register to 'onChange' events
 		this.connect(this._secondWidget, 'onChange', 'onChange');
