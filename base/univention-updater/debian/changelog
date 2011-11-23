@@ -1,3 +1,9 @@
+univention-updater (7.0.112-6) unstable; urgency=low
+
+  * Also redirect stdout when purging the old firmwares (Bug #22508)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 23 Nov 2011 09:26:14 +0100
+
 univention-updater (7.0.112-5) unstable; urgency=low
 
   * Update status message for secure apt in univention-repository-create (Bug #9475)
