@@ -795,7 +795,8 @@ class Node(PersistentCached):
 					'mem': pd.maxMem,
 					'cpu_usage': pd.cputime[0],
 					'vnc': pd.graphics and pd.graphics[0].type == Graphic.TYPE_VNC and pd.graphics[0].listen == '0.0.0.0',
-					'suspended': pd.suspended
+					'suspended': pd.suspended,
+					'node_available': self.pd.last_try == self.pd.last_update
 					})
 
 		return domains
@@ -1384,6 +1385,8 @@ def domain_info( uri, domain ):
 		raise NodeError( _( 'Unknown domain "%s"' ) % domain )
 	domain_pd = copy.copy( node.domains[ domain ].pd )
 	domain_pd.state = STATES[ domain_pd.state ]
+	domain_pd.available = node.pd.last_try == node.pd.last_update
+
 	return domain_pd
 
 def domain_state(uri, domain, state):

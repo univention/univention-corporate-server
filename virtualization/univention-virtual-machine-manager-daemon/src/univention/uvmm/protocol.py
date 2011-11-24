@@ -337,6 +337,7 @@ class Data_Domain(object):
 		self.annotations = {}
 		self.snapshots = None # ID: Data_Snapshot
 		self.suspended = None # True|False
+		self.available = None # None: not set, (True|False) -> node availability
 class Data_Node(object):
 	"""Container for node statistics."""
 	def __init__(self):

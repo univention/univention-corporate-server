@@ -283,14 +283,16 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		} ) );
 	},
 
-	_migrateDomain: function( ids ) {
+	_migrateDomain: function( ids, items ) {
 		var dialog = null, form = null;
 		var types = umc.modules._uvmm.types;
-
+		var unavailable = dojo.some( items, function( domain ) {
+			return domain.node_available === false;
+		} );
 		if ( ids.length > 1 ) {
 			var uniqueNodes = {}, count = 0;
 			dojo.forEach( ids, function( id ) {
-				var nodeURI = id.slice( 0, id.indexOf( '#' ) )
+				var nodeURI = id.slice( 0, id.indexOf( '#' ) );
 				if ( undefined === uniqueNodes[ nodeURI ] ) {
 					++count;
 				}
@@ -324,9 +326,14 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 
 		var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
-		var sourceScheme = types.getNodeType( sourceURI )
+		var sourceScheme = types.getNodeType( sourceURI );
 		form = new umc.widgets.Form({
-			widgets: [{
+			style: 'max-width: 500px;',
+			widgets: [ {
+				type: 'Text',
+				name: 'warning',
+				content: this._( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running instances! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual instances will be shown again. Any duplicates have to be cleaned up manually by migrating the instances back to the server or by deleting them. Make sure that shared images are not delete.</p>' )
+			}, {
 				name: 'name',
 				type: 'ComboBox',
 				label: this._('Please select the destination server:'),
@@ -355,9 +362,10 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				label: this._('Cancel'),
 				callback: _cleanup
 			}],
-			layout: [ 'name' ]
+			layout: [ 'warning', 'name' ]
 		});
 
+		form._widgets.warning.set( 'visible', unavailable );
 		dialog = new dijit.Dialog({
 			title: this._('Migrate domain'),
 			content: form,
@@ -513,7 +521,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.selectChild(wizard);
 	},
 
-	_maybeChangeState: function(/*String*/ question, /*String*/ buttonLabel, /*String*/ newState, ids) {
+	_maybeChangeState: function(/*String*/ question, /*String*/ buttonLabel, /*String*/ newState, /*String*/ action, ids, items ) {
 		var dialog = null, form = null;
 
 		var _cleanup = function() {
@@ -523,6 +531,14 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		};
 
 		var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
+
+		if ( ids.length > 1 ) {
+			if ( ! this._grid.canExecuteOnSelection( action, items ).length ) {
+				umc.dialog.alert( this._( 'The state of the selected virtual instances can not be changed' ) );
+				return;
+			};
+		}
+
 		form = new umc.widgets.Form({
 			widgets: [{
 				name: 'question',
@@ -535,7 +551,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				style: 'float: right;',
 				callback: dojo.hitch( this, function() {
 					_cleanup();
-					this._changeState( newState, ids );
+					this._changeState( newState, null, ids, items );
 				} )
 			}, {
 				name: 'cancel',
@@ -553,11 +569,17 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 		dialog.show();
 	},
-	_changeState: function(/*String*/ newState, ids) {
+	_changeState: function(/*String*/ newState, action, ids, items ) {
 		// chain all UMCP commands
 		var deferred = new dojo.Deferred();
 		deferred.resolve();
 
+		if ( ids.length > 1 && action !== null ) {
+			if ( ! this._grid.canExecuteOnSelection( action, items ).length ) {
+				umc.dialog.alert( this._( 'The state of the selected virtual instances can not be changed' ) );
+				return;
+			};
+		}
 		dojo.forEach(ids, function(iid, i) {
 			deferred = deferred.then(dojo.hitch(this, function() {
 				this.updateProgress(i, ids.length);
@@ -573,7 +595,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			this.moduleStore.onChange();
 			this.updateProgress(ids.length, ids.length);
 		}), dojo.hitch(this, function(error) {
-			this.modulestore.onChange();
+			this.moduleStore.onChange();
 			this.updateProgress(ids.length, ids.length);
 		}));
 	},
@@ -715,9 +737,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			description: this._( 'Start the virtual instance' ),
 			isStandardAction: true,
 			isMultiAction: true,
-			callback: dojo.hitch(this, '_changeState', 'RUN'),
+			callback: dojo.hitch(this, '_changeState', 'RUN', 'start' ),
 			canExecute: function(item) {
-				return item.state != 'RUNNING' && item.state != 'IDLE';
+				return item.state != 'RUNNING' && item.state != 'IDLE' && item.node_available;
 			}
 		}, {
 			name: 'stop',
@@ -726,9 +748,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			description: this._( 'Shut off the virtual instance' ),
 			isStandardAction: false,
 			isMultiAction: true,
-			callback: dojo.hitch(this, '_maybeChangeState', this._( 'Stopping virtual instances will turn them off without shutting down the operating system. Should the operation be continued?' ), this._( 'Stop' ), 'SHUTDOWN'),
+			callback: dojo.hitch(this, '_maybeChangeState', this._( 'Stopping virtual instances will turn them off without shutting down the operating system. Should the operation be continued?' ), this._( 'Stop' ), 'SHUTDOWN', 'stop' ),
 			canExecute: function(item) {
-				return item.state == 'RUNNING' || item.state == 'IDLE';
+				return item.state == 'RUNNING' || item.state == 'IDLE' && item.node_available;
 			}
 		}, {
 			name: 'pause',
@@ -736,9 +758,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			iconClass: 'umcIconPause',
 			isStandardAction: false,
 			isMultiAction: true,
-			callback: dojo.hitch(this, '_changeState', 'PAUSE'),
+			callback: dojo.hitch(this, '_changeState', 'PAUSE', 'pause' ),
 			canExecute: function(item) {
-				return item.state == 'RUNNING' || item.state == 'IDLE';
+				return item.state == 'RUNNING' || item.state == 'IDLE' && item.node_available;
 			}
 		}, {
  			name: 'suspend',
@@ -746,16 +768,16 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
  			// iconClass: 'umcIconPause',
  			isStandardAction: false,
  			isMultiAction: true,
- 			callback: dojo.hitch(this, '_changeState', 'SUSPEND'),
+ 			callback: dojo.hitch(this, '_changeState', 'SUSPEND', 'suspend' ),
  			canExecute: function(item) {
- 				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu';
+ 				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu' && item.node_available;
  			}
  		}, /* { FIXME: not yet fully supported
 			name: 'restart',
 			label: this._( 'Restart' ),
 			isStandardAction: false,
 			isMultiAction: true,
-			callback: dojo.hitch(this, '_changeState', 'RESTART'),
+			callback: dojo.hitch(this, '_changeState', 'RESTART', 'restart' ),
 			canExecute: function(item) {
 				return item.state == 'RUNNING' || item.state == 'IDLE';
 			}
@@ -766,7 +788,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			isMultiAction: false,
 			callback: dojo.hitch(this, '_cloneDomain' ),
 			canExecute: function(item) {
-				return item.state == 'SHUTOFF';
+				return item.state == 'SHUTOFF' && item.node_available;
 			}
 		}, {
 			name: 'vnc',
@@ -779,7 +801,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			} ),
 			callback: dojo.hitch(this, 'vncLink' ),
 			canExecute: function(item) {
-				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc;
+				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc && item.node_available;
 			}
 		}, {
 			name: 'migrate',
@@ -797,7 +819,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			isMultiAction: false,
 			callback: dojo.hitch(this, '_removeDomain' ),
 			canExecute: function(item) {
-				return item.state == 'SHUTOFF';
+				return item.state == 'SHUTOFF' && item.node_available;
 			}
 		}, {
 			name: 'add',
@@ -857,7 +879,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}
 		}
 		else if (item.type == 'domain') {
-			if (item.state == 'RUNNING' || item.state == 'IDLE') {
+			if ( !item.node_available ) {
+				iconName += '-off';
+			} else if (item.state == 'RUNNING' || item.state == 'IDLE') {
 				iconName += '-on';
 			}
 			else if ( item.state == 'PAUSED' || ( item.state == 'SHUTOFF' && item.suspended ) ) {

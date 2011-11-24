@@ -77,7 +77,7 @@ class Domains( object ):
 							continue
 						domain_uri = '%s#%s' % ( node_uri, domain[ 'uuid' ] )
 						domain_list.append( { 'id' : domain_uri, 'label' : domain[ 'name' ], 'nodeName' : uri.netloc, 'state' : domain[ 'state' ], 'type' : 'domain',
-											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ], 'vnc' : domain[ 'vnc' ], 'suspended' : bool( domain[ 'suspended' ] ) } )
+											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ], 'vnc' : domain[ 'vnc' ], 'suspended' : bool( domain[ 'suspended' ] ), 'node_available' : domain[ 'node_available' ] } )
 				self.finished( request.id, domain_list )
 			else:
 				self.finished( request.id, None, str( data ), status = MODULE_ERR_COMMAND_FAILED )
@@ -103,7 +103,23 @@ class Domains( object ):
 			node_uri = urlparse.urlsplit( request.options[ 'domainURI' ] )
 			uri, uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 			json = object2dict( data )
+
 			## re-arrange a few attributes for the frontend
+			# annotations
+			for key in json[ 'annotations' ]:
+				if key == 'uuid':
+					continue
+				json[ key ] = json[ 'annotations' ][ key ]
+
+			# type
+			json[ 'type' ] = '%(domain_type)s-%(os_type)s' % json
+
+			# STOP here if domain is not available
+			if not json[ 'available' ]:
+				MODULE.info( 'Domain is not available: %s' % str( json ) )
+				self.finished( request.id, json )
+				return
+
 			# RAM
 			json[ 'maxMem' ] = MemorySize.num2str( json[ 'maxMem' ] )
 			# disks
@@ -145,12 +161,6 @@ class Domains( object ):
 					json[ 'vncHost' ] = None
 					json[ 'vncPort' ] = None
 
-			# annotations
-			for key in json[ 'annotations' ]:
-				if key == 'uuid':
-					continue
-				json[ key ] = json[ 'annotations' ][ key ]
-
 			# profile (MUST be after mapping annotations)
 			profile_dn = json.get( 'profile' )
 			profile = None
@@ -161,9 +171,6 @@ class Domains( object ):
 						break
 				if profile:
 					json[ 'profileData' ] = object2dict( profile )
-
-			# type
-			json[ 'type' ] = '%(domain_type)s-%(os_type)s' % json
 
 			MODULE.info( 'Got domain description: success: %s, data: %s' % ( success, json ) )
 			self.finished( request.id, json )
@@ -194,6 +201,8 @@ class Domains( object ):
 
 			if file_pool:
 				drive.type = Disk.TYPE_FILE
+				if 'target_bus' in disk:
+					drive.target_bus = disk[ 'target_bus' ]
 			else:
 				drive.type = Disk.TYPE_BLOCK
 				drive.target_bus = 'ide'

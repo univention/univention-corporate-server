@@ -57,6 +57,32 @@ msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ausgewählt"
 msgid "(saved state)"
 msgstr "(gespeicherter Zustand)"
 
+#: umc/js/uvmm.js:335 umc/js/_uvmm/DomainPage.js:422
+msgid ""
+"<p>For fail over the virtual machine can be migrated to another physical "
+"server re-using the last known configuration and all disk images. This can "
+"result in <strong>data corruption</strong> if the images are "
+"<strong>concurrently used</strong> by multiple running instances! Therefore "
+"the failed server <strong>must be blocked from accessing the image files</"
+"strong>, for example by blocking access to the shared storage or by "
+"disconnecting the network.</p><p>When the server is restored, all its "
+"previous virtual instances will be shown again. Any duplicates have to be "
+"cleaned up manually by migrating the instances back to the server or by "
+"deleting them. Make sure that shared images are not delete.</p>"
+msgstr ""
+"<p>Für die Ausfallsicherung kann die virtuelle Maschine anhand der letzten "
+"Konfiguration und unter Verwendung aller Festplatten-Images auf einen "
+"anderen physikalischen Server migriert werden. Dies kann zu "
+"<strong>Datenkorruption</strong> führen, wenn die Image-Dateien "
+"<strong>gleichzeitig</strong> von mehreren Instanzen genutzt werden! Deshalb "
+"muß der <strong>Zugriff des Servers auf die Image-Dateien unterbunden</"
+"strong> werden, z.B. durch Blockieren des Zugriffs auf den gemeinsamen "
+"Speicherbereich oder durch abklemmen des Netzwerks.</p><p>Wenn der Server "
+"reaktiviert wird, werden alle seine virtuellen Instanzen erneut angezeigt. "
+"Alle Duplikate müssen von Hand aufgeräumt werden, entweder durch "
+"Zurückmigrieren oder Löschen der Instanz. Stellen Sie dabei sicher, dass "
+"keine mehrfach eingebundenen Image-Dateien gelöscht werden.</p>"
+
 #: umc/js/uvmm.js:106
 msgid ""
 "<p>This module provides a management interface for physical servers that are "
@@ -94,7 +120,7 @@ msgstr ""
 "Der Name für die virtuelle Instanz wird benötigt and sollte nicht der "
 "vorgeschlagenen Namenspräfix entsprechen"
 
-#: umc/js/uvmm.js:612
+#: umc/js/uvmm.js:634
 msgid "A valid clone name cannot contain \"/\" and may not start with \".\" ."
 msgstr ""
 "Ein gültiger Klonname darf keine \"/\" enthalten und kann nicht mit \".\" "
@@ -218,11 +244,11 @@ msgstr "CDROM-Laufwerk"
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: umc/js/uvmm.js:667 umc/js/uvmm.js:686
+#: umc/js/uvmm.js:689 umc/js/uvmm.js:708
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
-#: umc/js/uvmm.js:355 umc/js/uvmm.js:469 umc/js/uvmm.js:542 umc/js/uvmm.js:637
+#: umc/js/uvmm.js:362 umc/js/uvmm.js:477 umc/js/uvmm.js:558 umc/js/uvmm.js:659
 #: umc/js/_uvmm/InterfaceGrid.js:116 umc/js/_uvmm/SnapshotGrid.js:135
 #: umc/js/_uvmm/SnapshotGrid.js:161 umc/js/_uvmm/SnapshotGrid.js:198
 #: umc/js/_uvmm/DriveGrid.js:182 umc/js/_uvmm/DriveGrid.js:212
@@ -233,7 +259,7 @@ msgstr "Abbrechen"
 msgid "Choose existing image"
 msgstr "Auswahl einer vorhandenen Image-Datei"
 
-#: umc/js/uvmm.js:764
+#: umc/js/uvmm.js:786
 msgid "Clone"
 msgstr "Klonen"
 
@@ -245,11 +271,11 @@ msgstr "Kontakt"
 msgid "Coordinated Universal Time"
 msgstr "Koordinierte Weltzeit (UTC)"
 
-#: umc/js/uvmm.js:624 umc/js/_uvmm/SnapshotGrid.js:123
+#: umc/js/uvmm.js:646 umc/js/_uvmm/SnapshotGrid.js:123
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/uvmm.js:644
+#: umc/js/uvmm.js:666
 msgid "Create a clone"
 msgstr "Erstellen eines Klons"
 
@@ -270,7 +296,7 @@ msgstr "Erstellen einer virtuellen Instanz: (Profil: %s)"
 msgid "Create new snapshot"
 msgstr "Neuen Sicherungspunkt erstellen"
 
-#: umc/js/uvmm.js:804
+#: umc/js/uvmm.js:826
 msgid "Create virtual instance"
 msgstr "Erstellen einer virtuellen Instanz"
 
@@ -367,7 +393,7 @@ msgstr ""
 "Speicherbereich ausgewählt, wird die Liste der verfügbaren ISO-Images "
 "aktualisiert."
 
-#: umc/js/uvmm.js:199 umc/js/uvmm.js:705 umc/js/_uvmm/InterfaceGrid.js:81
+#: umc/js/uvmm.js:199 umc/js/uvmm.js:727 umc/js/_uvmm/InterfaceGrid.js:81
 #: umc/js/_uvmm/DriveGrid.js:75
 msgid "Edit"
 msgstr "Bearbeiten"
@@ -376,7 +402,7 @@ msgstr "Bearbeiten"
 msgid "Edit drive"
 msgstr "Laufwerk bearbeiten"
 
-#: umc/js/uvmm.js:709
+#: umc/js/uvmm.js:731
 msgid "Edit the configuration of the virtual instance"
 msgstr "Konfiguration der virtuellen Instanzen bearbeiten"
 
@@ -457,7 +483,7 @@ msgstr "Allgemein"
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/uvmm.js:619
+#: umc/js/uvmm.js:641
 msgid "Generate new MAC addresses"
 msgstr "Neue MAC-Adressen erzeugen"
 
@@ -534,7 +560,7 @@ msgstr "Image"
 msgid "Image format"
 msgstr "Image-Format"
 
-#: umc/js/uvmm.js:618
+#: umc/js/uvmm.js:640
 msgid "Inherit MAC addresses"
 msgstr "MAC-Adressen übernehmen"
 
@@ -577,7 +603,7 @@ msgstr "Lokale Zeitzone"
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: umc/js/uvmm.js:616
+#: umc/js/uvmm.js:638
 msgid "MAC addresses"
 msgstr "MAC-Adressen"
 
@@ -601,15 +627,15 @@ msgstr "Speicher"
 msgid "Memory (default unit MB)"
 msgstr "Größe des Arbeitsspeichers (Standardeinheit MB)"
 
-#: umc/js/uvmm.js:672
+#: umc/js/uvmm.js:694
 msgid "Memory usage"
 msgstr "Arbeitsspeichernutzung"
 
-#: umc/js/uvmm.js:343 umc/js/uvmm.js:786
+#: umc/js/uvmm.js:350 umc/js/uvmm.js:808
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: umc/js/uvmm.js:362 umc/js/uvmm.js:549
+#: umc/js/uvmm.js:370 umc/js/uvmm.js:565
 msgid "Migrate domain"
 msgstr "Migriere virtuelle Instanz"
 
@@ -617,7 +643,7 @@ msgstr "Migriere virtuelle Instanz"
 msgid "NAT"
 msgstr "NAT"
 
-#: umc/js/uvmm.js:663 umc/js/uvmm.js:682 umc/js/_uvmm/DomainWizard.js:111
+#: umc/js/uvmm.js:685 umc/js/uvmm.js:704 umc/js/_uvmm/DomainWizard.js:111
 #: umc/js/_uvmm/SnapshotGrid.js:50 umc/js/_uvmm/DomainPage.js:105
 msgid "Name"
 msgstr "Name"
@@ -647,7 +673,7 @@ msgstr "Keine Sicherungspunkte wurden ausgewählt!"
 msgid "Norwegian"
 msgstr "Norwegisch"
 
-#: umc/js/uvmm.js:447
+#: umc/js/uvmm.js:455
 msgid "Not removable"
 msgstr "Nicht löschbar"
 
@@ -655,7 +681,7 @@ msgstr "Nicht löschbar"
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: umc/js/uvmm.js:778
+#: umc/js/uvmm.js:800
 msgid "Open a view to the virtual instance {label} on {nodeName}"
 msgstr "Öffne eine Anzeige der virtuellen Instanz {label} auf {nodeName}"
 
@@ -697,7 +723,7 @@ msgstr ""
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/js/uvmm.js:735
+#: umc/js/uvmm.js:757
 msgid "Pause"
 msgstr "Pausieren"
 
@@ -705,7 +731,7 @@ msgstr "Pausieren"
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
-#: umc/js/uvmm.js:610
+#: umc/js/uvmm.js:632
 msgid "Please enter the name for the clone:"
 msgstr "Geben die den Namen für den Klon ein:"
 
@@ -713,11 +739,11 @@ msgstr "Geben die den Namen für den Klon ein:"
 msgid "Please enter the name for the snapshot:"
 msgstr "Geben Sie den Namen für den Sicherungspunkt ein:"
 
-#: umc/js/uvmm.js:912
+#: umc/js/uvmm.js:936
 msgid "Please select a valid search type."
 msgstr "Bitte wählen Sie einen gültigen Suchtypen."
 
-#: umc/js/uvmm.js:332
+#: umc/js/uvmm.js:339
 msgid "Please select the destination server:"
 msgstr "Auswahl des Zielservers"
 
@@ -762,16 +788,16 @@ msgstr "Neu laden"
 msgid "Remote access"
 msgstr "VNC-Fernzugriff"
 
-#: umc/js/uvmm.js:795 umc/js/_uvmm/InterfaceGrid.js:89
+#: umc/js/uvmm.js:817 umc/js/_uvmm/InterfaceGrid.js:89
 #: umc/js/_uvmm/InterfaceGrid.js:112
 msgid "Remove"
 msgstr "Löschen"
 
-#: umc/js/uvmm.js:476
+#: umc/js/uvmm.js:484
 msgid "Remove a virtual instance"
 msgstr "Löschen einer virtuellen Instanz"
 
-#: umc/js/uvmm.js:755
+#: umc/js/uvmm.js:777
 msgid "Restart"
 msgstr "Neu starten"
 
@@ -821,11 +847,11 @@ msgstr ""
 "Soll das ausgewählte Laufwerk gelöscht oder nur bei der virtuellen Instanz "
 "ausgehängt werden?"
 
-#: umc/js/uvmm.js:378
+#: umc/js/uvmm.js:386
 msgid "Should the selected virtual instance {label} be removed?"
 msgstr "Soll die ausgewählte virtuelle Instanz {label} gelöscht werden?"
 
-#: umc/js/uvmm.js:726
+#: umc/js/uvmm.js:748
 msgid "Shut off the virtual instance"
 msgstr "Ausschalten einer virtuellen Instanz"
 
@@ -861,23 +887,23 @@ msgstr "Quelle"
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: umc/js/uvmm.js:713
+#: umc/js/uvmm.js:735
 msgid "Start"
 msgstr "Starten"
 
-#: umc/js/uvmm.js:715
+#: umc/js/uvmm.js:737
 msgid "Start the virtual instance"
 msgstr "Starten einer virtuellen Instanz"
 
-#: umc/js/uvmm.js:888
+#: umc/js/uvmm.js:912
 msgid "State: {state}<br>Server: {node}"
 msgstr "Status: {state}<br>Server: {node}"
 
-#: umc/js/uvmm.js:724 umc/js/uvmm.js:729
+#: umc/js/uvmm.js:746 umc/js/uvmm.js:751
 msgid "Stop"
 msgstr "Beenden"
 
-#: umc/js/uvmm.js:729
+#: umc/js/uvmm.js:751
 msgid ""
 "Stopping virtual instances will turn them off without shutting down the "
 "operating system. Should the operation be continued?"
@@ -885,7 +911,7 @@ msgstr ""
 "Das Beenden der virtuellen Instanz schaltet diese aus ohne das "
 "Betriebssystem zuvor herunterzufahren. Soll die Aktion fortgesetzt werden?"
 
-#: umc/js/uvmm.js:745
+#: umc/js/uvmm.js:767
 msgid "Suspend"
 msgstr "Speichern & Beenden"
 
@@ -932,7 +958,7 @@ msgstr ""
 "Das ausgewählte Laufwerk ist scheinbar mit einer anderen virtuellen Instanz "
 "verknüpft und sollte daher nicht gelöscht werden."
 
-#: umc/js/uvmm.js:300
+#: umc/js/uvmm.js:302
 msgid ""
 "The selected virtual instances are not all located on the same physical "
 "server. The migration will not be performed."
@@ -947,6 +973,11 @@ msgid ""
 msgstr ""
 "Die Quelle ist der Name der Netzwerkschnittstelle des pyhsikalischen Server "
 "die als Bridge konfiguriert ist. Normalerweise ist dies eth0."
+
+#: umc/js/uvmm.js:537 umc/js/uvmm.js:579
+msgid "The state of the selected virtual instances can not be changed"
+msgstr ""
+"Der Status der ausgewählten virtuellen Instanzen kann nicht geändert werden"
 
 #: umc/js/_uvmm/DriveWizard.js:181
 msgid ""
@@ -1005,7 +1036,7 @@ msgstr ""
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/uvmm.js:443
+#: umc/js/uvmm.js:451
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -1017,7 +1048,7 @@ msgstr "Verwenden eines lokalen Gerätes"
 msgid "VNC password"
 msgstr "VNC-Passwort"
 
-#: umc/js/uvmm.js:773
+#: umc/js/uvmm.js:795
 msgid "View"
 msgstr "Anzeigen"
 
@@ -1038,7 +1069,7 @@ msgstr "Virtualisierungstechnik"
 msgid "What type of drive should be created?"
 msgstr "Welche Art von Laufwerk soll erstellt werden?"
 
-#: umc/js/_uvmm/DomainPage.js:467
+#: umc/js/_uvmm/DomainPage.js:485
 msgid ""
 "While the virtual instance is running most of the settings can not be "
 "changed."
@@ -1050,7 +1081,7 @@ msgstr ""
 msgid "automatic"
 msgstr "Automatisch"
 
-#: umc/js/uvmm.js:461
+#: umc/js/uvmm.js:469
 msgid "delete"
 msgstr "Löschen"
 
@@ -1078,7 +1109,7 @@ msgstr "ausgeschaltet (abgestürzt)"
 msgid "unknown"
 msgstr "Unbekannt"
 
-#: umc/js/uvmm.js:437 umc/js/uvmm.js:447
+#: umc/js/uvmm.js:445 umc/js/uvmm.js:455
 msgid "{volumeFilename} (Pool: {pool})"
 msgstr "{volumeFilename} (Speicherbereich: {pool})"
 
@@ -1098,33 +1129,6 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 
 #~ msgid "<li>%(type)s: local device %(device)s</li>"
 #~ msgstr "<li>%(type)s: lokales Gerät %(device)s</li>"
-
-#~ msgid ""
-#~ "<p>For fail over the virtual machine can be migrated to another physical "
-#~ "server re-using the last known configuration and all disk images. This "
-#~ "can result in <strong>data corruption</strong> if the images are "
-#~ "<strong>concurrently used</strong> by multiple running instances! "
-#~ "Therefore the failed server <strong>must be blocked from accessing the "
-#~ "image files</strong>, for example by blocking access to the shared "
-#~ "storage or by disconnecting the network.</p><p>When the server is "
-#~ "restored, all its previous virtual instances will be shown again. Any "
-#~ "duplicates have to be cleaned up manually by migrating the instances back "
-#~ "to the server or by deleting them. Make sure that shared images are not "
-#~ "delete.</p>"
-#~ msgstr ""
-#~ "<p>Für die Ausfallsicherung kann die virtuelle Maschine anhand der "
-#~ "letzten Konfiguration und unter Verwendung aller Festplatten-Images auf "
-#~ "einen anderen physikalischen Server migriert werden. Dies kann zu "
-#~ "<strong>Datenkorruption</strong> führen, wenn die Image-Dateien "
-#~ "<strong>gleichzeitig</strong> von mehreren Instanzen genutzt werden! "
-#~ "Deshalb muß der <strong>Zugriff des Servers auf die Image-Dateien "
-#~ "unterbunden</strong> werden, z.B. durch Blockieren des Zugriffs auf den "
-#~ "gemeinsamen Speicherbereich oder durch abklemmen des Netzwerks.</"
-#~ "p><p>Wenn der Server reaktiviert wird, werden alle seine virtuellen "
-#~ "Instanzen erneut angezeigt. Alle Duplikate müssen von Hand aufgeräumt "
-#~ "werden, entweder durch Zurückmigrieren oder Löschen der Instanz. Stellen "
-#~ "Sie dabei sicher, dass keine mehrfach eingebundenen Image-Dateien "
-#~ "gelöscht werden.</p>"
 
 #~ msgid "A virtual instance must at least have 4 MB memory."
 #~ msgstr "Eine virtuelle Instanz muss mindestens 4 MB Speicher haben."
@@ -1707,9 +1711,6 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 #~ msgstr ""
 #~ "Der Name einer virtuellen Instanz darf maximal %(maxlength)d Zeichen "
 #~ "haben!"
-
-#~ msgid "The name of the virtual instance should be changed"
-#~ msgstr "Sind Sie sicher, dass die virtuelle Instanz gelöscht werden soll?"
 
 #~ msgid ""
 #~ "The physical server does not have that much memory. As a suggestion the a "
