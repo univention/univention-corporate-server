@@ -1,3 +1,9 @@
+univention-grub (5.0.9-2) unstable; urgency=low
+
+  * Change screen resolution to 800x600 for xen-4.1 (Bug #24858)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 24 Nov 2011 10:14:21 +0100
+
 univention-grub (5.0.9-1) unstable; urgency=low
 
   * save menu.lst in postinst (is needed for chainload into grub2) 
