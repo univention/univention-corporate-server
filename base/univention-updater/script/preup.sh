@@ -530,6 +530,29 @@ if [ "$(dpkg-query -W -f='${Status}\n' squid 2>/dev/null)" = "install ok install
 	univention-config-registry set update30/squidpresent=true >>"$UPDATER_LOG" 2>&1
 fi
 
+# Test, whether univention-antivir-web is found. It is migrated from a different source
+# package and the templates have changed. Keep the installation status in a UCR variable
+dpkg -l univention-antivir-web
+if [ $? = 1 ]; then
+    echo "univention-antivir-web found. The UCR templates are moved to /etc/univention/templates/removed/dansguardian"
+    echo "and the univention-antivir-web package is removed"
+
+    echo "Local changes to the templates need to be merged manually"
+    
+    mv /etc/univention/templates/files/etc/dansguardian /etc/univention/templates/removed/ >>"$UPDATER_LOG" 2>&1
+    dpkg --purge univention-antivir-web >>"$UPDATER_LOG" 2>&1
+    univention-config-registry set update30/dansguardianpresent=true >>"$UPDATER_LOG" 2>&1
+fi
+
+
+# univention-dansguardian is upgraded frm univention-antivir-web
+if [ "$update30_dansguardianpresent" = "true" ]; then
+    univention-install univention-dansguardian  >>"$UPDATER_LOG" 2>&1
+    univention-config-registry unset update30/dansguardianpresent >>"$UPDATER_LOG" 2>&1
+fi
+
+
+
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
 	if [ -f "$update_custom_preup" ]; then
