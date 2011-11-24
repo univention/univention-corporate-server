@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.230-1) unstable; urgency=low
+
+  * Form: only get entries that are !== undefined (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Nov 2011 17:10:42 +0100
+
 univention-management-console-frontend (1.0.229-1) unstable; urgency=low
 
   * umc.i18n: ignore empty strings (Bug #24864)

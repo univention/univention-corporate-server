@@ -292,7 +292,11 @@ dojo.declare("umc.widgets.Form", [
 		umc.tools.forIn(this._widgets, function(iname, iwidget) {
 			// ignore elements that start with '__'
 			if ('__' != iname.substr(0, 2)) {
-				vals[iname] = iwidget.get('value');
+				var val = iwidget.get('value');
+				if (val !== undefined) {
+					// ignore undefined values
+					vals[iname] = val;
+				}
 			}
 		}, this);
 
