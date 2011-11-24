@@ -1,3 +1,9 @@
+univention-management-console (4.0.90-1) unstable; urgency=low
+
+  * added logrotate config for directory-reports-cleanup (Bug #18002) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Nov 2011 12:22:55 +0100
+
 univention-management-console (4.0.89-1) unstable; urgency=low
 
   * fixed logrotate configuration (Bug #18002)  
