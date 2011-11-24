@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.231-1) unstable; urgency=low
+
+  * umc.tools: adjusted session handling and long polling (Bug #24751)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Nov 2011 23:02:29 +0100
+
 univention-management-console-frontend (1.0.230-1) unstable; urgency=low
 
   * Form: only get entries that are !== undefined (Bug #22461)

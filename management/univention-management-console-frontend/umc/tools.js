@@ -33,6 +33,8 @@ dojo.provide("umc.tools");
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
 dojo.require("dijit.Dialog");
+dojo.require("dojox.timing");
+dojo.require("dojox.html.styles");
 
 dojo.mixin(umc.tools, new umc.i18n.Mixin({
 	// use the framework wide translation file
@@ -84,6 +86,66 @@ dojo.mixin(umc.tools, {
 		return undefined;
 	},
 
+	closeSession: function() {
+		// summary:
+		//		Reset the session cookie in order to close the session from the client side.
+		dojo.cookie('UMCSessionId', null, {
+			expires: -1,
+			path: '/'
+		});
+	},
+
+	holdSession: function() {
+		// summary:
+		//		Set the expiration time of the current session cookie in to 24 hours.
+		var date = new Date((new Date()).getTime() + 1000 * 60 * 60 * 24);
+		dojo.cookie('UMCSessionId', dojo.cookie('UMCSessionId'), {
+			expires: date.toUTCString(),
+			path: '/'
+		});
+	},
+
+	_checkSessionTimer: null,
+
+	checkSession: function(enable) {
+		// summary:
+		//		Create a background process that checks each second the validity of the session
+		//		cookie. As soon as the session is invalid, the login screen will be shown.
+		if (enable === false) {
+			// stop session checking
+			if (this._checkSessionTimer && this._checkSessionTimer.isRunning) {
+				this._checkSessionTimer.stop();
+			}
+			return;
+		}
+
+		if (!this._checkSessionTimer) {
+			// create a new timer instance
+			this._checkSessionTimer = new dojox.timing.Timer(1000);
+			this._checkSessionTimer.onTick = function() {
+				if (!dojo.isString(dojo.cookie('UMCSessionId'))) {
+					umc.tools._checkSessionTimer.stop();
+					if (umc.tools.status['loggingIn']) {
+						// login dialog is already running
+						return;
+					}
+
+					// try to login
+					umc.dialog.login().then(function() {
+						if (!umc.tools._checkSessionTimer.isRunning) {
+							umc.tools._checkSessionTimer.start();
+						}
+					});
+				}
+			};
+		}
+
+		// start session checking
+		if (!this._checkSessionTimer.isRunning) {
+			this._checkSessionTimer.start();
+		}
+	},
+
 	// handler class for long polling scenario
 	_PollingHandler: function(url, content, finishedDeferred, opts) {
 		return {
@@ -128,6 +190,14 @@ dojo.mixin(umc.tools, {
 			}),
 
 			sendRequest: function() {
+				// switch off the automatic check for session timeout...
+				// the proble here is as follows, we do not receive a response,
+				// therefore the cookie is not updated (which is checked for the
+				// session timeout), however, the server will renew the session
+				// with each valid request that it receives
+				umc.tools.holdSession();
+
+				// send AJAX command
 				this._lastRequestTime = (new Date()).getTime();
 				dojo.xhrPost({
 					url: this.url,
@@ -136,7 +206,8 @@ dojo.mixin(umc.tools, {
 					headers: {
 						'Content-Type': 'application/json'
 					},
-					postData: this.content
+					postData: this.content,
+					timeout: 1000 * 60 * 5 // 5min
 				}).then(dojo.hitch(this, function(data) {
 					// request finished
 					this._dialog.hide();
@@ -145,9 +216,13 @@ dojo.mixin(umc.tools, {
 				}), dojo.hitch(this, function(error) {
 					var result = umc.tools.parseError(error);
 
-					// handle login case
-					if (401 == result.status || 411 == result.status) {
-						// special cases during login, only show a notification
+					// handle login cases
+					if (401 == result.status) {
+						// command was rejected, user is not authorized
+						umc.dialog.login();
+					}
+					if (411 == result.status) {
+						// login failed
 						umc.dialog.login();
 						umc.dialog.notify(umc.tools._statusMessages[result.status]);
 					}

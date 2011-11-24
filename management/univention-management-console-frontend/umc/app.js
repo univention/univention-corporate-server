@@ -36,8 +36,6 @@ dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dojo.cookie");
-dojo.require("dojox.html.styles");
-dojo.require("dojox.timing");
 dojo.require("umc.tools");
 dojo.require("umc.dialog");
 dojo.require("umc.help");
@@ -53,7 +51,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 }), {
-	_checkSessionTimer: null,
 
 	start: function(/*Object*/ props) {
 		// summary:
@@ -68,18 +65,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		//		  not been shown and the module cannot be closed
 		//		* displayUsername: whether or not the username should be displayed
 		//		* width: forces the width of the GUI to a specific value
-
-		// create a background process that checks each second the validity of the session
-		// cookie as soon as the session is invalid, the login screen will be shown
-		this._checkSessionTimer = new dojox.timing.Timer(1000);
-		this._checkSessionTimer.onTick = dojo.hitch(this, function() {
-			if (!dojo.isString(dojo.cookie('UMCSessionId'))) {
-				this._checkSessionTimer.stop();
-				umc.dialog.login().then(dojo.hitch(this, function() {
-					this._checkSessionTimer.start();
-				}));
-			}
-		});
 
 		// save some config properties
 		umc.tools.status('width', props.width);
@@ -123,20 +108,13 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}
 	},
 
-	closeSession: function() {
-		dojo.cookie('UMCSessionId', null, {
-			expires: -1,
-			path: '/'
-		});
-	},
-
 	onLogin: function(username) {
 		// save the username internally and as cookie
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
 		umc.tools.status('username', username);
 
-		// restart the timer for session checking
-		this._checkSessionTimer.start();
+		// start the timer for session checking
+		umc.tools.checkSession(true);
 
 		// load the modules
 		this.loadModules();
@@ -521,7 +499,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 					label: this._('Logout'),
 					auto: true,
 					callback: dojo.hitch(this, function() {
-						this.closeSession();
+						umc.tools.closeSession();
 						window.location.reload();
 					})
 				}, {
