@@ -195,8 +195,8 @@ dojo.mixin(umc.tools, {
 		//		A deferred object.
 
 		// when logging in, ignore all except the AUTH command
-		if (this.status('loggingIn') && !(/^auth$/i).test(commandStr)) {
-			console.log(this._('WARNING: Ignoring command "%s" since user is logging in', commandStr));
+		if (umc.tools.status('loggingIn') && !(/^auth$/i).test(commandStr)) {
+			console.log(umc.tools._('WARNING: Ignoring command "%s" since user is logging in', commandStr));
 			var deferred = new dojo.Deferred();
 			deferred.reject();
 			return deferred;
@@ -226,7 +226,7 @@ dojo.mixin(umc.tools, {
 
 			// new handler
 			var finishedDeferred = new dojo.Deferred();
-			var handler = new this._PollingHandler(url, body, finishedDeferred, longPollingOptions);
+			var handler = new umc.tools._PollingHandler(url, body, finishedDeferred, longPollingOptions);
 			handler.sendRequest();
 
 			return finishedDeferred; // dojo.Deferred

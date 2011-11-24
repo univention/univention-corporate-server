@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.224-1) unstable; urgency=low
+
+  * umc.tools.umcpCommand: fixed scoping issues (Bug #24751)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Nov 2011 12:21:02 +0100
+
 univention-management-console-frontend (1.0.223-1) unstable; urgency=low
 
   * index.html: removed broken css-links (Bug #22883)
