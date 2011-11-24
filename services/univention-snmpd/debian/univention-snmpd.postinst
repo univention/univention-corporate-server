@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 # configure firewall
 ucr set security/packetfilter/package/univention-snmpd/tcp/161/all="ACCEPT" \
     security/packetfilter/package/univention-snmpd/tcp/161/all/en="SNMP" \
