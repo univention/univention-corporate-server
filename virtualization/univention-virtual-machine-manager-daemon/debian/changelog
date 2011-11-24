@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.87-1) unstable; urgency=low
+
+  * names of Xen domains must match the following regular expression
+    ^[A-Za-z0-9_\-.:+]+$ ; Bug #24871
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 24 Nov 2011 16:47:39 +0100
+
 univention-virtual-machine-manager-daemon (1.0.86-1) unstable; urgency=low
 
   * add icons for unavailable domains; Bug #24711

@@ -39,7 +39,6 @@ dojo.require("umc.modules._uvmm.types");
 dojo.require("umc.modules._uvmm.DriveGrid");
 
 dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mixin ], {
-	
 	i18nClass: 'umc.modules.uvmm',
 
 	_profile: null,
@@ -64,7 +63,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 			title: this._('Drives')
 		});
 		titlePane.addChild(this._driveGrid);
-		
+
 		// and the titlepane into a container
 		this._driveContainer  = new umc.widgets.ContainerWidget({
 			scrollable: true,
@@ -153,6 +152,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 
 	next: function(pageName) {
 		var nextName = this.inherited(arguments);
+		var types = umc.modules._uvmm.types;
 
 		if (pageName == 'profile') {
 			// query the profile settings
@@ -170,7 +170,11 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 				this.getWidget('profile').set('value', profileDN);
 				this.getWidget('domain_type').set('value', this._profile.virttech.split('-')[0]);
 				this.getWidget('name').set('value', this._profile.name_prefix || '');
-				this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$).*$' : '.*');
+				if ( types.getNodeType( this.getWidget('profile', 'nodeURI').get('value') ) == 'xen' ) {
+					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[A-Za-z0-9_\\-.:+]+$' : '.*');
+				} else {
+					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$).+$' : '.*');
+				}
 				this.getWidget('maxMem').set('value', this._profile.ram || '');
 				this.getWidget('vcpus').set('value', this._profile.cpus);
 				this.getWidget('vnc').set('value', this._profile.vnc);
