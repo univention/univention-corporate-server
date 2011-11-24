@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.223-1) unstable; urgency=low
+
+  * index.html: removed broken css-links (Bug #22883)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Nov 2011 12:15:31 +0100
+
 univention-management-console-frontend (1.0.222-1) unstable; urgency=low
 
   * PasswordInputBox: enabled dynamic setting of required/label

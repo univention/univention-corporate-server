@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-23 15:21+0100\n"
+"POT-Creation-Date: 2011-11-23 17:43+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/widgets/PasswordInputBox.js:73
+#: umc/widgets/PasswordInputBox.js:72
 #, python-format
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
@@ -350,7 +350,7 @@ msgstr "Die Sprache für die Anmeldesitzung."
 msgid "The password of your domain account."
 msgstr "Das Passwort Ihres Domänen-Kontos."
 
-#: umc/widgets/PasswordInputBox.js:108
+#: umc/widgets/PasswordInputBox.js:110
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
