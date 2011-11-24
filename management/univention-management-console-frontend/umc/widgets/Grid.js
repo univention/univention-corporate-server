@@ -999,6 +999,28 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}
 	},
 
+	canExecuteOnSelection: function( /* String|Object */action, /* Object[] */items ) {
+		// summary:
+		//		returns a subset of the given items that are available for the action according to the canExecute function
+		var actionObj = null;
+		var executableItems = [];
+
+		if ( dojo.isString( action ) ) {
+			var tmpActions = dojo.filter(this.actions, function(iaction) {
+				return iaction.isMultiAction && iaction.name == action;
+			} );
+			if ( ! tmpActions.length ) {
+				throw 'unknown action ' + action;
+			}
+			actionObj = tmpActions[ 0 ];
+		}
+		executableItems = dojo.filter( items, function( iitem ) {
+			return dojo.isFunction( actionObj.canExecute ) ? actionObj.canExecute( iitem ) : true;
+		} );
+
+		return executableItems;
+	},
+
 	onFilterDone: function(success) {
 		// event stub
 	}
