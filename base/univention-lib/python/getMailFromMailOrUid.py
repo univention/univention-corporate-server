@@ -42,7 +42,7 @@ if (len(sys.argv) < 2):
 mail = "None"
 uidOrMail = ldap.filter.escape_filter_chars(sys.argv[1])
 ldap = univention.uldap.getMachineConnection(ldap_master = False)
-filter = "(|(uid=%s)(mailPrimaryAddress=%s))" % (uidOrMail, uidOrMail)
+filter = "(&(|(uid=%s)(mailPrimaryAddress=%s))(objectClass=univentionMail))" % (uidOrMail, uidOrMail)
 try:
 	result = ldap.search(filter=filter, attr=["mailPrimaryAddress"])
 except Exception, e:

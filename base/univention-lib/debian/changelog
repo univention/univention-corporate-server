@@ -1,3 +1,9 @@
+univention-lib (1.0.42-1) unstable; urgency=low
+
+  * fixed ldap search filter in getMailFromMailOrUid.py (Bug #23739) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Nov 2011 09:36:08 +0100
+
 univention-lib (1.0.41-1) unstable; urgency=low
 
   * shell/umc.sh: fixed qutoing (Bug #24330)
