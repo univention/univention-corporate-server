@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-23 12:46+0100\n"
+"POT-Creation-Date: 2011-11-24 14:40+0100\n"
 "PO-Revision-Date: 2011-11-23 07:21+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -301,7 +301,7 @@ msgstr "Das Bearbeiten der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 msgid "Failed to remove network interface: %s"
 msgstr "Entfernen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
 
-#: umc/python/uvmm/domains.py:291
+#: umc/python/uvmm/domains.py:300
 #, python-format
 msgid "Failed to retrieve details for the server %(nodeURI)s"
 msgstr ""
@@ -388,7 +388,7 @@ msgstr "Image-Datei nicht gefunden"
 msgid "Image size"
 msgstr "Image-Größe"
 
-#: umc/python/uvmm/domains.py:424
+#: umc/python/uvmm/domains.py:428
 msgid "Invalid domain state"
 msgstr "Ungültiger Domain Status"
 
@@ -430,7 +430,7 @@ msgstr ""
 "virtuelle Instanzen anzulegen. Stellen Sie sicher, daß der LDAP-Server "
 "erreichbar ist."
 
-#: umc/python/uvmm/domains.py:191
+#: umc/python/uvmm/domains.py:193
 #, python-format
 msgid "No valid source for disk \"%s\" found"
 msgstr "Es fehlt eine gültige Quelle für das Gerät \"%s\""
@@ -751,7 +751,7 @@ msgstr ""
 msgid "Type"
 msgstr "Typ"
 
-#: umc/python/uvmm/domains.py:293
+#: umc/python/uvmm/domains.py:302
 #, python-format
 msgid "Unknown physical server %(nodeURI)s"
 msgstr "Unbekannter physikalischer Server %(nodeURI)s"
@@ -760,7 +760,7 @@ msgstr "Unbekannter physikalischer Server %(nodeURI)s"
 msgid "Unknown profile"
 msgstr "Unbekanntes Profil"
 
-#: umc/python/uvmm/domains.py:276
+#: umc/python/uvmm/domains.py:279
 msgid "Unknown profile given"
 msgstr "Unbekanntes profil wurde angegeben"
 

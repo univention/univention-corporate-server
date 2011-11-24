@@ -129,7 +129,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			type: 'TextBox',
 			name: 'pattern',
-			label: 'Query pattern',
+			label: this._('Query pattern'),
 			size: 'One',
 			value: '*'
 		}];

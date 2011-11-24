@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-23 12:46+0100\n"
+"POT-Creation-Date: 2011-11-24 14:40+0100\n"
 "PO-Revision-Date: 2011-11-23 10:54+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -318,7 +318,7 @@ msgstr "Direktzugriff (VNC)"
 
 #: umc/js/uvmm.js:123
 msgid "Displayed type"
-msgstr "Angezeiget Typ"
+msgstr "Angezeigter Typ"
 
 #: umc/js/_uvmm/DriveWizard.js:165
 msgid "Drive image"
@@ -745,6 +745,10 @@ msgstr "Portugiesisch-Brasilien"
 #: umc/js/_uvmm/DomainWizard.js:89
 msgid "Profile"
 msgstr "Profile"
+
+#: umc/js/uvmm.js:132
+msgid "Query pattern"
+msgstr "Suchmuster"
 
 #: umc/js/_uvmm/DomainPage.js:215
 msgid "RTC reference"
