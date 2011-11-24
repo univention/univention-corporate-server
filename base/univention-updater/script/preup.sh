@@ -210,6 +210,22 @@ if [ ! "$update_kolab_check" = "no" -a ! "$update_kolab_check" = "false" -a ! "$
 	fi
 fi
 
+# update to 3.0-0 Bug #24879
+# check if cyrus murder is installed ==> exit
+if [ ! "$update_cyrusmurder_check" = "no" -a ! "$update_cyrusmurder_check" = "false" -a ! "$update_cyrusmurder_check" = "1" ] ; then
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-mail-cyrus-murder 2>/dev/null)" = "install ok installed" ]; then
+		echo "WARNING: Cyrus Murder is installed!"
+		echo
+		echo "Depending on your local Cyrus Murder setup additional steps are required"
+		echo "to update this system to UCS 3.0. Please contact Kolab Systems or"
+		echo "Univention for further assistance. The update process will stop here."
+		echo
+		echo "This check can be disabled by setting the Univention Configuration Registry"
+		echo "variable \"update/cyrusmurder/check\" to \"no\"."
+		exit 1
+	fi
+fi
+
 # update to 3.0-0 Bug #23191
 if [ ! "$update_customatts_check" = "no" -a ! "$update_customatts_check" = "false" -a ! "$update_customatts_check" = "1" ]; then
 	customatts=false

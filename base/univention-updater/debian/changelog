@@ -1,3 +1,9 @@
+univention-updater (7.0.115-1) unstable; urgency=low
+
+  * block update if cyrus murder is installed (Bug #24879)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Nov 2011 21:11:54 +0100
+
 univention-updater (7.0.114-4) unstable; urgency=low
 
   * Transition code for Dansguardian update (Bug #22576)
