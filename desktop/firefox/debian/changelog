@@ -1,3 +1,10 @@
+firefox (1:7.0.1-5) unstable; urgency=low
+
+  * Now that openjdk-6 has been fixed, also depend on icedtea6-plugin also on
+    amd64 (Bug #22116)	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 24 Nov 2011 09:40:21 +0100
+
 firefox (1:7.0.1-4) unstable; urgency=low
 
   * Depend on icedtea6-plugin on i386. For amd64 we use the modified version now present
