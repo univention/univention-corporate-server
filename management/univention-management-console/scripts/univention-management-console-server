@@ -150,6 +150,28 @@ class UMC_Daemon( DaemonRunner ):
 		CORE.process( 'Starting UMC server ...' )
 		self._start()
 
+	def _terminate_daemon_process( self ):
+		""" Terminate the daemon process specified in the current PID file.
+			"""
+		pid = self.pidfile.read_pid()
+		try:
+			os.kill( pid, signal.SIGTERM )
+		except OSError, exc:
+			raise DaemonRunnerStopFailureError(	"Failed to terminate %(pid)d: %(exc)s" % vars() )
+
+		if self.pidfile.is_locked():
+			CORE.process( 'The UMC server is still running. Will wait for 5 seconds' )
+			count = 10
+			while count:
+				time.sleep( 0.5 )
+				if not self.pidfile.is_locked():
+					break
+				count -= 1
+			if self.pidfile.is_locked():
+				CORE.process( 'The UMC server is still running. Kill it!' )
+				os.kill( pid, signal.SIGKILL )
+				self.pidfile.break_lock()
+
 	DaemonRunner.action_funcs[ 'restart' ] = _restart
 	DaemonRunner.action_funcs[ 'crestart' ] = _crestart
 

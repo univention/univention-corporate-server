@@ -1,3 +1,10 @@
+univention-management-console (4.0.91-1) unstable; urgency=low
+
+  * added sending SIGKILL event to UMC server after 5 seconds (copied and
+    adapted from UMC web server) (Bug #24391)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Nov 2011 13:07:52 +0100
+
 univention-management-console (4.0.90-1) unstable; urgency=low
 
   * added logrotate config for directory-reports-cleanup (Bug #18002) 
