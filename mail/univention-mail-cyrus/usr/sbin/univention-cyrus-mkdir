@@ -120,10 +120,16 @@ if options.hostname != "localhost" or options.username != "cyrus" or options.pas
 if not remote:
 	sieve = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domain[0], domain, fsUser[0], fsUser)
 	if not os.path.exists(sieve):
-		os.makedirs(sieve, mode=0777)
+		sieveDirTmp = "/var/spool/cyrus/"
 		cyrusId=pwd.getpwnam('cyrus')[2]
 		mailId=grp.getgrnam('mail')[2]
-		os.chown(sieve, cyrusId, mailId)
+		sieveDirs = sieve.replace(sieveDirTmp, "")
+		for sieveDir in sieveDirs.split("/"):
+			sieveDirTmp = os.path.join(sieveDirTmp, sieveDir)
+			print sieveDirTmp
+			if not os.path.isdir(sieveDirTmp):
+				os.mkdir(sieveDirTmp)
+				os.chown(sieveDirTmp, cyrusId, mailId)
 
 		# create default spam sieve script
 		if cr.is_true("mail/cyrus/sieve/spam", True):
