@@ -52,7 +52,7 @@ dojo.declare("umc.i18n.Mixin", null, {
 
 	// _i18nTranslations: Object
 	//		Internal dictionary of translation from English -> current language
-	_i18nTranslations: { },
+	_i18nTranslations: null,
 
 	// _i18nModNameRegExp: RegExp
 	//		Internal regular expression to split the module name into the module
@@ -82,27 +82,32 @@ dojo.declare("umc.i18n.Mixin", null, {
 		// tags:
 		//		protected
 
-		// get module path and module name
-		// case1: no '.' is in the path: m[2] == undefined && m[3] == undefined
-		// case2: there is a '.' in the path: m[1] == undefined
+		// use the classname and 'umc.app' as backup path to allow other class to
+		// override a UMC base class without loosing its translations (see Bug #24864)
+		this._i18nTranslations = [];
 		this.i18nClass = this.i18nClass || this.declaredClass;
-		var m = this._i18nModNameRegExp.exec(this.i18nClass);
-		var modPath = m[2] || '';
-		var modName = m[3] || m[1];
+		dojo.forEach([this.i18nClass, 'umc.app'], function(iclass) {
+			// get module path and module name
+			// case1: no '.' is in the path: m[2] == undefined && m[3] == undefined
+			// case2: there is a '.' in the path: m[1] == undefined
+			var m = this._i18nModNameRegExp.exec(iclass);
+			var modPath = m[2] || '';
+			var modName = m[3] || m[1];
 
-		// detect the locale language (ignore territory)
-		m = this._i18nLocalRegExp.exec(dojo.locale);
-		var lang = m[1] || 'en'; // default is English
-		lang = lang.toLowerCase();
-		
-		// try to load the JSON translation file for the current language
-		try {
-			var json = dojo.cache(modPath, dojo.replace('i18n/{0}/{1}.json', [ lang, modName ]));
-			this._i18nTranslations = dojo.fromJson(json);
-		}
-		catch (error) {
-			console.log('INFO: Localization files for module ' + this.declaredClass + ' in language "' + lang + '" not available!');
-		}
+			// detect the locale language (ignore territory)
+			m = this._i18nLocalRegExp.exec(dojo.locale);
+			var lang = m[1] || 'en'; // default is English
+			lang = lang.toLowerCase();
+			
+			// try to load the JSON translation file for the current language
+			try {
+				var json = dojo.cache(modPath, dojo.replace('i18n/{0}/{1}.json', [ lang, modName ]));
+				this._i18nTranslations.push(dojo.fromJson(json));
+			}
+			catch (error) {
+				console.log('INFO: Localization files for module ' + this.declaredClass + ' in language "' + lang + '" not available!');
+			}
+		}, this);
 
 		this._i18nInitialized = true;
 	},
@@ -127,8 +132,15 @@ dojo.declare("umc.i18n.Mixin", null, {
 		}
 		
 		// get message to display (defaults to original message)
-		var msg = this._i18nTranslations[_msg] || _msg;
-
+		var msg = _msg;
+		for (var i = 0; i < this._i18nTranslations.length; ++i) {
+			if (_msg in this._i18nTranslations[i]) {
+				// we found a translation... take it and break the loop
+				msg = this._i18nTranslations[i][_msg];
+				break;
+			}
+		}
+		 
 		// get arguments for sprintf
 		var args = [msg];
 		for (var i = 1; i < arguments.length; ++i) {
