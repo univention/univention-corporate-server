@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-23 19:24+0100\n"
+"POT-Creation-Date: 2011-11-24 23:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,7 +135,7 @@ msgstr ""
 "Warnung, die Einstellungen können mit dem aktuell gewählten Namen "
 "gespeichert werden."
 
-#: umc/js/_setup/BasisPage.js:186
+#: umc/js/_setup/BasisPage.js:184
 msgid "Fully qualified domain name"
 msgstr "Vollständiger Rechername"
 
@@ -199,17 +199,21 @@ msgstr "IPv6-Präfix"
 msgid "Identifier"
 msgstr "Bezeichner"
 
-#: umc/js/_setup/SoftwarePage.js:75
+#: umc/js/_setup/SoftwarePage.js:81
 msgid "Installation of software components"
 msgstr "Installation von Softwarekomponenten"
 
-#: umc/js/_setup/SoftwarePage.js:66 umc/js/_setup/SoftwarePage.js:145
+#: umc/js/_setup/SoftwarePage.js:72
 msgid "Installed software components"
 msgstr "Installierte Softwarekomponenten"
 
 #: umc/js/_setup/LanguagePage.js:78 umc/js/_setup/LanguagePage.js:146
 msgid "Installed system locales"
 msgstr "Verfügbare System-Lokalisierungen"
+
+#: umc/js/_setup/SoftwarePage.js:209
+msgid "Installing software components"
+msgstr "Installation von Softwarekomponenten"
 
 #: umc/js/_setup/NetworkPage.js:75 umc/js/_setup/NetworkPage.js:119
 msgid "Interface"
@@ -219,6 +223,20 @@ msgstr "Netzwerkgerät"
 msgid "Interfaces"
 msgstr "Netzwerkgeräte"
 
+#: umc/js/_setup/SoftwarePage.js:112
+msgid ""
+"It is not possible to mix NT and Active Directory compatible "
+"domaincontroller. Make sure the existing UCS domain is Active Directory-"
+"compatible (Samba 4)."
+msgstr "Es ist nicht möglich NT- und Active-Directory-kompatible Domaincontroller gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-Domäne kompatible zu Active-Directory (Samba 4) ist."
+
+#: umc/js/_setup/SoftwarePage.js:111
+msgid ""
+"It is not possible to mix NT and Active Directory compatible "
+"domaincontroller. Make sure the existing UCS domain is NT-compatible (Samba "
+"3)."
+msgstr "Es ist nicht möglich NT- und Active-Directory-kompatible Domaincontroller gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-Domäne NT-kompatible (Samba 3) ist."
+
 #: umc/js/setup.js:419
 msgid "Join"
 msgstr ""
@@ -227,7 +245,7 @@ msgstr ""
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: umc/js/_setup/BasisPage.js:71 umc/js/_setup/BasisPage.js:190
+#: umc/js/_setup/BasisPage.js:71 umc/js/_setup/BasisPage.js:188
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
@@ -259,7 +277,7 @@ msgstr "Netzwerk"
 msgid "Network settings"
 msgstr "Netzwerk-Einstellungen"
 
-#: umc/js/_setup/BasisPage.js:198
+#: umc/js/_setup/BasisPage.js:196
 msgid "New root password"
 msgstr "Neues Root-Passwort"
 
@@ -310,6 +328,10 @@ msgstr ""
 msgid "Please confirm to continue with the boot process."
 msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 
+#: umc/js/_setup/SoftwarePage.js:219
+msgid "Removing software components"
+msgstr "Entfernen von Softwarekomponenten"
+
 #: umc/js/setup.js:158
 msgid "Reset"
 msgstr "Zurücksetzen"
@@ -326,11 +348,11 @@ msgstr "SSL-Root-Zertifikat"
 msgid "Save"
 msgstr "Speichern"
 
-#: umc/js/_setup/SoftwarePage.js:56
+#: umc/js/_setup/SoftwarePage.js:62
 msgid "Software"
 msgstr ""
 
-#: umc/js/_setup/SoftwarePage.js:57
+#: umc/js/_setup/SoftwarePage.js:63
 msgid "Software settings"
 msgstr "Software-Einstellungen"
 
@@ -391,7 +413,7 @@ msgstr "Zeitzonen- und Tastatureinstellungen"
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/_setup/BasisPage.js:77 umc/js/_setup/BasisPage.js:194
+#: umc/js/_setup/BasisPage.js:77 umc/js/_setup/BasisPage.js:192
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 

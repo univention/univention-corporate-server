@@ -121,12 +121,8 @@ def load_values():
 	else:
 		values['timezone']=''
 
-	# get installed packages
-	allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_components() ])
-	installedPackages = get_installed_packages()
-	packages = list(set(allPackages) & set(installedPackages))
-	packages.sort()
-	values['packages'] = ' '.join(packages)
+	# get installed components
+	values['components'] = ' '.join([icomp['id'] for icomp in get_installed_components()])
 
 	return values
 
@@ -158,15 +154,21 @@ def pre_save(newValues, oldValues):
 					# we could compute a network address
 					newValues[networkKey] = network
 	
-	# add a list with all packages that should not exist on the system
-	installPackages = []
-	if 'packages' in newValues:
+	# add a list with all packages that should be removed/installed on the system
+	if 'components' in newValues:
 		regSpaces = re.compile(r'\s+')
-		installPackages = regSpaces.split(newValues.get('packages', ''))
-		allPackages = reduce(lambda x, y: x + y, [ i['Packages'] for i in get_components() ])
-		removePackages = list(set(allPackages) - set(installPackages))
-		removePackages.sort()
+		selectedComponents = regSpaces.split(newValues.get('components', ''))
+		selectedPackages = set(reduce(lambda x, y: x + y, [ i.split(':') for i in selectedComponents ]))
+		componentPackages = set(reduce(lambda x, y: x + y, [ i['Packages'] for i in get_components() ]))
+		allPackages = set(get_installed_packages())
+
+		# get all packages that shall be removed
+		removePackages = list(componentPackages & (allPackages - selectedPackages))
 		newValues['packages_remove'] = ' '.join(removePackages)
+		
+		# get all packages that shall be installed
+		installPackages = list(componentPackages & (selectedPackages - allPackages)) 
+		newValues['packages_install'] = ' '.join(installPackages)
 
 def write_profile(values):
 	cache_file=open(PATH_PROFILE,"w+")
@@ -181,6 +183,7 @@ def run_scripts():
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
+	f.flush()
 
 	# make sure that UMC servers and apache will not be restartet
 	subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f)
@@ -202,12 +205,14 @@ def run_scripts():
 	# enable execution of servers again
 	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
 
+	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
 
 def run_joinscript(_username = None, password = None):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
+	f.flush()
 
 	# write password file
 	if _username and password:
@@ -229,6 +234,7 @@ def run_joinscript(_username = None, password = None):
 		# run join scripts
 		subprocess.call(PATH_JOIN_SCRIPT, stdout=f, stderr=f)
 
+	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
 
 def shutdown_browser():
@@ -339,19 +345,30 @@ def dhclient(interface, timeout=None):
 	return dhcp_dict
 
 def get_components():
-	'''Returns a list of packages that may be installed on the current system.'''
+	'''Returns a list of components that may be installed on the current system.'''
 
 	# get all package sets that are available for the current system role
 	role = ucr.get('server/role')
 	pkglist = [ jpackage for icategory in package_list.PackageList 
 			for jpackage in icategory['Packages']
 			if 'all' in jpackage['Possible'] or role in jpackage['Possible'] ]
+
+	# generate a unique ID for each component
+	for ipkg in pkglist:
+		ipkg['Packages'].sort()
+		ipkg['id'] = ':'.join(ipkg['Packages'])
 	return pkglist
 
 def get_installed_packages():
 	'''Returns a list of all installed packages on the system.'''
 	cache = apt.Cache()
 	return [ p.name for p in cache if p.is_installed ]
+
+def get_installed_components():
+	'''Returns a list of components that are currently fully installed on the system.'''
+	allPackages = set(get_installed_packages())
+	allComponents = get_components()
+	return [ icomp for icomp in allComponents if not len(set(icomp['Packages']) - allPackages) ]
 
 # from univention-installer/installer/modules/70_net.py
 def is_proxy(proxy):

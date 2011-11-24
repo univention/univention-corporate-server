@@ -50,6 +50,12 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
+	_orgComponents: {},
+
+	_role: null,
+
+	_noteShowed: false,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -84,48 +90,100 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 		});
 
 		this.addChild(this._form);
+
+		// show notes when samba 3/4 is selected
+		dojo.forEach(['samba', 'samba4'], function(ikey) {
+			this.connect(this._form.getWidget('components'), 'onChange', function(newVal) {
+				var components = newVal.join(' ');
+				if ((new RegExp('univention-' + ikey + '\\b')).test(components)) {
+					// only show the note when the samba 3 or 4 package is selected
+					this._showNote(ikey);
+				}
+			});
+		}, this);
+
+		// remeber which notes have already been showed
+		this._noteShowed = {
+			samba: false,
+			samba4: false
+		};
+		this._sambaNotes = {
+			samba: this._('It is not possible to mix NT and Active Directory compatible domaincontroller. Make sure the existing UCS domain is NT-compatible (Samba 3).'),
+			samba4: this._('It is not possible to mix NT and Active Directory compatible domaincontroller. Make sure the existing UCS domain is Active Directory-compatible (Samba 4).')
+		};
+	},
+
+	_showNote: function(key) {
+		if (!(key in this._noteShowed)) {
+			// make sure key exists
+			return;
+		}
+
+		if (this._role != 'domaincontroller_backup' && this._role != 'domaincontroller_slave') {
+			// only show note on backup/slave
+			return;
+		}
+
+		if (!this._noteShowed[key]) {
+			this._noteShowed[key] = true;
+			this.addNote(this._sambaNotes[key]);
+		}
 	},
 
 	setValues: function(vals) {
-		// get a dict of all packages that are installed
-		var installedPackages = {};
-		dojo.forEach((vals.packages || '').split(/\s+/), function(ipackage) {
-			installedPackages[ipackage] = true;
-		});
+		// get a dict of all installed components
+		this._orgComponents = {};
+		this._role = vals.role;
+		var components = (vals.components || '').split(/\s+/);
+		dojo.forEach(components, function(icomponent) {
+			this._orgComponents[icomponent] = true;
+		}, this);
+		this._form.getWidget('components').setInitialValue(components, true);
 
-		var components = this._form.getWidget('components');
-		this.umcpCommand('setup/software/components').then(dojo.hitch(this, function(data) {
-			// all form values have been loaded, we have also the list of components
-			var installedComponents = [];
-			dojo.forEach(data.result, function(icomponent) {
-				// a component is installed if all its packages are installed on the system
-				var componentPackagesInstalled = true;
-				dojo.forEach(icomponent.packages, function(jpackage) {
-					if (!(jpackage in installedPackages)) {
-						componentPackagesInstalled = false;
-					}
-					return componentPackagesInstalled;
-				});
-
-				if (componentPackagesInstalled) {
-					installedComponents.push(icomponent.id);
-				}
-			});
-
-			// set the values
-			components.setInitialValue(installedComponents, true);
-		}));
+		this._noteShowed = {
+			samba: false,
+			samba4: false
+		};
 	},
 
 	getValues: function() {
-		var packages = [];
-		dojo.forEach(this._form.gatherFormValues().components, function(icomponent) {
-			// each selected software component is a list of packages that
-			// are separated with a ':'
-			packages = packages.concat(icomponent.split(':'));
+		return {
+			components: this._form.getWidget('components').get('value').join(' ')
+		};
+	},
+
+	_getComponents: function() {
+		// return a dict of currently selected components
+		var components = {};
+		dojo.forEach(this._form.gatherFormValues().components, function(icomp) {
+			components[icomp] = true;
 		});
-		packages = packages.sort();
-		return { packages: packages.join(' ') };
+		return components;
+	},
+
+	_getRemovedComponents: function() {
+		// if a previously installed component has been deselected
+		// -> uninstall all its packages
+		var components = [];
+		var selectedComponents = this._getComponents();
+		umc.tools.forIn(this._orgComponents, function(icomponent) {
+			if (!(icomponent in selectedComponents)) {
+				components.push(icomponent);
+			}
+		});
+		return components;
+	},
+
+	_getInstalledComponents: function() {
+		// if a previously not/partly installed component has been selected
+		// -> install all its packages
+		var components = [];
+		umc.tools.forIn(this._getComponents(), function(icomponent) {
+			if (!(icomponent in this._orgComponents)) {
+				components.push(icomponent);
+			}
+		}, this);
+		return components;
 	},
 
 	getSummary: function() {
@@ -135,16 +193,35 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 			allComponents[iitem.id] = iitem.label;
 		});
 
-		// get a (verbose) list of all installed components
-		var components = dojo.map(this._form.gatherFormValues().components, function(icomponent) {
-			return allComponents[icomponent];
-		});
+		// get changed components
+		var removeComponents = this._getRemovedComponents();
+		var installComponents = this._getInstalledComponents();
 
-		return [{
-			variables: ['packages'],
-			description: this._('Installed software components'),
-			values: components.join(', ')
-		}];
+		// get a (verbose) list of components that will be removed/installed
+		var result = [];
+		var components = [];
+		if (installComponents.length) {
+			components = dojo.map(installComponents, function(icomponent) {
+				return allComponents[icomponent];
+			});
+			result.push({
+				variables: ['components'],
+				description: this._('Installing software components'),
+				values: components.join(', ')
+			});
+		}
+		if (removeComponents.length) {
+			components = dojo.map(removeComponents, function(icomponent) {
+				return allComponents[icomponent];
+			});
+			result.push({
+				variables: ['components'],
+				description: this._('Removing software components'),
+				values: components.join(', ')
+			});
+
+		}
+		return result;
 	},
 
 	onSave: function() {

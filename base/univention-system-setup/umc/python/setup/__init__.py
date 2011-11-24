@@ -383,6 +383,15 @@ class Instance(umcm.Base):
 		if not ipv4HasDynamic and not ipv6HasDynamic and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues.get('nameserver3'):
 			_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
 
+		# software checks
+		regSpaces = re.compile(r'\s+')
+		components = regSpaces.split(values.get('components', ''))
+		packages = set(reduce(lambda x, y: x + y, [ i.split(':') for i in components ]))
+		if 'univention-virtual-machine-manager-node-kvm' in packages and 'univention-virtual-machine-manager-node-xen' in packages:
+			_append('components', _('It is not possible to install KVM and XEN components on one system. Please select only one of these components.'))
+		if 'univention-samba' in packages and 'univention-samba4' in packages:
+			_append('components', _('It is not possible to install Samba 3 and Samba 4 on one system. Please select only one of these components.'))
+
 		self.finished(request.id, messages)
 
 
@@ -519,11 +528,8 @@ class Instance(umcm.Base):
 	def software_components(self, request):
 		'''Return a list of all available software packages. Entries have the properties 
 		"id", "label", and "packages" which is an array of the Debian package names.'''
-		choices = [ { 'id': ':'.join(i['Packages']), 'label': i['Name'], 'packages': i['Packages'] }
+		choices = [ { 'id': i['id'], 'label': i['Name'], 'packages': i['Packages'] }
 				for i in util.get_components() ]
 		self.finished(request.id, choices)
-
-
-
 
 

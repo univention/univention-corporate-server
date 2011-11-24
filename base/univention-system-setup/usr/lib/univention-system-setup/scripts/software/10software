@@ -40,8 +40,9 @@ fi
 
 packages=`get_profile_var "packages"`
 packages_remove=`get_profile_var "packages_remove"`
+packages_install=`get_profile_var "packages_install"`
 
-if [ -z "$packages" -o -z "$packages_remove" ]; then
+if [ -z "$packages_remove" -a -z "$packages_install" ]; then
 	exit 0
 fi
 
@@ -69,7 +70,7 @@ for p in $packages_remove; do
 	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base
 done
 
-for p in $packages; do
+for p in $packages_install; do
 	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p $base " >>/var/log/univention/setup.log
 	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p $base
 done

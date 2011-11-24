@@ -1,3 +1,10 @@
+univention-system-setup (5.0.70-1) unstable; urgency=low
+
+  * UMC: fixed software componente handling (Bug #24764)
+  * UMC: handle software basic conflicts (Bug #22905)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Nov 2011 23:54:22 +0100
+
 univention-system-setup (5.0.69-1) unstable; urgency=low
 
   * UMC: fixed scoping error (Bug #22904)

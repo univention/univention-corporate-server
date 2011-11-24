@@ -390,7 +390,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}]).then(dojo.hitch(this, function(response) {
 					if ('apply' != response) {
 						// throw new error to indicate that action has been canceled
-						throw new umc.widgets._setup.CancelDialogException();
+						throw new umc.modules._setup.CancelDialogException();
 					}
 				}));
 			});
@@ -468,7 +468,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}]).then(dojo.hitch(this, function(response) {
 					if ('apply' != response) {
 						// throw new error to indicate that action has been canceled
-						throw new umc.widgets._setup.CancelDialogException();
+						throw new umc.modules._setup.CancelDialogException();
 					}
 				}));
 			});
