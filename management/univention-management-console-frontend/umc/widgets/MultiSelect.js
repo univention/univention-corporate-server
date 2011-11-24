@@ -48,7 +48,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 
 	// value: String[]
 	//		The widgets value, an array of strings containing all elements that are selected.
-	value: null,
+	value: [],
 
 	_loadingDeferred: null,
 

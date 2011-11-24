@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.226-1) unstable; urgency=low
+
+  * MultiSelect: set default value to [] (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Nov 2011 13:37:38 +0100
+
 univention-management-console-frontend (1.0.225-1) unstable; urgency=low
 
   * umc.i18n: always use the scope 'umc.app' as backup for translations
