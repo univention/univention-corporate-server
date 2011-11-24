@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.223-1) unstable; urgency=low
+
+  * addNote: remove note from inernal list of widget is closed; Bug #24771
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 24 Nov 2011 14:08:09 +0100
+
 univention-management-console-frontend (1.0.226-1) unstable; urgency=low
 
   * MultiSelect: set default value to [] (Bug #22461)
