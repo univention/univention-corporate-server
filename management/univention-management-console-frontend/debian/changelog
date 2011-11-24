@@ -1,10 +1,16 @@
-univention-management-console-frontend (1.0.224-1) unstable; urgency=low
+univention-management-console-frontend (1.0.229-1) unstable; urgency=low
+
+  * umc.i18n: ignore empty strings (Bug #24864)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Nov 2011 16:36:03 +0100
+
+univention-management-console-frontend (1.0.228-1) unstable; urgency=low
 
   * add a helper function canExecuteOnSelection to the Grid widget; Bug #24711
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 24 Nov 2011 16:00:56 +0100
 
-univention-management-console-frontend (1.0.223-1) unstable; urgency=low
+univention-management-console-frontend (1.0.227-1) unstable; urgency=low
 
   * addNote: remove note from inernal list of widget is closed; Bug #24771
 
