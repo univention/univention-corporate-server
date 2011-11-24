@@ -477,6 +477,14 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				// } else {
 				// 	this._generalForm._widgets.name.set( 'disabled', disabled );
 				// }
+
+				// hide architecture for xen domains
+				if ( types.getNodeType( this._domain.domainURI ) == 'qemu' ) {
+					this._advancedForm._widgets.arch.set( 'visible', true );
+					this._advancedForm._widgets.arch.set( 'disabled', disabled );
+				} else {
+					this._advancedForm._widgets.arch.set( 'visible', false );
+				}
 				this._driveGrid.set( 'disabled', disabled );
 				this._interfaceGrid.set( 'disabled', disabled );
 				umc.tools.forIn( this._advancedForm._widgets, dojo.hitch( this, function( iid, iwidget ) {

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.84-1) unstable; urgency=low
+
+  * hide architecture for Xen domains; Bug #24854
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 24 Nov 2011 10:25:54 +0100
+
 univention-virtual-machine-manager-daemon (1.0.83-1) unstable; urgency=low
 
   * use operation system attribute from profile whne creating new machines; Bug #24772
