@@ -12,7 +12,9 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-squid,
  dansguardian
-Breaks: univention-antivir-web
+Replaces: univention-antivir-web
+Conflicts: univention-antivir-web (<=5.0.0-2)
+Provides: univention-antivir-web
 Recommends: univention-nagios-dansguardian
 Description: UCS - antivirus web
  UCS module to add antivirus protection to the web module.
