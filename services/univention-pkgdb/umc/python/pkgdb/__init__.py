@@ -283,13 +283,13 @@ class Instance(umcm.Base):
 				what = 'fetching system roles'
 				sysroles = self._execute_query('sql_getall_systemroles');
 				PROPOSALS['sysrole'] = sysroles
-				MODULE.info("   ++ system roles: ['%s']" % "','".join(sysroles[0]))
+				MODULE.info("   ++ system roles: ['%s']" % "','".join(sysroles))
 	
 			if not 'sysversion' in PROPOSALS:
 				what = 'fetching system versions'
 				sysversions = self._execute_query('sql_getall_systemversions');
 				PROPOSALS['sysversion'] = sysversions
-				MODULE.info("   ++ system versions: ['%s']" % "','".join(sysversions[0]))
+				MODULE.info("   ++ system versions: ['%s']" % "','".join(sysversions))
 			
 				# make 'systems not updated' pattern to a selection too
 				PROPOSALS['systems_not_updated'] = PROPOSALS['sysversion']
@@ -725,6 +725,33 @@ class Instance(umcm.Base):
 			if result == None:
 				what = 'handling NONE result'
 				result = []
+			# DEBUG for #22896: the fetchall() call can return different data types.
+			# Usually we expect an array of dictionaries:
+			#
+			#	result = [
+			#				{ 'field1':'value1', 'field2':'value2' },
+			#				{ ... }
+			#			]
+			#
+			# but depending on the type of query, the fields are sometimes returned without names, as in:
+			#
+			#	result = [
+			#				['one', 'two'], 
+			#				['three', 'four']
+			#			]
+			#
+			# For Grid-driven queries, this is not relevant. But for 'distinct' queries that are meant
+			# for ComboBox data, we need one array containing all those values, so converting them here:
+			#
+			what = 'checking result type'
+			
+			if (len(result) > 0) and ("'list'" in str(type(result[0]))) and (len(result[0]) == 1):
+				MODULE.info("   ++ Converting %d entries from single-element arrays to strings" % len(result))
+				tmp = []
+				for element in result:
+					tmp.append(element[0])
+				result = tmp
+			 
 			# Marshaler isn't able to handle too much data, so we limit the record count. Better SQL
 			# execution should avoid returning too much data, but in the meantime, we work around here. 
 			what = 'checking for record limit'
