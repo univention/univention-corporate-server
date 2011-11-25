@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.234-1) unstable; urgency=low
+
+  * changed german translation for Finish to Fertigstellen; Bug #23713
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Nov 2011 16:05:49 +0100
+
 univention-management-console-frontend (1.0.233-1) unstable; urgency=low
 
   * umc.render: fixed wrong references to $refLabe$ (Bug #22461)

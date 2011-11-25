@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2011-11-24 23:18+0100\n"
-"PO-Revision-Date: 2011-11-01 20:15+0100\n"
+"PO-Revision-Date: 2011-11-25 16:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -133,7 +133,7 @@ msgstr ""
 
 #: umc/widgets/Wizard.js:80
 msgid "Finish"
-msgstr "Beenden"
+msgstr "Fertigstellen"
 
 #: umc/widgets/LoginDialog.js:69
 msgid "German"
