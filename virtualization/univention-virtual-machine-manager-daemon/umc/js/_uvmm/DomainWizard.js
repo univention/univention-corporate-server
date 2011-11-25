@@ -173,7 +173,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 				if ( types.getNodeType( this.getWidget('profile', 'nodeURI').get('value') ) == 'xen' ) {
 					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[A-Za-z0-9_\\-.:+]+$' : '.*');
 				} else {
-					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$).+$' : '.*');
+					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
 				}
 				this.getWidget('maxMem').set('value', this._profile.ram || '');
 				this.getWidget('vcpus').set('value', this._profile.cpus);

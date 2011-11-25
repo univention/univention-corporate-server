@@ -78,6 +78,15 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				isStandardAction: true,
 				callback: dojo.hitch(this, '_editDrive')
 			}, {
+				name: 'change_medium',
+				label: this._('Change medium'),
+				isMultiAction: false,
+				isStandardAction: false,
+				callback: dojo.hitch(this, '_changeMedium'),
+				canExecute: function( item ) {
+					return item.device == 'cdrom' || item.device == 'floppy';
+				}
+			}, {
 				name: 'delete',
 				label: this._('Delete'),
 				isMultiAction: false,
@@ -104,6 +113,39 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		};
 	},
 
+	_changeMedium: function( ids, items ) {
+		var old_cdrom = items[ 0 ];
+		var dialog = null, wizard = null;
+
+		var _cleanup = function() {
+			dialog.hide();
+			dialog.destroyRecursive();
+			wizard.destroyRecursive();
+		};
+
+		var _finished = dojo.hitch( this, function( values ) {
+			_cleanup();
+			this.moduleStore.remove( ids[ 0 ] );
+			values.target_dev = old_cdrom.target_dev;
+			values.target_bus = old_cdrom.target_bus;
+			this.moduleStore.add( values );
+		} );
+
+		wizard = new umc.modules._uvmm.DriveWizard({
+			style: 'width: 450px; height:450px;',
+			domain: this.domain,
+			onFinished: _finished,
+			onCancel: _cleanup,
+			driveType: old_cdrom.device
+		});
+
+		dialog = new dijit.Dialog({
+			title: this._('Change medium'),
+			content: wizard
+		});
+		dialog.show();
+	},
+
 	_editDrive: function( ids, items ) {
 		var disk = items[ 0 ];
 
@@ -128,9 +170,9 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 
 		var _saveDrive = dojo.hitch(this, function() {
 			var values = form.gatherFormValues();
-			console.log( values );
 			disk.paravirtual = values.paravirtual;
 			this.moduleStore.put( disk );
+			_cleanup();
 		});
 
 		form = new umc.widgets.Form({

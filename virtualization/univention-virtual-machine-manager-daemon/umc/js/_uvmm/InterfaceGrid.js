@@ -56,7 +56,17 @@ dojo.declare("umc.modules._uvmm.InterfaceGrid", [ umc.widgets.Grid, umc.i18n.Mix
 		dojo.mixin(this, {
 			columns: [{
 				name: 'type',
-				label: this._('Type')
+				label: this._('Type'),
+				formatter: dojo.hitch(this, function(type) {
+					var label = this._('unknown');
+					dojo.some( umc.modules._uvmm.types.interfaceTypes, function( itype ) {
+						if ( itype.id == type ) {
+							label = itype.label;
+							return false;
+						}
+					} );
+					return label;
+				})
 			}, {
 				name: 'source',
 				label: this._('Source')
@@ -172,7 +182,7 @@ dojo.declare("umc.modules._uvmm.InterfaceGrid", [ umc.widgets.Grid, umc.i18n.Mix
 			content: wizard
 		});
 		dialog.show();
-		
+
 	},
 
 	filter: function() {

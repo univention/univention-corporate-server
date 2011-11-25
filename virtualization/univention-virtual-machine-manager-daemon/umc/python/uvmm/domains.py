@@ -122,6 +122,12 @@ class Domains( object ):
 
 			# RAM
 			json[ 'maxMem' ] = MemorySize.num2str( json[ 'maxMem' ] )
+
+			# interfaces (fake the special type network:<source>)
+			for iface in json[ 'interfaces' ]:
+				if iface[ 'type' ] == Interface.TYPE_NETWORK:
+					iface[ 'type' ] = 'network:' + iface[ 'source' ]
+
 			# disks
 			for disk in json[ 'disks' ]:
 				if disk[ 'type' ] != Disk.TYPE_BLOCK:
@@ -179,14 +185,31 @@ class Domains( object ):
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 		self.uvmm.send( 'DOMAIN_INFO', Callback( _finished, request ), uri = node_uri, domain = domain_uuid )
 
-	def _create_disks( self, node_uri, disks, domain_info ):
+	def _create_disks( self, node_uri, disks, domain_info, profile = None ):
 		drives = []
 
 		uri = urlparse.urlsplit( node_uri )
 		for disk in disks:
 			drive = Disk()
+			# do we create a new disk or just copy data from an already defined drive
+			create_new = disk.get( 'source', None ) == None
+
 			drive.device = disk[ 'device' ]
 			drive.driver_type = disk[ 'driver_type' ]
+
+			# set old values of existing drive
+			if not create_new:
+				drive.source = disk[ 'source' ]
+				drive.driver = disk[ 'driver' ]
+				drive.target_bus = disk[ 'target_bus' ]
+				drive.target_dev = disk[ 'target_dev' ]
+				if disk[ 'size' ] is not None:
+					drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
+			else: # when changing the medium of a CDROM we must keep the target
+				drive.target_bus = disk.get( 'target_bus', None )
+				drive.target_dev = disk.get( 'target_dev', None )
+
+			# creating new drive
 			pool_path = self.get_pool_path( node_uri, disk.get( 'pool' ) )
 			file_pool = self.is_file_pool( node_uri, disk.get( 'pool' ) )
 
@@ -194,26 +217,26 @@ class Domains( object ):
 				drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
 			elif not file_pool and disk.get( 'volumeType', Disk.TYPE_BLOCK ) and disk[ 'volumeFilename' ]:
 				drive.source = disk[ 'volumeFilename' ]
-			elif 'source' in disk and disk[ 'source' ]:
-				drive.source = disk[ 'source' ]
-			else:
+			elif drive.source is None:
 				raise ValueError( _( 'No valid source for disk "%s" found' ) % drive.device )
 
 			if file_pool:
 				drive.type = Disk.TYPE_FILE
-				if 'target_bus' in disk:
-					drive.target_bus = disk[ 'target_bus' ]
 			else:
 				drive.type = Disk.TYPE_BLOCK
 				drive.target_bus = 'ide'
-				if 'source' in disk and disk[ 'source' ]:
-					drive.source = disk[ 'source' ]
-				else:
-					drive.source = disk[ 'volumeFilename' ]
+				drive.source = disk[ 'volumeFilename' ]
 
-			driver_pv = None
-			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
+			# get default for paravirtual
+			if profile is not None:
+				if drive.device == Disk.DEVICE_DISK:
+					driver_pv = getattr( profile, 'pvdisk', False )
+				elif drive.device == Disk.DEVICE_CDROM:
+					driver_pv = getattr( profile, 'pvcdrom', False )
+			else:
 				driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
+
+			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
 				if drive.device == Disk.DEVICE_CDROM:
 					drive.driver_type = Disk.TYPE_RAW # ISOs need driver/@type='raw'
 			elif drive.device == Disk.DEVICE_FLOPPY:
@@ -225,6 +248,8 @@ class Domains( object ):
 				drive.driver = 'qemu'
 				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
 					drive.target_bus = 'virtio'
+				elif disk.get( 'paravirtual', None ) == False and not drive.target_bus:
+					drive.target_bus = 'ide'
 			elif uri.scheme.startswith( 'xen' ):
 				pv_domain = domain_info.os_type == 'xen'
 				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
@@ -251,7 +276,6 @@ class Domains( object ):
 					drive.driver = 'phy'
 			else:
 				raise ValueError( 'Unknown virt-tech "%s"' % node_uri )
-
 			if disk[ 'size' ]:
 				drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
 
@@ -370,10 +394,15 @@ class Domains( object ):
 			domain_info.graphics = [gfx,]
 
 		# RTC offset
-		domain_info.rtc_offset = domain.get( 'rtc_offset', '' )
+		if 'rtc_offset' in domain:
+			domain_info.rtc_offset = domain[ 'rtc_offset' ]
+		elif profile and getattr( profile, 'rtcoffset' ):
+			domain_info.rtc_offset = profile.rtcoffset
+		else:
+			domain_info.rtc_offset = 'utc'
 
 		# drives
-		domain_info.disks = self._create_disks( request.options[ 'nodeURI' ], domain[ 'disks' ], domain_info )
+		domain_info.disks = self._create_disks( request.options[ 'nodeURI' ], domain[ 'disks' ], domain_info, profile )
 		verify_device_files( domain_info )
 		# on _new_ PV machines we should move the CDROM drive to first position
 		if domain_info.uuid is None and domain_info.os_type == 'xen':
@@ -389,7 +418,12 @@ class Domains( object ):
 		domain_info.interfaces = []
 		for interface in domain[ 'interfaces' ]:
 			iface = Interface()
-			iface.source = interface[ 'source' ]
+			if interface[ 'type' ].startswith( 'network:' ):
+				iface.type = 'network'
+				iface.source = interface[ 'type' ].split( ':', 1 )[ 1 ]
+			else:
+				iface.type = interface[ 'type' ]
+				iface.source = interface[ 'source' ]
 			iface.model = interface[ 'model' ]
 			iface.mac_address = interface.get( 'mac_address', None )
 			# if  domain_info.os_type == 'hvm':

@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (1.0.89-1) unstable; urgency=low
+
+  * read time zone information from profile; Bug #24896
+  * close edit dialog for drives after saving; Bug #24813
+  * use prarvirtual setting from profile for new drives; Bug #24814
+  * implement changing the medium; Bug #24910
+  * support interfaces of typ NAT; Bug #24918
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Nov 2011 18:52:37 +0100
+
 univention-virtual-machine-manager-daemon (1.0.88-1) unstable; urgency=low
 
   * UMC: add focusing of search field (Bug #22893)

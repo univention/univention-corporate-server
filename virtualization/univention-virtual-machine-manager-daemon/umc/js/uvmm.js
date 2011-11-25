@@ -556,7 +556,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			if ( ! this._grid.canExecuteOnSelection( action, items ).length ) {
 				umc.dialog.alert( this._( 'The state of the selected virtual instances can not be changed' ) );
 				return;
-			};
+			}
 		}
 
 		form = new umc.widgets.Form({
@@ -598,7 +598,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			if ( ! this._grid.canExecuteOnSelection( action, items ).length ) {
 				umc.dialog.alert( this._( 'The state of the selected virtual instances can not be changed' ) );
 				return;
-			};
+			}
 		}
 		dojo.forEach(ids, function(iid, i) {
 			deferred = deferred.then(dojo.hitch(this, function() {

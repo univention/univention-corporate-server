@@ -43,6 +43,8 @@ dojo.declare("umc.modules._uvmm.DriveWizard", [ umc.widgets.Wizard, umc.i18n.Mix
 
 	_volumes: null,
 
+	driveType: null, // pre-defined drive will automatically set the drive type and start on page 'drive'
+
 	constructor: function() {
 		var types = umc.modules._uvmm.types;
 
@@ -137,7 +139,7 @@ dojo.declare("umc.modules._uvmm.DriveWizard", [ umc.widgets.Wizard, umc.i18n.Mix
 								});
 								++i;
 							} while (fname in this._volumes);
-							
+
 							// found one :)
 							return fname;
 						}));
@@ -223,6 +225,12 @@ dojo.declare("umc.modules._uvmm.DriveWizard", [ umc.widgets.Wizard, umc.i18n.Mix
 
 	next: function(pageName) {
 		var nextName = this.inherited(arguments);
+		if ( pageName === null && this.driveType ) {
+			this.getWidget( 'driveType', 'driveType' ).set( 'value', this.driveType );
+			nextName = 'drive';
+			pageName = 'driveType';
+			this.getPage( 'drive' ).set( 'headerText', this._( 'Change medium' ) );
+		}
 		if (pageName == 'driveType') {
 			// update the device type of the drive page
 			// ... will cause the ComboBoxes to update themselves

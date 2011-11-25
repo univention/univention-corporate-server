@@ -188,14 +188,14 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				name: 'boot_hvm',
 				type: 'MultiInput',
 				label: this._('Boot order'),
-				subtypes: [{
+				subtypes: [ {
 					type: 'ComboBox',
 					staticValues: types.bootDevices
-				}, ]
+				} ]
 			}, {
 				name: 'boot_pv',
 				type: 'ComboBox',
-				label: this._('Boot device'),
+				label: this._('Boot device')
 			}, {
 				name: 'os_type',
 				type: 'HiddenInput'
@@ -235,8 +235,10 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			layout: [{
 				label: this._('Machine'),
 				layout: [
-					[ 'arch', 'vcpus' ],
-					[ 'maxMem', 'domain_type', 'os_type', 'type' ],
+					'arch',
+					'vcpus',
+					'maxMem',
+					[ 'domain_type', 'os_type', 'type' ],
 					'rtc_offset',
 					'boot_hvm',
 					'boot_pv'
@@ -475,7 +477,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				} else {
 					this.hideChild( this._snapshotPage );
 				}
-;
+
 				// deactivate most input field when domain is running
 				var disabled = false;
 				if ( this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' ) {
