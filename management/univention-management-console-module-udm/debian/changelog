@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.232-1) unstable; urgency=low
+
+  * fixed autoselection of search text (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 19:22:34 +0100
+
 univention-management-console-module-udm (1.0.231-1) unstable; urgency=low
 
   * read default user template as configured by the UCR variable:

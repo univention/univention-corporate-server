@@ -685,7 +685,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// register to onShow as well as onFilterDone events in order on focus to the 
 		// input widget when the tab is changed
-		this.connect(this, 'onShow', '_selectInputText');
+		this.connect(this._searchPage, 'onShow', '_selectInputText');
 		this.connect(this._grid, 'onFilterDone', '_selectInputText');
 
 		// register event to update hiding/showing of form fields
@@ -784,7 +784,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// select the text
 		var textbox = dojo.getObject('_widget.textbox', false, widget);
 		if (textbox) {
-			dijit.selectInputText(textbox);
+			try {
+				dijit.selectInputText(textbox);
+			}
+			catch (err) { }
 		}
 	},
 
