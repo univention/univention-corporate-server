@@ -185,6 +185,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 					widgets.push({
 						type: 'ComboBox',
 						name: 'objectTemplate',
+						value: this.defaultObjectType,  // see Bug #13073, for users/user, there exists only one object type
 						label: this._('%s template', umc.tools.capitalize(this.objectNameSingular)),
 						description: this._('A template defines rules for default object properties.'),
 						staticValues: templates

@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.231-1) unstable; urgency=low
+
+  * read default user template as configured by the UCR variable:
+    directory/manager/web/modules/users/user/add/default
+    (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 18:11:40 +0100
+
 univention-management-console-module-udm (1.0.230-1) unstable; urgency=low
 
   * update list of superordinates when a new object is added
