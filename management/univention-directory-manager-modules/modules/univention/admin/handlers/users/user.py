@@ -1929,7 +1929,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if self[ 'mailPrimaryAddress' ]:
 				univention.admin.allocators.confirm( self.lo, self.position, 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] )
 			else:
-				univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] )
+				univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', self.oldinfo[ 'mailPrimaryAddress' ] )
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('mailPrimaryAddress'):

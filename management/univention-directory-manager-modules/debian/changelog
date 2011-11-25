@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.200-1) unstable; urgency=low
+
+  * fix releasing lock of removed mailPrimaryAddress; Bug #24687
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Nov 2011 21:15:23 +0100
+
 univention-directory-manager-modules (7.0.199-2) unstable; urgency=low
 
   * Fixed time interval mapping (Bug #23945, Bug #24602)
