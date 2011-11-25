@@ -5062,6 +5062,13 @@ form {
 	padding-bottom: 5px;
 }
 
+.umcPopup form {
+	margin-top: -5px;
+	margin-left: -5px;
+	margin-right: -5px;
+	margin-bottom: 0px;
+}
+
 .dijitTitlePane {
 	margin: 0 0 15px 0;
 }

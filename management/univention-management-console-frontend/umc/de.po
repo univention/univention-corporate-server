@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-24 23:18+0100\n"
+"POT-Creation-Date: 2011-11-25 16:26+0100\n"
 "PO-Revision-Date: 2011-11-25 16:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgstr "Zurück"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/widgets/Uploader.js:93
+#: umc/widgets/Uploader.js:97
 msgid "Clear data"
 msgstr "Daten leeren"
 
@@ -124,7 +124,7 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 msgid "English"
 msgstr "Englisch"
 
-#: umc/widgets/Uploader.js:140
+#: umc/widgets/Uploader.js:146
 #, python-format
 msgid "File cannot be uploaded, its maximum size may be %.1f MB."
 msgstr ""
@@ -437,7 +437,7 @@ msgstr "Univention Supportdatenbank (SDB)"
 msgid "Univention wiki site"
 msgstr "Univention Webseite"
 
-#: umc/widgets/Uploader.js:92 umc/widgets/InfoUploader.js:46
+#: umc/widgets/Uploader.js:96 umc/widgets/InfoUploader.js:46
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -445,7 +445,7 @@ msgstr "Hochladen"
 msgid "Upload new image"
 msgstr "Neues Bild hochladen"
 
-#: umc/widgets/Uploader.js:204
+#: umc/widgets/Uploader.js:212
 msgid "Uploading..."
 msgstr "Datenübertragung..."
 
