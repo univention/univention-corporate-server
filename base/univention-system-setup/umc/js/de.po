@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-24 23:48+0100\n"
+"POT-Creation-Date: 2011-11-25 00:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_setup/NetworkPage.js:200
+#: umc/js/_setup/NetworkPage.js:219
 msgid "A virtual network device cannot be used for DHCP."
 msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 
@@ -24,7 +24,7 @@ msgstr "Zugriffseinstellungen"
 msgid "Account data"
 msgstr "Kontodaten"
 
-#: umc/js/_setup/NetworkPage.js:104
+#: umc/js/_setup/NetworkPage.js:106
 msgid "Activated"
 msgstr "Aktiviert"
 
@@ -32,7 +32,7 @@ msgstr "Aktiviert"
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
-#: umc/js/_setup/NetworkPage.js:138
+#: umc/js/_setup/NetworkPage.js:140
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
@@ -61,6 +61,13 @@ msgstr "Zertifikat"
 msgid "Certificate settings"
 msgstr "Zertifikateinstellungen"
 
+#: umc/js/_setup/SoftwarePage.js:113
+msgid ""
+"Changes for IP addresses may result in restarting or stopping services. This "
+"can have severe side-effects when the system is in productive use at the "
+"moment."
+msgstr "Änderungen der IP-Adressen kann Neustart oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
+
 #: umc/js/_setup/CertificatePage.js:180
 msgid ""
 "Changes in the SSL certificate settings will result in generating new root "
@@ -84,11 +91,11 @@ msgstr "Fortfahren"
 msgid "Country"
 msgstr "Land"
 
-#: umc/js/_setup/NetworkPage.js:212
+#: umc/js/_setup/NetworkPage.js:231
 msgid "DHCP query failed."
 msgstr "DHCP-Anfrage schlug fehl."
 
-#: umc/js/_setup/NetworkPage.js:103
+#: umc/js/_setup/NetworkPage.js:105
 msgid "Deactivated"
 msgstr "Deaktiviert"
 
@@ -96,15 +103,15 @@ msgstr "Deaktiviert"
 msgid "Default system locale"
 msgstr "Standard-System-Sprachdefinition"
 
-#: umc/js/_setup/NetworkPage.js:488
+#: umc/js/_setup/NetworkPage.js:511
 msgid "Domain name server"
 msgstr "Domänen-DNS-Server"
 
-#: umc/js/_setup/NetworkPage.js:154
+#: umc/js/_setup/NetworkPage.js:156
 msgid "Domain name server (max. 3)"
 msgstr "Domänen-DNS-Server (max. 3)"
 
-#: umc/js/_setup/NetworkPage.js:101
+#: umc/js/_setup/NetworkPage.js:103
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
@@ -112,11 +119,11 @@ msgstr "Dynamisch (DHCP)"
 msgid "Email address"
 msgstr "E-Mailadresse"
 
-#: umc/js/_setup/NetworkPage.js:492
+#: umc/js/_setup/NetworkPage.js:515
 msgid "External name server"
 msgstr "Externer DNS-Server "
 
-#: umc/js/_setup/NetworkPage.js:160
+#: umc/js/_setup/NetworkPage.js:162
 msgid "External name server (max. 3)"
 msgstr "Externer DNS-Server "
 
@@ -143,11 +150,11 @@ msgstr "Vollständiger Rechername"
 msgid "Fully qualified domain name (e.g., master.example.com)"
 msgstr "Vollständiger Rechername (z.B., master.example.com)"
 
-#: umc/js/_setup/NetworkPage.js:145 umc/js/_setup/NetworkPage.js:480
+#: umc/js/_setup/NetworkPage.js:147 umc/js/_setup/NetworkPage.js:503
 msgid "Gateway (IPv4)"
 msgstr ""
 
-#: umc/js/_setup/NetworkPage.js:149 umc/js/_setup/NetworkPage.js:484
+#: umc/js/_setup/NetworkPage.js:151 umc/js/_setup/NetworkPage.js:507
 msgid "Gateway (IPv6)"
 msgstr ""
 
@@ -159,11 +166,11 @@ msgstr "Allgemein"
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/_setup/NetworkPage.js:175
+#: umc/js/_setup/NetworkPage.js:177
 msgid "Global network settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: umc/js/_setup/NetworkPage.js:165 umc/js/_setup/NetworkPage.js:496
+#: umc/js/_setup/NetworkPage.js:167 umc/js/_setup/NetworkPage.js:519
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
@@ -171,39 +178,39 @@ msgstr "HTTP-Proxy"
 msgid "Host and domain settings"
 msgstr "Recher- und Domänen-Einstellungen"
 
-#: umc/js/_setup/NetworkPage.js:93
+#: umc/js/_setup/NetworkPage.js:95
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
-#: umc/js/_setup/NetworkPage.js:169 umc/js/_setup/NetworkPage.js:500
+#: umc/js/_setup/NetworkPage.js:171 umc/js/_setup/NetworkPage.js:523
 msgid "IPv4 network devices"
 msgstr "IPv4-Netzwerkgeräte"
 
-#: umc/js/_setup/NetworkPage.js:128
+#: umc/js/_setup/NetworkPage.js:130
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
-#: umc/js/_setup/NetworkPage.js:508
+#: umc/js/_setup/NetworkPage.js:531
 msgid "IPv6 interfaces with autoconfiguration (SLAAC)"
 msgstr "IPv6-Netzwerkgeräte mit automatische Konfiguration (SLAAC)"
 
-#: umc/js/_setup/NetworkPage.js:172 umc/js/_setup/NetworkPage.js:504
+#: umc/js/_setup/NetworkPage.js:174 umc/js/_setup/NetworkPage.js:527
 msgid "IPv6 network devices"
 msgstr "IPv6-Netzwerkgeräte"
 
-#: umc/js/_setup/NetworkPage.js:132
+#: umc/js/_setup/NetworkPage.js:134
 msgid "IPv6 prefix"
 msgstr "IPv6-Präfix"
 
-#: umc/js/_setup/NetworkPage.js:124
+#: umc/js/_setup/NetworkPage.js:126
 msgid "Identifier"
 msgstr "Bezeichner"
 
-#: umc/js/_setup/SoftwarePage.js:81
+#: umc/js/_setup/SoftwarePage.js:79
 msgid "Installation of software components"
 msgstr "Installation von Softwarekomponenten"
 
-#: umc/js/_setup/SoftwarePage.js:72
+#: umc/js/_setup/SoftwarePage.js:70
 msgid "Installed software components"
 msgstr "Installierte Softwarekomponenten"
 
@@ -211,15 +218,22 @@ msgstr "Installierte Softwarekomponenten"
 msgid "Installed system locales"
 msgstr "Verfügbare System-Lokalisierungen"
 
-#: umc/js/_setup/SoftwarePage.js:209
+#: umc/js/_setup/NetworkPage.js:204
+msgid ""
+"Installing or removing software components may result in restarting or "
+"stopping services. This can have severe side-effects when the system is in "
+"productive use at the moment."
+msgstr "Die Installation oder das Entfernen von Softwarekomponenten kann Neustart oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
+
+#: umc/js/_setup/SoftwarePage.js:211
 msgid "Installing software components"
 msgstr "Installation von Softwarekomponenten"
 
-#: umc/js/_setup/NetworkPage.js:75 umc/js/_setup/NetworkPage.js:119
+#: umc/js/_setup/NetworkPage.js:77 umc/js/_setup/NetworkPage.js:121
 msgid "Interface"
 msgstr "Netzwerkgerät"
 
-#: umc/js/_setup/NetworkPage.js:71 umc/js/_setup/NetworkPage.js:115
+#: umc/js/_setup/NetworkPage.js:73 umc/js/_setup/NetworkPage.js:117
 msgid "Interfaces"
 msgstr "Netzwerkgeräte"
 
@@ -228,14 +242,20 @@ msgid ""
 "It is not possible to mix NT and Active Directory compatible "
 "domaincontroller. Make sure the existing UCS domain is Active Directory-"
 "compatible (Samba 4)."
-msgstr "Es ist nicht möglich NT- und Active-Directory-kompatible Domaincontroller gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-Domäne kompatible zu Active-Directory (Samba 4) ist."
+msgstr ""
+"Es ist nicht möglich NT- und Active-Directory-kompatible Domaincontroller "
+"gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
+"Domäne kompatible zu Active-Directory (Samba 4) ist."
 
 #: umc/js/_setup/SoftwarePage.js:111
 msgid ""
 "It is not possible to mix NT and Active Directory compatible "
 "domaincontroller. Make sure the existing UCS domain is NT-compatible (Samba "
 "3)."
-msgstr "Es ist nicht möglich NT- und Active-Directory-kompatible Domaincontroller gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-Domäne NT-kompatible (Samba 3) ist."
+msgstr ""
+"Es ist nicht möglich NT- und Active-Directory-kompatible Domaincontroller "
+"gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
+"Domäne NT-kompatible (Samba 3) ist."
 
 #: umc/js/setup.js:419
 msgid "Join"
@@ -265,15 +285,15 @@ msgstr "Ort"
 msgid "Location settings"
 msgstr "Standorteinstellungen"
 
-#: umc/js/_setup/NetworkPage.js:97
+#: umc/js/_setup/NetworkPage.js:99
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: umc/js/_setup/NetworkPage.js:61
+#: umc/js/_setup/NetworkPage.js:63
 msgid "Network"
 msgstr "Netzwerk"
 
-#: umc/js/_setup/NetworkPage.js:62
+#: umc/js/_setup/NetworkPage.js:64
 msgid "Network settings"
 msgstr "Netzwerk-Einstellungen"
 
@@ -296,7 +316,7 @@ msgstr ""
 "Es wurden keine Änderungen vorgenommen. Bitte bestätigen Sie, um mit dem "
 "Boot-Prozess fortzufahren."
 
-#: umc/js/_setup/NetworkPage.js:509
+#: umc/js/_setup/NetworkPage.js:532
 msgid "No device"
 msgstr "Kein Gerät"
 
@@ -312,7 +332,7 @@ msgstr "Einstellungen über die Organisation"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/js/_setup/NetworkPage.js:195
+#: umc/js/_setup/NetworkPage.js:214
 msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
@@ -328,7 +348,7 @@ msgstr ""
 msgid "Please confirm to continue with the boot process."
 msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 
-#: umc/js/_setup/SoftwarePage.js:219
+#: umc/js/_setup/SoftwarePage.js:221
 msgid "Removing software components"
 msgstr "Entfernen von Softwarekomponenten"
 
@@ -348,11 +368,11 @@ msgstr "SSL-Root-Zertifikat"
 msgid "Save"
 msgstr "Speichern"
 
-#: umc/js/_setup/SoftwarePage.js:62
+#: umc/js/_setup/SoftwarePage.js:60
 msgid "Software"
 msgstr ""
 
-#: umc/js/_setup/SoftwarePage.js:63
+#: umc/js/_setup/SoftwarePage.js:61
 msgid "Software settings"
 msgstr "Software-Einstellungen"
 
@@ -372,7 +392,7 @@ msgid ""
 msgstr ""
 "Die Verbindung zum Server konnte nach {time} Sekunden nicht hergestellt "
 "werden. Dieses Problem kann auf eine Änderung der IP-Adresse zurück zu "
-"führen sein. Loggen Sie sich in diesem fall erneut auf Univention Management "
+"führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der neuen Adresse ein."
 
 #: umc/js/setup.js:375
@@ -417,7 +437,7 @@ msgstr "Benutzername"
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: umc/js/_setup/NetworkPage.js:83 umc/js/_setup/NetworkPage.js:452
+#: umc/js/_setup/NetworkPage.js:85 umc/js/_setup/NetworkPage.js:475
 msgid "virtual"
 msgstr "virtuell"
 

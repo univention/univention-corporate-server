@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import threading
+import traceback
 import notifier
 import notifier.threads
 import re
@@ -105,9 +106,21 @@ class Instance(umcm.Base):
 			util.write_profile(values)
 			
 			if orgValues['server/role'] == 'basesystem' or os.path.exists('/var/univention-join/joined'):
-				# on a joined system or on a basesystem, we can run the join scripts
+				# in case of changes of the IP address, restart UMC server and web server
+				# for this we ignore changes of virtual or non-default devices
+				MODULE.info('Check whether ip addresses have been changed')
+				regIpv6 = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/default/(prefix|address)$')
+				regIpv4 = re.compile(r'^interfaces/(eth[0-9]+)/(address|netmask)$')
+				restart = False
+				for ikey, ival in values.iteritems():
+					if regIpv4.match(ikey) or regIpv6.match(ikey):
+						restart = True
+						break
+				MODULE.info('Restart servers: %s' % restart)
+
+				# on a joined system or on a basesystem, we can run the setup scripts
 				MODULE.info('runnning system setup scripts')
-				util.run_scripts()
+				util.run_scripts(restart)
 			else:
 				# unjoined system and not a basesystem -> run the join script
 				MODULE.info('runnning system setup join script')

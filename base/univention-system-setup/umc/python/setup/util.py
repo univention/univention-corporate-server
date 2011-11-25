@@ -179,7 +179,7 @@ def write_profile(values):
 		cache_file.write('%s="%s"\n\n' % (ikey, newVal))
 	cache_file.close()
 
-def run_scripts():
+def run_scripts(restartServer=False):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
@@ -204,6 +204,12 @@ def run_scripts():
 
 	# enable execution of servers again
 	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
+
+	if restartServer:
+		f.write('=== Restart of UMC server and web server (%s) ===\n' % timestamp())
+		f.flush()
+		subprocess.call(['/etc/init.d/univention-management-console-server', 'restart'], stdout=f, stderr=f)
+		subprocess.call(['/etc/init.d/univention-management-console-web-server', 'restart'], stdout=f, stderr=f)
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()

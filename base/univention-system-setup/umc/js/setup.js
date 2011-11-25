@@ -532,9 +532,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}
 
 			// error case, turn off standby animation
-			deferred.then(function() {}, dojo.hitch(this, function() {
-				this.standby(false);
-			}));
+			var self = this;
+			deferred.then(function() {}, function() {
+				self.standby(false);
+			});
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));

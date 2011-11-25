@@ -55,6 +55,8 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 	// dicts of the original IPv4/v6 values
 	_orgValues: null,
 
+	_noteShowed: false,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -183,7 +185,24 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			scrollable: true
 		});
 
+		// add onChange handlers that show the note
+		dojo.forEach(['interfaces_ipv4', 'interfaces_ipv6'], function(iname) {
+			var iwidget = this._form.getWidget(iname);
+			this.connect(iwidget, 'onChange', function() {
+				if (iwidget.focused) {
+					this._showNote();
+				}
+			});
+		}, this);
+		
 		this.addChild(this._form);
+	},
+
+	_showNote: function() {
+		if (!this._noteShowed) {
+			this._noteShowed = true;
+			this.addNote(this._('Installing or removing software components may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
+		}
 	},
 
 	_dhcpQuery: function(item, idx) {
@@ -374,6 +393,10 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 
 		// set values
 		this._form.setFormValues(vals);
+
+		// only show notes in an joined system in productive mode
+		this._noteShowed = !(_vals.joined && umc.tools.status('username') != '__systemsetup__');
+		this.clearNotes();
 	},
 
 	getValues: function() {

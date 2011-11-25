@@ -52,8 +52,6 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 
 	_orgComponents: {},
 
-	_role: null,
-
 	_noteShowed: false,
 
 	postMixInProperties: function() {
@@ -102,48 +100,52 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 			});
 		}, this);
 
+		// show notes for changes in the software settings
+		this.connect(this._form.getWidget('components'), 'onChange', function(newVal) {
+			this._showNote('software');
+		});
+
 		// remeber which notes have already been showed
-		this._noteShowed = {
-			samba: false,
-			samba4: false
-		};
-		this._sambaNotes = {
+		this._noteShowed = { };
+		this._myNotes = {
 			samba: this._('It is not possible to mix NT and Active Directory compatible domaincontroller. Make sure the existing UCS domain is NT-compatible (Samba 3).'),
-			samba4: this._('It is not possible to mix NT and Active Directory compatible domaincontroller. Make sure the existing UCS domain is Active Directory-compatible (Samba 4).')
+			samba4: this._('It is not possible to mix NT and Active Directory compatible domaincontroller. Make sure the existing UCS domain is Active Directory-compatible (Samba 4).'),
+			software: this._('Changes for IP addresses may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.')
 		};
 	},
 
 	_showNote: function(key) {
-		if (!(key in this._noteShowed)) {
+		if (!(key in this._noteShowed) || !this._form.getWidget('components').focused) {
 			// make sure key exists
-			return;
-		}
-
-		if (this._role != 'domaincontroller_backup' && this._role != 'domaincontroller_slave') {
-			// only show note on backup/slave
 			return;
 		}
 
 		if (!this._noteShowed[key]) {
 			this._noteShowed[key] = true;
-			this.addNote(this._sambaNotes[key]);
+			this.addNote(this._myNotes[key]);
 		}
 	},
 
 	setValues: function(vals) {
 		// get a dict of all installed components
 		this._orgComponents = {};
-		this._role = vals.role;
 		var components = (vals.components || '').split(/\s+/);
 		dojo.forEach(components, function(icomponent) {
 			this._orgComponents[icomponent] = true;
 		}, this);
 		this._form.getWidget('components').setInitialValue(components, true);
 
-		this._noteShowed = {
-			samba: false,
-			samba4: false
-		};
+		// handling of notes
+		this._noteShowed = { };
+		var role = vals['server/role'];
+		if (role == 'domaincontroller_backup' || role == 'domaincontroller_slave') {
+			// only show samba notes on backup/slave
+			this._noteShowed.samba = false;
+			this._noteShowed.samba4 = false;
+		}
+		// show note when changing software only on a joined system in productive mode
+		this._noteShowed.software = !(vals.joined && umc.tools.status('username') != '__systemsetup__');
+		this.clearNotes();
 	},
 
 	getValues: function() {
