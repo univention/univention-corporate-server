@@ -137,7 +137,6 @@ if [ "$update30_dansguardianpresent" = "true" ]; then
     univention-config-registry unset update30/dansguardianpresent >>"$UPDATER_LOG" 2>&1
 fi
 
-
 # remove obsolte packages, no more required after UCS 3.0-0 update
 # Bug #22997
 for package in $PACKAGES_TO_BE_PURGED; do

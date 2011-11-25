@@ -568,11 +568,6 @@ if [ $? = 0 ]; then
 fi
 
 
-# univention-dansguardian is upgraded frm univention-antivir-web
-if [ "$update30_dansguardianpresent" = "true" ]; then
-    univention-install univention-dansguardian  >>"$UPDATER_LOG" 2>&1
-    univention-config-registry unset update30/dansguardianpresent >>"$UPDATER_LOG" 2>&1
-fi
 
 
 
