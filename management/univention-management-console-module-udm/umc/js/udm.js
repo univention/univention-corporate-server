@@ -189,9 +189,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// this deferred is resolved when everything has been loaded
 		this._finishedDeferred = new dojo.Deferred();
 		this._finishedDeferred.then(dojo.hitch(this, function() {
-			// finish standby animation and focus on input widget
+			// finish standby
 			this.standby(false);
-			this._searchForm.getWidget('objectPropertyValue').focus();	
 		}));
 
 		// get the correct entry from the lists above
@@ -686,12 +685,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// register to onShow as well as onFilterDone events in order on focus to the 
 		// input widget when the tab is changed
-		this.connect(this, 'onShow', function() {
-			this._searchForm.getWidget('objectPropertyValue').focus();
-		});
-		this.connect(this._grid, 'onFilterDone', function() {
-			this._searchForm.getWidget('objectPropertyValue').focus();
-		});
+		this.connect(this, 'onShow', '_selectInputText');
+		this.connect(this._grid, 'onFilterDone', '_selectInputText');
 
 		// register event to update hiding/showing of form fields
 		var objTypeWidget = this._searchForm._widgets.objectType;
@@ -699,6 +694,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// hide the 'objectPropertyValue' combo box in case 'all properties' are shown
 		this.connect(this._searchForm._widgets.objectProperty, 'onChange', '_updateObjectPropertyValue');
+
+		// focus and select text when the objectPropertyValue has been loaded
+		// at the beginning
+		var propertyValueHandle = this.connect(this._searchForm._widgets.objectPropertyValue, 'onChange', function() {
+			this.disconnect(propertyValueHandle);
+			this._finishedDeferred.then(dojo.hitch(this, '_selectInputText'));
+		});
 
 		// show/hide object property filter for the navigation
 		if ('navigation' == this.moduleFlavor) {
@@ -759,6 +761,18 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			}
 			// create report button
 			this.connect( this._grid, 'onFilterDone', '_checkReportButton' );
+		}
+	},
+
+	_selectInputText: function() {
+		// focus on input widget
+		var widget = this._searchForm.getWidget('objectPropertyValue');
+		widget.focus();
+
+		// select the text
+		var textbox = dojo.getObject('_widget.textbox', false, widget);
+		if (textbox) {
+			dijit.selectInputText(textbox);
 		}
 	},
 

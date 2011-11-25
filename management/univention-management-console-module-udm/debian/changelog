@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.229-1) unstable; urgency=low
+
+  * added focusing and selecting text in the search form (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 14:14:11 +0100
+
 univention-management-console-module-udm (1.0.248-1) unstable; urgency=low
 
   * support removing attributes; Bug #23983
