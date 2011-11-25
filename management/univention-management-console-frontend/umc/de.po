@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-24 22:19+0100\n"
+"POT-Creation-Date: 2011-11-24 23:18+0100\n"
 "PO-Revision-Date: 2011-11-01 20:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,18 +51,18 @@ msgstr "Objekte hinzufügen"
 msgid "Additional documentation for UCS"
 msgstr "Zusätzliche Dokumentationen zu UCS"
 
-#: umc/tools.js:537
+#: umc/tools.js:533
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:463
+#: umc/tools.js:459
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf. Bitte "
 "versuchen Sie es später noch einmal."
 
-#: umc/tools.js:459
+#: umc/tools.js:455
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -71,7 +71,7 @@ msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
 "Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
 
-#: umc/tools.js:396
+#: umc/tools.js:392
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl. Bitte melden Sie sich erneut an."
 
@@ -104,11 +104,11 @@ msgstr "Bestätigung"
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
-#: umc/tools.js:388
+#: umc/tools.js:384
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: umc/tools.js:411
+#: umc/tools.js:407
 msgid "Could not process the request."
 msgstr "Die Anfrage konnte nicht bearbeitet werden."
 
@@ -166,36 +166,36 @@ msgstr "Host: %(host)s.%(domain)s"
 msgid "Information"
 msgstr "Hinweis"
 
-#: umc/tools.js:408
+#: umc/tools.js:404
 msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:407
+#: umc/tools.js:403
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Header konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:410
+#: umc/tools.js:406
 msgid "Internal module error: An error occured during command processing."
 msgstr ""
 "Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
 "auf."
 
-#: umc/tools.js:401
+#: umc/tools.js:397
 msgid "Internal server error."
 msgstr "Interner Server-Fehler."
 
-#: umc/tools.js:404
+#: umc/tools.js:400
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 "Interner Server-Fehler: Verbindung zum Modulprozess konnte nicht aufgebaut "
 "werden."
 
-#: umc/tools.js:405
+#: umc/tools.js:401
 msgid ""
 "Internal server error: The SSL server certificate is not trustworthy. Please "
 "check your SSL configurations."
@@ -203,11 +203,11 @@ msgstr ""
 "Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
 "vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
 
-#: umc/tools.js:403
+#: umc/tools.js:399
 msgid "Internal server error: The module process died unexpectedly."
 msgstr "Interner Server-Fehler: Der Modulprozess wurde unerwartet beendet."
 
-#: umc/tools.js:402
+#: umc/tools.js:398
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 
@@ -300,7 +300,7 @@ msgstr "Suchergebnisse:"
 msgid "Server"
 msgstr "Server"
 
-#: umc/tools.js:454
+#: umc/tools.js:450
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
@@ -314,7 +314,7 @@ msgstr ""
 "aufgebaut werden. Dies kann ein vorhergesehenes Verhalten sein. In jedem "
 "Fall wird der Prozess weiterhin versuchen die Verbindung wieder herzustellen."
 
-#: umc/tools.js:399
+#: umc/tools.js:395
 msgid "Specified locale is not available."
 msgstr "Die angegebene Sprachdefinition ist nicht verfügbar."
 
@@ -332,11 +332,11 @@ msgid "The SSL certificate will expire in %d days and should be renewed!"
 msgstr ""
 "Das SSL-Zertifikat wird in %d Tagen ablaufen und sollte erneuert werden!"
 
-#: umc/tools.js:398
+#: umc/tools.js:394
 msgid "The account as been disabled."
 msgstr "Das Benutzerkonto wurde deaktiviert."
 
-#: umc/tools.js:397
+#: umc/tools.js:393
 msgid "The account is expired and can not be used anymore."
 msgstr ""
 "Das Benutzerkonto kannt nicht verwendet werden. Seine Gültigkeit ist "
@@ -462,12 +462,12 @@ msgstr "Benutzername"
 msgid "Validity date of the SSL certificate"
 msgstr "Gültigkeitsdatum des SSL-Zertifikats"
 
-#: umc/tools.js:278
+#: umc/tools.js:274
 #, python-format
 msgid "WARNING: Ignoring command \"%s\" since user is logging in"
 msgstr "WARNING: Ignoring command \"%s\" since user is logging in"
 
-#: umc/tools.js:393
+#: umc/tools.js:389
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
@@ -475,7 +475,7 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen UMCP-Befehl-Argumente der Anfrage sind "
 "nicht zulässig."
 
-#: umc/tools.js:394
+#: umc/tools.js:390
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
@@ -483,7 +483,7 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen Argumente für die UMCP-Modul-Methode "
 "sind nicht zulässig oder fehlen."
 
-#: umc/tools.js:392
+#: umc/tools.js:388
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
@@ -499,7 +499,7 @@ msgstr ""
 msgid "Write"
 msgstr "Schreiben"
 
-#: umc/tools.js:390
+#: umc/tools.js:386
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
@@ -509,7 +509,7 @@ msgstr ""
 "Ihre Sitzung wurde wegen Inaktivität geschlossen. Bitte melden Sie sich "
 "erneut an."
 
-#: umc/tools.js:389
+#: umc/tools.js:385
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 

@@ -246,8 +246,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 							},
 							hide: function() {
 								this.set( 'visible', false );
-							},
-							$refLabel$: label
+							}
 						} );
 
 						// add the widget or button surrounded with a LabelPane
@@ -257,6 +256,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 							disabled: widget.disabled,
 							style: (widget.align ? 'float: ' + widget.align +';' : '' ) + (widget.style || '')
 						});
+						widget.$refLabel$ = label;
 
 						// add to layout
 						elContainer.addChild( label );
@@ -270,8 +270,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 								},
 								hide: function() {
 									this.set( 'visible', false );
-								},
-								$refLabel$: label
+								}
 							} );
 
 							// if buttons are displayed along with widgets, we need to add a '&nbps;'
@@ -282,6 +281,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 								disabled: button.disabled,
 								style: button.align ? 'float: ' + button.align : ''
 							});
+							button.$refLabel$ = label;
 							elContainer.addChild(label);
 						} else {
 							// if there are only buttons in the row, we do not need a label

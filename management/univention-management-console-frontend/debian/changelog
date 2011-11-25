@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.233-1) unstable; urgency=low
+
+  * umc.render: fixed wrong references to $refLabe$ (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 14:49:10 +0100
+
 univention-management-console-frontend (1.0.232-1) unstable; urgency=low
 
   * Uploader: add option to hide clear button; Bug #24903
