@@ -30,6 +30,8 @@
 
 dojo.provide("umc.modules._quota.PartitionPage");
 
+dojo.require("dojox.string.sprintf");
+
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.ExpandingTitlePane");
@@ -112,7 +114,7 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			isStandardAction: true,
 			isMultiAction: false,
 			callback: dojo.hitch(this, function(data) {
-				item = this._grid.getItem(data);
+				var item = this._grid.getItem(data);
 				this.onShowDetailPage(item);
 			})
 		}, {
@@ -132,32 +134,24 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 			width: 'auto'
 		}, {
 			name: 'sizeLimitUsed',
-			label: this._('Size used (MB)'),
-			width: 'adjust'
-		}, {
-			name: 'sizeLimitSoft',
-			label: this._('Soft (MB)'),
-			width: 'adjust'
-		}, {
-			name: 'sizeLimitHard',
-			label: this._('Hard (MB)'),
-			width: 'adjust'
+			label: this._('Size (MB) (used/soft/hard)'),
+			width: 'adjust',
+			formatter: dojo.hitch(this, function(id, rowIndex) {
+				var item = this._grid._grid.getItem(rowIndex);
+				return dojox.string.sprintf('%(sizeLimitUsed).0f/%(sizeLimitSoft).0f/%(sizeLimitHard).0f', item);
+			})
 		}, {
 			name: 'sizeLimitTime',
 			label: this._('Grace'),
 			width: 'adjust'
 		}, {
 			name: 'fileLimitUsed',
-			label: this._('Files used'),
-			width: 'adjust'
-		}, {
-			name: 'fileLimitSoft',
-			label: this._('Soft'),
-			width: 'adjust'
-		}, {
-			name: 'fileLimitHard',
-			label: this._('Hard'),
-			width: 'adjust'
+			label: this._('Files (used/soft/hard)'),
+			width: 'adjust',
+			formatter: dojo.hitch(this, function(id, rowIndex) {
+				var item = this._grid._grid.getItem(rowIndex);
+				return dojo.replace('{fileLimitUsed}/{fileLimitSoft}/{fileLimitHard}', item);
+			})
 		}, {
 			name: 'fileLimitTime',
 			label: this._('Grace'),
@@ -193,11 +187,11 @@ dojo.declare("umc.modules._quota.PartitionPage", [ umc.widgets.Page, umc.i18n.Mi
 	onRemoveUsers: function(ids) {
 		var dialogMessage = '';
 		var usernames = dojo.map(ids, dojo.hitch(this, function(id) {
-			item = this._grid.getItem(id);
+			var item = this._grid.getItem(id);
 			return item.user;
 		}));
-		if (usernames.length == 0) {
-			return
+		if (usernames.length === 0) {
+			return;
 		} else if (usernames.length == 1) {
 			dialogMessage = this._('Please confirm to remove the following user: %s', usernames);
 		} else {

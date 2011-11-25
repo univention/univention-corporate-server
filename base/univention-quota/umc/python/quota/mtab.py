@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+import os
 
 class File(list):
 	def __init__(self, file = '/etc/mtab'):
@@ -47,7 +48,7 @@ class File(list):
 
 	def get(self, partition):
 		for entry in self:
-			if entry.spec == partition:
+			if os.path.realpath(entry.spec) == os.path.realpath(partition):
 				return entry
 		return None
 

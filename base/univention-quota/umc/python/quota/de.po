@@ -3,22 +3,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-03 01:12+0100\n"
+"POT-Creation-Date: 2011-11-25 19:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
 #: umc/python/quota/tools.py:70
 #, python-format
 msgid "%s Days"
 msgstr "%s Tage"
 
-#: umc/python/quota/user.py:57 umc/python/quota/partition.py:57
-#: umc/python/quota/partition.py:89
+#: umc/python/quota/partition.py:57 umc/python/quota/partition.py:89
+#: umc/python/quota/user.py:57
 #, python-format
 msgid "Could not open %s"
 msgstr "Konnte %s nicht öffnen"
@@ -31,10 +31,12 @@ msgstr "Partition konnte nicht gefunden werden"
 msgid "Expired"
 msgstr "Abgelaufen"
 
-#: umc/python/quota/user.py:138
+#: umc/python/quota/user.py:139
 #, python-format
 msgid "Failed to modify quota settings for user %s on partition %s"
-msgstr "Konnte Quota-Einstellungen für den Benutzer %s auf der Partition %s nicht modifizieren"
+msgstr ""
+"Konnte Quota-Einstellungen für den Benutzer %s auf der Partition %s nicht "
+"modifizieren"
 
 #: umc/python/quota/tools.py:183
 msgid "Generating the quota information file failed"
@@ -73,11 +75,11 @@ msgstr "Erneutes Einhängen der Partition ist fehlgeschlagen"
 msgid "Restarting the quota services has failed"
 msgstr "Neustart des Quota-Dienstes ist fehlgeschlagen"
 
-#: umc/python/quota/user.py:171
+#: umc/python/quota/user.py:173
 msgid "Successfully removed quota settings"
 msgstr "Quota-Einstellungen erfolgreich entfernt"
 
-#: umc/python/quota/user.py:142
+#: umc/python/quota/user.py:143
 msgid "Successfully set quota settings"
 msgstr "Quota-Einstellungen erfolgreich gesetzt"
 

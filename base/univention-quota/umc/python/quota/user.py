@@ -123,7 +123,8 @@ class Commands(object):
 			result = []
 
 			partition = request.options['partitionDevice']
-			user = request.options['user']
+			unicode_user = request.options['user']
+			user = unicode_user.encode('utf-8')
 			size_soft = request.options['sizeLimitSoft']
 			size_hard = request.options['sizeLimitHard']
 			file_soft = request.options['fileLimitSoft']
@@ -160,7 +161,8 @@ class Commands(object):
 
 			# Remove user quota
 			for obj in request.options:
-				(user, partition) = obj['object'].split('@')
+				(unicode_user, partition) = obj['object'].split('@')
+				user = unicode_user.encode('utf-8')
 				failed = tools.setquota(partition, user, '0', '0', '0', '0')
 				if failed:
 					result.append({'id': obj['object'], 'success': False})

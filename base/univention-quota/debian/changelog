@@ -1,3 +1,12 @@
+univention-quota (6.0.18-1) unstable; urgency=low
+
+  * UMC: add unicode support
+  * UMC: reduce column size
+  * UMC: follow device symlinks
+  (Bug #22903)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 25 Nov 2011 21:07:08 +0100
+
 univention-quota (6.0.17-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)

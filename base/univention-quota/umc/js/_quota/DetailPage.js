@@ -164,7 +164,7 @@ dojo.declare("umc.modules._quota.DetailPage", [ umc.widgets.Page, umc.i18n.Mixin
 
 	validateValues: function() {
 		// check whether the username is specified
-		if (this._form.getWidget('user').get('value') == '') {
+		if (this._form.getWidget('user').get('value') === '') {
 			umc.dialog.alert(this._('A username needs to be specified.'));
 			return false;
 		}
