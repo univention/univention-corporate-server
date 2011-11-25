@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.30-2) unstable; urgency=low
+
+  * changed default of mail/cyrus/mailbox/rename to "yes" (Bug #24883)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Nov 2011 09:25:32 +0100
+
 univention-mail-cyrus (4.0.30-1) unstable; urgency=low
 
   * fix sieve dir permissions (Bug #22875) 
