@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.236-1) unstable; urgency=low
+
+  * adapted CSS style umcUnsetPolicy (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 17:24:56 +0100
+
 univention-management-console-frontend (1.0.235-1) unstable; urgency=low
 
   * adpated CSS rules for dialogs (Bug #22881)
