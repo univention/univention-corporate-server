@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.90-1) unstable; urgency=low
+
+  * fixed autoselection of search text (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 21:13:39 +0100
+
 univention-virtual-machine-manager-daemon (1.0.89-1) unstable; urgency=low
 
   * read time zone information from profile; Bug #24896

@@ -255,7 +255,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// register events
 		this.connect(this._domainPage, 'onUpdateProgress', 'updateProgress');
-		this.connect(this, 'onShow', '_selectInputText');
+		this.connect(this._searchPage, 'onShow', '_selectInputText');
 	},
 
 	postCreate: function() {
@@ -271,11 +271,6 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}));
 			}
 		}));
-
-		// focus search field at the beginning and select text
-		var widget = this._searchForm.getWidget('pattern');
-		widget.focus();
-		dijit.selectInputText(widget.textbox);
 	},
 
 	_selectInputText: function() { 
@@ -285,7 +280,10 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
  
 		// select the text
 		if (widget.textbox) { 
-			dijit.selectInputText(widget.textbox); 
+			try {
+				dijit.selectInputText(widget.textbox); 
+			}
+			catch (err) { }
 		}   
 	},
 
