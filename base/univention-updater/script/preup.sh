@@ -548,16 +548,23 @@ fi
 
 # Test, whether univention-antivir-web is found. It is migrated from a different source
 # package and the templates have changed. Keep the installation status in a UCR variable
+# This test covers both the case, where u-a-w is fully installed and if only the conffiles
+# are present ("rc state")
 dpkg -l univention-antivir-web > /dev/null 2>/dev/null
 if [ $? = 0 ]; then
     echo "univention-antivir-web found. The UCR templates are moved to /etc/univention/templates/removed/dansguardian"
     echo "and the univention-antivir-web package is removed"
 
-    echo "Local changes to the templates need to be merged manually"
+    echo "Local changes to the templates need to be merged manually if you plan to continue to use Dansguardian with these changes."
     
     mv /etc/univention/templates/files/etc/dansguardian /etc/univention/templates/removed/ >>"$UPDATER_LOG" 2>&1
+
+    # Only if univention-antivir-web is fully present, mark it for subsequent installation
+    if [ "$(dpkg-query -W -f='${Status}\n' univention-antivir-web 2>/dev/null)" = "install ok installed" ]; then
+	univention-config-registry set update30/dansguardianpresent=true >>"$UPDATER_LOG" 2>&1
+    fi
+
     dpkg --purge univention-antivir-web >>"$UPDATER_LOG" 2>&1
-    univention-config-registry set update30/dansguardianpresent=true >>"$UPDATER_LOG" 2>&1
 fi
 
 

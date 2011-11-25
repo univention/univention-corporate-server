@@ -128,6 +128,7 @@ fi
 if [ "$update30_squidpresent" = "true" ]; then
     univention-install univention-squid  >>"$UPDATER_LOG" 2>&1
     univention-config-registry unset update30/squidpresent >>"$UPDATER_LOG" 2>&1
+    dpkg --purge squid 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
 fi
 
 # univention-dansguardian is upgraded frm univention-antivir-web

@@ -1,3 +1,12 @@
+univention-updater (7.0.115-4) unstable; urgency=low
+
+  * Purge squid in postinst to drop init script leftovers if Squid was in "rc" state
+  * Improve the updater magic so that the conffiles are still saved, but 
+    univention-dansguardian is only installed if it was installed fully beforehand
+    Bug #22576x	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 25 Nov 2011 12:06:45 +0100
+
 univention-updater (7.0.115-3) unstable; urgency=low
 
   * Fix univention-antivir-web test (Bug #22576)
