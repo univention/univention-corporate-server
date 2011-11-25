@@ -43,4 +43,6 @@ ucr set security/packetfilter/package/univention-snmpd/tcp/161/all="ACCEPT" \
     security/packetfilter/package/univention-snmpd/udp/162/all/en="SNMP"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
+/etc/init.d/snmpd restart
+
 exit 0
