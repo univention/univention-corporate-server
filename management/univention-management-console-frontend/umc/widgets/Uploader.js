@@ -54,7 +54,11 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	//		The label that is displayed on the upload button.
 	buttonLabel: 'Upload',
 
-	// buttonLabel: String
+	// showClearButton: Boolean
+	//		The clear button is shown only if this attribute is set to true.
+	showClearButton: true,
+
+	// clearButtonLabel: String
 	//		The label that is displayed on the upload button.
 	clearButtonLabel: 'Clear data',
 
@@ -116,14 +120,16 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		dojo.style(this._uploader.button.domNode, 'display', 'inline-block');
 		this.addChild(this._uploader);
 
-		this._clearButton = new umc.widgets.Button({
-			label: this.clearButtonLabel,
-			iconClass: 'umcIconDelete',
-			callback: dojo.hitch(this, function() {
-				this.set('data', null);
-			})
-		});
-		this.addChild(this._clearButton);
+		if ( this.showClearButton ) {
+			this._clearButton = new umc.widgets.Button({
+				label: this.clearButtonLabel,
+				iconClass: 'umcIconDelete',
+				callback: dojo.hitch(this, function() {
+					this.set('data', null);
+				})
+			});
+			this.addChild(this._clearButton);
+		}
 	},
 	
 	postCreate: function() {
@@ -182,8 +188,10 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		}
 		this.value = newVal;
 
-		// decide whether to show/hide remove button
-		dojo.toggleClass(this._clearButton.domNode, 'dijitHidden', !(dojo.isString(this.value) && this.value !== ""));
+		if ( this.showClearButton ) {
+			// decide whether to show/hide remove button
+			dojo.toggleClass(this._clearButton.domNode, 'dijitHidden', !(dojo.isString(this.value) && this.value !== ""));
+		}
 
 		// send events
 		this.onChange(newVal);
