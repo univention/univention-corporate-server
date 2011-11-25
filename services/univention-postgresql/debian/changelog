@@ -1,3 +1,9 @@
+univention-postgresql (4.0.5-1) unstable; urgency=low
+
+  * set lc_* settings to locale/default value (Bug #24913)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 Nov 2011 16:26:48 +0100
+
 univention-postgresql (4.0.4-1) unstable; urgency=low
 
   * add pam_ldap.conf to support authenticated bind as postgres user (Bug #24092)

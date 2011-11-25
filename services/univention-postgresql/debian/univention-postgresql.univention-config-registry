@@ -96,3 +96,4 @@ Type: file
 File: etc/postgresql/8.4/main/postgresql.conf
 Variables: postgres8/maxconnections
 Variables: postgres8/listenaddress
+Variables: locale/default
