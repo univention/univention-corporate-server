@@ -162,8 +162,8 @@ fi
 
 rm -f /var/lib/univention-ldap/root.secret
 
-# allow execution of servers again
-/usr/share/univention-updater/enable-apache2-umc --no-restart
+# allow execution of servers again and perform a restart
+/usr/share/univention-updater/enable-apache2-umc
 
 exit 0
 

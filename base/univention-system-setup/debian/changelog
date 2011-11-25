@@ -1,3 +1,12 @@
+univention-system-setup (5.0.72-1) unstable; urgency=low
+
+  * UMC: added server restart also in the case of SSL certificate changes
+  * UMC: make sure that long polling requests to setup/finished are canceled
+    after 60sec
+  (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 11:51:51 +0100
+
 univention-system-setup (5.0.71-1) unstable; urgency=low
 
   * UMC: added restarting of UMC server and web server, added notifications

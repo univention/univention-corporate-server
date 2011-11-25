@@ -33,6 +33,7 @@
 
 import threading
 import traceback
+import time
 import notifier
 import notifier.threads
 import re
@@ -51,6 +52,9 @@ from univention.management.console.protocol.definitions import *
 _ = umc.Translation('univention-management-console-module-setup').translate
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
+
+class TimeoutError(Exception):
+	pass
 
 class Instance(umcm.Base):
 	def __init__(self):
@@ -92,6 +96,7 @@ class Instance(umcm.Base):
 
 		def _thread(request, obj, values, username, password):
 			# acquire the lock until the scripts have been executed
+			self._finishedResult = False
 			obj._finishedLock.acquire()
 
 			if not values:
@@ -111,9 +116,10 @@ class Instance(umcm.Base):
 				MODULE.info('Check whether ip addresses have been changed')
 				regIpv6 = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/default/(prefix|address)$')
 				regIpv4 = re.compile(r'^interfaces/(eth[0-9]+)/(address|netmask)$')
+				regSsl = re.compile(r'^ssl/.*')
 				restart = False
 				for ikey, ival in values.iteritems():
-					if regIpv4.match(ikey) or regIpv6.match(ikey):
+					if regIpv4.match(ikey) or regIpv6.match(ikey) or regSsl.match(ikey):
 						restart = True
 						break
 				MODULE.info('Restart servers: %s' % restart)
@@ -127,6 +133,7 @@ class Instance(umcm.Base):
 				util.run_joinscript(username, password)
 
 			# done :)
+			self._finishedResult = True
 			obj._finishedLock.release()
 			return True
 
@@ -144,7 +151,14 @@ class Instance(umcm.Base):
 		timeout), the error may be ignored and a new try can be started.'''
 		def _thread(request, obj):
 			# acquire the lock in order to wait for the join/setup scripts to finish
-			obj._finishedLock.acquire()
+			# do this one minute long on then return an error
+			ntries = 60
+			while not obj._finishedLock.acquire(False):
+				time.sleep(1)
+				ntries -= 1
+				if ntries <= 0:
+					raise TimeoutError('setup/finished has reached its timeout')
+
 			obj._finishedLock.release()
 
 			# scripts are done, return final result
