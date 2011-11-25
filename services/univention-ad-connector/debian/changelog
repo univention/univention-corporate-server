@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.36-1) unstable; urgency=low
+
+  * fixed another typo; Bug #23713
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Nov 2011 16:09:29 +0100
+
 univention-ad-connector (6.0.35-1) unstable; urgency=low
 
   * modified some descriptions

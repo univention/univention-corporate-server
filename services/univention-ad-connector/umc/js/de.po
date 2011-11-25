@@ -120,7 +120,7 @@ msgid "Synchronisation mode"
 msgstr "Synchronisationsmodus"
 
 #: umc/js/adconnector.js:244
-msgid "System langauge of Active Directory server"
+msgid "System language of Active Directory server"
 msgstr "Systemsprache des Active Directory Servers"
 
 #: umc/js/adconnector.js:155

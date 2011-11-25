@@ -241,7 +241,7 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 				label: this._( 'Synchronisation mode' )
 			}, {
 				name: 'MappingGroupLanguage',
-				label: this._( 'System langauge of Active Directory server' ),
+				label: this._( 'System language of Active Directory server' ),
 				type: 'ComboBox',
 				staticValues: [
 					{
