@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.debug
+import types
 
 def DaysToSeconds(days):
 	return str(int(days)*24*60*60)
@@ -72,7 +73,10 @@ def IgnoreNone(list):
 		return list
 
 def unmapUNIX_TimeInterval( value ):
-	value = int( value[ 0 ] )
+	if type(value) == types.ListType:
+		value = int(value[0])
+	else:
+		value = int(value)
 	unit = 'seconds'
 	if value % 60 == 0:
 		value /= 60

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.199-2) unstable; urgency=low
+
+  * Fixed time interval mapping (Bug #23945, Bug #24602)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Nov 2011 16:27:59 +0100
+
 univention-directory-manager-modules (7.0.199-1) unstable; urgency=low
 
   * Move title, firstname and lastname to the top of 'Basic settings'
