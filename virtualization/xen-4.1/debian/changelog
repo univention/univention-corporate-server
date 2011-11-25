@@ -1,3 +1,9 @@
+xen-4.1 (4.1.2-4) ucs3-0-0-0; urgency=low
+
+  * Fix "tap-ctl list" parsing (Bug #18357)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Nov 2011 19:57:33 +0100
+
 xen-4.1 (4.1.2-3) ucs3-0-0-0; urgency=low
 
   * Update HybridISO support for PyGrub2 (Bug #23812)
