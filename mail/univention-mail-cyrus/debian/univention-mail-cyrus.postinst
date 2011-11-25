@@ -51,7 +51,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; t
 	fi
 
     # fix sieve dir permissions
-	find  /var/spool/cyrus/sieve/ -maxdepth 4 -type d -exec chown cyrus:mail {} \;
+	find  /var/spool/cyrus/sieve/ -maxdepth 5 -type d -exec chown cyrus:mail {} \;
 	
 fi 
 

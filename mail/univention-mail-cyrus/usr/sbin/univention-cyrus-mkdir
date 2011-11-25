@@ -126,7 +126,6 @@ if not remote:
 		sieveDirs = sieve.replace(sieveDirTmp, "")
 		for sieveDir in sieveDirs.split("/"):
 			sieveDirTmp = os.path.join(sieveDirTmp, sieveDir)
-			print sieveDirTmp
 			if not os.path.isdir(sieveDirTmp):
 				os.mkdir(sieveDirTmp)
 				os.chown(sieveDirTmp, cyrusId, mailId)

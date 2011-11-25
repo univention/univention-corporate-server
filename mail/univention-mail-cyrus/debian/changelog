@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.31-1) unstable; urgency=low
+
+  * fix sieve dir permissions (Bug #22875)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Nov 2011 16:35:34 +0100
+
 univention-mail-cyrus (4.0.30-2) unstable; urgency=low
 
   * changed default of mail/cyrus/mailbox/rename to "yes" (Bug #24883)
