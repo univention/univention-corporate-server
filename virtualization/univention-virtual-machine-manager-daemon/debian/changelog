@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.92-1) unstable; urgency=low
+
+  * fix typo; Bug #24814
+  * increase protocol version number to 2.0; Bug #23931
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Nov 2011 21:17:37 +0100
+
 univention-virtual-machine-manager-daemon (1.0.91-1) unstable; urgency=low
 
   * if no interface type is given use 'bridge'; Bug #24918

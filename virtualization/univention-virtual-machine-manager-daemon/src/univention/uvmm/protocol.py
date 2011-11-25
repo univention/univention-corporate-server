@@ -41,7 +41,7 @@ except ImportError:
 import struct
 from helpers import TranslatableException, N_ as _
 
-VERSION = (1, 2)
+VERSION = (2, 0)
 MAX_MSG_SIZE = 4096
 
 class PacketError(TranslatableException):

@@ -253,7 +253,7 @@ class Domains( object ):
 			elif uri.scheme.startswith( 'xen' ):
 				pv_domain = domain_info.os_type == 'xen'
 				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
-					disk.target_bus = 'xen'
+					drive.target_bus = 'xen'
 				elif pv_domain and not driver_pv:
 					# explicitly set ide bus
 					drive.target_bus = 'ide'
