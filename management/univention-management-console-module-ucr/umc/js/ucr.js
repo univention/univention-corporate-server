@@ -49,7 +49,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_grid: null,
 	_store: null,
-	_searchWidget: null,
+	_searchForm: null,
 	_detailDialog: null,
 	_contextVariable: null,
 	_page: null,
@@ -188,23 +188,19 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}];
 
 		// generate the search widget
-		this._searchWidget = new umc.widgets.SearchForm({
+		this._searchForm = new umc.widgets.SearchForm({
 			region: 'top',
 			widgets: widgets,
 			layout: [[ 'category', 'key', 'filter', 'submit' ]],
 			onSearch: dojo.hitch(this._grid, 'filter')
 		});
-		titlePane.addChild(this._searchWidget);
+		titlePane.addChild(this._searchForm);
 
 		this._page.startup();
 
 		// make sure that the input field is focused
-		this.connect(this, 'onShow', function() {
-			this._searchWidget.getWidget('filter').focus();
-		});
-		this.connect(this._grid, 'onFilterDone', function() {
-			this._searchWidget.getWidget('filter').focus();
-		});
+		this.connect(this, 'onShow', '_selectInputText');
+		this.connect(this._grid, 'onFilterDone', '_selectInputText');
 
 		//
 		// create dialog for UCR variable details
@@ -214,8 +210,18 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			moduleStore: this.moduleStore
 		});
 		this._detailDialog.startup();
-	}
+	},
 
+	_selectInputText: function() {
+		// focus on input widget
+		var widget = this._searchForm.getWidget('filter');
+		widget.focus();
+
+		// select the text
+		if (widget.textbox) {
+			dijit.selectInputText(widget.textbox);
+		}
+	}
 });
 
 dojo.declare("umc.modules.ucr._DetailDialog", [ dijit.Dialog, umc.widgets.StandbyMixin, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
