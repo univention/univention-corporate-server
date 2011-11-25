@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-20 15:43+0100\n"
-"PO-Revision-Date: 2011-11-20 12:22+0100\n"
+"POT-Creation-Date: 2011-11-25 17:45+0100\n"
+"PO-Revision-Date: 2011-11-25 16:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/adconnector.js:163
+#: umc/js/adconnector.js:164
 msgid ""
 " The Configuation of UCS Active Directory Connector must be completed before "
 "the server can be started."
@@ -20,23 +20,23 @@ msgstr ""
 " Die Konfiguration von UCS Active Directory Connector muss zuerst "
 "abgeschlossen werden bevor der Dienst gestartet werden kann."
 
-#: umc/js/adconnector.js:191
+#: umc/js/adconnector.js:192
 msgid "Active Directory Server"
 msgstr "Active Directory Server"
 
-#: umc/js/adconnector.js:134
+#: umc/js/adconnector.js:135
 msgid "Active Directory Server configuration"
 msgstr "Active Directory Server Konfiguration"
 
-#: umc/js/adconnector.js:276
+#: umc/js/adconnector.js:277
 msgid "Add debug output for functions"
 msgstr "Debug-Ausgaben für Funktionen ausgeben"
 
-#: umc/js/adconnector.js:195
+#: umc/js/adconnector.js:196
 msgid "Automatic determination of the LDAP configuration"
 msgstr "Automatische Ermittlung der LDAP Konfiguration"
 
-#: umc/js/adconnector.js:128
+#: umc/js/adconnector.js:129
 msgid "Configuration"
 msgstr "Konfiguration"
 
@@ -44,100 +44,98 @@ msgstr "Konfiguration"
 msgid "Configuration of the UCS Active Directory Connector"
 msgstr "Konfiguration des UCS Active Directory Connector"
 
-#: umc/js/adconnector.js:110
+#: umc/js/adconnector.js:111
 msgid "Configure UCS Active Directory Connector"
 msgstr "UCS Active Directory Connector einrichten"
 
-#: umc/js/adconnector.js:271
+#: umc/js/adconnector.js:272
 msgid "Debug level of Active Directory Connector"
 msgstr "Debug-level des UCS Active Directory Connector"
 
-#: umc/js/adconnector.js:88
-msgid "Download the password serivce for Windows and the UCS certificate"
+#: umc/js/adconnector.js:89
+msgid "Download the password service for Windows and the UCS certificate"
 msgstr ""
-"Herunterladen des UCS-Zertifikats and des Passwort-Dienstes für Windows"
+"Herunterladen des UCS-Zertifikats und des Passwort-Dienstes für Windows"
 
-#: umc/js/adconnector.js:251
+#: umc/js/adconnector.js:252
 msgid "English"
 msgstr "Englisch"
 
-#: umc/js/adconnector.js:258
+#: umc/js/adconnector.js:259
 msgid "Extended settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/js/adconnector.js:82
+#: umc/js/adconnector.js:83
 msgid "Failed to import the certificate"
 msgstr "Der Import des Zertifikats ist fehlgeschlagen"
 
-#: umc/js/adconnector.js:248
+#: umc/js/adconnector.js:249
 msgid "German"
 msgstr "Deutsch"
 
-#: umc/js/adconnector.js:219
-msgid "Kerberos domain of the Active Directory server"
-msgstr "Kerberos-Domäne des Active Directory Servers"
+#: umc/js/adconnector.js:220
+msgid "Kerberos domain"
+msgstr "Kerberos-Domäne"
 
-#: umc/js/adconnector.js:211
+#: umc/js/adconnector.js:212
 msgid "LDAP DN of the synchronisation user"
 msgstr "LDAP DN des Synchronisationsbenutzers"
 
-#: umc/js/adconnector.js:201
+#: umc/js/adconnector.js:202
 msgid "LDAP and Kerberos"
 msgstr "LDAP und Kerberos"
 
-#: umc/js/adconnector.js:206
+#: umc/js/adconnector.js:207
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
-#: umc/js/adconnector.js:200
+#: umc/js/adconnector.js:201
 msgid ""
 "LDAP und kerberos configuration of the Active Directory server needs to be "
 "specified for the synchronisation"
-msgstr ""
-"Die LDAP- und Kerberos-Konfiguration muss für die Synchronisation angegeben "
-"werden."
+msgstr "Die LDAP- und Kerberos-Konfiguration des Active Directory Servers muss für die Synchronisation angegeben werden."
 
-#: umc/js/adconnector.js:215
+#: umc/js/adconnector.js:216
 msgid "Password of the synchronisation user"
 msgstr "Passwort des Synchronisationsbenutzers"
 
-#: umc/js/adconnector.js:263
+#: umc/js/adconnector.js:264
 msgid "Poll Interval (seconds)"
 msgstr "Polling-Intervall (in Sekunden)"
 
-#: umc/js/adconnector.js:266
+#: umc/js/adconnector.js:267
 msgid "Retry interval for rejected objects"
 msgstr "Wiederholungsintervall für abgelehnte Objekte"
 
-#: umc/js/adconnector.js:94
+#: umc/js/adconnector.js:95
 msgid "Start UCS Active Directory Connector"
 msgstr "UCS Active Directory Connector starten"
 
-#: umc/js/adconnector.js:102
+#: umc/js/adconnector.js:103
 msgid "Stop UCS Active Directory Connector"
 msgstr "UCS Active Directory Connector stoppen"
 
-#: umc/js/adconnector.js:225 umc/js/adconnector.js:240
+#: umc/js/adconnector.js:226 umc/js/adconnector.js:241
 msgid "Synchronisation mode"
 msgstr "Synchronisationsmodus"
 
-#: umc/js/adconnector.js:243
+#: umc/js/adconnector.js:244
 msgid "System langauge of Active Directory server"
-msgstr "Systemsprache des Active Directory Server"
+msgstr "Systemsprache des Active Directory Servers"
 
-#: umc/js/adconnector.js:154
+#: umc/js/adconnector.js:155
 msgid "The Active Directory certificate has been successfully installed."
 msgstr "Das Active Directory Zertifikat wurde erfolgreich installiert"
 
-#: umc/js/adconnector.js:152
+#: umc/js/adconnector.js:153
 msgid "The Active Directory certificate has not been installed yet."
 msgstr "Das Active Directory Zertifikat wurde noch nicht installiert."
 
-#: umc/js/adconnector.js:79
+#: umc/js/adconnector.js:80
 msgid "The certificate was imported successfully"
 msgstr "Das Zertifikat wurde erfolgreich importiert"
 
-#: umc/js/adconnector.js:147
+#: umc/js/adconnector.js:148
 msgid ""
 "The configuration process has been finished and all required settings for "
 "UCS Active Directory Connector are set."
@@ -145,12 +143,12 @@ msgstr ""
 "Die Konfiguration ist abgeschlossen und alle benötigten Einstellungen für "
 "den UCS Active Directory Connector sind gesetzt."
 
-#: umc/js/adconnector.js:149
+#: umc/js/adconnector.js:150
 msgid "The configuration process has not been started yet or is incomplete."
 msgstr ""
 "Die Konfigration ist noch nicht vorhanden oder zumindest unvollständig."
 
-#: umc/js/adconnector.js:257
+#: umc/js/adconnector.js:258
 msgid ""
 "The following settings control the internal behaviour of the UCS Active "
 "Directory connector. For all attributes reasonable default values are "
@@ -160,12 +158,12 @@ msgstr ""
 "Active Directory Connector. Für alle Attribute sind sinnvolle Vorgabewerte "
 "definiert."
 
-#: umc/js/adconnector.js:186
+#: umc/js/adconnector.js:187
 msgid "The full qualified hostname of the Active Directory server is required"
 msgstr ""
 "Der vollqualifizierte Rechnername des Active Directory Servers wird benötigt"
 
-#: umc/js/adconnector.js:315
+#: umc/js/adconnector.js:316
 msgid "The password for the synchronisation account is required!"
 msgstr "Das Passwort für den Synchronisationsbenutzer wird benötigt!"
 
@@ -177,27 +175,27 @@ msgstr ""
 "Dieses Modul stellt einen Konfigurationsassistenten zur einfachen "
 "Einrichtung des UCS Active Directory Connector zur Verfügung"
 
-#: umc/js/adconnector.js:113
+#: umc/js/adconnector.js:114
 msgid "UCS Active Directory Connector Wizard"
 msgstr "UCS Active Directory Connector Assistent"
 
-#: umc/js/adconnector.js:187
+#: umc/js/adconnector.js:188
 msgid "UCS Active Directory Connector configuration"
 msgstr "UCS Active Directory Connector Konfiguration"
 
-#: umc/js/adconnector.js:157
+#: umc/js/adconnector.js:158
 msgid "UCS Active Directory Connector is currently running."
 msgstr "UCS Active Directory Connector läuft aktuell."
 
-#: umc/js/adconnector.js:161
+#: umc/js/adconnector.js:162
 msgid "UCS Active Directory Connector is not running."
 msgstr "UCS Active Directory Connector ist nicht gestartet."
 
-#: umc/js/adconnector.js:131
+#: umc/js/adconnector.js:132
 msgid "UCS Active Directory Connector service"
 msgstr "UCS Active Directory Connector Dienst"
 
-#: umc/js/adconnector.js:224
+#: umc/js/adconnector.js:225
 msgid "UCS Active Directory Connector supports three types of synchronisation."
 msgstr ""
 "UCS Active Directory Connector unterstützt der Typen der Synchronisation."

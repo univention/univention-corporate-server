@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.35-1) unstable; urgency=low
+
+  * modified some descriptions
+  * deactivate clean button of Uploader widget; Bug #23713
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Nov 2011 16:01:53 +0100
+
 univention-ad-connector (6.0.34-1) unstable; urgency=low
 
   * Replace custom attribiutes by extended attributes in ad-connector-

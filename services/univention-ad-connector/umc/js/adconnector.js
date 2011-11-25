@@ -70,6 +70,7 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 			}, {
 				name: 'certificateUpload',
 				type: 'InfoUploader',
+				showCleanButton: false,
 				command: 'adconnector/upload/certificate',
 				onUploaded: dojo.hitch( this, function( result ) {
 					if ( dojo.isString( result ) ) {
@@ -85,7 +86,7 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 			}, {
 				name: 'download',
 				type: 'Text',
-				content: dojo.replace( '<a href="/univention-ad-connector/" target="_blank">{0}</a>', [ this._( 'Download the password serivce for Windows and the UCS certificate' ) ] )
+				content: dojo.replace( '<a href="/univention-ad-connector/" target="_blank">{0}</a>', [ this._( 'Download the password service for Windows and the UCS certificate' ) ] )
 			}
 		];
 		var buttons = [
@@ -216,7 +217,7 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 			}, {
 				name: 'KerberosDomain',
 				type: 'TextBox',
-				label: this._( 'Kerberos domain of the Active Directory server' )
+				label: this._( 'Kerberos domain' )
 			}],
 			layout: [ 'LDAP_Base', 'LDAP_BindDN', 'LDAP_Password', 'KerberosDomain' ]
 		}, {
