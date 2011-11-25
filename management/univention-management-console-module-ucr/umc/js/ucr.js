@@ -199,7 +199,7 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._page.startup();
 
 		// make sure that the input field is focused
-		this.connect(this, 'onShow', '_selectInputText');
+		this.connect(this._page, 'onShow', '_selectInputText');
 		this.connect(this._grid, 'onFilterDone', '_selectInputText');
 
 		//
@@ -219,7 +219,10 @@ dojo.declare("umc.modules.ucr", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// select the text
 		if (widget.textbox) {
-			dijit.selectInputText(widget.textbox);
+			try {
+				dijit.selectInputText(widget.textbox);
+			}
+			catch(err) { }
 		}
 	}
 });
