@@ -418,11 +418,11 @@ class Domains( object ):
 		domain_info.interfaces = []
 		for interface in domain[ 'interfaces' ]:
 			iface = Interface()
-			if interface[ 'type' ].startswith( 'network:' ):
+			if interface.get( 'type', '' ).startswith( 'network:' ):
 				iface.type = 'network'
 				iface.source = interface[ 'type' ].split( ':', 1 )[ 1 ]
 			else:
-				iface.type = interface[ 'type' ]
+				iface.type = interface.get( 'type', 'bridge' )
 				iface.source = interface[ 'source' ]
 			iface.model = interface[ 'model' ]
 			iface.mac_address = interface.get( 'mac_address', None )
