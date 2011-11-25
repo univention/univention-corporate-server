@@ -695,6 +695,18 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// hide the 'objectPropertyValue' combo box in case 'all properties' are shown
 		this.connect(this._searchForm._widgets.objectProperty, 'onChange', '_updateObjectPropertyValue');
 
+		// reload the superordinates in case an object has been added, it might be a new superordinate
+		if (superordinates && superordinates.length) {
+			this.connect(this.moduleStore, 'onChange', function() {
+				this.umcpCommand('udm/superordinates').then(dojo.hitch(this, function(data) {
+					var widget = this._searchForm.getWidget('superordinate');
+					if (widget) {
+						widget.set('staticValues', data.result);
+					}
+				}));
+			});
+		}
+
 		// focus and select text when the objectPropertyValue has been loaded
 		// at the beginning
 		var propertyValueHandle = this.connect(this._searchForm._widgets.objectPropertyValue, 'onChange', function() {
@@ -1106,80 +1118,98 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			msg = this._('Please confirm the removal of the selected %s!', this.objectNameSingular);
 		}
 
-		// build a small form with a checkbox to mark whether or not referring 
-		// objects are deleted, as well
-		var widgets = [{
-			type: 'CheckBox',
-			label: this._('Delete referring objects.'),
-			name: 'deleteReferring',
-			value: cleanup
-		}, {
-			type: 'Text',
-			label: '',
-			name: 'text',
-			content: msg
-		}];
-		var layout = [ 'text', 'deleteReferring' ];
-		var form = new umc.widgets.Form({
-			widgets: widgets,
-			layout: layout,
-			buttons: []
+		var dialog = null, form = null;
+
+		var _cleanup = function() {
+			dialog.hide();
+			dialog.destroyRecursive();
+			form.destroyRecursive();
+		};
+
+		var _remove = dojo.hitch(this, function() {
+			// enable standby animation
+			this.standby(true);
+
+			// set reloading path to ldap base
+			if (isContainer) {
+				var ldapBase = this._tree.model.getIdentity(this._tree.model.root);
+				this._reloadingPath = ldapBase;
+				this._tree.set('path', [ this._tree.model.root ]);
+			}
+
+			// set the options
+			var options = {
+				cleanup: form.getWidget('deleteReferring').get('value'),
+				recursive: recursive
+			};
+
+			// remove the selected elements via a transaction on the module store
+			var transaction = this.moduleStore.transaction();
+			dojo.forEach(ids, function(iid) {
+				this.moduleStore.remove( iid, options );
+			}, this);
+			transaction.commit().then(dojo.hitch(this, function(data) {
+
+				// disable standby animation
+				this.standby(false);
+
+				// see whether all objects could be removed successfully
+				var success = true;
+				var message = '<p>' + this._('The following object(s) could not be deleted:') + '</p><ul>';
+				dojo.forEach(data.result, function(iresult) {
+					if (!iresult.success) {
+						success = false;
+						message += '<li>' + iresult.$dn$ + ': ' + iresult.details;
+					}
+				}, this);
+				message += '</ul>';
+
+				// show an alert in case something went wrong
+				if (!success) {
+					umc.dialog.alert(message);
+				}
+			}), dojo.hitch(this, function() {
+				this.standby(false);
+			}));
+
+			// remove dialog
+			_cleanup();
 		});
 
-		// show the confirmation dialog
-		umc.dialog.confirm(form, [{
-			label: this._('Delete'),
-			callback: dojo.hitch(this, function() {
-				// enable standby animation
-				this.standby(true);
+		// build a small form with a checkbox to mark whether or not referring 
+		// objects are deleted, as well
+		var form = new umc.widgets.Form({
+			widgets: [{
+				type: 'Text',
+				label: '',
+				name: 'text',
+				content: '<p>' + msg + '</p>'
+			}, {
+				type: 'CheckBox',
+				label: this._('Delete referring objects.'),
+				name: 'deleteReferring',
+				value: cleanup,
+				style: 'width:auto'
+			}],
+			buttons: [{
+				name: 'submit',
+				label: this._('Cancel'),
+				callback: _cleanup
+			}, {
+				name: 'remove',
+				label: this._('Delete'),
+				callback: _remove,
+				style: 'float:right'
+			}]
+			//layout: [ 'text', [ 'deleteReferring', 'submit' ] ]
+		});
 
-				// set reloading path to ldap base
-				if (isContainer) {
-					var ldapBase = this._tree.model.getIdentity(this._tree.model.root);
-					this._reloadingPath = ldapBase;
-					this._tree.set('path', [ this._tree.model.root ]);
-				}
-
-				// set the options
-				var options = {
-					cleanup: form.getWidget('deleteReferring').get('value'),
-					recursive: recursive
-				};
-
-				// remove the selected elements via a transaction on the module store
-				var transaction = this.moduleStore.transaction();
-				dojo.forEach(ids, function(iid) {
-					this.moduleStore.remove( iid, options );
-				}, this);
-				transaction.commit().then(dojo.hitch(this, function(data) {
-
-					// disable standby animation
-					this.standby(false);
-
-					// see whether all objects could be removed successfully
-					var success = true;
-					var message = '<p>' + this._('The following object(s) could not be deleted:') + '</p><ul>';
-					dojo.forEach(data.result, function(iresult) {
-						if (!iresult.success) {
-							success = false;
-							message += '<li>' + iresult.$dn$ + ': ' + iresult.details;
-						}
-					}, this);
-					message += '</ul>';
-
-					// show an alert in case something went wrong
-					if (!success) {
-						umc.dialog.alert(message);
-					}
-				}), dojo.hitch(this, function() {
-					this.standby(false);
-				}));
-			})
-		}, {
-			label: this._('Cancel'),
-			'default': true
-		}]);
-
+		dialog = new dijit.Dialog({
+			title: this._('Delete objects'),
+			content: form,
+			'class': 'umcPopup'
+		});
+		dialog.show();
 	},
 
 	showNewObjectDialog: function() {
@@ -1200,10 +1230,12 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		}
 
 		// open the dialog
+		var superordinate = this._searchForm.getWidget('superordinate');
 		var dialog = new umc.modules._udm.NewObjectDialog({
 			umcpCommand: dojo.hitch(this, 'umcpCommand'),
 			moduleFlavor: this.moduleFlavor,
 			selectedContainer: selectedContainer,
+			selectedSuperordinate: superordinate && superordinate.get('value'),
 			defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
 			onDone: dojo.hitch(this, function(options) {
 				// when the options are specified, create a new detail page

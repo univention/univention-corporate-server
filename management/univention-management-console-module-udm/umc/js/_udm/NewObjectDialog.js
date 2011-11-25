@@ -60,6 +60,10 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 	//		can be specified via this property.
 	selectedContainer: { id: '', label: '', path: '' },
 
+	// selectedSuperordinate: String
+	//		DN of the preselected superordinate.
+	selectedSuperordinate: null,
+
 	// defaultObjectType: String
 	//		The object type that is selected by default.
 	defaultObjectType: null,
@@ -118,7 +122,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		containers = containers || [];
 		superordinates = superordinates || [];
 		templates = templates || [];
-		dojo.forEach([types, containers, superordinates, templates], function(iarray) {
+		dojo.forEach([types, containers, templates], function(iarray) {
 			iarray.sort(umc.tools.cmpObjects('label'));
 		});
 
@@ -146,7 +150,8 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 					name: 'superordinate',
 					label: this._('Superordinate'),
 					description: this._('The corresponding superordinate for the UDM object.', this.objectNameSingular),
-					staticValues: superordinates
+					staticValues: superordinates,
+					value: this.selectedSuperordinate
 				}, {
 					type: 'ComboBox',
 					name: 'objectType',
@@ -221,7 +226,8 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 			callback: dojo.hitch(this, function() {
 				this.onDone(this._form.gatherFormValues());
 				this.destroyRecursive();
-			})
+			}),
+			style: 'float:right;'
 		}, {
 			name: 'close',
 			label: this._('Close'),
@@ -236,6 +242,13 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 			layout: layout,
 			buttons: buttons
 		});
+		this.connect(this._form, 'onSubmit', function() {
+			this.onDone(this._form.gatherFormValues());
+			this.destroyRecursive();
+		});
+		this.connect(this, 'onShow', function() {
+			this._form.getWidget(widgets[0].name).focus();
+		});
 		var container = new umc.widgets.ContainerWidget({});
 		if ('navigation' == this.moduleFlavor) {
 			container.addChild(new umc.widgets.Text({
@@ -245,6 +258,7 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		container.addChild(this._form);
 		this.set('content', container);
 		this.show();
+
 	},
 
 	onDone: function(options) {

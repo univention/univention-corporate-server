@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.230-1) unstable; urgency=low
+
+  * update list of superordinates when a new object is added
+  * preselect currently selected superordinate when adding a new object
+  * adapted style of remove object dialog
+  (Bug #23784)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 17:03:48 +0100
+
 univention-management-console-module-udm (1.0.229-1) unstable; urgency=low
 
   * added focusing and selecting text in the search form (Bug #22881)
