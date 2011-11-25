@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.237-1) unstable; urgency=low
+
+  * web-server: fixed iframe workaround (Bug #23983)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 19:36:50 +0100
+
 univention-management-console-frontend (1.0.236-1) unstable; urgency=low
 
   * adapted CSS style umcUnsetPolicy (Bug #22881)

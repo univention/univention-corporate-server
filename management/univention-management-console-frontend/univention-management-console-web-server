@@ -321,7 +321,7 @@ class CPgeneric(object):
 			if not cherrypy.request.path_info.startswith( '/upload' ):
 				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
 			json = kwargs.values()
-			iframe = 'iframe' in kwargs and (kwargs['iframe'] != 'false' and kwargs['iframe'] != False)
+			iframe = 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0'))
 		elif cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
 			if not cherrypy.request.headers.get(u"Content-Length", u""):
 				json = ''
