@@ -436,7 +436,7 @@ class object(content):
 					except:
 						pass
 
-				self.parent.debug('cdrom_device=%s' % self.parent.container['cdrom_device'])
+				self.parent.debug('cdrom_device=%s' % self.parent.container.get('cdrom_device','NO DEVICE FOUND'))
 
 
 			elif self.action == 'cdrom-prepare':

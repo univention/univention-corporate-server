@@ -1,3 +1,9 @@
+univention-installer (7.0.150-1) unstable; urgency=low
+
+  * fixed faulty debug message in cdrom detection (Bug #24919)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Nov 2011 20:59:18 +0100
+
 univention-installer (7.0.149-1) unstable; urgency=low
 
   * remove univention-nagios-client from package_list (Bug #24763)
