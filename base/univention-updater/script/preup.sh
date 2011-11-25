@@ -549,7 +549,7 @@ fi
 # Test, whether univention-antivir-web is found. It is migrated from a different source
 # package and the templates have changed. Keep the installation status in a UCR variable
 dpkg -l univention-antivir-web > /dev/null 2>/dev/null
-if [ $? = 1 ]; then
+if [ $? = 0 ]; then
     echo "univention-antivir-web found. The UCR templates are moved to /etc/univention/templates/removed/dansguardian"
     echo "and the univention-antivir-web package is removed"
 
