@@ -281,7 +281,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 
 		// grid for the drives
 		this._driveStore = new umc.store.Memory({
-			idProperty: 'source'
+			idProperty: '$id$'
 		});
 		this._driveGrid = new umc.modules._uvmm.DriveGrid({
 			moduleStore: this._driveStore
@@ -455,6 +455,11 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				// we need to add pseudo ids for the network interfaces
 				dojo.forEach(this._domain.interfaces, function(idev, i) {
 					idev.$id$ = i + 1;
+				});
+
+				// we need to add pseudo ids for the network interfaces
+				dojo.forEach(this._domain.disks, function(idrive, i) {
+					idrive.$id$ = i + 1;
 				});
 
 				// update the stores

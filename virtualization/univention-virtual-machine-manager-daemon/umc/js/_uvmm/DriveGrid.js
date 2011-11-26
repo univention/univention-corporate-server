@@ -126,8 +126,11 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		var _finished = dojo.hitch( this, function( values ) {
 			_cleanup();
 			this.moduleStore.remove( ids[ 0 ] );
-			values.target_dev = old_cdrom.target_dev;
-			values.target_bus = old_cdrom.target_bus;
+			this.moduleStore.put( dojo.mixin( {
+				$id$: this.moduleStore.data.length + 1,
+				target_dev: old_cdrom.target_dev,
+				target_bus: old_cdrom.target_bus
+			}, values ) );
 			this.moduleStore.add( values );
 		} );
 
@@ -148,6 +151,7 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 
 	_editDrive: function( ids, items ) {
 		var disk = items[ 0 ];
+		var id = ids[ 0 ];
 
 		var types = umc.modules._uvmm.types;
 		var intro_msg = this._( 'All image files are stored in so-called storage pools. They can be stored in a local directory, an LVM partition or a share (e.g. using iSCSI, NFS or CIFS).' );
@@ -209,7 +213,7 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 			}, {
 				type: 'CheckBox',
 				name: 'paravirtual',
-				value: disk.paravirtual,
+				value: disk.paravirtual === undefined ? false : disk.paravirtual,
 				label: this._( 'Paravirtual drive' )
 			} ],
 			buttons: [{
@@ -311,7 +315,9 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 
 		var _finished = dojo.hitch(this, function(values) {
 			_cleanup();
-			this.moduleStore.add(values);
+			this.moduleStore.add( dojo.mixin( {
+				$id$: this.moduleStore.data.length + 1
+			}, values ) );
 		});
 
 		wizard = new umc.modules._uvmm.DriveWizard({

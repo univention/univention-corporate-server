@@ -102,14 +102,14 @@ dojo.declare("umc.modules._uvmm.InterfaceWizard", [ umc.widgets.Wizard, umc.i18n
 
 	_typeDescription: function() {
 		var widget = this.getWidget( 'typeDescription' );
-		if ( this.getWidget( 'type' ).get( 'value' ).indexOf( 'network:' ) == 0 ) {
+		if ( this.getWidget( 'type' ).get( 'value' ).indexOf( 'network:' ) === 0 ) {
 			widget.set( 'content' , 'By default the private network is 192.168.122.0/24' );
 			dojo.addClass( widget.domNode, 'umcPageNote' );
-			this.getWidget( 'source' ).set( 'visible', false )
+			this.getWidget( 'source' ).set( 'visible', false );
 		} else {
 			widget.set( 'content' , '' );
 			dojo.removeClass( widget.domNode, 'umcPageNote' );
-			this.getWidget( 'source' ).set( 'visible', true )
+			this.getWidget( 'source' ).set( 'visible', true );
 		}
 	},
 
