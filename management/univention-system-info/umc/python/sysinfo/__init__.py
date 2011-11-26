@@ -90,15 +90,15 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 	def get_system_info(self, request):
-		MANUFACTURER = request.options['manufacturer']
-		MODEL = request.options['model']
-		COMMENT = request.options['comment']
-		SYSTEM_INFO_CMD = ('/usr/bin/univention-system-info',
-		                   '-m', '%s' % MANUFACTURER,
-		                   '-t', '%s' % MODEL,
-		                   '-c', '%s' % COMMENT,
-		                   '-s', '%s' % request.options.get('ticket', ''),
-		                   '-u', )
+		MANUFACTURER = request.options['manufacturer'].encode( 'utf-8' )
+		MODEL = request.options['model'].encode( 'utf-8' )
+		COMMENT = request.options['comment'].encode( 'utf-8' )
+		SYSTEM_INFO_CMD = ( '/usr/bin/univention-system-info',
+							'-m', MANUFACTURER,
+							'-t', MODEL,
+							'-c', COMMENT,
+							'-s', request.options.get('ticket', ''),
+							'-u', )
 
 		(exitcode, stdout, stderr, ) = self._call(SYSTEM_INFO_CMD)
 		if exitcode:

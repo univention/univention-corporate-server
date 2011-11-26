@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-sysinfo\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-15 22:59+0100\n"
+"POT-Creation-Date: 2011-11-26 13:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,18 +12,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/sysinfo.js:127
+#: umc/js/sysinfo.js:156
 msgid ""
 "<p>Additionally to the information listed above some more details about your "
 "system has been collected. The hole set of collected data that will be "
 "transmitted to Univention can be downloaded at the following URL:</p>"
 msgstr ""
-"<p>Zusätzlich wurde eine Liste mit Informationen über die Hardware-Komponenten "
-"in Ihrem System erstellt. Die gesamten Informationen, die an Univention "
-"übertragen werden sollen, können Sie sich unter dem folgenden URL "
+"<p>Zusätzlich wurde eine Liste mit Informationen über die Hardware-"
+"Komponenten in Ihrem System erstellt. Die gesamten Informationen, die an "
+"Univention übertragen werden sollen, können Sie sich unter dem folgenden URL "
 "herunterladen:</p>"
 
-#: umc/js/sysinfo.js:78
+#: umc/js/sysinfo.js:106
 msgid ""
 "<p>If a Univention Support Engineer has asked you to provide these "
 "information, than please insert the ticket number of the related support "
@@ -36,27 +36,27 @@ msgstr ""
 "Ticketnummer, die Sie im Betreff der Support-Mails finden, an. Dies hilft "
 "bei der Zuordnung zu dem Supportfall und beschleunigt die Bearbeitung.</p>"
 
-#: umc/js/sysinfo.js:87
+#: umc/js/sysinfo.js:115
 msgid ""
 "<p>In the next step the information about the hardware of your system will "
 "be collect and a summary will be shown. No information will be send to "
 "Univention.</p>"
 msgstr ""
-"<p>Im nächsten Schritt werden die Informationen Ihres Systems eingeholt und es "
-"wird Ihnen dazu eine Zusammenfassung angezeigt. Es werden noch keine "
+"<p>Im nächsten Schritt werden die Informationen Ihres Systems eingeholt und "
+"es wird Ihnen dazu eine Zusammenfassung angezeigt. Es werden noch keine "
 "Informationen an Univention übertragen.</p>"
 
-#: umc/js/sysinfo.js:153
+#: umc/js/sysinfo.js:181
 msgid ""
 "<p>The collected information can be transfered to Univention by uploading "
 "the data or by sending the data via mail. Please selected the corresponding "
-"button for the technique of your choice.</p>"
+"option for the technique of your choice.</p>"
 msgstr ""
 "<p>Sie können die Informationen entweder direkt hochladen oder alternativ "
 "können Sie die Informationen auch per Mail an Univention schicken. Wählen "
-"Sie die entsprechende Schaltfläche für die von Ihnen gewünschte Variante.</p>"
+"Sie die entsprechende Option für die von Ihnen gewünschte Variante.</p>"
 
-#: umc/js/sysinfo.js:99
+#: umc/js/sysinfo.js:127
 msgid ""
 "<p>The following information has been collected and will be transfered to "
 "Univention with your acceptance.</p>"
@@ -64,15 +64,15 @@ msgstr ""
 "<p>Die folgenden Daten wurden über Ihr System gesammelt und werden mit Ihrer "
 "Einwillung an Univention übertragen:</p>"
 
-#: umc/js/sysinfo.js:173
+#: umc/js/sysinfo.js:201
 msgid ""
 "<p>The information were transfered to Univention successfully.</p><p>Thank "
 "you very much for your support!</p>"
 msgstr ""
-"<p>Die Informationen wurden erfolgreich an Univention übertragen.</p><p>Vielen "
-"Dank für Ihre Unterstützung!</p>"
+"<p>Die Informationen wurden erfolgreich an Univention übertragen.</"
+"p><p>Vielen Dank für Ihre Unterstützung!</p>"
 
-#: umc/js/sysinfo.js:45
+#: umc/js/sysinfo.js:73
 msgid ""
 "<p>This module collects information about the hardware of your system. This "
 "might be helpful in connection with a support case. By transmitting the data "
@@ -89,34 +89,34 @@ msgstr ""
 "Hardware mit UCS eingesetzt wird und deswegen auch zukünftig unterstützt "
 "werden sollte. Alle Daten werden von diesem Programm anonymisiert an "
 "Univention weitergeleitet. Im weiteren Verlauf werden Sie über die einzelnen "
-"Schritte genau informiert.</p><p>Es werden keine Informationen ohne "
-"Ihre Einwilligung an Univention übermittelt!</p>"
+"Schritte genau informiert.</p><p>Es werden keine Informationen ohne Ihre "
+"Einwilligung an Univention übermittelt!</p>"
 
-#: umc/js/sysinfo.js:131 umc/js/sysinfo.js:187 umc/js/sysinfo.js:320
+#: umc/js/sysinfo.js:160 umc/js/sysinfo.js:215 umc/js/sysinfo.js:348
 msgid "Archive with system information"
 msgstr "Archiv mit den Systeminformationen"
 
-#: umc/js/sysinfo.js:103
+#: umc/js/sysinfo.js:131
 msgid "CPU"
 msgstr "CPU"
 
-#: umc/js/sysinfo.js:94
+#: umc/js/sysinfo.js:122
 msgid "Collected Data"
 msgstr "Gesammelte Daten"
 
-#: umc/js/sysinfo.js:57
+#: umc/js/sysinfo.js:85
 msgid "Descriptive comment"
 msgstr "Kommentar"
 
-#: umc/js/sysinfo.js:44
+#: umc/js/sysinfo.js:72
 msgid "General Information"
 msgstr "Allgemeine Informationen"
 
-#: umc/js/sysinfo.js:123
+#: umc/js/sysinfo.js:152
 msgid "Graphics Device"
 msgstr "Grafikkarte"
 
-#: umc/js/sysinfo.js:65
+#: umc/js/sysinfo.js:93
 msgid ""
 "If this is related to a support case the next step will be to enter the "
 "ticket number. if not than the information about your system will be "
@@ -126,7 +126,7 @@ msgstr ""
 "Ticketnummer abgefragt, anderenfalls werden die Informationen zu Ihrem "
 "System gesammelt und eine Zusammenfassung angezeigt."
 
-#: umc/js/sysinfo.js:135
+#: umc/js/sysinfo.js:164
 msgid ""
 "In the following step two possibilities to transmit the information to "
 "Univention will be described."
@@ -134,43 +134,43 @@ msgstr ""
 "Im folgenden Schritt werden Ihnen zwei Möglichkeiten geboten, die "
 "Informationen an Univention zu übermitteln."
 
-#: umc/js/sysinfo.js:49
+#: umc/js/sysinfo.js:77
 msgid "Manufacturer"
 msgstr "Hersteller"
 
-#: umc/js/sysinfo.js:113
+#: umc/js/sysinfo.js:142
 msgid "Memory"
 msgstr "Arbeitsspeicher"
 
-#: umc/js/sysinfo.js:158
+#: umc/js/sysinfo.js:186
 msgid "Method"
 msgstr "Methode"
 
-#: umc/js/sysinfo.js:53
+#: umc/js/sysinfo.js:81
 msgid "Model"
 msgstr "Modell"
 
-#: umc/js/sysinfo.js:118
+#: umc/js/sysinfo.js:147
 msgid "Network Device"
 msgstr "Netzwerkkarte"
 
-#: umc/js/sysinfo.js:108
+#: umc/js/sysinfo.js:137
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: umc/js/sysinfo.js:161 umc/js/sysinfo.js:338
+#: umc/js/sysinfo.js:189 umc/js/sysinfo.js:366
 msgid "Send mail"
 msgstr "Mail senden"
 
-#: umc/js/sysinfo.js:73
+#: umc/js/sysinfo.js:101
 msgid "Support Information"
 msgstr "Support Informationen"
 
-#: umc/js/sysinfo.js:61 umc/js/sysinfo.js:82
+#: umc/js/sysinfo.js:89 umc/js/sysinfo.js:110
 msgid "This is related to a support case"
 msgstr "Dies bezieht sich auf einen Supportfall"
 
-#: umc/js/sysinfo.js:183
+#: umc/js/sysinfo.js:211
 msgid ""
 "To transfer the information via mail please follow these steps:"
 "<ol><li>Download the archive with the collected information and save it on "
@@ -188,18 +188,18 @@ msgstr ""
 "diese.</li><li>Beenden Sie diesen Assistenten durch Klicken auf die "
 "Schaltfläche 'Beenden'</li></ol>"
 
-#: umc/js/sysinfo.js:148
+#: umc/js/sysinfo.js:176
 msgid "Transfer the information"
 msgstr "Übertragung der Informationen"
 
-#: umc/js/sysinfo.js:178
+#: umc/js/sysinfo.js:206
 msgid "Transfer via mail"
 msgstr "Übertragung per Mail"
 
-#: umc/js/sysinfo.js:168
+#: umc/js/sysinfo.js:196
 msgid "Transfered successfully"
 msgstr "Übertragung erfolgreich"
 
-#: umc/js/sysinfo.js:160
+#: umc/js/sysinfo.js:188
 msgid "Upload"
 msgstr "Hochladen"

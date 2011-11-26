@@ -1,3 +1,10 @@
+univention-system-info (2.0.8-1) unstable; urgency=low
+
+  * fixed encoding problems; Bug #22927
+  * updated german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 26 Nov 2011 11:56:45 +0100
+
 univention-system-info (2.0.7-1) unstable; urgency=low
 
   * Add ucslint

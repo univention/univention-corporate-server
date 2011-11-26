@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2011 Univention GmbH
  *
  * http://www.univention.de/
@@ -133,6 +133,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			}, {
 				type: 'TextBox',
 				name: 'num_cpu',
+				sizeClass: 'OneThird',
 				label: this._('Number of CPUs'),
 				value: ''
 			}, {
@@ -163,8 +164,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 				content: this._('In the following step two possibilities to transmit the information to Univention will be described.')
 			}],
 			layout: [['firstText'],
-					 ['cpu'],
-					 ['num_cpu'],
+					 ['cpu', 'num_cpu'],
 					 ['mem'],
 					 ['net_dev'],
 					 ['gfx_dev'],
@@ -178,7 +178,7 @@ dojo.declare("umc.modules._sysinfo.Wizard", [ umc.widgets.Wizard, umc.widgets.St
 			widgets: [{
 				type: 'Text',
 				name: 'firstText',
-				content: this._('<p>The collected information can be transfered to Univention by uploading the data or by sending the data via mail. Please selected the corresponding button for the technique of your choice.</p>')
+				content: this._('<p>The collected information can be transfered to Univention by uploading the data or by sending the data via mail. Please selected the corresponding option for the technique of your choice.</p>')
 			}, {
 				type: 'ComboBox',
 				name: 'method',
