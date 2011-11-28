@@ -1,10 +1,10 @@
-univention-management-console-module-udm (1.0.232-1) unstable; urgency=low
+univention-management-console-module-udm (1.0.252-1) unstable; urgency=low
 
   * fixed autoselection of search text (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 19:22:34 +0100
 
-univention-management-console-module-udm (1.0.231-1) unstable; urgency=low
+univention-management-console-module-udm (1.0.251-1) unstable; urgency=low
 
   * read default user template as configured by the UCR variable:
     directory/manager/web/modules/users/user/add/default
@@ -12,7 +12,7 @@ univention-management-console-module-udm (1.0.231-1) unstable; urgency=low
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 18:11:40 +0100
 
-univention-management-console-module-udm (1.0.230-1) unstable; urgency=low
+univention-management-console-module-udm (1.0.250-1) unstable; urgency=low
 
   * update list of superordinates when a new object is added
   * preselect currently selected superordinate when adding a new object
@@ -21,7 +21,7 @@ univention-management-console-module-udm (1.0.230-1) unstable; urgency=low
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Nov 2011 17:03:48 +0100
 
-univention-management-console-module-udm (1.0.229-1) unstable; urgency=low
+univention-management-console-module-udm (1.0.249-1) unstable; urgency=low
 
   * added focusing and selecting text in the search form (Bug #22881)
 
