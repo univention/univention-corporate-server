@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.202-1) unstable; urgency=low
+
+  * shares/printergroup: syntax fixes; Bug #23782
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 18:14:29 +0100
+
 univention-directory-manager-modules (7.0.201-1) unstable; urgency=low
 
   * Re-added netbios_name_servers to dhcp_netbios policy (Bug #24593)

@@ -1549,6 +1549,10 @@ class Windows_Server( IComputer_FQDN ):
 class UCS_Server( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
 
+class ServicePrint_FQDN( IComputer_FQDN ):
+	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+	udm_filter = 'service=Print'
+
 class KDE_Profile( UDM_Attribute ):
 	udm_module = 'settings/default'
 	attribute = 'defaultKdeProfiles'
@@ -2497,6 +2501,17 @@ class Printers( UDM_Objects ):
 	depends = 'spoolHost'
 	simple = True
 	key = '%(name)s'
+
+	@classmethod
+	def udm_filter( self, options ):
+		return 'spoolHost=%s' % '|'.join( options[ Printers.depends ] )
+
+class PrinterNames( UDM_Objects ):
+	udm_modules = ( 'shares/printer', )
+	depends = 'spoolHost'
+	simple = True
+	key = '%(name)s'
+	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
 
 	@classmethod
 	def udm_filter( self, options ):
