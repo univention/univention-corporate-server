@@ -94,6 +94,8 @@ def choices( syntax, udm_property ):
 			opts = { 'objectType' : syntax.udm_modules[ 0 ] }
 		else:
 			opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
+		if issubclass( syntax, udm_syntax.network ):
+			opts = { 'onChange' : 'javascript:umc.modules._udm.setNetwork' }
 	elif isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ) or inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : inspect.isclass( syntax ) and syntax.__name__ or syntax.__class__.__name__ } }
 	elif isinstance( syntax, udm_syntax.LDAP_Search ):

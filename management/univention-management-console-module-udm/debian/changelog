@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.255-1) unstable; urgency=low
+
+  * udm/network: return next network configuration based on the given
+    network object; Bug #24077
+  * add onChange Option to network syntax class
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 16:17:29 +0100
+
 univention-management-console-module-udm (1.0.254-1) unstable; urgency=low
 
   * fixed removal of up-button when a new object is created (Bug #23784)

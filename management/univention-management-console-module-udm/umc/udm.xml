@@ -73,6 +73,8 @@
 	</command>
 	<command name="udm/types" function="types">
 	</command>
+	<command name="udm/network" function="network">
+	</command>
 	<command name="udm/properties" function="properties">
 	  <attribute name="objectType" syntax="String"/>
 	</command>

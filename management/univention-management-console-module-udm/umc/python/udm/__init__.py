@@ -506,6 +506,25 @@ class Instance( Base ):
 			result = module.get_default_values( property_name )
 		self.finished( request.id, result )
 
+	def network( self, request ):
+		"""Returns the next IP configuration based on the given network object
+
+		requests.options = {}
+		  'networkDN' -- the LDAP DN of the network object
+
+		return: {}
+		"""
+		self.required_options( request, 'networkDN' )
+		module = self._get_module( None, object_type = 'networks/network' )
+		obj = module.get( request.options[ 'networkDN' ] )
+		if not obj:
+			raise UMC_OptionTypeError( 'Could not find network object' )
+
+		result = { 'ip' : obj[ 'nextIp' ], 'dnsEntryZoneForward' : obj[ 'dnsEntryZoneForward' ], 'dhcpEntryZone' : obj[ 'dhcpEntryZone' ] }
+		obj.stepIp()
+		obj.modify()
+		self.finished( request.id, result )
+
 	def containers( self, request ):
 		"""Returns the list of default containers for the given object
 		type. Therefor the python module and the default object in the
