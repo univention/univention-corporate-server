@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.256-1) unstable; urgency=low
+
+  * set dependencies for MultiInput subtypes (Bug #23782)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Nov 2011 17:17:05 +0100
+
 univention-management-console-module-udm (1.0.255-1) unstable; urgency=low
 
   * udm/network: return next network configuration based on the given

@@ -251,7 +251,8 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 					dynamicValues: iprop.dynamicValues,
 					dynamicOptions: iprop.dynamicOptions,
 					staticValues: iprop.staticValues,
-					size: iprop.size
+					size: iprop.size,
+					depends: iprop.depends
 				}];
 				iprop.type = 'MultiInput';
 			}
@@ -517,7 +518,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 									type: jprop.type,
 									dynamicValues: jprop.dynamicValues,
 									dynamicOptions: jprop.dynamicOptions,
-									staticValues: jprop.staticValues
+									staticValues: jprop.staticValues,
+									size: jprop.size,
+									depends: jprop.depends
 								}];
 								jprop.type = 'MultiInput';
 							}
