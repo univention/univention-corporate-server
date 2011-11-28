@@ -1,3 +1,9 @@
+univention-management-console-module-mrtg (1.0.7-1) unstable; urgency=low
+
+  * fix fuzzy po-file (Bug #24724)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 28 Nov 2011 13:30:56 +0100
+
 univention-management-console-module-mrtg (1.0.6-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)
