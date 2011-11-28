@@ -5,8 +5,8 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/poll/sleep]
-Description[de]= Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis erneut angefragt wird. Lokal wird dabei nur nach neuen Dateien im oben genannten Verzeichnis gesucht, auf Active Directory-Seite wird eine LDAP-Anfrage gestellt. Je niedriger diese Zeit, desto höher die Replikationsgeschwindigkeit und die unnötige Systemlast.
-Description[en]=Time in seconds which is waited after a run without changes until the next request is made. Only new files are searched for locally in the directory named above; a LDAP request is made on the Active Directory side. The shorter this time, the higher the replication speed and the unnecessary system load.
+Description[de]= Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis erneut angefragt wird. Lokal wird dabei nur nach neuen Dateien im oben genannten Verzeichnis gesucht, auf Active Directory-Seite wird eine LDAP-Anfrage gestellt.
+Description[en]=Time in seconds which is waited after a run without changes until the next request is made. Only new files are searched for locally in the directory named above; a LDAP request is made on the Active Directory side.
 Type=str
 Categories=service-adcon
 
@@ -35,8 +35,8 @@ Type=str
 Categories=service-adcon
 
 [con.*/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector.log (0-4). Voreingestellt ist 1, so dass Warnungen und Fehler protokolliert werden.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector.log (0-4). Preset as 1, so that warnings and errors are documented.
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector.log (0-4). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector.log (0-4). Preset as 2, so that the status of the synchronisation is visible in the log files.
 Type=str
 Categories=service-adcon
 
