@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.94-1) unstable; urgency=low
+
+  * fixed the function 'change medium' for devices at the beginning of the
+    device list; Bug #24910
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 08:22:37 +0100
+
 univention-virtual-machine-manager-daemon (1.0.93-1) unstable; urgency=low
 
   * DriveGrid: use virtual ids to identify the drives as source is not
