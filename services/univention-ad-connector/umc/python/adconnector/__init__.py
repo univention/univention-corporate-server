@@ -304,7 +304,7 @@ class Instance( Base ):
 		def _run_it( action ):
 			return subprocess.call( ( 'invoke-rc.d', 'univention-ad-connector', action ) )
 
-		def _return( self, thread, result, request ):
+		def _return( thread, result, request ):
 			success = not result
 			if result:
 				message = _('Switching running state of Active Directory Connector failed.')
@@ -320,6 +320,7 @@ class Instance( Base ):
 		cb = notifier.Callback( _return, request )
 		func = notifier.Callback( _run_it, action )
 		thread = notifier.threads.Simple( 'service', func, cb )
+		thread.run()
 
 	def __update_status( self ):
 		ucr.load()

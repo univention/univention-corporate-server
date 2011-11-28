@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.37-1) unstable; urgency=low
+
+  * fixed service (start|stop); Bug #23713
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 12:17:09 +0100
+
 univention-ad-connector (6.0.36-2) unstable; urgency=low
 
   * Update UCR variable descriptions (Bug #22829)
