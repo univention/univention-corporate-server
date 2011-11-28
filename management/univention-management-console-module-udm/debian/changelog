@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.253-1) unstable; urgency=low
+
+  * fixed fuzzy translation (Bug #22881)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Nov 2011 11:18:56 +0100
+
 univention-management-console-module-udm (1.0.252-1) unstable; urgency=low
 
   * fixed autoselection of search text (Bug #22881)
