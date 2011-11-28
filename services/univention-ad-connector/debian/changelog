@@ -1,3 +1,13 @@
+univention-ad-connector (6.0.39-1) unstable; urgency=low
+
+  * define exception class ConnectorError; Bug #23713
+  * upload: hide clear button; Bug #24937
+  * add scrollbar to main container
+  * require hostname, LDAP base and sync user in wizard
+  * update page after start/stop of service
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 17:30:45 +0100
+
 univention-ad-connector (6.0.38-1) unstable; urgency=low
 
   * Since set_uid_umlauts is no longer available the udm syntax for the

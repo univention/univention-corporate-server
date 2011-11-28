@@ -53,6 +53,9 @@ FN_BINDPW = '/etc/univention/connector/ad/bindpw'
 DIR_WEB_AD = '/var/www/univention-ad-connector'
 DO_NOT_CHANGE_PWD = '********************'
 
+class ConnectorError( Exception ):
+	pass
+
 class Instance( Base ):
 	OPTION_MAPPING = ( ( 'LDAP_Host', 'connector/ad/ldap/host', '' ),
 					   ( 'LDAP_Base', 'connector/ad/ldap/base', '' ),
@@ -248,7 +251,7 @@ class Instance( Base ):
 					raise ConnectorError(  _( 'Copying of %s/%s to %s/%s failed (exception=%s)') % ( ssldir, fn, DIR_WEB_AD, fn, e.__class__.__name__ ) )
 		else:
 			if error_if_missing:
-				MODULE.error( ud.ADMIN, ud.ERROR, 'Creation of certificate failed (%s)' % ssldir )
+				MODULE.error( 'Creation of certificate failed (%s)' % ssldir )
 				raise ConnectorError( _('Creation of certificate failed (%s)') % ssldir )
 
 

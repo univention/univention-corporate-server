@@ -70,7 +70,7 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 			}, {
 				name: 'certificateUpload',
 				type: 'InfoUploader',
-				showCleanButton: false,
+				showClearButton: false,
 				command: 'adconnector/upload/certificate',
 				onUploaded: dojo.hitch( this, function( result ) {
 					if ( dojo.isString( result ) ) {
@@ -95,7 +95,7 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 				label: this._( 'Start UCS Active Directory Connector' ),
 				callback: dojo.hitch( this, function() {
 					umc.tools.umcpCommand( 'adconnector/service', { action : 'start' } ).then( dojo.hitch( this, function( response ) {
-						this.hideShowElements();
+						this.showHideElements();
 					} ) );
 				} )
 			}, {
@@ -103,7 +103,7 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 				label: this._( 'Stop UCS Active Directory Connector' ),
 				callback: dojo.hitch( this, function() {
 					umc.tools.umcpCommand( 'adconnector/service', { action : 'stop' } ).then( dojo.hitch( this, function( response ) {
-						this.hideShowElements();
+						this.showHideElements();
 					} ) );
 				} )
 			}, {
@@ -136,6 +136,7 @@ dojo.declare("umc.modules.adconnector", [ umc.widgets.Module, umc.i18n.Mixin ], 
 			layout: [ 'certificateUpload', 'download' ]
 		}  ], this._widgets, this._buttons );
 
+		_container.set( 'style', 'overflow: auto' );
 		this._page.addChild( _container );
 
 		this.showHideElements();
@@ -189,6 +190,9 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 			widgets: [{
 				name: 'LDAP_Host',
 				type: 'TextBox',
+				required: true,
+				regExp: '.+',
+				invalidMessage: this._( 'The hostname of the Active Directory server is required' ),
 				label: this._( 'Active Directory Server' )
 			}, {
 				name: 'guess',
@@ -203,10 +207,12 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 			widgets: [{
 				name: 'LDAP_Base',
 				type: 'TextBox',
+				required: true,
 				sizeClass: 'OneAndAHalf',
 				label: this._( 'LDAP base' )
 			}, {
 				name: 'LDAP_BindDN',
+				required: true,
 				type: 'TextBox',
 				sizeClass: 'OneAndAHalf',
 				label: this._( 'LDAP DN of the synchronisation user' )
@@ -295,6 +301,12 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 				this.getWidget( 'fqdn', 'guess' ).set( 'value', true );
 			}
 		} else if (currentID == 'fqdn') {
+			var nameWidget = this.getWidget( 'LDAP_Host' );
+			if ( ! nameWidget.isValid() ) {
+				nameWidget.focus();
+				return null;
+			}
+
 			var guess = this.getWidget( 'fqdn', 'guess' );
 			if ( guess.get( 'value' ) ) {
 				this.standby( true );
@@ -311,6 +323,18 @@ dojo.declare("umc.modules._adconnector.Wizard", [ umc.widgets.Wizard, umc.i18n.M
 				} ) );
 			}
 		} else if ( currentID == 'ldap' ) {
+			var valid = true;
+			dojo.forEach( [ 'LDAP_Base', 'LDAP_BindDN', 'LDAP_Password' ], dojo.hitch( this, function( widgetName ) {
+				if ( ! this.getWidget( widgetName ).isValid() ) {
+					this.getWidget( widgetName ).focus();
+					valid = false;
+					return false;
+				}
+			} ) );
+			if ( !valid ) {
+				return null;
+			}
+
 			var password = this.getWidget( 'ldap', 'LDAP_Password' );
 			if ( ! this.variables.passwordExists && ! password.get( 'value' ) ) {
 				umc.dialog.alert( this._( 'The password for the synchronisation account is required!' ) );
