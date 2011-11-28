@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.254-1) unstable; urgency=low
+
+  * fixed removal of up-button when a new object is created (Bug #23784)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Nov 2011 15:58:29 +0100
+
 univention-management-console-module-udm (1.0.253-1) unstable; urgency=low
 
   * fixed fuzzy translation (Bug #22881)

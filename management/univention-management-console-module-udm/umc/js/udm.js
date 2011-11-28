@@ -701,7 +701,11 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this.umcpCommand('udm/superordinates').then(dojo.hitch(this, function(data) {
 					var widget = this._searchForm.getWidget('superordinate');
 					if (widget) {
-						widget.set('staticValues', data.result);
+						var currentVals = dojo.map(widget.get('staticValues'), function(i) { return i.id }).sort();
+						var newVals = dojo.map(data.result, function(i) { return i.id }).sort();
+						if (dojo.toJson(currentVals) != dojo.toJson(newVals)) {
+							widget.set('staticValues', data.result);
+						}
 					}
 				}));
 			});
