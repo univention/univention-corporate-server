@@ -1,3 +1,9 @@
+univention-dojo (5.0.15-1) unstable; urgency=low
+
+  * dojo.store.Memory: reset index when setting data; Bug #24814
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 12:25:50 +0100
+
 univention-dojo (5.0.14-1) unstable; urgency=low
 
   * extended patch for dojox.form.Uploader (Bug #23333)

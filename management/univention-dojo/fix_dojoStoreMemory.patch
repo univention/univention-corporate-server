@@ -1,0 +1,10 @@
+--- dojo-release-1.6.1-src/dojo/store/Memory.js.orig	2011-04-08 18:45:38.000000000 +0200
++++ dojo-release-1.6.1-src/dojo/store/Memory.js	2011-11-28 12:21:33.000000000 +0100
+@@ -142,6 +142,7 @@
+ 			this.data = data;
+ 		}
+ 
++		this.index = {};
+ 		for(var i = 0, l = data.length; i < l; i++){
+ 			var object = data[i];
+ 			this.index[object[this.idProperty]] = object;
