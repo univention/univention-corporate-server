@@ -137,10 +137,14 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 
 		var _finished = dojo.hitch( this, function( values ) {
 			_cleanup();
+			if ( undefined !== old_cdrom.target_dev ) {
+				values.target_dev = old_cdrom.target_dev;
+			}
+			if ( undefined !== old_cdrom.target_bus ) {
+				values.target_bus = old_cdrom.target_bus;
+			}
 			this.moduleStore.put( dojo.mixin( {
-				$id$: ids[ 0 ],
-				target_dev: old_cdrom.target_dev,
-				target_bus: old_cdrom.target_bus
+				$id$: ids[ 0 ]
 			}, values ) );
 		} );
 

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.96-1) unstable; urgency=low
+
+  * change medium: just copy target_(bus|dev) if set; Bug #24814
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 13:41:51 +0100
+
 univention-virtual-machine-manager-daemon (1.0.95-1) unstable; urgency=low
 
   * use paravirtual setting from profile for disk and cdrom; Bug #24814

@@ -308,7 +308,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		});
 		titlePane.addChild(this._interfaceGrid);
 		container.addChild(titlePane);
-		
+
 		// we need to call resize() manually to make sure the grids are rendered correctly
 		this.connect(this._devicesPage, 'onShow', function() {
 			this._driveGrid.resize();
