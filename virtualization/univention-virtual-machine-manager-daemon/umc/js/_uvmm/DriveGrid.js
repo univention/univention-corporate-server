@@ -113,6 +113,18 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		};
 	},
 
+	_nextID: function() {
+		var newID = this.moduleStore.data.length + 1;
+
+		dojo.forEach( this.moduleStore.data, function( item ) {
+			if ( item.$id$ >= newID ) {
+				newID = item.$id$ + 1;
+			}
+		} );
+
+		return newID;
+	},
+
 	_changeMedium: function( ids, items ) {
 		var old_cdrom = items[ 0 ];
 		var dialog = null, wizard = null;
@@ -312,9 +324,20 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		};
 
 		var _finished = dojo.hitch(this, function(values) {
+			var paravirtual = false;
+			var id = this._nextID();
+
 			_cleanup();
+			if ( this.domain.profileData ) {
+				if ( values.device == 'cdrom' && this.domain.profileData.pvcdrom ) {
+					paravirtual = true;
+				} else if ( values.device == 'disk' && this.domain.profileData.pvdisk ) {
+					paravirtual = true;
+				}
+			}
 			this.moduleStore.add( dojo.mixin( {
-				$id$: this.moduleStore.data.length + 1
+				$id$: id,
+				paravirtual: paravirtual
 			}, values ) );
 		});
 

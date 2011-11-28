@@ -236,6 +236,8 @@ class Domains( object ):
 			else:
 				driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
 
+			MODULE.info( 'Creating a %s drive' % ( driver_pv and 'paravirtual' or 'non-paravirtual' ) )
+
 			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
 				if drive.device == Disk.DEVICE_CDROM:
 					drive.driver_type = Disk.TYPE_RAW # ISOs need driver/@type='raw'
@@ -300,7 +302,7 @@ class Domains( object ):
 			node_uri, domain_uuid = urlparse.urldefrag( domain[ 'domainURI' ] )
 			domain_info.uuid = domain_uuid
 
-		# annotations
+		# annotations & profile
 		profile = None
 		if not domain_info.uuid:
 			profile_dn = domain.get( 'profile' )
