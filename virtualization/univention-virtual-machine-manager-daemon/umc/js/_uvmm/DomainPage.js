@@ -224,7 +224,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				label: this._('Globally available')
 			}, {
 				name: 'vnc_password',
-				type: 'TextBox',
+				type: 'PasswordBox',
 				label: this._('VNC password')
 			}, {
 				name: 'kblayout',

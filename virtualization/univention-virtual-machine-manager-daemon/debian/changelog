@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.97-1) unstable; urgency=low
+
+  * fix set/get of VNC password; Bug #24925
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 15:40:07 +0100
+
 univention-virtual-machine-manager-daemon (1.0.96-1) unstable; urgency=low
 
   * change medium: just copy target_(bus|dev) if set; Bug #24814

@@ -144,9 +144,11 @@ class Domains( object ):
 			# graphics
 			if json[ 'graphics' ]:
 				try:
+					gfx = json[ 'graphics' ][ 0 ]
 					json[ 'vnc' ] = True
-					json[ 'kblayout' ] = json[ 'graphics' ][ 0 ][ 'keymap' ]
-					json[ 'vnc_remote' ] = json[ 'graphics' ][ 0 ][ 'listen' ] == '0.0.0.0'
+					json[ 'kblayout' ] = gfx[ 'keymap' ]
+					json[ 'vnc_remote' ] = gfx[ 'listen' ] == '0.0.0.0'
+					json[ 'vnc_password' ] = gfx[ 'passwd' ]
 					# vnc_password will not be send to frontend
 					port = int( json[ 'graphics' ][ 0 ][ 'port' ] )
 					if port == -1:
@@ -392,7 +394,9 @@ class Domains( object ):
 				gfx.keymap = profile.kblayout
 			else:
 				raise UMC_CommandError( 'Could not determine the keyboard layout for the VNC access' )
-			gfx.passord = domain.get( 'vnc_password', None )
+			if domain.get( 'vnc_password', None ):
+				gfx.passwd = domain[ 'vnc_password' ]
+
 			domain_info.graphics = [gfx,]
 
 		# RTC offset
