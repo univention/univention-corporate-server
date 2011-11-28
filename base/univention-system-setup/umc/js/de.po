@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-25 00:42+0100\n"
+"POT-Creation-Date: 2011-11-28 14:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:443
+#: umc/js/setup.js:444
 msgid "Account data"
 msgstr "Kontodaten"
 
@@ -28,7 +28,7 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:389 umc/js/setup.js:467
+#: umc/js/setup.js:390 umc/js/setup.js:468
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -48,8 +48,8 @@ msgstr "Basis-Einstellungen"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:251 umc/js/setup.js:386 umc/js/setup.js:431
-#: umc/js/setup.js:464
+#: umc/js/setup.js:251 umc/js/setup.js:387 umc/js/setup.js:432
+#: umc/js/setup.js:465
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -66,7 +66,10 @@ msgid ""
 "Changes for IP addresses may result in restarting or stopping services. This "
 "can have severe side-effects when the system is in productive use at the "
 "moment."
-msgstr "Änderungen der IP-Adressen kann Neustart oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
+msgstr ""
+"Änderungen der IP-Adressen kann Neustart oder Anhalten von diversen Diensten "
+"zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
+"System im Produktiveinsatz befinden."
 
 #: umc/js/_setup/CertificatePage.js:180
 msgid ""
@@ -223,7 +226,10 @@ msgid ""
 "Installing or removing software components may result in restarting or "
 "stopping services. This can have severe side-effects when the system is in "
 "productive use at the moment."
-msgstr "Die Installation oder das Entfernen von Softwarekomponenten kann Neustart oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
+msgstr ""
+"Die Installation oder das Entfernen von Softwarekomponenten kann Neustart "
+"oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte "
+"Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
 
 #: umc/js/_setup/SoftwarePage.js:211
 msgid "Installing software components"
@@ -257,7 +263,7 @@ msgstr ""
 "gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
 "Domäne NT-kompatible (Samba 3) ist."
 
-#: umc/js/setup.js:419
+#: umc/js/setup.js:420
 msgid "Join"
 msgstr ""
 
@@ -305,11 +311,11 @@ msgstr "Neues Root-Passwort"
 msgid "Next"
 msgstr "Vor"
 
-#: umc/js/setup.js:309
+#: umc/js/setup.js:310
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen vorgenommen."
 
-#: umc/js/setup.js:303
+#: umc/js/setup.js:304
 msgid ""
 "No changes have been made. Please confirm to continue with the boot process."
 msgstr ""
@@ -328,7 +334,7 @@ msgstr "Organisation"
 msgid "Organization settings"
 msgstr "Einstellungen über die Organisation"
 
-#: umc/js/setup.js:415
+#: umc/js/setup.js:416
 msgid "Password"
 msgstr "Passwort"
 
@@ -337,14 +343,14 @@ msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
 
-#: umc/js/setup.js:381
+#: umc/js/setup.js:382
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup.js:525
+#: umc/js/setup.js:526
 msgid "Please confirm to continue with the boot process."
 msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 
@@ -380,11 +386,11 @@ msgstr "Software-Einstellungen"
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/setup.js:496
+#: umc/js/setup.js:497
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:489
+#: umc/js/setup.js:490
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -395,15 +401,15 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der neuen Adresse ein."
 
-#: umc/js/setup.js:375
+#: umc/js/setup.js:376
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:315
+#: umc/js/setup.js:316
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
-#: umc/js/setup.js:400
+#: umc/js/setup.js:401
 msgid ""
 "The specified settings will be applied to the system and the system will be "
 "joined into the domain. Please enter username and password of a domain "
@@ -413,7 +419,7 @@ msgstr ""
 "das System in die Domäne gejoint. Bitte geben Sie dafür Benutzernamen und "
 "Password eines Administrator-Kontos der Domäne an."
 
-#: umc/js/setup.js:460
+#: umc/js/setup.js:461
 msgid ""
 "The specified settings will be applied to the system. This may take some "
 "time. Please confirm to proceed."
@@ -429,13 +435,19 @@ msgstr "Zeitzone"
 msgid "Time zone and keyboard settings"
 msgstr "Zeitzonen- und Tastatureinstellungen"
 
-#: umc/js/setup.js:411
+#: umc/js/setup.js:412
 msgid "Username"
 msgstr "Benutzername"
 
 #: umc/js/_setup/BasisPage.js:77 umc/js/_setup/BasisPage.js:192
 msgid "Windows domain"
 msgstr "Windows-Domäne"
+
+#: umc/js/setup.js:266
+msgid ""
+"Your session should be shut down automatically. If this has not happened so "
+"far, you may force a shutdown by pressing Ctrl+Q."
+msgstr "Ihre Session sollte automatisch beendet werden. Ist dies nicht der Fall, kann das Beenden mittels der Tastenkombination Ctrl+Q forciert werden."
 
 #: umc/js/_setup/NetworkPage.js:85 umc/js/_setup/NetworkPage.js:475
 msgid "virtual"

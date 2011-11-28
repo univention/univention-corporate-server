@@ -262,9 +262,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}
 
 				// otherwise send the UMCP command to shut down the web browser
-				return this.umcpCommand('setup/browser/shutdown').then(dojo.hitch(this, function() {
-					this.standby(false);
-				}), dojo.hitch(this, function() {
+				return this.umcpCommand('setup/browser/shutdown', false, undefined, {
+					message: this._('Your session should be shut down automatically. If this has not happened so far, you may force a shutdown by pressing Ctrl+Q.'),
+					messageInterval: 30
+				}).then(dojo.hitch(this, function() {
 					this.standby(false);
 				}));
 			}));

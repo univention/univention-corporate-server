@@ -1,3 +1,9 @@
+univention-system-setup (5.0.73-1) unstable; urgency=low
+
+  * UMC: use long polling for shutting down the session (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Nov 2011 14:36:18 +0100
+
 univention-system-setup (5.0.72-1) unstable; urgency=low
 
   * UMC: added server restart also in the case of SSL certificate changes
