@@ -1,3 +1,9 @@
+univention-system-info (2.0.9-1) unstable; urgency=low
+
+  * fix bug with multiple network devices (Bug #22927)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 28 Nov 2011 12:00:25 +0100
+
 univention-system-info (2.0.8-1) unstable; urgency=low
 
   * fixed encoding problems; Bug #22927

@@ -109,8 +109,11 @@ class Instance(umcm.Base):
 		else:
 			result = {}
 			for line in stdout.splitlines():
-				info, value = line.split(':')
-				result[info] = value
+				try:
+					info, value = line.split(':')
+					result[info] = value
+				except:
+					pass
 			if result['mem']:
 				match = self.mem_regex.match(result['mem'])
 				if match:
