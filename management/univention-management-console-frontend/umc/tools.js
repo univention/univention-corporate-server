@@ -175,6 +175,9 @@ dojo.mixin(umc.tools, {
 			// message that is displayed to the user in case the 
 			message: dojo.getObject('message', false, opts) || umc.tools._('So far, the connection to the server could not be established after {time} seconds. This can be a normal behavior. In any case, the process will continue to establish the connection.'),
 
+			// set to true, the _PollingHandler will not try a login
+			noLogin: false,
+
 			_startTime: (new Date()).getTime(),
 
 			_lastRequestTime: 0,
@@ -216,15 +219,17 @@ dojo.mixin(umc.tools, {
 				}), dojo.hitch(this, function(error) {
 					var result = umc.tools.parseError(error);
 
-					// handle login cases
-					if (401 == result.status) {
-						// command was rejected, user is not authorized
-						umc.dialog.login();
-					}
-					if (411 == result.status) {
-						// login failed
-						umc.dialog.login();
-						umc.dialog.notify(umc.tools._statusMessages[result.status]);
+					if (!this.noLogin) {
+						// handle login cases
+						if (401 == result.status) {
+							// command was rejected, user is not authorized
+							umc.dialog.login();
+						}
+						if (411 == result.status) {
+							// login failed
+							umc.dialog.login();
+							umc.dialog.notify(umc.tools._statusMessages[result.status]);
+						}
 					}
 
 					// error case

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.238-1) unstable; urgency=low
+
+  * umc.dialog: handle automatic login via long polling (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Nov 2011 14:30:50 +0100
+
 univention-management-console-frontend (1.0.237-1) unstable; urgency=low
 
   * web-server: fixed iframe workaround (Bug #23983)

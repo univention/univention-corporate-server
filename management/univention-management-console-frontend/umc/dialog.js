@@ -65,16 +65,15 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		var username = umc.tools.status('username');
 		var password = umc.tools.status('password');
 		if (username && password && dojo.isString(username) && dojo.isString(password)) {
-			// try to authenticate
+			// try to authenticate via long polling... i.e., in case of an error try again until it works
 			this._loginDeferred = umc.tools.umcpCommand('auth', {
 				username: username,
 				password: password
-			}, false).then(function() {
+			}, false, undefined, {
+				message: this._('So far the authentification failed. Continuing nevertheless.'),
+				noLogin: true
+			}).then(function() {
 				return username;
-			}, function() {
-				// reset password since it is not correct
-				umc.tools.status('password', null);
-				throw new Error('Username and password could not be authenticated.');
 			});
 		}
 		else {
