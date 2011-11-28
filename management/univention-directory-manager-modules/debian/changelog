@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.201-1) unstable; urgency=low
+
+  * Re-added netbios_name_servers to dhcp_netbios policy (Bug #24593)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Nov 2011 14:25:32 +0100
+
 univention-directory-manager-modules (7.0.200-1) unstable; urgency=low
 
   * fix releasing lock of removed mailPrimaryAddress; Bug #24687

@@ -148,6 +148,7 @@ layout=[
 	Tab(_('Netbios'),_('SMB/CIFS name resolution'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
+			'netbios_name_servers',
 			[ 'netbios_scope', 'netbios_node_type' ],
 		] ),
 	] ),
