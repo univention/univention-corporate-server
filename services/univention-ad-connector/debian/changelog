@@ -1,3 +1,16 @@
+univention-ad-connector (6.0.38-1) unstable; urgency=low
+
+  * Since set_uid_umlauts is no longer available the udm syntax for the
+    username will be changed to uid_umlauts (Bug #24941)
+  * Ignore well known sid objects which are groups in UCS (Bug #24288):
+    - World Authority
+    - Everyone
+    - Null Authority
+    - Nobody 
+    - Authenticated Users
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Nov 2011 15:16:52 +0100
+
 univention-ad-connector (6.0.37-1) unstable; urgency=low
 
   * fixed service (start|stop); Bug #23713
