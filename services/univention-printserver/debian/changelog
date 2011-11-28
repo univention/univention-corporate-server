@@ -1,3 +1,9 @@
+univention-printserver (5.0.23-1) unstable; urgency=low
+
+  * add copyright headers to JavaScript files (Bug #23210)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 28 Nov 2011 18:06:54 +0100
+
 univention-printserver (5.0.22-1) unstable; urgency=low
 
   * UMC: fixed tranlsation (Bug #22902)
