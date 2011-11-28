@@ -164,6 +164,12 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
 			maintained:			true,
 			unmaintained:		false
     	});
+    },
+    
+    // Let's fetch the current values again directly before we show the form.
+    onShow: function() {
+
+    	this._form.load('dummy');		// ID doesn't matter here but must be nonempty
     }
     
 });

@@ -31,6 +31,7 @@
 dojo.provide("umc.modules._updater.Form");
 
 dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.modules._updater._PollingMixin");
 
 // Form with some useful additions:
@@ -45,6 +46,7 @@ dojo.require("umc.modules._updater._PollingMixin");
 //
 dojo.declare("umc.modules._updater.Form", [
     umc.widgets.Form,
+    umc.widgets.StandbyMixin,
     umc.modules._updater._PollingMixin
 	],
 {

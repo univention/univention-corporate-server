@@ -229,13 +229,13 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
 			moduleStore:	umc.store.getModuleStore('name','updater/components'),
 			actions:		actions,
 			columns:		columns,
-			polling:	{
-				interval:	5000,
-				query:		'updater/components/serial',
-				callback:	dojo.hitch(this, function() {
-					this.refresh(true);
-				})
-			}
+//			polling:	{
+//				interval:	5000,
+//				query:		'updater/components/serial',
+//				callback:	dojo.hitch(this, function() {
+//					this.refresh(true);
+//				})
+//			}
     	});
     	
     	this.addChild(this._grid);
@@ -313,6 +313,12 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
 	// removes a component
 	_delete_components: function(ids) {
 
+		// multiAction callback is fired even if nothing
+		// is selected?
+		if (! ids.length)
+		{
+			return;
+		}
 		var msg = dojo.replace(this._("Are you sure you want to delete the following components: [{ids}]"),{ids: ids});
 		umc.dialog.confirm(msg,
 		[
@@ -339,6 +345,12 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
 		 		})
 		 	}
 		]);
+	},
+	
+	onShow: function() {
+		
+		this.inherited(arguments);
+		this.refresh();
 	},
 	
 	// gives a means to restart polling after reauthentication

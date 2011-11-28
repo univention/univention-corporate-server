@@ -58,22 +58,22 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 	
 	_job_key:		'',			// the key of the currently running job
 	
-    postMixInProperties: function() {
-        this.inherited(arguments);
-
-        dojo.mixin(this, {
-	    	title:			this._("Update in progress"),
-	        headerText:		this._("Univention Updater is working"),
-	        helpText:		this._("As long as the Univention Updater is updating your system, you're not allowed to manage settings or components. You may watch the progress, or close the module.")
-        });
-    },
+	postMixInProperties: function() {
+		
+		this.inherited(arguments);
+		
+		// If I don't do that -> the page will switch 'show module help description' off
+		dojo.mixin(this,{
+			helpText: ' '
+		});
+	},
 
     buildRendering: function() {
 		
     	this.inherited(arguments);
     	
     	this._pane = new umc.widgets.ExpandingTitlePane({
-    		title:		this._("Progress information")
+    		title:		this._("Log file view")
     	});
     	this.addChild(this._pane);
     	
@@ -99,7 +99,7 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
     	
     	// returns to the calling page
     	this._close = new umc.widgets.Button({
-    		label:		this._("back to overview"),
+    		label:		this._("back"),
     		region:		'bottom',
     		onClick:	dojo.hitch(this, function() {
     			var tab = '';
@@ -110,7 +110,6 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
     			// logic will revert to the first tab of our tab set.
     			if (this._reboot_required)
     			{
-    				//alert("Resetting return tab to 'Updates'");
     				this.last_tab = null;
     			}
     			if (this.last_tab)
@@ -170,6 +169,17 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 				    	this._allow_close(false);		// close button now invisible.
 					}
 				}
+				if (data.result != '')				
+				{
+					// start the first call for 'update/installer/status' if we got a job name
+					if ((this._interval) && (! this._timer))
+					{
+						this._timer = window.setTimeout(dojo.hitch(this, function() {
+							this._timer = '';
+							this._query_job_status();
+						}),this._interval);
+					}
+				}
 			}
 			else
 			{
@@ -188,75 +198,34 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 				}
 				msg = msg + "<br/>&nbsp;<br/>";
 				
-				msg += this._statusfile_data(data.result);
-				
-				// -------------- DEBUG ------------------
-//				for (var v in this._last_job)
-//				{
-//					msg += ("<br/>&nbsp;&nbsp;&nbsp;" + v + "&nbsp;=&nbsp;'" + this._last_job[v] + "'");
-//				}
-				// ---------------------------------------
 				
 				this._head.set('content',msg);
 				
 				if (! data.result['running'])
 				{
+				}
+
+				if (data.result['running'])
+				{
+					// reschedule this as long as the job runs.
+					if ((this._interval) && (! this._timer))
+					{
+						this._timer = window.setTimeout(dojo.hitch(this, function() {
+							this._timer = '';
+							this._query_job_status();
+						}),this._interval);
+					}
+				}
+				else
+				{
 					this._allow_close(true);		// does the rest.
 				}
 
 				this._pane.layout();
+
 			}
 		}
 
-		// establish the next call. Note this will be active as long
-		// as the module is open.
-		//
-		// if this is called from outside (by means of 'startPolling()' we must
-		// make sure that only one timer is active at any given time.
-		if ((this._interval) && (! this._timer))
-		{
-			this._timer = window.setTimeout(dojo.hitch(this, function() {
-				this._timer = '';
-				this._query_job_status();
-			}),this._interval);
-		}
-	},
-	
-	// takes a status structure as returned from the 'updater/installer/status' call,
-	// extracts the fields that came directly from the status file (if any) and
-	// formats them into a one-liner. Returns an empty string if nothing matches.
-	//
-	// FOR TEST: now includes the 'reboot' flag if it is present.
-	_statusfile_data: function(data) {
-		
-		var txt = '';
-		
-		for (var f in data)
-		{
-			// These fields are wrapped into underscores
-			if ((f.substr(0,1) == '_') && (f.substr(-1,1) == '_'))
-			{
-				if (txt.length) { txt += ','; }
-				txt += ' ' + f.substr(1,f.length-2) + "=" + data[f];
-			}
-		}
-		
-		if (data['reboot'])
-		{
-			txt += ' [REBOOT] ';
-			if (! this._reboot_required)		// not set or not true
-			{
-				//alert("Setting REBOOT from _statusfile_data");
-				this._reboot_required = true;
-			}
-		}
-		
-		if (txt != '')
-		{
-			txt = "(" + this._("Current status file content") + ":" + txt + ")<br/>";
-		}
-		
-		return txt;
 	},
 	
 	// queries job status. As long as we know a job key -> ask for full
@@ -265,7 +234,8 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 		
 		if (this._job_key == '')
 		{
-			umc.tools.umcpCommand('updater/installer/running',{},false).then(
+			umc.tools.umcpCommand(
+				'updater/installer/running',{},false).then(
 				dojo.hitch(this, function(data) {
 					this._query_success('updater/installer/running');
 					this._process_job_status(data);
@@ -314,36 +284,20 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 					msg = msg + dojo.replace(this._("It took {elapsed} to complete.<br/>"),this._last_job);
 				}
 				msg = msg + this._("You may return to the overview by clicking the 'back' button now.");
-				msg = msg + "<br/>&nbsp;<br/>";
-				
-				msg += this._statusfile_data(this._last_job);
-				
-				// -------------- DEBUG ------------------
-//				for (var v in this._last_job)
-//				{
-//					msg += ("<br/>&nbsp;&nbsp;&nbsp;" + v + "&nbsp;=&nbsp;'" + this._last_job[v] + "'");
-//				}
-				// ---------------------------------------
+				msg = msg + "<br/>&nbsp;<br/>";				
 				
 				this._head.set('content',msg);
 				
-				this._log.stopWatching();		// now log is freely scrollable manually
-				
-				//alert("Watching is finished, job is '" + this._job_key + "'");
-				
-				if ((this._last_job) && (this._last_job['reboot']))
+				// set headers according to the outcome
+				var status = 'success';
+				var lstat = this._last_job['_status_'];
+				if ((lstat == undefined) || (lstat != 'DONE'))
 				{
-					var reb = this._last_job['reboot'];
-					if (typeof(reb) == 'string')
-					{
-						reb = (reb == 'true');
-					}
-					if ((! this._reboot_required) || (reb != this._reboot_required))
-					{
-						//alert("setting REBOOT from _allow_close()");
-						this._reboot_required = reb;
-					}
+					status = 'failed';
 				}
+				this._switch_headings(status);
+				this._log.scrollToBottom();		// jump to bottom a very last time
+				this._log.stopWatching();		// now log is freely scrollable manually
 				
 				this._last_job = null;	// can be deleted, but this._job_key should be retained!
 			}
@@ -393,6 +347,52 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 		
 		this.inherited(arguments);
 		this._interval = 0;
+	},
+	
+	// on switch to this page: set initial headings, and fetch
+	// the 'job running' status at least once.
+	onShow: function() {
+		this._switch_headings('running');
+		this._query_job_status();
+	},
+	
+	// internal function that switches any heading variables of
+	// our current page, according to the retrieved job status
+	_switch_headings: function(status) {
+		
+		// avoid doing that repeatedly
+		if (status == this._last_heading_status)
+		{
+			return;
+		}
+		
+		this._last_heading_status = status;
+
+		var headings = {
+			'running': {
+		    	title:			this._("Update in progress"),
+		        headerText:		this._("Univention Updater is working"),
+		        helpText:		this._("As long as the Univention Updater is updating your system, you're not allowed to manage settings or components. You may watch the progress, or close the module.")
+			},
+			'success': {
+				title:			this._("Update finished"),
+				headerText:		this._("Univention Updater job completed"),
+				helpText:		this._("Univention Updater has successfully finished the current job. You may read through the log file. If you're finished you may press the 'back to overview' button to close this view.")
+			},
+			'failed': {
+				title:			this._("Update failed"),
+				headerText:		this._("Univention Updater job failed"),
+				helpText:		this._("Univention Updater could not successfully complete the current job. The log file should show the cause of the failure. If you're finished examining the log file you may press the 'back to overview' button to close this view.")
+			}
+		};
+		
+		var info = headings[status];
+		for (var v in info)
+		{
+			this.set(v,info[v]);
+		}
+		// this.layout();
+				
 	}
 
 });

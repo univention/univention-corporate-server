@@ -1,3 +1,9 @@
+univention-updater (7.0.116-1) unstable; urgency=low
+
+  * applied patch from Frank Greif <fg@it25.de> fixing several bugs; Bug #22898
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Nov 2011 18:22:05 +0100
+
 univention-updater (7.0.115-5) unstable; urgency=low
 
   * Fix duplicate entry (Bug #22576)

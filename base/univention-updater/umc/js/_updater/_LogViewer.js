@@ -148,10 +148,20 @@ dojo.declare('umc.modules._updater._LogViewer', [
 		try
 		{
 			var oldpos = this._get_positions();
-			this._text.set('content',content);
+			
+			// check if we should scroll to bottom. We avoid that if the current position
+			// is not at the end, indicating that the user has moved the pane manually.
+			//
 			// our height measure doesn't strictly reflect what we need, so we add a little tolerance:
 			// regard the positon 'at bottom' if its plus/minus 20px around zero
-			if ( (this._first_call > 0) || ((oldpos['d_bottom'] > -20) && (oldpos['d_bottom'] < 20)))
+			var to_scroll = false;
+			if ( (this._first_call > 0) || ( /* (oldpos['d_bottom'] > -20) && */ (oldpos['d_bottom'] < 20)))
+			{
+				to_scroll = true;
+			}
+
+			this._text.set('content',content);
+			if (to_scroll)
 			{
 				this.scrollToBottom();
 				if (this._first_call > 0)
@@ -184,6 +194,14 @@ dojo.declare('umc.modules._updater._LogViewer', [
 	//	-	in the 'content' setter if the position is roughly at the bottom
 	//
 	scrollToBottom: function() {
+		
+		// we ignore any calls to 'scrollToBottom()' if we're not currently
+		// watching. This makes the pane free movable at the 'return to overview'
+		// prompt when a job is finished.
+		if (this._check_interval == 0)
+		{
+			return;
+		}
 		var newpos = this._get_positions();
 		var todo = true;
 		var node = this._text.contentNode.parentNode;
@@ -228,7 +246,6 @@ dojo.declare('umc.modules._updater._LogViewer', [
 	// A seperate function that is called by the 'ProgressPage' when the key of the
 	// current job has become known.
 	setJobKey: function(job) {
-		//alert("LogViewer::setJobKey('" + job + "')");
 		this._current_job = job;
 	},
 	

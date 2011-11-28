@@ -39,7 +39,7 @@ import univention.config_registry
 
 import re
 import string
-from os import stat,listdir,chmod,unlink,path,getpid
+from os import stat,listdir,chmod,unlink,path,getpid,getppid
 from locale import nl_langinfo,D_T_FMT
 from time import strftime,localtime,sleep,time
 from subprocess import Popen
@@ -222,14 +222,14 @@ class Watched_Files(object):
 			self._unchanged_count = 0
 			self._last_stamp = max
 
-		return self._last_returned_stamp
+		return self._last_returned_stamp		
 
 class Instance(umcm.Base):
 	def __init__( self ):
 		umcm.Base.__init__( self )
 
 		self.init_called = False
-
+		
 	def init(self):
 		try:
 			if self.init_called:
@@ -237,10 +237,6 @@ class Instance(umcm.Base):
 				return
 			self.init_called = True
 			MODULE.info("Initializing 'updater' module (PID = %d, LANG = '%s')" % (getpid(),self.locale))
-
-			MODULE.info("(not defining workaround for translation)")
-#			global _
-#			_ = umc.Translation('univention-management-console-module-updater',self.locale).translate
 
 			self.uu = UniventionUpdater(False)
 			self.ucr = univention.config_registry.ConfigRegistry()
@@ -251,10 +247,10 @@ class Instance(umcm.Base):
 
 			self._serial_file = Watched_File(COMPONENTS_SERIAL_FILE)
 			self._updates_serial = Watched_Files(UPDATE_SERIAL_FILES)
-
+			
 		except Exception, ex:
 			MODULE.error("init() ERROR: %s" % str(ex))
-
+			
 	def query_components(self,request):
 		"""	Returns components list for the grid in the ComponentsPage.
 		"""
@@ -405,6 +401,7 @@ class Instance(umcm.Base):
 		for s in st:
 				MODULE.info("   << %s" % s)
 		# -----------------------------------
+
 
 		# umc.widgets.Form wraps the real data into an array:
 		#
@@ -822,9 +819,6 @@ class Instance(umcm.Base):
 		# -----------------------------------
 
 		result = self.__which_job_is_running()
-		# If we have seen a job before: mark it as finished
-		if result == '':
-			self._current_job['running'] = False
 
 		# ----------- DEBUG -----------------
 		MODULE.info("updater/installer/running returns:")
@@ -882,8 +876,8 @@ class Instance(umcm.Base):
 					result = self._logstamp(fname)
 				else:
 					# don't read complete file if we have an 'ignore' count
-					if (count == 0) and (self._current_job['lines']):
-						count = -self._current_job['lines']
+					if (count == 0) and ('lines' in self._current_job) and (self._current_job['lines']):
+						count = -int(self._current_job['lines'])
 					result = self._logview(fname, count)
 
 		# again debug, shortened
@@ -935,7 +929,7 @@ class Instance(umcm.Base):
 			if 'statusfile' in INSTALLERS[job]:
 				try:
 					for line in open(INSTALLERS[job]['statusfile']):
-						fields = line.split('=')
+						fields = line.strip().split('=')
 						if len(fields) == 2:
 							result['_%s_' % fields[0]] = fields[1]
 				except:
@@ -1036,6 +1030,14 @@ class Instance(umcm.Base):
 			MODULE.warn(result['message'])
 			self.finished(request.id,result)
 			return
+		
+		# initial values of current job
+		self._current_job = {
+			'job':		subject,
+			'detail':	detail,
+			'logfile':	'',
+			'lines':	0
+		}
 
 		# We want to limit the amount of logfile data being transferred
 		# to the frontend. So we remember the line count of the associated
@@ -1052,6 +1054,7 @@ class Instance(umcm.Base):
 				if file != None:
 					file.close()
 			self._current_job['lines'] = count
+			self._current_job['logfile'] = fname
 
 		try:
 			# Assemble the command line, now somewhat complicated:
@@ -1062,7 +1065,9 @@ class Instance(umcm.Base):
 			#	(4)	if the subject is about 'component' we must get the 'defaultpackages'
 			#		entry from the UCR tuple named by 'detail' and use that.
 			#	(5)	if not, we can format the 'detail' field into the command.
+			#
 			# cmd = '%s' % INSTALLERS[subject]['command']		# I need a copy of this string!
+			#
 			cmd = INSTALLERS[subject]['command']
 			if cmd.find('%') != -1:
 				if subject == 'component':
@@ -1369,9 +1374,13 @@ class Instance(umcm.Base):
 			and how long it is running.
 		"""
 		started = int(time())
+		logfile = self._current_job['logfile']
+		lines = self._current_job['lines']
 		script = '''
 #:started: %s
 #:detail: %s
+#:logfile: %s
+#:lines: %s
 #:command: %s
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-web-server
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
@@ -1382,7 +1391,7 @@ dpkg-statoverride --remove /usr/sbin/univention-management-console-web-server
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server
 dpkg-statoverride --remove /usr/sbin/apache2
 chmod +x /usr/sbin/univention-management-console-server /usr/sbin/univention-management-console-web-server /usr/sbin/apache2
-''' % (started,detail,command,command)
+''' % (started,detail,logfile,lines,command,command)
 		p1 = subprocess.Popen( [ 'LC_ALL=C at now', ], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True )
 		(stdout,stderr) = p1.communicate( script )
 
@@ -1419,7 +1428,13 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/univention-man
 							for line in atout.split("\n"):
 								match = re.search('^\#\:([a-z]+)\:\s(.*)$',line)
 								if (match):
-									self._current_job[match.group(1)] = match.group(2)
+									var = match.group(1)
+									val = match.group(2)
+									# restore numeric strings into numbers!
+									if val.isdigit():
+										self._current_job[var] = int(val)
+									else:
+										self._current_job[var] = val
 							return inst
 		return ''
 
@@ -1434,16 +1449,4 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/univention-man
 				if command in atout:
 					return True
 		return False
-
-#	def __is_updater_running(self):
-#		return self.__is_process_running( 'univention-updater net' )
-#
-#
-#	def __is_errata_update_running(self):
-#		return self.__is_process_running( 'univention-errata-update net' )
-#
-#
-#	def __is_dist_upgrade_running(self):
-#		return self.__is_process_running( 'univention-updater-umc-dist-upgrade' )
-
-
+	

@@ -121,6 +121,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		
 		// waits for the Progress Page to notify us that a job is finished. This
 		// should immediately refresh the 'Updates' and 'Components' pages.
+		// XXX can remain this way
 		dojo.connect(this._progress,'jobFinished',dojo.hitch(this, function() {
 			this._updates.refreshPage(true);
 			this._components.refreshPage();
@@ -225,7 +226,6 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				confirm:	this._("Do you really want to upgrade your system?")
 			});
 		}));
-		
 	},
 	
 	// We defer these actions until the UI is readily rendered
@@ -304,7 +304,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 					 		name:		'cancel'
 					 	},
 					 	{
-					 		label:		this._('Start!'),
+					 		label:		this._('Install'),
 					 		name:		'start',
 					 		'default':	true
 					 	}

@@ -69,8 +69,7 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
     	            'default':	true,
     	            label:		this._("Apply changes"),
     	            onClick: dojo.hitch(this, function() {
-    	            	this.standby(true);
-                        this._form.save(this._save_options);
+    	            	this._form.onSubmit();
     	            })
             	}
     		]		        	
@@ -131,7 +130,7 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
 	    		type:			'TextBox',
 	    		name:			'version',
 	    		label:			this._("Version"),
-	    		regExp:			'^((([0-9]+\.[0-9]+|current),)*([0-9]+\.[0-9]+|current))?$'
+	    		regExp:			'^((([0-9]+\\.[0-9]+|current),)*([0-9]+\\.[0-9]+|current))?$'
 	    	}
     	];
     
@@ -161,7 +160,13 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
     		widgets:		widgets,
     		layout:			layout,
     		//buttons:		buttons,
-    		moduleStore:	umc.store.getModuleStore('name','updater/components')
+    		moduleStore:	umc.store.getModuleStore('name','updater/components'),
+    		// This is (a) the submit handler of the form, but
+    		// also (b) the onClick handler of the 'Apply' button
+    		onSubmit: dojo.hitch(this,function() {
+    	    	this._form.standby(true);
+    	        this._form.save(this._save_options);
+    		})	
     	});
     	this.addChild(this._form);
     	
@@ -197,6 +202,7 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
 			this.set('helpText',this._("Please enter the details for the new component."));
 			
 			this._form.setFormValues(data);
+			this._form.standby(false);
 
 			// Component name editable and focused?
 			var nam = this._form.getWidget('name');
@@ -219,7 +225,7 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
 			this.set('headerText',dojo.replace(this._("Edit component details [{component}]"),{component:data}));
 			this.set('helpText',this._("You're editing the details of the component definition."));
 			
-			this._form.load(data);
+			this._form.load(data).then(dojo.hitch(this,function() { this._form.standby(false); }));
 			
 			// If we're in EDIT mode: don't allow changes to the component name.
 			this._form.getWidget('name').setDisabled(true);
@@ -233,7 +239,6 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
 	
 	// return to grid view
 	closeDetail: function() {
-	}
-	
+	}	
 
 });

@@ -117,6 +117,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		 		// FIXME Manual placement: should be done by the layout framework some day.
 		 		style:			'width:300px;',
 		 		onValuesLoaded:	dojo.hitch(this, function(values) {
+		 			// TODO check updater/installer/running, don't do anything if something IS running
 		 			try
 		 			{
 		 				this._query_success('updater/updates/query');
@@ -250,6 +251,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		 		callback:	dojo.hitch(this,function() {
 		 			var element = this._form.getWidget('releases');
 		 			var release = element.get('value');
+		 			// TODO check updater/installer/running, don't do action if a job is running
 		 			this.runReleaseUpdate(release);
 		 		}),
 		 		visible:	false
@@ -258,6 +260,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
    	            name:		'run_errata_update',
      			label:		this._('Install errata update'),
      			callback:	dojo.hitch(this, function() {
+		 			// TODO check updater/installer/running, don't do action if a job is running
      				this.runErrataUpdate();
      			}),
 		 		visible:	false
@@ -269,7 +272,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
    	            	this._check_dist_upgrade();
    	            })
            	},
-           	// to test the refresh code
+           	// If refresh isn't automatic anymore... should we show a "Refresh" button?
 //           	{
 //           		name:		'refresh',
 //           		label:		this._("Refresh"),
@@ -288,6 +291,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
            		name:		'easy_upgrade',
            		label:		this._("Start Upgrade"),		// FIXME Label not correct
            		callback:	dojo.hitch(this, function() {
+		 			// TODO check updater/installer/running, don't do action if a job is running
            			this.runEasyUpgrade();
            		})
            	}
@@ -343,14 +347,14 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
        		widgets:		widgets,
        		layout:			layout,
        		buttons:		buttons,
-       		moduleStore:	umc.store.getModuleStore(null,'updater/updates'),
-			polling:	{
-				interval:	5000,
-				query:		'updater/updates/serial',
-				callback:	dojo.hitch(this, function() {
-					this.refreshPage();
-				})
-			}
+       		moduleStore:	umc.store.getModuleStore(null,'updater/updates')
+//			polling:	{
+//				interval:	5000,
+//				query:		'updater/updates/serial',
+//				callback:	dojo.hitch(this, function() {
+//					this.refreshPage();
+//				})
+//			}
        	});
        	
        	// Before we attach the form to our page, just switch off all title panes.
@@ -461,7 +465,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		}
 		catch(error)
 		{
-			console.error("set_upates_button: " + error.message);
+			console.error("set_updates_button: " + error.message);
 		}
 	},
 	
@@ -541,7 +545,6 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		// pop a message up whenever the 'on' value changes
 		if (on != this._last_reboot)
 		{
-			//alert("Reboot affordance changed to " + on);
 			this._last_reboot = on;
 		}
 		
@@ -564,17 +567,33 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 	},
 	
 	// called when the 'reboot' button is pressed.
+	// now with confirmation that doesn't depend on the 'confirmations' setting.
 	_reboot: function() {
 		
-		this.standby(true);
-		umc.tools.umcpCommand('updater/installer/reboot').then(dojo.hitch(this, function() {
-			this.standby(false);
-			this._show_reboot_pane(true,true);
-		}),
-		dojo.hitch(this, function() {
-			this.standby(false);
-		})
+		umc.dialog.confirm(
+			this._("Do you really want to reboot the machine?"),
+			[
+			 	{
+			 		label:		this._("Cancel"),
+			 		'default':	true
+			 	},
+			 	{
+			 		label:		this._("Reboot"),
+			 		callback:	dojo.hitch(this, function() {
+			 			this.standby(true);
+			 			umc.tools.umcpCommand('updater/installer/reboot').then(dojo.hitch(this, function() {
+			 				this.standby(false);
+			 				this._show_reboot_pane(true,true);
+			 			}),
+			 			dojo.hitch(this, function() {
+			 				this.standby(false);
+			 			})
+			 			);
+			 		})
+			 	}
+			]
 		);
+
 	},
 	
 	// First page refresh doesn't work properly when invoked in 'buildRendering()' so
@@ -585,6 +604,13 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		this._show_reboot_pane(false);
 		this.refreshPage();
 		
+	},
+	
+	// ensures refresh whenever we're returning from any action.
+	onShow: function() {
+		
+		this.inherited(arguments);
+		this.refreshPage(true);
 	},
 	
 	// should refresh any data contained here. (can be called from outside when needed)
@@ -601,7 +627,8 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 	
 	// gives a means to restart polling after reauthentication
 	startPolling: function() {
-		this._form.startPolling();
+		// not needed anymore.
+		// this._form.startPolling();
 	},
 	
 	// These functions are stubs that the 'updater' Module is listening to,
