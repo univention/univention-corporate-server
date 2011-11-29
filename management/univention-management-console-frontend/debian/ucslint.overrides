@@ -2,5 +2,4 @@
 0010-2: build/js/dojox/storage/buildFlashStorage.sh
 0010-2: tests/post.sh
 0010-2: css/dijit/themes/umc/compile.js
-0010-2: umc/widgets/GroupBox.js
 0010-2: umc/widgets/Tree.js
