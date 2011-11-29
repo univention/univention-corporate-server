@@ -154,21 +154,21 @@ def pre_save(newValues, oldValues):
 					# we could compute a network address
 					newValues[networkKey] = network
 	
-	# add a list with all packages that should be removed/installed on the system
+	# add lists with all packages that should be removed/installed on the system
 	if 'components' in newValues:
 		regSpaces = re.compile(r'\s+')
-		selectedComponents = regSpaces.split(newValues.get('components', ''))
-		selectedPackages = set(reduce(lambda x, y: x + y, [ i.split(':') for i in selectedComponents ]))
-		componentPackages = set(reduce(lambda x, y: x + y, [ i['Packages'] for i in get_components() ]))
-		allPackages = set(get_installed_packages())
+		selectedComponents = set(regSpaces.split(newValues.get('components', '')))
+		currentComponents = set([icomp['id'] for icomp in get_installed_components()])
+		allComponents = set([ icomp['id'] for icomp in get_components() ])
 
 		# get all packages that shall be removed
-		removePackages = list(componentPackages & (allPackages - selectedPackages))
-		newValues['packages_remove'] = ' '.join(removePackages)
-		
+		removeComponents = list(allComponents & (currentComponents - selectedComponents))
+		newValues['packages_remove'] = ' '.join([ i.replace(':', ' ') for i in removeComponents ])
+
 		# get all packages that shall be installed
-		installPackages = list(componentPackages & (selectedPackages - allPackages)) 
-		newValues['packages_install'] = ' '.join(installPackages)
+		installComponents = list(allComponents & (selectedComponents - currentComponents))
+		newValues['packages_install'] = ' '.join([ i.replace(':', ' ') for i in installComponents ])
+		
 
 def write_profile(values):
 	cache_file=open(PATH_PROFILE,"w+")
