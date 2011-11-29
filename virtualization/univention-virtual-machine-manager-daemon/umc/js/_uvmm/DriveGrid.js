@@ -188,6 +188,11 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 
 		var _saveDrive = dojo.hitch(this, function() {
 			var values = form.gatherFormValues();
+			// reset target if setting paravirtual has changed
+			if ( disk.paravirtual != values.paravirtual ) {
+				disk.target_bus = null;
+				disk.target_dev = null;
+			}
 			disk.paravirtual = values.paravirtual;
 			this.moduleStore.put( disk );
 			_cleanup();

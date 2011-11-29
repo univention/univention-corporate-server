@@ -230,11 +230,14 @@ class Domains( object ):
 				drive.source = disk[ 'volumeFilename' ]
 
 			# get default for paravirtual
-			if profile is not None:
-				if drive.device == Disk.DEVICE_DISK:
-					driver_pv = getattr( profile, 'pvdisk', False )
-				elif drive.device == Disk.DEVICE_CDROM:
-					driver_pv = getattr( profile, 'pvcdrom', False )
+			if create_new:
+				if profile is not None:
+					if drive.device == Disk.DEVICE_DISK:
+						driver_pv = getattr( profile, 'pvdisk', False )
+					elif drive.device == Disk.DEVICE_CDROM:
+						driver_pv = getattr( profile, 'pvcdrom', False )
+				else:
+					driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
 			else:
 				driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
 
