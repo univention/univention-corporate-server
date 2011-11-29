@@ -96,10 +96,12 @@ dojo.declare("umc.widgets.MultiInput", [
 			var elapsedTime = Math.abs(currentTime - _lastCall);
 			_lastCall = currentTime;
 
-			// if the elapsed time is too big, execute the function
-			if (elapsedTime > 100) {
+			// if the elapsed time is too big, or we have not a Deferred object (i.e., value
+			// are directly computed by a function without AJAX calls), execute the function
+			if (elapsedTime > 100 || !('then' in _valueOrDeferred && 'cancel' in _valueOrDeferred)) {
 				_valueOrDeferred = ifunc(options);
 			}
+			//console.log('# new deferred: ', iname, ' elapsedTime: ', elapsedTime, ' options: ', dojo.toJson(options), ' values: ', _valueOrDeferred);
 
 			// return the value
 			return _valueOrDeferred;

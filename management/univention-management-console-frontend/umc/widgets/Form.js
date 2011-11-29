@@ -214,7 +214,8 @@ dojo.declare("umc.widgets.Form", [
 		this._initializingElements = 0;
 		umc.tools.forIn(this._widgets, function(iname, iwidget) {
 			// only consider elements that load values dynamically
-			if ('onValuesLoaded' in iwidget && !iwidget._valuesLoaded) {
+			if ('onValuesLoaded' in iwidget && !(iwidget._valuesLoaded && !iwidget._deferredOrValues)) {
+				// widget values have not been loaded completely so far
 				//console.log('iwidget:', iwidget.name);
 				++this._initializingElements;
 				var handle = this.connect(iwidget, 'onValuesLoaded', dojo.hitch(this, function() {
