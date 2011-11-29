@@ -1,3 +1,10 @@
+univention-system-setup (5.0.74-1) unstable; urgency=low
+
+  * adapted software/10software script to call "apt-get update" first 
+    (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Nov 2011 10:43:01 +0100
+
 univention-system-setup (5.0.73-1) unstable; urgency=low
 
   * UMC: use long polling for shutting down the session (Bug #22904)

@@ -65,6 +65,9 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
+echo "apt-get update -o DPkg::Options::=--force-confold -y --force-yes" >>/var/log/univention/setup.log
+apt-get update -o DPkg::Options::=--force-confold -y --force-yes
+
 for p in $packages_remove; do
 	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base " >>/var/log/univention/setup.log
 	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base
