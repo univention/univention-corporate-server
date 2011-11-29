@@ -256,13 +256,6 @@ class Instance(umcm.Base):
 					MODULE.warn("  -> %s" % match.group(1))
 					result.append(match.group(1))
 					
-		# simulate 10000 more users
-		for g in range(0,100):
-			gn = 'group %d' % g
-			for u in range(0,100):
-				un = 'user %d' % u
-				result.append('%s in %s' % (un,gn))
-
 		# ---------- DEBUG --------------
 		MODULE.info("printers/users/query returns:")
 		pp = pprint.PrettyPrinter(indent=4)

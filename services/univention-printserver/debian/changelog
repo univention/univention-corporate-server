@@ -1,3 +1,9 @@
+univention-printserver (5.0.24-1) unstable; urgency=low
+
+  * UMC applied patch that removes test entries from Bug #22902, Comment 17
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Nov 2011 18:16:57 +0100
+
 univention-printserver (5.0.23-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)
