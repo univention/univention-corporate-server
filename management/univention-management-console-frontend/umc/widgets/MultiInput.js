@@ -100,7 +100,6 @@ dojo.declare("umc.widgets.MultiInput", [
 			if (elapsedTime > 100) {
 				_valueOrDeferred = ifunc(options);
 			}
-			console.log('# new deferred: ', iname, ' elapsedTime: ', elapsedTime, ' options: ', dojo.toJson(options), ' values: ', _valueOrDeferred);
 
 			// return the value
 			return _valueOrDeferred;

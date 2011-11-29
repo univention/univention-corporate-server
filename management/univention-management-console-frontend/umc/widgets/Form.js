@@ -365,7 +365,7 @@ dojo.declare("umc.widgets.Form", [
 		dojo.forEach(this._dependencyMap[publisherName], function(i) {
 			tmp.push(i.name);
 		});
-		console.log(dojo.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, dojo.toJson(tmp)]));
+		//console.log(dojo.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, dojo.toJson(tmp)]));
 		if (publisherName in this._dependencyMap) {
 			var values = this.gatherFormValues();
 			dojo.forEach(this._dependencyMap[publisherName], function(ireceiver) {

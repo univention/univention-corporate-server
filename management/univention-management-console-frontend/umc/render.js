@@ -60,7 +60,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			conf.name = iconf.id || iconf.name;
 
 			// render the widget
-			var widget = this.widget(conf, widgets);
+			var widget = this.widget(conf);
 			if (widget) {
 				widgets[conf.name] = widget;
 			}
@@ -69,7 +69,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		return widgets; // Object
 	},
 
-	widget: function(/*Object*/ widgetConf, /*Object[]*/ widgets) {
+	widget: function(/*Object*/ widgetConf) {
 		if (!widgetConf) {
 			return undefined;
 		}
@@ -85,14 +85,6 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		// remove property 'id'
 		delete conf.id;
 
-		// register onChange event handler
-		var onChangeCallback = null;
-		if ('onChange' in conf) {
-			onChangeCallback = umc.tools.stringOrFunction(conf.onChange);
-			delete conf.onChange;
-		}
-
-		// get widgets' size class
 		if (conf.size) {
 			conf.sizeClass = conf.size;
 			delete conf.size;
@@ -118,14 +110,6 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			return undefined;
 		}
 		var widget = new WidgetClass(conf); // Widget
-
-		// register event handler
-		if (onChangeCallback) {
-			widget.connect(widget, 'onChange', function(newVal) {
-				// hand over the changed value plus the dict of all widgets
-				onChangeCallback(newVal, widgets);
-			});
-		}
 
 		// create a tooltip if there is a description
 		if (widgetConf.description) {
