@@ -115,13 +115,16 @@ s4_mapping = {
 						),
 				},
 
-			ucs_create_functions = [ univention.s4connector.set_ucs_passwd_user,
-						 univention.s4connector.check_ucs_lastname_user,
-						 univention.s4connector.set_primary_group_user
-						 ],
+			ucs_create_functions = [
+							univention.s4connector.set_ucs_passwd_user,
+						 	univention.s4connector.check_ucs_lastname_user,
+						 	univention.s4connector.set_primary_group_user,
+							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+						 	],
 
-			post_con_create_functions = [ univention.s4connector.s4.normalise_userAccountControl,
-						 ],
+			post_con_create_functions = [
+							univention.s4connector.s4.normalise_userAccountControl,
+						 	],
 
 			post_con_modify_functions=[
 							univention.s4connector.s4.sid_mapping.sid_to_s4,

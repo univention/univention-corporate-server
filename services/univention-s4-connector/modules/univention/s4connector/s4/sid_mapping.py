@@ -88,6 +88,8 @@ def sid_to_ucs(s4connector, key, s4_object):
 	ml = []
 
 	# object dn is already mapped to the UCS DN:
+	if not s4_object.get('dn'):
+		return # ignore
 	ucs_dn = s4_object['dn']
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4: UCS DN %s" % ucs_dn)
 	

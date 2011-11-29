@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.80-1) unstable; urgency=low
+
+  * Added sid_to_ucs to ucs_create_functions (Bug #24225)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Nov 2011 16:31:37 +0100
+
 univention-s4-connector (6.0.79-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 
