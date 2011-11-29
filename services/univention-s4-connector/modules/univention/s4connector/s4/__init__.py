@@ -1895,15 +1895,19 @@ class s4(univention.s4connector.ucs):
 
 				if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
 					for ac in self.property[property_type].attributes.keys():
-						attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_attribute)
+						if not self.property[property_type].attributes[ac].con_attribute in attrs_which_should_be_mapped:
+							attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_attribute)
 						if self.property[property_type].attributes[ac].con_other_attribute:
-							attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_other_attribute)
+							if not self.property[property_type].attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
+								attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_other_attribute)
 
 				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 					for ac in self.property[property_type].post_attributes.keys():
-						attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
-						if self.property[property_type].post_attributes[ac].con_other_attribute:
+						if not self.property[property_type].post_attributes[ac].con_attribute in attrs_which_should_be_mapped:
 							attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
+						if self.property[property_type].post_attributes[ac].con_other_attribute:
+							if not self.property[property_type].post_attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
+								attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_other_attribute)
 
 				modlist_empty_attrs = []			
 				for expected_attribute in attrs_which_should_be_mapped:
