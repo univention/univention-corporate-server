@@ -1,3 +1,12 @@
+univention-ad-connector (6.0.41-1) unstable; urgency=low
+
+  * Fixed handling for con_other attributes. This allows the sync of two
+    AD/S4 attributes (one single value and one multi value) to one multi
+    value UCS attribute like homePhone, otherHomePhone to
+    homeTelephoneNumber (Bug #24119 and Bug #20599)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Nov 2011 21:53:26 +0100
+
 univention-ad-connector (6.0.40-1) unstable; urgency=low
 
   * Ignore uid=krbtgt too (Bug #20516)
