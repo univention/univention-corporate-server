@@ -475,7 +475,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 						++qcow2_images;
 						return true;
 					}
-					return disk.driver_type == 'qcow2' || disk.readonly;
+					return disk.device == 'floppy' || ( disk.driver_type == 'qcow2' || disk.readonly );
 				} );
 				if ( snapshots_possible && qcow2_images > 0 ) {
 					this.showChild( this._snapshotPage );

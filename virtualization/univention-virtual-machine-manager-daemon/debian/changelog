@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.98-1) unstable; urgency=low
+
+  * also allow snapshots if a floppy is available; Bug #24733
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Nov 2011 10:01:08 +0100
+
 univention-virtual-machine-manager-daemon (1.0.97-1) unstable; urgency=low
 
   * fix set/get of VNC password; Bug #24925
