@@ -71,6 +71,43 @@ dojo.require("umc.modules._udm.DetailPage");
 		}
 		return list;
 	});
+
+	dojo.setObject('umc.modules._udm.setNetwork', function(newVal, widgets) {
+		if (!dojo.getObject('network.focused', false, widgets)) {
+			// only react on user changes of the network
+			return;
+		}
+
+		// query a new IP address and update network configurations automatically...
+		if (!newVal || newVal == 'None') {
+			// empty list
+			widgets.ip.set('value', []);
+			widgets.dnsEntryZoneForward.set('value', []);
+			widgets.dnsEntryZoneReverse.set('value', []);
+			widgets.dhcpEntryZone.set('value', []);
+		}
+		else {
+			umc.tools.umcpCommand('udm/network', { 
+				networkDN: newVal,
+				increaseCounter: Boolean(widgets.$dn$.get('value'))
+			}, true, 'computers/computer').then(function(data) {
+				// got values... update corresponding widgets
+				var vals = data.result;
+				widgets.ip.set('value', [vals.ip]);
+				widgets.dnsEntryZoneForward.set('value', [[vals.dnsEntryZoneForward, vals.ip]]);
+				widgets.dnsEntryZoneReverse.set('value', [[vals.dnsEntryZoneReverse, vals.ip]]);
+				var mac = widgets.mac.get('value');
+				if (mac.length && vals.dhcpEntryZone) {
+					// at least one MAC address is specified, update the DHCP entries
+					widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, mac[0]]]);
+				}
+				else {
+					// no MAC address given, clear DHCP entries
+					widgets.dhcpEntryZone.set('value', []);
+				}
+			});
+		}
+	});
 })();
 
 dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin ], {
@@ -701,8 +738,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this.umcpCommand('udm/superordinates').then(dojo.hitch(this, function(data) {
 					var widget = this._searchForm.getWidget('superordinate');
 					if (widget) {
-						var currentVals = dojo.map(widget.get('staticValues'), function(i) { return i.id }).sort();
-						var newVals = dojo.map(data.result, function(i) { return i.id }).sort();
+						var currentVals = dojo.map(widget.get('staticValues'), function(i) { return i.id; }).sort();
+						var newVals = dojo.map(data.result, function(i) { return i.id; }).sort();
 						if (dojo.toJson(currentVals) != dojo.toJson(newVals)) {
 							widget.set('staticValues', data.result);
 						}
@@ -1185,7 +1222,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// build a small form with a checkbox to mark whether or not referring 
 		// objects are deleted, as well
-		var form = new umc.widgets.Form({
+		form = new umc.widgets.Form({
 			widgets: [{
 				type: 'Text',
 				label: '',

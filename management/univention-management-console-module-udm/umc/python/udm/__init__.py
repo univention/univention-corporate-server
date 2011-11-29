@@ -511,19 +511,25 @@ class Instance( Base ):
 
 		requests.options = {}
 		  'networkDN' -- the LDAP DN of the network object
+		  'increaseCounter' -- if given and set to True, network object counter for 
+		                       IP addresses is increased
 
 		return: {}
 		"""
 		self.required_options( request, 'networkDN' )
 		module = self._get_module( None, object_type = 'networks/network' )
 		obj = module.get( request.options[ 'networkDN' ] )
+
 		if not obj:
 			raise UMC_OptionTypeError( 'Could not find network object' )
 
-		result = { 'ip' : obj[ 'nextIp' ], 'dnsEntryZoneForward' : obj[ 'dnsEntryZoneForward' ], 'dhcpEntryZone' : obj[ 'dhcpEntryZone' ] }
-		obj.stepIp()
-		obj.modify()
+		result = { 'ip' : obj[ 'nextIp' ], 'dnsEntryZoneForward' : obj[ 'dnsEntryZoneForward' ], 'dhcpEntryZone' : obj[ 'dhcpEntryZone' ], 'dnsEntryZoneReverse' : obj['dnsEntryZoneReverse'] }
 		self.finished( request.id, result )
+
+		if request.options.get('increaseCounter', False) == True:
+			# increase the next free IP address
+			obj.stepIp()
+			obj.modify()
 
 	def containers( self, request ):
 		"""Returns the list of default containers for the given object

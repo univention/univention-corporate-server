@@ -1,3 +1,11 @@
+univention-management-console-module-udm (1.0.258-1) unstable; urgency=low
+
+  * added frontend logic for setting the IP address automatically
+  * fixed backend problems w.r.t. udm/network
+  (Bug #24077)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Nov 2011 15:45:10 +0100
+
 univention-management-console-module-udm (1.0.257-1) unstable; urgency=low
 
   * remove old UCR variable directory/manager/timeout; Bug #22883
