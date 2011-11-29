@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.32-2) unstable; urgency=low
+
+  * fixed allowusersmove in imapd/imapd.conf (Bug #22875) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Nov 2011 16:47:50 +0100
+
 univention-mail-cyrus (4.0.32-1) unstable; urgency=low
 
   * fixed allowusersmove in imapd/imapd.conf (Bug #22875)
