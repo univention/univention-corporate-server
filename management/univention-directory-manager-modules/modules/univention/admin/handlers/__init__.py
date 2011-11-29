@@ -2087,11 +2087,11 @@ class simpleComputer( simpleLdap ):
 			subnet=ldap.explode_dn(reverseDN, 1)[0].replace('.ip6.arpa','').split('.')
 			# '2001::db8::3' → '2001:0db8:0000:…:003' → '20010db800…003' → ['2', '0', '0', '1', …]
 			ip=list(ipaddr.IPv6Address(sip).exploded.replace(':', ''))
-			self.calc_dns_reverse_entry_name_do(32, subnet, ip)
+			return self.calc_dns_reverse_entry_name_do(32, subnet, ip)
 		else:
 			subnet=ldap.explode_dn(reverseDN, 1)[0].replace('.in-addr.arpa','').split('.')
 			ip=sip.split('.')
-			self.calc_dns_reverse_entry_name_do(4, subnet, ip)
+			return self.calc_dns_reverse_entry_name_do(4, subnet, ip)
 	def calc_dns_reverse_entry_name_do(self, maxLength, zoneNet, ip):
 		zoneNet.reverse()
 		if not ip[:len(zoneNet)] == zoneNet:

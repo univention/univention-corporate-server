@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.204-1) unstable; urgency=low
+
+  * calc_dns_reverse_entry_name: return result from
+    calc_dns_reverse_entry_name_do; Bug #24992
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Nov 2011 14:54:13 +0100
+
 univention-directory-manager-modules (7.0.203-1) unstable; urgency=low
 
   * fixed traceback error when changing ip address range (Bug #24990)
