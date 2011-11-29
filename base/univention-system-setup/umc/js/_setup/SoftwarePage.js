@@ -110,7 +110,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 		this._myNotes = {
 			samba: this._('It is not possible to mix NT and Active Directory compatible domaincontroller. Make sure the existing UCS domain is NT-compatible (Samba 3).'),
 			samba4: this._('It is not possible to mix NT and Active Directory compatible domaincontroller. Make sure the existing UCS domain is Active Directory-compatible (Samba 4).'),
-			software: this._('Changes for IP addresses may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.')
+			software: this._('Installing or removing software components may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.')
 		};
 	},
 

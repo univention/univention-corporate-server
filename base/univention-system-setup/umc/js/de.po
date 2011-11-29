@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-28 14:31+0100\n"
+"POT-Creation-Date: 2011-11-29 16:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,16 +61,6 @@ msgstr "Zertifikat"
 msgid "Certificate settings"
 msgstr "Zertifikateinstellungen"
 
-#: umc/js/_setup/SoftwarePage.js:113
-msgid ""
-"Changes for IP addresses may result in restarting or stopping services. This "
-"can have severe side-effects when the system is in productive use at the "
-"moment."
-msgstr ""
-"Änderungen der IP-Adressen kann Neustart oder Anhalten von diversen Diensten "
-"zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
-"System im Produktiveinsatz befinden."
-
 #: umc/js/_setup/CertificatePage.js:180
 msgid ""
 "Changes in the SSL certificate settings will result in generating new root "
@@ -81,6 +71,16 @@ msgstr ""
 "Zertifikat erstellt. Dies hat zur Folge, dass alle Host-Zertifikate der "
 "Domäne aktualisiert werden müssen, da das alte Root-Zertifkat nicht mehr "
 "gültig sein wird."
+
+#: umc/js/_setup/NetworkPage.js:204
+msgid ""
+"Changing IP address configurations may result in restarting or stopping "
+"services. This can have severe side-effects when the system is in productive "
+"use at the moment."
+msgstr ""
+"Änderungen der IP-Adressen kann Neustart oder Anhalten von diversen Diensten "
+"zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
+"System im Produktiveinsatz befinden."
 
 #: umc/js/_setup/CertificatePage.js:76
 msgid "Common name for the root SSL certificate"
@@ -221,7 +221,7 @@ msgstr "Installierte Softwarekomponenten"
 msgid "Installed system locales"
 msgstr "Verfügbare System-Lokalisierungen"
 
-#: umc/js/_setup/NetworkPage.js:204
+#: umc/js/_setup/SoftwarePage.js:113
 msgid ""
 "Installing or removing software components may result in restarting or "
 "stopping services. This can have severe side-effects when the system is in "
@@ -447,7 +447,9 @@ msgstr "Windows-Domäne"
 msgid ""
 "Your session should be shut down automatically. If this has not happened so "
 "far, you may force a shutdown by pressing Ctrl+Q."
-msgstr "Ihre Session sollte automatisch beendet werden. Ist dies nicht der Fall, kann das Beenden mittels der Tastenkombination Ctrl+Q forciert werden."
+msgstr ""
+"Ihre Session sollte automatisch beendet werden. Ist dies nicht der Fall, "
+"kann das Beenden mittels der Tastenkombination Ctrl+Q forciert werden."
 
 #: umc/js/_setup/NetworkPage.js:85 umc/js/_setup/NetworkPage.js:475
 msgid "virtual"
@@ -455,6 +457,15 @@ msgstr "virtuell"
 
 #~ msgid "Basis"
 #~ msgstr "Allgemein"
+
+#~ msgid ""
+#~ "Changes for software components may result in restarting or stopping "
+#~ "services. This can have severe side-effects when the system is in "
+#~ "productive use at the moment."
+#~ msgstr ""
+#~ "Die Installation oder das Entfernen von Softwarekomponenten kann Neustart "
+#~ "oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte "
+#~ "Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
 
 #~ msgid "Changes to system setting may have a severe effect on your system."
 #~ msgstr ""

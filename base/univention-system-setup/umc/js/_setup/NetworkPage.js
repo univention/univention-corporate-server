@@ -201,7 +201,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 	_showNote: function() {
 		if (!this._noteShowed) {
 			this._noteShowed = true;
-			this.addNote(this._('Installing or removing software components may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
+			this.addNote(this._('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
 		}
 	},
 
