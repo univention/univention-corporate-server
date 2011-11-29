@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.205-1) unstable; urgency=low
+
+  * fix network object range handling (Bug #24993)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 29 Nov 2011 16:01:52 +0100
+
 univention-directory-manager-modules (7.0.204-1) unstable; urgency=low
 
   * calc_dns_reverse_entry_name: return result from

@@ -195,8 +195,8 @@ class object(univention.admin.handlers.simpleLdap):
 					continue
 				firstIP = ipaddr.IPAddress(ipRange[0])
 				lastIP = ipaddr.IPAddress(ipRange[1])
-				if firstIP < currentIp < lastIP:
-					if firstIP < newIp < lastIP:
+				if firstIP <= currentIp <= lastIP:
+					if firstIP <= newIp <= lastIP:
 						self['nextIp'] = str(newIp)
 					else:
 						position = (self['ipRange'].index(ipRange) + 1) % len(self['ipRange']) # find "next" ipRange
