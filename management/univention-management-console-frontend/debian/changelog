@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.240-1) unstable; urgency=low
+
+  * added copyright for umc.widgets.Image, adapted ucslint.overrides
+    (Bug #23210)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Nov 2011 10:05:04 +0100
+
 univention-management-console-frontend (1.0.239-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)
