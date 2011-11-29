@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.257-1) unstable; urgency=low
+
+  * remove old UCR variable directory/manager/timeout; Bug #22883
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Nov 2011 12:08:15 +0100
+
 univention-management-console-module-udm (1.0.256-1) unstable; urgency=low
 
   * set dependencies for MultiInput subtypes (Bug #23782)

@@ -35,7 +35,7 @@
 eval "$(univention-config-registry shell)"
 
 # remove old variables
-VARIABLES=
+VARIABLES="directory/manager/timeout"
 for mod in modwizard modbrowse; do
 	varname="directory_manager_web_${mod}_defaults_visible_results"
 	eval var=\$${varname}
