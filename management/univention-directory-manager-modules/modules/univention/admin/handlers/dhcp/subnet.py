@@ -170,7 +170,7 @@ class object(univention.admin.handlers.simpleLdap):
 					dhcpRange.append(string.join(i, ' '))
 				else:
 					raise univention.admin.uexceptions.rangeNotInNetwork, '%s-%s' % (i[0], i[1])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo['range'])
+			#univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo['range'])
 			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', ['']), dhcpRange))
 
 		return ml

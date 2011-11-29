@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.203-1) unstable; urgency=low
+
+  * fixed traceback error when changing ip address range (Bug #24990)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Nov 2011 13:24:11 +0100
+
 univention-directory-manager-modules (7.0.202-1) unstable; urgency=low
 
   * shares/printergroup: syntax fixes; Bug #23782
