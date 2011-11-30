@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-28 11:09+0100\n"
+"POT-Creation-Date: 2011-11-30 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,7 +57,7 @@ msgstr ""
 "Sie können die Management Console jetzt auch schließen, und später wieder "
 "öffnen."
 
-#: umc/js/_updater/SettingsPage.js:62 umc/js/_updater/DetailsPage.js:70
+#: umc/js/_updater/DetailsPage.js:70 umc/js/_updater/SettingsPage.js:62
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -100,11 +100,11 @@ msgstr "Abbrechen"
 msgid "Check for package updates"
 msgstr "Paket-Aktualisierungen prüfen"
 
-#: umc/js/_updater/DetailsPage.js:92 umc/js/_updater/ComponentsPage.js:183
+#: umc/js/_updater/ComponentsPage.js:183 umc/js/_updater/DetailsPage.js:92
 msgid "Component Name"
 msgstr "Name der Komponente"
 
-#: umc/js/_updater/DetailsPage.js:49 umc/js/_updater/ComponentsPage.js:50
+#: umc/js/_updater/ComponentsPage.js:50 umc/js/_updater/DetailsPage.js:49
 msgid "Components"
 msgstr "Komponenten"
 
@@ -382,11 +382,11 @@ msgstr "Aktueller Status"
 msgid "Release updates"
 msgstr "Release-Aktualisierungen"
 
-#: umc/js/_updater/SettingsPage.js:86 umc/js/_updater/DetailsPage.js:107
+#: umc/js/_updater/DetailsPage.js:107 umc/js/_updater/SettingsPage.js:86
 msgid "Repository prefix"
 msgstr "Repository prefix"
 
-#: umc/js/_updater/SettingsPage.js:81 umc/js/_updater/DetailsPage.js:102
+#: umc/js/_updater/DetailsPage.js:102 umc/js/_updater/SettingsPage.js:81
 msgid "Repository server"
 msgstr "Repository server"
 
@@ -513,17 +513,15 @@ msgstr "Deshalb sollten Sie das Update nicht im laufenden Betrieb einspielen. "
 msgid ""
 "Univention Updater could not successfully complete the current job. The log "
 "file should show the cause of the failure. If you're finished examining the "
-"log file you may press the 'back to overview' button to close this view."
+"log file you may press the 'back' button to close this view."
 msgstr ""
 "Univention Updater konnte den aktuellen Auftrag nicht erfolgreich "
 "abschließen. Im Protokoll sollten Sie die Ursache des Fehlschlages sehen "
-"können. Der Knopf 'zurück zur Übersicht' schließt die aktuelle Ansicht."
+"können. Der 'Zurück'-Button schließt die aktuelle Ansicht."
 
 #: umc/js/_updater/ProgressPage.js:380
 msgid ""
-"Univention Updater has successfully finished the current job. You may read "
-"through the log file. If you're finished you may press the 'back to "
-"overview' button to close this view."
+"Univention Updater has successfully finished the current job."
 msgstr ""
 "Univention Updater hat den aktuellen Auftrag erfolgreich abgeschlossen. "
 
@@ -571,11 +569,11 @@ msgstr "Allgemeine Einstellungen"
 msgid "Updates"
 msgstr "Aktualisierungen"
 
-#: umc/js/_updater/SettingsPage.js:91 umc/js/_updater/DetailsPage.js:112
+#: umc/js/_updater/DetailsPage.js:112 umc/js/_updater/SettingsPage.js:91
 msgid "Use maintained repositories"
 msgstr "'Maintained' Repositories benutzen"
 
-#: umc/js/_updater/SettingsPage.js:96 umc/js/_updater/DetailsPage.js:117
+#: umc/js/_updater/DetailsPage.js:117 umc/js/_updater/SettingsPage.js:96
 msgid "Use unmaintained repositories"
 msgstr "'Unmaintained' Repositories benutzen"
 
@@ -598,7 +596,7 @@ msgstr ""
 #: umc/js/_updater/ProgressPage.js:286
 msgid "You may return to the overview by clicking the 'back' button now."
 msgstr ""
-"Sie können jetzt zur Übersicht zurückkehren, indem Sie den 'Zurück'-Knopf "
+"Sie können jetzt zur Übersicht zurückkehren, indem Sie den 'Zurück'-Button "
 "drücken."
 
 #: umc/js/_updater/ProgressPage.js:197

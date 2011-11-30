@@ -377,12 +377,12 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 			'success': {
 				title:			this._("Update finished"),
 				headerText:		this._("Univention Updater job completed"),
-				helpText:		this._("Univention Updater has successfully finished the current job. You may read through the log file. If you're finished you may press the 'back to overview' button to close this view.")
+				helpText:		this._("Univention Updater has successfully finished the current job.")
 			},
 			'failed': {
 				title:			this._("Update failed"),
 				headerText:		this._("Univention Updater job failed"),
-				helpText:		this._("Univention Updater could not successfully complete the current job. The log file should show the cause of the failure. If you're finished examining the log file you may press the 'back to overview' button to close this view.")
+				helpText:		this._("Univention Updater could not successfully complete the current job. The log file should show the cause of the failure. If you're finished examining the log file you may press the 'back' button to close this view.")
 			}
 		};
 		

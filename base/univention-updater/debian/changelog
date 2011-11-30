@@ -1,3 +1,9 @@
+univention-updater (7.0.118-1) unstable; urgency=low
+
+  * UMC: adapted captions and translations (Bug #24141)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Nov 2011 17:49:22 +0100
+
 univention-updater (7.0.117-1) unstable; urgency=low
 
   * save /etc/cups/ppd/*.ppd files during update Bug #24938 
