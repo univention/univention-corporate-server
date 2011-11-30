@@ -910,7 +910,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				visible = true;
 			} else {
 				dojo.forEach( options, function( option ) {
-					if ( activeOptions.indexOf( option ) != -1 ) {
+					if ( dojo.indexOf(activeOptions, option) != -1 ) {
 						visible = true;
 					}
 				} );

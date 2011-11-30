@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.259-1) unstable; urgency=low
+
+  * fixed IE error, IE does not Array.indexOf(), dojo.indexOf() should be used
+    instead (Bug #22979)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Nov 2011 15:51:59 +0100
+
 univention-management-console-module-udm (1.0.258-1) unstable; urgency=low
 
   * added frontend logic for setting the IP address automatically
