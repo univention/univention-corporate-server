@@ -1,3 +1,9 @@
+univention-updater (7.0.117-1) unstable; urgency=low
+
+  * save /etc/cups/ppd/*.ppd files during update Bug #24938 
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Nov 2011 10:58:46 +0100
+
 univention-updater (7.0.116-1) unstable; urgency=low
 
   * applied patch from Frank Greif <fg@it25.de> fixing several bugs; Bug #22898

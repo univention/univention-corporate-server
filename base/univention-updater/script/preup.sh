@@ -567,9 +567,13 @@ if [ $? = 0 ]; then
     dpkg --purge univention-antivir-web >>"$UPDATER_LOG" 2>&1
 fi
 
-
-
-
+# save ppd files in /etc/cups/ppd
+if [ -d "/etc/cups/ppd" ]; then
+	if [ -n "$(ls /etc/cups/ppd/*.ppd 2>/dev/null)" ]; then 
+		mkdir -p "/var/cache/univention-printserver/ppds/ucs2.4"
+		cp /etc/cups/ppd/*.ppd /var/cache/univention-printserver/ppds/ucs2.4/
+	fi
+fi
 
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
