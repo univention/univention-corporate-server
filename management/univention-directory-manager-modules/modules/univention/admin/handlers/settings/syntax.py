@@ -91,6 +91,7 @@ property_descriptions = {
 	'attribute' : univention.admin.property(
 				short_description = _( 'Displayed Attributes' ),
 				long_description = '',
+#				syntax = univention.admin.syntax.UDM_PropertySelect,
 				syntax = univention.admin.syntax.listAttributes,
 				multivalue = 1,
 				options = [],
@@ -131,6 +132,7 @@ property_descriptions = {
 	'value' : univention.admin.property(
 				short_description = _( 'Stored Attribute' ),
 				long_description = '',
+#				syntax = univention.admin.syntax.UDM_PropertySelect,
 				syntax = univention.admin.syntax.listAttributes,
 				multivalue = 0,
 				options = [],
@@ -155,8 +157,10 @@ layout = [
 		Group( _( 'General' ), layout = [
 			[  "name",  "description" ],
 			[  "filter",  "base" ],
-			[  "attribute",  "ldapattribute" ],
-			[  "value",  "ldapvalue" ],
+			"attribute",
+			"ldapattribute",
+			"value",
+			"ldapvalue",
 			[  "viewonly", "addEmptyValue" ],
 		] ),
 	] ),

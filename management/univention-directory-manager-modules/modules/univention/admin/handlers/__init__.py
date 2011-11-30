@@ -2124,7 +2124,6 @@ class simpleComputer( simpleLdap ):
 				self.__modify_dhcp_object( dn, self[ 'name' ], ip, mac )
 
 
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'CRUNCHY: post create: DNS changes: %s' % str( self.__changes[ 'dnsEntryZoneForward' ] ) )
 		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ]:
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:

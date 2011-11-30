@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.208-1) unstable; urgency=low
+
+  * syntax listAttribute: temporarily replaced with a string; Bug #25034
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Nov 2011 18:20:52 +0100
+
 univention-directory-manager-modules (7.0.207-1) unstable; urgency=low
 
   * shares/printergroup: the attribute setQuota must not exist in

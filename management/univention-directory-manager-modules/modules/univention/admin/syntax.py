@@ -2267,7 +2267,11 @@ def univentionAdminModules_update():
 
 __register_choice_update_function(univentionAdminModules_update)
 
-class listAttributes(select):
+class UDM_PropertySelect( complex ):
+	subsyntaxes = ( ( _( 'UDM module' ), string ), ( _( 'property' ), string ) )
+
+# old syntax required by settings/syntax. Should be removed after migrating to UDM_PropertySelect
+class listAttributes(string):
 	@classmethod
 	def parse(self, text):
 		return text
