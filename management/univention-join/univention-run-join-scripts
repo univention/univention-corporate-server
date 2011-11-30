@@ -191,7 +191,7 @@ if test -e "/usr/lib/univention-install/"; then
 			continue
 		fi
 
-		if [ ! "$server_role" = "domaincontroller_master" ] ; then
+		if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
 		else
 			$i >>/var/log/univention/join.log 2>&1

@@ -1,3 +1,11 @@
+univention-join (4.0.28-3) unstable; urgency=low
+
+  * univention-run-join-scripts must pass the credentials to
+    the join scripts if --ask-pass was given on domaincontroller_master.
+    (Bug #22866)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Nov 2011 20:29:15 +0100
+
 univention-join (4.0.28-2) unstable; urgency=low
 
   * new option --ask-pass for univention-run-join-scripts asks
