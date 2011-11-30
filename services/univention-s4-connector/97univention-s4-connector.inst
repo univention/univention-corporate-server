@@ -104,7 +104,7 @@ else										## we are first system to provide this service
 	old_sleep="$connector_s4_poll_sleep"
 	old_retry="$connector_s4_retryrejected"
 
-	univention-config-registry set connector/s4/poll/sleep=1 connector/s4/retryrejected=1
+	univention-config-registry set connector/s4/poll/sleep=1 connector/s4/retryrejected=2
 
 	/etc/init.d/univention-s4-connector restart
 

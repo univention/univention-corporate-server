@@ -578,6 +578,8 @@ class s4(univention.s4connector.ucs):
 		self.s4_ldap_certificate = s4_ldap_certificate
 		self.baseConfig = self.configRegistry = baseConfig
 
+		self.__lastUSN=0
+
 		self.open_s4()
 
 		if not self.config.has_section('S4'):
@@ -644,15 +646,19 @@ class s4(univention.s4connector.ucs):
 			
 	def _get_lastUSN(self):
 		_d=ud.function('ldap._get_lastUSN')
-		return int(self._get_config_option('S4','lastUSN'))
+		return max(self.__lastUSN, int(self._get_config_option('S4','lastUSN')))
 	
 	def get_lastUSN(self):
 		return self._get_lastUSN()
 
+	def _commit_lastUSN(self):
+		_d=ud.function('ldap._commit_lastUSN')
+		self._set_config_option('S4','lastUSN',str(self.__lastUSN))
+
 	def _set_lastUSN(self, lastUSN):
 		_d=ud.function('ldap._set_lastUSN')
 		ud.debug(ud.LDAP, ud.INFO,"_set_lastUSN: new lastUSN is: %s" % lastUSN)
-		self._set_config_option('S4','lastUSN',str(lastUSN))
+		self.__lastUSN=lastUSN
 
 	# save ID's
 	def __check_base64(self,string):
@@ -1571,9 +1577,12 @@ class s4(univention.s4connector.ucs):
 			# compare highest USN from poll with highest before poll, if the last changes deletes
 			# the highest USN from poll is to low
 			self._set_lastUSN(max(highestCommittedUSN,self._get_lastUSN()))
+
+			self._commit_lastUSN()
 			ud.debug(ud.LDAP, ud.INFO, "initialize S4: sync of all objects finished, lastUSN is %d", self.__get_highestCommittedUSN())
 		else:
 			polled=self.poll()		
+			self._commit_lastUSN()
 		print "--------------------------------------"
 		
 	def resync_rejected(self):
@@ -1586,6 +1595,7 @@ class s4(univention.s4connector.ucs):
 		change_count = 0
 		rejected = self._list_rejected()
 		print "Sync %s rejected changes from S4 to UCS" % len(rejected)
+		ud.debug(ud.LDAP, ud.PROCESS, "Sync %s rejected changes from S4 to UCS" % len(rejected))
 		sys.stdout.flush()
 		if rejected:
 			for id, dn in rejected:

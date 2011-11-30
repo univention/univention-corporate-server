@@ -696,9 +696,11 @@ def ucs_zone_create(s4connector, object, dns_type):
 			zone['nameserver'] = ns
 		if soa['rname'] != zone['contact']:
 			zone['contact'] = soa['rname'].replace('.', '@', 1)
+		if set(soa['serial']) != set(zone['serial']):
+			zone['serial'] = soa['serial']
 		for k in ['serial', 'refresh', 'retry', 'expire', 'ttl']:
 			if set(soa[k]) != set(zone[k]):
-				zone[k] = soa[k]
+				zone[k] = [soa[k]]
 		if dns_type == 'forward_zone':
 			if set(a) != set(zone['a']):
 				zone['a'] = a

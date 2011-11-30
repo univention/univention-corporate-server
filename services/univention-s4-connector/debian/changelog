@@ -1,3 +1,12 @@
+univention-s4-connector (6.0.82-1) unstable; urgency=low
+
+  * Save lastUSN in cache and commit them after the sync is finished
+    (Bug #24225)
+  * Don't set retryrejected to 1 use 2 for the initialize stage
+  * Adapt complex syntax for DNS zones
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Nov 2011 18:01:46 +0100
+
 univention-s4-connector (6.0.81-1) unstable; urgency=low
 
   * Fixed handling for con_other attributes. This allows the sync of two
