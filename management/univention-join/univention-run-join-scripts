@@ -44,6 +44,7 @@ display_help() {
 	Options:
 	  -dcaccount <account>:    name of DC master account
 	  -dcpwd <password file>:  file with DC master password
+	  --ask-pass            :  ask for DC master account and password
 
 	  -h | --help | -?:        print this usage message and exit program
 	  --version:               print version information and exit program
@@ -95,6 +96,10 @@ do
 			DCPWD=$1
 			shift
 			;;
+		"--ask-pass")
+			ASK_PASS=1
+			shift
+			;;
 		"--version")
 			display_version
 			exit 1
@@ -114,7 +119,7 @@ if [ ! -e /var/univention-join/joined ]; then
     exit 1
 fi
 
-if [ ! "$server_role" = "domaincontroller_master" ] ; then
+if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 	if [ -z "$DCACCOUNT" ]; then
 		echo -n "Enter DC Master Account : "
 		read DCACCOUNT

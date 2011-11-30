@@ -1,3 +1,12 @@
+univention-join (4.0.28-2) unstable; urgency=low
+
+  * new option --ask-pass for univention-run-join-scripts asks
+    for DC master credentials also on domaincontroller_master.
+    necessary for Bug #22866 and in cases were the master is not
+    the first Samba4 system in the domain.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Nov 2011 12:24:18 +0100
+
 univention-join (4.0.28-1.1) unstable; urgency=low
 
   * adapted captions and translations (Bug #24724) 
