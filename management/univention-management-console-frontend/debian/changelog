@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.242-2) unstable; urgency=low
+
+  * version bump (Bug #22979)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Nov 2011 15:43:30 +0100
+
 univention-management-console-frontend (1.0.242-1) unstable; urgency=low
 
   * MultiInput: fixed check for dojo.Deferred (Bug #22461)
