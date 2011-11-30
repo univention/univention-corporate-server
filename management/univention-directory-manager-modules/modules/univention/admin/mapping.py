@@ -90,11 +90,13 @@ def unmapUNIX_TimeInterval( value ):
 	return [ unicode( value ), unit ]
 
 def mapUNIX_TimeInterval( value ):
-	if len( value ) == 1:
-		unit = 'seconds'
+	unit = 'seconds'
+	if isinstance( value, ( tuple, list ) ):
+		if len( value ) > 1:
+			unit = value[ 1 ]
+		value = int( value[ 0 ] )
 	else:
-		unit = value[ 1 ]
-	value = int( value[ 0 ] )
+		value = int( value )
 	if unit == 'days':
 		value *= 24 * 60 * 60
 	elif unit == 'hours':

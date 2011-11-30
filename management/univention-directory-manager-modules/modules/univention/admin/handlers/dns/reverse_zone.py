@@ -71,7 +71,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			default=('10800', [])
+			default = ( ( '3', 'hours' ), [] )
 		),
 	'contact': univention.admin.property(
 			short_description=_('Contact person'),
@@ -104,7 +104,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			default=('28800', [])
+			default = ( ( '8', 'hours' ), [] )
 		),
 	'retry': univention.admin.property(
 			short_description=_('Retry interval'),
@@ -115,7 +115,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			default=('7200', [])
+			default = ( ( '2', 'hours' ), [] )
 		),
 	'expire': univention.admin.property(
 			short_description=_('Expiry interval'),
@@ -126,7 +126,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			default=('604800', [])
+			default = ( ( '7', 'days' ), [] )
 		),
 	'ttl': univention.admin.property(
 			short_description=_('Minimum time to live'),
@@ -137,7 +137,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			default=('86400', [])
+			default = ( ( '1', 'days' ), [] )
 		),
 	'nameserver': univention.admin.property(
 			short_description=_('Name servers'),

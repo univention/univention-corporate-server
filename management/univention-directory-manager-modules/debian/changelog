@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.206-1) unstable; urgency=low
+
+  * add support for default values of complex properties; Bug #25000
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Nov 2011 11:31:55 +0100
+
 univention-directory-manager-modules (7.0.205-1) unstable; urgency=low
 
   * fix network object range handling (Bug #24993)

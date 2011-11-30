@@ -69,7 +69,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('10800', [])
+			default = ( ( '3', 'hours' ), [] )
 		),
 	'a': univention.admin.property(
 			short_description=_('IP addresses'),

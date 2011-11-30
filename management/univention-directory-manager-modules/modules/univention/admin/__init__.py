@@ -198,8 +198,12 @@ class property:
 
 		if isinstance(self.base_default, (types.StringType, types.UnicodeType)):
 			return self._replace(self.base_default, object)
+
+		# we can not import univention.admin.syntax here (recursive import) so we need to find another way to identify a complex syntax
+		if getattr( self.syntax, 'subsyntaxes', None ) is not None and isinstance( self.base_default[ 0 ], ( list, tuple ) ) and not self.multivalue:
+			return self.base_default[ 0 ]
 		# multivalue defaults will only be a part of templates, so not multivalue is the common way for modules
-		if (isinstance(self.base_default[0], (types.StringType, types.UnicodeType))) and not self.multivalue:
+		elif (isinstance(self.base_default[0], (types.StringType, types.UnicodeType))) and not self.multivalue:
 			res=self.base_default[0]
 			for p in self.base_default[1]:
 				if not object[p]:
