@@ -181,7 +181,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return [ ( 'objectClass', ['top', 'univentionPrinterGroup'] ) ]
 
 	def _ldap_pre_modify(self):# check for membership in a quota-printerclass
-		if self.hasChanged('setQuota') and self.info['setQuota'] == '0':
+		if self.hasChanged('setQuota') and self.info.get( 'setQuota', '0' ) == '0':
 			printergroups=self.lo.searchDn(filter='(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1))')
 			group_cn=[]
 			for pg_dn in printergroups:
@@ -191,7 +191,7 @@ class object(univention.admin.handlers.simpleLdap):
 						group_cn.append(member_list[0][1]['cn'][0])
 			if len(group_cn) > 0:
 				raise univention.admin.uexceptions.leavePrinterGroup, _('%s is member of following quota printer groups %s')%(self.info['name'],string.join(group_cn,", "))
-		elif self.info['setQuota'] == '1':
+		elif self.info.get( 'setQuota', None ) == '1':
 			for member_cn in self.info['groupMember']:
 				member_dn=self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(univentionPrinterSpoolHost=%s)(cn=%s)(univentionPrinterQuotaSupport=1))' % (self.info['spoolHost'], member_cn))
 				if len(member_dn) < 1:
