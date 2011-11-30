@@ -1,0 +1,23 @@
+If a TextBox? element is create programmatically with IE8, an error is thrown
+as the TextBox focusNode property is not set. This is related to IE's behavior
+that the name "length" will override the original length field of its parent.
+Hence dijit._Templated._attachTemplateNodes() will fail. The attached patch
+fixes this problem. 
+
+see also:
+* http://bugs.jquery.com/ticket/945
+* http://markmail.org/message/zllc7leglwa3gima 
+
+This patch has been sent upstream: http://bugs.dojotoolkit.org/ticket/14346
+
+--- dojo-release-1.6.1-src/dijit/_Templated.js.orig	2011-11-30 15:15:14.000000000 +0100
++++ dojo-release-1.6.1-src/dijit/_Templated.js	2011-11-30 15:15:36.000000000 +0100
+@@ -173,7 +173,7 @@
+ 
+ 			var nodes = dojo.isArray(rootNode) ? rootNode : (rootNode.all || rootNode.getElementsByTagName("*"));
+ 			var x = dojo.isArray(rootNode) ? 0 : -1;
+-			for(; x<nodes.length; x++){
++			for(; x < 0 || nodes[x]; x++){
+ 				var baseNode = (x == -1) ? rootNode : nodes[x];
+ 				if(this.widgetsInTemplate && (getAttrFunc(baseNode, "dojoType") || getAttrFunc(baseNode, "data-dojo-type"))){
+ 					continue;

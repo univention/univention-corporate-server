@@ -55,6 +55,7 @@ $(DOJO_DIR):
 	patch -p0 < fix_dojo_position.patch
 	patch -p0 < fix_dojox_form_Uploader.patch
 	patch -p0 < fix_dojoStoreMemory.patch
+	patch -p0 < fix_dijit_Templated.patch
 
 all: install
 

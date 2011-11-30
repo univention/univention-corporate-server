@@ -1,3 +1,10 @@
+univention-dojo (5.0.16-1) unstable; urgency=low
+
+  * added patch for dijit._Templated that fixes IE problems with TextBoxes
+    that have the name "length" (Bug #22979)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Nov 2011 15:30:32 +0100
+
 univention-dojo (5.0.15-1) unstable; urgency=low
 
   * dojo.store.Memory: reset index when setting data; Bug #24814
