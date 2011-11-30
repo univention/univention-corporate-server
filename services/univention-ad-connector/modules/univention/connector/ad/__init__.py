@@ -570,6 +570,8 @@ class ad(univention.connector.ucs):
 		self.ad_ldap_certificate = ad_ldap_certificate
 		self.baseConfig = baseConfig
 
+		self.__lastUSN=0
+
 		self.open_ad()
 
 		if not self.config.has_section('AD'):
@@ -618,7 +620,11 @@ class ad(univention.connector.ucs):
 			
 	def _get_lastUSN(self):
 		_d=ud.function('ldap._get_lastUSN')
-		return int(self._get_config_option('AD','lastUSN'))
+		return max(self.__lastUSN, int(self._get_config_option('AD','lastUSN')))
+
+	def _commit_lastUSN(self):
+		_d=ud.function('ldap._commit_lastUSN')
+		self._set_config_option('AD','lastUSN',str(self.__lastUSN))
 	
 	def get_lastUSN(self):
 		return self._get_lastUSN()
@@ -626,7 +632,7 @@ class ad(univention.connector.ucs):
 	def _set_lastUSN(self, lastUSN):
 		_d=ud.function('ldap._set_lastUSN')
 		ud.debug(ud.LDAP, ud.INFO,"_set_lastUSN: new lastUSN is: %s" % lastUSN)
-		self._set_config_option('AD','lastUSN',str(lastUSN))
+		self.__lastUSN=lastUSN
 
 	# save ID's
 	def __check_base64(self,string):
@@ -1587,10 +1593,13 @@ class ad(univention.connector.ucs):
 			# compare highest USN from poll with highest before poll, if the last changes deletes
 			# the highest USN from poll is to low
 			self._set_lastUSN(max(highestCommittedUSN,self._get_lastUSN()))
+
+			self._commit_lastUSN()
 			ud.debug(ud.LDAP, ud.INFO, "initialize AD: sync of all objects finished, lastUSN is %d", self.__get_highestCommittedUSN())
 		else:
 			self.resync_rejected()
 			polled=self.poll()		
+			self._commit_lastUSN()
 		print "--------------------------------------"
 		
 	def resync_rejected(self):
