@@ -438,8 +438,8 @@ msgid "Univention support data base (SDB)"
 msgstr "Univention Supportdatenbank (SDB)"
 
 #: umc/help.js:52
-msgid "Univention wiki site"
-msgstr "Univention Webseite"
+msgid "Univention Wiki"
+msgstr "Univention Wiki"
 
 #: umc/widgets/Uploader.js:96 umc/widgets/InfoUploader.js:46
 msgid "Upload"

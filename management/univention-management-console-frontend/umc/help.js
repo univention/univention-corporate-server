@@ -49,7 +49,7 @@ dojo.mixin(umc.help, new umc.i18n.Mixin({
 			manual : this._( 'Current manual (PDF)' ),
 			add_doc : this._( 'Additional documentation for UCS' ),
 			sdb : this._( 'Univention support data base (SDB)' ),
-			wiki : this._( 'Univention wiki site' ),
+			wiki : this._( 'Univention Wiki' ),
 			forum : this._( 'Univention forum' ),
 			support : this._( 'Univention support' ),
 			supportURL : lang == 'de' ? 'http://www.univention.de/univention/kontakt/kontaktformular/' : 'http://www.univention.de/en/about-univention/contact/',

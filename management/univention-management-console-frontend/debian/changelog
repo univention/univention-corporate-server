@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.244-1) unstable; urgency=low
+
+  * fix links to wiki and manual; Bug #25012
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Nov 2011 16:03:32 +0100
+
 univention-management-console-frontend (1.0.243-1) unstable; urgency=low
 
   * ComplexInput: removed debug output (Bug #22461)
