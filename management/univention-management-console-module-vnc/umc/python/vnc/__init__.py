@@ -32,15 +32,18 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
+import socket
 import subprocess
 
+from univention.lib.i18n import Translation
+
 import univention.info_tools as uit
-import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
+from univention.management.console.config import ucr
 from univention.management.console.protocol.definitions import *
 
-_ = umc.Translation('univention-management-console-module-vnc').translate
+_ = Translation('univention-management-console-module-vnc').translate
 
 class Instance(umcm.Base):
 	def _get_status(self):
@@ -108,7 +111,7 @@ class Instance(umcm.Base):
 		result = 0
 		if not is_running:
 			result = subprocess.call(('/bin/su', '-',  self._username, '-c',
-			                          'vncserver -geometry 800x600'))
+			                          'vncserver -geometry 1024x768'))
 
 		if result == 0:
 			message = _('Server successfully started')
@@ -137,13 +140,25 @@ class Instance(umcm.Base):
 		url = None
 		(is_running, passwd_exists, ) = self._get_status()
 		port = None
+		host = None
 		if is_running:
 			args = self._get_cmdline()
 			if '-rfbport' in args:
 				port = args[args.index('-rfbport') + 1]
-				url = '/vnc/connect.php?port=%s' % str(port)
 
-		self.finished(request.id, {'url': url})
+			fqdn = '%s.%s' % ( ucr.get( 'hostname' ), ucr.get( 'domainname' ) )
+			VNC_LINK_BY_NAME, VNC_LINK_BY_IPV4, VNC_LINK_BY_IPV6 = range(3)
+			vnc_link_format = VNC_LINK_BY_IPV4
+			if vnc_link_format == VNC_LINK_BY_IPV4:
+				addrs = socket.getaddrinfo( fqdn, port, socket.AF_INET )
+				(family, socktype, proto, canonname, sockaddr) = addrs[0]
+				host = sockaddr[0]
+			elif vnc_link_format == VNC_LINK_BY_IPV6:
+				addrs = socket.getaddrinfo( fqdn, port, socket.AF_INET6 )
+				(family, socktype, proto, canonname, sockaddr) = addrs[0]
+				host = '[%s]' % sockaddr[0]
+
+		self.finished( request.id, { 'port': port, 'host' : host } )
 
 	def set_password(self, request):
 		message = None

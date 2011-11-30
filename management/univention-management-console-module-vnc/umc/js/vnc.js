@@ -92,10 +92,14 @@ dojo.declare("umc.modules.vnc", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		this.connect(this._vncPage, 'onConnect', function() {
 			umc.tools.umcpCommand('vnc/connect').then(
-				dojo.hitch(this, function(data) {
-					if (data.result.url != undefined) {
-						window.open(data.result.url);
-					}
+				dojo.hitch( this, function( response ) {
+					var w = window.open();
+					var html = dojo.replace( '<html><head><title>{host}</title></head><body><applet archive="/vnc/TightVncViewer.jar" code="com.tightvnc.vncviewer.VncViewer" height="100%%" width="100%%"><param name="host" value="localhost"/><param name="port" value="{port}"/><param name="socketfactory" value="com.tightvnc.vncviewer.SshTunneledSocketFactory"><param name="sshhost" value="{host}"><param name="offer relogin" value="no" /></applet></body></html>', {
+						host: response.result.host,
+						port: response.result.port
+					} );
+					w.document.write( html );
+					w.document.close();
 				})
 			);
 		});

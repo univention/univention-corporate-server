@@ -1,3 +1,11 @@
+univention-management-console-module-vnc (1.0.6-1) unstable; urgency=low
+
+  * use same method to intergrate Java VNC client as in the UVMM module
+  * set default resolution to 1024x768
+  * remove PHP script (not requird anymore); Bug #22901
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Nov 2011 14:57:24 +0100
+
 univention-management-console-module-vnc (1.0.5-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)
