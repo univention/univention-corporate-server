@@ -213,7 +213,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 		extract_binddn_and_bindpwd_from_args "$@"
 
-		if [ "$server_role" = "domaincontroller_master" ] && [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
+		if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
 			echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
 			printf "\tunivention-run-join-scripts --ask-pass\n"
 			echo "to complete the domain join."
@@ -292,6 +292,14 @@ if [ "$samba4_role" = 'DC' ]; then
 
 elif [ "$samba4_role" = "RODC" ]; then
 
+	extract_binddn_and_bindpwd_from_args "$@"
+	if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
+		echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
+		printf "\tunivention-run-join-scripts --ask-pass\n"
+		echo "to complete the domain join."
+		exit 1
+	fi
+
 	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
 	samba4_ldap_base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
 	univention-config-registry set samba4/ldap/base="$samba4_ldap_base" \
@@ -313,7 +321,6 @@ elif [ "$samba4_role" = "RODC" ]; then
 		sleep 1
 	fi
 
-	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
 	## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
