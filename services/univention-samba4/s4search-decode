@@ -40,10 +40,13 @@ import sys
 import re
 import base64
 import binascii
+import heimdal
 from samba.dcerpc import dnsp
 from samba.dcerpc import drsblobs
 from samba.ndr import ndr_unpack
 from samba.ndr import ndr_print
+
+context = None
 
 keytypes = {
 	1: 'des_crc',
@@ -54,9 +57,25 @@ keytypes = {
 
 regEx = re.compile('^([a-zA-Z0-9-]*):: (.*)')
 
-def decode_supplementalCredentials(value):
-	object_data = ndr_unpack(drsblobs.supplementalCredentialsBlob, binascii.a2b_base64(value))
+def decode_unicodePwd(value, kvno = 0):
+	global context
+	if not context:
+		context = heimdal.context()
+	up_blob = binascii.a2b_base64(value)
+	keyblock = heimdal.keyblock_raw(context, 23, up_blob)
+	krb5key = heimdal.asn1_encode_key(keyblock, None, kvno)
 	print "# decoded:"
+	print "#\tsambaNTPassword:: %s" % binascii.b2a_hex(up_blob).upper().strip()
+	print "# unicodePwd recoded as krb5key:"
+	print "#\tkeytype: arcfour-hmac-md5"
+	print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
+
+def decode_supplementalCredentials(value, kvno = 0):
+	global context
+	if not context:
+		context = heimdal.context()
+	object_data = ndr_unpack(drsblobs.supplementalCredentialsBlob, binascii.a2b_base64(value))
+	print "# supplementalCredentials recoded as krb5key:"
 	# print "%s" % (ndr_print(object_data).strip(),)
 	for p in object_data.sub.packages:
 		krb_blob = binascii.unhexlify(p.data)
@@ -64,7 +83,11 @@ def decode_supplementalCredentials(value):
 		print "#\tkrb5Salt: %s" % (krb.ctr.salt.string)
 		for k in krb.ctr.keys:
 			keytype = keytypes.get(k.keytype, k.keytype)
-			print "#\tkeytype: %s,\tkrb5Key:: %s" % (keytype, binascii.b2a_base64(k.value).strip())
+			keyblock = heimdal.keyblock_raw(context, k.keytype, k.value)
+			krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
+			krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
+			print "#\tkeytype: %s" % keytype
+			print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
 
 def decode_dnsRecord(value):
 	object_data = ndr_unpack(dnsp.DnssrvRpcRecord, binascii.a2b_base64(value))
@@ -76,6 +99,7 @@ def decode_dnsRecord(value):
 objecttypes = {
 	'dnsRecord': decode_dnsRecord,
 	'supplementalCredentials': decode_supplementalCredentials,
+	'unicodePwd': decode_unicodePwd,
 }
 
 def decode_line(line):

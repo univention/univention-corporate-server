@@ -211,6 +211,8 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	else	## otherwise we will simply join the new DC
 
+		extract_binddn_and_bindpwd_from_args "$@"
+
 		if [ "$server_role" = "domaincontroller_master" ] && [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
 			echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
 			printf "\tunivention-run-join-scripts --ask-pass\n"
@@ -230,7 +232,6 @@ if [ "$samba4_role" = 'DC' ]; then
 			sleep 1
 		fi
 
-		extract_binddn_and_bindpwd_from_args "$@"
 		samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm"
 
 		## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
