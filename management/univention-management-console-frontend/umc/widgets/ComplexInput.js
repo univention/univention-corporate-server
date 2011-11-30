@@ -117,7 +117,6 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 
 	// provide 'onChange' method stub in case it does not exist yet
 	onChange: function( newValue, widgetName ) {
-		console.log( 'INFO: ComplexInput: onChange ' + newValue );
 		// event stub
 	},
 
