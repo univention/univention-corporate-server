@@ -1595,7 +1595,6 @@ class s4(univention.s4connector.ucs):
 		change_count = 0
 		rejected = self._list_rejected()
 		print "Sync %s rejected changes from S4 to UCS" % len(rejected)
-		ud.debug(ud.LDAP, ud.PROCESS, "Sync %s rejected changes from S4 to UCS" % len(rejected))
 		sys.stdout.flush()
 		if rejected:
 			for id, dn in rejected:
