@@ -211,6 +211,12 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	else	## otherwise we will simply join the new DC
 
+		if [ "$server_role" = "domaincontroller_master" ]; then
+			echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
+			echo -e "\tunivention-run-join-scripts --ask-pass"
+			echo "to complete the domain join."
+			exit 1
+		fi
 		if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 			## remove slapd from port 389 on upgrade
 			if [ -n "$slapd_port" ]; then
