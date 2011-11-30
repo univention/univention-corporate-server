@@ -1,3 +1,10 @@
+univention-samba4 (1.0.112-3) unstable; urgency=low
+
+  * only abort joinscript on UCS Master if no credentals are available
+    (Bug #22866)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Nov 2011 13:55:05 +0100
+
 univention-samba4 (1.0.112-2) unstable; urgency=low
 
   * fix bashism (Bug #22866).
