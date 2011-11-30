@@ -1,3 +1,9 @@
+univention-dojo (5.0.17-1) unstable; urgency=low
+
+  * sent patch upstream (Bug #24814)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Nov 2011 15:49:51 +0100
+
 univention-dojo (5.0.16-1) unstable; urgency=low
 
   * added patch for dijit._Templated that fixes IE problems with TextBoxes

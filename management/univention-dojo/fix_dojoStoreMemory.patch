@@ -1,3 +1,8 @@
+Currently, dojo.store.Memory.setData() would not reset its internal index when
+assigning new data. The attached patch corrects this behavior.
+
+The patch has been sent upstream: http://bugs.dojotoolkit.org/ticket/14347
+
 --- dojo-release-1.6.1-src/dojo/store/Memory.js.orig	2011-04-08 18:45:38.000000000 +0200
 +++ dojo-release-1.6.1-src/dojo/store/Memory.js	2011-11-28 12:21:33.000000000 +0100
 @@ -142,6 +142,7 @@
