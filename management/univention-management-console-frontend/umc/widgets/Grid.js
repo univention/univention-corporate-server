@@ -733,11 +733,16 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		// add one div per footer element
 		this._footerCells = [];
-		dojo.forEach(footerCellWidths, function(iwidth) {
+		dojo.forEach(footerCellWidths, function(iwidth, i) {
 			// use display:inline-block; we need a hack for IE7 here, see:
 			//   http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
+			var padding = '0 5px';
+			if (i == footerCellWidths.length - 1) {
+				// do not use padding-right on the last column
+				padding = '0 0 0 5px';
+			}
 			var cell = new umc.widgets.ContainerWidget({
-				style: 'display:inline-block; padding: 0px 5px; vertical-align:top; zoom:1; *display:inline; height:auto;' // width:' + iwidth + 'px;'
+				style: 'display:inline-block; padding: ' + padding + '; vertical-align:top; zoom:1; *display:inline; height:auto;' // width:' + iwidth + 'px;'
 			});
 			this._footerCells.push(cell);
 		}, this);

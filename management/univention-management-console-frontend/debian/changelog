@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.246-1) unstable; urgency=low
+
+  * Grid: fixed padding of the last column in the grid footer (containing 
+    multi-actions) in order to prevent the last element to slip below the other
+    elements (Bug #22881, Comment 14)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 01 Dec 2011 13:50:27 +0100
+
 univention-management-console-frontend (1.0.245-1) unstable; urgency=low
 
   * make sure that event is given before calling preventDefault() (Bug #22461)

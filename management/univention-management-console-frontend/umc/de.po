@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-28 14:32+0100\n"
+"POT-Creation-Date: 2011-12-01 13:48+0100\n"
 "PO-Revision-Date: 2011-11-25 16:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "%d Einträge von %d ausgewählt"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/app.js:418 umc/about.js:54
+#: umc/about.js:54 umc/app.js:418
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -79,8 +79,8 @@ msgstr "Die Authentisierung schlug fehl. Bitte melden Sie sich erneut an."
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/app.js:506 umc/widgets/Wizard.js:84
-#: umc/widgets/MultiObjectSelect.js:284
+#: umc/widgets/MultiObjectSelect.js:284 umc/widgets/Wizard.js:84
+#: umc/app.js:506
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -92,7 +92,7 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: umc/help.js:60 umc/about.js:54
+#: umc/about.js:54 umc/help.js:60
 msgid "Close"
 msgstr "Schließen"
 
@@ -153,7 +153,7 @@ msgstr "Hello %(last)s, %(first)s!"
 msgid "Hello %s %s!"
 msgstr "Hello %s %s!"
 
-#: umc/app.js:402 umc/help.js:60
+#: umc/help.js:60 umc/app.js:402
 msgid "Help"
 msgstr "Hilfe"
 
@@ -248,7 +248,7 @@ msgstr "Weiter"
 msgid "No entries could be found"
 msgstr "Es konnten keine Einträge gefunden werden"
 
-#: umc/widgets/Grid.js:747
+#: umc/widgets/Grid.js:752
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
@@ -306,7 +306,9 @@ msgstr "Fehlernachricht des Servers:"
 
 #: umc/dialog.js:73
 msgid "So far the authentification failed. Continuing nevertheless."
-msgstr "Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin probiert."
+msgstr ""
+"Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin "
+"probiert."
 
 #: umc/tools.js:176
 msgid ""
@@ -425,6 +427,10 @@ msgstr ""
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
+#: umc/help.js:52
+msgid "Univention Wiki"
+msgstr "Univention Wiki"
+
 #: umc/help.js:53
 msgid "Univention forum"
 msgstr "Univention Forum"
@@ -436,10 +442,6 @@ msgstr "Univention Support"
 #: umc/help.js:51
 msgid "Univention support data base (SDB)"
 msgstr "Univention Supportdatenbank (SDB)"
-
-#: umc/help.js:52
-msgid "Univention Wiki"
-msgstr "Univention Wiki"
 
 #: umc/widgets/Uploader.js:96 umc/widgets/InfoUploader.js:46
 msgid "Upload"
@@ -517,7 +519,7 @@ msgstr ""
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 
-#: umc/widgets/Grid.js:411 umc/widgets/Grid.js:819
+#: umc/widgets/Grid.js:411 umc/widgets/Grid.js:824
 msgid "more"
 msgstr "mehr"
 
