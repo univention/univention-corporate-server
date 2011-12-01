@@ -115,7 +115,7 @@ property_descriptions = {
 				syntax = univention.admin.syntax.TrueFalseUp,
 				multivalue = 0,
 				options = [],
-				required = 1,
+				required = False,
 				may_change = 1,
 				identifies = 0
 				),
@@ -156,14 +156,17 @@ layout = [
 	Tab( _( 'General' ), _( 'Basic Values' ), layout = [
 		Group( _( 'General' ), layout = [
 			[  "name",  "description" ],
-			[  "filter",  "base" ],
+			[  "filter",  "base" ] ] ),
+		Group( _( 'Display' ), layout = [
 			"attribute",
-			"ldapattribute",
+			"ldapattribute" ] ),
+		Group( _( 'Storage' ), layout = [
 			"value",
-			"ldapvalue",
-			[  "viewonly", "addEmptyValue" ],
+			"ldapvalue" ] ),
+		Group( _( 'Options' ), layout = [
+			"viewonly",
+			"addEmptyValue" ] )
 		] ),
-	] ),
 ]
 
 
@@ -195,7 +198,7 @@ class object( univention.admin.handlers.simpleLdap ):
 		univention.admin.handlers.simpleLdap.__init__( self, co, lo, position, dn, superordinate, attributes = attributes )
 
 	def __check( self ):
-		if self[ 'viewonly' ] == 'FALSE' and not self[ 'value' ]:
+		if self.info.get( 'viewonly', 'FALSE' ) == 'FALSE' and not ( self[ 'value' ] or self[ 'ldapvalue' ] ):
 			raise univention.admin.uexceptions.insufficientInformation( _( 'An LDAP attribute is required that should be used for storing the information' ) )
 
 	def open( self ):

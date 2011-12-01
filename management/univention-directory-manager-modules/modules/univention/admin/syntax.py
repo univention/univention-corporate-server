@@ -2427,10 +2427,10 @@ class LDAP_Search( select ):
 				self.value = attrs[ 'univentionSyntaxLDAPValue' ][ 0 ]
 			else:
 				self.value = 'dn'
-			if attrs[ 'univentionSyntaxViewOnly' ][ 0 ] == 'TRUE':
+			if attrs.get( 'univentionSyntaxViewOnly', [ 'FALSE' ] )[ 0 ] == 'TRUE':
 				self.viewonly = True
 				self.value = 'dn'
-			self.addEmptyValue = ( attrs.get('univentionSyntaxAddEmptyValue', ['0'])[ 0 ].upper() in [ 'TRUE', '1' ] )
+			self.addEmptyValue = ( attrs.get( 'univentionSyntaxAddEmptyValue', [ '0' ] )[ 0 ].upper() in [ 'TRUE', '1' ] )
 
 	def _prepare( self, lo, filter = None ):
 		if filter is None:
@@ -2438,8 +2438,9 @@ class LDAP_Search( select ):
 		self.choices = []
 		self.values = []
 		for dn in lo.searchDn( filter = filter, base = self.base ):
+			# self.attributes: pass on all display attributes so the frontend has a chance to supoport it some day
 			if not self.viewonly:
-				self.values.append( ( dn, self.value, self.attributes[ 0 ] ) )
+				self.values.append( ( dn, self.value, self.attributes ) )
 			else:
 				self.values.append( ( dn, self.attributes ) )
 

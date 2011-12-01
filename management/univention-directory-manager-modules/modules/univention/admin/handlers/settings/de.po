@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 15:03+0200\n"
-"PO-Revision-Date: 2011-10-17 17:22+0200\n"
+"POT-Creation-Date: 2011-12-01 09:46+0100\n"
+"PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -38,11 +38,11 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: admin.py:48
-msgid "Preferences: Univention Directory Manger Global Settings"
-msgstr "Einstellungen: Univention Directory Manager Globale Einstellungen"
+#: cn.py:46
+msgid "Univention Settings"
+msgstr "Univention-Einstellungen"
 
-#: admin.py:54 cn.py:52 default.py:54 directory.py:55 extended_attribute.py:52
+#: cn.py:52 default.py:54 directory.py:55 extended_attribute.py:52
 #: extended_options.py:55 extended_options.py:56 license.py:55 license.py:56
 #: lock.py:55 lock.py:56 packages.py:55 packages.py:56 printermodel.py:57
 #: printermodel.py:58 printeruri.py:55 printeruri.py:56
@@ -51,36 +51,23 @@ msgstr "Einstellungen: Univention Directory Manager Globale Einstellungen"
 msgid "Name"
 msgstr "Name"
 
-#: admin.py:64
-msgid "Visible Wizards"
-msgstr "Sichtbare Assistenten"
-
-#: admin.py:74
-msgid "Visible Modules"
-msgstr "Sichtbare Module"
-
-#: admin.py:87 admin.py:88 cn.py:64 default.py:137 default.py:138
-#: directory.py:178 directory.py:179 extended_attribute.py:368
-#: extended_attribute.py:369 extended_options.py:147 extended_options.py:148
-#: license.py:168 lock.py:77 lock.py:78 packages.py:78 packages.py:79
-#: printermodel.py:80 printermodel.py:81 printeruri.py:78 printeruri.py:79
-#: prohibited_username.py:77 prohibited_username.py:78 sambaconfig.py:182
-#: sambaconfig.py:183 sambadomain.py:229 sambadomain.py:230 service.py:64
-#: service.py:65 syntax.py:144 syntax.py:145 umc_operationset.py:101
-#: umc_operationset.py:102 user.py:218 usertemplate.py:349 usertemplate.py:350
-#: xconfig_choices.py:168 xconfig_choices.py:169
+#: cn.py:64 default.py:137 default.py:138 directory.py:178 directory.py:179
+#: extended_attribute.py:358 extended_attribute.py:359 extended_options.py:147
+#: extended_options.py:148 license.py:168 lock.py:77 lock.py:78 packages.py:78
+#: packages.py:79 printermodel.py:80 printermodel.py:81 printeruri.py:78
+#: printeruri.py:79 prohibited_username.py:77 prohibited_username.py:78
+#: sambaconfig.py:182 sambaconfig.py:183 sambadomain.py:229 sambadomain.py:230
+#: service.py:64 service.py:65 syntax.py:156 syntax.py:157
+#: umc_operationset.py:101 umc_operationset.py:102 usertemplate.py:349
+#: usertemplate.py:350 xconfig_choices.py:168 xconfig_choices.py:169
 msgid "General"
 msgstr "Allgemein"
 
-#: admin.py:87 cn.py:64 default.py:137 directory.py:178
-#: extended_attribute.py:368 extended_options.py:147 sambaconfig.py:182
-#: sambadomain.py:229 service.py:64 syntax.py:144 usertemplate.py:349
+#: cn.py:64 default.py:137 directory.py:178 extended_attribute.py:358
+#: extended_options.py:147 sambaconfig.py:182 sambadomain.py:229 service.py:64
+#: syntax.py:156 usertemplate.py:349
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
-
-#: cn.py:46
-msgid "Univention Settings"
-msgstr "Univention-Einstellungen"
 
 #: default.py:48
 msgid "Preferences: Default"
@@ -126,39 +113,39 @@ msgstr "KDE-Profile"
 msgid "Preferences: Default Container"
 msgstr "Einstellungen: Standard-Container"
 
-#: directory.py:66 user.py:125
+#: directory.py:66
 msgid "Policy Link"
 msgstr "Richtlinienverweis"
 
-#: directory.py:76 user.py:135
+#: directory.py:76
 msgid "DNS Link"
 msgstr "DNS-Verweis"
 
-#: directory.py:86 user.py:145
+#: directory.py:86
 msgid "DHCP Link"
 msgstr "DHCP-Verweis"
 
-#: directory.py:96 user.py:155
+#: directory.py:96
 msgid "User Link"
 msgstr "Benutzerverweis"
 
-#: directory.py:106 user.py:165
+#: directory.py:106
 msgid "Group Link"
 msgstr "Gruppenverweis"
 
-#: directory.py:116 user.py:175
+#: directory.py:116
 msgid "Computer Link"
 msgstr "Rechnerverweis"
 
-#: directory.py:126 user.py:185
+#: directory.py:126
 msgid "Network Link"
 msgstr "Netzverweis"
 
-#: directory.py:136 user.py:195
+#: directory.py:136
 msgid "Share Link"
 msgstr "Freigabenverweis"
 
-#: directory.py:146 user.py:205
+#: directory.py:146
 msgid "Printer Link"
 msgstr "Druckerverweis"
 
@@ -290,102 +277,98 @@ msgstr "Existierendes Eingabefeld überschreiben"
 msgid "Span both columns"
 msgstr "Beide Spalten umfassen"
 
-#: extended_attribute.py:243
-msgid "Add an empty value to choicelist"
-msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
-
-#: extended_attribute.py:253 extended_attribute.py:404
+#: extended_attribute.py:243 extended_attribute.py:393
 msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
-#: extended_attribute.py:263
+#: extended_attribute.py:253
 msgid "May change"
 msgstr "Nachträglich modifizierbar"
 
-#: extended_attribute.py:273
+#: extended_attribute.py:263
 msgid "Value not editable"
 msgstr "Wert ist nicht änderbar"
 
-#: extended_attribute.py:274
+#: extended_attribute.py:264
 msgid "Disabling this option will only allow hooks to change the value"
 msgstr ""
 "Das Deaktivieren dieser Option führt dazu, dass der Wert nur noch über Hooks "
 "änderbar ist."
 
-#: extended_attribute.py:284
+#: extended_attribute.py:274
 msgid "Value required"
 msgstr "Wert wird benötigt"
 
-#: extended_attribute.py:294 extended_options.py:135
+#: extended_attribute.py:284 extended_options.py:135
 msgid "Object Class"
 msgstr "Objektklasse"
 
 # customattribute.py:06
-#: extended_attribute.py:304
+#: extended_attribute.py:294
 msgid "Delete Object Class"
 msgstr "Objektklasse löschen"
 
-#: extended_attribute.py:314 extended_options.py:125
+#: extended_attribute.py:304 extended_options.py:125
 msgid "Needed Module"
 msgstr "Benötigtes Modul"
 
-#: extended_attribute.py:315
+#: extended_attribute.py:305
 msgid "\"users/user\" or \"computer/thinclient\""
 msgstr "\"users/user\" oder \"computer/thinclient\""
 
-#: extended_attribute.py:324
+#: extended_attribute.py:314
 msgid "Version of extended attribute"
 msgstr "Version des erweiterten Attributs"
 
-#: extended_attribute.py:335
+#: extended_attribute.py:325
 msgid "UDM CLI name of extended attribute"
 msgstr "UDM-CLI Attributname"
 
-#: extended_attribute.py:346 usertemplate.py:333
+#: extended_attribute.py:336 syntax.py:166 usertemplate.py:333
 msgid "Options"
 msgstr "Optionen"
 
-#: extended_attribute.py:356
+#: extended_attribute.py:346
 msgid "Unsearchable"
 msgstr "Nicht durchsuchbar"
 
-#: extended_attribute.py:375
+#: extended_attribute.py:365
 msgid "UDM Web"
 msgstr "UDM Web"
 
-#: extended_attribute.py:375
+#: extended_attribute.py:365
 msgid "Settings for UDM web interface"
 msgstr "UDM-Web-spezifische Einstellungen"
 
-#: extended_attribute.py:376
+#: extended_attribute.py:366
 msgid "Tab layout"
 msgstr "Karteikartendarstellung"
 
-#: extended_attribute.py:380
+#: extended_attribute.py:370
 msgid "Group layout"
 msgstr "Gruppendarstellung"
 
-#: extended_attribute.py:384
+#: extended_attribute.py:374
 msgid "Extended settings"
 msgstr "Erweiterte Einstellungen"
 
-#: extended_attribute.py:390 extended_attribute.py:391
+#: extended_attribute.py:379 extended_attribute.py:380
 msgid "UDM General"
 msgstr "UDM Allgemein"
 
-#: extended_attribute.py:390
+#: extended_attribute.py:379
 msgid "UDM related settings"
 msgstr "UDM-spezifische Einstellungen"
 
-#: extended_attribute.py:396 extended_attribute.py:397
+#: extended_attribute.py:385 extended_attribute.py:386
 msgid "Data type"
 msgstr "Datentyp"
 
-#: extended_attribute.py:396
+#: extended_attribute.py:385
 msgid "Data type definition"
 msgstr "Datentyp-Definition"
 
-#: extended_attribute.py:404 extended_attribute.py:405
+#: extended_attribute.py:393 extended_attribute.py:394
 msgid "LDAP"
 msgstr "LDAP"
 
@@ -492,22 +475,20 @@ msgid "Max. user accounts"
 msgstr "Max. Benutzerkonten"
 
 #: license.py:106
-msgid ""
-"Maximum number of user accounts managed with the UCS infrastructure"
+msgid "Maximum number of user accounts managed with the UCS infrastructure"
 msgstr ""
-"Maximale Anzahl von Benutzerkonten, die mit der UCS Infrastruktur "
-"verwaltet werden."
+"Maximale Anzahl von Benutzerkonten, die mit der UCS Infrastruktur verwaltet "
+"werden."
 
 #: license.py:115
 msgid "Max. clients"
 msgstr "Max. Clients"
 
 #: license.py:116
-msgid ""
-"Maximum number of client hosts managed with the UCS infrastructure"
+msgid "Maximum number of client hosts managed with the UCS infrastructure"
 msgstr ""
-"Maximale Anzahl von Client-Rechnern, die mit der UCS Infrastruktur "
-"verwaltet werden."
+"Maximale Anzahl von Client-Rechnern, die mit der UCS Infrastruktur verwaltet "
+"werden."
 
 #: license.py:125
 msgid "Max. groupware accounts"
@@ -515,8 +496,7 @@ msgstr "Max. Groupware-Konten"
 
 #: license.py:126
 msgid ""
-"Maximum number of groupware accounts managed with the UCS "
-"infrastructure"
+"Maximum number of groupware accounts managed with the UCS infrastructure"
 msgstr ""
 "Maximale Anzahl von Groupware-Konten, die mit der UCS Infrastruktur "
 "verwaltet werden."
@@ -527,11 +507,9 @@ msgstr "Max. Desktops"
 
 #: license.py:136
 msgid ""
-"Maximum number of Univention desktop accounts managed with the Univention "
+"Maximum number of Univention desktop accounts managed with the UCS "
 "infrastructure"
-msgstr ""
-"Maximale Anzahl von Desktop-Rechnern, die mit der Univention Infrastruktur "
-"verwaltet werden."
+msgstr "Maximale Anzahl von Desktop-Rechnern, die mit der UCS Infrastruktur verwaltet werden."
 
 #: license.py:145 license.py:155
 msgid "Valid product types"
@@ -737,23 +715,35 @@ msgstr "LDAP Basis"
 msgid "Displayed Attributes"
 msgstr "Anzuzeigende Attribute"
 
-#: syntax.py:102
+#: syntax.py:103
 msgid "Displayed LDAP Attributes"
 msgstr "Anzuzeigende LDAP-Attribute"
 
-#: syntax.py:112
+#: syntax.py:113
 msgid "Show Only"
 msgstr "Nur anzeigen"
 
-#: syntax.py:122
+#: syntax.py:123
+msgid "Add an empty value to choicelist"
+msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
+
+#: syntax.py:133
 msgid "Stored Attribute"
 msgstr "Zu speicherndes Attribut"
 
-#: syntax.py:132
+#: syntax.py:144
 msgid "Stored LDAP Attribute"
 msgstr "Zu speicherndes LDAP-Attribut"
 
-#: syntax.py:184
+#: syntax.py:160
+msgid "Display"
+msgstr "Anzeige"
+
+#: syntax.py:163
+msgid "Storage"
+msgstr "Speicherung"
+
+#: syntax.py:202
 msgid ""
 "An LDAP attribute is required that should be used for storing the information"
 msgstr ""
@@ -790,46 +780,6 @@ msgid ""
 msgstr ""
 "Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist, "
 "müssen Operationen diese setzen, ansonsten werden sie zurückgewiesen"
-
-#: user.py:49
-msgid "Preferences: Univention Directory Manager user settings"
-msgstr "Einstellungen: Univention Directory Manager Benutzereinstellungen"
-
-#: user.py:55
-msgid "User name"
-msgstr "Benutzername"
-
-#: user.py:65
-msgid "Visible wizards"
-msgstr "Sichtbare Assistenten"
-
-#: user.py:75
-msgid "Accessible user attributes"
-msgstr "Sichtbare Benutzerattribute"
-
-#: user.py:85
-msgid "Show these attributes in search results"
-msgstr "In Suchergebnissen werden diese Attribute angezeigt"
-
-#: user.py:95
-msgid "Show these attributes in the navigation"
-msgstr "Zeige diese Attribute in der Navigation"
-
-#: user.py:105
-msgid "Visible modules"
-msgstr "Sichtbare Module"
-
-#: user.py:115
-msgid "LDAP base DN"
-msgstr "LDAP Basis-DN"
-
-#: user.py:217
-msgid "Univention Directory Manager"
-msgstr "Univention Directory Manager"
-
-#: user.py:217
-msgid "Univention Directory Manager User Settings"
-msgstr "Univention Directory Manager Benutzer Einstellungen"
 
 #: usertemplate.py:46
 msgid "Settings: User Template"
@@ -1046,6 +996,45 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:168
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
+
+#~ msgid "Preferences: Univention Directory Manger Global Settings"
+#~ msgstr "Einstellungen: Univention Directory Manager Globale Einstellungen"
+
+#~ msgid "Visible Wizards"
+#~ msgstr "Sichtbare Assistenten"
+
+#~ msgid "Visible Modules"
+#~ msgstr "Sichtbare Module"
+
+#~ msgid "Preferences: Univention Directory Manager user settings"
+#~ msgstr "Einstellungen: Univention Directory Manager Benutzereinstellungen"
+
+#~ msgid "User name"
+#~ msgstr "Benutzername"
+
+#~ msgid "Visible wizards"
+#~ msgstr "Sichtbare Assistenten"
+
+#~ msgid "Accessible user attributes"
+#~ msgstr "Sichtbare Benutzerattribute"
+
+#~ msgid "Show these attributes in search results"
+#~ msgstr "In Suchergebnissen werden diese Attribute angezeigt"
+
+#~ msgid "Show these attributes in the navigation"
+#~ msgstr "Zeige diese Attribute in der Navigation"
+
+#~ msgid "Visible modules"
+#~ msgstr "Sichtbare Module"
+
+#~ msgid "LDAP base DN"
+#~ msgstr "LDAP Basis-DN"
+
+#~ msgid "Univention Directory Manager"
+#~ msgstr "Univention Directory Manager"
+
+#~ msgid "Univention Directory Manager User Settings"
+#~ msgstr "Univention Directory Manager Benutzer Einstellungen"
 
 #~ msgid "Default Kolab Home Server"
 #~ msgstr "Standard Kolab Home Server"
