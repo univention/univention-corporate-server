@@ -137,6 +137,10 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			}
 			vals[iname] = empty === true ? '' : vals[iname];
 			widget.set('visible', visible !== false);
+			if (visible === false) {
+				// make sure that invisible fields are not required
+				widget.set('required', false);
+			}
 		});
 		_set('fqdn', joined && role != 'basesystem', true, !joined);
 		_set('windows/domain', joined && role != 'basesystem', role != 'basesystem', !joined);
@@ -174,6 +178,13 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		vals.hostname = dojo.isString(parts[0]) ? parts[0] : '';
 		vals.domainname = parts.slice(1).join('.');
 		delete vals.fqdn;
+
+		var role = vals['server/role'];
+		if (!(role == 'domaincontroller_master' || role == 'basesystem')) {
+			// remove the ldap/base entry
+			delete vals['ldap/base'];
+		}
+
 		return vals;
 	},
 
