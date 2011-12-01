@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.245-1) unstable; urgency=low
+
+  * make sure that event is given before calling preventDefault() (Bug #22461)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 01 Dec 2011 10:45:27 +0100
+
 univention-management-console-frontend (1.0.244-1) unstable; urgency=low
 
   * fix links to wiki and manual; Bug #25012

@@ -102,7 +102,9 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 					layout: ipage.layout,
 					scrollable: true,
 					onSubmit: dojo.hitch(this, function(e) {
-						e.preventDefault();
+						if (e && e.preventDefault) {
+							e.preventDefault();
+						}
 						dojo.stopEvent(e);
 						if (this.hasNext(ipage.name)) {
 							this._next(ipage.name);

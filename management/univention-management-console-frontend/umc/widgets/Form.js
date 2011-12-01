@@ -276,7 +276,9 @@ dojo.declare("umc.widgets.Form", [
 			}
 			this.connect(this, ievent, function(e) {
 				// prevent standard form submission
-				e.preventDefault();
+				if (e && e.preventDefault) {
+					e.preventDefault();
+				}
 
 				// if there is a custom callback, call it with all form values
 				if (dojo.isFunction(orgCallback)) {
