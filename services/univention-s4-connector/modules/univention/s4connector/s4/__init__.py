@@ -578,8 +578,6 @@ class s4(univention.s4connector.ucs):
 		self.s4_ldap_certificate = s4_ldap_certificate
 		self.baseConfig = self.configRegistry = baseConfig
 
-		self.__lastUSN=0
-
 		self.open_s4()
 
 		if not self.config.has_section('S4'):
@@ -593,6 +591,9 @@ class s4(univention.s4connector.ucs):
 		if not self.config.has_option('S4','lastUSN'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init lastUSN with 0")
 			self._set_config_option('S4','lastUSN','0')
+			self.__lastUSN=0
+		else:
+			self.__lastUSN=int(self._get_config_option('S4','lastUSN'))
 
 		if not self.config.has_section('S4 GUID'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init add config section 'S4 GUID'")
@@ -1749,6 +1750,8 @@ class s4(univention.s4connector.ucs):
 			sys.stdout.flush()
 				
 		print ""
+
+		self._commit_lastUSN()
 
 		# return number of synced objects
 		rejected = self._list_rejected()
