@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.100-1) unstable; urgency=low
+
+  * UMC: sort snapshots descending according to their date (Bug #25049)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 01 Dec 2011 14:07:08 +0100
+
 univention-virtual-machine-manager-daemon (1.0.99-1) unstable; urgency=low
 
   * support making devices non-paravirtual again; Bug #24954

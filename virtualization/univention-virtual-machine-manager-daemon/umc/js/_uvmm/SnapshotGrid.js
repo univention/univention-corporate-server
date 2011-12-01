@@ -43,6 +43,8 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 
 	domainURI: null,
 
+	sortIndex: -2,
+
 	constructor: function() {
 		dojo.mixin(this, {
 			columns: [{
