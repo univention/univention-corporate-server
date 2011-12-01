@@ -981,7 +981,8 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 				dn, store_pattern, display_attr = item
 
 			if display_attr:
-				mod_display, display = split_module_attr( display_attr )
+				# currently we just support one display attribute
+				mod_display, display = split_module_attr( display_attr[ 0 ] )
 				module = get_module( mod_display, dn ) # mod_display might be None
 			else:
 				module = get_module( None, dn )

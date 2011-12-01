@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.260-1) unstable; urgency=low
+
+  * LDAP_Search: there might be several display attributes, but we just
+    support one for now; Bug #25039
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Dec 2011 09:42:55 +0100
+
 univention-management-console-module-udm (1.0.259-1) unstable; urgency=low
 
   * fixed IE error, IE does not Array.indexOf(), dojo.indexOf() should be used
