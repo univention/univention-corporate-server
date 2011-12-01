@@ -373,7 +373,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	
 	services=res[0][1].get('univentionService', [])
 	if 'Samba 4' in services:
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: %s is a S4 server, skip password sync" %s ucs_object['dn'])
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: %s is a S4 server, skip password sync" % ucs_object['dn'])
 		return
 			
 	sambaPwdLastSet = None
