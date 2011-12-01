@@ -1,3 +1,9 @@
+univention-ldap (8.0.76-1) unstable; urgency=low
+
+  * univentionSyntaxViewOnly is an optional attribute now; Bug #25039
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Dec 2011 09:43:36 +0100
+
 univention-ldap (8.0.75-1) unstable; urgency=low
 
   * Set set_lk_max_objects, set_lk_max_locks and set_lk_max_lockers in

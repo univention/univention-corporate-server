@@ -82,9 +82,9 @@ objectclass ( 1.3.6.1.4.1.10176.2000.1.100
   DESC 'A generic Syntax Definition for Attributes'
   SUP top STRUCTURAL
   MUST ( cn $ univentionSyntaxLDAPFilter $
-	univentionSyntaxViewOnly $
 	univentionSyntaxLDAPAttribute )
   MAY ( univentionSyntaxDescription $
+	univentionSyntaxViewOnly $
   	univentionSyntaxLDAPBase $
 	univentionSyntaxLDAPValue $
 	univentionSyntaxAddEmptyValue ) )
