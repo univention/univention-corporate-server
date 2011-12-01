@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.43-1) unstable; urgency=low
+
+  * Don't reset lastUSN on connector restart (Bug #25037)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Dec 2011 13:46:11 +0100
+
 univention-ad-connector (6.0.42-1) unstable; urgency=low
 
   * Save lastUSN in cache and commit them after the sync is finished

@@ -570,7 +570,6 @@ class ad(univention.connector.ucs):
 		self.ad_ldap_certificate = ad_ldap_certificate
 		self.baseConfig = baseConfig
 
-		self.__lastUSN=0
 
 		self.open_ad()
 
@@ -585,6 +584,9 @@ class ad(univention.connector.ucs):
 		if not self.config.has_option('AD','lastUSN'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init lastUSN with 0")
 			self._set_config_option('AD','lastUSN','0')
+			self.__lastUSN=0
+		else:
+			self.__lastUSN=int(self._get_config_option('AD','lastUSN'))
 
 		if not self.config.has_section('AD GUID'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init add config section 'AD GUID'")
@@ -1772,6 +1774,7 @@ class ad(univention.connector.ucs):
 
 		if newUSN != lastUSN:
 			self._set_lastUSN(newUSN)
+			self._commit_lastUSN()
 
 		# return number of synced objects
 		rejected = self._list_rejected()
