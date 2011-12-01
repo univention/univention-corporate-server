@@ -1,3 +1,11 @@
+univention-s4-connector (6.0.84-1) unstable; urgency=low
+
+  * Don't overwrite the kerberos keys of a Samba4 DC with the kerberos
+    keys from the OpenLDAP DC account. This is only necessary if the DC is
+    not a Samba 4 DC (Bug #24437)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Dec 2011 07:08:42 +0100
+
 univention-s4-connector (6.0.83-1) unstable; urgency=low
 
   * Removed debug line from last commit (Bug #24225)

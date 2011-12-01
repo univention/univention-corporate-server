@@ -366,11 +366,16 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
 
 	try:
-		res = s4connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
+		res = s4connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
 	except ldap.NO_SUCH_OBJECT:
 		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs_to_s4: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
 		return
 	
+	services=res[0][1].get('univentionService', [])
+	if 'Samba 4' in services:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: %s is a S4 server, skip password sync" %s ucs_object['dn'])
+		return
+			
 	sambaPwdLastSet = None
 	if res[0][1].has_key('sambaPwdLastSet'):
 		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
