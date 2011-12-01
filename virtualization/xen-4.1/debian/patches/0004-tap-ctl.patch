@@ -1,4 +1,4 @@
-Bug #18357: Fix tap-cli parsing.
+Bug #18357: Fix tap-ctl parsing.
 
 Shutting down a domU with xen-4.1.2 doesn't terminate the corresponding blktap2
 process, since one (other) VM uses a image file, which contains spaces in its
