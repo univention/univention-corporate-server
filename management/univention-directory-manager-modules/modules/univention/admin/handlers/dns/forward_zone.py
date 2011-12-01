@@ -286,11 +286,14 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
+		self.oldinfo['a'] = []
 		self.info['a'] = []
 		if 'aRecord' in self.oldattr:
-			self.info['a'].extend(self.oldattr['aRecord'])
+			self.oldinfo['a'].extend(self.oldattr['aRecord'])
+			self.info['a'].extend(   self.oldattr['aRecord'])
 		if 'aAAARecord' in self.oldattr:
-			self.info['a'].extend(self.oldattr['aAAARecord'])
+			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+			self.info['a'].extend(   map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 		soa=self.oldattr.get('sOARecord',[''])[0].split(' ')
 		if len(soa) > 6:
@@ -345,7 +348,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if newAddresses:
 			    for address in newAddresses:
 					if ':' in address: # IPv6
-						newAaaaRecord.append(address)
+						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
 					else:
 						newARecord.append(address)
 			ml.append(('aRecord',    oldARecord,    newARecord, ))

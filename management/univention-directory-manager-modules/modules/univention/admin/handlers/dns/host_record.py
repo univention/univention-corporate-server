@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ipaddr
 import string
 
 from univention.admin.layout import Tab, Group
@@ -162,12 +163,14 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
+		self.oldinfo['a'] = []
 		self.info['a'] = []
 		if 'aRecord' in self.oldattr:
-			self.info['a'].extend(self.oldattr['aRecord'])
+			self.oldinfo['a'].extend(self.oldattr['aRecord'])
+			self.info['a'].extend(   self.oldattr['aRecord'])
 		if 'aAAARecord' in self.oldattr:
-			self.info['a'].extend(self.oldattr['aAAARecord'])
-		self.save() # save current state as old state
+			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+			self.info['a'].extend(   map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self['name']), self.position.getDn())
@@ -196,7 +199,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if newAddresses:
 			    for address in newAddresses:
 					if ':' in address: # IPv6
-						newAaaaRecord.append(address)
+						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
 					else:
 						newARecord.append(address)
 			ml.append(('aRecord',    oldARecord,    newARecord, ))

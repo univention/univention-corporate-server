@@ -1112,12 +1112,14 @@ class simpleComputer( simpleLdap ):
 
 	def open( self ):
 		simpleLdap.open( self )
+		self.oldinfo['ip'] = []
 		self.info['ip'] = []
 		if 'aRecord' in self.oldattr:
-			self.info['ip'].extend(self.oldattr['aRecord'])
+			self.oldinfo['ip'].extend(self.oldattr['aRecord'])
+			self.info['ip'].extend(   self.oldattr['aRecord'])
 		if 'aAAARecord' in self.oldattr:
-			self.info['ip'].extend(self.oldattr['aAAARecord'])
-		self.save() # save current state as old state
+			self.oldinfo['ip'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+			self.info['ip'].extend(   map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 		self.ip_alredy_requested = 0
 		self.ip_freshly_set = False
@@ -1150,7 +1152,7 @@ class simpleComputer( simpleLdap ):
 						if attr.has_key( 'aRecord' ):
 							zoneNames.append( ( attr[ 'zoneName' ][ 0 ], attr[ 'aRecord' ] ) )
 						if attr.has_key( 'aAAARecord' ):
-							zoneNames.append( ( attr[ 'zoneName' ][ 0 ], attr[ 'aAAARecord' ] ) )
+							zoneNames.append( ( attr[ 'zoneName' ][ 0 ], map(lambda x: ipaddr.IPv6Address(x).exploded, attr[ 'aAAARecord' ] )) )
 
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'zoneNames: %s' % zoneNames )
 
@@ -1477,7 +1479,7 @@ class simpleComputer( simpleLdap ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should create a dns reverse object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
 		if name and zoneDn and ip:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'dns reverse object: start' )
-			if ip.find(':')!=-1: # IPv6, e.g. ip=2001:db8:100::5
+			if ':' in ip: # IPv6, e.g. ip=2001:db8:100::5
 				# 0.1.8.b.d.0.1.0.0.2.ip6.arpa → 0.1.8.b.d.1.0.0.2 → ['0', '1', '8', 'b', 'd', '0', '1', '0', '0', '2', ]
 				subnet = ldap.explode_dn(zoneDn, 1)[0].replace('.ip6.arpa', '').split('.')
 				# ['0', '1', '8', 'b', 'd', '0', '1', '0', '0', '2', ] → ['2', '0', '0', '1', '0', 'd', 'b', '8', '1', '0', ]
@@ -1554,39 +1556,72 @@ class simpleComputer( simpleLdap ):
 					tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 					base = tmppos.getBase( )
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base )
-				results = self.lo.search( base = base, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, ip ), unique = 0, required = 0 )
-				for dn, attr in results:
-					if attr[ 'aRecord' ] == [ ip ]:
-						# remove the object
-						self.lo.delete( dn )
-						if not zoneDn:
-							zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
+				if ':' in ip:
+					ip = ipaddr.IPv6Address(ip).exploded
+					results = self.lo.search( base = base, scope = 'domain', attr = [ 'aAAARecord' ], filter = '(&(relativeDomainName=%s)(aAAARecord=%s))' % ( name, ip ), unique = 0, required = 0 )
+					for dn, attr in results:
+						if attr[ 'aAAARecord' ] == [ ip ]:
+							# remove the object
+							self.lo.delete( dn )
+							if not zoneDn:
+								zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
+							else:
+								zone = zoneDn
+
+							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
+							zone.open( )
+							zone.modify( )
 						else:
-							zone = zoneDn
+							# remove only the ip address attribute
+							new_ip_list = copy.deepcopy( attr[ 'aAAARecord' ] )
+							new_ip_list.remove( ip )
 
-						zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-						zone.open( )
-						zone.modify( )
-					else:
-						# remove only the ip address attribute
-						new_ip_list = copy.deepcopy( attr[ 'aRecord' ] )
-						new_ip_list.remove( ip )
+							self.lo.modify( dn, [ ( 'aAAARecord', attr[ 'aAAARecord' ],  new_ip_list ) ] )
 
-						self.lo.modify( dn, [ ( 'aRecord', attr[ 'aRecord' ],  new_ip_list ) ] )
+							if not zoneDn:
+								zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
+							else:
+								zone = zoneDn
 
-						if not zoneDn:
-							zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
+							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
+							zone.open( )
+							zone.modify( )
+				else:
+					results = self.lo.search( base = base, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, ip ), unique = 0, required = 0 )
+					for dn, attr in results:
+						if attr[ 'aRecord' ] == [ ip ]:
+							# remove the object
+							self.lo.delete( dn )
+							if not zoneDn:
+								zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
+							else:
+								zone = zoneDn
+
+							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
+							zone.open( )
+							zone.modify( )
 						else:
-							zone = zoneDn
+							# remove only the ip address attribute
+							new_ip_list = copy.deepcopy( attr[ 'aRecord' ] )
+							new_ip_list.remove( ip )
 
-						zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-						zone.open( )
-						zone.modify( )
-					pass
+							self.lo.modify( dn, [ ( 'aRecord', attr[ 'aRecord' ],  new_ip_list ) ] )
+
+							if not zoneDn:
+								zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
+							else:
+								zone = zoneDn
+
+							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
+							zone.open( )
+							zone.modify( )
 
 	def check_common_name_length(self):
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward'], ))
 		if len(self['ip']) > 0 and len(self['dnsEntryZoneForward']) > 0:
 			for zone in self['dnsEntryZoneForward']:
+				if zone == '':
+					continue
 				zoneName = univention.admin.uldap.explodeDn( zone[ 0 ], 1 )[ 0 ]
 				if len(zoneName) + len(self['name']) >= 63:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: length of Common Name is too long: %d' % (len(zoneName) + len(self['name']) + 1))
@@ -1602,6 +1637,7 @@ class simpleComputer( simpleLdap ):
 			else:
 				base = zoneDn
 			if ':' in old_ip: # IPv6
+				old_ip = ipaddr.IPv6Address(old_ip).exploded
 				results = self.lo.search( base = base, scope = 'domain', attr = [ 'aAAARecord' ], filter = '(&(relativeDomainName=%s)(aAAARecord=%s))' % ( name, old_ip ), unique = 0 )
 			else:
 				results = self.lo.search( base = base, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, old_ip ), unique = 0 )
@@ -1615,14 +1651,19 @@ class simpleComputer( simpleLdap ):
 				else:
 					new_aRecord.remove(old_ip)
 				if ':' in new_ip: # IPv6
-					new_aAAARecord.append(new_ip)
+					new_ip = ipaddr.IPv6Address(new_ip).exploded
+					if new_ip not in new_aAAARecord:
+						new_aAAARecord.append(new_ip)
 				else:
-					new_aRecord.append(new_ip)
+					if new_ip not in new_aRecord:
+						new_aRecord.append(new_ip)
 				modlist = []
 				if ':' in old_ip or ':' in new_ip:
-					modlist.append( ('aAAARecord', old_aAAARecord, new_aAAARecord, ) )
+					if old_aAAARecord != new_aAAARecord:
+						modlist.append( ('aAAARecord', old_aAAARecord, new_aAAARecord, ) )
 				if ':' not in old_ip or ':' not in new_ip:
-					modlist.append( ('aRecord', old_aRecord, new_aRecord, ) )
+					if old_aRecord != new_aRecord:
+						modlist.append( ('aRecord', old_aRecord, new_aRecord, ) )
 				self.lo.modify(dn, modlist)
 				if not zoneDn:
 					zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
@@ -1640,12 +1681,13 @@ class simpleComputer( simpleLdap ):
 	def __add_dns_forward_object( self, name, zoneDn, ip ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
 		if ip.find(':')!=-1: #IPv6
-			self.__add_dns_forward_object_ipv6(name, zoneDn, ip)
+			self.__add_dns_forward_object_ipv6(name, zoneDn, ipaddr.IPv6Address(ip).exploded)
 		else:
 			self.__add_dns_forward_object_ipv4(name, zoneDn, ip)
 
 	def __add_dns_forward_object_ipv6( self, name, zoneDn, ip ):
 		if name and ip and zoneDn:
+			ip = ipaddr.IPv6Address(ip).exploded
 			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aAAARecord' ], filter = '(&(relativeDomainName=%s)(!(cNAMERecord=*)))' % ( name ), unique = 0 )
 			if not results:
 				try:
@@ -1946,7 +1988,7 @@ class simpleComputer( simpleLdap ):
 			if newAddresses:
 			    for address in newAddresses:
 					if ':' in address: # IPv6
-						newAaaaRecord.append(address)
+						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
 					else:
 						newARecord.append(address)
 			ml.append(('aRecord',    oldARecord,    newARecord, ))
@@ -2045,6 +2087,8 @@ class simpleComputer( simpleLdap ):
 						self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ].append( entry )
 						self.__remove_associated_domain ( entry )
 			for entry in self.info[ 'dnsEntryZoneForward' ]:
+				if entry == '':
+					continue
 				if not self.oldinfo.has_key( 'dnsEntryZoneForward' ) or not entry in self.oldinfo[ 'dnsEntryZoneForward' ]:
 					self.__changes[ 'dnsEntryZoneForward' ][ 'add' ].append( entry )
 				self.__set_associated_domain( entry )
@@ -2052,11 +2096,12 @@ class simpleComputer( simpleLdap ):
 		if self.hasChanged( 'dnsEntryZoneReverse' ):
 			if self.oldinfo.has_key( 'dnsEntryZoneReverse' ):
 				for entry in self.oldinfo[ 'dnsEntryZoneReverse' ]:
-					if not entry in self.info[ 'dnsEntryZoneReverse' ]:
+					if not 'dnsEntryZoneReverse' in self.info or not entry in self.info[ 'dnsEntryZoneReverse' ]:
 						self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ].append( entry )
-			for entry in self.info[ 'dnsEntryZoneReverse' ]:
-				if not self.oldinfo.has_key( 'dnsEntryZoneReverse' ) or not entry in self.oldinfo[ 'dnsEntryZoneReverse' ]:
-					self.__changes[ 'dnsEntryZoneReverse' ][ 'add' ].append( entry )
+			if 'dnsEntryZoneReverse' in self.info:
+				for entry in self.info[ 'dnsEntryZoneReverse' ]:
+					if not self.oldinfo.has_key( 'dnsEntryZoneReverse' ) or not entry in self.oldinfo[ 'dnsEntryZoneReverse' ]:
+						self.__changes[ 'dnsEntryZoneReverse' ][ 'add' ].append( entry )
 
 		if self.hasChanged( 'dnsEntryZoneAlias' ):
 			if self.oldinfo.has_key( 'dnsEntryZoneAlias' ):
