@@ -1,3 +1,9 @@
+univention-base-files (1.0.42-1) unstable; urgency=low
+
+  * etc/ntp.conf: Add missing ucr.get(...) (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 01 Dec 2011 10:21:50 +0100
+
 univention-base-files (1.0.41-1) unstable; urgency=low
 
   * fixed quoting in conffiles/etc/lsb-release template (Bug #24628) 
