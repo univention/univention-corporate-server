@@ -1,3 +1,9 @@
+univention-system-setup (5.0.78-1) unstable; urgency=low
+
+  * UMC: fixed problem when running join script on roles != master (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 02 Dec 2011 11:43:22 +0100
+
 univention-system-setup (5.0.77-1) unstable; urgency=low
 
   * UMC: ignore field for LDAP base if it is hidden (Bug #22904)

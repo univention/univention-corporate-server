@@ -222,9 +222,9 @@ def run_joinscript(_username = None, password = None):
 
 	# write password file
 	if _username and password:
-		f = open(PATH_PASSWORD_FILE, 'w')
-		f.write('%s' % password)
-		f.close()
+		fp = open(PATH_PASSWORD_FILE, 'w')
+		fp.write('%s' % password)
+		fp.close()
 		os.chmod(PATH_PASSWORD_FILE, 0600)
 
 		# sanitize username
