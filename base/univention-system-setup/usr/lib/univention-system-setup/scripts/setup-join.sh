@@ -156,7 +156,13 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	done
 else
 	if [ -n "$dcaccount" -a -n "$password_file" ]; then
-		/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$password_file" >>$SETUP_LOG 2>&1
+		# Copy to a temporary password file, because univention-join
+		# will copy the file to the same directory on the master
+		# with the given user credentials. This won't work.
+		pwd_file="$(mktemp)"
+		cp "$password_file" "$pwd_file"
+		/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$pwd_file" >>$SETUP_LOG 2>&1
+		rm -f "$pwd_file"
 	fi
 fi
 

@@ -1,3 +1,11 @@
+univention-system-setup (5.0.81-1) unstable; urgency=low
+
+  * setup-join.sh: Copy pwd file to a temporary password file,
+    because univention-join will copy the file to the same directory
+    on the master with the given user credentials (Bug #22904)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Dec 2011 13:27:36 +0100
+
 univention-system-setup (5.0.80-1) unstable; urgency=low
 
   * UMC: allow setup-join even if no changes are made (Bug #22904)
