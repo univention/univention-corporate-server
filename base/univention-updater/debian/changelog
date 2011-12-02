@@ -1,4 +1,4 @@
-univention-updater (7.0.118-1) unstable; urgency=low
+univention-updater (7.0.121-1) unstable; urgency=low
 
   * fixed component status logic (Bug #25104)
 
