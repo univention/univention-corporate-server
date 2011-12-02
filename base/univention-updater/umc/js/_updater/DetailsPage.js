@@ -89,7 +89,7 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
 	    	{
 	    		type:			'TextBox',
 	    		name:			'name',
-	    		label:			this._("Component Name")
+	    		label:			this._("Component Name"),
 	    	},
 	    	{
 	    		type:			'TextBox',
@@ -159,16 +159,18 @@ dojo.declare("umc.modules._updater.DetailsPage", umc.modules._updater.Page, {
     	this._form = new umc.modules._updater.Form({
     		widgets:		widgets,
     		layout:			layout,
+			scrollable:		true,
     		//buttons:		buttons,
-    		moduleStore:	umc.store.getModuleStore('name','updater/components'),
-    		// This is (a) the submit handler of the form, but
-    		// also (b) the onClick handler of the 'Apply' button
-    		onSubmit: dojo.hitch(this,function() {
-    	    	this._form.standby(true);
-    	        this._form.save(this._save_options);
-    		})	
+    		moduleStore:	umc.store.getModuleStore('name','updater/components')
     	});
     	this.addChild(this._form);
+    	
+    	// the onSubmit event should not be overwritten, instead connect should
+		// be used (see Bug #25093)
+    	dojo.connect(this._form,'onSubmit',dojo.hitch(this,function() {
+	    	this.standby(true);
+	        this._form.save(this._save_options);
+		}));
     	
     	dojo.connect(this._form,'onSaved',dojo.hitch(this, function(success,data) {
     		this.standby(false);
