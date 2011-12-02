@@ -156,7 +156,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	done
 else
 	if [ -n "$dcaccount" -a -n "$password_file" ]; then
-		/usr/share/univention-join/univention-join -dcaccount $domain_controller_account -dcpwd "$password_file" >>$SETUP_LOG 2>&1
+		/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$password_file" >>$SETUP_LOG 2>&1
 	fi
 fi
 
