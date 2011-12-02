@@ -1563,7 +1563,7 @@ class simpleComputer( simpleLdap ):
 					(attrEdit, attrOther, ) = ('aRecord', 'aAAARecord', )
 				results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord', ], filter='(&(relativeDomainName=%s)(%s=%s))' % (name, attrEdit, ip, ), unique=0, required=0)
 				for dn, attr in results:
-					if attr[attrEdit] == [ip, ] and not attr[attrOther]: # the <ip> to be removed is the last on the object
+					if attr[attrEdit] == [ip, ] and not attr.get(attrOther): # the <ip> to be removed is the last on the object
 						# remove the object
 						self.lo.delete( dn )
 						if not zoneDn:
