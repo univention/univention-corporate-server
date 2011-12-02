@@ -774,16 +774,19 @@ class UniventionUpdater:
 		except IOError, e:
 			return self.COMPONENT_UNKNOWN
 		rePath = re.compile('(un)?maintained/component/ ?%s/' % name)
+		reDenied = re.compile('credentials not accepted: %s$' % name)
 		try:
+			# default: file contains no valid repo entry
+			result = self.COMPONENT_NOT_FOUND
 			for line in comp_file:
 				if line.startswith('deb ') and rePath.search(line):
-					# stop immediately if at least one repo has been found
-					return self.COMPONENT_AVAILABLE
-				elif 'credentials not accepted' in line:
+					# at least one repo has been found
+					result = self.COMPONENT_AVAILABLE
+				elif reDenied.search(line):
 					# stop immediately if at least one repo has authentication problems
 					return self.COMPONENT_PERMISSION_DENIED
-			# file contains no valid repo entry
-			return self.COMPONENT_NOT_FOUND
+			# return result
+			return result
 		finally:
 			comp_file.close()
 

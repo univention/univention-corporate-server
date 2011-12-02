@@ -1,3 +1,9 @@
+univention-updater (7.0.118-1) unstable; urgency=low
+
+  * fixed component status logic (Bug #25104)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 02 Dec 2011 16:23:15 +0100
+
 univention-updater (7.0.120-1) unstable; urgency=low
 
   * UMC: fixed problems when entering a new component with empty fields, added
