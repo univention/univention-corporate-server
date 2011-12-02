@@ -99,11 +99,6 @@ class Instance(umcm.Base):
 			self._finishedResult = False
 			obj._finishedLock.acquire()
 
-			if not values:
-				MODULE.error( 'No property "values" given for save().' )
-				obj._finishedLock.release()
-				return False
-
 			# write the profile file and run setup scripts
 			orgValues = util.load_values()
 			util.pre_save(values, orgValues)
@@ -111,6 +106,11 @@ class Instance(umcm.Base):
 			util.write_profile(values)
 			
 			if orgValues['server/role'] == 'basesystem' or os.path.exists('/var/univention-join/joined'):
+				if not values:
+					MODULE.error( 'No property "values" given for save().' )
+					obj._finishedLock.release()
+					return False
+
 				# in case of changes of the IP address, restart UMC server and web server
 				# for this we ignore changes of virtual or non-default devices
 				MODULE.info('Check whether ip addresses have been changed')

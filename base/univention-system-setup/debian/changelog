@@ -1,3 +1,9 @@
+univention-system-setup (5.0.80-1) unstable; urgency=low
+
+  * UMC: allow setup-join even if no changes are made (Bug #22904)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 02 Dec 2011 13:01:05 +0100
+
 univention-system-setup (5.0.79-1) unstable; urgency=low
 
   * setup-join.sh: use correct join account (Bug #22904)
