@@ -84,6 +84,17 @@ readcontinue ()
     done
 }
 
+# Bug #25088
+if [ "${version_version}" = "2.4" ] && [ "${version_patchlevel}" -lt 4 ]; then
+	echo "ERROR: The current installed version is UCS ${version_version}-${version_patchlevel}."
+	echo "An update to UCS 3.0 is only possible from a system which has been updated to UCS 2.4-4 or higher."
+	echo ""
+	echo "The update process will stop here."
+	echo ""
+
+	exit 1
+fi
+
 ###########################################################################
 # RELEASE NOTES SECTION (Bug #19584)
 # Please update URL to release notes and changelog on every release update
@@ -144,6 +155,22 @@ if [ -z "$update30_kde_check" ]; then
 	fi
 	univention-config-registry set update30/kde/check=true >&3
 fi
+
+# Check for 2.6.18 or 2.6.26
+# Bug #25067
+kernel_version="$(uname -r | sed -e 's|-.*||')"
+if [ "${kernel_version}" = "2.6.18" ] || [ "${kernel_version}" = "2.6.26" ]; then
+	if [ ! "$update_kernel_check" = "no" ]; then
+		echo "WARNING: This system uses kernel ${kernel_version}. With UCS 3.0"
+		echo "only kernel 2.6.32 is supported. To prevent update conflicts you"
+		echo "should upgrade to 2.6.32 before the update."
+		echo
+		echo "This check can be disabled by setting the Univention Configuration"
+		echo "Registry variable \"update/kernel/check\" to \"no\"."
+		exit 1
+	fi
+fi
+
 
 # In some cases grub/boot might point to a device no longer present (e.g. if the system was installed
 # in a virtual machine and migrated). To prevent grub-install from failing and rendering the system

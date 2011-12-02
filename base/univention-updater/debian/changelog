@@ -1,3 +1,11 @@
+univention-updater (7.0.119-1) unstable; urgency=low
+
+  * Updates from UCS 2.4-3 and previous to UCS 3.0 are not allowed
+    (Bug #25088)
+  * Don't allow updates from kernel 2.6.18/26 systems (Bug #25067)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Dec 2011 12:03:59 +0100
+
 univention-updater (7.0.118-1) unstable; urgency=low
 
   * UMC: adapted captions and translations (Bug #24141)
