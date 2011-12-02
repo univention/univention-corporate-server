@@ -1558,63 +1558,37 @@ class simpleComputer( simpleLdap ):
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base )
 				if ':' in ip:
 					ip = ipaddr.IPv6Address(ip).exploded
-					results = self.lo.search( base = base, scope = 'domain', attr = [ 'aAAARecord' ], filter = '(&(relativeDomainName=%s)(aAAARecord=%s))' % ( name, ip ), unique = 0, required = 0 )
-					for dn, attr in results:
-						if attr[ 'aAAARecord' ] == [ ip ]:
-							# remove the object
-							self.lo.delete( dn )
-							if not zoneDn:
-								zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
-							else:
-								zone = zoneDn
-
-							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-							zone.open( )
-							zone.modify( )
-						else:
-							# remove only the ip address attribute
-							new_ip_list = copy.deepcopy( attr[ 'aAAARecord' ] )
-							new_ip_list.remove( ip )
-
-							self.lo.modify( dn, [ ( 'aAAARecord', attr[ 'aAAARecord' ],  new_ip_list ) ] )
-
-							if not zoneDn:
-								zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
-							else:
-								zone = zoneDn
-
-							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-							zone.open( )
-							zone.modify( )
+					(attrEdit, attrOther, ) = ('aAAARecord', 'aRecord', )
 				else:
-					results = self.lo.search( base = base, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, ip ), unique = 0, required = 0 )
-					for dn, attr in results:
-						if attr[ 'aRecord' ] == [ ip ]:
-							# remove the object
-							self.lo.delete( dn )
-							if not zoneDn:
-								zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
-							else:
-								zone = zoneDn
-
-							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-							zone.open( )
-							zone.modify( )
+					(attrEdit, attrOther, ) = ('aRecord', 'aAAARecord', )
+				results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord', ], filter='(&(relativeDomainName=%s)(%s=%s))' % (name, attrEdit, ip, ), unique=0, required=0)
+				for dn, attr in results:
+					if attr[attrEdit] == [ip, ] and not attr[attrOther]: # the <ip> to be removed is the last on the object
+						# remove the object
+						self.lo.delete( dn )
+						if not zoneDn:
+							zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
 						else:
-							# remove only the ip address attribute
-							new_ip_list = copy.deepcopy( attr[ 'aRecord' ] )
-							new_ip_list.remove( ip )
+							zone = zoneDn
 
-							self.lo.modify( dn, [ ( 'aRecord', attr[ 'aRecord' ],  new_ip_list ) ] )
+						zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
+						zone.open( )
+						zone.modify( )
+					else:
+						# remove only the ip address attribute
+						new_ip_list = copy.deepcopy(attr[attrEdit])
+						new_ip_list.remove( ip )
 
-							if not zoneDn:
-								zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
-							else:
-								zone = zoneDn
+						self.lo.modify(dn, [(attrEdit, attr[attrEdit], new_ip_list, ), ])
 
-							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-							zone.open( )
-							zone.modify( )
+						if not zoneDn:
+							zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
+						else:
+							zone = zoneDn
+
+						zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
+						zone.open( )
+						zone.modify( )
 
 	def check_common_name_length(self):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward'], ))

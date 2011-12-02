@@ -1,4 +1,4 @@
-univention-directory-manager-modules (7.0.210-2) unstable; urgency=low
+univention-directory-manager-modules (7.0.210-3) unstable; urgency=low
 
   * fix computer DNS zone handling with IPv6 (Bug #15687)
   * change LDAP IPv6 address format to exploded
