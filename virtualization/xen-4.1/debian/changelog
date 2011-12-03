@@ -1,6 +1,7 @@
 xen-4.1 (4.1.2-5) ucs3-0-0-0; urgency=low
 
   * Depends: python-lxml (Bug #25060)
+  * Switch to external libaio1 (Bug #18357)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 01 Dec 2011 15:56:58 +0100
 
