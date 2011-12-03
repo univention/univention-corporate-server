@@ -1,9 +1,10 @@
 xen-4.1 (4.1.2-5) ucs3-0-0-0; urgency=low
 
+  * Really fix "tap-ctl list" parsing (Bug #18357, Bug #25137)
   * Depends: python-lxml (Bug #25060)
   * Switch to external libaio1 (Bug #18357)
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 01 Dec 2011 15:56:58 +0100
+ -- Philipp Hahn <hahn@univention.de>  Sat, 03 Dec 2011 21:02:24 +0100
 
 xen-4.1 (4.1.2-4) ucs3-0-0-0; urgency=low
 
