@@ -26,6 +26,7 @@ Build-Depends: debhelper (>> 7),
  texlive-latex-base,
  texlive-fonts-recommended,
  texlive-latex-recommended,
+ texinfo,
  udev,
  uuid-dev
 XS-Python-Version: all
@@ -34,6 +35,7 @@ Package: xen-4.1
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
  libxenstore3.0 (= ${binary:Version}),
+ python-lxml,
  iproute,
  udev,
  bridge-utils,
