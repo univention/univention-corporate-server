@@ -1,3 +1,11 @@
+univention-updater (7.0.122-1) unstable; urgency=low
+
+  * UVMMd, Xen and KVM might be removed during the UCS 3.0 upgrade. Save
+    the package state in preup.sh and install them in postup.sh if
+    necessary (Bug #25132)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Dec 2011 13:06:33 +0100
+
 univention-updater (7.0.121-1) unstable; urgency=low
 
   * fixed component status logic (Bug #25104)

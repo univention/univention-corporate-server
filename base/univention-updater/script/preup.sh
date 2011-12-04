@@ -156,6 +156,24 @@ if [ -z "$update30_kde_check" ]; then
 	univention-config-registry set update30/kde/check=true >&3
 fi
 
+# Save current Xen/KVM package status. These packages might be removed
+# during the UCS 3.0 update
+if [ -z "$update30_uvmm_check" ]; then
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-xen 2>/dev/null)" = "install ok installed" ]; then
+		univention-config-registry set update30/uvmm/univentionxen=true >&3
+	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-virtual-machine-manager-daemon 2>/dev/null)" = "install ok installed" ]; then
+		univention-config-registry set update30/uvmm/univentionvirtualmachinemanagerdaemon=true >&3
+	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-virtual-machine-manager-node-xen 2>/dev/null)" = "install ok installed" ]; then
+		univention-config-registry set update30/uvmm/univentionvirtualmachinemanagernodexen=true >&3
+	fi
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-virtual-machine-manager-node-kvm 2>/dev/null)" = "install ok installed" ]; then
+		univention-config-registry set update30/uvmm/univentionvirtualmachinemanagernodekvm=true >&3
+	fi
+	univention-config-registry set update30/uvmm/check=true >&3
+fi
+
 # Check for 2.6.18 or 2.6.26
 # Bug #25067
 kernel_version="$(uname -r | sed -e 's|-.*||')"

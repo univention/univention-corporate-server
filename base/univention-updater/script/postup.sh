@@ -174,6 +174,26 @@ if [ -n "$update30_kde_check" -a "$update30_kde_check" = "true" ]; then
 	univention-config-registry unset update30/kde/check  >>"$UPDATER_LOG" 2>&1
 fi
 
+if [ -n "$update30_uvmm_check" -a "$update30_uvmm_check" = "true" ]; then
+	if [ -n "$update30_uvmm_univentionxen" -a "$update30_uvmm_univentionxen" = "true" ]; then
+		install univention-xen
+		univention-config-registry unset update30/uvmm/univentionxen  >>"$UPDATER_LOG" 2>&1
+	fi
+	if [ -n "$update30_uvmm_univentionvirtualmachinemanagerdaemon" -a "$update30_uvmm_univentionvirtualmachinemanagerdaemon" = "true" ]; then
+		install univention-virtual-machine-manager-daemon
+		univention-config-registry unset update30/uvmm/univentionvirtualmachinemanagerdaemon  >>"$UPDATER_LOG" 2>&1
+	fi
+	if [ -n "$update30_uvmm_univentionvirtualmachinemanagernodexen" -a "$update30_uvmm_univentionvirtualmachinemanagernodexen" = "true" ]; then
+		install univention-virtual-machine-manager-node-xen
+		univention-config-registry unset update30/uvmm/univentionvirtualmachinemanagernodexen  >>"$UPDATER_LOG" 2>&1
+	fi
+	if [ -n "$update30_uvmm_univentionvirtualmachinemanagernodekvm" -a "$update30_uvmm_univentionvirtualmachinemanagernodekvm" = "true" ]; then
+		install univention-virtual-machine-manager-node-kvm
+		univention-config-registry unset update30/uvmm/univentionvirtualmachinemanagernodekvm  >>"$UPDATER_LOG" 2>&1
+	fi
+	univention-config-registry unset update30/uvmm/check  >>"$UPDATER_LOG" 2>&1
+fi
+
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
