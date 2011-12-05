@@ -1,3 +1,11 @@
+univention-kernel-image-2.6.32 (5.0.0-1) unstable; urgency=low
+
+  * Bump version number. The source package builds the transitional package 
+    univention-kernel-headers-2.6.18, which was already at version 4.0.1-2
+    in UCS 2.4 (Bug #25116)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 05 Dec 2011 09:08:17 +0100
+
 univention-kernel-image-2.6.32 (2.0.0-12) unstable; urgency=low
 
   * Re-add KVM reboot fix (Bug #23258)
