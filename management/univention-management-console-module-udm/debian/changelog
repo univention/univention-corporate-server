@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.261-1 unstable; urgency=low
+
+  * default container: add special handling for printer modules; Bug #25145
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 05 Dec 2011 11:07:37 +0100
+
 univention-management-console-module-udm (1.0.260-1) unstable; urgency=low
 
   * LDAP_Search: there might be several display attributes, but we just

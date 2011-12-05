@@ -721,6 +721,10 @@ class UDM_Settings( object ):
 		"""Returns list of default containers for a given UDM module"""
 		base, name = split_module_name( module_name )
 
+		# the printer modules does not have the same name scheme
+		if module_name == 'shares/print':
+			base = 'printers'
+
 		return map( lambda x: { 'id' : x, 'label' : ldap_dn2path( x ) }, self.directory.info.get( base, [] ) )
 
 	def default_group( self, module_name ):
