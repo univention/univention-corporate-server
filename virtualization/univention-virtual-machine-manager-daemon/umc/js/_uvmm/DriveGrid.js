@@ -173,7 +173,7 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		var pv_msg = this._( 'Paravirtualisation is a special variant of virtualisation in which the virtualised operating system is adapted to the underlying virtualisation technology. This improves the performance. Linux systems usually support paravirtualisation out of the box. For Windows systems additional support drivers need to be installed, see the <a href="http://wiki.univention.de/index.php?title=UVMM_Technische_Details"> Univention wiki </a> for details (currently only available in German).' );
 
 		var msg = '<p>' + intro_msg + '</p>';
-		if ( types.getNodeType( this.domain.domainURI ) == 'qemu' ) {
+		if ( types.getNodeType( this.domain.nodeURI ) == 'qemu' ) {
 			msg += '<p>' + kvm_msg + '</p>';
 		}
 		msg = '<p>' + pv_msg + '</p>';
@@ -218,7 +218,7 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				description: this._('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS).'),
 				dynamicOptions: dojo.hitch( this, function( options ) {
 					return {
-						nodeURI: this.domain.domainURI.slice( 0, this.domain.domainURI.indexOf( '#' ) )
+						nodeURI: this.domain.nodeURI
 					};
 				} ),
 				dynamicValues: types.getPools,
@@ -282,45 +282,53 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 		// chain the UMCP commands for removing the drive
 		var deferred = new dojo.Deferred();
 		deferred.resolve();
-		deferred = deferred.then( dojo.hitch( this, function() {
-			return umc.tools.umcpCommand('uvmm/storage/volume/deletable', [ {
-				domainURI: this.domain.domainURI,
-				volumeFilename: disk.volumeFilename,
-				pool: disk.pool
-			} ] );
-		} ) );
-		deferred = deferred.then( dojo.hitch( this, function( response ) {
-			if ( disk.device == 'cdrom' ) {
-				msg += ' ' + this._( 'The selected drive is a CD-ROM and should be detached from the virtual instance. If the volume is delete no other instance can use it anymore.' );
-			} else if ( ! response.result[ 0 ].deletable ) {
-				msg += ' ' + this._( 'The selected drive seems to be attached to other virtual instances and therefor should not be deleted.' );
-			}
-			return umc.dialog.confirm( msg, buttons );
-		} ) );
+		// just of a domain URI is available we need to detach/delete it otherwise we just remove it from the grid
+		if ( undefined !== this.domain.domainURI ) {
+			deferred = deferred.then( dojo.hitch( this, function() {
+				return umc.tools.umcpCommand('uvmm/storage/volume/deletable', [ {
+					domainURI: this.domain.domainURI,
+					volumeFilename: disk.volumeFilename,
+					pool: disk.pool
+				} ] );
+			} ) );
+			deferred = deferred.then( dojo.hitch( this, function( response ) {
+				if ( disk.device == 'cdrom' ) {
+					msg += ' ' + this._( 'The selected drive is a CD-ROM and should be detached from the virtual instance. If the volume is delete no other instance can use it anymore.' );
+				} else if ( ! response.result[ 0 ].deletable ) {
+					msg += ' ' + this._( 'The selected drive seems to be attached to other virtual instances and therefor should not be deleted.' );
+				}
+				return umc.dialog.confirm( msg, buttons );
+			} ) );
 
-		deferred = deferred.then( dojo.hitch( this, function( action ) {
-			if ( action != 'delete' & action != 'detach' ) { 
-				return;
-			}
-			this.onUpdateProgress( 0, 1 );
+			deferred = deferred.then( dojo.hitch( this, function( action ) {
+				if ( action != 'delete' & action != 'detach' ) { 
+					return;
+				}
+				this.onUpdateProgress( 0, 1 );
 
-			// detach the drive from the domain
-			this.moduleStore.remove( ids[ 0 ] );
+				// detach the drive from the domain
+				this.moduleStore.remove( ids[ 0 ] );
 
-			if ( action == 'delete' ) {
-				umc.tools.umcpCommand('uvmm/storage/volume/remove', {
-					nodeURI: this.domain.domainURI.slice( 0, this.domain.domainURI.indexOf( '#' ) ),
-					volumes: [ { pool: disk.pool, volumeFilename: disk.volumeFilename } ],
-				pool: disk.pool
-				} ).then( dojo.hitch( this, function( response ) {
+				if ( action == 'delete' ) {
+					umc.tools.umcpCommand('uvmm/storage/volume/remove', {
+						nodeURI: this.domain.nodeURI,
+						volumes: [ { pool: disk.pool, volumeFilename: disk.volumeFilename } ],
+						pool: disk.pool
+					} ).then( dojo.hitch( this, function( response ) {
+						this.onUpdateProgress( 1, 1 );
+						this.moduleStore.onChange();
+					} ) );
+				} else {
 					this.onUpdateProgress( 1, 1 );
 					this.moduleStore.onChange();
-				} ) );
-			} else {
-				this.onUpdateProgress( 1, 1 );
-				this.moduleStore.onChange();
-			}
-		} ) );
+				}
+			} ) );
+		} else {
+			// detach the drive from the domain
+			this.moduleStore.remove( ids[ 0 ] );
+			this.moduleStore.onChange();
+			this.onUpdateProgress( 1, 1 );
+		}
 	},
 
 	_addDrive: function() {

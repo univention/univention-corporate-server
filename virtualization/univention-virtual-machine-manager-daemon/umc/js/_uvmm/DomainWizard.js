@@ -52,7 +52,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 
 		// grid for the drives
 		this._driveStore = new umc.store.Memory({
-			idProperty: 'source'
+			idProperty: '$id$'
 		});
 		this._driveGrid = new umc.modules._uvmm.DriveGrid({
 			moduleStore: this._driveStore
@@ -200,6 +200,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 
 			if ( null !== nextName ) {
 				this._driveGrid.domain = this.getValues();
+				this._driveGrid.domain.nodeURI = this.getWidget( 'nodeURI' ).get( 'value' );
 				this._driveGrid.domain.profileData = this._profile;
 			}
 		}

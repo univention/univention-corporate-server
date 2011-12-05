@@ -408,9 +408,11 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			// get data blob
 			this._domain = dojo.getObject('result', false, data);
 			this._domain.domainURI = id;
+			this._domain.nodeURI = id.slice( 0, id.indexOf( '#' ) );
 
 			if (data) {
-				var types = umc.modules._uvmm.types;
+				var types = umc.modules._uvmm.types;			this._domain.domainURI = id;
+
 				this.moduleWidget.set( 'title', 'UVMM: ' + this._domain.name );
 
 				// clear form data
