@@ -1,4 +1,4 @@
-univention-management-console-module-udm (1.0.261-2)unstable; urgency=low
+univention-management-console-module-udm (1.0.261-2) unstable; urgency=low
 
   * default container: add special handling for printer modules; Bug #25145
 
