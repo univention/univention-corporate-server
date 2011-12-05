@@ -32,6 +32,8 @@
 
 import univention.debug as ud
 import logging
+import grp
+import os
 
 # no exceptions from logging
 # otherwise shutdown the server will raise an exception that the logging stream could not be closed
@@ -43,10 +45,13 @@ def log_init( filename, log_level = 2 ):
 	'''Initializes Univention debug. The filename just needs to be a
 	relative name. The directory /var/log/univention/ is prepended and
 	the suffix '.log' is appended.'''
-	if filename[ 0 ] == '/':
-		fd = ud.init( filename, ud.FLUSH, ud.FUNCTION )
-	else:
-		fd = ud.init( '/var/log/univention/%s.log' % filename, ud.FLUSH, ud.FUNCTION )
+
+	if filename[ 0 ] != '/':
+		filename = '/var/log/univention/%s.log' % filename
+	fd = ud.init( filename, ud.FLUSH, ud.FUNCTION )
+	adm = grp.getgrnam( 'adm' )
+	os.chown( filename, 0, adm.gr_gid )
+	os.chmod( filename, 0640 )
 	log_set_level( log_level )
 
 	return fd

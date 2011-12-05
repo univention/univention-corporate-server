@@ -306,7 +306,7 @@ class ACLs( object ):
 	def _write_to_file( self, username ):
 		filename = os.path.join( ACLs.CACHE_DIR,  username )
 
-		file = os.open( filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT )
+		file = os.open( filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0600 )
 		os.write( file, cPickle.dumps( self.acls ) )
 		os.close( file )
 

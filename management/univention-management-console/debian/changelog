@@ -1,3 +1,10 @@
+univention-management-console (4.0.92-1) unstable; urgency=low
+
+  * set umask of UMC server and module processes to 0077; Bug #25162
+  * create log files with correct permissions( root:adm, 0640)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 05 Dec 2011 18:03:14 +0100
+
 univention-management-console (4.0.91-1) unstable; urgency=low
 
   * added sending SIGKILL event to UMC server after 5 seconds (copied and
