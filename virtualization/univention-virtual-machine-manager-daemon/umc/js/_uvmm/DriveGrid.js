@@ -76,7 +76,10 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				iconClass: 'umcIconEdit',
 				isMultiAction: false,
 				isStandardAction: true,
-				callback: dojo.hitch(this, '_editDrive')
+				callback: dojo.hitch(this, '_editDrive'),
+				canExecute: dojo.hitch( this, function( item ) {
+					return undefined !== this.domain.domainURI; // when creating an instance drives can not be edited
+				} )
 			}, {
 				name: 'change_medium',
 				label: this._('Change medium'),
