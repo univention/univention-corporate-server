@@ -50,5 +50,5 @@ update_system_after_installation='true'
 
 # [Software]
 # Example
-packages="openssh-client openssh-server dhcp3-client vim  wget"
+packages="openssh-client openssh-server vim  wget"
 

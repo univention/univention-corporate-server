@@ -62,5 +62,5 @@ update_system_after_installation='true'
 #create_home_share="false"
 
 # [Software]
-packages="univention-kde univention-samba4 univention-dhcp"
+packages="univention-kde univention-s4-connector univention-samba4 univention-dhcp"
 
