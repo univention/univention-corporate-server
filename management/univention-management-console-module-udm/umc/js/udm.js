@@ -101,8 +101,13 @@ dojo.require("umc.modules._udm.DetailPage");
 					// at least one MAC address is specified, update the DHCP entries
 					widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, mac[0]]]);
 				}
+				else if (vals.dhcpEntryZone) {
+					// no MAC address given, enter the DHCP entry and make sure that the MAC
+					// is chosen as soon as it is specified later on (via 'null' value)
+					widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, null]]);
+				}
 				else {
-					// no MAC address given, clear DHCP entries
+					// DHCP entry zone does not exist
 					widgets.dhcpEntryZone.set('value', []);
 				}
 			});

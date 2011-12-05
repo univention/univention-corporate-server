@@ -216,7 +216,17 @@ class UDM_Module( object ):
 				return value
 
 	def _map_properties( self, obj, properties ):
-		for property_name, value in properties.items():
+		# FIXME: for the automatic IP address assignment, we need to make sure that
+		#        the network is set before the IP address (see Bug #24077, comment 6)
+		#        The following code is a workaround to make sure that this is the
+		#        case, however, this should be fixed correctly.
+		#        This workaround has been documented as Bug #25163.
+		def _tmp_cmp(i, j):
+			if i[0] == 'network': 
+				return -1
+			return 0
+
+		for property_name, value in sorted(properties.items(), _tmp_cmp):
 			MODULE.info( 'Setting property %s to %s' % ( property_name, value ) )
 
 			property_obj = self.get_property( property_name )
