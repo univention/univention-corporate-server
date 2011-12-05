@@ -35,7 +35,7 @@
 info_header "$0"
 
 
-is_variable_set "gateway6"
+is_variable_set "ipv6/gateway"
 if [ $? = 0 ]; then
 	exit 0
 fi
@@ -45,7 +45,7 @@ if [ "$check_ldap_access" = "1" ]; then
 fi
 
 old_gateway6=$(univention-config-registry get ipv6/gateway)
-gateway6=`get_profile_var gateway6`
+gateway6=`get_profile_var ipv6/gateway`
 
 if [ -z "$gateway6" ]; then
 	univention-config-registry unset ipv6/gateway

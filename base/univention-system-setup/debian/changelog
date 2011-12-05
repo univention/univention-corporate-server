@@ -1,3 +1,9 @@
+univention-system-setup (5.0.82-1) unstable; urgency=low
+
+  * change profile variable name in 13ipv6gateway (Bug #23997)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 05 Dec 2011 17:07:11 +0100
+
 univention-system-setup (5.0.81-1) unstable; urgency=low
 
   * setup-join.sh: Copy pwd file to a temporary password file,
