@@ -1,3 +1,9 @@
+univention-installer (7.0.152-1) unstable; urgency=low
+
+  * Now the translation is too long. Changed again (Bug #3796)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Dec 2011 07:41:42 +0100
+
 univention-installer (7.0.151-1) unstable; urgency=low
 
   * Fixed typo in german translation (Bug #3796)
