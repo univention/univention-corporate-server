@@ -50,7 +50,7 @@ gateway6=`get_profile_var ipv6/gateway`
 if [ -z "$gateway6" ]; then
 	univention-config-registry unset ipv6/gateway
 else
-	univention-config-registry set ipv6gateway="$gateway6"
+	univention-config-registry set ipv6/gateway="$gateway6"
 fi
 
 if [ -d "/var/lib/univention-system-setup/gateway.post" ]; then

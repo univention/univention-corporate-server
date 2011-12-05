@@ -1,3 +1,9 @@
+univention-system-setup (5.0.82-2) unstable; urgency=low
+
+  * fixed UCR variable name in 13ipv6gateway (Bug #23997)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 05 Dec 2011 18:23:25 +0100
+
 univention-system-setup (5.0.82-1) unstable; urgency=low
 
   * change profile variable name in 13ipv6gateway (Bug #23997)
