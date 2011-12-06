@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.263-1) unstable; urgency=low
+
+  * fixed problems with template mechanism in IE8 (Bug #25193)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 06 Dec 2011 12:27:42 +0100
+
 univention-management-console-module-udm (1.0.262-1) unstable; urgency=low
 
   * added a workaround for problems with automatic IP address assignment

@@ -237,7 +237,7 @@ dojo.declare('umc.modules._udm.Template', null, {
 				catch (err1) { }
 
 				// check whether the user specified an end index
-				if (!match[6] && dojo.isString(match[5])) {
+				if (!match[6] && dojo.isString(match[5]) && match[5].length) {
 					// nope... index points to one single character
 					endIdx = startIdx + 1;
 					if (0 === endIdx) {
