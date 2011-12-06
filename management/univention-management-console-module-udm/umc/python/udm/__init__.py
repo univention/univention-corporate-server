@@ -32,10 +32,12 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
+import grp
 import os
 import shutil
 import notifier
 import notifier.threads
+import pwd
 import tempfile
 import traceback
 
@@ -476,9 +478,15 @@ class Instance( Base ):
 			except:
 				pass
 			if pdffile:
-				shutil.copy( pdffile, '/var/www/univention-directory-reports' )
+				path = '/var/www/univention-directory-reports'
+				shutil.copy( pdffile, path )
 				os.unlink( pdffile )
 
+				www_data_user = pwd.getpwnam( 'www-data' )
+				www_data_grp = grp.getgrnam( 'www-data' )
+				filename = os.path.join( path, os.path.basename( pdffile ) )
+				os.chown( filename, www_data_user.pw_uid, www_data_grp.gr_gid )
+				os.chmod( filename, 0644 )
 				url = '/univention-directory-reports/%s' % os.path.basename( pdffile )
 				link = '<a target="_blank" href="%s">%s (%s)</a>' % ( url, module.name, request.options[ 'report' ] )
 

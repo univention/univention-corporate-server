@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.264-1) unstable; urgency=low
+
+  * set access rights for reports to 0644 (www-data:www-data); Bug #25223
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 06 Dec 2011 12:33:42 +0100
+
 univention-management-console-module-udm (1.0.263-1) unstable; urgency=low
 
   * fixed problems with template mechanism in IE8 (Bug #25193)
