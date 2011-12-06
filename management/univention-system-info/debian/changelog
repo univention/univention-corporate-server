@@ -1,3 +1,9 @@
+univention-system-info (2.0.10-1) unstable; urgency=low
+
+  * set permissions of archive to 0444 (www-data:www-data) in UMC mode; Bug #25228
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 06 Dec 2011 15:55:37 +0100
+
 univention-system-info (2.0.9-1) unstable; urgency=low
 
   * fix bug with multiple network devices (Bug #22927)

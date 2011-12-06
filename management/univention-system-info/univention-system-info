@@ -203,6 +203,10 @@ if [ -z "$umc" ]; then
 	echo "Archive: $archive"
 else
 	mv "$archive" /var/www/univention-management-console/system-info/
+	base_name="$(basename "$archive")"
+	chmod 444 "/var/www/univention-management-console/system-info/$base_name"
+	chown www-data:www-data "/var/www/univention-management-console/system-info/$base_name"
+
 	echo "archive:$(basename "$archive")"
 	echo "cpu:$(grep -m 1 "^model name" /proc/cpuinfo | sed 's/model name[ \t] *: //')"
 	echo "num_cpu:$(grep -c "^processor" /proc/cpuinfo)"
