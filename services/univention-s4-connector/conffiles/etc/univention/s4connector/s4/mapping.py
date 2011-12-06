@@ -197,6 +197,16 @@ s4_mapping = {
 							ldap_attribute='sambaLogonScript',
 							con_attribute='scriptPath',
 						),
+					'homeDrive': univention.s4connector.attribute (
+							ucs_attribute='homedrive',
+							ldap_attribute='sambaHomeDrive',
+							con_attribute='homeDrive',
+						),
+					'homeDirectory': univention.s4connector.attribute (
+							ucs_attribute='sambahome',
+							ldap_attribute='sambaHomePath',
+							con_attribute='homeDirectory',
+						),
 					'telephoneNumber': univention.s4connector.attribute (
 							ucs_attribute='phone',
 							ldap_attribute='telephoneNumber',

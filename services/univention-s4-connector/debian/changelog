@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.87-1) unstable; urgency=low
+
+  * Synchonize homeDrive and homeDirectory (Bug #25211)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Dec 2011 08:38:21 +0100
+
 univention-s4-connector (6.0.86-1) unstable; urgency=low
 
   * Don't reset lastUSN on connector restart (Bug #25037)
