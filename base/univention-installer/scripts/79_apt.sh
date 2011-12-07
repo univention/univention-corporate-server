@@ -39,7 +39,7 @@ cat >> /instmnt/apt.sh <<"__EOT__"
 eval "$(univention-config-registry shell)"
 
 if [ "$repository_online_server" = "apt.univention.de" ] || 
-   [ "$repository_online_server" = "testing.univention.de" ]; then
+   [ "$repository_online_server" = "updates.software-univention.de" ]; then
 	
 	univention-config-registry set update/secure_apt=yes
 fi

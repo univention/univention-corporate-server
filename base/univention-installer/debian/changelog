@@ -1,3 +1,10 @@
+univention-installer (7.0.154-1) unstable; urgency=low
+
+  * Use updates.software-univention.de as default online repository
+    server (Bug #23121)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 07 Dec 2011 20:15:09 +0100
+
 univention-installer (7.0.153-1) unstable; urgency=low
 
   * fixed standard profiles (Bug #24494) 
