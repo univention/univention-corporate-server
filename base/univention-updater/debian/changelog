@@ -1,3 +1,9 @@
+univention-updater (7.0.124-1) unstable; urgency=low
+
+  * Set PATH in univention-maintenance cron job (Bug #25292)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 07 Dec 2011 19:00:40 +0100
+
 univention-updater (7.0.123-1) unstable; urgency=low
 
   * UMC: fixed hanging log viewer during update (Bug #25069)

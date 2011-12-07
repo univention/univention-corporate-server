@@ -41,6 +41,7 @@ CRON_D='/etc/cron.d/univention-maintenance'
 def write_cron_job(configRegistry, cron, updateto, reboot):
 	file=open(CRON_D, 'w')
 	file.write('# cron job for update\n')
+	file.write('PATH=/sbin:/usr/sbin:/usr/bin:/bin\n')
 	if cron != '* * * * * ':
 		file.write('%s root ' % cron)
 		if configRegistry.is_true( 'local/repository' ):
