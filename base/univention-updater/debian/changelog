@@ -1,3 +1,9 @@
+univention-updater (7.0.123-1) unstable; urgency=low
+
+  * UMC: fixed hanging log viewer during update (Bug #25069)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 07 Dec 2011 13:13:44 +0100
+
 univention-updater (7.0.122-1) unstable; urgency=low
 
   * UVMMd, Xen and KVM might be removed during the UCS 3.0 upgrade. Save

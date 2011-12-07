@@ -225,6 +225,16 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 
 			}
 		}
+		else {
+			// error case, request could not been sent... try again
+			if ((this._interval) && (! this._timer))
+			{
+				this._timer = window.setTimeout(dojo.hitch(this, function() {
+					this._timer = '';
+					this._query_job_status();
+				}),this._interval);
+			}
+		}
 
 	},
 	
