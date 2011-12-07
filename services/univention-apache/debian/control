@@ -11,7 +11,7 @@ Package: univention-apache
 Architecture: all
 Depends: ${misc:Depends},
  univention-ssl,
- apache2,
+ apache2-mpm-prefork,
  libapache2-mod-auth-pam,
  python2.6,
  univention-config-registry,

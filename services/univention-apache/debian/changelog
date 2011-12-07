@@ -1,3 +1,9 @@
+univention-apache (5.0.7-3) unstable; urgency=low
+
+  * change dependeny from apache2 to mpm-prefork version of apache; Bug #25255
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 07 Dec 2011 11:05:21 +0100
+
 univention-apache (5.0.7-2) unstable; urgency=low
 
   * update overview design for UMC design (Bug #23188)
