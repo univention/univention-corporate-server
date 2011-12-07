@@ -1,3 +1,9 @@
+univention-updater (6.0.109-1) unstable; urgency=low
+
+  * fixed component status logic (Bug #25101)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 07 Dec 2011 08:27:04 +0100
+
 univention-updater (6.0.108-1) unstable; urgency=low
 
   * fixed traceback if "univention-updater cdrom" get called (Bug #23948)
