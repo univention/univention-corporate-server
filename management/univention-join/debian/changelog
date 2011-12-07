@@ -1,3 +1,9 @@
+univention-join (4.0.29-1) unstable; urgency=low
+
+  * UMC module: reset umask to default; Bug #25287
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 07 Dec 2011 17:22:41 +0100
+
 univention-join (4.0.28-3) unstable; urgency=low
 
   * univention-run-join-scripts must pass the credentials to

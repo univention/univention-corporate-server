@@ -37,7 +37,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 
 import re
-from os import stat,listdir,chmod,unlink,path
+from os import stat,listdir,chmod,unlink,path, umask
 from locale import nl_langinfo,D_T_FMT,getlocale,setlocale,LC_ALL
 from time import strftime,localtime,sleep
 from string import join
@@ -49,6 +49,11 @@ from univention.management.console.protocol.definitions import *
 _ = umc.Translation('univention-management-console-module-join').translate
 
 class Instance(umcm.Base):
+	def __init__( self ):
+		umcm.Base.__init__( self )
+		# reset umask to default
+		umask( 0022 )
+
 	def init(self):
 		MODULE.warn("Initializing 'join' module with LANG = '%s'" % self.locale)
 
