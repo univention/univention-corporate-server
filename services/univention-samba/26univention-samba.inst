@@ -59,6 +59,14 @@ fi
 #  ucr set --force samba/domain/security=domain
 if [ -n "$s4setup" ]; then
 	univention-config-registry set samba/domain/security=ads
+
+	/usr/share/univention-samba/mount_extfs_with_user_xattr.py
+	if [ -z "$samba4_ntacl_backend" ]; then
+		univention-config-registry set samba4/ntacl/backend='native'
+		if [ -x /etc/init.d/univention-directory-listener ]; then
+			/etc/init.d/univention-directory-listener restart
+		fi
+	fi
 else
 	univention-config-registry set samba/domain/security=domain
 fi

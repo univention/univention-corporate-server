@@ -352,3 +352,8 @@ Description[en]=This parameter defines the highest protocol level that will be s
 Type=str
 Categories=service-samba
 
+[samba4/ntacl/backend]
+Description[de]=Auswahl des Speichermodus für NTACL
+Description[en]=Selects the storage mode for NTACL
+Type=str
+Categories=service-samba

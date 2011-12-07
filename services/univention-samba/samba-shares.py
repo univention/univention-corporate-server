@@ -109,8 +109,25 @@ def handler(dn, new, old):
 				('univentionShareSambaHostsDeny', 'hosts deny'),
 
 			]
+
+			vfs_objects = []
+			samba4_ntacl_backend = listener.configRegistry.get('samba4/ntacl/backend', 'native')
+			if samba4_ntacl_backend == 'native':
+				vfs_objects.append('acl_xattr')
+			elif samba4_ntacl_backend == 'tdb':
+				vfs_objects.append('acl_tdb')
+
+			additional_vfs_objects = new.get('univentionShareSambaVFSObjects')
+			if additional_vfs_objects:
+				vfs_objects.append(additional_vfs_objects)
+
+			if vfs_objects:
+				print >>fp, 'vfs objects = %s' % ' '.join(vfs_objects)
+
 			for attr, var in mapping:
 				if not new.has_key(attr):
+					continue
+				if attr == 'univentionShareSambaVFSObjects':
 					continue
 				if attr == 'univentionShareSambaDirectoryMode' and new['univentionSharePath'] == '/tmp':
 					continue

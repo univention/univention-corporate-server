@@ -158,6 +158,7 @@ Variables: samba/share/groups
 Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/share/netlogon
+Variables: samba4/ntacl/backend
 
 Type: file
 File: etc/samba/debian_config
