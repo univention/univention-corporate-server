@@ -53,7 +53,7 @@ if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repos
 			univention-config-registry set repository/mirror/server=univention-repository.$domainname
 		fi
 	else
-		univention-config-registry set repository/mirror/server=apt.univention.de
+		univention-config-registry set repository/mirror/server=updates.software-univention.de
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists --stoptls $domainname add cname univention-repository $hostname
 	fi
 

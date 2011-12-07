@@ -1,3 +1,10 @@
+univention-debmirror (5.0.4-1) unstable; urgency=low
+
+  * Use updates.software-univention.de as default online repository
+    server (Bug #23121)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 07 Dec 2011 20:18:14 +0100
+
 univention-debmirror (5.0.3-1) unstable; urgency=low
 
   * fix host parsing for IPv6 (Bug #24479)
