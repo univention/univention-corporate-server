@@ -61,6 +61,8 @@ class Instance(umcm.Base):
 		umcm.Base.__init__(self)
 		self._finishedLock = threading.Lock()
 		self._finishedResult = True
+		# reset umask to default
+		os.umask( 0022 )
 
 	def _check_thread_error( self, thread, result, request ):
 		"""Checks if the thread returned an exception. In that case in

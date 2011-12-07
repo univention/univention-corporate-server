@@ -1,3 +1,9 @@
+univention-system-setup (5.0.83-1) unstable; urgency=low
+
+  * UMC module: reset umask to default; Bug #25287
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 07 Dec 2011 17:18:47 +0100
+
 univention-system-setup (5.0.82-2) unstable; urgency=low
 
   * fixed UCR variable name in 13ipv6gateway (Bug #23997)
