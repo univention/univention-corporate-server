@@ -187,16 +187,16 @@ class UCSRepoPool(UCSRepo):
 	def deb(self, type="deb"):
 		'''Format for /etc/apt/sources.list.
 
-		>>> r=UCSRepoPool(prefix='http://apt.univention.de/',major=2,minor=3,patchlevel=1,part='maintained',arch='i386')
+		>>> r=UCSRepoPool(prefix='http://updates.software-univention.de/',major=2,minor=3,patchlevel=1,part='maintained',arch='i386')
 		>>> r.deb()
-		'deb http://apt.univention.de/2.3/maintained/ 2.3-1/i386/'
+		'deb http://updates.software-univention.de/2.3/maintained/ 2.3-1/i386/'
 		'''
 		fmt = "%(prefix)s%(version)s/%(part)s/ %(patch)s/%(arch)s/"
 		return "%s %s" % (type, super(UCSRepoPool,self)._format(fmt))
 	def path(self, file='Packages.gz'):
 		'''Format pool for directory/file access. Returns relative path.
 
-		>>> UCSRepoPool(prefix='http://apt.univention.de/',major=2,minor=3).path()
+		>>> UCSRepoPool(prefix='http://updates.software-univention.de/',major=2,minor=3).path()
 		'2.3/'
 		>>> UCSRepoPool(major=2,minor=3,part='maintained').path()
 		'2.3/maintained/'
@@ -221,16 +221,16 @@ class UCSRepoDist(UCSRepo):
 	def deb(self, type="deb"):
 		'''Format for /etc/apt/sources.list.
 
-		>>> r=UCSRepoDist(prefix='http://apt.univention.de/',major=2,minor=2,patchlevel=0,part='maintained',arch='i386')
+		>>> r=UCSRepoDist(prefix='http://updates.software-univention.de/',major=2,minor=2,patchlevel=0,part='maintained',arch='i386')
 		>>> r.deb()
-		'deb http://apt.univention.de/2.2/maintained/2.2-0/ dists/univention/main/binary-i386/'
+		'deb http://updates.software-univention.de/2.2/maintained/2.2-0/ dists/univention/main/binary-i386/'
 		'''
 		fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/ dists/univention/main/binary-%(arch)s/"
 		return "%s %s" % (type, super(UCSRepoDist,self)._format(fmt))
 	def path(self, file='Packages.gz'):
 		'''Format dist for directory/file access. Returns relative path.
 
-		>>> UCSRepoDist(prefix='http://apt.univention.de/',major=2,minor=2).path()
+		>>> UCSRepoDist(prefix='http://updates.software-univention.de/',major=2,minor=2).path()
 		'2.2/'
 		>>> UCSRepoDist(major=2,minor=2,part='maintained').path()
 		'2.2/maintained/'
@@ -453,7 +453,7 @@ class UniventionUpdater:
 	def config_repository( self ):
 		'''Retrieve configuration to access repository. Overridden in UniventionMirror.'''
 		self.online_repository = self.configRegistry.is_true('repository/online', True)
-		self.repository_server = self.configRegistry.get('repository/online/server', 'apt.univention.de')
+		self.repository_server = self.configRegistry.get('repository/online/server', 'updates.software-univention.de')
 		self.repository_port = self.configRegistry.get('repository/online/port', '80')
 		self.repository_prefix = self.configRegistry.get('repository/online/prefix', '').strip('/')
 		self.sources = self.configRegistry.is_true('repository/online/sources', False)

@@ -101,15 +101,16 @@ fi
 ###########################################################################
 echo
 echo "HINT:"
-#echo "Please check the following documents carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-#echo "Release Notes: http://download.univention.de/doc/release-notes-2.4.pdf"
-#echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
-echo "Please note that Univention Corporate Server (UCS) 3.0 is under development."
-echo "At the moment UCS 3.0 is not ready for production use!"
+echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"                                                                                                   
+echo " English version: http://download.univention.de/doc/release-notes-3.0.pdf"                                                                                                                 
+echo " German version:  http://download.univention.de/doc/release-notes-3.0_de.pdf" 
+# echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
+# echo "Please note that Univention Corporate Server (UCS) 3.0 is under development."
+# echo "At the moment UCS 3.0 is not ready for production use!"
 echo
-#echo "Please also consider documents of following release updates and"
-#echo "3rd party components."
-#echo
+echo "Please also consider documents of following release updates and"
+echo "3rd party components."
+echo
 if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
 	if [ "$UCS_FRONTEND" = "noninteractive" ]; then
 		echo "Update will wait here for 60 seconds..."
