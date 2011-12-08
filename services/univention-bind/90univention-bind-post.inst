@@ -130,7 +130,10 @@ wait_for_dns
 
 old=`univention-directory-manager policies/dhcp_dns list "$@" --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
 if [ -z "$old" -o "$old" = "None" ]; then
+	echo "$IP" | grep -q ":" # Don't register IPv6?
+	if [ $? = 1 ]; then
 		univention-directory-manager policies/dhcp_dns modify "$@" --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$IP
+	fi
 fi
 
 ucs_addServiceToLocalhost 'DNS' "$@"

@@ -1,3 +1,10 @@
+univention-bind (6.0.36-1) unstable; urgency=low
+
+  * Don't register an IPv6 address as default DNS server in
+    policies/dhcp_dns (Bug #25334)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Dec 2011 18:57:20 +0100
+
 univention-bind (6.0.35-1) unstable; urgency=low
 
   * Use 127.0.0.1 for local ldap server in bind configuration
