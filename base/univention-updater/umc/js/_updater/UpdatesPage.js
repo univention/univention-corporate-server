@@ -137,7 +137,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 						this._form.showWidget('ucs_updates_text',! to_show);		// either combobox or the text that no updates are available.
 
 						var but = this._form._buttons['run_release_update'];
-	 					dojo.toggleClass(but.domNode,'dijitHidden',! to_show);
+						but.set('visible', to_show);
 
 	 					// renew affordance to check for package updates, but only
 	 					// if we didn't see availability yet.
