@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.211-1) unstable; urgency=low
+
+  * explode IPv6 addresses and remove duplicates in host entry (Bug #25318)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Dec 2011 17:29:25 +0100
+
 univention-directory-manager-modules (7.0.210-4) unstable; urgency=low
 
   * fix computer DNS zone handling with IPv6 (Bug #15687)

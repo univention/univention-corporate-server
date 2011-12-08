@@ -191,17 +191,21 @@ class object(univention.admin.handlers.simpleLdap):
 		newAaaaRecord = []
 		if oldAddresses != newAddresses:
 			if oldAddresses:
-			    for address in oldAddresses:
+				for address in oldAddresses:
 					if ':' in address: # IPv6
 						oldAaaaRecord.append(address)
 					else:
 						oldARecord.append(address)
 			if newAddresses:
-			    for address in newAddresses:
+				for address in newAddresses:
 					if ':' in address: # IPv6
 						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
 					else:
 						newARecord.append(address)
+
+			# explode all IPv6 addresses and remove duplicates
+			newAaaaRecord = list(set(map(lambda x: ipaddr.IPv6Address(x).exploded, newAaaaRecord)))
+
 			ml.append(('aRecord',    oldARecord,    newARecord, ))
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 		return ml
