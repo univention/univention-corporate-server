@@ -1,3 +1,10 @@
+univention-samba4 (1.0.114-1) unstable; urgency=low
+
+  * If the first domain join fails try the next join against samba4/dc
+    or ldap/master (Bug #25343)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Dec 2011 21:23:48 +0100
+
 univention-samba4 (1.0.113-1) unstable; urgency=low
 
   * configure the vfs module acl_xattr for all file shares if
