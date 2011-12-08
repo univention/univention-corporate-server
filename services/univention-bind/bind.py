@@ -93,7 +93,7 @@ def new_zone(baseConfig, zonename, dn):
 	f.write('zone "%s" {\n' % zonename)
 	f.write('\ttype master;\n')
 	f.write('\tnotify yes;\n')
-	f.write('\tdatabase "ldap ldap://%s:%s/%s%s 172800";\n' % (baseConfig['ldap/server/ip'], baseConfig.get('ldap/server/port', '7389'), dn, ldap_auth_string(baseConfig)))
+	f.write('\tdatabase "ldap ldap://%s:%s/%s%s 172800";\n' % (baseConfig.get('bind/ldap/server/ip', '127.0.0.1'), baseConfig.get('ldap/server/port', '7389'), dn, ldap_auth_string(baseConfig)))
 	f.write('};\n')
 	f.close()
 
