@@ -67,7 +67,7 @@ attempt=0
 rc = 0
 
 while not i == 3:
-	i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
+	i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
 	if i in [0,1,2]:
 		child.sendline(machine_password)
 		attempt += 1
@@ -90,7 +90,7 @@ if '-c' in args:
 	i = 0
 	child = spawn(enableexec, [groupname])
 	while not i == 3:
-		i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
+		i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
 		#print "enable %s" % i
 		if i in [0,1,2]:
 			child.sendline(machine_password)
@@ -104,7 +104,7 @@ if '-c' in args:
 	i = 0
 	child = spawn(acceptexec, [groupname])
 	while not i == 3:
-		i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
+		i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
 		#print "accept %s" % i
 		if i in [0,1,2]:
 			child.sendline(machine_password)

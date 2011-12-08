@@ -79,7 +79,7 @@ child = spawn('%s %s' % (cmd, string.join(args, ' ')))
 i=0
 timeout=60
 while not i == 2:
-	i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), 'localhost\?', EOF], timeout=timeout)
+	i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), 'localhost.*\?', EOF], timeout=timeout)
 	if i in [0,1]:
 		child.sendline(machine_password)
 	elif i == 2:
