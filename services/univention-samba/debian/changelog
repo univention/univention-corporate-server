@@ -1,3 +1,9 @@
+univention-samba (6.0.19-2) unstable; urgency=low
+
+  * add mount_extfs_with_user_xattr.py script to install file (Bug #25248)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Dec 2011 09:39:43 +0100
+
 univention-samba (6.0.19-1) unstable; urgency=low
 
   * In a samba4 domain use the 'native' samba4/ntacl/backend,
