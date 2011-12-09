@@ -273,12 +273,14 @@ fi
 
 ## BEGIN Bug #25380 (only for UCS 3.0-0)
 # set smtpd restrictions for postfix
-univention-config-registry set \
-	mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
-	mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
-	mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
-	mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
-invoke-rc.d postfix restart
+if [ ! "$update_bugfix25380_disabled" = "yes" ] ; then
+	univention-config-registry set \
+		mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
+		mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
+		mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
+		mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
+	invoke-rc.d postfix restart
+fi
 ## END Bug #25380
 
 

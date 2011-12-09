@@ -1,3 +1,9 @@
+univention-updater (7.0.127-2) unstable; urgency=low
+
+  * added UCR variable to disable bugfix (Bug #25380)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 09 Dec 2011 15:14:08 +0100
+
 univention-updater (7.0.127-1) unstable; urgency=low
 
   * fix smtpd restrictions is postup.sh (Bug #25380)
