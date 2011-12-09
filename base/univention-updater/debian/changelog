@@ -1,3 +1,9 @@
+univention-updater (7.0.127-1) unstable; urgency=low
+
+  * fix smtpd restrictions is postup.sh (Bug #25380)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 09 Dec 2011 15:06:40 +0100
+
 univention-updater (7.0.126-1) unstable; urgency=low
 
   * Fixed Release Notes path (Bug #21474)

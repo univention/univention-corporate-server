@@ -271,6 +271,17 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
+## BEGIN Bug #25380 (only for UCS 3.0-0)
+# set smtpd restrictions for postfix
+univention-config-registry set \
+	mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
+	mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
+	mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
+	mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
+invoke-rc.d postfix restart
+## END Bug #25380
+
+
 ## BEGIN Bug #24413
 ucr set gdm/autostart="$(ucr get gdm/autostart/update30backup)" >&3 2>&3
 ucr unset gdm/autostart/update30backup >&3 2>&3
