@@ -162,7 +162,7 @@ class Instance( Base ):
 					try:
 						count = int( count )
 					except:
-						count = -1
+						count = None
 				license_data[ item ][ lic_type.lower() ] = count
 
 		if 'UGS' in udm_license._license.licenseTypes:

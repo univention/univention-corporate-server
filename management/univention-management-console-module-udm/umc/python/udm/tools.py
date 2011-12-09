@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import ldap
+import ldap.modlist
 import ldif
 
 from univention.lib.i18n import Translation
@@ -79,11 +80,16 @@ class LicenseImport( ldif.LDIFParser ):
 			return
 
 		#create modification list
-		for atr in entry:
-			self.mod_list.insert( 0, ( ldap.MOD_REPLACE, atr, entry[ atr ] ) )
+		self.addlist = ldap.modlist.addModlist( entry )
+		# for atr in entry:
+		# 	self.mod_list.insert( 0, ( ldap.MOD_REPLACE, atr, entry[ atr ] ) )
 
 	def write( self, user_dn, passwd ):
 		ldap_con = ldap.open( "localhost", port = int( ucr.get( 'ldap/server/port', 7389 ) ) )
 		ldap_con.simple_bind_s( user_dn, passwd )
-		ldap_con.modify_s( self.dn, self.mod_list )
+		try:
+			ldap_con.add_s( self.dn, self.addlist )
+		except ldap.ALREADY_EXISTS:
+			ldap_con.delete_s( self.dn )
+			ldap_con.add_s( self.dn, self.addlist )
 		ldap_con.unbind_s()

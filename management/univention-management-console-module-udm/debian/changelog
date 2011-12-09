@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.265-1) unstable; urgency=low
+
+  * fix license import; Bug #25390
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Dec 2011 17:21:17 +0100
+
 univention-management-console-module-udm (1.0.264-1) unstable; urgency=low
 
   * set access rights for reports to 0644 (www-data:www-data); Bug #25223

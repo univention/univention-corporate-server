@@ -119,8 +119,8 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 				var defered = umc.tools.umcpCommand( 'udm/license/import', { 'license' : this._widgets.licenseText.get( 'value' ) } );
 				defered.then( dojo.hitch( this, function( response ) {
 					this.standby( false );
-					if ( false === response.result.success ) {
-						umc.dialog.alert( this._( 'The import of the license has failed: ' ) + response.result.message );
+					if ( !dojo.isArray( response.result ) || false === response.result[ 0 ].success ) {
+						umc.dialog.alert( this._( 'The import of the license has failed: ' ) + response.result[ 0 ].message );
 					} else {
 						umc.dialog.alert( this._( 'The license has been imported succussfully' ) );
 					}
@@ -183,7 +183,9 @@ dojo.declare('umc.modules._udm.LicenseDialog', [ dijit.Dialog, umc.widgets.Stand
 		}
 
 		// substract system accounts
-		this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
+		if ( this.licenseInfo.real.account >= this.licenseInfo.sysAccountsFound ) {
+			this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
+		}
 		var keys = {
 			title : this._( 'Current license' ),
 			labelBase : this._( 'LDAP base' ),
