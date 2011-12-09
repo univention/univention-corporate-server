@@ -1,3 +1,9 @@
+univention-licence (4.0.4-1) unstable; urgency=low
+
+  * univention-license-import: use ldap/master/port; Bug #25390
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Dec 2011 15:54:46 +0100
+
 univention-licence (4.0.3-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
@@ -327,6 +333,4 @@ univention-license (0.1.0) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 May 2003 13:49:40 +0200
 
-Local variables:
-mode: debian-changelog
-End:
+
