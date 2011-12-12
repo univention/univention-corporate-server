@@ -1,0 +1,29 @@
+univention-kvm-virtio (1.1.16-0) unstable; urgency=low
+
+  * ucs 3.0 backport (Bug #23454)
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Dec 2011 12:12:13 +0100
+
+univention-kvm-virtio (1.1.16-4) unstable; urgency=low
+
+  * changed iso names (Bug #23454) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Nov 2011 09:37:32 +0100
+
+univention-kvm-virtio (1.1.16-3) unstable; urgency=low
+
+  * changed iso names (Bug #23454)  
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Nov 2011 09:16:44 +0100
+
+univention-kvm-virtio (1.1.16-2) unstable; urgency=low
+
+  * copy images (Bug #23589) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 12:45:30 +0100
+
+univention-kvm-virtio (1.1.16-1) unstable; urgency=low
+
+  * Initial Release (Bug #23589) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 11:55:19 +0100

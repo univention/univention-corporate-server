@@ -1,0 +1,4 @@
+*.iso usr/share/univention-kvm-virtio/
+*.vfd usr/share/univention-kvm-virtio/
+COPYING usr/share/doc/univention-kvm-virtio/
+LICENSE usr/share/doc/univention-kvm-virtio/
