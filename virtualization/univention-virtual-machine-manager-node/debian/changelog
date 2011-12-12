@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (0.1.34-1) unstable; urgency=low
+
+  * added recommends to univention-xen-gplpv and univention-kvm-virtio
+    (Bug #23589 #23454)
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Dec 2011 13:03:13 +0100
+
 univention-virtual-machine-manager-node (0.1.33-1) unstable; urgency=low
 
   * Re-synchronize init.d/u-v-m-m-n-kvm with xen scripts (Bug #21969)
