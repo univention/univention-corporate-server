@@ -1,9 +1,9 @@
-@%@BCWARNING=# @%@ 
+@%@UCRWARNING=# @%@ 
 
 auth    sufficient    pam_unix.so
 auth    requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid binddn=@%@ldap/hostdn@%@ pwfile=/etc/machine.secret ldap_port=@%@ldap/server/port@%@
 @!@
-if baseConfig.has_key('mail/cyrus/imap/quota') and baseConfig['mail/cyrus/imap/quota'] == "yes":
+if configRegistry.is_true('mail/cyrus/imap/quota', True):
 	print "auth    [success=1 default=ignore]    pam_ldap.so use_first_pass"
 	print "auth    [success=ok default=die]      pam_krb5.so use_first_pass"
 	print "auth	   required  	  pam_runasroot.so program=/usr/sbin/univention-cyrus-set-quota"

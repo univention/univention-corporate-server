@@ -84,6 +84,7 @@ univention-config-registry set mail/cyrus?yes \
 	mail/cyrus/pop?yes \
 	mail/cyrus/sieve/listen_host?all \
 	mail/cyrus/idlemethod?idled \
+	mail/cyrus/imap/quota?yes \
 	mail/cyrus/imap/quotainterval?60 \
 	mail/cyrus/imap/quotawarnpercent?90 \
 	mail/cyrus/imap/quotawarnkb?0 \
