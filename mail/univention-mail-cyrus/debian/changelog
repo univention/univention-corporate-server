@@ -1,6 +1,7 @@
 univention-mail-cyrus (4.0.33-1) unstable; urgency=low
 
-  * set mail/cyrus/imap/quota to yes by default (Bug #25418) 
+  * set mail/cyrus/imap/quota to yes by default (Bug #25418)
+  * use authenticated ldap connection (Bug #25419)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 12 Dec 2011 11:23:23 +0100
 

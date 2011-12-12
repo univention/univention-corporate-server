@@ -66,11 +66,30 @@ if user_name == 'root' or user_name == 'cyrus':
 	sys.exit(0)
 
 
+
+ldapproto = 'ldaps'
+ldapport = baseConfig.get('ldap/server/port')
+if ldapport == '7389':
+	ldapport = '7636'
+elif ldapport == '389':
+	ldapport = '636'
+else:
+	ldapproto = 'ldap'
+ldapuri = '%s://%s:%s' % ( ldapproto, baseConfig.get('ldap/server/name'), ldapport )
+binddn = baseConfig.get('ldap/hostdn')
+
 try:
-	l=ldap.open(baseConfig['ldap/server/name'])
-except ldap.LDAPError, e:
-	print e
-l.simple_bind_s('', '')
+	bindpw = open('/etc/cyrus-ldap.secret','r').read().strip()
+except IOError, e:
+	print 'ERROR: Cannot read /etc/cyrus-ldap.secret: %s' % e
+	sys.exit(1)
+
+try:
+	l = ldap.initialize(ldapuri)
+	l.simple_bind_s(binddn, bindpw)
+except ldap.LDAPError, error_message:
+	print error_message
+	sys.exit(1)
 
 serverDN = baseConfig['ldap/base']
 
