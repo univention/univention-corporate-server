@@ -99,8 +99,7 @@ if os.path.exists('/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], 
 
 	tempfile=tempfile.mktemp()
 
-
-	result=os.system('univention_policy_result -s "%s" >>%s' %  (user_dn, tempfile))
+	result=os.system("univention_policy_result -D '%s' -y /etc/cyrus-ldap.secret -s '%s' >> '%s'" %  (user_dn, baseConfig.get('ldap/hostdn'), tempfile))
 
 	if result != 0:
 		print 'failed to execute univention_policy_result'

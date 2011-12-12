@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.33-3) unstable; urgency=low
+
+  * fixed univention-policy-result (Bug #25419)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 12 Dec 2011 17:27:49 +0100
+
 univention-mail-cyrus (4.0.33-2) unstable; urgency=low
 
   * added dependency to python-univention (Bug #25419)
