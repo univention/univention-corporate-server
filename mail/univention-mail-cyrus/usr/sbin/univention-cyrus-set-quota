@@ -33,6 +33,7 @@
 
 adminuser=0
 import os, string, pwd, grp, sys, univention_baseconfig, ldap, tempfile, posix, subprocess, time
+import univention.uldap
 from pexpect import *
 
 baseConfig = univention_baseconfig.baseConfig()
@@ -65,30 +66,10 @@ else:
 if user_name == 'root' or user_name == 'cyrus':
 	sys.exit(0)
 
-
-
-ldapproto = 'ldaps'
-ldapport = baseConfig.get('ldap/server/port')
-if ldapport == '7389':
-	ldapport = '7636'
-elif ldapport == '389':
-	ldapport = '636'
-else:
-	ldapproto = 'ldap'
-ldapuri = '%s://%s:%s' % ( ldapproto, baseConfig.get('ldap/server/name'), ldapport )
-binddn = baseConfig.get('ldap/hostdn')
-
 try:
-	bindpw = open('/etc/cyrus-ldap.secret','r').read().strip()
-except IOError, e:
-	print 'ERROR: Cannot read /etc/cyrus-ldap.secret: %s' % e
-	sys.exit(1)
-
-try:
-	l = ldap.initialize(ldapuri)
-	l.simple_bind_s(binddn, bindpw)
-except ldap.LDAPError, error_message:
-	print error_message
+	l = univention.uldap.getMachineConnection(ldap_master = False, secret_file = "/etc/cyrus-ldap.secret").lo
+except ldap.LDAPError, e:
+	print 'Cannot connect ldap server: %s' % e
 	sys.exit(1)
 
 serverDN = baseConfig['ldap/base']
