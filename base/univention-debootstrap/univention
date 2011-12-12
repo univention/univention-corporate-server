@@ -18,6 +18,7 @@ work_out_debs () {
       #required="$required $(get_debs Priority: important)"
       #  ^^ should be getting debconf here somehow maybe
       base="$(get_debs Priority: important)"
+      base="$(echo $base | sed 's/mailx//')"
     elif doing_variant buildd; then
       base="$(get_debs Build-Essential: yes)"
     fi

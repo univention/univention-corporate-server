@@ -1,3 +1,9 @@
+univention-debootstrap (3.0.1-1) unstable; urgency=low
+
+  * remove mailx from list of important debootstrap packags (Bug #23590) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Dec 2011 16:27:41 +0100
+
 univention-debootstrap (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
