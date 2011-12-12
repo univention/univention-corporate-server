@@ -1,0 +1,6 @@
+SET CERT_NAME=friendly name of your certificate
+
+SET CA_CERT_NAME=friendly name of your CA cert
+SET CA_CERT_STORE=store of your CA cert (maybe root)
+SET CA_CERT_LOCATION=currentUser
+REM SET CA_CERT_LOCATION=localMachine

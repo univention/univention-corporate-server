@@ -1,0 +1,29 @@
+1. Download and install the Windows Driver Framework SDK (7600.16385.0
+is what i'm using) from Microsoft. You have to jump through a few
+hoops to get it, but it is free (as in beer of course. Microsoft don't
+do the 'as in speech' variety of free). It's also huge.
+http://www.microsoft.com/whdc/driver/wdf/default.mspx is a good place
+to start.
+http://www.microsoft.com/whdc/DevTools/WDK/WDKpkg.mspx is probably a
+better place to start. 
+
+2. Download and install the Wix Installer from
+http://wix.sourceforge.net/ - i'm using 3.0 but newer might work.
+
+3. Use Mercurial (get it from 
+http://www.selenic.com/mercurial/wiki/index.cgi/BinaryPackages) to get 
+the latest sources from 
+http://xenbits.xensource.com/ext/win-pvdrivers.hg.
+
+4. From the top directory, type 'makedist', which will build the drivers
+for all architectures. If the build fails, then you probably don't have
+exactly the 7600.16385.0 that i'm using. Edit set_ddk_path.bat and do a
+'makedist' again.
+
+5. Assuming all went well, your drivers should be in target/<os>/<arch> 
+directory. (<os> is win2k, winxp, winnet and winlh, arch is i386 and
+amd64). "gplpv_<platform>_<version>.msi" should also be created which is
+the wix installer. The msi files with _debug in the filename are the
+debug build versions.
+
+See the INSTALLING.txt file for information on how to install. 

@@ -1,0 +1,19 @@
+The source code still needs a tidy up. The Windows DDK stuff has it's 
+own coding style which I've imitated in places, and then xen has it's 
+own too, so this code is mostly one, the other, both, or neither. I'll 
+get to that as soon as I figure out what coding style to use and where.
+
+Known problems or things that need doing to make it properly useful:
+. No power management
+. Almost certainly won't support migration or suspend/resume.
+. Not enough testing under SMP.
+. Probably lots of other things too.
+
+TODO:
+. Do some performance testing
+. virtual scsi (eg a front end for the scsi passthrough stuff)
+. balloon drivers (this should actually be pretty easy)
+. Write an installer for the above binaries to automate everything
+. Fix BSoD crash dump under vbd (currently just hangs without writing
+  a dump file)
+. Correctly handle CD changes

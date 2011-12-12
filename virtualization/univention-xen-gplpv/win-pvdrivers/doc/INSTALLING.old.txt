@@ -1,0 +1,97 @@
+Please follow the steps here exactly. If you don't, you may be left with 
+an unbootable machine (although 'Last known good configuration' should 
+make it bootable again). 
+
+1. Copy the driver files that you built by following the BUILDING.txt 
+steps (or that you got from a binary dist), so that on your testing 
+machine the tree looks like this: 
+
+Xen\<arch>\xenhide.inf
+Xen\<arch>\xenpci.inf
+Xen\<arch>\xenvbd.inf 
+Xen\<arch>\i386\xenaddresource.sys Xen\<arch>\i386\xenhide.sys 
+Xen\<arch>\i386\xenpci.sys
+Xen\<arch>\i386\xenvbd.sys 
+Xen\<arch>\i386\WdfCoInstaller01005.dll
+(If you have compiled yourself, you'll need to copy
+WdfCoInstaller01005.dll from the redist folder in the DDK) (<arch> is
+winxp for XP, or winnet for 2K3)
+
+2. Go to the device manager (Right click on My Computer, then select the 
+Hardware tab, then click Device Manager) 
+
+3. Find the 'PCI Device' under 'Other Devices' - it should have an 
+exclamation mark against it. Right click on it and select 'Update 
+Driver...' 
+
+4. Select 'No, not this time' in answer to 'Can Windows connect to 
+Windows Update...' and click Next 
+
+5. Select 'Install from a list of specific location (Advanced)' and 
+click Next 
+
+6. Untick 'Search removable media...' and tick 'Include this 
+location...'. Enter the name of the directory where you put the .inf 
+files, then click Next 
+
+7. Windows should find the XenPCI driver as a candidate, and will 
+complain that it hasn't been signed. Just accept the warning. 
+
+8. Windows should load the XenPCI driver, and then give you 4 more 
+'Other Devices' - console, vfb, vif, and vbd. 
+
+9. Repeat steps 3-7 for the vbd and vif devices. Windows should then
+load the XenVBD driver. 
+
+10. The next bit is a bit tricker. In Device Manager, drill down on 
+System devices and right click on PCI Bus and select Update Driver. 
+
+11. Select 'No, not this time' in answer to 'Can Windows connect to 
+Windows Update...' and click Next 
+
+12. Select 'Install from a list or specific location (Advanced)' and 
+click Next 
+
+13. This time, select 'Don't search. I will choose the driver to 
+install' and click Next 
+
+14. Click 'Have Disk' and go to the locaton where you put the .inf 
+files. 
+
+15. Select the 'Xen PCI Device Hider Driver' (I know, it's a stupid 
+name) and install it, again accepting the unsigned driver warning. 
+
+16. edit your boot.ini to look something like this: 
+
+" [boot loader] timeout=30 
+default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS [operating systems] 
+multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="Windows Server 2003, 
+Enterprise" /noexecute=optout /fastdetect 
+multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="Windows Server 2003, 
+Enterprise, GPLPV" /noexecute=optout /fastdetect /gplpv " 
+
+17. The main thing in the above step is that you have a line with /gplpv 
+on the end. This tells the PV device (vbd, vif) drivers to activate,
+otherwise they will pretty much sit silent.
+
+18. Reboot and select the /gplpv entry. If it doesn't work then email me 
+(james.harper@bendigoit.com.au) with some details and i'll see what I can
+do. 
+
+Without the /gplpv option specified, the xenvbd driver will only pick up 
+on devices you have added since boot, so you can still test it without 
+specifying /gplpv and doing something like the following in Dom0: 
+
+" xm block-attach mywindowsdomain phy:/dev/someblockdevice /dev/hdc w " 
+
+You need to specify the 'phy:' in your xen config file and in the
+block-attach line otherwise the backend doesn't seem to publish the block
+and sector sizes correctly. 
+
+If you do the block-attach, then your block device should show up under 
+windows, and you can partition it etc. 
+
+19. If you have built ShutdownMon, run "ShutdownMon -i" which will 
+install it as a service. You will need to change the service to 
+'Automatic' and start it (or reboot). 'xm shutdown' and 'xm reboot' 
+should then do the right thing. 

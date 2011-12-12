@@ -1,0 +1,22 @@
+Advanced options on XenNet network adapter:
+
+Check checksum on RX packets:
+If enabled (and if Checksum Offload is enabled), xennet will check the checksum on incoming packets and report to Windows via the offload function. This is for compliance with the WHQL ndistest app but reduces performance. It can be safely disabled.
+
+Checksum Offload:
+Enables RX and TX checksum offload
+
+Large Send Offload:
+Sets the maximum size of TCP packets to be offloaded, or disables the offloading altogether.
+
+Locally Administered Address
+Overrides the MAC address of the adapter
+
+MTU
+Sets the maximum packet size reported to Windows
+
+Rx Interrupt Moderation
+Reduces the number of interrupts on receive by telling Dom0 not to notify so often if receive load is high. Can slightly increase latency when traffic slows.
+
+Scatter/Gather
+Reports to Dom0 that sg is supported. I'm not sure exactly what the outcome if changing this will be...

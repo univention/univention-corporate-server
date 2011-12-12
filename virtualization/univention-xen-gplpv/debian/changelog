@@ -1,0 +1,29 @@
+univention-xen-gplpv (11.0.308-0) unstable; urgency=low
+
+  * ucs 3.0 backport (Bug #23454) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Dec 2011 11:54:09 +0100
+
+univention-xen-gplpv (11.0.308-4) unstable; urgency=low
+
+  * changed iso name (Bug #23454) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Nov 2011 09:37:11 +0100
+
+univention-xen-gplpv (11.0.308-3) unstable; urgency=low
+
+  * changed iso name (Bug #23454) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Nov 2011 09:13:06 +0100
+
+univention-xen-gplpv (11.0.308-2) unstable; urgency=low
+
+  * copy iso to pool (Bug #23454) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 12:41:18 +0100
+
+univention-xen-gplpv (11.0.308-1) unstable; urgency=low
+
+  * Initial Release (Bug #23454)
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Sep 2011 15:06:55 +0200
