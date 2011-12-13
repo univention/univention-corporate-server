@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.33-4) unstable; urgency=low
+
+  * fixed univention-policy-result (Bug #25419)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 13 Dec 2011 10:47:02 +0100
+
 univention-mail-cyrus (4.0.33-3) unstable; urgency=low
 
   * fixed univention-policy-result (Bug #25419)
