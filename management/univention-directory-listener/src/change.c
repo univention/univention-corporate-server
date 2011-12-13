@@ -120,8 +120,8 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 		return LDAP_OTHER;
 	} else if (rv == 0) {
 		signals_block();
-		handler_update("cn=Subschema", &cache_entry, &old_cache_entry, handler, 'n');
 		cache_update_entry(0, "cn=subschema", &cache_entry);
+		handler_update("cn=Subschema", &cache_entry, &old_cache_entry, handler, 'n', NULL);
 		signals_unblock();
 		cache_free_entry(NULL, &cache_entry);
 	}
@@ -190,9 +190,15 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 			}
 	
 			signals_block();
-			/* First write the entry to the local cache to be sure the entry in the cache is untouched. Bug #21914 */
-			cache_update_entry_lower(0, dns[i].dn, &cache_entry);
-			handler_update(dns[i].dn, &cache_entry, &old_cache_entry, handler, 'n');
+
+			/* First copy the entry for the local cache to be sure the entry in the cache is untouched. Bug #21914 */
+			CacheEntry updated_cache_entry;
+			copy_cache_entry(&cache_entry, &updated_cache_entry);
+			handler_update(dns[i].dn, &cache_entry, &old_cache_entry, handler, 'n', &updated_cache_entry);
+			//compare_cache_entries(&cache_entry, &updated_cache_entry);
+			cache_update_entry_lower(0, dns[i].dn, &updated_cache_entry);
+			cache_free_entry(NULL, &updated_cache_entry);
+
 			signals_unblock();
 			cache_free_entry(NULL, &cache_entry);
 		}
@@ -249,10 +255,15 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 		rv = LDAP_OTHER;
 	} else {
 		signals_block();
-		if ((rv=cache_update_entry_lower(id, dn, &cache_entry)) != 0) {
+		/* First copy the entry for the local cache to be sure the entry in the cache is untouched. Bug #21914 */
+		CacheEntry updated_cache_entry;
+		copy_cache_entry(&cache_entry, &updated_cache_entry);
+		handlers_update(dn, &cache_entry, &old_cache_entry, command, &updated_cache_entry);
+		//compare_cache_entries(&cache_entry, &updated_cache_entry);
+		if ((rv=cache_update_entry_lower(id, dn, &updated_cache_entry)) != 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
 		}
-		handlers_update(dn, &cache_entry, &old_cache_entry, command);
+		cache_free_entry(NULL, &updated_cache_entry);
 		signals_unblock();
 	}
 

@@ -87,12 +87,14 @@ int	handlers_dump			(void);
 int	handlers_update			(char		*dn,
 					 CacheEntry	*new,
 					 CacheEntry	*old,
-					 char command);
+					 char		command,
+					 CacheEntry *scratch);
 int	handler_update			(char		*dn,
 					 CacheEntry	*new,
 					 CacheEntry	*old,
 					 Handler	*handler,
-					 char command);
+					 char		command,
+					 CacheEntry *scratch);
 int	handlers_delete			(char		*dn,
 					 CacheEntry	*old,
 					 char command);

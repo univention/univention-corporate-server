@@ -678,7 +678,7 @@ int attribute_has_changed(char** changes, char* attribute)
 
 
 /* a little more low-level interface than handler_update */
-static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEntry *old, PyObject *argtuple, char **changes)
+static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEntry *old, PyObject *argtuple, char **changes, CacheEntry *scratch)
 {
 	int matched;
 	int rv = 0;
@@ -707,6 +707,9 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 		if (uptodate) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (up-to-date)", handler->name);
 			cache_entry_module_add(new, handler->name);
+			if ( scratch != NULL ) {
+				cache_entry_module_add(scratch, handler->name);
+			}
 			return 0;
 		}
 	}
@@ -721,6 +724,9 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 	/* run handler */
 	if (handler_exec(handler, argtuple) == 0) {
 		cache_entry_module_add(new, handler->name);
+		if ( scratch != NULL ) {
+			cache_entry_module_add(scratch, handler->name);
+		}
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
 	} else {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "handler: %s (failed)", handler->name);
@@ -731,7 +737,7 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 }
 
 /* run all handlers if object has changed */
-int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command)
+int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command, CacheEntry *scratch)
 {
 	PyObject *argtuple;
 	PyObject *argtuple_command;
@@ -750,15 +756,15 @@ int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command)
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		if (!strcmp(handler->name, "replication")) {
-			handler__update(handler, dn, new, old, argtuple, changes);
+			handler__update(handler, dn, new, old, argtuple, changes, scratch);
 		}
 	}
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		if (strcmp(handler->name, "replication")) {
 			if ( handler->modrdn ) {
-				handler__update(handler, dn, new, old, argtuple_command, changes);
+				handler__update(handler, dn, new, old, argtuple_command, changes, scratch);
 			} else {
-				handler__update(handler, dn, new, old, argtuple, changes);
+				handler__update(handler, dn, new, old, argtuple, changes, scratch);
 			}
 		}
 	}
@@ -771,7 +777,7 @@ int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command)
 }
 
 /* run given handler if object has changed */
-int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command)
+int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command, CacheEntry *scratch)
 {
 	PyObject *argtuple;
 	PyObject *argtuple_command;
@@ -788,9 +794,9 @@ int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler,
 	argtuple_command = handlers_argtuple_command(dn, new, old, cmd);
 
 	if ( handler->modrdn ) {
-		handler__update(handler, dn, new, old, argtuple_command, changes);
+		rv = handler__update(handler, dn, new, old, argtuple_command, changes, scratch);
 	} else {
-		handler__update(handler, dn, new, old, argtuple, changes);
+		rv = handler__update(handler, dn, new, old, argtuple, changes, scratch);
 	}
 
 	Py_DECREF(argtuple);
