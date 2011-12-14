@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.44-1) unstable; urgency=low
+
+  * Don't recode value if recoding raises an UnicodeDecodeError
+    exception (Bug #25191)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Dec 2011 15:47:06 +0100
+
 univention-ad-connector (6.0.43-1) unstable; urgency=low
 
   * Don't reset lastUSN on connector restart (Bug #25037)
