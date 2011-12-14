@@ -477,10 +477,13 @@ class ucs:
 				if key in self.ucs_no_recode:
 					nattribs[key] = attribs[key]
 				else:
-					nvals = []
-					for val in attribs[key]:
-						nvals.append(unicode(val,'utf8'))
-					nattribs[unicode(key,'utf8')]=nvals
+					try:
+						nvals = []
+						for val in attribs[key]:
+							nvals.append(unicode(val,'utf8'))
+						nattribs[unicode(key,'utf8')]=nvals
+					except UnicodeDecodeError:
+						nattribs[key] = attribs[key]
 
 			return nattribs
 		new = recode_attribs(new)

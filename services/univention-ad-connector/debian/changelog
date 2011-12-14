@@ -1,3 +1,10 @@
+univention-ad-connector (5.0.26-1) unstable; urgency=low
+
+  * Don't recode value if recoding raises an UnicodeDecodeError
+    exception (Bug #25259)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Dec 2011 15:45:18 +0100
+
 univention-ad-connector (5.0.25-1) unstable; urgency=low
 
   * Rename UCR variable ad/password/timestamp/ignorereset to
