@@ -309,7 +309,7 @@ else
 	fi
 fi
 
-eval "$(ucr shell)"
+eval "$(ucr shell ldap/master/port)"
 
 if [ -z "$LDAPBASE" ]; then
 	echo -n "Search ldap/base"

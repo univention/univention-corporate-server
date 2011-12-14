@@ -1,3 +1,10 @@
+univention-join (3.0.6-1) unstable; urgency=low
+
+  * Don't overwrite all UCR variables, eval ldap/master/port only
+    (Bug #24012)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Dec 2011 16:09:37 +0100
+
 univention-join (3.0.5-1) unstable; urgency=low
 
   * Allow the join of a UCS 2.4 backup or slave against a UCS 3.0 master
