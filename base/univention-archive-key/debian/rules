@@ -55,6 +55,7 @@ install: build
 	dh_installdirs
 
 	cp univention-archive-key-ucs-2x.gpg debian/univention-archive-key/usr/share/keyrings/
+	cp univention-archive-key-ucs-2x-prolonged.gpg debian/univention-archive-key/usr/share/keyrings/
 
 binary-arch: build install
 
