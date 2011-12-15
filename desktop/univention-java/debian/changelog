@@ -1,3 +1,10 @@
+univention-java (5.0.0-3) stable; urgency=low
+
+  * Keep existing Sun Java installations (Bug #24078)
+  * Don't depend on the Sun web plugin	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Dec 2011 10:06:38 +0100
+
 univention-java (5.0.0-2) stable; urgency=low
 
   * Switch to OpenJDK as the Java implementation (Bug #24078)
