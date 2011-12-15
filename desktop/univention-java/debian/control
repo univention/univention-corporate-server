@@ -7,7 +7,7 @@ Build-Depends: debhelper
 
 Package: univention-java
 Architecture: any
-Depends: sun-java6-jre, sun-java6-bin, sun-java6-plugin [i386], ia32-sun-java6-bin [amd64], ia32-sun-java6-plugin [amd64]
+Depends: openjdk-6-jre
 Description: UCS - Java support
  This package provides Java support for UCS.
  .
