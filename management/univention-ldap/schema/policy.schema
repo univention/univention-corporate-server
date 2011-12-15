@@ -939,3 +939,15 @@ objectclass ( 1.3.6.1.4.1.10176.1000.6.26.2.1 NAME 'univentionPolicyNFSMounts'
     DESC 'NFS-Shares policy object'
     MAY ( univentionNFSMounts ))
 
+# new UMC policy object (UCS 3.0)
+attributetype ( 1.3.6.1.4.1.10176.1000.308.1.1
+			  NAME 'umcPolicyGrantedOperationSet'
+			  DESC 'List of allowed UMC operantion set'
+			  EQUALITY caseExactMatch
+			  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.1000.308.2.1
+			  NAME 'umcPolicy'
+			  DESC 'Defines a set of allowed UMC operations'
+			  SUP 'univentionPolicy' STRUCTURAL
+			  MAY umcPolicyGrantedOperationSet )

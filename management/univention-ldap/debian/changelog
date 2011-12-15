@@ -1,3 +1,10 @@
+univention-ldap (7.0.28-1) unstable; urgency=low
+
+  * add schema for the new UMC operation sets and the policy required for
+    UCS 3.0; Bug #24202
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Dec 2011 09:11:49 +0100
+
 univention-ldap (7.0.27-3) unstable; urgency=low
 
   * added dependency to univention-legacy-kolab-schema (Bug #23788)
