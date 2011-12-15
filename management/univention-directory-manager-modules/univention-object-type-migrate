@@ -47,6 +47,9 @@ def parseOptions():
 	parser.add_option('-a', '--action',
 	                  dest='action', action='store_true',
 	                  help='do modify the directory')
+	parser.add_option('--verbose',
+	                  dest='verbose', action='store_true', default=False,
+	                  help='do not hide warnings for unmatched component objects')
 	parser.add_option('-v', '--verify',
 	                  dest='verify', action='store_true', default=False,
 	                  help='check objects with already set univentionObjectType')
@@ -72,11 +75,44 @@ def warningSupressed(dn, attributes):
 				return True
 	# Kerberos principal objects
 	if set(attributes['objectClass']) == set(('top', 'account', 'krb5Principal', 'krb5KDCEntry', )):
-		if set(attributes.keys()) == set(('objectClass', 'uid', 'krb5Key', 'krb5PrincipalName', 'krb5KDCFlags', 'krb5KeyVersionNumber', )):
-			return True
-		if set(attributes.keys()) == set(('objectClass', 'uid', 'krb5Key', 'krb5PrincipalName', 'krb5KDCFlags', 'krb5MaxRenew', 'krb5KeyVersionNumber', 'krb5MaxLife', )):
-			return True
+		return True
+	if set(attributes['objectClass']) == set(('top', 'person' , 'krb5Principal', 'krb5KDCEntry', )):
+		return True
+	# samba idmap objects
+	if set(attributes['objectClass']) == set(('sambaIdmapEntry', 'sambaSidEntry', )):
+		return True
+	# old (2.4) Kolab objects
+	if 'kolabSharedFolder' in set(attributes['objectClass']):
+		return True
+	if 'univentionKolabGroup' in set(attributes['objectClass']):
+		return True
+	# old (2.4) UMC ACLs
+	if 'univentionConsoleACL' in set(attributes['objectClass']):
+		return True
+	if 'univentionConsoleOperations' in set(attributes['objectClass']):
+		return True
+	if 'univentionPolicyConsoleAccess' in set(attributes['objectClass']):
+		return True
+	# old (2.4) UDM visibility settings
+	if 'univentionPolicyAdminSettings' in set(attributes['objectClass']):
+		return True
+	if 'univentionAdminUserSettings' in set(attributes['objectClass']):
+		return True
+	return warningHidden(dn, attributes)
+
+def warningHidden(dn, attributes):
+	if warningHidden.verbose:
+		return False
+	if 'univentionCitrixUserSessionsClass' in set(attributes['objectClass']):
+		return True
+	if 'univentionPolicyThinClientUser' in set(attributes['objectClass']):
+		return True
+	if 'univentionThinClientSession' in set(attributes['objectClass']):
+		return True
+	if 'univentionThinClientAutostart' in set(attributes['objectClass']):
+		return True
 	return False
+warningHidden.verbose = False
 
 def main(options):
 	errorsOccurred = False
@@ -88,6 +124,7 @@ def main(options):
 	uldap = univention.uldap.getAdminConnection()
 	if options.action is not True:
 		uldap.modify = lambda dn, changes: sys.stdout.write('Would modify %r\n' % (dn, ))
+	warningHidden.verbose = options.verbose
 	for (dn, attributes, ) in uldap.search(filter=searchFilter, base=options.base):
 		matches = [module for (module, identify, ) in moduleIdentify.items() if identify(dn, attributes)]
 		if 'container/dc' in matches and ('container/ou' in matches or 'container/cn' in matches):
@@ -103,7 +140,7 @@ def main(options):
 			elif attributes['univentionObjectType'][0] != matches[0]:
 				errorsOccurred = True
 				print >>sys.stderr, 'Mismatch for %r: univentionObjectType is %r but should be %r!' % (dn, attributes['univentionObjectType'], matches, )
-		elif len(matches) > 2:
+		elif len(matches) > 1:
 			raise ValueError('Multiple matches for %r: %r!' % (dn, matches, ))
 		else:
 			if not warningSupressed(dn, attributes):
