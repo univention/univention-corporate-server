@@ -7,7 +7,7 @@ Build-Depends: debhelper, ucslint
 
 Package: univention-java
 Architecture: all
-Depends: openjdk-6-jre, icedtea6-plugin
+Depends: openjdk-6-jre | sun-java6-bin
 Description: UCS - Java support
  This package provides Java support for UCS.
  .

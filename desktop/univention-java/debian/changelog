@@ -1,3 +1,10 @@
+univention-java (6.0.0-3) stable; urgency=low
+
+  * Keep existing Sun JREs installed (Bug #24040)
+  * Don't install icedtea automatically
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Dec 2011 09:53:35 +0100
+
 univention-java (6.0.0-2) stable; urgency=low
 
   * Switch to OpenJDK instead of Sun Java. This also allows us to turn the package
