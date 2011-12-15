@@ -47,7 +47,9 @@ dojo.mixin(umc.help, new umc.i18n.Mixin({
 		var keys = {
 			introduction : introduction,
 			manual : this._( 'Current manual (PDF)' ),
+			manualURL : this._( 'http://www.univention.de/fileadmin/download/documentation_english/ucs-3.0-manual_en.pdf' ),
 			add_doc : this._( 'Additional documentation for UCS' ),
+			addDocURL : this._( 'http://www.univention.de/en/download/documentation/documentation/' ),
 			sdb : this._( 'Univention support data base (SDB)' ),
 			wiki : this._( 'Univention Wiki' ),
 			forum : this._( 'Univention forum' ),

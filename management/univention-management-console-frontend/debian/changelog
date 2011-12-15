@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.247-1) unstable; urgency=low
+
+  * localize the URL to the manual; Bug #25426
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Dec 2011 11:45:01 +0100
+
 univention-management-console-frontend (1.0.246-1) unstable; urgency=low
 
   * Grid: fixed padding of the last column in the grid footer (containing 
