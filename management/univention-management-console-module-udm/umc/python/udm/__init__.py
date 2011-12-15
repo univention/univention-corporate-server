@@ -414,10 +414,11 @@ class Instance( Base ):
 			result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate )
 
 			entries = []
+			object_type = request.options.get( 'objectType', request.flavor )
 			for obj in result:
 				if obj is None:
 					continue
-				module = get_module( request.flavor, obj.dn )
+				module = get_module( object_type, obj.dn )
 				if module is None:
 					MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
 					continue

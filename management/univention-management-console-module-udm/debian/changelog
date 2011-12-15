@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.266-1) unstable; urgency=low
+
+  * correct determination of LDAP objects types that do not contain an
+    attribute univentionObjectType; Bug #25409
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Dec 2011 10:13:25 +0100
+
 univention-management-console-module-udm (1.0.265-1) unstable; urgency=low
 
   * fix license import; Bug #25390
