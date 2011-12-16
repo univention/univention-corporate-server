@@ -31,7 +31,7 @@ echo
 echo "HINT:"
 echo "Please check the following documents carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
 #echo "Release Notes: http://download.univention.de/doc/release-notes-2.4.pdf"
-echo "Changelog: http://download.univention.de/doc/changelog-2.4-3.pdf"
+echo "Changelog: http://download.univention.de/doc/changelog-2.4-4.pdf"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -80,12 +80,10 @@ fi
 get_latest_kernel_pkg () {
 	# returns latest kernel package for given kernel version
 	# currently running kernel is NOT included!
-
-	kernel_version="$1"
-
-	latest_dpkg=""
-	latest_kver=""
-	for kver in $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | grep -v "linux-image-$(uname -r)") ; do
+	local kernel_version="$1"
+	local latest_dpkg latest_kver kver dpkgver
+	for kver in $(dpkg-query -f '${Package}\n' -W linux-image-${kernel_version}-ucs\* 2>/dev/null | grep -Fv "linux-image-$(uname -r)" | sort -n)
+	do
 		dpkgver="$(apt-cache show $kver | sed -nre 's/Version: //p')"
 		if dpkg --compare-versions "$dpkgver" gt "$latest_dpkg" ; then
 			latest_dpkg="$dpkgver"
@@ -99,10 +97,11 @@ pruneOldKernel () {
 	# removes all kernel packages of given kernel version
 	# EXCEPT currently running kernel and latest kernel package
 	# ==> at least one and at most two kernel should remain for given kernel version
-	kernel_version="$1"
+	local kernel_version="$1"
+	local ignore_kver
 
 	ignore_kver="$(get_latest_kernel_pkg "$kernel_version")"
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | egrep -v "linux-image-$(uname -r)|$ignore_kver" | tr "\n" " ") >>/var/log/univention/updater.log 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(dpkg-query -f '${Package}\n' -W linux-image-${kernel_version}-ucs\* 2>/dev/null | egrep -v "linux-image-$(uname -r)|$ignore_kver") >>/var/log/univention/updater.log 2>&1
 }
 
 if [ "$update24_pruneoldkernel" = "yes" -o "$univention_ox_directory_integration_oxae" = "true" ]; then
@@ -116,11 +115,11 @@ fi
 #####################
 
 check_space(){
-	partition=$1
-	size=$2
-	usersize=$3
-	if [ `df -P $partition|tail -n1 | awk '{print $4}'` -gt "$size" ]
-		then
+	local partition=$1
+	local size=$2
+	local usersize=$3
+	if [ "$(df -P "$partition" | tail -n1 | awk '{print $4}')" -gt "$size" ]
+	then
 		echo -e "Space on $partition:\t OK"
 	else
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
@@ -141,27 +140,25 @@ check_space(){
 
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
-if [ ! -d $initrd_backup ]; then
-	mkdir $initrd_backup
+if [ ! -d "$initrd_backup" ]; then
+	mkdir "$initrd_backup"
 fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ &>/dev/null
 
 # check space on filesystems
 if [ ! "$update24_checkfilesystems" = "no" ]
 then
-
-	check_space "/var/cache/apt/archives" "700000" "0,7 GB"
+	check_space "/var/cache/apt/archives" "150000" "150 MB"
 	check_space "/boot" "50000" "50 MB"
-	check_space "/" "1500000" "1,5 GB"
-
+	check_space "/" "350000" "350 MB"
 else
     echo "WARNING: skipped disk-usage-test as requested"
 fi
 
 
 echo "Checking for the package status"
-dpkg -l 2>&1 | grep "^[a-zA-Z][A-Z] " >>"$UPDATER_LOG" 2>&1
-if [ $? = 0 ]; then
+if LC_ALL=C COLUMNS=200 dpkg -l 2>&1 | LC_ALL=C grep "^[a-z][A-Z] " >>"$UPDATER_LOG" 2>&1
+then
 	echo "ERROR: The package state on this system is inconsistent."
 	echo "       Please run 'dpkg --configure -a' manually"
 	exit 1
@@ -179,34 +176,38 @@ if [ -e /usr/sbin/apache2 ]; then
 fi
 
 # Disable usplash during update (Bug #16363)
-if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
-	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --add /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
+if LC_ALL=C dpkg -l lilo >>"$UPDATER_LOG" 2>&1
+then
+	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --add /usr/share/initramfs-tools/hooks/bootsplash >>"$UPDATER_LOG" 2>&1
 fi
 
 # remove old packages that causes conflicts
 olddebs="python2.4-dns alsa-headers"
-for deb in $olddebs; do
-	if dpkg -l $deb >>"$UPDATER_LOG" 2>&1; then
-		dpkg -P $deb >>"$UPDATER_LOG" 2>&1
+for deb in $olddebs
+do
+	if LC_ALL=C dpkg -l "$deb" >>"$UPDATER_LOG" 2>&1; then
+		dpkg -P "$deb" >>"$UPDATER_LOG" 2>&1
 	fi
 done
 
 # Update package lists
 apt-get update >>"$UPDATER_LOG" 2>&1
 #
-for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base usplash ; do
+for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base usplash
+do
 	# pre-update $pkg to avoid pre-dependency-problems
-	if dpkg -l $pkg 2>> "$UPDATER_LOG" | grep ^ii  >>"$UPDATER_LOG" ; then
+	if LC_ALL=C dpkg -l "$pkg" 2>>"$UPDATER_LOG" | grep ^ii >>"$UPDATER_LOG"
+	then
 	    echo -n "Starting preupdate of $pkg..."
-	    $update_commands_install $pkg >>"$UPDATER_LOG" 2>> "$UPDATER_LOG"
-	    if [ ! $? = 0 ]; then
+	    if ! $update_commands_install "$pkg" >>"$UPDATER_LOG" 2>&1
+	    then
 			echo "failed."
 	        echo "ERROR: pre-update of $pkg failed!"
 	        echo "       Please run 'dpkg --configure -a' manually."
 	        exit 1
 	    fi
-	    dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
-	    if [ $? = 0 ]; then
+	    if LC_ALL=C COLUMNS=200 dpkg -l 2>&1 | LC_ALL=C grep "^[a-z][A-Z]" >>"$UPDATER_LOG" 2>&1
+	    then
 			echo "failed."
 	        echo "ERROR: pre-update of $pkg failed!"
 	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually."

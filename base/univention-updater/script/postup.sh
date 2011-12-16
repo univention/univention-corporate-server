@@ -5,18 +5,18 @@ UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 
-check_and_install ()
-{
-	state="$(dpkg --get-selections $1 2>/dev/null | awk '{print $2}')"
+check_and_install () {
+	local state
+	state="$(LC_ALL=C dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
-		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install $1 >>"$UPDATER_LOG" 2>&1
+		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install "$1" >>"$UPDATER_LOG" 2>&1
 	fi
 }
-check_and_reinstall ()
-{
-	state="$(dpkg --get-selections $1 2>/dev/null | awk '{print $2}')"
+check_and_reinstall () {
+	local state
+	state="$(LC_ALL=C dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
-		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install --reinstall $1 >>"$UPDATER_LOG" 2>&1
+		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install --reinstall "$1" >>"$UPDATER_LOG" 2>&1
 	fi
 }
 
@@ -60,11 +60,11 @@ DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPk
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
-	chmod +x /usr/sbin/univention-management-console-server 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
+	chmod +x /usr/sbin/univention-management-console-server >>"$UPDATER_LOG" 2>&1
 fi
 if [ -e /usr/sbin/apache2 ]; then
 	dpkg-statoverride --remove /usr/sbin/apache2 >/dev/null 2>&1
-	chmod +x /usr/sbin/apache2 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
+	chmod +x /usr/sbin/apache2 >>"$UPDATER_LOG" 2>&1
 fi
 
 # removes temporary sources list (always required)
@@ -74,7 +74,7 @@ fi
 
 # Enable usplash after update (Bug #16363) (always required)
 if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
-	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
+	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash >>"$UPDATER_LOG" 2>&1
 fi
 
 # executes custom postup script (always required)
@@ -108,4 +108,3 @@ echo "done."
 date >>"$UPDATER_LOG" 2>&1
 
 exit 0
-

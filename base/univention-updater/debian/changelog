@@ -1,8 +1,9 @@
 univention-updater (6.0.111-1) unstable; urgency=low
 
   * Fix update script download (Bug #25273)
+  * Update {pre,post}up scipts (Bug #24224)
 
- -- Philipp Hahn <hahn@univention.de>  Fri, 16 Dec 2011 18:51:04 +0100
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Dec 2011 19:01:14 +0100
 
 univention-updater (6.0.110-1) unstable; urgency=low
 
