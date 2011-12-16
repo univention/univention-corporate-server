@@ -58,7 +58,7 @@ _repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/
 
 def copy_repository( options, source, version ):
 	""" Copy packages and scripts belonging to version from source directory into local repository """
-	print >>options.teefile, 'Copying packages. Please be patient ...',
+	print >>options.teefile, 'Please be patient, copying packages ...',
 	sys.stdout.flush()
 
 	version = _exp_version.match( version ).groupdict()
@@ -76,12 +76,14 @@ def copy_repository( options, source, version ):
 	urepo.copy_package_files( source, dest_repo )
 
 	# create Packages files
+	print >>options.teefile, 'Packages ...',
 	urepo.update_indexes( dest_repo )
 
+	print >>options.teefile, 'Scripts ...',
 	for script in ('preup.sh', 'postup.sh'):
 		if os.path.exists(os.path.join(source, script)):
 			shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
-	print >>sys.stdout
+	print >>options.teefile, 'Done.'
 
 def update_cdrom( options ):
 	""" Copy repository from local DVD or ISO image """
