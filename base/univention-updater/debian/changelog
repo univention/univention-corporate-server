@@ -1,3 +1,9 @@
+univention-updater (6.0.111-1) unstable; urgency=low
+
+  * Fix update script download (Bug #25273)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Dec 2011 18:51:04 +0100
+
 univention-updater (6.0.110-1) unstable; urgency=low
 
   * do not show "update available but blocked" message if system is

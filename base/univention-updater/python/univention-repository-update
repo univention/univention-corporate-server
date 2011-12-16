@@ -1,9 +1,10 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Updater
 #  repository update
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -143,14 +144,19 @@ def update_net( options ):
 		os.symlink( '.', os.path.join(destdir, 'univention-repository') )
 
 	if options.sync:
+		# only update packages of current repositories
 		mirror.run()
 	elif options.security_only:
+		# trigger update to find new security repositories
 		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
 		mirror.run()
 	elif options.update_to:
+		# trigger update to explicitly mirror until given versions
 		ucr.handler_set( [ 'repository/mirror/version/end=%s' % options.update_to ] )
+		mirror = UniventionMirror()
 		mirror.run()
 	else:
+		# mirror all future versions
 		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
 		nextupdate = mirror.release_update_available()
 		mirror_run = False
@@ -250,7 +256,7 @@ if __name__ == '__main__':
 	try:
 		if command == 'net':
 			local_server='%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
-
+			# BUG: The localhost has many names, FQDNs and adresses ...
 			if configRegistry['repository/mirror/server'] == local_server:
 				print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
 				sys.exit(1)
