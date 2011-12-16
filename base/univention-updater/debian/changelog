@@ -4,6 +4,7 @@ univention-updater (6.0.111-1) unstable; urgency=low
   * Update {pre,post}up scipts (Bug #24224)
   * Add newline in univention-repository-update (Bug #25495)
   * Fix traceback in univention-updater (Bug #25496)
+  * Fix symlink creation (Bug #25508)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 16 Dec 2011 19:01:14 +0100
 
