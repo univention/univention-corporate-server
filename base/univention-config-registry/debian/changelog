@@ -1,3 +1,9 @@
+univention-config-registry (6.0.47-3) unstable; urgency=low
+
+  * updated description (Bug #25512)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Dec 2011 14:36:06 +0100
+
 univention-config-registry (6.0.47-2) unstable; urgency=low
 
   * added description for server/appliance (Bug #25512)

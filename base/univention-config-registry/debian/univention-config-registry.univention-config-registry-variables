@@ -382,8 +382,8 @@ Type=str
 Categories=system-base
 
 [server/appliance]
-Description[de]=True, wenn dieses System eine Appliance ist (Standard: nicht gesetzt)
-Description[en]=True if system is appliance (Default: not defined)
+Description[de]=Definiert, ob dieses System eine Appliance ist (Standard: nicht gesetzt oder "no")
+Description[en]=Defines, if this system is an appliance (Default: not defined or "no")
 Type=str
 Categories=system-base
 
