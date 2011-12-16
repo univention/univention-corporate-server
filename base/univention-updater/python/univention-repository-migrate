@@ -34,6 +34,7 @@
 from optparse import OptionParser
 import copy
 import os
+import errno
 import shutil
 import sys
 import time
@@ -138,8 +139,11 @@ def migrate_repository( options ):
 	_copy_repository( options, source, dest, versions[ 0 ] )
 
 	# create symbolic link univention-repository
-	if not os.path.exists(os.path.join(REPO_BASE_NEW, 'mirror/univention-repository' )):
-		os.symlink( os.path.join(REPO_BASE_NEW, 'mirror/.'), os.path.join(REPO_BASE_NEW, 'mirror/univention-repository' ))
+	try:
+		os.symlink('.', os.path.join(REPO_BASE_NEW, 'mirror', 'univention-repository'))
+	except OSError, e:
+		if e.errno != errno.EEXIST:
+			raise
 
 	# copy dists directory structure
 	print >> options.teefile, '  copying dists subdirectory ...',

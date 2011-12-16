@@ -34,6 +34,7 @@
 from optparse import OptionParser
 import copy
 import os
+import errno
 import re
 import shutil
 import subprocess
@@ -142,8 +143,11 @@ def update_net( options ):
 	destdir = os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' )
 	if not os.path.exists( destdir ):
 		os.makedirs( destdir )
-	if not os.path.exists( os.path.join(destdir, 'univention-repository') ):
+	try:
 		os.symlink( '.', os.path.join(destdir, 'univention-repository') )
+	except OSError, e:
+		if e.errno != errno.EEXIST:
+			raise
 
 	if options.sync:
 		# only update packages of current repositories

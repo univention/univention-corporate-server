@@ -83,8 +83,11 @@ class UniventionMirror( UniventionUpdater ):
 			if not os.path.exists( path ):
 				os.makedirs( path )
 		path = os.path.join(self.repository_path, 'mirror', 'univention-repository')
-		if not os.path.exists(path):
+		try:
 			os.symlink('.', path)
+		except OSError, e:
+			if e.errno != errno.EEXIST:
+				raise
 
 		log = open('/var/log/univention/repository.log', 'a')
 		try:
@@ -128,9 +131,7 @@ class UniventionMirror( UniventionUpdater ):
 			try:
 				os.makedirs(dirname, 0755)
 			except OSError, e:
-				if e.errno == errno.EEXIST:
-					pass
-				else:
+				if e.errno != errno.EEXIST:
 					raise
 			fd = open(filename, "w")
 			try:

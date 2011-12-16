@@ -33,6 +33,7 @@
 #
 
 import os
+import errno
 from optparse import OptionParser
 import shutil
 import subprocess
@@ -89,14 +90,14 @@ def  prepare( options ):
 		os.makedirs( _repo_base )
 	except OSError, e:
 		# already exists -> ignore
-		if e.errno != 17:
+		if e.errno != errno.EEXIST:
 			raise e
 	for arch in urepo.ARCHITECTURES:
 		try:
 			os.makedirs( os.path.join( _repo_base, arch ) )
 		except OSError, e:
 			# already exists -> ignore
-			if e.errno != 17:
+			if e.errno != errno.EEXIST:
 				raise e
 
 def copy_repository( options ):
@@ -189,13 +190,21 @@ def setup_pxe( options ):
 	'''setup network installation (PXE)'''
 	isodir = '/var/lib/univention-repository/isolinux'
 	bootdir = '/var/lib/univention-repository/boot'
-	if not os.path.isdir( isodir ):
-		os.mkdir( isodir )
-	if not os.path.exists( os.path.join( isodir, 'linux' ) ):
+	# it is easier to ask forgiveness than ask permission
+	try:
+		os.mkdir(isodir)
+	except OSError, e: pass
+	# Bug #17835: linux26 does not exist -> danling symlink
+	try:
 		os.symlink( os.path.join( bootdir, 'linux26' ), os.path.join( isodir, 'linux' ) )
-	if not os.path.exists( os.path.join( isodir, 'linux.bin' ) ):
+	except OSError, e:
+		if e.errno != errno.EEXIST:
+			raise
+	try:
 		os.symlink( os.path.join( bootdir, 'linux26.bin' ), os.path.join( isodir, 'linux.bin' ) )
-	pass # TDB
+	except OSError, e:
+		if e.errno != errno.EEXIST:
+			raise
 
 if __name__ == '__main__':
 	parser = OptionParser( usage = "usage: %prog [options]" )
@@ -251,8 +260,12 @@ if __name__ == '__main__':
 			ucr.handler_set( [ 'repository/mirror/version/start?%s-0' % repo_version ] )
 
 		# create symbolic link univention-repository
-		os.chdir( os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' ) )
-		os.symlink( '.', 'univention-repository' )
+		try:
+			basepath = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
+			os.symlink('.', os.path.join(basepath, 'mirror', 'univention-repository'))
+		except OSError, e:
+			if e.errno != errno.EEXIST:
+				raise
 
 		print "The local repository has been created."
 		print
