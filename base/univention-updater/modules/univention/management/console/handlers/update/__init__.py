@@ -861,7 +861,8 @@ class handler(umch.simpleHandler):
 				elif presult['exit'] == 1:
 					reComponentName = re.compile(".*without the component '([^']+)' is not possible because the component.*", re.DOTALL)
 					match = reComponentName.match( presult['stderr'].read() )
-					if match:
+					# if match has been found and system is no appliance then show message
+					if match and self.updater.configRegistry.is_false( 'server/appliance', False):
 						blocking_component = match.group(1)
 						list_easy_update.add_row( [ umcd.Text(_('Further release updates are available but the update is blocked by required component "%s".') % blocking_component) ] )
 					else:
@@ -910,8 +911,8 @@ class handler(umch.simpleHandler):
 				list_update_release.add_row([ errormsg ])
 			else:
 				if not available_release_updates:
-					# no release update possible/available
-					if blocking_component:
+					# no release update possible/available (show this message only if system is no appliance)
+					if blocking_component and self.updater.configRegistry.is_false( 'server/appliance', False):
 						txt = umcd.Text(_('The currently installed UCS release version is %(version)s. Further release updates are available but the update is blocked by required component "%(component)s".') % { 'version': self.updater.get_ucs_version(), 'component': blocking_component})
 					else:
 						txt = umcd.Text( _('The currently installed version is %s and there is no update available.') % self.updater.get_ucs_version() )
@@ -924,7 +925,8 @@ class handler(umch.simpleHandler):
 					txt['colspan'] = '2'
 					list_update_release.add_row([ txt ])
 
-					if blocking_component:
+					# show this message only if system is no appliance
+					if blocking_component and self.updater.configRegistry.is_false( 'server/appliance', False):
 						txt = umcd.Text( _('The updates can be installed up to release version %(maxpossibleversion)s. Further release updates are available but the following release updates are blocked by required component "%(component)s".') % { 'maxpossibleversion': available_release_updates[-1], 'component': blocking_component } )
 						txt['colspan'] = '2'
 						list_update_release.add_row([ txt ])

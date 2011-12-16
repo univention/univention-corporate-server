@@ -381,6 +381,12 @@ Description[en]=System role
 Type=str
 Categories=system-base
 
+[server/appliance]
+Description[de]=True, wenn dieses System eine Appliance ist (Standard: nicht gesetzt)
+Description[en]=True if system is appliance (Default: not defined)
+Type=str
+Categories=system-base
+
 [timeserver]
 Description[de]=Der erste NTP-Server
 Description[en]=The first NTP server
