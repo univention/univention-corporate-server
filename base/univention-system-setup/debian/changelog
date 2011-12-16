@@ -1,3 +1,10 @@
+univention-system-setup (5.0.84-1) unstable; urgency=low
+
+  * replaced old Translation class
+  * add support for reporting progress information; Bug #24399
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Dec 2011 14:02:52 +0100
+
 univention-system-setup (5.0.83-1) unstable; urgency=low
 
   * UMC module: reset umask to default; Bug #25287

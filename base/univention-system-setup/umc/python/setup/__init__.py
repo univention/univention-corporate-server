@@ -39,7 +39,7 @@ import notifier.threads
 import re
 import csv
 import univention.info_tools as uit
-import univention.management.console as umc
+from univention.lib.i18n import Translation
 import univention.management.console.modules as umcm
 import util
 import os
@@ -49,7 +49,7 @@ import univention.config_registry
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
-_ = umc.Translation('univention-management-console-module-setup').translate
+_ = Translation('univention-management-console-module-setup').translate
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 
@@ -61,6 +61,7 @@ class Instance(umcm.Base):
 		umcm.Base.__init__(self)
 		self._finishedLock = threading.Lock()
 		self._finishedResult = True
+		self._progressParser = util.ProgressParser()
 		# reset umask to default
 		os.umask( 0022 )
 
@@ -80,11 +81,10 @@ class Instance(umcm.Base):
 		"""This method is invoked when a threaded request function is
 		finished. The result is send back to the client. If the result
 		is an instance of BaseException an error is returned."""
-		if request:
-			if self._check_thread_error( thread, result, request ):
-				return
+		if self._check_thread_error( thread, result, request ):
+			return
 
-			self.finished( request.id, result )
+		self.finished( request.id, result )
 
 	def load(self, request):
 		'''Return a dict with all necessary values for system-setup read from the current
@@ -101,12 +101,13 @@ class Instance(umcm.Base):
 			self._finishedResult = False
 			obj._finishedLock.acquire()
 
+			self._progressParser.reset()
 			# write the profile file and run setup scripts
 			orgValues = util.load_values()
 			util.pre_save(values, orgValues)
 			MODULE.info('saving profile values')
 			util.write_profile(values)
-			
+
 			if orgValues['server/role'] == 'basesystem' or os.path.exists('/var/univention-join/joined'):
 				if not values:
 					MODULE.error( 'No property "values" given for save().' )
@@ -128,20 +129,23 @@ class Instance(umcm.Base):
 
 				# on a joined system or on a basesystem, we can run the setup scripts
 				MODULE.info('runnning system setup scripts')
-				util.run_scripts(restart)
+				util.run_scripts( self._progressParser, restart )
 			else:
 				# unjoined system and not a basesystem -> run the join script
 				MODULE.info('runnning system setup join script')
-				util.run_joinscript(username, password)
+				util.run_joinscript( self._progressParser, username, password )
 
 			# done :)
 			self._finishedResult = True
 			obj._finishedLock.release()
 			return True
 
-		thread = notifier.threads.Simple( 'check_finished', 
-			notifier.Callback( _thread, request, self, request.options.get('values'), request.options.get('username'), request.options.get('password')),
-			notifier.Callback( self._thread_finished, None ) )
+		def _finished( thread, result ):
+			if isinstance( result, BaseException ):
+				MODULE.warn( 'Exception during saving the settings: %s' % str( result ) )
+
+		thread = notifier.threads.Simple( 'save', 
+			notifier.Callback( _thread, request, self, request.options.get('values'), request.options.get('username'), request.options.get('password')),_finished )
 		thread.run()
 
 		self.finished(request.id, True)
@@ -154,9 +158,15 @@ class Instance(umcm.Base):
 		def _thread(request, obj):
 			# acquire the lock in order to wait for the join/setup scripts to finish
 			# do this one minute long on then return an error
-			ntries = 60
+			ntries = 240
 			while not obj._finishedLock.acquire(False):
-				time.sleep(1)
+				if self._progressParser.changed and self._progressParser.current:
+					state = self._progressParser.current
+					return { 'finished' : False,
+							 'name' : state.name,
+							 'message' : state.message,
+							 'percentage' : state.percentage }
+				time.sleep( 0.250 )
 				ntries -= 1
 				if ntries <= 0:
 					raise TimeoutError('setup/finished has reached its timeout')
@@ -164,12 +174,15 @@ class Instance(umcm.Base):
 			obj._finishedLock.release()
 
 			# scripts are done, return final result
-			return obj._finishedResult
-			
-		thread = notifier.threads.Simple( 'check_finished', 
+			return { 'finished' : obj._finishedResult,
+					 'name' : self._progressParser.current.name,
+					 'message' : self._progressParser.current.message,
+					 'percentage' : self._progressParser.current.percentage }
+
+		thread = notifier.threads.Simple( 'check_finished',
 			notifier.Callback( _thread, request, self ),
 			notifier.Callback( self._thread_finished, request ) )
-		thread.run() 
+		thread.run()
 
 	def shutdown_browser(self, request):
 		if self._username != '__systemsetup__':
@@ -190,7 +203,7 @@ class Instance(umcm.Base):
 		'''Validate the specified values given in the dict as option named "values".
 		Return a dict (with variable names as key) of dicts with the structure:
 		{ "valid": True/False, "message": "..." }'''
-		
+
 		# init variables
 		messages = []
 		values = request.options.get('values', {})

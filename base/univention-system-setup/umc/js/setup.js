@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global console MyError dojo dojox dijit umc setTimeout */
 
 dojo.provide("umc.modules.setup");
 
@@ -39,6 +39,8 @@ dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.TabContainer");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.TitlePane");
+
+dojo.require("umc.modules._setup.ProgressInfo");
 
 dojo.declare("umc.modules._setup.CancelDialogException", null, {
 	// empty class that indicates that the user canceled a dialog
@@ -61,6 +63,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_currentPage: -1,
 
+	_progressInfo: null,
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -76,6 +80,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	renderPages: function(role) {
+		this._progressInfo = new umc.modules._setup.ProgressInfo();
+		// this._progressInfo.buildRendering();
 		this.standby(true);
 		if (this.moduleFlavor == 'wizard') {
 			// wizard mode
@@ -393,6 +399,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						// throw new error to indicate that action has been canceled
 						throw new umc.modules._setup.CancelDialogException();
 					}
+					this.standby( false );
 				}));
 			});
 
@@ -471,25 +478,48 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						// throw new error to indicate that action has been canceled
 						throw new umc.modules._setup.CancelDialogException();
 					}
+					this.standby( false );
 				}));
 			});
 
 			// function to save data
 			var _save = dojo.hitch(this, function(username, password) {
+				var _Poller = function( _parent, _deferred ) {
+					return {
+						deferred: _deferred,
+						parent: _parent,
+						check: function() {
+							this.parent.umcpCommand( 'setup/finished', {}, undefined, undefined, {
+								// long polling options
+								messageInterval: 30,
+								message: this.parent._('The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the new address.')
+							} ).then( dojo.hitch( this, function( response ) {
+								if ( response.result.finished ) {
+									this.deferred.resolve();
+									return;
+								}
+								this.parent._progressInfo.setInfo( response.result.name, response.result.message, response.result.percentage );
+								setTimeout( dojo.hitch( this, 'check' ), 500 );
+							} ) );
+						}
+					};
+				};
+
+				var deferred = new dojo.Deferred();
+
 				// send save command to server
-				this.standby(true);
-				return this.umcpCommand('setup/save', { 
+				this.standby( true, this._progressInfo );
+				this.umcpCommand('setup/save', {
 					values: values,
 					username: username || null,
 					password: password || null
 				}).then(dojo.hitch(this, function() {
 					// poll whether script has finished
-					return this.umcpCommand('setup/finished', {}, undefined, undefined, {
-						// long polling options
-						messageInterval: 30,
-						message: this._('The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the new address.')
-					});
+					var poller = new _Poller( this, deferred );
+					poller.check();
 				}));
+
+				return deferred;
 			});
 
 			// notify user that saving was successfull

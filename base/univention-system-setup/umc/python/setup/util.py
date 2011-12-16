@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
 import ipaddr
 import os
 import tempfile
@@ -168,7 +169,6 @@ def pre_save(newValues, oldValues):
 		# get all packages that shall be installed
 		installComponents = list(allComponents & (selectedComponents - currentComponents))
 		newValues['packages_install'] = ' '.join([ i.replace(':', ' ') for i in installComponents ])
-		
 
 def write_profile(values):
 	cache_file=open(PATH_PROFILE,"w+")
@@ -179,14 +179,136 @@ def write_profile(values):
 		cache_file.write('%s="%s"\n\n' % (ikey, newVal))
 	cache_file.close()
 
-def run_scripts(restartServer=False):
+class ProgressState( object ):
+	def __init__( self ):
+		self.reset()
+
+	def reset( self ):
+		self.name = ''
+		self.message = ''
+		self._percentage = 0.0
+		self.fraction = 0.0
+		self.fractionName = ''
+		self.steps = 1
+		self.step = 0
+		self.max = 100
+
+	@property
+	def percentage( self ):
+		if self.step == 0:
+			return self._percentage
+		return ( self._percentage + self.fraction * ( self.step / self.steps ) ) / self.max * 100
+
+	def __eq__( self, other ):
+		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step
+
+	def __ne__( self, other ):
+		return not self.__eq__( other )
+
+	def __nonzero__( self ):
+		return bool( self.name or self.message or self.percentage )
+
+class ProgressParser( object ):
+	# regular expressions
+	NAME = re.compile( '^__NAME__: *(?P<key>[^ ]*) (?P<name>.*)\n$' )
+	MSG = re.compile( '^__MSG__: *(?P<message>.*)\n$' )
+	STEPS = re.compile( '^__STEPS__: *(?P<steps>.*)\n$' )
+	STEP = re.compile( '^__STEP__: *(?P<step>.*)\n$' )
+
+	# fractions of setup scripts
+	FRACTIONS = {
+		'basis/12domainname'		: 5,
+		'basis/14ldap_basis'		: 10,
+		'software/10software'		: 70,
+		}
+
+	# current status
+	def __init__( self ):
+		self.current = ProgressState()
+		self.old = ProgressState()
+		self.reset()
+
+	def reset( self ):
+		self.current.reset()
+		self.old.reset()
+		self.fractions = copy.copy( ProgressParser.FRACTIONS )
+		self.calculateFractions()
+
+	def calculateFractions( self ):
+		MODULE.info( 'Calculating maximum value for fractions ...' )
+		for category in filter( lambda x: os.path.isdir( os.path.join( PATH_SETUP_SCRIPTS, x ) ), os.listdir( PATH_SETUP_SCRIPTS ) ):
+			cat_path = os.path.join( PATH_SETUP_SCRIPTS, category )
+			for script in filter( lambda x: os.path.isfile( os.path.join( cat_path, x ) ), os.listdir( cat_path ) ):
+				name = '%s/%s' % ( category, script )
+				if not name in self.fractions:
+					self.fractions[ name ] = 1
+
+		self.current.max = sum( self.fractions.values() )
+		MODULE.info( 'Calculated a maximum value of %d' % self.current.max )
+
+	@property
+	def changed( self ):
+		if self.current != self.old:
+			MODULE.info( 'Progress state has changed!' )
+			self.old = copy.copy( self.current )
+			return True
+		return False
+
+	def parse( self, line ):
+		# start new component name
+		match = ProgressParser.NAME.match( line )
+		if match is not None:
+			MODULE.info( 'Found name entry' )
+			self.current.name, self.current.fractionName = match.groups()
+			MODULE.info( 'Found component %s' % self.current.name )
+			self.current.fraction = self.fractions.get( self.current.name, 0.0 )
+			MODULE.info( 'Set fraction to %f' % self.current.fraction )
+			self.current._percentage += self.current.fraction
+			MODULE.info( 'Set percentage to %f' % self.current._percentage )
+			MODULE.info( 'Calculated percentage is %f' % self.current.percentage )
+			return True
+
+		# new status message
+		match = ProgressParser.MSG.match( line )
+		if match is not None:
+			MODULE.info( 'Found message' )
+			self.current.message = match.groups()[ 0 ]
+			return True
+
+		# number of steps
+		match = ProgressParser.STEPS.match( line )
+		if match is not None:
+			try:
+				self.current.steps = int( match.groups()[ 0 ] )
+				MODULE.info( 'Found steps: %d' % self.current.steps )
+				self.current.step = 0
+				return True
+			except ValueError:
+				pass
+
+		# current step
+		match = ProgressParser.STEP.match( line )
+		if match is not None:
+			try:
+				self.current.step = int( match.groups()[ 0 ] )
+				if self.current.step > self.current.steps:
+					MODULE.info( 'ProgressParser (%s): step is higher than steps' % self.current.name )
+					self.current.step = self.current.steps
+				MODULE.info( 'Found step: %d' % self.current.step )
+				return True
+			except ValueError:
+				pass
+
+		return False
+
+def run_scripts( progressParser, restartServer = False ):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
 	f.flush()
 
 	# make sure that UMC servers and apache will not be restartet
-	subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f)
+	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
 
 	for root, dirs, files in os.walk(PATH_SETUP_SCRIPTS): 
 		# ignore the root
@@ -200,7 +322,13 @@ def run_scripts(restartServer=False):
 			ipath = os.path.join(root, ifile)
 
 			# launch script
-			subprocess.call(ipath, stdout=f, stderr=f)
+			pipe = subprocess.Popen( ipath, stdout = subprocess.PIPE, stderr = f ).stdout
+			while True:
+				line = pipe.readline()
+				if not line:
+					break
+				progressParser.parse( line )
+				f.write( line )
 
 	# enable execution of servers again
 	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
@@ -214,7 +342,7 @@ def run_scripts(restartServer=False):
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
 
-def run_joinscript(_username = None, password = None):
+def run_joinscript( progressParser, _username = None, password = None):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
