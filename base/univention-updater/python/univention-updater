@@ -242,8 +242,12 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
 				if res == 0:
 					dprint('Warning: Failed to unmount %s' % device_name)
-			if nextversion:
+		if nextversion:
+			try:
 				ver = UCS_Version(nextversion)
+			except AttributeError, e:
+				pass
+			else:
 				mm_version = UCS_Version.FORMAT % ver
 				if not updater:
 					updater = LocalUpdater()
