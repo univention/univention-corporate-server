@@ -1,6 +1,9 @@
 univention-updater (7.0.128-1) unstable; urgency=low
 
   * Fix update script download (Bug #25273)
+  * Add newline in univention-repository-update (Bug #25495)
+  * Fix traceback in univention-updater (Bug #25496)
+  * Fix symlink creation (Bug #25508)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 16 Dec 2011 18:52:51 +0100
 
