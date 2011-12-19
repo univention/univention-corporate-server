@@ -1,3 +1,10 @@
+univention-system-setup (5.0.85-1) unstable; urgency=low
+
+  * add close button to flavor tabs; Bug #24928
+  * changed label of "save" buttons
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Dec 2011 15:59:30 +0100
+
 univention-system-setup (5.0.84-1) unstable; urgency=low
 
   * replaced old Translation class

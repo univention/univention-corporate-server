@@ -122,7 +122,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				if (i == this.pages.length - 1) {
 					buttons.push({
 						name: 'submit',
-						label: this._('Finish'),
+						label: this._('Apply settings'),
 						callback: dojo.hitch(this, function() {
 							this.save();
 						})
@@ -153,9 +153,24 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			});
 
 			// each page has the same buttons for saving/resetting
-			var buttons = [{
+			var buttons = [ {
+					name: 'close',
+					label: this._( 'Close' ),
+					align: 'left',
+					callback: dojo.hitch( this, function() {
+						umc.dialog.confirm( this._( 'Should the UMC module be closed? All unsaved modification will be lost.' ), [ {
+							label: this._( 'Close' ),
+							callback: dojo.hitch( this, function() {
+								dojo.publish('/umc/tabs/close', [ this ] );
+							} )
+						}, {
+							label: this._( 'Cancel' ),
+							'default': true
+						} ] );
+					} )
+			}, {
 				name: 'submit',
-				label: this._('Save'),
+				label: this._( 'Apply changes' ),
 				callback: dojo.hitch(this, function() {
 					this.save();
 				})
