@@ -1,3 +1,10 @@
+univention-system-setup (5.0.87-1) unstable; urgency=low
+
+  * UMC module: prepared setup scripts to return parseable info data containing
+    progress information (Bug #24399)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 19 Dec 2011 18:35:25 +0100
+
 univention-system-setup (5.0.86-1) unstable; urgency=low
 
   * UMC module: translate list of software packages; Bug #24819

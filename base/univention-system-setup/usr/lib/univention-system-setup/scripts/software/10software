@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Setup
 #  software change script
@@ -32,7 +32,7 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-info_header "$0"
+info_header "$0" "$(gettext "Configuring software components")"
 
 if [ "$check_ldap_access" = "1" ]; then
 	exit 0
@@ -62,21 +62,78 @@ elif [ $server_role = "mobileclient" ]; then
 	base="univention-mobile-client+"
 fi
 
+# create named pipes in order to merge status information and stdout
+statFifo=$(mktemp -u /tmp/apt.stat.XXXXXXXX)
+stdoutFifo=$(mktemp -u /tmp/apt.stdout.XXXXXXXX)
+mkfifo "$stdoutFifo" "$statFifo"
 
-export DEBIAN_FRONTEND=noninteractive
+# run the installation in a background process
+( 
+	# set options
+	export DEBIAN_FRONTEND=noninteractive
+	export APT_PARAMS="-o APT::Status-FD=4 -o DPkg::Options::=--force-confold -y --force-yes -o APT::Get::AllowUnauthenticated=1"
 
-echo "apt-get update -o DPkg::Options::=--force-confold -y --force-yes" >>/var/log/univention/setup.log
-apt-get update -o DPkg::Options::=--force-confold -y --force-yes
+	# redirection of stdout/stderr and status information
+    exec >$stdoutFifo 2>$stdoutFifo 4>$statFifo </dev/null
 
-for p in $packages_remove; do
-	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base " >>/var/log/univention/setup.log
-	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base
+	# update
+	echo "apt-get $APT_PARAMS update"
+	apt-get $APT_PARAMS update
+	echo "dlstatus:_:100:" >&4
+
+	# install packages
+	for p in $packages_remove; do
+		echo "apt-get $APT_PARAMS install $p- $base" 
+		apt-get $APT_PARAMS install $p- $base
+	done
+
+	# remove packages
+	for p in $packages_install; do
+		echo "apt-get $APT_PARAMS install $p $base"
+		apt-get $APT_PARAMS install $p $base
+	done
+) &
+
+# number of commands = number of installed/removed packages +1 (for the update command)
+nCommands=$(( $(echo $packages_install | wc -w) + $(echo $packages_remove | wc -w) + 1 ))
+progress_steps $((nCommands * 100))  # each command is in the range [0, 100]
+
+# read from stdout/stderr and status information output via the named pipes
+exec 5<$stdoutFifo 6<$statFifo
+statResult=0
+stdoutResult=0
+icommand=0
+lastPercentage=0
+while [ "$statResult" != 1 -a "$stdoutResult" != 1 ]; do
+	# read from apt-get stdout/stderr
+    read -u 5 -t 0.1 line
+    stdoutResult=$?
+    [ $stdoutResult = 0 ] && echo "$line"
+
+	# read from apt-get status information
+    read -u 6 -t 0.1 line
+    statResult=$?
+    if [ $statResult = 0 ]; then
+		# status information, parse the string and print out current step
+		# as well as a descriptive information of what dpkg is doing
+        IFS=$':'
+        list=($line)
+        IFS=$'\n\t '
+		percentage=${list[2]%.*}  # the precentage might be floating point, remove fractions
+		msg=${list[3]}
+
+		# check whether we have passed to the next command
+		[ "$percentage" -lt "$lastPercentage" ] && icommand=$((icommand+1))
+		lastPercentage=$percentage
+
+		# print out status information
+        progress_next_step "$((percentage + icommand * 100))"
+        [ -n "$msg" ] && progress_msg "$msg"
+    fi
 done
 
-for p in $packages_install; do
-	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p $base " >>/var/log/univention/setup.log
-	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p $base
-done
+# remove named pipes
+rm -f "$stdoutFifo" "$statFifo"
 
 exit 0
 

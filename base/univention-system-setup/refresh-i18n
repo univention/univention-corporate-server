@@ -1,7 +1,7 @@
-#!/bin/sh -e
+#!/bin/sh
 #
-# Univention Setup
-#  kernel module change script
+# Univention Installer
+#  Refresh gettext entries for univention-installer and univention-system-setup
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -30,21 +30,40 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+lang=de
+dir=usr/share/locale/$lang/LC_MESSAGES/
+po=$dir/univention-system-setup-scripts.po
+pot=${po}t
+pox=${po}x
 
-info_header "$0"
+mkdir -p $dir
 
-modules=`get_profile_var modules`
+xgettext -L Shell -o $pot usr/lib/univention-system-setup/scripts/*.sh usr/lib/univention-system-setup/scripts/*/*
 
-if [ -z "$modules" ]; then
-	exit 0
+if grep "Content-Type: text/plain; charset=CHARSET" $pot ; then
+	echo "Rewriting encoding information from CHARSET to UTF-8"
+	sed -i "s#Content-Type: text/plain; charset=CHARSET#Content-Type: text/plain; charset=UTF-8#" $pot
 fi
 
-if [ "$check_ldap_access" = "1" ]; then
-	exit 0
+echo "Merging old gettext data with newly introduced strings"
+msgmerge $po $pot > $pox
+
+echo "Now you need to fix up all 'fuzzy' entries in your editor..."
+read answ
+
+if [ -n "$EDITOR" ]; then
+    $EDITOR $pox
+else
+	vim $pox
 fi
 
-univention-config-registry set kernel/modules="`echo $modules | sed -e 's| |;|g'`"
+echo "Use this entry? (Y/n)"
+read yn
 
+if [ -z "$yn" -o "$yn" = "y" ]; then
+    echo "Copying po file"
+    cp $pox $po
+fi
 
-exit 0
+rm -rf ${po}?
+

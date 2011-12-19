@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-12-19 03:27+0100\n"
+"POT-Creation-Date: 2011-12-19 17:05+0100\n"
 "PO-Revision-Date: 2011-12-19 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,11 +28,11 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:125 umc/js/setup.js:411 umc/js/setup.js:490
+#: umc/js/setup.js:173 umc/js/setup.js:411 umc/js/setup.js:490
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
-#: umc/js/setup.js:173
+#: umc/js/setup.js:125
 msgid "Apply settings"
 msgstr "Einstellungen anwenden"
 

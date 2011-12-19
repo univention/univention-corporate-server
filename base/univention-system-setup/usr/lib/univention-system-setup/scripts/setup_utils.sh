@@ -33,6 +33,9 @@
 profile_file="/var/cache/univention-system-setup/profile"
 check_ldap_access=0
 
+export LC_ALL=$LC_MESSAGES
+export TEXTDOMAIN="univention-system-setup-scripts"
+
 while [ $# -gt 0 ]
 do
 	case "$1" in
@@ -50,10 +53,48 @@ do
 	esac
 done
 
-# expects as parameter the path of the script and writes an info header
+# writes an info header
+# @param  script path
+# @param  description (optional)
 info_header()
 {
-	echo "=== $(readlink -m "$0") ($(date +'%Y-%m-%d %H:%M:%S')) ==="
+	_path=$(readlink -m "$0")
+	script="${_path##*scripts/}"
+	echo "=== $script ($(date +'%Y-%m-%d %H:%M:%S')) ==="
+
+	# information for the internal progress handler
+	# print the name of the script... if not specified the script name
+	name="$2"
+	[ -z "$name" ] && name="$script"
+	echo "__NAME__:$script $name"
+}
+
+# prints a message to the UMC module that is displayed in the progress bar
+# @param  message to print
+progress_msg()
+{
+	echo "__MSG__:$1"
+}
+
+# prints the number of total steps for the progress bar
+# @param  number of total steps
+progress_steps()
+{
+	echo "__STEPS__:$1"
+	_STEP_=0
+}
+
+# prints the current step number and increases it
+# @param  the current number of executed steps (optional)
+progress_next_step()
+{
+	if [ -n "$1" ]; then
+		echo "__STEP__:$1"
+		_STEP_=$1
+	else
+		echo "__STEP__:$_STEP_"
+		_STEP_=$((_STEP_+1))
+	fi
 }
 
 is_variable_set()

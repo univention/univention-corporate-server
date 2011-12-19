@@ -1,24 +1,4 @@
-usr/share/univention-system-setup/univention-system-setup         usr/share/univention-system-setup
-usr/lib/univention-system-setup/scripts/setup-join.sh            usr/lib/univention-system-setup/scripts/
-usr/lib/univention-system-setup/scripts/setup_utils.sh            usr/lib/univention-system-setup/scripts/
-usr/lib/univention-system-setup/scripts/ldap_available.sh         usr/lib/univention-system-setup/scripts/
-usr/lib/univention-system-setup/scripts/ldif_rewrite.py           usr/lib/univention-system-setup/scripts/
-usr/lib/univention-system-setup/scripts/keyboard/10keyboard       usr/lib/univention-system-setup/scripts/keyboard/
-usr/lib/univention-system-setup/scripts/timezone/10timezone       usr/lib/univention-system-setup/scripts/timezone/
-usr/lib/univention-system-setup/scripts/net/10interfaces          usr/lib/univention-system-setup/scripts/net/
-usr/lib/univention-system-setup/scripts/net/11ipv6interfaces      usr/lib/univention-system-setup/scripts/net/
-usr/lib/univention-system-setup/scripts/net/12gateway             usr/lib/univention-system-setup/scripts/net/
-usr/lib/univention-system-setup/scripts/net/13ipv6gateway         usr/lib/univention-system-setup/scripts/net/
-usr/lib/univention-system-setup/scripts/net/14nameserver          usr/lib/univention-system-setup/scripts/net/
-usr/lib/univention-system-setup/scripts/net/16forwarder           usr/lib/univention-system-setup/scripts/net/
-usr/lib/univention-system-setup/scripts/net/18proxy               usr/lib/univention-system-setup/scripts/net/
-usr/lib/univention-system-setup/scripts/language/10language       usr/lib/univention-system-setup/scripts/language/
-usr/lib/univention-system-setup/scripts/language/11default_locale usr/lib/univention-system-setup/scripts/defaultlocale/
-usr/lib/univention-system-setup/scripts/basis/10hostname          usr/lib/univention-system-setup/scripts/basis/
-usr/lib/univention-system-setup/scripts/basis/12domainname        usr/lib/univention-system-setup/scripts/basis/
-usr/lib/univention-system-setup/scripts/basis/14ldap_basis        usr/lib/univention-system-setup/scripts/basis/
-usr/lib/univention-system-setup/scripts/basis/16windows_domain    usr/lib/univention-system-setup/scripts/basis/
-usr/lib/univention-system-setup/scripts/basis/18root_password     usr/lib/univention-system-setup/scripts/basis/
-usr/lib/univention-system-setup/scripts/software/10software       usr/lib/univention-system-setup/scripts/software/
-usr/lib/univention-system-setup/scripts/ssl/10ssl                 usr/lib/univention-system-setup/scripts/ssl/
-var/lib/univention-system-setup/domainname.post/kerberos_rename   var/lib/univention-system-setup/domainname.post/
+usr/share/univention-system-setup/univention-system-setup
+usr/share/locale
+usr/lib/univention-system-setup/scripts
+var/lib/univention-system-setup/domainname.post/kerberos_rename

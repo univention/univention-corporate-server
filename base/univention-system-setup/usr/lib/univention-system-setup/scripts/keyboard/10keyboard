@@ -32,7 +32,7 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-info_header "$0"
+info_header "$0" "$(gettext "Setting keyboard layout")"
 
 keymap=`get_profile_var locale/keymap`
 

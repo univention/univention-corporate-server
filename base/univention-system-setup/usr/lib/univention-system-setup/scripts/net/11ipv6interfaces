@@ -47,7 +47,7 @@ done
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-info_header "$0"
+info_header "$0" "$(gettext "Configure IPv6 network devices")"
 
 # uses $binddn, $bindpwd, $new_ip, and $old_ip
 admin_replace_ip ()
