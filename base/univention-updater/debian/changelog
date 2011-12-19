@@ -1,3 +1,10 @@
+univention-updater (6.0.113-1) unstable; urgency=low
+
+  * do not show "update available but blocked" message if system is
+    appliance (Bug #25512)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 19 Dec 2011 16:52:41 +0100
+
 univention-updater (6.0.112-1) unstable; urgency=low
 
   * univention-upgrade now checks if univention-updater has been moved
