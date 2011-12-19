@@ -1,3 +1,9 @@
+univention-updater (6.0.111-2) unstable; urgency=low
+
+  * Do 2nd repository-update on missing {pre,post}up.sh scripts (Bug #25273)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Dec 2011 11:36:38 +0100
+
 univention-updater (6.0.111-1) unstable; urgency=low
 
   * Fix update script download (Bug #25273)

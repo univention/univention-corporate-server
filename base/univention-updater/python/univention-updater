@@ -485,6 +485,17 @@ def main():
 			dprint('       repository (/usr/sbin/univention-repository-create)')
 			dprint('       or try to install via "univention-updater net"')
 			sys.exit( 1 )
+	elif isinstance(updater, LocalUpdater) and nextversion == '3.0-0' and baseConfig.is_true('local/repository') and updateto_args:
+		# Workaround for Bug #25273: Call univention-repository-update again to mirror missed {pre,post}up.sh scripts
+		repobase = baseConfig.get('repository/mirror/basepath', '/var/lib/univention-repository')
+		base300a = os.path.join(repobase, 'mirror', '3.0', 'maintained', '3.0-0', 'all')
+		packages = os.path.join(base300a, 'Packages.gz')
+		scripts = os.path.join(base300a, 'preup.sh')
+		if os.path.exists(packages) and not os.path.exists(scripts):
+			dprint('Calling "univention-repository-update net" to download missing preup.sh for UCS-3.0 update')
+			resultCode = subprocess.call(['/usr/sbin/univention-repository-update', 'net'] + updateto_args)
+			if resultCode != 0:
+				raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
 
 	rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
 
