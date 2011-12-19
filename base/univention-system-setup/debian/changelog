@@ -1,3 +1,9 @@
+univention-system-setup (5.0.86-1) unstable; urgency=low
+
+  * UMC module: translate list of software packages; Bug #24819
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Dec 2011 16:49:51 +0100
+
 univention-system-setup (5.0.85-1) unstable; urgency=low
 
   * add close button to flavor tabs; Bug #24928

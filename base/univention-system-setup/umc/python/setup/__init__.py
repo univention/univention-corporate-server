@@ -65,6 +65,9 @@ class Instance(umcm.Base):
 		# reset umask to default
 		os.umask( 0022 )
 
+	def init( self ):
+		util.installer_i18n.set_language( str( self._locale ) )
+
 	def _check_thread_error( self, thread, result, request ):
 		"""Checks if the thread returned an exception. In that case in
 		error response is send and the function returns True. Otherwise

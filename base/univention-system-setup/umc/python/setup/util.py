@@ -45,7 +45,10 @@ import sys
 import apt
 import psutil
 
+from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
+
+installer_i18n = Translation( 'installer', localedir = '/lib/univention-installer/locale' )
 
 if not '/lib/univention-installer/' in sys.path:
 	sys.path.append('/lib/univention-installer/')
@@ -491,6 +494,9 @@ def get_components():
 	for ipkg in pkglist:
 		ipkg['Packages'].sort()
 		ipkg['id'] = ':'.join(ipkg['Packages'])
+		ipkg[ 'Description' ] = installer_i18n.translate( ipkg[ 'Description' ] )
+		ipkg[ 'Name' ] = installer_i18n.translate( ipkg[ 'Name' ] )
+
 	return pkglist
 
 def get_installed_packages():
