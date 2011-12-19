@@ -146,7 +146,10 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				if ignoreterm:
 					params.append(' --ignoreterm')
 				params = ''.join(params)
-				retcode = subprocess.call('univention-updater net --updateto %s%s' % (version_next, params, ), shell=True)
+				if os.path.exists('/usr/share/univention-updater/univention-updater'):
+					retcode = subprocess.call('/usr/share/univention-updater/univention-updater net --updateto %s%s' % (version_next, params, ), shell=True)
+				else:
+					retcode = subprocess.call('univention-updater net --updateto %s%s' % (version_next, params, ), shell=True)
 				if retcode:
 					dprint('exitcode of univention-updater: %s' % retcode)
 					dprint('ERROR: update failed. Please check /var/log/univention/updater.log')
@@ -212,7 +215,10 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 			# perform security update
 			dprint('Starting security update sec%s at %s...' % (next_security_update, time.ctime()))
 			time.sleep(1)
-			retcode = subprocess.call('univention-security-update net', shell=True)
+			if os.path.exists('/usr/share/univention-updater/univention-errata-update'):
+				retcode = subprocess.call('/usr/share/univention-updater/univention-errata-update net', shell=True)
+			else:
+				retcode = subprocess.call('univention-security-update net', shell=True)
 			if retcode:
 				dprint('exitcode of univention-security-update: %s' % retcode)
 				dprint('ERROR: update failed. Please check /var/log/univention/security-updates.log')
