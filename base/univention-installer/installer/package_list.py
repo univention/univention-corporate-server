@@ -41,7 +41,7 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('Desktop environemnt'),
+					'Name': _('Desktop environment'),
 					'Packages': ['univention-kde'],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],

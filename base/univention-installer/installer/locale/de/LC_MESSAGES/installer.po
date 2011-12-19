@@ -248,7 +248,7 @@ msgid "Desktop Environment packages"
 msgstr "Pakete der Desktop-Umgebung"
 
 #: installer/package_list.py:44
-msgid "Desktop environemnt"
+msgid "Desktop environment"
 msgstr "Desktop-Umgebung"
 
 #: installer/package_list.py:48
