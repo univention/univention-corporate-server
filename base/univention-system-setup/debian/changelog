@@ -1,3 +1,9 @@
+univention-system-setup (5.0.89-1) unstable; urgency=low
+
+  * fixed invisible progressbar for slave during system join (Bug #24399)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Dec 2011 16:12:41 +0100
+
 univention-system-setup (5.0.88-1) unstable; urgency=low
 
   * add missing JS file; Bug #24819

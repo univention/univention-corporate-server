@@ -440,7 +440,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					buttons: [{
 						name: 'submit',
 						label: this._('Join'),
-						callback: function() {
+						callback: dojo.hitch(this, function() {
+							this.standby(false);
 							deferred.resolve({
 								username: form.getWidget('username').get('value'),
 								password: form.getWidget('password').get('value')
@@ -448,7 +449,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 							dialog.hide();
 							dialog.destroyRecursive();
 							form.destroyRecursive();
-						}
+						})
 					}, {
 						name: 'cancel',
 						label: this._('Cancel'),
