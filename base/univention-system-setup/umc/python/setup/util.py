@@ -222,7 +222,9 @@ class ProgressParser( object ):
 	FRACTIONS = {
 		'basis/12domainname'		: 5,
 		'basis/14ldap_basis'		: 10,
-		'software/10software'		: 70,
+		'net/10interfaces'			: 5,
+		'net/11ipv6interfaces'		: 5,
+		'software/10software'		: 60,
 		}
 
 	# current status
@@ -261,20 +263,21 @@ class ProgressParser( object ):
 		# start new component name
 		match = ProgressParser.NAME.match( line )
 		if match is not None:
-			MODULE.info( 'Found name entry' )
+			MODULE.info( 'Progress: Found name entry' )
 			self.current.name, self.current.fractionName = match.groups()
-			MODULE.info( 'Found component %s' % self.current.name )
-			self.current.fraction = self.fractions.get( self.current.name, 0.0 )
-			MODULE.info( 'Set fraction to %f' % self.current.fraction )
+			MODULE.info( 'Progress: Found component %s' % self.current.name )
 			self.current._percentage += self.current.fraction
-			MODULE.info( 'Set percentage to %f' % self.current._percentage )
-			MODULE.info( 'Calculated percentage is %f' % self.current.percentage )
+			MODULE.info( 'Progress: Set percentage to %f' % self.current._percentage )
+			self.current.fraction = self.fractions.get( self.current.name, 0.0 )
+			MODULE.info( 'Progress: Set fraction to %f' % self.current.fraction )
+			self.current.step = 0 # reset current step
+			MODULE.info( 'Progress: Calculated percentage is %f' % self.current.percentage )
 			return True
 
 		# new status message
 		match = ProgressParser.MSG.match( line )
 		if match is not None:
-			MODULE.info( 'Found message' )
+			MODULE.info( 'Progress: Found message' )
 			self.current.message = match.groups()[ 0 ]
 			return True
 
@@ -283,7 +286,7 @@ class ProgressParser( object ):
 		if match is not None:
 			try:
 				self.current.steps = int( match.groups()[ 0 ] )
-				MODULE.info( 'Found steps: %d' % self.current.steps )
+				MODULE.info( 'Progress: Found steps: %d' % self.current.steps )
 				self.current.step = 0
 				return True
 			except ValueError:
@@ -297,7 +300,7 @@ class ProgressParser( object ):
 				if self.current.step > self.current.steps:
 					MODULE.info( 'ProgressParser (%s): step is higher than steps' % self.current.name )
 					self.current.step = self.current.steps
-				MODULE.info( 'Found step: %d' % self.current.step )
+				MODULE.info( 'Progress: Found step: %d' % self.current.step )
 				return True
 			except ValueError:
 				pass

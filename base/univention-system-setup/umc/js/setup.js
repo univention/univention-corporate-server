@@ -514,7 +514,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 									return;
 								}
 								this.parent._progressInfo.setInfo( response.result.name, response.result.message, response.result.percentage );
-								setTimeout( dojo.hitch( this, 'check' ), 500 );
+								setTimeout( dojo.hitch( this, 'check' ), 100 );
 							} ) );
 						}
 					};

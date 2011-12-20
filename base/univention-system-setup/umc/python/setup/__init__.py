@@ -44,6 +44,7 @@ import univention.management.console.modules as umcm
 import util
 import os
 import copy
+import locale
 import univention.config_registry
 
 from univention.management.console.log import MODULE
@@ -67,6 +68,7 @@ class Instance(umcm.Base):
 
 	def init( self ):
 		util.installer_i18n.set_language( str( self._locale ) )
+		locale.setlocale( locale.LC_ALL,  str( self._locale ) )
 
 	def _check_thread_error( self, thread, result, request ):
 		"""Checks if the thread returned an exception. In that case in
@@ -161,15 +163,17 @@ class Instance(umcm.Base):
 		def _thread(request, obj):
 			# acquire the lock in order to wait for the join/setup scripts to finish
 			# do this one minute long on then return an error
-			ntries = 240
+			SLEEP_TIME = 0.200
+			WAIT_TIME = 60
+			ntries = WAIT_TIME / SLEEP_TIME
 			while not obj._finishedLock.acquire(False):
 				if self._progressParser.changed and self._progressParser.current:
 					state = self._progressParser.current
 					return { 'finished' : False,
-							 'name' : state.name,
+							 'name' : state.fractionName,
 							 'message' : state.message,
 							 'percentage' : state.percentage }
-				time.sleep( 0.250 )
+				time.sleep( SLEEP_TIME )
 				ntries -= 1
 				if ntries <= 0:
 					raise TimeoutError('setup/finished has reached its timeout')
@@ -178,7 +182,7 @@ class Instance(umcm.Base):
 
 			# scripts are done, return final result
 			return { 'finished' : obj._finishedResult,
-					 'name' : self._progressParser.current.name,
+					 'name' : self._progressParser.current.fractionName,
 					 'message' : self._progressParser.current.message,
 					 'percentage' : self._progressParser.current.percentage }
 

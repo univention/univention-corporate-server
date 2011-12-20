@@ -1,3 +1,10 @@
+univention-system-setup (5.0.88-1) unstable; urgency=low
+
+  * add missing JS file; Bug #24819
+  * minor fixes in progress polling
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Dec 2011 10:14:28 +0100
+
 univention-system-setup (5.0.87-1) unstable; urgency=low
 
   * UMC module: prepared setup scripts to return parseable info data containing
