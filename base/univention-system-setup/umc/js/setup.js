@@ -297,6 +297,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var nchanges = 0;
 		var inverseKey2Page = {};  // saves which key belongs to which page
 		var summaries = [];
+		var umc_url = null;
+
 		dojo.forEach(this._pages, function(ipage) {
 			var pageVals = ipage.getValues();
 			var summary = ipage.getSummary();
@@ -311,6 +313,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				if (dojo.toJson(orgVal) != dojo.toJson(newVal)) {
 					values[ikey] = newVal;
 					++nchanges;
+					// if ( key == 'interfaces_ipv4' && newVal.length ) {
+					// 	umc_url = 'https://' + newVal[ 0 ][ 1 ] + '/umc/'
+					// }
 				}
 			}, this);
 		}, this);

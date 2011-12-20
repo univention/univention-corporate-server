@@ -33,7 +33,6 @@
 profile_file="/var/cache/univention-system-setup/profile"
 check_ldap_access=0
 
-export LC_ALL=$LC_MESSAGES
 export TEXTDOMAIN="univention-system-setup-scripts"
 
 while [ $# -gt 0 ]

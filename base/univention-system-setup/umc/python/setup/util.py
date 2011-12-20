@@ -354,6 +354,15 @@ def run_joinscript( progressParser, _username = None, password = None):
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
 	f.flush()
 
+	def runit( command ):
+		pipe = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = f ).stdout
+		while True:
+			line = pipe.readline()
+			if not line:
+				break
+			progressParser.parse( line )
+			f.write( line )
+
 	# write password file
 	if _username and password:
 		fp = open(PATH_PASSWORD_FILE, 'w')
@@ -366,13 +375,13 @@ def run_joinscript( progressParser, _username = None, password = None):
 		username = reg.sub('_', _username)
 
 		# run join scripts
-		subprocess.call([PATH_JOIN_SCRIPT, '--dcaccount', username, '--password_file', PATH_PASSWORD_FILE], stdout=f, stderr=f)
+		runit( [ PATH_JOIN_SCRIPT, '--dcaccount', username, '--password_file', PATH_PASSWORD_FILE ] )
 
 		# remove password file
 		os.remove(PATH_PASSWORD_FILE)
 	else:
 		# run join scripts
-		subprocess.call(PATH_JOIN_SCRIPT, stdout=f, stderr=f)
+		runit( PATH_JOIN_SCRIPT )
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
