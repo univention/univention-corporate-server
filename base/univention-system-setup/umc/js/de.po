@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-12-21 10:52+0100\n"
+"POT-Creation-Date: 2011-12-21 11:23+0100\n"
 "PO-Revision-Date: 2011-12-19 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:467
+#: umc/js/setup.js:472
 msgid "Account data"
 msgstr "Kontodaten"
 
@@ -28,7 +28,7 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:173 umc/js/setup.js:411 umc/js/setup.js:491
+#: umc/js/setup.js:173 umc/js/setup.js:416 umc/js/setup.js:496
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -52,8 +52,8 @@ msgstr "Basis-Einstellungen"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:167 umc/js/setup.js:272 umc/js/setup.js:408
-#: umc/js/setup.js:455 umc/js/setup.js:488
+#: umc/js/setup.js:167 umc/js/setup.js:272 umc/js/setup.js:413
+#: umc/js/setup.js:460 umc/js/setup.js:493
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -66,7 +66,6 @@ msgid "Certificate settings"
 msgstr "Zertifikateinstellungen"
 
 #: umc/js/_setup/CertificatePage.js:180
-#, fuzzy
 msgid ""
 "Changes in the SSL certificate settings will result in generating new root "
 "SSL certificates. Note that this will require an update of all host "
@@ -77,7 +76,8 @@ msgstr ""
 "Durch Änderungen an den SSL-Zertifikat-Einstellungen wird ein neues Root-"
 "Zertifikat erstellt. Dies hat zur Folge, dass alle Host-Zertifikate der "
 "Domäne aktualisiert werden müssen, da das alte Root-Zertifkat nicht mehr "
-"gültig sein wird. Weitere Informationen können in der <a href=\"http://sdb.univention.de/1000\">Univention Support Database</a> gefunden werden."
+"gültig sein wird. Weitere Informationen können in der <a href=\"http://sdb."
+"univention.de/1000\">Univention Support Database</a> gefunden werden."
 
 #: umc/js/_setup/NetworkPage.js:204
 msgid ""
@@ -270,7 +270,7 @@ msgstr ""
 "gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
 "Domäne NT-kompatible (Samba 3) ist."
 
-#: umc/js/setup.js:442
+#: umc/js/setup.js:447
 msgid "Join"
 msgstr ""
 
@@ -318,11 +318,11 @@ msgstr "Neues Root-Passwort"
 msgid "Next"
 msgstr "Vor"
 
-#: umc/js/setup.js:331
+#: umc/js/setup.js:336
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen vorgenommen."
 
-#: umc/js/setup.js:325
+#: umc/js/setup.js:330
 msgid ""
 "No changes have been made. Please confirm to continue with the boot process."
 msgstr ""
@@ -341,7 +341,7 @@ msgstr "Organisation"
 msgid "Organization settings"
 msgstr "Einstellungen über die Organisation"
 
-#: umc/js/setup.js:438
+#: umc/js/setup.js:443
 msgid "Password"
 msgstr "Passwort"
 
@@ -350,14 +350,14 @@ msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
 
-#: umc/js/setup.js:403
+#: umc/js/setup.js:408
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup.js:572
+#: umc/js/setup.js:577
 msgid "Please confirm to continue with the boot process."
 msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 
@@ -395,11 +395,11 @@ msgstr "Software-Einstellungen"
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/setup.js:543
+#: umc/js/setup.js:548
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:511
+#: umc/js/setup.js:516
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -410,15 +410,15 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der neuen Adresse ein."
 
-#: umc/js/setup.js:397
+#: umc/js/setup.js:402
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:337
+#: umc/js/setup.js:342
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
-#: umc/js/setup.js:423
+#: umc/js/setup.js:428
 msgid ""
 "The specified settings will be applied to the system and the system will be "
 "joined into the domain. Please enter username and password of a domain "
@@ -428,7 +428,7 @@ msgstr ""
 "das System in die Domäne gejoint. Bitte geben Sie dafür Benutzernamen und "
 "Password eines Administrator-Kontos der Domäne an."
 
-#: umc/js/setup.js:484
+#: umc/js/setup.js:489
 msgid ""
 "The specified settings will be applied to the system. This may take some "
 "time. Please confirm to proceed."
@@ -444,7 +444,7 @@ msgstr "Zeitzone"
 msgid "Time zone and keyboard settings"
 msgstr "Zeitzonen- und Tastatureinstellungen"
 
-#: umc/js/setup.js:434
+#: umc/js/setup.js:439
 msgid "Username"
 msgstr "Benutzername"
 
