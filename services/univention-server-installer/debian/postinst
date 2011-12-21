@@ -65,4 +65,15 @@ if [ "$1" = "configure" ]; then
 		then
 		/etc/init.d/univention-directory-listener crestart
 	fi
+
+	# copy fixed 10_debootstrap.sh to script/installer in repo dir Bug #23590
+	eval "$(univention-config-registry shell repository/mirror/basepath)"
+	if [ -z "$repository_mirror_basepath" ]; then
+		repository_mirror_basepath="/var/lib/univention-repository"
+	fi
+	mkdir -p "$repository_mirror_basepath/script/installer"
+	if [ ! -f "$repository_mirror_basepath/script/installer/10_debootstrap.sh" ]; then
+		cp /usr/share/univention-net-installer/10_debootstrap.sh "$repository_mirror_basepath/script/installer/10_debootstrap.sh"
+		chmod 755 "$repository_mirror_basepath/script/installer/10_debootstrap.sh"
+	fi
 fi
