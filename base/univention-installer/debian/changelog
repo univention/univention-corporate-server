@@ -1,3 +1,9 @@
+univention-installer (6.0.57-1) unstable; urgency=low
+
+  * exclude mailx in 10_debootstrap.sh Bug #23590 
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Dec 2011 10:46:15 +0100
+
 univention-installer (6.0.56-1) unstable; urgency=low
 
   * fixed installer/network.sh Bug #22505
