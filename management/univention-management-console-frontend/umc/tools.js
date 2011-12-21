@@ -222,13 +222,15 @@ dojo.mixin(umc.tools, {
 					if (!this.noLogin) {
 						// handle login cases
 						if (401 == result.status) {
-							// command was rejected, user is not authorized
-							umc.dialog.login();
+							// command was rejected, user is not authorized... continue to poll after successful login
+							umc.dialog.login().then(dojo.hitch(this, 'sendRequest'));
+							return;
 						}
 						if (411 == result.status) {
-							// login failed
-							umc.dialog.login();
+							// login failed... continue to poll after successful login
+							umc.dialog.login().then(dojo.hitch(this, 'sendRequest'));
 							umc.dialog.notify(umc.tools._statusMessages[result.status]);
+							return;
 						}
 					}
 

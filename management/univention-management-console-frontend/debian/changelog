@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.248-1) unstable; urgency=low
+
+  * pause long polling when login dialog is shown (Bug #25108)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Dec 2011 12:47:46 +0100
+
 univention-management-console-frontend (1.0.247-1) unstable; urgency=low
 
   * localize the URL to the manual; Bug #25426
