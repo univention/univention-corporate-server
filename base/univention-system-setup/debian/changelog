@@ -1,3 +1,9 @@
+univention-system-setup (5.0.90-2) unstable; urgency=low
+
+  * ignore .svn directories with dh_install (Bug #24399)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Dec 2011 12:20:51 +0100
+
 univention-system-setup (5.0.90-1) unstable; urgency=low
 
   * added progress information in setup-join.sh on a DC master, removed '.inst'
