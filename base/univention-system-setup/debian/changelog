@@ -1,3 +1,9 @@
+univention-system-setup (5.0.91-2) unstable; urgency=low
+
+  * version bump (Bug #24399)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Dec 2011 14:26:44 +0100
+
 univention-system-setup (5.0.91-1) unstable; urgency=low
 
   * fixed back button of software page on roles != DC master (Bug #25481)
