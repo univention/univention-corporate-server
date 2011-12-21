@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.250-1) unstable; urgency=low
+
+  * umc.tools.umcpCommand: added xhrTimeout long-polling option; Bug #25108
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Dec 2011 15:24:31 +0100
+
 univention-management-console-frontend (1.0.249-2) unstable; urgency=low
 
   * version bump; Bug #24943

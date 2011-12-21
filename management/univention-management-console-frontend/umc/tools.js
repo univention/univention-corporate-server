@@ -157,6 +157,9 @@ dojo.mixin(umc.tools, {
 			// JSON data that is being sent
 			content: content,
 
+			// in seconds, timeout that will be passed over to the XHR post command
+			xhrTimeout: dojo.getObject('xhrTimeout', false, opts) || 300,
+
 			// in seconds, will be multiplied with the number of retries
 			timeoutRetry: dojo.getObject('timeoutRetry', false, opts) || 2,
 
@@ -210,7 +213,7 @@ dojo.mixin(umc.tools, {
 						'Content-Type': 'application/json'
 					},
 					postData: this.content,
-					timeout: 1000 * 60 * 5 // 5min
+					timeout: 1000 * this.xhrTimeout
 				}).then(dojo.hitch(this, function(data) {
 					// request finished
 					this._dialog.hide();
