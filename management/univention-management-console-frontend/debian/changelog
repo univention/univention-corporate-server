@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.249-1) unstable; urgency=low
+
+  * added internal timer for session timeouts in order to avoid problems when
+    the system time is being changed; Bug #24943
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Dec 2011 13:32:21 +0100
+
 univention-management-console-frontend (1.0.248-1) unstable; urgency=low
 
   * pause long polling when login dialog is shown (Bug #25108)

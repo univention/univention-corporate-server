@@ -78,17 +78,29 @@ class SessionClient(object):
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
-		self._timeout = timeout * 1000
-		self._timeout_id = None
-		self.renew_timer()
+		self._timeout = timeout
+		self._time_remaining = timeout
+		self._timer()  # launch the timer
 		self._lock = threading.Lock()
 
 	def renew_timer( self ):
-		"""Refresh the session timer. If there is already a timer
-		running it is removed before the new timer is set up"""
-		if self._timeout_id is not None:
-			notifier.timer_remove( self._timeout_id )
-		self._timeout_id = notifier.timer_add( self._timeout, self._timed_out )
+		"""Refresh the remaining time the session is will be held open."""
+		self._time_remaining = self._timeout
+
+	def _timer( self ):
+		"""In order to avoid problems when the system time is changed (e.g.,
+		via rdate), we register a timer event that counts down the session
+		timeout second-wise."""
+		# count down the remaining time
+		self._time_remaining -= 1
+
+		if self._time_remaining <= 0:
+			# session has timed out
+			self._timed_out()
+		else:
+			# count down the timer second-wise (in order to avoid problems when
+			# changing the system time, e.g. via rdate)
+			notifier.timer_add( 1000 , self._timer )
 
 	def _timed_out( self ):
 		"""Timer event: the session has expired and therefor the
