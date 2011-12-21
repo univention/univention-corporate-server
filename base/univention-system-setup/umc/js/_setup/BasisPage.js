@@ -180,7 +180,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		delete vals.fqdn;
 
 		var role = vals['server/role'];
-		if (!(role == 'domaincontroller_master' || role == 'basesystem')) {
+		if (!this._form.getWidget('ldap/base').get('visible')) {
 			// remove the ldap/base entry
 			delete vals['ldap/base'];
 		}
