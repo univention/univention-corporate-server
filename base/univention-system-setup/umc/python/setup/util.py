@@ -200,7 +200,7 @@ class ProgressState( object ):
 	def percentage( self ):
 		if self.step == 0:
 			return self._percentage
-		return ( self._percentage + self.fraction * ( self.step / self.steps ) ) / self.max * 100
+		return ( self._percentage + self.fraction * ( self.step / float( self.steps ) ) ) / self.max * 100
 
 	def __eq__( self, other ):
 		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step
@@ -224,7 +224,7 @@ class ProgressParser( object ):
 		'basis/14ldap_basis'		: 10,
 		'net/10interfaces'			: 5,
 		'net/11ipv6interfaces'		: 5,
-		'software/10software'		: 60,
+		'software/10software'		: 20,
 		}
 
 	# current status
@@ -268,7 +268,7 @@ class ProgressParser( object ):
 			MODULE.info( 'Progress: Found component %s' % self.current.name )
 			self.current._percentage += self.current.fraction
 			MODULE.info( 'Progress: Set percentage to %f' % self.current._percentage )
-			self.current.fraction = self.fractions.get( self.current.name, 0.0 )
+			self.current.fraction = self.fractions.get( self.current.name, 1.0 )
 			MODULE.info( 'Progress: Set fraction to %f' % self.current.fraction )
 			self.current.step = 0 # reset current step
 			MODULE.info( 'Progress: Calculated percentage is %f' % self.current.percentage )
@@ -354,6 +354,7 @@ def run_joinscript( progressParser, _username = None, password = None):
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
 	f.flush()
 
+	progressParser.fractions[ 'setup-join.sh' ] = 20
 	def runit( command ):
 		pipe = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = f ).stdout
 		while True:

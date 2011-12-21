@@ -39,7 +39,12 @@ then # call self in xinit as nobody, then start gdm
 	USSPASSWD="$(tr -c -d '[:alnum:]' < /dev/urandom | head -c 30)"
 	echo "__systemsetup__:$USSPASSWD" | chpasswd
 
-	USSURL="http://localhost/univention-management-console/?username=__systemsetup__&password=${USSPASSWD}&module=setup&flavor=wizard&overview=false&displayUsername=false"
+	default_locale=en_US
+	eval "$(/usr/sbin/univention-config-registry shell locale/default)"
+	if [ -n "$locale_default" ]; then
+		default_locale=${locale_default%%.*}
+	fi
+	USSURL="http://localhost/univention-management-console/?username=__systemsetup__&password=${USSPASSWD}&module=setup&flavor=wizard&overview=false&displayUsername=false&lang=$default_locale"
 	BROWSERPIDFILE="/var/cache/univention-system-setup/browser.pid"
 
 	# save threshold (15 seconds from now on)

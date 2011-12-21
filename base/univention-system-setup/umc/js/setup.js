@@ -287,7 +287,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// otherwise send the UMCP command to shut down the web browser
 				return this.umcpCommand('setup/browser/shutdown', false, undefined, {
 					message: this._('Your session should be shut down automatically. If this has not happened so far, you may force a shutdown by pressing Ctrl+Q.'),
-					messageInterval: 30
+					messageInterval: 30,
+					xhrTimeout: 60
 				}).then(dojo.hitch(this, function() {
 					this.standby(false);
 				}));
@@ -315,9 +316,13 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				if (dojo.toJson(orgVal) != dojo.toJson(newVal)) {
 					values[ikey] = newVal;
 					++nchanges;
-					// if ( key == 'interfaces_ipv4' && newVal.length ) {
-					// 	umc_url = 'https://' + newVal[ 0 ][ 1 ] + '/umc/'
-					// }
+					if ( umc_url === null ) {
+						if ( ikey == 'interfaces/eth0/address' && newVal ) {
+							umc_url = 'https://' + newVal + '/umc/';
+						} else if ( ikey == 'interfaces/eth0/ipv6/default/address' && newVal ) {
+							umc_url = 'https://[' + newVal + ']/umc/';
+						}
+					}
 				}
 			}, this);
 		}, this);
@@ -512,10 +517,14 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						deferred: _deferred,
 						parent: _parent,
 						check: function() {
+							var message = dojo.replace( this.parent._( 'The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}.' ), { 
+								linkStart : umc_url ? '<a href="' + umc_url + '">' : '',
+								linkEnd : umc_url ? '</a>' : ''
+							} );
 							this.parent.umcpCommand( 'setup/finished', {}, undefined, undefined, {
 								// long polling options
 								messageInterval: 30,
-								message: this.parent._('The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the new address.')
+								message: message
 							} ).then( dojo.hitch( this, function( response ) {
 								if ( response.result.finished ) {
 									this.deferred.resolve();

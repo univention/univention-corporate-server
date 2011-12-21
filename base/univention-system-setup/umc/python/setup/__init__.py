@@ -67,8 +67,8 @@ class Instance(umcm.Base):
 		os.umask( 0022 )
 
 	def init( self ):
-		util.installer_i18n.set_language( str( self._locale ) )
-		os.environ[ 'LC_ALL' ] =  str( self._locale )
+		util.installer_i18n.set_language( str( self.locale ) )
+		os.environ[ 'LC_ALL' ] =  str( self.locale )
 
 	def _check_thread_error( self, thread, result, request ):
 		"""Checks if the thread returned an exception. In that case in
