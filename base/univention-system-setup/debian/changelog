@@ -1,3 +1,11 @@
+univention-system-setup (5.0.90-1) unstable; urgency=low
+
+  * added progress information in setup-join.sh on a DC master, removed '.inst'
+    suffix of join scripts (Bug #24399)
+  * added link to Univention SDB when changing SSL certificates (Bug #25350)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Dec 2011 10:54:16 +0100
+
 univention-system-setup (5.0.89-2) unstable; urgency=low
 
   * also parse output of scripts when joining the system; Bug #24819

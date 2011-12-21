@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-12-19 17:05+0100\n"
+"POT-Creation-Date: 2011-12-21 10:52+0100\n"
 "PO-Revision-Date: 2011-12-19 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:466
+#: umc/js/setup.js:467
 msgid "Account data"
 msgstr "Kontodaten"
 
@@ -28,7 +28,7 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:173 umc/js/setup.js:411 umc/js/setup.js:490
+#: umc/js/setup.js:173 umc/js/setup.js:411 umc/js/setup.js:491
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -53,7 +53,7 @@ msgid "Business unit"
 msgstr "Abteilung"
 
 #: umc/js/setup.js:167 umc/js/setup.js:272 umc/js/setup.js:408
-#: umc/js/setup.js:454 umc/js/setup.js:487
+#: umc/js/setup.js:455 umc/js/setup.js:488
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -66,15 +66,18 @@ msgid "Certificate settings"
 msgstr "Zertifikateinstellungen"
 
 #: umc/js/_setup/CertificatePage.js:180
+#, fuzzy
 msgid ""
 "Changes in the SSL certificate settings will result in generating new root "
 "SSL certificates. Note that this will require an update of all host "
-"certificates in the domain as the old root certificate is no longer valid."
+"certificates in the domain as the old root certificate is no longer valid. "
+"Additional information can be found in the <a href=\"http://sdb.univention."
+"de/1000\">Univention Support Database</a>"
 msgstr ""
 "Durch Änderungen an den SSL-Zertifikat-Einstellungen wird ein neues Root-"
 "Zertifikat erstellt. Dies hat zur Folge, dass alle Host-Zertifikate der "
 "Domäne aktualisiert werden müssen, da das alte Root-Zertifkat nicht mehr "
-"gültig sein wird."
+"gültig sein wird. Weitere Informationen können in der <a href=\"http://sdb.univention.de/1000\">Univention Support Database</a> gefunden werden."
 
 #: umc/js/_setup/NetworkPage.js:204
 msgid ""
@@ -354,7 +357,7 @@ msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup.js:571
+#: umc/js/setup.js:572
 msgid "Please confirm to continue with the boot process."
 msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 
@@ -392,11 +395,11 @@ msgstr "Software-Einstellungen"
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/setup.js:542
+#: umc/js/setup.js:543
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:510
+#: umc/js/setup.js:511
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -425,7 +428,7 @@ msgstr ""
 "das System in die Domäne gejoint. Bitte geben Sie dafür Benutzernamen und "
 "Password eines Administrator-Kontos der Domäne an."
 
-#: umc/js/setup.js:483
+#: umc/js/setup.js:484
 msgid ""
 "The specified settings will be applied to the system. This may take some "
 "time. Please confirm to proceed."

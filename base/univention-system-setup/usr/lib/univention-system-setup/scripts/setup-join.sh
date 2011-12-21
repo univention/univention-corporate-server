@@ -157,6 +157,7 @@ fi
 		ln -sf /var/univention-join/status /usr/lib/univention-install/.index.txt
 
 		for i in /usr/lib/univention-install/*.inst; do
+			echo "Configure $i"
 			$i
 		done
 	else
@@ -175,8 +176,10 @@ fi
 	# script is being executed
 	while read line; do
 		if [ "${line#Configure }" != "$line" ]; then
-			# found line starting with "Configure "
-			progress_msg "$(gettext "Configure") $(basename ${line#Configure })"
+			# found line starting with "Configure " ... parse the join script name
+			joinScript=${line#Configure }
+			joinScript=${joinScript%%.inst*}
+			progress_msg "$(gettext "Configure") $(basename $joinScript)"
 			progress_next_step
 		fi
 		echo "$line"
