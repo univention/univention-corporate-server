@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.249-2) unstable; urgency=low
+
+  * version bump; Bug #24943
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Dec 2011 14:27:11 +0100
+
 univention-management-console-frontend (1.0.249-1) unstable; urgency=low
 
   * added internal timer for session timeouts in order to avoid problems when
