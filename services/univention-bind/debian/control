@@ -18,12 +18,25 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 1.0.23),
  univention-ipcalc
 Conflicts: univention-dns,
- univention-bind-proxy
+ univention-bind-proxy (<= 6.0.0)
 Replaces: univention-dns,
  univention-bind-proxy
 Description: UCS - DNS server
  This package installs a DNS server that receives its zone
  information from LDAP or from Samba 4.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-bind-proxy
+Architecture: all
+Depends: ${misc:Depends},
+ univention-bind
+Description: Transition package
+ Package to ease upgrading from old package univention-bind to
+ the new package.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

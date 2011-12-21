@@ -1,3 +1,9 @@
+univention-bind (6.0.37-1) unstable; urgency=low
+
+  * Added univention-bind-proxy transition package (Bug #25571)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Dec 2011 11:15:00 +0100
+
 univention-bind (6.0.36-1) unstable; urgency=low
 
   * Don't register an IPv6 address as default DNS server in
