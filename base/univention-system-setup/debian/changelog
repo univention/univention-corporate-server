@@ -1,3 +1,10 @@
+univention-system-setup (5.0.91-1) unstable; urgency=low
+
+  * fixed back button of software page on roles != DC master (Bug #25481)
+  * added missing progress steps to setup-join.sh (Bug #24399)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 Dec 2011 12:41:29 +0100
+
 univention-system-setup (5.0.90-2) unstable; urgency=low
 
   * ignore .svn directories with dh_install (Bug #24399)

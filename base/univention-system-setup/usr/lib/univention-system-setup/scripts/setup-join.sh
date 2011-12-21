@@ -140,8 +140,10 @@ info_header "$(basename $0)" "$(gettext "Domain join")"
 
 # see how many join scripts we need to execute
 joinScripts=(/usr/lib/univention-install/*.inst)
-progress_steps $((${#joinScripts[@]}+1))
+nJoinSteps=$((${#joinScripts[@]}+1))
+progress_steps $nJoinSteps
 progress_msg "$(gettext "Preparing domain join")"
+progress_next_step
 
 # Call join
 if [ -d /var/lib/univention-ldap/ldap ]; then
@@ -185,6 +187,7 @@ fi
 		echo "$line"
 	done
 )
+progress_next_step $nJoinSteps
 
 rm -f /var/lib/univention-ldap/root.secret
 

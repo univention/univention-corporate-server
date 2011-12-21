@@ -83,17 +83,26 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._progressInfo = new umc.modules._setup.ProgressInfo();
 		// this._progressInfo.buildRendering();
 		this.standby(true);
+
+		// get all visible pages
+		var visiblePages = dojo.filter(this.pages, function(iclass, i) {
+			// load page class
+			var ipath = 'umc.modules._setup.' + iclass;
+			dojo['require'](ipath);
+
+			// check whether 'role' is set and the page should be visible or not
+			var Class = new dojo.getObject(ipath);
+			return !(Class.prototype.role && dojo.indexOf(Class.prototype.role, role) < 0);
+		});
+
 		if (this.moduleFlavor == 'wizard') {
 			// wizard mode
 
 			// create all pages dynamically
 			this._pages = [];
-			dojo.forEach(this.pages, function(iclass, i) {
-				// load page class
-				var ipath = 'umc.modules._setup.' + iclass;
-				dojo['require'](ipath);
-
+			dojo.forEach(visiblePages, function(iclass, i) {
 				// check whether 'role' is set and the page should be visible or not
+				var ipath = 'umc.modules._setup.' + iclass;
 				var Class = new dojo.getObject(ipath);
 				if (Class.prototype.role && dojo.indexOf(Class.prototype.role, role) < 0) {
 					return true;
@@ -101,7 +110,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 				// get the buttons we need
 				var buttons = [];
-				if (i < this.pages.length - 1) {
+				if (i < visiblePages.length - 1) {
 					buttons.push({
 						name: 'submit',
 						label: this._('Next'),
@@ -119,7 +128,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						})
 					});
 				}
-				if (i == this.pages.length - 1) {
+				if (i == visiblePages.length - 1) {
 					buttons.push({
 						name: 'submit',
 						label: this._('Apply settings'),
@@ -134,7 +143,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
 					footerButtons: buttons,
 					onSave: dojo.hitch(this, function() {
-						if (i < this.pages.length - 1) {
+						if (i < visiblePages.length - 1) {
 							this.selectChild(this._pages[i + 1]);
 						}
 						else {
@@ -184,17 +193,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// create all pages dynamically
 			this._pages = [];
-			dojo.forEach(this.pages, function(iclass) {
-				var ipath = 'umc.modules._setup.' + iclass;
-				dojo['require'](ipath);
-
-				// check whether 'role' is set and the page should be visible or not
-				var Class = new dojo.getObject(ipath);
-				if (Class.prototype.role && dojo.indexOf(Class.prototype.role, role) < 0) {
-					return true;
-				}
-
+			dojo.forEach(visiblePages, function(iclass) {
 				// create new page
+				var ipath = 'umc.modules._setup.' + iclass;
+				var Class = new dojo.getObject(ipath);
 				var ipage = new Class({
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
 					footerButtons: buttons,
