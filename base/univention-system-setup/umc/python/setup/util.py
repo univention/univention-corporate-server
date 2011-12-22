@@ -198,8 +198,6 @@ class ProgressState( object ):
 
 	@property
 	def percentage( self ):
-		if self.step == 0:
-			return self._percentage
 		return ( self._percentage + self.fraction * ( self.step / float( self.steps ) ) ) / self.max * 100
 
 	def __eq__( self, other ):
@@ -264,9 +262,11 @@ class ProgressParser( object ):
 		match = ProgressParser.NAME.match( line )
 		if match is not None:
 			self.current.name, self.current.fractionName = match.groups()
+			self.current.message = ''
 			self.current._percentage += self.current.fraction
 			self.current.fraction = self.fractions.get( self.current.name, 1.0 )
 			self.current.step = 0 # reset current step
+			self.current.steps = 1
 			return True
 
 		# new status message

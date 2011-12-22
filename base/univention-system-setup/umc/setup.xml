@@ -4,8 +4,8 @@
 	<name>System Setup</name>
 	<description>Univention System Setup for configuring the server</description>
 	<flavor icon="setup" id="wizard">
-		<name>System Setup Wizard</name>
-		<description>Univention System Setup Wizard for configuring the server</description>
+		<name>Basic settings wizard</name>
+		<description>Wizard for configuring the basic system settings</description>
 	</flavor>
 	<flavor icon="setup" id="tabs">
 		<name>Basic settings</name>

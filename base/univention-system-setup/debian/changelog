@@ -1,3 +1,13 @@
+univention-system-setup (5.0.96-1) unstable; urgency=low
+
+  * fixed wrong percentage number in progressbar; Bug #24819
+  * fixed error when saving in wizard; Bug #24398
+  * adjusted help text; Bug #24398
+  * changed locale directories for help text from de_DE -> de, en_US -> en;
+    Bug #24398
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 22 Dec 2011 16:22:05 +0100
+
 univention-system-setup (5.0.95-1) unstable; urgency=low
 
   * added help text for appliance wizard along with UCR integration; Bug #24398

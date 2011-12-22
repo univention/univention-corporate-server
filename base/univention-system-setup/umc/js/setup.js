@@ -353,6 +353,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var allValid = true;
 		var validationMessage = '<p>' + this._('The following entries could not be validated:') + '</p><ul style="max-height:200px; overflow:auto;">';
 		dojo.forEach(this._pages, function(ipage) {
+			if (!ipage._form) {
+				return true;
+			}
 			umc.tools.forIn(ipage._form._widgets, function(ikey, iwidget) {
 				if (iwidget.isValid && false === iwidget.isValid()) {
 					allValid = false;
@@ -545,6 +548,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				var deferred = new dojo.Deferred();
 
 				// send save command to server
+				this._progressInfo.reset();
 				this.standby( true, this._progressInfo );
 				this.umcpCommand('setup/save', {
 					values: values,

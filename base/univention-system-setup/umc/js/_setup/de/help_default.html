@@ -1,0 +1,16 @@
+<h2>Allgemein</h2>
+<p>UCS Appliance-Modus ermöglicht es, die Grundkonfiguration eines Univention Corporate Server-Systems nach dem Boot-Vorgang per Browser anzupassen. So können beispielsweise vorbereitete Images von Univention Corporate Server (UCS) kopiert oder für virtuelle Instanzen geklont und beim ersten Systemstart per Browser konfiguriert werden. Die Grundkonfiguration beinhaltet die notwendigen Einstellungen, damit das System einer Domäne beitreten kann und somit direkt einsatzfähig ist. Darüber hinaus können weitere Einstellungen wie z.B. die Software-Ausstattung vorgenommen werden.</p>
+<h2>Konfiguration</h2>
+<p>Die Grundkonfiguration des Systems ist aufgeteilt in die folgenden Schritte:</p>
+<ol>
+<li>Die <i>Spracheinstellungen</i> beinhalten alle sprachrelevanten Einstellungsmöglichkeiten wie Zeitzone, Tastaturlayout und Systemsprache.</li>
+<li>Die <i>Basis-Einstellungen</i> legen grundlegende Einstellungen wie Rechner- und Domänenname, LDAP-Basis, Windows-Domänename und Root-Passwort fest. </li>
+<li>In den <i>Netzwerkeinstellungen</i> können IP-Adressen (IPv4 und IPv6) sowie DNS-Server, Gateways und HTTP-Proxy festgelegt werden.</li>
+<li>Nach Vergabe der <i>Zertifikatseinstellungen</i> wird ein neues Root-Zertifikat für die Domäne erstellt. Hinweis: Dieser Schritt ist nur auf Domänencontroller Master-Systemen notwendig.</li>
+<li>Über die <i>Software-Einstellungen</i> können bestimmte Software-Komponenten installiert und deinstalliert werden.</li>
+</ol>
+<p>Während des Speichervorgangs wird auch der Domänenbeitritt durchgeführt.
+Dazu ist auf allen Systemrollen, außer Domänencontroller Master, die Eingabe von Benutzernamen und Passwort eines gültigen Domänenadministrator-Kontos notwendig.
+Nach dem erfolgreichen Domänenbeitritt kann der Einstellungsassistent abgeschlossen und der Boot-Vorgang fortgesetzt werden.</p>
+<p>Werden die Einstellungen in einem Browser von einem externen System aus vorgenommen, ist im Anschluss an die Konfiguration eine Neuanmeldung an Univention Management Console erforderlich.</p>
+<p>Die Grundkonfiguration kann jederzeit im UMC-Modul "Basiseinstellungen" geändert werden.</p>

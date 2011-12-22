@@ -55,22 +55,32 @@ dojo.declare("umc.modules._setup.ProgressInfo", [ umc.widgets.ContainerWidget, u
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._component = new umc.widgets.Text( { label : this._( 'Initialize the configuration process ...' ), style : 'width: 100%' } );
+		this._component = new umc.widgets.Text( { content : '' , style : 'width: 100%' } );
 		this.addChild( this._component );
 		this._progressBar = new dijit.ProgressBar( { style : 'width: 100%' } );
 		this.addChild( this._progressBar );
-		this._message = new umc.widgets.Text( { label : '', style : 'width: 100%' } );
+		this._message = new umc.widgets.Text( { content : '', style : 'width: 100%' } );
 		this.addChild( this._message );
 
 		this._progressBar.set( 'value', 0 );
 		this._progressBar.set( 'maximum', 100 );
+
+		this.reset();
 		this.startup();
+	},
+
+	reset: function() {
+		this._component.set( 'content', this._( 'Initialize the configuration process ...' ) );
+		this._message.set( 'content', '' );
+		this._progressBar.set( 'value', 0 );
 	},
 
 	setInfo: function( component, message, percentage ) {
 		this._component.set( 'content', component );
-		this._message.set( 'content', message );
 		this._progressBar.set( 'value', percentage );
+		// make sure that at least a not breakable space is printed
+		// ... this avoids vertical jumping of widgets
+		this._message.set( 'content', message || '&nbsp;' );
 	}
 });
 

@@ -49,7 +49,7 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 		this.inherited(arguments);
 
 		this.title = this._('Help');
-		this.headerText = this._('UCS Appliance');
+		this.headerText = this._('UCS appliance');
 		this._orgVals = {};
 	},
 
@@ -57,12 +57,12 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 		this.inherited(arguments);
 
 		// get the help file in the correct locale
-		var path = dojo.locale.replace('-', '_') + '/' + 'help.html';
+		var path = dojo.locale.split('-')[0].toLowerCase() + '/' + 'help.html';
 		var html = dojo.cache('umc.modules._setup', path);
 
 		// build up the widgets
 		var pane = new umc.widgets.ExpandingTitlePane({
-			title: this._('Information about UCS Appliance')
+			title: this._('Information about UCS appliance mode')
 		});
 		this.addChild(pane);
 		var text = new umc.widgets.Text({

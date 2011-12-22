@@ -34,7 +34,7 @@ DEST_DIR=/usr/share/univention-management-console-frontend/js/umc/modules/_setup
 DEST_NAME=help.html
 DEFAULT_NAME=help_default.html
 UCR_NAME=system/setup/boot/help
-LANGUAGES=(de_DE en_US)
+LANGUAGES=(de en)
 
 IFS=:
 vals=($(univention-config-registry get $UCR_NAME))

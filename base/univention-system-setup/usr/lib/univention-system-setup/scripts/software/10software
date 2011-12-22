@@ -79,7 +79,7 @@ mkfifo "$stdoutFifo" "$statFifo"
 	# update
 	echo "apt-get $APT_PARAMS update"
 	apt-get $APT_PARAMS update
-	echo "dlstatus:_:100:" >&4
+	echo "pmstatus:_:100:" >&4
 
 	# install packages
 	for p in $packages_remove; do
@@ -119,16 +119,22 @@ while [ "$statResult" != 1 -a "$stdoutResult" != 1 ]; do
         IFS=$':'
         list=($line)
         IFS=$'\n\t '
+		statusType=${list[0]}
 		percentage=${list[2]%.*}  # the precentage might be floating point, remove fractions
 		msg=${list[3]}
+
+		# print out message
+        [ -n "$msg" ] && progress_msg "$msg"
+
+		# ignore download status
+		[ "$statusType" = "dlstatus" ] && continue
 
 		# check whether we have passed to the next command
 		[ "$percentage" -lt "$lastPercentage" ] && icommand=$((icommand+1))
 		lastPercentage=$percentage
 
-		# print out status information
+		# print current step
         progress_next_step "$((percentage + icommand * 100))"
-        [ -n "$msg" ] && progress_msg "$msg"
     fi
 done
 

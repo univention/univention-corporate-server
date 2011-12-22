@@ -1,0 +1,17 @@
+<h2>General</h2>
+<p>UCS appliance mode allows to adapt the basic configuration of a Univention Corporate Server system after the boot process in a browser. In this way, prepared images of Univention Corporate Server (UCS) can be copied or, for virtual instances, cloned. A configuration is then possible at system startup.</p>
+<p>The basic configuration incorporates necessary system settings in order to join a domain and to be operational. Moreover, additional settings, such as software equipment, may be adjusted.</p>
+<h2>Configuration</h2>
+<p>The basic system configuration is divided into the following steps:</p>
+<ol>
+<li><i>Language settings</i> incorporate all language relevant configurations, such as time zone, keyboard layout, and system loclaes.</li>
+<li>The <i>basic settings</i> define essential properties, such as host and domain name, LDAP base, Windows base as well as root password.</li>
+<li>In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as name servers, gateways, and HTTP proxies may be specified.</li>
+<li>Following the <i>certificate settings</i>, a new root certificate will be created for the domain. Note that this step only applies to domaincontroller master systems.</li>
+<li>Via the <i>software settigns</i>, particular software components may be installed or removed.</li>
+</ol>
+<p>During the saving process, a domain join will be executed, as well.
+For this, it is necessary to enter a valid domain administrator account on all system roles except domaincontroller master.
+After the successful domain join, the configuration wizard can be closed in order to continue with the boot process.</p>
+<p>The configuration can also be conducted via a web browser from an external system. In this case, a subsequent relogin at Univention Management Console will be necessary.</p>
+<p>The basic configuration can be modified at any later point via the UMC moudle "Basic settings".</p>
