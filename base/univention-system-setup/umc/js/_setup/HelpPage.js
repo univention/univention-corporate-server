@@ -57,7 +57,7 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 		this.inherited(arguments);
 
 		// get the help file in the correct locale
-		var path = dojo.locale.split('-')[0].toLowerCase() + '/' + 'help.html';
+		var path = dojo.locale.split(/[^a-zA-Z]/)[0].toLowerCase() + '/' + 'help.html';
 		var html = dojo.cache('umc.modules._setup', path);
 
 		// build up the widgets
