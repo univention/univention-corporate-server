@@ -55,7 +55,7 @@ dojo.declare("umc.modules._setup.ProgressInfo", [ umc.widgets.ContainerWidget, u
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._component = new umc.widgets.Text( { label : '', style : 'width: 100%' } );
+		this._component = new umc.widgets.Text( { label : this._( 'Initialize the configuration process ...' ), style : 'width: 100%' } );
 		this.addChild( this._component );
 		this._progressBar = new dijit.ProgressBar( { style : 'width: 100%' } );
 		this.addChild( this._progressBar );

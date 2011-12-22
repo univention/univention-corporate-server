@@ -224,7 +224,7 @@ class ProgressParser( object ):
 		'basis/14ldap_basis'		: 10,
 		'net/10interfaces'			: 5,
 		'net/11ipv6interfaces'		: 5,
-		'software/10software'		: 20,
+		'software/10software'		: 50,
 		}
 
 	# current status
@@ -263,21 +263,15 @@ class ProgressParser( object ):
 		# start new component name
 		match = ProgressParser.NAME.match( line )
 		if match is not None:
-			MODULE.info( 'Progress: Found name entry' )
 			self.current.name, self.current.fractionName = match.groups()
-			MODULE.info( 'Progress: Found component %s' % self.current.name )
 			self.current._percentage += self.current.fraction
-			MODULE.info( 'Progress: Set percentage to %f' % self.current._percentage )
 			self.current.fraction = self.fractions.get( self.current.name, 1.0 )
-			MODULE.info( 'Progress: Set fraction to %f' % self.current.fraction )
 			self.current.step = 0 # reset current step
-			MODULE.info( 'Progress: Calculated percentage is %f' % self.current.percentage )
 			return True
 
 		# new status message
 		match = ProgressParser.MSG.match( line )
 		if match is not None:
-			MODULE.info( 'Progress: Found message' )
 			self.current.message = match.groups()[ 0 ]
 			return True
 
@@ -286,7 +280,6 @@ class ProgressParser( object ):
 		if match is not None:
 			try:
 				self.current.steps = int( match.groups()[ 0 ] )
-				MODULE.info( 'Progress: Found steps: %d' % self.current.steps )
 				self.current.step = 0
 				return True
 			except ValueError:
@@ -298,9 +291,7 @@ class ProgressParser( object ):
 			try:
 				self.current.step = int( match.groups()[ 0 ] )
 				if self.current.step > self.current.steps:
-					MODULE.info( 'ProgressParser (%s): step is higher than steps' % self.current.name )
 					self.current.step = self.current.steps
-				MODULE.info( 'Progress: Found step: %d' % self.current.step )
 				return True
 			except ValueError:
 				pass
@@ -354,7 +345,8 @@ def run_joinscript( progressParser, _username = None, password = None):
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
 	f.flush()
 
-	progressParser.fractions[ 'setup-join.sh' ] = 20
+	progressParser.fractions[ 'setup-join.sh' ] = 50
+	progressParser.current.max = sum( progressParser.fractions.values() )
 	def runit( command ):
 		pipe = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = f ).stdout
 		while True:
