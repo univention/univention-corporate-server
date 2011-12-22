@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.251-1) unstable; urgency=low
+
+  * adapted CSS properties for h2-tags; Bug #24398
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 22 Dec 2011 12:21:58 +0100
+
 univention-management-console-frontend (1.0.250-1) unstable; urgency=low
 
   * umc.tools.umcpCommand: added xhrTimeout long-polling option; Bug #25108

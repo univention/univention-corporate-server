@@ -5198,3 +5198,11 @@ p {
 	padding-bottom: 10px
 }
 
+.umc h2 {
+	margin-top: 1.2em;
+	margin-bottom: 0.6em;
+}
+
+.umc h2:first-child {
+	margin-top: 0.6em;
+}
