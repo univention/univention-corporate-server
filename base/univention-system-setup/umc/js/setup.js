@@ -78,10 +78,6 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			this.standby(false);
 		}));
 
-		// add the HelpPage to the list of pages for the wizard mode
-		if (this.moduleFlavor == 'wizard') {
-			this.pages.unshift('HelpPage');
-		}
 	},
 
 	renderPages: function(role) {
@@ -89,8 +85,14 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// this._progressInfo.buildRendering();
 		this.standby(true);
 
+		// add the HelpPage to the list of pages for the wizard mode
+		var allPages = dojo.clone(this.pages);
+		if (this.moduleFlavor == 'wizard') {
+			allPages.unshift('HelpPage');
+		}
+
 		// get all visible pages
-		var visiblePages = dojo.filter(this.pages, function(iclass, i) {
+		var visiblePages = dojo.filter(allPages, function(iclass, i) {
 			// load page class
 			var ipath = 'umc.modules._setup.' + iclass;
 			dojo['require'](ipath);
