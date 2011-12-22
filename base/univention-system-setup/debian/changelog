@@ -1,3 +1,9 @@
+univention-system-setup (5.0.97-1) unstable; urgency=low
+
+  * added target="_blank" to SDB link on ssl page; Bug #25350
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 22 Dec 2011 18:12:06 +0100
+
 univention-system-setup (5.0.96-1) unstable; urgency=low
 
   * fixed wrong percentage number in progressbar; Bug #24819
