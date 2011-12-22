@@ -174,6 +174,14 @@ if [ -n "$update30_kde_check" -a "$update30_kde_check" = "true" ]; then
 	univention-config-registry unset update30/kde/check  >>"$UPDATER_LOG" 2>&1
 fi
 
+if [ -n "$update30_firefox_check" -a "$update30_firefox_check" = "true" ]; then
+	if [ -n "$update30_firefox_univentionmozillafirefox" -a "$update30_firefox_univentionmozillafirefox" = "true" ]; then
+		install univention-mozilla-firefox
+		univention-config-registry unset update30/firefox/univentionmozillafirefox  >>"$UPDATER_LOG" 2>&1
+	fi
+	univention-config-registry unset update30/firefox/check  >>"$UPDATER_LOG" 2>&1
+fi
+
 if [ -n "$update30_uvmm_check" -a "$update30_uvmm_check" = "true" ]; then
 	if [ -n "$update30_uvmm_univentionxen" -a "$update30_uvmm_univentionxen" = "true" ]; then
 		install univention-xen

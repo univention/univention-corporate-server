@@ -157,6 +157,15 @@ if [ -z "$update30_kde_check" ]; then
 	univention-config-registry set update30/kde/check=true >&3
 fi
 
+# Save current Firefox package status. These packages might be removed
+# during the UCS 3.0 update
+if [ -z "$update30_firefox_check" ]; then
+	if [ "$(dpkg-query -W -f='${Status}\n' univention-mozilla-firefox 2>/dev/null)" = "install ok installed" ]; then
+		univention-config-registry set update30/firefox/univentionmozillafirefox=true >&3
+	fi
+	univention-config-registry set update30/firefox/check=true >&3
+fi
+
 # Save current Xen/KVM package status. These packages might be removed
 # during the UCS 3.0 update
 if [ -z "$update30_uvmm_check" ]; then

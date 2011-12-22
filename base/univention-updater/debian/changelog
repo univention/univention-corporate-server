@@ -1,3 +1,11 @@
+univention-updater (7.0.130-1) unstable; urgency=low
+
+  * Firefox might be removed during the UCS 3.0 upgrade. Save the
+    package state in preup.sh and install them in postup.sh if necessary
+    (Bug #25585)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Dec 2011 14:08:30 +0100
+
 univention-updater (7.0.129-1) unstable; urgency=low
 
   * Don't use univention-install in postup.sh, beacause it could
