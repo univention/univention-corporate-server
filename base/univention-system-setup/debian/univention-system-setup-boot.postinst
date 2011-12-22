@@ -33,6 +33,7 @@
 eval "$(univention-config-registry shell)"
 
 univention-config-registry set 'system/setup/boot/start?true'
+univention-config-registry set 'system/setup/boot/help?/usr/share/univention-management-console-frontend/js/umc/modules/_setup/:help_default.html'
 
 # remove initscript to place updated version by DEBHELPER (Bug #23870)
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.19-5; then

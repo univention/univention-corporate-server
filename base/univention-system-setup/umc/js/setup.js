@@ -77,6 +77,11 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));
+
+		// add the HelpPage to the list of pages for the wizard mode
+		if (this.moduleFlavor == 'wizard') {
+			this.pages.unshift('HelpPage');
+		}
 	},
 
 	renderPages: function(role) {

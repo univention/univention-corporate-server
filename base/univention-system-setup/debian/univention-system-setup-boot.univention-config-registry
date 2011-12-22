@@ -1,0 +1,4 @@
+Type: script
+Script: update_sytem_setup_help.sh
+Variables: system/setup/boot/help
+

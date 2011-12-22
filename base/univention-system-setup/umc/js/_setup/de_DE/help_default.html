@@ -1,0 +1,18 @@
+<h2>Allgemein</h2>
+<p>UCS-Appliance ermöglicht es, Images von virtuellen Instanzen zu kopieren/klonen und die Grundkonfiguration des Systems beim Bootvorgang per Browser anzupassen.
+Die Grundkonfiguration beinhaltet alle notwendigen Einstellungen, damit das System der Domäne beitreten kann und somit direkt einsatzfähig ist.
+Darüber hinaus können weitere Einstellungen wie z.B. die Software-Ausstattung vorgenommen werden.</p>
+
+<h2>Konfigurationsschritte</h2>
+<p>Die Grundkonfiguration des Systems ist aufgeteilt in die folgenden Schritte:</p>
+<ul>
+<li>Die <i>Spracheinstellungen</i> beinhalten alle sprachrelevanten Einstellungsmöglichkeiten wie Zeitzone, Tastaturlayout und Systemsprachen.</li>
+<li><i>Basis-Einstellungen</i> geben grundlegende Einstellungen wie Rechner- und Domänenname, LDAP-Basis, Windows-Domänename, und Root-Passwort vor. </li>
+<li>Über die <i>Netzwerk-Einstellungen</i> können IP-Adressen (IPv4 und IPv6) sowie DNS-Server, Gateways und HTTP-Proxy festgelegt werden.</li>
+<li>Nach Vorgabe der <i>Zertifkatseinstellungen</i> wird ein neues Root-Zertifikat für die Domäne erstellt. (Dieser Schritt ist nur auf DC-Master-Systemen notwendig.)</li>
+<li>Über die <i>Software-Einstellungen</i> können bestimmte Software-Komponenten installiert und deinstalliert werden.</li>
+</ul>
+<p>Währende des Speichervorgangs wird auch der Domänenbeitritt durchgeführt. 
+Dazu ist auf allen System-Rollen außer DC-Master auch die Eingabe eines gültigen Domänen-Administrator-Accounts notwendig.
+Nach dem erfolreichen Domänenbeitritt kann der Einstellungs-Assistent geschlossen und der Boot-Vorgang fortgesetzt werden.</p>
+<p>Werden die Einstellungen von einem externen System aus in einem Webbrowser vorgenommen, wird im Anschluss an die Konfiguratin um eine Neuanmeldung für UMC gefragt werden.</p>
