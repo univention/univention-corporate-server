@@ -126,14 +126,14 @@ fi
 
 # univention-squid might be held back due squid still being installed
 if [ "$update30_squidpresent" = "true" ]; then
-    univention-install univention-squid  >>"$UPDATER_LOG" 2>&1
+    install univention-squid  >>"$UPDATER_LOG" 2>&1
     univention-config-registry unset update30/squidpresent >>"$UPDATER_LOG" 2>&1
     dpkg --purge squid 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
 fi
 
 # univention-dansguardian is upgraded frm univention-antivir-web
 if [ "$update30_dansguardianpresent" = "true" ]; then
-    univention-install univention-dansguardian  >>"$UPDATER_LOG" 2>&1
+    install univention-dansguardian  >>"$UPDATER_LOG" 2>&1
     univention-config-registry unset update30/dansguardianpresent >>"$UPDATER_LOG" 2>&1
 fi
 

@@ -1,3 +1,10 @@
+univention-updater (7.0.129-1) unstable; urgency=low
+
+  * Don't use univention-install in postup.sh, beacause it could
+    generate questions (Bug #25581)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Dec 2011 10:02:23 +0100
+
 univention-updater (7.0.128-1) unstable; urgency=low
 
   * Fix update script download (Bug #25273)
