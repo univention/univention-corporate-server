@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-12-23 11:19+0100\n"
+"POT-Creation-Date: 2011-12-23 12:15+0100\n"
 "PO-Revision-Date: 2011-12-19 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:489
+#: umc/js/setup.js:486
 msgid "Account data"
 msgstr "Kontodaten"
 
@@ -28,11 +28,11 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:189 umc/js/setup.js:433 umc/js/setup.js:513
+#: umc/js/setup.js:186 umc/js/setup.js:430 umc/js/setup.js:510
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
-#: umc/js/setup.js:141
+#: umc/js/setup.js:138
 msgid "Apply settings"
 msgstr "Einstellungen anwenden"
 
@@ -40,7 +40,7 @@ msgstr "Einstellungen anwenden"
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
-#: umc/js/setup.js:132
+#: umc/js/setup.js:129
 msgid "Back"
 msgstr "Zurück"
 
@@ -52,8 +52,8 @@ msgstr "Basis-Einstellungen"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:183 umc/js/setup.js:281 umc/js/setup.js:430
-#: umc/js/setup.js:477 umc/js/setup.js:510
+#: umc/js/setup.js:180 umc/js/setup.js:278 umc/js/setup.js:427
+#: umc/js/setup.js:474 umc/js/setup.js:507
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -90,7 +90,7 @@ msgstr ""
 "zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
 "System im Produktiveinsatz befinden."
 
-#: umc/js/setup.js:174 umc/js/setup.js:178
+#: umc/js/setup.js:171 umc/js/setup.js:175
 msgid "Close"
 msgstr "Schließen"
 
@@ -98,11 +98,11 @@ msgstr "Schließen"
 msgid "Common name for the root SSL certificate"
 msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 
-#: umc/js/setup.js:540
+#: umc/js/setup.js:537
 msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
-#: umc/js/setup.js:274 umc/js/setup.js:284
+#: umc/js/setup.js:271 umc/js/setup.js:281
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -225,9 +225,9 @@ msgstr "IPv6-Präfix"
 msgid "Identifier"
 msgstr "Bezeichner"
 
-#: umc/js/_setup/HelpPage.js:65
-msgid "Information about UCS appliance mode"
-msgstr "Informationen über UCS Appliance-Modus"
+#: umc/js/_setup/HelpPage.js:73
+msgid "Information about the initial configuration"
+msgstr "Informationen über die Erstkonfiguration"
 
 #: umc/js/_setup/ProgressInfo.js:73
 msgid "Initialize the configuration process ..."
@@ -287,7 +287,7 @@ msgstr ""
 "gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
 "Domäne NT-kompatible (Samba 3) ist."
 
-#: umc/js/setup.js:464
+#: umc/js/setup.js:461
 msgid "Join"
 msgstr ""
 
@@ -331,15 +331,15 @@ msgstr "Netzwerk-Einstellungen"
 msgid "New root password"
 msgstr "Neues Root-Passwort"
 
-#: umc/js/setup.js:123
+#: umc/js/setup.js:120
 msgid "Next"
 msgstr "Vor"
 
-#: umc/js/setup.js:350
+#: umc/js/setup.js:347
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen vorgenommen."
 
-#: umc/js/setup.js:344
+#: umc/js/setup.js:341
 msgid ""
 "No changes have been made. Please confirm to continue with the boot process."
 msgstr ""
@@ -358,7 +358,7 @@ msgstr "Organisation"
 msgid "Organization settings"
 msgstr "Einstellungen über die Organisation"
 
-#: umc/js/setup.js:460
+#: umc/js/setup.js:457
 msgid "Password"
 msgstr "Passwort"
 
@@ -367,14 +367,14 @@ msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
 
-#: umc/js/setup.js:425
+#: umc/js/setup.js:422
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup.js:600
+#: umc/js/setup.js:597
 msgid "Please confirm to continue with the boot process."
 msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 
@@ -382,7 +382,7 @@ msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 msgid "Removing software components"
 msgstr "Entfernen von Softwarekomponenten"
 
-#: umc/js/setup.js:195
+#: umc/js/setup.js:192
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -394,7 +394,7 @@ msgstr "Root-Passwort"
 msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"
 
-#: umc/js/setup.js:177
+#: umc/js/setup.js:174
 msgid "Should the UMC module be closed? All unsaved modification will be lost."
 msgstr ""
 "Soll das UMC-Modul geschlossen werden? Alle nicht gespeicherten Änderungen "
@@ -412,11 +412,11 @@ msgstr "Software-Einstellungen"
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/setup.js:571
+#: umc/js/setup.js:568
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:530
+#: umc/js/setup.js:527
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -428,15 +428,15 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
-#: umc/js/setup.js:419
+#: umc/js/setup.js:416
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:356
+#: umc/js/setup.js:353
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
-#: umc/js/setup.js:445
+#: umc/js/setup.js:442
 msgid ""
 "The specified settings will be applied to the system and the system will be "
 "joined into the domain. Please enter username and password of a domain "
@@ -446,7 +446,7 @@ msgstr ""
 "das System in die Domäne gejoint. Bitte geben Sie dafür Benutzernamen und "
 "Password eines Administrator-Kontos der Domäne an."
 
-#: umc/js/setup.js:506
+#: umc/js/setup.js:503
 msgid ""
 "The specified settings will be applied to the system. This may take some "
 "time. Please confirm to proceed."
@@ -463,10 +463,10 @@ msgid "Time zone and keyboard settings"
 msgstr "Zeitzonen- und Tastatureinstellungen"
 
 #: umc/js/_setup/HelpPage.js:52
-msgid "UCS appliance"
-msgstr "UCS Appliance"
+msgid "UCS initial configuration"
+msgstr "UCS Erstkonfiguration"
 
-#: umc/js/setup.js:456
+#: umc/js/setup.js:453
 msgid "Username"
 msgstr "Benutzername"
 
@@ -474,7 +474,7 @@ msgstr "Benutzername"
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: umc/js/setup.js:296
+#: umc/js/setup.js:293
 msgid ""
 "Your session should be shut down automatically. If this has not happened so "
 "far, you may force a shutdown by pressing Ctrl+Q."
@@ -528,3 +528,6 @@ msgstr "virtuell"
 
 #~ msgid "The boot process will then continue automatically."
 #~ msgstr "Der Bootvorgang wird danach automatisch weiterlaufen."
+
+#~ msgid "UCS appliance"
+#~ msgstr "UCS Appliance"

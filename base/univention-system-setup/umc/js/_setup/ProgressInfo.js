@@ -71,7 +71,7 @@ dojo.declare("umc.modules._setup.ProgressInfo", [ umc.widgets.ContainerWidget, u
 
 	reset: function() {
 		this._component.set( 'content', this._( 'Initialize the configuration process ...' ) );
-		this._message.set( 'content', '' );
+		this._message.set( 'content', '&nbsp;' );
 		this._progressBar.set( 'value', 0 );
 	},
 

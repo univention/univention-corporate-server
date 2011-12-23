@@ -1,3 +1,12 @@
+univention-system-setup (5.0.99-1) unstable; urgency=low
+
+  * adjusted help texts
+  * fixed standby animation until all values have been loaded
+  * fixed setting progressbar to 100% when process is finished
+  Bug #24398
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 23 Dec 2011 12:19:07 +0100
+
 univention-system-setup (5.0.98-1) unstable; urgency=low
 
   * set progressbar to 100% when process is finished

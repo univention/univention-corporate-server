@@ -72,10 +72,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.standby(true);
 		umc.tools.ucr('server/role').then(dojo.hitch(this, function(ucr) {
 			this.renderPages(ucr['server/role']);
-			this.standby(false);
 			this.standbyOpacity = 0.75;  // set back the opacity to 75%
-		}), dojo.hitch(this, function() {
-			this.standby(false);
 		}));
 
 	},
@@ -537,7 +534,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 								message: message
 							} ).then( dojo.hitch( this, function( response ) {
 								if ( response.result.finished ) {
-									this.parent._progressInfo.setInfo(this._('Configuration finished'), '', 100);
+									this.parent._progressInfo.setInfo(this.parent._('Configuration finished'), '', 100);
 									this.deferred.resolve();
 									return;
 								}

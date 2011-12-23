@@ -49,7 +49,7 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 		this.inherited(arguments);
 
 		this.title = this._('Help');
-		this.headerText = this._('UCS appliance');
+		this.headerText = this._('UCS initial configuration');
 		this._orgVals = {};
 	},
 
@@ -60,9 +60,17 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 		var path = dojo.locale.split(/[^a-zA-Z]/)[0].toLowerCase() + '/' + 'help.html';
 		var html = dojo.cache('umc.modules._setup', path);
 
+		// parse out the h1-header and set it as page title
+		var regH1 = /<h1>([^<]*)<\/h1>/i;
+		var match = html.match(regH1);
+		if (match && match[1]) {
+			this.set('headerText', match[1]);
+			html = html.replace(regH1, '');
+		}
+
 		// build up the widgets
 		var pane = new umc.widgets.ExpandingTitlePane({
-			title: this._('Information about UCS appliance mode')
+			title: this._('Information about the initial configuration')
 		});
 		this.addChild(pane);
 		var text = new umc.widgets.Text({
