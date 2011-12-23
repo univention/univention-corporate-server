@@ -117,6 +117,7 @@ class ModuleProcess( Client ):
 		self.running = False
 		self._queued_requests = []
 		self._inactivity_timer = None
+		self._inactivity_counter = 0
 
 	def __del__( self ):
 		CORE.process( 'ModuleProcess: dying' )
@@ -330,11 +331,24 @@ class Processor( signals.Provider ):
 
 		return module_name
 
-	def reset_inactivity_timer( self, module ):
-		if module._inactivity_timer is not None:
-			notifier.timer_remove( module._inactivity_timer )
+	def _inactivitiy_tick( self, module ):
+		if module._inactivity_counter > 0:
+			module._inactivity_counter -= 1000
+			return True
+		if self._mod_inactive( module ): # open requests -> waiting
+			module._inactivity_counter = MODULE_INACTIVITY_TIMER
+			return True
 
-		module._inactivity_timer = notifier.timer_add( MODULE_INACTIVITY_TIMER, notifier.Callback( self._mod_inactive, module ) )
+		module._inactivity_timer = None
+		module._inactivity_counter = 0
+
+		return False
+
+	def reset_inactivity_timer( self, module ):
+		if module._inactivity_timer is None:
+			module._inactivity_timer = notifier.timer_add( 1000, notifier.Callback( self._inactivitiy_tick, module ) )
+
+		module._inactivity_counter = MODULE_INACTIVITY_TIMER
 
 	def handle_request_upload( self, msg ):
 		# request.options = { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )

@@ -1,3 +1,9 @@
+univention-management-console (4.0.93-1) unstable; urgency=low
+
+  * ensure that time jumps do not kill inactive modules too early; Bug #24819
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 23 Dec 2011 11:52:31 +0100
+
 univention-management-console (4.0.92-1) unstable; urgency=low
 
   * set umask of UMC server and module processes to 0077; Bug #25162
