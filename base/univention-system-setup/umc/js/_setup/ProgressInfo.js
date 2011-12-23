@@ -59,7 +59,7 @@ dojo.declare("umc.modules._setup.ProgressInfo", [ umc.widgets.ContainerWidget, u
 		this.addChild( this._component );
 		this._progressBar = new dijit.ProgressBar( { style : 'width: 100%' } );
 		this.addChild( this._progressBar );
-		this._message = new umc.widgets.Text( { content : '', style : 'width: 100%' } );
+		this._message = new umc.widgets.Text( { content : '&nbsp;', style : 'width: 100%' } );
 		this.addChild( this._message );
 
 		this._progressBar.set( 'value', 0 );

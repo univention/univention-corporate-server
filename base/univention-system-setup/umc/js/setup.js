@@ -537,6 +537,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 								message: message
 							} ).then( dojo.hitch( this, function( response ) {
 								if ( response.result.finished ) {
+									this.parent._progressInfo.setInfo(this._('Configuration finished'), '', 100);
 									this.deferred.resolve();
 									return;
 								}

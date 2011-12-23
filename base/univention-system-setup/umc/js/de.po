@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-12-22 18:10+0100\n"
+"POT-Creation-Date: 2011-12-23 11:19+0100\n"
 "PO-Revision-Date: 2011-12-19 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,8 @@ msgstr ""
 "Zertifikat erstellt. Dies hat zur Folge, dass alle Host-Zertifikate der "
 "Domäne aktualisiert werden müssen, da das alte Root-Zertifkat nicht mehr "
 "gültig sein wird. Weitere Informationen können in der <a href=\"http://sdb."
-"univention.de/1000\" target=\"_blank\">Univention Support Database</a> gefunden werden."
+"univention.de/1000\" target=\"_blank\">Univention Support Database</a> "
+"gefunden werden."
 
 #: umc/js/_setup/NetworkPage.js:204
 msgid ""
@@ -96,6 +97,10 @@ msgstr "Schließen"
 #: umc/js/_setup/CertificatePage.js:76
 msgid "Common name for the root SSL certificate"
 msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
+
+#: umc/js/setup.js:540
+msgid "Configuration finished"
+msgstr "Konfiguration abgeschlossen"
 
 #: umc/js/setup.js:274 umc/js/setup.js:284
 msgid "Continue"
@@ -369,7 +374,7 @@ msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup.js:599
+#: umc/js/setup.js:600
 msgid "Please confirm to continue with the boot process."
 msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
 
@@ -407,7 +412,7 @@ msgstr "Software-Einstellungen"
 msgid "State"
 msgstr "Bundesland"
 
-#: umc/js/setup.js:570
+#: umc/js/setup.js:571
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
