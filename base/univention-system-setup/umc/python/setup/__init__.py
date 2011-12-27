@@ -164,7 +164,7 @@ class Instance(umcm.Base):
 			# acquire the lock in order to wait for the join/setup scripts to finish
 			# do this one minute long on then return an error
 			SLEEP_TIME = 0.200
-			WAIT_TIME = 60
+			WAIT_TIME = 30
 			ntries = WAIT_TIME / SLEEP_TIME
 			while not obj._finishedLock.acquire(False):
 				if self._progressParser.changed and self._progressParser.current:

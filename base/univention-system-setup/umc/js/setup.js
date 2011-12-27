@@ -291,8 +291,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// otherwise send the UMCP command to shut down the web browser
 				return this.umcpCommand('setup/browser/shutdown', false, undefined, {
 					message: this._('Your session should be shut down automatically. If this has not happened so far, you may force a shutdown by pressing Ctrl+Q.'),
-					messageInterval: 30,
-					xhrTimeout: 60
+					messageInterval: 30
 				}).then(dojo.hitch(this, function() {
 					this.standby(false);
 				}));
@@ -531,7 +530,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 							this.parent.umcpCommand( 'setup/finished', {}, undefined, undefined, {
 								// long polling options
 								messageInterval: 30,
-								message: message
+								message: message,
+								xhrTimeout: 40
 							} ).then( dojo.hitch( this, function( response ) {
 								if ( response.result.finished ) {
 									this.parent._progressInfo.setInfo(this.parent._('Configuration finished'), '', 100);

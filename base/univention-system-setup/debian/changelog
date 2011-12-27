@@ -1,3 +1,9 @@
+univention-system-setup (5.0.100-1) unstable; urgency=low
+
+  * fixed timeout handling for setup/finished ; Bug #24425
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Dec 2011 13:13:18 +0100
+
 univention-system-setup (5.0.99-1) unstable; urgency=low
 
   * adjusted help texts
