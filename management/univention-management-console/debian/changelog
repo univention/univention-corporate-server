@@ -1,3 +1,9 @@
+univention-management-console (4.0.95-1) unstable; urgency=low
+
+  * ensure that responses to malformed request can be send without error; Bug #25231
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Dec 2011 15:28:35 +0100
+
 univention-management-console (4.0.94-1) unstable; urgency=low
 
   * increase stability of UMC server when receiving invalid messages and

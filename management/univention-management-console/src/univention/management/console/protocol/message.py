@@ -205,6 +205,7 @@ class Message( object ):
 			try:
 				self.body = json.loads( self.body )
 			except:
+				self.body = {}
 				PARSER.process( 'Error parsing UMCP message body' )
 				raise ParseError( UMCP_ERR_UNPARSABLE_BODY, _( 'error parsing UMCP message body' ) )
 
