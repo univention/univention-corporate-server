@@ -284,7 +284,7 @@ class MagicBucket( object ):
 			CRYPT.info( 'UMCP: SSL error need to re-send chunk' )
 			notifier.socket_add( state.socket, self._do_send, notifier.IO_WRITE )
 			state.resend_queue.append( data )
-		except ( SSL.SysCallError, SSL.Error ), error:
+		except ( SSL.SysCallError, SSL.Error, socket.error ), error:
 			statistics.connections.inactive()
 			# clean up if not already done
 			if state.socket in self.__states:
@@ -295,7 +295,10 @@ class MagicBucket( object ):
 						state.processor.shutdown()
 					notifier.socket_remove( state.socket )
 					del self.__states[ state.socket ]
-					socket.close()
+					try:
+						state.socket.close()
+					except:
+						pass
 			return
 
 		# module process wants to exit

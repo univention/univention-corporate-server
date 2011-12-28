@@ -48,7 +48,7 @@ from OpenSSL import *
 import univention.uldap
 from univention.lib.i18n import Translation, I18N_Error
 
-from .message import Response, Request
+from .message import Response, Request, MIMETYPE_JSON
 from .client import Client, NoSocketError, ConnectionError
 from .version import VERSION
 from .definitions import *
@@ -385,7 +385,11 @@ class Processor( signals.Provider ):
 	def handle_request_command( self, msg ):
 		module_name = self.__is_command_known( msg )
 		if module_name and msg.arguments:
-			if not self.acls.is_command_allowed( msg.arguments[ 0 ], options = msg.options, flavor = msg.flavor ):
+			if msg.mimetype == MIMETYPE_JSON:
+				is_allowed = self.acls.is_command_allowed( msg.arguments[ 0 ], options = msg.options, flavor = msg.flavor )
+			else:
+				is_allowed = self.acls.is_command_allowed( msg.arguments[ 0 ] )
+			if not is_allowed:
 				response = Response( msg )
 				response.status = BAD_REQUEST_FORBIDDEN
 				response.message = status_description( response.status )

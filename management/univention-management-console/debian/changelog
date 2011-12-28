@@ -1,3 +1,13 @@
+univention-management-console (4.0.94-1) unstable; urgency=low
+
+  * increase stability of UMC server when receiving invalid messages and
+    sockets are closed by the client unexpectedly; Bug #25231, Bug #25237
+  * umc-client: add option to close connection directyl after sending
+    request, support different MIME types, set exit code to UMCP response
+    status - 200
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Dec 2011 15:10:07 +0100
+
 univention-management-console (4.0.93-1) unstable; urgency=low
 
   * ensure that time jumps do not kill inactive modules too early; Bug #24819

@@ -93,13 +93,15 @@ class Status( object ):
 		return _( 'Unknown status code' )
 
 STATUS = (
+	# UMCP request success messages
 	Status( 'SUCCESS'							, 200, _( 'OK, operation successful' ) ),
 	Status( 'SUCCESS_MESSAGE'					, 204, _( 'OK, containing report message' ) ),
-	Status( 'SUCCESS_PARTIAL'					, 206, _( 'OK, partial response' ) ),
+	Status( 'SUCCESS_PARTIAL'					, 206, _( 'OK, partial response' ) ), # not yet used
 	Status( 'SUCCESS_SHUTDOWN'					, 250, _( 'OK, operation successful ask for shutdown of connection' ) ),
 
 	Status( 'CLIENT_ERR_NONFATAL'				, 301, _( 'A non-fatal error has occured processing may continue' ) ),
 
+	# the UMCP request was parsable but within the context it is not valid
 	Status( 'BAD_REQUEST'						, 400, _( 'Bad request' ) ),
 	Status( 'BAD_REQUEST_UNAUTH'				, 401, _( 'Unauthorized' ) ),
 	Status( 'BAD_REQUEST_FORBIDDEN'				, 403, _( 'Forbidden' ) ),
@@ -111,14 +113,19 @@ STATUS = (
 	Status( 'BAD_REQUEST_ACCOUNT_DISABLED'		, 413, _( 'The account as been disabled' ) ),
 	Status( 'BAD_REQUEST_UNAVAILABLE_LOCALE'	, 414, _( 'Specified locale is not available' ) ),
 
+	# UMCP server core errors
 	Status( 'SERVER_ERR'						, 500, _( 'Internal error' ) ),
 	Status( 'SERVER_ERR_MODULE_DIED'			, 510, _( 'Module process died unexpectedly' ) ),
 	Status( 'SERVER_ERR_MODULE_FAILED'			, 511, _( 'Connection to module process failed' ) ),
 	Status( 'SERVER_ERR_CERT_NOT_TRUSTWORTHY'	, 512, _( 'SSL server certificate is not trustworthy' ) ),
 
+	# generic UMCP parser errors
 	Status( 'UMCP_ERR_UNPARSABLE_HEADER'		, 551, _( 'Unparsable message header' ) ),
+	Status( 'UMCP_ERR_UNKNOWN_COMMAND'			, 552, _( 'Unknown command' ) ),
+	Status( 'UMCP_ERR_ARGS_MISSMATCH'			, 553, _( 'Invalid number of arguments' ) ),
 	Status( 'UMCP_ERR_UNPARSABLE_BODY'			, 554, _( 'Unparsable message body' ) ),
 
+	# errors occuring during command process in module process
 	Status( 'MODULE_ERR'						, 590, _( 'Error occuried during command processing' ) ),
 	Status( 'MODULE_ERR_COMMAND_FAILED'			, 591, _( 'The execution of a command caused an fatal error' ) )
 )

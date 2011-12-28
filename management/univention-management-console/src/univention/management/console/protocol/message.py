@@ -159,29 +159,33 @@ class Message( object ):
 		# is the format of the header line valid?
 		match = Message._header.match( lines[ 0 ] )
 		if not match:
-			raise ParseError( 551, _( 'Unparsable message header' ) )
+			raise ParseError( UMCP_ERR_UNPARSABLE_HEADER, _( 'Unparsable message header' ) )
 
 		groups = match.groupdict()
 		self._type = groups[ 'type' ] == 'REQUEST' and Message.REQUEST or Message.RESPONSE
+		self._id = groups[ 'id' ]
+		if 'mimetype' in groups and groups[ 'mimetype' ]:
+			self.mimetype = groups[ 'mimetype' ]
+
 		self._id = groups[ 'id' ]
 		try:
 			self._length = int( groups[ 'length' ] )
 		except ValueError:
 			PARSER.process( 'Invalid length information' )
-			raise ParseError( 551, _( 'Invalid length information' ) )
+			raise ParseError( UMCP_ERR_UNPARSABLE_HEADER, _( 'Invalid length information' ) )
 		self.command = groups[ 'command' ]
 
 		# known command?
 		if not command_is_known( self.command ):
 			PROTOCOL.process( 'Unknown UMCP command: %s' % self.command )
-			raise UnknownCommandError( 552, _( 'Unknown UMCP command: %s' ) % self.command )
+			raise UnknownCommandError( UMCP_ERR_UNKNOWN_COMMAND, _( 'Unknown UMCP command: %s' ) % self.command )
 
 		if groups.get( 'arguments' ):
 			if command_has_arguments( self.command ):
 				self.arguments = groups[ 'arguments' ].split( ' ' )
 			else:
 				PROTOCOL.process( "The command '%s' do not have any arguments" % self.command )
-				raise InvalidArgumentsError( 553, _( "The command '%s' do not have any arguments" ) % self.command )
+				raise InvalidArgumentsError( UMCP_ERR_ARGS_MISSMATCH, _( "The command '%s' do not have any arguments" ) % self.command )
 
 		# invalid/missing message body?
 		current_length = len( lines[ 1 ] )
@@ -202,11 +206,11 @@ class Message( object ):
 				self.body = json.loads( self.body )
 			except:
 				PARSER.process( 'Error parsing UMCP message body' )
-				raise ParseError( 554, _( 'error parsing UMCP message body' ) )
+				raise ParseError( UMCP_ERR_UNPARSABLE_BODY, _( 'error parsing UMCP message body' ) )
 
-		for key in ( 'options', ):
-			if key in self.body:
-				setattr( self, key[ 1 : ], self.body[ key ] )
+			for key in ( 'options', ):
+				if key in self.body:
+					setattr( self, key[ 1 : ], self.body[ key ] )
 
 		PARSER.info( 'UMCP %(type)s %(id)s parsed successfully' % groups )
 
@@ -239,9 +243,10 @@ class Response( Message ):
 			self._id = request._id
 			self.command = request.command
 			self.arguments = request.arguments
-			self.options = request.options
-			if 'status' in request.body:
-				self.status = request.status
+			if request.mimetype == MIMETYPE_JSON:
+				self.options = request.options
+				if 'status' in request.body:
+					self.status = request.status
 		elif data:
 			self.parse( data )
 
