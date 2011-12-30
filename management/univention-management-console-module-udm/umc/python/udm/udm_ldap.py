@@ -691,15 +691,21 @@ class UDM_Settings( object ):
 
 		return UDM_Settings.Singleton
 
-	@LDAP_Connection
-	def __init__( self, ldap_connection = None, ldap_position = None ):
+	def __init__( self ):
 		"""Reads the policies for the current user"""
 		if hasattr( self, 'initialized' ):
 			return
 		self.initialized = True
 		self.user_dn = None
 		self.policies = None
+		self.read()
 
+	def read( self ):
+		self._read_directories()
+		self._read_groups()
+
+	@LDAP_Connection
+	def _read_directories( self, ldap_connection = None, ldap_position = None ):
 		try:
 			directories = udm_modules.lookup( 'settings/directory', None, ldap_connection, scope = 'sub' )
 		except ( LDAPError, udm_errors.ldapError ), e:
@@ -711,6 +717,8 @@ class UDM_Settings( object ):
 		else:
 			self.directory = directories[ 0 ]
 
+	@LDAP_Connection
+	def _read_groups( self, ldap_connection = None, ldap_position = None ):
 		try:
 			groups = udm_modules.lookup( 'settings/default', None, ldap_connection, scope = 'sub' )
 		except ( LDAPError, udm_errors.ldapError ), e:
@@ -735,9 +743,13 @@ class UDM_Settings( object ):
 		if module_name == 'shares/print':
 			base = 'printers'
 
+		self._read_directories()
+
 		return map( lambda x: { 'id' : x, 'label' : ldap_dn2path( x ) }, self.directory.info.get( base, [] ) )
 
 	def default_group( self, module_name ):
+		self._read_groups()
+
 		if self.groups is None:
 			return None
 		if module_name == 'users/user':

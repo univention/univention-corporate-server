@@ -94,7 +94,9 @@ dojo.declare("umc.modules._udm.NewObjectDialog", [ dijit.Dialog, umc.i18n.Mixin 
 		if ('navigation' != this.moduleFlavor) {
 			// query the necessary elements to display the add-dialog correctly
 			(new dojo.DeferredList([
-				this.umcpCommand('udm/types'),
+				this.umcpCommand('udm/types', {
+					superordinate: this.selectedSuperordinate !== undefined ? this.selectedSuperordinate : null
+				} ),
 				this.umcpCommand('udm/containers'),
 				this.umcpCommand('udm/superordinates'),
 				this.umcpCommand('udm/templates')

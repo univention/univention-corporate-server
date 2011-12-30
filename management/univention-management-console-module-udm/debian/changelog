@@ -1,3 +1,13 @@
+univention-management-console-module-udm (1.0.267-1) unstable; urgency=low
+
+  * Always pass an attribute superordinate to udm/types. This is required
+    to currectly determine the available objects when creating new objects; Bug #25387
+  * do not cache settings/default and settings/directory. This allows for
+    example to use newly created defaults containers directly within the
+    same UMC session; Bug #25147
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 30 Dec 2011 10:05:54 +0100
+
 univention-management-console-module-udm (1.0.266-1) unstable; urgency=low
 
   * correct determination of LDAP objects types that do not contain an
