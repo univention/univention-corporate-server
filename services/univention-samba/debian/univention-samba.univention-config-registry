@@ -23,6 +23,7 @@ Variables: samba/serverstring
 Variables: samba/charset.*
 Variables: samba/enable-privileges
 Variables: samba/socket_options
+Variables: samba/max_open_files
 
 Type: subfile
 Multifile: etc/samba/smb.conf

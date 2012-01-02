@@ -136,6 +136,12 @@ Description[en]=Maximum packet size that will be negotiated
 Type=str
 Categories=service-samba
 
+[samba/max_open_files]
+Description[de]=Maximal geöffnete Dateien
+Description[en]=Maximum of open files
+Type=str
+Categories=service-samba
+
 [samba/netbios/aliases]
 Description[de]=Zusätzliche NetBIOS-Namen für den Samba-Server
 Description[en]=Additional NetBIOS names under which the Samba server is known
