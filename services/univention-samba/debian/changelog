@@ -1,3 +1,9 @@
+univention-samba (6.0.20-1) unstable; urgency=low
+
+  * iptables source port rule for netbios broadcast answers (Bug #25243)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Jan 2012 10:55:15 +0100
+
 univention-samba (6.0.19-2) unstable; urgency=low
 
   * add mount_extfs_with_user_xattr.py script to install file (Bug #25248)

@@ -148,6 +148,7 @@ ucr set security/packetfilter/package/univention-samba/tcp/137:139/all="ACCEPT" 
 		security/packetfilter/package/univention-samba/tcp/137:139/all/en="netbios (Samba)" \
 		security/packetfilter/package/univention-samba/udp/137:139/all="ACCEPT" \
 		security/packetfilter/package/univention-samba/udp/137:139/all/en="netbios (Samba)" \
+		security/packetfilter/package/univention-samba/udp/137/all="ACCEPT" \
 		security/packetfilter/package/univention-samba/tcp/445/all="ACCEPT" \
 		security/packetfilter/package/univention-samba/tcp/445/all/en="microsoft-ds (Samba)" \
 		security/packetfilter/package/univention-samba/udp/445/all="ACCEPT" \
