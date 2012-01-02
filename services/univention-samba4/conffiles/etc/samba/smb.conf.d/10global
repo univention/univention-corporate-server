@@ -44,6 +44,11 @@ print '\ttls certfile\t= /etc/univention/ssl/%s/cert.pem' % fqdn
 print '\ttls cafile\t= /etc/univention/ssl/ucsCA/CAcert.pem'
 print
 
+if configRegistry.is_true('samba4/schema/update/allowed'):
+	print '\tdsdb:schema update allowed = yes'
+else:
+	print '\tdsdb:schema update allowed = no'
+
 for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/dos', 'dos charset'),
 		       ('samba/charset/unix', 'unix charset'),
