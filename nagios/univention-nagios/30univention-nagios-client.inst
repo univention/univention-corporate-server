@@ -73,7 +73,6 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
               "cn=UNIVENTION_DISK_ROOT,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_SWAP,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_DNS,cn=nagios,$ldap_base" \
-              "cn=UNIVENTION_NTP,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_SMTP2,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_REPLICATION,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_LOAD,cn=nagios,$ldap_base" \
@@ -103,13 +102,15 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
     if [ "$server_role" = "domaincontroller_master" -o \
          "$server_role" = "domaincontroller_backup" -o \
          "$server_role" = "domaincontroller_slave" ] ; then
-		dn="cn=UNIVENTION_LDAP_AUTH,cn=nagios,$ldap_base"
-		rdn="$(echo $dn | sed -e 's|,.*||')"
-		if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
-			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
-		else
-			echo "Skipping $dn (code $?)"
-		fi
+		for dn in "cn=UNIVENTION_LDAP_AUTH,cn=nagios,$ldap_base" \
+                  "cn=UNIVENTION_NTP,cn=nagios,$ldap_base"; do
+			rdn="$(echo $dn | sed -e 's|,.*||')"
+			if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
+				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+			else
+				echo "Skipping $dn (code $?)"
+			fi
+		done
     fi
 
     # add joinstatus check only on role "domaincontroler_*, memberserver and managedclients"

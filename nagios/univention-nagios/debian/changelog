@@ -1,3 +1,9 @@
+univention-nagios (5.0.21-1) unstable; urgency=low
+
+  * apply UNIVENTION_NTP to dc's only (Bug #25128) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 03 Jan 2012 14:26:07 +0100
+
 univention-nagios (5.0.20-1) unstable; urgency=low
 
   * added system role icons (Bug #24568) 
