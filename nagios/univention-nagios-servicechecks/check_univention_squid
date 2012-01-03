@@ -69,7 +69,7 @@ fi
 
 # get local squid port
 port=3128
-squidCfg=/etc/squid/squid.conf
+squidCfg=/etc/squid3/squid.conf
 if [ -e "$squidCfg" ]; then
 	cfgPort=$(sed -nre 's/^\s*http_port\s+//p' "$squidCfg")
 	if [ -n "$cfgPort" ]; then
