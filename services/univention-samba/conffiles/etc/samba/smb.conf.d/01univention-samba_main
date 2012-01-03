@@ -9,7 +9,7 @@
 @!@
 max_open_files = configRegistry.get('samba/max_open_files')
 if max_open_files:
-	print '\tmax open files %i' % max_open_files
+	print '\tmax open files %s' % max_open_files
 if configRegistry.has_key('samba/serverstring') and configRegistry['samba/serverstring']:
 	print '\tserver string = %s' % configRegistry['samba/serverstring']
 else:
