@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.268-1) unstable; urgency=low
+
+  * navigation: add object type "all containers" to support editing and
+    removing of containers without access to the context menu
+  * navigation: clicking on a container in the grid is like selecting it
+    in the tree widget and marks it as the new base for the search; Bug #25218
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 03 Jan 2012 08:41:15 +0100
+
 univention-management-console-module-udm (1.0.267-1) unstable; urgency=low
 
   * Always pass an attribute superordinate to udm/types. This is required

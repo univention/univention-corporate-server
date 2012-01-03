@@ -392,6 +392,7 @@ class Instance( Base ):
 		  'objectPropertyValue' -- the filter that should be found in the property
 		  'container' -- the base container where the search should be started (default: LDAP base)
 		  'superordinate' -- the superordinate object for the search (default: None)
+		  'scope' -- the search scope (default: sub)
 
 		return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
 		"""
@@ -411,7 +412,7 @@ class Instance( Base ):
 				else:
 					raise UMC_OptionTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
 
-			result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate )
+			result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate, scope = request.options.get( 'scope', 'sub' ) )
 
 			entries = []
 			object_type = request.options.get( 'objectType', request.flavor )
@@ -424,6 +425,7 @@ class Instance( Base ):
 					continue
 				entry = {
 					'$dn$' : obj.dn,
+					'$childs$' : module.childs,
 					'objectType' : module.name,
 					'labelObjectType' : module.subtitle,
 					'name' : udm_objects.description( obj ),
@@ -822,22 +824,29 @@ class Instance( Base ):
 		if not 'container' in request.options:
 			raise UMC_OptionMissing( "The option 'container' is required" )
 
-		if 'None' != request.options.get('objectType', ''):
+		object_type = request.options.get( 'objectType', '' )
+		if object_type not in ( 'None', '$containers$' ):
 			# we need to search for a specific objectType, then we should call the standard query
 			# we also need to get the correct superordinate
-			superordinate = udm_objects.get_superordinate( request.options['objectType'], None, ldap_connection, request.options['container'] )
+			superordinate = udm_objects.get_superordinate( object_type, None, ldap_connection, request.options['container'] )
 			if superordinate:
 				superordinate = superordinate.dn
 			request.options['superordinate'] = superordinate
+			request.options['scope'] = 'one'
 			self.query(request)
 			return
 
 		def _thread( container ):
 			entries = []
-			for module, obj in list_objects( container ):
-				if obj is None or module.childs:
+			for module, obj in list_objects( container, object_type = object_type ):
+				if obj is None:
+					continue
+				if object_type != '$containers$' and module.childs:
+					continue
+				if object_type == '$containers$' and not module.childs:
 					continue
 				entries.append( { '$dn$' : obj.dn,
+								  '$childs$' : module.childs,
 								  'objectType' : module.name,
 								  'labelObjectType' : module.subtitle,
 								  'name' : udm_objects.description(obj),

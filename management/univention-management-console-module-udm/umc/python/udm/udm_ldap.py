@@ -848,7 +848,7 @@ def get_module( flavor, ldap_dn, ldap_connection = None, ldap_position = None ):
 	return UDM_Module( modules[ 0 ] )
 
 @LDAP_Connection
-def list_objects( container, ldap_connection = None, ldap_position = None ):
+def list_objects( container, object_type = None, ldap_connection = None, ldap_position = None ):
 	"""Returns a list of UDM objects"""
 	try:
 		result = ldap_connection.search( base = container, scope = 'one' )
@@ -862,7 +862,10 @@ def list_objects( container, ldap_connection = None, ldap_position = None ):
 		if not modules:
 			MODULE.warn( 'Could not identify LDAP object %s' % dn )
 			continue
+		if object_type == '$containers$' and not udm_modules.childs( modules[ 0 ] ):
+			continue
 		module = UDM_Module( modules[ 0 ] )
+
 		if not module:
 			MODULE.process( 'The UDM module %s could not be found. Ignoring LDAP object %s' % ( modules[ 0 ], dn ) )
 			continue

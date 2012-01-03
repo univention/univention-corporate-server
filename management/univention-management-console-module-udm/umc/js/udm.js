@@ -172,6 +172,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 	// button to navigate back to the list of superordinates
 	_upButton: null,
+	_navUpButton: null,
 
 	// button to generate reports
 	_reportButton: null,
@@ -272,7 +273,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		if ('navigation' == this.moduleFlavor) {
 			// for the UDM navigation, we only query the UCR variables
 			this.standby(true);
-			umc.tools.ucr( [ 'directory/manager/web*' ] ).then(dojo.hitch(this, function(ucr) {
+			umc.tools.ucr( [ 'directory/manager/web*', 'ldap/base' ] ).then(dojo.hitch(this, function(ucr) {
 				// save the ucr variables locally and also globally
 				this._ucr = umc.modules._udm.ucr = ucr;
 				this.renderSearchPage();
@@ -289,7 +290,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				this.umcpCommand('udm/containers'),
 				this.umcpCommand('udm/superordinates'),
 				this.umcpCommand('udm/reports/query'),
-				umc.tools.ucr( [ 'directory/manager/web*' ] )
+				umc.tools.ucr( [ 'directory/manager/web*', 'ldap/base' ] )
 			])).then(dojo.hitch(this, function(results) {
 				// result: [ 0 ] -> success/failure, [ 1 ] -> data
 				var containers = results[0][0] ? results[0][1] : [];
@@ -308,6 +309,17 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// register onClose events
 		this.connect(this, 'onClose', 'onCloseTab');
+	},
+
+	_ldapDN2TreePath: function( ldapDN ) {
+		var path = [];
+		while ( ldapDN != this._ucr[ 'ldap/base' ] ) {
+			path.unshift( ldapDN );
+			ldapDN = ldapDN.slice( ldapDN.indexOf( ',' ) + 1 );
+		}
+		path.unshift( ldapDN );
+
+		return path;
 	},
 
 	renderSearchPage: function(containers, superordinates) {
@@ -458,7 +470,10 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				}
 			}),
 			defaultAction: dojo.hitch( this, function( keys, items ) {
-				if ( undefined !== this._searchForm._widgets.superordinate ) {
+				if ( 'navigation' == this.moduleFlavor && ( this._searchForm._widgets.objectType.get( 'value' ) == '$containers$' || items[ 0 ].$childs$ === true ) ) {
+					this._tree.set( 'path', this._ldapDN2TreePath( keys[ 0 ] ) );
+					this.filter( this._searchForm.gatherFormValues() );
+				} else if ( undefined !== this._searchForm._widgets.superordinate ) {
 					var found = false;
 					this._searchForm._widgets.superordinate.store.fetch( { onItem: dojo.hitch( this, function( item ) {
 						if ( this._searchForm._widgets.superordinate.store.getValue( item, 'id' ) == keys[ 0 ] ) {
@@ -501,8 +516,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		var objTypes = [];
 		var objProperties = [];
 		if ('navigation' == this.moduleFlavor) {
-			// add the type 'None' to objTypeas
-			objTypes.push({ id: 'None', label: this._( 'All types' ) });
+			// add the types 'None'  and '$containers$' to objTypes
+			objTypes.push( { id: 'None', label: this._( 'All types' ) } );
+			objTypes.push( { id: '$containers$', label: this._( 'All containers' ) } );
 			objProperties.push({ id: 'None', label: this._( 'All properties' ) });
 		}
 		else if (superordinates && superordinates.length) {
@@ -632,6 +648,23 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 
 		// generate the navigation pane for the navigation module
 		if ('navigation' == this.moduleFlavor) {
+			this._navUpButton = this.adopt( umc.widgets.Button, {
+				label: this._( 'Parent container' ),
+				iconClass: 'umcIconUp',
+				callback: dojo.hitch(this, function() {
+					var path = this._tree.get( 'path' );
+					var ldapDN = path[ path.length - 2 ].id;
+					this._tree.set( 'path', this._ldapDN2TreePath( ldapDN ) );
+					this._searchForm.getWidget('superordinate').set('value', 'None');
+					// we can relaunch the search after all search form values
+					// have been updated
+					var watchHandle = this.connect(this._searchForm.getWidget('objectPropertyValue'), 'onValuesLoaded', function() {
+						this.filter();
+						this.disconnect(watchHandle);
+					});
+				})
+			});
+
 			var model = new umc.modules._udm.TreeModel({
 				umcpCommand: umcpCmd
 			});
@@ -663,7 +696,13 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 					// tree has been reloaded to its last position
 					this._reloadingPath = '';
 				}
-			})); 	
+				if ( this._tree.get('path').length > 1 ) {
+					this._grid._toolbar.addChild( this._navUpButton, 0 );
+				} else {
+					this._grid._toolbar.removeChild( this._navUpButton );
+				}
+				this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
+			}));
 			// in the case of changes, reload the navigation, as well (could have 
 			// changes referring to container objects)
 			this.connect(this.moduleStore, 'onChange', dojo.hitch(this, 'reloadTree'));
@@ -763,8 +802,8 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 		// show/hide object property filter for the navigation
 		if ('navigation' == this.moduleFlavor) {
 			this.connect(this._searchForm._widgets.objectType, 'onChange', function(val) {
-				this._searchForm._widgets.objectProperty.set('visible', 'None' != val);
-				this._searchForm._widgets.objectPropertyValue.set('visible', 'None' != val);
+				this._searchForm._widgets.objectProperty.set('visible', 'None' != val && '$containers$' != val);
+				this._searchForm._widgets.objectPropertyValue.set('visible', 'None' != val && '$containers$' != val);
 				this.layout();
 			});
 		}
