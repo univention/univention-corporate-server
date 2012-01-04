@@ -97,9 +97,13 @@ fi
 /usr/lib/univention-system-setup/scripts/basis/18root_password
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-      univention-config-registry set ldap/server/name="$hostname.$domainname" \
-      						ldap/master="$hostname.$domainname" \
-      						kerberos/adminserver="$hostname.$domainname"
+	realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"
+	univention-config-registry set ldap/server/name="$hostname.$domainname" \
+						ldap/master="$hostname.$domainname" \
+						kerberos/adminserver="$hostname.$domainname" \
+						kerberos/realm="$realm" \
+						mail/alias/root="systemmail@$hostname.$domainname"
+
 fi
 
 # do not allow the UMC or webserver to be restarted

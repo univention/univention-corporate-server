@@ -1,3 +1,9 @@
+univention-system-setup (5.0.101-1) unstable; urgency=low
+
+  * Set kerberos/realm and mail/alias/root in setup-join.sh (Bug #25682)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Jan 2012 06:47:32 +0100
+
 univention-system-setup (5.0.100-1) unstable; urgency=low
 
   * fixed timeout handling for setup/finished ; Bug #24425
