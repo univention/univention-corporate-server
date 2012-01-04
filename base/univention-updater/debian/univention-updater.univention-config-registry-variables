@@ -130,6 +130,12 @@ Description[en]=List of architectures to be used on local system, space separate
 Type=str
 Categories=service-software-management
 
+[repository/online/errata/start]
+Description[de]=Niedrigste einzubindende Errata-Version [1]
+Description[en]=Lowest errata-version to use [1]
+Type=int
+Categories=service-software-management
+
 
 [repository/mirror]
 Description[de]=Aktiviere/Deaktiviere das Spiegeln der Pakete in das lokale Repository [yes]

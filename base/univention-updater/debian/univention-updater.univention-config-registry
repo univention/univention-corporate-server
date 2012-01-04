@@ -28,6 +28,7 @@ Variables: repository/online/maintained
 Variables: repository/online/unmaintained
 Variables: repository/online/sources
 Variables: repository/online/httpmethod
+Variables: repository/online/errata/start
 
 Type: file
 File: etc/apt/sources.list.d/20_ucs-online-component.list
