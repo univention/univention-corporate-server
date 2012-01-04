@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (1.0.15-7) unstable; urgency=low
+
+  * Update kernel for security update (Bug #22954)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 04 Jan 2012 09:09:51 +0100
+
 univention-kernel-image-2.6.32 (1.0.15-6) unstable; urgency=low
 
   * Drop dependency on firmware-ipw2x00, which will be removed in UCS 3.0

@@ -3,7 +3,7 @@
 # Univention Kernel Image 2.6.32
 #  rules file for the debian package
 #
-# Copyright 2006-2011 Univention GmbH
+# Copyright 2006-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,7 +32,7 @@
 
 export DH_COMPAT=7
 
-ABI := ucs48
+ABI := ucs55
 
 amd64_SOURCE_VERSION := 2.6.32
 amd64_VERSION := 2.6.32-${ABI}-amd64
