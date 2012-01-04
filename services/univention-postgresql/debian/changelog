@@ -1,3 +1,9 @@
+univention-postgresql (4.0.6-1) unstable; urgency=low
+
+  * added server password change hook script (Bug #25085) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 04 Jan 2012 11:04:32 +0100
+
 univention-postgresql (4.0.5-1) unstable; urgency=low
 
   * set lc_* settings to locale/default value (Bug #24913)
