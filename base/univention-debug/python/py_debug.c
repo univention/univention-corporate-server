@@ -41,10 +41,10 @@
  * fd = univention.debug.init("stdout", univention.debug.DEBUG_NO_FLUSH, univention.debug.DEBUG_FUNCTION)
  * univention.debug.set_level(univention.debug.LISTENER, univention.debug.ERROR)
  * univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Fatal error, var = '+j)
- *
  */
 
-static PyObject *py_univention_debug_debug(PyObject *self, PyObject *args)
+static PyObject *
+py_univention_debug_debug(PyObject *self, PyObject *args)
 {
     int id;
     int level;
@@ -59,8 +59,16 @@ static PyObject *py_univention_debug_debug(PyObject *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+PyDoc_STRVAR(py_univention_debug_debug__doc__,
+        "debug(category, level, message) - Log debug message.\n"
+        "\n"
+        "Log message 'message' of severity 'level' to facility 'category'.\n"
+        "category - ID of the category, e.g. MAIN, LDAP, USERS, ...\n"
+        "level - Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL\n"
+        "message - The message to log");
 
-static PyObject *py_univention_debug_init(PyObject *self, PyObject *args)
+static PyObject *
+py_univention_debug_init(PyObject *self, PyObject *args)
 {
     char *logfile;
     int flush, function;
@@ -75,14 +83,22 @@ static PyObject *py_univention_debug_init(PyObject *self, PyObject *args)
 
     if ( fd == NULL ) {
         Py_RETURN_NONE;
-    } 
+    }
 
     file = PyFile_FromFile( fd, logfile, "a+", NULL );
 
     return file;
 }
+PyDoc_STRVAR(py_univention_debug_init__doc__,
+        "init(logfile, flush, function) - Initialize debugging library.\n"
+        "\n"
+        "Initialize debugging library for logging to 'logfile', forcing 'flush' and tracing 'function's.\n"
+        "logfile - name of the logfile, or 'stderr', or 'stdout'.\n"
+        "flush - force flushing of messages (True).\n"
+        "function - enable (True) or disable (False) function tracing.");
 
-static PyObject *py_univention_debug_set_level(PyObject *self, PyObject *args)
+static PyObject *
+py_univention_debug_set_level(PyObject *self, PyObject *args)
 {
     int id;
     int level;
@@ -96,8 +112,35 @@ static PyObject *py_univention_debug_set_level(PyObject *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+PyDoc_STRVAR(py_univention_debug_set_level__doc__,
+        "set_level(category, level) - Set debug level for category.\n"
+        "\n"
+        "Set minimum required severity 'level' for facility 'category'.\n"
+        "category - ID of the category, e.g. MAIN, LDAP, USERS, ...\n"
+        "level - Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL");
 
-static PyObject *py_univention_debug_set_function(PyObject *self, PyObject *args)
+static PyObject *
+py_univention_debug_get_level(PyObject *self, PyObject *args)
+{
+    int id;
+    enum uv_debug_level level;
+
+    if (!PyArg_ParseTuple(args, "i", &id)) {
+        return NULL;
+    }
+
+    level = univention_debug_get_level(id);
+
+    return Py_BuildValue("i", level);
+}
+PyDoc_STRVAR(py_univention_debug_get_level__doc__,
+        "get_level(category) -> int - Get debug level for category.\n"
+        "\n"
+        "Get minimum required severity for facility 'category'.\n"
+        "category - ID of the category, e.g. MAIN, LDAP, USERS, ...\n");
+
+static PyObject *
+py_univention_debug_set_function(PyObject *self, PyObject *args)
 {
     int function;
 
@@ -110,8 +153,14 @@ static PyObject *py_univention_debug_set_function(PyObject *self, PyObject *args
     Py_INCREF(Py_None);
     return Py_None;
 }
+PyDoc_STRVAR(py_univention_debug_set_function__doc__,
+        "set_function(flag) - Enable function tracing.\n"
+        "\n"
+        "Enable or disable the logging of function begins and ends.\n"
+        "flag - enable (True) or disable (False) function tracing.");
 
-static PyObject *py_univention_debug_begin(PyObject *self, PyObject *args)
+static PyObject *
+py_univention_debug_begin(PyObject *self, PyObject *args)
 {
     char *string;
 
@@ -124,8 +173,14 @@ static PyObject *py_univention_debug_begin(PyObject *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+PyDoc_STRVAR(py_univention_debug_begin__doc__,
+        "begin(function) - Function starts here.\n"
+        "\n"
+        "Log the begin of function 'function'.\n"
+        "function - name of the function starting.");
 
-static PyObject *py_univention_debug_end(PyObject *self, PyObject *args)
+static PyObject *
+py_univention_debug_end(PyObject *self, PyObject *args)
 {
     char *string;
 
@@ -138,28 +193,54 @@ static PyObject *py_univention_debug_end(PyObject *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+PyDoc_STRVAR(py_univention_debug_end__doc__,
+        "end(function) - Function ends here.\n"
+        "\n"
+        "Log the end of function 'function'.\n"
+        "function - name of the function ending.");
 
-static PyObject *py_univention_debug_exit(PyObject *self, PyObject *args)
+static PyObject *
+py_univention_debug_exit(PyObject *self, PyObject *args)
 {
     univention_debug_exit();
 
     Py_INCREF(Py_None);
     return Py_None;
 }
+PyDoc_STRVAR(py_univention_debug_exit__doc__,
+        "exit() - Close debug log.\n"
+        "\n"
+        "Close the debug logfile.");
+
+static PyObject *
+py_univention_debug_reopen(PyObject *self, PyObject *args)
+{
+    univention_debug_reopen();
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+PyDoc_STRVAR(py_univention_debug_reopen__doc__,
+        "reopen() - Re-open logfile.\n"
+        "\n"
+        "Close and re-open the debug logfile.");
 
 
 static struct PyMethodDef debug_methods[] = {
-    {"debug", py_univention_debug_debug, METH_VARARGS, "Print a debug message" },
-    {"init", py_univention_debug_init, METH_VARARGS, "Init the debug module"},
-    {"set_level", py_univention_debug_set_level, METH_VARARGS, "set the level for one debug modul"},
-    {"set_function", py_univention_debug_set_function, METH_VARARGS, "Printing funcion entry"},
-    {"begin", py_univention_debug_begin, METH_VARARGS, "Function starts here"},
-    {"end", py_univention_debug_end, METH_VARARGS, "Function ends here"},
-    {"exit", py_univention_debug_exit, METH_VARARGS, "Close debuglog"},
+    {"debug", (PyCFunction)py_univention_debug_debug, METH_VARARGS, py_univention_debug_debug__doc__},
+    {"init", (PyCFunction)py_univention_debug_init, METH_VARARGS, py_univention_debug_init__doc__},
+    {"set_level", (PyCFunction)py_univention_debug_set_level, METH_VARARGS, py_univention_debug_set_level__doc__},
+    {"get_level", (PyCFunction)py_univention_debug_get_level, METH_VARARGS, py_univention_debug_get_level__doc__},
+    {"set_function", (PyCFunction)py_univention_debug_set_function, METH_VARARGS, py_univention_debug_set_function__doc__},
+    {"begin", (PyCFunction)py_univention_debug_begin, METH_VARARGS, py_univention_debug_begin__doc__},
+    {"end", (PyCFunction)py_univention_debug_end, METH_VARARGS, py_univention_debug_end__doc__},
+    {"exit", (PyCFunction)py_univention_debug_exit, METH_VARARGS, py_univention_debug_exit__doc__},
+    {"reopen", (PyCFunction)py_univention_debug_reopen, METH_VARARGS, py_univention_debug_reopen__doc__},
     { NULL, NULL, 0, NULL}
 };
 
-void init_debug(void)
+PyMODINIT_FUNC
+init_debug(void)
 {
     PyObject *module, *dict;
 
