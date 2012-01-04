@@ -192,4 +192,7 @@ univention-config-registry set security/packetfilter/package/univention-base-fil
 	security/packetfilter/package/univention-base-files/udp/123/all/en="ntp"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
+# Bug #25715: Restart ntp for fixed ntp.conf on 3.0-0-errataX
+[ -x "/etc/init.d/ntp" ] && dpkg --compare-versions "$1" lt 1.0.43-2 && invoke-rc.d ntp restart || true
+
 exit 0

@@ -1,3 +1,9 @@
+univention-base-files (1.0.43-2) unstable; urgency=low
+
+  * Restart ntp with new ntp.conf (Bug #25715)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 04 Jan 2012 18:05:34 +0100
+
 univention-base-files (1.0.43-1) unstable; urgency=low
 
   * etc/ntp.conf: Remove server_s_ (Bug #25715)
