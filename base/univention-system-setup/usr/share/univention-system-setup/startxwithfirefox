@@ -35,6 +35,8 @@ then # call self in xinit as nobody, then start gdm
 	echo -e "\n\n\n"
 	echo "$0 has been started at $(date)"
 	echo
+	USS_PROFILE="/var/cache/univention-system-setup/profile"
+
 	# set random password for system setup user
 	USSPASSWD="$(tr -c -d '[:alnum:]' < /dev/urandom | head -c 30)"
 	echo "__systemsetup__:$USSPASSWD" | chpasswd
@@ -47,17 +49,18 @@ then # call self in xinit as nobody, then start gdm
 	USSURL="http://localhost/univention-management-console/?username=__systemsetup__&password=${USSPASSWD}&module=setup&flavor=wizard&overview=false&displayUsername=false&lang=$default_locale"
 	BROWSERPIDFILE="/var/cache/univention-system-setup/browser.pid"
 
-	# save threshold (15 seconds from now on)
-	threshold="$(( $(date +%s) + 15))"
-
 	# stop plymouth - otherwise it is burning CPU power in background
 	plymouth quit
 
+	# move old profile
+	if [ -f "$USS_PROFILE" ]; then
+		mv "$USS_PROFILE" "$USS_PROFILE.bak"
+	fi
 	# start X11 and browser ; script returns pid of browser on fd3
 	[ -x /usr/bin/xinit ] && /usr/bin/xinit /bin/su nobody -c "'$0' '$USSURL'" 3> "$BROWSERPIDFILE"
 
-	# if xinit returns a non-zero exitcode or xinit does not exist or session returned within 15 seconds...
-	if [ ! $? = 0 ] || [ ! -x /usr/bin/xinit ] || [[ $threshold > $(date +%s) ]] ; then
+	# if xinit returns a non-zero exitcode or the system setup profile has not been generated
+	if [ ! $? = 0 ] || [ ! -x /usr/bin/xinit ] || [ ! -f "$USS_PROFILE" ] ; then
 		# ... then start console tool univention-system-setup
 		chvt 1
 		/usr/share/univention-system-setup/univention-system-setup --modules="password,net" < /dev/tty1 > /dev/tty1
