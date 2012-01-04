@@ -94,23 +94,33 @@ def handler(dn, new, old):
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
 	if new:
 
+		# ignore changes if we are not the univentionMailHomeServer
 		if new.has_key('univentionMailHomeServer') and new['univentionMailHomeServer'][0] and new['univentionMailHomeServer'][0] != fqdn:
 			return
 
+		# new account
 		if not old:
 				create_cyrus_mailbox(new)
+		# modification
 		else:
-			old_mailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
+			oldMailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
+			oldHomeServer = old.get('univentionMailHomeServer', [''])[0]
+			mailboxrename = listener.baseConfig.get('mail/cyrus/mailbox/rename')
+
+			# i am not a cyrus murder
 			if not is_cyrus_murder_backend():
-				mailboxrename = listener.baseConfig.get('mail/cyrus/mailbox/rename')
-				if old_mailPrimaryAddress and mailboxrename and mailboxrename.lower() in ['true', 'yes']:
-					# cyrus-mailboxrename.py will take care of this case
-					pass
+				if oldMailPrimaryAddress and mailboxrename and mailboxrename.lower() in ['true', 'yes']:
+					if oldHomeServer and oldHomeServer != fqdn:
+						# univentionMailHomeServer has changed, create a new mailbox
+						create_cyrus_mailbox(new)
+					else:
+						# cyrus-mailboxrename.py will take care of this case
+						pass
 				else:
 					create_cyrus_mailbox(new)
+			# cyrus murder
 			else:
-				oldHomeServer = old.get('univentionMailHomeServer', [''])[0]
-				if (oldHomeServer and oldHomeServer != fqdn):
+				if oldHomeServer and oldHomeServer != fqdn:
 					# the univentionMailHomeServer changed:
 					move_cyrus_murder_mailbox(new, old)
 				#elif (oldHomeServer == fqdn):
