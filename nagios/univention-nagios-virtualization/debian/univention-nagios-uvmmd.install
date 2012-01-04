@@ -1,1 +1,2 @@
+check_uvmmd_suidwrapper usr/lib/nagios/plugins/
 31univention-nagios-uvmmd.inst usr/lib/univention-install/

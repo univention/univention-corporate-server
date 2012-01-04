@@ -1,0 +1,1 @@
+check_libvirtd_suidwrapper usr/lib/nagios/plugins/

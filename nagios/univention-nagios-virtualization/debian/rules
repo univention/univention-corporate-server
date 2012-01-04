@@ -34,26 +34,18 @@
 	dh $@
 
 override_dh_auto_build:
-	make check_libvirtd_suidwrapper
-	make check_uvmmd_suidwrapper
-	dh_auto_build
+	$(MAKE) check_libvirtd_suidwrapper check_uvmmd_suidwrapper CFLAGS="$(CFLAGS) -Wall -pedantic-errors"
 
 override_dh_auto_clean:
-	$(RM) check_libvirtd_suidwrapper
-	$(RM) check_uvmmd_suidwrapper
-	dh_auto_clean
+	$(RM) check_libvirtd_suidwrapper check_uvmmd_suidwrapper
 
 override_dh_auto_install:
-	dh_testdir
-	dh_installdirs
-	install -m 4755 check_libvirtd_suidwrapper debian/univention-nagios-libvirtd/usr/lib/nagios/plugins/
-	install -m 4755 check_uvmmd_suidwrapper debian/univention-nagios-uvmmd/usr/lib/nagios/plugins/
 	univention-install-config-registry
-	dh_auto_install
 
 override_dh_fixperms:
-	dh_fixperms -X usr/lib/nagios/plugins/check_libvirtd_suidwrapper -X usr/lib/nagios/plugins/check_uvmmd_suidwrapper
+	dh_fixperms
+	chmod 4755 debian/univention-nagios-libvirtd/usr/lib/nagios/plugins/check_libvirtd_suidwrapper
+	chmod 4755 debian/univention-nagios-uvmmd/usr/lib/nagios/plugins/check_uvmmd_suidwrapper
 
 override_dh_auto_test:
-	ucslint
-	dh_auto_test
+	-ucslint

@@ -1,3 +1,9 @@
+univention-nagios-virtualization (1.0.2-1) unstable; urgency=low
+
+  * Fix Nagios checks (Bug #25125)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Dec 2011 20:14:26 +0100
+
 univention-nagios-virtualization (1.0.1-1) unstable; urgency=low
 
   * run the join script at an earlier stage (Bug #24252) 
@@ -29,4 +35,3 @@ univention-nagios-virtualization (0.1.0-1) unstable; urgency=low
   * Initial Release.
 
  -- Univention GmbH Felix Botner  <botner@univention.de>  Thu, 08 Mar 2011 08:53:54 +0200
-

@@ -29,20 +29,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#include <unistd.h>
-#include <string.h>
-#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/wait.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include <signal.h>
 #include <fcntl.h>
-#include <netdb.h>
-
-#define COMMAND "/usr/bin/virsh"
-#define COMMAND_ARGS "list --all"
-#define URI_SWITCH "-c"
-#define XEN_URI "xen://"
-#define KVM_URI "qemu:///system"
+#include <limits.h>
+#include <sys/wait.h>
 
 #define NAGIOS_OK 0
 #define NAGIOS_OK_MSG "OK:"
@@ -56,82 +51,92 @@
 #define NAGIOS_UNKNOWN 3
 #define NAGIOS_UNKNOWN_MSG "UNKNOWN:"
 
-#define MAX_STR_LEN 254
+static char XEN_URI[] = "xen+unix:///";
+static char KVM_URI[] = "qemu+unix:///system";
+static char *virsh_argv[] = {
+	"/usr/bin/virsh",
+	"-c",
+	NULL, /* uri */
+	"list",
+	"--all",
+	NULL,
+};
+static char *virsh_envp[] = {
+	NULL
+};
 
-pid_t pid;
-int timeout = 10;
+static char *command;
+static pid_t pid;
+static unsigned int timeout = 10;
 
 /* kill the child and exit with error */
-void my_alarm_handler (int signo) {
-
-	kill(pid, 9);
-	printf("%s libvirtd timed out after %d seconds!\n", NAGIOS_CRITICAL_MSG, timeout);
+static void my_alarm_handler(int signo) {
+	kill(pid, SIGKILL);
+	printf(NAGIOS_CRITICAL_MSG " libvirtd timed out after %d seconds!\n", timeout);
 	exit(NAGIOS_CRITICAL);
 }
 
-void usage() {
-
-	printf("usage: -k|-x [OPTIONS]\n");
-	printf("\t-t SECONDS - libvirtd timout\n");
-	printf("\t-h|--help  - help message\n");
-	printf("\t-x         - check xen\n");
-	printf("\t-k         - check kvm\n");
-	
-	exit(1);
+static void usage(int status) {
+	FILE *stream = status ? stderr : stdout;
+	fprintf(stream, "usage: %s -k|-x [OPTIONS]\n", command);
+	fprintf(stream, "\t-t SECONDS - libvirtd timout\n");
+	fprintf(stream, "\t-h|--help  - help message\n");
+	fprintf(stream, "\t-x         - check xen\n");
+	fprintf(stream, "\t-k         - check kvm\n");
+	exit(status);
 }
 
-main (int argc, char ** argv, char ** envp) {
-
+int main(int argc, char *argv[], char *envp[]) {
 	int i = 0;
 	int status;
 	uid_t uid = getuid();
-	char uri[MAX_STR_LEN] = "";
-	char hostname[MAX_STR_LEN] = "";
-	char fqdn[MAX_STR_LEN] = "";
-	struct hostent *hp;
-
-	/* get host and domain name */
-	gethostname(hostname, MAX_STR_LEN);
-	hp = gethostbyname(hostname);
-	if (hp == NULL) {
-		printf("\n%s failed to get host's fqdn\n", NAGIOS_CRITICAL_MSG);
-		exit(NAGIOS_CRITICAL);
-	}
-	strncpy(fqdn, hp->h_name, MAX_STR_LEN);
 
 	/* get options */
-	for (i = 0; i < argc; i++) {
-
-		if ((strcmp("-t", argv[i]) == 0 ) && (i+1 < argc)) {
-			timeout = atoi(argv[i+1]);
-		}
-
-		if (strcmp("-k", argv[i]) == 0 ) {
-                        /* KVM */
-                        strncat(uri, KVM_URI, MAX_STR_LEN);
-                }
-
-                if (strcmp("-x", argv[i]) == 0 ) {
-                        /* XEN */
-                        strncat(uri, XEN_URI, MAX_STR_LEN);
-                        strncat(uri, fqdn, MAX_STR_LEN);
-                        strncat(uri, "/", MAX_STR_LEN);
-                }
-
-		if ((strcmp("-h", argv[i]) == 0) || (strcmp("--help", argv[i]) == 0 )) {
-			usage();
+	command = argv[0];
+	for (i = 1; i < argc; i++) {
+		if (strcmp("-t", argv[i]) == 0) {
+			if (i + 1 < argc) {
+				char *endptr;
+				errno = 0;
+				timeout = strtoul(argv[++i], &endptr, 10);
+				if ((errno == ERANGE) && (timeout == ULONG_MAX)) {
+					perror("ERROR: strtoul");
+					usage(EXIT_FAILURE);
+				} else if ((errno != 0) && (timeout == 0)) {
+					fprintf(stderr, "ERROR: invalid timeout: %s\n", argv[i]);
+					usage(EXIT_FAILURE);
+				} else if (*endptr != '\0') {
+					fprintf(stderr, "ERROR: invalid timeout: %s\n", argv[i]);
+					usage(EXIT_FAILURE);
+				}
+			} else {
+				fprintf(stderr, "ERROR: missing timeout.\n");
+				usage(EXIT_FAILURE);
+			}
+		} else if (strcmp("-k", argv[i]) == 0) {
+			virsh_argv[2] = KVM_URI;
+		} else if (strcmp("-x", argv[i]) == 0) {
+			virsh_argv[2] = XEN_URI;
+		} else if ((strcmp("-h", argv[i]) == 0) || (strcmp("--help", argv[i]) == 0 )) {
+			usage(EXIT_SUCCESS);
+		} else {
+			fprintf(stderr, "ERROR: unknown option: %s", argv[i]);
+			usage(EXIT_FAILURE);
 		}
 	}
 
-        if (strcmp("", uri) == 0) {
-                usage();
-        }
+	if (!virsh_argv[2]) {
+		fprintf(stderr, "ERROR: neither -k nor -x.\n");
+		usage(EXIT_FAILURE);
+	}
 
 	/* signal handler */
-	signal (SIGALRM, my_alarm_handler);
-			
-	if( setgid(getegid()) ) perror( "setgid" );
-	if( setuid(geteuid()) ) perror( "setuid" );
+	signal(SIGALRM, my_alarm_handler);
+
+	if (setgid(getegid()))
+		perror("setgid");
+	if (setuid(geteuid()))
+		perror("setuid");
 
 	pid = fork();
 
@@ -141,38 +146,40 @@ main (int argc, char ** argv, char ** envp) {
 		/* redirect output, nagios wants one status line */
 		int devnull = open("/dev/null", O_RDWR);
 		if (devnull < 0) {
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 		dup2(devnull, STDOUT_FILENO);
 		dup2(devnull, STDERR_FILENO);
 		close(devnull);
 
-		execle(COMMAND, COMMAND, URI_SWITCH, uri, COMMAND_ARGS, (char *)0, (char *)0);
+		execve(virsh_argv[0], virsh_argv, virsh_envp);
+		exit(NAGIOS_CRITICAL);
 	} else if (pid < 0) {
 		setuid(uid);
-		printf("%s fork failed\n", NAGIOS_CRITICAL_MSG);
+		printf(NAGIOS_CRITICAL_MSG " fork failed\n");
 		exit(NAGIOS_CRITICAL);
-	} 
-	else {
+	} else {
 		/* handle timeouts gracefully... */
-		alarm (timeout);
+		alarm(timeout);
 
 		waitpid(pid, &status, 0);
 		setuid(uid);
 
 		/* Stop the timer */
-		alarm (0);
+		alarm(0);
 
 		if (WEXITSTATUS(status) != 0) {
-			printf("%s %s %s %s %s failed\n", NAGIOS_CRITICAL_MSG, COMMAND, URI_SWITCH, uri, COMMAND_ARGS);
+			printf(NAGIOS_CRITICAL_MSG);
+			for (i = 0; virsh_argv[i]; i++)
+				printf(" %s", virsh_argv[i]);
+			printf(" failed\n");
 			exit(NAGIOS_CRITICAL);
-		}
-		else {
-			printf("%s libvirtd is running\n", NAGIOS_OK_MSG);
+		} else {
+			printf(NAGIOS_OK_MSG " libvirtd is running\n");
 			exit(NAGIOS_OK);
 		}
 	}
-	
-	printf("%s libvirtd unknown\n", NAGIOS_UNKNOWN_MSG);
+
+	printf(NAGIOS_UNKNOWN_MSG " libvirtd unknown\n");
 	exit(NAGIOS_UNKNOWN);
 }
