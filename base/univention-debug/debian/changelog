@@ -2,8 +2,9 @@ univention-debug (5.0.11-1) unstable; urgency=low
 
   * Add Python binding for new functions (Bug #22552,22160)
   * Add PyDoc according to PEP-0007.
+  * Fix SEGV after exit().
 
- -- Philipp Hahn <hahn@univention.de>  Mon, 24 Oct 2011 16:51:06 +0200
+ -- Philipp Hahn <hahn@univention.de>  Mon, 24 Oct 2011 17:02:30 +0200
 
 univention-debug (5.0.10-1) unstable; urgency=low
 

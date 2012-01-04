@@ -138,6 +138,8 @@ void univention_debug(enum uv_debug_category id, enum uv_debug_level level, cons
 	struct tm tm;
 	struct timeval tv;
 
+	if (!univention_debug_ready || id < 0 || id >= DEBUG_MODUL_COUNT)
+		return;
 	if (univention_debug_file && level <= univention_debug_level[id]) {
 		gettimeofday( &tv, NULL );
 		localtime_r( &tv.tv_sec, &tm );
@@ -226,11 +228,15 @@ void univention_debug_exit(void)
 
 void univention_debug_set_level(enum uv_debug_category id, enum uv_debug_level level)
 {
+	if (!univention_debug_ready || id < 0 || id >= DEBUG_MODUL_COUNT)
+		return;
 	univention_debug_level[id] = level;
 }
 
 enum uv_debug_level univention_debug_get_level(enum uv_debug_category id)
 {
+	if (!univention_debug_ready || id < 0 || id >= DEBUG_MODUL_COUNT)
+		return UV_DEBUG_ERROR;
 	return univention_debug_level[id];
 }
 
