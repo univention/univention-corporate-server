@@ -1,7 +1,10 @@
-AC_INIT(lib/debug.c)
+AC_INIT([univentiondebug], [5.0])
+AC_CONFIG_SRCDIR([lib/debug.c])
+AM_INIT_AUTOMAKE([foreign -Wall])
 
-AM_INIT_AUTOMAKE(univentiondebug, 5.0)
 AM_PROG_LIBTOOL
+AM_PATH_PYTHON(,, [:])
+AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
 
 LIB_CURRENT=1
 LIB_REVISION=0
@@ -14,4 +17,4 @@ AC_PROG_INSTALL
 AC_LANG_C
 AC_HEADER_STDC
 
-AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile setup.py)
+AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile setup.py tests/Makefile)

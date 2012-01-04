@@ -1,0 +1,6 @@
+00.00.00 00:00:00.000  DEBUG_INIT
+00.00.00 00:00:00.000  MAIN        ( ERROR   ) : Error in main: %%%
+00.00.00 00:00:00.000  MAIN        ( WARN    ) : Warning in main: %%%
+UNIVENTION_DEBUG_BEGIN  : Function
+UNIVENTION_DEBUG_END    : Function
+00.00.00 00:00:00.000  DEBUG_EXIT

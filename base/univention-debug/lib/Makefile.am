@@ -1,10 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = foreign
+AM_CPPFLAGS = -I$(top_srcdir)/include
 
-INCLUDES = -I$(top_srcdir)/include
-
-CFLAGS = -Wall -D_FILE_OFFSET_BITS=64
+AM_CFLAGS = -Wall -D_FILE_OFFSET_BITS=64
 
 lib_LTLIBRARIES = libuniventiondebug.la
 
