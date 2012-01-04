@@ -104,8 +104,8 @@ class UniventionMirror( UniventionUpdater ):
 
 		repos = self._iterate_version_repositories(start, end, parts, archs) # returns generator
 
-		start_errata = UCS_Version((start.major, start.minor, 0))  # errata updates start with 'errata001'
-		end_errata = UCS_Version((end.major, end.minor, 99)) # get all available for mirror
+		start_errata = UCS_Version((start.major, start.minor, 1))  # errata updates start with 'errata1'
+		end_errata = UCS_Version((end.major, end.minor, 999)) # get all available for mirror
 		hotfixes = self.hotfixes
 		errata = self._iterate_errata_repositories(start_errata, end_errata, parts, archs) # returns generator
 

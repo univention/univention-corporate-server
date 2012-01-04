@@ -367,7 +367,7 @@ class UCSHttpServer(object):
 				raise ConfigurationError(uri, 'host is unresolvable')
 			raise DownloadError(uri, res.code)
 		except urllib2.URLError, e:
-			if type(e.reason) == str:
+			if isinstance(e.reason, basestring):
 				reason = e.reason
 			else:
 				reason = e.reason.args[1] # default value for error message
@@ -926,7 +926,7 @@ class UniventionUpdater:
 					del ver.part
 					ver.minor += 1
 					ver.patchlevel = ver.patchlevel_reset
-					if ver > end:
+					if ver > end or ver.minor > 99:
 						break
 			except DownloadError, e:
 				ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
@@ -1342,9 +1342,10 @@ class UniventionUpdater:
 		version.patchlevel = 0
 		foundFirst = False
 		for version.major in range(start.major, end.major + 1):
-			while (version.major, version.minor) <= (end.major, end.minor):
+			while version <= end:
 				try:
 					assert self.server.access(version.path())
+					foundFirst = True
 					result.append(UCS_Version(version))
 				except DownloadError:
 					if foundFirst or version.minor > 99:
