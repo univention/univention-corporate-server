@@ -1,3 +1,9 @@
+univention-base-files (1.0.43-4) unstable; urgency=low
+
+  * Restart ntp with new ntp.conf (Bug #25715)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Jan 2012 17:31:28 +0100
+
 univention-base-files (1.0.43-3) unstable; urgency=low
 
   * Restart ntp with new ntp.conf (Bug #25715)
