@@ -20,7 +20,7 @@ smtpd_sasl_security_options = noanonymous
 
 # smtp client
 @!@
-print 'smtp_tls_security_level = %s' % baseConfig.get('mail/postfix/ssl/client/level', 'none')
+print 'smtp_tls_security_level = %s' % baseConfig.get('mail/postfix/tls/client/level', 'none')
 @!@
 
 # Support broken clients like Microsoft Outlook Express 4.x which expect AUTH=LOGIN instead of AUTH LOGIN

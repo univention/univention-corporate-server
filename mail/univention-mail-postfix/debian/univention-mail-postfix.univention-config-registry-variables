@@ -190,7 +190,7 @@ Description[en]=Pathname of SSL key file that is used by Postfix to establish SS
 Type=str
 Categories=service-mail
 
-[mail/postfix/ssl/client/level]
+[mail/postfix/tls/client/level]
 Description[de]=Die Standard SMTP TLS Sicherheitsstufe für den Postfix SMTP Client (Mögliche Werte: "may", "none", Default: "none")
 Description[en]=The default SMTP TLS security level for the Postfix SMTP client (Valid values: "may", "none"; Default: "none")
 Type=str
