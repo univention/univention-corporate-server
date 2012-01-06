@@ -1,3 +1,9 @@
+univention-installer (7.0.156-1) unstable; urgency=low
+
+  * fixed handling of cciss block device names in 67_bootloader.py (Bug #25719)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 06 Jan 2012 16:35:38 +0100
+
 univention-installer (7.0.155-1) unstable; urgency=low
 
   * fixed typo in package list; Bug #24819

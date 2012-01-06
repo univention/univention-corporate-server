@@ -78,7 +78,9 @@ class object(content):
 
 	def find_devices(self):
 		self.devices = {}
-		REpartitions = re.compile('^\d+\s+\d+\s+\d+\s+(.*[^0-9])$')
+		# match on any device name that does not end on digit OR
+		# any device name ending with cXdY where X and Y are one or more digits
+		REpartitions = re.compile('^\d+\s+\d+\s+\d+\s+(.*)$')
 		try:
 			lines = [ x.strip() for x in open('/proc/partitions','r').readlines() ]
 		except IOError, e:
@@ -91,24 +93,24 @@ class object(content):
 				continue
 			device = match.group(1)
 
-			# is block device?
-			if not os.path.exists('/sys/block/%s' % device):
+			# is block device and no partition?
+			if not os.path.exists('/sys/block/%s' % device.replace("/","!")):
 				continue
 
 			# is readonly?
 			try:
-				content = open('/sys/block/%s/ro' % device,'r').read()
+				content = open('/sys/block/%s/ro' % device.replace("/","!"),'r').read()
 			except IOError, e:
-				self.debug('WARNING: cannot read /sys/block/%s/ro: e' % (device, e))
+				self.debug('WARNING: cannot read /sys/block/%s/ro: e' % (device.replace("/","!"), e))
 				content = '0'
 			if not content.strip() == '0':
 				continue
 
 			# check if device is a CDROM
 			try:
-				content = open('/sys/block/%s/capability' % device,'r').read()
+				content = open('/sys/block/%s/capability' % device.replace("/","!"),'r').read()
 			except IOError, e:
-				self.debug('WARNING: cannot read /sys/block/%s/capability: e' % (device, e))
+				self.debug('WARNING: cannot read /sys/block/%s/capability: e' % (device.replace("/","!"), e))
 				content = '0'
 			try:
 				value = int(content, 16)
@@ -127,15 +129,22 @@ class object(content):
 		self.debug('Possible bootloader devices: %s' % self.devices)
 
 		if len(self.devices) > 1:
-			self.debug('More than one possible bootloader devices - disabling auto-f12')
+			self.debug('More than one possible bootloader device - disabling auto-f12')
 			self.auto_input_enabled = False
 
 		self.selected_device = self.all_results.get('bootloader_record')
 		self.debug('User selected device: %s' % self.selected_device)
 		if not self.selected_device:
-			 self.selected_device = self.all_results.get('boot_partition','').strip('0123456789')
-			 self.debug('Guessing device: %s' % self.selected_device)
-		if not self.selected_device in self.devices:
+			self.selected_device = self.all_results.get('boot_partition','')
+			if 'cciss' in self.selected_device:
+				# cut off partition number →
+				# sub(pattern, repl, string, count=0) → if regular expression "pattern" matches then execute
+				# callable "repl" which returns string without trailing "p\d+"
+				self.selected_device = re.sub('^(.*?cciss/c\d+d\d+)p\d+$', lambda x: x.group(1), self.selected_device)
+			else:
+				self.selected_device = self.selected_device.rstrip('0123456789')
+			self.debug('Guessing device: %s' % self.selected_device)
+		if not self.selected_device in self.devices and self.devices:
 			self.selected_device = self.devices.keys()[0]
 		self.debug('self.selected_device: %s' % self.selected_device)
 
