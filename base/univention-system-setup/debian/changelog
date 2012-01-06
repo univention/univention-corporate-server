@@ -1,3 +1,10 @@
+univention-system-setup (5.0.104-1) unstable; urgency=low
+
+  * using dc components (instead of cn) when generating a suggestion for
+    the LDAP base; Bug #25731
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 06 Jan 2012 10:21:04 +0100
+
 univention-system-setup (5.0.103-1) unstable; urgency=low
 
   * when using system setup boot on DC master systems the domain

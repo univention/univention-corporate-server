@@ -162,7 +162,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			this._form.getWidget('ldap/base').set('dynamicValue', function(deps) {
 				var l = (deps.fqdn || '').split('.');
 				return dojo.map(l.slice(1), function(part) {
-					return 'cn=' + part;
+					return 'dc=' + part;
 				}).join(',');
 			});
 
