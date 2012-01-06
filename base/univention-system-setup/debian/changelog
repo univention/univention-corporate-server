@@ -1,3 +1,11 @@
+univention-system-setup (5.0.103-1) unstable; urgency=low
+
+  * when using system setup boot on DC master systems the domain
+    nameserver field should be hidden and set to the external nameserver
+    if given; Bug #25738
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 06 Jan 2012 09:59:57 +0100
+
 univention-system-setup (5.0.102-1) unstable; urgency=low
 
   * startxwithfirefox: remove check that tries to ensure that the session

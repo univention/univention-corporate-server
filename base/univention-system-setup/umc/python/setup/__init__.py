@@ -110,6 +110,11 @@ class Instance(umcm.Base):
 			# write the profile file and run setup scripts
 			orgValues = util.load_values()
 			util.pre_save(values, orgValues)
+
+			# on DC master the nameserver must be set to the external nameserver when using USS boot
+			if orgValues['server/role'] == 'domaincontroller_master' and request.flavor == 'wizard' and values.get( 'dns/forwarder1' ):
+				values[ 'nameserver1' ] = values.get( 'dns/forwarder1' )
+
 			MODULE.info('saving profile values')
 			util.write_profile(values)
 

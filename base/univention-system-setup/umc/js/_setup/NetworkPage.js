@@ -57,6 +57,8 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 
 	_noteShowed: false,
 
+	_currentRole: null,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -387,10 +389,12 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		});
 
 		// only show forwarder for master, backup, and slave
-		var role = _vals['server/role'];
-		var showForwarder = role == 'domaincontroller_master' || role == 'domaincontroller_backup' || role == 'domaincontroller_slave';
+		this._currentRole = _vals['server/role'];
+		var showForwarder = this._currentRole == 'domaincontroller_master' || this._currentRole == 'domaincontroller_backup' || this._currentRole == 'domaincontroller_slave';
 		this._form.getWidget('dns/forwarder').set('visible', showForwarder);
 
+		// hide domain nameserver on master when using system setup boot
+		this._form.getWidget('nameserver').set('visible', ! ( this.moduleFlavor == 'wizard' && this._currentRole == 'domaincontroller_master' ) );
 		// set values
 		this._form.setFormValues(vals);
 

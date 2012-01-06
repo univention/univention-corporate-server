@@ -146,6 +146,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				var ipage = new Class({
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
 					footerButtons: buttons,
+					moduleFlavor: this.moduleFlavor,
 					onSave: dojo.hitch(this, function() {
 						if (i < visiblePages.length - 1) {
 							this.selectChild(this._pages[i + 1]);
@@ -204,6 +205,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				var ipage = new Class({
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
 					footerButtons: buttons,
+					moduleFlavor: this.moduleFlavor,
 					onSave: dojo.hitch(this, function() {
 						this.save();
 					})

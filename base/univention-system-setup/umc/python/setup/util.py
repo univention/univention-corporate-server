@@ -157,7 +157,7 @@ def pre_save(newValues, oldValues):
 				if network:
 					# we could compute a network address
 					newValues[networkKey] = network
-	
+
 	# add lists with all packages that should be removed/installed on the system
 	if 'components' in newValues:
 		regSpaces = re.compile(r'\s+')
