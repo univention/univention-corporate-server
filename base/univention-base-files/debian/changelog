@@ -1,3 +1,9 @@
+univention-base-files (1.0.44-1) unstable; urgency=low
+
+  * check size before copying the temporary fstab to /etc/fstab in nfsmount (Bug #23513)
+
+ -- Felix Botner <botner@univention.de>  Fri, 06 Jan 2012 16:19:19 +0100
+
 univention-base-files (1.0.43-4) unstable; urgency=low
 
   * Restart ntp with new ntp.conf (Bug #25715)

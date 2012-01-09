@@ -215,7 +215,8 @@ def main():
 	f_new.close()
 	debug('Switching /etc/fstab...\n')
 	if not simulate:
-		os.rename(fstabNew, '/etc/fstab')
+		if os.path.isfile(fstabNew) and os.path.getsize(fstabNew) > 0:
+			os.rename(fstabNew, '/etc/fstab')
 
 	fp = open('/etc/mtab', 'r')
 	for line in fp:
