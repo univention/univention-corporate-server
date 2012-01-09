@@ -37,6 +37,7 @@ import univention.utf8
 import re
 import ldap
 import univention.config_registry
+import univention.uldap
 
 fn_fetchmailrc = '/etc/fetchmailrc'
 __initscript = '/etc/init.d/fetchmail'
@@ -192,45 +193,17 @@ def handler(dn, new, old):
 			configRegistry = univention.config_registry.ConfigRegistry()
 			configRegistry.load()
 
-			baseDN = configRegistry.get('ldap/base')
-			fqdnMaster = configRegistry.get('ldap/master')
-			portMaster = configRegistry.get('ldap/master/port')
-
-			if not baseDN:
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.WARN, 'fetchmail: cannot get UCR variable ldap/base' )
-				return
-
-			if not fqdnMaster:
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.WARN, 'fetchmail: cannot get UCR variable ldap/master' )
-				return
-
-			if not portMaster or not portMaster.isdigit():
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.WARN, 'fetchmail: cannot get UCR variable ldap/master/port or value is no integer' )
-				return
-
-			bindpw = ''
 			listener.setuid(0)
 			try:
-				bindpw = open('/etc/ldap.secret').read()
-				bindpw = bindpw.strip('\n')
-			finally:
-				listener.unsetuid()
-
-			if not bindpw:
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.PROCESS, 'fetchmail: cannot get password for cn=admin,%s' % baseDN )
-				return
-
-			try:
-				lo = ldap.open( fqdnMaster, int(portMaster) )
-				lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
-
-				modlist = [ (ldap.MOD_DELETE, 'univentionFetchmailPasswd', new['univentionFetchmailPasswd'][0]) ]
-				lo.modify_s(dn, modlist)
+				lo = univention.uldap.getMachineConnection()
+				modlist = [('univentionFetchmailPasswd', new['univentionFetchmailPasswd'][0], "")]
+				lo.modify(dn, modlist)
 				univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: reset password successfully' )
 			except Exception, e:
 				univention.debug.debug( univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: cannot reset password in LDAP (%s): %s' % (dn, str(e)) )
-
-
+			finally:
+				listener.unsetuid()
+			
 def initialize():
 	pass
 

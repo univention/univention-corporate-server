@@ -1,3 +1,9 @@
+univention-fetchmail (5.0.4-1) unstable; urgency=low
+
+  * add non-master support to univention-fetchmail (Bug #25629)
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Jan 2012 15:56:36 +0100
+
 univention-fetchmail (5.0.3-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
