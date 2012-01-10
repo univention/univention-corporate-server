@@ -1,3 +1,11 @@
+univention-updater (7.0.133-1) unstable; urgency=low
+
+  * corrected the comparison of errata levels
+  * added scrollbars to updates overview and settings pages
+  (Bug #25779)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 10 Jan 2012 16:59:41 +0100
+
 univention-updater (7.0.132-1) unstable; urgency=low
 
   * because of the new umask of the UMC process the execute rights has not

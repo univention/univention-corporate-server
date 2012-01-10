@@ -347,7 +347,8 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
        		widgets:		widgets,
        		layout:			layout,
        		buttons:		buttons,
-       		moduleStore:	umc.store.getModuleStore(null,'updater/updates')
+       		moduleStore:	umc.store.getModuleStore(null,'updater/updates'),
+			scrollable: true
 //			polling:	{
 //				interval:	5000,
 //				query:		'updater/updates/serial',
@@ -424,7 +425,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 				// Uuuh, Buttons are not included in the _widgets list, so they can't be addressed by
 				// showWidget()... so I have to grab into internal structure of the Form :-(
 				var but = this._form._buttons['run_errata_update'];
-				dojo.toggleClass(but.domNode,'dijitHidden',values['latest_errata_update'] <= values['erratalevel']);
+				dojo.toggleClass(but.domNode,'dijitHidden',parseInt(values['latest_errata_update'],10) <= parseInt(values['erratalevel'],10));
 
  				var tx1 = '';
  				var tx2 = '';

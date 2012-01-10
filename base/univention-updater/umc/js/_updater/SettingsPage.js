@@ -114,6 +114,7 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     		layout:			layout,
     		//buttons:		buttons,
     		moduleStore:	umc.store.getModuleStore('dummy','updater/settings'),
+			scrollable: true,
     		onSaved: dojo.hitch(this, function(success,data) {
     			this.standby(false);
     			if (success)		// this is only Python module result, not data validation result!
