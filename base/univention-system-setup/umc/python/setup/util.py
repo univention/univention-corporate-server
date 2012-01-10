@@ -135,7 +135,7 @@ def pre_save(newValues, oldValues):
 
 	# add broadcast addresses for ipv4 addresses using the ipaddr library
 	regIpv4Device = re.compile(r'interfaces/(?P<device>[^/]+)/(?P<type>.*)')
-	for ikey, ival in newValues.iteritems():
+	for ikey, ival in copy.copy( newValues ).iteritems():
 		m = regIpv4Device.match(ikey)
 		if m:
 			vals = m.groupdict()
@@ -418,7 +418,7 @@ def detect_interfaces():
 
 def get_broadcast(ip, netmask):
 	try:
-		ip = ipaddr.IPv4Network('%s/%s')
+		ip = ipaddr.IPv4Network('%s/%s' % ( ip, netmask ) )
 		return ip.broadcast
 	except ValueError:
 		pass
@@ -426,7 +426,7 @@ def get_broadcast(ip, netmask):
 
 def get_network(ip, netmask):
 	try:
-		ip = ipaddr.IPv4Network('%s/%s')
+		ip = ipaddr.IPv4Network('%s/%s' % ( ip, netmask ) )
 		return ip.network
 	except ValueError:
 		pass
