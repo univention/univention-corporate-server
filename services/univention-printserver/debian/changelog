@@ -1,3 +1,9 @@
+univention-printserver (5.0.26-1) unstable; urgency=low
+
+  * remove stat-override for /usr/lib/cups/backend/cups-pdf (Bug #25371)
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Jan 2012 13:13:30 +0100
+
 univention-printserver (5.0.25-1) unstable; urgency=low
 
   * univention-(lpadmin|cupsadmin): fix regular expression used by expect
