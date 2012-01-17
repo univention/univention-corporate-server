@@ -482,6 +482,11 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	univention-ssh-rsync $DCPWD -az -e ssh $DCACCOUNT@$DCNAME:/etc/univention/ssl/* /etc/univention/ssl/ >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 
+	# prevent join from failing if umask is modified (Bug #21587)
+	chmod 755 /etc/univention/ssl
+	chmod 755 /etc/univention/ssl/ucsCA
+	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
+	
 	check_ldap_tls_connection
 
 	download_host_certificate

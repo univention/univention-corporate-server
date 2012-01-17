@@ -1,3 +1,9 @@
+univention-join (4.0.29-1.1) unstable; urgency=low
+
+  * prevent join from failing if umask is modified (Bug #21587)
+
+ -- Lukas Walter <lwalter@mammut.knut.univention.de>  Tue, 17 Jan 2012 12:38:04 +0100
+
 univention-join (4.0.29-1) unstable; urgency=low
 
   * UMC module: reset umask to default; Bug #25287
