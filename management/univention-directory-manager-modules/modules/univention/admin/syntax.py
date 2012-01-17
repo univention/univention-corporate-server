@@ -1081,14 +1081,32 @@ class NetworkType( select ):
 	choices = ( ( 'ethernet', _( 'Ethernet' ) ), ( 'fddi', _( 'FDDI' ) ), ( 'token-ring', _( 'Token-Ring' ) ) )
 
 class MAC_Address( simple ):
-	regex = re.compile( '^([0-9a-fA-F]{1,2}[:-]){5}[0-9a-fA-F]{1,2}$' )
-	error_message = _( 'This is not a valid MAC address. It must have 6 two digit hexadecimal numbers separated by \"-\" or \":\"' )
+	regexLinuxFormat = re.compile( r'^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$' )
+	regexWindowsFormat = re.compile( r'^([0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}$' )
+	regexRawFormat = re.compile( r'^[0-9a-fA-F]{12}$' )
+	regexCiscoFormat = re.compile( r'^([0-9a-fA-F]{4}\.){2}[0-9a-fA-F]{4}$' )
+	error_message = _( 'This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)' )
 	size = 'TwoThirds'
 
 	@classmethod
 	def parse( self, text ):
-		simple.parse( text )
-		return text.replace( '-', ':' ).lower()
+		if self.regexLinuxFormat.match(text) is not None:
+			return  text.lower()
+		elif self.regexWindowsFormat.match(text) is not None:
+			return  text.replace('-', ':').lower()
+		elif self.regexRawFormat.match(text) is not None:
+			temp = []
+			for i in range(0, len(text)-1, 2):
+				temp.append(text[i:i+2])
+			return ':'.join(temp).lower()
+		elif self.regexCiscoFormat.match(text) is not None:
+			tmpList = []
+			tmpStr = text.translate(None, '.')
+			for i in range(0, len(tmpStr)-1, 2):
+				tmpList.append(tmpStr)[i:i+2]
+			return ':'.join(tmpList).lower()
+		else:
+			raise univention.admin.uexceptions.valueError( self.error_message )
 
 class DHCP_HardwareAddress( complex ):
 	subsyntaxes = ( ( _( 'Type' ), NetworkType ), ( _( 'Address' ), MAC_Address ) )
