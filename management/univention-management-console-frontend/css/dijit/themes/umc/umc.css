@@ -296,7 +296,7 @@ DIV.dijitArrowButton {
 	float: left; 
 }
 .dijitInputInner {
-	
+	-webkit-appearance: none;
 	border:0 !important;
 	vertical-align:middle !important;
 	background-color:transparent !important;

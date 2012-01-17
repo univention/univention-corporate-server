@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.252-1) unstable; urgency=low
+
+  * fixed Safari/webkit appearance bug in stylesheet (Bug #25325)
+
+ -- Florian Best <best@univention.de>  Mon, 16 Jan 2012 17:53:01 +0100
+
 univention-management-console-frontend (1.0.251-1) unstable; urgency=low
 
   * adapted CSS properties for h2-tags; Bug #24398
