@@ -2,7 +2,7 @@ univention-directory-manager-modules (7.0.213-1) unstable; urgency=low
 
   * add support for common mac address formats (Bug #25463)
 
- -- Lukas Walter <lwalter@mammut.knut.univention.de>  Tue, 17 Jan 2012 15:09:38 +0100
+ -- Lukas Walter <walter@univention.de>  Tue, 17 Jan 2012 15:09:38 +0100
 
 univention-directory-manager-modules (7.0.212-1) unstable; urgency=low
 
