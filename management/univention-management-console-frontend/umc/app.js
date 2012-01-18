@@ -348,12 +348,24 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			});
 			this._tabContainer.addChild(overviewPage);
 
-			// check validity of SSL certificates
-			umc.tools.umcpCommand( 'get/ucr', [ 'ssl/validity/days', 'ssl/validity/warning' ] ).then( dojo.hitch( this, function( data ) {
+			// get needed UCR variables
+			umc.tools.umcpCommand( 'get/ucr', [ 'ssl/validity/days', 'ssl/validity/warning', 'update/available', 'update/reboot/required' ] ).then( dojo.hitch( this, function( data ) {
+				// check validity of SSL certificates
 				var days = parseInt( data.result[ 'ssl/validity/days' ], 10 );
 				var warning = parseInt( data.result[ 'ssl/validity/warning' ], 10 );
 				if ( days <= warning ) {
 					overviewPage.addNote( this._( 'The SSL certificate will expire in %d days and should be renewed!', days ) );
+				}
+
+				// check if updates are available
+				if ( umc.tools.isTrue(data.result['update/available']) ) {
+					var link = 'href="javascript:void(0)" onclick="umc.app.openModule(\'updater\')"';
+					overviewPage.addNote( this._( 'An update for UCS is available. Please visit <a %s>Online Update Module</a> to install the updates.', link ) );
+				}
+
+				// check if system reboot is required
+				if ( umc.tools.isTrue(data.result['update/reboot/required']) ) {
+					overviewPage.addNote( this._( 'This system has been updated recently. A reboot is required to finish the update.' ) );
 				}
 			}));
 

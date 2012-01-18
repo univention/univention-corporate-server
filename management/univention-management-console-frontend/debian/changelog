@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.254-1) unstable; urgency=low
+
+  * added notice to overview page if updates are available or system needs to
+  	reboot (Bug #24999)
+  * modified UMC helptext (Bug #25294)
+
+ -- Florian Best <best@univention.de>  Wed, 18 Jan 2012 16:06:07 +0100
+
 univention-management-console-frontend (1.0.253-1) unstable; urgency=low
 
   * Internet Explorer detects end of session (Bug #25036)
