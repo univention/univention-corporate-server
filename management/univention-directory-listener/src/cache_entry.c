@@ -97,8 +97,11 @@ int cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 	char **value;
 	
 	fprintf(fp, "dn: %s\n", dn);
-	for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
-		for (value=(*attribute)->values; *value != NULL; value++) {
+	int i, j;
+	for(i=0; i<entry->attribute_count; i++) {
+		attribute = &entry->attributes[i];
+		for (j=0; j<entry->attributes[i]->value_count; j++) {
+			value = &entry->attributes[i]->values[j];
 			char *c;
 			for (c=*value; *c != '\0'; c++) {
 				if (!isgraph(*c))
@@ -106,7 +109,7 @@ int cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 			}
 			if (*c != '\0') {
 				char *base64_value;
-				size_t srclen = strlen(*value);
+				size_t srclen = entry->attributes[i]->length[j]-1;
 				base64_value = malloc(BASE64_ENCODE_LEN(srclen)+1);
 				base64_encode(*value, srclen, base64_value, BASE64_ENCODE_LEN(srclen)+1);
 				fprintf(fp, "%s:: %s\n", (*attribute)->name, base64_value);
@@ -353,7 +356,7 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 		if (cur2 != NULL && *cur2 != NULL && (*cur1)->value_count == (*cur2)->value_count) {
 			int i;
 			for (i = 0; i < (*cur1)->value_count; i++)
-				if (strcmp((*cur1)->values[i], (*cur2)->values[i]) != 0)
+				if (memcmp((*cur1)->values[i], (*cur2)->values[i], (*cur1)->length[i]) != 0)
 					break;
 			if (i == (*cur1)->value_count)
 				continue;
@@ -423,16 +426,14 @@ int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
 					goto result;
 				}
 				(*cur2)->length[(*cur2)->value_count]=strlen((*cur2)->values[(*cur2)->value_count])+1;
-			} else {	// in this case something is strange about the string in bv_val, maybe contains a '\0'
-				// the legacy approach is to copy bv_len bytes, let's stick with this and just terminate to be safe
-				if (((*cur2)->values[(*cur2)->value_count]=malloc(((*cur1)->length[i]+1)*sizeof(char))) == NULL) {
+			} else {
+				if (((*cur2)->values[(*cur2)->value_count]=malloc(((*cur1)->length[i])*sizeof(char))) == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for value failed");
 					rv = 1;
 					goto result;
 				}
 				memcpy((*cur2)->values[(*cur2)->value_count],(*cur1)->values[i],(*cur1)->length[i]);
-				(*cur2)->values[(*cur2)->value_count][(*cur1)->length[i]]='\0'; // terminate the string to be safe
-				(*cur2)->length[(*cur2)->value_count]=(*cur1)->length[i]+1;
+				(*cur2)->length[(*cur2)->value_count]=(*cur1)->length[i];
 			}
 			(*cur2)->values[(*cur2)->value_count+1]=NULL;
 			(*cur2)->value_count++;

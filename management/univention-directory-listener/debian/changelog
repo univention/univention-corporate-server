@@ -1,3 +1,13 @@
+univention-directory-listener (6.0.20-1) unstable; urgency=low
+
+  * specify length of attribute values while passing them to Python,
+    important for binary attribute values (Bug #25858)
+  * fix base64 printing of binary attribute values for
+    univention-directory-listener-dump
+  * fix off by one glitch in copy_cache_entry
+
+ -- Arvid Requate <requate@univention.de>  Wed, 18 Jan 2012 19:20:51 +0100
+
 univention-directory-listener (6.0.19-1) unstable; urgency=low
 
   * Don't use -p port in run file because the listener himself will

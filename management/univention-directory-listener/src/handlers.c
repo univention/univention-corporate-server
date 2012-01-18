@@ -621,7 +621,7 @@ static PyObject* handlers_entrydict(CacheEntry *entry)
 		s = PyString_FromString(entry->attributes[i]->name);
 
 		for(j=0; j<entry->attributes[i]->value_count; j++) {
-			PyList_SetItem(valuelist, j, PyString_FromString(entry->attributes[i]->values[j]));
+			PyList_SetItem(valuelist, j, PyString_FromStringAndSize(entry->attributes[i]->values[j], entry->attributes[i]->length[j]-1));
 		}
 
 		PyDict_SetItem(entrydict, s, valuelist);
