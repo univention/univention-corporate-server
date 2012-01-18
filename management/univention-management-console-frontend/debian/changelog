@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.253-1) unstable; urgency=low
+
+  * Internet Explorer detects end of session (Bug #25036)
+
+ -- Florian Best <best@univention.de>  Wed, 18 Jan 2012 12:18:32 +0100
+
 univention-management-console-frontend (1.0.252-1) unstable; urgency=low
 
   * fixed Safari/webkit appearance bug in stylesheet (Bug #25325)
