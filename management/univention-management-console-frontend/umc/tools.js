@@ -42,6 +42,10 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 }));
 dojo.mixin(umc.tools, {
 
+	// default value for the session timeout
+	// it will be replaced by the ucr variable 'umc/http/session/timeout' onLogin
+	_sessionTimeout: 300,
+
 	_status: {
 		username: null,
 		hostname: '',
@@ -103,6 +107,19 @@ dojo.mixin(umc.tools, {
 			expires: date.toUTCString(),
 			path: '/'
 		});
+	},
+
+	_renewIESession : function() {
+		// summary:
+		//		Reset the Internet Explorer Session. Internet Explorer can not handle max-age cookies.
+		//		This is required for automatically show the login dialogue when the session is expired.
+		if(dojo.isIE !== undefined) {
+			var date = new Date((new Date()).getTime() + 1000 * this._sessionTimeout);
+			dojo.cookie('UMCSessionId', dojo.cookie('UMCSessionId'), {
+				expires: date.toUTCString(),
+				path: '/'
+			});
+		}
 	},
 
 	_checkSessionTimer: null,
@@ -216,6 +233,7 @@ dojo.mixin(umc.tools, {
 					timeout: 1000 * this.xhrTimeout
 				}).then(dojo.hitch(this, function(data) {
 					// request finished
+					umc.tools._renewIESession();
 					this._dialog.hide();
 					this._dialog.destroyRecursive();
 					this.finishedDeferred.resolve(data);
@@ -326,6 +344,11 @@ dojo.mixin(umc.tools, {
 					'Content-Type': 'application/json'
 				},
 				postData: body
+			});
+
+			call = call.then(function(data) {
+				umc.tools._renewIESession();
+				return data;
 			});
 
 			// handle XHR errors unless not specified otherwise
