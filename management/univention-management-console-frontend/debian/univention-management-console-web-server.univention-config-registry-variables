@@ -1,0 +1,5 @@
+[umc/http/port]
+Description[de]=Port des UMC-HTTP-Servers
+Description[en]=Port of UMC HTTP server
+Type=int
+Categories=Management

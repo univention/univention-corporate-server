@@ -1,8 +1,13 @@
 @%@UCRWARNING=# @%@
 
 ProxyPreserveHost on
-ProxyPass /umcp/ http://localhost:8080/ retry=0
-ProxyPassReverse /umcp/ http://localhost:8080/
+
+@!@
+port = int( configRegistry.get('umc/http/port', 8090) )
+
+print 'ProxyPass /umcp/ http://localhost:%s/ retry=0' % port
+print 'ProxyPassReverse /umcp/ http://localhost:%s/' % port
+@!@
 
 RedirectMatch ^/umc(/$|$) /univention-management-console/
 RedirectMatch ^/univention-management-console$ /univention-management-console/

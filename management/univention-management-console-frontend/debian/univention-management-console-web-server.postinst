@@ -47,7 +47,8 @@ univention-config-registry unset umc/web/timeout umc/web/language umc/web/respon
 
 # provide new settings
 univention-config-registry set "umc/http/session/timeout?600" \
-	umc/http/autostart?yes
+	umc/http/autostart?yes \
+	umc/http/port?8090
 
 if dpkg --compare-versions "$2" lt-nl 1.0.8-1; then
 	univention-config-registry unregister univention-directory-manager || true

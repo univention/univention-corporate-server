@@ -504,7 +504,7 @@ class CPAuth(object):
 class CPRoot(object):
 	def index(self):
 		"""
-		http://localhost:8080/
+		http://localhost:<ucr:umc/http/port>/
 		"""
 		raise cherrypy.HTTPError(httplib.NOT_FOUND)
 	index.exposed = True
@@ -513,7 +513,7 @@ def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
 	cherrypy.config.update( {
-		'server.socket_port': 8080,
+		'server.socket_port': int( configRegistry.get( 'umc/http/port', 8090 ) ),
 		'server.socket_host': '::',
 		'server.request_queue_size' : 100,
 		'engine.autoreload_on': False,
