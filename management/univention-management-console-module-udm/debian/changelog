@@ -1,9 +1,15 @@
+univention-management-console-module-udm (1.0.269-2) unstable; urgency=low
+
+  * fixed typo (Bug #25630) 
+
+ -- Florian Best <best@univention.de>  Mon, 23 Jan 2012 13:21:05 +0100
+
 univention-management-console-module-udm (1.0.269-1) unstable; urgency=low
 
-  * DetailPage: added object name to safe button when creating an object (Bug
-  	#25797)
-  * DetailPage: ask the user for discarding changes on closing the detailpage (Bug
-  	#25630)
+  * DetailPage: added object name to safe button when creating an object
+    (Bug #25797)
+  * DetailPage: ask the user for discarding changes on closing the detailpage
+    (Bug #25630)
 
  -- Florian Best <best@univention.de>  Mon, 23 Jan 2012 12:19:01 +0100
 
