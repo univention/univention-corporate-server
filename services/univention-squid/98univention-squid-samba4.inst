@@ -1,0 +1,99 @@
+#! /bin/sh
+#
+# Univention Squid Samba4
+#  join script
+#
+# Copyright 2010-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+## check if this host is a Samba4 DC
+cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
+
+if [ "$cn" = "$hostname" ]; then
+	## TODO: currently we only create a kerberos principal for the http-proxy if the host is a Samba4 DC
+	## for UCS Samba Members some listener code similar to the the keytab.py/keytab-member.py would be needed
+
+	keytab="$samba_private_dir/http-proxy.keytab"
+	if ! [ -f "$keytab" ]; then
+
+		service_accountname="http-proxy-$hostname"
+
+		password=$(makepasswd)
+
+		/usr/sbin/samba-tool user add "$service_accountname" "$password" \
+			--description "HTTP Proxy Service Account for $hostname"
+
+		samba_private_dir="/var/lib/samba/private"
+
+		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
+
+		if [ -z "$service_account_dn" ]; then
+			echo "ERROR: samAccountName not found for service account $service_accountname"
+			exit 1
+		fi
+
+		ldbmodify -H $samba_private_dir/sam.ldb <<-%EOF
+		dn: $service_account_dn
+		changetype: modify
+		add: servicePrincipalName
+		servicePrincipalName: HTTP/$(hostname -f)
+		-
+		%EOF
+
+
+
+		ldbadd -H $samba_private_dir/secret.ldb <<-%EOF
+		dn: samAccountName=$service_accountname,CN=Principals
+		objectClass: kerberosSecret
+		privateKeytab: http-proxy.keytab
+		realm: $kerberos_realm
+		secret: $password
+		msDS-KeyVersionNumber: 1
+		sAMAccountName: $service_accountname
+		servicePrincipalName: HTTP/$(hostname -f)
+		name: $service_accountname
+		%EOF
+
+		if ! [ -f "$keytab" ]; then
+			echo "ERROR: keytab not created for samAccountName=$service_accountname"
+			exit 1
+		fi
+		chown proxy "$keytab"
+	fi
+
+fi
+
+joinscript_save_current_version
+
+exit 0
+

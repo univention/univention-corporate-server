@@ -100,3 +100,21 @@ Description[de]=Die TTL in Sekunden für den IP-basierten Authentisierungscache 
 Description[en]=The TTL in seconds for the IP-based authentication cache (0=disabled)
 Type=str
 Categories=service-webproxy
+
+[squid/krb5auth]
+Description[de]=Squid Modul zur Kerberos Authentifikation aktivieren
+Description[en]=Configure squid helper for kerberos authentication
+Type=str
+Categories=service-webproxy
+
+[squid/krb5auth/children]
+Description[de]=Zahl der squid_kerb_auth Prozesse
+Description[en]=Number of squid_kerb_auth processes
+Type=str
+Categories=service-webproxy
+
+[squid/krb5auth/keepalive]
+Description[de]=keep_alive Option für squid_kerb_auth 
+Description[en]=keep_alive option for squid_kerb_auth
+Type=str
+Categories=service-webproxy

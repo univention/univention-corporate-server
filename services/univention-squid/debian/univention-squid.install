@@ -1,2 +1,3 @@
 79univention-squid.inst usr/lib/univention-install/
+98univention-squid-samba4.inst usr/lib/univention-install/
 squid-pw-rotate usr/lib/univention-server/server_password_change.d/

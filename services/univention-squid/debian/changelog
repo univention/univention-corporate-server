@@ -1,3 +1,19 @@
+univention-squid (5.0.4-2) unstable; urgency=low
+
+  * add squid/krb5auth configuration option (Bug #24277)
+  * add krb5 principal for HTTP/ service if host runs Samba 4
+  * strip kerberos realm from usernames in ldap_group lookups
+
+ -- Arvid Requate <requate@univention.de>  Mon, 23 Jan 2012 17:35:45 +0100
+
+
+univention-squid (5.0.4-1) unstable; urgency=low
+
+  * use ldap/server/port for squid LDAP binds (Bug #24281)
+  * strip samba domain from usernames in ldap_group lookups
+
+ -- Arvid Requate <requate@univention.de>  Mon, 23 Jan 2012 16:13:46 +0100
+
 univention-squid (5.0.3-19) unstable; urgency=low
 
   * Fix group lookup (Bug #22576) 
