@@ -1282,7 +1282,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		var alteredValues = this.getAlteredValues();
 		delete alteredValues.$dn$;
 
-		if(!this.newObjectOptions && (dojo.toJson(alteredValues) != '{}'))) {
+		if(!this.newObjectOptions && (dojo.toJson(alteredValues) != '{}')) {
 			// Changes have been made. Display confirm dialogue.
 			return umc.dialog.confirm( this._('There are unsaved changes. Are you sure to cancel nevertheless?'), [{
 				label: this._('Discard changes'),
