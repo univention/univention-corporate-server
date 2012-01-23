@@ -1291,7 +1291,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				}, {
 					label: this._('Continue editing'),
 					name: 'cancel',
-					'default': true,
+					'default': true
 				}]
 			);
 		}
