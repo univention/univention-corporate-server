@@ -1356,7 +1356,9 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 			newObjectOptions: newObjOptions,
 			moduleWidget: this,
 			isClosable: isClosable,
-			note: note || null
+			note: note || null,
+			objectNamePlural: this.objectNamePlural,
+			objectNameSingular: this.objectNameSingular
 		});
 
 		this._detailPageHandles = [];

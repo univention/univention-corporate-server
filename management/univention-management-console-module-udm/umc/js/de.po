@@ -727,3 +727,15 @@ msgstr "Benutzer"
 
 #~ msgid "License"
 #~ msgstr "Lizenz"
+
+msgid "There are unsaved changes. Are you sure to cancel nevertheless?"
+msgstr "Einige Änderungen sind noch nicht gespeichert. Möchten Sie trotzdem abbrechen?"
+
+msgid "Continue editing"
+msgstr "Bearbeiten fortführen"
+
+msgid "Discard changes"
+msgstr "Änderungen verwerfen"
+
+msgid "Create %s"
+msgstr "%s anlegen"

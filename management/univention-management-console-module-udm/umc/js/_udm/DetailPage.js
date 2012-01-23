@@ -137,6 +137,10 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 	_multiEdit: false,
 
+	// UDM object type name in singular and plural
+	objectNameSingular: '',
+	objectNamePlural: '',
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -592,15 +596,23 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			closeLabel = this._('Cancel');
 		}
 
+		var createLabel = '';
+		if(this.newObjectOptions) {
+			createLabel = this._( 'Create %s', this.objectNameSingular );
+		}
+		else {
+			createLabel = this._( 'Save changes' );
+		}
+
 		// buttons
 		var buttons = umc.render.buttons([{
 			name: 'submit',
-			label: this._('Save changes'),
+			label: createLabel,
 			style: 'float: right'
 		}, {
 			name: 'close',
 			label: closeLabel,
-			callback: dojo.hitch(this, 'onCloseTab'),
+			callback: dojo.hitch(this, 'askForQuit'),
 			style: 'float: left'
 		}]);
 		var footer = new umc.widgets.ContainerWidget({
@@ -678,6 +690,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 
 				// save the original form data
 				this._receivedObjFormData = this.getValues();
+				this._receivedObjFormData.$policies$ = this._receivedObjOrigData.$policies$;
 			}));
 		}
 		else {
@@ -1260,6 +1273,31 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// summary:
 		//		Event is called when the page should be closed.
 		return true;
+	},
+
+	askForQuit : function() {
+		// summary:
+		// 		If changes have been made ask before closing the detailpage
+
+		var alteredValues = this.getAlteredValues();
+		delete alteredValues.$dn$;
+
+		if(!this.newObjectOptions && (dojo.toJson(alteredValues) != '{}'))) {
+			// Changes have been made. Display confirm dialogue.
+			return umc.dialog.confirm( this._('There are unsaved changes. Are you sure to cancel nevertheless?'), [{
+				label: this._('Discard changes'),
+				name: 'quit',
+				callback: dojo.hitch(this, 'onCloseTab')
+				}, {
+					label: this._('Continue editing'),
+					name: 'cancel',
+					'default': true,
+				}]
+			);
+		}
+
+		// No changes have been made. Close the detail page
+		this.onCloseTab();
 	},
 
 	onSave: function(dn, objectType) {
