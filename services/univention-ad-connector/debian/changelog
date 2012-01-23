@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.45-1) unstable; urgency=low
+
+  * Don't skip the synchronization if the object was added in UCS
+    (Bug #25847)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Jan 2012 11:08:50 +0100
+
 univention-ad-connector (6.0.44-1) unstable; urgency=low
 
   * Don't recode value if recoding raises an UnicodeDecodeError
