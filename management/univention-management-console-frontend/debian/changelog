@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.255-2) unstable; urgency=low
+
+  * added missing UCR Variable (Bug #25406)
+
+ -- Florian Best <best@univention.de>  Mon, 23 Jan 2012 14:50:45 +0100
+
 univention-management-console-frontend (1.0.255-1) unstable; urgency=low
 
   * added UCR variable for port of UMC-Web-Server  (Bug #25406)
