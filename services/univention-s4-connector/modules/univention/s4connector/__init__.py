@@ -806,8 +806,9 @@ class ucs:
 
 					dn,new,old,old_dn=cPickle.load(f)
 
-					if len(self.dn_list.get(dn, [])) < 2:
+					if len(self.dn_list.get(dn, [])) < 2 or not old:
 						# If the list contains more then one file, the DN will be synced later
+						# But if the object is new (not old) synchonize in any case
 						try:
 							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
 						except (ldap.SERVER_DOWN, SystemExit):

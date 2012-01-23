@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.90-1) unstable; urgency=low
+
+  * Don't skip the synchronization if the object was added in UCS
+    (Bug #25847)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Jan 2012 11:05:46 +0100
+
 univention-s4-connector (6.0.89-1) unstable; urgency=low
 
   * Don't synchronize the homeDirectory attribute from UCS to Samba 4.
