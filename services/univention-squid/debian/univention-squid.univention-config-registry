@@ -30,6 +30,7 @@ Variables: squid/ipauth/.*
 Variables: squid/krb5auth
 Variables: squid/krb5auth/children
 Variables: squid/krb5auth/keepalive
+Variables: ldap/server/port
 
 Type: file
 File: etc/security/packetfilter.d/20squid
