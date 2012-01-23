@@ -1,3 +1,11 @@
+univention-s4-connector (6.0.89-1) unstable; urgency=low
+
+  * Don't synchronize the homeDirectory attribute from UCS to Samba 4.
+    The Samba 4 attribute homeDirectory will be synchronized with the
+    UCS attribute sambaHomePath (Bug #25823)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Jan 2012 09:37:17 +0100
+
 univention-s4-connector (6.0.88-1) unstable; urgency=low
 
   * Don't recode value if recoding raises an UnicodeDecodeError

@@ -1849,6 +1849,9 @@ class s4(univention.s4connector.ucs):
 				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 					for attr,value in object['attributes'].items():
 						for attribute in self.property[property_type].post_attributes.keys():
+							if self.property[property_type].post_attributes[attribute].reverse_attribute_check:
+								if not object['attributes'].get(self.property[property_type].post_attributes[attribute].ldap_attribute):
+									continue
 							if self.property[property_type].post_attributes[attribute].con_attribute == attr:
 								if value:
 									modlist.append((ldap.MOD_REPLACE, attr, value))
@@ -1895,6 +1898,9 @@ class s4(univention.s4connector.ucs):
 						attr_list.append(attr)
 						for attribute in self.property[property_type].post_attributes.keys():
 							if self.property[property_type].post_attributes[attribute].con_attribute == attr or self.property[property_type].post_attributes[attribute].con_other_attribute == attr:
+								if self.property[property_type].post_attributes[attribute].reverse_attribute_check:
+									if not object['attributes'].get(self.property[property_type].post_attributes[attribute].ldap_attribute):
+										continue
 								if not s4_object.has_key(attr):
 									if value:
 										modlist.append((ldap.MOD_ADD, attr, value))
@@ -1916,7 +1922,13 @@ class s4(univention.s4connector.ucs):
 				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 					for ac in self.property[property_type].post_attributes.keys():
 						if not self.property[property_type].post_attributes[ac].con_attribute in attrs_which_should_be_mapped:
-							attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
+							if self.property[property_type].post_attributes[ac].reverse_attribute_check:
+								if object['attributes'].get(self.property[property_type].post_attributes[ac].ldap_attribute):
+									attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
+								elif s4_object.get(self.property[property_type].post_attributes[ac].con_attribute):
+									modlist.append((ldap.MOD_DELETE, self.property[property_type].post_attributes[ac].con_attribute, None))
+							else:
+								attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
 						if self.property[property_type].post_attributes[ac].con_other_attribute:
 							if not self.property[property_type].post_attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
 								attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_other_attribute)

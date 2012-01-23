@@ -206,6 +206,7 @@ s4_mapping = {
 							ucs_attribute='sambahome',
 							ldap_attribute='sambaHomePath',
 							con_attribute='homeDirectory',
+							reverse_attribute_check = True,
 						),
 					'telephoneNumber': univention.s4connector.attribute (
 							ucs_attribute='phone',

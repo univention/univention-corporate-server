@@ -179,7 +179,7 @@ class configsaver:
 		return self.config.has_key(section) and self.config[section].has_key(option)
 
 class attribute:
-	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', mapping=() ):
+	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', mapping=(), reverse_attribute_check=False ):
 		self.ucs_attribute=ucs_attribute
 		self.ldap_attribute=ldap_attribute
 		self.con_attribute=con_attribute
@@ -188,6 +188,13 @@ class attribute:
 		self.compare_function=compare_function
 		if mapping:
 			self.mapping=mapping
+		# Make a reverse check of this mapping. This is necassary if the attribute is
+		# available in UCS and in AD but the mapping is not 1:1.
+		# For example the homeDirectory attribute is in UCS and in AD, but the mapping is
+		# from homeDirectory in AD to sambaHomePath in UCS. The homeDirectory in UCS is not
+		# considered. 
+		# Seee https://forge.univention.org/bugzilla/show_bug.cgi?id=25823
+		self.reverse_attribute_check=reverse_attribute_check
 
 class property:
 	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
@@ -949,7 +956,13 @@ class ucs:
 			if hasattr(self.property[property_type].post_attributes[attr_key], 'mapping'):
 				set_values(self.property[property_type].post_attributes[attr_key].mapping[1](self, property_type, object))
 			else:
-				set_values(self.property[property_type].post_attributes[attr_key])
+				if self.property[property_type].post_attributes[attr_key].reverse_attribute_check:
+					if object['attributes'].get(self.property[property_type].post_attributes[attr_key].ldap_attribute):
+						set_values(self.property[property_type].post_attributes[attr_key])
+					else:
+						ucs_object[self.property[property_type].post_attributes[attr_key].ucs_attribute] = ''
+				else:
+					set_values(self.property[property_type].post_attributes[attr_key])
 
 	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype = "modify"):
 		if object.has_key('custom_attributes'):
