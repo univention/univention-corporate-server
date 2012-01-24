@@ -52,11 +52,12 @@ extract_binddn_and_bindpwd_from_args() {
 
 
 samba_private_dir="/var/lib/samba/private"
-keytab="$samba_private_dir/$servicename.keytab"
 
-if ! [ -f "$keytab" ]; then
+service_accountname="$servicename-$hostname"
+keytab_filename="$service_accountname.keytab"
+keytab_path="$samba_private_dir/$keytab_filename"
 
-	service_accountname="$servicename-$hostname"
+if ! [ -f "$keytab_path" ]; then
 
 	secret_filename="/etc/$servicename.secret"
 	password=$(makepasswd)
@@ -98,14 +99,14 @@ if ! [ -f "$keytab" ]; then
 		realm: $kerberos_realm
 		secret: $password
 		msDS-KeyVersionNumber: 1
-		privateKeytab: $servicename.keytab
+		privateKeytab: $keytab_filename
 		%EOF
 
-		if ! [ -f "$keytab" ]; then
+		if ! [ -f "$keytab_path" ]; then
 			echo "ERROR: keytab not created for samAccountName=$service_accountname"
 			exit 1
 		fi
-		chown proxy "$keytab"
+		chown proxy "$keytab_path"
 
 	else
 		### in this case we are not a Samba4-DC
@@ -132,13 +133,16 @@ if ! [ -f "$keytab" ]; then
 				--set description="$servicedescription"
 
 			## create service keytab manually
-			/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab" \
+			if ! [ -d "$samba_private_dir" ]; then
+				mkdir -p "$samba_private_dir"
+			fi
+			/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab_path" \
 				--principal="host/$service_accountname.$domainname" \
 				--alias="$spn_instance/$hostname.$domainname" \
 				--alias="$service_accountname" \
 				--kvno=1 --password="$password"
 
-			chown proxy "$keytab"
+			chown proxy "$keytab_path"
 
 			## using ldap-tools here
 			## ldbmodify might be an option, depends on package ldb-tools

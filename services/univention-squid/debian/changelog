@@ -1,3 +1,12 @@
+univention-squid (5.0.4-7) unstable; urgency=low
+
+  * harmonize changes with the forked version in ucs-school:
+  * enhancing readability of squid.conf template
+  * use 7389 as standard ldap-Port in squid.conf
+  * use consistent name for keytab file (Bug #24277)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jan 2012 22:53:33 +0100
+
 univention-squid (5.0.4-6) unstable; urgency=low
 
   * improve handling of non-Samba4-DC case in squid-samba4 joinscript
