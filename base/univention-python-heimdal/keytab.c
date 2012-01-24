@@ -249,7 +249,7 @@ static PyObject *keytab_list(krb5KeytabObject *self, PyObject *args)
 		//		 ((unsigned char*)entry.keyblock.keyvalue.data)[i]);
 		//	CHECK_MAX(key);
 		//}
-		PyTuple_SetItem(tuple, 4, PyString_FromString(entry.keyblock.keyvalue.data));
+		PyTuple_SetItem(tuple, 4, PyString_FromStringAndSize(entry.keyblock.keyvalue.data, entry.keyblock.keyvalue.length));
 
 		PyList_Append(list, tuple);
 		krb5_kt_free_entry(*self->context, &entry);
