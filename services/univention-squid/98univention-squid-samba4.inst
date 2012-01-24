@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #
 # Univention Squid Samba4
 #  join script
@@ -36,24 +36,28 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-## check if this host is a Samba4 DC
-cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
+extract_binddn_and_bindpwd_from_args() {
+	## parse binddn and bindpwd from command line arguments into shell variables
+	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
+	if [ -n "$binddn" ]; then
+		dcaccount="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "$binddn" -LLL uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')"
+	fi
+}
 
-if [ "$cn" = "$hostname" ]; then
-	## TODO: currently we only create a kerberos principal for the http-proxy if the host is a Samba4 DC
-	## for UCS Samba Members some listener code similar to the the keytab.py/keytab-member.py would be needed
+samba_private_dir="/var/lib/samba/private"
+keytab="$samba_private_dir/http-proxy.keytab"
+if ! [ -f "$keytab" ]; then
 
-	keytab="$samba_private_dir/http-proxy.keytab"
-	if ! [ -f "$keytab" ]; then
+	service_accountname="http-proxy-$hostname"
+	password=$(makepasswd)
 
-		service_accountname="http-proxy-$hostname"
+	## check if this host is a Samba4 DC
+	cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
 
-		password=$(makepasswd)
+	if [ "$cn" = "$hostname" ]; then
 
 		/usr/sbin/samba-tool user add "$service_accountname" "$password" \
 			--description "HTTP Proxy Service Account for $hostname"
-
-		samba_private_dir="/var/lib/samba/private"
 
 		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
 
@@ -69,7 +73,6 @@ if [ "$cn" = "$hostname" ]; then
 		servicePrincipalName: HTTP/$(hostname -f)
 		-
 		%EOF
-
 
 
 		ldbadd -H $samba_private_dir/secret.ldb <<-%EOF
@@ -89,7 +92,43 @@ if [ "$cn" = "$hostname" ]; then
 			exit 1
 		fi
 		chown proxy "$keytab"
-	fi
+
+	else
+		### in this case we are not a Samba4-DC
+
+		## check if we are in a samba4 domain
+		samba4servicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
+
+		if [ -n "$samba4servicedcs" ]; then
+			samba4dcs=( $samba4servicedcs )
+			s4dc="${samba4dcs[0]}"	# pick the first samba4 DC listed
+
+			### cannot use udm, servicePrincipalName is not synced
+			#univention-directory-manager users/user create "$@" \
+			#	--position "cn=users,$ldap_base" \
+			#	--set username="$service_accountname" \
+			#	--set password="$password" \
+			#	--set description="HTTP Proxy Service Account for $hostname"
+
+			extract_binddn_and_bindpwd_from_args "$@"
+
+			ldbadd -H "ldaps://$dc" -U"$dcaccount"%"$bindpwd" <<-%EOF
+			dn: $service_account,CN=Users,$ldap_base
+			objectClass: user
+			description: HTTP Proxy Service Account for $hostname
+			sAMAccountName: $service_accountname
+			servicePrincipalName: HTTP/$(hostname -f)
+			%EOF
+
+			/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab" \
+				--principal="host/${service_accountname}.${domainname}" \
+				--alias="HTTP/${hostname}.${domainname}" \
+				--alias="${service_accountname}" \
+				--kvno=1 --password="$password"
+
+			chown proxy "$keytab"
+
+		fi
 
 fi
 
