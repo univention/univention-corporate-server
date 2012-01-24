@@ -52,11 +52,4 @@ setup(
 			libraries=['krb5', 'kadm5clnt', 'hdb', 'asn1', 'com_err', 'roken' ]
 		)
 	],
-	ext_modules=[
-		Extension(
-			'heimdal2',
-			['pykrb5.c'],
-			libraries=['krb5', 'kadm5clnt', 'hdb', 'asn1', 'com_err', 'roken' ]
-		)
-	],
 )
