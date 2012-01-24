@@ -835,9 +835,9 @@ class Instance(umcm.Base):
 			the job.
 
 			Argument 'count' has the same meaning as already known:
-			-1 ...... return timestamp of file (for polling)
+			<0 ...... return timestamp of file (for polling)
 			0 ....... return whole file as a string list
-			>0 ...... return this many last lines, as in 'tail -n <count>'
+			>0 ...... ignore this many lines, return the rest of the file
 
 			*** NOTE *** As soon as we have looked for a running job at least once,
 						we know the job key and can associate it here.
@@ -876,9 +876,9 @@ class Instance(umcm.Base):
 					result = self._logstamp(fname)
 				else:
 					# don't read complete file if we have an 'ignore' count
-					if (count == 0) and ('lines' in self._current_job) and (self._current_job['lines']):
-						count = -int(self._current_job['lines'])
-					result = self._logview(fname, count)
+					if ('lines' in self._current_job) and (self._current_job['lines']):
+						count += int(self._current_job['lines'])
+					result = self._logview(fname, -count)
 
 		# again debug, shortened
 		if isinstance(result,int):
