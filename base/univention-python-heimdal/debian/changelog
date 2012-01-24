@@ -1,3 +1,9 @@
+univention-python-heimdal (4.0.3-1) unstable; urgency=low
+
+  * fix traceback in keytab binding (Bug #24277)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jan 2012 15:54:29 +0100
+
 univention-python-heimdal (4.0.2-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

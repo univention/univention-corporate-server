@@ -120,7 +120,7 @@ static void keytab_destroy(krb5KeytabObject *self)
 		free(self->context);
 	}
 
-	PyMem_Del(self);
+	PyObject_Del(self);
 }
 
 static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
