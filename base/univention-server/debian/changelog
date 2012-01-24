@@ -1,3 +1,11 @@
+univention-server (7.0.15-2) unstable; urgency=low
+
+  * Enable IPv6 for time (Bug #25456)
+  * Due to http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=638791 we cannot
+    use update-inetd for this.	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 24 Jan 2012 09:44:10 +0100
+
 univention-server (7.0.15-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002) 

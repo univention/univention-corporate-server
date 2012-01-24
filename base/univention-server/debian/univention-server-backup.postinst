@@ -39,9 +39,17 @@ univention-config-registry set server/role?domaincontroller_backup \
 
 mkdir -p /var/lib/samba/netlogon/scripts/
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.15-2; then
+	update-inetd --remove time
+	echo "time            stream  tcp4     nowait  root    internal" >> /etc/inetd.conf
+	echo "time            stream  tcp6     nowait  root    internal" >> /etc/inetd.conf
+	/etc/init.d/openbsd-inetd restart
+fi
+
 if [ "$1" = "configure" -a -z "$2" ]; then
-	update-inetd --add "time            stream  tcp     nowait  root    internal"
-	update-inetd --debug --comment-chars '#' --enable time
+	echo "time            stream  tcp4     nowait  root    internal" >> /etc/inetd.conf
+	echo "time            stream  tcp6     nowait  root    internal" >> /etc/inetd.conf
+	/etc/init.d/openbsd-inetd restart
 fi
 
 #DEBHELPER#
