@@ -1,8 +1,8 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention S4 Connector
-#  Basic class for the UCS connector part
+# Univention Salt Kerberos Keys
+#  Tool that adds a Kerberos salt to all keys found in the LDAP Backend
 #
 # Copyright 2010-2011 Univention GmbH
 #
