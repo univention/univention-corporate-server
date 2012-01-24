@@ -1,0 +1,65 @@
+#!/usr/bin/python
+
+import heimdal
+import subprocess
+import binascii
+import univention.config_registry
+from optparse import OptionParser
+import tempfile
+import sys
+import os
+
+parser = OptionParser()
+parser.add_option("-k", "--keytab", dest="keytab",
+	help="write keytab to FILE", metavar="FILE")
+parser.add_option("-p", "--principal", dest="principal",
+	help="create keys for PRINCIPAL", metavar="PRINCIPAL")
+parser.add_option("-a", "--alias", dest="service_principal_names",
+	help="add alias", action="append")
+parser.add_option("-V", "--kvno", dest="kvno",
+	help="key version number")
+parser.add_option("-w", "--password", dest="password",
+	help="password")
+
+(options, args) = parser.parse_args()
+
+if not options.keytab:
+	print "keytab argument missing"
+	sys.exit(1)
+if not options.principal:
+	print "principal argument missing"
+	sys.exit(1)
+if not options.service_principal_names:
+	print "alias argument missing"
+	sys.exit(1)
+if not options.kvno:
+	print "kvno argument missing"
+	sys.exit(1)
+if not options.password:
+	print "password argument missing"
+	sys.exit(1)
+
+keytab_filename = options.keytab
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+krb5_context = heimdal.context()
+permitted_enctypes = krb5_context.get_permitted_enctypes()
+permitted_enctypes.reverse()
+temp_keytab_filename = tempfile.mktemp()
+for krb5_enctype in permitted_enctypes:
+	enctype = str(krb5_enctype)
+	if enctype in ('des-cbc-md4', 'des3-cbc-md5', 'des3-cbc-sha1'):
+		continue
+	p1 = subprocess.Popen(['/usr/sbin/ktutil', '-k', temp_keytab_filename, 'add', '-p', options.principal, '-V', str(options.kvno), '-e', enctype, '-w', options.password])
+	p1.wait()
+
+keytab = heimdal.keytab(krb5_context, temp_keytab_filename)
+for (kvno, enctype, principal, timestamp, keyblock) in keytab.list():
+	keyblock_hex = binascii.b2a_hex(keyblock)
+	for spn in options.service_principal_names:
+		p1 = subprocess.Popen(['/usr/sbin/ktutil', '-k', keytab_filename, 'add', '-p', spn, '-V', str(kvno), '-e', enctype, '-w', keyblock_hex, '--hex'])
+		p1.wait()
+os.unlink(temp_keytab_filename)
+
