@@ -129,7 +129,7 @@ if ! [ -f "$keytab" ]; then
 			chown proxy "$keytab"
 
 		fi
-
+	fi
 fi
 
 joinscript_save_current_version
