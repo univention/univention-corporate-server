@@ -33,18 +33,26 @@
 from subprocess import Popen, PIPE
 import string
 
-def policy_result(dn):
+def policy_result(dn, binddn="", bindpw=""):
 	"""
 	Return a tuple of hash-lists, mapping attributes to a list of values and
 	mapping attributes to the matching Policy-DN.
 
-	>>> (results, policies) = policy_result('dc=opendvdi,dc=local')
+	>>> (results, policies) = policy_result('dc=opendvdi,dc=local' [, binddn=BINDDN, bindpw=BINDPW])
 	>>> policies['univentionDhcpDomainNameServers']
 	'cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=opendvdi,dc=local'
 	results['univentionDhcpDomainNameServers']
 	['192.168.0.111']
 	"""
-	p = Popen(['univention-policy-result', dn], stdout=PIPE, stderr=PIPE)
+
+	if not binddn:
+		import univention.config_registry
+		cr = univention.config_registry.ConfigRegistry()
+		cr.load()
+		binddn = cr.get("ldap/hostdn")
+		bindpw = "/etc/machine.secret"
+
+	p = Popen(['univention-policy-result', '-D', binddn, '-y', bindpw, dn], stdout=PIPE, stderr=PIPE)
 	stdout, stderr = p.communicate()
 	if p.returncode != 0:
 		raise Exception("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr})
