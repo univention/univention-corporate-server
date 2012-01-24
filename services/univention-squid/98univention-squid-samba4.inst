@@ -36,6 +36,12 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+
+servicename='http-proxy'
+servicedescription="$servicedescription Service Account for $hostname"
+spn_instance='HTTP'
+
+
 extract_binddn_and_bindpwd_from_args() {
 	## parse binddn and bindpwd from command line arguments into shell variables
 	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
@@ -44,11 +50,15 @@ extract_binddn_and_bindpwd_from_args() {
 	fi
 }
 
+
 samba_private_dir="/var/lib/samba/private"
-keytab="$samba_private_dir/http-proxy.keytab"
+keytab="$samba_private_dir/$servicename.keytab"
+
 if ! [ -f "$keytab" ]; then
 
-	service_accountname="http-proxy-$hostname"
+	service_accountname="$servicename-$hostname"
+
+	secret_filename="/etc/$servicename.secret"
 	password=$(makepasswd)
 
 	## check if this host is a Samba4 DC
@@ -56,8 +66,14 @@ if ! [ -f "$keytab" ]; then
 
 	if [ "$cn" = "$hostname" ]; then
 
+		## save password for debugging
+		touch "$secret_filename"
+		chmod 600 "$secret_filename"
+		chown proxy "$secret_filename"
+		echo -n "$password" > "$secret_filename"
+
 		/usr/sbin/samba-tool user add "$service_accountname" "$password" \
-			--description "HTTP Proxy Service Account for $hostname"
+			--description "$servicedescription"
 
 		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
 
@@ -66,25 +82,23 @@ if ! [ -f "$keytab" ]; then
 			exit 1
 		fi
 
-		ldbmodify -H $samba_private_dir/sam.ldb <<-%EOF
+		ldbmodify -H "$samba_private_dir/sam.ldb" <<-%EOF
 		dn: $service_account_dn
 		changetype: modify
 		add: servicePrincipalName
-		servicePrincipalName: HTTP/$(hostname -f)
+		servicePrincipalName: $spn_instance/$(hostname -f)
 		-
 		%EOF
 
-
-		ldbadd -H $samba_private_dir/secret.ldb <<-%EOF
+		ldbadd -H "$samba_private_dir/secrets.ldb" <<-%EOF
 		dn: samAccountName=$service_accountname,CN=Principals
 		objectClass: kerberosSecret
-		privateKeytab: http-proxy.keytab
+		sAMAccountName: $service_accountname
+		servicePrincipalName: $spn_instance/$(hostname -f)
 		realm: $kerberos_realm
 		secret: $password
 		msDS-KeyVersionNumber: 1
-		sAMAccountName: $service_accountname
-		servicePrincipalName: HTTP/$(hostname -f)
-		name: $service_accountname
+		privateKeytab: $servicename.keytab
 		%EOF
 
 		if ! [ -f "$keytab" ]; then
@@ -102,31 +116,58 @@ if ! [ -f "$keytab" ]; then
 		if [ -n "$samba4servicedcs" ]; then
 			samba4dcs=( $samba4servicedcs )
 			s4dc="${samba4dcs[0]}"	# pick the first samba4 DC listed
+			s4dc_fqdn="$s4dc.$domainname"
 
-			### cannot use udm, servicePrincipalName is not synced
-			#univention-directory-manager users/user create "$@" \
-			#	--position "cn=users,$ldap_base" \
-			#	--set username="$service_accountname" \
-			#	--set password="$password" \
-			#	--set description="HTTP Proxy Service Account for $hostname"
+			## save password for debugging
+			touch "$secret_filename"
+			chmod 600 "$secret_filename"
+			chown proxy "$secret_filename"
+			echo -n "$password" > "$secret_filename"
 
-			extract_binddn_and_bindpwd_from_args "$@"
+			## create service_accountname via udm, but servicePrincipalName is missing
+			univention-directory-manager users/user create "$@" \
+				--position "cn=users,$ldap_base" \
+				--set username="$service_accountname" \
+				--set password="$password" \
+				--set description="$servicedescription"
 
-			ldbadd -H "ldaps://$dc" -U"$dcaccount"%"$bindpwd" <<-%EOF
-			dn: $service_account,CN=Users,$ldap_base
-			objectClass: user
-			description: HTTP Proxy Service Account for $hostname
-			sAMAccountName: $service_accountname
-			servicePrincipalName: HTTP/$(hostname -f)
-			%EOF
-
+			## create service keytab manually
 			/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab" \
-				--principal="host/${service_accountname}.${domainname}" \
-				--alias="HTTP/${hostname}.${domainname}" \
-				--alias="${service_accountname}" \
+				--principal="host/$service_accountname.$domainname" \
+				--alias="$spn_instance/$hostname.$domainname" \
+				--alias="$service_accountname" \
 				--kvno=1 --password="$password"
 
 			chown proxy "$keytab"
+
+			## using ldap-tools here
+			## ldbmodify might be an option, depends on package ldb-tools
+			## samba-tool might be another option, but it needs samba4-common-bin and python-samba4
+
+			extract_binddn_and_bindpwd_from_args "$@"
+			samba4_bind_dn="CN=$dcaccount,CN=Users,$ldap_base"
+
+			## wait for S4 Connector and possibly DRS
+			count=0
+			while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
+				sleep 1
+				service_account_dn=$(ldapsearch -H $"ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
+				count=$((count+1))
+			done
+
+			if [ -z "$service_account_dn" ]; then
+				echo "ERROR: $service_accountname not found in samba4 directory on host $s4dc.$domainname"
+				echo "ERROR: cannot add attribute \"servicePrincipalName: $spn_instance/$(hostname -f)\""
+				exit 1
+			fi
+
+			ldapmodify -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" <<-%EOF
+			dn: $service_account_dn
+			changetype: modify
+			add: servicePrincipalName
+			servicePrincipalName: $spn_instance/$(hostname -f)
+			--
+			%EOF
 
 		fi
 	fi
