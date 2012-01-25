@@ -14,8 +14,6 @@ Depends: ${misc:Depends},
  univention-config,
  winbind | winbind4,
  univention-heimdal-common (>>5.0.24-1),
- ldb-tools,
- samba-dsdb-modules,
  python-ipaddr
 Breaks: squid
 Recommends: univention-nagios-squid

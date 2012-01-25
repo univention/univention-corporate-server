@@ -129,14 +129,20 @@ if ! [ -f "$keytab_path" ]; then
 
 			chown proxy "$keytab_path"
 
-			## try to connect to any of the hosts running the S4 Connector
+			## using ldap-tools here
+			## ldbmodify might be an option, depends on package ldb-tools
+			## samba-tool might be another option, but it needs samba4-common-bin and python-samba4
+
 			extract_binddn_and_bindpwd_from_args "$@"
+			samba4_bind_dn="CN=$dcaccount,CN=Users,$ldap_base"
+
+			## try to connect to any of the hosts running the S4 Connector
 			s4connectors=( $s4connectorservicehosts )
 
 			s4dc_fqdn=''
 			for s4dc in "${s4connectors[@]}"; do
 				try_fqdn="$s4dc.$domainname"
-				test_dn=$(ldbsearch -H "ldaps://$try_fqdn" -U"$dcaccount%$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
+				test_dn=$(ldapsearch -H "ldaps://$try_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
 				if [ -n "$test_dn" ]; then
 					s4dc_fqdn="$try_fqdn"
 					break
@@ -152,7 +158,7 @@ if ! [ -f "$keytab_path" ]; then
 
 				for s4dc in "${samba4dcs[@]}"; do
 					try_fqdn="$s4dc.$domainname"
-					test_dn=$(ldbsearch -H "ldaps://$try_fqdn" -U"$dcaccount%$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
+					test_dn=$(ldapsearch -H "ldaps://$try_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
 					if [ -n "$test_dn" ]; then
 						s4dc_fqdn="$try_fqdn"
 						break
@@ -170,7 +176,7 @@ if ! [ -f "$keytab_path" ]; then
 			count=0
 			while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
 				sleep 1
-				service_account_dn=$(ldbsearch -H "ldaps://$s4dc_fqdn" -U"$dcaccount%$bindpwd" samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
+				service_account_dn=$(ldapsearch -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
 				count=$((count+1))
 			done
 
@@ -180,7 +186,7 @@ if ! [ -f "$keytab_path" ]; then
 				exit 1
 			fi
 
-			ldbmodify -H "ldaps://$s4dc_fqdn" -U"$dcaccount%$bindpwd" <<-%EOF
+			ldapmodify -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" <<-%EOF
 			dn: $service_account_dn
 			changetype: modify
 			add: servicePrincipalName
