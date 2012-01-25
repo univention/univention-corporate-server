@@ -111,13 +111,10 @@ if ! [ -f "$keytab_path" ]; then
 	else
 		### in this case we are not a Samba4-DC
 
-		## check if we are in a samba4 domain
-		samba4servicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
+		## look for S4 Connector hosts
+		s4connectorservicehosts="$(univention-directory-manager computers/computer list "$@" --filter "(univentionService=S4 Connector)" | sed -ne 's|^DN: cn=\([^,]*\).*|\1|p')"
 
-		if [ -n "$samba4servicedcs" ]; then
-			samba4dcs=( $samba4servicedcs )
-			s4dc="${samba4dcs[0]}"	# pick the first samba4 DC listed
-			s4dc_fqdn="$s4dc.$domainname"
+		if [ -n "$s4connectorservicehosts" ]; then
 
 			## save password for debugging
 			touch "$secret_filename"
@@ -151,11 +148,47 @@ if ! [ -f "$keytab_path" ]; then
 			extract_binddn_and_bindpwd_from_args "$@"
 			samba4_bind_dn="CN=$dcaccount,CN=Users,$ldap_base"
 
+			## try to connect to any of the hosts running the S4 Connector
+			s4connectors=( $s4connectorservicehosts )
+
+			s4dc_fqdn=''
+			for s4dc in "${s4connectors[@]}"; do
+				try_fqdn="$s4dc.$domainname"
+				test_dn=$(ldapsearch -H "ldaps://$try_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
+				if [ -n "$test_dn" ]; then
+					s4dc_fqdn="$try_fqdn"
+					break
+				fi
+			done
+
+			if [ -z "$s4dc_fqdn" ]; then
+
+				## Hmm, try other S4 DCs
+				samba4servicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
+
+				samba4dcs=( $samba4servicedcs )
+
+				for s4dc in "${samba4dcs[@]}"; do
+					try_fqdn="$s4dc.$domainname"
+					test_dn=$(ldapsearch -H "ldaps://$try_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
+					if [ -n "$test_dn" ]; then
+						s4dc_fqdn="$try_fqdn"
+						break
+					fi
+				done
+
+				if [ -z "$s4dc_fqdn" ]; then
+					echo "ERROR: No Samba 4 DC available for LDAP"
+					exit 1
+				fi
+
+			fi
+
 			## wait for S4 Connector and possibly DRS
 			count=0
 			while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
 				sleep 1
-				service_account_dn=$(ldapsearch -H $"ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
+				service_account_dn=$(ldapsearch -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
 				count=$((count+1))
 			done
 
