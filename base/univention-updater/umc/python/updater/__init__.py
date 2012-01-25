@@ -37,6 +37,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 import univention.config_registry
 
+import shlex
 import re
 import string
 from os import stat,listdir,chmod,unlink,path,getpid,getppid
@@ -50,6 +51,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
 from univention.updater import UniventionUpdater
+from univention.updater.commands import cmd_update
 
 _ = umc.Translation('univention-management-console-module-updater').translate
 
@@ -441,6 +443,12 @@ class Instance(umcm.Base):
 				pass
 #				result['status'] = PUT_WRITE_ERROR
 #				result['message'] = "Writing UCR failed: %s" % str(ex)
+			try:
+				f = open('/dev/null')
+				subprocess.call(shlex.split(cmd_update), stdout=f, stderr=f)
+				f.close()
+			except OSerror, e:
+				MODULE.error('Execution of "%s" failed: %s' % (cmd_update, str(e)))
 
 
 		# ----------- DEBUG -----------------
@@ -779,6 +787,12 @@ class Instance(umcm.Base):
 				MODULE.fatal("   !! Writing UCR failed: %s" % str(ex))
 				errors['save'] = str(ex)
 				response['status'] = 3
+			try:
+				f = open ('/dev/null')
+				subprocess.call(shlex.split(cmd_update), stdout=f, stderr=f)
+				f.close()
+			except OSError, e:
+				MODULE.error('Execution of "%s" failed: %s' % (cmd_update, str(e)))
 
 		if (len(errors) or (response['status'] != 0)):
 			response['object'] = errors

@@ -1,3 +1,9 @@
+univention-updater (7.0.135-1) unstable; urgency=low
+
+  * execute apt-get update after modifying repositories or components (Bug #25332)
+
+ -- Florian Best <best@univention.de>  Wed, 25 Jan 2012 16:21:35 +0100
+
 univention-updater (7.0.134-1) unstable; urgency=low
 
   * Polling logfiles will only poll new content instead of the whole logfile (Bug #25068)
