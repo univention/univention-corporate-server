@@ -1,3 +1,9 @@
+univention-squid (5.0.4-12) unstable; urgency=low
+
+  * use config_registry.is_true (Bug #24277)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2012 19:54:27 +0100
+
 univention-squid (5.0.4-11) unstable; urgency=low
 
   * avoid GSSAPI in ldap-operations (Bug #24277)
