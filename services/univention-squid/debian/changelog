@@ -1,3 +1,10 @@
+univention-squid (5.0.4-10) unstable; urgency=low
+
+  * skip temporary storage of cleartext password of http-proxy service
+    account (Bug #24277)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2012 18:14:08 +0100
+
 univention-squid (5.0.4-9) unstable; urgency=low
 
   * fix path for kerberos helper (Bug #24277)
