@@ -1,3 +1,9 @@
+univention-heimdal (5.0.25-1) unstable; urgency=low
+
+  * move m-key out of the way for samba4/lorikeet heimdal (Bug #25915)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 26 Jan 2012 11:48:52 +0100
+
 univention-heimdal (5.0.24-3) unstable; urgency=low
 
   * make univention-create-keytab executable (Bug #24277)
