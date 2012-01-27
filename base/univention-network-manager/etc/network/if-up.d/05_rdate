@@ -34,7 +34,7 @@
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-[ ! -f /var/run/ntpd.pid ] && exit 0
+[ -f /var/run/ntpd.pid ] && exit 0
 
 /etc/init.d/rdate start
 
