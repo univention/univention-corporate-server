@@ -1,9 +1,7 @@
-#!/usr/bin/make -f
+#!/bin/sh
+# postinst script for python-univention-config-registry
 #
-# Univention Configuration Registry
-#  rules file for the debian package
-#
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,27 +28,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-%:
-	dh $@
+#DEBHELPER#
 
-override_dh_auto_clean:
-	[ ! -f Makefile ] || $(MAKE) maintainer-clean
-	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in tests/Makefile.in
-	$(RM) configure
-	$(RM) aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs depcomp
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.29; then
+	if [ -f /var/log/univention/config-registry.replog ]; then
+		chmod 0640 /var/log/univention/config-registry.replog
+	fi
+fi
 
-override_dh_auto_configure:
-	libtoolize
-	aclocal
-	autoconf
-	automake --add-missing
-	./configure --prefix=/usr
-
-version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
-override_dh_auto_install:
-	dh_auto_install --buildsystem=makefile
-
-	install -d debian/tmp/usr/share/pyshared/univention
-	sed -e 's/@%@package_version@%@/$(version)/' <python/univention/config_registry.py >debian/tmp/usr/share/pyshared/univention/config_registry.py
-
-override_dh_installinit: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
+exit 0

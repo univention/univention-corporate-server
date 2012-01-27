@@ -3,7 +3,7 @@
 # Univention Configuration Registry
 #  main configuration registry classes
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -1070,9 +1070,14 @@ def replog(method, scope, ucr, var, value=None):
 
 		str = '%s: %s %s%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue)
 		try:
+			isNew = True
+			if os.path.isfile(replog_file):
+				isNew = False
 			logfile = open(replog_file,"a+")
 			logfile.write(str)
 			logfile.close()
+			if isNew:
+				os.chmod(replog_file, 0640)
 		except Exception, e:
 			print "error: exception occurred while writing to replication log: %s" % str(e)
 			exception_occured()
@@ -1429,7 +1434,7 @@ def handler_info( args, opts = {} ):
 def handler_help( args, opts = {} ):
 	print '''
 univention-config-registry: base configuration for UCS
-copyright (c) 2001-2011 Univention GmbH, Germany
+copyright (c) 2001-2012 Univention GmbH, Germany
 
 Syntax:
   univention-config-registry [options] <action> [options] [parameters]

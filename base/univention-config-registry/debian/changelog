@@ -1,3 +1,9 @@
+univention-config-registry (7.0.29-1) unstable; urgency=low
+
+  * create replog log file with 0640 (Bug #25206)
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Jan 2012 15:39:28 +0100
+
 univention-config-registry (7.0.28-1) unstable; urgency=low
 
   * Make dpkg-divert wrapper a bash script (Bug #22668)
