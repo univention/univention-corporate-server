@@ -1,0 +1,6 @@
+Module: MODULEID
+Python: umc/python
+Definition: umc/MODULEID.xml
+Category: umc/categories/MODULEID.xml
+Javascript: umc/js
+Icons: umc/icons

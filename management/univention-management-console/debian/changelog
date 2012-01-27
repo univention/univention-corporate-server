@@ -1,3 +1,10 @@
+univention-management-console (4.0.96-1) unstable; urgency=low
+
+  * added tool 'umc-create-module' to generate empty UMC modules from templates
+    (Bug #23876)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Jan 2012 12:54:26 +0100
+
 univention-management-console (4.0.95-1) unstable; urgency=low
 
   * ensure that responses to malformed request can be send without error; Bug #25231
