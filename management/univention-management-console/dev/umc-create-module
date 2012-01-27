@@ -150,7 +150,7 @@ dch --create --package "$PACKAGENAME" --newversion 0.0.0-1 --distribution unstab
 icon="$moduleDir/umc/icons/scalable/$MODULEID.svgz"
 if [ -n "$ICONFILE" ]; then
 	# we got a custom icon file... remove the default and copy the custom icon
-	ext=$(ICONFILE##*.)
+	ext=${ICONFILE##*.}
 	rm -f "$icon"
 	icon="${icon%.*}.$ext"
 	cp "$ICONFILE" "$icon"

@@ -1,3 +1,9 @@
+univention-management-console (4.0.97-1) unstable; urgency=low
+
+  * umc-create-module: fixed error when using the option --icon (Bug #23876)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Jan 2012 16:44:57 +0100
+
 univention-management-console (4.0.96-1) unstable; urgency=low
 
   * added tool 'umc-create-module' to generate empty UMC modules from templates
