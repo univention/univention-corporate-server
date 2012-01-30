@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.256-2) unstable; urgency=low
+
+  * spelling and wording fixes (Bug #25675)
+
+ -- Florian Best <best@univention.de>  Mon, 30 Jan 2012 12:18:15 +0100
+
 univention-management-console-frontend (1.0.256-1) unstable; urgency=low
 
   * added traceback handling to error handler (Bug #25675)

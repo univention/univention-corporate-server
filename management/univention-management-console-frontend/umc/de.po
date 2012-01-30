@@ -607,10 +607,10 @@ msgid "This system has been updated recently. A reboot is required to finish the
 msgstr "Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems ist erforderlich, um das Update abzuschließen."
 
 msgid "Send feedback mail to Univention"
-msgstr "Feedback E-Mail an Univention senden"
+msgstr "Feedback-E-Mail an Univention senden"
 
 msgid "Please take a second to provide the following information:"
-msgstr "Bitte nehmen Sie sich einen Augenblick um die folgenden Informationen bereitzustellen:"
+msgstr "Bitte nehmen Sie sich einen Augenblick Zeit, um die folgenden Informationen bereitzustellen:"
 
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
@@ -619,7 +619,7 @@ msgid "expected result"
 msgstr "erwartetes Ergebnis"
 
 msgid "actual result"
-msgstr "Ergebnis"
+msgstr "beobachtetes Ergebnis"
 
 msgid "Hide server error message"
 msgstr "Fehlernachricht des Servers ausblenden"

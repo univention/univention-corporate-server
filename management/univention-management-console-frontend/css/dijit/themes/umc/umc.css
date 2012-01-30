@@ -4810,7 +4810,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	background-color: #fff;
 	border: 0 none !important;
 }
-.umcTracebackPane .dijitTitlePaneTitle span.dijitTitlePaneTextNode a {
+.umcTracebackPane .dijitTitlePaneTitle .dijitTitlePaneTextNode a {
 	text-decoration: underline;
 }
 .umcTracebackPane pre {

@@ -445,8 +445,6 @@ dojo.mixin(umc.tools, {
 		var message = '';
 		try {
 			var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
-			// replace all newlines with '<br>'
-			jsonResponse = jsonResponse.replace(/\n/g, '<br>');
 			var response = dojo.fromJson(jsonResponse);
 			status = parseInt(dojo.getObject('status', false, response) || error.status, 10) || status;
 			message = dojo.getObject('message', false, response) || '';
@@ -486,12 +484,12 @@ dojo.mixin(umc.tools, {
 				feedbackLink += "\n2) " + this._('expected result');
 				feedbackLink += "\n3) " + this._('actual result');
 				feedbackLink += "\n\n----------\n\n";
-				feedbackLink += message.replace(/<br>/g, "\n");
+				feedbackLink += message;
 				feedbackLink += "\n\n----------\n\n";
 				feedbackLink += "univention-management-console-frontend " + dojo.version;
 				feedbackLink = '<a href="mailto:feedback@univention.de?body=' + encodeURI( feedbackLink ) + '&amp;subject=[UMC-Feedback]%20Traceback">' + this._('Send feedback mail to Univention') + '</a>';
 
-				var content = '<pre>' + message + '</pre><br>' + feedbackLink;
+				var content = '<pre>' + message.replace(/\n/g, '<br>') + '</pre><br>' + feedbackLink;
 				var hideLink = '<a>' + this._('Hide server error message') + '</a>';
 				var showLink = '<a>' + this._('Show server error message') + '</a>';
 
