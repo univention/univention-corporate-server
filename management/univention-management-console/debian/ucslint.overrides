@@ -1,3 +1,7 @@
 0010-4: umc-module-templates/grid_with_detailpage/35PACKAGENAME.inst
 0010-4: umc-module-templates/grid_with_detailpage/umc/python/MODULEID/__init__.py
 0010-4: umc-module-templates/grid_with_detailpage/debian/rules
+0010-4: umc-module-templates/simple_form/35PACKAGENAME.inst
+0010-4: umc-module-templates/simple_form/umc/python/MODULEID/__init__.py
+0010-4: umc-module-templates/simple_form/debian/rules
+0010-4: umc-module-templates/debian/rules

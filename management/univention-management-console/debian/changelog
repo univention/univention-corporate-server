@@ -1,3 +1,9 @@
+univention-management-console (4.0.98-1) unstable; urgency=low
+
+  * add template simple_form; Bug #23876
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 30 Jan 2012 17:07:12 +0100
+
 univention-management-console (4.0.97-1) unstable; urgency=low
 
   * umc-create-module: fixed error when using the option --icon (Bug #23876)

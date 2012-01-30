@@ -44,6 +44,9 @@ options:
   --category     category id (default: system)
   --package      package name
   --icon         path to SVG icon file
+  --list         list available templates
+  --template     name of the template (default: grid_with_detailpage)
+  --no-debian    do not copy debian packages files
 
 EOF
 exit 1
@@ -82,8 +85,10 @@ PACKAGENAME=""
 CATEGORYNAME="system"
 ICONFILE=""
 DESTDIR="$PWD"
-SRC=/usr/share/univention-management-console-dev/umc-module-templates/grid_with_detailpage
+TEMPLATE="grid_with_detailpage"
+SRC_DIR="/usr/share/univention-management-console-dev/umc-module-templates"
 YEAR=$(date +'%Y')
+NO_DEBIAN=""
 
 # parse the CLI parameters
 for iparam in "$@"; do
@@ -108,8 +113,27 @@ for iparam in "$@"; do
 			ICONFILE="$2"
 			shift 2
 			;;
+		--template)
+			TEMPLATE="$2"
+			shift 2
+			;;
+		--list)
+			echo "Available templates:"
+			(cd $SRC_DIR && find -maxdepth 1 -type d ! -name debian -a ! -name "." | sed 's,./,  ,')
+			exit 0
+			;;
+		--no-debian)
+			NO_DEBIAN="yes"
+			shift 1
+			;;
 	esac
 done
+
+SRC="$SRC_DIR/$TEMPLATE"
+if [ ! -d "$SRC" ]; then
+	echo "error: unknown template $TEMPLATE"
+	exit 1
+fi
 
 MODULEID="$1"
 if [ $# -ge 2 ]; then
@@ -125,6 +149,8 @@ fi
 moduleDir="$DESTDIR/$PACKAGENAME"
 [ -e "$moduleDir" ] && err "The destination directory already exists: $moduleDir"
 cp -r "$SRC" "$moduleDir"
+echo "CRUNCHY" cp -r "$SRC_DIR/debian" "$moduleDir"
+[ -z "$NO_DEBIAN" ] && cp -r "$SRC_DIR/debian" "$moduleDir"
 
 # fix directory and file names
 for findParam in "-type d" "-type f"; do
