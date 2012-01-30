@@ -4805,6 +4805,19 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	max-height: 200px;
 }
 
+.umcTracebackPane .dijitTitlePaneTitle,
+.umcTracebackPane .dijitTitlePaneContentOuter {
+	background-color: #fff;
+	border: 0 none !important;
+}
+.umcTracebackPane .dijitTitlePaneTitle span.dijitTitlePaneTextNode a {
+	text-decoration: underline;
+}
+.umcTracebackPane pre {
+	overflow: auto;
+	font-family: monospace;
+}
+
 /* @group Tabellen */
 .umc .dojoxGridCell .dijitButtonText,
 .umc .umcGridFooter .dijitButtonText {

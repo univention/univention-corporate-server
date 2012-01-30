@@ -478,6 +478,40 @@ dojo.mixin(umc.tools, {
 				// a user error
 				umc.dialog.alert('<p>' + this._statusMessages[status] + (message ? ': ' + message : '.') + '</p>');
 			}*/
+			// handle Tracebacks
+			else if(message.match(/Traceback.*most recent call.*File.*line/)) {
+
+				var feedbackLink = this._('Please take a second to provide the following information:');
+				feedbackLink += "\n\n1) " + this._('steps to reproduce the failure');
+				feedbackLink += "\n2) " + this._('expected result');
+				feedbackLink += "\n3) " + this._('actual result');
+				feedbackLink += "\n\n----------\n\n";
+				feedbackLink += message.replace(/<br>/g, "\n");
+				feedbackLink += "\n\n----------\n\n";
+				feedbackLink += "univention-management-console-frontend " + dojo.version;
+				feedbackLink = '<a href="mailto:feedback@univention.de?body=' + encodeURI( feedbackLink ) + '&amp;subject=[UMC-Feedback]%20Traceback">' + this._('Send feedback mail to Univention') + '</a>';
+
+				var content = '<pre>' + message + '</pre><br>' + feedbackLink;
+				var hideLink = '<a>' + this._('Hide server error message') + '</a>';
+				var showLink = '<a>' + this._('Show server error message') + '</a>';
+
+				var titlePane = dijit.TitlePane({
+					title: showLink,
+					content: content,
+					'class': 'umcTracebackPane',
+					open: false,
+					onHide: function() { titlePane.set('title', showLink); },
+					onShow: function() { titlePane.set('title', hideLink); }
+				});
+
+				var container = new umc.widgets.ContainerWidget({});
+				container.addChild(new umc.widgets.Text({
+					content: '<p>' + this._statusMessages[status] + '</p>'
+				}));
+				container.addChild(titlePane);
+
+				umc.dialog.alert( container );
+			}
 			else {
 				// all other cases
 				umc.dialog.alert('<p>' + this._statusMessages[status] + '</p>' + (message ? '<p>' + this._('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''));
