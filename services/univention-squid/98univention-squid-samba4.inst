@@ -113,6 +113,7 @@ if ! [ -f "$keytab_path" ]; then
 			univention-directory-manager users/user create "$@" \
 				--position "cn=users,$ldap_base" \
 				--set username="$service_accountname" \
+				--set lastname="Service" \
 				--set password="$password" \
 				--set description="$servicedescription"
 
@@ -191,7 +192,6 @@ if ! [ -f "$keytab_path" ]; then
 			changetype: modify
 			add: servicePrincipalName
 			servicePrincipalName: $spn_instance/$(hostname -f)
-			--
 			%EOF
 
 		fi

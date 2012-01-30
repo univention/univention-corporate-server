@@ -1,3 +1,9 @@
+univention-squid (5.0.4-13) unstable; urgency=low
+
+  * fix joinscript univention-squid-samba4 (Bug #24277)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Jan 2012 18:59:31 +0100
+
 univention-squid (5.0.4-12) unstable; urgency=low
 
   * use config_registry.is_true (Bug #24277)
