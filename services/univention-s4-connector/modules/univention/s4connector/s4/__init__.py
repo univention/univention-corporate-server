@@ -1456,6 +1456,7 @@ class s4(univention.s4connector.ucs):
 
 		if ml:
 			self.lo.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
+			self.group_members_cache_ucs[ucs_group_object['dn'].lower()].append(object['dn'].lower())
 
 	def one_group_member_sync_from_ucs(self, s4_group_object, object):
 		"""
@@ -1467,6 +1468,7 @@ class s4(univention.s4connector.ucs):
 
 		if ml:
 			self.lo_s4.lo.modify_s(s4_group_object['dn'],compatible_modlist(ml))
+			self.group_members_cache_con[s4_group_object['dn'].lower()].append(object['dn'].lower())
 		
 	def group_members_sync_to_ucs(self, key, object):
 		"""
@@ -1508,8 +1510,7 @@ class s4(univention.s4connector.ucs):
 			if not prim_dn in ['None','',None]: # filter referrals
 				s4_members.append(prim_dn)
 
-		ud.debug(ud.LDAP, ud.INFO,
-							   "group_members_sync_to_ucs: s4_members %s" % s4_members)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: s4_members %s" % s4_members)
 
 		ucs_members_from_s4 = { 'user' : [], 'group': [] }
 		
@@ -1639,7 +1640,8 @@ class s4(univention.s4connector.ucs):
 
 		modlist=[]
 
-		if not ucs_admin_object['disabled'].lower() in [ 'none', '0' ]:
+		ud.debug(ud.LDAP, ud.INFO, "Disabled state: %s" % ucs_admin_object['disabled'].lower())
+		if not (ucs_admin_object['disabled'].lower() in [ 'none', '0' ]):
 			# user disabled in UCS
 			if ldap_object_s4.has_key('userAccountControl') and (int(ldap_object_s4['userAccountControl'][0]) & 2 ) == 0:
 				#user enabled in S4 -> change
@@ -1721,7 +1723,7 @@ class s4(univention.s4connector.ucs):
 		print "Initialize sync from S4"
 		self.resync_rejected()
 		if self._get_lastUSN() == 0: # we startup new
-			ud.debug(ud.LDAP, ud.INFO, "initialize S4: last USN is 0, sync all")
+			ud.debug(ud.LDAP, ud.PROCESS, "initialize S4: last USN is 0, sync all")
 			# query highest USN in LDAP
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 
@@ -1817,6 +1819,8 @@ class s4(univention.s4connector.ucs):
 		sys.stdout.flush()
 		done_counter = 0
 		object = None
+		lastUSN = self._get_lastUSN()
+		newUSN = lastUSN
 
 		for element in changes:
 			try:
@@ -1882,7 +1886,7 @@ class s4(univention.s4connector.ucs):
 
 					if sync_successfull:
 						change_count+=1
-						self.__update_lastUSN(object)
+						newUSN = max( self.__get_change_usn(object), newUSN)
 						try:
 							GUID = old_element[1]['objectGUID'][0]
 							self._set_DN_for_GUID(GUID,old_element[0])
@@ -1896,7 +1900,7 @@ class s4(univention.s4connector.ucs):
 						self.save_rejected(object)
 						self.__update_lastUSN(object)
 				else:
-					self.__update_lastUSN(object)
+					newUSN = max( self.__get_change_usn(object), newUSN)
 
 				done_counter += 1
 				print "%s"%done_counter,
@@ -1907,7 +1911,9 @@ class s4(univention.s4connector.ucs):
 				
 		print ""
 
-		self._commit_lastUSN()
+		if newUSN != lastUSN:
+			self._set_lastUSN(newUSN)
+			self._commit_lastUSN()
 
 		# return number of synced objects
 		rejected = self._list_rejected()

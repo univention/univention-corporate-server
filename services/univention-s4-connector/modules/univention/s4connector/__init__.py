@@ -996,10 +996,7 @@ class ucs:
 	def __set_values(self, property_type, object, ucs_object, modtype='modify'):
 		_d=ud.function('ldap.__set_value')
 		if not modtype == 'add':
-			if property_type == 'group':
-				ucs_object.open()
-			else:
-				ucs_object.open()
+			ucs_object.open()
 		def set_values(attributes):
 			if object['attributes'].has_key(attributes.ldap_attribute):
 				ucs_key = attributes.ucs_attribute

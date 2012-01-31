@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.94-1) unstable; urgency=low
+
+  * More group caching updates (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jan 2012 13:24:58 +0100
+
 univention-s4-connector (6.0.93-1) unstable; urgency=low
 
   * ignore NT-hashes found in supplementalCredentials of W2k8R2 users
