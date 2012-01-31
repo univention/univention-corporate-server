@@ -392,7 +392,9 @@ class ucs:
 		self.close_debug()
 
 	def open_ucs( self ):
-		bindpw=open('/etc/ldap.secret').read()
+		bindpw_file = self.baseConfig.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
+		binddn = self.baseConfig.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,'+self.baseConfig['ldap/base'])
+		bindpw=open(bindpw_file).read()
 		if bindpw[-1] == '\n':
 			bindpw=bindpw[0:-1]
 
@@ -403,7 +405,7 @@ class ucs:
 		except:
 			port = 7389
 
-		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
+		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2)
 
 	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
 		try:

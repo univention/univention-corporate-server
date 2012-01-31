@@ -147,3 +147,16 @@ Description[de]=TCP-Port über den der LDAP-Dienst des AD-Servers erreichbar ist
 Description[en]=The port of the LDAP service of the Active Directory server. This value should only changed in write mode.
 Type=str
 Categories=service-adcon
+
+[con.*/ldap/binddn]
+Description[de]=Mit diesem LDAP-Benutzer nimmt der AD Connector Änderungen im LDAP des UCS vor
+Description[en]= The Univention AD connector uses this user to make changes in the LDAP of the UCS.
+Type=str
+Categories=service-adcon
+
+[con.*/ldap/bindpw]
+Description[de]=Die Datei, die das Passwort des UCS-Synchronisationsbenutzers enthält, z.B. /etc/ldap.secret. Die Datei sollte genau eine Zeile enthalten.
+Description[en]=The file, which contains the password of the UCS synchronisation user, e.g. /etc/ldap.secret. This file should contain exactly one line.
+Type=str
+Categories=service-adcon
+
