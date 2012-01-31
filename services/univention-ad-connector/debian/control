@@ -15,7 +15,8 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
- univention-server-master | univention-server-backup
+ univention-server-master | univention-server-backup,
+ python-pysqlite2
 Pre-Depends: univention-config-registry (>= 2.6.8-5)
 Provides: ${python:Provides}
 Conflicts: univention-server-slave,
@@ -35,7 +36,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
  python-univention-connector (= ${binary:Version}),
- python-m2crypto
+ python-m2crypto,
+ python-pysqlite2
 Pre-Depends: univention-config-registry
 Provides: ${python:Provides}
 Description: UCS - Modules for connector sychronisation
@@ -56,7 +58,8 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 1.0.6),
  python-univention-lib (>= 1.0.25-1),
  univention-management-console-module-adconnector (= ${binary:Version})
-Recommends: univention-nagios-ad-connector
+Recommends: univention-nagios-ad-connector,
+ sqlite3
 Description: UCS - Modules for sync UCS and Active Directory
  This package contains the modules that implement the
  features of UCS Active Directory (AD) Connector.

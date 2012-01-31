@@ -591,6 +591,40 @@ class ad(univention.connector.ucs):
 		if not self.config.has_section('AD GUID'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init add config section 'AD GUID'")
 			self.config.add_section('AD GUID')
+
+		# Build an internal cache with AD as key and the UCS object as cache
+		self.group_mapping_cache_ucs = {}
+		self.group_mapping_cache_con = {}
+		
+		# Save the old members of a group
+		# 	lower dn as key and members as dn list
+		self.group_members_cache_ucs = {}
+		self.group_members_cache_con = {}
+
+		ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
+		ad_groups = self.__search_ad( filter='objectClass=group', attrlist=['member'])
+		ud.debug(ud.LDAP, ud.INFO,"__init__: ad_groups: %s" % ad_groups)
+		for ad_group in ad_groups:
+			if not ad_group or not ad_group[0]:
+				continue
+			group = ad_group[0].lower()
+			self.group_members_cache_con[group] = []
+			if ad_group[1]:
+				for member in ad_group[1].get('member'):
+					self.group_members_cache_con[group].append(member.lower())
+		ud.debug(ud.LDAP, ud.INFO,"__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
+
+		ucs_groups = self.search_ucs( filter='objectClass=univentionGroup', attr=['uniqueMember'])
+		for ucs_group in ucs_groups:
+			group = ucs_group[0].lower()
+			self.group_members_cache_ucs[group] = []
+			if ucs_group[1]:
+				for member in ucs_group[1].get('uniqueMember'):
+					self.group_members_cache_ucs[group].append(member.lower())
+		ud.debug(ud.LDAP, ud.INFO,"__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
+
+		ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
+			
 		try:
 			self.ad_sid = univention.connector.ad.decode_sid(
 				self.lo_ad.lo.search_ext_s(ad_ldap_base,ldap.SCOPE_BASE,
@@ -623,13 +657,13 @@ class ad(univention.connector.ucs):
 	def _get_lastUSN(self):
 		_d=ud.function('ldap._get_lastUSN')
 		return max(self.__lastUSN, int(self._get_config_option('AD','lastUSN')))
+	
+	def get_lastUSN(self):
+		return self._get_lastUSN()
 
 	def _commit_lastUSN(self):
 		_d=ud.function('ldap._commit_lastUSN')
 		self._set_config_option('AD','lastUSN',str(self.__lastUSN))
-	
-	def get_lastUSN(self):
-		return self._get_lastUSN()
 
 	def _set_lastUSN(self, lastUSN):
 		_d=ud.function('ldap._set_lastUSN')
@@ -821,7 +855,6 @@ class ad(univention.connector.ucs):
 			else:
 				# Every object has got a uSNCreated
 				returnObjects = search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1 )
-
 		except (ldap.SERVER_DOWN, SystemExit):		
 			raise
 		except ldap.SIZELIMIT_EXCEEDED:
@@ -1131,8 +1164,10 @@ class ad(univention.connector.ucs):
 				if not self._ignore_object( 'group', ad_object ):
 					sync_object = self._object_mapping( 'group' , ad_object, 'ucs' )
 					sync_object_ad = self.get_object( sync_object['dn'] )
+					ad_group_object = {'dn': sync_object['dn'], 'attributes': sync_object_ad }
 					if sync_object_ad:
-						self.group_members_sync_from_ucs( 'group', sync_object )
+						# self.group_members_sync_from_ucs( 'group', sync_object )
+						self.one_group_member_sync_from_ucs(ad_group_object, object  )
 		
 
 	def group_members_sync_from_ucs(self, key, object): # object mit ad-dn
@@ -1195,33 +1230,39 @@ class ad(univention.connector.ucs):
 
 		# map members from UCS to AD and check if they exist
 		for member_dn in ucs_members:
-			member_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
+			ad_dn = self.group_mapping_cache_ucs.get(member_dn.lower())
+			if ad_dn:
+				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache ucs" % member_dn)
+				ad_members_from_ucs.append(ad_dn.lower())
+			else:
+				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in group cache ucs" % member_dn)
+				member_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
 
-			# can't sync them if users have no posix-account
-			if not member_object['attributes'].has_key('gidNumber'):
-				continue
+				# can't sync them if users have no posix-account
+				if not member_object['attributes'].has_key('gidNumber'):
+					continue
 
-			# check if this is members primary group, if true it shouldn't be added to ad
-			if member_object['attributes'].has_key('gidNumber') and ldap_object_ucs.has_key('gidNumber') and \
-			       member_object['attributes']['gidNumber'] == ldap_object_ucs['gidNumber']:
-				# is primary group
-				continue
-			
-			#print 'member_object: %s '%member_object
-			for k in self.property.keys():
-				if self.modules[k].identify(member_dn, member_object['attributes']):
-					key=k
-					break
-			#print 'object key: %s' % key
-			ad_dn = self._object_mapping(key, member_object, 'ucs')['dn']
-			# check if dn exists in ad
-			try:
-				if self.lo_ad.get(ad_dn,attr=['cn']): # search only for cn to suppress coding errors
-					ad_members_from_ucs.append(ad_dn.lower())
-			except (ldap.SERVER_DOWN, SystemExit):
-				raise
-			except:  # FIXME: which exception is to be caught?
-				ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: failed to get dn from ad, assume object doesn't exist")
+				# check if this is members primary group, if true it shouldn't be added to ad
+				if member_object['attributes'].has_key('gidNumber') and ldap_object_ucs.has_key('gidNumber') and \
+					   member_object['attributes']['gidNumber'] == ldap_object_ucs['gidNumber']:
+					# is primary group
+					continue
+				
+				#print 'member_object: %s '%member_object
+				for k in self.property.keys():
+					if self.modules[k].identify(member_dn, member_object['attributes']):
+						key=k
+						break
+				#print 'object key: %s' % key
+				ad_dn = self._object_mapping(key, member_object, 'ucs')['dn']
+				# check if dn exists in ad
+				try:
+					if self.lo_ad.get(ad_dn,attr=['cn']): # search only for cn to suppress coding errors
+						ad_members_from_ucs.append(ad_dn.lower())
+				except (ldap.SERVER_DOWN, SystemExit):
+					raise
+				except:  # FIXME: which exception is to be caught?
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: failed to get dn from ad, assume object doesn't exist")
 
 		ud.debug(ud.LDAP, ud.INFO,
 							   "group_members_sync_from_ucs: UCS-members in ad_members_from_ucs %s" % ad_members_from_ucs)
@@ -1234,8 +1275,8 @@ class ad(univention.connector.ucs):
 					
 					key = self.__identify({'dn':member_dn,'attributes':ad_object})
 					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':ad_object})['dn']
-					if not self.lo.get(ucs_dn):
-						ad_members_from_ucs.append(member_dn.lower())
+					if not self.lo.get(ucs_dn, att=['dn']):
+						# ad_members_from_ucs.append(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO,
 								       "group_members_sync_from_ucs: Object exists only in AD [%s]" % ucs_dn)			
 					elif self._ignore_object(key,{'dn':member_dn,'attributes':ad_object}):
@@ -1259,13 +1300,21 @@ class ad(univention.connector.ucs):
 			group_rid = decode_sid(self.lo_ad.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE,
 								      '(objectClass=*)', ['objectSid'])[0][1]['objectSid'][0]).split('-')[-1]
 		except ldap.NO_SUCH_OBJECT:
-			group_rid = ''
+			group_rid = None
 
-		tmp_members = copy.deepcopy(ad_members_from_ucs)
-		for member_dn in tmp_members:			
-			member_object = self.get_object(member_dn)
-			if member_object and member_object.has_key('primaryGroupID') and member_object['primaryGroupID'][0] == group_rid:
-				ad_members_from_ucs.remove(member_dn)
+		if group_rid:
+			# search for members who have this as their primaryGroup
+			prim_members_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
+									 'primaryGroupID=%s'%group_rid, ['cn'], 
+									 timeout=-1, sizelimit=0))
+
+			for prim_dn, prim_object in prim_members_ad:
+				if not prim_dn in ['None','',None]: # filter referrals
+					if prim_dn.lower() in ad_members_from_ucs:
+						ad_members_from_ucs.remove(member_dn.lower())
+					elif prim_dn in ad_members_from_ucs:
+						ad_members_from_ucs.remove(member_dn)
+
 
 		ud.debug(ud.LDAP, ud.INFO,
 							   "group_members_sync_from_ucs: ad_members_from_ucs without members with this as their primary group: %s" % ad_members_from_ucs)
@@ -1277,10 +1326,18 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del initialized: %s" % del_members)
 
 		for member_dn in ad_members:
+			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: %s in ad_members_from_ucs?" % member_dn)
 			if member_dn.lower() in ad_members_from_ucs:
+				ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Yes")
 				add_members.remove(member_dn.lower())
 			else:
-				del_members.append(member_dn)
+				# remove member only if he was in the cache
+				# otherwise it is possible that the user was just created on UCS
+				if member_dn.lower() in self.group_members_cache_ucs.get(object_ucs['dn'].lower(), [member_dn.lower()]):
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: No")
+					del_members.append(member_dn)
+				else:
+					ud.debug(ud.LDAP, ud.PROCESS, "group_members_sync_from_ucs: %s was not found in member cache, don't delete" % member_dn)
 
 		
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
@@ -1291,6 +1348,12 @@ class ad(univention.connector.ucs):
 			for member in del_members:
 				ad_members.remove(member)
 			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members result: %s" % ad_members)
+			group_dn_lower = object_ucs['dn'].lower()
+			self.group_members_cache_ucs[group_dn_lower] = []
+			for member in ad_members:
+				self.group_members_cache_ucs[group_dn_lower].append(member.lower())
+			ud.debug(ud.LDAP, ud.INFO, "group_members_cache_ucs[%s]: %s" % (group_dn_lower, self.group_members_cache_ucs[group_dn_lower]))
+
 
 			modlist_members = []
 			for member in ad_members:
@@ -1315,7 +1378,7 @@ class ad(univention.connector.ucs):
 		"""
 		_d=ud.function('ldap.object_memberships_sync_to_ucs')
 		# disable this debug line, see Bug #12031
-		#ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
+		# ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
 
 		if object['attributes'].has_key('memberOf'):
 			for groupDN in object['attributes']['memberOf']:
@@ -1323,10 +1386,51 @@ class ad(univention.connector.ucs):
 				if not self._ignore_object( 'group', ad_object ):
 					sync_object = self._object_mapping( 'group' , ad_object )
 					ldap_object_ucs = self.get_ucs_ldap_object( sync_object['dn'] )
+					ucs_group_object = {'dn': sync_object['dn'], 'attributes': ldap_object_ucs }
+					# ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: sync_object: %s" % ldap_object_ucs)
 					# check if group exists in UCS, may fail
 					# if the group will be synced later
 					if ldap_object_ucs:
-						self.group_members_sync_to_ucs( 'group', sync_object )
+						self.one_group_member_sync_to_ucs( ucs_group_object, object )
+
+	def __compare_lowercase(self, dn, dn_list):
+		"""
+		Checks if dn is in dn_list
+		"""
+		for d in dn_list:
+			if dn.lower() == d.lower():
+				return True
+		return False
+
+	def one_group_member_sync_to_ucs(self, ucs_group_object, object):
+		"""
+		sync groupmembers in UCS if changend one member in AD
+		"""
+		# In AD the object['dn'] is member ofthe group sync_object
+
+		ml = []
+		if not self.__compare_lowercase(object['dn'], ucs_group_object['attributes'].get('uniqueMember', [])):
+			ml.append((ldap.MOD_ADD, 'uniqueMember', [object['dn']]))
+
+		uid=object['attributes'].get('uid', [])[0]
+		if not self.__compare_lowercase(uid, ucs_group_object['attributes'].get('memberUid', [])):
+			ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
+
+		if ml:
+			self.lo.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
+			self.group_members_cache_ucs[ucs_group_object['dn'].lower()].append(object['dn'].lower())
+
+	def one_group_member_sync_from_ucs(self, ad_group_object, object):
+		"""
+		sync groupmembers in AD if changend one member in AD
+		"""
+		ml = []
+		if not self.__compare_lowercase(object['dn'], ad_group_object['attributes'].get('member', [])):
+			ml.append((ldap.MOD_ADD, 'member', [object['dn']]))
+
+		if ml:
+			self.lo_ad.lo.modify_s(ad_group_object['dn'],compatible_modlist(ml))
+			self.group_members_cache_con[ad_group_object['dn'].lower()].append(object['dn'].lower())
 		
 	def group_members_sync_to_ucs(self, key, object):
 		"""
@@ -1359,7 +1463,10 @@ class ad(univention.connector.ucs):
 		group_rid = group_sid[string.rfind(group_sid,"-")+1:]
 
 		# search for members who have this as their primaryGroup
-		prim_members_ad = self.__search_ad(filter='primaryGroupID=%s'%group_rid, attrlist=['dn'])
+		prim_members_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
+							     'primaryGroupID=%s'%group_rid,
+							     timeout=-1, sizelimit=0))
+
 
 		for prim_dn, prim_object in prim_members_ad:
 			if not prim_dn in ['None','',None]: # filter referrals
@@ -1371,21 +1478,31 @@ class ad(univention.connector.ucs):
 		
 		# map members from AD to UCS and check if they exist
 		for member_dn in ad_members:
-			member_object = self.get_object(member_dn)
-			if member_object:
-				mo_key = self.__identify({'dn':member_dn,'attributes':member_object})
-				if not mo_key:
-					ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of ad member, ignore membership: %s" % member_dn)
-					continue # member is an object which will not be synced
-				ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
-				ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped ad member to ucs DN %s" % ucs_dn)
-				try:
-					if self.lo.get(ucs_dn):
-						ucs_members_from_ad[key].append(ucs_dn.lower())
-				except (ldap.SERVER_DOWN, SystemExit):
-					raise
-				except: # FIXME: which exception is to be caught?
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
+			ucs_dn = self.group_mapping_cache_con.get(member_dn.lower())
+			if ucs_dn:
+				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache ad: DN: %s" % (member_dn, ucs_dn))
+				ucs_members_from_ad[key].append(ucs_dn.lower())
+			else:
+				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in group cache ad" % member_dn)
+				member_object = self.get_object(member_dn)
+				if member_object:
+					mo_key = self.__identify({'dn':member_dn,'attributes':member_object})
+					if not mo_key:
+						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of ad member, ignore membership: %s" % member_dn)
+						continue # member is an object which will not be synced
+					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped ad member to ucs DN %s" % ucs_dn)
+
+					try:
+						if self.lo.get(ucs_dn):
+							ucs_members_from_ad[key].append(ucs_dn.lower())
+							self.group_mapping_cache_con[member_dn.lower()] = ucs_dn
+						else:
+							ud.debug(ud.LDAP, ud.INFO, "Failed to find %s via self.lo.get" % ucs_dn)
+					except (ldap.SERVER_DOWN, SystemExit):
+						raise
+					except: # FIXME: which exception is to be caught?
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
 				
 		# build an internal cache
 		cache={}
@@ -1395,7 +1512,7 @@ class ad(univention.connector.ucs):
 			if not (member_dn.lower() in ucs_members_from_ad['user'] or member_dn.lower() in ucs_members_from_ad['group']):
 				try:
 					cache[member_dn] = self.lo.get(member_dn)
-					ucs_object = {'dn':member_dn,'modtype':'modify','attributes':cache[member_dn]}
+					ucs_object = {'dn':member_dn,'modtype':'modify','attributes': cache[member_dn]}
 
 					if self._ignore_object(key, object):
 						continue
@@ -1404,6 +1521,7 @@ class ad(univention.connector.ucs):
 						if self.modules[k].identify(member_dn, ucs_object['attributes']):
 							ad_dn = self._object_mapping(k, ucs_object, 'ucs')['dn']
 
+							ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: search for: %s" % ad_dn)
 							# search only for cn to suppress coding errors
 							if not self.lo_ad.get(ad_dn,attr=['cn']): 
 								# member does not exist in AD but should
@@ -1416,10 +1534,6 @@ class ad(univention.connector.ucs):
 				except: # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs which is groupmember")
 
-		# compare lists and generate modlist
-		# direct compare is not possible, because ucs_members_from_ad are all lowercase,
-		# ad_members are not, so we need to iterate...
-		# FIXME: should be done in the last iteration (above)
 		add_members = ucs_members_from_ad
 		del_members = { 'user' : [], 'group': [] }
 
@@ -1432,20 +1546,25 @@ class ad(univention.connector.ucs):
 			elif member_dn.lower() in ucs_members_from_ad['group']:
 				add_members['group'].remove(member_dn.lower())
 			else:
-				ucs_object_attr=cache.get(member_dn)
-				if not ucs_object_attr:
-					ucs_object_attr = self.lo.get(member_dn)
-					cache[member_dn] = ucs_object_attr
-				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':ucs_object_attr}
+				# remove member only if he was in the cache
+				# otherwise it is possible that the user was just created on UCS
+				if member_dn.lower() in self.group_members_cache_con.get(ad_object['dn'].lower(), [member_dn.lower()]):
+					ucs_object_attr=cache.get(member_dn)
+					if not ucs_object_attr:
+						ucs_object_attr = self.lo.get(member_dn)
+						cache[member_dn] = ucs_object_attr
+					ucs_object = {'dn':member_dn,'modtype':'modify','attributes':ucs_object_attr}
 
-				# TODO: check if ucs_object is really an user
-				if not self._ignore_object('user', ucs_object):
-					for k in self.property.keys():
-						# identify if DN is a user or a group (will be ignored it is a host)
-						if self.modules[k].identify(member_dn, ucs_object['attributes']):
-							del_members[k].append(member_dn)
-							break					
-
+					if not self._ignore_object('user', ucs_object):
+						for k in self.property.keys():
+							# identify if DN is a user or a group (will be ignored it is a host)
+							if self.modules[k].identify(member_dn, ucs_object['attributes']):
+								del_members[k].append(member_dn)
+								break					
+				else:
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: %s was not found in member cache, don't delete" % member_dn)
+		self.group_members_cache_con[ad_object['dn'].lower()] = ucs_members_from_ad['user'] + ucs_members_from_ad['group']
+		ud.debug(ud.LDAP, ud.INFO, "group_members_cache_con[%s]: %s" % (ad_object['dn'].lower(), self.group_members_cache_con[ad_object['dn'].lower()]))
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to add: %s" % add_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to del: %s" % del_members)
@@ -1454,24 +1573,20 @@ class ad(univention.connector.ucs):
 			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
 			ucs_admin_object.open()
 
-			modlist_members = { 'user' : [] , 'group' : [] }
-			for tempdn in ucs_admin_object['users']:
-				modlist_members['user'].append(tempdn.lower())
-			for tempdn in ucs_admin_object['nestedGroup']:
-				modlist_members['group'].append(tempdn.lower())
-
-			for key in ['user', 'group']:
-				modlist_members[key] = modlist_members[key] + add_members[key]
-				for member in del_members[key]:
-					ud.debug(ud.LDAP, ud.INFO,
-							       "group_members_sync_to_ucs: members[%s] remove: %s" % (key, member.lower()) )
-					modlist_members[key].remove(member.lower())
-				ud.debug(ud.LDAP, ud.INFO,
-						       "group_members_sync_to_ucs: members %s result: %s" % (key,modlist_members[key]) )
-
-			ucs_admin_object['users'] = modlist_members['user']
-			ucs_admin_object['nestedGroup'] = modlist_members['group']
-			ucs_admin_object.modify()
+			uniqueMember_add = add_members['user'] + add_members['group']
+			uniqueMember_del = del_members['user'] + del_members['group']
+			memberUid_add = []
+			memberUid_del = []
+			for member in add_members['user']:
+				uid = ldap.explode_dn(member)[0].split('=')[-1]
+				memberUid_add.append(uid)
+			for member in del_members['user']:
+				uid = ldap.explode_dn(member)[0].split('=')[-1]
+				memberUid_del.append(uid)
+			if uniqueMember_del or memberUid_del:
+				ucs_admin_object.fast_member_remove(uniqueMember_del, memberUid_del, ignore_license=1)
+			if uniqueMember_add or memberUid_del:
+				ucs_admin_object.fast_member_add(uniqueMember_add, memberUid_add)
 
 		else:
 			pass
@@ -1617,7 +1732,10 @@ class ad(univention.connector.ucs):
 		sys.stdout.flush()
 		if rejected:
 			for id, dn in rejected:
-				premapped_ad_dn = unicode(dn, 'utf8')
+				try:
+					premapped_ad_dn = unicode(dn, 'utf8')
+				except TypeError:
+					premapped_ad_dn = dn
 				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (premapped_ad_dn))
 				try:
 					sync_successfull = False
@@ -1811,7 +1929,7 @@ class ad(univention.connector.ucs):
 				old_dn = tmp_object['dn']
 			if hasattr(self.property[property_type], 'position_mapping'):
 				for mapping in self.property[property_type].position_mapping:
-					old_dn=self._subtree_replace(old_dn,mapping[0],mapping[1])
+					old_dn=self._subtree_replace(old_dn.lower(),mapping[0].lower(),mapping[1].lower())
 				old_dn = self._subtree_replace(old_dn,self.lo.base,self.lo_ad.base)
 
 			# the old object was moved in UCS, but does this object exist in AD?
@@ -1846,6 +1964,10 @@ class ad(univention.connector.ucs):
 		addlist=[]
 		modlist=[]
 
+		if self.group_mapping_cache_con.get(object['dn'].lower()) and object['modtype'] != 'delete':
+			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: remove %s from group cache" % object['dn'])
+			self.group_mapping_cache_con[object['dn'].lower()] = None
+
 		ad_object=self.get_object(object['dn'])
 
 		if (object['modtype'] == 'add' and not ad_object) or (object['modtype'] == 'modify' and not ad_object):
@@ -1879,6 +2001,10 @@ class ad(univention.connector.ucs):
 
 			self.lo_ad.lo.add_s(compatible_modstring(object['dn']), compatible_addlist(addlist)) #FIXME encoding
 
+			if property_type == 'group':
+				self.group_members_cache_con[object['dn'].lower()] = []
+				ud.debug(ud.LDAP, ud.INFO, "group_members_cache_con[%s]: []" % (object['dn'].lower()))
+
 			if hasattr(self.property[property_type],"post_con_create_functions"):
 				for f in self.property[property_type].post_con_create_functions:
 					f(self, property_type, object)
@@ -1889,7 +2015,9 @@ class ad(univention.connector.ucs):
 
 			if hasattr(self.property[property_type],"post_con_modify_functions"):
 				for f in self.property[property_type].post_con_modify_functions:
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % f)
 					f(self, property_type, object)
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % f)
 
 		elif (object['modtype'] == 'modify' and ad_object) or (object['modtype'] == 'add' and ad_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modify object: %s"%object['dn'])
@@ -1957,7 +2085,9 @@ class ad(univention.connector.ucs):
 
 			if hasattr(self.property[property_type],"post_con_modify_functions"):
 				for f in self.property[property_type].post_con_modify_functions:
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % f)
 					f(self, property_type, object)
+					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % f)
 		elif object['modtype'] == 'delete':
 			self.delete_in_ad( object )
 				

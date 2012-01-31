@@ -1,3 +1,11 @@
+univention-ad-connector (6.0.46-1) unstable; urgency=low
+
+  * Build an internal group membership cache. This increases the group
+    synchronisation performance (Bug #25709)
+  * Use sqlite as backend for internal.cfg (Bug #13045)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jan 2012 09:21:52 +0100
+
 univention-ad-connector (6.0.45-1) unstable; urgency=low
 
   * Don't skip the synchronization if the object was added in UCS
