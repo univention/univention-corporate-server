@@ -31,8 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ $# -eq 0 -o "$1" == "--help" -o "$1" == "-h" ]; then
-cat <<EOF
+usage () {
+	cat <<EOF
 usage: $(basename $0) [<options>...] <moduleID> [<destinationDir>]
 
 destination dir:
@@ -49,7 +49,11 @@ options:
   --no-debian    do not copy debian packages files
 
 EOF
-exit 1
+}
+
+if [ $# -eq 0 -o "$1" == "--help" -o "$1" == "-h" ]; then
+	usage
+	exit 1
 fi
 
 function err() {
@@ -136,6 +140,12 @@ if [ ! -d "$SRC" ]; then
 fi
 
 MODULEID="$1"
+if [ -z "$MODULEID" ]; then
+	usage
+	echo "error: module ID missing!"
+	exit 1
+fi
+
 if [ $# -ge 2 ]; then
 	DESTDIR=$(readlink -f "$2")
 fi
@@ -149,7 +159,6 @@ fi
 moduleDir="$DESTDIR/$PACKAGENAME"
 [ -e "$moduleDir" ] && err "The destination directory already exists: $moduleDir"
 cp -r "$SRC" "$moduleDir"
-echo "CRUNCHY" cp -r "$SRC_DIR/debian" "$moduleDir"
 [ -z "$NO_DEBIAN" ] && cp -r "$SRC_DIR/debian" "$moduleDir"
 
 # fix directory and file names
@@ -170,7 +179,7 @@ sed -i "$sedParam" $(find "$moduleDir" -type f)
 
 # create empty changelog
 cd "$moduleDir"
-dch --create --package "$PACKAGENAME" --newversion 0.0.0-1 --distribution unstable
+dch --create --package "$PACKAGENAME" --newversion 0.1.0-1 --distribution unstable "Initial release (Bug #XXXXXX)"
 
 # custom icon file
 icon="$moduleDir/umc/icons/scalable/$MODULEID.svgz"

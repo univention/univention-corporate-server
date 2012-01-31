@@ -1,3 +1,10 @@
+univention-management-console (4.0.99-1) unstable; urgency=low
+
+  * some fixes for umc-create-module
+  * add translation files to UMC module templates; Bug #23876
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 31 Jan 2012 11:26:55 +0100
+
 univention-management-console (4.0.98-1) unstable; urgency=low
 
   * add template simple_form; Bug #23876
