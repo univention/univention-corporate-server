@@ -15,7 +15,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
  python-univention-heimdal (>= 4.0.2-2),
- python-univention-directory-manager (>= 7.0.33-1)
+ python-univention-directory-manager (>= 7.0.33-1),
+ python-pysqlite2
 Provides: ${python:Provides}
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
@@ -36,6 +37,7 @@ Depends: ${misc:Depends},
  univention-samba4,
  univention-directory-manager-tools,
  univention-heimdal-common
+Recommends: sqlite3
 Description: UCS - Modules for sync UCS and Samba4 LDB directory
  This package contains the modules that implement the
  features of UCS Samba4 Connector for Samba4.

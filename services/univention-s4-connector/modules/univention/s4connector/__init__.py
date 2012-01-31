@@ -44,6 +44,8 @@ import base64
 from signal import *
 term_signal_caught = False
 
+import sqlite3 as lite
+
 univention.admin.modules.update()
 
 # update choices-lists which are defined in LDAP
@@ -117,6 +119,124 @@ def compare_lowercase(val1, val2):
 		return False
 
 # helper classes
+class configdb:
+	def __init__ (self, filename):
+		self.filename = filename
+		self._dbcon = lite.connect(self.filename)
+
+	def get(self, section, option):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("SELECT value FROM '%s' WHERE key='%s'" % (section, option))
+				self._dbcon.commit()
+				rows = cur.fetchall()
+				cur.close()
+				if rows:
+					return rows[0][0]
+				return ''
+			except lite.Error, e:
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
+		
+
+	def set(self, section, option, value):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("""
+		INSERT OR REPLACE INTO '%(table)s' (key,value) 
+			VALUES (  '%(key)s', 
+					coalesce((SELECT value from '%(table)s' where key='%(key)s'), '%(value)s')
+		);""" % {'key': option, 'value': value, 'table': section})
+				self._dbcon.commit()
+				cur.close()
+				return 
+			except lite.Error, e:
+				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
+
+	def items(self, section):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("SELECT * FROM '%s'" % (section))
+				self._dbcon.commit()
+				rows = cur.fetchall()
+				cur.close()
+				return rows
+			except lite.Error, e:
+				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
+
+	def remove_option(self, section, option):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("DELETE FROM '%s' WHERE key='%s'" % (section, option))
+				self._dbcon.commit()
+				cur.close()
+				return
+			except lite.Error, e:
+				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
+
+	def has_section(self, section):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % section)
+				self._dbcon.commit()
+				rows = cur.fetchone()
+				cur.close()
+				if rows:
+					return True
+				else:
+					return False
+			except lite.Error, e:
+				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
+	
+	def add_section(self, section):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("CREATE TABLE IF NOT EXISTS '%s'(Key TEXT PRIMARY KEY, Value TEXT)" % section)
+				self._dbcon.commit()
+				cur.close()
+				return 
+			except lite.Error, e:
+				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
+	
+	def has_option(self, section, option):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("SELECT value FROM '%s' WHERE key='%s'" % (section, option))
+				self._dbcon.commit()
+				rows = cur.fetchall()
+				cur.close()
+				if rows:
+					return True
+				else:
+					return False
+			except lite.Error, e:
+				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
 
 class configsaver:
 	def __init__ (self, filename):
@@ -265,11 +385,24 @@ class ucs:
 		self.co=univention.admin.config.config()
 		self.listener_dir=listener_dir
 
+		configdbfile='/etc/univention/%s/s4internal.sqlite' % self.CONFIGBASENAME
+		self.config = configdb(configdbfile)
 
-		self.configfile='/etc/univention/%s/s4internal.cfg' % self.CONFIGBASENAME
-		if not os.path.exists(self.configfile):
-			os.mknod(self.configfile)
-		self.config = configsaver(self.configfile)
+		configfile='/etc/univention/%s/s4internal.cfg' % self.CONFIGBASENAME
+		if os.path.exists(configfile):
+			ud.debug(ud.LDAP, ud.PROCESS, "Converting %s into a sqlite database" % configfile)
+			config = configsaver(configfile)
+			ud.debug(ud.LDAP, ud.INFO, "Sections to convert: %s" % config.config.keys())
+			for section in config.config.keys():
+				ud.debug(ud.LDAP, ud.PROCESS, "Converting section %s" % section)
+				self.config.add_section(section)
+				for key in config.config[section].keys():                                                                                                                                                  
+					ud.debug(ud.LDAP, ud.INFO, "Adding key: %s" % key)
+					self.config.set(section, key, config.get(section, key))
+
+			new_file='%s_converted_%f' % (configfile,time.time())
+			os.rename(configfile, new_file)
+			ud.debug(ud.LDAP, ud.PROCESS, "Converting done")
 		
 		self.open_ucs()
 
@@ -429,7 +562,7 @@ class ucs:
 		_d=ud.function('ldap._check_dn_mapping')
 		dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
 		dn_ucs_mapped = self._get_dn_by_con(dn_con.lower())
-		if dn_con_mapped != dn_con or dn_ucs_mapped != dn_ucs:
+		if dn_con_mapped != dn_con.lower() or dn_ucs_mapped != dn_ucs.lower():
 			self._remove_dn_mapping(dn_ucs.lower(), dn_con_mapped.lower())
 			self._remove_dn_mapping(dn_ucs_mapped.lower(), dn_con.lower())
 			self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
@@ -751,6 +884,9 @@ class ucs:
 		Save all filenames in a dictonary with dn as key
 		If more than one pickle file was created for one DN we could skip the first one
 		'''
+		if len(files) > 200:
+			# Show an info if it takes some time
+			ud.debug(ud.LDAP, ud.PROCESS, 'Scan all changes from UCS ...')
 		self.dn_list = {}
 		for listener_file in files:
 			filename = os.path.join(self.listener_dir, listener_file)
@@ -806,20 +942,26 @@ class ucs:
 
 					dn,new,old,old_dn=cPickle.load(f)
 
-					if len(self.dn_list.get(dn, [])) < 2 or not old:
+					if len(self.dn_list.get(dn, [])) < 2 or not old or not new:
 						# If the list contains more then one file, the DN will be synced later
-						# But if the object is new (not old) synchonize in any case
-						try:
-							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
-						except (ldap.SERVER_DOWN, SystemExit):
-							raise
-						except:
-							self._save_rejected_ucs(filename, 'unknown')
-							# We may dropped the parent object, so don't show this warning
-							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
-						if sync_successfull:
-							os.remove(os.path.join(self.listener_dir,listener_file))
-							change_counter += 1
+						# But if the object was added or remoed, the synchonization is required
+						for i in [0, 1]: # do it twice if the LDAP connection was closed
+							try:
+								sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
+							except (ldap.SERVER_DOWN, SystemExit):
+								# once again, ldap idletimeout ...
+								if i == 0:
+									self.open_ucs()
+									continue
+								raise
+							except:
+								self._save_rejected_ucs(filename, 'unknown')
+								# We may dropped the parent object, so don't show this warning
+								self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
+							if sync_successfull:
+								os.remove(os.path.join(self.listener_dir,listener_file))
+								change_counter += 1
+							break
 					else:
 						os.remove(os.path.join(filename))
 						traceback_level = ud.INFO
@@ -854,7 +996,10 @@ class ucs:
 	def __set_values(self, property_type, object, ucs_object, modtype='modify'):
 		_d=ud.function('ldap.__set_value')
 		if not modtype == 'add':
-			ucs_object.open()
+			if property_type == 'group':
+				ucs_object.open()
+			else:
+				ucs_object.open()
 		def set_values(attributes):
 			if object['attributes'].has_key(attributes.ldap_attribute):
 				ucs_key = attributes.ucs_attribute
@@ -998,7 +1143,11 @@ class ucs:
 	def add_in_ucs(self, property_type, object, module, position):
 		_d=ud.function('ldap.add_in_ucs')
 		ucs_object=module.object(None, self.lo, position=position)
-		ucs_object.open()
+		if property_type == 'group':
+			ucs_object.open()
+			self.group_members_cache_ucs[object['dn'].lower()] = []
+		else:
+			ucs_object.open()
 		self.__set_values(property_type,object,ucs_object, modtype='add')
 		for function in self.property[property_type].ucs_create_functions:
 			function(self, property_type, ucs_object)
@@ -1100,6 +1249,10 @@ class ucs:
 		if not old_object and object['modtype'] == 'move':
 			object['modtype'] = 'add'
 
+		if self.group_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
+			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: remove %s from group cache" % object['dn'])
+			self.group_mapping_cache_ucs[object['dn'].lower()] = None
+
 		try:
 			ud.debug(ud.LDAP, ud.PROCESS,
 							   'sync to ucs:   [%14s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
@@ -1148,7 +1301,9 @@ class ucs:
 			try:
 				if object['modtype'] in ['add','modify']:
 					for f in self.property[property_type].post_ucs_modify_functions:
+						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s" % f)
 						f(self, property_type, object)
+						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s (done)" % f)
 			except (ldap.SERVER_DOWN, SystemExit):
 				raise
 			except: # FIXME: which exception is to be caught?
