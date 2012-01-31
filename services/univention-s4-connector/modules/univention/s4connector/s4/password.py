@@ -44,6 +44,7 @@ from samba.dcerpc import drsblobs
 import heimdal
 from ldap.controls import LDAPControl
 import ctypes
+import traceback
 _PyCObject_FromVoidPtr = ctypes.pythonapi.PyCObject_FromVoidPtr 
 _PyCObject_FromVoidPtr.argtypes = [ctypes.POINTER(ctypes.c_char_p), ctypes.c_void_p] 
 _PyCObject_FromVoidPtr.restype = ctypes.py_object 
@@ -65,39 +66,58 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 
 	if sc_blob:
 		#ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: sc_blob: %s" % binascii.b2a_base64(sc_blob))
-		sc = ndr_unpack(drsblobs.supplementalCredentialsBlob, sc_blob)
-		for p in sc.sub.packages:
-			krb = None
-			ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: parsing %s blob" % p.name)
-			if p.name == "Primary:Kerberos":
-				krb_blob = binascii.unhexlify(p.data)
-				krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
-				assert krb.version == 3
+		try:
+			sc = ndr_unpack(drsblobs.supplementalCredentialsBlob, sc_blob)
+			for p in sc.sub.packages:
+				krb = None
+				ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: parsing %s blob" % p.name)
+				if p.name == "Primary:Kerberos":
+					krb_blob = binascii.unhexlify(p.data)
+					krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+					assert krb.version == 3
 
-				for k in krb.ctr.keys:
-					if k.keytype not in keytypes:
-						ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr3.key.keytype: %s" % k.keytype)
-						key = heimdal.keyblock_raw(context, k.keytype, k.value)
-						# keys.append(heimdal.asn1_encode_key(key, krb.ctr.salt.string, kvno))
-						## asn1_encode_key expects a krb5SaltObject
-						## (krb5SaltObject *salt)->salt.saltvalue.data = krb.ctr.salt.string		# see source4/dsdb/samdb/ldb_modules/password_hash.c:setup_kerberos_keys
-						## (krb5SaltObject *salt)->salt.saltvalue.length = strlen(krb.ctr.salt.string)	# const char **krb.ctr.salt.string; package_PrimaryKerberosString krb.ctr.salt
-						## something like:
-						krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
-						keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
-						keytypes.append(k.keytype)
-			elif p.name == "Primary:Kerberos-Newer-Keys":
-				krb_blob = binascii.unhexlify(p.data)
-				krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
-				assert krb.version == 4
+					for k in krb.ctr.keys:
+						if k.keytype not in keytypes:
+							ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr3.key.keytype: %s" % k.keytype)
+							try:
+								key = heimdal.keyblock_raw(context, k.keytype, k.value)
+								krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
+								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
+								keytypes.append(k.keytype)
+							except:
+								if k.value == up_blob:
+									ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 key key with invalid keytype %s in %s" % (k.keytype, p.name))
+								else:
+									traceback.print_exc()
+									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed. Continuing anyway." % k.keytype)
 
-				for k in krb.ctr.keys:
-					if k.keytype not in keytypes:
-						ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr4.key.keytype: %s" % k.keytype)
-						key = heimdal.keyblock_raw(context, k.keytype, k.value)
-						krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
-						keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
-						keytypes.append(k.keytype)
+				elif p.name == "Primary:Kerberos-Newer-Keys":
+					krb_blob = binascii.unhexlify(p.data)
+					krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+					assert krb.version == 4
+
+					for k in krb.ctr.keys:
+						if k.keytype not in keytypes:
+							ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr4.key.keytype: %s" % k.keytype)
+							try:
+								key = heimdal.keyblock_raw(context, k.keytype, k.value)
+								krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
+								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
+								keytypes.append(k.keytype)
+							except:
+								if k.value == up_blob:
+									ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 key key with invalid keytype %s in %s" % (k.keytype, p.name))
+								else:
+									traceback.print_exc()
+									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed. Continuing anyway." % k.keytype)
+
+		except Exception as exc:
+			if type(exc.args) == type(()) and len(exc.args) == 2 and exc.args[1] == 'Buffer Size Error':
+				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: '%s' while unpacking supplementalCredentials:: %s" % ( exc, binascii.b2a_base64(sc_blob) ) )
+				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.")
+			else:
+				traceback.print_exc()
+				ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.")
 
 	return keys
 
