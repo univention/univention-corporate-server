@@ -1,3 +1,13 @@
+univention-s4-connector (6.0.94-2) unstable; urgency=low
+
+  * Support for a different binddn and bindpw for the UCS access,
+    for example if the machine acount should be used (Bug #25985)
+  * Cleanup the UCR variables description
+  * Added UCR variable connector/s4/allow/secondary which allows a
+    second s4 connector in the domain (Bug #25990)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jan 2012 16:18:23 +0100
+
 univention-s4-connector (6.0.94-1) unstable; urgency=low
 
   * More group caching updates (Bug #25709)

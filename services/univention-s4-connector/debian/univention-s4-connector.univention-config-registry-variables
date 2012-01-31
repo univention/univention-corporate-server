@@ -1,72 +1,72 @@
 [con.*/s4/listener/dir]
-Description[de]=Verzeichnis-Pfad in dem OpenLDAP-Änderungen durch das Directory-Listener-Plugin gespeichert werden.
-Description[en]=
+Description[de]=Verzeichnis, in dem die von UCS nach Samba 4 zu übertragenen Objekte liegen. In diesem Pfad legt das zugehörige Listener-Modul die Änderungen ab, er sollte daher nicht geändert werden.
+Description[en]=Directory in which the objects transferred from UCS to Samba 4 are stored, preset as /var/lib/univention-connector/ad. The corresponding listener module saves the changes in this path; it should thus not be altered.
 Type=str
 Categories=service-adcon
 
 [con.*/s4/poll/sleep]
-Description[de]=Wartezeit in Sekunden bevor auf neue Änderungen in Samba 4 oder OpenLDAP geprüft wird.
-Description[en]=
+Description[de]= Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis erneut angefragt wird. Lokal wird dabei nur nach neuen Dateien im oben genannten Verzeichnis gesucht, auf Samba 4-Seite wird eine LDAP-Anfrage gestellt.
+Description[en]=Time in seconds which is waited after a run without changes until the next request is made. Only new files are searched for locally in the directory named above; a LDAP request is made on the Samba 4 side.
 Type=str
 Categories=service-adcon
 
 [con.*/s4/retryrejected]
-Description[de]=Anzahl der durch Synchronisationsläufe bevor erneut versucht wird fehgeschlagene Änderungen zu synchronisieren.
-Description[en]=
+Description[de]=Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-status.log nachvollzogen werden.
+Description[en]=Number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be followed in the /var/log/univention/connector-status.log logfile.
 Type=str
 Categories=service-adcon
 
 [con.*/s4/ldap/port]
-Description[de]=TCP-Port über den das Samba 4 LDAP erreichbar ist (default: 389).
-Description[en]=
+Description[de]=TCP-Port über den der LDAP-Dienst des Samba 4-Servers erreichbar ist
+Description[en]=The port of the LDAP service of the Samba 4 server
 Type=str
 Categories=service-adcon
 
 [con.*/s4/ldap/host]
-Description[de]=FQDN des Samba 4 Servers
-Description[en]=
+Description[de]=Der Fully Qualified Domain Name des Samba 4 Servers
+Description[en]=The fully qualified domain name of the Samba 4 server.
 Type=str
 Categories=service-adcon
 
 [con.*/debug/function]
-Description[de]=Debug-Level für die Rückverfolgung von Funktionsaufrufen im S4-Connector (0 oder 1).
-Description[en]=
+Description[de]=Debug-Level für die Rückverfolgung von Funktionsaufrufen im S4-Connector (0 oder 1). Auf 1 gesetzt werden Funktionsaufrufe als zusätzliche Debug-Information protokolliert.
+Description[en]=Controls, whether function calls should be traced in the debug log (0 or 1) When set to 1 the function calls are also documented as additional debug information
 Type=str
 Categories=service-adcon
 
 [con.*/debug/level]
-Description[de]=Debug-Level für die Ausgaben in der connector.log (0-4).
-Description[en]=
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector.log (0-4). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector.log (0-4). Preset as 2, so that the status of the synchronisation is visible in the log files.
 Type=str
 Categories=service-adcon
 
 [con.*/s4/mapping/group/language]
-Description[de]=Konfiguriert, ob ein Mapping der englischen Standardgruppen im OpenLDAP auf anderssprachige Standardgruppen im Samba 4 durchgeführt werden soll (default: de).
-Description[en]=
+Description[de]=Definiert, welche Abbildung von Standard-Gruppennamen zwischen UCS (Gruppennamen sind dort immer englisch) und Samba 4 genutzt werden soll. Voreingestellt ist das Mapping auf ein deutschsprachiges Samba 4 über den Wert "de".
+Description[en]=Defines which form of standard group names should be used between UCS (group names are always English) and Samba 4. The mapping to a Samba 4 service in German language is preset using the value "de".
 Type=str
 Categories=service-adcon
 
 [con.*/s4/mapping/syncmode]
-Description[de]=Konfiguriert, ob bidirectional ("sync", default) oder unidirektional ("read" oder "write") synchronisiert werden soll.
-Description[en]=
+Description[de]=Definiert den Sychronisations-Modus, unterstützt werden die Werte "read" (nur lesend von Samba 4 nach UCS), "write" (nur schreiben von UCS nach Samba 4) oder "sync" (bidirektionale Synchronisation).
+Description[en]=Defines the synchronisation mode; "read" (reading only from Samba 4 to UCS), "write" (writing only from UCS to Samba 4) and "sync" (bidirectional synchronisation) are supported. 
 Type=str
 Categories=service-adcon
 
 [con.*/s4/ldap/base]
-Description[de]=LDAP Basis des Samba 4 Directories.
-Description[en]=
+Description[de]=Die LDAP-Basis-DN des Samba 4-Servers
+Description[en]=The LDAP base DN of the Samba 4 server.
 Type=str
 Categories=service-adcon
 
 [con.*/s4/ldap/binddn]
-Description[de]=LDAP-DN des Synchronisationsaccounts im Samba 4.
-Description[en]=
+Description[de]=Mit diesem LDAP-Benutzer nimmt der S4 Connector Änderungen im LDAP des Samba 4 vor
+Description[en]= The Univention S4 connector uses this user to make changes in the LDAP of the Samba 4.
 Type=str
 Categories=service-adcon
 
 [con.*/s4/ldap/bindpw]
-Description[de]=Pfad zur Datei aus der das Passwort des Synchronisationsaccounts gelesen werden soll.
-Description[en]=
+Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers enthält, z.B. /etc/univention/ad.secret. Die Datei sollte genau eine Zeile enthalten.
+Description[en]=The file, which contains the password of the synchronisation user, e.g. /etc/univention/ad.secret. This file should contain exactly one line.
 Type=str
 Categories=service-adcon
 
@@ -75,3 +75,34 @@ Description[de]=Definiert ob die SID synchronisiert werden soll (Default: true)
 Description[en]=Defines whether the SID should be synchronized (Default: true)
 Type=str
 Categories=service-adcon
+
+[con.*/ldap/server]
+Description[de]=Der Fully Qualified Domain Name des UCS LDAP Servers. Wenn der Wert nicht gesetzt ist, wird der DC Master verwendet. Dieser Wert sollte nur im write Modus angepasst werden.
+Description[en]=The fully qualified domain name of the UCS LDAP server. If the value is not set, the DC master will be used. This value should only changed in write mode.
+Type=string
+Categories=service-adcon
+
+[con.*/ldap/port]
+Description[de]=TCP-Port über den der LDAP-Dienst des Samba 4-Servers erreichbar ist. Dieser Wert sollte nur im write Modus angepasst werden.
+Description[en]=The port of the LDAP service of the Samba 4 server. This value should only changed in write mode.
+Type=str
+Categories=service-adcon
+
+[con.*/ldap/binddn]
+Description[de]=Mit diesem LDAP-Benutzer nimmt der S4 Connector Änderungen im LDAP des UCS vor
+Description[en]= The Univention S4 connector uses this user to make changes in the LDAP of the UCS.
+Type=str
+Categories=service-adcon
+
+[con.*/ldap/bindpw]
+Description[de]=Die Datei, die das Passwort des UCS-Synchronisationsbenutzers enthält, z.B. /etc/ldap.secret. Die Datei sollte genau eine Zeile enthalten.
+Description[en]=The file, which contains the password of the UCS synchronisation user, e.g. /etc/ldap.secret. This file should contain exactly one line.
+Type=str
+Categories=service-adcon
+
+[con.*/s4/allow/secondary]
+Description[de]=Sofern diese Variable auf true gesetzt ist, kann ein zweiter S4 Connector in der Domäne gestartet werden. Diese Variable sollte nicht manuell gesetzt werden.
+Description[en]=If this variable is set to true, a second S4 connector can be started in the domain. This variable must not be set manually.
+Type=str
+Categories=service-adcon
+
