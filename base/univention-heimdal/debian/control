@@ -55,7 +55,7 @@ Package: univention-heimdal-common
 Architecture: all
 Depends: ${misc:Depends},
  univention-config-registry,
- python-univention-heimdal (= ${binary:Version}),
+ python-univention-heimdal,
  heimdal-clients
 Breaks: univention-heimdal-kdc (<< 5.0.6-1),
  univention-heimdal-member (<< 5.0.6-1)
