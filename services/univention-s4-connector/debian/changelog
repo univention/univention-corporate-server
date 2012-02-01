@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.97-1) unstable; urgency=low
+
+  * Use the correct group cache (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Feb 2012 20:16:16 +0100
+
 univention-s4-connector (6.0.96-1) unstable; urgency=low
 
   * Added support for referral handling (Bug #25986)
