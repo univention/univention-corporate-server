@@ -138,6 +138,8 @@ def samba2s4_time(l):
 	return long(time.mktime(time.gmtime(l+3600)))*10000000+d
 
 def s42samba_time(l):
+	if l == 0:
+		return l
 	d=116444736000000000L #difference between 1601 and 1970
 	return long(((l-d))/10000000)
 
@@ -1349,9 +1351,9 @@ class s4(univention.s4connector.ucs):
 			for prim_dn, prim_object in prim_members_s4:
 				if not prim_dn in ['None','',None]: # filter referrals
 					if prim_dn.lower() in s4_members_from_ucs:
-						s4_members_from_ucs.remove(member_dn.lower())
+						s4_members_from_ucs.remove(prim_dn.lower())
 					elif prim_dn in s4_members_from_ucs:
-						s4_members_from_ucs.remove(member_dn)
+						s4_members_from_ucs.remove(prim_dn)
 
 
 		ud.debug(ud.LDAP, ud.INFO,
@@ -1450,12 +1452,13 @@ class s4(univention.s4connector.ucs):
 		if not self.__compare_lowercase(object['dn'], ucs_group_object['attributes'].get('uniqueMember', [])):
 			ml.append((ldap.MOD_ADD, 'uniqueMember', [object['dn']]))
 
-		uid=object['attributes'].get('uid', [])[0]
-		if not self.__compare_lowercase(uid, ucs_group_object['attributes'].get('memberUid', [])):
-			ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
+		if object['attributes'].get('uid'):
+			uid=object['attributes'].get('uid', [])[0]
+			if not self.__compare_lowercase(uid, ucs_group_object['attributes'].get('memberUid', [])):
+				ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
 
 		if ml:
-			self.lo.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
+			self.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
 
 		# The user has been removed from the cache. He must be added in any case
 		self.group_members_cache_ucs[ucs_group_object['dn'].lower()].append(object['dn'].lower())
@@ -1576,7 +1579,7 @@ class s4(univention.s4connector.ucs):
 				except: # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs which is groupmember")
 
-		add_members = ucs_members_from_s4
+		add_members = copy.deepcopy(ucs_members_from_s4)
 		del_members = { 'user' : [], 'group': [] }
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)

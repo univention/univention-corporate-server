@@ -147,8 +147,7 @@ class configdb:
 				cur = self._dbcon.cursor()
 				cur.execute("""
 		INSERT OR REPLACE INTO '%(table)s' (key,value) 
-			VALUES (  '%(key)s', 
-					coalesce((SELECT value from '%(table)s' where key='%(key)s'), '%(value)s')
+			VALUES (  '%(key)s', '%(value)s'
 		);""" % {'key': option, 'value': value, 'table': section})
 				self._dbcon.commit()
 				cur.close()
@@ -429,7 +428,7 @@ class ucs:
 		except:
 			port = 7389
 
-		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2)
+		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
 
 	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
 		try:
@@ -957,7 +956,7 @@ class ucs:
 									continue
 								raise
 							except:
-								self._save_rejected_ucs(filename, 'unknown')
+								self._save_rejected_ucs(filename, dn)
 								# We may dropped the parent object, so don't show this warning
 								self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
 							if sync_successfull:
