@@ -1456,7 +1456,9 @@ class s4(univention.s4connector.ucs):
 
 		if ml:
 			self.lo.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
-			self.group_members_cache_ucs[ucs_group_object['dn'].lower()].append(object['dn'].lower())
+
+		# The user has been removed from the cache. He must be added in any case
+		self.group_members_cache_ucs[ucs_group_object['dn'].lower()].append(object['dn'].lower())
 
 	def one_group_member_sync_from_ucs(self, s4_group_object, object):
 		"""
@@ -1468,7 +1470,9 @@ class s4(univention.s4connector.ucs):
 
 		if ml:
 			self.lo_s4.lo.modify_s(s4_group_object['dn'],compatible_modlist(ml))
-			self.group_members_cache_con[s4_group_object['dn'].lower()].append(object['dn'].lower())
+
+		# The user has been removed from the cache. He must be added in any case
+		self.group_members_cache_con[s4_group_object['dn'].lower()].append(object['dn'].lower())
 		
 	def group_members_sync_to_ucs(self, key, object):
 		"""

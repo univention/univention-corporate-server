@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.95-1) unstable; urgency=low
+
+  * Group caching: Add a user to the group cache even if he is already
+    member of the group (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Feb 2012 07:52:13 +0100
+
 univention-s4-connector (6.0.94-2) unstable; urgency=low
 
   * Support for a different binddn and bindpw for the UCS access,
