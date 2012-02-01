@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.48-1) unstable; urgency=low
+
+  * Group caching: Add a user to the group cache even if he is already
+    member of the group (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Feb 2012 07:53:07 +0100
+
 univention-ad-connector (6.0.47-1) unstable; urgency=low
 
   * Support for a different binddn and bindpw for the UCS access,
