@@ -147,8 +147,7 @@ class configdb:
 				cur = self._dbcon.cursor()
 				cur.execute("""
 		INSERT OR REPLACE INTO '%(table)s' (key,value) 
-			VALUES (  '%(key)s', 
-					coalesce((SELECT value from '%(table)s' where key='%(key)s'), '%(value)s')
+			VALUES (  '%(key)s', '%(value)s'
 		);""" % {'key': option, 'value': value, 'table': section})
 				self._dbcon.commit()
 				cur.close()
@@ -360,7 +359,6 @@ class ucs:
 		self.co=univention.admin.config.config()
 		self.listener_dir=listener_dir
 
-
 		configdbfile='/etc/univention/%s/internal.sqlite' % self.CONFIGBASENAME
 		self.config = configdb(configdbfile)
 
@@ -405,7 +403,7 @@ class ucs:
 		except:
 			port = 7389
 
-		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2)
+		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
 
 	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
 		try:
@@ -540,7 +538,7 @@ class ucs:
 		_d=ud.function('ldap._check_dn_mapping')
 		dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
 		dn_ucs_mapped = self._get_dn_by_con(dn_con.lower())
-		if dn_con_mapped != dn_con or dn_ucs_mapped != dn_ucs:
+		if dn_con_mapped != dn_con.lower() or dn_ucs_mapped != dn_ucs.lower():
 			self._remove_dn_mapping(dn_ucs.lower(), dn_con_mapped.lower())
 			self._remove_dn_mapping(dn_ucs_mapped.lower(), dn_con.lower())
 			self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
@@ -890,20 +888,26 @@ class ucs:
 
 					dn,new,old,old_dn=cPickle.load(f)
 
-					if len(self.dn_list.get(dn, [])) < 2 or not old:
+					if len(self.dn_list.get(dn, [])) < 2 or not old or not new:
 						# If the list contains more then one file, the DN will be synced later
-						# But if the object is new (not old) synchonize in any case
-						try:
-							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
-						except (ldap.SERVER_DOWN, SystemExit):
-							raise
-						except: # FIXME: which exception is to be caught?
-							self._save_rejected_ucs(filename, dn)
-							# We may dropped the parent object, so don't show this warning
-							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
-						if sync_successfull:
-							os.remove(os.path.join(self.listener_dir,listener_file))
-							change_counter += 1
+						# But if the object was added or remoed, the synchonization is required
+						for i in [0, 1]: # do it twice if the LDAP connection was closed
+							try:
+								sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
+							except (ldap.SERVER_DOWN, SystemExit):
+								# once again, ldap idletimeout ...
+								if i == 0:
+									self.open_ucs()
+									continue
+								raise
+							except:
+								self._save_rejected_ucs(filename, dn)
+								# We may dropped the parent object, so don't show this warning
+								self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
+							if sync_successfull:
+								os.remove(os.path.join(self.listener_dir,listener_file))
+								change_counter += 1
+							break
 					else:
 						os.remove(os.path.join(filename))
 						traceback_level = ud.INFO

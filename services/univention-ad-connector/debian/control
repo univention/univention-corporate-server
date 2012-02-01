@@ -16,6 +16,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
  univention-server-master | univention-server-backup,
+ python-univention-directory-manager (>= 7.0.214),
  python-pysqlite2
 Pre-Depends: univention-config-registry (>= 2.6.8-5)
 Provides: ${python:Provides}

@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.49-1) unstable; urgency=low
+
+  * Added support for referral handling (Bug #25986)
+  * Group caching: Minor updates (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Feb 2012 15:02:59 +0100
+
 univention-ad-connector (6.0.48-1) unstable; urgency=low
 
   * Group caching: Add a user to the group cache even if he is already

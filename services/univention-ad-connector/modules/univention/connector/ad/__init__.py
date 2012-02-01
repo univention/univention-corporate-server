@@ -1259,6 +1259,7 @@ class ad(univention.connector.ucs):
 				try:
 					if self.lo_ad.get(ad_dn,attr=['cn']): # search only for cn to suppress coding errors
 						ad_members_from_ucs.append(ad_dn.lower())
+						self.group_mapping_cache_ucs[member_dn.lower()] = s4_dn
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except:  # FIXME: which exception is to be caught?
@@ -1275,7 +1276,7 @@ class ad(univention.connector.ucs):
 					
 					key = self.__identify({'dn':member_dn,'attributes':ad_object})
 					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':ad_object})['dn']
-					if not self.lo.get(ucs_dn, att=['dn']):
+					if not self.lo.get(ucs_dn, attr=['dn']):
 						# ad_members_from_ucs.append(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO,
 								       "group_members_sync_from_ucs: Object exists only in AD [%s]" % ucs_dn)			
@@ -1311,9 +1312,9 @@ class ad(univention.connector.ucs):
 			for prim_dn, prim_object in prim_members_ad:
 				if not prim_dn in ['None','',None]: # filter referrals
 					if prim_dn.lower() in ad_members_from_ucs:
-						ad_members_from_ucs.remove(member_dn.lower())
+						ad_members_from_ucs.remove(prim_dn.lower())
 					elif prim_dn in ad_members_from_ucs:
-						ad_members_from_ucs.remove(member_dn)
+						ad_members_from_ucs.remove(prim_dn)
 
 
 		ud.debug(ud.LDAP, ud.INFO,
@@ -1412,12 +1413,13 @@ class ad(univention.connector.ucs):
 		if not self.__compare_lowercase(object['dn'], ucs_group_object['attributes'].get('uniqueMember', [])):
 			ml.append((ldap.MOD_ADD, 'uniqueMember', [object['dn']]))
 
-		uid=object['attributes'].get('uid', [])[0]
-		if not self.__compare_lowercase(uid, ucs_group_object['attributes'].get('memberUid', [])):
-			ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
+		if object['attributes'].get('uid'):
+			uid=object['attributes'].get('uid', [])[0]
+			if not self.__compare_lowercase(uid, ucs_group_object['attributes'].get('memberUid', [])):
+				ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
 
 		if ml:
-			self.lo.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
+			self.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
 
 		# The user has been removed from the cache. He must be added in any case
 		self.group_members_cache_ucs[ucs_group_object['dn'].lower()].append(object['dn'].lower())
@@ -1538,7 +1540,7 @@ class ad(univention.connector.ucs):
 				except: # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs which is groupmember")
 
-		add_members = ucs_members_from_ad
+		add_members = copy.deepcopy(ucs_members_from_ad)
 		del_members = { 'user' : [], 'group': [] }
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
