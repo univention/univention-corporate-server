@@ -1422,7 +1422,7 @@ class ad(univention.connector.ucs):
 			self.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
 
 		# The user has been removed from the cache. He must be added in any case
-		self.group_members_cache_ucs[ucs_group_object['dn'].lower()].append(object['dn'].lower())
+		self.group_members_cache_con[ucs_group_object['dn'].lower()].append(object['dn'].lower())
 
 	def one_group_member_sync_from_ucs(self, ad_group_object, object):
 		"""
@@ -1436,7 +1436,7 @@ class ad(univention.connector.ucs):
 			self.lo_ad.lo.modify_s(ad_group_object['dn'],compatible_modlist(ml))
 
 		# The user has been removed from the cache. He must be added in any case
-		self.group_members_cache_con[ad_group_object['dn'].lower()].append(object['dn'].lower())
+		self.group_members_cache_ucs[ad_group_object['dn'].lower()].append(object['dn'].lower())
 		
 	def group_members_sync_to_ucs(self, key, object):
 		"""
