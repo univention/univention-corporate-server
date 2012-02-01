@@ -36,6 +36,8 @@ import sys
 import ldap.schema
 import univention.debug
 from univention.config_registry import ConfigRegistry
+from ldapurl import LDAPUrl
+from ldapurl import isLDAPUrl
 
 def _extend_uniq(list1, list2):
 	for item in list2:
@@ -121,7 +123,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, 
 
 class access:
 
-	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None):
+	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False):
 		"""start_tls = 0 (no); 1 (try); 2 (must)"""
 		ucr = None
 		self.host = host
@@ -157,6 +159,11 @@ class access:
 			self.decode_ignorelist = ucr.get('ldap/binaryattributes', 'krb5Key,userCertificate;binary').split(',')
 		else:
 			self.decode_ignorelist = decode_ignorelist
+
+		# python-ldap does not cache the credentials, so we override the
+		# referral handling if follow_referral is set to true
+		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=9139
+		self.follow_referral = follow_referral
 
 		self.__open(ca_certfile)
 
@@ -197,6 +204,10 @@ class access:
 		if self.binddn and not self.uri.startswith('ldapi://'):
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
 			self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
+
+		# Override referral handling
+		if self.follow_referral:
+			self.lo.set_option(ldap.OPT_REFERRALS,0)
 
 	def __encode( self, value ):
 		if value == None:
@@ -408,7 +419,15 @@ class access:
 			templist = nal.setdefault(i[0], [])
 			_extend_uniq(templist, v)
 		nal = self.__encode_entry(nal.items())
-		self.lo.add_s(dn, nal)
+		try:
+			self.lo.add_s(dn, nal)
+		except ldap.REFERRAL, e:
+			if self.follow_referral:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
+				lo_ref = self._handle_referral(e)
+				lo_ref.add_s(dn, nal)
+			else:
+				raise
 
 	def modify(self, dn, changes, atomic=0):
 		"""Modify LDAP entry dn with attributes in changes=(attribute-name, old-values, new-values)."""
@@ -481,8 +500,29 @@ class access:
 			self.lo.rename_s(dn, rename, None, delold=0)
 			dn=rename+dn[dn.find(','):]
 		if ml:
-			self.lo.modify_s(dn, ml)
+			try:
+				self.lo.modify_s(dn, ml)
+			except ldap.REFERRAL, e:
+				if self.follow_referral:
+					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
+					lo_ref = self._handle_referral(e)
+					lo_ref.modify_s(dn, ml)
+				else:
+					raise
 		return dn
+
+	def modify_s(self, dn, ml):
+		"""Redirect modify_s directly to lo"""
+		try:
+			self.lo.modify_s(dn, ml)
+		except ldap.REFERRAL, e:
+			if self.follow_referral:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
+				lo_ref = self._handle_referral(e)
+				lo_ref.modify_s(dn, ml)
+			else:
+				raise
+
 
 	def rename(self, dn, newdn):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn,newdn))
@@ -493,17 +533,41 @@ class access:
 
 		if not newsdn.lower() == oldsdn.lower():
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
-			self.lo.rename_s(dn, newrdn, newsdn)
+			try:
+				self.lo.rename_s(dn, newrdn, newsdn)
+			except ldap.REFERRAL, e:
+				if self.follow_referral:
+					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
+					lo_ref = self._handle_referral(e)
+					lo_ref.rename_s(dn, newrdn, newsdn)
+				else:
+					raise
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
-			self.lo.rename_s(dn, newrdn)
+			try:
+				self.lo.rename_s(dn, newrdn)
+			except ldap.REFERRAL, e:
+				if self.follow_referral:
+					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
+					lo_ref = self._handle_referral(e)
+					lo_ref.rename_s(dn, newrdn)
+				else:
+					raise
 
 	def delete(self, dn):
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.delete %s' % dn)
 		if dn:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'delete')
-			self.lo.delete_s(dn)
+			try:
+				self.lo.delete_s(dn)
+			except ldap.REFERRAL, e:
+				if self.follow_referral:
+					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
+					lo_ref = self._handle_referral(e)
+					lo_ref.delete_s(dn)
+				else:
+					raise
 
 	def parentDn(self, dn):
 		return parentDn(dn, self.base)
@@ -538,6 +602,34 @@ class access:
 		_d=univention.debug.function('uldap.__setstate__')
 		self.__dict__.update(dict)
 		self.__open()
+
+	def _handle_referral(self, exception):
+		# Following referral
+		e = exception.args[0]
+		info = e.get('info')
+		ldap_url = info[info.find('ldap'):]
+ 		if isLDAPUrl(ldap_url):
+			conn_str = LDAPUrl(ldap_url).initializeUrl()
+
+			lo_ref=ldap.initialize(conn_str)
+
+			if self.ca_certfile:
+				lo_ref.set_option( ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile )
+
+			if self.start_tls == 1:
+				try:
+					lo_ref.start_tls_s()
+				except:
+					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
+			elif self.start_tls == 2:
+				lo_ref.start_tls_s()
+
+			lo_ref.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
+			return lo_ref
+
+		else:
+			raise ldap.CONNECT_ERROR, 'Bad referral "%s"' % str(e)
+  
 
 	def needed_objectclasses(self, entry):
 
