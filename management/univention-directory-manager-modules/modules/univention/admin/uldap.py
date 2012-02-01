@@ -244,14 +244,14 @@ class position:
 
 class access:
 
-	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, lo=None):
+	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, lo=None, follow_referral=False):
 		if lo:
 			self.lo=lo
 		else:
 			if not port:
 				port = int(configRegistry.get('ldap/server/port', 7389))
 			try:
-				self.lo=univention.uldap.access(host, port, base, binddn, bindpw, start_tls)
+				self.lo=univention.uldap.access(host, port, base, binddn, bindpw, start_tls, follow_referral=follow_referral)
 			except ldap.INVALID_CREDENTIALS,ex:
 				raise univention.admin.uexceptions.authFail, _( "Authentication failed" )
 			except ldap.UNWILLING_TO_PERFORM,ex:

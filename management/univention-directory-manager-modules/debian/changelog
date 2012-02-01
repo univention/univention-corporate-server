@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.214-1) unstable; urgency=low
+
+  * Added a referral handling in uldap (Bug #9139)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Feb 2012 14:32:23 +0100
+
 univention-directory-manager-modules (7.0.213-1) unstable; urgency=low
 
   * add support for common mac address formats (Bug #25463)
