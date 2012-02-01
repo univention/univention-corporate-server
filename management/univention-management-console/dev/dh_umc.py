@@ -184,6 +184,7 @@ class UMC_Module( dict ):
 
 	@property
 	def xml_po_files( self ):
+		if self.xml_definition is None: return
 		dirpath = os.path.dirname( self.xml_definition )
 		for lang in LANGUAGES:
 			yield ( lang, os.path.join( dirpath, '%s.po' % lang ) )

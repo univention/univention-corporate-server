@@ -40,8 +40,9 @@ from .log import *
 
 class XML_Definition( ET.ElementTree ):
 	'''Definition of a category class'''
-	def __init__( self, root = None, filename = None ):
+	def __init__( self, root = None, filename = None, domain = None ):
 		ET.ElementTree.__init__( self, element = root, file = filename )
+		self.domain = domain
 
 	@property
 	def name( self ):
@@ -74,8 +75,9 @@ class Manager( dict ):
 				continue
 			try:
 				definitions = ET.ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
+				i18nDomain = definitions.find( 'categories' ).get( 'domain' )
 				for category_elem in definitions.findall( 'categories/category' ):
-					category = XML_Definition( root = category_elem )
+					category = XML_Definition( root = category_elem, domain = i18nDomain )
 					self[ category.id ] = category
 				RESOURCES.info( 'Loaded categories from %s' % filename )
 			except xml.parsers.expat.ExpatError, e:
