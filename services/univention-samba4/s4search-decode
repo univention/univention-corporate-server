@@ -41,6 +41,7 @@ import re
 import base64
 import binascii
 import heimdal
+import traceback
 from samba.dcerpc import dnsp
 from samba.dcerpc import drsblobs
 from samba.ndr import ndr_unpack
@@ -122,5 +123,6 @@ try:
 			decode_line(line)
 			line = line2
 except:
+	traceback.print_exc()
 	sys.stdout.flush()
 

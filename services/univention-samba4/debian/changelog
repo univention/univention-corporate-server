@@ -1,3 +1,10 @@
+univention-samba4 (1.0.115-2) unstable; urgency=low
+
+  * improve error feedback in univntion-s4search and s4search-decode
+    (Bug #26016)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 02 Feb 2012 14:33:37 +0100
+
 univention-samba4 (1.0.115-1) unstable; urgency=low
 
   * Block schema updates by default (Bug #24630)

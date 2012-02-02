@@ -88,8 +88,10 @@ if ! [ "$credentials_given" = 'true' ]; then
 fi
 
 ldbsearch --debug-stderr -H "ldaps://$ldap_server_name" "$@"
+rc=$?
 
 if [ "$debug" = 'true' ]; then
 	echo "### Output of: ldbsearch -H ldaps://$ldap_server_name $@"
 fi
 
+exit $rc
