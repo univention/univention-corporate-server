@@ -84,3 +84,6 @@ File: etc/pam.d/samba
 
 Type: file
 File: etc/init.d/winbind
+User: root
+Group: root
+Mode: 0755
