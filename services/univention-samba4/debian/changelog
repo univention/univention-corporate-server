@@ -1,3 +1,9 @@
+univention-samba4 (1.0.116-2) unstable; urgency=low
+
+  * add copyright header to winbind init script (Bug #24281)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 02 Feb 2012 14:51:09 +0100
+
 univention-samba4 (1.0.116-1) unstable; urgency=low
 
   * init script for source3/winbindd taken from samba source package
