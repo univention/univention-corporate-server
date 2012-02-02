@@ -1,3 +1,13 @@
+univention-samba4 (1.0.116-1) unstable; urgency=low
+
+  * init script for source3/winbindd taken from samba source package
+    including univention patches
+  * new UCR variable samba4/service/winbind?'winbindd' disables the
+    samba4-builtin winbind service and makes source3/winbindd start
+  * start source3/winbindd at the end of the join script (Bug #24281)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 02 Feb 2012 14:35:13 +0100
+
 univention-samba4 (1.0.115-2) unstable; urgency=low
 
   * improve error feedback in univntion-s4search and s4search-decode

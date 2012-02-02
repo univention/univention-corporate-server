@@ -81,3 +81,6 @@ Variables: logrotate/.*
 
 Type: file
 File: etc/pam.d/samba
+
+Type: file
+File: etc/init.d/winbind

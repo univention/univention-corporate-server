@@ -1,0 +1,69 @@
+#!/bin/sh
+@%@UCRWARNING=# @%@
+
+### BEGIN INIT INFO
+# Provides:          winbind
+# Required-Start:    $network $remote_fs $syslog
+# Required-Stop:     $network $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: start Winbind daemon
+### END INIT INFO
+
+samba4_service_winbind=$(/usr/sbin/univention-config-registry get samba4/service/winbind)
+if [ "$samba4_service_winbind" != "winbindd" ]; then
+	echo 'start of winbindd disabled by ucr var samba4/service/winbind != winbindd'
+	exit 0
+fi
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+[ -r /etc/default/winbind ] && . /etc/default/winbind
+
+DAEMON=/usr/sbin/winbindd
+PIDDIR=/var/run/samba
+WINBINDPID=$PIDDIR/winbindd.pid
+
+# clear conflicting settings from the environment
+unset TMPDIR
+
+# See if the daemon is there
+test -x $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+case "$1" in
+	start)
+ 		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart winbind winbind/autostart
+		fi
+		log_daemon_msg "Starting the Winbind daemon" "winbind"
+
+		mkdir -p /var/run/samba/winbindd_privileged || return 1
+		chgrp winbindd_priv $PIDDIR/winbindd_privileged/ || return 1
+		chmod 0750 $PIDDIR/winbindd_privileged/ || return 1
+		start-stop-daemon --start --quiet --oknodo --exec $DAEMON -- $WINBINDD_OPTS
+
+		log_end_msg $?
+		;;
+
+	stop)
+		log_daemon_msg "Stopping the Winbind daemon" "winbind"
+		start-stop-daemon --stop --quiet --oknodo --exec $DAEMON
+		log_end_msg $?
+		;;
+
+	restart|force-reload)
+		$0 stop && sleep 2 && $0 start
+		;;
+
+	status)
+		status_of_proc -p $WINBINDPID $DAEMON winbind && exit 0 || exit $?
+		;;
+	*)
+		echo "Usage: /etc/init.d/winbind {start|stop|restart|force-reload|status}"
+		exit 1
+		;;
+esac

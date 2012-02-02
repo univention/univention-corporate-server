@@ -147,7 +147,6 @@ if [ -x /etc/init.d/samba ]; then
 fi
 if [ -x /etc/init.d/winbind ]; then
 	/etc/init.d/winbind stop
-	univention-config-registry set winbind/autostart=no
 fi
 if [ -x /etc/init.d/heimdal-kdc ]; then
 	/etc/init.d/heimdal-kdc stop
@@ -423,6 +422,7 @@ fi
 /usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
 
 /etc/init.d/samba4 restart
+/etc/init.d/winbind start
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 

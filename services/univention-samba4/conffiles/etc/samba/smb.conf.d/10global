@@ -26,6 +26,8 @@ if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	server_services.append('-smb')
 if configRegistry.get('samba4/service/nmb', 'nmbd') == 'nmbd':
 	server_services.append('-nbtd')
+if configRegistry.get('samba4/service/winbind', 'winbindd') == 'winbindd':
+	server_services.append('-winbind')
 if server_services:
 	print '\tserver services\t=', ' '.join(server_services)
 
