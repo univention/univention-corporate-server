@@ -111,7 +111,9 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 									traceback.print_exc()
 									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed. Continuing anyway." % k.keytype)
 
-		except Exception as exc:
+		except Exception:
+			import sys
+			exc = sys.exc_info()[1]
 			if type(exc.args) == type(()) and len(exc.args) == 2 and exc.args[1] == 'Buffer Size Error':
 				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: '%s' while unpacking supplementalCredentials:: %s" % ( exc, binascii.b2a_base64(sc_blob) ) )
 				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.")

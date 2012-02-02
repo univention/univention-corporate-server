@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.97-2) unstable; urgency=low
+
+  * fix python2.6-style exception handling for python2.5 (Bug #24779)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 02 Feb 2012 18:12:04 +0100
+
 univention-s4-connector (6.0.97-1) unstable; urgency=low
 
   * Use the correct group cache (Bug #25709)
