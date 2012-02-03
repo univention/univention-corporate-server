@@ -297,13 +297,13 @@ binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
 if [ -z "$binddn" ]; then
 	# Next check is the local ldapi interface
 	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
-		ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+		ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
 fi
 
 if [ -z "$binddn" ]; then
 	# Check with anonymous bind
 	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" \
-		ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+		ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
 fi
 
 if [ -z "$binddn" ]; then
