@@ -9,6 +9,7 @@ Variables: squid/contentscan
 Variables: squid/ldapauth
 Variables: squid/ldapauth/groups
 Variables: squid/ldapauth/children
+Variables: squid/auth/groups
 Variables: squid/ntlmauth
 Variables: squid/basicauth
 Variables: squid/basicauth/children
@@ -16,6 +17,7 @@ Variables: squid/allowfrom
 Variables: squid/allow/localnet
 Variables: squid/parent/host
 Variables: squid/parent/port
+Variables: squid/parent/options
 Variables: squid/parent/directnetworks
 Variables: squid/debug/level
 Variables: squid/httpport
@@ -27,6 +29,7 @@ Variables: interfaces/.*/network
 Variables: squid/ntlmauth/children
 Variables: squid/ntlmauth/keepalive
 Variables: squid/ipauth/.*
+Variables: squid/redirect
 Variables: squid/krb5auth
 Variables: squid/krb5auth/children
 Variables: squid/krb5auth/keepalive

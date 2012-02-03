@@ -52,6 +52,12 @@ Description[en]=Port of a parent proxy for squid
 Type=str
 Categories=service-webproxy
 
+[squid/parent/options]
+Description[de]=Optionen für Verbindung mir dem übergeordneten Proxys (Default: default)
+Description[en]=Options for the parent proxy connection (default: default)
+Type=str
+Categories=service-webproxy
+
 [squid/parent/directnetworks]
 Description[de]=Netzwerke, auf die squid nicht über einen übergeordneten Proxy zugreift
 Description[en]=Networks, which squid accesses without using a parent proxy
@@ -118,3 +124,16 @@ Description[de]=keep_alive Option für squid_kerb_auth
 Description[en]=keep_alive option for squid_kerb_auth
 Type=str
 Categories=service-webproxy
+
+[squid/auth/groups]
+Description[de]=Autorisierung am Squid auf Basis von Gruppenzugehörigkeit (Default: yes)
+Description[en]=Squid Authorization based on group membership (Default: yes)
+Type=str
+Categories=service-webproxy
+
+[squid/redirect]
+Description[de]=Gibt ein Programm für den URL redirector an (Mögliche Werte: squidguard)
+Description[en]=Specifies the location of the executable for the URL redirector (Valid values: squidguard)
+Type=str
+Categories=service-webproxy
+

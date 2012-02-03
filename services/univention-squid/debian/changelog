@@ -1,3 +1,11 @@
+univention-squid (5.0.5-1) unstable; urgency=low
+
+  * added squid/auth/groups and squid/redirect 
+  * added squid/parent/options
+  (Bug #25806) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 Feb 2012 09:02:17 +0100
+
 univention-squid (5.0.4-14) unstable; urgency=low
 
   * fix squid3.conf template (Bug #24277)
