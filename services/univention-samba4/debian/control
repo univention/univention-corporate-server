@@ -23,6 +23,7 @@ Depends: ${misc:Depends},
  samba-dsdb-modules,
  ldb-tools,
  winbind4,
+ univention-samba-local-config,
  pwgen,
  python-univention-lib (>= 1.0.30-1)
 Description: UCS - Samba4 integration package
