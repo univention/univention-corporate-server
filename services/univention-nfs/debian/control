@@ -11,7 +11,8 @@ Architecture: all
 Depends: ${misc:Depends},
  nfs-kernel-server,
  univention-directory-manager-tools (>> 7.0.147),
- univention-directory-listener
+ univention-directory-listener,
+ python-univention-lib (>= 1.0.43)
 Description: UCS - NFS server
  This package configures the Network FileSystem (NFS).
  Shares, that are directories which can be accessed by

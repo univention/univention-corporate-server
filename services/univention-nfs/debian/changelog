@@ -1,3 +1,12 @@
+univention-nfs (4.0.6-1) unstable; urgency=low
+
+  * uses univention.lib.listenerSharePath.createOrRename()
+    to create or rename share path in nfs-shares.py
+  * added modrdn support in nfs-shares.py
+    (Bug #26025)
+
+ -- Felix Botner <botner@univention.de>  Mon, 06 Feb 2012 11:13:54 +0100
+
 univention-nfs (4.0.5-6) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

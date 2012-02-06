@@ -34,23 +34,71 @@ __package__='' 	# workaround for PEP 366
 import listener
 import os, re, string
 import univention.debug
+import univention.lib.listenerSharePath
+import cPickle
 
-if listener.baseConfig.has_key('nfsserver/ha/master') and listener.baseConfig['nfsserver/ha/master']:
-	hostname=listener.baseConfig['nfsserver/ha/master']
-else:
-	hostname=listener.baseConfig['hostname']
+hostname=listener.baseConfig['hostname']
 domainname=listener.baseConfig['domainname']
 ip=listener.baseConfig['interfaces/eth0/address']
 
 name='nfs-shares'
 description='Create configuration for NFS shares'
 filter='(&(objectClass=univentionShare)(|(univentionShareHost=%s.%s)(univentionShareHost=%s)))' % (hostname, domainname, ip)
+modrdn='1'
 
 __exports = '/etc/exports'
 __comment_pattern = re.compile('^"*/.*#[ \t]*LDAP:[ \t]*(.*)')
 
+tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + ".oldObject")
 
-def handler(dn, new, old):
+def handler(dn, new, old, command):
+
+	# create tmp dir
+	tmpDir = os.path.dirname(tmpFile)
+	listener.setuid(0)
+	try:
+		if not os.path.exists(tmpDir):
+			os.makedirs(tmpDir)
+	except Exception, e:
+		univention.debug.debug(
+			univention.debug.LISTENER, univention.debug.ERROR,
+			"%s: could not create tmp dir %s (%s)" % (name, tmpDir, str(e)))
+		return
+	finally:
+		listener.unsetuid()
+
+	# modrdn stuff
+	# 'r'+'a' -> renamed
+	# command='r' and "not new and old"
+	# command='a' and "new and not old"
+	
+	# write old object to pickle file
+	oldObject = {}
+	oldDn = ""
+	listener.setuid(0)
+	try:
+		# object was renamed -> save old object
+		if command == "r" and old:
+			f = open(tmpFile, "w+")
+			os.chmod(tmpFile, 0600)
+			cPickle.dump({"dn":dn, "old":old}, f)
+			f.close()
+		elif command == "a" and not old:
+			if os.path.isfile(tmpFile):
+				f = open(tmpFile, "r")
+				p = cPickle.load(f)
+				f.close()
+				oldObject = p.get("old", {})
+				oldDn = p.get("dn", {})
+				os.remove(tmpFile)
+	except Exception, e:
+		if os.path.isfile(tmpFile):
+			os.remove(tmpFile)
+		univention.debug.debug(
+			univention.debug.LISTENER, univention.debug.ERROR,
+			"%s: could not read/write tmp file %s (%s)" % (name, tmpFile, str(e)))
+	finally:
+		listener.unsetuid()
 
 	global __exports, __comment_pattern
 	# update exports file
@@ -62,9 +110,6 @@ def handler(dn, new, old):
 		if not s or s[0] != dn:
 			new_lines.append(line)
 	fp.close()
-	uid = 0
-	gid = 0
-	mode = '0755'
 	if new and new.has_key('objectClass') and 'univentionShareNFS' in new['objectClass']:
 		path = new['univentionSharePath'][0]
 		options = ''
@@ -98,50 +143,20 @@ def handler(dn, new, old):
 
 		new_lines.append('"%s" %s # LDAP:%s' % (path, options, dn))
 
-		try:
-			if new.has_key('univentionShareUid'):
-				uid=int(new['univentionShareUid'][0])
-		except:
-			pass
-		try:
-			if new.has_key('univentionShareGid'):
-				gid=int(new['univentionShareGid'][0])
-		except:
-			pass
-		try:
-			if new.has_key('univentionShareDirectoryMode'):
-				mode=new['univentionShareDirectoryMode'][0]
-		except:
-			pass
-
 		listener.setuid(0)
 		try:
 			fp = open(__exports, 'w')
 			fp.write(string.join(new_lines, '\n')+'\n')
 			fp.close()
 
-			if not os.access(path,os.F_OK):
-				os.makedirs(path,int('0755',0))
-
-			# deny chmod for dirs in dirBlackList and files
-			dirBlackList = ["sys", "proc", "dev", "tmp", "root"]
-			path = new['univentionSharePath'][0]
-			dirOnBlackList = False
-			if os.path.islink(path):
-				path = os.path.realpath(path)
-			for dir in dirBlackList:
-				if re.match("^/%s$|^/%s/" % (dir, dir), path):
-					dirOnBlackList = True
-
-			if os.path.isdir(path) and not dirOnBlackList:
-				try:
-					os.chmod(directory,int(mode,0))
-					os.chown(directory,uid,gid)
-				except:
-					pass
-			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-					"'%s': Custom permissions for files not allowed, skip." % path)
+			# object was renamed
+			if not old and oldObject and command == "a":
+				old = oldObject
+			ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
+			if ret:
+				univention.debug.debug(
+					univention.debug.LISTENER, univention.debug.ERROR,
+					"%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
 
 		finally:
 			listener.unsetuid()
