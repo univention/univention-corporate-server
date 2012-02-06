@@ -309,3 +309,15 @@ Description[de]=Auswahl des winbind-Dienstes für Samba 4 (z.B. winbindd oder s4
 Description[en]=Selects the winbind service for Samba 4 (e.g. winbindd oder s4)
 Type=str
 Categories=service-samba
+
+[samba4/service/drepl]
+Description[de]=DRS Replikationsdienst aktivieren (default: yes)
+Description[en]=Activate DRS replication service (default: yes)
+Type=str
+Categories=service-samba
+
+[samba4/rpc/endpoint/drsuapi]
+Description[de]=DRS Update API RPC Interface aktivieren
+Description[en]=Activate the DRS Update API RPC interface
+Type=str
+Categories=service-samba
