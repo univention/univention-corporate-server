@@ -126,7 +126,9 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 		this._form = new umc.widgets.Form({
 			widgets: widgets,
 			layout: layout,
-			moduleStore: this.moduleStore
+			moduleStore: this.moduleStore,
+			// alows the form to be scrollable when the window size is not large enough
+			scrollable: true
 		});
 
 		// add form to page... the page extends a BorderContainer, by default
