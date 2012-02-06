@@ -64,10 +64,6 @@ Subfile: etc/samba/smb.conf.d/92univention-samba_shares
 
 Type: subfile
 Multifile: etc/samba/smb.conf
-Subfile: etc/samba/smb.conf.d/95univention-samba_local_config
-
-Type: subfile
-Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/99univention-samba_local_shares
 
 Type: file
