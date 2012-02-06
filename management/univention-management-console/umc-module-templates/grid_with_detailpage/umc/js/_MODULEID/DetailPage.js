@@ -74,8 +74,8 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 				this._save(this._form.gatherFormValues());
 			})
 		}, {
-			name: 'cancel',
-			label: this._('Cancel'),
+			name: 'back',
+			label: this._('Back to overview'),
 			callback: dojo.hitch(this, 'onClose')
 		}];
 	},

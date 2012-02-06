@@ -1,7 +1,8 @@
 univention-management-console (4.0.201-1) unstable; urgency=low
 
-  * fixed scrollbars in DetailPage of template grid_with_detailpage; 
-    Bug #23876
+  * fixed scrollbars in DetailPage of template grid_with_detailpage 
+  * changed 'cancel' button to 'back to overview'
+  Bug #23876
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Feb 2012 16:53:18 +0100
 
