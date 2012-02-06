@@ -1,3 +1,9 @@
+univention-lib (1.0.43-1) unstable; urgency=low
+
+  * added python lib to rename directories (Bug #26025) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 Feb 2012 14:29:30 +0100
+
 univention-lib (1.0.42-1) unstable; urgency=low
 
   * fixed ldap search filter in getMailFromMailOrUid.py (Bug #23739) 
