@@ -43,7 +43,31 @@ dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._
 	queryExpr: '*${0}*',
 
 	// no auto completion, otherwise this gets weired in combination with the '*${0}*' search
-	autoComplete: false
+	autoComplete: false,
+
+	// autoHide: Boolean
+	//		If true, the ComboBox will only be visible if there it lists more than 
+	//		one element.
+	autoHide: false,
+
+	postMixInProperties: function() {
+		this.inherited(arguments);
+
+		if (this.autoHide) {
+			// autoHide ist set, by default the widget will be hidden
+			this.visible = false;
+		}
+	},
+
+	postCreate: function() {
+		this.inherited(arguments);
+
+		var handle = this.connect(this, 'onValuesLoaded', function(values) {
+			// show the widget in case there are more than 1 values 
+			this.set('visible', values.length > 1);
+			this.disconnect(handle);
+		});
+	}
 });
 
 
