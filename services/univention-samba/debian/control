@@ -50,6 +50,7 @@ Description: UCS - Samba domain controller (as slave)
 Package: univention-samba-local-config
 Architecture: all
 Depends: ${misc:Depends}, samba (>= 3.0.20) | samba4
+Breaks: univention-samba4 (<< 1.0.118-2)
 Description: UCS - UCR Extensions for configuration of local shares
  This package contains some scripts and templates to configure
  samba shares via UCR.
