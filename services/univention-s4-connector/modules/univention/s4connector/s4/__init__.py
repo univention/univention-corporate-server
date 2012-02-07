@@ -570,7 +570,7 @@ def explode_unicode_dn(dn, notypes=0):
 	return ret
 
 class s4(univention.s4connector.ucs):
-	def __init__(self, CONFIGBASENAME, property, baseConfig, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir):
+	def __init__(self, CONFIGBASENAME, property, baseConfig, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True):
 
 		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
 
@@ -625,29 +625,30 @@ class s4(univention.s4connector.ucs):
 		self.group_members_cache_ucs = {}
 		self.group_members_cache_con = {}
 
-		ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
-		s4_groups = self.__search_s4( filter='objectClass=group', attrlist=['member'])
-		ud.debug(ud.LDAP, ud.INFO,"__init__: s4_groups: %s" % s4_groups)
-		for s4_group in s4_groups:
-			if not s4_group or not s4_group[0]:
-				continue
-			group = s4_group[0].lower()
-			self.group_members_cache_con[group] = []
-			if s4_group[1]:
-				for member in s4_group[1].get('member'):
-					self.group_members_cache_con[group].append(member.lower())
-		ud.debug(ud.LDAP, ud.INFO,"__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
+		if init_group_cache:
+			ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
+			s4_groups = self.__search_s4( filter='objectClass=group', attrlist=['member'])
+			ud.debug(ud.LDAP, ud.INFO,"__init__: s4_groups: %s" % s4_groups)
+			for s4_group in s4_groups:
+				if not s4_group or not s4_group[0]:
+					continue
+				group = s4_group[0].lower()
+				self.group_members_cache_con[group] = []
+				if s4_group[1]:
+					for member in s4_group[1].get('member'):
+						self.group_members_cache_con[group].append(member.lower())
+			ud.debug(ud.LDAP, ud.INFO,"__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 
-		ucs_groups = self.search_ucs( filter='objectClass=univentionGroup', attr=['uniqueMember'])
-		for ucs_group in ucs_groups:
-			group = ucs_group[0].lower()
-			self.group_members_cache_ucs[group] = []
-			if ucs_group[1]:
-				for member in ucs_group[1].get('uniqueMember'):
-					self.group_members_cache_ucs[group].append(member.lower())
-		ud.debug(ud.LDAP, ud.INFO,"__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
+			ucs_groups = self.search_ucs( filter='objectClass=univentionGroup', attr=['uniqueMember'])
+			for ucs_group in ucs_groups:
+				group = ucs_group[0].lower()
+				self.group_members_cache_ucs[group] = []
+				if ucs_group[1]:
+					for member in ucs_group[1].get('uniqueMember'):
+						self.group_members_cache_ucs[group].append(member.lower())
+			ud.debug(ud.LDAP, ud.INFO,"__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
 
-		ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
+			ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 			
 		try:
 			self.s4_sid = univention.s4connector.s4.decode_sid(
@@ -1461,6 +1462,8 @@ class s4(univention.s4connector.ucs):
 			self.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
 
 		# The user has been removed from the cache. He must be added in any case
+		if not self.group_members_cache_con.get(ucs_group_object['dn'].lower()):
+			self.group_members_cache_con[ucs_group_object['dn'].lower()] = []
 		self.group_members_cache_con[ucs_group_object['dn'].lower()].append(object['dn'].lower())
 
 	def one_group_member_sync_from_ucs(self, s4_group_object, object):
@@ -1475,6 +1478,8 @@ class s4(univention.s4connector.ucs):
 			self.lo_s4.lo.modify_s(s4_group_object['dn'],compatible_modlist(ml))
 
 		# The user has been removed from the cache. He must be added in any case
+		if not self.group_members_cache_ucs.get(s4_group_object['dn'].lower()):
+			self.group_members_cache_ucs[s4_group_object['dn'].lower()] = []
 		self.group_members_cache_ucs[s4_group_object['dn'].lower()].append(object['dn'].lower())
 		
 	def group_members_sync_to_ucs(self, key, object):

@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.98-1) unstable; urgency=low
+
+  * Check if group cache is empty (Bug #25709)
+  * Don't build group cache while listing rejects (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Feb 2012 14:49:02 +0100
+
 univention-s4-connector (6.0.97-2) unstable; urgency=low
 
   * fix python2.6-style exception handling for python2.5 (Bug #24779)

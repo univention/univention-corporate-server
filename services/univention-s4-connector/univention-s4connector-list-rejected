@@ -122,7 +122,8 @@ def main():
 				       configRegistry['%s/s4/ldap/binddn' % CONFIGBASENAME],
 				       s4_ldap_bindpw,
 				       configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
-				       configRegistry['%s/s4/listener/dir' % CONFIGBASENAME])
+				       configRegistry['%s/s4/listener/dir' % CONFIGBASENAME],
+				       False)
 	#except:
 	#	print "Failed to read Connector-Config. This may happen if the connector is running."		
 	#	sys.exit(1)
