@@ -127,7 +127,8 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// property that defines the widget's position in a dijit.layout.BorderContainer
 			region: 'top',
 			widgets: widgets,
-			layout: layout
+			layout: layout,
+			scrollable: true
 		});
 
 		// turn off the standby animation as soon as all form values have been loaded

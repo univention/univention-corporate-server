@@ -1,6 +1,14 @@
+univention-management-console (4.0.202-1) unstable; urgency=low
+
+  * added scollbars to template simple_form
+  * prevent dh-umc-module-build --core to create a .po file in /
+  Bug #23876
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 07 Feb 2012 17:34:23 +0100
+
 univention-management-console (4.0.201-1) unstable; urgency=low
 
-  * fixed scrollbars in DetailPage of template grid_with_detailpage 
+  * fixed scrollbars in DetailPage of template grid_with_detailpage
   * changed 'cancel' button to 'back to overview'
   Bug #23876
 

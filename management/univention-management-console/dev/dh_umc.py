@@ -222,7 +222,7 @@ def read_modules( package, core = False ):
 
 def module_xml2po( module, po_file, language ):
 	"""Create a PO file the XML definition of an UMC module"""
-	message_po = '%s/messages.po' % os.path.dirname( po_file )
+	message_po = '%s/messages.po' % ( os.path.dirname( po_file ) or '.' )
 
 	po = polib.POFile()
 	po.header = PO_HEADER
@@ -254,7 +254,7 @@ def module_xml2po( module, po_file, language ):
 
 def create_po_file( po_file, package, files, language = 'python' ):
 	"""Create a PO file for a defined set of files"""
-	message_po = '%s/messages.po' % os.path.dirname( po_file )
+	message_po = '%s/messages.po' % ( os.path.dirname( po_file ) or '.' )
 
 	if os.path.isfile( message_po ):
 		os.unlink( message_po )
