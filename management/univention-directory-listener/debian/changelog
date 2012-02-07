@@ -1,3 +1,10 @@
+univention-directory-listener (6.0.21-1) unstable; urgency=low
+
+  * perform listener/memberuid/skip and listener/uniquemember/skip tests
+    only if activated by the UCR variables (Bug #25958)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Feb 2012 12:30:29 +0100
+
 univention-directory-listener (6.0.20-1) unstable; urgency=low
 
   * specify length of attribute values while passing them to Python,

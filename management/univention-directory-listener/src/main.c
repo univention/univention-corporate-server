@@ -477,7 +477,7 @@ int main(int argc, char* argv[])
 		lp->ld = NULL;
 		select_server(lp);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-				"no server given, choose one by myself (%s)",
+				"no server given, choosing one by myself (%s)",
 				lp->host);
 	}
 
