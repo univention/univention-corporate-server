@@ -435,10 +435,27 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
  				}
  				else
  				{
- 					tx1 = dojo.replace(this._("The system knows about {components} components."),values);
- 					tx1 = tx1 + '<br/>' + (values['enabled'] == 0 ?
-						this._("None of them are currently enabled.") :
-						dojo.replace(this._("{enabled} of them are currently enabled."),values));
+ 					if (values['components'] == '1')
+ 					{
+ 						tx1 = this._("The system knows about 1 component.");
+ 					}
+ 					else
+ 					{
+ 						tx1 = dojo.replace(this._("The system knows about {components} components."),values);
+ 					}
+ 					tx1 += '<br/>';
+ 					switch(values['enabled'])
+ 					{
+ 						case '0':
+ 							tx1 += this._("None of them are currently enabled.");
+ 							break;
+ 						case '1':
+ 							tx1 += this._("1 of them is currently enabled.");
+ 							break;
+ 						default:
+ 							tx1 += dojo.replace(this._("{enabled} of them are currently enabled."),values);
+ 					}
+						
  				}
  				this._form.getWidget('package_update_text1').set('content',tx1);		 				
  				

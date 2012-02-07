@@ -155,13 +155,11 @@ dojo.declare("umc.modules._updater.Form", [
 				{
 					result = data[0];
 				}
+				// *** CHANGED *** We don't display the message here since
+				//		we don't have the detailed knowledge what the errors
+				//		and error codes mean.
 				if (result['status'])
 				{
-					if (result['message'])
-					{
-						// not yet clear where I'll display this
-						umc.dialog.alert(result['message']);
-					}
 					this.applyErrorIndicators(result['object']);
 				}
 			}

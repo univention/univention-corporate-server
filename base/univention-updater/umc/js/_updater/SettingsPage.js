@@ -53,7 +53,7 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     	            name:		'reset',
     	            label:		this._( 'Reset' ),
     	            onClick: dojo.hitch(this, function() {
-    	                this._form.load('dummy');		// ID doesn't matter here but must be nonempty
+    	                this._form.load('server');		// ID doesn't matter here but must be nonempty
     	            })
     	    	},
     	    	{
@@ -113,7 +113,7 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     		widgets:		widgets,
     		layout:			layout,
     		//buttons:		buttons,
-    		moduleStore:	umc.store.getModuleStore('dummy','updater/settings'),
+    		moduleStore:	umc.store.getModuleStore('server','updater/settings'),
 			scrollable: true,
     		onSaved: dojo.hitch(this, function(success,data) {
     			this.standby(false);
@@ -128,10 +128,42 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     				{
     					if (result['message'])
     					{
-    						// not yet clear where I'll display this
-    						umc.dialog.alert(result['message']);
+    						// result['status'] is kind of error code:
+    						//	1 ... invalid field input
+    						//	2 ... error setting registry variable
+    						//	3 ... error commiting UCR
+    						//	4 ... any kind of 'repo not found' conditions
+    						//	5 ... repo not found, but encountered without commit
+    						var txt = this._("An unknown error with code %d occured.",result['status']);
+    						var title = 'Error';
+    						switch(result['status'])
+    						{
+    							case 1: txt = this._("Please correct the corresponding input fields:");
+    									title = this._("Invalid data");
+    									break;
+    							case 2:
+    							case 3:	txt = this._("The data you entered could not be saved correctly:");
+    									title = this._("Error saving data");
+    									break;
+    							case 4: txt = this._("Using the data you entered, no valid repository could be found.<br/>Since this may be a temporary server problem as well, your data was saved though.<br/>The problem was:");
+    									title = this._("Updater warning");
+    									break;
+    							case 5: txt = this._("With the current (unchanged) settings, the following problem was encountered:");
+										title = this._("Updater warning");
+										break;
+    						}
+    						
+    						var message = dojo.replace('<p>{txt}</p><p><b>{msg}</b></p>',{txt:txt,msg:result['message']});
+    						
+    						// While our module is open, the first created dialog would retain its title over
+    						// its whole lifetime... But we want the title to be changed on every invocation,
+    						// so there's no chance but to reap a current instance of the dialog.
+
+    						umc.dialog._alertDialog = null;
+    						umc.dialog.alert(message,title);
     					}
-    					this._form.applyErrorIndicators(result['object']);
+    					// No, this is done in the Form class itself.
+    					// this._form.applyErrorIndicators(result['object']);
     				}
     				else
     				{
@@ -144,7 +176,12 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     	});
     	this.addChild(this._form);
     	
-    	this._form.load('dummy');		// ID doesn't matter here, but must be nonempty
+    	dojo.connect(this._form,'onSubmit',dojo.hitch(this,function() {
+	    	this.standby(true);
+	        this._form.save(this._save_options);
+		}));
+    	    	
+    	this._form.load('server');		// ID doesn't matter here, but must be nonempty
     },
     
     // Returns defaults for a new component definition. 
@@ -170,7 +207,7 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
     // Let's fetch the current values again directly before we show the form.
     onShow: function() {
 
-    	this._form.load('dummy');		// ID doesn't matter here but must be nonempty
+    	this._form.load('server');		// ID doesn't matter here but must be nonempty
     }
     
 });

@@ -380,7 +380,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			 		label:		this._('Cancel')
 			 	},
 			 	{
-			 		label:		this._('Start!'),
+			 		label:		this._('Install'),
 			 		'default':	true,
 			 		callback:	dojo.hitch(this,function() {
 			 			args['confirm'] = false;

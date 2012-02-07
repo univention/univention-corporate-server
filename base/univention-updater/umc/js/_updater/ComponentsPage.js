@@ -328,7 +328,7 @@ dojo.declare("umc.modules._updater.ComponentsPage", umc.modules._updater.Page, {
 		 		label:		this._('Cancel')
 		 	},
 		 	{
-		 		label:		this._('Delete!'),
+		 		label:		this._('Delete'),
 		 		'default':	true,
 		 		callback:	dojo.hitch(this,function() {
 		 			this.standby(true);

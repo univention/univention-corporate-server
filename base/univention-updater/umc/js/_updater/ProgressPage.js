@@ -64,7 +64,8 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 		
 		// If I don't do that -> the page will switch 'show module help description' off
 		dojo.mixin(this,{
-			helpText: ' '
+			helpText:	' ',
+			title:		this._("Update progress")
 		});
 	},
 
@@ -380,17 +381,17 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 
 		var headings = {
 			'running': {
-		    	title:			this._("Update in progress"),
+		    	// title:			this._("Update in progress"),
 		        headerText:		this._("Univention Updater is working"),
 		        helpText:		this._("As long as the Univention Updater is updating your system, you're not allowed to manage settings or components. You may watch the progress, or close the module.")
 			},
 			'success': {
-				title:			this._("Update finished"),
+				// title:			this._("Update finished"),
 				headerText:		this._("Univention Updater job completed"),
-				helpText:		this._("Univention Updater has successfully finished the current job.")
+				helpText:		this._("Univention Updater has successfully finished the current job. You may read through the log file. If you're finished you may press the 'back' button to close this view.")
 			},
 			'failed': {
-				title:			this._("Update failed"),
+				// title:			this._("Update failed"),
 				headerText:		this._("Univention Updater job failed"),
 				helpText:		this._("Univention Updater could not successfully complete the current job. The log file should show the cause of the failure. If you're finished examining the log file you may press the 'back' button to close this view.")
 			}

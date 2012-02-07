@@ -40,6 +40,7 @@ import univention.config_registry
 import shlex
 import re
 import string
+import sys
 from os import stat,listdir,chmod,unlink,path,getpid,getppid
 from locale import nl_langinfo,D_T_FMT
 from time import strftime,localtime,sleep,time
@@ -81,6 +82,8 @@ PUT_SUCCESS				= 0
 PUT_PARAMETER_ERROR		= 1				# content of request record isn't valid
 PUT_PROCESSING_ERROR	= 2				# some error while parameter processing
 PUT_WRITE_ERROR			= 3				# some error while saving data
+PUT_UPDATER_ERROR		= 4				# after saving options, any errors related to repositories
+PUT_UPDATER_NOREPOS		= 5				# nothing committed, but not found any valid repository
 
 # Status codes for the 'execute' function
 RUN_SUCCESS				= 0
@@ -738,7 +741,7 @@ class Instance(umcm.Base):
 		errors = {}
 		result = []				# this is returned from the module
 		response = {}			# this is the one and only element in the 'result' array
-		response['status'] = 0
+		response['status'] = PUT_SUCCESS
 
 		# for easier addressing
 		data	= request.options[0]['object']
@@ -759,11 +762,11 @@ class Instance(umcm.Base):
 			# is to give a 'general' error message in errors[message] that will be displayed as a
 			# seperate Text widget within the form.
 			response['message'] = _("ERROR: %s") % estr
-			response['status'] = 1
+			response['status'] = PUT_PARAMETER_ERROR
 
 		# Only if all fields are valid: set values into our UCR copy.
 		# Errors set status to '2'
-		if response['status'] == 0:
+		if response['status'] == PUT_SUCCESS:
 			for field in data:
 				MODULE.info("   ++ Setting new value for '%s' to '%s'" % (field,data[field]))
 				try:
@@ -772,21 +775,37 @@ class Instance(umcm.Base):
 				except Exception, ex:
 					MODULE.fatal("   !! %s" % str(ex))
 					errors[field] = str(ex)
-					response['status'] = 2
+					response['status'] = PUT_PROCESSING_ERROR
+				# Bug #24878: emit a warning if repository is not reachable
+				except:
+					info = sys.exc_info()
+					emsg = '%s: %s' % info[:2]
+					MODULE.warn("   !! Updater error [setting UCR variable '%s']: %s" % (field,emsg))
+					response['message'] = str(info[1])
+					response['status'] = PUT_UPDATER_ERROR
 
-		# if at least one field was successfully changed:
-		#	-	write registry back
-		#	-	commit affected files
-		#	-	read registry again (refresh values)
-		if changed:
+		# If nothing was committed (no real changes but the user pressed 'Apply') we know
+		# that UniventionUpdater does not throw the exceptions we need for diagnosing
+		# server problems.
+		commit_count = 0
+
+		# We don't do anything if we have errors so far.
+		if response['status'] == PUT_SUCCESS:
 			try:
 				self.ucr.save()
-				self._commit_ucr()
+				commit_count = self._commit_ucr()
 				self.ucr.load()
 			except Exception,ex:
-				MODULE.fatal("   !! Writing UCR failed: %s" % str(ex))
-				errors['save'] = str(ex)
-				response['status'] = 3
+				MODULE.warn("   !! Writing UCR failed: %s" % str(ex))
+				response['message'] = str(ex)
+				response['status'] = PUT_WRITE_ERROR
+			# Bug #24878: emit a warning if repository is not reachable
+			except:
+				info = sys.exc_info()
+				emsg = '%s: %s' % info[:2]
+				MODULE.warn("   !! Updater error [committing UCR changes]: %s" % emsg)
+				response['message'] = str(info[1])
+				response['status'] = PUT_UPDATER_ERROR
 			try:
 				f = open ('/dev/null')
 				subprocess.call(shlex.split(cmd_update), stdout=f, stderr=f)
@@ -794,7 +813,38 @@ class Instance(umcm.Base):
 			except OSError, e:
 				MODULE.error('Execution of "%s" failed: %s' % (cmd_update, str(e)))
 
-		if (len(errors) or (response['status'] != 0)):
+		# Again, only if successful
+		if response['status'] == PUT_SUCCESS:
+			what = ''
+			# Bug #24878: emit a warning if repository is not reachable
+			try:
+				what = 'creating updater object'
+				upd = UniventionUpdater()
+				what = 'fetching repo lines'
+				txt = upd.print_version_repositories()
+				empty = True
+				what = 'processing repo lines'
+				for line in txt.split("\n"):
+					if len(line.strip()):
+						empty = False
+					MODULE.info("   -> %s" % line)
+				if empty:
+					msg = _("There is no repository at this server (or at least none for the current UCS version)")
+					MODULE.warn("   !! Updater error: %s" % msg)
+					response['message'] = msg
+					response['status'] = PUT_UPDATER_ERROR
+					# if nothing was committed, we want a different type of error code,
+					# just to appropriately inform the user
+					if commit_count == 0:
+						response['status'] = PUT_UPDATER_NOREPOS
+			except:
+				info = sys.exc_info()
+				emsg = '%s: %s' % info[:2]
+				MODULE.warn("   !! Updater error [%s]: %s" % (what,emsg))
+				response['message'] = str(info[1])
+				response['status'] = PUT_UPDATER_ERROR
+
+		if (len(errors) or (response['status'] != PUT_SUCCESS)):
 			response['object'] = errors
 
 		result.append(response)
@@ -1002,7 +1052,7 @@ class Instance(umcm.Base):
 		"""	This is the function that invokes any kind of installer. Arguments accepted:
 			job ..... the main thing to do. can be one of:
 				'release' ...... perform a release update
-				'errata' ..... perform a errata update
+				'errata' ....... perform a errata update
 				'component' .... install a component by installing its default package(s)
 				'distupgrade' .. update all currently installed packages (distupgrade)
 				'check' ........ check what would be done for 'update' ... do we need this?
@@ -1223,8 +1273,11 @@ class Instance(umcm.Base):
 	def _commit_ucr(self):
 		""" Commits changes to UCR variables. Expects a dict with key=variable name
 			and value=[old,new] tuples.
+		
+			For Bug #24878: now returns the number of changes being committed.
 		"""
 		MODULE.info("commit_ucr called: %d changes there." % len(self._changes))
+		count = len(self._changes)
 		if len(self._changes):
 			# ---------------------- DEBUG -----------------------
 			MODULE.info("   ## commit_ucr data:")
@@ -1237,6 +1290,7 @@ class Instance(umcm.Base):
 			c.load()
 			c(self._changes.keys(), (self.ucr, self._changes))
 			self._changes = {}
+		return count
 
 	def _del_component(self,id):
 		""" Removes one component. Note that this does not remove

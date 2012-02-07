@@ -1,3 +1,10 @@
+univention-updater (7.0.136-1) unstable; urgency=low
+
+  * applied patch from Frank Greif <fg@it25.de> implements error messages when
+  	changing repository settings (Bug #24878)
+
+ -- Florian Best <best@univention.de>  Tue, 07 Feb 2012 17:28:42 +0100
+
 univention-updater (7.0.135-1) unstable; urgency=low
 
   * execute apt-get update after modifying repositories or components (Bug #25332)
