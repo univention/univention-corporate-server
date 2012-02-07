@@ -1,3 +1,9 @@
+univention-base-files (1.0.45-1) unstable; urgency=low
+
+  * option to configure Signed NTP via UCRV ntp/signed (Bug #24953)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Feb 2012 11:28:30 +0100
+
 univention-base-files (1.0.44-1) unstable; urgency=low
 
   * check size before copying the temporary fstab to /etc/fstab in nfsmount (Bug #23513)

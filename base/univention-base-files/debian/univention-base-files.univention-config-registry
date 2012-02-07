@@ -71,6 +71,7 @@ Variables: server/role
 Variables: timeserver
 Variables: timeserver2
 Variables: timeserver3
+Variables: ntp/signed
 
 Type: file
 File: etc/default/ntpdate

@@ -598,3 +598,8 @@ Description[en]=Xorg keyboard options
 Type=str
 Categories=system-desktop
 
+[ntp/signed]
+Description[de]=NTP Signierung aktivieren
+Description[en]=Activate Signed NTP
+Type=str
+Categories=system-desktop
