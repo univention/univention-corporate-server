@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.258-1) unstable; urgency=low
+
+  * check if modules are loaded before adding module related 
+  	notices (Bug #24999)
+
+ -- Florian Best <best@univention.de>  Wed, 08 Feb 2012 16:50:46 +0100
+
 univention-management-console-frontend (1.0.257-1) unstable; urgency=low
 
   * added option autoHide to umc.widgets.ComboBox; Bug #25701

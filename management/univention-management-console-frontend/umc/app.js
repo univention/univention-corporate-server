@@ -358,13 +358,13 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				}
 
 				// check if updates are available
-				if ( umc.tools.isTrue(data.result['update/available']) ) {
+				if ( umc.modules.updater && umc.tools.isTrue(data.result['update/available']) ) {
 					var link = 'href="javascript:void(0)" onclick="umc.app.openModule(\'updater\')"';
 					overviewPage.addNote( this._( 'An update for UCS is available. Please visit <a %s>Online Update Module</a> to install the updates.', link ) );
 				}
 
 				// check if system reboot is required
-				if ( umc.tools.isTrue(data.result['update/reboot/required']) ) {
+				if ( umc.modules.reboot && umc.tools.isTrue(data.result['update/reboot/required']) ) {
 					overviewPage.addNote( this._( 'This system has been updated recently. A reboot is required to finish the update.' ) );
 				}
 			}));
