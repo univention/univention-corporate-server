@@ -34,7 +34,9 @@
 
 import ldap
 import univention.debug2 as ud
-import univention.s4connector.s4
+from ldap.controls import LDAPControl
+from samba.dcerpc import security
+from samba.ndr import ndr_pack, ndr_unpack
 
 def sid_to_s4(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4 object: %s" % object)
@@ -59,20 +61,25 @@ def sid_to_s4(s4connector, key, object):
 	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectSid=*)', ['objectSid'] )[0]
 	objectSid = s4_attributes.get('objectSid')
 	if objectSid:
-		decoded_s4_sid = univention.s4connector.s4.decode_sid(objectSid[0])
+		# decoded_s4_sid = univention.s4connector.s4.decode_sid(objectSid[0])
+		s4_objectSid = ndr_unpack(security.dom_sid, objectSid[0])
+		decoded_s4_sid = str(s4_objectSid)
 		if decoded_s4_sid == sambaSID[0]:
-			ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: objectSID and %s are equal' % sidAttribute)
+			ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: objectSid and %s are equal' % sidAttribute)
 			return
 
-		# change objectSID
-		# objectSid modification for an AD object seems to be not possible:
+		### change objectSID
 		#	http://serverfault.com/questions/53717/how-can-i-change-the-sid-of-a-user-account-in-the-active-directory
 		#	http://technet.microsoft.com/en-us/library/cc961998.aspx
 
-		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: The objectSid modification in S4 / AD is not allowed.')
-		#encoded_sambaSID = univention.s4connector.s4.encode_sid(sambaSID[0])
-	 	#modlist.append((ldap.MOD_REPLACE, 'objectSid', encoded_sambaSID))
-		#s4connector.lo_s4.lo.modify_ext_s(s4_dn, modlist)
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: changing objectSid from %s to %s' % (decoded_s4_sid, sambaSID[0]) )
+		new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID[0]))
+	 	modlist.append((ldap.MOD_REPLACE, 'objectSid', new_objectSid_ndr))
+
+		# objectSid modification for an Samba4 object is only possible with the "provision" control:
+		LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
+		controls = [ LDAPControl(LDB_CONTROL_PROVISION_OID,criticality=0) ]
+		s4connector.lo_s4.lo.modify_ext_s(s4_dn, modlist, serverctrls=controls)
 
 	pass
 	

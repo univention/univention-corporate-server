@@ -76,6 +76,18 @@ Description[en]=Defines whether the SID should be synchronized (Default: true)
 Type=str
 Categories=service-adcon
 
+[con.*/s4/mapping/sid/sid_to_s4]
+Description[de]=Definiert ob die SID von UCS nach Samba 4 synchronisiert werden soll (Default: false)
+Description[en]=Defines whether the SID should be synchronized from UCS to Samba 4 (Default: false)
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/sid/sid_to_ucs]
+Description[de]=Definiert ob die SID von Samba 4 nach UCS synchronisiert werden soll (Default: true)
+Description[en]=Defines whether the SID should be synchronized from Samba 4 to UCS (Default: true)
+Type=str
+Categories=service-adcon
+
 [con.*/ldap/server]
 Description[de]=Der Fully Qualified Domain Name des UCS LDAP Servers. Wenn der Wert nicht gesetzt ist, wird der DC Master verwendet. Dieser Wert sollte nur im write Modus angepasst werden.
 Description[en]=The fully qualified domain name of the UCS LDAP server. If the value is not set, the DC master will be used. This value should only changed in write mode.

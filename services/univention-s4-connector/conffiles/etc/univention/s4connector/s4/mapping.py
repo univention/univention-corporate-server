@@ -119,7 +119,10 @@ s4_mapping = {
 							univention.s4connector.set_ucs_passwd_user,
 						 	univention.s4connector.check_ucs_lastname_user,
 						 	univention.s4connector.set_primary_group_user,
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
+@!@
 						 	],
 
 			post_con_create_functions = [
@@ -127,14 +130,20 @@ s4_mapping = {
 						 	],
 
 			post_con_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_s4,'
+@!@
 							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    univention.s4connector.s4.primary_group_sync_from_ucs,
 						    univention.s4connector.s4.disable_user_from_ucs,
 						    ],
 
 			post_ucs_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
+@!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs,
 						    univention.s4connector.s4.primary_group_sync_to_ucs,
 						    univention.s4connector.s4.object_memberships_sync_to_ucs,
@@ -259,13 +268,19 @@ s4_mapping = {
 			con_create_objectclass=['top', 'group'],
 
 			post_con_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_s4,'
+@!@
 							univention.s4connector.s4.group_members_sync_from_ucs,
 							univention.s4connector.s4.object_memberships_sync_from_ucs
 							],
 
 			post_ucs_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
+@!@
 							univention.s4connector.s4.group_members_sync_to_ucs,
 							univention.s4connector.s4.object_memberships_sync_to_ucs
 							],
@@ -314,12 +329,18 @@ s4_mapping = {
 								  ],
 	
 			post_con_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_s4,'
+@!@
 							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    ],
 	
 			post_ucs_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
+@!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
 						    ],
 	
@@ -379,12 +400,18 @@ s4_mapping = {
 
 			#post_con_create_functions = [ univention.connector.s4.computers.
 			post_con_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_s4,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_s4,'
+@!@
 							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    ],
 
 			post_ucs_modify_functions=[
-							univention.s4connector.s4.sid_mapping.sid_to_ucs,
+							@!@
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
+@!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
 						    ],
 
