@@ -1,3 +1,12 @@
+univention-ldap (8.0.77-1) unstable; urgency=low
+
+  * Set SRV priority to 100 for ldap and kerberos in backup2master
+    (Bug #24935)
+  * Reconfigure S4 connector in backup2master (Bug #25398)
+  * Do some cleanup in backup2master (Bug #26048)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Feb 2012 09:24:30 +0100
+
 univention-ldap (8.0.76-1) unstable; urgency=low
 
   * univentionSyntaxViewOnly is an optional attribute now; Bug #25039
