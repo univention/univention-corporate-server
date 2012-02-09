@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.35-1) unstable; urgency=low
+
+  * commit postfix ldap.maps properly (Bug #25836)
+
+ -- Felix Botner <botner@univention.de>  Thu, 09 Feb 2012 16:26:52 +0100
+
 univention-mail-postfix (6.0.34-2) unstable; urgency=low
 
   * renamed mail/postfix/ssl/client/level to
