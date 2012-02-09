@@ -1878,7 +1878,7 @@ class simpleComputer( simpleLdap ):
 			if not self.__multiip:
 				if self.has_key( 'dnsEntryZoneForward' ) and len( self[ 'dnsEntryZoneForward' ] ) > 0:
 					if not changed_ip:
-						self.__add_dns_forward_object( self[ 'name' ], self[ 'dnsEntryZoneForward' ][ 0 ], entry )
+						self.__add_dns_forward_object( self[ 'name' ], self[ 'dnsEntryZoneForward' ][ 0 ][ 0 ], entry )
 				if self.has_key( 'dnsEntryZoneReverse' ) and len( self[ 'dnsEntryZoneReverse' ] ) > 0:
 					for dnsEntryZoneReverse in self['dnsEntryZoneReverse']:
 						x, ip = self.__split_dns_line(dnsEntryZoneReverse)

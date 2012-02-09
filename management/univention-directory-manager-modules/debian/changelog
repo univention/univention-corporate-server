@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.217-1) unstable; urgency=low
+
+  * fixed bug wich caused a traceback when setting network via cli on existing
+  	computer objects (Bug #25173)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 09 Feb 2012 11:44:38 +0100
+
 univention-directory-manager-modules (7.0.216-1) unstable; urgency=low
 
   * Fixed identify function for computers/managedclient (Bug #25488)
