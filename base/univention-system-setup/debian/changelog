@@ -1,3 +1,9 @@
+univention-system-setup (5.0.107-1) unstable; urgency=low
+
+  * Removed package univention-system-setup-appliance (Bug #26057)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Feb 2012 14:51:41 +0100
+
 univention-system-setup (5.0.106-1) unstable; urgency=low
 
   * Added backend support for the server role selection in UMC system

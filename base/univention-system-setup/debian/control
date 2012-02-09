@@ -35,7 +35,9 @@ Description: UCS System Setup tools
 
 Package: univention-system-setup-boot
 Architecture: all
-Provides: univention-setup-boot
+Provides: univention-setup-boot, univention-system-setup-appliance
+Replaces: univention-system-setup-appliance
+Conflicts: univention-system-setup-appliance
 Depends: ${misc:Depends},
  univention-system-setup,
  firefox
@@ -43,18 +45,6 @@ Replaces: univention-setup-boot
 Description: Starting univention-system-setup on next boot
  This package configures the computer to launch UCS System Setup on its next
  boot.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-system-setup-appliance
-Architecture: all
-Depends: ${misc:Depends},
- univention-system-setup-boot,
- univention-installer-modules (>= 4.0.28)
-Description: Perform initial configuration of appliance editions
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
