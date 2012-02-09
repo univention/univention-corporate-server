@@ -1,3 +1,9 @@
+univention-updater (7.0.137-1) unstable; urgency=low
+
+  * added missing translation (Bug #24878)
+
+ -- Florian Best <best@univention.de>  Thu, 09 Feb 2012 14:25:45 +0100
+
 univention-updater (7.0.136-1) unstable; urgency=low
 
   * applied patch from Frank Greif <fg@it25.de> implements error messages when

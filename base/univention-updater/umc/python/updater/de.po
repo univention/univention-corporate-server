@@ -65,7 +65,7 @@ msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
-msgstr ""
+msgstr "Auf dem Server befindet sich kein Repository (oder zumindest keins für die aktuelle UCS Version)"
 
 #: umc/python/updater/__init__.py:323
 msgid "latest version"
