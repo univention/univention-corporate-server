@@ -1,5 +1,14 @@
 univention-directory-manager-modules (7.0.217-1) unstable; urgency=low
 
+  * Removed sambaPwdMustChange from users module (Bug #13199)
+  * Added /usr/share/univention-directory-manager-
+    tools/remove_sambapwdlastset to remove sambaPwdMustChange from all 
+    accounts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Feb 2012 12:28:18 +0100
+
+univention-directory-manager-modules (7.0.217-1) unstable; urgency=low
+
   * fixed bug wich caused a traceback when setting network via cli on existing
   	computer objects (Bug #25173)
 

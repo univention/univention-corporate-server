@@ -2114,19 +2114,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					old_shadowMax=self.oldattr.get('shadowMax', '')
 					if old_shadowMax != shadowMax:
 						ml.append(('shadowMax',self.oldattr.get('shadowMax', [''])[0], shadowMax))
-				if 'samba' in self.options:
-					if pwd_change_next_login == 1:
-						sambaPwdMustChange="%d" % long(time.time())
-						ml.append(("sambaPwdMustChange", "-1", sambaPwdMustChange))
-					else:
-						if expiryInterval==-1 or expiryInterval == 0:
-							sambaPwdMustChange=''
-						else:
-							sambaPwdMustChange="%d" % long(time.time()+(expiryInterval*3600*24))
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdMustChange: %s' % sambaPwdMustChange)
-					old_sambaPwdMustChange=self.oldattr.get('sambaPwdMustChange', '')
-					if old_sambaPwdMustChange != sambaPwdMustChange:
-						ml.append(('sambaPwdMustChange',self.oldattr.get('sambaPwdMustChange', [''])[0], sambaPwdMustChange))
 				if 'kerberos' in self.options:
 					if pwd_change_next_login == 1:
 						expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()))))
@@ -2149,10 +2136,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				if 'posix' in self.options or 'mail' in self.options:
 					ml.append(('shadowMax',self.oldattr.get('shadowMax', [''])[0], ''))
 					shadowLastChangeValue = ''
-				if 'samba' in self.options:
-					old_sambaPwdMustChange=self.oldattr.get('sambaPwdMustChange', '')
-					if old_sambaPwdMustChange:
-						ml.append(('sambaPwdMustChange',self.oldattr.get('sambaPwdMustChange', [''])[0], ''))
 				if 'kerberos' in self.options:
 					old_krb5PasswordEnd=self.oldattr.get('krb5PasswordEnd', '')
 					if old_krb5PasswordEnd:
@@ -2338,12 +2321,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ml.append(('shadowMax',self.oldattr.get('shadowMax', [''])[0], shadowMax))
 
 			if 'samba' in self.options:
-				sambaPwdMustChange="%d" % long(time.time())
-				ml.append(('sambaPwdCanChange', '-1', sambaPwdMustChange))
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdMustChange: %s' % sambaPwdMustChange)
-				old_sambaPwdMustChange=self.oldattr.get('sambaPwdMustChange', '')
-				if old_sambaPwdMustChange != sambaPwdMustChange:
-					ml.append(('sambaPwdMustChange',self.oldattr.get('sambaPwdMustChange', [''])[0], sambaPwdMustChange))
 				# set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
 				sambaPwdLastSetValue='1'
 
@@ -2387,16 +2364,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				sambaPwdLastSetValue = str(long(time.time()))
 				# transfered into ml below
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
-
-				# obsolete code: Bug #13199
-				if expiryInterval==-1 or expiryInterval == 0:
-					sambaPwdMustChange=''
-				else:
-					sambaPwdMustChange="%d" % long(time.time()+(expiryInterval*3600*24))
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdMustChange: %s' % sambaPwdMustChange)
-				old_sambaPwdMustChange=self.oldattr.get('sambaPwdMustChange', [''])[0]
-				if old_sambaPwdMustChange != sambaPwdMustChange:
-					ml.append(('sambaPwdMustChange', old_sambaPwdMustChange, sambaPwdMustChange))
 
 			# 4. set kerberos attribute
 			if 'kerberos' in self.options:
