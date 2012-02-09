@@ -1,3 +1,9 @@
+univention-system-setup (5.0.108-1) unstable; urgency=low
+
+  * Fixed typo in control file from last commit (Bug #26057)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Feb 2012 14:56:46 +0100
+
 univention-system-setup (5.0.107-1) unstable; urgency=low
 
   * Removed package univention-system-setup-appliance (Bug #26057)

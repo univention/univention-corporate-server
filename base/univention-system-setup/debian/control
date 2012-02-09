@@ -36,12 +36,11 @@ Description: UCS System Setup tools
 Package: univention-system-setup-boot
 Architecture: all
 Provides: univention-setup-boot, univention-system-setup-appliance
-Replaces: univention-system-setup-appliance
 Conflicts: univention-system-setup-appliance
 Depends: ${misc:Depends},
  univention-system-setup,
  firefox
-Replaces: univention-setup-boot
+Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot
  This package configures the computer to launch UCS System Setup on its next
  boot.
