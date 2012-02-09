@@ -3,7 +3,7 @@
 # Univention Samba
 #  listener module: manages samba share configuration
 #
-# Copyright 2001-2011 Univention GmbH
+# Copyright 2001-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,6 +34,8 @@ __package__='' 	# workaround for PEP 366
 import listener
 import os, re, string
 import univention.debug
+import univention.lib.listenerSharePath
+import cPickle
 ## for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers
 ucr_handlers = configHandlers()
@@ -46,9 +48,59 @@ ip=listener.baseConfig['interfaces/eth0/address']
 name='samba-shares'
 description='Create configuration for Samba shares'
 filter='(&(objectClass=univentionShare)(objectClass=univentionShareSamba)(|(univentionShareHost=%s.%s)(univentionShareHost=%s)))' % (hostname, domainname, ip)
-atributes=[]
+attributes=[]
+modrdn='1'
 
-def handler(dn, new, old):
+tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + ".oldObject")
+
+def handler(dn, new, old, command):
+
+	# create tmp dir
+	tmpDir = os.path.dirname(tmpFile)
+	listener.setuid(0)
+	try:
+		if not os.path.exists(tmpDir):
+			os.makedirs(tmpDir)
+	except Exception, e:
+		univention.debug.debug(
+			univention.debug.LISTENER, univention.debug.ERROR,
+			"%s: could not create tmp dir %s (%s)" % (name, tmpDir, str(e)))
+		return
+	finally:
+		listener.unsetuid()
+	
+	# modrdn stuff
+	# 'r'+'a' -> renamed
+	# command='r' and "not new and old"
+	# command='a' and "new and not old"
+	
+	# write old object to pickle file
+	oldObject = {}
+	oldDn = ""
+	listener.setuid(0)
+	try:
+		# object was renamed -> save old object
+		if command == "r" and old:
+			f = open(tmpFile, "w+")
+			os.chmod(tmpFile, 0600)
+			cPickle.dump({"dn":dn, "old":old}, f)
+			f.close()
+		elif command == "a" and not old:
+			if os.path.isfile(tmpFile):
+				f = open(tmpFile, "r")
+				p = cPickle.load(f)
+				f.close()
+				oldObject = p.get("old", {})
+				oldDn = p.get("dn", {})
+				os.remove(tmpFile)
+	except Exception, e:
+		if os.path.isfile(tmpFile):
+			os.remove(tmpFile)
+		univention.debug.debug(
+			univention.debug.LISTENER, univention.debug.ERROR,
+			"%s: could not read/write tmp file %s (%s)" % (name, tmpFile, str(e)))
+	finally:
+		listener.unsetuid()
 
 	if old:
 		filename = '/etc/samba/shares.conf.d/%s' % old['univentionShareSambaName'][0]
@@ -139,47 +191,14 @@ def handler(dn, new, old):
 			# try to create directory to share
 			if new['univentionShareSambaName'][0] != 'homes':
 				directory = os.path.join('/', new['univentionSharePath'][0])
-				if not os.access(directory,os.F_OK):
-					os.makedirs(directory,int('0755',0))
-				uid = 0
-				gid = 0
-				mode = '0755'
-
-				try:
-					if new.has_key('univentionShareUid'):
-						uid=int(new['univentionShareUid'][0])
-				except:
-					pass
-				try:
-					if new.has_key('univentionShareGid'):
-						gid=int(new['univentionShareGid'][0])
-				except:
-					pass
-				try:
-					if new.has_key('univentionShareDirectoryMode'):
-						mode=new['univentionShareDirectoryMode'][0]
-				except:
-					pass
-
-				# deny chmod for dirs in dirBlackList and files
-				dirBlackList = ["sys", "proc", "dev", "tmp", "root"]
-				path = new['univentionSharePath'][0]
-				dirOnBlackList = False
-				if os.path.islink(path):
-					path = os.path.realpath(path)
-				for dir in dirBlackList:
-					if re.match("^/%s$|^/%s/" % (dir, dir), path):
-						dirOnBlackList = True
-
-				if os.path.isdir(path) and not dirOnBlackList:
-					try:
-						os.chmod(directory,int(mode,0))
-						os.chown(directory,uid,gid)
-					except:
-						pass
-				else:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-						"'%s': Custom permissions for files not allowed, skip." % path)
+				# object was renamed
+				if not old and oldObject and command == "a":
+					old = oldObject
+				ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
+				if ret:
+					univention.debug.debug(
+						univention.debug.LISTENER, univention.debug.ERROR,
+						"%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
 
 			if new.has_key('univentionShareSambaCustomSetting') and new['univentionShareSambaCustomSetting']:
 				for setting in new['univentionShareSambaCustomSetting']:

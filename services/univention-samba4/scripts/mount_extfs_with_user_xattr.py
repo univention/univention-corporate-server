@@ -1,7 +1,7 @@
 #!/usr/bin/python2.6
 
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

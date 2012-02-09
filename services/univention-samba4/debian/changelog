@@ -1,3 +1,12 @@
+univention-samba4 (1.0.119-1) unstable; urgency=low
+
+  * uses univention.lib.listenerSharePath.createOrRename()
+    to create or rename share path in samba-shares.py
+  * added modrdn support in samba-shares.py
+    (Bug #26025)
+
+ -- Felix Botner <botner@univention.de>  Thu, 09 Feb 2012 10:01:22 +0100
+
 univention-samba4 (1.0.118-2) unstable; urgency=low
 
   * depend on univention-samba-local-config (Bug #25978)
