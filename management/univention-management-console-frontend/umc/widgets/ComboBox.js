@@ -63,8 +63,10 @@ dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._
 		this.inherited(arguments);
 
 		var handle = this.connect(this, 'onValuesLoaded', function(values) {
-			// show the widget in case there are more than 1 values 
-			this.set('visible', values.length > 1);
+			if (this.autoHide) {
+				// show the widget in case there are more than 1 values 
+				this.set('visible', values.length > 1);
+			}
 			this.disconnect(handle);
 		});
 	}

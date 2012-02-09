@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.259-1) unstable; urgency=low
+
+  * ComboBox: fixed autoHide feature; Bug #25701
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Feb 2012 14:30:02 +0100
+
 univention-management-console-frontend (1.0.258-1) unstable; urgency=low
 
   * check if modules are loaded before adding module related 
