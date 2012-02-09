@@ -631,5 +631,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 def identify(dn, attr, canonical=0):
 		
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionClient' in attr.get('objectClass', [])
+	return 'univentionHost' in attr.get('objectClass', []) and 'univentionClient' in attr.get('objectClass', []) and ( 'posixAccount' in attr.get('objectClass', []) or ( 'krb5KDCEntry' in attr.get('objectClass', []) and 'krb5Principal' in attr.get('objectClass', []) ) )
 

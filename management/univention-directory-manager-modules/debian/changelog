@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.216-1) unstable; urgency=low
+
+  * Fixed identify function for computers/managedclient (Bug #25488)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Feb 2012 11:43:01 +0100
+
 univention-directory-manager-modules (7.0.215-1) unstable; urgency=low
 
   * A user with only mail and personalInformation will no longer be
