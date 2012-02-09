@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.215-1) unstable; urgency=low
+
+  * A user with only mail and personalInformation will no longer be
+    accounted to the license (Bug #26047)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Feb 2012 11:10:27 +0100
+
 univention-directory-manager-modules (7.0.214-1) unstable; urgency=low
 
   * Added a referral handling in uldap (Bug #9139)
