@@ -61,6 +61,8 @@ SETUP_LOG="/var/log/univention/setup.log"
 
 echo "no-ldap" > /var/run/univention-system-setup.ldap
 
+# Install the server package
+/usr/lib/univention-system-setup/scripts/role/10role
 
 echo "Starting re-configuration of basic settings"
 

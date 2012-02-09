@@ -1,3 +1,10 @@
+univention-system-setup (5.0.106-1) unstable; urgency=low
+
+  * Added backend support for the server role selection in UMC system
+    setup (Bug #24272)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Feb 2012 08:38:27 +0100
+
 univention-system-setup (5.0.105-1) unstable; urgency=low
 
   * fixed calculation of netmask and broadcast address; Bug #24929

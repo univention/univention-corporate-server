@@ -1,0 +1,102 @@
+#!/bin/bash
+#
+# Univention Setup
+#  role change script
+#
+# Copyright 2011-2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+
+info_header "$0" "$(gettext "Configuring server role")"
+
+# These packages will be removed if the server role was changed to memberserver or basesystem
+BASE_REMOVE_PACKAGES="samba-common samba samba4 slapd univention-directory-notifier bind9 isc-dhcp-server \
+        			heimdal-kdc heimdal-servers univention-ldap-acl-slave univention-directory-manager \
+					univention-virtual-machine-manager-schema univention-management-console-module-udm nagios3-core"
+
+# mapping of role to package
+get_role_package ()
+{
+	test "$1" = "domaincontroller_master" && echo "univention-server-master"
+	test "$1" = "domaincontroller_backup" && echo "univention-server-backup"
+	test "$1" = "domaincontroller_slave" && echo "univention-server-slave"
+	test "$1" = "memberserver" && echo "univention-server-member"
+	test "$1" = "basesystem" && echo "univention-basesystem"
+}
+
+profile_role=$(get_profile_var "server/role")
+ucr_role=$(univention-config-registry get server/role)
+
+if [ -z "$profile_role" ] || [ "$profile_role" = "$ucr_role" ]; then
+	# nothing to do
+	exit 0
+fi
+
+
+role_package="$(get_role_package $profile_role)"
+ucr_role_package="$(get_role_package $ucr_role)"
+
+# --force-yes is required because not all packages are signed
+install_cmd="$(univention-config-registry get update/commands/install) --force-yes"
+
+progress_next_step
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+
+APT_PARAMS="-o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 --force-yes"
+if [ "$profile_role" = "basesystem" ] || [ "$profile_role" = "memberserver" ]; then
+	# Remove server packages
+	apt-get remove $APT_PARAMS --purge $BASE_REMOVE_PACKAGES
+fi
+
+progress_next_step
+	
+
+if [ -n "$role_package" -a -n "$ucr_role_package" ]; then
+	$install_cmd ${role_package}+ ${ucr_role_package}-
+elif [ -n "$role_package" ]; then
+	$install_cmd ${role_package}+
+fi
+
+progress_next_step
+
+# mark these packages as manually installed
+apt-get install univention-management-console univention-pam
+
+apt-get autoremove $APT_PARAMS
+
+univention-config-registry set server/role="$profile_role"
+
+# Cleanup
+rm -f /etc/apt/sources.list/05univention-system-setup.list
+rm -Rf /var/cache/univention-system-setup/packages
+
+
+exit 0
+

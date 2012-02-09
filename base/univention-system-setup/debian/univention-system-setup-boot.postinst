@@ -40,6 +40,25 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.19-5
 	update-rc.d -f univention-system-setup-boot remove
 fi
 
+# prepare the server role selection
+if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
+	mkdir -p /var/cache/univention-system-setup/packages/
+	install_cmd="$(univention-config-registry get update/commands/install)"
+	for package in server-backup server-slave server-member basesystem; do
+		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages univention-${package}
+	done
+
+	(
+		cd /var/cache/univention-system-setup/packages/
+		apt-ftparchive packages . >Packages
+	)
+
+	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
+		echo "deb file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
+	fi
+fi
+
+
 #DEBHELPER#
 
 exit 0
