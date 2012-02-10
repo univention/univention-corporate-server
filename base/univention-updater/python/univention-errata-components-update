@@ -1,0 +1,352 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention Updater
+#  errata update fpor components
+#
+# Copyright 2011-2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os
+import sys
+import getopt
+try:
+	import univention.debug as ud
+except ImportError:
+	import univention.debug2 as ud
+import univention.config_registry as ucr
+import time
+import subprocess
+import traceback
+import shlex
+
+import univention.updater
+from univention.updater.commands import cmd_dist_upgrade, cmd_update
+import univention.updater.tools
+
+updater_status = {}
+
+FN_STATUS = '/var/lib/univention-updater/univention-errata-components-update.status'
+TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_errata__components_update.list'
+LOGFILE = '/var/log/univention/errata-components-updates.log'
+
+def update_status(**kwargs):
+	'''
+	update updater_status and write status to disk
+
+	Keys:
+	- updatetype      ==> (LOCAL|NET)
+	- status          ==> (RUNNING|FAILED|DONE)
+	- errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
+	'''
+	global updater_status
+	updater_status.update(kwargs)
+	# write temporary file
+	fn = '%s.new' % FN_STATUS
+	try:
+		fd = open( fn, 'w+' )
+		for key, val in updater_status.items():
+			fd.write('%s=%s\n' % (key, val))
+		fd.close()
+	except:
+		dprint('Warning: cannot update %s' % fn)
+	try:
+		os.rename(fn, FN_STATUS)
+	except:
+		dprint('Warning: cannot update %s' % FN_STATUS)
+
+def dprint(str, fd=[]):
+	""" print message to multiple destinations or stdout """
+	if len(fd) < 1:
+		print str
+	for f in fd:
+		print >>f, str
+
+def add_temporary_sources_list ( debline ):
+	fp = open(TMPSOURCE, 'a+')
+	fp.write(debline+'\n')
+	fp.close()
+
+def remove_temporary_sources_list ():
+	if os.path.exists(TMPSOURCE):
+		os.remove(TMPSOURCE)
+
+def usage(fd=sys.stdout):
+	print >> fd, 'univention-errata-components-update: tool for installing errata updates for components'
+	print >> fd, 'copyright (c) 2011-2012 Univention GmbH, Germany'
+	print >> fd, ''
+	print >> fd, 'Syntax:'
+	print >> fd, '  univention-errata-compoents-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check] [--no-repository-update] [--component <component>]'
+	print >> fd, '  univention-errata-compoents-update [--help] '
+	print >> fd, ''
+
+def checkForUpdate(command, component):
+	""" Check for availability of errata updates """
+	if command == 'local':
+		updater = univention.updater.LocalUpdater()
+	elif command == 'net':
+		updater = univention.updater.UniventionUpdater()
+	configRegistry = ucr.ConfigRegistry()
+	configRegistry.load()
+
+	if component:
+		components = [ component ]
+	else:
+		components = updater.get_all_components()
+
+	for component in components:
+			configRegistry.load()
+			updater = univention.updater.UniventionUpdater()
+			versions = updater._get_component_versions(component, None, None)
+			for version in versions:
+				current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+				nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
+				if nextupdate:
+					return True
+	return False
+
+def update_ucr_updatestatus():
+	try:
+		devnull = open( '/dev/null', 'w' )
+		subprocess.call( '/usr/share/univention-updater/univention-updater-check', stdout = devnull, stderr = devnull )
+		devnull.close()
+	except:
+		dprint('Warning: calling univention-updater-check failed.')
+
+if __name__ == '__main__':
+	# PATH does not contain */sbin when called from cron
+	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+
+	ud.init(LOGFILE, ud.NO_FLUSH, ud.NO_FUNCTION)
+	fp_debug = open(LOGFILE, 'a+')
+	call_upgrade=True
+	file=''
+	component=None
+	repository_update=True
+	check=False
+
+	dprint( '***** Starting univention-errata-component-update at %s\n' % time.ctime(), [fp_debug] )
+
+	if len(sys.argv) < 2:
+		usage(sys.stderr)
+		fp_debug.close()
+		sys.exit(1)
+
+	if sys.argv[1] in ['-h', '-?', '--help']:
+		usage(sys.stdout)
+		fp_debug.close()
+		sys.exit(0)
+
+	if sys.argv[1] == 'net':
+		command = 'net'
+	elif sys.argv[1] == 'local':
+		command = 'local'
+	else:
+		usage(sys.stderr)
+		fp_debug.close()
+		sys.exit(1)
+
+	longopts=['file=', 'silent', 'noupdate', 'check', 'no-repository-update', 'component=' ]
+	try:
+		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
+	except getopt.error, msg:
+		usage(sys.stderr)
+		fp_debug.close()
+		sys.exit(1)
+	for opt, val in opts:
+		if opt == '--file':
+			file=val
+			if command=='net':
+				dprint( "Parameter \"--file\" only valid when running locally.", [fp_debug,sys.stderr] )
+				fp_debug.close()
+				sys.exit(1)
+			if not val:
+				dprint( "Parameter \"--file\" needs an argument.", [fp_debug,sys.stderr] )
+				fp_debug.close()
+				sys.exit(1)
+			file = os.path.abspath( file )
+		if opt == '--component':
+			component=val
+		if opt == '--no-repository-update':
+			repository_update=False
+		if opt == '--silent':
+			sys.stdout = open(os.path.devnull, 'w+')
+		if opt == '--noupdate':
+			call_upgrade=False
+		elif opt == '--check':
+			check=True
+	if check:
+		try:
+			if checkForUpdate(command, component):
+				sys.exit(1)	# reversed: 1=update available
+			else:
+				sys.exit(0)	# reversed: 0=no updates
+		except SystemExit:
+			raise
+		except Exception, e:
+			dprint(traceback.format_exc(), [fp_debug])
+			dprint("Failure to query repository: %s" % e)
+			sys.exit(0) # no updates available because of error :-(
+
+	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
+	try:
+		configRegistry = ucr.ConfigRegistry()
+		configRegistry.load()
+
+		if repository_update:
+			# from univention-upgrade a repository update had already been done
+			local_repository = False
+			# update local repository
+			if configRegistry.is_true('local/repository', False):
+				local_repository = True
+				# if there is no _new_ repository server -> exit
+				if configRegistry.has_key( 'repository/local/old' ):
+					update_status( status='FAILED', errorsource='SETTINGS' )
+					dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0', [fp_debug,sys.stderr] )
+					sys.exit( 1 )
+
+				# ... via mirror synchronsiation
+				if command == 'net':
+					dprint( 'Update local repository server ...', [fp_debug] )
+					ret = subprocess.call( ['univention-repository-update', 'net', '--errata-only'], stdout=fp_debug, stderr=fp_debug )
+					if ret:
+						update_status( status='FAILED', errorsource='PREPARATION' )
+						dprint( 'Error: Update of local repository server failed', [fp_debug,sys.stderr] )
+						sys.exit( 1 )
+				# ... via tar archive
+				elif command == 'local' and file:
+					repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
+					ret = subprocess.call( ['tar','xzf', file], cwd=os.path.join(repo_path, 'mirror'), stdout=fp_debug, stderr=fp_debug )
+					if ret:
+						update_status( status='FAILED', errorsource='PREPARATION' )
+						dprint( 'Error: Failed to extract errata update archive.', [fp_debug,sys.stderr] )
+						sys.exit( 1 )
+
+			# without a local repository the local mode is not supported
+			elif command == 'local':
+				update_status( status='FAILED', errorsource='SETTINGS' )
+				dprint( 'Error: The local mode can just be used on repository servers', [fp_debug,sys.stderr] )
+				sys.exit( 1 )
+
+		# install errata updates
+		filename = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
+		if os.path.exists(filename):
+			dprint( 'Warning: Found `%s`\nfrom incomplete univention-updater run. Deleted.' % (filename), [fp_debug,sys.stdout] )
+			os.remove(filename)
+
+		update_status( status='RUNNING', type=command.upper() )
+
+		upgraded = None
+		updater = univention.updater.UniventionUpdater()
+		if component:
+			components = [ component ]
+		else:
+			components = updater.get_all_components()
+
+		for component in components:
+			while True:
+					configRegistry.load()
+					updater = univention.updater.UniventionUpdater()
+					versions = updater._get_component_versions(component, None, None)
+					for version in versions:
+						try:
+							current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+							nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
+						except univention.updater.ConfigurationError, e:
+							dprint(traceback.format_exc(), [fp_debug])
+							dprint('Error: an error occurred during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
+							update_status( status='FAILED', errorsource='SETTINGS' )
+							sys.exit( 1 )
+
+					next_level = current_level+1
+					# we don't want an endless loop
+					if nextupdate == upgraded:
+						break
+
+					if not nextupdate:
+						if not upgraded:
+							dprint( 'No errata update available for %s!' % component, [fp_debug,sys.stdout] )
+						break
+
+					dprint( 'Update to %d.%d %s-errata%d' % (version.major, version.minor, component,next_level), [fp_debug,sys.stdout] )
+
+					remove_temporary_sources_list()
+					upgraded = nextupdate
+					if not call_upgrade:
+						continue
+
+					add_temporary_sources_list('\n'.join(nextupdate))
+
+					archs = ['all']
+					errata = updater._iterate_component_repositories([component], version, version, archs, errata_level=next_level)
+					# Download the pre and postup scripts
+					scripts = updater.get_sh_files(errata)
+					for part, phase in updater.call_sh_files(scripts, LOGFILE, str(version)):
+						if (part, phase) == ('update', 'main'):
+							# Execute the dist-upgrade!
+							count = 300
+							while os.path.exists('/var/run/apt-get.lock') and count > 0:
+								time.sleep(1)
+								count -= 1
+							# create lock file
+							try:
+								fd = open( '/var/run/apt-get.lock', 'w' )
+								fd.close()
+							except:
+								pass
+							# check for preup.sh
+
+							# update indices
+							ret = subprocess.call(shlex.split(cmd_update), stdout=fp_debug, stderr=fp_debug)
+							if ret:
+								update_status( status='FAILED', errorsource='PREPARATION' )
+								dprint( 'Error: Failed to update APT indices', [fp_debug,sys.stderr] )
+							else:
+								os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
+								ret = subprocess.call(shlex.split(cmd_dist_upgrade), stdout=fp_debug, stderr=fp_debug)
+								if ret:
+									update_status( status='FAILED', errorsource='UPDATE' )
+									dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
+								else:
+									# OK
+									subprocess.call(('univention-config-registry', 'set', 'repository/online/component/%s/%s.%s/erratalevel=%s' % (component, version.major, version.minor, next_level)), stdout=fp_debug, stderr=fp_debug)
+
+							remove_temporary_sources_list()
+							if os.path.exists('/var/run/apt-get.lock'):
+								os.unlink('/var/run/apt-get.lock')
+							if ret:
+								sys.exit( ret )
+
+		update_status( status='DONE' )
+	finally:
+		if not univention.updater.tools.updater_lock_release(lock):
+			print 'WARNING: updater-lock already released!'
+		update_ucr_updatestatus()

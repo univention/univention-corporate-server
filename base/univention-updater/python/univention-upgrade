@@ -301,6 +301,47 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 					sys.exit(1)
 				dprint(silent, 'Errata update finished errata%s at %s...' % (next_errata_update, time.ctime()), debug=True)
 
+		#######################################################################
+		# ERRATA COMPONENTS UPDATE
+		#######################################################################
+		# reinit updater module
+		errata_component_update = False
+		updater.ucr_reinit()
+		for component in updater.get_all_components():
+			dprint(silent, 'Checking for component errata updates for %s: ' % component, newline=False)
+			retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-components-update',  'net', '--component', component, '--check'], shell=False, env=os.environ)
+			if not retcode:
+				dprint(silent, 'none')
+				continue
+
+			# Found an update
+			dprint(silent, 'found\n')
+
+			if checkForUpdates:
+				return True
+
+			run = True
+			if interactive:
+				run = readcontinue('Do you want to install all available errata updates for component %s [Y|n]?' % component)
+
+			if run:
+				# perform errata update
+				dprint(silent, 'Starting errata update at %s...' % (time.ctime()), debug=True)
+				dprint(silent, 'Starting errata update')
+				time.sleep(1)
+				if configRegistry.is_true('local/repository', False):
+					# Repository update is already complete
+					retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-components-update',  'net', '--no-repository-update', '--component', component], shell=False, env=os.environ)
+				else:
+					retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-components-update',  'net', '--component', component], shell=False, env=os.environ)
+				if retcode:
+					dprint(silent, 'exitcode of univention-errata-components-update: %s' % retcode, debug=True)
+					dprint(silent, 'ERROR: update failed. Please check /var/log/univention/errata-components-updates.log\n')
+					update_status( status='FAILED', errorsource='UPDATE' )
+					sys.exit(1)
+				dprint(silent, 'Errata update component %s at %s...' % (component, time.ctime()), debug=True)
+
+
 	# updates available ==> stop here in "check-mode"
 	if checkForUpdates:
 		return False
