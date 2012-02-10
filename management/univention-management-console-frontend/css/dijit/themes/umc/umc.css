@@ -4578,10 +4578,20 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 /* @group Login */
 
+.umcLoginDialog_underlay {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	z-index: 990;
+}
+
 .umcLoginDialog {
-	width: 270px;
+	width: 300px;
 	padding: 25px;
-	height: 300px !important;
+	margin: auto;
+	position: relative !important;
 }
 
 .umcLoginDialog .umcText {
@@ -4599,16 +4609,6 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	margin: 0 auto;
 }
 
-.umcLoginDialog form > .umcContainerWidget {
-	width: auto;
-	margin 0;
-}
-
-.umcLoginDialog .umcSubmitButton {
-	margin-top: 10px;
-	margin-right: 8px;
-}
-
 .umc .umcLoginDialog .dojoxDialogPaneContent {
 	margin: 0 auto !important;
 	height: 310px !important;
@@ -4617,16 +4617,41 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	margin-bottom: 10px;
 }
 
-.umcLoginDialog .umcLabelPane {
+.umcLoginDialogFormContainer {
+	width: 225px;
+	height: 210px;
+}
+
+.umcLoginForm {
+	overflow: hidden;
+}
+
+#umc_Form {
+	width: auto !important;
+	height: 100% !important;
+	margin-top: 0 !important;
+	margin-bottom: 0;
+}
+
+.umcLoginForm .umcSubmitButton {
+	margin-top: 10px;
+	margin-right: 8px;
+	float: right;
+	position: relative;
+	top: 58px;
+}
+
+.umcLoginForm .umcLabelPane {
 	margin-bottom: 0 !important;
 }
 
-.umcLoginDialog .dijitTextBox {
-	width: 215px !important;
+.umcLoginDialogFormContainer .umcLabelPane {
+	position: relative;
+	top: -100px;
 }
 
-.umcLoginDialog .umcSubmitButton {
-	float: right;
+.umcLoginForm .dijitTextBox {
+	width: 215px !important;
 }
 
 #umc_widgets_Button_0_label .dijitButtonNode {
@@ -4735,19 +4760,6 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 .dijitDialog p {
 	margin-top: 0;
-}
-
-.umcLoginDialog form {
-	margin-bottom: 0;
-}
-
-.umcLoginDialog form {
-	width: auto !important;
-	margin-top: 0 !important;
-}
-
-.umcLoginDialog .umcLabelPane {
-	margin-bottom: 8px;
 }
 
 .dijitDialog .dijitButtonNode {

@@ -15,15 +15,15 @@
 			@import url("css%HASH%/dojox/form/resources/CheckedMultiSelect.css");
 			@import url("css%HASH%/dojox/widget/Toaster/Toaster.css");
 		</style>
-		
+
 		<!--[if IE 8]>
 		  <link rel="stylesheet" href="css%HASH%/dijit/themes/umc/ie/ie8.css" type="text/css" media="screen" title="IE 8 CSS" />
 		<![endif]-->
-		
+
 		<!--[if IE 9]>
 		  <link rel="stylesheet" href="css%HASH%/dijit/themes/umc/ie/ie9.css" type="text/css" media="screen" title="IE 9 CSS" />
 		<![endif]-->
-		
+
 		<script type="text/javascript">
 			//<!--
 			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
@@ -57,6 +57,7 @@
 			}
 
 			var dojoConfig = {
+			    parseOnLoad: true,
 				isDebug: false,
 				debugAtAllCosts: false,
 				locale: getQuery('lang') || getCookie('UMCLang')
@@ -67,11 +68,12 @@
 		<script type="text/javascript" src="js%HASH%/umc/build.js%JSSUFFIX%"></script>
 		<script type="text/javascript">
 			dojo.require("umc.app");
+			dojo.require("umc.widgets.ContainerWidget");
 
 			// start the application when everything has been loaded
 			dojo.addOnLoad(function() {
 				umc.app.start({
-					username: getQuery('username'), 
+					username: getQuery('username'),
 					password: getQuery('password'),
 					module: getQuery('module'),
 					flavor: getQuery('flavor'),
@@ -83,6 +85,17 @@
 		</script>
 	</head>
 	<body class="umc">
-	<div id="header" class="umcHeader" style="position: absolute; left: 0px; right: 0px;"></div>
+		<div id="header" class="umcHeader" style="position: absolute; left: 0px; right: 0px;"></div>
+		<div class="umcShowHide" style="position: absolute; height: 100%; width: 100%; display: none;">
+			<div class="umcShowHide" style="height:50%; margin-bottom:-150px;"></div>
+			<div id="umc_LoginDialog" class="umcShowHide dijitDialog dojoxDialog umcLoginDialog">
+				<div id="umc_LoginDialog_ContainerWidget" data-dojo-type="umc.widgets.ContainerWidget">
+					<div id="umc_LoginDialog_FormContainer" class="umcLoginForm umcLoginDialogFormContainer">
+						<iframe id="umc_LoginDialog_Iframe" src="login.html" frameborder=0 class="umcLoginDialogFormContainer"></iframe>
+					</div>
+				</div>
+			</div>
+			<div class="umcShowHide dijitDialogUnderlay umcLoginDialog_underlay"></div>
+		</div>
 	</body>
 </html>

@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.261-1) unstable; urgency=low
+
+  * replace dynamically generated login dialog with a static version
+  (Bug #25020)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 10 Feb 2012 16:08:22 +0100
+
 univention-management-console-frontend (1.0.260-1) unstable; urgency=low
 
   * added isEqual function to umc.tools (Bug #25631)

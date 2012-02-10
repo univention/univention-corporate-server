@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style="background:none">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+			@import url("js%HASH%/dojo/resources/dojo.css");
+			@import url("css%HASH%/dijit/themes/umc/umc.css");
+			@import url("css%HASH%/dojox/grid/resources/umcGrid.css");
+			@import url("css%HASH%/dojox/grid/enhanced/resources/EnhancedGrid.css");
+			@import url("css%HASH%/dojox/grid/enhanced/resources/umc/EnhancedGrid.css");
+			@import url("css%HASH%/dojox/form/resources/CheckedMultiSelect.css");
+			@import url("css%HASH%/dojox/widget/Toaster/Toaster.css");
+		</style>
+
+		<!--[if IE 8]>
+		  <link rel="stylesheet" href="css%HASH%/dijit/themes/umc/ie/ie8.css" type="text/css" media="screen" title="IE 8 CSS" />
+		<![endif]-->
+
+		<!--[if IE 9]>
+		  <link rel="stylesheet" href="css%HASH%/dijit/themes/umc/ie/ie9.css" type="text/css" media="screen" title="IE 9 CSS" />
+		<![endif]-->
+
+		<script type="text/javascript">
+			var dojoConfig = {
+				parseOnLoad: true
+			};
+		</script>
+		<script type="text/javascript" src="js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
+		<script type="text/javascript" src="js%HASH%/umc/build.js%JSSUFFIX%"></script>
+		<script type="text/javascript">
+			dojo.require("umc.widgets.SubmitButton");
+
+			var ready = false;
+			dojo.addOnLoad(function() {
+			    ready = true;
+			});
+		</script>
+	</head>
+	<body class="umc">
+		<form id="umc_Form" name="umc_Form" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
+			<div class="umcLabelPane">
+				<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop">
+					<label id="umc_LabelPane_Username" for="umc_UsernameInput"></label>
+				</div>
+				<div id="umc_UsernameContainer" class="dijit dijitReset dijitInlineTable dijitLeft umcTextBox umcFormWidget dijitTextBox dijitValidationTextBox">
+					<div class="dijitReset dijitInputField dijitInputContainer">
+						<input id="umc_UsernameInput" name="username" type="text" class="dijitReset dijitInputInner" />
+					</div>
+				</div>
+			</div>
+			<div class="umcLabelPane">
+				<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop">
+					<label id="umc_LabelPane_Password" for="umc_PasswordInput"></label>
+				</div>
+				<div id="umc_PasswordContainer" class="dijit dijitReset dijitInlineTable dijitLeft umcPasswordBox umcFormWidget dijitTextBox dijitValidationTextBox">
+					<div class="dijitReset dijitInputField dijitInputContainer">
+						<input id="umc_PasswordInput" name="password" type="password" class="dijitReset dijitInputInner" />
+					</div>
+				</div>
+			</div>
+			<button id="umc_SubmitButton" name="submit" type="submit" data-dojo-type="umc.widgets.SubmitButton"></button>
+		</form>
+	</body>
+</html>

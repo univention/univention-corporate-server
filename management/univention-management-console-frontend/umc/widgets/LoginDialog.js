@@ -30,24 +30,23 @@
 
 dojo.provide("umc.widgets.LoginDialog");
 
-dojo.require("dojox.widget.Dialog");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.Form");
-dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.Text");
+dojo.require("umc.widgets.LabelPane");
+dojo.require("umc.widgets.ComboBox");
+dojo.require("umc.widgets.StandbyMixin");
 
-dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	// our own variables
-	_container: null,
-	_passwordTextBox: null,
-	_usernameTextBox: null,
+	_connections: null,
+	_iframe: null,
+	_languageBox: null,
+	_languageLabel: null,
 	_text: null,
-	_form: null,
-	_container: null,
 
-	'class': 'umcLoginDialog',
+	// internal flag whether the dialog is rendered or not
+	_isRendered: false,
 
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
@@ -56,47 +55,42 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 
 	postMixInProperties: function() {
 		dojo.mixin(this, {
-			closable: false,
-			modal: true,
-			sizeDuration: 900,
-			sizeMethod: 'chain',
-			sizeToViewport: false,
-			dimensions: [300, 270]
-		});
-
-		dojo.mixin(this, {
 			availableLanguages: [
-				{ id: 'de-DE', label: this._('German') },
-				{ id: 'en-US', label: this._('English') }
-			] } );
+				{id: 'de-DE', label: this._('German')},
+				{id: 'en-US', label: this._('English')}
+			]});
+
+		this.domNode = dojo.byId('umc_LoginDialog');
 	},
 
 	defaultLang: function () {
 		// dojo.locale is set in the index.html either via the query string in the URL,
 		// via a cookie, or via dojo automatically
 		var lowercase_locale = dojo.locale.toLowerCase();
-		var exact_match = dojo.filter( this.availableLanguages, function( item ) { return lowercase_locale == item.id.toLowerCase(); } );
-		if ( exact_match.length > 0 ) {
-			return exact_match[ 0 ].id;
+		var exact_match = dojo.filter(this.availableLanguages, function(item) {
+			return lowercase_locale == item.id.toLowerCase();
+		});
+		if (exact_match.length > 0) {
+			return exact_match[0].id;
 		}
 
 		// fallbacks
 		var default_language = null;
 
 		// if dojo.locale is 'de' or 'de-XX' choose the first locale that starts with 'de'
-		var short_locale = lowercase_locale.slice( 0, 2 );
-		dojo.forEach( this.availableLanguages, function( lang ) {
-			if ( lang.id.toLowerCase().indexOf(short_locale ) === 0 ) {
+		var short_locale = lowercase_locale.slice(0, 2);
+		dojo.forEach(this.availableLanguages, function(lang) {
+			if (lang.id.toLowerCase().indexOf(short_locale) === 0) {
 				default_language = lang.id;
 				return false;
 			}
-		}, this );
+		}, this);
 
-		if ( null === default_language ) {
+		if (null === default_language) {
 			default_language = 'en-US';
 		}
 
-		console.log( 'new locale ' + default_language );
+		console.log('new locale ' + default_language);
 
 		return default_language;
 	},
@@ -104,63 +98,35 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		// adjust CSS classes for the title
-		dojo.addClass(this.titleNode, 'umcLoginDialogTitle');
-		dojo.addClass(this.titleBar, 'umcLoginDialogTitleBar');
+		this._iframe = dojo.byId('umc_LoginDialog_Iframe');
+		// initialize the iframe
+		this._initForm();
 
+		// create the upper info text
+		this._text = new umc.widgets.Text({
+			style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 250px;',
+			content: ''
+		});
+		this._text.placeAt('umc_LoginDialog', 'first');
+
+		// create the language combobox
 		var default_lang = this.defaultLang();
-
-		var widgets = [{
-			type: 'TextBox',
-			name: 'username',
-			value: dojo.cookie('UMCUsername') || '',
-			//description: this._('The username of your domain account.'),
-			label: this._('Username'),
-			sizeClass: null
-		}, {
-			type: 'PasswordBox',
-			name: 'password',
-			//description: this._('The password of your domain account.'),
-			label: this._('Password'),
-			sizeClass: null
-		}, {
-			type: 'ComboBox',
-			name: 'language',
+		this._languageBox = new umc.widgets.ComboBox({
 			staticValues: this.availableLanguages,
 			value: default_lang,
-			//description: this._('The language for the login session.'),
-			label: this._('Language'),
 			sizeClass: null
-		}];
-
-		var buttons = [{
-			name: 'submit',
-			label: this._('Login'),
-			callback: dojo.hitch(this, function(values) {
-				// call LoginDialog.onSubmit() and clear password
-				this._authenticate(values.username, values.password);
-				this._form.elementValue('password', '');
-			})
-		} ];
-
-		var layout = [['username'], ['password'], ['language']];
-
-		this._form = new umc.widgets.Form({
-			//style: 'width: 100%',
-			widgets: widgets,
-			buttons: buttons,
-			layout: layout,
-			style: 'margin-left: auto; margin-right: auto; width: 180px;'
-		}).placeAt(this.containerNode);
-		this._form.startup();
-
-		// register onChange event
-		this.connect(this._form._widgets.language, 'onChange', function(lang) {
+		});
+		this._languageLabel = new umc.widgets.LabelPane({
+			label: this._('Language'),
+			content: this._languageBox
+		});
+		// we need to manually startup the widgets
+		this._languageBox.startup();
+		this._languageLabel.startup();
+		this._languageLabel.placeAt('umc_LoginDialog_FormContainer');
+		// register onchange event
+		this.connect(this._languageBox, 'onChange', function(lang) {
 			if (lang != dojo.locale) {
-				// disable the entry fields
-				this._form.getWidget('username').set('disabled', true);
-				this._form.getWidget('password').set('disabled', true);
-
 				// reload the page when a different language is selected
 				var query = dojo.queryToObject(window.location.search.substring(1));
 				query.lang = lang;
@@ -168,57 +134,112 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 				window.location.search = '?' + dojo.objectToQuery(query);
 			}
 		});
-
-		// put the layout together
-		this._container = new umc.widgets.ContainerWidget({});
-		this._text = new umc.widgets.Text({
-			style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 250px;',
-			content: ''
-		});
-		this._container.addChild(this._text);
-		this._container.addChild(this._form);
-		this.set('content', this._container);
 	},
 
-	postCreate: function() {
-		// call superclass' postCreate()
-		this.inherited(arguments);
+	_initForm: function() {
+		// wait until the iframe is completely loaded
+		setTimeout(dojo.hitch(this, function() {
+			// check whether the form is available or not
+			var	isLoaded = dojo.getObject('contentWindow.ready', false, this._iframe);
+			if (!isLoaded) {
+				// we can't access the form, therefore we need to trigger the
+				// function again
+				this._initForm();
+			} else {
+				// we are able to access the form
+				dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
+					// because of the iframe we need to manually translate the content
+					dojo.attr(dojo.byId('umc_LabelPane_Username'), 'innerHTML', this._('Username'));
+					dojo.attr(dojo.byId('umc_LabelPane_Password'), 'innerHTML', this._('Password'));
+					dojo.attr(dojo.byId('umc_SubmitButton_label'), 'innerHTML', this._('Login'));
+				}));
 
-		// hide the close button
-		dojo.style(this.closeButtonNode, 'display', 'none');
+				// each time the page is loaded, we need to connect to the form events
+				this._connectEvents();
+
+				this._isRendered = true;
+			}
+		}), 500);
 	},
 
-	_showContent: function() {
-		this.inherited(arguments);
+	_connectEvents: function() {
+		// TODO: cleanup?
+		var form;
+		var usernameInput;
+		var usernameContainer;
+		var passwordInput;
+		var passwordContainer;
 
-		// focus on password input field if username is already given by cookie
-		if (this._form.elementValue('username')) {
-			this._form._widgets.password.focus();
-		}
+		dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
+			form = dojo.byId('umc_Form');
+			usernameInput = dojo.byId('umc_UsernameInput');
+			usernameContainer = dojo.byId('umc_UsernameContainer');
+			passwordInput = dojo.byId('umc_PasswordInput');
+			passwordContainer = dojo.byId('umc_PasswordContainer');
+		}));
 
-		// update text and disable/enable username input field
-		var msg = '';
-		if (umc.tools.status('setupGui')) {
-			// user has already logged in before, show message for relogin
-			msg = this._('Your session has been closed due to inactivity. Please login again.');
-			// disable username field
-			this._form.getWidget('username').set('disabled', true);
-		}
-		else {
-			msg = this._('Welcome to Univention Management Console. Please enter your domain username and password for login.');
-			this._form.getWidget('username').set('disabled', false);
-		}
-		this._text.set('content', '<p>' + msg + '</p>');
+		this._connections = [];
+		// register all events
+		this._connections.push(
+			this.connect(form, 'onsubmit', function(event) {
+				this._authenticate(usernameInput.value, passwordInput.value);
+				this._isRendered = false;
+				this._initForm();
+			})
+		);
+
+		var fields = [
+			[usernameInput, usernameContainer],
+			[passwordInput, passwordContainer]
+		];
+		var settingsArray = [
+			['onmouseover', this._setHover, true],
+			['onmouseout', this._setHover, false],
+			['onfocus', this._setFocus, true],
+			['onblur', this._setFocus, false]
+		];
+		dojo.forEach(fields, dojo.hitch(this, function(field) {
+			var input = field[0];
+			var container = field[1];
+			dojo.forEach(settingsArray, dojo.hitch(this, function(setting) {
+				var event = setting[0];
+				var func = setting[1];
+				var flag = setting[2];
+				this._connections.push(
+					dojo.connect(input, event, function(e) {
+						func(container, flag);
+					})
+				);
+			}));
+		}));
 	},
 
-	_onKey:  function(evt) {
-		// ignore ESC key
-		if (evt.charOrCode == dojo.keys.ESCAPE) {
-			return;
-		}
+	_disconnectEvents: function() {
+		dojo.forEach(this._connections, dojo.disconnect);
+	},
 
-		// otherwise call the standard handler
-		this.inherited(arguments);
+	_setInitialFocus: function() {
+		dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
+			// initial focus on username input
+			dojo.byId('umc_UsernameInput').focus();
+			this._setFocus(dojo.byId('umc_UsernameContainer'), true);
+		}));
+	},
+
+	_setFocus: function(obj, enable) {
+		if (enable === true) {
+			dojo.addClass(obj, 'dijitTextBoxFocused dijitValidationTextBoxFocused dijitFocused');
+		} else if (enable === false) {
+			dojo.removeClass(obj, 'dijitTextBoxFocused dijitValidationTextBoxFocused dijitFocused');
+		}
+	},
+
+	_setHover: function(obj, enable) {
+		if (enable === true) {
+			dojo.addClass(obj, 'dijitTextBoxHover dijitValidationTextBoxHover dijitHover');
+		} else if (enable === false) {
+			dojo.removeClass(obj, 'dijitTextBoxHover dijitValidationTextBoxHover dijitHover');
+		}
 	},
 
 	_authenticate: function(username, password) {
@@ -239,9 +260,35 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		}));
 	},
 
+	show: function() {
+		// update info text
+		var msg = '';
+		if (umc.tools.status('setupGui')) {
+			// user has already logged in before, show message for relogin
+			msg = this._('Your session has been closed due to inactivity. Please login again.');
+		} else {
+			msg = this._('Welcome to Univention Management Console. Please enter your domain username and password for login.');
+		}
+		this._text.set('content', '<p>' + msg + '</p>');
+
+		if (this._isRendered) {
+			dojo.query('.umcShowHide').style('display', 'block');
+			this._setInitialFocus();
+		} else {
+			var handler = this.connect(this, '_connectEvents', function() {
+				dojo.query('.umcShowHide').style('display', 'block');
+				this._setInitialFocus();
+				this.disconnect(handler);
+			});
+		}
+	},
+
+	hide: function() {
+		// hide the dialog
+		dojo.query('.umcShowHide').style('display', 'none');
+	},
+
 	onLogin: function(/*String*/ username) {
 		// event stub
 	}
 });
-
-

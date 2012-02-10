@@ -104,6 +104,9 @@ build-common: i18n
 		mkdir -p "$(CURDIR)/umc/i18n/$$lang"; \
 		cp $$i "$(CURDIR)/umc/i18n/$$lang/app.json"; \
 	done
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' login.html > "$(buildDir)/login.html"
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' blank.html > "$(buildDir)/blank.html"
+
 
 i18n:
 	/usr/bin/dh-umc-translate -p univention-management-console-frontend -o umc $(jsFiles)
