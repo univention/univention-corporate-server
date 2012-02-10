@@ -63,6 +63,10 @@ build: build-common
 	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/;' index.html > "$(buildDir)/debug.html"
 	@# copy css style sheets and images
 	rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
+	@# static login pages
+	for i in login blank; do \
+		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
+	done;
 
 build-dev: build-common
 	mkdir -p "$(buildDir)/js"
@@ -80,6 +84,11 @@ build-dev: build-common
 	@# symlinks for installed modules/icons
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(buildDir)/js/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(buildDir)/images/icons/
+	@# static login pages
+	for i in login blank; do \
+		rm "$(buildDir)/js/umc/$$i.html"; \
+		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
+	done;
 
 build-common: i18n
 	@# scale all icons
@@ -104,9 +113,6 @@ build-common: i18n
 		mkdir -p "$(CURDIR)/umc/i18n/$$lang"; \
 		cp $$i "$(CURDIR)/umc/i18n/$$lang/app.json"; \
 	done
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/login.html > "$(buildDir)/umc/login.html"
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/blank.html > "$(buildDir)/umc/blank.html"
-
 
 i18n:
 	/usr/bin/dh-umc-translate -p univention-management-console-frontend -o umc $(jsFiles)

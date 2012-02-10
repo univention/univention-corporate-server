@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.263-1) unstable; urgency=low
+
+  * fixed hash handling for login.html file; Bug #25020 
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Feb 2012 19:25:33 +0100
+
 univention-management-console-frontend (1.0.262-1) unstable; urgency=low
 
   * fixed hash handling for login.html file; Bug #25020
