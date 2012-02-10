@@ -676,24 +676,35 @@ class UniventionUpdater:
 				break
 		return result
 
-	def get_all_available_errata_component_updates(self, component):
-		# SGO: TODO
-		'''Returns a list of all available security updates for current major.minor version
+	def get_all_available_errata_component_updates(self):
+		'''Returns a list of all available errata updates for current major.minor version
 	       as integer
-		   >>> updater.get_all_available_security_updates()
-		   [3, 4, 5]
+		   >>> updater.get_all_available_errata_component_updates()
+			[
+				('component1', {'2.3': ['2', '3'], '2.4': ['5']} ),
+				('component2', {'3.0': ['1']} ),
+			]
 		'''
 		result = []
 		archs = ['all'] + self.architectures
-		for el in xrange(self.erratalevel + 1, 999):
-			version = UCS_Version( (self.version_major, self.version_minor, el) )
-			secver = self.errata_update_available(version)
-			if secver:
-				result.append( secver )
-			else:
-				break
-		return result
+		for component in self.get_all_components():
+			versions = self._get_component_versions(component, None, None)
+			component_versions = {}
+			for version in versions:
+				version_str = '%s.%s' % (version.major, version.minor)
+				current_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))                                       
+				for el in xrange(current_level + 1, 999):
+					if self.get_component_repositories(component, [version], errata_level=el):
+						if component_versions.get(version_str):
+							component_versions[version_str].append(el)
+						else:
+							component_versions[version_str] = [el]
+					else:
+						break
+			if component_versions:
+				result.append( (component, component_versions) )
 
+		return result
 
 	def security_update_available(self, version=None):
 		'''Check for the security version for the current version.
@@ -711,20 +722,6 @@ class UniventionUpdater:
 	def errata_update_available(self, version=None):
 		'''Check for the errata version for the current version.
 	       Returns next available security update number (integer) or False if no security update is available.
-		'''
-		if version:
-			start = end = version
-		else:
-			start = end = UCS_Version( (self.version_major, self.version_minor, self.erratalevel+1) )
-		archs = ['all'] + self.architectures
-		for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
-			return ver.patchlevel
-		return False
-
-	def errata_update_component_available(self, component, version=None):
-		# SGO: TODO
-		'''Check for the errata version for the current version.
-	       Returns next available errata update number (integer) or False if no errata update is available.
 		'''
 		if version:
 			start = end = version

@@ -1,3 +1,10 @@
+univention-updater (7.0.139-1) unstable; urgency=low
+
+  * Added get_all_available_errata_component_updates to list all
+    available errata updates for all components (Bug #24347)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Feb 2012 13:47:35 +0100
+
 univention-updater (7.0.138-1) unstable; urgency=low
 
   * Added support for component errata updates (Bug #24347)
