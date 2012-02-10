@@ -104,8 +104,8 @@ build-common: i18n
 		mkdir -p "$(CURDIR)/umc/i18n/$$lang"; \
 		cp $$i "$(CURDIR)/umc/i18n/$$lang/app.json"; \
 	done
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' login.html > "$(buildDir)/login.html"
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' blank.html > "$(buildDir)/blank.html"
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/login.html > "$(buildDir)/umc/login.html"
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/blank.html > "$(buildDir)/umc/blank.html"
 
 
 i18n:
