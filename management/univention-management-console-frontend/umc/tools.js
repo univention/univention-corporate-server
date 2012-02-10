@@ -717,7 +717,7 @@ dojo.mixin(umc.tools, {
 				return false;
 			}
 			for (var i = 0; i < a.length; ++i) {
-				if (!this.isEqual(a[i], b[i])) {
+				if (!umc.tools.isEqual(a[i], b[i])) {
 					return false;
 				}
 			}
@@ -727,7 +727,7 @@ dojo.mixin(umc.tools, {
 			var allKeys = dojo.mixin({}, a, b);
 			var result = true;
 			umc.tools.forIn(allKeys, function(key) {
-					result &= this.isEqual(a[key], b[key]);
+					result &= umc.tools.isEqual(a[key], b[key]);
 					return result;
 			});
 			return result;
