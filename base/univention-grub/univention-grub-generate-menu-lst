@@ -1,0 +1,74 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention Grub menu.lst generator
+#
+# Copyright 2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os, glob, sys
+
+if os.path.exists("/boot/grub/menu.lst"):
+    f = open("/boot/grub/menu.lst")
+    generated_by_ucs = False
+
+    for i in f.readlines():
+        if i.find("auto-generated through univention-grub-generate-menu-lst") != -1:
+            generated_by_ucs = True
+
+    if not generated_by_ucs:
+        print "menu.lst already exists. This typically happens if you have updated from UCS 2.4"
+        print "and haven't converted from chain loading"
+        sys.exit(-1)
+
+kernels = []
+for i in glob.glob("/boot/vmlinuz*"):
+    kernels.append(i.split("/boot/vmlinuz-")[1])
+
+lst = []
+lst.append("# This Grub configuration is auto-generated through univention-grub-generate-menu-lst.")
+lst.append("# It is used when booting UCS 3.0 as a Xen DomU with an older version of Pygrub")
+lst.append(" ")
+lst.append("default 0")
+lst.append("timeout 5 ")
+lst.append(" ")
+
+for i in kernels:
+    lst.append("title           UCS, kernel " + i)
+    lst.append("root            (hd0,0)")
+    lst.append("kernel          /vmlinuz-" + i + " root=/dev/mapper/vg_ucs-rootfs ro splash=nosplash")
+    lst.append("initrd          /initrd.img-" + i)
+    lst.append(" ")
+
+generated_list = open("menu.lst", "w")
+for i in lst:
+    generated_list.write(i + "\n")
+
+
+
+
+    
