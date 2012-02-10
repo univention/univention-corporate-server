@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.103-1) unstable; urgency=low
+
+  * corrected notification of the number of snapshots which will be deleted (Bug #25057)
+  * display information about unchanged changes on closing domain page (Bug #25631)
+
+ -- Florian Best <best@univention.de>  Fri, 10 Feb 2012 14:23:55 +0100
+
 univention-virtual-machine-manager-daemon (1.0.102-1) unstable; urgency=low
 
   * deactivating editing of drives in domain wizard; Bug #25131

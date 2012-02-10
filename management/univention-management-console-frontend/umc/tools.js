@@ -445,6 +445,8 @@ dojo.mixin(umc.tools, {
 		var message = '';
 		try {
 			var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
+			// replace all newlines with '<br>' because strings in json must not have line breaks
+			jsonResponse = jsonResponse.replace(/\n/g, '<br>');
 			var response = dojo.fromJson(jsonResponse);
 			status = parseInt(dojo.getObject('status', false, response) || error.status, 10) || status;
 			message = dojo.getObject('message', false, response) || '';
@@ -477,19 +479,19 @@ dojo.mixin(umc.tools, {
 				umc.dialog.alert('<p>' + this._statusMessages[status] + (message ? ': ' + message : '.') + '</p>');
 			}*/
 			// handle Tracebacks
-			else if(message.match(/Traceback.*most recent call.*File.*line/)) {
+			else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 
 				var feedbackLink = this._('Please take a second to provide the following information:');
 				feedbackLink += "\n\n1) " + this._('steps to reproduce the failure');
 				feedbackLink += "\n2) " + this._('expected result');
 				feedbackLink += "\n3) " + this._('actual result');
 				feedbackLink += "\n\n----------\n\n";
-				feedbackLink += message;
+				feedbackLink += message.replace(/<br>/g, "\n");
 				feedbackLink += "\n\n----------\n\n";
 				feedbackLink += "univention-management-console-frontend " + dojo.version;
 				feedbackLink = '<a href="mailto:feedback@univention.de?body=' + encodeURI( feedbackLink ) + '&amp;subject=[UMC-Feedback]%20Traceback">' + this._('Send feedback mail to Univention') + '</a>';
 
-				var content = '<pre>' + message.replace(/\n/g, '<br>') + '</pre><br>' + feedbackLink;
+				var content = '<pre>' + message + '</pre><br>' + feedbackLink;
 				var hideLink = '<a>' + this._('Hide server error message') + '</a>';
 				var showLink = '<a>' + this._('Show server error message') + '</a>';
 
@@ -701,6 +703,38 @@ dojo.mixin(umc.tools, {
 		};
 	},
 
+	isEqual: /* Boolean */ function(/* mixed */a, /* mixed */b) {
+		// summary:
+		//		recursive compare two objects(?) and return true if they are equal
+		if (a === b) {
+			return true;
+		}
+		if(typeof a !== typeof b) { return false; }
+
+		// check whether we have arrays
+		if (dojo.isArray(a) && dojo.isArray(b)) {
+			if (a.length !== b.length) {
+				return false;
+			}
+			for (var i = 0; i < a.length; ++i) {
+				if (!this.isEqual(a[i], b[i])) {
+					return false;
+				}
+			}
+			return true;
+		}
+		if (dojo.isObject(a) && dojo.isObject(b) && !(a === null || b === null)) {
+			var allKeys = dojo.mixin({}, a, b);
+			var result = true;
+			umc.tools.forIn(allKeys, function(key) {
+					result &= this.isEqual(a[key], b[key]);
+					return result;
+			});
+			return result;
+		}
+		return a === b;
+	},
+
 	_existingIconClasses: {},
 
 	getIconClass: function(iconName, size) {
@@ -717,7 +751,7 @@ dojo.mixin(umc.tools, {
 				var css = dojo.replace(
 					'background: no-repeat;' +
 					'width: {s}px; height: {s}px;' +
-					'background-image: url("images/icons/{s}x{s}/{icon}.png")',
+					'background-image: url("images/icons/{s}x{s}/{icon}.png");',
 					values);
 				dojox.html.insertCssRule('.' + iconClass, css);
 

@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.260-1) unstable; urgency=low
+
+  * added isEqual function to umc.tools (Bug #25631)
+  * fixed error in json parsing caused by new lines in strings (Bug #25675)
+
+ -- Florian Best <best@univention.de>  Fri, 10 Feb 2012 14:40:13 +0100
+
 univention-management-console-frontend (1.0.259-1) unstable; urgency=low
 
   * ComboBox: fixed autoHide feature; Bug #25701

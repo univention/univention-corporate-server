@@ -191,9 +191,9 @@ msgstr ""
 "Sind Sie sicher, dass der ausgewählte Sicherungspunkt gelöscht werden soll?"
 
 #: umc/js/_uvmm/SnapshotGrid.js:188
-msgid "Are you sure to delete the selected {0} snapshots?"
+msgid "Are you sure to delete the selected %s snapshots?"
 msgstr ""
-"Sind Sie sicher, dass die {0} ausgewählten Sicherungspunkte gelöscht werden "
+"Sind Sie sicher, dass die %s ausgewählten Sicherungspunkte gelöscht werden "
 "sollen?"
 
 #: umc/js/_uvmm/SnapshotGrid.js:155
@@ -1894,3 +1894,11 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 
 #~ msgid "unknown value"
 #~ msgstr "Unbekannter Wert"
+msgid "There are unsaved changes. Are you sure to cancel nevertheless?"
+msgstr "Einige Änderungen sind noch nicht gespeichert. Möchten Sie trotzdem abbrechen?"
+
+msgid "Continue editing"
+msgstr "Bearbeiten fortführen"
+
+msgid "Discard changes"
+msgstr "Änderungen verwerfen"

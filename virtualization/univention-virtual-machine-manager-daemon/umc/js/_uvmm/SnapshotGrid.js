@@ -187,7 +187,7 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 		}
 
 		// confirm removal of snapshot(s)
-		var msg = this._('Are you sure to delete the selected {0} snapshots?', ids.length);
+		var msg = this._('Are you sure to delete the selected %s snapshots?', ids.length);
 		if (ids.length == 1) {
 			msg = this._('Are you sure to delete the selected snapshot?');
 		}
