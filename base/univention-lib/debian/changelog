@@ -1,3 +1,9 @@
+univention-lib (1.0.44-1) unstable; urgency=low
+
+  * added login.html to umc_frontend_new_hash; Bug #25020
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Feb 2012 18:05:05 +0100
+
 univention-lib (1.0.43-1) unstable; urgency=low
 
   * added python lib to rename directories (Bug #26025) 
