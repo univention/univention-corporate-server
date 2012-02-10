@@ -1,3 +1,9 @@
+univention-squid (5.0.6-1) unstable; urgency=low
+
+  * fixed squid config template (Bug #25806)
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Feb 2012 16:46:30 +0100
+
 univention-squid (5.0.5-1) unstable; urgency=low
 
   * added squid/auth/groups and squid/redirect 
