@@ -40,7 +40,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	//		In order to make the widget send information such as module flavor
 	//		etc., it can be necessary to specify a module specific umcpCommand
 	//		method.
-	umcpCommand: umc.tools.umcpCommand,
+	umcpCommand: null,
 
 	// dynamicValues: String|Function
 	//		Either an UMCP command to query data from or a javascript function.
@@ -113,6 +113,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		// The store needs to be available already at construction time, otherwise an
 		// error will be thrown. We need to define it here, in order to create a new
 		// store for each instance.a
+		this.umcpCommand = umc.tools.umcpCommand;
 		this.store = this._createStore();
 	},
 

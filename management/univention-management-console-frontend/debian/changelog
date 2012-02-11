@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.265-1) unstable; urgency=low
+
+  * fixed reference to umc.tools.umcpCommand in _SelectMixin; Bug #25020 
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 11 Feb 2012 15:18:18 +0100
+
 univention-management-console-frontend (1.0.264-1) unstable; urgency=low
 
   * fixed reference to login.html file; Bug #25020
