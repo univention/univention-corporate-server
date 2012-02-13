@@ -591,6 +591,11 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
 		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 	fi
+	
+	# prevent join from failing if umask is modified (Bug #21587)
+	chmod 755 /etc/univention/ssl
+	chmod 755 /etc/univention/ssl/ucsCA
+	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
 
 	check_ldap_tls_connection
 
@@ -659,6 +664,11 @@ elif [ "$server_role" = "memberserver" ]; then
 		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 	fi
 
+	# prevent join from failing if umask is modified (Bug #21587)
+	chmod 755 /etc/univention/ssl
+	chmod 755 /etc/univention/ssl/ucsCA
+	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
+
 	check_ldap_tls_connection
 
 	download_host_certificate
@@ -706,6 +716,11 @@ else
 	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
 		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 	fi
+
+	# prevent join from failing if umask is modified (Bug #21587)
+	chmod 755 /etc/univention/ssl
+	chmod 755 /etc/univention/ssl/ucsCA
+	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
 
 	check_ldap_tls_connection
 
