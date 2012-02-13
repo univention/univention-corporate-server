@@ -1,3 +1,15 @@
+univention-directory-manager-modules (7.0.218-1) unstable; urgency=low
+
+  * change dns/forward_zone->zone syntax, disallowing "." at the end (Bug #19557)
+  * automatically append "." to dns/reverse_zone->nameserver if missing
+  * cleanup dns/forward_zone.py
+    * use SOA email functions from __init__.py
+  * cleanup dns/reverse_zone.py
+    * use SOA email functions from __init__.py
+    * improve subnet mapping
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 13 Feb 2012 18:02:15 +0100
+
 univention-directory-manager-modules (7.0.217-1) unstable; urgency=low
 
   * Removed sambaPwdMustChange from users module (Bug #13199)

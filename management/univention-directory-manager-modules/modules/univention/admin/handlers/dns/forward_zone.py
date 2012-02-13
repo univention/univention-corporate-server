@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import ipaddr
-import re
 
 from univention.admin.layout import Tab, Group
 from univention.admin import configRegistry
@@ -39,13 +38,10 @@ from univention.admin import configRegistry
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, escapeSOAemail, unescapeSOAemail
 
 translation=univention.admin.localization.translation('univention.admin.handlers.dns')
 _=translation.translate
-
-def makeContactPerson(object, arg):
-	domain=object.position.getDomain()
-	return 'root@%s.' %(domain.replace(',dc=','.').replace('dc=',''))
 
 module='dns/forward_zone'
 operations=['add','edit','remove','search']
@@ -59,7 +55,7 @@ property_descriptions={
 	'zone': univention.admin.property(
 			short_description=_('Zone name'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.dnsZone,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -253,38 +249,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
-	def unescapeSOAemail(self, email):
-		ret = ''
-		i = 0
-		while i < len(email):
-			if email[i] == '\\':
-				i += 1
-				if i >= len(email):
-					raise ValueError()
-			elif email[i] == '.':
-				i += 1
-				if i >= len(email):
-					raise ValueError()
-				ret += '@'
-				ret += email[i:]
-				return ret
-			ret += email[i]
-			i += 1
-		raise ValueError()
-
-	def escapeSOAemail(self, email):
-		SPECIAL_CHARACTERS = set('"(),.:;<>@[\\]')
-		if not '@' in email:
-			raise ValueError()
-		(local, domain, ) = email.rsplit('@', 1)
-		tmp = ''
-		for c in local:
-			if c in SPECIAL_CHARACTERS:
-				tmp += '\\'
-			tmp += c
-		local = tmp
-		return local + '.' + domain
-
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		self.oldinfo['a'] = []
@@ -298,7 +262,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		soa=self.oldattr.get('sOARecord',[''])[0].split(' ')
 		if len(soa) > 6:
-			self['contact']=self.unescapeSOAemail(soa[1])
+			self['contact'] = unescapeSOAemail(soa[1])
 			self['serial']=soa[2]
 			self['refresh'] = univention.admin.mapping.unmapUNIX_TimeInterval( soa[3] )
 			self['retry'] = univention.admin.mapping.unmapUNIX_TimeInterval( soa[4] )
@@ -320,17 +284,17 @@ class object(univention.admin.handlers.simpleLdap):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		if self.hasChanged(['nameserver', 'contact', 'serial', 'refresh', 'retry', 'expire', 'ttl']):
 			if self['contact'] and not self['contact'].endswith('.'):
-				self['contact'] = '%s.' % self['contact']
+				self['contact'] += '.'
 			if len (self['nameserver'][0]) > 0 \
-				and self['nameserver'][0].find (':') == -1 \
-				and self['nameserver'][0].find ('.') != -1 \
-				and not self['nameserver'][0][-1] == '.':
-				self['nameserver'][0] = '%s.' % self['nameserver'][0]
+				and ':' not in self['nameserver'][0] \
+				and '.' in self['nameserver'][0] \
+				and not self['nameserver'][0].endswith('.'):
+				self['nameserver'][0] += '.'
 			refresh = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'refresh' ] )
 			retry = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'retry' ] )
 			expire = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'expire' ] )
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'ttl' ] )
-			soa='%s %s %s %s %s %s %s' % (self['nameserver'][0], self.escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl )
+			soa='%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl )
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa]))
 
 		oldAddresses = self.oldinfo.get('a')
@@ -366,8 +330,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.expression('relativeDomainName', '@'),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4)]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6)]),
 		])
 
 	if filter_s:
@@ -382,4 +346,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 
 def identify(dn, attr, canonical=0):
-	return 'dNSZone' in attr.get('objectClass', []) and ['@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr['zoneName'][0].endswith('.ip6.arpa')
+	return 'dNSZone' in attr.get('objectClass', []) and ['@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].endswith(ARPA_IP4) and not attr['zoneName'][0].endswith(ARPA_IP6)
