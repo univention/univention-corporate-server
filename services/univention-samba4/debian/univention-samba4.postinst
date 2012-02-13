@@ -94,7 +94,6 @@ univention-config-registry set \
 	samba4/sysvol/sync/jitter?60 \
 	samba4/service/smb?'smbd' \
 	samba4/service/nmb?'nmbd' \
-	samba4/service/winbind?'winbindd' \
 	samba4/ntacl/backend?'native'
 
 # configure firewall
@@ -165,13 +164,6 @@ if [ "$1" = "configure" ]; then
 		if [ -r /var/run/winbindd.pid ]; then
 			processname=$(ps -p $(cat /var/run/winbindd.pid) -o comm= )
 			if [ "$processname" = 'winbindd' ]; then
-				/etc/init.d/winbind restart
-			fi
-		fi
-
-		if dpkg --compare-versions "$2" lt "1.0.116-2"; then
-			if [ "$(univention-config-registry get winbind/autostart)" = "no" ]; then
-				univention-config-registry unset winbind/autostart
 				/etc/init.d/winbind restart
 			fi
 		fi
