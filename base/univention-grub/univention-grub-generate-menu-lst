@@ -32,6 +32,15 @@
 
 import os, glob, sys
 
+import univention.debug as udbg
+import univention.config_registry as ucr
+
+configRegistry=ucr.ConfigRegistry()
+configRegistry.load()
+
+if not configRegistry.has_key('grub/generate-menu-lst') or not configRegistry['grub/generate-menu-lst'] != "yes":
+	sys.exit(-1)
+
 if os.path.exists("/boot/grub/menu.lst"):
     f = open("/boot/grub/menu.lst")
     generated_by_ucs = False
