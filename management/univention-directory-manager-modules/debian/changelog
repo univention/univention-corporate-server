@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.224-1) unstable; urgency=low
+
+  * nagios/service: fix removing all host entries; Bug #25403
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 14 Feb 2012 16:54:55 +0100
+
 univention-directory-manager-modules (7.0.223-1) unstable; urgency=low
 
   * handle missing keys in dict when removing/adding dhcpEntryZone entries
