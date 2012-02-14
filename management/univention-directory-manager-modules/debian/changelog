@@ -1,4 +1,4 @@
-univention-directory-manager-modules (7.0.218-2) unstable; urgency=low
+univention-directory-manager-modules (7.0.219-1) unstable; urgency=low
 
   * add empty value to UDM syntax WritableShare (Bug #26098)
 
