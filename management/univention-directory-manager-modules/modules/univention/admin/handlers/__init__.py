@@ -2042,17 +2042,22 @@ class simpleComputer( simpleLdap ):
 
 		if self.hasChanged( 'dhcpEntryZone' ):
 			if self.oldinfo.has_key( 'dhcpEntryZone' ):
-				for entry in self.oldinfo[ 'dhcpEntryZone' ]:
-					if not entry in self.info[ 'dhcpEntryZone' ]:
-						self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
-			for entry in self.info[ 'dhcpEntryZone' ]:
-				#check if line is valid
-				dn, ip, mac = self.__split_dhcp_line( entry )
-				if dn and ip and mac:
-					if not self.oldinfo.has_key( 'dhcpEntryZone' ) or not entry in self.oldinfo[ 'dhcpEntryZone' ]:
-						self.__changes[ 'dhcpEntryZone' ][ 'add' ].append( entry )
+				if 'dhcpEntryZone' in self.info:
+					for entry in self.oldinfo[ 'dhcpEntryZone' ]:
+						if not entry in self.info[ 'dhcpEntryZone' ]:
+							self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
 				else:
-					raise univention.admin.uexceptions.invalidDhcpEntry, _('The DHCP entry for this host should contain the zone LDAP-DN, the IP address and the MAC address.')
+					for entry in self.oldinfo:
+						self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
+			if 'dhcpEntryZone' in self.info:
+				for entry in self.info[ 'dhcpEntryZone' ]:
+					#check if line is valid
+					dn, ip, mac = self.__split_dhcp_line( entry )
+					if dn and ip and mac:
+						if not self.oldinfo.has_key( 'dhcpEntryZone' ) or not entry in self.oldinfo[ 'dhcpEntryZone' ]:
+							self.__changes[ 'dhcpEntryZone' ][ 'add' ].append( entry )
+					else:
+						raise univention.admin.uexceptions.invalidDhcpEntry, _('The DHCP entry for this host should contain the zone LDAP-DN, the IP address and the MAC address.')
 
 		if self.hasChanged( 'dnsEntryZoneForward' ):
 			if self.oldinfo.has_key( 'dnsEntryZoneForward' ):

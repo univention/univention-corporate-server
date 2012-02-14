@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.223-1) unstable; urgency=low
+
+  * handle missing keys in dict when removing/adding dhcpEntryZone entries
+    (Bug #25124)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 14 Feb 2012 15:41:28 +0100
+
 univention-directory-manager-modules (7.0.222-1) unstable; urgency=low
 
   * fixed removing IP address ranges from dhcp/sharedsubnet objects; Bug #25387
