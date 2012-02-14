@@ -610,7 +610,7 @@ class UDM_Module( object ):
 
 	@property
 	def superordinate( self ):
-		return getattr( self.module, 'superordinate', None )
+		return udm_modules.superordinate_name( self.module )
 
 	@property
 	def superordinates( self ):
@@ -623,7 +623,11 @@ class UDM_Module( object ):
 			else:
 				module = UDM_Module( mod )
 				if module:
-					for obj in module.search():
+					so = module.superordinate
+					if so == '':
+						so = None
+					objects = module.search( superordinate = so )
+					for obj in objects:
 						superordinates.append( { 'id' : obj.dn, 'label' : '%s: %s' % ( module.title, obj[ module.identifies ] ) } )
 
 		return superordinates
@@ -760,6 +764,8 @@ class UDM_Settings( object ):
 			return self.groups[ 'defaultDomainControllerMBGroup' ]
 		if module_name in ( 'computers/memberserver', ):
 			return self.groups[ 'defaultMemberServerGroup' ]
+		if module_name in ( 'computers/mobileclient', 'computers/managedclient', 'computers/macos' ):
+			return self.groups[ 'defaultClientGroup' ]
 		if module_name.startswith( 'computers/' ):
 			return self.groups[ 'defaultComputerGroup' ]
 

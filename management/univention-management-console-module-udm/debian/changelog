@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.270-1) unstable; urgency=low
+
+  * udm/superordinates: support superordinates that have a superordinate
+    itself; Bug #25387
+  * searching for objects with a given superordinate uses it for the
+    search base; Bug #25205
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 14 Feb 2012 11:24:19 +0100
+
 univention-management-console-module-udm (1.0.269-2) unstable; urgency=low
 
   * fixed typo (Bug #25630) 

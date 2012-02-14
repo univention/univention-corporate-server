@@ -409,6 +409,7 @@ class Instance( Base ):
 				if mod is not None:
 					MODULE.info( 'Found UDM module for superordinate' )
 					superordinate = mod.get( superordinate )
+					request.options[ 'container' ] = superordinate.dn
 				else:
 					raise UMC_OptionTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
 
