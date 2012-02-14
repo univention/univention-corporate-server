@@ -4596,7 +4596,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 .umcLoginDialog .umcText {
 	padding: 0;
-	width: 225px !important;
+	width: 260px !important;
 	margin: 0 auto 15px auto;
 }
 
@@ -4611,7 +4611,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 .umc .umcLoginDialog .dojoxDialogPaneContent {
 	margin: 0 auto !important;
-	height: 310px !important;
+	height: 410px !important;
 }
 .umcLoginDialog .dojoxDialogPaneContent .contentNode {
 	margin-bottom: 10px;

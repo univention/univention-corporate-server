@@ -104,7 +104,7 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 
 		// create the upper info text
 		this._text = new umc.widgets.Text({
-			style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 250px;',
+			style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 280px;',
 			content: ''
 		});
 		this._text.placeAt('umc_LoginDialog', 'first');
@@ -269,6 +269,13 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		} else {
 			msg = this._('Welcome to Univention Management Console. Please enter your domain username and password for login.');
 		}
+
+		// Show warning if connection is unsecured
+		if (window.location.protocol === 'http:') {
+			msg += '<p style="margin: 5px 0;"><b>' + this._('Insecure Connection') + ': </b>';
+			msg += this._('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', '<a href="https://' + window.location.href.slice(7) + '">') + '</p>';
+		}
+
 		this._text.set('content', '<p>' + msg + '</p>');
 
 		if (this._isRendered) {

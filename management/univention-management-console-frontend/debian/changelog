@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.266-1) unstable; urgency=low
+
+  * Show information about unsecured connection on Login (Bug #23850)
+  * Display notification if javascript is disabled (Bug #24627)
+
+ -- Florian Best <best@univention.de>  Tue, 14 Feb 2012 16:31:59 +0100
+
 univention-management-console-frontend (1.0.265-1) unstable; urgency=low
 
   * fixed reference to umc.tools.umcpCommand in _SelectMixin; Bug #25020 

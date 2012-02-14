@@ -564,6 +564,18 @@ msgstr "mehr"
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
+msgid "Insecure Connection"
+msgstr "Unsichere Verbindung"
+
+msgid ""
+"This network connection is not encrypted. All personal or sensitive data "
+"will be transmitted in plain text. Please follow %s this link</a> to use a "
+"secure SSL connection."
+msgstr ""
+"Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
+"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s "
+"diesen Link</a> für eine verschlüsselte SSL-Verbindung."
+
 #~ msgid "%s (used: %s)"
 #~ msgstr "%s (genutzt: %s)"
 
