@@ -2047,7 +2047,7 @@ class simpleComputer( simpleLdap ):
 						if not entry in self.info[ 'dhcpEntryZone' ]:
 							self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
 				else:
-					for entry in self.oldinfo:
+					for entry in self.oldinfo[ 'dhcpEntryZone' ]:
 						self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
 			if 'dhcpEntryZone' in self.info:
 				for entry in self.info[ 'dhcpEntryZone' ]:
