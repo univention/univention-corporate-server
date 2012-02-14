@@ -1672,6 +1672,7 @@ class WritableShare( UDM_Objects ):
 	udm_modules = ( 'shares/share', )
 	udm_filter = 'writeable=1'
 	size = 'OneAndAHalf'
+	empty_value = True
 
 # class share(ldapDnOrNone):
 # 	searchFilter='(objectClass=univentionShare)'
