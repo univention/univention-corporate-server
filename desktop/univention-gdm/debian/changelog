@@ -1,3 +1,10 @@
+univention-gdm (8.0.9-1) unstable; urgency=low
+
+  * Removed system/setup/appliance/start from etc/init.d/gdm
+    (Bug #26057)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Feb 2012 08:04:34 +0100
+
 univention-gdm (8.0.8-1) unstable; urgency=low
 
   * remove UCRV system/setup/boot/modules (Bug #23870)

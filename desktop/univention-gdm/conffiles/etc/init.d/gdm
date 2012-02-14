@@ -45,11 +45,8 @@
 
 # do not start the GDM if the setup tools will be started
 if [ -x /usr/sbin/univention-config-registry ]; then
-	eval "$(/usr/sbin/univention-config-registry shell system/setup/boot/start system/setup/appliance/start)"
+	eval "$(/usr/sbin/univention-config-registry shell system/setup/boot/start)"
 	if [ -n "$system_setup_boot_start" ] && [ "$system_setup_boot_start" = "yes" ] || [ "$system_setup_boot_start" = "true" ]; then
-		exit 0
-	fi
-	if [ -n "$system_setup_appliance_start" ] && [ "$system_setup_appliance_start" = "yes" ] || [ "$system_setup_appliance_start" = "true" ]; then
 		exit 0
 	fi
 
