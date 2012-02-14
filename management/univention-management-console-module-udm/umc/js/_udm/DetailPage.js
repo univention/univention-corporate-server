@@ -612,7 +612,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}, {
 			name: 'close',
 			label: closeLabel,
-			callback: dojo.hitch(this, 'askForQuit'),
+			callback: dojo.hitch(this, 'confirmClose'),
 			style: 'float: left'
 		}]);
 		var footer = new umc.widgets.ContainerWidget({
@@ -1054,7 +1054,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		var nChanges = 0;
 		var regKey = /\$.*\$/;
 		umc.tools.forIn(vals, function(ikey) {
-			if (!regKey.test(ikey)) {
+			if (!regKey.test(ikey) || ikey == '$options$') {
 				// key does not start and end with '$' and is thus a regular key
 				++nChanges;
 			}
@@ -1257,8 +1257,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 				var oldVal = this._receivedObjFormData[iname];
 
 				// check whether old values and new values differ...
-				// convert to JSON since we may have dicts/arrays as value
-				if (dojo.toJson(ival) != dojo.toJson(oldVal)) {
+				if (!umc.tools.isEqual(ival,oldVal)) {
 					newVals[iname] = ival;
 				}
 			}, this);
@@ -1275,9 +1274,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		return true;
 	},
 
-	askForQuit : function() {
+	confirmClose : function() {
 		// summary:
-		// 		If changes have been made ask before closing the detailpage
+		// 		If changes have been made show a confirmation dialogue before closing the detailpage
 
 		var alteredValues = this.getAlteredValues();
 		delete alteredValues.$dn$;
