@@ -3,6 +3,7 @@ univention-grub (5.0.9-4) unstable; urgency=low
   * Version the dependency to grub-pc, so that the patched grub-pc is setup
     before the postinst of univention-grub is executed 	
     Bug #25981
+  * Sort kernels, so that the most recent kernel is listed first	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 14 Feb 2012 15:59:23 +0100
 

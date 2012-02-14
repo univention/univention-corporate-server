@@ -66,6 +66,8 @@ lst.append("default 0")
 lst.append("timeout 5 ")
 lst.append(" ")
 
+kernels = sorted(kernels, reverse=True)
+
 for i in kernels:
     lst.append("title           UCS, kernel " + i)
     lst.append("root            (hd0,0)")
