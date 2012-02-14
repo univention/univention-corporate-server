@@ -311,16 +311,24 @@ class Instance(umcm.Base):
 		result = []
 		try:
 			request.status = SUCCESS
-			tmp = self.uu.get_all_available_release_updates()[0]
-			for rel in tmp:
+			available_versions, blocking_component = self.uu.get_all_available_release_updates()
+			for rel in available_versions:
 				entry = {}
 				entry['id'] = rel
 				entry['label'] = 'UCS %s' % rel
+				entry['next_version_blocked_by_component'] = ''
 				result.append(entry)
-			# XXX does UniventionUpdater return these entries already sorted, so
-			# the last returned entry is always the one to be flagged as 'latest'?
 			if len(result):
-				result[len(result)-1]['label'] = '%s (%s)' % (result[len(result)-1]['label'],_('latest version'))
+				if blocking_component:
+					# there are additional updates available but the next version is blocked by
+					# a required component
+					result[-1]['next_version_blocked_by_component'] = blocking_component
+				else:
+					# UniventionUpdater returns available version in ascending order, so
+					# the last returned entry is the one to be flagged as 'latest' if there's
+					# no blocking component.
+					result[-1]['label'] = '%s (%s)' % (result[-1]['label'],_('latest version'))
+
 
 		except Exception,ex:
 			request.status = FAILURE

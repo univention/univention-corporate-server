@@ -120,6 +120,11 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		 			// TODO check updater/installer/running, don't do anything if something IS running
 		 			try
 		 			{
+						// in easy mode, remove possible existing note about blocking components
+						var easy_mode = (this._form.getWidget('easy_mode').get('value') == 'true');
+						if (! easy_mode) {
+							this.clearNotes();
+						}
 		 				this._query_success('updater/updates/query');
 		 				var element = this._form.getWidget('releases');
 		 				var to_show = false;
@@ -128,6 +133,12 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		 					to_show = true;
 			 				var val = values[values.length-1]['id'];
 			 				element.set('value',val);
+
+							if ((! easy_mode) && (values[values.length-1]['next_version_blocked_by_component'].length)) {
+								// further updates are available but blocked by specified component which is required for update
+								var vtxt = dojo.replace(this._("Further release updates are available but cannot be installed because the component '{next_version_blocked_by_component}' is not available for newer release versions."), values[values.length-1]);
+								this.addNote(vtxt);
+							}
 		 				}
 		 				// hide or show combobox, spacers and corresponding button
 	 					this._form.showWidget('releases',to_show);
