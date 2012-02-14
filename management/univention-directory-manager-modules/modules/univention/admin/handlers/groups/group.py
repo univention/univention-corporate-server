@@ -606,7 +606,6 @@ class object(univention.admin.handlers.simpleLdap):
 			raise
 
 	def _ldap_modlist( self ):
-
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist( self )
 
 		# samba privileges
@@ -634,7 +633,6 @@ class object(univention.admin.handlers.simpleLdap):
 			uniqueMemberAdd = list( new - old )    #  (new - old) ==> new set with elements in "new" but not in "old"
 			uniqueMemberRemove = list( old - new ) #  (old - new) ==> new set with elements in "old" but not in "new"
 
-
 			def getUidList(uniqueMembers):
 				result = []
 				for uniqueMember in uniqueMembers:
@@ -650,15 +648,32 @@ class object(univention.admin.handlers.simpleLdap):
 								univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'groups/group: A groupmember has multiple UIDs (%s %s)' % (uniqueMember, str(uid_list)))
 				return result
 
+			def adaptCase( members, oldMembers ):
+				newMembers = []
+				oldMembers = tuple(  oldMembers )
+				oldMembersLowerCase = map( lambda x: x.lower(), oldMembers )
+				for member in map( lambda x: x.lower(), members ):
+					found = -1
+					for oldMember in oldMembersLowerCase:
+						found += 1
+						if member == oldMember:
+							newMembers.append( oldMembers[ found ] )
+							break
+
+				return newMembers
+
 			# create lists for memberUid entries to be added or removed
 			memberUidAdd    = getUidList(uniqueMemberAdd)
 			memberUidRemove = getUidList(uniqueMemberRemove)
 
 			if uniqueMemberRemove:
+				uniqueMemberRemove = adaptCase( uniqueMemberRemove, old )
 				ml.append( ( 'uniqueMember', uniqueMemberRemove, '' ) )
 			if uniqueMemberAdd:
 				ml.append( ( 'uniqueMember', '', uniqueMemberAdd ) )
 			if memberUidRemove:
+				oldMemberUids = self.oldattr.get( 'memberUid', () ) 
+				memberUidRemove = adaptCase( memberUidRemove, oldMemberUids )
 				ml.append( ( 'memberUid', memberUidRemove, '' ) )
 			if memberUidAdd:
 				ml.append( ( 'memberUid', '', memberUidAdd ) )

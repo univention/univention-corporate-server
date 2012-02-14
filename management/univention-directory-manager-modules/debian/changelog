@@ -1,3 +1,14 @@
+univention-directory-manager-modules (7.0.221-1) unstable; urgency=low
+
+  * fix typo in settings/usertemplate that caused an empty mail tab; Bug #25312
+  * layout fix in dhcp/pool; Bug #25387
+  * fix debug message in dhcp/sharedsubnet
+  * fix the syntax check for MAC addresses; Bug #25203
+  * groups/group: removing members is now case-insensitive for the
+    memberUid attribute; Bug #25838
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 17 Jan 2012 14:23:40 +0100
+
 univention-directory-manager-modules (7.0.220-1) unstable; urgency=low
 
   * mail/folder: ignore empty string where list is required (Bug #25407)

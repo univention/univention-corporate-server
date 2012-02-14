@@ -427,7 +427,7 @@ class boolean(simple):
 	def parse(self, text):
 		if isinstance( text, bool ):
 			return text and '1' or '0'
-		return simple.parse( text )
+		return super( boolean, self ).parse( text )
 
 class filesize(simple):
 	"""
@@ -742,7 +742,7 @@ class sharePath( simple ):
 			if re.match("(^/%s$)|(^/%s/)" % (path, path), os.path.realpath(text)):
 				raise univention.admin.uexceptions.valueError, _('Path may not start with "%s" !') % path
 
-		return simple.parse( text )
+		return super( sharePath, self ).parse( text )
 
 class passwd(simple):
 	min_length=8

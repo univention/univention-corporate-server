@@ -44,7 +44,7 @@ _=translation.translate
 
 module='dhcp/pool'
 operations=['add','edit','remove','search']
-superordinate='dhcp/subnet'
+superordinate = 'dhcp/subnet'
 childs=0
 usewizard=1
 short_description=_('DHCP: Pool')
@@ -130,7 +130,8 @@ options={
 layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
 		Group( _( 'General' ), layout = [
-			[ 'name', 'range' ]
+			'name',
+			'range'
 		] ),
 	] ),
 	Tab( _( 'Advanced' ), _('Advanced DHCP pool options'), advanced = True, layout = [

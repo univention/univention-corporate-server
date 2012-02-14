@@ -359,7 +359,7 @@ layout = [
 			[ "disabled", "pwdChangeNextLogin" ]
 		] ),
 	] ),
-	Tab(_('Mail'),_('Mail Settings'),[
+	Tab(_('Mail'),_('Mail Settings'), layout = [
 		Group( _( 'Mail' ), layout = [
 			"mailPrimaryAddress",
 			"mailAlternativeAddress",
