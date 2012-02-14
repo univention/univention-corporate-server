@@ -67,7 +67,8 @@ univention-config-registry set grub/timeout?5 \
 	grub/color/normal?"dark-gray/black" \
 	grub/color/highlight?"dark-gray/black" \
 	grub/menu/color/normal?"dark-gray/black" \
-	grub/menu/color/highlight?"white/green"
+	grub/menu/color/highlight?"white/green" \
+	grub/generate-menu-lst?"yes"
 
 # grub needs to read the file unicode.pf2 for gfxmode,
 # /usr/share/grub/unicode.pf2 is the default, but /

@@ -75,3 +75,9 @@ Description[de]=Grub VGA-Code
 Description[en]=Grub vga code
 Type=str
 Categories=system-base
+
+[grub/generate-menu-lst]
+Description[de]=Wenn diese Option aktiviert ist, wird zusätzlich eine /boot/grub/menu.lst im Format von Grub 1 generiert
+Description[en]=If this option is activated, an additional /boot/grub/menu.lst is generated in Grub 1 format
+Type=str
+Categories=system-base
