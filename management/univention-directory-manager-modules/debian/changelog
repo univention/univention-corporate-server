@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.220-1) unstable; urgency=low
+
+  * mail/folder: ignore empty string where list is required (Bug #25407)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 14 Feb 2012 12:59:07 +0100
+
 univention-directory-manager-modules (7.0.219-1) unstable; urgency=low
 
   * add empty value to UDM syntax WritableShare (Bug #26098)

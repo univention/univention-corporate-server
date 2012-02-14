@@ -278,10 +278,14 @@ class object(univention.admin.handlers.simpleLdap):
 				else:
 					_sre = univention.admin.syntax.GroupName.regex
 				for acl in self[ attr ]:
+					if acl == '':
+						continue
 					if _sre.match( acl[ 0 ] ):
 						new_acls_tmp.append( ' '.join( acl ) )
 			else:
 				for acl in self[attr]:
+					if acl == '':
+						continue
 					new_acls_tmp.append( ' '.join( acl ) )
 
 		if rewrite_acl:
