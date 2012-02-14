@@ -192,7 +192,10 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			pos = string.find(dn,'=')
 			pos2 =  len(univention.s4connector.s4.explode_unicode_dn(dn)[0])
 			attrib = dn[:pos]
-			value = dn[pos+1:pos2]
+			if ucsobject and object.get('attributes') and object['attributes'].get(ucsattrib):
+				value = object['attributes'][ucsattrib][0]
+			else:
+				value = dn[pos+1:pos2]
 
 			if ucsobject:
 				# lookup the cn as sAMAccountName in S4 to get corresponding DN, if not found create new
@@ -297,6 +300,22 @@ def group_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
 	'''
 	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', u'group')
+
+def windowscomputer_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
+	'''
+	map dn of given windows computer using the samaccountname/uid
+	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
+	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
+	'''
+	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', u'computer')
+
+def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
+	'''
+	map dn of given dc computer using the samaccountname/uid
+	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
+	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
+	'''
+	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', u'computer')
 
 def old_user_dn_mapping(s4connector, given_object):
 	object = copy.deepcopy(given_object)

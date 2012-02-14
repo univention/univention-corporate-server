@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.100-1) unstable; urgency=low
+
+  * Added position mapping for windows computers and domain controller
+    (Bug #26121)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Feb 2012 07:41:36 +0100
+
 univention-s4-connector (6.0.99-1) unstable; urgency=low
 
   * Added two UCR variables to configure the sid_to_s4 and sid_to_ucs

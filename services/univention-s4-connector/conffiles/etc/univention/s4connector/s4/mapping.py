@@ -318,6 +318,8 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 
 			match_filter='(|(objectClass=univentionDomainController)(objectClass=computer))',
 
+			dn_mapping_function=[ univention.s4connector.s4.dc_dn_mapping ],
+
 			# Whether a DC joins to the samba 4 domain
 			# the DC will be deleted.
 			disable_delete_in_ucs = True,
@@ -384,6 +386,8 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 			sync_mode='@%@connector/s4/mapping/syncmode@%@',
 
 			scope='sub',
+
+			dn_mapping_function=[ univention.s4connector.s4.windowscomputer_dn_mapping ],
 
 			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))',
 
