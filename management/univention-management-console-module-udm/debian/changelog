@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.272-1) unstable; urgency=low
+
+  * fix evaluation of directory/manager/web/modules/autosearch and
+    directory/manager/web/modules/MODULENAME/search/autosearch (Bug #25250)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 14 Feb 2012 17:51:10 +0100
+
 univention-management-console-module-udm (1.0.271-1) unstable; urgency=low
 
   * fixed a bug which does not allow to save objects if only options were

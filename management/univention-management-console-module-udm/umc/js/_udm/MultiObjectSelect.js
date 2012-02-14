@@ -89,8 +89,10 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 		// evaluate the UCR variables (from a global variable created by umc.modules.udm)
 		var autoObjProperty = umc.modules._udm.ucr['directory/manager/web/modules/' + this.objectType + '/search/default'] || 
 			umc.modules._udm.ucr['directory/manager/web/modules/default'];
-		var autoSearch = umc.modules._udm.ucr['directory/manager/web/modules/' + this.objectType + '/search/autosearch'] ||
-			umc.modules._udm.ucr['directory/manager/web/modules/autosearch'];
+		this.autoSearch = umc.tools.isTrue( 
+			umc.modules._udm.ucr['directory/manager/web/modules/' + this.objectType + '/search/autosearch'] ||
+				umc.modules._udm.ucr['directory/manager/web/modules/autosearch']
+		);
 
 		// specify the search form widgets
 		this.queryWidgets = [{
