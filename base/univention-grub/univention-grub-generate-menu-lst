@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, glob, sys
+import os, glob, sys, shutil
 
 import univention.debug as udbg
 import univention.config_registry as ucr
@@ -38,8 +38,8 @@ import univention.config_registry as ucr
 configRegistry=ucr.ConfigRegistry()
 configRegistry.load()
 
-if not configRegistry.has_key('grub/generate-menu-lst') or not configRegistry['grub/generate-menu-lst'] != "yes":
-	sys.exit(-1)
+if not configRegistry.has_key('grub/generate-menu-lst') or configRegistry.is_false('grub/generate-menu-lst', False)  :
+	sys.exit(0)
 
 if os.path.exists("/boot/grub/menu.lst"):
     f = open("/boot/grub/menu.lst")
@@ -52,7 +52,7 @@ if os.path.exists("/boot/grub/menu.lst"):
     if not generated_by_ucs:
         print "menu.lst already exists. This typically happens if you have updated from UCS 2.4"
         print "and haven't converted from chain loading"
-        sys.exit(-1)
+        sys.exit(0)
 
 kernels = []
 for i in glob.glob("/boot/vmlinuz*"):
@@ -73,7 +73,12 @@ for i in kernels:
     lst.append("initrd          /initrd.img-" + i)
     lst.append(" ")
 
-generated_list = open("menu.lst", "w")
+
+if os.path.exists("/boot/grub/menu.lst"):
+   shutil.copyfile("/boot/grub/menu.lst", "/boot/grub/menu.lst.bak")
+
+print "Generating legacy menu.lst from current kernels"
+generated_list = open("/boot/grub/menu.lst", "w")
 for i in lst:
     generated_list.write(i + "\n")
 
