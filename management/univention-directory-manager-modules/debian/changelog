@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.222-1) unstable; urgency=low
+
+  * fixed removing IP address ranges from dhcp/sharedsubnet objects; Bug #25387
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 14 Feb 2012 16:22:48 +0100
+
 univention-directory-manager-modules (7.0.221-1) unstable; urgency=low
 
   * fix typo in settings/usertemplate that caused an empty mail tab; Bug #25312

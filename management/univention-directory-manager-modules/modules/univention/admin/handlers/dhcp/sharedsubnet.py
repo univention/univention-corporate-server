@@ -106,7 +106,7 @@ layout = [
 ]
 
 def rangeMap( value ):
-	return map( lambda x: ' '.join( x ), value )
+	return map( lambda x: ' '.join( x ), value ) or None
 
 def rangeUnmap( value ):
 	return map( lambda x: x.split( ' ' ), value )
@@ -142,37 +142,6 @@ class object(univention.admin.handlers.simpleLdap):
 		return [
 			('objectClass', ['top', 'univentionDhcpSubnet', 'univentionDhcpSharedSubnet']),
 		]
-
-	def _ldap_modlist(self):
-
-		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
-
-		if self.hasChanged('range'):
-			dhcpRange=[]
-			for i in self['range']:
-				for j in self['range']:
-					if i != j and univention.admin.ipaddress.is_range_overlapping(i, j):
-						raise univention.admin.uexceptions.rangesOverlapping, '%s-%s; %s-%s' % (i[0], i[1], j[0], j[1])
-
-				ip_in_network=1
-				for j in i:
-					if not univention.admin.ipaddress.ip_is_in_network(self['subnet'], self['subnetmask'], j):
-						ip_in_network=0
-
-					if univention.admin.ipaddress.ip_is_network_address(self['subnet'], self['subnetmask'], j):
-						raise univention.admin.uexceptions.rangeInNetworkAddress, '%s-%s' % (i[0], i[1])
-
-					if univention.admin.ipaddress.ip_is_broadcast_address(self['subnet'], self['subnetmask'], j):
-						raise univention.admin.uexceptions.rangeInBroadcastAddress, '%s-%s' % (i[0], i[1])
-
-				if ip_in_network:
-					dhcpRange.append(string.join(i, ' '))
-				else:
-					raise univention.admin.uexceptions.rangeNotInNetwork, '%s-%s' % (i[0], i[1])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo.get( 'range' ) )
-			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', ['']), dhcpRange))
-
-		return ml
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
