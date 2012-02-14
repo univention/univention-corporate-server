@@ -87,7 +87,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
-				callback: dojo.hitch(this, 'askForClose')
+				callback: dojo.hitch(this, 'confirmClose')
 			}, {
 				label: this._('Save'),
 				defaultButton: true,
@@ -157,7 +157,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
-				callback: dojo.hitch(this, 'askForClose')
+				callback: dojo.hitch(this, 'confirmClose')
 			}, {
 				label: this._('Save'),
 				defaultButton: true,
@@ -267,7 +267,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
-				callback: dojo.hitch(this, 'askForClose')
+				callback: dojo.hitch(this, 'confirmClose')
 			}, {
 				label: this._('Save'),
 				defaultButton: true,
@@ -326,7 +326,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
-				callback: dojo.hitch(this, 'askForClose')
+				callback: dojo.hitch(this, 'confirmClose')
 			}, {
 				label: this._('Save'),
 				defaultButton: true,
@@ -546,9 +546,9 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		return values;
 	},
 
-	askForClose : function() {
+	confirmClose : function() {
 		// summary:
-		// 		If changes have been made ask before closing the page
+		// 		If changes have been made show a confirmation dialogue before closing the page
 
 		if (!umc.tools.isEqual(this._loadedValues, this.getValues())) {
 			// Changes have been made. Display confirm dialogue.
