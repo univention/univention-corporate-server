@@ -304,6 +304,12 @@ Description[en]=This parameter controls whether connections to CUPS servers will
 Type=str
 Categories=service-samba
 
+[samba4/schema/update/allowed]
+Description[de]=Schema-Updates erlauben
+Description[en]=Allow schema updates
+Type=str
+Categories=service-samba
+
 [samba4/service/winbind]
 Description[de]=Auswahl des winbind-Dienstes für Samba 4 (z.B. winbindd oder s4)
 Description[en]=Selects the winbind service for Samba 4 (e.g. winbindd oder s4)
