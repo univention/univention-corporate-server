@@ -1,3 +1,9 @@
+univention-pam (5.0.18-1) unstable; urgency=low
+
+  * added use_authtok in common-password (Bug #25898)  
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Feb 2012 13:22:40 +0100
+
 univention-pam (5.0.17-2) unstable; urgency=low
 
   * also fix nscd.py listener (Bug #23984)
