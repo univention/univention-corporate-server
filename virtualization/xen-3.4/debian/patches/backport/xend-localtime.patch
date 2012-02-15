@@ -1,0 +1,14 @@
+tools: Fix time offset when localtime=0
+
+localtime can be stored in vm config as a string, resulting in
+incorrect calculation of rtc_timeoffset. Cast localtime to int
+to ensure rtc_timeoffset is calculated properly.
+
+Signed-off-by: Jim Fehlig <jfehlig@novell.com>
+
+staging/xen-4.1-testing.hg changeset 21460:15f4ead9e686
+--- xen-3.4.3/tools/python/xen/xend/image.py
++++ xen-3.4.3/tools/python/xen/xend/image.py
+@@ -130,1 +130,1 @@
+-        if vmConfig['platform'].get('localtime', 0):
++        if int(vmConfig['platform'].get('localtime', 0)):

@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-20) ucs2-4-0-0; urgency=low
+
+  * Fix 'localtime' evaluation as boolean (Bug #16554)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Feb 2012 14:47:38 +0100
+
 xen-3.4 (3.4.3-19) ucs2-4-0-0; urgency=low
 
   * Update PyGrub from xen-4.1 for Grub2 support (Bug #23812)
