@@ -32,6 +32,9 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
+import errno
+
+README = '/usr/share/doc/univention-virtual-machine-manager-node-common/README.restore'
 
 def handler( ucr, changes ):
 	try:
@@ -44,5 +47,9 @@ def handler( ucr, changes ):
 		if os.path.exists( old_symlink ):
 			os.unlink( old_symlink )
 	new_symlink = os.path.join( new, 'README.restore' )
-	if new and os.path.isdir( new ) and not os.path.exists( new_symlink ):
-		os.symlink( '/usr/share/doc/univention-virtual-machine-manager-node-common/README.restore', new_symlink )
+	if new and os.path.isdir( new ) and not os.path.exists( new_symlink ) and os.path.exists(README):
+		try:
+			os.symlink(README, new_symlink)
+		except OSError, e:
+			if e.errno != errno.EEXIST:
+				raise
