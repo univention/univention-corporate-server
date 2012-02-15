@@ -131,6 +131,7 @@ class S4Connector(univention.s4connector.s4.s4):
 		if hasattr(self.property[property_type], 'position_mapping'):
 			for mapping in self.property[property_type].position_mapping:
 				old_dn=self._subtree_replace(old_dn.lower(),mapping[0].lower(),mapping[1].lower())
+			old_dn = self._subtree_replace(old_dn,self.lo.base,self.lo_s4.base)
 
 		return old_dn
 
