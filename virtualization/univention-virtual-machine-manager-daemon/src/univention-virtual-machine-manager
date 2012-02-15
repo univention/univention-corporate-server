@@ -313,7 +313,7 @@ class Client(object):
 
 	def migrate(self, uri, domain, target_uri):
 		"""
-		%prog migrate <uri> <statefile> <target_uri>
+		%prog migrate <uri> <domain> <target_uri>
 
 		Migrate the domain <domain> from the virtualization server specifies by
 		<uri> to the virtualization server specifies by <target_uri>.
