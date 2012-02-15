@@ -467,8 +467,14 @@ dojo.mixin(umc.tools, {
 
 		// handle the different status codes
 		if (undefined !== status && status in this._statusMessages) {
-			if (401 == status || 411 == status) {
-				// special cases during login, only show a notification
+			if (411 == status) {
+				// authentification failed, show a notification
+				umc.dialog.login();
+				var logindialog = dojo.query('.umc_LoginMessage');
+				logindialog[0].innerHTML = this._statusMessages[status];
+				logindialog.style('display', 'block');
+			} else if(401 == status) {
+				// session has expired
 				umc.dialog.login();
 				umc.dialog.notify(this._statusMessages[status]);
 			}

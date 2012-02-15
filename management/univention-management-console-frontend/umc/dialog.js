@@ -184,6 +184,11 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		//this._alertDialog.startup();
 		this._alertDialog.show();
 	},
+	
+	centerAlertDialog: function() {
+		this._alertDialog._relativePosition = null;
+		this._alertDialog._position();
+	},
 
 	confirm: function(/*String|_Widget*/ message, /*Object[]*/ options) {
 		// summary:

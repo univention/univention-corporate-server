@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.267-1) unstable; urgency=low
+
+  * improoved visibility of error message on failed authentification
+    (Bug #25249)
+
+ -- Florian Best <best@univention.de>  Wed, 15 Feb 2012 15:56:38 +0100
+
 univention-management-console-frontend (1.0.266-1) unstable; urgency=low
 
   * Show information about unsecured connection on Login (Bug #23850)

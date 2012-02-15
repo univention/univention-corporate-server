@@ -265,18 +265,21 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		var msg = '';
 		if (umc.tools.status('setupGui')) {
 			// user has already logged in before, show message for relogin
-			msg = this._('Your session has been closed due to inactivity. Please login again.');
+			msg = '<p>' + this._('Your session has been closed due to inactivity. Please login again.') + '</p>';
 		} else {
-			msg = this._('Welcome to Univention Management Console. Please enter your domain username and password for login.');
+			msg = '<p>' + this._('Welcome to Univention Management Console. Please enter your domain username and password for login.') + '</p>';
+
+			// Show warning if connection is unsecured
+			if (window.location.protocol === 'http:') {
+				msg += '<p style="margin: 5px 0;"><b>' + this._('Insecure Connection') + ': </b>';
+				msg += this._('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', '<a href="https://' + window.location.href.slice(7) + '">') + '</p>';
+			}
 		}
 
-		// Show warning if connection is unsecured
-		if (window.location.protocol === 'http:') {
-			msg += '<p style="margin: 5px 0;"><b>' + this._('Insecure Connection') + ': </b>';
-			msg += this._('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', '<a href="https://' + window.location.href.slice(7) + '">') + '</p>';
-		}
+		// if login failed display a notification
+		msg += '<p class="umc_LoginMessage" style="display: none; color: #ff0000;"></p>';
 
-		this._text.set('content', '<p>' + msg + '</p>');
+		this._text.set('content', msg);
 
 		if (this._isRendered) {
 			dojo.query('.umcShowHide').style('display', 'block');
