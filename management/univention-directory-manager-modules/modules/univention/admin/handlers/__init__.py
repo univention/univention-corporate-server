@@ -1927,7 +1927,7 @@ class simpleComputer( simpleLdap ):
 							'dhcpEntryZone': { 'remove': [ ], 'add': [ ] } }
 		ml = [ ]
 		if self.hasChanged( 'mac' ):
-			for macAddress in self[ 'mac' ]:
+			for macAddress in self.info.get( 'mac', [] ):
 				if self.oldinfo.has_key( 'mac' ) and macAddress in self.oldinfo[ 'mac' ]:
 					continue
 				try:
@@ -1942,7 +1942,7 @@ class simpleComputer( simpleLdap ):
 					raise univention.admin.uexceptions.macAlreadyUsed, ' %s' % macAddress
 			if self.oldinfo.has_key( 'mac' ):
 				for macAddress in self.oldinfo[ 'mac' ]:
-					if macAddress in self.info[ 'mac' ]:
+					if macAddress in self.info.get( 'mac', [] ):
 						continue
 					self.__changes[ 'mac' ][ 'remove' ].append( macAddress )
 

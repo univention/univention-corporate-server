@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.225-1) unstable; urgency=low
+
+  * fix removing of MAC addresses; Bug #26079
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 15 Feb 2012 18:32:22 +0100
+
 univention-directory-manager-modules (7.0.224-1) unstable; urgency=low
 
   * nagios/service: fix removing all host entries; Bug #25403
