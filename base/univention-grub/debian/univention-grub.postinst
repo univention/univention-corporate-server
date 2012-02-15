@@ -94,7 +94,9 @@ if [ "$1" = configure -a -z "$2" ];  then
 	univention-config-registry unset grub/boot
 fi
 
-
+if ! [ -e /boot/grub/menu.lst ] ; then
+    /usr/sbin/univention-grub-generate-menu-lst
+fi
 
 grepcnt=$(grep -c "^dm-mod$" /etc/initramfs-tools/modules)
 if [ "$grepcnt" = "0" ] ; then

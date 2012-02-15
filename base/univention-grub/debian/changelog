@@ -1,3 +1,10 @@
+univention-grub (5.0.9-5) unstable; urgency=low
+
+  * Start univention-grub-generate-menu-lst in postinst instead of the versioned
+    Depends  (Bug #25981)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 15 Feb 2012 12:16:21 +0100
+
 univention-grub (5.0.9-4) unstable; urgency=low
 
   * Version the dependency to grub-pc, so that the patched grub-pc is setup

@@ -10,7 +10,7 @@ Build-Depends: debhelper,
 Package: univention-grub
 Architecture: all
 Depends: ${misc:Depends},
- grub-pc (>= 1.98+20100804-14.30.201202141455),
+ grub-pc,
  diff,
  initramfs-tools,
  lvm2,
