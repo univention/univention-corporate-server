@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.267-2) unstable; urgency=low
+
+  * center Tracebacks on expanding/hiding (Bug #25675)
+
+ -- Florian Best <best@univention.de>  Wed, 15 Feb 2012 17:21:31 +0100
+
 univention-management-console-frontend (1.0.267-1) unstable; urgency=low
 
   * improoved visibility of error message on failed authentification

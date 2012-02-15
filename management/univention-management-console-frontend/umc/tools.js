@@ -516,6 +516,9 @@ dojo.mixin(umc.tools, {
 				}));
 				container.addChild(titlePane);
 
+				container.connect(titlePane._wipeIn, 'onEnd', function() { umc.dialog.centerAlertDialog(); } );
+				container.connect(titlePane._wipeOut, 'onEnd', function() { umc.dialog.centerAlertDialog(); } );
+
 				umc.dialog.alert( container );
 			}
 			else {
