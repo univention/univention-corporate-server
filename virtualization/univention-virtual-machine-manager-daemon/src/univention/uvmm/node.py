@@ -1023,7 +1023,11 @@ def _domain_edit(node, dom_stat, xml):
 			domain_features_x = update(domain_features, f_name, '')
 
 	# /domain/clock @offset @timezone @adjustment
-	if dom_stat.rtc_offset:
+	if dom_stat.rtc_offset in ('utc', 'localtime'):
+		domain_clock = update(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None, adjustment=None, basis=None)
+	elif dom_stat.rtc_offset == 'variable':
+		domain_clock = update(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None)
+	elif dom_stat.rtc_offset:
 		domain_clock = update(domain, 'clock', '', offset=dom_stat.rtc_offset) # timezone='', adjustment=0
 	# /domain/on_poweroff
 	if defaults:

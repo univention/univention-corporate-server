@@ -440,6 +440,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				} else {
 					this._advancedForm._widgets.boot_hvm.set( 'value', this._domain.boot );
 				}
+				this._advancedForm._widgets.rtc_offset.set('staticValues', types.getRtcOffset(this._domain.type, this._domain.rtc_offset));
 
 				// we need to add pseudo ids for the network interfaces
 				dojo.forEach(this._domain.interfaces, function(idev, i) {

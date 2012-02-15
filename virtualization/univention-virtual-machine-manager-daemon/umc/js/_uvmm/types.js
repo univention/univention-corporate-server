@@ -62,9 +62,15 @@ dojo.require("umc.tools");
 			{ id: 'network', label: _( 'Network' ) }
 		],
 		rtcOffset: [
-			{ id: 'utc', label: _('Coordinated Universal Time') },
-			{ id: 'localtime', label: _('Local time zone') }
+			{ id: 'utc', label: _('Coordinated Universal Time'), vt: ['kvm-hvm', 'xen-xen'] },
+			{ id: 'localtime', label: _('Local time zone'), vt: ['kvm-hvm', 'xen-xen'] },
+			{ id: 'variable', label: _('Guest controlled'), vt: ['kvm-hvm', 'xen-hvm'] }
 		],
+		getRtcOffset: function(domain_type, rtc_offset) {
+			return dojo.filter(self.rtcOffset, function(irtc) {
+				return dojo.indexOf(irtc.vt, domain_type) >= 0 || irtc.id == rtc_offset;
+			});
+		},
 		domainStates: {
 			RUNNING : _( 'running' ),
 			SHUTOFF : _( 'shut off' ),

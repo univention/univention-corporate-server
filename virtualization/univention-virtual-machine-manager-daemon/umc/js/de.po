@@ -1,6 +1,6 @@
 # UCS Virtual Machine Manager Management Console Module
 #
-# Copyright 2010-2011 Univention GmbH
+# Copyright 2010-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,10 +32,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-virtual-machina-manager-daemon 0.9.333-7\n"
+"Project-Id-Version: univention-virtual-machina-manager-daemon 1.0.103-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2011-11-25 20:38+0100\n"
-"PO-Revision-Date: 2011-11-25 12:15+0100\n"
+"PO-Revision-Date: 2012-02-15 16:08+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -599,6 +599,10 @@ msgstr "Lettisch"
 #: umc/js/_uvmm/types.js:114
 msgid "Lithuanian"
 msgstr "Litauisch"
+
+#: umc/js/_uvmm/types.js:67
+msgid "Guest controlled"
+msgstr "Gast-gesteuert"
 
 #: umc/js/_uvmm/types.js:66
 msgid "Local time zone"
