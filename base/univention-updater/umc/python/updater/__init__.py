@@ -1458,15 +1458,9 @@ class Instance(umcm.Base):
 #:logfile: %s
 #:lines: %s
 #:command: %s
-/usr/sbin/dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-web-server
-/usr/sbin/dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
-/usr/sbin/dpkg-statoverride --add root root 0644 /usr/sbin/apache2
-/bin/chmod a-x /usr/sbin/univention-management-console-server /usr/sbin/univention-management-console-web-server /usr/sbin/apache2
+/usr/share/univention-updater/disable-apache2-umc
 %s < /dev/null
-/usr/sbin/dpkg-statoverride --remove /usr/sbin/univention-management-console-web-server
-/usr/sbin/dpkg-statoverride --remove /usr/sbin/univention-management-console-server
-/usr/sbin/dpkg-statoverride --remove /usr/sbin/apache2
-/bin/chmod a+x /usr/sbin/univention-management-console-server /usr/sbin/univention-management-console-web-server /usr/sbin/apache2
+/usr/share/univention-updater/enable-apache2-umc --no-restart
 ''' % (started,detail,logfile,lines,command,command)
 		p1 = subprocess.Popen( [ 'LC_ALL=C at now', ], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True )
 		(stdout,stderr) = p1.communicate( script )

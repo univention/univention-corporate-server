@@ -48,7 +48,7 @@ for prog in univention-management-console-server \
 
 	if [ -f "/usr/sbin/$prog" ] && [ ! -x "/usr/sbin/$prog" ]; then
 		/usr/sbin/dpkg-statoverride --remove "/usr/sbin/$prog" >/dev/null 2>&1
-	 	chmod +x "/usr/sbin/$prog"
+	 	/bin/chmod a+x "/usr/sbin/$prog"
 		[ -z "$NORESTART" ] && "/etc/init.d/$prog" restart >/dev/null 2>&1
 	fi
 done

@@ -37,7 +37,7 @@ for prog in apache2 \
 
 	if [ -x "/usr/sbin/$prog" ]; then
 	 	/usr/sbin/dpkg-statoverride --add root root 0644 "/usr/sbin/$prog" >/dev/null 2>&1
-	 	chmod -x "/usr/sbin/$prog"
+	 	/bin/chmod a-x "/usr/sbin/$prog"
 	fi
 done
 
