@@ -1,3 +1,9 @@
+univention-management-console (4.0.202-2) unstable; urgency=low
+
+  * added dependency on univention-management-console-module-vnc (Bug #25107) 
+
+ -- Lukas Walter <walter@univention.de>  Wed, 15 Feb 2012 09:33:27 +0100
+
 univention-management-console (4.0.202-1) unstable; urgency=low
 
   * added scollbars to template simple_form
