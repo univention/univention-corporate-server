@@ -397,7 +397,8 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			this._domain.nodeURI = id.slice( 0, id.indexOf( '#' ) );
 
 			if (data) {
-				var types = umc.modules._uvmm.types;			this._domain.domainURI = id;
+				var types = umc.modules._uvmm.types;
+				this._domain.domainURI = id;
 
 				this.moduleWidget.set( 'title', 'UVMM: ' + this._domain.name );
 
@@ -576,6 +577,3 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		// event stub
 	}
 });
-
-
-
