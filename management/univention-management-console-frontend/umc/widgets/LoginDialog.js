@@ -140,12 +140,14 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		// wait until the iframe is completely loaded
 		setTimeout(dojo.hitch(this, function() {
 			// check whether the form is available or not
-			var	isLoaded = dojo.getObject('contentWindow.ready', false, this._iframe);
-			if (!isLoaded) {
+			var	state = dojo.getObject('contentWindow.state', 'unloaded', this._iframe);
+			if (state === 'unloaded' || state === 'initialized') {
 				// we can't access the form, therefore we need to trigger the
 				// function again
+				console.log('state: ', state);
 				this._initForm();
 			} else {
+				console.log('state: ', state);
 				// we are able to access the form
 				dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
 					// because of the iframe we need to manually translate the content
@@ -158,6 +160,8 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 				this._connectEvents();
 
 				this._isRendered = true;
+				dojo.setObject('contentWindow.state', 'initialized', this._iframe);
+				this._initForm();
 			}
 		}), 500);
 	},

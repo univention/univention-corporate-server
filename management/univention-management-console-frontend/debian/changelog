@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.268-1) unstable; urgency=low
+
+  * change doctype to "XHTML 1.0 Transitional"
+  * reinitialize login form on iframe reload
+  (Bug #23654)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 16 Feb 2012 17:15:58 +0100
+
 univention-management-console-frontend (1.0.267-2) unstable; urgency=low
 
   * center Tracebacks on expanding/hiding (Bug #25675)
