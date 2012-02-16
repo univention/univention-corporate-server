@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="quota" icon="quota-module" version="1.0">
+	<name>Filesystem quotas</name>
+	<description>Set, unset and modify filesystem quota</description>
+	<categories>
+		<category name="system"/>
+	</categories>
+	</module>
+</umc>

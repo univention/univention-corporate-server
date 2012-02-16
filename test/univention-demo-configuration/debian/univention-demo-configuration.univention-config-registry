@@ -1,0 +1,12 @@
+Type: subfile
+Multifile: var/www/ucs-overview/de.html
+Subfile: var/www/ucs-overview/de.html.d/90sdb_de.html
+
+Type: subfile
+Multifile: var/www/ucs-overview/en.html
+Subfile: var/www/ucs-overview/en.html.d/90sdb_en.html
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/59univention-ldap-server_acl-master-no-password-change
+Variables: ldap/base

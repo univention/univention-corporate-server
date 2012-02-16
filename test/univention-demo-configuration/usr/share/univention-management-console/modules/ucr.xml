@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="ucr" icon="ucr" version="1.0">
+	<name>Univention Configuration Registry</name>
+	<description>Managing UCR variables</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+	<command name="ucr/get" function="get">
+	  <attribute name="variable" syntax="UCR-Variable" required="1"/>
+	  <return syntax="Dictionary"/>
+	</command>
+	<command name="ucr/categories" function="categories">
+	  <return syntax="Dictionary"/>
+	</command>
+	<command name="ucr/query" function="query">
+	  <attribute name="filter" syntax="String" required="1"/>
+	  <attribute name="key" syntax="UCR-SearchOption" required="1"/>
+	  <attribute name="category" syntax="String" required="1"/>
+	  <return syntax="UCR-Variables"/>
+	</command>
+  </module>
+</umc>

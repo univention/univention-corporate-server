@@ -1,0 +1,12 @@
+Source: univention-demo-configuration
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper (>= 7.0.50~)
+ ucslint,
+ univention-config-dev
+
+Package: univention-demo-configuration
+Architecture: all
+Description: restricted configuration for demo.univention.de

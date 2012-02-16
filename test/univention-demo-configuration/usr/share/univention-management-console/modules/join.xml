@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="join" icon="join" version="1.0">
+	<name>Domain join</name>
+	<description>Show overview of join scripts</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+	<!-- should be used only for the grid, so no arg is needed -->
+	<command name="join/scripts/query" function="query">
+		<attribute name="script" syntax="String"/>
+	</command>
+	<!-- Status queries, distinct URLs now -->
+	<command name="join/logview" function="logview">
+		<attribute name="count" syntax="Integer"/>
+	</command>
+	<command name="join/joined" function="joined"/>
+	<command name="join/running" function="running"/>
+  </module>
+</umc>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="packages" icon="apt" version="1.0">
+	<name>Package management</name>
+	<description>Manage (install/deinstall) software packages on your machine</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+	
+	<!-- straightforward module: one grid with a query, a get method
+		to retrieve details, and some actions.
+	-->
+	<!-- Query: all args are filter args. -->
+	<command name="packages/query" function="query">
+		<attribute name="installed" syntax="Boolean"/>
+		<attribute name="section" syntax="String"/>
+		<attribute name="key" syntax="String"/>
+		<attribute name="pattern" syntax="String"/>
+	</command>
+
+	<!-- Get: details of one package -->
+	<command name="packages/get" function="get">
+		<attribute name="package" syntax="String"/>
+	</command>
+
+	<!-- Sections: fill the 'sections' combobox. -->
+	<command name="packages/sections" function="sections"/>
+
+	<!-- Logview: tail -f on the installer log. -->
+	<command name="packages/logview" function="logview">
+		<attribute name="count" syntax="Integer"/>
+	</command>
+
+	<!-- Running: ask if an installer job is running. -->
+	<command name="packages/running" function="running"/>
+
+  </module>
+</umc>
