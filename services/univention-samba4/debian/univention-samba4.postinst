@@ -161,13 +161,6 @@ if [ "$1" = "configure" ]; then
 			fi
 		fi
 
-		if [ -r /var/run/winbindd.pid ]; then
-			processname=$(ps -p $(cat /var/run/winbindd.pid) -o comm= )
-			if [ "$processname" = 'winbindd' ]; then
-				/etc/init.d/winbind restart
-			fi
-		fi
-
 	fi
 
 	if test -f /etc/init.d/univention-directory-listener; then

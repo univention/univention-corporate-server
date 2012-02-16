@@ -26,8 +26,6 @@ if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	server_services.append('-smb')
 if configRegistry.get('samba4/service/nmb', 'nmbd') == 'nmbd':
 	server_services.append('-nbtd')
-if configRegistry.get('samba4/service/winbind', 's4') == 'winbindd':
-	server_services.append('-winbind')
 if configRegistry.is_false('samba4/service/drepl'):
 	server_services.append('-drepl')
 if server_services:
