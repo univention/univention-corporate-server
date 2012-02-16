@@ -526,6 +526,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						parent: _parent,
 						check: function() {
 							var message = dojo.replace( this.parent._( 'The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}.' ), { 
+								time: '{time}',
 								linkStart : umc_url ? '<a href="' + umc_url + '">' : '',
 								linkEnd : umc_url ? '</a>' : ''
 							} );
