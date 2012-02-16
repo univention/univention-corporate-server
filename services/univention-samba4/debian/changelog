@@ -1,3 +1,9 @@
+univention-samba4 (1.0.123-1) unstable; urgency=low
+
+  * set the machine.secret in the samba domain join (Bug #24989)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Feb 2012 16:37:25 +0100
+
 univention-samba4 (1.0.122-1) unstable; urgency=low
 
   * rollback of changes for Bug #24281
