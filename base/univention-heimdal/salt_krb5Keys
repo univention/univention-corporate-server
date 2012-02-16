@@ -117,9 +117,10 @@ def main():
 
 	lc = ldapconnection(ucr['ldap/master'], ldaps_master_port, options.binddn, options.bindpwd, 'ldaps')
 	for dn, object_dict in lc.ldapsearch_async(ldap_base, ldapfilter = ldapfilter, attrlist = attrlist):
-		mod_krb5Keys = salt_krb5Keys(object_dict['krb5PrincipalName'][0], object_dict['krb5Key'])
-		if mod_krb5Keys:
-			lc.ldapmodify_object(dn, { 'krb5Key' : mod_krb5Keys } )
+		if 'krb5Key' in object_dict:
+			mod_krb5Keys = salt_krb5Keys(object_dict['krb5PrincipalName'][0], object_dict['krb5Key'])
+			if mod_krb5Keys:
+				lc.ldapmodify_object(dn, { 'krb5Key' : mod_krb5Keys } )
 
 	return 0
 

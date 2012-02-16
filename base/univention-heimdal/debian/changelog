@@ -1,3 +1,9 @@
+univention-heimdal (5.0.27-1) unstable; urgency=low
+
+  * check of krb5Key is present in salt_krb5Keys (Bug #26099)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Feb 2012 17:02:57 +0100
+
 univention-heimdal (5.0.26-2) unstable; urgency=low
 
   * fix package depenency (Bug #24277)
