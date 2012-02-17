@@ -941,13 +941,13 @@ class UniventionUpdater:
 				while True:
 					assert server.access(ver.path()) # minor
 					findFirst = False
-					# reset patchlevel for each nested part
-					saved_patchlevel = ver.patchlevel
-					for ver.part in parts: # part
-						ver.patchlevel = saved_patchlevel
-						try:
-							while True:
+					found_patchlevel = True
+					while found_patchlevel:
+						found_patchlevel = False
+						for ver.part in parts: # part
+							try:
 								assert server.access(ver.path()) # patchlevel
+								found_patchlevel = True
 								for ver.arch in archs: # architecture
 									try:
 										assert server.access(ver.path())
@@ -955,14 +955,15 @@ class UniventionUpdater:
 									except DownloadError, e:
 										ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 								del ver.arch
-								if isinstance(ver.patch, basestring): # patchlevel not used
-									break
-								ver.patchlevel += 1
-								if ver > end:
-									break
-						except DownloadError, e:
-							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-					del ver.part
+							except DownloadError, e:
+								ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+						del ver.part
+
+						if isinstance(ver.patch, basestring): # patchlevel not used
+							break
+						ver.patchlevel += 1
+						if ver > end:
+							break
 					ver.minor += 1
 					ver.patchlevel = ver.patchlevel_reset
 					if ver > end or ver.minor > 99:
