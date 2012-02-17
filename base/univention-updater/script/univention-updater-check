@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(ucr shell)"
+eval "$(univention-config-registry shell)"
 
 if [ "$1" = "--silent" ] ; then
 	exec > /dev/null 2> /dev/null
@@ -43,10 +43,10 @@ else
 	if /usr/share/univention-updater/univention-updater net --silent --check ; then
 		# return $? == 0  if system is uptodate
 		# return $? == 1  if system is requires at least one update
-		if /usr/share/univention-updater/univention-security-update net --check ; then
+		if /usr/share/univention-updater/univention-errata-update net --check ; then
 			# return $? == 0  if system is uptodate
 			# return $? == 1  if system is requires at least one update
-			/usr/share/univention-updater/univention-config-registry set update/available=no
+			/usr/sbin/univention-config-registry set update/available=no
 			exit 0
 		fi
 	fi
