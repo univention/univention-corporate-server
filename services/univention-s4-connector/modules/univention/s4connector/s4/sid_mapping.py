@@ -112,10 +112,10 @@ def sid_to_ucs(s4connector, key, s4_object):
 		ud.debug(ud.LDAP, ud.WARN, 'sid_to_ucs: UCS object (%s) not found' % ucs_dn)
 		return
 
-	objectSid = s4_object['attributes'].get('objectSid')[0]
+	objectSid = s4_object['attributes'].get('objectSid')
 	sambaSID = ucs_attributes.get(sidAttribute)
 	if not sambaSID or objectSid != sambaSID:
-		ml.append((sidAttribute, sambaSID, s4_object['attributes'].get('objectSid')[0]))
+		ml.append((sidAttribute, sambaSID, s4_object['attributes'].get('objectSid')))
 		if 'user' in s4_object['attributes'].get('objectClass', []):
 			if not 'sambaSamAccount' in ucs_attributes.get('objectClass'):
 				ml.append(('objectClass',ucs_attributes.get('objectClass'), ucs_attributes.get('objectClass')+['sambaSamAccount']))

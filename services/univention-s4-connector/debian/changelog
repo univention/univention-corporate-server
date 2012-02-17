@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.102-1) unstable; urgency=low
+
+  * Fixed sid checking (Bug #26005)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Feb 2012 15:42:56 +0100
+
 univention-s4-connector (6.0.101-2) unstable; urgency=low
 
   * translate ldap_base to samba4_ldap_base after position_mapping
