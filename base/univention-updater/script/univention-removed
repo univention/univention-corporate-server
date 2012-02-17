@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention Updater
 #
@@ -31,11 +31,11 @@
 
 eval "$(univention-config-registry shell version/version)"
 
-if [ "${version_version:0:1}" -lt 3 ]; then
-	prog="${0/*\//}"
-	exec /usr/share/univention-updater/$prog $@
+prog="${0##*/}"
+if [ "${version_version%%.*}" -lt 3 ]
+then
+	exec "/usr/share/univention-updater/$prog" "$@"
 else
-	echo "${0/*\//} has been removed. Please use univention-upgrade."
+	echo "$prog has been removed. Please use univention-upgrade."
 	exit 1
 fi
-
