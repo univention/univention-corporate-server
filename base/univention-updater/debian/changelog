@@ -1,3 +1,9 @@
+univention-updater (7.0.142-1) unstable; urgency=low
+
+  * Fix minimum errata version for mirroring (Bug #25616)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 Jan 2012 11:44:39 +0100
+
 univention-updater (7.0.141-1) unstable; urgency=low
 
   * enable-/disable-apache2-umc: use 'chmod a-x' or 'chmod a+x'

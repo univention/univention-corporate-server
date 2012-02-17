@@ -1158,11 +1158,12 @@ class UniventionUpdater:
 		else:
 			start = UCS_Version( ( self.version_major, self.version_minor, 1 ) )
 		# Explicit override of start for point updates (Bug #25616)
-		try:
-			skip = self.configRegistry['repository/online/errata/start']
-			start.patchlevel = int(skip)
-		except (KeyError, TypeError, ValueError), e:
-			pass
+		if not all_errata_updates:
+			try:
+				skip = self.configRegistry['repository/online/errata/start']
+				start.patchlevel = int(skip)
+			except (KeyError, TypeError, ValueError), e:
+				pass
 
 		# Hopefully never more than 999 errata updates
 		max = bool(all_errata_updates) and 1000 or self.erratalevel
