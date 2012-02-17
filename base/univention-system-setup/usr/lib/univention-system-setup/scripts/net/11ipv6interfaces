@@ -55,11 +55,11 @@ admin_replace_ip ()
 	admin_module="$1"
 	ldap_attribute="$2"
 	admin_attribute="$3"
-	univention-directory-manager "$admin_module" list --binddn "$binddn" --bindpwd "$bindpwd" --filter "($ldap_attribute=$old_ip)" | grep ^DN | sed -e 's|^DN: ||' | while read dn; do
+	univention-directory-manager "$admin_module" list --binddn "$binddn" --bindpwd "$bindpwd" --filter "($ldap_attribute=$old_ip_exploded)" | grep ^DN | sed -e 's|^DN: ||' | while read dn; do
 		if [ -n "$4" ]; then
-			univention-directory-manager "$admin_module" modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set "$admin_attribute=$new_ip"
+			univention-directory-manager "$admin_module" modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set "$admin_attribute=$new_ip_exploded"
 		else
-			univention-directory-manager "$admin_module" modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append "$admin_attribute=$new_ip" --remove "$admin_attribute=$old_ip"
+			univention-directory-manager "$admin_module" modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append "$admin_attribute=$new_ip_exploded" --remove "$admin_attribute=$old_ip_exploded"
 		fi
 	done
 }
@@ -74,8 +74,11 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
   serversystem=1
 fi
 
-for interface in eth0 eth1 eth2 eth3; do
-	for attr in default/address default/prefix acceptRA; do
+while read match
+do
+	interface=$(echo "$match" | cut -d / -f 2)
+	name=$(echo "$match" | cut -d / -f 4)
+	for attr in "$name"/address "$name"/prefix acceptRA; do
 		is_variable_set "interfaces/$interface/ipv6/$attr"
 		if [ $? = 0 ]; then
 			continue
@@ -88,7 +91,7 @@ for interface in eth0 eth1 eth2 eth3; do
 			baseconfig_set="$baseconfig_set interfaces/$interface/ipv6/$attr=$var"
 		fi
 
-		if [ "$attr" = "address" ]; then
+		if [ "$attr" = "default/address" -o "$attr" = "default/prefix" ]; then
 			to_change="$to_change $interface"
 			if [ "$check_ldap_access" = "1" ]; then
 				if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
@@ -101,7 +104,7 @@ for interface in eth0 eth1 eth2 eth3; do
 	
 		
 	done
-done
+done < <(grep -Eo '^interfaces/[^/]+/ipv6/([^/]+/(address|prefix)|acceptRA)=' "$profile_file")
 
 if [ "$check_ldap_access" = "1" ]; then
 	exit 0
@@ -138,12 +141,25 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		if [ -z "$device" ]; then
 			continue;
 		fi
-		new_ip=$(    get_profile_var                "interfaces/$device/ipv6/default/address")
 		old_ip=$(    univention-config-registry get "interfaces/$device/ipv6/default/address")
- 		new_prefix=$(get_profile_var                "interfaces/$device/ipv6/default/prefix")
 		old_prefix=$(univention-config-registry get "interfaces/$device/ipv6/default/prefix")
-		old_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$old_address/$old_prefix")
-		new_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$new_address/$new_prefix")
+		if ! is_variable_set "interfaces/$device/ipv6/default/address"
+		then
+			new_ip=$(get_profile_var "interfaces/$device/ipv6/default/address")
+		else
+			new_ip=$old_ip # not changed
+		fi
+		if ! is_variable_set "interfaces/$device/ipv6/default/prefix"
+		then
+ 			new_prefix=$(get_profile_var "interfaces/$device/ipv6/default/prefix")
+		else
+			new_prefix=$old_prefix # not changed
+		fi
+		old_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$old_ip/$old_prefix")
+		new_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$new_ip/$new_prefix")
+		new_ip_exploded=$(python -c 'import ipaddr,sys;print ipaddr.IPAddress(sys.argv[1]).exploded' "$new_ip")
+		old_ip_exploded=$(python -c 'import ipaddr,sys;print ipaddr.IPAddress(sys.argv[1]).exploded' "$old_ip")
+		echo `date` : "Secondary changes for interfaces/$device/ipv6/default ($old_ip/$old_prefix to $new_ip/$new_prefix)..." >> /var/log/univention/setup.log
 		if [ -z "$old_ip" ]; then
 			# There was a new interface created
 			continue
@@ -154,18 +170,18 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 			server_role="client"
 		fi
 		if [ $ldap_available = 1 ]; then
-		    ldap_dn=$(univention-directory-manager "computers/$server_role" list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aAAARecord=$old_ip))" | grep ^DN | sed -e 's|^DN: ||')
+		    ldap_dn=$(univention-directory-manager "computers/$server_role" list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aAAARecord=$old_ip_exploded))" | grep ^DN | sed -e 's|^DN: ||')
 		    if [ -n "$ldap_dn" ]; then
 				#change the ldap entry
-				if [ -n "$new_ip" ]; then
+				if [ -n "$new_ip_exploded" ]; then
 					# check reverse zone
-					reverse=$(univention-ipcalc6 --netmask "$new_prefix" --ip "$new_ip" --output reverse --calcdns)
+					reverse=$(univention-ipcalc6 --netmask "$new_prefix" --ip "$new_ip_exploded" --output reverse --calcdns)
 					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse "$reverse" add zone "root@$domainname." 1 28800 10800 604800 108001 "$hostname.$domainname."
 
-					ptr=$(univention-ipcalc6 --netmask "$new_prefix" --ip "$new_ip" --output pointer --calcdns)
+					ptr=$(univention-ipcalc6 --netmask "$new_prefix" --ip "$new_ip_exploded" --output pointer --calcdns)
 					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse "$reverse" add ptr "$ptr" "$hostname.$domainname."
 
-					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set "ip=$new_ip"
+					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --append "ip=$new_ip_exploded" --remove "ip=$old_ip_exploded"
 				fi
 		    fi
 		fi

@@ -1,3 +1,10 @@
+univention-system-setup (5.0.111-1) unstable; urgency=low
+
+  * add IPv6 device configuration for multiple addresses per interface (Bug #25080)
+  * fix UDM updates for IPv6 default address changes
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 17 Feb 2012 17:25:09 +0100
+
 univention-system-setup (5.0.110-1) unstable; urgency=low
 
   * added optional selection of system role in system setup (Bug #25980)
