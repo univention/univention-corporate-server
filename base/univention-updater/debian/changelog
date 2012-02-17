@@ -3,6 +3,7 @@ univention-updater (7.0.142-1) unstable; urgency=low
   * Fix minimum errata version for mirroring (Bug #25616)
   * Fix quoting in wrapper script (Bug #16823)
   * Add {un,}maintained lock-step (Bug #25865)
+  * Fix spelling error in help text (Bug #26164)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 25 Jan 2012 11:44:39 +0100
 

@@ -357,7 +357,7 @@ def main():
 	parser.add_option("--setucr", dest="setucr", default=False, action="store_true", help="if set, variable update/available will be updated if --check is specified too")
 	parser.add_option("--ignoressh", dest="ignoressh", default=False, action="store_true", help="pass --ignoressh to univention-updater")
 	parser.add_option("--ignoreterm", dest="ignoreterm", default=False, action="store_true", help="pass --ignoreterm to univention-updater")
-	parser.add_option("--noninteractive", dest="noninteractive", default=False, action="store_true", help="Performance a noninteractive update")
+	parser.add_option("--noninteractive", dest="noninteractive", default=False, action="store_true", help="Perform a non-interactive update")
 	parser.add_option("--iso", dest="iso", default=None, action="store", help="ISO image for the repository update")
 	parser.add_option("--cdrom", dest="cdrom", default="/dev/cdrom", action="store", help="CDROM device for the repository update")
 	(options, args) = parser.parse_args()
