@@ -1,3 +1,9 @@
+univention-system-setup (5.0.110-1) unstable; urgency=low
+
+  * added optional selection of system role in system setup (Bug #25980)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 16 Feb 2012 16:10:01 +0100
+
 univention-system-setup (5.0.109-1) unstable; urgency=low
 
   * fixed a status message (Bug #24425)

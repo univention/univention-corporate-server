@@ -70,56 +70,64 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// query the system role
 		this.standby(true);
-		umc.tools.ucr('server/role').then(dojo.hitch(this, function(ucr) {
-			this.renderPages(ucr['server/role']);
+
+		// load some ucr variables
+		var deferred_ucr = umc.tools.ucr(['system/setup/boot/select/role']);
+		// load system setup values (e.g. join status)
+		var deferred_variables = this.umcpCommand('setup/load');
+		// wait for deferred objects to be completed
+		var deferredlist = new dojo.DeferredList([deferred_ucr, deferred_variables]);
+		deferredlist.then(dojo.hitch(this, function(data) {
+			// pass ucr and values to renderPages()
+			this.renderPages(data[0][1], data[1][1].result);
 			this.standbyOpacity = 0.75;  // set back the opacity to 75%
 		}));
-
 	},
 
-	renderPages: function(role) {
+	renderPages: function(ucr, values) {
 		this._progressInfo = new umc.modules._setup.ProgressInfo();
 		// this._progressInfo.buildRendering();
 		this.standby(true);
 
-		// add the HelpPage to the list of pages for the wizard mode
+		// console.log('joined=' + values.joined);
+		// console.log('select_role=' + ucr['system/setup/boot/select/role']);
+
 		var allPages = dojo.clone(this.pages);
+
+		// add the SystemRole to the list of pages for the wizard mode if system is not joined yet
+		if ((umc.tools.isTrue(ucr['system/setup/boot/select/role'])) && (! values.joined)) {
+			allPages.unshift('SystemRolePage');
+		}
+
+		// add the HelpPage to the list of pages for the wizard mode
 		if (this.moduleFlavor == 'wizard') {
 			allPages.unshift('HelpPage');
 		}
-
-		// get all visible pages
-		var visiblePages = dojo.filter(allPages, function(iclass, i) {
-			// load page class
-			var ipath = 'umc.modules._setup.' + iclass;
-			dojo['require'](ipath);
-
-			// check whether 'role' is set and the page should be visible or not
-			var Class = new dojo.getObject(ipath);
-			return !(Class.prototype.role && dojo.indexOf(Class.prototype.role, role) < 0);
-		});
 
 		if (this.moduleFlavor == 'wizard') {
 			// wizard mode
 
 			// create all pages dynamically
 			this._pages = [];
-			dojo.forEach(visiblePages, function(iclass, i) {
-				// check whether 'role' is set and the page should be visible or not
+			dojo.forEach(allPages, function(iclass, i) {
 				var ipath = 'umc.modules._setup.' + iclass;
+				dojo['require'](ipath);
 				var Class = new dojo.getObject(ipath);
-				if (Class.prototype.role && dojo.indexOf(Class.prototype.role, role) < 0) {
-					return true;
-				}
 
 				// get the buttons we need
 				var buttons = [];
-				if (i < visiblePages.length - 1) {
+				if (i < allPages.length - 1) {
 					buttons.push({
 						name: 'submit',
 						label: this._('Next'),
 						callback: dojo.hitch(this, function() {
-							this.selectChild(this._pages[i + 1]);
+							// switch to next visible page
+							// precondition: the last page is never invisible!
+							var nextpage = i + 1;
+							while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
+								nextpage += 1;
+							}
+							this.selectChild(this._pages[nextpage]);
 						})
 					});
 				}
@@ -128,11 +136,17 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						name: 'restore',
 						label: this._('Back'),
 						callback: dojo.hitch(this, function() {
-							this.selectChild(this._pages[i - 1]);
+							// switch to previous visible page
+							// precondition: the first page is never invisible!
+							var prevpage = i - 1;
+							while ((0 < prevpage) && (! this._pages[prevpage].visible)) {
+								prevpage -= 1;
+							}
+							this.selectChild(this._pages[prevpage]);
 						})
 					});
 				}
-				if (i == visiblePages.length - 1) {
+				if (i == allPages.length - 1) {
 					buttons.push({
 						name: 'submit',
 						label: this._('Apply settings'),
@@ -148,7 +162,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					footerButtons: buttons,
 					moduleFlavor: this.moduleFlavor,
 					onSave: dojo.hitch(this, function() {
-						if (i < visiblePages.length - 1) {
+						if (i < allPages.length - 1) {
 							this.selectChild(this._pages[i + 1]);
 						}
 						else {
@@ -158,6 +172,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				});
 				this.addChild(ipage);
 				this._pages.push(ipage);
+
+				// connect to onValuesChanged callback of every page
+				this.connect(ipage, 'onValuesChanged', 'updateAllValues');
 			}, this);
 		}
 		else {
@@ -198,9 +215,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// create all pages dynamically
 			this._pages = [];
-			dojo.forEach(visiblePages, function(iclass) {
+			dojo.forEach(allPages, function(iclass) {
 				// create new page
 				var ipath = 'umc.modules._setup.' + iclass;
+				dojo['require'](ipath);
 				var Class = new dojo.getObject(ipath);
 				var ipage = new Class({
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
@@ -212,13 +230,34 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				});
 				tabContainer.addChild(ipage);
 				this._pages.push(ipage);
+
+				// connect to onValuesChanged callback of every page
+				this.connect(ipage, 'onValuesChanged', 'updateAllValues');
+
+				// hide tab if page is not visible
+				ipage.watch('visible', function(name, oldval, newval) {
+					if ((newval == true) || (newval == undefined)) {
+						tabContainer.showChild(ipage);
+					} else {
+						tabContainer.hideChild(ipage);
+					}
+				});
 			}, this);
 
 			this.addChild(tabContainer);
 		}
 
 		this.startup();
-		this.load();
+		this.setValues(values);
+		this.standby(false);
+	},
+
+	updateAllValues: function(values) {
+		var vals = dojo.clone(this._orgValues);
+		dojo.mixin(vals, this.getValues());
+		dojo.forEach(this._pages, function(ipage) {
+			ipage.setValues(vals);
+		}, this);
 	},
 
 	setValues: function(values) {

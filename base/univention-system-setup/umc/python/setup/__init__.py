@@ -111,14 +111,17 @@ class Instance(umcm.Base):
 			orgValues = util.load_values()
 			util.pre_save(values, orgValues)
 
+			# determine new system role
+			newrole = values.get('server/role', orgValues.get('server/role',''))
+
 			# on DC master the nameserver must be set to the external nameserver when using USS boot
-			if orgValues['server/role'] == 'domaincontroller_master' and request.flavor == 'wizard' and values.get( 'dns/forwarder1' ):
+			if newrole == 'domaincontroller_master' and request.flavor == 'wizard' and values.get( 'dns/forwarder1' ):
 				values[ 'nameserver1' ] = values.get( 'dns/forwarder1' )
 
 			MODULE.info('saving profile values')
 			util.write_profile(values)
 
-			if orgValues['server/role'] == 'basesystem' or os.path.exists('/var/univention-join/joined'):
+			if newrole == 'basesystem' or orgValues.get('joined'):
 				if not values:
 					MODULE.error( 'No property "values" given for save().' )
 					obj._finishedLock.release()
@@ -221,6 +224,9 @@ class Instance(umcm.Base):
 		values = request.options.get('values', {})
 		orgValues = util.load_values()
 
+		# determine new system role
+		newrole = values.get('server/role', orgValues.get('server/role',''))
+
 		# mix original and new values
 		allValues = copy.copy(values)
 		for ikey, ival in orgValues.iteritems():
@@ -244,6 +250,9 @@ class Instance(umcm.Base):
 				'valid': False,
 				'message': message
 			})
+
+		# system role
+		_check('server/role', lambda x: not(orgValues.get('joined')) or (orgValues.get('server/role') == values.get('server/role')), _('The system role may not change on a system that has already joined to domain.'))
 
 		# basis
 		_check('hostname', util.is_hostname, _('The hostname is not a valid fully qualified domain name in lowercase (e.g. host.example.com).'))
@@ -432,7 +441,7 @@ class Instance(umcm.Base):
 			_append('interfaces/eth0/ipv6/default/address', _('At least one IPv6 address needs to be specified.'))
 		if isSetIpv6 and not hasIpv6DefaultDevices:
 			_append('interfaces/eth0/ipv6/default/address', _('A default entry with the identifier "default" needs to be specified for each network device.'))
-		if orgValues.get('server/role', '') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'] and isSetIpv4 and not ipv4HasAddress:
+		if newrole in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'] and isSetIpv4 and not ipv4HasAddress:
 			_append('interfaces/eth0/address', _('At least one IPv4 address needs to be specified.'))
 		if not ipv4HasDynamic and not ipv6HasDynamic and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues.get('nameserver3'):
 			_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
@@ -582,8 +591,9 @@ class Instance(umcm.Base):
 	def software_components(self, request):
 		'''Return a list of all available software packages. Entries have the properties 
 		"id", "label", and "packages" which is an array of the Debian package names.'''
+		role = request.options.get('role')
 		choices = [ { 'id': i['id'], 'label': i['Name'], 'packages': i['Packages'] }
-				for i in util.get_components() ]
+				for i in util.get_components(role=role) ]
 		self.finished(request.id, choices)
 
 

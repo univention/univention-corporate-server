@@ -45,9 +45,6 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
-	// page is only visible for DC master
-	role: ['domaincontroller_master'],
-
 	umcpCommand: umc.tools.umcpCommand,
 
 	// internal reference to the formular containing all form widgets of an UDM object
@@ -187,6 +184,9 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 		this.clearNotes();
 
 		this._doShowNote = _vals['joined'];
+
+		// this page should be only visible on domaincontroller_master
+		this.set('visible', _vals['server/role'] == 'domaincontroller_master');
 
 		// reset the flag indicating whether certificate note has been shown or not
 		// we do not need to show the note in appliance mode

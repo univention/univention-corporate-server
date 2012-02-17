@@ -158,6 +158,9 @@ def pre_save(newValues, oldValues):
 					# we could compute a network address
 					newValues[networkKey] = network
 
+	# use new system role (or as fallback the current system role)
+	role = newValues.get('server/role', ucr.get('server/role'))
+
 	# add lists with all packages that should be removed/installed on the system
 	if 'components' in newValues:
 		regSpaces = re.compile(r'\s+')
@@ -168,6 +171,8 @@ def pre_save(newValues, oldValues):
 		# get all packages that shall be removed
 		removeComponents = list(allComponents & (currentComponents - selectedComponents))
 		newValues['packages_remove'] = ' '.join([ i.replace(':', ' ') for i in removeComponents ])
+
+		allComponents = set([ icomp['id'] for icomp in get_components(role=role) ])
 
 		# get all packages that shall be installed
 		installComponents = list(allComponents & (selectedComponents - currentComponents))
@@ -486,11 +491,12 @@ def dhclient(interface, timeout=None):
 	os.unlink(tempfilename)
 	return dhcp_dict
 
-def get_components():
+def get_components(role=None):
 	'''Returns a list of components that may be installed on the current system.'''
 
 	# get all package sets that are available for the current system role
-	role = ucr.get('server/role')
+	if not role:
+		role = ucr.get('server/role')
 	pkglist = [ jpackage for icategory in package_list.PackageList 
 			for jpackage in icategory['Packages']
 			if 'all' in jpackage['Possible'] or role in jpackage['Possible'] ]

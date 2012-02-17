@@ -50,7 +50,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
-	_orgComponents: {},
+	_orgComponents: undefined,
 
 	_noteShowed: false,
 
@@ -70,6 +70,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 			label: this._('Installed software components'),
 			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/software/components',
+			dynamicOptions: {},
 			sortDynamicValues: false,
 			style: 'width: 500px;',
 			height: '200px'
@@ -127,13 +128,19 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 	},
 
 	setValues: function(vals) {
-		// get a dict of all installed components
-		this._orgComponents = {};
+		// set dynamicOption to get list of components corresponding to selected system role
+		this._form.getWidget('components').set('dynamicOptions', { role: vals['server/role'] });
+
+		// get a dict of all installed components and initialise component list
 		var components = (vals.components || '').split(/\s+/);
-		dojo.forEach(components, function(icomponent) {
-			this._orgComponents[icomponent] = true;
-		}, this);
 		this._form.getWidget('components').setInitialValue(components, true);
+
+		if (this._orgComponents === undefined) {
+			this._orgComponents = {};
+			dojo.forEach(components, function(icomponent) {
+				this._orgComponents[icomponent] = true;
+			}, this);
+		}
 
 		// handling of notes
 		this._noteShowed = { };
