@@ -36,6 +36,7 @@ dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.LabelPane");
 dojo.require("umc.widgets.ComboBox");
 dojo.require("umc.widgets.StandbyMixin");
+dojo.require("dijit.Dialog");
 
 dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	// our own variables
@@ -96,6 +97,12 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 	buildRendering: function() {
 		this.inherited(arguments);
 
+		// set the properties for the dialog underlay element
+		this.underlayAttrs = {
+			dialogId: this.id,
+			'class': 'dijitDialogUnderlay'
+		};
+
 		this._iframe = dojo.byId('umc_LoginDialog_Iframe');
 		// initialize the iframe
 		this._initForm();
@@ -105,7 +112,7 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 			style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 280px;',
 			content: ''
 		});
-		this._text.placeAt('umc_LoginDialog', 'first');
+		this._text.placeAt(this.domNode, 'first');
 
 		// create the language combobox
 		var default_lang = this.defaultLang();
@@ -284,10 +291,12 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		if (this._isRendered) {
 			dojo.query('.umcShowHide').style('display', 'block');
 			this._setInitialFocus();
+			dijit._DialogLevelManager.show(this);
 		} else {
 			var handler = this.connect(this, '_connectEvents', function() {
 				dojo.query('.umcShowHide').style('display', 'block');
 				this._setInitialFocus();
+				dijit._DialogLevelManager.show(this);
 				this.disconnect(handler);
 			});
 		}
@@ -296,6 +305,7 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 	hide: function() {
 		// hide the dialog
 		dojo.query('.umcShowHide').style('display', 'none');
+		dijit._DialogLevelManager.hide(this);
 	},
 
 	onLogin: function(/*String*/ username) {
