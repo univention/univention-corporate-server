@@ -74,7 +74,7 @@ property_descriptions={
 	'ldapServer': univention.admin.property(
 			short_description=_('LDAP server'),
 			long_description='',
-			syntax=univention.admin.syntax.LDAP_Server,
+			syntax=univention.admin.syntax.DomainController,
 			multivalue=1,
 			options=[],
 			required=0,

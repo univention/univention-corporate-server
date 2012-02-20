@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.226-1) unstable; urgency=low
+
+  * Use syntax DomainController for ldapServer in policies/ldapserver.py
+    (Bug #25594)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Feb 2012 11:00:44 +0100
+
 univention-directory-manager-modules (7.0.225-1) unstable; urgency=low
 
   * fix removing of MAC addresses; Bug #26079
