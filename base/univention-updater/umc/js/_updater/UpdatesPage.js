@@ -222,6 +222,10 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 				name:			'latest_errata_update'
 			},
 			{
+				type:			'HiddenInput',
+				name:			'components_errata'
+			},
+			{
 				type:			'Text',
 				label:			'',
 				name:			'errata_update_text1',
@@ -424,20 +428,78 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 
        			// Text for errata updates. Stuffed into two different widgets so the button on the right
        			// can be aligned at the second sentence.
-		    	var tmp1 = (values['erratalevel'] != 0) ?
-		    		dojo.replace(this._("Your system is at errata level {erratalevel}."),values) :
-		    		this._("No errata updates for the current version are installed.");
-				this._form.getWidget('errata_update_text1').set('content',tmp1);
-			    var tmp2 = (values['latest_errata_update'] != 0) ?
-					dojo.replace(this._("The most recent errata update is {latest_errata_update}."),values) :
-					this._("There are no errata updates available for the current release.");
-				this._form.getWidget('errata_update_text2').set('content',tmp2);
-				
-				// Uuuh, Buttons are not included in the _widgets list, so they can't be addressed by
-				// showWidget()... so I have to grab into internal structure of the Form :-(
-				var but = this._form._buttons['run_errata_update'];
-				dojo.toggleClass(but.domNode,'dijitHidden',parseInt(values['latest_errata_update'],10) <= parseInt(values['erratalevel'],10));
 
+				var but = this._form._buttons['run_errata_update'];
+				var ucs_errata_count = parseInt(values['latest_errata_update'],10) - parseInt(values['erratalevel'],10)
+				if (( ucs_errata_count > 0 ) || ( values.components_errata !== "" ))
+				{
+					// Convert the string back to an object. This is necessary because such a dict
+					// can not be transferred through a hidden value
+					if (values.components_errata !== "" ) {
+						values.components_errata = dojo.fromJson(values.components_errata);
+					}
+
+					var tmp1 = this._("Errata updates are available for this system.");
+					if (( ucs_errata_count > 0 ) && ( values.components_errata !== "" ))
+					{
+						// Errata Updates for UCS and for components
+						if ( ucs_errata_count > 1 ) {
+							var tmp2 = dojo.replace(this._("For UCS are {errata_count} errata updates available" ), {errata_count: ucs_errata_count});
+						} else {
+							var tmp2 = dojo.replace(this._("For UCS is one errata update available" ), {errata_count: ucs_errata_count});
+						}
+						for (var key in values.components_errata)
+						{
+							if ( parseInt(values.components_errata[key],10) > 1 ) {
+								tmp2 += dojo.replace(this._(" and for component {component} are {count} errata updates available"), {component: key, count: values.components_errata[key]})
+							} else {
+								tmp2 += dojo.replace(this._(" and for component {component} is one errata update available"), {component: key, count: values.components_errata[key]})
+							}
+						}
+						tmp2 += '.';
+					}
+					else if ( ucs_errata_count > 0 )
+					{
+						// Errata Updates for UCS
+						if ( ucs_errata_count > 1 ) {
+							var tmp2 = dojo.replace(this._("There are {errata_count} errata updates for UCS available." ), {errata_count: ucs_errata_count})
+						} else {
+							var tmp2 = dojo.replace(this._("There is one errata update for UCS available." ), {errata_count: ucs_errata_count})
+						}
+					}
+					else
+					{
+						// Errata Updates for components
+						for (var key in values.components_errata)
+						{
+							if (tmp2 === undefined) {
+								if ( parseInt(values.components_errata[key],10) > 1 ) {
+									var tmp2 = dojo.replace(this._("For component {component} are {count} errata updates available"), {component: key, count: values.components_errata[key]})
+								} else {
+									var tmp2 = dojo.replace(this._("For component {component} is one errata update available"), {component: key, count: values.components_errata[key]})
+								}
+							} else {
+								if ( parseInt(values.components_errata[key],10) > 1 ) {
+									tmp2 += dojo.replace(this._(" and for component {component} are {count} errata updates available"), {component: key, count: values.components_errata[key]})
+								} else {
+									tmp2 += dojo.replace(this._(" and for component {component} is one errata update available"), {component: key, count: values.components_errata[key]})
+								}
+							}
+						}
+						tmp2 += '.';
+					}
+					this._form.getWidget('errata_update_text2').set('content',tmp2);
+
+					// Show the Update button
+					dojo.toggleClass(but.domNode,'dijitHidden',false)
+				}
+				else
+				{
+					var tmp1 = this._("There are no errata updates available for this system.")
+					dojo.toggleClass(but.domNode,'dijitHidden',true)
+				}
+				this._form.getWidget('errata_update_text1').set('content',tmp1);
+				
  				var tx1 = '';
  				var tx2 = '';
  				if (values['components'] == '0')

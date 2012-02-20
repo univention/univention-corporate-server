@@ -1,3 +1,9 @@
+univention-updater (7.0.143-1) unstable; urgency=low
+
+  * Show component errata updates in UMC (Bug #24347)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Feb 2012 09:32:44 +0100
+
 univention-updater (7.0.142-1) unstable; urgency=low
 
   * Fix minimum errata version for mirroring (Bug #25616)

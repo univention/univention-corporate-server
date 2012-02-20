@@ -50,9 +50,9 @@ import univention.updater.tools
 
 updater_status = {}
 
-FN_STATUS = '/var/lib/univention-updater/univention-errata-components-update.status'
+FN_STATUS = '/var/lib/univention-updater/univention-errata-update.status'
 TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_errata__components_update.list'
-LOGFILE = '/var/log/univention/errata-components-updates.log'
+LOGFILE = '/var/log/univention/errata-updates.log'
 
 def update_status(**kwargs):
 	'''
