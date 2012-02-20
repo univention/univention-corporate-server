@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-19 18:33+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2012-02-20 14:40+0100\n"
+"PO-Revision-Date: 2012-02-20 14:41+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:139
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:145
 msgid "Domain join"
 msgstr "Domänen-Join"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:144
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:151
 msgid "Preparing domain join"
 msgstr "Vorbereitung des Domänen-Joins"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:179
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:190
 msgid "Configure"
 msgstr "Einrichten von"
 
@@ -87,6 +87,10 @@ msgstr "Einrichten des Rechnernamens"
 #: usr/lib/univention-system-setup/scripts/net/18proxy:35
 msgid "Setting proxy"
 msgstr "Setzen des Proxys"
+
+#: usr/lib/univention-system-setup/scripts/role/10role:35
+msgid "Configuring server role"
+msgstr "Einrichten der Systemrolle"
 
 #: usr/lib/univention-system-setup/scripts/software/10software:35
 msgid "Configuring software components"
