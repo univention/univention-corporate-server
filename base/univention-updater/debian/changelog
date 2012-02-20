@@ -1,3 +1,9 @@
+univention-updater (7.0.144-1) unstable; urgency=low
+
+  * Cleanup pre- and postup.sh (Bug #26157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Feb 2012 10:37:32 +0100
+
 univention-updater (7.0.143-1) unstable; urgency=low
 
   * Show component errata updates in UMC (Bug #24347)

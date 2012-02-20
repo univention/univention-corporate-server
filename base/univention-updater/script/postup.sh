@@ -32,8 +32,6 @@ export DEBIAN_FRONTEND=noninteractive
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
-PACKAGES_TO_BE_PURGED="kcontrol libusplash0 univention-usplash-theme usplash libnjb5 univention-shares"
-PACKAGES_TO_BE_REMOVED="nagios2 nagios2-common nagios2-doc"
 
 install ()
 {
@@ -88,27 +86,6 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# hold on dash update #22557
-if [ "$(dpkg-query -W -f='${Status}\n' dash 2>/dev/null)" = "hold ok installed" ]; then
-	if [ "$update30_hold_dash" = "true" ]; then
-		echo "dash install" | dpkg --set-selections
-		install dash
-		univention-config-registry unset update30/hold/dash >>"$UPDATER_LOG" 2>&1
-	fi
-else
-	echo "dash install" | dpkg --set-selections
-fi
-
-
-
-
-DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
-
-# # https://forge.univention.org/bugzilla/show_bug.cgi?id=18529
-# if [ -x /usr/sbin/update-initramfs ]; then
-#	update-initramfs -u -k all >>"$UPDATER_LOG" 2>&1
-# fi
-
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
@@ -119,138 +96,11 @@ if [ -e /usr/sbin/apache2 ]; then
 	chmod +x /usr/sbin/apache2 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 fi
 
-# Enable usplash after update (Bug #16363) (always required)
-if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
-	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
-fi
-
-# univention-squid might be held back due squid still being installed
-if [ "$update30_squidpresent" = "true" ]; then
-    install univention-squid  >>"$UPDATER_LOG" 2>&1
-    univention-config-registry unset update30/squidpresent >>"$UPDATER_LOG" 2>&1
-    dpkg --purge squid 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
-fi
-
-# univention-dansguardian is upgraded frm univention-antivir-web
-if [ "$update30_dansguardianpresent" = "true" ]; then
-    install univention-dansguardian  >>"$UPDATER_LOG" 2>&1
-    univention-config-registry unset update30/dansguardianpresent >>"$UPDATER_LOG" 2>&1
-fi
-
-# remove obsolte packages, no more required after UCS 3.0-0 update
-# Bug #22997
-for package in $PACKAGES_TO_BE_PURGED; do
-	dpkg -P $package 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
-	if [ ! 0 -eq $? ]; then
-		echo "Puring package $package failed: $?" >> "$UPDATER_LOG"
-	fi
-done
-
-for package in $PACKAGES_TO_BE_REMOVED; do
-	dpkg --remove "$package" 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
-	if [ ! 0 -eq $? ]; then
-		echo "Removing package $package failed: $?" >> "$UPDATER_LOG"
-	fi
-done
-
-if [ "$server_role" = "domaincontroller_master" ]; then
-	echo "Increase priority for some system SRV records from 0 to 100" >>"$UPDATER_LOG" 2>&1 
-	/usr/share/univention-directory-manager-tools/change_srv_priority.py >>"$UPDATER_LOG" 2>&1
-fi
-
-if [ -n "$update30_kde_check" -a "$update30_kde_check" = "true" ]; then
-	if [ -n "$update30_kde_univentionkde" -a "$update30_kde_univentionkde" = "true" ]; then
-		install univention-kde
-		univention-config-registry unset update30/kde/univentionkde  >>"$UPDATER_LOG" 2>&1
-	fi
-	if [ -n "$update30_kde_kdepim" -a "$update30_kde_kdepim" = "true" ]; then
-		install kdepim
-		univention-config-registry unset update30/kde/kdepim  >>"$UPDATER_LOG" 2>&1
-	fi
-	if [ -n "$update30_kde_kdemultimedia" -a "$update30_kde_kdemultimedia" = "true" ]; then
-		install kdemultimedia
-		univention-config-registry unset update30/kde/kdemultimedia  >>"$UPDATER_LOG" 2>&1
-	fi
-	univention-config-registry unset update30/kde/check  >>"$UPDATER_LOG" 2>&1
-fi
-
-if [ -n "$update30_firefox_check" -a "$update30_firefox_check" = "true" ]; then
-	if [ -n "$update30_firefox_univentionmozillafirefox" -a "$update30_firefox_univentionmozillafirefox" = "true" ]; then
-		install univention-mozilla-firefox
-		univention-config-registry unset update30/firefox/univentionmozillafirefox  >>"$UPDATER_LOG" 2>&1
-	fi
-	univention-config-registry unset update30/firefox/check  >>"$UPDATER_LOG" 2>&1
-fi
-
-if [ -n "$update30_uvmm_check" -a "$update30_uvmm_check" = "true" ]; then
-	if [ -n "$update30_uvmm_univentionxen" -a "$update30_uvmm_univentionxen" = "true" ]; then
-		install univention-xen
-		univention-config-registry unset update30/uvmm/univentionxen  >>"$UPDATER_LOG" 2>&1
-	fi
-	if [ -n "$update30_uvmm_univentionvirtualmachinemanagerdaemon" -a "$update30_uvmm_univentionvirtualmachinemanagerdaemon" = "true" ]; then
-		install univention-virtual-machine-manager-daemon
-		univention-config-registry unset update30/uvmm/univentionvirtualmachinemanagerdaemon  >>"$UPDATER_LOG" 2>&1
-	fi
-	if [ -n "$update30_uvmm_univentionvirtualmachinemanagernodexen" -a "$update30_uvmm_univentionvirtualmachinemanagernodexen" = "true" ]; then
-		install univention-virtual-machine-manager-node-xen
-		univention-config-registry unset update30/uvmm/univentionvirtualmachinemanagernodexen  >>"$UPDATER_LOG" 2>&1
-	fi
-	if [ -n "$update30_uvmm_univentionvirtualmachinemanagernodekvm" -a "$update30_uvmm_univentionvirtualmachinemanagernodekvm" = "true" ]; then
-		install univention-virtual-machine-manager-node-kvm
-		univention-config-registry unset update30/uvmm/univentionvirtualmachinemanagernodekvm  >>"$UPDATER_LOG" 2>&1
-	fi
-	univention-config-registry unset update30/uvmm/check  >>"$UPDATER_LOG" 2>&1
-fi
 
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 fi
-
-# remove old sysklogd startup links (Bug #23143)
-update-rc.d -f sysklogd remove 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
-
-# create /etc/python2.6/sitecustomize.py
-univention-config-registry commit /etc/python2.6/sitecustomize.py >>"$UPDATER_LOG" 2>&1
-
-# restore menu.lst: for grub1 chainload into grub2 (no more required after UCS 3.0-0 update)
-if [ -e /boot/grub/menu.lst.ucs3.0-0 ]; then
-	cp /boot/grub/menu.lst.ucs3.0-0 /boot/grub/menu.lst
-fi
-# end restore menu.lst
-
-# UCS 3.0 add univentionObjectType 
-if [ "$server_role" = "domaincontroller_master" ]; then
-
-	omscript="/usr/share/univention-directory-manager-tools/univention-object-type-migrate"
-
-	if [ ! "$update_objecttype_check" = "no" -a ! "$update_objecttype_check" = "false" -a ! "$update_objecttype_check" = "1" ]; then
-		dcs=$(univention-ldapsearch  -x objectClass=univentionDomainController -LLL dn | grep ^dn:| wc -l)
-		if [ -n "$dcs" -a "$dcs" -eq 1 ]; then
-			# only one dc -> update univentionObjectType
-			echo
-			echo -n "updating univentionObjectType ... "
-			$omscript -a -v >>"$UPDATER_LOG" 2>&1
-			echo "done"
-			echo
-		else
-			# multiple dc's -> print a message 
-			echo 
-			echo "To increase the performance of the Univention Director Manager (UDM) the"
-			echo "internal storage of the UDM objects was adapted. To update existing objects,"
-			echo "the script \"$(basename $omscript)\" can be used. This script changes"
-			echo "all the objects in the LDAP directory and therefore must be called manually"
-			echo "on the Domain Controller Master:"
-			echo
-			echo "-> $omscript -a -v"
-			echo 
-			echo "Additional information can be found in the release notes."
-			echo
-			
-		fi
-	fi
-fi
-# univentionObjectType end
 
 # executes custom postup script (always required)
 if [ ! -z "$update_custom_postup" ]; then
@@ -279,30 +129,7 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
-## BEGIN Bug #25380 (only for UCS 3.0-0)
-# set smtpd restrictions for postfix
-if [ ! "$update_bugfix25380_disabled" = "yes" ] ; then
-	univention-config-registry set \
-		mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
-		mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
-		mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
-		mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
-	invoke-rc.d postfix restart
-fi
-## END Bug #25380
-
-
-## BEGIN Bug #24413
-ucr set gdm/autostart="$(ucr get gdm/autostart/update30backup)" >&3 2>&3
-ucr unset gdm/autostart/update30backup >&3 2>&3
-eval "$(ucr shell gdm/autostart)"
-if [ -x /etc/init.d/gdm -a ! "$gdm_autostart" = "no" -a ! "$gdm_autostart" = "false" ] ; then
-	echo "Restarting gdm"
-	/etc/init.d/gdm start >&3 2>&3
-fi
-## END Bug #24413
-
-# For UCS 3.0 a reboot is required
+# For UCS 3.0-1 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
 echo "done."
