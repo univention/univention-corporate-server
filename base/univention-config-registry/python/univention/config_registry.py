@@ -1070,14 +1070,11 @@ def replog(method, scope, ucr, var, value=None):
 
 		str = '%s: %s %s%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue)
 		try:
-			isNew = True
-			if os.path.isfile(replog_file):
-				isNew = False
+			if not os.path.isfile(replog_file):
+				os.close(os.open(replog_file, os.O_CREAT, 0640))
 			logfile = open(replog_file,"a+")
 			logfile.write(str)
 			logfile.close()
-			if isNew:
-				os.chmod(replog_file, 0640)
 		except Exception, e:
 			print "error: exception occurred while writing to replication log: %s" % str(e)
 			exception_occured()

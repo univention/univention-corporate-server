@@ -1,3 +1,9 @@
+univention-config-registry (7.0.29-2) unstable; urgency=low
+
+  * fixed last commit (Bug #25206) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Feb 2012 12:55:44 +0100
+
 univention-config-registry (7.0.29-1) unstable; urgency=low
 
   * create replog log file with 0640 (Bug #25206)
