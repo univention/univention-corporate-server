@@ -1,3 +1,10 @@
+univention-squid (5.0.7-1) unstable; urgency=low
+
+  * replaced redirect_program in squid.conf with url_rewrite_program
+    (Bug #25806)
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Feb 2012 12:22:27 +0100
+
 univention-squid (5.0.6-1) unstable; urgency=low
 
   * fixed squid config template (Bug #25806)
