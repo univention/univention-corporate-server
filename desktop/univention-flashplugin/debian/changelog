@@ -1,3 +1,9 @@
+univention-flashplugin (5.0.2-7) unstable; urgency=low
+
+  * adjust filename (Bug #26161)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Feb 2012 16:56:08 +0100
+
 univention-flashplugin (5.0.2-6) unstable; urgency=low
 
   * Remove old download file (Bug #26161)
