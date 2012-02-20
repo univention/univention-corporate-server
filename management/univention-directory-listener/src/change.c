@@ -264,8 +264,15 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 		copy_cache_entry(&cache_entry, &updated_cache_entry);
 		handlers_update(dn, &cache_entry, &old_cache_entry, command, &updated_cache_entry);
 		//compare_cache_entries(&cache_entry, &updated_cache_entry);
-		if ((rv=cache_update_entry_lower(id, dn, &updated_cache_entry)) != 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+		if ( command == 'r' ) {
+			/* Delete the entry from cache, if the entry has been renamed, Bug #26069 */
+			if ((rv=cache_delete_entry(id, dn)) != 0) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+			}
+		} else {
+	   		if ((rv=cache_update_entry_lower(id, dn, &updated_cache_entry)) != 0) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+			}
 		}
 		rv=0;
 		signals_unblock();
