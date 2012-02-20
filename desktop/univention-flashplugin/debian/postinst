@@ -34,7 +34,7 @@
 
 # Move the old Flash plugin out of the way
 current_date=`date +%Y-%m-%d`
-mv /var/cache/flashplugin-nonfree/install_flash_player_10_linux.tar.gz /var/cache/flashplugin-nonfree/backup-flash-player-$current_date
+mv /var/cache/flashplugin-nonfree/install_flash_player_11_linux.tar.gz /var/cache/flashplugin-nonfree/backup-flash-player-$current_date
 
 update-flashplugin || echo "Warning: flash-update failed, run update-flashplugin manually"
 
