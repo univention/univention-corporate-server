@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2012-02-17 13:58+0100\n"
-"PO-Revision-Date: 2012-02-17 12:31+0100\n"
+"PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -22,7 +22,7 @@ msgid ""
 "management system. However, it is possible to configure DNS and DHCP "
 "settings for base systems via the Univention management system as long as "
 "the base system is entered as an IP managed client in the directory service."
-msgstr ""
+msgstr "<h2>Basissystem</h2>Ein Basissystem ist ein eigenständiges System. Es ist nicht Mitglied einer Domäne und unterhält keine Vertrauensbeziehungen zu anderen Servern oder Domänen. Ein Basissystem bietet sich somit für Dienste an, die außerhalb des Vertrauenskontextes der Domäne betrieben werden, etwa als Web-Server oder Firewall. Die Dienste eines Basissystems können nicht über das UCS-Managementsystem konfiguriert werden. Es können aber DNS- und DHCP-Einstellungen für Basissysteme über das Univention Management System, sofern das betreffende Basissystem als IP-Managed-Client im Verzeichnisdienst eingetragen wurde."
 
 #: umc/js/_setup/SystemRolePage.js:90
 msgid ""
@@ -34,7 +34,7 @@ msgid ""
 "copy of the DC master.  If the DC master should collapse completely, running "
 "a special command allows the DC backup to take over the role of the DC "
 "master permanently in a very short time."
-msgstr ""
+msgstr "<h2>Domänencontroller Backup</h2>Auf Servern mit der Rolle Domänencontroller Backup (kurz DC Backup) befindet sich eine replizierte Kopie des gesamten LDAP-Verzeichnisses, die nicht verändert werden kann, da alle Schreibzugriffe grundsätzlich am DC Master durchgeführt werden. Ausserdem wird eine Kopie aller SSL-Zertifikate einschließlich des privaten Schlüssels der Root-CA auf dem DC Backup vorgehalten. Der DC Backup dient somit als Sicherheitskopie des DC Master.  Sollte der DC Master dauerhaft ausfallen, kann ein DC Backup innerhalb kürzester Zeit durch Aufruf eines Befehls die Rolle des DC Master dauerhaft übernehmen. Dies ist nur notwendig, wenn Änderungen am LDAP-Verzeichnis vorgenommen oder neue Zertifikate ausgestellt werden sollen, weil diese Aufgaben nur von einem DC Master durchgeführt werden können."
 
 #: umc/js/_setup/SystemRolePage.js:85
 msgid ""
@@ -45,7 +45,7 @@ msgid ""
 "of them within a domain. In addition, the Root Certification Authority (root "
 "CA) is also on the DC master. All SSL certificates created are archived on "
 "the DC master."
-msgstr ""
+msgstr "<h2>Domänencontroller Master</h2>Auf dem Domänencontroller Master (kurz DC Master) befindet sich der Originaldatenbestand des gesamten LDAP-Verzeichnisses. Änderungen im LDAP-Verzeichnis werden nur auf diesem Server vorgenommen. Deswegen muss dieser als erstes System in Betrieb genommen werden und kann innerhalb einer Domäne nur einmal existieren. Außerdem befindet sich die Root Certification Authority (Root-CA) auf dem DC Master. Alle ausgestellten SSL-Zertifikate werden auf dem DC Master archiviert."
 
 #: umc/js/_setup/SystemRolePage.js:95
 msgid ""
@@ -56,7 +56,7 @@ msgid ""
 "location through selective replication. The DC slave only stores a copy of "
 "its own and the public SSL certificate of the root CA. A DC slave system "
 "cannot be promoted to a DC master."
-msgstr ""
+msgstr "<h2>Domänencontroller Slave</h2>Auf einem Domänencontroller Slave (kurz DC Slave) befindet sich eine replizierte Kopie des LDAP-Verzeichnisses, die nicht verändert werden kann, da alle Schreibzugriffe am DC Master durchgeführt werden. Die Kopie kann das gesamte Verzeichnis umfassen oder durch selektive Replikation auf an einem Standort benötigte Daten eingeschränkt werden. Auf einem DC Slave wird nur das eigene und das öffentliche SSL-Zertifikat der Root-CA vorgehalten. Ein DC Slave-System kann nicht zum DC Master hochgestuft werden."
 
 #: umc/js/_setup/SystemRolePage.js:100
 msgid ""
@@ -64,7 +64,7 @@ msgid ""
 "services such as file storage for the domain. Member servers do not contain "
 "a copy of the LDAP directory. It only stores a copy of its own and the "
 "public SSL certificate of the root CA."
-msgstr ""
+msgstr "<h2>Member-Server</h2>Member-Server sind Mitglieder einer LDAP-Domäne und bieten Dienste wie z.B. Datenspeicherung für die Domäne an. Auf einem Member-Server befindet sich keine Kopie des LDAP-Verzeichnisses. Auf ihm wird nur das eigene und das öffentliche SSL-Zertifikat der Root-CA vorgehalten."
 
 #: umc/js/_setup/NetworkPage.js:221
 msgid "A virtual network device cannot be used for DHCP."
