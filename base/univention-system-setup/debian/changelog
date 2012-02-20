@@ -1,3 +1,9 @@
+univention-system-setup (5.0.112-2) unstable; urgency=low
+
+  * add missing UCR variable description (Bug #25980)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 20 Feb 2012 16:32:19 +0100
+
 univention-system-setup (5.0.112-1) unstable; urgency=low
 
   * update translation (Bug #25980)

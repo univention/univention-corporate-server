@@ -9,3 +9,9 @@ Description[en]=Defines the position of HTML files that will be included as star
 Description[de]=Definiert die Position der HMLT-Dateien, die als Startseite in den Wizard des Appliance-Konfigurations-Setup eingebunden werden. Format: <Verzeichnis>:<Datei>. Wenn <Verzeichnis>/<Sprache>/<Datei> existiert, wird die Startseite lokalisiert, andernfalls ist der "Fallback" <Verzeichnis>/<Datei> für eine Startseite, die nicht lokalisiert ist.
 Type=string
 Categories=system-base
+
+[system/setup/boot/select/role]
+Description[en]=Activates in Univention System Setup the selection of a new system role. The selection dialog will be shown only, if the system has not been joined yet.
+Description[de]=Aktiviert in Univention System Setup den optionalen Wechsel zu einer anderen Systemrolle. Die Auswahl wird nur angezeigt, wenn das System noch nicht gejoined wurde.
+Type=string
+Categories=system-base
