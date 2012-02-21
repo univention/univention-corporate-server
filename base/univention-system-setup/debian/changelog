@@ -2,6 +2,7 @@ univention-system-setup (5.0.114-1) unstable; urgency=low
 
   * use currently selected role to determine if join credentials are
     neccessary (Bug #25980)
+  * obey visible attribute of wizard pages when pressing RETURN (Bug #25980)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 21 Feb 2012 11:32:47 +0100
 

@@ -163,7 +163,13 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					moduleFlavor: this.moduleFlavor,
 					onSave: dojo.hitch(this, function() {
 						if (i < allPages.length - 1) {
-							this.selectChild(this._pages[i + 1]);
+							// switch to next visible page
+							// precondition: the last page is never invisible!
+							var nextpage = i + 1;
+							while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
+								nextpage += 1;
+							}
+							this.selectChild(this._pages[nextpage]);
 						}
 						else {
 							this.save();
