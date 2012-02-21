@@ -731,7 +731,7 @@ class gid(simple):
 	error_message = _("Value may not contain other than numbers, letters and dots!")
 
 class sharePath( simple ):
-	regex = re.compile('.*".*')
+	regex = re.compile('^([^"])+$')
 	error_message = _('Value may not contain double quotes (")!')
 
 	@classmethod
