@@ -373,7 +373,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// initiate some local check variables
 		var joined = this._orgValues['joined'];
-		var role = this._orgValues['server/role'];
+		var newValues = this.getValues();
+		var role = newValues['server/role'];
 		var userSystemSetup = umc.tools.status('username') == '__systemsetup__';
 
 		if (!nchanges && userSystemSetup && (joined || role == 'basesystem')) {
