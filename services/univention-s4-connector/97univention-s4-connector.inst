@@ -85,8 +85,10 @@ if [ -n "$s4connectorservicehost_dns" ]; then	## there already is a system provi
 else										## we are first system to provide this service
 
 	## create an admin user for synchronisation
-	samba-tool user add ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
-	samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
+	if [ -e /etc/samba4.secret ]; then
+		samba-tool user add ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
+		samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
+	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 		/usr/share/univention-heimdal/salt_krb5Keys 

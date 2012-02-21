@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.103-1) unstable; urgency=low
+
+  * Create ucs-s4sync user only if /etc/samba4.secret was created
+    (Bug #25985)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Feb 2012 07:20:10 +0100
+
 univention-s4-connector (6.0.102-1) unstable; urgency=low
 
   * Fixed sid checking (Bug #26005)
