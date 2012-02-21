@@ -147,9 +147,12 @@ def connect():
 	else:
 		baseconfig_retry_rejected=baseConfig['%s/s4/retryrejected' % CONFIGBASENAME]
 
-	s4_ldap_bindpw=open(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
-	if s4_ldap_bindpw[-1] == '\n':
-		s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
+	if os.path.exists(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
+		s4_ldap_bindpw=open(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
+		if s4_ldap_bindpw[-1] == '\n':
+			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
+	else:
+		s4_ldap_bindpw=None
 	
 	poll_sleep=int(baseConfig['%s/s4/poll/sleep' % CONFIGBASENAME])
 	s4_init=None
