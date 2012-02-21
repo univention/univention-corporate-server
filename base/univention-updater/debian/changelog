@@ -1,3 +1,10 @@
+univention-updater (7.0.144-2) unstable; urgency=low
+
+  * Set repository/online/errata/start to 30, since UCS 3.0-1 incorporates
+    all previous 29 errata updates (Bug #25832)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 21 Feb 2012 14:55:20 +0100
+
 univention-updater (7.0.144-1) unstable; urgency=low
 
   * Cleanup pre- and postup.sh (Bug #26157)

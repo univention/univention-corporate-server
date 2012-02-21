@@ -116,4 +116,6 @@ else
 	univention-config-registry set repository/online/server?"updates.software-univention.de"
 fi
 
+univention-config-registry set repository/online/errata/start=30
+
 exit 0
