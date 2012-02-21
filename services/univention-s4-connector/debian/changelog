@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.105-1) unstable; urgency=low
+
+  * Don't map the windows computer to a DN with uid= (Bug #26121)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Feb 2012 14:08:48 +0100
+
 univention-s4-connector (6.0.104-1) unstable; urgency=low
 
   * Check if bindpw file exists (Bug #25985)

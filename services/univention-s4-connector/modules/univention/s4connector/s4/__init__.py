@@ -144,7 +144,7 @@ def s42samba_time(l):
 	return long(((l-d))/10000000)
 
 # mapping funtions
-def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocs4):
+def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocs4, dn_attr = None):
 	'''
 	map dn of given object (which must have an samaccountname in S4)
 	ocucs and ocs4 are objectclasses in UCS and S4
@@ -152,10 +152,14 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 	object = copy.deepcopy(given_object)
 
 	samaccountname = ''
+	dn_attr_val = ''
 	
 	if object['dn'] != None:
 		if object['attributes'].has_key('sAMAccountName'):
 			samaccountname=object['attributes']['sAMAccountName'][0]
+		if dn_attr:
+			if object['attributes'].has_key(dn_attr):
+				dn_attr_val=object['attributes'][dn_attr][0]
 		
 	def dn_premapped(object, dn_key, dn_mapping_stored):
 		if (not dn_key in dn_mapping_stored) or (not object[dn_key]):
@@ -196,7 +200,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				value = object['attributes'][ucsattrib][0]
 			else:
 				value = dn[pos+1:pos2]
-
+	
 			if ucsobject:
 				# lookup the cn as sAMAccountName in S4 to get corresponding DN, if not found create new
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got an UCS-Object")
@@ -227,6 +231,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				else:
 					newdn = 'cn' + dn[pos:] #new object, don't need to change
 
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
 				# get the object to read the sAMAccountName in S4 and use it as name
 				# we have no fallback here, the given dn must be found in S4 or we've got an error
@@ -272,7 +277,10 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					newdn = ucsdn
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
 				else:
-					newdn = ucsattrib + '=' + samaccountname + dn[pos2:] # guess the old dn
+					if dn_attr:
+						newdn = dn_attr + '=' + dn_attr_val + dn[pos2:] # guess the old dn
+					else:
+						newdn = ucsattrib + '=' + samaccountname + dn[pos2:] # guess the old dn
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %s:" % dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %s" % dn)
@@ -307,7 +315,7 @@ def windowscomputer_dn_mapping(s4connector, given_object, dn_mapping_stored, isU
 	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
 	'''
-	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', u'computer')
+	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
 
 def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 	'''
@@ -315,7 +323,7 @@ def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
 	'''
-	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', u'computer')
+	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
 
 def old_user_dn_mapping(s4connector, given_object):
 	object = copy.deepcopy(given_object)
