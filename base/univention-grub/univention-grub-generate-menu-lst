@@ -34,6 +34,7 @@ import os, glob, sys, shutil, operator
 
 import univention.debug as udbg
 import univention.config_registry as ucr
+from distutils.version import LooseVersion
 
 class kernel:
 	def __init__(self, kversion, uversion, arch, origversion):
@@ -65,8 +66,7 @@ if os.path.exists("/boot/grub/menu.lst"):
 
 kernels = []
 for i in glob.glob("/boot/vmlinuz*"):
-	ksplit = i.split("/boot/vmlinuz-")[1].split("-")
-	kernels.append(kernel(ksplit[0], int(ksplit[1].replace("ucs", "")), ksplit[2], i.replace("/boot/", "")))
+	kernels.append(i.replace("/boot/vmlinuz-", ""))
 
 lst = []
 lst.append("# This Grub configuration is auto-generated through univention-grub-generate-menu-lst.")
@@ -76,13 +76,11 @@ lst.append("default 0")
 lst.append("timeout 5 ")
 lst.append(" ")
 
-for i in sorted(kernels, key=operator.attrgetter('kversion', 'uversion'), reverse=True):
-	kstring = i.origversion
-
-	lst.append("title           UCS, kernel " + kstring)
+for i in sorted(kernels, key=LooseVersion, reverse=True):
+	lst.append("title           UCS, kernel " + i)
 	lst.append("root            (hd0,0)")
-	lst.append("kernel          /vmlinuz-" + kstring + " root=/dev/mapper/vg_ucs-rootfs ro splash=nosplash")
-	lst.append("initrd          /initrd.img-" + kstring)
+	lst.append("kernel          /vmlinuz-" + i + " root=/dev/mapper/vg_ucs-rootfs ro splash=nosplash")
+	lst.append("initrd          /initrd.img-" + i)
 	lst.append(" ")
 
 if os.path.exists("/boot/grub/menu.lst"):
