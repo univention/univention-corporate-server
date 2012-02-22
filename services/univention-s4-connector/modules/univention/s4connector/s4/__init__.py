@@ -1065,9 +1065,7 @@ class s4(univention.s4connector.ucs):
 		'''
 		_d=ud.function('ldap.set_primary_group_to_ucs_user')
 
-		s4_group_rid_resultlist = encode_s4_resultlist(self.lo_s4.lo.search_ext_s(self.lo_s4.base,ldap.SCOPE_SUBTREE,
-							   'samaccountname=%s' % compatible_modstring(object_ucs['username']),
-							   timeout=-1, sizelimit=0))
+		s4_group_rid_resultlist = self.__search_s4(base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, 'samaccountname=%s' % compatible_modstring(object_ucs['username'], attrlist=['dn', 'primaryGroupID']))
 
 		if not s4_group_rid_resultlist[0][0] in ['None','',None]:
 
@@ -1076,12 +1074,8 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO,
 								   "set_primary_group_to_ucs_user: S4 rid: %s"%s4_group_rid)
 			object_sid_string = str(self.s4_sid) + "-" + str(s4_group_rid)
-			if self.baseConfig.has_key('%s/s4/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/s4/windows_version' % self.CONFIGBASENAME] == "win2000":
-				object_sid_string = encode_object_sid_to_binary_ldapfilter(object_sid_string)
 
-			ldap_group_s4 = encode_s4_resultlist(self.lo_s4.lo.search_ext_s(self.lo_s4.base,ldap.SCOPE_SUBTREE,
-								   "objectSid=" + object_sid_string,
-								   timeout=-1, sizelimit=0))
+			ldap_group_s4 = self.__search_s4( base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter="objectSid=" + object_sid_string)
 
 			if not ldap_group_s4[0][0]:
 				ud.debug(ud.LDAP, ud.ERROR, "s4.set_primary_group_to_ucs_user: Primary Group in S4 not found (not enough rights?), sync of this object will fail!")
@@ -1179,9 +1173,7 @@ class s4(univention.s4connector.ucs):
 		object_sid_string = str(self.s4_sid) + "-" + str(s4_group_rid)
 
 
-		ldap_group_s4 = encode_s4_resultlist(self.lo_s4.lo.search_ext_s(self.lo_s4.base,ldap.SCOPE_SUBTREE,
-							   ('objectSID=' + object_sid_string),
-							   timeout=-1, sizelimit=0))
+		ldap_group_s4 = self.__search_s4( base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter='objectSID=' + object_sid_string)
 
 		ucs_group = self._object_mapping('group',{'dn':ldap_group_s4[0][0],'attributes':ldap_group_s4[0][1]})
 
@@ -1215,7 +1207,8 @@ class s4(univention.s4connector.ucs):
 
 		object_ucs = self._object_mapping(key, object)
 
-		ucs_groups_ldap = self.search_ucs(filter='(&(objectClass=univentionGroup)(uniqueMember=%s))' % object_ucs['dn'])
+		# Exclude primary group
+		ucs_groups_ldap = self.search_ucs(filter='(&(objectClass=univentionGroup)(uniqueMember=%s)(!(gidNumber=%s)))' % (object_ucs['dn'], object_ucs['attributes'].get('gidNumber', [])[0]))
 
 		if ucs_groups_ldap == []:
 			ud.debug(ud.LDAP, ud.INFO,
@@ -1372,9 +1365,7 @@ class s4(univention.s4connector.ucs):
 
 		if group_rid:
 			# search for members who have this as their primaryGroup
-			prim_members_s4 = encode_s4_resultlist(self.lo_s4.lo.search_ext_s(self.lo_s4.base,ldap.SCOPE_SUBTREE,
-									 'primaryGroupID=%s'%group_rid, ['cn'], 
-									 timeout=-1, sizelimit=0))
+			prim_members_s4 = self.__search_s4(self.lo_s4.base,ldap.SCOPE_SUBTREE, 'primaryGroupID=%s'%group_rid, ['cn'])
 
 			for prim_dn, prim_object in prim_members_s4:
 				if not prim_dn in ['None','',None]: # filter referrals

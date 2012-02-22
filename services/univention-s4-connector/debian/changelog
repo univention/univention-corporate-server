@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.106-1) unstable; urgency=low
+
+  * Use function __search_s4 (Bug #26208)
+  * Fixed group membership sync (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Feb 2012 08:11:42 +0100
+
 univention-s4-connector (6.0.105-1) unstable; urgency=low
 
   * Don't map the windows computer to a DN with uid= (Bug #26121)

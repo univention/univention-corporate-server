@@ -136,6 +136,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
 @!@
 							univention.s4connector.s4.password.password_sync_ucs_to_s4,
 						    univention.s4connector.s4.primary_group_sync_from_ucs,
+						    univention.s4connector.s4.object_memberships_sync_from_ucs,
 						    univention.s4connector.s4.disable_user_from_ucs,
 						    ],
 
