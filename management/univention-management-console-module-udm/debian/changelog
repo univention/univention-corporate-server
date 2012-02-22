@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.273-1) unstable; urgency=low
+
+  * revert close confirmation changes (Bug #25630)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 22 Feb 2012 12:47:14 +0100
+
 univention-management-console-module-udm (1.0.272-1) unstable; urgency=low
 
   * fix evaluation of directory/manager/web/modules/autosearch and

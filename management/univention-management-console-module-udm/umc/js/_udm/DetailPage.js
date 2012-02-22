@@ -612,7 +612,7 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		}, {
 			name: 'close',
 			label: closeLabel,
-			callback: dojo.hitch(this, 'confirmClose'),
+			callback: dojo.hitch(this, 'onCloseTab'),
 			style: 'float: left'
 		}]);
 		var footer = new umc.widgets.ContainerWidget({
@@ -1272,31 +1272,6 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 		// summary:
 		//		Event is called when the page should be closed.
 		return true;
-	},
-
-	confirmClose : function() {
-		// summary:
-		// 		If changes have been made show a confirmation dialogue before closing the detailpage
-
-		var alteredValues = this.getAlteredValues();
-		delete alteredValues.$dn$;
-
-		if(!this.newObjectOptions && (dojo.toJson(alteredValues) != '{}')) {
-			// Changes have been made. Display confirm dialogue.
-			return umc.dialog.confirm( this._('There are unsaved changes. Are you sure to cancel nevertheless?'), [{
-				label: this._('Discard changes'),
-				name: 'quit',
-				callback: dojo.hitch(this, 'onCloseTab')
-				}, {
-					label: this._('Continue editing'),
-					name: 'cancel',
-					'default': true
-				}]
-			);
-		}
-
-		// No changes have been made. Close the detail page
-		this.onCloseTab();
 	},
 
 	onSave: function(dn, objectType) {
