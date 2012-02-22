@@ -69,7 +69,6 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 	_snapshotGrid: null,
 
 	_domain: null,
-	_loadedValues: null,
 
 	disabled: false,
 
@@ -87,7 +86,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
-				callback: dojo.hitch(this, 'confirmClose')
+				callback: dojo.hitch(this, 'onClose')
 			}, {
 				label: this._('Save'),
 				defaultButton: true,
@@ -157,7 +156,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
-				callback: dojo.hitch(this, 'confirmClose')
+				callback: dojo.hitch(this, 'onClose')
 			}, {
 				label: this._('Save'),
 				defaultButton: true,
@@ -267,7 +266,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
-				callback: dojo.hitch(this, 'confirmClose')
+				callback: dojo.hitch(this, 'onClose')
 			}, {
 				label: this._('Save'),
 				defaultButton: true,
@@ -326,7 +325,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			footerButtons: [{
 				label: this._('Back to overview'),
 				name: 'cancel',
-				callback: dojo.hitch(this, 'confirmClose')
+				callback: dojo.hitch(this, 'onClose')
 			}, {
 				label: this._('Save'),
 				defaultButton: true,
@@ -358,8 +357,11 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 		// validate
 		var valid = true;
 		var widgets = dojo.mixin({}, this._generalForm._widgets, this._advancedForm._widgets);
+		var values = dojo.clone(this._domain);
+		delete values.domainURI;
 		umc.tools.forIn(widgets, function(iname, iwidget) {
 			valid = valid && (false !== iwidget.isValid());
+			values[iname] = iwidget.get('value');
 			return valid;
 		}, this);
 
@@ -367,9 +369,21 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			umc.dialog.alert(this._('The entered data is not valid. Please correct your input.'));
 			return;
 		}
-
-		var values = this.getValues();
-		delete values.domainURI;
+		// special handling for boot devices
+		var paravirtual = this._domain.type == 'xen-xen';
+		if ( paravirtual ) {
+			var disks = [], boot_medium = null;
+			dojo.forEach( this._domain.disks, function( disk ) {
+				if ( values.boot_pv == disk.source ) {
+					disks.unshift( disk );
+				} else {
+					disks.push( disk );
+				}
+			} );
+			values.disks = disks;
+		} else {
+			values.boot = values.boot_hvm;
+		}
 
 		this.standby(true);
 		umc.tools.umcpCommand('uvmm/domain/put', {
@@ -447,17 +461,17 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 					idev.$id$ = i + 1;
 				});
 
-				// we need to add pseudo ids for the disk drives
+				// we need to add pseudo ids for the network interfaces
 				dojo.forEach(this._domain.disks, function(idrive, i) {
 					idrive.$id$ = i + 1;
 				});
 
 				// update the stores
+				this._interfaceStore.setData(this._domain.interfaces);
+				this._driveStore.setData(this._domain.disks);
 				this._snapshotGrid.set('domainURI', id);
 				this._driveGrid.set('domain', this._domain);
 				this._interfaceGrid.set('domain', this._domain);
-				this._interfaceStore.setData(this._domain.interfaces);
-				this._driveStore.setData(this._domain.disks);
 
 				var qcow2_images = 0;
 				var snapshots_possible = dojo.every( this._domain.disks, function( disk ) {
@@ -511,63 +525,10 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				} ) );
 				this.selectChild( this._generalPage, true);
 			}
-			this._loadedValues = this.getValues();
-			// iterate over all advanced settings to set dynamically loaded values
-			umc.tools.forIn(this._advancedForm._widgets, function(ikey) {
-				if (this._loadedValues[ikey] === '' && this._domain[ikey] !== null && this._domain[ikey] !== undefined) {
-					this._loadedValues[ikey] = String(this._domain[ikey]);
-				}
-			}, this);
 			this.standby(false);
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));
-	},
-
-	getValues : function() {
-		var values = dojo.mixin({}, this._domain, 
-			this._generalForm.gatherFormValues(), 
-			this._advancedForm.gatherFormValues()
-		);
-
-		// special handling for boot devices
-		var paravirtual = this._domain.type === 'xen-xen';
-		if ( paravirtual ) {
-			var disks = [], boot_medium = null;
-			dojo.forEach( this._domain.disks, function( disk ) {
-				if ( values.boot_pv == disk.source ) {
-					disks.unshift( disk );
-				} else {
-					disks.push( disk );
-				}
-			} );
-			values.disks = disks;
-		} else {
-			values.boot = values.boot_hvm;
-		}
-		return values;
-	},
-
-	confirmClose : function() {
-		// summary:
-		// 		If changes have been made show a confirmation dialogue before closing the page
-
-		if (!umc.tools.isEqual(this._loadedValues, this.getValues())) {
-			// Changes have been made. Display confirm dialogue.
-			return umc.dialog.confirm( this._('There are unsaved changes. Are you sure to cancel nevertheless?'), [{
-				label: this._('Discard changes'),
-				name: 'quit',
-				callback: dojo.hitch(this, 'onClose')
-				}, {
-					label: this._('Continue editing'),
-					name: 'cancel',
-					'default': true
-				}]
-			);
-		}
-
-		// No changes have been made. Close the page
-		this.onClose();
 	},
 
 	onClose: function() {
