@@ -36,10 +36,11 @@ import univention.debug as udbg
 import univention.config_registry as ucr
 
 class kernel:
-	def __init__(self, kversion, uversion, arch):
+	def __init__(self, kversion, uversion, arch, origversion):
 		self.kversion = kversion
 		self.uversion = uversion
 		self.arch = arch
+		self.origversion = origversion
 	def __repr__(self):
 		return repr((self.kversion, self.uversion, self.arch))
 
@@ -65,7 +66,7 @@ if os.path.exists("/boot/grub/menu.lst"):
 kernels = []
 for i in glob.glob("/boot/vmlinuz*"):
 	ksplit = i.split("/boot/vmlinuz-")[1].split("-")
-	kernels.append(kernel(ksplit[0], int(ksplit[1].replace("ucs", "")), ksplit[2]))
+	kernels.append(kernel(ksplit[0], int(ksplit[1].replace("ucs", "")), ksplit[2], i.replace("/boot/", "")))
 
 lst = []
 lst.append("# This Grub configuration is auto-generated through univention-grub-generate-menu-lst.")
@@ -76,7 +77,7 @@ lst.append("timeout 5 ")
 lst.append(" ")
 
 for i in sorted(kernels, key=operator.attrgetter('kversion', 'uversion'), reverse=True):
-	kstring = i.kversion + "-ucs" +  str(i.uversion) + "-" + i.arch
+	kstring = i.origversion
 
 	lst.append("title           UCS, kernel " + kstring)
 	lst.append("root            (hd0,0)")
