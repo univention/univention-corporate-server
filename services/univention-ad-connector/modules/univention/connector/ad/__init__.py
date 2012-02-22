@@ -1150,7 +1150,8 @@ class ad(univention.connector.ucs):
 
 		object_ucs = self._object_mapping(key, object)
 
-		ucs_groups_ldap = self.search_ucs(filter='(&(objectClass=univentionGroup)(uniqueMember=%s))' % object_ucs['dn'])
+		# Exclude primary group
+		ucs_groups_ldap = self.search_ucs(filter='(&(objectClass=univentionGroup)(uniqueMember=%s)(!(gidNumber=%s)))' % (object_ucs['dn'], object_ucs['attributes'].get('gidNumber', [])[0]))
 
 		if ucs_groups_ldap == []:
 			ud.debug(ud.LDAP, ud.INFO,
@@ -1306,9 +1307,7 @@ class ad(univention.connector.ucs):
 
 		if group_rid:
 			# search for members who have this as their primaryGroup
-			prim_members_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
-									 'primaryGroupID=%s'%group_rid, ['cn'], 
-									 timeout=-1, sizelimit=0))
+			prim_members_ad = self.__search_ad( self.lo_ad.base,ldap.SCOPE_SUBTREE, 'primaryGroupID=%s'%group_rid, ['cn'])
 
 			for prim_dn, prim_object in prim_members_ad:
 				if not prim_dn in ['None','',None]: # filter referrals

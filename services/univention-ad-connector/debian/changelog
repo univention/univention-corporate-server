@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.52-1) unstable; urgency=low
+
+  * Use function __search_s4 (Bug #26208)
+  * Fixed group membership sync (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Feb 2012 08:12:05 +0100
+
 univention-ad-connector (6.0.51-1) unstable; urgency=low
 
   * Check if group cache is empty (Bug #25709)
