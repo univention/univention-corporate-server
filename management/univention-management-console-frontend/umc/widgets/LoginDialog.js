@@ -264,6 +264,7 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		}), dojo.hitch(this, function(error) {
 			// disable standby in any case
 			this.standby(false);
+			dijit._DialogLevelManager.hide(this);
 		}));
 	},
 
@@ -291,12 +292,12 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		if (this._isRendered) {
 			dojo.query('.umcShowHide').style('display', 'block');
 			this._setInitialFocus();
-			dijit._DialogLevelManager.show(this);
+			dijit._DialogLevelManager.show(this, this.underlayAttrs);
 		} else {
 			var handler = this.connect(this, '_connectEvents', function() {
 				dojo.query('.umcShowHide').style('display', 'block');
 				this._setInitialFocus();
-				dijit._DialogLevelManager.show(this);
+				dijit._DialogLevelManager.show(this, this.underlayAttrs);
 				this.disconnect(handler);
 			});
 		}

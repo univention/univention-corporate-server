@@ -1,5 +1,11 @@
 univention-management-console-frontend (1.0.270-1) unstable; urgency=low
 
+  * LoginDialog: fix dijit._DialogLevelManager implementation (Bug #25249)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 22 Feb 2012 10:53:52 +0100
+
+univention-management-console-frontend (1.0.270-1) unstable; urgency=low
+
   * LoginDialog: use dijit._DialogLevelManager to handle visibility of dialogs
     correctly; Bug #25249
 
