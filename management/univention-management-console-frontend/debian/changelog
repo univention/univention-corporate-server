@@ -1,6 +1,7 @@
-univention-management-console-frontend (1.0.270-1) unstable; urgency=low
+univention-management-console-frontend (1.0.271-1) unstable; urgency=low
 
   * LoginDialog: fix dijit._DialogLevelManager implementation (Bug #25249)
+  * LoginDialog: recentering dialog (Bug #25020)
 
  -- Jascha Geerds <geerds@univention.de>  Wed, 22 Feb 2012 10:53:52 +0100
 
