@@ -1,4 +1,4 @@
-univention-management-console-frontend (1.0.273-2) unstable; urgency=low
+univention-management-console-frontend (1.0.274-1) unstable; urgency=low
 
   * updated text of reboot hint after UMC login (Bug #24999)
 
