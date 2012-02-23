@@ -1484,14 +1484,14 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ad_members %s" % ad_members)
 
-		ucs_members_from_ad = { 'user' : [], 'group': [] }
+		ucs_members_from_ad = { 'user' : [], 'group': [], 'unknown': [] }
 		
 		# map members from AD to UCS and check if they exist
 		for member_dn in ad_members:
 			ucs_dn = self.group_mapping_cache_con.get(member_dn.lower())
 			if ucs_dn:
 				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache ad: DN: %s" % (member_dn, ucs_dn))
-				ucs_members_from_ad[key].append(ucs_dn.lower())
+				ucs_members_from_ad['unknown'].append(ucs_dn.lower())
 			else:
 				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in group cache ad" % member_dn)
 				member_object = self.get_object(member_dn)
@@ -1505,7 +1505,7 @@ class ad(univention.connector.ucs):
 
 					try:
 						if self.lo.get(ucs_dn):
-							ucs_members_from_ad[key].append(ucs_dn.lower())
+							ucs_members_from_ad['unknown'].append(ucs_dn.lower())
 							self.group_mapping_cache_con[member_dn.lower()] = ucs_dn
 						else:
 							ud.debug(ud.LDAP, ud.INFO, "Failed to find %s via self.lo.get" % ucs_dn)
@@ -1519,7 +1519,7 @@ class ad(univention.connector.ucs):
 
 		# check if members in UCS don't exist in AD, if true they need to be added in UCS
 		for member_dn in ucs_members:
-			if not (member_dn.lower() in ucs_members_from_ad['user'] or member_dn.lower() in ucs_members_from_ad['group']):
+			if not (member_dn.lower() in ucs_members_from_ad['user'] or member_dn.lower() in ucs_members_from_ad['group'] or member_dn.lower() in ucs_members_from_ad['unknown']):
 				try:
 					cache[member_dn] = self.lo.get(member_dn)
 					ucs_object = {'dn':member_dn,'modtype':'modify','attributes': cache[member_dn]}
@@ -1555,6 +1555,8 @@ class ad(univention.connector.ucs):
 				add_members['user'].remove(member_dn.lower())
 			elif member_dn.lower() in ucs_members_from_ad['group']:
 				add_members['group'].remove(member_dn.lower())
+			elif member_dn.lower() in ucs_members_from_ad['unknown']:
+				add_members['unknown'].remove(member_dn.lower())
 			else:
 				# remove member only if he was in the cache
 				# otherwise it is possible that the user was just created on UCS
@@ -1573,23 +1575,28 @@ class ad(univention.connector.ucs):
 								break					
 				else:
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: %s was not found in member cache, don't delete" % member_dn)
-		self.group_members_cache_con[ad_object['dn'].lower()] = ucs_members_from_ad['user'] + ucs_members_from_ad['group']
+		self.group_members_cache_con[ad_object['dn'].lower()] = ucs_members_from_ad['user'] + ucs_members_from_ad['group'] + ucs_members_from_ad['unknown']
 		ud.debug(ud.LDAP, ud.INFO, "group_members_cache_con[%s]: %s" % (ad_object['dn'].lower(), self.group_members_cache_con[ad_object['dn'].lower()]))
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to add: %s" % add_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to del: %s" % del_members)
 
-		if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group']:
+		if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group'] or add_members['unknown']:
 			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
 			ucs_admin_object.open()
 
-			uniqueMember_add = add_members['user'] + add_members['group']
+			uniqueMember_add = add_members['user'] + add_members['group'] + add_members['unknown']
 			uniqueMember_del = del_members['user'] + del_members['group']
 			memberUid_add = []
 			memberUid_del = []
 			for member in add_members['user']:
 				uid = ldap.explode_dn(member)[0].split('=')[-1]
 				memberUid_add.append(uid)
+			for member in add_members['unknown']: # user or group?
+				ucs_object_attr = self.lo.get(member)
+				uid=ucs_object_attr.get('uid')
+				if uid:
+					memberUid_add.append(uid[0])
 			for member in del_members['user']:
 				uid = ldap.explode_dn(member)[0].split('=')[-1]
 				memberUid_del.append(uid)

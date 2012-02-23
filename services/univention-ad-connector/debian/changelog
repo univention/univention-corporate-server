@@ -1,3 +1,10 @@
+univention-ad-connector (6.0.53-1) unstable; urgency=low
+
+  * Add the memberUid value to the group if the new member is a user
+    (Bug #25709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Feb 2012 06:55:34 +0100
+
 univention-ad-connector (6.0.52-1) unstable; urgency=low
 
   * Use function __search_s4 (Bug #26208)
