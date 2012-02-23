@@ -228,8 +228,18 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 	_setInitialFocus: function() {
 		dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
 			// initial focus on username input
-			dojo.byId('umc_UsernameInput').focus();
-			this._setFocus(dojo.byId('umc_UsernameContainer'), true);
+			if (!umc.tools._status.username) {
+				dojo.byId('umc_UsernameInput').focus();
+				this._setFocus('umc_UsernameContainer', true);
+			} else {
+				// user has already logged in before, we need to auto fill
+				// the username and disable the textbox.
+				dojo.attr('umc_UsernameInput', 'value', umc.tools._status.username);
+				dojo.attr('umc_UsernameInput', 'disabled', true);
+				dojo.addClass('umc_UsernameContainer', 'dijitTextBoxDisabled dijitValidationTextBoxDisabled dijitDisabled');
+				dojo.byId('umc_PasswordInput').focus();
+				this._setFocus('umc_PasswordContainer', true);
+			}
 		}));
 	},
 
