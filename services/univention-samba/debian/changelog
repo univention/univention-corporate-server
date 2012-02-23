@@ -1,3 +1,9 @@
+univention-samba (6.0.25-1) unstable; urgency=low
+
+  * fixed dependency to univention-lib (Bug #26025) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2012 11:16:17 +0100
+
 univention-samba (6.0.24-1) unstable; urgency=low
 
   * fix broken config syntax for max open files (Bug #24165)
