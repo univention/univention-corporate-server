@@ -341,7 +341,7 @@ class UCSHttpServer(object):
 					return method
 			req.get_method = new.instancemethod(get_method, req, urllib2.Request)
 
-		ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s", (req.get_method(), req.get_full_url()))
+		ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
 		try:
 			res = UCSHttpServer.opener.open(req)
 			try:
@@ -644,7 +644,7 @@ class UniventionUpdater:
 
 	def get_all_available_security_updates(self):
 		'''Returns a list of all available security updates for current major.minor version
-	       as integer
+		   as integer
 		   >>> updater.get_all_available_security_updates()
 		   [3, 4, 5]
 		'''
@@ -661,7 +661,7 @@ class UniventionUpdater:
 
 	def get_all_available_errata_updates(self):
 		'''Returns a list of all available errata updates for current major.minor version
-	       as integer
+		   as integer
 		   >>> updater.get_all_available_errata_updates()
 		   [3, 4, 5]
 		'''
@@ -678,7 +678,7 @@ class UniventionUpdater:
 
 	def get_all_available_errata_component_updates(self):
 		'''Returns a list of all available errata updates for current major.minor version
-	       as integer
+		   as integer
 		   >>> updater.get_all_available_errata_component_updates()
 			[
 				('component1', {'2.3': ['2', '3'], '2.4': ['5']} ),
@@ -692,7 +692,7 @@ class UniventionUpdater:
 			component_versions = {}
 			for version in versions:
 				version_str = '%s.%s' % (version.major, version.minor)
-				current_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))                                       
+				current_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
 				for el in xrange(current_level + 1, 999):
 					if self.get_component_repositories(component, [version], errata_level=el):
 						if component_versions.get(version_str):
@@ -1036,8 +1036,8 @@ class UniventionUpdater:
 				if errata_level:
 					errata_prefixes = ['-errata%s' % errata_level]
 				else:
-					errata_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major,version.minor), 0))
-					errata_prefixes = [ '' ] + ['-errata'+str(x) for x in range(1,errata_level+1)]
+					errata_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+					errata_prefixes = [''] + ['-errata%d' % x for x in range(1, errata_level + 1)]
 
 				for errata_prefix in errata_prefixes:
 					struct = UCSRepoPool(prefix=server, patch=component+errata_prefix)
