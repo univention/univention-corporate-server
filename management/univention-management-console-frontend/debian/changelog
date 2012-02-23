@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.273-2) unstable; urgency=low
+
+  * updated text of reboot hint after UMC login (Bug #24999)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 23 Feb 2012 16:15:05 +0100
+
 univention-management-console-frontend (1.0.273-1) unstable; urgency=low
 
   * LoginDialog: automatically resize the DialogUnderlay container

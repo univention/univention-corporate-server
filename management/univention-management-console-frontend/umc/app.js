@@ -365,7 +365,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 				// check if system reboot is required
 				if ( umc.modules.reboot && umc.tools.isTrue(data.result['update/reboot/required']) ) {
-					overviewPage.addNote( this._( 'This system has been updated recently. A reboot is required to finish the update.' ) );
+					var link_reboot = 'href="javascript:void(0)" onclick="umc.app.openModule(\'reboot\')"';
+					overviewPage.addNote( this._( 'This system has been updated recently. Please visit the <a %s>Reboot Module</a> and reboot this system to finish the update.', link_reboot ) );
 				}
 			}));
 
