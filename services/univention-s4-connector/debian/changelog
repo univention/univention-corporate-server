@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.110-2) unstable; urgency=low
+
+  * render univention-s4-position-sync executable (Bug #26120)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Feb 2012 12:13:02 +0100
+
 univention-s4-connector (6.0.110-1) unstable; urgency=low
 
   * adjust path for univention-s4-position-sync (Bug #26120)
