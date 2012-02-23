@@ -139,6 +139,12 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 				window.location.search = '?' + dojo.objectToQuery(query);
 			}
 		});
+		// automatically resize the DialogUnderlay container
+		this.connect(window, 'onresize', function() {
+			if (dijit._DialogLevelManager.isTop(this)) {
+				dijit._underlay.layout();
+			}
+		});
 	},
 
 	_initForm: function() {

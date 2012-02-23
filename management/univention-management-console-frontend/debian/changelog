@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.273-1) unstable; urgency=low
+
+  * LoginDialog: automatically resize the DialogUnderlay container
+    (Bug #25249)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 23 Feb 2012 15:44:47 +0100
+
 univention-management-console-frontend (1.0.272-1) unstable; urgency=low
 
   * LoginDialog: disable username textbox if already logged in before
