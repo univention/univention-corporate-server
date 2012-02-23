@@ -1,3 +1,9 @@
+univention-nfs (4.0.7-1) unstable; urgency=low
+
+  * fixed dependency to univention-lib (Bug #26025)
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2012 11:14:28 +0100
+
 univention-nfs (4.0.6-1) unstable; urgency=low
 
   * uses univention.lib.listenerSharePath.createOrRename()
