@@ -1,3 +1,9 @@
+univention-lib (1.0.45-1) unstable; urgency=low
+
+  * fixed python/listenerSharePath.py (Bug #26025) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2012 11:10:14 +0100
+
 univention-lib (1.0.44-1) unstable; urgency=low
 
   * added login.html to umc_frontend_new_hash; Bug #25020

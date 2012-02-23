@@ -45,36 +45,31 @@ DIR_BLACKLIST.append("/dev")
 DIR_BLACKLIST.append("/tmp")
 DIR_BLACKLIST.append("/root")
 
-def dirIsMountPoint(dir):
+def dirIsMountPoint(path):
 
-	if dir == "/":
+	if path == "/":
 		return "/ is a mount point"
 
-	if not dir.endswith("/"):
-		dir = dir + "/"
-
-	if os.path.isfile("/etc/fstab"):
-		f = open("/etc/fstab", "r")
-		for line in f:
-			if line.startswith("#"):
-				continue
-			if "\t" in line:
-				tmp = line.split("\t")
-			else:
-				tmp = line.split(" ")
-			if len(tmp) > 1:
-				if tmp[1] and not tmp[1] == "/":
-					if not tmp[1].endswith("/"):
-						tmp[1] = tmp[1] + "/"
-					if dir.startswith(tmp[1]):
-						return "%s is a mount point" % dir
+	for tab in ["/etc/fstab", "/etc/mtab"]:
+		if os.path.isfile(tab):
+			f = open(tab, "r")
+			for line in f:
+				if line.startswith("#"):
+					continue
+				if "\t" in line:
+					tmp = line.split("\t")
+				else:
+					tmp = line.split()
+				if len(tmp) > 1:
+					tmp[1] = tmp[1].rstrip("/")
+					if tmp[1] == path:
+						return "%s is a mount point" % path
 	return None
 
-
-def checkDirFileSystem(dir, cr):
+def checkDirFileSystem(path, cr):
 
 	knownFs = cr.get("listener/shares/rename/fstypes", DEFAUL_FS).split(":")
-	ret, out = commands.getstatusoutput("LC_ALL=C stat -f '%s'" % dir)
+	ret, out = commands.getstatusoutput("LC_ALL=C stat -f '%s'" % path)
 	myFs = ""
 	for line in out.split("\n"):
 		tmp = line.split("Type: ")
@@ -85,8 +80,7 @@ def checkDirFileSystem(dir, cr):
 					# ok, found fs is fs whitelist
 					return None
 			break
-	return "%s for %s is not on a known filesystem" % (myFs, dir)	
-
+	return "filesystem %s for %s is not on a known filesystem" % (myFs, path)	
 
 def createOrRename(old, new, cr):
 
@@ -104,7 +98,7 @@ def createOrRename(old, new, cr):
 	# check new path
 	if not new.get("univentionSharePath"):
 		return "univentionSharePath not set"
-	newPath = new['univentionSharePath'][0]
+	newPath = new['univentionSharePath'][0].rstrip("/")
 	if not newPath.startswith("/"):
 		newPath = "/" + newPath
 	if os.path.islink(newPath):
@@ -118,7 +112,7 @@ def createOrRename(old, new, cr):
 		# old path (source)
 		if not old.get("univentionSharePath"):
 			return "not old univentionSharePath found, renaming not possible"
-		oldPath = old["univentionSharePath"][0]
+		oldPath = old["univentionSharePath"][0].rstrip("/")
 		if not oldPath.startswith("/"):
 			oldPath = "/" + oldPath
 		if os.path.islink(oldPath):
@@ -151,20 +145,33 @@ def createOrRename(old, new, cr):
 				return ret
 
 		# check path to destination
+		# get existing part of path
 		newPathDir = os.path.dirname(newPath)
-		if newPathDir == "/":
+		existingNewPathDir = "/"
+		for path in newPathDir.split("/"):
+			if path and os.access(existingNewPathDir, os.F_OK):
+				if os.access(os.path.join(existingNewPathDir, path), os.F_OK):
+					existingNewPathDir = os.path.join(existingNewPathDir, path)
+
+		if newPathDir == "/" or existingNewPathDir == "/":
 			return "moving to directory level one is not allowed (%s)" % newPath
+
+		# check know fs
+		for i in [oldPath, existingNewPathDir]:
+			ret = checkDirFileSystem(i, cr)
+			if ret:
+				return ret
+
+		# check if source and destination are on the same device
+		if not os.stat(oldPath).st_dev == os.stat(existingNewPathDir).st_dev:
+			return "source %s and destination %s are not on the same device" % (oldPath, newPath)
+
+		# create path to destination
 		if not os.access(newPathDir, os.F_OK):
 			try:
 				os.makedirs(newPathDir, int('0755',0))
 			except Exception, e:
 				return "creation of directory %s failed: %s" % (newPathDir, str(e))
-
-		# check know fs
-		for i in [oldPath, newPathDir]:
-			ret = checkDirFileSystem(i, cr)
-			if ret:
-				return ret
 
 		# check size of source and free space in destination
 		# TODO
@@ -175,7 +182,7 @@ def createOrRename(old, new, cr):
 				shutil.move(oldPath, newPath)
 		except Exception, e:
 			return "failed to move directory %s to %s: %s" % (oldPath, newPath, str(e))
-		
+
 	# or create directory anyway
 	if not os.access(newPath, os.F_OK):
 		try:
