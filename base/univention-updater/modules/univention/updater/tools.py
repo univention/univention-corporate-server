@@ -1009,7 +1009,7 @@ class UniventionUpdater:
 			yield server, ver
 
 
-	def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False, errata_level=None):
+	def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False, errata_level=None, iterate_errata=True):
 		'''
 			Iterate over all components and return (server, version).
 			for_mirror_list shall be True if the code shall iterate over component
@@ -1033,11 +1033,13 @@ class UniventionUpdater:
 				# Get a list of all availble errata updates for this component and version
 
 				# The errata level for components is bound to the minor version
-				if errata_level:
-					errata_prefixes = ['-errata%s' % errata_level]
-				else:
-					errata_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
-					errata_prefixes = [''] + ['-errata%d' % x for x in range(1, errata_level + 1)]
+				errata_prefixes = ['']
+				if iterate_errata:
+					if errata_level:
+						errata_prefixes = ['-errata%s' % errata_level]
+					else:
+						errata_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+						errata_prefixes += ['-errata%d' % x for x in range(1, errata_level + 1)]
 
 				for errata_prefix in errata_prefixes:
 					struct = UCSRepoPool(prefix=server, patch=component+errata_prefix)
@@ -1348,7 +1350,14 @@ class UniventionUpdater:
 			versions_mmp.append(version)
 
 		for version in versions_mmp:
-			for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list, errata_level=errata_level):
+
+			# Show errata updates for latest version only
+			if version == max(versions_mmp):
+				iterate_errata=True
+			else:
+				iterate_errata=False
+
+			for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list, errata_level=errata_level, iterate_errata=iterate_errata):
 				result.append( ver.deb() )
 				if ver.arch == archs[-1]: # after architectures but before next patch(level)
 					if clean:

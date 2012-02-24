@@ -119,14 +119,13 @@ def checkForUpdate(command, component):
 		components = updater.get_all_components()
 
 	for component in components:
-			configRegistry.load()
-			updater = univention.updater.UniventionUpdater()
-			versions = updater._get_component_versions(component, None, None)
-			for version in versions:
-				current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
-				nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
-				if nextupdate:
-					return True
+		configRegistry.load()
+		updater = univention.updater.UniventionUpdater()
+		version = max(updater._get_component_versions(component, None, None))
+		current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+		nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
+		if nextupdate:
+			return True
 	return False
 
 def update_ucr_updatestatus():
@@ -218,6 +217,7 @@ if __name__ == '__main__':
 		print >>sys.stderr, e
 		sys.exit(5)
 	try:
+		nextupdate = None
 		configRegistry = ucr.ConfigRegistry()
 		configRegistry.load()
 
@@ -273,77 +273,76 @@ if __name__ == '__main__':
 
 		for component in components:
 			while True:
-					configRegistry.load()
-					updater = univention.updater.UniventionUpdater()
-					versions = updater._get_component_versions(component, None, None)
-					for version in versions:
+				configRegistry.load()
+				updater = univention.updater.UniventionUpdater()
+				version = max(updater._get_component_versions(component, None, None))
+				try:
+					current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+					nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
+				except univention.updater.ConfigurationError, e:
+					dprint(traceback.format_exc(), [fp_debug])
+					dprint('Error: an error occurred during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
+					update_status( status='FAILED', errorsource='SETTINGS' )
+					sys.exit( 1 )
+
+				next_level = current_level+1
+				# we don't want an endless loop
+				if nextupdate == upgraded:
+					break
+
+				if not nextupdate:
+					if not upgraded:
+						dprint( 'No errata update available for %s!' % component, [fp_debug,sys.stdout] )
+					break
+
+				dprint( 'Update to %d.%d %s-errata%d' % (version.major, version.minor, component,next_level), [fp_debug,sys.stdout] )
+
+				remove_temporary_sources_list()
+				upgraded = nextupdate
+				if not call_upgrade:
+					continue
+
+				add_temporary_sources_list('\n'.join(nextupdate))
+
+				archs = ['all']
+				errata = updater._iterate_component_repositories([component], version, version, archs, errata_level=next_level)
+				# Download the pre and postup scripts
+				scripts = updater.get_sh_files(errata)
+				for part, phase in updater.call_sh_files(scripts, LOGFILE, str(version)):
+					if (part, phase) == ('update', 'main'):
+						# Execute the dist-upgrade!
+						count = 300
+						while os.path.exists('/var/run/apt-get.lock') and count > 0:
+							time.sleep(1)
+							count -= 1
+						# create lock file
 						try:
-							current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
-							nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
-						except univention.updater.ConfigurationError, e:
-							dprint(traceback.format_exc(), [fp_debug])
-							dprint('Error: an error occurred during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
-							update_status( status='FAILED', errorsource='SETTINGS' )
-							sys.exit( 1 )
+							fd = open( '/var/run/apt-get.lock', 'w' )
+							fd.close()
+						except:
+							pass
+						# check for preup.sh
 
-					next_level = current_level+1
-					# we don't want an endless loop
-					if nextupdate == upgraded:
-						break
-
-					if not nextupdate:
-						if not upgraded:
-							dprint( 'No errata update available for %s!' % component, [fp_debug,sys.stdout] )
-						break
-
-					dprint( 'Update to %d.%d %s-errata%d' % (version.major, version.minor, component,next_level), [fp_debug,sys.stdout] )
-
-					remove_temporary_sources_list()
-					upgraded = nextupdate
-					if not call_upgrade:
-						continue
-
-					add_temporary_sources_list('\n'.join(nextupdate))
-
-					archs = ['all']
-					errata = updater._iterate_component_repositories([component], version, version, archs, errata_level=next_level)
-					# Download the pre and postup scripts
-					scripts = updater.get_sh_files(errata)
-					for part, phase in updater.call_sh_files(scripts, LOGFILE, str(version)):
-						if (part, phase) == ('update', 'main'):
-							# Execute the dist-upgrade!
-							count = 300
-							while os.path.exists('/var/run/apt-get.lock') and count > 0:
-								time.sleep(1)
-								count -= 1
-							# create lock file
-							try:
-								fd = open( '/var/run/apt-get.lock', 'w' )
-								fd.close()
-							except:
-								pass
-							# check for preup.sh
-
-							# update indices
-							ret = subprocess.call(shlex.split(cmd_update), stdout=fp_debug, stderr=fp_debug)
+						# update indices
+						ret = subprocess.call(shlex.split(cmd_update), stdout=fp_debug, stderr=fp_debug)
+						if ret:
+							update_status( status='FAILED', errorsource='PREPARATION' )
+							dprint( 'Error: Failed to update APT indices', [fp_debug,sys.stderr] )
+						else:
+							os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
+							ret = subprocess.call(shlex.split(cmd_dist_upgrade), stdout=fp_debug, stderr=fp_debug)
 							if ret:
-								update_status( status='FAILED', errorsource='PREPARATION' )
-								dprint( 'Error: Failed to update APT indices', [fp_debug,sys.stderr] )
+								update_status( status='FAILED', errorsource='UPDATE' )
+								dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
 							else:
-								os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
-								ret = subprocess.call(shlex.split(cmd_dist_upgrade), stdout=fp_debug, stderr=fp_debug)
-								if ret:
-									update_status( status='FAILED', errorsource='UPDATE' )
-									dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
-								else:
-									# OK
-									subprocess.call(('univention-config-registry', 'set', 'repository/online/component/%s/%s.%s/erratalevel=%s' % (component, version.major, version.minor, next_level)), stdout=fp_debug, stderr=fp_debug)
+								# OK
+								subprocess.call(('univention-config-registry', 'set', 'repository/online/component/%s/%s.%s/erratalevel=%s' % (component, version.major, version.minor, next_level)), stdout=fp_debug, stderr=fp_debug)
 
-							remove_temporary_sources_list()
-							if os.path.exists('/var/run/apt-get.lock'):
-								os.unlink('/var/run/apt-get.lock')
-							if ret:
-								sys.exit( ret )
+						remove_temporary_sources_list()
+						if os.path.exists('/var/run/apt-get.lock'):
+							os.unlink('/var/run/apt-get.lock')
+						if ret:
+							sys.exit( ret )
 
 		update_status( status='DONE' )
 	finally:

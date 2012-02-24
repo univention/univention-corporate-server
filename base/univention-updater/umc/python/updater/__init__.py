@@ -658,9 +658,7 @@ class Instance(umcm.Base):
 				"""
 				res = {}
 				for (component,versions) in components_errata:
-					res[component] = 0
-					for v in versions:
-						res[component] += len(versions[v])
+					res[component] = len(max(versions))
 				# Convert the object into a string. This is necessary because such a dict
 				# can not be transferred through a hidden value in java script
 				result['components_errata'] = str(res)
