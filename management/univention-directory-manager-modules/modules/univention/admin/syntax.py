@@ -1118,7 +1118,7 @@ class MAC_Address( simple ):
 			tmpList = []
 			tmpStr = text.translate(None, '.')
 			for i in range(0, len(tmpStr)-1, 2):
-				tmpList.append(tmpStr)[i:i+2]
+				tmpList.append(tmpStr[i:i+2])
 			return ':'.join(tmpList).lower()
 		else:
 			raise univention.admin.uexceptions.valueError( self.error_message )

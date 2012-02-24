@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.227-2) unstable; urgency=low
+
+  * fix typo in syntax MAC_Address (Bug #25463)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 24 Feb 2012 15:36:52 +0100
+
 univention-directory-manager-modules (7.0.227-1) unstable; urgency=low
 
   * Fixed regular expression for the share path (Bug #26189)
