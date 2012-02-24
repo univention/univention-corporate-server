@@ -1,7 +1,13 @@
+univention-updater (7.0.145-1) unstable; urgency=low
+
+  * Fix traceback in univention-updater (Bug #25496)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Feb 2012 09:03:32 +0100
+
 univention-updater (7.0.144-2) unstable; urgency=low
 
   * Set repository/online/errata/start to 30, since UCS 3.0-1 incorporates
-    all previous 29 errata updates (Bug #25832)	
+    all previous 29 errata updates (Bug #25832)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 21 Feb 2012 14:55:20 +0100
 
@@ -208,7 +214,7 @@ univention-updater (7.0.118-1) unstable; urgency=low
 
 univention-updater (7.0.117-1) unstable; urgency=low
 
-  * save /etc/cups/ppd/*.ppd files during update Bug #24938 
+  * save /etc/cups/ppd/*.ppd files during update Bug #24938
 
  -- Felix Botner <botner@univention.de>  Wed, 30 Nov 2011 10:58:46 +0100
 
@@ -227,9 +233,9 @@ univention-updater (7.0.115-5) unstable; urgency=low
 univention-updater (7.0.115-4) unstable; urgency=low
 
   * Purge squid in postinst to drop init script leftovers if Squid was in "rc" state
-  * Improve the updater magic so that the conffiles are still saved, but 
+  * Improve the updater magic so that the conffiles are still saved, but
     univention-dansguardian is only installed if it was installed fully beforehand
-    Bug #22576x	
+    Bug #22576x
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 25 Nov 2011 12:06:45 +0100
 
@@ -284,7 +290,7 @@ univention-updater (7.0.113-2) unstable; urgency=low
 
 univention-updater (7.0.113-1) unstable; urgency=low
 
-  * do not allow update with univention-fax and/or hylafax packages (Bug #24619)  
+  * do not allow update with univention-fax and/or hylafax packages (Bug #24619)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Nov 2011 11:34:15 +0100
 
@@ -332,13 +338,13 @@ univention-updater (7.0.111-2) unstable; urgency=low
 
 univention-updater (7.0.111-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:42:24 +0100
 
 univention-updater (7.0.110-1) unstable; urgency=low
 
-  * more hylafax preup changes (Bug #24619) 
+  * more hylafax preup changes (Bug #24619)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 14:17:47 +0100
 
@@ -353,7 +359,7 @@ univention-updater (7.0.109-1) unstable; urgency=low
 
 univention-updater (7.0.108-1) unstable; urgency=low
 
-  * more hylafax preup changes (Bug #24619) 
+  * more hylafax preup changes (Bug #24619)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 11:16:01 +0100
 
@@ -403,7 +409,7 @@ univention-updater (7.0.101-1) unstable; urgency=low
 
 univention-updater (7.0.100-1) unstable; urgency=low
 
-  * exit in preup if univention-fax-* packages are installed (Bug #24619) 
+  * exit in preup if univention-fax-* packages are installed (Bug #24619)
 
  -- Felix Botner <botner@univention.de>  Thu, 17 Nov 2011 09:59:55 +0100
 
@@ -450,7 +456,7 @@ univention-updater (7.0.96-1) unstable; urgency=low
 
 univention-updater (7.0.95-2) unstable; urgency=low
 
-  * Silence firmware removal (Bug #22508) 
+  * Silence firmware removal (Bug #22508)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 15 Nov 2011 10:51:56 +0100
 
@@ -555,7 +561,7 @@ univention-updater (7.0.84-2) unstable; urgency=low
   * Remove firmware packages, which require an interactive debconf EULA confirmation. Early kernel
     meta packages had a dependency, which has been removed in 2.4-4. Double-check anyway, since
     some installations might carry the package locally or from uninstalled UCS 2.3 packages
-    Bug #24389  	
+    Bug #24389
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 04 Nov 2011 15:01:19 +0100
 
@@ -575,7 +581,7 @@ univention-updater (7.0.83-1) unstable; urgency=low
 
 univention-updater (7.0.82-1) unstable; urgency=low
 
-  * redirect output of univention-object-type-migrate to updater.log (Bug #23167) 
+  * redirect output of univention-object-type-migrate to updater.log (Bug #23167)
 
  -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2011 15:14:27 +0100
 
@@ -587,25 +593,25 @@ univention-updater (7.0.81-1) unstable; urgency=low
 
 univention-updater (7.0.80-2) unstable; urgency=low
 
-  * fixed univention-object-type-migrate message (Bug #23167) 
+  * fixed univention-object-type-migrate message (Bug #23167)
 
  -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2011 11:06:47 +0100
 
 univention-updater (7.0.80-1) unstable; urgency=low
 
-  * added univention-object-type-migrate check in postup.sh (Bug #23167) 
+  * added univention-object-type-migrate check in postup.sh (Bug #23167)
 
  -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2011 10:58:32 +0100
 
 univention-updater (7.0.79-2) unstable; urgency=low
 
-  * Remove univention-shares in postup (Bug #24279) 
+  * Remove univention-shares in postup (Bug #24279)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 02 Nov 2011 10:54:46 +0100
 
 univention-updater (7.0.79-1) unstable; urgency=low
 
-  * restore menu.lst in postup.sh (Bug #24279) 
+  * restore menu.lst in postup.sh (Bug #24279)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Nov 2011 16:54:17 +0100
 
@@ -623,7 +629,7 @@ univention-updater (7.0.78-1) unstable; urgency=low
 
 univention-updater (7.0.77-1) unstable; urgency=low
 
-  * added custom attributes check in preup.sh (Bug #23191) 
+  * added custom attributes check in preup.sh (Bug #23191)
 
  -- Felix Botner <botner@univention.de>  Mon, 31 Oct 2011 15:41:50 +0100
 
@@ -659,7 +665,7 @@ univention-updater (7.0.74-1) unstable; urgency=low
   * removed unnecessary references to this.moduleStore and added
     umc.tools.umcpCommand instead
   * fixed jslint errors/warnings
-    (Bug #22898) 
+    (Bug #22898)
 
  -- Alexander Kläser <klaeser@univention.de>  Sat, 29 Oct 2011 22:51:50 +0200
 
@@ -902,7 +908,7 @@ univention-updater (7.0.49-1) unstable; urgency=low
 univention-updater (7.0.48-2) unstable; urgency=low
 
   * Add a note that local repositories are not yet compatible with secure apt
-    (since it would need to create a local archive key) (Bug #9475)	 
+    (since it would need to create a local archive key) (Bug #9475)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 17 Oct 2011 12:23:24 +0200
 
@@ -946,7 +952,7 @@ univention-updater (7.0.44-1) unstable; urgency=low
 univention-updater (7.0.43-2) unstable; urgency=low
 
   * extern is no longer used in the 3.0 repositories. Adapt univention-updater to no
-    longer use it (Bug #23986)	 
+    longer use it (Bug #23986)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 13 Oct 2011 10:26:25 +0200
 
@@ -971,7 +977,7 @@ univention-updater (7.0.42-1) unstable; urgency=low
 
 univention-updater (7.0.41-2) unstable; urgency=low
 
-  * fixed logrotate configuration (Bug #18002) 
+  * fixed logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:47:10 +0200
 
@@ -990,7 +996,7 @@ univention-updater (7.0.40-1) unstable; urgency=low
 
 univention-updater (7.0.29-1) unstable; urgency=low
 
-  * do not purge console-tools (Bug #23858) 
+  * do not purge console-tools (Bug #23858)
 
  -- Felix Botner <botner@univention.de>  Thu, 06 Oct 2011 10:51:37 +0200
 
@@ -1087,7 +1093,7 @@ univention-updater (7.0.21-1) unstable; urgency=low
 univention-updater (7.0.20-1) unstable; urgency=low
 
   * use machine secret with ldap/hostdn (Bug #23178)
-  * add lost policyresult flag in maintenance script 
+  * add lost policyresult flag in maintenance script
 
  -- Arvid Requate <requate@univention.de>  Thu, 01 Sep 2011 13:56:05 +0200
 
@@ -1197,7 +1203,7 @@ univention-updater (7.0.7-1) unstable; urgency=low
 
   * use python2.4 or python2.6 for tcs test in preup.sh,
     depending on what univention-updater version is installed
-    Bug #22878 
+    Bug #22878
 
  -- Felix Botner <botner@univention.de>  Wed, 03 Aug 2011 17:49:13 +0200
 
@@ -1212,21 +1218,21 @@ univention-updater (7.0.6-1) unstable; urgency=low
 
 univention-updater (7.0.5-1) unstable; urgency=low
 
-  * abort update if ucs tcs is installed and not 
+  * abort update if ucs tcs is installed and not
     available for the update version (Bug #22878)
 
  -- Felix Botner <botner@univention.de>  Tue, 26 Jul 2011 08:36:14 +0200
 
 univention-updater (7.0.4-1) unstable; urgency=low
 
-  * abort update if lilo and/or univention-lilo is installed 
+  * abort update if lilo and/or univention-lilo is installed
     (Bug #23063)
 
  -- Felix Botner <botner@univention.de>  Mon, 25 Jul 2011 12:42:55 +0200
 
 univention-updater (7.0.3-1) unstable; urgency=low
 
-  * purge packages kcontrol, libusplash0, univention-usplash-theme 
+  * purge packages kcontrol, libusplash0, univention-usplash-theme
     and usplash in updater/postup.sh (Bug #22997)
 
  -- Felix Botner <botner@univention.de>  Mon, 25 Jul 2011 11:56:59 +0200
@@ -1446,7 +1452,7 @@ univention-updater (6.0.63-1) unstable; urgency=low
 
 univention-updater (6.0.62-1) unstable; urgency=low
 
-  * call fix_primary_group_membership in postup.sh on 
+  * call fix_primary_group_membership in postup.sh on
     domaincontroller master (Bug #21711)
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Mar 2011 15:43:16 +0100
@@ -1491,7 +1497,7 @@ univention-updater (6.0.57-1) unstable; urgency=low
 univention-updater (6.0.56-1) unstable; urgency=low
 
   * call hook "update_finished"
-  * display "reboot required" msg in component settings dialog (OX-Bug #18366) 
+  * display "reboot required" msg in component settings dialog (OX-Bug #18366)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Feb 2011 16:54:21 +0100
 
@@ -1601,7 +1607,7 @@ univention-updater (6.0.44-1) unstable; urgency=low
 
 univention-updater (6.0.43-1) unstable; urgency=low
 
-  * honour the no_proxy env/ucr in univention-updater (Bug #16020) 
+  * honour the no_proxy env/ucr in univention-updater (Bug #16020)
 
  -- Felix Botner <botner@univention.de>  Mon, 08 Nov 2010 14:29:25 +0100
 
@@ -1629,7 +1635,7 @@ univention-updater (6.0.39-1) unstable; urgency=low
   * added status wrapper univention-updater-umc-univention-install (Bug #20498)
   * added function to install components
   * updated translations
-  * added get_component_defaultpackage() and is_component_defaultpackage_installed() 
+  * added get_component_defaultpackage() and is_component_defaultpackage_installed()
     to univention.updater
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 25 Oct 2010 15:16:40 +0200
@@ -1685,7 +1691,7 @@ univention-updater (6.0.31-1) unstable; urgency=low
   * RefreshFrame: reduce maxlen from 300000 to 120000 (Bug #17666)
   * RefreshFrame: changed refresh interval from 1000 to 1500ms
   * fixed dist-upgrade error detection
-  
+
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Aug 2010 10:56:50 +0200
 
 univention-updater (6.0.30-1) unstable; urgency=low
@@ -1710,7 +1716,7 @@ univention-updater (6.0.28-1) unstable; urgency=low
 univention-updater (6.0.27-1) unstable; urgency=low
 
   * use --silent in
-    univention-directory-policy/univention-policy-maintenance 
+    univention-directory-policy/univention-policy-maintenance
     (Bug #18465)
 
  -- Felix Botner <botner@univention.de>  Tue, 17 Aug 2010 14:12:37 +0200
@@ -1844,7 +1850,7 @@ univention-updater (6.0.10-1) unstable; urgency=low
 
 univention-updater (6.0.9-2) unstable; urgency=low
 
-  * fixed help message for previous change (Bug #18465) 
+  * fixed help message for previous change (Bug #18465)
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Jul 2010 14:03:08 +0200
 
@@ -1858,11 +1864,11 @@ univention-updater (6.0.9-1) unstable; urgency=low
 univention-updater (6.0.8-1) unstable; urgency=low
 
   * enhanced univention-updater and univention-security-update: (Bug #14346)
-    write status to /var/lib/univention-updater/univention-*.status 
+    write status to /var/lib/univention-updater/univention-*.status
   * UMC online update module now checks /var/lib/univention-updater/*.status
     to display proper message after update stopped (successfully/faulty)
   * added new translations (Bug #14346, #18237, 17666)
-  
+
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Jul 2010 18:21:56 +0200
 
 univention-updater (6.0.7-1) unstable; urgency=low
@@ -1886,7 +1892,7 @@ univention-updater (6.0.5-1) unstable; urgency=low
     - avoid error msgs in updater or raise Exception if requested
     - function to return a list of all available security updates
     - function to return a list of all available release updates
-    - new exception class 
+    - new exception class
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 13 Jul 2010 17:39:20 +0200
 
@@ -1907,7 +1913,7 @@ univention-updater (6.0.3-1) unstable; urgency=low
 
 univention-updater (6.0.2-1) unstable; urgency=low
 
-  * update pre install of usplash in preup.sh (Bug #17096) 
+  * update pre install of usplash in preup.sh (Bug #17096)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Jun 2010 13:46:27 +0200
 

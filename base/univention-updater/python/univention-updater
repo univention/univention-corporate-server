@@ -245,7 +245,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 		if nextversion:
 			try:
 				ver = UCS_Version(nextversion)
-			except AttributeError, e:
+			except ValueError, e:
 				pass
 			else:
 				mm_version = UCS_Version.FORMAT % ver
