@@ -1,3 +1,9 @@
+univention-mail-postfix (6.0.35-2) unstable; urgency=low
+
+  * fixed last commit (Bug #25836) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 Feb 2012 14:42:18 +0100
+
 univention-mail-postfix (6.0.35-1) unstable; urgency=low
 
   * commit postfix ldap.maps properly (Bug #25836)
