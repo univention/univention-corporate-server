@@ -1477,7 +1477,14 @@ class s4(univention.s4connector.ucs):
 				ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
 
 		if ml:
-			self.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
+			try:
+				self.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
+			except ldap.ALREADY_EXISTS:
+				# The user is already member in this group or it is his primary group
+				# This might happen, if we synchronize a rejected file with old informations
+				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
+				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_to_ucs: User is already member of the group: %s modlist: %s" % (ucs_group_object['dn'], ml))
+				pass
 
 		# The user has been removed from the cache. He must be added in any case
 		if not self.group_members_cache_con.get(ucs_group_object['dn'].lower()):
@@ -1493,7 +1500,14 @@ class s4(univention.s4connector.ucs):
 			ml.append((ldap.MOD_ADD, 'member', [object['dn']]))
 
 		if ml:
-			self.lo_s4.lo.modify_s(s4_group_object['dn'],compatible_modlist(ml))
+			try:
+				self.lo_s4.lo.modify_s(s4_group_object['dn'],compatible_modlist(ml))
+			except ldap.ALREADY_EXISTS:
+				# The user is already member in this group or it is his primary group
+				# This might happen, if we synchronize a rejected file with old informations
+				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
+				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: User is already member of the group: %s modlist: %s" % (s4_group_object['dn'], ml))
+				pass
 
 		# The user has been removed from the cache. He must be added in any case
 		if not self.group_members_cache_ucs.get(s4_group_object['dn'].lower()):
