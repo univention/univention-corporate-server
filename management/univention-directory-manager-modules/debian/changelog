@@ -1,4 +1,4 @@
-univention-directory-manager-modules (7.0.227-2) unstable; urgency=low
+univention-directory-manager-modules (7.0.228-1) unstable; urgency=low
 
   * fix typo in syntax MAC_Address (Bug #25463)
 
