@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.275-1) unstable; urgency=low
+
+  * updated text of online help (Bug #25294)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 24 Feb 2012 10:54:32 +0100
+
 univention-management-console-frontend (1.0.274-1) unstable; urgency=low
 
   * updated text of reboot hint after UMC login (Bug #24999)

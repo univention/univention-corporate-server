@@ -344,7 +344,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				title: this._('Overview'),
 				headerText: this._('Overview'),
 				iconClass: umc.tools.getIconClass('univention'),
-				helpText: this._('Univention Management Console is a modularly designed, web-based application for the administration of objects in your Univention Corporate Server domain as well as individual of Univention Corporate Server systems. Depending on system role default settings and permissions, you find extensive functions for the administration of your UCS domain and for the configuration of this server.')
+				helpText: this._('Univention Management Console (UMC) is the central tool for web-based administration of the UCS domain. It supports the management of domain-wide available data in the LDAP directory, e.g., users, groups or host accounts, and allows the configuration or management of an individual system, e.g., the starting and stopping of services. Detailed instructions and descriptions for UMC can be found in UCS manual. The manual and further information can be found at the following links:')
 			});
 			this._tabContainer.addChild(overviewPage);
 
