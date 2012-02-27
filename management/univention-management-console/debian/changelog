@@ -3,7 +3,7 @@ univention-management-console (4.0.202-3) unstable; urgency=low
   * removed dependency on univention-management-console-module-vnc
     (Bug #25107)
 
- -- Lukas Walter <walter@univention.de>  Mon, 27 Feb 2012 09:12:27 +0100
+ -- Lukas Walter <walter@univention.de>  Mon, 27 Feb 2012 09:34:43 +0100
 
 univention-management-console (4.0.202-2) unstable; urgency=low
 
