@@ -49,7 +49,7 @@ fi
 if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 	mkdir -p /var/cache/univention-system-setup/packages/
 	install_cmd="$(univention-config-registry get update/commands/install)"
-	for package in server-backup server-slave server-member basesystem; do
+	for package in server-master server-backup server-slave server-member basesystem; do
 		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages univention-${package}
 	done
 
