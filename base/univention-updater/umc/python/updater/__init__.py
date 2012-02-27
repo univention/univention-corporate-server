@@ -308,6 +308,8 @@ class Instance(umcm.Base):
 		self.uu.ucr_reinit()
 		self.ucr.load()
 
+		appliance_mode = self.ucr.is_true('server/appliance')
+
 		result = []
 		try:
 			request.status = SUCCESS
@@ -318,17 +320,17 @@ class Instance(umcm.Base):
 				entry['label'] = 'UCS %s' % rel
 				entry['next_version_blocked_by_component'] = ''
 				result.append(entry)
-			if len(result):
-				if blocking_component:
-					# there are additional updates available but the next version is blocked by
-					# a required component
-					result[-1]['next_version_blocked_by_component'] = blocking_component
-				else:
-					# UniventionUpdater returns available version in ascending order, so
-					# the last returned entry is the one to be flagged as 'latest' if there's
-					# no blocking component.
-					result[-1]['label'] = '%s (%s)' % (result[-1]['label'],_('latest version'))
-
+			#
+			# appliance_mode=no ; blocking_comp=no  → add "latest version"
+			# appliance_mode=no ; blocking_comp=yes →  no "latest version"
+			# appliance_mode=yes; blocking_comp=no  → add "latest version"
+			# appliance_mode=yes; blocking_comp=yes → add "latest version"
+			#
+			if len(result) and not(not(appliance_mode) and blocking_component):
+				# UniventionUpdater returns available version in ascending order, so
+				# the last returned entry is the one to be flagged as 'latest' if there's
+				# no blocking component.
+				result[-1]['label'] = '%s (%s)' % (result[-1]['label'],_('latest version'))
 
 		except Exception,ex:
 			request.status = FAILURE
@@ -611,6 +613,15 @@ class Instance(umcm.Base):
 			result['release_update_available']	= self.uu.release_update_available()
 			if result['release_update_available'] == None:
 				result['release_update_available'] = ''
+
+			what = 'querying update-blocking components'
+			blocking_component = self.uu.get_all_available_release_updates()[1]
+			if not blocking_component:
+				blocking_component = ''
+			result['release_update_blocking_component'] = blocking_component
+
+			what = 'querying appliance mode'
+			result['appliance_mode'] = self.ucr.is_true('server/appliance')
 
 			# current errata patchlevel, converted to int, 0 if unset.
 			what = 'querying errata patchlevel'

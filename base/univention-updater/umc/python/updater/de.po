@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-02-07 04:37+0100\n"
+"POT-Creation-Date: 2012-02-27 16:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,25 +12,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/updater/__init__.py:758
+#: umc/python/updater/__init__.py:801
 #, python-format
 msgid "At least one out of %s must be selected."
 msgstr "Wenigstens eine der %s Kategorien muß ausgewählt werden."
 
-#: umc/python/updater/__init__.py:1335
+#: umc/python/updater/__init__.py:1378
 msgid "Component name is not allowed to be empty."
 msgstr "Der Komponentenname muß angegeben werden."
 
-#: umc/python/updater/__init__.py:764
+#: umc/python/updater/__init__.py:807
 #, python-format
 msgid "ERROR: %s"
 msgstr "FEHLER: %s"
 
-#: umc/python/updater/__init__.py:752
+#: umc/python/updater/__init__.py:795
 msgid "Empty server name not allowed"
 msgstr "Der Servername muß angegeben werden."
 
-#: umc/python/updater/__init__.py:1340
+#: umc/python/updater/__init__.py:1383
 #, python-format
 msgid "Illegal character(s) in component name: '%s'"
 msgstr "Unzulässige Zeichen (%s) im Komponentennamen."
@@ -57,20 +57,22 @@ msgstr "Komponente '%s' installieren"
 msgid "Perform release update up to version '%s'"
 msgstr "Release auf Version '%s' aktualisieren"
 
-#: umc/python/updater/__init__.py:1349
+#: umc/python/updater/__init__.py:1392
 msgid "There is already a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/updater/__init__.py:832
+#: umc/python/updater/__init__.py:875
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
-msgstr "Auf dem Server befindet sich kein Repository (oder zumindest keins für die aktuelle UCS Version)"
+msgstr ""
+"Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
+"aktuelle UCS Version)"
 
-#: umc/python/updater/__init__.py:323
+#: umc/python/updater/__init__.py:333
 msgid "latest version"
 msgstr "neueste Version"
 
-#: umc/python/updater/__init__.py:520
+#: umc/python/updater/__init__.py:530
 msgid "unknown"
 msgstr "unbekannt"

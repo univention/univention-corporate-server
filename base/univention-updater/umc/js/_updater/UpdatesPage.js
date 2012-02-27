@@ -105,6 +105,14 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
     	 		content:		'easy_available_text'		// changed in onLoaded event
     	 	},
     	 	// -------------------- Release updates --------------------------
+    	 	{
+    	 		type:			'HiddenInput',
+    	 		name:			'appliance_mode'
+    	 	},
+    	 	{
+    	 		type:			'HiddenInput',
+    	 		name:			'release_update_blocking_component'
+    	 	},
 			{
 				type:			'ComboBox',
 				name:			'releases',
@@ -120,32 +128,36 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		 			// TODO check updater/installer/running, don't do anything if something IS running
 		 			try
 		 			{
-						// in easy mode, remove possible existing note about blocking components
-						var easy_mode = (this._form.getWidget('easy_mode').get('value') == 'true');
-						if (! easy_mode) {
-							this.clearNotes();
-						}
 		 				this._query_success('updater/updates/query');
-		 				var element = this._form.getWidget('releases');
+		 				var element_releases = this._form.getWidget('releases');
 		 				var to_show = false;
+						var to_show_msg = true;
+
+						var element_updatestext = this._form.getWidget('ucs_updates_text');
+						element_updatestext.set('content', this._("There are no release updates available."));
+
 		 				if (values.length)
 		 				{
-		 					to_show = true;
 			 				var val = values[values.length-1]['id'];
-			 				element.set('value',val);
+		 					to_show = true;
+							to_show_msg = false;
+			 				element_releases.set('value',val);
+		 				} 
 
-							if ((! easy_mode) && (values[values.length-1]['next_version_blocked_by_component'].length)) {
-								// further updates are available but blocked by specified component which is required for update
-								var vtxt = dojo.replace(this._("Further release updates are available but cannot be installed because the component '{next_version_blocked_by_component}' is not available for newer release versions."), values[values.length-1]);
-								this.addNote(vtxt);
-							}
-		 				}
+       					var appliance_mode = (this._form.getWidget('appliance_mode').get('value') === 'true');
+						var blocking_component = this._form.getWidget('release_update_blocking_component').get('value');
+						if ((blocking_component) && (! appliance_mode)) {
+							// further updates are available but blocked by specified component which is required for update
+							element_updatestext.set('content', dojo.replace(this._("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
+							to_show_msg = true;
+						}
+
 		 				// hide or show combobox, spacers and corresponding button
 	 					this._form.showWidget('releases',to_show);
 						this._form.showWidget('hspacer_180px',to_show);
 						this._form.showWidget('vspacer_1em',to_show);
 						
-						this._form.showWidget('ucs_updates_text',! to_show);		// either combobox or the text that no updates are available.
+						this._form.showWidget('ucs_updates_text', to_show_msg);
 
 						var but = this._form._buttons['run_release_update'];
 						but.set('visible', to_show);
@@ -417,12 +429,17 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
        			this._form.getWidget('easy_release_text').set('content',vtxt);
        			
        			// easy_update_available -> easy_available_text
+				var element = this._form.getWidget('easy_available_text');
        			var ava = ((values['easy_update_available'] === true) || (values['easy_update_available'] === 'true'));
-       			this._form.getWidget('easy_available_text').set('content',
-       					ava ?
-       					this._("There are updates available.") :
-       					this._("There are no updates available.")
-       					);
+       			var appliance_mode = ((values['appliance_mode'] === true) || (values['appliance_mode'] === 'true'));
+				var blocking_component = this._form.getWidget('release_update_blocking_component').get('value');
+				if (ava) {
+					element.set('content', this._("There are updates available."));
+				} else if ((blocking_component) && (! appliance_mode)) {
+					element.set('content', dojo.replace(this._("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
+				} else {
+					element.set('content', this._("There are no updates available."));
+				}
        			var ebu = this._form._buttons['easy_upgrade'];
        			dojo.toggleClass(ebu.domNode,'dijitHidden',! ava);
 
