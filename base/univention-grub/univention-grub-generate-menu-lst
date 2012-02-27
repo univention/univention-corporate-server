@@ -99,7 +99,7 @@ for line in grub2:
 		if device.startswith('hd'):
 			root = "(%s,%d)" % (device, int(part) - 1)
 		elif device.startswith('/dev/'):
-			root = "(hd%d,%d)" % (ord(device[-1]) - ord('a'), int(part) - 1)
+			root = "(hd0,%d)" % (int(part) - 1)
 		else:
 			print >>sys.stderr, "Unhandled root=%s" % (line,)
 

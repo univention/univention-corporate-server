@@ -1,3 +1,9 @@
+univention-grub (5.0.9-8) unstable; urgency=low
+
+  * Always use hd0,X when probing the alternative device (Bug #25981)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 27 Feb 2012 14:42:08 +0100
+
 univention-grub (5.0.9-7) unstable; urgency=low
 
   * Switch the generating menu.lst from the existing grub.cfg (Bug #25981) 
