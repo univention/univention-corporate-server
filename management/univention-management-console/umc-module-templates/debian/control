@@ -12,7 +12,8 @@ XS-Python-Version: 2.6
 Package: PACKAGENAME
 Architecture: all
 Depends: ${misc:Depends},
- univention-management-console-server
+ univention-management-console-server,
+ devscripts
 Description: UMC dummy module
  This package contains a UMC dummy module.
  .

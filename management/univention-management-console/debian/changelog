@@ -1,3 +1,13 @@
+univention-management-console (4.0.203-1) unstable; urgency=low
+
+  * added dependency on devscripts to umc-create-module
+  * corrected language misstakes in code comments in simple_form
+    template
+  * added missing import instructions in simple_form template
+  (Bug #23876)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 27 Feb 2012 17:13:21 +0100
+
 univention-management-console (4.0.202-3) unstable; urgency=low
 
   * removed dependency on univention-management-console-module-vnc

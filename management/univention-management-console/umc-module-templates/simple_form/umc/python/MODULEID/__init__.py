@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import notifier, smtplib
+
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
@@ -40,8 +42,8 @@ _ = Translation( 'PACKAGENAME' ).translate
 
 class Instance( Base ):
 	def init( self ):
-		# this initialization method is called when the module when the
-		# module process is started and the configuration from the the
+		# this initialization method is called when the
+		# module process is started and the configuration from the
 		# UMC server is completed
 		pass
 
@@ -68,7 +70,7 @@ class Instance( Base ):
 
 			server = smtplib.SMTP('localhost')
 			server.set_debuglevel(0)
-			server.sendmail(sender, recipients, msg)
+			server.sendmail(sender, recipient, msg)
 			server.quit()
 
 		def _send_return( thread, result, request ):
