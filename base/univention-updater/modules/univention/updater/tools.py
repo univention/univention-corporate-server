@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages updates
 #
-# Copyright 2008-2011 Univention GmbH
+# Copyright 2008-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -134,6 +134,7 @@ class UCSRepo(UCS_Version):
 	'''Debian repository.'''
 	def __init__(self, **kw):
 		kw.setdefault('patchlevel_reset', 0)
+		kw.setdefault('patchlevel_max', 99)
 		for (k, v) in kw.items():
 			if isinstance(v, str) and '%(' in v:
 				setattr(self, k, UCSRepo._substitution(v, self.__dict__))
@@ -526,11 +527,16 @@ class UniventionUpdater:
 		'''
 		debug = (errorsto == 'stderr')
 
-		for ver in [
-			{'major':version.major  , 'minor':version.minor  , 'patchlevel':version.patchlevel+1},
-			{'major':version.major  , 'minor':version.minor+1, 'patchlevel':0},
-			{'major':version.major+1, 'minor':0              , 'patchlevel':0}
-			]:
+		def versions(major, minor, patchlevel):
+			"""Generate next valid version numbers as hash."""
+			if patchlevel < 99:
+				yield {'major':major,   'minor':minor,   'patchlevel':patchlevel+1}
+			if minor < 99:
+				yield {'major':major,   'minor':minor+1, 'patchlevel':0}
+			if major < 99:
+				yield {'major':major+1, 'minor':0,       'patchlevel':0}
+
+		for ver in versions(version.major, version.minor, version.patchlevel):
 			repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
 			try:
 				assert self.server.access(repo.path())
@@ -650,7 +656,7 @@ class UniventionUpdater:
 		'''
 		result = []
 		archs = ['all'] + self.architectures
-		for sp in xrange(self.security_patchlevel + 1, 99):
+		for sp in xrange(self.security_patchlevel + 1, 100):
 			version = UCS_Version( (self.version_major, self.version_minor, sp) )
 			secver = self.security_update_available(version)
 			if secver:
@@ -667,7 +673,7 @@ class UniventionUpdater:
 		'''
 		result = []
 		archs = ['all'] + self.architectures
-		for el in xrange(self.erratalevel + 1, 999):
+		for el in xrange(self.erratalevel + 1, 1000):
 			version = UCS_Version( (self.version_major, self.version_minor, el) )
 			secver = self.errata_update_available(version)
 			if secver:
@@ -693,7 +699,7 @@ class UniventionUpdater:
 			for version in versions:
 				version_str = '%s.%s' % (version.major, version.minor)
 				current_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
-				for el in xrange(current_level + 1, 999):
+				for el in xrange(current_level + 1, 1000):
 					if self.get_component_repositories(component, [version], errata_level=el):
 						if component_versions.get(version_str):
 							component_versions[version_str].append(el)
@@ -936,9 +942,9 @@ class UniventionUpdater:
 		# Workaround version of start << first available repository version,
 		# e.g. repository starts at 2.3-0, but called with start=2.0-0
 		findFirst = True
-		while ver <= end: # major
+		while ver <= end and ver.major <= 99: # major
 			try:
-				while True:
+				while ver.minor <= 99:
 					assert server.access(ver.path()) # minor
 					findFirst = False
 					found_patchlevel = True
@@ -962,11 +968,11 @@ class UniventionUpdater:
 						if isinstance(ver.patch, basestring): # patchlevel not used
 							break
 						ver.patchlevel += 1
-						if ver > end:
+						if ver > end or ver.patchlevel > ver.patchlevel_max:
 							break
 					ver.minor += 1
 					ver.patchlevel = ver.patchlevel_reset
-					if ver > end or ver.minor > 99:
+					if ver > end:
 						break
 			except DownloadError, e:
 				ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
@@ -1004,7 +1010,7 @@ class UniventionUpdater:
 	def _iterate_errata_repositories(self, start, end, parts, archs):
 		'''Iterate over all errata releases and return (server, version).'''
 		server = self.server
-		struct = UCSRepoPool(prefix=self.server, patch="errata%(patchlevel)d", patchlevel_reset=1)
+		struct = UCSRepoPool(prefix=self.server, patch="errata%(patchlevel)d", patchlevel_reset=1, patchlevel_max=999)
 		for ver in self._iterate_versions(struct, start, end, parts, archs, server):
 			yield server, ver
 
@@ -1350,12 +1356,8 @@ class UniventionUpdater:
 			versions_mmp.append(version)
 
 		for version in versions_mmp:
-
 			# Show errata updates for latest version only
-			if version == max(versions_mmp):
-				iterate_errata=True
-			else:
-				iterate_errata=False
+			iterate_errata = version == max(versions_mmp):
 
 			for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list, errata_level=errata_level, iterate_errata=iterate_errata):
 				result.append( ver.deb() )
