@@ -1,3 +1,9 @@
+univention-updater (7.0.147-1) unstable; urgency=low
+
+  * Fix traceback in univention-repository-update (Bug #25619)
+
+ -- 
+
 univention-updater (7.0.146-1) unstable; urgency=low
 
   * Bind errata updates for components to the latest version only

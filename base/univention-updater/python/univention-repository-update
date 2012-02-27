@@ -199,6 +199,8 @@ def update_net( options ):
 			new_version.minor = int( regdict[ 'minor' ] )
 			if not min_version or new_version < min_version:
 				min_version = copy.copy( new_version )
+		if not min_version:
+			return
 
 		inst_fd = open( os.path.join( _mirror_base, '.univention_install' ), 'w' )
 		inst_fd.write( 'VERSION=%d.%d\n' % ( min_version.major, min_version.minor ) )
