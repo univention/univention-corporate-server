@@ -1,3 +1,9 @@
+univention-java (6.0.0-6) stable; urgency=low
+
+  * Fix ucslint issues 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 27 Feb 2012 09:31:32 +0100
+
 univention-java (6.0.0-5) stable; urgency=low
 
   * On amd64 depend on ia32-libs-gtk, since it includes the ia32ified version
