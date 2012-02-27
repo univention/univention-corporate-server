@@ -1,3 +1,10 @@
+univention-java (6.0.0-5) stable; urgency=low
+
+  * On amd64 depend on ia32-libs-gtk, since it includes the ia32ified version
+    of icedtea6-plugin (unrelated, but spotted through Bug #25673)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 27 Feb 2012 09:23:47 +0100
+
 univention-java (6.0.0-4) stable; urgency=low
 
   * Revert previous change
