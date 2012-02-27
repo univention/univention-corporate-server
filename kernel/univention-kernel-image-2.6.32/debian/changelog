@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (5.0.1-1) unstable; urgency=low
+
+  * Depend on new kernel (Bug #26192)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Feb 2012 11:17:32 +0100
+
 univention-kernel-image-2.6.32 (5.0.0-4) unstable; urgency=low
 
   * Depend on new kernel (Bug #25908)
