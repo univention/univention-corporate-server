@@ -1,3 +1,9 @@
+univention-system-setup (5.0.116-1) unstable; urgency=low
+
+  * Download all dependencies of all server packages (Bug #24272)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Feb 2012 14:01:14 +0100
+
 univention-system-setup (5.0.115-1) unstable; urgency=low
 
   * Added master package to package cache (Bug #24272)

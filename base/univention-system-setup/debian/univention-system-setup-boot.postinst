@@ -51,6 +51,10 @@ if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 	install_cmd="$(univention-config-registry get update/commands/install)"
 	for package in server-master server-backup server-slave server-member basesystem; do
 		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages univention-${package}
+	
+		# Get all dependencies
+		dependencies="$(LC_ALL=C apt-cache show univention-${package} | grep Depends | head -n 1 | sed -e 's| \| [^,]*||g;s|,||g;s|([^(]*)||g;s|^Depends: ||')"
+		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages ${dependencies}
 	done
 
 	(
