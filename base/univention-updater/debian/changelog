@@ -1,3 +1,10 @@
+univention-updater (7.0.148-1) unstable; urgency=low
+
+  * Show only the errata updates for the latest component (Bug #24347)
+  * Fixed counting of errata updates for components (Bug #24347)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Feb 2012 16:34:35 +0100
+
 univention-updater (7.0.147-2) unstable; urgency=low
 
   * Fix merge error (Bug #24347)

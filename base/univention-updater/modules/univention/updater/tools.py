@@ -688,6 +688,7 @@ class UniventionUpdater:
 		   >>> updater.get_all_available_errata_component_updates()
 			[
 				('component1', {'2.3': ['2', '3'], '2.4': ['5']} ),
+				('component2', {'3.0': ['1'], '3.1': []} ),
 				('component2', {'3.0': ['1']} ),
 			]
 		'''
@@ -706,6 +707,7 @@ class UniventionUpdater:
 						else:
 							component_versions[version_str] = [el]
 					else:
+						component_versions[version_str] = []
 						break
 			if component_versions:
 				result.append( (component, component_versions) )

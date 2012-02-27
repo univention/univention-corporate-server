@@ -648,21 +648,24 @@ class Instance(umcm.Base):
 			if components_errata:
 				""" Convert the result.
 				The result is in a form like this:
-					[                                                                                                                                                                                    
-						('component1', {'2.3': ['2', '3'], '2.4': ['5']} ),                                                                                                                              
-						('component2', {'3.0': ['2']} ),                                                                                                                                                 
-					] 
+					[
+						('component1', {'2.3': ['2', '3'], '2.4': ['5']} ),
+						('component2', {'3.0': ['2']} ),
+					]
 				The UMC module needs the number of updates:
 					component1: 3
 					component2: 1
 				"""
 				res = {}
 				for (component,versions) in components_errata:
-					res[component] = len(max(versions))
+					if len(versions[max(versions)]) > 0:
+						MODULE.info('components_errata: Found %d updates for %s' %(len(versions[max(versions)]), component))
+						res[component] = len(versions[max(versions)])
 				# Convert the object into a string. This is necessary because such a dict
 				# can not be transferred through a hidden value in java script
-				result['components_errata'] = str(res)
-				MODULE.info('components_errata: %s' % result['components_errata'])
+				if res:
+					result['components_errata'] = str(res)
+					MODULE.info('components_errata: %s' % result['components_errata'])
 
 
 			# it doesn't hurt to include the value of the 'update/available' UCR variable
