@@ -1,3 +1,10 @@
+univention-system-setup (5.0.117-1) unstable; urgency=low
+
+  * Don't mark univention-management-console and univention-pam as
+    manually installed on basesystem (Bug #24272)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Feb 2012 15:40:40 +0100
+
 univention-system-setup (5.0.116-1) unstable; urgency=low
 
   * Download all dependencies of all server packages (Bug #24272)

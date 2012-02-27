@@ -86,8 +86,10 @@ fi
 
 progress_next_step
 
-# mark these packages as manually installed
-apt-get install univention-management-console univention-pam
+if [ "$profile_role" != "basesystem" ]; then
+	# mark these packages as manually installed
+	apt-get install univention-management-console univention-pam
+fi
 
 apt-get autoremove $APT_PARAMS
 
