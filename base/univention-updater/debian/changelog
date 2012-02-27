@@ -1,3 +1,9 @@
+univention-updater (7.0.147-2) unstable; urgency=low
+
+  * Fix merge error (Bug #24347)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Feb 2012 13:21:42 +0100
+
 univention-updater (7.0.147-1) unstable; urgency=low
 
   * Fix traceback in univention-repository-update (Bug #25619)

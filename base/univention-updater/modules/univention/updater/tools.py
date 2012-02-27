@@ -1357,7 +1357,7 @@ class UniventionUpdater:
 
 		for version in versions_mmp:
 			# Show errata updates for latest version only
-			iterate_errata = version == max(versions_mmp):
+			iterate_errata = version == max(versions_mmp)
 
 			for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list, errata_level=errata_level, iterate_errata=iterate_errata):
 				result.append( ver.deb() )
