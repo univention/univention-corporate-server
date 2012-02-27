@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, glob, sys, shutil, operator
+import os, glob, sys, shutil, operator, re
 
 import univention.debug as udbg
 import univention.config_registry as ucr
@@ -64,9 +64,12 @@ if os.path.exists("/boot/grub/menu.lst"):
         print "and haven't converted from chain loading"
         sys.exit(0)
 
-kernels = []
-for i in glob.glob("/boot/vmlinuz*"):
-	kernels.append(i.replace("/boot/vmlinuz-", ""))
+try:
+	grub2 = open("/boot/grub/grub.cfg", "r")
+except OSError, e:
+       print >>sys.stderr, "Failed to open grub.cfg: %s" % (e,)
+       sys.exit(1)
+
 
 lst = []
 lst.append("# This Grub configuration is auto-generated through univention-grub-generate-menu-lst.")
@@ -76,12 +79,51 @@ lst.append("default 0")
 lst.append("timeout 5 ")
 lst.append(" ")
 
-for i in sorted(kernels, key=LooseVersion, reverse=True):
-	lst.append("title           UCS, kernel " + i)
-	lst.append("root            (hd0,0)")
-	lst.append("kernel          /vmlinuz-" + i + " root=/dev/mapper/vg_ucs-rootfs ro splash=nosplash")
-	lst.append("initrd          /initrd.img-" + i)
-	lst.append(" ")
+RE_MENUENTRY = re.compile(r"^menuentry '([^']*)' .*")
+RE_ROOT = re.compile(r"^\s+set\s+root='\((hd[0-9]+|/dev/\w+d[a-z]),msdos([0-9]+)\)'")
+RE_LINUX = re.compile(r"^\s+linux\s+(.+)")
+RE_INITRD = re.compile(r"^\s+initrd\s+(.+)")
+RE_CLOSE = re.compile(r"^}")
+
+name = kernel = initrd = None
+
+for line in grub2:
+	m = RE_MENUENTRY.match(line)
+	if m:
+		(name,) = m.groups()
+		continue
+
+	m = RE_ROOT.match(line)
+	if m:
+		device, part = m.groups()
+		if device.startswith('hd'):
+			root = "(%s,%d)" % (device, int(part) - 1)
+		elif device.startswith('/dev/'):
+			root = "(hd%d,%d)" % (ord(device[-1]) - ord('a'), int(part) - 1)
+		else:
+			print >>sys.stderr, "Unhandled root=%s" % (line,)
+
+	m = RE_LINUX.match(line)
+	if m:
+		(kernel,) = m.groups()
+		continue
+
+	m = RE_INITRD.match(line)
+	if m:
+		(initrd,) = m.groups()
+		continue
+
+	m = RE_CLOSE.match(line)
+	if m:
+		if name and root and kernel:
+			lst.append("title           " + name)
+			lst.append("root            " + root)
+			lst.append("kernel          " + kernel)
+			if initrd:
+				lst.append("initrd          " + initrd)
+			lst.append(" ")
+		name = root = kernel = initrd = None
+		continue
 
 if os.path.exists("/boot/grub/menu.lst"):
    shutil.copyfile("/boot/grub/menu.lst", "/boot/grub/menu.lst.bak")
