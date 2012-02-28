@@ -99,11 +99,14 @@ dojo.mixin(umc.tools, {
 		});
 	},
 
-	holdSession: function() {
+	holdSession: function(/*String?*/ id) {
 		// summary:
 		//		Set the expiration time of the current session cookie in to 24 hours.
+		// id: String
+		//		If specified, the session ID will be set to this value, otherwise the
+		//		ID will be read from the cookie automatically.
 		var date = new Date((new Date()).getTime() + 1000 * 60 * 60 * 24);
-		dojo.cookie('UMCSessionId', dojo.cookie('UMCSessionId'), {
+		dojo.cookie('UMCSessionId', id || dojo.cookie('UMCSessionId'), {
 			expires: date.toUTCString(),
 			path: '/'
 		});
@@ -165,6 +168,10 @@ dojo.mixin(umc.tools, {
 
 	// handler class for long polling scenario
 	_PollingHandler: function(url, content, finishedDeferred, opts) {
+		// save the current session ID locally, as the cookie might expire when
+		// the time and timezone settings are updated
+		var _oldSessionID = dojo.cookie('UMCSessionId');
+
 		return {
 			finishedDeferred: finishedDeferred,
 
@@ -218,7 +225,13 @@ dojo.mixin(umc.tools, {
 				// therefore the cookie is not updated (which is checked for the
 				// session timeout), however, the server will renew the session
 				// with each valid request that it receives
-				umc.tools.holdSession();
+				var currentSessionID = dojo.cookie('UMCSessionId');
+				if (!currentSessionID || 'undefined' == currentSessionID) {
+					// restore last valid session ID
+					currentSessionID = _oldSessionID;
+				}
+				_oldSessionID = currentSessionID;
+				umc.tools.holdSession(currentSessionID);
 
 				// send AJAX command
 				this._lastRequestTime = (new Date()).getTime();

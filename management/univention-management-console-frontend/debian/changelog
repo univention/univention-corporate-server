@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.280-1) unstable; urgency=low
+
+  * fixed problems with expiration of cookies when the local system time is
+    updated; Bug #24943
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Feb 2012 19:04:10 +0100
+
 univention-management-console-frontend (1.0.279-1) unstable; urgency=low
 
   * fixed LoginDialog for Internet Explorer compatibility mode (Bug #25020)
