@@ -1,3 +1,10 @@
+univention-updater (7.0.151-1) unstable; urgency=low
+
+  * Fixed use of_get_component_versions in errata-components-update, it
+    may return None (Bug #24347)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Feb 2012 11:46:30 +0100
+
 univention-updater (7.0.150-1) unstable; urgency=low
 
   * Some more errata component cleanups (Bug #24347)

@@ -121,7 +121,10 @@ def checkForUpdate(command, component):
 	for component in components:
 		configRegistry.load()
 		updater = univention.updater.UniventionUpdater()
-		version = max(updater._get_component_versions(component, None, None))
+		versions = updater._get_component_versions(component, None, None)
+		if not versions:
+			continue
+		version = max(versions)
 		current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
 		nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
 		if nextupdate:
@@ -275,7 +278,13 @@ if __name__ == '__main__':
 			while True:
 				configRegistry.load()
 				updater = univention.updater.UniventionUpdater()
-				version = max(updater._get_component_versions(component, None, None))
+				versions = updater._get_component_versions(component, None, None)
+				if not versions:
+					if not upgraded:
+						dprint( 'No errata update available for %s!' % component, [fp_debug,sys.stdout] )
+					break
+				version=max(versions)
+
 				try:
 					current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
 					nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
