@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -37,43 +37,43 @@ dojo.require("umc.store");
 dojo.require("umc.modules._updater.Page");
 
 dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
-	
-	i18nClass: 		'umc.modules.updater',
-	
-    postMixInProperties: function() {
-        this.inherited(arguments);
 
-        dojo.mixin(this, {
-        	title:			this._("Settings"),
-        	headerText:		this._("Settings for online updates"),
-            helpText:		this._("This page lets you modify essential settings that affect where your system looks for updates, and which of them it will consider."),
-        	footerButtons:
-    		[
-    	    	{
-    	            name:		'reset',
-    	            label:		this._( 'Reset' ),
-    	            onClick: dojo.hitch(this, function() {
-    	                this._form.load('server');		// ID doesn't matter here but must be nonempty
-    	            })
-    	    	},
-    	    	{
-    	            name:		'submit',
-    	            'default':	true,
-    	            label:		this._("Apply changes"),
-    	            onClick: dojo.hitch(this, function() {
-    	            	this.standby(true);
-    	                this._form.save();
-    	            })
-    	    	}
-    		]
-        });
-    },
+	i18nClass:		'umc.modules.updater',
 
-    buildRendering: function() {
-		
-    	this.inherited(arguments);
+	postMixInProperties: function() {
+		this.inherited(arguments);
 
-    	var widgets =
+		dojo.mixin(this, {
+			title:			this._("Settings"),
+			headerText:		this._("Settings for online updates"),
+			helpText:		this._("This page lets you modify essential settings that affect where your system looks for updates, and which of them it will consider."),
+			footerButtons:
+			[
+				{
+					name:		'reset',
+					label:		this._( 'Reset' ),
+					onClick: dojo.hitch(this, function() {
+						this._form.load('server');		// ID doesn't matter here but must be nonempty
+					})
+				},
+				{
+					name:		'submit',
+					'default':	true,
+					label:		this._("Apply changes"),
+					onClick: dojo.hitch(this, function() {
+						this.standby(true);
+						this._form.save();
+					})
+				}
+			]
+		});
+	},
+
+	buildRendering: function() {
+
+		this.inherited(arguments);
+
+		var widgets =
 		[
 			{
 				type:			'TextBox',
@@ -97,98 +97,98 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
 			}
 		];
 
-    	var layout = 
-    	[
-    	 	{
-    	 		label:		this._("Update-related settings"),
-    	 		layout:
-    	 		[
-		    		['server','prefix'],
-		    		['maintained','unmaintained']
-		    	]
-    	 	}
-    	];
-
-    	this._form = new umc.modules._updater.Form({
-    		widgets:		widgets,
-    		layout:			layout,
-    		//buttons:		buttons,
-    		moduleStore:	umc.store.getModuleStore('server','updater/settings'),
+		var layout =
+		[
+			{
+				label:		this._("Update-related settings"),
+				layout:
+				[
+					['server','prefix'],
+					['maintained','unmaintained']
+				]
+			}
+		];
+	
+		this._form = new umc.modules._updater.Form({
+			widgets:		widgets,
+			layout:			layout,
+			//buttons:		buttons,
+			moduleStore:	umc.store.getModuleStore('server','updater/settings'),
 			scrollable: true,
-    		onSaved: dojo.hitch(this, function(success,data) {
-    			this.standby(false);
-    			if (success)		// this is only Python module result, not data validation result!
-    			{
-    				var result = data;
-    				if (dojo.isArray(data))
-    				{
-    					result = data[0];
-    				}
-    				if (result['status'])
-    				{
-    					if (result['message'])
-    					{
-    						// result['status'] is kind of error code:
-    						//	1 ... invalid field input
-    						//	2 ... error setting registry variable
-    						//	3 ... error commiting UCR
-    						//	4 ... any kind of 'repo not found' conditions
-    						//	5 ... repo not found, but encountered without commit
-    						var txt = this._("An unknown error with code %d occured.",result['status']);
-    						var title = 'Error';
-    						switch(result['status'])
-    						{
-    							case 1: txt = this._("Please correct the corresponding input fields:");
-    									title = this._("Invalid data");
-    									break;
-    							case 2:
-    							case 3:	txt = this._("The data you entered could not be saved correctly:");
-    									title = this._("Error saving data");
-    									break;
-    							case 4: txt = this._("Using the data you entered, no valid repository could be found.<br/>Since this may be a temporary server problem as well, your data was saved though.<br/>The problem was:");
-    									title = this._("Updater warning");
-    									break;
-    							case 5: txt = this._("With the current (unchanged) settings, the following problem was encountered:");
+			onSaved: dojo.hitch(this, function(success,data) {
+				this.standby(false);
+				if (success)		// this is only Python module result, not data validation result!
+				{
+					var result = data;
+					if (dojo.isArray(data))
+					{
+						result = data[0];
+					}
+					if (result['status'])
+					{
+						if (result['message'])
+						{
+							// result['status'] is kind of error code:
+							//	1 ... invalid field input
+							//	2 ... error setting registry variable
+							//	3 ... error commiting UCR
+							//	4 ... any kind of 'repo not found' conditions
+							//	5 ... repo not found, but encountered without commit
+							var txt = this._("An unknown error with code %d occured.",result['status']);
+							var title = 'Error';
+							switch(result['status'])
+							{
+								case 1: txt = this._("Please correct the corresponding input fields:");
+										title = this._("Invalid data");
+										break;
+								case 2:
+								case 3:	txt = this._("The data you entered could not be saved correctly:");
+										title = this._("Error saving data");
+										break;
+								case 4: txt = this._("Using the data you entered, no valid repository could be found.<br/>Since this may be a temporary server problem as well, your data was saved though.<br/>The problem was:");
 										title = this._("Updater warning");
 										break;
-    						}
-    						
-    						var message = dojo.replace('<p>{txt}</p><p><b>{msg}</b></p>',{txt:txt,msg:result['message']});
-    						
-    						// While our module is open, the first created dialog would retain its title over
-    						// its whole lifetime... But we want the title to be changed on every invocation,
-    						// so there's no chance but to reap a current instance of the dialog.
+								case 5: txt = this._("With the current (unchanged) settings, the following problem was encountered:");
+										title = this._("Updater warning");
+										break;
+							}
+	
+							var message = dojo.replace('<p>{txt}</p><p><b>{msg}</b></p>',{txt:txt,msg:result['message']});
+	
+							// While our module is open, the first created dialog would retain its title over
+							// its whole lifetime... But we want the title to be changed on every invocation,
+							// so there's no chance but to reap a current instance of the dialog.
+	
+							umc.dialog._alertDialog = null;
+							umc.dialog.alert(message,title);
+						}
+						// No, this is done in the Form class itself.
+						// this._form.applyErrorIndicators(result['object']);
+					}
+					else
+					{
+						this.dataChanged();
+						// nothing!
+						//this.closeDetail();
+					}
+				}
+			})
+		});
+		this.addChild(this._form);
 
-    						umc.dialog._alertDialog = null;
-    						umc.dialog.alert(message,title);
-    					}
-    					// No, this is done in the Form class itself.
-    					// this._form.applyErrorIndicators(result['object']);
-    				}
-    				else
-    				{
-    					this.dataChanged();
-    					// nothing!
-    					//this.closeDetail();
-    				}
-    			}
-    		})
-    	});
-    	this.addChild(this._form);
-    	
-    	dojo.connect(this._form,'onSubmit',dojo.hitch(this,function() {
-	    	this.standby(true);
-	        this._form.save(this._save_options);
+		dojo.connect(this._form,'onSubmit',dojo.hitch(this,function() {
+			this.standby(true);
+			this._form.save(this._save_options);
 		}));
-    	    	
-    	this._form.load('server');		// ID doesn't matter here, but must be nonempty
+
+		this._form.load('server');		// ID doesn't matter here, but must be nonempty
     },
-    
-    // Returns defaults for a new component definition. 
+
+    // Returns defaults for a new component definition.
     getComponentDefaults: function() {
-    
-    	return ({
-    		// Behaviour: enable the component in first place
+
+		return ({
+			// Behaviour: enable the component in first place
 			enabled:			true,
 			// Empty fields
 			name:				'',		// TOOD wouldn't it be nice to get this field focused on NEW?
@@ -201,13 +201,13 @@ dojo.declare("umc.modules._updater.SettingsPage", umc.modules._updater.Page, {
 			// TODO These have to be copied from the current settings
 			maintained:			true,
 			unmaintained:		false
-    	});
+		});
     },
-    
+
     // Let's fetch the current values again directly before we show the form.
     onShow: function() {
 
-    	this._form.load('server');		// ID doesn't matter here but must be nonempty
+		this._form.load('server');		// ID doesn't matter here but must be nonempty
     }
-    
+
 });

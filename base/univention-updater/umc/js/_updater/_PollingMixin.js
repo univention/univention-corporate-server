@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -45,11 +45,11 @@ dojo.declare('umc.modules._updater._PollingMixin', [
 	postMixinProperties: function() {
 		this.inherited(arguments);
 	},
-	
+
 	buildRendering: function() {
-		
+
 		this.inherited(arguments);
-		
+
 		// Everything needed is kept in the 'polling' dictionary: constructor arguments
 		// and all private status variables.
 		//
@@ -78,11 +78,11 @@ dojo.declare('umc.modules._updater._PollingMixin', [
 		{
 			umc.tools.assert(this.polling['interval'],	"_PollingMixin does not work without 'interval' argument.");
 			umc.tools.assert(this.polling['query'],		"_PollingMixin does not work without 'query' argument.");
-			umc.tools.assert(this.polling['callback'],	"_PollingMixin does not work without 'callback' argument."); 
-			
+			umc.tools.assert(this.polling['callback'],	"_PollingMixin does not work without 'callback' argument.");
+
 			this.polling['value'] = 0;		// initial values.
 			this.polling['timer'] = '';
-			
+
 			// 'function' starts UMCP command and hands result over to 'handler'
 			this.polling['function'] = dojo.hitch(this, function() {
 				try
@@ -98,7 +98,7 @@ dojo.declare('umc.modules._updater._PollingMixin', [
 						})
 						);
 				}
-				catch(error) 
+				catch(error)
 				{
 					console.error("Polling [function] error: " + error.message);
 				}
@@ -135,11 +135,11 @@ dojo.declare('umc.modules._updater._PollingMixin', [
 					console.error("Polling [handler] error: " + error.message);
 				}
 			});
-			
+
 			this.startPolling();
 		}
 	},
-	
+
 	// public function to start polling
 	startPolling: function() {
 		if ((this.polling) && (this.polling['handler']) && (typeof(this.polling['handler']) == 'function'))
@@ -147,7 +147,7 @@ dojo.declare('umc.modules._updater._PollingMixin', [
 			this.polling['handler'](null);
 		}
 	},
-	
+
 	// public function to stop polling
 	stopPolling: function() {
 		if (this.polling)
@@ -155,7 +155,7 @@ dojo.declare('umc.modules._updater._PollingMixin', [
 			this.polling['interval'] = 0;
 		}
 	},
-	
+
 	// stops the timer if the object is destroyed.
 	uninitialize: function() {
 

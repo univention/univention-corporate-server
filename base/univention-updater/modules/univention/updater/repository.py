@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: helper functions for managing repositories
 #
-# Copyright 2009-2011 Univention GmbH
+# Copyright 2009-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

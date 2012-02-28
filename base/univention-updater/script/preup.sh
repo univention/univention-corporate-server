@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2010-2011 Univention GmbH
+# Copyright (C) 2010-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -196,8 +196,8 @@ check_space(){
 	else
 		echo "failed"
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
-        echo "         This may interrupt the update and result in an inconsistent system!"
-    	echo "         If neccessary you can skip this check by setting the value of the"
+		echo "         This may interrupt the update and result in an inconsistent system!"
+		echo "         If neccessary you can skip this check by setting the value of the"
 		echo "         config registry variable update30/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
 		if [ "$partition" = "/boot" -a ! "$update30_pruneoldkernel" = "yes" -a ! "$univention_ox_directory_integration_oxae" = "true" ] ; then

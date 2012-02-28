@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -53,21 +53,21 @@ dojo.declare('umc.modules._updater._LogViewer', [
     umc.widgets.ContainerWidget,
 	umc.i18n.Mixin
 	], {
-	
+
 	scrollable:			true,
 	_first_call:		3,
 	_last_stamp:		0,
 	_check_interval:	0,
 	_current_job:		'',
-	_log_position: 		0,
+	_log_position:		0,
 
 	// FIXME which class should I take here?
 	style:		'border:1px solid #d0d0d0;background-color:#f8f8f8;padding:.3em;',
-	
+
 //	postMixinProperties: function() {
-//		
+//
 //		this.inherited(arguments);
-//		
+//
 //		// mix in the polling capability
 //		dojo.mixin(this,umc.modules._updater._PollingMixin({
 //			polling: {
@@ -79,29 +79,29 @@ dojo.declare('umc.modules._updater._LogViewer', [
 //			}
 //		}));
 //	},
-	
+
 	buildRendering: function() {
-		
+
 		this.inherited(arguments);
-		
+
 		this._text = new umc.widgets.Text({
 			style:		'font-family:monospace;',
 			content:	this._("... loading log file ...")
 		});
 		this.addChild(this._text);
 	},
-	
+
 	_fetch_log: function() {
-		
+
 		umc.tools.umcpCommand(this.query,{job:this._current_job, count:-1},false).then(dojo.hitch(this,function(data) {
-			
+
 			this._query_success(this.query + " [count=-1]");
 			var stamp = data.result;
 			if (stamp != this._last_stamp)
 			{
 				this._last_stamp = stamp;
 				umc.tools.umcpCommand(this.query,{job:this._current_job,count:this._log_position},false).then(dojo.hitch(this, function(data) {
-					
+
 					var contentLength = parseInt( data.result.length, 10 );
 					if( contentLength ) {
 						this._log_position += contentLength;
@@ -121,7 +121,7 @@ dojo.declare('umc.modules._updater._LogViewer', [
 					this._fetch_log();
 				}),this._check_interval);
 			}
-		
+
 		}),
 		dojo.hitch(this,function(data) {
 			this._query_error(this.query + " [count=-1]",data);
@@ -134,18 +134,18 @@ dojo.declare('umc.modules._updater._LogViewer', [
 			}
 		})
 		);
-		
+
 	},
-	
+
 	getContentAttr: function() {
 		return this._text.get('content');
 	},
-	
+
 	// set content. Additionally checks if the current scroll position
 	// (before setting content) is at bottom, and if it is -> set
 	// bottom position after setting content too.
 	setContentAttr: function(content) {
-		
+
 		if (dojo.isArray(content))
 		{
 			content = content.join("<br/>\n");
@@ -153,7 +153,7 @@ dojo.declare('umc.modules._updater._LogViewer', [
 		try
 		{
 			var oldpos = this._get_positions();
-			
+
 			// check if we should scroll to bottom. We avoid that if the current position
 			// is not at the end, indicating that the user has moved the pane manually.
 			//
@@ -180,26 +180,26 @@ dojo.declare('umc.modules._updater._LogViewer', [
 			console.error("SCROLL ERROR: " + error.message);
 		}
 	},
-	
+
 	// gets the scrolling state of the text widget relative to its container
 	_get_positions: function() {
-		
+
 		var result = {};
 		result['h_text'] = this._text.contentNode.scrollHeight;						// text height
 		result['h_container'] = this.domNode.clientHeight;							// container widget height
 		result['d_top'] = this._text.contentNode.parentNode.scrollTop;				// scroll distance from top
 		result['d_bottom'] = result['h_text'] - (result['h_container'] + result['d_top']);	// scroll distance from bottom
-		
+
 		return result;
 	},
-	
+
 	// scrolls to the bottom of the scroll area. Will be called from different places:
 	//
 	//	-	unconditionally when the ProgressPage is being opened
 	//	-	in the 'content' setter if the position is roughly at the bottom
 	//
 	scrollToBottom: function() {
-		
+
 		// we ignore any calls to 'scrollToBottom()' if we're not currently
 		// watching. This makes the pane free movable at the 'return to overview'
 		// prompt when a job is finished.
@@ -216,7 +216,7 @@ dojo.declare('umc.modules._updater._LogViewer', [
 			var oldval = node.scrollTop;
 			node.scrollTop = oldval+skip;
 			var newval = node.scrollTop;
-			
+
 			// manually changed?
 			// or new value not accepted?
 			if (newval != (oldval+skip))
@@ -232,28 +232,28 @@ dojo.declare('umc.modules._updater._LogViewer', [
 			}
 		}
 	},
-	
+
 	// Called from ProgressPage when the log file polling is to be started.
 	// job key can't be an argument here as we don't know it.
 	startWatching: function(interval) {
-		
+
 		this._check_interval = interval;
 		// clean up any stale display and states from last run
 		this.set('content',this._("... loading log file ..."));
-		
+
 		this._first_call = 3;
 		this._last_stamp = 0;
-		
+
 		this._fetch_log();		// first call, will reschedule itself as long
 								// as _check_interval is not zero
 	},
-	
+
 	// A seperate function that is called by the 'ProgressPage' when the key of the
 	// current job has become known.
 	setJobKey: function(job) {
 		this._current_job = job;
 	},
-	
+
 	// effectively stops the polling timer. Can be called from outside (if ProgressPage is being closed)
 	// or from inside (as 'uninitialize' handler)
 	//
@@ -261,24 +261,22 @@ dojo.declare('umc.modules._updater._LogViewer', [
 	stopWatching: function(clean) {
 
 		this._check_interval = 0;
-		
+
 		if ((typeof(clean) != 'undefined') && (clean))
 		{
 			this.set('content',this._("... loading log file ..."));
 		}
 	},
-	
+
 	uninitialize: function() {
-		
+
 		this.inherited(arguments);
 		this.stopWatching();
 	},
-	
+
 	// can be listened to from outside
 	_query_error: function(subject,data) {
 	},
 	_query_success: function(subject) {
 	}
 });
-	
-

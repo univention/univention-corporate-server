@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -28,7 +28,7 @@
  */
 /*global console MyError dojo dojox dijit umc window */
 
-dojo.provide("umc.modules.updater"); 
+dojo.provide("umc.modules.updater");
 
 // ------------ Basics ------------------
 dojo.require("umc.i18n");
@@ -51,8 +51,8 @@ dojo.require("umc.modules._updater.ProgressPage");
 
 dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 
-	i18nClass: 			'umc.modules.updater',
-	
+	i18nClass:			'umc.modules.updater',
+
 	// some variables related to error handling
 	_connection_status:	0,			// 0 ... successful or not set
 									// 1 ... errors received
@@ -60,28 +60,28 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 	_busy_dialog: null,		// a handle to the 'connection lost' dialog while
 							// queries return with errors.
 	_error_count: 0,		// how much errors in one row
-	
+
 	buildRendering: function() {
 
 		this.inherited(arguments);
-	
+
 		this._updates = new umc.modules._updater.UpdatesPage({});
 		this._components = new  umc.modules._updater.ComponentsPage({});
 		this._details = new umc.modules._updater.DetailsPage({});
 		this._settings = new umc.modules._updater.SettingsPage({});
 		this._progress = new umc.modules._updater.ProgressPage({});
-		
+
 		this.addChild(this._updates);
 		this.addChild(this._components);
-		this.addChild(this._details); 
+		this.addChild(this._details);
 		this.addChild(this._settings);
 		this.addChild(this._progress);
-		
+
 		// --------------------------------------------------------------------------
 		//
 		//		Connections that make the UI work (mostly tab switching)
 		//
-		
+
 		// switches from 'add' or 'edit' (components grid) to the detail form
 		dojo.connect(this._components,'showDetail',dojo.hitch(this, function(id) {
 			this.exchangeChild(this._components,this._details);
@@ -97,19 +97,19 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				this._details.startEdit(true,this._settings.getComponentDefaults());
 			}
 		}));
-		
+
 		// closes detail form and returns to grid view.
 		dojo.connect(this._details,'closeDetail',dojo.hitch(this, function(args) {
 			this.exchangeChild(this._details,this._components);
 		}));
-		
+
 		// waits for the Progress Page to be closed (automatically or by a close button)
 		dojo.connect(this._progress,'stopWatching',dojo.hitch(this, function(tab) {
 			this.hideChild(this._progress);
 			this.showChild(this._updates);
 			this.showChild(this._components);
 			this.showChild(this._settings);
-			
+
 			// Revert to the 'Updates' page if the installer action encountered
 			// the 'reboot' affordance.
 			if (! tab)
@@ -118,7 +118,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			}
 			this.selectChild(tab);
 		}));
-		
+
 		// waits for the Progress Page to notify us that a job is finished. This
 		// should immediately refresh the 'Updates' and 'Components' pages.
 		// XXX can remain this way
@@ -126,7 +126,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			this._updates.refreshPage(true);
 			this._components.refreshPage();
 		}));
-		
+
 		// waits for the Progress Page to notify us that a job is running
 		dojo.connect(this._progress,'jobStarted',dojo.hitch(this, function() {
 			this._switch_to_progress_page();
@@ -137,57 +137,57 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		//		Connections that listen for changes and propagate
 		//		them to other pages
 		//
-		
+
 		// *** NOTE *** the Components Grid is able to refresh itself automatically,
 		//				so we don't have to refresh it manually on any changes.
-		
+
 		// *** NOTE *** the Updates Page also has some mechanisms to refresh itself
 		//				on changes that reflect themselves in the sources.list
 		//				snippet files. But this refresh is intentionally slow (once
 		//				in 5 secs) to avoid resource congestion. The callbacks here
 		//				should immediately trigger refresh whenever something was
 		//				done at the frontend UI.
-		
+
 		// listens for changes on the 'settings' tab and refreshes the 'updates' page.
 		dojo.connect(this._settings,'dataChanged',dojo.hitch(this, function() {
 			this._updates.refreshPage();
 		}));
-		
+
 		// called whenever detail form is successfully saved. Should refresh 'Updates' page.
 		dojo.connect(this._details,'dataChanged',dojo.hitch(this, function(args) {
 			this._updates.refreshPage();
 		}));
-		
+
 		// listens for changes on the 'components' grid (enabling/disabling) and
 		// refreshes the 'Updates' page.
 		dojo.connect(this._components,'dataChanged',dojo.hitch(this, function() {
 			this._updates.refreshPage();
 		}));
-		
+
 		// ---------------------------------------------------------------------------
 		//
 		//		Listens for 'query error' and 'query success' events on all attached pages
 		//		and their children, delivering them to our own (central) error handler
 		//
-		
+
 		var ch = this.getChildren();
 		for (var obj in ch)
 		{
-	    	dojo.connect(ch[obj],'_query_error',dojo.hitch(this,function(subject,data) {
-	    		this._query_error(subject,data);
-	    	}));
-	    	
-	    	dojo.connect(ch[obj],'_query_success',dojo.hitch(this,function(subject) {
-	    		this._query_success(subject);
-	    	}));
+			dojo.connect(ch[obj],'_query_error',dojo.hitch(this,function(subject,data) {
+				this._query_error(subject,data);
+			}));
+
+			dojo.connect(ch[obj],'_query_success',dojo.hitch(this,function(subject) {
+				this._query_success(subject);
+			}));
 		}
-    			
+
 		// --------------------------------------------------------------------------
 		//
 		//		Connections that centralize the work of the installer:
 		//		listen for events that should start UniventionUpdater
 		//
-		
+
 		// invokes the installer from the 'install' button (components grid)
 		dojo.connect(this._components,'installComponent',dojo.hitch(this, function(name) {
 			this._call_installer({
@@ -196,7 +196,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				confirm:	dojo.replace(this._("Do you really want to install the '{name}' component?"),{name: name})
 			});
 		}));
-		
+
 		// invokes the installer from the 'release update' button (Updates Page)
 		dojo.connect(this._updates,'runReleaseUpdate',dojo.hitch(this, function(release) {
 			this._call_installer({
@@ -205,7 +205,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				confirm:	dojo.replace(this._("Do you really want to install release updates up to version {release}?"),{release: release})
 			});
 		}));
-		
+
 		// invokes the installer from the 'errata update' button (Updates Page)
 		dojo.connect(this._updates,'runErrataUpdate',dojo.hitch(this, function() {
 			this._call_installer({
@@ -213,12 +213,12 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				confirm:	this._("Do you really want to install all available errata updates?")
 			});
 		}));
-		
+
 		// invokes the installer from the 'component update' button (Updates Page)
 		dojo.connect(this._updates,'runDistUpgrade',dojo.hitch(this, function() {
 			this._confirm_distupgrade();
 		}));
-		
+
 		// invokes the installer in easy mode
 		dojo.connect(this._updates,'runEasyUpgrade',dojo.hitch(this, function() {
 			this._call_installer({
@@ -227,22 +227,22 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			});
 		}));
 	},
-	
+
 	// We defer these actions until the UI is readily rendered
 	startup: function() {
-		
+
 		this.inherited(arguments);
-		
+
 		this.hideChild(this._details);
 		this.hideChild(this._progress);
-		
+
 	},
-	
+
 	// Seperate function that can be called the same way as _call_installer:
 	// instead of presenting the usual confirm dialog it presents the list
 	// of packages for a distupgrade.
 	_confirm_distupgrade: function() {
-		
+
 		try
 		{
 			this.standby(true);
@@ -299,31 +299,31 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 					style:			'max-width:600px;',
 					options:
 					[
-					 	{
-					 		label:		this._('Cancel'),
-					 		name:		'cancel'
-					 	},
-					 	{
-					 		label:		this._('Install'),
-					 		name:		'start',
-					 		'default':	true
-					 	}
+						{
+							label:		this._('Cancel'),
+							name:		'cancel'
+						},
+						{
+							label:		this._('Install'),
+							name:		'start',
+							'default':	true
+						}
 					]
 				});
-				
+
 				dojo.connect(dia,'onConfirm',dojo.hitch(this, function(answer) {
 					dia.close();
 					if (answer == 'start')
 					{
-			 			this._call_installer({
-			 				confirm:		false,
-			 				job:			'distupgrade',
-			 				detail:			''
-			 			});
+						this._call_installer({
+							confirm:		false,
+							job:			'distupgrade',
+							detail:			''
+						});
 					}
-				}));				
+				}));
 				dia.show();
-	
+
 				return;
 			}),
 			dojo.hitch(this, function(data) {
@@ -345,7 +345,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 	//		false ........ run the installer unconditionally.
 	//		any string ... the confirmation text to ask.
 	_call_installer: function(args) {
-		
+
 		if (args['confirm'])
 		{
 			var msg = "<h1>" + this._("Attention!") + "</h1><br/>";
@@ -353,15 +353,15 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				this._("Installing an system update is a significant change to this system and could have impact to other systems. ") +
 				this._("In normal case, trouble-free use by users is not possible during the update, since system services may need to be restarted. ") +
 				this._("Thus, updates shouldn't be installed on a live system. ") +
-				this._("It is also recommended to evaluate the update in a test environment and to create a backup of the system.") + 
+				this._("It is also recommended to evaluate the update in a test environment and to create a backup of the system.") +
 				"</p>";
-			msg = msg + "<p>" + 
+			msg = msg + "<p>" +
 				this._("During setup, the web server may be stopped, leading to a termination of the HTTP connection. ") +
 				this._("Nonetheless, the update proceeds and the update can be monitored from a new UMC session. ") +
-				this._("Logfiles can be found in the directory /var/log/univention/.") + 
+				this._("Logfiles can be found in the directory /var/log/univention/.") +
 				"</p>";
-			msg = msg + "<p>" + 
-				this._("Please also consider the release notes, changelogs and references posted in the <a href='http://forum.univention.de'>Univention Forum</a>.") + 
+			msg = msg + "<p>" +
+				this._("Please also consider the release notes, changelogs and references posted in the <a href='http://forum.univention.de'>Univention Forum</a>.") +
 				"</p>";
 			if (typeof(args['confirm']) == 'string')
 			{
@@ -369,24 +369,24 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			}
 			else
 			{
-				msg = msg + "<p>" + 
-					this._("Do you really wish to proceed?") + 
+				msg = msg + "<p>" +
+					this._("Do you really wish to proceed?") +
 					"</p>";
 			}
-			
+
 			umc.dialog.confirm(msg,
 			[
-			 	{
-			 		label:		this._('Cancel')
-			 	},
-			 	{
-			 		label:		this._('Install'),
-			 		'default':	true,
-			 		callback:	dojo.hitch(this,function() {
-			 			args['confirm'] = false;
-			 			this._call_installer(args);
-			 		})
-			 	}
+				{
+					label:		this._('Cancel')
+				},
+				{
+					label:		this._('Install'),
+					'default':	true,
+					callback:	dojo.hitch(this,function() {
+						args['confirm'] = false;
+						this._call_installer(args);
+					})
+				}
 			]);
 
 			return;
@@ -414,14 +414,14 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			this.standby(false);
 		}));
 	},
-	
-	
+
+
 	// Switches to the progress view: all tabs but the 'update in progess' will disappear.
 	// Remembers the currently selected tab and will restore it when finished.
 	// NOTE that we don't pass any args to the progress page since it is able
 	//		to fetch them all from the AT job.
 	_switch_to_progress_page: function() {
-		
+
 		try
 		{
 			// No clue why it says that selectedChildWidget() is not a method
@@ -436,14 +436,14 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 					args['last_tab'] = children[tab];
 				}
 			}
-			
+
 			this.hideChild(this._updates);
 			this.hideChild(this._components);
 			this.hideChild(this._settings);
-			
+
 			this.showChild(this._progress);
 			this.selectChild(this._progress);
-			
+
 			this._progress.startWatching(args);
 		}
 		catch(error)
@@ -451,7 +451,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			console.error("switch_progress: " + error.message);
 		}
 	},
-	
+
 	// We must establish a NO ERROR callback too, so we can reset
 	// the error status
 	_query_success: function(subject) {
@@ -462,7 +462,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			this._reset_error_status();
 		}
 	},
-	
+
 	// Recover after any kind of long-term failure:
 	//
 	//	-	set error counter to zero
@@ -471,7 +471,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 	//	-	refresh Updates page
 	//	-	restart polling
 	_reset_error_status: function() {
-		
+
 		this._connection_status = 0;
 		this._error_count = 0;
 		if (this._busy_dialog)
@@ -481,14 +481,14 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			this._busy_dialog = null;
 		}
 	},
-	
+
 	// Handles gracefully all things related to fatal query errors while
 	// an installer call is running. The background is that all polling
 	// queries are done with 'handleErrors=false', and their corresponding
 	// Error callback hands everything over to this function. So it could
 	// theoretically even survive a reboot...
 	_query_error: function(subject,data) {
-		
+
 		try
 		{
 			// While the login dialog is open -> all queries return at the
@@ -504,14 +504,14 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				if (this._connection_status != 2)
 				{
 					this._connection_status = 2;
-	
+
 					if (this._busy_dialog)
 					{
 						this._busy_dialog.hide();
 						this._busy_dialog.destroy();
 						this._busy_dialog = null;
 					}
-	
+
 					umc.dialog.login().then(dojo.hitch(this, function(username) {
 						// if authenticated again -> reschedule refresh queries, Note that these
 						// methods are intelligent enough to do nothing if the timer in question
@@ -522,9 +522,9 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 						this._progress.startPolling();
 					})
 					);
-	
-		            
-		            umc.dialog.notify(this._("Your current session has expired, or the connection to the server was lost. You must authenticate yourself again."));
+
+
+					umc.dialog.notify(this._("Your current session has expired, or the connection to the server was lost. You must authenticate yourself again."));
 				}
 //				else
 //				{
@@ -534,7 +534,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			else
 			{
 				this._connection_status = 1;
-	
+
 				this._error_count = this._error_count + 1;
 				if (this._error_count < 5)
 				{

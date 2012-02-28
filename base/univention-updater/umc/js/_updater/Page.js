@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -41,15 +41,15 @@ dojo.require("umc.widgets.StandbyMixin");
 //	-	add a prototype for a refresh function
 //
 dojo.declare("umc.modules._updater.Page", [
-   	umc.widgets.Page, 
+	umc.widgets.Page,
     umc.widgets.StandbyMixin,
 	umc.i18n.Mixin
-	] , 
+	] ,
 {
 	buildRendering: function() {
-		
+
 		this.inherited(arguments);
-		
+
 		// helpText and headerText changeable
 		this.watch('headerText',dojo.hitch(this,function(name,oldval,newval) {
 			var children = this.getChildren();
@@ -68,22 +68,22 @@ dojo.declare("umc.modules._updater.Page", [
 			this._helpTextPane.set('content',newval);
 		}));
 	},
-	
+
 	// should be overloaded by subclasses that need an entry point
 	// that should reload/refresh changed data and update the display
 	refreshPage: function() {
 	},
-	
+
 	// can be listened to by instances that want to be notified
 	// if something on this page has changed. Does not propagate
 	// any args or current data.
 	dataChanged: function() {
 	},
-	
+
 	startup: function() {
-		
+
 		this.inherited(arguments);
-		
+
 		// Establish generic listeners for all of our direct children.
 		var ch = this.getChildren();
 		for (var i in ch)
@@ -96,7 +96,7 @@ dojo.declare("umc.modules._updater.Page", [
 			}));
 		}
 	},
-	
+
 	// Two callbacks that are used by queries that want to propagate
 	// their outcome to the main error handlers
 	_query_error: function(subject,data) {
@@ -104,4 +104,3 @@ dojo.declare("umc.modules._updater.Page", [
 	_query_success: function(subject) {
 	}
 });
-

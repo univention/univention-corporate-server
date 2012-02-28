@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: updater
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -227,14 +227,14 @@ class Watched_Files(object):
 			self._unchanged_count = 0
 			self._last_stamp = max
 
-		return self._last_returned_stamp		
+		return self._last_returned_stamp
 
 class Instance(umcm.Base):
 	def __init__( self ):
 		umcm.Base.__init__( self )
 
 		self.init_called = False
-		
+
 	def init(self):
 		try:
 			if self.init_called:
@@ -252,10 +252,10 @@ class Instance(umcm.Base):
 
 			self._serial_file = Watched_File(COMPONENTS_SERIAL_FILE)
 			self._updates_serial = Watched_Files(UPDATE_SERIAL_FILES)
-			
+
 		except Exception, ex:
 			MODULE.error("init() ERROR: %s" % str(ex))
-			
+
 	def query_components(self,request):
 		"""	Returns components list for the grid in the ComponentsPage.
 		"""
@@ -422,7 +422,7 @@ class Instance(umcm.Base):
 		#
 		#	[
 		#		{
-		#		 	'object' : { ... a dict with the real data .. },
+		#			'object' : { ... a dict with the real data .. },
 		#			'options': None
 		#		},
 		#		... more such entries ...
@@ -1138,7 +1138,7 @@ class Instance(umcm.Base):
 			MODULE.warn(result['message'])
 			self.finished(request.id,result)
 			return
-		
+
 		# initial values of current job
 		self._current_job = {
 			'job':		subject,
@@ -1317,7 +1317,7 @@ class Instance(umcm.Base):
 	def _commit_ucr(self):
 		""" Commits changes to UCR variables. Expects a dict with key=variable name
 			and value=[old,new] tuples.
-		
+
 			For Bug #24878: now returns the number of changes being committed.
 		"""
 		MODULE.info("commit_ucr called: %d changes there." % len(self._changes))
@@ -1367,7 +1367,7 @@ class Instance(umcm.Base):
 			Function does not throw exceptions or print log messages.
 		"""
 		result = {
-			'status': 	PUT_SUCCESS,
+			'status':	PUT_SUCCESS,
 			'message':	'',
 			'object':	{}
 			}
@@ -1555,4 +1555,4 @@ class Instance(umcm.Base):
 				if command in atout:
 					return True
 		return False
-	
+

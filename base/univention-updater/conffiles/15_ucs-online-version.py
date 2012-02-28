@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Univention GmbH
+# Copyright (C) 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

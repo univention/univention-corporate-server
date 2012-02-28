@@ -123,7 +123,7 @@ univention-updater (7.0.137-1) unstable; urgency=low
 univention-updater (7.0.136-1) unstable; urgency=low
 
   * applied patch from Frank Greif <fg@it25.de> implements error messages when
-  	changing repository settings (Bug #24878)
+    changing repository settings (Bug #24878)
 
  -- Florian Best <best@univention.de>  Tue, 07 Feb 2012 17:28:42 +0100
 
@@ -891,7 +891,7 @@ univention-updater (7.0.53-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
   * Install univention-config-wrapper on upgrades to help UCR transition (Bug
-  	#22668)
+    #22668)
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:15 +0200
 
@@ -1696,7 +1696,7 @@ univention-updater (6.0.39-1) unstable; urgency=low
 univention-updater (6.0.38-1) unstable; urgency=low
 
   * added hook directory for displaying additional information and
-  	blocking update (Bug #20429)
+    blocking update (Bug #20429)
     (/usr/lib/python2.4/site-packages/u/m/c/handlers/update/hooks)
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 19 Oct 2010 10:51:00 +0200
@@ -2554,7 +2554,7 @@ univention-updater (5.0.23-1) unstable; urgency=low
 
   * add "unmaintained" sources to temporary sources.list file if
     repository/online/unmaintained=yes to prevent update issues.
-  	This is also done in current version of preup.sh and can be removed
+    This is also done in current version of preup.sh and can be removed
     after UCS 2.3-0 (Bug: #16331)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Nov 2009 12:06:07 +0100

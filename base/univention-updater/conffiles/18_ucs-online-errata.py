@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Univention GmbH
+# Copyright (C) 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,7 +38,7 @@ def preinst(baseConfig, changes):
 def postinst(baseConfig, changes):
 	if os.path.exists(FILE_NAME):
 		# This check is necessary otherwise this handler will reconstruct the
-		# old file because the new file will be empty. 
+		# old file because the new file will be empty.
 		if not baseConfig['version/erratalevel'] == '0':
 			res=open(FILE_NAME, 'r').readlines()
 			if len(res) <= 1:

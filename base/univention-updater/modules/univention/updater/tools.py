@@ -666,10 +666,11 @@ class UniventionUpdater:
 		return result
 
 	def get_all_available_errata_updates(self):
-		'''Returns a list of all available errata updates for current major.minor version
-		   as integer
-		   >>> updater.get_all_available_errata_updates()
-		   [3, 4, 5]
+		'''
+		Returns a list of all available errata updates for current major.minor version
+		as integer
+		> updater.get_all_available_errata_updates()
+		[3, 4, 5]
 		'''
 		result = []
 		archs = ['all'] + self.architectures
@@ -683,14 +684,15 @@ class UniventionUpdater:
 		return result
 
 	def get_all_available_errata_component_updates(self):
-		'''Returns a list of all available errata updates for current major.minor version
-		   as integer
-		   >>> updater.get_all_available_errata_component_updates()
-			[
-				('component1', {'2.3': ['2', '3'], '2.4': ['5']} ),
-				('component2', {'3.0': ['1'], '3.1': []} ),
-				('component3', {'3.0': ['1']} ),
-			]
+		'''
+		Returns a list of all available errata updates for current major.minor version
+		as integer
+		> updater.get_all_available_errata_component_updates()
+		[
+			('component1', {'2.3': ['2', '3'], '2.4': ['5']}),
+			('component2', {'3.0': ['1'], '3.1': []}),
+			('component3', {'3.0': ['1']}),
+		]
 		'''
 		result = []
 		archs = ['all'] + self.architectures
@@ -1331,7 +1333,7 @@ class UniventionUpdater:
 
 	def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False, errata_level=None):
 		'''Return array of Debian repository statements for requested component.
-	       With clean=True, additional clean statements for apt-mirror are added.
+		   With clean=True, additional clean statements for apt-mirror are added.
 		   Component repositories for mirror.list are returned if for_mirror_list=True.
 		'''
 		archs = ['all'] + self.architectures

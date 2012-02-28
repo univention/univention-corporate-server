@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -57,7 +57,7 @@ dojo.declare("umc.modules._updater.Form", [
 	// as a side effect, sets the focus either to the first invalid field (if any)
 	// or the first field at all.
 	applyErrorIndicators: function(values) {
-				
+
 		var firstname = '';
 		var errname = '';
 		for (var field in this._widgets)
@@ -95,7 +95,7 @@ dojo.declare("umc.modules._updater.Form", [
 		// not really useful: depending on NEW or EDIT we would
 		// want a different field to be focused.
 		//if (focus == '') { focus = firstname; }
-		
+
 		if (focus != '')
 		{
 			this._widgets[focus].focus();
@@ -106,7 +106,7 @@ dojo.declare("umc.modules._updater.Form", [
 //			}));
 		}
 	},
-	
+
 	// can be deleted when the last built version contains this method.
     getWidget: function( /*String*/ widget_name) {
         // summary:
@@ -118,27 +118,27 @@ dojo.declare("umc.modules._updater.Form", [
         // summary:
         //              Gather all form values and send them to the server via UMCP.
         //              For this, the field umcpSetCommand needs to be set.
-                                        
+
         umc.tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
-        
+
         // sending the data to the server
         var values = this.gatherFormValues();
 
-    	// *** CHANGED *** propagate an 'options' dict to the 'put' call of the moduleStore
+		// *** CHANGED *** propagate an 'options' dict to the 'put' call of the moduleStore
         // *** CHANGED *** propagate the result of the put operation to the 'onSaved' callback
         var deferred = this.moduleStore.put(values,options).then(dojo.hitch(this, function(result) {
             this.onSaved(true,result);
         }), dojo.hitch(this, function(result) {
             this.onSaved(false,result);
         }));
-                
+
         return deferred;
     },
-       
+
 	buildRendering: function(args) {
 
 		this.inherited(arguments);
-		
+
 		// It is important that error indicators get reset if data from
 		// the store has been loaded, but also if setFormValues() is called
 		// manually (e.g. to fill a 'new' form with initial values)
@@ -147,7 +147,7 @@ dojo.declare("umc.modules._updater.Form", [
 		}));
 
 		dojo.connect(this,'onSaved',dojo.hitch(this, function(success,data) {
-			
+
 			if (success)		// this is only Python module result, not data validation result!
 			{
 				var result = data;
@@ -173,4 +173,3 @@ dojo.declare("umc.modules._updater.Form", [
 	_query_success: function(subject) {
 	}
 });
-

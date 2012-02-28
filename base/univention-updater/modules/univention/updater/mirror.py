@@ -4,7 +4,7 @@
 # Univention Debmirror
 #  mirrors a repository server
 #
-# Copyright 2009-2011 Univention GmbH
+# Copyright 2009-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -124,8 +124,8 @@ class UniventionMirror( UniventionUpdater ):
 
 			# Check disabled, otherwise files won't get refetched if they change on upstream server
 			#if os.path.exists(filename):
-			# 	ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
-			# 	continue
+			#	ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
+			#	continue
 
 			dirname = os.path.dirname(filename)
 			try:
