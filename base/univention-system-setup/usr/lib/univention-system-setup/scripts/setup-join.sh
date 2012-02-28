@@ -112,8 +112,12 @@ fi
 /usr/share/univention-updater/disable-apache2-umc
 
 # cleanup secrets
-echo -n "$(makepasswd)" > /etc/ldap.secret
-echo -n "$(makepasswd)" > /etc/ldap-backup.secret
+if [ "$server_role" = "domaincontroller_master" ]; then
+	echo -n "$(makepasswd)" > /etc/ldap.secret
+	echo -n "$(makepasswd)" > /etc/ldap-backup.secret
+else
+	rm -f /etc/ldap.secret /etc/ldap-backup.secret
+fi
 rm -f /etc/machine.secret
 
 echo "Starting re-configuration of SSL"
