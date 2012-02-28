@@ -947,7 +947,7 @@ class UniventionUpdater:
 					assert server.access(ver.path()) # minor
 					findFirst = False
 					found_patchlevel = True
-					while found_patchlevel:
+					while found_patchlevel and ver.patchlevel <= ver.patchlevel_max:
 						found_patchlevel = False
 						for ver.part in parts: # part
 							try:
@@ -967,7 +967,7 @@ class UniventionUpdater:
 						if isinstance(ver.patch, basestring): # patchlevel not used
 							break
 						ver.patchlevel += 1
-						if ver > end or ver.patchlevel > ver.patchlevel_max:
+						if ver > end:
 							break
 					ver.minor += 1
 					ver.patchlevel = ver.patchlevel_reset
@@ -1337,6 +1337,9 @@ class UniventionUpdater:
 		archs = ['all'] + self.architectures
 		result = []
 
+		if errata_level > 999:
+			return result
+
 		cleanComponent = False
 		if clean:
 			cleanComponent = self.configRegistry.is_true('repository/online/component/%s/clean' % component, False)
@@ -1402,7 +1405,7 @@ class UniventionUpdater:
 		version.minor = start.minor
 		version.patchlevel = 0
 		foundFirst = False
-		for version.major in range(start.major, end.major + 1):
+		for version.major in range(start.major, min(99, end.major + 1)):
 			while version <= end:
 				try:
 					assert self.server.access(version.path())

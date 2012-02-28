@@ -287,14 +287,14 @@ if __name__ == '__main__':
 
 				try:
 					current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
-					nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
+					next_level = current_level + 1
+					nextupdate = updater.get_component_repositories(component, [version], errata_level=next_level)
 				except univention.updater.ConfigurationError, e:
 					dprint(traceback.format_exc(), [fp_debug])
 					dprint('Error: an error occurred during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
 					update_status( status='FAILED', errorsource='SETTINGS' )
 					sys.exit( 1 )
 
-				next_level = current_level+1
 				# we don't want an endless loop
 				if nextupdate == upgraded:
 					break
@@ -304,7 +304,7 @@ if __name__ == '__main__':
 						dprint( 'No errata update available for %s!' % component, [fp_debug,sys.stdout] )
 					break
 
-				dprint( 'Update to %d.%d %s-errata%d' % (version.major, version.minor, component,next_level), [fp_debug,sys.stdout] )
+				dprint('Update to %d.%d %s-errata%d' % (version.major, version.minor, component, next_level), [fp_debug,sys.stdout])
 
 				remove_temporary_sources_list()
 				upgraded = nextupdate

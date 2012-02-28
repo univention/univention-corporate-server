@@ -1,3 +1,9 @@
+univention-updater (7.0.152-1) unstable; urgency=low
+
+  * Limit versions to 99 and 999 (Bug #25619)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 28 Feb 2012 10:07:01 +0100
+
 univention-updater (7.0.151-1) unstable; urgency=low
 
   * Fixed use of_get_component_versions in errata-components-update, it
