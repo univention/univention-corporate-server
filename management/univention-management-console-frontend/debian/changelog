@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.279-1) unstable; urgency=low
+
+  * fixed LoginDialog for Internet Explorer compatibility mode (Bug #25020)
+
+ -- Florian Best <best@univention.de>  Tue, 28 Feb 2012 15:46:58 +0100
+
 univention-management-console-frontend (1.0.278-1) unstable; urgency=low
 
   * SearchForm: added missing dojo.require()

@@ -63,7 +63,8 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 				{id: 'en-US', label: this._('English')}
 			]});
 
-		this.domNode = dojo.byId('umc_LoginDialog');
+		this.containerNode = dojo.byId('umc_LoginDialog');
+		this.domNode = dojo.byId('umc_LoginWrapper');
 	},
 
 	defaultLang: function () {
@@ -114,7 +115,7 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 			style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 280px;',
 			content: ''
 		});
-		this._text.placeAt(this.domNode, 'first');
+		this._text.placeAt(this.containerNode, 'first');
 
 		// create the language combobox
 		var default_lang = this.defaultLang();
