@@ -689,7 +689,7 @@ class UniventionUpdater:
 			[
 				('component1', {'2.3': ['2', '3'], '2.4': ['5']} ),
 				('component2', {'3.0': ['1'], '3.1': []} ),
-				('component2', {'3.0': ['1']} ),
+				('component3', {'3.0': ['1']} ),
 			]
 		'''
 		result = []
@@ -700,14 +700,11 @@ class UniventionUpdater:
 			for version in versions:
 				version_str = '%s.%s' % (version.major, version.minor)
 				current_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+				component_versions[version_str] = []
 				for el in xrange(current_level + 1, 1000):
 					if self.get_component_repositories(component, [version], errata_level=el):
-						if component_versions.get(version_str):
-							component_versions[version_str].append(el)
-						else:
-							component_versions[version_str] = [el]
+						component_versions[version_str].append(el)
 					else:
-						component_versions[version_str] = []
 						break
 			if component_versions:
 				result.append( (component, component_versions) )
