@@ -68,9 +68,9 @@ univention-config-registry set \
 	'mail/postfix/masquerade/domains?$mydomain' \
 	mail/postfix/masquerade/exceptions?root \
 	mail/alias/root?systemmail@$hostname.$domainname \
-    mail/alias/postmaster?root \
-    mail/messagesizelimit?10240000
-
+	mail/alias/postmaster?root \
+	mail/messagesizelimit?10240000 \
+	mail/postfix/tls/client/level?may
 
 eval "$(univention-config-registry shell)"
 
