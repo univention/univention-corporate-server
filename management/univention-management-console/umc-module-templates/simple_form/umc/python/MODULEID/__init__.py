@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import notifier, smtplib
+import notifier
+import smtplib
 
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE

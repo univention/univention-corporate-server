@@ -1,3 +1,12 @@
+univention-management-console (4.0.204-1) unstable; urgency=low
+
+  * added build-dependency on ucslint to umc module template
+  * module description passed to umc-module-create is now used
+    in the debian/control file of generated dummy modules
+  (Bug #23876)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 28 Feb 2012 14:58:16 +0100
+
 univention-management-console (4.0.203-1) unstable; urgency=low
 
   * added dependency on devscripts to umc-create-module

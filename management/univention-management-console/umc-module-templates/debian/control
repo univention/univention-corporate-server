@@ -5,7 +5,8 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  python-support,
  univention-management-console-dev,
- python-all
+ python-all,
+ ucslint
 Standards-Version: 3.7.2
 XS-Python-Version: 2.6
 
@@ -14,10 +15,5 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-server,
  devscripts
-Description: UMC dummy module
- This package contains a UMC dummy module.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+Description: MODULEDESC
+ MODULEDESC
