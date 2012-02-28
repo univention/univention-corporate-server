@@ -1,3 +1,9 @@
+univention-management-console (4.0.204-2) unstable; urgency=low
+
+  * version bump (Bug #23876)
+
+ -- Florian Best <best@univention.de>  Tue, 28 Feb 2012 16:35:14 +0100
+
 univention-management-console (4.0.204-1) unstable; urgency=low
 
   * added build-dependency on ucslint to umc module template
