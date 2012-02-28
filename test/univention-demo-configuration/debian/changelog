@@ -1,3 +1,10 @@
+univention-demo-configuration (0.0.2-1) unstable; urgency=low
+
+  * update to current UMC (fixes login) (Bug #26023)
+  * fix debian/control
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 28 Feb 2012 17:07:18 +0100
+
 univention-demo-configuration (0.0.1-1) unstable; urgency=low
 
   * Initial release. (Bug #26023)
