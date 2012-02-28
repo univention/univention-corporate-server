@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.277-1) unstable; urgency=low
+
+  * fixed wording (Bug #24627)
+  * reverted last changes (Bug #25020)
+
+ -- Florian Best <best@univention.de>  Tue, 28 Feb 2012 14:27:18 +0100
+
 univention-management-console-frontend (1.0.276-1) unstable; urgency=low
 
   * fixed LoginDialog for Internet Explorer compatibility mode (Bug #25020) 
