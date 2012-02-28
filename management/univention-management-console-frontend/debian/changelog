@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.278-1) unstable; urgency=low
+
+  * SearchForm: added missing dojo.require()
+  * umc.dialog.login() / LoginDialog: fixed detection of already opened dialog
+  Bug #25020
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Feb 2012 14:32:31 +0100
+
 univention-management-console-frontend (1.0.277-1) unstable; urgency=low
 
   * fixed wording (Bug #24627)

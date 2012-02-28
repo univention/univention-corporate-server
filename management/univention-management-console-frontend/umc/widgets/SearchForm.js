@@ -30,6 +30,7 @@
 
 dojo.provide("umc.widgets.SearchForm");
 
+dojo.require("umc.widgets.Form");
 dojo.require("dijit.form.Form");
 dojo.require("umc.i18n");
 

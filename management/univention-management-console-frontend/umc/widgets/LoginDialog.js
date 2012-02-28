@@ -52,6 +52,8 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 	// use the framework wide translation file
 	i18nClass: 'umc.app',
 
+	open: false,
+
 	availableLanguages: null,
 
 	postMixInProperties: function() {
@@ -285,6 +287,12 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 	},
 
 	show: function() {
+		// only open the dialog if it has not been opened before
+		if (this.get('open')) {
+			return;
+		}
+		this.set('open', true);
+
 		// update info text
 		var msg = '';
 		if (umc.tools.status('setupGui')) {
@@ -320,6 +328,12 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 	},
 
 	hide: function() {
+		// only close the dialog if it has not been closed already
+		if (!this.get('open')) {
+			return;
+		}
+		this.set('open', false);
+
 		// hide the dialog
 		dojo.query('.umcShowHide').style('display', 'none');
 		dijit._DialogLevelManager.hide(this);

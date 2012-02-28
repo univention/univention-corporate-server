@@ -55,7 +55,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		//		A dojo.Deferred object that is called upon successful login.
 		//		The callback receives the authorized username as parameter.
 
-		if (this._loginDeferred && this._loginDeferred.fired < 0) {
+		if (this._loginDeferred) {
 			// a login attempt is currently running
 			return this._loginDeferred;
 		}
@@ -115,6 +115,9 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 			return umc.tools.umcpCommand('set', {
 				locale: dojo.locale.replace('-', '_')
 			}, false).then(function() {
+				// remove the reference to the login deferred object
+				umc.dialog._loginDeferred = null;
+
 				// make sure the username is handed over to the next callback
 				return username;
 			}, function() {
