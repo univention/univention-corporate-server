@@ -1,3 +1,10 @@
+univention-samba4 (1.0.126-2) unstable; urgency=low
+
+  * Set Samba4 DNS records again also on first run of Joinscript
+    (Bug #26285)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Feb 2012 19:42:19 +0100
+
 univention-samba4 (1.0.126-1) unstable; urgency=low
 
   * Set Samba4 DNS records again as remedy for Bug #26285

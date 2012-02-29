@@ -79,7 +79,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "
 	
 fi
 
-if [ $JS_LAST_EXECUTED_VERSION = 1 ]; then
+if [ $JS_LAST_EXECUTED_VERSION -le 1 ]; then
 ## Set DNS records again in case Bug #26285 occured in UCS 3.0-0. 
 ## Flow control copied from 96univention-samba4.inst
 
