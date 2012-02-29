@@ -17,3 +17,8 @@ Depends: ${misc:Depends},
  devscripts
 Description: MODULEDESC
  MODULEDESC
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

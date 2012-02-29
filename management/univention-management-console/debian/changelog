@@ -1,3 +1,10 @@
+univention-management-console (4.0.205-1) unstable; urgency=low
+
+  * added standard text to debian/control in umc-module-template
+    (Bug #23876)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 29 Feb 2012 10:33:36 +0100
+
 univention-management-console (4.0.204-2) unstable; urgency=low
 
   * version bump (Bug #23876)
