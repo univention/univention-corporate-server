@@ -1,3 +1,9 @@
+univention-samba4 (1.0.126-1) unstable; urgency=low
+
+  * Set Samba4 DNS records again as remedy for Bug #26285
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Feb 2012 19:31:16 +0100
+
 univention-samba4 (1.0.125-1) unstable; urgency=low
 
   * Fix DNS-Setup skript to support DNS-Domains with more than one dot.

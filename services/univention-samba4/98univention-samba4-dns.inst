@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -39,7 +39,7 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 # Change the dns/backend to samba4 only whether a S4 Connector is installed in our domain
-s4connectorservicedcs="$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
+s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
 
 if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "$s4connectorservicedcs" ]; then
 	univention-config-registry set dns/backend=samba4
@@ -77,6 +77,30 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "
 		exit 1
 	fi
 	
+fi
+
+if [ $JS_LAST_EXECUTED_VERSION = 1 ]; then
+## Set DNS records again in case Bug #26285 occured in UCS 3.0-0. 
+## Flow control copied from 96univention-samba4.inst
+
+	if [ "$samba4_role" = 'DC' ]; then
+
+		if [ "$s4connectorservicedcs" = "$hostname" ]; then
+
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --gc --pdc "$@"
+
+		else
+
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc "$@"
+
+		fi
+
+	elif [ "$samba4_role" = "RODC" ]; then
+
+		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc "$@"
+
+	fi
+
 fi
 
 joinscript_save_current_version
