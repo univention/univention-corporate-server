@@ -171,4 +171,39 @@ fi
 call_joinscript 96univention-samba4.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
 
+
+eval "$(univention-config-registry shell)"
+
+##### Join-Script fragments that need to be executed automatically also on Master and Backup:
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+
+	## The following block of code can be removed after ucs3.0-1
+	if [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl "1.0.126-3"; then
+		## Set DNS records again in case Bug #26285 occured in UCS 3.0-0. 
+		## Flow control copied from 96univention-samba4.inst
+
+		if [ "$samba4_role" = 'DC' ]; then
+
+			s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
+
+			if [ "$s4connectorservicedcs" = "$hostname" ]; then
+
+				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --gc --pdc "$@"
+
+			else
+
+				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc "$@"
+
+			fi
+
+		elif [ "$samba4_role" = "RODC" ]; then
+
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc "$@"
+
+		fi
+
+	fi
+
+fi
+
 exit 0
