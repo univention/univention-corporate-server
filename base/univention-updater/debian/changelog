@@ -1,3 +1,9 @@
+univention-updater (7.0.154-3) unstable; urgency=low
+
+  * disable restart of apache2 and UMC in preup.sh (Bug #26298)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Mar 2012 13:55:43 +0100
+
 univention-updater (7.0.154-2) unstable; urgency=low
 
   * disable restart of apache2 and UMC in preup.sh (Bug #26298)

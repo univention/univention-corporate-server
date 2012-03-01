@@ -247,6 +247,11 @@ if [ -e /usr/sbin/univention-management-console-server ]; then
 	chmod a-x /usr/sbin/univention-management-console-server
 fi
 
+if [ -e /usr/sbin/univention-management-console-web-server ]; then
+	dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-web-server >/dev/null 2>&1
+	chmod a-x /usr/sbin/univention-management-console-web-server
+fi
+
 if [ -e /usr/sbin/apache2 ]; then
 	dpkg-statoverride --add root root 0644 /usr/sbin/apache2 >/dev/null 2>&1
 	chmod a-x /usr/sbin/apache2
