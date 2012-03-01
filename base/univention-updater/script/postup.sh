@@ -96,6 +96,11 @@ if [ -e /usr/sbin/apache2 ]; then
 	chmod +x /usr/sbin/apache2 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 fi
 
+if [ -e /usr/sbin/apache2 ]; then
+	# Reload apache, see https://forge.univention.org/bugzilla/show_bug.cgi?id=26298
+	/etc/init.d/apache2 reload >/dev/null 2>&1
+fi
+
 
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then

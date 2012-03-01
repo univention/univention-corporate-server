@@ -1,3 +1,9 @@
+univention-updater (7.0.153-1) unstable; urgency=low
+
+  * Reload apache in postup.sh (Bug #26298)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Mar 2012 10:27:01 +0100
+
 univention-updater (7.0.152-1) unstable; urgency=low
 
   * Limit versions to 99 and 999 (Bug #25619)
