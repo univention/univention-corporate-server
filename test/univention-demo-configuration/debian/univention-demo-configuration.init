@@ -1,7 +1,7 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
 # restricted configuration for demo.univention.de
-#  debian/rules file
+#  upgrade init script
 #
 # Copyright 2012 Univention GmbH
 #
@@ -29,21 +29,13 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
+case "$1" in
+	start)
+		univention-upgrade --noninteractive
+		univention-config-registry set update/reboot/required=false
+		;;
+esac
 
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f debian/univention-demo-configuration.conffiles
-
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
-
-override_dh_installinit:
-	dh_installinit --no-start
-
-%:
-	dh $@
+exit 0
