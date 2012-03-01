@@ -87,20 +87,8 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 fi
 
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
-if [ -e /usr/sbin/univention-management-console-server ]; then
-	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
-	chmod +x /usr/sbin/univention-management-console-server 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
-fi
-if [ -e /usr/sbin/apache2 ]; then
-	dpkg-statoverride --remove /usr/sbin/apache2 >/dev/null 2>&1
-	chmod +x /usr/sbin/apache2 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
-fi
-
-if [ -e /usr/sbin/apache2 ]; then
-	# Reload apache, see https://forge.univention.org/bugzilla/show_bug.cgi?id=26298
-	/etc/init.d/apache2 reload >/dev/null 2>&1
-fi
-
+# Restart apache & Co see https://forge.univention.org/bugzilla/show_bug.cgi?id=26298
+/usr/share/univention-updater/enable-apache2-umc 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then

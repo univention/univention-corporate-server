@@ -1,3 +1,9 @@
+univention-updater (7.0.154-1) unstable; urgency=low
+
+  * Restart umc too (Bug #26298)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Mar 2012 11:30:19 +0100
+
 univention-updater (7.0.153-1) unstable; urgency=low
 
   * Reload apache in postup.sh (Bug #26298)
