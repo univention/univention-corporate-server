@@ -1,3 +1,9 @@
+univention-samba4 (1.0.127-2) unstable; urgency=low
+
+  * revert collateral svn checkin (Bug #26376)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Mar 2012 17:39:35 +0100
+
 univention-samba4 (1.0.127-1) unstable; urgency=low
 
   * Configure logrotate for log.samba etc. (Bug #26376)
