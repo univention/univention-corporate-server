@@ -1,3 +1,9 @@
+univention-samba4 (1.0.127-1) unstable; urgency=low
+
+  * Configure logrotate for log.samba etc. (Bug #26376)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Mar 2012 16:42:53 +0100
+
 univention-samba4 (1.0.126-3) unstable; urgency=low
 
   * Set Samba4 DNS records again also on master and backup

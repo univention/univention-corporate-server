@@ -116,13 +116,21 @@ if [ -n "$dc" ]; then
 	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.dc msdcs 0 100 389 $hostname.$domainname.
 
 
+
+	Domain_GUID="$(ldbsearch -H "$LDB_URI" -b "$domaindn" -s base $ldb_control objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')"
+	if [ -n "$Domain_GUID" ]; then
+		## _ldap._tcp.cd12388d-d1ca-45b5-a427-d91071c3b7b1.domains._msdcs          IN SRV 0 100 389 qamaster
+		/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.$Domain_GUID.domains msdcs 0 100 389 $hostname.$domainname.
+	else
+		echo "Error: Domain_GUID was not found!"
+	fi
 	Partition_GUID="$(ldbsearch -H "$LDB_URI" -b "CN=$windows_domain,CN=Partitions,CN=Configuration,$domaindn" $ldb_control objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')"
 	if [ -n "$Partition_GUID" ]; then
-		## _ldap._tcp.cd12388d-d1ca-45b5-a427-d91071c3b7b1.domains._msdcs          IN SRV 0 100 389 qamaster
-		/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap.$Partition_GUID.domains msdcs 0 100 389 $hostname.$domainname.
-	else
+ 		## remove wrong record: _ldap.PartitionGUID.domains._msdcs          IN SRV 0 100 389 qamaster
+		/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname remove srv ldap.$Partition_GUID.domains msdcs 0 100 389 $hostname.$domainname.
+ 	else
 		echo "Error: Partition_GUID was not found!"
-	fi
+ 	fi
 
 	## TODO: the next two might collide/duplicate the ones created by 15univention-heimdal-kdc.inst
 	## _kerberos._tcp          IN SRV 0 100 88         qamaster
