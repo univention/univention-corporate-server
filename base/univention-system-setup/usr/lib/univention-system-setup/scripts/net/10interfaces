@@ -97,6 +97,24 @@ for interface in eth0 eth1 eth2 eth3; do
 				if [ -z "$old_address" ]; then
 					ifup="$ifup $interface"
 				fi
+				if [ ! -f /var/univention-join/joined -a "$(univention-config-registry get server/role)" = 'domaincontroller_master' ]
+				then
+					virtual='0'
+					while :
+					do
+						# check if virtual interface is free
+						if ! univention-config-registry shell "interfaces/${interface}_.*/.*" | cut -d_ -f3 | grep -Fqs "$virtual"
+						then
+							echo "interfaces/${interface}_${virtual}/netmask=$(univention-config-registry get "interfaces/$interface/netmask")" >> "$profile_file"
+							echo "interfaces/${interface}_${virtual}/address=$(univention-config-registry get "interfaces/$interface/address")" >> "$profile_file"
+							echo "interfaces/${interface}_${virtual}/broadcast=$(univention-config-registry get "interfaces/$interface/broadcast")" >> "$profile_file"
+							echo "interfaces/${interface}_${virtual}/network=$(univention-config-registry get "interfaces/$interface/network")" >> "$profile_file"
+							univention-config-registry set "interfaces/${interface}_${virtual}/type=appliance-mode-temporary"
+							break
+						fi
+						virtual=$((virtual + 1))
+					done
+				fi
 			fi
 		fi
 

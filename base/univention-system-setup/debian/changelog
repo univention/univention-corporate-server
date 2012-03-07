@@ -1,3 +1,9 @@
+univention-system-setup (5.0.120-1) unstable; urgency=low
+
+  * keep old IP configuration in virtual interface (Bug #26338)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 07 Mar 2012 13:16:00 +0100
+
 univention-system-setup (5.0.119-1) unstable; urgency=low
 
   * Mark univention-pam and univention-management-console again as
