@@ -1,7 +1,6 @@
 univention-management-console-frontend (1.0.281-1) unstable; urgency=low
 
-  * fixed problems with login screen when the UMC server was restarted;
-    Bug #26347
+  * fixed problems with login screen after UMC server restart; Bug #26347
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 08 Mar 2012 12:17:20 +0100
 
