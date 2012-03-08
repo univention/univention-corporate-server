@@ -1,3 +1,32 @@
+univention-system-setup (5.0.121-1) unstable; urgency=low
+
+  * Firefox is now recommended by univention-system-setup-boot. Previous
+    it was a dependency and if the system should be configured remote a
+    complete graphical environment was installed (Bug #26403)
+  * Give root permissions to the system setup wizard if system-setup-
+    boot was installed (Bug #26283)
+  * Redirect apache default site to the system setup wizard module and
+    added a message for the ssh login (Bug #26283)
+  * Don't restart UMC and UMC webserver at the end of the setup-join, this
+    will be done by the umc module process (Bug #26316)
+  * system-setup-boot must be installed on a DC Master (Bug #26404)
+  * Change default on unjoined master for apply dialog
+  * Allow empty values for nameserver and for gateway (Bug #26330)
+  * Set gateway and nameserver from DHCP query (Bug #26365)
+  * Adjusted the system setup welcome message (Bug #26326)
+  * Kill firefox even if system setup is used remote (Bug #24807)
+  * Re-create the ssl certificates in setup-join on a DC Master only
+    (Bug #26270)
+  * Adjusted the final message of the system setup appliance mode
+    (Bug #26067)
+  * Use "apt-get autoremove" after removing the packages, which were
+    disabled in the software selection of system setup (Bug #26135)
+  * The selection of the setup role is only allowed on an unjoined DC
+    master (Bug #26262)
+  * Updated copyright to 2012
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Mar 2012 07:48:48 +0100
+
 univention-system-setup (5.0.120-1) unstable; urgency=low
 
   * keep old IP configuration in virtual interface (Bug #26338)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -235,7 +235,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			}
 
 			// set the queried IP and netmask
-			var devicesWidget = this._forms.network.getWidget('interfaces_ipv4');
+			var devicesWidget = this._form.getWidget('interfaces_ipv4');
 			var val = devicesWidget.get('value');
 			if (result.address) {
 				val[idx][1] = result.address;
@@ -243,8 +243,37 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			if (result.netmask) {
 				val[idx][2] = result.netmask;
 			}
-			val[idx][3] = 'false';
+			// set "Dynamic (DHCP)" to be false if it wasn't set
+			if ( val[idx][3] == '') {
+				val[idx][3] = 'false';
+			}
+
+			// set gateway
 			devicesWidget.set('value', val);
+			if (result.gateway) {
+				var gatewayWidget = this._form.getWidget('gateway');
+				gatewayWidget.set('value', result.gateway);
+			}
+
+			// read nameserver or dns/forwarder
+			if (this._form.getWidget('nameserver').get('visible')) {
+				var nameserverWidget = this._form.getWidget('nameserver');
+			} else {
+				// if nameserver is not visable, set dns/forwarder
+				var nameserverWidget = this._form.getWidget('dns/forwarder');
+			}
+			var val = nameserverWidget.get('value');
+			if (result.nameserver_1) {
+				val[0] = result.nameserver_1;
+			}
+			if (result.nameserver_2) {
+				val[1] = result.nameserver_2;
+			}
+			if (result.nameserver_3) {
+				val[2] = result.nameserver_3;
+			}
+			nameserverWidget.set('value', val);
+
 		}), dojo.hitch(this, function() {
 			// switch off standby animation
 			this.standby(false);
@@ -394,7 +423,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		this._form.getWidget('dns/forwarder').set('visible', showForwarder);
 
 		// hide domain nameserver on master when using system setup boot
-		this._form.getWidget('nameserver').set('visible', ! ( this.moduleFlavor == 'wizard' && this._currentRole == 'domaincontroller_master' ) );
+		this._form.getWidget('nameserver').set('visible', ! ( !_vals.joined && this._currentRole == 'domaincontroller_master' ) );
 		// set values
 		this._form.setFormValues(vals);
 

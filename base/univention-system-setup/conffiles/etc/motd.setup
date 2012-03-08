@@ -1,0 +1,45 @@
+
+########################################################################
+
+Welcome to Univention Corporate Server (UCS)!
+
+This system was configured with a random password. It is recommended to
+change the password of the administrative root account. To do so,
+please enter the following command and type in your password twice:
+ passwd root
+
+To finalise the configuration of this system you need to login to the
+web-based Univention Management Console which can be reached with a web
+browser under the following URL
+
+@!@
+import os
+if os.path.exists('/opt/amazon/aws/ec2daddr'):
+	# Amazon EC2 image
+	pass
+else:
+	#IPv4
+	for i in range(0,10):
+		if configRegistry.get('interfaces/eth%d/type') == 'dhcp':
+			continue
+		elif configRegistry.get('interfaces/eth%d/address' % i):
+			print '  https://%s' % configRegistry.get('interfaces/eth%d/address' % i)
+	# IPv6
+	for i in range(0,10):
+		if configRegistry.get('interfaces/eth%d/ipv6/default/address' % i):
+			print '  https://%s' % configRegistry.get('interfaces/eth%d/ipv6/default/address' % i)
+@!@
+The login at the Univention Management Console needs to be done with
+the user root and the new password you entered in the above-mentioned
+password change.
+  
+UMC uses numerous Javascript and CSS functions to display the web
+interface. Some of these features are unavailable in older browsers. The
+following web browsers are supported:
+ - Chrome as of version 14 or later
+ - Firefox as of version 3.6 (Firefox 7 or later is recommended)
+ - Internet Explorer as of version 8 or later
+ - Safari (on the iPad 2)
+
+########################################################################
+

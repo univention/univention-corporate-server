@@ -2,3 +2,11 @@ Type: script
 Script: update_sytem_setup_help.sh
 Variables: system/setup/boot/help
 
+Type: file
+File: etc/motd.setup
+Variables: interfaces/.*
+
+Type: subfile
+Multifile: etc/pam.d/common-session
+Subfile: conffiles/etc/pam.d/common-session.d/20system-setup-login-message
+Variables: system/setup/showloginmessage

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -72,7 +72,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.standby(true);
 
 		// load some ucr variables
-		var deferred_ucr = umc.tools.ucr(['system/setup/boot/select/role']);
+		var deferred_ucr = umc.tools.ucr(['server/role', 'system/setup/boot/select/role']);
 		// load system setup values (e.g. join status)
 		var deferred_variables = this.umcpCommand('setup/load');
 		// wait for deferred objects to be completed
@@ -94,17 +94,25 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		var allPages = dojo.clone(this.pages);
 
-		// add the SystemRole to the list of pages for the wizard mode if system is not joined yet
-		if ((umc.tools.isTrue(ucr['system/setup/boot/select/role'])) && (! values.joined)) {
-			allPages.unshift('SystemRolePage');
+		var system_role = ucr['server/role'];
+
+		this.wizard_mode = false;
+
+		// set wizard mode only on unjoined DC Master
+		if (( system_role == 'domaincontroller_master') && (! values.joined)) {
+			this.wizard_mode = true;
 		}
 
-		// add the HelpPage to the list of pages for the wizard mode
-		if (this.moduleFlavor == 'wizard') {
+		// add the SystemRolePage and HelpPage to the list of pages for the wizard mode
+		if (this.wizard_mode) {
+			// add the SystemRolePage to the list of pages for the wizard mode if the packages have been downloaded
+			if (umc.tools.isTrue(ucr['system/setup/boot/select/role'])) {
+				allPages.unshift('SystemRolePage');
+			}
 			allPages.unshift('HelpPage');
 		}
 
-		if (this.moduleFlavor == 'wizard') {
+		if (this.wizard_mode) {
 			// wizard mode
 
 			// create all pages dynamically
@@ -311,7 +319,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		};
 
 		// confirm dialog to continue with boot process
-		var _shutDownBrowser = dojo.hitch(this, function(msg, hasCancel) {
+		var _cleanup = dojo.hitch(this, function(msg, hasCancel) {
 			var choices = [{
 				name: 'apply',
 				'default': true,
@@ -329,19 +337,43 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}];
 			}
 
+			// get the session ID
+			var sessionID = dojo.cookie('UMCSessionId');
+
+			// make the session valid for the next two days, otherwise the session ewxpired
+			// before the user can confirm the cleanup dialog
+			dojo.cookie('UMCSessionId', sessionID, {
+				expires: 2,
+				path: '/'
+			});
+
 			return umc.dialog.confirm(msg, choices).then(dojo.hitch(this, function(response) {
 				if (response == 'cancel') {
 					// do not continue
 					return;
 				}
 
-				// otherwise send the UMCP command to shut down the web browser
-				return this.umcpCommand('setup/browser/shutdown', false, undefined, {
-					message: this._('Your session should be shut down automatically. If this has not happened so far, you may force a shutdown by pressing Ctrl+Q.'),
-					messageInterval: 30
-				}).then(dojo.hitch(this, function() {
-					this.standby(false);
-				}));
+				// shut down web browser and restart apache and UMC
+				this.umcpCommand('setup/cleanup', {}, false);
+
+				// redirect to UMC and set username to Administrator
+				target = this.domNode.baseURI.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=Administrator');
+
+				// Consider IP changes, replace old ip in url by new ip
+				umc.tools.forIn(this._orgValues, function(ikey, ival) {
+					// 1. check if value is equal to the current IP
+					// 2. check if the key for this value startswith interfaces/
+					// 3. check if a new value was set
+					if ((ival == window.location.host) && (ikey.indexOf('interfaces/') == 0)  && (values[ikey])) {
+						target = target.replace(new RegExp(ival+"/univention-management-console", "g"), values[ikey]+"/univention-management-console");
+					}
+				});
+
+				// give the restart/services function 10 seconds time to restart the services
+				setTimeout(function () {
+					window.location.replace(target);
+				},10000);
+
 			}));
 		});
 
@@ -381,11 +413,14 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var joined = this._orgValues['joined'];
 		var newValues = this.getValues();
 		var role = newValues['server/role'];
+		if (!role) {
+			role = this._orgValues['server/role'];
+		}
 		var userSystemSetup = umc.tools.status('username') == '__systemsetup__';
 
 		if (!nchanges && userSystemSetup && (joined || role == 'basesystem')) {
 			// no changes have been made we can shut down the web browser directly
-			_shutDownBrowser(this._('No changes have been made. Please confirm to continue with the boot process.'), true);
+			_cleanup(this._('No changes have been made. Please confirm to continue with the boot process.'), true);
 			return;
 		}
 
@@ -550,10 +585,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				var msg = '<p>' + this._('The specified settings will be applied to the system. This may take some time. Please confirm to proceed.') + '</p>';
 				return umc.dialog.confirm(msg, [{
 					name: 'cancel',
-					'default': true,
 					label: this._('Cancel')
 				}, {
 					name: 'apply',
+					'default': true,
 					label: this._('Apply changes')
 				}]).then(dojo.hitch(this, function(response) {
 					if ('apply' != response) {
@@ -640,10 +675,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				});
 			}
 
-			// as user __systemsetup__, notify that the boot process will continue
-			if (userSystemSetup) {
+			// kill the browser and restart the UMC services in wizard mode
+			if (this.wizard_mode) {
 				deferred = deferred.then(dojo.hitch(this, function() {
-					return _shutDownBrowser(this._('Please confirm to continue with the boot process.'));
+					return _cleanup(this._('The configuration was sucessful. Please confirm to complete the process.'));
 				}));
 			}
 			else {

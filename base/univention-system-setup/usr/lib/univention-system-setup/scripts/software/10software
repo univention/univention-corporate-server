@@ -3,7 +3,7 @@
 # Univention Setup
 #  software change script
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -81,13 +81,18 @@ mkfifo "$stdoutFifo" "$statFifo"
 	apt-get $APT_PARAMS update
 	echo "pmstatus:_:100:" >&4
 
-	# install packages
+	# remove packages
 	for p in $packages_remove; do
 		echo "apt-get $APT_PARAMS install $p- $base" 
 		apt-get $APT_PARAMS install $p- $base
 	done
 
-	# remove packages
+	# run autoremove
+	if [ -n "$packages_remove" ]; then
+		apt-get $APT_PARAMS autoremove
+	fi
+
+	# install packages
 	for p in $packages_install; do
 		echo "apt-get $APT_PARAMS install $p $base"
 		apt-get $APT_PARAMS install $p $base

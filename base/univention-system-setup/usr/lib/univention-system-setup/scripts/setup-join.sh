@@ -3,7 +3,7 @@
 # Univention System Setup
 #  Appliance mode
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -120,9 +120,12 @@ else
 fi
 rm -f /etc/machine.secret
 
-echo "Starting re-configuration of SSL"
-# Re-create SSL certificates even if the admin did'nt change all variables
-/usr/lib/univention-system-setup/scripts/ssl/10ssl --force-recreate
+# Re-create SSL certificates on DC Master even if the admin didn't change all variables
+# otherwise a lot of appliances will have the same SSL certificate secret
+if [ "$server_role" = "domaincontroller_master" ]; then
+	echo "Starting re-configuration of SSL"
+	/usr/lib/univention-system-setup/scripts/ssl/10ssl --force-recreate
+fi
 
 univention-certificate new -name "$hostname.$domainname"
 ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
@@ -199,10 +202,16 @@ fi
 )
 progress_next_step $nJoinSteps
 
+# Cleanup
 rm -f /var/lib/univention-ldap/root.secret
 
-# allow execution of servers again and perform a restart
-/usr/share/univention-updater/enable-apache2-umc
+# Reset the apache2 startsite
+startsite="$(ucr get apache2/startsite)"
+if [ "$startsite" = 'univention-management-console/?module=setup\&username=root' ]; then
+	ucr set apache2/startsite="$(ucr get system/setup/prev/apache2/startsite)"
+fi
+# Removed system setup login message
+ucr unset system/setup/showloginmessage
 
 exit 0
 

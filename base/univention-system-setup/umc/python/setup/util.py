@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: system setup
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -65,6 +65,7 @@ LOG_FILE = '/var/log/univention/setup.log'
 PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
 PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
+CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 
 
@@ -384,21 +385,49 @@ def run_joinscript( progressParser, _username = None, password = None):
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
 
-def shutdown_browser():
-	try:
-		fpid = open(PATH_BROWSER_PID)
-		strpid = fpid.readline().strip()
-		pid = int(strpid)
-		p = psutil.Process(pid)
-		p.kill()
-		return True
-	except IOError:
-		MODULE.error('cannot open browser PID file: %s' % PATH_BROWSER_PID)
-	except ValueError:
-		MODULE.error('browser PID is not a number: "%s"' % strpid)
-	except psutil.NoSuchProcess:
-		MODULE.error('cannot kill process with PID: %s' % pid)
-	return False
+def cleanup():
+	# write header before executing scripts
+	f = open(LOG_FILE, 'a')
+	f.write('\n\n=== Cleanup (%s) ===\n\n' % timestamp())
+	f.flush()
+
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	# The browser was only started, if system/setup/boot/start is true
+	if ucr.is_true('system/setup/boot/start', False):
+		MODULE.info('Appliance mode: try to shut down the browser')
+		try:
+			fpid = open(PATH_BROWSER_PID)
+			strpid = fpid.readline().strip()
+			pid = int(strpid)
+			p = psutil.Process(pid)
+			p.kill()
+		except IOError:
+			MODULE.warn('cannot open browser PID file: %s' % PATH_BROWSER_PID)
+		except ValueError:
+			MODULE.error('browser PID is not a number: "%s"' % strpid)
+		except psutil.NoSuchProcess:
+			MODULE.error('cannot kill process with PID: %s' % pid)
+
+	# make sure that UMC servers and apache will not be restartet
+	subprocess.call( CMD_ENABLE_EXEC_WITH_RESTART, stdout = f, stderr = f )
+
+	# unset the temporary interface if set
+	_re=re.compile('interfaces/[^/]*/type')
+	for var in ucr.keys():
+		if _re.match(var) and ucr.get(var) == 'appliance-mode-temporary':
+			f.write('unset %s' % var)
+			keys = [var]
+			for k in ['netmask', 'address', 'broadcast', 'network']:
+				keys.append(var.replace('/type', '/%s' % k))
+			univention.config_registry.handler_unset(keys)
+				
+	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
+	f.flush()
+	f.close()
+
+	return True
 
 def detect_interfaces():
 	"""

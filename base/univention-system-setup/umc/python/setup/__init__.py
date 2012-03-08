@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: system setup
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -199,20 +199,15 @@ class Instance(umcm.Base):
 			notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
-	def shutdown_browser(self, request):
-		if self._username != '__systemsetup__':
-			MODULE.warn('Tried to shut down the web browser, however, system is not in appliance mode.')
-			self.finished(request.id, False, message=_('Not allowed to shut down the web browser.'))
-			return
-
+	def cleanup(self, request):
 		# shut down the browser in appliance mode
-		MODULE.info('Appliance mode: try to shut down the browser')
-		if util.shutdown_browser():
-			MODULE.info('... shutting down successful')
+		MODULE.info('Appliance mode: cleanup')
+		if util.cleanup():
+			MODULE.info('... cleanup successful')
 			self.finished(request.id, True)
 		else:
-			MODULE.warn('... shutting down operation failed')
-			self.finished(request.id, False, message=_('Failed to shut down the web browser.'))
+			MODULE.warn('... cleanup operation failed')
+			self.finished(request.id, False, message=_('Failed to cleanup.'))
 
 	def validate(self, request):
 		'''Validate the specified values given in the dict as option named "values".
@@ -350,11 +345,16 @@ class Instance(umcm.Base):
 			reg = re.compile('^(%s)$' % ikey)
 			for jkey, jval in values.iteritems():
 				if reg.match(jkey):
+					if not values.get(jkey):
+						# allow empty value
+						continue
 					_check(jkey, util.is_ipaddr, _('The specified IP address (%s) is not valid: %s') % (iname, jval))
 			
 		# check gateways
-		_check('gateway', util.is_ipv4addr, _('The specified gateway IPv4 address is not valid: %s') % values.get('gateway'))
-		_check('ipv6/gateway', util.is_ipv6addr, _('The specified gateway IPv6 address is not valid: %s') % values.get('ipv6/gateway'))
+		if values.get('gateway'): # allow empty value
+			_check('gateway', util.is_ipv4addr, _('The specified gateway IPv4 address is not valid: %s') % values.get('gateway'))
+		if values.get('ipv6/gateway'): # allow empty value
+			_check('ipv6/gateway', util.is_ipv6addr, _('The specified gateway IPv6 address is not valid: %s') % values.get('ipv6/gateway'))
 
 		# proxy
 		_check('proxy/http', util.is_proxy, _('The specified proxy address is not valid (e.g., http://10.201.1.1:8080): %s') % allValues.get('proxy/http', ''))

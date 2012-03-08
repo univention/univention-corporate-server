@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-02-17 13:58+0100\n"
+"POT-Creation-Date: 2012-03-03 20:31+0100\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,16 @@ msgid ""
 "management system. However, it is possible to configure DNS and DHCP "
 "settings for base systems via the Univention management system as long as "
 "the base system is entered as an IP managed client in the directory service."
-msgstr "<h2>Basissystem</h2>Ein Basissystem ist ein eigenständiges System. Es ist nicht Mitglied einer Domäne und unterhält keine Vertrauensbeziehungen zu anderen Servern oder Domänen. Ein Basissystem bietet sich somit für Dienste an, die außerhalb des Vertrauenskontextes der Domäne betrieben werden, etwa als Web-Server oder Firewall. Die Dienste eines Basissystems können nicht über das UCS-Managementsystem konfiguriert werden. Es können aber DNS- und DHCP-Einstellungen für Basissysteme über das Univention Management System, sofern das betreffende Basissystem als IP-Managed-Client im Verzeichnisdienst eingetragen wurde."
+msgstr ""
+"<h2>Basissystem</h2>Ein Basissystem ist ein eigenständiges System. Es ist "
+"nicht Mitglied einer Domäne und unterhält keine Vertrauensbeziehungen zu "
+"anderen Servern oder Domänen. Ein Basissystem bietet sich somit für Dienste "
+"an, die außerhalb des Vertrauenskontextes der Domäne betrieben werden, etwa "
+"als Web-Server oder Firewall. Die Dienste eines Basissystems können nicht "
+"über das UCS-Managementsystem konfiguriert werden. Es können aber DNS- und "
+"DHCP-Einstellungen für Basissysteme über das Univention Management System, "
+"sofern das betreffende Basissystem als IP-Managed-Client im "
+"Verzeichnisdienst eingetragen wurde."
 
 #: umc/js/_setup/SystemRolePage.js:90
 msgid ""
@@ -34,7 +43,19 @@ msgid ""
 "copy of the DC master.  If the DC master should collapse completely, running "
 "a special command allows the DC backup to take over the role of the DC "
 "master permanently in a very short time."
-msgstr "<h2>Domänencontroller Backup</h2>Auf Servern mit der Rolle Domänencontroller Backup (kurz DC Backup) befindet sich eine replizierte Kopie des gesamten LDAP-Verzeichnisses, die nicht verändert werden kann, da alle Schreibzugriffe grundsätzlich am DC Master durchgeführt werden. Ausserdem wird eine Kopie aller SSL-Zertifikate einschließlich des privaten Schlüssels der Root-CA auf dem DC Backup vorgehalten. Der DC Backup dient somit als Sicherheitskopie des DC Master.  Sollte der DC Master dauerhaft ausfallen, kann ein DC Backup innerhalb kürzester Zeit durch Aufruf eines Befehls die Rolle des DC Master dauerhaft übernehmen. Dies ist nur notwendig, wenn Änderungen am LDAP-Verzeichnis vorgenommen oder neue Zertifikate ausgestellt werden sollen, weil diese Aufgaben nur von einem DC Master durchgeführt werden können."
+msgstr ""
+"<h2>Domänencontroller Backup</h2>Auf Servern mit der Rolle Domänencontroller "
+"Backup (kurz DC Backup) befindet sich eine replizierte Kopie des gesamten "
+"LDAP-Verzeichnisses, die nicht verändert werden kann, da alle "
+"Schreibzugriffe grundsätzlich am DC Master durchgeführt werden. Ausserdem "
+"wird eine Kopie aller SSL-Zertifikate einschließlich des privaten Schlüssels "
+"der Root-CA auf dem DC Backup vorgehalten. Der DC Backup dient somit als "
+"Sicherheitskopie des DC Master.  Sollte der DC Master dauerhaft ausfallen, "
+"kann ein DC Backup innerhalb kürzester Zeit durch Aufruf eines Befehls die "
+"Rolle des DC Master dauerhaft übernehmen. Dies ist nur notwendig, wenn "
+"Änderungen am LDAP-Verzeichnis vorgenommen oder neue Zertifikate ausgestellt "
+"werden sollen, weil diese Aufgaben nur von einem DC Master durchgeführt "
+"werden können."
 
 #: umc/js/_setup/SystemRolePage.js:85
 msgid ""
@@ -45,7 +66,14 @@ msgid ""
 "of them within a domain. In addition, the Root Certification Authority (root "
 "CA) is also on the DC master. All SSL certificates created are archived on "
 "the DC master."
-msgstr "<h2>Domänencontroller Master</h2>Auf dem Domänencontroller Master (kurz DC Master) befindet sich der Originaldatenbestand des gesamten LDAP-Verzeichnisses. Änderungen im LDAP-Verzeichnis werden nur auf diesem Server vorgenommen. Deswegen muss dieser als erstes System in Betrieb genommen werden und kann innerhalb einer Domäne nur einmal existieren. Außerdem befindet sich die Root Certification Authority (Root-CA) auf dem DC Master. Alle ausgestellten SSL-Zertifikate werden auf dem DC Master archiviert."
+msgstr ""
+"<h2>Domänencontroller Master</h2>Auf dem Domänencontroller Master (kurz DC "
+"Master) befindet sich der Originaldatenbestand des gesamten LDAP-"
+"Verzeichnisses. Änderungen im LDAP-Verzeichnis werden nur auf diesem Server "
+"vorgenommen. Deswegen muss dieser als erstes System in Betrieb genommen "
+"werden und kann innerhalb einer Domäne nur einmal existieren. Außerdem "
+"befindet sich die Root Certification Authority (Root-CA) auf dem DC Master. "
+"Alle ausgestellten SSL-Zertifikate werden auf dem DC Master archiviert."
 
 #: umc/js/_setup/SystemRolePage.js:95
 msgid ""
@@ -56,7 +84,15 @@ msgid ""
 "location through selective replication. The DC slave only stores a copy of "
 "its own and the public SSL certificate of the root CA. A DC slave system "
 "cannot be promoted to a DC master."
-msgstr "<h2>Domänencontroller Slave</h2>Auf einem Domänencontroller Slave (kurz DC Slave) befindet sich eine replizierte Kopie des LDAP-Verzeichnisses, die nicht verändert werden kann, da alle Schreibzugriffe am DC Master durchgeführt werden. Die Kopie kann das gesamte Verzeichnis umfassen oder durch selektive Replikation auf an einem Standort benötigte Daten eingeschränkt werden. Auf einem DC Slave wird nur das eigene und das öffentliche SSL-Zertifikat der Root-CA vorgehalten. Ein DC Slave-System kann nicht zum DC Master hochgestuft werden."
+msgstr ""
+"<h2>Domänencontroller Slave</h2>Auf einem Domänencontroller Slave (kurz DC "
+"Slave) befindet sich eine replizierte Kopie des LDAP-Verzeichnisses, die "
+"nicht verändert werden kann, da alle Schreibzugriffe am DC Master "
+"durchgeführt werden. Die Kopie kann das gesamte Verzeichnis umfassen oder "
+"durch selektive Replikation auf an einem Standort benötigte Daten "
+"eingeschränkt werden. Auf einem DC Slave wird nur das eigene und das "
+"öffentliche SSL-Zertifikat der Root-CA vorgehalten. Ein DC Slave-System kann "
+"nicht zum DC Master hochgestuft werden."
 
 #: umc/js/_setup/SystemRolePage.js:100
 msgid ""
@@ -64,7 +100,11 @@ msgid ""
 "services such as file storage for the domain. Member servers do not contain "
 "a copy of the LDAP directory. It only stores a copy of its own and the "
 "public SSL certificate of the root CA."
-msgstr "<h2>Member-Server</h2>Member-Server sind Mitglieder einer LDAP-Domäne und bieten Dienste wie z.B. Datenspeicherung für die Domäne an. Auf einem Member-Server befindet sich keine Kopie des LDAP-Verzeichnisses. Auf ihm wird nur das eigene und das öffentliche SSL-Zertifikat der Root-CA vorgehalten."
+msgstr ""
+"<h2>Member-Server</h2>Member-Server sind Mitglieder einer LDAP-Domäne und "
+"bieten Dienste wie z.B. Datenspeicherung für die Domäne an. Auf einem Member-"
+"Server befindet sich keine Kopie des LDAP-Verzeichnisses. Auf ihm wird nur "
+"das eigene und das öffentliche SSL-Zertifikat der Root-CA vorgehalten."
 
 #: umc/js/_setup/NetworkPage.js:221
 msgid "A virtual network device cannot be used for DHCP."
@@ -74,7 +114,7 @@ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:526
+#: umc/js/setup.js:565
 msgid "Account data"
 msgstr "Kontodaten"
 
@@ -82,11 +122,11 @@ msgstr "Kontodaten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: umc/js/setup.js:204 umc/js/setup.js:470 umc/js/setup.js:550
+#: umc/js/setup.js:218 umc/js/setup.js:509 umc/js/setup.js:589
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
-#: umc/js/setup.js:152
+#: umc/js/setup.js:160
 msgid "Apply settings"
 msgstr "Einstellungen anwenden"
 
@@ -94,7 +134,7 @@ msgstr "Einstellungen anwenden"
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
-#: umc/js/setup.js:137
+#: umc/js/setup.js:145
 msgid "Back"
 msgstr "Zurück"
 
@@ -110,8 +150,8 @@ msgstr "Basis-Einstellungen"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:198 umc/js/setup.js:319 umc/js/setup.js:467
-#: umc/js/setup.js:514 umc/js/setup.js:547
+#: umc/js/setup.js:212 umc/js/setup.js:333 umc/js/setup.js:506
+#: umc/js/setup.js:553 umc/js/setup.js:585
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -148,7 +188,7 @@ msgstr ""
 "zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
 "System im Produktiveinsatz befinden."
 
-#: umc/js/setup.js:189 umc/js/setup.js:193
+#: umc/js/setup.js:203 umc/js/setup.js:207
 msgid "Close"
 msgstr "Schließen"
 
@@ -156,7 +196,7 @@ msgstr "Schließen"
 msgid "Common name for the root SSL certificate"
 msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 
-#: umc/js/setup.js:578
+#: umc/js/setup.js:618
 msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
@@ -164,7 +204,7 @@ msgstr "Konfiguration abgeschlossen"
 msgid "Configuration of the UCS system role"
 msgstr "Konfiguration der UCS-Systemrolle"
 
-#: umc/js/setup.js:312 umc/js/setup.js:322
+#: umc/js/setup.js:326 umc/js/setup.js:336
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -200,7 +240,7 @@ msgstr "Domänencontroller Master"
 msgid "Domain controller slave"
 msgstr "Domänencontroller Slave"
 
-#: umc/js/_setup/NetworkPage.js:515
+#: umc/js/_setup/NetworkPage.js:544
 msgid "Domain name server"
 msgstr "Domänen-DNS-Server"
 
@@ -216,7 +256,7 @@ msgstr "Dynamisch (DHCP)"
 msgid "Email address"
 msgstr "E-Mailadresse"
 
-#: umc/js/_setup/NetworkPage.js:519
+#: umc/js/_setup/NetworkPage.js:548
 msgid "External name server"
 msgstr "Externer DNS-Server "
 
@@ -243,11 +283,11 @@ msgstr "Vollständiger Rechername"
 msgid "Fully qualified domain name (e.g., master.example.com)"
 msgstr "Vollständiger Rechername (z.B., master.example.com)"
 
-#: umc/js/_setup/NetworkPage.js:149 umc/js/_setup/NetworkPage.js:507
+#: umc/js/_setup/NetworkPage.js:149 umc/js/_setup/NetworkPage.js:536
 msgid "Gateway (IPv4)"
 msgstr ""
 
-#: umc/js/_setup/NetworkPage.js:153 umc/js/_setup/NetworkPage.js:511
+#: umc/js/_setup/NetworkPage.js:153 umc/js/_setup/NetworkPage.js:540
 msgid "Gateway (IPv6)"
 msgstr ""
 
@@ -263,11 +303,11 @@ msgstr "Allgemeine Einstellungen"
 msgid "Global network settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: umc/js/_setup/NetworkPage.js:169 umc/js/_setup/NetworkPage.js:523
+#: umc/js/_setup/NetworkPage.js:169 umc/js/_setup/NetworkPage.js:552
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
-#: umc/js/_setup/HelpPage.js:54
+#: umc/js/_setup/HelpPage.js:51
 msgid "Help"
 msgstr "Hilfe"
 
@@ -279,7 +319,7 @@ msgstr "Recher- und Domänen-Einstellungen"
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
-#: umc/js/_setup/NetworkPage.js:173 umc/js/_setup/NetworkPage.js:527
+#: umc/js/_setup/NetworkPage.js:173 umc/js/_setup/NetworkPage.js:556
 msgid "IPv4 network devices"
 msgstr "IPv4-Netzwerkgeräte"
 
@@ -287,11 +327,11 @@ msgstr "IPv4-Netzwerkgeräte"
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
-#: umc/js/_setup/NetworkPage.js:535
+#: umc/js/_setup/NetworkPage.js:564
 msgid "IPv6 interfaces with autoconfiguration (SLAAC)"
 msgstr "IPv6-Netzwerkgeräte mit automatische Konfiguration (SLAAC)"
 
-#: umc/js/_setup/NetworkPage.js:176 umc/js/_setup/NetworkPage.js:531
+#: umc/js/_setup/NetworkPage.js:176 umc/js/_setup/NetworkPage.js:560
 msgid "IPv6 network devices"
 msgstr "IPv6-Netzwerkgeräte"
 
@@ -303,7 +343,7 @@ msgstr "IPv6-Präfix"
 msgid "Identifier"
 msgstr "Bezeichner"
 
-#: umc/js/_setup/HelpPage.js:76
+#: umc/js/_setup/HelpPage.js:73
 msgid "Information about the initial configuration"
 msgstr "Informationen über die Erstkonfiguration"
 
@@ -365,7 +405,7 @@ msgstr ""
 "gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
 "Domäne NT-kompatible (Samba 3) ist."
 
-#: umc/js/setup.js:501
+#: umc/js/setup.js:540
 msgid "Join"
 msgstr ""
 
@@ -413,22 +453,22 @@ msgstr "Netzwerk-Einstellungen"
 msgid "New root password"
 msgstr "Neues Root-Passwort"
 
-#: umc/js/setup.js:122
+#: umc/js/setup.js:130
 msgid "Next"
 msgstr "Vor"
 
-#: umc/js/setup.js:387
+#: umc/js/setup.js:426
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen vorgenommen."
 
-#: umc/js/setup.js:381
+#: umc/js/setup.js:420
 msgid ""
 "No changes have been made. Please confirm to continue with the boot process."
 msgstr ""
 "Es wurden keine Änderungen vorgenommen. Bitte bestätigen Sie, um mit dem "
 "Boot-Prozess fortzufahren."
 
-#: umc/js/_setup/NetworkPage.js:536
+#: umc/js/_setup/NetworkPage.js:565
 msgid "No device"
 msgstr "Kein Gerät"
 
@@ -440,7 +480,7 @@ msgstr "Organisation"
 msgid "Organization settings"
 msgstr "Einstellungen über die Organisation"
 
-#: umc/js/setup.js:497
+#: umc/js/setup.js:536
 msgid "Password"
 msgstr "Passwort"
 
@@ -449,22 +489,18 @@ msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen sie ein Netzwerkgerät bevor sie eine DHCP-Adresse anfragen."
 
-#: umc/js/setup.js:462
+#: umc/js/setup.js:501
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup.js:638
-msgid "Please confirm to continue with the boot process."
-msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
-
 #: umc/js/_setup/SoftwarePage.js:228
 msgid "Removing software components"
 msgstr "Entfernen von Softwarekomponenten"
 
-#: umc/js/setup.js:210
+#: umc/js/setup.js:224
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -476,7 +512,7 @@ msgstr "Root-Passwort"
 msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"
 
-#: umc/js/setup.js:192
+#: umc/js/setup.js:206
 msgid "Should the UMC module be closed? All unsaved modification will be lost."
 msgstr ""
 "Soll das UMC-Modul geschlossen werden? Alle nicht gespeicherten Änderungen "
@@ -499,11 +535,11 @@ msgstr "Bundesland"
 msgid "System role"
 msgstr "Systemrolle"
 
-#: umc/js/setup.js:609
+#: umc/js/setup.js:649
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:567
+#: umc/js/setup.js:606
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -515,15 +551,21 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
-#: umc/js/setup.js:456
+#: umc/js/setup.js:495
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:393
+#: umc/js/setup.js:432
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
-#: umc/js/setup.js:482
+#: umc/js/setup.js:678
+msgid ""
+"The configuration was sucessful. Please confirm to complete the process."
+msgstr ""
+"Die Konfiguration war erfolgreich. Bitte bestätigen Sie, um den Vorgang abzuschließen."
+
+#: umc/js/setup.js:521
 msgid ""
 "The specified settings will be applied to the system and the system will be "
 "joined into the domain. Please enter username and password of a domain "
@@ -533,7 +575,7 @@ msgstr ""
 "das System in die Domäne gejoint. Bitte geben Sie dafür Benutzernamen und "
 "Password eines Administrator-Kontos der Domäne an."
 
-#: umc/js/setup.js:543
+#: umc/js/setup.js:582
 msgid ""
 "The specified settings will be applied to the system. This may take some "
 "time. Please confirm to proceed."
@@ -549,11 +591,11 @@ msgstr "Zeitzone"
 msgid "Time zone and keyboard settings"
 msgstr "Zeitzonen- und Tastatureinstellungen"
 
-#: umc/js/_setup/HelpPage.js:55
+#: umc/js/_setup/HelpPage.js:52
 msgid "UCS initial configuration"
 msgstr "UCS Erstkonfiguration"
 
-#: umc/js/setup.js:493
+#: umc/js/setup.js:532
 msgid "Username"
 msgstr "Benutzername"
 
@@ -561,15 +603,7 @@ msgstr "Benutzername"
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: umc/js/setup.js:334
-msgid ""
-"Your session should be shut down automatically. If this has not happened so "
-"far, you may force a shutdown by pressing Ctrl+Q."
-msgstr ""
-"Ihre Session sollte automatisch beendet werden. Ist dies nicht der Fall, "
-"kann das Beenden mittels der Tastenkombination Ctrl+Q forciert werden."
-
-#: umc/js/_setup/NetworkPage.js:87 umc/js/_setup/NetworkPage.js:479
+#: umc/js/_setup/NetworkPage.js:87 umc/js/_setup/NetworkPage.js:508
 msgid "virtual"
 msgstr "virtuell"
 
@@ -604,6 +638,9 @@ msgstr "virtuell"
 #~ "Nach bestimmten Änderungen kann ein neuer Join des Systems in die UCS-"
 #~ "Domäne notwendig sein."
 
+#~ msgid "Please confirm to continue with the boot process."
+#~ msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
+
 #~ msgid "Save"
 #~ msgstr "Speichern"
 
@@ -630,3 +667,10 @@ msgstr "virtuell"
 
 #~ msgid "UCS system role 2"
 #~ msgstr "UCS-Systemrolle"
+
+#~ msgid ""
+#~ "Your session should be shut down automatically. If this has not happened "
+#~ "so far, you may force a shutdown by pressing Ctrl+Q."
+#~ msgstr ""
+#~ "Ihre Session sollte automatisch beendet werden. Ist dies nicht der Fall, "
+#~ "kann das Beenden mittels der Tastenkombination Ctrl+Q forciert werden."
