@@ -1,3 +1,9 @@
+univention-system-setup (5.0.125-1) unstable; urgency=low
+
+  * Added overview matrix from Bug #22904 (Bug #26408)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Mar 2012 11:44:54 +0100
+
 univention-system-setup (5.0.124-1) unstable; urgency=low
 
   * Create a new UMC operation without flavors and remove the old
