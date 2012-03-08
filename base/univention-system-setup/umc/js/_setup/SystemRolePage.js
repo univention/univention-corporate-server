@@ -141,9 +141,7 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 
 	setValues: function(_vals) {
 		var vals = dojo.mixin({}, _vals);
-		if (vals.joined) {
-			this.set('visible', false);
-		}
+
 		this._form.setFormValues(vals);
 	},
 

@@ -45,6 +45,12 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	// system-setup-boot
+	wizard_mode: false,
+
+	// __systemsetup__ user is logged in at local firefox session
+	local_mode: false,
+
 	umcpCommand: umc.tools.umcpCommand,
 
 	// internal reference to the formular containing all form widgets of an UDM object
@@ -151,7 +157,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 			this._noteShowed.samba4 = false;
 		}
 		// show note when changing software only on a joined system in productive mode
-		this._noteShowed.software = !(vals.joined && umc.tools.status('username') != '__systemsetup__');
+		this._noteShowed.software = this.wizard_mode;
 		this.clearNotes();
 	},
 

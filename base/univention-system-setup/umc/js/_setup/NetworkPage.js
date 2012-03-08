@@ -47,6 +47,12 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	// system-setup-boot
+	wizard_mode: false,
+
+	// __systemsetup__ user is logged in at local firefox session
+	local_mode: false,
+
 	umcpCommand: umc.tools.umcpCommand,
 
 	// internal reference to the formular containing all form widgets of an UDM object
@@ -423,12 +429,12 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		this._form.getWidget('dns/forwarder').set('visible', showForwarder);
 
 		// hide domain nameserver on master when using system setup boot
-		this._form.getWidget('nameserver').set('visible', ! ( !_vals.joined && this._currentRole == 'domaincontroller_master' ) );
+		this._form.getWidget('nameserver').set('visible', ! ( this.wizard_mode && this._currentRole == 'domaincontroller_master' ) );
 		// set values
 		this._form.setFormValues(vals);
 
 		// only show notes in an joined system in productive mode
-		this._noteShowed = !(_vals.joined && umc.tools.status('username') != '__systemsetup__');
+		this._noteShowed = this.wizard_mode;
 		this.clearNotes();
 	},
 

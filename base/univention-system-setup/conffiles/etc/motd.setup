@@ -14,20 +14,32 @@ browser under the following URL
 
 @!@
 import os
-if os.path.exists('/opt/amazon/aws/ec2daddr'):
-	# Amazon EC2 image
-	pass
-else:
-	#IPv4
-	for i in range(0,10):
-		if configRegistry.get('interfaces/eth%d/type') == 'dhcp':
-			continue
-		elif configRegistry.get('interfaces/eth%d/address' % i):
-			print '  https://%s' % configRegistry.get('interfaces/eth%d/address' % i)
-	# IPv6
-	for i in range(0,10):
-		if configRegistry.get('interfaces/eth%d/ipv6/default/address' % i):
-			print '  https://%s' % configRegistry.get('interfaces/eth%d/ipv6/default/address' % i)
+import socket
+import fcntl
+import struct
+
+def get_ip_address(ifname):  
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	try:
+		# SIOCGIFADDR == 0x8915
+		addr = socket.inet_ntoa(fcntl.ioctl( s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
+	except IOError:
+		addr = None
+	return addr
+
+#IPv4
+for i in range(0,10):
+	ifname = 'eth%d' % i
+	if configRegistry.get('interfaces/%s/type' % ifname) == 'dhcp':
+		addr = get_ip_address(ifname)
+		if addr:
+			print '  https://%s' % get_ip_address(ifname)
+	elif configRegistry.get('interfaces/%s/address' % ifname):
+		print '  https://%s' % configRegistry.get('interfaces/%s/address' % ifname)
+# IPv6
+for i in range(0,10):
+	if configRegistry.get('interfaces/eth%d/ipv6/default/address' % i):
+		print '  https://%s' % configRegistry.get('interfaces/eth%d/ipv6/default/address' % i)
 @!@
 The login at the Univention Management Console needs to be done with
 the user root and the new password you entered in the above-mentioned

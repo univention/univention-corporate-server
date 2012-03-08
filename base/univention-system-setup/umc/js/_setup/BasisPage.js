@@ -45,6 +45,12 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	// system-setup-boot
+	wizard_mode: false,
+
+	// __systemsetup__ user is logged in at local firefox session
+	local_mode: false,
+
 	umcpCommand: umc.tools.umcpCommand,
 
 	// internal reference to the formular containing all form widgets of an UDM object
@@ -127,8 +133,6 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 
 		// decide which files are visible/required/empty/disabled in which scenario
 		var role = _vals['server/role'];
-		var joined = _vals['joined'];
-		var userSystemSetup = umc.tools.status('username') == '__systemsetup__';
 		var _set = dojo.hitch(this, function(iname, disabled, required, empty, visible) {
 			var widget = this._form.getWidget(iname);
 			widget.set('disabled', disabled);
@@ -142,12 +146,12 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 				widget.set('required', false);
 			}
 		});
-		_set('fqdn', joined && role != 'basesystem', true, !joined);
-		_set('windows/domain', joined && role != 'basesystem', role != 'basesystem', !joined);
-		_set('ldap/base', joined && role != 'basesystem', role != 'basesystem', !joined, role == 'domaincontroller_master' || role == 'basesystem');
-		_set('root_password', false, !joined && userSystemSetup);
+		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode);
+		_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode);
+		_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode, role == 'domaincontroller_master' || role == 'basesystem');
+		_set('root_password', false, this.wizard_mode && !this.local_mode);
 
-		if (role != 'basesystem' && !joined) {
+		if (role != 'basesystem' && this.wizard_mode) {
 			// add dynamic value computation from FQDN for windows domain
 			this._form.getWidget('windows/domain').set('dynamicValue', function(deps) {
 				var l = (deps.fqdn || '').split('.');
@@ -157,7 +161,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 				return '';
 			});
 		}
-		if (role == 'domaincontroller_master' && !joined) {
+		if (role == 'domaincontroller_master' && this.wizard_mode) {
 			// add dynamic value computation from FQDN for LDAP base
 			this._form.getWidget('ldap/base').set('dynamicValue', function(deps) {
 				var l = (deps.fqdn || '').split('.');

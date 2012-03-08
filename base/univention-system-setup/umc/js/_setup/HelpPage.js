@@ -45,6 +45,12 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	// system-setup-boot
+	wizard_mode: false,
+
+	// __systemsetup__ user is logged in at local firefox session
+	local_mode: false,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 

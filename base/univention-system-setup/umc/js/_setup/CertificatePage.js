@@ -45,6 +45,12 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	// system-setup-boot
+	wizard_mode: false,
+
+	// __systemsetup__ user is logged in at local firefox session
+	local_mode: false,
+
 	umcpCommand: umc.tools.umcpCommand,
 
 	// internal reference to the formular containing all form widgets of an UDM object
@@ -183,7 +189,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 		this._orgVals = dojo.clone(_vals);
 		this.clearNotes();
 
-		this._doShowNote = _vals['joined'];
+		this._doShowNote = !this.wizard_mode;
 
 		// this page should be only visible on domaincontroller_master
 		this.set('visible', _vals['server/role'] == 'domaincontroller_master');

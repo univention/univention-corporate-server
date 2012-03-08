@@ -103,6 +103,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			this.wizard_mode = true;
 		}
 
+		// we are in locale mode if the user is __systemsetup__
+		this.local_mode = umc.tools.status('username') == '__systemsetup__';
+
 		// add the SystemRolePage and HelpPage to the list of pages for the wizard mode
 		if (this.wizard_mode) {
 			// add the SystemRolePage to the list of pages for the wizard mode if the packages have been downloaded
@@ -169,6 +172,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
 					footerButtons: buttons,
 					moduleFlavor: this.moduleFlavor,
+					wizard_mode: this.wizard_mode,
+					local_mode: this.local_mode,
 					onSave: dojo.hitch(this, function() {
 						if (i < allPages.length - 1) {
 							// switch to next visible page
@@ -238,6 +243,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					umcpCommand: dojo.hitch(this, 'umcpCommand'),
 					footerButtons: buttons,
 					moduleFlavor: this.moduleFlavor,
+					wizard_mode: this.wizard_mode,
+					local_mode: this.local_mode,
 					onSave: dojo.hitch(this, function() {
 						this.save();
 					})
@@ -340,12 +347,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// get the session ID
 			var sessionID = dojo.cookie('UMCSessionId');
 
-			// make the session valid for the next two days, otherwise the session ewxpired
+			// make the session valid for the next 24 hours, otherwise the session ewxpired
 			// before the user can confirm the cleanup dialog
-			dojo.cookie('UMCSessionId', sessionID, {
-				expires: 2,
-				path: '/'
-			});
+			umc.tools.holdSession();
 
 			return umc.dialog.confirm(msg, choices).then(dojo.hitch(this, function(response) {
 				if (response == 'cancel') {
@@ -356,8 +360,13 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// shut down web browser and restart apache and UMC
 				this.umcpCommand('setup/cleanup', {}, false);
 
-				// redirect to UMC and set username to Administrator
-				target = this.domNode.baseURI.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=Administrator');
+				// redirect to UMC and set username to Administrator on DC master
+				username = 'Administrator';
+				if (this.role == 'basesystem') {
+					// use root on basesystem
+					username = 'root';
+				}
+				target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username='+username);
 
 				// Consider IP changes, replace old ip in url by new ip
 				umc.tools.forIn(this._orgValues, function(ikey, ival) {
@@ -416,16 +425,15 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		if (!role) {
 			role = this._orgValues['server/role'];
 		}
-		var userSystemSetup = umc.tools.status('username') == '__systemsetup__';
 
-		if (!nchanges && userSystemSetup && (joined || role == 'basesystem')) {
+		if (!nchanges && this.local_mode && !this.wizard_mode) {
 			// no changes have been made we can shut down the web browser directly
 			_cleanup(this._('No changes have been made. Please confirm to continue with the boot process.'), true);
 			return;
 		}
 
 		// only submit data to server if there are changes and the system is joined
-		if (!nchanges && (joined || role == 'basesystem')) {
+		if (!nchanges && !this.wizard_mode) {
 			umc.dialog.alert(this._('No changes have been made.'));
 			return;
 		}
@@ -655,7 +663,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// show the correct dialogs
 			var deferred = null;
-			if (joined || role == 'basesystem') {
+			if (!this.wizard_mode) {
 				// normal setup scenario, confirm changes and then save
 				deferred = _confirmChanges().then(function() {
 					return _save();

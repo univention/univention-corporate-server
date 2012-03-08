@@ -1,3 +1,10 @@
+univention-system-setup (5.0.126-1) unstable; urgency=low
+
+  * Show dhcp ip address in login message (Bug #26332)
+  * Use wizard_mode and local_mode for all javascript pages (Bug #26408)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Mar 2012 14:22:41 +0100
+
 univention-system-setup (5.0.125-1) unstable; urgency=low
 
   * Added overview matrix from Bug #22904 (Bug #26408)

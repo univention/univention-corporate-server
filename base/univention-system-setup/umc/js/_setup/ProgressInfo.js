@@ -44,6 +44,12 @@ dojo.declare("umc.modules._setup.ProgressInfo", [ umc.widgets.ContainerWidget, u
 	// use i18n information from umc.modules.udm
 	i18nClass: 'umc.modules.setup',
 
+	// system-setup-boot
+	wizard_mode: false,
+
+	// __systemsetup__ user is logged in at local firefox session
+	local_mode: false,
+
 	umcpCommand: umc.tools.umcpCommand,
 
 	style: 'width: 400px',
