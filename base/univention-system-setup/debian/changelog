@@ -1,3 +1,9 @@
+univention-system-setup (5.0.122-1) unstable; urgency=low
+
+  * Added username=root to the default apache2 startsite (Bug #26283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Mar 2012 08:11:53 +0100
+
 univention-system-setup (5.0.121-1) unstable; urgency=low
 
   * Firefox is now recommended by univention-system-setup-boot. Previous

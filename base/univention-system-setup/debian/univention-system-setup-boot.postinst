@@ -74,7 +74,7 @@ if [ "$1" = configure ] && [ -z "$2" ]; then
 
 	# Redirect the apache start site to the wizard module
 	ucr set system/setup/prev/apache2/startsite="$(ucr get apache2/startsite)"
-	ucr set apache2/startsite='univention-management-console/?module=setup'
+	ucr set apache2/startsite='univention-management-console/?module=setup\&username=root'
 	if [ -x /etc/init.d/apache2 ]; then
 		/etc/init.d/apache2 restart
 	fi
