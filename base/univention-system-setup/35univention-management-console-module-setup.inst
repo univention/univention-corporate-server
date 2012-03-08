@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -39,8 +39,15 @@ VERSION=2
 joinscript_init
 
 umc_init
-umc_operation_create "setup-all" "Univention System-Setup" "tabs" "setup/*"
-umc_operation_create "setup-wizard-all" "Univention System-Setup" "wizard" "setup/*"
+
+eval "$(ucr shell)"
+
+# Remove previous operations
+if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
+	udm settings/umc_operationset remove "$@" --dn "cn=setup-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+	udm settings/umc_operationset remove "$@" --dn "cn=setup-wizard-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+fi
+umc_operation_create "setup-all" "Univention System-Setup" "" "setup/*"
 umc_policy_append "default-umc-all" "setup-all"
 
 joinscript_save_current_version

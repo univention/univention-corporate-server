@@ -410,9 +410,6 @@ def cleanup():
 		except psutil.NoSuchProcess:
 			MODULE.error('cannot kill process with PID: %s' % pid)
 
-	# make sure that UMC servers and apache will not be restartet
-	subprocess.call( CMD_ENABLE_EXEC_WITH_RESTART, stdout = f, stderr = f )
-
 	# unset the temporary interface if set
 	_re=re.compile('interfaces/[^/]*/type')
 	for var in ucr.keys():
@@ -422,6 +419,11 @@ def cleanup():
 			for k in ['netmask', 'address', 'broadcast', 'network']:
 				keys.append(var.replace('/type', '/%s' % k))
 			univention.config_registry.handler_unset(keys)
+			# Shut down temporary interface
+			subprocess.call(['ifconfig', var.split('/')[1].replace('_', ':'), 'down'])
+
+	# make sure that UMC servers and apache will not be restartet
+	subprocess.call( CMD_ENABLE_EXEC_WITH_RESTART, stdout = f, stderr = f )
 				
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.flush()

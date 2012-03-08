@@ -1,3 +1,12 @@
+univention-system-setup (5.0.124-1) unstable; urgency=low
+
+  * Create a new UMC operation without flavors and remove the old
+    operations (Bug #26283)
+  * First remove the temporary interface and the restart the services
+    (Bug #26338)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Mar 2012 09:33:02 +0100
+
 univention-system-setup (5.0.123-1) unstable; urgency=low
 
   * Removed the UMC and apache restart from startxwithfirefox, this
