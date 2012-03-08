@@ -236,18 +236,22 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 
 	_setInitialFocus: function() {
 		dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
-			// initial focus on username input
-			if (!umc.tools._status.username) {
-				dojo.byId('umc_UsernameInput').focus();
-				this._setFocus('umc_UsernameContainer', true);
-			} else {
-				// user has already logged in before, we need to auto fill
+			if (umc.tools.status('username')) {
+				// username is specified, we need to auto fill
 				// the username and disable the textbox.
-				dojo.attr('umc_UsernameInput', 'value', umc.tools._status.username);
-				dojo.attr('umc_UsernameInput', 'disabled', true);
-				dojo.addClass('umc_UsernameContainer', 'dijitTextBoxDisabled dijitValidationTextBoxDisabled dijitDisabled');
+				dojo.attr('umc_UsernameInput', 'value', umc.tools.status('username'));
 				dojo.byId('umc_PasswordInput').focus();
 				this._setFocus('umc_PasswordContainer', true);
+
+				// disable the username field during relogin, i.e., when the GUI has been previously set up
+				if (umc.tools.status('setupGui')) {
+					dojo.attr('umc_UsernameInput', 'disabled', true);
+					dojo.addClass('umc_UsernameContainer', 'dijitTextBoxDisabled dijitValidationTextBoxDisabled dijitDisabled');
+				}
+			} else {
+				// initial focus on username input
+				dojo.byId('umc_UsernameInput').focus();
+				this._setFocus('umc_UsernameContainer', true);
 			}
 		}));
 	},
