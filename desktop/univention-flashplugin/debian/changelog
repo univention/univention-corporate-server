@@ -1,3 +1,9 @@
+univention-flashplugin (5.0.3-1) unstable; urgency=low
+
+  * Update to new Flash download URL (Bug #26396)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Mar 2012 15:31:32 +0100
+
 univention-flashplugin (5.0.2-7) unstable; urgency=low
 
   * adjust filename (Bug #26161)
