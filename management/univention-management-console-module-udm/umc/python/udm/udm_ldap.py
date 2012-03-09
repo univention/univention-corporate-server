@@ -872,7 +872,7 @@ def list_objects( container, object_type = None, ldap_connection = None, ldap_po
 			continue
 		module = UDM_Module( modules[ 0 ] )
 
-		if not module:
+		if not module.module:
 			MODULE.process( 'The UDM module %s could not be found. Ignoring LDAP object %s' % ( modules[ 0 ], dn ) )
 			continue
 		if module.superordinate:
