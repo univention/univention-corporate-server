@@ -1,3 +1,11 @@
+univention-network-manager (3.0.4-1) unstable; urgency=low
+
+  * On a joined DNS server the nameservers given by DHCP will be
+    converted to dns forwarders. If the system is not a DNS server the
+    nameservers given by DHCP will be used directly (Bug #25769)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Mar 2012 10:18:59 +0100
+
 univention-network-manager (3.0.3-1) unstable; urgency=low
 
   * do not not start ntpd if stopped (Bug #25785)

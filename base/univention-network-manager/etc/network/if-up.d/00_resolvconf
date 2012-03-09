@@ -33,17 +33,36 @@
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-eval "$(univention-config-registry shell nameserver/option/timeout nameserver1 nameserver2 nameserver3)"
+eval "$(univention-config-registry shell)"
+
+. /usr/share/univention-lib/ucr.sh
 
 if [ -n "$nameserver_option_timeout" ] && ! grep timeout /etc/resolv.conf &>/dev/null; then
 	echo "options timeout:$nameserver_option_timeout" >> /etc/resolv.conf
 fi
 
-if ! grep nameserver /etc/resolv.conf &>/dev/null; then
+# On a joined DNS server the DHCP nameserver should be converted to a dns/forwarder.
+# But at least one nameserver must be configured via ucr and nameserver/external 
+# must not be set to true
+if [ /var/univention-join/joined ] && is_ucr_true "bind/autostart" && [ -n "$nameserver1" -o -n "$nameserver2" -o -n "$nameserver3" ] && ! is_ucr_true "nameserver/external"; then
+	i=1
+	cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do
+		if [ "$(ucr get dns/forwarder$i)" != "$ns" ]; then
+			ucr set "dns/forwarder$i=$ns"
+			invoke-rc.d bind9 restart
+		fi
+		i=$((i+1))
+	done
+	ucr commit /etc/resolv.conf
+else
+	# Add the local configured nameserver to the resolv.conf
 	for i in $(seq 1 3); do
 		dns="nameserver$i"
 		if [ -n "${!dns}" ]; then
-			echo "nameserver ${!dns}" >> /etc/resolv.conf
+			# Don't add the nameserver twice
+			if ! grep "nameserver ${!dns}\$" /etc/resolv.conf &>/dev/null; then
+				echo "nameserver ${!dns}" >> /etc/resolv.conf
+			fi
 		fi
 	done
 fi
