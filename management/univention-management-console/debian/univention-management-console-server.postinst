@@ -65,7 +65,7 @@ if [ "$server_role" != "basesystem" ]; then
 	/usr/sbin/univention-management-console-acls allow --user root --host "*" --command 'join/*' --command 'mrtg/*'
 fi
 
-/usr/sbin/univention-management-console-acls allow --user root --host "*" --flavor tabs \
+/usr/sbin/univention-management-console-acls allow --user root --host "*" --flavor "*" \
 			--command 'setup/*'
 
 

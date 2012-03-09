@@ -1,3 +1,9 @@
+univention-management-console (4.0.206-1) unstable; urgency=low
+
+  * Flavors have been removed from system setup module (Bug #26283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Mar 2012 13:46:57 +0100
+
 univention-management-console (4.0.205-1) unstable; urgency=low
 
   * added standard text to debian/control in umc-module-template
