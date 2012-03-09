@@ -1,3 +1,10 @@
+univention-system-setup (5.0.127-1) unstable; urgency=low
+
+  * Show a hint at the command line based login, that the system is not
+    configured yet (Bug #26413)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Mar 2012 07:01:46 +0100
+
 univention-system-setup (5.0.126-1) unstable; urgency=low
 
   * Show dhcp ip address in login message (Bug #26332)

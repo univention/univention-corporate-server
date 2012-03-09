@@ -211,7 +211,7 @@ if [ "$startsite" = 'univention-management-console/?module=setup\&username=root'
 	ucr set apache2/startsite="$(ucr get system/setup/prev/apache2/startsite)"
 fi
 # Removed system setup login message
-ucr unset system/setup/showloginmessage
+ucr set system/setup/showloginmessage=false
 
 exit 0
 

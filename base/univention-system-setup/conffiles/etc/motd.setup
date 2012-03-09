@@ -3,14 +3,15 @@
 
 Welcome to Univention Corporate Server (UCS)!
 
-This system was configured with a random password. It is recommended to
-change the password of the administrative root account. To do so,
-please enter the following command and type in your password twice:
+This system was configured with a random or default password. It is
+recommended to change the password of the administrative root account.
+To do so, please enter the following command and type in your password
+twice:
  passwd root
 
-To finalise the configuration of this system you need to login to the
-web-based Univention Management Console which can be reached with a web
-browser under the following URL
+This system is not completely configured yet. To finalise the configuration
+of this system you need to login to the web-based Univention Management
+Console which can be reached with a web browser under the following URL
 
 @!@
 import os
