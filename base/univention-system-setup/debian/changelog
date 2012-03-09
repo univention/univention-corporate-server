@@ -1,3 +1,9 @@
+univention-system-setup (5.0.128-1) unstable; urgency=low
+
+  * Added description for system/setup/showloginmessage (Bug #26413)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Mar 2012 11:53:15 +0100
+
 univention-system-setup (5.0.127-1) unstable; urgency=low
 
   * Show a hint at the command line based login, that the system is not

@@ -15,3 +15,9 @@ Description[en]=Activates in Univention System Setup the selection of a new syst
 Description[de]=Aktiviert in Univention System Setup den optionalen Wechsel zu einer anderen Systemrolle. Die Auswahl wird nur angezeigt, wenn das System noch nicht gejoined wurde.
 Type=string
 Categories=system-base
+
+[system/setup/showloginmessage]
+Description[en]=Defines whether the system is given on the command line login a reference to the UMC initial configuration.
+Description[de]=Definiert, ob das System bei der Anmeldung auf der Kommandozeile einen Hinweis auf die UMC Erstkonfiguration gibt.
+Type=string
+Categories=system-base
