@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.275-1) unstable; urgency=low
+
+  * Fixes another typo that caused the same traceback; Bug #26367
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Mar 2012 14:02:21 +0100
+
 univention-management-console-module-udm (1.0.274-1) unstable; urgency=low
 
   * Fixes a typo that caused a traceback when handling unknown LDAP objects; Bug #26367

@@ -421,7 +421,7 @@ class Instance( Base ):
 				if obj is None:
 					continue
 				module = get_module( object_type, obj.dn )
-				if module is None:
+				if module.module is None:
 					MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
 					continue
 				entry = {
