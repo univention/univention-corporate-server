@@ -33,7 +33,6 @@
 eval "$(univention-config-registry shell)"
 
 univention-config-registry set 'system/setup/boot/start?true' \
-							   'system/setup/boot/help?/usr/share/univention-management-console-frontend/js/umc/modules/_setup/:help_default.html' \
 							   'system/setup/boot/select/role?true'
 
 # Show login message on an unjoined system
@@ -73,9 +72,6 @@ if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 fi
 
 if [ "$1" = configure ] && [ -z "$2" ]; then
-	# For remote configuration give root the permission to see the wizard
-	# This permission will be revoked in system setup itself
-	/usr/sbin/univention-management-console-acls -u "root" -c "setup/*" "allow" -H "*"
 
 	# Redirect the apache start site to the wizard module
 	ucr set system/setup/prev/apache2/startsite="$(ucr get apache2/startsite)"

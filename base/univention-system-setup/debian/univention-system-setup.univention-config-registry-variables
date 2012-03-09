@@ -1,0 +1,6 @@
+[system/setup/boot/help]
+Description[en]=Defines the position of HTML files that will be included as start page in the wizard of the appliance configuration setup. Format: <directory>:<filename>. If <directory>/<lang>/<filename> exists, the start page will be localized. The fallback is <directory>/<filename> for a non-localized start page.
+Description[de]=Definiert die Position der HMLT-Dateien, die als Startseite in den Wizard des Appliance-Konfigurations-Setup eingebunden werden. Format: <Verzeichnis>:<Datei>. Wenn <Verzeichnis>/<Sprache>/<Datei> existiert, wird die Startseite lokalisiert, andernfalls ist der "Fallback" <Verzeichnis>/<Datei> für eine Startseite, die nicht lokalisiert ist.
+Type=string
+Categories=system-base
+

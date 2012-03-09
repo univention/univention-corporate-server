@@ -1,3 +1,12 @@
+univention-system-setup (5.0.129-1) unstable; urgency=low
+
+  * Create ACLs for root in system-setup instead of system-setup-boot
+    (Bug #26283)
+  * Move help pages from system-setup-boot package to system-setup
+    (Bug #26283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Mar 2012 14:02:03 +0100
+
 univention-system-setup (5.0.128-1) unstable; urgency=low
 
   * Added description for system/setup/showloginmessage (Bug #26413)
