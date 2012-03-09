@@ -146,7 +146,6 @@ Variables: logrotate/.*
 
 Type: file
 File: etc/resolv.conf
-Postinst: resolv.py
 Variables: domainname
 Variables: nameserver1
 Variables: nameserver2

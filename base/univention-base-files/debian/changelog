@@ -1,3 +1,9 @@
+univention-base-files (1.0.46-1) unstable; urgency=low
+
+  * Don't re-call dhclient if the resolv.conf was written (Bug #25769)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Mar 2012 08:34:15 +0100
+
 univention-base-files (1.0.45-1) unstable; urgency=low
 
   * option to configure Signed NTP via UCRV ntp/signed (Bug #24953)
