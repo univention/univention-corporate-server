@@ -458,7 +458,12 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 			
 			identify=univention.s4connector.s4.dns.identify,
 
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/s4/mapping/dns/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/dns/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
+@!@
 
 			scope='sub',
 

@@ -52,6 +52,12 @@ Description[en]=Defines the synchronisation mode; "read" (reading only from Samb
 Type=str
 Categories=service-adcon
 
+[con.*/s4/mapping/dns/syncmode]
+Description[de]=Definiert den Sychronisations-Modus für DNS Daten, unterstützt werden die Werte "read" (nur lesend von Samba 4 nach UCS), "write" (nur schreiben von UCS nach Samba 4) oder "sync" (bidirektionale Synchronisation).
+Description[en]=Defines the synchronisation mode for DNS data; "read" (reading only from Samba 4 to UCS), "write" (writing only from UCS to Samba 4) and "sync" (bidirectional synchronisation) are supported. 
+Type=str
+Categories=service-adcon
+
 [con.*/s4/ldap/base]
 Description[de]=Die LDAP-Basis-DN des Samba 4-Servers
 Description[en]=The LDAP base DN of the Samba 4 server.
