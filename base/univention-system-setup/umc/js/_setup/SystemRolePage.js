@@ -82,27 +82,28 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 			type: 'Text',
 			label: '',
 			name: 'text_domaincontroller_master',
-			content: this._('<h2>Domain controller master</h2>The domain controller master (DC master for short) contains the original dataset for the entire LDAP directory. Changes to the LDAP directory are only performed on this server. For this reason, this must be the first system to be commissioned and there can only be one of them within a domain. In addition, the Root Certification Authority (root CA) is also on the DC master. All SSL certificates created are archived on the DC master.')
+			content: this._('<h2>Master domain controller master</h2>A system with the master domain controller role (DC master for short) is the primary domain controller of a UCS domain and is always installed as the first system. The domain data (such as users, groups, printers) and the SSL security certificates are saved on the DC master. 
+Copies of these data are automatically transferred to all servers with the backup domain controller role.')
 		}, {
 			type: 'Text',
 			label: '',
 			name: 'text_domaincontroller_backup',
-			content: this._('<h2>Domain controller backup</h2>Servers with the role of domain controller backup (DC backup for short) contain a replicated copy of the entire LDAP directory, which cannot be changed as all write accesses occur exclusively on the DC master. A copy of all SSL certificates including the private key of the root CA is kept on the DC backup. The DC backup is as such a backup copy of the DC master.  If the DC master should collapse completely, running a special command allows the DC backup to take over the role of the DC master permanently in a very short time.')
+			content: this._('<h2>Backup domain controller/h2>All the domain data and SSL security certificates are saved as read-only copies on servers with the backup domain controller role (backup DC for short). The backup domain controller is the fallback system for the master DC. If the latter should fail, a backup DC can take over the role of the DC master permanently.')
 		}, {
 			type: 'Text',
 			label: '',
 			name: 'text_domaincontroller_slave',
-			content: this._('<h2>Domain controller slave</h2>Each domain controller slave (DC slave for short) contains a replicated copy of the entire LDAP directory, which cannot be changed as all write accesses occur on the DC master. The copy can either contain the entire directory or be limited to the files required by a location through selective replication. The DC slave only stores a copy of its own and the public SSL certificate of the root CA. A DC slave system cannot be promoted to a DC master.')
+			content: this._('<h2>Slave domain controller</h2>All the domain data are saved as read-only copies on servers with the slave domain controller role (slave DC for short). In contrast to the backup domain controller, however, not all security certificates are synchronised. As access to the services running on a slave domain controller are performed against the local LDAP server, slave DC systems are ideal for site servers and the distribution of load-intensive services. A slave DC system cannot be promoted to a master DC.')
 		}, {
 			type: 'Text',
 			label: '',
 			name: 'text_memberserver',
-			content: this._('<h2>Member server</h2>Member servers are members of a LDAP domain and offer services such as file storage for the domain. Member servers do not contain a copy of the LDAP directory. It only stores a copy of its own and the public SSL certificate of the root CA.')
+			content: this._('<h2>Member server</h2>Member servers are server systems without a local LDAP server. Access to domain data here is performed via other servers in the domain.')
 		}, {
 			type: 'Text',
 			label: '',
 			name: 'text_basesystem',
-			content: this._('<h2>Base system</h2>A base system is an independent system. It is not a member of a domain and does not maintain trust relationships with other servers or domains. A base system is thus suitable for services which are operated outside of the trust context of the domain, such as a web server or a firewall. The services of a base system cannot be configured over the UCS management system. However, it is possible to configure DNS and DHCP settings for base systems via the Univention management system as long as the base system is entered as an IP managed client in the directory service.')
+			content: this._('<h2>Base system</h2>A base system is an autonomous system which is not a member of the domain.A base system is thus suitable for services which are operated outside of the trust context of the domain, such as a web server or a firewall.')
 		}];
 
 		var layout = [{
