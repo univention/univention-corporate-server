@@ -625,7 +625,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: No password change to sync to UCS")
 
-		if pwdLastSet or pwdLastSet == 0:
+		if pwd_changed and (pwdLastSet or pwdLastSet == 0):
 			newSambaPwdMustChange = sambaPwdMustChange
 			if pwdLastSet == 0: # pwd change on next login
 				newSambaPwdMustChange = str(pwdLastSet)

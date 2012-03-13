@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.113-1) unstable; urgency=low
+
+  * Set pwd last set attributes only if the password was changed
+    (Bug #26466)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Mar 2012 06:39:45 +0100
+
 univention-s4-connector (6.0.112-1) unstable; urgency=low
 
   * Added UCR variable connector/s4/mapping/dns/syncmode to configure
