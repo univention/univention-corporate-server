@@ -1,3 +1,9 @@
+univention-lib (1.0.70-1) unstable; urgency=low
+
+  * version bump; Bug #25707
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 14 Mar 2012 15:16:03 +0100
+
 univention-lib (1.0.45-1) unstable; urgency=low
 
   * fixed python/listenerSharePath.py (Bug #26025) 
