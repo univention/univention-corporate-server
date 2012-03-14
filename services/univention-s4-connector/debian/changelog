@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.116-1) unstable; urgency=low
+
+  * Remove local sync user from password_sync_ucs_to_s4 tool
+    (Bug #26197)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Mar 2012 16:55:18 +0100
+
 univention-s4-connector (6.0.115-1) unstable; urgency=low
 
   * Fixed typo from last commit (Bug #26197)
