@@ -85,12 +85,6 @@ def main():
 	if not configRegistry.has_key('%s/s4/ldap/base' % CONFIGBASENAME):
 		print '%s/s4/ldap/base not set' % CONFIGBASENAME
 		sys.exit(1)
-	if not configRegistry.has_key('%s/s4/ldap/binddn' % CONFIGBASENAME):
-		print '%s/s4/ldap/binddn not set' % CONFIGBASENAME
-		sys.exit(1)
-	if not configRegistry.has_key('%s/s4/ldap/bindpw' % CONFIGBASENAME):
-		print '%s/s4/ldap/bindpw not set' % CONFIGBASENAME
-		sys.exit(1)
 
 	if not configRegistry.has_key('%s/s4/ldap/certificate' % CONFIGBASENAME) and not (configRegistry.has_key('%s/s4/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no') :
 		print '%s/s4/ldap/certificate not set' % CONFIGBASENAME
@@ -105,9 +99,11 @@ def main():
 	else:
 		baseconfig_retry_rejected=configRegistry['%s/s4/retryrejected' % CONFIGBASENAME]
 
-	s4_ldap_bindpw=open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
-	if s4_ldap_bindpw[-1] == '\n':
-		s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
+	s4_ldap_bindpw=None
+	if configRegistry.get('%s/s4/ldap/bindpw' % CONFIGBASENAME]):
+		s4_ldap_bindpw=open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
+		if s4_ldap_bindpw[-1] == '\n':
+			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
 	
 	poll_sleep=int(configRegistry['%s/s4/poll/sleep' % CONFIGBASENAME])
 
@@ -119,7 +115,7 @@ def main():
 				       configRegistry['%s/s4/ldap/host' % CONFIGBASENAME],
 				       configRegistry['%s/s4/ldap/port' % CONFIGBASENAME],
 				       configRegistry['%s/s4/ldap/base' % CONFIGBASENAME],
-				       configRegistry['%s/s4/ldap/binddn' % CONFIGBASENAME],
+				       configRegistry.get('%s/s4/ldap/binddn' % CONFIGBASENAME),
 				       s4_ldap_bindpw,
 				       configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
 				       configRegistry['%s/s4/listener/dir' % CONFIGBASENAME],

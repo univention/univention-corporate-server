@@ -43,8 +43,6 @@ NAME="S4 Connector"
 univention-config-registry set \
 	connector/s4/ldap/host?"$ldap_master" \
 	connector/s4/ldap/base?"$samba4_ldap_base" \
-	connector/s4/ldap/binddn?"cn=ucs-s4sync,cn=Users,$samba4_ldap_base" \
-	connector/s4/ldap/bindpw?"/etc/samba4.secret" \
 	connector/s4/ldap/ssl?"no" \
 	connector/s4/mapping/group/language?en \
 	connector/s4/ldap/protocol?ldapi \
@@ -54,41 +52,7 @@ if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
 fi
 
-if [ -n "$s4connectorservicehost_dns" ]; then	## there already is a system providing this service
-
-	## copy /etc/samba4.secret required by univention-s4search if connector/s4/ldap/binddn is set.
-	HOSTPWD="/etc/machine.secret"
-	HOSTACCOUNT="$hostname\$"
-
-	echo "$s4connectorservicehost_dns" | while read s4chost_dn; do
-
-		s4chost=$(echo "$s4chost_dn" | sed -n 's/cn=\([^,]*\).*/\1/p')
-
-		if [ "$s4chost" = "$hostname" ]; then
-			continue
-		fi
-		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$s4chost:/etc/samba4.secret /etc/"
-		if [ $? = 0 ]; then
-			break
-		fi
-
-	done
-	if ! [ -r /etc/samba4.secret ]; then
-		echo "ERROR: Failed to copy /etc/samba4.secret. Please copy it manually from the main host running the Samba4 Connector."
-	fi
-
-	/etc/init.d/univention-s4-connector stop
-
-	## Don't autostart S4 Connector on other host by default, more config to be done for this to be useful
-	univention-config-registry set connector/s4/autostart?no
-
-else										## we are first system to provide this service
-
-	## create an admin user for synchronisation
-	if [ -e /etc/samba4.secret ]; then
-		samba-tool user add ucs-s4sync "$(cat /etc/samba4.secret)" -U Administrator%$(cat /etc/samba4.secret)
-		samba-tool group addmembers "Domain Admins" ucs-s4sync #maybe we could use a more restrict group?
-	fi
+if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide this service
 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 		/usr/share/univention-heimdal/salt_krb5Keys 

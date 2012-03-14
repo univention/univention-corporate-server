@@ -123,14 +123,6 @@ def connect():
 		print '%s/s4/ldap/base not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
-	if not baseConfig.has_key('%s/s4/ldap/binddn' % CONFIGBASENAME):
-		print '%s/s4/ldap/binddn not set' % CONFIGBASENAME
-		f.close()
-		sys.exit(1)
-	if not baseConfig.has_key('%s/s4/ldap/bindpw' % CONFIGBASENAME):
-		print '%s/s4/ldap/bindpw not set' % CONFIGBASENAME
-		f.close()
-		sys.exit(1)
 
 	if not baseConfig.has_key('%s/s4/ldap/certificate' % CONFIGBASENAME) and not (baseConfig.has_key('%s/s4/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no') :
 		print '%s/s4/ldap/certificate not set' % CONFIGBASENAME
@@ -147,7 +139,7 @@ def connect():
 	else:
 		baseconfig_retry_rejected=baseConfig['%s/s4/retryrejected' % CONFIGBASENAME]
 
-	if os.path.exists(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
+	if baseConfig.get('%s/s4/ldap/bindpw' % CONFIGBASENAME) and os.path.exists(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
 		s4_ldap_bindpw=open(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
 		if s4_ldap_bindpw[-1] == '\n':
 			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
@@ -164,7 +156,7 @@ def connect():
 							baseConfig['%s/s4/ldap/host' % CONFIGBASENAME],
 							baseConfig['%s/s4/ldap/port' % CONFIGBASENAME],
 							baseConfig['%s/s4/ldap/base' % CONFIGBASENAME],
-							baseConfig['%s/s4/ldap/binddn' % CONFIGBASENAME],
+							baseConfig.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
 							s4_ldap_bindpw,
 							baseConfig['%s/s4/ldap/certificate' % CONFIGBASENAME],
 							baseConfig['%s/s4/listener/dir' % CONFIGBASENAME])

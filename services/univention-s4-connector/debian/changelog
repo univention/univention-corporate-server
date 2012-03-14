@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.114-1) unstable; urgency=low
+
+  * S4 connector does not require a local user for the Samba 4 directory
+    access (Bug #26197)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Mar 2012 07:36:05 +0100
+
 univention-s4-connector (6.0.113-1) unstable; urgency=low
 
   * Set pwd last set attributes only if the password was changed
