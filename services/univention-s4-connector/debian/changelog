@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.115-1) unstable; urgency=low
+
+  * Fixed typo from last commit (Bug #26197)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Mar 2012 11:50:46 +0100
+
 univention-s4-connector (6.0.114-1) unstable; urgency=low
 
   * S4 connector does not require a local user for the Samba 4 directory

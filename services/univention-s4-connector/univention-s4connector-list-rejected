@@ -100,7 +100,7 @@ def main():
 		baseconfig_retry_rejected=configRegistry['%s/s4/retryrejected' % CONFIGBASENAME]
 
 	s4_ldap_bindpw=None
-	if configRegistry.get('%s/s4/ldap/bindpw' % CONFIGBASENAME]):
+	if configRegistry.get('%s/s4/ldap/bindpw' % CONFIGBASENAME):
 		s4_ldap_bindpw=open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
 		if s4_ldap_bindpw[-1] == '\n':
 			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
