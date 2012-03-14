@@ -1,3 +1,9 @@
+univention-samba4 (1.0.129-1) unstable; urgency=low
+
+  * The ucs-s4sync is no longer needed (Bug #26197)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Mar 2012 07:39:02 +0100
+
 univention-samba4 (1.0.127-3) unstable; urgency=low
 
   * revert changes for (Bug #26376)

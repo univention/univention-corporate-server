@@ -116,22 +116,6 @@ while [ "$adminpw" != "$adminpw2" ]; do
 	fi
 done
 
-pwfile="/etc/samba4.secret"
-if [ -e "$pwfile" ]; then
-	pwhistoryfile="$pwfile.SAVE"
-	if [ ! -f "$pwhistoryfile" ]; then
-		cp -a "$pwfile" "$pwhistoryfile"	# always keep ownership
-	else
-		cat "$pwfile" >> "$pwhistoryfile"
-	fi
-	timestamp=$(stat --printf='%y' "$pwfile")
-	printf "\t# modification timestamp: $timestamp\n" >> "$pwhistoryfile"
-fi
-touch "$pwfile"
-chgrp "DC Backup Hosts" "$pwfile"
-chmod 640 "$pwfile"
-echo -n "$adminpw" > "$pwfile"
-
 ## Provision Samba4
 eval "$(univention-config-registry shell)"	## eval again
 
