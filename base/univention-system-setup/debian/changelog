@@ -1,3 +1,9 @@
+univention-system-setup (5.0.133-4) unstable; urgency=low
+
+  * Overhaul descriptions of system roles (Bug #26327)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 16 Mar 2012 14:24:02 +0100
+
 univention-system-setup (5.0.133-3) unstable; urgency=low
 
   * Overhaul descriptions of system roles (Bug #26327)
