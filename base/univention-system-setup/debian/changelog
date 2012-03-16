@@ -1,3 +1,9 @@
+univention-system-setup (5.0.130-1) unstable; urgency=low
+
+  * Added wizard and system role to doc/matrix.csv (Bug #26408)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Mar 2012 07:26:57 +0100
+
 univention-system-setup (5.0.129-1) unstable; urgency=low
 
   * Create ACLs for root in system-setup instead of system-setup-boot
