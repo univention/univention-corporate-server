@@ -36,3 +36,15 @@ Description: UCS - Directory Listener
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-directory-listener-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: univention-directory-listener (= ${binary:Version}),
+ ${misc:Depends}
+Description: debugging symbols for univention-directory-listener
+ UCS Directory Listener is a client for the UCS Directory Notifier which calls
+ Python handlers upon changes.
+ .
+ This package contains the debugging symbols for univention-directory-listener.
