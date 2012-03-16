@@ -1,0 +1,41 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-DIRECTORY-LISTENER-DUMP 8 2012-03-16 UCS
+.SH NAME
+univention\-directory\-listener\-dump \- dump UCS listener cache
+.SH SYNOPSIS
+.B univention\-directory\-listener\-dump
+.RI [ options ]
+.SH DESCRIPTION
+This manual page documents briefly the
+.B univention\-directory\-listener\-dump
+command, which dumps the data in the listener cache.
+.SH OPTIONS
+A summary of options is included below.
+.TP
+.BI \-d\  level
+Set debugging \fIlevel\fP.
+.TP
+.BI \-c\  directory
+Use the \fIcache.db\fP from given \fIdirectory\fP instead of from \fI/var/lib/univention\-directory\-listener\fP.
+.TP
+.B \-r
+Print broken entries only (as far as that is possible).
+.TP
+.BI \-O\  file
+Dump cache to \fIfile\fP. Default ro stdout.
+.TP
+.B \-i
+Dump ID only (only available with db4.2).
+.SH FILES
+.TP
+.I /var/lib/univention\-directory\-listener/
+Default directory used by the
+.BR univention\-directory\-listener (8).
+.SH SEE ALSO
+.BR univention\-directory\-listener (8),
+.BR univention\-directory\-listener\-verify (8).
+.br
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+.SH AUTHOR
+Copyright (c) 2001-2012 Univention GmbH, Germany

@@ -1,0 +1,112 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-DIRECTORY-LISTENER 8 2012-03-16 UCS
+.SH NAME
+univention\-directory\-listener \- UCS LDAP directory listener
+.SH SYNOPSIS
+.B univention\-directory\-listener
+.RI [ options ]
+.SH DESCRIPTION
+This manual page documents briefly the
+.B univention\-directory\-listener
+command, which implements the listening part of the univention LDAP replication and update mechanism.
+It polls updates from an
+.BR univention\-directory\-notifier (8)
+running on TCP port 6669 on the server specified through the "\fInotifier/server\fP" univention-config-registry variable.
+.SH OPTIONS
+A summary of options is included below.
+.TP
+.BI \-d\  level
+Set debugging \fIlevel\fP: 0=Error, 1=Warning, 2=Process, 3=Info, 4=All.
+.TP
+.B \-F
+Run in foreground (intended for process supervision).
+.TP
+.BI \-H\  ldap-uri
+LDAP server URI.
+.TP
+.BI \-h\  host
+LDAP server address.
+.TP
+.BI \-p\  port
+LDAP server port.
+.TP
+.BI \-b\  base-dn
+LDAP base dn.
+.TP
+.BI \-D\  bind-dn
+LDAP bind dn.
+.TP
+.BI \-w\  password
+LDAP bind password.
+.TP
+.BI \-y\  file
+Read LDAP bind (or Kerberos with \fB\-K\fP) password from file.
+.TP
+.B \-x
+LDAP simple bind.
+.TP
+.BR \-Z [ Z ]
+LDAP start TLS request (\fB\-ZZ\fP to require successful response).
+.TP
+.BI \-Y\  meachanism
+SASL mechanism.
+.TP
+.BI \-U\  username
+SASL/Kerberos username.
+.TP
+.BI \-R\  realm
+SASL/Kerberos realm.
+.TP
+.B \-K
+Acquire Kerberos ticket granting ticket (like \fBkinit\fP(1)).
+.TP
+.BI \-m\  listeners
+Listener module path (may be specified multiple times).
+.TP
+.B \-B
+Only use dc backup notifier.
+.TP
+.BI \-c\  cache
+Listener cache path, default is \fI/var/lib/univention\-directory\-listener\fP.
+.TP
+.B \-g
+Start from scratch (remove cache).
+.TP
+.B \-i
+Initialize handlers only.
+.TP
+.BI \-o\  file
+Write transaction \fIfile\fP.
+.SH FILES
+.TP
+.I /var/log/univention/listener.log
+Log file for the listener.
+.TP
+.I /var/lib/univention\-directory\-listener/cache.db
+Cache of LDAP data.
+.TP
+.I /var/lib/univention\-directory\-listener/notifier_id
+Number of the last processed transaction
+.TP
+.I /var/lib/univention\-directory\-listener/handlers/
+Directory containing ???
+.SH UNIVENTION CONFIG REGISTRY VARIABLES
+.TP
+.B server/role
+Used to determin the host on which 
+.BR univention\-directory\-notifier (8)
+runs.
+.TP
+.B ldap/backup
+Space separated list of LDAP server host names used by all roles expect domaincontroller_masters and backups.
+.TP
+.B ldap/master
+Host name of the LDAP server for domaincontroller_masters, backups and all other roles.
+.SH SEE ALSO
+.BR univention\-directory\-notifier (8),
+.BR slapd (8).
+.br
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+.SH AUTHOR
+Copyright (c) 2001-2012 Univention GmbH, Germany

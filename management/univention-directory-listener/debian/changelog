@@ -4,8 +4,9 @@ univention-directory-listener (6.0.23-1) unstable; urgency=low
   * Add package with debug symbols for getting useful tracebacks.
   * Update copyright years
   * Fix errors in shell quoting.
+  * Add manual pages (Bug #25663)
 
- -- Philipp Hahn <hahn@univention.de>  Fri, 16 Mar 2012 19:31:24 +0100
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Mar 2012 20:25:18 +0100
 
 univention-directory-listener (6.0.22-1) unstable; urgency=low
 
