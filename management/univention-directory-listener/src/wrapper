@@ -32,8 +32,7 @@
 
 CACHE=/var/lib/univention-directory-listener
 if [ -e "$CACHE/__db.001" ] || [ -e "$CACHE/log.0000000001" ] || ! [ -e "$CACHE/cache.db" ]; then
-	exec $0.db42 $*
+	exec $0.db42 "$@"
 else
-	exec $0.db3 $*
+	exec $0.db3 "$@"
 fi
-

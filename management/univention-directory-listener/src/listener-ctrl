@@ -42,10 +42,10 @@ case "$1" in
 	resync)
 		shift
 		[ -z "$1" ] && usage
-		
 		sv down univention-directory-listener
 		i=0
-		while ! sv status univention-directory-listener | grep ^down: >/dev/null ; do
+		while ! sv status univention-directory-listener | grep -q '^down:'
+		do
 			i=$((i+1))
 			if [ $i -gt 300 ]; then
 				echo "Sending SIGKILL"
@@ -55,15 +55,15 @@ case "$1" in
 					i=0
 				fi
 			fi
-			sleep 1;
-			echo waiting for shutdown ;
-		done;
+			sleep 1
+			echo waiting for shutdown
+		done
 		echo shutdown done
-		for i in $*; do
+		for i in "$@"
+		do
 			rm "/var/lib/univention-directory-listener/handlers/$i" 2>/dev/null || echo "W: handler \"$i\" is unknown"
 		done
 		sv up univention-directory-listener
-		
 		;;
 	*)
 		usage
