@@ -1,4 +1,4 @@
-	"Wizard"	"System role"	"FQDN"	"WindDom"	"LDAP-Base"	"Root-Pwd"	"FF-beenden"	"Zertifikat-Seite"	"Ext. DNS-Server"	"Hinweis Samba 3/4 Installation "	"Hinweis Software-Installation"	"Hinweis Netzwerkänderungen"	"Neustart UMC-Server"
+	"Wizard"	"System role selection"	"FQDN"	"WindDom"	"LDAP-Base"	"Root-Pwd"	"FF-beenden"	"Zertifikat-Seite"	"Ext. DNS-Server"	"Hinweis Samba 3/4 Installation "	"Hinweis Software-Installation"	"Hinweis Netzwerkänderungen"	"Neustart UMC-Server"
 "unjoined, local"													
 "Master"	"ja"	"ja"	"Leer + required"	"Leer + required + autofill"	"Leer + required + autofill"	"required"	"ja"	"ja, ohne Warnung"	"ja"	"nein"	"nein"	"nein"	"via UMC Modul"
 "Master → Backup"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"ja"	"ja"	"nein"	"nein"	"via UMC Modul"
@@ -9,14 +9,16 @@
 "joined, local"													
 "Master"	"nein"	"nein"	"disabled"	"disabled"	"disabled"	"optional"	"ja"	"ja, mit Warnung"	"ja"	"nein"	"nein"	"nein"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
 													
+"joined, external"													
+"Master"	"nein"	"nein"	"disabled"	"disabled"	"disabled"	"optional"	"nein"	"ja, mit Warnung"	"ja"	"nein"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
+													
 "joined or unjoined, local"													
 "Backup"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"
 "Slave"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"
 "Member"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"
 "Basesystem"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"
 													
-"joined, external"													
-"Master"	"nein"	"nein"	"disabled"	"disabled"	"disabled"	"optional"	"nein"	"ja, mit Warnung"	"ja"	"nein"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
+"joined or unjoined, external"													
 "Backup"	"nein"	"nein"	"disabled"	"disabled"	"nein"	"optional"	"nein"	"nein"	"ja"	"ja"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
 "Slave"	"nein"	"nein"	"disabled"	"disabled"	"nein"	"optional"	"nein"	"nein"	"ja"	"ja"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
 "Member"	"nein"	"nein"	"disabled"	"disabled"	"nein"	"optional"	"nein"	"nein"	"nein"	"nein"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
