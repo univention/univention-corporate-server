@@ -370,7 +370,7 @@ if sys.version_info[0:2] < (2, 6):
 else:
 	__python_executable = sys.executable
 def filter(template, dir, srcfiles=set(), opts = {}):
-	"""Process a template file: susbstitute variables and call hook scripts and modules."""
+	"""Process a template file: susbstitute variables."""
 	while True:
 		i = variable_token.finditer(template)
 		try:

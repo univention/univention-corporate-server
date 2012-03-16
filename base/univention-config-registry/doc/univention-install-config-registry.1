@@ -1,5 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION-INSTALL-CONFIG-REGISTRY 1 2011-05-24 UCS
+.TH UNIVENTION-INSTALL-CONFIG-REGISTRY 1 2012-02-16 UCS
 
 .SH NAME
 univention\-install\-config\-registry \- install UCR template files into package build directories
@@ -38,19 +38,19 @@ Each time one of the listed UCR variables gets changed, the File will be re-crea
 The template file is scanned for variable substitutions using the \fB@%@\fP\fIvariable\fP\fB@%@\fP syntax, which are automatically registered with this entry.
 Additional variables can be explicitly registered using the \fBVariables\fP statement, one variable per statement.
 .P
-If \fBPreinst\fP und \fBPostinst\fP are used, the module must implement the following functions:
+If \fBPreinst\fP und \fBPostinst\fP are used, the module must implement the following Python functions:
 .RS 5
 .nf
 def preinst(config_registry, changes):
     """Called before the update.
     'config_registry' is an instance of univention.config_registry.ConfigRegistry, which contains the updated values.
-    'changes' is a list of the variable names, which were changed.
+    'changes' is a dictionary mapping the name of changed variables to a 2-tuple (old-value, new-value).
     """
 
 def postinst(config_registry, changes):
     """Called after the update.
     'config_registry' is an instance of univention.config_registry.ConfigRegistry, which contains the updated values.
-    'changes' is a list of the variable names, which were changed.
+    'changes' is a dictionary mapping the name of changed variables to a 2-tuple (old-value, new-value).
     """
 .fi
 .RE
@@ -105,13 +105,13 @@ Each time one of the listed UCR variables gets changed, the Python module will b
 .P
 Variables to trigger the module must be explicitly registered using the \fBVariables\fP statement, one variable per statement.
 .P
-The module should implement the following functions:
+The module should implement the following Python function:
 .RS 5
 .nf
 def handler(config_registry, changes):
     """Called to do the update.
     'config_registry' is an instance of univention.config_registry.ConfigRegistry.
-    'changes' is a list of the changed variable names.
+    'changes' is a dictionary mapping the name of changed variables to a 2-tuple (old-value, new-value).
     """
 .fi
 .RE
