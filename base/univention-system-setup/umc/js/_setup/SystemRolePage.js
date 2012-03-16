@@ -87,7 +87,7 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 			type: 'Text',
 			label: '',
 			name: 'text_domaincontroller_backup',
-			content: this._('<h2>Backup domain controller/h2>All the domain data and SSL security certificates are saved as read-only copies on servers with the backup domain controller role (backup DC for short). The backup domain controller is the fallback system for the master DC. If the latter should fail, a backup DC can take over the role of the DC master permanently.')
+			content: this._('<h2>Backup domain controller</h2>All the domain data and SSL security certificates are saved as read-only copies on servers with the backup domain controller role (backup DC for short). The backup domain controller is the fallback system for the master DC. If the latter should fail, a backup DC can take over the role of the DC master permanently.')
 		}, {
 			type: 'Text',
 			label: '',
