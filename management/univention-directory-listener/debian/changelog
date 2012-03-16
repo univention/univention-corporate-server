@@ -5,8 +5,9 @@ univention-directory-listener (6.0.23-1) unstable; urgency=low
   * Update copyright years
   * Fix errors in shell quoting.
   * Add manual pages (Bug #25663)
+  * Fix handling of -f option.
 
- -- Philipp Hahn <hahn@univention.de>  Fri, 16 Mar 2012 20:25:18 +0100
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Mar 2012 21:43:45 +0100
 
 univention-directory-listener (6.0.22-1) unstable; urgency=low
 

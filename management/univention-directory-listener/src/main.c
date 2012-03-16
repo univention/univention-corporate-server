@@ -291,7 +291,7 @@ int do_connection(univention_ldap_parameters_t *lp)
 	struct  timeval timeout;
 	int rc;
 
-	timeout.tv_sec=10;                                                                                                                                                                              
+	timeout.tv_sec=10;
 	timeout.tv_usec=0;
 
 	if (univention_ldap_open(lp) != 0 || notifier_client_new(NULL, lp->host, 1) != 0) {
@@ -359,7 +359,7 @@ int main(int argc, char* argv[])
 	for (;;) {
 		int c;
 
-		c = getopt(argc, argv, "d:FH:h:b:p:D:w:m:c:Zxy:Y:U:R:KgiBof:");
+		c = getopt(argc, argv, "d:FH:h:p:b:D:w:y:xZY:U:R:Km:Bc:gio");
 		if (c < 0)
 			break;
 		switch (c) {
@@ -424,7 +424,7 @@ int main(int argc, char* argv[])
 		case 'R':
 			lp->sasl_realm=strdup(optarg);
 #ifdef WITH_KRB5
- 			kp->realm=strdup(optarg);
+			kp->realm=strdup(optarg);
 #endif
 			break;
 #ifdef WITH_KRB5
