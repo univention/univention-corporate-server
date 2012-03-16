@@ -82,7 +82,7 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 			type: 'Text',
 			label: '',
 			name: 'text_domaincontroller_master',
-			content: this._('<h2>Master domain controller master</h2>A system with the master domain controller role (DC master for short) is the primary domain controller of a UCS domain and is always installed as the first system. The domain data (such as users, groups, printers) and the SSL security certificates are saved on the DC master.  Copies of these data are automatically transferred to all servers with the backup domain controller role.')
+			content: this._('<h2>Master domain controller</h2>A system with the master domain controller role (DC master for short) is the primary domain controller of a UCS domain and is always installed as the first system. The domain data (such as users, groups, printers) and the SSL security certificates are saved on the DC master.  Copies of these data are automatically transferred to all servers with the backup domain controller role.')
 		}, {
 			type: 'Text',
 			label: '',

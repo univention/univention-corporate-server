@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-12-16 13:12+0100\n"
+"POT-Creation-Date: 2011-12-23 03:07+0100\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_setup/SystemRolePage.js:91
+#: umc/js/_setup/SystemRolePage.js:90
 msgid ""
 "<h2>Backup domain controller</h2>All the domain data and SSL security "
 "certificates are saved as read-only copies on servers with the backup domain "
@@ -20,13 +20,13 @@ msgid ""
 "fallback system for the master DC. If the latter should fail, a backup DC "
 "can take over the role of the DC master permanently."
 msgstr ""
-"<h2>Domänencontroller Backup</h2> Auf Servern mit der Rolle Domänencontroller "
-"Backup (kurz DC Backup) werden alle Domänendaten und SSL-Sicherheitszertifikate "
-"als Nur-Lese-Kopie gespeichert. Der DC Backup dient als Fallback-System des "
-"DC Master. Sollte dieser ausfallen, kann ein DC Backup die Rolle des DC Master "
-"dauerhaft übernehmen."
+"<h2>Domänencontroller Backup</h2> Auf Servern mit der Rolle "
+"Domänencontroller Backup (kurz DC Backup) werden alle Domänendaten und SSL-"
+"Sicherheitszertifikate als Nur-Lese-Kopie gespeichert. Der DC Backup dient "
+"als Fallback-System des DC Master. Sollte dieser ausfallen, kann ein DC "
+"Backup die Rolle des DC Master dauerhaft übernehmen."
 
-#: umc/js/_setup/SystemRolePage.js:106
+#: umc/js/_setup/SystemRolePage.js:105
 msgid ""
 "<h2>Base system</h2>A base system is an autonomous system which is not a "
 "member of the domain.A base system is thus suitable for services which are "
@@ -40,30 +40,31 @@ msgstr ""
 
 #: umc/js/_setup/SystemRolePage.js:85
 msgid ""
-"<h2>Master domain controller master</h2>A system with the master domain "
-"controller role (DC master for short) is the primary domain controller of a "
-"UCS domain and is always installed as the first system. The domain data "
-"(such as users, groups, printers) and the SSL security certificates are "
-"saved on the DC master. "
+"<h2>Master domain controller</h2>A system with the master domain controller "
+"role (DC master for short) is the primary domain controller of a UCS domain "
+"and is always installed as the first system. The domain data (such as users, "
+"groups, printers) and the SSL security certificates are saved on the DC "
+"master.  Copies of these data are automatically transferred to all servers "
+"with the backup domain controller role."
 msgstr ""
-"<h2>Domänencontroller Master/h2> Ein System mit der Rolle Domänencontroller "
+"<h2>Domänencontroller Master</h2> Ein System mit der Rolle Domänencontroller "
 "Master (kurz DC Master) ist der primäre Domänencontroller einer UCS-Domäne "
 "und wird immer als erstes System installiert. Auf dem DC Master werden die "
-"Domänendaten (wie z.B. Benutzer, Gruppen, Drucker) und die SSL-Sicherheits-"
-"zertifikate gespeichert. Kopien dieser Daten werden automatisch auf Server "
+"Domänendaten (wie z.B. Benutzer, Gruppen, Drucker) und die SSL-Sicherheitszertifikate"
+"gespeichert. Kopien dieser Daten werden automatisch auf Server "
 "mit der Rolle Domänencontroller Backup übertragen."
 
-#: umc/js/_setup/SystemRolePage.js:101
+#: umc/js/_setup/SystemRolePage.js:100
 msgid ""
 "<h2>Member server</h2>Member servers are server systems without a local LDAP "
 "server. Access to domain data here is performed via other servers in the "
 "domain."
 msgstr ""
-"<h2>Memberserver/h2> Memberserver sind Server-Systeme ohne lokalen LDAP-"
-"Server. Der Zugriff auf Domänendaten erfolgt hierbei über andere Server "
-"der Domäne."
+"<h2>Memberserver</h2> Memberserver sind Server-Systeme ohne lokalen LDAP-"
+"Server. Der Zugriff auf Domänendaten erfolgt hierbei über andere Server der "
+"Domäne."
 
-#: umc/js/_setup/SystemRolePage.js:96
+#: umc/js/_setup/SystemRolePage.js:95
 msgid ""
 "<h2>Slave domain controller</h2>All the domain data are saved as read-only "
 "copies on servers with the slave domain controller role (slave DC for "
@@ -73,13 +74,14 @@ msgid ""
 "DC systems are ideal for site servers and the distribution of load-intensive "
 "services. A slave DC system cannot be promoted to a master DC."
 msgstr ""
-"<h2>Domänencontroller Slave/h2> Auf Servern mit der Rolle \ucsSlave{} (kurz "
-"DC Slave) werden die Domänendaten als Nur-Lese-Kopie gespeichert. Im Gegensatz "
-"zum Domänencontroller Backup werden jedoch nicht alle SSL-Sicherheitszertifikate "
-"gespeichert. Da die Zugriffe der auf einem \ucsSlave{} laufenden Dienste gegen "
-"den lokalen LDAP-Datenbestand erfolgen, bieten sich DC Slave-System für "
-"Standortserver und für die Verteilung lastintensiver Dienste an. Ein DC "
-"Slave-System kann nicht zum DC Master hochgestuft werden."
+"<h2>Domänencontroller Slave</h2> Auf Servern mit der Rolle "
+"Domänencontroller Slave (kurz DC Slave) werden die Domänendaten als Nur-Lese-"
+"Kopie gespeichert. Im Gegensatz zum Domänencontroller Backup werden jedoch "
+"nicht alle SSL-Sicherheitszertifikate gespeichert. Da die Zugriffe der auf "
+"einem DC Slave laufenden Dienste gegen den lokalen LDAP-Datenbestand "
+"erfolgen, bieten sich DC Slave-System für Standortserver und für die "
+"Verteilung lastintensiver Dienste an. Ein DC Slave-System kann nicht zum DC "
+"Master hochgestuft werden."
 
 #: umc/js/_setup/NetworkPage.js:227
 msgid "A virtual network device cannot be used for DHCP."
@@ -175,7 +177,7 @@ msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
-#: umc/js/_setup/SystemRolePage.js:110
+#: umc/js/_setup/SystemRolePage.js:109
 msgid "Configuration of the UCS system role"
 msgstr "Konfiguration der UCS-Systemrolle"
 
@@ -506,7 +508,7 @@ msgid "State"
 msgstr "Bundesland"
 
 #: umc/js/_setup/SystemRolePage.js:59 umc/js/_setup/SystemRolePage.js:60
-#: umc/js/_setup/SystemRolePage.js:161
+#: umc/js/_setup/SystemRolePage.js:160
 msgid "System role"
 msgstr "Systemrolle"
 
