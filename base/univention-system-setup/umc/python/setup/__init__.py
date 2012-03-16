@@ -114,9 +114,10 @@ class Instance(umcm.Base):
 			# determine new system role
 			newrole = values.get('server/role', orgValues.get('server/role',''))
 
-			# on DC master the nameserver must be set to the external nameserver when using USS boot
-			if newrole == 'domaincontroller_master' and request.flavor == 'wizard' and values.get( 'dns/forwarder1' ):
-				values[ 'nameserver1' ] = values.get( 'dns/forwarder1' )
+			# on unjoined DC master the nameserver must be set to the external nameserver
+			if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
+				for i in range(1,4):
+					values[ 'nameserver%d'%i ] = values.get( 'dns/forwarder%d'%i )
 
 			MODULE.info('saving profile values')
 			util.write_profile(values)

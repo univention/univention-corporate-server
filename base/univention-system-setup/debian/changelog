@@ -1,3 +1,10 @@
+univention-system-setup (5.0.132-1) unstable; urgency=low
+
+  * Cleanup and simplify of doc/matrix.csv (Bug #26408)
+  * Copy dns/fowarder values to nameserver on unjoined DC master
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Mar 2012 10:03:44 +0100
+
 univention-system-setup (5.0.130-1) unstable; urgency=low
 
   * Added wizard and system role to doc/matrix.csv (Bug #26408)
