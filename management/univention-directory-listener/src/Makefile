@@ -34,7 +34,7 @@ DB_LDADD=-ldb3
 DB_CFLAGS=-I/usr/include/db3 -DWITH_DB3
 DB_OBJS=cache.o cache_entry.o cache_lowlevel.o base64.o
 
-CFLAGS=-g -Wall -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
+CFLAGS=-g -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
 LDADD=-g -luniventiondebug
 LISTENER_LDADD=$(LDADD) -luniventionpolicy -lldap -lpython2.6 $(DB_LDADD)
 LISTENER_OBJS=main.o notifier.o transfile.o handlers.o cache.o cache_entry.o cache_lowlevel.o change.o network.o filter.o signals.o base64.o select_server.o
@@ -45,7 +45,7 @@ DEMO_OBJS=demo.o network.o
 VERIFY_LDADD=$(LDADD) -lldap -luniventionpolicy $(DB_LDADD)
 VERIFY_OBJS=verify.o dump_signals.o $(DB_OBJS)
 
-
+.PHONY: all
 all: listener dump verify
 
 listener: $(LISTENER_OBJS)
@@ -60,5 +60,6 @@ demo: $(DEMO_OBJS)
 verify: $(VERIFY_OBJS)
 	$(CC) -o verify $(VERIFY_OBJS) $(VERIFY_LDADD)
 
+.PHONY: clean
 clean:
-	rm -f *.o listener dump demo verify *.db3 *.db42
+	$(RM) *.o listener dump demo verify *.db3 *.db42

@@ -59,11 +59,17 @@ void usage(void)
 	fprintf(stderr, "   -c   Listener cache path\n");
 	fprintf(stderr, "   -r   print broken entries only (as far as that's possible)\n");
 	fprintf(stderr, "   -O   dump cache to file (default is stdout)\n");
+#ifdef WITH_DB42
+	fprintf(stderr, "   -i   ID only\n");
+#endif
 }
 
 int main(int argc, char* argv[])
 {
-	int debugging = 0, broken_only = 0, id_only = 0;
+	int debugging = 0, broken_only = 0;
+#ifdef WITH_DB42
+	int id_only = 0;
+#endif
 	char *output_file = NULL;
 	FILE *fp;
 	int rv;
@@ -77,7 +83,11 @@ int main(int argc, char* argv[])
 	for (;;) {
 		int c;
 
+#ifdef WITH_DB42
 		c = getopt(argc, argv, "d:c:O:ri");
+#else
+		c = getopt(argc, argv, "d:c:O:r");
+#endif
 		if (c < 0)
 			break;
 		switch (c) {

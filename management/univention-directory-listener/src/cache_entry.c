@@ -111,7 +111,7 @@ int cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 				char *base64_value;
 				size_t srclen = entry->attributes[i]->length[j]-1;
 				base64_value = malloc(BASE64_ENCODE_LEN(srclen)+1);
-				base64_encode(*value, srclen, base64_value, BASE64_ENCODE_LEN(srclen)+1);
+				base64_encode((u_char *)*value, srclen, base64_value, BASE64_ENCODE_LEN(srclen)+1);
 				fprintf(fp, "%s:: %s\n", (*attribute)->name, base64_value);
 				free(base64_value);
 			} else {

@@ -33,6 +33,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "select_server.h"
 #include <univention/debug.h>
 #include <univention/ldap.h>

@@ -83,12 +83,12 @@ int	cache_close				(void);
 
 /* deprecated with DB42*/
 int	cache_set_int				(const char		 *key,
-						 const long		  value);
+						 const NotifierID		  value);
 int	cache_get_int				(const char		 *key,
-						 long			 *value,
+						 NotifierID			 *value,
 						 const long		  def);
 
-int cache_get_schema_id(const char *key, long *value, const long def);
-int cache_set_schema_id(const char *key, const long value);
+int cache_get_schema_id(const char *key, NotifierID *value, const long def);
+int cache_set_schema_id(const char *key, const NotifierID value);
 
 #endif /* _CACHE_H_ */

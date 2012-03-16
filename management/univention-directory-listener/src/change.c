@@ -58,16 +58,10 @@ struct dn_list{
 	long size;
 };
 
-int dn_size_compare ( struct dn_list *dn1, struct dn_list *dn2 )
+static int dn_size_compare(const void *p1, const void *p2)
 {
-	if ( dn1->size > dn2->size ) {
-		return 1;
-	} else if ( dn1->size < dn2->size ) {
-		return -1;
-	} else {
-		return 0;
-	}
-
+	const struct dn_list *dn1 = p1, *dn2 = p2;
+	return dn1->size - dn2->size;
 }
 
 /* initialize module */
@@ -270,7 +264,7 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
 			}
 		} else {
-	   		if ((rv=cache_update_entry_lower(id, dn, &updated_cache_entry)) != 0) {
+			if ((rv=cache_update_entry_lower(id, dn, &updated_cache_entry)) != 0) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
 			}
 		}

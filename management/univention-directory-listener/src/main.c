@@ -323,7 +323,7 @@ int main(int argc, char* argv[])
 #else
 	void				*kp = NULL ;
 #endif
-	int 				 debugging = 0,
+	int				 debugging = 0,
 					 from_scratch = 0,
 					 foreground = 0,
 					 initialize_only = 0,

@@ -194,7 +194,7 @@ int cache_init(void)
 	return 0;
 }
 
-int cache_set_schema_id(const char *key, const long value)
+int cache_set_schema_id(const char *key, const NotifierID value)
 {
 	FILE *fp;
 	char file[PATH_MAX];
@@ -209,7 +209,7 @@ int cache_set_schema_id(const char *key, const long value)
 	return fclose(fp);
 }
 
-int cache_get_schema_id(const char *key, long *value, const long def)
+int cache_get_schema_id(const char *key, NotifierID *value, const long def)
 {
 	FILE *fp;
 	char file[PATH_MAX];
@@ -223,7 +223,7 @@ int cache_get_schema_id(const char *key, long *value, const long def)
 	return fclose(fp);
 }
 
-int cache_set_int(const char *key, const long value)
+int cache_set_int(const char *key, const NotifierID value)
 {
 	FILE *fp;
 	char file[PATH_MAX];
@@ -235,7 +235,7 @@ int cache_set_int(const char *key, const long value)
 	return fclose(fp);
 }
 
-int cache_get_int(const char *key, long *value, const long def)
+int cache_get_int(const char *key, NotifierID *value, const long def)
 {
 	FILE *fp;
 	char file[PATH_MAX];
@@ -408,7 +408,7 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 		free(data.data);
 		return rv;
 	}
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %d bytes for %s", (data.size, dn));
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %d bytes for %s", data.size, dn);
 
 
 #ifdef WITH_DB42
