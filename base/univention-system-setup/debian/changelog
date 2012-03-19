@@ -1,3 +1,9 @@
+univention-system-setup (5.0.135-1) unstable; urgency=low
+
+  * More updates for the matrix (Bug #26408)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Mar 2012 10:37:41 +0100
+
 univention-system-setup (5.0.134-1) unstable; urgency=low
 
   * More updates for the matrix (Bug #26408)
