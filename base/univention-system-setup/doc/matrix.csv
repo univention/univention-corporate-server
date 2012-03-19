@@ -3,8 +3,8 @@
 "Master"	"ja"	"ja"	"Leer + required"	"Leer + required + autofill"	"Leer + required + autofill"	"required"	"ja"	"ja, ohne Warnung"	"ja"	"nein"	"nein"	"nein"	"nein"	"via UMC Modul"
 "Master → Backup"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"ja"	"ja + required"	"ja"	"nein"	"nein"	"via UMC Modul"
 "Master → Slave"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"ja"	"ja + required"	"ja"	"nein"	"nein"	"via UMC Modul"
-"Master → Member"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"nein"	"ja + required"	"ja"	"nein"	"nein"	"via UMC Modul"
-"Master → Basesystem"	"---"	"---"	"Leer + required"	"Leer + optional"	"Leer + optional"	"required"	"ja"	"nein"	"nein"	"ja"	"ja"	"nein"	"nein"	"via UMC Modul"
+"Master → Member"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"nein"	"ja + required"	"nein"	"nein"	"nein"	"via UMC Modul"
+"Master → Basesystem"	"---"	"---"	"Leer + required"	"Leer + optional"	"Leer + optional"	"required"	"ja"	"nein"	"nein"	"ja"	"nein"	"nein"	"nein"	"via UMC Modul"
 														
 "joined, local"														
 "Master"	"nein"	"nein"	"disabled"	"disabled"	"disabled"	"optional"	"ja"	"ja, mit Warnung"	"ja"	"ja + required"	"nein"	"nein"	"nein"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
