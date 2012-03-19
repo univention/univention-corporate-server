@@ -1,5 +1,5 @@
 	"Wizard"	"System role selection"	"FQDN"	"WindDom"	"LDAP-Base"	"Root-Pwd"	"FF-beenden"	"Zertifikat-Seite"	"Ext. DNS-Server"	"Hinweis Samba 3/4 Installation "	"Hinweis Software-Installation"	"Hinweis Netzwerkänderungen"	"Neustart UMC-Server"
-"unjoined, local"													
+"unjoined, local or external"													
 "Master"	"ja"	"ja"	"Leer + required"	"Leer + required + autofill"	"Leer + required + autofill"	"required"	"ja"	"ja, ohne Warnung"	"ja"	"nein"	"nein"	"nein"	"via UMC Modul"
 "Master → Backup"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"ja"	"ja"	"nein"	"nein"	"via UMC Modul"
 "Master → Slave"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"ja"	"ja"	"nein"	"nein"	"via UMC Modul"

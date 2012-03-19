@@ -1,3 +1,9 @@
+univention-system-setup (5.0.134-1) unstable; urgency=low
+
+  * More updates for the matrix (Bug #26408)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Mar 2012 10:32:36 +0100
+
 univention-system-setup (5.0.133-4) unstable; urgency=low
 
   * Overhaul descriptions of system roles (Bug #26327)
