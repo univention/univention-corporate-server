@@ -1,3 +1,9 @@
+univention-system-setup (5.0.138-1) unstable; urgency=low
+
+  * Add public key only once (Bug #26332)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Mar 2012 14:42:59 +0100
+
 univention-system-setup (5.0.137-1) unstable; urgency=low
 
   * Added new variable server/amazon to show the correct hostname in
