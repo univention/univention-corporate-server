@@ -95,13 +95,16 @@ for line in grub2:
 
 	m = RE_ROOT.match(line)
 	if m:
-		device, part = m.groups()
-		if device.startswith('hd'):
-			root = "(%s,%d)" % (device, int(part) - 1)
-		elif device.startswith('/dev/'):
-			root = "(hd0,%d)" % (int(part) - 1)
+		if configRegistry.has_key('grub/grub1root'):
+			root = configRegistry['grub/grub1root']
 		else:
-			print >>sys.stderr, "Unhandled root=%s" % (line,)
+			device, part = m.groups()
+			if device.startswith('hd'):
+				root = "(%s,%d)" % (device, int(part) - 1)
+			elif device.startswith('/dev/'):
+				root = "(hd0,%d)" % (int(part) - 1)
+			else:
+				print >>sys.stderr, "Unhandled root=%s" % (line,)
 
 	m = RE_LINUX.match(line)
 	if m:

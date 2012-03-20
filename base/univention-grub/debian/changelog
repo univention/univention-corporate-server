@@ -1,3 +1,10 @@
+univention-grub (5.0.9-9) unstable; urgency=low
+
+  * The new UCR variable grub/grub1root can be used to specify a root partition
+    for the auto-generated /grub/menu.lst instead of probing it (Bug #26559)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 20 Mar 2012 11:28:21 +0100
+
 univention-grub (5.0.9-8) unstable; urgency=low
 
   * Always use hd0,X when probing the alternative device (Bug #25981)

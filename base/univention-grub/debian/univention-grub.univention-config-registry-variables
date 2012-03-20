@@ -81,3 +81,9 @@ Description[de]=Wenn diese Option aktiviert ist, wird zusätzlich eine /boot/gru
 Description[en]=If this option is activated, an additional /boot/grub/menu.lst is generated in Grub 1 format
 Type=str
 Categories=system-base
+
+[grub/grub1root]
+Description[de]=Der hier übergebene Wert wird für die root-Partition in der generierten Grub1-Konfiguration verwendet
+Description[en]=This value is used for the root partition in the generated Grub1 configuration
+Type=str
+Categories=system-base
