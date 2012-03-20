@@ -80,7 +80,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				dojo.disconnect(handle);
 				this.openModule(props.module, props.flavor);
 				this._tabContainer.layout();
-				
+
 				// put focus into the CategoryPane for scrolling
 				/*dijit.focus(this._categoryPane.domNode);
 				this.connect(_categoryPane, 'onShow', function() {
@@ -97,14 +97,19 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			return;
 		}
 
-		// check whether we still have a app cookie
+		// check whether we still have a possibly valid cookie
 		var sessionCookie = dojo.cookie('UMCSessionId');
-		if (undefined === sessionCookie) {
-			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+		var usernameCookie = dojo.cookie('UMCUsername');
+		if (undefined !== sessionCookie && usernameCookie !== undefined
+			&& (!umc.tools.status('username') || umc.tools.status('username') == usernameCookie)) {
+			// the following conditions need to be given for an automatic login
+			// * session and username need to be set via cookie
+			// * if a username is given via the query string, it needs to match the
+			//   username saved in the cookie
+			this.onLogin(dojo.cookie('UMCUsername'));
 		}
 		else {
-			this.onLogin(dojo.cookie('UMCUsername'));
-			//console.log(this._('Login is still valid (cookie: %(cookie)s, username: %(user)s).', { cookie: sessionCookie, user: umc.tools.status('username') }));
+			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
 		}
 	},
 

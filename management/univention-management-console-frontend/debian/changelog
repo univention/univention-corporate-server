@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.282-1) unstable; urgency=low
+
+  * only allow automatic login if username is not specified via query string or
+    if it matches the username in the session cookie; Bug #26347
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Mar 2012 11:10:56 +0100
+
 univention-management-console-frontend (1.0.281-1) unstable; urgency=low
 
   * fixed problems with login screen after UMC server restart; Bug #26347
