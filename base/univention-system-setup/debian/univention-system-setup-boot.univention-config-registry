@@ -1,6 +1,7 @@
 Type: file
 File: etc/motd.setup
 Variables: interfaces/.*
+Variables: server/amazon
 
 Type: subfile
 Multifile: etc/pam.d/common-session

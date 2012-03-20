@@ -34,9 +34,25 @@ eval "$(univention-config-registry shell system/setup/boot/start)"
 
 . /lib/lsb/init-functions
 
+. /usr/share/univention-lib/ucr.sh
+
 case "$1" in
 	start)
 		log_action_msg "Starting univention-system setup tools"
+
+		# Show corret IP in motd
+		if [ -e /etc/motd.setup ]; then
+			ucr commit /etc/motd.setup
+		fi
+
+		# Add public ssh key if the system was startet in EC2:
+		if is_ucr_true server/amazon; then
+			if [ ! -d /root/.ssh ]; then
+				mkdir -p /root/.ssh
+			fi
+			wget -q -O - http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key  >>/root/.ssh/authorized_keys
+		fi
+
 		if [ "$system_setup_boot_start" = "yes" -o "$system_setup_boot_start" = "true" ]; then
 			/usr/share/univention-system-setup/startxwithfirefox > "/var/log/univention/system-setup-boot.log" 2>&1
 		fi

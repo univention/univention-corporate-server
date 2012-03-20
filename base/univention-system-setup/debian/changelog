@@ -1,3 +1,13 @@
+univention-system-setup (5.0.137-1) unstable; urgency=low
+
+  * Added new variable server/amazon to show the correct hostname in
+    motd.setup. This is necessary because an Amazon image will be
+    started with an internal local IP (Bug #26332)
+  * Add Amazon EC2 key to authorized keys of root
+  * Commit /etc/motd.setup in univention-system-setup-boot.init
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Mar 2012 13:35:25 +0100
+
 univention-system-setup (5.0.136-1) unstable; urgency=low
 
   * Adjustments for the matrix (Bug #26408)

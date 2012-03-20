@@ -18,6 +18,7 @@ import os
 import socket
 import fcntl
 import struct
+import subprocess
 
 def get_ip_address(ifname):  
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -28,19 +29,25 @@ def get_ip_address(ifname):
 		addr = None
 	return addr
 
-#IPv4
-for i in range(0,10):
-	ifname = 'eth%d' % i
-	if configRegistry.get('interfaces/%s/type' % ifname) == 'dhcp':
-		addr = get_ip_address(ifname)
-		if addr:
-			print '  https://%s' % get_ip_address(ifname)
-	elif configRegistry.get('interfaces/%s/address' % ifname):
-		print '  https://%s' % configRegistry.get('interfaces/%s/address' % ifname)
-# IPv6
-for i in range(0,10):
-	if configRegistry.get('interfaces/eth%d/ipv6/default/address' % i):
-		print '  https://%s' % configRegistry.get('interfaces/eth%d/ipv6/default/address' % i)
+if configRegistry.is_true('server/amazon', False):
+	p1 = subprocess.Popen(['/usr/bin/wget', '-q', '-O', '-', 'http://169.254.169.254/latest/meta-data/public-hostname'], shell=False, stdout=subprocess.PIPE)
+	res = p1.communicate()
+	if len(res) > 0:
+		print '  https://%s' % res[0]
+else:
+	#IPv4
+	for i in range(0,10):
+		ifname = 'eth%d' % i
+		if configRegistry.get('interfaces/%s/type' % ifname) == 'dhcp':
+			addr = get_ip_address(ifname)
+			if addr:
+				print '  https://%s' % get_ip_address(ifname)
+		elif configRegistry.get('interfaces/%s/address' % ifname):
+			print '  https://%s' % configRegistry.get('interfaces/%s/address' % ifname)
+	# IPv6
+	for i in range(0,10):
+		if configRegistry.get('interfaces/eth%d/ipv6/default/address' % i):
+			print '  https://%s' % configRegistry.get('interfaces/eth%d/ipv6/default/address' % i)
 @!@
 The login at the Univention Management Console needs to be done with
 the user root and the new password you entered in the above-mentioned
