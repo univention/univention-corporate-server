@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.283-1) unstable; urgency=low
+
+  * Grid: fixed display problems with duplicated entries; Bug #26564
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Mar 2012 15:36:22 +0100
+
 univention-management-console-frontend (1.0.282-1) unstable; urgency=low
 
   * only allow automatic login if username is not specified via query string or

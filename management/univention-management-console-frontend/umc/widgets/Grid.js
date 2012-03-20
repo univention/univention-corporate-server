@@ -490,6 +490,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			query: this.query,
 			queryOptions: { ignoreCase: true },
 			'class': 'umcGrid',
+			rowsPerPage: 30,
 			plugins : {
 				indirectSelection: {
 					headerSelector: true,
