@@ -1,3 +1,9 @@
+univention-grub (5.0.9-10) unstable; urgency=low
+
+  * Only fall back to parsing grub.cfg if grub/grub1root is not set (Bug #26559)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 20 Mar 2012 14:36:47 +0100
+
 univention-grub (5.0.9-9) unstable; urgency=low
 
   * The new UCR variable grub/grub1root can be used to specify a root partition

@@ -93,11 +93,11 @@ for line in grub2:
 		(name,) = m.groups()
 		continue
 
-	m = RE_ROOT.match(line)
-	if m:
-		if configRegistry.has_key('grub/grub1root'):
-			root = configRegistry['grub/grub1root']
-		else:
+	if configRegistry.has_key('grub/grub1root'):
+		root = configRegistry['grub/grub1root']
+	else:
+		m = RE_ROOT.match(line)
+		if m:
 			device, part = m.groups()
 			if device.startswith('hd'):
 				root = "(%s,%d)" % (device, int(part) - 1)
