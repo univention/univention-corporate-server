@@ -18,7 +18,7 @@ import os
 import socket
 import fcntl
 import struct
-import subprocess
+import urllib2
 
 def get_ip_address(ifname):  
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -29,12 +29,16 @@ def get_ip_address(ifname):
 		addr = None
 	return addr
 
+res = None
 if configRegistry.is_true('server/amazon', False):
-	p1 = subprocess.Popen(['/usr/bin/wget', '-q', '-O', '-', 'http://169.254.169.254/latest/meta-data/public-hostname'], shell=False, stdout=subprocess.PIPE)
-	res = p1.communicate()
-	if len(res) > 0:
-		print '  https://%s' % res[0]
-else:
+	socket.setdefaulttimeout(2)
+	try:
+		res = urllib2.urlopen('http://169.254.169.254/latest/meta-data/public-hostname')
+		print '  https://%s' % res.read()
+	except urllib2.URLError:
+		pass
+
+if not res:
 	#IPv4
 	for i in range(0,10):
 		ifname = 'eth%d' % i

@@ -1,3 +1,9 @@
+univention-system-setup (5.0.139-1) unstable; urgency=low
+
+  * Use urllib2 instead of wget (Bug #26332)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Mar 2012 15:26:44 +0100
+
 univention-system-setup (5.0.138-1) unstable; urgency=low
 
   * Add public key only once (Bug #26332)
