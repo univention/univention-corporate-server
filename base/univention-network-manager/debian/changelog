@@ -1,3 +1,10 @@
+univention-network-manager (3.0.7-1) unstable; urgency=low
+
+  * Fixed permissions for usr/share/univention-network-
+    common/dhclient2ucr (Bug #26332)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Mar 2012 07:37:29 +0100
+
 univention-network-manager (3.0.6-1) unstable; urgency=low
 
   * Added missing install file (Bug #26332)
