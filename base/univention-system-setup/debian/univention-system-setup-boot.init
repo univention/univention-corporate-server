@@ -42,7 +42,7 @@ case "$1" in
 
 		# Show corret IP in motd
 		if [ -e /etc/motd.setup ]; then
-			ucr commit /etc/motd.setup
+			ucr commit /etc/motd.setup >/dev/null 2>&1
 		fi
 
 		# Add public ssh key if the system was startet in EC2:
@@ -56,7 +56,7 @@ case "$1" in
 			fi
 		fi
 
-		if is_ucr_true server/amazon && is_ucs_true system/setup/boot/networking; then
+		if is_ucr_true server/amazon && is_ucr_true system/setup/boot/networking; then
 			echo "Save dhclient result in UCR" >>/var/log/univention/setup.log
 			/usr/share/univention-network-common/dhclient2ucr --set-forwarder >>/var/log/univention/setup.log 2>&1
 			ucr set system/setup/boot/networking=false >>/var/log/univention/setup.log 2>&1

@@ -1,3 +1,9 @@
+univention-system-setup (5.0.141-1) unstable; urgency=low
+
+  * Fixed typo in system-setup-boot init script (Bug #26332)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Mar 2012 07:29:00 +0100
+
 univention-system-setup (5.0.140-1) unstable; urgency=low
 
   * Save dhclient results in UCR during first boot of system-setup-boot
