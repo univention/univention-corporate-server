@@ -48,7 +48,8 @@ Conflicts: univention-system-setup-appliance,
 Depends: ${misc:Depends},
  shell-univention-lib,
  univention-system-setup (= ${source:Version}),
- univention-server-master
+ univention-server-master,
+ univention-network-common
 Recommends: firefox
 Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot
