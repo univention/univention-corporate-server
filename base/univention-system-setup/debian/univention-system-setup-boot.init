@@ -56,6 +56,13 @@ case "$1" in
 			fi
 		fi
 
+		if is_ucr_true server/amazon && is_ucs_true system/setup/boot/networking; then
+			echo "Save dhclient result in UCR" >>/var/log/univention/setup.log
+			/usr/share/univention-network-common/dhclient2ucr --set-forwarder >>/var/log/univention/setup.log 2>&1
+			ucr set system/setup/boot/networking=false >>/var/log/univention/setup.log 2>&1
+			echo "Save dhclient result in UCR (done)" >>/var/log/univention/setup.log
+		fi
+
 		if [ "$system_setup_boot_start" = "yes" -o "$system_setup_boot_start" = "true" ]; then
 			/usr/share/univention-system-setup/startxwithfirefox > "/var/log/univention/system-setup-boot.log" 2>&1
 		fi

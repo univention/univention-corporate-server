@@ -1,3 +1,10 @@
+univention-system-setup (5.0.140-1) unstable; urgency=low
+
+  * Save dhclient results in UCR during first boot of system-setup-boot
+    in EC2 (Bug #26332)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Mar 2012 06:47:12 +0100
+
 univention-system-setup (5.0.139-1) unstable; urgency=low
 
   * Use urllib2 instead of wget (Bug #26332)
