@@ -1,3 +1,10 @@
+univention-network-manager (3.0.5-1) unstable; urgency=low
+
+  * Added dhclient2ucr which converts the dhcp result into UCR
+    (Bug #26332)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Mar 2012 06:34:45 +0100
+
 univention-network-manager (3.0.4-1) unstable; urgency=low
 
   * On a joined DNS server the nameservers given by DHCP will be

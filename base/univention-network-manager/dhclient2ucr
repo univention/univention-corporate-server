@@ -1,0 +1,157 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention Network Common
+#  A tool for converting dhclient result to UCR
+#
+# Copyright (C) 2011-2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os, sys, time, string
+import tempfile, threading
+import optparse
+import subprocess
+import traceback
+import ipaddr
+
+import univention.config_registry
+
+def _get_broadcast(ip, netmask):
+	try:
+		ip = ipaddr.IPv4Network('%s/%s' % ( ip, netmask ) )
+		return ip.broadcast
+	except ValueError:
+		pass
+	return None
+
+def _get_network(ip, netmask):
+	try:
+		ip = ipaddr.IPv4Network('%s/%s' % ( ip, netmask ) )
+		return ip.network
+	except ValueError:
+		pass
+	return None
+
+def dhclient(interface, timeout=None):
+	"""
+	perform DHCP request for specified interface. If succesful, returns a dict
+	similar to the following:
+	{
+		'address': '10.200.26.51',
+		'broadcast': '10.200.26.255',
+		'domainname': 'univention.qa',
+		'gateway': '',
+		'nameserver_1': '10.200.26.27',
+		'nameserver_2': '',
+		'nameserver_3': '',
+		'netmask': '255.255.255.0'
+	}
+	"""
+	tempfilename = tempfile.mkstemp( '.out', 'dhclient.', '/tmp' )[1]
+	pidfilename = tempfile.mkstemp( '.pid', 'dhclient.', '/tmp' )[1]
+	cmd='/sbin/dhclient -1 -lf /tmp/dhclient.leases -pf %s -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (pidfilename, tempfilename, interface)
+	p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+
+	# read from stderr until timeout, following recipe of subprocess.communicate()
+	def _readerthread(fh, stringbufferlist):
+		stringbufferlist.append(fh.read())
+
+	stderr = []
+	stderr_thread = threading.Thread(target=_readerthread,
+									args=(p.stderr, stderr))
+	stderr_thread.setDaemon(True)
+	stderr_thread.start()
+	stderr_thread.join(timeout)
+	if stderr:
+		stderr=stderr[0]
+	# note: despite '-1' background dhclient never seems to terminate
+	try:
+		dhclientpid = int(open(pidfilename,'r').read().strip('\n\r\t '))
+		os.kill(dhclientpid, 15)
+		time.sleep(1.0) # sleep 1s
+		os.kill(dhclientpid, 9)
+	except:
+		pass
+	try:
+		os.unlink(pidfilename)
+	except:
+		pass
+
+	file = open(tempfilename)
+	dhcp_dict={}
+	for line in file.readlines():
+		key, value = line.strip().split(':', 1)
+		dhcp_dict[key]=value.lstrip()
+	file.close()
+	os.unlink(tempfilename)
+
+	if not 'network' in dhcp_dict.keys():
+		dhcp_dict['network'] = str(_get_network(dhcp_dict.get('address'), dhcp_dict.get('netmask')))
+
+	return dhcp_dict
+
+def dhclient_to_ucr(configRegistry, dhcp_dict, interface, nameserver = False, forwarder = False):
+
+	ucr_set = []
+	for k in ['netmask', 'address', 'broadcast', 'network']:
+		if dhcp_dict.get(k):
+			ucr_set.append('interfaces/%s/%s=%s' % (interface, k, dhcp_dict.get(k)))
+		else:
+			ucr_set.append('interfaces/%s/%s' % (interface, k))
+
+	if dhcp_dict.get('gateway'):
+		ucr_set.append('gateway=%s' % dhcp_dict.get('gateway', ''))
+
+	for i in range(1,4):
+		k_dict = 'nameserver_%d' % i
+		if nameserver:
+			k = 'nameserver%d' % i
+			ucr_set.append('%s=%s' % (k,dhcp_dict.get(k_dict)))
+		if forwarder:
+			k = 'dns/forwarder%d' % i
+			ucr_set.append('%s=%s' % (k,dhcp_dict.get(k_dict)))
+
+	univention.config_registry.handler_set(ucr_set)
+
+
+if __name__ == '__main__':
+
+	parser = optparse.OptionParser( )
+	parser.add_option("--interface", dest="interface", default='eth0', action="store", help="network interface to use")
+	parser.add_option("--timeout", dest="timeout", default=None, action="store", help="timeout for dhclient")
+	parser.add_option("--set-nameserver", dest="nameserver", default=False, action="store_true", help="save nameserver results in UCR variables nameserver*")
+	parser.add_option("--set-forwarder", dest="forwarder", default=False, action="store_true", help="save nameserver results in UCR variables dns/forwarder*")
+	(options, args) = parser.parse_args()
+
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+
+	dhcp_dict = dhclient(options.interface, options.timeout)
+
+	dhclient_to_ucr(configRegistry, dhcp_dict, options.interface, options.nameserver, options.forwarder)
+
+	sys.exit(0)
