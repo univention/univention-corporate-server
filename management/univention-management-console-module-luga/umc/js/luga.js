@@ -311,13 +311,10 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	_editObject: function(ids, items) {
-		if (ids.length != 1) {
-			// should not happen
-			return;
+		if (ids.length == 1) {
+			this.selectChild(this._detailPage);
+			this._detailPage.load(ids[0]);
 		}
-
-		this.selectChild(this._detailPage);
-		this._detailPage.load(ids[0]);
 	},
 
 	_deleteObjects: function(ids, items) {

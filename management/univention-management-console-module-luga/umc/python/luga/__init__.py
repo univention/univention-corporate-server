@@ -43,6 +43,9 @@ import subprocess
 import shlex
 
 class Process():
+	def sanitize_arg(arg):
+		return "'" + str(arg).replace('\\','\\\\').replace('\'','\\\'') + "'"
+
 	def process(self, args, stdin=None):
 		"""
 			process a shell command
@@ -52,8 +55,11 @@ class Process():
 			return {returncode: <returncode>, stderr: <stderrdata>}
 		"""
 
-		p = subprocess.Popen( args = shlex.split(args.encode('utf-8')), env = {'LANG':'en'}, stderr = subprocess.PIPE, stdin = subprocess.PIPE )
-		(stdout, stderr) = p.communicate(stdin)
+		try:
+			p = subprocess.Popen( args = shlex.split(args.encode('utf-8')), env = {'LANG':'en'}, stderr = subprocess.PIPE, stdin = subprocess.PIPE )
+			(stdout, stderr) = p.communicate(stdin)
+		except OSError as e:
+			pass
 
 		return { 'returncode': p.returncode, 'stderr': stderr }
 

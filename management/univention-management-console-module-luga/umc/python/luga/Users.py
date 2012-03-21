@@ -42,17 +42,16 @@ from univention.management.console.protocol.definitions import *
 _ = Translation( 'univention-management-console-module-luga' ).translate
 
 class Users():
-
 	def gid2name(self, gid):
 		"""
 			get the groupname of a group id
 		"""
-		ret = self.groups_parse('gid', gid)
+		ret = self.parse_groups('gid', gid)
 		if len(ret) != 1: # 0|1 other should be impossible
 			return '' # important!
 		return ret.pop().get('groupname')
 
-	def users_parse(self, category='username', pattern='*'):
+	def parse_users(self, category='username', pattern='*'):
 		""" parse /etc/passwd and /etc/shadow
 			param category: one of [username, uid, gid, gecos, homedir, shell, group]
 			param pattern: a searchpattern
@@ -63,24 +62,24 @@ class Users():
 		"""
 		# Load /etc/shadow into dict
 		shadows = {}
-		f = open('/etc/shadow', 'r')
+		f = open('/etc/shadow')
 
 		for user in f:
-			user = user[0:-1].split(':')
+			user = user[:-1].split(':')
 			user.pop()
 			shadows[ user.pop(0) ] = user
 		f.close()
 
 		# Parse /etc/passwd
 		users = []
-		f = open('/etc/passwd', 'r')
+		f = open('/etc/passwd')
 		for user in f:
 			# remove trailing newline, split by ':' seperator
 			(username, password, uid, gid, gecos, homedir, shell) = user[0:-1].split(':')
 
 			# Groups
 			group = self.gid2name(gid) # primary group
-			groups = self.groups_getAdditionalGroups(username)
+			groups = self.get_additional_groups(username)
 			groups_mixin = groups + [group]
 
 			# Filter
@@ -121,13 +120,12 @@ class Users():
 				'tel_business': gecos[2],
 				'tel_private': gecos[3],
 				'miscellaneous': gecos[4],
-				# TODO
-				'days_since_epoch_of_last_pw_change': shadow[0],
-				'days_until_change_allowed': shadow[1],
-				'days_before_change_required': shadow[2],
-				'days_warning_for_expiration': shadow[3],
-				'days_before_account_inactive': shadow[4],
-				'days_since_epoch_when_account_expires': shadow[5],
+				'pw_last_change': shadow[0], # days since epoch
+				'pw_mindays': shadow[1],
+				'pw_maxdays': shadow[2],
+				'pw_warndays': shadow[3], # days the user is warned before pw expired
+				'pw_inactive': shadow[4], # days_before_account_inactive
+				'pw_expiration_date': shadow[5], # expiration days since epoch # TODO: toDate?
 				'locked': locked,
 				'expired': expired,
 				'empty_password': empty_password
@@ -135,27 +133,66 @@ class Users():
 		f.close()
 		return users
 
-	def users_changePassword(self, username, password):
+	def change_password(self, username, password, options={}):
 		"""
-			change the userpassword for <username>
+			change the userpassword and options for <username>
 			returns (<success>, <errormessage|None>)
-			TODO: test special characters
+			TODO: test utf-8 characters
 		"""
+		messages = {
+			'0': '',
+			'1': _('permission denied'),
+			'2': _('invalid combination of options'),
+			'3': _('unexpected failure, nothing done'),
+			'4': _('unexpected failure, passwd file missing'),
+			'5': _('passwd file busy, try again'),
+			'6': _('invalid argument to option'),
+		}
+		cmd = '/usr/bin/passwd -q'
+
+		if options.get('delete'):
+			cmd += '-d '
+		if options.get('expire'):
+			cmd += '-e '
+		if options.get('keep_tokens'):
+			cmd += '-k '
+		if options.get('lock'):
+			cmd += '-l '
+		elif options.get('lock'):
+			cmd += '-u '
+
+		inactive = options.get('inactive')
+		if inacitve:
+			cmd += '-i %s' % self.sanitize_arg(inactive) # String or number?
+
+		mindays = options.get('mindays')
+		if mindays:
+			cmd += '-n %d' % self.sanitize_arg(mindays)
+
+		warndays = options.get('warndays')
+		if warndays:
+			cmd += '-w %d' % self.sanitize_arg(warndays)
+			
+		maxdays = options.get('maxdays')
+		if maxdays:
+			cmd += '-x %d' % self.sanitize_arg(maxdays)
+
+		pwd = '/usr/bin/passwd -q %s' % self.sanitize_arg(username)
+		cmd += ' %s' % self.sanitize_arg(username)
 
 		success = True
-		message = None
+		message = ''
+		# Change password
+		if password:
+			exit = self.process(pwd, '%s\n%s' % (password, password))
+			success = 0 is exit['returncode']
+			message = messages.get( str(exit['returncode']), _('unknown error') )
 
-		exit = self.process('/usr/bin/passwd %s' % username, '%s\n%s' % (password, password))
-		if 0 != exit['returncode']:
-			message = {
-				'1': _('permission denied'),
-				'2': _('invalid combination of options'),
-				'3': _('unexpected failure, nothing done'),
-				'4': _('unexpected failure, passwd file missing'),
-				'5': _('passwd file busy, try again'),
-				'6': _('invalid argument to option'),
-			}.get( str(exit['returncode']), _('error') )
-			success = False
+		# Change options
+		exit = self.process(cmd)
+		success = success and (0 == exit['returncode'])
+		message += messages.get( str(exit['returncode']), _('unknown error') )
+
 		return (success, message)
 
 	def users_query( self, request ):
@@ -172,26 +209,24 @@ class Users():
 		MODULE.info( 'luga.users_query: options: %s' % str( request.options ) )
 
 		if dict is not type(request.options):
-			request.status = BAD_REQUEST_INVALID_OPTS
-			self.finished( request.id, False)
-			return
+			raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
+			# 'expected 'dict' but got %s' % type(request.options)
 
 		category = request.options.get('category', 'username')
 		pattern = request.options.get('pattern', '*')
 
-		# TODO: which exceptions can be raised by open()?
+		request.status = SUCCESS
 		try:
-			request.status = SUCCESS
-			response = self.users_parse( category, pattern )
-		except:
-			request.status = MODULE_ERR
-			response = False
-			pass # TODO
+			response = self.parse_users( category, pattern )
+		except IOError:
+			pass # no permissions, file does not exists
+		except (KeyError, IndexError):
+			pass # shadow/passwd has wrong format
 
 		MODULE.info( 'luga.users_query: results: %s' % str( response ) )
 		self.finished( request.id, response )
 
-	def users_getUsers(self, request):
+	def users_get_users(self, request):
 		"""
 			returns a shorten list containing a dict for each user
 			[ {'id': <username>, 'label': <username>}, ... ]
@@ -199,20 +234,20 @@ class Users():
 		MODULE.info( 'luga.users_getUsers: options: %s' % str( request.options ) )
 
 		response = []
-		for user in self.users_parse():
+		for user in self.parse_users():
 			response.append( {'id': user['username'], 'label': user['username']} )
 
 		MODULE.info( 'luga.users_query: results: %s' % str( response ) )
 		self.finished(request.id, response)
 
-	def users_getUsersByGroup(self, groupname):
+	def get_group_members(self, groupname):
 		"""
 			returns a list containing all users which are in <groupname> as strings
 			[ <username>, <username2>, ... ]
 		"""
 
 		response = []
-		users = self.users_parse('groupname', groupname)
+		users = self.parse_users('groupname', groupname)
 		for user in users:
 			response.append(user['username'])
 		return response
@@ -225,15 +260,13 @@ class Users():
 		MODULE.info( 'luga.users_get: options: %s' % str( request.options ) )
 
 		if list is not type(request.options):
-			request.status = BAD_REQUEST_INVALID_OPTS
-			self.finished( request.id, False, _("argument type has to be 'list'") )
-			return
+			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
 		response = []
 
 		i = len(request.options)
 		c = 0
-		for user in self.users_parse():
+		for user in self.parse_users():
 			if user['username'] in request.options:
 				response.append(user)
 				c += 1
@@ -243,100 +276,133 @@ class Users():
 		MODULE.info( 'luga.users_get: results: %s' % str( response ) )
 		self.finished( request.id, response )
 
+	def get_common_args( self, options, pwoptions={} ):
+		"""
+			get args which are equal for put and add
+			can also modify an dict with password options
+			return string
+		"""
+
+		cmd = ''
+
+		# Gecos
+		def sanitize_gecos(s):
+			return str( options.get(s, '') ).replace(',', '')
+
+		gecos = [options.get('fullname'), options.get('roomnumber'), options.get('tel_business'), options.get('tel_private'), options.get('miscellaneous')]
+		gecos = set([None]) != set(gecos)
+
+		if gecos:
+			gecos = map(sanitize_gecos, ['fullname', 'roomnumber', 'tel_business', 'tel_private', 'miscellaneous'])
+			cmd += ' -c %s' % self.sanitize_arg( ','.join(gecos) )
+
+		# Home directory
+		homedir = options.get('homedir')
+		if homedir:
+			cmd += ' -d %s' % self.sanitize_arg( homedir )
+			if options.get('create_home'): # TODO: a name between move/create_home
+				cmd += ' -m '
+
+		# Shell
+		shell = options.get('shell')
+		if shell:
+			cmd += ' -s %s' % self.sanitize_arg(shell)
+
+		# User-ID
+		uid = str(options.get('uid', ''))
+		if uid.isdigit():
+			cmd += ' -u %d' % self.sanitize_arg(uid)
+
+		# Additional groups
+		groups = options.get('groups')
+		if groups:
+			cmd += ' -G %s' % self.sanitize_arg( ','.join(list(groups)) )
+
+		# Primary Group
+		group = options.get('group')
+		if group:
+			cmd += ' -g %s' % self.sanitize_arg( group )
+
+		# Password options
+		if options.get('pw_delete'):
+			pwoptions['delete'] = True
+		if options.get('pw_expire'):
+			pwoptions['expire'] = True
+		if options.get('pw_keep_tokens'):
+			pwoptions['keep_tokens'] = True
+		if options.get('pw_lock'):
+			pwoptions['lock'] = True
+		elif options.get('pw_unlock'):
+			pwoptions['unlock'] = True
+
+		inactive = options.get('pw_inactive') # TODO: sanitize
+		if inacitve:
+			pwoptions['inactive'] = inactive
+
+		mindays = options.get('pw_mindays')
+		if mindays:
+			pwoptions['mindays'] = mindays
+
+		warndays = options.get('pw_warndays')
+		if warndays:
+			pwoptions['warndays'] = warndays
+
+		maxdays = options.get('pw_maxdays')
+		if maxdays:
+			pwoptions['maxdays'] = maxdays
+
+		return cmd
+
 	def users_put( self, request ):
 		MODULE.info( 'luga.users_put: options: %s' % str( request.options ) )
 		"""
 			modify a local user
-
-			TODO: two usernames
-			TODO: parameter:
-				-e, --expiredate ABL_DATUM	Ablaufdatum auf ABL_DATUM setzen
-				-f, --inactive INAKTIV		Passwort nach Ablauf von INAKTIV deaktivieren
 		"""
 
 		if list is not type(request.options):
-			request.status = BAD_REQUEST_INVALID_OPTS
-			self.finished( request.id, False, _("argument type has to be 'list'") )
-			return
+			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
 		request.status = SUCCESS
 		failures = []
 		errors = {} # no information about returncodes, yet
 
-		for option in request.options:
-			o = option.get('object', {})
-			options = option.get('options', {})
+		for o in request.options:
+			option = o.get('object', {})
+			options = o.get('options', {})
 
 			# Username
 			username = options.get('username')
+			new_username = option.get('username')
 			if not username:
-				request.status = MODULE_ERR
 				failures.append( ('', _('No username-option given')) )
 				continue
 
+			pwoptions = {}
 			cmd = '/usr/sbin/usermod '
-
+			cmd += self.get_common_args( option, pwoptions )
+	
 			# Change username
-			if o.get('username'):
-				cmd += ' -l "%s"' % o['username']
+			if new_username and username != new_username:
+				cmd += ' -l %s' % self.sanitize_arg( new_username )
 
-			# Gecos
-			# TODO: emptiing entries?
-			gecos = ( o.get('fullname', ''), o.get('roomnumber', ''), o.get('tel_business', ''), o.get('tel_private', ''), o.get('miscellaneous', '') )
-			if not (gecos[0] or gecos[1] or gecos[2] or gecos[3] or gecos[4]):
-				gecos = None
+#			Will be Done in pwoptions
+#			# Account deactivation
+#			if None != options.get('lock'):
+#				cmd += ' -L'
+#			elif None != options.get('unlock'):
+#				cmd += ' -U'
 
-			if None != gecos:
-				gecos = '%s,%s,%s,%s,%s' % gecos
-				cmd += ' -c "%s"' % gecos
-
-			# Home directory
-			homedir = o.get('homedir')
-			if homedir:
-				cmd += ' -d "%s"' % homedir
-				if True == options.get('move_home_folder'):
-					cmd += ' -m '
-
-			# Loginshell
-			shell = o.get('shell')
-			if shell:
-				cmd += ' -s "%s"' % shell
-
-			# Change User-ID
-			uid = str(o.get('uid', ''))
-			if uid.isdigit():
-				cmd += ' -u "%d"' % uid
-
-			# Primary Group
-			if o.get('gid'): #TODO: rename to group
-				cmd += ' -g "%s"' % o['gid']
-
-			# Additional Groups
-			groups = o.get('groups')
-			if groups:
-				cmd += ' -G "%s"' % ','.join( list(groups) )
-
-			# Account deactivation
-			if None != options.get('lock'):
-				cmd += ' -L'
-			elif None != options.get('unlock'):
-				cmd += ' -U'
+			cmd += ' %s' % self.sanitize_arg(username)
 
 			# Password
-			password = o.get('password')
-			if password:
-				# TODO
-				pw = self.users_changePassword(username, password)
-				if not pw[0]:
-					request.status = MODULE_ERR
-					message = pw[1]
-
-			cmd += ' "%s"' % username
+			password = option.get('password')
+			pw = self.change_password(username, password, pwoptions)
+			if not pw[0]:
+				failures.append( (username, pw[1], ) )
 
 			# Execute
 			exit = self.process(cmd)
 			if exit['returncode'] != 0:
-				request.status = MODULE_ERR
 				error = errors.get( str(exit['returncode']), _('Could not edit user') )
 				failures.append( (username, error, ) )
 				continue
@@ -356,9 +422,7 @@ class Users():
 		MODULE.info( 'luga.users_add: options: %s' % str( request.options ) )
 	
 		if list is not type(request.options):
-			request.status = BAD_REQUEST_INVALID_OPTS
-			self.finished( request.id, False, _("argument type has to be 'list'") )
-			return
+			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
 		request.status = SUCCESS
 		failures = []
@@ -374,85 +438,50 @@ class Users():
 			'13': _('could not create mail spool'),
 		}
 
-		for option in request.options:
+		for o in request.options:
 			if dict is not type(option):
 				failures.append( ('', _('No username given')) )
 				continue
 
-			o = option.get('object', {})
-			options = option.get('options', {})
+			option = o.get('object', {})
+			options = o.get('options', {})
 
 			# Username
-#			username = o.get('username')
 			username = options.get('username')
 			if not username:
-				request.status = MODULE_ERR
 				failures.append( ('', _('No username-option given')) )
 				continue
 
+			pwoptions = {}
 			cmd = '/usr/sbin/useradd '
+			cmd += self.get_common_args( option, pwoptions )
+	
+			# TODO: Homedir -M option?, requuires passwd 4.1.4.2
 
-			# Gecos
-			# TODO: emptiing entries?
-			gecos = ( o.get('fullname', ''), o.get('roomnumber', ''), o.get('tel_business', ''), o.get('tel_private', ''), o.get('miscellaneous', '') )
-			if not (gecos[0] or gecos[1] or gecos[2] or gecos[3] or gecos[4]):
-				gecos = None
-
-			if None != gecos:
-				gecos = '%s,%s,%s,%s,%s' % gecos
-				cmd += ' -c "%s"' % gecos
-
-			# Homedir
-			if o.get('homedir'):
-				cmd += ' -d "%s"' % o['homedir']
-			if options.get('create_home'):
-				cmd += ' -m'
-			else:
-				cmd += ' -M'
-
-			# Shell
-			if o.get('shell'):
-				cmd += ' -s "%s"' % o['shell']
-
-			# User ID
-			if o.get('uid'):
-				cmd += ' -u "%d"' % o['uid']
-
-			# Create an own Usergroup as primary group?
+			# TODO: rename?, Create an own Usergroup as primary group?
 			if options.get('create_usergroup'):
 				cmd += ' -U'
 			else:
 				cmd += ' -N'
-				# Primary Group
-				if o.get('gid'): # TODO: rename to group
-					cmd += ' -g "%s"' % o['gid']
 
-			# Additional groups
-			groups = o.get('groups')
-			if groups:
-				cmd += ' -G "%s"' % ','.join( list(groups) )
+#	 		Will be done in pwoptions
+#			# Password inactivity, expiration
+#			if option.get('inactive'):
+#				cmd += ' -f %s' % self.sanitize_arg(option['inactive'])
 
-			# Password inactivity, expiration
-			if o.get('inactive'):
-				cmd += ' -f "%s"' % o['inactive']
-
-			cmd += ' "%s"' % username
+			cmd += ' %s' % self.sanitize_arg(username)
 
 			# Execute
 			exit = self.process(cmd)
 			if 0 != exit['returncode']:
-				request.status = MODULE_ERR
-				error = errors.get( str(exit['returncode']), _('error') )
+				error = errors.get( str(exit['returncode']), _('unknown error') )
 				failures.append( (username, error, ) )
 				continue
-			# TODO: TODO: TODO
 			else:
-				password = o.get('password')
-				if None != password:
-					pw = self.users_changePassword(username, password)
-					if not pw[0]:
-						request.status = MODULE_ERR
-						response = pw[1]
+				password = option.get('password')
+				pw = self.change_password(username, password, pwoptions)
+				if not pw[0]:
+					failures.append( (username, pw[1], ) )
 
 		response = 0 < len(failures)
 
@@ -469,9 +498,7 @@ class Users():
 		MODULE.info( 'luga.users_delete: options: %s' % str( request.options ) )
 
 		if list is not type(request.options):
-			request.status = BAD_REQUEST_INVALID_OPTS
-			self.finished( request.id, False, _("argument type has to be 'list'") )
-			return
+			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
 		cmd = '/usr/sbin/userdel '
 		request.status = SUCCESS
@@ -503,15 +530,15 @@ class Users():
 			if option.get('remove'):
 				cmd += ' -r'
 
-			cmd += ' "%s"' % username
+			cmd += ' %s' % self.sanitize_arg(username)
 
 			exit = self.process(cmd)
 			if exit['returncode'] != 0:
-				request.status = MODULE_ERR
-				error = errors.get( str(exit['returncode']), _('error') )
+				error = errors.get( str(exit['returncode']), _('unknown error') )
 				failures.append( (username, error, ) )
 
 		response = 0 < len(failures)
 
 		MODULE.info( 'luga.users_delete: results: %s' % str( response ) )
 		self.finished( request.id, response, str(failures) )
+

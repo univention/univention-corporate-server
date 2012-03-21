@@ -1,12 +1,6 @@
-univention-management-console-module-top (1.0.0-3) unstable; urgency=low
+univention-management-console-module-luga (1.0.0-1) unstable; urgency=low
 
-  * added sources for group flavour backend (Bug #9899)
-
- -- Lukas Walter <walter@univention.de>  Tue, 20 Mar 2012 17:00:22 +0100
-
-univention-management-console-module-top (1.0.0-2) unstable; urgency=low
-
-  * Initial commit (Bug #9899)
+  * Initial release (Bug #9899)
 
  -- Florian Best <best@univention.de>  Tue, 20 Mar 2012 16:44:36 +0100
 

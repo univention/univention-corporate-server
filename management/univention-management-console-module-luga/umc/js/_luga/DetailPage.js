@@ -59,7 +59,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 
 		// Set the opacity for the standby animation to 100% in order to mask
 		// GUI changes when the module is opened. Call this.standby(true|false)
-		// to enabled/disable the animation.
+		// to enable/disable the animation.
 		this.standbyOpacity = 1;
 
 		// set the page header
@@ -67,8 +67,8 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			this.headerText = this._('Properties for user %s', '');
 			this.helpText = this._('Create or modify an local user.');
 		} else if (this.moduleFlavor === 'luga/groups') {
-			this.headerText = this._('Object properties');
-			this.helpText = this._('This page demonstrates how object properties can be viewed for editing.');
+			this.headerText = this._('Group properties');
+			this.helpText = this._('Create or modify a group with the form displayed below.');
 		}
 
 		// configure buttons for the footer of the detail page
@@ -166,35 +166,44 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}, {
 				type: 'TextBox',
 				disabled: true,
-				name: 'days_since_epoch_of_last_pw_change',
+				name: 'pw_last_change',
 				label: this._('days since Jan 1, 1970 that password was last changed')
 			}, {
 				type: 'TextBox',
-				disabled: true,
-				name: 'days_until_change_allowed',
+				name: 'pw_mindays',
 				label: this._('days before password may be changed')
 			}, {
 				type: 'TextBox',
-				disabled: true,
-				name: 'days_before_change_required',
+				name: 'pw_maxdays',
 				label: this._('days after which password must be changed')
 			}, {
 				type: 'TextBox',
-				disabled: true,
-				name: 'days_warning_for_expiration',
+				name: 'pw_warndays',
 				label: this._('days before password is to expire that user is warned')
 			}, {
 				type: 'TextBox',
-				disabled: true,
-				name: 'days_before_account_inactive',
+				name: 'pw_inactive',
 				label: this._('days after password expires that account is disabled')
 			}, {
 				type: 'TextBox',
-				disabled: true,
-				name: 'days_since_epoch_when_account_expires',
+			//	disabled: true, # TODO: DateBox
+				name: 'pw_expiration_date',
 				label: this._('days since Jan 1, 1970 that account is disabled')
 			}];
-
+			
+			if( this.newObjectOptions ) {
+				widgets.push( {
+					type: 'CheckBox',
+					name: 'create_home',
+					label: this._('create home folder')
+				} );
+			} else {
+				widgets.push( {
+					type: 'CheckBox',
+					name: 'create_home',
+					label: this._('move home folder')
+				} );
+			}
 			// specify the layout... additional dicts are used to group form elements
 			// together into title panes
 			layout = [{
@@ -205,7 +214,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				layout: [ ['homedir', 'shell' ], ['fullname', 'roomnumber'], ['tel_business', 'tel_private'], 'miscellaneous' ]
 			}, {
 				label: this._('Options and Passwords'),
-				layout: [ 'locked', 'expired', 'empty_password', 'days_since_epoch_of_last_pw_change', 'days_until_change_allowed', 'days_before_change_required', 'days_warning_for_expiration', 'days_before_account_inactive', 'days_since_epoch_when_account_expires' ]
+				layout: [ 'locked', 'expired', 'empty_password', 'pw_last_change', 'pw_mindays', 'pw_maxdays', 'pw_warnday', 'pw_inactive', 'pw_expiration_date' ]
 			}];
 		} else if (this.moduleFlavor === 'luga/groups') {
 			widgets = [{
