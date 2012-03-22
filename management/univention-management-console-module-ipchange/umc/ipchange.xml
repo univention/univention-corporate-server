@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="ipchange" icon="ipchange" version="1.0">
+	<name>IP change</name>
+	<description>Change ip for ucs servers</description>
+	<categories>
+	  <category name="system"/>
+	</categories>
+	<command name="ip/change" function="change">
+		<attribute name="ip" syntax="String"/>
+		<attribute name="role" syntax="String"/>
+	</command>
+  </module>
+</umc>

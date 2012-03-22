@@ -1,0 +1,6 @@
+univention-management-console-module-ipchange (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #26416)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Mar 2012 20:34:59 +0100
+
