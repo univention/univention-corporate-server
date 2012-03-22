@@ -43,7 +43,7 @@ import subprocess
 import shlex
 
 class Process():
-	def sanitize_arg(arg):
+	def sanitize_arg(self, arg):
 		return "'" + str(arg).replace('\\','\\\\').replace('\'','\\\'') + "'"
 
 	def process(self, args, stdin=None):

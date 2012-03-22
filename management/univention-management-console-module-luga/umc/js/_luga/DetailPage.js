@@ -106,21 +106,23 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				name: 'username',
 				label: this._('Username')
 			}, {
-				type: 'TextBox',
+				type: 'PasswordInputBox',
 				name: 'password',
 				label: this._('Password')
 			}, {
-				type: 'TextBox',
+				type: 'NumberSpinner',
 				name: 'uid',
+				size: 'OneThird',
 				label: this._('User ID')
 			}, {
 				type: 'ComboBox',
 				name: 'group',
-				label: this._('primary group'),
+				label: this._('Primary group'),
 				dynamicValues: 'luga/groups/get_groups'
 			}, {
 				type: 'TextBox',
 				name: 'homedir',
+				size: 'TwoThirds',
 				label: this._('Unix home directory')
 			}, {
 				type: 'TextBox',
@@ -153,42 +155,54 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				dynamicValues: 'luga/groups/get_groups'
 			}, {
 				type: 'CheckBox',
-				name: 'locked',
+				name: 'lock',
 				label: this._('Disable login')
 			}, {
 				type: 'CheckBox',
-				name: 'expired',
-				label: this._('expired')
+				name: 'pw_is_expired',
+				disabled: true,
+				label: this._('Password is expired'),
 			}, {
 				type: 'CheckBox',
-				name: 'empty_password',
-				label: this._('empty password')
+				name: 'pw_delete',
+				value: false,
+				label: this._('Remove password')
 			}, {
-				type: 'TextBox',
+				type: 'CheckBox',
+				name: 'pw_is_empty',
+				disabled: true,
+				label: this._('The password is currently not set')
+			}, {
+				type: 'DateBox',
 				disabled: true,
 				name: 'pw_last_change',
-				label: this._('days since Jan 1, 1970 that password was last changed')
+				label: this._('Password was last changed')
 			}, {
 				type: 'TextBox',
 				name: 'pw_mindays',
-				label: this._('days before password may be changed')
+				type: 'NumberSpinner',
+				label: this._('Days before password may be changed')
 			}, {
 				type: 'TextBox',
 				name: 'pw_maxdays',
-				label: this._('days after which password must be changed')
+				type: 'NumberSpinner',
+				label: this._('Days after which password must be changed')
 			}, {
 				type: 'TextBox',
 				name: 'pw_warndays',
-				label: this._('days before password is to expire that user is warned')
+				type: 'NumberSpinner',
+				label: this._('Days before password expiration that user is warned')
 			}, {
 				type: 'TextBox',
-				name: 'pw_inactive',
-				label: this._('days after password expires that account is disabled')
+				name: 'pw_disabledays',
+				type: 'NumberSpinner',
+				label: this._('Number of days where the account will be disabled after password expiration')
 			}, {
-				type: 'TextBox',
-			//	disabled: true, # TODO: DateBox
-				name: 'pw_expiration_date',
-				label: this._('days since Jan 1, 1970 that account is disabled')
+				// This field will be hidden if account is enabled
+				type: 'DateBox',
+				disabled: true,
+				name: 'disabled_since',
+				label: this._('Account is disabled since')
 			}];
 			
 			if( this.newObjectOptions ) {
@@ -208,13 +222,16 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			// together into title panes
 			layout = [{
 				label: this._('General'),
-				layout: [ [ 'uid', 'groups' ], 'username', 'password', 'group']
+				layout: [ [ 'username', 'fullname' ], ['password', 'password_retype'], ['lock', 'pw_delete' ] ]
 			}, {
-				label: this._('User information'),
-				layout: [ ['homedir', 'shell' ], ['fullname', 'roomnumber'], ['tel_business', 'tel_private'], 'miscellaneous' ]
+				label: this._('Groups'),
+				layout: [ 'group', 'groups' ]
+			}, {
+				label: this._('Account information'),
+				layout: [ ['uid', 'homedir', 'shell' ], ['tel_business', 'tel_private'], ['roomnumber', 'miscellaneous'] ]
 			}, {
 				label: this._('Options and Passwords'),
-				layout: [ 'locked', 'expired', 'empty_password', 'pw_last_change', 'pw_mindays', 'pw_maxdays', 'pw_warnday', 'pw_inactive', 'pw_expiration_date' ]
+				layout: [ 'pw_is_expired', 'pw_is_empty', 'pw_last_change', 'disabled_since', 'pw_mindays', 'pw_maxdays', 'pw_warndays', 'pw_disabledays' ]
 			}];
 		} else if (this.moduleFlavor === 'luga/groups') {
 			widgets = [{

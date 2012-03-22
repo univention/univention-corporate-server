@@ -162,28 +162,31 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var columns = null;
 		if (this.moduleFlavor === 'luga/users') {
 			columns = [{
-				name: 'uid',
-				label: this._('UserID'),
-				width: 'adjust'
+				name: 'lock',
+				label: this._('Enabled'),
+				width: 'adjust',
+				formatter: function(value) {
+					return value ? '&#10799;' : '&#10004;';
+				}
 			}, {
 				name: 'username',
 				label: this._('Username'),
-				width: '72%'
+				width: '52%'
 			}, {
-				name: 'group',
-				label: this._('Group'),
-				width: '20%'
+				name: 'fullname',
+				label: this._('Fullname'),
+				width: '40%'
 			}];
 		}
 		else if (this.moduleFlavor === 'luga/groups') {
 			columns = [{
-				name: 'gid',
-				label: this._('Group ID'),
-				width: '10%'
+				name: 'status',
+				label: this._('Status'),
+				width: '12%'
 			}, {
 				name: 'groupname',
 				label: this._('Groupname'),
-				width: '90%'
+				width: '88%'
 			}];
 		}
 
@@ -238,9 +241,6 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name: 'category',
 			description: this._('Defines the .'),
 			label: this._('Category'),
-			// Values are dynamically loaded from the server via a UMCP request.
-			// Use the property dynamicOptions to pass additional values to the server.
-			// Use staticValues to pass an array directly (see umc.widgets._SelectMixin).
 			staticValues: staticValues
 		}, {
 			type: 'TextBox',

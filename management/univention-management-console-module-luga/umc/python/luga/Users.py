@@ -31,8 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import uuid
 from fnmatch import fnmatch
+from datetime import date
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError, Base
@@ -60,7 +60,7 @@ class Users():
 						'fullname': <full name>, 'miscellaneous': <misc>, 'roomnumber': <room number>, 'tel_business': <telephone business>, 'tel_private': <telephone private>, 
 						[.TODO.], ... ] 
 		"""
-		# Load /etc/shadow into dict
+		# Parse /etc/shadow
 		shadows = {}
 		f = open('/etc/shadow')
 
@@ -98,9 +98,14 @@ class Users():
 			shadow = shadows.get(username, [password, '', '', '', '', '', ''])
 			password = shadow.pop(0)
 
-			locked = ('!' == password[0]) or ('*' == password[0]) or ('LK' == password)
-			expired = (password == '!!')
-			empty_password = password in ('NP', '!', '')
+			deactivated = ('!' == password[0]) or ('*' == password[0]) or ('LK' == password)
+			pw_is_expired = (password == '!!' or not shadow[5] == '')
+			pw_is_empty = password in ('NP', '!', '', '*')
+
+			shadow[0] = date.isoformat(date.fromtimestamp(int(shadow[0]) * 86400))
+			if shadow[5].isdigit():
+				pw_is_expired = True
+				shadow[5] = date.isoformat(date.fromtimestamp(int(shadow[5]) * 86400))
 
 			# Gecos
 			gecos = gecos.split(',')
@@ -120,15 +125,15 @@ class Users():
 				'tel_business': gecos[2],
 				'tel_private': gecos[3],
 				'miscellaneous': gecos[4],
-				'pw_last_change': shadow[0], # days since epoch
+				'pw_last_change': shadow[0],
 				'pw_mindays': shadow[1],
 				'pw_maxdays': shadow[2],
-				'pw_warndays': shadow[3], # days the user is warned before pw expired
-				'pw_inactive': shadow[4], # days_before_account_inactive
-				'pw_expiration_date': shadow[5], # expiration days since epoch # TODO: toDate?
-				'locked': locked,
-				'expired': expired,
-				'empty_password': empty_password
+				'pw_warndays': shadow[3],
+				'pw_disabledays': shadow[4],
+				'disabled_since': shadow[5], 
+				'lock': deactivated,
+				'pw_is_expired': pw_is_expired,
+				'pw_is_empty': pw_is_empty
 			} )
 		f.close()
 		return users
@@ -158,40 +163,43 @@ class Users():
 			cmd += '-k '
 		if options.get('lock'):
 			cmd += '-l '
-		elif options.get('lock'):
+		elif options.get('unlock'):
 			cmd += '-u '
 
-		inactive = options.get('inactive')
-		if inacitve:
-			cmd += '-i %s' % self.sanitize_arg(inactive) # String or number?
+		inactive = options.get('disabledays')
+		if inactive:
+			cmd += '-i %d ' % self.sanitize_arg(inactive)
 
 		mindays = options.get('mindays')
 		if mindays:
-			cmd += '-n %d' % self.sanitize_arg(mindays)
+			cmd += '-n %d ' % self.sanitize_arg(mindays)
 
 		warndays = options.get('warndays')
 		if warndays:
-			cmd += '-w %d' % self.sanitize_arg(warndays)
+			cmd += '-w %d ' % self.sanitize_arg(warndays)
 			
 		maxdays = options.get('maxdays')
 		if maxdays:
-			cmd += '-x %d' % self.sanitize_arg(maxdays)
+			cmd += '-x %d ' % self.sanitize_arg(maxdays)
 
 		pwd = '/usr/bin/passwd -q %s' % self.sanitize_arg(username)
-		cmd += ' %s' % self.sanitize_arg(username)
+		cmd += self.sanitize_arg(username)
+		if not (inactive or mindays or warndays or maxdays or options.get('delete') or options.get('expire') or options.get('keep_tokens') or options.get('lock') or options.get('unlock')):
+			cmd = False
 
 		success = True
 		message = ''
 		# Change password
 		if password:
 			exit = self.process(pwd, '%s\n%s' % (password, password))
-			success = 0 is exit['returncode']
-			message = messages.get( str(exit['returncode']), _('unknown error') )
+			success = (0 is exit['returncode'])
+			message = messages.get( str(exit['returncode']), _('unknown error with statuscode %d accured while changing password') % (exit['returncode']) )
 
 		# Change options
-		exit = self.process(cmd)
-		success = success and (0 == exit['returncode'])
-		message += messages.get( str(exit['returncode']), _('unknown error') )
+		if cmd:
+			exit = self.process(cmd)
+			success = success and (0 is exit['returncode'])
+			message += '\n' + messages.get( str(exit['returncode']), _('unknown error with statuscode %d accured while changing password options') % (exit['returncode']) )
 
 		return (success, message)
 
@@ -219,8 +227,12 @@ class Users():
 		try:
 			response = self.parse_users( category, pattern )
 		except IOError:
+			response = []
+			response.status = MODULE_ERR # UMC_CommandError ?
 			pass # no permissions, file does not exists
 		except (KeyError, IndexError):
+			response.status = MODULE_ERR # UMC_CommandError ?
+			response = []
 			pass # shadow/passwd has wrong format
 
 		MODULE.info( 'luga.users_query: results: %s' % str( response ) )
@@ -330,13 +342,15 @@ class Users():
 			pwoptions['expire'] = True
 		if options.get('pw_keep_tokens'):
 			pwoptions['keep_tokens'] = True
-		if options.get('pw_lock'):
+		if options.get('lock'):
 			pwoptions['lock'] = True
-		elif options.get('pw_unlock'):
+		else:
+		#	if options.get('pw_unlock'):
+		#	TODO: old state
 			pwoptions['unlock'] = True
 
-		inactive = options.get('pw_inactive') # TODO: sanitize
-		if inacitve:
+		inactive = options.get('pw_deactivatedays')
+		if inactive:
 			pwoptions['inactive'] = inactive
 
 		mindays = options.get('pw_mindays')
@@ -374,7 +388,7 @@ class Users():
 			username = options.get('username')
 			new_username = option.get('username')
 			if not username:
-				failures.append( ('', _('No username-option given')) )
+				failures.append( ('', _('No username given')) )
 				continue
 
 			pwoptions = {}
@@ -403,11 +417,11 @@ class Users():
 			# Execute
 			exit = self.process(cmd)
 			if exit['returncode'] != 0:
-				error = errors.get( str(exit['returncode']), _('Could not edit user') )
+				error = errors.get( str(exit['returncode']), _('unknown error with statuscode %d accured') % (exit['returncode']) )
 				failures.append( (username, error, ) )
 				continue
 
-		response = 0 < len(failures)
+		response = (0 is len(failures))
 		MODULE.info( 'luga.users_edit: results: %s' % str( response ) )
 		self.finished( request.id, response, str(failures) )
 
@@ -439,9 +453,8 @@ class Users():
 		}
 
 		for o in request.options:
-			if dict is not type(option):
-				failures.append( ('', _('No username given')) )
-				continue
+			if dict is not type(o):
+				raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
 			option = o.get('object', {})
 			options = o.get('options', {})
@@ -449,7 +462,7 @@ class Users():
 			# Username
 			username = options.get('username')
 			if not username:
-				failures.append( ('', _('No username-option given')) )
+				failures.append( ('', _('No username given')) )
 				continue
 
 			pwoptions = {}
@@ -474,7 +487,7 @@ class Users():
 			# Execute
 			exit = self.process(cmd)
 			if 0 != exit['returncode']:
-				error = errors.get( str(exit['returncode']), _('unknown error') )
+				error = errors.get( str(exit['returncode']), _('unknown error with statuscode %d accured') % (exit['returncode']) )
 				failures.append( (username, error, ) )
 				continue
 			else:
@@ -483,7 +496,7 @@ class Users():
 				if not pw[0]:
 					failures.append( (username, pw[1], ) )
 
-		response = 0 < len(failures)
+		response = (0 is len(failures))
 
 		MODULE.info( 'luga.users_add: results: %s' % str( response ) )
 		self.finished( request.id, response, str(failures) )
@@ -513,16 +526,15 @@ class Users():
 		}
 
 		for option in request.options:
-			# TODO: o is a string, not dict...
+			# TODO: option is a string, not dict...
 			# where to get options foreach user?
 			# can i hack in JS? alerting user?
 			if dict is not type(option):
-				failures.append( ('', _('No username given')) )
-				continue
+				raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
 			username = option.get('username')
 
-			if None == username:
+			if None is username:
 				failures.append( ('', _('No username given')) )
 				continue
 			if option.get('force'):
@@ -534,10 +546,10 @@ class Users():
 
 			exit = self.process(cmd)
 			if exit['returncode'] != 0:
-				error = errors.get( str(exit['returncode']), _('unknown error') )
+				error = errors.get( str(exit['returncode']), _('unknown error with statuscode %d accured') % (exit['returncode']) )
 				failures.append( (username, error, ) )
 
-		response = 0 < len(failures)
+		response = (0 is len(failures))
 
 		MODULE.info( 'luga.users_delete: results: %s' % str( response ) )
 		self.finished( request.id, response, str(failures) )
