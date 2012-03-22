@@ -52,6 +52,14 @@ cp /etc/machine.secret "$dest"
 chown cyrus:root "$dest"
 chmod 600  "$dest"
 
+# restart cyrus
+if [ -x /etc/init.d/cyrus2.2 ]; then
+	/etc/init.d/cyrus2.2 restart
+fi
+if [ -x /etc/init.d/cyrus-imapd ]; then
+	/etc/init.d/cyrus-imapd restart
+fi
+
 joinscript_save_current_version
 
 exit 0

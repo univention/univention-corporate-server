@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.35-1) unstable; urgency=low
+
+  * restart cyrus in 81univention-mail-cyrus.inst (Bug #26570) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Mar 2012 09:46:52 +0100
+
 univention-mail-cyrus (4.0.34-1) unstable; urgency=low
 
   * create mailbox in cyrus.py if homeserver changed (Bug #25314) 
