@@ -1,3 +1,10 @@
+univention-management-console (4.0.207-1) unstable; urgency=low
+
+  * Added option -y to read password from file for univention-
+    management-console-client (Bug #26600)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Mar 2012 20:05:01 +0100
+
 univention-management-console (4.0.206-1) unstable; urgency=low
 
   * Flavors have been removed from system setup module (Bug #26283)

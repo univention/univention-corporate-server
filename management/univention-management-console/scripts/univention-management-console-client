@@ -198,6 +198,9 @@ if __name__ == '__main__':
 	group.add_option( '-P', '--password', type = 'string',
 					   action = 'store', dest = 'password',
 					   help = 'set password for authentication' )
+	group.add_option( '-y', '--password_file', type = 'string',
+					   action = 'store', dest = 'password_file',
+					   help = 'read password for authentication from given file' )
 	group.add_option( '-s', '--server', type = 'string', action = 'store',
 					   dest = 'server', default = 'localhost',
 					   help = 'defines the host of the UMC daemon to connect to [default: %default]' )
@@ -244,6 +247,8 @@ if __name__ == '__main__':
 	if options.authenticate:
 		if not options.username:
 			options.username = raw_input( 'Username:' )
+		if options.password_file:
+			options.password = open(options.password_file).read().strip()
 		if not options.password:
 			options.password = getpass( 'Password:' )
 	try:
