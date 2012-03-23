@@ -35,20 +35,21 @@ from fnmatch import fnmatch
 from datetime import date
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import UMC_OptionTypeError, Base
+from univention.management.console.modules import UMC_OptionTypeError, UMC_CommandError, UMC_OptionMissing, Base
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
 _ = Translation( 'univention-management-console-module-luga' ).translate
 
-class Users():
+class Users:
 	def gid2name(self, gid):
 		"""
 			get the groupname of a group id
+			return empty string if no group was found
 		"""
-		ret = self.parse_groups('gid', gid)
+		ret = self.group_search('gid', gid)
 		if len(ret) != 1: # 0|1 other should be impossible
-			return '' # important!
+			return ''
 		return ret.pop().get('groupname')
 
 	def parse_users(self, category='username', pattern='*'):
@@ -60,82 +61,90 @@ class Users():
 						'fullname': <full name>, 'miscellaneous': <misc>, 'roomnumber': <room number>, 'tel_business': <telephone business>, 'tel_private': <telephone private>, 
 						[.TODO.], ... ] 
 		"""
-		# Parse /etc/shadow
-		shadows = {}
-		f = open('/etc/shadow')
 
-		for user in f:
-			user = user[:-1].split(':')
-			user.pop()
-			shadows[ user.pop(0) ] = user
-		f.close()
-
-		# Parse /etc/passwd
 		users = []
-		f = open('/etc/passwd')
-		for user in f:
-			# remove trailing newline, split by ':' seperator
-			(username, password, uid, gid, gecos, homedir, shell) = user[0:-1].split(':')
+		shadows = {}
 
-			# Groups
-			group = self.gid2name(gid) # primary group
-			groups = self.get_additional_groups(username)
-			groups_mixin = groups + [group]
+		try:
+			shadow = open('/etc/shadow')
+			passwd = open('/etc/passwd')
 
-			# Filter
-			value = { 'username': username, 'uid': uid, 'gid': gid, 'gecos': gecos.split(','), 'homedir': homedir, 'shell': shell, 'group': groups_mixin }.get(category, 'username')
-			if list is type(value):
-				match = False
-				for val in value:
-					if fnmatch(str(value), pattern):
-						match = True
-			else:
-				match = fnmatch(str(value), pattern)
-			if not match:
-				continue
+			# Parse /etc/shadow
+			for user in shadow:
+				user = user[:-1].split(':')
+				user.pop()
+				shadows[ user.pop(0) ] = user
+			shadow.close()
 
-			# Shadow
-			shadow = shadows.get(username, [password, '', '', '', '', '', ''])
-			password = shadow.pop(0)
+			# Parse /etc/passwd
+			for user in passwd:
+				# remove trailing newline, split by ':' seperator
+				(username, password, uid, gid, gecos, homedir, shell) = user[0:-1].split(':')
 
-			deactivated = ('!' == password[0]) or ('*' == password[0]) or ('LK' == password)
-			pw_is_expired = (password == '!!' or not shadow[5] == '')
-			pw_is_empty = password in ('NP', '!', '', '*')
+				# Groups
+				group = self.gid2name(gid) # primary group
+				groups = self.get_additional_groups(username)
+				groups_mixin = groups + [group]
 
-			shadow[0] = date.isoformat(date.fromtimestamp(int(shadow[0]) * 86400))
-			if shadow[5].isdigit():
-				pw_is_expired = True
-				shadow[5] = date.isoformat(date.fromtimestamp(int(shadow[5]) * 86400))
+				# Filter
+				value = { 'username': username, 'uid': uid, 'gid': gid, 'gecos': gecos.split(','), 'homedir': homedir, 'shell': shell, 'group': groups_mixin }.get(category, 'username')
+				if list is type(value):
+					match = False
+					for val in value:
+						if fnmatch(str(value), pattern):
+							match = True
+				else:
+					match = fnmatch(str(value), pattern)
+				if not match:
+					continue
 
-			# Gecos
-			gecos = gecos.split(',')
-			while len(gecos) < 5:
-				gecos.append('')
+				# Shadow
+				shadow = shadows.get(username, [password, '', '', '', '', '', ''])
+				password = shadow.pop(0)
 
-			users.append( {
-				'username': username,
-				'uid': int(uid),
-				'gid': int(gid),
-				'group': group,
-				'groups': groups,
-				'homedir': homedir,
-				'shell': shell,
-				'fullname': gecos[0],
-				'roomnumber': gecos[1],
-				'tel_business': gecos[2],
-				'tel_private': gecos[3],
-				'miscellaneous': gecos[4],
-				'pw_last_change': shadow[0],
-				'pw_mindays': shadow[1],
-				'pw_maxdays': shadow[2],
-				'pw_warndays': shadow[3],
-				'pw_disabledays': shadow[4],
-				'disabled_since': shadow[5], 
-				'lock': deactivated,
-				'pw_is_expired': pw_is_expired,
-				'pw_is_empty': pw_is_empty
-			} )
-		f.close()
+				deactivated = ('!' == password[0]) or ('*' == password[0]) or ('LK' == password)
+				pw_is_expired = (password == '!!' or shadow[5].isdigit())
+				pw_is_empty = password in ('NP', '!', '', '*')
+
+				shadow[0] = date.isoformat(date.fromtimestamp(int(shadow[0]) * 86400))
+				if shadow[5].isdigit():
+					shadow[5] = date.isoformat(date.fromtimestamp(int(shadow[5]) * 86400))
+
+				# Gecos
+				gecos = gecos.split(',')
+				while len(gecos) < 5:
+					gecos.append('')
+
+				users.append( {
+					'username': username,
+					'uid': int(uid),
+					'gid': int(gid),
+					'group': group,
+					'groups': groups,
+					'homedir': homedir,
+					'shell': shell,
+					'fullname': gecos[0],
+					'roomnumber': gecos[1],
+					'tel_business': gecos[2],
+					'tel_private': gecos[3],
+					'miscellaneous': gecos[4],
+					'pw_last_change': shadow[0],
+					'pw_mindays': shadow[1],
+					'pw_maxdays': shadow[2],
+					'pw_warndays': shadow[3],
+					'pw_disabledays': shadow[4],
+					'disabled_since': shadow[5], 
+					'lock': deactivated,
+					'pw_is_expired': pw_is_expired,
+					'pw_is_empty': pw_is_empty
+				} )
+			passwd.close()
+		except (KeyError, IndexError):
+			raise UMC_CommandError(_('passwd/shadow file is corrupt'))
+		except IOError:
+			raise UMC_CommandError(_('Could not open passwd/shadow file')) # no permissions, file does not exists
+#		except:
+#			raise UMC_CommandError(_('Could not parse passwd/shadow file'))
 		return users
 
 	def change_password(self, username, password, options={}):
@@ -145,15 +154,16 @@ class Users():
 			TODO: test utf-8 characters
 		"""
 		messages = {
-			'0': '',
-			'1': _('permission denied'),
-			'2': _('invalid combination of options'),
-			'3': _('unexpected failure, nothing done'),
-			'4': _('unexpected failure, passwd file missing'),
-			'5': _('passwd file busy, try again'),
-			'6': _('invalid argument to option'),
+			'OSError': _('command processing failed'),
+			0: '',
+			1: _('permission denied'),
+			2: _('invalid combination of options'),
+			3: _('unexpected failure, nothing done'),
+			4: _('unexpected failure, passwd file missing'),
+			5: _('passwd file busy, try again'),
+			6: _('invalid argument to option'),
 		}
-		cmd = '/usr/bin/passwd -q'
+		cmd = '/usr/bin/passwd -q '
 
 		if options.get('delete'):
 			cmd += '-d '
@@ -188,18 +198,21 @@ class Users():
 			cmd = False
 
 		success = True
-		message = ''
-		# Change password
-		if password:
-			exit = self.process(pwd, '%s\n%s' % (password, password))
-			success = (0 is exit['returncode'])
-			message = messages.get( str(exit['returncode']), _('unknown error with statuscode %d accured while changing password') % (exit['returncode']) )
+		message = []
+		try:
+			# Change password
+			if password:
+				returncode = self.process(pwd, '%s\n%s' % (password, password))
+				success = (0 is returncode)
+				raise ValueError( messages.get( returncode, _('unknown error with statuscode %d accured while changing password') % (returncode) ) )
 
-		# Change options
-		if cmd:
-			exit = self.process(cmd)
-			success = success and (0 is exit['returncode'])
-			message += '\n' + messages.get( str(exit['returncode']), _('unknown error with statuscode %d accured while changing password options') % (exit['returncode']) )
+			# Change options
+			if cmd:
+				returncode = self.process(cmd)
+				success = success and (0 is returncode)
+				raise ValueError( messages.get( returncode, _('unknown error with statuscode %d accured while changing password options') % (returncode) ) )
+		except ValueError as e:
+			message.append( str(e) )
 
 		return (success, message)
 
@@ -218,22 +231,12 @@ class Users():
 
 		if dict is not type(request.options):
 			raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
-			# 'expected 'dict' but got %s' % type(request.options)
 
 		category = request.options.get('category', 'username')
 		pattern = request.options.get('pattern', '*')
 
 		request.status = SUCCESS
-		try:
-			response = self.parse_users( category, pattern )
-		except IOError:
-			response = []
-			response.status = MODULE_ERR # UMC_CommandError ?
-			pass # no permissions, file does not exists
-		except (KeyError, IndexError):
-			response.status = MODULE_ERR # UMC_CommandError ?
-			response = []
-			pass # shadow/passwd has wrong format
+		response = self.parse_users( category, pattern )
 
 		MODULE.info( 'luga.users_query: results: %s' % str( response ) )
 		self.finished( request.id, response )
@@ -295,7 +298,7 @@ class Users():
 			return string
 		"""
 
-		cmd = ''
+		cmd = ' '
 
 		# Gecos
 		def sanitize_gecos(s):
@@ -306,34 +309,34 @@ class Users():
 
 		if gecos:
 			gecos = map(sanitize_gecos, ['fullname', 'roomnumber', 'tel_business', 'tel_private', 'miscellaneous'])
-			cmd += ' -c %s' % self.sanitize_arg( ','.join(gecos) )
+			cmd += '-c %s ' % self.sanitize_arg( ','.join(gecos) )
 
 		# Home directory
 		homedir = options.get('homedir')
 		if homedir:
-			cmd += ' -d %s' % self.sanitize_arg( homedir )
-			if options.get('create_home'): # TODO: a name between move/create_home
-				cmd += ' -m '
+			cmd += '-d %s ' % self.sanitize_arg( homedir )
+			if options.get('create_home'): # TODO: rename move/create_home
+				cmd += '-m '
 
 		# Shell
 		shell = options.get('shell')
 		if shell:
-			cmd += ' -s %s' % self.sanitize_arg(shell)
+			cmd += '-s %s ' % self.sanitize_arg(shell)
 
 		# User-ID
 		uid = str(options.get('uid', ''))
 		if uid.isdigit():
-			cmd += ' -u %d' % self.sanitize_arg(uid)
+			cmd += '-u %d ' % self.sanitize_arg(uid)
 
 		# Additional groups
 		groups = options.get('groups')
 		if groups:
-			cmd += ' -G %s' % self.sanitize_arg( ','.join(list(groups)) )
+			cmd += '-G %s ' % self.sanitize_arg( ','.join(list(groups)) )
 
 		# Primary Group
 		group = options.get('group')
 		if group:
-			cmd += ' -g %s' % self.sanitize_arg( group )
+			cmd += '-g %s ' % self.sanitize_arg( group )
 
 		# Password options
 		if options.get('pw_delete'):
@@ -378,50 +381,54 @@ class Users():
 
 		request.status = SUCCESS
 		failures = []
-		errors = {} # no information about returncodes, yet
+		errors = {
+			# no information about returncodes, yet
+		}
 
 		for o in request.options:
-			option = o.get('object', {})
-			options = o.get('options', {})
+			try:
+				option = o.get('object', {})
+				options = o.get('options', {})
 
-			# Username
-			username = options.get('username')
-			new_username = option.get('username')
-			if not username:
-				failures.append( ('', _('No username given')) )
-				continue
+				# Username
+				username = options.get('username')
+				new_username = option.get('username')
+				if not username:
+					raise ValueError( _('No username given') )
 
-			pwoptions = {}
-			cmd = '/usr/sbin/usermod '
-			cmd += self.get_common_args( option, pwoptions )
-	
-			# Change username
-			if new_username and username != new_username:
-				cmd += ' -l %s' % self.sanitize_arg( new_username )
+				pwoptions = {}
+				cmd = '/usr/sbin/usermod '
+				cmd += self.get_common_args( option, pwoptions )
 
-#			Will be Done in pwoptions
-#			# Account deactivation
-#			if None != options.get('lock'):
-#				cmd += ' -L'
-#			elif None != options.get('unlock'):
-#				cmd += ' -U'
+				# Change username
+				if new_username and username != new_username:
+					cmd += '-l %s ' % self.sanitize_arg( new_username )
 
-			cmd += ' %s' % self.sanitize_arg(username)
+				# Account deactivation
+				if pwoptions.get('lock'):
+					cmd += '-L '
 
-			# Password
-			password = option.get('password')
-			pw = self.change_password(username, password, pwoptions)
-			if not pw[0]:
-				failures.append( (username, pw[1], ) )
+				elif options.get('unlock'):
+					cmd += '-U '
 
-			# Execute
-			exit = self.process(cmd)
-			if exit['returncode'] != 0:
-				error = errors.get( str(exit['returncode']), _('unknown error with statuscode %d accured') % (exit['returncode']) )
-				failures.append( (username, error, ) )
-				continue
+				cmd += self.sanitize_arg(username)
 
-		response = (0 is len(failures))
+				# Password
+				password = option.get('password')
+				pw = self.change_password(username, password, pwoptions)
+				if not pw[0]:
+					raise ValueError( _('%s: %s') % (username, pw[1]) )
+
+				# Execute
+				returncode = self.process(cmd)
+				if returncode != 0:
+					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
+					raise ValueError( _('%s: %s') % (username, error) )
+
+			except ValueError as e:
+				failures.append( str(e) )
+
+		response = 0 is len(failures)
 		MODULE.info( 'luga.users_edit: results: %s' % str( response ) )
 		self.finished( request.id, response, str(failures) )
 
@@ -441,62 +448,62 @@ class Users():
 		request.status = SUCCESS
 		failures = []
 		errors = {
-			'1': _('could not update password file'),
-			'2': _('invalid command syntax'),
-			'3': _('invalid argument to option'),
-			'4': _('UID already in use (and no -o)'),
-			'6': _('specified group doesnt exist'),
-			'9': _('username already in use'),
-			'10': _('could not update group file'),
-			'12': _('could not create home directory'),
-			'13': _('could not create mail spool'),
+			1: _('could not update password file'),
+			2: _('invalid command syntax'),
+			3: _('invalid argument to option'),
+			4: _('UID already in use (and no -o)'),
+			6: _('specified group doesnt exist'),
+			9: _('username already in use'),
+			10: _('could not update group file'),
+			12: _('could not create home directory'),
+			13: _('could not create mail spool'),
 		}
 
 		for o in request.options:
-			if dict is not type(o):
-				raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
+			try:
+				if dict is not type(o):
+					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
-			option = o.get('object', {})
-			options = o.get('options', {})
+				option = o.get('object', {})
+				options = o.get('options', {})
 
-			# Username
-			username = options.get('username')
-			if not username:
-				failures.append( ('', _('No username given')) )
-				continue
+				# Username
+				username = options.get('username')
+				if not username:
+					raise ValueError( _('No username given') )
 
-			pwoptions = {}
-			cmd = '/usr/sbin/useradd '
-			cmd += self.get_common_args( option, pwoptions )
-	
-			# TODO: Homedir -M option?, requuires passwd 4.1.4.2
+				pwoptions = {}
+				cmd = '/usr/sbin/useradd '
+				cmd += self.get_common_args( option, pwoptions )
 
-			# TODO: rename?, Create an own Usergroup as primary group?
-			if options.get('create_usergroup'):
-				cmd += ' -U'
-			else:
-				cmd += ' -N'
+				# TODO: rename?
+				# Create an own Usergroup as primary group?
+				if options.get('create_usergroup'):
+					cmd += ' -U'
+				else:
+					cmd += ' -N'
 
-#	 		Will be done in pwoptions
-#			# Password inactivity, expiration
-#			if option.get('inactive'):
-#				cmd += ' -f %s' % self.sanitize_arg(option['inactive'])
+				cmd += ' %s' % self.sanitize_arg(username)
 
-			cmd += ' %s' % self.sanitize_arg(username)
+				# Execute
+				returncode = self.process(cmd)
+				if 0 != returncode:
+					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
+					raise ValueError( '%s: %s' % (username, error) )
+				else:
+					password = option.get('password')
+					pw = self.change_password(username, password, pwoptions)
+					if not pw[0]:
+						failures.append( (username, pw[1], ) )
+			except UMC_OptionTypeError as e:
+				if len(0) is 1:
+					raise e
+				else:
+					failures.append( str(e) )
+			except ValueError as e:
+				failures.append( str(e) )
 
-			# Execute
-			exit = self.process(cmd)
-			if 0 != exit['returncode']:
-				error = errors.get( str(exit['returncode']), _('unknown error with statuscode %d accured') % (exit['returncode']) )
-				failures.append( (username, error, ) )
-				continue
-			else:
-				password = option.get('password')
-				pw = self.change_password(username, password, pwoptions)
-				if not pw[0]:
-					failures.append( (username, pw[1], ) )
-
-		response = (0 is len(failures))
+		response = 0 is len(failures)
 
 		MODULE.info( 'luga.users_add: results: %s' % str( response ) )
 		self.finished( request.id, response, str(failures) )
@@ -517,40 +524,42 @@ class Users():
 		request.status = SUCCESS
 		failures = []
 		errors = {
-			'1': _('could not update password file'),
-			'2': _('invalid command syntax'),
-			'6': _('specified user doesnt exist'),
-			'8': _('user currently logged in'),
-			'10': _('could not update group file'),
-			'12': _('could not remove home directory')
+			1: _('could not update password file'),
+			2: _('invalid command syntax'),
+			6: _('specified user doesnt exist'),
+			8: _('user currently logged in'),
+			10: _('could not update group file'),
+			12: _('could not remove home directory')
 		}
 
 		for option in request.options:
-			# TODO: option is a string, not dict...
-			# where to get options foreach user?
-			# can i hack in JS? alerting user?
-			if dict is not type(option):
-				raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
+			try:
+				# TODO: option is a string, not dict...
+				# where to get options foreach user?
+				# can i hack in JS? alerting user?
+				if dict is not type(option):
+					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
-			username = option.get('username')
+				username = option.get('username')
 
-			if None is username:
-				failures.append( ('', _('No username given')) )
-				continue
-			if option.get('force'):
-				cmd += ' -f'
-			if option.get('remove'):
-				cmd += ' -r'
+				if None is username:
+					raise ValueError( _('No username given') )
+				if option.get('force'):
+					cmd += ' -f'
+				if option.get('remove'):
+					cmd += ' -r'
 
-			cmd += ' %s' % self.sanitize_arg(username)
+				cmd += ' %s' % self.sanitize_arg(username)
 
-			exit = self.process(cmd)
-			if exit['returncode'] != 0:
-				error = errors.get( str(exit['returncode']), _('unknown error with statuscode %d accured') % (exit['returncode']) )
-				failures.append( (username, error, ) )
+				returncode = self.process(cmd)
+				if returncode != 0:
+					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
+					raise ValueError( '%s: %s' % (username, error) )
+			except ValueError as e:
+				failures.append( str(e) )
 
-		response = (0 is len(failures))
+		response = 0 is len(failures)
 
 		MODULE.info( 'luga.users_delete: results: %s' % str( response ) )
-		self.finished( request.id, response, str(failures) )
+		self.finished( request.id, response, failures )
 

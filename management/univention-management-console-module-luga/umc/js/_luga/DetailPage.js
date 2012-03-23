@@ -122,7 +122,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}, {
 				type: 'TextBox',
 				name: 'homedir',
-				size: 'TwoThirds',
+		//		size: 'TwoThirds',
 				label: this._('Unix home directory')
 			}, {
 				type: 'TextBox',
@@ -203,32 +203,31 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				disabled: true,
 				name: 'disabled_since',
 				label: this._('Account is disabled since')
+			}, {
+				type: 'CheckBox',
+				name: 'create_home',
+				label: this._('move home folder')
+			}, {
+				type: 'CheckBox',
+				name: 'create_usergroups',
+				visible: false,
+				label: this._('create group for user')
 			}];
-			
-			if( this.newObjectOptions ) {
-				widgets.push( {
-					type: 'CheckBox',
-					name: 'create_home',
-					label: this._('create home folder')
-				} );
-			} else {
-				widgets.push( {
-					type: 'CheckBox',
-					name: 'create_home',
-					label: this._('move home folder')
-				} );
-			}
+
 			// specify the layout... additional dicts are used to group form elements
 			// together into title panes
 			layout = [{
 				label: this._('General'),
 				layout: [ [ 'username', 'fullname' ], ['password', 'password_retype'], ['lock', 'pw_delete' ] ]
+			}, { 
+				label: this._('Additional information'),
+				layout: [ ['tel_business', 'tel_private'], ['roomnumber', 'miscellaneous'] ]
 			}, {
 				label: this._('Groups'),
 				layout: [ 'group', 'groups' ]
 			}, {
 				label: this._('Account information'),
-				layout: [ ['uid', 'homedir', 'shell' ], ['tel_business', 'tel_private'], ['roomnumber', 'miscellaneous'] ]
+				layout: [ 'uid', 'shell',  'homedir', 'create_home']
 			}, {
 				label: this._('Options and Passwords'),
 				layout: [ 'pw_is_expired', 'pw_is_empty', 'pw_last_change', 'disabled_since', 'pw_mindays', 'pw_maxdays', 'pw_warndays', 'pw_disabledays' ]
@@ -240,20 +239,17 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				label: this._('Groupname')
 			}, {
 				type: 'TextBox',
-				name: 'password',
-				label: this._('Password')
-			}, {
-				type: 'CheckBox',
-				name: 'remove_password',
-				label: this._('Remove password')
-			}, {
-				type: 'TextBox',
 				name: 'gid',
 				label: this._('Group ID')
 			}, {
 				type: 'MultiSelect',
 				name: 'users',
 				label: this._('Users'),
+				dynamicValues: 'luga/users/get_users'
+			}, {
+				type: 'MultiSelect',
+				name: 'administrators',
+				label: this._('Administrators'),
 				dynamicValues: 'luga/users/get_users'
 			}];
 			layout = [];
@@ -329,6 +325,33 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));
+	},
+
+	add: function() {
+		this.newObjectOptions = true;
+		// add a local user or group
+		if (this.moduleFlavor === 'luga/users') {
+			umc.toold.forIn({ 
+				pw_is_expired: ['visible', false],
+				pw_is_empty: ['visible', false],
+				pw_last_change: ['visible', false],
+				disabled_since: ['visible', false],
+				pw_delete: ['visible', false],
+				uid: ['visible', false],
+				create_usergroup: ['visible', false],
+				create_home: ['label', this._('Create home folder')],
+				shell: ['value', '/bin/bash']
+			}, function(widget, value) {
+				this._form.getWidget(widget).set(value[0], value[1]);
+			}, this);
+
+			// TODO: connect on username, change group field
+			// change home dir
+		} else if (this.moduleFlavor === 'luga/groups') {
+			this._form._widgets.gid.set('visible', false);
+		}
+		this.standby(false);
+//		this.show();
 	},
 
 	load: function(id) {

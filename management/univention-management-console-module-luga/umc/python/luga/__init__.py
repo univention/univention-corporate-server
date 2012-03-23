@@ -35,14 +35,14 @@ from Users import Users
 from Groups import Groups
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import UMC_OptionTypeError, Base
-from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
+from univention.management.console.modules import Base
 
-import subprocess
-import shlex
+from subprocess import PIPE, Popen
+from shlex import split
 
-class Process():
+_ = Translation( 'univention-management-console-module-luga' ).translate
+
+class Process:
 	def sanitize_arg(self, arg):
 		return "'" + str(arg).replace('\\','\\\\').replace('\'','\\\'') + "'"
 
@@ -52,21 +52,18 @@ class Process():
 			
 			param args = string of arguments
 			param stdin = stdin string
-			return {returncode: <returncode>, stderr: <stderrdata>}
+			return int returncode|string 'OSError'
 		"""
 
 		try:
-			p = subprocess.Popen( args = shlex.split(args.encode('utf-8')), env = {'LANG':'en'}, stderr = subprocess.PIPE, stdin = subprocess.PIPE )
+			p = Popen( args = split(args.encode('utf-8')), env = {'LANG':'en'}, stderr = PIPE, stdin = PIPE )
 			(stdout, stderr) = p.communicate(stdin)
-		except OSError as e:
-			pass
+		except:
+			raise ValueError( _('command processing failed') )
 
-		return { 'returncode': p.returncode, 'stderr': stderr }
+		return p.returncode
 
 class Instance(Users, Groups, Base, Process):
 	def __init__(self):
-#		Users.__init__(self)
-#		Groups.__init__(self)
-#		Process.__init__(self)
 		Base.__init__(self)
 

@@ -43,10 +43,10 @@ dojo.require("umc.modules._luga.DetailPage");
 
 dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// summary:
-	//		Template module to ease the UMC module development.
+	//		
 	// description:
-	//		This module is a template module in order to aid the development of
-	//		new modules for Univention Management Console.
+	//		
+	//		
 
 	// the property field that acts as unique identifier for the object
 	idProperty: null,
@@ -134,8 +134,8 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// define grid actions
 		var actions = [{
 			name: 'add',
-			label: this._('Add object'),
-			description: this._('Create a new object'),
+			label: this._('Add %s', this.objectNameSingular),
+			description: this._('Create a new %s', this.objectNameSingular),
 			iconClass: 'umcIconAdd',
 			isContextAction: false,
 			isStandardAction: true,
@@ -180,30 +180,20 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 		else if (this.moduleFlavor === 'luga/groups') {
 			columns = [{
-				name: 'status',
-				label: this._('Status'),
-				width: '12%'
-			}, {
 				name: 'groupname',
 				label: this._('Groupname'),
-				width: '88%'
+				width: '100%'
 			}];
 		}
 
 		// generate the data grid
 		this._grid = new umc.widgets.Grid({
-			// property that defines the widget's position in a dijit.layout.BorderContainer,
-			// 'center' is its default value, so no need to specify it here explicitely
-			// region: 'center',
 			actions: actions,
-			// defines which data fields are displayed in the grids columns
 			columns: columns,
-			// a generic UMCP module store object is automatically provided
-			// as this.moduleStore (see also umc.store.getModuleStore())
 			moduleStore: this.moduleStore,
 			// initial query
 			query: { 
-				category: '', // TODO: 'all' is deprecated
+				category: '',
 				pattern: '*'
 			}
 		});
@@ -220,9 +210,9 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			staticValues = [
 				{id: 'groupname', label: this._('Groupname')},
 				{id: 'gid', label: this._('GID')},
-				{id: 'users', label: this._('Users')}
+				{id: 'users', label: this._('Users')},
+				{id: 'administrators', label: this._('Administrators')}
 			];
-
 		} else if (this.moduleFlavor === 'luga/users') {
 			staticValues = [
 				{id: 'username', label: this._('Username')},
@@ -264,7 +254,6 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			layout: layout,
 			onSearch: dojo.hitch(this, function(values) {
 				// call the grid's filter function
-				// (could be also done via dojo.connect() and dojo.disconnect() )
 				this._grid.filter(values);
 			})
 		});
@@ -294,20 +283,14 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// connect to the onClose event of the detail page... we need to manage
 		// visibility of sub pages here
-		// ... this.connect() will destroy signal handlers upon widget
-		// destruction automatically
 		this.connect(this._detailPage, 'onClose', function() {
 			this.selectChild(this._searchPage);
 		});
 	},
 
 	_addObject: function() {
-		if (this.moduleFlavor === 'luga/users') {
-			this._addUser();
-		}
-		else if (this.moduleFlavor === 'luga/groups') {
-			this._addGroup();
-		}
+		this.selectChild(this._detailPage);
+		this._detailPage.add()
 	},
 
 	_editObject: function(ids, items) {
