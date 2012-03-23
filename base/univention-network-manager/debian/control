@@ -41,7 +41,8 @@ Description: UCS - Support for ifplugd
 Package: univention-network-common
 Architecture: all
 Depends: ${misc:Depends},
- univention-management-console-server
+ univention-management-console-server,
+ python-netifaces
 Description: UCS - Network tools for ifplugd and network-manager (common)
  This package installs tools required by univention-ifplugd and
  univention-network-manager.
