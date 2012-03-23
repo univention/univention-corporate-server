@@ -142,7 +142,7 @@ class Groups():
 			if groupname:
 				try:
 					if not self.validate_groupname(groupname):
-						raise ValueError(_('"%s" is no valid groupname') % (groupname)
+						raise ValueError(_('"%s" is no valid groupname') % groupname)
 					if gid:
 						if not self.validate_gid(gid):
 							args += ' -g "%s"' % gid
