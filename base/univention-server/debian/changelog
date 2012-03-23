@@ -1,3 +1,10 @@
+univention-server (7.0.16-1) unstable; urgency=low
+
+  * Added dependency to umc-module-ipchange for Master and Backup
+    (Bug #26416)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Mar 2012 06:33:07 +0100
+
 univention-server (7.0.15-2) unstable; urgency=low
 
   * Enable IPv6 for time (Bug #25456)
