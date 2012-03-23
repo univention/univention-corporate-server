@@ -1,3 +1,12 @@
+univention-base-files (1.0.47-1) unstable; urgency=low
+
+  * Removed network fallback warning from issue (Bug #26416)
+  * Added an UCR variable interfaces/restart/auto. If this variable is
+    set to false, the automatic network restart will be skipped while
+    changing network UCR variables (Bug #26416)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Mar 2012 16:10:19 +0100
+
 univention-base-files (1.0.46-1) unstable; urgency=low
 
   * Don't re-call dhclient if the resolv.conf was written (Bug #25769)

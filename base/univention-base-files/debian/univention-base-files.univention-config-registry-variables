@@ -187,6 +187,11 @@ Description[en]=Accept neighbour discovery protocol (NDP) router advertisements 
 Type=str
 Categories=system-network
 
+[interfaces/restart/auto]
+Description[de]=Aktiviere/Deaktiviere den automatischen Netzwerk Neustart beim Setzen von Netzwerk UCR Variablen
+Description[en]=Enable/Disable automatic network restart while setting network UCR variables
+Type=bool
+Categories=system-network
 
 [hosts/static/.*]
 Description[de]=Zusätzliche /etc/hosts Einträge

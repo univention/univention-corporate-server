@@ -28,21 +28,4 @@ if configRegistry.get('version/version'):
 else:
 	print 'Univention Thin Client'
 
-if serversystem:
-	for device in ['eth0', 'eth1', 'eth2', 'eth3']:
-		type=configRegistry.get('interfaces/%s/type' % device)
-		if type == 'dhcp':
-			fallback_address=configRegistry.get('interfaces/%s/fallback/address' % device)
-			if fallback_address:
-		  		current_address=configRegistry.get('interfaces/%s/address' % device )
-		  		if current_address != fallback_address:
-					print ''
-					print 'Warning: Network device %s currently uses the IP address "%s", obtained via dhcp,' % (device, current_address)
-					print '         but it was setup with IP address "%s".' % fallback_address
-					recommend_ussnet=True
-	if recommend_ussnet:
-		print ''
-		print '         Please consider running univention-system-setup-net'
-		print '         to update the information in the UCS directory service.'
-		print ''
 @!@

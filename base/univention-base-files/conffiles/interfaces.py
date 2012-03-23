@@ -84,18 +84,20 @@ def restore_v6gateway(gateway):
 			os.system('ip -6 route add to default via %s' % gateway)
 
 def preinst(configRegistry, changes):
-	for iface in set(changes):
-		if iface in configRegistry:
-			stop_iface(interface(iface))
+	if configRegistry.is_true('interfaces/restart/auto', True):
+		for iface in set(changes):
+			if iface in configRegistry:
+				stop_iface(interface(iface))
 
 def postinst(configRegistry, changes):
-	for iface in set(changes):
-		if iface in configRegistry:
-			start_iface(interface(iface))
-	if 'gateway' in set(changes) or 'interfaces/eth0/netmask' in set(changes):
-		if 'gateway' in set(changes):
-			restore_gateway(changes['gateway'], configRegistry.get("interfaces/eth0/netmask", False))
-		else:
-			restore_gateway(configRegistry.get("gateway", False), configRegistry.get("interfaces/eth0/netmask", False))
-	if 'ipv6/gateway' in changes:
-		restore_v6gateway(changes['ipv6/gateway'])
+	if configRegistry.is_true('interfaces/restart/auto', True):
+		for iface in set(changes):
+			if iface in configRegistry:
+				start_iface(interface(iface))
+		if 'gateway' in set(changes) or 'interfaces/eth0/netmask' in set(changes):
+			if 'gateway' in set(changes):
+				restore_gateway(changes['gateway'], configRegistry.get("interfaces/eth0/netmask", False))
+			else:
+				restore_gateway(configRegistry.get("gateway", False), configRegistry.get("interfaces/eth0/netmask", False))
+		if 'ipv6/gateway' in changes:
+			restore_v6gateway(changes['ipv6/gateway'])
