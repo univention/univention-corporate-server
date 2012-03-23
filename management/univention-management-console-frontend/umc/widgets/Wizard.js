@@ -188,12 +188,13 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 
 	_next: function(/*String*/ currentPage) {
 		// update visibilty of buttons and show next page
-		var nextPage = this.next(currentPage);
-		if (!nextPage) {
-			throw new Error('ERROR: received invalid page name [' + dojo.toJson(nextPage) + '] for Wizard.next(' + dojo.toJson(currentPage) + ')');
-		}
-		this._updateButtons(nextPage);
-		this.selectChild(this._pages[nextPage]);
+		dojo.when(this.next(currentPage), dojo.hitch(this, function(nextPage) {
+			if (!nextPage) {
+				throw new Error('ERROR: received invalid page name [' + dojo.toJson(nextPage) + '] for Wizard.next(' + dojo.toJson(currentPage) + ')');
+			}
+			this._updateButtons(nextPage);
+			this.selectChild(this._pages[nextPage]);
+		}));
 	},
 
 	next: function(/*String*/ pageName) {
@@ -226,9 +227,10 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 
 	_previous: function(/*String*/ currentPage) {
 		// update visibilty of buttons and show previous page
-		var previousPage = this.previous(currentPage);
-		this._updateButtons(previousPage);
-		this.selectChild(this._pages[previousPage]);
+		dojo.when(this.previous(currentPage), dojo.hitch(this, function(previousPage) {
+			this._updateButtons(previousPage);
+			this.selectChild(this._pages[previousPage]);
+		}));
 	},
 
 	previous: function(/*String*/ pageName) {
