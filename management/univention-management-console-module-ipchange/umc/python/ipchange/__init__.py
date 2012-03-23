@@ -37,6 +37,7 @@ import time
 import notifier
 import notifier.threads
 import re
+import string
 import csv
 import univention.info_tools as uit
 from univention.lib.i18n import Translation
@@ -79,7 +80,35 @@ class Instance(umcm.Base):
 				server = cobject[0]
 				server.open()
 				MODULE.info('Change IP to %s' % request.options.get('ip'))
+
+				# remove old DNS reverse entries with old IP
+				old_ip = server['ip']
+				for e in server['dnsEntryZoneReverse']:
+					if e[1] == old_ip:
+						server['dnsEntryZoneReverse'].remove(e)
+
+				# do we have a reverse zone for this IP address?
+				rmodule = univention.admin.modules.get('dns/reverse_zone')
+				# ignore all netmask values != 255
+				c = request.options.get('netmask').split('.').count('255')
+				filter='(subnet=%s)' % (string.join(request.options.get('ip').split('.')[0:c], '.') )
+				reverseobject = univention.admin.modules.lookup(rmodule, co, lo, scope='sub', superordinate=None, filter=filter)
+				if reverseobject:
+					server['dnsEntryZoneReverse'].append([reverseobject[0].dn, request.options.get('ip')])
+				
 				server['ip'] = request.options.get('ip')
 				server.modify()
+
+				# do we have a reverse zone for this IP address?
+				if request.options.get('oldip'):
+					fmodule = univention.admin.modules.get('dns/forward_zone')
+					filter='(aRecord=%s)' % (request.options.get('oldip'))
+					forwardobjects = univention.admin.modules.lookup(fmodule, co, lo, scope='sub', superordinate=None, filter=filter)
+					for forwardobject in forwardobjects:
+						forwardobject.open()
+						forwardobject['a'].remove(request.options.get('oldip'))
+						forwardobject['a'].append(request.options.get('ip'))
+						forwardobject.modify()
+
 		self.finished(request.id, True)
 

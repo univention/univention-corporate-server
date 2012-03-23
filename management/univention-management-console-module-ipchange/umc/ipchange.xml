@@ -8,6 +8,8 @@
 	</categories>
 	<command name="ip/change" function="change">
 		<attribute name="ip" syntax="String"/>
+		<attribute name="netmask" syntax="String"/>
+		<attribute name="oldip" syntax="String"/>
 		<attribute name="role" syntax="String"/>
 	</command>
   </module>
