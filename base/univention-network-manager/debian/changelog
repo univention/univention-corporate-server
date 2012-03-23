@@ -1,3 +1,10 @@
+univention-network-manager (3.0.10-1) unstable; urgency=low
+
+  * Register address only if the device is configured as DHCP device
+    (Bug #26416)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Mar 2012 21:50:04 +0100
+
 univention-network-manager (3.0.9-1) unstable; urgency=low
 
   * Added dependency to python-netifaces (Bug #26416)
