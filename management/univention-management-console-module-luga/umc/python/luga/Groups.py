@@ -142,25 +142,25 @@ class Groups():
 			if groupname:
 				try:
 					if not self.validate_groupname(groupname):
-						raise ValueError(_('Did not create group "%s" ("%s" is no valid groupname)\n') % (groupname, groupname))
+						raise ValueError(_('"%s" is no valid groupname') % (groupname)
 					if gid:
 						if not self.validate_gid(gid):
 							args += ' -g "%s"' % gid
-							raise ValueError(_('Dit not create group "%s" ("%s" is no valid GID)\n') % (groupname, gid))
+							raise ValueError(_('"%s" is no valid GID') % gid)
 						args += ' -g "%s"' % gid
 					returncode = self.process('/usr/sbin/groupadd%s "%s"' % (args, groupname))
 					if returncode:
-						raise CreatingError(_('Did not create group "%s" (groupadd returned %d)\n') % (groupname, returncode))
+						raise CreatingError(_('groupadd returned %d') % returncode)
 					if users:
 						returncode = self.process('/usr/bin/gpasswd -M "%s" "%s"' % (users, groupname))
 						if returncode:
-							raise ModifyError(_('Did not create group "%s" (could not set list of users, gpasswd returned %d)\n') % (groupname, returncode))
+							raise ModifyError(_('could not set list of users, gpasswd returned %d') % returncode)
 					if administrators:
 						retuncode = self.process('/usr/bin/gpasswd -A "%s" "%s"' % (administrators, groupname))
 						if returncode:
-							raise ModifyError(_('Did not create group "%s" (could not set list of administrators, gpasswd returned %d)\n') % (groupname, returncode))
+							raise ModifyError(_('could not set list of administrators, gpasswd returned %d') % returncode)
 				except (ValueError, CreatingError, ModifyError) as e:
-					message += e.message
+					message += _('Did not create group "%s" (%s)\n') % (groupname, e.message)
 					success = False
 				else:
 					message += _('Successfully created group "%s"\n') % groupname
@@ -184,25 +184,25 @@ class Groups():
 				if groupname:
 					if not self.validate_groupname(groupname):
 						args += ' -n %s' % groupname
-						raise ValueError(_('Did not modify group "%s" ("%s" is no valid groupname)\n') % (id, groupname))
+						raise ValueError(_('"%s" is no valid groupname)\n') % groupname)
 					args += ' -n %s' % groupname
 				if gid:
 					if not self.validate_gid(gid):
-						raise ValueError(_('Did not modify group "%s" ("%s" is no valid gid)\n') % (id, gid))
+						raise ValueError(_('"%s" is no valid gid)\n') % id)
 					args += ' -g %s' % gid
 				returncode = self.process('/usr/sbin/groupmod%s "%s"' % (args, id))
 				if returncode:
-					raise ModifyError(_('Did not modify group "%s" (groumod returned %d)\n') % (id, returncode))
+					raise ModifyError(_('groumod returned %d)\n') % returncode)
 				if users:
 					returncode = self.process('/usr/bin/gpasswd -M "%s" "%s"' % (users, groupname))
 					if returncode:
-						raise ModifyError(_('Did not modify group "%s" (could not modify list of users, gpasswd returned %d)\n') % (id, returncode))
+						raise ModifyError(_('could not modify list of users, gpasswd returned %d)\n') % returncode)
 				if administrators:
 					returncode = self.process('/usr/bin/gpasswd -A "%s" "%s"' % (administrators, groupname))
 					if returncode:
-						raise ModifyError(_('Did not modify group "%s" (could not modify list of administrators, gpasswd returned %d)\n') % (id, returncode))
+						raise ModifyError(_('could not modify list of administrators, gpasswd returned %d)\n') % returncode)
 			except (ValueError, ModifyError) as e:
-				message += e.message
+				message += _('Did not modify group "%s" (%s)\n' ) % (id, e.message)
 				success = False
 			else:
 				message += _('Successfully modified group "%s"\n') % id
@@ -215,7 +215,7 @@ class Groups():
 			returncode = self.process('/usr/sbin/groupdel "%s"' % id)
 			if returncode:	
 				success = False
-				message += _('Could not remove group "%s" (groupdel returned %d)\n') % (id, returncode)
+				message += _('Did not remove group "%s" (groupdel returned %d)\n') % (id, returncode)
 			else:
 				message += _('Successfully removed group "%s"\n') % id
 		self.finished(request.id, None, message[:-1], success)
