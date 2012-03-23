@@ -32,171 +32,192 @@
 # <http://www.gnu.org/licenses/>.
 
 from fnmatch import fnmatch
-
+from GroupExceptions import *
 from univention.lib.i18n import Translation
 
 _ = Translation( 'univention-management-console-module-luga' ).translate
 
 
-
-
 class Groups():
-	def groups_parse(self, category='groupname', pattern='*'):
-		f = open('/etc/group', 'r')
-		result = []
-		groups = {}
-		for line in f:
-			groupSplit = line[:-1].split(':')
-			if len(groupSplit) == 4:
-				group = {'groupname' : groupSplit[0], 'status' : groupSplit[1], 'gid' : int(groupSplit[2]), 'users' : groupSplit[3]}
-				attributes = []
-				if category == 'users':
-					attributes.extend(group['users'].split(','))
-				else:
-					attributes.append(group[category])
-				for attribute in attributes:
-					if fnmatch(str(attribute), str(pattern)):
-						groups[group['groupname']] = group
-						break
-		f.close()
-		f = open('/etc/gshadow', 'r')
-		for line in f:
-			groupSplit = line[:-1].split(':')
-			if groupSplit[0] in groups:
-				if groupSplit[1] in ('*', '!', '!!'):
-					groups[groupSplit[0]]['status'] = groupSplit[1]
-				else:
-					groups[groupSplit[0]]['status'] = ''
-				result.append(groups[groupSplit[0]])
-				del groups[groupSplit[0]]
-		f.close()
-		for group in groups:
-			result.append(group)
+	def parse_groups(self):
+		try:
+			f = open('/etc/group', 'r')
+			result = []
+			shadowGroups = {}
+			for line in f:
+				lineSplit = line[:-1].split(':')
+				if len(lineSplit) == 4:
+					group = {'groupname' : lineSplit[0], 'gid' : int(lineSplit[2]), 'users' : lineSplit[3], 'administrators' : ''}
+					if lineSplit[1] == 'x':
+						shadowGroups[lineSplit[0]] = group
+					else:
+						result.append(group)
+			f.close()
+		except IOError:
+			raise UMC_CommandError(_('Could not read from file /etc/group'))
+		try:
+			f = open('/etc/gshadow', 'r')
+			for line in f:
+				lineSplit = line[:-1].split(':')
+				if len(lineSplit) == 4 and lineSplit[0] in shadowGroups:
+					shadowGroups[lineSplit[0]]['administrators'] = lineSplit[2]
+					result.append(shadowGroups[lineSplit[0]])
+					del shadowGroups[lineSplit[0]]
+			f.close()
+		except IOError:
+			raise UMC_CommandError(_('Could not read from file /etc/gshadow'))
 		return result
+
+	def group_search(self, category, pattern):
+		result = []
+		groups = self.parse_groups()
+		for group in groups:
+			attributes = []
+			if category == 'users' or category == 'administrators':
+				attributes.extend(group[category].split(','))
+			else:
+				attributes.append(group[category])
+			for attribute in attributes:
+				if fnmatch(str(attribute), str(pattern)):
+					result.append(group)
+					break
+		return result
+
+	def get_additional_groups(self, username):
+		return self.group_search('users', username)
+
+	def get_groups(self, request):
+		result = []
+		groups = self.parse_groups()
+		for group in groups:
+			result.append({'id' : group['groupname'], 'label' : group['groupname']})
+		self.finished(request.id, result)
+
+	def get_administrators(self, group):
+		return self.group_search('groupname', group)[0]['administrators'].split(',')
+
+	def validate_groupname(self, groupname):
+		if len(groupname) <= 32 and not groupname.startswith('-') and not ':' in groupname and not ' ' in groupname and not '\n' in groupname and not '\t' in groupname:
+			return True
+		else:
+			return False
+
+	def validate_gid(self, gid):
+		return gid.isdigit()
+
+	def groups_get(self, request):
+		result = []
+		for group in self.parse_groups():
+			if group['groupname'] in request.options:
+				result.append(group)
+		self.finished(request.id, result)
 
 	def groups_query(self, request):
 		success = True
 		message = None
 		result = []
+		groups = []
 		category = request.options.get('category', '')
 		if category == '':
 			category = 'groupname'
-		if not category in ('groupname', 'gid', 'users'):
+		if category in ('groupname', 'gid', 'users', 'administrators'):
+			groups.extend(self.group_search(category, request.options.get('pattern', '*')))
+			for group in groups:
+				result.append({'groupname' : group['groupname']})
+		else:
 			success = False
-			message = 'Invalid category "%s"' % category
-		else:
-			result.extend(self.groups_parse(category, request.options.get('pattern', '*')))
-			message = 'Success'
+			message = _('Invalid category "%s"') % category
 		self.finished(request.id, result, message, success)
-
-	def groups_getGroups(self, request):
-		result = []
-		groups = self.groups_parse()
-		for group in groups:
-			result.append({'id' : group['groupname'], 'label' : group['groupname']})
-		self.finished(request.id, result)
-
-	def groups_getAdditionalGroups(self, username):
-		result = []
-		groups = self.groups_parse('users', username)
-		for group in groups:
-			result.append(group['groupname'])
-		return result
-
-	def groups_get(self, request):
-		result = []
-		for group in self.groups_parse():
-			if group['groupname'] in request.options:
-				result.append(group)
-		self.finished(request.id, result)
-
-	def groups_validateGid(gid):
-		return gid.isdigit()
 	
-	def groups_validateGroupname(groupname):
-		if not len(groupname) <= 32 and not groupname.startswith('-') and not ':' in groupname and not ' ' in groupname and not '\n' in groupname and not '\t' in groupname:
-			return True
-		else:
-			return False
-
 	def groups_add(self, request):
 		message = ''
 		success = True
-		for id in request:
+		for group in request.options:
 			args = ''
-			groupname = id.options.get('groupname')
-			gid = id.options.get('gid')
-			password = id.options.get('password')
-			try:
-				if groupname:
-					if not self.groups_validateGroupname(groupname):
-						raise ValueError('"%s" is no valid groupname' % groupname)
-				else:
-					raise ValueError('groupname required')
-				if gid:
-					if self.groups_validateGid(gid):
+			returncode = None
+			groupname = group.get('groupname')
+			gid = group.get('gid')
+			users = group.get('users')
+			administrators = groups.get('administrators')
+			if groupname:
+				try:
+					if not self.validate_groupname(groupname):
+						raise ValueError(_('Did not create group "%s" ("%s" is no valid groupname)\n') % (groupname, groupname))
+					if gid:
+						if not self.validate_gid(gid):
+							args += ' -g "%s"' % gid
+							raise ValueError(_('Dit not create group "%s" ("%s" is no valid GID)\n') % (groupname, gid))
 						args += ' -g "%s"' % gid
-					else:
-						raise ValueError('"%s" is no valid GID')
-			except ValueError as e:
-				message += 'Could not create group "%s" (%s)\n' % (groupname, e.message)
-				success = False
-			else:
-				if not self.process('/usr/sbin/groupadd %s %s' % (args, groupname))['returncode']:
-					if password is None or password is not None and not self.process('/usr/bin/gpasswd "%s"' % groupname, '%s\n%s\n' % (password, password)):
-						message += 'Successfully created group "%s"' % groupname
-					else:
-						success = False
-						message += 'An error occured during setting password for group "%s"\n' % groupname
-						self.process('/usr/sbin/groupdel "%s"' % groupname)
-				else:
+					returncode = self.process('/usr/sbin/groupadd%s "%s"' % (args, groupname))
+					if returncode:
+						raise CreatingError(_('Did not create group "%s" (groupadd returned %d)\n') % (groupname, returncode))
+					if users:
+						returncode = self.process('/usr/bin/gpasswd -M "%s" "%s"' % (users, groupname))
+						if returncode:
+							raise ModifyError(_('Did not create group "%s" (could not set list of users, gpasswd returned %d)\n') % (groupname, returncode))
+					if administrators:
+						retuncode = self.process('/usr/bin/gpasswd -A "%s" "%s"' % (administrators, groupname))
+						if returncode:
+							raise ModifyError(_('Did not create group "%s" (could not set list of administrators, gpasswd returned %d)\n') % (groupname, returncode))
+				except (ValueError, CreatingError, ModifyError) as e:
+					message += e.message
 					success = False
-					message += 'An unexpected error occured during creating group "%s"\n' % groupname
+				else:
+					message += _('Successfully created group "%s"\n') % groupname
+			else:
+				message += _('A group was not created because no groupname was given\n')
+				success = False
 		self.finished(request.id, None, message[:-1], success)
 
 	def groups_put(self, request):
 		message = ''
 		success = True
-		for id in request.options:
+		for group in request.options:
 			args = ''
-			newGroupname = id.get('newGroupname')
-			newGid = id.get('newGid')
-			newPassword = id.get('newPassword')
+			returncode = None
+			id = group.get('id')
+			groupname = group.get('groupname')
+			gid = group.get('gid')
+			users = group.get('users')
+			administratos = id.get('administrators')
 			try:
-				if newGroupname:
-						if self.groups_validateeGroupname(newGroupname):
-							args += ' -n %s' % newGroupname
-						else:
-							raise ValueError('"%s" is no valid groupname' % newGroupname)
-				if newGid:
-						if self.groups_validateGid(newGid):
-							args += ' -g %s' % newGid
-						else:
-							raise ValueError('"%s" is no valid groupname' % newGid)
-				if removePassword:
-					if self.process('/usr/sbin/gpasswd -r "%s"' % id)['returncode']:
-						raise ValueError('could not remove password')
-				else:
-					if newPassword:
-							if self.process('/usr/bin/gpasswd "%s"' % id, '%s\n%s' % (newPassword, newPassword))['returncode']:
-								raise ValueError('could not change password')
-			except ValueError as e:
-				message += 'Could not modify group "%s" (%s\n)' % (id, e.message)
+				if groupname:
+					if not self.validate_groupname(groupname):
+						args += ' -n %s' % groupname
+						raise ValueError(_('Did not modify group "%s" ("%s" is no valid groupname)\n') % (id, groupname))
+					args += ' -n %s' % groupname
+				if gid:
+					if not self.validate_gid(gid):
+						raise ValueError(_('Did not modify group "%s" ("%s" is no valid gid)\n') % (id, gid))
+					args += ' -g %s' % gid
+				returncode = self.process('/usr/sbin/groupmod%s "%s"' % (args, id))
+				if returncode:
+					raise ModifyError(_('Did not modify group "%s" (groumod returned %d)\n') % (id, returncode))
+				if users:
+					returncode = self.process('/usr/bin/gpasswd -M "%s" "%s"' % (users, groupname))
+					if returncode:
+						raise ModifyError(_('Did not modify group "%s" (could not modify list of users, gpasswd returned %d)\n') % (id, returncode))
+				if administrators:
+					returncode = self.process('/usr/bin/gpasswd -A "%s" "%s"' % (administrators, groupname))
+					if returncode:
+						raise ModifyError(_('Did not modify group "%s" (could not modify list of administrators, gpasswd returned %d)\n') % (id, returncode))
+			except (ValueError, ModifyError) as e:
+				message += e.message
 				success = False
 			else:
-				if not self.process('/usr/sbin/groupmod%s %s' % (args, id))['returncode']:
-					message += 'Successfully modified group "%s"\n' % id
-				else:
-					message += 'An unexpected error occured while modifying group "%s"\n' % id
+				message += _('Successfully modified group "%s"\n') % id
 		self.finished(request.id, None, message[:-1], success)
 	
 	def groups_remove(self, request):
 		success = True
 		message = ''
 		for id in request.options:
-			if self.process('/usr/sbin/groupdel "%s"' % id)['returncode']:
+			returncode = self.process('/usr/sbin/groupdel "%s"' % id)
+			if returncode:	
 				success = False
-				message += 'Could not remove group "%s"\n' % id
+				message += _('Could not remove group "%s" (groupdel returned %d)\n') % (id, returncode)
+			else:
+				message += _('Successfully removed group "%s"\n') % id
 		self.finished(request.id, None, message[:-1], success)
 
 
