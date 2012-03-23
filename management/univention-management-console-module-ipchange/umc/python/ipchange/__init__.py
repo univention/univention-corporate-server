@@ -97,10 +97,9 @@ class Instance(umcm.Base):
 					server['dnsEntryZoneReverse'].append([reverseobject[0].dn, request.options.get('ip')])
 				
 				server['ip'] = request.options.get('ip')
-				server.modify()
 
 				# do we have a reverse zone for this IP address?
-				if request.options.get('oldip'):
+				if request.options.get('oldip') and request.options.get('oldip') != request.options.get('ip'):
 					fmodule = univention.admin.modules.get('dns/forward_zone')
 					filter='(aRecord=%s)' % (request.options.get('oldip'))
 					forwardobjects = univention.admin.modules.lookup(fmodule, co, lo, scope='sub', superordinate=None, filter=filter)
@@ -109,6 +108,12 @@ class Instance(umcm.Base):
 						forwardobject['a'].remove(request.options.get('oldip'))
 						forwardobject['a'].append(request.options.get('ip'))
 						forwardobject.modify()
+				try:
+					server.modify()
+				except Exception, err:
+					MODULE.warn('Failed to change IP: %s' % traceback.format_exc())
 
-		self.finished(request.id, True)
+					self.finished(request.id, {'success': False}, 'Failed to change IP')
+
+		self.finished(request.id, {'success': True})
 
