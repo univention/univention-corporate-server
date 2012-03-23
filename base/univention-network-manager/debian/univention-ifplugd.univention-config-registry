@@ -1,7 +1,8 @@
 Type: file
-File: etc/dhcp3/dhclient.conf
+File: etc/dhcp/dhclient.conf
 Variables: dhclient/options/timeout
 Variables: dhclient/options/retry
+Variables: dhclient/linklocal/fallback
 
 Type: file
 File: etc/default/ifplugd

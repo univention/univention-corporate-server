@@ -1,5 +1,6 @@
 etc/network/ucs-network-tools etc/network/
 etc/network/if-up.d/[0-9]* etc/network/if-up.d/
 etc/network/if-down.d/[0-9]* etc/network/if-down.d/
+etc/network/if-pre-up.d/[0-9]* etc/network/if-pre-up.d/
 etc/NetworkManager/dhcp-hooks.d/[0-9]* etc/NetworkManager/dhcp-hooks.d/
 nm-dhcp-client.action usr/lib/NetworkManager/

@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
-# Univention Network Manager
-#  rules file for the debian package
+# Univention Network
+#  network script: register IP in LDAP
 #
-# Copyright 2009-2011 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,22 +29,27 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+#
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+. /etc/network/ucs-network-tools
+ucs_ignore_interface
 
-override_dh_fixperms:
-	chmod 755 debian/univention-network-manager/usr/lib/NetworkManager/nm-dhcp-client.action
-	chmod 755 debian/univention-ifplugd/etc/dhcp3/dhclient-enter-hooks.d/univention-ifplugd-enter-hook
-	dh_fixperms
+eval "$(ucr shell server/role ldap/master)"
 
-override_dh_installinit:
-	dh_installinit -punivention-network-common --no-start -u"defaults 99"
+# System must be joined
+if [ ! -e /var/univention-join/joined ]; then
+	exit 0
+fi
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
+# Is master available?
+if /bin/netcat -q0 -w1 $ldap_master 6670 </dev/null; then
 
-%:
-	dh $@
+	# If we are the master a restart of UMC is required
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		invoke-rc.d univention-management-console-server restart
+	fi
+
+	/usr/sbin/univention-register-network-address
+fi
+
+exit 0

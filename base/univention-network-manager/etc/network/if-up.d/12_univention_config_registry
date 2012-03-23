@@ -1,0 +1,88 @@
+#!/usr/bin/python2.6
+#
+# Univention Network
+#  network script: save dhclient result in UCR
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import sys, os, ipaddr, netifaces
+import socket, struct
+
+import univention.config_registry
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+
+iface = os.environ.get('IFACE')
+
+# ignore lo and all
+if iface in ['lo', 'all']:
+	sys.exit(0)
+
+# is interface configured as DHCP?
+if configRegistry.get('interfaces/%s/type' % iface) != 'dhcp':
+	sys.exit(0)
+
+# get first AF_INET interface
+inf = netifaces.ifaddresses(iface).get(netifaces.AF_INET)[0]
+
+ip = ipaddr.IPv4Network('%s/%s' % ( inf.get('addr'), inf.get('netmask') ) )
+inf['network'] = ip.network
+
+# make the key equal to UCR
+inf['address'] = inf.get('addr')
+
+# save to UCR
+ucr_set = []
+for k in ['netmask', 'address', 'broadcast', 'network']:
+	if inf.get(k):
+		ucr_set.append('interfaces/%s/%s=%s' % (iface, k, inf.get(k)))
+	else:
+		ucr_set.append('interfaces/%s/%s' % (iface, k))
+
+# read gateway from proc
+gateway=''
+with open("/proc/net/route") as fh:
+	for line in fh:
+		fields = line.strip().split()
+		if fields[1] != '00000000' or not int(fields[3], 16) & 2:
+			continue
+		gateway=socket.inet_ntoa(struct.pack("<L", int(fields[2], 16)))
+# write to UCR
+if configRegistry.get('gateway') != gateway:
+	ucr_set.append('gateway=%s' % gateway)
+
+
+# Disable ifdown / ifup while setting new UCR variables to avoid an endless loop
+restart = configRegistry.get('interfaces/restart/auto', '')
+univention.config_registry.handler_set(['interfaces/restart/auto=false'])
+univention.config_registry.handler_set(ucr_set)
+univention.config_registry.handler_set(['interfaces/restart/auto=%s' % restart])
+
+sys.exit(0)
+

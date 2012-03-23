@@ -35,7 +35,7 @@ ucs_ignore_interface
 
 eval "$(univention-config-registry shell)"
 
-. /usr/share/univention-lib/ucr.sh
+. /usr/share/univention-lib/all.sh
 
 if [ -n "$nameserver_option_timeout" ] && ! grep timeout /etc/resolv.conf &>/dev/null; then
 	echo "options timeout:$nameserver_option_timeout" >> /etc/resolv.conf
@@ -44,7 +44,7 @@ fi
 # On a joined DNS server the DHCP nameserver should be converted to a dns/forwarder.
 # But at least one nameserver must be configured via ucr and nameserver/external 
 # must not be set to true
-if [ /var/univention-join/joined ] && is_ucr_true "bind/autostart" && [ -n "$nameserver1" -o -n "$nameserver2" -o -n "$nameserver3" ] && ! is_ucr_true "nameserver/external"; then
+if [ /var/univention-join/joined ] && is_domain_controller && [ -n "$nameserver1" -o -n "$nameserver2" -o -n "$nameserver3" ] && ! is_ucr_true "nameserver/external"; then
 	i=1
 	cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do
 		if [ "$(ucr get dns/forwarder$i)" != "$ns" ]; then

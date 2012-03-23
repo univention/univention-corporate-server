@@ -3,9 +3,10 @@ File: etc/dbus-1/system.d/ucs-networkmanager.conf
 Variables: networkmanager/group
 
 Type: file
-File: etc/dhcp3/dhclient.conf
+File: etc/dhcp/dhclient.conf
 Variables: dhclient/options/timeout
 Variables: dhclient/options/retry
+Variables: dhclient/linklocal/fallback
 
 Type: file
 File: etc/NetworkManager/nm-system-settings.conf

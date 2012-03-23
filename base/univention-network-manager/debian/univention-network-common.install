@@ -1,1 +1,1 @@
-dhclient2ucr usr/share/univention-network-common/
+univention-register-network-address usr/sbin

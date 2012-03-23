@@ -1,3 +1,11 @@
+univention-network-manager (3.0.8-1) unstable; urgency=low
+
+  * Cleanup the DHCP client handling for UCS servers. This includes an
+    auto registration in LDAP (DNS) and UCR if the network address was
+    changed via DHCP  (Bug #26416)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Mar 2012 16:22:21 +0100
+
 univention-network-manager (3.0.7-1) unstable; urgency=low
 
   * Fixed permissions for usr/share/univention-network-
