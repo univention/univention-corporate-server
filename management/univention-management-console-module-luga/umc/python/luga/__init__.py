@@ -46,6 +46,11 @@ class Process:
 	def sanitize_arg(self, arg):
 		return "'" + str(arg).replace('\\','\\\\').replace('\'','\\\'') + "'"
 
+	def sanitize_int(self, num):
+		if str(num).isdigit():
+			return int(num)
+		raise UMC_OptionTypeError( _("argument type has to be 'int'") )
+
 	def process(self, args, stdin=None):
 		"""
 			process a shell command
@@ -66,4 +71,5 @@ class Process:
 class Instance(Users, Groups, Base, Process):
 	def __init__(self):
 		Base.__init__(self)
+
 

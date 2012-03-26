@@ -47,6 +47,8 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// description:
 	//		
 	//		
+	
+	moduleStore: null,
 
 	// the property field that acts as unique identifier for the object
 	idProperty: null,
@@ -100,7 +102,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// start the standby animation in order prevent any interaction before the
 		// form values are loaded
-	//	this.standby(true);
+	//	this.standby(true); // FIXME
 
 		// render the page containing search form and grid
 		this.renderSearchPage();
@@ -143,7 +145,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'edit',
 			label: this._('Edit'),
-			description: this._('Edit the selected object'),
+			description: this._('Edit the selected %s', this.objectNameSingular),
 			iconClass: 'umcIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
@@ -151,7 +153,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			name: 'delete',
 			label: this._('Delete'),
-			description: this._('Deleting the selected objects.'),
+			description: this._('Deleting the selected %s.', this.objectNamePlural),
 			isStandardAction: true,
 			isMultiAction: true,
 			iconClass: 'umcIconDelete',
@@ -290,7 +292,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_addObject: function() {
 		this.selectChild(this._detailPage);
-		this._detailPage.add()
+		this._detailPage.add();
 	},
 
 	_editObject: function(ids, items) {
@@ -310,10 +312,42 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	_addGroup: function() {},
-	_deleteGroups: function(ids, items) {},
+	_deleteGroups: function(ids) {
+		var confirm_message = '';
+		if (ids.length == 1) {
+			confirm_message = this._('Please confirm removing the selected group: %s', ids[0]);
+		}
+		else {
+			confirm_message = this._('Please confirm removing the selected groups: %s', ids.join(', '));
+		}
+		umc.dialog.confirm(confirm_message, [{
+			label: this._('Ok'),
+			callback: dojo.hitch(this, function(ids) {
+				this.moduleStore.remove(ids);
+			})
+		}, {
+				label: this._('Cancel')
+		}]);
+	},
 
 	_addUser: function() {},
-	_deleteUsers: function(ids, items) {}
+	_deleteUsers: function(usernames, userobjects) {
+		// TODO: ask for -r -f
+		var msg = '';
+//		if(usernames.length == 1) {
+			msg = this._('Please confirm removing the selected user(s) %s!', usernames.join(', '));
+//		} else {
+//			msg = this._('Please confirm removing the selected users: %s!', ...);
+//		}
+
+		umc.dialog.confirm(msg, [{
+			label: this._('OK'),
+			callback: dojo.hitch(this, function() {
+			})
+		}, {
+			label: this._('Cancel')
+		}]);
+	}
 
 });
 
