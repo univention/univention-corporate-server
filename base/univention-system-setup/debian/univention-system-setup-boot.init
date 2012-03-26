@@ -40,6 +40,16 @@ case "$1" in
 	start)
 		log_action_msg "Starting univention-system setup tools"
 
+		# deconfigure temporary interfaces
+		ucr search --brief --value '^appliance-mode-temporary$'|cut -f1 -d:|grep -E '^interfaces/[^/]+_[^/]/type$' | while read
+		do
+			interface="${REPLY%type}"
+			for subvar in netmask address broadcast network type
+			do
+				ucr unset "$interface$subvar"
+			done
+		done
+
 		# Show corret IP in motd
 		if [ -e /etc/motd.setup ]; then
 			ucr commit /etc/motd.setup >/dev/null 2>&1
