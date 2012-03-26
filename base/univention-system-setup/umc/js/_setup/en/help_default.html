@@ -1,19 +1,19 @@
 <h1>UCS initial configuration</h1>
 <h2>Welcome</h2>
-<p>The UCS initial configuration allows to adapt basic settings of a Univention Corporate Server system via a web browser. In this way, prepared images of Univention Corporate Server (UCS) can be copied or, for virtual instances, cloned. A configuration is then possible at system startup.</p>
-<p>The basic configuration incorporates necessary system settings in order to join a domain and to be operational. Moreover, additional settings, such as software equipment, may be adjusted.</p>
-<h2>Configuration</h2>
-<p>The basic system configuration is divided into the following steps:</p>
+<p>The UCS initial configuration will guide you through the configuration steps required to use this newly created system.</p>
+<p>The process includes all necessary settings to join the system to a domain or to create a new one. Moreover, additional settings, such as software equipment, may be adjusted.</p>
+<br>
+<p>The initial configuration is divided into the following steps:</p>
 <ol>
-<li>The <i>system role</i> may be changed if the system has not joined to the UCS domain yet.</li>
-<li><i>Language settings</i> incorporate all language relevant configurations, such as time zone, keyboard layout, and system loclaes.</li>
-<li>The <i>basic settings</i> define essential properties, such as host and domain name, LDAP base, Windows base as well as root password.</li>
+<li>If the system is not part of a domain yet, the <i>system role</i> may be changed.</li>
+<li><i>Language settings</i> incorporate all language relevant configurations, such as time zone, keyboard layout, and system locales.</li>
+<li>The <i>basic settings</i> define essential properties, such as host and domain name, LDAP base, Windows domain name as well as the system administrators (root) password.</li>
 <li>In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as name servers, gateways, and HTTP proxies may be specified.</li>
-<li>Following the <i>certificate settings</i>, a new root certificate will be created for the domain. Note that this step only applies to domaincontroller master systems.</li>
-<li>Via the <i>software settigns</i>, particular software components may be installed or removed.</li>
+<li>Following the <i>certificate settings</i>, a new root certificate will be created for the domain. Note that this step only applies to systems with the role 'domaincontroller master'</li>
+<li>Via the <i>software settings</i>, particular software components may be installed or removed.</li>
 </ol>
 <p>During the saving process, a domain join will be executed, as well.
-For this, it is necessary to enter a valid domain administrator account on all system roles except domaincontroller master.
-After the successful domain join, the configuration wizard can be closed in order to continue with the boot process.</p>
+For this, it is necessary to enter a valid domain administrator account on all system roles except domaincontroller master, where a new domain will be created.
+After the successful domain join, the configuration wizard may be closed in order to continue with the boot process.</p>
 <p>The configuration can also be conducted via a web browser from an external system. In this case, a subsequent relogin at Univention Management Console will be necessary.</p>
-<p>The basic configuration can be modified at any later point via the UMC moudle "Basic settings".</p>
+<p>The initial configuration can be modified at any later point via the UMC module "Basic settings".</p>
