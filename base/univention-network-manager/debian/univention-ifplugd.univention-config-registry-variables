@@ -10,12 +10,6 @@ Description[en]=If this variable is set the home directory share will be mounted
 Type=bool
 Categories=system-base
 
-[networkmanager/dhcp/options/fallback]
-Description[de]=Wenn per DHCP kein Nameserver und keine Domäne gesetzt werden, können alternativ diese Informationen aus UCR-Variablen gelesen werden
-Description[en]=The nameserver and domain name may not be send via DHCP. As a fallback these information can read from UCR variables
-Type=bool
-Categories=system-base
-
 [dhclient/options/timeout]
 Description[de]=Definiert die Zeit in Sekunden, die der DHCP-Client versucht eine IP-Konfiguration zu beziehen
 Description[en]=Defines the amount of time in seconds that the DHCP clients tries to get an IP configuration

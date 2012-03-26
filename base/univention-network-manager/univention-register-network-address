@@ -55,7 +55,11 @@ def register_iface(configRegistry, iface, verbose):
 				value = configRegistry.get('interfaces/%s/%s' % (iface, k))
 				ucr_set.append('interfaces/%s/fallback/%s=%s' % (iface, k, value))
 		if ucr_set:
-			univention.config_registry.handler_set(ucr_set)
+			null = open(os.path.devnull, 'w' )
+			stdout = sys.stdout
+			sys.stdout = null
+			univention.config_registry.handler_set(ucr_set, quiet=True)
+			sys.stdout = stdout
 	return True
 
 if __name__ == '__main__':

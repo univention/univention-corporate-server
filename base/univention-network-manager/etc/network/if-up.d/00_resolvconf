@@ -48,7 +48,7 @@ if [ /var/univention-join/joined ] && is_domain_controller && [ -n "$nameserver1
 	i=1
 	cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do
 		if [ "$(ucr get dns/forwarder$i)" != "$ns" ]; then
-			ucr set "dns/forwarder$i=$ns"
+			ucr set "dns/forwarder$i=$ns" >/dev/null
 			invoke-rc.d bind9 restart
 		fi
 		i=$((i+1))
