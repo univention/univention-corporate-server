@@ -117,7 +117,10 @@ class Instance(umcm.Base):
 			# on unjoined DC master the nameserver must be set to the external nameserver
 			if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
 				for i in range(1,4):
-					values[ 'nameserver%d'%i ] = values.get( 'dns/forwarder%d'%i )
+					# overwrite these values only if they are set, because the UMC module
+					# will save only changed values
+					if values.get( 'dns/forwarder%d'%i ):
+						values[ 'nameserver%d'%i ] = values.get( 'dns/forwarder%d'%i )
 
 			MODULE.info('saving profile values')
 			util.write_profile(values)
