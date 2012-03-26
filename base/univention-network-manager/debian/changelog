@@ -1,3 +1,9 @@
+univention-network-manager (3.0.12-1) unstable; urgency=low
+
+  * Fixed typo in 00_resolvconf (Bug #26416)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Mar 2012 16:03:29 +0200
+
 univention-network-manager (3.0.11-1) unstable; urgency=low
 
   * More DHCP cleanups (Bug #26416)
