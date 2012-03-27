@@ -1,4 +1,5 @@
 usr/share/univention-samba4/scripts
+usr/share/univention-samba4/locale
 usr/share/univention-samba4/samba3upgrade/smb.conf.d
 usr/lib/univention-install
 usr/sbin

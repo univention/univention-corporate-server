@@ -7,3 +7,4 @@ s4search-decode usr/sbin/
 samba-shares.py usr/lib/univention-directory-listener/system
 samba4-idmap.py usr/lib/univention-directory-listener/system
 samba3upgrade/smb.conf.d/* usr/share/univention-samba4/samba3upgrade/smb.conf.d
+univention-samba4.mo usr/share/locale/de/LC_MESSAGES

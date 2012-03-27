@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
 # Univention Samba4
-#  rules file
+#  Refresh gettext entries for univention-samba4
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,28 +30,37 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	msgfmt -o univention-samba4.mo univention-samba4.po
-	dh_auto_build
+lang=de
+po=univention-samba4.po
+pot=${po}t
+pox=${po}x
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install 
+xgettext -o $pot scripts/*.py
 
-override_dh_fixperms:
-	chmod 755 debian/univention-samba4/usr/lib/univention-install/96univention-samba4.inst
-	chmod 755 debian/univention-samba4/usr/lib/univention-install/98univention-samba4-dns.inst
-	chmod 755 debian/univention-samba4/usr/lib/univention-directory-listener/system/samba-shares.py
-	chmod 755 debian/univention-samba4/usr/lib/univention-directory-listener/system/samba4-idmap.py
-	dh_fixperms 
+if grep "Content-Type: text/plain; charset=CHARSET" $pot ; then
+	echo "Rewriting encoding information from CHARSET to UTF-8"
+	sed -i "s#Content-Type: text/plain; charset=CHARSET#Content-Type: text/plain; charset=UTF-8#" $pot
+fi
 
-override_dh_installinit:
-	dh_installinit -a --no-start -u"defaults 97"
+echo "Merging old gettext data with newly introduced strings"
+msgmerge $po $pot > $pox
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+echo "Now you need to fix up all 'fuzzy' entries in your editor..."
+read answ
 
-%:
-	dh $@
+if [ -n "$EDITOR" ]; then
+    $EDITOR $pox
+else
+	vim $pox
+fi
+
+echo "Use this entry? (Y/n)"
+read yn
+
+if [ -z "$yn" -o "$yn" = "y" ]; then
+    echo "Copying po file"
+    cp $pox $po
+fi
+
+rm -rf ${po}?
 

@@ -1,3 +1,9 @@
+univention-samba4 (1.0.130-1) unstable; urgency=low
+
+  * add translation file (Bug #26359)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Mar 2012 14:09:01 +0200
+
 univention-samba4 (1.0.129-1) unstable; urgency=low
 
   * The ucs-s4sync is no longer needed (Bug #26197)

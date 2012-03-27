@@ -50,6 +50,12 @@
 from univention.lib import fstab
 import subprocess
 
+from univention.lib import Translation
+import locale
+locale.setlocale(locale.LC_ALL, '')
+i18n = Translation( 'univention-samba4' )
+_ = i18n.translate
+
 def _do_modify_extfs_option(fstab_partition, options=[], activate=True):
 	fstab_modified = False
 	for option in options:
