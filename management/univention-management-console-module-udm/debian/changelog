@@ -1,4 +1,4 @@
-univention-management-console-module-udm (1.0.274-1) unstable; urgency=low
+univention-management-console-module-udm (1.0.276-1) unstable; urgency=low
 
   * Disable univention-directory-manager apache site while removing the
     package (Bug #26280)
