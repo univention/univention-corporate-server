@@ -1,3 +1,9 @@
+univention-samba4 (1.0.131-1) unstable; urgency=low
+
+  * version bump to avoid collision with ucs-school (Bug #26359)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Mar 2012 14:11:28 +0200
+
 univention-samba4 (1.0.130-1) unstable; urgency=low
 
   * add translation file (Bug #26359)
