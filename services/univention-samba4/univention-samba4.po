@@ -1,3 +1,6 @@
+Content-Type: text/plain; charset=UTF-8\n
+Content-Transfer-Encoding: ENCODING\n
+
 #: scripts/mount_extfs_with_user_xattr.py:85
 #, python-format
 msgid "Device could not be found: %s"
