@@ -1,3 +1,9 @@
+univention-samba4 (1.0.131-4) unstable; urgency=low
+
+  * add dependency on python-univention-lib (Bug #26359).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Mar 2012 14:43:11 +0200
+
 univention-samba4 (1.0.131-3) unstable; urgency=low
 
   * support multiple languages (Bug #26359).

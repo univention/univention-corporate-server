@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 lang=de
-po=univention-samba4.po
+po=${lang}.po
 pot=${po}t
 pox=${po}x
 
