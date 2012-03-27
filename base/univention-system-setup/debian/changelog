@@ -1,3 +1,9 @@
+univention-system-setup (5.0.145-1) unstable; urgency=low
+
+  * Adjust welcome message text (Bug #26326)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Mar 2012 12:27:44 +0200
+
 univention-system-setup (5.0.144-1) unstable; urgency=low
 
   * Overwrite nameserver values only if the gateway atrributes have been
