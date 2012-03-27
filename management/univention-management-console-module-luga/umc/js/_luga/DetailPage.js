@@ -81,9 +81,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		this.footerButtons = [{
 			name: 'submit',
 			label: this._('Save'),
-			callback: dojo.hitch(this, function() {
-				this._save(this._form.gatherFormValues());
-			})
+			callback: dojo.hitch(this, '_save')
 		}, {
 			name: 'back',
 			label: this._('Back to overview'),
@@ -274,10 +272,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			scrollable: true
 		});
 
-// TODO: wrong place
-		// save the original form data
-//		this._receivedObjFormData = this._form.gatherFormValues();
-
 		// add form to page... the page extends a BorderContainer, by default
 		// an element gets added to the center region
 		this.addChild(this._form);
@@ -323,17 +317,17 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		return newVals;
 	},
 
-	_save: function(values) {
+	_save: function() {
 		// summary:
 		//		Save the user changes for the edited object.
 
 		// TODO: validate form entries
 
-		values = this.getAlteredValues();
+		var values = this.getAlteredValues();
 
 		var deferred = null;
 		if (this.newObject) {
-			deferred = this.moduleStore.add(values, this.newObject);
+			deferred = this.moduleStore.add(values);
 		}
 		else {
 			deferred = this.moduleStore.put(values);
@@ -341,14 +335,9 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		deferred.then(dojo.hitch(this, function(result) {
 			// see whether saving was successfull
 			this.standby(false);
-			var success = true; 
-			var msg = '';
+			var success = (result && result.length === 0);
 			if (dojo.isArray(result)) {
-				success = result.length === 0;
-				msg = result.join("\n");
-			} else if (dojo.isString(result)) {
-				success = result.length === 0;
-				msg = result;
+				result = result.join("\n");
 			}
 
 			if (success) {
@@ -357,7 +346,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}
 			else {
 				// print error message to user
-				umc.dialog.alert(msg);
+				umc.dialog.alert(result);
 			}
 		}), dojo.hitch(this, function() {
 			this.standby(false);
@@ -366,7 +355,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 
 	add: function() {
 		this.newObject = true;
-		this.clean();
+		this._resetForm();
 		// add a local user or group
 		if (this.moduleFlavor === 'luga/users') {
 			umc.tools.forIn({ 
@@ -388,10 +377,11 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				this._form.getWidget(widget).set(value[0], value[1]);
 			}, this);
 
-			this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(value) {
+			this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(username) {
+				this._form.getWidget('group').set('staticValues', [username]);
 				this._form.setValues({
-					homedir: '/home/'+value,
-					group: value
+					homedir: '/home/'+username,
+					group: username
 				});
 			}));
 
@@ -408,7 +398,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 //		this.show();
 	},
 
-	clean: function() {
+	_resetForm: function() {
 		this._form.clearFormValues();
 		umc.tools.forIn(this._form._widgets, function(widget) {
 			var w = this._form.getWidget(widget);
@@ -425,7 +415,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 
 		this.newObject = false;
 
-		this.clean();
+		this._resetForm();
 
 		// load the object into the form... the load method returns a
 		// dojo.Deferred object in order to handel asynchronity

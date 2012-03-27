@@ -67,10 +67,6 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	objectNamePlural: null,
 
 	postMixInProperties: function() {
-		// is called after all inherited properties/methods have been mixed
-		// into the object (originates from dijit._Widget)
-
-		// it is important to call the parent's postMixInProperties() method
 		this.inherited(arguments);
 
 		this.idProperty = this.moduleFlavor === 'luga/users' ? 'username' : 'groupname';
@@ -83,9 +79,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.objectNameSingular = objNames[this.moduleFlavor][0];
 		this.objectNamePlural = objNames[this.moduleFlavor][1];
 
-		if (this.idProperty) {
-			this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleFlavor, this.moduleFlavor);
-		}
+		this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleFlavor, this.moduleFlavor);
 
 		// Set the opacity for the standby animation to 100% in order to mask
 		// GUI changes when the module is opened. Call this.standby(true|false)
@@ -94,10 +88,6 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	buildRendering: function() {
-		// is called after all DOM nodes have been setup
-		// (originates from dijit._Widget)
-
-		// it is important to call the parent's postMixInProperties() method
 		this.inherited(arguments);
 
 		// start the standby animation in order prevent any interaction before the
@@ -219,6 +209,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			staticValues = [
 				{id: 'username', label: this._('Username')},
 				{id: 'group', label: this._('Group membership')},
+				{id: 'fullname', label: this._('Fullname')},
 				{id: 'uid', label: this._('User ID')},
 				{id: 'gid', label: this._('Group ID')},
 				{id: 'gecos', label: this._('Additional Information')},
@@ -262,7 +253,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// turn off the standby animation as soon as all form values have been loaded
 	//	this.connect(this._searchForm, 'onValuesInitialized', function() {
-	//		this.standby(false);
+	//		this.standby(false); // FIXME
 	//	});
 
 		// add search form to the title pane
@@ -302,54 +293,68 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 	},
 
-	_deleteObjects: function(ids, items) {
-		if (this.moduleFlavor === 'luga/users') {
-			this._deleteUsers(ids, items);
-		}
-		else if (this.moduleFlavor === 'luga/groups') {
-			this._deleteGroups(ids, items);
-		}
-	},
-
-	_addGroup: function() {},
-	_deleteGroups: function(ids) {
-		var confirm_message = '';
-		if (ids.length == 1) {
-			confirm_message = this._('Please confirm removing the selected group: %s', ids[0]);
-		}
-		else {
-			confirm_message = this._('Please confirm removing the selected groups: %s', ids.join(', '));
-		}
-		umc.dialog.confirm(confirm_message, [{
-			label: this._('Ok'),
-			callback: dojo.hitch(this, function(ids) {
-				this.moduleStore.remove(ids);
-			})
+	_getDeleteUserForm: function(ids) {
+		var widgets = [{
+			type: 'CheckBox',
+			name: 'force',
+			checked: false,
+			label: this._('force removal of files, even if not owned by user')
 		}, {
-				label: this._('Cancel')
-		}]);
+			type: 'CheckBox',
+			name: 'remove',
+			checked: true,
+			label: this._('remove home directory and mail spool')
+		}];
+
+		var form = new umc.widgets.Form({
+			widgets: widgets
+		});
+		return form;
 	},
 
-	_addUser: function() {},
-	_deleteUsers: function(usernames, userobjects) {
-		// TODO: ask for -r -f
-		var msg = '';
-//		if(usernames.length == 1) {
-			msg = this._('Please confirm removing the selected user(s) %s!', usernames.join(', '));
-//		} else {
-//			msg = this._('Please confirm removing the selected users: %s!', ...);
-//		}
+	_deleteObjects: function(ids, items) {
 
-		umc.dialog.confirm(msg, [{
+		var form;
+		var textWidget = new umc.widgets.ContainerWidget();
+
+		textWidget.addChild(new umc.widgets.Text().set('content', this._('Please confirm removing the selected %s(s): %s', this.objectNameSingular, ids.join(', '))));
+
+		if (this.moduleFlavor === 'luga/users') {
+			form = this._getDeleteUserForm(ids);
+			textWidget.addChild(form);
+		}
+
+		umc.dialog.confirm(textWidget, [{
 			label: this._('OK'),
 			callback: dojo.hitch(this, function() {
+				var options = null;
+				if (this.moduleFlavor === 'luga/users') {
+					options = {
+						force: form.getWidget('force').get('value'),
+						remove: form.getWidget('remove').get('value')
+					};
+				}
+				var transaction = this.moduleStore.transaction();
+				dojo.forEach(ids, function(id) {
+					this.moduleStore.remove(id, options);
+				});
+				transaction.commit().then(dojo.hitch(this, function(result) {
+					this.standby(false);
+					if(result && result.length) {
+						if(dojo.isArray(result)) {
+							result = result.join("\n");
+						}
+						umc.dialog.alert(result);
+					}
+				}), dojo.hitch(this, function() {
+					this.standby(false);
+				}));
 			})
 		}, {
-			label: this._('Cancel')
+			label: this._('Cancel'),
+			"default": true
 		}]);
 	}
 
 });
-
-
 

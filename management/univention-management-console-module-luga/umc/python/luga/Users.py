@@ -110,7 +110,7 @@ class Users:
 				if shadow[5].isdigit():
 					shadow[5] = date.isoformat(date.fromtimestamp(int(shadow[5]) * 86400))
 
-				for i in [1, 2, 3, 4]:
+				for i in (1, 2, 3, 4):
 					if not shadow[i].isdigit():
 						shadow[i] = 0
 
@@ -156,8 +156,7 @@ class Users:
 			change the userpassword and options for <username>
 			raises ValueError on error
 		"""
-		messages = {
-			0: '',
+		errors = {
 			1: _('permission denied'),
 			2: _('invalid combination of options'),
 			3: _('unexpected failure, nothing done'),
@@ -204,16 +203,16 @@ class Users:
 			returncode = self.process(pwd, '%s\n%s' % (password, password))
 			if 0 != returncode:
 				MODULE.error('cmd "%s" failed with returncode %d' % (pwd, returncode)) 
-				message = messages.get(returncode, _('unknown error with statuscode %d') % (returncode))
-				raise ValueError( _('an error accured while changing password for %s: %s') % (username, message) )
+				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
+				raise ValueError( _('an error accured while changing password for %s: %s') % (username, error) )
 
 		# Change options
 		if cmd:
 			returncode = self.process(cmd)
 			if 0 != returncode:
 				MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
-				message = messages.get(returncode, _('unknown error with statuscode %d accured while changing password options') % (returncode))
-				raise ValueError( _('an error accured while changing password options for %s: %s') % (username, message) )
+				error = errors.get(returncode, _('unknown error with statuscode %d accured while changing password options') % (returncode))
+				raise ValueError( _('an error accured while changing password options for %s: %s') % (username, error) )
 
 		return True
 
@@ -236,11 +235,10 @@ class Users:
 		category = request.options.get('category', 'username')
 		pattern = request.options.get('pattern', '*')
 
-		request.status = SUCCESS
 		response = self.parse_users( category, pattern )
 
 		MODULE.info( 'luga.users_query: results: %s' % str( response ) )
-		self.finished( request.id, response )
+		self.finished(request.id, response, status=SUCCESS)
 
 	def users_get_users(self, request):
 		"""
@@ -254,7 +252,7 @@ class Users:
 			response.append( {'id': user['username'], 'label': user['username']} )
 
 		MODULE.info( 'luga.users_query: results: %s' % str( response ) )
-		self.finished(request.id, response)
+		self.finished(request.id, response, status=SUCCESS)
 
 	def get_group_members(self, groupname):
 		"""
@@ -290,7 +288,7 @@ class Users:
 					break
 
 		MODULE.info( 'luga.users_get: results: %s' % str( response ) )
-		self.finished( request.id, response )
+		self.finished(request.id, response, status=SUCCESS)
 
 	def get_common_args( self, options, pwoptions={} ):
 		"""
@@ -302,14 +300,12 @@ class Users:
 		cmd = ' '
 
 		# Gecos
-		def sanitize_gecos(s):
-			return str( options.get(s, '') ).replace(',', '')
-
 		gecos = [options.get('fullname'), options.get('roomnumber'), options.get('tel_business'), options.get('tel_private'), options.get('miscellaneous')]
 		gecos = set([None]) != set(gecos)
 
 		if gecos:
-			gecos = map(sanitize_gecos, ['fullname', 'roomnumber', 'tel_business', 'tel_private', 'miscellaneous'])
+			keys = ['fullname', 'roomnumber', 'tel_business', 'tel_private', 'miscellaneous']
+			gecos = map(lambda s: str(options.get(s, '')).replace(',', ''), keys)
 			cmd += '-c %s ' % self.sanitize_arg( ','.join(gecos) )
 
 		# Home directory
@@ -380,7 +376,6 @@ class Users:
 		if list is not type(request.options):
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
-		request.status = SUCCESS
 		response = []
 		errors = {
 			# no information about returncodes, yet
@@ -424,6 +419,7 @@ class Users:
 				# Execute
 				returncode = self.process(cmd)
 				if returncode != 0:
+					MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
 					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
 					raise ValueError( _('%s: %s') % (username, error) )
 
@@ -431,7 +427,7 @@ class Users:
 				response.append( str(e) )
 
 		MODULE.info( 'luga.users_edit: results: %s' % str( response ) )
-		self.finished( request.id, response )
+		self.finished(request.id, response, status=SUCCESS)
 
 	def users_add(self, request):
 		"""
@@ -446,7 +442,6 @@ class Users:
 		if list is not type(request.options):
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
-		request.status = SUCCESS
 		response = []
 		errors = {
 			1: _('could not update password file'),
@@ -507,7 +502,7 @@ class Users:
 				response.append( str(e) )
 
 		MODULE.info( 'luga.users_add: results: %s' % str( response ) )
-		self.finished( request.id, response )
+		self.finished(request.id, response, status=SUCCESS)
 
 	def users_remove(self, request):
 		"""
@@ -522,7 +517,6 @@ class Users:
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
 		cmd = '/usr/sbin/userdel '
-		request.status = SUCCESS
 		response = []
 		errors = {
 			1: _('could not update password file'),
