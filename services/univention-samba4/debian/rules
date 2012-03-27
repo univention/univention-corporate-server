@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 override_dh_auto_build:
-	msgfmt -o univention-samba4.mo univention-samba4.po
+	msgfmt -o de.mo de.po
 	dh_auto_build
 
 override_dh_auto_install:
