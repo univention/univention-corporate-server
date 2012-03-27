@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from fnmatch import fnmatch
+from pexpect import spawn
 from GroupExceptions import *
 from univention.lib.i18n import Translation
 
@@ -93,14 +94,23 @@ class Groups():
 			result.append({'id' : group['groupname'], 'label' : group['groupname']})
 		self.finished(request.id, result)
 
-	def get_administrators(self, group):
-		return self.group_search('groupname', group)[0]['administrators'].split(',')
-
 	def validate_groupname(self, groupname):
 		if len(groupname) <= 32 and not groupname.startswith('-') and not ':' in groupname and not ' ' in groupname and not '\n' in groupname and not '\t' in groupname:
 			return True
 		else:
 			return False
+
+#	def change_group_password(self, groupname, password):
+#		subprocess = None
+#		if password:
+#			subprocess = spawn('/usr/bin/gpasswd "%s"' % groupname)
+#			subprocess.expect(':')
+#			subprocess.sendline(password)
+#			subprocess.expect(':')
+#			subprocess.sendline(password)
+#		else:
+#			subprocess = spawn('/usr/bin/gpasswd -r "%s"' % groupname)
+#		subprocess.close()
 
 	def validate_gid(self, gid):
 		return gid.isdigit()
@@ -113,8 +123,6 @@ class Groups():
 		self.finished(request.id, result)
 
 	def groups_query(self, request):
-		success = True
-		message = None
 		result = []
 		groups = []
 		category = request.options.get('category', '')
@@ -124,27 +132,25 @@ class Groups():
 			groups.extend(self.group_search(category, request.options.get('pattern', '*')))
 			for group in groups:
 				result.append({'groupname' : group['groupname']})
-		else:
-			success = False
-			message = _('Invalid category "%s"') % category
-		self.finished(request.id, result, message, success)
-	
+		self.finished(request.id, result)
+
 	def groups_add(self, request):
-		message = ''
-		success = True
+		messages = []
 		group_cache = self.parse_groups()
 		for group in request.options:
 			args = ''
 			error_code = None
-			groupname = group.get('groupname')
-			gid = group.get('gid')
-			users = group.get('users')
-			administrators = group.get('administrators')
+			options = group.get('object', {})
+			groupname = options.get('groupname')
+			gid = group['object'].get('gid')
+#			password = options.get('password')
+			users = options.get('users')
+			administrators = options.get('administrators')
 			if groupname:
 				try:
 					for cached_group in group_cache:
 						if cached_group['groupname'] == groupname:
-							raise ValueError(_('group already exists'))
+							raise ValueError(_('Groupname "%s" is already in use') % groupname)
 					if not self.validate_groupname(groupname):
 						raise ValueError(_('"%s" is no valid groupname') % groupname)
 					if gid:
@@ -154,85 +160,103 @@ class Groups():
 						args += ' -g "%s"' % gid
 					error_code = self.process('/usr/sbin/groupadd%s "%s"' % (args, groupname))
 					if error_code:
-						raise CreatingError(_('groupadd returned %d') % error_code)
+						raise CreatingError(_('Groupadd returned %d') % error_code)
+#					if password:
+#						self.change_group_password(groupname)
 					if users:
-						error_code = self.process('/usr/bin/gpasswd -M "%s" "%s"' % (users, groupname))
+						error_code = self.process('/usr/bin/gpasswd -M "%s" "%s"' % (','.join(users), groupname))
 						if error_code:
-							raise ModifyError(_('could not set list of users, gpasswd returned %d') % error_code)
+							raise ModifyError(_('Could not set list of users, gpasswd returned %d') % error_code)
 					if administrators:
-						error_code = self.process('/usr/bin/gpasswd -A "%s" "%s"' % (administrators, groupname))
+						error_code = self.process('/usr/bin/gpasswd -A "%s" "%s"' % (','.join(administrators), groupname))
 						if error_code:
-							raise ModifyError(_('could not set list of administrators, gpasswd returned %d') % error_code)
+							raise ModifyError(_('Could not set list of administrators, gpasswd returned %d') % error_code)
 				except (ValueError, CreatingError, ModifyError) as e:
-					message += _('Did not create group "%s" (%s)\n') % (groupname, e.message)
-					success = False
+					messages.append(str(e))
+					if type(e) == ModifyError:
+						self.process('/usr/sbin/groupdel "%s"' % groupname)
 				else:
-					message += _('Successfully created group "%s"\n') % groupname
+					group_cache.append({'groupname' : groupname})
 			else:
-				message += _('A group was not created because no groupname was given\n')
-				success = False
-		self.finished(request.id, None, message[:-1], success)
+				messages.append(_('Groupname required'))
+		self.finished(request.id, messages)
 
 	def groups_put(self, request):
-		message = ''
-		success = True
+		messages = []
 		group_cache = self.parse_groups()
 		for group in request.options:
+			group_index = None
 			args = ''
 			error_code = None
-			id = group.get('id')
-			groupname = group.get('groupname')
-			gid = group.get('gid')
-			users = group.get('users')
-			administrators = group.get('administrators')
+			options = group.get('object', {})
+			id = options.get('id')
+			groupname = options.get('groupname')
+			gid = options.get('gid')
+#			password = options.get('password')
+#			remove_password = options.get('remove_password')
+			users = options.get('users')
+			administrators = options.get('administrators')
 			if id:
 				try:
-					for cached_group in group_cache:
-						if cached_group['groupname'] == id:
+					for i in range(0, len(group_cache)):
+						if group_cache[i]['groupname'] == id:
+							group_index = i
 							break
 					else:
-						raise ValueError(_('specified group does not exist'))
-					if not groupname and not gid and not users and not administrators:
-						raise ModifyError(_('no changes are specified'))
-					if groupname:
+						raise ValueError(_('Specified group does not exist'))
+					if groupname is None and gid is None and users is None and administrators is None:
+						raise ModifyError(_('No changes have been made'))
+					if groupname is not None:
 						if not self.validate_groupname(groupname):
-							raise ValueError(_('"%s" is no valid groupname)\n') % groupname)
+							raise ValueError(_('"%s" is no valid groupname') % groupname)
 						args += ' -n "%s"' % groupname
-					if gid:
+					if gid is not None:
 						if not self.validate_gid(gid):
-							raise ValueError(_('"%s" is no valid gid)\n') % id)
+							raise ValueError(_('"%s" is no valid gid') % gid)
 						args += ' -g "%s"' % gid
+					if users is not None:
+						error_code = self.process('/usr/bin/gpasswd -M "%s" "%s"' % (','.join(users), id))
+						if error_code:
+							raise ModifyError(_('Could not modify list of users, gpasswd returned %d') % error_code)
+					if administrators is not None:
+						error_code = self.process('/usr/bin/gpasswd -A "%s" "%s"' % (','.join(administrators), id))
+						if error_code:
+							raise ModifyError(_('Could not modify list of administrators, gpasswd returned %d') % error_code)
 					error_code = self.process('/usr/sbin/groupmod%s "%s"' % (args, id))
 					if error_code:
-						raise ModifyError(_('groumod returned %d)\n') % error_code)
-					if users:
-						error_code = self.process('/usr/bin/gpasswd -M "%s" "%s"' % (users, id))
-						if error_code:
-							raise ModifyError(_('could not modify list of users, gpasswd returned %d)\n') % error_code)
-					if administrators:
-						error_code = self.process('/usr/bin/gpasswd -A "%s" "%s"' % (administrators, id))
-						if error_code:
-							raise ModifyError(_('could not modify list of administrators, gpasswd returned %d)\n') % error_code)
+						raise ModifyError(_('Groupmod returned %d') % error_code)
 				except (ValueError, ModifyError) as e:
-					message += _('Did not modify group "%s" (%s)\n' ) % (id, e.message)
-					success = False
+					messages.append(str(e))
 				else:
-					message += _('Successfully modified group "%s"\n') % id
+					if groupname:
+						group_cache[group_index]['groupname'] = groupname
 			else:
-				message += _('A group has not been modified because no ID was specified\n')
-		self.finished(request.id, None, message[:-1], success)
+				messages.append(_('No group has been specified'))
+		self.finished(request.id, messages)
 	
 	def groups_remove(self, request):
-		success = True
-		message = ''
-		for id in request.options:
-			error_code = self.process('/usr/sbin/groupdel "%s"' % id)
-			if error_code:	
-				success = False
-				message += _('Did not remove group "%s" (groupdel returned %d)\n') % (id, error_code)
+		messages = []
+		group_cache = self.parse_groups()
+		ids = request.options[0].get('object', {})
+		for id in ids:
+			group_index = None
+			try:
+				for i in range(0, len(group_cache)):
+					if group_cache[i]['groupname'] == id:
+						group_index = i
+						break
+				else:
+					raise ModifyError(_('Specified group does not exist'))
+				error_code = self.process('/usr/sbin/groupdel "%s"' % id)
+				if error_code == 8:
+					raise ModifyError(_('Can not remove a users primary group'))
+				elif error_code:
+					raise ModifyError(_('groupdel returned %d') % error_code)
+			except ModifyError as e:
+				messages.append(str(e))
 			else:
-				message += _('Successfully removed group "%s"\n') % id
-		self.finished(request.id, None, message[:-1], success)
+				group_cache.pop(group_index)
+		self.finished(request.id, messages)
 
 
 

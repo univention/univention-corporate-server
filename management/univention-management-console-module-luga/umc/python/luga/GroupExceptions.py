@@ -31,10 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-class CreatingError(Exception):
-	def __init__(self, message):
-		self.message = message
+class CreatingError(EnvironmentError):
+	pass
 	
-class ModifyError(Exception):
-	def __init__(self, message):
-		self.message = message
+class ModifyError(EnvironmentError):
+	pass
