@@ -67,6 +67,9 @@ def handler(dn, new, old):
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return
 
+	if not new.get('krb5Key'):
+		return
+
 	if server_role == 'memberserver':
 		listener.setuid(0)
 		if os.path.exists('/etc/krb5.keytab'):

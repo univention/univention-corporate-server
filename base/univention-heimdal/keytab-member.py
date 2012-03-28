@@ -53,6 +53,9 @@ def handler(dn, new, old):
 	server_role = configRegistry['server/role']
 	if server_role == 'domaincontroller_master':
 			
+		if not new.get('krb5Key'):
+			return
+
 		listener.setuid(0)
 		try:
 			if old:
