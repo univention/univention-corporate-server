@@ -164,6 +164,31 @@ else
 		exit 1
 	fi
 
+	## Before starting the upgrade check for group names colliding with user names
+	uid_ldap_check_function() {
+		local filter="$1"
+		collision=$(univention-ldapsearch -xLLL "(&(objectClass=posixAccount)(|$filter))" uid | sed -n 's/^uid: \(.*\)/\1/p')
+		if [ -n "$collision" ]; then
+			echo "ERROR: Group names and user names must be unique, please rename these before updating to Samba 4" >&2
+			echo "The following user names are also present as group names:" >&2
+			echo "$collision" >&2
+			exit 1
+		fi
+	}
+
+	filter_maxsize=10000	## approximate limit for the LDAP filter string size
+	while read name; do
+		if [ "$((${#filter} + ${#name}))" -lt "$filter_maxsize" ]; then
+			filter="$filter(uid=$name)"
+		else
+			uid_ldap_check_function "$filter"
+			filter="(uid=$name)"
+		fi
+	done < <(univention-ldapsearch -xLLL "(objectClass=posixGroup)" cn | sed -n 's/^cn: \(.*\)/\1/p')
+	if [ -n "$filter" ]; then
+		uid_ldap_check_function "$filter"
+	fi
+
 	## Preparations for the samba3update:
 	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
 	groups=("Windows Hosts" "DC Backup Hosts" "DC Slave Hosts" "Computers" "Power Users")
