@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.120-1) unstable; urgency=low
+
+  * Restart S4 connector when rotating the log files (Bug #26060)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Mar 2012 09:56:36 +0200
+
 univention-s4-connector (6.0.119-1) unstable; urgency=low
 
   * A typo in the DNS zone delete function was removed, which prevented

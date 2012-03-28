@@ -10,17 +10,20 @@ for setting in settings.keys():
 	print "\t%s" % settings[setting]
 print "}"
 
-name = "s4"
+name = "s4-status"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print "/var/log/univention/*-%s.log {" % name
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
 print "}"
 
-name = "s4-status"
+name = "s4"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print "/var/log/univention/*-%s.log {" % name
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
+print '\tpostrotate'
+print '\t\tinvoke-rc.d univention-s4-connector restart > /dev/null'
+print '\tendscript'
 print "}"
 @!@
