@@ -1,7 +1,9 @@
 univention-samba4 (1.0.132-1) unstable; urgency=low
 
   * Abort samba3update if there are Samba accounts that are not POSIX
-    (Bug #26358)
+    (Bug #26358).
+  * add  versioned dependency on python-univention-lib to let errata
+    update depend on ucs3.0-1 (Bug #26359).
 
  -- Arvid Requate <requate@univention.de>  Wed, 28 Mar 2012 12:32:16 +0200
 
