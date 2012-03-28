@@ -1,3 +1,9 @@
+univention-system-setup (5.0.146-1) unstable; urgency=low
+
+  * UMC cleanup: Kill the system-setup cmd tool too (Bug #24807)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Mar 2012 16:52:14 +0200
+
 univention-system-setup (5.0.145-1) unstable; urgency=low
 
   * Adjust welcome message text (Bug #26326)

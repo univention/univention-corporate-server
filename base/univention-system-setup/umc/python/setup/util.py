@@ -409,6 +409,11 @@ def cleanup():
 			MODULE.error('browser PID is not a number: "%s"' % strpid)
 		except psutil.NoSuchProcess:
 			MODULE.error('cannot kill process with PID: %s' % pid)
+	
+		# Maybe the system-setup CMD tool was started
+		for p in psutil.process_iter():
+			if p.name == 'python2.6' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline:
+				p.kill()
 
 	# unset the temporary interface if set
 	_re=re.compile('interfaces/[^/]*/type')
