@@ -734,7 +734,7 @@ def ucs_zone_create(s4connector, object, dns_type):
 
 		
 
-def ucs_zone_delete(s4connector, objecti, dns_type):
+def ucs_zone_delete(s4connector, object, dns_type):
 	_d=ud.function('ucs_zone_delete')
 
 	zoneName, relativeDomainName=__split_s4_dn(object['dn'])
