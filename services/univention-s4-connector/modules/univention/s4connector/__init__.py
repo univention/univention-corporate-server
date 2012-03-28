@@ -319,7 +319,7 @@ class property:
 	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
 					con_create_objectclass=[], con_create_attributes=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], post_con_create_functions=[],
 					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[], con_sync_function = None, ucs_sync_function = None, disable_delete_in_ucs = False,
-					identify = None ):
+					identify = None, con_subtree_delete_objects = [] ):
 
 		self.ucs_default_dn=ucs_default_dn
 
@@ -359,6 +359,8 @@ class property:
 			self.con_sync_function = con_sync_function
 		if ucs_sync_function:
 			self.ucs_sync_function = ucs_sync_function
+
+		self.con_subtree_delete_objects = con_subtree_delete_objects
 
 		# Overwrite the identify function from the ucs modules, at least needed for dns
 		if identify:

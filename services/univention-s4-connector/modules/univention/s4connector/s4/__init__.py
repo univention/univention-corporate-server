@@ -2185,7 +2185,7 @@ class s4(univention.s4connector.ucs):
 			if hasattr(self.property[property_type],"con_sync_function"):
 				self.property[property_type].con_sync_function(self, property_type, object)
 			else:
-				self.delete_in_s4( object )
+				self.delete_in_s4( object, property_type )
 				
 		else:
 			ud.debug(ud.LDAP, ud.WARN,
@@ -2200,7 +2200,7 @@ class s4(univention.s4connector.ucs):
 							   "sync from ucs return True" )
 		return True # FIXME: return correct False if sync fails
 
-	def delete_in_s4(self, object ):
+	def delete_in_s4(self, object, property_type ):
 		_d=ud.function('ldap.delete_in_s4')
 		try:
 			self.lo_s4.lo.delete_s(compatible_modstring(object['dn']))
@@ -2212,25 +2212,28 @@ class s4(univention.s4connector.ucs):
 				if univention.s4connector.compare_lowercase(result[0], object['dn']):
 					continue
 				ud.debug(ud.LDAP, ud.INFO,"delete: %s"% result[0])
-				subobject={'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
-				key = None
-				for k in self.property.keys():
-					if self.modules[k].identify(result[0], result[1]):
-						key=k
-						break
-				object_mapping = self._object_mapping(key, subobject)
-				ud.debug(ud.LDAP, ud.WARN,"delete subobject: %s"% object_mapping['dn'])
-				if not self._ignore_object(key,object_mapping):
-					if not self.sync_from_ucs(key, subobject, object_mapping['dn']):
-						try:
-							ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
-						except (ldap.SERVER_DOWN, SystemExit):
-							raise							
-						except: # FIXME: which exception is to be caught?
-							ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed")
-						return False
+				if ldap.explode_rdn(result[0].lower())[0] in self.property[property_type].con_subtree_delete_objects:
+					self.lo_s4.lo.delete_s(compatible_modstring(result[0]))
+				else:
+					subobject={'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
+					key = None
+					for k in self.property.keys():
+						if self.modules[k].identify(result[0], result[1]):
+							key=k
+							break
+					object_mapping = self._object_mapping(key, subobject)
+					ud.debug(ud.LDAP, ud.WARN,"delete subobject: %s"% object_mapping['dn'])
+					if not self._ignore_object(key,object_mapping):
+						if not self.sync_from_ucs(key, subobject, object_mapping['dn']):
+							try:
+								ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
+							except (ldap.SERVER_DOWN, SystemExit):
+								raise							
+							except: # FIXME: which exception is to be caught?
+								ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed")
+							return False
 
 
-			return self.delete_in_s4(object)
+			return self.delete_in_s4(object, property_type)
 
 
