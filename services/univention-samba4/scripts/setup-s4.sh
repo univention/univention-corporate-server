@@ -154,7 +154,17 @@ if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
 						--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
 
 else
+	## Before starting the upgrade check for Samba accounts that are not POSIX accounts:
+	non_posix_sambaSamAccount_dns=$(univention-ldapsearch -xLLL "(&(objectClass=sambaSamAccount)(!(objectClass=posixAccount)))" dn | sed -n 's/^dn: \(.*\)/\1/p')
+	if [ -n "$non_posix_sambaSamAccount_dns" ]; then
+		echo "ERROR: Found Samba accounts in LDAP that are not POSIX accounts, please remove these before updating to Samba 4" >&2
+		echo "$non_posix_sambaSamAccount_dns" | while read dn; do
+			echo "DN: $dn" >&2
+		done
+		exit 1
+	fi
 
+	## Preparations for the samba3update:
 	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
 	groups=("Windows Hosts" "DC Backup Hosts" "DC Slave Hosts" "Computers" "Power Users")
 	for group in "${groups[@]}"; do
