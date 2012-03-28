@@ -36,6 +36,7 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.StandbyMixin");
+dojo.require("umc.modules._luga.PasswordInputBox");
 
 dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	// summary:
@@ -110,7 +111,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				name: 'username',
 				label: this._('Username')
 			}, {
-				type: 'PasswordInputBox',
+				type: 'umc.modules._luga.PasswordInputBox',
 				name: 'password',
 				label: this._('Password')
 			}, {
@@ -215,11 +216,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				type: 'CheckBox',
 				name: 'create_home',
 				label: this._('move home folder')
-			}, {
-				type: 'CheckBox',
-				name: 'create_usergroup',
-				visible: false,
-				label: this._('create group for user')
 			}];
 
 			// specify the layout... additional dicts are used to group form elements
@@ -335,67 +331,65 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		deferred.then(dojo.hitch(this, function(result) {
 			// see whether saving was successfull
 			this.standby(false);
-			var success = (result && result.length === 0);
-			if (dojo.isArray(result)) {
-				result = result.join("\n");
-			}
 
-			if (success) {
+			if (result.length === 0) {
 				// everything ok, close page
 				this.onClose();
 			}
 			else {
 				// print error message to user
-				umc.dialog.alert(result);
+				umc.dialog.alert(escape(result));
 			}
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));
 	},
 
-	add: function() {
-		this.newObject = true;
-		this._resetForm();
-		// add a local user or group
+	initConnects: function() {
 		if (this.moduleFlavor === 'luga/users') {
-			umc.tools.forIn({ 
-				pw_is_expired: ['visible', false],
-				pw_is_empty: ['visible', false],
-				pw_last_change: ['visible', false],
-				disabled_since: ['visible', false],
-				pw_delete: ['visible', false],
-				uid: ['visible', false],
-				create_usergroup: ['visible', false],
-				create_home: ['label', this._('Create home folder')],
-				create_home: ['checked', true],
-				shell: ['value', '/bin/bash'],
-				pw_maxdays: ['value', 99999],
-				pw_mindays:  ['value', 0],
-				pw_warndays:  ['value', 7],
-				pw_disabledays:  ['value', '']
-			}, function(widget, value) {
-				this._form.getWidget(widget).set(value[0], value[1]);
+
+			// Set group to username groupname is equal to original value / is not touched
+			this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(username) {
+				var equal = this._receivedObjFormData.group === this._form.getWidget('group').get('value');
+
+				if (!this._newObject || equal) {
+					this._form.getWidget('group').set('staticValues', [username]);
+					this._form.setValues({
+						homedir: '/home/'+username,
+						group: username
+					});
+				} else {
+					this.disconnect();
+				}
+			}));
+
+			// modifiing Objects
+			if (!this._newObject) {
+				// deactivate create_home (move hom folder) button if values has not changed and not new object
+				this.connect(this._form.getWidget('homedir'), 'onChange', dojo.hitch(this, function(homedir) {
+					var equal = (this._receivedObjFormData.homedir === homedir);
+					this._form.getWidget('create_home').set('disabled', equal);
+					if (!equal) {
+						this.disconnect();
+					}
+				}));
+
+			}
+
+			// disable/enable password field to value of lock and pw_remove
+			dojo.forEach(['lock', 'pw_delete'], function(widget) {
+				this.connect(this._form.getWidget(widget), 'onChange', dojo.hitch(this, function(locked) {
+					var lock = this._form.getWidget('lock').get('value');
+					var remove = this._newObject ? false : this._form.getWidget('pw_delete').get('value');
+					if (!locked) {
+						locked = !lock && !remove;
+					}
+					this._form.getWidget('password').setDisabledAttr(locked);
+					//this._form.getWidget('password').set('disabled', locked); // FIXME
+				}));
 			}, this);
 
-			this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(username) {
-				this._form.getWidget('group').set('staticValues', [username]);
-				this._form.setValues({
-					homedir: '/home/'+username,
-					group: username
-				});
-			}));
-
-			this.connect(this._form.getWidget('lock'), 'onChange', dojo.hitch(this, function(value) {
-				// FIXME: does not work on PasswordInputBox
-				this._form.getWidget('password').set('disabled', value);
-				this._form.getWidget('password').disabled = value;
-			}));
-
-		} else if (this.moduleFlavor === 'luga/groups') {
-			this._form._widgets.gid.set('visible', false);
 		}
-		this.standby(false);
-//		this.show();
 	},
 
 	_resetForm: function() {
@@ -407,6 +401,39 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				w.reset();
 			}
 		}, this);
+		// TODO: set all values unchecked
+//		this._form.getWidget('group').set('value', []);
+	},
+
+	add: function() {
+		// add a local user or group
+		this.newObject = true;
+		this._resetForm();
+		if (this.moduleFlavor === 'luga/users') {
+			umc.tools.forIn({ 
+				pw_is_expired: ['visible', false],
+				pw_is_empty: ['visible', false],
+				pw_last_change: ['visible', false],
+				disabled_since: ['visible', false],
+				pw_delete: ['visible', false],
+				uid: ['visible', false],
+				create_home: ['label', this._('Create home folder')],
+				create_home: ['checked', true],
+				shell: ['value', '/bin/bash'],
+				pw_maxdays: ['value', 99999],
+				pw_mindays:  ['value', 0],
+				pw_warndays:  ['value', 7],
+				pw_disabledays:  ['value', '']
+			}, function(widget, value) {
+				this._form.getWidget(widget).set(value[0], value[1]);
+			}, this);
+		} else if (this.moduleFlavor === 'luga/groups') {
+			this._form._widgets.gid.set('visible', false);
+		}
+
+		this.initConnects();
+
+		this.standby(false);
 	},
 
 	load: function(id) {
@@ -428,6 +455,8 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			// error messages will be displayed automatically
 			this.standby(false);
 		}));
+
+		this.initConnects();
 	},
 
 	confirmClose: function() {

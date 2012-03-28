@@ -335,14 +335,14 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					};
 				}
 				var transaction = this.moduleStore.transaction();
-				dojo.forEach(ids, function(id) {
+				dojo.forEach(ids, dojo.hitch(this, function(id) {
 					this.moduleStore.remove(id, options);
-				});
+				}));
 				transaction.commit().then(dojo.hitch(this, function(result) {
 					this.standby(false);
 					if(result && result.length) {
 						if(dojo.isArray(result)) {
-							result = result.join("\n");
+							result = result.join("<br/>");
 						}
 						umc.dialog.alert(result);
 					}

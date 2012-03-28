@@ -227,7 +227,7 @@ class Users:
 			request.options.category:
 				one of [username, uid, gid, gecos, homedir, shell, group] default: username
 		"""
-		MODULE.info( 'luga.users_query: options: %s' % str( request.options ) )
+		MODULE.info( 'luga.users_query: options: %s' % str(request.options) )
 
 		if dict is not type(request.options):
 			raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
@@ -237,7 +237,7 @@ class Users:
 
 		response = self.parse_users( category, pattern )
 
-		MODULE.info( 'luga.users_query: results: %s' % str( response ) )
+		MODULE.info( 'luga.users_query: result-length: %d' % len(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
 	def users_get_users(self, request):
@@ -245,13 +245,13 @@ class Users:
 			returns a shorten list containing a dict for each user
 			[ {'id': <username>, 'label': <username>}, ... ]
 		"""
-		MODULE.info( 'luga.users_getUsers: options: %s' % str( request.options ) )
+		MODULE.info( 'luga.users_getUsers: options: %s' % str(request.options) )
 
 		response = []
 		for user in self.parse_users():
 			response.append( {'id': user['username'], 'label': user['username']} )
 
-		MODULE.info( 'luga.users_query: results: %s' % str( response ) )
+		MODULE.info( 'luga.users_query: results: %s' % str(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
 	def get_group_members(self, groupname):
@@ -271,7 +271,7 @@ class Users:
 			returns a list of dicts containing user information from requested usernames
 			param request.options = [ <username>, <username2>, ... ]
 		"""
-		MODULE.info( 'luga.users_get: options: %s' % str( request.options ) )
+		MODULE.info( 'luga.users_get: options: %s' % str(request.options) )
 
 		if list is not type(request.options):
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
@@ -287,7 +287,7 @@ class Users:
 				if c == i:
 					break
 
-		MODULE.info( 'luga.users_get: results: %s' % str( response ) )
+		MODULE.info( 'luga.users_get: results: %s' % str(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
 	def get_common_args( self, options, pwoptions={} ):
@@ -312,7 +312,7 @@ class Users:
 		homedir = options.get('homedir')
 		if homedir:
 			cmd += '-d %s ' % self.sanitize_arg( homedir )
-			if options.get('create_home'): # TODO: rename move/create_home
+			if options.get('create_home'):
 				cmd += '-m '
 
 		# Shell
@@ -332,7 +332,7 @@ class Users:
 
 		# Primary Group
 		group = options.get('group')
-		if group:
+		if not options.get('create_usergroup') and group:
 			cmd += '-g %s ' % self.sanitize_arg( group )
 
 		# Password options
@@ -368,7 +368,7 @@ class Users:
 		return cmd
 
 	def users_put( self, request ):
-		MODULE.info( 'luga.users_put: options: %s' % str( request.options ) )
+		MODULE.info( 'luga.users_put: options: %s' % str(request.options) )
 		"""
 			modify a local user
 		"""
@@ -383,6 +383,7 @@ class Users:
 
 		for o in request.options:
 			try:
+				fail = ''
 				#if dict is not type(o) or dict is not type(o.get('object', {})) or dict is not type(o.get('options', {})):
 				if dict is not type(o) or dict is not type(o.get('object', {})):
 					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
@@ -421,23 +422,22 @@ class Users:
 				if returncode != 0:
 					MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
 					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
-					raise ValueError( _('%s: %s') % (username, error) )
+					raise ValueError( error )
 
 			except ValueError as e:
-				response.append( str(e) )
+				username = username if type(username) is str else ''
+				fail = '%s: %s' % (username, str(e))
+			finally:
+				response.append( fail )
 
-		MODULE.info( 'luga.users_edit: results: %s' % str( response ) )
+		MODULE.info( 'luga.users_edit: results: %s' % str(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
 	def users_add(self, request):
 		"""
 			add a local user
-
-			TODO: remove gid, replace by groupname
-			TODO: gecos
-			TODO: Password changing
 		"""
-		MODULE.info( 'luga.users_add: options: %s' % str( request.options ) )
+		MODULE.info( 'luga.users_add: options: %s' % str(request.options) )
 	
 		if list is not type(request.options):
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
@@ -457,14 +457,11 @@ class Users:
 
 		for o in request.options:
 			try:
+				fail = ''
 				if dict is not type(o) or dict is not type(o.get('object', {})):
 					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
 				option = o.get('object', {})
-#				options = o.get('options', {})
-
-#				if dict is not type(option): # or dict is not type(options):
-#					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
 				# Username
 				username = option.get('username')
@@ -473,35 +470,32 @@ class Users:
 
 				pwoptions = {}
 				cmd = '/usr/sbin/useradd '
-				cmd += self.get_common_args( option, pwoptions )
 
-				# TODO: rename?
-				# Create an own Usergroup as primary group?
-				if option.get('create_usergroup'):
-					cmd += ' -U'
+				if username == option.get('group'):
+					option['create_usergroup'] = True
+					cmd += '-U '
 				else:
-					cmd += ' -N'
+					cmd += '-N '
 
-				cmd += ' %s' % self.sanitize_arg(username)
+				cmd += self.get_common_args( option, pwoptions )
+				cmd += self.sanitize_arg(username)
 
 				# Execute
 				returncode = self.process(cmd)
 				if 0 != returncode:
 					MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
 					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
-					raise ValueError( '%s: %s' % (username, error) )
+					raise ValueError( error )
 				else:
 					password = option.get('password')
 					self.change_user_password(username, password, pwoptions)
-			except UMC_OptionTypeError as e:
-				if len(request.options) is 1:
-					raise e
-				else:
-					response.append( str(e) )
 			except ValueError as e:
-				response.append( str(e) )
+				username = username if type(username) is str else ''
+				fail = '%s: %s' % (username, str(e))
+			finally:
+				response.append( fail )
 
-		MODULE.info( 'luga.users_add: results: %s' % str( response ) )
+		MODULE.info( 'luga.users_add: results: %s' % str(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
 	def users_remove(self, request):
@@ -511,12 +505,11 @@ class Users:
 				force: force removal of files, even if not owned by user
 				remove: remove home directory and mail spool
 		"""
-		MODULE.info( 'luga.users_delete: options: %s' % str( request.options ) )
+		MODULE.info( 'luga.users_remove: options: %s' % str(request.options) )
 
 		if list is not type(request.options):
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
-		cmd = '/usr/sbin/userdel '
 		response = []
 		errors = {
 			1: _('could not update password file'),
@@ -529,31 +522,36 @@ class Users:
 
 		for option in request.options:
 			try:
-				# TODO: option is a string, not dict...
-				# where to get options foreach user?
-				# can i hack in JS? alerting user?
+				fail = ''
 				if dict is not type(option):
 					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
-				username = option.get('username')
+				cmd = '/usr/sbin/userdel '
 
+				username = option.get('object')
 				if None is username:
 					raise ValueError( _('No username given') )
-				if option.get('force'):
-					cmd += ' -f'
-				if option.get('remove'):
-					cmd += ' -r'
 
-				cmd += ' %s' % self.sanitize_arg(username)
+				options = self.sanitize_dict(option.get('options', {}))
+				if options.get('force'):
+					cmd += '-f '
+				if options.get('remove'):
+					cmd += '-r '
+
+				cmd += self.sanitize_arg(username)
 
 				returncode = self.process(cmd)
 				if returncode != 0:
 					MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
 					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
-					raise ValueError( '%s: %s' % (username, error) )
+					raise ValueError( error )
 			except ValueError as e:
-				response.append( str(e) )
+				username = username if type(username) is string else ''
+				fail = '%s: %s' % (username, str(e))
+			finally:
+				response.append( fail )
 
-		MODULE.info( 'luga.users_delete: results: %s' % str( response ) )
-		self.finished( request.id, response )
+
+		MODULE.info( 'luga.users_remove: results: %s' % str(response) )
+		self.finished(request.id, response, status=SUCCESS)
 

@@ -36,6 +36,7 @@ from Groups import Groups
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules import Base
+from univention.management.console.log import MODULE
 
 from subprocess import PIPE, Popen
 from shlex import split
@@ -44,12 +45,15 @@ _ = Translation( 'univention-management-console-module-luga' ).translate
 
 class Process:
 	def sanitize_arg(self, arg):
-		return "'" + str(arg).replace('\\','\\\\').replace('\'','\\\'') + "'"
+		return '"' + str(arg).replace('\\','\\\\').replace('\"','\\\"') + '"'
 
 	def sanitize_int(self, num):
 		if str(num).isdigit():
 			return int(num)
 		raise UMC_OptionTypeError( _("argument type has to be 'int'") )
+
+	def sanitize_dict(self, d):
+		return d if type(d) is dict else {}
 
 	def process(self, args, stdin=None):
 		"""
@@ -63,8 +67,9 @@ class Process:
 		try:
 			p = Popen( args = split(args.encode('utf-8')), env = {'LANG':'en'}, stderr = PIPE, stdin = PIPE )
 			(stdout, stderr) = p.communicate(stdin)
-		except:
-			raise ValueError( _('command processing failed') )
+		except OSError as e:
+			MODULE.error( _('Command failed: %s\n Exception: %s') % (args, str(e)) )
+			raise ValueError( _('Command failed') )
 
 		return p.returncode
 
