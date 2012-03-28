@@ -874,6 +874,10 @@ def con2ucs (s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, 'dns con2ucs: Ignore unkown dns object: %s' % object['dn'])
 		return True
 
+	if object['dn'].find('\\0ACNF:') > 0:
+		ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted dns object: %s' % object['dn'])
+		return True
+
 	ud.debug(ud.LDAP, ud.INFO, 'dns con2ucs: Object (%s) is from type %s' % (object['dn'], dns_type))
 
 	if dns_type == 'host_record':
