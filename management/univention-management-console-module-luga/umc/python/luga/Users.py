@@ -204,15 +204,15 @@ class Users:
 			if 0 != returncode:
 				MODULE.error('cmd "%s" failed with returncode %d' % (pwd, returncode)) 
 				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
-				raise ValueError( _('an error accured while changing password for %s: %s') % (username, error) )
+				raise ValueError( _('an error accured while changing password: %s') % (error) )
 
 		# Change options
 		if cmd:
 			returncode = self.process(cmd)
 			if 0 != returncode:
 				MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
-				error = errors.get(returncode, _('unknown error with statuscode %d accured while changing password options') % (returncode))
-				raise ValueError( _('an error accured while changing password options for %s: %s') % (username, error) )
+				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
+				raise ValueError( _('an error accured while changing password options: %s') % (error) )
 
 		return True
 
@@ -297,7 +297,7 @@ class Users:
 			return string
 		"""
 
-		cmd = ' '
+		cmd = ''
 
 		# Gecos
 		gecos = [options.get('fullname'), options.get('roomnumber'), options.get('tel_business'), options.get('tel_private'), options.get('miscellaneous')]
@@ -336,7 +336,7 @@ class Users:
 			cmd += '-g %s ' % self.sanitize_arg( group )
 
 		# Password options
-		if options.get('pw_delete'):
+		if options.get('pw_remove'):
 			pwoptions['delete'] = True
 		if options.get('pw_expire'):
 			pwoptions['expire'] = True
@@ -349,9 +349,9 @@ class Users:
 		#	TODO: old state
 			pwoptions['unlock'] = True
 
-		inactive = options.get('pw_deactivatedays')
+		inactive = options.get('pw_disabledays')
 		if inactive:
-			pwoptions['inactive'] = inactive
+			pwoptions['disabledays'] = inactive
 
 		mindays = options.get('pw_mindays')
 		if mindays:
@@ -411,18 +411,22 @@ class Users:
 				elif option.get('unlock'):
 					cmd += '-U '
 
-				cmd += self.sanitize_arg(username)
+				if cmd != '/usr/sbin/usermod ':
+					cmd += self.sanitize_arg(username)
+				else:
+					cmd = False
 
 				# Password
 				password = option.get('password')
 				self.change_user_password(username, password, pwoptions)
 
 				# Execute
-				returncode = self.process(cmd)
-				if returncode != 0:
-					MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
-					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
-					raise ValueError( error )
+				if cmd:
+					returncode = self.process(cmd)
+					if returncode != 0:
+						MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
+						error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
+						raise ValueError( error )
 
 			except ValueError as e:
 				username = username if type(username) is str else ''
@@ -469,7 +473,7 @@ class Users:
 					raise ValueError( _('No username given') )
 
 				pwoptions = {}
-				cmd = '/usr/sbin/useradd '
+				cmd = '/usr/sbin/useradd -r '
 
 				if username == option.get('group'):
 					option['create_usergroup'] = True
@@ -478,17 +482,22 @@ class Users:
 					cmd += '-N '
 
 				cmd += self.get_common_args( option, pwoptions )
-				cmd += self.sanitize_arg(username)
+				if cmd != '/usr/sbin/useradd -r ':
+					cmd += self.sanitize_arg(username)
+				else:
+					cmd = False
 
 				# Execute
-				returncode = self.process(cmd)
-				if 0 != returncode:
-					MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
-					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
-					raise ValueError( error )
-				else:
-					password = option.get('password')
-					self.change_user_password(username, password, pwoptions)
+				if cmd:
+					returncode = self.process(cmd)
+					if 0 != returncode:
+						MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
+						error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
+						raise ValueError( error )
+
+				# Change Password + options
+				password = option.get('password')
+				self.change_user_password(username, password, pwoptions)
 			except ValueError as e:
 				username = username if type(username) is str else ''
 				fail = '%s: %s' % (username, str(e))
@@ -517,7 +526,7 @@ class Users:
 			6: _('specified user doesnt exist'),
 			8: _('user currently logged in'),
 			10: _('could not update group file'),
-			12: _('could not remove home directory')
+			12: _('could not remove home directory or mail spool')
 		}
 
 		for option in request.options:
@@ -546,7 +555,7 @@ class Users:
 					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
 					raise ValueError( error )
 			except ValueError as e:
-				username = username if type(username) is string else ''
+				username = username if type(username) is str else ''
 				fail = '%s: %s' % (username, str(e))
 			finally:
 				response.append( fail )

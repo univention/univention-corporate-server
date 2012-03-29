@@ -154,8 +154,12 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var columns = null;
 		if (this.moduleFlavor === 'luga/users') {
 			columns = [{
+				name: 'uid',
+				label: this._('UID'),
+				width: 'adjust'
+			}, {
 				name: 'lock',
-				label: this._('Enabled'),
+				label: ' ', // this._('Enabled'),
 				width: 'adjust',
 				formatter: function(value) {
 					return value ? '&#10799;' : '&#10004;';
@@ -163,7 +167,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}, {
 				name: 'username',
 				label: this._('Username'),
-				width: '52%'
+				width: '44%'
 			}, {
 				name: 'fullname',
 				label: this._('Fullname'),
@@ -212,7 +216,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				{id: 'fullname', label: this._('Fullname')},
 				{id: 'uid', label: this._('User ID')},
 				{id: 'gid', label: this._('Group ID')},
-				{id: 'gecos', label: this._('Additional Information')},
+				{id: 'gecos', label: this._('Additional information')},
 				{id: 'homedir', label: this._('Home directory')},
 				{id: 'shell', label: this._('Login shell')}
 			];
@@ -341,10 +345,16 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				transaction.commit().then(dojo.hitch(this, function(result) {
 					this.standby(false);
 					if(result && result.length) {
+						var message = this._('The following errors accured while deleting the selected %s:', this._objectNamePlural) + '<ul>';
 						if(dojo.isArray(result)) {
-							result = result.join("<br/>");
+							dojo.forEach(result, function(err) {
+								message += '<li>' + err + '</li>';
+							}, this);
+						} else {
+							message += '<li>' + result + '</li>';
 						}
-						umc.dialog.alert(result);
+						message += '</ul>';
+						umc.dialog.alert(message);
 					}
 				}), dojo.hitch(this, function() {
 					this.standby(false);

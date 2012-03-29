@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<definitions>
+		<syntax base="Selection" name="luga-groups-search">
+			<choice name="groupname"/>
+			<choice name="gid"/>
+			<choice name="users"/>
+			<choice name="administrators"/>
+		</syntax>
+		<syntax base="Selection" name="luga-users-search">
+			<choice name="username"/>
+			<choice name="fullname"/>
+			<choice name="uid"/>
+			<choice name="gid"/>
+			<choice name="gecos"/>
+			<choice name="shell"/>
+			<choice name="homedir"/>
+			<choice name="group"/>
+		</syntax>
+		<syntax base="List" name="luga-users-put">
+			<item key="" name="luga-users-put-item"/>
+		</syntax>
+		<syntax base="Dictionary" name="luga-users-put-item">
+			<item key="username" value="nonempty-value"/>
+			<item key="uid" value="Integer"/>
+			<item key="pw_mindays" value="Integer"/>
+			<item key="pw_maxdays" value="Integer"/>
+			<item key="pw_warndays" value="Integer"/>
+			<item key="pw_disabledays" value="Integer"/>
+			<item key="lock" value="Boolean"/>
+			<item key="unlock" value="Boolean"/>
+			<item key="pw_remove" value="Boolean"/>
+			<item key="pw_expire" value="Boolean"/>
+			<item key="pw_keep_tokens" value="Boolean"/>
+			<item key="create_home" value="Boolean"/>
+			<item key="miscellaneous" value="String"/>
+			<item key="tel_private" value="String"/>
+			<item key="tel_business" value="String"/>
+			<item key="roomnumber" value="String"/>
+			<item key="fullname" value="String"/>
+			<item key="shell" value="Path"/>
+			<item key="homedir" value="Path"/>
+			<item key="group" value="String"/>
+			<item key="groups" value="List"/>
+		</syntax>
+		<syntax base="String" name="nonempty-value">
+			<regex>.+</regex>
+		</syntax>
+		<syntax base="String" name="Path">
+			<regex>.+</regex>
+		</syntax>
+  </definitions>
+</umc>
+  

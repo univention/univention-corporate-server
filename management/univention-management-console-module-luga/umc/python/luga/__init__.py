@@ -35,7 +35,7 @@ from Users import Users
 from Groups import Groups
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import Base
+from univention.management.console.modules import UMC_OptionTypeError, UMC_CommandError, UMC_OptionMissing, Base
 from univention.management.console.log import MODULE
 
 from subprocess import PIPE, Popen
@@ -48,9 +48,9 @@ class Process:
 		return '"' + str(arg).replace('\\','\\\\').replace('\"','\\\"') + '"'
 
 	def sanitize_int(self, num):
-		if str(num).isdigit():
+		if str(num).isdigit() and type(int(num)) is int:
 			return int(num)
-		raise UMC_OptionTypeError( _("argument type has to be 'int'") )
+		raise UMC_OptionTypeError( _("argument type has to be 'int': %s") % num )
 
 	def sanitize_dict(self, d):
 		return d if type(d) is dict else {}

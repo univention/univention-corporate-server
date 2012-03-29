@@ -52,7 +52,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	_form: null,
 
 	// new object?
-	newObject: null,
+	_newObject: null,
 
 	// initial object properties as they are represented by the form
 	_receivedObjFormData: null,
@@ -109,6 +109,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			widgets = [{
 				type: 'TextBox',
 				name: 'username',
+				required: true,
 				label: this._('Username')
 			}, {
 				type: 'umc.modules._luga.PasswordInputBox',
@@ -117,6 +118,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}, {
 				type: 'NumberSpinner',
 				name: 'uid',
+				disabled: true,
 				size: 'OneThird',
 				label: this._('User ID')
 			}, {
@@ -144,7 +146,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			// Gecos
 				type: 'TextBox',
 				name: 'fullname',
-				label: this._('Full name')
+				label: this._('Fullname')
 			}, {
 				type: 'TextBox',
 				name: 'roomnumber',
@@ -173,7 +175,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				label: this._('Password is expired')
 			}, {
 				type: 'CheckBox',
-				name: 'pw_delete',
+				name: 'pw_remove',
 				value: false,
 				label: this._('Remove password')
 			}, {
@@ -222,7 +224,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			// together into title panes
 			layout = [{
 				label: this._('General'),
-				layout: [ [ 'username', 'fullname' ], ['password'], ['lock', 'pw_delete' ] ]
+				layout: [ [ 'username', 'fullname' ], ['password'], ['lock', 'pw_remove' ] ]
 			}, { 
 				label: this._('Additional information'),
 				layout: [ ['tel_business', 'tel_private'], ['roomnumber', 'miscellaneous'] ]
@@ -283,7 +285,13 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		// get all form values and see which values are new
 		var vals = this._form.gatherFormValues();
 		var newVals = {};
-		if (this.newObject) {
+
+		// remove unneedet values
+		delete vals.pw_last_change;
+		delete vals.disabled_since;
+		delete vals.uid;
+
+		if (this._newObject) {
 			// get only non-empty values
 			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
 				if (!(dojo.isArray(ival) && !ival.length) && ival) {
@@ -313,16 +321,73 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		return newVals;
 	},
 
+	validateChanges: function(vals) {
+		// summary:
+		//		Validate the user input.
+
+		// reset settings from last validation
+		umc.tools.forIn(this._form._widgets, function(iname, iwidget) {
+			if (iwidget.setValid) {
+				iwidget.setValid(null);
+			}
+		}, this);
+
+		// check whether all required properties are set
+		var errMessage = this._('The following properties need to be specified or are invalid:') + '<ul>';
+		var allValuesGiven = true;
+		umc.tools.forIn(this._form._widgets, function(iname, iwidget) {
+			// ignore widgets that are not visible
+			if (!iwidget.get('visible')) {
+				return true;
+			}
+
+			// check whether a required property is set or a property is invalid
+			var tmpVal = dojo.toJson(iwidget.get('value'));
+			var isEmpty = tmpVal == '""' || tmpVal == '[]' || tmpVal == '{}';
+			if ((isEmpty && iwidget.required) || (!isEmpty && iwidget.isValid && false === iwidget.isValid())) {
+				// value is empty
+				allValuesGiven = false;
+				errMessage += '<li>' + iwidget.label + '</li>';
+			}
+		}, this);
+		errMessage += '</ul>';
+
+		// check whether any changes are made at al
+		var nChanges = 0;
+		var regKey = /\$.*\$/;
+		umc.tools.forIn(vals, function(ikey) {
+			if (!regKey.test(ikey)) {
+				// key does not start and end with '$' and is thus a regular key
+				++nChanges;
+			}
+		});
+
+		if (!nChanges) {
+			umc.dialog.alert(this._('No changes have been made.'));
+			return false;
+		}
+
+		// print out an error message if not all required properties are given
+		if (!allValuesGiven) {
+			umc.dialog.alert(errMessage);
+			return false;
+		}
+
+		return true;
+	},
+
 	_save: function() {
 		// summary:
 		//		Save the user changes for the edited object.
 
-		// TODO: validate form entries
-
 		var values = this.getAlteredValues();
 
+		if(!this.validateChanges(values)) {
+			return;
+		}
+
 		var deferred = null;
-		if (this.newObject) {
+		if (this._newObject) {
 			deferred = this.moduleStore.add(values);
 		}
 		else {
@@ -338,7 +403,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}
 			else {
 				// print error message to user
-				umc.dialog.alert(escape(result));
+				umc.dialog.alert(result);
 			}
 		}), dojo.hitch(this, function() {
 			this.standby(false);
@@ -348,11 +413,11 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	initConnects: function() {
 		if (this.moduleFlavor === 'luga/users') {
 
-			// Set group to username groupname is equal to original value / is not touched
+			// Set group to username if new object or groupname is equal to original value / is not touched
 			this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(username) {
-				var equal = this._receivedObjFormData.group === this._form.getWidget('group').get('value');
+				var equal = this._newObject || (this._receivedObjFormData.group === this._form.getWidget('group').get('value'));
 
-				if (!this._newObject || equal) {
+				if (equal) {
 					this._form.getWidget('group').set('staticValues', [username]);
 					this._form.setValues({
 						homedir: '/home/'+username,
@@ -363,31 +428,29 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				}
 			}));
 
-			// modifiing Objects
+			// modify User
 			if (!this._newObject) {
-				// deactivate create_home (move hom folder) button if values has not changed and not new object
+				// deactivate create_home (move home folder) button if values has not changed, don't disconnect
 				this.connect(this._form.getWidget('homedir'), 'onChange', dojo.hitch(this, function(homedir) {
-					var equal = (this._receivedObjFormData.homedir === homedir);
-					this._form.getWidget('create_home').set('disabled', equal);
-					if (!equal) {
-						this.disconnect();
-					}
+					this._form.getWidget('create_home').set('disabled', (this._receivedObjFormData.homedir === homedir));
 				}));
-
+				// disable/enable password field to value of pw_remove
+				this.connect(this._form.getWidget('pw_remove'), 'onChange', dojo.hitch(this, function(enabled) {
+					enabled = enabled || this._form.getWidget('lock').get('value');
+					this._form.getWidget('password').setDisabledAttr(enabled);
+				}));
+			} else {
+			// new User
+				
 			}
 
-			// disable/enable password field to value of lock and pw_remove
-			dojo.forEach(['lock', 'pw_delete'], function(widget) {
-				this.connect(this._form.getWidget(widget), 'onChange', dojo.hitch(this, function(locked) {
-					var lock = this._form.getWidget('lock').get('value');
-					var remove = this._newObject ? false : this._form.getWidget('pw_delete').get('value');
-					if (!locked) {
-						locked = !lock && !remove;
-					}
-					this._form.getWidget('password').setDisabledAttr(locked);
-					//this._form.getWidget('password').set('disabled', locked); // FIXME
-				}));
-			}, this);
+			// disable/enable password field to value of lock or (pw_remove if not new User)
+			this.connect(this._form.getWidget('lock'), 'onChange', dojo.hitch(this, function(enabled) {
+				if(!this._newObject) {
+					enabled = enabled || this._form.getWidget('pw_remove').get('value');
+				}
+				this._form.getWidget('password').setDisabledAttr(enabled);
+			}));
 
 		}
 	},
@@ -407,7 +470,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 
 	add: function() {
 		// add a local user or group
-		this.newObject = true;
+		this._newObject = true;
 		this._resetForm();
 		if (this.moduleFlavor === 'luga/users') {
 			umc.tools.forIn({ 
@@ -415,7 +478,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				pw_is_empty: ['visible', false],
 				pw_last_change: ['visible', false],
 				disabled_since: ['visible', false],
-				pw_delete: ['visible', false],
+				pw_remove: ['visible', false],
 				uid: ['visible', false],
 				create_home: ['label', this._('Create home folder')],
 				create_home: ['checked', true],
@@ -440,7 +503,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		// during loading show the standby animation
 		this.standby(true);
 
-		this.newObject = false;
+		this._newObject = false;
 
 		this._resetForm();
 
@@ -467,6 +530,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		// event stub 
 	}
 });
+
 
 
 
