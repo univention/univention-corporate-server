@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.228-2) unstable; urgency=low
+
+  * univention-object-type-migrate: added user-friendly error message in case
+    LDAP schema extensions are not installed correctly; Bug #26304
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 29 Mar 2012 15:45:24 +0200
+
 univention-directory-manager-modules (7.0.228-1) unstable; urgency=low
 
   * fix typo in syntax MAC_Address (Bug #25463)
