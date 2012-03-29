@@ -38,6 +38,15 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+## Check if Samba 4 setup is done
+LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
+domaindn="DC=${kerberos_realm//./,DC=}"	# that's what /usr/share/pyshared/samba/provision.py uses
+if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn: $domaindn"; then
+	echo "Samba4 backend database not available yet, exiting joinscript 98nivention-samba4-dns."
+	exit 1
+fi
+
+
 # Change the dns/backend to samba4 only whether a S4 Connector is installed in our domain
 s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
 

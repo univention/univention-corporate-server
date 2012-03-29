@@ -1,3 +1,9 @@
+univention-samba4 (1.0.133-2) unstable; urgency=low
+
+  * Check if Samba4 ist provisioned (Bug #26659)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Mar 2012 10:44:18 +0200
+
 univention-samba4 (1.0.133-1) unstable; urgency=low
 
   * Abort samba3update if there are group names colliding with user names
