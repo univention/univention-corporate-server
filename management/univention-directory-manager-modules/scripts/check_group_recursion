@@ -94,7 +94,7 @@ def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
 	global grp2childgrps, co, lo
 
 	if not dn in grp2childgrps:
-		grpobj = univention.admin.objects.get(grp_module, co, lo, position='', dn=dn, arg='')
+		grpobj = univention.admin.objects.get(grp_module, co, lo, position='', dn=dn, attr=None)
 		grpobj.open()
 		childs = grpobj['nestedGroup']
 		grp2childgrps[ dn ] = childs
@@ -124,6 +124,7 @@ def main():
 	parser.add_option("-v", "--verbose", help="print debug output", dest="verbose", action="store_true")
 	(options, args) = parser.parse_args()
 
+	univention.admin.modules.update()
 	lo, position = get_ldap_connection(basedn)
 	grp_module = univention.admin.modules.get( 'groups/group' )
 	univention.admin.modules.init(lo, position, grp_module)

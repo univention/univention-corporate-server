@@ -2379,6 +2379,47 @@ class simpleComputer( simpleLdap ):
 				except Exception,e:
 					self.exceptions.append([_('DNS Alias'), _('delete'), e])
 
+		# remove service record entries (see Bug #26400)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '_ldap_post_remove: clean up service records, host records, and IP address saved at the forward zone')
+		ips = set(self['ip'] or [])
+		fqdn = self['fqdn']
+		fqdnDot = '%s.' % fqdn  # we might have entires w/ or w/out trailing '.'
+
+		# iterate over all forward zones
+		for zone in self['dnsEntryZoneForward'] or []:
+			# load zone object
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'clean up entries for zone: %s' % zone)
+			if len(zone) < 1:
+				continue
+			zoneObj = univention.admin.objects.get(univention.admin.modules.get('dns/forward_zone'), self.co, self.lo, self.position, dn = zone[0])
+			zoneObj.open()
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'zone aRecords: %s' % zoneObj['a'])
+
+			# clean up aRecords of zone itself
+			new_entries = list(set(zoneObj['a']) - ips)
+			if len(new_entries) != len(zoneObj['a']):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Clean up zone records:\n%s ==> %s' % (zoneObj['a'], new_entries))
+				zoneObj['a'] = new_entries
+				zoneObj.modify()
+
+			# clean up service records
+			for irecord in univention.admin.modules.lookup('dns/srv_record', self.co, self.lo, base=self.lo.base, scope='sub', superordinate=zoneObj):
+				irecord.open()
+				new_entries = [ j for j in irecord['location'] if fqdn not in j and fqdnDot not in j ]
+				if len(new_entries) != len(irecord['location']):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Entry found in "%s":\n%s ==> %s' % (irecord.dn, irecord['location'], new_entries))
+					irecord['location'] = new_entries
+					irecord.modify()
+
+			# clean up host records (that should probably be done correctly by Samba4)
+			for irecord in univention.admin.modules.lookup('dns/host_record', self.co, self.lo, base=self.lo.base, scope='sub', superordinate=zoneObj):
+				irecord.open()
+				new_entries = list(set(irecord['a']) - ips)
+				if len(new_entries) != len(irecord['a']):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Entry found in "%s":\n%s ==> %s' % (irecord.dn, irecord['a'], new_entries))
+					irecord['a'] = new_entries
+					irecord.modify()
+
 	def __setitem__(self, key, value):
 		raise_after = None
 		if key == 'network':

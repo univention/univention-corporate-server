@@ -1,3 +1,13 @@
+univention-directory-manager-modules (7.0.229-1) unstable; urgency=low
+
+  * check_group_recursion: added more error message in case LDAP schema
+    extensions are deemed not to be installed; Bug #26104
+  * added additional cleanup upon removal of a computer object: service and
+    host records as well as aRecords of the corresponding forward zone;
+    Bug #26400
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Mar 2012 17:37:23 +0200
+
 univention-directory-manager-modules (7.0.228-2) unstable; urgency=low
 
   * univention-object-type-migrate: added user-friendly error message in case
