@@ -226,7 +226,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var widgets = [{
 			type: 'ComboBox',
 			name: 'category',
-			description: this._('Defines the .'),
+			description: this._('Defines the category'),
 			label: this._('Category'),
 			staticValues: staticValues
 		}, {

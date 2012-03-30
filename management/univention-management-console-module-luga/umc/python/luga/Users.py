@@ -33,6 +33,7 @@
 
 from fnmatch import fnmatch
 from datetime import date
+import copy
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError, UMC_CommandError, UMC_OptionMissing, Base
@@ -48,7 +49,7 @@ class Users:
 			return empty string if no group was found
 		"""
 		ret = self.group_search('gid', gid)
-		if len(ret) != 1: # 0|1 other should be impossible
+		if len(ret) < 1:
 			return ''
 		return ret.pop().get('groupname')
 
@@ -143,12 +144,11 @@ class Users:
 					'pw_is_empty': pw_is_empty
 				} )
 			passwd.close()
-		except (KeyError, IndexError):
+		except (KeyError, IndexError, ValueError):
 			raise UMC_CommandError(_('passwd/shadow file is corrupt'))
 		except IOError:
-			raise UMC_CommandError(_('Could not open passwd/shadow file')) # no permissions, file does not exists
-#		except:
-#			raise UMC_CommandError(_('Could not parse passwd/shadow file'))
+			# no permissions, file does not exists
+			raise UMC_CommandError(_('Could not open passwd/shadow file'))
 		return users
 
 	def change_user_password(self, username, password, options={}):
@@ -193,16 +193,17 @@ class Users:
 		if maxdays:
 			cmd += '-x %d ' % self.sanitize_int(maxdays)
 
-		pwd = '/usr/bin/passwd -q %s' % self.sanitize_arg(username)
-		cmd += self.sanitize_arg(username)
-		if not (inactive or mindays or warndays or maxdays or options.get('delete') or options.get('expire') or options.get('keep_tokens') or options.get('lock') or (options.get('unlock') and password)):
+		if cmd != '/usr/bin/passwd -q ':
+			cmd += self.sanitize_arg(username)
+		else:
 			cmd = False
 
 		# Change password
 		if password:
+			pwd = '/usr/bin/passwd -q %s' % self.sanitize_arg(username)
 			returncode = self.process(pwd, '%s\n%s' % (password, password))
 			if 0 != returncode:
-				MODULE.error('cmd "%s" failed with returncode %d' % (pwd, returncode)) 
+				MODULE.error("cmd '%s' failed with returncode %d" % (pwd, returncode)) 
 				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
 				raise ValueError( _('an error accured while changing password: %s') % (error) )
 
@@ -210,7 +211,7 @@ class Users:
 		if cmd:
 			returncode = self.process(cmd)
 			if 0 != returncode:
-				MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
+				MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
 				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
 				raise ValueError( _('an error accured while changing password options: %s') % (error) )
 
@@ -237,7 +238,7 @@ class Users:
 
 		response = self.parse_users( category, pattern )
 
-		MODULE.info( 'luga.users_query: result-length: %d' % len(response) )
+		MODULE.info( 'luga.users_query: content-length: %d' % len(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
 	def users_get_users(self, request):
@@ -374,7 +375,12 @@ class Users:
 		"""
 
 		if list is not type(request.options):
+			MODULE.info( 'luga.users_put: options: %s' % (request.options) )
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
+		else:
+			c = copy.deepcopy(request.options)
+			map(lambda d: type(d) is dict and 'options' in d and 'password' in d['object'] and type(d['object']) is dict and d['object'].pop('password'), c)
+			MODULE.info( 'luga.users_put: options: %s' % (c) )
 
 		response = []
 		errors = {
@@ -384,11 +390,9 @@ class Users:
 		for o in request.options:
 			try:
 				fail = ''
-				#if dict is not type(o) or dict is not type(o.get('object', {})) or dict is not type(o.get('options', {})):
 				if dict is not type(o) or dict is not type(o.get('object', {})):
 					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 				option = o.get('object', {})
-#				options = o.get('options', {})
 
 				# Username
 				username = option.get('$username$')
@@ -402,6 +406,7 @@ class Users:
 
 				# Change username
 				if new_username and username != new_username:
+					self.validate_name(new_username)
 					cmd += '-l %s ' % self.sanitize_arg( new_username )
 
 				# Account deactivation
@@ -424,7 +429,7 @@ class Users:
 				if cmd:
 					returncode = self.process(cmd)
 					if returncode != 0:
-						MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
+						MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
 						error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
 						raise ValueError( error )
 
@@ -441,10 +446,14 @@ class Users:
 		"""
 			add a local user
 		"""
-		MODULE.info( 'luga.users_add: options: %s' % str(request.options) )
-	
+
 		if list is not type(request.options):
+			MODULE.info( 'luga.users_add: options: %s' % (request.options) )
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
+		else:
+			c = copy.deepcopy(request.options)
+			map(lambda d: type(d) is dict and 'options' in d and 'password' in d['object'] and type(d['object']) is dict and d['object'].pop('password'), c)
+			MODULE.info( 'luga.users_add: options: %s' % (c) )
 
 		response = []
 		errors = {
@@ -469,8 +478,7 @@ class Users:
 
 				# Username
 				username = option.get('username')
-				if not username:
-					raise ValueError( _('No username given') )
+				self.validate_name(username)
 
 				pwoptions = {}
 				cmd = '/usr/sbin/useradd -r '
@@ -491,7 +499,7 @@ class Users:
 				if cmd:
 					returncode = self.process(cmd)
 					if 0 != returncode:
-						MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
+						MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
 						error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
 						raise ValueError( error )
 
@@ -551,7 +559,7 @@ class Users:
 
 				returncode = self.process(cmd)
 				if returncode != 0:
-					MODULE.error('cmd "%s" failed with returncode %d' % (cmd, returncode)) 
+					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
 					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
 					raise ValueError( error )
 			except ValueError as e:

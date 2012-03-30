@@ -40,20 +40,34 @@ from univention.management.console.log import MODULE
 
 from subprocess import PIPE, Popen
 from shlex import split
+import re
 
 _ = Translation( 'univention-management-console-module-luga' ).translate
 
 class Process:
 	def sanitize_arg(self, arg):
+		if ':' in str(arg):
+			raise ValueError(_('arguments can not contain ":"'))
 		return '"' + str(arg).replace('\\','\\\\').replace('\"','\\\"') + '"'
 
 	def sanitize_int(self, num):
-		if str(num).isdigit() and type(int(num)) is int:
-			return int(num)
+		num = str(num)
+		if num.isdigit() or (num[0] == '-' and num[1:].isdigit()):
+			if type(int(num)) is int:
+				return int(num)
 		raise UMC_OptionTypeError( _("argument type has to be 'int': %s") % num )
 
 	def sanitize_dict(self, d):
 		return d if type(d) is dict else {}
+
+	def validate_name(self, name):
+		if not name:
+			raise ValueError( _('No name given') )
+		rpattern = r'^[a-zA-Z_][a-zA-Z0-9_-]*[$]?'
+		if None is re.match(rpattern, str(name)):
+			raise ValueError( _('name can only contain letters, numbers, "-" and "_" and must not start with "-"') )
+		if len(str(name)) > 32:
+			raise ValueError( _('name can not be longer than 32 chars') )
 
 	def process(self, args, stdin=None):
 		"""
@@ -68,7 +82,7 @@ class Process:
 			p = Popen( args = split(args.encode('utf-8')), env = {'LANG':'en'}, stderr = PIPE, stdin = PIPE )
 			(stdout, stderr) = p.communicate(stdin)
 		except OSError as e:
-			MODULE.error( _('Command failed: %s\n Exception: %s') % (args, str(e)) )
+			MODULE.error( 'Command failed: %s\nException: %s' % (args, str(e)) )
 			raise ValueError( _('Command failed') )
 
 		return p.returncode

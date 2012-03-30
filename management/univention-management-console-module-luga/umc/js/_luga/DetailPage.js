@@ -75,7 +75,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			this.helpText = this._('Create or modify an local user.');
 		} else if (this.moduleFlavor === 'luga/groups') {
 			this.headerText = this._('Group properties');
-			this.helpText = this._('Create or modify a group with the form displayed below.');
+			this.helpText = this._('Create or modify a local group');
 		}
 
 		// configure buttons for the footer of the detail page
@@ -118,6 +118,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}, {
 				type: 'NumberSpinner',
 				name: 'uid',
+				constraints: { min: 0, max: 400000000 },
 				disabled: true,
 				size: 'OneThird',
 				label: this._('User ID')
@@ -192,21 +193,25 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				type: 'TextBox',
 				name: 'pw_mindays',
 				type: 'NumberSpinner',
+				constraints: { min: -1, max: 400000000 },
 				label: this._('Days before password may be changed')
 			}, {
 				type: 'TextBox',
 				name: 'pw_maxdays',
 				type: 'NumberSpinner',
+				constraints: { min: -1, max: 400000000 },
 				label: this._('Days after which password must be changed')
 			}, {
 				type: 'TextBox',
 				name: 'pw_warndays',
 				type: 'NumberSpinner',
+				constraints: { min: -1, max: 400000000 },
 				label: this._('Days before password expiration that user is warned')
 			}, {
 				type: 'TextBox',
 				name: 'pw_disabledays',
 				type: 'NumberSpinner',
+				constraints: { min: -1, max: 400000000 },
 				label: this._('Days after password expiration where account will be disabled')
 			}, {
 				// This field will be hidden if account is enabled
@@ -258,7 +263,17 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				label: this._('Administrators'),
 				dynamicValues: 'luga/users/get_users'
 			}];
-			layout = [];
+
+			layout = [{
+				label: this._('General'),
+				layout: [ ['groupname', 'gid'] ]
+			}, {
+				label: this._('Group members'),
+				layout: [ ['users'] ]
+			}, {
+				label: this._('Group administrators'),
+				layout: [ ['administrators'] ]
+			}];
 		}
 
 		// create the form
@@ -337,7 +352,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		var allValuesGiven = true;
 		umc.tools.forIn(this._form._widgets, function(iname, iwidget) {
 			// ignore widgets that are not visible
-			if (!iwidget.get('visible')) {
+			if (!iwidget.get('visible') || !iwidget.get('disabled')) {
 				return true;
 			}
 
@@ -412,6 +427,18 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 
 	initConnects: function() {
 		if (this.moduleFlavor === 'luga/users') {
+			// modify User
+			if (!this._newObject) {
+				// deactivate create_home (move home folder) button if values has not changed, don't disconnect
+				this.connect(this._form.getWidget('homedir'), 'onChange', dojo.hitch(this, function(homedir) {
+					this._form.getWidget('create_home').set('disabled', (this._receivedObjFormData.homedir === homedir));
+				}));
+				// disable/enable password field to value of pw_remove
+				this.connect(this._form.getWidget('pw_remove'), 'onChange', dojo.hitch(this, function(enabled) {
+					enabled = enabled || this._form.getWidget('lock').get('value');
+					this._form.getWidget('password').setDisabledAttr(enabled);
+				}));
+			}
 
 			// Set group to username if new object or groupname is equal to original value / is not touched
 			this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(username) {
@@ -428,22 +455,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				}
 			}));
 
-			// modify User
-			if (!this._newObject) {
-				// deactivate create_home (move home folder) button if values has not changed, don't disconnect
-				this.connect(this._form.getWidget('homedir'), 'onChange', dojo.hitch(this, function(homedir) {
-					this._form.getWidget('create_home').set('disabled', (this._receivedObjFormData.homedir === homedir));
-				}));
-				// disable/enable password field to value of pw_remove
-				this.connect(this._form.getWidget('pw_remove'), 'onChange', dojo.hitch(this, function(enabled) {
-					enabled = enabled || this._form.getWidget('lock').get('value');
-					this._form.getWidget('password').setDisabledAttr(enabled);
-				}));
-			} else {
-			// new User
-				
-			}
-
 			// disable/enable password field to value of lock or (pw_remove if not new User)
 			this.connect(this._form.getWidget('lock'), 'onChange', dojo.hitch(this, function(enabled) {
 				if(!this._newObject) {
@@ -451,7 +462,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				}
 				this._form.getWidget('password').setDisabledAttr(enabled);
 			}));
-
 		}
 	},
 

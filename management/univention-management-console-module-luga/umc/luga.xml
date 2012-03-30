@@ -28,7 +28,32 @@
 			<return syntax="List"/>
 		</command>
 		<command name="luga/users/put" function="users_put">
-			<attribute name="input-list" syntax="luga-users-put" required="True"/>
+			<attribute name="" syntax="luga-users-put" required="True">
+				<attribute name="" syntax="luga-users-put-item" required="True">
+					<attribute name="String" syntax=""/>
+					<attribute name="username" syntax="nonempty-value"/>
+					<attribute name="uid" syntax="Integer"/>
+					<attribute name="pw_mindays" syntax="Integer"/>
+					<attribute name="pw_maxdays" syntax="Integer"/>
+					<attribute name="pw_warndays" syntax="Integer"/>
+					<attribute name="pw_disabledays" syntax="Integer"/>
+					<attribute name="lock" syntax="Boolean"/>
+					<attribute name="unlock" syntax="Boolean"/>
+					<attribute name="pw_remove" syntax="Boolean"/>
+					<attribute name="pw_expire" syntax="Boolean"/>
+					<attribute name="pw_keep_tokens" syntax="Boolean"/>
+					<attribute name="create_home" syntax="Boolean"/>
+					<attribute name="miscellaneous" syntax="geco"/>
+					<attribute name="tel_private" syntax="geco"/>
+					<attribute name="tel_business" syntax="geco"/>
+					<attribute name="roomnumber" syntax="geco"/>
+					<attribute name="fullname" syntax="geco"/>
+					<attribute name="shell" syntax="Path"/>
+					<attribute name="homedir" syntax="Path"/>
+					<attribute name="group" syntax="String"/>
+					<attribute name="groups" syntax="List"/>
+				</attribute>
+			</attribute>
 			<return syntax="List"/>
 		</command>
 		<command name="luga/users/remove" function="users_remove">
@@ -58,3 +83,4 @@
 		</command>
 	</module>
 </umc>
+
