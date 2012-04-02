@@ -3,7 +3,7 @@
 # Univention Dojo Package
 #  Makefile for building/installing the package
 #
-# Copyright 2008-2011 Univention GmbH
+# Copyright 2008-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,9 +40,10 @@ INSTDIR=/usr/share/${PKGNAME}
 DOJO_VERSION=$(shell find . -maxdepth 1 -name "dojo-release*-src.tar.gz" | sort -r | sed -n '1 s/^.*dojo-release-\(.*\)-src.tar.gz$$/\1/ p')
 DOJO_DIR=dojo-release-$(DOJO_VERSION)-src
 
+API_VERSION=$(shell find . -maxdepth 1 -name "univention-dojo-api-viewer-r*.tar.gz" | sort -r | sed -n '1 s/^.*univention-dojo-api-viewer-r\(.*\).tar.gz$$/\1/ p')
 .PHONY: clean all install
 
-build: $(DOJO_DIR)
+build: $(DOJO_DIR) apiviewer
 
 $(DOJO_DIR):
 	tar xzf $@.tar.gz
@@ -57,10 +58,15 @@ $(DOJO_DIR):
 	patch -p0 < fix_dojoStoreMemory.patch
 	patch -p0 < fix_dijit_Templated.patch
 
+apiviewer:
+	tar -xzf "univention-dojo-api-viewer-r$(API_VERSION).tar.gz" --exclude='tests' --exclude='install' --exclude='data/*'
+	patch -p0 < dojo_api.patch
+
 all: install
 
 clean:
 	rm -rf $(DOJO_DIR)
+	rm -rf univention-dojo-api-viewer
 
 install: build
 	@# main directory
@@ -75,4 +81,5 @@ install: build
 		[ "$${i%.sh}" != "$$i" ] && mod=0755; \
 		install -m $$mod "$(DOJO_DIR)/$$i" "$(DESTDIR)$(INSTDIR)/$$i"; \
 	done
-
+	@# install api-viewer
+	cp -r univention-dojo-api-viewer "$(DESTDIR)/usr/share/univention-dojo-api-viewer"

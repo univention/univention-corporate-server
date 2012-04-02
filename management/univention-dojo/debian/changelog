@@ -1,3 +1,9 @@
+univention-dojo (5.0.18-1) unstable; urgency=low
+
+  * added univention-dojo-api-viewer (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 16:38:13 +0200
+
 univention-dojo (5.0.17-1) unstable; urgency=low
 
   * sent patch upstream (Bug #24814)

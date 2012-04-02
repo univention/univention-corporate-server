@@ -19,3 +19,14 @@ Depends: ${misc:Depends},
  univention-dojo
 Description: The Dojo Toolkit, utilility functions and tools
  This package contains utility functions and tools of the Dojo Toolkit
+
+Package: univention-dojo-api-viewer
+Architecture: all
+Depends: ${misc:Depends},
+ php5-curl,
+ php5-xsl,
+ univention-dojo,
+ univention-management-console-frontend
+Description: The Dojo Documentation API Viewer
+ This package contains a patched version of the Dojo Documentation
+ API Viewer from https://svn.dojotoolkit.org/website/trunk/api

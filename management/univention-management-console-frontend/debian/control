@@ -47,18 +47,12 @@ Description: UCS Management Console - Web server
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-management-console-fontend-dev
+Package: univention-management-console-frontend-doc
 Architecture: all
 Depends: ${misc:Depends},
- univention-dojo,
- univention-management-console-dev,
- imagemagick,
- rsync
-Description: UCS Management Console - development files
- UCS Management Console is a web based program to manage computers.  It has
- an extensible architecture, using modules to implement its
- features. This package is a meta package that contains dependencies
- to packages that are necessary for the framework development.
+ univention-dojo-api-viewer
+Description: Univention Management Console - Documentation
+ This package contains the api.xml file which is needet by univention-dojo-api-viewer
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

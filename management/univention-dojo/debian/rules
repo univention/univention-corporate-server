@@ -3,7 +3,7 @@
 # Univention Dojo Package
 #  rules file for generating the deb package
 #
-# Copyright 2008-2011 Univention GmbH
+# Copyright 2008-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,6 +33,10 @@
 override_dh_auto_test:
 	ucslint
 	dh_auto_test
+
+override_dh_auto_install:
+	univention-install-config-registry
+	dh_auto_install
 
 %:
 	dh $@

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.287-1) unstable; urgency=low
+
+  * added univention-management-console-frontend-doc (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 16:36:24 +0200
+
 univention-management-console-frontend (1.0.286-2) unstable; urgency=low
 
   * added max-height css property for tracebacks in umc.css (Bug #26538) 

@@ -1,0 +1,2 @@
+usr/share/univention-dojo-api-viewer/ var/www/univention-management-console-doc
+etc/apache2/sites-available/univention-management-console-doc etc/apache2/sites-enabled/univention-management-console-doc

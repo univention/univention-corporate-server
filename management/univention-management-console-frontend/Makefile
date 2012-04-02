@@ -37,9 +37,13 @@ version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir:=$(CURDIR)/build
 tmpDir:=$(buildDir)/_tmp$(timestamp)
 
+# API viewer paths
+TO_ROOT:=../../../../..
+DOJODIR:=/usr/share/univention-dojo
+
 .PHONY: build build-dev build-common install clean jslint
 
-build: build-common
+build: build-common doc
 	@# create a temp directory
 	mkdir -p '$(tmpDir)'
 	@# create the module umc.widgets containing a require for all umc widgets
@@ -114,6 +118,13 @@ build-common: i18n
 		cp $$i "$(CURDIR)/umc/i18n/$$lang/app.json"; \
 	done
 
+doc:
+	@# generate api.xml for univention-dojo-api-viewer
+	echo "location = $(TO_ROOT)$(CURDIR)/umc/" > "$(DOJODIR)/util/docscripts/modules/umc.module.properties";
+	cd "$(DOJODIR)/util/docscripts/"; \
+	php generate.php umc dojo dojox dijit --serialize=xml --outfile=../$(TO_ROOT)$(CURDIR)/umc --clean
+	rm -f "$(DOJODIR)/util/docscripts/modules/umc.module.properties"
+
 i18n:
 	/usr/bin/dh-umc-translate -p univention-management-console-frontend -o umc $(jsFiles)
 
@@ -121,6 +132,9 @@ install: build
 	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
 	rsync -rpl --exclude ".svn" --exclude "_tmp"'$(timestamp)' "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
+	@# api files
+	mkdir -p "$(DESTDIR)/usr/share/univention-dojo-api-viewer"
+	mv -f umc.xml "$(DESTDIR)/usr/share/univention-dojo-api-viewer"
 
 clean:
 	rm -rf build
