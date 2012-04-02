@@ -6,8 +6,8 @@ univention-directory-manager-modules (7.0.230-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.229-1) unstable; urgency=low
 
-  * check_group_recursion: added more error message in case LDAP schema
-    extensions are deemed not to be installed; Bug #26104
+  * a traceback error when executing the script check_group_recursion has
+    been corrected; Bug #26104
   * added additional cleanup upon removal of a computer object: service and
     host records as well as aRecords of the corresponding forward zone;
     Bug #26400
