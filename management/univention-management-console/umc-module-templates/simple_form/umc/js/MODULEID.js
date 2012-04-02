@@ -141,21 +141,21 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// submit changes
 		var buttons = [ {
-            name: 'submit',
-            label: this._( 'Send' ),
-            'default': true,
-            callback: dojo.hitch( this, function() {
+			name: 'submit',
+			label: this._( 'Send' ),
+			'default': true,
+			callback: dojo.hitch( this, function() {
 				var values = this._form.gatherFormValues();
 				if ( values.message ) {
 					this.onSubmit( this._form.gatherFormValues() );
 				} else {
 					umc.dialog.alert( 'A message is missing!' );
 				}
-            } )
-        }, {
-            name: 'close',
-            label: this._('Close'),
-            callback: dojo.hitch(this, function() {
+			} )
+		}, {
+			name: 'close',
+			label: this._('Close'),
+			callback: dojo.hitch(this, function() {
 				var values = this._form.gatherFormValues();
 				if ( values.message ) {
 					umc.dialog.confirm( this._( 'Should the UMC module be closed? All unsaved modification will be lost.' ), [ {
@@ -170,8 +170,8 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				} else {
 					dojo.publish('/umc/tabs/close', [ this ] );
 				}
-            } )
-        } ];
+			} )
+		} ];
 
 		this._page = new umc.widgets.Page({
 			headerText: this.description,
@@ -194,6 +194,3 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		} ) );
 	}
 });
-
-
-

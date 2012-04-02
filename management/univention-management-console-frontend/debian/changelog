@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.285-1) unstable; urgency=low
+
+  * added locale suffix to UMC-href on overviewpage (Bug #23861)
+  * corrected returnvalue in umc.tools.isEqual (Bug #26691)
+
+ -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 12:56:18 +0200
+
 univention-management-console-frontend (1.0.284-1) unstable; urgency=low
 
   * Wizard: next/previous functions now accept deferred objects

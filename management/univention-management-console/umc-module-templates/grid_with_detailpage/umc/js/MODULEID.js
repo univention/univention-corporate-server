@@ -259,6 +259,3 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		umc.dialog.alert(this._('Feature not yet implemented'));
 	}
 });
-
-
-

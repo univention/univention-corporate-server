@@ -59,7 +59,7 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 
 		// Set the opacity for the standby animation to 100% in order to mask
 		// GUI changes when the module is opened. Call this.standby(true|false)
-		// to enabled/disable the animation.
+		// to enable/disable the animation.
 		this.standbyOpacity = 1;
 
 		// set the page header
@@ -159,10 +159,7 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 		}));
 	},
 
-	onClose: function(dn, objectType) {
-		// event stub 
+	onClose: function() {
+		// event stub
 	}
 });
-
-
-

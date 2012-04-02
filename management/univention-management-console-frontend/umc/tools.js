@@ -749,7 +749,7 @@ dojo.mixin(umc.tools, {
 			var allKeys = dojo.mixin({}, a, b);
 			var result = true;
 			umc.tools.forIn(allKeys, function(key) {
-					result &= umc.tools.isEqual(a[key], b[key]);
+					result = result && umc.tools.isEqual(a[key], b[key]);
 					return result;
 			});
 			return result;
