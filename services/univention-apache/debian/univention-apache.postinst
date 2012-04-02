@@ -43,7 +43,7 @@ fi
 
 univention-config-registry set apache2/autostart?"yes"
 univention-config-registry set apache2/loglevel?"warn"
-univention-config-registry set apache2/startsite?"ucs-overview/de.html"
+univention-config-registry set apache2/startsite?"ucs-overview/"
 univention-config-registry set apache2/documentroot?"/var/www/"
 univention-config-registry set apache2/maxclients?150
 univention-config-registry set mail/alias/webmaster?root

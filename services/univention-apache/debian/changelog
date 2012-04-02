@@ -1,3 +1,9 @@
+univention-apache (5.0.8-1) unstable; urgency=low
+
+  * overviewpage forwards to localespecific overview-document (Bug #17659)
+
+ -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 13:16:11 +0200
+
 univention-apache (5.0.7-3) unstable; urgency=low
 
   * change dependeny from apache2 to mpm-prefork version of apache; Bug #25255

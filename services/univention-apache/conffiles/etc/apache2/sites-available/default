@@ -49,3 +49,10 @@ if baseConfig.has_key('apache2/startsite'):
 	print 'RedirectMatch ^/$ /%s' % baseConfig['apache2/startsite']
 @!@
 </Directory>
+
+<Directory /var/www/ucs-overview/>
+	RewriteEngine On
+	RewriteCond %{HTTP:Accept-Language} (^de) [NC]
+	 RewriteRule ^$ /ucs-overview/de.html [L,R]
+	RewriteRule ^$ /ucs-overview/en.html [L,R]
+</Directory>
