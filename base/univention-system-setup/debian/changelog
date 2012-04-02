@@ -1,3 +1,9 @@
+univention-system-setup (5.0.147-1) unstable; urgency=low
+
+  * fixed spelling mistakes in language files (Bug #26287)
+
+ -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 14:15:21 +0200
+
 univention-system-setup (5.0.146-1) unstable; urgency=low
 
   * UMC cleanup: Kill the system-setup cmd tool too (Bug #24807)

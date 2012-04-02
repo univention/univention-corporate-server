@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.106-1) unstable; urgency=low
+
+  * fixed spelling mistakes in language files (Bug #26287)
+
+ -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 14:27:27 +0200
+
 univention-virtual-machine-manager-daemon (1.0.105-1) unstable; urgency=low
 
   * partial revert of commit 30871 (Bug #25631)

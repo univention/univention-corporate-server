@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.230-1) unstable; urgency=low
+
+  * fixed spelling mistakes in language files (Bug #26287)
+
+ -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 14:09:25 +0200
+
 univention-directory-manager-modules (7.0.229-1) unstable; urgency=low
 
   * check_group_recursion: added more error message in case LDAP schema

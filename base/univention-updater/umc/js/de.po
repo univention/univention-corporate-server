@@ -311,7 +311,7 @@ msgstr "Installiert"
 
 #: umc/js/updater.js:353
 msgid ""
-"Installing an system update is a significant change to this system and could "
+"Installing a system update is a significant change to this system and could "
 "have impact to other systems. "
 msgstr ""
 "Das Einspielen eines Updates ist eine signifikante Veränderung des "
@@ -564,7 +564,7 @@ msgid ""
 "This page lets you modify essential settings that affect where your system "
 "looks for updates, and which of them it will consider."
 msgstr ""
-"Auf dieser Seite kann eingestellt werden, von wo das System nach "
+"Auf dieser Seite kann eingestellt werden, von wo das System "
 "Aktualisierungen bezieht und welche davon eingebunden werden."
 
 #: umc/js/updater.js:355

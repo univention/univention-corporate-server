@@ -340,7 +340,7 @@ msgstr ""
 
 #: dhcp_dnsupdate.py:142
 msgid ""
-"Do DNS updates for clients even their IP addresses are assigned using fixed "
+"Do DNS updates for clients even if their IP addresses are assigned using fixed "
 "addresses"
 msgstr ""
 "Führe DNS-Aktualisierung auch bei Clients durch, die eine statische IP-"
@@ -381,7 +381,7 @@ msgstr "Lease-Zeit"
 #: dhcp_leasetime.py:77
 msgid ""
 "Lease time used, if the client does not request a specific expiration time"
-msgstr "Lease-Zeit, wenn der Client nicht eine bestimmte Ablaufzeit erbittet"
+msgstr "Lease-Zeit, wenn der Client keine bestimmte Ablaufzeit erbittet"
 
 #: dhcp_leasetime.py:87
 msgid "Maximum lease time, that the server will accept if asked for"

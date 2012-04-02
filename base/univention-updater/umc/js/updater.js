@@ -350,7 +350,7 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		{
 			var msg = "<h1>" + this._("Attention!") + "</h1><br/>";
 			msg = msg + "<p>" +
-				this._("Installing an system update is a significant change to this system and could have impact to other systems. ") +
+				this._("Installing a system update is a significant change to this system and could have impact to other systems. ") +
 				this._("In normal case, trouble-free use by users is not possible during the update, since system services may need to be restarted. ") +
 				this._("Thus, updates shouldn't be installed on a live system. ") +
 				this._("It is also recommended to evaluate the update in a test environment and to create a backup of the system.") +

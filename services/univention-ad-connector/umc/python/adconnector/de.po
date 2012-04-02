@@ -32,7 +32,7 @@ msgid ""
 "An error occured while saving .htaccess (filename=%(fn)s ; exception="
 "%(exception)s)"
 msgstr ""
-"Ein Fehler ist beim Speicher der Datei .htaccess aufgetreten (filename="
+"Ein Fehler ist beim Speichern der Datei .htaccess aufgetreten (filename="
 "%(fn)s ; exception=%(exception)s)"
 
 #: umc/python/adconnector/__init__.py:263

@@ -100,8 +100,8 @@ property_descriptions={
 			identifies=0
 		),
 	'pwdChangeNextLogin': univention.admin.property(
-			short_description=_('Change password on Next Login'),
-			long_description=_('Change password on next login'),
+			short_description=_('Change password upon next login'),
+			long_description=_('Change password upon next login'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],

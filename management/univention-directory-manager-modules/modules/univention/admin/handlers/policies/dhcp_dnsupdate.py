@@ -139,7 +139,7 @@ property_descriptions={
 			),
 	'updateStaticLeases': univention.admin.property(
 			short_description=_('Update static leases'),
-			long_description=_("Do DNS updates for clients even their IP addresses are assigned using fixed addresses"),
+			long_description=_("Do DNS updates for clients even if their IP addresses are assigned using fixed addresses"),
 			syntax=univention.admin.syntax.TrueFalse,
 			multivalue=0,
 			options=[],

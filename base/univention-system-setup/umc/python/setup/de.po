@@ -26,7 +26,7 @@ msgstr ""
 
 #: umc/python/setup/__init__.py:261
 msgid ""
-"A valid netbios name can not be longer than 15 characters. If samba is "
+"A valid netbios name can not be longer than 15 characters. If Samba is "
 "installed, the hostname should be shortened."
 msgstr ""
 "Ein gültiger NetBIOS Name darf nicht länger als 15 Zeichen sein. Wenn Samba "
@@ -185,7 +185,7 @@ msgid ""
 "The root password is too short. For security reasons, your password must "
 "contain at least 8 characters."
 msgstr ""
-"Das Root-Passwort ist zu kurz, aus Sicherheitsgründen sollte esmindestens 8 "
+"Das Root-Passwort ist zu kurz, aus Sicherheitsgründen sollte es mindestens 8 "
 "Zeichen lang sein."
 
 #: umc/python/setup/__init__.py:279
@@ -200,7 +200,7 @@ msgstr "Die angegebenen IP-Adresse (%s) ist nicht gültig: %s"
 #: umc/python/setup/__init__.py:342
 #, python-format
 msgid ""
-"The specified IPv6 identifier may only consit of letters and numbers: %s"
+"The specified IPv6 identifier may only consist of letters and numbers: %s"
 msgstr ""
 "Der angegebene IPv6-Bezeichner kann nur aus Buchstaben und Zahlen bestehen: "
 "%s"

@@ -91,7 +91,7 @@ class DriveWizard( umcd.IWizard ):
 
 		# PAGE_HD=1: Select (new or) existing image or block device
 		if change:
-			page = umcd.Page(self.title, _('Chossen between using an existing image or using a local device.'))
+			page = umcd.Page(self.title, _('Choose between using an existing image or using a local device.'))
 		else:
 			page = umcd.Page(self.title, _('For the drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual instance at a time.'))
 		page.options.append( umcd.make( ( 'existing-or-new-disk', self.disk_select ) ) )

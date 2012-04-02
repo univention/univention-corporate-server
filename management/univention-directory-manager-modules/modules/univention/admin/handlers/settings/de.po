@@ -459,7 +459,7 @@ msgstr "Basis-DN"
 
 #: license.py:86
 msgid "Base DN the license is valid for"
-msgstr "Für diesen Basis-DN st die Lizenz gültig."
+msgstr "Für diesen Basis-DN ist die Lizenz gültig."
 
 #: license.py:95
 msgid "Signature"
@@ -798,11 +798,8 @@ msgid "Organization"
 msgstr "Organisation"
 
 #: usertemplate.py:103
-msgid "Change password on Next Login"
-msgstr "Passwort bei der nächsten Anmeldung ändern"
-
 #: usertemplate.py:104
-msgid "Change password on next login"
+msgid "Change password upon next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
 #: usertemplate.py:114

@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.55-1) unstable; urgency=low
+
+  * fixed spelling mistake (Bug #26287)
+
+ -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 14:06:51 +0200
+
 univention-ad-connector (6.0.54-1) unstable; urgency=low
 
   * Don't try to add a user to his primary group in AD. This might
