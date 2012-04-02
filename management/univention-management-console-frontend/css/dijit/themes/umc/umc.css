@@ -4810,8 +4810,6 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 
 .umcTracebackPane .dijitTitlePaneTitle,
 .umcTracebackPane .dijitTitlePaneContentOuter {
-	max-height: 400px;
-	overflow: auto;
 	background-color: #fff;
 	border: 0 none !important;
 }
@@ -4819,6 +4817,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 	text-decoration: underline;
 }
 .umcTracebackPane pre {
+	max-height: 400px;
 	overflow: auto;
 	font-family: monospace;
 }
