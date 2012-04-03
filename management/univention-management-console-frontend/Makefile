@@ -37,10 +37,6 @@ version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir:=$(CURDIR)/build
 tmpDir:=$(buildDir)/_tmp$(timestamp)
 
-# API viewer paths
-TO_ROOT:=../../../../..
-DOJODIR:=/usr/share/univention-dojo
-
 .PHONY: build build-dev build-common install clean jslint
 
 build: build-common doc
@@ -120,10 +116,11 @@ build-common: i18n
 
 doc:
 	@# generate api.xml for univention-dojo-api-viewer
-	echo "location = $(TO_ROOT)$(CURDIR)/umc/" > "$(DOJODIR)/util/docscripts/modules/umc.module.properties";
-	cd "$(DOJODIR)/util/docscripts/"; \
-	php generate.php umc dojo dojox dijit --serialize=xml --outfile=../$(TO_ROOT)$(CURDIR)/umc --clean
-	rm -f "$(DOJODIR)/util/docscripts/modules/umc.module.properties"
+	cp -r /usr/share/univention-dojo/util/docscripts/ /tmp/univention-dojo
+	echo "location = ../../../../..$(CURDIR)/umc/" > "/tmp/univention-dojo/modules/umc.module.properties";
+	cd "/tmp/univention-dojo/"; \
+	php generate.php umc dojo dojox dijit --serialize=xml --outfile=../../../../../..$(CURDIR)/umc --clean
+	rm -rf "/tmp/univention-dojo"
 
 i18n:
 	/usr/bin/dh-umc-translate -p univention-management-console-frontend -o umc $(jsFiles)

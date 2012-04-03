@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.287-2) unstable; urgency=low
+
+  * fixed a permission problem when building as non-root (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Tue, 03 Apr 2012 13:25:54 +0200
+
 univention-management-console-frontend (1.0.287-1) unstable; urgency=low
 
   * added univention-management-console-frontend-doc (Bug #23197)
