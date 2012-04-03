@@ -1,3 +1,9 @@
+univention-dojo (5.0.18-4) unstable; urgency=low
+
+  * removed unnedet api-viewer file (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Tue, 03 Apr 2012 15:49:14 +0200
+
 univention-dojo (5.0.18-3) unstable; urgency=low
 
   * added missing build dependency to univention-config-dev (Bug #23197)

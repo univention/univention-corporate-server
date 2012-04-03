@@ -1,6 +1,3 @@
-Type: file
-File: etc/apache2/sites-available/univention-management-console-doc
-
 Type: multifile
 Multifile: var/www/ucs-overview/de.html
 
