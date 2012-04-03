@@ -1,3 +1,9 @@
+univention-dojo (5.0.18-3) unstable; urgency=low
+
+  * added missing build dependency to univention-config-dev (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Tue, 03 Apr 2012 11:09:54 +0200
+
 univention-dojo (5.0.18-2) unstable; urgency=low
 
   * added missing icons for univention-dojo-api-viewer (Bug #23197)
