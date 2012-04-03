@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.287-4) unstable; urgency=low
+
+  * version bump (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Tue, 03 Apr 2012 14:20:01 +0200
+
 univention-management-console-frontend (1.0.287-3) unstable; urgency=low
 
   * added missing build dependency php5-xsl (Bug #23197)
