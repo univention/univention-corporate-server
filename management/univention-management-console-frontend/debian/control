@@ -8,7 +8,8 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  univention-management-console-dev,
  imagemagick,
- rsync
+ rsync,
+ php5-xsl
 
 Package: univention-management-console-frontend
 Architecture: all
