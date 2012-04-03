@@ -116,9 +116,9 @@ build-common: i18n
 
 doc:
 	@# generate api.xml for univention-dojo-api-viewer
-	cp -r /usr/share/univention-dojo/util/docscripts/ /tmp/univention-dojo
-	echo "location = ../../../../..$(CURDIR)/umc/" > "/tmp/univention-dojo/modules/umc.module.properties";
-	cd "/tmp/univention-dojo/"; \
+	cp -r /usr/share/univention-dojo/ /tmp
+	echo "location = ../../../../..$(CURDIR)/umc/" > "/tmp/univention-dojo/util/docscripts/modules/umc.module.properties";
+	cd "/tmp/univention-dojo/util/docscripts/"; \
 	php generate.php umc dojo dojox dijit --serialize=xml --outfile=../../../../../..$(CURDIR)/umc --clean
 	rm -rf "/tmp/univention-dojo"
 

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.287-5) unstable; urgency=low
+
+  * univention-management-console-frontend-doc corrections (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Tue, 03 Apr 2012 15:16:59 +0200
+
 univention-management-console-frontend (1.0.287-4) unstable; urgency=low
 
   * version bump (Bug #23197)
