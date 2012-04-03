@@ -1,4 +1,5 @@
 This patch fixes the htaccess and config of univention-dojo-api-viewer (Bug #23197).
+Please mind that univention-dojo-api-viewer/config.php index.php and lib/spider.php has CRLF lineendings!
 Index: univention-dojo-api-viewer/config.php
 ===================================================================
 --- univention-dojo-api-viewer/config.php	(Revision 804)

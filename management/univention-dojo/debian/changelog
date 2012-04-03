@@ -1,3 +1,11 @@
+univention-dojo (5.0.18-2) unstable; urgency=low
+
+  * added missing icons for univention-dojo-api-viewer (Bug #23197)
+  * fixed a malformed patchfile caused by CRLF lineendings in destination
+  	files (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Tue, 03 Apr 2012 09:53:18 +0200
+
 univention-dojo (5.0.18-1) unstable; urgency=low
 
   * added univention-dojo-api-viewer (Bug #23197)
