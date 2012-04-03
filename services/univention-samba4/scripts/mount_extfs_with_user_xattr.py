@@ -50,12 +50,6 @@
 from univention.lib import fstab
 import subprocess
 
-from univention.lib import Translation
-import locale
-locale.setlocale(locale.LC_ALL, '')
-i18n = Translation( 'univention-samba4' )
-_ = i18n.translate
-
 def _do_modify_extfs_option(fstab_partition, options=[], activate=True):
 	fstab_modified = False
 	for option in options:
@@ -84,7 +78,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 			if fstab_partition and fstab_partition.type in ('ext3', 'ext4'):
 				target_partitions.append(fstab_partition)
 			else:
-				print _('Device could not be found: %s') % device
+				print 'Device could not be found: %s' % device
 	else:
 		for fstype in ('ext3', 'ext4'):
 			for fstab_partition in fs.get(fstype, ignore_root=False):
@@ -94,7 +88,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 		if _do_modify_extfs_option(fstab_partition, options, activate):
 			fs.save()
 			if subprocess.call(('mount', '-o', 'remount', fstab_partition.spec)):
-				print _('Remounting partition failed: %s') % fstab_partition.spec
+				print 'Remounting partition failed: %s' % fstab_partition.spec
 
 if __name__ == '__main__':
 	_modify_extfs_option(['user_xattr'])

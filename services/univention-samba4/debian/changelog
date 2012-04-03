@@ -1,3 +1,11 @@
+univention-samba4 (1.0.134-1) unstable; urgency=low
+
+  * remove locale support from critical mount_extfs_with_user_xattr
+    script, this must not fail, even if locale is not configured
+    properly (Bug #26694).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Apr 2012 09:56:04 +0200
+
 univention-samba4 (1.0.133-2) unstable; urgency=low
 
   * Check if Samba4 ist provisioned (Bug #26659)
