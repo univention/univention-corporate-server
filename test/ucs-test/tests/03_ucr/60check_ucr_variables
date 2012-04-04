@@ -1,0 +1,57 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check names of UCR Variables
+## roles: [domaincontroller_master, domaincontroller_backup]
+## tags: basic
+## exposure: careful
+
+allowed=".-_"
+disallowed="%,;()"
+RETVAL=100
+
+echo "Checking for allowed chars"
+echo "..."
+for ((i=0; i<${#allowed}; i++))
+do
+	n="${allowed:i:1}test"
+	if ucr set "${n}=foo" 2>/dev/null | grep -q "Not"
+	then
+		echo "doesn't work for name $n"
+		RETVAL=110
+	else
+		echo "works for name $n"
+	fi
+	if ucr set "test=${n}" 2>/dev/null | grep -q "Not"
+	then
+		echo "doesn't work for value $n"
+		RETVAL=110
+	else
+		echo "works for value $n"
+	fi
+	ucr unset test "${n}" >/dev/null
+done
+echo "..."
+
+echo "Checking for disallowed chars"
+echo "..."
+for ((i=0; i<${#disallowed}; i++))
+do
+	n="${disallowed:i:1}test"
+	if ucr set "${n}=foo" 2>/dev/null | grep -q "Not"
+	then
+		echo "denied, works for name $n"
+	else
+		echo "doesn't work, name $n was accepted"
+		RETVAL=110
+	fi
+	if ucr set "test=${n}" 2>/dev/null | grep -q "Not"
+	then
+		echo "denied, works for value $n"
+	else
+		echo "$n was accepted as a value - should be okay"
+	fi
+	ucr unset test "${n}" >/dev/null
+done
+echo "..."
+
+exit $RETVAL
+# vim: set filetype=sh :

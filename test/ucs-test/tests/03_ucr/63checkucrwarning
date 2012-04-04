@@ -1,0 +1,60 @@
+#!/usr/share/ucs-test/runner /usr/bin/python2.6
+## desc: Checking for UCR template warnings in all UCR conffiles
+## tags: [basic]
+## exposure: safe
+
+import os
+import subprocess
+import sys
+
+BASE = '/etc/univention/templates/info'
+WHITELIST = set([
+	'/etc/default/capi4hylafax',
+	'/etc/default/hylafax',
+	'/etc/hylafax/FaxDispatch',
+	'/etc/hylafax/cid',
+	'/etc/hylafax/config',
+	'/etc/hylafax/hosts.hfaxd',
+	'/etc/hylafax/setup.cache',
+	'/etc/hylafax/setup.modem',
+	'/etc/hylafax/tsi',
+	'/etc/isdn/capi.conf',
+	'/var/lib/univention-windows-installer/install/bin/mapznrun.bat',
+	'/etc/mailname',
+	'/etc/issue',
+	'/etc/issue.net',
+	'/usr/share/apps/ksmserver/pics/shutdownkonq.png',
+	'/etc/hostname',
+	'/usr/lib/openoffice/basis3.0/share/registry/data/org/openoffice/Office/DataAccess.xcu',
+	'/usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
+	'/usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
+	'/usr/lib/openoffice/basis3.0/share/registry/schema/org/openoffice/Office/Common.xcs',
+	'/usr/lib/openoffice/basis-link/share/registry/data/org/openoffice/Office/DataAccess.xcu',
+	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
+	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
+	'/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs'
+	])
+
+message_line = "Warning: This\|but can be overridden via univention-config-registry."
+
+files = set()
+for info in os.listdir(BASE):
+	for line in open(os.path.join(BASE, info)):
+		if line.startswith('File: ') or line.startswith('Multifile: '):
+			fn = '/' + line.strip().split(': ', 1)[1]
+			files.add(fn)
+files -= set(WHITELIST)
+
+missing_header_files = False
+for fn in files:
+	p1 = subprocess.Popen(('/bin/grep', '-q', message_line , fn))
+	if p1.wait() != 0:
+		print 'Error: Missing UCR header for %s' % fn
+		missing_header_files = True
+
+if missing_header_files:
+	sys.exit(110)
+else:
+	print "Info: All UCR files contain a warning."
+	sys.exit(100)
+# vim: set filetype=python :

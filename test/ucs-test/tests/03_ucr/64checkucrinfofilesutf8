@@ -1,0 +1,34 @@
+#!/usr/share/ucs-test/runner /usr/bin/python2.6
+## desc: Checking all UCR-info-files for invalid UTF-8-characters
+## bugs: [13111]
+## tags: [basic]
+## exposure: safe
+
+exit_code = 100
+
+import os
+import sys
+
+def visit(arg, dirname, names):
+	global exit_code
+	for name in names:
+		filename = os.path.join(dirname, name)
+		if os.path.isfile(filename):
+			f = open(filename, 'rb')
+			try:
+				for (i, line) in enumerate(f):
+					try:
+						line.decode('utf8')
+					except UnicodeDecodeError, E:
+						print >>sys.stderr, 'Error. Invalid UTF-8-character in file %s, line %s, at position %s' % (filename, i, E.end)
+						exit_code = 111
+						break
+				else:
+					print "OK: %s" % (filename,)
+			finally:
+				f.close()
+
+os.path.walk('/etc/univention/registry.info', visit, None)
+
+sys.exit(exit_code)
+# vim: set filetype=python :

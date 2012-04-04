@@ -1,0 +1,58 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test Univention Config Registry dump
+## bugs: [16637]
+## exposure: safe
+
+BASECONFIG=univention-baseconfig
+UCRLINK=ucr
+UCR=univention-config-registry
+
+Dump () {
+	"$@" dump >"${TMPDIR}/$1.dump"
+	local rc=$?
+	if [ $rc -ne 0 ]
+	then
+		echo "Failed to execute \"$* dump\". Return code $rc"
+		exit 110
+	fi
+}
+
+Diff () {
+	diff "${TMPDIR}/$1.dump" "${TMPDIR}/$2.dump"
+}
+
+##### Beginning #####
+TMPDIR=$(mktemp -d) || (echo "Unable to create temporary directory"; exit 140)
+trap "rm -rf '${TMPDIR}'" EXIT
+
+##### dump #####
+Dump "${BASECONFIG}"
+Dump "${UCRLINK}"
+Dump "${UCR}"
+
+if ! Diff "${BASECONFIG}" "${UCRLINK}" && Diff "${UCRLINK}" "${UCR}"
+then
+	echo "Test failed. Output of dump is not equal."
+	exit 110
+fi
+
+##### --shell dump #####
+Dump "${BASECONFIG}" --shell
+Dump "${UCRLINK}" --shell
+Dump "${UCR}" --shell
+
+if ! Diff "${BASECONFIG}" "${UCRLINK}" && Diff "${UCRLINK}" "${UCR}"
+then
+	echo "Test failed. Output of --shell dump is not equal."
+	exit 110
+fi
+
+if grep -ve '=".*"' "${TMPDIR}/${BASECONFIG}.dump"
+then
+	echo "Test failed. Output of --shell dump contains non-quoted values."
+	echo "Bug exists as expected: Bug #16637"
+	exit 121
+fi
+
+##### End ##### 
+exit 0

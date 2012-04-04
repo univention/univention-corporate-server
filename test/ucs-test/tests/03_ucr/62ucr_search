@@ -1,0 +1,47 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test Univention Config Registry search
+## bugs: [16637]
+## tags: [basic]
+## exposure: careful
+
+. "$TESTLIBPATH/ucr.sh" || exit 137
+
+Assert () { # Assert $1 = $2, optional error message $3
+	local expect=$1
+	if ! grep -q -x -e "$expect" "$out"
+	then
+		echo "Test failed. ${2:-Got \"$(cat "$out")\" Expected \"$expect\"}"
+		exit 110
+	fi
+}
+
+##### Beginning ##### 
+out="$(mktemp)"
+trap "rm -f '$out' ; ucr_restore >/dev/null" EXIT
+ucr set foo=bar bar=foo >/dev/null 2>&1
+
+##### Test foo and bar  ##### 
+ucr search --brief foo >"$out"
+Assert "foo: bar"
+
+ucr search --brief --key foo >"$out"
+Assert "foo: bar"
+
+ucr --shell search --brief --key foo >"$out"
+Assert "foo=\"bar\""
+
+ucr search --brief --value bar >"$out"
+Assert "foo: bar"
+
+ucr search --brief --value '^b[aA][^R]$' >"$out"
+Assert "foo: bar"
+
+ucr search --brief --key '^fo{2}$' >"$out"
+Assert "foo: bar"
+
+ucr search --brief --key '^(fo{2}|bar)$' >"$out"
+Assert "bar: foo"
+Assert "foo: bar"
+
+##### End ##### 
+exit 0

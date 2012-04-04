@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking whether . are allowed in ucr keys
+## exposure: careful
+
+. "$TESTLIBPATH/ucr.sh" || exit 137
+
+randomchars () {
+	tr -d -c 'a-zA-Z0-9.' </dev/urandom 2>/dev/null | head -c 10
+}
+rc=100
+ucr_management () {
+	local key=$1 value=$2
+	if ! ucr set "$key=$value"
+	then
+		echo "ucr $key=$value caused an error"
+		rc=110
+	fi
+
+	value2="$(ucr get "$key")"
+	if [ "$value" != "$value2" ]
+	then
+		echo "ucr get $key returned a wrong value or maybe wasn't set correctly"
+		echo "returned $value2 instead of $value"
+		rc=110
+	fi
+
+	if ! ucr unset "$key"
+	then
+		echo "ucr unset $key failed!"
+		rc=110
+	fi
+}
+
+for i in $(seq 1 10)
+do
+	ucr_management "$(randomchars)" "$(randomchars)"
+done
+
+#	.RANDOM
+ucr_management ".$(randomchars)" "$(randomchars)"
+
+#	RANDOM.
+ucr_management "$(randomchars)." "$(randomchars)"
+
+#	RANDOM..RANDOM
+ucr_management "$(randomchars)..$(randomchars)" "$(randomchars)"
+
+exit $rc
+# vim: set filetype=sh :
