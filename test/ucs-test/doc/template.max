@@ -1,0 +1,40 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Das ist ein Test
+##  ich weiß noch nicht, ob er funktioniert
+## bugs: [23527, 23528]
+## otrs: [201110031733]
+## versions:
+##  2.0-0: found
+##  2.1-0: skip
+##  2.2-0: found
+##  2.3-2: fixed
+##  2.4-0: found
+##  2.4-1: fixed
+##  3.0-0: skip
+## tags: [info, SKIP, basic]
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+##  - basesystem
+##  - managedclient
+##  - mobileclient
+##  - fatclient
+## roles-not:
+## join: true
+## components:
+#  tcs: true
+##  dvs: false
+## packages:
+##  - dpkg-dev (>= 1.15)
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+echo "$0 $@"
+sed -ne '1,/^[^#]\|^$/s/^## //p' "$0"
+if
+# vim: set ft=sh :

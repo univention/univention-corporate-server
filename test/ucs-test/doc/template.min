@@ -1,0 +1,5 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Kurzbeschreibung
+
+exit 0
+# vim: set ft=sh :
