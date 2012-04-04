@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check if overview.html links to master via HTTPS
+## bugs: [11504]
+## roles-not: [domaincontroller_master]
+## joined: true
+## exposure: safe
+eval "$(univention-config-registry shell ldap/master)"
+
+outfile="$(mktemp)"
+trap "rm -f '$outfile'" EXIT #Clean tempfile on exit
+
+echo "Checking link in overview..."
+wget "http://localhost/" -O "$outfile"
+
+if grep -Fqs "https://$ldap_master" "$outfile"
+then
+	echo "Link is HTTPS ==> GOOD"
+	exit 101
+elif grep -Fqs "http://$ldap_master" "$outfile"
+then
+	echo "Link is HTTP ==> BAD"
+	exit 111
+else
+	echo "Link is missing ==> BAD"
+	echo "--- HTML CODE ---"
+	cat "$outfile"
+	exit 110
+fi
+# vim:set ft=sh:

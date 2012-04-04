@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Checking for the proper remove of the locks for groupname
+##  Creating a Group, removing it and trying to create it again.
+## bugs: [3367]
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## tags: [basic]
+## packages: [univention-directory-manager-tools]
+## exposure: dangerous
+. "$TESTLIBPATH/base.sh" || exit 137
+
+group="Baggerfahrer"
+
+eval "$(univention-config-registry shell)"
+
+univention-directory-manager groups/group create --position="cn=groups,$ldap_base" --set name="$group" --set users="uid=bodo,cn=users,$ldap_base"
+univention-directory-manager groups/group remove --dn "cn=$group,cn=groups,$ldap_base"
+
+if univention-directory-manager groups/group create --position="cn=groups,$ldap_base" --set name="$group" --set users="uid=bodo,cn=users,$ldap_base"
+then
+	RETVAL=100
+else
+	RETVAL=110
+fi
+univention-directory-manager groups/group remove --dn="cn=$group,cn=groups,$ldap_base"
+exit $RETVAL
+# vim: set ft=sh :

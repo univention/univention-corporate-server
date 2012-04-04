@@ -1,0 +1,26 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check univention-ssh timeout
+## bugs: [17697]
+## tags: [univention]
+## packages: [univention-ssh]
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+pwfile="$(mktemp)"
+trap "rm -f '$pwfile'" EXIT
+echo -n univention >"$pwfile"
+
+result="$(univention-ssh -timeout 10 "$pwfile" "root@${hostname}.${domainname}" echo BEFORE \; sleep 20 \; echo AFTER 2>&1)"
+if ! grep -q BEFORE <<<"$result"
+then
+	exit 110 # ERROR
+elif grep Traceback <<<"$result"
+then
+	exit 110 # ERROR
+elif grep -q AFTER <<<"$result"
+then
+	exit 110 # ERROR
+else
+	exit 100 # OK
+fi
+# vim:set ft=sh:

@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Test for used pam modules
+##  This script test for all required pam modules.
+## tags: basic
+## exposure: safe
+
+# Use: whitelist=(pam_module1.so pam_module2.so pam_modules3.so)
+whitelist=(pam_gnome_keyring.so)
+
+modules=$(grep -v '#' /etc/pam.conf $(run-parts --list /etc/pam.d) | grep -o 'pam_.*\.so' | sort -u | grep -F -v "$(IFS=$'\n\t '; echo ${whitelist[*]} )")
+
+result=0
+for mod in $modules # IFS
+do
+	if [ ! -e "/lib/security/$mod" ]
+	then
+		echo "$mod does not exist"
+		result=1
+	fi
+done
+exit $result
+
+# vim: set ft=sh :

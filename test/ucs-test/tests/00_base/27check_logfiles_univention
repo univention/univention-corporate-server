@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner bash
+## desc: World-readable Univention-specific logfiles
+## bugs: [11431]
+## exposure: safe
+## versions:
+##  2.4-0: fixed
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+tmpfile=$(mktemp)
+
+find /var/log/univention -perm /o+r ! -type l ! -type d ! -name test_\*.log -print0 >"$tmpfile"
+
+if [ -s "$tmpfile" ]
+then
+	RETVAL=1
+	echo "Some potentially sensitive log files are world-readable:"
+	xargs -0 ls -lad <"$tmpfile"
+fi
+
+rm -f "$tmpfile"
+exit $RETVAL
+
+# vim:set ft=sh:

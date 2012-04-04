@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking for Problems using proof_uniqueMembers
+## bugs: [12061]
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+## packages: [ldap-utils, univention-directory-manager-tools]
+## exposure: dangerous
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/ldap.sh" || exit 137
+
+username="$(random_chars)"
+group="$(random_chars)"
+
+info "Create group and a member for it"
+
+udm groups/group create \
+	--position="cn=groups,$ldap_base" \
+	--set name="$group" \
+	--set users="uid=$username,cn=users,$ldap_base" || fail_test 110
+
+udm users/user create \
+	--position="cn=users,$ldap_base" \
+	--set username="$username" \
+	--set firstname="Bodo" \
+	--set lastname="der Baggerfahrer" \
+	--set password="univention" \
+	--set primaryGroup="cn=$group,cn=groups,$ldap_base" || fail_test 110
+
+info "Deliberately create an inconsistency by deleting the uniqueMember group-attribute \
+and thereby bringing the ldap attributes memberUid and uniqueMember out of sync. \
+In a sane environment both of them would contain all the members of the group"
+
+ldap_delete_attribute "cn=$group,cn=groups,$ldap_base" "uniqueMember" || fail_test 110
+
+info "Let's see if proof_uniqueMembers finds it"
+
+if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |\
+	grep -Fq "add uniqueMember entry for uid=$username"
+then
+	fail_test 110 "It seems that proof_uniqueMembers didn't find the attribute inconsistency we just created"
+fi
+
+info "Deliberately create an inconsistency by deleting the group member. \
+In a sane environment all the group members would exist"
+
+ldap_delete "uid=$username,cn=users,$ldap_base" || fail_test 110
+
+info "Let's see if proof_uniqueMembers finds it"
+
+if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |\
+	grep -Fq "no object found while searching for uid=$username"
+then
+	fail_test 110 "It seems that proof_uniqueMembers didn't find the object inconsistency we just created"
+fi
+
+udm groups/group remove --dn="cn=$group,cn=groups,$ldap_base" || fail_test 110
+
+exit $RETVAL
+# vim: set ft=sh :

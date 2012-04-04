@@ -1,0 +1,9 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking for filesystem permissions on machine.secret
+## roles-not: basesystem
+## tags: basic
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+check_perm -f /etc/machine.secret 0600 root root
+# vim: set ft=sh :

@@ -1,0 +1,31 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check univention-ssh buffering
+## bugs: [7488]
+## tags: [univention]
+## packages: [univention-ssh]
+## exposure: safe
+
+delay=10
+
+. "$TESTLIBPATH/base.sh" || exit 137
+pwfile="$(mktemp)"
+trap "rm -f '$pwfile'" EXIT
+echo -n univention > "$pwfile"
+
+univention-ssh "$pwfile" "root@${hostname}.${domainname}" "date +%s ; sleep $delay ; date +%s" | (
+	read a
+	ta=$(date +%s)
+	echo "1st@$ta: $a"
+
+	read b
+	tb=$(date +%s)
+	echo "2nd@$tb: $b"
+
+	if [ $((tb - ta)) -lt $((delay / 2)) ]
+	then
+		exit 110 # ERROR
+	else
+		exit 100 # OK
+	fi
+)
+# vim:set ft=sh:

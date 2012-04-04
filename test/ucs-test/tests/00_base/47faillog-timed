@@ -1,0 +1,64 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test timed faillog via ssh
+## roles: [domaincontroller_master]
+## tags: [basic]
+## packages: [univention-directory-manager-tools]
+## exposure: dangerous
+## versions:
+##  1.0-0: skip
+##  2.4-0: fixed
+
+LOCKTIME=20
+
+. "$TESTLIBPATH/ucr.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+NAME=$(user_randomname)
+
+ucr set \
+	auth/faillog=yes \
+	auth/faillog/lock_global=no \
+	auth/faillog/limit=6 \
+	auth/faillog/unlock_time="${LOCKTIME}" \
+	sshd/challengeresponse=yes \
+	sshd/passwordauthentication=no
+
+invoke-rc.d ssh restart
+
+tdir=$(mktemp -d)
+trap "rm -rf '$tdir' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
+fake_passwd="$tdir/fake_passwd"
+echo "foobar1234" >"$fake_passwd"
+passwd="$tdir/passwd"
+echo "univention" >"$passwd"
+
+ssh_login () {
+	univention-ssh -timeout 10 "$1" -o NumberOfPasswordPrompts=3 "$NAME@$hostname.$domainname" /usr/sbin/ucr get hostname
+}
+
+user_create "$NAME" \
+	--set groups="cn=Administrators,cn=groups,$ldap_base"
+
+info "Lock after tally"
+ssh_login "$fake_passwd" # 3
+ssh_login "$fake_passwd" # 6
+ssh_login "$fake_passwd" # 9
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" = "$hostname" ]
+then
+	fail_test "ssh login was successful, but the user should be locked"
+fi
+
+info "Wait for timeout ${LOCKTIME}"
+sleep "${LOCKTIME}"
+
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]
+then
+	fail_test "ssh login wasn't successful"
+fi
+
+exit $RETVAL
+# vim: set ft=sh :

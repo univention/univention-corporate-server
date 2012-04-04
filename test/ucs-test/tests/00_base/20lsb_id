@@ -1,0 +1,18 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking, whether LSB distributor ID is set to Univention
+## tags: [basic]
+## packages: [lsb-release]
+## exposure: safe
+
+return_code=100
+
+id=$(lsb_release -i | awk '{print $3}')
+if [ "$id" != "Univention" ]
+then
+	echo "The LSB distributor's ID is not set to Univention"
+	echo $id
+	return_code=110
+fi
+
+exit $return_code
+# vim: set ft=sh :

@@ -1,0 +1,16 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Check existence of /etc/krb5.keytab
+##  This script checks that the file "/etc/krb5.keytab" does exist and is not empty on member servers.
+## roles:
+##  - memberserver
+## exposure: safe
+
+set -o nounset -o errexit -o pipefail
+trap 'ls -l /etc/krb5.keytab' ERR
+
+[ -f '/etc/krb5.keytab' ]
+[ -s '/etc/krb5.keytab' ]
+exit 0
+
+# vim: set ft=sh :

@@ -1,0 +1,65 @@
+#!/usr/share/ucs-test/runner bash
+## desc: checking alternative ssl-certificate for apache
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+## packages:
+##  - univention-apache
+##  - univention-ssl
+## exposire: dangerous
+
+. "$TESTLIBPATH/ucr.sh" || exit 137
+eval "$(univention-config-registry shell)"
+RETVAL=100
+
+getssl () {
+	openssl s_client -connect "$interfaces_eth0_address":443 </dev/null 2>/dev/null | openssl x509 -text >"$1"
+}
+
+#create new certificate
+cert="ucs-test"
+univention-certificate list -name "$cert" 2>/dev/null
+univention-certificate new -name "$cert" 2>/dev/null
+
+#set certification
+ucr_cert="apache2/ssl/certificate"
+ucr_key="apache2/ssl/key"
+
+cert_path="/etc/univention/ssl/$cert/cert.pem"
+key_path="/etc/univention/ssl/$cert/private.key"
+
+univention-config-registry set \
+	"$ucr_cert=$cert_path" \
+	"$ucr_key=$key_path" >/dev/null
+invoke-rc.d apache2 restart
+
+tmp_file="$(mktemp)"
+trap "rm -f '$tmp_file' ; ucr_restore ; invoke-rc.d apache2 restart" EXIT
+
+#check alternative cert
+getssl "$tmp_file"
+
+if diff -q "$tmp_file" "$cert_path"
+then
+	echo "used right certificate"
+else
+	RETVAL=110
+fi
+
+ucr unset "$ucr_cert" "$ucr_key"
+invoke-rc.d apache2 restart
+
+#check whether alternative cert is removed
+getssl "$tmp_file"
+if diff -q "$tmp_file" "$cert_path"
+then
+	echo "alternative cert not removed"
+	RETVAL=110
+else
+	echo "und das ist auch gut so!"
+fi
+
+univention-certificate revoke -name "$cert" 2>/dev/null
+
+exit $RETVAL
+# vim: set ft=sh :

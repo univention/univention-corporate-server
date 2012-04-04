@@ -1,0 +1,10 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking the thin-client-package database
+## exposure: careful
+## packages:
+##  - univention-thin-client
+
+echo "***chroot to /var/lib/univention-client-root/"
+#chroot /var/lib/univention-client-root/ sh -c "dpkg --configure -a"
+chroot /var/lib/univention-client-root/ sh -c '[ -z "$(dpkg -C)" ]'
+# vim: set ft=sh :

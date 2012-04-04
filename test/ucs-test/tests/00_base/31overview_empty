@@ -1,0 +1,21 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check if overview.html links to master only if joined
+## bugs: [11505]
+## roles-not: [domaincontroller_master]
+## joined: false
+
+outfile="$(mktemp)"
+trap "rm -f '$outfile'" EXIT #Clean tempfile on exit
+
+echo "Checking link in overview..."
+wget "http://localhost" -O "$outfile"
+
+if grep -Es "https?:///ucs-overview" "$outfile"
+then
+	echo "Found: (BAD)"
+	exit 111
+else
+	echo "Not found (GOOD)"
+	exit 101
+fi
+# vim:set ft=sh:

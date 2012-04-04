@@ -1,0 +1,43 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Local UIDs and GIDs must not be in range 1000-29999
+##  This scripts tests if the local UIDs and GIDs are not in the range 1000-29999, so they will not collide with users from the LDAP.
+##  It does so by parsing the "/etc/passwd" and "/etc/group" an checking every ID.
+## bugs: [13153, 18315]
+## tags: basic
+## exposure: safe
+set -o errexit -o nounset -o pipefail
+
+# "/etc/passwd": fields are seperated with ":"
+while IFS=":" read login_name password uid gid user_name directory shell
+do
+	if [ '(' "$uid" -ge 1000 -a "$uid" -le 55000 ')' -o '(' "$uid" -ge 65536 -a "$uid" -le 1000000 ')' ]
+	then
+		if [ "$login_name" = "freebusy" ]; then
+			echo "user '$login_name' has a colliding UID ($uid) (See Bug #18315)"
+			exitCode=121 # Bug exists
+		else
+			echo "user '$login_name' has a colliding UID ($uid)"
+			exitCode=110 # Test failed
+		fi
+	fi
+done < "/etc/passwd"
+
+# "/etc/group": fields are seperated with ":"
+while IFS=":" read group_name password gid user_list
+do
+	if [ '(' "$gid" -ge 1000 -a "$gid" -le 55000 ')' -o '(' "$gid" -ge 65536 -a "$gid" -le 1000000 ')' ]
+	then
+		if [ "$group_name" = "freebusy" ]; then
+			echo "group '$group_name' has a colliding GID ($gid) (See Bug #18315)"
+			exitCode=121 # Bug exists
+		else
+			echo "group '$group_name' has a colliding GID ($gid)"
+			exitCode=110 # Test failed
+		fi
+	fi
+done < "/etc/group"
+
+exit ${exitCode:-0}
+
+# vim: set ft=sh :

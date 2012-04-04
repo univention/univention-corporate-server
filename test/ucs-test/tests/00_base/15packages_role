@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check for the system role package state
+## tags: [basic]
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+eval "$(ucr shell)"
+
+set -e
+case "$server_role" in
+domaincontroller_master)
+	requiresoftware univention-server-master ;;
+domaincontroller_backup)
+	requiresoftware univention-server-backup ;;
+domaincontroller_slave)
+	requiresoftware univention-server-slave ;;
+memberserver)
+	requiresoftware univention-server-member ;;
+managedclient)
+	requiresoftware univention-managed-client ;;
+mobileclient)
+	requiresoftware univention-mobile-client ;;
+basesystem)
+	requiresoftware univention-basesystem ;;
+esac
+exit 0
+
+# vim: set ft=sh :

@@ -1,0 +1,45 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check if the User 'Administrator' is in the right Groups
+## roles-not: [basesystem]
+## tags: [basic]
+## exposure: safe
+
+RETVAL=100
+
+#define username - here always Administrator
+username="Administrator"
+
+## check if the user belongs to all of this Groups
+old_ifs=$IFS
+while read should_be_in_group
+do
+	IFS=: read group_name password gid user_list < <(getent group "$should_be_in_group")
+	IFS=,; set -- $user_list; IFS=$old_ifs
+	found=false
+	for user_in_group in "$@"
+	do
+		if [ "$user_in_group" = "$username" ]
+		then
+			found=true
+			break
+		fi
+	done
+
+	if "$found"
+	then
+		echo -e "Check if '$username' is in Group '$should_be_in_group'   \tOK"
+	else
+		echo -e "Check if '$username' is in Group '$should_be_in_group'   \tFailed"
+		RETVAL=110
+	fi
+done <<__GROUPS__
+Domain Admins
+Domain Users
+Windows Hosts
+DC Backup Hosts
+DC Slave Hosts
+Computers
+__GROUPS__
+
+exit $RETVAL
+# vim: set ft=sh :

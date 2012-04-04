@@ -1,0 +1,69 @@
+#!/usr/share/ucs-test/runner python2.6
+## desc: Check log files for errors and warnings
+## tags: [basic]
+## exposure: safe
+# -*- coding: utf-8 -*.
+import re
+import gzip
+import check_log_files_definitions as definitions
+import sys
+import os
+
+logs = [
+		"/var/log/univention/updater.log",
+		"/var/log/univention/installation.log.gz",
+		"/var/log/univention/updater.log.gz"
+		]
+retVal = 100
+
+def checkLine(line, definition, result, msg):
+	"""Check a single 'line' against patterns from 'definition' and add message 'msg' to list 'result' if pattern in in wanted."""
+	for pattern in definition.ignore:
+		if pattern.match(line):
+			return result
+
+	for pattern in definition.wanted:
+		if pattern.match(line):
+			result.append(msg)
+			return result
+
+	return result
+
+def checkFile(filename):
+	"""Check file 'filename' for issues, returning 2-tuple (warnings, errors)."""
+	errors = []
+	warnings = []
+	counter = 0
+	basename = os.path.basename(filename).replace(".gz", "")
+
+	if not os.path.isfile(filename):
+		return (errors, warnings)
+
+	if filename.endswith('.gz'):
+		fh = gzip.open(filename, "rb")
+	else:
+		fh = open(filename, "r")
+	for line in fh:
+		counter += 1
+		line = line.strip()
+		msg = "%s:%s %s" % (basename, counter, line)
+		errors = checkLine(line, definitions.errors, errors, msg)
+		warnings = checkLine(line, definitions.warnings, warnings, msg)
+	fh.close()
+
+	return (errors, warnings)
+
+for filename in logs:
+	err, warn = checkFile(filename)
+	if err:
+		print "Errors in %s" % filename
+		for line in err:
+			print " E:%s" % (line,)
+		retVal = 110
+	if warn:
+		print "Warnings in %s" % filename
+		for line in warn:
+			print " W:%s" % (line,)
+
+sys.exit(retVal)
+# vim:set ft=python:

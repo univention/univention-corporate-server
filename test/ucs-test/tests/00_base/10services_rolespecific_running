@@ -1,0 +1,50 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test if system role specific services are running
+## tags: [basic]
+## exposure: safe
+
+slapd="/usr/sbin/slapd"
+udn="/usr/sbin/univention-directory-notifier"
+udl="/usr/sbin/univention-directory-listener"
+returnCode=0
+server_role=$(/usr/sbin/univention-config-registry get server/role)
+
+echo "Check which services should be running on the system role \"$server_role\""
+case "$server_role" in
+domaincontroller_master)
+	services_to_check="$udl $udn $slapd" ;;
+domaincontroller_backup)
+	services_to_check="$udl $slapd" ;;
+domaincontroller_slave)
+	services_to_check="$udl $slapd" ;;
+memberserver)
+	services_to_check="$udl" ;;
+mobileclient)
+	services_to_check="$udl" ;;
+fatclient)
+	services_to_check="$udl" ;;
+basesystem)
+	echo -e "The are no services which should be running on a basesystem\t OK"
+	exit 0
+	;;
+*)
+	echo "Unknwon server role "
+	exit 134
+	;;
+esac
+
+echo "Trying to check if these services are running"
+for service_to_check in $services_to_check # IFS
+do
+	echo -ne "Check if "$(basename $service_to_check)" is running\t"
+	if pgrep -f "$service_to_check" >/dev/null
+	then
+		echo "OK"
+	else
+		echo "ERROR"
+		returnCode=1
+	fi
+done
+exit $returnCode
+
+# vim: set ft=sh :

@@ -1,0 +1,26 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check univention-ssh signal
+## bugs: [17874]
+## tags: [univention]
+## packages: [univention-ssh]
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+pwfile="$(mktemp)"
+trap "rm -f '$pwfile'" EXIT
+echo -n univention >"$pwfile"
+
+result="$(univention-ssh "$pwfile" "root@${hostname}.${domainname}" echo BEFORE \; kill '$$' \; echo AFTER)"
+if [ $? -eq 0 ]
+then
+	exit 110 # ERROR
+elif ! grep -q BEFORE <<<"$result"
+then
+	exit 110 # ERROR
+elif grep -q AFTER <<<"$result"
+then
+	exit 110 # ERROR
+else
+	exit 100 # OK
+fi
+# vim:set ft=sh:

@@ -1,0 +1,8 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking for filesystem permissions on /etc/shadow
+## tags: [basic]
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+check_perm -f /etc/shadow 0640 root shadow
+# vim: set ft=sh :

@@ -1,0 +1,140 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking if the UCR-Variable ldap/acl/user/password/change works
+## roles: [domaincontroller_master]
+## packages:
+##  - univention-directory-manager-tools
+##  - univention-ssh
+## exposure: dangerous
+
+RETURN_OK=100
+RETURN_ERROR=110
+RETURN_MISSING_SOFTWARE=137
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/master.sh" || exit 137
+
+info "Check if the master system is reachable via SSH ..."
+if master_reachable_via_ssh
+then
+	info "OK"
+else
+	fail_fast $RETURN_ERROR "FAIL ($?)"
+fi
+
+LDAP_SECRET="$(master_ldap_secret)" || fail_fast $RETURN_ERROR "ldap.secret missing"
+
+UCR_KEY=ldap/acl/user/password/change
+UCR_VALUE="$(master_ucr_get "$UCR_KEY")" || fail_test $RETURN_ERROR "$UC_KEY missing"
+info "Get the status of the value $UCR_KEY: $UCR_VALUE"
+if [ "$UCR_VALUE" = "no" ]
+then
+	INV_VALUE=yes
+else
+	INV_VALUE=no
+fi
+
+info "Create a test User ..."
+SALT="$(date +%Y%m%d%H%M%S)"
+USER_NAME="test$SALT"
+USER_PASSWORD="univention"
+if on_master univention-directory-manager users/user create \
+	--binddn="cn=admin,${ldap_base}" \
+	--bindpw="${LDAP_SECRET}" \
+	--position "cn=users,${ldap_base}" \
+	--set "password=${USER_PASSWORD}" \
+	--set "username=${USER_NAME}" \
+	--set "lastname=${USER_NAME}"
+then
+	info "OK"
+else
+	fail_fast $RETURN_ERROR "FAIL ($?)"
+fi
+
+info "Find the position of the user test$SALT ..."
+USER_DN=$(univention-ldapsearch -xLLL "uid=$USER_NAME" dn | ldapsearch-wrapper | sed -ne 's/^dn: //p')
+if [ -n "$USER_DN" ]
+then
+	info "Found $USER_DN"
+else
+	fail_fast "Not found"
+fi
+
+change_passwd_udm () { # Try changing the password.
+	local setting=${1?:missing setting}
+	local new_pw="new${setting}${SALT}"
+	info "Trying to change the password ..."
+	local out
+	out=$(univention-directory-manager users/user modify \
+		--binddn="${USER_DN}" \
+		--bindpwd="${USER_PASSWORD}" \
+		--dn="${USER_DN}" \
+		--set password="${new_pw}" 2>&1)
+	local ret=$?
+	if [ "$setting" = "no" ] ; then
+		if [ "$ret" -eq 0 ] ; then
+			fail_test $RETURN_ERROR "The user should NO be able to change his password ($out)"
+			USER_PASSWORD="$new_pw"
+		else
+			info "failed - OK"
+		fi
+	else
+		if [ "$ret" -eq 0 ] ; then
+			info "successful OK"
+			USER_PASSWORD="$new_pw"
+		else
+			fail_test $RETURN_ERROR "The user should be able to change his password ($ret)"
+		fi
+	fi
+}
+
+change_passwd_udm "$UCR_VALUE"
+
+info "Toggling UCR to $INV_VALUE ..."
+master_ucr_set "$UCR_KEY" "$INV_VALUE"
+if [ "$(master_ucr_get "$UCR_KEY")" = "$INV_VALUE" ]
+then
+	info "OK"
+else
+	fail_test $RETURN_ERROR "FAIL"
+fi
+
+info "Restart the slapd to activate the changes ..."
+if master_restart_service "slapd"
+then
+	info "OK"
+else
+	fail_test $RETURN_ERROR "FAIL ($?)"
+fi
+
+change_passwd_udm "$INV_VALUE"
+
+info "Toggling UCR back back to $UCR_VALUE ..."
+master_ucr_set "$UCR_KEY" "$UCR_VALUE"
+if [ "$(master_ucr_get "$UCR_KEY")" = "$UCR_VALUE" ]
+then
+	info "OK"
+else
+	fail_test $RETURN_ERROR "Setting to $UCR_VALUE - ERROR"
+fi
+
+info "Restart the slapd to activate the changes ..."
+if master_restart_service "slapd"
+then
+	info "OK"
+else
+	fail_test $RETURN_ERROR "FAIL ($?)"
+fi
+
+info "Cleaning up - delete User ..."
+if univention-directory-manager users/user remove \
+	--binddn="cn=admin,${ldap_base}" \
+	--bindpw="${LDAP_SECRET}" \
+	--dn "${USER_DN}"
+then
+	info "OK"
+else
+	error "FAIL ($?)"
+fi
+
+exit $RETVAL
+# vim:set ft=python:

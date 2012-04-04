@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner bash
+## desc: checks whether telnet is on (bad) or off (good)
+## bugs: [11005]
+## tags: [basic]
+## exposure: safe
+
+test_telnet () {
+	echo -n "$1: "
+	if telnet "$1" </dev/null 2>&1 | grep -q "Connection refused"
+	then
+		echo "ok"
+	else
+		echo "error"
+		exit 111
+	fi
+}
+
+eval "$(univention-config-registry shell)"
+
+if [ -x /usr/bin/telnet ]
+then
+	test_telnet "localhost"
+	test_telnet "$hostname"
+	test_telnet "$hostname.$domainname"
+	exit 101
+else
+	echo "telnet is not present on this system"
+	exit 137
+fi
+# vim: set ft=sh :

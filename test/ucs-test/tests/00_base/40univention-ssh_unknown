@@ -1,0 +1,36 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check univention-ssh with unknown hosts
+## tags: [univention]
+## packages: [univention-ssh]
+## exposure: dangerous
+
+# ucs-test is run from init.d-script, where HOME=/ and USER=
+if [ / = "${HOME}" ]
+then
+	IFS=: read USER password uid gid gecos HOME shell < <(getent passwd $UID)
+fi
+
+. "${TESTLIBPATH}/base.sh" || exit 137
+pwfile="$(mktemp)"
+my_mv () {
+	test -f "$1" && /bin/mv -f "$1" "$2"
+}
+restore () {
+	my_mv /etc/ssh/ssh_known_hosts{.$$,}
+	my_mv "${HOME}/.ssh/known_hosts"{.$$,}
+	rm -f "${pwfile}"
+}
+trap restore EXIT
+
+my_mv /etc/ssh/ssh_known_hosts{,.$$}
+my_mv "${HOME}/.ssh/known_hosts"{,.$$}
+echo -n univention >"${pwfile}"
+
+if univention-ssh "${pwfile}" "root@${hostname}.${domainname}" true && \
+	[ -n "$(ssh-keygen -F "${hostname}.${domainname}")" ]
+then
+	exit 100 # OK
+else
+	exit 110 # ERROR
+fi
+# vim:set ft=sh:

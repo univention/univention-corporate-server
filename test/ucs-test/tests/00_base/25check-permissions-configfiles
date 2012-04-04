@@ -1,0 +1,19 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check permissions of config files
+## tags: [basic]
+## exposure: safe
+## packages: [univention-kolab2-webclient]
+
+# some config files, created by univention-config-registry from templates,
+# contain passwords, we have to check the permissions (e.g., read
+# permissions for "others") of the templates and the config files
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+# config files to check
+check_perm -f /etc/horde/horde3/conf.php 0640 www-data root || RETVAL=110
+check_perm -f /etc/horde/horde3/conf.d/20-kolab_ucs.php 0640 www-data root || RETVAL=110
+
+exit $RETVAL
+
+# vim: set ft=sh :

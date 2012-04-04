@@ -1,0 +1,38 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test clamav-filter in webproxy
+## bugs: [19350]
+## packages: [univention-antivir-web]
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+
+trap 'ucr_restore ; invoke-rc.d dansguardian restart ; invoke-rc.d squid restart' EXIT
+ucr set squid/virusscan=yes
+
+invoke-rc.d dansguardian restart
+invoke-rc.d squid restart
+
+VIRUS="$(wget -q -O - http://www.eicar.org/download/eicar.com.txt)"
+
+[ -n "$VIRUS" ] || fail_test 110 "It seems the test-virus isn't where it used to be"
+
+FILTERED="$(http_proxy=http://localhost:3128 wget -q -O - http://www.eicar.org/download/eicar.com.txt)"
+
+if [ -z "$FILTERED" ]; then
+	if current_ucs_version_greater_equal 2.4; then
+		fail_test 121 "It seems we didn't receive anything. See #19350"
+	else
+		fail_test 110 "It seems we didn't receive anything. Maybe the proxy for this system is not configured as http://localhost:3128 ?"
+	fi
+fi
+
+if [ "$VIRUS" = "$FILTERED" ]; then
+	fail_test 110 "The filtered and unfiltered result was identical"
+else
+	info "It seems the virus was detected correctly, as we received the following instead of the virus:"
+	info "$FILTERED"
+fi
+
+exit $RETVAL
+# vim: set ft=sh :

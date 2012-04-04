@@ -1,0 +1,35 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking for machine.secret not to be written if failed.ldif exists
+## bugs: [4777]
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_slave
+##  - domaincontroller_backup
+## tags: [basic]
+## packages:
+##  - univention-server-master
+##  - univention-directory-manager-tools
+## exposure: careful
+
+LDIF=/var/lib/univention-directory-replication/failed.ldif
+if [ -s "$LDIF" ]
+then
+	echo -n "$LDIF already exists:"
+	ls -l "$LDIF"
+	exit 138
+fi
+
+mkdir -p "${LDIF%/*}"
+echo "test" >"$LDIF"
+trap "rm -f '$LDIF'" EXIT
+
+/usr/lib/univention-server/server_password_change >/dev/null
+if [ $? -eq 1 ]
+then
+	echo "***machine.secret was not written, everything is fine"
+	exit 100
+else
+	echo "***An Error occured."
+	exit 110
+fi
+# vim: set ft=sh :

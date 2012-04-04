@@ -1,0 +1,6 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking the package database
+## tags: [basic]
+## exposure: careful
+dpkg --configure -a
+# vim: set ft=sh :

@@ -1,0 +1,131 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test faillog via ssh
+## roles: [domaincontroller_master]
+## tags: [basic]
+## packages: [univention-directory-manager-tools, openssh-server]
+## exposure: dangerous
+## versions:
+##  1.0-0: skip
+##  2.4-0: fixed
+
+. "$TESTLIBPATH/ucr.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+NAME=$(user_randomname)
+
+ucr set \
+	auth/faillog=no \
+	auth/faillog/lock_global=no \
+	sshd/challengeresponse=yes \
+	sshd/passwordauthentication=no
+
+invoke-rc.d ssh restart
+
+tdir=$(mktemp -d)
+trap "rm -rf '$tdir' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
+fake_passwd="$tdir/fake_passwd"
+echo "foobar1234" >"$fake_passwd"
+passwd="$tdir/passwd"
+echo "univention" >"$passwd"
+
+ssh_login () {
+	univention-ssh -timeout 10 "$1" -o NumberOfPasswordPrompts=3 "$NAME@$hostname.$domainname" /usr/sbin/ucr get hostname
+}
+
+user_create "$NAME" \
+	--set groups="cn=Administrators,cn=groups,$ldap_base"
+
+# univention-ssh tries it 3 times
+info "Login with wrong password via ssh"
+ssh_login "$fake_passwd"
+ssh_login "$fake_passwd"
+ssh_login "$fake_passwd"
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]; then
+	fail_test 110 "E: The login wasn't successful, but faillog is disabled"
+fi
+
+#activate
+ucr set auth/faillog=yes auth/faillog/lock_global=no
+pam_tally --user "$NAME" --reset
+
+info "Login via ssh"
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]; then
+	fail_test 110 "E: The login wasn't successful: $ssh_hostname $hostname"
+fi
+
+# univention-ssh tries it 3 times
+info "Login with wrong password via ssh"
+ssh_login "$fake_passwd"
+ssh_login "$fake_passwd"
+
+# by default the user should be disabled
+failCount=$(pam_tally --user="$NAME" | awk '{print $NF}')
+if [ "$failCount" != "6" ]; then
+	fail_test 110 "E: failCount is $failCount and should be 6"
+fi
+
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" = "$hostname" ]; then
+	fail_test 110 "E: The login was successful, but the user should be locked"
+fi
+
+info "Reset counter for $NAME"
+pam_tally --user="$NAME" --reset
+
+info "Normal ssh login"
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]; then
+	fail_test 110 "E: The login wasn't successful, but the user faillog is resetted: $ssh_hostname $hostname"
+fi
+
+info "Login with wrong password"
+ssh_login "$fake_passwd"
+failCount=$(pam_tally --user="$NAME" | awk '{print $NF}')
+if [ "$failCount" != "3" ]; then
+	fail_test 110 "E: failCount is $failCount and should be 3"
+fi
+
+pam_tally --user="$NAME"
+# reset failCount
+info "Reset counter with a success login"
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]; then
+	fail_test 110 "E: The login wasn't successful, but the user faillog is lower than the maximum"
+fi
+failCount=$(pam_tally --user="$NAME" | awk '{print $NF}')
+if [ "$failCount" != "0" ]; then
+	fail_test 110 "E: failCount should be empty"
+fi
+
+info "Activate global lock and a diffrent limit"
+ucr set auth/faillog/limit=6 auth/faillog/lock_global=yes
+ssh_login "$fake_passwd"
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]; then
+	fail_test 110 "E: The login wasn't successful, but the users faillog is lower than the maximum"
+fi
+ssh_login "$fake_passwd"
+ssh_login "$fake_passwd"
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" = "$hostname" ]; then
+	fail_test 110 "E: The login was successful, but the user should be locked"
+fi
+
+udm_locked=$(univention-directory-manager users/user list --filter "uid=$NAME" | grep "^  locked: all")
+if [ "$udm_locked" != "  locked: all" ]; then
+	fail_test 110 "E: user was not locked in UDM"
+	univention-directory-manager users/user list --filter "uid=$NAME"
+fi
+
+user_set_attr "$NAME" locked "" none
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]; then
+	fail_test 110 "E: The login wasn't successful, but the fail counter should be resetted"
+fi
+
+exit $RETVAL
+# vim: set ft=sh :

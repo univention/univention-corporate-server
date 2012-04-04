@@ -1,0 +1,129 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Sensitive logfiles are not world-readable
+## bugs: [11431, 25164]
+## exposure: safe
+## versions:
+##  2.4-0: found
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+# /var/log/mrtg should only be accessible by root:adm . If not, the world-readable
+# logfiles within the directory are exposed to arbitrary users:
+check_perm -d /var/log/mrtg 0750 root adm || RETVAL=110
+
+# /var/log/samba should only be accessible by root:adm . If not, the world-readable
+# logfiles within the directory are exposed to arbitrary users:
+check_perm -d /var/log/samba 0750 root adm || RETVAL=121 # Bug #25164
+
+# /var/log/nagios2 should only be accessible by root:adm . If not, the world-readable
+# logfiles within the directory are exposed to arbitrary users:
+check_perm -d /var/log/nagios2 02751 nagios adm || RETVAL=110
+
+# /var/log/xen should only be accessible by root:adm . If not, the world-readable
+# logfiles within the directory are exposed to arbitrary users:
+check_perm -d /var/log/xen 02750 root adm || RETVAL=110
+
+tmpfile=$(mktemp)
+
+echo "***Searching for world-readable logfiles:"
+find /var/log \
+	-type l -prune \
+	-o -path "/var/log/apt" -prune \
+	-o -path "/var/log/univention" -prune \
+	-o -path "/var/log/nagios2" -prune \
+	-o -path "/var/log/ntpstats" -prune \
+	-o -path "/var/log/ksymoops" -prune \
+	-o -path "/var/log/mrtg" -prune \
+	-o -path "/var/log/news" -prune \
+	-o -path "/var/log/xen" -prune \
+	-o -not -type d -perm /o+r ! \( \
+		-path "/var/log" \
+		-o -path "/var/log/apache2" \
+		-o -path "/var/log/aptitude*" \
+		-o -path "/var/log/autoupdate.log" \
+		-o -path "/var/log/alternatives.log*" \
+		-o -path "/var/log/bootstrap.log" \
+		-o -path "/var/log/btmp" \
+		-o -path "/var/log/clamav" \
+		-o -path "/var/log/cups/access_log*" \
+		-o -path "/var/log/cups/error_log*" \
+		-o -path "/var/log/dbconfig-common" \
+		-o -path "/var/log/debug" \
+		-o -path "/var/log/dirmngr*" \
+		-o -path "/var/log/dpkg.log*" \
+		-o -path "/var/log/faillog" \
+		-o -path "/var/log/fontconfig.log" \
+		-o -path "/var/log/gdm/*log*" \
+		-o -path "/var/log/horde" \
+		-o -path "/var/log/hylafax" \
+		-o -path "/var/log/kern.log" \
+		-o -path "/var/log/lastlog" \
+		-o -path "/var/log/lpr.log" \
+		-o -path "/var/log/ltsp-mounts.log" \
+		-o -path "/var/log/mgetty" \
+		-o -path "/var/log/mrtg/*" \
+		-o -path "/var/log/nagios2/*" \
+		-o -path "/var/log/nagios2/archives" \
+		-o -path "/var/log/php_error.log" \
+		-o -path "/var/log/postgresql" \
+		-o -path "/var/log/printserver-start.log" \
+		-o -path "/var/log/pycentral.log" \
+		-o -path "/var/log/python-notifier.log" \
+		-o -path "/var/log/samba/log.nmbd*" \
+		-o -path "/var/log/samba/log.smbd*" \
+		-o -path "/var/log/samba/log.wb-*" \
+		-o -path "/var/log/samba/log.winbindd*" \
+		-o -path "/var/log/user.log" \
+		-o -path "/var/log/uucp.log" \
+		-o -path "/var/log/wtmp" \
+		-o -path "/var/log/Xorg*log*" \
+	\) -print0 >"$tmpfile"
+if [ -s "$tmpfile" ]
+then
+	RETVAL=1
+	echo "Some potentially sensitive log files are world-readable:"
+	xargs -0 ls -lad <"$tmpfile"
+fi
+rm -f "$tmpfile"
+exit $RETVAL
+
+# Docs
+# "/var/log/ntpstats/*"          : NTP server synchronisation data
+# "/var/log/kern.log"            : Linux Kernel status messages
+# "/var/log/ksymoops/*"          : OOPS failure messages from the Linux kernel
+# "/var/log/faillog"             : Records only the number of failed authentication attempts of each user, no further sensitive information
+# "/var/log/hylafax"             : Only the directory itself is world-readable, the files within have stricter permissions
+# "/var/log/apache2"             : Only the directory itself is world-readable, the files within have stricter permissions
+# "/var/log/wtmp"                : Records logins, the information is accesible through the last command anyway
+# "/var/log/lastlog"             : Records logins, the information is accesible through the lastlog command anyway
+# "/var/log/btmp"                : Records logins, the information is accesible through the lastb command anyway
+# "/var/log/news/*"              : Logfiles for Usenet news servers, doesn't contain sensitive information, not present in UCS anyway
+# "/var/log/clamav"              : Only the directory itself is world-readable, the files within have stricter permissions
+# "/var/log/uucp.log"            : UUCP transfer logging, not present in UCS
+# "/var/log/horde"               : Only the directory itself is world-readable, the files within (horde3.log*) have stricter permissions (group www-data)
+# "/var/log/pycentral.log"       : Logfiles of Python modules processing, doesn't contain sensitive information
+# "/var/log/fontconfig.log"      : Logfiles of font processing, doesn't contain sensitive information
+# "/log/mgetty"                  : Only the directory itself is world-readable, the files within have stricter permissions
+# "/var/log/Xorg*log*"           : Logfiles of X server, doesn't contain sensitive information
+# "/var/log/fsck"                : Only the directory itself is world-readable, the files within have stricter permissions (group adm)
+# "/var/log/bootstrap.log"       : Debootstrap logfile, doesn't contain sensitive information
+# "/var/log/postgresql"          : Only the directory itself is world-readable, the files within have stricter permissions (group postgres)
+# "/var/log/gdm/*log*"           : Logfiles of GDM, doesn't contain sensitive information
+# "/var/log/lpr.log"             : LPD printing log files, doesn't contain sensitive information
+# /var/log/cups etc.             : we follow Debian with this one
+# /var/log/dirmngr*              : we follow Debian with this one
+# /var/log/debug                 : we follow Debian with this one
+# /var/log/user.log              : we follow Debian with this one
+# /var/log/apt                   : we follow Debian with this one
+# /var/log/php_error.log         : Only exists if log_erros=on in php.ini - not by default / content depends on php application
+# /var/log/dbconfig-common       : Only the directory itself is world-readable, the files within have stricter permissions
+# /var/log/ltsp-mounts.log       : Doesn't contain sensitive information
+# /var/log/printserver-start.log : Doesn't contain sensitive information
+# /var/log/autoupdate.log        : Created by ucs-test
+# /var/log/univention/updater.log: Doesn't contain sensitive information
+
+
+# Covered by test cases limiting the root directories:
+# mrtg, samba, nagios, xen
+
+# vim:set ft=sh:

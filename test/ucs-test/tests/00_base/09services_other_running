@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test if installed services are running
+## roles:
+##  - domaincontroller_master
+## tags: [basic]
+## optional-packages:
+##  - apache2 | apache2-mpm-prefork
+##  - nscd
+##  - bind9
+##  - isc-dhcp-server | dhcp3-server
+##  - univention-management-console
+##  - nagios2 | nagios2
+## exposure: safe
+
+returnCode=0
+echo "Test if installed services are running"
+while read package binary
+do
+	echo -ne "Is ${package} installed?\t"
+	installed=$(dpkg-query -W -f '${status}' "$package")
+
+	if [ "$installed" = "install ok installed" ]
+	then
+		echo "Yes"
+		echo -ne "Is the service running?\t"
+		if pgrep -f "$binary" >/dev/null
+		then
+			echo "Ok"
+		else
+			echo "Error"
+			returnCode=1
+		fi
+	else
+		echo "No - Skipping check"
+	fi
+done <<__LIST__
+apache2	/usr/sbin/apache2
+apache2-mpm-prefork	/usr/sbin/apache2
+nscd	/usr/sbin/nscd
+bind9	/usr/sbin/named
+dhcp3-server	/usr/sbin/dhcpd3
+isc-dhcp-server	/usr/sbin/dhcpd
+univention-management-console	/usr/sbin/univention-management-console-server
+nagios2	/usr/sbin/nagios2
+nagios3	/usr/sbin/nagios3
+__LIST__
+exit $returnCode
+
+# vim: set ft=sh :

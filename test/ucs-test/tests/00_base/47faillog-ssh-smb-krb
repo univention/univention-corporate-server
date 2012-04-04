@@ -1,0 +1,140 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test faillog via ssh, smb, krb
+## roles: [domaincontroller_master]
+## tags: [basic]
+## packages:
+##  - univention-directory-manager-tools
+##  - openssh-server
+##  - smbclient
+##  - heimdal-clients
+##  - univention-samba | univention-samba4
+## exposure: dangerous
+## versions:
+##  1.0-0: skip
+##  2.4-0: fixed
+
+. "$TESTLIBPATH/ucr.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+NAME=$(user_randomname)
+
+ucr set \
+	auth/faillog=yes \
+	auth/faillog/lock_global=yes \
+	auth/faillog/limit=6 \
+	sshd/challengeresponse=yes \
+	sshd/passwordauthentication=no
+
+invoke-rc.d ssh restart
+
+tdir=$(mktemp -d)
+trap "rm -rf '$tdir' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
+fake_passwd="$tdir/fake_passwd"
+echo "foobar1234" >"$fake_passwd"
+passwd="$tdir/passwd"
+echo "univention" >"$passwd"
+
+ssh_login () {
+	univention-ssh -timeout 10 "$1" -o NumberOfPasswordPrompts=3 "$NAME@$hostname.$domainname" /usr/sbin/ucr get hostname
+}
+
+smb_login () {
+	smbclient -g -L "$hostname" -U "${NAME}%$(<$1)"
+}
+
+krb_login () {
+	kinit --password-file="${1}" "$NAME"
+	local rc=$?
+	kdestroy
+	return $rc
+}
+
+user_create "$NAME" \
+	--set groups="cn=Administrators,cn=groups,$ldap_base" \
+	--set locked=none
+
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]
+then
+	fail_test 110 "ssh login wasn't successful"
+fi
+if ! smb_login "$passwd" | grep -q "^Disk|$NAME|"
+then
+	fail_test 110 "smb login wasn't successful"
+fi
+if ! krb_login "$passwd"
+then
+	fail_test 110 "krb login wasn't successful"
+fi
+
+info "Lock all after tally"
+ssh_login "$fake_passwd" # 3
+ssh_login "$fake_passwd" # 6
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" = "$hostname" ]
+then
+	fail_test 110 "ssh login was successful, but the user should be locked"
+fi
+if ! smb_login "$passwd" | grep -q NT_STATUS_ACCOUNT_LOCKED_OUT
+then
+	fail_test 110 "smb login was successful, but the user should be locked"
+fi
+if krb_login "$passwd"
+then
+	fail_test 110 "krb login was successful, but the user should be locked"
+fi
+
+info "Lock windows"
+user_set_attr "$NAME" locked "" windows
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" != "$hostname" ]
+then
+	fail_test 110 "ssh login wasn't successful"
+fi
+if ! smb_login "$passwd" | grep -q NT_STATUS_ACCOUNT_LOCKED_OUT
+then
+	fail_test 110 "smb login was successful, but the user should be locked"
+fi
+# Heimdal interprets Windows Lock
+if krb_login "$passwd"
+then
+	fail_test 110 "krb login was successful, but the user should be locked"
+fi
+
+info "Lock posix"
+user_set_attr "$NAME" locked "" posix
+ssh_hostname="$(ssh_login "$passwd")"
+# 'Deny' from 'pam_unix' is 'ignored', 'ok' from 'pam_krb5.so' is sufficient -> OKAY
+if false && [ "$ssh_hostname" = "$hostname" ]
+then
+	fail_test 110 "ssh login was successful, but the user should be locked"
+fi
+if ! smb_login "$passwd" | grep -q "^Disk|$NAME|"
+then
+	fail_test 110 "smb login wasn't successful"
+fi
+if ! krb_login "$passwd"
+then
+	fail_test 110 "krb login wasn't successful"
+fi
+
+info "Lock all"
+user_set_attr "$NAME" locked "" all
+ssh_hostname="$(ssh_login "$passwd")"
+if [ "$ssh_hostname" = "$hostname" ]
+then
+	fail_test 110 "ssh login was successful, but the user should be locked"
+fi
+if ! smb_login "$passwd" | grep -q NT_STATUS_ACCOUNT_LOCKED_OUT
+then
+	fail_test 110 "smb login was successful, but the user should be locked"
+fi
+if krb_login "$passwd"
+then
+	fail_test 110 "krb login was successful, but the user should be locked"
+fi
+
+exit $RETVAL
+# vim: set filetype=sh ts=4 :

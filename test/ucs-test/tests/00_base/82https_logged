@@ -1,0 +1,19 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  https-connects are not logged in the /var/log/apache2/access.log
+##  This script tests, whether https-connects are logged in the /var/log/apache2/access.log
+## bugs: [10401]
+## packages: [apache2 | apache2-mpm-prefork]
+## versions:
+##  2.0-2: fixed
+## exposure: safe
+
+eval "$(ucr shell hostname domainname)"
+url="https://$hostname.$domainname/"
+key="Wget/$(date +%s)-$$-$RANDOM"
+
+echo "***Connecting this machine via $url and checking the log"
+
+wget --no-check-certificate -O - --user-agent="$key" "$url" >/dev/null 2>&1
+grep -q "\"GET /ucs-overview/.*\"$key\"" /var/log/apache2/access.log
+# vim: set ft=sh :

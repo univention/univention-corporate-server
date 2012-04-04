@@ -1,0 +1,74 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking if the HTTPS Port gets blocked when apache2 restarts
+## packages: [apache2 | apache2-mpm-prefork]
+## exposure: careful
+
+RETURN_OK=100
+RETURN_MISSING_SOFTWARE=137
+RETURN_ERROR=110
+
+RETVAL=$RETURN_OK
+
+HTTPS_PORT=443
+STOP_APACHE_AT_THE_END=false
+
+is_apache2_running () {
+	invoke-rc.d apache2 status
+}
+
+echo "-------------------------------------------"
+echo "Check if apache2 is running"
+prog=$(netstat -tlpn | sed -ne "s/\s\+$//;s|^tcp.*:$HTTPS_PORT .*/||p")
+if [ -z "$prog" ] ; then
+	echo "No Process is running on Port $HTTPS_PORT"
+	echo "Starting apache2 (will be stopped at the end of this test)"
+	STOP_APACHE_AT_THE_END=true
+elif [ "$prog" = apache2 ] ; then
+	echo "Apache2 is running"
+	echo "Stopping apache2"
+	invoke-rc.d apache2 stop
+	sleep 3s
+	if ! is_apache2_running
+	then
+		echo "Apache2 has been stopped - OK"
+	else
+		echo "Apache2 could NOT be stopped - ERROR"
+		exit $RETURN_ERROR
+	fi
+else
+	echo "Apache2 is not running on Port $HTTPS_PORT - ERROR"
+	echo "The port is used by: '$prog'"
+	exit $RETURN_ERROR
+fi
+
+
+echo "-------------------------------------------"
+echo "Starting apache2"
+invoke-rc.d apache2 start
+sleep 3s
+if is_apache2_running
+then
+	echo "Apache2 has been started - OK"
+else
+	echo "Apache2 could NOT be startet - ERROR"
+	exit $RETURN_ERROR
+fi
+echo ""
+
+if "$STOP_APACHE_AT_THE_END"
+then
+	echo "-------------------------------------------"
+	echo "Stopping apache2"
+	invoke-rc.d apache2 stop
+	sleep 3s
+	if ! is_apache2_running
+	then
+		echo "Apache2 has been stopped - OK"
+	else
+		echo "Apache2 could NOT be stopped - ERROR"
+		RETVAL=$RETURN_ERROR
+	fi
+fi
+
+exit $RETVAL
+# vim: set ft=sh :

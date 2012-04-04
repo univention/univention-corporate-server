@@ -1,0 +1,38 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test nfs 16 groups limit
+## bugs: [25850]
+## tags: [WIP]
+## packages:
+##  - nfs-kernel-server
+## exposure: dangerous
+
+useradd --home=/home/nfs --create-home --user-group nfs # --groups "$groups_comma"
+mkdir --mode=0755 /home/nfs/export /home/nfs/import
+
+for ((i=0;i<17;i+=1))
+do
+	group="nfs$i"
+	groupadd "$group"
+	adduser nfs "$group"
+	mkdir --mode=0750 "/home/nfs/export/$group"
+	chown root:"$group" "/home/nfs/export/$group"
+done
+
+echo "/home/nfs/export $(hostname -f)(rw,no_root_squash,sync,no_subtree_check)" >>/etc/exports
+exportfs -r
+mount -t nfs $(hostname -f):/home/nfs/export /home/nfs/import
+
+diff <(su -c "cd export && ls -1d nfs*/." - nfs) <(su -c "cd import && ls -1d nfs*/." - nfs)
+rc=$?
+
+umount /home/nfs/import
+sed -i -e '$d' /etc/exports
+for ((i=0;i<17;i+=1))
+do
+	group="nfs$i"
+	groupdel "$group"
+done
+deluser --remove-home nfs
+
+exit $rc
+# vim: set ft=sh :

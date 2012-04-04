@@ -1,0 +1,20 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check univention-ssh exit code
+## bugs: [17874]
+## tags: [univention]
+## packages: [univention-ssh]
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+pwfile="$(mktemp)"
+trap "rm -f '$pwfile'" EXIT
+echo -n univention >"$pwfile"
+
+univention-ssh "$pwfile" "root@${hostname}.${domainname}" exit 110
+if [ $? -eq 110 ]
+then
+	exit 100 # OK
+else
+	exit 110 # ERROR
+fi
+# vim:set ft=sh:

@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Checking for Problems with nested Groups
+##  Creating two Testgroups, one nested within the other using the UDM CLI
+## bugs: [10144]
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## packages: [ldap-utils]
+## exposure: dangerous
+. "$TESTLIBPATH/group.sh" || exit 137
+
+group_create
+GROUP1=$GROUPNAME
+GROUPNAME=
+
+group_create
+GROUP2=$GROUPNAME
+GROUPNAME=
+
+univention-directory-manager groups/group modify --dn="cn=$GROUP2,cn=groups,$ldap_base" --append nestedGroup="cn=$GROUP1,cn=groups,$ldap_base"
+
+univention-directory-manager groups/group remove --dn="cn=$GROUP1,cn=groups,$ldap_base"
+
+# GROUP2 should no longer be listed
+! univention-ldapsearch -x -LL "cn=$GROUP2" memberUid | grep -q "memberUid: $GROUP1"
+RETVAL=$?
+
+univention-directory-manager groups/group remove --dn="cn=$GROUP2,cn=groups,$ldap_base"
+
+exit $RETVAL
+# vim: set ft=sh :
