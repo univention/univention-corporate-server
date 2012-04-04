@@ -302,7 +302,12 @@ if [ "$samba4_role" = 'DC' ]; then
 	fi
 
 	## set default ACLs so sysvol-sync can read files and directories
+	nscd -i group
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
+	rc="$?"
+	if [ "$rc" != 0 ]; then
+		exit "$rc"
+	fi
 
 
 elif [ "$samba4_role" = "RODC" ]; then
@@ -392,6 +397,10 @@ elif [ "$samba4_role" = "RODC" ]; then
 	## set default ACLs so sysvol-sync can read files and directories
 	nscd -i group
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
+	rc="$?"
+	if [ "$rc" != 0 ]; then
+		exit "$rc"
+	fi
 
 elif [ "$samba4_role" = "MEMBER" ]; then
 

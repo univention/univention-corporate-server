@@ -1,3 +1,10 @@
+univention-samba4 (1.0.135-1) unstable; urgency=low
+
+  * invalidate nscd group cache before trying to setfacl on sysvol
+  * fail joinscript if setfacl fails (Bug #26706)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Apr 2012 20:17:14 +0200
+
 univention-samba4 (1.0.134-1) unstable; urgency=low
 
   * remove locale support from critical mount_extfs_with_user_xattr
