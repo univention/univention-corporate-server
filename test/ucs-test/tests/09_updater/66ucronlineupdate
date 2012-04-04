@@ -1,0 +1,66 @@
+#!/usr/share/ucs-test/runner bash
+## desc: checking online update sources.list creation
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+## exposure: dangerous
+
+eval "$(univention-config-registry shell)"
+dpkg --compare-versions "$version_version" lt "3.0" || exit 133 # too new
+
+ping -c 1 "$repository_online_server" || exit 120 # Transient error in DNS resolution
+
+rc=100
+
+arch=$(dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
+
+keys[0]="repository/online"
+values[0]="yes"
+
+keys[1]="repository/online/component/xen/server"
+values[1]="apt.univention.de"
+
+keys[2]="repository/online/component/xen/version"
+values[2]="2.1,2.2"
+
+keys[3]="repository/online/component/xen"
+values[3]="yes"
+
+for i in $(seq 0 3)
+do
+	values_old[$i]="$(univention-config-registry get ${keys[$i]} )"
+	univention-config-registry set "${keys[$i]}=${values[$i]}"
+done
+
+if [ "$local_repository" == "yes" ]
+then
+	echo "server is repository-server"
+	sources="/etc/apt/mirror.list"
+else
+	sources="/etc/apt/sources.list.d/20_ucs-online-component.list"
+fi
+
+for component in "deb http://apt.univention.de\(:80\)\?/2.1/maintained/component/\? xen/all/" "deb http://apt.univention.de\(:80\)\?/2.1/maintained/component/\? xen/$arch/"
+do
+	if ! grep "$component" "$sources"
+	then
+		echo "$component is missing in $sources"
+		rc=110
+	fi
+done
+
+for i in $(seq 0 3)
+do
+	if [ "${values_old[$i]}" ]
+	then
+		univention-config-registry set "${keys[$i]}=${values_old[$i]}"
+	else
+		univention-config-registry unset "${keys[$i]}"
+	fi
+done
+
+echo "=== RESULT: $rc ==="
+exit $rc
+# vim:set ft=sh:

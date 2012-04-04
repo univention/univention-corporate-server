@@ -1,0 +1,56 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Mirror localhost errata repository
+##  1. Partial mirror starting at $minor >= 2
+##  2. If r/m/v/start is unset, /etc/apt/sources.list starts with $major.0
+##     FYI: u/updater/tools.py#UniventionUpdater would starts with $major.$minor
+##  3. If that doesn't exist, increments $minor and continues with $major.1
+##  4. If that doesn't exist, increments $major and continues with $major+1.0
+## bugs: [16673]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+##  - univention-debmirror
+## exposure: dangerous
+
+RETVAL=121 # Bug vorhanden, wie vermutet
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${major}.2-0" maintained all
+mkdeb "${pkgname}l" 5 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+mkpdir "${major}.2-0" maintained "${ARCH}"
+mkdeb "${pkgname}y" 5 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.2--errata1" maintained all
+mkdeb "${pkgname}l" 6 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+mkpdir "${major}.2--errata1" maintained "${ARCH}"
+mkdeb "${pkgname}y" 6 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_mirror \
+	version/version="${major}.2" \
+	version/patchlevel=0 \
+	version/erratalevel=0 \
+	repository/mirror/version/end="${major}.2-1"
+ucr unset repository/mirror/version/start
+
+(
+	set -e
+	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	univention-repository-update net
+	checkmirror "${DIRS[@]}"
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim:set ft=sh:

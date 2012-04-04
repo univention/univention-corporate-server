@@ -1,0 +1,63 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository multiple security hotfixes
+##  1. setup local repository with 2 hotfix update
+##     1st one is needed to break the findFirst-search
+##  2. check if the repository of the minor-version is included
+## bugs: [19087]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## versions:
+##  2.4-2: fixed
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+dpkg --compare-versions "$_version_version" lt "3.0" || exit 133 # too new
+
+setup_apache "${repoprefix}"
+
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--hotfixes" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--hotfixes" maintained "${ARCH}"
+mkdeb "${pkgname}" 4 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_repo version/patchlevel=0 version/security-patchlevel=0 repository/online/hotfixes=yes
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
+	univention-updater net
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[2]}" "${DIRS[3]}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	ucr set update/available=""  # unset update/available
+	univention-security-update net # does not install hotfixes
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	apt-get -qq update
+	apt-get -qq -y upgrade
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	4"
+	checkdeb "${pkgname}" 2 3 4
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

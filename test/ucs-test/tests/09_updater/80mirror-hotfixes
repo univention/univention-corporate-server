@@ -1,0 +1,54 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Mirror localhost hotfixes repository
+##  1. Create mirror with two minors, each with hotfixes
+##  2. Check for both hotfix-repositories being used
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+##  - univention-debmirror
+## bugs: [19087]
+## versions:
+##  2.4-2: fixed
+## exposure: dangerous
+
+RETVAL=121 # Bug vorhanden, wie vermutet
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--hotfixes" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--hotfixes" maintained "${ARCH}"
+mkdeb "${pkgname}" 4 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_mirror \
+	version/patchlevel=0 \
+	version/erratalevel=0 \
+	repository/online/hotfixes=yes
+ucr unset repository/mirror/version/start repository/mirror/version/end
+
+(
+	set -e
+	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	univention-repository-update net
+	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	checkmirror "${DIRS[@]}"
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim:set ft=sh:

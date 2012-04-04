@@ -1,0 +1,42 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost component from port 81
+##  1. setup local repository for maintained component from custom port
+##  2. check if the package is installable
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+compname="test${RANDOM}"
+port=81
+
+setup_apache --port "${port}" "${repoprefix}"
+
+# NOTE: ${comp}/version must specified because no release exists for autodetection
+
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+comp="repository/online/component/${compname}"
+config_repo /. \
+	"${comp}=yes" "${comp}/parts=maintained" "${comp}/port=${port}" "${comp}/version=${_version_version}"
+
+(
+	set -e
+	checkapt "http://localhost:${port}/${repoprefix}/" "${DIRS[@]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	checkdeb "${pkgname}" 1
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

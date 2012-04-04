@@ -1,0 +1,43 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Mirror localhost repository with non-standard prefix
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+##  - univention-debmirror
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+FIXED_18225=false
+
+repoprefix="univention-repository-$$-${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained all
+mkdeb "${pkgname}l" 1 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_mirror
+if ! "${FIXED_18225}"
+then
+	mkdir -p "${BASEDIR}/mirror/mirror"
+	ln -s . "${BASEDIR}/mirror/mirror/${repoprefix}"
+fi
+
+(
+	set -e
+	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	univention-repository-update net
+	checkmirror
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim:set ft=sh:

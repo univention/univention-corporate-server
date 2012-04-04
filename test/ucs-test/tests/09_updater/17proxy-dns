@@ -1,0 +1,41 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository via proxy resolving DNS
+##  1. Use minimal proxy implemented in Python
+## bugs: [15550]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=121 # Bug vorhanden, wie vermutet
+. pool.sh || exit 137
+FIXED_12571=false
+
+hostname="host${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel}") maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+eval "$(python proxy.py -f -p 0 -t "${hostname}" 3>&-)"
+config_repo "${hostname}" proxy/http="http://localhost:${proxy_port}"
+
+(
+	set -e
+	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
+	checkapt "http://${hostname}\(:80\)\?/${repoprefix}/" "${DIR}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	checkdeb "${pkgname}" 1
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+kill ${proxy_pid}
+
+exit ${RETVAL}
+# vim:set ft=sh:

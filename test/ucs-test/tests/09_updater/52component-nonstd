@@ -1,0 +1,56 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost component with Packages for all archs
+##  1. setup local repository for maintained component from alternative hierarchy
+##  2. check if the package is installable
+## bugs: [22015]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+compname="test${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+# mkpkg "${DIR}"
+PDIR="${DIR%/$ARCH}" # only one level
+cd "${PDIR}"
+dpkg-scanpackages "${DIR#${PWD}/}" >"${PDIR}/Packages" 2>&3
+gzip -n -9 <"${PDIR}/Packages" >"${PDIR}/Packages.gz"
+bzip2 -9 <"${PDIR}/Packages" >"${PDIR}/Packages.bz2"
+apt-ftparchive \
+	-o "APT::FTPArchive::Release::Origin=Univention" \
+	-o "APT::FTPArchive::Release::Label=Univention" \
+	-o "APT::FTPArchive::Release::Version=${_version_version}" \
+	-o "APT::FTPArchive::Release::Codename=./" \
+	release . >Release.tmp 2>&3
+mv Release.tmp Release
+if mkgpg
+then
+	chroot "${GPG_DIR}" "${GPG_BIN}" --batch --keyring "${GPGPUB#${GPG_DIR}}" --secret-keyring "${GPGSEC#${GPG_DIR}}" --detach-sign --armor --default-key "${GPGID}" <Release >Release.gpg
+fi
+cd "${OLDPWD}"
+
+comp="repository/online/component/${compname}"
+config_repo "${comp}=yes" "${comp}/parts=maintained"
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/${PDIR#$REPODIR/}/ \./"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	checkdeb "${pkgname}" 1
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

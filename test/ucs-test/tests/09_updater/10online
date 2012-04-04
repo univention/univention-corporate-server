@@ -1,0 +1,36 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository online
+##  Check repository/online
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_repo repository/online=no
+
+(
+	set -e
+	grep -v '^#\|^[[:space:]]*$' /etc/apt/sources.list.d/* && false
+	ucr set repository/online=yes
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIR}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	checkdeb "${pkgname}" 1
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

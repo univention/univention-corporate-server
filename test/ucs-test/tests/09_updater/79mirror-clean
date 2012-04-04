@@ -1,0 +1,128 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Mirror local repository and clean obsolete files
+##  1. Create repository with deprecated and current files
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+##  - univention-debmirror
+## exposure: dangerous
+
+CHECK_INSTALL=false
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+FIXED_18225=false
+
+# Change repoprefix, because both repositories are hosted on the same server
+srcprefix="source-repository-$$-${RANDOM}"
+repoprefix="mirrored-repository-$$-${RANDOM}"
+
+alias="Alias /${repoprefix} ${BASEDIR}/mirror/mirror" \
+setup_apache "" # setup server to / for ${repoprefix} and ${srcprefix}
+
+REPODIR="${REPODIR}/${srcprefix}"
+mkdir -p "${REPODIR}"
+
+mkpdir "${_version_version}-0" maintained all
+BDIR+=("${DIR}")
+mkdeb "${pkgname}l" 2 all "${DIR}"
+mkpkg "${DIR}"
+mkdeb "${pkgname}l" 1 all "${DIR}"
+DEBS+=("${DIR#${REPODIR}}${DEB#${BASEDIR}}")
+mksh "${DIR}" preup postup
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+BDIR+=("${DIR}")
+mkdeb "${pkgname}y" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR}"
+DEBS+=("${DIR#${REPODIR}}${DEB#${BASEDIR}}")
+
+minor+=1
+
+mkpdir "${major}.${minor}-0" maintained all
+CDIR+=("${DIR}")
+mkdeb "${pkgname}l" 4 all "${DIR}"
+mkpkg "${DIR}"
+mkdeb "${pkgname}l" 3 all "${DIR}"
+DEBS+=("${DIR#${REPODIR}}${DEB#${BASEDIR}}")
+mksh "${DIR}" preup postup
+
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+CDIR+=("${DIR}")
+mkdeb "${pkgname}y" 4 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+mkdeb "${pkgname}y" 3 "${ARCH}" "${DIR}"
+DEBS+=("${DIR#${REPODIR}}${DEB#${BASEDIR}}")
+
+config_mirror "/${srcprefix}" \
+	repository/online=yes \
+	repository/online/server=localhost \
+	repository/online/port=80 \
+	repository/online/prefix="${repoprefix}" \
+	online/repository/clean=yes
+if ! "${FIXED_18225}"
+then
+	mkdir -p "${BASEDIR}/mirror/mirror"
+	ln -s . "${BASEDIR}/mirror/mirror/${repoprefix}"
+	ln -s . "${BASEDIR}/mirror/mirror/${srcprefix}"
+fi
+
+REPO="${_version_version}/maintained/${_version_version}-0/all"
+CLEAN="${BASEDIR}/mirror/var/clean.sh"
+
+(
+	set -e
+	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}"
+	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/${_version_version}/maintained/${_version_version}-0/" /etc/apt/mirror.list
+	univention-repository-update net
+	ucr commit /etc/apt/sources.list.d/*
+	if "${CHECK_INSTALL}"
+	then
+		apt-get -qq update
+		apt-get -qq install "${pkgname}l" "${pkgname}y"
+		dpkg-query -W "${pkgname}l" | grep -Fqx "${pkgname}l	2"
+		dpkg-query -W "${pkgname}y" | grep -Fqx "${pkgname}y	2"
+	fi
+	touch "${BASEDIR}/mirror/mirror/${REPO}/obsolete_1.0-all.deb"
+	touch "${BASEDIR}/mirror/mirror/${REPO}/obsolete.txt"
+
+	# Since UCS-3.0 the local repo is no longer updater automatically
+	univention-repository-update net
+	/usr/share/univention-updater/univention-updater local
+	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
+	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/${_version_version}/maintained/${_version_version}-0/" /etc/apt/mirror.list
+	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/${major}.${minor}/maintained/${major}.${minor}-0/" /etc/apt/mirror.list
+
+	# preup and postup scripts must not be cleaned
+	grep -Fq "preup.sh" "${CLEAN}" && exit 1
+	grep -Fq "postup.sh" "${CLEAN}" && exit 1
+	# other unreferenced files should be cleaned
+	grep -Fq "${REPO}/obsolete_1.0-all.deb" "${CLEAN}" || exit 1
+	grep -Fq "${REPO}/obsolete.txt" "${CLEAN}" || exit 1
+	# unreferenced packages must not be mirrored
+	for deb in "${DEBS[@]}"
+	do
+		ls -1 "${BASEDIR}/mirror/mirror/${deb}" 2>&3 && exit 1
+	done
+
+	if "${CHECK_INSTALL}"
+	then
+		dpkg-query -W "${pkgname}l" | grep -Fqx "${pkgname}l	4"
+		dpkg-query -W "${pkgname}y" | grep -Fqx "${pkgname}y	4"
+		test "${major}.${minor}" = "$(ucr get version/version)"
+		test 0 = "$(ucr get version/patchlevel)"
+		checkdeb "${pkgname}l" 2 4
+		checkdeb "${pkgname}y" 2 4
+	fi
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+if "${CHECK_INSTALL}"
+then
+	dpkg -P --force-all "${pkgname}"{l,y} >&3 2>&3
+fi
+
+exit ${RETVAL}
+# vim:set ft=sh:

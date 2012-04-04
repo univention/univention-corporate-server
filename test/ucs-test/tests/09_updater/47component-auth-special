@@ -1,0 +1,104 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost component with non-ascii authentication
+##  1. setup local repository for maintained component with authentication using special characters
+##  2. check if the Packages file is accessale
+##  3. optionally check if the package is installable
+## bugs: [17691]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+CHECK_QUOTED=true
+CHECK_INSTALL=false
+
+. pool.sh || exit 137
+
+compname="test${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+if "${CHECK_INSTALL}"
+then
+	mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+fi
+mkpkg "${DIR}"
+
+cat <<-EOF >"${DIR}/../.htaccess"
+AuthType Basic
+AuthUserFile ${REPODIR}/.htpasswd
+AuthGroupFile /dev/null
+AuthName "${compname}"
+Require valid-user
+EOF
+
+comp="repository/online/component/${compname}"
+config_repo "${comp}=yes" "${comp}/parts=maintained"
+
+quote () { # escape text to basic regular expression
+	python -c 'import sys
+l = lambda c: "\\(%s\\|%%%02x\\|%%%02X\\)" % (c, ord(c), ord(c))
+print "".join(map(l, sys.argv[1]))' "${1}"
+}
+
+run_test () {
+	local username="$1"
+	local password="$2"
+	if "${CHECK_QUOTED}"
+	then
+		local quoted_u="$(quote "${username}")"
+		local quoted_p="$(quote "${password}")"
+	fi
+	htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}" >&3
+	ucr set "${comp}/username=${username}" "${comp}/password=${password}"
+	(
+		set -e
+		if "${CHECK_QUOTED}"
+		then
+			checkapt "http://${quoted_u}:${quoted_p}@localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+		else
+			checkapt "http://u[^:]\+:p[^@]\+@localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+		fi
+		# Validate URL by using lwp-request
+		read ncode scode < <(HEAD "$(sed -ne 's/ //g;s/^deb//p' /etc/apt/sources.list.d/20_ucs-online-component.list)" | head -n 1)
+		test 200 -eq "${ncode}"
+		apt-get -qq update
+		if "${CHECK_INSTALL}"
+		then
+			apt-get -qq install "${pkgname}"
+			dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+			checkdeb "${pkgname}" 1
+		fi
+	)
+	[ $? -ne 0 ] && RETVAL=121 # Bug vorhanden, wie vermutet
+	if "${CHECK_INSTALL}"
+	then
+		dpkg -P --force-all "${pkgname}" >&3 2>&3
+	fi
+}
+
+# There is a maximum length for userinfo. Apache simply returns error 400 if the string is too long
+chars='< >"%{}|\^~[]`;?&$-_.+!*(),@:/'\'\#
+# Because of http://bugs.debian.org/500560, some charactes don't work, not even urlencoded
+chars_skip_username='\[:/'
+chars_skip_password='\[@/'
+#	[ indicates an IPv6 address (RFC 3986 3.2.2.)
+#	# starts the fragment (RFC 3986 3.5.), old UCR strip them
+#	: seperates username from password, and hostname from port
+#	/ starts the path
+#	@ separates the userinfo from the hostname
+for ((i=0;i<${#chars};i+=1))
+do
+	c="${chars:i:1}"
+	u="${c//[${chars_skip_username}]/}"
+	p="${c//[${chars_skip_password}]/}"
+	echo "Checking ${c}	${u}	${p}"
+	test -n "${u}" && run_test "u${u}u" "password"
+	test -n "${p}" && run_test "user" "p${p}p"
+done
+
+exit ${RETVAL:=100} # Test bestanden (Keine Fehler)
+# vim:set ft=sh:

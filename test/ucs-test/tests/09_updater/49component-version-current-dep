@@ -1,0 +1,71 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost component with current version blocked
+##  1. setup local repository for maintained component with current version
+##  2. check if the component is installable
+##  3. one release update is available with component
+##  4. additional release updates are unavailable because of missing component
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+compname="test${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkpkg "${DIR}"
+
+major+=1
+mkpdir "${major}.0-0" maintained "${ARCH}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.0-0--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+comp="repository/online/component/${compname}"
+minor+=-1
+major+=-1
+config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	/usr/share/univention-updater/univention-updater net
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}" "${DIRS[2]}" "${DIRS[3]}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
+	test "${major}.${minor}" = "$(ucr get version/version)"
+	test 0 = "$(ucr get version/patchlevel)"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	checkdeb "${pkgname}" 1 2
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

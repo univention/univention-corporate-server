@@ -1,0 +1,95 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository using --updateto
+##  1. setup local repository with 1 patchlevel, 1 minor and 1 major update
+##  2. check if upgrade of package work
+##  3. check if --updateto is honored
+## bugs: [19754]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## versions:
+##  2.4-2: fixed
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}-1" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+major+=1
+mkpdir "${major}.0-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 4 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_repo version/patchlevel=0 version/erratalevel=0
+
+(
+	set -e
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+
+	/usr/share/univention-updater/univention-updater net --updateto 1.0-0
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	test "${_version_version}" = "$(ucr get version/version)"
+	test 0 = "$(ucr get version/patchlevel)"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	ucr set update/available=""  # unset update/available
+
+	/usr/share/univention-updater/univention-updater net --updateto "${_version_version}-0"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	test "${_version_version}" = "$(ucr get version/version)"
+	test 0 = "$(ucr get version/patchlevel)"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	ucr set update/available=""  # unset update/available
+
+	/usr/share/univention-updater/univention-updater net --updateto "${_version_version}-1"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
+	test "${_version_version}" = "$(ucr get version/version)"
+	test 1 = "$(ucr get version/patchlevel)"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	ucr set update/available=""  # unset update/available
+
+	/usr/share/univention-updater/univention-updater net --updateto "${_version_version}-99"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
+	test "${_version_version}" = "$(ucr get version/version)"
+	test 1 = "$(ucr get version/patchlevel)"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	ucr set update/available=""  # unset update/available
+
+	major+=-1
+	/usr/share/univention-updater/univention-updater net --updateto "${major}.${minor}-1"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
+	test "${major}.${minor}" = "$(ucr get version/version)"
+	test 0 = "$(ucr get version/patchlevel)"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	ucr set update/available=""  # unset update/available
+
+	major+=1
+	/usr/share/univention-updater/univention-updater net --updateto "99.99-99"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	4"
+	test "${major}.0" = "$(ucr get version/version)"
+	test 0 = "$(ucr get version/patchlevel)"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	ucr set update/available=""  # unset update/available
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

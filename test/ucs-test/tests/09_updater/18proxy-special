@@ -1,0 +1,75 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository via non-ascii authorized proxy
+##  1. Use minimal proxy implemented in Python
+##  2. check if the Packages file is accessale
+##  3. optionally check if the package is installable
+## bugs: [17691, 18393]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+CHECK_INSTALL=false
+
+. pool.sh || exit 137
+FIXED_12571=false
+
+setup_apache "${repoprefix}"
+
+mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel}") maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_repo proxy/username= proxy/password= proxy/address=
+
+quote () { # url-escape text
+	python -c 'import urllib,sys;print urllib.quote(sys.argv[1], "")' "${1}"
+}
+
+run_test () {
+	local username="$1"
+	local password="$2"
+	eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
+	local http_proxy="http://$(quote "${username}"):$(quote "${password}")@localhost:${proxy_port}"
+	ucr set proxy/http="${http_proxy}"
+	(
+		set -e
+		"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
+		checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIR}"
+		# Validate URL by using lwp-request
+		read ncode scode < <(HEAD -p "${http_proxy}" "$(sed -ne 's/ //g;s/^deb//p' /etc/apt/sources.list.d/15_ucs-online-version.list)" | head -n 1)
+		test 200 -eq "${ncode}"
+		apt-get -qq update
+		if "${CHECK_INSTALL}"
+		then
+			apt-get -qq install "${pkgname}"
+			dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+			checkdeb "${pkgname}" 1
+		fi
+	)
+	[ $? -ne 0 ] && RETVAL=121 # Bug vorhanden, wie vermutet
+	if "${CHECK_INSTALL}"
+	then
+		dpkg -P --force-all "${pkgname}" >&3 2>&3
+	fi
+	kill ${proxy_pid} 2>&3
+}
+
+# There is a maximum length for userinfo. Apache simply returns error 400 if the string is too long
+chars='Aa< >"%{}|\^~[]`;?&$-_.+!*(),@:/'\'\#
+chars_skip_username=":/"
+chars_skip_password="@/"
+for ((i=0;i<${#chars};i+=1))
+do
+	c="${chars:i:1}"
+	u="${c//[${chars_skip_username}]/}"
+	p="${c//[${chars_skip_password}]/}"
+	echo "Checking ${c}	${u}	${p}"
+	test -n "${u}" && run_test "u${u}u" "password"
+	test -n "${p}" && run_test "user" "p${p}p"
+done
+
+exit ${RETVAL:=100} # Test bestanden (Keine Fehler)
+# vim:set ft=sh:

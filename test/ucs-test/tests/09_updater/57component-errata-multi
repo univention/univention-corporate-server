@@ -1,0 +1,77 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost component with multiple errata
+##  1. setup local repository with component and minor update
+##  2. check if errata updates are available
+## bugs: [24347]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+compname="test${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}r" 1 all "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--component/${compname}-errata1" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--component/${compname}-errata2" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}r" 2 all "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 4 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--component/${compname}-errata1" maintained "${ARCH}"
+mkdeb "${pkgname}" 5 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+comp="repository/online/component/${compname}"
+config_repo \
+	"${comp}=yes" \
+	"${comp}/parts=maintained" \
+	version/patchlevel=0
+ucr unset \
+	"${comp}/${_version_version}/erratalevel" \
+	"${comp}/${major}.${minor}/erratalevel"
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	(ulimit -t 60; univention-upgrade --noninteractive) 2>&3
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}" "${DIRS[4]}" "${DIRS[5]}" "${DIRS[6]}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	5"
+	test "${major}.${minor}" = "$(ucr get version/version)"
+	#test 2 = "$(ucr get "${comp}/${_version_version}/erratalevel")"
+	test 1 = "$(ucr get "${comp}/${major}.${minor}/erratalevel")"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	checkdeb "${pkgname}" 1 4 5
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

@@ -1,0 +1,57 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository with errata minimum
+##  1. setup local repository with one errata and one patchlevel
+##  2. check if pruning erratas works
+## bugs: [25616]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## versions:
+##  3.0-0: found
+##  3.0-1: fixed
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--errata1" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}-1" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}" 'ucr set repository/online/errata/start=2'
+mkpkg "${DIR}"
+
+config_repo version/patchlevel=0 version/erratalevel=0
+ucr unset repository/online/errata/start
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	/usr/share/univention-updater/univention-errata-update net
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	/usr/share/univention-updater/univention-updater net
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[2]}"
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[1]}" 2>/dev/null && echo "Failed: ${DIRS[1]}" >&2
+	test 1 -eq $?
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
+	test 2 = "$(ucr get repository/online/errata/start)"
+	test 1 = "$(ucr get version/erratalevel)"
+	checkdeb "${pkgname}" 1 2 3
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

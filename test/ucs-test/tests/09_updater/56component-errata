@@ -1,0 +1,50 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost component with errata
+##  1. setup local repository for maintained component with errata
+##  2. check if errata updates are available
+## bugs: [24347]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+compname="test${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--component/${compname}-errata1" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+comp="repository/online/component/${compname}"
+config_repo "${comp}=yes" "${comp}/parts=maintained"
+ucr unset "${comp}/${_version_version}/erratalevel"
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	/usr/share/univention-updater/univention-errata-components-update net
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
+	test "${major}.${minor}" = "$(ucr get version/version)"
+	test 1 = "$(ucr get "${comp}/${_version_version}/erratalevel")"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	checkdeb "${pkgname}" 1 2
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

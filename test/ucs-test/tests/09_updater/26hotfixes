@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository one security hotfix
+##  1. setup local repository with 1 hotfix update
+##  2. check if upgrade of package work
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+dpkg --compare-versions "$_version_version" lt "3.0" || exit 133 # too new
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--hotfixes" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_repo version/patchlevel=0 version/security-patchlevel=0 repository/online/hotfixes=no
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	univention-security-update net
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	ucr set repository/online/hotfixes=yes >&3 2>&3
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	univention-security-update net
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	apt-get -qq update
+	apt-get -qq -y upgrade
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
+	checkdeb "${pkgname}" 1 2
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

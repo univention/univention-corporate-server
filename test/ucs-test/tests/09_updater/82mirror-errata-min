@@ -1,0 +1,48 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Mirror localhost errata minimum
+##  1. Create mirror with 2 errata
+##  2. Check both are mirrored even when min-errata is set
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+##  - univention-debmirror
+## bugs: [25616]
+## versions:
+##  3.0-0: found
+##  3.0-1: fixed
+## exposure: dangerous
+
+RETVAL=121 # Bug vorhanden, wie vermutet
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--errata1" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--errata2" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_mirror \
+	repository/mirror/version/end="${_version_version}-0" \
+	repository/online/errata/start=2
+ucr unset repository/mirror/version/start
+
+(
+	set -e
+	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	univention-repository-update net
+	checkmirror "${DIRS[@]}"
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim:set ft=sh:

@@ -1,0 +1,74 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost with component authentication failure
+##  1. setup local repository
+##  2. setup maintained component with is unavailable (due wrong authentication)
+##  3. check update still possible
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## bugs: [22567]
+## versions:
+##  2.4-2: found
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+compname="test${RANDOM}"
+username="user${RANDOM}"
+password="pass${RANDOM}"
+
+setup_apache "${repoprefix}"
+htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}-1" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+cat <<-EOF >"${DIR}/../.htaccess"
+AuthType Basic
+AuthUserFile ${REPODIR}/.htpasswd
+AuthGroupFile /dev/null
+AuthName "${compname}"
+Require user ${username}
+EOF
+
+comp="repository/online/component/${compname}"
+config_repo \
+	version/patchlevel=0 \
+	version/erratalevel=0 \
+	"${comp}=yes" \
+	"${comp}/parts=maintained" \
+	"${comp}/username=${username}" \
+	"${comp}/password=DUMMY"
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	/usr/share/univention-updater/univention-updater net
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	msg="Configuration error: credentials not accepted"
+	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
+	test "${_version_version}" = "$(ucr get version/version)"
+	test 1 = "$(ucr get version/patchlevel)"
+	checkdeb "${pkgname}" 1 2
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

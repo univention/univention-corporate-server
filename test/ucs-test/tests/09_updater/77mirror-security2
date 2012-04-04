@@ -1,0 +1,48 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Mirror localhost next errata repository
+##  1. Partial mirror starting at $minor >= 2, must have no next patchlevel available
+##  2. Create errata update after /etc/apt/mirror.list was generated
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+##  - univention-debmirror
+## bugs: [19781]
+## versions:
+##  2.4-0: found
+##  2.4-2: fixed
+## exposure: dangerous
+
+RETVAL=121 # Bug vorhanden, wie vermutet
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${major}.2-0" maintained "${ARCH}"
+mkdeb "${pkgname}y" 5 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_mirror \
+	version/version="${major}.2" \
+	version/patchlevel=0 \
+	version/erratalevel=0 \
+	repository/mirror/version/end="${major}.2-1"
+ucr unset repository/mirror/version/start
+
+mkpdir "${major}.2--errata1" maintained "${ARCH}"
+mkdeb "${pkgname}y" 6 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+(
+	set -e
+	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	# ucr commit /etc/apt/mirror.list ### Bug #19781
+	univention-repository-update net
+	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	checkmirror "${DIRS[@]}"
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim:set ft=sh:

@@ -1,0 +1,45 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository with different architectures
+##  1. setup local repository for all|any and external/
+##  2. check if all packages are installable
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained all
+mkdeb "${pkgname}l" 1 all "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}-0" maintained amd64
+mkdeb "${pkgname}y" 1 amd64 "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}-0" maintained i386
+mkdeb "${pkgname}y" 1 i386 "${DIR}"
+mkpkg "${DIR}"
+
+config_repo
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"{l,y}
+	dpkg-query -W "${pkgname}l" | grep -Fqx "${pkgname}l	1"
+	dpkg-query -W "${pkgname}y" | grep -Fqx "${pkgname}y	1"
+	checkdeb "${pkgname}l" 1
+	checkdeb "${pkgname}y" 1
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}"{l,y} >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

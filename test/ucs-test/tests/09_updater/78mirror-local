@@ -1,0 +1,138 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Mirror local repository and blocking component
+##  Check locally mirrored repository with blocking component
+##  1. Create main and component repositories
+##  2. Mirror using u-repository-update
+##  3. Install first version
+##  4. Mirror and install second version using u-updater
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+##  - univention-debmirror
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+FIXED_18225=false
+
+# Change repoprefix, because both repositories are hosted on the same server
+srcprefix="source-repository-$$-${RANDOM}"
+repoprefix="mirrored-repository-$$-${RANDOM}"
+compname="test${RANDOM}"
+
+alias="Alias /${repoprefix} ${BASEDIR}/mirror/mirror" \
+setup_apache "" # setup server to / for ${repoprefix} and ${srcprefix}
+
+REPODIR="${REPODIR}/${srcprefix}"
+mkdir -p "${REPODIR}"
+
+mkpdir "${_version_version}-0" maintained all
+mkdeb "${pkgname}l" 1 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+BDIR+=("${DIR}")
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+BDIR+=("${DIR}")
+
+mkpdir "${_version_version}--component/${compname}" maintained all
+mkdeb "${pkgname}cl" 1 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+BDIR+=("${DIR}")
+
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}cy" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+BDIR+=("${DIR}")
+
+minor+=1
+
+mkpdir "${major}.${minor}-0" maintained all
+mkdeb "${pkgname}l" 2 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+CDIR+=("${DIR}")
+
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}y" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+CDIR+=("${DIR}")
+
+mkpdir "${major}.${minor}--component/${compname}" maintained all
+mkdeb "${pkgname}cl" 2 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+CDIR+=("${DIR}")
+
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}cy" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+CDIR+=("${DIR}")
+
+minor+=1
+
+mkpdir "${major}.${minor}-0" maintained all
+mkdeb "${pkgname}l" 3 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+ADIR+=("${DIR}")
+
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}y" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+ADIR+=("${DIR}")
+
+minor+=-1
+
+comp="repository/online/component/${compname}"
+config_mirror "/${srcprefix}" \
+	repository/online=yes \
+	repository/online/server=localhost \
+	repository/online/port=80 \
+	repository/online/prefix="${repoprefix}" \
+	"${comp}=yes" \
+	"${comp}/version=current"
+if ! "${FIXED_18225}"
+then
+	mkdir -p "${BASEDIR}/mirror/mirror"
+	ln -s . "${BASEDIR}/mirror/mirror/${repoprefix}"
+	ln -s . "${BASEDIR}/mirror/mirror/${srcprefix}"
+fi
+
+(
+	set -e
+	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}"
+	grep -v '^#\|^[[:space:]]*$' /etc/apt/sources.list.d/* && false
+	univention-repository-update net
+	ucr commit /etc/apt/sources.list.d/*
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${BDIR[@]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"{,c}{l,y}
+	dpkg-query -W "${pkgname}l" | grep -Fqx "${pkgname}l	1"
+	dpkg-query -W "${pkgname}y" | grep -Fqx "${pkgname}y	1"
+	dpkg-query -W "${pkgname}cl" | grep -Fqx "${pkgname}cl	1"
+	dpkg-query -W "${pkgname}cy" | grep -Fqx "${pkgname}cy	1"
+	/usr/share/univention-updater/univention-updater net
+	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${BDIR[@]}" "${CDIR[@]}"
+	dpkg-query -W "${pkgname}l" | grep -Fqx "${pkgname}l	2"
+	dpkg-query -W "${pkgname}y" | grep -Fqx "${pkgname}y	2"
+	dpkg-query -W "${pkgname}cl" | grep -Fqx "${pkgname}cl	2"
+	dpkg-query -W "${pkgname}cy" | grep -Fqx "${pkgname}cy	2"
+	test "${major}.${minor}" = "$(ucr get version/version)"
+	test 0 = "$(ucr get version/patchlevel)"
+	checkdeb "${pkgname}l" 1 2
+	checkdeb "${pkgname}y" 1 2
+	checkdeb "${pkgname}cl" 1 2
+	checkdeb "${pkgname}cy" 1 2
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}"{,c}{l,y} >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

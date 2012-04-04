@@ -1,0 +1,42 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository with sources
+##  1. setup local repository with sources
+##  2. check if including sources works
+## bugs: [17200]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+# SDIR="${REPODIR}/${_version_version}/unmaintained/${_version_version}-0/source" # BUG: The current iterator will not find Sources when Packages is missing
+SDIR="${REPODIR}/${_version_version}/maintained/${_version_version}-0/source"
+mkdir -p "${SDIR}"
+mkdsc "${pkgname}" 1 "${ARCH}" "${SDIR}"
+mksrc "${SDIR}"
+
+# config_repo repository/online/maintained=yes repository/online/unmaintained=yes repository/online/sources=yes # BUG: see above
+config_repo repository/online/maintained=yes repository/online/sources=yes
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	checkapt --source "http://localhost\(:80\)\?/${repoprefix}/" "${SDIR}"
+	apt-get -qq update
+	mkdir "${BASEDIR}/src"
+	cd "${BASEDIR}/src" && apt-get -qq source "${pkgname}"
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim:set ft=sh:

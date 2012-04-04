@@ -1,0 +1,177 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost repository testing errors
+##  1. setup local repository with 1 update
+##  2. check if upgrade of package work
+##  3. check if --updateto is honored
+## bugs: [21127, 22567]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## versions:
+##  2.4-2: fixed
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+FIXED_12571=false
+
+compname="test${RANDOM}"
+username="user${RANDOM}"
+password="pass${RANDOM}"
+
+setup_apache "${repoprefix}"
+htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--errata1" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+cat <<-EOF >"${DIR}/../.htaccess"
+AuthType Basic
+AuthUserFile ${REPODIR}/.htpasswd
+AuthGroupFile /dev/null
+AuthName "${compname}"
+Require user ${username}
+EOF
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}c" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+cat <<-EOF >"${DIR}/../.htaccess"
+AuthType Basic
+AuthUserFile ${REPODIR}/.htpasswd
+AuthGroupFile /dev/null
+AuthName "${compname}"
+Require user ${username}
+EOF
+
+comp="repository/online/component/${compname}"
+config_repo version/patchlevel=0 version/erratalevel=0
+
+eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
+invoke-rc.d univention-firewall stop
+
+run_tests () { # execute all updater programs
+	local msg="$1"
+	grep -F "$msg" /etc/apt/sources.list.d/15_ucs-online-version.list
+
+	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F "$msg"
+	grep -F "status=FAILED" /var/lib/univention-updater/univention-updater.status
+	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-updater.status
+	rm /var/lib/univention-updater/update-failed
+	ucr search --brief ^update/available
+	# NOTE: the following tests for update/available have been disabled, see also Bug #23510
+	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
+
+	univention-upgrade 2>&1 | grep -F "$msg"
+	grep -F "status=FAILED" /var/lib/univention-updater/univention-upgrade.status
+	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-upgrade.status
+	ucr search --brief ^update/available
+	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
+
+	/usr/share/univention-updater/univention-errata-update net 2>&1 | grep -F "$msg"
+	grep -F "status=FAILED" /var/lib/univention-updater/univention-errata-update.status
+	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-errata-update.status
+	ucr search --brief ^update/available
+	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
+}
+
+(
+	set -e
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+
+	ucr set repository/online/server=DUMMY
+	run_tests "Configuration error: host is unresolvable"
+	ucr set repository/online/server=localhost
+
+	ucr set repository/online/port=9
+	run_tests "Configuration error: port is closed"
+	ucr set repository/online/port=80
+
+	ucr set repository/online/prefix=DUMMY
+	run_tests "Configuration error: non-existing prefix"
+	ucr set repository/online/prefix="${repoprefix}"
+
+	msg="Configuration error: credentials not accepted"
+	ucr set "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=DUMMY" "${comp}/password=DUMMY" "${comp}/version=current"
+	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
+	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F "$msg"
+	grep -F "status=FAILED" /var/lib/univention-updater/univention-updater.status
+	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-updater.status
+	rm /var/lib/univention-updater/update-failed
+	ucr search --brief ^update/available
+	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
+	univention-upgrade 2>&1 | grep -F "$msg"
+	grep -F "status=FAILED" /var/lib/univention-updater/univention-upgrade.status
+	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-upgrade.status
+	ucr search --brief ^update/available
+	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
+	ucr unset "${comp}" "${comp}/parts" "${comp}/username" "${comp}/password" "${comp}/version"
+
+	msg="Configuration error: component not found"
+	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/parts=maintained" "${comp}DUMMY/version=current"
+	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
+	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F " is marked as required."
+	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
+	[ ! -e /var/lib/univention-updater/update-failed ]
+	ucr search --brief ^update/available
+	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
+	# univention-upgrade would call univention-errata-update, which would update to v2
+	ucr unset "${comp}DUMMY" "${comp}DUMMY/parts" "${comp}DUMMY/version"
+
+	ucr set proxy/http="http://DUMMY:DUMMY@localhost:${proxy_port}"
+	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
+	run_tests "Proxy configuration error: credentials not accepted"
+	ucr unset proxy/http
+
+	# check timeout 2nd last
+	iptables -I INPUT 1 -p tcp --dport discard -j DROP >&3 2>&3
+	ucr set repository/online/port=9
+	run_tests "Configuration error: port is blocked"
+	iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3
+	ucr set repository/online/port=80
+
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+
+	# must be last since update succeeds!
+	msg="Configuration error: credentials not accepted"
+	ucr set "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=DUMMY" "${comp}/password=DUMMY"
+	! grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
+	/usr/share/univention-updater/univention-updater net 2>&1
+	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
+	ucr search --brief ^update/available
+	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
+	univention-upgrade 2>&1
+	! grep -F "status=DONE" /var/lib/univention-updater/univention-upgrade.status
+	ucr search --brief ^update/available
+	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
+	ucr unset "${comp}" "${comp}/parts" "${comp}/username" "${comp}/password"
+
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
+kill ${proxy_pid} 2>&3
+invoke-rc.d univention-firewall start
+
+exit ${RETVAL}
+# vim:set ft=sh:

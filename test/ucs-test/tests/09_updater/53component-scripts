@@ -1,0 +1,98 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update localhost component with multiple scripts
+##  1. setup local repository for maintained component with multiple version
+##  2. check if the latest package is installable
+##  3. check if all repositories are available
+## bugs: [21127]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## versions:
+##  2.4-2: fixed
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+SH_LOG="${BASEDIR}/sh.log"
+compname="test${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${major}.${minor}-0" maintained all
+mkdeb "${pkgname}" 1 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+mkpdir "${major}.${minor}--component/${compname}" maintained all
+mkdeb "${pkgname}c" 1 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained all
+mkdeb "${pkgname}" 2 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+mkpdir "${major}.${minor}--component/${compname}" maintained all
+mkdeb "${pkgname}c" 2 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+cat >"${SH_LOG}" <<__SH__
+${DIRS[3]}/preup.sh [0-9]\+ pre ${major}.${minor}-0
+${DIRS[2]}/preup.sh [0-9]\+ ${major}.${minor}-0
+${DIRS[3]}/preup.sh [0-9]\+ post ${major}.${minor}-0
+${DIRS[3]}/postup.sh [0-9]\+ pre ${major}.${minor}-0
+${DIRS[2]}/postup.sh [0-9]\+ ${major}.${minor}-0
+${DIRS[3]}/postup.sh [0-9]\+ post ${major}.${minor}-0
+__SH__
+
+major+=1
+mkpdir "${major}.0-0" maintained all
+mkdeb "${pkgname}" 3 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+mkpdir "${major}.0--component/${compname}" maintained all
+mkdeb "${pkgname}c" 3 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+cat >>"${SH_LOG}" <<__SH__
+${DIRS[5]}/preup.sh [0-9]\+ pre ${major}.0-0
+${DIRS[4]}/preup.sh [0-9]\+ ${major}.0-0
+${DIRS[5]}/preup.sh [0-9]\+ post ${major}.0-0
+${DIRS[5]}/postup.sh [0-9]\+ pre ${major}.0-0
+${DIRS[4]}/postup.sh [0-9]\+ ${major}.0-0
+${DIRS[5]}/postup.sh [0-9]\+ post ${major}.0-0
+__SH__
+
+comp="repository/online/component/${compname}"
+config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=${_version_version},${major}.${minor}"
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}" "${pkgname}c"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+	dpkg-query -W "${pkgname}c" | grep -Fqx "${pkgname}c	1"
+
+	/usr/share/univention-updater/univention-updater net
+	grep -qxf "${SH_LOG}" "${BASEDIR}/install.log"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
+	dpkg-query -W "${pkgname}c" | grep -Fqx "${pkgname}c	3"
+	test "${major}.0" = "$(ucr get version/version)"
+	test 0 = "$(ucr get version/patchlevel)"
+	checkdeb "${pkgname}" 1 2 3
+	checkdeb "${pkgname}c" 1 2 3
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" "${pkgname}c" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

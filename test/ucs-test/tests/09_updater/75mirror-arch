@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Mirror localhost repository with architectures
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+##  - univention-debmirror
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained all
+mkdeb "${pkgname}l" 1 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+mkpdir "${_version_version}-0" maintained amd64
+mkdeb "${pkgname}y" 1 amd64 "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}-0" maintained i386
+mkdeb "${pkgname}y" 1 i386 "${DIR}"
+mkpkg "${DIR}"
+
+config_mirror repository/mirror/architectures="amd64 i386" # SPACE separated
+
+(
+	set -e
+	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	univention-repository-update net
+	checkmirror
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim:set ft=sh:

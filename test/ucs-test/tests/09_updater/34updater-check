@@ -1,0 +1,165 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Test the correct behavior of univention-updater-check
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+(
+	# break upon error
+	set -e
+
+	# initial version numbers
+	patchlevel=0
+	erratalevel=0
+	pkversion=1
+
+	# create first repository
+	echo "### Initiate the repository (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+	mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
+	mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
+	mkpkg "${DIR}"
+
+	# reset to X.X-0 without errata patches
+	config_repo version/patchlevel=0 version/erratalevel=0
+
+	# install the first version of the test package
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+
+	# no update should be available
+	/usr/share/univention-updater/univention-updater-check
+	ucr search --brief ^update/available
+	test no = "$(ucr get update/available)"
+	ucr set update/available="" # reset the UCR variable
+
+	# We need to test the behavior for normal and easy update process.
+	# In fact, there is only one difference: for the easy process, an update
+	# is also available in case there is any package with a new version.
+	for easy in false true; do
+		# set easy ins
+		ucr set update/umc/updateprocess/easy=$easy
+
+		# create new patchlevel release
+		let ++patchlevel
+		let ++pkversion
+		echo "### Create a new patchlevel release (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
+		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
+		mkpkg "${DIR}"
+		apt-get -qq update
+
+		# an update should be available
+		/usr/share/univention-updater/univention-updater-check
+		ucr search --brief ^update/available
+		test yes = "$(ucr get update/available)"
+		ucr set update/available="" # reset the UCR variable
+
+		# do the update and make sure update/available has been updated
+		echo "### Update ###"
+		/usr/share/univention-updater/univention-updater net
+		ucr search --brief ^update/available
+		test no = "$(ucr get update/available)"
+		ucr set update/available="" # reset the UCR variable
+
+
+		# create new package version in the same release
+		let ++pkversion
+		echo "### Create a new package version (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
+		mkpkg "${DIR}"
+		apt-get -qq update
+
+		# an update should be available only if the easy update process is enabled
+		/usr/share/univention-updater/univention-updater-check
+		ucr search --brief ^update/available
+		if [ "true" = "$easy" ]; then
+			test yes = "$(ucr get update/available)"
+		else
+			test no = "$(ucr get update/available)"
+		fi
+		ucr set update/available="" # reset the UCR variable
+
+		# call univention-actualise and make sure update/available has been updated 
+		# without easy update process, the variable should not be modified
+		echo "### Updating packages (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		/usr/share/univention-updater/univention-actualise
+		ucr search --brief ^update/available
+		if [ "true" = "$easy" ]; then
+			test no = "$(ucr get update/available)"
+		else
+			test -z "$(ucr get update/available)"
+		fi
+		ucr set update/available="" # reset the UCR variable
+
+
+		# create new errata update
+		echo "### Create a new errata update (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		let ++erratalevel
+		let ++pkversion
+		mkpdir "${_version_version}--errata${erratalevel}" maintained "${ARCH}"
+		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
+		mkpkg "${DIR}"
+		apt-get -qq update
+
+		# an update should be available
+		/usr/share/univention-updater/univention-updater-check
+		ucr search --brief ^update/available
+		test yes = "$(ucr get update/available)"
+		ucr set update/available="" # reset the UCR variable
+
+		# do the update and make sure update/available has been updated
+		echo "### errata update ###"
+		/usr/share/univention-updater/univention-errata-update net
+		ucr search --brief ^update/available
+		test no = "$(ucr get update/available)"
+		ucr set update/available="" # reset the UCR variable
+
+
+		# create new errata update and patchlevel release
+		let ++patchlevel
+		let ++erratalevel
+		let pkversion+=2
+		echo "### Create a new patchlevel release and errata update (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
+		mkdeb "${pkgname}" $((pkversion-1)) "${ARCH}" "${DIR}"
+		mkpkg "${DIR}"
+		mkpdir "${_version_version}--errata${erratalevel}" maintained "${ARCH}"
+		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
+		mkpkg "${DIR}"
+		apt-get -qq update
+
+		# an update should be available
+		/usr/share/univention-updater/univention-updater-check
+		ucr search --brief ^update/available
+		test yes = "$(ucr get update/available)"
+		ucr set update/available="" # reset the UCR variable
+
+		# do the update and make sure update/available has been updated
+		echo "### Update ###"
+		/usr/share/univention-updater/univention-updater net
+		ucr search --brief ^update/available
+		test yes = "$(ucr get update/available)"
+		ucr set update/available="" # reset the UCR variable
+
+		# do the update and make sure update/available has been updated
+		echo "### errata update ###"
+		/usr/share/univention-updater/univention-errata-update net
+		ucr search --brief ^update/available
+		test no = "$(ucr get update/available)"
+		ucr set update/available="" # reset the UCR variable
+	done
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:
