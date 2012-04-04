@@ -1,0 +1,41 @@
+#!/usr/bin/python
+# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 noet :
+#
+# UCS Testrunner - run UCS test in sane environment
+#
+import sys
+import logging
+from optparse import OptionParser
+from univention.testing.utils import setup_environment, setup_debug
+from univention.testing.data import *
+from univention.testing.format.text import Text
+
+def main():
+	usage = "Usage: %prog [options] <lang> <file>"
+	parser = OptionParser(usage=usage)
+	parser.add_option("-v", "--verbose", dest="verbose", action="count", help="Increase verbosity")
+	parser.add_option("-f", "--force", dest="force", action="store_true", help="Disable pre-condition check")
+	(options, args) = parser.parse_args()
+	setup_environment()
+	setup_debug(options.verbose)
+
+	try:
+		exe, lang, fn = sys.argv[0:3]
+		del sys.argv[0:2]
+	except ValueError, e:
+		parser.print_usage(sys.stderr)
+		sys.exit(2)
+
+	text = Text()
+	te = TestEnvironment(interactive=True)
+	if options.force:
+		te.set_exposure('dangerous')
+	tc = TestCase().load(fn)
+	tr = TestResult(tc, te).run()
+	text.format(tr)
+
+if __name__ == '__main__':
+	try:
+		main()
+	except KeyboardInterrupt, e:
+		sys.exit(1)

@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_install:
+	dh_install --sourcedir=$(CURDIR)
+
+override_dh_auto_test:
+	! find -type f -exec grep '^source\>' {} +

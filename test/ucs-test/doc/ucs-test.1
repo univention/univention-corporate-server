@@ -1,0 +1,81 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UCS-TEST 1 2012-03-21 UCS
+
+.SH SYNOPSIS
+.B ucs-test
+.RI [ options ]
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B ucs-test
+comannd to run tests on UCS systems.
+
+.SH OPTIONS
+A summary of options is included below.
+.TP
+\fB\-h\fP, \fB\-\-help\fP
+Show a help message and exit.
+
+.SS Test selection
+.TP
+\fB\-s\fP \fISECTION\fP, \fB\-\-section=\fP\fISECTION\fP
+Run tests only from the specified section.
+.TP
+\fB\-p\fP \fITAG\fP, \fB\-\-prohibit=\fP\fITAG\fP
+Skipt tests with this tag.
+The option may be used multiple times to skip multiple tags.
+.TP
+\fB\-r\fP \fITAG\fP, \fB\-\-require=\fP\fITAG\fP
+Only run tests with this tag.
+The option may be used multiple times to require multiple tags.
+.TP
+\fB\-g\fP \fITAG\fP, \fB\-\-ignore=\fP\fITAG\fP
+Ignore tag by not requiring nor prohibiting it.
+The option may be used multiple times to ignore multiple tags.
+.TP
+\fB\-E\fP \fIEXPOSURE\fP, \fB\-\-exposure=\fP\fIEXPOSURE\fP
+Run more dangerous tests.
+Allowed values are \fBsafe\fP (default), \fBcareful\fP and \fBdangerous\fP.
+
+.SS Output options
+.TP
+\fB\-n\fP, \fB\-\-dry\-run\fP
+Only show which tests would run.
+.TP
+\fB\-f\fP, \fB\-\-filtered\fP
+Hide tests with unmatched pre-conditions from the output instead of printing them as skipped.
+.TP
+\fB\-F\fP \fIFORMAT\fP, \fB\-\-format=\fP\fIFORMAT\fP
+Select output format.
+Available formats include \fBtext\fP (default), \fBtap\fP, \fBhtml\fP, \fBjenkins\fP.
+.TP
+\fB\-v\fP, \fB\-\-verbose\fP
+Increase verbosity.
+May be used multiple times.
+.TP
+\fB\-i\fP, \fB\-\-interactive\fP
+Run test connected to terminal.
+Otherwise the tests runs with the standard input connected to \fI/dev/null\fP and the output redirected to the \fIlogfile\fP.
+.TP
+\fB\-c\fP, \fB\-\-count\fP
+Prefix tests by count.
+.TP
+\fB\-l\fP \fILOGFILE\fP, \fB\-\-logfile=\fP\fILOGFILE\fP
+Path to log file.
+Without this option a file like \fI/var/log/univention/test_XXX.log\fP is used where \fIXXX\fP is replaced by the unix epoche.
+
+.SH EXAMPLE
+.nf
+ucs-test \-s updater \-e dangerous -vvv
+.fi
+
+.SH FILES
+.TP
+.I /usr/share/ucs-test/
+Base directory for tests.
+.TP
+.I /var/log/univention/test_XXX.log
+Logfile of test case output.
+
+.SH AUTHOR
+Copyright (c) 2012 Univention GmbH, Germany

@@ -1,0 +1,3 @@
+bin/ucs-test usr/sbin/
+bin/runner usr/share/ucs-test/
+univention usr/share/pyshared/
