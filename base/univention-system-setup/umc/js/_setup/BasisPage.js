@@ -105,6 +105,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		});
 
 		this.connect(this._form.getWidget('fqdn'), 'onChange', function(newVal) {
+			this.onValuesChanged();
 			function count(s) { 
 				var n = 0;
 				var i = 0;
@@ -146,7 +147,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 				widget.set('required', false);
 			}
 		});
-		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode);
+		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, !this.wizard_mode);
 		_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode);
 		_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode, role == 'domaincontroller_master' || role == 'basesystem');
 		_set('root_password', false, this.wizard_mode && !this.local_mode);
@@ -197,7 +198,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		return [{
 			variables: ['domainname', 'hostname'],
 			description: this._('Fully qualified domain name'),
-			values: vals['fqdn']
+			values: vals['hostname'] + '.' + vals['domainname']
 		}, {
 			variables: ['ldap/base'],
 			description: this._('LDAP base'),

@@ -61,6 +61,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	_doShowNote: false,
 
 	_orgVals: null,
+	old_ssl_email: null,
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
@@ -137,7 +138,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 				}
 			});
 		}, this);
-		
+
 		this.addChild(this._form);
 
 		var countryWidget = this._form.getWidget('ssl/country');
@@ -185,6 +186,14 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 	},
 
 	setValues: function(_vals) {
+		// update ssl/email on FQDN changes if not manually changed
+		if(!this.old_ssl_email) {
+			this.old_ssl_email = this._orgVals['ssl/email'];
+		}
+		if( _vals['ssl/email'] === this.old_ssl_email) {
+			_vals['ssl/email'] = this.old_ssl_email = 'ssl@' + _vals.domainname;
+		}
+
 		this._form.setFormValues(_vals);
 		this._orgVals = dojo.clone(_vals);
 		this.clearNotes();
