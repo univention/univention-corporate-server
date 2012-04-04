@@ -304,7 +304,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.newPrimaryGroupDn=0
 		self.oldPrimaryGroupDn=0
 
-		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate)
+		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 		self.options = []
 		if self.oldattr.has_key('objectClass'):

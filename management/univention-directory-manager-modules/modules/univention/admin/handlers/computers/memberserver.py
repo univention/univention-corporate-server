@@ -383,7 +383,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.ipRequest=0
 
 		self.old_samba_option = False
-		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate)
+		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 		self.options = []
 		nagios.Support.__init__(self)
 

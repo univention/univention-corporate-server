@@ -1,3 +1,12 @@
+univention-directory-manager-modules (7.0.240-1) unstable; urgency=low
+
+  * bump version
+  * shares/printer: read available printer schemas in the object
+    constructor; Bug #25976
+  * computer modules: passing LDAP attributes to base constructor; Bug #26454
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 04 Apr 2012 21:18:04 +0200
+
 univention-directory-manager-modules (7.0.230-1) unstable; urgency=low
 
   * fixed spelling mistakes in language files (Bug #26287)

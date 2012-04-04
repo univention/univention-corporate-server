@@ -61,7 +61,7 @@ def get_superordinate( module, co, lo, dn ):
 
 	return None
 
-def get(module, co, lo, position, dn='', attr=None, superordinate=None):
+def get(module, co, lo, position, dn='', attr = None, superordinate = None, attributes = [] ):
 	'''return object of module while trying to create objects of
 	superordinate modules as well'''
 
@@ -72,7 +72,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None):
 	if not superordinate:
 		superordinate = get_superordinate( module, co, lo, dn or position.getDn() )
 
-	return module.object( co, lo, position, dn, superordinate = superordinate )
+	return module.object( co, lo, position, dn, superordinate = superordinate, attributes = attributes )
 
 def open(object):
 	'''initialization of properties not neccessary for browsing etc.'''

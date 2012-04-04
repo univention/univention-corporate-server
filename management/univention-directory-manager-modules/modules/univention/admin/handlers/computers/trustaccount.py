@@ -110,7 +110,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.alloc=[]
 
-		super(object, self).__init__(co, lo, position, dn, superordinate)
+		super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
 
 	def open(self):
 		super(object, self).open()

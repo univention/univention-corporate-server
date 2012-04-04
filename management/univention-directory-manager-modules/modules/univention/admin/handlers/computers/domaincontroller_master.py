@@ -388,7 +388,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		self.old_samba_option = False
 
-		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate)
+		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 		self.options = []
 		if self.oldattr.has_key('objectClass'):
