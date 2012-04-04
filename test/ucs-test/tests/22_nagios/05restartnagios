@@ -1,0 +1,42 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Restarting Nagios doesn't shutdown the old Instance of Nagios
+## bugs: [10849]
+## tags: [basic]
+## packages:
+##  - univention-directory-manager-tools
+##  - univention-nagios-server
+##  - univention-nagios-client
+## exposure: careful
+
+###################
+###  Information  #
+###################
+### This script tests, if there is only one instance of Nagios after a restart of Nagios
+###################
+
+# ensure, there is only one instance of nagios. If there are more, kill 
+# remaining old processes and start exact one instance
+if [ 1 -lt $(pgrep -c nagios3) ]
+then
+	pkill nagios3
+	if ! invoke-rc.d nagios3 start
+	then # if the script wasn't able to start Nagios (perhaps error in config)
+		exit 140
+	fi
+fi
+
+# restart Nagios
+echo "Restarting Nagios"
+invoke-rc.d nagios3 restart >/dev/null
+
+# Check that there is only one instance of Nagios left.
+if [ 1 -lt $(pgrep -c nagios3) ]
+then 
+	echo "After a restart of Nagios, there is more than one instance of Nagios (Bug: #10849)"
+	pkill nagios3 # trying to ensure, there is only one instance of Nagios after this script, even if the test failed
+	invoke-rc.d nagios3 start
+	exit 111
+else
+	exit 101
+fi
+# vim:set filetype=sh ts=4:

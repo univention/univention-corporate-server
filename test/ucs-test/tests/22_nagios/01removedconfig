@@ -1,0 +1,84 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Deleting a host remains an inconsistend Nagios-Config
+## bugs: [8620]
+## tags: [basic]
+## exposure: safe
+## packages:
+##  - univention-directory-manager-tools
+##  - univention-nagios-server
+##  - univention-nagios-client
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/computer.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+##################
+##  Information  #
+##################
+## This script tests, if it is possible to create a system, wich role corresponds with the role of the hostsystem,
+## that is observed by UNIVENTION_PING and delete it again without remaining the
+## Nagios-Config-File for the Host, wich isn't present anymore.
+##################
+## Configuration #
+##################
+
+STRINGLENGTH=10 #length of the random-hostname
+NAGIOSSERVICE="UNIVENTION_PING"
+BINDUSER="Administrator"
+BINDPW="univention"
+
+HOSTNAME=$(computer_randomname)
+IP=$(random_ipv4)
+
+# check, if there is already a computer with the desired name or ip
+if udm "computers/$server_role" list --filter "(|(ip=$IP)(name=$HOSTNAME))" | grep '^DN: '
+then
+	fail_test 140 "Host already exists or IP address already used"
+fi
+
+# create a System with Nagios Ping
+info "Creating a $server_role named $HOSTNAME, observed by Nagios"
+
+univention-directory-manager "computers/$server_role" create \
+	--position "cn=computers,$ldap_base" \
+	--set name="$HOSTNAME" \
+	--set ip="$IP" \
+	--set dnsEntryZoneForward="zoneName=$domainname,cn=dns,$ldap_base $IP" \
+	--option nagios \
+	--binddn="uid=$BINDUSER,cn=users,$ldap_base" \
+	--bindpw="$BINDPW"
+
+udm nagios/service modify \
+	--dn "cn=$NAGIOSSERVICE,cn=nagios,$ldap_base" \
+	--append assignedHosts="cn=$HOSTNAME,cn=computers,$ldap_base" \
+	--binddn="uid=$BINDUSER,cn=users,$ldap_base" \
+	--bindpw="$BINDPW"
+
+# wait am moment for the UD-Listener to commit the changes
+sleep 2
+
+# check, whether the script was able to create the Nagios-Config
+info  "Remove the Host, checking the existence of the corresponding config"
+
+if [ ! -f "/etc/nagios3/conf.univention.d/services/UNIVENTION_PING,$HOSTNAME.$domainname.cfg" ]
+then
+	RETVAL=140
+fi
+
+# delete the computer
+udm "computers/$server_role" remove \
+	--dn "cn=$HOSTNAME,cn=computers,$ldap_base" \
+	--binddn="uid=$BINDUSER,cn=users,$ldap_base" \
+	--bindpw="$BINDPW"
+
+# wait a moment agian
+sleep 2
+
+# check, wether Bug #8620 is still there
+if [ -f /etc/nagios3/conf.univention.d/services/$NAGIOSSERVICE,$HOSTNAME.$domainname.cfg ]
+then
+	RETVAL=111
+fi
+exit "$RETVAL"
+# vim:set filetype=sh ts=4:
