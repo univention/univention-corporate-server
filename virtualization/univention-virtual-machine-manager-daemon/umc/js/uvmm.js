@@ -922,9 +922,10 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			width: '16px',
 			label: label
 		});
-		var widget = new umc.widgets.Text( {
-			content: html
-		} );
+		// set content after creating the object because of HTTP404: Bug #25635
+		var widget = new umc.widgets.Text({});
+		widget.set('content', html);
+
 		if ( undefined !== item.state ) {
 			var tooltip = new umc.widgets.Tooltip( {
 				label: dojo.replace( this._( 'State: {state}<br>Server: {node}' ), {
