@@ -1,3 +1,10 @@
+univention-samba4 (1.0.135-2) unstable; urgency=low
+
+  * if nscd -i is not enough then restart nscd (Bug #26706)
+  * improve error feedback in case etfacl on sysvol fails
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Apr 2012 11:53:50 +0200
+
 univention-samba4 (1.0.135-1) unstable; urgency=low
 
   * invalidate nscd group cache before trying to setfacl on sysvol

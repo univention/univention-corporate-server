@@ -303,9 +303,13 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	## set default ACLs so sysvol-sync can read files and directories
 	nscd -i group
+	if ! getent group "Authenticated Users" >/dev/null; then
+		/etc/init.d/nscd restart
+	fi
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
 	rc="$?"
 	if [ "$rc" != 0 ]; then
+		echo "Error: Could not set fACL for /var/lib/samba/sysvol" >&2
 		exit "$rc"
 	fi
 
@@ -396,9 +400,13 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 	## set default ACLs so sysvol-sync can read files and directories
 	nscd -i group
+	if ! getent group "Authenticated Users" >/dev/null; then
+		/etc/init.d/nscd restart
+	fi
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
 	rc="$?"
 	if [ "$rc" != 0 ]; then
+		echo "Error: Could not set fACL for /var/lib/samba/sysvol" >&2
 		exit "$rc"
 	fi
 
