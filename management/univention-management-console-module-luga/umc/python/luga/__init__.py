@@ -63,7 +63,7 @@ class Process:
 	def validate_name(self, name):
 		if not name:
 			raise ValueError( _('No name given') )
-		rpattern = r'^[a-zA-Z_][a-zA-Z0-9_-]*[$]?'
+		rpattern = r'^[a-zA-Z_][a-zA-Z0-9_-]*[$]?$'
 		if None is re.match(rpattern, str(name)):
 			raise ValueError( _('name can only contain letters, numbers, "-" and "_" and must not start with "-"') )
 		if len(str(name)) > 32:

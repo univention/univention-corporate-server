@@ -39,8 +39,6 @@ dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.modules._luga.PasswordInputBox");
 
 dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
-	// summary:
-	//		This class represents the detail view of our dummy module.
 
 	// reference to the module's store object
 	moduleStore: null,
@@ -57,11 +55,10 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	// initial object properties as they are represented by the form
 	_receivedObjFormData: null,
 
-	postMixInProperties: function() {
-		// is called after all inherited properties/methods have been mixed
-		// into the object (originates from dijit._Widget)
+	objectNamePlural: null,
+	objectNameSingular: null,
 
-		// it is important to call the parent's postMixInProperties() method
+	postMixInProperties: function() {
 		this.inherited(arguments);
 
 		// Set the opacity for the standby animation to 100% in order to mask
@@ -91,10 +88,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	},
 
 	buildRendering: function() {
-		// is called after all DOM nodes have been setup
-		// (originates from dijit._Widget)
-
-		// it is important to call the parent's postMixInProperties() method
 		this.inherited(arguments);
 
 		this.renderDetailPage();
@@ -104,12 +97,18 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		// render the form containing all detail information that may be edited
 		var widgets;
 		var layout;
+
+		var validator = function(value) {
+			return -1 === value.search(':');
+		};
+
 		if (this.moduleFlavor === 'luga/users') {
 			// specify all widgets
 			widgets = [{
 				type: 'TextBox',
 				name: 'username',
 				required: true,
+				validator: validator,
 				label: this._('Username')
 			}, {
 				type: 'umc.modules._luga.PasswordInputBox',
@@ -126,43 +125,74 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			// Groups
 				type: 'ComboBox',
 				name: 'group',
+				validator: validator,
 				label: this._('Primary group'),
 				dynamicValues: 'luga/groups/get_groups'
 			}, {
-				type: 'MultiSelect',
+				type: 'MultiObjectSelect',
 				name: 'groups',
+				validator: validator,
 				label: this._('Additional Groups'),
-				dynamicValues: 'luga/groups/get_groups'
+				queryWidgets: [ {
+					type: 'ComboBox',
+					name: 'category',
+					label: this._('Category'),
+					staticValues: [
+						{id: 'groupname', label: this._('Groupname')},
+						{id: 'gid', label: this._('Group ID')},
+						{id: 'users', label: this._('Users')},
+						{id: 'administrators', label: this._('Administrators')}
+					]
+				}, {
+					type: 'TextBox',
+					name: 'pattern',
+					value: '*',
+					label: this._('Search pattern')
+				}, {
+					type: 'ComboBox'
+				}],
+				queryCommand: dojo.hitch(this, function(options) { 
+					return this.moduleStore.umcpCommand('luga/groups/get_groups', options).then(function(data) {
+						return data.result;
+					});
+				}),
+				autoSearch: true
 			}, {
 			// Unix/Posix
 				type: 'TextBox',
 				name: 'homedir',
-//				size: 'TwoThirds',
+				validator: validator,
 				label: this._('Unix home directory')
 			}, {
 				type: 'TextBox',
 				name: 'shell',
+				validator: validator,
 				label: this._('Login shell')
 			}, {
 			// Gecos
 				type: 'TextBox',
 				name: 'fullname',
+				validator: validator,
 				label: this._('Fullname')
 			}, {
 				type: 'TextBox',
 				name: 'roomnumber',
+				validator: validator,
 				label: this._('Room number')
 			}, {
 				type: 'TextBox',
 				name: 'tel_business',
+				validator: validator,
 				label: this._('Telephone (business)')
 			}, {
 				type: 'TextBox',
 				name: 'tel_private',
+				validator: validator,
 				label: this._('Telephone (private)')
 			}, {
 				type: 'TextBox',
 				name: 'miscellaneous',
+				validator: validator,
 				label: this._('Miscellaneous')
 			}, {
 			// Status information
@@ -190,29 +220,25 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				name: 'pw_last_change',
 				label: this._('Password was last changed')
 			}, {
-				type: 'TextBox',
 				name: 'pw_mindays',
 				type: 'NumberSpinner',
 				constraints: { min: -1, max: 400000000 },
-				label: this._('Days before password may be changed')
+				label: this._('Days until the password may be changed')
 			}, {
-				type: 'TextBox',
 				name: 'pw_maxdays',
 				type: 'NumberSpinner',
 				constraints: { min: -1, max: 400000000 },
-				label: this._('Days after which password must be changed')
+				label: this._('Days until the password has to be changed')
 			}, {
-				type: 'TextBox',
 				name: 'pw_warndays',
 				type: 'NumberSpinner',
 				constraints: { min: -1, max: 400000000 },
-				label: this._('Days before password expiration that user is warned')
+				label: this._('Days the user is warned until password expiration')
 			}, {
-				type: 'TextBox',
 				name: 'pw_disabledays',
 				type: 'NumberSpinner',
 				constraints: { min: -1, max: 400000000 },
-				label: this._('Days after password expiration where account will be disabled')
+				label: this._('Days until the account will be disabled after its password is expired')
 			}, {
 				// This field will be hidden if account is enabled
 				type: 'DateBox',
@@ -240,13 +266,14 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				label: this._('Account information'),
 				layout: [ 'uid', 'shell',  'homedir', 'create_home']
 			}, {
-				label: this._('Options and Passwords'),
+				label: this._('Options and Password'), // TODO: better description
 				layout: [ 'pw_is_expired', 'pw_is_empty', ['pw_last_change', 'disabled_since'], ['pw_mindays', 'pw_maxdays'], ['pw_warndays', 'pw_disabledays'] ]
 			}];
 		} else if (this.moduleFlavor === 'luga/groups') {
 			widgets = [{
 				type: 'TextBox',
 				name: 'groupname',
+				validator: validator,
 				label: this._('Groupname')
 			}, {
 				type: 'TextBox',
@@ -281,12 +308,10 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			widgets: widgets,
 			layout: layout,
 			moduleStore: this.moduleStore,
-			// alows the form to be scrollable when the window size is not large enough
 			scrollable: true
 		});
 
-		// add form to page... the page extends a BorderContainer, by default
-		// an element gets added to the center region
+		// add form to page...
 		this.addChild(this._form);
 
 		// hook to onSubmit event of the form
@@ -324,14 +349,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 					newVals[iname] = ival;
 				}
 			}, this);
-
-			// set the original username
-			if (this.moduleFlavor === 'luga/users') {
-				newVals.$username$ = this._receivedObjFormData.username;
-			}
-			else if (this.moduleFlavor === 'luga/groups') {
-				newVals.id = this._receivedObjFormData.groupname;
-			}
 		}
 		return newVals;
 	},
@@ -367,7 +384,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		}, this);
 		errMessage += '</ul>';
 
-		// check whether any changes are made at al
+		// check whether any changes are made at all
 		var nChanges = 0;
 		var regKey = /\$.*\$/;
 		umc.tools.forIn(vals, function(ikey) {
@@ -399,6 +416,14 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 
 		if(!this.validateChanges(values)) {
 			return;
+		}
+
+		// set the original username
+		if (this.moduleFlavor === 'luga/users') {
+			values.$username$ = this._receivedObjFormData.username;
+		}
+		else if (this.moduleFlavor === 'luga/groups') {
+			values.id = this._receivedObjFormData.groupname;
 		}
 
 		var deferred = null;
@@ -438,12 +463,17 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 					enabled = enabled || this._form.getWidget('lock').get('value');
 					this._form.getWidget('password').setDisabledAttr(enabled);
 				}));
+
+				// hide disabled_since field if account is not disabled
+				this._form.getWidget('disabled_since').set('visible', this._form.getWidget('lock').get('value'));
 			}
 
 			// Set group to username if new object or groupname is equal to original value / is not touched
 			this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(username) {
 				var equal = this._newObject || (this._receivedObjFormData.group === this._form.getWidget('group').get('value'));
 
+				// TODO: dont change initial value of homedir, why does it happen?
+				// this will always change the homedir
 				if (equal) {
 					this._form.getWidget('group').set('staticValues', [username]);
 					this._form.setValues({
@@ -466,6 +496,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	},
 
 	_resetForm: function() {
+		// clear and reset the form
 		this._form.clearFormValues();
 		umc.tools.forIn(this._form._widgets, function(widget) {
 			var w = this._form.getWidget(widget);
@@ -479,7 +510,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	},
 
 	add: function() {
-		// add a local user or group
+		// open the detailpage for adding a new user or group
 		this._newObject = true;
 		this._resetForm();
 		if (this.moduleFlavor === 'luga/users') {
@@ -510,22 +541,17 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	},
 
 	load: function(id) {
-		// during loading show the standby animation
 		this.standby(true);
 
 		this._newObject = false;
 
 		this._resetForm();
 
-		// load the object into the form... the load method returns a
-		// dojo.Deferred object in order to handel asynchronity
+		// load the object into the form...
 		this._form.load(id).then(dojo.hitch(this, function() {
-			// done, switch of the standby animation
 			this._receivedObjFormData = this._form.gatherFormValues();
 			this.standby(false);
 		}), dojo.hitch(this, function() {
-			// error handler: switch of the standby animation
-			// error messages will be displayed automatically
 			this.standby(false);
 		}));
 
@@ -533,6 +559,21 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	},
 
 	confirmClose: function() {
+	// summary:
+	// 		If changes have been made ask before closing the detailpage
+//		if (!this._newObject && dojo.toJson(this.getAlteredValues()) !== '{}') {
+		if (!this._newObject && !umc.tools.isEqual(this._form.gatherFormValues(), this._receivedObjFormData)) {
+			return umc.dialog.confirm( this._('There are unsaved changes. Are you sure to cancel nevertheless?'), [{
+				label: this._('Discard changes'),
+				name: 'quit',
+				callback: dojo.hitch(this, 'onClose')
+			}, {
+				label: this._('Continue editing'),
+				name: 'cancel',
+				'default': true
+			}]);
+		}
+
 		this.onClose();
 	},
 

@@ -42,12 +42,8 @@ dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.modules._luga.DetailPage");
 
 dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
-	// summary:
-	//		
-	// description:
-	//		
-	//		
-	
+
+	// internal reference to the module store
 	moduleStore: null,
 
 	// the property field that acts as unique identifier for the object
@@ -69,8 +65,10 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
+		// define the idProperty
 		this.idProperty = this.moduleFlavor === 'luga/users' ? 'username' : 'groupname';
 
+		// determine objecttype with help of flavor
 		var objNames = {
 			'luga/users': [ this._('user'), this._('users') ],
 			'luga/groups': [ this._('group'), this._('groups') ]
@@ -79,6 +77,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.objectNameSingular = objNames[this.moduleFlavor][0];
 		this.objectNamePlural = objNames[this.moduleFlavor][1];
 
+		// create the module store
 		this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleFlavor, this.moduleFlavor);
 
 		// Set the opacity for the standby animation to 100% in order to mask
@@ -102,17 +101,13 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// render all GUI elements for the search formular and the grid
 
 		// setup search page and its main widgets
-		// for the styling, we need a title pane surrounding search form and grid
 		this._searchPage = new umc.widgets.Page({
-			headerText: this.description,
+			headerText: this.description, // FIXME: defined?
 			helpText: ''
 		});
 
-		// umc.widgets.Module is also a StackContainer instance that can hold
-		// different pages (see also umc.widgets.TabbedModule)
 		this.addChild(this._searchPage);
 
-		// umc.widgets.ExpandingTitlePane is an extension of dijit.layout.BorderContainer
 		var titlePane = new umc.widgets.ExpandingTitlePane({
 			title: this._('Search results')
 		});
@@ -159,7 +154,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				width: 'adjust'
 			}, {
 				name: 'lock',
-				label: ' ', // this._('Enabled'),
+				label: ' ',
 				width: 'adjust',
 				formatter: function(value) {
 					return value ? '&#10799;' : '&#10004;';
@@ -205,7 +200,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		if (this.moduleFlavor === 'luga/groups') {
 			staticValues = [
 				{id: 'groupname', label: this._('Groupname')},
-				{id: 'gid', label: this._('GID')},
+				{id: 'gid', label: this._('Group ID')},
 				{id: 'users', label: this._('Users')},
 				{id: 'administrators', label: this._('Administrators')}
 			];
@@ -232,7 +227,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, {
 			type: 'TextBox',
 			name: 'pattern',
-			description: this._('Specifies the substring pattern which is searched for in the displayed name'),
+			description: this._('Specifies the substring pattern which is searched for in the selected category'),
 			value: '*',
 			label: this._('Search pattern')
 		}];
@@ -256,9 +251,10 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 
 		// turn off the standby animation as soon as all form values have been loaded
-	//	this.connect(this._searchForm, 'onValuesInitialized', function() {
-	//		this.standby(false); // FIXME
-	//	});
+		this.connect(this._searchForm, 'onValuesInitialized', function() {
+			// FIXME:
+			// this.standby(false);
+		});
 
 		// add search form to the title pane
 		titlePane.addChild(this._searchForm);
@@ -274,7 +270,10 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// create a DetailPage instance
 		this._detailPage = new umc.modules._luga.DetailPage({
 			moduleFlavor: this.moduleFlavor,
-			moduleStore: this.moduleStore
+			moduleStore: this.moduleStore,
+			// TODO: needet?
+			objectNameSingular: this.objectNameSingular,
+			objectNamePlural: this.objectNamePlural
 		});
 		this.addChild(this._detailPage);
 
@@ -297,7 +296,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}
 	},
 
-	_getDeleteUserForm: function(ids) {
+	_getDeleteUserForm: function() {
 		var widgets = [{
 			type: 'CheckBox',
 			name: 'force',
@@ -316,6 +315,22 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		return form;
 	},
 
+	showErrors: function(result) {
+		this.standby(false);
+		if(result && result.length) {
+			var message = this._('The following errors accured while deleting the selected %s:', this._objectNamePlural) + '<ul>';
+			if(dojo.isArray(result)) {
+					dojo.forEach(result, function(err) {
+						message += '<li>' + err + '</li>';
+					}, this);
+			} else {
+				message += '<li>' + result + '</li>';
+			}
+			message += '</ul>';
+			umc.dialog.alert(message);
+		}
+	},
+
 	_deleteObjects: function(ids, items) {
 
 		var form;
@@ -324,7 +339,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		textWidget.addChild(new umc.widgets.Text().set('content', this._('Please confirm removing the selected %s(s): %s', this.objectNameSingular, ids.join(', '))));
 
 		if (this.moduleFlavor === 'luga/users') {
-			form = this._getDeleteUserForm(ids);
+			form = this._getDeleteUserForm();
 			textWidget.addChild(form);
 		}
 
@@ -342,21 +357,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				dojo.forEach(ids, dojo.hitch(this, function(id) {
 					this.moduleStore.remove(id, options);
 				}));
-				transaction.commit().then(dojo.hitch(this, function(result) {
-					this.standby(false);
-					if(result && result.length) {
-						var message = this._('The following errors accured while deleting the selected %s:', this._objectNamePlural) + '<ul>';
-						if(dojo.isArray(result)) {
-							dojo.forEach(result, function(err) {
-								message += '<li>' + err + '</li>';
-							}, this);
-						} else {
-							message += '<li>' + result + '</li>';
-						}
-						message += '</ul>';
-						umc.dialog.alert(message);
-					}
-				}), dojo.hitch(this, function() {
+				transaction.commit().then(this.showErrors, dojo.hitch(this, function() {
 					this.standby(false);
 				}));
 			})
