@@ -95,7 +95,7 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 			var page = new umc.widgets.Page(pageConf);
 
 			// create the page form
-			if (ipage.widgets) {
+			if (ipage.widgets || ipage.buttons) {
 				page._form = new umc.widgets.Form({
 					widgets: ipage.widgets,
 					buttons: ipage.buttons,
