@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.287-6) unstable; urgency=low
+
+  * adapted Makefile (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Tue, 10 Apr 2012 13:58:22 +0200
+
 univention-management-console-frontend (1.0.287-5) unstable; urgency=low
 
   * univention-management-console-frontend-doc corrections (Bug #23197)

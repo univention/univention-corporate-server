@@ -36,10 +36,14 @@ timestamp:=$$$(shell date +'%Y%d%m%H%M%S')$$
 version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir:=$(CURDIR)/build
 tmpDir:=$(buildDir)/_tmp$(timestamp)
+dojo_tmp_dir:=$(buildDir)/univention-dojo
+rel_root_path:=$(shell echo '$(dojo_tmp_dir)/util/docscripts' | sed -e 's,/[^/]*,../,g')
 
-.PHONY: build build-dev build-common install clean jslint
+.PHONY: build build-dev build-common api-doc install clean jslint i18n
 
-build: build-common doc
+build: build-common api-doc $(buildDir)/js/umc/build.js
+
+$(buildDir)/js/umc/build.js:
 	@# create a temp directory
 	mkdir -p '$(tmpDir)'
 	@# create the module umc.widgets containing a require for all umc widgets
@@ -114,27 +118,29 @@ build-common: i18n
 		cp $$i "$(CURDIR)/umc/i18n/$$lang/app.json"; \
 	done
 
-doc:
-	@# generate api.xml for univention-dojo-api-viewer
-	cp -r /usr/share/univention-dojo/ /tmp
-	echo "location = ../../../../..$(CURDIR)/umc/" > "/tmp/univention-dojo/util/docscripts/modules/umc.module.properties";
-	cd "/tmp/univention-dojo/util/docscripts/"; \
-	php generate.php umc dojo dojox dijit --serialize=xml --outfile=../../../../../..$(CURDIR)/umc --clean
-	rm -rf "/tmp/univention-dojo"
+api-doc: umc.xml
+
+umc.xml:
+	@# generate umc.xml for univention-dojo-api-viewer
+	cp -r /usr/share/univention-dojo/ '$(dojo_tmp_dir)'
+	echo 'location = $(rel_root_path)$(CURDIR)/umc/' > '$(dojo_tmp_dir)/util/docscripts/modules/umc.module.properties'
+	cd '$(dojo_tmp_dir)/util/docscripts/'; \
+	php generate.php umc --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
+	rm -rf $(dojo_tmp_dir)
 
 i18n:
 	/usr/bin/dh-umc-translate -p univention-management-console-frontend -o umc $(jsFiles)
 
 install: build
+	@# move umc.xml
+	mkdir -p '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
+	cp umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
 	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
 	rsync -rpl --exclude ".svn" --exclude "_tmp"'$(timestamp)' "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
-	@# api files
-	mkdir -p "$(DESTDIR)/usr/share/univention-dojo-api-viewer"
-	mv -f umc.xml "$(DESTDIR)/usr/share/univention-dojo-api-viewer"
 
 clean:
-	rm -rf build
+	rm -rf build umc.xml
 
 jslint:
 	jslint $(jsFiles) | grep -v "\['require'\] is better written in dot notation" || true
