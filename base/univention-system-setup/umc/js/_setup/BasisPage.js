@@ -56,6 +56,9 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
+	// state of fqdn field
+	fqdnTouched: false,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -121,6 +124,13 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			}
 		});
 
+		if (this.wizard_mode) {
+			var c = dojo.connect(this._form.getWidget('fqdn'), 'onKeyUp', function() {
+				this.fqdnTouched = true;
+				dojo.disconnect(c);
+			});
+		}
+
 		this.addChild(this._form);
 	},
 
@@ -147,7 +157,8 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 				widget.set('required', false);
 			}
 		});
-		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, !this.wizard_mode);
+
+		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode && !this.fqdnTouched);
 		_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode);
 		_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode, role == 'domaincontroller_master' || role == 'basesystem');
 		_set('root_password', false, this.wizard_mode && !this.local_mode);

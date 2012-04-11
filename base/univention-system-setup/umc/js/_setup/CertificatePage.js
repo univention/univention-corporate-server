@@ -140,42 +140,6 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 		}, this);
 
 		this.addChild(this._form);
-
-		var countryWidget = this._form.getWidget('ssl/country');
-		var _addCurrentCountry = function() {
-			if (countryWidget.focused) {
-				// ignore user changes
-				return;
-			}
-			// make sure the country code is set
-			if (!('ssl/country' in this._orgVals)) {
-				return;
-			}
-
-			// see whether the current country code matches any country code in the list
-			var val = this._orgVals['ssl/country'];
-			var vals = countryWidget.getAllItems();
-			var matches = dojo.filter(vals, function(ival) {
-				return ival.id == val;
-			});
-			var staticValues = countryWidget.get('staticValues');
-			var isInStaticValues = dojo.indexOf(staticValues, val) >= 0;
-			if (!matches.length && !isInStaticValues) {
-				// the current value set by the system is not in the list of country codes
-				// we need to add the current value that is being set for backwards 
-				// compatibility reasons
-				countryWidget.set('staticValues', [ this._orgVals['ssl/country'] ]);
-				countryWidget._loadValues();
-			}
-			else if (staticValues.length && !isInStaticValues) {
-				// empty staticValues 
-				countryWidget.set('staticValues', [ ]);
-				countryWidget._loadValues();
-			}
-		};
-
-		this.connect(countryWidget, 'onValuesLoaded', _addCurrentCountry);
-		this.connect(countryWidget, 'onChange', _addCurrentCountry);
 	},
 
 	_showNote: function() {

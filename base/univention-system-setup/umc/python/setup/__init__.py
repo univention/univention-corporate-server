@@ -567,6 +567,12 @@ class Instance(umcm.Base):
 		r = csv.reader(file, delimiter=':')
 		countries = [ { 'label': i[0], 'id': i[1] } for i in r if not i[0].startswith('#') ]
 
+		tmpUCR = univention.config_registry.ConfigRegistry()
+		tmpUCR.load()
+		ssl_country = tmpUCR.get('ssl/country')
+		if ssl_country not in [ i['id'] for i in countries ]:
+			countries.append( {'label': ssl_country, 'id': ssl_country} )
+
 		self.finished(request.id, countries)
 
 

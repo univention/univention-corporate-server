@@ -1,3 +1,10 @@
+univention-system-setup (5.0.149-1) unstable; urgency=low
+
+  * update ssl-email on changing domainname (Bug #25710)
+  * added ucr ssl/country value to lang_countrycodes (Bug #26409)
+
+ -- Florian Best <best@univention.de>  Wed, 11 Apr 2012 09:55:52 +0200
+
 univention-system-setup (5.0.148-1) unstable; urgency=low
 
   * update ssl-email on changing domainname (Bug #25710)
