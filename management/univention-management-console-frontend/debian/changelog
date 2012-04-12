@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.289-1) unstable; urgency=low
+
+  * MultiObjectSelect: support data structures with labels; Bug #26363
+
+ -- Florian Best <best@univention.de>  Thu, 12 Apr 2012 15:38:05 +0200
+
 univention-management-console-frontend (1.0.288-1) unstable; urgency=low
 
   * Wizard: Fix a bug when defining new pages which only contain buttons

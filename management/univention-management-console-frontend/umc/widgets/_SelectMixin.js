@@ -229,22 +229,14 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	},
 
 	_clearValues: function() {
-		if ('setStore' in this) {
-			// there is a method 'setStore' (data grids) which can be used to create a new store object
-			var newStore = this._createStore();
-			this.setStore(newStore, {});
-		}
-		else {
-			// otherwise (combo box) clear the store as described in:
-			//   http://mail.dojotoolkit.org/pipermail/dojo-interest/2011-January/052159.html
-			this.store.save();
-			this.store.data = {
-				identifier: 'id',
-				label: 'label',
-				items: []
-			};
-			this.store.close();
-		}
+		this.store.fetch( { 
+			onComplete: dojo.hitch( this, function( items ) {
+				dojo.forEach( items, dojo.hitch( this, function( item ) {
+					this.store.deleteItem( item );
+				} ) )
+			} )
+		} );
+		this.store.save();
 
 		//if (this._isAutoValue) {
 		//	// reset the _initialValue in case we chose it automatically

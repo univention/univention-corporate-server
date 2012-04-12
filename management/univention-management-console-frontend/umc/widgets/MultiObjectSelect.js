@@ -40,6 +40,8 @@ dojo.require("umc.render");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
+dojo.require("dojo.store.DataStore");
+
 dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc.i18n.Mixin, umc.widgets._FormWidgetMixin ], {
 	// summary:
 	//		???
@@ -66,11 +68,11 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	// the widget's class name as CSS class
 	'class': 'umcMultiObjectSelect',
 
-	// internal reference to all values
-	_values: [],
-
 	// internal reference to the parsed formatter function
 	_formatter: function(ids) { return ids; },
+
+	// object store adapter for the data store of the MultiSelect widget
+	_objectStore: null,
 
 	// reference to the MultiSelect widget
 	_multiSelect: null,
@@ -78,6 +80,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	// reference to the detail dialog
 	_detailDialog: null,
 
+	// encapsulate the data store fo the multi select widget
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -90,11 +93,21 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		this._formatter = umc.tools.stringOrFunction(this.formatter);
 	},
 
+	_attachObjectStore: function() {
+		this._objectStore = new dojo.store.DataStore( {
+			store: this._multiSelect.store
+		} );
+	},
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
 		// add the MultiSelect widget
 		this._multiSelect = new umc.widgets.MultiSelect({});
+		this._attachObjectStore();
+		if ( 'setStore' in this._multiSelect ) {
+			dojo.connect( this._multiSelect, 'setStore', this, '_attachObjectStore' );
+		}
 		var container = new umc.widgets.ContainerWidget({});
 		container.addChild(this._multiSelect);
 		this.addChild(container);
@@ -138,14 +151,15 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 			// callback handler
 			this._multiSelect.set('staticValues', values);
 		}));
-
-		// cache the specified values for any case
-		this._values = _values;
 	},
 
 	_getValueAttr: function() {
 		// return a copy
-		return dojo.clone(this._values);
+		var values = [];
+		this._objectStore.query( {} ).map( function( item ) {
+			values.push( item.id );
+		} );
+		return values;
 	},
 
 	getQueryWidget: function(name) {
@@ -154,39 +168,28 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		return this._detailDialog._form.getWidget(name);
 	},
 
-	_addElements: function(values) {
-		// get all current entries
-		var newValues = this._values;
-		var map = {};
-		dojo.forEach(newValues, function(iid) {
-			map[iid] = true;
-		});
-
+	_addElements: function( ids ) {
 		// only add elements that do not exist already
-		dojo.forEach(values, function(iid) {
-			if (!(iid in map)) {
-				newValues.push(iid);
+		var dialog_store = dojo.store.DataStore( { store: this._detailDialog._multiSelect.store } );
+		dojo.forEach( ids , dojo.hitch( this, function( id ) {
+			var item = dialog_store.get( id );
+			try {
+				this._objectStore.get( id );
+			} catch( e ) {
+				// object does not exist ...
+				this._objectStore.put( item );
 			}
-		});
-
-		// save the new values
-		this.set('value', newValues);
+		} ) );
+		this._multiSelect.store.save();
 	},
 
 	_removeSelectedElements: function() {
 		// create a dict for all selected elements
-		var selection = {};
-		dojo.forEach(this._multiSelect.get('value'), function(iid) {
-			selection[iid] = true;
-		});
-
-		// get all items
-		var newValues = dojo.filter(this.get('value'), function(iid) {
-			return !(iid in selection);
-		});
-
-		// set the new values
-		this.set('value', newValues);
+		dojo.forEach(this._multiSelect.getSelectedItems(), dojo.hitch( this, function( iid ) {
+			this._objectStore.remove( iid.id );
+		} ) );
+		this._multiSelect.selection.clear();
+		this._multiSelect.store.save();
 	},
 
 	uninitialize: function() {

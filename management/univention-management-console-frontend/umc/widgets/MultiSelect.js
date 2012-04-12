@@ -77,15 +77,15 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	height: '110px',
 
 	postMixInProperties: function() {
+		// initiate a new Deferred object
+		this._loadingDeferred = new dojo.Deferred();
+
 		this.inherited(arguments);
 
 		// in case 'value' is not specified, generate a new array
 		if (!dojo.isArray(this.value)) {
 			this.value = [];
 		}
-
-		// initiate a new Deferred object
-		this._loadingDeferred = new dojo.Deferred();
 	},
 
 	postCreate: function() {
