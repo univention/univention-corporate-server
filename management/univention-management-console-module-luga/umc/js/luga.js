@@ -286,7 +286,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_addObject: function() {
 		this.selectChild(this._detailPage);
-		this._detailPage.add();
+		this._detailPage.load();
 	},
 
 	_editObject: function(ids, items) {
@@ -301,12 +301,12 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			type: 'CheckBox',
 			name: 'force',
 			checked: false,
-			label: this._('force removal of files, even if not owned by user')
+			label: this._('Force removal of files, even if not owned by user')
 		}, {
 			type: 'CheckBox',
 			name: 'remove',
 			checked: true,
-			label: this._('remove home directory and mail spool')
+			label: this._('Remove home directory and mail spool')
 		}];
 
 		var form = new umc.widgets.Form({
@@ -318,7 +318,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	showErrors: function(result) {
 		this.standby(false);
 		if(result && result.length) {
-			var message = this._('The following errors accured while deleting the selected %s:', this._objectNamePlural) + '<ul>';
+			var message = this._('The following errors occured while deleting the selected %s:', this._objectNamePlural) + '<ul>';
 			if(dojo.isArray(result)) {
 					dojo.forEach(result, function(err) {
 						message += '<li>' + err + '</li>';

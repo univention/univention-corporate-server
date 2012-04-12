@@ -52,7 +52,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 	// new object?
 	_newObject: null,
 
-	// initial object properties as they are represented by the form
+	// initial object properties as they are represented by the form, it is a cache if newObject
 	_receivedObjFormData: null,
 
 	objectNamePlural: null,
@@ -112,6 +112,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				label: this._('Username')
 			}, {
 				type: 'umc.modules._luga.PasswordInputBox',
+				required: true,
 				name: 'password',
 				label: this._('Password')
 			}, {
@@ -133,6 +134,12 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				name: 'groups',
 				validator: validator,
 				label: this._('Additional Groups'),
+				formatter: function(ids) {
+					dojo.forEach(ids, function(id, i) {
+						if (dojo.isString(id)) { ids[i] = {label: id, id: id};}
+					});
+					return ids;
+				},
 				queryWidgets: [ {
 					type: 'ComboBox',
 					name: 'category',
@@ -233,12 +240,12 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				name: 'pw_warndays',
 				type: 'NumberSpinner',
 				constraints: { min: -1, max: 400000000 },
-				label: this._('Days the user is warned until password expiration')
+				label: this._('Days between password expiration and user notification')
 			}, {
 				name: 'pw_disabledays',
 				type: 'NumberSpinner',
 				constraints: { min: -1, max: 400000000 },
-				label: this._('Days until the account will be disabled after its password is expired')
+				label: this._('Days until the account will be disabled after password expiration')
 			}, {
 				// This field will be hidden if account is enabled
 				type: 'DateBox',
@@ -248,7 +255,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}, {
 				type: 'CheckBox',
 				name: 'create_home',
-				label: this._('move home folder')
+				label: this._('Move home folder')
 			}];
 
 			// specify the layout... additional dicts are used to group form elements
@@ -450,70 +457,18 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		}));
 	},
 
-	initConnects: function() {
-		if (this.moduleFlavor === 'luga/users') {
-			// modify User
-			if (!this._newObject) {
-				// deactivate create_home (move home folder) button if values has not changed, don't disconnect
-				this.connect(this._form.getWidget('homedir'), 'onChange', dojo.hitch(this, function(homedir) {
-					this._form.getWidget('create_home').set('disabled', (this._receivedObjFormData.homedir === homedir));
-				}));
-				// disable/enable password field to value of pw_remove
-				this.connect(this._form.getWidget('pw_remove'), 'onChange', dojo.hitch(this, function(enabled) {
-					enabled = enabled || this._form.getWidget('lock').get('value');
-					this._form.getWidget('password').setDisabledAttr(enabled);
-				}));
 
-				// hide disabled_since field if account is not disabled
-				this._form.getWidget('disabled_since').set('visible', this._form.getWidget('lock').get('value'));
-			}
-
-			// Set group to username if new object or groupname is equal to original value / is not touched
-			this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(username) {
-				var equal = this._newObject || (this._receivedObjFormData.group === this._form.getWidget('group').get('value'));
-
-				// TODO: dont change initial value of homedir, why does it happen?
-				// this will always change the homedir
-				if (equal) {
-					this._form.getWidget('group').set('staticValues', [username]);
-					this._form.setValues({
-						homedir: '/home/'+username,
-						group: username
-					});
-				} else {
-					this.disconnect();
-				}
-			}));
-
-			// disable/enable password field to value of lock or (pw_remove if not new User)
-			this.connect(this._form.getWidget('lock'), 'onChange', dojo.hitch(this, function(enabled) {
-				if(!this._newObject) {
-					enabled = enabled || this._form.getWidget('pw_remove').get('value');
-				}
-				this._form.getWidget('password').setDisabledAttr(enabled);
-			}));
+	prepareFormGroups: function() {
+		if (this._newObject) {
+			this._form._widgets.gid.set('visible', false);
 		}
 	},
 
-	_resetForm: function() {
-		// clear and reset the form
-		this._form.clearFormValues();
-		umc.tools.forIn(this._form._widgets, function(widget) {
-			var w = this._form.getWidget(widget);
-			w.set('visible', true);
-			if(w.reset) {
-				w.reset();
-			}
-		}, this);
-		// TODO: set all values unchecked
-//		this._form.getWidget('group').set('value', []);
-	},
-
-	add: function() {
-		// open the detailpage for adding a new user or group
-		this._newObject = true;
-		this._resetForm();
-		if (this.moduleFlavor === 'luga/users') {
+	prepareFormUsers: function() {
+	//	summary:
+	//		set some form values, add some connects
+		// on adding a user
+		if (this._newObject) {
 			umc.tools.forIn({ 
 				pw_is_expired: ['visible', false],
 				pw_is_empty: ['visible', false],
@@ -521,7 +476,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				disabled_since: ['visible', false],
 				pw_remove: ['visible', false],
 				uid: ['visible', false],
-				create_home: ['label', this._('Create home folder')],
 				create_home: ['checked', true],
 				shell: ['value', '/bin/bash'],
 				pw_maxdays: ['value', 99999],
@@ -531,37 +485,118 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}, function(widget, value) {
 				this._form.getWidget(widget).set(value[0], value[1]);
 			}, this);
-		} else if (this.moduleFlavor === 'luga/groups') {
-			this._form._widgets.gid.set('visible', false);
+
+			// Set group to username if group is not touched, same for homedir
+			var c = this.connect(this._form.getWidget('username'), 'onChange', dojo.hitch(this, function(username) {
+				var group, home;
+				var groupequal = this._receivedObjFormData.group === (group = this._form.getWidget('group').get('value'));
+				var homeequal = this._receivedObjFormData.homedir === (home = this._form.getWidget('homedir').get('value'));
+
+				if (groupequal) {
+					this._receivedObjFormData.group = username;
+					this._form.getWidget('group').set('staticValues', [username]);
+					this._form.getWidget('group').set('value', username);
+				}
+				if (homeequal) {
+					this._receivedObjFormData.homedir = '/home/'+username;
+					this._form.getWidget('homedir').set('value', '/home/'+username);
+				}
+
+				if (!homeequal && !groupequal) {
+					this.disconnect(c);
+				}
+			}));
+		}
+		// on modifiing user
+		else {
+			// deactivate create_home (move home folder) button if values has not changed, don't disconnect
+			this.connect(this._form.getWidget('homedir'), 'onChange', dojo.hitch(this, function(homedir) {
+				this._form.getWidget('create_home').set('disabled', (this._receivedObjFormData.homedir === homedir));
+			}));
+			// disable/enable password field to value of pw_remove
+			this.connect(this._form.getWidget('pw_remove'), 'onChange', dojo.hitch(this, function(enabled) {
+				enabled = enabled || this._form.getWidget('lock').get('value');
+				this._form.getWidget('password').setDisabledAttr(enabled);
+			}));
+
+			// hide disabled_since field if account is not disabled
+			this._form.getWidget('disabled_since').set('visible', this._form.getWidget('lock').get('value'));
 		}
 
-		this.initConnects();
+		// on adding and modifiing user
 
-		this.standby(false);
+		// disable/enable password field to value of lock or (pw_remove if not new User)
+		this.connect(this._form.getWidget('lock'), 'onChange', dojo.hitch(this, function(enabled) {
+			if(!this._newObject) {
+				enabled = enabled || this._form.getWidget('pw_remove').get('value');
+			}
+			this._form.getWidget('password').setDisabledAttr(enabled);
+		}));
+
+		// set specific labels
+		this._form.getWidget('create_home').set('label', this._newObject ? this._('Create home folder') : this._('Move home folder'));
+	},
+
+	_resetForm: function() {
+	// summary:
+	//		clear and reset the form
+		this._form.clearFormValues();
+		umc.tools.forIn(this._form._widgets, function(widget) {
+			var w = this._form.getWidget(widget);
+			if (undefined !== w.visible && !w.visible) {
+				w.set('visible', true);
+			}
+			if(w.reset) {
+				w.reset();
+			}
+			if (w.checked) {
+				// CheckBox
+				w.set('checked', false);
+			}
+			if (w.disabled) {
+				w.set('disabled', false);
+			}
+		}, this);
+		this._form.getWidget('group').set('value', []);
 	},
 
 	load: function(id) {
-		this.standby(true);
-
-		this._newObject = false;
-
+	// summary:
+	//		open the detailpage for adding or modifiing an user or group
+		this._newObject = (id === undefined);
 		this._resetForm();
 
-		// load the object into the form...
-		this._form.load(id).then(dojo.hitch(this, function() {
+		this.standby(true);
+
+		var deferred;
+		if (this._newObject) {
+			deferred = new dojo.Deferred();
+			deferred.resolve();
+		} else {
+			// load the object into the form...
+			deferred = this._form.load(id);
+		}
+
+		deferred.then(dojo.hitch(this, function() {
+			this._receivedObjFormData = this._form.gatherFormValues();
+
+			// prepare the Form, initialize connects
+			if (this.moduleFlavor === 'luga/users') {
+				this.prepareFormUsers();
+			} else if (this.moduleFlavor === 'luga/groups') {
+				this.prepareFormGroups();
+			}
+
 			this._receivedObjFormData = this._form.gatherFormValues();
 			this.standby(false);
 		}), dojo.hitch(this, function() {
-			this.standby(false);
+				this.standby(false);
 		}));
-
-		this.initConnects();
 	},
 
 	confirmClose: function() {
 	// summary:
 	// 		If changes have been made ask before closing the detailpage
-//		if (!this._newObject && dojo.toJson(this.getAlteredValues()) !== '{}') {
 		if (!this._newObject && !umc.tools.isEqual(this._form.gatherFormValues(), this._receivedObjFormData)) {
 			return umc.dialog.confirm( this._('There are unsaved changes. Are you sure to cancel nevertheless?'), [{
 				label: this._('Discard changes'),
