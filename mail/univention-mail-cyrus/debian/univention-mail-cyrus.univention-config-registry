@@ -21,6 +21,8 @@ Variables: ldap/hostdn
 Variables: mail/cyrus/ldap/pwfile
 Variables: mail/cyrus/ssl/certificate
 Variables: mail/cyrus/ssl/key
+Variables: mail/cyrus/mailnotifier
+Variables: mail/cyrus/notifyd
 User: cyrus
 Group: sasl
 Mode: 0640
@@ -64,6 +66,8 @@ Variables: mail/cyrus/pop/maxchilds
 Variables: mail/cyrus/sieve/listen_host
 Variables: mail/cyrus/sieve/maxchilds
 Variables: mail/cyrus/sieve/port
+Variables: mail/cyrus/mailnotifier
+Variables: mail/cyrus/notifyd
 
 Type: subfile
 Multifile: etc/imapd/cyrus.conf
@@ -83,6 +87,8 @@ Variables: mail/cyrus/pop
 Variables: mail/cyrus/pop/maxchilds
 Variables: mail/cyrus/sieve/listen_host
 Variables: mail/cyrus/sieve/maxchilds
+Variables: mail/cyrus/mailnotifier
+Variables: mail/cyrus/notifyd
 
 Type: subfile
 Multifile: etc/imapd/cyrus.conf

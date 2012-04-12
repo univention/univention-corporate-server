@@ -171,3 +171,15 @@ Description[de]=Vollständiger Dateiname der SSL-Schlüsseldatei, das von Cyrus 
 Description[en]=Pathname of SSL key file that is used by Cyrus to establish SSL connections (default: /var/lib/cyrus/cert.pem)
 Type=str
 Categories=service-mail
+
+[mail/cyrus/mailnotifier]
+Description[de]=Methode für die "MAIL"-Benachrichtigungen des notifyd.
+Description[en]=notifyd method to use for "MAIL" notifications.
+Type=str
+Categories=service-mail
+
+[mail/cyrus/notifyd]
+Description[de]=Aktivierung bzw. Deaktivierung des cyrus notifyd (default: true, falls mail/cyrus/mailnotifier gesetzt)
+Description[en]=Disable or enable cyrus notifyd (default: true, if mail/cyrus/mailnotifier is set)
+Type=str
+Categories=service-mail
