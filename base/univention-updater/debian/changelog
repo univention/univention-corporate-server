@@ -1,4 +1,4 @@
-univention-updater (7.0.157-2) unstable; urgency=low
+univention-updater (7.0.157-1) unstable; urgency=low
 
   * added new UMCP command for calling updater hooks (Bug #26774)
   * display messages gathered via updater hooks
