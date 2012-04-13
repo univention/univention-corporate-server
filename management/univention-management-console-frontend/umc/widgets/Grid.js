@@ -305,7 +305,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			}
 			var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
 			gridColumns.push({
-				field: this.moduleStore.idProperty,
+				field: iaction.field || this.moduleStore.idProperty,
 				name: this.actionLabel ? ilabel : ' ',
 				width: ! this.actionLabel && iaction.iconClass ? '28px':  this._getHeaderWidth( ilabel ) + 'px',
 				description: iaction.description,

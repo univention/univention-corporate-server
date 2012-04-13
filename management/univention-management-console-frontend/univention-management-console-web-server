@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import cherrypy
+import httplib
 import os
 import threading
 import Queue
@@ -42,8 +43,9 @@ import sys
 import tempfile
 import time
 import threading
+import urllib
+import urlparse
 import uuid
-import httplib
 
 import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
@@ -349,6 +351,8 @@ class CPgeneric(object):
 				except ValueError:
 					self._log('error', 'cannot parse JSON body')
 					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Invalid JSON document')
+		else:
+			json = ''
 
 		# create new UMCP request
 		req = self.get_request( cherrypy.request, json )
@@ -371,6 +375,10 @@ class CPgeneric(object):
 				return '<html><body><textarea>' + simplejson.dumps(response.body) + '</textarea></body></html>'
 			else:
 				return simplejson.dumps(response.body)
+		elif response.mimetype != umcp.MIMETYPE_JSON:
+			update_session_cookie(cherrypy.response.cookie, sessionid)
+			cherrypy.response.headers[ 'Content-Type' ] = response.mimetype
+			return response.body
 
 		# something bad happened
 		self._log('error', 'response status code: %s' % response.status)
@@ -433,7 +441,8 @@ class CPCommand(CPgeneric):
 	requestprefix = '/command'
 
 	def get_request(self, request, json):
-		args = request.path_info
+		parse_result = urlparse.urlparse( request.path_info )
+		args = parse_result.path
 
 		if args.startswith( self.requestprefix ):
 			args = args[ len(self.requestprefix)+1 : ]
@@ -442,9 +451,14 @@ class CPCommand(CPgeneric):
 			self._log('error', 'get_request: args is empty')
 			raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
-		req = umcp.Command( [ args ], options = json.get( 'options', {} ) )
-		if 'flavor' in json:
-			req.flavor = json[ 'flavor' ]
+		if cherrypy.request.method == 'POST':
+			req = umcp.Command( [ args ], options = json.get( 'options', {} ) )
+			if 'flavor' in json:
+				req.flavor = json[ 'flavor' ]
+		elif cherrypy.request.method == 'GET':
+			req = umcp.Command( [ args ], options = {} )
+			for key, value in urlparse.parse_qsl( cherrypy.request.query_string ):
+				req.options[ key ] = urllib.unquote( value )
 
 		return req
 
