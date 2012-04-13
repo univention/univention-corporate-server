@@ -34,6 +34,7 @@ dojo.require("umc.i18n");
 dojo.require("umc.dialog");
 dojo.require("umc.tools");
 dojo.require("umc.store");
+dojo.require("umc.widgets.TitlePane");
 
 dojo.require("umc.modules._updater.Page");
 
@@ -41,6 +42,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 
 	i18nClass:		'umc.modules.updater',
 	_last_reboot:	false,
+	_update_prohibited: false,
 
 	postMixInProperties: function() {
 
@@ -385,12 +387,20 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 //			}
 		});
 
+		// fetch all known/initial titlepanes and save them with their name
+		// so they can be used later on
+		this._titlepanes = { 
+			reboot: this._form._container.getChildren()[0],
+			easymode: this._form._container.getChildren()[1],
+			release: this._form._container.getChildren()[2],
+			errata: this._form._container.getChildren()[3],
+			packages: this._form._container.getChildren()[4]
+		};
+
 		// Before we attach the form to our page, just switch off all title panes.
 		// This delays showing the right panes until we know the value of 'easy_mode'.
-		for (var i = 0; i<5; i++)
-		{
-			this._show_title_pane(i,false);
-		}
+		this._show_updater_panes(false);
+
 
 		this.addChild(this._form);
 		this._form.showWidget('releases',false);
@@ -557,6 +567,44 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 				console.error("onLoaded: " + error.message);
 			}
 		}));
+
+		// call hooks updater_show_message and updater_prohibit_update.
+		//
+		// "updater_show_message" has to return its data as a dictionary . 
+		// The returned data will be displayed in a new titlepane for each hook.
+		// data structure:
+		// {
+		//   valid: (true|false)   ==> indicates if a message should be displayed
+		//   title: <string>       ==> title of TitlePane
+		//   message: <string>     ==> content of TitlePane
+		// }
+		//
+		// "updater_prohibit_update" has to return a boolean directly.
+		// If the value "true" is returned by at least one hook, the titlepanes 
+		// "easymode", "release", "errata" and "packages" will be hidden and
+		// this._update_prohibited will be set to true.
+
+		umc.tools.umcpCommand('updater/hooks/call', { hooks: ['updater_show_message', 'updater_prohibit_update'] }).then(dojo.hitch(this, function(result) {
+			this._update_prohibited = false;
+			var index = 0;
+			var newpane;
+			dojo.forEach(result.result.updater_show_message, function(hookresult) {
+				if (hookresult.valid) {
+		 			newpane = new dijit.TitlePane({
+		 				title: hookresult.title,
+		 				content: hookresult.message
+		 			});
+		 			this._form._container.addChild(newpane, 0);
+				}
+			}, this);
+			dojo.forEach(result.result.updater_prohibit_update, function(hookresult) {
+				if (hookresult) {
+					this._update_prohibited = true;
+					this._show_updater_panes(false);
+				}
+			}, this);
+		}));
+
 	},
 
 	// Internal function that sets the 'updates available' button and
@@ -606,37 +654,26 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		}
 	},
 
-	// Now we need it: a general function that switches the visibility of
-	// panes on and off. We use this for the visibility of the reboot
-	// pane and the switch between easy and normal mode.
-	//
-	// *** HACK *** this function cannot address the titlePanes directly since they're
-	//				buried in the internal layout structures of the form. But as we have
-	//				digged into the structure of the form, we rely on the following things:
-	//
-	//				(1)	the first child of the form is the container that contains all
-	//					title panes
-	//				(2)	the order of the titlePanes there is the same as the order in
-	//					our layout structure.
-	_show_title_pane: function(number, on) {
-
-		var cont = this._form.getChildren()[0];		// the container that contains the title panes
-		var chi = cont.getChildren();				// the array of TitlePanes
-
-		if (number < chi.length)
-		{
-			var pan = chi[number];
-			dojo.toggleClass(pan.domNode,'dijitHidden',! on);
-		}
+	// This function switches the visibilty of all relevant titlepanes used for updates.
+	// Other titlepanes (e.g. reboot) are not affected.
+	_show_updater_panes: function(on) {
+		dojo.forEach(['easymode','release','errata','packages'], function(iname) {
+			dojo.toggleClass(this._titlepanes[iname].domNode, 'dijitHidden', ! on);
+		}, this);
 	},
 
-	// switches easy mode on or off. Doesn't touch the 'reboot required' pane.
+	// Switches easy mode on or off. If the update is prohibited via hook, this 
+	// function hides the updater titlepanes. Doesn't touch other panes like the 
+	// 'reboot required' pane.
 	_switch_easy_mode: function(on) {
-
-		this._show_title_pane(1,on);		// this is the 'easy mode' pane
-		this._show_title_pane(2,! on);		// release
-		this._show_title_pane(3,! on);		// errata
-		this._show_title_pane(4,! on);		// packages
+		if (this._update_prohibited) {
+			this._show_updater_panes(false);
+		} else {
+			dojo.toggleClass(this._titlepanes.easymode.domNode, 'dijitHidden',! on);
+			dojo.toggleClass(this._titlepanes.release.domNode, 'dijitHidden', on);
+			dojo.toggleClass(this._titlepanes.errata.domNode, 'dijitHidden', on);
+			dojo.toggleClass(this._titlepanes.packages.domNode, 'dijitHidden', on);
+		}
 	},
 
 	// Switches visibility of the reboot pane on or off. Second arg 'inprogress'
@@ -656,8 +693,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 			this._last_reboot = on;
 		}
 
-		var pane = this._form.getChildren()[0].getChildren()[0];
-		dojo.toggleClass(pane.domNode,'dijitHidden',! on);
+		dojo.toggleClass(this._titlepanes.reboot.domNode,'dijitHidden',! on);
 
 		if (on)
 		{
