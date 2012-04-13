@@ -134,6 +134,10 @@ class XML_Definition( ET.ElementTree ):
 		return self.find( 'module' ).get( 'id' )
 
 	@property
+	def notifier( self ):
+		return self.find( 'module' ).get( 'notifier' )
+
+	@property
 	def icon( self ):
 		return self.find( 'module' ).get( 'icon' )
 

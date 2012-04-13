@@ -135,7 +135,7 @@ class ModuleServer( Server ):
 		except ( ParseError, UnknownCommandError ), e:
 			MODULE.error( 'Failed to parse message: %s' % str( e ) )
 			res = Response( msg )
-			res.id( -1 )
+			res.id = -1
 			res.status = e.args[ 0 ]
 			self.response( res )
 

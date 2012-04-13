@@ -1,3 +1,9 @@
+univention-management-console (4.0.211-1) unstable; urgency=low
+
+  * add support for using a different notifier implementation; Bug #26703
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Apr 2012 10:24:30 +0200
+
 univention-management-console (4.0.210-1) unstable; urgency=low
 
   * add support for overwriting flavors; Bug #26381

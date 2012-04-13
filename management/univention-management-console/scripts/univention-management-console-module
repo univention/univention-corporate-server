@@ -43,23 +43,22 @@ import os
 import sys
 
 import notifier
+import notifier.log as nflog
 
 if __name__ == '__main__':
 	if os.getuid() != 0:
 		sys.stderr.write( '%s must be started as root\n' % os.path.basename( sys.argv[ 0 ] ) )
 		sys.exit( 1 )
 
-	notifier.init( notifier.GENERIC )
-
 	parser = OptionParser( usage = "usage: %prog [options]" )
-	parser.add_option( '-s', '--socket', type = 'string', action = 'store',
-					   dest = 'socket', help = 'defines the socket to bind to' )
-	parser.add_option( '-l', '--language', type = 'string', action = 'store',
-					   dest = 'language', default = 'C',
+	parser.add_option( '-s', '--socket', type = 'string', action = 'store', dest = 'socket',
+					   help = 'defines the socket to bind to' )
+	parser.add_option( '-l', '--language', type = 'string', action = 'store', dest = 'language', default = 'C',
 					   help = 'defines the language to use' )
-	parser.add_option( '-m', '--module', type = 'string',
-					   action = 'store', dest = 'module',
+	parser.add_option( '-m', '--module', type = 'string', action = 'store', dest = 'module',
 					   help = 'set the UMC daemon module to load' )
+	parser.add_option( '-n', '--notifier', type = 'string', action = 'store', dest = 'notifier', default = 'generic',
+					   help = 'defines the notifier implementation to use' )
 
 	default_debug = MODULE_DEBUG_LEVEL
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
@@ -71,8 +70,21 @@ if __name__ == '__main__':
 	daemon = DaemonContext( detach_process = False, umask = 0077 )
 	daemon.open()
 
+	# MUST be called after initializing the deamon
+	if options.notifier.lower() == 'generic':
+		notifier.init( notifier.GENERIC )
+	elif options.notifier.lower() == 'qt':
+		import PyQt4.Qt as qt
+		qApp = qt.QCoreApplication( sys.argv )
+		notifier.init( notifier.QT )
+
 	# init logging
 	debug_fd = log_init( '%s-%s' % ( options.logfile, options.module ), options.debug )
+	# no notifier logging
+	nflog.instance.handlers = []
+	# to activate notifier logging
+	# nflog.set_level( nflog.DEBUG )
+	# nflog.open()
 
 	localeok = False
 	try:
