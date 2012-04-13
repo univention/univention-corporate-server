@@ -89,5 +89,6 @@
 	<command name="updater/installer/status" function="updater_job_status">
 		<attribute name="job" syntax="Online-Install-Job"/>
 	</command>
+	<command name="updater/hooks/call" function="call_hooks"/>
   </module>
 </umc>

@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import traceback
 import pprint
 import subprocess
 import univention.management.console as umc
@@ -47,6 +48,8 @@ from time import strftime,localtime,sleep,time
 from subprocess import Popen
 from hashlib import md5
 from copy import deepcopy
+import univention.hooks
+import notifier.threads
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
@@ -76,6 +79,8 @@ UPDATE_SERIAL_FILES = [
 	'/etc/apt/sources.list.d/18_ucs-online-errata.list',
 	'/etc/apt/sources.list.d/20_ucs-online-component.list'
 ]
+
+HOOK_DIRECTORY = '/usr/share/pyshared/univention/management/console/modules/updater/hooks'
 
 # Symbolic error codes for UCR write operations
 PUT_SUCCESS				= 0
@@ -473,6 +478,49 @@ class Instance(umcm.Base):
 		# -----------------------------------
 
 		self.finished(request.id,result)
+
+
+	def _check_thread_error( self, thread, result, request ):
+		"""Checks if the thread returned an exception. In that case in
+		error response is send and the function returns True. Otherwise
+		False is returned."""
+		if not isinstance( result, BaseException ):
+			return False
+
+		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
+		MODULE.process( 'An internal error occurred: %s' % msg )
+		self.finished( request.id, None, msg, False )
+		return True
+
+
+	def _thread_finished( self, thread, result, request ):
+		if self._check_thread_error( thread, result, request ):
+			return
+		self.finished( request.id, result )
+
+
+	def call_hooks(self, request):
+		""" Calls the specified hooks and returns data given back by each hook
+		"""
+
+		def _thread( request ):
+			result = {}
+
+			hookmanager = univention.hooks.HookManager(HOOK_DIRECTORY) # , raise_exceptions=False
+
+			hooknames = request.options.get( 'hooks' )
+			MODULE.info('requested hooks: %s' % hooknames)
+			for hookname in hooknames:
+				MODULE.info('calling hook %s' % hookname)
+				result[hookname] = hookmanager.call_hook(hookname)
+			MODULE.info('result: %s' % result)
+
+			self.finished(request.id,result)
+
+		thread = notifier.threads.Simple( 'call_hooks', notifier.Callback( _thread, request ),
+										  notifier.Callback( self._thread_finished, request ) )
+		thread.run()
+
 
 	def serial(self,request):
 		""" Uses the 'Watched_File' class to track changedness
