@@ -39,16 +39,15 @@ from univention.management.console.modules import UMC_OptionTypeError, UMC_Comma
 from univention.management.console.log import MODULE
 
 from subprocess import PIPE, Popen
-from shlex import split
 import re
 
 _ = Translation( 'univention-management-console-module-luga' ).translate
 
 class Process:
 	def sanitize_arg(self, arg):
-		if ':' in str(arg):
-			raise ValueError(_('arguments can not contain ":"'))
-		return '"' + str(arg).replace('\\','\\\\').replace('\"','\\\"') + '"'
+#		if ':' in str(arg):
+#			raise ValueError(_('arguments can not contain ":"'))
+		return arg.replace(':')
 
 	def sanitize_int(self, num):
 		num = str(num)
@@ -73,13 +72,13 @@ class Process:
 		"""
 			process a shell command
 			
-			param args = string of arguments
+			param args = array of arguments
 			param stdin = stdin string
 			return int returncode|string 'OSError'
 		"""
 
 		try:
-			p = Popen( args = split(args.encode('utf-8')), env = {'LANG':'en'}, stderr = PIPE, stdin = PIPE )
+			p = Popen( args = map(lambda a: str(a).encode('utf-8'), args), stderr = PIPE, stdin = PIPE )
 			(stdout, stderr) = p.communicate(stdin)
 		except OSError as e:
 			MODULE.error( 'Command failed: %s\nException: %s' % (args, str(e)) )

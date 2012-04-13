@@ -161,38 +161,39 @@ class Users:
 			5: _('passwd file busy, try again'),
 			6: _('invalid argument to option'),
 		}
-		cmd = orig = '/usr/bin/passwd -q '
+		cmd = ['/usr/bin/passwd', '-q']
 
 		if options.get('delete'):
-			cmd += '-d '
+			cmd.append('-d')
 		if options.get('expire'):
-			cmd += '-e '
+			cmd.append('-e')
 		if options.get('keep_tokens'):
-			cmd += '-k '
+			cmd.append('-k')
 		if options.get('lock'):
-			cmd += '-l '
+			cmd.append('-l')
+		# if no password is set you can not unlock a user
 		elif options.get('unlock') and password:
-			cmd += '-u '
+			cmd.append('-u')
 
 		inactive = options.get('disabledays')
 		if inactive:
-			cmd += '-i %d ' % self.sanitize_int(inactive)
+			cmd += ['-i', self.sanitize_int(inactive)]
 
 		mindays = options.get('mindays')
 		if mindays:
-			cmd += '-n %d ' % self.sanitize_int(mindays)
+			cmd += ['-n', self.sanitize_int(mindays)]
 
 		warndays = options.get('warndays')
 		if warndays:
-			cmd += '-w %d ' % self.sanitize_int(warndays)
+			cmd += ['-w', self.sanitize_int(warndays)]
 			
 		maxdays = options.get('maxdays')
 		if maxdays:
-			cmd += '-x %d ' % self.sanitize_int(maxdays)
+			cmd += ['-x', self.sanitize_int(maxdays)]
 
 		# Change password
 		if password:
-			pwd = '/usr/bin/passwd -q %s' % self.sanitize_arg(username)
+			pwd = ['/usr/bin/passwd', '-q', self.sanitize_arg(username)]
 			returncode = self.process(pwd, '%s\n%s' % (password, password))
 			if 0 != returncode:
 				MODULE.error("cmd '%s' failed with returncode %d" % (pwd, returncode)) 
@@ -200,8 +201,8 @@ class Users:
 				raise ValueError( _('an error accured while changing password: %s') % (error) )
 
 		# Change options
-		if cmd != orig:
-			cmd += self.sanitize_arg(username)
+		if len(cmd) > 2:
+			cmd.append(self.sanitize_arg(username))
 			returncode = self.process(cmd)
 			if 0 != returncode:
 				MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
@@ -283,7 +284,7 @@ class Users:
 			return string
 		"""
 
-		cmd = ''
+		cmd = []
 
 		# Gecos
 		gecos = [options.get('fullname'), options.get('roomnumber'), options.get('tel_business'), options.get('tel_private'), options.get('miscellaneous')]
@@ -292,34 +293,34 @@ class Users:
 		if gecos:
 			keys = ['fullname', 'roomnumber', 'tel_business', 'tel_private', 'miscellaneous']
 			gecos = map(lambda s: str(options.get(s, '')).replace(',', ''), keys)
-			cmd += '-c %s ' % self.sanitize_arg( ','.join(gecos) )
+			cmd += ['-c', self.sanitize_arg(','.join(gecos))]
 
 		# Home directory
 		homedir = options.get('homedir')
 		if homedir:
-			cmd += '-d %s ' % self.sanitize_arg( homedir )
+			cmd += ['-d', self.sanitize_arg(homedir)]
 			if options.get('create_home'):
-				cmd += '-m '
+				cmd.append('-m')
 
 		# Shell
 		shell = options.get('shell')
 		if shell:
-			cmd += '-s %s ' % self.sanitize_arg(shell)
+			cmd += ['-s', self.sanitize_arg(shell)]
 
 		# User-ID
 		uid = str(options.get('uid', ''))
 		if uid.isdigit():
-			cmd += '-u %d ' % self.sanitize_int(uid)
+			cmd += ['-u', self.sanitize_int(uid)]
 
 		# Additional groups
 		groups = options.get('groups')
 		if groups:
-			cmd += '-G %s ' % self.sanitize_arg( ','.join(list(groups)) )
+			cmd += ['-G', self.sanitize_arg( ','.join(list(groups))) ]
 
 		# Primary Group
 		group = options.get('group')
 		if not options.get('create_usergroup') and group:
-			cmd += '-g %s ' % self.sanitize_arg( group )
+			cmd += ['-g', self.sanitize_arg( group )]
 
 		# Password options
 		if options.get('pw_remove'):
@@ -386,28 +387,28 @@ class Users:
 					raise ValueError( _('No username given') )
 
 				pwoptions = {}
-				cmd = orig = '/usr/sbin/usermod '
+				cmd = ['/usr/sbin/usermod']
 				cmd += self.get_common_args( option, pwoptions )
 
 				# Change username
 				if new_username and username != new_username:
 					self.validate_name(new_username)
-					cmd += '-l %s ' % self.sanitize_arg( new_username )
+					cmd += ['-l', self.sanitize_arg( new_username )]
 
 				# Account deactivation
 				if pwoptions.get('lock'):
-					cmd += '-L '
+					cmd.append('-L')
 
 				elif option.get('unlock'):
-					cmd += '-U '
+					cmd.append('-U')
 
 				# Password
 				password = option.get('password')
 				self.change_user_password(username, password, pwoptions)
 
 				# Execute
-				if cmd != orig:
-					cmd += self.sanitize_arg(username)
+				if len(cmd) > 1:
+					cmd.append(self.sanitize_arg(username))
 					returncode = self.process(cmd)
 					if returncode != 0:
 						MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
@@ -461,24 +462,23 @@ class Users:
 				self.validate_name(username)
 
 				pwoptions = {}
-				cmd = orig = '/usr/sbin/useradd -r '
+				cmd = ['/usr/sbin/useradd', '-r']
 
 				if username == option.get('group'):
 					option['create_usergroup'] = True
-					cmd += '-U '
+					cmd.append('-U')
 				else:
-					cmd += '-N '
+					cmd.append('-N')
 
 				cmd += self.get_common_args( option, pwoptions )
 
 				# Execute
-				if cmd != orig:
-					cmd += self.sanitize_arg(username)
-					returncode = self.process(cmd)
-					if 0 != returncode:
-						MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
-						error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
-						raise ValueError( error )
+				cmd.append(self.sanitize_arg(username)) #TODO: sanitize_name ?
+				returncode = self.process(cmd)
+				if 0 != returncode:
+					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
+					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
+					raise ValueError( error )
 
 				# Change Password + options
 				password = option.get('password')
@@ -519,7 +519,7 @@ class Users:
 				if dict is not type(option):
 					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
-				cmd = '/usr/sbin/userdel '
+				cmd = ['/usr/sbin/userdel']
 
 				username = option.get('object')
 				if None is username:
@@ -527,11 +527,11 @@ class Users:
 
 				options = self.sanitize_dict(option.get('options', {}))
 				if options.get('force'):
-					cmd += '-f '
+					cmd.append('-f')
 				if options.get('remove'):
-					cmd += '-r '
+					cmd.append('-r')
 
-				cmd += self.sanitize_arg(username)
+				cmd.append(self.sanitize_arg(username))
 
 				returncode = self.process(cmd)
 				if returncode != 0:

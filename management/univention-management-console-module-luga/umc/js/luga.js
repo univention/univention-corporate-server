@@ -88,11 +88,6 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	buildRendering: function() {
 		this.inherited(arguments);
-
-		// start the standby animation in order prevent any interaction before the
-		// form values are loaded
-	//	this.standby(true); // FIXME
-
 		// render the page containing search form and grid
 		this.renderSearchPage();
 	},
@@ -149,17 +144,6 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		var columns = null;
 		if (this.moduleFlavor === 'luga/users') {
 			columns = [{
-				name: 'uid',
-				label: this._('UID'),
-				width: 'adjust'
-			}, {
-				name: 'lock',
-				label: ' ',
-				width: 'adjust',
-				formatter: function(value) {
-					return value ? '&#10799;' : '&#10004;';
-				}
-			}, {
 				name: 'username',
 				label: this._('Username'),
 				width: '44%'
@@ -167,6 +151,20 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				name: 'fullname',
 				label: this._('Fullname'),
 				width: '40%'
+			}, {
+				name: 'lock',
+				label: this._('enabled'),
+				width: 'adjust',
+				formatter: dojo.hitch(this, function(value) {
+					return value ? '&#10799; enabled' : '&#10004; disabled';
+				})
+			}, {
+				name: 'pw_is_expired',
+				label: this._('Password expired'),
+				width: 'adjust',
+				formatter: dojo.hitch(this, function(value) {
+					return value ? this._('yes') : this._('no');
+				})
 			}];
 		}
 		else if (this.moduleFlavor === 'luga/groups') {
@@ -248,12 +246,6 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// call the grid's filter function
 				this._grid.filter(values);
 			})
-		});
-
-		// turn off the standby animation as soon as all form values have been loaded
-		this.connect(this._searchForm, 'onValuesInitialized', function() {
-			// FIXME:
-			// this.standby(false);
 		});
 
 		// add search form to the title pane

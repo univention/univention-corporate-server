@@ -102,13 +102,19 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			return -1 === value.search(':');
 		};
 
+		var gecosValidator = function(value) {
+			return validator(value) && (-1 === value.search(','));
+		};
+
 		if (this.moduleFlavor === 'luga/users') {
 			// specify all widgets
 			widgets = [{
 				type: 'TextBox',
 				name: 'username',
 				required: true,
-				validator: validator,
+				validator: function(value) {
+					return validator(value) && ('-' !== value[0]);
+				},
 				label: this._('Username')
 			}, {
 				type: 'umc.modules._luga.PasswordInputBox',
@@ -179,27 +185,27 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			// Gecos
 				type: 'TextBox',
 				name: 'fullname',
-				validator: validator,
+				validator: gecosValidator,
 				label: this._('Fullname')
 			}, {
 				type: 'TextBox',
 				name: 'roomnumber',
-				validator: validator,
+				validator: gecosValidator,
 				label: this._('Room number')
 			}, {
 				type: 'TextBox',
 				name: 'tel_business',
-				validator: validator,
+				validator: gecosValidator,
 				label: this._('Telephone (business)')
 			}, {
 				type: 'TextBox',
 				name: 'tel_private',
-				validator: validator,
+				validator: gecosValidator,
 				label: this._('Telephone (private)')
 			}, {
 				type: 'TextBox',
 				name: 'miscellaneous',
-				validator: validator,
+				validator: gecosValidator,
 				label: this._('Miscellaneous')
 			}, {
 			// Status information
@@ -208,19 +214,9 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				label: this._('Disable login')
 			}, {
 				type: 'CheckBox',
-				name: 'pw_is_expired',
-				disabled: true,
-				label: this._('Password is expired')
-			}, {
-				type: 'CheckBox',
 				name: 'pw_remove',
 				value: false,
 				label: this._('Remove password')
-			}, {
-				type: 'CheckBox',
-				name: 'pw_is_empty',
-				disabled: true,
-				label: this._('The password is currently not set')
 			}, {
 				type: 'DateBox',
 				disabled: true,
@@ -274,13 +270,15 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				layout: [ 'uid', 'shell',  'homedir', 'create_home']
 			}, {
 				label: this._('Options and Password'), // TODO: better description
-				layout: [ 'pw_is_expired', 'pw_is_empty', ['pw_last_change', 'disabled_since'], ['pw_mindays', 'pw_maxdays'], ['pw_warndays', 'pw_disabledays'] ]
+				layout: [ ['pw_last_change', 'disabled_since'], ['pw_mindays', 'pw_maxdays'], ['pw_warndays', 'pw_disabledays'] ]
 			}];
 		} else if (this.moduleFlavor === 'luga/groups') {
 			widgets = [{
 				type: 'TextBox',
 				name: 'groupname',
-				validator: validator,
+				validator: function(value) {
+					return validator(value) && ('-' !== value[0]);
+				},
 				label: this._('Groupname')
 			}, {
 				type: 'TextBox',
@@ -350,6 +348,12 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			// existing object .. get only the values that changed
 			umc.tools.forIn(vals, function(iname, ival) {
 				var oldVal = this._receivedObjFormData[iname];
+
+				// the backend needs all fields of the "gecos"
+				if (-1 !== dojo.indexOf(['fullname', 'tel_business', 'tel_private', 'miscellaneous', 'roomnumber' ], iname)) {
+					newVals[iname] = ival;
+					return true;
+				}
 
 				// check whether old values and new values differ...
 				if (!umc.tools.isEqual(ival,oldVal)) {
@@ -470,8 +474,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		// on adding a user
 		if (this._newObject) {
 			umc.tools.forIn({ 
-				pw_is_expired: ['visible', false],
-				pw_is_empty: ['visible', false],
 				pw_last_change: ['visible', false],
 				disabled_since: ['visible', false],
 				pw_remove: ['visible', false],
@@ -557,7 +559,9 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				w.set('disabled', false);
 			}
 		}, this);
-		this._form.getWidget('group').set('value', []);
+		if (this.moduleFlavor === 'luga/users') {
+			this._form.getWidget('group').set('value', []);
+		}
 	},
 
 	load: function(id) {
