@@ -141,6 +141,8 @@ class Base( signals.Provider, Translation ):
 			res = Response( object )
 			res.result = response
 			res.message = message
+		else:
+			res = response
 
 		if not res.status:
 			if status is not None:

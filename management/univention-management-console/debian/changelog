@@ -1,3 +1,9 @@
+univention-management-console (4.0.209-1) unstable; urgency=low
+
+  * add support for different MIME types in UMCP; Bug #26268
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Apr 2012 09:37:03 +0200
+
 univention-management-console (4.0.208-1) unstable; urgency=low
 
   * fixed code indention in umc-create-module templates (Bug #26406)

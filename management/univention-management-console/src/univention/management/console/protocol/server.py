@@ -264,7 +264,7 @@ class MagicBucket( object ):
 		request.'''
 		# FIXME: error handling is missing!!
 		if not msg.id in state.requests and msg.id != -1:
-			CORE.process( 'The given response is invalid or not known' )
+			CORE.info( 'The given response is invalid or not known (%s)' % msg.id )
 			return
 
 		try:

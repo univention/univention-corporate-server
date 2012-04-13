@@ -156,21 +156,27 @@ class CLI_Client( umcp.Client ):
 				print '  ARGUMENTS: %s' % pprint.pformat( msg.arguments )
 			else:
 				print '  ARGUMENTS: %s' % ' '.join( msg.arguments )
-		print '  STATUS   : %d' % msg.status
-		if msg.options:
-			if self._options.prettyprint:
-				print '  OPTIONS  : %s' % pprint.pformat( msg.options, indent = 2 )
-			else:
-				if isinstance( msg.options, ( list, tuple ) ):
-					print '  OPTIONS  : %s' % ', '.join( map( lambda x: str( x ), msg.options ) )
+		print 'MIMETYPE   : %s' % msg.mimetype
+		if msg.mimetype == umcp.MIMETYPE_JSON:
+			print '  STATUS   : %d' % msg.status
+			if msg.options:
+				if self._options.prettyprint:
+					print '  OPTIONS  : %s' % pprint.pformat( msg.options, indent = 2 )
 				else:
-					print '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] )
-		print '  MESSAGE  : %s' % msg.message
-		if self._options.prettyprint:
-			print '  RESULT   : %s' % pprint.pformat( msg.result, indent = 2 )
+					if isinstance( msg.options, ( list, tuple ) ):
+						print '  OPTIONS  : %s' % ', '.join( map( lambda x: str( x ), msg.options ) )
+					else:
+						print '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] )
+			print '  MESSAGE  : %s' % msg.message
+			if self._options.prettyprint:
+				print '  RESULT   : %s' % pprint.pformat( msg.result, indent = 2 )
+			else:
+				print '  RESULT   : %s' % msg.result
+			if msg.status is not None:
+				raise ClientExit( msg.status - 200 )
 		else:
-			print '  RESULT   : %s' % msg.result
-		raise ClientExit( msg.status - 200 )
+			print 'BODY       : %s' % str( msg.body )
+		raise ClientExit()
 
 if __name__ == '__main__':
 	notifier.init( notifier.GENERIC )
@@ -260,8 +266,10 @@ if __name__ == '__main__':
 	try:
 		notifier.loop()
 	except ClientExit, exit:
-		exitcode = int( exit.args[ 0 ] )
-		if exitcode == 200:
-			exitcode = 0
-		sys.exit( exitcode )
+		if exit.args:
+			exitcode = int( exit.args[ 0 ] )
+			if exitcode == 200:
+				exitcode = 0
+			sys.exit( exitcode )
+		sys.exit( 0 )
 

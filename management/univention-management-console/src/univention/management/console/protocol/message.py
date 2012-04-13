@@ -82,7 +82,8 @@ class Message( object ):
 		self.command = command
 		self.arguments = arguments
 		self.mimetype = mime_type
-		self.options = options
+		if mime_type == MIMETYPE_JSON:
+			self.options = options
 		if data:
 			self.parse( data )
 
@@ -129,14 +130,13 @@ class Message( object ):
 				self.body[ key ] = value
 		else:
 			PARSER.process( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
-			raise AttributeError( _( 'Attribute %s just available for MIME type %s' ) % ( key, MIMETYPE_JSON ) )
 
 	def _get_key( self, key ):
 		if self.mimetype == MIMETYPE_JSON:
 			return self.body.get( key )
 		else:
 			PARSER.process( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
-			raise AttributeError( _( 'Attribute %s just available for MIME type %s' ) % ( key, MIMETYPE_JSON ) )
+			return None
 
 	# property: message
 	message = property( lambda self: self._get_key( 'message' ), lambda self, value: self._set_key( 'message', value ) )
