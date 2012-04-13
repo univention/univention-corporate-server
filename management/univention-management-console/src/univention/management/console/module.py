@@ -76,11 +76,12 @@ class Command( JSON_Object ):
 class Flavor( JSON_Object ):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
-	def __init__( self, id = '', icon = '', name = '', description = '' ):
+	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [] ):
 		self.id = id
 		self.name = name
 		self.description = description
 		self.icon = icon
+		self.overwrites = overwrites
 
 class Module( JSON_Object ):
 	'''Represents an command attribute'''
@@ -141,6 +142,7 @@ class XML_Definition( ET.ElementTree ):
 		'''Retrieve list of flavor objects'''
 		for elem in self.findall( 'module/flavor' ):
 			flavor = Flavor( elem.get( 'id' ), elem.get( 'icon' ) )
+			flavor.overwrites = elem.get( 'overwrites', '' ).split( ',' )
 			flavor.name = elem.find( 'name' ).text
 			flavor.description = elem.find( 'description' ).text
 			yield flavor
@@ -235,6 +237,12 @@ class Manager( dict ):
 				# it should not be shown in the overview
 				if not at_least_one_command and mod.flavors:
 					mod.flavors.remove( flavor )
+
+			overwrites = set()
+			for flavor in mod.flavors:
+				overwrites.update( flavor.overwrites )
+
+			mod.flavors = JSON_List( filter( lambda f: f.id not in overwrites, mod.flavors ) )
 
 		return modules
 
