@@ -401,6 +401,8 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 		// This delays showing the right panes until we know the value of 'easy_mode'.
 		this._show_updater_panes(false);
 
+		// show standby while loading data
+		this.standby(true);
 
 		this.addChild(this._form);
 		this._form.showWidget('releases',false);
@@ -566,6 +568,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 			{
 				console.error("onLoaded: " + error.message);
 			}
+			this.standby(false);
 		}));
 
 		// call hooks updater_show_message and updater_prohibit_update.
