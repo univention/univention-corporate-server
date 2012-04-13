@@ -5207,6 +5207,12 @@ p {
 	background-position: -144px 0px;
 }
 
+.umcIconLoading {
+	background-image: url(images/loadingAnimation.gif);
+	width: 20px;
+	height: 20px;
+}
+
 .umcButtonRow {
 	padding-top: 5px;
 }

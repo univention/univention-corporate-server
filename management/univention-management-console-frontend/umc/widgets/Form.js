@@ -437,6 +437,27 @@ dojo.declare("umc.widgets.Form", [
 		return deferred;
 	},
 
+	validate: function() {
+		return this.getInvalidWidgets().length === 0;
+	},
+
+	getInvalidWidgets: function() {
+		var widgets = [];
+
+		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+			if ( iwidget.validate !== undefined ) {
+				if ( iwidget._maskValidSubsetError !== undefined ) {
+					iwidget._maskValidSubsetError = false;
+				}
+				if ( ! iwidget.validate() ) {
+					widgets.push( iname );
+				}
+			}
+		} );
+
+		return widgets;
+	},
+
 	onSaved: function(/*Boolean*/ success) {
 		// event stub
 	},

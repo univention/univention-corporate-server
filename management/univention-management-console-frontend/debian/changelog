@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.292-1) unstable; urgency=low
+
+  * Grid: add events onShowDescription and onHideDescription; Bug #26699
+  * add CSS class umcIconLoading; Bug #26697
+  * add validate method to Form widget; Bug #26525
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Apr 2012 10:27:58 +0200
+
 univention-management-console-frontend (1.0.291-1) unstable; urgency=low
 
   * new widget ProgressInfo: Showing process in standby mode; Bug #26274

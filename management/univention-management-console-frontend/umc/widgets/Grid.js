@@ -349,7 +349,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 							label: idescription,
 							connectId: [ btn.domNode ]
 						});
-
+						if ( iaction.onShowDescription ) {
+							tooltip = dojo.mixin( tooltip, { onShow: function( target ) { iaction.onShowDescription( target, item ); } } );
+						}
+						if ( iaction.onHideDescription ) {
+							tooltip = dojo.mixin( tooltip, { onHide: function() { iaction.onHideDescription( item ); } } );
+						}
 						// destroy the tooltip when the widget is destroyed
 						tooltip.connect( btn, 'destroy', 'destroy' );
 					}
