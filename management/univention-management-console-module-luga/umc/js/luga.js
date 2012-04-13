@@ -199,8 +199,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			staticValues = [
 				{id: 'groupname', label: this._('Groupname')},
 				{id: 'gid', label: this._('Group ID')},
-				{id: 'users', label: this._('Users')},
-				{id: 'administrators', label: this._('Administrators')}
+				{id: 'users', label: this._('Users')}
 			];
 		} else if (this.moduleFlavor === 'luga/users') {
 			staticValues = [

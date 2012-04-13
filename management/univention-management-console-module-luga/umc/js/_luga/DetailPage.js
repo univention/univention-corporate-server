@@ -289,11 +289,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				name: 'users',
 				label: this._('Users'),
 				dynamicValues: 'luga/users/get_users'
-			}, {
-				type: 'MultiSelect',
-				name: 'administrators',
-				label: this._('Administrators'),
-				dynamicValues: 'luga/users/get_users'
 			}];
 
 			layout = [{
@@ -302,9 +297,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}, {
 				label: this._('Group members'),
 				layout: [ ['users'] ]
-			}, {
-				label: this._('Group administrators'),
-				layout: [ ['administrators'] ]
 			}];
 		}
 

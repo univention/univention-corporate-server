@@ -31,9 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+
+
+
+# TODO: implement certain logging through MODULE.error
+
 from fnmatch import fnmatch
 from GroupExceptions import *
 from univention.management.console.modules import UMC_CommandError, UMC_OptionTypeError
+from univention.management.console.log import MODULE
 from univention.lib.i18n import Translation
 
 _ = Translation( 'univention-management-console-module-luga' ).translate
@@ -49,32 +55,18 @@ class Groups():
 		returns:
 			<list> containing every found <dictionary>group
 		'''
+
+		result = [] # list wich will be returned (containing the collected group dictionarys)
+
 		try:
 			f = open('/etc/group', 'r')
-			result = [] # list wich will be returned (containing the collected group dictionarys)
-			shadowGroups = {} # 
 			for line in f:
 				lineSplit = line[:-1].split(':') # group attributes are devided by ':'
-				if len(lineSplit) == 4 and lineSplit[2] and lineSplit[2].isdigit(): # valid line?
-					group = {'groupname' : lineSplit[0], 'gid' : int(lineSplit[2]), 'users' : lineSplit[3], 'administrators' : ''}
-					if lineSplit[1] == 'x': # additional information about group administrators in in /etc/gshadow?
-						shadowGroups[lineSplit[0]] = group
-					else:
-						result.append(group)
+				if len(lineSplit) == 4 and lineSplit[0] and lineSplit[2] and lineSplit[2].isdigit(): # valid line?
+					result += [{'groupname' : lineSplit[0], 'gid' : int(lineSplit[2]), 'users' : lineSplit[3]}]
 			f.close()
 		except IOError:
 			raise UMC_CommandError(_('Could not read from file /etc/group.'))
-		try:
-			f = open('/etc/gshadow', 'r')
-			for line in f:
-				lineSplit = line[:-1].split(':')
-				if len(lineSplit) == 4 and lineSplit[0] in shadowGroups: # valid line wich contains a group wich is also part of shadowGroups?
-					shadowGroups[lineSplit[0]]['administrators'] = lineSplit[2]
-					result.append(shadowGroups[lineSplit[0]])
-					del shadowGroups[lineSplit[0]] # remove group from shadowGroups to possibly accelerate the loop for the next line
-			f.close()
-		except IOError:
-			raise UMC_CommandError(_('Could not read from file /etc/gshadow.'))
 		return result
 
 	def group_search(self, category, pattern):
@@ -89,17 +81,19 @@ class Groups():
 		returns:
 			<list> containing every <dictionary>group matching the given parameters
 		'''
+
 		result = []
 		groups = self.parse_groups()
+
 		for group in groups:
 			attributes = []
-			if category == 'users' or category == 'administrators':
-				attributes.extend(group[category].split(','))
+			if category == 'users':
+				attributes += group[category].split(',')
 			else:
-				attributes.append(group[category])
+				attributes += [group[category]]
 			for attribute in attributes:
 				if fnmatch(str(attribute), str(pattern)):
-					result.append(group)
+					result += [group]
 					break
 		return result
 
@@ -113,17 +107,18 @@ class Groups():
 		returns:
 			<list> of <string>groupnames in wich the user is member
 		'''
+
 		result = []
 		groups = self.group_search('users', username)
 		for group in groups:
-			result.append(group['groupname'])
+			result += [group['groupname']]
 		return result
 
 	def get_groups(self, request):
 		result = []
 		groups = self.parse_groups()
 		for group in groups:
-			result.append({'id' : group['groupname'], 'label' : group['groupname']})
+			result += [{'id' : group['groupname'], 'label' : group['groupname']}]
 		self.finished(request.id, result)
 
 	def validate_groupname(self, groupname):
@@ -138,12 +133,15 @@ class Groups():
 			... or
 			<boolean>False if it does not.
 		'''
-		return len(groupname) <= 32 and not groupname.startswith('-') and not ':' in groupname and not ' ' in groupname and not '\n' in groupname and not '\t' in groupname
+
+		if not len(groupname) <= 32 and not groupname.startswith('-') and not ':' in groupname and not ' ' in groupname and not '\n' in groupname and not '\t' in groupname:
+			raise ValueError(_('"%s" is no valid groupname. Groupnames may consist of one to 32 characters, excluding ":" and whitespaces, and not start with "-".') % groupname)
 
 
 	def groups_get(self, request):
 		if not type(request.options) == list:
 			raise UMC_OptionTypeError(_('Options have to be given as list of strings.'))
+
 		result = []
 		for group in self.parse_groups():
 			if group['groupname'] in request.options:
@@ -153,165 +151,159 @@ class Groups():
 	def groups_query(self, request):
 		if not type(request.options) == dict:
 			raise UMC_OptionTypeError(_('Options have to be given as dictionary.'))
+
 		result = []
 		groups = []
 		category = request.options.get('category', '')
+
 		if category == '':
 			category = 'groupname'
 		if category in ('groupname', 'gid', 'users', 'administrators'):
 			groups.extend(self.group_search(category, request.options.get('pattern', '*')))
 			for group in groups:
-				result.append({'groupname' : group['groupname']})
+				result += [{'groupname' : group['groupname']}]
 		self.finished(request.id, result)
 
 	def groups_add(self, request):
 		if not type(request.options) == list:
 			raise UMC_OptionTypeError(_('Options have to be given as list of dictionarys.'))
+
 		messages = []
-		group_cache = self.parse_groups()
 		for group in request.options:
 			options = None
 			groupname = None
 			users = None
-			administrators = None
+			command = ['/usr/sbin/groupadd']
+			exit_code = None
+
 			try:
 				if not type(group) == dict:
 					raise ValueError(_('Invalid optiontype.'))
 				options = group.get('object', {})
 				if not type(options) == dict:
 					raise ValueError(_('Invalid optiontype.'))
+
 				groupname = options.get('groupname')
 				users = options.get('users')
-				administrators = options.get('administrators')
-				if not groupname:
+
+				if not groupname is not None:
 					raise ValueError(_('Groupname is required.'))
 				if not type(groupname) == str:
 					raise ValueError(_('Groupname has to be given as string.'))
-				if not self.validate_groupname(groupname):
-					raise ValueError(_('"%s" is no valid groupname. Groupnames may consist of one to 32 characters, excluding ":" and whitespaces, and not start with "-".') % groupname)
-				# iterate over every groupname to check if the groupname is already in use
-				for cached_group in group_cache:
-					if cached_group['groupname'] == groupname:
-						raise ValueError(_('Groupname "%s" is already in use.') % groupname)
-				if self.process('/usr/sbin/groupadd "%s"' % groupname):
-					raise CreatingError(_('Could not create group.'))
+				self.validate_groupname(groupname)
+				command += [groupname]
+				exit_code = self.process(command)
+				if exit_code == 9:
+					raise ValueError(_('Groupname "%s" is already in use.') % groupname)
+				if exit_code:
+					MODULE.error('Processing "%s" failed and returned %s' % (str(command), str(exit_code)))
+					raise CreatingError(_('Could not create group. See log for more information.'))
 				if users is not None:
 					if not type(users) == list:
 						raise ModifyError(_('Users have to be given as list.'))
-					if self.process('/usr/bin/gpasswd -M "%s" "%s"' % (','.join(users), groupname)):
+					if self.process(['/usr/bin/gpasswd', '-M', ','.join(users), groupname]):
 						raise ModifyError(_('Could not set list of users.'))
-				if administrators is not None:
-					if not type(administrators) == list:
-						raise ModifyError(_('Administrators have to be given as list'))
-					if self.process('/usr/bin/gpasswd -A "%s" "%s"' % (','.join(administrators), groupname)):
-						raise ModifyError(_('Could not set list of administrators.'))
 			except (ValueError, CreatingError, ModifyError) as e:
-				messages.append(str(e))
+				messages += [str(e)]
 				if type(e) == ModifyError:
-					self.process('/usr/sbin/groupdel "%s"' % groupname)
+					self.process(['/usr/sbin/groupdel', groupname])
 			else:
-				messages.append('')
-				group_cache.append({'groupname' : groupname})
+				messages += ['']
 		self.finished(request.id, messages)
 
 	def groups_put(self, request):
 		if not type(request.options) == list:
 			raise UMC_OptionTypeError(_('Options have to be given as list of dictionarys.'))
+
 		messages = []
-		group_cache = self.parse_groups()
 		for group in request.options:
 			group_index = None
-			args = ''
+			command = ['/usr/sbin/groupmod']
 			options = None
-			id = None
+			identifier = None
 			groupname = None
 			users = None
-			administrators = None
+			exit_code = None
+
 			try:
 				if not type(group) == dict:
 					raise ValueError(_('Invalid optiontype.'))
 				options = group.get('object', {})
 				if not type(options) == dict:
 					raise ValueError(_('Invalid opiontype.'))
-				id = options.get('id')
+
+				identifier = options.get('id')
 				groupname = options.get('groupname')
 				gid = options.get('gid')
 				users = options.get('users')
-				administrators = options.get('administrators')
-				if not id:
+
+				if not identifier:
 					raise ValueError(_('No group has been specified.'))
-				if not type(id) == str:
+				if not type(identifier) == str:
 					raise ValueError(_('ID has to be given as string.'))
-				# iterate over all groupnames to check if the group specified by 'id' exists
-				for i in range(0, len(group_cache)):
-					if group_cache[i]['groupname'] == id:
-						group_index = i
-						break
-				else: # no groups name equals 'id'
-					raise ValueError(_('Specified group does not exist.'))
+				command += [identifier]
 				if groupname is None and gid is None and users is None and administrators is None:
 					raise ModifyError(_('No changes have been made.'))
-				for cached_group in group_cache:
-					if cached_group['groupname'] == groupname:
-						raise ValueError(_('Groupname "%s" is already in use.') % groupname)
-					if str(cached_group['gid']) == gid:
-						raise ValueError(_('Group ID "%s" is already in use.') % gid)
+				if users is not None:
+					if self.process(['/usr/bin/gpasswd', '-M', ','.join(users), identifier]):
+						raise ModifyError(_('Could not modify list of users.'))
 				if groupname is not None:
-					if not self.validate_groupname(groupname):
-						raise ValueError(_('"%s" is no valid groupname. Groupnames may consist of one to 32 characters, excluding ":" and whitespaces, and not start with "-".') % groupname)
-					args += ' -n "%s"' % groupname
+					self.validate_groupname(groupname)
+					command += ['-n', groupname]
 				if gid is not None:
 					if not gid.isdigit():
 						raise ValueError(_('"%s" is no valid group ID. Group IDs may only consist of digits.') % gid)
-					args += ' -g "%s"' % gid
-				if users is not None:
-					if self.process('/usr/bin/gpasswd -M "%s" "%s"' % (','.join(users), id)):
-						raise ModifyError(_('Could not modify list of users.'))
-				if administrators is not None:
-					if self.process('/usr/bin/gpasswd -A "%s" "%s"' % (','.join(administrators), id)):
-						raise ModifyError(_('Could not modify list of administrators.'))
-				if self.process('/usr/sbin/groupmod%s "%s"' % (args, id)):
-					raise ModifyError(_('Could not modify group.'))
+					command += ['-g', '%s' % gid]
+				exit_code = self.process(command)
+				if exit_code == 4:
+					raise ValueError(_('Group ID "%s" is already in use.' % gid))
+				if exit_code == 6:
+					raise ModifyError(_('Group "%s" does not exist.') % identifier)
+				if exit_code == 9:
+					raise ValueError(_('Groupname "%s" is already in use.' % groupname))
+				if exit_code:
+					MODULE.error('Processing "%s" failed and returned %s' % (str(command), str(exit_code)))
+					raise ModifyError(_('Could not modify group. See log for more information.'))
 			except (ValueError, ModifyError) as e:
-				messages.append(str(e))
+				messages += [str(e)]
 			else:
-				messages.append('')
-				if groupname:
-						group_cache[group_index]['groupname'] = groupname
+				messages += ['']
 		self.finished(request.id, messages)
 	
 	def groups_remove(self, request):
 		if not type(request.options) == list:
 			raise UMC_OptionTypeError(_('Options have to be given as list of strings.'))
+
 		messages = []
-		group_cache = self.parse_groups()
 		user_cache = self.parse_users()
 		for group in request.options:
-			id = group.get('object', '').replace('&lt;', '<') # frontend converts '<' to '&lt' for some reasons (undo that)
+			identifier = group.get('object', '').replace('&lt;', '<') # frontend converts '<' to '&lt' for some reasons (undo that)
 			gid = None
 			primary_users = []
+			command = ['/usr/sbin/groupdel']
+			exit_code = None
+
 			try:
-				if not type(id) == str:
+				if not type(identifier) == str:
 					raise ValueError(_('ID has to be given as string.'))
-				# iterate over all groups to check if the group specified by 'id' exists
-				for cached_group in group_cache:
-					if cached_group['groupname'] == id:
-						gid = cached_group['gid']
-						break
-				else: # no groups name equals 'id'
-					raise ModifyError(_('Group "%s" does not exist') % id)
+
 				# iterate over all users to check if one of them has the group as primary group
 				for cached_user in user_cache:
 					if cached_user['gid'] == gid:
 						primary_users.append(cached_user['username'])
 				if primary_users: # users found wich have the group as primary group?
 					raise ModifyError(_('Can not remove the primary group of user(s): %s.') % ', '.join(primary_users))
-				if self.process('/usr/sbin/groupdel "%s"' % id): # no exception occured till here and still groupdel failed?
-					raise ModifyError(_('Could not delete group.'))
+				command += [identifier]
+				exit_code = self.process(command)
+				if exit_code == 6:
+					raise ModifyError(_('Group "%s" does not exist.' % identifier))
+				if exit_code:
+					raise ModifyError(_('Could not delete group "%s". See log for more informaton.') % identifier)
+					MODULE.error('Processing "%s" failed and returned %s' % (str(command), str(exit_code)))
 			except (ValueError, ModifyError) as e:
-				messages.append('%s: %s' % (id, str(e)))
+				messages += ['%s: %s' % (identifier, str(e))]
 			else:
-				messages.append('')
+				messages += ['']
 		self.finished(request.id, messages)
 
 
