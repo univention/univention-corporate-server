@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.291-1) unstable; urgency=low
+
+  * new widget ProgressInfo: Showing process in standby mode; Bug #26274
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Apr 2012 09:57:42 +0200
+
 univention-management-console-frontend (1.0.290-1) unstable; urgency=low
 
   * add support for different MIME types in UMCP; Bug #26268

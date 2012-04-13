@@ -5208,7 +5208,12 @@ p {
 }
 
 .umcButtonRow {
-	padding-top: 5px
+	padding-top: 5px;
+}
+
+.umcProgressInfo {
+	background-color: #fff;
+	min-width: 400px;
 }
 
 .umc .umcMultiObjectSelectDetailDialog form {
