@@ -1,3 +1,10 @@
+univention-lib (1.0.71-1) unstable; urgency=low
+
+  * added description for listener/shares/rename and
+    listener/shares/rename/fstypes (Bug #26536) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Apr 2012 09:51:47 +0200
+
 univention-lib (1.0.70-1) unstable; urgency=low
 
   * version bump; Bug #25707

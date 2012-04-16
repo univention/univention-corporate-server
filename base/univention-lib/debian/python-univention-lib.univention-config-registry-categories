@@ -1,0 +1,4 @@
+[service-misc]
+name[de]=Dienst: Verschiedenes
+name[en]=Service: Misc
+icon=service-misc.gif

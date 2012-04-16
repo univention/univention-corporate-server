@@ -35,7 +35,7 @@ import os
 import commands
 import shutil
 
-DEFAUL_FS = "ext2/ext3:ext2:ext3:ext4:xfs:btrfs"
+DEFAULT_FS = "ext2/ext3:ext2:ext3:ext4:xfs:btrfs"
 DIR_BLACKLIST = []
 DIR_BLACKLIST.append("/boot")
 DIR_BLACKLIST.append("/sys")
@@ -68,7 +68,7 @@ def dirIsMountPoint(path):
 
 def checkDirFileSystem(path, cr):
 
-	knownFs = cr.get("listener/shares/rename/fstypes", DEFAUL_FS).split(":")
+	knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS).split(":")
 	ret, out = commands.getstatusoutput("LC_ALL=C stat -f '%s'" % path)
 	myFs = ""
 	for line in out.split("\n"):

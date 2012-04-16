@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7),
  python-all,
  python-support (>= 0.90),
+ univention-config-dev
  ucslint
 
 Package: python-univention-lib
