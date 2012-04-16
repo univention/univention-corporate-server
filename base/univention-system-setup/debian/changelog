@@ -1,3 +1,9 @@
+univention-system-setup (5.0.149-2) unstable; urgency=low
+
+  * fixed missing dojo.hitch (Bug #25710)
+
+ -- Florian Best <best@univention.de>  Mon, 16 Apr 2012 16:45:01 +0200
+
 univention-system-setup (5.0.149-1) unstable; urgency=low
 
   * update ssl-email on changing domainname (Bug #25710)
