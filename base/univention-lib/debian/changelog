@@ -1,3 +1,9 @@
+univention-lib (1.0.71-2) unstable; urgency=low
+
+  * fixed build dep (Bug #26536) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Apr 2012 09:59:38 +0200
+
 univention-lib (1.0.71-1) unstable; urgency=low
 
   * added description for listener/shares/rename and
