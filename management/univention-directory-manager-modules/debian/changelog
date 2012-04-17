@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.242-1) unstable; urgency=low
+
+  * fixed unhandled cli exceptions (Bug #7389)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 17 Apr 2012 12:02:43 +0200
+
 univention-directory-manager-modules (7.0.241-1) unstable; urgency=low
 
   * changed descriptions for certain mailing list attributes (Bug #24029)

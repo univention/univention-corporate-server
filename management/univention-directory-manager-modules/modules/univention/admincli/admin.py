@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, getopt, types, re, codecs, string, time, base64, os, subprocess
+import sys, getopt, types, re, codecs, string, time, base64, os, subprocess, traceback
 
 import univention.debug
 
@@ -382,6 +382,16 @@ def list_available_modules(o=[]):
 	return o
 
 def doit(arglist):
+	out=[]
+	try:
+		out=_doit(arglist)
+	except univention.admin.uexceptions.base, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, traceback.format_exc())
+		out.append(e.message)
+		return out + ["OPERATION FAILED"]
+	return out
+
+def _doit(arglist):
 
 	out=[]
 	# parse module and action
