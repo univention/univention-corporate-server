@@ -64,14 +64,16 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 
 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
-		/usr/share/univention-heimdal/salt_krb5Keys 
-		/usr/sbin/univention-password_sync_ucs_to_s4 Administrator     ## this account already exists in Samba4, set UCS password for it
+
+		/usr/share/univention-heimdal/salt_krb5Keys "$@"
+
+		/usr/sbin/univention-password_sync_ucs_to_s4 "$@" Administrator     ## this account already exists in Samba4, set UCS password for it
 		if [ $? != 0 ]; then
 			/etc/init.d/samba4 restart
 			sleep 3
-			/usr/sbin/univention-password_sync_ucs_to_s4 Administrator     ## this account already exists in Samba4, set UCS password for it
+			/usr/sbin/univention-password_sync_ucs_to_s4 "$@" Administrator     ## this account already exists in Samba4, set UCS password for it
 		fi
-		/usr/share/univention-s4-connector/sync_krbtgt
+		/usr/share/univention-s4-connector/sync_krbtgt "$@"
 	fi
 
 	ucs_addServiceToLocalhost "${NAME}" "$@"

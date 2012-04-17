@@ -42,7 +42,7 @@ from optparse import OptionParser
 import sys, binascii
 
 class S4:
-	def __init__(self, ucrbase, ucr=None):
+	def __init__(self, ucrbase, binddn, bindpwd, ucr=None):
 		self.ucrbase = ucrbase
 		if ucr:
 			self.ucr = ucr
@@ -52,7 +52,7 @@ class S4:
 
 		self.init_debug()
 		self.open_s4()
-		self.open_ucs()
+		self.open_ucs(binddn, bindpwd)
 
 	def init_debug(self):
 		_d=ud.function('init_debug')
@@ -94,14 +94,20 @@ class S4:
 			raise ldap.SERVER_DOWN
 
 
-	def open_ucs( self ):
-		bindpw=open('/etc/ldap.secret').read()
+	def open_ucs( self, binddn, bindpwd ):
+		if not binddn:
+			binddn='cn=admin,'+self.ucr['ldap/base']
+
+		# read password from file
+		if not bindpwd:
+			bindpwd=open('/etc/ldap.secret').read()
+			if bindpwd[-1] == '\n':
+				bindpwd=bindpwd[0:-1]
+
 		self.ucs_ldap_base = self.ucr.get('ldap/base')
-		if bindpw[-1] == '\n':
-			bindpw=bindpw[0:-1]
 
 		try:
-			self.lo=univention.admin.uldap.access(host=self.ucr['ldap/master'], base=self.ucr['ldap/base'], binddn='cn=admin,'+self.ucr['ldap/base'], bindpw=bindpw, start_tls=2)
+			self.lo=univention.admin.uldap.access(host=self.ucr['ldap/master'], base=self.ucr['ldap/base'], binddn=binddn, bindpw=bindpwd, start_tls=2)
 		except ldap.SERVER_DOWN:
 			print "Can't initialize UCS LDAP connection"
 			raise ldap.SERVER_DOWN
@@ -179,10 +185,14 @@ def main():
 	parser = OptionParser(usage=usage)
 	parser.add_option("--ucrbase", dest="ucrbase",
 			help="", metavar="ucrbase", default="connector")
+	parser.add_option("--binddn", dest="binddn",
+			help="Binddn for UCS LDAP connection", default=None)
+	parser.add_option("--bindpwd", dest="bindpwd",
+			help="Bindpwd for UCS LDAP connection", default=None)
 	(options, args) = parser.parse_args()
 
 	try:
-		s4 = S4(options.ucrbase)
+		s4 = S4(options.ucrbase, options.binddn, options.bindpwd)
 		s4.sync_password()
 	except ldap.SERVER_DOWN:
 		sys.exit(1)
