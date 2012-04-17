@@ -66,19 +66,19 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.inherited(arguments);
 
 		// define the idProperty
-		this.idProperty = this.moduleFlavor === 'luga/users' ? 'username' : 'groupname';
+		this.idProperty = this.moduleFlavor === 'users' ? 'username' : 'groupname';
 
 		// determine objecttype with help of flavor
 		var objNames = {
-			'luga/users': [ this._('user'), this._('users') ],
-			'luga/groups': [ this._('group'), this._('groups') ]
+			'users': [ this._('user'), this._('users') ],
+			'groups': [ this._('group'), this._('groups') ]
 		};
 
 		this.objectNameSingular = objNames[this.moduleFlavor][0];
 		this.objectNamePlural = objNames[this.moduleFlavor][1];
 
 		// create the module store
-		this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleFlavor, this.moduleFlavor);
+		this.moduleStore = umc.store.getModuleStore(this.idProperty, 'luga/'+this.moduleFlavor, this.moduleFlavor);
 
 		// Set the opacity for the standby animation to 100% in order to mask
 		// GUI changes when the module is opened. Call this.standby(true|false)
@@ -97,7 +97,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// setup search page and its main widgets
 		this._searchPage = new umc.widgets.Page({
-			headerText: this.description, // FIXME: defined?
+			headerText: this.description,
 			helpText: ''
 		});
 
@@ -142,32 +142,32 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// define the grid columns
 		var columns = null;
-		if (this.moduleFlavor === 'luga/users') {
+		if (this.moduleFlavor === 'users') {
 			columns = [{
 				name: 'username',
 				label: this._('Username'),
-				width: '44%'
+				width: '35%'
 			}, {
 				name: 'fullname',
 				label: this._('Fullname'),
-				width: '40%'
+				width: '50%'
 			}, {
 				name: 'lock',
-				label: this._('enabled'),
+				label: this._('Account'),
 				width: 'adjust',
 				formatter: dojo.hitch(this, function(value) {
-					return value ? '&#10799; enabled' : '&#10004; disabled';
+					return value ? this._('enabled') : this._('disabled');
 				})
 			}, {
 				name: 'pw_is_expired',
-				label: this._('Password expired'),
+				label: this._('Password'),
 				width: 'adjust',
 				formatter: dojo.hitch(this, function(value) {
-					return value ? this._('yes') : this._('no');
+					return value ? this._('expired') : this._('not expired');
 				})
 			}];
 		}
-		else if (this.moduleFlavor === 'luga/groups') {
+		else if (this.moduleFlavor === 'groups') {
 			columns = [{
 				name: 'groupname',
 				label: this._('Groupname'),
@@ -195,13 +195,13 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// search form
 		//
 		var staticValues = null;
-		if (this.moduleFlavor === 'luga/groups') {
+		if (this.moduleFlavor === 'groups') {
 			staticValues = [
 				{id: 'groupname', label: this._('Groupname')},
 				{id: 'gid', label: this._('Group ID')},
 				{id: 'users', label: this._('Users')}
 			];
-		} else if (this.moduleFlavor === 'luga/users') {
+		} else if (this.moduleFlavor === 'users') {
 			staticValues = [
 				{id: 'username', label: this._('Username')},
 				{id: 'group', label: this._('Group membership')},
@@ -262,7 +262,6 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._detailPage = new umc.modules._luga.DetailPage({
 			moduleFlavor: this.moduleFlavor,
 			moduleStore: this.moduleStore,
-			// TODO: needet?
 			objectNameSingular: this.objectNameSingular,
 			objectNamePlural: this.objectNamePlural
 		});
@@ -329,7 +328,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		textWidget.addChild(new umc.widgets.Text().set('content', this._('Please confirm removing the selected %s(s): %s', this.objectNameSingular, ids.join(', '))));
 
-		if (this.moduleFlavor === 'luga/users') {
+		if (this.moduleFlavor === 'users') {
 			form = this._getDeleteUserForm();
 			textWidget.addChild(form);
 		}
@@ -338,7 +337,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label: this._('OK'),
 			callback: dojo.hitch(this, function() {
 				var options = null;
-				if (this.moduleFlavor === 'luga/users') {
+				if (this.moduleFlavor === 'users') {
 					options = {
 						force: form.getWidget('force').get('value'),
 						remove: form.getWidget('remove').get('value')

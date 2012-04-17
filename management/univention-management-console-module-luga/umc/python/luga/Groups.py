@@ -46,7 +46,7 @@ _ = Translation( 'univention-management-console-module-luga' ).translate
 
 
 class Groups():
-	def parse_groups(self):
+	def _parse_groups(self):
 		'''
 		Reads every line in /etc/group and /etc/gshadow to collect as many informations
 		about every group as possible and stores it in a dictionary (one for each group):
@@ -57,21 +57,20 @@ class Groups():
 		'''
 
 		result = [] # list wich will be returned (containing the collected group dictionarys)
-
 		try:
 			f = open('/etc/group', 'r')
 			for line in f:
-				lineSplit = line[:-1].split(':') # group attributes are devided by ':'
-				if len(lineSplit) == 4 and lineSplit[0] and lineSplit[2] and lineSplit[2].isdigit(): # valid line?
-					result += [{'groupname' : lineSplit[0], 'gid' : int(lineSplit[2]), 'users' : lineSplit[3]}]
+				line_split = line[:-1].split(':') # group attributes are devided by ':'
+				if len(line_split) == 4 and line_split[0] and line_split[2] and line_split[2].isdigit(): # valid line?
+					result += [{'groupname' : line_split[0], 'gid' : int(line_split[2]), 'users' : line_split[3]}]
 			f.close()
 		except IOError:
 			raise UMC_CommandError(_('Could not read from file /etc/group.'))
 		return result
 
-	def group_search(self, category, pattern):
+	def _search_groups(self, category, pattern):
 		'''
-		Uses self.parse_groups() to get a list containing every group as a dictionary
+		Uses self._parse_groups() to get a list containing every group as a dictionary
 		and extracts certain groups of it.
 		=============================================================================
 		expects:
@@ -83,7 +82,7 @@ class Groups():
 		'''
 
 		result = []
-		groups = self.parse_groups()
+		groups = self._parse_groups()
 
 		for group in groups:
 			attributes = []
@@ -97,9 +96,9 @@ class Groups():
 					break
 		return result
 
-	def get_additional_groups(self, username):
+	def _get_additional_groups(self, username):
 		'''
-		Uses self.group_search() to find every group in wich a certain user is member.
+		Uses self._search_groups() to find every group in wich a certain user is member.
 		============================================================================
 		expects:
 			<string>username: name of the user wich should be looked for
@@ -109,30 +108,17 @@ class Groups():
 		'''
 
 		result = []
-		groups = self.group_search('users', username)
+		groups = self._search_groups('users', username)
 		for group in groups:
 			result += [group['groupname']]
 		return result
 
 	def get_groups(self, request):
 		result = []
-		groups = self.parse_groups()
+		groups = self._parse_groups()
 		for group in groups:
-			result += [{'id' : group['groupname'], 'label' : group['groupname']}]
+			result += [group['groupname']]
 		self.finished(request.id, result)
-
-	def validate_groupname(self, groupname):
-		'''
-		Validates if a certain groupname complys with debian rules for groupnames.
-		============================================================================
-		expects:
-			<string>groupname: groupname wich should be validated
-		============================================================================
-		returns:
-			<boolean>True if the given groupname fullfils the rules ...
-			... or
-			<boolean>False if it does not.
-		'''
 
 		if not len(groupname) <= 32 and not groupname.startswith('-') and not ':' in groupname and not ' ' in groupname and not '\n' in groupname and not '\t' in groupname:
 			raise ValueError(_('"%s" is no valid groupname. Groupnames may consist of one to 32 characters, excluding ":" and whitespaces, and not start with "-".') % groupname)
@@ -143,7 +129,7 @@ class Groups():
 			raise UMC_OptionTypeError(_('Options have to be given as list of strings.'))
 
 		result = []
-		for group in self.parse_groups():
+		for group in self._parse_groups():
 			if group['groupname'] in request.options:
 				result.append(group)
 		self.finished(request.id, result)
@@ -159,7 +145,7 @@ class Groups():
 		if category == '':
 			category = 'groupname'
 		if category in ('groupname', 'gid', 'users', 'administrators'):
-			groups.extend(self.group_search(category, request.options.get('pattern', '*')))
+			groups += self._search_groups(category, request.options.get('pattern', '*'))
 			for group in groups:
 				result += [{'groupname' : group['groupname']}]
 		self.finished(request.id, result)
@@ -190,8 +176,10 @@ class Groups():
 					raise ValueError(_('Groupname is required.'))
 				if not type(groupname) == str:
 					raise ValueError(_('Groupname has to be given as string.'))
-				self.validate_groupname(groupname)
+				self.validate_name(groupname)
 				command += [groupname]
+
+				# execute "groupadd"
 				exit_code = self.process(command)
 				if exit_code == 9:
 					raise ValueError(_('Groupname "%s" is already in use.') % groupname)
@@ -232,7 +220,7 @@ class Groups():
 				if not type(options) == dict:
 					raise ValueError(_('Invalid opiontype.'))
 
-				identifier = options.get('id')
+				identifier = options.get('$groupname$')
 				groupname = options.get('groupname')
 				gid = options.get('gid')
 				users = options.get('users')
@@ -244,23 +232,31 @@ class Groups():
 				command += [identifier]
 				if groupname is None and gid is None and users is None and administrators is None:
 					raise ModifyError(_('No changes have been made.'))
+
+				# first try to set new list of users, if given, with "gpasswd"
 				if users is not None:
 					if self.process(['/usr/bin/gpasswd', '-M', ','.join(users), identifier]):
 						raise ModifyError(_('Could not modify list of users.'))
+
+				# collect arguements for "groupmod" command
 				if groupname is not None:
-					self.validate_groupname(groupname)
+					self.validate_name(groupname)
 					command += ['-n', groupname]
 				if gid is not None:
-					if not gid.isdigit():
-						raise ValueError(_('"%s" is no valid group ID. Group IDs may only consist of digits.') % gid)
+					if not type(gid) == int:
+						raise ValueError(_('"Group ID has to be given as string.'))
 					command += ['-g', '%s' % gid]
+
+				# exceute "groupmod"
 				exit_code = self.process(command)
+				if exit_code == 3:
+					raise ValueError(_('"%s" is no valid Group ID. Group IDs may only consit of digits.') % gid)
 				if exit_code == 4:
-					raise ValueError(_('Group ID "%s" is already in use.' % gid))
+					raise ValueError(_('Group ID "%s" is already in use.') % gid)
 				if exit_code == 6:
 					raise ModifyError(_('Group "%s" does not exist.') % identifier)
 				if exit_code == 9:
-					raise ValueError(_('Groupname "%s" is already in use.' % groupname))
+					raise ValueError(_('Groupname "%s" is already in use.') % groupname)
 				if exit_code:
 					MODULE.error('Processing "%s" failed and returned %s' % (str(command), str(exit_code)))
 					raise ModifyError(_('Could not modify group. See log for more information.'))
@@ -275,7 +271,7 @@ class Groups():
 			raise UMC_OptionTypeError(_('Options have to be given as list of strings.'))
 
 		messages = []
-		user_cache = self.parse_users()
+		user_cache = self._parse_users()
 		for group in request.options:
 			identifier = group.get('object', '').replace('&lt;', '<') # frontend converts '<' to '&lt' for some reasons (undo that)
 			gid = None
@@ -290,13 +286,16 @@ class Groups():
 				# iterate over all users to check if one of them has the group as primary group
 				for cached_user in user_cache:
 					if cached_user['gid'] == gid:
-						primary_users.append(cached_user['username'])
+						primary_users += [cached_user['username']]
 				if primary_users: # users found wich have the group as primary group?
 					raise ModifyError(_('Can not remove the primary group of user(s): %s.') % ', '.join(primary_users))
+
 				command += [identifier]
+
+				# execute "groupdel"
 				exit_code = self.process(command)
 				if exit_code == 6:
-					raise ModifyError(_('Group "%s" does not exist.' % identifier))
+					raise ModifyError(_('Group "%s" does not exist.') % identifier)
 				if exit_code:
 					raise ModifyError(_('Could not delete group "%s". See log for more informaton.') % identifier)
 					MODULE.error('Processing "%s" failed and returned %s' % (str(command), str(exit_code)))

@@ -45,9 +45,9 @@ _ = Translation( 'univention-management-console-module-luga' ).translate
 
 class Process:
 	def sanitize_arg(self, arg):
-#		if ':' in str(arg):
-#			raise ValueError(_('arguments can not contain ":"'))
-		return arg.replace(':')
+		if ':' in str(arg):
+			raise ValueError(_('arguments can not contain ":"'))
+		return arg
 
 	def sanitize_int(self, num):
 		num = str(num)
@@ -61,12 +61,12 @@ class Process:
 
 	def validate_name(self, name):
 		if not name:
-			raise ValueError( _('No name given') )
-		rpattern = r'^[a-zA-Z_][a-zA-Z0-9_-]*[$]?$'
+			raise ValueError( _('No name given.') )
+		rpattern = r'^[a-zA-Z_äÄüÜöÖ][a-zA-ZäÄüÜöÖ0-9_-]*[$]?$'
 		if None is re.match(rpattern, str(name)):
-			raise ValueError( _('name can only contain letters, numbers, "-" and "_" and must not start with "-"') )
+			raise ValueError( _('Name may only contain letters, numbers, "-" and "_" and must not start with "-".') )
 		if len(str(name)) > 32:
-			raise ValueError( _('name can not be longer than 32 chars') )
+			raise ValueError( _('Name may not be longer than 32 characters.') )
 
 	def process(self, args, stdin=None):
 		"""

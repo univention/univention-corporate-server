@@ -43,14 +43,14 @@ from univention.management.console.protocol.definitions import *
 _ = Translation( 'univention-management-console-module-luga' ).translate
 
 class Users:
-	def gid2name(self, gid):
+	def _gid2name(self, gid):
 		"""
 			return groupname of a group id or empty string if no group was found
 		"""
-		ret = self.group_search('gid', gid)
+		ret = self._search_groups('gid', gid)
 		return ret.pop().get('groupname') if len(ret) < 1 else ''
 
-	def parse_users(self, category='username', pattern='*'):
+	def _parse_users(self, category='username', pattern='*'):
 		""" parse /etc/passwd and /etc/shadow
 			param category: one of [username, uid, gid, fullname, gecos, homedir, shell, group]
 			param pattern: a searchpattern
@@ -81,8 +81,8 @@ class Users:
 				(username, password, uid, gid, gecos, homedir, shell) = user[:-1].split(':')
 
 				# Groups
-				group = self.gid2name(gid) # primary group
-				groups = self.get_additional_groups(username)
+				group = self._gid2name(gid) # primary group
+				groups = self._get_additional_groups(username)
 				groups_mixin = groups + [group]
 
 				# Filter
@@ -148,7 +148,7 @@ class Users:
 			raise UMC_CommandError(_('Could not open passwd/shadow file'))
 		return users
 
-	def change_user_password(self, username, password, options={}):
+	def _change_user_password(self, username, password, options={}):
 		"""
 			change the userpassword and options for <username>
 			raises ValueError on error
@@ -230,12 +230,12 @@ class Users:
 		category = request.options.get('category', 'username')
 		pattern = request.options.get('pattern', '*')
 
-		response = self.parse_users( category, pattern )
+		response = self._parse_users( category, pattern )
 
 		MODULE.info( 'luga.users_query: results: %s' % response )
 		self.finished(request.id, response, status=SUCCESS)
 
-	def users_get_users(self, request):
+	def get_users(self, request):
 		"""
 			returns a shorten list containing a dict for each user
 			[ {'id': <username>, 'label': <username>}, ... ]
@@ -245,17 +245,18 @@ class Users:
 		category = request.options.get('category', 'username')
 		pattern = request.options.get('pattern', '*')
 
-		response = [ {'id': u['username'], 'label': u['username']} for u in self.parse_users(category, pattern) ]
+#		response = [ {'id': u['username'], 'label': u['username']} for u in self._parse_users(category, pattern) ]
+		response = [ u['username'] for u in self._parse_users(category, pattern) ]
 
 		MODULE.info( 'luga.users_query: results: %s' % str(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
-	def get_group_members(self, groupname):
+	def _get_group_members(self, groupname):
 		"""
 			returns a list containing all users which are in <groupname> as strings
 			[ <username>, <username2>, ... ]
 		"""
-		return map( lambda u: u['username'], self.parse_users('groupname', groupname) )
+		return map( lambda u: u['username'], self._parse_users('groupname', groupname) )
 
 	def users_get( self, request ):
 		"""
@@ -269,7 +270,7 @@ class Users:
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
 		userdict = {}
-		for user in self.parse_users():
+		for user in self._parse_users():
 			if user['username'] in request.options:
 				userdict[user['username']] = user
 		response = [ userdict.get(username) for username in request.options ]
@@ -277,7 +278,7 @@ class Users:
 		MODULE.info( 'luga.users_get: results: %s' % str(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
-	def get_common_args( self, options, pwoptions={} ):
+	def _get_common_args( self, options, pwoptions={} ):
 		"""
 			get args which are equal for put and add
 			can also modify an dict with password options
@@ -365,7 +366,7 @@ class Users:
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 		else:
 			c = deepcopy(request.options)
-			map(lambda d: type(d) is dict and 'options' in d and 'password' in d['object'] and type(d['object']) is dict and d['object'].pop('password'), c)
+			map(lambda d: type(d) is dict and 'object' in d and 'password' in d['object'] and type(d['object']) is dict and d['object'].pop('password'), c)
 			MODULE.info( 'luga.users_put: options: %s' % c )
 
 		response = []
@@ -388,12 +389,12 @@ class Users:
 
 				pwoptions = {}
 				cmd = ['/usr/sbin/usermod']
-				cmd += self.get_common_args( option, pwoptions )
+				cmd += self._get_common_args( option, pwoptions )
 
 				# Change username
 				if new_username and username != new_username:
 					self.validate_name(new_username)
-					cmd += ['-l', self.sanitize_arg( new_username )]
+					cmd += ['-l', self.sanitize_arg(new_username)]
 
 				# Account deactivation
 				if pwoptions.get('lock'):
@@ -404,14 +405,14 @@ class Users:
 
 				# Password
 				password = option.get('password')
-				self.change_user_password(username, password, pwoptions)
+				self._change_user_password(username, password, pwoptions)
 
 				# Execute
 				if len(cmd) > 1:
 					cmd.append(self.sanitize_arg(username))
 					returncode = self.process(cmd)
 					if returncode != 0:
-						MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
+						MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode))
 						error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
 						raise ValueError( error )
 
@@ -433,7 +434,7 @@ class Users:
 			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 		else:
 			c = deepcopy(request.options)
-			map(lambda d: type(d) is dict and 'options' in d and 'password' in d['object'] and type(d['object']) is dict and d['object'].pop('password'), c)
+			map(lambda d: type(d) is dict and 'object' in d and 'password' in d['object'] and type(d['object']) is dict and d['object'].pop('password'), c)
 			MODULE.info( 'luga.users_add: options: %s' % (c) )
 
 		response = []
@@ -470,10 +471,10 @@ class Users:
 				else:
 					cmd.append('-N')
 
-				cmd += self.get_common_args( option, pwoptions )
+				cmd += self._get_common_args( option, pwoptions )
 
 				# Execute
-				cmd.append(self.sanitize_arg(username)) #TODO: sanitize_name ?
+				cmd.append(self.sanitize_arg(username))
 				returncode = self.process(cmd)
 				if 0 != returncode:
 					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
@@ -482,7 +483,7 @@ class Users:
 
 				# Change Password + options
 				password = option.get('password')
-				self.change_user_password(username, password, pwoptions)
+				self._change_user_password(username, password, pwoptions)
 			except ValueError as e:
 				message = (username + ': ' if type(username) is str else '') + str(e)
 			finally:

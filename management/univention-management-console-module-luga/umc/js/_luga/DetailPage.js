@@ -67,10 +67,10 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		this.standbyOpacity = 1;
 
 		// set the page header
-		if (this.moduleFlavor === 'luga/users') {
+		if (this.moduleFlavor === 'users') {
 			this.headerText = this._('Properties for user %s', '');
 			this.helpText = this._('Create or modify an local user.');
-		} else if (this.moduleFlavor === 'luga/groups') {
+		} else if (this.moduleFlavor === 'groups') {
 			this.headerText = this._('Group properties');
 			this.helpText = this._('Create or modify a local group');
 		}
@@ -95,8 +95,9 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 
 	renderDetailPage: function() {
 		// render the form containing all detail information that may be edited
-		var widgets;
-		var layout;
+		var widgets, layout;
+
+		var nameDescription = this._('May consist of up to 32 characters including letters, "ä, Ä, ü, Ü, ö, Ö", "_", "-", and not start with "-"');
 
 		var validator = function(value) {
 			return -1 === value.search(':');
@@ -106,14 +107,15 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			return validator(value) && (-1 === value.search(','));
 		};
 
-		if (this.moduleFlavor === 'luga/users') {
+		if (this.moduleFlavor === 'users') {
 			// specify all widgets
 			widgets = [{
 				type: 'TextBox',
 				name: 'username',
+				description: nameDescription,
 				required: true,
 				validator: function(value) {
-					return validator(value) && ('-' !== value[0]);
+					return null !== value.match(/^[a-zA-Z_][a-zA-Z0-9_\-]*[$]?$/);
 				},
 				label: this._('Username')
 			}, {
@@ -142,7 +144,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				label: this._('Additional Groups'),
 				formatter: function(ids) {
 					dojo.forEach(ids, function(id, i) {
-						if (dojo.isString(id)) { ids[i] = {label: id, id: id};}
+						if (dojo.isString(id)) { ids[i] = {label: id, id: id}; }
 					});
 					return ids;
 				},
@@ -267,28 +269,58 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				layout: [ 'group', 'groups' ]
 			}, {
 				label: this._('Account information'),
-				layout: [ 'uid', 'shell',  'homedir', 'create_home']
+				layout: [ 'uid', 'shell',  'homedir']
 			}, {
 				label: this._('Options and Password'), // TODO: better description
-				layout: [ ['pw_last_change', 'disabled_since'], ['pw_mindays', 'pw_maxdays'], ['pw_warndays', 'pw_disabledays'] ]
+				layout: [ 'pw_last_change', 'disabled_since', 'pw_mindays', 'pw_maxdays', 'pw_warndays', 'pw_disabledays' ]
 			}];
-		} else if (this.moduleFlavor === 'luga/groups') {
+		} else if (this.moduleFlavor === 'groups') {
 			widgets = [{
 				type: 'TextBox',
 				name: 'groupname',
+				label: this._('Groupname'),
+				description: nameDescription,
 				validator: function(value) {
 					return validator(value) && ('-' !== value[0]);
-				},
-				label: this._('Groupname')
+				}
 			}, {
-				type: 'TextBox',
+				type: 'NumberSpinner',
 				name: 'gid',
 				label: this._('Group ID')
 			}, {
-				type: 'MultiSelect',
+				type: 'MultiObjectSelect',
 				name: 'users',
+				validator: validator,
 				label: this._('Users'),
-				dynamicValues: 'luga/users/get_users'
+				formatter: function(ids) {
+					dojo.forEach(ids, function(id, i) {
+						if (dojo.isString(id)) { ids[i] = {label: id, id: id};}
+					});
+					return ids;
+				},
+				queryWidgets: [ {
+					type: 'ComboBox',
+					name: 'category',
+					label: this._('Category'),
+					staticValues: [
+						{id: 'username', label: this._('Username')},
+						{id: 'uid', label: this._('User ID')},
+						{id: 'group', label: this._('Primary group')}
+					]
+				}, {
+					type: 'TextBox',
+					name: 'pattern',
+					value: '*',
+					label: this._('Search pattern')
+				}, {
+					type: 'ComboBox'
+				}],
+				queryCommand: dojo.hitch(this, function(options) { 
+					return this.moduleStore.umcpCommand('luga/users/get_users', options).then(function(data) {
+						return data.result;
+					});
+				}),
+				autoSearch: true
 			}];
 
 			layout = [{
@@ -421,14 +453,33 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			return;
 		}
 
-		// set the original username
-		if (this.moduleFlavor === 'luga/users') {
+		if (this.moduleFlavor === 'users') {
+			// set the original username
 			values.$username$ = this._receivedObjFormData.username;
-		}
-		else if (this.moduleFlavor === 'luga/groups') {
-			values.id = this._receivedObjFormData.groupname;
-		}
 
+			// ask for moving homefolder
+			if (!this._newObject && undefined !== values.homedir) {
+				umc.dialog.confirm(this._form.getWidget('create_home'), [{
+					label: this._('OK'),
+					callback: dojo.hitch(this, function() {
+						values.create_home = this._form.getWidget('create_home').getValue();
+						this._saveValues(values);
+					})
+				}, {
+					label: this._('Cancel'),
+					"default": true
+				}]);
+			} else {
+				this._saveValues(values);
+			}
+		}
+		else if (this.moduleFlavor === 'groups') {
+			values.id = this._receivedObjFormData.groupname;
+			this._saveValues(values);
+		}
+	},
+
+	_saveValues: function(values) {
 		var deferred = null;
 		if (this._newObject) {
 			deferred = this.moduleStore.add(values);
@@ -514,7 +565,10 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}));
 
 			// hide disabled_since field if account is not disabled
-			this._form.getWidget('disabled_since').set('visible', this._form.getWidget('lock').get('value'));
+			this._form.getWidget('disabled_since').set('visible', !this._form.getWidget('lock').get('value'));
+
+			// disable userid field
+			this._form.getWidget('uid').set('disabled', true);
 		}
 
 		// on adding and modifiing user
@@ -526,9 +580,6 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}
 			this._form.getWidget('password').setDisabledAttr(enabled);
 		}));
-
-		// set specific labels
-		this._form.getWidget('create_home').set('label', this._newObject ? this._('Create home folder') : this._('Move home folder'));
 	},
 
 	_resetForm: function() {
@@ -551,8 +602,11 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				w.set('disabled', false);
 			}
 		}, this);
-		if (this.moduleFlavor === 'luga/users') {
-			this._form.getWidget('group').set('value', []);
+		if (this.moduleFlavor === 'users') {
+			this._form.getWidget('groups').set('value', []);
+			if (this._newObject) {
+				this._form.getWidget('group').set('value', '');
+			}
 		}
 	},
 
@@ -577,13 +631,12 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			this._receivedObjFormData = this._form.gatherFormValues();
 
 			// prepare the Form, initialize connects
-			if (this.moduleFlavor === 'luga/users') {
+			if (this.moduleFlavor === 'users') {
 				this.prepareFormUsers();
-			} else if (this.moduleFlavor === 'luga/groups') {
+			} else if (this.moduleFlavor === 'groups') {
 				this.prepareFormGroups();
 			}
 
-			this._receivedObjFormData = this._form.gatherFormValues();
 			this.standby(false);
 		}), dojo.hitch(this, function() {
 				this.standby(false);
