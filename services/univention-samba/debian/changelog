@@ -1,3 +1,10 @@
+univention-samba (6.0.26-1) unstable; urgency=low
+
+  * The UCR variables samba/script/* can now be set to the command
+    itself (Bug #26814)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Apr 2012 14:20:11 +0200
+
 univention-samba (6.0.25-1) unstable; urgency=low
 
   * fixed dependency to univention-lib (Bug #26025) 
