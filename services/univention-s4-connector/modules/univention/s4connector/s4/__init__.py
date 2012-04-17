@@ -1146,15 +1146,29 @@ class s4(univention.s4connector.ucs):
 						s4_members.append(compatible_modstring(member))
 				s4_members.append(compatible_modstring(object['dn']))
 				self.lo_s4.lo.modify_s(compatible_modstring(s4_group_object['dn']),[(ldap.MOD_REPLACE, 'member', s4_members)])
-				ud.debug(ud.LDAP, ud.INFO,
-									   "primary_group_sync_from_ucs: primary Group needed change of membership in S4")
+				ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: primary Group needed change of membership in S4")
 				
 			# set new primary group
 			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']),[(ldap.MOD_REPLACE, 'primaryGroupID', rid)])
-			ud.debug(ud.LDAP, ud.INFO,
-								   "primary_group_sync_from_ucs: changed primary Group in S4")
-			return True
+			ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: changed primary Group in S4")
 
+			# If the user is not member in UCS of the previous primary group, the user must
+			# be removed from this group in AD: https://forge.univention.org/bugzilla/show_bug.cgi?id=26514
+			prev_samba_primary_group_id = ldap_object_s4.get('primaryGroupID', [])[0]
+			object_sid_string = str(self.s4_sid) + "-" + str(prev_samba_primary_group_id)
+			s4_group = self.__search_s4( base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter='objectSid=%s' % object_sid_string)
+			ucs_group_object = self._object_mapping('group', {'dn':s4_group[0][0], 'attributes': s4_group[0][1]}, 'con')
+			ucs_group = self.get_ucs_ldap_object(ucs_group_object['dn'])
+			is_member = False
+			for member in ucs_group.get('uniqueMember', []):
+				if member.lower() == object_ucs['dn'].lower():
+					is_member = True
+					break
+			if not is_member:
+				# remove S4 member from previous group
+				self.lo_s4.lo.modify_s(s4_group[0][0],[(ldap.MOD_DELETE, 'member', [compatible_modstring(object['dn'])])])
+			
+			return True
 
 	def primary_group_sync_to_ucs(self, key, object): # object mit ucs-dn
 		'''
