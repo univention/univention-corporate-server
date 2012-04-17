@@ -21,3 +21,33 @@ Description[de]=Größenlimit für die SPAM-Prüfung (KiB)
 Description[en]=Sizelimit for spam check (KiB)
 Type=str
 Categories=service-mail
+
+[clamav/database/mirror]
+Description[de]=Server, von den die Databank Updates geladen werden.
+Description[en]=Server  name  where  database  updates  are  downloaded from.
+Type=str
+Categories=service-mail
+
+[clamav/proxy/http]
+Description[de]=HTTP Proxy für freshclam
+Description[en]=HTTP Proxy to use
+Type=str
+Categories=service-mail
+
+[clamav/proxy/username]
+Description[de]=HTTP Proxy Benutzer für freshclam
+Description[en]=freshclam HTTP proxy username 
+Type=str
+Categories=service-mail
+
+[clamav/proxy/password]
+Description[de]=HTTP Proxy Passwort für freshclam
+Description[en]=freshclam HTTP proxy password
+Type=str
+Categories=service-mail
+
+[clamav/proxy/port]
+Description[de]=HTTP Proxy Port für freshclam
+Description[en]=freshclam HTTP proxy port
+Type=str
+Categories=service-mail

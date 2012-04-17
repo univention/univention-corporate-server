@@ -27,3 +27,11 @@ File: etc/clamav/clamd.conf
 Type: file
 File: etc/clamav/freshclam.conf
 Variables: clamav/database/mirror
+Variables: clamav/proxy/http
+Variables: clamav/proxy/username
+Variables: clamav/proxy/password
+Variables: clamav/proxy/port
+Variables: proxy/http
+User: clamav
+Group: root
+Mode: 0700
