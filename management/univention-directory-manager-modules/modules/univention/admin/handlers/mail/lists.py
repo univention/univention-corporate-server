@@ -89,7 +89,7 @@ property_descriptions={
 			identifies=0
 		),
 	'allowedEmailUsers': univention.admin.property(
-			short_description=_('Allowed e-mail users'),
+			short_description=_('Users with mailing privileges'),
 			long_description='',
 			syntax=univention.admin.syntax.UserDN,
 			multivalue=1,
@@ -99,7 +99,7 @@ property_descriptions={
 			identifies=0
 		),
 	'allowedEmailGroups': univention.admin.property(
-			short_description=_('Allowed e-mail groups'),
+			short_description=_('Groups with mailing privileges'),
 			long_description='',
 			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
@@ -118,10 +118,10 @@ layout = [
 			"members"
 		] ),
 	] ),
-	Tab( _( 'Allowed users' ), _( 'Users that are allowed to send e-mails to the list' ), advanced = True, layout = [
+	Tab( _( 'Authorised users' ), _( 'Users that are allowed to send e-mails to the list' ), advanced = True, layout = [
 		"allowedEmailUsers"
 		] ),
-	Tab( _( 'Allowed groups' ), _( 'Groups that are allowed to send e-mails to the list' ), advanced = True, layout = [
+	Tab( _( 'Authorised groups' ), _( 'Groups that are allowed to send e-mails to the list' ), advanced = True, layout = [
 		"allowedEmailGroups"
 		] )
 	]

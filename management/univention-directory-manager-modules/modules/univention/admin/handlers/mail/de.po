@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 15:03+0200\n"
+"POT-Creation-Date: 2012-02-09 12:59+0100\n"
 "PO-Revision-Date: 2008-07-09 14:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,24 +107,24 @@ msgid "Mail address"
 msgstr "Mail-Adresse"
 
 #: lists.py:92
-msgid "Allowed e-mail users"
-msgstr "Berechtigte E-Mail Benutzer"
+msgid "Users with mailing privileges"
+msgstr "Benutzer mit Sendeberechtigung"
 
 #: lists.py:102
-msgid "Allowed e-mail groups"
-msgstr "Berechtigte E-Mail Gruppen"
+msgid "Groups with mailing privileges"
+msgstr "Gruppen mit Sendeberechtigung"
 
 #: lists.py:121
-msgid "Allowed users"
-msgstr "Berechtigte Benutzer"
+msgid "Authorised users"
+msgstr "Autorisierte Benutzer"
 
 #: lists.py:121
 msgid "Users that are allowed to send e-mails to the list"
 msgstr "Benutzer, die berechtigt sind, E-Mails an diese Liste zu versenden"
 
 #: lists.py:124
-msgid "Allowed groups"
-msgstr "Berechtigte Gruppen"
+msgid "Authorised groups"
+msgstr "Autorisierte Gruppen"
 
 #: lists.py:124
 msgid "Groups that are allowed to send e-mails to the list"
@@ -153,6 +153,12 @@ msgstr "Suchen"
 #: mail.py:56
 msgid "Search mail object(s)"
 msgstr "Mail-Objekt(e) suchen"
+
+#~ msgid "Allowed e-mail users"
+#~ msgstr "Berechtigte E-Mail Benutzer"
+
+#~ msgid "Allowed e-mail groups"
+#~ msgstr "Berechtigte E-Mail Gruppen"
 
 #~ msgid "Should be visible for Outlook"
 #~ msgstr "Soll für Outlook sichtbar sein"
