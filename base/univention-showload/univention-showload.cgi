@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 # Univention Showload
 #  showload cgi script
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,8 +29,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-loadavg="`echo \`cat /proc/loadavg |awk '{print $3}'\`*100 | bc | cut -f1 -d"."`"
-
-echo "Content-type: text/html"; echo
-echo "LOAD:$loadavg"
-
+LC_ALL=C exec awk '{printf "Content-Type: text/plain\n\nLOAD:%d\n", $3*100}' /proc/loadavg

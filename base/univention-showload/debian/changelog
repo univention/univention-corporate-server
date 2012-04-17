@@ -1,3 +1,9 @@
+univention-showload (5.0.1-1) unstable; urgency=low
+
+  * Rewrite CGI-script (Bug #21975)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 24 Mar 2011 10:58:56 +0100
+
 univention-showload (5.0.0-2) unstable; urgency=low
 
   * Fixed typo in control file (Bug #22433)

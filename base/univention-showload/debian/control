@@ -6,7 +6,7 @@ Build-Depends: debhelper (>> 7), ucslint
 
 Package: univention-showload
 Architecture: all
-Depends: bc, httpd
+Depends: httpd
 Description: UCS - load balancing server
  This package contain the UCS load balancing server.
  .
