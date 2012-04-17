@@ -1098,6 +1098,23 @@ class ad(univention.connector.ucs):
 								   "primary_group_sync_from_ucs: changed primary Group in AD")
 			return True
 
+			# If the user is not member in UCS of the previous primary group, the user must
+			# be removed from this group in AD: https://forge.univention.org/bugzilla/show_bug.cgi?id=26809
+			prev_samba_primary_group_id = ldap_object_ad.get('primaryGroupID', [])[0]
+			object_sid_string = str(self.ad_sid) + "-" + str(prev_samba_primary_group_id)
+			ad_group = self.__search_ad( base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter='objectSid=%s' % object_sid_string)
+			ucs_group_object = self._object_mapping('group', {'dn':ad_group[0][0], 'attributes': ad_group[0][1]}, 'con')
+			ucs_group = self.get_ucs_ldap_object(ucs_group_object['dn'])
+			is_member = False
+			for member in ucs_group.get('uniqueMember', []):
+				if member.lower() == object_ucs['dn'].lower():
+					is_member = True
+					break
+			if not is_member:
+				# remove AD member from previous group
+				self.lo_ad.lo.modify_s(ad_group[0][0],[(ldap.MOD_DELETE, 'member', [compatible_modstring(object['dn'])])])
+			
+			return True
 
 	def primary_group_sync_to_ucs(self, key, object): # object mit ucs-dn
 		'''
@@ -1261,7 +1278,7 @@ class ad(univention.connector.ucs):
 				try:
 					if self.lo_ad.get(ad_dn,attr=['cn']): # search only for cn to suppress coding errors
 						ad_members_from_ucs.append(ad_dn.lower())
-						self.group_mapping_cache_ucs[member_dn.lower()] = s4_dn
+						self.group_mapping_cache_ucs[member_dn.lower()] = ad_dn
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except:  # FIXME: which exception is to be caught?
