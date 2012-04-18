@@ -3,7 +3,7 @@
 # Univention Configuration Registry
 #  postrm file
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,5 +35,6 @@ set -e
 if test "$1" = "purge"; then
 	rm -rf /var/cache/univention-baseconfig
 fi
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/set_locale.py 1.0.48~ -- "$@"
 
 #DEBHELPER#

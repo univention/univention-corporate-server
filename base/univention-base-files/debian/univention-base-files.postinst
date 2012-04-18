@@ -3,7 +3,7 @@
 # Univention Configuration Registry
 #  postinst file
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -173,6 +173,7 @@ if [ -z "$locale_keymap" ]; then
 		done
 	fi
 fi
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/set_locale.py 1.0.48~ -- "$@"
 
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 

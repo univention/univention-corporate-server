@@ -3,7 +3,7 @@
 # Univention Configuration Registry
 #  rules file for the debian package
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,6 +40,8 @@ override_dh_install:
 	dh_install
 	mv debian/univention-base-files/usr/lib/univention-directory-policy/nfsmounts.py debian/univention-base-files/usr/lib/univention-directory-policy/nfsmounts
 	mv debian/univention-base-files/usr/lib/univention-directory-policy/univention-policy-update-config-registry.py debian/univention-base-files/usr/lib/univention-directory-policy/univention-policy-update-config-registry
+	mkdir -p debian/univention-base-files/etc/univention/templates/scripts/etc
+	ln -s /usr/sbin/locale-gen debian/univention-base-files/etc/univention/templates/scripts/etc/locale.gen
 
 override_dh_fixperms:
 	dh_fixperms

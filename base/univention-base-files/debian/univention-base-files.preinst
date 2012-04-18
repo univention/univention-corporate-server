@@ -31,6 +31,9 @@
 # <http://www.gnu.org/licenses/>.
 
 dpkg-divert --rename --quiet --divert /etc/motd.debian --package univention-base-files --add /etc/motd
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/set_locale.py 1.0.48~ -- "$@"
+rm -f /etc/univention/templates/modules/set_locale.pyc || true
+
 
 #DEBHELPER#
 
