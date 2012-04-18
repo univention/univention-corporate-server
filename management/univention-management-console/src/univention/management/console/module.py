@@ -116,6 +116,30 @@ class Module( JSON_Object ):
 			command.fromJSON( cmd )
 			self.commands.append( command )
 
+	def merge( self, other ):
+		''' merge another Module object into current one '''
+		if not self.name:
+			self.name = other.name
+
+		if not self.icon:
+			self.icon = other.icon
+
+		if not self.description:
+			self.description = other.description
+
+		for flavor in other.flavors:
+			if not flavor in self.flavors:
+				self.flavors.append(flavor)
+
+		for category in other.categories:
+			if not category in self.categories:
+				self.categories.append(category)
+
+		for command in other.commands:
+			if not command in self.commands:
+				self.commands.append(command)
+
+
 class XML_Definition( ET.ElementTree ):
 	'''container for the interface description of a module'''
 	def __init__( self, root = None, filename = None ):
@@ -210,7 +234,8 @@ class Manager( dict ):
 			except xml.parsers.expat.ExpatError, e:
 				RESOURCES.warn( 'Failed to load module %s: %s' % ( filename, str( e ) ) )
 				continue
-			self[ mod.id ] = mod
+			# save list of definitions in self
+			self.setdefault( mod.id, [] ).append(mod)
 
 	def permitted_commands( self, hostname, acls ):
 		'''Retrieves a list of all modules and commands available
@@ -221,21 +246,31 @@ class Manager( dict ):
 		RESOURCES.info( 'Retrieving list of permitted commands' )
 		modules = {}
 		for module_id in self:
-			mod = self[ module_id ].get_module()
+			# get first Module and merge all subsequent Module objects into it
+			mod = None
+			for module_xml in self[ module_id ]:
+				nextmod = module_xml.get_module()
+				if mod:
+					mod.merge( nextmod )
+				else:
+					mod = nextmod
+
 			if not mod.flavors:
 				flavors = [ Flavor( id = None ) ]
 			else:
 				flavors = copy.copy( mod.flavors )
 			for flavor in flavors:
 				at_least_one_command = False
-				for command in self[ module_id ].commands():
-					if acls.is_command_allowed( command, hostname, flavor = flavor.id ):
-						if not module_id in modules:
-							modules[ module_id ] = mod
-						cmd = self[ module_id ].get_command( command )
-						if not cmd in modules[ module_id ].commands:
-							modules[ module_id ].commands.append( cmd )
-						at_least_one_command = True
+				# iterate over all commands in all XML descriptions
+				for module_xml in self[ module_id ]:
+					for command in module_xml.commands():
+						if acls.is_command_allowed( command, hostname, flavor = flavor.id ):
+							if not module_id in modules:
+								modules[ module_id ] = mod
+							cmd = module_xml.get_command( command )
+							if not cmd in modules[ module_id ].commands:
+								modules[ module_id ].commands.append( cmd )
+							at_least_one_command = True
 
 				# if there is not one command allowed with this flavor
 				# it should not be shown in the overview

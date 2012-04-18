@@ -1,3 +1,9 @@
+univention-management-console (4.0.212-1) unstable; urgency=low
+
+  * add support for multiple XML definitions for a single UMC module (Bug #24260)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 Apr 2012 15:48:45 +0200
+
 univention-management-console (4.0.211-1) unstable; urgency=low
 
   * add support for using a different notifier implementation; Bug #26703
