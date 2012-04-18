@@ -1,3 +1,9 @@
+univention-management-console (4.0.213-1) unstable; urgency=low
+
+  * add support for deactivating flavors (Bug #26831)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 Apr 2012 17:49:06 +0200
+
 univention-management-console (4.0.212-1) unstable; urgency=low
 
   * add support for multiple XML definitions for a single UMC module (Bug #24260)

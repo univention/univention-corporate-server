@@ -76,12 +76,13 @@ class Command( JSON_Object ):
 class Flavor( JSON_Object ):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
-	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [] ):
+	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [], deactivated=False ):
 		self.id = id
 		self.name = name
 		self.description = description
 		self.icon = icon
 		self.overwrites = overwrites
+		self.deactivated = deactivated
 
 class Module( JSON_Object ):
 	'''Represents an command attribute'''
@@ -128,8 +129,7 @@ class Module( JSON_Object ):
 			self.description = other.description
 
 		for flavor in other.flavors:
-			if not flavor in self.flavors:
-				self.flavors.append(flavor)
+			self.flavors.append(flavor)
 
 		for category in other.categories:
 			if not category in self.categories:
@@ -171,8 +171,9 @@ class XML_Definition( ET.ElementTree ):
 		for elem in self.findall( 'module/flavor' ):
 			flavor = Flavor( elem.get( 'id' ), elem.get( 'icon' ) )
 			flavor.overwrites = elem.get( 'overwrites', '' ).split( ',' )
-			flavor.name = elem.find( 'name' ).text
-			flavor.description = elem.find( 'description' ).text
+			flavor.deactivated = (elem.get( 'deactivated', 'no' ).lower() in ('yes','true','1'))
+			flavor.name = elem.findtext('name','')
+			flavor.description = elem.findtext('description','')
 			yield flavor
 
 	@property
@@ -259,7 +260,14 @@ class Manager( dict ):
 				flavors = [ Flavor( id = None ) ]
 			else:
 				flavors = copy.copy( mod.flavors )
+
+			deactivated_flavors = set()
 			for flavor in flavors:
+				RESOURCES.info('mod=%s  flavor=%s  deactivated=%s' % (module_id, flavor.id, flavor.deactivated))
+				if flavor.deactivated:
+					deactivated_flavors.add(flavor.id)
+					continue
+
 				at_least_one_command = False
 				# iterate over all commands in all XML descriptions
 				for module_xml in self[ module_id ]:
@@ -276,6 +284,8 @@ class Manager( dict ):
 				# it should not be shown in the overview
 				if not at_least_one_command and mod.flavors:
 					mod.flavors.remove( flavor )
+
+			mod.flavors = JSON_List( filter( lambda f: f.id not in deactivated_flavors, mod.flavors ) )
 
 			overwrites = set()
 			for flavor in mod.flavors:
