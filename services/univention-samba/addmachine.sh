@@ -35,6 +35,7 @@ name="$1"
 
 if [ -z "$name" ] || [ "$name" = "-h" -o "$name" = "-?" -o "$name" = "-help" -o "$name" = "--help" ]; then
 	echo "Usage: $0 <windows computer name>"
+	exit 1
 fi
 
 eval $(ucr shell ldap/master hostname)
