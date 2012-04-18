@@ -158,16 +158,19 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 		univention-directory-manager computers/$server_role modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(cat /etc/machine.secret)"
 	fi
 
-	$JOIN_CMD -U${samba_account}%${samba_pwd}
-	if [ $? != 0 ]; then
-		$JOIN_CMD -U${samba_account}%${samba_pwd} -S${ldap_master}
-		if [ $? != 0 ]; then
-			echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
-			exit 1
-		else
-			#The join against the ldap_master was successful, set him as wins server
-			univention-config-registry set windows/wins-server?"${ldap_master}"
-		fi
+	# Join against the global workgroup
+	if $JOIN_CMD -U${samba_account}%${samba_pwd}; then
+		:
+	# try to join directly against the DC master
+	elif $JOIN_CMD -U${samba_account}%${samba_pwd} -S${ldap_master}; then
+		#The join against the ldap_master was successful, set him as wins server
+		univention-config-registry set windows/wins-server?"${ldap_master}"
+	# try to join against localhost
+	elif $JOIN_CMD -U${samba_account}%${samba_pwd} -Slocalhost; then
+		:
+	else
+		echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
+		exit 1
 	fi
 
 	# restart samba

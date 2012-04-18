@@ -1,3 +1,9 @@
+univention-samba (6.0.29-1) unstable; urgency=low
+
+  * Try to join against localhost if the join failed (Bug #26828)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Apr 2012 14:37:14 +0200
+
 univention-samba (6.0.28-1) unstable; urgency=low
 
   * addmachine.sh: Exit when showing the help (Bug #26821)
