@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+#!/bin/bash
 #
 # Univention Samba
-#  rules file for the debian package
+#  Script for adding a machine via UMC
 #
-# Copyright 2006-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,24 +30,31 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install 
 
-override_dh_fixperms:
-	chmod 755 debian/univention-samba/usr/share/univention-samba/kerberize_user
-	chmod 755 debian/univention-samba/usr/lib/univention-directory-listener/system/samba-shares.py
-	chmod 755 debian/univention-samba/usr/share/univention-samba/remove-samba-account
-	chmod 755 debian/univention-samba/usr/share/univention-samba/slave-sync
-	chmod 755 debian/univention-samba/usr/lib/univention-directory-listener/system/samba-privileges.py
-	chmod 755 debian/univention-samba/usr/share/univention-samba/addmachine.sh
-	dh_fixperms 
+name="$1"
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+if [ -z "$name" ] || [ "$name" = "-h" -o "$name" = "-?" -o "$name" = "-help" -o "$name" = "--help" ]; then
+	echo "Usage: $0 <windows computer name>"
+fi
 
-%:
-	dh $@
+eval $(ucr shell ldap/master hostname)
 
+# Create the windows computer via UMC
+/usr/sbin/umc-command -s "$ldap_master" -y /etc/machine.secret -U "$hostname$" selectiveudm/create_windows_computer -o name="$name"; rc=$?
+if [ $rc != 0 ]; then
+	echo "Failed to create $name. $rc"
+	exit $?
+fi
+
+# Wait for the replication (maximal 60 seconds)
+c=0
+while [ $c -lt  60 ]; do
+	dn=$(univention-ldapsearch "uid=${name/%$/}$" dn | sed -ne 's|dn: ||p')
+	test -n "$dn" && break
+done
+
+# Invalidate the nscd passwd cache
+nscd -i passwd
+
+exit 0
 

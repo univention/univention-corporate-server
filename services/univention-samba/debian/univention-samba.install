@@ -15,3 +15,4 @@ vampire/password_check usr/share/univention-samba/
 vampire/mount_extfs_with_user_xattr.py usr/share/univention-samba/
 26univention-samba.inst usr/lib/univention-install/
 kerberize_user usr/share/univention-samba/
+addmachine.sh usr/share/univention-samba/
