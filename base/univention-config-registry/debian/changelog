@@ -1,3 +1,9 @@
+univention-config-registry (7.0.30-1) unstable; urgency=low
+
+  * Do not redirect stdout to /dev/null when executing scripts (Bug #26840)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 19 Apr 2012 13:44:28 +0200
+
 univention-config-registry (7.0.29-2) unstable; urgency=low
 
   * fixed last commit (Bug #25206) 
