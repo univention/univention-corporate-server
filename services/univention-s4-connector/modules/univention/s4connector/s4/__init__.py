@@ -643,6 +643,13 @@ class s4(univention.s4connector.ucs):
 			# shows that it's supported, but currently it is unhappy if you mark it critical
 			self.ctrl_show_deleted = LDAPControl('1.2.840.113556.1.4.417',criticality=0)
 
+		self.serverctrls_for_add_and_modify = []
+		if 'univention_samaccountname_ldap_check' in self.configRegistry.get('samba4/ldb/sam/module/prepend', '').split():
+			## The S4 connector must bypass this LDB module if it is activated via samba4/ldb/sam/module/prepend
+			## The OID of the 'bypass_samaccountname_ldap_check' control is defined in ldb.h
+			ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
+			self.serverctrls_for_add_and_modify.append( ldb_ctrl_bypass_samaccountname_ldap_check )
+
 		# Build an internal cache with S4 as key and the UCS object as cache
 		self.group_mapping_cache_ucs = {}
 		self.group_mapping_cache_con = {}
@@ -2094,7 +2101,7 @@ class s4(univention.s4connector.ucs):
 								else:
 									modlist.append((ldap.MOD_DELETE, attr, None))
 
-				self.lo_s4.lo.add_s(compatible_modstring(object['dn']), compatible_addlist(addlist)) #FIXME encoding
+				self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=self.serverctrls_for_add_and_modify) #FIXME encoding
 
 				if property_type == 'group':
 					self.group_members_cache_con[object['dn'].lower()] = []
@@ -2106,7 +2113,7 @@ class s4(univention.s4connector.ucs):
 
 				ud.debug(ud.LDAP, ud.INFO, "to modify: %s"%object['dn'])
 				if modlist:
-					self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+					self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=self.serverctrls_for_add_and_modify)
 
 				if hasattr(self.property[property_type],"post_con_modify_functions"):
 					for f in self.property[property_type].post_con_modify_functions:
@@ -2187,7 +2194,7 @@ class s4(univention.s4connector.ucs):
 
 				if modlist:
 					ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modlist: %s" % modlist)
-					self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+					self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=self.serverctrls_for_add_and_modify)
 
 
 				if hasattr(self.property[property_type],"post_con_modify_functions"):

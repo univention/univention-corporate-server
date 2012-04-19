@@ -1,3 +1,11 @@
+univention-s4-connector (6.0.126-1) unstable; urgency=low
+
+  * Use LDB control 'bypass_samaccountname_ldap_check' in add and modify
+    if the LDB module 'univention_samaccountname_ldap_check' is activated
+    by the UCR variable 'samba4/ldb/sam/module/prepend' (Bug #26768)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Apr 2012 18:11:17 +0200
+
 univention-s4-connector (6.0.125-1) unstable; urgency=low
 
   * If an user was added in UCS, the primary group setting will be synced
