@@ -2607,12 +2607,12 @@ class PrinterURI( complex ):
 		if self.min_elements is not None:
 			count = self.min_elements
 		else:
-			count = len( self.subsyntaxes )
+			count = len( self.subsyntaxes ) if not 'pdf' in texts[0] else len( self.subsyntaxes )-1
 
-		if len(texts) < count-1:
+		if len(texts) < count:
 			raise univention.admin.uexceptions.valueInvalidSyntax, _("not enough arguments")
 
-		if len(texts)-1 > len( self.subsyntaxes ):
+		if len(texts) > len( self.subsyntaxes ):
 			raise univention.admin.uexceptions.valueInvalidSyntax, _("too many arguments")
 
 		for i in range( len( texts ) ):
