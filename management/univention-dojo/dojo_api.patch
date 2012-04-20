@@ -47,6 +47,29 @@ Index: univention-dojo-api-viewer/index.php
  		<!-- SyntaxHighlighter -->
  		<script type="text/javascript" src="<?php echo $basePath; ?>js/syntaxhighlighter/scripts/shCore.js"><</script>
  		<script type="text/javascript" src="<?php echo $basePath; ?>js/syntaxhighlighter/scripts/shBrushJScript.js"><</script>
+Index: univention-dojo-api-viewer/lib/class-tree.php
+===================================================================
+--- univention-dojo-api-viewer/lib/class-tree.php	(Revision 804)
++++ univention-dojo-api-viewer/lib/class-tree.php	(Arbeitskopie)
+@@ -143,14 +143,16 @@
+ 		if(array_key_exists("children", $ret[$item])){
+ 			usort($ret[$item]["children"], "sorter");
+ 		}
+-		$fin[] = &$ret[$item];
++		if (NULL !== $ret[$item])
++			$fin[] = &$ret[$item];
+ 	}
+ 	foreach($ret as &$obj){
+ 		if(!array_key_exists($obj["fullname"], $show)){
+ 			if(array_key_exists("children", $obj)){
+ 				usort($obj["children"], "sorter");
+ 			}
+-			$fin[] = $obj;
++			if (NULL !== $obj)
++				$fin[] = $obj;
+ 		}
+ 	}
+ 
 Index: univention-dojo-api-viewer/lib/transform.php
 ===================================================================
 --- univention-dojo-api-viewer/lib/transform.php	(Revision 804)

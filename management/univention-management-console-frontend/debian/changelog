@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.293-1) unstable; urgency=low
+
+  * added dojo, dijit, dojox to the list of generated documentations in·
+    univention-management-console-frontend-doc (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Fri, 20 Apr 2012 11:34:47 +0200
+
 univention-management-console-frontend (1.0.292-1) unstable; urgency=low
 
   * Grid: add events onShowDescription and onHideDescription; Bug #26699
