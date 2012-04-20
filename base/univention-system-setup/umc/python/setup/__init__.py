@@ -567,6 +567,9 @@ class Instance(umcm.Base):
 		r = csv.reader(file, delimiter=':')
 		countries = [ { 'label': i[0], 'id': i[1] } for i in r if not i[0].startswith('#') ]
 
+		# add the value from ucr value to the list
+		# this is required because invalid values will be unset in frontend
+		# Bug #26409
 		tmpUCR = univention.config_registry.ConfigRegistry()
 		tmpUCR.load()
 		ssl_country = tmpUCR.get('ssl/country')

@@ -107,8 +107,8 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			scrollable: true
 		});
 
-		this.connect(this._form.getWidget('fqdn'), 'onChange', function(newVal) {
-			this.onValuesChanged();
+		this.connect(this._form.getWidget('fqdn'), 'onChange', this.onValuesChanged);
+		var fc = this.connect(this._form.getWidget('fqdn'), 'onChange', function(newVal) {
 			function count(s) { 
 				var n = 0;
 				var i = 0;
@@ -122,6 +122,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			if (count(newVal) < 2) {
 				this.addNote(this._("For Active Directory domains the fully qualified domain name must have at least two dots (e.g. host.example.com). This warning is shown only once, the installation can be continued with the name currently given."));
 			}
+			this.disconnect(fc);
 		});
 
 		if (this.wizard_mode) {
@@ -159,18 +160,18 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		});
 
 		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode && !this._fqdnTouched);
-		_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode);
-		_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode, role == 'domaincontroller_master' || role == 'basesystem');
+		_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && !this._fqdnTouched);
+		_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && !this._fqdnTouched, role == 'domaincontroller_master' || role == 'basesystem');
 		_set('root_password', false, this.wizard_mode && !this.local_mode);
 
 		if (role != 'basesystem' && this.wizard_mode) {
 			// add dynamic value computation from FQDN for windows domain
 			this._form.getWidget('windows/domain').set('dynamicValue', function(deps) {
 				var l = (deps.fqdn || '').split('.');
-				if (l.length) {
+				if (l.length && l[1]) {
 					return String(l[1]).toUpperCase();
 				}
-				return '';
+				return ' ';
 			});
 		}
 		if (role == 'domaincontroller_master' && this.wizard_mode) {
@@ -226,6 +227,10 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	},
 
 	onSave: function() {
+		// event stub
+	},
+
+	onValuesChanged: function() {
 		// event stub
 	}
 });
