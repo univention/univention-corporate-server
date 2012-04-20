@@ -58,6 +58,18 @@ Description[en]=Defines the synchronisation mode for DNS data; "read" (reading o
 Type=str
 Categories=service-adcon
 
+[con.*/s4/mapping/user/ignorelist]
+Description[de]=Definiert durch Komma separierte Benutzer, welche durch den Connector nicht synchronisert werden (Default ist root,pcpatch,ucs-s4sync)
+Description[en]=Defines a comma separated list of users whom will be ignored by the connector (default is root,pcpatch,ucs-s4sync)
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/group/ignorelist]
+Description[de]=Definiert durch Komma separierte Gruppen, welche durch den Connector nicht synchronisert werden (Default ist Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody)
+Description[en]=Defines a comma separated list of groups whom will be ignored by the connector (default is Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody)
+Type=str
+Categories=service-adcon
+
 [con.*/s4/ldap/base]
 Description[de]=Die LDAP-Basis-DN des Samba 4-Servers
 Description[en]=The LDAP base DN of the Samba 4 server.

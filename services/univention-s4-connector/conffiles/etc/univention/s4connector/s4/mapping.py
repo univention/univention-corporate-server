@@ -86,8 +86,13 @@ s4_mapping = {
 
 			con_search_filter='(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))',
 			match_filter='(&(|(&(objectClass=posixAccount)(objectClass=krb5Principal))(objectClass=user))(!(objectClass=univentionHost)))',
-			ignore_filter='(|(uid=root)(uid=pcpatch)(cn=pcpatch)(CN=pcpatch)(uid=ucs-s4sync)(CN=ucs-s4sync))',
-
+@!@
+ignore_filter = ''
+for user in configRegistry.get('connector/s4/mapping/user/ignorelist', 'root,pcpatch,ucs-s4sync').split(','):
+	ignore_filter += '(uid=%s)(CN=%s)' % (user, user)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 			ignore_subtree = global_ignore_subtree,
 			
 			con_create_objectclass=['top', 'user', 'person', 'organizationalPerson'],
@@ -260,7 +265,12 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 			sync_mode='@%@connector/s4/mapping/syncmode@%@',
 			scope='sub',
 
-			ignore_filter='(|(sambaGroupType=5)(groupType=5)(cn=Windows Hosts)(cn=Authenticated Users)(cn=World Authority)(cn=Everyone)(cn=Null Authority)(cn=Nobody))',
+@!@
+ignore_filter = ''
+for group in configRegistry.get('connector/s4/mapping/group/ignorelist', 'Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody').split(','):
+	ignore_filter += '(cn=%s)' % (group)
+print "			ignore_filter='(|(sambaGroupType=5)(groupType=5)%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 			
