@@ -185,11 +185,9 @@ class complex( ISyntax ):
 
 		if len(texts) < count:
 			raise univention.admin.uexceptions.valueInvalidSyntax, _("not enough arguments")
-			p=s.parse(texts[i])
 
 		if len(texts) > len( self.subsyntaxes ):
 			raise univention.admin.uexceptions.valueInvalidSyntax, _("too many arguments")
-			p=s.parse(texts[i])
 
 		for i in range( len( texts ) ):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
@@ -2601,6 +2599,36 @@ class PrinterProtocol( UDM_Attribute ):
 
 class PrinterURI( complex ):
 	subsyntaxes = ( ( _( 'Protocol' ), PrinterProtocol ), ( _( 'Destination' ), string ) )
+
+	@classmethod
+	def parse(self, texts):
+		parsed=[]
+
+		if self.min_elements is not None:
+			count = self.min_elements
+		else:
+			count = len( self.subsyntaxes )
+
+		if len(texts) < count-1:
+			raise univention.admin.uexceptions.valueInvalidSyntax, _("not enough arguments")
+
+		if len(texts)-1 > len( self.subsyntaxes ):
+			raise univention.admin.uexceptions.valueInvalidSyntax, _("too many arguments")
+
+		for i in range( len( texts ) ):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
+			if not inspect.isclass( self.subsyntaxes[ i ][ 1 ] ):
+				s = self.subsyntaxes[ i ][ 1 ]
+			else:
+				s = self.subsyntaxes[ i ][ 1 ]()
+			if texts[i] == None:
+				if self.min_elements is None or ( i+1 ) < self.min_elements:
+					raise univention.admin.uexceptions.valueInvalidSyntax, _("Invalid syntax")
+			p = s.parse( texts[ i ] )
+			if p:
+				parsed.append(p)
+		return parsed
+	
 
 
 if __name__ == '__main__':

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.244-1) unstable; urgency=low
+
+  * added own parse method for dervived syntax class "PrinterURI"
+    to fix traceback when creating pdf printers (Bug #25370)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 20 Apr 2012 14:40:18 +0200
+
 univention-directory-manager-modules (7.0.243-1) unstable; urgency=low
 
   * Fixed keyerror when removing dns attributes from host objects (Bug #25923)
