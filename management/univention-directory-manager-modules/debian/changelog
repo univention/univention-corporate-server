@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.243-1) unstable; urgency=low
+
+  * Fixed keyerror when removing dns attributes from host objects (Bug #25923)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 20 Apr 2012 11:40:58 +0200
+
 univention-directory-manager-modules (7.0.242-1) unstable; urgency=low
 
   * fixed unhandled cli exceptions (Bug #7389)

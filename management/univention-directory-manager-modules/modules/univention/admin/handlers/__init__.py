@@ -2060,39 +2060,36 @@ class simpleComputer( simpleLdap ):
 						raise univention.admin.uexceptions.invalidDhcpEntry, _('The DHCP entry for this host should contain the zone LDAP-DN, the IP address and the MAC address.')
 
 		if self.hasChanged( 'dnsEntryZoneForward' ):
-			if self.oldinfo.has_key( 'dnsEntryZoneForward' ):
-				for entry in self.oldinfo[ 'dnsEntryZoneForward' ]:
-					if not entry in self.info[ 'dnsEntryZoneForward' ]:
-						self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ].append( entry )
-						self.__remove_associated_domain ( entry )
-			for entry in self.info[ 'dnsEntryZoneForward' ]:
+			for entry in self.oldinfo.get('dnsEntryZoneForward', []):
+				if not entry in self.info.get('dnsEntryZoneForward', []):
+					self.__changes['dnsEntryZoneForward']['remove'].append(entry)
+					self.__remove_associated_domain(entry)
+			for entry in self.info.get('dnsEntryZoneForward', []):
 				if entry == '':
 					continue
-				if not self.oldinfo.has_key( 'dnsEntryZoneForward' ) or not entry in self.oldinfo[ 'dnsEntryZoneForward' ]:
-					self.__changes[ 'dnsEntryZoneForward' ][ 'add' ].append( entry )
-				self.__set_associated_domain( entry )
+				if not entry in self.oldinfo.get('dnsEntryZoneForward', []):
+					self.__changes['dnsEntryZoneForward']['add'].append(entry)
+				self.__set_associated_domain(entry)
 
-		if self.hasChanged( 'dnsEntryZoneReverse' ):
-			if self.oldinfo.has_key( 'dnsEntryZoneReverse' ):
-				for entry in self.oldinfo[ 'dnsEntryZoneReverse' ]:
-					if not 'dnsEntryZoneReverse' in self.info or not entry in self.info[ 'dnsEntryZoneReverse' ]:
-						self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ].append( entry )
-			if 'dnsEntryZoneReverse' in self.info:
-				for entry in self.info[ 'dnsEntryZoneReverse' ]:
-					if not self.oldinfo.has_key( 'dnsEntryZoneReverse' ) or not entry in self.oldinfo[ 'dnsEntryZoneReverse' ]:
-						self.__changes[ 'dnsEntryZoneReverse' ][ 'add' ].append( entry )
+		if self.hasChanged('dnsEntryZoneReverse'):
+			for entry in self.oldinfo.get('dnsEntryZoneReverse', []):
+				for entry in self.oldinfo['dnsEntryZoneReverse']:
+					if not entry in self.info.get('dnsEntryZoneReverse', []):
+						self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ].append(entry)
+			for entry in self.info.get('dnsEntryZoneReverse', []):
+				if not entry in self.oldinfo.get('dnsEntryZoneReverse', []):
+					self.__changes['dnsEntryZoneReverse']['add'].append(entry)
 
 		if self.hasChanged( 'dnsEntryZoneAlias' ):
-			if self.oldinfo.has_key( 'dnsEntryZoneAlias' ):
-				for entry in self.oldinfo[ 'dnsEntryZoneAlias' ]:
-					if not entry in self.info[ 'dnsEntryZoneAlias' ]:
-						self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ].append( entry )
-			for entry in self.info[ 'dnsEntryZoneAlias' ]:
+			for entry in self.oldinfo.get('dnsEntryZoneAlias', []):
+				if not entry in self.info.get('dnsEntryZoneAlias', []):
+					self.__changes['dnsEntryZoneAlias']['remove'].append(entry)
+			for entry in self.info.get('dnsEntryZoneAlias', []):
 				#check if line is valid
 				dnsForwardZone, dnsAliasZoneContainer, alias = entry
 				if dnsForwardZone and dnsAliasZoneContainer and alias:
-					if not self.oldinfo.has_key( 'dnsEntryZoneAlias' ) or not entry in self.oldinfo[ 'dnsEntryZoneAlias' ]:
-						self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ].append( entry )
+					if not entry in self.oldinfo.get('dnsEntryZoneAlias', []):
+						self.__changes['dnsEntryZoneAlias']['add'].append(entry)
 				else:
 					raise univention.admin.uexceptions.invalidDNSAliasEntry, _('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.')
 
