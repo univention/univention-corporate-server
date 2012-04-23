@@ -1,3 +1,9 @@
+univention-lib (1.0.72-1) unstable; urgency=low
+
+  * atjobs: execTime may now be given as a datetime object; Bug #26528
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Apr 2012 15:54:53 +0200
+
 univention-lib (1.0.71-2) unstable; urgency=low
 
   * fixed build dep (Bug #26536) 
