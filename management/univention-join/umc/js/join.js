@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global console MyError dojo dojox dijit umc setTimeout*/
 
 dojo.provide("umc.modules.join");
 
@@ -288,7 +288,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					if (this._job_running)
 					{
 						var txt = this._infotext.get('content');
-						if (txt == '')
+						if (txt === '')
 						{
 							this._infotext.set('content',this._("Currently some join scripts are running. You may watch the log file until they are finished."));
 							this._switch_log_display('show');
@@ -308,7 +308,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// We should have exactly one such job. If one is underway, we don't
 			// step on its feet. Otherwise, we start a new one.
-			if (this._polling_job == null)
+			if (this._polling_job === null)
 			{
 		        var deferred = new dojo.Deferred();
 		        this._polling_job = deferred;
@@ -367,7 +367,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				dup[fn] = 1;
 				
 				var allow = false;
-				if (row['action'] != '')
+				if (row['action'] !== '')
 				{
 					runnable++;
 					allow = true;
@@ -427,7 +427,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	
 	// Asynchronously runs the selected script(s).
 	//
-	_run_scripts: function(list) {
+	_run_scripts: function(credentials, list) {
 		// switch the log pane visible; this will establish a refresh too.
 		this._switch_log_display('show');
 		
@@ -439,43 +439,55 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		//  (1) something is selected -> use the grid's selected IDs
 		//	(2) nothing selected -> use our 'runnables' array as we've read it in _check_grid_status()
 		
-		if (list == null)
+		if ((list === null) || (list === undefined))
 		{
 			list = this._grid.getSelectedIDs();
-			if (list.length == 0)
+			if (list.length === 0)
 			{
 				list = this._runnables;
 			}
 		}
 		
-		if ((list != null) && (list.length != 0))
+		if ((list !== null) && (list !== undefined) && (list.length != 0))
 		{
-        	this._job_running = true;
+			this._job_running = true;
 
-        	if (list.length == 1)
-        	{
-        		this._footers[0].set('content',this._("One join script is currently running"));
-        	}
-        	else
-        	{
-        		this._footers[0].set('content',this._('%d join scripts are currently running',list.length));
-        	}
+			if (list.length == 1)
+			{
+				this._footers[0].set('content',this._("One join script is currently running"));
+			}
+			else
+			{
+				this._footers[0].set('content',this._('%d join scripts are currently running',list.length));
+			}
 			this._footers[1].removeChild(this._multi_action);
-		
-	        this.umcpCommand('join/run',{scripts: list}).then(dojo.hitch(this, function(data) {
-	        	var result = dojo.getObject('result', false, data);
-	        	if (result != '')
-	        	{
-	        		// Note result is already localized
-	        		umc.dialog.alert(this._("Can't start join: ") + result);
-		        	this._check_join_status();		// sets meaningful messages
-	        	}
-	        	else
-	        	{
-	        		// Job is started. Now wait for its completion.
-	        		this._job_polling_loop(true);
-	        	}
-	        }));
+
+			var values = { scripts: list };
+			if (credentials.username) {
+				values.username = credentials.username;
+			}
+			if (credentials.password) {
+				values.password = credentials.password;
+			}
+						   
+			this.umcpCommand('join/run', values).then(dojo.hitch(this, function(data) {
+				if (data.result.msg) {
+					// Note result is already localized
+					umc.dialog.alert(this._("Can't start join script:<br>%s", data.result.msg), this._('Error'));
+					this._grid.standby(false);
+					this._job_polling_loop(false);
+					this._check_grid_status();		// sets meaningful messages
+
+					if (data.result.errortype == 'autherror') {
+						this._switch_log_display('hide');
+					}
+				}
+				else
+				{
+					// Job is started. Now wait for its completion.
+					this._job_polling_loop(true);
+				}
+			}));
 		}
 
 	},
@@ -513,14 +525,22 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	                isStandardAction:	true,
 	            	canExecute: dojo.hitch(this, function(values) {
 	            		// Knowledge is in the Python module!
-	            		return (values['action'] != '');
+	            		return (values['action'] !== '');
 	            	}),
 	                callback: dojo.hitch(this, function(id) {
 	            		if (dojo.isArray(id))
 	            		{
 	            			id = id[0];
 	            		}
-	                	this._run_scripts([id]);
+						umc.tools.ucr('server/role').then( dojo.hitch( this, function(ucrValues) {
+							if (ucrValues['server/role'] == 'domaincontroller_master') {
+								this._run_scripts({}, [id]);
+							} else {
+								this._get_credentials().then( dojo.hitch( this, function(credentials) {
+	                				this._run_scripts(credentials, [id]);
+								}));
+							}
+						}));
 	                })
 	            }
 			],
@@ -605,8 +625,16 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// FIXME Style this button according to Univention guidelines
 			//'class':	'umcSubmitButton',
 			onClick:	dojo.hitch(this, function() {
-				this._run_scripts();		// without arg: will be filled there with either
-											// the selected or all runnable scripts.
+				umc.tools.ucr('server/role').then( dojo.hitch( this, function(ucrValues) {
+					if (ucrValues['server/role'] == 'domaincontroller_master') {
+						this._run_scripts({});
+					} else {
+						this._get_credentials().then( dojo.hitch( this, function(credentials) {
+							// _run_scripts without second arg: will be filled there with either the selected or all runnable scripts.
+							this._run_scripts(credentials);
+						}));
+					}
+				}));
 			})
 		});
 		for (var i=0; i<this._footers.length; i++)
@@ -731,13 +759,15 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						user: this._joinform._widgets['user'].value,
 						pass: this._joinform._widgets['pass'].value				        	
 			        }).then(dojo.hitch(this, function(data) {
-			        	var result = dojo.getObject('result', false, data);
-			        	if (result != '')
-			        	{
+						if (data.result.msg) {
 			        		this._joinform.standby(false);
 			        		// Note result is already localized
-			        		umc.dialog.alert(this._("Can't start join: ") + result);
+			        		umc.dialog.alert(this._("Can't start join process:<br>") + data.result.msg, data.result.title);
 				        	this._check_join_status();		// sets meaningful messages
+
+							if (data.result.errortype == 'autherror') {
+								this._switch_log_display('hide');
+							}
 			        	}
 			        	else
 			        	{
@@ -760,22 +790,22 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				type:			'TextBox',
 				name:			'host',
 				value:			'',
-				label:			this._('DC Hostname'),
-				description:	this._('The hostname of the DC Master of the domain')
+				label:			this._('Hostname of domain controller master'),
+				description:	this._('The hostname of the domain controller master of the domain')
 			},
 			{
 				type:			'TextBox',
 				name:			'user',
 				value:			'Administrator',
 				label:			this._('Username'),
-				description:	this._('The username of the Domain Administrator')
+				description:	this._('The username of the domain administrator')
 			},
 			{
 				type:		'PasswordBox',
 				name:		'pass',
 				value:		'',
 				label: this._( 'Password' ),
-				description: this._( 'Password of the Domain Administrator' )
+				description: this._( 'Password of the domain administrator' )
 			}
 		];
 		this._joinform = new umc.modules._join.Form({
@@ -802,6 +832,71 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.inherited(arguments);
 		this._refresh_time = 0;
 		
+	},
+
+	_get_credentials: function() {
+		var msg = this._('<p>Please enter username and password of a Domain Administrator to run the selected join scripts and click the <i>Run</i> button.</p>'); 
+		var deferred = new dojo.Deferred();
+		var dialog = null;
+		var form = new umc.widgets.Form({
+			widgets: [{
+				name: 'text',
+				type: 'Text',
+				content: msg
+			}, {
+				name: 'username',
+				type: 'TextBox',
+				label: this._('Username'),
+				value: ''
+			}, {
+				name: 'password',
+				type: 'PasswordBox',
+				label: this._('Password')
+			}],
+			buttons: [{
+				name: 'cancel',
+				label: this._('Cancel'),
+				callback: dojo.hitch(this, function() {
+					deferred.reject();
+					this.standby(false);
+					dialog.hide();
+					dialog.destroyRecursive();
+					form.destroyRecursive();
+				})
+			},{
+				name: 'submit',
+				label: this._('Run'),
+				callback: dojo.hitch(this, function() {
+					if (form.getWidget('password').get('value').length === 0) {
+						umc.dialog.alert( this._('The password may not be empty.'), this._('Password invalid') );
+					} else {
+						this.standby(false);
+						deferred.resolve({
+							username: form.getWidget('username').get('value'),
+							password: form.getWidget('password').get('value')
+						});
+						dialog.hide();
+						dialog.destroyRecursive();
+						form.destroyRecursive();
+					}
+				})
+			}],
+			layout: [ 'text', 'username', 'password' ]
+		});
+		dialog = new dijit.Dialog({
+			title: this._('Run join scripts'),
+			content: form,
+			style: 'max-width: 400px;'
+		});
+		this.connect(dialog, 'onHide', function() {
+			if (deferred.fired < 0) {
+				// user clicked the close button
+				this.standby(false);
+				deferred.reject();
+			}
+		});
+		dialog.show();
+		return deferred;
 	}
 	
 });

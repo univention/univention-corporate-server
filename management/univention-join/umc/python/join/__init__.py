@@ -31,22 +31,44 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import pprint
+import traceback
 import subprocess
+import os
+import stat
+import tempfile
+import base64
+import ldap
+import pipes
+import pprint
 import univention.management.console as umc
 import univention.management.console.modules as umcm
+from univention.management.console.config import ucr
 
 import re
-from os import stat,listdir,chmod,unlink,path, umask
+from os import listdir,chmod,unlink,path, umask
 from locale import nl_langinfo,D_T_FMT,getlocale,setlocale,LC_ALL
 from time import strftime,localtime,sleep
 from string import join
 from subprocess import Popen
+import notifier.threads
+import univention.uldap
+import univention.admin.uldap
+import univention.admin.modules
+import univention.admin.config
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
 _ = umc.Translation('univention-management-console-module-join').translate
+
+class JoinExceptionUnknownHost(Exception):
+	pass
+class JoinExceptionInvalidCredentials(Exception):
+	pass
+class JoinExceptionInvalidCharacters(Exception):
+	pass
+class JoinExceptionUnknownError(Exception):
+	pass
 
 class Instance(umcm.Base):
 	def __init__( self ):
@@ -93,7 +115,7 @@ class Instance(umcm.Base):
 		# --------------------------------
 
 		self.finished(request.id,result)
-		
+
 	def joined(self,request):
 		""" returns the (localized) join date/time or
 			the empty string.
@@ -106,10 +128,10 @@ class Instance(umcm.Base):
 		for s in st:
 			MODULE.info("   << %s" % s)
 		# -----------------------------------
-		
+
 		result = self._joined()
 		request.status = SUCCESS
-		
+
 		# ---------- DEBUG --------------
 		MODULE.info("join/joined returns:")
 		pp = pprint.PrettyPrinter(indent=4)
@@ -131,10 +153,10 @@ class Instance(umcm.Base):
 		for s in st:
 			MODULE.info("   << %s" % s)
 		# -----------------------------------
-		
+
 		result = self._running()
 		request.status = SUCCESS
-		
+
 		# ---------- DEBUG --------------
 		MODULE.info("join/running returns:")
 		pp = pprint.PrettyPrinter(indent=4)
@@ -158,10 +180,10 @@ class Instance(umcm.Base):
 		for s in st:
 			MODULE.info("   << %s" % s)
 		# -----------------------------------
-		
+
 		result = self._logview(int(request.options.get('count',10)))
 		request.status = SUCCESS
-		
+
 		# ---------- DEBUG --------------
 		# TODO: We should not repeat the whole log into
 		# the module log file!
@@ -174,63 +196,241 @@ class Instance(umcm.Base):
 
 		self.finished(request.id,result)
 
+
+	def _check_thread_error( self, thread, result, request ):
+		"""Checks if the thread returned an exception. In that case in
+		error response is send and the function returns True. Otherwise
+		False is returned."""
+		if not isinstance( result, BaseException ):
+			return False
+
+		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
+		MODULE.process( 'An internal error occurred: %s' % msg )
+		self.finished( request.id, None, msg, False )
+		return True
+
+
+	def _thread_finished( self, thread, result, request ):
+		if self._check_thread_error( thread, result, request ):
+			return
+		self.finished( request.id, result )
+
+	def _ldapsearch_wrapper_decode64_dnfilter(self, lines):
+		reBase64 = re.compile('^([a-zA-Z0-9-]*):: (.*)')
+
+		# decode base64 encoded ldapsearch result lines
+		def decode64(txt):
+			if reBase64.match(txt):
+				attr, data = txt.split(':: ',1)
+				return '%s: %s' % (attr, base64.decodestring(data))
+			return txt
+
+		# unwrap lines from ldapsearch
+		result = []
+		linecache = ''
+		for line in lines.splitlines():
+			if line[:1] == ' ' and line[:2] != '  ':
+				linecache += line[1:]
+			else:
+				if linecache:
+					result.append(decode64(linecache))
+				linecache = line
+		result.append(decode64(linecache))
+
+		# filter out lines with object DN
+		for line in result:
+			if line.startswith('DN: ') or line.startswith('dn: '):
+				return line[4:]
+
+		return ''
+
+	def _guess_userdn(self, username, password, hostname):
+		# do some security checks on given username and hostname
+		# Warning: no complete check since the user is able to log on to the DC master and can call harmful commands directly
+		invalid_characters = """'"$();"""
+		for i in invalid_characters:
+			if i in username:
+				raise JoinExceptionInvalidCharacters(_('The username contains an invalid character: %s') % i)
+			if i in hostname:
+				raise JoinExceptionInvalidCharacters(_('The hostname contains an invalid character: %s') % i)
+
+		# create temporary password file
+		pwdfilename = tempfile.mkstemp()[1]
+		os.chown(pwdfilename, 0, 0)
+		os.chmod(pwdfilename, stat.S_IRUSR | stat.S_IWUSR)
+		open(pwdfilename,'w').write('%s\n' % password)
+
+		user_host = '%s@%s' % (username, hostname)
+
+		# TODO: the following shell calls are also present in "univention-join";
+		#       move them to a new script "univention-guess-userdn" and
+		#		call this new script from univention-join and from here via
+		#       univention-ssh while joining.
+		#
+		# Original commands from script "univention-join"
+		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" /usr/sbin/udm users/user list --filter uid=$DCACCOUNT --logfile /dev/null | sed -ne 's|DN: ||p'
+		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p'
+		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p'
+		cmdlist = [	['univention-ssh', pwdfilename, user_host, '/usr/sbin/udm', 'users/user', 'list', '--filter', 'uid=%s' % username, '--logfile', '/dev/null'],
+					['univention-ssh', pwdfilename, user_host, 'ldapsearch', '-x', '-LLL', '-H', 'ldapi:///', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
+					['univention-ssh', pwdfilename, user_host, 'ldapsearch', '-x', '-LLL', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
+					]
+
+		try:
+			for cmd in cmdlist:
+				# call univention-ssh and try to determine userDn
+				stdout, stderr = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+				if stderr:
+					MODULE.error('calling %s failed:\n%s' % (cmd, stderr))
+				if 'could not resolve hostname' in stderr.lower() or 'name or service not known' in stderr.lower():
+					raise JoinExceptionUnknownHost()
+				if 'permission denied' in stderr.lower():
+					raise JoinExceptionInvalidCredentials()
+				if stderr:
+					raise JoinExceptionUnknownError()
+
+				userdn = self._ldapsearch_wrapper_decode64_dnfilter(stdout)
+				if userdn:
+					return userdn
+
+			return None
+		finally:
+			os.remove(pwdfilename)
+
+
 	def join(self,request):
 		"""runs the 'univention-join' script for a unjoined system with
 		the given arguments."""
-		result = ''
-		args = []		# argument list to univention-join
-		host = request.options.get('host','')
-		if host != '':
-			args.append('-dcname')
-			args.append(host)
-		user = request.options.get('user','')
-		if user != '':
-			args.append('-dcaccount')
-			args.append(user)
-		# Password is not given on command line, instead we have
-		# to write a file for that.
-		pasw = request.options.get('pass','')
-		if pasw != '':
-			args.append('-dcpwd')
-			args.append(self._passfile)
-			file = None
+
+
+		def _thread( request ):
+			result = {}
+			host = request.options.get('host')
+			user = request.options.get('user')
+			password = request.options.get('pass')
+
 			try:
-				file = open(self._passfile,'w')
-				file.write("%s\n" % pasw)
-			finally:
-				if file != None:
-					file.close()
-					chmod(self._passfile,0400)
-		# construct a batch file that will do everything
-		cmds = [
-			'#!/bin/bash',
-			'TMPF=%s' % self._tempfile,
-			'trap "rm -f %s %s %s" EXIT' % (self._passfile, self._tempfile, self._tempscript),
-			'(',
-			'  echo "`date`: Starting univention-join"',
-			'  %s %s >${TMPF} 2>&1' % (self._jointool,join(args)),
-			'  ret=$?',
-			'  if [ ${ret} = 0 ] ; then',
-			'    echo "`date`: univention-join finished successfully"',
-			'  else',
-			'    echo "`date`: univention-join finished with error:"',
-			'    /usr/bin/tail -n 7 ${TMPF}',
-			'  fi',
-			'  echo',
-			') >>%s 2>&1' % self._logname
-		]
-		result = self._run_shell_script(cmds)
-		request.status = SUCCESS
-		self.finished(request.id,result)
+				if not self._guess_userdn(user, password, host):
+					result['msg'] = _("The given user does not exist in LDAP. Please enter a domain administrator account.")
+					result['title'] = _('Wrong credentials')
+			except JoinExceptionUnknownHost:
+				result['msg'] = _("The given hostname cannot be resolved or the host is unreachable.")
+				result['title'] = _('Host unreachable')
+			except JoinExceptionInvalidCredentials:
+				result['msg'] = _("The given username or password is not correct.")
+				result['title'] = _('Wrong credentials')
+			except JoinExceptionUnknownError:
+				result['msg'] = _("An unknown error occured while testing join credentials.")
+				result['title'] = _('Error')
+			except JoinExceptionInvalidCharacters, e:
+				result['msg'] = str(e)
+				result['title'] = _('Invalid characters')
+
+			if result:
+				result['errortype'] = 'autherror'
+				request.status = SUCCESS
+				self.finished(request.id, result)
+				return
+
+			# create temporary password file
+			self._passfile = tempfile.mkstemp()[1]
+			os.chown(self._passfile, 0, 0)
+			os.chmod(self._passfile, stat.S_IRUSR | stat.S_IWUSR)
+			open(self._passfile, 'w').write('%s\n' % password)
+
+			args = ['-dcname', host, '-dcaccount', user, '-dcpwd', self._passfile]		# argument list to univention-join
+
+			# construct a batch file that will do everything
+			cmds = [
+				'#!/bin/bash',
+				'TMPF=%s' % self._tempfile,
+				'trap "rm -f %s %s %s" EXIT' % (self._passfile, self._tempfile, self._tempscript),
+				'(',
+				'  echo "`date`: Starting univention-join"',
+				'  %s %s >${TMPF} 2>&1' % (self._jointool,join(args)),
+				'  ret=$?',
+				'  if [ ${ret} = 0 ] ; then',
+				'	 echo "`date`: univention-join finished successfully"',
+				'  else',
+				'	 echo "`date`: univention-join finished with error:"',
+				'	 /usr/bin/tail -n 7 ${TMPF}',
+				'  fi',
+				'  echo',
+				') >>%s 2>&1' % self._logname
+			]
+			msg = self._run_shell_script(cmds)
+			if msg:
+				result['msg'] = msg
+				result['errortype'] = 'joinerror'
+			request.status = SUCCESS
+			self.finished(request.id, result)
+
+		localthread = notifier.threads.Simple( 'join', notifier.Callback( _thread, request ),
+										  notifier.Callback( self._thread_finished, request ) )
+		localthread.run()
+
 
 	def run(self,request):
 		"""runs the given join scripts (args is an array) Note that we
 		don't rely on sortedness or even existance of the script names
 		passed in. Everything is checked here before we fire the real
 		action."""
-		result = ''
+		result = {}
+		credentials = []
+		username = request.options.get('username',[])
+		password = request.options.get('password',[])
 		scripts = request.options.get('scripts',[])
 		current = self._script_map()
+
+		ucr.load()
+		baseDn = ucr.get('ldap/base')
+
+		# If username and password are set then check credentials against master
+		# before calling join script.
+		MODULE.info('username = %s' % username)
+		if username and password:
+			userDn = None
+			try:
+				# get LDAP connection and UDM users/user module
+				co = univention.admin.config.config()
+				lo = univention.uldap.getMachineConnection()
+				position = univention.admin.uldap.position(baseDn)
+				univention.admin.modules.update()
+				user_module = univention.admin.modules.get("users/user")
+				univention.admin.modules.init(lo, position, user_module)
+
+				# find desired object
+				objects = univention.admin.modules.lookup(user_module, co, lo, scope='sub', filter='uid=%s' % username)
+
+				if not objects:
+					MODULE.warn('The given username "%s" does not exist.' % username)
+					result['msg'] = _('The given username "%s" does not exist.') % username
+				elif len(objects) > 1:
+					MODULE.error('Found more than one matching user object for uid=%s.'% username)
+					result['msg'] = _('Found more than one matching user object.')
+				else:
+					userDn = objects[0].dn
+					MODULE.info('userDn = %s' % userDn)
+					credentials = [ '--binddn', userDn, '--bindpwd', password ]
+
+					port = int(ucr.get('ldap/master/port', '7389'))
+					lo = univention.uldap.access(host=ucr['ldap/master'], port=port,
+												 base=ucr['ldap/base'],
+												 binddn=userDn, bindpw=password,
+												 start_tls=2, decode_ignorelist=[])
+			except ldap.INVALID_CREDENTIALS, e:
+				MODULE.warn('The given credentials are not correct.')
+				result['msg'] = _('The given credentials are not correct.')
+			except ldap.SERVER_DOWN, e:
+				MODULE.error('Cannot connect to LDAP server for resolving username.')
+				result['msg'] = _('Cannot connect to LDAP server for resolving username.')
+
+			if result.get('msg'):
+				# error status
+				result['errortype'] = 'autherror'
+				request.status = SUCCESS
+				self.finished(request.id, result)
+				return
 
 		# Temporary shell script that will call the scripts,
 		# redirect their output (STDERR + STDOUT) into the
@@ -241,9 +441,10 @@ class Instance(umcm.Base):
 			'function run()',
 			'{',
 			'  echo "`date`: running $1"',
-			'  ./$1',
+			'  local cmd="$1"; shift',
+			'  ./$cmd "$@"',
 			'  local ret=$?',
-			'  echo "`date`: $1 finished with ${ret}"',
+			'  echo "`date`: $1 finished with exitcode ${ret}"',
 			'  echo',
 			'}',
 			'('
@@ -258,11 +459,18 @@ class Instance(umcm.Base):
 				else:
 					fnames.append(current[s]['full'])
 			for s in sorted(fnames):
-				MODULE.info('   .. %s' % s)
-				cmds.append('  run %s' % s)
+				if credentials:
+					cmd = '%s %s' % (s, ' '.join([ pipes.quote(x) for x in credentials]))
+					MODULE.info('   .. %s' % cmd)
+					cmds.append('  run %s' % cmd)
+				else:
+					MODULE.info('   .. %s' % s)
+					cmds.append('  run %s' % s)
 			cmds.append(') >>%s 2>&1' % self._logname)
 
-			result = self._run_shell_script(cmds)
+			result['msg'] = self._run_shell_script(cmds)
+			if result['msg']:
+				result['errortype'] = 'scripterror'
 			request.status = SUCCESS
 
 		self.finished(request.id,result)
@@ -299,7 +507,7 @@ class Instance(umcm.Base):
 	def _joined(self):
 		"""returns (localized) the join date+time (or empty string if not joined)"""
 		try:
-			st = stat('/var/univention-join/joined')
+			st = os.stat('/var/univention-join/joined')
 			if st:
 				# FIXME Locale info of the process is not right!
 				fmt = nl_langinfo(D_T_FMT)		# string to format a date/time
@@ -344,7 +552,7 @@ class Instance(umcm.Base):
 						MODULE.warn("   Script '%s' has no version number" % fname)
 					else:
 						files[entry['script']] = entry
-		MODULE.info("Found %d valid scripts." % len(files))		
+		MODULE.info("Found %d valid scripts." % len(files))
 		return files
 
 	def _scripts(self):
@@ -433,7 +641,7 @@ class Instance(umcm.Base):
 		lines = []
 		if count < 0:
 			try:
-				st = stat(self._logname)
+				st = os.stat(self._logname)
 				if st:
 					MODULE.info("   >> log file stamp = '%s'" % st[9])
 					return st[9]

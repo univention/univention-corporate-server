@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-12 14:31+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2012-04-23 15:57+0200\n"
+"PO-Revision-Date: 2012-04-23 15:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -12,27 +12,95 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:273
+#: umc/python/join/__init__.py:323
+msgid "An unknown error occured while testing join credentials."
+msgstr ""
+"Ein unbekannter Fehler ist beim Prüfen der Benutzerinformationen aufgetreten."
+
+#: umc/python/join/__init__.py:486
 msgid "Another join operation is in progress"
 msgstr "Es wird gerade eine andere Join-Operation ausgeführt"
 
-#: umc/python/join/__init__.py:386
+#: umc/python/join/__init__.py:426
+msgid "Cannot connect to LDAP server for resolving username."
+msgstr ""
+"Eine Verbindung zum LDAP-Server konnte nicht hergestellt werden, um den "
+"Benutzernamen aufzulösen."
+
+#: umc/python/join/__init__.py:324
+msgid "Error"
+msgstr "Fehler"
+
+#: umc/python/join/__init__.py:410
+msgid "Found more than one matching user object."
+msgstr "Es wurde mehr als ein Benutzerobjekt gefunden."
+
+#: umc/python/join/__init__.py:318
+msgid "Host unreachable"
+msgstr "Rechner ist nicht erreichbar"
+
+#: umc/python/join/__init__.py:327
+msgid "Invalid characters"
+msgstr "Ungültige Zeichen"
+
+#: umc/python/join/__init__.py:423
+msgid "The given credentials are not correct."
+msgstr "Die angegebenen Benutzerinformationen sind nicht korrekt."
+
+#: umc/python/join/__init__.py:317
+msgid "The given hostname cannot be resolved or the host is unreachable."
+msgstr ""
+"Der angegebene Rechnername konnte nicht aufgelöst werden oder der Rechner "
+"ist nicht erreichbar."
+
+#: umc/python/join/__init__.py:314
+msgid ""
+"The given user does not exist in LDAP. Please enter a domain administrator "
+"account."
+msgstr ""
+"Der angegebene Benutzer existiert nicht im LDAP-Verzeichnis. Bitte ein Konto "
+"eines Domänen Administrators angeben."
+
+#: umc/python/join/__init__.py:407
+#, python-format
+msgid "The given username \"%s\" does not exist."
+msgstr "Der angegebene Benutzername \"%s\" existiert nicht."
+
+#: umc/python/join/__init__.py:320
+msgid "The given username or password is not correct."
+msgstr "Der angegebene Benutzername oder das Passwort ist nicht korrekt."
+
+#: umc/python/join/__init__.py:255
+#, python-format
+msgid "The hostname contains an invalid character: %s"
+msgstr "Der Rechnername enthält ein ungültiges Zeichen: %s"
+
+#: umc/python/join/__init__.py:253
+#, python-format
+msgid "The username contains an invalid character: %s"
+msgstr "Der Benutzername enthält ein ungültiges Zeichen: %s"
+
+#: umc/python/join/__init__.py:315 umc/python/join/__init__.py:321
+msgid "Wrong credentials"
+msgstr "Falsche Benutzerangaben"
+
+#: umc/python/join/__init__.py:600
 msgid "due"
 msgstr "fällig"
 
-#: umc/python/join/__init__.py:410
+#: umc/python/join/__init__.py:623
 msgid "never run"
 msgstr "noch nie ausgeführt"
 
-#: umc/python/join/__init__.py:394
+#: umc/python/join/__init__.py:608
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/join/__init__.py:385 umc/python/join/__init__.py:411
+#: umc/python/join/__init__.py:599 umc/python/join/__init__.py:624
 msgid "run"
 msgstr "ausführen"
 
-#: umc/python/join/__init__.py:388
+#: umc/python/join/__init__.py:602
 msgid "successful"
 msgstr "erfolgreich"
 
