@@ -191,10 +191,12 @@ class UMC_Daemon( DaemonRunner ):
 		notifier.loop()
 
 	def signal_hang_up( self, signal, frame ):
-		self.server.reload()
+		if hasattr( self, 'server' ):
+			self.server.reload()
 
 	def signal_user1( self, signal, frame ):
-		self.server.reload()
+		if hasattr( self, 'server' ):
+			self.server.reload()
 
 	def signal_terminate( self, signal, frame ):
 		self.server.exit()

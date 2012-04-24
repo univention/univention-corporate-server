@@ -1,3 +1,10 @@
+univention-management-console (4.0.214-1) unstable; urgency=low
+
+  * prevent hanging UMC server if a restart-reload-sequence happens too
+    quickly (Bug #26881)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 24 Apr 2012 17:08:59 +0200
+
 univention-management-console (4.0.213-1) unstable; urgency=low
 
   * add support for deactivating flavors (Bug #26831)
