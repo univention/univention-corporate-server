@@ -174,7 +174,7 @@ def create_storage_volume(conn, domain, disk):
 		'''
 	else:
 		logger.error("Unsupported storage-pool-type %s for %s:%s" % (pool_type, domain.name, disk.source))
-		raise StorageError(_('Unsupported storage-pool-type "%(pool_type)s for "%(domain)s"'), pool_type=pool_type, domain=domain.name)
+		raise StorageError(_('Unsupported storage-pool-type "%(pool_type)s" for "%(domain)s"'), pool_type=pool_type, domain=domain.name)
 
 	xml = template % values
 	try:

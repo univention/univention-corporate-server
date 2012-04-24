@@ -481,7 +481,7 @@ msgstr "Ungültiger Zustandsübergang von %(cur_state)s zu %(next_state)s"
 
 #: src/univention/uvmm/storage.py:177
 #, python-format
-msgid "Unsupported storage-pool-type \"%(pool_type)s for \"%(domain)s\""
+msgid "Unsupported storage-pool-type \"%(pool_type)s\" for \"%(domain)s\""
 msgstr ""
 "Speicherbereichstyp \"%(pool_type)s\" wird nicht unterstützt für \"%(domain)s"
 "\""
