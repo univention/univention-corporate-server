@@ -444,7 +444,7 @@ class Instance(umcm.Base):
 			'  local cmd="$1"; shift',
 			'  ./$cmd "$@"',
 			'  local ret=$?',
-			'  echo "`date`: $1 finished with exitcode ${ret}"',
+			'  echo "`date`: $cmd finished with exitcode ${ret}"',
 			'  echo',
 			'}',
 			'('

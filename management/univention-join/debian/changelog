@@ -1,3 +1,9 @@
+univention-join (4.0.34-1) unstable; urgency=low
+
+  * show join script name in log output and not its first argument (Bug #26720)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 24 Apr 2012 09:51:20 +0200
+
 univention-join (4.0.33-1) unstable; urgency=low
 
   * ask for credentials in UMC module if join scripts shall be executed on
