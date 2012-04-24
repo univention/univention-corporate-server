@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.350-1) unstable; urgency=low
+
+  * version bump; Bug #26894
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 24 Apr 2012 18:54:47 +0200
+
 univention-management-console-frontend (1.0.293-1) unstable; urgency=low
 
   * added dojo, dijit, dojox to the list of generated documentations in·
