@@ -205,16 +205,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		umc.tools.umcpCommand('get/modules/list', null, false).then(dojo.hitch(this, function(data) {
 			// helper function for sorting, sort indeces with priority < 0 to be at the end
 			var _cmp = function(x, y) {
-				if (x.priority == y.priority) {
-					return 0;
-				}
-				if (x.priority < 0) {
-					return 1;
-				}
-				if (y.priority < 0) {
-					return -1;
-				}
-				return x.priority - y.priority;
+				return y.priority - x.priority;
 			};
 
 			// get all categories
