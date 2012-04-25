@@ -220,6 +220,12 @@ def read_modules( package, core = False ):
 
 	return modules
 
+def _appendPoEntry( poFile, xmlEntry ):
+	"""Helper function to access text property of XML elements and to find the
+	corresponding po-entry."""
+	if xmlEntry != None:
+		poFile.append( polib.POEntry( msgid = xmlEntry.text, msgstr = '' ) )
+
 def module_xml2po( module, po_file, language ):
 	"""Create a PO file the XML definition of an UMC module"""
 	message_po = '%s/messages.po' % ( os.path.dirname( po_file ) or '.' )
@@ -233,16 +239,16 @@ def module_xml2po( module, po_file, language ):
 
 	if module.xml_definition and os.path.isfile( module.xml_definition ):
 		tree = ET.ElementTree( file = module.xml_definition )
-		po.append( polib.POEntry( msgid = tree.find( 'module/name' ).text, msgstr = '' ) )
-		po.append( polib.POEntry( msgid = tree.find( 'module/description' ).text, msgstr = '' ) )
+		_appendPoEntry( po, tree.find( 'module/name' ) )
+		_appendPoEntry( po, tree.find( 'module/description' ) )
 		for flavor in tree.findall( 'module/flavor' ):
-			po.append( polib.POEntry( msgid = flavor.find( 'name' ).text, msgstr = '' ) )
-			po.append( polib.POEntry( msgid = flavor.find( 'description' ).text, msgstr = '' ) )
+			_appendPoEntry( po, flavor.find( 'name' ) )
+			_appendPoEntry( po, flavor.find( 'description' ) )
 
 	if module.xml_categories and os.path.isfile( module.xml_categories ):
 		tree = ET.ElementTree( file = module.xml_categories )
 		for cat in tree.findall( 'categories/category' ):
-			po.append( polib.POEntry( msgid = cat.find( 'name' ).text, msgstr = '' ) )
+			_appendPoEntry( po, cat.find( 'name' ) )
 
 	po.save( message_po )
 	if os.path.isfile( po_file ):
