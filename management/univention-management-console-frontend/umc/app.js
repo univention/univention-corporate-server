@@ -203,32 +203,25 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}
 
 		umc.tools.umcpCommand('get/modules/list', null, false).then(dojo.hitch(this, function(data) {
+			// helper function for sorting, sort indeces with priority < 0 to be at the end
+			var _cmp = function(x, y) {
+				if (x.priority == y.priority) {
+					return 0;
+				}
+				if (x.priority < 0) {
+					return 1;
+				}
+				if (y.priority < 0) {
+					return -1;
+				}
+				return x.priority - y.priority;
+			};
+
 			// get all categories
 			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(icat) {
 				this._categories.push(icat);
 			}));
-
-			// hack a specific order
-			//TODO: remove this hack
-			//var cats1 = [];
-			//var cats2 = this._categories;
-			//dojo.forEach(['favorites', 'ucsschool'], function(id) {
-			//	var tmpCats = cats2;
-			//	cats2 = [];
-			//	dojo.forEach(tmpCats, function(icat) {
-			//		if (id == icat.id) {
-			//			cats1.push(icat);
-			//		}
-			//		else {
-			//			cats2.push(icat);
-			//		}
-			//	});
-			//});
-			//this._categories = cats1.concat(cats2);
-			//console.log(cats1);
-			//console.log(cats2);
-			//console.log(this._categories);
-			// end of hack :)
+			this._categories.sort(_cmp);
 
 			// get all modules
 			dojo.forEach(dojo.getObject('modules', false, data), dojo.hitch( this, function(module) {
@@ -248,6 +241,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 					BaseClass: dojo.getObject('umc.modules.' + module.id)
 				}, module));
 			}));
+			this._modules.sort(_cmp);
 
 			// loading is done
 			this.onModulesLoaded();
