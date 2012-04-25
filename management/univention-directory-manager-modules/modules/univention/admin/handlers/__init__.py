@@ -2073,8 +2073,7 @@ class simpleComputer( simpleLdap ):
 
 		if self.hasChanged('dnsEntryZoneReverse'):
 			for entry in self.oldinfo.get('dnsEntryZoneReverse', []):
-				for entry in self.oldinfo['dnsEntryZoneReverse']:
-					if not entry in self.info.get('dnsEntryZoneReverse', []):
+				if not entry in self.info.get('dnsEntryZoneReverse', []):
 						self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ].append(entry)
 			for entry in self.info.get('dnsEntryZoneReverse', []):
 				if not entry in self.oldinfo.get('dnsEntryZoneReverse', []):
