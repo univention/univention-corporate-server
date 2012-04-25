@@ -76,21 +76,23 @@ class Command( JSON_Object ):
 class Flavor( JSON_Object ):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
-	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [], deactivated=False ):
+ 	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [], deactivated=False, priority = -1 ):
 		self.id = id
 		self.name = name
 		self.description = description
 		self.icon = icon
 		self.overwrites = overwrites
 		self.deactivated = deactivated
+ 		self.priority = priority
 
 class Module( JSON_Object ):
 	'''Represents an command attribute'''
-	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None ):
+ 	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None, priority = -1 ):
 		self.id = id
 		self.name = name
 		self.description = description
 		self.icon = icon
+ 		self.priority = priority
 		if flavors is None:
 			self.flavors = JSON_List()
 		else:
@@ -140,6 +142,11 @@ class Module( JSON_Object ):
 				self.commands.append(command)
 
 
+def _getText( result ):
+	if result != None:
+		return result.text
+	return None
+
 class XML_Definition( ET.ElementTree ):
 	'''container for the interface description of a module'''
 	def __init__( self, root = None, filename = None ):
@@ -147,15 +154,23 @@ class XML_Definition( ET.ElementTree ):
 
 	@property
 	def name( self ):
-		return self.find( 'module/name' ).text
+		return _getText(self.find( 'module/name' ))
 
 	@property
 	def description( self ):
-		return self.find( 'module/description' ).text
+		return _getText(self.find( 'module/description' ))
 
 	@property
 	def id( self ):
 		return self.find( 'module' ).get( 'id' )
+
+	@property
+	def priority( self ):
+		try:
+			return float(self.find( 'module' ).get( 'priority', -1 ))
+		except ValueError:
+			RESOURCES.warn( 'No valid number type for property "priority": %s' % self.find( 'module' ).get('priority') )
+		return None
 
 	@property
 	def notifier( self ):
@@ -172,8 +187,13 @@ class XML_Definition( ET.ElementTree ):
 			flavor = Flavor( elem.get( 'id' ), elem.get( 'icon' ) )
 			flavor.overwrites = elem.get( 'overwrites', '' ).split( ',' )
 			flavor.deactivated = (elem.get( 'deactivated', 'no' ).lower() in ('yes','true','1'))
-			flavor.name = elem.findtext('name','')
-			flavor.description = elem.findtext('description','')
+ 			flavor.name = _getText(elem.find( 'name' ))
+ 			flavor.description = _getText(elem.find( 'description' ))
+ 			try:
+ 				flavor.priority = float(elem.get('priority', -1))
+ 			except ValueError:
+ 				RESOURCES.warn( 'No valid number type for property "priority": %s' % elem.get('priority') )
+ 				flavor.priority = None
 			yield flavor
 
 	@property
@@ -186,7 +206,7 @@ class XML_Definition( ET.ElementTree ):
 			yield command.get( 'name' )
 
 	def get_module( self ):
-		return Module( self.id, self.name, self.description, self.icon, self.categories, self.flavors )
+		return Module( self.id, self.name, self.description, self.icon, self.categories, self.flavors, priority = self.priority )
 
 	def get_flavor( self, name ):
 		'''Retrieves details of a flavor'''

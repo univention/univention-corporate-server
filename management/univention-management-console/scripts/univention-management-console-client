@@ -168,10 +168,13 @@ class CLI_Client( umcp.Client ):
 					else:
 						print '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] )
 			print '  MESSAGE  : %s' % msg.message
+			result = msg.result
+			if not result:
+				result = msg.body
 			if self._options.prettyprint:
-				print '  RESULT   : %s' % pprint.pformat( msg.result, indent = 2 )
+				print '  RESULT   : %s' % pprint.pformat( result, indent = 2 )
 			else:
-				print '  RESULT   : %s' % msg.result
+				print '  RESULT   : %s' % result
 			if msg.status is not None:
 				raise ClientExit( msg.status - 200 )
 		else:

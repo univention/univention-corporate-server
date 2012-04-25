@@ -255,15 +255,15 @@ class Processor( signals.Provider ):
 				# check for translation
 				if module.flavors:
 					for flavor in module.flavors:
-						modules.append( { 'id' : id, 'flavor' : flavor.id, 'name' : self.i18n._( flavor.name, id ), 'description' : self.i18n._( flavor.description, id ), 'icon' : flavor.icon, 'categories' : module.categories } )
+						modules.append( { 'id' : id, 'flavor' : flavor.id, 'name' : self.i18n._( flavor.name, id ), 'description' : self.i18n._( flavor.description, id ), 'icon' : flavor.icon, 'categories' : module.categories, 'priority' : flavor.priority } )
 				else:
-						modules.append( { 'id' : id, 'name' : self.i18n._( module.name, id ), 'description' : self.i18n._( module.description, id ), 'icon' : module.icon, 'categories' : module.categories } )
+						modules.append( { 'id' : id, 'name' : self.i18n._( module.name, id ), 'description' : self.i18n._( module.description, id ), 'icon' : module.icon, 'categories' : module.categories, 'priority' : module.priority } )
 			res.body[ 'modules' ] = modules
 			_ucr_dict = dict( ucr.items() )
 
 			categories = []
 			for catID, category in categoryManager.items():
-				categories.append( { 'id' : catID, 'name' : self.i18n._( category.name, category.domain ).format( **_ucr_dict ) } )
+				categories.append( { 'id' : catID, 'name' : self.i18n._( category.name, category.domain ).format( **_ucr_dict ), 'priority' : category.priority } )
 
 			res.body[ 'categories' ] = categories
 			CORE.info( 'Modules: %s' % modules )

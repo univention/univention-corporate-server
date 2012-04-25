@@ -53,8 +53,16 @@ class XML_Definition( ET.ElementTree ):
 	def id( self ):
 		return self._root.get( 'id' )
 
+	@property
+	def priority( self ):
+		try:
+			return float(self._root.get( 'priority', -1 ))
+		except ValueError:
+			RESOURCES.warn( 'No valid number type for property "priority": %s' % self._root.get('priority') )
+		return None
+
 	def json( self ):
-		return { 'id' : self.id, 'name' : self.name }
+		return { 'id' : self.id, 'name' : self.name, 'priority': self.priority }
 
 class Manager( dict ):
 	'''Manager of all available categories'''
