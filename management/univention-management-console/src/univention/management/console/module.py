@@ -147,6 +147,11 @@ def _getText( result ):
 		return result.text
 	return None
 
+def _getText( result ):
+	if result != None:
+		return result.text
+	return None
+
 class XML_Definition( ET.ElementTree ):
 	'''container for the interface description of a module'''
 	def __init__( self, root = None, filename = None ):

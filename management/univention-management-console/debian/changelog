@@ -1,6 +1,8 @@
 univention-management-console (4.0.251-1) unstable; urgency=low
 
-  * add property "priority" to category entries; Bug #26349
+  * add property "priority" to module and category entries; Bug #26349
+  * allow missing name/description entries
+  * umc-client: enable output for "get modules/list"
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 24 Apr 2012 16:20:47 +0200
 
