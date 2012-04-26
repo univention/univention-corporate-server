@@ -1,3 +1,9 @@
+univention-mozilla-firefox (5.0.1-5) unstable; urgency=low
+
+  * Bump version (Bug #26897) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 26 Apr 2012 14:29:41 +0200
+
 univention-mozilla-firefox (5.0.1-4) unstable; urgency=low
 
   * Add alternate Depends on firefox-en and firefox-de (Bug #26897)
