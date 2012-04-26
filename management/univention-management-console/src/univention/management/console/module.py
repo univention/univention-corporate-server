@@ -88,7 +88,7 @@ class Flavor( JSON_Object ):
 
 class Module( JSON_Object ):
 	'''Represents an command attribute'''
-	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None, priority = -1, translationId = None ):
+	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None, priority = -1 ):
 		self.id = id
 		self.name = name
 		self.description = description
