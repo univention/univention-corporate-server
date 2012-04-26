@@ -181,7 +181,7 @@ modules = {
 	'shares/print': Attributes( UCS ),
 	'shares/printer': Attributes( UCS ),
 	'shares/printergroup': Attributes( UCS ),
-	'shares/share': Attributes( [UCS, OXAE] ),
+	'shares/share': Attributes( [UCS] ),
 	'users/passwd': Attributes(),
 	'users/user': Attributes( ),
 }

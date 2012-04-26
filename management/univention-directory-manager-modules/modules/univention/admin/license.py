@@ -300,6 +300,12 @@ class License( object ):
 				'License Type', 'Type attribute not found' )
 		if not isinstance( self.types, ( list, tuple ) ):
 			self.types = [ self.types ]
+		# handle license type "OXAE" the same way as license type "UCS"
+		if 'OXAE' in self.types:
+			self.types.remove('OXAE')
+			if not 'UCS' in self.types:
+				self.types.append('UCS')
+
 		self.oemProductTypes = self.__getValue( 'univentionLicenseOEMProduct', [ ],
 				'License Type', 'univentionLicenseOEMProduct attribute not found' )
 		if not isinstance( self.oemProductTypes, ( list, tuple ) ):
