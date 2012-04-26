@@ -76,24 +76,24 @@ class Command( JSON_Object ):
 class Flavor( JSON_Object ):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
- 	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [], deactivated=False, priority = -1, translationId=None ):
+	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [], deactivated=False, priority = -1, translationId=None ):
 		self.id = id
 		self.name = name
 		self.description = description
 		self.icon = icon
 		self.overwrites = overwrites
 		self.deactivated = deactivated
- 		self.priority = priority
+		self.priority = priority
 		self.translationId = translationId
 
 class Module( JSON_Object ):
 	'''Represents an command attribute'''
- 	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None, priority = -1, translationId = None ):
+	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None, priority = -1, translationId = None ):
 		self.id = id
 		self.name = name
 		self.description = description
 		self.icon = icon
- 		self.priority = priority
+		self.priority = priority
 		if flavors is None:
 			self.flavors = JSON_List()
 		else:
@@ -198,13 +198,13 @@ class XML_Definition( ET.ElementTree ):
 			flavor.overwrites = elem.get( 'overwrites', '' ).split( ',' )
 			flavor.deactivated = (elem.get( 'deactivated', 'no' ).lower() in ('yes','true','1'))
 			flavor.translationId = self.translationId
- 			flavor.name = _getText(elem.find( 'name' ))
- 			flavor.description = _getText(elem.find( 'description' ))
- 			try:
- 				flavor.priority = float(elem.get('priority', -1))
- 			except ValueError:
- 				RESOURCES.warn( 'No valid number type for property "priority": %s' % elem.get('priority') )
- 				flavor.priority = None
+			flavor.name = _getText(elem.find( 'name' ))
+			flavor.description = _getText(elem.find( 'description' ))
+			try:
+				flavor.priority = float(elem.get('priority', -1))
+			except ValueError:
+				RESOURCES.warn( 'No valid number type for property "priority": %s' % elem.get('priority') )
+				flavor.priority = None
 			yield flavor
 
 	@property
