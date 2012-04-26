@@ -255,7 +255,10 @@ class Processor( signals.Provider ):
 				# check for translation
 				if module.flavors:
 					for flavor in module.flavors:
-						modules.append( { 'id' : id, 'flavor' : flavor.id, 'name' : self.i18n._( flavor.name, id ), 'description' : self.i18n._( flavor.description, id ), 'icon' : flavor.icon, 'categories' : module.categories, 'priority' : flavor.priority } )
+						translationId = flavor.translationId
+						if not translationId:
+							translationId = id
+						modules.append( { 'id' : id, 'flavor' : flavor.id, 'name' : self.i18n._( flavor.name, translationId ), 'description' : self.i18n._( flavor.description, translationId ), 'icon' : flavor.icon, 'categories' : module.categories, 'priority' : flavor.priority } )
 				else:
 						modules.append( { 'id' : id, 'name' : self.i18n._( module.name, id ), 'description' : self.i18n._( module.description, id ), 'icon' : module.icon, 'categories' : module.categories, 'priority' : module.priority } )
 			res.body[ 'modules' ] = modules

@@ -76,7 +76,7 @@ class Command( JSON_Object ):
 class Flavor( JSON_Object ):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
- 	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [], deactivated=False, priority = -1 ):
+ 	def __init__( self, id = '', icon = '', name = '', description = '', overwrites = [], deactivated=False, priority = -1, translationId=None ):
 		self.id = id
 		self.name = name
 		self.description = description
@@ -84,10 +84,11 @@ class Flavor( JSON_Object ):
 		self.overwrites = overwrites
 		self.deactivated = deactivated
  		self.priority = priority
+		self.translationId = translationId
 
 class Module( JSON_Object ):
 	'''Represents an command attribute'''
- 	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None, priority = -1 ):
+ 	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None, priority = -1, translationId = None ):
 		self.id = id
 		self.name = name
 		self.description = description
@@ -178,6 +179,10 @@ class XML_Definition( ET.ElementTree ):
 		return None
 
 	@property
+	def translationId( self ):
+		return self.find( 'module' ).get( 'translationId', '' )
+
+	@property
 	def notifier( self ):
 		return self.find( 'module' ).get( 'notifier' )
 
@@ -192,6 +197,7 @@ class XML_Definition( ET.ElementTree ):
 			flavor = Flavor( elem.get( 'id' ), elem.get( 'icon' ) )
 			flavor.overwrites = elem.get( 'overwrites', '' ).split( ',' )
 			flavor.deactivated = (elem.get( 'deactivated', 'no' ).lower() in ('yes','true','1'))
+			flavor.translationId = self.translationId
  			flavor.name = _getText(elem.find( 'name' ))
  			flavor.description = _getText(elem.find( 'description' ))
  			try:
