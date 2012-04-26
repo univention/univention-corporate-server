@@ -1,3 +1,9 @@
+univention-mozilla-firefox (5.0.1-4) unstable; urgency=low
+
+  * Add alternate Depends on firefox-en and firefox-de (Bug #26897)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 26 Apr 2012 14:23:03 +0200
+
 univention-mozilla-firefox (5.0.1-3) unstable; urgency=low
 
   * added GNU APGL V3 header (Bug #9620)
