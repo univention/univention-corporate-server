@@ -1,3 +1,11 @@
+univention-directory-manager-modules (7.0.248-1) unstable; urgency=low
+
+  * added function for removing properties from layout (Bug #26947)
+  * added UCR variables for hiding properties in UDM layout (Bug #26947)
+  * small fix to prevent a traceback
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 27 Apr 2012 16:53:43 +0200
+
 univention-directory-manager-modules (7.0.247-1) unstable; urgency=low
 
   * Added a new attribute to disable an UDM property in UDM/UMC
