@@ -1,3 +1,10 @@
+univention-ldap (8.0.78-1) unstable; urgency=low
+
+  * Added a new attribute to disable an UDM property in UDM/UMC
+    (Bug #26921)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Apr 2012 06:56:17 +0200
+
 univention-ldap (8.0.77-1) unstable; urgency=low
 
   * Set SRV priority to 100 for ldap and kerberos in backup2master

@@ -278,6 +278,13 @@ attributetype ( 1.3.6.1.4.1.10176.200.129 NAME 'univentionUDMPropertyLayoutGroup
 		SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 
+attributetype ( 1.3.6.1.4.1.10176.200.130 NAME 'univentionUDMPropertyLayoutDisable'
+        DESC ' defines if this attribute will be shown in UDM/UMC'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+
 objectclass ( 1.3.6.1.4.1.10176.200.199
     NAME 'univentionUDMProperty'
         DESC ' defines a custom attribute for use in univention directory manager '
@@ -311,7 +318,8 @@ objectclass ( 1.3.6.1.4.1.10176.200.199
 			  univentionUDMPropertyAddEmptyValue $
 			  univentionUDMPropertyLayoutGroupName $
 			  univentionUDMPropertyTranslationGroupName $
-			  univentionUDMPropertyLayoutGroupPosition
+			  univentionUDMPropertyLayoutGroupPosition $
+			  univentionUDMPropertyLayoutDisable
 			  )
 	)
 
