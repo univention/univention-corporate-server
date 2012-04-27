@@ -84,6 +84,33 @@ class ILayoutElement( dict ):
 
 		return ( replaced, self.layout )
 
+	def remove( self, field, recursive=True ):
+		new_layout = []
+		removed = False
+		if self.exists(field):
+			for item in self.layout:
+				if removed:
+					new_layout.append(item)
+					continue
+				if isinstance(item, basestring) and item != field:
+					new_layout.append(item)
+				elif isinstance(item, (tuple, list)):
+					line = []
+					for elem in item:
+						if elem != field:
+							line.append(elem)
+						else:
+							removed = True
+					new_layout.append(line)
+				elif isinstance(item, ILayoutElement) and recursive:
+					removed, layout = item.remove(field, recursive)
+					new_layout.append(item)
+				else:
+					removed = True
+			self.layout = new_layout
+
+		return (removed, self.layout)
+
 	def exists( self, field ):
 		for item in self.layout:
 			if isinstance( item, basestring ) and item == field:
