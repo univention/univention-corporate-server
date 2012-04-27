@@ -1,6 +1,6 @@
 univention-s4-connector (6.0.128-1) unstable; urgency=low
 
-  * Synchonize MS GPO links and obkjects (Bug #26926)
+  * Synchonize MS GPO links and objects (Bug #26926)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Apr 2012 12:00:32 +0200
 
