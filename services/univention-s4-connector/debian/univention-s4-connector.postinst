@@ -61,7 +61,7 @@ call_joinscript 97univention-s4-connector.inst
 
 stop_udm_cli_server
 
-if [ -x /etc/init.d/univention-s4-connector ]; then
+if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
 	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.128-1 ; then
 		# Write the MS GPO settings from Samba 4 to UCS
 		/etc/init.d/univention-s4-connector stop
