@@ -1,3 +1,9 @@
+univention-ldap (8.0.79-1) unstable; urgency=low
+
+  * Added a schema file for MS group policy objects (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Apr 2012 10:39:37 +0200
+
 univention-ldap (8.0.78-1) unstable; urgency=low
 
   * Added a new attribute to disable an UDM property in UDM/UMC

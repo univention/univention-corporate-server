@@ -36,6 +36,7 @@ if baseConfig['ldap/server/type']=="master":
 	print 'include         /usr/share/univention-ldap/schema/nagios.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-directory.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-objecttype.schema'
+	print 'include         /usr/share/univention-ldap/schema/msgpo.schema'
 else:
 	print 'include         /var/lib/univention-ldap/schema.conf'
 @!@
