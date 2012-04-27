@@ -55,11 +55,9 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'CN=DomainUpdates,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=Password Settings Container,CN=System,@%@connector/s4/ldap/base@%@',
 			'DC=RootDNSServers,CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@',
-			'CN=Default Domain Policy,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=File Replication Service,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=RpcServices,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=Meetings,CN=System,@%@connector/s4/ldap/base@%@',
-			'CN=Policies,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=AdminSDHolder,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=WMIPolicy,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=BCKUPKEY_c490e871-a375-4b76-bd24-711e9e49fe5e Secret,CN=System,@%@connector/s4/ldap/base@%@',
@@ -494,6 +492,67 @@ else:
 			ucs_sync_function = univention.s4connector.s4.dns.con2ucs,
 
 		),
+	'msGPO': univention.s4connector.property (
+			ucs_module='container/msgpo',
+
+			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+
+			scope='sub',
+
+			con_search_filter='(&(objectClass=container)(objectClass=groupPolicyContainer))',
+
+			ignore_filter='',
+
+			ignore_subtree = global_ignore_subtree,
+			
+			con_create_objectclass=['top', 'container', 'groupPolicyContainer' ],
+
+			attributes= {
+					'cn': univention.s4connector.attribute (
+							ucs_attribute='name',
+							ldap_attribute='cn',
+							con_attribute='cn',
+							required=1,
+							compare_function=univention.s4connector.compare_lowercase,
+						),
+					'description': univention.s4connector.attribute (
+							ucs_attribute='description',
+							ldap_attribute='description',
+							con_attribute='description'
+						),
+					'msGPOFlags': univention.s4connector.attribute (
+							ucs_attribute='msGPOFlags',
+							ldap_attribute='msGPOFlags',
+							con_attribute='flags'
+						),
+					'msGPOVersionNumber': univention.s4connector.attribute (
+							ucs_attribute='msGPOVersionNumber',
+							ldap_attribute='msGPOVersionNumber',
+							con_attribute='versionNumber'
+						),
+					'msGPOSystemFlags': univention.s4connector.attribute (
+							ucs_attribute='msGPOSystemFlags',
+							ldap_attribute='msGPOSystemFlags',
+							con_attribute='systemFlags'
+						),
+					'msGPOFunctionalityVersion': univention.s4connector.attribute (
+							ucs_attribute='msGPOFunctionalityVersion',
+							ldap_attribute='msGPOFunctionalityVersion',
+							con_attribute='gPCFunctionalityVersion'
+						),
+					'msGPOFileSysPath': univention.s4connector.attribute (
+							ucs_attribute='msGPOFileSysPath',
+							ldap_attribute='msGPOFileSysPath',
+							con_attribute='gPCFileSysPath'
+						),
+					'msGPOMachineExtensionNames': univention.s4connector.attribute (
+							ucs_attribute='msGPOMachineExtensionNames',
+							ldap_attribute='msGPOMachineExtensionNames',
+							con_attribute='gPCMachineExtensionNames'
+						),
+				},
+
+		),
 	'container': univention.s4connector.property (
 			ucs_module='container/cn',
 
@@ -501,9 +560,9 @@ else:
 
 			scope='sub',
 
-			con_search_filter='(|(objectClass=container)(objectClass=builtinDomain))', # builtinDomain is cn=builtin (with group cn=Administrators)
+			con_search_filter='(&(|(objectClass=container)(objectClass=builtinDomain))(!(objectClass=groupPolicyContainer)))', # builtinDomain is cn=builtin (with group cn=Administrators)
 
-			ignore_filter='(|(cn=mail)(cn=kerberos)(cn=System)(cn=MicrosoftDNS))',
+			ignore_filter='(|(cn=mail)(cn=kerberos)(cn=MicrosoftDNS))',
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -521,6 +580,11 @@ else:
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description'
+						),
+					'gPLink': univention.s4connector.attribute (
+							ucs_attribute='gPLink',
+							ldap_attribute='msGPOLink',
+							con_attribute='gPLink'
 						),
 				},
 
@@ -554,7 +618,32 @@ else:
 							ldap_attribute='description',
 							con_attribute='description'
 						),
+					'gPLink': univention.s4connector.attribute (
+							ucs_attribute='gPLink',
+							ldap_attribute='msGPOLink',
+							con_attribute='gPLink'
+						),
 				},
+		),
+	'container_dc': univention.s4connector.property (
+			ucs_module='container/dc',
+
+			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+
+			scope='sub',
+
+			con_search_filter='(objectClass=domain)', # builtinDomain is cn=builtin (with group cn=Administrators)
+
+			ignore_subtree = global_ignore_subtree,
+			
+			attributes= {
+					'gPLink': univention.s4connector.attribute (
+							ucs_attribute='gPLink',
+							ldap_attribute='msGPOLink',
+							con_attribute='gPLink'
+						),
+				},
+
 		),
 }
 

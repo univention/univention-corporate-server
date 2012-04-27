@@ -1264,9 +1264,10 @@ class ucs:
 		module = self.modules[property_type]
 		position=univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
-		ud.debug(ud.LDAP, ud.INFO,
-				       'sync_to_ucs: set position to %s' % string.join( ldap.explode_dn( object['dn'] )[1:], "," ) )
-		position.setDn( string.join( ldap.explode_dn( object['dn'] )[1:], "," ) ) 
+		if object['dn'].lower() != self.baseConfig['ldap/base'].lower():
+			ud.debug(ud.LDAP, ud.INFO,
+						   'sync_to_ucs: set position to %s' % string.join( ldap.explode_dn( object['dn'] )[1:], "," ) )
+			position.setDn( string.join( ldap.explode_dn( object['dn'] )[1:], "," ) ) 
 
 		try:
 			result = False

@@ -1,0 +1,68 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-27 09:39+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"                                                                                                                                                        
+"Content-Transfer-Encoding: unicode\n"
+
+#: msgpo.py:47
+msgid "Container: MS Group Policy"
+msgstr "Container: MS Group Policy"
+
+#: msgpo.py:53
+msgid "Name"
+msgstr "Name"
+
+#: msgpo.py:63
+msgid "Description"
+msgstr "Beschreibung"
+
+#: msgpo.py:73
+msgid "MS Group Policy Flags"
+msgstr "MS Group Policy Flags"
+
+#: msgpo.py:83
+msgid "MS Group Policy Version Number"
+msgstr "MS Group Policy Versionsnummer"
+
+#: msgpo.py:93
+msgid "MS Group Policy System Flags"
+msgstr "MS Group Policy System-Flags"
+
+#: msgpo.py:103
+msgid "MS Group Policy Functionality Version"
+msgstr "MS Group Policy Functionsversion"
+
+#: msgpo.py:113
+msgid "MS Group Policy File Sys Path"
+msgstr "MS Group Policy File Sys Path"
+
+#: msgpo.py:123
+msgid "MS Group Policy Machine Extension Names"
+msgstr "MS Group Policy Machine Extension Names"
+
+#: msgpo.py:135 msgpo.py:136
+msgid "General"
+msgstr "Allgemein"
+
+#: msgpo.py:135
+msgid "Basic settings"
+msgstr "Grundeinstellungen"
+
+#: msgpo.py:140 msgpo.py:141
+msgid "GPO settings"
+msgstr "GPO-Einstellungen"
+
+#: msgpo.py:140
+msgid "MS GPO settings"
+msgstr "MS GPO-Einstellungen"

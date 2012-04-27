@@ -1,3 +1,4 @@
 modules/univention/s4connector/*.py usr/share/pyshared/univention/s4connector/
 modules/univention/s4connector/s4/*.py usr/share/pyshared/univention/s4connector/s4/
+modules/univention/admin/handlers/container/*.py usr/share/pyshared/univention/admin/handlers/container/
 

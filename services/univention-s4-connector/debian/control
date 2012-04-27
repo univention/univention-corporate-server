@@ -15,7 +15,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
  python-univention-heimdal (>= 4.0.2-2),
- python-univention-directory-manager (>= 7.0.214),
+ python-univention-directory-manager (>= 7.0.232-2),
  python-pysqlite2
 Provides: ${python:Provides}
 Description: UCS - Modules for connector sychronisation

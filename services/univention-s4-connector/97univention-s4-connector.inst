@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  join script
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -47,6 +47,23 @@ univention-config-registry set \
 	connector/s4/mapping/group/language?en \
 	connector/s4/ldap/protocol?ldapi \
 	connector/s4/ldap/socket?/var/lib/samba/private/ldap_priv/ldapi
+
+# Create an extended attribute to synchronize the GPO attributes
+udm settings/extended_attribute create "$@" --ignore_exists \
+			--position "cn=custom attributes,cn=univention,$ldap_base" \
+			--set name=gPLink \
+			--set objectClass=msGPO \
+			--set module=container/ou \
+			--append module=container/ou \
+			--append module=container/dc \
+			--set shortDescription=gPLink \
+			--set CLIName=gPLink \
+			--set longDescription="MS Group Policy Link" \
+			--set doNotSearch=1 \
+			--set syntax=string \
+			--set mayChange=1 \
+			--set disableUDMWeb=1 \
+			--set ldapMapping=msGPOLink
 
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
@@ -84,6 +101,21 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 	old_retry="$connector_s4_retryrejected"
 
 	univention-config-registry set connector/s4/poll/sleep=1 connector/s4/retryrejected=2
+
+	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
+		/etc/init.d/univention-s4-connector stop
+
+		# By default the connector will overwrite all Samba 4 objects by the UCS objects.
+		# On a normal Samba 4 DC is is necessary that the MS GPO settings will not be overwritten.
+		# But on a "Slave PDC" the settings from the Master must be used
+		if ! is_ucr_true 'connector/s4/allow/secondary'; then
+			# Normal Samba 4 DC
+			/usr/share/univention-s4-connector/msgpo.py --write2ucs
+		else
+			# Slave PDC
+			/usr/share/univention-s4-connector/msgpo.py --write2samba4
+		fi
+	fi
 
 	/etc/init.d/univention-s4-connector restart
 
