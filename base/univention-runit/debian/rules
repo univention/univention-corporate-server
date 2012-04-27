@@ -3,7 +3,7 @@
 # Univention RunIt
 #  prerm script for the debian package
 #
-# Copyright 2003-2011 Univention GmbH
+# Copyright 2003-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 override_dh_installinit:
-	dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="defaults 13 25"
+	dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="defaults 8 25"
 
 override_dh_auto_test:
 	ucslint

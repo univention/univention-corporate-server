@@ -1,3 +1,9 @@
+univention-runit (4.0.3-2) unstable; urgency=low
+
+  * Start univention-runit in init level 08 (Bug #26848)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 27 Apr 2012 10:05:09 +0200
+
 univention-runit (4.0.3-1) unstable; urgency=low
 
   * Use the correct postinst file (Bug #23358)

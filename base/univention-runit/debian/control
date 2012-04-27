@@ -2,8 +2,8 @@ Source: univention-runit
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), ucslint
-Standards-Version: 3.5.2
+Build-Depends: debhelper, ucslint
+Standards-Version: 3.7.2
 
 Package: univention-runit
 Architecture: all
