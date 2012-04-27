@@ -159,6 +159,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'disableUDMWeb': univention.admin.property(
+			short_description=_('Do not show in UDM Web'),
+			long_description='',
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'tabName': univention.admin.property(
 			short_description=_('Tab Name'),
 			long_description='',
@@ -374,6 +384,7 @@ layout = [
 		Group( _( 'Extended settings' ), layout = [
 			[ "overwritePosition", "fullWidth" ],
 			[ "overwriteTab", "tabAdvanced" ],
+			[ "disableUDMWeb" ],
 			] ),
 	] ),
 	Tab(_('UDM General'),_('UDM related settings'), layout = [
@@ -410,6 +421,7 @@ mapping.register('syntax', 'univentionUDMPropertySyntax', None, univention.admin
 mapping.register('hook', 'univentionUDMPropertyHook', None, univention.admin.mapping.ListToString)
 mapping.register('ldapMapping', 'univentionUDMPropertyLdapMapping', None, univention.admin.mapping.ListToString)
 mapping.register('multivalue', 'univentionUDMPropertyMultivalue', None, univention.admin.mapping.ListToString)
+mapping.register('disableUDMWeb', 'univentionUDMPropertyLayoutDisable', None, univention.admin.mapping.ListToString)
 mapping.register('tabName', 'univentionUDMPropertyLayoutTabName', None, univention.admin.mapping.ListToString)
 mapping.register('tabPosition', 'univentionUDMPropertyLayoutPosition', None, univention.admin.mapping.ListToString)
 mapping.register('groupName', 'univentionUDMPropertyLayoutGroupName', None, univention.admin.mapping.ListToString)

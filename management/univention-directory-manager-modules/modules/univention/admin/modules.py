@@ -415,6 +415,12 @@ def update_extended_attributes(lo, module, position):
 			# single value ==> use only first value
 			propertyDefault = propertyDefault[0]
 
+		# Show this attribute in UDM/UMC?
+		if attrs.get('univentionUDMPropertyLayoutDisable', [''])[0] == '1':
+			layoutDisabled = True
+		else:
+			layoutDisabled = False
+
 		# get current language
 		lang = locale.getlocale( locale.LC_MESSAGES )[0]
 		ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang))
@@ -476,32 +482,33 @@ def update_extended_attributes(lo, module, position):
 				overwriteProp = None
 
 			# add tab name to list if missing
-			if not tabname in properties4tabs:
+			if not tabname in properties4tabs and not layoutDisabled:
 				properties4tabs[ tabname ] = []
 				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
 
 			# remember tab for purging if required
-			if overwriteTab and not tabname in overwriteTabList:
+			if overwriteTab and not tabname in overwriteTabList and not layoutDisabled:
 				overwriteTabList.append(tabname)
 
-			# get position on tab
-			# -1 == append on top
-			tabPosition = attrs.get( 'univentionUDMPropertyLayoutPosition', [ '-1' ] )[ 0 ]
-			try:
-				tabPosition = int( tabPosition )
-			except:
-				ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
-				tabPosition = -1
+			if not layoutDisabled:
+				# get position on tab
+				# -1 == append on top
+				tabPosition = attrs.get( 'univentionUDMPropertyLayoutPosition', [ '-1' ] )[ 0 ]
+				try:
+					tabPosition = int( tabPosition )
+				except:
+					ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
+					tabPosition = -1
 
-			if tabPosition == -1:
-				for ea_layout in properties4tabs[ tabname ]:
-					try:
-						if ea_layout.position <= tabPosition:
-							tabPosition = pos-1
-					except:
-						ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
+				if tabPosition == -1:
+					for ea_layout in properties4tabs[ tabname ]:
+						try:
+							if ea_layout.position <= tabPosition:
+								tabPosition = pos-1
+						except:
+							ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
 
-			properties4tabs[ tabname ].append( EA_Layout( name = pname, tabName = tabname, position = tabPosition, advanced = tabAdvanced, overwrite = overwriteProp, fullWidth = fullWidth, groupName = groupname, groupPosition = groupPosition ) )
+				properties4tabs[ tabname ].append( EA_Layout( name = pname, tabName = tabname, position = tabPosition, advanced = tabAdvanced, overwrite = overwriteProp, fullWidth = fullWidth, groupName = groupname, groupPosition = groupPosition ) )
 
 			module.extended_udm_attributes.extend( [ univention.admin.extended_attribute( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
 																				  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,

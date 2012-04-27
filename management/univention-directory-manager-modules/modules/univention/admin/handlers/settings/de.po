@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-01 09:46+0100\n"
+"POT-Creation-Date: 2012-04-27 07:03+0200\n"
 "PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -52,7 +52,7 @@ msgid "Name"
 msgstr "Name"
 
 #: cn.py:64 default.py:137 default.py:138 directory.py:178 directory.py:179
-#: extended_attribute.py:358 extended_attribute.py:359 extended_options.py:147
+#: extended_attribute.py:368 extended_attribute.py:369 extended_options.py:147
 #: extended_options.py:148 license.py:168 lock.py:77 lock.py:78 packages.py:78
 #: packages.py:79 printermodel.py:80 printermodel.py:81 printeruri.py:78
 #: printeruri.py:79 prohibited_username.py:77 prohibited_username.py:78
@@ -63,7 +63,7 @@ msgstr "Name"
 msgid "General"
 msgstr "Allgemein"
 
-#: cn.py:64 default.py:137 directory.py:178 extended_attribute.py:358
+#: cn.py:64 default.py:137 directory.py:178 extended_attribute.py:368
 #: extended_options.py:147 sambaconfig.py:182 sambadomain.py:229 service.py:64
 #: syntax.py:156 usertemplate.py:349
 msgid "Basic Values"
@@ -246,129 +246,133 @@ msgid "Default Value"
 msgstr "Vorgabewert"
 
 #: extended_attribute.py:163
+msgid "Do not show in UDM Web"
+msgstr "In UDM Web nicht anzeigen"
+
+#: extended_attribute.py:173
 msgid "Tab Name"
 msgstr "Name der Karteikarte"
 
-#: extended_attribute.py:173
+#: extended_attribute.py:183
 msgid "Position number on tab"
 msgstr "Positionsnummer auf der Karteikarte"
 
-#: extended_attribute.py:183
+#: extended_attribute.py:193
 msgid "Group name"
 msgstr "Gruppenname"
 
-#: extended_attribute.py:193
+#: extended_attribute.py:203
 msgid "Position number of group"
 msgstr "Positionsnummer der Gruppe"
 
-#: extended_attribute.py:203
+#: extended_attribute.py:213
 msgid "Advanced tab"
 msgstr "Karteikarte mit erweiterten Einstellungen"
 
-#: extended_attribute.py:213
+#: extended_attribute.py:223
 msgid "Overwrite existing tab"
 msgstr "Existierende Karteikarte überschreiben"
 
-#: extended_attribute.py:223
+#: extended_attribute.py:233
 msgid "Overwrite existing widget"
 msgstr "Existierendes Eingabefeld überschreiben"
 
-#: extended_attribute.py:233
+#: extended_attribute.py:243
 msgid "Span both columns"
 msgstr "Beide Spalten umfassen"
 
-#: extended_attribute.py:243 extended_attribute.py:393
+#: extended_attribute.py:253 extended_attribute.py:404
 msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
-#: extended_attribute.py:253
+#: extended_attribute.py:263
 msgid "May change"
 msgstr "Nachträglich modifizierbar"
 
-#: extended_attribute.py:263
+#: extended_attribute.py:273
 msgid "Value not editable"
 msgstr "Wert ist nicht änderbar"
 
-#: extended_attribute.py:264
+#: extended_attribute.py:274
 msgid "Disabling this option will only allow hooks to change the value"
 msgstr ""
 "Das Deaktivieren dieser Option führt dazu, dass der Wert nur noch über Hooks "
 "änderbar ist."
 
-#: extended_attribute.py:274
+#: extended_attribute.py:284
 msgid "Value required"
 msgstr "Wert wird benötigt"
 
-#: extended_attribute.py:284 extended_options.py:135
+#: extended_attribute.py:294 extended_options.py:135
 msgid "Object Class"
 msgstr "Objektklasse"
 
 # customattribute.py:06
-#: extended_attribute.py:294
+#: extended_attribute.py:304
 msgid "Delete Object Class"
 msgstr "Objektklasse löschen"
 
-#: extended_attribute.py:304 extended_options.py:125
+#: extended_attribute.py:314 extended_options.py:125
 msgid "Needed Module"
 msgstr "Benötigtes Modul"
 
-#: extended_attribute.py:305
+#: extended_attribute.py:315
 msgid "\"users/user\" or \"computer/thinclient\""
 msgstr "\"users/user\" oder \"computer/thinclient\""
 
-#: extended_attribute.py:314
+#: extended_attribute.py:324
 msgid "Version of extended attribute"
 msgstr "Version des erweiterten Attributs"
 
-#: extended_attribute.py:325
+#: extended_attribute.py:335
 msgid "UDM CLI name of extended attribute"
 msgstr "UDM-CLI Attributname"
 
-#: extended_attribute.py:336 syntax.py:166 usertemplate.py:333
+#: extended_attribute.py:346 syntax.py:166 usertemplate.py:333
 msgid "Options"
 msgstr "Optionen"
 
-#: extended_attribute.py:346
+#: extended_attribute.py:356
 msgid "Unsearchable"
 msgstr "Nicht durchsuchbar"
 
-#: extended_attribute.py:365
+#: extended_attribute.py:375
 msgid "UDM Web"
 msgstr "UDM Web"
 
-#: extended_attribute.py:365
+#: extended_attribute.py:375
 msgid "Settings for UDM web interface"
 msgstr "UDM-Web-spezifische Einstellungen"
 
-#: extended_attribute.py:366
+#: extended_attribute.py:376
 msgid "Tab layout"
 msgstr "Karteikartendarstellung"
 
-#: extended_attribute.py:370
+#: extended_attribute.py:380
 msgid "Group layout"
 msgstr "Gruppendarstellung"
 
-#: extended_attribute.py:374
+#: extended_attribute.py:384
 msgid "Extended settings"
 msgstr "Erweiterte Einstellungen"
 
-#: extended_attribute.py:379 extended_attribute.py:380
+#: extended_attribute.py:390 extended_attribute.py:391
 msgid "UDM General"
 msgstr "UDM Allgemein"
 
-#: extended_attribute.py:379
+#: extended_attribute.py:390
 msgid "UDM related settings"
 msgstr "UDM-spezifische Einstellungen"
 
-#: extended_attribute.py:385 extended_attribute.py:386
+#: extended_attribute.py:396 extended_attribute.py:397
 msgid "Data type"
 msgstr "Datentyp"
 
-#: extended_attribute.py:385
+#: extended_attribute.py:396
 msgid "Data type definition"
 msgstr "Datentyp-Definition"
 
-#: extended_attribute.py:393 extended_attribute.py:394
+#: extended_attribute.py:404 extended_attribute.py:405
 msgid "LDAP"
 msgstr "LDAP"
 
@@ -509,7 +513,9 @@ msgstr "Max. Desktops"
 msgid ""
 "Maximum number of Univention desktop accounts managed with the UCS "
 "infrastructure"
-msgstr "Maximale Anzahl von Desktop-Rechnern, die mit der UCS Infrastruktur verwaltet werden."
+msgstr ""
+"Maximale Anzahl von Desktop-Rechnern, die mit der UCS Infrastruktur "
+"verwaltet werden."
 
 #: license.py:145 license.py:155
 msgid "Valid product types"
@@ -797,8 +803,7 @@ msgstr "Anzeigename"
 msgid "Organization"
 msgstr "Organisation"
 
-#: usertemplate.py:103
-#: usertemplate.py:104
+#: usertemplate.py:103 usertemplate.py:104
 msgid "Change password upon next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
