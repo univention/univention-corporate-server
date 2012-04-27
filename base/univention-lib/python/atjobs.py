@@ -40,6 +40,8 @@ import datetime
 import subprocess
 import re
 
+__all__ = [ 'add', 'list', 'load', 'remove', 'AtJob' ]
+
 # internal formatting strings and regexps
 _regWhiteSpace = re.compile(r'\s+')
 _regJobNr = re.compile(r'job\s+(\d+)')
@@ -48,8 +50,9 @@ _dateTimeFormatWrite = '%Y-%m-%d %H:%M'
 _timeFormatWrite = '%H:%M'
 _dateFormatWrite = '%Y-%m-%d'
 
+COMMENT_PREFIX = '# Comment: '
 
-def add(cmd, execTime = None):
+def add( cmd, execTime = None, comments = {} ):
 	'''Add a new command to the job queue given a time (in seconds since
 	the epoch or as a datetime object) at which the job will be
 	executed.'''
@@ -67,6 +70,12 @@ def add(cmd, execTime = None):
 		atCmd.extend([jobTime, jobDate])
 	else:
 		atCmd.append('now')
+
+	# add comments
+	if comments:
+		cmd =  '\n'.join( map( lambda c: '%s%s:%s' % ( COMMENT_PREFIX, c[ 0 ], c[ 1 ] ), comments.items() ) ) + '\n' + cmd
+
+	# add job
 	p = subprocess.Popen(atCmd, stdout = subprocess.PIPE, stdin = subprocess.PIPE, stderr = subprocess.PIPE)
 
 	# send the job to stdin
@@ -78,7 +87,7 @@ def add(cmd, execTime = None):
 		return load(int(matches[0]))
 	return None
 
-def list():
+def list( parse_comments = False ):
 	'''Returns a list of all registered jobs as instances of AtJob.'''
 	p = subprocess.Popen('/usr/bin/atq', stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 	jobs = []
@@ -86,15 +95,34 @@ def list():
 		ijob = _parseJob(line)
 		if ijob:
 			jobs.append(_parseJob(line))
+
+	if parse_comments:
+		for job in jobs:
+			_parseComments( job )
+
 	return jobs
 
-def load(nr):
+def load( nr, parse_comments = False ):
 	'''Load a job given a particular ID. Returns None if job does not exist,
 	otherwise an instance of AtJob is returned.'''
-	result = [ p for p in list() if p.nr == nr ]
+	result = [ p for p in list( parse_comments ) if p.nr == nr ]
 	if len(result):
 		return result[0]
 	return None
+
+def remove( nr ):
+	result = [ p for p in list() if p.nr == nr ]
+	if len(result):
+		return result[ 0 ].rm()
+
+def _parseComments( job ):
+	p = subprocess.Popen( [ '/usr/bin/at', '-c', str( job.nr ) ], stdout = subprocess.PIPE )
+	job.comments = {}
+	for line in p.stdout:
+		if line.startswith( COMMENT_PREFIX ):
+			line = line[ len( COMMENT_PREFIX ) : -1 ]
+			key, value = line.split( ':', 1 )
+			job.comments[ key ] = value
 
 def _parseJob(string):
 	'''Internal method to parse output of at-command.'''
@@ -128,6 +156,7 @@ class AtJob(object):
 
 		self.execTime = execTime
 		self.isRunning = isRunning
+		self.comments = {}
 
 	def __str__(self):
 		t = self.execTime.strftime( _dateTimeFormatWrite )

@@ -1,3 +1,10 @@
+univention-lib (1.0.73-1) unstable; urgency=low
+
+  * atjobs: add support for optional comments to store data assoziated
+    with the job; Bug #25707
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 Apr 2012 15:24:25 +0200
+
 univention-lib (1.0.72-1) unstable; urgency=low
 
   * atjobs: execTime may now be given as a datetime object; Bug #26528
