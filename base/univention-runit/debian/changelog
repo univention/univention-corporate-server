@@ -1,3 +1,10 @@
+univention-runit (4.0.3-3) unstable; urgency=low
+
+  * Update version check to drop the old init config levels to ensure that existing
+    init scripts are updated (Bug #26848)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 27 Apr 2012 10:40:57 +0200
+
 univention-runit (4.0.3-2) unstable; urgency=low
 
   * Start univention-runit in init level 08 (Bug #26848)
