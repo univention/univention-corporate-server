@@ -43,19 +43,21 @@ baseConfig=configRegistry
 
 # __path__.append("handlers")
 
+ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
+
 def ucr_overwrite_properties( module, lo ):
 	"""
 	Overwrite properties in property_descriptions by UCR variables
 	"""
 	prop_obj = property()
-	ucr_prefix = 'directory/manager/web/modules/%s/properties/' % module.module
+	ucr_prefix = ucr_property_prefix % module.module
 	if not module:
 		return
 	
 	for var in configRegistry.keys():
 		if not var.startswith( ucr_prefix ):
 			continue
-		try: 
+		try:
 			prop, attr = var[ len( ucr_prefix ) : ].split( '/', 1 )
 			# ingore internal attributes
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: found variable: %s' % var )
@@ -310,7 +312,7 @@ def ucr_overwrite_layout (module, ucr_property, tab):
 	else:
 		return True
 
-def ucr_overwrite_module_layout( module ):
+def ucr_overwrite_module_layout( module, _ ):
 	'''
 	Overwrite the tab layout
 	'''
@@ -334,10 +336,13 @@ def ucr_overwrite_module_layout( module ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_name='%s'" % tab_name )
 		tab_descr = configRegistry.get( 'directory/manager/web/modules/%s/layout/%s/description' % ( module.module, desc ) )
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_descr='%s'" % tab_descr )
+
 		if tab_name:
 			tab[ 'name' ] = tab_name
+
 		if tab_descr:
 			tab[ 'description' ] = tab_descr
+
 		if tab_layout and tab_layout.lower() != 'none':
 			layout = []
 			for row in tab_layout.split( ';' ):
@@ -352,7 +357,21 @@ def ucr_overwrite_module_layout( module ):
 						univention.debug.debug( univention.debug.ADMIN, univention.debug.ERROR, "layout overwrite: unknown property: %s" % col )
 				layout.append( line )
 			tab[ 'layout' ] = { 'label' : _( 'General' ), 'layout' : layout }
+
 		if not tab_layout or tab_layout.lower() != 'none':
+			# disable specified properties via UCR
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_module_layout: trying to hide properties on tab %s' % (desc))
+			ucr_prefix = ucr_property_prefix % module.module
+			for var in configRegistry.keys():
+				if not var.startswith( ucr_prefix ):
+					continue
+				prop, attr = var[len(ucr_prefix):].split('/', 1)
+				# ignore invalid/unknown UCR variables
+				if '/' in attr:
+					continue
+				if attr in ('__hidden') and configRegistry.is_true(var):
+					removed, layout = tab.remove(prop)
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_module_layout: tried to hide property: %s (found=%s)' % (prop, removed))
 			new_layout.append( tab )
 
 	del module.layout
