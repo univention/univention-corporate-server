@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.130-1) unstable; urgency=low
+
+  * Don't call msgpo.py twice (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Apr 2012 23:46:13 +0200
+
 univention-s4-connector (6.0.129-1) unstable; urgency=low
 
   * Added a dependency to the ldap server package (Bug #26926)
