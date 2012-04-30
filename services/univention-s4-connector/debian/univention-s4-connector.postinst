@@ -66,6 +66,8 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 		# Write the MS GPO settings from Samba 4 to UCS
 		/etc/init.d/univention-s4-connector stop
 		/usr/share/univention-s4-connector/msgpo.py --write2ucs
+		# Added GPO objects to S4 rejected table, this will resync these objects
+		/usr/share/univention-s4-connector/upgrade_groupPolicyContainer.py
 		/etc/init.d/univention-s4-connector start
 	else
 		/etc/init.d/univention-s4-connector restart
