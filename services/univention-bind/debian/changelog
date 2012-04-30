@@ -1,3 +1,9 @@
+univention-bind (6.0.38-2) unstable; urgency=low
+
+  * bind service is now called "bind9" instead of "bind" (Bug #26482)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 30 Apr 2012 10:53:52 +0200
+
 univention-bind (6.0.38-1) unstable; urgency=low
 
   * Don't wait for the local DNS server if the internal nameserver

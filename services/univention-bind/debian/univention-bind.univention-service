@@ -1,4 +1,4 @@
-[bind]
+[bind9]
 description[de]=DNS-Server
 description[en]=DNS Server
 icon=service/bind
