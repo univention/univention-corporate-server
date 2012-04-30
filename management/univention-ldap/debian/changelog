@@ -1,3 +1,10 @@
+univention-ldap (8.0.80-1) unstable; urgency=low
+
+  * Added version dependency to ldap-config and acl packages
+    (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Apr 2012 14:57:48 +0200
+
 univention-ldap (8.0.79-1) unstable; urgency=low
 
   * Added a schema file for MS group policy objects (Bug #26926)
