@@ -53,7 +53,7 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 			--position "cn=custom attributes,cn=univention,$ldap_base" \
 			--set name=gPLink \
 			--set objectClass=msGPO \
-			--set module=container/ou \
+			--append module=container/cn \
 			--append module=container/ou \
 			--append module=container/dc \
 			--set shortDescription=gPLink \
