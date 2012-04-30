@@ -40,7 +40,7 @@ import datetime
 import subprocess
 import re
 
-__all__ = [ 'add', 'list', 'load', 'remove', 'AtJob' ]
+__all__ = [ 'add', 'list', 'load', 'remove', 'reschedule', 'AtJob' ]
 
 # internal formatting strings and regexps
 _regWhiteSpace = re.compile(r'\s+')
@@ -50,12 +50,14 @@ _dateTimeFormatWrite = '%Y-%m-%d %H:%M'
 _timeFormatWrite = '%H:%M'
 _dateFormatWrite = '%Y-%m-%d'
 
+SCRIPT_PREFIX = '# --- Univention-Lib at job  ---'
 COMMENT_PREFIX = '# Comment: '
 
 def add( cmd, execTime = None, comments = {} ):
 	'''Add a new command to the job queue given a time (in seconds since
 	the epoch or as a datetime object) at which the job will be
-	executed.'''
+	executed. Optionally comments can be provided as a dictionary. The
+	data is assoziated with the job.'''
 
 	if isinstance( execTime, ( int, float ) ):
 		start = datetime.datetime.fromtimestamp( execTime )
@@ -73,7 +75,7 @@ def add( cmd, execTime = None, comments = {} ):
 
 	# add comments
 	if comments:
-		cmd =  '\n'.join( map( lambda c: '%s%s:%s' % ( COMMENT_PREFIX, c[ 0 ], c[ 1 ] ), comments.items() ) ) + '\n' + cmd
+		cmd =  '\n'.join( map( lambda c: '%s%s:%s' % ( COMMENT_PREFIX, c[ 0 ], c[ 1 ] ), comments.items() ) ) + '\n' + SCRIPT_PREFIX + '\n' + cmd
 
 	# add job
 	p = subprocess.Popen(atCmd, stdout = subprocess.PIPE, stdin = subprocess.PIPE, stderr = subprocess.PIPE)
@@ -87,8 +89,21 @@ def add( cmd, execTime = None, comments = {} ):
 		return load(int(matches[0]))
 	return None
 
-def list( parse_comments = False ):
-	'''Returns a list of all registered jobs as instances of AtJob.'''
+def reschedule( nr, execTime = None ):
+	"""Re-schedules the at job with the given number for the specified time"""
+	atjob = load( nr, extended = True )
+	if atjob is None:
+		raise AttributeError( 'Could not find at job %s' % nr )
+	if atjob.command is None:
+		raise AttributeError( 'The command of the at job is not available' )
+	atjob.rm()
+
+	return add( atjob.command, execTime, atjob.comments )
+
+def list( extended = False ):
+	'''Returns a list of all registered jobs as instances of AtJob. If
+	extended is set to True the parser also extras the comments and the
+	command to execute. This can be used to re-schedule a job.'''
 	p = subprocess.Popen('/usr/bin/atq', stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 	jobs = []
 	for line in p.stdout:
@@ -96,33 +111,41 @@ def list( parse_comments = False ):
 		if ijob:
 			jobs.append(_parseJob(line))
 
-	if parse_comments:
+	if extended:
 		for job in jobs:
-			_parseComments( job )
+			_parseScript( job )
 
 	return jobs
 
-def load( nr, parse_comments = False ):
+def load( nr, extended = False ):
 	'''Load a job given a particular ID. Returns None if job does not exist,
 	otherwise an instance of AtJob is returned.'''
-	result = [ p for p in list( parse_comments ) if p.nr == nr ]
+	result = [ p for p in list( extended ) if p.nr == nr ]
 	if len(result):
 		return result[0]
 	return None
 
 def remove( nr ):
+	"""Removes the at job with the given number"""
 	result = [ p for p in list() if p.nr == nr ]
 	if len(result):
 		return result[ 0 ].rm()
 
-def _parseComments( job ):
+def _parseScript( job ):
 	p = subprocess.Popen( [ '/usr/bin/at', '-c', str( job.nr ) ], stdout = subprocess.PIPE )
 	job.comments = {}
+	script = False
+	job.command = ''
 	for line in p.stdout:
+		if script:
+			job.command += line
+			continue
 		if line.startswith( COMMENT_PREFIX ):
 			line = line[ len( COMMENT_PREFIX ) : -1 ]
 			key, value = line.split( ':', 1 )
 			job.comments[ key ] = value
+		elif line.startswith( SCRIPT_PREFIX ):
+			script = True
 
 def _parseJob(string):
 	'''Internal method to parse output of at-command.'''
@@ -143,17 +166,10 @@ class AtJob(object):
 	'''This class is an abstract representation of an at-job. Do not initiate
 	the class directly, but use the methods provided in this module.'''
 
-	#TODO: it would be nice to be able to register meta information within the job file
-
-	# execTime: in seconds
 	def __init__(self, nr, owner, execTime, isRunning):
 		self.nr = nr
 		self.owner = owner
-		if isinstance( execTime, ( int, float ) ):
-			self.execTime = datetime.datetime.fromtimestamp( execTime )
-		else:
-			self.execTime = execTime
-
+		self.command = None
 		self.execTime = execTime
 		self.isRunning = isRunning
 		self.comments = {}
