@@ -205,17 +205,21 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		umc.tools.umcpCommand('get/modules/list', null, false).then(dojo.hitch(this, function(data) {
 			// helper function for sorting, sort indeces with priority < 0 to be at the end
 			var _cmp = function(x, y) {
+				if (y.priority == x.priority) {
+					return x._orgIndex - y._orgIndex;
+				}
 				return y.priority - x.priority;
 			};
 
 			// get all categories
-			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(icat) {
+			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(icat, i) {
+				icat._orgIndex = i;  // save the element's original index
 				this._categories.push(icat);
 			}));
 			this._categories.sort(_cmp);
 
 			// get all modules
-			dojo.forEach(dojo.getObject('modules', false, data), dojo.hitch( this, function(module) {
+			dojo.forEach(dojo.getObject('modules', false, data), dojo.hitch(this, function(module, i) {
 				// try to load the module
 				try {
 					dojo['require']('umc.modules.' + module.id);
@@ -229,7 +233,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				// load the module
 				// add module config class to internal list of available modules
 				this._modules.push(dojo.mixin({
-					BaseClass: dojo.getObject('umc.modules.' + module.id)
+					BaseClass: dojo.getObject('umc.modules.' + module.id),
+					_orgIndex: i  // save the element's original index
 				}, module));
 			}));
 			this._modules.sort(_cmp);
