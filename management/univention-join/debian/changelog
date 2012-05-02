@@ -1,3 +1,9 @@
+univention-join (4.0.35-1) unstable; urgency=low
+
+  * Fix rare shell quoting issue in kerberos realm detection (Bug #26475)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 02 May 2012 19:56:33 +0200
+
 univention-join (4.0.34-1) unstable; urgency=low
 
   * show join script name in log output and not its first argument (Bug #26720)

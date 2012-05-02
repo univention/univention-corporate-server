@@ -442,7 +442,7 @@ set_kerberos_realm ()
 	DCNAME="$3"
 	realm="$4"
 	if [ -z "$realm" ]; then
-		realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+		realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep '[A-Za-z0-9]' ) >>/var/log/univention/join.log 2>&1
 		if [ $? != 0 -o -z "$realm" ]; then
 			echo "Unable to retrieve the kerberos realm. Try to use option -realm <kerberos/realm>"
 			exit 1
