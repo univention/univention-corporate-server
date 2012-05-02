@@ -312,7 +312,7 @@ def ucr_overwrite_layout (module, ucr_property, tab):
 	else:
 		return True
 
-def ucr_overwrite_module_layout( module, _ ):
+def ucr_overwrite_module_layout( module ):
 	'''
 	Overwrite the tab layout
 	'''

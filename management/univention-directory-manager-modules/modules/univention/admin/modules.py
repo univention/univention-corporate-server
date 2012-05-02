@@ -273,7 +273,7 @@ def init(lo, position, module, template_object=None):
 
 
 	# re-build layout if there any overwrites defined
-	univention.admin.ucr_overwrite_module_layout( module, _ )
+	univention.admin.ucr_overwrite_module_layout( module )
 
 	module.initialized=1
 
