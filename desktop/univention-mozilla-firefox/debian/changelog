@@ -1,3 +1,9 @@
+univention-mozilla-firefox (7.0.0-6) unstable; urgency=low
+
+  * Add alternative depends on firefox-en and firefox-de (Bug #26898)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 03 May 2012 12:12:21 +0200
+
 univention-mozilla-firefox (7.0.0-5) unstable; urgency=low
 
   * Default to session restore (Bug #22116)
