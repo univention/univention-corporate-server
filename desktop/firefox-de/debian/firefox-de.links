@@ -1,0 +1,3 @@
+opt/firefox/firefox /usr/bin/mozilla-firefox
+usr/lib/mozilla/plugins /opt/firefox/plugins
+

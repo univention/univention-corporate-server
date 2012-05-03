@@ -1,0 +1,4 @@
+debian/firefox.desktop usr/share/applications
+debian/firefox.png usr/share/pixmaps
+debian/firefox.xpm usr/share/pixmaps
+bin/firefox usr/bin
