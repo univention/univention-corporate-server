@@ -300,6 +300,7 @@ class License( object ):
 				'License Type', 'Type attribute not found' )
 		if not isinstance( self.types, ( list, tuple ) ):
 			self.types = [ self.types ]
+		self.types = list(self.types)
 		# handle license type "OXAE" the same way as license type "UCS"
 		if 'OXAE' in self.types and 'UCS' not in self.types:
 			self.types.append('UCS')
@@ -309,7 +310,6 @@ class License( object ):
 		if not isinstance( self.oemProductTypes, ( list, tuple ) ):
 			self.oemProductTypes = [ self.oemProductTypes ]
 		self.licenseTypes = self.types
-		self.types=list(self.types)
 		self.types.extend(self.oemProductTypes)
 		self.endDate = self.__getValue( 'univentionLicenseEndDate', None, 'License end date', 'univentionLicenseEndDate attribute not found' )
 

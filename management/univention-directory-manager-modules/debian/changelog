@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.248-3) unstable; urgency=low
+
+  * handle license type "OXAE" the same way as license type "UCS" (Bug #26914)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 03 May 2012 16:18:05 +0200
+
 univention-directory-manager-modules (7.0.248-2) unstable; urgency=low
 
   * revert API change to ucr_overwrite_module_layout (Bug #26947)
