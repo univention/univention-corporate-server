@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.134-1) unstable; urgency=low
+
+  * Added new UCR variable connector/s4/mapping/gpo to disable the GPO
+    sync (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 May 2012 07:56:55 +0200
+
 univention-s4-connector (6.0.133-1) unstable; urgency=low
 
   * Added gPLink custom attribute to DC and CN too (Bug #26926)

@@ -47,6 +47,7 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/ad/mapping/group/language?de \
 							   connector/s4/mapping/syncmode?sync \
 							   connector/s4/mapping/sid?true \
+							   connector/s4/mapping/gpo?true \
 							   connector/s4/mapping/user/ignorelist?"root,pcpatch,ucs-s4sync" \
 							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody"
 
@@ -62,7 +63,7 @@ call_joinscript 97univention-s4-connector.inst
 stop_udm_cli_server
 
 if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.128-1 ; then
+	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.128-1  && is_ucr_true connector/s4/mapping/gpo; then
 		# Write the MS GPO settings from Samba 4 to UCS
 		/etc/init.d/univention-s4-connector stop
 		/usr/share/univention-s4-connector/msgpo.py --write2ucs

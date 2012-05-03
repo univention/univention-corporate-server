@@ -58,6 +58,12 @@ Description[en]=Defines the synchronisation mode for DNS data; "read" (reading o
 Type=str
 Categories=service-adcon
 
+[con.*/s4/mapping/gpo]
+Description[de]=Definiert ob die MS GPOs synchronisiert werden sollen (Default: true)
+Description[en]=Defines whether the MS GPOs should be synchronized (Default: true)
+Type=str
+Categories=service-adcon
+
 [con.*/s4/mapping/user/ignorelist]
 Description[de]=Definiert durch Komma separierte Benutzer, welche durch den Connector nicht synchronisert werden (Default ist root,pcpatch,ucs-s4sync)
 Description[en]=Defines a comma separated list of users whom will be ignored by the connector (default is root,pcpatch,ucs-s4sync)

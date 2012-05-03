@@ -102,7 +102,7 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 
 	univention-config-registry set connector/s4/poll/sleep=1 connector/s4/retryrejected=2
 
-	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
+	if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true connector/s4/mapping/gpo; then
 		/etc/init.d/univention-s4-connector stop
 
 		# By default the connector will overwrite all Samba 4 objects by the UCS objects.

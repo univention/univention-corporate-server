@@ -492,6 +492,9 @@ else:
 			ucs_sync_function = univention.s4connector.s4.dns.con2ucs,
 
 		),
+@!@
+if configRegistry.is_true('connector/s4/mapping/gpo', True):
+	print '''
 	'msGPO': univention.s4connector.property (
 			ucs_module='container/msgpo',
 
@@ -553,6 +556,8 @@ else:
 				},
 
 		),
+'''
+@!@
 	'container': univention.s4connector.property (
 			ucs_module='container/cn',
 
@@ -581,11 +586,16 @@ else:
 							ldap_attribute='description',
 							con_attribute='description'
 						),
+@!@
+if configRegistry.is_true('connector/s4/mapping/gpo', True):
+	print '''
 					'gPLink': univention.s4connector.attribute (
 							ucs_attribute='gPLink',
 							ldap_attribute='msGPOLink',
 							con_attribute='gPLink'
 						),
+	'''
+@!@
 				},
 
 		),
@@ -618,13 +628,21 @@ else:
 							ldap_attribute='description',
 							con_attribute='description'
 						),
+@!@
+if configRegistry.is_true('connector/s4/mapping/gpo', True):
+	print '''
 					'gPLink': univention.s4connector.attribute (
 							ucs_attribute='gPLink',
 							ldap_attribute='msGPOLink',
 							con_attribute='gPLink'
 						),
+	'''
+@!@
 				},
 		),
+@!@
+if configRegistry.is_true('connector/s4/mapping/gpo', True):
+	print '''
 	'container_dc': univention.s4connector.property (
 			ucs_module='container/dc',
 
@@ -645,6 +663,8 @@ else:
 				},
 
 		),
+	'''
+@!@
 }
 
 
