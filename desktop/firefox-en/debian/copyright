@@ -1,0 +1,20 @@
+
+This package was debianized by Univention GmbH.
+
+It was downloaded from http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/
+
+=== firefox
+
+Overall, the firefox project is licensed under the terms of the Mozilla
+Public License version 1.1 or, at your option, under the terms of the GNU
+eneral Public License version 2 or subsequent, or the terms of the GNU
+Lesser General Public License version 2.1 or subsequent.
+
+On Debian systems, the complete text of the GNU General Public
+License can be found in the file `/usr/share/common-licenses/GPL' ;
+the complete text of the GNU Lesser General Public License can be
+found in the file `/usr/share/common-licenses/LGPL'.
+
+The complete text of the Mozilla Public License can be found in the MPL file
+in the same directory as this file.
+
