@@ -1,3 +1,9 @@
+firefox-de (1:10.0.4esr-4) unstable; urgency=low
+
+  * Fix name of desktop file (Bug #26898)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 03 May 2012 11:44:55 +0200
+
 firefox-de (1:10.0.4esr-3) unstable; urgency=low
 
   * Update to Firefox 10.0.4esr (Bug #26898)
