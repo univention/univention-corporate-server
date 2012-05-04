@@ -97,15 +97,15 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 						return list;
 					}));
 				}),
-				style: 'width: 7em'
+				sizeClass: 'OneThird'
 			}, {
 				type: 'TextBox',
 				label: this._('IPv4 address'),
-				style: 'width: 14em'
+				sizeClass: 'TwoThirds'
 			}, {
 				type: 'TextBox',
 				label: this._('Netmask'),
-				style: 'width: 14em'
+				sizeClass: 'Half'
 			}, {
 				type: 'ComboBox',
 				label: this._('Dynamic (DHCP)'),
@@ -113,7 +113,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 					{ id: 'false', label: this._('Deactivated') },
 					{ id: 'true', label: this._('Activated') }
 				],
-				style: 'width: 10em'
+				sizeClass: 'OneThird'
 			}, {
 				type: 'Button',
 				label: 'DHCP query',
@@ -122,25 +122,25 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		}, {
 			type: 'MultiInput',
 			name: 'interfaces_ipv6',
-			label: this._('Interfaces'),
 			umcpCommand: this.umcpCommand,
 			subtypes: [{
 				type: 'ComboBox',
 				label: this._('Interface'),
 				dynamicValues: 'setup/net/interfaces',
-				style: 'width: 7em'
-			}, {
-				type: 'TextBox',
-				label: this._('Identifier'),
-				style: 'width: 7em'
+				sizeClass: 'OneThird'
 			}, {
 				type: 'TextBox',
 				label: this._('IPv6 address'),
-				style: 'width: 20em'
+				sizeClass: 'TwoThirds'
 			}, {
 				type: 'TextBox',
 				label: this._('IPv6 prefix'),
-				style: 'width: 12em'
+				sizeClass: 'Half'
+			}, {
+				type: 'TextBox',
+				label: this._('Identifier'),
+				sizeClass: 'OneThird'
+
 			}]
 		}, {
 			type: 'MultiSelect',
@@ -148,7 +148,8 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			label: this._('Autoconfiguration (SLAAC)'),
 			umcpCommand: this.umcpCommand,
 			dynamicValues: 'setup/net/interfaces',
-			autoHeight: true
+			autoHeight: true,
+			sizeClass: 'OneThird'
 		}, {
 			type: 'TextBox',
 			name: 'gateway',
@@ -407,9 +408,9 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		dojo.forEach(sortedIpv6, function(idev) {
 			vals.interfaces_ipv6.push([
 				idev.device,
-				idev.id || '',
 				idev.address || '',
-				idev.prefix || ''
+				idev.prefix || '',
+				idev.id || '',
 			]);
 		});
 
@@ -483,9 +484,9 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		// copy ipv6 interfaces
 		dojo.forEach(_vals.interfaces_ipv6, function(ival) {
 			var idev = ival[0];
-			var iid = ival[1];
 			var iaddress = ival[2];
 			var iprefix = ival[3];
+			var iid = ival[1];
 			vals['interfaces/' + idev + '/ipv6/' + iid + '/address'] = iaddress;
 			vals['interfaces/' + idev + '/ipv6/' + iid + '/prefix'] = iprefix;
 		});

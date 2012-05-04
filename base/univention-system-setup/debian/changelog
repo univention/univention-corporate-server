@@ -1,3 +1,9 @@
+univention-system-setup (5.0.151-1) unstable; urgency=low
+
+  * Modified layout of UMC Networkpage (Bug #25071)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 04 May 2012 17:53:06 +0200
+
 univention-system-setup (5.0.150-1) unstable; urgency=low
 
   * fixes in BasisPage (Bug #25710)
