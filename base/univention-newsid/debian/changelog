@@ -1,3 +1,9 @@
+univention-newsid (4.0.1-1) unstable; urgency=low
+
+  * added help option  (Bug #25627)
+
+ -- Tobias Peters <tpeters@mammut.knut.univention.de>  Thu, 03 May 2012 14:50:04 +0200
+
 univention-newsid (4.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #23017)
