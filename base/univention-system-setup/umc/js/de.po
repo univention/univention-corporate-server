@@ -262,11 +262,11 @@ msgstr "Vollständiger Rechername (z.B., master.example.com)"
 
 #: umc/js/_setup/NetworkPage.js:156 umc/js/_setup/NetworkPage.js:543
 msgid "Gateway (IPv4)"
-msgstr ""
+msgstr "Gateway (IPv4)"
 
 #: umc/js/_setup/NetworkPage.js:160 umc/js/_setup/NetworkPage.js:547
 msgid "Gateway (IPv6)"
-msgstr ""
+msgstr "Gateway (IPv6)"
 
 #: umc/js/_setup/BasisPage.js:65
 msgid "General"
