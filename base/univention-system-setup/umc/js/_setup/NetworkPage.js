@@ -484,9 +484,9 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		// copy ipv6 interfaces
 		dojo.forEach(_vals.interfaces_ipv6, function(ival) {
 			var idev = ival[0];
-			var iaddress = ival[2];
-			var iprefix = ival[3];
-			var iid = ival[1];
+			var iaddress = ival[1];
+			var iprefix = ival[2];
+			var iid = ival[3];
 			vals['interfaces/' + idev + '/ipv6/' + iid + '/address'] = iaddress;
 			vals['interfaces/' + idev + '/ipv6/' + iid + '/prefix'] = iprefix;
 		});
