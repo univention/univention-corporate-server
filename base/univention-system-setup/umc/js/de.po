@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-05-04 17:47+0200\n"
+"POT-Creation-Date: 2012-05-07 11:15+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,6 +87,10 @@ msgstr ""
 msgid "A virtual network device cannot be used for DHCP."
 msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
 
+#: umc/js/_setup/BasisPage.js:99
+msgid "Access settings"
+msgstr "Zugriffseinstellungen"
+
 #: umc/js/setup.js:576
 msgid "Account data"
 msgstr "Kontodaten"
@@ -114,6 +118,10 @@ msgstr "Zurück"
 #: umc/js/_setup/SystemRolePage.js:75
 msgid "Base system"
 msgstr "Basissystem"
+
+#: umc/js/_setup/BasisPage.js:66
+msgid "Basic settings"
+msgstr "Basis-Einstellungen"
 
 #: umc/js/_setup/CertificatePage.js:104
 msgid "Business unit"
@@ -233,6 +241,25 @@ msgstr "Externer DNS-Server "
 msgid "External name server (max. 3)"
 msgstr "Externer DNS-Server "
 
+#: umc/js/_setup/BasisPage.js:123
+msgid ""
+"For Active Directory domains the fully qualified domain name must have at "
+"least two dots (e.g. host.example.com). This warning is shown only once, the "
+"installation can be continued with the name currently given."
+msgstr ""
+"Für Active Directory Domänen muss der vollständige Domänenname mindestens "
+"zwei Punkte enthalten (z.B. host.example.com). Dies ist eine einmalige "
+"Warnung, die Einstellungen können mit dem aktuell gewählten Namen "
+"gespeichert werden."
+
+#: umc/js/_setup/BasisPage.js:212
+msgid "Fully qualified domain name"
+msgstr "Vollständiger Rechername"
+
+#: umc/js/_setup/BasisPage.js:75
+msgid "Fully qualified domain name (e.g., master.example.com)"
+msgstr "Vollständiger Rechername (z.B., master.example.com)"
+
 #: umc/js/_setup/NetworkPage.js:156 umc/js/_setup/NetworkPage.js:543
 msgid "Gateway (IPv4)"
 msgstr ""
@@ -240,6 +267,10 @@ msgstr ""
 #: umc/js/_setup/NetworkPage.js:160 umc/js/_setup/NetworkPage.js:547
 msgid "Gateway (IPv6)"
 msgstr ""
+
+#: umc/js/_setup/BasisPage.js:65
+msgid "General"
+msgstr "Allgemein"
 
 #: umc/js/_setup/CertificatePage.js:112
 msgid "General settings"
@@ -256,6 +287,10 @@ msgstr "HTTP-Proxy"
 #: umc/js/_setup/HelpPage.js:57
 msgid "Help"
 msgstr "Hilfe"
+
+#: umc/js/_setup/BasisPage.js:96
+msgid "Host and domain settings"
+msgstr "Recher- und Domänen-Einstellungen"
 
 #: umc/js/_setup/NetworkPage.js:103
 msgid "IPv4 address"
@@ -355,6 +390,10 @@ msgstr ""
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
+#: umc/js/_setup/BasisPage.js:80 umc/js/_setup/BasisPage.js:216
+msgid "LDAP base"
+msgstr "LDAP-Basis"
+
 #: umc/js/_setup/LanguagePage.js:62
 msgid "Language"
 msgstr "Sprache"
@@ -386,6 +425,10 @@ msgstr "Netzwerk"
 #: umc/js/_setup/NetworkPage.js:72
 msgid "Network settings"
 msgstr "Netzwerk-Einstellungen"
+
+#: umc/js/_setup/BasisPage.js:224
+msgid "New root password"
+msgstr "Neues Root-Passwort"
 
 #: umc/js/setup.js:133
 msgid "Next"
@@ -437,6 +480,10 @@ msgstr "Entfernen von Softwarekomponenten"
 #: umc/js/setup.js:229
 msgid "Reset"
 msgstr "Zurücksetzen"
+
+#: umc/js/_setup/BasisPage.js:92
+msgid "Root password"
+msgstr "Root-Passwort"
 
 #: umc/js/_setup/CertificatePage.js:190
 msgid "SSL root certificate"
@@ -529,6 +576,10 @@ msgstr "UCS Erstkonfiguration"
 #: umc/js/setup.js:543
 msgid "Username"
 msgstr "Benutzername"
+
+#: umc/js/_setup/BasisPage.js:86 umc/js/_setup/BasisPage.js:220
+msgid "Windows domain"
+msgstr "Windows-Domäne"
 
 #: umc/js/_setup/NetworkPage.js:93 umc/js/_setup/NetworkPage.js:515
 msgid "virtual"
@@ -627,12 +678,6 @@ msgstr "virtuell"
 #~ "wird nur das eigene und das öffentliche SSL-Zertifikat der Root-CA "
 #~ "vorgehalten."
 
-#~ msgid "Access settings"
-#~ msgstr "Zugriffseinstellungen"
-
-#~ msgid "Basic settings"
-#~ msgstr "Basis-Einstellungen"
-
 #~ msgid "Basis"
 #~ msgstr "Allgemein"
 
@@ -656,36 +701,8 @@ msgstr "virtuell"
 #~ msgid "Desktop environment"
 #~ msgstr "Desktop-Umgebung"
 
-#~ msgid ""
-#~ "For Active Directory domains the fully qualified domain name must have at "
-#~ "least two dots (e.g. host.example.com). This warning is shown only once, "
-#~ "the installation can be continued with the name currently given."
-#~ msgstr ""
-#~ "Für Active Directory Domänen muss der vollständige Domänenname mindestens "
-#~ "zwei Punkte enthalten (z.B. host.example.com). Dies ist eine einmalige "
-#~ "Warnung, die Einstellungen können mit dem aktuell gewählten Namen "
-#~ "gespeichert werden."
-
-#~ msgid "Fully qualified domain name"
-#~ msgstr "Vollständiger Rechername"
-
-#~ msgid "Fully qualified domain name (e.g., master.example.com)"
-#~ msgstr "Vollständiger Rechername (z.B., master.example.com)"
-
-#~ msgid "General"
-#~ msgstr "Allgemein"
-
-#~ msgid "Host and domain settings"
-#~ msgstr "Recher- und Domänen-Einstellungen"
-
-#~ msgid "LDAP base"
-#~ msgstr "LDAP-Basis"
-
 #~ msgid "Locality"
 #~ msgstr "Ort"
-
-#~ msgid "New root password"
-#~ msgstr "Neues Root-Passwort"
 
 #~ msgid "Note that some changes may require a new join into the UCS domain."
 #~ msgstr ""
@@ -694,9 +711,6 @@ msgstr "virtuell"
 
 #~ msgid "Please confirm to continue with the boot process."
 #~ msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
-
-#~ msgid "Root password"
-#~ msgstr "Root-Passwort"
 
 #~ msgid "Save"
 #~ msgstr "Speichern"
@@ -724,9 +738,6 @@ msgstr "virtuell"
 
 #~ msgid "UCS system role 2"
 #~ msgstr "UCS-Systemrolle"
-
-#~ msgid "Windows domain"
-#~ msgstr "Windows-Domäne"
 
 #~ msgid ""
 #~ "Your session should be shut down automatically. If this has not happened "
