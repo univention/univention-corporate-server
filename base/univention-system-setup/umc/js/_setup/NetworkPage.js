@@ -101,7 +101,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			}, {
 				type: 'TextBox',
 				label: this._('IPv4 address'),
-				sizeClass: 'TwoThirds'
+				sizeClass: 'Half'
 			}, {
 				type: 'TextBox',
 				label: this._('Netmask'),
@@ -131,11 +131,11 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			}, {
 				type: 'TextBox',
 				label: this._('IPv6 address'),
-				sizeClass: 'TwoThirds'
+				sizeClass: 'One'
 			}, {
 				type: 'TextBox',
 				label: this._('IPv6 prefix'),
-				sizeClass: 'Half'
+				sizeClass: 'OneThird'
 			}, {
 				type: 'TextBox',
 				label: this._('Identifier'),
