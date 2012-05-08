@@ -7,6 +7,7 @@ Variables: samba/share/groups
 Variables: samba/share/printers
 Variables: samba/share/netlogon
 Variables: samba/share/sysvol
+Variables: samba/share/sysvol/readonly
 Variables: samba4/service/smb
 Variables: samba4/ntacl/backend
 

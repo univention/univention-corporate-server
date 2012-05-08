@@ -1,3 +1,10 @@
+univention-samba4 (1.0.136-2) unstable; urgency=low
+
+  * Added new UCR variable samba/share/sysvol/readonly to configure
+    sysvol share read only (Bug #27030)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 May 2012 13:45:10 +0200
+
 univention-samba4 (1.0.135-2) unstable; urgency=low
 
   * if nscd -i is not enough then restart nscd (Bug #26706)

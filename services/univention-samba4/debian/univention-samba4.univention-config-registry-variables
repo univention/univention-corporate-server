@@ -280,6 +280,18 @@ Description[en]=Enable/Disable the home directory share
 Type=str
 Categories=service-samba
 
+[samba/share/sysvol]
+Description[de]=Aktivieren/Deaktivieren der sysvol-Freigabe
+Description[en]=Enable/Disable the sysvol share
+Type=str
+Categories=service-samba
+
+[samba/share/sysvol/readonly]
+Description[de]=Lesezugriff für sysvol-Freigabe konfigurieren
+Description[en]=Configure read only for sysvol share
+Type=str
+Categories=service-samba
+
 [samba/short_preserve_case]
 Description[de]=Kontrolliert ob neue Dateien nach 8.3 (DOS) Format in Großbuchstaben erstellt oder auf standard Groß/Kleinschreibung geändert werden
 Description[en]=Controls if new files which conform to 8.3 (DOS) syntax are created upper case, or if they are forced to be the default case
