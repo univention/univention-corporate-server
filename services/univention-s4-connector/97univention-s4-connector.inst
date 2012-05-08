@@ -105,10 +105,15 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true connector/s4/mapping/gpo; then
 		/etc/init.d/univention-s4-connector stop
 
+		s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
+
 		# By default the connector will overwrite all Samba 4 objects by the UCS objects.
 		# On a normal Samba 4 DC is is necessary that the MS GPO settings will not be overwritten.
 		# But on a "Slave PDC" the settings from the Master must be used
-		if ! is_ucr_true 'connector/s4/allow/secondary'; then
+		if [ -z "$s4connectorservicehost_dns" ]; then
+			# First Sama 4 server
+			/usr/share/univention-s4-connector/msgpo.py --write2ucs
+		elif ! is_ucr_true 'connector/s4/allow/secondary'; then
 			# Normal Samba 4 DC
 			/usr/share/univention-s4-connector/msgpo.py --write2ucs
 		else

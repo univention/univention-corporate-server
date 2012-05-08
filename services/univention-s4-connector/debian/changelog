@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.135-1) unstable; urgency=low
+
+  * Write GPO from Samba 4 to UCS on first DC (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 May 2012 16:57:04 +0200
+
 univention-s4-connector (6.0.134-1) unstable; urgency=low
 
   * Added new UCR variable connector/s4/mapping/gpo to disable the GPO
