@@ -1,3 +1,12 @@
+univention-management-console (4.0.253-1) unstable; urgency=low
+
+  * removed unused argument (Bug #24260)
+  * added translationId for translating additional flavors (Bug #24260)
+  * moduleManager returns a list of XML_Definition objects (Bug #26703)
+  * use ElementTree.findtext (Bug #26349)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 May 2012 12:48:14 +0200
+
 univention-management-console (4.0.252-2) unstable; urgency=low
 
   * version bump; Bug #26350
