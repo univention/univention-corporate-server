@@ -129,7 +129,9 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 
 					// register the event handler
 					this.connect(this._detailDialog, 'onAdd', '_addElements');
+					this.onCreateDialog( this._detailDialog );
 				}
+				this.onShowDialog( this._detailDialog );
 				this._detailDialog.show();
 			})
 		}));
@@ -196,6 +198,14 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		if (this._detailDialog) {
 			this._detailDialog.destroy();
 		}
+	},
+
+	onCreateDialog: function( dialog ) {
+		// event stub
+	},
+
+	onShowDialog: function( dialog ) {
+		// event stub
 	}
 });
 
