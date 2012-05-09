@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.355-1) unstable; urgency=low
+
+  * map not to False in isFalse() (Bug #27055) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 May 2012 12:06:57 +0200
+
 univention-management-console-frontend (1.0.354-1) unstable; urgency=low
 
   * MultiObjectSelect: add the two events onCreateDialog and onShowDialog; Bug #27025

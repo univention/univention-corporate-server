@@ -893,6 +893,7 @@ dojo.mixin(umc.tools, {
 		if (dojo.isString(input)) {
 			switch (input.toLowerCase()) {
 				case 'no':
+				case 'not':
 				case 'false':
 				case '0':
 				case 'disable':
