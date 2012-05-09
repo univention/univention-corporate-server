@@ -40,14 +40,17 @@ import univention.config_registry
 import univention.admin.uldap
 import univention.admin.uexceptions
 
-def _connect_ucs(configRegistry):
+def _connect_ucs(configRegistry, binddn, bindpwd):
 	''' Connect to OpenLDAP '''
 
-	bindpw_file = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
-	binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,'+configRegistry['ldap/base'])
-	bindpw=open(bindpw_file).read()
-	if bindpw[-1] == '\n':
-		bindpw=bindpw[0:-1]
+	if binddn and bindpwd:
+		bindpw = bindpwd
+	else:
+		bindpw_file = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
+		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,'+configRegistry['ldap/base'])
+		bindpw=open(bindpw_file).read()
+		if bindpw[-1] == '\n':
+			bindpw=bindpw[0:-1]
 
 	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
 
@@ -133,12 +136,12 @@ def write_to_s4(configRegistry, ucs_result):
 				print 'Set gPLink for Samba 4 object (%s)' % (s4_dn)
 
 
-def search_ucs(configRegistry):
+def search_ucs(configRegistry, binddn, bindpwd):
 	''' Search all UCS objects with msGPOLink attribute and return a
 		dictonary with dn as key and msGPOLink as result
 	'''
 
-	lo = _connect_ucs(configRegistry)
+	lo = _connect_ucs(configRegistry, binddn, bindpwd)
 
 	result = {}
 	ldap_result = lo.search('(msGPOLink=*)')
@@ -148,10 +151,10 @@ def search_ucs(configRegistry):
 	return result
 
 
-def write_to_ucs(configRegistry,  s4_result):
+def write_to_ucs(configRegistry,  s4_result, binddn, bindpwd):
 	''' Write the result from search_s4 to UCS LDAP '''
 
-	lo = _connect_ucs(configRegistry)
+	lo = _connect_ucs(configRegistry, binddn, bindpwd)
 
 	s4_ldap_base = configRegistry.get('connector/s4/ldap/base' ).lower()
 	ucs_ldap_base = configRegistry.get('ldap/base').lower()
@@ -178,6 +181,8 @@ if __name__ == '__main__':
 	parser = OptionParser(usage='msgpo.py (--write2ucs|--write2samba4)')
 	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Write MS GPO settings from Samba 4 to UCS", default=False)
 	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write MS GPO settings from UCS to Samba 4", default=False)
+	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
+	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
 	(options, args) = parser.parse_args()
 
 	configRegistry = univention.config_registry.ConfigRegistry()
@@ -185,9 +190,9 @@ if __name__ == '__main__':
 
 	if options.write2ucs:
 		result = search_s4()
-		write_to_ucs(configRegistry, result)
+		write_to_ucs(configRegistry, result, options.binddn, options.bindpwd)
 	elif options.write2samba4:
-		result = search_ucs(configRegistry)
+		result = search_ucs(configRegistry, options.binddn, options.bindpwd)
 		write_to_s4(configRegistry, result)
 	else:
 		parser.print_help()

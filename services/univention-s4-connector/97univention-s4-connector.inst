@@ -112,13 +112,13 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 		# But on a "Slave PDC" the settings from the Master must be used
 		if [ -z "$s4connectorservicehost_dns" ]; then
 			# First Sama 4 server
-			/usr/share/univention-s4-connector/msgpo.py --write2ucs
+			/usr/share/univention-s4-connector/msgpo.py --write2ucs "$@"
 		elif ! is_ucr_true 'connector/s4/allow/secondary'; then
 			# Normal Samba 4 DC
-			/usr/share/univention-s4-connector/msgpo.py --write2ucs
+			/usr/share/univention-s4-connector/msgpo.py --write2ucs "$@"
 		else
 			# Slave PDC
-			/usr/share/univention-s4-connector/msgpo.py --write2samba4
+			/usr/share/univention-s4-connector/msgpo.py --write2samba4 "$@"
 		fi
 	fi
 

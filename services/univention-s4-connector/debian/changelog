@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.136-1) unstable; urgency=low
+
+  * Use binddn and bindpwd for the GPO migration to support an
+    environment without S4 on DC Master and DC Backup (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 May 2012 07:28:19 +0200
+
 univention-s4-connector (6.0.135-1) unstable; urgency=low
 
   * Write GPO from Samba 4 to UCS on first DC (Bug #26926)
