@@ -1,8 +1,8 @@
 ucs-test (2.0.0-3) unstable; urgency=low
 
- -- Juergen Kahrs <kahrs@univention.de>  Thu, 12 Apr 2012 15:44:53 +0200
-
   * reproducing experimental version bump for writing a Wiki entry
+
+ -- Juergen Kahrs <kahrs@univention.de>  Thu, 12 Apr 2012 15:44:53 +0200
 
 ucs-test (2.0.0-2) unstable; urgency=low
 
