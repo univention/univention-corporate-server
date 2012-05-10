@@ -43,11 +43,12 @@ dojo.declare("umc.i18n.Mixin", null, {
 	//		"domain/i18n/<language>/mymodule.json". The mixin provides a 
 	//		gettext-like conversion method _().
 
-	// i18nClass: String
+	// i18nClass: String | String[]
 	//		If given, the locale information for the specified class is loaded instead
 	//		of the default class. The default class is the class as specified by 
 	//		declaredClass, i.e., the class name as specified for dojo.declare().
 	//		Using this property, multiple classes can share one i18n translation file.
+	//		It is also possible to specify a list of translation domains.
 	i18nClass: '',
 
 	// _i18nTranslations: Object
@@ -82,11 +83,18 @@ dojo.declare("umc.i18n.Mixin", null, {
 		// tags:
 		//		protected
 
-		// use the classname and 'umc.app' as backup path to allow other class to
-		// override a UMC base class without loosing its translations (see Bug #24864)
+		// initiate the translation classes as array
 		this._i18nTranslations = [];
 		this.i18nClass = this.i18nClass || this.declaredClass;
-		dojo.forEach([this.i18nClass, 'umc.app'], function(iclass) {
+		if (!dojo.isArray(this.i18nClass)) {
+			// convert strings to array of strings
+			this.i18nClass = [ this.i18nClass ];
+		}
+
+		// use the classname and 'umc.app' as backup path to allow other class to
+		// override a UMC base class without loosing its translations (see Bug #24864)
+		this.i18nClass.push('umc.app');
+		dojo.forEach(this.i18nClass, function(iclass) {
 			// get module path and module name
 			// case1: no '.' is in the path: m[2] == undefined && m[3] == undefined
 			// case2: there is a '.' in the path: m[1] == undefined

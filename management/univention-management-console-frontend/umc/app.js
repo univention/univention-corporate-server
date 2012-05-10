@@ -49,7 +49,7 @@ dojo.require("umc.i18n");
 
 dojo.mixin(umc.app, new umc.i18n.Mixin({
 	// use the framework wide translation file
-	i18nClass: 'umc.app'
+	i18nClass: [ 'umc.branding', 'umc.app' ]
 }), {
 
 	start: function(/*Object*/ props) {
@@ -336,10 +336,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			//	   problems.
 			//     -> This could probably be fixed by calling layout() after adding a new tab!
 			var overviewPage = new umc.widgets.Page({
-				title: this._('Overview'),
-				headerText: this._('Overview'),
+				title: this._('umcOverviewTabTitle'),
+				headerText: this._('umcOverviewHeader'),
 				iconClass: umc.tools.getIconClass('univention'),
-				helpText: this._('Univention Management Console (UMC) is the central tool for web-based administration of the UCS domain. It supports the management of domain-wide available data in the LDAP directory, e.g., users, groups or host accounts, and allows the configuration or management of an individual system, e.g., the starting and stopping of services. Depending on system role, default settings and permissions, you find extensive functions for the administration of your UCS domain and for the configuration of this server.')
+				helpText: this._('umcOverviewHelpText')
 			});
 			this._tabContainer.addChild(overviewPage);
 
@@ -460,7 +460,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			then(dojo.hitch(this, function(data) {
 				var domainname = data.result.domainname;
 				var hostname = data.result.hostname;
-				hostInfo.set('content', this._('Host: %(host)s.%(domain)s', {
+				hostInfo.set('content', this._('umcHostInfo', {
 					domain: domainname,
 					host: hostname
 				}));
@@ -497,7 +497,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}));
 		if (umc.tools.status('displayUsername')) {
 			headerRight.addChild(new dijit.form.DropDownButton({
-				label: this._('User: %s', umc.tools.status('username')),
+				label: this._('umcUserInfo', {
+					username: umc.tools.status('username')
+				}),
 				'class': 'umcHeaderButton',
 				dropDown: menu
 			}));

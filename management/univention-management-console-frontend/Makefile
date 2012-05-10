@@ -129,7 +129,7 @@ umc.xml:
 	rm -rf $(dojo_tmp_dir)
 
 i18n:
-	/usr/bin/dh-umc-translate -p univention-management-console-frontend -o umc $(jsFiles)
+	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
 
 install: build
 	@# move umc.xml

@@ -31,7 +31,7 @@ msgstr "%d Einträge von %d ausgewählt"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/app.js:436 umc/about.js:54
+#: umc/about.js:54 umc/app.js:426
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -71,7 +71,7 @@ msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
 "Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
 
-#: umc/app.js:363
+#: umc/app.js:353
 #, python-format
 msgid ""
 "An update for UCS is available. Please visit <a %s>Online Update Module</a> "
@@ -109,7 +109,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:488
+#: umc/app.js:478
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -125,7 +125,7 @@ msgstr "Die Anfrage konnte nicht bearbeitet werden."
 msgid "Current manual (PDF)"
 msgstr "Aktuelles Handbuch (PDF)"
 
-#: umc/app.js:516
+#: umc/app.js:508
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -152,28 +152,23 @@ msgstr "Deutsch"
 msgid "Group"
 msgstr "Gruppe"
 
-#: umc/i18n.js:127
+#: umc/i18n.js:135
 #, python-format
 msgid "Hello %(last)s, %(first)s!"
 msgstr "Hello %(last)s, %(first)s!"
 
-#: umc/i18n.js:126
+#: umc/i18n.js:134
 #, python-format
 msgid "Hello %s %s!"
 msgstr "Hello %s %s!"
 
-#: umc/app.js:420 umc/help.js:62
+#: umc/app.js:410 umc/help.js:62
 msgid "Help"
 msgstr "Hilfe"
 
 #: umc/tools.js:501
 msgid "Hide server error message"
 msgstr "Fehlernachricht des Servers ausblenden"
-
-#: umc/app.js:468
-#, python-format
-msgid "Host: %(host)s.%(domain)s"
-msgstr "Host: %(host)s.%(domain)s"
 
 #: umc/tools.js:211
 msgid "Information"
@@ -232,7 +227,7 @@ msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/app.js:428
+#: umc/app.js:418
 msgid "License"
 msgstr "Lizenz"
 
@@ -245,7 +240,7 @@ msgstr "Anmelden"
 msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
 msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
 
-#: umc/app.js:517
+#: umc/app.js:509
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -253,7 +248,7 @@ msgstr "Abmelden"
 msgid "Manual and documentation"
 msgstr "Handbücher und Dokumentation"
 
-#: umc/app.js:496
+#: umc/app.js:486
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -284,10 +279,6 @@ msgstr "Ok"
 #: umc/widgets/UnixAccessRights.js:74
 msgid "Others"
 msgstr "Andere"
-
-#: umc/app.js:344 umc/app.js:345
-msgid "Overview"
-msgstr "Übersicht"
 
 #: umc/widgets/UnixAccessRights.js:72
 msgid "Owner"
@@ -363,7 +354,7 @@ msgstr "Weiterführende Informationen"
 msgid "Support and assistance"
 msgstr "Unterstützung und Support"
 
-#: umc/app.js:357
+#: umc/app.js:347
 #, python-format
 msgid "The SSL certificate will expire in %d days and should be renewed!"
 msgstr ""
@@ -383,7 +374,7 @@ msgstr ""
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
-#: umc/i18n.js:125
+#: umc/i18n.js:133
 #, python-format
 msgid "The total cost was %.2f EUR!"
 msgstr "The total cost was %.2f EUR!"
@@ -399,18 +390,18 @@ msgstr ""
 "sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s diesen "
 "Link</a> für eine verschlüsselte SSL-Verbindung."
 
-#: umc/app.js:369
+#: umc/app.js:359
 #, python-format
 msgid ""
 "This system has been updated recently. Please visit the <a %s>Reboot Module</"
 "a> and reboot this system to finish the update."
 msgstr "Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems über das <a %s>Neustarten-Modul</a> ist erforderlich, um das Update abzuschließen."
 
-#: umc/app.js:481
+#: umc/app.js:471
 msgid "Tooltips"
 msgstr "Tooltips"
 
-#: umc/i18n.js:124
+#: umc/i18n.js:132
 msgid "Translate me!"
 msgstr "Translate me!"
 
@@ -440,16 +431,7 @@ msgstr ""
 "im UCS-Handbuch. Das Handbuch und weitere wichtige Informationen sind unter "
 "den folgenden Links abrufbar."
 
-#: umc/app.js:347
-msgid ""
-"Univention Management Console (UMC) is the central tool for web-based administration of the UCS domain. It supports the management of domain-wide available data in the LDAP directory, e.g., users, groups or host accounts, and allows the configuration or management of an individual system, e.g., the starting and stopping of services. Depending on system role, default settings and permissions, you find extensive functions for the administration of your UCS domain and for the configuration of this server."
-msgstr ""
-"Univention Management Console (UMC) ist eine flexible Webanwendung für die "
-"Administration von UCS-basierten Systemen und Domänen. Je nach Systemrolle, "
-"Voreinstellungen und Berechtigungen, finden Sie hier umfangreiche Funktionen "
-"zur UCS-Domänenadministration und für die Konfiguration dieses Servers."
-
-#: umc/app.js:445
+#: umc/app.js:435
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
@@ -480,11 +462,6 @@ msgstr "Neues Bild hochladen"
 #: umc/widgets/Uploader.js:212
 msgid "Uploading..."
 msgstr "Datenübertragung..."
-
-#: umc/app.js:505
-#, python-format
-msgid "User: %s"
-msgstr "Benutzer: %s"
 
 #: umc/widgets/LoginDialog.js:159
 msgid "Username"
@@ -572,6 +549,31 @@ msgstr "mehr"
 #: umc/tools.js:491
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
+
+#: umc/app.js:458
+msgid "umcHostInfo"
+msgstr "Host: %(host)s.%(domain)s"
+
+#: umc/app.js:335
+msgid "umcOverviewHeader"
+msgstr "Übersicht"
+
+#: umc/app.js:337
+msgid "umcOverviewHelpText"
+msgstr ""
+"Univention Management Console (UMC) ist eine flexible Webanwendung für "
+"die Administration von UCS-basierten Systemen und Domänen. Je nach "
+"Systemrolle, Voreinstellungen und Berechtigungen, finden Sie hier "
+"umfangreiche Funktionen zur UCS-Domänenadministration und für die "
+"Konfiguration dieses Servers."
+
+#: umc/app.js:334
+msgid "umcOverviewTabTitle"
+msgstr "Übersicht"
+
+#: umc/app.js:495
+msgid "umcUserInfo"
+msgstr "Benutzer: %(username)s"
 
 #~ msgid "%s (used: %s)"
 #~ msgstr "%s (genutzt: %s)"

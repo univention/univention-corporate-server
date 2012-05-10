@@ -1,0 +1,537 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-frontend\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2012-05-10 14:22+0200\n"
+"PO-Revision-Date: 2012-02-23 16:18+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: umc/widgets/PasswordInputBox.js:72
+#, python-format
+msgid "%(label)s (retype)"
+msgstr ""
+
+#: umc/widgets/Grid.js:678
+#, python-format
+msgid "%d entries of %d selected"
+msgstr ""
+
+#: umc/widgets/Grid.js:683
+#, python-format
+msgid "1 entry of %d selected"
+msgstr ""
+
+#: umc/about.js:54 umc/app.js:426
+msgid "About UMC"
+msgstr ""
+
+#: umc/widgets/UnixAccessRights.js:96
+msgid "Access"
+msgstr ""
+
+#: umc/widgets/MultiObjectSelect.js:118 umc/widgets/MultiObjectSelect.js:278
+msgid "Add"
+msgstr ""
+
+#: umc/widgets/MultiObjectSelect.js:238
+msgid "Add objects"
+msgstr ""
+
+#: umc/help.js:51
+msgid "Additional documentation for UCS"
+msgstr ""
+
+#: umc/tools.js:622
+msgid "An assert statement failed"
+msgstr ""
+
+#: umc/tools.js:548
+msgid ""
+"An error occurred while connecting to the server, please try again later."
+msgstr ""
+
+#: umc/tools.js:544
+#, python-format
+msgid ""
+"An unknown error with status code %s occurred while connecting to the "
+"server, please try again later."
+msgstr ""
+
+#: umc/app.js:353
+#, python-format
+msgid ""
+"An update for UCS is available. Please visit <a %s>Online Update Module</a> "
+"to install the updates."
+msgstr ""
+
+#: umc/tools.js:438
+msgid "Authentication failed, please login again."
+msgstr ""
+
+#: umc/widgets/Wizard.js:69
+msgid "Back"
+msgstr ""
+
+#: umc/app.js:516 umc/widgets/MultiObjectSelect.js:297
+#: umc/widgets/Wizard.js:84
+msgid "Cancel"
+msgstr ""
+
+#: umc/widgets/Uploader.js:97
+msgid "Clear data"
+msgstr ""
+
+#: umc/widgets/ImageUploader.js:52
+msgid "Clear image data"
+msgstr ""
+
+#: umc/about.js:54 umc/help.js:62
+msgid "Close"
+msgstr ""
+
+#: umc/dialog.js:272
+msgid "Confirmation"
+msgstr ""
+
+#: umc/app.js:478
+msgid "Confirmations"
+msgstr ""
+
+#: umc/tools.js:430
+msgid "Could not fulfill the request."
+msgstr ""
+
+#: umc/tools.js:453
+msgid "Could not process the request."
+msgstr ""
+
+#: umc/help.js:49
+msgid "Current manual (PDF)"
+msgstr ""
+
+#: umc/app.js:508
+msgid "Do you really want to logout?"
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:63
+msgid "English"
+msgstr ""
+
+#: umc/widgets/Uploader.js:146
+#, python-format
+msgid "File cannot be uploaded, its maximum size may be %.1f MB."
+msgstr ""
+
+#: umc/widgets/Wizard.js:80
+msgid "Finish"
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:62
+msgid "German"
+msgstr ""
+
+#: umc/widgets/UnixAccessRights.js:73
+msgid "Group"
+msgstr ""
+
+#: umc/i18n.js:135
+#, python-format
+msgid "Hello %(last)s, %(first)s!"
+msgstr ""
+
+#: umc/i18n.js:134
+#, python-format
+msgid "Hello %s %s!"
+msgstr ""
+
+#: umc/app.js:410 umc/help.js:62
+msgid "Help"
+msgstr ""
+
+#: umc/tools.js:514
+msgid "Hide server error message"
+msgstr ""
+
+#: umc/tools.js:218
+msgid "Information"
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:307
+msgid "Insecure Connection"
+msgstr ""
+
+#: umc/tools.js:450
+msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
+msgstr ""
+
+#: umc/tools.js:449
+msgid ""
+"Internal UMC protocol error: The UMCP message header could not be parsed."
+msgstr ""
+
+#: umc/tools.js:452
+msgid "Internal module error: An error occured during command processing."
+msgstr ""
+
+#: umc/tools.js:443
+msgid "Internal server error."
+msgstr ""
+
+#: umc/tools.js:446
+msgid "Internal server error: Could not connect to the module process."
+msgstr ""
+
+#: umc/tools.js:447
+msgid ""
+"Internal server error: The SSL server certificate is not trustworthy. Please "
+"check your SSL configurations."
+msgstr ""
+
+#: umc/tools.js:445
+msgid "Internal server error: The module process died unexpectedly."
+msgstr ""
+
+#: umc/tools.js:444
+msgid "Internal server error: The service is temporarily not available."
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:128
+msgid "Language"
+msgstr ""
+
+#: umc/app.js:418
+msgid "License"
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:164
+msgid "Login"
+msgstr ""
+
+#: umc/app.js:107
+#, python-format
+msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
+msgstr ""
+
+#: umc/app.js:509
+msgid "Logout"
+msgstr ""
+
+#: umc/help.js:58
+msgid "Manual and documentation"
+msgstr ""
+
+#: umc/app.js:486
+msgid "Module help description"
+msgstr ""
+
+#: umc/widgets/Wizard.js:75
+msgid "Next"
+msgstr ""
+
+#: umc/widgets/Grid.js:680
+msgid "No entries could be found"
+msgstr ""
+
+#: umc/widgets/Grid.js:758
+msgid "No object selected"
+msgstr ""
+
+#: umc/widgets/MultiUploader.js:195
+msgid "No upload in progress"
+msgstr ""
+
+#: umc/widgets/Page.js:251
+msgid "Note"
+msgstr ""
+
+#: umc/dialog.js:172
+msgid "Notification"
+msgstr ""
+
+#: umc/dialog.js:175
+msgid "Ok"
+msgstr ""
+
+#: umc/widgets/UnixAccessRights.js:74
+msgid "Others"
+msgstr ""
+
+#: umc/widgets/UnixAccessRights.js:72
+msgid "Owner"
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:163
+msgid "Password"
+msgstr ""
+
+#: umc/tools.js:503
+msgid "Please take a second to provide the following information:"
+msgstr ""
+
+#: umc/widgets/UnixAccessRights.js:86
+msgid "Read"
+msgstr ""
+
+#: umc/widgets/MultiObjectSelect.js:139 umc/widgets/MultiUploader.js:116
+msgid "Remove"
+msgstr ""
+
+#: umc/widgets/SearchForm.js:52
+msgid "Search"
+msgstr ""
+
+#: umc/widgets/MultiObjectSelect.js:269
+msgid "Search results:"
+msgstr ""
+
+#: umc/tools.js:511
+msgid "Send feedback mail to Univention"
+msgstr ""
+
+#: umc/about.js:45
+msgid "Server"
+msgstr ""
+
+#: umc/tools.js:539
+msgid "Server error message:"
+msgstr ""
+
+#: umc/tools.js:515
+msgid "Show server error message"
+msgstr ""
+
+#: umc/dialog.js:73
+msgid "So far the authentification failed. Continuing nevertheless."
+msgstr ""
+
+#: umc/tools.js:203
+msgid ""
+"So far, the connection to the server could not be established after {time} "
+"seconds. This can be a normal behavior. In any case, the process will "
+"continue to establish the connection."
+msgstr ""
+
+#: umc/tools.js:441
+msgid "Specified locale is not available."
+msgstr ""
+
+#: umc/help.js:59
+msgid "Supplementary information"
+msgstr ""
+
+#: umc/help.js:60
+msgid "Support and assistance"
+msgstr ""
+
+#: umc/app.js:347
+#, python-format
+msgid "The SSL certificate will expire in %d days and should be renewed!"
+msgstr ""
+
+#: umc/tools.js:440
+msgid "The account as been disabled."
+msgstr ""
+
+#: umc/tools.js:439
+msgid "The account is expired and can not be used anymore."
+msgstr ""
+
+#: umc/widgets/PasswordInputBox.js:110
+msgid "The passwords do not match, please retype again."
+msgstr ""
+
+#: umc/i18n.js:133
+#, python-format
+msgid "The total cost was %.2f EUR!"
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:308
+#, python-format
+msgid ""
+"This network connection is not encrypted. All personal or sensitive data "
+"will be transmitted in plain text. Please follow %s this link</a> to use a "
+"secure SSL connection."
+msgstr ""
+
+#: umc/app.js:359
+#, python-format
+msgid ""
+"This system has been updated recently. Please visit the <a %s>Reboot Module</"
+"a> and reboot this system to finish the update."
+msgstr ""
+
+#: umc/app.js:471
+msgid "Tooltips"
+msgstr ""
+
+#: umc/i18n.js:132
+msgid "Translate me!"
+msgstr ""
+
+#: umc/about.js:47
+msgid "UCS version"
+msgstr ""
+
+#: umc/about.js:49
+msgid "UMC version"
+msgstr ""
+
+#: umc/help.js:44
+msgid ""
+"Univention Management Console (UMC) is the central web-application for "
+"comfortable domain and computer administration in Univention Corporate "
+"Server (UCS). UMC allows to manage users, groups or computers, to control "
+"services, and to check or adjust system settings. The web-based interface of "
+"UMC is described in detail in the current manual of Univention Corporate "
+"Server (UCS). You can find the manual and further important information at "
+"the given links below. "
+msgstr ""
+
+#: umc/app.js:435
+msgid "Univention Website"
+msgstr ""
+
+#: umc/help.js:54
+msgid "Univention Wiki"
+msgstr ""
+
+#: umc/help.js:55
+msgid "Univention forum"
+msgstr ""
+
+#: umc/help.js:56
+msgid "Univention support"
+msgstr ""
+
+#: umc/help.js:53
+msgid "Univention support data base (SDB)"
+msgstr ""
+
+#: umc/widgets/Uploader.js:96 umc/widgets/InfoUploader.js:46
+#: umc/widgets/MultiUploader.js:98
+msgid "Upload"
+msgstr ""
+
+#: umc/widgets/ImageUploader.js:51
+msgid "Upload new image"
+msgstr ""
+
+#: umc/widgets/Uploader.js:228
+msgid "Uploading..."
+msgstr ""
+
+#: umc/widgets/MultiUploader.js:215
+#, python-format
+msgid "Uploading... %d of %d files remaining."
+msgstr ""
+
+#: umc/widgets/MultiUploader.js:212
+msgid "Uploads finished"
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:162
+msgid "Username"
+msgstr ""
+
+#: umc/about.js:51
+msgid "Validity date of the SSL certificate"
+msgstr ""
+
+#: umc/tools.js:315
+#, python-format
+msgid "WARNING: Ignoring command \"%s\" since user is logging in"
+msgstr ""
+
+#: umc/tools.js:435
+msgid ""
+"Webfrontend error: The specified UMCP command arguments of the request are "
+"invalid."
+msgstr ""
+
+#: umc/tools.js:436
+msgid ""
+"Webfrontend error: The specified arguments for the UMCP module method are "
+"invalid or missing."
+msgstr ""
+
+#: umc/tools.js:434
+msgid "Webfrontend error: The specified request is unknown."
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:303
+msgid ""
+"Welcome to Univention Management Console. Please enter your domain username "
+"and password for login."
+msgstr ""
+
+#: umc/widgets/UnixAccessRights.js:91
+msgid "Write"
+msgstr ""
+
+#: umc/tools.js:432
+msgid "You are not authorized to perform this action."
+msgstr ""
+
+#: umc/widgets/LoginDialog.js:301
+msgid "Your session has been closed due to inactivity. Please login again."
+msgstr ""
+
+#: umc/tools.js:431
+msgid "Your session has expired, please login again."
+msgstr ""
+
+#: umc/tools.js:506
+msgid "actual result"
+msgstr ""
+
+#: umc/tools.js:505
+msgid "expected result"
+msgstr ""
+
+#: umc/help.js:52
+msgid "http://www.univention.de/en/download/documentation/documentation/"
+msgstr ""
+
+#: umc/help.js:50
+msgid ""
+"http://www.univention.de/fileadmin/download/documentation_english/ucs-3.0-"
+"manual_en.pdf"
+msgstr ""
+
+#: umc/widgets/Grid.js:417 umc/widgets/Grid.js:830
+msgid "more"
+msgstr ""
+
+#: umc/tools.js:504
+msgid "steps to reproduce the failure"
+msgstr ""
+
+#: umc/app.js:458
+msgid "umcHostInfo"
+msgstr "Host: %(host)s.%(domain)s"
+
+#: umc/app.js:335
+msgid "umcOverviewHeader"
+msgstr "Overview"
+
+#: umc/app.js:337
+msgid "umcOverviewHelpText"
+msgstr "Univention Management Console (UMC) is the central tool for web-based administration of the UCS domain. It supports the management of domain-wide available data in the LDAP directory, e.g., users, groups or host accounts, and allows the configuration or management of an individual system, e.g., the starting and stopping of services. Depending on system role, default settings and permissions, you find extensive functions for the administration of your UCS domain and for the configuration of this server."
+
+#: umc/app.js:334
+msgid "umcOverviewTabTitle"
+msgstr "Overview"
+
+#: umc/app.js:495
+msgid "umcUserInfo"
+msgstr "User: %(username)s"
