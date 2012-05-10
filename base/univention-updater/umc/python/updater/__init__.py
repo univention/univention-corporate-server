@@ -1304,6 +1304,8 @@ class Instance(umcm.Base):
 		for attr in COMP_PARAMS:
 			regstr = '%s/%s/%s' % (COMPONENT_BASE,id,attr)
 			entry[attr] = self.ucr.get(regstr,'')
+		# Get default packages (can be named either defaultpackage or defaultpackages)
+		entry['defaultpackages'] = list(self.uu.get_component_defaultpackage(id))  # method returns a set
 		# Parts value (if present) must be splitted into words and added as bools.
 		# For parts not contained here we have set 'False' default values.
 		parts = self.ucr.get('%s/%s/parts' % (COMPONENT_BASE,id),'').split(',')

@@ -1,3 +1,10 @@
+univention-updater (7.0.158-1) unstable; urgency=low
+
+  * respect for the list of components the entry 'defaultpackages' and
+    'defaultpackage'; Bug #27078
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 10 May 2012 13:00:42 +0200
+
 univention-updater (7.0.157-1) unstable; urgency=low
 
   * added new UMCP command for calling updater hooks (Bug #26774)
