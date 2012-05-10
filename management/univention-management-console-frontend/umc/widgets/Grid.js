@@ -116,6 +116,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 	disabled: false,
 
+	// multiActionsAlwaysActive: Boolean
+	//		Be default this option is set to false. In that case a multi
+	//		action is disabled if no item is selected. Setting this
+	//		option to true forces multi actions to be always enabled.
+	multiActionsAlwaysActive: false,
+
 	_contextItem: null,
 	_contextItemID: null,
 	_contextMenu: null,
@@ -654,7 +660,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 	_updateFooterCells: function() {
 		// deactivate multi actions if no item is selected
-		if ( ! this._footerCells.length ) {
+		if ( ! this._footerCells.length || this.multiActionsAlwaysActive === true ) {
 			return;
 		}
 

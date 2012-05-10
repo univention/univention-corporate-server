@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.356-1) unstable; urgency=low
+
+  * add option multiActionsAlwaysActive to Grid: allows to keep multi
+    actions enabled if no item is selected; Bug #27072
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 10 May 2012 11:25:50 +0200
+
 univention-management-console-frontend (1.0.355-1) unstable; urgency=low
 
   * map not to False in isFalse() (Bug #27055) 
