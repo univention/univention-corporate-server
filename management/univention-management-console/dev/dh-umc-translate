@@ -53,13 +53,20 @@ def main():
 	parser.add_option( '-o', '--outdir', action = 'store',
 					   dest = 'outdir',
 					   help = 'Specifies the output directory where translations from all js files are saved to. (Mandatory)')
+	parser.add_option( '-l', '--lang', action = 'append',
+					   dest = 'lang',
+					   help = 'Specifies the languages that are processed (default: de)')
 
 	( options, args ) = parser.parse_args()
 
-	# make sure we have javascript files
-	if not len(args):
-		print '\nPlease specify a set of JavaScript files containing translations!\n'
-		sys.exit(1)
+#	# make sure we have javascript files
+#	if not len(args):
+#		print '\nPlease specify a set of JavaScript files containing translations!\n'
+#		sys.exit(1)
+
+	# update the list of languages
+	if options.lang and len(options.lang):
+		dh_umc.LANGUAGES = options.lang
 
 	# make sure we have enough parameters
 	if not options.package:
@@ -89,7 +96,9 @@ def main():
 	# build translation files
 	for lang in dh_umc.LANGUAGES:
 		ipo_file = po_file % lang
-		dh_umc.create_po_file( ipo_file, options.package, args)
+		if len(args):
+			# only re-create po files if javascript files are given
+			dh_umc.create_po_file( ipo_file, options.package, args)
 		create_final_output( ipo_file)
 
 if __name__ == '__main__':
