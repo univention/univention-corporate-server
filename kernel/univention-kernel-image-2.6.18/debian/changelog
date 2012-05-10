@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.18 (4.0.1-3) unstable; urgency=low
+
+  * Update meta package for security update (Bug #20655)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 10 May 2012 09:58:11 +0200
+
 univention-kernel-image-2.6.18 (4.0.1-2) unstable; urgency=low
 
   * Update meta package for import of security patches (Bug #20621)	
