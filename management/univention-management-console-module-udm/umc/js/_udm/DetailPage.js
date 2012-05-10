@@ -1244,9 +1244,9 @@ dojo.declare("umc.modules._udm.DetailPage", [ dijit.layout.ContentPane, umc.widg
 			}));
 		}
 		else if (this.newObjectOptions) {
-			// get only non-empty values
+			// get only non-empty values or values of type 'boolean'
 			umc.tools.forIn(vals, dojo.hitch(this, function(iname, ival) {
-				if (!(dojo.isArray(ival) && !ival.length) && ival) {
+				if (typeof(ival) == 'boolean' || (!(dojo.isArray(ival) && !ival.length) && ival)) {
 					newVals[iname] = ival;
 				}
 			}));
