@@ -116,14 +116,18 @@ if ignore_filter:
 							ldap_attribute='sn',
 							con_attribute='sn',
 						),
-				},
+					@!@
+import univention.s4connector.s4.sid_mapping
+univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
+@!@
+			},
 
 			ucs_create_functions = [
 							univention.s4connector.set_ucs_passwd_user,
 						 	univention.s4connector.check_ucs_lastname_user,
 						 	univention.s4connector.set_primary_group_user,
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
 @!@
 						 	],
@@ -134,7 +138,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 
 			post_con_modify_functions=[
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_s4,'
 @!@
 							univention.s4connector.s4.password.password_sync_ucs_to_s4,
@@ -145,7 +149,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
 
 			post_ucs_modify_functions=[
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
 @!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs,
@@ -278,7 +282,7 @@ print "			ignore_filter='(|(sambaGroupType=5)(groupType=5)%s)'," % ignore_filter
 
 			post_con_modify_functions=[
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_s4,'
 @!@
 							univention.s4connector.s4.group_members_sync_from_ucs,
@@ -287,7 +291,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
 
 			post_ucs_modify_functions=[
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
 @!@
 							univention.s4connector.s4.group_members_sync_to_ucs,
@@ -314,6 +318,10 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 							ldap_attribute='mailPrimaryAddress',
 							con_attribute='mail',
 					),
+					@!@
+import univention.s4connector.s4.sid_mapping
+univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
+@!@
 				},
 		),
 	'dc': univention.s4connector.property (
@@ -346,7 +354,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 	
 			post_con_modify_functions=[
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_s4,'
 @!@
 							univention.s4connector.s4.password.password_sync_ucs_to_s4,
@@ -354,7 +362,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
 	
 			post_ucs_modify_functions=[
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
 @!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
@@ -388,6 +396,10 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 							ldap_attribute='univentionOperatingSystemVersion',
 							con_attribute='operatingSystemVersion'
 						),
+					@!@
+import univention.s4connector.s4.sid_mapping
+univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
+@!@
 				},
 	
 		),
@@ -419,7 +431,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 			#post_con_create_functions = [ univention.connector.s4.computers.
 			post_con_modify_functions=[
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_s4,'
 @!@
 							univention.s4connector.s4.password.password_sync_ucs_to_s4,
@@ -427,7 +439,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
 
 			post_ucs_modify_functions=[
 							@!@
-if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True):
 	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
 @!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
@@ -461,6 +473,10 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
 							ldap_attribute='univentionOperatingSystemVersion',
 							con_attribute='operatingSystemVersion'
 						),
+					@!@
+import univention.s4connector.s4.sid_mapping
+univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
+@!@
 				},
 
 		),

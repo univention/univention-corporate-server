@@ -40,6 +40,8 @@ import univention.debug2 as ud
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
 
+DECODE_IGNORELIST=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member']
+
 # page results
 PAGE_SIZE=1000
 
@@ -519,6 +521,11 @@ def encode_modlist(list, encoding):
 			newattr=attr.encode(encoding)
 		else:
 			newattr=attr
+
+		if attr in DECODE_IGNORELIST:
+			newlist.append((modtype,newattr,values))
+			continue
+
 		if type(values) == type([]):
 			newlist.append((modtype,newattr,encode_list(values, encoding)))
 		else:
@@ -532,6 +539,11 @@ def decode_modlist(list, encoding):
 			newattr=attr.decode(encoding)
 		else:
 			newattr=attr
+
+		if attr in DECODE_IGNORELIST:
+			newlist.append((modtype,newattr,values))
+			continue
+
 		if type(values) == type([]):
 			newlist.append((modtype,newattr,decode_list(values, encoding)))
 		else:
@@ -545,6 +557,11 @@ def encode_addlist(list, encoding):
 			newattr=attr.encode(encoding)
 		else:
 			newattr=attr
+
+		if attr in DECODE_IGNORELIST:
+			newlist.append((newattr,values))
+			continue
+
 		if type(values) == type([]):
 			newlist.append((newattr,encode_list(values, encoding)))
 		else:
@@ -558,6 +575,11 @@ def decode_addlist(list, encoding):
 			newattr=attr.decode(encoding)
 		else:
 			newattr=attr
+
+		if attr in DECODE_IGNORELIST:
+			newlist.append((newattr,values))
+			continue
+
 		if type(values) == type([]):
 			newlist.append((newattr,decode_list(values, encoding)))
 		else:
@@ -649,6 +671,11 @@ class s4(univention.s4connector.ucs):
 			## The OID of the 'bypass_samaccountname_ldap_check' control is defined in ldb.h
 			ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
 			self.serverctrls_for_add_and_modify.append( ldb_ctrl_bypass_samaccountname_ldap_check )
+
+		# objectSid modification for an Samba4 object is only possible with the "provision" control:
+		if self.configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+			LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
+			self.serverctrls_for_add_and_modify.append(LDAPControl(LDB_CONTROL_PROVISION_OID,criticality=0) )
 
 		# Build an internal cache with S4 as key and the UCS object as cache
 		self.group_mapping_cache_ucs = {}
@@ -1194,7 +1221,7 @@ class s4(univention.s4connector.ucs):
 		object_sid_string = str(self.s4_sid) + "-" + str(s4_group_rid)
 
 
-		ldap_group_s4 = self.__search_s4( base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter='objectSID=' + object_sid_string)
+		ldap_group_s4 = self.__search_s4( base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter='objectSid=' + object_sid_string)
 
 		ucs_group = self._object_mapping('group',{'dn':ldap_group_s4[0][0],'attributes':ldap_group_s4[0][1]})
 
@@ -2100,6 +2127,7 @@ class s4(univention.s4connector.ucs):
 									modlist.append((ldap.MOD_REPLACE, attr, value))
 								else:
 									modlist.append((ldap.MOD_DELETE, attr, None))
+				ud.debug(ud.LDAP, ud.INFO, "addlist: %s" % compatible_addlist(addlist))
 
 				self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=self.serverctrls_for_add_and_modify) #FIXME encoding
 
@@ -2157,25 +2185,27 @@ class s4(univention.s4connector.ucs):
 
 				if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
 					for ac in self.property[property_type].attributes.keys():
-						if not self.property[property_type].attributes[ac].con_attribute in attrs_which_should_be_mapped:
-							attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_attribute)
-						if self.property[property_type].attributes[ac].con_other_attribute:
-							if not self.property[property_type].attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
-								attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_other_attribute)
+						if self.property[property_type].attributes[ac].sync_mode in ['write', 'sync']:
+							if not self.property[property_type].attributes[ac].con_attribute in attrs_which_should_be_mapped:
+								attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_attribute)
+							if self.property[property_type].attributes[ac].con_other_attribute:
+								if not self.property[property_type].attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
+									attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_other_attribute)
 
 				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 					for ac in self.property[property_type].post_attributes.keys():
-						if not self.property[property_type].post_attributes[ac].con_attribute in attrs_which_should_be_mapped:
-							if self.property[property_type].post_attributes[ac].reverse_attribute_check:
-								if object['attributes'].get(self.property[property_type].post_attributes[ac].ldap_attribute):
+						if self.property[property_type].post_attributes[ac].sync_mode in ['write', 'sync']:
+							if not self.property[property_type].post_attributes[ac].con_attribute in attrs_which_should_be_mapped:
+								if self.property[property_type].post_attributes[ac].reverse_attribute_check:
+									if object['attributes'].get(self.property[property_type].post_attributes[ac].ldap_attribute):
+										attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
+									elif s4_object.get(self.property[property_type].post_attributes[ac].con_attribute):
+										modlist.append((ldap.MOD_DELETE, self.property[property_type].post_attributes[ac].con_attribute, None))
+								else:
 									attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
-								elif s4_object.get(self.property[property_type].post_attributes[ac].con_attribute):
-									modlist.append((ldap.MOD_DELETE, self.property[property_type].post_attributes[ac].con_attribute, None))
-							else:
-								attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
-						if self.property[property_type].post_attributes[ac].con_other_attribute:
-							if not self.property[property_type].post_attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
-								attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_other_attribute)
+							if self.property[property_type].post_attributes[ac].con_other_attribute:
+								if not self.property[property_type].post_attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
+									attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_other_attribute)
 
 				modlist_empty_attrs = []			
 				for expected_attribute in attrs_which_should_be_mapped:

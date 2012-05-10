@@ -38,6 +38,60 @@ from ldap.controls import LDAPControl
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
 
+'''
+	Helper function to create the SID mapping definition.
+'''
+def print_sid_mapping(configRegistry):
+	sync_mode = 'sync'
+	if configRegistry.is_true('connector/s4/mapping/sid', True):
+		if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
+			mapping_str='univention.s4connector.s4.sid_mapping.sid_to_s4_mapping,'
+		else:
+			mapping_str='None, '
+			sync_mode = 'read'
+		if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
+			mapping_str+='univention.s4connector.s4.sid_mapping.sid_to_ucs_mapping'
+		else:
+			mapping_str+='None'
+			sync_mode = 'write'
+		print '''
+					'sid': univention.s4connector.attribute (
+							sync_mode='%s',
+							mapping=(%s),
+							ldap_attribute='sambaSID',
+							ucs_attribute='sambaRID',
+							con_attribute='objectSid',
+					), ''' % (sync_mode, mapping_str)
+
+
+def sid_to_s4_mapping(s4connector, key, object):
+	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4_mapping")
+	sidAttribute='sambaSID'
+	if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+		sidAttribute='univentionSamba4SID'
+
+	sambaSID = object['attributes'][sidAttribute]
+		
+	# Two diffrent cases are possible, the user sid contains the
+	# domain sid or not.
+	if sambaSID[0].startswith(s4connector.s4_sid):
+		new_objectSid_ndr = ndr_pack(security.dom_sid('%s' % (sambaSID[0])))
+	else:
+		new_objectSid_ndr = ndr_pack(security.dom_sid('%s-%s' % (s4connector.s4_sid, sambaSID[0])))
+
+	return [new_objectSid_ndr]
+
+def sid_to_ucs_mapping(s4connector, key, s4_object):
+	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs_mapping")
+	rids=[]
+	object_sids=s4_object['attributes']['objectSid']
+	for object_sid in object_sids:
+		rids.append(object_sid.split('-')[-1])
+	return rids
+	
+
+
 def sid_to_s4(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4 object: %s" % object)
 
@@ -45,6 +99,9 @@ def sid_to_s4(s4connector, key, object):
 	if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
 		sidAttribute='univentionSamba4SID'
+	else:
+		# This case will be handled by direct mapping
+		return
 
 	# object dn was already mapped to the s4 DN:
 	s4_dn = object['dn']
@@ -84,12 +141,16 @@ def sid_to_s4(s4connector, key, object):
 	pass
 	
 def sid_to_ucs(s4connector, key, s4_object):
-	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4: %s" % s4_object)
+	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 object: %s" % s4_object)
+	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 key: %s" % key)
 
 	sidAttribute='sambaSID'
 	if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: SID mapping is disabled via UCR: connector/s4/mapping/sid')
 		sidAttribute='univentionSamba4SID'
+	else:
+		# This case will be handled by direct mapping
+		return
 
 	# modlist
 	ml = []
