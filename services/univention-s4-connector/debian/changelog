@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.139-1) unstable; urgency=low
+
+  * Add DC to group Domain Controllers (Bug #27402)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 May 2012 06:47:55 +0200
+
 univention-s4-connector (6.0.138-1) unstable; urgency=low
 
   * Create Samba 4 basis objects (groups and containers) in the S4
