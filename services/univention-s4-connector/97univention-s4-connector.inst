@@ -65,6 +65,109 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 			--set disableUDMWeb=1 \
 			--set ldapMapping=msGPOLink
 
+# Be sure theses containers exists
+if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
+udm container/cn create "$@" --ignore_exists \
+			--set name=System
+
+udm container/cn create "$@" --ignore_exists \
+			--position "cn=System,$ldap_base" \
+			--set name=Policies
+
+udm container/ou create "$@" --ignore_exists \
+			--set name="Domain Controllers" \
+			--set description="Default container for domain controllers"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="All domain controllers in the domain"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Domain Controllers" \
+				--set description="All domain controllers in the domain"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Read-only Domain Controllers" \
+				--set description="Members of this group are Read-Only Domain Controllers in the domain"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="RAS and IAS Servers" \
+				--set description="Servers in this group can access remote access properties of users"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Domain Computers" \
+				--set description="All workstations and servers joined to the domain"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Cert Publishers" \
+				--set description="Members of this group are permitted to publish certificates to the directory"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="DnsAdmins" \
+				--set description="DNS Administrators Group"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="DnsUpdateProxy" \
+				--set description="DNS clients who are permitted to perform dynamic updates on behalf of some other clients (such as DHCP servers)."
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Enterprise Read-only Domain Controllers" \
+				--set description="Members of this group are Read-Only Domain Controllers in the enterprise"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Group Policy Creator Owners" \
+				--set description="Members in this group can modify group policy for the domain"
+udm groups/group modify "$@" --ignore_exists \
+				--dn "cn=Group Policy Creator Owners,cn=groups,$ldap_base" \
+				--append users="uid=Administrator,CN=Users,DC=dedlock10,DC=local"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Schema Admins" \
+				--set description="Designated administrators of the schema"
+udm groups/group modify "$@" --ignore_exists \
+				--dn "cn=Schema Admins,cn=groups,$ldap_base" \
+				--append users="uid=Administrator,CN=Users,DC=dedlock10,DC=local"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Denied RODC Password Replication Group" \
+				--set description="Members in this group cannot have their passwords replicated to any read-only domain controllers in the domain"
+udm groups/group modify "$@" --ignore_exists \
+				--dn "cn=Denied RODC Password Replication Group,cn=groups,$ldap_base" \
+				--append nestedGroup="CN=Read-only Domain Controllers,CN=Groups,DC=dedlock10,DC=local" \
+				--append nestedGroup="CN=Group Policy Creator Owners,CN=Groups,DC=dedlock10,DC=local" \
+				--append nestedGroup="CN=Domain Admins,CN=Groups,DC=dedlock10,DC=local" \
+				--append nestedGroup="CN=Cert Publishers,CN=Groups,DC=dedlock10,DC=local" \
+				--append nestedGroup="CN=Enterprise Admins,CN=Groups,DC=dedlock10,DC=local" \
+				--append nestedGroup="CN=Schema Admins,CN=Groups,DC=dedlock10,DC=local" \
+				--append nestedGroup="CN=Domain Controllers,CN=Groups,DC=dedlock10,DC=local"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Enterprise Admins"
+udm groups/group modify "$@" --ignore_exists \
+				--dn "cn=Enterprise Admins,cn=groups,$ldap_base" \
+				--append users="uid=Administrator,CN=Users,DC=dedlock10,DC=local"
+
+udm groups/group create "$@" --ignore_exists \
+				--position "cn=groups,$ldap_base" \
+				--set name="Allowed RODC Password Replication Group" \
+				--set description="Members in this group can have their passwords replicated to all read-only domain controllers in the domain"
+
+
+fi
+
+
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
 fi

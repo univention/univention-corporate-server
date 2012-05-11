@@ -333,7 +333,7 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 
 			position_mapping = [( ',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@' )],
 
-			match_filter='(|(objectClass=univentionDomainController)(objectClass=computer))',
+			match_filter='(|(&(objectClass=univentionDomainController)(univentionService=Samba 4))(objectClass=computer))',
 
 			dn_mapping_function=[ univention.s4connector.s4.dc_dn_mapping ],
 
