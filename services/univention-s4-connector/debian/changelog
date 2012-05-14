@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.140-1) unstable; urgency=low
+
+  * Fixed sid to ucs mapping function (Bug #26055)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2012 08:09:55 +0200
+
 univention-s4-connector (6.0.139-1) unstable; urgency=low
 
   * Add DC to group Domain Controllers (Bug #27402)

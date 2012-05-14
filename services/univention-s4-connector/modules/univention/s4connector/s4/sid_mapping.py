@@ -84,13 +84,8 @@ def sid_to_s4_mapping(s4connector, key, object):
 
 def sid_to_ucs_mapping(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs_mapping")
-	rids=[]
-	object_sids=s4_object['attributes']['objectSid']
-	for object_sid in object_sids:
-		rids.append(object_sid.split('-')[-1])
-	return rids
-	
-
+	object_sid=s4_object['attributes']['objectSid'][0]
+	return object_sid.split('-')[-1]
 
 def sid_to_s4(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4 object: %s" % object)
