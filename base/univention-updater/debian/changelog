@@ -1,3 +1,15 @@
+univention-updater (7.0.160-1) unstable; urgency=low
+
+  * fixed list of defaultpackage names (Bug #27078)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 May 2012 19:20:29 +0200
+
+univention-updater (7.0.159-1) unstable; urgency=low
+
+  * use updater functions for detecting defaultpackages (Bug #27078)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 May 2012 14:58:44 +0200
+
 univention-updater (7.0.158-1) unstable; urgency=low
 
   * respect for the list of components the entry 'defaultpackages' and

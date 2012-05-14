@@ -1227,12 +1227,9 @@ class Instance(umcm.Base):
 			cmd = INSTALLERS[subject]['command']
 			if cmd.find('%') != -1:
 				if subject == 'component':
-					# Strictly spoken, we can't arrive here if 'defaultpackages' is not set
-					ucrs = '%s/%s/defaultpackages' % (COMPONENT_BASE,detail)
-					pkgs = self.ucr.get(ucrs,'')
+					pkgs = ' '.join(self.uu.get_component_defaultpackage(detail))
 					cmd = cmd % pkgs
 					MODULE.info("  Resolution of default packages of the '%s' component:" % detail)
-					MODULE.info("     UCRS = '%s'" % ucrs)
 					MODULE.info("     PKGS = '%s'" % pkgs)
 					MODULE.info("     CMD  = '%s'" % cmd)
 				else:
@@ -1328,7 +1325,7 @@ class Instance(umcm.Base):
 			entry['icon'] = DEFAULT_ICON
 
 		# Allowance for an 'install' button: if a package is available, not installed, and there's a default package specified
-		entry['installable'] = (entry['status'] == 'available') and (not entry['installed']) and ('defaultpackages' in entry) and (entry['defaultpackages'] != '')
+		entry['installable'] = (entry['status'] == 'available') and (not entry['installed']) and bool(entry['defaultpackages'])
 
 		return entry
 
