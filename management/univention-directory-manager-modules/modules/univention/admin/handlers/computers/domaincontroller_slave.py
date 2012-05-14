@@ -266,15 +266,15 @@ property_descriptions={
 			identifies=0
 		),
 	'reinstalloption': univention.admin.property(
-            short_description=_('additional start options'),
-            long_description='',
-            syntax=univention.admin.syntax.string,
-            multivalue=0,
-            options=[],
-            required=0,
-            may_change=1,
-            identifies=0
-        ),
+			short_description=_('additional start options'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'instprofile': univention.admin.property(
 			short_description=_('Name of installation profile'),
 			long_description='',
@@ -305,6 +305,17 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0
+		),
+	'sambaRID': univention.admin.property(
+			short_description=_('Relative ID'),
+			long_description='',
+			syntax=univention.admin.syntax.integer,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0,
+			options=['samba']
 		),
 }
 
@@ -440,6 +451,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 					self['primaryGroup']=None
 					self.save()
 					raise univention.admin.uexceptions.primaryGroup
+			if 'samba' in self.options:
+				sid = self.oldattr.get('sambaSID', [''])[0]
+				pos = sid.rfind('-')
+				self.info['sambaRID'] = sid[pos+1:]
 
 			self.save()
 
@@ -517,7 +532,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				# new sambaSID back from Samba 4.
 				self.machineSid='S-1-4-%s' % self.uidNum
 			else:
-				self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum)
+				self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum, self.get('sambaRID'))
 				self.alloc.append(('sid',self.machineSid))
 			ocs.append('sambaSamAccount')
 			al.append(('sambaSID', [self.machineSid]))
@@ -641,7 +656,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				# new sambaSID back from Samba 4.
 				self.machineSid='S-1-4-%s' % self.oldattr['uidNumber'][0]
 			else:
-				self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0])
+				self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0], self.get('sambaRID'))
 				self.alloc.append(('sid',self.machineSid))
 			ml.insert(0, ('objectClass', '', 'sambaSamAccount'))
 			ml.append(('sambaSID', '', [self.machineSid]))
@@ -654,6 +669,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			for key in [ 'sambaSID', 'sambaAcctFlags', 'sambaNTPassword', 'sambaLMPassword', 'sambaPwdLastSet', 'displayName' ]:
 				if self.oldattr.get(key, []):
 					ml.insert(0, (key, self.oldattr.get(key, []), ''))
+
+		if self.hasChanged('sambaRID') and not hasattr(self, 'machineSid'):
+			self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0], self.get('sambaRID'))
+			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.machineSid]))
 
 		return ml
 

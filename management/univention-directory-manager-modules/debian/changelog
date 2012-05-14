@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.250-1) unstable; urgency=low
+
+  * Make the Samba RID changeable for DCs, member servers, groups and
+    users (Bug #27111)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2012 08:00:32 +0200
+
 univention-directory-manager-modules (7.0.249-1) unstable; urgency=low
 
   * handle license type "OXAE" the same way as license type "UCS" (Bug #26914)

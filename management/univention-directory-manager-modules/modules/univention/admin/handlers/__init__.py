@@ -1066,15 +1066,22 @@ class simpleComputer( simpleLdap ):
 		)
 		self[ 'dnsAlias' ] = [ ]	# defined here to avoid pseudo non-None value of [''] in modwizard search
 
-	def getMachineSid(self, lo, position, uidNum):
-		num = uidNum
-		machineSid = ""
-		while not machineSid or machineSid == 'None':
-			try:
-				machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
-			except univention.admin.uexceptions.noLock, e:
-				num = str(int(num)+1)
-		return machineSid
+	def getMachineSid(self, lo, position, uidNum, rid=None):
+		if rid:
+			searchResult=self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+			domainsid=searchResult[0][1]['sambaSID'][0]
+			sid = domainsid+'-'+rid
+			univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
+			return sid
+		else:
+			num = uidNum
+			machineSid = ""
+			while not machineSid or machineSid == 'None':
+				try:
+					machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
+				except univention.admin.uexceptions.noLock, e:
+					num = str(int(num)+1)
+			return machineSid
 
 	# HELPER
 	def __ip_from_ptr( self, zoneName, relativeDomainName ):

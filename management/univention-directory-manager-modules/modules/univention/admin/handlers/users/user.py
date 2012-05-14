@@ -527,7 +527,7 @@ property_descriptions={
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			required=0,
-			may_change=0,
+			may_change=1,
 			dontsearch=1,
 			identifies=0,
 			options=['samba']
@@ -1821,37 +1821,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 				self.alloc.append(('uidNumber', self.uidNum))
 
-			self.userSid=None
-			if self.uidNum and 'samba' in self.options:
-				if self['sambaRID']:
-					searchResult=self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-					domainsid=searchResult[0][1]['sambaSID'][0]
-					sid = domainsid+'-'+self['sambaRID']
-					try:
-						self.userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
-						self.alloc.append(('sid', self.userSid))
-					except univention.admin.uexceptions.noLock, e:
-						raise univention.admin.uexceptions.sidAlreadyUsed, ': %s' % self['sambaRID']
-
-				else:
-					if self.s4connector_present:
-						# In this case Samba 4 must create the SID, the s4 connector will sync the
-						# new sambaSID back from Samba 4.
-						self.userSid='S-1-4-%s' % self.uidNum
-					else:
-						try:
-							self.userSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
-						except:
-							pass
-					if not self.userSid or self.userSid == 'None':
-						num=self.uidNum
-						while not self.userSid or self.userSid == 'None':
-							num = str(int(num)+1)
-							try:
-								self.userSid=univention.admin.allocators.requestUserSid(self.lo, self.position, num)
-							except univention.admin.uexceptions.noLock, e:
-								num = str(int(num)+1)
-						self.alloc.append(('sid', self.userSid))
+			if 'samba' in self.options:
+				self.userSid = self.__generate_user_sid(self.uidNum)
 
 			# due to the fact that the modlist is appended to the addlist this would be added twice
 			# leave commented out for now!
@@ -1930,6 +1901,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				univention.admin.allocators.confirm( self.lo, self.position, 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] )
 			else:
 				univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', self.oldinfo[ 'mailPrimaryAddress' ] )
+		if 'samba' in self.options and self.hasChanged('sambaRID'):
+			univention.admin.allocators.confirm(self.lo, self.position, 'sid', self.userSid)
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('mailPrimaryAddress'):
@@ -1981,6 +1954,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			# add univentionSambaPrivileges objectclass
 			if self[ 'sambaPrivileges'] and not "univentionSambaPrivileges" in o:
 				ml.insert( 0, ( 'objectClass', '', 'univentionSambaPrivileges' ) )
+
 
 		shadowLastChangeValue = ''	# if is filled, it will be added to ml in the end
 		sambaPwdLastSetValue = ''	# if is filled, it will be added to ml in the end
@@ -2435,6 +2409,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			sambaMunged=self.sambaMungedDialMap()
 			if sambaMunged:
 				ml.append(('sambaMungedDial', self.oldattr.get('sambaMungedDial', ['']), [sambaMunged]))
+
+			if self.hasChanged('sambaRID') and not hasattr(self, 'userSid'):
+				self.userSid = self.__generate_user_sid(self.oldattr['uidNumber'][0])
+				ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.userSid]))
 			pass
 
 		if sambaPwdLastSetValue:
@@ -2624,6 +2602,42 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		# and build the new history
 		res = string.join(pwlist, '')
 		return res
+
+	def __generate_user_sid(self, uidNum):
+		# TODO: cleanup function
+		userSid = None
+
+		if self['sambaRID']:
+			searchResult=self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+			domainsid=searchResult[0][1]['sambaSID'][0]
+			sid = domainsid+'-'+self['sambaRID']
+			try:
+				userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
+				self.alloc.append(('sid', userSid))
+			except univention.admin.uexceptions.noLock, e:
+				raise univention.admin.uexceptions.sidAlreadyUsed, ': %s' % self['sambaRID']
+		
+		else:
+			if self.s4connector_present:
+				# In this case Samba 4 must create the SID, the s4 connector will sync the
+				# new sambaSID back from Samba 4.
+				userSid='S-1-4-%s' % uidNum
+			else:
+				try:
+					userSid=univention.admin.allocators.requestUserSid(self.lo, self.position, uidNum)
+				except:
+					pass
+			if not userSid or userSid == 'None':
+				num=uidNum
+				while not userSid or userSid == 'None':
+					num = str(int(num)+1)
+					try:
+						userSid=univention.admin.allocators.requestUserSid(self.lo, self.position, num)
+					except univention.admin.uexceptions.noLock, e:
+						num = str(int(num)+1)
+				self.alloc.append(('sid', userSid))
+
+		return userSid
 
 	def getbytes(self, string):
 		#return byte values of a string (for smbPWHistory)

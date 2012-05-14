@@ -108,7 +108,7 @@ property_descriptions={
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			required=0,
-			may_change=0,
+			may_change=1,
 			identifies=0,
 			options=['samba']
 		),
@@ -525,27 +525,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 			if 'samba' in self.options and self.gidNum:
-				if self['sambaRID']:
-					searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-					domainsid=searchResult[0][1]['sambaSID'][0]
-					sid = domainsid+'-'+self['sambaRID']
-					self.groupSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
-					self.alloc.append(('sid', self.groupSid))
-				else:
-					num = self.gidNum
-					if s4connector_present:
-						# In this case Samba 4 must create the SID, the s4 connector will sync the
-						# new sambaSID back from Samba 4.
-						self.groupSid='S-1-4-%s' % num
-					else:
-						while not hasattr(self,'groupSid') or not self.groupSid or self.groupSid == 'None':
-							try:
-								self.groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num)
-							except univention.admin.uexceptions.noLock, e:
-								num = str(int(num)+1)
-						self.alloc.append(('sid', self.groupSid))
-			else:
-				self.groupSid=None
+				self.groupSid = self.__generate_group_sid(self.gidNum)
 
 			error=0
 			name=None
@@ -608,12 +588,19 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist( self ):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist( self )
 
-		# samba privileges
-		if self.hasChanged( 'sambaPrivileges' ) and 'samba' in self.options:
-			o = self.oldattr.get( 'objectClass', [] )
-			# add univentionSambaPrivileges objectclass
-			if self[ 'sambaPrivileges'] and not "univentionSambaPrivileges" in o:
-				ml.insert( 0, ( 'objectClass', '', 'univentionSambaPrivileges' ) )
+		if 'samba' in self.options:
+			# samba privileges
+			if self.hasChanged( 'sambaPrivileges' ):
+				o = self.oldattr.get( 'objectClass', [] )
+				# add univentionSambaPrivileges objectclass
+				if self[ 'sambaPrivileges'] and not "univentionSambaPrivileges" in o:
+					ml.insert( 0, ( 'objectClass', '', 'univentionSambaPrivileges' ) )
+
+			if self.hasChanged('sambaRID') and not hasattr(self, 'groupSid'):
+				self.groupSid = self.__generate_group_sid(self.oldattr['gidNumber'][0])
+				ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.groupSid]))
+				self.update_sambaPrimaryGroupSid = True
+
 
 		if self.hasChanged( 'mailAddress' ) and self[ 'mailAddress' ]:
 			for i, j in self.alloc:
@@ -704,6 +691,8 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged( 'mailAddress' ) and self[ 'mailAddress' ]:
 			univention.admin.allocators.confirm( self.lo, self.position, 'mailPrimaryAddress', self[ 'mailAddress' ] )
 		self.__update_membership()
+		if hasattr(self, 'groupSid'):
+			self._update_sambaPrimaryGroupSID(self.oldattr.get('sambaSID', [])[0], self.groupSid)
 
 	def _ldap_pre_remove(self):
 		if not hasattr(self,"options"):
@@ -916,7 +905,37 @@ class object(univention.admin.handlers.simpleLdap):
 
 			self._check_group_childs_for_recursion(grp_module, grpdn2childgrpdns, childgrp.lower(), new_parents)
 
+	def __generate_group_sid(self, gidNum):
+		# TODO: cleanup function
+		groupSid = None
 
+		if self['sambaRID']:
+			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+			domainsid=searchResult[0][1]['sambaSID'][0]
+			sid = domainsid+'-'+self['sambaRID']
+			groupSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
+			self.alloc.append(('sid', groupSid))
+		else:
+			num = self.gidNum
+			if s4connector_present:
+				# In this case Samba 4 must create the SID, the s4 connector will sync the
+				# new sambaSID back from Samba 4.
+				groupSid='S-1-4-%s' % num
+			else:
+				while not groupSid or groupSid == 'None':
+					try:
+						groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num)
+					except univention.admin.uexceptions.noLock, e:
+						num = str(int(num)+1)
+				self.alloc.append(('sid', groupSid))
+		return groupSid
+
+	def _update_sambaPrimaryGroupSID(self, oldSid, newSid):
+		if hasattr(self, 'update_sambaPrimaryGroupSid') and self.update_sambaPrimaryGroupSid:
+			res = self.lo.search('sambaPrimaryGroupSID=%s' % oldSid, attr=['sambaPrimaryGroupSID'])
+			for dn,attr in res:
+				self.lo.modify(dn, [ ('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [newSid]) ] )
+			self.update_sambaPrimaryGroupSid = False
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
