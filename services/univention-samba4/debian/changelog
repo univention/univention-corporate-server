@@ -1,6 +1,6 @@
 univention-samba4 (1.0.137-1) unstable; urgency=low
 
-  * Create the samba share even if a VFS object was given (Bug #26975)
+  * Create the samba share even if a VFS object was given (Bug #27121)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 May 2012 08:17:53 +0200
 
