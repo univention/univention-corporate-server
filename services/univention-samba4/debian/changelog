@@ -1,3 +1,9 @@
+univention-samba4 (1.0.138-2) unstable; urgency=low
+
+  * version bump (Bug #27122)
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 May 2012 09:27:58 +0200
+
 univention-samba4 (1.0.138-1) unstable; urgency=low
 
   * don't run join scripts if samba4/disabled is true (Bug #27122)
