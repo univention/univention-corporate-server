@@ -30,22 +30,91 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+opt_force=0
+opt_wait=30
+
+Usage() {
+  message=$1
+  printf "Usage:\n  %s: [-h] [-f] [-w 0]\n\n" `basename $0`
+  printf "Example:\n"
+  printf "  %s -h\n\n" $0
+  printf "   This script converts a UCS backup into a UCS master.\n"
+  printf "   When using it, you need root privileges.\n"
+  printf "   If you invoke it without any options, it will ask for permission to proceed.\n"
+  printf "   Use the options to choose what you need. Default values\n"
+  printf "\n"
+  printf "Options:\n"
+  printf "  -h             no conversion of UCS backup, but this helpful text is printed\n"
+  printf "  -f             force execution of script, even if checks fail (none).\n"
+  printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
+  printf "\n"
+  printf "Concept     : May 14 2007\n"
+  printf "Revision    : \$Id:$\n"
+  printf "Runtime     : `date +"%b %d %Y %H:%M:%S"`\n"
+  printf "\n"
+  if ! test -z "$message" ; then
+    printf "\n"
+    printf "\x1b[31m$message\x1b[0m\n"
+  fi
+}
+
+while getopts hfw: name
+do
+    case $name in
+    f)  opt_force=1           ;;
+    w)  opt_wait="${OPTARG}"  ;;
+    h)  Usage ; exit          ;;
+    esac
+done
+shift $(($OPTIND - 1))
+if [ $# -ne 0 ] ; then
+  Usage;
+  printf "You passed obscure arguments: \"%s\"\n" "$*"
+  exit 2
+fi
+
+# Check if the script univention-config-registry can be executed.
+if [ $( univention-config-registry 2> /dev/null > /dev/null  ; echo $? ) -ne 0 ]; then
+  Usage "this is not a proper UCS host (cannot find command univention-config-registry)"
+  printf "use -f to proceed anyway\n"
+  if [ $opt_force -eq 0 ] ; then
+    exit 1
+  fi
+fi
+
+# Check if the current user has root permissions.
+if [ $( id -u ) -ne 0 ]; then
+  Usage "you are user $( id -u ) and not root, so you are not allowed to do this"
+  printf "use -f to proceed anyway\n"
+  if [ $opt_force -eq 0 ] ; then
+    exit 1
+  fi
+fi
+
+# Read all Univention variables into shell variables.
 eval "$(univention-config-registry shell)"
 
+# Check if the current host has been configured to become DC master.
 if [ "$server_role" != "domaincontroller_backup" ]; then
-	echo 
-	echo "ERROR: univention-backup2master can only be started"
-	echo "on a domain controller backup."
-	echo 
-	exit 1
+  Usage "ERROR: univention-backup2master can only be started on a domain controller backup."
+  exit 1
+fi
+
+# Try to connect to DC master, check if connection is possible
+if [ $( nc -z $ldap_master $ldap_master_port 2> /dev/null > /dev/null  ; echo $? ) -eq 0 ]; then
+  Usage "the LDAP Domain Controller master host ($ldap_master:$ldap_master_port) is still running"
+  printf "use -f to proceed anyway\n"
+  if [ $opt_force -eq 0 ] ; then
+    exit 1
+  fi
 fi
 
 echo
 echo "univention-backup2master allows the domain controller backup to take over the domain controller master role."
 echo
-echo "This tool will wait here for 30 seconds..."
+echo "This tool will wait here for $opt_wait seconds..."
 echo "Press CTRL-c to abort or press ENTER to continue"
-read -t 30 somevar
+read -t $opt_wait somevar
 
 #remove replication listener modul
 dpkg-divert --divert /usr/lib/univention-directory-listener/replication.py.divert --rename --add /usr/lib/univention-directory-listener/system/replication.py
