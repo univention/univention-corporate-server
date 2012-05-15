@@ -1,3 +1,10 @@
+univention-samba (6.0.32-1) unstable; urgency=low
+
+  * Changed the permissions for /var/log/samba so that
+    non-root users cannot read the content anymore (Bug #25164) 
+
+ -- Tobias Peters <tpeters@univention.de>  Tue, 15 May 2012 16:35:41 +0200
+
 univention-samba (6.0.31-1) unstable; urgency=low
 
   * Create the samba share even if a VFS object was given (Bug #26975)
