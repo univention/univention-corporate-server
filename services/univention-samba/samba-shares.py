@@ -166,9 +166,9 @@ def handler(dn, new, old, command):
 			elif samba4_ntacl_backend == 'tdb':
 				vfs_objects.append('acl_tdb')
 
-			additional_vfs_objects = new.get('univentionShareSambaVFSObjects')
+			additional_vfs_objects = new.get('univentionShareSambaVFSObjects', [])
 			if additional_vfs_objects:
-				vfs_objects.append(additional_vfs_objects)
+				vfs_objects.extend(additional_vfs_objects)
 
 			if vfs_objects:
 				print >>fp, 'vfs objects = %s' % ' '.join(vfs_objects)
