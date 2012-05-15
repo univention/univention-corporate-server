@@ -40,6 +40,12 @@ LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary 
 
 eval "$(univention-config-registry shell)"
 
+# samba4 allowd on this system?
+if is_ucr_true samba4/disabled; then
+	echo "WARNING: samba 4 on this system is not allowed."
+	exit 0
+fi
+
 s3setup="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret '(&(univentionService=Samba 3)(objectClass=univentionDomainController))' -LLL dn | sed -ne 's|dn: ||p')"
 if [ -n "$s3setup" ] && is_domain_controller; then
 

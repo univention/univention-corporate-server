@@ -38,6 +38,12 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+# samba4 allowd on this system?
+if is_ucr_true samba4/disabled; then
+	echo "WARNING: samba 4 on this system is not allowed."
+	exit 0
+fi
+
 ## Check if Samba 4 setup is done
 LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
 domaindn="DC=${kerberos_realm//./,DC=}"	# that's what /usr/share/pyshared/samba/provision.py uses

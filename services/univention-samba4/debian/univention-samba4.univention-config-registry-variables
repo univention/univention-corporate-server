@@ -333,3 +333,9 @@ Description[de]=DRS Update API RPC Interface aktivieren
 Description[en]=Activate the DRS Update API RPC interface
 Type=str
 Categories=service-samba
+
+[samba4/disabled]
+Description[de]=Verhindert die Ausführung der Join-Skripte von univention-samba4 (default: false)
+Description[en]=Prevents the execution of the join-scripts of univention samba4 (default: false)
+Type=str
+Categories=service-samba
