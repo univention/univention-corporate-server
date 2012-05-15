@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.278-1) unstable; urgency=low
+
+  * added missing instantiation of syntax classes, e.g., for calls to
+    udm/syntax/choices, this fixes concurrency problems
+  * removed entries which cause KeyErrors for key/label pairs
+  Bug #26994
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 May 2012 18:34:31 +0200
+
 univention-management-console-module-udm (1.0.277-1) unstable; urgency=low
 
   * always send boolean values to backend (Bug #27058)

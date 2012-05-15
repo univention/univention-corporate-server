@@ -908,31 +908,34 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 	if syntax_name not in udm_syntax.__dict__:
 		return None
 
-	syn = udm_syntax.__dict__[ syntax_name ]
+	syn = udm_syntax.__dict__[ syntax_name ]()
 
-	if issubclass( syn, udm_syntax.UDM_Objects ):
+	if issubclass( syn.__class__, udm_syntax.UDM_Objects ):
 		syn.choices = []
-		def map_choice( obj ):
-			obj.open()
+		def map_choice( obj_list ):
+			result = []
+			for obj in obj_list:
+				obj.open()
 
-			if syn.key == 'dn':
-				key = obj.dn
-			else:
-				try:
-					key = syn.key % obj.info
-				except KeyError:
+				if syn.key == 'dn':
 					key = obj.dn
-			if syn.label is None:
-				label = udm_objects.description( obj )
-			elif syn.label == 'dn':
-				label = obj.dn
-			else:
-				try:
-					label = syn.label % obj.info
-				except KeyError:
+				else:
+					try:
+						key = syn.key % obj.info
+					except KeyError:
+						continue
+				if syn.label is None:
 					label = udm_objects.description( obj )
+				elif syn.label == 'dn':
+					label = obj.dn
+				else:
+					try:
+						label = syn.label % obj.info
+					except KeyError:
+						continue
 
-			return ( key, label )
+				result.append( (key, label) )
+			return result
 
 		for udm_module in syn.udm_modules:
 			module = UDM_Module( udm_module )
@@ -942,13 +945,13 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 			if filter_s is None:
 				syn.choices = []
 			else:
-				syn.choices.extend( map( map_choice, module.search( filter = filter_s ) ) )
+				syn.choices.extend( map_choice( module.search( filter = filter_s ) ) )
 		if isinstance( syn.static_values, ( tuple, list ) ):
 			for value in syn.static_values:
 				syn.choices.insert( 0, value )
 		if syn.empty_value:
 			syn.choices.insert( 0, ( '', '' ) )
-	elif issubclass( syn, udm_syntax.UDM_Attribute ):
+	elif issubclass( syn.__class__, udm_syntax.UDM_Attribute ):
 		syn.choices = []
 		def filter_choice( obj ):
 			# if attributes does not exist or is empty
@@ -986,7 +989,7 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 				syn.choices.insert( 0, value )
 		if syn.empty_value:
 			syn.choices.insert( 0, ( '', '' ) )
-	elif issubclass( syn, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
+	elif issubclass( syn.__class__, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
 		try:
 			result = ldap_connection.searchDn( filter = syn.searchFilter )
 		except udm_errors.base, e:
@@ -996,7 +999,7 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 		for dn in result:
 			dn_list = ldap_connection.explodeDn( dn )
 			syn.choices.append( ( dn, dn_list[ 0 ].split( '=', 1 )[ 1 ] ) )
-	elif issubclass( syn, udm_syntax.LDAP_Search ):
+	elif issubclass( syn.__class__, udm_syntax.LDAP_Search ):
 		options = options.get( 'options', {} )
 		syntax = udm_syntax.LDAP_Search( options[ 'syntax' ], options[ 'filter' ], options[ 'attributes' ], options[ 'base' ], options[ 'value' ], options[ 'viewonly' ], options[ 'empty' ] )
 
