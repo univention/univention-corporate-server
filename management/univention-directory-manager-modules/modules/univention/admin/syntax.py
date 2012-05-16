@@ -1666,6 +1666,10 @@ class dhcpEntry( complex ):
 	def parse( self, value ):
 		return value
 
+class DHCP_Option( complex ):
+	subsyntaxes = ( ( _( 'Name' ), string ), ( _( 'Value' ), string ) )
+	description = _( 'DHCP option' )
+
 class WritableShare( UDM_Objects ):
 	udm_modules = ( 'shares/share', )
 	udm_filter = 'writeable=1'

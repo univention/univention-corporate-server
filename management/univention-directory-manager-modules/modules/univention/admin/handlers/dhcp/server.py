@@ -72,6 +72,10 @@ layout = [
 mapping=univention.admin.mapping.mapping()
 mapping.register('server', 'cn', None, univention.admin.mapping.ListToString)
 
+from .__common import add_dhcp_options
+
+add_dhcp_options( property_descriptions, mapping, layout )
+
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
