@@ -140,6 +140,44 @@ get_default_ip_address () {
 }
 
 #
+# returns the default IPv4 address
+#
+get_default_ipv4_address () {
+	eval "$(/usr/sbin/univention-config-registry shell \
+					interfaces/eth0/address interfaces/eth1/address \
+					interfaces/eth2/address interfaces/eth3/address)"
+
+	if [ -n "$interfaces_eth0_address" ]; then
+		echo "$interfaces_eth0_address"
+	elif [ -n "$interfaces_eth1_address" ]; then
+		echo "$interfaces_eth1_address"
+	elif [ -n "$interfaces_eth2_address" ]; then
+		echo "$interfaces_eth2_address"
+	elif [ -n "$interfaces_eth3_address" ]; then
+		echo "$interfaces_eth3_address"
+	fi
+}
+
+#
+# returns the default IPv6 address
+#
+get_default_ipv6_address () {
+	eval "$(/usr/sbin/univention-config-registry shell \
+					interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
+					interfaces/eth2/ipv6/default/address interfaces/eth4/ipv6/default/address)"
+
+	if [ -n "$interfaces_eth0_ipv6_default_address" ]; then
+		echo "$interfaces_eth0_ipv6_default_address"
+	elif [ -n "$interfaces_eth1_ipv6_default_address" ]; then
+		echo "$interfaces_eth1_ipv6_default_address"
+	elif [ -n "$interfaces_eth2_ipv6_default_address" ]; then
+		echo "$interfaces_eth2_ipv6_default_address"
+	elif [ -n "$interfaces_eth3_ipv6_default_address" ]; then
+		echo "$interfaces_eth3_ipv6_default_address"
+	fi
+}
+
+#
 # returns the default netmask
 #
 get_default_netmask () {

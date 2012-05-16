@@ -1,3 +1,10 @@
+univention-lib (1.0.75-1) unstable; urgency=low
+
+  * Added get_default_ipv4_address and get_default_ipv6_address
+    (Bug #27154)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 May 2012 21:58:48 +0200
+
 univention-lib (1.0.74-1) unstable; urgency=low
 
   * add function reschedule to change time of execution for a job; Bug #25707
