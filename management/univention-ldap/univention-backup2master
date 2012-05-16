@@ -32,20 +32,26 @@
 
 opt_force=0
 opt_wait=30
+opt_dry_run=0
+opt_old_master=
+opt_verbose=0
 
 Usage() {
   local message=$1
-  printf "Usage:\n  %s: [-h] [-f] [-w 0]\n\n" `basename $0`
+  printf "Usage:\n  %s: [-c] [-d] [-f] [-h] [-v] [-w 0]\n\n" $( basename $0 )
   printf "Example:\n"
-  printf "  %s -h\n\n" $0
-  printf "   This script converts a UCS backup into a UCS master.\n"
-  printf "   When using it, you need root privileges.\n"
-  printf "   If you invoke it without any options, it will ask for permission to proceed.\n"
-  printf "   Use the options to choose what you need. Default values\n"
+  printf "  %s -h\n\n" $( basename $0 )
+  printf "  This script converts a UCS backup into a UCS master.\n"
+  printf "  When using it, you need root privileges.\n"
+  printf "  If you invoke it without any options, it allows cancelling before it proceeds.\n"
+  printf "  Choose among the options as needed. Default values are listed in parentheses.\n"
   printf "\n"
   printf "Options:\n"
-  printf "  -h             no conversion of UCS backup, but this helpful text is printed\n"
-  printf "  -f             force execution of script, even if checks fail (none).\n"
+  printf "  -c old-master  do not convert UCS backup, just check objects that reference old master ($opt_old_master).\n"
+  printf "  -d             do not convert UCS backup, just check environment and report any problems ($opt_dry_run)\n"
+  printf "  -f             force execution of script, even if checks fail ($opt_force).\n"
+  printf "  -h             do not convert UCS backup, but print this helpful text\n"
+  printf "  -v             enable verbose log output ($opt_verbose).\n"
   printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
   printf "\n"
   printf "Revision    : \$Id$\n"
@@ -56,13 +62,16 @@ Usage() {
   fi
 }
 
-while getopts hfw: name
+while getopts c:dfhvw: name
 do
-    case "$name" in
-    f)  opt_force=1           ;;
-    w)  opt_wait="${OPTARG}"  ;;
-    h)  Usage ; exit          ;;
-    esac
+  case "$name" in
+    c)  opt_old_master="${OPTARG}"  ;;
+    d)  opt_dry_run=1               ;;
+    f)  opt_force=1                 ;;
+    h)  Usage ; exit                ;;
+    v)  opt_verbose=1               ;;
+    w)  opt_wait="${OPTARG}"        ;;
+  esac
 done
 shift $(($OPTIND - 1))
 if [ $# -ne 0 ] ; then
@@ -95,7 +104,11 @@ eval "$(univention-config-registry shell)"
 # Check if the current host has been configured to become DC master.
 if [ "$server_role" != "domaincontroller_backup" ]; then
   Usage "ERROR: univention-backup2master can only be started on a domain controller backup."
-  exit 1
+  # Does it make sense to allow enforcement on a master ?
+  # Yes, immediately after conversion, we use this script to report remainders.
+  if [ $opt_force -eq 0 ] ; then
+    exit 1
+  fi
 fi
 
 # Try to connect to DC master, check if connection is possible
@@ -107,6 +120,39 @@ if nc -z $ldap_master $ldap_master_port 2> /dev/null > /dev/null ; then
   fi
 fi
 
+# Find all objects in the LDAP database that still contain the name
+# of the DC master that is going to be switched off.
+if [ -n "$opt_old_master" ] ; then
+  printf "Checking if LDAP database contains any remaining references to old master %s\n" $opt_old_master
+  univention-ldapsearch  | \
+    awk -vname=$opt_old_master -vverbose=$opt_verbose '
+      # Treat LDIF input as multi-line input: an empty line separates records.
+      BEGIN {RS=""; FS="\n" }
+      # If the name of the old master still appears in an object then report it.
+      match($0, name) {
+        if (verbose)
+          print "\n" $1
+        print $2
+        if (verbose) {
+          for (i=2; i<=NF; i++)
+            if (match($i, name))
+              print $i
+        }
+      };
+    '
+  # This was just a check, stop now and don't convert to master.
+  exit
+fi
+
+# If this is a dry-run, then stop now because everything has been said,
+# except for the actual conversion itself.  
+if [ $opt_dry_run -ne 0 ] ; then
+  echo "Terminating dry-run here as requested."
+  echo "Use this script without option -d to convert $(hostname) to master."
+  exit 0
+fi
+
+# The environment seems proper, now start the actual conversion to master.
 echo
 echo "univention-backup2master allows the domain controller backup to take over the domain controller master role."
 echo
