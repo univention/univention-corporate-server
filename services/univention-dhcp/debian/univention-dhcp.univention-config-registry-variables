@@ -15,3 +15,9 @@ Description[de]=Dynamic DNS Konfiguration
 Description[en]=Dynamic DNS Settings
 Type=str
 Categories=service-dhcp
+
+[dhcpd/options/.*]
+Description[de]=DHCP Optionendefinitionen
+Description[en]=DHCP option definitions
+Type=str
+Categories=service-dhcp

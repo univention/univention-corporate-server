@@ -7,6 +7,7 @@ Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: dhcpd/autostart
 Variables: dhcpd/ddns.*
+Variables: dhcpd/options/.*
 Variables: domainname
 
 Type: file
