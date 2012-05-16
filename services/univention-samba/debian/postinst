@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+dpkg-statoverride --update --add root root 0750 /var/log/samba || true
+
 . /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"

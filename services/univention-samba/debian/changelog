@@ -1,3 +1,9 @@
+univention-samba (6.0.32-2) unstable; urgency=low
+
+  * Merged postint and univention-samba.postinst (Bug #25164) 
+
+ -- Tobias Peters <tpeters@univention.de>  Wed, 16 May 2012 12:47:06 +0200
+
 univention-samba (6.0.32-1) unstable; urgency=low
 
   * Changed the permissions for /var/log/samba so that
