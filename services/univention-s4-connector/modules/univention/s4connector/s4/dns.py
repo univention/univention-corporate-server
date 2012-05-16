@@ -321,7 +321,27 @@ def s4_zone_create(s4connector, object):
 
 	__pack_soaRecord(object, dnsRecords)
 
-	__pack_aRecord(object, dnsRecords)
+	# The IP address of the DNS forward zone will be used to determine the
+	# sysvol share. On a selective replicated DC only a short list of DCs
+	# should be returned
+	aRecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv4' % zoneName[0].lower())
+	aAAARecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv6' % zoneName[0].lower())
+	if aRecords or aAAARecords:
+		#IPv4
+		if aRecords:
+			for a in aRecords.split(' '):
+				a=univention.s4connector.s4.compatible_modstring(a)
+				a_record=ARecord(a)
+				dnsRecords.append(ndr_pack(a_record))
+
+		#IPv6
+		if aAAARecords:
+			for a in aAAARecords.split(' '):
+				a=univention.s4connector.s4.compatible_modstring(a)
+				a_record=AAAARecord(a)
+				dnsRecords.append(ndr_pack(a_record))
+	else:
+		__pack_aRecord(object, dnsRecords)
 
 	__pack_mxRecord(object, dnsRecords)
 
@@ -702,8 +722,14 @@ def ucs_zone_create(s4connector, object, dns_type):
 			if set(soa[k]) != set(zone[k]):
 				zone[k] = [soa[k]]
 		if dns_type == 'forward_zone':
-			if set(a) != set(zone['a']):
-				zone['a'] = a
+			# The IP address of the DNS forward zone will be used to determine the
+			# sysvol share. On a selective replicated DC only a short list of DCs
+			# should be returned
+			aRecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv4' % zoneName.lower())
+			aAAARecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv6' % zoneName.lower())
+			if not aRecords and not  aAAARecords:
+				if set(a) != set(zone['a']):
+					zone['a'] = a
 			if mx:
 				mapMX=lambda m: '%s %s' % (m[0], m[1])
 				if set(map(mapMX,mx)) != set(map(mapMX,zone['mx'])):

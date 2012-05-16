@@ -112,6 +112,18 @@ Description[en]=Defines whether the SID should be synchronized from Samba 4 to U
 Type=str
 Categories=service-adcon
 
+[con.*/s4/mapping/dns/forward_zone/.*/static/ipv4]
+Description[de]=Eine statische Liste von IPv4 Adressen, die immer an der angegebenen Forward Zone gesetzt werden soll
+Description[en]=A static list of IPv4 addresses, which should always be set at the specified forward zone
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/dns/forward_zone/.*/static/ipv6]
+Description[de]=Eine statische Liste von IPv6 Adressen, die immer an der angegebenen Forward Zone gesetzt werden soll
+Description[en]=A static list of IPv6 addresses, which should always be set at the specified forward zone
+Type=str
+Categories=service-adcon
+
 [con.*/ldap/server]
 Description[de]=Der Fully Qualified Domain Name des UCS LDAP Servers. Wenn der Wert nicht gesetzt ist, wird der DC Master verwendet. Dieser Wert sollte nur im write Modus angepasst werden.
 Description[en]=The fully qualified domain name of the UCS LDAP server. If the value is not set, the DC master will be used. This value should only changed in write mode.
