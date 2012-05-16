@@ -87,9 +87,9 @@ udm groups/group create "$@" --ignore_exists \
 				--set name="Domain Controllers" \
 				--set description="All domain controllers in the domain"
 if [ "$samba4_role" = "DC" ]; then
-udm groups/group modify "$@" --ignore_exists \
-				--dn "cn=Domain Controllers,cn=groups,$ldap_base" \
-				--append hosts="$ldap_hostdn"
+	udm groups/group modify "$@" --ignore_exists \
+					--dn "cn=Domain Controllers,cn=groups,$ldap_base" \
+					--append hosts="$ldap_hostdn" >/dev/null 2>&1
 fi
 
 udm groups/group create "$@" --ignore_exists \
@@ -97,9 +97,9 @@ udm groups/group create "$@" --ignore_exists \
 				--set name="Read-only Domain Controllers" \
 				--set description="Members of this group are Read-Only Domain Controllers in the domain"
 if [ "$samba4_role" = "RODC" ]; then
-udm groups/group modify "$@" --ignore_exists \
-				--dn "cn=Read-only Domain Controllers,cn=groups,$ldap_base" \
-				--append hosts="$ldap_hostdn"
+	udm groups/group modify "$@" --ignore_exists \
+					--dn "cn=Read-only Domain Controllers,cn=groups,$ldap_base" \
+					--append hosts="$ldap_hostdn" >/dev/null 2>&1
 fi
 
 udm groups/group create "$@" --ignore_exists \
@@ -138,7 +138,7 @@ udm groups/group create "$@" --ignore_exists \
 				--set description="Members in this group can modify group policy for the domain"
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Group Policy Creator Owners,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,DC=dedlock10,DC=local"
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
@@ -146,7 +146,7 @@ udm groups/group create "$@" --ignore_exists \
 				--set description="Designated administrators of the schema"
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Schema Admins,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,DC=dedlock10,DC=local"
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
@@ -154,20 +154,20 @@ udm groups/group create "$@" --ignore_exists \
 				--set description="Members in this group cannot have their passwords replicated to any read-only domain controllers in the domain"
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Denied RODC Password Replication Group,cn=groups,$ldap_base" \
-				--append nestedGroup="CN=Read-only Domain Controllers,CN=Groups,DC=dedlock10,DC=local" \
-				--append nestedGroup="CN=Group Policy Creator Owners,CN=Groups,DC=dedlock10,DC=local" \
-				--append nestedGroup="CN=Domain Admins,CN=Groups,DC=dedlock10,DC=local" \
-				--append nestedGroup="CN=Cert Publishers,CN=Groups,DC=dedlock10,DC=local" \
-				--append nestedGroup="CN=Enterprise Admins,CN=Groups,DC=dedlock10,DC=local" \
-				--append nestedGroup="CN=Schema Admins,CN=Groups,DC=dedlock10,DC=local" \
-				--append nestedGroup="CN=Domain Controllers,CN=Groups,DC=dedlock10,DC=local"
+				--append nestedGroup="CN=Read-only Domain Controllers,CN=Groups,$ldap_base" \
+				--append nestedGroup="CN=Group Policy Creator Owners,CN=Groups,$ldap_base" \
+				--append nestedGroup="CN=Domain Admins,CN=Groups,$ldap_base" \
+				--append nestedGroup="CN=Cert Publishers,CN=Groups,$ldap_base" \
+				--append nestedGroup="CN=Enterprise Admins,CN=Groups,$ldap_base" \
+				--append nestedGroup="CN=Schema Admins,CN=Groups,$ldap_base" \
+				--append nestedGroup="CN=Domain Controllers,CN=Groups,$ldap_base" >/dev/null 2>&1
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Enterprise Admins"
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Enterprise Admins,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,DC=dedlock10,DC=local"
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \

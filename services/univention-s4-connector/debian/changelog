@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.142-1) unstable; urgency=low
+
+  * Joinscript: Ignore error messages if user is already member in the
+    group. See also Bug #12964 (Bug #27042)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 May 2012 20:36:20 +0200
+
 univention-s4-connector (6.0.141-1) unstable; urgency=low
 
   * sync_ucs_to_s4: avoid removing unicodePwd if there is neither NT hash

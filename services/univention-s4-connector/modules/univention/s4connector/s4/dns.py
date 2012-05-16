@@ -332,7 +332,7 @@ def s4_zone_create(s4connector, object):
 
 ''' Delete a forward zone in Samaba 4 '''
 def s4_zone_delete(s4connector, object):
-	_d=ud.function('s4_zone_create')
+	_d=ud.function('s4_zone_delete')
 
 	zoneDn, zoneName=__create_default_s4_zone_dn(s4connector, object)
 
