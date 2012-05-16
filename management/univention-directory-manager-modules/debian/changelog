@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.253-1) unstable; urgency=low
+
+  * add missing file; Bug #26838
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 May 2012 13:45:36 +0200
+
 univention-directory-manager-modules (7.0.252-1) unstable; urgency=low
 
   * add DHCP options field to dhcp/(service|server|subnet); Bug #26838
