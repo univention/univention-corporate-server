@@ -468,12 +468,16 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	if not ucsNThash == s4NThash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %s NT Hash UCS: %s" % (s4NThash, ucsNThash))
-		pwd_set = True
-		if unicodePwd_attr:
-			modlist.append((ldap.MOD_DELETE, 'unicodePwd', unicodePwd_attr))
-		if ucsNThash:
-			unicodePwd_new = binascii.a2b_hex(ucsNThash)
-			modlist.append((ldap.MOD_ADD, 'unicodePwd', unicodePwd_new))
+		## Now if ucsNThash is empty there should at least some timestamp in UCS,
+		## otherwise it's probably not a good idea to remove the unicodePwd.
+		## Usecase: LDB module on ucs_3.0-0-ucsschool slaves creates XP computers/windows in UDM without password
+		if ucsNThash or sambaPwdLastSet:
+			pwd_set = True
+			if unicodePwd_attr:
+				modlist.append((ldap.MOD_DELETE, 'unicodePwd', unicodePwd_attr))
+			if ucsNThash:
+				unicodePwd_new = binascii.a2b_hex(ucsNThash)
+				modlist.append((ldap.MOD_ADD, 'unicodePwd', unicodePwd_new))
 
 	if not ucsLMhash == s4LMhash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: LM Hash S4: %s LM Hash UCS: %s" % (s4LMhash, ucsLMhash))
