@@ -34,7 +34,7 @@ opt_force=0
 opt_wait=30
 
 Usage() {
-  message=$1
+  local message=$1
   printf "Usage:\n  %s: [-h] [-f] [-w 0]\n\n" `basename $0`
   printf "Example:\n"
   printf "  %s -h\n\n" $0
@@ -48,19 +48,17 @@ Usage() {
   printf "  -f             force execution of script, even if checks fail (none).\n"
   printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
   printf "\n"
-  printf "Concept     : May 14 2007\n"
-  printf "Revision    : \$Id:$\n"
-  printf "Runtime     : `date +"%b %d %Y %H:%M:%S"`\n"
+  printf "Revision    : \$Id$\n"
   printf "\n"
   if ! test -z "$message" ; then
     printf "\n"
-    printf "\x1b[31m$message\x1b[0m\n"
+    printf "$message\n"
   fi
 }
 
 while getopts hfw: name
 do
-    case $name in
+    case "$name" in
     f)  opt_force=1           ;;
     w)  opt_wait="${OPTARG}"  ;;
     h)  Usage ; exit          ;;
@@ -74,7 +72,7 @@ if [ $# -ne 0 ] ; then
 fi
 
 # Check if the script univention-config-registry can be executed.
-if [ $( univention-config-registry 2> /dev/null > /dev/null  ; echo $? ) -ne 0 ]; then
+if ! univention-config-registry 2> /dev/null > /dev/null ; then
   Usage "this is not a proper UCS host (cannot find command univention-config-registry)"
   printf "use -f to proceed anyway\n"
   if [ $opt_force -eq 0 ] ; then
@@ -101,7 +99,7 @@ if [ "$server_role" != "domaincontroller_backup" ]; then
 fi
 
 # Try to connect to DC master, check if connection is possible
-if [ $( nc -z $ldap_master $ldap_master_port 2> /dev/null > /dev/null  ; echo $? ) -eq 0 ]; then
+if nc -z $ldap_master $ldap_master_port 2> /dev/null > /dev/null ; then
   Usage "the LDAP Domain Controller master host ($ldap_master:$ldap_master_port) is still running"
   printf "use -f to proceed anyway\n"
   if [ $opt_force -eq 0 ] ; then
