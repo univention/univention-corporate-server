@@ -1,3 +1,9 @@
+univention-flashplugin (6.0.5-1) unstable; urgency=low
+
+  * update to new Flash download URL (Bug #26741)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 16 May 2012 15:59:44 +0200
+
 univention-flashplugin (6.0.4-1) unstable; urgency=low
 
   * update to new Flash download URL (Bug #26741)
