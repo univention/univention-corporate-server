@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.143-1) unstable; urgency=low
+
+  * Remove member from the DECODE_IGNORELIST (Bug #26055)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 May 2012 21:11:05 +0200
+
 univention-s4-connector (6.0.142-1) unstable; urgency=low
 
   * Joinscript: Ignore error messages if user is already member in the
