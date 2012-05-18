@@ -318,7 +318,7 @@ class attribute:
 
 class property:
 	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
-					con_create_objectclass=[], con_create_attributes=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], post_con_create_functions=[],
+					con_create_objectclass=[], con_create_attributes=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], con_create_extenstions=[], post_con_create_functions=[],
 					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[], con_sync_function = None, ucs_sync_function = None, disable_delete_in_ucs = False,
 					identify = None, con_subtree_delete_objects = [] ):
 
@@ -347,6 +347,7 @@ class property:
 		self.attributes=attributes
 
 		self.ucs_create_functions=ucs_create_functions
+		self.con_create_extenstions=con_create_extenstions
 
 		self.post_con_create_functions=post_con_create_functions
 		self.post_con_modify_functions=post_con_modify_functions

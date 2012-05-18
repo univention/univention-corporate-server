@@ -45,6 +45,9 @@ DECODE_IGNORELIST=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 
 # page results
 PAGE_SIZE=1000
 
+# global cache of primary SIDs, needed by add_primary_group_to_addlist
+SID_GROUP_CACHE=[]
+
 def normalise_userAccountControl (s4connector, key, object):
         # set userAccountControl to 512 -- accounts synced to samba4 alpha17 had userAccountControl == 544
         for i in range(0,10):
@@ -79,6 +82,29 @@ def disable_user_from_ucs(s4connector, key, object):
 
 def disable_user_to_ucs(s4connector, key, object):
 	return s4connector.disable_user_to_ucs(key, object)
+
+def add_primary_group_to_addlist(s4connector, property_type, object, addlist, serverctrls):
+	primary_group_sid = object.get('attributes', {}).get('sambaPrimaryGroupSID')
+	if primary_group_sid:
+		if type(primary_group_sid) == type([]):
+			primary_group_sid = primary_group_sid[0]
+		ud.debug(ud.LDAP, ud.INFO, 'add_primary_group_to_addlist: sid: %s' % primary_group_sid)
+		primary_group_rid = primary_group_sid.split('-')[-1]
+
+		# Is the primary group Domain Users (the default)?
+		if primary_group_rid == '513':
+			return 
+
+		# Does this group exist
+		if not primary_group_sid in SID_GROUP_CACHE:
+			res = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base,ldap.SCOPE_SUBTREE, 'objectSid=%s' % primary_group_sid, attrlist=['cn'])
+			if not res:
+				return
+			SID_GROUP_CACHE.append(primary_group_sid)
+
+		addlist.append(('primaryGroupID', [primary_group_rid]))
+		LDB_CONTROL_RELAX_OID = '1.3.6.1.4.1.4203.666.5.12'
+		serverctrls.append(LDAPControl(LDB_CONTROL_RELAX_OID,criticality=0))
 
 def encode_attrib(attrib):
 	if not attrib or type(attrib) == type(u''): # referral or already unicode
@@ -2104,6 +2130,9 @@ class s4(univention.s4connector.ucs):
 				if self.property[property_type].con_create_attributes:
 					addlist +=  self.property[property_type].con_create_attributes
 
+				# Copy the LDAP controls, because they may be modified
+				# in an ucs_create_extenstions
+				ctrls = copy.deepcopy(self.serverctrls_for_add_and_modify)
 				if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
 					for attr,value in object['attributes'].items():
 						for attribute in self.property[property_type].attributes.keys():
@@ -2111,6 +2140,9 @@ class s4(univention.s4connector.ucs):
 								addlist.append((attr, value))
 							if self.property[property_type].attributes[attribute].con_other_attribute == attr:
 								addlist.append((attr, value))
+				if hasattr(self.property[property_type], 'con_create_extenstions') and self.property[property_type].con_create_extenstions != None:
+					for f in self.property[property_type].con_create_extenstions:
+						f(self, property_type, object, addlist, ctrls)
 				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 					for attr,value in object['attributes'].items():
 						for attribute in self.property[property_type].post_attributes.keys():
@@ -2129,7 +2161,7 @@ class s4(univention.s4connector.ucs):
 									modlist.append((ldap.MOD_DELETE, attr, None))
 				ud.debug(ud.LDAP, ud.INFO, "addlist: %s" % compatible_addlist(addlist))
 
-				self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=self.serverctrls_for_add_and_modify) #FIXME encoding
+				self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls) #FIXME encoding
 
 				if property_type == 'group':
 					self.group_members_cache_con[object['dn'].lower()] = []
@@ -2141,7 +2173,7 @@ class s4(univention.s4connector.ucs):
 
 				ud.debug(ud.LDAP, ud.INFO, "to modify: %s"%object['dn'])
 				if modlist:
-					self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=self.serverctrls_for_add_and_modify)
+					self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=ctrls)
 
 				if hasattr(self.property[property_type],"post_con_modify_functions"):
 					for f in self.property[property_type].post_con_modify_functions:

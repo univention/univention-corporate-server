@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.145-2) unstable; urgency=low
+
+  * Set primary group for a user while adding (Bug #27157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 May 2012 08:20:49 +0200
+
 univention-s4-connector (6.0.144-1) unstable; urgency=low
 
   * Added two new UCR variables to overwrite the aRecord (IPv4) and

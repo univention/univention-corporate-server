@@ -122,6 +122,12 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 @!@
 			},
 
+			# These functions can extend the addlist while
+			# creating an object in S4. Parameters are
+			#	s4connector, property_type, object, addlist, serverctrls
+			con_create_extenstions = [
+							univention.s4connector.s4.add_primary_group_to_addlist,
+			],
 			ucs_create_functions = [
 							univention.s4connector.set_ucs_passwd_user,
 						 	univention.s4connector.check_ucs_lastname_user,
