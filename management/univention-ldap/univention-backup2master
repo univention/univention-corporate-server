@@ -34,11 +34,12 @@ opt_force=0
 opt_wait=30
 opt_dry_run=0
 opt_old_master=
+opt_reference=
 opt_verbose=0
 
 Usage() {
   local message=$1
-  printf "Usage:\n  %s: [-c] [-d] [-f] [-h] [-v] [-w 0]\n\n" $( basename $0 )
+  printf "Usage:\n  %s: [-c old-master] [-d] [-f] [-h] [-r old-master] [-v] [-w 0]\n\n" $( basename $0 )
   printf "Example:\n"
   printf "  %s -h\n\n" $( basename $0 )
   printf "  This script converts a UCS backup into a UCS master.\n"
@@ -51,6 +52,7 @@ Usage() {
   printf "  -d             do not convert UCS backup, just check environment and report any problems ($opt_dry_run)\n"
   printf "  -f             force execution of script, even if checks fail ($opt_force).\n"
   printf "  -h             do not convert UCS backup, but print this helpful text\n"
+  printf "  -r old-master  do not convert UCS backup, just resolve share references to old master ($opt_reference) interactively.\n"
   printf "  -v             enable verbose log output ($opt_verbose).\n"
   printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
   printf "\n"
@@ -62,13 +64,50 @@ Usage() {
   fi
 }
 
-while getopts c:dfhvw: name
+# A function to detect references to shares in LDAP and allow
+# to resolve these references interactively.
+resolve_reference() {
+  local old_ldap_master=$1
+  local ldap_master=$2
+
+  domains=$( udm shares/share list | awk -vold=$old_ldap_master '/^DN:/ {DN=$2}; /^  host:/ && $2==old { print DN }' )
+  echo ""
+  for DN in "$domains"
+  do
+    if [ -z "$DN" ] ; then
+      echo "no more references to $old_ldap_master found"
+      break
+    fi
+    echo "$DN contains a reference to host $old_ldap_master"
+    echo "Do you want this reference to be changed?"
+
+    select resolution in unchanged changed removed
+    do
+      case $resolution in
+        unchanged )
+          echo "Ok, leaving $DN unchanged"
+          break ;;
+        changed   )
+          echo "Ok, changing $DN"
+          udm shares/share modify --dn "$DN" --set host="$ldap_master"
+          break ;;
+        removed   )
+          echo "Ok, removing $n";
+          udm shares/share remove --dn "$DN"
+          break ;;
+      esac
+    done
+  done 
+}
+
+while getopts c:dfhr:vw: name
 do
   case "$name" in
     c)  opt_old_master="${OPTARG}"  ;;
     d)  opt_dry_run=1               ;;
     f)  opt_force=1                 ;;
     h)  Usage ; exit                ;;
+    r)  opt_reference="${OPTARG}"   ;;
     v)  opt_verbose=1               ;;
     w)  opt_wait="${OPTARG}"        ;;
   esac
@@ -141,6 +180,15 @@ if [ -n "$opt_old_master" ] ; then
       };
     '
   # This was just a check, stop now and don't convert to master.
+  exit
+fi
+
+# Interactively change all shares in the LDAP database that still contain the name
+# of the DC master that is going to be switched off.
+if [ -n "$opt_reference" ] ; then
+  printf "\nInteractively resolve remaining share references to old master %s\n" $opt_reference
+  resolve_reference $opt_reference $ldap_backup
+  # This was just the interactive resolution, stop now and don't convert to master.
   exit
 fi
 
@@ -252,6 +300,9 @@ done
 
 # Run join scripts
 univention-run-join-scripts
+
+# Resolve any LDAP references to the old master
+resolve_reference $old_ldap_master  $ldap_master
 
 exit 0
 
