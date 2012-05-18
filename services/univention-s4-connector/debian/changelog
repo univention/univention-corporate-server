@@ -1,4 +1,10 @@
-univention-s4-connector (6.0.145-2) unstable; urgency=low
+univention-s4-connector (6.0.146-1) unstable; urgency=low
+
+  * Depend on a newer UDM modules version (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 May 2012 10:23:45 +0200
+
+univention-s4-connector (6.0.145-1) unstable; urgency=low
 
   * Set primary group for a user while adding (Bug #27157)
 
