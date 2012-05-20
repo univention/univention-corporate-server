@@ -45,9 +45,6 @@ DECODE_IGNORELIST=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 
 # page results
 PAGE_SIZE=1000
 
-# global cache of primary SIDs, needed by add_primary_group_to_addlist
-SID_GROUP_CACHE=[]
-
 def normalise_userAccountControl (s4connector, key, object):
         # set userAccountControl to 512 -- accounts synced to samba4 alpha17 had userAccountControl == 544
         for i in range(0,10):
@@ -84,24 +81,30 @@ def disable_user_to_ucs(s4connector, key, object):
 	return s4connector.disable_user_to_ucs(key, object)
 
 def add_primary_group_to_addlist(s4connector, property_type, object, addlist, serverctrls):
+	gidNumber = object.get('attributes', {}).get('gidNumber')
 	primary_group_sid = object.get('attributes', {}).get('sambaPrimaryGroupSID')
-	if primary_group_sid:
-		if type(primary_group_sid) == type([]):
-			primary_group_sid = primary_group_sid[0]
-		ud.debug(ud.LDAP, ud.INFO, 'add_primary_group_to_addlist: sid: %s' % primary_group_sid)
+	if gidNumber:
+		if type(gidNumber) == type([]):
+			gidNumber = gidNumber[0]
+		ud.debug(ud.LDAP, ud.INFO, 'add_primary_group_to_addlist: gidNumber: %s' % gidNumber)
+
+		ucs_group_ldap = s4connector.search_ucs(filter='(&(objectClass=univentionGroup)(gidNumber=%s))' % gidNumber) # is empty !?
+		if not ucs_group_ldap:
+			ud.debug(ud.LDAP, ud.WARN, 'add_primary_group_to_addlist: Did not find UCS group with gidNumber %s' % gidNumber)
+			return
+
+		member_key = 'group'
+		s4_group_object = s4connector._object_mapping(member_key, {'dn':ucs_group_ldap[0][0], 'attributes': ucs_group_ldap[0][1]}, 'ucs')
+		ldap_object_s4_group = s4connector.get_object(s4_group_object['dn'])
+
+		primary_group_sid = ldap_object_s4_group['objectSid'][0]
 		primary_group_rid = primary_group_sid.split('-')[-1]
 
 		# Is the primary group Domain Users (the default)?
 		if primary_group_rid == '513':
 			return 
 
-		# Does this group exist
-		if not primary_group_sid in SID_GROUP_CACHE:
-			res = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base,ldap.SCOPE_SUBTREE, 'objectSid=%s' % primary_group_sid, attrlist=['cn'])
-			if not res:
-				return
-			SID_GROUP_CACHE.append(primary_group_sid)
-
+		ud.debug(ud.LDAP, ud.INFO, 'add_primary_group_to_addlist: Set primary group to %s (rid) for %s' % (primary_group_rid, object.get('dn')))
 		addlist.append(('primaryGroupID', [primary_group_rid]))
 		LDB_CONTROL_RELAX_OID = '1.3.6.1.4.1.4203.666.5.12'
 		serverctrls.append(LDAPControl(LDB_CONTROL_RELAX_OID,criticality=0))
