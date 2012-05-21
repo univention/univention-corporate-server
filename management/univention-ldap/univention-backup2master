@@ -64,17 +64,19 @@ Usage() {
   fi
 }
 
-# A function to detect references to shares in LDAP and allow
+# A function to detect references to host names in LDAP and allow
 # to resolve these references interactively.
 resolve_reference() {
-  local old_ldap_master=$1
-  local ldap_master=$2
-  if [ "$#" -ne 2 ] ; then
-    echo "resolve_reference received $# parameters and not 2 as expected"
+  local module=$1
+  local variable=$2
+  local old_ldap_master=$3
+  local ldap_master=$4
+  if [ "$#" -ne 4 ] ; then
+    echo "resolve_reference received $# parameters and not 4 as expected"
     exit
   fi
 
-  domains=$( udm shares/share list | awk -vold=$old_ldap_master '/^DN:/ {DN=$2}; /^  host:/ && $2==old { print DN }' )
+  domains=$( udm $module list | awk -vold=$old_ldap_master -vvar=$variable '/^DN:/ {DN=$2}; $1 ~ var && $2 == old { print DN }' )
   echo ""
   for DN in "$domains"
   do
@@ -93,11 +95,11 @@ resolve_reference() {
           break ;;
         changed   )
           echo "Ok, changing $DN"
-          udm shares/share modify --dn "$DN" --set host="$ldap_master"
+          udm $module modify --dn "$DN" --set $variable="$ldap_master"
           break ;;
         removed   )
           echo "Ok, removing $n";
-          udm shares/share remove --dn "$DN"
+          udm $module remove --dn "$DN"
           break ;;
       esac
     done
@@ -191,7 +193,8 @@ fi
 # of the DC master that is going to be switched off.
 if [ -n "$opt_reference" ] ; then
   printf "\nInteractively resolve remaining share references to old master %s\n" $opt_reference
-  resolve_reference $opt_reference $ldap_backup
+  resolve_reference shares/share     host       "$opt_reference"    "$ldap_backup"
+  resolve_reference dns/forward_zone nameserver "$opt_reference."   "$ldap_backup."
   # This was just the interactive resolution, stop now and don't convert to master.
   exit
 fi
@@ -292,10 +295,8 @@ if [ -n "$res" ]; then
 	 /usr/share/univention-directory-manager-tools/univention-dnsedit --stoptls --overwrite "$domainname" add cname univention-repository "$hostname"
 fi
 
-univention-directory-manager dns/forward_zone list --filter nameserver="$old_ldap_server." | sed -ne 's|DN: ||p' | while read line; do
-	univention-directory-manager dns/forward_zone modify --dn "$line" --append nameserver="$hostname.$domainname."
-	univention-directory-manager dns/forward_zone modify --dn "$line" --remove nameserver="$old_ldap_server."
-done
+# Change DNS nameserver
+resolve_reference dns/forward_zone nameserver "$old_ldap_master." "$ldap_backup."
 
 univention-directory-manager dns/reverse_zone list --filter nameserver="$old_ldap_server." | sed -ne 's|DN: ||p' | while read line; do
 	univention-directory-manager dns/reverse_zone modify --dn "$line" --append nameserver="$hostname.$domainname."
@@ -306,7 +307,7 @@ done
 univention-run-join-scripts
 
 # Resolve any LDAP references to the old master
-resolve_reference $old_ldap_master  $ldap_backup
+resolve_reference shares/share host $old_ldap_master  $ldap_backup
 
 exit 0
 
