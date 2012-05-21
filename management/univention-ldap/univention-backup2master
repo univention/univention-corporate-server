@@ -69,6 +69,10 @@ Usage() {
 resolve_reference() {
   local old_ldap_master=$1
   local ldap_master=$2
+  if [ "$#" -ne 2 ] ; then
+    echo "resolve_reference received $# parameters and not 2 as expected"
+    exit
+  fi
 
   domains=$( udm shares/share list | awk -vold=$old_ldap_master '/^DN:/ {DN=$2}; /^  host:/ && $2==old { print DN }' )
   echo ""
@@ -302,7 +306,7 @@ done
 univention-run-join-scripts
 
 # Resolve any LDAP references to the old master
-resolve_reference $old_ldap_master  $ldap_master
+resolve_reference $old_ldap_master  $ldap_backup
 
 exit 0
 
