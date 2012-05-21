@@ -118,7 +118,7 @@ get_default_ip_address () {
 					interfaces/eth0/address interfaces/eth1/address \
 					interfaces/eth2/address interfaces/eth3/address \
 					interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
-					interfaces/eth2/ipv6/default/address interfaces/eth4/ipv6/default/address)"
+					interfaces/eth2/ipv6/default/address interfaces/eth3/ipv6/default/address)"
 
 	if [ -n "$interfaces_eth0_address" ]; then
 		echo "$interfaces_eth0_address"
@@ -164,7 +164,7 @@ get_default_ipv4_address () {
 get_default_ipv6_address () {
 	eval "$(/usr/sbin/univention-config-registry shell \
 					interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
-					interfaces/eth2/ipv6/default/address interfaces/eth4/ipv6/default/address)"
+					interfaces/eth2/ipv6/default/address interfaces/eth3/ipv6/default/address)"
 
 	if [ -n "$interfaces_eth0_ipv6_default_address" ]; then
 		echo "$interfaces_eth0_ipv6_default_address"
@@ -185,7 +185,7 @@ get_default_netmask () {
 					interfaces/eth0/netmask interfaces/eth1/netmask \
 					interfaces/eth2/netmask interfaces/eth3/netmask \
 					interfaces/eth0/ipv6/default/prefix interfaces/eth1/ipv6/default/prefix \
-					interfaces/eth2/ipv6/default/prefix interfaces/eth4/ipv6/default/prefix)"
+					interfaces/eth2/ipv6/default/prefix interfaces/eth3/ipv6/default/prefix)"
 
 	if [ -n "$interfaces_eth0_netmask" ]; then
 		echo "$interfaces_eth0_netmask"
@@ -213,9 +213,9 @@ get_default_network () {
 					interfaces/eth0/network interfaces/eth1/network \
 					interfaces/eth2/network interfaces/eth3/network \
 					interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
-					interfaces/eth2/ipv6/default/address interfaces/eth4/ipv6/default/address \
+					interfaces/eth2/ipv6/default/address interfaces/eth3/ipv6/default/address \
 					interfaces/eth0/ipv6/default/prefix interfaces/eth1/ipv6/default/prefix \
-					interfaces/eth2/ipv6/default/prefix interfaces/eth4/ipv6/default/prefix)"
+					interfaces/eth2/ipv6/default/prefix interfaces/eth3/ipv6/default/prefix)"
 
 	if [ -n "$interfaces_eth0_network" ]; then
 		echo "$interfaces_eth0_network"
