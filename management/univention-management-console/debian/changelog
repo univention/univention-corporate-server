@@ -1,3 +1,9 @@
+univention-management-console (4.0.255-2) unstable; urgency=low
+
+  * Depend on python-notifier >= 0.9.5-1 (Bug #26701)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2012 16:49:58 +0200
+
 univention-management-console (4.0.255-1) unstable; urgency=low
 
   * added destroy method that is invoked upon module exit; Bug #26374
