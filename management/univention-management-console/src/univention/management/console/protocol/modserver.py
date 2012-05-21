@@ -100,6 +100,7 @@ class ModuleServer( Server ):
 
 	def _timed_out( self ):
 		MODULE.info( "Commiting suicide" )
+		self.__handler.destroy()
 		self.exit()
 		sys.exit( 0 )
 

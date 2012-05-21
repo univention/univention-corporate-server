@@ -87,6 +87,11 @@ class Base( signals.Provider, Translation ):
 		that passes the base configuration to the module process'''
 		pass
 
+	def destroy( self ):
+		'''this function is invoked before before the module process is
+		exiting.'''
+		pass
+
 	def execute( self, method, request ):
 		self.__requests[ request.id ] = ( request, method )
 
