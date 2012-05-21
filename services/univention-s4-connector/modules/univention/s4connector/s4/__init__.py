@@ -1950,6 +1950,13 @@ class s4(univention.s4connector.ucs):
 		lastUSN = self._get_lastUSN()
 		newUSN = lastUSN
 
+		# Check if the connection to UCS ldap exists. Otherwise re-create the session.
+		try:
+			self.search_ucs(scope=ldap.SCOPE_BASE)
+		except ldap.SERVER_DOWN:
+			ud.debug(ud.LDAP, ud.INFO, "UCS LDAP connection was closed, re-open the connection.")
+			self.open_ucs()
+
 		for element in changes:
 			try:
 				if element[0] == 'None': # referrals

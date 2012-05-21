@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.148-1) unstable; urgency=low
+
+  * Re-open the UCS LDAP connection if the connection has been closed
+    while searching for all S4 changes (Bug #27173)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2012 06:43:05 +0200
+
 univention-s4-connector (6.0.147-1) unstable; urgency=low
 
   * Determine the primary group by the gidNumber (Bug #27158)
