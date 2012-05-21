@@ -41,11 +41,7 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 
 	standbyOpacity: 0.75,
 
-	uninitialize: function() {
-		this.inherited(arguments);
-
-		this._standbyWidget.destroy();
-	},
+	_lastContent: null,
 
 	buildRendering: function() {
 		this.inherited(arguments);
@@ -62,26 +58,48 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 		this._standbyWidget.startup();
 	},
 
+	_cleanUp: function() {
+		if (this._lastContent && this._lastContent.declaredClass && this._lastContent.domNode) {
+			// we got a widget as last element, remove it from the DOM
+			try {
+				this._standbyWidget._textNode.removeChild(this._lastContent.domNode);
+			}
+			catch(e) {
+				console.log('Could remove standby widget from DOM:', e);
+			}
+			this._lastContent = null;
+		}
+	},
+
 	_updateContent: function(content) {
 		// type check of the content
 		if (dojo.isString(content)) {
 			// string
+			this._cleanUp();
 			this._standbyWidget.set('text', content);
 			this._standbyWidget.set('centerIndicator', 'text');
 		}
 		else if (dojo.isObject(content) && content.declaredClass && content.domNode) {
 			// widget
-			this._standbyWidget.set('text', '');
-			this._standbyWidget.set('centerIndicator', 'text');
+			if (!this._lastContent || this._lastContent != content) {
+				// we only need to add a new widget to the DOM
+				this._cleanUp();
+				this._standbyWidget.set('text', '');
+				this._standbyWidget.set('centerIndicator', 'text');
 
-			// hook the given widget to the text node
-			dojo.place(content.domNode, this._standbyWidget._textNode);
-			content.startup();
+				// hook the given widget to the text node
+				dojo.place(content.domNode, this._standbyWidget._textNode);
+				content.startup();
+			}
 		}
 		else {
 			// set default image
+			this._cleanUp();
 			this._standbyWidget.set('centerIndicator', 'image');
 		}
+
+		// cache the widget
+		this._lastContent = content;
 	},
 
 	standby: function(/*Boolean*/ doStandby, /*mixed?*/ content) {

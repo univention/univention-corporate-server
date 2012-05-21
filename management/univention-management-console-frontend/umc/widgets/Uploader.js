@@ -106,7 +106,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 
 	buildRendering: function() {
 		this.inherited(arguments);
-		
+
 		this._uploader = new dojox.form.Uploader({
 			url: '/umcp/upload' + (this.command ? '/' + this.command : ''),
 			label: this.buttonLabel,
@@ -131,7 +131,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 			this.addChild(this._clearButton);
 		}
 	},
-	
+
 	postCreate: function() {
 		this.inherited(arguments);
 
@@ -144,24 +144,37 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 			}, this);
 			if (!allOk) {
 				umc.dialog.alert(this._('File cannot be uploaded, its maximum size may be %.1f MB.', this.maxSize / 1048576.0));
+				this._uploader.reset();
 			}
 			else {
-				this._updateLabel();
-				this._uploader.upload({
-					iframe: (this._uploader.uploadType === 'iframe') ? true : false
-				});
+				dojo.when(this.canUpload(data[0]), dojo.hitch(this, function(doUpload) {
+					if (!doUpload) {
+						// upload canceled
+						this._uploader.reset();
+						return;
+					}
+
+					// perform the upload
+					this._updateLabel();
+					this._uploader.upload({
+						iframe: (this._uploader.uploadType === 'iframe') ? true : false
+					});
+					this.onUploadStarted(data[0]);
+				}));
 			}
 		});
 
 		// hook for showing the progress
-		/*this.connect(this._uploader, 'onProgress', function(data) {
-			console.log('onProgress:', dojo.toJson(data));
-			this._updateLabel(data.percent);
-		});*/
+		this.connect(this._uploader, 'onProgress', 'onProgress');
 
 		// notification as soon as the file has been uploaded
 		this.connect(this._uploader, 'onComplete', function(data) {
-			this.set('data', data.result[0]);
+			if (data && dojo.isArray(data.result)) {
+				this.set('data', data.result[0]);
+			}
+			else {
+				this.set('data', null);
+			}
 			this.onUploaded(this.data);
 			this._resetLabel();
 		});
@@ -199,6 +212,9 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	},
 
 	_resetLabel: function() {
+		if (!this._uploader.button) {
+			return;
+		}
 		this.set('disabled', false);
 		this.set('buttonLabel', this._origButtonLabel);
 		this._uploader.reset();
@@ -213,11 +229,17 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	},
 
 	_setButtonLabelAttr: function(newVal) {
+		if (!this._uploader.button) {
+			return;
+		}
 		this.buttonLabel = newVal;
 		this._uploader.button.set('label', newVal);
 	},
 
 	_setDisabledAttr: function(newVal) {
+		if (!this._uploader.button) {
+			return;
+		}
 		this._uploader.set('disabled', newVal);
 		dojo.style(this._uploader.button.domNode, 'display', 'inline-block');
 	},
@@ -226,7 +248,25 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		return this._uploader.get('disabled');
 	},
 
+	canUpload: function(fileInfo) {
+		// summary:
+		//		Before uploading a file, this function is called to make sure
+		//		that the given filename is valid. Return boolean or dojo.Deferred.
+		// fileInfo: Object
+		//		Info object for the requested file, contains properties 'name',
+		//		'size', 'type'.
+		return true;
+	},
+
+	onUploadStarted: function(fileInfo) {
+		// event stub
+	},
+
 	onUploaded: function(data) {
+		// event stub
+	},
+
+	onProgress: function(data) {
 		// event stub
 	},
 
