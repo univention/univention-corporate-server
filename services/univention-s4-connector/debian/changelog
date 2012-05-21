@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.149-1) unstable; urgency=low
+
+  * Removed cut+paste error while creating the default groups
+    (Bug #27042)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2012 20:04:28 +0200
+
 univention-s4-connector (6.0.148-1) unstable; urgency=low
 
   * Re-open the UCS LDAP connection if the connection has been closed

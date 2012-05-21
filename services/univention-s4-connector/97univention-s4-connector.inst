@@ -80,10 +80,6 @@ udm container/ou create "$@" --ignore_exists \
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
-				--set name="All domain controllers in the domain"
-
-udm groups/group create "$@" --ignore_exists \
-				--position "cn=groups,$ldap_base" \
 				--set name="Domain Controllers" \
 				--set description="All domain controllers in the domain"
 if [ "$samba4_role" = "DC" ]; then
