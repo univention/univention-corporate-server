@@ -28,24 +28,24 @@
  */
 /*global dojo dijit dojox umc console */
 
-dojo.provide("umc.widgets.DateBox");
+dojo.provide("umc.widgets.TimeBox");
 
-dojo.require("dijit.form.DateTextBox");
-dojo.require("dojox.string.sprintf");
+dojo.require("dijit.form.TimeTextBox");
+//dojo.require("dojox.string.sprintf");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.DateBox", [
+dojo.declare("umc.widgets.TimeBox", [
 	umc.widgets.ContainerWidget,
 	umc.widgets._FormWidgetMixin,
 	umc.widgets._WidgetsInWidgetsMixin
 ], {
 	// the widget's class name as CSS class
-	'class': 'umcDateBox',
+	'class': 'umcTimeBox',
 
-	_dateBox: null,
+	_timeBox: null,
 
 	sizeClass: null,
 
@@ -60,34 +60,42 @@ dojo.declare("umc.widgets.DateBox", [
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._dateBox = this.adopt(dijit.form.DateTextBox, {
+		this._timeBox = this.adopt(dijit.form.TimeTextBox, {
 			name: this.name,
 			disabled: this.disabled
 		});
-		this.addChild(this._dateBox);
+		this.addChild(this._timeBox);
 
 		// hook to the onChange event
-		this.connect(this._dateBox, 'onChange', 'onChange');
+		this.connect(this._timeBox, 'onChange', function(val) {
+			this.onChange(this.get('value'));
+		});
 	},
 
-	_dateToString: function(dateObj) {
-		return dojox.string.sprintf('%04d-%02d-%02d', dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate());
+	_dateToTime: function(dateObj) {
+		try {
+			return dojox.string.sprintf('%02d:%02d', dateObj.getHours(), dateObj.getMinutes());
+		} catch(e) {
+			return '';
+		}
 	},
 
-	// return ISO8601/RFC3339 format (yyyy-MM-dd) as string
+	// return time in the format 'HH:MM'
 	_getValueAttr: function() {
-		var dateObj = this._dateBox.get('value');
-		if (dateObj && dateObj instanceof Date) {
-			return this._dateToString(dateObj);
-		}
-		return dateObj;
+		return this._dateToTime(this._timeBox.get('value'));
 	},
 
-	_setValueAttr: function(/*String|Date*/ newVal) {
+	_setValueAttr: function(newVal) {
 		if (newVal && newVal instanceof Date) {
-			newVal = this._dateToString(newVal);
+			newVal = this._dateToTime(newVal);
 		}
-		this._dateBox.set('value', newVal);
+		try {
+			var parts = newVal.split(':');
+			this._timeBox.set('value', new Date(1970, 1, 1, parseInt(parts[0], 10) || 0, parseInt(parts[1], 10) || 0));
+		} catch(e) {
+			console.log('ERROR: invalid time format: ' + newVal);
+			this._timeBox.set('value', null);
+		}
 	},
 
 	isValid: function() {
@@ -96,17 +104,17 @@ dojo.declare("umc.widgets.DateBox", [
 		if (null !== this.valid) {
 			return this.get('valid');
 		}
-		return this._dateBox.isValid();
+		return this._timeBox.isValid();
 	},
 
 	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
-		umc.tools.delegateCall(this, arguments, this._dateBox);
+		umc.tools.delegateCall(this, arguments, this._timeBox);
 	},
 
 	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
-		umc.tools.delegateCall(this, arguments, this._dateBox);
+		umc.tools.delegateCall(this, arguments, this._timeBox);
 	}
 });
 
