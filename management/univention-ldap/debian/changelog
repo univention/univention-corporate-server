@@ -1,3 +1,9 @@
+univention-ldap (8.0.81-2) unstable; urgency=low
+
+  * space/tab mix cleanup (Bug #23962)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 17:35:33 +0200
+
 univention-ldap (8.0.81-1) unstable; urgency=low
 
   * Check that slapd is not running before starting bdb recover
