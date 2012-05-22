@@ -195,6 +195,7 @@ if [ -n "$opt_reference" ] ; then
   printf "\nInteractively resolve remaining share references to old master %s\n" $opt_reference
   resolve_reference shares/share     host       "$opt_reference"    "$ldap_backup"
   resolve_reference dns/forward_zone nameserver "$opt_reference."   "$ldap_backup."
+  resolve_reference dns/reverse_zone nameserver "$opt_reference."   "$ldap_backup."
   # This was just the interactive resolution, stop now and don't convert to master.
   exit
 fi
@@ -274,6 +275,9 @@ echo "dn: ${ldap_hostdn}" >>"$temp_file"
 echo "changetype: modify" >>"$temp_file"
 echo "replace: univentionServerRole" >>"$temp_file"
 echo "univentionServerRole: master" >>"$temp_file"
+echo "-" >>"$temp_file"
+echo "replace: univentionObjectType" >>"$temp_file"
+echo "univentionObjectType: computers/domaincontroller_master" >>"$temp_file"
 
 ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -f "$temp_file"
 
