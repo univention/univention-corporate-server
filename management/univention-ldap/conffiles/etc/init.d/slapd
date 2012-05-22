@@ -38,8 +38,8 @@ bdbrecover ()
 				stale_locks=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Nc | sed -rn 's/([0-9]*)\t*Number of current locks/\1/p')
 				if [ "$stale_locks" != 0 ]; then
 					log_action_msg "WARNING"
-					log_action_msg "WARNING: There are stale locks in LDAP backend Berkeley DB."
-					log_action_msg "WARNING: If slapd does not respond, manual LDAP dump/restore may be necessary."
+					log_action_msg "WARNING: There are stale locks in LDAP backend Berkeley DB"
+					log_action_msg "WARNING: If slapd does not respond, manual LDAP dump/restore may be necessary"
 					log_action_begin_msg "Continuing BDB database check: "
 				fi
 				"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
@@ -145,7 +145,7 @@ case "$1" in
 	fi
 	# check that no slapd is running
 	if ! start-stop-daemon --start --quiet --pidfile "$pidfile" --exec $DAEMON	--test > /dev/null; then
-		log_action_msg "LDAP server already running."
+		log_action_msg "LDAP server already running"
 		exit 2
 	fi
 @!@
@@ -217,7 +217,7 @@ if baseConfig['ldap/server/type']=="master":
 		then
 		$0 restart
 	else
-		log_action_msg "No slapd process found, no restart needed."
+		log_action_msg "No slapd process found, no restart needed"
 	fi
 	;;
   *)

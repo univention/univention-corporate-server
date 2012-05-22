@@ -1,3 +1,9 @@
+univention-ldap (8.0.81-4) unstable; urgency=low
+
+  * fix trailing dots in log_action_msg (Bug #23962)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 18:22:06 +0200
+
 univention-ldap (8.0.81-3) unstable; urgency=low
 
   * Fix db4.8_stat home path (Bug #23962)
