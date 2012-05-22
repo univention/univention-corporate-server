@@ -1,3 +1,10 @@
+univention-ldap (8.0.81-3) unstable; urgency=low
+
+  * Fix db4.8_stat home path (Bug #23962)
+  * another minor log_action message fix
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 18:09:44 +0200
+
 univention-ldap (8.0.81-2) unstable; urgency=low
 
   * space/tab mix cleanup (Bug #23962)

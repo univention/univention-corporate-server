@@ -30,10 +30,12 @@ bdbrecover ()
 	DBRECOVER="/usr/bin/db${back_bdb_version}_recover"
 	DBSTAT="/usr/bin/db${back_bdb_version}_stat"
 	if [ -e "${DBRECOVER}" ]; then
-		dbstat_output=$("${DBSTAT}" -Ne -h /var/lib/univention-ldap/ldap/ 2>/dev/null)
+		# check if the db_stat version works on the database environment
+		dbstat_output=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Ne 2>/dev/null)
 		if [ $? = 0 ]; then
 			if echo "$dbstat_output" | grep -q 'Environment version'; then
-				stale_locks=$("${DBSTAT}" -Nc | sed -rn 's/([0-9]*)\t*Number of current locks/\1/p')
+				# check for stale locks or stale futexes
+				stale_locks=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Nc | sed -rn 's/([0-9]*)\t*Number of current locks/\1/p')
 				if [ "$stale_locks" != 0 ]; then
 					log_action_msg "WARNING"
 					log_action_msg "WARNING: There are stale locks in LDAP backend Berkeley DB."
@@ -75,11 +77,11 @@ check_subschema ()
 		fi
 	done
 
-	@!@
+@!@
 if baseConfig.has_key('ldap/schema/export') and baseConfig['ldap/schema/export'].lower() in ['yes', 'true']:
 		print '\tcp $tmpfile /var/www/ldap-schema.txt'
 		print '\tchmod a+r /var/www/ldap-schema.txt'
-	@!@
+@!@
 
 	md5=`md5sum $tmpfile | awk '{print $1}'`
 	if [ ! -d /var/lib/univention-ldap/schema ]; then
@@ -174,7 +176,7 @@ if configRegistry.get('ldap/maxopenfiles'):
 
 @!@
 if baseConfig['ldap/server/type']=="master":
-	print '\tlog_action_begin_msg "Checking Schema: "'
+	print '\tlog_action_begin_msg "Checking Schema ID: "'
 	print '\tcheck_subschema >/dev/null 2>&1'
 	print '\tlog_action_end_msg 0'
 @!@
