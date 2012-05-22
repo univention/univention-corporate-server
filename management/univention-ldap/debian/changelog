@@ -1,3 +1,13 @@
+univention-ldap (8.0.81-1) unstable; urgency=low
+
+  * Check that slapd is not running before starting bdb recover
+  * Run db4.8_stat without acquiring shared region mutexes
+  * Issue a warning if db4.8_stat finds stale locks (Bug #23962)
+  * Fix error message in case bdb_open fails in db4.8_stat (Bug #23962)
+  * Improve log_action message formating
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 17:18:21 +0200
+
 univention-ldap (8.0.80-1) unstable; urgency=low
 
   * Added version dependency to ldap-config and acl packages

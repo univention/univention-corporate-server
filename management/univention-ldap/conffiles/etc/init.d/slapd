@@ -24,16 +24,30 @@ SLAPDCONF=/etc/ldap/slapd.conf
 
 bdbrecover ()
 {
+	log_action_begin_msg "Check database: "
 	# determine libdb version that back-bdb.so was linked against
 	back_bdb_version="$(/usr/bin/ldd /usr/lib/ldap/back_bdb.so | sed -n 's|.*/usr/lib/libdb-\([0-9.]*\).so.*|\1|p')"
 	DBRECOVER="/usr/bin/db${back_bdb_version}_recover"
 	DBSTAT="/usr/bin/db${back_bdb_version}_stat"
 	if [ -e "${DBRECOVER}" ]; then
-		if "${DBSTAT}" -e -h /var/lib/univention-ldap/ldap/ | grep -q 'Environment version'; then
-			cd /var/lib/univention-ldap/ldap
-			"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
+		dbstat_output=$("${DBSTAT}" -Ne -h /var/lib/univention-ldap/ldap/ 2>/dev/null)
+		if [ $? = 0 ]; then
+			if echo "$dbstat_output" | grep -q 'Environment version'; then
+				stale_locks=$("${DBSTAT}" -Nc | sed -rn 's/([0-9]*)\t*Number of current locks/\1/p')
+				if [ "$stale_locks"  != 0 ]; then
+					log_action_msg "WARNING"
+					log_action_msg "WARNING: There are stale locks in LDAP backend Berkeley DB."
+					log_action_msg "WARNING: If slapd does not respond, manual LDAP dump/restore may be necessary."
+					log_action_begin_msg "Continuing BDB database check: "
+				fi
+				"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
+				log_action_end_msg 0
+			else
+				log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not seem to match the one back-bdb uses"
+				log_action_msg "Skipping ${DBRECOVER} to avoid damage"
+			fi
 		else
-			log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not seem to match the one back-bdb uses"
+			log_action_msg "Could not determine BDB version of /var/lib/univention-ldap/ldap"
 			log_action_msg "Skipping ${DBRECOVER} to avoid damage"
 		fi
 	else
@@ -127,17 +141,20 @@ case "$1" in
 	    . "/usr/share/univention-config-registry/init-autostart.lib"
 	    check_autostart ldap ldap/autostart
 	fi
+	# check that no slapd is running
+	if ! start-stop-daemon --start --quiet --pidfile "$pidfile" --exec $DAEMON	--test > /dev/null; then
+		log_action_msg "LDAP server already running."
+		exit 2
+ 	fi
    @!@
 if baseConfig['ldap/database/type'] == 'bdb':
-	print 'echo -n "Check database: "'
-	print 'bdbrecover'
-	print 'echo "done"'
-	print 'echo -n "  "'
+	print '\t# check backend database'
+	print '\tbdbrecover'
 if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
 	print 'check_replog_file'
    @!@
 
-    log_action_msg "Starting ldap server(s): slapd"
+    log_action_begin_msg "Starting ldap server(s): slapd "
 	(
 @!@
 uris=['ldapi:///']
@@ -151,18 +168,21 @@ if configRegistry.get('ldap/maxopenfiles'):
 @!@		start-stop-daemon --start --quiet --pidfile "$pidfile" \
 			--exec $DAEMON -- -h "${uris}"
 	)
+	log_action_end_msg 0
 
 	test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi
 
    @!@
 if baseConfig['ldap/server/type']=="master":	   
-    print 'check_subschema >/dev/null 2>&1'
+    print '\tlog_action_begin_msg "Checking Schema: "'
+    print '\tcheck_subschema >/dev/null 2>&1'
+    print '\tlog_action_end_msg 0'
    @!@
 
     echo "."
 
 	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
-    	log_action_msg "Found failed.ldif. Importing"
+    	log_action_begin_msg "Found failed.ldif. Importing "
 		test -x /usr/sbin/univention-directory-replication-resync && /usr/sbin/univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
 		if [ $? = 0 ]; then
 			log_action_end_msg 0
@@ -175,7 +195,7 @@ if baseConfig['ldap/server/type']=="master":
 	
     ;;
   stop)
-    log_action_msg "Stopping ldap server(s): slapd"
+    log_action_begin_msg "Stopping ldap server(s): slapd "
 	start-stop-daemon --stop --quiet --oknodo --retry 10 \
 	    --pidfile "$pidfile" \
 	    --exec /usr/sbin/slapd 2>&1
@@ -197,7 +217,7 @@ if baseConfig['ldap/server/type']=="master":
 		then
 		$0 restart
 	else
-		log_action_msg "No slapd process found, no restart needed"
+		log_action_msg "No slapd process found, no restart needed."
 	fi
 	;;
   *)
