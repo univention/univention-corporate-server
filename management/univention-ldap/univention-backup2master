@@ -298,10 +298,8 @@ fi
 # Change DNS nameserver
 resolve_reference dns/forward_zone nameserver "$old_ldap_master." "$ldap_backup."
 
-univention-directory-manager dns/reverse_zone list --filter nameserver="$old_ldap_server." | sed -ne 's|DN: ||p' | while read line; do
-	univention-directory-manager dns/reverse_zone modify --dn "$line" --append nameserver="$hostname.$domainname."
-	univention-directory-manager dns/reverse_zone modify --dn "$line" --remove nameserver="$old_ldap_server."
-done
+# Change nameserver of reverse zone for reverse DNS lookup
+resolve_reference dns/reverse_zone nameserver "$old_ldap_master." "$ldap_backup."
 
 # Run join scripts
 univention-run-join-scripts
