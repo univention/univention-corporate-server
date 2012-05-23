@@ -1,3 +1,9 @@
+univention-management-console (4.0.256-1) unstable; urgency=low
+
+  * set the environment variable LANG to locale/default; Bug #27256
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 May 2012 14:10:38 +0200
+
 univention-management-console (4.0.255-2) unstable; urgency=low
 
   * Depend on python-notifier >= 0.9.5-1 (Bug #26701)
