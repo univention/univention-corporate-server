@@ -40,7 +40,7 @@ _properties = {
 	'option': univention.admin.property(
 		short_description = _( 'DHCP options' ),
 		long_description = _( 'Defines DHCP options for the subnet.' ),
-		syntax = univention.admin.syntax.DHCP_Option,
+		syntax = univention.admin.syntax.string,
 		multivalue = True,
 		options = [],
 		required = 0,
@@ -49,14 +49,15 @@ _properties = {
 		),
 }
 
-def optionMap( value ):
-	return map( lambda x: ' '.join( x ), value )
+# def optionMap( value ):
+# 	return map( lambda x: ' '.join( x ), value )
 
-def optionUnmap( value ):
-	return map( lambda x: x.split( ' ', 1 ), value )
+# def optionUnmap( value ):
+# 	return map( lambda x: x.split( ' ', 1 ), value )
 
 _mappings = (
-	( 'option', 'dhcpOption', optionMap, optionUnmap ),
+	# ( 'option', 'dhcpOption', optionMap, optionUnmap ),
+	( 'option', 'dhcpOption', None, univention.admin.mapping.ListToString ),
 	)
 
 def add_dhcp_options( properties, mapping, layout ):

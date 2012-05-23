@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.254-1) unstable; urgency=low
+
+  * changed syntax of DHCP options to string; Bug #26838
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 May 2012 11:35:18 +0200
+
 univention-directory-manager-modules (7.0.253-1) unstable; urgency=low
 
   * add missing file; Bug #26838

@@ -99,7 +99,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist( self )
-		oldOCs = self.oldinfo.get( 'objectClass', [] )
+		oldOCs = self.oldattr.get( 'objectClass', [] )
 		newOCs = self.info.get( 'objectClass', [] )
 		if self.info.get( 'option', [] ) and not 'dhcpOptions' in oldOCs:
 			newOCs.append( 'dhcpOptions' )
