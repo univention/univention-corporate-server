@@ -57,7 +57,14 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	// may return dojo.Deferred
 	formatter: function(ids) { return ids; },
 
+	// autoSearch: String
+	//	  Specifies whether or not a query is executed as soon as the dialog is
+	//	  opened for the first time.
 	autoSearch: true,
+
+	// dialogTitle: String
+	//	  Specifies the title of the dialog to add new entries.
+	dialogTitle: null,
 
 	name: '',
 
@@ -124,7 +131,8 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 						widgets: this.queryWidgets,
 						queryCommand: dojo.hitch( this, 'queryCommand' ),
 						queryOptions: this.queryOptions || {},
-						autoSearch: this.autoSearch
+						autoSearch: this.autoSearch,
+						title: this.dialogTitle
 					});
 
 					// register the event handler
@@ -235,7 +243,9 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
-		this.title = this._('Add objects');
+		if (!this.title) {
+			this.title = this._('Add objects');
+		}
 	},
 
 	buildRendering: function() {
