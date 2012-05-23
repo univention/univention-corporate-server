@@ -1,4 +1,4 @@
-univention-samba (6.0.33-1) unstable; urgency=low
+univention-samba (6.0.33-3) unstable; urgency=low
 
   * samba scripts: Fixed typo (Bug #26814)
 
