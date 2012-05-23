@@ -1,3 +1,9 @@
+univention-samba4 (1.0.139-2) unstable; urgency=low
+
+  * Split sysvol sync into a seperate package (Bug #27249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 May 2012 16:14:21 +0200
+
 univention-samba4 (1.0.138-3) unstable; urgency=low
 
   * version bump (Bug #27122)

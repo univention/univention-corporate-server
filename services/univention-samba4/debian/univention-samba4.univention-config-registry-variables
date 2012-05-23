@@ -160,18 +160,6 @@ Description[en]=Selects the storage mode for NTACL
 Type=str
 Categories=service-samba
 
-[samba4/sysvol/sync/cron]
-Description[de]=Zeitpunkte der Sysvol-Replikation im Crontab Format
-Description[en]=Time of sysvol replication in crontab format
-Type=str
-Categories=service-samba
-
-[samba4/sysvol/sync/jitter]
-Description[de]=Intervall zur Variation des Zeitpunkts der Sysvol-Replikation (in Sekunden)
-Description[en]=Interval for the variation of the time of sysvol replication (in seconds)
-Type=str
-Categories=service-samba
-
 [samba/charset/display]
 Description[de]=Zeichensatz zum Ausgeben von Nachrichten auf stdout und stderr (sollte gleich mit samba/charset/unix sein)
 Description[en]=Charset used to print messages to stdout and stderr (should be the same as the samba/charset/unix)

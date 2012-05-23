@@ -26,10 +26,26 @@ Depends: ${misc:Depends},
  winbind4,
  univention-samba-local-config,
  pwgen,
- python-univention-lib (>= 1.0.45)
+ python-univention-lib (>= 1.0.45),
+ univention-samba4-sysvol-sync (= ${binary:Version})
 Description: UCS - Samba4 integration package
  This package contains the scripts and patches
  for integration of Samba4 into Univention Corporate Server (UCS)
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-samba4-sysvol-sync
+Architecture: all
+Depends: ${misc:Depends},
+ univention-config-registry,
+Breaks: univention-samba4 ( << 1.0.139-2)
+Description: UCS - Samba4 sysvol synchronization
+ This package contains the scripts and configuration
+ for integration the Samba4 sysvol synchronisation into
+ Univention Corporate Server (UCS)
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

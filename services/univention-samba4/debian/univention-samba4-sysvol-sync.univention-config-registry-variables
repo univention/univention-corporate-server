@@ -1,0 +1,13 @@
+[samba4/sysvol/sync/cron]
+Description[de]=Zeitpunkte der Sysvol-Replikation im Crontab Format
+Description[en]=Time of sysvol replication in crontab format
+Type=str
+Categories=service-samba
+
+[samba4/sysvol/sync/jitter]
+Description[de]=Intervall zur Variation des Zeitpunkts der Sysvol-Replikation (in Sekunden)
+Description[en]=Interval for the variation of the time of sysvol replication (in seconds)
+Type=str
+Categories=service-samba
+
+

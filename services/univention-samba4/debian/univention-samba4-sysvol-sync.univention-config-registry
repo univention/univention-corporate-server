@@ -1,0 +1,4 @@
+Type: file
+File: etc/cron.d/sysvol-sync
+Variables: samba4/sysvol/sync/cron
+Variables: samba4/sysvol/sync/jitter
