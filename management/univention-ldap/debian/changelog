@@ -1,3 +1,9 @@
+univention-ldap (8.0.81-5) unstable; urgency=low
+
+  * Remove version dependency to acl packages (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 May 2012 16:49:31 +0200
+
 univention-ldap (8.0.81-4) unstable; urgency=low
 
   * fix trailing dots in log_action_msg (Bug #23962)
