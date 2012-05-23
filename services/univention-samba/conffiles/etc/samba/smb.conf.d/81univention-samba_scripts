@@ -10,7 +10,7 @@ if configRegistry['server/role'] == 'domaincontroller_master' or (configRegistry
 		elif configRegistry.is_true(key, False): # if the value is set to true, the default script will be added
 			print '	%s = %s' % (option, default)
 		elif configRegistry.get(key):
-			print '	%s = %s' % (option, configRegistry.get('samba/script/addmachine'))
+			print '	%s = %s' % (option, configRegistry.get(key))
 
 	add_script('samba/script/adduser', 'add user script', '/usr/share/univention-admin-tools/univention-adduser "%u"')
 	add_script('samba/script/deleteuser', 'delete user script', '/usr/share/univention-admin-tools/univention-deluser "%u"')

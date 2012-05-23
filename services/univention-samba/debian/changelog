@@ -1,3 +1,9 @@
+univention-samba (6.0.33-1) unstable; urgency=low
+
+  * samba scripts: Fixed typo (Bug #26814)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 May 2012 13:10:21 +0200
+
 univention-samba (6.0.32-2) unstable; urgency=low
 
   * Merged postint and univention-samba.postinst (Bug #25164) 
