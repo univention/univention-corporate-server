@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.255-1) unstable; urgency=low
+
+  * add objectclass dhcpOptions to dhcp/(shared)subnet if necessary; Bug #26838
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 May 2012 17:33:54 +0200
+
 univention-directory-manager-modules (7.0.254-1) unstable; urgency=low
 
   * changed syntax of DHCP options to string; Bug #26838

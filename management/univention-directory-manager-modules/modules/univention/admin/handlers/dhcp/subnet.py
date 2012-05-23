@@ -118,7 +118,7 @@ mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.Lis
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
 mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 
-from .__common import add_dhcp_options
+from .__common import add_dhcp_options, add_dhcp_objectclass
 
 add_dhcp_options( property_descriptions, mapping, layout )
 
@@ -177,7 +177,7 @@ class object(univention.admin.handlers.simpleLdap):
 			#univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo['range'])
 			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', ['']), dhcpRange))
 
-		return ml
+		return add_dhcp_objectclass( self, ml )
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 

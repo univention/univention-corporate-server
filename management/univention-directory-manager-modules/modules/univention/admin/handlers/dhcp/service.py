@@ -70,7 +70,7 @@ layout = [
 mapping=univention.admin.mapping.mapping()
 mapping.register('service', 'cn', None, univention.admin.mapping.ListToString)
 
-from .__common import add_dhcp_options
+from .__common import add_dhcp_options, add_dhcp_objectclass
 
 add_dhcp_options( property_descriptions, mapping, layout )
 
@@ -99,13 +99,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist( self )
-		oldOCs = self.oldattr.get( 'objectClass', [] )
-		newOCs = self.info.get( 'objectClass', [] )
-		if self.info.get( 'option', [] ) and not 'dhcpOptions' in oldOCs:
-			newOCs.append( 'dhcpOptions' )
-			ml.append( ( 'objectClass', oldOCs, newOCs ) )
 
-		return ml
+		return add_dhcp_objectclass( self, ml )
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 

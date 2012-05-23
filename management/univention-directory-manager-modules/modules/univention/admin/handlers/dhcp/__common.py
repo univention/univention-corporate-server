@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
+
 import univention.admin.localization
 from univention.admin.layout import Tab, Group
 
@@ -72,3 +74,11 @@ def add_dhcp_options( properties, mapping, layout ):
 	# currently not visible
 	#layout.append( Tab( _( 'Advanced' ), _( 'Advanced DHCP options' ), layout = [ 'option' ] ) )
 
+def add_dhcp_objectclass( self, ml ):
+	oldOCs = self.oldattr.get( 'objectClass', [] )
+	newOCs = copy.copy( oldOCs )
+	if self.info.get( 'option', [] ) and not 'dhcpOptions' in oldOCs:
+		newOCs.append( 'dhcpOptions' )
+		ml.append( ( 'objectClass', oldOCs, newOCs ) )
+
+	return ml

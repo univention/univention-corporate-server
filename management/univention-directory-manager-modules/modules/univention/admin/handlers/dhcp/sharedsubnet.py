@@ -117,7 +117,7 @@ mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
 
-from .__common import add_dhcp_options
+from .__common import add_dhcp_options, add_dhcp_objectclass
 
 add_dhcp_options( property_descriptions, mapping, layout )
 
@@ -144,8 +144,13 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'univentionDhcpSubnet', 'univentionDhcpSharedSubnet']),
+			('objectClass', ['top', 'univentionDhcpSubnet', 'univentionDhcpSharedSubnet', 'dhcpOptions' ]),
 		]
+
+	def _ldap_modlist(self):
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist( self )
+
+		return add_dhcp_objectclass( self, ml )
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
