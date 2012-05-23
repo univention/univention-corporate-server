@@ -1,3 +1,9 @@
+univention-dhcp (6.0.21-2) unstable; urgency=low
+
+  * add UCR variable dhcpd/authoritative; Bug #26838
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 May 2012 17:21:39 +0200
+
 univention-dhcp (6.0.20-1) unstable; urgency=low
 
   * add UCR variables to define DHCP options; Bug #26838

@@ -2,6 +2,7 @@ Type: file
 File: etc/dhcp/dhcpd.conf
 Variables: ldap/base
 Variables: ldap/hostdn
+Variables: dhcpd/authoritative
 Variables: dhcpd/ldap/base
 Variables: ldap/server/name
 Variables: ldap/server/port
