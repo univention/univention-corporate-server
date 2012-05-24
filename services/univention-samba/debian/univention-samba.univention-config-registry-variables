@@ -358,8 +358,51 @@ Description[en]=This parameter defines the highest protocol level that will be s
 Type=str
 Categories=service-samba
 
+[samba/usershare/max_shares]
+Description[de]=Definiert die maximale Anzahl an Usershares 
+Description[en]=Defines the maximum amount of usershares
+Type=str
+Categories=service-samba
+
+[samba/usershare/allow_guests]
+Description[de]=Definiert ob es möglich ist, Gästen den Zugriff auf Freigaben zu erlauben.  
+Description[en]=Defines wether it is possible to allow guests to access shares.
+Type=str
+Categories=service-samba
+
+[samba/usershare/owner_only]
+Description[de]=Aktiviert/deaktiviert ob Nutzer nur Ordner freigeben können, deren Besitzer sie sind.
+Description[en]=Enables/disables wether only directories owned by the sharing user can be shared.
+Type=str
+Categories=service-samba
+
+[samba/usershare/path]
+Description[de]=Zeigt auf den Ordner welcher die Definitionen der Usershares beinhaltet. Die Rechte dieses Ordners bestimmen wer Usershares erstellen kann.
+Description[en]=Points to the directory containing the user defined share definitions. The filesystem permissions on this directory control who can create user defined shares.
+Type=str
+Categories=service-samba
+
+[samba/usershare/prefix_allow_list]
+Description[de]=Mit Komma getrennte Liste der absoluten Pfadnamen der Ordner in denen es erlaubt ist, Freigaben zu erstellen.
+Description[en]=Comma-separated list of absolute pathnames restricting what directories can be shared. Only directories below the pathnames in this list are permitted.
+Type=str
+Categories=service-samba
+
+[samba/usershare/prefix_deny_list]
+Description[de]=Mit Komma getrennte Liste der absoluten Pfadnamen der Ordner in denen es nicht erlaubt ist, Freigaben zu erstellen.
+Description[en]=Comma-separated list of absolute pathnames restricting what directories can be shared. Only directories below the pathnames in this list are permitted.
+Type=str
+Categories=service-samba
+
+[samba/usershare/template_share]
+Description[de]=Erstellt eine Vorlage für neue Usershares. Beim Erstellen eines neuen Usershares werden alle Werte die dort nicht spezifiziert wurden aus dieser Vorlage benutzt.
+Description[en]=Names a pre-existing share used as a template for creating new usershares. All other share parameters not specified in the user defined share definition are copied from this named share.
+Type=str
+Categories=service-samba
+
 [samba4/ntacl/backend]
 Description[de]=Auswahl des Speichermodus für NTACL
 Description[en]=Selects the storage mode for NTACL
 Type=str
 Categories=service-samba
+

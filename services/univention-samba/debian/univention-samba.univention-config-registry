@@ -133,6 +133,17 @@ Variables: samba/password/checkscript
 
 Type: subfile
 Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/90univention-samba_user_shares
+Variables: samba/usershare/allow_guests
+Variables: samba/usershare/max_shares
+Variables: samba/usershare/owner_only
+Variables: samba/usershare/path
+Variables: samba/usershare/prefix_allow_list
+Variables: samba/usershare/prefix_deny_list
+Variables: samba/usershare/template_share
+
+Type: subfile
+Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/91univention-samba_shares
 Variables: server/role
 Variables: samba/domainmaster

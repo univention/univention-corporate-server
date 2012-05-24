@@ -1,3 +1,10 @@
+univention-samba (6.0.34-3) unstable; urgency=low
+
+  * Usershares can now be configured with UCR (Bug #19019)
+  * Usershare are disabled by default (Bug #26414)
+
+ -- Tobias Peters <tpeters@univention.de>  Thu, 24 May 2012 14:32:46 +0200
+
 univention-samba (6.0.33-3) unstable; urgency=low
 
   * samba scripts: Fixed typo (Bug #26814)
