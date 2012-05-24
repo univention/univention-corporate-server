@@ -1,3 +1,9 @@
+univention-lib (1.0.77-1) unstable; urgency=low
+
+  * stop_udm_cli_server: use kill binary and not shell builtin; Bug #27274
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 24 May 2012 11:44:53 +0200
+
 univention-lib (1.0.76-1) unstable; urgency=low
 
   * Fixed typo in get_default_addresses (Bug #27154)

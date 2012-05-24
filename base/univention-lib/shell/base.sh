@@ -92,7 +92,7 @@ stop_udm_cli_server () {
 	local pids signal=SIGTERM
 	pids=$(pgrep -f "/usr/bin/python.* /usr/share/univention-directory-manager-tools/univention-cli-server") || return 0
 	# As long as one of the processes remains, try to kill it.
-	while kill -"$signal" $pids 2>/dev/null # IFS
+	while /bin/kill -"$signal" $pids 2>/dev/null # IFS
 	do
 		sleep 1
 		signal=SIGKILL
