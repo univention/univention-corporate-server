@@ -143,7 +143,7 @@ dojo.declare("umc.i18n.Mixin", null, {
 		var msg = _msg;
 		var i = 0;
 		for (i = 0; i < this._i18nTranslations.length; ++i) {
-			if (this._i18nTranslations[i][_msg]) {
+			if (this._i18nTranslations[i][_msg] && dojo.isString(this._i18nTranslations[i][_msg])) {
 				// we found a translation... take it and break the loop
 				msg = this._i18nTranslations[i][_msg];
 				break;
