@@ -1,3 +1,9 @@
+univention-samba4 (1.0.139-4) unstable; urgency=low
+
+  * Make sysvol-sync.sh executable (Bug #27249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2012 07:45:14 +0200
+
 univention-samba4 (1.0.139-3) unstable; urgency=low
 
   * Create sysvol directory in postinst (Bug #27249)
