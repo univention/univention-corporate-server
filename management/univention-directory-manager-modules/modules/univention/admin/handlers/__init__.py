@@ -1053,6 +1053,7 @@ class simpleComputer( simpleLdap ):
 		self.network_object = False
 		self.old_network = 'None'
 		self.__saved_dhcp_entry = None
+		self.macRequest = 0
 		# read-only attribute containing the FQDN of the host
 		self.descriptions[ 'fqdn' ] = univention.admin.property(
 			short_description = 'FQDN',
@@ -1906,10 +1907,12 @@ class simpleComputer( simpleLdap ):
 				if ipAddress:
 					univention.admin.allocators.confirm( self.lo, self.position, 'aRecord', ipAddress )
 			self.ipRequest = 0
-		if self[ 'mac' ]:
+
+		if self.macRequest == 1 and self[ 'mac' ]:
 			for macAddress in self[ 'mac' ]:
 				if macAddress:
 					univention.admin.allocators.confirm( self.lo, self.position, 'mac', macAddress )
+			self.macRequest = 0
 
 		self.update_groups()
 
@@ -1946,7 +1949,9 @@ class simpleComputer( simpleLdap ):
 					self.__changes[ 'mac' ][ 'add' ].append( macAddress )
 				except univention.admin.uexceptions.noLock:
 					self.cancel( )
+					univention.admin.allocators.release(self.lo, self.position, "mac", macAddress)
 					raise univention.admin.uexceptions.macAlreadyUsed, ' %s' % macAddress
+				self.macRequest = 1
 			if self.oldinfo.has_key( 'mac' ):
 				for macAddress in self.oldinfo[ 'mac' ]:
 					if macAddress in self.info.get( 'mac', [] ):
@@ -1985,8 +1990,10 @@ class simpleComputer( simpleLdap ):
 						if not IpAddr:
 							self.cancel( )
 							raise univention.admin.uexceptions.noLock
+						self.alloc.append( ( 'aRecord', ipAddress ) )
 					except univention.admin.uexceptions.noLock:
 						self.cancel( )
+						univention.admin.allocators.release(self.lo, self.position, "aRecord", ipAddress)
 						self.ip_alredy_requested = 0
 						raise univention.admin.uexceptions.ipAlreadyUsed, ' %s' % ipAddress
 				else:
@@ -2209,6 +2216,18 @@ class simpleComputer( simpleLdap ):
 				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
 			else:
 				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
+
+		if self.ipRequest == 1 and self[ 'ip' ]:
+			for ipAddress in self[ 'ip' ]:
+				if ipAddress:
+					univention.admin.allocators.confirm( self.lo, self.position, 'aRecord', ipAddress )
+			self.ipRequest = 0
+
+		if self.macRequest == 1 and self[ 'mac' ]:
+			for macAddress in self[ 'mac' ]:
+				if macAddress:
+					univention.admin.allocators.confirm( self.lo, self.position, 'mac', macAddress )
+			self.macRequest = 0
 
 		self.update_groups()
 

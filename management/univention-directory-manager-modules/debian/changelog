@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.256-1) unstable; urgency=low
+
+  * release ip/mac locks in simpleComputer (Bug #27270) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 May 2012 14:48:44 +0200
+
 univention-directory-manager-modules (7.0.255-1) unstable; urgency=low
 
   * add objectclass dhcpOptions to dhcp/(shared)subnet if necessary; Bug #26838
