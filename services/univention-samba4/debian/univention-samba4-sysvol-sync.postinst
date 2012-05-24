@@ -35,6 +35,14 @@
 if [ "$1" = "configure" ]; then
 	## activate sysvol replication
 	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
+
+	## create the sysvol directory
+	if [ ! -d /var/lib/samba/sysvol ]; then
+		   mkdir -p /var/lib/samba/sysvol
+		   chown -R root.adm /var/lib/samba/sysvol
+		   chmod 640 /var/lib/samba/sysvol
+	fi
+
 fi
 
 exit 0

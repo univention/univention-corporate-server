@@ -1,3 +1,9 @@
+univention-samba4 (1.0.139-3) unstable; urgency=low
+
+  * Create sysvol directory in postinst (Bug #27249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2012 06:59:48 +0200
+
 univention-samba4 (1.0.139-2) unstable; urgency=low
 
   * Split sysvol sync into a seperate package (Bug #27249)
