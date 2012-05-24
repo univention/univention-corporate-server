@@ -8,3 +8,4 @@ samba-shares.py usr/lib/univention-directory-listener/system
 samba4-idmap.py usr/lib/univention-directory-listener/system
 samba3upgrade/smb.conf.d/* usr/share/univention-samba4/samba3upgrade/smb.conf.d
 de.mo usr/share/locale/de/LC_MESSAGES/univention-samba4.mo
+debian/tmp/lib/security/*.so lib/security/
