@@ -923,6 +923,8 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 					try:
 						key = syn.key % obj.info
 					except KeyError:
+						# ignore the entry as the key is important for a selection, there
+						# is no sensible fallback for the key (Bug #26994)
 						continue
 				if syn.label is None:
 					label = udm_objects.description( obj )
@@ -932,7 +934,9 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 					try:
 						label = syn.label % obj.info
 					except KeyError:
-						continue
+						# fallback to the default description as this is just what displayed
+						# to the user (Bug #26994)
+						label = udm_objects.description( obj )
 
 				result.append( (key, label) )
 			return result
