@@ -39,6 +39,7 @@ uses time stamps in seconds for scheduling jobs.'''
 import datetime
 import subprocess
 import re
+import locale
 
 __all__ = [ 'add', 'list', 'load', 'remove', 'reschedule', 'AtJob' ]
 
@@ -149,7 +150,12 @@ def _parseScript( job ):
 
 def _parseJob(string):
 	'''Internal method to parse output of at-command.'''
+	timeLocale = locale.getlocale(locale.LC_TIME)
 	try:
+		# change the time locale temporarily to 'C' as atq uses English date format
+		# ignoring the currently set locale
+		locale.setlocale(locale.LC_TIME, 'C')
+
 		# parse string
 		tmp = _regWhiteSpace.split(string)
 		execTime = datetime.datetime.strptime( ' '.join( tmp[ 1 : 6 ] ), _dateTimeFormatRead )
@@ -159,6 +165,9 @@ def _parseJob(string):
 	except (IndexError, ValueError), e:
 		# parsing failed
 		return None
+	finally:
+		# reset locale to default
+		locale.setlocale(locale.LC_TIME, timeLocale)
 	return AtJob(nr, owner, execTime, isRunning)
 
 

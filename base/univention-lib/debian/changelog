@@ -1,3 +1,9 @@
+univention-lib (1.0.78-1) unstable; urgency=low
+
+  * fixed locale problems when calling atq; Bug #27256
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 May 2012 11:19:11 +0200
+
 univention-lib (1.0.77-1) unstable; urgency=low
 
   * stop_udm_cli_server: use kill binary and not shell builtin; Bug #27274
@@ -30,6 +36,7 @@ univention-lib (1.0.73-1) unstable; urgency=low
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 27 Apr 2012 15:24:25 +0200
 
+>>>>>>> .r33295
 univention-lib (1.0.72-1) unstable; urgency=low
 
   * atjobs: execTime may now be given as a datetime object; Bug #26528
