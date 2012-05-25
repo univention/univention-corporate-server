@@ -545,6 +545,11 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							ldap_attribute='description',
 							con_attribute='description'
 						),
+					'displayName': univention.s4connector.attribute (
+							ucs_attribute='displayName',
+							ldap_attribute='displayName',
+							con_attribute='displayName'
+						),
 					'msGPOFlags': univention.s4connector.attribute (
 							ucs_attribute='msGPOFlags',
 							ldap_attribute='msGPOFlags',
@@ -574,6 +579,11 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							ucs_attribute='msGPOMachineExtensionNames',
 							ldap_attribute='msGPOMachineExtensionNames',
 							con_attribute='gPCMachineExtensionNames'
+						),
+					'msGPOUserExtensionNames': univention.s4connector.attribute (
+							ucs_attribute='msGPOUserExtensionNames',
+							ldap_attribute='msGPOUserExtensionNames',
+							con_attribute='gPCUserExtensionNames'
 						),
 				},
 

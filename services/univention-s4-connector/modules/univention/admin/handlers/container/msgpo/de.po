@@ -7,12 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-27 09:39+0200\n"
+"POT-Creation-Date: 2012-05-25 08:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"                                                                                                                                                        
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
 #: msgpo.py:47
@@ -28,41 +28,49 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: msgpo.py:73
+msgid "Display name"
+msgstr "Anzeigename"
+
+#: msgpo.py:83
 msgid "MS Group Policy Flags"
 msgstr "MS Group Policy Flags"
 
-#: msgpo.py:83
+#: msgpo.py:93
 msgid "MS Group Policy Version Number"
 msgstr "MS Group Policy Versionsnummer"
 
-#: msgpo.py:93
+#: msgpo.py:103
 msgid "MS Group Policy System Flags"
 msgstr "MS Group Policy System-Flags"
 
-#: msgpo.py:103
+#: msgpo.py:113
 msgid "MS Group Policy Functionality Version"
 msgstr "MS Group Policy Functionsversion"
 
-#: msgpo.py:113
+#: msgpo.py:123
 msgid "MS Group Policy File Sys Path"
 msgstr "MS Group Policy File Sys Path"
 
-#: msgpo.py:123
-msgid "MS Group Policy Machine Extension Names"
-msgstr "MS Group Policy Machine Extension Names"
+#: msgpo.py:133
+msgid "MS Group Policy User Extension Names"
+msgstr "MS Group Policy Benutzer Extension Name"
 
-#: msgpo.py:135 msgpo.py:136
+#: msgpo.py:143
+msgid "MS Group Policy Machine Extension Names"
+msgstr "MS Group Policy Rechner Extension Name"
+
+#: msgpo.py:155 msgpo.py:156
 msgid "General"
 msgstr "Allgemein"
 
-#: msgpo.py:135
+#: msgpo.py:155
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: msgpo.py:140 msgpo.py:141
+#: msgpo.py:161 msgpo.py:162
 msgid "GPO settings"
 msgstr "GPO-Einstellungen"
 
-#: msgpo.py:140
+#: msgpo.py:161
 msgid "MS GPO settings"
 msgstr "MS GPO-Einstellungen"
