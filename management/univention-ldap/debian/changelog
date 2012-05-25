@@ -1,3 +1,9 @@
+univention-ldap (8.0.82-1) unstable; urgency=low
+
+  * Added displayName and msGPOUserExtensionNames to GPOs (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2012 08:54:33 +0200
+
 univention-ldap (8.0.81-5) unstable; urgency=low
 
   * Remove version dependency to acl packages (Bug #26926)

@@ -66,17 +66,24 @@ attributetype ( 1.3.6.1.4.1.10176.4105.1.7 NAME 'msGPOMachineExtensionNames'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( 1.3.6.1.4.1.10176.4105.1.8 NAME 'msGPOUserExtensionNames'
+	DESC 'MS Group Policy Container User Extension Names'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 objectclass ( 1.3.6.1.4.1.10176.4105.2.2 NAME 'msGPOContainer'
 	DESC 'MS GPO Policy Container'
 	SUP top STRUCTURAL
 	Must ( cn )
 	MAY (
 		description $ 
+		displayName $ 
 		msGPOFlags $ 
 		msGPOVersionNumber $ 
 		msGPOSystemFlags $ 
 		msGPOFunctionalityVersion $
 		msGPOFileSysPath $
+		msGPOUserExtensionNames $
 		msGPOMachineExtensionNames
 		)
 	)
