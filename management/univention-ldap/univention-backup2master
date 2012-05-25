@@ -49,10 +49,12 @@ Usage() {
   printf "\n"
   printf "Options:\n"
   printf "  -c old-master  do not convert UCS backup, just check objects that reference old master ($opt_old_master).\n"
+  printf "                 combine this with option -v to see the exact references\n"
   printf "  -d             do not convert UCS backup, just check environment and report any problems ($opt_dry_run)\n"
   printf "  -f             force execution of script, even if checks fail ($opt_force).\n"
   printf "  -h             do not convert UCS backup, but print this helpful text\n"
   printf "  -r old-master  do not convert UCS backup, just resolve share references to old master ($opt_reference) interactively.\n"
+  printf "                 use this option after conversion to change remaining references\n"
   printf "  -v             enable verbose log output ($opt_verbose).\n"
   printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
   printf "\n"
@@ -66,26 +68,70 @@ Usage() {
 
 # A function to detect references to host names in LDAP and allow
 # to resolve these references interactively.
+# This function uses udm and will work correctly only if an LDAP
+# master is reachable.
+# It looks for all occurrences of the attribute in the module.
+# For each such occurrence an interactive change is offered.
+# Notice that (while searching) the names are matched instead
+# of checked for identity. Accordingly, the change of the old
+# name into the new name is not a "setting" but a textual "replacement".
+# This is necessary because such changes can occur in SRV records
+# and we want the settings of the SRV record (port prio) preserved.
 resolve_reference() {
   local module=$1
-  local variable=$2
+  local attribute=$2
   local old_ldap_master=$3
   local ldap_master=$4
-  if [ "$#" -ne 4 ] ; then
-    echo "resolve_reference received $# parameters and not 4 as expected"
+  local udm_options=$5
+  if [ "$#" -ne 5 ] ; then
+    echo "resolve_reference received $# parameters and not 5 as expected"
     exit
   fi
 
-  domains=$( udm $module list | awk -vold=$old_ldap_master -vvar=$variable '/^DN:/ {DN=$2}; $1 ~ var && $2 == old { print DN }' )
-  echo ""
-  for DN in "$domains"
-  do
-    if [ -z "$DN" ] ; then
-      echo "no more references to $old_ldap_master found"
-      break
+  # Search for the DNs of all UDM entries of this module containing the attribute.
+  # Save DNs in a temporary file (line by line) and assign fd 5 to the file.
+  # This is necessary because fd 0 is already used by user-interaction.
+  domains=$(mktemp)
+  udm $module list $udm_options |\
+    awk -vold=$old_ldap_master -vattr=$attribute \
+      '/^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
+       $1 ~ attr && $0 ~ old { print DN }
+      ' > $domains
+  # Open temporary file containing DNs and assign fd 5 to it.
+  exec 5<> $domains
+  # Remember that LDAP DNs may contain blank characters.
+  # So the DN may possibly span several fields.
+  # Beware when quoting DN.
+  while read -u 5 DN; do
+    echo ""
+    echo "udm $module (attribute $attribute) contains a reference to $old_ldap_master in $DN"
+    old_value=$( udm $module list $udm_options | \
+      awk -vold=$old_ldap_master -vdn="$DN" -vattr=$attribute \
+        '/^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
+         dn==DN && $1 ~ attr && $0 ~ old { $1=""; sub(/^[ ]+/, ""); print $0 ; exit }
+        ' )
+    new_value=${old_value//$old_ldap_master/$ldap_master}
+    echo "Do you want this reference to be changed from"
+    echo "  \"$old_value\""
+    echo "to"
+    echo "  \"$new_value\""
+    echo "?"
+    # When changing references to hosts in udm module shares/share first
+    # check if the path already exists on the new host.
+    if [ "$module" = "shares/share" ] ; then
+      udm $module list |\
+        awk -vdn="$DN" -vtarget=$new_value '
+          /^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
+          $1 == "host:" { host = $2 }
+          $1 == "path:" { path = $2 }
+          dn == DN && path { old_path = path }
+          host && path { count [ host ":" path ] ++ ; host=path="" }
+          END {
+            if ( (target ":" old_path) in count )
+              print "WARNING: path", old_path, "already exists on new host", target
+          }
+        '
     fi
-    echo "$DN contains a reference to host $old_ldap_master"
-    echo "Do you want this reference to be changed?"
 
     select resolution in unchanged changed removed
     do
@@ -94,8 +140,8 @@ resolve_reference() {
           echo "Ok, leaving $DN unchanged"
           break ;;
         changed   )
-          echo "Ok, changing $DN"
-          udm $module modify --dn "$DN" --set $variable="$ldap_master"
+          echo "Ok, changing $attribute in $DN"
+          udm $module modify --dn "$DN" --set $attribute="$new_value"
           break ;;
         removed   )
           echo "Ok, removing $n";
@@ -104,6 +150,9 @@ resolve_reference() {
       esac
     done
   done 
+  # Close fd 5 (domain names) and remove the file.
+  exec 5>&-
+  rm -f "$domains"
 }
 
 while getopts c:dfhr:vw: name
@@ -168,8 +217,11 @@ fi
 # Find all objects in the LDAP database that still contain the name
 # of the DC master that is going to be switched off.
 if [ -n "$opt_old_master" ] ; then
-  printf "Checking if LDAP database contains any remaining references to old master %s\n" $opt_old_master
-  univention-ldapsearch  | \
+  printf "\nChecking if LDAP database contains any remaining references to old master %s\n" $opt_old_master
+  printf "Each and every remaining textual appearance of the name will be reported\n"
+  printf "Notice that some containers are named after hosts and it is normal that\n"
+  printf "some container names survive after the initial master has disappeared\n"
+  univention-ldapsearch  | ldapsearch-wrapper | \
     awk -vname=$opt_old_master -vverbose=$opt_verbose '
       # Treat LDIF input as multi-line input: an empty line separates records.
       BEGIN {RS=""; FS="\n" }
@@ -193,9 +245,10 @@ fi
 # of the DC master that is going to be switched off.
 if [ -n "$opt_reference" ] ; then
   printf "\nInteractively resolve remaining share references to old master %s\n" $opt_reference
-  resolve_reference shares/share     host       "$opt_reference"    "$ldap_backup"
-  resolve_reference dns/forward_zone nameserver "$opt_reference."   "$ldap_backup."
-  resolve_reference dns/reverse_zone nameserver "$opt_reference."   "$ldap_backup."
+  resolve_reference shares/share     host       "$opt_reference"    "$ldap_backup"   ""
+  resolve_reference dns/forward_zone nameserver "$opt_reference."   "$ldap_backup."  ""
+  resolve_reference dns/reverse_zone nameserver "$opt_reference."   "$ldap_backup."  ""
+  resolve_reference dns/srv_record   location   "$opt_reference"    "$hostname"      "--superordinate zoneName=$domainname,cn=dns,$ldap_base"
   # This was just the interactive resolution, stop now and don't convert to master.
   exit
 fi
@@ -299,17 +352,23 @@ if [ -n "$res" ]; then
 	 /usr/share/univention-directory-manager-tools/univention-dnsedit --stoptls --overwrite "$domainname" add cname univention-repository "$hostname"
 fi
 
+# Now that there is a new LDAP master, we can safely use resolve_reference.
 # Change DNS nameserver
-resolve_reference dns/forward_zone nameserver "$old_ldap_master." "$ldap_backup."
+resolve_reference dns/forward_zone nameserver "$old_ldap_master." "$ldap_backup." ""
 
 # Change nameserver of reverse zone for reverse DNS lookup
-resolve_reference dns/reverse_zone nameserver "$old_ldap_master." "$ldap_backup."
+resolve_reference dns/reverse_zone nameserver "$old_ldap_master." "$ldap_backup." ""
 
 # Run join scripts
 univention-run-join-scripts
 
 # Resolve any LDAP references to the old master
-resolve_reference shares/share host $old_ldap_master  $ldap_backup
+resolve_reference shares/share   host     $old_ldap_master_hostname $hostname ""
+resolve_reference dns/srv_record location $old_ldap_master_hostname $hostname "--superordinate zoneName=$domainname,cn=dns,$ldap_base"
+
+# Remove the old master from the default settings of thin clients
+def_dn=$(univention-directory-manager policies/thinclient list | sed -ne 's|DN: ||p')
+univention-directory-manager policies/thinclient modify --dn "$def_dn" --remove fileServer="$old_ldap_master"
 
 exit 0
 
