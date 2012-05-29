@@ -237,6 +237,10 @@ if [ -n "$opt_old_master" ] ; then
         }
       };
     '
+  printf "\nChecking if the SRV records contain any remaining references to old master %s\n" $opt_old_master
+  host -t SRV -l ${domainname}  | grep $opt_old_master
+  printf "\n"
+
   # This was just a check, stop now and don't convert to master.
   exit
 fi
@@ -369,6 +373,9 @@ resolve_reference dns/srv_record location $old_ldap_master_hostname $hostname "-
 # Remove the old master from the default settings of thin clients
 def_dn=$(univention-directory-manager policies/thinclient list | sed -ne 's|DN: ||p')
 univention-directory-manager policies/thinclient modify --dn "$def_dn" --remove fileServer="$old_ldap_master"
+
+# Remove the reference to old master from krb5PrincipalName for LDAP access
+ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5PrincipalName=ldap/${old_ldap_master}@${kerberos_realm},cn=kerberos,${ldap_base}"
 
 exit 0
 
