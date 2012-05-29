@@ -1,3 +1,31 @@
+univention-ldap (8.0.82-2) unstable; urgency=low
+
+  * univention-backup2master (Bug #5774):
+    Added some error checking; added options -h -f -w to the script.
+    Changes suggested by Philip after review.
+    New options -c -d -v allow check and dry-run without actally converting
+    to master. This helps when searching for LDAP references to old master.
+    New option -r allows to change share references interactively.
+    Added safety check for number of parameters of function resolve_reference;
+    corrected second parameter when using resolve_reference during conversion.
+  * univention-backup2master (Bug #10038):
+    Use function resolve_reference with module dns/forward_zone.
+  * univention-backup2master (Bug #16789):
+    changed script so that it also changes references in LDAP to
+    the old LDAP master for module dns/reverse_zone.
+  * univention-backup2master (Bug #27144):
+    changed script so that it also changes univentionObjectType to
+    computers/domaincontroller_master for the new master.
+  * univention-backup2master (Bug #26211):
+    Change old master in udm module policies/thinclient.
+    Special case udm module shares/share: warn if changed path already exists.
+    Blank characters in DNs are now handled correctly.
+    Access to udm module dns/srv_record needs special command line options.
+    Extended function resolve_reference.
+    Remove the reference to old master from krb5PrincipalName for LDAP access.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 29 May 2012 10:41:14 +0200
+
 univention-ldap (8.0.82-1) unstable; urgency=low
 
   * Added displayName and msGPOUserExtensionNames to GPOs (Bug #26926)
