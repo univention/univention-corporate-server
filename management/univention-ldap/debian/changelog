@@ -1,3 +1,11 @@
+univention-ldap (8.0.82-3) unstable; urgency=low
+
+  * univention-backup2master (Bug #14568):
+    Added replacement of package univention-server-backup with
+    package univention-server-master
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 30 May 2012 07:59:38 +0200
+
 univention-ldap (8.0.82-2) unstable; urgency=low
 
   * univention-backup2master (Bug #5774):
