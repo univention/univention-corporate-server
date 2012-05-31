@@ -50,6 +50,10 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 	//		file content encoded as base64.
 	command: '',
 
+	// dynamicOptions: Object?|Function?
+	//		see umc.widgets.Uploader
+	dynamicOptions: null,
+
 	// buttonLabel: String
 	//		The label that is displayed on the upload button.
 	buttonLabel: 'Upload',
@@ -222,6 +226,7 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 			showClearButton: false,
 			buttonLabel: this.buttonLabel,
 			command: this.command,
+			dynamicOptions: this.dynamicOptions,
 			maxSize: this.maxSize,
 			canUpload: this.canUpload,
 			style: 'float: left;'

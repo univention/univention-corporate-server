@@ -50,6 +50,12 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	//		file content encoded as base64.
 	command: '',
 
+	// dynamicOptions: Object?|Function?
+	//		Reference to a dictionary containing options that are passed over to
+	//		the upload command. Can be a function that is expected to return a
+	//		dictionary.
+	dynamicOptions: null,
+
 	// buttonLabel: String
 	//		The label that is displayed on the upload button.
 	buttonLabel: 'Upload',
@@ -156,9 +162,20 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 
 					// perform the upload
 					this._updateLabel();
-					this._uploader.upload({
+					var params = {};
+					if (this.dynamicOptions) {
+						if (dojo.isFunction(this.dynamicOptions)) {
+							dojo.mixin(params, this.dynamicOptions(params));
+						}
+						else if (dojo.isObject(this.dynamicOptions)) {
+							dojo.mixin(params, this.dynamicOptions);
+						}
+					}
+					// mixin the iframe information
+					dojo.mixin(params, {
 						iframe: (this._uploader.uploadType === 'iframe') ? true : false
 					});
+					this._uploader.upload(params);
 					this.onUploadStarted(data[0]);
 				}));
 			}

@@ -334,7 +334,7 @@ class CPgeneric(object):
 		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ): # upload
 			if not cherrypy.request.path_info.startswith( '/upload' ):
 				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
-			json = kwargs.values()
+			json = kwargs
 			iframe = 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0'))
 		elif cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
 			if not cherrypy.request.headers.get(u"Content-Length", u""):
@@ -417,7 +417,7 @@ class CPSet(CPgeneric):
 class CPUpload( CPgeneric ):
 	requestprefix = '/upload'
 
-	def get_request(self, request, storages ):
+	def get_request(self, request, fields ):
 		self._log( 'info', 'Handle upload command' )
 		global _upload_manager
 		custom_command = request.path_info[ len( self.requestprefix ) + 1 : ]
@@ -428,12 +428,22 @@ class CPUpload( CPgeneric ):
 			req = umcp.Request( 'UPLOAD' )
 
 		options = []
-		for store in storages:
-			if isinstance(store, cherrypy._cpcgifs.FieldStorage):
+		body = {}
+		for iid, ifield in fields.iteritems():
+			if isinstance(ifield, cherrypy._cpcgifs.FieldStorage):
+				# field is a FieldStorage object
+				store = ifield
 				tmpfile = _upload_manager.add( req.id, store )
 				options.append( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
+			elif isinstance(ifield, basestring):
+				# field is a string :)
+				body[iid] = ifield
+			else:
+				# we cannot handle any other type
+				CORE.warn( 'Unknown type of multipart/form entry: %s=%s' % (iid, ifield) )
 
-		req.options = options
+		req.body = body
+		req.body['options'] = options
 		return req
 
 

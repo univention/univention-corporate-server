@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.363-1) unstable; urgency=low
+
+  * allow additional string options for upload in Uploader/MultiUploader
+    widgets and on the web server side; Bug #27413
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 May 2012 19:51:39 +0200
+
 univention-management-console-frontend (1.0.362-1) unstable; urgency=low
 
   * make sure that _() returns a string; Bug #27280
