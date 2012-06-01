@@ -45,6 +45,10 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.12; th
 	if [ "yes" = "$(ucr get squid/ldapauth)" ]; then
 		ucr set squid/basicauth=yes
 	fi
+	if [ -n "$(squid/ldapauth/children)" ]; then
+		ucr set squid/basicauth/children="$(squid/ldapauth/children)"
+	fi
+	ucr unset squid/ldapauth/children squid/ldapauth
 fi
 
 if [ -e /etc/squid/local.conf ] ; then
