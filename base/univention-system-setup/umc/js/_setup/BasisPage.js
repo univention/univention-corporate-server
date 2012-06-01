@@ -107,7 +107,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			scrollable: true
 		});
 
-		this.connect(this._form.getWidget('fqdn'), 'onChange', this.onValuesChanged);
+		this.connect(this._form.getWidget('fqdn'), 'onChange', 'onValuesChanged');
 		var fc = this.connect(this._form.getWidget('fqdn'), 'onChange', function(newVal) {
 			function count(s) { 
 				var n = 0;

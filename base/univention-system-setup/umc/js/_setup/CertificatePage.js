@@ -194,6 +194,10 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 
 	onSave: function() {
 		// event stub
+	},
+
+	onValuesChanged: function() {
+		// event stub
 	}
 });
 
