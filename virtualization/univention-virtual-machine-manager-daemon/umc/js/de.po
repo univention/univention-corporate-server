@@ -1906,3 +1906,6 @@ msgstr "Bearbeiten fortführen"
 
 msgid "Discard changes"
 msgstr "Änderungen verwerfen"
+
+msgid "VNC Port"
+msgstr "VNC Port"

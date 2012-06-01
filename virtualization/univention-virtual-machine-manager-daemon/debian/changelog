@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.108-1) unstable; urgency=low
+
+  * added VNC Port field to DomainPage (Bug #24698)
+
+ -- Florian Best <best@univention.de>  Fri, 01 Jun 2012 10:28:50 +0200
+
 univention-virtual-machine-manager-daemon (1.0.107-1) unstable; urgency=low
 
   * fixed HTTP 404 errors for images (Bug #25635)

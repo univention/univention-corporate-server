@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -223,6 +223,12 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				type: 'CheckBox',
 				label: this._('Globally available')
 			}, {
+				name: 'vncPort',
+				type: 'TextBox',
+				disabled: true,
+				visible: false,
+				label: this._('VNC Port')
+			}, {
 				name: 'vnc_password',
 				type: 'PasswordBox',
 				label: this._('VNC password')
@@ -247,6 +253,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				label: this._('Remote access'),
 				layout: [
 					 [ 'vnc', 'vnc_remote' ],
+					 'vncPort',
 					'vnc_password',
 					'kblayout'
 				]
@@ -486,6 +493,9 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				} else {
 					this.hideChild( this._snapshotPage );
 				}
+
+				// set visibility of the VNC-Port
+				this._advancedForm._widgets.vncPort.set('visible', Boolean(this._advancedForm._widgets.vncPort.get('value')));
 
 				// deactivate most input field when domain is running
 				var disabled = false;
