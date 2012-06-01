@@ -40,6 +40,13 @@ adduser proxy winbindd_priv
 # Remove old templates for Squid 2, can be removed in UCS 3.1
 remove_ucr_template /etc/squid/squid.conf
 
+# convert old ldapauth to basicauth for this update Bug #24281
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.12; then
+	if [ "yes" = "$(ucr get squid/ldapauth)" ]; then
+		ucr set squid/basicauth=yes
+	fi
+fi
+
 if [ -e /etc/squid/local.conf ] ; then
     mv /etc/squid/local.conf /etc/squid3/local.conf
 fi
