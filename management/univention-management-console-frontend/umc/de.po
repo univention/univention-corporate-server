@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-04-11 12:45+0200\n"
+"POT-Creation-Date: 2012-06-01 09:24+0200\n"
 "PO-Revision-Date: 2012-02-23 16:18+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,17 +21,17 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:678
+#: umc/widgets/Grid.js:684
 #, python-format
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
-#: umc/widgets/Grid.js:683
+#: umc/widgets/Grid.js:689
 #, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/about.js:54 umc/app.js:426
+#: umc/about.js:54 umc/app.js:431
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -39,11 +39,11 @@ msgstr "Über UMC"
 msgid "Access"
 msgstr "Zugriff"
 
-#: umc/widgets/MultiObjectSelect.js:118 umc/widgets/MultiObjectSelect.js:268
+#: umc/widgets/MultiObjectSelect.js:125 umc/widgets/MultiObjectSelect.js:288
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/widgets/MultiObjectSelect.js:228
+#: umc/widgets/MultiObjectSelect.js:247
 msgid "Add objects"
 msgstr "Objekte hinzufügen"
 
@@ -71,7 +71,7 @@ msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
 "Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
 
-#: umc/app.js:353
+#: umc/app.js:358
 #, python-format
 msgid ""
 "An update for UCS is available. Please visit <a %s>Online Update Module</a> "
@@ -88,12 +88,12 @@ msgstr "Die Authentisierung schlug fehl. Bitte melden Sie sich erneut an."
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/app.js:524 umc/widgets/Wizard.js:84
-#: umc/widgets/MultiObjectSelect.js:287
+#: umc/app.js:521 umc/widgets/Wizard.js:84
+#: umc/widgets/MultiObjectSelect.js:307
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/widgets/Uploader.js:97
+#: umc/widgets/Uploader.js:103
 msgid "Clear data"
 msgstr "Daten leeren"
 
@@ -101,15 +101,15 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: umc/help.js:62 umc/about.js:54
+#: umc/about.js:54 umc/help.js:62
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/dialog.js:272
+#: umc/dialog.js:276
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:478
+#: umc/app.js:483
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -125,7 +125,7 @@ msgstr "Die Anfrage konnte nicht bearbeitet werden."
 msgid "Current manual (PDF)"
 msgstr "Aktuelles Handbuch (PDF)"
 
-#: umc/app.js:508
+#: umc/app.js:513
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -133,7 +133,7 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 msgid "English"
 msgstr "Englisch"
 
-#: umc/widgets/Uploader.js:146
+#: umc/widgets/Uploader.js:152
 #, python-format
 msgid "File cannot be uploaded, its maximum size may be %.1f MB."
 msgstr ""
@@ -162,7 +162,7 @@ msgstr "Hello %(last)s, %(first)s!"
 msgid "Hello %s %s!"
 msgstr "Hello %s %s!"
 
-#: umc/app.js:410 umc/help.js:62
+#: umc/app.js:415 umc/help.js:62
 msgid "Help"
 msgstr "Hilfe"
 
@@ -174,7 +174,7 @@ msgstr "Fehlernachricht des Servers ausblenden"
 msgid "Information"
 msgstr "Hinweis"
 
-#: umc/widgets/LoginDialog.js:307
+#: umc/widgets/LoginDialog.js:311
 msgid "Insecure Connection"
 msgstr "Unsichere Verbindung"
 
@@ -227,7 +227,7 @@ msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/app.js:418
+#: umc/app.js:423
 msgid "License"
 msgstr "Lizenz"
 
@@ -235,12 +235,7 @@ msgstr "Lizenz"
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:107
-#, python-format
-msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
-msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
-
-#: umc/app.js:509
+#: umc/app.js:514
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -248,7 +243,7 @@ msgstr "Abmelden"
 msgid "Manual and documentation"
 msgstr "Handbücher und Dokumentation"
 
-#: umc/app.js:486
+#: umc/app.js:491
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -256,15 +251,15 @@ msgstr "Modul-Hilfetexte"
 msgid "Next"
 msgstr "Weiter"
 
-#: umc/widgets/Grid.js:680
+#: umc/widgets/Grid.js:686
 msgid "No entries could be found"
 msgstr "Es konnten keine Einträge gefunden werden"
 
-#: umc/widgets/Grid.js:758
+#: umc/widgets/Grid.js:764
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
-#: umc/widgets/MultiUploader.js:195
+#: umc/widgets/MultiUploader.js:199
 msgid "No upload in progress"
 msgstr "Keine laufende Dateiübertragung"
 
@@ -302,7 +297,7 @@ msgstr ""
 msgid "Read"
 msgstr "Lesen"
 
-#: umc/widgets/MultiUploader.js:116 umc/widgets/MultiObjectSelect.js:137
+#: umc/widgets/MultiObjectSelect.js:147 umc/widgets/MultiUploader.js:120
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -310,7 +305,7 @@ msgstr "Entfernen"
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/widgets/MultiObjectSelect.js:259
+#: umc/widgets/MultiObjectSelect.js:279
 msgid "Search results:"
 msgstr "Suchergebnisse:"
 
@@ -358,7 +353,7 @@ msgstr "Weiterführende Informationen"
 msgid "Support and assistance"
 msgstr "Unterstützung und Support"
 
-#: umc/app.js:347
+#: umc/app.js:352
 #, python-format
 msgid "The SSL certificate will expire in %d days and should be renewed!"
 msgstr ""
@@ -383,7 +378,7 @@ msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 msgid "The total cost was %.2f EUR!"
 msgstr "The total cost was %.2f EUR!"
 
-#: umc/widgets/LoginDialog.js:308
+#: umc/widgets/LoginDialog.js:312
 #, python-format
 msgid ""
 "This network connection is not encrypted. All personal or sensitive data "
@@ -394,7 +389,7 @@ msgstr ""
 "sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s diesen "
 "Link</a> für eine verschlüsselte SSL-Verbindung."
 
-#: umc/app.js:359
+#: umc/app.js:364
 #, python-format
 msgid ""
 "This system has been updated recently. Please visit the <a %s>Reboot Module</"
@@ -403,7 +398,7 @@ msgstr ""
 "Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems über das "
 "<a %s>Neustarten-Modul</a> ist erforderlich, um das Update abzuschließen."
 
-#: umc/app.js:471
+#: umc/app.js:476
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -419,21 +414,6 @@ msgstr "UCS Version"
 msgid "UMC version"
 msgstr "UMC Version"
 
-#: umc/app.js:347
-msgid ""
-"Univention Management Console (UMC) is the central tool for web-based "
-"administration of the UCS domain. It supports the management of domain-wide "
-"available data in the LDAP directory, e.g., users, groups or host accounts, "
-"and allows the configuration or management of an individual system, e.g., "
-"the starting and stopping of services. Depending on system role, default "
-"settings and permissions, you find extensive functions for the "
-"administration of your UCS domain and for the configuration of this server."
-msgstr ""
-"Univention Management Console (UMC) ist eine flexible Webanwendung für die "
-"Administration von UCS-basierten Systemen und Domänen. Je nach Systemrolle, "
-"Voreinstellungen und Berechtigungen, finden Sie hier umfangreiche Funktionen "
-"zur UCS-Domänenadministration und für die Konfiguration dieses Servers."
-
 #: umc/help.js:44
 msgid ""
 "Univention Management Console (UMC) is the central web-application for "
@@ -444,15 +424,15 @@ msgid ""
 "Server (UCS). You can find the manual and further important information at "
 "the given links below. "
 msgstr ""
-"Univention Management Console (UMC) ist die zentrale Webanwendung "
-"zur komfortablen Domänen- und Rechnerverwaltung in Univention Corporate Server"
-"(UCS). UMC ermöglicht es Benutzer-, Gruppen oder Rechner zu verwalten "
-"oder Dienste zu kontrollieren und Systemeinstellungen einzusehen oder zu "
-"ändern. Detaillierte Anleitungen und Beschreibungen zu UMC befinden sich "
-"im UCS-Handbuch. Das Handbuch und weitere wichtige Informationen sind unter "
-"den folgenden Links abrufbar."
+"Univention Management Console (UMC) ist die zentrale Webanwendung zur "
+"komfortablen Domänen- und Rechnerverwaltung in Univention Corporate Server"
+"(UCS). UMC ermöglicht es Benutzer-, Gruppen oder Rechner zu verwalten oder "
+"Dienste zu kontrollieren und Systemeinstellungen einzusehen oder zu ändern. "
+"Detaillierte Anleitungen und Beschreibungen zu UMC befinden sich im UCS-"
+"Handbuch. Das Handbuch und weitere wichtige Informationen sind unter den "
+"folgenden Links abrufbar."
 
-#: umc/app.js:435
+#: umc/app.js:440
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
@@ -472,8 +452,8 @@ msgstr "Univention Support"
 msgid "Univention support data base (SDB)"
 msgstr "Univention Supportdatenbank (SDB)"
 
-#: umc/widgets/Uploader.js:96 umc/widgets/MultiUploader.js:98
-#: umc/widgets/InfoUploader.js:46
+#: umc/widgets/MultiUploader.js:102 umc/widgets/InfoUploader.js:46
+#: umc/widgets/Uploader.js:102
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -481,19 +461,20 @@ msgstr "Hochladen"
 msgid "Upload new image"
 msgstr "Neues Bild hochladen"
 
-#: umc/widgets/Uploader.js:212
+#: umc/widgets/Uploader.js:245
 msgid "Uploading..."
 msgstr "Datenübertragung..."
 
-#: umc/widgets/MultiUploader.js:215
+#: umc/widgets/MultiUploader.js:219
+#, python-format
 msgid "Uploading... %d of %d files remaining."
 msgstr "Dateiübertragung... %d von %d Dateien verbleiben"
 
-#: umc/widgets/MultiUploader.js:212
+#: umc/widgets/MultiUploader.js:216
 msgid "Uploads finished"
 msgstr "Dateiübertragung beendet"
 
-#: umc/widgets/LoginDialog.js:159
+#: umc/widgets/LoginDialog.js:162
 msgid "Username"
 msgstr "Benutzername"
 
@@ -526,7 +507,7 @@ msgstr ""
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
-#: umc/widgets/LoginDialog.js:303
+#: umc/widgets/LoginDialog.js:307
 msgid ""
 "Welcome to Univention Management Console. Please enter your domain username "
 "and password for login."
@@ -542,7 +523,7 @@ msgstr "Schreiben"
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
-#: umc/widgets/LoginDialog.js:301
+#: umc/widgets/LoginDialog.js:305
 msgid "Your session has been closed due to inactivity. Please login again."
 msgstr ""
 "Ihre Sitzung wurde wegen Inaktivität geschlossen. Bitte melden Sie sich "
@@ -572,7 +553,7 @@ msgstr ""
 "http://www.univention.de/fileadmin/download/dokumentation_3.0/handbuch_ucs30."
 "pdf"
 
-#: umc/widgets/Grid.js:417 umc/widgets/Grid.js:830
+#: umc/widgets/Grid.js:422 umc/widgets/Grid.js:836
 msgid "more"
 msgstr "mehr"
 
@@ -580,28 +561,27 @@ msgstr "mehr"
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
-#: umc/app.js:458
+#: umc/app.js:463
 msgid "umcHostInfo"
 msgstr "Host: %(host)s.%(domain)s"
 
-#: umc/app.js:335
+#: umc/app.js:340
 msgid "umcOverviewHeader"
 msgstr "Übersicht"
 
-#: umc/app.js:337
+#: umc/app.js:342
 msgid "umcOverviewHelpText"
 msgstr ""
-"Univention Management Console (UMC) ist eine flexible Webanwendung für "
-"die Administration von UCS-basierten Systemen und Domänen. Je nach "
-"Systemrolle, Voreinstellungen und Berechtigungen, finden Sie hier "
-"umfangreiche Funktionen zur UCS-Domänenadministration und für die "
-"Konfiguration dieses Servers."
+"Univention Management Console (UMC) ist eine flexible Webanwendung für die "
+"Administration von UCS-basierten Systemen und Domänen. Je nach Systemrolle, "
+"Voreinstellungen und Berechtigungen, finden Sie hier umfangreiche Funktionen "
+"zur UCS-Domänenadministration und für die Konfiguration dieses Servers."
 
-#: umc/app.js:334
+#: umc/app.js:339
 msgid "umcOverviewTabTitle"
 msgstr "Übersicht"
 
-#: umc/app.js:495
+#: umc/app.js:500
 msgid "umcUserInfo"
 msgstr "Benutzer: %(username)s"
 
@@ -665,6 +645,9 @@ msgstr "Benutzer: %(username)s"
 #~ msgid "LDAP base"
 #~ msgstr "LDAP-Basis"
 
+#~ msgid "Login is still valid (cookie: %(cookie)s, username: %(user)s)."
+#~ msgstr "Der Login ist noch gültig (Cookie: %(cookie)s, Benutzer: %(user)s."
+
 #~ msgid "More actions"
 #~ msgstr "Weitere Aktionen"
 
@@ -676,6 +659,19 @@ msgstr "Benutzer: %(username)s"
 
 #~ msgid "The username of your domain account."
 #~ msgstr "Der Benutzername Ihres Domänen-Kontos."
+
+#~ msgid ""
+#~ "Univention Management Console (UMC) is  the central tool for web-based "
+#~ "administration of the UCS domain. Depending on system role, default "
+#~ "settings and  permissions, you find extensive functions for the "
+#~ "administration of  your UCS domain and for the configuration of this "
+#~ "server."
+#~ msgstr ""
+#~ "Univention Management Console (UMC) ist eine flexible Webanwendung für "
+#~ "die Administration von UCS-basierten Systemen und Domänen. Je nach "
+#~ "Systemrolle, Voreinstellungen und Berechtigungen, finden Sie hier "
+#~ "umfangreiche Funktionen zur UCS-Domänenadministration und für die "
+#~ "Konfiguration dieses Servers."
 
 #~ msgid "User accounts"
 #~ msgstr "Benutzerkonten"

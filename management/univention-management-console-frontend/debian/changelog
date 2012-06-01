@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.365-1) unstable; urgency=low
+
+  * modified the overview helptext (Bug #27208)
+
+ -- Florian Best <best@univention.de>  Fri, 01 Jun 2012 10:39:09 +0200
+
 univention-management-console-frontend (1.0.364-1) unstable; urgency=low
 
   * fixed actualisation of title in umc.dialog.alert() (Bug #26874) 
