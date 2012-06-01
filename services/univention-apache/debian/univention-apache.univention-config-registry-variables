@@ -45,3 +45,15 @@ Description[de]=Wie viele Verbindungen gleichzeitig verarbeitet werden
 Description[en]=Maximum number of connections that will be processed simultaneously
 Type=str
 Categories=service-apache
+
+[apache2/ssl/certificate]
+Description[de]=Pfad zur PEM-codierten SSL-Zertifikat .crt Datei.
+Description[en]=Path to the PEM-encodet SSL certificate .crt file.
+Type=str
+Categories=service-apache
+
+[apache2/ssl/key]
+Description[de]=Pfad zur PEM-codierten privaten .key Schlüsseldatei. Der Schlüssel muss ein RSA oder DSA-Key sein.
+Description[en]=Path to the PEM-encodet private key (.key) file. The key must be a RSA or DSA-Key.
+Type=str
+Categories=service-apache

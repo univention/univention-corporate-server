@@ -1,3 +1,10 @@
+univention-apache (5.0.8-2) unstable; urgency=low
+
+  * added UCR variables apache2/ssl/certificate and apache2/ssl/key 
+    (Bug #21574).
+
+ -- Florian Best <best@univention.de>  Fri, 01 Jun 2012 08:12:44 +0200
+
 univention-apache (5.0.8-1) unstable; urgency=low
 
   * overviewpage forwards to localespecific overview-document (Bug #17659)
