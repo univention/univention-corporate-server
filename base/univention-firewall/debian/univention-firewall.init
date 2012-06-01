@@ -28,13 +28,14 @@
 # <http://www.gnu.org/licenses/>.
 
 . /lib/lsb/init-functions
+. /usr/share/univention-lib/ucr.sh
 
 case "$1" in
     start)
-
-        security_disabled="$(univention-config-registry get security/packetfilter/disabled)"
-
-        if [ -n "$security_disabled" -a "$security_disabled" = "true" ]; then
+        is_ucr_true security/packetfilter/disabled
+        # Notice that only a proper "true" or "on" value switches firewall OFF.
+        # Everything else like "false" or "off" or "muell" will leave firewall ON.
+        if [ $? = 0 ]; then
             echo "Univention iptables configuration has been disabled."
         else
             log_daemon_msg "Starting Univention iptables configuration:"
