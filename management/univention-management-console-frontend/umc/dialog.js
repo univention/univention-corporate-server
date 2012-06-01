@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -184,6 +184,10 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 
 		// show the confirmation dialog
 		this._alertDialog.set('message', message);
+		if (title) {
+			// update title
+			this._alertDialog.set('title', title);
+		}
 		//this._alertDialog.startup();
 		this._alertDialog.show();
 	},

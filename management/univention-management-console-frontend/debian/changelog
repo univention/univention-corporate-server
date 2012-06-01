@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.364-1) unstable; urgency=low
+
+  * fixed actualisation of title in umc.dialog.alert() (Bug #26874) 
+
+ -- Florian Best <best@univention.de>  Fri, 01 Jun 2012 08:41:14 +0200
+
 univention-management-console-frontend (1.0.363-1) unstable; urgency=low
 
   * allow additional string options for upload in Uploader/MultiUploader
