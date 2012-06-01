@@ -1,3 +1,11 @@
+univention-firewall (4.0.6-6) unstable; urgency=low
+
+  * debian/univention-firewall.init:
+    value of ucr security/packetfilter/disabled is now evaluated with
+    the shell function is_ucr_true (Bug #27003)
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 01 Jun 2012 10:07:38 +0200
+
 univention-firewall (4.0.6-5) unstable; urgency=low
 
   * remove executable flag of /etc/init.d/univention-iptables.disabled
