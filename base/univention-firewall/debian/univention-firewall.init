@@ -32,10 +32,9 @@
 
 case "$1" in
     start)
-        is_ucr_true security/packetfilter/disabled
         # Notice that only a proper "true" or "on" value switches firewall OFF.
         # Everything else like "false" or "off" or "muell" will leave firewall ON.
-        if [ $? = 0 ]; then
+        if is_ucr_true security/packetfilter/disabled; then
             echo "Univention iptables configuration has been disabled."
         else
             log_daemon_msg "Starting Univention iptables configuration:"
