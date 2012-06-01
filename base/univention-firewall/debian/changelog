@@ -1,3 +1,11 @@
+univention-firewall (4.0.6-7) unstable; urgency=low
+
+  * debian/ucslint.overrides: workaround as long as Bug #27429 is open;
+    removed line number from override file because it causes
+    problem when building
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 01 Jun 2012 12:46:30 +0200
+
 univention-firewall (4.0.6-6) unstable; urgency=low
 
   * debian/univention-firewall.init:
