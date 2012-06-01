@@ -22,15 +22,27 @@ Description[en]=Activate content scanner for squid
 Type=str
 Categories=service-webproxy
 
-[squid/ldapauth]
-Description[de]=Anmeldung für squid voraussetzen
-Description[en]=Require authentication for using squid
+[squid/basicauth]
+Description[de]=Basic Authentifizierung am Squid
+Description[de]=squid basicn authentication 
+Type=str
+Categories=service-webproxy
+
+[squid/basicauth/children]
+Description[de]=Zahl der Basic Authentifuzierungs Prozesse
+Description[en]=Number of basic authentication processes
 Type=str
 Categories=service-webproxy
 
 [squid/ldapauth/groups]
 Description[de]=Benutzergruppen, die auf squid zugreifen dürfen
 Description[en]=User groups that are allowed to access squid
+Type=str
+Categories=service-webproxy
+
+[squid/allow/localnet]
+Description[de]=Gibt an, ob von den lokalen Netzwerken aus Squid zugegriffen werden darf (Default: no)
+Description[en]=Specifies whether or not access to Squid is allowed from local networks (default: no)
 Type=str
 Categories=service-webproxy
 
@@ -53,7 +65,7 @@ Type=str
 Categories=service-webproxy
 
 [squid/parent/options]
-Description[de]=Optionen für Verbindung mir dem übergeordneten Proxys (Default: default)
+Description[de]=Optionen für Verbindung mit dem übergeordneten Proxy (Default: default)
 Description[en]=Options for the parent proxy connection (default: default)
 Type=str
 Categories=service-webproxy
@@ -78,32 +90,20 @@ Type=str
 Categories=service-webproxy
 
 [squid/ntlmauth/children]
-Description[de]=Zahl der ntlm_auth Prozesse
-Description[en]=Number of ntlm_auth processes
+Description[de]=Zahl der NTLM Authentifuzierungs Prozesse
+Description[en]=Number of ntlm authentication processes
 Type=str
 Categories=service-webproxy
 
 [squid/ntlmauth/keepalive]
-Description[de]=keep_alive Option für ntlm_auth 
-Description[en]=keep_alive option for ntlm_auth
+Description[de]=keep_alive Option für die NTLM Authentifizierung
+Description[en]=keep_alive option for the ntlm authentication
 Type=str
 Categories=service-webproxy
 
-[squid/ipauth/allow]
-Description[de]=Liste von Netzen. Clients aus diesen Netzen verwenden den IP-basierten Authentisierungscache (Leerzeichen separariert)
-Description[en]=List of networks. Clients in these networks will use the IP-based authentication cache (space separated)
-Type=str
-Categories=service-webproxy
-
-[squid/ipauth/deny]
-Description[de]=Liste von Netzen. Clients aus diesen Netzen werden vom IP-basierten Authentisierungscache ausgeschlossen (Leerzeichen separariert)
-Description[en]=List of networks. Clients in these networks will be excluded from the usage of the IP-based authentication cache (space separated)
-Type=str
-Categories=service-webproxy
-
-[squid/ipauth/ttl]
-Description[de]=Die TTL in Sekunden für den IP-basierten Authentisierungscache (0=deaktiviert)
-Description[en]=The TTL in seconds for the IP-based authentication cache (0=disabled)
+[squid/ntlmauth/tool]
+Description[de]=Programm für die Squid NTLM Authentifizierung
+Description[de]=Squid ntlm authentication tool
 Type=str
 Categories=service-webproxy
 

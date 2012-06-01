@@ -6,9 +6,7 @@ Variables: ldap/hostdn
 Variables: squid/cache
 Variables: squid/virusscan
 Variables: squid/contentscan
-Variables: squid/ldapauth
 Variables: squid/ldapauth/groups
-Variables: squid/ldapauth/children
 Variables: squid/auth/groups
 Variables: squid/ntlmauth
 Variables: squid/basicauth
@@ -28,12 +26,12 @@ Variables: interfaces/.*/netmask
 Variables: interfaces/.*/network
 Variables: squid/ntlmauth/children
 Variables: squid/ntlmauth/keepalive
-Variables: squid/ipauth/.*
 Variables: squid/redirect
 Variables: squid/krb5auth
 Variables: squid/krb5auth/children
 Variables: squid/krb5auth/keepalive
 Variables: ldap/server/port
+Variables: squid/ntlmauth/tool
 
 Type: file
 File: etc/security/packetfilter.d/20squid

@@ -1,3 +1,74 @@
+univention-squid (5.0.12-1) unstable; urgency=low
+
+  * merged ucs@school 3.0 changes (Bug #24281) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Jun 2012 12:20:15 +0200
+
+univention-squid (5.0.11-5) unstable; urgency=low
+
+  * fix syntax typo (Bug #26508)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 May 2012 17:00:41 +0200
+
+univention-squid (5.0.11-4) unstable; urgency=low
+
+  * create the service principal account only in Samba4 domains (Bug #26508)
+  * run Joinscript also if service principal keytab file already exists
+  * check if keytab was created on Samba4 DCs, otherwise create it manually
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 May 2012 12:55:43 +0200
+
+univention-squid (5.0.11-3) unstable; urgency=low
+
+  * add ignore-exists to udm call (Bug #26508)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 May 2012 12:23:28 +0200
+
+univention-squid (5.0.11-2) unstable; urgency=low
+
+  * Continue 98univention-squid-samba4.inst if the memberserver
+    is not in a Samba 4 domain
+  * Fix fail/retry case in 98univention-squid-samba4.inst (Bug #26508)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 May 2012 11:49:53 +0200
+
+univention-squid (5.0.11-1) unstable; urgency=low
+
+  * create kerberos service account in UDM also for Samba4 DCs
+    (Bug #26508)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 19 Apr 2012 19:28:35 +0200
+
+univention-squid (5.0.10-1) unstable; urgency=low
+
+  * allow local networks if squid/allow/localnet is true
+  * fixed description of ucr vars (Bug #25700)
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Mar 2012 16:47:53 +0200
+
+univention-squid (5.0.9-2) unstable; urgency=low
+
+  * fixed debugging in ntlm authentication module
+  * added copyright (Bug #25771) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Mar 2012 10:37:21 +0100
+
+univention-squid (5.0.9-1) unstable; urgency=low
+
+  * fixed squid.conf template (Bug #25771) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Mar 2012 11:22:00 +0100
+
+univention-squid (5.0.8-1) unstable; urgency=low
+
+  * added squid ldap <-> ntlm authentication module
+  * changed basic auth to ldap backend
+  * removed ipauth stuff
+  * removed squid/ldapauth
+  (Bug #25803)
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Mar 2012 11:03:17 +0100
+
 univention-squid (5.0.7-1) unstable; urgency=low
 
   * replaced redirect_program in squid.conf with url_rewrite_program

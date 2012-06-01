@@ -37,10 +37,20 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 
+## look for S4 Connector hosts to add the servicePrincipalName to the directory object
+s4connectorservicehosts="$(univention-directory-manager computers/computer list "$@" --filter "(univentionService=S4 Connector)" | sed -ne 's|^DN: cn=\([^,]*\).*|\1|p')"
+
+## Hmm, seems like we are not in a UCS 3 Samba 4 domain
+if [ -z "$s4connectorservicehosts" ]; then
+	echo "INFO: No S4 Connector Service found in UDM"
+	echo "INFO: Cannot register a servicePrincipalName"
+	exit 0
+fi
+
+## Ok, we are in a Samba 4 domain, go on to create the service principal
 servicename='http-proxy'
 servicedescription="$servicedescription Service Account for $hostname"
 spn_instance='HTTP'
-
 
 extract_binddn_and_bindpwd_from_args() {
 	## parse binddn and bindpwd from command line arguments into shell variables
@@ -50,40 +60,30 @@ extract_binddn_and_bindpwd_from_args() {
 	fi
 }
 
-
 samba_private_dir="/var/lib/samba/private"
 
 service_accountname="$servicename-$hostname"
 keytab_filename="$service_accountname.keytab"
 keytab_path="$samba_private_dir/$keytab_filename"
 
-if ! [ -f "$keytab_path" ]; then
+password=$(makepasswd)
 
-	password=$(makepasswd)
+## create service_accountname via udm, but servicePrincipalName is missing
+univention-directory-manager users/user create "$@" \
+	--position "cn=users,$ldap_base" \
+	--ignore_exists \
+	--set username="$service_accountname" \
+	--set lastname="Service" \
+	--set password="$password" \
+	--set description="$servicedescription"
 
-	## check if this host is a Samba4 DC
-	cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
+## Next for keytab creation check if this host is a Samba4 DC
+cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
 
-	if [ "$cn" = "$hostname" ]; then
+if [ "$cn" = "$hostname" ]; then
 
-		/usr/sbin/samba-tool user add "$service_accountname" "$password" \
-			--description "$servicedescription"
-
-		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
-
-		if [ -z "$service_account_dn" ]; then
-			echo "ERROR: samAccountName not found for service account $service_accountname"
-			exit 1
-		fi
-
-		ldbmodify -H "$samba_private_dir/sam.ldb" <<-%EOF
-		dn: $service_account_dn
-		changetype: modify
-		add: servicePrincipalName
-		servicePrincipalName: $spn_instance/$(hostname -f)
-		-
-		%EOF
-
+	if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
+		## trigger Samba4 to create service keytab
 		ldbadd -H "$samba_private_dir/secrets.ldb" <<-%EOF
 		dn: samAccountName=$service_accountname,CN=Principals
 		objectClass: kerberosSecret
@@ -94,108 +94,122 @@ if ! [ -f "$keytab_path" ]; then
 		msDS-KeyVersionNumber: 1
 		privateKeytab: $keytab_filename
 		%EOF
+	fi
 
-		if ! [ -f "$keytab_path" ]; then
-			echo "ERROR: keytab not created for samAccountName=$service_accountname"
+	if ! [ -f "$keytab_path" ]; then
+		echo "WARNING: samba4 did not create a keytab for samAccountName=$service_accountname"
+		echo "WARNING: creating keytab manually"
+		/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab_path" \
+			--principal="host/$service_accountname.$domainname" \
+			--alias="$spn_instance/$hostname.$domainname" \
+			--alias="$service_accountname" \
+			--kvno=1 --password="$password"
+	fi
+
+	chown proxy "$keytab_path"
+
+	## wait for S4 Connector and possibly DRS until the service_accountname is available
+	count=0
+	while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
+		sleep 1
+		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
+		count=$((count+1))
+	done
+
+	if [ -z "$service_account_dn" ]; then
+		echo "ERROR: samAccountName not found for service account $service_accountname"
+		echo "ERROR: cannot add attribute \"servicePrincipalName: $spn_instance/$(hostname -f)\""
+		exit 1
+	fi
+
+	ldbmodify -H "$samba_private_dir/sam.ldb" <<-%EOF
+	dn: $service_account_dn
+	changetype: modify
+	add: servicePrincipalName
+	servicePrincipalName: $spn_instance/$(hostname -f)
+	-
+	%EOF
+
+else
+	### in this case we are not a Samba4-DC, i.e. we are a samba3 UCS memberserver in a Samba 4 domain
+
+	## using ldap-tools here
+	## ldbmodify might be an option, depends on package ldb-tools
+	## samba-tool might be another option, but it needs samba4-common-bin and python-samba4
+
+	extract_binddn_and_bindpwd_from_args "$@"
+	samba4_bind_dn="CN=$dcaccount,CN=Users,$ldap_base"
+
+	## try to connect to any of the hosts running the S4 Connector
+	s4connectors=( $s4connectorservicehosts )
+
+	s4dc_fqdn=''
+	for s4dc in "${s4connectors[@]}"; do
+		try_fqdn="$s4dc.$domainname"
+		test_dn=$(ldapsearch -x -LL -H "ldaps://$try_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
+		if [ -n "$test_dn" ]; then
+			s4dc_fqdn="$try_fqdn"
+			break
+		fi
+	done
+
+	if [ -z "$s4dc_fqdn" ]; then
+
+		## Hmm, try other S4 DCs
+		samba4servicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
+
+		samba4dcs=( $samba4servicedcs )
+
+		for s4dc in "${samba4dcs[@]}"; do
+			try_fqdn="$s4dc.$domainname"
+			test_dn=$(ldapsearch -x -LL -H "ldaps://$try_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
+			if [ -n "$test_dn" ]; then
+				s4dc_fqdn="$try_fqdn"
+				break
+			fi
+		done
+
+		if [ -z "$s4dc_fqdn" ]; then
+			echo "ERROR: No Samba 4 DC available for LDAP"
 			exit 1
 		fi
-		chown proxy "$keytab_path"
 
-	else
-		### in this case we are not a Samba4-DC
-
-		## look for S4 Connector hosts
-		s4connectorservicehosts="$(univention-directory-manager computers/computer list "$@" --filter "(univentionService=S4 Connector)" | sed -ne 's|^DN: cn=\([^,]*\).*|\1|p')"
-
-		if [ -n "$s4connectorservicehosts" ]; then
-
-			## create service_accountname via udm, but servicePrincipalName is missing
-			univention-directory-manager users/user create "$@" \
-				--position "cn=users,$ldap_base" \
-				--set username="$service_accountname" \
-				--set lastname="Service" \
-				--set password="$password" \
-				--set description="$servicedescription"
-
-			## create service keytab manually
-			if ! [ -d "$samba_private_dir" ]; then
-				mkdir -p "$samba_private_dir"
-			fi
-
-			/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab_path" \
-				--principal="host/$service_accountname.$domainname" \
-				--alias="$spn_instance/$hostname.$domainname" \
-				--alias="$service_accountname" \
-				--kvno=1 --password="$password"
-
-			chown proxy "$keytab_path"
-
-			## using ldap-tools here
-			## ldbmodify might be an option, depends on package ldb-tools
-			## samba-tool might be another option, but it needs samba4-common-bin and python-samba4
-
-			extract_binddn_and_bindpwd_from_args "$@"
-			samba4_bind_dn="CN=$dcaccount,CN=Users,$ldap_base"
-
-			## try to connect to any of the hosts running the S4 Connector
-			s4connectors=( $s4connectorservicehosts )
-
-			s4dc_fqdn=''
-			for s4dc in "${s4connectors[@]}"; do
-				try_fqdn="$s4dc.$domainname"
-				test_dn=$(ldapsearch -x -LL -H "ldaps://$try_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
-				if [ -n "$test_dn" ]; then
-					s4dc_fqdn="$try_fqdn"
-					break
-				fi
-			done
-
-			if [ -z "$s4dc_fqdn" ]; then
-
-				## Hmm, try other S4 DCs
-				samba4servicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
-
-				samba4dcs=( $samba4servicedcs )
-
-				for s4dc in "${samba4dcs[@]}"; do
-					try_fqdn="$s4dc.$domainname"
-					test_dn=$(ldapsearch -x -LL -H "ldaps://$try_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$dcaccount" dn | sed -n 's/^dn: \(.*\)/\1/p')
-					if [ -n "$test_dn" ]; then
-						s4dc_fqdn="$try_fqdn"
-						break
-					fi
-				done
-
-				if [ -z "$s4dc_fqdn" ]; then
-					echo "ERROR: No Samba 4 DC available for LDAP"
-					exit 1
-				fi
-
-			fi
-
-			## wait for S4 Connector and possibly DRS
-			count=0
-			while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
-				sleep 1
-				service_account_dn=$(ldapsearch -x -LL -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
-				count=$((count+1))
-			done
-
-			if [ -z "$service_account_dn" ]; then
-				echo "ERROR: $service_accountname not found in samba4 directory on host $s4dc.$domainname"
-				echo "ERROR: cannot add attribute \"servicePrincipalName: $spn_instance/$(hostname -f)\""
-				exit 1
-			fi
-
-			ldapmodify -x -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" <<-%EOF
-			dn: $service_account_dn
-			changetype: modify
-			add: servicePrincipalName
-			servicePrincipalName: $spn_instance/$(hostname -f)
-			%EOF
-
-		fi
 	fi
+
+	## wait for S4 Connector and possibly DRS
+	count=0
+	while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
+		sleep 1
+		service_account_dn=$(ldapsearch -x -LL -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
+		count=$((count+1))
+	done
+
+	if [ -z "$service_account_dn" ]; then
+		echo "ERROR: $service_accountname not found in samba4 directory on host $s4dc.$domainname"
+		echo "ERROR: cannot add attribute \"servicePrincipalName: $spn_instance/$(hostname -f)\""
+		exit 1
+	fi
+
+	ldapmodify -x -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" <<-%EOF
+	dn: $service_account_dn
+	changetype: modify
+	add: servicePrincipalName
+	servicePrincipalName: $spn_instance/$(hostname -f)
+	%EOF
+
+	## OK, everything fine up to this point so now create service keytab manually
+	if ! [ -d "$samba_private_dir" ]; then
+		mkdir -p "$samba_private_dir"
+	fi
+
+	/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab_path" \
+		--principal="host/$service_accountname.$domainname" \
+		--alias="$spn_instance/$hostname.$domainname" \
+		--alias="$service_accountname" \
+		--kvno=1 --password="$password"
+
+	chown proxy "$keytab_path"
+
 fi
 
 joinscript_save_current_version

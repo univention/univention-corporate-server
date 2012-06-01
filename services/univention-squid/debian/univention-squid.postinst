@@ -56,10 +56,9 @@ if [ ! -e "$LOCALINCLUDE" ]; then
 	echo "# add local config here" >> "$LOCALINCLUDE"
 fi
 
-ucr set squid/transparentproxy?false
-ucr set squid/ldapauth?no
-ucr set squid/cache?yes
-ucr set squid/debug/level?ALL,1
+ucr set squid/transparentproxy?false \
+	squid/cache?yes \
+	squid/debug/level?ALL,1
 
 /etc/init.d/squid3 stop
 /etc/init.d/squid3 start

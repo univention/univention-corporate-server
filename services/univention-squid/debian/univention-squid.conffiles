@@ -1,3 +1,5 @@
 /etc/univention/registry.info/categories/univention-squid.cfg
 /etc/univention/registry.info/variables/univention-squid.cfg
 /etc/univention/templates/files/etc/squid3/squid.conf
+/etc/univention/templates/files/etc/security/packetfilter.d/20squid
+/etc/univention/templates/files/etc/default/squid3
