@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.366-1) unstable; urgency=low
+
+  * Form: Also clear _loadedID on clearFormValues (Bug #26540)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 04 Jun 2012 12:12:22 +0200
+
 univention-management-console-frontend (1.0.365-1) unstable; urgency=low
 
   * modified the overview helptext (Bug #27208)
