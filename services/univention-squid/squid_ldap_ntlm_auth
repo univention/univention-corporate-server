@@ -156,14 +156,22 @@ def parseNtlmTypeThree(data):
 
 	domainOffset = struct.unpack("<l", data[32:36])[0]
 	usernameOffset = struct.unpack("<l", data[40:44])[0]
+	hostLength = struct.unpack("<h", data[44:46])[0]
 	hostOffset = struct.unpack("<l", data[48:52])[0]
 	flags = struct.unpack("<I", data[60:64])[0]
 
 	username = data[usernameOffset:hostOffset]
 	domain = data[domainOffset:usernameOffset]
-	host = data[hostOffset:lmOffset]
+	host = data[hostOffset:hostOffset + hostLength]
 	lmResp = data[lmOffset:ntOffset]
 	ntResp = data[ntOffset:(ntOffset + ntLen)]	
+
+	if domainOffset == 0:
+		domain = ""
+	if hostOffset == 0:
+		host = ""
+	if usernameOffset == 0:
+		username = ""
 
 	if flags & NTLM_NegotiateUnicode:
 		username = username.decode("utf-16")
@@ -484,6 +492,12 @@ assert resp.decode("hex") == verifyNtlmV2(resp.decode("hex"),
 resp = "16bae73559708bcd091f34a43f21bcf30101000000000000a826ec08dcfacc01e45112e4c3192b9a00000000020000000000000000000000"
 assert resp.decode("hex") == verifyNtlmV2(resp.decode("hex"),
 	"11111111", "Administrator", "UNIVENTION", "CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex"))
+
+# ipad
+kk = "TlRMTVNTUAADAAAAGAAYAEAAAAAYABgAWAAAAAAAAAAAAAAAGgAaAHAAAAAIAAgAigAAAAAAAAAAAAAABQIIAJEPdnUglFZTAAAAAAAAAAAAAAAAAAAAADMFtY9sMPhP1jShGSWXgOE2e8gvtwdPAGEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAaQBQAGEAZAA="
+ntResp = "3305b58f6c30f84fd634a119259780e1367bc82fb7074f00"
+a, b, c, d, e, f = parseNtlmTypeThree(kk)
+assert ntResp.decode("hex") == e
 
 # main
 if __name__ == '__main__':
