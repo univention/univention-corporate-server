@@ -1,3 +1,9 @@
+univention-samba4 (1.0.140-5) unstable; urgency=low
+
+  * fixed unexpected settngs of ucr variables (Bug #26303)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 04 Jun 2012 16:46:40 +0200
+
 univention-samba4 (1.0.139-5) unstable; urgency=low
 
   * Install pam module again (Bug #27249)

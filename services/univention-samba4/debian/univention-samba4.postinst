@@ -42,6 +42,8 @@ fi
 
 #DEBHELPER#
 
+eval "$(univention-config-registry shell)"
+
 if [ -z "$2" ]; then
 	mkdir -p /home/groups
 
@@ -170,9 +172,6 @@ fi
 
 call_joinscript 96univention-samba4.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
-
-
-eval "$(univention-config-registry shell)"
 
 ##### Join-Script fragments that need to be executed automatically also on Master and Backup:
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
