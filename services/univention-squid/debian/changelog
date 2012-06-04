@@ -1,3 +1,9 @@
+univention-squid (5.0.15-1) unstable; urgency=low
+
+  * successfully join even if there is no samba4 dc (Bug #27278)
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Jun 2012 11:42:56 +0200
+
 univention-squid (5.0.14-1) unstable; urgency=low
 
   * default for squid/ntlmauth/keepalive is now "off" (Bug #27401) 

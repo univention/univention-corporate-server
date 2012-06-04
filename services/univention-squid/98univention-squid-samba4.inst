@@ -44,6 +44,7 @@ s4connectorservicehosts="$(univention-directory-manager computers/computer list 
 if [ -z "$s4connectorservicehosts" ]; then
 	echo "INFO: No S4 Connector Service found in UDM"
 	echo "INFO: Cannot register a servicePrincipalName"
+	joinscript_save_current_version
 	exit 0
 fi
 
