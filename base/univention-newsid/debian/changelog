@@ -1,3 +1,9 @@
+univention-newsid (4.0.1-3) unstable; urgency=low
+  
+  * fixed help output (Bug #25627)
+
+ -- Tobias Peters <tpeters@univention.de>  Mon, 04 Jun 2012 14:58:07 +0200
+
 univention-newsid (4.0.1-2) unstable; urgency=low
 
   * fixed indentation (Bug #25627)

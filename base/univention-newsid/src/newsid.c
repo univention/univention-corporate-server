@@ -77,7 +77,7 @@ int main ( int argc, char * argv[] ) {
   int help_flag=0;
   char help_text[] = "univention-newsid: Generates a new SID\n\n"
   "Syntax:\n"
-  "\t/usr/sbin/univention-newsid [options]\n\n"
+  "\tunivention-newsid [options]\n\n"
   "Options:\n"
   "\t-h | --help:\n"
   "\tprint this usage message and exit program\n\n";
