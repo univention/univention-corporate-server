@@ -1,3 +1,9 @@
+univention-base-files (1.0.48-2) unstable; urgency=low
+
+  * conffiles/etc/locale.gen: Always generate locale/default first (Bug #26322)
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Mon, 04 Jun 2012 09:15:42 +0200
+
 univention-base-files (1.0.48-1) unstable; urgency=low
 
   * Update locales after setting UCR variable 'locale' (Bug #26412)
