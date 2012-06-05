@@ -51,11 +51,18 @@ fi
 
 univention-config-registry set \
 	pxe/installer/initrd?"linux.bin" \
-	pxe/installer/ramdisksize?"184696" \
+	pxe/installer/ramdisksize?"209272" \
 	pxe/installer/quiet?"yes" \
 	pxe/installer/vga?"788" \
 	pxe/installer/loglevel?"0" \
 	pxe/installer/ipappend?"3"
+
+# increase ramdisksize for this update (Bug #25416)
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.4-1; then
+	if [ "$(univention-config-registry get pxe/installer/ramdisksize)" = "184696" ]; then
+		univention-config-registry set pxe/installer/ramdisksize=209272
+	fi
+fi
 
 call_joinscript 81univention-net-installer.inst
 

@@ -61,7 +61,7 @@ def handler(dn, new, old):
 
 		append  = "root=/dev/ram rw nomodeset "
 		append += "initrd=%s " % baseConfig.get("pxe/installer/initrd", "linux.bin")
-		append += "ramdisk_size=%s " % baseConfig.get("pxe/installer/ramdisksize", "184696")
+		append += "ramdisk_size=%s " % baseConfig.get("pxe/installer/ramdisksize", "209272")
 		if baseConfig.is_true("pxe/installer/quiet", False):
 			append += "quiet "
 		append += "vga=%s " % baseConfig.get("pxe/installer/vga", "788")

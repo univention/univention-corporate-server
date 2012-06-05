@@ -1,3 +1,9 @@
+univention-net-installer (5.0.4-1) unstable; urgency=low
+
+  * increased default pxe ramdisksize (Bug #25416)
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Jun 2012 12:55:07 +0200
+
 univention-net-installer (5.0.3-1) unstable; urgency=low
 
   * added pxe/installer ucr vars
