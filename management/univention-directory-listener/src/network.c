@@ -147,7 +147,7 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "connection to notifier was closed");
 			return 0;
 		} else if (r < 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "error %d while receiving from notifier", r);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "error %d: %s while receiving from notifier", errno, strerror(errno));
 			return 0;
 		}
 

@@ -181,7 +181,7 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 		*data_data = (void*)((char*)data+*pos);
 
 		if (*data_size != strlen(*data_data)+1)
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "data_size and strlen don't match: %d != %d", *data_size, strlen(*data_data)+1);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "data_size and strlen don't match: %d != %zd", *data_size, strlen(*data_data)+1);
 		*pos += *data_size;
 	} else {
 		*data_size = 0;
@@ -235,7 +235,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 				(*attribute)->value_count = 0;
 				entry->attribute_count++;
 				
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at 0x%x", (*attribute)->name, (unsigned int)*attribute);
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", (*attribute)->name, *attribute);
 			}
 			(*attribute)->values = realloc((*attribute)->values, ((*attribute)->value_count+2)*sizeof(char*));
 			if ((*attribute)->values == NULL)
