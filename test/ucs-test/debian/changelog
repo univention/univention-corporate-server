@@ -1,6 +1,7 @@
 ucs-test (2.0.1-1) unstable; urgency=low
 
   * Fix Ctrl-C handling (Bug #23527)
+  * updater/52component-dist: Fix UCR variable name
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 05 Jun 2012 17:29:58 +0200
 
