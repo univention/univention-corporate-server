@@ -60,7 +60,7 @@ config_repo \
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	/usr/share/univention-updater/univention-updater net
 	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
-	msg="Configuration error: credentials not accepted"
+	msg="Configuration error: " # credentials not accepted | component not found
 	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
 	test "${_version_version}" = "$(ucr get version/version)"
