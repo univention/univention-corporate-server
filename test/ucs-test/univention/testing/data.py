@@ -427,12 +427,9 @@ class TestCase(object):
 		time_start = time()
 
 		# Protect wrapper from Ctrl-C as long as test case is running
-		aborted = False
 		def handle_int(signal, frame):
 			result.result = TestCodes.RESULT_SKIP
-			result.reason = TestCodes.REASON_INTERNAL
-			global aborted
-			aborted = True
+			result.reason = TestCodes.REASON_ABORT
 		old_sig_int = signal.signal(signal.SIGINT, handle_int)
 		def prepare_child():
 			signal.signal(signal.SIGINT, signal.SIG_IGN)
@@ -457,7 +454,7 @@ class TestCase(object):
 				raise
 		finally:
 			signal.signal(signal.SIGINT, old_sig_int)
-			if aborted:
+			if result.reason == TestCodes.REASON_ABORT:
 				raise KeyboardInterrupt()
 
 		time_end = time()

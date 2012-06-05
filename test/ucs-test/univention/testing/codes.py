@@ -26,6 +26,7 @@ class TestCodes(object):
 			138: ('REASON_INSTALLED', 'Conflicting software', 'BLUE'),
 			139: ('REASON_DANGER', 'Too dangerous', 'BLUE'),
 			140: ('REASON_INTERNAL', 'Internal error', 'MAGENTA'),
+			141: ('REASON_ABORT', 'Aborted', 'MAGENTA'),
 			}
 	MESSAGE = {}
 	MAX_MESSAGE_LEN = 0
