@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.23-2) unstable; urgency=low
+
+  * FTBFS: Fix format string (Bug #27312)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Jun 2012 15:38:50 +0200
+
 univention-directory-listener (6.0.23-1) unstable; urgency=low
 
   * Fix SEGV in debug level 4 output (Bug #26548)
