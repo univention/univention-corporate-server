@@ -189,10 +189,7 @@ Hint: The network settings have to be confirmed before the system boot process w
 		return self.check_values(root_password1, root_password2)
 
 	def helptext(self):
-		if self.oxae:
-			return _('Password  \n \n Changing default root password into a custom one.')
-		else:
-			return _('Password  \n \n Changing default root password into a custom one.')
+		return _('Password  \n \n Changing default root password into a custom one.')
 
 	def modheader(self):
 		return _('Password')

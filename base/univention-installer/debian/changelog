@@ -1,3 +1,9 @@
+univention-installer (7.0.157-1) unstable; urgency=low
+
+  * fixed helptext() in 45_password.py (Bug #26439)
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Jun 2012 12:45:29 +0200
+
 univention-installer (7.0.156-1) unstable; urgency=low
 
   * fixed handling of cciss block device names in 67_bootloader.py (Bug #25719)
