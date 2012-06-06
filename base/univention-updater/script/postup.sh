@@ -125,6 +125,13 @@ fi
 # For UCS 3.0-1 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
+# purge univention-shares Bug #24610
+dpkg -P univention-shares 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
+if [ -f /etc/cron.d/univention-shares ]; then
+	rm -f /etc/cron.d/univention-shares
+fi
+# end purge univention-shares Bug #24610
+
 echo "done."
 date >>"$UPDATER_LOG" 2>&1
 
