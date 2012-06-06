@@ -60,106 +60,106 @@ Provides: ucs-test-module
 Description: UCR tests
  This package includes some scripts to test the ucr.
 
-Package: ucs-test-login
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- univention-ssh,
- expect,
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Login tests
- This package includes some scripts to test the login behavior.
+#Package: ucs-test-login
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# univention-ssh,
+# expect,
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Login tests
+# This package includes some scripts to test the login behavior.
 
-Package: ucs-test-quota
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ${misc:Depends}
-Provides: ucs-test-module
-Description: Quota tests
- This package includes some scripts for testing file quota.
+#Package: ucs-test-quota
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Quota tests
+# This package includes some scripts for testing file quota.
 
-Package: ucs-test-ldap
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for LDAP and replication
- This package includes some scripts for testing the UCS LDAP and the
- replication.
+#Package: ucs-test-ldap
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for LDAP and replication
+# This package includes some scripts for testing the UCS LDAP and the
+# replication.
 
-Package: ucs-test-dns
-Architecture: all
-Recommends: ucs-test-framework
-Depends: python,
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for DNS
- This package includes some scripts for testing DNS.
+#Package: ucs-test-dns
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: python,
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for DNS
+# This package includes some scripts for testing DNS.
 
-Package: ucs-test-dhcp
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- vde2,
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for DHCP
- This package includes some scripts for testing DHCP.
+#Package: ucs-test-dhcp
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# vde2,
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for DHCP
+# This package includes some scripts for testing DHCP.
 
-Package: ucs-test-mail
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- swaks,
- pytho,
- ${misc:Depends}n
-Provides: ucs-test-module
-Description: Test scripts for mail
- This package includes some scripts for testing mail.
+#Package: ucs-test-mail
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# swaks,
+# pytho,
+# ${misc:Depends}n
+#Provides: ucs-test-module
+#Description: Test scripts for mail
+# This package includes some scripts for testing mail.
 
-Package: ucs-test-kolab
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- swaks,
- libnet-ssleay-perl,
- python,
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for Kolab groupware suite
- This package includes some scripts for testing Kolab.
+#Package: ucs-test-kolab
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# swaks,
+# libnet-ssleay-perl,
+# python,
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for Kolab groupware suite
+# This package includes some scripts for testing Kolab.
 
-Package: ucs-test-iptables
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for iptables
- This package includes some scripts for testing the iptables settings and
- open/filtered ports.
+#Package: ucs-test-iptables
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for iptables
+# This package includes some scripts for testing the iptables settings and
+# open/filtered ports.
 
-Package: ucs-test-samba
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for samba (and NFS shares)
- This package includes some scripts for testing the functionality of the samba
- domain and NFS shares.
+#Package: ucs-test-samba
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for samba (and NFS shares)
+# This package includes some scripts for testing the functionality of the samba
+# domain and NFS shares.
 
-Package: ucs-test-pkgdb
-Architecture: all
-Recommends: ucs-test-framework
-Depends: python,
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for pkgdb
- This package includes some scripts for testing the functionality of the
- univention package database.
+#Package: ucs-test-pkgdb
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: python,
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for pkgdb
+# This package includes some scripts for testing the functionality of the
+# univention package database.
 
 Package: ucs-test-nagios
 Architecture: all
@@ -171,104 +171,104 @@ Description: Test scripts for Nagios
  This package includes some scripts for testing the functionality of the
  Nagios.
 
-Package: ucs-test-apache
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for Apache Web Server
- This packages includes some scripts for testing the functionality of the
- Apache Web Server.
+#Package: ucs-test-apache
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for Apache Web Server
+# This packages includes some scripts for testing the functionality of the
+# Apache Web Server.
 
-Package: ucs-test-udm-general
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for basic functionality of the UDM
- This package includes some scripts for testing the basic functionality of the
- UDM.
+#Package: ucs-test-udm-general
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for basic functionality of the UDM
+# This package includes some scripts for testing the basic functionality of the
+# UDM.
 
-Package: ucs-test-udm-users
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for the users/user-module of the UDM
- This package includes some scripts for testing the functionality of the
- users/user-module of the UDM.
+#Package: ucs-test-udm-users
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for the users/user-module of the UDM
+# This package includes some scripts for testing the functionality of the
+# users/user-module of the UDM.
 
-Package: ucs-test-udm-groups
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for the groups/group-module of the UDM
- This package includes some scripts for testing the functionality of the
- groups/group-module of the UDM.
+#Package: ucs-test-udm-groups
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for the groups/group-module of the UDM
+# This package includes some scripts for testing the functionality of the
+# groups/group-module of the UDM.
 
-Package: ucs-test-udm-dns
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for the dns/* modules of the UDM.
- This package includes some scripts for testing the functionality of the domain
- name services of the UDM.
+#Package: ucs-test-udm-dns
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for the dns/* modules of the UDM.
+# This package includes some scripts for testing the functionality of the domain
+# name services of the UDM.
 
-Package: ucs-test-udm-printers
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for the printers/* modules of the UDM.
- This package includes some scripts for testing the functionality of the
- printers services of the UDM.
+#Package: ucs-test-udm-printers
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for the printers/* modules of the UDM.
+# This package includes some scripts for testing the functionality of the
+# printers services of the UDM.
 
-Package: ucs-test-udm-dhcp
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for the dhcp/* modules of the UDM.
- This package includes some scripts for testing the functionality of the DHCP
- services of the UDM.
+#Package: ucs-test-udm-dhcp
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for the dhcp/* modules of the UDM.
+# This package includes some scripts for testing the functionality of the DHCP
+# services of the UDM.
 
-Package: ucs-test-udm-computers
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for the computers/* modules of UDM.
- This package includes some scripts for testing the functionality of the
- computers of the UDM.
+#Package: ucs-test-udm-computers
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for the computers/* modules of UDM.
+# This package includes some scripts for testing the functionality of the
+# computers of the UDM.
 
-Package: ucs-test-udm-containers
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for UDM containers.
- This package includes some scripts for testing the functionality of the
- default containers (OU/CN) of the UDM.
+#Package: ucs-test-udm-containers
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for UDM containers.
+# This package includes some scripts for testing the functionality of the
+# default containers (OU/CN) of the UDM.
 
-Package: ucs-test-udm-net
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for udm net.
- This package includes some scripts for testing the functionality of the
- Network module of the UDM.
+#Package: ucs-test-udm-net
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for udm net.
+# This package includes some scripts for testing the functionality of the
+# Network module of the UDM.
 
 Package: ucs-test-updater
 Architecture: all
@@ -280,81 +280,81 @@ Provides: ucs-test-module
 Description: Test scripts for the updater.
  This package includes some scripts for testing the system updater.
 
-Package: ucs-test-udm-extendedattribute
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for the settings/extended_attribute module of UDM.
- This package includes some scripts for testing UDM extended attributes.
+#Package: ucs-test-udm-extendedattribute
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for the settings/extended_attribute module of UDM.
+# This package includes some scripts for testing UDM extended attributes.
 
-Package: ucs-test-udm-customattribute
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for the settings/customattribute module of UDM.
- This package includes some scripts for testing UDM custom attributes.
+#Package: ucs-test-udm-customattribute
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for the settings/customattribute module of UDM.
+# This package includes some scripts for testing UDM custom attributes.
 
-Package: ucs-test-system-setup
-Architecture: all
-Depends: ucs-test-framework (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module,
-Description: Test scripts for univention-system-setup.
- This package includes the test-cases for unvention-system-setup.
+#Package: ucs-test-system-setup
+#Architecture: all
+#Depends: ucs-test-framework (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module,
+#Description: Test scripts for univention-system-setup.
+# This package includes the test-cases for unvention-system-setup.
 
-Package: ucs-test-ad-connector
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for univention-ad-connector.
- This package includes the test-cases for unvention-ad-connector.
+#Package: ucs-test-ad-connector
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for univention-ad-connector.
+# This package includes the test-cases for unvention-ad-connector.
 
-Package: ucs-test-ucsschool
-Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
-Description: Test scripts for UCS@school.
- This package includes the test-cases for UCS@school.
+#Package: ucs-test-ucsschool
+#Architecture: all
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
+# ${misc:Depends}
+#Provides: ucs-test-module
+#Description: Test scripts for UCS@school.
+# This package includes the test-cases for UCS@school.
 
 Package: ucs-test-modules-all
 Architecture: all
-Depends: ucs-test-framework,
+Depends:
  ucs-test-base,
- ucs-test-quota,
- ucs-test-ldap,
- ucs-test-dns,
- ucs-test-mail,
- ucs-test-kolab,
- ucs-test-iptables,
- ucs-test-samba,
- ucs-test-pkgdb,
- ucs-test-udm-dns,
- ucs-test-udm-computers,
- ucs-test-udm-containers,
- ucs-test-kolab,
+# ucs-test-quota,
+# ucs-test-ldap,
+# ucs-test-dns,
+# ucs-test-mail,
+# ucs-test-kolab,
+# ucs-test-iptables,
+# ucs-test-samba,
+# ucs-test-pkgdb,
+# ucs-test-udm-dns,
+# ucs-test-udm-computers,
+# ucs-test-udm-containers,
+# ucs-test-kolab,
  ucs-test-updater,
- ucs-test-udm-extendedattribute,
- ucs-test-udm-customattribute,
- ucs-test-udm-dhcp,
- ucs-test-dhcp,
+# ucs-test-udm-extendedattribute,
+# ucs-test-udm-customattribute,
+# ucs-test-udm-dhcp,
+# ucs-test-dhcp,
  ucs-test-nagios,
- ucs-test-apache,
- ucs-test-udm-general,
- ucs-test-udm-users,
- ucs-test-udm-groups,
- ucs-test-system-setup,
- ucs-test-udm-net,
+# ucs-test-apache,
+# ucs-test-udm-general,
+# ucs-test-udm-users,
+# ucs-test-udm-groups,
+# ucs-test-system-setup,
+# ucs-test-udm-net,
  ucs-test-ucr,
- ucs-test-ad-connector,
- ucs-test-ucsschool,
- ucs-test-login
+# ucs-test-ad-connector,
+# ucs-test-ucsschool,
+# ucs-test-login
 Description: UCS test environment meta package
  This package depends on all other tests of UCS test.
