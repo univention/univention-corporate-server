@@ -18,6 +18,8 @@ print '\tlisten-on-v6 { %s; };' % val
 
 @!@
 if configRegistry.get('dns/forwarder1') or configRegistry.get('dns/forwarder2') or configRegistry.get('dns/forwarder3'):
+	print '\n# Found a forwarder in ucr variables, using forwarder in zone ".".'
+	print '# Ignoring any setting of dns/fakeroot.'
 	print 'zone "." {'
 	print '\ttype forward;'
 	print '\tforwarders {'
@@ -30,9 +32,19 @@ if configRegistry.get('dns/forwarder1') or configRegistry.get('dns/forwarder2') 
 	print '\t};'
 	print '};'
 elif configRegistry.is_true('dns/fakeroot', True):
+	print '\n# Found no forwarder in ucr variables.'
+	print '# dns/fakeroot is either missing or set to True.'
 	print 'zone "." {'
 	print '\ttype master;'
 	print '\tfile "/etc/bind/db.root.fake";'
+	print '};'
+else:
+	print '\n# Found no forwarder in ucr variables.'
+	print '# dns/fakeroot is set to False.'
+	print '# So setting a root zone "." of type "hint" with default root servers.'
+	print 'zone "." {'
+	print '\ttype hint;'
+	print '\tfile "/etc/bind/db.root";'
 	print '};'
 
 print '''dlz "samba4.zone" {
