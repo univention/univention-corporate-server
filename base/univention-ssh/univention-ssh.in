@@ -98,7 +98,7 @@ def display_help(out=sys.stdout):
 		Copyright (c) 2001-2011 Univention GmbH, Germany
 
 		Syntax:
-		  %(cmd)s <pwd_file> [options] files [user@]host:[path]
+		  %(cmd)s [-timeout timeout] <pwd_file> [options] files [user@]host:[path]
 		  %(cmd)s [--help] [--version]
 
 		Parameters:
