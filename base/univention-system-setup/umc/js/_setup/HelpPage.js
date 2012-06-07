@@ -88,7 +88,7 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 			content: html
 		}];
 
-		form = new umc.widgets.Form({
+		var form = new umc.widgets.Form({
 			widgets: widgets,
 			layout: ['language', 'html'],
 			scrollable: true
