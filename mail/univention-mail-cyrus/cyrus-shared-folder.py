@@ -167,8 +167,8 @@ def handler(dn, new, old, command):
 					policy = fix_anyone_acl( new, email, policy )
 					setacl(name, email, policy)
 
-				if new.has_key('cyrus-userquota') and new['cyrus-userquota'][0]:
-					setquota(name, new['cyrus-userquota'][0])
+				if new.has_key('univentionMailUserQuota') and new['univentionMailUserQuota'][0]:
+					setquota(name, new['univentionMailUserQuota'][0])
 
 				listener.unsetuid()
 
@@ -199,11 +199,11 @@ def handler(dn, new, old, command):
 	if old and new:
 		name = '"%s"' % new['cn'][0]
 
-		if old.has_key('cyrus-userquota') and old['cyrus-userquota'][0] and not new.has_key('cyrus-userquota'):
+		if old.has_key('univentionMailUserQuota') and old['univentionMailUserQuota'][0] and not new.has_key('univentionMailUserQuota'):
 			setquota(name, "none")
 
-		if new.has_key('cyrus-userquota') and new['cyrus-userquota'][0]:
-			setquota(name, new['cyrus-userquota'][0])
+		if new.has_key('univentionMailUserQuota') and new['univentionMailUserQuota'][0]:
+			setquota(name, new['univentionMailUserQuota'][0])
 
 		if old.has_key('univentionMailACL') and old['univentionMailACL'] and not new.has_key('univentionMailACL'):
 			for line in old['univentionMailACL']:

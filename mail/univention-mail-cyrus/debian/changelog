@@ -1,3 +1,9 @@
+univention-mail-cyrus (4.0.37-1) unstable; urgency=low
+
+  * fixed quota in cyrus-shared-folder.py (Bug #26891)
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jun 2012 17:36:43 +0200
+
 univention-mail-cyrus (4.0.36-1) unstable; urgency=low
 
   * new ucr var mail/cyrus/mailnotifier for imapd.conf:mailnotifier
