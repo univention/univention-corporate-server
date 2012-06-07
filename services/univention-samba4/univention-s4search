@@ -74,7 +74,7 @@ if ! [ "$credentials_given" = 'true' ]; then
 
 			## currently the password in the secrets.ldb is set to machine.secret only on provision host, so we need to look it up from the secrets.ldb
 			# sampassword=$(cat /etc/machine.secret)
-			sampassword=$(ldbsearch -H /var/lib/samba/private/secrets.ldb samAccountName="${hostname}\$" secret | sed -n 's/secret: \(.*\)/\1/p')
+			sampassword=$(ldbsearch -H /var/lib/samba/private/secrets.ldb samAccountName="${hostname}\$" secret | ldapsearch-wrapper | sed -n 's/secret: \(.*\)/\1/p')
 			samaccount="${windows_domain}/${hostname}\$"
 
 		fi

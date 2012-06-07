@@ -1,3 +1,10 @@
+univention-samba4 (1.0.142-1) unstable; urgency=low
+
+  * Fix fetching the machine secret for search (Bug #27480)
+  * Avoid LDAP redirects for ldapmodify (Bug #27494)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Jun 2012 15:01:58 +0200
+
 univention-samba4 (1.0.141-1) unstable; urgency=low
 
   * also modify ext2 partitions in mount_extfs_with_user_xattr.py (Bug #27466) 

@@ -237,14 +237,14 @@ else
 	reverse_ldif_sambaGroupType_2_to_4="${ldif_sambaGroupType_2_to_4//sambaGroupType: 4/sambaGroupType: 2}"
 
 	reverse_sambaGroupType_change() {
-		echo "$reverse_ldif_sambaGroupType_5_to_4" | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
-		echo "$reverse_ldif_sambaGroupType_2_to_4" | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
+		echo "$reverse_ldif_sambaGroupType_5_to_4" | ldapmodify -h "$ldap_master" -p "$ldap_master_port" -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
+		echo "$reverse_ldif_sambaGroupType_2_to_4" | ldapmodify -h "$ldap_master" -p "$ldap_master_port" -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
 	}
 	trap reverse_sambaGroupType_change EXIT
 
 	## now adjust sambaGroupType 2 and 5
-	echo "$ldif_sambaGroupType_5_to_4" | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
-	echo "$ldif_sambaGroupType_2_to_4" | ldapmodify -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
+	echo "$ldif_sambaGroupType_5_to_4" | ldapmodify -h "$ldap_master" -p "$ldap_master_port" -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
+	echo "$ldif_sambaGroupType_2_to_4" | ldapmodify -h "$ldap_master" -p "$ldap_master_port" -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
 
 	## commit samba3 smb.conf
 	mkdir -p /var/lib/samba3/etc/samba
