@@ -48,7 +48,7 @@ root_fs=`python2.6 /sbin/univention-config-registry get installer/device/0/fs`
 if [ "$root_fs" = "xfs" ]; then
 	options="defaults"
 else
-	if [ "$root_fs" = "ext3" -o "$root_fs" = "ext4" ]; then
+	if [ "$root_fs" = "ext3" -o "$root_fs" = "ext4" -o "$root_fs" = "ext2" ]; then
 		options="acl,errors=remount-ro"
 	else
 		options="errors=remount-ro"
@@ -78,7 +78,7 @@ cat >>/instmnt/etc/fstab <<__EOT__
 $device  none 	swap	sw 0	0
 __EOT__
 	fi
-	if [ "$fs" = "ext3" -o "$fs" = "ext4" ]; then
+	if [ "$fs" = "ext3" -o "$fs" = "ext4" -o "$fs" = "ext2" ]; then
 		acl=",acl"
 	else
 		acl=""

@@ -1,3 +1,9 @@
+univention-installer (7.0.159-1) unstable; urgency=low
+
+  * add mount option acl for ext2 partitions in /etc/fstab (Bug #27466) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jun 2012 13:18:39 +0200
+
 univention-installer (7.0.158-1) unstable; urgency=low
 
   * add mount option acl for ext4 partitions in /etc/fstab (Bug #27466)
