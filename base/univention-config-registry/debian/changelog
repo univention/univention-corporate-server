@@ -1,3 +1,10 @@
+univention-config-registry (7.0.31-1) unstable; urgency=low
+
+  * added /etc/univention/templates/scripts/full_path_to_file
+    support for multifile templates (Bug #27510)
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jun 2012 16:34:44 +0200
+
 univention-config-registry (7.0.30-1) unstable; urgency=low
 
   * Do not redirect stdout to /dev/null when executing scripts (Bug #26840)

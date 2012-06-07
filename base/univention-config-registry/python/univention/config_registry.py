@@ -569,6 +569,11 @@ class configHandlerMultifile(configHandlerDiverting):
 			to_fp.write(filter(from_fp.read(), ucr, srcfiles = self.from_files, opts = filter_opts))
 
 		self._set_perm(st)
+		to_fp.close()
+
+		script_file = os.path.join(script_dir, self.to_file.strip("/"))
+		if os.path.isfile(script_file):
+			runScript(script_file, 'postinst', changed)
 
 	def need_divert(self):
 		"""Diversion is needed when at least one multifile and one subfile definition exists."""

@@ -78,6 +78,11 @@ Each time one of the listed UCR variables gets changed, the Multifile will be re
 .P
 The sub-template files are scanned for variable substitutions using the \fB@%@\fP\fIvariable\fP\fB@%@\fP syntax, which are automatically registered with the multifile entry.
 Additional variables can be explicitly registered using the \fBVariables\fP statement, one variable per statement.
+.fi
+.RE
+.P
+If a script \fI/etc/univention/templates/scripts/$full_path_to_file\fP exists, it will be called after the multifile has been created from the template.
+The script is called with the argument \fBpostinst\fP and receives the list of changes as \fIkey\fP\fB@%@\fP\fIold_value\fP\fB@%@\fP\fInew_value\fP on standard input.
 
 .SS Script file
 Each time one of the listed UCR variables gets changed, the script will be executed with the argument \fBgenerate\fP.
