@@ -36,6 +36,7 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.ExpandingTitlePane");
 dojo.require("umc.widgets.Text");
+dojo.require("umc.widgets.Form");
 
 dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
 	// summary:
@@ -75,15 +76,30 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 		}
 
 		// build up the widgets
+		// create the language combobox
+		var widgets = [{
+			type: 'LanguageBox',
+			name: 'language',
+			label: this._('Please choose the language of the wizard')
+		}, {
+			type: 'Text',
+			name: 'html',
+			label: '',
+			content: html
+		}];
+
+		form = new umc.widgets.Form({
+			widgets: widgets,
+			layout: ['language', 'html'],
+			scrollable: true
+		});
+
 		var pane = new umc.widgets.ExpandingTitlePane({
 			title: this._('Information about the initial configuration')
 		});
 		this.addChild(pane);
-		var text = new umc.widgets.Text({
-			content: html,
-			style: "overflow: auto;"
-		});
-		pane.addChild(text);
+
+		pane.addChild(form);
 	},
 
 	setValues: function(_vals) {

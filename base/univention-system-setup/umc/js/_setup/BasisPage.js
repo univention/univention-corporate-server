@@ -32,6 +32,7 @@ dojo.provide("umc.modules._setup.BasisPage");
 
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
+dojo.require("umc.dialog");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.TabContainer");
@@ -232,7 +233,26 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 
 	onValuesChanged: function() {
 		// event stub
+	},
+
+	validate: function() {
+		var empty_password = this._form.getWidget('root_password').get('value') == '';
+		if (empty_password) {
+			return umc.dialog.confirm(this._('Root password empty. Continue?'),
+				[{
+					label: this._('Cancel'),
+					name: 'cancel'
+				}, {
+					label: this._('Continue'),
+					name: 'continue'
+				}]
+			).then(function(response) {
+				return 'continue' == response;
+			});
+		}
+		return true;
 	}
+
 });
 
 

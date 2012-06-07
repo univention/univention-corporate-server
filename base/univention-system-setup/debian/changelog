@@ -1,3 +1,10 @@
+univention-system-setup (5.0.153-1) unstable; urgency=low
+
+  * added LanguageBox in HelpPage (Bug #26732)
+  * added confirm dialog for empty root password (Bug #26734)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Jun 2012 16:14:07 +0200
+
 univention-system-setup (5.0.152-1) unstable; urgency=low
 
   * fixed the connect on onValuesChanged in BasisPage (Bug #25710)

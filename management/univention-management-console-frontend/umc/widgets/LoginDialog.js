@@ -34,7 +34,7 @@ dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.LabelPane");
-dojo.require("umc.widgets.ComboBox");
+dojo.require("umc.widgets.LanguageBox");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("dijit.Dialog");
 
@@ -54,47 +54,10 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 
 	open: false,
 
-	availableLanguages: null,
-
 	postMixInProperties: function() {
-		dojo.mixin(this, {
-			availableLanguages: [
-				{id: 'de-DE', label: this._('German')},
-				{id: 'en-US', label: this._('English')}
-			]});
-
+		this.inherited(arguments);
 		this.containerNode = dojo.byId('umc_LoginDialog');
 		this.domNode = dojo.byId('umc_LoginWrapper');
-	},
-
-	defaultLang: function () {
-		// dojo.locale is set in the index.html either via the query string in the URL,
-		// via a cookie, or via dojo automatically
-		var lowercase_locale = dojo.locale.toLowerCase();
-		var exact_match = dojo.filter(this.availableLanguages, function(item) {
-			return lowercase_locale == item.id.toLowerCase();
-		});
-		if (exact_match.length > 0) {
-			return exact_match[0].id;
-		}
-
-		// fallbacks
-		var default_language = null;
-
-		// if dojo.locale is 'de' or 'de-XX' choose the first locale that starts with 'de'
-		var short_locale = lowercase_locale.slice(0, 2);
-		dojo.forEach(this.availableLanguages, function(lang) {
-			if (lang.id.toLowerCase().indexOf(short_locale) === 0) {
-				default_language = lang.id;
-				return false;
-			}
-		}, this);
-
-		if (null === default_language) {
-			default_language = 'en-US';
-		}
-
-		return default_language;
 	},
 
 	buildRendering: function() {
@@ -117,13 +80,8 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		});
 		this._text.placeAt(this.containerNode, 'first');
 
-		// create the language combobox
-		var default_lang = this.defaultLang();
-		this._languageBox = new umc.widgets.ComboBox({
-			staticValues: this.availableLanguages,
-			value: default_lang,
-			sizeClass: null
-		});
+		// create the language_combobox
+		this._languageBox = new umc.widgets.LanguageBox({});
 		this._languageLabel = new umc.widgets.LabelPane({
 			label: this._('Language'),
 			content: this._languageBox
@@ -132,16 +90,6 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		this._languageBox.startup();
 		this._languageLabel.startup();
 		this._languageLabel.placeAt('umc_LoginDialog_FormContainer');
-		// register onchange event
-		this.connect(this._languageBox, 'onChange', function(lang) {
-			if (lang != dojo.locale) {
-				// reload the page when a different language is selected
-				var query = dojo.queryToObject(window.location.search.substring(1));
-				query.lang = lang;
-				dojo.cookie('UMCLang', query.lang, { expires: 100, path: '/' });
-				window.location.search = '?' + dojo.objectToQuery(query);
-			}
-		});
 		// automatically resize the DialogUnderlay container
 		this.connect(window, 'onresize', function() {
 			if (dijit._DialogLevelManager.isTop(this)) {

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.367-1) unstable; urgency=low
+
+  * refactored LoginDialog (extracted LanguageBox); for Bug #26732
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Jun 2012 15:43:53 +0200
+
 univention-management-console-frontend (1.0.366-1) unstable; urgency=low
 
   * Form: Also clear _loadedID on clearFormValues (Bug #26540)

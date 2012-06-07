@@ -47,11 +47,11 @@ class Instance(umcm.Base):
 		if request.options['action'] == 'halt':
 			do = 'h'
 			target = _('The system is going down for system halt NOW '
-			           'with following message: ')
+			           'with following message(s): ')
 		elif request.options['action'] == 'reboot':
 			do = 'r'
-			target = _('The system is going down for reboot NOW '
-			           'with following message: ')
+			target = _('The system is going down for reboot NOW!!! '
+			           'with following message(s): ')
 
 		unicode_message = '%s%s' % (target, request.options['message'])
 		message = unicode_message.encode('utf-8')

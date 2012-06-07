@@ -138,7 +138,14 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 							while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
 								nextpage += 1;
 							}
-							this.selectChild(this._pages[nextpage]);
+							var current_page = this._pages[nextpage - 1];
+							dojo.when(current_page.validate === undefined || current_page.validate(),
+								dojo.hitch(this, function(value) {
+									if (value) {
+										this.selectChild(this._pages[nextpage]);
+									}
+								})
+							);
 						})
 					});
 				}
