@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
+#!/bin/bash
 #
 # Univention Mail Postfix
 #  call postmap on transport map and reload postfix
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
-
-def handler(configRegistry, changes):
-	os.system('/usr/sbin/postmap /etc/postfix/transport')
+postmap /etc/postfix/transport

@@ -134,11 +134,6 @@ Type: module
 Module: create-archivefolder.py
 Variables: mail/archivefolder
 
-Type: module
-Module: mail_hosteddomains.py
-Variables: mail/hosteddomains
-Variables: mail/maps/transport/.*
-
 Type: multifile
 Multifile: etc/postfix/ldap.groups
 Variables: mail/postfix/virtual/.*

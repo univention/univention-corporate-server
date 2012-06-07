@@ -15,7 +15,7 @@ Depends: ${misc:Depends},
  sasl2-bin,
  libpam-univentionmailcyrus,
  univention-base-files,
- univention-config-registry
+ univention-config-registry (>= 7.0.31-1)
 Conflicts: univention-mail,
  exim4,
  exim4-base,
