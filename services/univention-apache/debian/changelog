@@ -1,3 +1,18 @@
+univention-apache (5.0.8-3) unstable; urgency=low
+
+  * CVE-2012-0216: Remove "Alias /doc /usr/share/doc" from the default virtual
+    hosts' config files.
+    If scripting modules like mod_php or mod_rivet are enabled on systems
+    where either 1) some frontend server forwards connections to an apache2
+    backend server on the localhost address, or 2) the machine running
+    apache2 is also used for web browsing, this could allow a remote
+    attacker to execute example scripts stored under /usr/share/doc.
+    Depending on the installed packages, this could lead to issues like cross
+    site scripting, code execution, or leakage of sensitive data.
+    (Bug #25471)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 05 Jun 2012 12:41:16 +0200
+
 univention-apache (5.0.8-2) unstable; urgency=low
 
   * added UCR variables apache2/ssl/certificate and apache2/ssl/key 

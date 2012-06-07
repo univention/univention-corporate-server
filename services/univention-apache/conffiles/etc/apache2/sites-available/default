@@ -25,15 +25,6 @@ ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
 	Allow from all
 </Directory>
 
-Alias /doc/ "/usr/share/doc/"
-<Directory "/usr/share/doc/">
-Options Indexes MultiViews FollowSymLinks
-AllowOverride None
-Order deny,allow
-Deny from all
-Allow from 127.0.0.0/255.0.0.0 ::1/128
-</Directory>
-
 <Directory /var/www/>
 	Options Indexes FollowSymLinks MultiViews
 	@!@
