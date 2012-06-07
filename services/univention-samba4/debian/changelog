@@ -1,3 +1,9 @@
+univention-samba4 (1.0.141-1) unstable; urgency=low
+
+  * also modify ext2 partitions in mount_extfs_with_user_xattr.py (Bug #27466) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jun 2012 14:38:05 +0200
+
 univention-samba4 (1.0.140-5) unstable; urgency=low
 
   * fixed unexpected settngs of ucr variables (Bug #26303)

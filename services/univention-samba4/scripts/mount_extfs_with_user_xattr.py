@@ -45,7 +45,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-"""Set user_xattr option on ext3/ext4 filesystems, remount if necessary"""
+"""Set user_xattr option on ext2/ext3/ext4 filesystems, remount if necessary"""
 
 from univention.lib import fstab
 import subprocess
@@ -80,7 +80,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 			else:
 				print 'Device could not be found: %s' % device
 	else:
-		for fstype in ('ext3', 'ext4'):
+		for fstype in ('ext2', 'ext3', 'ext4'):
 			for fstab_partition in fs.get(fstype, ignore_root=False):
 				target_partitions.append(fstab_partition)
 
