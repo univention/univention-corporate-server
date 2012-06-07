@@ -1,3 +1,19 @@
+univention-network-manager (3.0.14-1) unstable; urgency=low
+
+  * Added UCRV to enable and handle DDNS in dhclient.conf (Bug: #24282)
+    This patch was written by Roman Asendorf and applied by Juergen Kahrs
+    while working on Bug #24282.
+  * Renamed path etc/dhcp3 in original patch to etc/dhcp to make it fit.
+  * conffiles/etc/dhcp/dhclient.conf:
+    Used configRegistry.is_true('dhclient/options/ddns', False) for reading.
+  * Updated version number of original patch from 1.1.0.1 to 3.0.14-1.
+  * Updated Copyright notes from 2011 to 2012 in dozens of files.
+  * debian/univention-ifplugd.univention-config-registry,
+    debian/univention-network-manager.univention-config-registry:
+    Added hostname and domainname to keep ucslint satisfied.
+
+ -- Roman Asendorf <asendorf@univention.de>  Tue, 01 Nov 2011 10:31:37 +0100
+
 univention-network-manager (3.0.13-1) unstable; urgency=low
 
   * Set execute permissions to etc/network/if-pre-up.d/10_dhclientconf

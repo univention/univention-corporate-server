@@ -2,7 +2,11 @@ Type: file
 File: etc/dhcp/dhclient.conf
 Variables: dhclient/options/timeout
 Variables: dhclient/options/retry
+Variables: dhclient/options/ddns
+Variables: dhclient/options/ddns/zone
 Variables: dhclient/linklocal/fallback
+Variables: hostname
+Variables: domainname
 
 Type: file
 File: etc/default/ifplugd

@@ -33,3 +33,15 @@ Description[de]=Definiert ob eine Link Local IP Adresse konfiguriert wird, wenn 
 Description[en]=Defines whether a link local IP address is configured if no IP address could be obtained via DHCP (default: true)
 Type=str
 Categories=system-base
+
+[dhclient/options/ddns]
+Description[de]=Aktiviert DDNS per DHCP für externe DNS-Dienste [disabled]
+Description[en]=Activates DDNS via DHCP for external DNS-Services [disabled]
+Type=bool
+Categories=system-base
+
+[dhclient/options/ddns/zone]
+Description[de]=Definiert die DNS Zone, die bei aktiviertem DDNS per DHCP verwendet werden soll [domainname]
+Description[en]=Defines the DNS Zone which will be updated when DDNS via DHCP is enabled [domainname]
+Type=str
+Categories=system-base
