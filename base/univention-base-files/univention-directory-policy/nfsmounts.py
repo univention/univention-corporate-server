@@ -69,7 +69,7 @@ def query_policy(dn):
 		p = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', dn], shell=False, stdout=subprocess.PIPE)
 		stdout, stderr = p.communicate()
 	except OSError, e:
-		exit(result, "FAIL: failed to execute `%s'" % policy)
+		exit(1, "FAIL: failed to execute `univention_policy_result %s'" % dn)
 	for line in stdout.splitlines():
 		line = line.rstrip('\n')
 		k, v = line.split('=', 1)
