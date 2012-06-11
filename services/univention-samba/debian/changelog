@@ -1,3 +1,10 @@
+univention-samba (6.0.35-1) unstable; urgency=low
+
+  * samba local config: support setting printer and share configuration
+    for hosts; Bug #26899
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 11 Jun 2012 11:09:48 +0200
+
 univention-samba (6.0.34-3) unstable; urgency=low
 
   * Usershares can now be configured with UCR (Bug #19019)
