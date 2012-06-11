@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -191,6 +191,11 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 			}
 			else {
 				this.set('data', null);
+				var error = umc.tools.parseError(data);
+				if (200 !== error.status) {
+					umc.dialog.alert(error.message);
+					this.onError();
+				}
 			}
 			this.onUploaded(this.data);
 			this._resetLabel();
@@ -280,6 +285,10 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	},
 
 	onUploaded: function(data) {
+		// event stub
+	},
+
+	onError: function(data) {
 		// event stub
 	},
 

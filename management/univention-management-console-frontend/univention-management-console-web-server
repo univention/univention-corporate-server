@@ -4,7 +4,7 @@
 # Univention Management Console
 #  UMC web server
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -434,6 +434,20 @@ class CPUpload( CPgeneric ):
 				# field is a FieldStorage object
 				store = ifield
 				tmpfile = _upload_manager.add( req.id, store )
+
+				# check if filesize is allowed
+				st = os.stat( tmpfile )
+				max_size = int( configRegistry.get( 'umc/server/upload/max', 64 ) ) * 1024
+				if st.st_size > max_size:
+					self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
+					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'The size of the uploaded file is too large')
+				# check if enough free space is available
+				min_size = int( configRegistry.get( 'umc/server/upload/min_free_space', 51200 ) ) * 1024
+				s = os.statvfs(tmpfile)
+				if ((s.f_bavail * s.f_frsize) / 1024) < min_size:
+					self._log('error', 'there is not enough free space to upload files')
+					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'There is not enough free space on disk')
+
 				options.append( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
 			elif isinstance(ifield, basestring):
 				# field is a string :)
