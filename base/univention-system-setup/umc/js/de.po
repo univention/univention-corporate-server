@@ -290,7 +290,7 @@ msgstr "Hilfe"
 
 #: umc/js/_setup/BasisPage.js:97
 msgid "Host and domain settings"
-msgstr "Recher- und Domänen-Einstellungen"
+msgstr "Rechner- und Domänen-Einstellungen"
 
 #: umc/js/_setup/NetworkPage.js:103
 msgid "IPv4 address"

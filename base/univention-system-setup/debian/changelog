@@ -1,3 +1,10 @@
+univention-system-setup (5.0.155-1) unstable; urgency=low
+
+  * Fix typo: Recher -> Rechner (Bug #26967)
+  * Use default style for Cancel button (Bug #26734)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Jun 2012 16:55:38 +0200
+
 univention-system-setup (5.0.154-1) unstable; urgency=low
 
   * Added white list and black list to filter pages in wizard mode
