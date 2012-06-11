@@ -57,6 +57,11 @@ eval "$(/usr/sbin/univention-config-registry shell)"
 # See how we were called.
 case "$1" in
   start)
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		source "/usr/share/univention-config-registry/init-autostart.lib"
+		check_autostart nfs-kernel-server nfs/autostart
+	fi
 	cd /	# daemons should have root dir as cwd
 	if egrep -q '^["]{0,1}/' /etc/exports
 	then

@@ -1,0 +1,6 @@
+	[nfs/autostart]
+	Description[de]=Automatischer Start des NFS-Dienstes beim Systemstart
+	Description[en]=Automatically start of the NFS-service at system startup
+	Type=str
+	Categories=nfs
+
