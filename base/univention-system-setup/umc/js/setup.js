@@ -72,7 +72,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.standby(true);
 
 		// load some ucr variables
-		var deferred_ucr = umc.tools.ucr(['server/role', 'system/setup/boot/select/role']);
+		var deferred_ucr = umc.tools.ucr(['server/role', 'system/setup/boot/select/role', 'system/setup/boot/pages/whitelist', 'system/setup/boot/pages/blacklist']);
 		// load system setup values (e.g. join status)
 		var deferred_variables = this.umcpCommand('setup/load');
 		// wait for deferred objects to be completed
@@ -113,6 +113,20 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				allPages.unshift('SystemRolePage');
 			}
 			allPages.unshift('HelpPage');
+
+			// alter pages by a whitelist and/or blacklist. the pages will be removed without any replacement.
+			// empty lists are treated as if they were not defined at all (show all pages). list names should
+			// match the names in this.pages and can be separated by a ' '.
+			var white_list = ucr['system/setup/boot/pages/whitelist'];
+			if (white_list) {
+				white_list = white_list.split(' ');
+				allPages = dojo.filter(allPages, function(page) { return white_list.indexOf(page) > -1 });
+			}
+			var black_list = ucr['system/setup/boot/pages/blacklist'];
+			if (black_list) {
+				black_list = black_list.split(' ');
+				allPages = dojo.filter(allPages, function(page) { return black_list.indexOf(page) == -1 });
+			}
 		}
 
 		if (this.wizard_mode) {

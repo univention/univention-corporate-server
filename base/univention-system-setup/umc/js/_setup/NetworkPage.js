@@ -122,6 +122,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		}, {
 			type: 'MultiInput',
 			name: 'interfaces_ipv6',
+			label: '', //this._('Interfaces'),
 			umcpCommand: this.umcpCommand,
 			subtypes: [{
 				type: 'ComboBox',

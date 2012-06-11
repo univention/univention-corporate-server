@@ -10,6 +10,18 @@ Description[de]=Aktiviert in Univention System Setup den optionalen Wechsel zu e
 Type=string
 Categories=system-base
 
+[system/setup/boot/pages/whitelist]
+Description[en]=Activates in Univention System Setup a whitelist for the setup pages HelpPage, SystemRolePage, LanguagePage, BasisPage, NetworkPage, CertificatePage, SoftwarePage used when the system has not been joined yet. If given, a blank seperates entries in the list. If not given, all pages are shown.
+Description[de]=Aktiviert in Univention System Setup eine Positivliste für die Setup-Seiten HelpPage, SystemRolePage, LanguagePage, BasisPage, NetworkPage, CertificatePage, SoftwarePage. Sie wird benutzt, wenn das System noch nicht gejoined wurde. Mehrere Einträge werden durch Leerzeichen getrennt. Wenn die Variable nicht gesetzt ist, werden alle Seiten gezeigt.
+Type=string
+Categories=system-base
+
+[system/setup/boot/pages/blacklist]
+Description[en]=Activates in Univention System Setup a blacklist for the setup pages when the system has not been joined yet. See system/setup/boot/pages/whitelist for further details.
+Description[de]=Aktiviert in Univention System Setup eine Negativliste for die Setup-Seiten, wenn das System noch nicht gejoined wurde. Weitere Erläuterungen unter system/setup/boot/pages/whitelist.
+Type=string
+Categories=system-base
+
 [system/setup/showloginmessage]
 Description[en]=Defines whether the system is given on the command line login a reference to the UMC initial configuration.
 Description[de]=Definiert, ob das System bei der Anmeldung auf der Kommandozeile einen Hinweis auf die UMC Erstkonfiguration gibt.
