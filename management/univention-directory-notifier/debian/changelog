@@ -1,3 +1,12 @@
+univention-directory-notifier (6.0.8-2) unstable; urgency=low
+
+  * src/network.c: Notifier opened socket only with AF_INET6
+    and failed if IPv6 was not available. Added some code that
+    first tries opening with AF_INET6 and (if that fails) tries
+    to open with AF_INET (Bug #26469).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Mon, 11 Jun 2012 11:25:06 +0200
+
 univention-directory-notifier (6.0.8-1) unstable; urgency=low
 
   * Restart notifier on update to 3.0 (Bug #24472)

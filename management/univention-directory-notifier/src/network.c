@@ -83,9 +83,20 @@ int network_create_socket( int port )
 	server_address.sin6_port = htons(port);
 
 	if( (bind(server_socketfd,(struct sockaddr*)&server_address,sizeof(server_address))) == -1) {
-		perror("bind");
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "bind failed, exit");
-		exit(1);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "bind cannot connect via AF_INET6, trying AF_INET");
+		close(server_socketfd);
+		struct sockaddr_in server_address;
+		server_socketfd = socket(PF_INET, SOCK_STREAM, 0);
+		i=1;
+		setsockopt(server_socketfd, SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i));
+		server_address.sin_family = AF_INET;
+		server_address.sin_addr.s_addr = htonl(INADDR_ANY);
+		server_address.sin_port = htons(port);
+		if( (bind(server_socketfd,(struct sockaddr*)&server_address,sizeof(server_address))) == -1) {
+			perror("bind");
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "bind failed with AF_INET6 and also with AF_INET, exit");
+			exit(1);
+		}
 	}
 
 	if( (listen(server_socketfd, 5)) == -1) {
