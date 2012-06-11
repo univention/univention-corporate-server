@@ -35,43 +35,69 @@ import os, sys
 import univention.config_registry_info as ucr_info
 from univention.debhelper import doIt, binary_packages
 
+def usage():
+	sys.stderr.write('''
+	univention-install-config-registry-info - install UCR variable description
+	into package build directories
+
+	univention-install-config-registry-info is a debhelper like programm that is
+	responsible for installing univention config registry (UCR) variable and cat‐
+	egory descriptions into etc/univention/registry.info/variables/ and /etc/uni‐
+	vention/registry.info/categories/ in the package build directory. The files
+	debian/PACKAGE.univention-config-registry-variables and debian/PACKAGE.uni‐
+	vention-config-registry-categories are installed.
+
+''')
+	sys.exit(1)
+
+
+
+
+
 if __name__ == '__main__':
+	for arg in sys.argv:
+		if arg == '--help' or arg == '-h':
+			usage()
+
 	info = ucr_info.ConfigRegistryInfo( install_mode = True )
-	for package in binary_packages():
-		# categories
-		source = os.path.join( 'debian', package + '.univention-config-registry-categories' )
-		if os.path.exists( source ):
-			info.read_categories( source )
-			failed = info.check_categories()
+	try:	
+		for package in binary_packages():
+			# categories
+			source = os.path.join( 'debian', package + '.univention-config-registry-categories' )
+			if os.path.exists( source ):
+				info.read_categories( source )
+				failed = info.check_categories()
+				if failed:
+					print >>sys.stderr, 'The following category definitions are invalid: %s' % \
+					  	  ', '.join( failed )
+					sys.exit( 1 )
+				dest_path = os.path.join( 'debian', package, ucr_info.ConfigRegistryInfo.BASE_DIR[ 1 : ],
+									  	  ucr_info.ConfigRegistryInfo.CATEGORIES )
+				dest = os.path.join( dest_path, package + '.cfg' )
+
+				doIt('install', '-m', '755', '-d', dest_path)
+				doIt('install', '-m', '644', source, dest)
+
+				real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR,
+										  	  ucr_info.ConfigRegistryInfo.CATEGORIES,
+										  	  package + '.cfg' )
+
+			# variables
+			source = os.path.join( 'debian', package + '.univention-config-registry-variables' )
+			if not os.path.exists( source ):
+				continue
+
+			info.read_variables( source )
+			failed = info.check_variables()
 			if failed:
-				print >>sys.stderr, 'The following category definitions are invalid: %s' % \
-					  ', '.join( failed )
+				print >>sys.stderr, 'The following variable definition are invalid: %s' % \
+				  	  ', '.join( failed )
 				sys.exit( 1 )
 			dest_path = os.path.join( 'debian', package, ucr_info.ConfigRegistryInfo.BASE_DIR[ 1 : ],
-									  ucr_info.ConfigRegistryInfo.CATEGORIES )
+								  	  ucr_info.ConfigRegistryInfo.VARIABLES )
 			dest = os.path.join( dest_path, package + '.cfg' )
 
 			doIt('install', '-m', '755', '-d', dest_path)
 			doIt('install', '-m', '644', source, dest)
-
-			real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR,
-										  ucr_info.ConfigRegistryInfo.CATEGORIES,
-										  package + '.cfg' )
-
-		# variables
-		source = os.path.join( 'debian', package + '.univention-config-registry-variables' )
-		if not os.path.exists( source ):
-			continue
-
-		info.read_variables( source )
-		failed = info.check_variables()
-		if failed:
-			print >>sys.stderr, 'The following variable definition are invalid: %s' % \
-				  ', '.join( failed )
-			sys.exit( 1 )
-		dest_path = os.path.join( 'debian', package, ucr_info.ConfigRegistryInfo.BASE_DIR[ 1 : ],
-								  ucr_info.ConfigRegistryInfo.VARIABLES )
-		dest = os.path.join( dest_path, package + '.cfg' )
-
-		doIt('install', '-m', '755', '-d', dest_path)
-		doIt('install', '-m', '644', source, dest)
+	except IOError:
+		usage()

@@ -40,6 +40,20 @@ try:
 except ImportError:
 	from pipes import quote
 
+def usage():
+	sys.stderr.write('''
+	univention-install-config-registry - install UCR template files into package
+	build directories
+	
+	univention-install-config-registry is  a  debhelper  like  programm  that  is
+	responsible  for  installing  template files using univention config registry
+	(UCR) variables into etc/univention/templates/ in the  package  build  direc‐
+	tory.  The  templates references by debian/PACKAGE.univention-config-registry
+	are installed.
+
+''')
+	sys.exit(1)
+
 def tmpDir(package):
 	return 'debian/'+package
 
@@ -154,8 +168,15 @@ def do_package(package):
 	doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7.0.25)");' % package)
 
 if __name__ == '__main__':
-	for package in binary_packages():
-		do_package(package)
+	for arg in sys.argv:
+		if arg == '--help' or arg == '-h':
+			usage()
+
+	try:
+		for package in binary_packages():
+			do_package(package)
+	except IOError:
+		usage()
 
 	doIt("univention-install-config-registry-info")
 	doIt("univention-install-service-info")
