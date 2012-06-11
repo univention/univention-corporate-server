@@ -619,6 +619,7 @@ def _doit(arglist):
 					if properties[name].multivalue:
 						if not input.has_key(name):
 							input[name]=[]
+							was_set=1
 						if value:
 							input[name].append(value)
 							was_set=1

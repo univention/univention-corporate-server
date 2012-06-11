@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.257-1) unstable; urgency=low
+
+  * don't show "No attribute with name <name> in this module" warning when 
+    emptying multivalues (Bug #18702)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 11 Jun 2012 11:34:49 +0200
+
 univention-directory-manager-modules (7.0.256-1) unstable; urgency=low
 
   * release ip/mac locks in simpleComputer (Bug #27270) 
