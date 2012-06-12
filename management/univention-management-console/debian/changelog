@@ -1,3 +1,9 @@
+univention-management-console (4.0.258-1) unstable; urgency=low
+
+  * update UCR variable with pyinotify when they change (Bug #27261)
+
+ -- Florian Best <best@univention.de>  Tue, 12 Jun 2012 16:08:56 +0200
+
 univention-management-console (4.0.257-1) unstable; urgency=low
 
   * src/univention/management/console/protocol/server.py:

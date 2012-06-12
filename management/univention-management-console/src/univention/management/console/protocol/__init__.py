@@ -3,7 +3,7 @@
 #
 # Univention Management Console
 #
-# Copyright 2006-2011 Univention GmbH
+# Copyright 2006-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

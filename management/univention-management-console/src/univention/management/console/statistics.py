@@ -3,7 +3,7 @@
 # Univention Management Console
 #  runtime statistics of the UMC server
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
