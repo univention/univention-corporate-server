@@ -12,6 +12,8 @@ import apt
 from time import time
 import logging
 import signal
+import select
+import errno
 try: # >= Python 2.5
 	from hashlib import md5
 except ImportError:
@@ -439,15 +441,43 @@ class TestCase(object):
 				print >>result.environment.log, '*** BEGIN *** %r ***' % (cmd,)
 				result.environment.log.flush()
 				if result.environment.interactive:
-					p = Popen(cmd, executable=self.exe.filename, close_fds=True, shell=False, cwd=dir)
+					p = Popen(cmd, executable=self.exe.filename, stdout=PIPE, stderr=PIPE, close_fds=True, shell=False, cwd=dir)
+					to_stdout, to_stderr = sys.stdout, sys.stderr
 				else:
 					devnull = open(os.path.devnull, 'r')
 					try:
-						p = Popen(cmd, executable=self.exe.filename, stdin=devnull, stdout=result.environment.log, stderr=STDOUT, close_fds=True, shell=False, cwd=dir, preexec_fn=prepare_child)
+						p = Popen(cmd, executable=self.exe.filename, stdin=devnull, stdout=PIPE, stderr=PIPE, close_fds=True, shell=False, cwd=dir, preexec_fn=prepare_child)
 					finally:
 						devnull.close()
-				stdout, stderr = p.communicate()
-				print >>result.environment.log, '*** END *** %d ***' % (p.returncode,)
+					to_stdout = to_stderr = result.environment.log
+
+				log_stdout, log_stderr = [], []
+				read_set = [p.stdout.fileno(), p.stderr.fileno()]
+				while read_set:
+					try:
+						rlist, wlist, elist = select.select(read_set, [], [])
+					except select.error, e:
+						if e.args[0] == errno.EINTR:
+							continue
+						raise
+					if p.stdout.fileno() in rlist:
+						data = p.stdout.read(1024)
+						if data == '':
+							read_set.remove(p.stdout.fileno())
+							p.stdout.close()
+						else:
+							to_stdout.write(data)
+							log_stdout.append(data)
+					if p.stderr.fileno() in rlist:
+						data = p.stderr.read(1024)
+						if data == '':
+							read_set.remove(p.stderr.fileno())
+							p.stderr.close()
+						else:
+							to_stderr.write(data)
+							log_stderr.append(data)
+				result.result = p.wait()
+				print >>result.environment.log, '*** END *** %d ***' % (result.result,)
 				result.environment.log.flush()
 			except OSError, e:
 				TestCase.logger.error('Failed to execute %r using %s in %s' % (cmd, self.exe, dir))
@@ -459,30 +489,29 @@ class TestCase(object):
 
 		time_end = time()
 
-		result.result = p.returncode
 		result.duration = int(time_end * 1000.0 - time_start * 1000.0)
-		TestCase.logger.info('Test %r using %s in %s returned %s in %s ms' % (cmd, self.exe, dir, p.returncode, result.duration))
-		if stdout:
-			result.attach('stdout', 'text/plain', stdout)
-		if stderr:
-			result.attach('stderr', 'text/plain', stderr)
-		if p.returncode == TestCodes.RESULT_OKAY:
+		TestCase.logger.info('Test %r using %s in %s returned %s in %s ms' % (cmd, self.exe, dir, result.result, result.duration))
+		if log_stdout:
+			result.attach('stdout', 'text/plain', ''.join(log_stdout))
+		if log_stderr:
+			result.attach('stderr', 'text/plain', ''.join(log_stderr))
+		if result.result == TestCodes.RESULT_OKAY:
 			result.reason = {
 					'fixed': TestCodes.REASON_FIXED_EXPECTED,
 					'found': TestCodes.REASON_FIXED_UNEXPECTED,
 					'run': TestCodes.REASON_OKAY,
-					}.get(self.versions.state, p.returncode)
-		elif p.returncode == TestCodes.RESULT_SKIP:
+					}.get(self.versions.state, result.result)
+		elif result.result == TestCodes.RESULT_SKIP:
 			result.reason = TestCodes.REASON_INTERNAL
 		else:
-			if p.returncode in TestResult.MESSAGE:
-				result.reason = p.returncode
+			if result.result in TestResult.MESSAGE:
+				result.reason = result.result
 			else:
 				result.reason = {
 						'fixed': TestCodes.REASON_FAIL_UNEXPECTED,
 						'found': TestCodes.REASON_FAIL_EXPECTED,
 						'run': TestCodes.REASON_FAIL,
-						}.get(self.versions.state, p.returncode)
+						}.get(self.versions.state, result.result)
 		result.eofs = TestCodes.EOFS.get(result.reason, 'E')
 
 class TestResult(TestCodes):
