@@ -528,6 +528,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 				else
 				{
 					tmp1 = this._("There are no errata updates available for this system.");
+					this._form.getWidget('errata_update_text2').set('content', null);
 					dojo.toggleClass(but.domNode,'dijitHidden',true);
 				}
 				this._form.getWidget('errata_update_text1').set('content',tmp1);

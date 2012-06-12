@@ -1,3 +1,9 @@
+univention-updater (7.0.162-1) unstable; urgency=low
+
+  * Reset errata update text after update (Bug #26245)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 12 Jun 2012 18:22:37 +0200
+
 univention-updater (7.0.161-1) unstable; urgency=low
 
   * delete /etc/cron.d/univention-shares in postup (Bug #24610) 
