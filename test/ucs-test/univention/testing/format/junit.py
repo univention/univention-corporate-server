@@ -16,12 +16,14 @@ class Junit(object):
 	"""
 	def __init__(self, stream=sys.stdout):
 		self.outdir = "test-reports"
+		self.section = ''
+		self.now = 0
 
 	def begin_run(self, environment, count=1):
 		pass
 
 	def begin_section(self, section):
-		pass
+		self.section = section
 
 	def begin_test(self, case, prefix=''):
 		self.now = datetime.today()
