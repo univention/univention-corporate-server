@@ -101,7 +101,7 @@ class Junit(object):
 				w.startElement('skipped', {})
 				try:
 					mime, content = result.artifacts['check']
-					msg = '\n'.join(content)
+					msg = '\n'.join(['%s' % (c,) for c in content])
 					w.characters(msg)
 				except KeyError, e:
 					pass

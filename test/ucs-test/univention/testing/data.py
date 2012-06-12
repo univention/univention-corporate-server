@@ -521,7 +521,7 @@ class TestResult(TestCodes):
 		self.environment = environment
 		self.result = -1
 		self.reason = None
-		self.duration = -1
+		self.duration = 0
 		self.artifacts = {}
 		self.condition = None
 		self.eofs = None
@@ -532,7 +532,7 @@ class TestResult(TestCodes):
 		print >>stream, 'Environment: %s' % (self.environment.hostname,)
 		print >>stream, 'Result: %d %s' % (self.result, self.eofs)
 		print >>stream, 'Reason: %s (%s)' % (self.reason, TestResult.MESSAGE.get(self.reason, ''))
-		print >>stream, 'Duration: %d' % (self.duration or -1,)
+		print >>stream, 'Duration: %d' % (self.duration or 0,)
 		for (id, (mime, content)) in self.artifacts.items():
 			print 'Artifact[%s]: %s %r' % (id, mime, content)
 
@@ -544,16 +544,19 @@ class TestResult(TestCodes):
 		"""Mark result as successful."""
 		self.result = TestCodes.RESULT_OKAY
 		self.reason = reason
+		self.eofs = 'O'
 
 	def fail(self, reason=TestCodes.REASON_FAIL):
 		"""Mark result as failed."""
 		self.result = TestCodes.RESULT_FAIL
 		self.reason = reason
+		self.eofs = 'F'
 
 	def skip(self, reason=TestCodes.REASON_INTERNAL):
 		"""Mark result as skipped."""
 		self.result = TestCodes.RESULT_SKIP
 		self.reason = self.reason or reason
+		self.eofs = 'S'
 
 	def check(self):
 		"""Test conditions to run test."""
