@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.369-1) unstable; urgency=low
+
+  * univention-management-console-web-server:
+    Changed host name that is used to connect with cherrpy.
+    "localhost" works with IPv6 and also IPv4 ("::" works with IPv6 only)
+    Bug #26470
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 12 Jun 2012 14:18:36 +0200
+
 univention-management-console-frontend (1.0.368-1) unstable; urgency=low
 
   * added filesize check for uploaded files (Bug #27415)
