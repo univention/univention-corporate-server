@@ -537,6 +537,18 @@ def get_components(role=None):
 			for jpackage in icategory['Packages']
 			if 'all' in jpackage['Possible'] or role in jpackage['Possible'] ]
 
+	# filter whitelisted packages
+	whitelist = ucr.get('system/setup/packages/whitelist')
+	if whitelist:
+		whitelist = whitelist.split(' ')
+		pkglist = [ipkg for ipkg in pkglist if all(jpkg in whitelist for jpkg in ipkg['Packages'])]
+
+	# filter blacklisted packages
+	blacklist = ucr.get('system/setup/packages/blacklist')
+	if blacklist:
+		blacklist = blacklist.split(' ')
+		pkglist = [ipkg for ipkg in pkglist if not any(jpkg in blacklist for jpkg in ipkg['Packages'])]
+
 	# generate a unique ID for each component
 	for ipkg in pkglist:
 		ipkg['Packages'].sort()

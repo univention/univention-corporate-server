@@ -10,6 +10,18 @@ Description[de]=Aktiviert in Univention System Setup den optionalen Wechsel zu e
 Type=string
 Categories=system-base
 
+[system/setup/packages/whitelist]
+Description[en]=Activates in Univention System Setup's SoftwarePage a whitelist for Software Components. The list should contain all internal package names of a component for it to be shown. If given, a blank seperates entries in the list. If not given, all components are shown.
+Description[de]=Aktiviert in Univention System Setup's Setup-Seite SoftwarePage eine Positivliste für Software Komponenten. Die Liste muss alle internen Paketnamen einer Komponente enthalten, damit diese angezeigt wird. Mehrere Einträge werden durch Leerzeichen getrennt. Wenn die Variable nicht gesetzt ist, werden alle Software Komponenten gezeigt.
+Type=string
+Categories=system-base
+
+[system/setup/packages/blacklist]
+Description[en]=Activates in Univention System Setup's SoftwarePage a blacklist for Software Components. The list should contain any internal package name of a component for it to be hidden. See system/setup/packages/whitelist for further details.
+Description[de]=Aktiviert in Univention System Setup's Setup-Seite SoftwarePage eine Negativliste für Software Komponenten. Die Liste muss einen internen Paketnamen einer Komponente enthalten, damit diese nicht angezeigt wird. Weitere Erläuterungen unter system/setup/packages/whitelist.
+Type=string
+Categories=system-base
+
 [system/setup/boot/pages/whitelist]
 Description[en]=Activates in Univention System Setup a whitelist for the setup pages HelpPage, SystemRolePage, LanguagePage, BasisPage, NetworkPage, CertificatePage, SoftwarePage used when the system has not been joined yet. If given, a blank seperates entries in the list. If not given, all pages are shown.
 Description[de]=Aktiviert in Univention System Setup eine Positivliste für die Setup-Seiten HelpPage, SystemRolePage, LanguagePage, BasisPage, NetworkPage, CertificatePage, SoftwarePage. Sie wird benutzt, wenn das System noch nicht gejoined wurde. Mehrere Einträge werden durch Leerzeichen getrennt. Wenn die Variable nicht gesetzt ist, werden alle Seiten gezeigt.

@@ -1,3 +1,10 @@
+univention-system-setup (5.0.157-1) unstable; urgency=low
+
+  * Added white an black list to filter Software Components
+  (Bug #27535). New UCR variables system/setup/packages/[white|black]list
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Jun 2012 09:34:08 +0200
+
 univention-system-setup (5.0.156-1) unstable; urgency=low
 
   * Do some more cleanups in setup-join.sh, restart nscd and commit PAM
