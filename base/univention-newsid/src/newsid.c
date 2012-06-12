@@ -55,7 +55,7 @@ char *sid_to_string(fstring sidstr_out, const DOM_SID *sid)
    * in a range of 2^48.
    */
   ia = (sid->id_auth[5]) +
-				(sid->id_auth[4] << 8 ) +
+    (sid->id_auth[4] << 8 ) +
     (sid->id_auth[3] << 16) +
     (sid->id_auth[2] << 24);
 
@@ -84,19 +84,19 @@ int main ( int argc, char * argv[] ) {
  
   
   if(argc >= 1) {
-				for(index_options=1;index_options<argc;index_options++) {        
-							 	if (strcmp(argv[index_options],"--help")==0 || strcmp(argv[index_options],"-h")==0) {
-										  help_flag=1;
-									} else {
-								    fprintf(stdout, "illegal option: %s\n",argv[index_options]);
-								    help_flag=1;
-								}
-				}
+    for(index_options=1;index_options<argc;index_options++) {        
+      if (strcmp(argv[index_options],"--help")==0 || strcmp(argv[index_options],"-h")==0) {
+        help_flag=1;
+      } else {
+        fprintf(stdout, "illegal option: %s\n",argv[index_options]);
+        help_flag=1;
+      }
+    }
   }
-  
+
   if(help_flag==1) {
-				fprintf(stdout,"%s",help_text);
-				exit(0);
+    fprintf(stdout,"%s",help_text);
+    exit(0);
   }
   
  
