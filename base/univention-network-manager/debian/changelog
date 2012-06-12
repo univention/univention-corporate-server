@@ -1,3 +1,9 @@
+univention-network-manager (3.0.16-1) unstable; urgency=low
+
+  * Use true as default for interfaces/restart/auto (Bug #26737)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jun 2012 08:12:06 +0200
+
 univention-network-manager (3.0.15-1) unstable; urgency=low
 
   * Overwrite dns/forwarder only if the nameserver settings were
