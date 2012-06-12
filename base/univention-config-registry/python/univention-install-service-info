@@ -47,12 +47,11 @@ def usage():
 	AGE.univention-service are installed.
 
 ''')
-	sys.exit(1)
 
 if __name__ == '__main__':
-	for arg in sys.argv:
-		if arg == '--help' or arg == '-h':
-			usage()
+	if '--help' in sys.argv or '-h' in sys.argv:
+		usage()
+		sys.exit(1)
 
 	info = us_info.ServiceInfo( install_mode = True )
 	try:
@@ -75,5 +74,6 @@ if __name__ == '__main__':
 
 			doIt('install', '-m', '755', '-d', dest_path)
 			doIt('install', '-m', '644', source, dest)
-	except IOError:
-		usage()
+	except IOError, e:
+		sys.stderr.write('%s\n' % e)
+		sys.exit(1)

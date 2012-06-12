@@ -52,7 +52,6 @@ def usage():
 	are installed.
 
 ''')
-	sys.exit(1)
 
 def tmpDir(package):
 	return 'debian/'+package
@@ -168,15 +167,16 @@ def do_package(package):
 	doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7.0.25)");' % package)
 
 if __name__ == '__main__':
-	for arg in sys.argv:
-		if arg == '--help' or arg == '-h':
-			usage()
+	if '--help' in sys.argv or '-h' in sys.argv:
+		usage()
+		sys.exit(1)
 
 	try:
 		for package in binary_packages():
 			do_package(package)
-	except IOError:
-		usage()
+	except IOError, e:
+		sys.stderr.write('%s\n' % e)
+		sys.exit(1)
 
 	doIt("univention-install-config-registry-info")
 	doIt("univention-install-service-info")
