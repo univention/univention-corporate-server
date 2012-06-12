@@ -36,7 +36,7 @@ import univention.config_registry_info as ucr_info
 from univention.debhelper import doIt, binary_packages
 
 def usage():
-	sys.stderr.write('''
+	print '''
 	univention-install-config-registry-info - install UCR variable description
 	into package build directories
 
@@ -47,7 +47,7 @@ def usage():
 	debian/PACKAGE.univention-config-registry-variables and debian/PACKAGE.uni‐
 	vention-config-registry-categories are installed.
 
-''')
+'''
 
 
 
@@ -98,5 +98,5 @@ if __name__ == '__main__':
 			doIt('install', '-m', '755', '-d', dest_path)
 			doIt('install', '-m', '644', source, dest)
 	except IOError, e:
-		sys.stderr.write('%s\n' % e)
+		print >> sys.stderr, e
 		sys.exit(1)

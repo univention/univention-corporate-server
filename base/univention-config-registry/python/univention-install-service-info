@@ -37,7 +37,7 @@ from univention.debhelper import doIt, binary_packages
 
 
 def usage():
-	sys.stderr.write('''
+	print '''
 	univention-install-service-info - install UCS service description files into
 	package build directories
 
@@ -46,7 +46,7 @@ def usage():
 	vice.info/services/ in the package build directory. The files debian/PACK‐
 	AGE.univention-service are installed.
 
-''')
+'''
 
 if __name__ == '__main__':
 	if '--help' in sys.argv or '-h' in sys.argv:
@@ -75,5 +75,5 @@ if __name__ == '__main__':
 			doIt('install', '-m', '755', '-d', dest_path)
 			doIt('install', '-m', '644', source, dest)
 	except IOError, e:
-		sys.stderr.write('%s\n' % e)
+		print >> sys.stderr, e
 		sys.exit(1)
