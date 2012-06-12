@@ -1,3 +1,11 @@
+univention-management-console (4.0.257-1) unstable; urgency=low
+
+  * src/univention/management/console/protocol/server.py:
+    Sockets are first opened with AF_INET6 and (if that fails)
+    with AF_INET;  Bug #26470
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 12 Jun 2012 11:00:59 +0200
+
 univention-management-console (4.0.256-1) unstable; urgency=low
 
   * set the environment variable LANG to locale/default; Bug #27256
