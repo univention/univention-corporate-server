@@ -452,7 +452,8 @@ class TestCase(object):
 					to_stdout = to_stderr = result.environment.log
 
 				log_stdout, log_stderr = [], []
-				read_set = [p.stdout.fileno(), p.stderr.fileno()]
+				fd_stdout, fd_stderr = p.stdout.fileno(), p.stderr.fileno()
+				read_set = [fd_stdout, fd_stderr]
 				while read_set:
 					try:
 						rlist, wlist, elist = select.select(read_set, [], [])
@@ -460,18 +461,18 @@ class TestCase(object):
 						if e.args[0] == errno.EINTR:
 							continue
 						raise
-					if p.stdout.fileno() in rlist:
+					if fd_stdout in rlist:
 						data = p.stdout.read(1024)
 						if data == '':
-							read_set.remove(p.stdout.fileno())
+							read_set.remove(fd_stdout)
 							p.stdout.close()
 						else:
 							to_stdout.write(data)
 							log_stdout.append(data)
-					if p.stderr.fileno() in rlist:
+					if fd_stderr in rlist:
 						data = p.stderr.read(1024)
 						if data == '':
-							read_set.remove(p.stderr.fileno())
+							read_set.remove(fd_stderr)
 							p.stderr.close()
 						else:
 							to_stderr.write(data)
