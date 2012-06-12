@@ -169,7 +169,7 @@ def do_package(package):
 if __name__ == '__main__':
 	if '--help' in sys.argv or '-h' in sys.argv:
 		usage()
-		sys.exit(1)
+		sys.exit(0)
 
 	try:
 		for package in binary_packages():

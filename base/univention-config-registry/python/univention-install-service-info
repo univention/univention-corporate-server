@@ -51,7 +51,7 @@ def usage():
 if __name__ == '__main__':
 	if '--help' in sys.argv or '-h' in sys.argv:
 		usage()
-		sys.exit(1)
+		sys.exit(0)
 
 	info = us_info.ServiceInfo( install_mode = True )
 	try:
