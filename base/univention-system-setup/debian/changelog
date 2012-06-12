@@ -1,3 +1,10 @@
+univention-system-setup (5.0.156-1) unstable; urgency=low
+
+  * Do some more cleanups in setup-join.sh, restart nscd and commit PAM
+    files (Bug #26846)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jun 2012 08:50:29 +0200
+
 univention-system-setup (5.0.155-1) unstable; urgency=low
 
   * Fix typo: Recher -> Rechner (Bug #26967)

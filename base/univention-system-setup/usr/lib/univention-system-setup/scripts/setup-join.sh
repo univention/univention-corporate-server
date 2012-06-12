@@ -210,6 +210,15 @@ startsite="$(ucr get apache2/startsite)"
 if [ "$startsite" = 'univention-management-console/?module=setup\&username=root' ]; then
 	ucr set apache2/startsite="$(ucr get system/setup/prev/apache2/startsite)"
 fi
+
+# Restart NSCD
+test -x /etc/init.d/nscd && invoke-rc.d nscd restart
+
+# Commit PAM files, workaround for
+#   https://forge.univention.org/bugzilla/show_bug.cgi?id=26846
+#   https://forge.univention.org/bugzilla/show_bug.cgi?id=27536
+ucr commit /etc/pam.d/*
+
 # Removed system setup login message
 ucr set system/setup/showloginmessage=false
 
