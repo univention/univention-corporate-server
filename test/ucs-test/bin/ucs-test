@@ -10,10 +10,7 @@ from time import time
 from optparse import OptionParser, OptionGroup
 from univention.testing.utils import *
 from univention.testing.data import *
-from univention.testing.format.tap import TAP as format_tap
-from univention.testing.format.text import Text as format_text
-from univention.testing.format.html import HTML as format_html
-from univention.testing.format.jenkins import Jenkins as format_jenkins
+import univention.testing.format
 
 def parse_options(sections):
 	usage = "Usage: %prog [options]"
@@ -45,7 +42,7 @@ def parse_options(sections):
 			dest="filter", action="store_true",
 			help="Hide tests with unmatched pre-conditions")
 	output_group.add_option("-F", "--format",
-			dest="format", action="store", choices=('text','tap','html','jenkins'), default='text',
+			dest="format", action="store", choices=univention.testing.format.FORMATS, default='text',
 			help="Select output format [%default]")
 	output_group.add_option("-v", "--verbose",
 			dest="verbose", action="count",
@@ -69,7 +66,8 @@ def main():
 
 	(options, args) = parse_options(all_sections.keys())
 
-	format = globals()['format_%s' % (options.format,)]()
+	formatter = getattr(univention.testing.format, 'format_%s' % (options.format,))
+	format = formatter()
 	setup_environment()
 	setup_debug(options.verbose)
 	global logger
