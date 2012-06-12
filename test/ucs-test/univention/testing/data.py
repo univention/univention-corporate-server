@@ -483,6 +483,7 @@ class TestCase(object):
 						'found': TestCodes.REASON_FAIL_EXPECTED,
 						'run': TestCodes.REASON_FAIL,
 						}.get(self.versions.state, p.returncode)
+		result.eofs = TestCodes.EOFS.get(result.reason, 'E')
 
 class TestResult(TestCodes):
 	def __init__(self, case, environment=None):
@@ -493,12 +494,13 @@ class TestResult(TestCodes):
 		self.duration = -1
 		self.artifacts = {}
 		self.condition = None
+		self.eofs = None
 
 	def dump(self, stream=sys.stdout):
 		"""Dump test result data."""
 		print >>stream, 'Case: %s' % (self.case.id,)
 		print >>stream, 'Environment: %s' % (self.environment.hostname,)
-		print >>stream, 'Result: %d' % (self.result,)
+		print >>stream, 'Result: %d %s' % (self.result, self.eofs)
 		print >>stream, 'Reason: %s (%s)' % (self.reason, TestResult.MESSAGE.get(self.reason, ''))
 		print >>stream, 'Duration: %d' % (self.duration or -1,)
 		for (id, (mime, content)) in self.artifacts.items():
