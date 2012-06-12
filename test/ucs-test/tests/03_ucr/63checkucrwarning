@@ -6,6 +6,7 @@
 import os
 import subprocess
 import sys
+from univention.debhelper import parseRfc822
 
 BASE = '/etc/univention/templates/info'
 WHITELIST = set([
@@ -39,10 +40,22 @@ message_line = "Warning: This\|but can be overridden via univention-config-regis
 
 files = set()
 for info in os.listdir(BASE):
-	for line in open(os.path.join(BASE, info)):
-		if line.startswith('File: ') or line.startswith('Multifile: '):
-			fn = '/' + line.strip().split(': ', 1)[1]
-			files.add(fn)
+	if not info.endswith('.info'):
+		continue
+	fn = os.path.join(BASE, info)
+	f = open(fn, 'r')
+	try:
+		data = f.read()
+	finally:
+		f.close()
+	for section in parseRfc822(data):
+		if section['Type'] == 'file':
+			fn = '/%{File}s' % section
+		elif section['Type'] == 'multifile':
+			fn = '/%{Multiile}s' % section
+		else:
+			continue
+		files.add(fn)
 files -= set(WHITELIST)
 
 missing_header_files = False
