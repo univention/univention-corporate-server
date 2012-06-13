@@ -4,7 +4,6 @@
 # UCS Testrunner - run UCS test in sane environment
 #
 import sys
-import logging
 from optparse import OptionParser
 from univention.testing.utils import setup_environment, setup_debug
 from univention.testing.data import *
