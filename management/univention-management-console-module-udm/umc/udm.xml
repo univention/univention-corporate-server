@@ -51,10 +51,10 @@
 	  <name>Navigation</name>
 	  <description>Browsing the LDAP directory</description>
 	</flavor>
-<!--	<flavor icon="udm-self" id="users/self">
-	  <name>My account</name>
+	<flavor icon="udm-self" id="users/self">
+	  <name>Change Password</name>
 	  <description>Settings for the personal account</description>
-	</flavor> -->
+	</flavor> 
 	<categories>
 	  <category name="domain"/>
 	</categories>

@@ -93,8 +93,8 @@ msgstr "Univention Directory Manager"
 msgid "Users"
 msgstr "Benutzer"
 
-#~ msgid "My account"
-#~ msgstr "Mein Konto"
+msgid "Settings for the personal account"
+msgstr "Einstellungen für das persönliche Konto"
 
-#~ msgid "Settings for the personal account"
-#~ msgstr "Einstellungen für das persönliche Konto"
+msgid "Change Password"
+msgstr "Passwort ändern"
