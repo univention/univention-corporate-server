@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.370-1) unstable; urgency=low
+
+  * fixed error message parsing in umc.tools.parseError (Bug #27415)
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jun 2012 09:26:58 +0200
+
 univention-management-console-frontend (1.0.369-1) unstable; urgency=low
 
   * univention-management-console-web-server:

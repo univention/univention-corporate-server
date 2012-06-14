@@ -462,7 +462,7 @@ dojo.mixin(umc.tools, {
 			jsonResponse = jsonResponse.replace(/\n/g, '<br>');
 			var response = dojo.fromJson(jsonResponse);
 			status = parseInt(dojo.getObject('status', false, response) || error.status, 10) || status;
-			message = dojo.getObject('message', false, response) || '';
+			message = dojo.getObject('message', false, response) || error.message || '';
 		}
 		catch (_err) { }
 
