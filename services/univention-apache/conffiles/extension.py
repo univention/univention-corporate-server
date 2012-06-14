@@ -4,7 +4,7 @@
 #  baseconfig module: modifies the memory limit for PHP applications run
 #  by apache
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

@@ -43,10 +43,13 @@ fi
 
 univention-config-registry set apache2/autostart?"yes"
 univention-config-registry set apache2/loglevel?"warn"
-univention-config-registry set apache2/startsite?"ucs-overview/"
 univention-config-registry set apache2/documentroot?"/var/www/"
 univention-config-registry set apache2/maxclients?150
 univention-config-registry set mail/alias/webmaster?root
+univention-config-registry set apache2/startsite?"ucs-overview/"
+if [ "$(univention-config-registry get apache2/startsite)" = "ucs-overview/de.html" ]; then
+	univention-config-registry set apache2/startsite="ucs-overview/"
+fi
 
 # configure firewall
 ucr set security/packetfilter/package/univention-apache/tcp/80/all=ACCEPT \

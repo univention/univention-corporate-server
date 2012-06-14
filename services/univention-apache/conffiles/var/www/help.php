@@ -4,7 +4,7 @@
  * Univention Webui
  *  help.php
  *
- * Copyright 2009-2010 Univention GmbH
+ * Copyright 2009-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
