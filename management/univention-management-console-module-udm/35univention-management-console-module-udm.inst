@@ -98,11 +98,6 @@ univention-directory-manager policies/umc create "$@" --ignore_exists \
 # append udm-self openeration set to default-udm-self policy
 umc_policy_append "default-udm-self" "udm-self"
 
-# link default-udm-self policy to base
-univention-directory-manager container/dc  modify "$@" \
-	--dn "$ldap_base" \
-	--policy-reference="cn=default-udm-self,cn=UMC,cn=policies,$ldap_base"
-
 joinscript_save_current_version
 
 exit 0

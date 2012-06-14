@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.280-2) unstable; urgency=low
+
+  * not link the udm-self policy automatically (Bug #27016)
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Jun 2012 11:36:13 +0200
+
 univention-management-console-module-udm (1.0.280-1) unstable; urgency=low
 
   * added users/self to allow useres to change their password (Bug #27016)
