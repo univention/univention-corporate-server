@@ -1,3 +1,9 @@
+univention-ldap (8.0.83-2) unstable; urgency=low
+
+  * reverted last commit (Bug #27016) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Jun 2012 11:19:15 +0200
+
 univention-ldap (8.0.83-1) unstable; urgency=low
 
   * new default "yes" for ldap/acl/user/password/change (Bug #27016) 

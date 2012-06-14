@@ -93,20 +93,13 @@ univention-config-registry set	ldap/debug/level?0 \
 								ldap/idletimeout?360 \
 								ldap/index/autorebuild?yes \
 								ldap/threads?16 \
-								ldap/acl/user/password/change?yes \
+								ldap/acl/user/password/change?no \
 								ldap/acl/slavepdc?yes \
 								ldap/acl/nestedgroups?yes \
 								ldap/database/bdb/db_config_options?"set_flags" \
 								ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE" \
 								ldap/autostart?yes \
 								ldap/maxopenfiles?8192 # Bug #17705
-
-# change ldap/acl/user/password/change default to "yes" for this update
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.83 ; then
-	if [ "$(univention-config-registry get ldap/acl/user/password/change)" = "no" ]; then
-		univention-config-registry set ldap/acl/user/password/change=yes
-	fi
-fi
 
 # UDM Property Attributes
 udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"
