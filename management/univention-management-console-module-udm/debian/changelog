@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.281-1) unstable; urgency=low
+
+  * display message when an object could not be removed (Bug #27087)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 14 Jun 2012 12:26:58 +0200
+
 univention-management-console-module-udm (1.0.280-2) unstable; urgency=low
 
   * not link the udm-self policy automatically (Bug #27016)

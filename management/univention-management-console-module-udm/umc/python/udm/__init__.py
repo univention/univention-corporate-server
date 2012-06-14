@@ -336,6 +336,8 @@ class Instance( Base ):
 				except UDM_Error, e:
 					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
+			return result
+
 		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()

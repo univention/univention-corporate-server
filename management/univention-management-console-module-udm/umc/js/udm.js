@@ -1244,7 +1244,7 @@ dojo.declare("umc.modules.udm", [ umc.widgets.Module, umc.widgets._WidgetsInWidg
 				// see whether all objects could be removed successfully
 				var success = true;
 				var message = '<p>' + this._('The following object(s) could not be deleted:') + '</p><ul>';
-				dojo.forEach(data.result, function(iresult) {
+				dojo.forEach(data, function(iresult) {
 					if (!iresult.success) {
 						success = false;
 						message += '<li>' + iresult.$dn$ + ': ' + iresult.details;
