@@ -49,21 +49,25 @@ umc_operation_create "ipchange" "IP change for servers" "" "ip/change"
 for name in 'default-slave-umc' 'default-backup-umc' 'default-computers-umc'; do
 	udm policies/umc create "$@" --ignore_exists --set "name=$name" --position "cn=UMC,cn=policies,$ldap_base"
 	umc_policy_append "$name" "ipchange"
+done
 
-if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
-	# remove old "default-server-umc" policy
-	udm policies/umc remove "$@" --dn "cn=default-server-umc,cn=UMC,cn=policies,$ldap_base"
-
+# update from version 1: adjust policy references
+if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
 	# remove old references
 	for g in "DC Backup Hosts" "DC Slave Hosts" "Computers"; do
 		udm groups/group modify "$@" --dn "cn=$g,cn=groups,$ldap_base" --policy-dereference "cn=default-server-umc,cn=UMC,cn=policies,$ldap_base"
 	done
+
+	# remove old "default-server-umc" policy
+	udm policies/umc remove "$@" --dn "cn=default-server-umc,cn=UMC,cn=policies,$ldap_base"
 fi
 
-# append policies to server groups
-udm groups/group modify "$@" --dn "cn=DC Backup Hosts,cn=groups,$ldap_base" --policy-reference "cn=default-backup-umc,cn=UMC,cn=policies,$ldap_base"
-udm groups/group modify "$@" --dn "cn=DC Slave Hosts,cn=groups,$ldap_base" --policy-reference "cn=default-slave-umc,cn=UMC,cn=policies,$ldap_base"
-udm groups/group modify "$@" --dn "cn=Computers,cn=groups,$ldap_base" --policy-reference "cn=default-computers-umc,cn=UMC,cn=policies,$ldap_base"
+if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
+	# append policies to server groups at first installation or during upgrade from version 1
+	udm groups/group modify "$@" --dn "cn=DC Backup Hosts,cn=groups,$ldap_base" --policy-reference "cn=default-backup-umc,cn=UMC,cn=policies,$ldap_base"
+	udm groups/group modify "$@" --dn "cn=DC Slave Hosts,cn=groups,$ldap_base" --policy-reference "cn=default-slave-umc,cn=UMC,cn=policies,$ldap_base"
+	udm groups/group modify "$@" --dn "cn=Computers,cn=groups,$ldap_base" --policy-reference "cn=default-computers-umc,cn=UMC,cn=policies,$ldap_base"
+fi
 
 joinscript_save_current_version
 
