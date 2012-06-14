@@ -1,3 +1,10 @@
+univention-system-setup (5.0.159-1) unstable; urgency=low
+
+  * Partly reverted 5.0.153-1. Use flags to change the language.
+  (Bug #26732)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Jun 2012 18:56:39 +0200
+
 univention-system-setup (5.0.158-2) unstable; urgency=low
 
   * fixed deprecated warning (Bug #26061)

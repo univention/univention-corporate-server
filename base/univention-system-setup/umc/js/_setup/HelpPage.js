@@ -37,8 +37,9 @@ dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.ExpandingTitlePane");
 dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
+dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin, umc.widgets._WidgetsInWidgetsMixin ], {
 	// summary:
 	//		This class renderes a detail page containing subtabs and form elements
 	//		in order to edit UDM objects.
@@ -75,31 +76,32 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin ]
 			html = html.replace(regH1, '');
 		}
 
-		// build up the widgets
-		// create the language combobox
-		var widgets = [{
-			type: 'LanguageBox',
-			name: 'language',
-			label: this._('Please choose the language of the wizard')
-		}, {
-			type: 'Text',
-			name: 'html',
-			label: '',
-			content: html
-		}];
-
-		var form = new umc.widgets.Form({
-			widgets: widgets,
-			layout: ['language', 'html'],
-			scrollable: true
-		});
-
 		var pane = new umc.widgets.ExpandingTitlePane({
 			title: this._('Information about the initial configuration')
 		});
 		this.addChild(pane);
 
-		pane.addChild(form);
+		if (umc.i18n.availableLanguages.length > 1) {
+			var langContainer = this.adopt(umc.widgets.ContainerWidget, {
+				style: "float: right; display: inner-block;"
+			});
+			dojo.forEach(umc.i18n.availableLanguages, function(ilang) {
+				// create one button per language
+				langContainer.addChild(new umc.widgets.Button({
+					iconClass: "country-" + ilang.id.substring(3).toLowerCase(), // country flags, i.e. "us", not "en"
+					callback: function() {
+						umc.i18n.setLanguage(ilang.id);
+					}
+				}));
+			});
+
+			dojo.place(langContainer.domNode, pane._titlePane.domNode, 'first');
+		}
+		var text = new umc.widgets.Text({
+			content: html,
+			style: "overflow: auto;"
+		});
+		pane.addChild(text);
 	},
 
 	setValues: function(_vals) {

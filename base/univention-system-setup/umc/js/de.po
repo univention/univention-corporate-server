@@ -466,10 +466,6 @@ msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen Sie ein Netzwerkgerät bevor Sie eine DHCP-Adresse anfragen."
 
-#: umc/js/_setup/HelpPage.js:83
-msgid "Please choose the language of the wizard"
-msgstr "Bitte wählen Sie die Sprache für den Installationswizard"
-
 #: umc/js/setup.js:519
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
