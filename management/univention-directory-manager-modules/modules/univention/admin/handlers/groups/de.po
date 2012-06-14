@@ -124,11 +124,11 @@ msgstr "enthaltene Gruppe"
 
 #: group.py:204
 msgid "Users with mailing privileges"
-msgstr "Berechtige E-Mail Benutzer"
+msgstr "Benutzer mit Sendeberechtigung"
 
 #: group.py:215
 msgid "Groups with mailing privileges"
-msgstr "Berechtigte E-Mail Gruppen"
+msgstr "Gruppen mit Sendeberechtigung"
 
 #: group.py:228
 msgid "General"
