@@ -26,12 +26,84 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console dojo dojox dijit umc */
+/*global console dojo dojox dijit umc window*/
 
 dojo.provide("umc.i18n");
 
 dojo.require("dojo.cache");
 dojo.require("dojox.string.sprintf");
+
+// availableLanguages: Object[]
+//              Dictonary with keys "id" and "label" of available languages
+//              They are configured by default in
+//              univention-management-console/language.json,
+//              which is created by univention-config-registry
+//              using locale and umc/server/languages/*
+umc.i18n.availableLanguages = dojo.fromJson(dojo["cache"]("", "../../univention-management-console/languages.json"));
+
+umc.i18n.setLanguage = function(/*String*/ locale) {
+	// summary:
+	//		Sets the new locale to locale by doing a redirect.
+	// description:
+	//		This function will set the frontend (dojo) and
+	//		the backend (ucr) locale to locale. Due to
+	//		dojo restrictions this can only be done by doing
+	//		a redirect (losing all unsaved changes done in the
+	//		current session!) with reasonable effort. This
+	//		redirect is only done if necessary (i.e. if
+	//		current locale != locale).
+	// example:
+	//		umc.i18n.setLanguage('de-DE'); // might do a redirect
+	//		...
+	//		umc.i18n.setLanguage('de-DE'); // wont do it again
+
+	if (locale != dojo.locale) {
+		// reload the page when a different language is selected
+		var query = dojo.queryToObject(window.location.search.substring(1));
+		query.lang = locale;
+		dojo.cookie('UMCLang', query.lang, { expires: 100, path: '/' });
+		window.location.search = '?' + dojo.objectToQuery(query);
+	}
+};
+
+umc.i18n.defaultLang = function () {
+	// summary:
+	//		Returns the default Language
+	// description:
+	//		This function will retrieve the currently
+	//		set Language (has to be allowed, i.e. in
+	//		umc.i18n.availableLanguages) or a default Language.
+	//		The currently set locale (dojo.locale)
+	//		is set in the index.html either via the query
+	//		string in the URL, via a cookie,
+	//		or via dojo automatically
+
+	var lowercase_locale = dojo.locale.toLowerCase();
+	var exact_match = dojo.filter(umc.i18n.availableLanguages, function(item) {
+		return lowercase_locale == item.id.toLowerCase();
+	});
+	if (exact_match.length > 0) {
+		return exact_match[0].id;
+	}
+
+	// fallbacks
+	var default_language = null;
+
+	// if dojo.locale is 'de' or 'de-XX' choose the first locale that starts with 'de'
+	var short_locale = lowercase_locale.slice(0, 2);
+	dojo.forEach(umc.i18n.availableLanguages, function(lang) {
+		if (lang.id.toLowerCase().indexOf(short_locale) === 0) {
+			default_language = lang.id;
+			return false;
+		}
+	}, this);
+
+	if (null === default_language) {
+		default_language = 'en-US';
+	}
+
+	return default_language;
+};
 
 dojo.declare("umc.i18n.Mixin", null, {
 	// summary:
@@ -119,7 +191,7 @@ dojo.declare("umc.i18n.Mixin", null, {
 
 		this._i18nInitialized = true;
 	},
-	
+
 	_: function(/*String*/ _msg, /*mixed...*/ filler) {
 		// summary:
 		//		A gettext-like translation method.

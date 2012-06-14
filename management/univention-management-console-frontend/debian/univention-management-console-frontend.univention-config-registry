@@ -1,0 +1,4 @@
+Type: file
+File: usr/share/univention-management-console-frontend/languages.json
+Variables: locale
+Variables: umc/server/languages/.*

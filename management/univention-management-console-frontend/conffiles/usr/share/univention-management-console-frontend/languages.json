@@ -1,0 +1,23 @@
+[
+@!@
+locale = configRegistry.get('locale', '') 
+
+locales = []
+for l in locale.split(' '): 
+        if '.' in l:
+                l = l.split('.')[0]
+        configured_locale = configRegistry.get('umc/server/languages/%s' % l)
+        if configured_locale:
+                locales.append((l.replace('_', '-'), configured_locale))
+
+i = 0 
+for id, name in locales:
+        i += 1
+        if i < len(locales):
+                comma = ',' 
+        else:
+                comma = ''
+        print '    {"id" : "%s", "label" : "%s"}%s' % (id, name, comma)
+@!@
+]
+

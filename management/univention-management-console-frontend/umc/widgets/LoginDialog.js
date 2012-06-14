@@ -34,7 +34,7 @@ dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.LabelPane");
-dojo.require("umc.widgets.LanguageBox");
+dojo.require("umc.widgets.ComboBox");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("dijit.Dialog");
 
@@ -81,7 +81,11 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		this._text.placeAt(this.containerNode, 'first');
 
 		// create the language_combobox
-		this._languageBox = new umc.widgets.LanguageBox({});
+		this._languageBox = new umc.widgets.ComboBox({
+			staticValues: umc.i18n.availableLanguages,
+			value: umc.i18n.defaultLang(),
+			sizeClass: null
+		});
 		this._languageLabel = new umc.widgets.LabelPane({
 			label: this._('Language'),
 			content: this._languageBox
@@ -90,6 +94,10 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		this._languageBox.startup();
 		this._languageLabel.startup();
 		this._languageLabel.placeAt('umc_LoginDialog_FormContainer');
+		// register onchange event
+		this.connect(this._languageBox, 'onChange', function(lang) {
+			umc.i18n.setLanguage(lang);
+		});
 		// automatically resize the DialogUnderlay container
 		this.connect(window, 'onresize', function() {
 			if (dijit._DialogLevelManager.isTop(this)) {

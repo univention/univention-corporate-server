@@ -9,6 +9,7 @@
 		<style type="text/css">
 			@import url("js%HASH%/dojo/resources/dojo.css");
 			@import url("css%HASH%/dijit/themes/umc/umc.css");
+			@import url("css%HASH%/country-flags.css");
 			@import url("css%HASH%/dojox/grid/resources/umcGrid.css");
 			@import url("css%HASH%/dojox/grid/enhanced/resources/EnhancedGrid.css");
 			@import url("css%HASH%/dojox/grid/enhanced/resources/umc/EnhancedGrid.css");
@@ -56,11 +57,15 @@
 				return defaultVal;
 			}
 
+			var locale = getQuery('lang') || getCookie('UMCLang');
+			if (locale) {
+				locale = locale.replace('_', '-');
+			}
 			var dojoConfig = {
 			    parseOnLoad: true,
 				isDebug: false,
 				debugAtAllCosts: false,
-				locale: getQuery('lang') || getCookie('UMCLang')
+				locale: locale
 			};
 			//-->
 		</script>
