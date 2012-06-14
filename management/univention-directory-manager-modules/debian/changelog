@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.258-1) unstable; urgency=low
+
+  * changed descriptions for certain mail attributes of groups
+    (Bug #24029)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 14 Jun 2012 13:39:53 +0200
+
 univention-directory-manager-modules (7.0.257-1) unstable; urgency=low
 
   * don't show "No attribute with name <name> in this module" warning when 

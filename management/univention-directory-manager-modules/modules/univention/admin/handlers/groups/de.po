@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 15:03+0200\n"
+"POT-Creation-Date: 2012-06-14 13:04+0200\n"
 "PO-Revision-Date: 2011-10-09 19:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,12 +123,12 @@ msgid "Nested group"
 msgstr "enthaltene Gruppe"
 
 #: group.py:204
-msgid "Users that are allowed to send e-mails to the group"
-msgstr "Benutzer, die berechtigt sind E-Mails an diese Gruppe zu versenden"
+msgid "Users with mailing privileges"
+msgstr "Berechtige E-Mail Benutzer"
 
 #: group.py:215
-msgid "Groups that are allowed to send e-mails to the group"
-msgstr "Gruppen, die berechtigt sind E-Mails an diese Gruppe zu versenden"
+msgid "Groups with mailing privileges"
+msgstr "Berechtigte E-Mail Gruppen"
 
 #: group.py:228
 msgid "General"
@@ -177,6 +177,12 @@ msgstr "Windows"
 #: group.py:251
 msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
+
+#~ msgid "Users that are allowed to send e-mails to the group"
+#~ msgstr "Benutzer, die berechtigt sind E-Mails an diese Gruppe zu versenden"
+
+#~ msgid "Groups that are allowed to send e-mails to the group"
+#~ msgstr "Gruppen, die berechtigt sind E-Mails an diese Gruppe zu versenden"
 
 #~ msgid "Allowed e-mail users"
 #~ msgstr "Berechtigte E-Mail Benutzer"
