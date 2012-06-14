@@ -53,6 +53,12 @@ f = open('/var/log/univention/setup.log', 'a')
 f.write('\n\n%s running univention-system-setup\n\n' %now)
 f.close()
 
+if len(sys.argv) != 2 or sys.argv[1] != "--modules=password,net":
+	print >> sys.stderr, "WARNING: univention-system-setup is deprecated, please"
+	print >> sys.stderr, "         use the UMC modul \"Basic settings\" to configure"
+	print >> sys.stderr, "         basic system settings!"
+	sys.exit(0)
+
 #initialize the global cmdline dictonary and parse the cmdline
 cmdline={}
 cmdline['mode']='setup'

@@ -1,3 +1,9 @@
+univention-system-setup (5.0.158-1) unstable; urgency=low
+
+  * univention-system-setup is deprecated (Bug #26061) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Jun 2012 12:23:18 +0200
+
 univention-system-setup (5.0.157-1) unstable; urgency=low
 
   * Added white an black list to filter Software Components
