@@ -1,3 +1,10 @@
+univention-network-manager (3.0.17-1) unstable; urgency=low
+
+  * Don't overwrite the dns/forwarder with the local nameserver if no
+    nameserver was received via DHCP (Bug #26416)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2012 11:15:46 +0200
+
 univention-network-manager (3.0.16-1) unstable; urgency=low
 
   * Use true as default for interfaces/restart/auto (Bug #26737)

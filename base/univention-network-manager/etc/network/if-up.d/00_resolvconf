@@ -43,6 +43,19 @@ fi
 
 interface_type="$(ucr get interfaces/${IFACE}/type)"
 
+is_ns ()
+{
+	server="$1"
+	eval "$(ucr shell dns/forwarder1 dns/forwarder2 dns/forwarder3 nameserver1 nameserver2 nameserver3)"
+
+	if	[ "$dns_forwarder1" = "$server" ] || [ "$dns_forwarder2" = "$server" ] || [ "$dns_forwarder3" = "$server" ] || \
+		[ "$nameserver1" = "$server" ] || [ "$nameserver2" = "$server" ] || [ "$nameserver3" = "$server" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 # On a joined DNS server the DHCP nameserver should be converted to a dns/forwarder.
 # But at least one nameserver must be configured via ucr and nameserver/external 
 # must not be set to true
@@ -52,7 +65,7 @@ if	[ -e /var/univention-join/joined ] && is_domain_controller && \
 	! is_ucr_true "nameserver/external"; then
 	i=1
 	cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do
-		if [ "$(ucr get dns/forwarder$i)" != "$ns" ]; then
+		if ! is_ns "$ns"; then
 			ucr set "dns/forwarder$i=$ns" >/dev/null
 			invoke-rc.d bind9 restart
 		fi
