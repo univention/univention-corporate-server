@@ -1,3 +1,10 @@
+univention-samba4 (1.0.143-1) unstable; urgency=low
+
+  * Usershares can now be configured with UCR (Bug #27525)
+  * Usershares are disabled by default (Bug #27524)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 15 Jun 2012 12:16:50 +0200
+
 univention-samba4 (1.0.142-1) unstable; urgency=low
 
   * Fix fetching the machine secret for search (Bug #27478)

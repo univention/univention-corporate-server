@@ -57,6 +57,10 @@ Subfile: etc/samba/smb.conf.d/71univention-samba_users
 
 Type: subfile
 Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/90univention-samba_user_shares
+
+Type: subfile
+Multifile: etc/samba/smb.conf
 Subfile: etc/samba/smb.conf.d/91univention-samba_shares
 
 Type: subfile
