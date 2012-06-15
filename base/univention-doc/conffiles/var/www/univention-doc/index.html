@@ -30,8 +30,8 @@
 		<!-- @end title -->
 
 		<!-- @start favicon -->
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="/ucs-overview/favicon.ico" type="image/x-icon"/>
+		<link rel="icon" href="/ucs-overview/favicon.ico" type="image/x-icon">
 		<!-- @end favicon -->
 
 
@@ -76,7 +76,6 @@
 
 
 
-<tr>
 @!@
 import os
 
@@ -97,12 +96,17 @@ for directory in os.listdir( DOC_SOURCE_DIR ):
 	project = None
 	execfile( conf_file )
 	if not html_logo:
-		html_logo = '../icon/about.png'
+		html_logo = '/icon/about.png'
 	print '''
 <tr>
 	<td class="overview">
 		<a href="%(doc)s/index.html">
-			<img src="%(logo)s" alt="%(project)s" border="0" />%(project)s
+			<img src="%(logo)s" alt="%(project)s" border="0" />
+		</a>
+	</td>
+	<td>
+		<a href="%(doc)s/index.html">
+		  	%(project)s
 		</a>
 	</td>
 </tr>

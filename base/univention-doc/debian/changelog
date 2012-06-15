@@ -1,3 +1,9 @@
+univention-doc (0.0.2-1) unstable; urgency=low
+
+  * minor style fixes in index.html; Bug #27594
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 15 Jun 2012 12:47:59 +0200
+
 univention-doc (0.0.1-2) unstable; urgency=low
 
   * fixed UCR registrations
