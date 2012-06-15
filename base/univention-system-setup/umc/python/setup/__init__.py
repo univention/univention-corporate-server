@@ -595,7 +595,7 @@ class Instance(umcm.Base):
 		if not interface:
 			message = 'No property "interface" given for dhclient().'
 			MODULE.error(message)
-			self.finished(request.id, None, success = false, message = message)
+			self.finished(request.id, None, success = False, message = message)
 			return
 
 		res = util.dhclient(interface, timeout)

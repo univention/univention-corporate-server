@@ -52,6 +52,7 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 
 	// original values
 	_orgValues: {},
+	_oldRole: null,
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
@@ -73,11 +74,7 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 				{ id: 'domaincontroller_slave', label: this._('Domain controller slave') },
 				{ id: 'memberserver', label: this._('Member server') },
 				{ id: 'basesystem', label: this._('Base system') }
- 			],
- 			onChange: dojo.hitch(this, function(val) {   // notify setup.js if value of ComboBox changed 
-				this.switchDescription();
-				this.onValuesChanged( {'server/role': val } );
-			})
+ 			]
 		}, {
 			type: 'Text',
 			label: '',
@@ -121,7 +118,18 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 			onSubmit: dojo.hitch(this, 'onSave'),
 			scrollable: true
 		});
+		this._oldRole = this._form.getWidget('server/role').get('value');
 
+		this.connect(this._form.getWidget('server/role'), 'onChange', function(val) {
+			// notify setup.js if value of ComboBox changed 
+			// only notify if value really changed (see Bug #27240)
+			if (this._oldRole != val) {
+				this._oldRole = val;
+				this.switchDescription();
+				this.onValuesChanged( {'server/role': val } );
+			}
+		});
+ 	
 		// update visibility of description text before adding form otherwise all descriptions will be visible
 		// for a short amount of time.
 		this.switchDescription();

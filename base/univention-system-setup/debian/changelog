@@ -1,3 +1,9 @@
+univention-system-setup (5.0.160-1) unstable; urgency=low
+
+  * fixed this.textbox is undefined errors caused by update event in SystemRolePage (Bug #27240)
+
+ -- Florian Best <best@univention.de>  Fri, 15 Jun 2012 12:09:51 +0200
+
 univention-system-setup (5.0.159-1) unstable; urgency=low
 
   * Partly reverted 5.0.153-1. Use flags to change the language.
