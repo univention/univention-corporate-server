@@ -1,9 +1,9 @@
-univention-config-registry (7.0.32-1) unstable; urgency=low
+univention-config-registry (7.0.32-2) unstable; urgency=low
 
   * display info message when "--help" or "-h" is passed to an ucr
     installation script (Bug #19853)
 
- -- Lukas Walter <walter@univention.de>  Mon, 11 Jun 2012 14:43:07 +0200
+ -- Lukas Walter <walter@univention.de>  Fri, 15 Jun 2012 14:45:19 +0200
 
 univention-config-registry (7.0.31-1) unstable; urgency=low
 
