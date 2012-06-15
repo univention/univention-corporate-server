@@ -1,7 +1,7 @@
 #!/bin/sh
 # postinst script for univention-doc
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,5 +31,7 @@
 #DEBHELPER#
 
 a2dissite univention-doc
+
+univention-doc uninstall univention-doc
 
 exit 0

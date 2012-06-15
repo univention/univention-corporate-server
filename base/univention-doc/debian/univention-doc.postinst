@@ -34,4 +34,6 @@ a2ensite univention-doc
 
 invoke-rc.d apache2 reload
 
+univention-doc install univention-doc
+
 exit 0

@@ -1,1 +1,4 @@
 univention-doc	usr/bin/
+doc/index.rst usr/share/univention-doc/src/univention-doc/
+doc/conf.py usr/share/univention-doc/src/univention-doc/
+doc/Makefile usr/share/univention-doc/src/univention-doc/

@@ -1,3 +1,10 @@
+univention-doc (0.0.3-1) unstable; urgency=low
+
+  * add documentation for univention doc itself; Bug #27594
+  * minor fixes
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 15 Jun 2012 14:31:33 +0200
+
 univention-doc (0.0.2-1) unstable; urgency=low
 
   * minor style fixes in index.html; Bug #27594

@@ -80,7 +80,7 @@
 import os
 
 DOC_SOURCE_DIR = '/usr/share/univention-doc/src'
-DOC_OUTPUT_DIR = '/usr/share/univention-doc/html'
+DOC_OUTPUT_DIR = '/var/www/univention-doc'
 
 for directory in os.listdir( DOC_SOURCE_DIR ):
 	if not os.path.isdir( os.path.join( DOC_SOURCE_DIR, directory ) ):
