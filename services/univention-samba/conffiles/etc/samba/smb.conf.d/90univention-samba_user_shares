@@ -11,5 +11,5 @@ for key, smbstring in [('samba/usershare/allow_guests','usershare allow guests')
 			('samba/usershare/template_share', 'usershare template share'),]:
 	value = configRegistry.get(key)
 	if value:
-		print '\t%s = %s' % (key, value)
+		print '\t%s = %s' % (smbstring, value)
 @!@
