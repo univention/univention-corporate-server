@@ -1,3 +1,10 @@
+univention-network-manager (3.0.18-1) unstable; urgency=low
+
+  * Don't reload GDM after the IP has been set. Removed etc/network/if-
+    down.d/50_gdm and etc/network/if-up.d/50_gdm (Bug #27598)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2012 20:53:12 +0200
+
 univention-network-manager (3.0.17-1) unstable; urgency=low
 
   * Don't overwrite the dns/forwarder with the local nameserver if no

@@ -61,5 +61,15 @@ for i in $(seq 0 10); do
 	fi
 done
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.18-1; then
+	if [ -e /etc/network/if-up.d/50_gdm ]; then
+		mkdir -p /var/univention-backup/old_conffiles/network/if-up.d
+		mv /etc/network/if-up.d/50_gdm /var/univention-backup/old_conffiles/network/if-up.d
+	fi
+	if [ -e /etc/network/if-down.d/50_gdm ]; then
+		mkdir -p /var/univention-backup/old_conffiles/network/if-down.d
+		mv /etc/network/if-down.d/50_gdm /var/univention-backup/old_conffiles/network/if-down.d
+	fi
+fi
 
 exit 0
