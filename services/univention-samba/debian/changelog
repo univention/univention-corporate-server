@@ -1,3 +1,10 @@
+univention-samba (6.0.36-1) unstable; urgency=low
+
+  * removed deprecated command "has_key" and fixed that an option was set twice
+  * in smb.conf (Bug #19019)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 15 Jun 2012 09:18:54 +0200
+
 univention-samba (6.0.35-1) unstable; urgency=low
 
   * samba local config: support setting printer and share configuration
@@ -10,7 +17,7 @@ univention-samba (6.0.34-3) unstable; urgency=low
   * Usershares can now be configured with UCR (Bug #19019)
   * Usershare are disabled by default (Bug #26414)
 
- -- Tobias Peters <tpeters@univention.de>  Thu, 24 May 2012 14:32:46 +0200
+ -- Tobias Peters <peters@univention.de>  Thu, 24 May 2012 14:32:46 +0200
 
 univention-samba (6.0.33-3) unstable; urgency=low
 
@@ -22,7 +29,7 @@ univention-samba (6.0.32-2) unstable; urgency=low
 
   * Merged postint and univention-samba.postinst (Bug #25164) 
 
- -- Tobias Peters <tpeters@univention.de>  Wed, 16 May 2012 12:47:06 +0200
+ -- Tobias Peters <peters@univention.de>  Wed, 16 May 2012 12:47:06 +0200
 
 univention-samba (6.0.32-1) unstable; urgency=low
 
