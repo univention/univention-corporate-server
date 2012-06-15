@@ -1,3 +1,9 @@
+univention-system-setup (5.0.163-1) unstable; urgency=low
+
+  * Write apache2 default sites (Bug #27596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2012 16:24:26 +0200
+
 univention-system-setup (5.0.162-1) unstable; urgency=low
 
   * immediately apply new keymap when it has been changed in

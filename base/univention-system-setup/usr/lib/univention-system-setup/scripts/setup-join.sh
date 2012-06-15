@@ -205,6 +205,11 @@ progress_next_step $nJoinSteps
 # Cleanup
 rm -f /var/lib/univention-ldap/root.secret
 
+# Rewrite apache2 default sites, workaround for 
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27597
+ucr commit /var/www/ucs-overview/de.html \
+           /var/www/ucs-overview/en.html
+
 # Reset the apache2 startsite
 startsite="$(ucr get apache2/startsite)"
 if [ "$startsite" = 'univention-management-console/?module=setup\&username=root' ]; then
