@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.260-1) unstable; urgency=low
+
+  * computers/windows_domaincontroller: fixed sambaRID handling
+    (Bug #27111)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2012 06:45:51 +0200
+
 univention-directory-manager-modules (7.0.259-1) unstable; urgency=low
 
   * Backport from UCS@school:

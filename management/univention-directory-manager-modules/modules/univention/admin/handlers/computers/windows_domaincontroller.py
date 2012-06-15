@@ -423,6 +423,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 					self['primaryGroup']=None
 					self.save()
 					raise univention.admin.uexceptions.primaryGroup
+			if 'samba' in self.options:
+				sid = self.oldattr.get('sambaSID', [''])[0]
+				pos = sid.rfind('-')
+				self.info['sambaRID'] = sid[pos+1:]
 
 			self.save()
 
@@ -654,6 +658,7 @@ def rewrite(filter, mapping):
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	res=[]
+	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
 		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:
