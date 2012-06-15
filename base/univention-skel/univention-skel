@@ -4,7 +4,7 @@
 # Univention Skel
 #  skel script
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, md5, string, subprocess
+import os, sys, hashlib, string, subprocess
 # for file locking
 import fcntl
 import time
@@ -75,8 +75,8 @@ class Stamps:
 		if os.path.exists(os.path.join(base, 'files')):
 			fp=open(os.path.join(base, 'files'))
 			for line in fp.readlines():
-				(file,md5sum)=line[0:-1].split('@%@')
-				self.files[file]=md5sum
+				(file,hashsum)=line[0:-1].split('@%@')
+				self.files[file]=hashsum
 			fp.close()
 	def write(self):
 		if not os.path.exists(self.base):
@@ -90,9 +90,8 @@ class Stamps:
 			fp.write(string.join(file, '@%@')+'\n')
 		fp.close()
 
-def md5sum(file):
-	# module md5 will be replace with hashlib in python 2.5
-	return md5.md5(open(file).read()).hexdigest()
+def hashsum(file):
+	return hashlib.sha224(open(file).read()).hexdigest()
 
 def i2h_file(file):
 	return file.replace(userconfig_templates, home)
@@ -141,14 +140,14 @@ def install_files(stamps, dir, files):
 				hstamps.files[hfile] = 'symlink'
 				istamps.files[ifile] = 'symlink'
 			continue
-		istamps.files[ifile] = md5sum(ifile)
+		istamps.files[ifile] = hashsum(ifile)
 		# copy file if:
 		## file does not exist
-		## there is no MD5 sum
-		## unmodified version of file exists and MD5 sums of skel and user version do not match
+		## there is no hashsum
+		## unmodified version of file exists and hashsums of skel and user version do not match
 		if ( not os.path.exists(hfile) ) or \
-			   ( not hstamps.files.has_key(hfile) ) or \
-			   ( os.path.exists(hfile) and md5sum(hfile) == hstamps.files.get(hfile, '') and \
+			   ( not (hfile in hstamps.files) ) or \
+			   ( os.path.exists(hfile) and hashsum(hfile) == hstamps.files.get(hfile, '') and \
 				 hstamps.files[hfile] != istamps.files[ifile] ):
 			print 'create', hfile
 			rfp=open(ifile)
@@ -157,7 +156,7 @@ def install_files(stamps, dir, files):
 			os.close( wfp )
 			rfp.close()
 			run_script( ifile )
-			hstamps.files[hfile] = md5sum(hfile)
+			hstamps.files[hfile] = hashsum(hfile)
 
 def _lock():
 	'''try to lock skel operations. If lock could not be acquired will
@@ -204,12 +203,12 @@ os.path.walk(userconfig_templates, install_files, (hstamps, istamps))
 delete_files=[]
 for hfile in hstamps.files.keys():
 	ifile = h2i_file(hfile)
-	if os.path.islink(hfile) and not istamps.files.has_key(ifile) and os.path.exists(hfile):
+	if os.path.islink(hfile) and not (ifile in istamps.files) and os.path.exists(hfile):
 		print 'delete_link', hfile
 		delete_files.append(hfile)
 		os.unlink(hfile)
-	if not os.path.islink(ifile) and not istamps.files.has_key(ifile) and os.path.exists(hfile) and \
-			hstamps.files[hfile] == md5sum(hfile):
+	if not os.path.islink(ifile) and not (ifile in istamps.files) and os.path.exists(hfile) and \
+			hstamps.files[hfile] == hashsum(hfile):
 		print 'delete', hfile
 		delete_files.append(hfile)
 		os.unlink(hfile)
