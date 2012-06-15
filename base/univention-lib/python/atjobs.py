@@ -163,11 +163,14 @@ def _parseJob(string):
 		owner = tmp[7]
 		nr = int(tmp[0])
 	except (IndexError, ValueError), e:
-		# parsing failed
-		return None
-	finally:
 		# reset locale to default
 		locale.setlocale(locale.LC_TIME, timeLocale)
+		# parsing failed
+		return None
+
+	# reset locale to default
+	locale.setlocale(locale.LC_TIME, timeLocale)
+
 	return AtJob(nr, owner, execTime, isRunning)
 
 
