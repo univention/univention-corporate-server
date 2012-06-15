@@ -46,6 +46,7 @@ import os
 import copy
 import locale
 import univention.config_registry
+import subprocess
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
@@ -96,6 +97,12 @@ class Instance(umcm.Base):
 		status of the system.'''
 		values = util.load_values()
 		self.finished(request.id, values)
+
+	def save_keymap(self, request):
+		keymap = request.options.get('keymap')
+		if keymap and type(keymap) == str:
+			subprocess.call(['/usr/bin/setxkbmap', '-display', ':0', request.options.get('keymap').split('-')[0]])
+			self.finished(request.id, True)
 
 	def save(self, request):
 		'''Reconfigures the system according to the values specified in the dict given as

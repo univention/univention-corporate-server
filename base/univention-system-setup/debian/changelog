@@ -1,3 +1,10 @@
+univention-system-setup (5.0.162-1) unstable; urgency=low
+
+  * immediately apply new keymap when it has been changed in
+    local mode (Bug #26733)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 15 Jun 2012 16:03:48 +0200
+
 univention-system-setup (5.0.161-1) unstable; urgency=low
 
   * only show IP/root-pw dialog if graphical system setup did not run (Bug #26907)

@@ -77,7 +77,12 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 			name: 'locale/keymap',
 			label: this._('Keyboard layout'),
 			umcpCommand: this.umcpCommand,
-			dynamicValues: 'setup/lang/keymaps'
+			dynamicValues: 'setup/lang/keymaps',
+			onChange: dojo.hitch(this, function() {
+				if(this.local_mode) {
+					this.umcpCommand('setup/keymap/save', {keymap: this._form.gatherFormValues()['locale/keymap']});
+				}
+			})
 		}, {
 			type: 'MultiSelect',
 			name: 'locale',

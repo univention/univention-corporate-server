@@ -18,5 +18,7 @@
 	<command name="setup/net/interfaces" function="net_interfaces"></command>
 	<command name="setup/net/dhclient" function="net_dhclient"></command>
 	<command name="setup/software/components" function="software_components"></command>
+	<command name="setup/keymap/save" function="save_keymap"></command>
+
   </module>
 </umc>
