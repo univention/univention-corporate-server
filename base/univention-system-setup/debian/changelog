@@ -1,3 +1,9 @@
+univention-system-setup (5.0.161-1) unstable; urgency=low
+
+  * only show IP/root-pw dialog if graphical system setup did not run (Bug #26907)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 15 Jun 2012 14:01:23 +0200
+
 univention-system-setup (5.0.160-1) unstable; urgency=low
 
   * fixed this.textbox is undefined errors caused by update event in SystemRolePage (Bug #27240)

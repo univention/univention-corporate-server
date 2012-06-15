@@ -59,8 +59,8 @@ then # call self in xinit as nobody, then start gdm
 	# start X11 and browser ; script returns pid of browser on fd3
 	[ -x /usr/bin/xinit ] && /usr/bin/xinit /bin/su nobody -c "'$0' '$USSURL'" 3> "$BROWSERPIDFILE"
 
-	# if xinit returns a non-zero exitcode or the system setup profile has not been generated
-	if [ ! $? = 0 ] || [ ! -x /usr/bin/xinit ] || [ ! -f "$USS_PROFILE" ] ; then
+	# if the system setup profile has not been generated
+	if [ ! -f "$USS_PROFILE" ] ; then
 		# ... then start console tool univention-system-setup
 		chvt 1
 		/usr/share/univention-system-setup/univention-system-setup --modules="password,net" < /dev/tty1 > /dev/tty1
