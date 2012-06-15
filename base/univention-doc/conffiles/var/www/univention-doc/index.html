@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ Warning: This file is auto-generated and might be overwritten by
+          univention-config-registry.
+          Please edit the following file(s) instead:
+ Warnung: Diese Datei wurde automatisch generiert und kann durch
+          univention-config-registry überschrieben werden.
+          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+
+ 	/etc/univention/templates/files/var/www/documentation.html
+-->
+
+<!--
+	@description
+-->
+
+<!-- @start html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" dir="ltr">
+
+	<!-- @start head -->
+	<head>
+
+		<!-- @start meta -->
+
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<!-- @end meta -->
+
+		<!-- @start title -->
+		<title>Univention Corporate Server - Documentation</title>
+		<!-- @end title -->
+
+		<!-- @start favicon -->
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<!-- @end favicon -->
+
+
+		<!-- @start styles -->
+		<link rel="stylesheet" href="../ucs-overview/css/style.css" type="text/css" media="screen" title="style.css" charset="utf-8" />
+		<!-- @end styles -->
+
+	</head>
+	<!-- @end head -->
+
+	<!-- @start body -->
+	<body>
+
+		<!-- @start header -->
+		<div id="header">
+			<div id="header-wrapper">
+			  <div id="header-left">
+				<a href="http://www.univention.de"><img src="../ucs-overview/images/univention_logo.png" /></a>
+			  </div>
+			  <div id="header-right">
+				<span>Host: master.errata.test</span>
+			  </div>
+			</div>
+		</div>
+		<!-- @end header -->
+
+		<!-- @start wrapper -->
+		<div id="wrapper">
+			<!-- @start content-head -->
+			<div id="content-head">
+				<!-- @start header-title -->
+				<h1>Univention documentation</h1>
+				<!-- @end header-title -->
+				<div>Development documentation</div>
+			</div>
+			<!-- @end content-head -->
+
+			<!-- @start content -->
+			<div id="content">
+			<table class="content">
+
+
+
+
+<tr>
+@!@
+import os
+
+DOC_SOURCE_DIR = '/usr/share/univention-doc/src'
+DOC_OUTPUT_DIR = '/usr/share/univention-doc/html'
+
+for directory in os.listdir( DOC_SOURCE_DIR ):
+	if not os.path.isdir( os.path.join( DOC_SOURCE_DIR, directory ) ):
+		continue
+	if not os.path.isdir( os.path.join( DOC_OUTPUT_DIR, directory ) ):
+		continue
+	conf_file = os.path.join( DOC_SOURCE_DIR, directory, 'conf.py' )
+	if not os.path.isfile( conf_file ):
+		continue
+
+	# found documentation
+	html_logo = None
+	project = None
+	execfile( conf_file )
+	if not html_logo:
+		html_logo = '../ucs-overview/images/univention_logo.png'
+	print '''
+<tr>
+	<td class="overview">
+		<a href="%(doc)s/index.html">
+			<img src="%(logo)s" alt="%(project)s" border="0" />%(project)s
+		</a>
+	</td>
+</tr>
+''' % { 'doc' : directory, 'logo' : html_logo, 'project' : project }
+@!@
+
+</table>
+			</div>
+			<!-- @end content -->
+		</div>
+		<!-- @end wrapper -->
+		<div id="contentfooter"></div>
+	</body>
+	<!-- @end body -->
+</html>

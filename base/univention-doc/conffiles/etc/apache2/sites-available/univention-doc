@@ -1,0 +1,5 @@
+@%@UCRWARNING=# @%@
+
+Alias /documentation/ /var/www/univention-doc/
+<Directory /var/www/univention-doc/>
+</Directory>

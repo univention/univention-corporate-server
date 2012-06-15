@@ -1,0 +1,5 @@
+univention-doc (0.0.1-1) unstable; urgency=low
+
+  * initial release; Bug #27594
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 15 Jun 2012 09:39:42 +0200
