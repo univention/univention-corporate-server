@@ -3,7 +3,6 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Architecture: all
 Build-Depends: debhelper, univention-config-dev, ucslint
 
 Package: univention-doc
@@ -16,4 +15,3 @@ Description: tool to build source documentation
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
