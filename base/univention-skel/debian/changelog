@@ -1,3 +1,11 @@
+univention-skel (4.0.2-1) unstable; urgency=low
+
+  * Use hash algorithm md5, no other algorithm like sha224 because we
+    want to make sure that our script univention-skel keeps on working
+    with existing hash values on existing servers (Bug #23116).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 15 Jun 2012 13:44:28 +0200
+
 univention-skel (4.0.1-1) unstable; urgency=low
 
   * Python library md5 is not used any longer, hashlib is used now (Bug #23116)

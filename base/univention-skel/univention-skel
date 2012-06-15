@@ -91,7 +91,7 @@ class Stamps:
 		fp.close()
 
 def hashsum(file):
-	return hashlib.sha224(open(file).read()).hexdigest()
+	return hashlib.md5(open(file).read()).hexdigest()
 
 def i2h_file(file):
 	return file.replace(userconfig_templates, home)
