@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.259-1) unstable; urgency=low
+
+  * Backport from UCS@school:
+    Build UDM for Python 2.6 only (Bug #27328)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2012 06:12:16 +0200
+
 univention-directory-manager-modules (7.0.258-2) unstable; urgency=low
 
   * changed descriptions for certain mail attributes of groups

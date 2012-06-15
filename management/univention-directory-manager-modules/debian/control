@@ -8,6 +8,7 @@ Build-Depends: debhelper (>> 7),
  python2.6-dev,
  python-support,
  univention-config-dev
+XS-Python-Version: 2.6
 
 Package: python-univention-directory-manager
 Architecture: all
