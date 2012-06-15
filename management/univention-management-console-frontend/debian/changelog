@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.372-1) unstable; urgency=low
+
+  * Make sure "en_US" can be chosen in languageBox (even if not installed)
+  (Bug #24551)
+  * Set umc/server/languages in postinstall (Bug #24551)
+  * Completely remove umc.widgets.LanguageBox (not needed anymore)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Jun 2012 12:13:32 +0200
+
 univention-management-console-frontend (1.0.371-1) unstable; urgency=low
 
   * Only installed locales may be chosen as UMC frontend language.
