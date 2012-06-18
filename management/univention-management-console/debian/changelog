@@ -1,3 +1,9 @@
+univention-management-console (4.0.259-1) unstable; urgency=low
+
+  * add source documentation; Bug #27594
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jun 2012 08:49:26 +0200
+
 univention-management-console (4.0.258-1) unstable; urgency=low
 
   * update UCR variable with pyinotify when they change (Bug #27261)

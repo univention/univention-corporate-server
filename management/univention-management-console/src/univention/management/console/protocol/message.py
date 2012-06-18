@@ -31,6 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""
+UMCP is a simple RPC protocol using two message types (request and
+response message). The API of the Python objects representing the
+messages are based on the class :class:`.Message`.
+"""
+
 import mimetypes
 import time
 import re
@@ -66,7 +72,17 @@ MIMETYPE_JPEG = 'image/jpeg'
 MIMETYPE_PNG = 'image/png'
 
 class Message( object ):
-	"""This class represents a protocol message of UMCP"""
+	"""Represents a protocol message of UMCP. It is able to parse
+	request as well as response messages.
+
+	:param type: message type (RESPONSE or REQUEST)
+	:param str command: UMCP command
+	:param str mime_type: defines the MIME type of the message body
+	:param data: binary data that should contain a message
+	:param arguments: arguments for the UMCP command
+	:param options: options passed to the command handler. This works for request messages with MIME type application/JSON only.
+	"""
+
 	RESPONSE, REQUEST = range( 0, 2 )
 	_header = re.compile( '(?P<type>REQUEST|RESPONSE)/(?P<id>[\d-]+)/(?P<length>\d+)(/(?P<mimetype>[a-z-/]+))?: ?(?P<command>\w+) ?(?P<arguments>[^\n]+)?', re.UNICODE )
 	__counter = 0
@@ -107,9 +123,11 @@ class Message( object ):
 		Message.__counter += 1
 
 	def recreate_id( self ):
+		"""Creates a new unique ID for the message"""
 		self._create_id()
 
 	def is_type( self, type ):
+		"""Checks the message type"""
 		return ( self._type == type )
 
 	# property: id
@@ -119,6 +137,7 @@ class Message( object ):
 	def _get_id( self ):
 		return self._id
 
+	#: The property id contains the unique identifier for the message
 	id = property( _get_id, _set_id )
 
 	# JSON body properties
@@ -138,22 +157,28 @@ class Message( object ):
 			PARSER.process( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
 			return None
 
-	# property: message
+	#: contains a human readable error message
 	message = property( lambda self: self._get_key( 'message' ), lambda self, value: self._set_key( 'message', value ) )
 
-	# property: result
+	#: contains the data that represents the result of the request
 	result = property( lambda self: self._get_key( 'result' ), lambda self, value: self._set_key( 'result', value ) )
 
-	# property: status
+	#: contains the status code defining the success or failure of a request (see also :mod:`univention.management.console.protocol.definitions.STATUS`)
 	status = property( lambda self: self._get_key( 'status' ), lambda self, value: self._set_key( 'status', value, int ) )
 
-	# property: options
+	#: defines options to pass on to the module command
 	options = property( lambda self: self._get_key( 'options' ), lambda self, value: self._set_key( 'options', value ) )
 
-	# property: flavor
+	#: flavor of the request
 	flavor = property( lambda self: self._get_key( 'flavor' ), lambda self, value: self._set_key( 'flavor', value ) )
 
 	def parse( self, msg ):
+		"""Parses data and creates in case of a vaild UMCP message the
+		corresponding object. If the data contains mor than the message
+		the rest of the data is returned.
+
+		:raises: :class:`.ParseError`, :class:`.UnknownCommandError`, :class:`.InvalidArgumentsError`
+		"""
 		lines = msg.split( '\n', 1 )
 
 		# is the format of the header line valid?

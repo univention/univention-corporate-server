@@ -31,6 +31,99 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""
+Python API for UMC modules
+==========================
+
+The python API for UMC modules primary consists of one base class that
+must be implemented. As an addition the python API provides some helper
+functions and classes:
+
+* exception classes
+* translation support
+* logging functions
+* UCR access
+
+The XML file defining the UMC module specifies functions for the
+commands provided by the module. These functions must be implemented as
+methods of a class named *Instance* that inherits :class:`.Base`.
+
+The following python code example matches the definition in the previous section::
+
+ from univention.management.console import Translation
+ from univention.management.console.config import ucr
+ from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+ from univention.management.console.log import MODULE
+ 
+ _ = Translation( 'univention-management-console-modules-udm' ).translate
+ 
+ class Instance( Base ):
+   def query( self, request ):
+     ...
+ 
+   def containers( self, request ):
+     module_name = request.options.get( 'objectType' )
+     if not module_name or 'all' == module_name:
+       module_name = request.flavor
+     if not module_name:
+      raise UMC_OptionMissing( 'No valid module name found' )
+ 
+     module = UDM_Module( module_name )
+     self.finished( request.id, module.containers + self.settings.containers( request.flavor ) )
+
+Each command methods has one parameter that contains the UMCP request of
+type
+:class:`~univention.management.console.protocol.message.Request`. Such
+an object has the following properties:
+
+*id*
+	is the unique identifier of the request
+
+*options*
+	contains the arguments for the command. For most commands it is a
+	diectionary.
+
+*flavor*
+	is the name of the flavor that was used to invoke the command. This
+	might be *None*
+
+The *containers* method in the example above shows how to retrieve the
+command parameters and and what to do to send the result back to the
+client. Important is that returning a value in a command function does
+not send anything back to the client. Therefor the function *finished*
+must be invoked. The first parameter is the identifier of the request
+that will be answered and the second parameter the data strcuture
+containing the result. As the result is converted to JSON it must just
+contain data types that can be converted. The *finished* function has
+two further optional parameters. *message* may contain a human readable
+text explaining the result and *success* is a boolean parameter defining
+the success of the operation. By default *success* is true. be setting
+*success* to *False* the UCM module sends an error status back to the
+client. Another way to send an error message back to the client is by
+raisig one of the following exceptions:
+
+*UMC_OptionTypeError*
+	The type of a given option does not match
+
+*UMC_OptionMissing*
+	One required option is missing
+
+*UMC_CommandError*
+	A general error occurred
+
+The base class for modules provides some properties and methods that
+could be usful when writing UMC modules:
+
+Properties
+ * *username*: The username of the owner of this session
+ * *password*: The password of the user
+
+Methods
+ * *init*: Is invoked after the module process has been initialised. At that moment, the settings, like locale and username and password are available.
+ * *permitted*: Can be used to determine if a specific UMCP command can be invoked by the current user. This method has two parameters: The ''command'' name and the ''options''.
+
+"""
+
 import notifier
 import notifier.signals as signals
 

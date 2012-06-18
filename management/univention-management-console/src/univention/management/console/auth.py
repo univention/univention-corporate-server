@@ -31,6 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""
+Authentication mechanisms
+=========================
+
+This module defines a :class:`.AuthHandler` that provides access to
+authentication modules for the UMC core. Currently it implements a
+module using PAM.
+"""
+
 import notifier.signals as signals
 import notifier.threads as threads
 
@@ -40,12 +49,24 @@ from .log import *
 
 from univention.lib.i18n import Translation
 
-__all__ = [ 'AuthHandler' ]
-
 _ = Translation( 'univention.management.console' ).translate
 
 class Auth( signals.Provider ):
+	"""
+	This is the base class for authentication modules.
+
+	**Signals:**
+
+	* *auth_return* -- is emitted when the authentication process has finished. As argument a boolean is passed definig if the authentication was successful. This signal is used internally only by the :class:`AuthHandler`.
+	"""
 	def __init__( self, username, password ):
+		"""This class is not meant to be instanciated directly. It is
+		just a base class to define the interface for authentication
+		modules.
+
+		:param username: username to authenticate
+		:param password: the secret to use for authentcation. Normally this will be a cleartext password.
+		"""
 		signals.Provider.__init__( self )
 		self._username = username
 		self._password = password
@@ -53,15 +74,32 @@ class Auth( signals.Provider ):
 		self.signal_new( 'auth_return' )
 
 	def credenticals( self, username = None, password = None ):
+		"""
+		Sets the given credentials.
+
+		:param username: username to authenticate
+		:param password: the secret to use for authentcation. Normally this will be a cleartext password.
+		"""
 		if username is not None:
 			self._username = username
 		if password is not None:
 			self._password = password
 
 	def authenticate( self ):
+		"""This method should be overwritten when implementing an
+		authentication module. It is invoked by the UMC core when
+		verifiying the credentials of a user."""
 		return True
 
 class PAM_Auth( Auth ):
+	"""This class implements the interface :class:`Auth` to provide
+	authentcation using PAM. It uses the PAM service
+	*univention-management-console*.
+
+	:param username: username to authenticate
+	:param password: the secret to use for authentcation. Normally this will be a cleartext password.
+	"""
+
 	def __init__( self, username = None, password = None ):
 		Auth.__init__( self, username, password )
 		self._pam = PAM.pam()
@@ -107,6 +145,14 @@ class PAM_Auth( Auth ):
 _all_modules = ( PAM_Auth, )
 
 class AuthHandler( signals.Provider ):
+	"""
+	This class is instanciated by the UMC core to access the
+	authentication modules.
+
+	**Signals:**
+
+	* *authenticated* -- is emitted when the authentication process has finished. As argument a boolean is passed definig if the authentication was successful.
+	"""
 	def __init__( self ):
 		signals.Provider.__init__( self )
 		self._modules = []

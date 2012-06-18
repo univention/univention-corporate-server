@@ -31,6 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""This module provides a class for an UMC module server. it is based on
+the UMC server class
+:class:`~univention.management.console.protocol.server.Server`.
+"""
+
 from .server import *
 from .message import *
 from .definitions import *
@@ -48,6 +53,13 @@ import notifier
 import notifier.threads as threads
 
 class ModuleServer( Server ):
+	"""Implements an UMC module server
+
+	:param str socket: UNIX socket filename
+	:param str module: name of the UMC module to serve
+	:param int timeout: If there are no incoming requests for *timeout* seconds the module server shuts down
+	:param bool check_acls: if False the module server does not check the permissions (**dangerous!**)
+	"""
 	def __init__( self, socket, module, timeout = 300, check_acls = True ):
 		self.__name = module
 		self.__module = module
@@ -143,6 +155,17 @@ class ModuleServer( Server ):
 		return True
 
 	def handle( self, msg ):
+		"""Handles incoming UMCP requests. This function is called onyl,
+		when it is a valid UMCP request.
+
+		:param Request msg: the received UMCP request
+
+		The following commands are handled directly and are not passed
+		to the custom module code:
+
+		* SET (acls|username|credentials)
+		* EXIT
+		"""
 		PROTOCOL.info( 'Received UMCP %s REQUEST %s' % ( msg.command, msg.id ) )
 		if msg.command == 'EXIT':
 			shutdown_timeout = 100
@@ -228,12 +251,17 @@ class ModuleServer( Server ):
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	def command_get( self, command_name ):
+		"""Returns the command object that matches the given command name"""
 		for cmd in self.__commands.commands:
 			if cmd.name == command_name:
 				return cmd
 		return None
 
 	def command_is_known( self, command_name ):
+		"""Checks if a command with the given command name is known
+
+		:rtype: bool
+		"""
 		for cmd in self.__commands.commands:
 			if cmd.name == command_name:
 				return True
@@ -259,6 +287,7 @@ class ModuleServer( Server ):
 			return False
 
 	def response( self, msg ):
+		"""Send an UMCP response to the client"""
 		PROTOCOL.info( 'Sending UMCP RESPONSE %s' % msg.id )
 		data = str( msg )
 		self.__queue += str(msg)

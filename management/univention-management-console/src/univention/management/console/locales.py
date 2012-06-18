@@ -30,6 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""
+Locales
+=======
+
+The translations provided by the UMC server are technically based on
+gettext library. As the server needs to provide translations for several
+different commponents that deliver their own translation files this
+module provides for the UMC server a simple way to get the required
+translations. Components that provide there own translation files:
+
+* the UMC core --- python code directly imported by the UMC server
+* categories
+* module definitions
+"""
+
 import gettext
 from locale import getlocale, getdefaultlocale
 import re
@@ -49,6 +64,12 @@ _ = obj.translate
 '''
 
 class I18N( object ):
+	"""
+	Provides a translation function for a given language and translation domain.
+
+	:param str locale: the locale to provide
+	:param str domain: the translation domain to use
+	"""
 	LOCALE_DIR = '/usr/share/univention-management-console/i18n/'
 
 	def __init__( self, locale = None, domain = None ):
@@ -58,6 +79,15 @@ class I18N( object ):
 		self.load( locale, domain )
 
 	def load( self, locale = None, domain = None ):
+		"""
+		Tries to load the translation file specified by the given locale
+		and domain. If the given locale could not be found the method
+		tries to find the translation domain for the systems default
+		locale. No translation is provided with this fails too.
+
+		:param str locale: the locale to provide
+		:param str domain: the translation domain to use
+		"""
 		if locale is not None:
 			self.locale = locale
 		if domain is not None:
@@ -79,9 +109,22 @@ class I18N( object ):
 		self.mofile = polib.mofile( filename )
 
 	def exists( self, message ):
+		"""
+		Verifies if the translation file contains a translation for the given text.
+
+		:param str message: the text to search for
+		:rtype: bool
+		"""
 		return self.mofile is not None and self.mofile.find( message, by = 'msgid' )
 
 	def _( self, message ):
+		"""
+		Translates the given text if a translation is
+		available. Otherwise the given text is returned.
+
+		:param str message: text to translate
+		:rtype: str
+		"""
 		if self.mofile:
 			entry = self.mofile.find( message, by = 'msgid' )
 			if entry is not None:
@@ -90,6 +133,14 @@ class I18N( object ):
 		return message
 
 class I18N_Manager( dict ):
+	"""
+	This class handles the :class:`.I18N` instances within an UMC
+	session.
+
+	As the UMC server handles all sessions opened on a system that may
+	all use a different language it uses one :class:`.I18N_Manager` per
+	session.
+	"""
 	def __init__( self ):
 		lang, codeset = getdefaultlocale()
 		if lang is None:
@@ -97,6 +148,11 @@ class I18N_Manager( dict ):
 		self.locale = Locale( lang )
 
 	def set_locale( self, locale ):
+		"""
+		Sets the locale to use within the :class:`.I18N_Manager`.
+
+		:param str locale: locale to use
+		"""
 		LOCALE.info( 'Setting locale to %s' % locale )
 		self.locale.parse( locale )
 		for domain, i18n in self.items():
@@ -108,6 +164,14 @@ class I18N_Manager( dict ):
 		dict.__setitem__( self, key, value )
 
 	def _( self, message, domain = None ):
+		"""
+		Translates the given text. Therefor all known translation
+		domains or if not None the given domain is searched for a
+		translation.
+
+		:param str message: text to translation
+		:param str domain: translation domain
+		"""
 		LOCALE.info( 'Searching for %s translation of "%s' % ( str( self.locale ), message ) )
 		if domain is not None:
 			if not domain in self:

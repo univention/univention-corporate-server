@@ -31,6 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""
+Defines the basic class for an UMC server.
+"""
+
 # python packages
 import datetime
 import fcntl
@@ -69,8 +73,12 @@ class MagicBucket( object ):
 		self.exit()
 
 	def new( self, client, socket ):
-		'''Is called by the Server object to annouce a new incoming
-		connetion.'''
+		"""Is called by the Server object to annouce a new incoming
+		connection.
+
+		:param str client: IP address + port
+		:param fd socket: a file descriptor or socket object
+		"""
 		CORE.info( 'Established connection: %s' % client )
 		state = State( client, socket )
 		state.signal_connect( 'authenticated', self._authenticated )
@@ -93,8 +101,12 @@ class MagicBucket( object ):
 		self.__states = {}
 
 	def _authenticated( self, success, state ):
-		'''Signal callback: Invoked when a authentication has been
-		tried. This function generates the UMCP response.'''
+		"""Signal callback: Invoked when a authentication has been
+		tried. This function generates the UMCP response.
+
+		:param bool success: True if the authentication was successful
+		:param State state: the state object for the connection (see also :class:`~univention.management.console.protocol.session.State`)
+		"""
 		if success:
 			statistics.users.add( state.username )
 			state.authResponse.status = SUCCESS
@@ -105,9 +117,12 @@ class MagicBucket( object ):
 		state.authResponse = None
 
 	def _receive( self, socket ):
-		'''Handles incoming data. Processes SSL events and parses the
-		incoming data. If a vaild UMCP was found it is passed to
-		_handle.'''
+		"""Signal callback: Handles incoming data. Processes SSL events
+		and parses the incoming data. If a vaild UMCP was found it is
+		passed to _handle.
+
+		:param fd socket: file descriptor or socket object that reported incoming data
+		"""
 		state = self.__states[ socket ]
 		data = ''
 
@@ -167,8 +182,19 @@ class MagicBucket( object ):
 
 	CHANGELOG_VERSION = re.compile( '^[^(]*\(([^)]*)\).*' )
 	def _handle( self, state, msg ):
-		'''Ensures that commands are only passed to the processor if a
-		successful authentication has been completed.'''
+		"""Ensures that commands are only passed to the processor if a
+		successful authentication has been completed.
+
+		:param State state: state object for the connection
+		:param Request msg: UMCP request
+
+		The following commands are directly handled in this function:
+
+		* GET (ucr|info)
+		* STATISTICS
+
+		All other valid commands are redirected to the processor.
+		"""
 		state.requests[ msg.id ] = msg
 		statistics.requests.new()
 		CORE.info( 'Incoming request of type %s' % msg.command )
@@ -309,8 +335,17 @@ class MagicBucket( object ):
 				state.processor._purge_child( module_name )
 
 class Server( signals.Provider ):
-	'''Handles incoming connections on UNIX or TCP sockets and passes
-	the control to the MagicBucket'''
+	"""Creates an UMC server. It handles incoming connections on UNIX or
+	TCP sockets and passes the control to an external session handler
+	(e.g. :class:`.MagicBucket`)
+
+	:param int port: port to listen to
+	:param bool ssl: if SSL should be used
+	:param str unix: if given it must be the filename of the UNIX socket to use
+	:param bool magic: if an external session handler should be used
+	:param class magicClass: a reference to the class for the external session handler
+	:param bool load_ressources: if the modules, categories and syntax definitions should be loaded
+	"""
 
 	def __init__( self, port = 6670, ssl = True, unix = None, magic = True, magicClass = MagicBucket, load_ressources = True ):
 		'''Initializes the socket to listen for requests'''
@@ -471,6 +506,7 @@ class Server( signals.Provider ):
 			self.__bucket.exit()
 
 	def reload( self ):
+		"""Reloads resources like module, syntax and category definitions"""
 		CORE.info( 'Reloading resources: modules, syntax definitions, categories' )
 		moduleManager.load()
 		syntaxManager.load()

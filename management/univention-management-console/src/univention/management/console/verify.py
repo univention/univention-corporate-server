@@ -30,6 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""The module provides functions to verify the corretness of request
+options.
+"""
+
 import os
 import re
 import sys
@@ -39,14 +43,18 @@ from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
 class SyntaxVerificationError( Exception ):
+	"""Exception that is raised if a syntax verification has failed"""
 	pass
 
 #
 # load all additional syntax files from */site-packages/univention/management/console/syntax.d/*.py
 #
+
+#: path prefix for the syntax classes
 PREFIX_SYNTAX = 'univention/management/console'
 
 def import_verification_functions():
+	"""Imports syntax verfification functions"""
 	for dir in sys.path:
 		if os.path.exists( os.path.join( dir, PREFIX_SYNTAX, 'syntax.py' ) ):
 			if os.path.isdir( os.path.join( dir, PREFIX_SYNTAX, 'syntax.d/' ) ):
@@ -60,18 +68,36 @@ def import_verification_functions():
 							pass
 
 def is_boolean( value, syntax, verify_function ):
+	"""Tests if the given value is of type *bool*
+
+	:param value: value to check the syntax for
+	:param Syntax syntax: The specification of the syntax class
+	:param function verify_function: a function to invoke for verification
+	"""
 	if not isinstance( value, bool ):
 		raise SyntaxVerificationError( _( 'Value is not an boolean' ) )
 
 	return True
 
 def is_integer( value, syntax, verify_function ):
+	"""Tests if the given value is of type *int*
+
+	:param value: value to check the syntax for
+	:param Syntax syntax: The specification of the syntax class
+	:param function verify_function: a function to invoke for verification
+	"""
 	if not isinstance( value, int ):
 		raise SyntaxVerificationError( _( 'Value is not an integer' ) )
 
 	return True
 
 def is_float( value, syntax, verify_function ):
+	"""Tests if the given value is of type *float*
+
+	:param value: value to check the syntax for
+	:param Syntax syntax: The specification of the syntax class
+	:param function verify_function: a function to invoke for verification
+	"""
 	if not isinstance( value, float ):
 		raise SyntaxVerificationError( _( 'Value is not n floating point number' ) )
 
@@ -86,6 +112,14 @@ def _compile_regex( regular_expression ):
 	return regex
 
 def is_string( value, syntax, verify_function ):
+	"""Tests if the given value is of type *str* and if the value
+	matches the optional regular expression.
+
+	:param value: value to check the syntax for
+	:param Syntax syntax: The specification of the syntax class
+	:param function verify_function: a function to invoke for verification
+	"""
+
 	if not isinstance( value, basestring ):
 		raise SyntaxVerificationError( _( 'Value is not of type string' ) )
 
@@ -101,12 +135,25 @@ def is_string( value, syntax, verify_function ):
 	return True
 
 def is_list( value, syntax, verify_function ):
+	"""Tests if the given value is of type *list* or *tuple*
+
+	:param value: value to check the syntax for
+	:param Syntax syntax: The specification of the syntax class
+	:param function verify_function: a function to invoke for verification
+	"""
 	if not isinstance( value, ( list, tuple ) ):
 		raise SyntaxVerificationError( _( 'Value is not a list' ) )
 
 	return True
 
 def is_dict( value, syntax, verify_function ):
+	"""Tests if the given value is of type *dict* and if the items are
+	of valid types.
+
+	:param value: value to check the syntax for
+	:param Syntax syntax: The specification of the syntax class
+	:param function verify_function: a function to invoke for verification
+	"""
 	if not isinstance( value, dict ):
 		raise SyntaxVerificationError( _( 'Value is not a dictionary' ) )
 
@@ -125,6 +172,14 @@ def is_dict( value, syntax, verify_function ):
 	return True
 
 def is_selection( value, syntax, verify_function ):
+	"""Tests if the given value is of type *str* and the value is equal
+	to one of the valid choices of the selection.
+
+	:param value: value to check the syntax for
+	:param Syntax syntax: The specification of the syntax class
+	:param function verify_function: a function to invoke for verification
+	"""
+
 	if not isinstance( value, basestring ):
 		raise SyntaxVerificationError( _( 'Value is not of type string' ) )
 

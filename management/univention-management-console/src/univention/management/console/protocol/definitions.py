@@ -37,10 +37,12 @@ from univention.lib.i18n import NullTranslation
 
 _ = NullTranslation( 'univention.management.console' ).translate
 
-# buffer size for reading commands from socket
+#: buffer size for reading commands from socket
 RECV_BUFFER_SIZE = 65536
 
 class CommandDefinition( object ):
+	"""Defines basic properties of valid commands. Used to test for the
+	validity of an incoming request."""
 	def __init__( self, name, has_arguments, *options ):
 		self._name = name
 		self._has_arguments = has_arguments
@@ -58,6 +60,7 @@ class CommandDefinition( object ):
 	def options( self ):
 		return self._options
 
+#: List of valid commands
 COMMANDS = (
 	CommandDefinition( 'AUTH', False, 'username', 'password' ),
 	CommandDefinition( 'COMMAND', True ),
@@ -92,6 +95,7 @@ class Status( object ):
 			return self._description
 		return _( 'Unknown status code' )
 
+#: list of valid status names, codes, and human readable descriptions
 STATUS = (
 	# UMCP request success messages
 	Status( 'SUCCESS'							, 200, _( 'OK, operation successful' ) ),
@@ -135,6 +139,7 @@ for status in STATUS:
 	setattr( sys.modules[ 'univention.management.console.protocol.definitions' ], status.name, status.code )
 
 def command_get( name ):
+	"""Returns the command definition of the command named like *name*"""
 	for cmd in COMMANDS:
 		if cmd.name == name:
 			return cmd

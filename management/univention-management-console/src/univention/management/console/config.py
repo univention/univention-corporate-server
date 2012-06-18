@@ -31,6 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""
+Configuration
+=============
+
+Global configuration variables and objects for the UMC server.
+
+This module provides a global :class:`!ConfigRegistry` instance *ucr*
+some constants that are used internally.
+"""
 import univention.config_registry
 
 ucr = univention.config_registry.ConfigRegistry()

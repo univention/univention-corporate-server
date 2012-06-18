@@ -31,21 +31,28 @@
 # <http://www.gnu.org/licenses/>.
 
 class Counter( object ):
+	"""Implements a counter that counts elements available elements of
+	any type that can be inactive."""
 	def __init__( self ):
 		self._all = 0l
 		self._active = 0l
 
 	def new( self ):
+		"""Increase counter by one active element"""
 		self._all += 1
 		self._active += 1
 
 	def inactive( self ):
+		"""Decrease counter of active elements by one"""
 		self._active -= 1
 
 	def json( self ):
+		"""Returns counter information in JSON compatible form"""
 		return { 'all' : self._all, 'active' : self._active }
 
 class Statistics( object ):
+	"""Collects information about the connections, modules, requests and
+	users processed and seen by the running UMC server instance"""
 	connections = Counter()
 	modules = Counter()
 	requests = Counter()
@@ -53,11 +60,11 @@ class Statistics( object ):
 
 	@staticmethod
 	def json():
+		"""Returns the statistics ina JSON compatible form"""
 		return { 'connections' : Statistics.connections.json(),
 				 'modules' : Statistics.modules.json(),
 				 'requests' : Statistics.requests.json(),
 				 'users' : list( Statistics.users ) }
 
+#: global :class:`Statistics` object
 statistics = Statistics()
-
-__all__ = [ 'statistics' ]

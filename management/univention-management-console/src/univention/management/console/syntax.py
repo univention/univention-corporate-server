@@ -30,6 +30,65 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""
+Syntax definitions
+==================
+
+Syntax definitions can help to ensure the correctness of commands passed
+to the UMC server. Therefor it helps to keeps the server save by
+dismissing incorrect commands that may crash the UMC module.
+
+By default the UMC server brings a set of basic and most common syntax
+definitions:
+
+* String
+* Boolean
+* Integer
+* Float
+* Selection (only predefined strings are allowed)
+
+Additionally it provides some data structure types:
+
+* Dictionary
+* List
+
+These syntax types can be used to create own syntax definitions based on
+these types. To define custom syntax types the UMC module must provide
+an XML file with the definitions. Example ::
+
+ <?xml version="1.0" encoding="UTF-8"?>
+ <umc version="2.0">
+   <definitions>
+      <syntax base="String" name="UCR-Variable">
+        <regex-invalid>.*[\\r\\n!\"§$%&amp;()\\[\\]{}=?`+#',;&lt;&gt;].*</regex-invalid>
+      </syntax>
+      <syntax base="String" name="UCR-Value">
+        <regex-invalid>.*[\\r\\n].*</regex-invalid>
+      </syntax>
+      <syntax base="Dictionary" name="UCR-Variables">
+        <item key="UCR-Variable" value="UCR-Value"/>
+      </syntax>
+      <syntax base="Selection" name="UCR-SearchOption">
+        <choice name="all"/>
+        <choice name="key"/>
+        <choice name="value"/>
+        <choice name="description"/>
+      </syntax>
+   </definitions>
+ </umc>
+
+A syntax definition must provide the *base* type and a new
+*name*. Depending on the base type the available child elements differ:
+
+*String*
+ * *regex-invalid* defines a regular expression. If it matches, the value is invalid
+ * *regex* defines a regular expression. Only if it matches the value is valid
+*Dictionary*
+ * *item* defines the syntax types of the list elements. The attribute *key* defines the syntax type of the key and the attribute *value* for its value.
+*Selection*
+ * *choice* defines a valid string for the selection. The value must be set in the attribute *name*
+"""
+
 import os
 import re
 import sys
@@ -44,20 +103,27 @@ from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
 class XML_Definition( ET.ElementTree ):
-	'''Definition of a syntax class'''
+	"""Definition of a syntax class
+
+	:param str root: root element within the XML structure
+	:param str filename: path to the file containing the XML data
+	"""
 	def __init__( self, root = None, filename = None ):
 		ET.ElementTree.__init__( self, element = root, file = filename )
 
 	@property
 	def name( self ):
+		"""Returns the unique name of the syntax"""
 		return self._root.get( 'name' )
 
 	@property
 	def base( self ):
+		"""Returns the name of the base syntax"""
 		return self._root.get( 'base' )
 
 	@property
 	def regex_invalid( self ):
+		"""Returns the a regular expression defining invalid characters if specified or None"""
 		tag = self.find( 'regex-invalid' )
 		if tag != None:
 			return tag.text
@@ -65,6 +131,7 @@ class XML_Definition( ET.ElementTree ):
 
 	@property
 	def regex( self ):
+		"""Returns the a regular expression defining valid characters if specified or None"""
 		tag = self.find( 'regex' )
 		if tag != None:
 			return tag.text
@@ -72,6 +139,7 @@ class XML_Definition( ET.ElementTree ):
 
 	@property
 	def item( self ):
+		"""Returns a pair of *key* and *value* defining the items of a dictionary"""
 		item = self.find( 'item' )
 		if not item:
 			return ( None, None )
@@ -79,6 +147,7 @@ class XML_Definition( ET.ElementTree ):
 
 	@property
 	def choices( self ):
+		"""Returns a list of choices if the syntax is based on Selection"""
 		return [ elem.text for elem in self.findall( 'choices' ) ]
 
 	@property
@@ -89,8 +158,9 @@ class XML_Definition( ET.ElementTree ):
 		return None
 
 class Manager( dict ):
-	'''Manager of all available syntax definitions'''
+	"""Manager of all available syntax definitions"""
 
+	#: directory containing the syntax definition files
 	DIRECTORY = os.path.join( sys.prefix, 'share/univention-management-console/syntax' )
 	def __init__( self ):
 		dict.__init__( self )

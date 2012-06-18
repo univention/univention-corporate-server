@@ -31,6 +31,33 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""
+UMC ACL implementation
+======================
+
+This module implements the UMC ACLs used to define the access rights for
+users and groups to the UMC service.
+
+UMC ACLs are defined by creating *UMC operation set* objects that are added
+to *UMC policies*. These policies cann be connected with users or
+groups.
+
+An *UMC operation set* consists of a list of UMC command patterns like ::
+
+	udm/* objectType=nagios/*
+
+This specifies that all commands hat match the pattern *udm/\** can be
+called if the option *objectType* is given and the value matches the
+pattern *nagios/\**.
+
+Patterns for commands and options may just use the asterik and now no
+other wildcards. For options there is one additional format allowed to
+specify that te option may not exist. Therefor the following format is
+used ::
+
+	udm/* !objectType
+"""
+
 import os, sys, ldap, re
 import cPickle
 
@@ -46,24 +73,32 @@ import univention.admin.handlers.computers.managedclient as managedclient
 import univention.admin.handlers.computers.mobileclient as mobileclient
 
 class Rule( dict ):
+	"""A simple class representing one ACL rule in a form that can be
+	simply serialized."""
+
 	@property
 	def fromUser( self ):
+		"""Returns *True* if the rule was connected with a user, otherwise False"""
 		return self.get( 'fromUser', False )
 
 	@property
 	def host( self ):
+		"""Returns a hostname pattern. If the pattern matches the hostname the command is allowed on the host"""
 		return self.get( 'host', '*' )
 
 	@property
 	def command( self ):
+		"""Returns the command pattern this rule describes"""
 		return self.get( 'command', '' )
 
 	@property
 	def options( self ):
+		"""Returns the option pattern for the rule"""
 		return self.get( 'options', {} )
 
 	@property
 	def flavor( self ):
+		"""Returns the flavor if given otherwise *None*"""
 		return self.get( 'flavor', None )
 
 	def __eq__( self, other ):
@@ -71,12 +106,17 @@ class Rule( dict ):
 
 class ACLs( object ):
 	"""Provides methods to determine the access rights of users to
-	specific UMC commands"""
+	specific UMC commands. It defines a cache for ACLs, a parser for
+	command definitions of ACLs and functions for comparsion.
+	"""
 
 	# constants
 	( MATCH_NONE, MATCH_PART, MATCH_FULL ) = range( 3 )
+
+	#: defines the directory for the cache files
 	CACHE_DIR = '/var/cache/univention-management-console/acls'
 
+	#: list of all supported computer types for ACL rules
 	_systemroles = ( dc_master, dc_backup, dc_slave, memberserver, managedclient, mobileclient )
 
 	def __init__( self, ldap_base = None, acls = None ):
@@ -253,10 +293,19 @@ class ACLs( object ):
 			if match in ( ACLs.MATCH_PART, ACLs.MATCH_FULL ) and opt_match == ACLs.MATCH_FULL and flavor_match in ( ACLs.MATCH_PART, ACLs.MATCH_FULL ):
 				return True
 
-		# default is to prohibited the command execution
+		# default is to prohibit the command execution
 		return False
 
 	def is_command_allowed( self, command, hostname = None, options = {}, flavor = None ):
+		"""This method verifies if the given command (with options and
+		flavor) is on the named host allowed.
+
+		:param str command: the command to check access for
+		:param str hostname: FQDN of the host
+		:param dict options: the command options given in the UMCP request
+		:param str flavor: the flavor gien in the UMCP request
+		:rtype: bool
+		"""
 		if not hostname:
 			hostname = ucr[ 'hostname' ]
 
@@ -311,10 +360,14 @@ class ACLs( object ):
 		os.close( file )
 
 	def json( self ):
+		"""Returns the ACL definitions in a JSON compatible form."""
 		return self.acls
 
 class LDAP_ACLs ( ACLs ):
-	"""Reads ACLs from LDAP directory for the given username."""
+	"""Reads ACLs from LDAP directory for the given username. By
+	inheriting the class :class:`ACLs` the ACL definitions can be cached
+	on the local system. If the LDAP server can not be reached the cache
+	is used if available."""
 
 	FROM_USER = True
 	FROM_GROUP = False

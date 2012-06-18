@@ -1,10 +1,9 @@
-#!/usr/bin/python2.6
-# -*- coding: utf-8 -*-
+#!/bin/sh
 #
-# Univention Management Console
-#  version information for the UMC protocol
+# Univention documentation
+#  postinst script for UMC documentation
 #
-# Copyright 2007-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,11 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-major_number    = 2
-minor_number    = 0
-revision_number = 0
-extension       = ''
+#DEBHELPER#
 
-#: Defines the protocol version
-VERSION = "%d.%d.%d%s" % ( major_number, minor_number,
-						   revision_number, extension )
+univention-doc install umc
+
+exit 0

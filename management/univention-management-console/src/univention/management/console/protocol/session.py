@@ -31,6 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""Implements several helper classes to handle the state of a session
+and the communication with the module processes"""
+
 import base64
 import ldap
 import locale
@@ -62,7 +65,11 @@ from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND
 from ..locales import I18N, I18N_Manager
 
 class State( signals.Provider ):
-	'''Holds information about the state of an active session'''
+	"""Holds information about the state of an active session
+
+	:param str client: IP address + port
+	:param fd socket: file descriptor or socket obbject
+	"""
 	def __init__( self, client, socket ):
 		signals.Provider.__init__( self )
 		self.__auth = AuthHandler()
@@ -87,14 +94,23 @@ class State( signals.Provider ):
 		self.signal_emit( 'authenticated', success, self )
 
 	def authenticate( self, username, password ):
+		"""Initiates an authentication process"""
 		self.username = username
 		self.__auth.authenticate( username, password )
 
 	def credentials( self ):
+		"""Returns the credentials"""
 		return self.__auth.credentials()
 
 
 class ModuleProcess( Client ):
+	"""handles the communication with an UMC modue process
+
+	:param str module: name of the module to start
+	:param str debug: debug level as a string
+	:param str locale: locale to use for the module process
+	"""
+
 	def __init__( self, module, debug = '0', locale = None ):
 		socket = '/var/run/univention-management-console/%u-%lu.socket' % ( os.getpid(), long( time.time() * 1000 ) )
 		# determine locale settings
@@ -146,12 +162,17 @@ class ModuleProcess( Client ):
 		self.signal_emit( 'result', msg )
 
 	def pid( self ):
+		"""Returns procss ID of module process"""
 		return self.__pid
 
 class Processor( signals.Provider ):
-	'''Implements a proxy and command handler. It handles all internal
+	"""Implements a proxy and command handler. It handles all internal
 	UMCP commands and passes the commands for a module to the
-	subprocess.'''
+	subprocess.
+
+	:param str username: name of the user who authenticated for this session
+	:param str password: password of the user
+	"""
 
 	def __init__( self, username, password ):
 		self.__username = username
@@ -187,6 +208,7 @@ class Processor( signals.Provider ):
 		self.signal_new( 'response' )
 
 	def shutdown( self ):
+		"""Instructs the module process to shutdown"""
 		CORE.info( 'The session is shutting down. Sending UMC modules an EXIT request (%d processes)' % len( self.__processes ) )
 		for module_name in self.__processes:
 			CORE.info( 'Ask module %s to shutdown gracefully' % module_name )
@@ -199,9 +221,18 @@ class Processor( signals.Provider ):
 			del process
 
 	def get_module_name( self, command ):
+		"""Return the name of the module that provides the given command
+
+		:param str command: the command name
+		"""
 		return moduleManager.module_providing( self.__comand_list, command )
 
 	def request( self, msg ):
+		"""Handles an incoming UMCP request and passes the requests to
+		specific handler functions.
+
+		:param Request msg: UMCP request
+		"""
 		if msg.command == 'EXIT':
 			self.handle_request_exit( msg )
 		elif msg.command == 'GET':
@@ -227,6 +258,18 @@ class Processor( signals.Provider ):
 		return False
 
 	def handle_request_exit( self, msg ):
+		"""Handles an EXIT request. If the request does not have an
+		argument that contains a valid name of an running UMC module
+		instance the request is returned as a bad request.
+
+		Is the rquest valid it is passed on to the module
+		process. Additionally a timer of 3000 milli seconds is
+		started. After that amoun of time the module process MUST have
+		been exited itself. If not the UMC server will kill the module
+		process.
+
+		:param Request msg: UMCP request
+		"""
 		if len( msg.arguments ) < 1:
 			return self.handle_request_unknown( msg )
 
@@ -242,6 +285,11 @@ class Processor( signals.Provider ):
 				CORE.info( 'Got EXIT request for a non-existing module %s' % module_name )
 
 	def handle_request_version( self, msg ):
+		"""Handles a VERSION request by returning the version of the UMC
+		server's protocol version.
+
+		:param Request msg: UMCP request
+		"""
 		res = Response( msg )
 		res.status = SUCCESS # Ok
 		res.body[ 'version' ] = VERSION
@@ -249,6 +297,23 @@ class Processor( signals.Provider ):
 		self.signal_emit( 'response', res )
 
 	def handle_request_get( self, msg ):
+		"""Handles a GET request. The following possible variants are supported:
+
+		modules/list
+			Returns a list of all available UMC modules within the current session
+
+		categories/list
+			Returns a list of all known categories
+
+
+		syntax/verification
+			Checks the correctness of a value accordding to a syntax
+			class. Both the *syntax* and the *value* are passed to the
+			command via the reuqest option.
+
+		:param Request msg: UMCP request
+		"""
+
 		res = Response( msg )
 
 		if 'modules/list' in msg.arguments:
@@ -297,6 +362,14 @@ class Processor( signals.Provider ):
 		self.signal_emit( 'response', res )
 
 	def handle_request_set( self, msg ):
+		"""Handles a SET request. No argument may be given. The
+		variables that should be set are passed via the request
+		options. The currentyl only variable that may be set is the
+		locale. If any unknown variable is given the the request is
+		invalidated.
+
+		:param Request msg: UMCP request
+		"""
 		res = Response( msg )
 		if len( msg.arguments ):
 			res.status = BAD_REQUEST_INVALID_ARGS
@@ -357,12 +430,34 @@ class Processor( signals.Provider ):
 		return False
 
 	def reset_inactivity_timer( self, module ):
+		"""Resets the inactivity timer. This timer watches the
+		inactivity of the module process. If the module did not receive
+		a request for MODULE_INACTIVITY_TIMER seconds the module process
+		is shut down to save resources. The timer ticks eah seconds to
+		handle glitches of the system clock.
+
+		:param Module module: a module 
+		"""
 		if module._inactivity_timer is None:
 			module._inactivity_timer = notifier.timer_add( 1000, notifier.Callback( self._inactivitiy_tick, module ) )
 
 		module._inactivity_counter = MODULE_INACTIVITY_TIMER
 
 	def handle_request_upload( self, msg ):
+		"""Handles an UPLOAD request. The command is used for the HTTP
+		access to the UMC server. Incoming HTTP requests that send a
+		list of files are passed on to the UMC server by storing the
+		files in temporary files and passing the information about the
+		files to the UMC server in the options of the request. The
+		request options must be a list of dictionaries. Each dictionary
+		must contain the following keys:
+
+		* *filename* -- the original name of the file
+		* *name* -- name of the form field
+		* *tmpfile* -- filename of the temporary file
+
+		:param Request msg: UMCP request
+		"""
 		# request.options = { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
 		response = Response( msg )
 		if not isinstance( msg.options, ( list, tuple ) ):
@@ -395,6 +490,20 @@ class Processor( signals.Provider ):
 		self.signal_emit( 'response', response )
 
 	def handle_request_command( self, msg ):
+		"""Handles a COMMAND request. The request must contain a valid
+		and known command that can be accessed by the current user. If
+		access to the command is prohibited the request is answered as a
+		forbidden command.
+
+		If there is no running module process for the given command a
+		new one is started and the request is added to a queue of
+		requests that will be passed on when the process is ready.
+
+		Is a module process already running the request is passed on and
+		the inactivity timer is reset.
+
+		:param Request msg: UMCP request
+		"""
 		module_name = self.__is_command_known( msg )
 		if module_name and msg.arguments:
 			if msg.mimetype == MIMETYPE_JSON:
@@ -540,6 +649,11 @@ class Processor( signals.Provider ):
 			del self.__processes[ module_name ]
 
 	def handle_request_unknown( self, msg ):
+		"""Handles an unknown or invalid request that is answered with a
+		status code BAD_REQUEST_NOT_FOUND.
+
+		:param Request msg: UMCP request
+		"""
 		res = Response( msg )
 		res.status = BAD_REQUEST_NOT_FOUND
 		res.message = status_description( res.status )

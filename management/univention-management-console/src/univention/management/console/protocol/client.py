@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+"""Provides a class :class:`.Client` that implements an UMCP client"""
+
 import errno, os, socket, sys, fcntl
 
 from univention.lib.i18n import Translation
@@ -61,6 +63,15 @@ request handling.
 '''
 
 class Client( signals.Provider, Translation ):
+	"""Implememts an UMCP client
+
+	:param str servername: hostname of the UMC server to connect to
+	:param int port: port number of the UMC server
+	:param str unix: filename of the UNIX socket to connect to
+	:param bool ssl: if True the connection is encrypted
+	:param bool auth: if False no authentication is required for the connection
+	"""
+
 	def __verify_cert_cb( self, conn, cert, errnum, depth, ok ):
 		CORE.info( '__verify_cert_cb: Got certificate subject: %s' % cert.get_subject() )
 		CORE.info( '__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer() )
@@ -105,6 +116,7 @@ class Client( signals.Provider, Translation ):
 
 	@property
 	def openRequests( self ):
+		"""Returns a list of open UMCP requests"""
 		return self.__unfinishedRequests
 
 	def __nonzero__( self ):
@@ -126,6 +138,8 @@ class Client( signals.Provider, Translation ):
 			self.__socket = None
 
 	def disconnect( self, force = True ):
+		"""Shutdown the connection. If there are still open requests and
+		*force* is False the connection is kept."""
 		if not force and self.__unfinishedRequests:
 			return False
 		if self.__ssl and not self.__unix:
@@ -137,6 +151,7 @@ class Client( signals.Provider, Translation ):
 		return True
 
 	def connect( self ):
+		"""Connects to the UMC server"""
 		if not self.__realsocket and not self.__socket:
 			self._init_socket()
 		try:
@@ -215,6 +230,11 @@ class Client( signals.Provider, Translation ):
 		return False
 
 	def request( self, msg ):
+		"""Sends an UMCP request to the UMC server
+
+		:param Request msg: the UMCP request to send
+		:raises: :class:`.NotAuthenticatedError`
+		"""
 		if not self.__authenticated and msg.command != 'AUTH':
 			raise NotAuthenticatedError()
 
@@ -237,6 +257,9 @@ class Client( signals.Provider, Translation ):
 		self.__unfinishedRequests.append( msg.id )
 
 	def invalidate_all_requests(self):
+		"""Checks for open UMCP requests and invalidates these by faking
+		a response with status code SERVER_ERR_MODULE_DIED"""
+
 		if self.__unfinishedRequests:
 			CORE.warn( 'Invalidating all pending requests %s' % ', '.join( self.__unfinishedRequests ) )
 		else:
@@ -315,9 +338,7 @@ class Client( signals.Provider, Translation ):
 			self.signal_emit( 'error', UnknownRequestError() )
 
 	def authenticate( self, username, password ):
-		'''
-		Authenticate against a running server on the local connection.
-		'''
+		"""Authenticate against the UMC server"""
 		authRequest = Request ('AUTH' )
 		authRequest.body['username'] = username
 		authRequest.body['password'] = password
