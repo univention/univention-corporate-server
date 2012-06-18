@@ -275,6 +275,7 @@ Architecture: all
 Recommends: ucs-test-framework
 Depends: libwww-perl,
  univention-updater,
+ dpkg-dev,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for the updater.
