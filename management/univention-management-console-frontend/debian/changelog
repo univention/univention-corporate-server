@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.374-1) unstable; urgency=low
+
+  * Remove "global" variable en_us_present (Bug #24551)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Jun 2012 18:20:15 +0200
+
 univention-management-console-frontend (1.0.373-1) unstable; urgency=low
 
   * Fix "en_US" can be chosen in languageBox (even if not installed)

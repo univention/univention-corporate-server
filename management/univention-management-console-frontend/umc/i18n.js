@@ -40,22 +40,25 @@ dojo.require("dojox.string.sprintf");
 //              which is created by univention-config-registry
 //              using locale and umc/server/languages/*
 umc.i18n.availableLanguages = dojo.fromJson(dojo["cache"]("", "../../univention-management-console/languages.json"));
-// if we do not have any language available (we only localised
-// english and german, maybe the system has neither of them installed)
-// we "hack" availableLanguage because whereever we iterate over the
-// languages, we want to show at least one (and thus the possibility
-// to localise UMC). WARNING: This only works because we use English
-// strings when we translate. If English is not installed, we do not
-// translate anything, we just return the very same string.
-var en_us_present = false;
-dojo.forEach(umc.i18n.availableLanguages, function(lang) {
-	if (lang.id == 'en-US') {
-		en_us_present = true;
+// do it another scope to not expose en_us_present
+(function() {
+	// if we do not have any language available (we only localised
+	// english and german, maybe the system has neither of them installed)
+	// we "hack" availableLanguage because whereever we iterate over the
+	// languages, we want to show at least one (and thus the possibility
+	// to localise UMC). WARNING: This only works because we use English
+	// strings when we translate. If English is not installed, we do not
+	// translate anything, we just return the very same string.
+	var en_us_present = false;
+	dojo.forEach(umc.i18n.availableLanguages, function(lang) {
+		if (lang.id == 'en-US') {
+			en_us_present = true;
+		}
+	});
+	if (!en_us_present) {
+		umc.i18n.availableLanguages.push({id: 'en-US', label: 'English'});
 	}
-});
-if (!en_us_present) {
-	umc.i18n.availableLanguages.push({id: 'en-US', label: 'English'});
-}
+})();
 
 umc.i18n.setLanguage = function(/*String*/ locale) {
 	// summary:
