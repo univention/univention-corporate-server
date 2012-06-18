@@ -1,3 +1,9 @@
+univention-management-console (4.0.261-1) unstable; urgency=low
+
+  * removed unneedet setting of ucr variable in postinst (Bug #27261)
+
+ -- Florian Best <best@univention.de>  Mon, 18 Jun 2012 16:03:38 +0200
+
 univention-management-console (4.0.260-3) unstable; urgency=low
 
   * reverted adding triggering of python-support in univention-management-console-server
