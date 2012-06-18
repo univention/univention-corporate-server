@@ -1,8 +1,8 @@
-firefox-de (1:10.0.5esr-1) unstable; urgency=low
+firefox-en (1:10.0.5esr-3) unstable; urgency=low
 
-  * Update to Firefox 10.0.5esr (Bug #27486)
+  * Update to Firefox 10.0.5esr (Bug #27487)
 
- -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 07 Jun 2012 10:10:12 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 18 Jun 2012 16:19:19 +0200
 
 firefox-de (1:10.0.4esr-5) unstable; urgency=low
 
