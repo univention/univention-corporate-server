@@ -1,9 +1,9 @@
-univention-management-console (4.0.260-2) unstable; urgency=low
+univention-management-console (4.0.260-3) unstable; urgency=low
 
-  * added triggering of python-support in univention-management-console-server
+  * reverted adding triggering of python-support in univention-management-console-server
   postinst (Bug #27261)
 
- -- Florian Best <best@univention.de>  Mon, 18 Jun 2012 13:21:09 +0200
+ -- Florian Best <best@univention.de>  Mon, 18 Jun 2012 14:22:58 +0200
 
 univention-management-console (4.0.260-1) unstable; urgency=low
 

@@ -1,9 +1,9 @@
-univention-management-console-frontend (1.0.372-2) unstable; urgency=low
+univention-management-console-frontend (1.0.372-3) unstable; urgency=low
 
   * updated dependencies of univention-management-console-web-server
   (Bug #26243)
 
- -- Florian Best <best@univention.de>  Mon, 18 Jun 2012 09:41:08 +0200
+ -- Florian Best <best@univention.de>  Mon, 18 Jun 2012 14:20:45 +0200
 
 univention-management-console-frontend (1.0.372-1) unstable; urgency=low
 
