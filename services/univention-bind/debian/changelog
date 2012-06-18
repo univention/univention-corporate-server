@@ -1,3 +1,11 @@
+univention-bind (6.0.38-4) unstable; urgency=low
+
+  * univention-bind: Added section "nochange" to the script.
+    New function bind_service improves readability. Updated Copyright.
+    (Bug #27517)
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Mon, 18 Jun 2012 09:47:03 +0200
+
 univention-bind (6.0.38-3) unstable; urgency=low
 
   * ucr dns/fakeroot=False is used to indicate that zone "." shall be
