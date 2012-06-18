@@ -81,27 +81,8 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		this._text.placeAt(this.containerNode, 'first');
 
 		// create the language_combobox
-		// if we do not have any language available (we only localised
-		// english and german, maybe the system has neither of them installed)
-		// we "hack" the static values because we want to show that combo box
-		// and the possibility to localise UMC. anyway, we should not
-		// alter umc.i18n.availableLanguages because english is not really
-		// available in this case. it works, because every string we try to
-		// translate (and we may not be able to do so in the backend...) is in
-		// english and thus returns something reasonable. but in effect it is
-		// incorrect.
-		var languages = umc.i18n.availableLanguages;
-		var en_us_present = false;
-		dojo.forEach(languages, function(lang) {
-			if (lang.id == 'en-US') {
-				en_us_present = true;
-			}
-		});
-		if (!en_us_present) {
-			languages.push({id: 'en-US', label: 'English'});
-		}
 		this._languageBox = new umc.widgets.ComboBox({
-			staticValues: languages,
+			staticValues: umc.i18n.availableLanguages,
 			value: umc.i18n.defaultLang(),
 			sizeClass: null
 		});

@@ -37,7 +37,7 @@
 umc_frontend_new_hash
 
 # provide new settings for localisation of umc frontend
-univention-config-registry set "umc/server/languages/en_US=English" \
+univention-config-registry set "umc/server/languages/en_US?English" \
 	"umc/server/languages/de_DE?Deutsch"
 
 exit 0
