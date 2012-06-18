@@ -1,3 +1,9 @@
+univention-management-console (4.0.260-1) unstable; urgency=low
+
+  * add packaging doc from wiki; Bug #27594
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jun 2012 09:04:24 +0200
+
 univention-management-console (4.0.259-1) unstable; urgency=low
 
   * add source documentation; Bug #27594

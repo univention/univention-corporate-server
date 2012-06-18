@@ -24,6 +24,7 @@ python API for modules are described.
    http
    core_api
    module_api
+   packaging
 
 Indices and tables
 ==================
