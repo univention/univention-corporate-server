@@ -127,12 +127,12 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 				default_locale_default = parts[0] + '_' + parts[1] + '.UTF-8:UTF-8';
 			}
 			var default_locale_keymap = countrycode;
-			this._form.getWidget('locale/keymap').set('value', default_locale_keymap);
-			this._form.getWidget('locale/default').set('value', default_locale_default);
 			this.umcpCommand('setup/lang/default_timezone', {
 				'countrycode': countrycode
 			}).then(dojo.hitch(this, function(data) { 
 				var default_timezone = data.result;
+				this._form.getWidget('locale/keymap').set('value', default_locale_keymap);
+				this._form.getWidget('locale/default').set('value', default_locale_default);
 				this._form.getWidget('timezone').set('value', default_timezone);
 			}));
 		}
