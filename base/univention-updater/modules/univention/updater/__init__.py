@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Updater
-#  python tools for updater and repository tools
+"""Python tools for updater and repository maintenance."""
 #
 # Copyright 2009-2012 Univention GmbH
 #
@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from tools import UniventionUpdater, UCS_Version
-from mirror import UniventionMirror
-from repository import *
-from errors import *
+from univention.updater.tools import UniventionUpdater, UCS_Version
+from univention.updater.mirror import UniventionMirror
+from univention.updater.repository import *
+from univention.updater.errors import *

@@ -1382,14 +1382,29 @@ class UniventionUpdater:
 		repo = UCSRepoPool(prefix=server, patch=component)
 		for repo.version in versions_mm:
 			for repo.part in ["%s/component" % part for part in parts]:
-				path = '%(version)s/%(part)s/%(patch)s/Packages.gz' % repo
-				try:
-					assert server.access(path)
-					result.append('deb %(prefix)s%(version)s/%(part)s/%(patch)s/ ./' % repo)
-					if cleanComponent:
-						result.append('clean %(prefix)s%(version)s/%(part)s/%(patch)s/' % repo)
-				except DownloadError, e:
-					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+				errata_prefixes = ['']
+				if iterate_errata:
+					if errata_level:
+						errata_prefixes = ['-errata%s' % errata_level]
+					else:
+						errata_level = int(self.configRegistry.get('repository/online/component/%s/%s/erratalevel' % (component, repo.version), 0))
+						errata_prefixes += ['-errata%d' % x for x in range(1, errata_level + 1)]
+				for ep in errata_prefixes:
+					path = '%(version)s/%(part)s/%(patch)s' % repo
+					if ep:
+						path += ep
+					path += '/Packages.gz'
+
+					try:
+						assert server.access(path)
+						path = '%(prefix)s%(version)s/%(part)s/%(patch)s' % repo
+						if ep:
+							path += ep
+						result.append('deb %s/ ./' % path)
+						if cleanComponent:
+							result.append('clean %s/' % path)
+					except DownloadError, e:
+						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
 		return result
 
