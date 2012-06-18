@@ -1,6 +1,5 @@
 import sys
-from os import uname
-import os.path
+import os
 from univention.config_registry import ConfigRegistry
 import yaml
 from univention.testing.codes import TestCodes
@@ -43,7 +42,7 @@ class TestEnvironment(object):
 		self.log = open(logfile or os.path.devnull, 'a')
 
 	def _load_host(self):
-		(sysname, nodename, release, version, machine) = uname()
+		(sysname, nodename, release, version, machine) = os.uname()
 		self.hostname = nodename
 		self.architecture = machine
 
@@ -462,7 +461,7 @@ class TestCase(object):
 							continue
 						raise
 					if fd_stdout in rlist:
-						data = p.stdout.read(1024)
+						data = os.read(fd_stdout, 1024)
 						if data == '':
 							read_set.remove(fd_stdout)
 							p.stdout.close()
@@ -470,7 +469,7 @@ class TestCase(object):
 							to_stdout.write(data)
 							log_stdout.append(data)
 					if fd_stderr in rlist:
-						data = p.stderr.read(1024)
+						data = os.read(fd_stderr, 1024)
 						if data == '':
 							read_set.remove(fd_stderr)
 							p.stderr.close()
