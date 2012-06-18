@@ -535,6 +535,25 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, locales)
 
+	def default_timezone(self, request):
+		'''Returns default timezone for given locale.'''
+		countrycode = request.options.get('countrycode', '')
+		timezone = None
+		file = open('/lib/univention-installer/locale/countrycode2timezone')
+
+		reader = csv.reader(file, delimiter=' ')
+		for row in reader:
+			if row[0].startswith("#"): continue
+			if len(row) > 1:
+				if countrycode.upper() == row[0].upper():
+					timezone = row[1]
+					break
+		file.close()
+
+		if timezone is None:
+			timezone = 'Europe/Berlin'
+		self.finished(request.id, timezone)
+
 	def lang_timezones(self, request):
 		'''Return a list of all available time zones.'''
 		try:

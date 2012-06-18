@@ -11,6 +11,7 @@
 	<command name="setup/save" function="save"></command>
 	<command name="setup/finished" function="check_finished"></command>
 	<command name="setup/cleanup" function="cleanup"></command>
+	<command name="setup/lang/default_timezone" function="default_timezone"></command>
 	<command name="setup/lang/timezones" function="lang_timezones"></command>
 	<command name="setup/lang/locales" function="lang_locales"></command>
 	<command name="setup/lang/keymaps" function="lang_keymaps"></command>

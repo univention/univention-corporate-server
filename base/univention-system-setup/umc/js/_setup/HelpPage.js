@@ -36,7 +36,6 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.ExpandingTitlePane");
 dojo.require("umc.widgets.Text");
-dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin, umc.widgets._WidgetsInWidgetsMixin ], {
@@ -76,6 +75,7 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin, 
 			html = html.replace(regH1, '');
 		}
 
+		// build up the widgets
 		var pane = new umc.widgets.ExpandingTitlePane({
 			title: this._('Information about the initial configuration')
 		});

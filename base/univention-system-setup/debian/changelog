@@ -1,3 +1,10 @@
+univention-system-setup (5.0.164-1) unstable; urgency=low
+
+  * Default values for widgets in LanguagePage change
+  according to dojo.locale (Bug #26732)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Jun 2012 17:39:13 +0200
+
 univention-system-setup (5.0.163-1) unstable; urgency=low
 
   * Write apache2 default sites (Bug #27596)
