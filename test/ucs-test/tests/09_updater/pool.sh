@@ -308,7 +308,7 @@ mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpa
 	bzip2 -9 <"${dir}/Packages" >"${dir}/Packages.bz2"
 	cd "${OLDPWD}"
 
-	mkgpg || return
+	mkgpg || return 0
 	cd "${dir}"
 	rm -f Release Release.tmp Release.gpg
 	apt-ftparchive \
@@ -336,7 +336,7 @@ mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scanso
 
 mkgpg () { # Create GPG-key for secure APT
 	case "${_update_secure_apt}" in
-		0|false|no|off) mkpgp () { false; } ; return ;;
+		0|false|no|off) mkgpg () { false; } ; return 1 ;;
 	esac
 	GPG_BIN=/usr/bin/gpg
 	GPG_DIR="${BASEDIR}/gpg.chroot"
@@ -367,6 +367,7 @@ mkgpg () { # Create GPG-key for secure APT
 	GPGSEC="${GPG_DIR}/test.sec"
 	apt-key add "${GPGPUB}"
 	mkgpg () { true; }
+	return 0
 }
 
 mksh () { # Create shell scripts $@ in $1
