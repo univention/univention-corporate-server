@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.261-1) unstable; urgency=low
+
+  * fixed spelling (Bug #26287)
+
+ -- Florian Best <best@univention.de>  Mon, 18 Jun 2012 13:47:34 +0200
+
 univention-directory-manager-modules (7.0.260-1) unstable; urgency=low
 
   * computers/windows_domaincontroller: fixed sambaRID handling

@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin policy for the mobile client packages
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

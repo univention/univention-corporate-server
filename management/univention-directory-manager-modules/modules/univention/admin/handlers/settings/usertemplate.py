@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for user template objects
 #
-# Copyright 2002-2011 Univention GmbH
+# Copyright 2002-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -100,8 +100,8 @@ property_descriptions={
 			identifies=0
 		),
 	'pwdChangeNextLogin': univention.admin.property(
-			short_description=_('Change password upon next login'),
-			long_description=_('Change password upon next login'),
+			short_description=_('Change password on next login'),
+			long_description=_('Change password on next login'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],
