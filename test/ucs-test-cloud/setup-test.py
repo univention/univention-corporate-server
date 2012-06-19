@@ -292,8 +292,15 @@ fn = os.path.join(ressources, 'run-ucs-test.sh')
 attributes = sftp.put(fn, 'run-ucs-test.sh')
 sftp.chmod('run-ucs-test.sh', 0700)
 
-fn = os.path.join(ressources, 'ucs-test.ini')  # FIXME: Only part of [mail] and [test] section needed
-attributes = sftp.put(fn, 'ucs-test.ini')
+# Only transfer [mail] and [test] sections; strip credentials!
+for section in cfg.sections():
+    if section not in ('mail', 'test'):
+        cfg.remove_section(section)
+ini_file = sftp.file('ucs-test.ini', 'w')
+try:
+    cfg.write(ini_file)
+finally:
+    ini_file.close()
 sftp.chmod('ucs-test.ini', 0600)
 
 # Remove temporary APT configuration again
