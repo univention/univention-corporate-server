@@ -14,6 +14,7 @@ from random import choice
 from select import select
 from socket import error as socket_error
 from ConfigParser import ConfigParser, Error as ConfigError
+from pipes import quote as escape_shell
 
 INI = '~/ucs-test.ini'
 INSTANCES = 1
@@ -233,6 +234,19 @@ logger.debug('Running setup...')
 cmd = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
 rv = ssh_exec(cmd)
 
+# Configure instance
+logger.debug('Configuring UCR...')
+try:
+    config = cfg.items('ucr')
+except ConfigError:
+    pass
+else:
+    if config:
+        cmd = 'univention-config-registry set ' + ' '.join(
+                ('%s=%s' % (escape_shell(key), escape_shell(value)) for
+                    key, value in config))
+        rc = ssh_exec(cmd)
+
 # Update instance
 logger.debug('Running update...')
 cmd = 'univention-upgrade net --ignoressh --ignoreterm --noninteractive' + \
@@ -246,7 +260,7 @@ try:
     print >> apt_list, 'deb %s repo/' % (s3_repo,)
 finally:
     apt_list.close()
-cmd = 'ucr set repository/online/unmaintained=yes ' + \
+cmd = 'univention-config-registry set repository/online/unmaintained=yes ' + \
         'update/secure_apt=no'
 rv = ssh_exec(cmd)
 cmd = 'apt-get update </dev/null'
@@ -284,7 +298,7 @@ sftp.chmod('ucs-test.ini', 0600)
 
 # Remove temporary APT configuration again
 cmd = 'rm -f /etc/apt/sources.list.d/*.list ; ' + \
-        'ucr set repository/online/unmaintained=no ' + \
+        'univention-config-registry set repository/online/unmaintained=no ' + \
         'update/secure_apt=yes'
 rv = ssh_exec(cmd)
 
