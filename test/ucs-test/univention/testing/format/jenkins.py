@@ -26,7 +26,7 @@ class Jenkins(TestFormatInterface):
         print >> self.stream, '<duration>%d</duration>' % \
                 (result.duration or -1,)
         print >> self.stream, '<displayName>%s</displayName>' % \
-                (escape_xml(result.case.id),)
+                (escape_xml(result.case.uid),)
         print >> self.stream, '<description>%s</description>' % \
                 (escape_xml(result.case.description or ''),)
         print >> self.stream, '</run>'
@@ -38,7 +38,7 @@ class Jenkins(TestFormatInterface):
                 TestResult
         >>> te = TestEnvironment()
         >>> tc = TestCase()
-        >>> tc.id = 'python/data.py'
+        >>> tc.uid = 'python/data.py'
         >>> tr = TestResult(tc, te)
         >>> tr.success()
         >>> Jenkins().format(tr)

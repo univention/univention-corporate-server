@@ -31,7 +31,7 @@ class TAP(TestFormatInterface):
         else:
             prefix = 'not ok'
             suffix = ''
-        print >> self.stream, '%s %s%s' % (prefix, result.case.id, suffix)
+        print >> self.stream, '%s %s%s' % (prefix, result.case.uid, suffix)
         super(TAP, self).end_test(result)
 
     def format(self, result):
@@ -40,7 +40,7 @@ class TAP(TestFormatInterface):
                 TestResult
         >>> te = TestEnvironment()
         >>> tc = TestCase()
-        >>> tc.id = 'python/data.py'
+        >>> tc.uid = 'python/data.py'
         >>> tr = TestResult(tc, te)
         >>> tr.success()
         >>> TAP().format(tr)

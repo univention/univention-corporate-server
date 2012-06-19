@@ -41,7 +41,7 @@ class Junit(TestFormatInterface):
         else:
             errors = 1
 
-        filename = os.path.join(self.outdir, '%s.xml' % (result.case.id,))
+        filename = os.path.join(self.outdir, '%s.xml' % (result.case.uid,))
         dirname = os.path.dirname(filename)
         try:
             os.makedirs(dirname)
@@ -53,7 +53,7 @@ class Junit(TestFormatInterface):
             xml = XMLGenerator(f_report, encoding='utf-8')
             xml.startDocument()
             xml.startElement('testsuite', {
-                'name': encode(result.case.description or result.case.id),
+                'name': encode(result.case.description or result.case.uid),
                 'tests': '%d' % (1,),
                 'failures': '%d' % (failures,),
                 'errors': '%d' % (errors,),
@@ -62,7 +62,7 @@ class Junit(TestFormatInterface):
                 'skipped': '%d' % (skipped,),
                 'timestamp': self.now.isoformat(),
                 'hostname': os.uname()[1],
-                'id': result.case.id,
+                'id': result.case.uid,
                 'package': self.section,
                 })
 
@@ -90,10 +90,10 @@ class Junit(TestFormatInterface):
             xml.endElement('properties')
 
             xml.startElement('testcase', {
-                'name': encode(result.case.description or result.case.id),
+                'name': encode(result.case.description or result.case.uid),
                 #'assertions': '%d' % (0,),
                 'time': '%0.3f' % (result.duration / 1000.0,),
-                'classname': result.case.id,
+                'classname': result.case.uid,
                 #'status': '???',
                 })
 
@@ -149,7 +149,7 @@ class Junit(TestFormatInterface):
                 TestResult
         >>> te = TestEnvironment()
         >>> tc = TestCase()
-        >>> tc.id = 'python/data.py'
+        >>> tc.uid = 'python/data.py'
         >>> tr = TestResult(tc, te)
         >>> tr.success()
         >>> Junit().format(tr)

@@ -37,7 +37,7 @@ class HTML(TestFormatInterface):
 
     def end_test(self, result):
         """Called after each test."""
-        title = escape_xml(result.case.id)
+        title = escape_xml(result.case.uid)
         if result.case.description:
             title = '<span title="%s">%s</span>' % \
                     (title, escape_xml(result.case.description))
@@ -75,7 +75,7 @@ class HTML(TestFormatInterface):
                 TestResult
         >>> te = TestEnvironment()
         >>> tc = TestCase()
-        >>> tc.id = 'python/data.py'
+        >>> tc.uid = 'python/data.py'
         >>> tr = TestResult(tc, te)
         >>> tr.success()
         >>> HTML().format(tr)

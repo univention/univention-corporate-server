@@ -69,7 +69,7 @@ class Text(TestFormatInterface):
     def begin_test(self, case, prefix=''):
         """Called before each test."""
         super(Text, self).begin_test(case, prefix)
-        title = case.description or case.id
+        title = case.description or case.uid
         title = prefix + title.splitlines()[0]
 
         cols = self.term.COLS - TestCodes.MAX_MESSAGE_LEN - 1
@@ -105,7 +105,7 @@ class Text(TestFormatInterface):
                 TestResult
         >>> te = TestEnvironment()
         >>> tc = TestCase()
-        >>> tc.id = 'python/data.py'
+        >>> tc.uid = 'python/data.py'
         >>> tr = TestResult(tc, te)
         >>> tr.success()
         >>> Text().format(tr)
