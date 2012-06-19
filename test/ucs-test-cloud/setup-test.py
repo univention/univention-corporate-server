@@ -200,13 +200,13 @@ try:
 finally:
     profile.close()
 
-def ssh_exec(command, timeout=10*60):
+def ssh_exec(command, idle_timeout=10*60):
     '''Execute command using ssh and output stdout, stderr.'''
     transport = client.get_transport()
     session = transport.open_session()
     try:
         session.exec_command(command)
-        while timeout > 0:
+        while idle_timeout > 0:
             r_list, _w_list, _e_list = select([session], [], [], 10)
             if r_list:
                 if session.recv_ready():
@@ -220,7 +220,7 @@ def ssh_exec(command, timeout=10*60):
                 else:
                     pass  # EOF
             else:
-                timeout -= 10
+                idle_timeout -= 10
             if session.exit_status_ready():
                 break
         if session.exit_status != 0:
@@ -251,7 +251,7 @@ else:
 logger.debug('Running update...')
 cmd = 'univention-upgrade net --ignoressh --ignoreterm --noninteractive' + \
         ' </dev/null'
-rv = ssh_exec(cmd)
+rv = ssh_exec(cmd, idle_timeout=30*60)  # FIXME: larger timeout for Bug #27665
 
 # Setup ucs-test repository
 logger.debug('Configuring repositories...')
