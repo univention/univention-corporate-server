@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.376-3) unstable; urgency=low
+
+  * created univention-management-console-web-server.postinst (Bug #26243)
+
+ -- Florian Best <best@univention.de>  Tue, 19 Jun 2012 13:48:07 +0200
+
 univention-management-console-frontend (1.0.376-2) unstable; urgency=low
 
   * version bump (Bug #27415)
