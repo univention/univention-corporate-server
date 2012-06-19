@@ -634,7 +634,7 @@ class TestCase(object):
                         devnull.close()
                     to_stdout = to_stderr = result.environment.log
 
-                self._run_tee(proc, to_stdout, to_stderr)
+                TestCase._run_tee(proc, result, to_stdout, to_stderr)
 
                 result.result = proc.wait()
                 print >> result.environment.log, '*** END *** %d ***' % \
