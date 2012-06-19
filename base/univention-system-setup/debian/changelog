@@ -1,3 +1,10 @@
+univention-system-setup (5.0.165-2) unstable; urgency=low
+
+  * add recommands entry for xinit which is required for the graophical
+    mode; Bug #27616
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 19 Jun 2012 11:14:26 +0200
+
 univention-system-setup (5.0.165-1) unstable; urgency=low
 
   * Fix problems with asynchronous calls. Problem may still
