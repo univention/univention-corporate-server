@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 # pyinotify modules have to be available (Bug 26243)
-dpkg-trigger pysupport
+update-python-modules --post-install
 
 #DEBHELPER#
 exit 0
