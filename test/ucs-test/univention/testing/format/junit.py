@@ -101,10 +101,11 @@ class Junit(TestFormatInterface):
                 xml.startElement('skipped', {})
                 try:
                     mime, content = result.artifacts['check']
-                    msg = '\n'.join(['%s' % (c,) for c in content])
-                    xml.characters(msg)
                 except KeyError:
                     pass
+                else:
+                    msg = '\n'.join(['%s' % (c,) for c in content])
+                    xml.characters(msg)
                 xml.endElement('skipped')
             elif errors:
                 xml.startElement('error', {
@@ -122,19 +123,21 @@ class Junit(TestFormatInterface):
 
             try:
                 mime, content = result.artifacts['stdout']
+            except KeyError:
+                pass
+            else:
                 xml.startElement('system-out', {})
                 xml.characters(content)
                 xml.endElement('system-out')
-            except KeyError:
-                pass
 
             try:
                 mime, content = result.artifacts['stderr']
+            except KeyError:
+                pass
+            else:
                 xml.startElement('system-err', {})
                 xml.characters(content)
                 xml.endElement('system-err')
-            except KeyError:
-                pass
 
             xml.endElement('testcase')
             xml.endElement('testsuite')

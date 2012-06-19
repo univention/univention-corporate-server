@@ -19,9 +19,13 @@ class Jenkins(TestFormatInterface):
     def end_test(self, result):
         """Called after each test."""
         print >> self.stream, '<run>'
-        if 'stdout' in result.artifacts:
+        try:
+            mime, content = result.artifacts['stdout']
+        except KeyError:
+            pass
+        else:
             print >> self.stream, '<log encoding="hexBinary">%s</log>' % \
-                    (encode(result.artifacts['stdout'], 'hex'),)
+                    (encode(content, 'hex'),)
         print >> self.stream, '<result>%d</result>' % (result.result,)
         print >> self.stream, '<duration>%d</duration>' % \
                 (result.duration or -1,)
