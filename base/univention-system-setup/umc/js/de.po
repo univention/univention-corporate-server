@@ -254,11 +254,11 @@ msgstr ""
 
 #: umc/js/_setup/BasisPage.js:213
 msgid "Fully qualified domain name"
-msgstr "Vollständiger Rechername"
+msgstr "Vollständiger Rechnername"
 
 #: umc/js/_setup/BasisPage.js:76
-msgid "Fully qualified domain name (e.g., master.example.com)"
-msgstr "Vollständiger Rechername (z.B., master.example.com)"
+msgid "Fully qualified domain name (e.g. master.example.com)"
+msgstr "Vollständiger Rechnername (z.B. master.example.com)"
 
 #: umc/js/_setup/NetworkPage.js:156 umc/js/_setup/NetworkPage.js:543
 msgid "Gateway (IPv4)"

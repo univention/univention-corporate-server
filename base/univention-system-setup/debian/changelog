@@ -1,3 +1,9 @@
+univention-system-setup (5.0.167-1) unstable; urgency=low
+
+  * Fix some more typos in Translation (Bug #26967)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 19 Jun 2012 17:11:27 +0200
+
 univention-system-setup (5.0.166-1) unstable; urgency=low
 
   * Put setting of values into functon setValues() (Bug #26732)

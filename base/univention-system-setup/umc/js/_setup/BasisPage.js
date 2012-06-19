@@ -73,7 +73,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		var widgets = [{
 			type: 'TextBox',
 			name: 'fqdn',
-			label: this._('Fully qualified domain name (e.g., master.example.com)'),
+			label: this._('Fully qualified domain name (e.g. master.example.com)'),
 			required: true
 		}, {
 			type: 'TextBox',

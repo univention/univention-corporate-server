@@ -50,7 +50,7 @@ msgid ""
 "At least one domain name server needs to be given if DHCP or SLAAC is not "
 "specified."
 msgstr ""
-"Zumindest ein Domänen-DNS-Server muss angegeben werden wenn DHCP oder SLAAC "
+"Zumindest ein Domänen-DNS-Server muss angegeben werden, wenn DHCP oder SLAAC "
 "nicht ausgewählt sind."
 
 #: umc/python/setup/__init__.py:441
@@ -81,7 +81,7 @@ msgstr "Der Beendevorgang des Web-Browsers ist fehlgeschlagen."
 
 #: umc/python/setup/__init__.py:270
 msgid "Hostname is equal to domain name."
-msgstr "Systemname ist gleich Domänennamen."
+msgstr "Systemname ist gleich dem Domänennamen."
 
 #: umc/python/setup/__init__.py:315
 #, python-format
@@ -125,7 +125,7 @@ msgstr "Ort"
 
 #: umc/python/setup/__init__.py:207
 msgid "Not allowed to shut down the web browser."
-msgstr "Keine Berechtigung, um den Web-Browsers herunter zu fahren."
+msgstr "Keine Berechtigung, um den Web-Browsers herunterzufahren."
 
 #: umc/python/setup/__init__.py:284
 msgid "Organization"
@@ -173,7 +173,7 @@ msgstr ""
 #: umc/python/setup/__init__.py:268
 msgid ""
 "The length of fully qualified domain name is greater than 63 characters."
-msgstr "Die Länge von System und Domänennamen ist größer als 63 Zeichen."
+msgstr "Die Länge von System- und Domänennamen ist größer als 63 Zeichen."
 
 #: umc/python/setup/__init__.py:273
 msgid ""
