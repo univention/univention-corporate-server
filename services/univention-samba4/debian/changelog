@@ -1,3 +1,9 @@
+univention-samba4 (1.0.144-1) unstable; urgency=low
+
+  * don't run join scripts if samba4/disabled is true (Bug #27122) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Jun 2012 12:46:28 +0200
+
 univention-samba4 (1.0.143-1) unstable; urgency=low
 
   * Usershares can now be configured with UCR (Bug #27525)

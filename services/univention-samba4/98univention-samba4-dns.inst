@@ -40,7 +40,10 @@ eval "$(univention-config-registry shell)"
 
 # samba4 allowd on this system?
 if is_ucr_true samba4/disabled; then
-	echo "WARNING: samba 4 on this system is not allowed."
+	echo "WARNING: samba4 on this system is not allowed."
+	echo "         The samba4 join stops here. To rerun the"
+	echo "         join script, use "
+	echo "         -> univention-run-join-scripts"
 	exit 0
 fi
 
