@@ -13,7 +13,7 @@ cd "$HOME" || exit 1
 # Clean up previous data
 rm -rf "$HOME/ucs-test.log" "$HOME/test-reports"
 # Run ucs-test
-/usr/sbin/ucs-test -E dangerous -F junit -l "ucs-test.log" -s ucr # FIXME: Remove '-s ucr'
+/usr/sbin/ucs-test -E dangerous -F junit -l "ucs-test.log"
 # Send test-results via email
 /root/smtp-send.py "ucs-test.log"
 # Schedule shutdown in 1 minute

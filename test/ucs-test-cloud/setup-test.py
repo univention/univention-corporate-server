@@ -247,8 +247,7 @@ try:
 finally:
     apt_list.close()
 cmd = 'ucr set repository/online/unmaintained=yes ' + \
-        'update/secure_apt=no ' + \
-        'version/erratalevel=81'
+        'update/secure_apt=no'
 rv = ssh_exec(cmd)
 cmd = 'apt-get update </dev/null'
 rv = ssh_exec(cmd)
