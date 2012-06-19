@@ -160,7 +160,7 @@ def main():
     test_set.set_environment(test_environment)
     test_set.set_prefix(options.count)
     test_set.set_format(options.format)
-    test_set.run_tests(tests, options.filter, options.dry)
+    test_set.run_tests(options.filter, options.dry)
 
 if __name__ == '__main__':
     try:
