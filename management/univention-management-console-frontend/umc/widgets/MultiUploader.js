@@ -254,7 +254,8 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 				dojo.mixin(file, info);
 				this._updateProgress();
 			});
-			var uploadSignal = this.connect(uploader, 'onUploaded', function() {
+
+			var _done = function(success) {
 				// disconnect events
 				//console.log('### onUploaded');
 				this.disconnect(progressSignal);
@@ -262,6 +263,7 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 
 				// update progress information
 				file.done = true;
+				file.success = success;
 				this._updateProgress();
 
 				// remove Uploader widget from container
@@ -279,14 +281,18 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 					var vals = this.get('value');
 					dojo.forEach(this._uploadingFiles, function(ifile) {
 						//console.log('### adding:', ifile.name);
-						vals.unshift(ifile.name);
+						if (file.success) {
+							vals.unshift(ifile.name);
+						}
 					});
 					this.set('value', vals);
 
 					// clear the list of uploading files
 					this._uploadingFiles = [];
 				}
-			});
+			};
+			var uploadSignal = this.connect(uploader, 'onUploaded', dojo.hitch(this, _done, true));
+			var uploadSignal = this.connect(uploader, 'onError', dojo.hitch(this, _done, false));
 
 			// hide uploader widget and add a new one
 			dojo.style(uploader.domNode, {

@@ -68,6 +68,10 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	//		The label that is displayed on the upload button.
 	clearButtonLabel: 'Clear data',
 
+	// displayErrorMessage: Boolean
+	// 		Show message if error occured when uploading file.
+	displayErrorMessage: true,
+
 	// data: Object
 	//		An object containing the file data that has been uploaded.
 	data: null,
@@ -188,16 +192,20 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		this.connect(this._uploader, 'onComplete', function(data) {
 			if (data && dojo.isArray(data.result)) {
 				this.set('data', data.result[0]);
+				this.onUploaded(this.data);
 			}
 			else {
 				this.set('data', null);
 				var error = umc.tools.parseError(data);
 				if (200 !== error.status) {
-					umc.dialog.alert(error.message);
-					this.onError();
+					if (this.displayErrorMessage) {
+						umc.dialog.alert(error.message);
+					}
+					this.onError(error);
+				} else {
+					this.onUploaded(this.data);
 				}
 			}
-			this.onUploaded(this.data);
 			this._resetLabel();
 		});
 

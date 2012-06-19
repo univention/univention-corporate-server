@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.376-1) unstable; urgency=low
+
+  * fixed onError event in widgets.Uploader and widgets.MultiUploader
+    (Bug #27415)
+
+ -- Florian Best <best@univention.de>  Tue, 19 Jun 2012 11:49:19 +0200
+
 univention-management-console-frontend (1.0.375-1) unstable; urgency=low
 
   * univention-management-console-web-server:
