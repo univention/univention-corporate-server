@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.375-1) unstable; urgency=low
+
+  * univention-management-console-web-server:
+    host name to use when listening with cherrypy is taken from new
+    ucr variable umc/http/name (default "localhost")
+    Bug #26470
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 19 Jun 2012 09:34:47 +0200
+
 univention-management-console-frontend (1.0.374-1) unstable; urgency=low
 
   * Remove "global" variable en_us_present (Bug #24551)
