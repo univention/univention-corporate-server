@@ -1,3 +1,9 @@
+univention-system-setup (5.0.166-1) unstable; urgency=low
+
+  * Put setting of values into functon setValues() (Bug #26732)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 19 Jun 2012 13:09:05 +0200
+
 univention-system-setup (5.0.165-2) unstable; urgency=low
 
   * add recommands entry for xinit which is required for the graophical

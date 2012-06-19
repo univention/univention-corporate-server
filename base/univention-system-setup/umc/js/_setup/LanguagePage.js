@@ -56,6 +56,9 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
+	// internal flag whether setValues() has been called at least once or not
+	_firstSetValues: true,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -117,8 +120,12 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 		});
 
 		this.addChild(this._form);
+	},
 
-		if (this.wizard_mode) {
+	setValues: function(_vals) {
+		var vals = dojo.mixin({}, _vals);
+		if (this.wizard_mode && this._firstSetValues) {
+			this._firstSetValues = false;
 			var countrycode = null;
 			var default_locale_default = null;
 			if (dojo.locale && dojo.locale.split('-').length == 2) {
@@ -126,20 +133,15 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 				countrycode = parts[1].toLowerCase();
 				default_locale_default = parts[0] + '_' + parts[1] + '.UTF-8:UTF-8';
 			}
-			var default_locale_keymap = countrycode;
+			vals['locale/keymap'] = countrycode;
+			vals['locale/default'] = default_locale_default;
 			this.umcpCommand('setup/lang/default_timezone', {
 				'countrycode': countrycode
 			}).then(dojo.hitch(this, function(data) { 
 				var default_timezone = data.result;
-				this._form.getWidget('locale/keymap').set('value', default_locale_keymap);
-				this._form.getWidget('locale/default').set('value', default_locale_default);
 				this._form.getWidget('timezone').set('value', default_timezone);
 			}));
 		}
-	},
-
-	setValues: function(_vals) {
-		var vals = dojo.mixin({}, _vals);
 		vals.locale = _vals.locale.split(/\s+/);
 		this._form.setFormValues(vals);
 	},

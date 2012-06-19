@@ -225,6 +225,7 @@ msgstr "Die Proxy-Adresse ist nicht gültig (z.B. http://10.201.1.1:8080): %s"
 msgid ""
 "The system role may not change on a system that has already joined to domain."
 msgstr ""
+"Die Systemrolle darf sich auf einem bereits gejointen System nicht mehr ändern."
 
 #: umc/python/setup/__init__.py:272
 msgid "The windows domain name can only consist of upper case characters."

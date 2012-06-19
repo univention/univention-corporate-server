@@ -251,7 +251,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			if (result.netmask) {
 				val[idx][2] = result.netmask;
 			}
-			// set "Dynamic (DHCP)" to be false if it wasn't set
+			// set "Dynamic (DHCP)" to be false if it was not set
 			if ( val[idx][3] == '') {
 				val[idx][3] = 'false';
 			}
