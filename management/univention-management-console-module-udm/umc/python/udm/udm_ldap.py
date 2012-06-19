@@ -66,6 +66,12 @@ udm_modules.update()
 _user_dn = None
 _password = None
 
+
+def get_exception_msg(e):
+	if getattr(e, 'message', False):
+		return e.message
+	return str(e)
+
 def set_credentials( dn, passwd ):
 	global _user_dn, _password
 	_user_dn = dn
@@ -312,7 +318,7 @@ class UDM_Module( object ):
 			obj.create()
 		except udm_errors.base, e:
 			MODULE.warn( 'Failed to create LDAP object: %s: %s' % ( e.__class__.__name__, str( e ) ) )
-			raise UDM_Error( e.message, obj.dn )
+			raise UDM_Error( get_exception_msg(e), obj.dn )
 
 		return obj.dn
 
@@ -330,8 +336,8 @@ class UDM_Module( object ):
 			obj.move( dest )
 			return dest
 		except udm_errors.base, e:
-			MODULE.warn( 'Failed to remove LDAP object %s: %s: %s' % ( ldap_dn, e.__class__.__name__, str( e ) ) )
-			raise UDM_Error( str( e ) )
+			MODULE.warn( 'Failed to move LDAP object %s: %s: %s' % ( ldap_dn, e.__class__.__name__, str( e ) ) )
+			raise UDM_Error( get_exception_msg( e ) )
 
 	@LDAP_Connection
 	def remove( self, ldap_dn, cleanup = False, recursive = False, ldap_connection = None, ldap_position = None ):
@@ -346,7 +352,7 @@ class UDM_Module( object ):
 				udm_objects.performCleanup( obj )
 		except udm_errors.base, e:
 			MODULE.warn( 'Failed to remove LDAP object %s: %s: %s' % ( ldap_dn, e.__class__.__name__, str( e ) ) )
-			raise UDM_Error( str( e ) )
+			raise UDM_Error( get_exception_msg( e ) )
 
 	@LDAP_Connection
 	def modify( self, ldap_object, ldap_connection = None, ldap_position = None ):
@@ -372,7 +378,7 @@ class UDM_Module( object ):
 			obj.modify()
 		except udm_errors.base, e:
 			MODULE.warn( 'Failed to modify LDAP object %s: %s: %s' % ( obj.dn, e.__class__.__name__, str( e ) ) )
-			raise UDM_Error( e.message )
+			raise UDM_Error( get_exception_msg(e) )
 
 	@LDAP_Connection
 	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '', ldap_connection = None, ldap_position = None ):
@@ -397,7 +403,7 @@ class UDM_Module( object ):
 		except ( LDAPError, udm_errors.ldapError ), e:
 			raise e
 		except udm_errors.base, e:
-			raise UDM_Error( str( e ) )
+			raise UDM_Error( get_exception_msg( e ) )
 
 	@LDAP_Connection
 	def get( self, ldap_dn = None, superordinate = None, attributes = [], ldap_connection = None, ldap_position = None ):
@@ -415,7 +421,7 @@ class UDM_Module( object ):
 			raise e
 		except Exception, e:
 			MODULE.info( 'Failed to retrieve LDAP object: %s' % str( e ) )
-			raise UDM_Error( str( e ) )
+			raise UDM_Error( get_exception_msg( e ) )
 		return obj
 
 	def get_property( self, property_name ):
@@ -861,7 +867,7 @@ def list_objects( container, object_type = None, ldap_connection = None, ldap_po
 	except ( LDAPError, udm_errors.ldapError ), e:
 		raise e
 	except udm_errors.base, e:
-		raise UDM_Error( str( e ) )
+		raise UDM_Error( get_exception_msg( e ) )
 	objects = []
 	for dn, attrs in result:
 		modules = udm_modules.objectType( None, ldap_connection, dn, attrs )

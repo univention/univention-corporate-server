@@ -235,7 +235,7 @@ class Instance( Base ):
 					new_dn = module.move( ldap_dn, options[ 'container' ] )
 					result.append( { '$dn$' : ldap_dn, 'success' : True } )
 				except UDM_Error, e:
-					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e.args[ 0 ] ) } )
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
 			return result
 

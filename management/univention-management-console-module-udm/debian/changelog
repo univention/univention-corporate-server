@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.282-1) unstable; urgency=low
+
+  * fixed messages which are displayed when adding/modifying/moving/removing
+    an object failed (Bug #27087)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 19 Jun 2012 13:11:17 +0200
+
 univention-management-console-module-udm (1.0.281-1) unstable; urgency=low
 
   * display message when an object could not be removed (Bug #27087)
