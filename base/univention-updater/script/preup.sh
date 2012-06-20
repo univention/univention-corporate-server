@@ -266,6 +266,16 @@ then
 	fi
 fi
 
+# check for deprecated MySQL option skip-bdb in modified configuration files
+MYSQL_CONF="/etc/mysql/my.cnf"
+if test -f "$MYSQL_CONF" && ! conffile_is_unmodified "$MYSQL_CONF" && grep -q skip-bdb "$MYSQL_CONF"
+then
+	echo "ERROR: The MySQL configuration file /etc/mysql/my.cnf has been modified and"
+	echo "       contains the deprecated option 'skip-bdb'. It MUST be removed before"
+	echo "       the update can continue."
+	exit 1
+fi
+
 # ensure that UMC is not restarted during the update process
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server >/dev/null 2>&1
