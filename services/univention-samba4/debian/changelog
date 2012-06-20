@@ -1,3 +1,9 @@
+univention-samba4 (1.0.145-1) unstable; urgency=low
+
+  * logrotate config for log.samba, log.smbd and log.nmbd (Bug #26376)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 20 Jun 2012 14:12:42 +0200
+
 univention-samba4 (1.0.144-1) unstable; urgency=low
 
   * don't run join scripts if samba4/disabled is true (Bug #27122) 
