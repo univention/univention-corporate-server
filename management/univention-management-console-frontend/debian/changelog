@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.376-6) unstable; urgency=low
+
+  * Changed explaining text of UCR variable umc/http/interface.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 20 Jun 2012 10:19:09 +0200
+
 univention-management-console-frontend (1.0.376-5) unstable; urgency=low
 
   * univention-management-console-web-server:
