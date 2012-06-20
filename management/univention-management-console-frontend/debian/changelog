@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.376-7) unstable; urgency=low
+
+  * removed univention-management-console-web-server.postinst (Bug #26243)
+
+ -- Florian Best <best@univention.de>  Wed, 20 Jun 2012 12:45:12 +0200
+
 univention-management-console-frontend (1.0.376-6) unstable; urgency=low
 
   * Changed explaining text of UCR variable umc/http/interface.
