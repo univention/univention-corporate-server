@@ -35,6 +35,8 @@
 info_header "$0" "$(gettext "Setting keyboard layout")"
 
 keymap=`get_profile_var locale/keymap`
+xlayout=`get_profile_var xorg/keyboard/options/XkbLayout`
+xvariant=`get_profile_var xorg/keyboard/options/XkbVariant`
 
 if [ -z "$keymap" ]; then
 	exit 0
@@ -44,10 +46,12 @@ if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-univention-config-registry set locale/keymap="$keymap"
+univention-config-registry set locale/keymap="$keymap" \
+	xorg/keyboard/options/XkbLayout="$xlayout" \
+	xorg/keyboard/options/XkbVariant="$xvariant"
 
 loadkeys $keymap
 
-univention-config-registry set xorg/keyboard/options/XkbLayout=$(echo $keymap | sed -e 's|-.*||')
+
 
 exit 0

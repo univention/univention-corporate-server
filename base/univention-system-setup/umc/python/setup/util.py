@@ -131,6 +131,24 @@ def load_values():
 
 	return values
 
+
+def _xkeymap(keymap):
+	'''Determine the x-keymap which belongs to 'keymap' by
+	parsing /lib/univention-installer/locale/all-kmaps'''
+	
+	xkeymap = {'layout' : '', 'variant' : ''}
+	fp = open('/lib/univention-installer/locale/all-kmaps', 'r')
+	for line in fp:
+		line_split = line.strip('\n').split(':')
+		if line_split[1] == keymap:
+			xkeymap['layout'] = line_split[2].split(' ')[0]
+			if len(line_split[2].split(' ')) == 2:
+				xkeymap['variant'] = line_split[2].split(' ')[1]
+			break
+	fp.close()
+	return xkeymap
+
+
 def pre_save(newValues, oldValues):
 	'''Modify the final dict before saving it to the profile file.'''
 
@@ -178,6 +196,13 @@ def pre_save(newValues, oldValues):
 		# get all packages that shall be installed
 		installComponents = list(allComponents & (selectedComponents - currentComponents))
 		newValues['packages_install'] = ' '.join([ i.replace(':', ' ') for i in installComponents ])
+
+	if 'locale/keymap' in newValues:
+		xkeymap = _xkeymap(newValues['locale/keymap'])
+		if xkeymap:
+			newValues['xorg/keyboard/options/XkbLayout'] = xkeymap['layout']
+			newValues['xorg/keyboard/options/XkbVariant'] = xkeymap['variant']
+
 
 def write_profile(values):
 	cache_file=open(PATH_PROFILE,"w+")

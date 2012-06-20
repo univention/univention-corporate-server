@@ -99,10 +99,14 @@ class Instance(umcm.Base):
 		self.finished(request.id, values)
 
 	def save_keymap(self, request):
+		'''Set the systems x-keymap according to
+		request.options[keymap]'''
+		
 		keymap = request.options.get('keymap')
-		if keymap and type(keymap) == str:
-			subprocess.call(['/usr/bin/setxkbmap', '-display', ':0', request.options.get('keymap').split('-')[0]])
-			self.finished(request.id, True)
+		if keymap:
+			xkeymap = util._xkeymap(keymap)
+			subprocess.call(['/usr/bin/setxkbmap', '-display', ':0', '-layout', xkeymap['layout'], '-variant', xkeymap['variant']])
+		self.finished(request.id, True)
 
 	def save(self, request):
 		'''Reconfigures the system according to the values specified in the dict given as

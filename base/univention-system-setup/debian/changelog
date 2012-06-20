@@ -1,3 +1,9 @@
+univention-system-setup (5.0.170-1) unstable; urgency=low
+
+  * add support for every listed keymap (Bug #26733)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 20 Jun 2012 16:08:47 +0200
+
 univention-system-setup (5.0.169-1) unstable; urgency=low
 
   * Fix default keymaps using same keymaps as univention-installer
