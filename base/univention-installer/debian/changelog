@@ -1,3 +1,10 @@
+univention-installer (7.0.160-1) unstable; urgency=low
+
+  * added mapping of x-keymaps to the corresponding keymaps
+    in 'all-kmaps' (Bug #26733)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 20 Jun 2012 16:01:18 +0200
+
 univention-installer (7.0.159-1) unstable; urgency=low
 
   * add mount option acl for ext2 partitions in /etc/fstab (Bug #27466) 
