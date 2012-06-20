@@ -535,7 +535,7 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, locales)
 
-	def default_timezone(self, request):
+	def lang_default_timezone(self, request):
 		'''Returns default timezone for given locale.'''
 		countrycode = request.options.get('countrycode', '')
 		timezone = None
@@ -566,6 +566,26 @@ class Instance(umcm.Base):
 		timezones = [ i.strip('\n') for i in file if not i.startswith('#') ]
 
 		self.finished(request.id, timezones)
+
+	def lang_default_keymap(self, request):
+		'''Returns default timezone for given locale.'''
+		# use "or ''" to be sure to not get None
+		countrycode = (request.options.get('countrycode') or  '').upper()
+		keymap = None
+		file = open('/lib/univention-installer/locale/default-kmaps')
+
+		reader = csv.reader(file, delimiter=':')
+		for row in reader:
+			if row[0].startswith("#"): continue
+			if len(row) > 1:
+				if row[1].upper().startswith(countrycode):
+					keymap = row[1]
+					break
+		file.close()
+
+		if keymap is None:
+			keymap = 'us'
+		self.finished(request.id, keymap)
 
 	def lang_keymaps(self, request):
 		'''Return a list of all available keyboard layouts.'''

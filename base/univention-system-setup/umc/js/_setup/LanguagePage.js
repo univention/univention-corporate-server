@@ -124,6 +124,7 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 
 	setValues: function(_vals) {
 		var vals = dojo.mixin({}, _vals);
+		vals.locale = _vals.locale.split(/\s+/);
 		if (this.wizard_mode && this._firstSetValues) {
 			this._firstSetValues = false;
 			var countrycode = null;
@@ -133,16 +134,21 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 				countrycode = parts[1].toLowerCase();
 				default_locale_default = parts[0] + '_' + parts[1] + '.UTF-8:UTF-8';
 			}
-			vals['locale/keymap'] = countrycode;
+			if (vals.locale.indexOf(default_locale_default) < 0) {
+				vals.locale.push(default_locale_default);
+			}
 			vals['locale/default'] = default_locale_default;
+			this.umcpCommand('setup/lang/default_keymap', {
+				'countrycode': countrycode
+			}).then(dojo.hitch(this, function(data) { 
+				this._form.getWidget('locale/keymap').set('value', data.result);
+			}));
 			this.umcpCommand('setup/lang/default_timezone', {
 				'countrycode': countrycode
 			}).then(dojo.hitch(this, function(data) { 
-				var default_timezone = data.result;
-				this._form.getWidget('timezone').set('value', default_timezone);
+				this._form.getWidget('timezone').set('value', data.result);
 			}));
 		}
-		vals.locale = _vals.locale.split(/\s+/);
 		this._form.setFormValues(vals);
 	},
 

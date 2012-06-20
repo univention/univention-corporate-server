@@ -1,3 +1,11 @@
+univention-system-setup (5.0.169-1) unstable; urgency=low
+
+  * Fix default keymaps using same keymaps as univention-installer
+  (Bug #26732)
+  * Fix locales always hold at least dojo.locale (Bug #26732)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jun 2012 11:05:42 +0200
+
 univention-system-setup (5.0.168-1) unstable; urgency=low
 
   * Remove system role "Base system" from combobox. It is buggy (Bug #27633)
