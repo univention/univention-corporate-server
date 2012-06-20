@@ -241,6 +241,31 @@ if [ $? = 0 ]; then
 fi
 echo "OK"
 
+# check for valid machine account
+if [ -f /var/univention-join/joined -a ! -f /etc/machine.secret ]
+then
+	echo "ERROR: The credentials for the machine account could not be found!"
+	echo "       Please contact the support team"
+	exit 1
+fi
+
+eval "$(ucr shell server/role ldap/base ldap/hostdn ldap/server/name)"
+if [ -n "$server_role" -a "$server_role" != "basesystem" -a -n "$ldap_base" -a -n "$ldap_hostdn" ]
+then
+	ldapsearch -x -D "$ldap_hostdn" -w "$(< /etc/machine.secret)" -b "$ldap_base" -s base &>/dev/null
+	if [ $? -eq 49 ]
+	then
+		echo "ERROR: An LDAP connection to $ldap_server_name with the machine account has"
+		echo "       failed (invalid credentials)!"
+		echo "       This MUST be fixed before the update can continue."
+		echo
+		echo "       This problem can be corrected by setting the content of the file"
+		echo "       /etc/machine.secret as the password of the computer object using"
+		echo "       Univention Directory Manager"
+		exit 1
+	fi
+fi
+
 # ensure that UMC is not restarted during the update process
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server >/dev/null 2>&1

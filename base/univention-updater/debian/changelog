@@ -1,3 +1,9 @@
+univention-updater (7.0.165-1) unstable; urgency=low
+
+  * preup.sh: add a check for a valid machine account; Bug #27619
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 20 Jun 2012 10:55:44 +0200
+
 univention-updater (7.0.164-1) unstable; urgency=low
 
   * fixed pruneOldKernel in preup.sh (Bug #27097)
