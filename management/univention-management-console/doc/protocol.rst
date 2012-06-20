@@ -20,7 +20,8 @@ Specification
 Python API
 ----------
 
-The following documents the API of all components implementing parts of UMCP.
+The following documents the API of all components implementing parts of
+the Univention Management Concole Protocol (UMCP).
 
 Messages
 ========

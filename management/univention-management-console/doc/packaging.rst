@@ -9,7 +9,7 @@ debhelper tools making package creation for UMC modules very easy.
 The following example is based on the package for the UMC module UCR.
 
 A UMC module may be part of a source package with multiple binary
-packages. The examples uses an own source package for the module.
+packages. The examples uses a distinct source package for the module.
 
 As a first step create a source package with the following files: ::
 
@@ -33,7 +33,7 @@ contains information about the locations of the UMC module source files: ::
 		Javascript: umc/js
 		Icons: umc/icons
 
-The keys in this file of the following meaning:
+The meaning of the keys in this file are described in the following:
 
 Module
 	The internal name of the module

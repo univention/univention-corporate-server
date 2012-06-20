@@ -62,9 +62,9 @@ from ..config import ucr, SERVER_MAX_CONNECTIONS
 from ..statistics import statistics
 
 class MagicBucket( object ):
-	'''Manages a connection (session) to the UMC server. Therefor it
+	'''Manages a connection (session) to the UMC server. Therefore it
 	ensures that without successful authentication no other command is
-	excepted. After the user has authenticated the commands a are passed
+	excepted. After the user has authenticated the commands are passed
 	on to the Processor.'''
 	def __init__( self ):
 		self.__states = {}

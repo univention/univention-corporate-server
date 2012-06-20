@@ -135,7 +135,7 @@ from .tools import JSON_Object, JSON_List, JSON_Dict
 from .log import RESOURCES
 
 class Attribute( JSON_Object ):
-	'''Represents an command attribute'''
+	'''Represents a command attribute'''
 	def __init__( self, name = '', syntax = '', required = True ):
 		self.name = name
 		self.syntax = syntax
@@ -146,7 +146,7 @@ class Attribute( JSON_Object ):
 			setattr( self, attr, json[ attr ] )
 
 class Command( JSON_Object ):
-	'''Represents an UMCP command handled by a module'''
+	'''Represents a UMCP command handled by a module'''
 	SEPARATOR = '/'
 
 	def __init__( self, name = '', method = None, attributes = None ):
@@ -182,7 +182,7 @@ class Flavor( JSON_Object ):
 		self.translationId = translationId
 
 class Module( JSON_Object ):
-	'''Represents an command attribute'''
+	'''Represents a command attribute'''
 	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None, priority = -1 ):
 		self.id = id
 		self.name = name

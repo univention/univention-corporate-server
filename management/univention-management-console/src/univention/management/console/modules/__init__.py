@@ -181,7 +181,7 @@ class Base( signals.Provider, Translation ):
 		pass
 
 	def destroy( self ):
-		'''this function is invoked before before the module process is
+		'''this function is invoked before the module process is
 		exiting.'''
 		pass
 
@@ -213,7 +213,7 @@ class Base( signals.Provider, Translation ):
 			del self.__requests[ request.id ]
 
 	def required_options( self, request, *options ):
-		"""Raises an UMC_OptionMissing exception any of the given
+		"""Raises an UMC_OptionMissing exception if any of the given
 		options is not found in request.options"""
 		missing = filter( lambda o: o not in request.options, options )
 		if missing:

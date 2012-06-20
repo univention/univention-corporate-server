@@ -1,3 +1,9 @@
+univention-management-console (4.0.262-1) unstable; urgency=low
+
+  * Fix some typos in the documentation. Bug #27594
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jun 2012 14:35:51 +0200
+
 univention-management-console (4.0.261-2) unstable; urgency=low
 
   * added python-pyinotify to Pre-Depends of
