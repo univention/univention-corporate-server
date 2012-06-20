@@ -278,7 +278,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 				// hide tab if page is not visible
 				ipage.watch('visible', function(name, oldval, newval) {
-					if ((newval == true) || (newval == undefined)) {
+					if ((newval === true) || (newval === undefined)) {
 						tabContainer.showChild(ipage);
 					} else {
 						tabContainer.hideChild(ipage);
@@ -379,31 +379,35 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}
 
 				// shut down web browser and restart apache and UMC
-				this.umcpCommand('setup/cleanup', {}, false);
-
-				// redirect to UMC and set username to Administrator on DC master
-				username = 'Administrator';
-				if (this.role == 'basesystem') {
-					// use root on basesystem
-					username = 'root';
-				}
-				target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username='+username);
-
-				// Consider IP changes, replace old ip in url by new ip
-				umc.tools.forIn(this._orgValues, function(ikey, ival) {
-					// 1. check if value is equal to the current IP
-					// 2. check if the key for this value startswith interfaces/
-					// 3. check if a new value was set
-					if ((ival == window.location.host) && (ikey.indexOf('interfaces/') == 0)  && (values[ikey])) {
-						target = target.replace(new RegExp(ival+"/univention-management-console", "g"), values[ikey]+"/univention-management-console");
+				// use long polling to make sure the command succeeds (Bug #27632)
+				return this.umcpCommand('setup/cleanup', {}, undefined, undefined, {
+					// long polling options
+					messageInterval: 30,
+					xhrTimeout: 40
+				}).then(dojo.hitch(this, function() {
+					// redirect to UMC and set username to Administrator on DC master
+					var username = 'Administrator';
+					if (this.role == 'basesystem') {
+						// use root on basesystem
+						username = 'root';
 					}
-				});
+					var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
 
-				// give the restart/services function 10 seconds time to restart the services
-				setTimeout(function () {
-					window.location.replace(target);
-				},10000);
+					// Consider IP changes, replace old ip in url by new ip
+					umc.tools.forIn(this._orgValues, function(ikey, ival) {
+						// 1. check if value is equal to the current IP
+						// 2. check if the key for this value startswith interfaces/
+						// 3. check if a new value was set
+						if ((ival == window.location.host) && (ikey.indexOf('interfaces/') == 0)  && (values[ikey])) {
+							target = target.replace(new RegExp(ival+"/univention-management-console", "g"), values[ikey]+"/univention-management-console");
+						}
+					});
 
+					// give the restart/services function 10 seconds time to restart the services
+					setTimeout(function () {
+						window.location.replace(target);
+					}, 10000);
+				}));
 			}));
 		});
 

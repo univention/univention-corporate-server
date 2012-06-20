@@ -1,3 +1,9 @@
+univention-system-setup (5.0.171-1) unstable; urgency=low
+
+  * use long polling for sending the command setup/cleanup; Bug #27632
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Jun 2012 16:11:44 +0200
+
 univention-system-setup (5.0.170-1) unstable; urgency=low
 
   * add support for every listed keymap (Bug #26733)
