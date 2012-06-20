@@ -72,8 +72,8 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 				{ id: 'domaincontroller_master', label: this._('Domain controller master') },
 				{ id: 'domaincontroller_backup', label: this._('Domain controller backup') },
 				{ id: 'domaincontroller_slave', label: this._('Domain controller slave') },
-				{ id: 'memberserver', label: this._('Member server') },
-				{ id: 'basesystem', label: this._('Base system') }
+				{ id: 'memberserver', label: this._('Member server') }
+				// { id: 'basesystem', label: this._('Base system') }
  			]
 		}, {
 			type: 'Text',

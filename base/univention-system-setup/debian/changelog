@@ -1,3 +1,9 @@
+univention-system-setup (5.0.168-1) unstable; urgency=low
+
+  * Remove system role "Base system" from combobox. It is buggy (Bug #27633)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jun 2012 10:10:13 +0200
+
 univention-system-setup (5.0.167-1) unstable; urgency=low
 
   * Fix some more typos in Translation (Bug #26967)
