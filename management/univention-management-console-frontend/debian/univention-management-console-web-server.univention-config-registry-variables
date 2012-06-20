@@ -4,7 +4,7 @@ Description[en]=Port of UMC HTTP server
 Type=int
 Categories=Management
 
-[umc/http/name]
+[umc/http/interface]
 Description[de]=Name des UMC-HTTP-Servers, auf den mit listen reagiert werden soll (Vorgabe localhost)
 Description[en]=Name of UMC HTTP server to use when listening (default localhost)
 Type=str

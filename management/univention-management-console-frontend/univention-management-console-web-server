@@ -553,7 +553,7 @@ def run_cherrypy():
 	# 'server.environment': 'production',
 	cherrypy.config.update( {
 		'server.socket_port': int( configRegistry.get( 'umc/http/port', 8090 ) ),
-		'server.socket_host': configRegistry.get( 'umc/http/name', 'localhost' ),
+		'server.socket_host': configRegistry.get( 'umc/http/interface', 'localhost' ),
 		'server.request_queue_size' : 100,
 		'engine.autoreload_on': False,
 	} )
