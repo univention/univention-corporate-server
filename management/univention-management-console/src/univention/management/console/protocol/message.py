@@ -174,7 +174,7 @@ class Message( object ):
 
 	def parse( self, msg ):
 		"""Parses data and creates in case of a vaild UMCP message the
-		corresponding object. If the data contains mor than the message
+		corresponding object. If the data contains more than the message
 		the rest of the data is returned.
 
 		:raises: :class:`.ParseError`, :class:`.UnknownCommandError`, :class:`.InvalidArgumentsError`

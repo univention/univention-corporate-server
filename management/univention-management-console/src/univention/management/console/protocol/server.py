@@ -64,7 +64,7 @@ from ..statistics import statistics
 class MagicBucket( object ):
 	'''Manages a connection (session) to the UMC server. Therefore it
 	ensures that without successful authentication no other command is
-	excepted. After the user has authenticated the commands are passed
+	accepted. After the user has authenticated the commands are passed
 	on to the Processor.'''
 	def __init__( self ):
 		self.__states = {}
@@ -491,7 +491,7 @@ class Server( signals.Provider ):
 		return True
 
 	def exit( self ):
-		'''Shutdowns all open connections.'''
+		'''Shuts down all open connections.'''
 		CORE.warn( 'Shutting down all open connections' )
 		if self.__ssl and not self.__unix:
 			notifier.socket_remove( self.connection )

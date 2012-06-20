@@ -1,3 +1,9 @@
+univention-management-console (4.0.263-1) unstable; urgency=low
+
+  * Fix some more typos in the documentation. Bug #27594
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jun 2012 17:10:51 +0200
+
 univention-management-console (4.0.262-1) unstable; urgency=low
 
   * Fix some typos in the documentation. Bug #27594

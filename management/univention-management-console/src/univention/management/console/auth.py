@@ -57,7 +57,7 @@ class Auth( signals.Provider ):
 
 	**Signals:**
 
-	* *auth_return* -- is emitted when the authentication process has finished. As argument a boolean is passed definig if the authentication was successful. This signal is used internally only by the :class:`AuthHandler`.
+	* *auth_return* -- is emitted when the authentication process has finished. As argument a boolean is passed defining if the authentication was successful. This signal is used internally only by the :class:`AuthHandler`.
 	"""
 	def __init__( self, username, password ):
 		"""This class is not meant to be instanciated directly. It is
@@ -151,7 +151,7 @@ class AuthHandler( signals.Provider ):
 
 	**Signals:**
 
-	* *authenticated* -- is emitted when the authentication process has finished. As argument a boolean is passed definig if the authentication was successful.
+	* *authenticated* -- is emitted when the authentication process has finished. As argument a boolean is passed defining if the authentication was successful.
 	"""
 	def __init__( self ):
 		signals.Provider.__init__( self )

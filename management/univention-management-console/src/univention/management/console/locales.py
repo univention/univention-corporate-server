@@ -83,7 +83,7 @@ class I18N( object ):
 		Tries to load the translation file specified by the given locale
 		and domain. If the given locale could not be found the method
 		tries to find the translation domain for the systems default
-		locale. No translation is provided with this fails too.
+		locale. No translation is provided when this fails too.
 
 		:param str locale: the locale to provide
 		:param str domain: the translation domain to use

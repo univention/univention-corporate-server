@@ -34,8 +34,8 @@
 Syntax definitions
 ==================
 
-Syntax definitions can help to ensure the correctness of commands passed
-to the UMC server. Therefor it helps to keeps the server save by
+Syntax definitions ensure the correctness of commands passed to the
+UMC server. Therefore they can help to keep the server save by
 dismissing incorrect commands that may crash the UMC module.
 
 By default the UMC server brings a set of basic and most common syntax

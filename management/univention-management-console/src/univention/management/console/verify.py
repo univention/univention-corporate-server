@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-"""The module provides functions to verify the corretness of request
+"""The module provides functions to verify the correctness of request
 options.
 """
 
@@ -54,7 +54,7 @@ class SyntaxVerificationError( Exception ):
 PREFIX_SYNTAX = 'univention/management/console'
 
 def import_verification_functions():
-	"""Imports syntax verfification functions"""
+	"""Imports syntax verification functions"""
 	for dir in sys.path:
 		if os.path.exists( os.path.join( dir, PREFIX_SYNTAX, 'syntax.py' ) ):
 			if os.path.isdir( os.path.join( dir, PREFIX_SYNTAX, 'syntax.d/' ) ):

@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 class Counter( object ):
-	"""Implements a counter that counts elements available elements of
+	"""Implements a counter that counts available elements of
 	any type that can be inactive."""
 	def __init__( self ):
 		self._all = 0l

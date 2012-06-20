@@ -155,7 +155,7 @@ class ModuleServer( Server ):
 		return True
 
 	def handle( self, msg ):
-		"""Handles incoming UMCP requests. This function is called onyl,
+		"""Handles incoming UMCP requests. This function is called only
 		when it is a valid UMCP request.
 
 		:param Request msg: the received UMCP request
@@ -287,7 +287,7 @@ class ModuleServer( Server ):
 			return False
 
 	def response( self, msg ):
-		"""Send an UMCP response to the client"""
+		"""Sends an UMCP response to the client"""
 		PROTOCOL.info( 'Sending UMCP RESPONSE %s' % msg.id )
 		data = str( msg )
 		self.__queue += str(msg)

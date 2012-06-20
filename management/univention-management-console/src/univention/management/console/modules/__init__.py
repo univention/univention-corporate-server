@@ -81,26 +81,26 @@ an object has the following properties:
 
 *options*
 	contains the arguments for the command. For most commands it is a
-	diectionary.
+	dictionary.
 
 *flavor*
 	is the name of the flavor that was used to invoke the command. This
 	might be *None*
 
 The *containers* method in the example above shows how to retrieve the
-command parameters and and what to do to send the result back to the
+command parameters and what to do to send the result back to the
 client. Important is that returning a value in a command function does
 not send anything back to the client. Therefor the function *finished*
 must be invoked. The first parameter is the identifier of the request
-that will be answered and the second parameter the data strcuture
+that will be answered and the second parameter the data structure
 containing the result. As the result is converted to JSON it must just
 contain data types that can be converted. The *finished* function has
 two further optional parameters. *message* may contain a human readable
 text explaining the result and *success* is a boolean parameter defining
-the success of the operation. By default *success* is true. be setting
+the success of the operation. By default *success* is true. By setting
 *success* to *False* the UCM module sends an error status back to the
 client. Another way to send an error message back to the client is by
-raisig one of the following exceptions:
+raising one of the following exceptions:
 
 *UMC_OptionTypeError*
 	The type of a given option does not match
@@ -112,7 +112,7 @@ raisig one of the following exceptions:
 	A general error occurred
 
 The base class for modules provides some properties and methods that
-could be usful when writing UMC modules:
+could be useful when writing UMC modules:
 
 Properties
  * *username*: The username of the owner of this session

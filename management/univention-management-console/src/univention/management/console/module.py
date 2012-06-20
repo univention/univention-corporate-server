@@ -35,7 +35,7 @@ Module definitions
 ==================
 
 The UMC server does not load the python modules to get the details about
-the modules name, description and functionality. Therefor each UMC
+the modules name, description and functionality. Therefore each UMC
 module must provide an XML file containing this kind of information.
 
 The following example defines a module with the id *udm* ::
@@ -72,7 +72,7 @@ icon
 	should be used for the module. Details for installing icons can be
 	found in the section [[#Packaging]]
 
-The child elements *name* and *description* define the english human
+The child elements *name* and *description* define the English human
 readable name and description of the module. For other translations the
 build tools will create translation files. Details can be found in the
 section [[#Packaging]].
@@ -84,7 +84,7 @@ several"virtual" modules in the overview of the web frontend. Additionally the f
 As the next element *categories* is defined in the example. The child
 elements *category* set the categories wthin the overview where the
 module should be shown. Each module can be more than one category. The
-attribute name is the internal identify of category. The UMC server
+attribute name is to identify the category internally. The UMC server
 brings a set of pre-defined categories:
 
 favorites
@@ -92,14 +92,15 @@ favorites
 
 system
 	Tools manipulating the system itself (e.g. software installation)
-	shopuld go in here.
+	should go in here.
 
 wizards
 	UMC modules providing a step-by-step assistent to create some kind
 	of configuration should be added to this category
 
-monitor Everything that provides monitor functionality (e.g. simple
-system statistics) should be placed in this category
+monitor
+	Everything that provides monitor functionality (e.g. simple
+	system statistics) should be placed in this category
 
 At the end of the definition file a list of commands is specified. The
 UMC server only passes commands to a UMC module that are defined. A
@@ -114,7 +115,7 @@ function
 	command is called.
 
 Each command can have arguments and a return value. These can also be
-specified as chidl elements of the command. For example
+specified as child elements of the command. For example ::
 
  <attribute name="superordinate" syntax="String" required="False"/>
 
@@ -334,11 +335,11 @@ class Manager( dict ):
 		dict.__init__( self )
 
 	def modules( self ):
-		'''Return list of module names'''
+		'''Returns list of module names'''
 		return self.keys()
 
 	def load( self ):
-		'''Load the list of available modules. As the list is cleared
+		'''Loads the list of available modules. As the list is cleared
 		before, the method can also be used for reloading'''
 		RESOURCES.info( 'Loading modules ...' )
 		self.clear()

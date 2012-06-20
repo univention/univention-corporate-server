@@ -39,7 +39,7 @@ This module implements the UMC ACLs used to define the access rights for
 users and groups to the UMC service.
 
 UMC ACLs are defined by creating *UMC operation set* objects that are added
-to *UMC policies*. These policies cann be connected with users or
+to *UMC policies*. These policies can be connected with users or
 groups.
 
 An *UMC operation set* consists of a list of UMC command patterns like ::
@@ -50,9 +50,9 @@ This specifies that all commands hat match the pattern *udm/\** can be
 called if the option *objectType* is given and the value matches the
 pattern *nagios/\**.
 
-Patterns for commands and options may just use the asterik and now no
+Patterns for commands and options may just use the asterik and know no
 other wildcards. For options there is one additional format allowed to
-specify that te option may not exist. Therefor the following format is
+specify that the option may not exist. Therefor the following format is
 used ::
 
 	udm/* !objectType
@@ -303,7 +303,7 @@ class ACLs( object ):
 		:param str command: the command to check access for
 		:param str hostname: FQDN of the host
 		:param dict options: the command options given in the UMCP request
-		:param str flavor: the flavor gien in the UMCP request
+		:param str flavor: the flavor given in the UMCP request
 		:rtype: bool
 		"""
 		if not hostname:

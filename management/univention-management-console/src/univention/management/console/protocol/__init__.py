@@ -98,7 +98,7 @@ within a communication channel. By default it consists of a timestamp
 and a counter. The next field is a number defining the length of the
 body in bytes. Starting to count after the empty line. Since *UMCP 2.0*
 there is as another field specifying the mime type of the body. If not
-given the the guessed value for the mime type is application/json. If
+given the guessed value for the mime type is application/json. If
 the body can not be decoded using a json parser the message is invalid.
 
 The last two fields define the UMCP command that should be executed by
@@ -118,7 +118,7 @@ SET
 
 COMMAND
 	This command is used to pass requests to UMC modules. Each
-	module defines a set of commands, that it implements. The UMC module
+	module defines a set of commands that it implements. The UMC module
 	command is defined by the first argument in the UMCP header, e.g. a
 	request like ::
 

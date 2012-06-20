@@ -104,7 +104,7 @@ class State( signals.Provider ):
 
 
 class ModuleProcess( Client ):
-	"""handles the communication with an UMC modue process
+	"""handles the communication with a UMC module process
 
 	:param str module: name of the module to start
 	:param str debug: debug level as a string
@@ -162,7 +162,7 @@ class ModuleProcess( Client ):
 		self.signal_emit( 'result', msg )
 
 	def pid( self ):
-		"""Returns procss ID of module process"""
+		"""Returns process ID of module process"""
 		return self.__pid
 
 class Processor( signals.Provider ):
@@ -221,7 +221,7 @@ class Processor( signals.Provider ):
 			del process
 
 	def get_module_name( self, command ):
-		"""Return the name of the module that provides the given command
+		"""Returns the name of the module that provides the given command
 
 		:param str command: the command name
 		"""
@@ -259,12 +259,12 @@ class Processor( signals.Provider ):
 
 	def handle_request_exit( self, msg ):
 		"""Handles an EXIT request. If the request does not have an
-		argument that contains a valid name of an running UMC module
+		argument that contains a valid name of a running UMC module
 		instance the request is returned as a bad request.
 
-		Is the rquest valid it is passed on to the module
-		process. Additionally a timer of 3000 milli seconds is
-		started. After that amoun of time the module process MUST have
+		Is the request is valid it is passed on to the module
+		process. Additionally a timer of 3000 milliseconds is
+		started. After that amount of time the module process MUST have
 		been exited itself. If not the UMC server will kill the module
 		process.
 
@@ -307,9 +307,9 @@ class Processor( signals.Provider ):
 
 
 		syntax/verification
-			Checks the correctness of a value accordding to a syntax
+			Checks the correctness of a value according to a syntax
 			class. Both the *syntax* and the *value* are passed to the
-			command via the reuqest option.
+			command via the request option.
 
 		:param Request msg: UMCP request
 		"""
@@ -364,7 +364,7 @@ class Processor( signals.Provider ):
 	def handle_request_set( self, msg ):
 		"""Handles a SET request. No argument may be given. The
 		variables that should be set are passed via the request
-		options. The currentyl only variable that may be set is the
+		options. Currently the only variable that may be set is the
 		locale. If any unknown variable is given the the request is
 		invalidated.
 
@@ -433,7 +433,7 @@ class Processor( signals.Provider ):
 		"""Resets the inactivity timer. This timer watches the
 		inactivity of the module process. If the module did not receive
 		a request for MODULE_INACTIVITY_TIMER seconds the module process
-		is shut down to save resources. The timer ticks eah seconds to
+		is shut down to save resources. The timer ticks each seconds to
 		handle glitches of the system clock.
 
 		:param Module module: a module 
@@ -499,8 +499,8 @@ class Processor( signals.Provider ):
 		new one is started and the request is added to a queue of
 		requests that will be passed on when the process is ready.
 
-		Is a module process already running the request is passed on and
-		the inactivity timer is reset.
+		If a module process is already running the request is passed on
+		and the inactivity timer is reset.
 
 		:param Request msg: UMCP request
 		"""
