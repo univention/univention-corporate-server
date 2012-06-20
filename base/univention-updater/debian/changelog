@@ -1,3 +1,9 @@
+univention-updater (7.0.164-1) unstable; urgency=low
+
+  * fixed pruneOldKernel in preup.sh (Bug #27097)
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Jun 2012 11:46:30 +0200
+
 univention-updater (7.0.163-1) unstable; urgency=low
 
   * Fix component errata loop (Bug #27098)
