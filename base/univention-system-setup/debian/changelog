@@ -1,3 +1,10 @@
+univention-system-setup (5.0.172-1) unstable; urgency=low
+
+  * send response for setup/cleanup before actually performing the cleanup;
+    Bug #27632
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 21 Jun 2012 16:14:00 +0200
+
 univention-system-setup (5.0.171-1) unstable; urgency=low
 
   * use long polling for sending the command setup/cleanup; Bug #27632

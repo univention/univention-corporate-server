@@ -216,13 +216,14 @@ class Instance(umcm.Base):
 
 	def cleanup(self, request):
 		# shut down the browser in appliance mode
+		# call finished() directly, so the browser will get the response in any case
+		# (see Bug #27632)
 		MODULE.info('Appliance mode: cleanup')
+		self.finished(request.id, True)
 		if util.cleanup():
 			MODULE.info('... cleanup successful')
-			self.finished(request.id, True)
 		else:
 			MODULE.warn('... cleanup operation failed')
-			self.finished(request.id, False, message=_('Failed to cleanup.'))
 
 	def validate(self, request):
 		'''Validate the specified values given in the dict as option named "values".
