@@ -14,6 +14,7 @@
 # does read in your changes.
 
 @!@
+dl=None
 # Generate at least the default locale.
 if configRegistry.get('locale/default'):
         dl = configRegistry.get('locale/default')
@@ -21,6 +22,6 @@ if configRegistry.get('locale/default'):
 # Now generate all other locales, but don't repeat the default.
 if configRegistry.get('locale'):
         for l in configRegistry['locale'].split(' '):
-                if l != dl:
+                if dl is None or l != dl:
                         print l.replace(':', ' ')
 @!@

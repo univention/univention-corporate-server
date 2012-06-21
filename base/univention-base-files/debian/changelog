@@ -1,3 +1,10 @@
+univention-base-files (1.0.48-4) unstable; urgency=low
+
+  * conffiles/etc/locale.gen:
+    Handle an unset ucr locale/default correctly (Bug #26322)
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Thu, 21 Jun 2012 08:51:59 +0200
+
 univention-base-files (1.0.48-3) unstable; urgency=low
 
   * univention-directory-policy/nfsmounts.py:
