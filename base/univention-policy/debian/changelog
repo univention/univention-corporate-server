@@ -1,3 +1,12 @@
+univention-policy (5.0.8-2) unstable; urgency=low
+
+  * Options "-W" and "-p" already existed in getopt, but were not
+    explained in usage() and also not implemented (Bug #23189).
+  * Implemented "-W" and "-p" and explained usage.
+  * Improved error handling for all options.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Thu, 21 Jun 2012 14:00:52 +0200
+
 univention-policy (5.0.8-1) unstable; urgency=low
 
   * non-anonymous ldap bind in policy_result (Bug #25909)

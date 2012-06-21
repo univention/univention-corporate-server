@@ -1,8 +1,8 @@
 /*
  * Univention Policy
- *  C source of the univnetion policy result tool
+ *  C source of the univention policy result tool
  *
- * Copyright 2003-2011 Univention GmbH
+ * Copyright 2003-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -43,12 +43,13 @@
 
 static void usage(void)
 {
-	fprintf(stderr, "Usage: univention_policy_result [-h <hostdn>] [-D <binddn>] [-w <bindpw> | -y <pwfile>] [-s | -b] dn\n");
+	fprintf(stderr, "Usage: univention_policy_result [-h <hostdn>] [-D <binddn>] [-w <bindpw> | -y <pwfile> | -W] [-p port] [-s | -b] dn\n");
 	fprintf(stderr, "  -h host    LDAP server\n");
 	fprintf(stderr, "  -D binddn  bind DN\n");
+	fprintf(stderr, "  -W         prompt for password on the command line\n");
 	fprintf(stderr, "  -w bindpw  bind password\n");
 	fprintf(stderr, "  -y pwfile  Read password from file\n");
-
+	fprintf(stderr, "  -p port    port number where the ldap server is listening\n");
 	fprintf(stderr, "  -s         Shell output\n");
 	fprintf(stderr, "  -b         Basic output\n");
 	fprintf(stderr, "  -d         Enable debug\n");
@@ -118,11 +119,8 @@ int main(int argc, char* argv[])
 	if ((ldap_parameters = univention_ldap_new()) == NULL)
 		return 1;
 
-	for (;;) {
-		int c;
-		c = getopt(argc, argv, "h:p:D:w:Wdsby:");
-		if (c == -1)
-			break;
+	int c;
+	while ((c = getopt(argc, argv, ":h:p:D:w:Wdsby:")) != -1) {
 		switch (c) {
 			case 'h':
 				ldap_parameters->host = strdup(optarg);
@@ -130,11 +128,25 @@ int main(int argc, char* argv[])
 			case 'D':
 				ldap_parameters->binddn = strdup(optarg);
 				break;
+			case 'W':
+				ldap_parameters->bindpw = getpass("Enter LDAP Password: ");
+				if (ldap_parameters->bindpw == NULL) {
+					perror("getpass: reading password failed");
+					goto err2;
+				}
+				ldap_parameters->bindpw = strdup(ldap_parameters->bindpw);
+				break;
 			case 'w':
 				ldap_parameters->bindpw = strdup(optarg);
 				break;
 			case 'd':
 				opt_debug = 1;
+				break;
+			case 'p':
+				if (sscanf(optarg, "%d", & ldap_parameters->port) != 1) {
+					fprintf(stderr, "the given port number '%s' is unusable", optarg);
+					goto err2;
+				}
 				break;
 			case 's':
 				output = OUTPUT_SHELL;
@@ -148,9 +160,13 @@ int main(int argc, char* argv[])
 					return 1;
 				}
 				break;
+			case ':':
+				fprintf(stderr, "missing argument for option %c\n", optopt);
+				goto err2;
 			default:
 				univention_ldap_close(ldap_parameters);
 				usage();
+				fprintf(stderr, "option %c is undefined\n", optopt);
 				goto err1;
 		}
 	}
