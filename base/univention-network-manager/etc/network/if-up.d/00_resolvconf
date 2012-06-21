@@ -72,13 +72,13 @@ if	[ -e /var/univention-join/joined ] && is_domain_controller && \
 		i=$((i+1))
 	done
 	ucr commit /etc/resolv.conf
-else
+elif [ "$interface_type" = "dhcp" ]; then
 	# Add the local configured nameserver to the resolv.conf
 	for i in $(seq 1 3); do
 		dns="nameserver$i"
 		if [ -n "${!dns}" ]; then
 			# Don't add the nameserver twice
-			if ! grep "nameserver ${!dns}\$" /etc/resolv.conf &>/dev/null; then
+			if ! grep "nameserver *${!dns}\$" /etc/resolv.conf &>/dev/null; then
 				echo "nameserver ${!dns}" >> /etc/resolv.conf
 			fi
 		fi
