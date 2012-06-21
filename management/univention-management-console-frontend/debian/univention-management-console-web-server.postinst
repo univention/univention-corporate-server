@@ -49,6 +49,7 @@ univention-config-registry unset umc/web/timeout umc/web/language umc/web/respon
 univention-config-registry set "umc/http/session/timeout?600" \
 	umc/http/autostart?yes \
 	umc/http/port?8090 \
+	umc/http/interface?127.0.0.1 \
 	umc/server/upload/min_free_space?51200
 
 if dpkg --compare-versions "$2" lt-nl 1.0.8-1; then
