@@ -9,7 +9,7 @@ import boto
 from boto.ec2 import regions
 from time import time, sleep
 import paramiko
-import string
+import string  # pylint: disable-msg=W0402
 from random import choice
 from select import select
 from socket import error as socket_error
@@ -34,6 +34,10 @@ ec2_security_group = cfg.get('ec2', 'security_group')
 ec2_keypair = cfg.get('ec2', 'keypair')
 ec2_instance_type = cfg.get('ec2', 'instance_type')
 ec2_ami = cfg.get('ec2', 'ami')
+if cfg.has_option('ec2', 'reuse'):
+    ec2_reuse = cfg.get('ec2', 'reuse')
+else:
+    ec2_reuse = None
 s3_repo = cfg.get('s3', 'repo')
 timeout = int(cfg.get('ec2', 'timeout'))
 aws_cfg = {
@@ -62,9 +66,11 @@ else:
 ec2 = boto.connect_ec2(**aws_cfg)
 ami = ec2.get_image(ec2_ami)
 logger.info('AMI-Id: %s', ami.id)
-if False:  # FIXME: Remove after testing
-    reservation = ec2.get_all_instances(instance_ids=['i-6b52c523'])[0]
+if ec2_reuse:
+    logger.info('Reusing previous instance %s', ec2_reuse)
+    reservation = ec2.get_all_instances(instance_ids=[ec2_reuse])[0]
 else:
+    logger.info('Creating new reservation')
     reservation = ami.run(min_count=INSTANCES,
             max_count=INSTANCES,
             key_name=ec2_keypair,
