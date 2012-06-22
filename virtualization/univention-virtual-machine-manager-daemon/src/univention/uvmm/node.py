@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  node handler
 #
-# Copyright 2010-2011 Univention GmbH
+# Copyright 2010-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -795,6 +795,7 @@ class Node(PersistentCached):
 					'mem': pd.maxMem,
 					'cpu_usage': pd.cputime[0],
 					'vnc': pd.graphics and pd.graphics[0].type == Graphic.TYPE_VNC and pd.graphics[0].listen == '0.0.0.0',
+					'vnc_port': pd.graphics[0].port if pd.graphics else -1,
 					'suspended': pd.suspended,
 					'node_available': self.pd.last_try == self.pd.last_update
 					})

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.109-1) unstable; urgency=low
+
+  * added VNC Port field to tooltips (Bug #24698)
+
+ -- Florian Best <best@univention.de>  Fri, 22 Jun 2012 14:01:40 +0200
+
 univention-virtual-machine-manager-daemon (1.0.108-1) unstable; urgency=low
 
   * added VNC Port field to DomainPage (Bug #24698)

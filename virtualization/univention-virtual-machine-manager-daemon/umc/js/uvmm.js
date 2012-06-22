@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Univention GmbH
+ * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -928,9 +928,10 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		if ( undefined !== item.state ) {
 			var tooltip = new umc.widgets.Tooltip( {
-				label: dojo.replace( this._( 'State: {state}<br>Server: {node}' ), {
+				label: dojo.replace( this._( 'State: {state}<br>Server: {node}<br>{port}' ), {
 					state: umc.modules._uvmm.types.getDomainStateDescription( item ),
-					node: item.nodeName
+					node: item.nodeName,
+					port: item.vnc_port == -1 ? '' : this._( 'VNC-Port: %s', item.vnc_port)
 				} ),
 				connectId: [ widget.domNode ],
 				position: 'below'

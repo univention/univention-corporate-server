@@ -3,7 +3,7 @@
 # Univention Management Console
 #  module: management of virtualization servers
 #
-# Copyright 2010-2011 Univention GmbH
+# Copyright 2010-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -76,8 +76,17 @@ class Domains( object ):
 						if domain[ 'uuid' ] == '00000000-0000-0000-0000-000000000000': # ignore domain-0 of Xen
 							continue
 						domain_uri = '%s#%s' % ( node_uri, domain[ 'uuid' ] )
-						domain_list.append( { 'id' : domain_uri, 'label' : domain[ 'name' ], 'nodeName' : uri.netloc, 'state' : domain[ 'state' ], 'type' : 'domain',
-											  'mem' : domain[ 'mem' ], 'cpuUsage' : domain[ 'cpu_usage' ], 'vnc' : domain[ 'vnc' ], 'suspended' : bool( domain[ 'suspended' ] ), 'node_available' : domain[ 'node_available' ] } )
+						domain_list.append( { 'id' : domain_uri,
+											'label' : domain[ 'name' ],
+											'nodeName' : uri.netloc,
+											'state' : domain[ 'state' ],
+											'type' : 'domain',
+											'mem' : domain[ 'mem' ],
+											'cpuUsage' : domain[ 'cpu_usage' ],
+											'vnc' : domain[ 'vnc' ],
+											'vnc_port' : domain[ 'vnc_port' ],
+											'suspended' : bool( domain[ 'suspended' ] ),
+											'node_available' : domain[ 'node_available' ] } )
 				self.finished( request.id, domain_list )
 			else:
 				self.finished( request.id, None, str( data ), status = MODULE_ERR_COMMAND_FAILED )

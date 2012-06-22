@@ -3,7 +3,7 @@
 # Univention Management Console
 #  UVMM node commands
 #
-# Copyright 2010-2011 Univention GmbH
+# Copyright 2010-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -74,7 +74,8 @@ class Nodes( object ):
 			if success:
 				for node_pd in data:
 					node_uri = urlparse.urlsplit( node_pd.uri )
-					nodes.append( { 'id' : node_pd.uri, 'label' : node_pd.name,
+					nodes.append( { 'id' : node_pd.uri,
+									'label' : node_pd.name,
 									'group' : _( 'Physical servers' ),
 									'type' : 'node',
 									'virtech' : node_uri.scheme,

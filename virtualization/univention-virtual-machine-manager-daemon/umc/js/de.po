@@ -905,8 +905,12 @@ msgid "Start the virtual instance"
 msgstr "Starten einer virtuellen Instanz"
 
 #: umc/js/uvmm.js:932
-msgid "State: {state}<br>Server: {node}"
-msgstr "Status: {state}<br>Server: {node}"
+msgid "State: {state}<br>Server: {node}<br>{port}"
+msgstr "Status: {state}<br>Server: {node}<br>{port}"
+
+#: umc/js/uvmm.js:934
+msgid "VNC-Port: %s"
+msgstr "VNC-Port: %s"
 
 #: umc/js/uvmm.js:766 umc/js/uvmm.js:771
 msgid "Stop"
