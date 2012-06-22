@@ -73,18 +73,6 @@ class Auth( signals.Provider ):
 
 		self.signal_new( 'auth_return' )
 
-	def credenticals( self, username = None, password = None ):
-		"""
-		Sets the given credentials.
-
-		:param username: username to authenticate
-		:param password: the secret to use for authentcation. Normally this will be a cleartext password.
-		"""
-		if username is not None:
-			self._username = username
-		if password is not None:
-			self._password = password
-
 	def authenticate( self ):
 		"""This method should be overwritten when implementing an
 		authentication module. It is invoked by the UMC core when
