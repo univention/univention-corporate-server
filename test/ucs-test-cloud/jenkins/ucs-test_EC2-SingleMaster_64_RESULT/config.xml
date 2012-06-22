@@ -13,16 +13,15 @@
     <org.jenkinsci.plugins.scripttrigger.ScriptTrigger>
       <spec># Check every 5 minutes
 */5 * * * *</spec>
-      <script>exec /home/phahn/imap-get.py --check
+      <script>exec &quot;${WORKSPACE%_RESULT}/imap-get.py&quot; --check
 </script>
-      <exitCode>0</exitCode>
     </org.jenkinsci.plugins.scripttrigger.ScriptTrigger>
   </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
       <command>rm -rf test-reports
-exec /home/phahn/imap-get.py</command>
+exec &quot;${WORKSPACE%_RESULT}/imap-get.py&quot;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
