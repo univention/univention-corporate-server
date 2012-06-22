@@ -57,8 +57,8 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
 
-	// state of fqdn field
-	_fqdnTouched: false,
+	// internal flag whether setValues() has been called at least once or not
+	_firstSetValues: true,
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
@@ -126,13 +126,6 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			this.disconnect(fc);
 		});
 
-		if (this.wizard_mode) {
-			var c = dojo.connect(this._form.getWidget('fqdn'), 'onKeyUp', dojo.hitch(this, function() {
-				this._fqdnTouched = true;
-				dojo.disconnect(c);
-			}));
-		}
-
 		this.addChild(this._form);
 	},
 
@@ -160,9 +153,9 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			}
 		});
 
-		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode && !this._fqdnTouched);
-		_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && !this._fqdnTouched);
-		_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && !this._fqdnTouched, role == 'domaincontroller_master' || role == 'basesystem');
+		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode && this._firstSetValues);
+		_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues);
+		_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues, role == 'domaincontroller_master' || role == 'basesystem');
 		_set('root_password', false, this.wizard_mode && !this.local_mode);
 
 		if (role != 'basesystem' && this.wizard_mode) {
@@ -188,6 +181,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 
 		this._form.setFormValues(vals);
 		this._form.getWidget('fqdn').set('blockOnChange', false);
+		this._firstSetValues = false;
 	},
 
 	getValues: function() {
@@ -197,7 +191,6 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		vals.domainname = parts.slice(1).join('.');
 		delete vals.fqdn;
 
-		var role = vals['server/role'];
 		if (!this._form.getWidget('ldap/base').get('visible')) {
 			// remove the ldap/base entry
 			delete vals['ldap/base'];
