@@ -265,6 +265,7 @@ cmd = 'univention-config-registry set repository/online/unmaintained=yes ' + \
 rv = ssh_exec(cmd)
 cmd = 'apt-get update </dev/null'
 rv = ssh_exec(cmd)
+assert rv == 0
 
 # Remove old kernels
 logger.debug('Pruning old kernels...')
