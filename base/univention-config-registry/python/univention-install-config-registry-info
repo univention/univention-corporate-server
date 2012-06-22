@@ -37,8 +37,8 @@ from univention.debhelper import doIt, binary_packages
 
 def usage():
 	print '''
-	univention-install-config-registry-info - install UCR variable description
-	into package build directories
+	Usage: univention-install-config-registry-info
+	install UCR variable description into package build directories
 
 	univention-install-config-registry-info is a debhelper like programm that is
 	responsible for installing univention config registry (UCR) variable and cat‐

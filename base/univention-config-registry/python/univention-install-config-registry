@@ -42,8 +42,8 @@ except ImportError:
 
 def usage():
 	print '''
-	univention-install-config-registry - install UCR template files into package
-	build directories
+	Usage: univention-install-config-registry
+	install UCR template files into package build directories
 	
 	univention-install-config-registry is  a  debhelper  like  programm  that  is
 	responsible  for  installing  template files using univention config registry

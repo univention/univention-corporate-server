@@ -38,8 +38,8 @@ from univention.debhelper import doIt, binary_packages
 
 def usage():
 	print '''
-	univention-install-service-info - install UCS service description files into
-	package build directories
+	Usage: univention-install-service-info
+	install UCS service description files into package build directories
 
 	univention-install-service-info is a debhelper like programm that is  respon‐
 	sible for installing a service description file into etc/univention/ser‐
