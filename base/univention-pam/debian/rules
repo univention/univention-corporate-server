@@ -3,7 +3,7 @@
 # Univention PAM
 #  rules file for the debian package
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,9 +38,6 @@ override_dh_auto_install:
 override_dh_auto_build:
 	ucslint
 	dh_auto_build
-
-override_dh_fixperms:
-	dh_fixperms
 
 %:
 	dh $@

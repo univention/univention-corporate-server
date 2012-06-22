@@ -1,3 +1,11 @@
+univention-pam (5.0.19-1) unstable; urgency=low
+
+  * Allow '-' in addition to hard and soft in limits.conf (Bug #27709)
+  * Update copyright.
+  * debian/rules: Remove unneeded dh_fixperms_override.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 22 Jun 2012 19:51:45 +0200
+
 univention-pam (5.0.18-1) unstable; urgency=low
 
   * added use_authtok in common-password (Bug #25898)  
