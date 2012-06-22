@@ -1,3 +1,16 @@
+univention-directory-manager-modules (7.0.263-1) unstable; urgency=low
+
+  * changed the ldap lookup filters for ... 
+     ... ipmanagedclients (to not match managed clients which have no
+         posix attribute)
+     ... mobileclients (to also match mobileclients which have no
+         posix attribute)
+  * exit with prompt when trying to create managed clients with
+    neither posix nor kerberos option
+   (Bug #26853)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 22 Jun 2012 16:04:12 +0200
+
 univention-directory-manager-modules (7.0.262-1) unstable; urgency=low
 
   * corrected error printing (to provide full error messages for 

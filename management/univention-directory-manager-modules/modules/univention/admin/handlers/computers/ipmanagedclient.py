@@ -317,6 +317,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 			univention.admin.filter.expression('objectClass', 'univentionHost'),
 			univention.admin.filter.expression('objectClass', 'univentionClient'),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectType', 'computers/managedclient')]),
 			])
 
 		if filter_s:

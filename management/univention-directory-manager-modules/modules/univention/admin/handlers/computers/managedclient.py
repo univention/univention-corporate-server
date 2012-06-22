@@ -424,6 +424,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		univention.admin.handlers.simpleComputer._ldap_pre_create( self )
 
 	def _ldap_addlist(self):
+		if not 'posix' in self.options and not 'kerberos' in self.options:
+			raise univention.admin.uexceptions.invalidOptions(_('At least one of the options Posix or Kerberos has to be specified.'))
+		
+		
 		ocs=['top', 'person', 'univentionHost', 'univentionClient']
 		al=[]
 		if 'kerberos' in self.options:

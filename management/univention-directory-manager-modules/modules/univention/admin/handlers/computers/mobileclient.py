@@ -606,7 +606,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		filter=univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionHost'),
 			univention.admin.filter.expression('objectClass', 'univentionMobileClient'),
-			univention.admin.filter.expression('objectClass', 'posixAccount'),
 			])
 
 		if filter_s:
