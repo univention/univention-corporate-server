@@ -50,10 +50,11 @@ class Dotter(object):
         if self.dot_out:
             text = fmt % (data or {})
             try:  # FIXME: Fix Unicode
-                print >> self.dot_out, text
+                print >> self.dot_out, ''.join(_ for _ in text if
+                        32 <= ord(_))
             except UnicodeEncodeError:
                 print >> self.dot_out, ''.join(_ for _ in text if
-                        0 <= ord(_) < 128)
+                        32 <= ord(_) < 128)
 
 
 class Resource(object):
@@ -636,7 +637,7 @@ def print_dot(resources, out=sys.stdout):
     dot('digraph G')
     dot('{')
     dot('rankdir=LR;')
-    dot('rotate=90;')
+    dot('splines=false;')
     dot('nodesep=.05;')
     clusters = {}
     for res in resources:
@@ -649,6 +650,7 @@ def print_dot(resources, out=sys.stdout):
             res.dot()
         dot('label="%s";', container)
         dot('color=gray;')
+        dot('splines=false;')
         dot('}')
 
     for res in resources:
@@ -732,9 +734,9 @@ def main():
             filtered.add(res)
             text = '// %s' % (res.console(),)
             try:  # FIXME: Fix Unicode
-                print text
+                print ''.join(_ for _ in text if 32 <= ord(_))
             except UnicodeEncodeError:
-                print ''.join(_ for _ in text if 0 <= ord(_) < 128)
+                print ''.join(_ for _ in text if 32 <= ord(_) < 128)
 
     if options.dot:
         if not options.show_all:
