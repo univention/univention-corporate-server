@@ -387,7 +387,10 @@ def doit(arglist):
 		out=_doit(arglist)
 	except univention.admin.uexceptions.base, e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, traceback.format_exc())
-		out.append(e.message)
+		if getattr(e, 'message', False):
+			out.append(e.message)
+		if e.args:
+			out.extend(e.args)
 		return out + ["OPERATION FAILED"]
 	return out
 

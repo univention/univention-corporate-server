@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.262-1) unstable; urgency=low
+
+  * corrected error printing (to provide full error messages for 
+    password policy errors) on cli (Bug #7389)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 21 Jun 2012 11:35:19 +0200
+
 univention-directory-manager-modules (7.0.261-1) unstable; urgency=low
 
   * fixed spelling (Bug #26287)
