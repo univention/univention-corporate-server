@@ -112,11 +112,12 @@ static int _pam_parse(int flags, int argc, const char **argv)
 
    /* read password from file */
    if ((fp = fopen(pwfile, "r")) != NULL) {
-     if (fgets(bindpw, 1024, fp) == NULL) {
+     if (fgets(bindpw, BUFSIZ, fp) == NULL) {
        len = strlen(bindpw);
        if (bindpw[len-1] == '\n')
          bindpw[len-1] = '\0';
      }
+	 fclose(fp);
    }
 
    return ctrl;

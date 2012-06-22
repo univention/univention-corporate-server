@@ -1,3 +1,9 @@
+pam-univentionmailcyrus (4.0.3-1) unstable; urgency=low
+
+  * close filescriptor after reading machine.secret (Bug #27723)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 22 Jun 2012 14:26:40 +0200
+
 pam-univentionmailcyrus (4.0.2-1) unstable; urgency=low
 
   * fixed last commit (Bug #23487) 
