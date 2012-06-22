@@ -84,6 +84,7 @@ trap cleanup EXIT
 failure () { # Report failed command
 	set +e +x
 	trap - ERR
+	[ ${BASH_SUBSHELL} -eq 0 ] && return 0 # do not exit the controlling shell
 
 	echo "**************** Test failed above this line ****************" >&2
 	echo "ERROR ${0}:${BASH_LINENO[@]}" >&2
