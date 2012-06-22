@@ -5,8 +5,8 @@ Type=int
 Categories=Management
 
 [umc/http/interface]
-Description[de]=Netzwerk-Interface, auf das der UMC-HTTP-Server reagieren soll (Vorgabe: localhost)
-Description[en]=Network interface to be used by UMC HTTP server when listening (default: localhost)
+Description[de]=Netzwerk-Interface, auf das der UMC-HTTP-Server reagieren soll (Vorgabe: 127.0.0.1)
+Description[en]=Network interface to be used by UMC HTTP server when listening (default: 127.0.0.1)
 Type=str
 Categories=Management
 

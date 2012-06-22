@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.379-2) unstable; urgency=low
+
+  * adjusted variable description for umc/http/interface; Bug #26470
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 22 Jun 2012 13:01:04 +0200
+
 univention-management-console-frontend (1.0.379-1) unstable; urgency=low
 
   * Fix displaced logout button in IE (quirks mode) (Bug #26264)
