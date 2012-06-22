@@ -1,3 +1,9 @@
+univention-system-setup (5.0.173-1) unstable; urgency=low
+
+  * Fix root password not checked onSubmit (Bug #26734)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Jun 2012 12:02:36 +0200
+
 univention-system-setup (5.0.172-1) unstable; urgency=low
 
   * send response for setup/cleanup before actually performing the cleanup;
