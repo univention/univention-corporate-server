@@ -2,7 +2,7 @@
  * PAM Univention Mail Cyrus
  *  PAM Module to change username from email@address.com to username
  *
- * Copyright 2005-2011 Univention GmbH
+ * Copyright 2005-2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -65,6 +65,8 @@ static char bindpw[BUFSIZ];
 
 /* some syslogging */
 static void _log_err(int err, const char *format, ...)
+    __attribute__ ((format (printf, 2, 3)));
+static void _log_err(int err, const char *format, ...)
 {
    va_list args;
 
@@ -89,25 +91,24 @@ static int _pam_parse(int flags, int argc, const char **argv)
    /* step through arguments */
    for (; argc-- > 0; ++argv)
    {
-      if (!strcmp(*argv, "silent")) {
-	 ctrl |= UNIVENTIONMAILCYRUS_QUIET;
-      } else if (!strncmp(*argv,"ldap_host=",10))
-	strncpy(ldap_host,*argv+10,BUFSIZ);
-      else if (!strncmp(*argv,"ldap_port=",10))
-	ldap_port=atoi(*argv+10);
-      else if (!strncmp(*argv,"ldap_base=",10))
-	strncpy(ldap_base,*argv+10,BUFSIZ);
-      else if (!strncmp(*argv,"from_attr=",10))
-	strncpy(fromattr,*argv+10,BUFSIZ);
-      else if (!strncmp(*argv,"to_attr=",8))
-	strncpy(toattr,*argv+8,BUFSIZ);
-      else if (!strncmp(*argv,"binddn=",7))
-	strncpy(binddn,*argv+7,BUFSIZ);
-      else if (!strncmp(*argv,"pwfile=",7))
-	strncpy(pwfile,*argv+7,BUFSIZ);
-      else {
-	 _log_err(LOG_ERR, "unknown option; %s", *argv);
-      }
+      if (!strcmp(*argv, "silent"))
+          ctrl |= UNIVENTIONMAILCYRUS_QUIET;
+      else if (!strncmp(*argv, "ldap_host=", 10))
+          strncpy(ldap_host, *argv + 10, BUFSIZ);
+      else if (!strncmp(*argv, "ldap_port=", 10))
+          ldap_port=atoi(*argv + 10);
+      else if (!strncmp(*argv, "ldap_base=", 10))
+          strncpy(ldap_base, *argv + 10, BUFSIZ);
+      else if (!strncmp(*argv, "from_attr=", 10))
+          strncpy(fromattr, *argv + 10, BUFSIZ);
+      else if (!strncmp(*argv, "to_attr=", 8))
+          strncpy(toattr, *argv + 8, BUFSIZ);
+      else if (!strncmp(*argv, "binddn=", 7))
+          strncpy(binddn, *argv + 7, BUFSIZ);
+      else if (!strncmp(*argv, "pwfile=", 7))
+          strncpy(pwfile, *argv + 7, BUFSIZ);
+      else
+          _log_err(LOG_ERR, "unknown option: %s", *argv);
    }
 
    /* read password from file */
@@ -117,21 +118,28 @@ static int _pam_parse(int flags, int argc, const char **argv)
        if (bindpw[len-1] == '\n')
          bindpw[len-1] = '\0';
      }
-	 fclose(fp);
+     fclose(fp);
    }
 
    return ctrl;
 }
 
-int mapuser(const char *fromuser, char *touser)
+static int mapuser(const char *fromuser, char *touser)
 {
    int msgid;
+   int scope = LDAP_SCOPE_SUBTREE;
    char filter[BUFSIZ];
    char *attrs[] = {toattr, NULL};
+   int attrsonly = 0;
+   LDAPControl **serverctrls = NULL;
+   LDAPControl **clientctrls = NULL;
+   struct timeval timeout = {.tv_sec=10, .tv_usec=0};
+   int sizelimit = 0;
    LDAPMessage *res = NULL, *entry;
-   char **values = NULL;
-   int ret = PAM_SUCCESS;
+   struct berval **values = NULL;
+   int ret = PAM_USER_UNKNOWN;
    univention_ldap_parameters_t *lp;
+
    lp = univention_ldap_new();
    lp->host = strdup(ldap_host);
    lp->port = ldap_port;
@@ -144,46 +152,44 @@ int mapuser(const char *fromuser, char *touser)
 
    if (univention_ldap_open(lp) != 0) {
        _log_err(LOG_NOTICE, "Failed to connect to LDAP server %s:%d", ldap_host, ldap_port);
-       ret = PAM_USER_UNKNOWN;
-	   goto cleanup;
+       goto cleanup;
    }
-   if ((msgid = ldap_search_s(lp->ld, ldap_base, LDAP_SCOPE_SUBTREE, filter, attrs, 0, &res)) != LDAP_SUCCESS) {
-       _log_err(LOG_NOTICE, "Failed to query LDAP server: ", filter);
-       ret = PAM_USER_UNKNOWN;
-	   goto cleanup;
+   if ((msgid = ldap_search_ext_s(lp->ld, ldap_base, scope, filter, attrs,
+                   attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res)) != LDAP_SUCCESS) {
+       _log_err(LOG_NOTICE, "Failed to query LDAP server: %s", filter);
+       goto cleanup;
    }
    if (ldap_count_entries(lp->ld, res) != 1) {
        _log_err(LOG_NOTICE, "No or ambigous result, found %d entries.", ldap_count_entries(lp->ld, res));
-       ret = PAM_USER_UNKNOWN;
-	   goto cleanup;
+       goto cleanup_msg;
    }
    if ((entry = ldap_first_entry(lp->ld, res)) == NULL) {
        _log_err(LOG_NOTICE, "LDAP search returned no entries.");
-       ret = PAM_USER_UNKNOWN;
-	   goto cleanup;
+       goto cleanup_msg;
    }
-   if ((values = ldap_get_values(lp->ld, entry, toattr)) == NULL) {
+   if ((values = ldap_get_values_len(lp->ld, entry, toattr)) == NULL) {
        _log_err(LOG_NOTICE, "LDAP search returned no values: %s", filter);
-       ret = PAM_USER_UNKNOWN;
-	   goto cleanup;
+       goto cleanup_msg;
    }
-   if (ldap_count_values(values) != 1) {
-       _log_err(LOG_NOTICE, "No or ambigous result, found %d values.", ldap_count_values(values));
-       ret = PAM_USER_UNKNOWN;
-	   goto cleanup;
+   if (ldap_count_values_len(values) != 1) {
+       _log_err(LOG_NOTICE, "No or ambigous result, found %d values.", ldap_count_values_len(values));
+       goto cleanup_values;
    }
-   strncpy(touser, values[0], BUFSIZ);
+   strncpy(touser, values[0]->bv_val, BUFSIZ);
+   ret = PAM_SUCCESS;
 
+cleanup_values:
+   ldap_value_free_len(values);
+cleanup_msg:
+   ldap_msgfree(res);
 cleanup:
-   if ( values ) ldap_value_free(values);
-   if ( res ) ldap_msgfree(res);
-   if ( lp->ld ) ldap_unbind(lp->ld);
+   univention_ldap_close(lp);
    return ret;
 }
 
 PAM_EXTERN
 int pam_sm_authenticate(pam_handle_t *pamh, int flags,
-			int argc, const char **argv)
+                        int argc, const char **argv)
 {
    int retval, ctrl;
    const char* auth_user;
@@ -214,7 +220,7 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 
 /* Ignore */
 int pam_sm_setcred(pam_handle_t *pamh, int flags, int
-		     argc, const char **argv)
+                   argc, const char **argv)
 {
    return PAM_IGNORE;
 }

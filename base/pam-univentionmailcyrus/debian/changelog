@@ -1,3 +1,14 @@
+pam-univentionmailcyrus (4.0.4-1) unstable; urgency=low
+
+  * mapuser(): (Bug #27727)
+    - Fix memory leak by calling univention_ldap_close()
+    - Fix formatstring for printing filter
+    - Replace deprecated ldap_*() functions with ldap_*_ext()
+  * pam_univentionmailcyrus.c: Reformat for consistency.
+  * Makefile: Add -Werror for fail on warning.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 22 Jun 2012 16:52:07 +0200
+
 pam-univentionmailcyrus (4.0.3-1) unstable; urgency=low
 
   * close filescriptor after reading machine.secret (Bug #27723)
