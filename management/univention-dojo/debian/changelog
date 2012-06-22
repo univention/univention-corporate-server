@@ -1,3 +1,10 @@
+univention-dojo (5.0.20-1) unstable; urgency=low
+
+  * added dependency to univention-doc in univention-dojo-api-viewer
+  	(Bug #23197)
+
+ -- Florian Best <best@univention.de>  Thu, 21 Jun 2012 13:18:06 +0200
+
 univention-dojo (5.0.19-1) unstable; urgency=low
 
   * fixed a little bug in the univention-dojo-api-viewer package (Bug #23197)

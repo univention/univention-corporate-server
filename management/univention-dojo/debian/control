@@ -27,6 +27,7 @@ Depends: ${misc:Depends},
  php5-curl,
  php5-xsl,
  univention-dojo,
+ univention-doc,
  univention-management-console-frontend
 Description: The Dojo Documentation API Viewer
  This package contains a patched version of the Dojo Documentation

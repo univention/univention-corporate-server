@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.378-1) unstable; urgency=low
+
+  * added max-width for tooltips (Bug #25822)
+  * the localisation of ssl validaty date in the about page have been
+  	moved from backend to frontend (Bug #27037)
+
+ -- Florian Best <best@univention.de>  Thu, 21 Jun 2012 11:07:44 +0200
+
 univention-management-console-frontend (1.0.377-1) unstable; urgency=low
 
   * use 127.0.0.1 as default host for proxy

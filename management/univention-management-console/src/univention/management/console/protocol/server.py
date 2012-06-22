@@ -228,9 +228,7 @@ class MagicBucket( object ):
 					response.result[ 'umc_version' ] = match.groups()[ 0 ]
 					response.result[ 'ucs_version' ] = '{0}-{1} errata{2} ({3})'.format( ucr.get( 'version/version', '' ), ucr.get( 'version/patchlevel', '' ), ucr.get( 'version/erratalevel', '0' ), ucr.get( 'version/releasename', '' ) )
 					response.result[ 'server' ] = '{0}.{1}'.format( ucr.get( 'hostname', '' ), ucr.get( 'domainname', '' ) )
-					import locale
-					locale.setlocale( locale.LC_ALL, 'de_DE.UTF-8' )
-					response.result[ 'ssl_validity_date' ] = datetime.datetime.fromtimestamp( int( ucr.get( 'ssl/validity/days', '0' ) ) * 24 * 60 * 60 ).strftime( "%x" )
+					response.result[ 'ssl_validity_date' ] = int( ucr.get( 'ssl/validity/days', '0' ) ) * 24 * 60 * 60 * 1000
 				except IOError:
 					response.status = BAD_REQUEST_FORBIDDEN
 					pass

@@ -49,7 +49,7 @@ dojo.mixin(umc.about, new umc.i18n.Mixin({
 			labelUMC_Version : this._( 'UMC version' ),
 			UMC_Version : info.umc_version,
 			labelSSL_ValidityDate : this._( 'Validity date of the SSL certificate' ),
-			SSL_ValidityDate : info.ssl_validity_date
+			SSL_ValidityDate : new Date(info.ssl_validity_date).toLocaleDateString()
 		};
 		umc.dialog.templateDialog( "umc", "about.html", keys, this._( 'About UMC' ), this._( 'Close' ) );
 	}

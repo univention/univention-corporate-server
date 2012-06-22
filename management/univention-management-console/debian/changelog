@@ -1,3 +1,10 @@
+univention-management-console (4.0.264-1) unstable; urgency=low
+
+  * the localisation of ssl validaty date in the about page have been
+  	moved from backend to frontend (Bug #27037)
+
+ -- Florian Best <best@univention.de>  Thu, 21 Jun 2012 11:41:24 +0200
+
 univention-management-console (4.0.263-1) unstable; urgency=low
 
   * Fix some more typos in the documentation. Bug #27594

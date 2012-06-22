@@ -1,3 +1,10 @@
+univention-doc (0.0.3-2) unstable; urgency=low
+
+  * removed hardcoded link to index.html (Bug #23197)
+  * added icon file for univention-doc (Bug #23197)
+
+ -- Florian Best <best@univention.de>  Thu, 21 Jun 2012 13:24:56 +0200
+
 univention-doc (0.0.3-1) unstable; urgency=low
 
   * add documentation for univention doc itself; Bug #27594
