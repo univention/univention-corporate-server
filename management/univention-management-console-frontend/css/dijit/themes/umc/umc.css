@@ -14,7 +14,6 @@
 .dijitInline {
 	
 	display:inline-block;			
-	#zoom: 1; 
 	#display:inline; 
 	border:0;
 	padding:0;
@@ -265,10 +264,10 @@ DIV.dijitArrowButton {
 	color: gray;
 }
 .dj_webkit .dijitTextBoxDisabled INPUT {
-	color: #eee; 
+	color: DarkGray; 
 }
 .dj_webkit TEXTAREA.dijitTextAreaDisabled {
-	color: #333; 
+	color: DarkGray; 
 }
 .dj_gecko .dijitTextBoxReadOnly INPUT.dijitInputField, 
 .dj_gecko .dijitTextBoxDisabled INPUT {

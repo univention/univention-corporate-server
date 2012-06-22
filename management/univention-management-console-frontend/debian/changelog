@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.379-1) unstable; urgency=low
+
+  * Fix displaced logout button in IE (quirks mode) (Bug #26264)
+  * Fix disabled inputs having same background-color as the text in it
+  in newer Chrome browser (Bug #26541)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Jun 2012 11:51:36 +0200
+
 univention-management-console-frontend (1.0.378-1) unstable; urgency=low
 
   * added max-width for tooltips (Bug #25822)
