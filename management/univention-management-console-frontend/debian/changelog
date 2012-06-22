@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.380-1) unstable; urgency=low
+
+  * using dojo.date.locale.format in about page (Bug #27037)
+
+ -- Florian Best <best@univention.de>  Fri, 22 Jun 2012 14:55:35 +0200
+
 univention-management-console-frontend (1.0.379-2) unstable; urgency=low
 
   * adjusted variable description for umc/http/interface; Bug #26470
