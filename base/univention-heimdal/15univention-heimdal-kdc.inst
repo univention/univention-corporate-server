@@ -43,9 +43,20 @@ test -n "`grep "univention-heimdal-kdc v${VERSION} successful" /usr/lib/univenti
 
 eval "$(univention-config-registry shell)"
 
+# Bug #27001
+local_is_ucr_false () { # test if UCS variable is "true" or "false"
+    local value
+    value="$(univention-config-registry get "$1")"
+    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+        1|yes|on|true|enable|enabled) return 1 ;;
+        0|no|off|false|disable|disabled) return 0 ;;
+        *) return 2 ;;
+    esac
+}
+
 samba4dcs=$(univention-ldapsearch -x -LLL "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -ne 's|^cn: ||p')
 
-if [ -z "$samba4dcs" ]; then
+if [ -z "$samba4dcs" ] && ! local_is_ucr_false dns/register/srv_records/kerberos; then
 	# Register in DNS onyl if no S4 is configured
 	# By default S4 KDCs and OpenLDAP/KDCs should not be mixed
 	if [ "$server_role" = "domaincontroller_master" ]; then
