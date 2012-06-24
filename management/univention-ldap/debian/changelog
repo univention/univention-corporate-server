@@ -1,3 +1,10 @@
+univention-ldap (8.0.84-1) unstable; urgency=low
+
+  * Consider dns/register/srv_records/kerberos and /ldap UCR variables
+    to avoid the DNS registration (Bug #27708)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 24 Jun 2012 10:21:52 +0200
+
 univention-ldap (8.0.83-2) unstable; urgency=low
 
   * reverted last commit (Bug #27016) 
