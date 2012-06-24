@@ -619,21 +619,28 @@ def ucs_srv_record_create(s4connector, object):
 	# unpack the host record
 	srv=__unpack_sRVrecord(object)
 
+	# ucr set connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
+	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName[0],zoneName[0]))
+	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName,zoneName,ucr_locations))
+
 	# Does a host record for this zone already exist?
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
 		superordinate=s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
 		newRecord= univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: location: %s' % newRecord['location'])
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: srv     : %s' % srv)
-		srv.sort()
-		newRecord['location'].sort()
-		if srv != newRecord['location']:
-			newRecord['location']=srv
-			newRecord.modify()
+		if ucr_locations:
+			ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not write SRV record back from S4 to UCS because location of SRV record have been overwritten by UCR')
 		else:
-			ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not modify host record')
+			ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: location: %s' % newRecord['location'])
+			ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: srv     : %s' % srv)
+			srv.sort()
+			newRecord['location'].sort()
+			if srv != newRecord['location']:
+				newRecord['location']=srv
+				newRecord.modify()
+			else:
+				ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not modify host record')
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
@@ -653,7 +660,10 @@ def ucs_srv_record_create(s4connector, object):
 			protocol=protocol[1:] 
 		ud.debug(ud.LDAP, ud.INFO, 'SRV create: service="%s" protocol="%s"' % (service, protocol))
 		newRecord['name']=[service, protocol]
-		newRecord['location']=srv
+		if ucr_locations:
+			ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not write SRV record back from S4 to UCS because location of SRV record have been overwritten by UCR')
+		else:
+			newRecord['location']=srv
 		newRecord.create()
 	
 
@@ -680,7 +690,32 @@ def s4_srv_record_create(s4connector, object):
 
 	dnsRecords=[]
 
-	__pack_sRVrecord(object, dnsRecords)
+	zoneDn, zoneName=__create_default_s4_zone_dn(s4connector, object)
+
+	relativeDomainName=object['attributes'].get('relativeDomainName')
+	relativeDomainName=univention.s4connector.s4.compatible_list(relativeDomainName)
+
+	# ucr set connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 foobar.test.local.'
+	# ucr set connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
+	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName[0],zoneName[0]))
+	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName[0],zoneName[0],ucr_locations))
+	if ucr_locations:
+		# Convert ucr variable
+		priority=None; weight=None; port=None; target=None
+		for v in ucr_locations.split(' '):
+			# Check explicit for None, because the int values may be 0
+			if priority == None: priority=int(v)
+			elif weight == None: weight=int(v)
+			elif port == None: port=int(v)
+			elif not target: target=__remove_dot(v)
+			if priority != None and weight != None and port != None and target:
+				ud.debug(ud.LDAP, ud.INFO, 'priority=%d weight=%d port=%d target=%s' % (priority,weight,port,target))
+				s=SRVRecord(target, port, priority, weight)
+				dnsRecords.append(ndr_pack(s))
+				priority=None; weight=None; port=None; target=None
+
+	else:
+		__pack_sRVrecord(object, dnsRecords)
 
 	dnsNodeDn=s4_dns_node_base_create(s4connector, object, dnsRecords)
 

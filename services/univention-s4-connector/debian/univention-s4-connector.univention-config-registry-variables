@@ -124,6 +124,12 @@ Description[en]=A static list of IPv6 addresses, which should always be set at t
 Type=str
 Categories=service-adcon
 
+[con.*/s4/mapping/dns/srv_record/.*/location]
+Description[de]=Eine statische Liste von SRV Einträgen, die immer an dem angegebenen SRV Record in Samba 4 gesetzt gesetzt werden soll, unabhängig von den SRV Einträgen in UCS, beispielsweise connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 server1.test.local. 100 0 389 server2.test.local.'
+Description[en]=A static list of SRV locations, which will always be set at the specified SRV record in Samba 4 independent from the SRV locations in UCS, for example connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 server1.test.local. 100 0 389 server2.test.local.'
+Type=str
+Categories=service-adcon
+
 [con.*/ldap/server]
 Description[de]=Der Fully Qualified Domain Name des UCS LDAP Servers. Wenn der Wert nicht gesetzt ist, wird der DC Master verwendet. Dieser Wert sollte nur im write Modus angepasst werden.
 Description[en]=The fully qualified domain name of the UCS LDAP server. If the value is not set, the DC master will be used. This value should only changed in write mode.

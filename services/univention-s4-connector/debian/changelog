@@ -1,3 +1,12 @@
+univention-s4-connector (6.0.151-1) unstable; urgency=low
+
+  * Added UCR variables to overwrite the DNS SRV records by UCR
+    (Bug #27706 and Bug #27395)
+  * Don't try to start / stop the s4 connector if /usr/sbin/univention-
+    s4-connector is not available
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2012 22:14:04 +0200
+
 univention-s4-connector (6.0.150-1) unstable; urgency=low
 
   * Sync msGPOUserExtensionNames and displayName for GPOs as well

@@ -32,6 +32,8 @@
 
 ADCONNECTORPID=/var/run/univention-s4-connector
 
+test -x /usr/sbin/univention-s4-connector || exit 0
+
 . /lib/lsb/init-functions
 
 case "$1" in
