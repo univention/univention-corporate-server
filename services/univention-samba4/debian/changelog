@@ -1,3 +1,10 @@
+univention-samba4 (1.0.146-1) unstable; urgency=low
+
+  * Consider dns/register/srv_records/kerberos and /ldap UCR variables
+    to avoid the DNS registration (Bug #27708 and Bug #27395)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Jun 2012 13:16:22 +0200
+
 univention-samba4 (1.0.145-1) unstable; urgency=low
 
   * logrotate config for log.samba, log.smbd and log.nmbd (Bug #26376)

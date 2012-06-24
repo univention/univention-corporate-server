@@ -328,6 +328,12 @@ Description[en]=Prevents the execution of the join-scripts of univention samba4 
 Type=str
 Categories=service-samba
 
+[samba4/join/dnsupdate]
+Description[de]=Wenn samba4/join/dnsupdate auf true gesetzt ist, so wird das Tool samba_dnsupdate im Samba DNS Joinskript ausgeführt. Dadurch werden die DNS Einträge im Samba 4 DNS aktualisiert. Dies wird auf selektiv replizierten Samba 4 DCs benötigt.
+Description[en]=If samba4/join/dnsupdate is set to true, the tool samba_dnsupdate will be executed in the Samba DNS join script. Thus, the DNS entries in the Samba 4 DNS are updated. This is required on selective replicated Samba 4 DCs.
+Type=str
+Categories=service-samba
+
 [samba/usershare/max_shares]
 Description[de]=Definiert die maximale Anzahl an Usershares
 Description[en]=Defines the maximum amount of usershares
