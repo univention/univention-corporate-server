@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.152-1) unstable; urgency=low
+
+  * Convert UCR variables for SRV records to lower case (Bug #27706)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 24 Jun 2012 13:15:17 +0200
+
 univention-s4-connector (6.0.151-1) unstable; urgency=low
 
   * Added UCR variables to overwrite the DNS SRV records by UCR
