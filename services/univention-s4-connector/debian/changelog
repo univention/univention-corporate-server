@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.155-1) unstable; urgency=low
+
+  * Fixed typo from last commit (Bug #27706)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Jun 2012 11:41:54 +0200
+
 univention-s4-connector (6.0.154-1) unstable; urgency=low
 
   * Check if ucr_locations exists (Bug #27706)

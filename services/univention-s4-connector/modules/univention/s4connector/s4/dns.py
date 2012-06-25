@@ -703,7 +703,7 @@ def s4_srv_record_create(s4connector, object):
 	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName[0].lower(),zoneName[0].lower()))
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName[0].lower(),zoneName[0].lower(),ucr_locations))
 	if ucr_locations:
-		if ucr_locations.lower() == 'ignored':
+		if ucr_locations.lower() == 'ignore':
 			return
 		# Convert ucr variable
 		priority=None; weight=None; port=None; target=None
