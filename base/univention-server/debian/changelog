@@ -1,3 +1,10 @@
+univention-server (7.0.17-2) unstable; urgency=low
+
+  * server_password_change: Even more safety checking to avoid
+    inconsistent states of the server (Bug #27577).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Mon, 25 Jun 2012 12:07:04 +0200
+
 univention-server (7.0.17-1) unstable; urgency=low
 
   * server_password_change: Improved safety by checking for errors
