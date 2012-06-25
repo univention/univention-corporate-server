@@ -125,8 +125,8 @@ Type=str
 Categories=service-adcon
 
 [con.*/s4/mapping/dns/srv_record/.*/location]
-Description[de]=Eine statische Liste von SRV Einträgen, die immer an dem angegebenen SRV Record in Samba 4 gesetzt gesetzt werden soll, unabhängig von den SRV Einträgen in UCS, beispielsweise connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 server1.test.local. 100 0 389 server2.test.local.'
-Description[en]=A static list of SRV locations, which will always be set at the specified SRV record in Samba 4 independent from the SRV locations in UCS, for example connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 server1.test.local. 100 0 389 server2.test.local.'
+Description[de]=Eine statische Liste von SRV Einträgen, die immer an dem angegebenen SRV Record in Samba 4 gesetzt gesetzt werden soll, unabhängig von den SRV Einträgen in UCS, beispielsweise connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 server1.test.local. 100 0 389 server2.test.local.' Wird der Wert auf 'ignore' gesetzt, so wird der SRV Eintrag nicht synchronisiert.
+Description[en]=A static list of SRV locations, which will always be set at the specified SRV record in Samba 4 independent from the SRV locations in UCS, for example connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 server1.test.local. 100 0 389 server2.test.local.'. If the value is set to 'ignore', the SRV record will not be synced.
 Type=str
 Categories=service-adcon
 

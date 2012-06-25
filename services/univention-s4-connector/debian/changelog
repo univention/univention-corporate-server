@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.153-1) unstable; urgency=low
+
+  * Allow 'ignore' for SRV record mapping (Bug #27706)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Jun 2012 06:27:27 +0200
+
 univention-s4-connector (6.0.152-1) unstable; urgency=low
 
   * Convert UCR variables for SRV records to lower case (Bug #27706)
