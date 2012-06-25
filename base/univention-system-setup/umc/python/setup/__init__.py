@@ -55,9 +55,6 @@ _ = Translation('univention-management-console-module-setup').translate
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 
-class TimeoutError(Exception):
-	pass
-
 class Instance(umcm.Base):
 	def __init__(self):
 		umcm.Base.__init__(self)
@@ -190,24 +187,22 @@ class Instance(umcm.Base):
 			WAIT_TIME = 30
 			ntries = WAIT_TIME / SLEEP_TIME
 			while not obj._finishedLock.acquire(False):
-				if self._progressParser.changed and self._progressParser.current:
+				if self._progressParser.changed and self._progressParser.current or ntries <= 0:
 					state = self._progressParser.current
 					return { 'finished' : False,
-							 'name' : state.fractionName,
-							 'message' : state.message,
-							 'percentage' : state.percentage }
+						 'name' : state.fractionName,
+						 'message' : state.message,
+						 'percentage' : state.percentage }
 				time.sleep( SLEEP_TIME )
 				ntries -= 1
-				if ntries <= 0:
-					raise TimeoutError('setup/finished has reached its timeout')
 
 			obj._finishedLock.release()
 
 			# scripts are done, return final result
 			return { 'finished' : obj._finishedResult,
-					 'name' : self._progressParser.current.fractionName,
-					 'message' : self._progressParser.current.message,
-					 'percentage' : self._progressParser.current.percentage }
+				 'name' : self._progressParser.current.fractionName,
+				 'message' : self._progressParser.current.message,
+				 'percentage' : self._progressParser.current.percentage }
 
 		thread = notifier.threads.Simple( 'check_finished',
 			notifier.Callback( _thread, request, self ),

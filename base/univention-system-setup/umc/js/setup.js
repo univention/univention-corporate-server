@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc setTimeout */
+/*global console dojo dojox dijit umc setTimeout window */
 
 dojo.provide("umc.modules.setup");
 
@@ -120,12 +120,12 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var white_list = ucr['system/setup/boot/pages/whitelist'];
 			if (white_list) {
 				white_list = white_list.split(' ');
-				allPages = dojo.filter(allPages, function(page) { return white_list.indexOf(page) > -1 });
+				allPages = dojo.filter(allPages, function(page) { return white_list.indexOf(page) > -1; });
 			}
 			var black_list = ucr['system/setup/boot/pages/blacklist'];
 			if (black_list) {
 				black_list = black_list.split(' ');
-				allPages = dojo.filter(allPages, function(page) { return black_list.indexOf(page) == -1 });
+				allPages = dojo.filter(allPages, function(page) { return black_list.indexOf(page) == -1; });
 			}
 		}
 
@@ -391,7 +391,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						// 1. check if value is equal to the current IP
 						// 2. check if the key for this value startswith interfaces/
 						// 3. check if a new value was set
-						if ((ival == window.location.host) && (ikey.indexOf('interfaces/') == 0)  && (values[ikey])) {
+						if ((ival == window.location.host) && (ikey.indexOf('interfaces/') === 0)  && (values[ikey])) {
 							target = target.replace(new RegExp(ival+"/univention-management-console", "g"), values[ikey]+"/univention-management-console");
 						}
 					});
