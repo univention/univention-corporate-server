@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.382-1) unstable; urgency=low
+
+  * Fix disabled inputs having same background-color as the text in it
+  with umc class (and .less) (Bug #26541)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Jun 2012 11:42:40 +0200
+
 univention-management-console-frontend (1.0.381-1) unstable; urgency=low
 
   * Fix displaced logout button with umc class (Bug #26264)

@@ -265,10 +265,10 @@ DIV.dijitArrowButton {
 	color: gray;
 }
 .dj_webkit .dijitTextBoxDisabled INPUT {
-	color: DarkGray; 
+	color: #eee; 
 }
 .dj_webkit TEXTAREA.dijitTextAreaDisabled {
-	color: DarkGray; 
+	color: #333; 
 }
 .dj_gecko .dijitTextBoxReadOnly INPUT.dijitInputField, 
 .dj_gecko .dijitTextBoxDisabled INPUT {
@@ -1978,6 +1978,9 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 .umc .dijitTextBoxDisabled, .umc .dijitTextBoxDisabled .dijitInputContainer {
   background-color: #ededee;
   background-image: none;
+  color: #818181;
+}
+.umc .dijitTextBoxDisabled .dijitInputContainer input {
   color: #818181;
 }
 .umc .dijitComboBox .dijitArrowButtonInner {
