@@ -1,3 +1,10 @@
+univention-network-manager (3.0.20-1) unstable; urgency=low
+
+  * debian/rules: Call dh_fixperms at the beginnng of
+    override_dh_fixperms (Bug #26408)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Jun 2012 11:09:08 +0200
+
 univention-network-manager (3.0.19-1) unstable; urgency=low
 
   * if-up.d/00_resolvconf: Added given nameserver to local resolv.conf
