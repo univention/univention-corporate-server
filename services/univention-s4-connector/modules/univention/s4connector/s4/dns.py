@@ -623,7 +623,7 @@ def ucs_srv_record_create(s4connector, object):
 	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName[0].lower(),zoneName[0].lower()))
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName.lower(),zoneName.lower(),ucr_locations))
 
-	if ucr_locations.lower() == 'ignore':
+	if ucr_locations and ucr_locations.lower() == 'ignore':
 		return
 
 	# Does a host record for this zone already exist?
@@ -702,9 +702,9 @@ def s4_srv_record_create(s4connector, object):
 	# ucr set connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
 	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName[0].lower(),zoneName[0].lower()))
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName[0].lower(),zoneName[0].lower(),ucr_locations))
-	if ucr_locations.lower() == 'ignored':
-		return
-	elif ucr_locations:
+	if ucr_locations:
+		if ucr_locations.lower() == 'ignored':
+			return
 		# Convert ucr variable
 		priority=None; weight=None; port=None; target=None
 		for v in ucr_locations.split(' '):
