@@ -1,3 +1,9 @@
+univention-samba4 (1.0.147-1) unstable; urgency=low
+
+  * Call dnsupdate in local mode (Bug #27708 and Bug #27395)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Jun 2012 08:40:17 +0200
+
 univention-samba4 (1.0.146-1) unstable; urgency=low
 
   * Consider dns/register/srv_records/kerberos and /ldap UCR variables

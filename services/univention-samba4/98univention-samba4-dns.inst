@@ -124,7 +124,7 @@ fi
 # On a selective replicated DC the local system is not registered in global
 # SRV records. But the local settings are required, so execute samba_dnsupdate
 if is_ucr_true samba4/join/dnsupdate; then
-	samba_dnsupdate
+	samba_dnsupdate --local
 fi
 
 joinscript_save_current_version
