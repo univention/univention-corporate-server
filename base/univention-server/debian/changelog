@@ -1,3 +1,11 @@
+univention-server (7.0.17-1) unstable; urgency=low
+
+  * server_password_change: Improved safety by checking for errors
+    and rolling back changes as long as it is safe to do so (Bug #27577).
+    Updated copyright lines.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 22 Jun 2012 15:37:05 +0200
+
 univention-server (7.0.16-1) unstable; urgency=low
 
   * Added dependency to umc-module-ipchange for Master and Backup
