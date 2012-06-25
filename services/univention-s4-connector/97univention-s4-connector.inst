@@ -270,6 +270,10 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 		echo "**************************************************************"
 		exit 1
 	fi
+else
+	## Don't autostart S4 Connector
+	/etc/init.d/univention-s4-connector stop
+	univention-config-registry set connector/s4/autostart?no
 fi
 
 joinscript_save_current_version
