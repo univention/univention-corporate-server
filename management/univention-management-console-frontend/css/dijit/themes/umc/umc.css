@@ -14,6 +14,7 @@
 .dijitInline {
 	
 	display:inline-block;			
+	#zoom: 1;
 	#display:inline; 
 	border:0;
 	padding:0;
@@ -4880,6 +4881,7 @@ DIV.dijitTabDisabled, .dj_ie DIV.dijitTabDisabled {
 }
 
 .umc .umcHeader .umcLogoutButton .dijitButtonNode .dijitInline {
+	#zoom: 0;
 	padding-top: 3px;
 	display: block;
 }

@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.381-1) unstable; urgency=low
+
+  * Fix displaced logout button with umc class (Bug #26264)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Jun 2012 09:26:26 +0200
+
 univention-management-console-frontend (1.0.380-1) unstable; urgency=low
 
   * using dojo.date.locale.format in about page (Bug #27037)
