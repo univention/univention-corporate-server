@@ -31,6 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 """
+.. _sec-syntax-definitions:
+
 Syntax definitions
 ==================
 

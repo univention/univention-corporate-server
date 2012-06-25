@@ -30,8 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-"""The module provides functions to verify the correctness of request
+"""
+.. note::
+	Currently this feature is not activated
+
+The module provides functions to verify the correctness of request
 options.
+
+The verification of the command options is based on the definitions in
+the module files (see :ref:`sec-module-definitions` and
+:ref:`sec-syntax-definitions`).
 """
 
 import os
