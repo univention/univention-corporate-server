@@ -1,10 +1,10 @@
 ==============
-UMCP over HTTP
+UMC web server
 ==============
 
 With the new generation of UMC there is also an HTTP server available
 that can be used to access the UMC server. The web server is implemented
-as a frontend to the UMC server and translates HTTP POST requests to
+as a frontend to the UMC server and translates HTTP requests to
 UMCP commands.
 
 --------

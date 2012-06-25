@@ -1,10 +1,10 @@
-===========
-Python Core
-===========
+==========
+UMC server
+==========
 
------------
-Definitions
------------
+----------
+Ressources
+----------
 
 .. automodule:: univention.management.console.module
 	:members:

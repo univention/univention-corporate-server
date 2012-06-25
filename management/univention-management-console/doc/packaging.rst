@@ -1,3 +1,5 @@
+.. _chapter-packaging:
+
 ---------
 Packaging
 ---------

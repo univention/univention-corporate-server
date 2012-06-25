@@ -70,12 +70,12 @@ id
 icon
 	The value of this attribute defines an identifier for the icon that
 	should be used for the module. Details for installing icons can be
-	found in the section [[#Packaging]]
+	found in the section :ref:`chapter-packaging`
 
 The child elements *name* and *description* define the English human
 readable name and description of the module. For other translations the
 build tools will create translation files. Details can be found in the
-section [[#Packaging]].
+section :ref:`chapter-packaging`.
 
 This example defines a so called flavor. A flavor defines a new name,
 description and icon for the same UMC module. This can be used to show

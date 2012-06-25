@@ -21,9 +21,9 @@ python API for modules are described.
 
    architecture
    protocol
-   http
    core_api
    module_api
+   http
    packaging
 
 Indices and tables

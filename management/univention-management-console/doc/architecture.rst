@@ -4,10 +4,14 @@ Architecture
 
 The Univention Management Console service consists of four
 components. The communication between these components is encrypted
-using SSL. The following image shows the architecture and the
-communication channels.
+using SSL. The figure :ref:`figure-umc-archiecture` shows the
+architecture and the communication channels.
 
-.. image:: umc-architecture.png
+.. _figure-umc-archiecture:
+
+.. figure:: umc-architecture.png
+
+	Architecture of UMC
 
 * The *UMC server* is the core component. It provides access to the
   modules, manages the connection and verifies that only authorized

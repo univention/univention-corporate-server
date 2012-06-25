@@ -1,6 +1,6 @@
-=====================
+===========
 UMC modules
-=====================
+===========
 
 .. automodule:: univention.management.console.modules
 	:members:
