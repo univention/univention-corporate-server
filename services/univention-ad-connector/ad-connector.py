@@ -62,6 +62,7 @@ if listener.baseConfig.has_key('connector/listener/additionalbasenames') and lis
 def handler(dn, new, old, command):
 
 	global group_objects
+	global init_mode
 
 	listener.setuid(0)
 	try:
@@ -89,8 +90,9 @@ def handler(dn, new, old, command):
 
 				filename=os.path.join(directory,"%f"%time.time())
 	
-				if new and 'univentionGroup' in new.get('objectClass', []):
-					group_objects.append(ob)
+				if init_mode:
+					if new and 'univentionGroup' in new.get('objectClass', []):
+						group_objects.append(ob)
 
 				f=open(filename, 'w+')
 				os.chmod(filename, 0600)
@@ -122,6 +124,7 @@ def clean():
 
 def postrun():
 	global init_mode
+	global group_objects
 	if init_mode:
 		listener.setuid(0)
 		try:
@@ -135,6 +138,8 @@ def postrun():
 					p.dump(ob)
 					p.clear_memo()
 					f.close()
+			del group_objects
+			group_objects = []
 		finally:
 			listener.unsetuid()
 
