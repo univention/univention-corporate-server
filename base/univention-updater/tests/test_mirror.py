@@ -82,7 +82,7 @@ class TestUniventionMirror(unittest.TestCase):
         cmds = MockPopen.mock_get()
         cmd = cmds[0]
         if isinstance(cmd, (list, tuple)):
-            cmd = ' '.join(cmd)
+            cmd = cmd[0]
         self.assertTrue('apt-mirror' in cmd)
 
     def test_mirror_update_scripts(self):
