@@ -1,3 +1,9 @@
+univention-updater (7.0.167-3) unstable; urgency=low
+
+  * Fix absolute import during build for unit-test (Bug #27148)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Jun 2012 13:39:46 +0200
+
 univention-updater (7.0.167-2) unstable; urgency=low
 
   * Add notice to disable secure_apt on all hosts (Bug #26668)

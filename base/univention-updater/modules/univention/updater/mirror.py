@@ -37,7 +37,7 @@ import re
 import subprocess
 import itertools
 
-from univention.updater.tools import UniventionUpdater, UCS_Version
+from tools import UniventionUpdater, UCS_Version
 try:
 	import univention.debug as ud
 except ImportError:
