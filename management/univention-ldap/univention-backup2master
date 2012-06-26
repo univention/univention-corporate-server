@@ -58,8 +58,6 @@ Usage() {
   printf "  -v             enable verbose log output ($opt_verbose).\n"
   printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
   printf "\n"
-  printf "Revision    : \$Id$\n"
-  printf "\n"
   if ! test -z "$message" ; then
     printf "\n"
     printf "$message\n"
@@ -133,7 +131,7 @@ resolve_reference() {
         '
     fi
 
-    select resolution in unchanged changed removed
+    select resolution in unchanged changed
     do
       case $resolution in
         unchanged )
@@ -142,10 +140,6 @@ resolve_reference() {
         changed   )
           echo "Ok, changing $attribute in $DN"
           udm $module modify --dn "$DN" --set $attribute="$new_value"
-          break ;;
-        removed   )
-          echo "Ok, removing $n";
-          udm $module remove --dn "$DN"
           break ;;
       esac
     done
@@ -434,7 +428,7 @@ ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5Princip
 # Install the package of the master at the same time when removing the package of the backup.
 # This way no dependent packages get removed.
 printf "\nReplacing package univention-server-backup with univention-server-master.\n"
-apt-get install univention-server-master univention-server-backup-
+apt-get -y install univention-server-master univention-server-backup-
 
 # Tell trap handler to terminate silently. 
 STILL_RUNNING=

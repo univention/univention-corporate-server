@@ -1,3 +1,15 @@
+univention-ldap (8.0.84-3) unstable; urgency=low
+
+  * univention-backup2master:
+    apt-get is now invoked with option -y to avoid interactivity
+    (Bug #14568).
+    
+  * univention-backup2master:
+    The function resolve_reference does not offer to remove LDAP
+    entries any more (Bug #10038).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 26 Jun 2012 13:55:47 +0200
+
 univention-ldap (8.0.84-2) unstable; urgency=low
 
   * univention-backup2master (Bug #27144):
