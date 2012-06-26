@@ -1,3 +1,11 @@
+univention-server (7.0.17-3) unstable; urgency=low
+
+  * server_password_change: Additional safety check; access to
+    LDAP master and to local LDAP are now tested before finalizing
+    password change (Bug #27577).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 26 Jun 2012 09:35:34 +0200
+
 univention-server (7.0.17-2) unstable; urgency=low
 
   * server_password_change: Even more safety checking to avoid
