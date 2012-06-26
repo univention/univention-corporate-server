@@ -487,7 +487,7 @@ class UniventionUpdater:
 		self.patchlevel = int(self.configRegistry['version/patchlevel'])
 		self.security_patchlevel = int(self.configRegistry.get('version/security-patchlevel', 0))
 		self.erratalevel = int(self.configRegistry.get('version/erratalevel', 0))
-		self.version_major, self.version_minor = map(int, self.ucs_version.split('.'))
+		self.version_major, self.version_minor = map(int, self.ucs_version.split('.', 1))
 
 		# should hotfixes be used
 		self.hotfixes = self.configRegistry.is_true('repository/online/hotfixes', False)
@@ -701,7 +701,7 @@ class UniventionUpdater:
 			versions = self._get_component_versions(component, None, None)
 			component_versions = {}
 			for version in versions:
-				version_str = '%s.%s' % (version.major, version.minor)
+				version_str = UCS_Version.FORMAT % version
 				current_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
 				component_versions[version_str] = []
 				for el in xrange(current_level + 1, 1000):
@@ -794,13 +794,15 @@ class UniventionUpdater:
 
 	def get_component(self, name):
 		'''Retrieve named component from registry as hash'''
-		component = {}
-		component['name'] = name
-		component['activated'] = self.configRegistry.get('repository/online/component/%s' % name, 'disabled')
-		for key in self.configRegistry.keys():
-			if key.startswith('repository/online/component/%s/' % name):
-				var = key[len('repository/online/component/%s/' % name):]
-				component[var] = self.configRegistry[key]
+		component = {
+				'name': name,
+				'activated': self.configRegistry.is_true('repository/online/component/%s' % name, False)
+				}
+		PREFIX = 'repository/online/component/%s/' % (name,)
+		for key, value in self.configRegistry.items():
+			if key.startswith(PREFIX):
+				var = key[len(PREFIX):]
+				component[var] = value
 		return component
 
 	def get_current_component_status(self, name):
@@ -873,13 +875,12 @@ class UniventionUpdater:
 					continue
 				raise ValueError('invalid package name (%s)' % pkg)
 
-		# call "dpkg -s $PKGLIST"
-		cmd = [ '/usr/bin/dpkg', '-s' ]
+		cmd = ['/usr/bin/dpkg-query', '-W', '-f', '${Status}\\n']
 		cmd.extend( pkglist )
 		p = subprocess.Popen( cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
 		stdout, stderr = p.communicate()
 		# count number of "Status: install ok installed" lines
-		installed_correctly = len([ x for x in stdout.splitlines() if x == 'Status: install ok installed' ])
+		installed_correctly = len([x for x in stdout.splitlines() if x.endswith(' ok installed')])
 		# if pkg count and number of counted lines match, all packages are installed
 		return len(pkglist) == installed_correctly
 
@@ -931,9 +932,9 @@ class UniventionUpdater:
 		return ( new_packages, upgraded_packages, removed_packages )
 
 	def run_dist_upgrade( self ):
-		cmd = 'export DEBIAN_FRONTEND=noninteractive; %s >> /var/log/univention/updater.log 2>&1 ;' % cmd_dist_upgrade
-		p = subprocess.Popen([ cmd ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(stdout,stderr) = p.communicate()
+		cmd = 'export DEBIAN_FRONTEND=noninteractive;%s >>/var/log/univention/updater.log 2>&1' % cmd_dist_upgrade
+		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		stdout, stderr = p.communicate()
 		return p.returncode, stdout, stderr
 
 
