@@ -651,7 +651,7 @@ class UniventionUpdater:
 	def get_all_available_security_updates(self):
 		'''Returns a list of all available security updates for current major.minor version
 		   as integer
-		   >>> updater.get_all_available_security_updates()
+		   > updater.get_all_available_security_updates()
 		   [3, 4, 5]
 		'''
 		result = []
