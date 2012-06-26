@@ -1,3 +1,10 @@
+univention-samba4 (1.0.148-1) unstable; urgency=low
+
+  * Create default and default.V2 directories in windows-profiles
+    (Bug #27373)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jun 2012 16:11:33 +0200
+
 univention-samba4 (1.0.147-1) unstable; urgency=low
 
   * Call dnsupdate in local mode (Bug #27708 and Bug #27395)

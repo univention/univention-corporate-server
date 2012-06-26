@@ -48,10 +48,16 @@ if [ -z "$2" ]; then
 	mkdir -p /home/groups
 
 	mkdir -p /etc/univention/skel/windows-profiles
-	for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 ; do
+	for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 default default.V2; do
 		mkdir -p /etc/univention/skel/windows-profiles/$dname
 	done
 fi
+
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.148-1 ; then
+	mkdir -p /etc/univention/skel/windows-profiles/default
+	mkdir -p /etc/univention/skel/windows-profiles/default.V2
+fi
+
 
 ## samba3 defaults copied from univention-samba
 univention-config-registry set \
