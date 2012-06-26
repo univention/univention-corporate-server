@@ -1041,16 +1041,16 @@ class UniventionUpdater:
 				# Get a list of all availble errata updates for this component and version
 
 				# The errata level for components is bound to the minor version
-				errata_prefixes = ['']
+				patch_names = [component]
 				if iterate_errata:
 					if errata_level:
-						errata_prefixes = ['-errata%s' % errata_level]
+						patch_names = ['%s-errata%s' % (component, errata_level)]
 					else:
 						errata_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
-						errata_prefixes += ['-errata%d' % x for x in range(1, errata_level + 1)]
+						patch_names += ['%s-errata%d' % (component, x) for x in range(1, errata_level + 1)]
 
-				for errata_prefix in errata_prefixes:
-					struct = UCSRepoPool(prefix=server, patch=component+errata_prefix)
+				for patch_name in patch_names:
+					struct = UCSRepoPool(prefix=server, patch=patch_name)
 					try:
 						for ver in self._iterate_versions(struct, version, version, parts, archs, server):
 							yield server, ver
