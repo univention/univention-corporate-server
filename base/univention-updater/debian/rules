@@ -82,9 +82,13 @@ override_dh_installinit:
 	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
 
 override_dh_auto_test:
+	# doctest
+	python modules/univention/updater/tools.py -v
+	python modules/univention/updater/mirror.py -v
+	# unittest
+	python tests/test_updater.py -v
+	python tests/test_mirror.py -v
 	ucslint
-	dh_auto_test
 
 %:
 	dh $@
-

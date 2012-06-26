@@ -1,0 +1,183 @@
+#!/usr/bin/python2.6
+# vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
+"""Replacements to test updater in stable local environment."""
+# pylint: disable-msg=C0301,R0903,R0913
+import sys
+import os.path
+import errno
+import httplib
+import univention
+univention.__path__.insert(0, os.path.abspath('modules/univention'))
+import univention.updater.tools as U
+import univention.updater.mirror as M
+import univention.config_registry as C
+
+__all__ = ['U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'SEC', 'ERRAT', 'PART', 'ARCH',
+        'MockConfigRegistry', 'MockUCSHttpServer', 'MockPopen', 'MockFile',
+        'verbose']
+
+MAJOR = 3
+MINOR = 0
+PATCH = 1
+SEC = 2
+ERRAT = 3
+PART = 'part'
+ARCH = 'arch'
+
+
+class MockConfigRegistry(C.ConfigRegistry):
+    """Mockup for ConfigRegistry."""
+    _ORIG = C.ConfigRegistry
+    _DEFAULT = {
+            'version/version': '%d.%d' % (MAJOR, MINOR),
+            'version/patchlevel': '%d' % (PATCH,),
+            'version/security-patchlevel': '%d' % (SEC,),
+            'version/erratalevel': '%d' % (ERRAT,),
+            }
+    _EXTRA = {}
+
+    def __init__(self):
+        MockConfigRegistry._ORIG.__init__(self, filename=os.path.devnull)
+
+    def load(self):
+        """Load UCR variables."""
+        for key, value in MockConfigRegistry._DEFAULT.items():
+            self[key] = value
+        for key, value in MockConfigRegistry._EXTRA.items():
+            self[key] = value
+
+
+class MockUCSHttpServer(U.UCSLocalServer):
+    """Mockup for UCSHttpServer."""
+    PREFIX = 'mock'
+    mock_content = {}
+
+    def __init__(self, server, port=None, prefix=None, username=None, password=None):
+        U.UCSLocalServer.__init__(self, MockUCSHttpServer.PREFIX)
+        self.mock_server = server
+        self.mock_port = port
+        self.mock_prefix = prefix
+        self.mock_username = username
+        self.mocj_password = password
+        self.mock_uris = []
+        self.mock_uri = None
+
+    def access(self, rel, get=False):  # pylint: disable-msg=W0613
+        """Access relative URI."""
+        self.mock_uri = self.join(rel)
+        self.mock_uris.append(self.mock_uri)
+        try:
+            return (httplib.OK, MockUCSHttpServer.mock_content[self.mock_uri])
+        except KeyError:
+            raise U.DownloadError(self.mock_uri, -1)
+
+    @classmethod
+    def mock_add(cls, relpath, content):
+        """Add content to mackup (including all parent directories)."""
+        dirname, _base = os.path.split(relpath)
+        while dirname:
+            uri = 'file:///%s/%s/' % (MockUCSHttpServer.PREFIX, dirname)
+            cls.mock_content.setdefault(uri, '')
+            dirname = os.path.dirname(dirname)
+            if dirname == '/':
+                break
+        uri = 'file:///%s/%s' % (MockUCSHttpServer.PREFIX, relpath)
+        cls.mock_content[uri] = content
+
+    def mock_dump(self, out=sys.stdout):
+        """Print accessed URIs."""
+        print >> out, 'Registered URIs:'
+        print >> out, '\n'.join(MockUCSHttpServer.mock_content)
+        print >> out, 'Requested URIs:'
+        print >> out, '\n'.join(self.mock_uris)
+
+    @classmethod
+    def mock_reset(cls):
+        """Reset log of accessed URIs."""
+        cls.mock_content = {}
+
+
+class MockPopen(object):
+    """Mockup for Popen."""
+    _ORIG = U.subprocess.Popen
+    mock_commands = []
+    mock_stdout = ''
+    mock_stderr = ''
+
+    def __init__(self, cmd, shell=False, *args, **kwargs):  # pylint: disable-msg=W0613
+        self.returncode = 0
+        self.stdin = ''
+        self.stdout = MockPopen.mock_stdout
+        self.stderr = MockPopen.mock_stderr
+        if shell:
+            MockPopen.mock_commands.append(cmd)
+        else:
+            if isinstance(cmd, basestring):
+                cmd = (cmd,)
+            try:
+                fd_script = open(cmd[0], 'r')
+                try:
+                    content = fd_script.read(1024)
+                finally:
+                    fd_script.close()
+            except IOError, ex:
+                content = ex
+            MockPopen.mock_commands.append(tuple(cmd) + (content,))
+
+    def wait(self):
+        """Return result code."""
+        return self.returncode
+
+    def communicate(self, stdin=None):  # pylint: disable-msg=W0613
+        """Return stdout and strerr."""
+        return self.stdout, self.stderr
+
+    @classmethod
+    def mock_get(cls):
+        """Return list of called commands."""
+        commands = cls.mock_commands
+        cls.mock_commands = []
+        return commands
+
+    @classmethod
+    def mock_reset(cls):
+        """Reset list of called commands."""
+        cls.mock_commands = []
+        cls.mock_stdout = cls.mock_stderr = ''
+
+
+class MockFile(object):
+    """Wrapper for open() / file()."""
+    _ORIG = open
+    def __init__(self, base='/tmp'):
+        self.mock_base = base
+
+    def __call__(self, name, mode='r', *args, **kwargs):
+        if mode.startswith('r'):
+            return MockFile._ORIG(name, mode, *args, **kwargs)
+        else:
+            head, tail = os.path.split(name)
+            if not os.path.isdir(head):
+                raise IOError(errno.ENOENT, "No such file or directory: '%s'" % (name,))
+            dirname = self.mock_base + head
+            try:
+                os.makedirs(dirname)
+            except OSError, ex:
+                if ex.errno != errno.EEXIST:
+                    raise
+            filename = os.path.join(dirname, tail)
+            return MockFile._ORIG(filename, mode, *args, **kwargs)
+
+
+def verbose(verbose_mode=True):
+    """Turn on verbose network mode."""
+    U.ud.init('stdout', U.ud.NO_FLUSH, U.ud.NO_FUNCTION)
+    if verbose_mode:
+        level = U.ud.ALL
+    else:
+        level = U.ud.ERROR
+    U.ud.set_level(U.ud.NETWORK, level)
+
+sys.modules['univention.config_registry'].ConfigRegistry = MockConfigRegistry
+sys.modules['univention.updater.tools'].UCSHttpServer = U.UCSHttpServer = MockUCSHttpServer
+sys.modules['subprocess'].Popen = MockPopen

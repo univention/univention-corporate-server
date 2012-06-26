@@ -1,6 +1,7 @@
 univention-updater (7.0.167-1) unstable; urgency=low
 
   * Add full support for non-arch repository layout (Bug #27149)
+  * Add unit-test for faster API testing (Bug #27148)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 26 Jun 2012 09:52:03 +0200
 
