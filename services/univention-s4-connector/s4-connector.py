@@ -129,7 +129,6 @@ def postrun():
 		listener.setuid(0)
 		try:
 			s4_init_mode = False
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "s4-connector: group_objects: %d" % len(group_objects))
 			for ob in group_objects:
 				for directory in dirs:
 					filename=os.path.join(directory,"%f"%time.time())
