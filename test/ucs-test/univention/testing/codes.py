@@ -11,6 +11,7 @@ class TestCodes(object):
 
     __REASONS = {  # EOFS name code message color
             None: ('E', 'REASON_UNKNOWN', 'Unknown', 'MAGENTA'),
+            77: ('S', 'REASON_SKIP', 'Skipped', 'BLUE'),
             100: ('O', 'REASON_OKAY', 'Test passed', 'GREEN'),
             101: ('O', 'REASON_FIXED_EXPECTED', 'Fixed expected', 'GREEN'),
             102: ('O', 'REASON_FIXED_UNEXPECTED', 'Fixed unexpected', 'GREEN'),

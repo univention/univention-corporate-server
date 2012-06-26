@@ -580,7 +580,7 @@ class TestCase(object):
                     'run': TestCodes.REASON_OKAY,
                     }.get(self.versions.state, result.result)
         elif result.result == TestCodes.RESULT_SKIP:
-            result.reason = TestCodes.REASON_INTERNAL
+            result.reason = TestCodes.REASON_SKIP
         else:
             if result.result in TestCodes.MESSAGE:
                 result.reason = result.result
