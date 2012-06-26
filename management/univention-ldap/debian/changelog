@@ -1,3 +1,18 @@
+univention-ldap (8.0.84-2) unstable; urgency=low
+
+  * univention-backup2master (Bug #27144):
+    If the server possess no attribute univentionObjectType in LDAP,
+    then the attribute univentionObjectType will be added to the
+    objectClass univentionObject if necessary.
+  * univention-backup2master:
+    Added new function consider_termination.
+    At run-time of this script, any premature termination (ctrl-c)
+    will now be caught by a trap handler. The user can choose to
+    really terminate (being warned about the incomplete DC master)
+    or to continue with the script.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 26 Jun 2012 10:23:54 +0200
+
 univention-ldap (8.0.84-1) unstable; urgency=low
 
   * Consider dns/register/srv_records/kerberos and /ldap UCR variables

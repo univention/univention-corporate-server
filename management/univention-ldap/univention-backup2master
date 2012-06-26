@@ -155,6 +155,39 @@ resolve_reference() {
   rm -f "$domains"
 }
 
+STILL_RUNNING=1
+
+consider_termination() {
+  # If the script terminates properly, then keep quiet.
+  if [ -z "$STILL_RUNNING" ]; then
+    exit
+  fi
+  logger -p auth.warning "$0 manually interrupted"
+  echo ""
+  echo "You have requested termination of this script at"
+  echo "a time when the script has not finished properly."
+  echo "Termination at this point will leave the server"
+  echo "in an undefined state. You should reconsider to"
+  echo "continue the script. If you still choose to end"
+  echo "the script, you are left on your own with a server"
+  echo "in a state that is (at best) undefined and (at worst)"
+  echo "incomplete and therefore unusable."
+  select action in "continue and dont stop" "terminate and proceed at own risk"
+  do
+    case $action in
+      "continue and dont stop")
+        echo "Ok, continue"
+        return
+        break ;;
+      "terminate and proceed at own risk")
+        logger -p auth.emerg "$0 terminated prematurely upon manual interrupt, leaving new DC master incomplete"
+        echo "Ok, terminating as requested"
+        STILL_RUNNING=
+        exit ;;
+    esac
+  done
+}
+
 while getopts c:dfhr:vw: name
 do
   case "$name" in
@@ -273,6 +306,9 @@ echo "This tool will wait here for $opt_wait seconds..."
 echo "Press CTRL-c to abort or press ENTER to continue"
 read -t $opt_wait somevar
 
+# From now on this script should not be terminated before proper completion.
+trap "consider_termination" TERM EXIT QUIT INT HUP
+
 #remove replication listener modul
 dpkg-divert --divert /usr/lib/univention-directory-listener/replication.py.divert --rename --add /usr/lib/univention-directory-listener/system/replication.py
 
@@ -324,7 +360,25 @@ if [ -n "$master_dn" ]; then
 		echo
 	fi
 fi
-	
+
+# Does the server possess the attribute univentionObjectType in LDAP ?
+# UCS versions prior to 3 did not know about this.
+# Find out and add the attribute univentionObjectType to the
+# objectClass univentionObject if necessary.
+found_univentionObject=$( ldapsearch -x -ZZ -D "$ldap_hostdn" -b "$ldap_hostdn" -y /etc/machine.secret -LLL | awk '$1=="objectClass:" && $2=="univentionObject"' )
+if [ -z "$found_univentionObject" ]; then
+  temp_file=$(mktemp)
+  echo "dn: ${ldap_hostdn}"                                      >> "$temp_file"
+  echo "changetype: modify"                                      >> "$temp_file"
+  echo "add: objectClass"                                        >> "$temp_file"
+  echo "objectClass: univentionObject"                           >> "$temp_file"
+  echo "-"                                                       >> "$temp_file"
+  echo "add: univentionObjectType"                               >> "$temp_file"
+  echo "univentionObjectType: computers/domaincontroller_master" >> "$temp_file"
+
+  ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -f "$temp_file"
+  rm $temp_file
+fi
 
 # set ServerRole to master
 temp_file=$(mktemp)
@@ -381,6 +435,9 @@ ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5Princip
 # This way no dependent packages get removed.
 printf "\nReplacing package univention-server-backup with univention-server-master.\n"
 apt-get install univention-server-master univention-server-backup-
+
+# Tell trap handler to terminate silently. 
+STILL_RUNNING=
 
 exit 0
 
