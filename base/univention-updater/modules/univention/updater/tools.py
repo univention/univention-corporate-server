@@ -124,7 +124,7 @@ class UCS_Version( object ):
 		return hash((self.major, self.minor, self.patchlevel))
 
 	def __eq__(self, other):
-		return isinstance(other, UCS_Version) and (self.major, self.minor, self.patchlevel) == (other.major, other.minor, other.patchlevel)
+		return (self.major, self.minor, self.patchlevel) == (other.major, other.minor, other.patchlevel)
 
 	def __repr__(self):
 		'''Return canonical string representation.'''
