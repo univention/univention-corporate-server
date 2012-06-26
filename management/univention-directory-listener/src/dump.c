@@ -152,8 +152,6 @@ int main(int argc, char* argv[])
 		
 	} else {
 
-	cache_print_entries("uid=b95152,cn=users,dc=olb,dc=de");
-
 	exit(0);
 #endif
 		

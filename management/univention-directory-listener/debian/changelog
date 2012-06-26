@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.24-1) unstable; urgency=low
+
+  * Removed unused debug line with a hard-coded DN (Bug #26547)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jun 2012 07:23:07 +0200
+
 univention-directory-listener (6.0.23-2) unstable; urgency=low
 
   * FTBFS: Fix format string (Bug #27312)
