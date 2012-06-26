@@ -1,4 +1,5 @@
 High-Level-Overview
+===================
 
 modules/univention/updater/tools.py#UCS_Version
 	Representation of a UCS-Version, e.g. $major.$minor-$patchlevel
@@ -20,3 +21,110 @@ modules/univention/updater/tools.py#LocalUpdater
 modules/univention/updater/mirror.py#UniventionMiror
 	High level functions to handle the mirroring of remote repositories to the local repository, normally /var/lib/univention-repository/
 	Using UCR variables repository/mirror**
+
+
+Repository layout
+=================
+* [SDB 91](http://sdb.univention.de/content/12/91/de/wie-koennen-eigene-pakete-fuer-ucs-bereitgestellt-werden.html)
+* [SDB 135](http://sdb.univention.de/content/12/135/de/wie-kann-ein-repository-fuer-ucs-bereitgestellt-werden.html)
+
+Repository Server
+-----------------
+* [IPv6](http://updates.software-univention.de/)
+* [IPv4](http://apt.univention.de/)
+* [Lokal](http://univention-repository.$FQDN/univention-repository/)
+
+With arch/
+----------
+		1.3/
+			##### ????? #####
+		2.0/
+		2.1/
+		2.2/
+		2.3/
+			maintained/
+			unmaintained/
+				##### Paths in Packages file are relative to here #####
+				2.3-X/
+					dists/
+						ucs/
+							main/
+								binary-amd64/
+								binary-i386/
+									Packages
+									Packages.gz
+					...
+		2.4/
+			maintained/
+			unmaintained/
+				hotfixes/
+				secX/
+				2.4-X/
+					all/
+						*_all.deb
+						Packages
+						Packages.gz
+					i386/
+						*_i386.deb
+						Packages
+						Packages.gz
+					amd64/
+						*_amd64.deb
+						Packages
+						Packages.gz
+					extern/
+						*.deb
+						Packages
+						Packages.gz
+					source/	##### Only in unmaintained #####
+						*.dsc
+						*.tar.gz
+						*.diff.gz
+						*.changes
+						Sources
+						Sources.gz
+					##### No dists/ here any more #####
+				component/
+					COMP/
+						all/...
+						i386/...
+						amd64/...
+						extern/...
+		3.0/
+			maintained/
+			unmaintained/
+				3.0-X/
+					all/...
+					i386/...
+					amd64/...
+					sources/...
+				errataX/
+					all/...
+					i386/...
+					amd64/...
+				component/
+					COMP/
+						all/...
+						i386/...
+						amd64/...
+					COMP-errataX/
+						all/...
+						i386/...
+						amd64/...
+				##### No hotfixes/ and secX/ here any more #####
+
+Without arch/
+-------------
+		2.4/maintained/component/COMP/
+			##### Paths in Packages file are relative to here #####
+			*_all.deb
+			*_i386.deb
+			*_amd64.deb
+			Packages
+			Packages.gz
+
+
+Assumptions
+===========
+* A version depends on all previous versions of the same major version
+* The next patch-level update incorporated all previous errata updates
