@@ -44,8 +44,8 @@ except ImportError:
 	import univention.debug2 as ud
 
 class UniventionMirror( UniventionUpdater ):
-	def __init__( self ):
-		UniventionUpdater.__init__( self )
+	def __init__(self, check_access=True):
+		UniventionUpdater.__init__(self, check_access)
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 
 		if self.configRegistry.has_key( 'repository/mirror/version/end' ):
@@ -85,8 +85,8 @@ class UniventionMirror( UniventionUpdater ):
 		path = os.path.join(self.repository_path, 'mirror', 'univention-repository')
 		try:
 			os.symlink('.', path)
-		except OSError, e:
-			if e.errno != errno.EEXIST:
+		except OSError, ex:
+			if ex.errno != errno.EEXIST:
 				raise
 
 		log = open('/var/log/univention/repository.log', 'a')
@@ -106,7 +106,6 @@ class UniventionMirror( UniventionUpdater ):
 
 		start_errata = UCS_Version((start.major, start.minor, 1))  # errata updates start with 'errata1'
 		end_errata = UCS_Version((end.major, end.minor, 999)) # get all available for mirror
-		hotfixes = self.hotfixes
 		errata = self._iterate_errata_repositories(start_errata, end_errata, parts, archs) # returns generator
 
 		components = self.get_components()
@@ -130,8 +129,8 @@ class UniventionMirror( UniventionUpdater ):
 			dirname = os.path.dirname(filename)
 			try:
 				os.makedirs(dirname, 0755)
-			except OSError, e:
-				if e.errno != errno.EEXIST:
+			except OSError, ex:
+				if ex.errno != errno.EEXIST:
 					raise
 			fd = open(filename, "w")
 			try:
@@ -151,7 +150,7 @@ class UniventionMirror( UniventionUpdater ):
 		'''
 		result = []
 		repobase = os.path.join( self.repository_path, 'mirror')
-		RErepo = re.compile('^%s/(\d+[.]\d)/(maintained|unmaintained)/(\d+[.]\d+-\d+)$' % repobase )
+		RErepo = re.compile('^%s/(\d+[.]\d)/(maintained|unmaintained)/(\d+[.]\d+-\d+)$' % (re.escape(repobase),))
 		for dirname, subdirs, files in os.walk(repobase):
 			match = RErepo.match(dirname)
 			if match:
