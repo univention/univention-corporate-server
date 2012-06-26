@@ -88,17 +88,17 @@ def  prepare( options ):
 	# create directory structure
 	try:
 		os.makedirs( _repo_base )
-	except OSError, e:
+	except OSError, ex:
 		# already exists -> ignore
-		if e.errno != errno.EEXIST:
-			raise e
+		if ex.errno != errno.EEXIST:
+			raise ex
 	for arch in urepo.ARCHITECTURES:
 		try:
 			os.makedirs( os.path.join( _repo_base, arch ) )
-		except OSError, e:
+		except OSError, ex:
 			# already exists -> ignore
-			if e.errno != errno.EEXIST:
-				raise e
+			if ex.errno != errno.EEXIST:
+				raise ex
 
 def copy_repository( options ):
 	""" Copy version info, kernels, grub configuration, profiles, packages and dists """
@@ -118,8 +118,8 @@ def copy_repository( options ):
 		shutil.rmtree( boot_dest )
 	try:
 		shutil.copytree( os.path.join( options.mount_point, 'boot' ), boot_dest )
-	except shutil.Error, e:
-		print "failed (%s)." % str( e )
+	except shutil.Error, ex:
+		print "failed (%s)." % (ex,)
 	else:
 		print 'done.'
 
@@ -130,8 +130,8 @@ def copy_repository( options ):
 		shutil.rmtree( profiles_dest )
 	try:
 		shutil.copytree( os.path.join( options.mount_point, 'profiles' ), profiles_dest )
-	except shutil.Error, e:
-		print "failed (%s)." % str( e )
+	except shutil.Error, ex:
+		print "failed (%s)." % (ex,)
 	else:
 		# everyone should be able to read the profiles
 		os.chmod( profiles_dest, 0555 )
@@ -150,8 +150,8 @@ def copy_repository( options ):
 		shutil.rmtree( dists_dest )
 	try:
 		shutil.copytree( os.path.join( options.mount_point, 'packages', 'dists' ), dists_dest )
-	except shutil.Error, e:
-		print "failed (%s)." % str( e )
+	except shutil.Error, ex:
+		print "failed (%s)." % (ex,)
 	else:
 		print 'done.'
 
@@ -193,17 +193,17 @@ def setup_pxe( options ):
 	# it is easier to ask forgiveness than ask permission
 	try:
 		os.mkdir(isodir)
-	except OSError, e: pass
+	except OSError: pass
 	# Bug #17835: linux26 does not exist -> danling symlink
 	try:
 		os.symlink( os.path.join( bootdir, 'linux26' ), os.path.join( isodir, 'linux' ) )
-	except OSError, e:
-		if e.errno != errno.EEXIST:
+	except OSError, ex:
+		if ex.errno != errno.EEXIST:
 			raise
 	try:
 		os.symlink( os.path.join( bootdir, 'linux26.bin' ), os.path.join( isodir, 'linux.bin' ) )
-	except OSError, e:
-		if e.errno != errno.EEXIST:
+	except OSError, ex:
+		if ex.errno != errno.EEXIST:
 			raise
 
 if __name__ == '__main__':
@@ -228,8 +228,8 @@ if __name__ == '__main__':
 
 	try:
 		lock = univention.updater.tools.updater_lock_acquire()
-	except univention.updater.tools.LockingError, e:
-		print >>sys.stderr, e
+	except univention.updater.tools.LockingError, ex:
+		print >>sys.stderr, ex
 		sys.exit(5)
 	try:
 		check_preconditions( options )
@@ -263,21 +263,24 @@ if __name__ == '__main__':
 		try:
 			basepath = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
 			os.symlink('.', os.path.join(basepath, 'mirror', 'univention-repository'))
-		except OSError, e:
-			if e.errno != errno.EEXIST:
+		except OSError, ex:
+			if ex.errno != errno.EEXIST:
 				raise
 
-		print "The local repository has been created."
-		print
-		print
-		print "UCS validates the archive integrity through signed Release files (using the secure"
-		print "APT mechanism). Secure APT is not yet available for local repositories. As such, it"
-		print "should be disabled by setting the Univention Configuration Registry variable"
-		print "update/secure_apt to no:"
-		print
-		print "ucr set update/secure_apt=no"
-		print
-		print
+		print """
+		The local repository has been created.
+
+		UCS validates the archive integrity through signed Release files (using the
+		secure APT mechanism). Secure APT is not yet available for local repositories.
+		As such, it should be disabled on this and all other hosts using this
+		repository by setting the Univention Configuration Registry (UCR) variable
+		update/secure_apt to no:
+
+		  ucr set update/secure_apt=no
+
+		This is best done in a domain by defining an UCR Policy, which sets this variable
+		and is applied to all hosts using this repository server.
+		""".replace('\t\t', '')
 
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
