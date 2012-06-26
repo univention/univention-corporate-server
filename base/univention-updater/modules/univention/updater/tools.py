@@ -391,13 +391,13 @@ class UCSLocalServer(object):
 	def __init__(self, prefix):
 		prefix = str(prefix).strip('/')
 		if prefix:
-			self.prefix = '/%s/' % prefix
+			self.prefix = '%s/' % prefix
 		else:
-			self.prefix = '/'
+			self.prefix = ''
 
 	def __str__(self):
 		'''Absolute file-URI.'''
-		return 'file://%s' % self.prefix
+		return 'file:///%s' % self.prefix
 
 	def __repr__(self):
 		'''Return canonical string representation.'''
