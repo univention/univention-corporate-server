@@ -213,6 +213,42 @@ class UCSRepoPool(UCSRepo):
 		fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/" # %(arch)s/
 		return "clean %s" % super(UCSRepoPool,self)._format(fmt)
 
+
+class UCSRepoPoolNoArch(UCSRepo):
+	'''Debian pool repository without explicit architecture subdirectory.'''
+	def __init__(self, **kw):
+		kw.setdefault('version', UCS_Version.FORMAT)
+		kw.setdefault('patch', UCS_Version.FULLFORMAT)
+		super(UCSRepoPoolNoArch,self).__init__(**kw)
+	def deb(self, type="deb"):
+		'''Format for /etc/apt/sources.list.
+
+		>>> r=UCSRepoPoolNoArch(prefix='http://updates.software-univention.de/',major=2,minor=3,patch='comp',part='maintained/component',arch='all')
+		>>> r.deb()
+		'deb http://updates.software-univention.de/2.3/maintained/component/comp/ ./'
+		'''
+		fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/ ./"
+		return "%s %s" % (type, super(UCSRepoPoolNoArch,self)._format(fmt))
+	def path(self, file='Packages.gz'):
+		'''Format pool for directory/file access. Returns relative path.
+
+		>>> UCSRepoPoolNoArch(prefix='http://updates.software-univention.de/',major=2,minor=3).path()
+		'2.3/'
+		>>> UCSRepoPoolNoArch(major=2,minor=3,part='maintained/component').path()
+		'2.3/maintained/component/'
+		>>> UCSRepoPoolNoArch(major=2,minor=3,part='maintained/component',patch='comp').path()
+		'2.3/maintained/component/comp/Packages.gz'
+		>>> UCSRepoPoolNoArch(major=2,minor=3,part='maintained/component',patch='comp',arch='all').path()
+		'2.3/maintained/component/comp/Packages.gz'
+		'''
+		fmt = "%(version)s/%(part)s/%(patch)s/" + file
+		return super(UCSRepoPoolNoArch,self)._format(fmt)
+	def clean(self):
+		'''Format for /etc/apt/mirror.list'''
+		fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/"
+		return "clean %s" % super(UCSRepoPoolNoArch,self)._format(fmt)
+
+
 class UCSRepoDist(UCSRepo):
 	'''Debian dists repository.'''
 	def __init__(self, **kw):
@@ -1051,10 +1087,11 @@ class UniventionUpdater:
 						patch_names += ['%s-errata%d' % (component, x) for x in range(1, errata_level + 1)]
 
 				for patch_name in patch_names:
-					struct = UCSRepoPool(prefix=server, patch=patch_name)
 					try:
-						for ver in self._iterate_versions(struct, version, version, parts, archs, server):
-							yield server, ver
+						for (UCSRepoPoolVariant, subarchs) in ((UCSRepoPool, archs), (UCSRepoPoolNoArch, ('all',))):
+							struct = UCSRepoPoolVariant(prefix=server, patch=patch_name)
+							for ver in self._iterate_versions(struct, version, version, parts, subarchs, server):
+								yield server, ver
 					except (ConfigurationError, ProxyError), e:
 						# if component is marked as required (UCR variable "version" contains "current")
 						# then raise error, otherwise ignore it
@@ -1355,18 +1392,19 @@ class UniventionUpdater:
 			cleanComponent = self.configRegistry.is_true('repository/online/component/%s/clean' % component, False)
 
 		# Sanitize versions: UCS_Version() and Major.Minor
-		versions_mm = set()
-		versions_mmp = []
+		versions_mmp = set()
 		for version in versions:
 			if isinstance(version, basestring):
 				if '-' in version:
 					version = UCS_Version(version)
 				else:
 					version = UCS_Version('%s-0' % version)
-			elif not isinstance(version, UCS_Version):
+			elif isinstance(version, UCS_Version):
+				version = copy.copy(version)
+			else:
 				raise TypeError('Not a UCS Version', version)
-			versions_mm.add(UCS_Version.FORMAT % version)
-			versions_mmp.append(version)
+			version.patchlevel = 0 # component dont use the patchlevel
+			versions_mmp.add(version)
 
 		for version in versions_mmp:
 			# Show errata updates for latest version only
@@ -1384,39 +1422,6 @@ class UniventionUpdater:
 							result.append( ver.deb("deb-src") )
 						except DownloadError, e:
 							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-
-		# support no-arch repository format:
-		# - only one Package file for all architectures
-		# - the .debs are in the same directory as the Package file
-		# e.g. deb http://host/prefix/X.Y/maintained/component/COMP/ ./
-		parts = RE_SPLIT_MULTI.split(self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained'))
-		server = self._get_component_server(component, for_mirror_list=for_mirror_list)
-		repo = UCSRepoPool(prefix=server, patch=component)
-		for repo.version in versions_mm:
-			for repo.part in ["%s/component" % part for part in parts]:
-				errata_prefixes = ['']
-				if iterate_errata:
-					if errata_level:
-						errata_prefixes = ['-errata%s' % errata_level]
-					else:
-						errata_level = int(self.configRegistry.get('repository/online/component/%s/%s/erratalevel' % (component, repo.version), 0))
-						errata_prefixes += ['-errata%d' % x for x in range(1, errata_level + 1)]
-				for ep in errata_prefixes:
-					path = '%(version)s/%(part)s/%(patch)s' % repo
-					if ep:
-						path += ep
-					path += '/Packages.gz'
-
-					try:
-						assert server.access(path)
-						path = '%(prefix)s%(version)s/%(part)s/%(patch)s' % repo
-						if ep:
-							path += ep
-						result.append('deb %s/ ./' % path)
-						if cleanComponent:
-							result.append('clean %s/' % path)
-					except DownloadError, e:
-						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
 		return result
 
