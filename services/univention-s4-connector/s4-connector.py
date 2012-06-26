@@ -61,6 +61,7 @@ if listener.configRegistry.has_key('connector/listener/additionalbasenames') and
 def handler(dn, new, old, command):
 
 	global group_objects
+	global s4_init_mode
 
 	listener.setuid(0)
 	try:
@@ -88,8 +89,9 @@ def handler(dn, new, old, command):
 
 				filename=os.path.join(directory,"%f"%time.time())
 	
-				if new and 'univentionGroup' in new.get('objectClass', []):
-					group_objects.append(ob)
+				if s4_init_mode:
+					if new and 'univentionGroup' in new.get('objectClass', []):
+						group_objects.append(ob)
 
 				f=open(filename, 'w+')
 				os.chmod(filename, 0600)
@@ -121,10 +123,13 @@ def clean():
 
 def postrun():
 	global s4_init_mode
+	global group_objects
+
 	if s4_init_mode:
 		listener.setuid(0)
 		try:
 			s4_init_mode = False
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "s4-connector: group_objects: %d" % len(group_objects))
 			for ob in group_objects:
 				for directory in dirs:
 					filename=os.path.join(directory,"%f"%time.time())
@@ -134,6 +139,8 @@ def postrun():
 					p.dump(ob)
 					p.clear_memo()
 					f.close()
+			del group_objects
+			group_objects = []
 		finally:
 			listener.unsetuid()
 
