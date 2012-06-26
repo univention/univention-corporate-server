@@ -1,3 +1,10 @@
+univention-updater (7.0.167-4) unstable; urgency=low
+
+  * Add whitelist in unit test (Bug #27148)
+  * Fix unstable sort of (un)maintained directories
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Jun 2012 13:54:43 +0200
+
 univention-updater (7.0.167-3) unstable; urgency=low
 
   * Fix absolute import during build for unit-test (Bug #27148)

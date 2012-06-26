@@ -73,6 +73,7 @@ class TestUniventionMirror(unittest.TestCase):
 
     def test_mirror_repositories(self):
         """Test mirror structure and apt-mirror called."""
+        self.mock_file.mock_whitelist.add('/var/log/univention')
         self.m.mirror_repositories()
         self.assertTrue(os.path.isdir(os.path.join(self.base_dir, 'repo', 'var')))
         self.assertTrue(os.path.isdir(os.path.join(self.base_dir, 'repo', 'skel')))
@@ -168,35 +169,38 @@ class TestUniventionMirrorList(unittest.TestCase):
         del self.m
         MockConfigRegistry._EXTRA = {}
 
-    def assertListEqual(self, list1, list2):
-        """Tests that two lists are equal."""
-        for elem1, elem2 in zip(list1, list2):
-            self.assertTupelEqual(elem1, elem2)
-
-    def assertTupelEqual(self, tupel1, tupel2):
-        """Tests that two tuples are equal."""
-        for elem1, elem2 in zip(tupel1, tupel2):
-            self.assertEqual(elem2, elem1)
+    def assertDeepEqual(self, seq1, seq2):
+        """Tests that two lists or tuples are equal."""
+        if isinstance(seq1, list) and isinstance(seq2, list):
+            self.assertEqual(len(seq1), len(seq2))
+            for elem1, elem2 in zip(seq1, seq2):
+                self.assertDeepEqual(elem1, elem2)
+        elif isinstance(seq1, tuple) and isinstance(seq2, tuple):
+            self.assertEqual(len(seq1), len(seq2))
+            for elem1, elem2 in zip(seq1, seq2):
+                self.assertDeepEqual(elem1, elem2)
+        else:
+            self.assertEqual(seq1, seq2)
 
     def test_default(self):
         """Test default."""
         result = self.m.list_local_repositories()
         self.assertEqual(len(result), 4)
-        self.assertListEqual(result, [_ for _ in self.repos if _[2]])
+        self.assertDeepEqual(result, [_ for _ in self.repos if _[2]])
 
     def test_start(self):
         """Test start version."""
         ver = U.UCS_Version((MAJOR, MINOR + 1, PATCH))
         result = self.m.list_local_repositories(start=ver)
         self.assertEqual(len(result), 2)
-        self.assertListEqual(result, [_ for _ in self.repos if _[1] >= ver and _[2]])
+        self.assertDeepEqual(result, [_ for _ in self.repos if _[1] >= ver and _[2]])
 
     def test_end(self):
         """Test end version."""
         ver = U.UCS_Version((MAJOR, MINOR, PATCH))
         result = self.m.list_local_repositories(end=ver)
         self.assertEqual(len(result), 1)
-        self.assertListEqual(result, [_ for _ in self.repos if _[1] <= ver and _[2]])
+        self.assertDeepEqual(result, [_ for _ in self.repos if _[1] <= ver and _[2]])
 
     def test_maintained(self):
         """Test maintained off."""
@@ -208,7 +212,9 @@ class TestUniventionMirrorList(unittest.TestCase):
         """Test unmaintained on."""
         result = self.m.list_local_repositories(unmaintained=True)
         self.assertEqual(len(result), 6)
-        self.assertListEqual(result, self.repos)
+        # Check sorted by version
+        self.assertDeepEqual([_[1] for _ in result], [_[1] for _ in self.repos])
+        self.assertDeepEqual(sorted(result), sorted(self.repos))
 
 if __name__ == '__main__':
     unittest.main()

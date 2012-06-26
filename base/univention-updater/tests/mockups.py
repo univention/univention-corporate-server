@@ -151,13 +151,14 @@ class MockFile(object):
     _ORIG = open
     def __init__(self, base='/tmp'):
         self.mock_base = base
+        self.mock_whitelist = set()
 
     def __call__(self, name, mode='r', *args, **kwargs):
         if mode.startswith('r'):
             return MockFile._ORIG(name, mode, *args, **kwargs)
         else:
             head, tail = os.path.split(name)
-            if not os.path.isdir(head):
+            if head not in self.mock_whitelist and not os.path.isdir(head):
                 raise IOError(errno.ENOENT, "No such file or directory: '%s'" % (name,))
             dirname = self.mock_base + head
             try:
