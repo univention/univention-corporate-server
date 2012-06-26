@@ -606,7 +606,7 @@ class UniventionUpdater:
 			repos = []
 			try:
 				repos = self.get_component_repositories(component, [mmp_version], False)
-			except (ConfigurationError, ProxyError, DownloadError):
+			except (ConfigurationError, ProxyError), e:
 				# if component is marked as required (UCR variable "version" contains "current")
 				# then raise error, otherwise ignore it
 				if component in current_components:
@@ -1054,7 +1054,7 @@ class UniventionUpdater:
 					try:
 						for ver in self._iterate_versions(struct, version, version, parts, archs, server):
 							yield server, ver
-					except (ConfigurationError, ProxyError, DownloadError):
+					except (ConfigurationError, ProxyError), e:
 						# if component is marked as required (UCR variable "version" contains "current")
 						# then raise error, otherwise ignore it
 						if component in self.get_current_components():
