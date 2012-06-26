@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (1.0.110-1) unstable; urgency=low
+
+  * Allow to change the CD/DVD medium on KVM hosts while the domain is
+    running (Bug #25134)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 26 Jun 2012 12:13:28 +0200
+
 univention-virtual-machine-manager-daemon (1.0.109-1) unstable; urgency=low
 
   * added VNC Port field to tooltips (Bug #24698)

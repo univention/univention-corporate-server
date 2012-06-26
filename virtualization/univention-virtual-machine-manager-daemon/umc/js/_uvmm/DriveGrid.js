@@ -78,7 +78,12 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				isStandardAction: true,
 				callback: dojo.hitch(this, '_editDrive'),
 				canExecute: dojo.hitch( this, function( item ) {
-					return undefined !== this.domain.domainURI; // when creating an instance drives can not be edited
+					if (this.disabled) {
+						return false;
+					} else {
+						// when creating an instance drives can not be edited
+						return undefined !== this.domain.domainURI;
+					}
 				} )
 			}, {
 				name: 'change_medium',
@@ -95,16 +100,38 @@ dojo.declare("umc.modules._uvmm.DriveGrid", [ umc.widgets.Grid, umc.i18n.Mixin ]
 				isMultiAction: false,
 				isStandardAction: true,
 				iconClass: 'umcIconDelete',
-				callback: dojo.hitch(this, '_removeDrive')
+				callback: dojo.hitch(this, '_removeDrive'),
+				canExecute: dojo.hitch(this, function(item) {
+					return !this.disabled;
+				})
 			}, {
 				name: 'add',
 				label: this._('Add drive'),
 				isMultiAction: false,
 				isContextAction: false,
 				iconClass: 'umcIconAdd',
-				callback: dojo.hitch(this, '_addDrive')
+				callback: dojo.hitch(this, '_addDrive'),
+				canExecute: dojo.hitch(this, function(item) {
+					return !this.disabled;
+				})
 			}]
 		});
+	},
+
+	_setDisabledAttr: function(value) {
+		if (this.domain.domain_type === 'kvm') {
+			this.disabled = value;
+			this._grid.update();
+
+			// disable actions in toolbar
+			dojo.forEach(this._toolbar.getChildren(), dojo.hitch(this, function(widget) {
+				if (widget instanceof umc.widgets.Button) {
+					widget.set('disabled', value);
+				}
+			}));
+		} else {
+			this.inherited(arguments);
+		}
 	},
 
 	buildRendering: function() {
