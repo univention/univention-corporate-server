@@ -542,7 +542,7 @@ class UniventionUpdater:
 				assert self.server.access(repo.path())
 				for component in components:
 					mm_version = UCS_Version.FORMAT % ver
-					if not self.get_component_repositories(component, [mm_version], False, debug=debug):
+					if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
 						if errorsto == 'stderr':
 							print >>sys.stderr, "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (mm_version, component, component)
 						elif errorsto == 'exception':
@@ -689,14 +689,15 @@ class UniventionUpdater:
 		as integer
 		> updater.get_all_available_errata_component_updates()
 		[
-			('component1', {'2.3': ['2', '3'], '2.4': ['5']}),
-			('component2', {'3.0': ['1'], '3.1': []}),
-			('component3', {'3.0': ['1']}),
+			('component1', {'2.3': [2, 3], '2.4': [5]}),
+			('component2', {'3.0': [1], '3.1': []}),
+			('component3', {'3.0': [1]}),
 		]
 		'''
 		result = []
 		archs = ['all'] + self.architectures
 		for component in self.get_all_components():
+			# get configured versions for component; default: this major
 			versions = self._get_component_versions(component, None, None)
 			component_versions = {}
 			for version in versions:
@@ -750,7 +751,7 @@ class UniventionUpdater:
 
 	def get_components(self, only_localmirror_enabled=False):
 		'''
-			Retrieve all enabled components from registry as list.
+			Retrieve all enabled components from registry as set().
 			By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
 			If only_localmirror_enabled is True, then all components with
 			repository/online/component/%s/localmirror=$TRUE will be returned.
@@ -770,7 +771,7 @@ class UniventionUpdater:
 		return components
 
 	def get_current_components(self):
-		'''Return all components marked as current.'''
+		'''Return set() of all components marked as current.'''
 		all_components = self.get_components()
 		components = set()
 		for component in all_components:
@@ -782,7 +783,7 @@ class UniventionUpdater:
 		return components
 
 	def get_all_components(self):
-		'''Retrieve all configured components from registry as list'''
+		'''Retrieve all configured components from registry as set().'''
 		components = set()
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
@@ -1313,7 +1314,13 @@ class UniventionUpdater:
 		return server
 
 	def _get_component_versions(self, component, start, end):
-		'''Return versions available for component.'''
+		'''
+		Return configured versions for component.
+		 'current'=required component; must exist for requested version.
+		 ''=optional component; used when exists for requested version.
+		 'major.minor'=use exactly this version.
+		Can be a space/comma seperated combination of above.
+		'''
 		str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
 		versions = set()
 		for version in RE_SPLIT_MULTI.split(str):
@@ -1346,6 +1353,7 @@ class UniventionUpdater:
 		if clean:
 			cleanComponent = self.configRegistry.is_true('repository/online/component/%s/clean' % component, False)
 
+		# Sanitize versions: UCS_Version() and Major.Minor
 		versions_mm = set()
 		versions_mmp = []
 		for version in versions:
@@ -1376,7 +1384,10 @@ class UniventionUpdater:
 						except DownloadError, e:
 							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
-		# support repository format with one Packages for all architectures (e.g. used by OX)
+		# support no-arch repository format:
+		# - only one Package file for all architectures
+		# - the .debs are in the same directory as the Package file
+		# e.g. deb http://host/prefix/X.Y/maintained/component/COMP/ ./
 		parts = RE_SPLIT_MULTI.split(self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained'))
 		server = self._get_component_server(component, for_mirror_list=for_mirror_list)
 		repo = UCSRepoPool(prefix=server, patch=component)
