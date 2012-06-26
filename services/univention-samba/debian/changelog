@@ -1,3 +1,10 @@
+univention-samba (6.0.37-1) unstable; urgency=low
+
+  * Create default and default.V2 directories in windows-profiles
+    (Bug #27373)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jun 2012 16:13:28 +0200
+
 univention-samba (6.0.36-2) unstable; urgency=low
 
   * fixed wrong print for usershare options (Bug #19019) 
