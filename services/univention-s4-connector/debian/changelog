@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.161-1) unstable; urgency=low
+
+  * univention-s4-position-sync: check if connector/s4/ldap/bindpw is
+    set, it might be empty (Bug #26197)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Jun 2012 09:41:43 +0200
+
 univention-s4-connector (6.0.160-1) unstable; urgency=low
 
   * The match filter for DCs has been amended so that

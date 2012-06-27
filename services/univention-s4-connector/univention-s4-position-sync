@@ -100,9 +100,12 @@ class S4Connector(univention.s4connector.s4.s4):
 			ucr = config_registry.ConfigRegistry()
 			ucr.load()
 			
-		s4_ldap_bindpw=open(ucr['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
-		if s4_ldap_bindpw[-1] == '\n':
-			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
+		s4_ldap_bindpw=None
+		bindpw_file=ucr['%s/s4/ldap/bindpw' % CONFIGBASENAME]
+		if bindpw_file:
+			s4_ldap_bindpw=open(bindpw_file).read()
+			if s4_ldap_bindpw[-1] == '\n':
+				s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
 
 		univention.s4connector.s4.s4.__init__(self,
 				CONFIGBASENAME,
