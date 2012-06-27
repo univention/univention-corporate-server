@@ -477,11 +477,11 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				});
 
 				// update the stores
-				this._interfaceStore.setData(this._domain.interfaces);
-				this._driveStore.setData(this._domain.disks);
 				this._snapshotGrid.set('domainURI', id);
 				this._driveGrid.set('domain', this._domain);
 				this._interfaceGrid.set('domain', this._domain);
+				this._interfaceStore.setData(this._domain.interfaces);
+				this._driveStore.setData(this._domain.disks);
 
 				var qcow2_images = 0;
 				var snapshots_possible = dojo.every( this._domain.disks, function( disk ) {

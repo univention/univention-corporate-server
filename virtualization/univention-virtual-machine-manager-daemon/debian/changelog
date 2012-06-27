@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (1.0.111-1) unstable; urgency=low
 
   * Validate memory size (Bug #27747)
+  * Fix initialization order of grids (Bug #27751)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 05 Jun 2012 14:50:22 +0200
 
