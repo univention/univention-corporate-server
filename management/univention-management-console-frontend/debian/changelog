@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.383-1) unstable; urgency=low
+
+  * using dojo.date.locale.format in about page (Bug #27037)
+
+ -- Florian Best <best@univention.de>  Wed, 27 Jun 2012 15:52:39 +0200
+
 univention-management-console-frontend (1.0.382-1) unstable; urgency=low
 
   * Fix disabled inputs having same background-color as the text in it
