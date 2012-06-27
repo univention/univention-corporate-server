@@ -37,9 +37,9 @@ if [ "$1" = "purge" ]; then
 	rm -rf /var/lib/univention-ldap/ldap
 
 	# Subdirectories belonging to package univention-directory-notifier
-	rm -rf /var/lib/univention-ldap/notify
-	rm -rf /var/lib/univention-ldap/replog-slurpd
-	rm -rf /var/lib/univention-ldap/save
+	# /var/lib/univention-ldap/notify
+	# /var/lib/univention-ldap/replog-slurpd
+	# /var/lib/univention-ldap/save
 
 	# Subdirectories belonging to no package
 	rm -rf /var/lib/univention-ldap/schema
