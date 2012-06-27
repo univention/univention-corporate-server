@@ -85,6 +85,27 @@ dojo.require("umc.tools");
 			}
 			return text;
 		},
+		parseStorageSize: function(size) {
+			var pattern = /^([0-9]+(?:[,.][0-9]+)?)[ \t]*([KkMmGgTtPp]?[Ii]?[Bb])?$/;
+			var match = pattern.exec(size);
+			if (match === null)
+				return null;
+			var mem = parseFloat(match[1].replace(',', '.'));
+			var unit = match[2].charAt(0);
+			switch (unit) {
+			case 'P': case 'p':
+				mem *= 1024;
+			case 'T': case 't':
+				mem *= 1024;
+			case 'G': case 'g':
+				mem *= 1024;
+			case 'M': case 'm':
+				mem *= 1024;
+			case 'K': case 'k':
+				mem *= 1024;
+			}
+			return mem;
+		},
 		virtualizationTechnology: [
 			{ id: 'kvm-hvm', label: _( 'Full virtualization (KVM)' ) },
 			{ id: 'xen-hvm', label: _( 'Full virtualization (XEN)' ) },

@@ -90,6 +90,16 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 	_addSnapshot: function() {
 		var dialog = null, form = null;
 
+		if (this.domain.state != 'SHUTOFF') {
+			var mem = umc.modules._uvmm.types.parseStorageSize(this.domain.maxMem);
+			if (mem === null)
+				return null;
+			if (mem >= 4000000000) { // 4 GiB - epsilon for qemu internal data
+				umc.dialog.alert(this._('Snapshots are not supported for running domains with 4 GB or more of RAM!'));
+				return;
+			}
+		}
+
 		var _cleanup = function() {
 			dialog.hide();
 			dialog.destroyRecursive();

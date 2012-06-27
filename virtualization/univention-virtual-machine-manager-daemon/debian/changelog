@@ -1,5 +1,6 @@
 univention-virtual-machine-manager-daemon (1.0.111-1) unstable; urgency=low
 
+  * Reject domain snapshot with >= 4 GB (Bug #26645)
   * Validate memory size (Bug #27747)
   * Fix initialization order of grids (Bug #27751)
 
