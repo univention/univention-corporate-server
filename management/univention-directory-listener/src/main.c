@@ -237,7 +237,6 @@ static void convert_cookie(void)
 		fclose(fp);
 	} else
 		master_entry.schema_id = 0;
-	free(filename);
 
 	if ((rv=cache_update_master_entry(&master_entry, NULL)) != 0)
 		exit(1); /* XXX */
