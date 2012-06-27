@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.283-1) unstable; urgency=low
+
+  * show full message also in frontend when a password
+    policy error occurs (Bug #24841)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 27 Jun 2012 16:50:42 +0200
+
 univention-management-console-module-udm (1.0.282-1) unstable; urgency=low
 
   * fixed messages which are displayed when adding/modifying/moving/removing
