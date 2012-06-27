@@ -1,3 +1,13 @@
+univention-ldap (8.0.85-1) unstable; urgency=low
+
+  * univention-ldap-server.postrm: Upon "purge" remove
+    subdirectories under /var/lib/univention-ldap/
+    only if they belong to package univention-ldap-server.
+    Leave subdirectories belonging to noone or to other
+    packages untouched (Bug #26269).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 27 Jun 2012 09:45:38 +0200
+
 univention-ldap (8.0.84-3) unstable; urgency=low
 
   * univention-backup2master:

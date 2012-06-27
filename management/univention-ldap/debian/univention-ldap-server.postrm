@@ -31,7 +31,30 @@
 # <http://www.gnu.org/licenses/>.
 
 if [ "$1" = "purge" ]; then
-	rm -rf /var/lib/univention-ldap
+	# Find all subdirectories located directly under /var/lib/univention-ldap/.
+	ALL_DIRS=$( find  /var/lib/univention-ldap/ -mindepth 1 -maxdepth 1 -type d )
+
+	for dir in $ALL_DIRS
+	do
+		# Does the subdirectory belong to any package ?
+		if dpkg -S $dir > /dev/null 2>&1 ; then
+			# To which packages does the subdirectory belong ?
+			belongsto=$( dpkg -S $dir | awk '{$NF=""; gsub(/[,:]/, ""); sub(/[ \t]+$/, ""); print $0}')
+			# Does the subdirectory belong to package univention-ldap-server ?
+			if [ "$belongsto" = "univention-ldap-server" ] ; then
+				# If so, it shall be removed.
+				rm -rf $dir
+				# A subdirectory belonging to univention-ldap-server and also to some
+				# other package will not be removed.
+			else
+				# Subdirectories belonging to other packages shall be left untouched.
+				continue
+			fi
+		else
+			# Subdirectory belong to noone, leave it untouched.
+			continue
+		fi
+	done
 fi
 
 #DEBHELPER#
