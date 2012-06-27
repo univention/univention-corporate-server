@@ -268,11 +268,11 @@ fi
 
 # check for deprecated MySQL option skip-bdb in modified configuration files
 MYSQL_CONF="/etc/mysql/my.cnf"
-if test -f "$MYSQL_CONF" && ! conffile_is_unmodified "$MYSQL_CONF" && grep -q skip-bdb "$MYSQL_CONF"
+if test -f "$MYSQL_CONF" && ! conffile_is_unmodified "$MYSQL_CONF" && grep -q '\<skip-bdb\>' "$MYSQL_CONF"
 then
 	echo "ERROR: The MySQL configuration file /etc/mysql/my.cnf has been modified and"
-	echo "       contains the deprecated option 'skip-bdb'. It MUST be removed before"
-	echo "       the update can continue."
+	echo "       contains the deprecated option 'skip-bdb'. The option MUST be removed"
+	echo "       before the update can continue."
 	exit 1
 fi
 
