@@ -116,7 +116,7 @@ dojo.declare("umc.modules._uvmm.DomainWizard", [ umc.widgets.Wizard, umc.i18n.Mi
 					name: 'maxMem',
 					type: 'TextBox',
 					required: true,
-					regExp: '^[0-9]+(?:[,.][0-9]+)?[ \t]*([KkMmGg]?[bB])?$',
+					regExp: '^[0-9]+(?:[,.][0-9]+)?[ \t]*([MmGg]?[bB])?$',
 					invalidMessage: this._( 'The memory size format is not valid (e.g. 3GB or 1024 MB)' ),
 					label: this._('Memory (default unit MB)')
 				}, {
