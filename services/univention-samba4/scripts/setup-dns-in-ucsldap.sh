@@ -43,6 +43,7 @@ local_is_ucr_false () { # test if UCS variable is "true" or "false"
     esac
 }
 
+sitename='Default-First-Site-Name'
 
 optspec="h-:"
 while getopts "$optspec" option; do
@@ -71,11 +72,24 @@ while getopts "$optspec" option; do
 			fi
 			OPTIND=$((OPTIND+1))
 			;;
+		site|site=*)
+			## allow "--site=foo" and "--site foo"
+			val=${OPTARG#*=}
+			if [ "$val" != "$OPTARG" ]; then
+				opt=${OPTARG%=$val}
+			else
+				val="${!OPTIND}"
+				opt="${OPTARG}"
+			fi
+			## store the sitename
+			sitename="$val"
+			OPTIND=$((OPTIND+1))
+			;;
 		*)
 			echo "Unknown option --${OPTARG}" >&2
 			;;
 	    esac;;
-	h|*) echo "usage: $0 [--dc|--rodc] [--gc|--rogc] [--pdc]"; exit 1;;
+	h|*) echo "usage: $0 [--dc|--rodc] [--gc|--rogc] [--pdc] [--site=SITENAME]"; echo 'default site is "Default-First-Site-Name"'; exit 1;;
     esac
 done
 set -- "${UDM_ARGV[@]}"
@@ -155,16 +169,16 @@ if [ -n "$dc" ]; then
 	fi
 	
 	## _ldap._tcp.Default-First-Site-Name._sites               IN SRV 0 100 389 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.Default-First-Site-Name sites 0 100 389 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "ldap._tcp.$sitename" sites 0 100 389 $hostname.$domainname.
 	## _ldap._tcp.Default-First-Site-Name._sites.dc._msdcs     IN SRV 0 100 389 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.Default-First-Site-Name._sites.dc msdcs 0 100 389 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "ldap._tcp.$sitename._sites.dc" msdcs 0 100 389 $hostname.$domainname.
 	
 	###
 	### krb5 servers
 	## _kerberos._tcp.Default-First-Site-Name._sites   IN SRV 0 100 88 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos._tcp.Default-First-Site-Name sites 0 100 88 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "kerberos._tcp.$sitename" sites 0 100 88 $hostname.$domainname.
 	## _kerberos._tcp.Default-First-Site-Name._sites.dc._msdcs IN SRV 0 100 88 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos._tcp.Default-First-Site-Name._sites.dc msdcs 0 100 88 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "kerberos._tcp.$sitename._sites.dc" msdcs 0 100 88 $hostname.$domainname.
 	####### </Non-RODC server> #######
 	
 	### heimdal 'find realm for host' hack
@@ -181,16 +195,16 @@ if [ -n "$rodc" ]; then
 	###
 	### ldap servers
 	## _ldap._tcp.Default-First-Site-Name._sites               IN SRV 0 100 389 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.Default-First-Site-Name sites 0 100 389 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "ldap._tcp.$sitename" sites 0 100 389 $hostname.$domainname.
 	## _ldap._tcp.Default-First-Site-Name._sites.dc._msdcs     IN SRV 0 100 389 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.Default-First-Site-Name._sites.dc msdcs 0 100 389 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "ldap._tcp.$sitename._sites.dc" msdcs 0 100 389 $hostname.$domainname.
 
 	###
 	### krb5 servers
 	## _kerberos._tcp.Default-First-Site-Name._sites   IN SRV 0 100 88 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos._tcp.Default-First-Site-Name sites 0 100 88 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "kerberos._tcp.$sitename" sites 0 100 88 $hostname.$domainname.
 	## _kerberos._tcp.Default-First-Site-Name._sites.dc._msdcs IN SRV 0 100 88 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos._tcp.Default-First-Site-Name._sites.dc msdcs 0 100 88 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "kerberos._tcp.$sitename._sites.dc" msdcs 0 100 88 $hostname.$domainname.
 
 fi
 
@@ -207,9 +221,9 @@ if [ -n "$gc" ]; then
 	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.gc msdcs 0 100 3268 $hostname.$domainname.
 
 	## _gc._tcp.Default-First-Site-Name._sites IN SRV 0 100 3268       qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv gc._tcp.Default-First-Site-Name sites 0 100 3268 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "gc._tcp.$sitename" sites 0 100 3268 $hostname.$domainname.
 	## _ldap._tcp.Default-First-Site-Name._sites.gc._msdcs     IN SRV 0 100 3268 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.Default-First-Site-Name._sites.gc msdcs 0 100 3268 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "ldap._tcp.$sitename._sites.gc" msdcs 0 100 3268 $hostname.$domainname.
 	####### <GC server> #######
 fi
 
@@ -221,9 +235,9 @@ if [ -n "$rogc" ]; then
 	fi
 
 	## _gc._tcp.Default-First-Site-Name._sites IN SRV 0 100 3268       qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv gc._tcp.Default-First-Site-Name sites 0 100 3268 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "gc._tcp.$sitename" sites 0 100 3268 $hostname.$domainname.
 	## _ldap._tcp.Default-First-Site-Name._sites.gc._msdcs     IN SRV 0 100 3268 qamaster
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.Default-First-Site-Name._sites.gc msdcs 0 100 3268 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv "ldap._tcp.$sitename._sites.gc" msdcs 0 100 3268 $hostname.$domainname.
 	####### <RODC GC server> #######
 fi
 

@@ -322,6 +322,12 @@ Description[en]=Activate the DRS Update API RPC interface
 Type=str
 Categories=service-samba
 
+[samba4/join/site]
+Description[de]=Wählt den Samba 4 Standort für den Domänenbeitritt
+Description[en]=Selects Samba 4 site for domain join
+Type=str
+Categories=service-samba
+
 [samba4/disabled]
 Description[de]=Verhindert die Ausführung der Join-Skripte von univention-samba4 (default: false)
 Description[en]=Prevents the execution of the join-scripts of univention samba4 (default: false)
@@ -375,4 +381,3 @@ Description[de]=Erstellt eine Vorlage für neue Usershares. Beim Erstellen eines
 Description[en]=Names a pre-existing share used as a template for creating new usershares. All other share parameters not specified in the user defined share definition are copied from this named share.
 Type=str
 Categories=service-samba
-

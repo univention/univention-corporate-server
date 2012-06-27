@@ -1,3 +1,20 @@
+univention-samba4 (1.0.149-1) unstable; urgency=low
+
+  * Patches merged from UCS@school (Bug #26835):
+  * allocate and create a local rid pool in case samba4/service/drepl
+    is switched off during join (Bug #25991)
+  * shell syntax fix (Bug #25991)
+  * improve structure of join script a bit (Bug #25991)
+  * make ucslint happy (Bug #25991)
+  * New UCR samba4/join/essentialonly for domain-critical-only join
+    (Bug #25991)
+  * the site object needs to be created before attempting to join it
+    (Bug #25991)
+  * New UCR variable samba4/join/site selects a site to join to
+  * Create subnet object for default network (Bug #25991)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Mar 2012 12:09:19 +0100
+
 univention-samba4 (1.0.148-1) unstable; urgency=low
 
   * Create default and default.V2 directories in windows-profiles

@@ -66,6 +66,8 @@ fi
 
 NAME="Samba 4"
 
+### --- BEGIN helper functions ---
+
 extract_binddn_and_bindpwd_from_args() {
 	## parse binddn and bindpwd from command line arguments into shell variables
 	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
@@ -145,6 +147,114 @@ remove_port ()
 
 }
 
+create_site() {
+	if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
+		echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
+		printf "\tunivention-run-join-scripts --ask-pass\n"
+		echo "to complete the domain join."
+		exit 1
+	fi
+
+	/usr/share/univention-samba4/scripts/univention-samba4-site-tool.py \
+			-H "ldap://$ldap_master" \
+			-U"$dcaccount"%"$bindpwd" \
+			--site "$1" --createsite \
+			--ignore-exists
+}
+
+allocate_rid_pool() {
+
+	allocate_numberofrids="$1"
+
+	ridmanager=$(ldbsearch -H "ldap://$ldap_master" -U"$dcaccount"%"$bindpwd" -b "$samba4_ldap_base" -s base rIDManagerReference |
+					ldapsearch-wrapper | sed -n 's/^rIDManagerReference: \(.*\)/\1/p')
+
+	if [ -z "$ridmanager" ]; then
+		echo "Error: Could not determine RID Manager" >&2
+		return 1
+	fi
+
+	rIDAvailablePool=$(ldbsearch -H "ldap://$ldap_master" -U"$dcaccount"%"$bindpwd" -b "$ridmanager" -s base rIDAvailablePool |
+						ldapsearch-wrapper | sed -n 's/^rIDAvailablePool: \(.*\)/\1/p')
+
+	if [ -z "$ridmanager" ]; then
+		echo "Error: Could not determine rIDAvailablePool" >&2
+		return 1
+	fi
+
+	floor="${rIDAvailablePool%-*}"
+	ceil="${rIDAvailablePool#*-}"
+	newfloor=$(($floor + $allocate_numberofrids))
+
+	if [ "$newfloor" -lt "$ceil" ]; then
+		ldbmodify -H ldap://master -U"$dcaccount"%"$bindpwd" <<-%EOF >/dev/null 2>&1
+			dn: $ridmanager
+			changetype: modify
+			delete: rIDAvailablePool
+			rIDAvailablePool: $rIDAvailablePool
+			-
+			add: rIDAvailablePool
+			rIDAvailablePool: $newfloor-$ceil
+			%EOF
+		rc="$?"
+		if [ "$rc" -eq 0 ]; then
+			upperbound=$(($newfloor - 1))
+			ridrange="$floor-$upperbound"
+			echo "$ridrange"
+			return 0
+		else
+			echo "Error updating rIDAvailablePool" >&2
+			new_rIDAvailablePool=$(ldbsearch -H "ldap://$ldap_master" -U"$dcaccount"%"$bindpwd" -b "$ridmanager" -s base rIDAvailablePool |
+									ldapsearch-wrapper | sed -n 's/^rIDAvailablePool: \(.*\)/\1/p')
+			if [ "$rIDAvailablePool" != "$new_rIDAvailablePool" ]; then
+				echo "rIDAvailablePool modification race, try again" >&2
+				return 2
+			fi
+			return 1
+		fi
+	else
+		echo "Error: Could not allocate $allocate_numberofrids, only $(($ceil - $floor + 1)) left in rIDAvailablePool" >&2
+		return 1
+	fi
+}
+
+create_local_rid_pool() {
+	numberofrids="$1"
+
+	ridrange=$(allocate_rid_pool "$numberofrids")
+
+	if [ $? -eq 1 ]; then
+		return 1
+	elif [ $? -eq 2 ]; then	## try again
+		ridrange=$(allocate_rid_pool)
+	fi
+
+	if [ -n "$ridrange" ]; then
+		floor="${ridrange%-*}"
+		ldbadd -H /var/lib/samba/private/sam.ldb --relax <<-%EOF
+			dn: CN=RID Set,CN=$hostname,OU=Domain Controllers,$samba4_ldap_base
+			objectClass: rIDSet
+			cn: RID Set
+			showInAdvancedViewOnly: TRUE
+			name: RID Set
+			rIDAllocationPool: $ridrange
+			rIDPreviousAllocationPool: $ridrange
+			rIDUsedPool: 0
+			rIDNextRID: $floor
+			%EOF
+
+		ldbmodify -H /var/lib/samba/private/sam.ldb <<-%EOF
+			dn: CN=$hostname,OU=Domain Controllers,$samba4_ldap_base
+			changetype: modify
+			replace: rIDSetReferences
+			rIDSetReferences: CN=RID Set,CN=$hostname,OU=Domain Controllers,$samba4_ldap_base
+			%EOF
+	fi
+}
+### --- END helper functions ---
+
+extract_binddn_and_bindpwd_from_args "$@"
+
 univention-config-registry commit /etc/samba/smb.conf		# 03univention-directory-listener.inst might remove include
 
 univention-config-registry set samba/quota/command='None'	# currently unsupported in samba4
@@ -170,6 +280,9 @@ if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then
 fi                                                                                                                                                                                                 
 univention-config-registry set samba4/autostart?yes 
 
+SYSVOL_PATH='/var/lib/samba/sysvol'
+/usr/share/univention-samba4/scripts/mount_extfs_with_user_xattr.py
+
 if [ -z "$samba4_role" ]; then
 	case "$server_role" in
 		domaincontroller_*)
@@ -185,8 +298,6 @@ if [ -z "$samba4_role" ]; then
 	univention-config-registry set samba4/role="$samba4_role"
 fi
 
-SYSVOL_PATH='/var/lib/samba/sysvol'
-/usr/share/univention-samba4/scripts/mount_extfs_with_user_xattr.py
 
 if [ "$samba4_role" = 'DC' ]; then
 
@@ -224,14 +335,13 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	else	## otherwise we will simply join the new DC
 
-		extract_binddn_and_bindpwd_from_args "$@"
-
 		if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
 			echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
 			printf "\tunivention-run-join-scripts --ask-pass\n"
 			echo "to complete the domain join."
 			exit 1
 		fi
+
 		if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 			## remove slapd from port 389 on upgrade
 			if [ -n "$slapd_port" ]; then
@@ -245,22 +355,76 @@ if [ "$samba4_role" = 'DC' ]; then
 			sleep 1
 		fi
 
-		samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-								--machinepass="$(cat /etc/machine.secret)"
-		if [ $? != 0 ]; then
-			# try again with --server
-			if [ -n "$samba4_dc" ]; then
+		if [ -z "$samba4_join_site" ]; then
+			## normal domain join
+			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+									--machinepass="$(cat /etc/machine.secret)"
+			if [ $? != 0 ]; then
+				# try again with --server
 				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
 										--machinepass="$(cat /etc/machine.secret)"
 			else
 				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
 										--machinepass="$(cat /etc/machine.secret)"
 			fi
+
+		else
+			## site join
+			create_site "$samba4_join_site"
+
+			is_ucr_true samba4/join/essentialonly
+			rc=$?
+			if [ "$rc" -eq 0 ] || [ -z "$samba4_join_essentialonly" ]; then
+
+				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+									--machinepass="$(cat /etc/machine.secret)" \
+									--site="$samba4_join_site"
+				# try again with --server
+				if [ -n "$samba4_dc" ]; then
+					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
+										--machinepass="$(cat /etc/machine.secret)" \
+										--site="$samba4_join_site"
+				else
+					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
+										--machinepass="$(cat /etc/machine.secret)" \
+										--site="$samba4_join_site"
+				fi
+
+			elif [ "$rc" -eq 1 ]; then
+				## site join with essential DRS replication only
+
+				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+									--machinepass="$(cat /etc/machine.secret)" \
+									--site="$samba4_join_site" \
+									--domain-critical-only
+				# try again with --server
+				if [ -n "$samba4_dc" ]; then
+					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
+										--machinepass="$(cat /etc/machine.secret)" \
+										--site="$samba4_join_site" \
+										--domain-critical-only
+				else
+					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
+										--machinepass="$(cat /etc/machine.secret)" \
+										--site="$samba4_join_site" \
+										--domain-critical-only
+				fi
+
+			fi
 		fi
 
-		## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
+		is_ucr_true samba4/service/drepl
+		if [ $? -eq 1 ]; then
+			create_local_rid_pool 500
+		fi
+
+		## Adding DNS records is currently necessary, probably this can be avoided with samba_dnsupdate
 		## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
-		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc "$@"
+		if [ -z "$samba4_join_site" ]; then
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc "$@"
+		else
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --site="$samba4_join_site" "$@"
+		fi
 
 		operatingSystem_attribute add
 
@@ -325,7 +489,6 @@ if [ "$samba4_role" = 'DC' ]; then
 
 elif [ "$samba4_role" = "RODC" ]; then
 
-	extract_binddn_and_bindpwd_from_args "$@"
 	if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
 		echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
 		printf "\tunivention-run-join-scripts --ask-pass\n"
@@ -354,13 +517,30 @@ elif [ "$samba4_role" = "RODC" ]; then
 		sleep 1
 	fi
 
-	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+	if [ -z "$samba4_join_site" ]; then
+		samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
 							--machinepass="$(cat /etc/machine.secret)"
 
-	## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
-	## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
-	# TODO this is non-standard: by definition of FSMO roles, there can only be one PDC emulator in the domain
-	/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc "$@"
+		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc "$@"
+	else
+		# site join
+		create_site "$samba4_join_site"
+
+		is_ucr_true samba4/join/essentialonly
+		rc=$?
+		if [ "$rc" -eq 0 ] || [ -z "$samba4_join_essentialonly" ]; then
+			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+								--machinepass="$(cat /etc/machine.secret)" \
+								--site="$samba4_join_site"
+		else
+			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+								--machinepass="$(cat /etc/machine.secret)" \
+								--site="$samba4_join_site" \
+								--domain-critical-only
+		fi
+
+		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc --site="$samba4_join_site" "$@"
+	fi
 
 	operatingSystem_attribute add
 
@@ -421,13 +601,55 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 elif [ "$samba4_role" = "MEMBER" ]; then
 
-	extract_binddn_and_bindpwd_from_args "$@"
 	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
 							--machinepass="$(cat /etc/machine.secret)"
 	univention-config-registry set samba/share/netlogon?no \
 									samba/share/sysvol?no
 
 	# set_machine_secret	## currently disabled
+
+fi
+
+if [ -n "$samba4_join_site" ] && [ "$samba4_role" != "MEMBER" ]; then
+
+	default_network_and_prefix() {
+		eval "$(/usr/sbin/univention-config-registry shell \
+						interfaces/eth0/network interfaces/eth1/network \
+						interfaces/eth2/network interfaces/eth3/network \
+						interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
+						interfaces/eth2/ipv6/default/address interfaces/eth4/ipv6/default/address \
+						interfaces/eth0/ipv6/default/prefix interfaces/eth1/ipv6/default/prefix \
+						interfaces/eth2/ipv6/default/prefix interfaces/eth4/ipv6/default/prefix)"
+
+		if [ -n "$interfaces_eth0_network" ] && [ -n "$interfaces_eth0_netmask" ]; then
+			network="$interfaces_eth0_network/$interfaces_eth0_netmask"
+		elif [ -n "$interfaces_eth1_network" ] && [ -n "$interfaces_eth1_netmask" ]; then
+			network="$interfaces_eth1_network/$interfaces_eth1_netmask"
+		elif [ -n "$interfaces_eth2_network" ] && [ -n "$interfaces_eth2_netmask" ]; then
+			network="$interfaces_eth2_network/$interfaces_eth2_netmask"
+		elif [ -n "$interfaces_eth3_network" ] && [ -n "$interfaces_eth3_netmask" ]; then
+			network="$interfaces_eth3_network/$interfaces_eth3_netmask"
+		elif [ -n "$interfaces_eth0_ipv6_default_address" ] && [ -n "$interfaces_eth0_ipv6_default_prefix" ]; then
+			network="$interfaces_eth0_ipv6_default_address/$interfaces_eth0_ipv6_default_prefix"
+		elif [ -n "$interfaces_eth1_ipv6_default_address" ] && [ -n "$interfaces_eth1_ipv6_default_prefix" ]; then
+			network="$interfaces_eth1_ipv6_default_address/$interfaces_eth1_ipv6_default_prefix"
+		elif [ -n "$interfaces_eth2_ipv6_default_address" ] && [ -n "$interfaces_eth2_ipv6_default_prefix" ]; then
+			network="$interfaces_eth2_ipv6_default_address/$interfaces_eth2_ipv6_default_prefix"
+		elif [ -n "$interfaces_eth3_ipv6_default_address" ] && [ -n "$interfaces_eth3_ipv6_default_prefix" ]; then
+			network="$interfaces_eth3_ipv6_default_address/$interfaces_eth3_ipv6_default_prefix"
+		fi
+		if [ -n "$network" ]; then
+			python -c 'import ipaddr,sys; ip=ipaddr.IPNetwork(sys.argv[1]); print "%s/%s" % ( ip.network, ip.prefixlen)' "$network"
+		fi
+	}
+
+	## create subnet locally
+	subnet=$(default_network_and_prefix)
+	/usr/share/univention-samba4/scripts/univention-samba4-site-tool.py \
+			-H "/var/lib/samba/private/sam.ldb" \
+			--subnet "$subnet" --createsubnet \
+			--site "$samba4_join_site" \
+			--ignore-exists
 
 fi
 
