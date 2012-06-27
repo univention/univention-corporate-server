@@ -133,7 +133,7 @@ class Instance(umcm.Base):
 			MODULE.info('saving profile values')
 			util.write_profile(values)
 
-			if newrole == 'basesystem' or orgValues.get('joined'):
+			if newrole == 'basesystem' or (orgValues.get('joined') and newrole != 'domaincontroller_master'):
 				if not values:
 					MODULE.error( 'No property "values" given for save().' )
 					obj._finishedLock.release()
@@ -187,11 +187,12 @@ class Instance(umcm.Base):
 			WAIT_TIME = 30
 			ntries = WAIT_TIME / SLEEP_TIME
 			while not obj._finishedLock.acquire(False):
-				if self._progressParser.changed and self._progressParser.current or ntries <= 0:
+				if ntries <= 0 or self._progressParser.changed and self._progressParser.current:
 					state = self._progressParser.current
 					return { 'finished' : False,
 						 'name' : state.fractionName,
 						 'message' : state.message,
+						 'error' : state.error,
 						 'percentage' : state.percentage }
 				time.sleep( SLEEP_TIME )
 				ntries -= 1
@@ -202,6 +203,7 @@ class Instance(umcm.Base):
 			return { 'finished' : obj._finishedResult,
 				 'name' : self._progressParser.current.fractionName,
 				 'message' : self._progressParser.current.message,
+				 'error' : self._progressParser.current.error,
 				 'percentage' : self._progressParser.current.percentage }
 
 		thread = notifier.threads.Simple( 'check_finished',

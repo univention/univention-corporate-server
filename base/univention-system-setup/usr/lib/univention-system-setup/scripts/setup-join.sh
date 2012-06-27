@@ -44,7 +44,7 @@ while [ "$#" -gt 0 ]; do
 			password_file="$2"
             shift 2
             ;;
-		--help)
+        --help)
             echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
 			exit 1
             ;;
@@ -196,6 +196,10 @@ fi
 			joinScript=${joinScript%%.inst*}
 			progress_msg "$(gettext "Configure") $(basename $joinScript)"
 			progress_next_step
+		fi
+		if [ "${line#* Message:  }" != "$line" ]; then
+			# found line indicating join failed. output
+			progress_error "${line#* Message:  }"
 		fi
 		echo "$line"
 	done

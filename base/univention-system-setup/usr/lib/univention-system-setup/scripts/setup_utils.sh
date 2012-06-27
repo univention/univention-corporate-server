@@ -75,6 +75,13 @@ progress_msg()
 	echo "__MSG__:$1"
 }
 
+# prints an error message to the UMC module that is displayed in the progress bar
+# @param  error message to print
+progress_error()
+{
+	echo "__ERR__:$1"
+}
+
 # prints the number of total steps for the progress bar
 # @param  number of total steps
 progress_steps()

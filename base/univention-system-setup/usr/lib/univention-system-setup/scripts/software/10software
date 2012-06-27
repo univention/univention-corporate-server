@@ -35,68 +35,68 @@
 info_header "$0" "$(gettext "Configuring software components")"
 
 if [ "$check_ldap_access" = "1" ]; then
-	exit 0
+    exit 0
 fi
 
-packages=`get_profile_var "packages"`
 packages_remove=`get_profile_var "packages_remove"`
 packages_install=`get_profile_var "packages_install"`
 
 if [ -z "$packages_remove" -a -z "$packages_install" ]; then
-	exit 0
+    exit 0
 fi
 
 eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	base="univention-server-master+"
+    base="univention-server-master+"
 elif [ $server_role = "domaincontroller_backup" ]; then
-	base="univention-server-backup+"
+    base="univention-server-backup+"
 elif [ $server_role = "domaincontroller_slave" ]; then
-	base="univention-server-slave+"
+    base="univention-server-slave+"
 elif [ $server_role = "memberserver" ]; then
-	base="univention-server-member+"
+    base="univention-server-member+"
 elif [ $server_role = "fatclient" ]; then
-	base="univention-managed-client+"
+    base="univention-managed-client+"
 elif [ $server_role = "mobileclient" ]; then
-	base="univention-mobile-client+"
+    base="univention-mobile-client+"
 fi
 
 # create named pipes in order to merge status information and stdout
-statFifo=$(mktemp -u /tmp/apt.stat.XXXXXXXX)
 stdoutFifo=$(mktemp -u /tmp/apt.stdout.XXXXXXXX)
-mkfifo "$stdoutFifo" "$statFifo"
+stderrFifo=$(mktemp -u /tmp/apt.stderr.XXXXXXXX)
+statFifo=$(mktemp -u /tmp/apt.stat.XXXXXXXX)
+mkfifo "$stdoutFifo" "$stderrFifo" "$statFifo"
 
 # run the installation in a background process
 ( 
-	# set options
-	export DEBIAN_FRONTEND=noninteractive
-	export APT_PARAMS="-o APT::Status-FD=4 -o DPkg::Options::=--force-confold -y --force-yes -o APT::Get::AllowUnauthenticated=1"
+    # set options
+    export DEBIAN_FRONTEND=noninteractive
+    export APT_PARAMS="-o APT::Status-FD=4 -o DPkg::Options::=--force-confold -y --force-yes -o APT::Get::AllowUnauthenticated=1"
 
-	# redirection of stdout/stderr and status information
-    exec >$stdoutFifo 2>$stdoutFifo 4>$statFifo </dev/null
+    # redirection of stdout/stderr and status information
+    exec >$stdoutFifo 2>$stderrFifo 4>$statFifo </dev/null
 
-	# update
-	echo "apt-get $APT_PARAMS update"
-	apt-get $APT_PARAMS update
-	echo "pmstatus:_:100:" >&4
+    # update
+    echo "apt-get $APT_PARAMS update"
+    apt-get $APT_PARAMS update
+    echo "pmstatus:_:100:" >&4
 
-	# remove packages
-	for p in $packages_remove; do
-		echo "apt-get $APT_PARAMS install $p- $base" 
-		apt-get $APT_PARAMS install $p- $base
-	done
+    # remove packages
+    for p in $packages_remove; do
+        echo "apt-get $APT_PARAMS install $p- $base" 
+        apt-get $APT_PARAMS install $p- $base
+    done
 
-	# run autoremove
-	if [ -n "$packages_remove" ]; then
-		apt-get $APT_PARAMS autoremove
-	fi
+    # run autoremove
+    if [ -n "$packages_remove" ]; then
+        apt-get $APT_PARAMS autoremove
+    fi
 
-	# install packages
-	for p in $packages_install; do
-		echo "apt-get $APT_PARAMS install $p $base"
-		apt-get $APT_PARAMS install $p $base
-	done
+    # install packages
+    for p in $packages_install; do
+        echo "apt-get $APT_PARAMS install $p $base"
+        apt-get $APT_PARAMS install $p $base
+    done
 ) &
 
 # number of commands = number of installed/removed packages +1 (for the update command)
@@ -104,47 +104,54 @@ nCommands=$(( $(echo $packages_install | wc -w) + $(echo $packages_remove | wc -
 progress_steps $((nCommands * 100))  # each command is in the range [0, 100]
 
 # read from stdout/stderr and status information output via the named pipes
-exec 5<$stdoutFifo 6<$statFifo
+# ordering is important!
+exec 5<$stdoutFifo 7<$stderrFifo 6<$statFifo
 statResult=0
 stdoutResult=0
+stderrResult=0
 icommand=0
 lastPercentage=0
-while [ "$statResult" != 1 -a "$stdoutResult" != 1 ]; do
-	# read from apt-get stdout/stderr
-    read -u 5 -t 0.1 line
+while [ "$statResult" != 1 -a "$stdoutResult" != 1 -a "$stderrResult" != 1 ]; do
+    # read from apt-get stdout
+    read -u 5 -t 0.01 line
     stdoutResult=$?
-    [ $stdoutResult = 0 ] && echo "$line"
+    #[ $stdoutResult = 0 ] && echo "$line"
 
-	# read from apt-get status information
-    read -u 6 -t 0.1 line
+    # read from apt-get stderr
+    read -u 7 -t 0.01 line
+    stderrResult=$?
+    [ $stderrResult = 0 ] && progress_error "$line"
+
+    # read from apt-get status information
+    read -u 6 -t 0.01 line
     statResult=$?
     if [ $statResult = 0 ]; then
-		# status information, parse the string and print out current step
-		# as well as a descriptive information of what dpkg is doing
+        # status information, parse the string and print out current step
+        # as well as a descriptive information of what dpkg is doing
         IFS=$':'
         list=($line)
         IFS=$'\n\t '
-		statusType=${list[0]}
-		percentage=${list[2]%.*}  # the precentage might be floating point, remove fractions
-		msg=${list[3]}
+        statusType=${list[0]}
+        percentage=${list[2]%.*}  # the precentage might be floating point, remove fractions
+        msg=${list[3]}
 
-		# print out message
+        # print out message
         [ -n "$msg" ] && progress_msg "$msg"
 
-		# ignore download status
-		[ "$statusType" = "dlstatus" ] && continue
+        # ignore download status
+        [ "$statusType" = "dlstatus" ] && continue
 
-		# check whether we have passed to the next command
-		[ "$percentage" -lt "$lastPercentage" ] && icommand=$((icommand+1))
-		lastPercentage=$percentage
+        # check whether we have passed to the next command
+        [ "$percentage" -lt "$lastPercentage" ] && icommand=$((icommand+1))
+        lastPercentage=$percentage
 
-		# print current step
+        # print current step
         progress_next_step "$((percentage + icommand * 100))"
     fi
 done
 
 # remove named pipes
-rm -f "$stdoutFifo" "$statFifo"
+rm -f "$stdoutFifo" "$statFifo" "$stderrFifo"
 
 exit 0
 

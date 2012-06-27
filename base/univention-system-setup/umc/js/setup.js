@@ -65,6 +65,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_progressInfo: null,
 
+	// internal dict to save error messages while polling
+	_saveErrors: null,
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -361,7 +364,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// get the session ID
 			var sessionID = dojo.cookie('UMCSessionId');
 
-			// make the session valid for the next 24 hours, otherwise the session ewxpired
+			// make the session valid for the next 24 hours, otherwise the session expired
 			// before the user can confirm the cleanup dialog
 			umc.tools.holdSession();
 
@@ -437,7 +440,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}, this);
 
 		// initiate some local check variables
-		var joined = this._orgValues['joined'];
+		var joined = this._orgValues.joined;
 		var newValues = this.getValues();
 		var role = newValues['server/role'];
 		if (!role) {
@@ -627,6 +630,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// function to save data
 			var _save = dojo.hitch(this, function(username, password) {
+				this._saveErrors = {};
+				var self = this;
 				var _Poller = function( _parent, _deferred ) {
 					return {
 						deferred: _deferred,
@@ -643,6 +648,13 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 								message: message,
 								xhrTimeout: 40
 							} ).then( dojo.hitch( this, function( response ) {
+								if ( response.result.error ) {
+									var errors = self._saveErrors[ response.result.name ] || [];
+									if ( errors.indexOf( response.result.error ) === -1 ) {
+										errors.push( response.result.error );
+									}
+									self._saveErrors[ response.result.name ] = errors;
+								}
 								if ( response.result.finished ) {
 									this.parent._progressInfo.setInfo(this.parent._('Configuration finished'), '', 100);
 									this.deferred.resolve();
@@ -673,12 +685,25 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return deferred;
 			});
 
-			// notify user that saving was successfull
+			// notify user that saving was successful
 			var _success = dojo.hitch(this, function() {
 				umc.dialog.notify(this._('The changes have been applied successfully.'));
 				this.load(); // sets 'standby(false)'
 			});
 
+			// tell user that saving was not successful (has to confirm)
+			var _failure = dojo.hitch(this, function(errorHtml) {
+				var msg = this._('The changes could not be applied successfully. Please contact the Administrator. Details follow.') + errorHtml;
+				var choices = [{
+					name: 'apply',
+					'default': true,
+					label: this._('Continue')
+				}];
+				return umc.dialog.confirm(msg, choices).then(dojo.hitch(this, function(response) {
+					this.load(); // sets 'standby(false)'
+					return;
+				}));
+			});
 			// show the correct dialogs
 			var deferred = null;
 			if (!this.wizard_mode) {
@@ -704,13 +729,23 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// kill the browser and restart the UMC services in wizard mode
 			if (this.wizard_mode) {
 				deferred = deferred.then(dojo.hitch(this, function() {
-					return _cleanup(this._('The configuration was sucessful. Please confirm to complete the process.'));
+					var errorHtml = this._buildErrorHtml();
+					if (!errorHtml) {
+						return _cleanup(this._('The configuration was successful. Please confirm to complete the process.'));
+					} else {
+						return _cleanup(this._('The configuration was not successful. The wizard ends here, possibly leaving the system unjoined. In this case, please contact the Administrator and join the system with the dedicated module. Details follow.') + errorHtml);
+					}
 				}));
 			}
 			else {
-				deferred = deferred.then(function() {
-					return _success();
-				});
+				deferred = deferred.then(dojo.hitch(this, function() {
+					var errorHtml = this._buildErrorHtml();
+					if (!errorHtml) {
+						return _success();
+					} else {
+						return _failure(errorHtml);
+					}
+				}));
 			}
 
 			// error case, turn off standby animation
@@ -721,6 +756,21 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));
+	},
+
+	_buildErrorHtml: function() {
+		var errorHtml = '';
+		umc.tools.forIn(this._saveErrors, function(key, value) {
+			errorHtml += '<li>' + key + '<ul>';
+			umc.tools.forIn(value, function(i, v) {
+				errorHtml += '<li>' + v + '</li>';
+			});
+			errorHtml += '</ul></li>';
+		});
+		if (errorHtml) {
+			errorHtml = '<ul>' + errorHtml + '</ul>';
+		}
+		return errorHtml;
 	},
 
 	selectChildIfValid: function(nextpage) {

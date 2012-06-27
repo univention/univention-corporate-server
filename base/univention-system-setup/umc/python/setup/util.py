@@ -226,19 +226,20 @@ class ProgressState( object ):
 		self.steps = 1
 		self.step = 0
 		self.max = 100
+		self.error = ''
 
 	@property
 	def percentage( self ):
 		return ( self._percentage + self.fraction * ( self.step / float( self.steps ) ) ) / self.max * 100
 
 	def __eq__( self, other ):
-		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step
+		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.error == other.error
 
 	def __ne__( self, other ):
 		return not self.__eq__( other )
 
 	def __nonzero__( self ):
-		return bool( self.name or self.message or self.percentage )
+		return bool( self.name or self.message or self.percentage or self.error )
 
 class ProgressParser( object ):
 	# regular expressions
@@ -246,14 +247,15 @@ class ProgressParser( object ):
 	MSG = re.compile( '^__MSG__: *(?P<message>.*)\n$' )
 	STEPS = re.compile( '^__STEPS__: *(?P<steps>.*)\n$' )
 	STEP = re.compile( '^__STEP__: *(?P<step>.*)\n$' )
+	ERROR = re.compile( '^__ERR__: *(?P<error_message>.*)\n$' )
 
 	# fractions of setup scripts
 	FRACTIONS = {
-		'basis/12domainname'		: 5,
-		'basis/14ldap_basis'		: 10,
-		'net/10interfaces'			: 5,
-		'net/11ipv6interfaces'		: 5,
-		'software/10software'		: 50,
+		'basis/12domainname'	:  5,
+		'basis/14ldap_basis'	: 10,
+		'net/10interfaces'	:  5,
+		'net/11ipv6interfaces'	:  5,
+		'software/10software'	: 50,
 		}
 
 	# current status
@@ -326,6 +328,12 @@ class ProgressParser( object ):
 				return True
 			except ValueError:
 				pass
+
+		# error message: why did the script fail?
+		match = ProgressParser.ERROR.match( line )
+		if match is not None:
+			self.current.error = match.groups()[ 0 ]
+			return True
 
 		return False
 
