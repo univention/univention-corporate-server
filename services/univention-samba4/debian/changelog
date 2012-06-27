@@ -1,3 +1,10 @@
+univention-samba4 (1.0.150-1) unstable; urgency=low
+
+  * call set_machine_secret in setup-s4.sh after samba3upgrade
+    (Bug #27479)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 27 Jun 2012 17:26:37 +0200
+
 univention-samba4 (1.0.149-1) unstable; urgency=low
 
   * Patches merged from UCS@school (Bug #26835):

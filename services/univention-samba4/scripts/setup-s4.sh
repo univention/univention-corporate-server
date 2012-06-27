@@ -71,6 +71,26 @@ done
 
 DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 
+## helper function
+set_machine_secret() {
+	## 1. store password locally in secrets.ldb
+	kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
+
+	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
+	dn: flatname=${windows_domain},cn=Primary Domains
+	changetype: modify
+	replace: secret
+	secret:< file:///etc/machine.secret
+	-
+	replace: msDS-KeyVersionNumber
+	msDS-KeyVersionNumber: $kvno
+	-
+	%EOF
+
+	## 2. replace random machine secret in SAM with /etc/machine.secret
+	samba-tool user setpassword "${hostname}\$" --newpassword="$(cat /etc/machine.secret)"
+}
+
 # Search for Samba 3 DCs
 S3_DCS="$(univention-ldapsearch -x "(&(objectclass=univentionDomainController)(univentionService=Samba 3))" cn | sed -n 's/cn: \(.*\)/\1/p')"
 if [ -n "$S3_DCS" ]; then
@@ -263,6 +283,9 @@ else
 	### revert changes for sambaGroupType 5 and 2
 	reverse_sambaGroupType_change
 	trap - EXIT
+
+	## set the samba4 machine account secret in secrets.ldb to /etc/machine.secret
+	set_machine_secret
 
 	## finally set the Administrator password, which samba3upgrade did not migrate
 	samba-tool user setpassword Administrator --newpassword="$adminpw"

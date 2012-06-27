@@ -76,26 +76,6 @@ extract_binddn_and_bindpwd_from_args() {
 	fi
 }
 
-set_machine_secret() {
-	## 1. replace random machine secret in SAM with /etc/machine.secret
-	samba-tool setpassword "${hostname}\$" --newpassword="$(cat /etc/machine.secret)"
-
-	## 2. store password locally in secrets.ldb
-	current_kvn=$(ldbsearch -H /var/lib/samba/private/secrets.ldb samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
-	new_kvno=$(($current_kvn + 1))
-
-	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
-	dn: flatname=${windows_domain},cn=Primary Domains
-	changetype: modify
-	replace: secret
-	secret:< file:///etc/machine.secret
-	-
-	replace: msDS-KeyVersionNumber
-	msDS-KeyVersionNumber: $new_kvno
-	-
-	%EOF
-}
-
 operatingSystem_attribute() {
 	operation="$1"
 	## Warning: editing sam.ldb via tdb should only be done when samba4 is not running!
@@ -428,8 +408,6 @@ if [ "$samba4_role" = 'DC' ]; then
 
 		operatingSystem_attribute add
 
-		# set_machine_secret	## currently disabled, seems to break DRS replication
-
 		## determine default sysvol parent for this host from univentionService="S4 Connector"
 		if [ -z "$samba4_sysvol_sync_host" ]; then
 			s4connectorservicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
@@ -544,8 +522,6 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 	operatingSystem_attribute add
 
-	# set_machine_secret	## currently disabled, seems to break DRS replication
-
 	## determine default sysvol parent for this host from univentionService="S4 Connector"
 	if [ -z "$samba4_sysvol_sync_host" ]; then
 		s4connectorservicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
@@ -605,8 +581,6 @@ elif [ "$samba4_role" = "MEMBER" ]; then
 							--machinepass="$(cat /etc/machine.secret)"
 	univention-config-registry set samba/share/netlogon?no \
 									samba/share/sysvol?no
-
-	# set_machine_secret	## currently disabled
 
 fi
 
