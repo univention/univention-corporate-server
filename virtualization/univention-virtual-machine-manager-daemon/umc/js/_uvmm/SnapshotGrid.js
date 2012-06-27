@@ -41,7 +41,7 @@ dojo.require("umc.widgets.Form");
 dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixin ], {
 	i18nClass: 'umc.modules.uvmm',
 
-	domainURI: null,
+	domain: null,
 
 	sortIndex: -2,
 
@@ -78,13 +78,13 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 		});
 	},
 
-	_setDomainURIAttr: function(newURI) {
-		this.domainURI = newURI;
+	_setDomainAttr: function(newDomain) {
+		this.domain = newDomain;
 		this.filter();
 	},
 
 	filter: function() {
-		this.inherited(arguments, [{ domainURI: this.domainURI }]);
+		this.inherited(arguments, [{ domainURI: this.domain.domainURI }]);
 	},
 
 	_addSnapshot: function() {
@@ -100,7 +100,7 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 			// send the UMCP command
 			this.onUpdateProgress(0, 1);
 			umc.tools.umcpCommand('uvmm/snapshot/create', {
-				domainURI: this.domainURI,
+				domainURI: this.domain.domainURI,
 				snapshotName: name
 			}).then(dojo.hitch(this, function() {
 				this.moduleStore.onChange();
@@ -169,7 +169,7 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 			// send the UMCP command
 			this.onUpdateProgress(0, 1);
 			umc.tools.umcpCommand('uvmm/snapshot/revert', {
-				domainURI: this.domainURI,
+				domainURI: this.domain.domainURI,
 				snapshotName: ids[0]
 			}).then(dojo.hitch(this, function() {
 				this.onUpdateProgress(1, 1);
@@ -210,7 +210,7 @@ dojo.declare("umc.modules._uvmm.SnapshotGrid", [ umc.widgets.Grid, umc.i18n.Mixi
 				deferred = deferred.then(dojo.hitch(this, function() {
 					this.onUpdateProgress(i, ids.length);
 					return umc.tools.umcpCommand('uvmm/snapshot/remove', {
-						domainURI: this.domainURI,
+						domainURI: this.domain.domainURI,
 						snapshotName: iid
 					});
 				}));

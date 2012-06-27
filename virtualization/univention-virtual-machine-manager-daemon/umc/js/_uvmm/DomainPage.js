@@ -477,7 +477,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				});
 
 				// update the stores
-				this._snapshotGrid.set('domainURI', id);
+				this._snapshotGrid.set('domain', this._domain);
 				this._driveGrid.set('domain', this._domain);
 				this._interfaceGrid.set('domain', this._domain);
 				this._interfaceStore.setData(this._domain.interfaces);
