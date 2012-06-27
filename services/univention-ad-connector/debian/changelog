@@ -1,3 +1,9 @@
+univention-ad-connector (6.0.60-1) unstable; urgency=low
+
+  * Check the primary group setting for new users (Bug #26809)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Jun 2012 08:25:11 +0200
+
 univention-ad-connector (6.0.59-1) unstable; urgency=low
 
   * Check for conflicted objects in poll (Bug #26710)

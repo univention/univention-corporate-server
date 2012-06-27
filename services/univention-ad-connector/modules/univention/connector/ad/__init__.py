@@ -1096,7 +1096,6 @@ class ad(univention.connector.ucs):
 			self.lo_ad.lo.modify_s(compatible_modstring(object['dn']),[(ldap.MOD_REPLACE, 'primaryGroupID', rid)])
 			ud.debug(ud.LDAP, ud.INFO,
 								   "primary_group_sync_from_ucs: changed primary Group in AD")
-			return True
 
 			# If the user is not member in UCS of the previous primary group, the user must
 			# be removed from this group in AD: https://forge.univention.org/bugzilla/show_bug.cgi?id=26809
