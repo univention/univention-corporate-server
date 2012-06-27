@@ -1,6 +1,7 @@
 univention-updater (7.0.168-1) unstable; urgency=low
 
   * preup.sh: check if the depreated MySQL option skip-bdb exists; Bug #27686
+  * preup.sh: small changed to the error message; Bug #27619
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 27 Jun 2012 09:34:01 +0200
 
