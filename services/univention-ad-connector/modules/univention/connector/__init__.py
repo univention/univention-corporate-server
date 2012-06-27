@@ -1166,6 +1166,10 @@ class ucs:
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
 			return True
 
+		if object['dn'].find('\\0ACNF:') > 0:
+			ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % object['dn'])
+			return True
+
 		try:
 			if object.has_key('olddn'):
 				old_object = self.get_ucs_object(property_type,object['olddn'])
