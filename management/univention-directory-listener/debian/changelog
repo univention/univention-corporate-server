@@ -1,6 +1,7 @@
 univention-directory-listener (6.0.25-1) unstable; urgency=low
 
   * Fix memory double free bug (Bug #27313)
+  * Fix SEGV during shutdown (Bug #15019)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 27 Jun 2012 14:52:45 +0200
 

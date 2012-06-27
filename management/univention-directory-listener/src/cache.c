@@ -663,7 +663,7 @@ int cache_close(void)
 
 	if ( dbc_cur != NULL )
 		cache_free_cursor(dbc_cur);
-	if ((rv = dbp->close(dbp, 0)) != 0) {
+	if (dbp && (rv = dbp->close(dbp, 0)) != 0) {
 		dbp->err(dbp, rv, "close");
 	}
 #ifdef WITH_DB42
