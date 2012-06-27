@@ -1,3 +1,9 @@
+univention-management-console (4.0.266-1) unstable; urgency=low
+
+  * Don't show multiple modules of the same flavor (Bug #27719)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 27 Jun 2012 10:08:41 +0200
+
 univention-management-console (4.0.265-1) unstable; urgency=low
 
   * removed unused method (Bug #27699)
