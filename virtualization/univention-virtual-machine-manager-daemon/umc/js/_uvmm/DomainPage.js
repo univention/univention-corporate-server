@@ -344,7 +344,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 			}]
 		});
 
-		// grid for the drives
+		// grid for the snapshots
 		this._snapshotStore = umc.store.getModuleStore('id', 'uvmm/snapshot');
 		this._snapshotGrid = new umc.modules._uvmm.SnapshotGrid({
 			moduleStore: this._snapshotStore,
@@ -489,7 +489,7 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 						++qcow2_images;
 						return true;
 					}
-					return disk.device == 'floppy' || ( disk.driver_type == 'qcow2' || disk.readonly );
+					return disk.device == 'floppy' || disk.readonly;
 				} );
 				if ( snapshots_possible && qcow2_images > 0 ) {
 					this.showChild( this._snapshotPage );
