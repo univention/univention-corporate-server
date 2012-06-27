@@ -31,30 +31,22 @@
 # <http://www.gnu.org/licenses/>.
 
 if [ "$1" = "purge" ]; then
-	# Find all subdirectories located directly under /var/lib/univention-ldap/.
-	ALL_DIRS=$( find  /var/lib/univention-ldap/ -mindepth 1 -maxdepth 1 -type d )
+	# Subdirectories belonging directly to package univention-ldap-server
+	rm -rf /var/lib/univention-ldap/fake
+	rm -rf /var/lib/univention-ldap/replog
+	rm -rf /var/lib/univention-ldap/ldap
 
-	for dir in $ALL_DIRS
-	do
-		# Does the subdirectory belong to any package ?
-		if dpkg -S $dir > /dev/null 2>&1 ; then
-			# To which packages does the subdirectory belong ?
-			belongsto=$( dpkg -S $dir | awk '{$NF=""; gsub(/[,:]/, ""); sub(/[ \t]+$/, ""); print $0}')
-			# Does the subdirectory belong to package univention-ldap-server ?
-			if [ "$belongsto" = "univention-ldap-server" ] ; then
-				# If so, it shall be removed.
-				rm -rf $dir
-				# A subdirectory belonging to univention-ldap-server and also to some
-				# other package will not be removed.
-			else
-				# Subdirectories belonging to other packages shall be left untouched.
-				continue
-			fi
-		else
-			# Subdirectory belong to noone, leave it untouched.
-			continue
-		fi
-	done
+	# Subdirectories belonging to package univention-directory-notifier
+	rm -rf /var/lib/univention-ldap/notify
+	rm -rf /var/lib/univention-ldap/replog-slurpd
+	rm -rf /var/lib/univention-ldap/save
+
+	# Subdirectories belonging to no package
+	rm -rf /var/lib/univention-ldap/schema
+
+	# Subdirectories belonging to no package and to be left untouched:
+	# /var/lib/univention-ldap/schema.conf
+	# /var/lib/univention-ldap/listener
 fi
 
 #DEBHELPER#

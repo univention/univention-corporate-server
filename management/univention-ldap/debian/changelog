@@ -1,3 +1,12 @@
+univention-ldap (8.0.85-2) unstable; urgency=low
+
+  * univention-ldap-server.postrm: Removal of directories under
+    /var/lib/univention-ldap/ shall be decided in advance on a
+    case-by-case basis and not at run-time of the script.
+    (Bug #26269)
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 27 Jun 2012 10:42:59 +0200
+
 univention-ldap (8.0.85-1) unstable; urgency=low
 
   * univention-ldap-server.postrm: Upon "purge" remove
