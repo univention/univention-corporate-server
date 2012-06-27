@@ -1878,6 +1878,13 @@ class ad(univention.connector.ucs):
 							print "%s"%done_counter,
 							continue
 
+					if object['dn'].find('\\0ACNF:') > 0:
+						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % object['dn'])
+						self.__update_lastUSN(object)
+						done_counter += 1
+						print "%s"%done_counter,
+						continue
+
 					sync_successfull = False
 					try:
 						mapped_object = self._object_mapping(property_key,object)
