@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.164-1) unstable; urgency=low
+
+  * Fixed a typo in the UCR variables description for
+    mapping/dns/srv_record/.*/location (Bug #27706)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Jun 2012 09:20:13 +0200
+
 univention-s4-connector (6.0.163-1) unstable; urgency=low
 
   * Give the S4 connector two seconds to die before it will be started
