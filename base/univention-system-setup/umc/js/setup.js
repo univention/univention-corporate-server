@@ -39,6 +39,7 @@ dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.TabContainer");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.TitlePane");
+dojo.require("umc.modules.lib.server");
 
 dojo.require("umc.modules._setup.ProgressInfo");
 
@@ -428,6 +429,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				if (dojo.toJson(orgVal) != dojo.toJson(newVal)) {
 					values[ikey] = newVal;
 					++nchanges;
+
+					// check whether a redirect to a new IP address is necessary
 					if ( umc_url === null ) {
 						if ( ikey == 'interfaces/eth0/address' && newVal ) {
 							umc_url = 'https://' + newVal + '/umc/';
@@ -458,6 +461,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			umc.dialog.alert(this._('No changes have been made.'));
 			return;
 		}
+
+		// see whether a UMC server, UMC web server, and apache restart is necessary:
+		// -> installation/removal of software components
+		var umcRestart = 'components' in values;
 
 		// check whether all page widgets are valid
 		var allValid = true;
@@ -685,6 +692,11 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				return deferred;
 			});
 
+			// ask user whether UMC server components shall be restarted or not
+			var _restart = dojo.hitch(this, function() {
+				umc.modules.lib.server.askRestart(this._('The changes have been applied successfully.'));
+			});
+
 			// notify user that saving was successful
 			var _success = dojo.hitch(this, function() {
 				umc.dialog.notify(this._('The changes have been applied successfully.'));
@@ -726,8 +738,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				});
 			}
 
-			// kill the browser and restart the UMC services in wizard mode
 			if (this.wizard_mode) {
+				// kill the browser and restart the UMC services in wizard mode
 				deferred = deferred.then(dojo.hitch(this, function() {
 					var errorHtml = this._buildErrorHtml();
 					if (!errorHtml) {
@@ -738,12 +750,20 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}));
 			}
 			else {
+				// show success/error message and eventually restart UMC server components
 				deferred = deferred.then(dojo.hitch(this, function() {
 					var errorHtml = this._buildErrorHtml();
-					if (!errorHtml) {
-						return _success();
-					} else {
+					if (errorHtml) {
+						// errors have occurred
 						return _failure(errorHtml);
+					} else {
+						// everything went well :)
+						if (umcRestart) {
+							return _restart();
+						}
+						else {
+							return _success();
+						}
 					}
 				}));
 			}

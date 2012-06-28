@@ -1,0 +1,5 @@
+univention-management-console-module-lib (0.1.0-1) unstable; urgency=low
+
+  * Initial release of module with library methods; Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 25 Jun 2012 17:01:14 +0200

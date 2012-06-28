@@ -1,3 +1,12 @@
+univention-system-setup (5.0.177-1) unstable; urgency=low
+
+  * added dialog to restart UMC server components after software installation
+  * make sure that UMC ACLs for "lib/server/*" for root and __systemsetup__
+    are granted
+  Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Jun 2012 17:43:58 +0200
+
 univention-system-setup (5.0.176-1) unstable; urgency=low
 
   * Parse and output errors from apt-get during software configuration

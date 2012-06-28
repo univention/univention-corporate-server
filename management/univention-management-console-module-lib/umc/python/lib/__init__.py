@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/usr/bin/python2.6
 #
-# Univention System Setup
-#  postinst script
+# Univention Management Console
+#  Module lib containing low-lewel commands to control the UMC server
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,16 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# create special user for univention-system-setup-boot
-adduser --system --no-create-home --disabled-password --force-badname '__systemsetup__'
+import notifier
 
-# set UMC ACLs for special user
-/usr/sbin/univention-management-console-acls -u "__systemsetup__" -c "setup/*" -c "lib/server/*" "allow" -H "*"
+from univention.management.console.log import MODULE
+from univention.management.console.config import ucr
+from univention.management.console.modules import Base
 
-# For remote configuration give root the permission to see this module. Normally the
-# ACL will be defined in the UMC package and can be removed here after UCS 3.0-2
-/usr/sbin/univention-management-console-acls -u "root" -c "setup/*" -c "lib/server/*" "allow" -H "*"
+from univention.lib.i18n import Translation
 
-#DEBHELPER#
+_ = Translation( 'univention-management-console-module-lib' ).translate
 
-exit 0
+from .server import Server
+
+class Instance( Base, Server ):
+	pass

@@ -69,6 +69,7 @@ Depends: univention-management-console-server,
  univention-installer-modules,
  univention-system-setup (= ${source:Version}),
  univention-updater,
+ univention-management-console-module-lib,
  python-apt
 Description: UMC module for Univention system setup
  This package contains the UMC module for the UCS System Setup.

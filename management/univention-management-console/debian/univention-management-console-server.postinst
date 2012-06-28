@@ -57,7 +57,8 @@ eval "$(ucr shell server/role)"
 			--command 'services/*' \
 			--command 'sysinfo/*' \
 			--command 'packages/*' \
-			--command 'updater/*'
+			--command 'updater/*' \
+			--command 'lib/*'
 
 if [ "$server_role" != "basesystem" ]; then
 	# mrtg does not work because univention-maintenance is not installed

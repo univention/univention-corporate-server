@@ -1,9 +1,10 @@
 #!/bin/sh
+# -*- coding: utf-8 -*-
 #
-# Univention System Setup
-#  postinst script
+# Univention Management Console Module lib
+#  join script
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,16 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# create special user for univention-system-setup-boot
-adduser --system --no-create-home --disabled-password --force-badname '__systemsetup__'
+VERSION=1
 
-# set UMC ACLs for special user
-/usr/sbin/univention-management-console-acls -u "__systemsetup__" -c "setup/*" -c "lib/server/*" "allow" -H "*"
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/umc.sh
 
-# For remote configuration give root the permission to see this module. Normally the
-# ACL will be defined in the UMC package and can be removed here after UCS 3.0-2
-/usr/sbin/univention-management-console-acls -u "root" -c "setup/*" -c "lib/server/*" "allow" -H "*"
+joinscript_init
 
-#DEBHELPER#
+umc_init
+umc_operation_create "lib-all" "Server commands" "" "lib/*"
+umc_policy_append "default-umc-all" "lib-all"
+
+joinscript_save_current_version
 
 exit 0
+
+

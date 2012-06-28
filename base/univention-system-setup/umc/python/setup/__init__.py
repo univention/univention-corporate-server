@@ -133,7 +133,7 @@ class Instance(umcm.Base):
 			MODULE.info('saving profile values')
 			util.write_profile(values)
 
-			if newrole == 'basesystem' or (orgValues.get('joined') and newrole != 'domaincontroller_master'):
+			if newrole == 'basesystem' or orgValues.get('joined'):
 				if not values:
 					MODULE.error( 'No property "values" given for save().' )
 					obj._finishedLock.release()

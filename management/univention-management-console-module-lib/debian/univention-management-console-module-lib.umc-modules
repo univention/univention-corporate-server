@@ -1,0 +1,6 @@
+Module: lib
+Python: umc/python
+Definition: umc/lib.xml
+Category: umc/categories/lib.xml
+Javascript: umc/js
+Icons: umc/icons

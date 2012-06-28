@@ -1,3 +1,11 @@
+univention-management-console (4.0.266-2) unstable; urgency=low
+
+  * added UMC ACLs for command lib/* for root
+  * added univention-management-console-module-lib to default dependencies
+  Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Jun 2012 15:17:09 +0200
+
 univention-management-console (4.0.266-1) unstable; urgency=low
 
   * Don't show multiple modules of the same flavor (Bug #27719)
