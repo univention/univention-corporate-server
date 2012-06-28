@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.163-1) unstable; urgency=low
+
+  * Give the S4 connector two seconds to die before it will be started
+    again (Bug #27408)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Jun 2012 08:28:38 +0200
+
 univention-s4-connector (6.0.162-1) unstable; urgency=low
 
   * Added ignorelist for DNS, OUs, container and computers (Bug #26860)

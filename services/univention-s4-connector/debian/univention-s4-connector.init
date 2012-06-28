@@ -54,6 +54,7 @@ case "$1" in
 		;;
 	restart|force-reload)
 		$0 stop
+		sleep 2 # give it some time to die
 		$0 start
 		;;
 	crestart)
