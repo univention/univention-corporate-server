@@ -86,8 +86,9 @@ s4_mapping = {
 			match_filter='(&(|(&(objectClass=posixAccount)(objectClass=krb5Principal))(objectClass=user))(!(objectClass=univentionHost)))',
 @!@
 ignore_filter = ''
-for user in configRegistry.get('connector/s4/mapping/user/ignorelist', 'root,pcpatch,ucs-s4sync').split(','):
-	ignore_filter += '(uid=%s)(CN=%s)' % (user, user)
+for user in configRegistry.get('connector/s4/mapping/user/ignorelist', '').split(','):
+	if user:
+		ignore_filter += '(uid=%s)(CN=%s)' % (user, user)
 if ignore_filter:
 	print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
@@ -275,8 +276,9 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 
 @!@
 ignore_filter = ''
-for group in configRegistry.get('connector/s4/mapping/group/ignorelist', 'Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody').split(','):
-	ignore_filter += '(cn=%s)' % (group)
+for group in configRegistry.get('connector/s4/mapping/group/ignorelist', '').split(','):
+	if group:
+		ignore_filter += '(cn=%s)' % (group)
 print "			ignore_filter='(|(sambaGroupType=5)(groupType=5)%s)'," % ignore_filter
 @!@
 
@@ -351,6 +353,14 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 			# in S4. By default a DC has a subobject wihtout any mapping
 			# and this subobject would avoid a deletion of this DC in S4
 			con_subtree_delete_objects = [ 'cn=rid set' ],
+@!@
+ignore_filter = ''
+for dc in configRegistry.get('connector/s4/mapping/dc/ignorelist', '').split(','):
+	if dc:
+		ignore_filter += '(cn=%s)' % (dc)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 	
 			con_create_objectclass=['top', 'computer' ],
 			
@@ -427,8 +437,14 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer))',
 
 			ignore_subtree = global_ignore_subtree,
-			
-			ignore_filter='',
+@!@
+ignore_filter = ''
+for computer in configRegistry.get('connector/s4/mapping/windowscomputer/ignorelist', '').split(','):
+	if computer:
+		ignore_filter += '(cn=%s)' % (computer)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 
 			con_create_objectclass=['top', 'computer' ],
 
@@ -506,7 +522,14 @@ else:
 
 			position_mapping = [( ',cn=dns,@%@ldap/base@%@', ',CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@' )],
 
-			ignore_filter='(DC=_ldap._tcp.Default-First-Site-Name._site)',
+@!@
+ignore_filter = ''
+for dns in configRegistry.get('connector/s4/mapping/dns/ignorelist', '').split(','):
+	if dns:
+		ignore_filter += '(%s)' % (dns)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -516,6 +539,10 @@ else:
 		),
 @!@
 if configRegistry.is_true('connector/s4/mapping/gpo', True):
+	ignore_filter = ''
+	for gpo in configRegistry.get('connector/s4/mapping/gpo/ignorelist', '').split(','):
+		if gpo:
+			ignore_filter += '(cn=%s)' % (gpo)
 	print '''
 	'msGPO': univention.s4connector.property (
 			ucs_module='container/msgpo',
@@ -526,7 +553,7 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 
 			con_search_filter='(&(objectClass=container)(objectClass=groupPolicyContainer))',
 
-			ignore_filter='',
+			ignore_filter='%s',
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -588,7 +615,7 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 				},
 
 		),
-'''
+''' % ignore_filter
 @!@
 	'container': univention.s4connector.property (
 			ucs_module='container/cn',
@@ -599,7 +626,14 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 
 			con_search_filter='(&(|(objectClass=container)(objectClass=builtinDomain))(!(objectClass=groupPolicyContainer)))', # builtinDomain is cn=builtin (with group cn=Administrators)
 
-			ignore_filter='(|(cn=mail)(cn=kerberos)(cn=MicrosoftDNS))',
+@!@
+ignore_filter = ''
+for cn in configRegistry.get('connector/s4/mapping/container/ignorelist', 'mail,kerberos,MicrosoftDNS').split(','):
+	if cn:
+		ignore_filter += '(cn=%s)' % (cn)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -641,7 +675,14 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 
 			con_search_filter='objectClass=organizationalUnit',
 
-			ignore_filter='',
+@!@
+ignore_filter = ''
+for ou in configRegistry.get('connector/s4/mapping/ou/ignorelist', '').split(','):
+	if ou:
+		ignore_filter += '(ou=%s)' % (ou)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 

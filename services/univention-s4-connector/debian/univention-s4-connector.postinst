@@ -49,7 +49,9 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/sid?true \
 							   connector/s4/mapping/gpo?true \
 							   connector/s4/mapping/user/ignorelist?"root,pcpatch,ucs-s4sync" \
-							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody"
+							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody" \
+							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \
+							   connector/s4/mapping/dns/ignorelist?"DC=_ldap._tcp.Default-First-Site-Name._site"
 
 if [ ! -d /var/lib/univention-connector/s4 ]; then
 	mkdir -p /var/lib/univention-connector/s4

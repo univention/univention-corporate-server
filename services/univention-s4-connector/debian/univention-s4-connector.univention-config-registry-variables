@@ -76,6 +76,41 @@ Description[en]=Defines a comma separated list of groups whom will be ignored by
 Type=str
 Categories=service-adcon
 
+[con.*/s4/mapping/dc/ignorelist]
+Description[de]=Definiert durch Komma separierte DCs, welche durch den Connector nicht synchronisert werden
+Description[en]=Defines a comma separated list of dc's which will be ignored by the connector
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/windowscomputer/ignorelist]
+Description[de]=Definiert durch Komma separierte Windows Rechner, welche durch den Connector nicht synchronisert werden
+Description[en]=Defines a comma separated list of windows computers which will be ignored by the connector
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/container/ignorelist]
+Description[de]=Definiert durch Komma separierte Container, welche durch den Connector nicht synchronisert werden (Default ist mail,kerberos,MicrosoftDNS)
+Description[en]=Defines a comma separated list of containers which will be ignored by the connector (default is mail,kerberos,MicrosoftDNS)
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/ou/ignorelist]
+Description[de]=Definiert durch Komma separierte OU's, welche durch den Connector nicht synchronisert werden
+Description[en]=Defines a comma separated list of OU's which will be ignored by the connector
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/dns/ignorelist]
+Description[de]=Definiert durch Komma separierte DNS Objekte, welche durch den Connector nicht synchronisert werden (Default ist DC=_ldap._tcp.Default-First-Site-Name._site)
+Description[en]=Defines a comma separated list of DNS objects which will be ignored by the connector (default is DC=_ldap._tcp.Default-First-Site-Name._site)
+Type=str
+Categories=service-adcon
+
+[con.*/s4/mapping/gpo/ignorelist]
+Description[de]=Definiert durch Komma separierte GPO Objekte, welche durch den Connector nicht synchronisert werden
+Description[en]=Defines a comma separated list of GPO objects which will be ignored by the connector
+Type=str
+Categories=service-adcon
 [con.*/s4/ldap/base]
 Description[de]=Die LDAP-Basis-DN des Samba 4-Servers
 Description[en]=The LDAP base DN of the Samba 4 server.
