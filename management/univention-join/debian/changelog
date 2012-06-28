@@ -1,3 +1,18 @@
+univention-join (4.0.36-1) unstable; urgency=low
+
+  * univention-server-join: Improved error checking (Bug #16214)
+  * Replaced "if [ $? = 1 ]" with "if [ $? -gt 0 ]" in several
+    places so that all errors reported by udm are detected 
+  * Added such a check after "udm groups/group modify"
+  * Replaced internal variable name HOSTNAME with NEWHOSTNAME
+    because HOSTNAME is always set by default with the local
+    server name and this shall not be the default value to be used
+  * If -hostname is missing, then script now terminates with error
+  * If -role is missing, then script now terminates with error
+  * Added an exit (with error) if -role parameter is unknown
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Thu, 28 Jun 2012 09:45:35 +0200
+
 univention-join (4.0.35-1) unstable; urgency=low
 
   * Fix rare shell quoting issue in kerberos realm detection (Bug #26475)

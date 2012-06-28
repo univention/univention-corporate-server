@@ -116,7 +116,7 @@ do
 			;;
 		"-hostname")
 			shift
-			HOSTNAME=$1
+			NEWHOSTNAME=$1
 			shift
 			;;
 		"-domainname")
@@ -197,12 +197,14 @@ fi
 
 eval "$(univention-config-registry shell)"
 if [ -z "$ROLE" ]; then
+	display_help
 	log 1 "E: 	-role is missing"
-	display_help
+	exit 1
 fi
-if [ -z "$HOSTNAME" ]; then
-	log 1 "E: 	-hostname is missing"
+if [ -z "$NEWHOSTNAME" ]; then
 	display_help
+	log 1 "E: 	-hostname is missing"
+	exit 1
 fi
 
 if [ -z "$DOMAINNAME" ]; then
@@ -218,8 +220,8 @@ create_entry () {
 # $5 group
 	log 0 "Join $1"
 
-	old_dn=`univention-directory-manager $2 list --filter name=$HOSTNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep "DN: " | sed -e "s|.*DN: ||"`
-	if [ $? = 1 ]; then
+	old_dn=`univention-directory-manager $2 list --filter name=$NEWHOSTNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep "DN: " | sed -e "s|.*DN: ||"`
+	if [ $? -gt 0 ]; then
 		log 1 "E: failed search $1 [$old_dn]"
 		exit 1
 	fi
@@ -246,10 +248,10 @@ create_entry () {
 		fi
 
 		rc=`univention-directory-manager $2 create --position "$3"\
-			--set name=$HOSTNAME $ip_cmd \
+			--set name=$NEWHOSTNAME $ip_cmd \
 			--set domain=$DOMAINNAME \
 			--set password=$computerPassword --set unixhome=/dev/null --set shell=/bin/sh --set primaryGroup="$4" $mac_cmd $ADMINOPTIONS`
-		if [ $? = 1 ]; then
+		if [ $? -gt 0 ]; then
 			log 1 "E: failed to create $1 (1) [$rc]"
 			exit 1
 		fi
@@ -269,6 +271,10 @@ create_entry () {
 
 		if [ -n "$5" ]; then
 			rc=`univention-directory-manager groups/group modify --dn="$5" --append users="$ldap_dn" $ADMINOPTIONS`
+			if [ $? -gt 0 ]; then
+				log 1 "E: failed to modify groups/group for $1 [$rc]"
+				exit 1
+			fi
 		fi
 	else
 		log 0 "Modify $1 [$old_dn]"
@@ -281,8 +287,9 @@ create_entry () {
 		fi
 		rc=`univention-directory-manager $2 modify --dn "$old_dn" --set password=$computerPassword --set domain=$DOMAINNAME $mac_cmd $ip_cmd $ADMINOPTIONS`
 
-		if [ $? = 1 ]; then
+		if [ $? -gt 0 ]; then
 			log 1 "E: failed to modify $1 $old_dn [$rc]"
+			exit 1
 		fi
 
 		echo "ldap_dn=\"$old_dn\" "
@@ -324,14 +331,14 @@ elif [ "$ROLE" = "domaincontroller_backup" ]; then
 	else
 		create_entry "DC Backup" "computers/domaincontroller_backup" "cn=dc,cn=computers,$ldap_base" "cn=DC Backup Hosts,cn=groups,$ldap_base" "cn=DC Slave Hosts,cn=groups,$ldap_base"
 	fi
-	kadmin -l add --random-key --use-defaults ldap/$HOSTNAME.$DOMAINNAME
+	kadmin -l add --random-key --use-defaults ldap/$NEWHOSTNAME.$DOMAINNAME
 elif [ "$ROLE" = "domaincontroller_slave" ]; then
 	if [ -n "$POSITION" ]; then
 		create_entry "DC Slave" "computers/domaincontroller_slave" "$POSITION" "cn=DC Slave Hosts,cn=groups,$ldap_base"
 	else
 		create_entry "DC Slave" "computers/domaincontroller_slave" "cn=dc,cn=computers,$ldap_base" "cn=DC Slave Hosts,cn=groups,$ldap_base"
 	fi
-	kadmin -l add --random-key --use-defaults ldap/$HOSTNAME.$DOMAINNAME
+	kadmin -l add --random-key --use-defaults ldap/$NEWHOSTNAME.$DOMAINNAME
 elif [ "$ROLE" = "memberserver" ]; then
 	if [ -n "$POSITION" ]; then
 		create_entry "Member Server" "computers/memberserver" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
@@ -350,6 +357,9 @@ elif [ "$ROLE" = "mobileclient" ]; then
 	else
 		create_entry "Client" "computers/mobileclient" "cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
 	fi
+else
+	log 1 "E: 	-role $ROLE is unknown"
+	exit 1
 fi
 
 echo "KerberosPasswd=\"$computerPassword\" "
