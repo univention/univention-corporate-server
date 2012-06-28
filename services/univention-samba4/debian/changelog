@@ -1,5 +1,12 @@
 univention-samba4 (1.0.150-1) unstable; urgency=low
 
+  * More adjustements for dns/register/srv_records/kerberos and /ldap
+    handling (Bug #27708 and Bug #27395)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Jun 2012 09:38:48 +0200
+
+univention-samba4 (1.0.150-1) unstable; urgency=low
+
   * call set_machine_secret in setup-s4.sh after samba3upgrade
     (Bug #27479)
 
