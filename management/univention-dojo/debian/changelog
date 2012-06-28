@@ -1,3 +1,10 @@
+univention-dojo (5.0.21-1) unstable; urgency=low
+
+  * Add a patch for dojo.io.iframe that fixes IE problems with IFrame
+    uploads (Bug #25031)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 28 Jun 2012 10:38:14 +0200
+
 univention-dojo (5.0.20-1) unstable; urgency=low
 
   * added dependency to univention-doc in univention-dojo-api-viewer

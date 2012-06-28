@@ -57,6 +57,7 @@ $(DOJO_DIR):
 	patch -p0 < fix_dojox_form_Uploader.patch
 	patch -p0 < fix_dojoStoreMemory.patch
 	patch -p0 < fix_dijit_Templated.patch
+	patch -p0 < fix_dojo_iframe_textarea.patch
 
 apiviewer:
 	tar -xzf "univention-dojo-api-viewer-r$(API_VERSION).tar.gz" --exclude='tests' --exclude='install' --exclude='data/*'
