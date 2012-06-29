@@ -1,3 +1,9 @@
+univention-python (6.0.21-2) unstable; urgency=low
+
+  * bumped version  (Bug #9139) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 29 Jun 2012 09:46:19 +0200
+
 univention-python (6.0.21-1) unstable; urgency=low
 
   * Added a referral handling in uldap (Bug #9139)
