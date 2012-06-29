@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -42,12 +42,16 @@ umc_init
 
 eval "$(ucr shell)"
 
-# Remove previous operations
-if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
-	udm settings/umc_operationset remove "$@" --dn "cn=setup-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+# Remove previous operation sets
+if [ $JS_LAST_EXECUTED_VERSION -le 2 -a $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
+	# setup-wizard-all is no longer needed as the wizard is shown on an unjoined DC master system
 	udm settings/umc_operationset remove "$@" --dn "cn=setup-wizard-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
 fi
-umc_operation_create "setup-all" "Univention System-Setup" "" "setup/*"
+if [ $JS_LAST_EXECUTED_VERSION -le 3 -a $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
+	# setup-all needs to grant access for lib/server/*
+	udm settings/umc_operationset remove "$@" --dn "cn=setup-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+fi
+umc_operation_create "setup-all" "Univention System-Setup" "" "setup/*" "lib/server/*"
 umc_policy_append "default-umc-all" "setup-all"
 
 joinscript_save_current_version
