@@ -184,8 +184,18 @@ dojo.declare("umc.modules._uvmm.DomainPage", [ umc.widgets.TabContainer, umc.wid
 				name: 'maxMem',
 				type: 'TextBox',
 				required: true,
-				regExp: '^[0-9]+(?:[,.][0-9]+)?[ \t]*([MmGg]?[bB])?$',
-				invalidMessage: this._( 'The memory size format is not valid (e.g. 3GB or 1024 MB)' ),
+				constraints: {min: 4*1024*1024},
+				validator: function(value, constraints) {
+					var size = types.parseStorageSize(value);
+					if (size === null)
+						return false;
+					if (constraints.min && size < constraints.min)
+						return false;
+					if (constraints.max && size > constraints.max)
+						return false;
+					return true;
+				},
+				invalidMessage: this._('The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB'),
 				label: this._('Memory')
 			}, {
 				name: 'boot_hvm',

@@ -950,9 +950,9 @@ msgstr ""
 "können nun angepasst werden."
 
 #: umc/js/_uvmm/DomainWizard.js:120
-msgid "The memory size format is not valid (e.g. 3GB or 1024 MB)"
+msgid "The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB"
 msgstr ""
-"Das Format der angegebenen Speichergröße is ungültig (bspw. 3GB oder 1024 MB)"
+"Die angegebenen Speichergröße is ungültig (bspw. 3GB oder 1024 MB), Minimum 4MB"
 
 #: umc/js/_uvmm/DriveGrid.js:271
 msgid ""
