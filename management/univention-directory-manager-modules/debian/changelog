@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.265-1) unstable; urgency=low
+
+  * Change search syntax of the mail home server to search for IMAP
+    services instead of SMTP (Bug #26438)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 29 Jun 2012 11:50:46 +0200
+
 univention-directory-manager-modules (7.0.264-1) unstable; urgency=low
 
   * add localisation for message raised when trying to create managed

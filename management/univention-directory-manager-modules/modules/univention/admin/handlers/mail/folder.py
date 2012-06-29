@@ -57,7 +57,7 @@ module_search_filter=univention.admin.filter.conjunction('&', [
 
 
 ldap_search_mailhomeserver = univention.admin.syntax.LDAP_Search(
-	filter = '(&(objectClass=univentionHost)(univentionService=SMTP))',
+	filter = '(&(objectClass=univentionHost)(univentionService=IMAP))',
 	attribute = [ 'computers/computer: fqdn' ],
 	value='computers/computer: fqdn' )
 
