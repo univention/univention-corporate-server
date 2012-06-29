@@ -113,10 +113,10 @@ resolve_reference() {
     echo "  \"$old_value\""
     echo "to"
     echo "  \"$new_value\""
-    echo "[Y|n]?"
     # When changing references to hosts in udm module shares/share first
     # check if the path already exists on the new host.
     if [ "$module" = "shares/share" ] ; then
+      echo "[Y|n|remove]? "
       udm $module list |\
         awk -vdn="$DN" -vtarget=$new_value '
           /^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
@@ -129,6 +129,9 @@ resolve_reference() {
               print "WARNING: path", old_path, "already exists on new host", target
           }
         '
+    else
+      # Removal not offered (only for shares).
+      echo "[Y|n]? "
     fi
     while true; do
       read answer
@@ -140,8 +143,23 @@ resolve_reference() {
         [nN] )
           echo "Ok, leaving $DN unchanged"
           break ;;
+        remove )
+          if [ "$module" = "shares/share" ] ; then
+            echo "Ok, removing $n";
+            udm $module remove --dn "$DN"
+            break
+          else
+            echo "removal is offered only with udm module shares/share" 
+            echo "changing nothing, try again [Y|n]? " 
+          fi
+          ;;
         * )
-          echo "[Y|n]?" ;;
+          if [ "$module" = "shares/share" ] ; then
+            echo "[Y|n|remove]? "
+          else
+            echo "[Y|n]? "
+          fi
+          ;;
       esac
     done
   done 

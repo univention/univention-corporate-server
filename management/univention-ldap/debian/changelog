@@ -1,3 +1,11 @@
+univention-ldap (8.0.86-3) unstable; urgency=low
+
+  * univention-backup2master (Bug #5774):
+    When resolving references to old master, removal of DNs is
+    offered (again), but only for udm module shares/share.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 29 Jun 2012 15:42:08 +0200
+
 univention-ldap (8.0.86-2) unstable; urgency=low
 
   * univention-backup2master (Bug #10038):
