@@ -113,7 +113,7 @@ resolve_reference() {
     echo "  \"$old_value\""
     echo "to"
     echo "  \"$new_value\""
-    echo "?"
+    echo "[Y|n]?"
     # When changing references to hosts in udm module shares/share first
     # check if the path already exists on the new host.
     if [ "$module" = "shares/share" ] ; then
@@ -130,17 +130,18 @@ resolve_reference() {
           }
         '
     fi
-
-    select resolution in unchanged changed
-    do
-      case $resolution in
-        unchanged )
-          echo "Ok, leaving $DN unchanged"
-          break ;;
-        changed   )
+    while true; do
+      read answer
+      case $answer in
+        [yY] )
           echo "Ok, changing $attribute in $DN"
           udm $module modify --dn "$DN" --set $attribute="$new_value"
           break ;;
+        [nN] )
+          echo "Ok, leaving $DN unchanged"
+          break ;;
+        * )
+          echo "[Y|n]?" ;;
       esac
     done
   done 
@@ -166,18 +167,20 @@ consider_termination() {
   echo "the script, you are left on your own with a server"
   echo "in a state that is (at best) undefined and (at worst)"
   echo "incomplete and therefore unusable."
-  select action in "continue and dont stop" "terminate and proceed at own risk"
-  do
-    case $action in
-      "continue and dont stop")
+
+  while true ; do
+    echo ""
+    read -p "Do you want to continue with converting this server into a DC master [Y|n]? " answer
+    case $answer in
+      [yY] )
         echo "Ok, continue"
-        return
-        break ;;
-      "terminate and proceed at own risk")
+        return ;;
+      [nN] )
         logger -p auth.emerg "$0 terminated prematurely upon manual interrupt, leaving new DC master incomplete"
         echo "Ok, terminating as requested"
         STILL_RUNNING=
         exit ;;
+     * )     ;;
     esac
   done
 }

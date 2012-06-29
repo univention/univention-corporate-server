@@ -1,3 +1,10 @@
+univention-ldap (8.0.86-1) unstable; urgency=low
+
+  * univention-backup2master (Bug #5774):
+    Changed interactive prompting to comply with established rules.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 29 Jun 2012 11:28:56 +0200
+
 univention-ldap (8.0.85-3) unstable; urgency=low
 
   * univention-ldap-server.postrm: Do not remove subdirectories
