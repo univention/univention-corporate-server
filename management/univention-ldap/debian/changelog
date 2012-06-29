@@ -1,3 +1,10 @@
+univention-ldap (8.0.86-2) unstable; urgency=low
+
+  * univention-backup2master (Bug #10038):
+    Any bind9 that might be running shall be restarted.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 29 Jun 2012 14:46:18 +0200
+
 univention-ldap (8.0.86-1) unstable; urgency=low
 
   * univention-backup2master (Bug #5774):

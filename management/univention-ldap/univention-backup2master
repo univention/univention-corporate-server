@@ -433,6 +433,9 @@ ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5Princip
 printf "\nReplacing package univention-server-backup with univention-server-master.\n"
 apt-get -y install univention-server-master univention-server-backup-
 
+# Any bind9 that might be running shall be restarted.
+test -x /etc/init.d/bind9 && /etc/init.d/bind9 force-reload
+
 # Tell trap handler to terminate silently. 
 STILL_RUNNING=
 
