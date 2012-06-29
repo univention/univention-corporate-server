@@ -1,3 +1,12 @@
+univention-management-console-module-packages (1.0.2-2.2-1) unstable; urgency=low
+
+  * disable restart of UMC server components during installation and added
+    dialog to confirm a restart of UMC server components
+  * adjusted package dependencies and join script
+  Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 29 Jun 2012 12:27:15 +0200
+
 univention-management-console-module-packages (1.0.2-2.1) unstable; urgency=low
 
   * adapted captions and translations (Bug #24724)

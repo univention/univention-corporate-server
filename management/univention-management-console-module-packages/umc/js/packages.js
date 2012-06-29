@@ -37,6 +37,8 @@ dojo.require("umc.store");
 dojo.require("umc.widgets.Module");
 dojo.require("umc.widgets.Grid");
 
+dojo.require("umc.modules.lib.server");
+
 dojo.require("umc.modules._packages.SearchForm");
 
 dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
@@ -174,7 +176,16 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			name:			'back',
 			label:			this._( 'Back to search' ),
 			callback:		dojo.hitch(this, function() {
-				this._switch_to_progress(false);
+				umc.modules.lib.server.askRestart(this._('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
+					function() {
+						// if user confirms, he is redirected to the login page
+						// no need to do anythin fancy here :)
+					},
+					dojo.hitch(this, function() {
+						// user canceled -> switch back to initial view
+						this._switch_to_progress(false);
+					}
+				));
 			})
 		});
 

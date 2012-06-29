@@ -211,8 +211,10 @@ class Instance(umcm.Base):
 			'trap "rm -f %s" EXIT' % self._tempscript,
 			'(',
 			'  echo "`date`: Starting to %s %s"' % (fnc,pkg),
+			'  /usr/share/univention-updater/disable-apache2-umc',  # disable UMC server components restart
 			'  %s' % (' '.join(args)),
 			'  ret=$?',
+			'  /usr/share/univention-updater/enable-apache2-umc --no-restart',  # enable UMC server components restart
 			'  echo "`date`: finished with ${ret}"',
 			') >%s 2>&1' % self._logname
 		]
