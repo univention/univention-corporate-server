@@ -176,7 +176,7 @@ pruneOldKernel () {
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | egrep -v "linux-image-$(uname -r)|$ignore_kver" | tr "\n" " ") >>/var/log/univention/updater.log 2>&1
 }
 
-if [ "$update30_pruneoldkernel" = "yes" -o "$univention_ox_directory_integration_oxase" = "true" ]; then
+if [ "$update30_pruneoldkernel" = "yes" ]; then
 	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
 	pruneOldKernel "2.6.18"
 	pruneOldKernel "2.6.26"
