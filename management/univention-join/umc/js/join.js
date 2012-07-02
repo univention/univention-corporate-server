@@ -44,122 +44,146 @@ dojo.require("umc.widgets.TabbedModule");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.modules._join.Form");
 dojo.require("dojox.string.sprintf");
+dojo.require("dojo.window");
+dojo.require("dijit.layout.StackContainer");
+dojo.require("dijit.layout.BorderContainer");
+dojo.require("umc.modules.lib.server");
 
 // Inheriting from umc.widgets.TabbedModule so any pages being added
 // will become tabs automatically.
 dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_page:				null,			// umc.widgets.Page
-	_content:			null,			// umc.widgets.ExpandingTitlePane
+	_titlePane:			null,			// umc.widgets.ExpandingTitlePane
 //	_split:				null,			// dijit.layout.BorderContainer
 	_grid:				null,			// umc.widgets.Grid
-	_infotext:			null,
-	
-	_logview:			null,			// container that gives scrollability to _logtext
+
+	_logpane:			null,			// container that gives scrollability to _logtext
 	_logtext:			null,			// text widget that holds log
+	_logbottom			null,			// empty element to which we can scroll to
 	_b_show:			null,			// button to show log
 	_b_hide:			null,			// button to hide log
 	_b_full:			null,			// button to extend log to show all lines
-	_logcount_default:	15,				// default line count for log view 
-	_logcount:			15,				// current line count (0 = unlimited)
+	_logcount_default:	20,				// default line count for log view 
+	_logcount:			20,				// current line count (0 = unlimited)
 	_refresh_time:		1000,			// period [ms] of refresh
 	_log_stamp:			0,				// Unix timestamp of the join.log as we've read it
 	_refresh_job:		null,			// if defined: job that refreshes the log view
 	_proto_gen:			0,				// simply to show the refresh
-	
-	_joined:			'not set',		// remember last joined status
-	
+
+	_joined:			null,			// remember last joined status
+
 	_footer:			null,			// redefined footer container...
 	_footers:			null,			// ... and its content cells
 	_multi_action:		null,			// ... and its multi-action button
-	
+
 	_polling_job:		null,			// polling for grid refresh while scripts are running
 	_job_running:		false,			// true while scripts are running
 	_polling_time:		1000,			// once per second
-	
+
 	_grid_query:		{'*': '*'},		// all?
-	
+
 	idProperty:			'script',		// doesn't help with the sorting problem of selected rows
 	i18nClass: 			'umc.modules.join',
-	
+	standbyOpacity:		1,
+
 	// all functions that deal with the log view pane. Code arg determines what to do:
-	//  'hide' ... switch display off
-	//	'show' ... switch display on, show last '_logcount_default' lines
-	//	'full' .... (display is already on) show all log lines
-	_switch_log_display: function(code) {
-		if (code == 'hide')
+	_switch_view: function(code) {
+		var lastSelectedChild = this._stackContainer.selectedChildWidget;
+		if (code == 'grid')
 		{
-			this._content.removeChild(this._logview);
-			this._bottom.addChild(this._b_show);
-			this._bottom.removeChild(this._b_hide);
-			this._bottom.removeChild(this._b_full);
-			
-			// stop refresh job
-			if (this._refresh_job)
-			{
+			// show the grid
+			this._stackContainer.selectChild(this._grid);
+			this._refresh_log(false);
+		}
+		else if (code == 'log')
+		{
+			// show the log view without the closing button
+			this._b_hide.set('disabled', true);
+			this._stackContainer.selectChild(this._logpane);
+
+			// by default show only the last N lines of the log
+			if (lastSelectedChild != this._logpane) {
+				this._logcount = this._logcount_default; 
+			}
+
+			// start the loops
+			this._refresh_log(true);
+			this._job_polling_loop();
+		}
+		else if (code == 'log_finished')
+		{
+			// show the log view with the closing button
+			this._b_hide.set('disabled', false);
+			this._stackContainer.selectChild(this._logpane);
+			this._refresh_log(false);
+		}
+		else if (code == 'join_form')
+		{
+			// show the join form (on an unjoined system)
+			this._stackContainer.selectChild(this._joinpane);
+			this._refresh_log(false);
+		}
+
+		// update the layout if view changed
+		if (lastSelectedChild != this._stackContainer.selectedChildWidget) {
+			this.layout();
+			this._reload_grid();		// redo the status query for the grid, effectively triggering
+										// _check_grid_status() on 'fetchComplete'
+		}
+	},
+
+	_setTitle: function(joinDate) {
+		if (joinDate) {
+			this._titlePane.set('title', this._("Current status: System joined on %s", joinDate));
+		}
+		else {
+			this._titlePane.set('title', this._("Current status: System has not been joined yet"));
+		}
+	},
+
+	// gets the current join status and switches display mode if needed.
+	_check_join_status: function() {
+		this.standby(true);
+		this.umcpCommand('join/joined').then(dojo.hitch(this, function(data) {
+			// update view
+			var result = data.result;
+			this._setTitle(result);
+			if (result) {
+				// show grid with join status, else....
+				this._switch_view('grid');
+				if (result != this._joined) {
+					this._reload_grid();		// force grid reload
+				}
+			}
+			else {
+				// show affordance to join, nothing more.
+				this._switch_view('join_form');
+			}
+
+			// save curent value
+			this._joined = result;
+			this.standby(false);
+		}), dojo.hitch(this, function(result) {
+			console.error("check_join_status ERROR " + result.message);
+			this.standby(false);
+		}));
+	},
+
+	// Asynchronously invokes reload of the log lines display. Before fetching real data,
+	// checks if the timestamp of log file has changed. Use 'force=true' to override
+	// the timestamp check.  Use 'force=false' to stop the refresh loop.
+	_refresh_log: function(force) {
+		if (force === true)
+		{
+			this._fetch_log_text();
+		}
+		else if (force === false) {
+			// force the refreshing log loop to stop
+			if (this._refresh_job) {
 				this._refresh_job.cancel();
 				this._refresh_job = null;
 			}
-		}
-		else
-		{
-			if (code == 'full')
-			{
-				this._logcount = 0;
-				this._refresh_log(true);
-				this._bottom.removeChild(this._b_full);
-			}
-			else
-			{
-				this._logcount = this._logcount_default;
-				this._refresh_log(true);
-				this._bottom.addChild(this._b_hide);
-				this._bottom.addChild(this._b_full);
-				this._content.addChild(this._logview);
-				this._logview.addChild(this._logtext);
-			}
-
-			this._bottom.removeChild(this._b_show);
-		}
-	},
-	
-	// gets the current join status and switches display mode if needed.
-	_check_join_status: function() {
-		this.umcpCommand('join/joined').then(dojo.hitch(this, function(data) {
-			var result = data.result;
-			if (result != this._joined)
-			{
-				this._joined = result;
-				if (result)
-				{
-					// show grid with join status, else....
-					this._infotext.set('content',this._("This system joined on %s",result));
-					this._content.removeChild(this._joinpane);
-					this._content.addChild(this._grid);
-					this._reload_grid();		// force grid reload
-				}
-				else
-				{
-					// show affordance to join, nothing more.
-					this._infotext.set('content',this._("This system has not been joined yet."));
-					this._content.removeChild(this._grid);
-					this._content.addChild(this._joinpane);
-				}
-			}
-		}),
-		dojo.hitch(this, function(result) {
-			console.error("check_join_status ERROR " + result.message);
-		})
-		);
-	},
-	
-	// Asynchronously invokes reload of the log lines display. Before fetching real data,
-	// checks if the timestamp of log file has changed. Use 'force=true' to override
-	// the timestamp check.
-	_refresh_log: function(force) {
-		if (force)
-		{
-			this._fetch_log_text();
 		}
 		else
 		{
@@ -180,7 +204,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}));
 		}
 	},
-	
+
 	// fetches join log text. This function doesn't care about changedness,
 	// it's the function being invoked if either 'force' is set or the
 	// log really changed.
@@ -203,22 +227,26 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				txt = txt + dojox.string.sprintf("%s<br/>\n",result[line]);
 			}
 			this._logtext.set('content',txt);
-			
+			if (this._logbottom) {
+			dojo.window.scrollIntoView(this._logbottom.domNode);
+			}
+			else {
+				console.error('### no logfooter');
+			}
+
 			// if we had something to read -> restart the refresh timer AFTER we
 			// have read everything
 			this._renew_refresh_job();
-				
+
 		}));
 	},
-	
+
 	// re-establishes a refresh job after a predefined time.
 	_renew_refresh_job: function() {
 		// Establish refresh every second. We keep the last instance of our 'Deferred'
 		// as an instance member this._refresh_job, thus avoiding to have more than one
 		// refresh running at any time.
-		//
-		// Added here: if this._refresh_time is set to zero we stop the timer.
-		if ((! this._refresh_job) && (this._refresh_time))
+		if (!this._refresh_job)
 		{
 	        var deferred = new dojo.Deferred();
 	        this._refresh_job = deferred;
@@ -237,7 +265,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	        }));
 		}
 	},
-	
+
 	// triggers a grid reload. Should be called from the 'then' handler
 	// of any 'run' invocation. Rebuilding the whole grid status (by calling
 	// this._check_grid_status() ) will be done automatically in the 'onFetchComplete'
@@ -245,19 +273,22 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_reload_grid: function() {
 		this._grid._grid.filter(this._grid_query);
 	},
-	
+
 	// This function establishes and refreshes a polling loop that will
 	// run as long as one of the join job functions run (or precisely:
 	// as long as the umcp query 'running' returns true).
 	//
 	// At the end of the loop, the function calls the functions that refresh
 	// the display according to the new status.
+	//
+	// pass the parameter on=false in order to force the loop to stop.
 	_job_polling_loop: function(on) {
-		
-		// 'on' arg is for starting and stopping
-		if (typeof(on) != 'undefined')
-		{
-			this._job_running = on;
+		if (on === false) {
+			if (this._polling_job) {
+				this._polling_job.cancel();
+				this._polling_job = null;
+			}
+			return;
 		}
 
 		// If in the meantime the callback has set _job_running to FALSE
@@ -266,33 +297,16 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		{
 			// this query returns false as soon as the scripts are finished, and this
 			// will avoid scheduling any new polling cycle.
-			this.umcpCommand('join/running').then(dojo.hitch(this, function(data) {
+			var umcpDeferred = this.umcpCommand('join/running').then(dojo.hitch(this, function(data) {
 				try
 				{
-					var result = data.result;
-					if (result != this._job_running)
-					{
-						this._job_running = result;
-						if (! result)
-						{
-							this._joinform.standby(false);
-						}
-						this._check_join_status();	// switch between join form and script grid
-						this._reload_grid();		// redo the status query for the grid, effectively triggering
-													// _check_grid_status() on 'fetchComplete'
+					this._job_running = data.result;
+					if (!this._job_running) {
+						this._joinform.standby(false);
+						this._switch_view('log_finished');
 					}
-					// for first display: if none of the two widgets (script grid or join form)
-					// is displayed AND we run into a running job we have to do two things:
-					//  (1) show a header text that explains the situation
-					//	(2) switch log display on.
-					if (this._job_running)
-					{
-						var txt = this._infotext.get('content');
-						if (txt === '')
-						{
-							this._infotext.set('content',this._("Currently some join scripts are running. You may watch the log file until they are finished."));
-							this._switch_log_display('show');
-						}
+					else {
+						this._switch_view('log');
 					}
 				}
 				catch(error)
@@ -303,8 +317,8 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			dojo.hitch(this, function(result) {
 				this._joinform.standby(false);
 				this._grid.standby(false);
-			})
-			);
+				this._switch_view('grid');
+			}));
 
 			// We should have exactly one such job. If one is underway, we don't
 			// step on its feet. Otherwise, we start a new one.
@@ -312,51 +326,42 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			{
 		        var deferred = new dojo.Deferred();
 		        this._polling_job = deferred;
-		        setTimeout(dojo.hitch(this, function() {
-		        	if (this._polling_job)
-		        	{
-		            	this._polling_job.callback({
-		            		called: true
-		            	});
-		        	}
-		        }),
-		        this._polling_time);
 		        deferred.then(dojo.hitch(this,function() {
 		        	this._polling_job = null;		// this job has fired.
 		        	this._job_polling_loop();		// go on to next loop
 		        }));
+
+				// set timeout to trigger refesh
+				umcpDeferred.then(dojo.hitch(this, function() {
+					setTimeout(dojo.hitch(this, function() {
+						if (this._polling_job)
+						{
+							this._polling_job.resolve();
+						}
+					}), this._polling_time);
+				}));
 			}
 		}
 	},
-	
+
 	// Seperate function that iterates over all rows of the grid and
 	// updates any dependent things:
 	//
 	//	-	counts runnable rows
 	//	-	shows or hides a '[run all]' action button if count is != 0
 	//	-	shows or hides a '[run selected]' action button if some are selected
-
 	_check_grid_status: function() {
-		
 		try
 		{
-		
-			// While a job is running the grid is in standby() nevertheless, so it won't
-			// make sense to refresh it.
-			if (this._job_running)
-			{
-				return;
-			}
-					
 			var runnable = 0;
 			var selected = 0;
 			this._runnables = [];
 			var dup = {};
-			
+
 			for (var rowIndex=0; rowIndex < this._grid._grid.attr("rowCount"); rowIndex++)
 			{
 				var row = this._grid.getRowValues(rowIndex);
-	
+
 				// check against bug that duplicates data starting from the 26th row
 				var fn = row['script'];
 				if (typeof(dup[fn]) != 'undefined')
@@ -365,7 +370,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					return;
 				}
 				dup[fn] = 1;
-				
+
 				var allow = false;
 				if (row['action'] !== '')
 				{
@@ -387,7 +392,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					}
 				}
 				this._grid._grid.rowSelectCell.setDisabled(rowIndex, ! allow);
-				
+
 			}
 			if (selected)
 			{
@@ -408,7 +413,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						due = this._("One script is due to be run.");
 					}
 					this._footers[0].set('content',due);
-					
+
 					this._multi_action.set('label',this._('run all'));
 					this._footers[1].addChild(this._multi_action);
 				}
@@ -424,21 +429,41 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			console.error("check grid status: " + error.message);
 		}
 	},
-	
+
+	// trigger the join procedure
+	_run_join: function() {
+		this._joinform.standby(true);
+		this.umcpCommand('join/join',{
+			host: this._joinform._widgets['host'].value,
+			user: this._joinform._widgets['user'].value,
+			pass: this._joinform._widgets['pass'].value
+		}).then(dojo.hitch(this, function(data) {
+			if (data.result.msg) {
+				this._joinform.standby(false);
+				// Note result is already localized
+				umc.dialog.alert(this._("Can't start join process:<br>") + data.result.msg, data.result.title);
+				this._setTitle(false);
+				this._check_join_status();
+			}
+			else
+			{
+				// Job is started. Now wait for its completion.
+				this._switch_view('log');
+			}
+		}));
+	},
+
 	// Asynchronously runs the selected script(s).
 	//
 	_run_scripts: function(credentials, list) {
-		// switch the log pane visible; this will establish a refresh too.
-		this._switch_log_display('show');
-		
 		// set the grid unclickable
 		this._grid.standby(true);
-		
+
 		// if list is none: it is called from our 'run all' button. Depending on the dialog state,
 		// we have to get the list from different places:
 		//  (1) something is selected -> use the grid's selected IDs
 		//	(2) nothing selected -> use our 'runnables' array as we've read it in _check_grid_status()
-		
+
 		if ((list === null) || (list === undefined))
 		{
 			list = this._grid.getSelectedIDs();
@@ -447,20 +472,10 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				list = this._runnables;
 			}
 		}
-		
-		if ((list !== null) && (list !== undefined) && (list.length != 0))
+
+		if ((list !== null) && (list !== undefined) && (list.length > 0))
 		{
 			this._job_running = true;
-
-			if (list.length == 1)
-			{
-				this._footers[0].set('content',this._("One join script is currently running"));
-			}
-			else
-			{
-				this._footers[0].set('content',this._('%d join scripts are currently running',list.length));
-			}
-			this._footers[1].removeChild(this._multi_action);
 
 			var values = { scripts: list };
 			if (credentials.username) {
@@ -469,23 +484,19 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			if (credentials.password) {
 				values.password = credentials.password;
 			}
-						   
+
 			this.umcpCommand('join/run', values).then(dojo.hitch(this, function(data) {
 				if (data.result.msg) {
 					// Note result is already localized
 					umc.dialog.alert(this._("Can't start join script:<br>%s", data.result.msg), this._('Error'));
 					this._grid.standby(false);
-					this._job_polling_loop(false);
 					this._check_grid_status();		// sets meaningful messages
-
-					if (data.result.errortype == 'autherror') {
-						this._switch_log_display('hide');
-					}
+					this._check_join_status();
 				}
 				else
 				{
 					// Job is started. Now wait for its completion.
-					this._job_polling_loop(true);
+					this._switch_view('log');
 				}
 			}));
 		}
@@ -494,23 +505,30 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	buildRendering: function() {
 		this.inherited(arguments);
-			
+		this.standby(true);
+
 		this._page = new umc.widgets.Page({
 			headerText:		this._("Join status"),
 			helpText:		this._("This page shows the status of all available join scripts on this system, along with all join-related actions (run selected or all join scripts, or join the system as a whole)")
 		});
-		this.addChild(this._page);
 
 		// Title pane without rollup/down
-		this._content = new umc.widgets.ExpandingTitlePane({
+		this._titlePane = new umc.widgets.ExpandingTitlePane({
 			title:			this._("Current status")
 		});
-		this._page.addChild(this._content);
-		
+		this._page.addChild(this._titlePane);
+
+		// add StackContainer as center element to the TitlePane in order to
+		// switch between the different layers
+		this._stackContainer = new dijit.layout.StackContainer({
+			region: 'center'
+		});
+		this._titlePane.addChild(this._stackContainer);
+
 		// Trying to give the user a chance to resize the grid <-> logview ratio.
 		// Even a simple BorderContainer is able to do that: just give some of its
 		// children a 'splitter: true' property.
-		
+
 		this._grid = new umc.widgets.Grid({
 			region:			'center',
 			moduleStore:	umc.store.getModuleStore('script','join/scripts'),
@@ -577,6 +595,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}
 			]
 		});
+		this._stackContainer.addChild(this._grid);
 
 		// -------------------- Modifications to Grid ----------------------
 
@@ -592,13 +611,13 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._grid._grid.canSort = function(col) {
 			return (col == 1);
 		};
-		
+
 		// the predefined footer structure (that adopts column widths of data cols with actions
 		// into columns of footer cells) doesn't make sense here. We let all the callbacks
 		// intact that try to update the footer, but we detach it from the grid so it's
 		// not visible anymore.
 		this._grid.removeChild(this._grid._footer);
-		
+
 		// Now we can add a different layout container here: a 2x1 table with adjacent
 		// left- and right-aligned cells. CSS class is copied from the base class.
 		this._footer = new dojox.layout.TableContainer({
@@ -655,87 +674,99 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
         this.connect(this._grid._grid, "_onFetchError", dojo.hitch(this, function() {
             this._check_grid_status();
         }));
-		
+
 		// ---------------- END modifications to Grid ----------------------
 
-		this._logview = new umc.widgets.ContainerWidget({
-			region:			'bottom',
-			scrollable:		true,
-			splitter:		true,
-			style:			'height:45%;'	// should initially occupy 45% of pane height
+		this._logpane = new dijit.layout.BorderContainer({
+			gutters: false
 		});
-		// FIXME Does Univention have a style guide that requests a specific monospaced font?
+		this._stackContainer.addChild(this._logpane);
+
+		// temporary container for scrolling to the bottom
+		var logContainer = new umc.widgets.ContainerWidget({
+			region:			'center',
+			scrollable:		true
+		});
+		this._logpane.addChild(logContainer);
+
+		// FIXME use a generic CSS class that requests a specific monospaced font
 		this._logtext = new umc.widgets.Text({
-			scrollable:		true,
+			region:			'center',
 			content:		this._('... loading log ...'),
 			style:			'font-family:monospace;'
 		});
-		
+		logContainer.addChild(this._logtext);
+
+		// this element allows us to scroll to the bottom of the log
+		this._logbottom = new umc.widgets.Text({});
+		logContainer.addChild(this._logbottom);
+
 		// seperate right-aligned widget below the SplitPane, simply to contain
 		// the button(s) to show/hide the log view
-		this._bottom = new umc.widgets.ContainerWidget({
+		this._logbuttons = new umc.widgets.ContainerWidget({
 			region:		'bottom',
 			style:		'text-align: right;'
 		});
-		this._content.addChild(this._bottom);
-		this._b_show = new umc.widgets.Button({
+		this._logpane.addChild(this._logbuttons);
+		/*this._b_show = new umc.widgets.Button({
 			label:		this._('show log'),
 			onClick:	dojo.hitch(this, function() {
-				this._switch_log_display('show');
+				this._switch_view('show');
 			})
 		});
-		this._bottom.addChild(this._b_show);
-		
+		this._logbuttons.addChild(this._b_show);
+		*/
+
 		this._b_hide = new umc.widgets.Button({
-			label:		this._('hide log'),
+			label:		this._('Close log'),
+			disabled:	true,
+			'class': 'umcSubmitButton',
 			onClick:	dojo.hitch(this, function() {
-				this._switch_log_display('hide');
+				var msg = this._('A restart of the UMC server components may be necessary for changes to take effect.');
+				if (this._joined) {
+					// show a different message for initial join
+					msg = this._('A restart of the UMC server components is necessary after an initial join.');
+				}
+				umc.modules.lib.server.askRestart(msg).then(
+					function() { /* nothing to do */ },
+					dojo.hitch(this, function() {
+						// user canceled -> change the current view
+						this._check_join_status();
+					}
+				));
 			})
 		});
-		
+		this._logbuttons.addChild(this._b_hide);
+
 		this._b_full = new umc.widgets.Button({
-			label:		this._('show all'),
+			label:		this._('Show full log'),
     		onClick:	dojo.hitch(this, function() {
-				this._switch_log_display('full');
+				this._logcount = 0;
     		})
 		});
+		this._logbuttons.addChild(this._b_full);
 
 // --------------- DEBUG BUTTONS ------------------
-//		this._bottom.addChild(new umc.widgets.Button({
+//		this._logbuttons.addChild(new umc.widgets.Button({
 //			label:	'[reload grid]',
 //			onClick:	dojo.hitch(this, function() {
 //				this._reload_grid();
 //			})
 //		}));
-//		this._bottom.addChild(new umc.widgets.Button({
+//		this._logbuttons.addChild(new umc.widgets.Button({
 //			label:	'[check join status]',
 //			onClick:	dojo.hitch(this, function() {
 //				this._check_join_status();
 //			})
 //		}));
-//		this._bottom.addChild(new umc.widgets.Button({
+//		this._logbuttons.addChild(new umc.widgets.Button({
 //			label:	'[check grid status]',
 //			onClick:	dojo.hitch(this, function() {
 //				this._check_grid_status();
 //			})
 //		}));
 // ------------ END DEBUG BUTTONS ---------------
-		
-		// We can't change the 'title' property of an ExpandingTitlePane after we've created it...
-		// so we write the (variable) status info into the 'top' component of the BorderContainer.
-		var info = new umc.widgets.ContainerWidget({
-			region:			'top',
-			scrollable:		false,
-			style:			'border:none;'
-		});
-		this._content.addChild(info);
-		
-		this._infotext = new umc.widgets.Text({
-			style:			'border:none;margin:.2em;',
-			content:		''
-		});
-		info.addChild(this._infotext);
-		
+
 		// The standard view is the grid with all join scripts. There's a different view
 		// meant for a system that has not been joined yet: a form for entering an admin
 		// password and for starting the join process. This form is prepared here and stored
@@ -745,40 +776,16 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			region:				'center',
 			scrollable:			true
 		});
+		this._stackContainer.addChild(this._joinpane);
 		var buttons = 
 		[
 			{
-				type:			'submit',
-				'default':		true,
+				name:			'submit',
 				label:			this._("Start Join"),
-				onClick:		dojo.hitch(this, function() {
-					this._joinform.standby(true);
-					this._switch_log_display('show');
-			        this.umcpCommand('join/join',{
-						host: this._joinform._widgets['host'].value,
-						user: this._joinform._widgets['user'].value,
-						pass: this._joinform._widgets['pass'].value				        	
-			        }).then(dojo.hitch(this, function(data) {
-						if (data.result.msg) {
-			        		this._joinform.standby(false);
-			        		// Note result is already localized
-			        		umc.dialog.alert(this._("Can't start join process:<br>") + data.result.msg, data.result.title);
-				        	this._check_join_status();		// sets meaningful messages
-
-							if (data.result.errortype == 'autherror') {
-								this._switch_log_display('hide');
-							}
-			        	}
-			        	else
-			        	{
-			        		// Job is started. Now wait for its completion.
-			        		this._job_polling_loop(true);
-			        	}
-			        }));
-				})
+				callback:		dojo.hitch(this, '_run_join')
 			}
 		];
-		var widgets = 
+		var widgets =
 		[
 			{
 				type:			'Text',
@@ -813,25 +820,37 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			widgets:	widgets
 		});
 		this._joinpane.addChild(this._joinform);
-	},
-	
-	startup: function() {
-		
-		this.inherited(arguments);
 
-		// All display elements exist. Now we check what we have to display.
-		// This is done by checking once for a running job (at the Python side)
-		// and setting the display accordingly. The polling loop itself will then
-		// establish triggers that change display if the current job is finished.
-		this._job_polling_loop(true);
-		
-	},
-	
-	uninitialize: function() {
-		
-		this.inherited(arguments);
-		this._refresh_time = 0;
-		
+		// add the prepared page to the module widget
+		this.addChild(this._page);
+
+		// all display elements exist, now check the curren status:
+		// -> job running
+		// -> joined
+		// -> unjoined
+		(new dojo.DeferredList([
+			this.umcpCommand('join/joined'),
+			this.umcpCommand('join/running')
+		])).then(dojo.hitch(this, function(results) {
+			// result[i]: [ 0 ] -> success/failure, [ 1 ] -> data
+			this._joined = results[0][0] ? results[0][1].result : false;
+			this._job_running = results[1][0] ? results[1][1].result : false;
+			this.standby(false);
+			this.standbyOpacity = 0.75;  // set it back to semi transparent
+			this._setTitle(this._joined);  // update TitlePane title
+			if (this._job_running) {
+				this._switch_view('log');
+			}
+			else if (!this._joined) {
+				this._switch_view('join_form');
+			}
+			else {
+				// grid view is selected by default... refresh the grid
+				this._reload_grid();
+			}
+		}), dojo.hitch(this, function() {
+			this.standby(false);
+		}));
 	},
 
 	_get_credentials: function() {
@@ -897,6 +916,11 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 		dialog.show();
 		return deferred;
+	},
+
+	uninitialize: function() {
+		this.inherited(arguments);
+		this._refresh_log(false);
+		this._job_polling_loop(false);
 	}
-	
 });

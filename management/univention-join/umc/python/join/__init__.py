@@ -347,6 +347,7 @@ class Instance(umcm.Base):
 				'trap "rm -f %s %s %s" EXIT' % (self._passfile, self._tempfile, self._tempscript),
 				'(',
 				'  echo "`date`: Starting univention-join"',
+				'  /usr/share/univention-updater/disable-apache2-umc',  # disable UMC server components restart
 				'  %s %s >${TMPF} 2>&1' % (self._jointool,join(args)),
 				'  ret=$?',
 				'  if [ ${ret} = 0 ] ; then',
@@ -356,6 +357,7 @@ class Instance(umcm.Base):
 				'	 /usr/bin/tail -n 7 ${TMPF}',
 				'  fi',
 				'  echo',
+				'  /usr/share/univention-updater/enable-apache2-umc --no-restart',  # enable UMC server components restart
 				') >>%s 2>&1' % self._logname
 			]
 			msg = self._run_shell_script(cmds)
@@ -441,11 +443,13 @@ class Instance(umcm.Base):
 			'function run()',
 			'{',
 			'  echo "`date`: running $1"',
+			'  /usr/share/univention-updater/disable-apache2-umc',  # disable UMC server components restart
 			'  local cmd="$1"; shift',
 			'  ./$cmd "$@"',
 			'  local ret=$?',
 			'  echo "`date`: $cmd finished with exitcode ${ret}"',
 			'  echo',
+			'  /usr/share/univention-updater/enable-apache2-umc --no-restart',  # enable UMC server components restart
 			'}',
 			'('
 			'  cd %s' % self._instdir

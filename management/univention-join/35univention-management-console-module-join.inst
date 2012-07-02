@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -40,7 +40,14 @@ joinscript_init
 
 umc_init
 
-umc_operation_create "join-all" "Join UCS systems" "" "join/*"
+eval "$(ucr shell ldap/base)"
+
+if [ $JS_LAST_EXECUTED_VERSION -le 2 -a $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
+	# remove previous operation sets as join-all needs to grant access to lib/server/*
+	udm settings/umc_operationset remove "$@" --dn "cn=join-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+fi
+
+umc_operation_create "join-all" "Join UCS systems" "" "join/*" "lib/server/*"
 
 umc_policy_append "default-umc-all" "join-all"
 

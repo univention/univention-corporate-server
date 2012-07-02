@@ -32,7 +32,9 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server,
- univention-join (= ${source:Version})
+ univention-join (= ${source:Version}),
+ univention-updater,
+ univention-management-console-module-lib
 Description: UMC module for system join
  This package contains the UMC module for system join actions.
  .

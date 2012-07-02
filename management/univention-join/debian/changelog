@@ -1,3 +1,14 @@
+univention-join (4.0.37-1) unstable; urgency=low
+
+  * refactored UMC module to either show the join log, the grid or the form
+    for initial join, no parallel view allowed anymore
+  * added ask for restarting UMC server components after the join process
+  * adapted UMC operation set and package dependencies to allow access to UMCP
+    command lib/server/restart
+  Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 02 Jul 2012 16:06:01 +0200
+
 univention-join (4.0.36-1) unstable; urgency=low
 
   * univention-server-join: Improved error checking (Bug #16214)
