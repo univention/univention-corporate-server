@@ -1,3 +1,9 @@
+univention-join (4.0.38-1) unstable; urgency=low
+
+  * added translations; Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 02 Jul 2012 16:29:15 +0200
+
 univention-join (4.0.37-1) unstable; urgency=low
 
   * refactored UMC module to either show the join log, the grid or the form
