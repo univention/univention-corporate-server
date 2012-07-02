@@ -45,15 +45,15 @@ bind_service(){
 			# start bind9 only if it has been stopped by this script
 			if [ "$dns_bind9_stoppedbyserverpasswordchange" = "yes" ] ; then
 				echo "starting bind9 after server password change" | logger -t "server-password-change"
-				/etc/init.d/bind9 start >/dev/null
+				invoke-rc.d bind9 start >/dev/null
 				univention-config-registry unset dns/bind9/stoppedbyserverpasswordchange >/dev/null
 			fi
 		fi
 		if [ "$action" = "stop" ]; then
-			if /etc/init.d/bind9 status | grep -q "is running" ; then
+			if invoke-rc.d bind9 status | grep -q "is running" ; then
 				univention-config-registry set dns/bind9/stoppedbyserverpasswordchange=yes >/dev/null
 				echo "stopping bind9 due to upcoming server password change" | logger -t "server-password-change"
-				/etc/init.d/bind9 stop >/dev/null
+				invoke-rc.d bind9 stop >/dev/null
 			fi
 		fi
 	fi

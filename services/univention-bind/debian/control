@@ -10,6 +10,7 @@ Standards-Version: 3.8.2
 Package: univention-bind
 Architecture: all
 Depends: ${misc:Depends},
+ ${python:Depends},
  univention-config (>= 7.0.25),
  univention-base-files,
  bind9 (>= 1:9.8.0.P4),

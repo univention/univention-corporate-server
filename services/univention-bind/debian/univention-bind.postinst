@@ -73,11 +73,11 @@ fi
 
 if [ "$1" = "configure" ]; then
 	if [ -n "$2" ]; then
-		/etc/init.d/bind9 crestart
+		invoke-rc.d bind9 crestart
 	else
-		/etc/init.d/bind9 start
+		invoke-rc.d bind9 start
 	fi
-	/etc/init.d/univention-directory-listener crestart
+	invoke-rc.d univention-directory-listener crestart
 fi
 
 call_joinscript 05univention-bind.inst

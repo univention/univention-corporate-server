@@ -1,3 +1,13 @@
+univention-bind (6.0.39-1) unstable; urgency=low
+
+  * Timeout zone updates in listener (Bug #25868)
+  * Only restart bind9{,-proxy} once.
+  * debian/control[univention-bind]: Depends ${python:Depends}
+  * 05univention-bind.inst: Limit infiit timeout.
+  * Use invoke-rc.d to restart bind9 (in chroot environments) (Bug #18497)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 02 Jul 2012 09:14:25 +0200
+
 univention-bind (6.0.38-4) unstable; urgency=low
 
   * univention-bind: Added section "nochange" to the script.

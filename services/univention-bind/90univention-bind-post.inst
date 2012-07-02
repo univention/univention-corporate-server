@@ -42,33 +42,33 @@ if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 	exit 1
 fi
 
-wait_for_dns(){
+wait_for_dns () {
 	echo -n "Wait for bind9: "
 	count=0
 	while [ $count -le 600 ]; do
-		timeout=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
-		if [ -n "$timeout" ]; then
+		if LC_ALL=C host -W 1 "$ldap_master" 2>&1 | grep -q 'has \(IPv6 \)\?address '
+		then
 			echo " done"
 			break
 		else
 			echo -n "."
 			# restart bind every 200 seconds
-			expr $count % 200 >/dev/null || /etc/init.d/bind9 restart
+			expr $count % 200 >/dev/null || invoke-rc.d bind9 restart
 			sleep 1
-		fi;
+		fi
 		count=$((count+1))
 	done
 
 	count=0
 	while [ $count -le 600 ]; do
-		timeout=$(LC_ALL=C host -t SRV -W 1 _ldap._tcp.$domainname 2>&1| grep "has SRV record")
-		if [ -n "$timeout" ]; then
+		if LC_ALL=C host -t SRV -W 1 "_ldap._tcp.$domainname" 2>&1 | grep -q "has SRV record"
+		then
 			echo " done"
 			break
 		else
 			echo -n "."
 			# restart bind every 200 seconds
-			expr $count % 200 >/dev/null || /etc/init.d/bind9 restart
+			expr $count % 200 >/dev/null || invoke-rc.d bind9 restart
 			sleep 1
 		fi;
 		count=$((count+1))
@@ -95,17 +95,15 @@ if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	fi
 
 	if [ "$IP" != "$nameserver1" ]; then
-
 		if [ -z "$nameserver1" ]; then
-			univention-config-registry set nameserver1=$IP
+			univention-config-registry set nameserver1="$IP"
 		elif [ -z "$nameserver2" ]; then
-			univention-config-registry set nameserver2=$nameserver1 nameserver1=$IP
+			univention-config-registry set nameserver2="$nameserver1" nameserver1="$IP"
 		elif [ -z "$nameserver3" ]; then
-			univention-config-registry set nameserver3=$nameserver2 nameserver2=$nameserver1 nameserver1=$IP
+			univention-config-registry set nameserver3="$nameserver2" nameserver2="$nameserver1" nameserver1="$IP"
 		else
-			univention-config-registry set nameserver4=$nameserver3 nameserver3=$nameserver2 nameserver2=$nameserver1 nameserver1=$IP
+			univention-config-registry set nameserver4="$nameserver3" nameserver3="$nameserver2" nameserver2="$nameserver1" nameserver1="$IP"
 		fi
-
 	fi
 fi
 
@@ -125,15 +123,15 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 fi
 
 # Restart the bind9 daemon and wait for a few seconds if the local nameserver should be used
-/etc/init.d/bind9 restart
+invoke-rc.d bind9 restart
 if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	wait_for_dns
 fi
 
 old=`univention-directory-manager policies/dhcp_dns list "$@" --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
 if [ -z "$old" -o "$old" = "None" ]; then
-	echo "$IP" | grep -q ":" # Don't register IPv6?
-	if [ $? = 1 ]; then
+	if ! echo "$IP" | grep -q ":" # Don't register IPv6?
+	then
 		univention-directory-manager policies/dhcp_dns modify "$@" --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$IP
 	fi
 fi
