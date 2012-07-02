@@ -234,7 +234,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			return umc.dialog.confirm(this._('Root password empty. Continue?'),
 				[{
 					label: this._('Cancel'),
-					default: true,
+					'default': true,
 					name: 'cancel'
 				}, {
 					label: this._('Continue'),

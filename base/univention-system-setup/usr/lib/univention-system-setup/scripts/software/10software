@@ -63,9 +63,9 @@ fi
 
 # create named pipes in order to merge status information and stdout
 stdoutFifo=$(mktemp -u /tmp/apt.stdout.XXXXXXXX)
-stderrFifo=$(mktemp -u /tmp/apt.stderr.XXXXXXXX)
+#stderrFifo=$(mktemp -u /tmp/apt.stderr.XXXXXXXX)
 statFifo=$(mktemp -u /tmp/apt.stat.XXXXXXXX)
-mkfifo "$stdoutFifo" "$stderrFifo" "$statFifo"
+mkfifo "$stdoutFifo" "$statFifo" #"$stderrFifo"
 
 # run the installation in a background process
 ( 
@@ -74,7 +74,8 @@ mkfifo "$stdoutFifo" "$stderrFifo" "$statFifo"
     export APT_PARAMS="-o APT::Status-FD=4 -o DPkg::Options::=--force-confold -y --force-yes -o APT::Get::AllowUnauthenticated=1"
 
     # redirection of stdout/stderr and status information
-    exec >$stdoutFifo 2>$stderrFifo 4>$statFifo </dev/null
+    # exec >$stdoutFifo 2>$stderrFifo 4>$statFifo </dev/pts/2
+    exec >$stdoutFifo 2>$stdoutFifo 4>$statFifo </dev/null
 
     # update
     echo "apt-get $APT_PARAMS update"
@@ -85,6 +86,10 @@ mkfifo "$stdoutFifo" "$stderrFifo" "$statFifo"
     for p in $packages_remove; do
         echo "apt-get $APT_PARAMS install $p- $base" 
         apt-get $APT_PARAMS install $p- $base
+        aptResult=$?
+        if [ $aptResult -gt 0 ]; then
+            echo "setuperror:$p::$(gettext "Failed to uninstall")" >&4
+        fi
     done
 
     # run autoremove
@@ -96,6 +101,10 @@ mkfifo "$stdoutFifo" "$stderrFifo" "$statFifo"
     for p in $packages_install; do
         echo "apt-get $APT_PARAMS install $p $base"
         apt-get $APT_PARAMS install $p $base
+        aptResult=$?
+        if [ $aptResult -gt 0 ]; then
+            echo "setuperror:$p::$(gettext "Failed to install")" >&4
+        fi
     done
 ) &
 
@@ -105,7 +114,8 @@ progress_steps $((nCommands * 100))  # each command is in the range [0, 100]
 
 # read from stdout/stderr and status information output via the named pipes
 # ordering is important!
-exec 5<$stdoutFifo 7<$stderrFifo 6<$statFifo
+#exec 5<$stdoutFifo 7<$stderrFifo 6<$statFifo
+exec 5<$stdoutFifo 6<$statFifo
 statResult=0
 stdoutResult=0
 stderrResult=0
@@ -115,12 +125,12 @@ while [ "$statResult" != 1 -a "$stdoutResult" != 1 -a "$stderrResult" != 1 ]; do
     # read from apt-get stdout
     read -u 5 -t 0.01 line
     stdoutResult=$?
-    #[ $stdoutResult = 0 ] && echo "$line"
+    [ $stdoutResult = 0 ] && echo "$line"
 
     # read from apt-get stderr
-    read -u 7 -t 0.01 line
-    stderrResult=$?
-    [ $stderrResult = 0 ] && progress_error "$line"
+    #read -u 7 -t 0.01 line
+    #stderrResult=$?
+    #[ $stderrResult = 0 ] && progress_error "$line"
 
     # read from apt-get status information
     read -u 6 -t 0.01 line
@@ -132,11 +142,22 @@ while [ "$statResult" != 1 -a "$stdoutResult" != 1 -a "$stderrResult" != 1 ]; do
         list=($line)
         IFS=$'\n\t '
         statusType=${list[0]}
+        package=${list[1]}
         percentage=${list[2]%.*}  # the precentage might be floating point, remove fractions
         msg=${list[3]}
 
         # print out message
-        [ -n "$msg" ] && progress_msg "$msg"
+        if [ -n "$msg" ]; then
+            if [ "$statusType" = "setuperror" ]; then
+                progress_error "$package: $msg" && sleep 0.1 # give parser some time
+            else
+            #if [ "$statusType" = "pmerror" ]; then
+            #    progress_error "$package: $msg"
+            #    sleep 0.1 # give parser some time
+            #else
+                progress_msg "$msg"
+            fi
+        fi
 
         # ignore download status
         [ "$statusType" = "dlstatus" ] && continue
@@ -151,7 +172,7 @@ while [ "$statResult" != 1 -a "$stdoutResult" != 1 -a "$stderrResult" != 1 ]; do
 done
 
 # remove named pipes
-rm -f "$stdoutFifo" "$statFifo" "$stderrFifo"
+rm -f "$stdoutFifo" "$statFifo" #"$stderrFifo"
 
 exit 0
 

@@ -109,18 +109,82 @@ class Instance(umcm.Base):
 		'''Reconfigures the system according to the values specified in the dict given as
 		option named "values".'''
 
-		def _thread(request, obj, values, username, password):
+		# get old and new values
+		orgValues = util.load_values()
+		values = request.options.get('values', {})
+
+		def _thread(request, obj):
 			# acquire the lock until the scripts have been executed
 			self._finishedResult = False
 			obj._finishedLock.acquire()
-
 			self._progressParser.reset()
+
 			# write the profile file and run setup scripts
 			orgValues = util.load_values()
 			util.pre_save(values, orgValues)
 
-			# determine new system role
-			newrole = values.get('server/role', orgValues.get('server/role',''))
+			MODULE.info('saving profile values')
+			util.write_profile(values)
+
+			if not values:
+				MODULE.error( 'No property "values" given for save().' )
+				obj._finishedLock.release()
+				return False
+
+			# in case of changes of the IP address, restart UMC server and web server
+			# for this we ignore changes of virtual or non-default devices
+			MODULE.info('Check whether ip addresses have been changed')
+			regIpv6 = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/default/(prefix|address)$')
+			regIpv4 = re.compile(r'^interfaces/(eth[0-9]+)/(address|netmask)$')
+			regSsl = re.compile(r'^ssl/.*')
+			restart = False
+			for ikey, ival in values.iteritems():
+				if regIpv4.match(ikey) or regIpv6.match(ikey) or regSsl.match(ikey):
+					restart = True
+					break
+			MODULE.info('Restart servers: %s' % restart)
+
+			# on a joined system or on a basesystem, we can run the setup scripts
+			MODULE.info('runnning system setup scripts')
+			util.run_scripts( self._progressParser, restart )
+
+			# done :)
+			self._finishedResult = True
+			obj._finishedLock.release()
+			return True
+
+		def _finished( thread, result ):
+			if isinstance( result, BaseException ):
+				MODULE.warn( 'Exception during saving the settings: %s' % str( result ) )
+
+		thread = notifier.threads.Simple( 'save', 
+			notifier.Callback( _thread, request, self ), _finished )
+		thread.run()
+
+		self.finished(request.id, True)
+
+	def join(self, request):
+		'''Join and reconfigure the system according to the values specified in the dict given as
+		option named "values".'''
+		
+		# get old and new values
+		orgValues = util.load_values()
+		values = request.options.get('values', {})
+
+		# determine new system role
+		oldrole = orgValues.get('server/role', '')
+		newrole = values.get('server/role', oldrole)
+		if newrole == 'basesystem' or orgValues.get('joined'):
+			raise Exception( _('Base systems and already joined systems cannot be joined.') )
+		
+		def _thread(request, obj, username, password):
+			# acquire the lock until the scripts have been executed
+			self._finishedResult = False
+			obj._finishedLock.acquire()
+			self._progressParser.reset()
+
+			# write the profile file and run setup scripts
+			util.pre_save(values, orgValues)
 
 			# on unjoined DC master the nameserver must be set to the external nameserver
 			if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
@@ -133,32 +197,9 @@ class Instance(umcm.Base):
 			MODULE.info('saving profile values')
 			util.write_profile(values)
 
-			if newrole == 'basesystem' or orgValues.get('joined'):
-				if not values:
-					MODULE.error( 'No property "values" given for save().' )
-					obj._finishedLock.release()
-					return False
-
-				# in case of changes of the IP address, restart UMC server and web server
-				# for this we ignore changes of virtual or non-default devices
-				MODULE.info('Check whether ip addresses have been changed')
-				regIpv6 = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/default/(prefix|address)$')
-				regIpv4 = re.compile(r'^interfaces/(eth[0-9]+)/(address|netmask)$')
-				regSsl = re.compile(r'^ssl/.*')
-				restart = False
-				for ikey, ival in values.iteritems():
-					if regIpv4.match(ikey) or regIpv6.match(ikey) or regSsl.match(ikey):
-						restart = True
-						break
-				MODULE.info('Restart servers: %s' % restart)
-
-				# on a joined system or on a basesystem, we can run the setup scripts
-				MODULE.info('runnning system setup scripts')
-				util.run_scripts( self._progressParser, restart )
-			else:
-				# unjoined system and not a basesystem -> run the join script
-				MODULE.info('runnning system setup join script')
-				util.run_joinscript( self._progressParser, username, password )
+			# unjoined DC master (that is not being converted to a basesystem) -> run the join script
+			MODULE.info('runnning system setup join script')
+			util.run_joinscript( self._progressParser, username, password )
 
 			# done :)
 			self._finishedResult = True
@@ -170,7 +211,7 @@ class Instance(umcm.Base):
 				MODULE.warn( 'Exception during saving the settings: %s' % str( result ) )
 
 		thread = notifier.threads.Simple( 'save', 
-			notifier.Callback( _thread, request, self, request.options.get('values'), request.options.get('username'), request.options.get('password')),_finished )
+			notifier.Callback( _thread, request, self, request.options.get('username'), request.options.get('password')),_finished )
 		thread.run()
 
 		self.finished(request.id, True)
@@ -178,12 +219,13 @@ class Instance(umcm.Base):
 	def check_finished(self, request):
 		'''Check whether the join/setup scripts are finished. This method implements a long
 		polling request, i.e., the request is only finished at the moment when all scripts
-		have been executed. When the connection breaks down on the client side (due to
-		timeout), the error may be ignored and a new try can be started.'''
+		have been executed or due to a timeout. If it returns because of the timeout, a new
+		try can be started.'''
 		def _thread(request, obj):
 			# acquire the lock in order to wait for the join/setup scripts to finish
-			# do this one minute long on then return an error
-			SLEEP_TIME = 0.200
+			# do this for 30 sec and then return anyway
+			# SLEEP less than the scripts (see e.g. scripts/software/10software)
+			SLEEP_TIME = 0.01
 			WAIT_TIME = 30
 			ntries = WAIT_TIME / SLEEP_TIME
 			while not obj._finishedLock.acquire(False):
@@ -192,7 +234,8 @@ class Instance(umcm.Base):
 					return { 'finished' : False,
 						 'name' : state.fractionName,
 						 'message' : state.message,
-						 'error' : state.error,
+						 'join_error' : state.pop_join_error(),
+						 'error' : state.pop_error(),
 						 'percentage' : state.percentage }
 				time.sleep( SLEEP_TIME )
 				ntries -= 1
@@ -200,11 +243,13 @@ class Instance(umcm.Base):
 			obj._finishedLock.release()
 
 			# scripts are done, return final result
+			state = self._progressParser.current
 			return { 'finished' : obj._finishedResult,
-				 'name' : self._progressParser.current.fractionName,
-				 'message' : self._progressParser.current.message,
-				 'error' : self._progressParser.current.error,
-				 'percentage' : self._progressParser.current.percentage }
+				 'name' : state.fractionName,
+				 'message' : state.message,
+				 'join_error' : state.pop_join_error(),
+				 'error' : state.pop_error(),
+				 'percentage' : state.percentage }
 
 		thread = notifier.threads.Simple( 'check_finished',
 			notifier.Callback( _thread, request, self ),

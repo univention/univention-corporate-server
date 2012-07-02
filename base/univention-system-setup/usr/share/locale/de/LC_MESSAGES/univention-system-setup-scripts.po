@@ -96,6 +96,14 @@ msgstr "Einrichten der Systemrolle"
 msgid "Configuring software components"
 msgstr "Einrichten der Software-Komponenten"
 
+#: usr/lib/univention-system-setup/scripts/software/10software:92
+msgid "Failed to uninstall"
+msgstr "Deinstallation fehlgeschlagen"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Failed to install"
+msgstr "Installation fehlgeschlagen"
+
 #: usr/lib/univention-system-setup/scripts/ssl/10ssl:50
 msgid "Generating SSL certificate"
 msgstr "Erstellen der SSL-Zertifikate"

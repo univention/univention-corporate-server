@@ -226,20 +226,33 @@ class ProgressState( object ):
 		self.steps = 1
 		self.step = 0
 		self.max = 100
+		self.join_error = ''
 		self.error = ''
+
+	# make sure the error is only send once
+	def pop_join_error( self ):
+		error = self.join_error
+		self.join_error = ''
+		return error
+
+	# make sure the error is only send once
+	def pop_error( self ):
+		error = self.error
+		self.error = ''
+		return error
 
 	@property
 	def percentage( self ):
 		return ( self._percentage + self.fraction * ( self.step / float( self.steps ) ) ) / self.max * 100
 
 	def __eq__( self, other ):
-		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.error == other.error
+		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.join_error == self.join_error and self.error == other.error
 
 	def __ne__( self, other ):
 		return not self.__eq__( other )
 
 	def __nonzero__( self ):
-		return bool( self.name or self.message or self.percentage or self.error )
+		return bool( self.name or self.message or self.percentage or self.join_error or self.error )
 
 class ProgressParser( object ):
 	# regular expressions
@@ -247,6 +260,7 @@ class ProgressParser( object ):
 	MSG = re.compile( '^__MSG__: *(?P<message>.*)\n$' )
 	STEPS = re.compile( '^__STEPS__: *(?P<steps>.*)\n$' )
 	STEP = re.compile( '^__STEP__: *(?P<step>.*)\n$' )
+	JOINERROR = re.compile( '^__JOINERR__: *(?P<error_message>.*)\n$' )
 	ERROR = re.compile( '^__ERR__: *(?P<error_message>.*)\n$' )
 
 	# fractions of setup scripts
@@ -328,6 +342,12 @@ class ProgressParser( object ):
 				return True
 			except ValueError:
 				pass
+
+		# error message: why did the join fail?
+		match = ProgressParser.JOINERROR.match( line )
+		if match is not None:
+			self.current.join_error = match.groups()[ 0 ]
+			return True
 
 		# error message: why did the script fail?
 		match = ProgressParser.ERROR.match( line )

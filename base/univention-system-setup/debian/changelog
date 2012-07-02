@@ -1,3 +1,10 @@
+univention-system-setup (5.0.179-1) unstable; urgency=low
+
+  * Allow retry of join process if it failed (Bug #25805)
+  * Only show minimalistic errors from apt-get (Bug #26331)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Jul 2012 12:02:48 +0200
+
 univention-system-setup (5.0.178-1) unstable; urgency=low
 
   * grant acces for "lib/server/*" with UMC operation set setup-all; Bug #26235

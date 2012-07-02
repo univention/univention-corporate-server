@@ -9,6 +9,7 @@
 	<command name="setup/load" function="load"></command>
 	<command name="setup/validate" function="validate"></command>
 	<command name="setup/save" function="save"></command>
+	<command name="setup/join" function="join"></command>
 	<command name="setup/finished" function="check_finished"></command>
 	<command name="setup/cleanup" function="cleanup"></command>
 	<command name="setup/lang/default_timezone" function="lang_default_timezone"></command>

@@ -199,7 +199,7 @@ fi
 		fi
 		if [ "${line#* Message:  }" != "$line" ]; then
 			# found line indicating join failed. output
-			progress_error "${line#* Message:  }"
+			progress_join_error "${line#* Message:  }"
 		fi
 		echo "$line"
 	done

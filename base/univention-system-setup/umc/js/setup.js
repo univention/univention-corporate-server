@@ -69,6 +69,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// internal dict to save error messages while polling
 	_saveErrors: null,
 
+	// internal flag to indicate whether a fatal join error occurred
+	_joinError: null,
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -100,12 +103,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		var system_role = ucr['server/role'];
 
-		this.wizard_mode = false;
-
 		// set wizard mode only on unjoined DC Master
-		if (( system_role == 'domaincontroller_master') && (! values.joined)) {
-			this.wizard_mode = true;
-		}
+		this.wizard_mode = ( system_role == 'domaincontroller_master') && (! values.joined);
 
 		// we are in locale mode if the user is __systemsetup__
 		this.local_mode = umc.tools.status('username') == '__systemsetup__';
@@ -344,7 +343,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		};
 
 		// confirm dialog to continue with boot process
-		var _cleanup = dojo.hitch(this, function(msg, hasCancel) {
+		var _cleanup = dojo.hitch(this, function(msg, hasCancel, loadAfterCancel) {
 			var choices = [{
 				name: 'apply',
 				'default': true,
@@ -372,6 +371,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			return umc.dialog.confirm(msg, choices).then(dojo.hitch(this, function(response) {
 				if (response == 'cancel') {
 					// do not continue
+					if (loadAfterCancel) {
+						this.load();
+					}
 					return;
 				}
 
@@ -637,7 +639,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// function to save data
 			var _save = dojo.hitch(this, function(username, password) {
-				this._saveErrors = {};
+				this.resetErrors();
 				var self = this;
 				var _Poller = function( _parent, _deferred ) {
 					return {
@@ -655,13 +657,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 								message: message,
 								xhrTimeout: 40
 							} ).then( dojo.hitch( this, function( response ) {
-								if ( response.result.error ) {
-									var errors = self._saveErrors[ response.result.name ] || [];
-									if ( errors.indexOf( response.result.error ) === -1 ) {
-										errors.push( response.result.error );
-									}
-									self._saveErrors[ response.result.name ] = errors;
-								}
+								var name = response.result.name
+								self.addError( name, response.result.error );
+								self.addError( name, response.result.join_error, true );
 								if ( response.result.finished ) {
 									this.parent._progressInfo.setInfo(this.parent._('Configuration finished'), '', 100);
 									this.deferred.resolve();
@@ -679,11 +677,19 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// send save command to server
 				this._progressInfo.reset();
 				this.standby( true, this._progressInfo );
-				this.umcpCommand('setup/save', {
-					values: values,
-					username: username || null,
-					password: password || null
-				}).then(dojo.hitch(this, function() {
+				var command = null;
+				if (!this.wizard_mode || role == 'basesystem') {
+					command = this.umcpCommand('setup/save', {
+						values: values
+					});
+				} else {
+					command = this.umcpCommand('setup/join', {
+						values: values,
+						username: username,
+						password: password
+					});
+				}
+				command.then(dojo.hitch(this, function() {
 					// poll whether script has finished
 					var poller = new _Poller( this, deferred );
 					poller.check();
@@ -744,8 +750,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					var errorHtml = this._buildErrorHtml();
 					if (!errorHtml) {
 						return _cleanup(this._('The configuration was successful. Please confirm to complete the process.'));
+					} else if (this._joinError) {
+						return _cleanup(this._('The system join was not successful. You may continue and end the wizard leaving the system unjoined; it can be joined later with the dedicated module. Or you may cancel and return to the wizard, change some fields and retry. Details follow.') + errorHtml, true, true);
 					} else {
-						return _cleanup(this._('The configuration was not successful. The wizard ends here, possibly leaving the system unjoined. In this case, please contact the Administrator and join the system with the dedicated module. Details follow.') + errorHtml);
+						return _cleanup(this._('The configuration was not successful, but the system has joined and thus the wizard ends here. Please confirm to complete the process. Details follow.' + errorHtml));
 					}
 				}));
 			}
@@ -778,6 +786,24 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		}));
 	},
 
+	resetErrors: function() {
+		this._saveErrors = {};
+		this._joinError = false;
+	},
+
+	addError: function(name, error, join_error) {
+		if ( error ) {
+			var errors = this._saveErrors[ name ] || [];
+			if ( dojo.indexOf( errors, error ) === -1 ) {
+				errors.push( error );
+			}
+			this._saveErrors[ name ] = errors;
+			if (join_error) {
+				this._joinError = true;
+			}
+		}
+	},
+
 	_buildErrorHtml: function() {
 		var errorHtml = '';
 		umc.tools.forIn(this._saveErrors, function(key, value) {
@@ -788,7 +814,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			errorHtml += '</ul></li>';
 		});
 		if (errorHtml) {
-			errorHtml = '<ul>' + errorHtml + '</ul>';
+			errorHtml = '<ul style="overflow: auto; max-height: 400px;">' + errorHtml + '</ul>';
 		}
 		return errorHtml;
 	},

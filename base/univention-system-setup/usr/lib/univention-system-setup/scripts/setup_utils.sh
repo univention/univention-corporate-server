@@ -75,6 +75,13 @@ progress_msg()
 	echo "__MSG__:$1"
 }
 
+# prints a join error message to the UMC module that is displayed in the progress bar
+# @param  error message to print
+progress_join_error()
+{
+	echo "__JOINERR__:$1"
+}
+
 # prints an error message to the UMC module that is displayed in the progress bar
 # @param  error message to print
 progress_error()
