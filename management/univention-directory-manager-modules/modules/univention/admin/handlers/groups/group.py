@@ -201,7 +201,7 @@ property_descriptions={
 			identifies=0
 		),
 	'allowedEmailUsers': univention.admin.property(
-			short_description=_( 'Users with mailing privileges' ),
+			short_description=_( 'Users that are allowed to send e-mails to the group' ),
 			long_description='',
 			syntax=univention.admin.syntax.UserDN,
 			multivalue=1,
@@ -212,7 +212,7 @@ property_descriptions={
 			identifies=0
 		),
 	'allowedEmailGroups': univention.admin.property(
-			short_description=_('Groups with mailing privileges'),
+			short_description=_('Groups that are allowed to send e-mails to the group'),
 			long_description='',
 			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,
