@@ -200,7 +200,7 @@ check_space(){
 		echo "         If neccessary you can skip this check by setting the value of the"
 		echo "         config registry variable update30/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" -a ! "$update30_pruneoldkernel" = "yes" -a ! "$univention_ox_directory_integration_oxase" = "true" ] ; then
+		if [ "$partition" = "/boot" -a ! "$update30_pruneoldkernel" = "yes" ] ; then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
 			echo "         update30/pruneoldkernel to \"yes\"."

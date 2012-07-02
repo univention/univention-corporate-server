@@ -1,3 +1,9 @@
+univention-updater (7.0.169-2) unstable; urgency=low
+
+  * removed OXASE specific test in preup.sh (Bug #27097)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 02 Jul 2012 14:54:31 +0200
+
 univention-updater (7.0.169-1) unstable; urgency=low
 
   * removed OXASE specific test in preup.sh (Bug #27097)
