@@ -1,3 +1,10 @@
+univention-bind (6.0.40-1) unstable; urgency=low
+
+  * Check _ldap._tcp only if dns/register/srv_records/ldap is true or
+    empty (Bug #27708)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 02 Jul 2012 13:40:50 +0200
+
 univention-bind (6.0.39-1) unstable; urgency=low
 
   * Timeout zone updates in listener (Bug #25868)

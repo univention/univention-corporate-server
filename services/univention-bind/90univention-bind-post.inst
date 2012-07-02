@@ -36,6 +36,17 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
+# Bug #27001
+local_is_ucr_false () { # test if UCS variable is "true" or "false"
+    local value
+    value="$(univention-config-registry get "$1")"
+    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+        1|yes|on|true|enable|enabled) return 1 ;;
+        0|no|off|false|disable|disabled) return 0 ;;
+        *) return 2 ;;
+    esac
+}
+
 eval "$(univention-config-registry shell)"
 
 if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
@@ -59,20 +70,22 @@ wait_for_dns () {
 		count=$((count+1))
 	done
 
-	count=0
-	while [ $count -le 600 ]; do
-		if LC_ALL=C host -t SRV -W 1 "_ldap._tcp.$domainname" 2>&1 | grep -q "has SRV record"
-		then
-			echo " done"
-			break
-		else
-			echo -n "."
-			# restart bind every 200 seconds
-			expr $count % 200 >/dev/null || invoke-rc.d bind9 restart
-			sleep 1
-		fi;
-		count=$((count+1))
-	done
+	if ! local_is_ucr_false dns/register/srv_records/ldap; then
+		count=0
+		while [ $count -le 600 ]; do
+			if LC_ALL=C host -t SRV -W 1 "_ldap._tcp.$domainname" 2>&1 | grep -q "has SRV record"
+			then
+				echo " done"
+				break
+			else
+				echo -n "."
+				# restart bind every 200 seconds
+				expr $count % 200 >/dev/null || invoke-rc.d bind9 restart
+				sleep 1
+			fi;
+			count=$((count+1))
+		done
+	fi
 
 	nscd -i hosts
 }
