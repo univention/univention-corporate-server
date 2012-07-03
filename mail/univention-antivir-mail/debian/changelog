@@ -1,3 +1,11 @@
+univention-antivir-mail (4.0.2-1) unstable; urgency=low
+
+  * modified ucr template for freshclam.conf in order to support
+    passwords containing ":" for proxy authentication
+    (Bug #19471)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 03 Jul 2012 10:12:48 +0200
+
 univention-antivir-mail (4.0.1-1) unstable; urgency=low
 
   * added proxy configuration for freshclam (Bug #19471)
