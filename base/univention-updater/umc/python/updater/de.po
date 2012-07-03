@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-02-27 16:22+0100\n"
+"POT-Creation-Date: 2012-07-03 12:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,56 +12,56 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/updater/__init__.py:801
+#: umc/python/updater/__init__.py:850
 #, python-format
 msgid "At least one out of %s must be selected."
 msgstr "Wenigstens eine der %s Kategorien muß ausgewählt werden."
 
-#: umc/python/updater/__init__.py:1378
+#: umc/python/updater/__init__.py:1426
 msgid "Component name is not allowed to be empty."
 msgstr "Der Komponentenname muß angegeben werden."
 
-#: umc/python/updater/__init__.py:807
+#: umc/python/updater/__init__.py:856
 #, python-format
 msgid "ERROR: %s"
 msgstr "FEHLER: %s"
 
-#: umc/python/updater/__init__.py:795
+#: umc/python/updater/__init__.py:844
 msgid "Empty server name not allowed"
 msgstr "Der Servername muß angegeben werden."
 
-#: umc/python/updater/__init__.py:1383
+#: umc/python/updater/__init__.py:1431
 #, python-format
 msgid "Illegal character(s) in component name: '%s'"
 msgstr "Unzulässige Zeichen (%s) im Komponentennamen."
 
-#: umc/python/updater/__init__.py:130
+#: umc/python/updater/__init__.py:135
 msgid "Install all available updates for the current release"
 msgstr "Alle verfügbaren Aktualisierungen installieren"
 
-#: umc/python/updater/__init__.py:102
+#: umc/python/updater/__init__.py:107
 msgid "Install all errata updates"
 msgstr "Alle Errata-Aktualisierungen installieren"
 
-#: umc/python/updater/__init__.py:123
+#: umc/python/updater/__init__.py:128
 msgid "Install all package updates"
 msgstr "Alle Paket-Aktualisierungen installieren"
 
-#: umc/python/updater/__init__.py:117
+#: umc/python/updater/__init__.py:122
 #, python-format
 msgid "Install component '%s'"
 msgstr "Komponente '%s' installieren"
 
-#: umc/python/updater/__init__.py:108
+#: umc/python/updater/__init__.py:113
 #, python-format
 msgid "Perform release update up to version '%s'"
 msgstr "Release auf Version '%s' aktualisieren"
 
-#: umc/python/updater/__init__.py:1392
+#: umc/python/updater/__init__.py:1440
 msgid "There is already a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/updater/__init__.py:875
+#: umc/python/updater/__init__.py:924
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -69,10 +69,10 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/updater/__init__.py:333
+#: umc/python/updater/__init__.py:338
 msgid "latest version"
 msgstr "neueste Version"
 
-#: umc/python/updater/__init__.py:530
+#: umc/python/updater/__init__.py:578
 msgid "unknown"
 msgstr "unbekannt"

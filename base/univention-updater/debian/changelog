@@ -1,3 +1,9 @@
+univention-updater (7.0.170-1) unstable; urgency=low
+
+  * added dialog for restarting UMC server components; Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Jul 2012 13:16:21 +0200
+
 univention-updater (7.0.169-2) unstable; urgency=low
 
   * removed OXASE specific test in preup.sh (Bug #27097)

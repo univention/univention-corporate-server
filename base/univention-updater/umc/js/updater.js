@@ -226,6 +226,11 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 				confirm:	this._("Do you really want to upgrade your system?")
 			});
 		}));
+
+		// propagate the status information to other pages
+		dojo.connect(this._updates,'onStatusLoaded',dojo.hitch(this, function(vals) {
+			this._progress.updateStatus(vals);
+		}));
 	},
 
 	// We defer these actions until the UI is readily rendered

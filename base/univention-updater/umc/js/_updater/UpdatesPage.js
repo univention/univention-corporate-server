@@ -79,7 +79,7 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 				type:			'Text',
 				name:			'reboot_text',
 				label:			'',
-				content:		this._("In order to complete the recently executed installer action, it is required to reboot the system."),
+				content:		this._("In order to complete the recently executed action, it is required to reboot the system."),
 				// FIXME: Manual placement: should be done by the layout framework some day.
 				style:			'width:500px;'
 			},
@@ -421,6 +421,9 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 			{
 				this._query_success('updater/updates/get');
 				var values = this._form.gatherFormValues();
+
+				// send event that value have been loaded
+				this.onStatusLoaded(values);
 
 				// before we do anything else: switch visibility of panes dependant of the 'easy mode'
 				this._switch_easy_mode((values['easy_mode'] === true) || (values['easy_mode'] === 'true'));
@@ -791,6 +794,10 @@ dojo.declare("umc.modules._updater.UpdatesPage", umc.modules._updater.Page, {
 	runDistUpgrade: function() {
 	},
 	runEasyUpgrade: function() {
+	},
+
+	onStatusLoaded: function(vals) {
+		// event stub
 	}
 
 });

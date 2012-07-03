@@ -36,6 +36,7 @@ dojo.require("umc.tools");
 
 dojo.require("umc.modules._updater.Page");
 dojo.require("umc.modules._updater._LogViewer");
+dojo.require("umc.modules.lib.server");
 
 // Some thoughts about the programmatic page structure:
 //
@@ -57,6 +58,8 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 	_interval:		1000,
 
 	_job_key:		'',			// the key of the currently running job
+
+	_reboot_required: null,
 
 	postMixInProperties: function() {
 
@@ -113,12 +116,33 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 				{
 					this.last_tab = null;
 				}
-				if (this.last_tab)
-				{
-					tab = this.last_tab;
-					this.last_tab = null;
+
+				// local function to close the log view
+				var _closeLogView = dojo.hitch(this, function() {
+					if (this.last_tab)
+					{
+						tab = this.last_tab;
+						this.last_tab = null;
+					}
+					this.stopWatching(tab);		// updater Module listens here and will switch display back to the given tab.
+				});
+
+				if (this._reboot_required) {
+					// show an alert
+					umc.dialog.alert(this._('In order to complete the update, it is strongly recommended to reboot the system.'));
+					_closeLogView();
 				}
-				this.stopWatching(tab);		// updater Module listens here and will switch display back to the given tab.
+				else {
+					// ask user to restart
+					umc.modules.lib.server.askRestart(this._('For the changes to take effect, it is recommended to perform a restart of the UMC server components. This will take approximately 10 sec.')).then(
+						function() { /* nothing to do */ },
+						function() {
+							// user canceled -> change current view
+							_closeLogView();
+						}
+					);
+				}
+
 			})
 		});
 		this._pane.addChild(this._close);
@@ -404,6 +428,10 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 		}
 		// this.layout();
 
-	}
+	},
 
+	updateStatus: function(values) {
+		// receive new status values from update page
+		this._reboot_required = umc.tools.isTrue(values.reboot_required);
+	}
 });
