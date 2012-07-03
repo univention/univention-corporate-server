@@ -271,9 +271,9 @@ class Instance(umcm.Base):
 		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" /usr/sbin/udm users/user list --filter uid=$DCACCOUNT --logfile /dev/null | sed -ne 's|DN: ||p'
 		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p'
 		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p'
-		cmdlist = [	['univention-ssh', pwdfilename, user_host, '/usr/sbin/udm', 'users/user', 'list', '--filter', 'uid=%s' % username, '--logfile', '/dev/null'],
-					['univention-ssh', pwdfilename, user_host, 'ldapsearch', '-x', '-LLL', '-H', 'ldapi:///', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
-					['univention-ssh', pwdfilename, user_host, 'ldapsearch', '-x', '-LLL', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
+		cmdlist = [	['univention-ssh', pwdfilename, '-q', user_host, '/usr/sbin/udm', 'users/user', 'list', '--filter', 'uid=%s' % username, '--logfile', '/dev/null'],
+					['univention-ssh', pwdfilename, '-q', user_host, 'ldapsearch', '-x', '-LLL', '-H', 'ldapi:///', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
+					['univention-ssh', pwdfilename, '-q', user_host, 'ldapsearch', '-x', '-LLL', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
 					]
 
 		try:
