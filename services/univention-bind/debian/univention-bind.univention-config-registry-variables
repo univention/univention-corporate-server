@@ -23,8 +23,8 @@ Type=str
 Categories=service-bind
 
 [dns/fakeroot]
-Description[de]=Nur wirksam falls kein dns/forwarder gesetzt ist. Falls auf True gesetzt, löst Bind nur noch den Namen des eigenen Rechners auf. Falls auf False gesetzt, so werden die wohlbekannten DNS-Server des Internets benutzt. (Standard: nicht gesetzt)
-Description[en]=Effective only if no dns/forwarder is set. If set to True then bind service resolves only the name of the host itself. If set to False then the well-known DNS root servers are used. (Default: not set)
+Description[de]=Nur wirksam falls keine dns/forwarder gesetzt sind. Falls auf True gesetzt, löst Bind nur noch Namen aus den lokal definierten Zonen auf (darunter den Namen des eigenen Rechners). Falls auf False gesetzt, so werden die wohlbekannten root-DNS-Server des Internets benutzt. (Standard: yes)
+Description[en]=Effective only if no forwarders are set. If set to True then the DNS server resolves only the names of the locally defined zones (among them the host itself). If set to False then the well-known DNS root servers are used. (Default: yes)
 Type=str
 Categories=service-bind
 

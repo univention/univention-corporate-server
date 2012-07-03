@@ -1,3 +1,10 @@
+univention-bind (6.0.41-1) unstable; urgency=low
+
+  * univention-bind.univention-config-registry-variables:
+    Improved description of dns/fakeroot (Bug #26301).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 03 Jul 2012 09:36:30 +0200
+
 univention-bind (6.0.40-1) unstable; urgency=low
 
   * Check _ldap._tcp only if dns/register/srv_records/ldap is true or
