@@ -23,7 +23,7 @@ Depends: ${misc:Depends},
  python-tdb,
  samba-common-bin,
  shell-univention-lib (>= 1.0.6),
- python-univention-lib (>= 1.0.45)
+ python-univention-lib (>= 1.0.80)
 Conflicts: samba4,
  samba-dsdb-modules,
  samba4-common-bin,

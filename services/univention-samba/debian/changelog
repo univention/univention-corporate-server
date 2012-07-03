@@ -1,3 +1,9 @@
+univention-samba (6.0.39-1) unstable; urgency=low
+
+  * moved python/share_restrictions.py to python-univention-lib (Bug #26899)
+
+ -- Florian Best <best@univention.de>  Tue, 03 Jul 2012 08:23:31 +0200
+
 univention-samba (6.0.38-1) unstable; urgency=low
 
   * added conflict to samba4 packages (Bug #27370)
