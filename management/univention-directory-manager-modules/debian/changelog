@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.267-1) unstable; urgency=low
+
+  * added translation for exception message (Bug #26853)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 03 Jul 2012 14:56:22 +0200
+
 univention-directory-manager-modules (7.0.266-2) unstable; urgency=low
 
   * version bump (as changes for Bug #26853 have been modified)

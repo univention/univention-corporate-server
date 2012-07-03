@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-22 16:20+0200\n"
+"POT-Creation-Date: 2012-07-03 14:46+0200\n"
 "PO-Revision-Date: 2009-08-04 17:18+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -394,8 +394,10 @@ msgid "Hostname"
 msgstr "Rechnername"
 
 #: managedclient.py:428
-msgid "At least one of the options Posix or Kerberos has to be specified."
-msgstr "Zumindest eine der Optionen Posix oder Kerberos muss ausgewählt sein."
+msgid ""
+" The combination of options is invalid. At least posix or kerberos is "
+"required."
+msgstr " Zumindest Posix oder Kerberos wird benötigt."
 
 #: memberserver.py:54
 msgid "Computer: Member Server"
@@ -456,6 +458,10 @@ msgstr "Windows Workstation/Server Name"
 #: windows.py:214
 msgid "Initialize password with hostname"
 msgstr "Passwort mit dem Rechnernamen initialisieren"
+
+#~ msgid "At least one of the options Posix or Kerberos has to be specified."
+#~ msgstr ""
+#~ "Zumindest eine der Optionen Posix oder Kerberos muss ausgewählt sein."
 
 #~ msgid "IP"
 #~ msgstr "IP"
