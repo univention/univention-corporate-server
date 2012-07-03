@@ -1,3 +1,9 @@
+univention-antivir-mail (4.0.2-2) unstable; urgency=low
+
+  * version bump (as changes for Bug #19471 have been modified)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 03 Jul 2012 11:38:30 +0200
+
 univention-antivir-mail (4.0.2-1) unstable; urgency=low
 
   * modified ucr template for freshclam.conf in order to support
