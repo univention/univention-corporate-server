@@ -14,7 +14,7 @@ Package: univention-management-console-module-lib
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-server,
- devscripts
+ univention-updater
 Description: Module lib containing low-lewel commands to control the UMC server
  Module lib containing low-lewel commands to control the UMC server
  .
