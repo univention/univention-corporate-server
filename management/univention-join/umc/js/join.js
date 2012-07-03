@@ -60,7 +60,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_logpane:			null,			// container that gives scrollability to _logtext
 	_logtext:			null,			// text widget that holds log
-	_logbottom			null,			// empty element to which we can scroll to
+	_logbottom:			null,			// empty element to which we can scroll to
 	_b_show:			null,			// button to show log
 	_b_hide:			null,			// button to hide log
 	_b_full:			null,			// button to extend log to show all lines
