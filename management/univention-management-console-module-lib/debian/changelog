@@ -1,3 +1,9 @@
+univention-management-console-module-lib (0.1.1-1) unstable; urgency=low
+
+  * added missing translations; Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Jul 2012 10:58:24 +0200
+
 univention-management-console-module-lib (0.1.0-1) unstable; urgency=low
 
   * Initial release of module with library methods; Bug #26235
