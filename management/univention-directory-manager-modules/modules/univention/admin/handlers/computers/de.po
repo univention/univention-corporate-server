@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 14:46+0200\n"
+"POT-Creation-Date: 2012-07-03 15:07+0200\n"
 "PO-Revision-Date: 2009-08-04 17:18+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -394,9 +394,7 @@ msgid "Hostname"
 msgstr "Rechnername"
 
 #: managedclient.py:428
-msgid ""
-" The combination of options is invalid. At least posix or kerberos is "
-"required."
+msgid " At least posix or kerberos is required."
 msgstr " Zumindest Posix oder Kerberos wird benötigt."
 
 #: memberserver.py:54

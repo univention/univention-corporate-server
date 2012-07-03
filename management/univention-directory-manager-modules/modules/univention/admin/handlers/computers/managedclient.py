@@ -425,7 +425,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	def _ldap_addlist(self):
 		if not 'posix' in self.options and not 'kerberos' in self.options:
-			raise univention.admin.uexceptions.invalidOptions(_(' The combination of options is invalid. At least posix or kerberos is required.'))
+			raise univention.admin.uexceptions.invalidOptions(_(' At least posix or kerberos is required.'))
 		
 		
 		ocs=['top', 'person', 'univentionHost', 'univentionClient']
