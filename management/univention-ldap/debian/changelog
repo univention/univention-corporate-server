@@ -1,3 +1,13 @@
+univention-ldap (8.0.86-4) unstable; urgency=low
+
+  * univention-backup2master (Bug #26211): The changing of attributes
+    in resolve_reference() is done differently now. The new attribute
+    is first appended and after this, the old attribute is removed.
+    Only udm module shares/share is still changed with --set because
+    its attribute host can occur only once.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 03 Jul 2012 14:39:22 +0200
+
 univention-ldap (8.0.86-3) unstable; urgency=low
 
   * univention-backup2master (Bug #5774):

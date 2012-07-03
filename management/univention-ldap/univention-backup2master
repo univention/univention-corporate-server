@@ -94,7 +94,7 @@ resolve_reference() {
     awk -vold=$old_ldap_master -vattr=$attribute \
       '/^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
        $1 ~ attr && $0 ~ old { print DN }
-      ' > $domains
+      ' | uniq > $domains
   # Open temporary file containing DNs and assign fd 5 to it.
   exec 5<> $domains
   # Remember that LDAP DNs may contain blank characters.
@@ -138,7 +138,14 @@ resolve_reference() {
       case $answer in
         [yY] )
           echo "Ok, changing $attribute in $DN"
-          udm $module modify --dn "$DN" --set $attribute="$new_value"
+          if [ "$module" = "shares/share" ] ; then
+            # shares/share can have only one host
+            udm $module modify --dn "$DN" --set $attribute="$new_value"
+          else 
+            # other modules can have the same attribute several times
+            udm $module modify --dn "$DN" --append $attribute="$new_value"
+            udm $module modify --dn "$DN" --remove $attribute="$old_value"
+          fi
           break ;;
         [nN] )
           echo "Ok, leaving $DN unchanged"
