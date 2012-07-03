@@ -1,10 +1,13 @@
 Type: script
 Script: samba.local.config.py
 Variables: samba/share/.*/usergroup/.*/invalid
+Variables: samba/share/.*/hosts/deny
 Variables: samba/share/.*/options
 Variables: samba/global/options
 Variables: samba/printmode/usergroup
+Variables: samba/printmode/hosts/.*
 Variables: samba/othershares/usergroup/.*/invalid
+Variables: samba/othershares/hosts
 
 Type: multifile
 Multifile: etc/samba/smb.conf

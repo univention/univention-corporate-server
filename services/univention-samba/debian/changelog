@@ -1,3 +1,10 @@
+univention-samba (6.0.40-2) unstable; urgency=low
+
+  * added missing UCR variables samba/share/.*/hosts/deny,
+    samba/printmode/hosts/.* and samba/othershares/hosts (Bug #26899)
+
+ -- Florian Best <best@univention.de>  Tue, 03 Jul 2012 11:10:33 +0200
+
 univention-samba (6.0.40-1) unstable; urgency=low
 
   * readded python/share_restrictions.py (Bug #26899)
