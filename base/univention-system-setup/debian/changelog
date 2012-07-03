@@ -1,3 +1,9 @@
+univention-system-setup (5.0.180-1) unstable; urgency=low
+
+  * make sure that credentials are != undefined for setup/join; Bug #25805
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Jul 2012 12:25:14 +0200
+
 univention-system-setup (5.0.179-1) unstable; urgency=low
 
   * Allow retry of join process if it failed (Bug #25805)

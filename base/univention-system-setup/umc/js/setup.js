@@ -639,6 +639,11 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 			// function to save data
 			var _save = dojo.hitch(this, function(username, password) {
+				// make sure that the parameters are not undefined,
+				// otherwise an 'Invalid JSON Document' is return by the server
+				username = username || null;
+				password = password || null;
+
 				this.resetErrors();
 				var self = this;
 				var _Poller = function( _parent, _deferred ) {
