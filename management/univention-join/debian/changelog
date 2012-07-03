@@ -1,3 +1,11 @@
+univention-join (4.0.41-1) unstable; urgency=low
+
+  * fixed polling issues
+  * fixed backend error handling with for credentials check
+  Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Jul 2012 17:37:43 +0200
+
 univention-join (4.0.40-1) unstable; urgency=low
 
   * added option '-q' to univention-ssh for credentials check; Bug #26235

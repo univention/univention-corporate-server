@@ -54,7 +54,6 @@ import notifier.threads
 import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules
-import univention.admin.config
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
@@ -244,6 +243,10 @@ class Instance(umcm.Base):
 
 		return ''
 
+
+	# regular expression to match warnings
+	_regWarnings = re.compile(r'^Warning:.*?\n', re.MULTILINE)
+
 	def _guess_userdn(self, username, password, hostname):
 		# do some security checks on given username and hostname
 		# Warning: no complete check since the user is able to log on to the DC master and can call harmful commands directly
@@ -271,9 +274,9 @@ class Instance(umcm.Base):
 		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" /usr/sbin/udm users/user list --filter uid=$DCACCOUNT --logfile /dev/null | sed -ne 's|DN: ||p'
 		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p'
 		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p'
-		cmdlist = [	['univention-ssh', pwdfilename, '-q', user_host, '/usr/sbin/udm', 'users/user', 'list', '--filter', 'uid=%s' % username, '--logfile', '/dev/null'],
-					['univention-ssh', pwdfilename, '-q', user_host, 'ldapsearch', '-x', '-LLL', '-H', 'ldapi:///', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
-					['univention-ssh', pwdfilename, '-q', user_host, 'ldapsearch', '-x', '-LLL', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
+		cmdlist = [	['univention-ssh', pwdfilename, user_host, '/usr/sbin/udm', 'users/user', 'list', '--filter', 'uid=%s' % username, '--logfile', '/dev/null'],
+					['univention-ssh', pwdfilename, user_host, 'ldapsearch', '-x', '-LLL', '-H', 'ldapi:///', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
+					['univention-ssh', pwdfilename, user_host, 'ldapsearch', '-x', '-LLL', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
 					]
 
 		try:
@@ -286,6 +289,7 @@ class Instance(umcm.Base):
 					raise JoinExceptionUnknownHost()
 				if 'permission denied' in stderr.lower():
 					raise JoinExceptionInvalidCredentials()
+				stderr = self._regWarnings.sub('', stderr)  # ignore warnings
 				if stderr:
 					raise JoinExceptionUnknownError()
 
@@ -394,7 +398,6 @@ class Instance(umcm.Base):
 			userDn = None
 			try:
 				# get LDAP connection and UDM users/user module
-				co = univention.admin.config.config()
 				lo = univention.uldap.getMachineConnection()
 				position = univention.admin.uldap.position(baseDn)
 				univention.admin.modules.update()
@@ -402,7 +405,7 @@ class Instance(umcm.Base):
 				univention.admin.modules.init(lo, position, user_module)
 
 				# find desired object
-				objects = univention.admin.modules.lookup(user_module, co, lo, scope='sub', filter='uid=%s' % username)
+				objects = univention.admin.modules.lookup(user_module, None, lo, scope='sub', filter='uid=%s' % username)
 
 				if not objects:
 					MODULE.warn('The given username "%s" does not exist.' % username)

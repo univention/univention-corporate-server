@@ -94,7 +94,10 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		{
 			// show the grid
 			this._stackContainer.selectChild(this._grid);
+
+			// stop the loops
 			this._refresh_log(false);
+			this._job_polling_loop(false);
 		}
 		else if (code == 'log')
 		{
@@ -116,13 +119,19 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// show the log view with the closing button
 			this._b_hide.set('disabled', false);
 			this._stackContainer.selectChild(this._logpane);
+
+			// stop the loops
 			this._refresh_log(false);
+			this._job_polling_loop(false);
 		}
 		else if (code == 'join_form')
 		{
 			// show the join form (on an unjoined system)
 			this._stackContainer.selectChild(this._joinpane);
+
+			// stop the loops
 			this._refresh_log(false);
+			this._job_polling_loop(false);
 		}
 
 		// update the layout if view changed
@@ -231,7 +240,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			dojo.window.scrollIntoView(this._logbottom.domNode);
 			}
 			else {
-				console.error('### no logfooter');
+				console.error('no logfooter');
 			}
 
 			// if we had something to read -> restart the refresh timer AFTER we
@@ -291,9 +300,9 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			return;
 		}
 
-		// If in the meantime the callback has set _job_running to FALSE
-		// the function will do nothing, effectively stopping the loop.
-		if (this._job_running)
+		// We should have exactly one such job. If one is underway, we don't
+		// step on its feet. Otherwise, we start a new one.
+		if (!this._polling_job)
 		{
 			// this query returns false as soon as the scripts are finished, and this
 			// will avoid scheduling any new polling cycle.
@@ -320,27 +329,22 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				this._switch_view('grid');
 			}));
 
-			// We should have exactly one such job. If one is underway, we don't
-			// step on its feet. Otherwise, we start a new one.
-			if (this._polling_job === null)
-			{
-		        var deferred = new dojo.Deferred();
-		        this._polling_job = deferred;
-		        deferred.then(dojo.hitch(this,function() {
-		        	this._polling_job = null;		// this job has fired.
-		        	this._job_polling_loop();		// go on to next loop
-		        }));
+			var deferred = new dojo.Deferred();
+			this._polling_job = deferred;
+			deferred.then(dojo.hitch(this,function() {
+				this._polling_job = null;		// this job has fired.
+				this._job_polling_loop();		// go on to next loop
+			}));
 
-				// set timeout to trigger refesh
-				umcpDeferred.then(dojo.hitch(this, function() {
-					setTimeout(dojo.hitch(this, function() {
-						if (this._polling_job)
-						{
-							this._polling_job.resolve();
-						}
-					}), this._polling_time);
-				}));
-			}
+			// set timeout to trigger refesh
+			umcpDeferred.then(dojo.hitch(this, function() {
+				setTimeout(dojo.hitch(this, function() {
+					if (this._polling_job)
+					{
+						this._polling_job.resolve();
+					}
+				}), this._polling_time);
+			}));
 		}
 	},
 
@@ -433,10 +437,12 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// trigger the join procedure
 	_run_join: function() {
 		this._joinform.standby(true);
+		var pass = this._joinform._widgets['pass'].get('value');
+		this._joinform._widgets['pass'].set('value', '');
 		this.umcpCommand('join/join',{
-			host: this._joinform._widgets['host'].value,
-			user: this._joinform._widgets['user'].value,
-			pass: this._joinform._widgets['pass'].value
+			host: this._joinform._widgets['host'].get('value'),
+			user: this._joinform._widgets['user'].get('value'),
+			pass: pass
 		}).then(dojo.hitch(this, function(data) {
 			if (data.result.msg) {
 				this._joinform.standby(false);
@@ -475,8 +481,6 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		if ((list !== null) && (list !== undefined) && (list.length > 0))
 		{
-			this._job_running = true;
-
 			var values = { scripts: list };
 			if (credentials.username) {
 				values.username = credentials.username;
@@ -742,6 +746,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			label:		this._('Show full log'),
     		onClick:	dojo.hitch(this, function() {
 				this._logcount = 0;
+				this._refresh_log(true);
     		})
 		});
 		this._logbuttons.addChild(this._b_full);
@@ -894,6 +899,7 @@ dojo.declare("umc.modules.join", [ umc.widgets.Module, umc.i18n.Mixin ], {
 							username: form.getWidget('username').get('value'),
 							password: form.getWidget('password').get('value')
 						});
+						form.getWidget('password').set('value', '');
 						dialog.hide();
 						dialog.destroyRecursive();
 						form.destroyRecursive();
