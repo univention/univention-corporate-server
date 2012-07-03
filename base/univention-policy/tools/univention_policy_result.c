@@ -188,9 +188,7 @@ int main(int argc, char* argv[])
 	dn = argv[argc - 1];
 
 	if ((rc = univention_ldap_open(ldap_parameters)) != 0) {
-		if (output == OUTPUT_VERBOSE) {
-			printf("Return 1 %s\n\n", dn);
-		}
+		fprintf(stderr, "could not open policy for %s\n\n", dn);
 		goto err2;
 	}
 
@@ -265,8 +263,10 @@ int main(int argc, char* argv[])
 		}
 		univention_policy_close(handle);
 		rc = 0;
-	} else
+	} else {
 		rc = 1;
+		printf("could not open policy\n");
+	}
 err2:
 	univention_ldap_close(ldap_parameters);
 err1:

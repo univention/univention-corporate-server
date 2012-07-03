@@ -1,3 +1,9 @@
+univention-policy (5.0.8-3) unstable; urgency=low
+
+  * univention_policy_result.c: Improved error-reporting.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 03 Jul 2012 08:38:37 +0200
+
 univention-policy (5.0.8-2) unstable; urgency=low
 
   * Options "-W" and "-p" already existed in getopt, but were not
