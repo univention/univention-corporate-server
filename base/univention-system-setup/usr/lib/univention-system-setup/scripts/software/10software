@@ -88,7 +88,7 @@ mkfifo "$stdoutFifo" "$statFifo" #"$stderrFifo"
         apt-get $APT_PARAMS install $p- $base
         aptResult=$?
         if [ $aptResult -gt 0 ]; then
-            echo "setuperror:$p::$(gettext "Failed to uninstall")" >&4
+            progress_error "$p: $(gettext "Failed to uninstall")"
         fi
     done
 
@@ -103,7 +103,7 @@ mkfifo "$stdoutFifo" "$statFifo" #"$stderrFifo"
         apt-get $APT_PARAMS install $p $base
         aptResult=$?
         if [ $aptResult -gt 0 ]; then
-            echo "setuperror:$p::$(gettext "Failed to install")" >&4
+            progress_error "$p: $(gettext "Failed to install")"
         fi
     done
 ) &

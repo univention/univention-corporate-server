@@ -224,8 +224,7 @@ class Instance(umcm.Base):
 		def _thread(request, obj):
 			# acquire the lock in order to wait for the join/setup scripts to finish
 			# do this for 30 sec and then return anyway
-			# SLEEP less than the scripts (see e.g. scripts/software/10software)
-			SLEEP_TIME = 0.01
+			SLEEP_TIME = 0.200
 			WAIT_TIME = 30
 			ntries = WAIT_TIME / SLEEP_TIME
 			while not obj._finishedLock.acquire(False):
@@ -235,7 +234,7 @@ class Instance(umcm.Base):
 						 'name' : state.fractionName,
 						 'message' : state.message,
 						 'join_error' : state.pop_join_error(),
-						 'error' : state.pop_error(),
+						 'error' : state.pop_misc_error(),
 						 'percentage' : state.percentage }
 				time.sleep( SLEEP_TIME )
 				ntries -= 1
@@ -243,13 +242,18 @@ class Instance(umcm.Base):
 			obj._finishedLock.release()
 
 			# scripts are done, return final result
+			# return all errors that we gathered throughout the setup
 			state = self._progressParser.current
-			return { 'finished' : obj._finishedResult,
-				 'name' : state.fractionName,
-				 'message' : state.message,
-				 'join_error' : state.pop_join_error(),
-				 'error' : state.pop_error(),
-				 'percentage' : state.percentage }
+			return { 
+				'finished' : obj._finishedResult,
+				'name' : state.fractionName,
+				'message' : state.message,
+				'join_error' : state.pop_join_error(),
+				'error' : state.pop_misc_error(),
+				'all_join_errors' : state._join_errors,
+				'all_errors' : state._misc_errors,
+				'percentage' : state.percentage,
+				 }
 
 		thread = notifier.threads.Simple( 'check_finished',
 			notifier.Callback( _thread, request, self ),

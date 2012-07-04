@@ -226,33 +226,51 @@ class ProgressState( object ):
 		self.steps = 1
 		self.step = 0
 		self.max = 100
-		self.join_error = ''
-		self.error = ''
+		self._join_error = ''
+		self._join_errors = []
+		self._misc_error = ''
+		self._misc_errors = []
 
 	# make sure the error is only send once
+	def _pop_error( self, error_name ):
+		# error attrs are "hidden"
+		error_name = '_%s' % error_name
+		error = getattr(self, error_name)
+		setattr(self, error_name, '')
+		return error
+
+	def pop_misc_error( self ):
+		return self._pop_error('misc_error')
+
 	def pop_join_error( self ):
-		error = self.join_error
-		self.join_error = ''
-		return error
+		return self._pop_error('join_error')
 
-	# make sure the error is only send once
-	def pop_error( self ):
-		error = self.error
-		self.error = ''
-		return error
+	# make sure the error is preserved even if it cannot be returned now
+	def _add_error( self, error_name, error ):
+		error_name = '_%s' % error_name
+		# simplify error (to not have to use nested lists)
+		error = '%s: %s' % (self.fractionName, error)
+		setattr(self, error_name, error)
+		getattr(self, error_name + 's').append(error)
+
+	def add_misc_error( self, error ):
+		self._add_error('misc_error', error)
+
+	def add_join_error( self, error ):
+		self._add_error('join_error', error)
 
 	@property
 	def percentage( self ):
 		return ( self._percentage + self.fraction * ( self.step / float( self.steps ) ) ) / self.max * 100
 
 	def __eq__( self, other ):
-		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.join_error == self.join_error and self.error == other.error
+		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self._join_error == self._join_error and self._misc_error == other._misc_error
 
 	def __ne__( self, other ):
 		return not self.__eq__( other )
 
 	def __nonzero__( self ):
-		return bool( self.name or self.message or self.percentage or self.join_error or self.error )
+		return bool( self.name or self.message or self.percentage or self._join_error or self._misc_error )
 
 class ProgressParser( object ):
 	# regular expressions
@@ -346,13 +364,13 @@ class ProgressParser( object ):
 		# error message: why did the join fail?
 		match = ProgressParser.JOINERROR.match( line )
 		if match is not None:
-			self.current.join_error = match.groups()[ 0 ]
+			self.current.add_join_error( match.groups()[ 0 ] )
 			return True
 
 		# error message: why did the script fail?
 		match = ProgressParser.ERROR.match( line )
 		if match is not None:
-			self.current.error = match.groups()[ 0 ]
+			self.current.add_misc_error( match.groups()[ 0 ] )
 			return True
 
 		return False
@@ -398,7 +416,7 @@ def run_scripts( progressParser, restartServer = False ):
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
 
-def run_joinscript( progressParser, _username = None, password = None):
+def run_joinscript( progressParser, _username, password ):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())

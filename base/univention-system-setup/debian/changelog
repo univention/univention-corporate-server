@@ -1,3 +1,12 @@
+univention-system-setup (5.0.183-1) unstable; urgency=low
+
+  * Rename Continue -> Ok, make error more robust (Bug #26331)
+  * Rename frontend error messages, save all errors and (re)send them
+    all at once when finished in case one message went missing and
+    slightly alter layout of errors (Bug #25805)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Jul 2012 20:25:44 +0200
+
 univention-system-setup (5.0.182-1) unstable; urgency=low
 
   * perform a reload when asking to restart the server
