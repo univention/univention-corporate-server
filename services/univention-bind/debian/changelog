@@ -1,3 +1,10 @@
+univention-bind (6.0.41-2) unstable; urgency=low
+
+  * univention-bind.univention-config-registry-variables:
+    Improved description of dns/fakeroot (Bug #26301).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 04 Jul 2012 08:45:51 +0200
+
 univention-bind (6.0.41-1) unstable; urgency=low
 
   * univention-bind.univention-config-registry-variables:

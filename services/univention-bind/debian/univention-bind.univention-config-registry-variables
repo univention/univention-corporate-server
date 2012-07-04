@@ -23,8 +23,8 @@ Type=str
 Categories=service-bind
 
 [dns/fakeroot]
-Description[de]=Nur wirksam falls keine dns/forwarder gesetzt sind. Falls auf True gesetzt, löst Bind nur noch Namen aus den lokal definierten Zonen auf (darunter den Namen des eigenen Rechners). Falls auf False gesetzt, so werden die wohlbekannten root-DNS-Server des Internets benutzt. (Standard: yes)
-Description[en]=Effective only if no forwarders are set. If set to True then the DNS server resolves only the names of the locally defined zones (among them the host itself). If set to False then the well-known DNS root servers are used. (Default: yes)
+Description[de]=Diese Einstellung kontrolliert die Namensauflösung für nicht lokal definierte DNS-Zonen und ist nur relevant, sofern keine DNS-Forwarder gesetzt sind. Bei "no" wird auf die wohlbekannten root-DNS-Server zurückgegriffen. Bei "yes" werden keine externen Server verwendet, so dass nur noch Namen aus den lokalen Zonen (darunter der Name des eigenen Rechners) aufgelöst werden können. (Standard: no)
+Description[en]=This setting controls name resoltion for non-locally defined DNS zones and is relevant only if no DNS forwarder has been set. If set to "no" then the well-known DNS root servers are used for name resolution. If set to "yes" then no external servers will be used, so that only names from the local zones (among them the host itself) can be resolved. (Default: no)
 Type=str
 Categories=service-bind
 
