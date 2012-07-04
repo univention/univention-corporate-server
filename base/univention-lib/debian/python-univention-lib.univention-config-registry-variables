@@ -1,11 +1,11 @@
 [listener/shares/rename]
-Description[de]=Gibt an, ob der Directory Listener Verzeichnisse von Freigaben (NFS, Samba) verschieben soll, wenn der Freigabepfad geändert wird (default: ein neues Verzeichnis mit dem neuen Freigabepfad wird angelegt).
-Description[en]=Specifies whether the directory listeners should rename directories of shares (NFS, Samba), if the share is path changed (default: a new directory with the new share path is created).
-Type=str
+Description[de]="yes" gibt an, daß der Directory Listener Verzeichnisse von Freigaben (NFS, Samba) verschieben soll, wenn der Freigabepfad geändert wird (Standard: "no"=ein neues Verzeichnis mit dem neuen Freigabepfad wird angelegt).
+Description[en]="yes" specifies that the Directory Listener should move directories of shares (NFS, Samba), if the share path is changed (default: "no"=a new directory with the new share path is created).
+Type=bool
 Categories=service-misc
 
 [listener/shares/rename/fstypes]
-Description[de]=: separierte Liste von Dateisystemen, auf denen das Umbenennen von Verzeichnissen von Freigaben erlaubt ist (default: ext2/ext3:ext2:ext3:ext4:xfs:btrfs)
-Description[en]=: separated list of file systems on which renaming of directories of shares is allowed (default: ext2/ext3:ext2:ext3:ext4:xfs:btrfs)
+Description[de]=: separierte Liste von Dateisystemtypen, auf denen das Umbenennen von Verzeichnissen von Freigaben erlaubt ist (default: ext2/ext3:ext2:ext3:ext4:xfs:btrfs)
+Description[en]=: separated list of file system types on which renaming of directories of shares is allowed (default: ext2/ext3:ext2:ext3:ext4:xfs:btrfs)
 Type=str
 Categories=service-misc
