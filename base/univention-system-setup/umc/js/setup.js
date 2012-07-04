@@ -706,6 +706,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// ask user whether UMC server components shall be restarted or not
 			var _restart = dojo.hitch(this, function() {
 				umc.modules.lib.server.askRestart(this._('The changes have been applied successfully.'));
+				this.load(); // sets 'standby(false)'
 			});
 
 			// notify user that saving was successful

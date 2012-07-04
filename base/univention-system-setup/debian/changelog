@@ -1,3 +1,11 @@
+univention-system-setup (5.0.182-1) unstable; urgency=low
+
+  * perform a reload when asking to restart the server
+  * make sure that the FQDN is not set to "." after role change
+  Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 04 Jul 2012 18:22:50 +0200
+
 univention-system-setup (5.0.181-1) unstable; urgency=low
 
   * disable umc server and apache restart from the beginning of setup-join.sh,

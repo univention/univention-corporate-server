@@ -132,6 +132,10 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	setValues: function(_vals) {
 		var vals = dojo.mixin({}, _vals);
 		vals.fqdn = vals.hostname + '.' + vals.domainname;
+		if (vals.fqdn == '.') {
+			// hostname == "" and domainname == ""
+			vals.fqdn = "";
+		}
 		vals.root_password = '';
 
 		// block for setting the values onChange events for FQDN widget
