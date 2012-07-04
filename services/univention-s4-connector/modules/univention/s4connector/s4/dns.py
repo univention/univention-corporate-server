@@ -644,8 +644,6 @@ def ucs_srv_record_create(s4connector, object):
 				newRecord.modify()
 			else:
 				ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not modify host record')
-	elif ucr_locations:
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not write SRV record back from S4 to UCS because location of SRV record have been overwritten by UCR')
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 

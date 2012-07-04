@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.167-1) unstable; urgency=low
+
+  * Use given SRV locations from S4 when creating SRV record in UCS even
+    if the location is overwritten in UCR (Bug #27706)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Jul 2012 07:18:57 +0200
+
 univention-s4-connector (6.0.166-1) unstable; urgency=low
 
   * Fixed a typo in DNS SRV mapping which prevents the SRV record sync
