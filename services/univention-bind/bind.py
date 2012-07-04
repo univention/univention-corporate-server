@@ -228,7 +228,7 @@ def _wait_children(pids, timeout=15):
 
 		if time.time() > timeout:
 			ud.debug(ud.LISTENER, ud.WARN, 'DNS: Pending children: %s' % \
-					(' '.join(pids),))
+					(' '.join([str(pid) for pid in pids]),))
 			break
 		time.sleep(1)
 
