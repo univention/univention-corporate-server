@@ -4,6 +4,7 @@ Variables: dhclient/options/timeout
 Variables: dhclient/options/retry
 Variables: dhclient/options/ddns
 Variables: dhclient/options/ddns/zone
+Variables: dhclient/options/ddns/serverupdate
 Variables: dhclient/linklocal/fallback
 Variables: hostname
 Variables: domainname
