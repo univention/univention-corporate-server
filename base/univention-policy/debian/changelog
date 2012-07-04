@@ -1,6 +1,14 @@
+univention-policy (5.0.8-4) unstable; urgency=low
+
+  * univention_policy_result.c: One error-report redirected
+    to stderr instead of stdout  (Bug #23189). 
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 04 Jul 2012 09:20:24 +0200
+
 univention-policy (5.0.8-3) unstable; urgency=low
 
-  * univention_policy_result.c: Improved error-reporting.
+  * univention_policy_result.c: Improved error-reporting
+   (Bug #23189).
 
  -- Juergen Kahrs <Kahrs@univention.de>  Tue, 03 Jul 2012 08:38:37 +0200
 

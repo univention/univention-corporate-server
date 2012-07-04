@@ -265,7 +265,7 @@ int main(int argc, char* argv[])
 		rc = 0;
 	} else {
 		rc = 1;
-		printf("could not open policy\n");
+		fprintf(stderr, "could not open policy\n");
 	}
 err2:
 	univention_ldap_close(ldap_parameters);
