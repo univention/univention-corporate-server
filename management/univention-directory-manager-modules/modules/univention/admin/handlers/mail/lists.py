@@ -118,10 +118,10 @@ layout = [
 			"members"
 		] ),
 	] ),
-	Tab( _( 'Authorised users' ), _( 'Users that are allowed to send e-mails to the list' ), advanced = True, layout = [
+	Tab( _( 'Authorized users' ), _( 'Users that are allowed to send e-mails to the list' ), advanced = True, layout = [
 		"allowedEmailUsers"
 		] ),
-	Tab( _( 'Authorised groups' ), _( 'Groups that are allowed to send e-mails to the list' ), advanced = True, layout = [
+	Tab( _( 'Authorized groups' ), _( 'Groups that are allowed to send e-mails to the list' ), advanced = True, layout = [
 		"allowedEmailGroups"
 		] )
 	]

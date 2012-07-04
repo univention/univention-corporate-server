@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-02 11:47+0200\n"
+"POT-Creation-Date: 2012-07-04 12:53+0200\n"
 "PO-Revision-Date: 2008-07-09 14:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,18 +108,18 @@ msgstr "Mail-Adresse"
 
 #: lists.py:92 lists.py:121
 msgid "Users that are allowed to send e-mails to the list"
-msgstr "Benutzer die berechtigt sind E-Mails an diese Liste zu versenden"
+msgstr "Benutzer, die berechtigt sind, E-Mails an diese Liste zu versenden"
 
 #: lists.py:102 lists.py:124
 msgid "Groups that are allowed to send e-mails to the list"
-msgstr "Gruppen die berechtigt sind E-Mails an diese Liste zu versenden"
+msgstr "Gruppen, die berechtigt sind, E-Mails an diese Liste zu versenden"
 
 #: lists.py:121
-msgid "Authorised users"
+msgid "Authorized users"
 msgstr "Autorisierte Benutzer"
 
 #: lists.py:124
-msgid "Authorised groups"
+msgid "Authorized groups"
 msgstr "Autorisierte Gruppen"
 
 #: mail.py:50 mail.py:54

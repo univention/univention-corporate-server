@@ -1,3 +1,13 @@
+univention-directory-manager-modules (7.0.270-1) unstable; urgency=low
+
+  * changed English localisation for certain attributes of mailing
+    lists from BE to AE
+  * modified German localisation for certain attributes of groups
+    and mailing lists
+    (Bug #24029)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 04 Jul 2012 13:03:17 +0200
+
 univention-directory-manager-modules (7.0.269-1) unstable; urgency=low
 
   * users/user: Change search syntax of the mail home server to search
