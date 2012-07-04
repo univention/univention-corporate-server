@@ -619,8 +619,8 @@ def ucs_srv_record_create(s4connector, object):
 	# unpack the host record
 	srv=__unpack_sRVrecord(object)
 
-	# ucr set connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
-	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName[0].lower(),zoneName[0].lower()))
+	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
+	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName.lower(),zoneName.lower()))
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName.lower(),zoneName.lower(),ucr_locations))
 
 	if ucr_locations and ucr_locations.lower() == 'ignore':
@@ -644,6 +644,8 @@ def ucs_srv_record_create(s4connector, object):
 				newRecord.modify()
 			else:
 				ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not modify host record')
+	elif ucr_locations:
+		ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not write SRV record back from S4 to UCS because location of SRV record have been overwritten by UCR')
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
@@ -663,10 +665,7 @@ def ucs_srv_record_create(s4connector, object):
 			protocol=protocol[1:] 
 		ud.debug(ud.LDAP, ud.INFO, 'SRV create: service="%s" protocol="%s"' % (service, protocol))
 		newRecord['name']=[service, protocol]
-		if ucr_locations:
-			ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not write SRV record back from S4 to UCS because location of SRV record have been overwritten by UCR')
-		else:
-			newRecord['location']=srv
+		newRecord['location']=srv
 		newRecord.create()
 	
 
@@ -698,10 +697,10 @@ def s4_srv_record_create(s4connector, object):
 	relativeDomainName=object['attributes'].get('relativeDomainName')
 	relativeDomainName=univention.s4connector.s4.compatible_list(relativeDomainName)
 
-	# ucr set connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 foobar.test.local.'
-	# ucr set connector/s4/mapping/dns/srv/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
+	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 foobar.test.local.'
+	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
 	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName[0].lower(),zoneName[0].lower()))
-	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName[0].lower(),zoneName[0].lower(),ucr_locations))
+	ud.debug(ud.LDAP, ud.INFO, 's4_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName[0].lower(),zoneName[0].lower(),ucr_locations))
 	if ucr_locations:
 		if ucr_locations.lower() == 'ignore':
 			return

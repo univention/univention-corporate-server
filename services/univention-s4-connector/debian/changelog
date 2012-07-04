@@ -1,3 +1,12 @@
+univention-s4-connector (6.0.166-1) unstable; urgency=low
+
+  * Fixed a typo in DNS SRV mapping which prevents the SRV record sync
+    from S4 to UCS when the location is set in UCR (Bug #27706)
+  * Don't try to create a SRV record on UCS when the location has been
+    overwritten by UCR because empty locations are not allowed on UCS
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Jul 2012 07:07:36 +0200
+
 univention-s4-connector (6.0.165-1) unstable; urgency=low
 
   * Use machine.secret by default on DC Slave and Memberserver
