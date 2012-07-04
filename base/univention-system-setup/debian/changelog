@@ -1,3 +1,10 @@
+univention-system-setup (5.0.181-1) unstable; urgency=low
+
+  * disable umc server and apache restart from the beginning of setup-join.sh,
+    enable the restart at the end of setup-join.sh; Bug #27822
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 04 Jul 2012 13:59:43 +0200
+
 univention-system-setup (5.0.180-1) unstable; urgency=low
 
   * make sure that credentials are != undefined for setup/join; Bug #25805

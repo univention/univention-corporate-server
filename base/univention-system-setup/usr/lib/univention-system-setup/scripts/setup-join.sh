@@ -61,6 +61,9 @@ SETUP_LOG="/var/log/univention/setup.log"
 
 echo "no-ldap" > /var/run/univention-system-setup.ldap
 
+# do not allow the UMC or webserver to be restarted
+/usr/share/univention-updater/disable-apache2-umc
+
 # Install the server package
 /usr/lib/univention-system-setup/scripts/role/10role
 
@@ -107,9 +110,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 						mail/alias/root="systemmail@$hostname.$domainname"
 
 fi
-
-# do not allow the UMC or webserver to be restarted
-/usr/share/univention-updater/disable-apache2-umc
 
 # cleanup secrets
 if [ "$server_role" = "domaincontroller_master" ]; then
@@ -230,6 +230,9 @@ ucr commit /etc/pam.d/*
 
 # Removed system setup login message
 ucr set system/setup/showloginmessage=false
+
+# allow a restart of server components without actually restarting them
+/usr/share/univention-updater/enable-apache2-umc --no-restart
 
 exit 0
 
