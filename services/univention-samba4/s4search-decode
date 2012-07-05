@@ -71,6 +71,19 @@ def decode_unicodePwd(value, kvno = 0):
 	print "#\tkeytype: arcfour-hmac-md5"
 	print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
 
+def decode_krb5Key(value):
+	k = binascii.a2b_base64(value)
+	(keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
+	enctype = keyblock.keytype()
+	enctype_id = enctype.toint()
+	print "#\tkrb5_keytype: %s (%d)" % (enctype, enctype_id)
+	key_data = keyblock.keyvalue()
+	print "#\tkeyblock: ", binascii.b2a_base64(key_data).strip()
+	if enctype_id == 23:
+		print "#\tas NThash:",  binascii.b2a_hex(key_data).strip().upper()
+	saltstring = salt.saltvalue()
+	print "#\tsaltstring: ", saltstring
+
 def decode_supplementalCredentials(value, kvno = 0):
 	global context
 	if not context:
@@ -78,16 +91,24 @@ def decode_supplementalCredentials(value, kvno = 0):
 	object_data = ndr_unpack(drsblobs.supplementalCredentialsBlob, binascii.a2b_base64(value))
 	print "# supplementalCredentials recoded as krb5key:"
 	# print "%s" % (ndr_print(object_data).strip(),)
+	print "# object_data.sub.num_packages:" ,object_data.sub.num_packages
 	for p in object_data.sub.packages:
+		print "#\tsupplementalCredentials package name: ", p.name
 		krb_blob = binascii.unhexlify(p.data)
 		krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+		print "#\tsupplementalCredentials package version: ", krb.version
 		print "#\tkrb5Salt: %s" % (krb.ctr.salt.string)
 		for k in krb.ctr.keys:
+			# print "#\tk.value:", binascii.b2a_base64(k.value).strip()
 			keytype = keytypes.get(k.keytype, k.keytype)
+			print "#\tkeytype: %s (%d)" % (keytype, k.keytype)
+			print "#\tkeyblock:",
 			keyblock = heimdal.keyblock_raw(context, k.keytype, k.value)
+			print keyblock
+			print "#\tkrb5SaltObject:",
 			krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
+			print krb5SaltObject
 			krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
-			print "#\tkeytype: %s" % keytype
 			print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
 
 def decode_dnsRecord(value):
@@ -97,10 +118,25 @@ def decode_dnsRecord(value):
 		if line:
 			print "# %s" % line
 
+class decode_drsblob():
+	
+	def __init__(self, blobtype):
+		self.blobtype=blobtype
+
+	def __call__(self, value):
+		object_data = ndr_unpack(self.blobtype, binascii.a2b_base64(value))
+		print "# decoded:"
+		for line in ndr_print(object_data).split('\n'):
+			if line:
+				print "# %s" % line
+
 objecttypes = {
-	'dnsRecord': decode_dnsRecord,
+	'dnsRecord': decode_drsblob(dnsp.DnssrvRpcRecord),
+	'replPropertyMetaData': decode_drsblob(drsblobs.replPropertyMetaDataBlob),
+	'repsFrom': decode_drsblob(drsblobs.repsFromToBlob),
 	'supplementalCredentials': decode_supplementalCredentials,
 	'unicodePwd': decode_unicodePwd,
+	'krb5Key': decode_krb5Key,
 }
 
 def decode_line(line):
