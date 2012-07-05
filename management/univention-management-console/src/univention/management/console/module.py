@@ -192,10 +192,9 @@ class Module( JSON_Object ):
 		self.description = description
 		self.icon = icon
 		self.priority = priority
-		if flavors is None:
-			self.flavors = JSON_List()
-		else:
-			self.flavors = JSON_List( flavors )
+		self.flavors = JSON_List()
+		if flavors is not None:
+			self.append_flavors(flavors)
 
 		if categories is None:
 			self.categories = JSON_List()
@@ -218,6 +217,14 @@ class Module( JSON_Object ):
 			command.fromJSON( cmd )
 			self.commands.append( command )
 
+	def append_flavors(self, flavors):
+		for flavor in flavors:
+			# remove duplicated flavors
+			if flavor.id not in [iflavor.id for iflavor in self.flavors]:
+				self.flavors.append(flavor)
+			else:
+				RESOURCES.warn('Duplicated flavor for module %s: %s' % (self.id, flavor.id))
+
 	def merge( self, other ):
 		''' merge another Module object into current one '''
 		if not self.name:
@@ -229,8 +236,7 @@ class Module( JSON_Object ):
 		if not self.description:
 			self.description = other.description
 
-		for flavor in other.flavors:
-			self.flavors.append(flavor)
+		self.append_flavors(other.flavors)
 
 		for category in other.categories:
 			if not category in self.categories:
@@ -345,17 +351,12 @@ class Manager( dict ):
 		before, the method can also be used for reloading'''
 		RESOURCES.info( 'Loading modules ...' )
 		self.clear()
-		existing_flavors = set()
 		for filename in os.listdir( Manager.DIRECTORY ):
 			if not filename.endswith( '.xml' ):
 				continue
 			try:
 				mod = XML_Definition( filename = os.path.join( Manager.DIRECTORY, filename ) )
 				RESOURCES.info( 'Loaded module %s' % filename )
-				for flavor in mod.flavors:
-					if (mod.id, flavor.id) in existing_flavors:
-						RESOURCES.warn('Duplicate flavor for module %s: %s in %s' % (mod.id, flavor.id, filename))
-					existing_flavors.add((mod.id, flavor.id))
 			except xml.parsers.expat.ExpatError, e:
 				RESOURCES.warn( 'Failed to load module %s: %s' % ( filename, str( e ) ) )
 				continue
@@ -370,7 +371,6 @@ class Manager( dict ):
 		'''
 		RESOURCES.info( 'Retrieving list of permitted commands' )
 		modules = {}
-		used_flavors = set()
 		for module_id in self:
 			# get first Module and merge all subsequent Module objects into it
 			mod = None
@@ -388,10 +388,6 @@ class Manager( dict ):
 
 			deactivated_flavors = set()
 			for flavor in flavors:
-				# Remove duplicated flavors
-				if (module_id, flavor.id) in used_flavors:
-				 	mod.flavors.remove(flavor)
-				 	continue
 
 				RESOURCES.info('mod=%s  flavor=%s  deactivated=%s' % (module_id, flavor.id, flavor.deactivated))
 				if flavor.deactivated:
@@ -414,8 +410,6 @@ class Manager( dict ):
 				# it should not be shown in the overview
 				if not at_least_one_command and mod.flavors:
 					mod.flavors.remove( flavor )
-				else:
-				 	used_flavors.add((module_id, flavor.id))
 
 			mod.flavors = JSON_List( filter( lambda f: f.id not in deactivated_flavors, mod.flavors ) )
 
