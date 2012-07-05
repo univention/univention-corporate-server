@@ -262,8 +262,8 @@ msgstr ""
 #: umc/js/_updater/ProgressPage.js:137
 msgid ""
 "For the changes to take effect, it is recommended to perform a restart of "
-"the UMC server components. This will take approximately 10 sec."
-msgstr "Damit die Änderungen wirksam werden, ist es empfohlen einen Neustart der UMC-Server-Komponenten durchzuführen. Dies wird ungefähr 10 sec dauern."
+"the UMC server components."
+msgstr "Damit die Änderungen wirksam werden, ist es empfohlen einen Neustart der UMC-Server-Komponenten durchzuführen."
 
 #: umc/js/_updater/UpdatesPage.js:153 umc/js/_updater/UpdatesPage.js:454
 msgid ""

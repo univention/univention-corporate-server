@@ -1,3 +1,9 @@
+univention-updater (7.0.171-1) unstable; urgency=low
+
+  * modified dialog message for restarting server components; Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 05 Jul 2012 17:07:42 +0200
+
 univention-updater (7.0.170-1) unstable; urgency=low
 
   * added dialog for restarting UMC server components; Bug #26235

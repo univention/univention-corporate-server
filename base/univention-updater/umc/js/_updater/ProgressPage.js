@@ -134,7 +134,7 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 				}
 				else {
 					// ask user to restart
-					umc.modules.lib.server.askRestart(this._('For the changes to take effect, it is recommended to perform a restart of the UMC server components. This will take approximately 10 sec.')).then(
+					umc.modules.lib.server.askRestart(this._('For the changes to take effect, it is recommended to perform a restart of the UMC server components.')).then(
 						function() { /* nothing to do */ },
 						function() {
 							// user canceled -> change current view
