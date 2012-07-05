@@ -1,3 +1,10 @@
+univention-system-setup (5.0.184-1) unstable; urgency=low
+
+  * force the restart of the UMC server components in cleanup method;
+    Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 05 Jul 2012 15:54:27 +0200
+
 univention-system-setup (5.0.183-1) unstable; urgency=low
 
   * Rename Continue -> Ok, make error more robust (Bug #26331)

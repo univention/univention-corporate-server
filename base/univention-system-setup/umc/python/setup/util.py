@@ -480,7 +480,7 @@ def cleanup():
 			MODULE.error('browser PID is not a number: "%s"' % strpid)
 		except psutil.NoSuchProcess:
 			MODULE.error('cannot kill process with PID: %s' % pid)
-	
+
 		# Maybe the system-setup CMD tool was started
 		for p in psutil.process_iter():
 			if p.name == 'python2.6' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline:
@@ -498,9 +498,10 @@ def cleanup():
 			# Shut down temporary interface
 			subprocess.call(['ifconfig', var.split('/')[1].replace('_', ':'), 'down'])
 
-	# make sure that UMC servers and apache will not be restartet
+	# force a restart of UMC servers and apache
+	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
 	subprocess.call( CMD_ENABLE_EXEC_WITH_RESTART, stdout = f, stderr = f )
-				
+
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.flush()
 	f.close()
