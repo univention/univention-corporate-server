@@ -74,7 +74,8 @@ DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainN
 ## helper function
 set_machine_secret() {
 	## 1. store password locally in secrets.ldb
-	kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
+	old_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
+	new_kvno=$(($old_kvno + 1))
 
 	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
 	dn: flatname=${windows_domain},cn=Primary Domains
@@ -83,7 +84,7 @@ set_machine_secret() {
 	secret:< file:///etc/machine.secret
 	-
 	replace: msDS-KeyVersionNumber
-	msDS-KeyVersionNumber: $kvno
+	msDS-KeyVersionNumber: $new_kvno
 	-
 	%EOF
 
