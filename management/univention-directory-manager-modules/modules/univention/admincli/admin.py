@@ -397,11 +397,10 @@ def doit(arglist):
 
 		# strip elements and make sure that a ':' is printed iff further information follows
 		msg = [i.strip() for i in msg]
-		msg[0] = '%s' % msg[0].strip(':.')
 		if len(msg) == 1:
-			msg[0] = '%s.' % msg[0]
+			msg[0] = '%s.' % msg[0].strip(':.')
 		elif len(msg) > 1:
-			msg[0] = '%s:' % msg[0]
+			msg[0] = '%s:' % msg[0].strip(':.')
 
 		# append to the output
 		out.append(' '.join(msg))

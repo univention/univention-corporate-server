@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.272-1) unstable; urgency=low
+
+  * be prepared for exceptions which have no/empty "message"
+    AND no/empty "args" attribute (Bug #7389)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 05 Jul 2012 16:18:41 +0200
+
 univention-directory-manager-modules (7.0.271-1) unstable; urgency=low
 
   * always print errors on cli in a single line (Bug #7389)
