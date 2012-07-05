@@ -1,3 +1,9 @@
+univention-lib (1.0.80-4) unstable; urgency=low
+
+  * Fix more UCR descriptions (Bug #26536)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Jul 2012 14:06:23 +0200
+
 univention-lib (1.0.80-3) unstable; urgency=low
 
   * Fix UCR listener/shares/rename description (Bug #26536)
