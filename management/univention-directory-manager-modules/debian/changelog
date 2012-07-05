@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.271-1) unstable; urgency=low
+
+  * always print errors on cli in a single line (Bug #7389)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 05 Jul 2012 15:39:21 +0200
+
 univention-directory-manager-modules (7.0.270-1) unstable; urgency=low
 
   * changed English localisation for certain attributes of mailing

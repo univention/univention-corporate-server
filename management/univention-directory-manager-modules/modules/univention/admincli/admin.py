@@ -387,10 +387,24 @@ def doit(arglist):
 		out=_doit(arglist)
 	except univention.admin.uexceptions.base, e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, traceback.format_exc())
+
+		# collect error information
+		msg = []
 		if getattr(e, 'message', False):
-			out.append(e.message)
-		if e.args:
-			out.extend(e.args)
+			msg.append(e.message)
+		if getattr(e, 'args', False):
+			msg.extend(e.args)
+
+		# strip elements and make sure that a ':' is printed iff further information follows
+		msg = [i.strip() for i in msg]
+		msg[0] = '%s' % msg[0].strip(':.')
+		if len(msg) == 1:
+			msg[0] = '%s.' % msg[0]
+		elif len(msg) > 1:
+			msg[0] = '%s:' % msg[0]
+
+		# append to the output
+		out.append(' '.join(msg))
 		return out + ["OPERATION FAILED"]
 	return out
 
