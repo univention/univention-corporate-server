@@ -1,3 +1,9 @@
+univention-management-console-module-lib (0.1.2-1) unstable; urgency=low
+
+  * adjusted dialog message; Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 05 Jul 2012 17:06:36 +0200
+
 univention-management-console-module-lib (0.1.1-2) unstable; urgency=low
 
   * fixed package dependencies; Bug #26235

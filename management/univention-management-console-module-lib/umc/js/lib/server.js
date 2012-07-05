@@ -49,7 +49,7 @@ dojo.mixin(umc.modules.lib.server, new umc.i18n.Mixin({
 		if (_msg) {
 			msg += '<p>' + _msg + '</p>';
 		}
-		msg += '<p>' + this._('Please confirm to restart UMC server components and the HTTP web server.') + '</p>';
+		msg += '<p>' + this._('Please confirm to restart UMC server components and the HTTP web server. This will take approximately 10 seconds.') + '</p>';
 		msg += '<p>' + this._('<b>Note:</b> After the restart you will be redirected to the login page.') + '</p>';
 		return umc.dialog.confirm(msg, [{
 			name: 'cancel',
