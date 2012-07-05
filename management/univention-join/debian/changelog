@@ -1,3 +1,9 @@
+univention-join (4.0.42-1) unstable; urgency=low
+
+  * fix new lines in failed_message; important for Bug #25805
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Jul 2012 17:15:24 +0200
+
 univention-join (4.0.41-1) unstable; urgency=low
 
   * fixed polling issues

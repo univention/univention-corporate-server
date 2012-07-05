@@ -382,9 +382,10 @@ if [ -n "$res" ]; then
 		fi
 	else
 		if [ -n "$res_message" ]; then
-			failed_message "$res_message"
+			# this may have copyright information in it. dont use that
+			failed_message `echo "$res_message" | tail -n 1`
 		else
-			failed_message "$res"
+			failed_message `echo "$res" | tail -n 1`
 		fi
 	fi
 
