@@ -325,9 +325,7 @@ class Processor( signals.Provider ):
 						translationId = flavor.translationId
 						if not translationId:
 							translationId = id
-						# Don't show multiple modules of the same flavor
-						if flavor.id not in [imodule.get('flavor', '') for imodule in modules]:
-							modules.append( { 'id' : id, 'flavor' : flavor.id, 'name' : self.i18n._( flavor.name, translationId ), 'description' : self.i18n._( flavor.description, translationId ), 'icon' : flavor.icon, 'categories' : module.categories, 'priority' : flavor.priority } )
+						modules.append( { 'id' : id, 'flavor' : flavor.id, 'name' : self.i18n._( flavor.name, translationId ), 'description' : self.i18n._( flavor.description, translationId ), 'icon' : flavor.icon, 'categories' : module.categories, 'priority' : flavor.priority } )
 				else:
 						modules.append( { 'id' : id, 'name' : self.i18n._( module.name, id ), 'description' : self.i18n._( module.description, id ), 'icon' : module.icon, 'categories' : module.categories, 'priority' : module.priority } )
 			res.body[ 'modules' ] = modules
