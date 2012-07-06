@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.273-1) unstable; urgency=low
+
+  * univention-sync-memberuid now better bears with inconsistencies (Bug #23601)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 06 Jul 2012 16:28:58 +0200
+
 univention-directory-manager-modules (7.0.272-1) unstable; urgency=low
 
   * be prepared for exceptions which have no/empty "message"

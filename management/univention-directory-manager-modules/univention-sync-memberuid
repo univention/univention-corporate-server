@@ -74,8 +74,14 @@ for grp in groups:
 	if attrs.has_key( 'memberUid' ):
 		old = attrs[ 'memberUid' ]
 
+	ud.debug( ud.ADMIN, ud.PROCESS, 'Group: %s' % dn )
 	for uniqueMember in attrs.get( 'uniqueMember', [] ):
-		result = lo.search_s( uniqueMember, ldap.SCOPE_BASE, '(objectclass=*)' )
+		try:
+			result = lo.search_s( uniqueMember, ldap.SCOPE_BASE, '(objectclass=*)' )
+		except Exception, e:
+			ud.debug( ud.ADMIN, ud.ERROR, 'reading uid of %s failed: %s' % (uniqueMember, str(e)) )
+			print 'ERROR: cannot read uid of DN %s' % uniqueMember
+			continue
 		if not result:
 			ud.debug( ud.ADMIN, ud.ERROR, 'empty result for uniqueMember %s' % uniqueMember)
 			print 'ERROR: empty result for uniqueMember %s' % uniqueMember
@@ -88,7 +94,6 @@ for grp in groups:
 	new.sort()
 
 	if old != new:
-		ud.debug( ud.ADMIN, ud.PROCESS, 'Group: %s' % dn )
 		ud.debug( ud.ADMIN, ud.INFO, '  members: %s' % attrs.get( 'uniqueMember', [] ) )
 		ud.debug( ud.ADMIN, ud.INFO, '  old memberUid: %s' % old )
 		ud.debug( ud.ADMIN, ud.INFO, '  new memberUid: %s' % new )
