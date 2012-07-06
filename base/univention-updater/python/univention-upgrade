@@ -277,7 +277,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 			run = True
 			# updates available ==> stop here in "check-mode"
 			if checkForUpdates:
-				dprint(silent, 'none')
+				dprint(silent, 'found')
 				return True
 
 			dprint(silent, 'found\n')

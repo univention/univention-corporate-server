@@ -1,3 +1,10 @@
+univention-updater (7.0.172-1) unstable; urgency=low
+
+  * Fixed the check mode for errata updates univnetion-upgrade
+    (Bug #26451)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Jul 2012 12:18:58 +0200
+
 univention-updater (7.0.171-1) unstable; urgency=low
 
   * modified dialog message for restarting server components; Bug #26235
