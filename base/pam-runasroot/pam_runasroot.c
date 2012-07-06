@@ -2,7 +2,7 @@
  * PAM Run As Root
  *  C source for the PAM module runasroot
  *
- * Copyright 2001-2011 Univention GmbH
+ * Copyright 2001-2012 Univention GmbH
  *
  * http://www.univention.de/
  *

@@ -3,7 +3,7 @@
 # Univention Directory Reports
 #  module for creating reports about any kind of Univention Admin object
 #
-# Copyright 2007-2011 Univention GmbH
+# Copyright 2007-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

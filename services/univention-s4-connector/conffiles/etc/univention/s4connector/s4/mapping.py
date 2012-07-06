@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  this file defines the mapping beetween S4 and UCS
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

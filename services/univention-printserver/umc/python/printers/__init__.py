@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: updater
 #
-# Copyright 2011 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

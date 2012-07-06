@@ -59,7 +59,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				except:
 					pass
 
-		# Copyright (C) 2004, 2005, 2006 Univention GmbH
+		# Copyright (C) 2004, 2005, 2006-2012 Univention GmbH
 		# Copyright 2008 by
 		reCopyrightVersion = re.compile('Copyright(\s+\(C\))?\s+([0-9, -]+)\s+(by|Univention\s+GmbH)')
 

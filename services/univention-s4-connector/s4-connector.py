@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Univention Directory Listener script for the s4 connector
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

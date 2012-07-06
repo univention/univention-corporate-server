@@ -2,7 +2,7 @@
 ' Univention AD Connector
 '  this scripts automatically generates users in the Active Directory
 '
-' Copyright 2004-2011 Univention GmbH
+' Copyright 2004-2012 Univention GmbH
 '
 ' http://www.univention.de/
 '

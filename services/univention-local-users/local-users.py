@@ -4,7 +4,7 @@
 #  listener module: replicates a selected group of LDAP users to
 #  /etc/passwd
 #
-# Copyright 2003-2011 Univention GmbH
+# Copyright 2003-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

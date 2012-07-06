@@ -4,7 +4,7 @@
 # UCS Virtual Machine Manager Node Common
 #  script to restore virtual machines
 #
-# Copyright 2010-2011 Univention GmbH
+# Copyright 2010-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

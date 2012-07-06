@@ -2,7 +2,7 @@
  * Python Heimdal
  *	Bindings for the context object of heimdal
  *
- * Copyright 2003-2011 Univention GmbH
+ * Copyright 2003-2012 Univention GmbH
  *
  * http://www.univention.de/
  *

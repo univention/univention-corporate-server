@@ -3,7 +3,7 @@
 # Univention Log Collector Server
 #   collects log file from other hosts
 #
-# Copyright 2007-2011 Univention GmbH
+# Copyright 2007-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

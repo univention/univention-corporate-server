@@ -3,7 +3,7 @@
 # Univention Check Printers
 #  script monitoring local printers and re-activates stopped printers
 #
-# Copyright 2006-2011 Univention GmbH
+# Copyright 2006-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

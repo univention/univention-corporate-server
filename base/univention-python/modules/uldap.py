@@ -3,7 +3,7 @@
 # Univention Python
 #  LDAP access
 #
-# Copyright 2002-2011 Univention GmbH
+# Copyright 2002-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

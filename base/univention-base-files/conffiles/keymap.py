@@ -3,7 +3,7 @@
 # Univention Configuration Registry
 #  config registry module for the network interfaces
 #
-# Copyright 2009-2011 Univention GmbH
+# Copyright 2009-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

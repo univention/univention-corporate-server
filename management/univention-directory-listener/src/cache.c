@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  ldap listener caching system
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2012 Univention GmbH
  *
  * http://www.univention.de/
  *

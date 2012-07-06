@@ -7,7 +7,7 @@ Handle parsing and writing /etc/fstab.
 See <http://linux.die.net/include/mntent.h>.
 """
 #
-# Copyright 2002-2011 Univention GmbH
+# Copyright 2002-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

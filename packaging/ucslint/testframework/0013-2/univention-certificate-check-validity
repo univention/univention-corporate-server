@@ -4,7 +4,7 @@
 # Univention SSL
 #  checks validity of the local SSL certificate
 #
-# Copyright (C) 2006-2008 Univention GmbH
+# Copyright (C) 2006-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

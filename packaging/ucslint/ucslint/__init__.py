@@ -3,7 +3,7 @@
 # Univention Tools
 #  modules init
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008-2012 Univention GmbH
 #
 # http://www.univention.de/
 #

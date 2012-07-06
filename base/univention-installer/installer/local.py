@@ -4,7 +4,7 @@
 # Univention Installer
 #  helper functions for i18n
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
