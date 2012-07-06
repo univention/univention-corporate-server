@@ -307,7 +307,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 		# reinit updater module
 		errata_component_update = False
 		updater.ucr_reinit()
-		for component in updater.get_all_components():
+		for component in updater.get_components():
 			dprint(silent, 'Checking for component errata updates for %s: ' % component, newline=False)
 			retcode = subprocess.call(['/usr/share/univention-updater/univention-errata-components-update',  'net', '--component', component, '--check'], shell=False, env=os.environ)
 			if not retcode:

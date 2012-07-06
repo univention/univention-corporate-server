@@ -116,7 +116,7 @@ def checkForUpdate(command, component):
 	if component:
 		components = [ component ]
 	else:
-		components = updater.get_all_components()
+		components = updater.get_components()
 
 	for component in components:
 		configRegistry.load()

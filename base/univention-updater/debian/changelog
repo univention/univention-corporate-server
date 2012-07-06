@@ -1,3 +1,9 @@
+univention-updater (7.0.173-1) unstable; urgency=low
+
+  * Don't check for errata updates for disabled components (Bug #26524)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Jul 2012 14:29:51 +0200
+
 univention-updater (7.0.172-1) unstable; urgency=low
 
   * Fixed the check mode for errata updates univnetion-upgrade
