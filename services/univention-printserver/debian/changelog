@@ -1,3 +1,11 @@
+univention-printserver (5.0.28-1) unstable; urgency=low
+
+  * Add a cronjob which deletes old print jobs (Bug #26361)
+  * version bump to ensure that version is higher than in ucs@school
+    (Bug #26894)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 06 Jul 2012 14:43:10 +0200
+
 univention-printserver (5.0.26-1) unstable; urgency=low
 
   * remove stat-override for /usr/lib/cups/backend/cups-pdf (Bug #25371)

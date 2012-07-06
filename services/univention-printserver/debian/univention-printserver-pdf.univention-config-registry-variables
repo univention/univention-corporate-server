@@ -9,3 +9,21 @@ Description[de]=Verzeichnis für PDF Pseudo Drucker (anonymous)
 Description[en]=Output directory for pdf pseudo printer (anonymous)
 Type=str
 Categories=Printing
+
+[cups/cups-pdf/cleanup/enabled]
+Description[de]=Diese Variable de-/aktiviert den Cronjob, der automatisch alte Druckaufträge löscht (Default: no)
+Description[en]=This variable de-/activates the cronjob that automatically removes old print jobs (default: no)
+Type=bool
+Categories=Printing
+
+[cups/cups-pdf/cleanup/interval]
+Description[de]=Suche alle x Tage nach alten Druckaufträgen (Default: * * 1 * *)
+Description[en]=Search for old print jobs every x days (default: * * 1 * *)
+Type=str
+Categories=Printing
+
+[cups/cups-pdf/cleanup/keep]
+Description[de]=Lösche Druckaufträge welcher älter als x Tage sind (Default: 30 Tage)
+Description[en]=Remove print jobs which are older than x days (default: 30 days)
+Type=str
+Categories=Printing
