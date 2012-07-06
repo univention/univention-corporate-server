@@ -42,10 +42,7 @@ import pwd
 import grp
 import time
 from debhelper import parseRfc822
-try:
-	from univention.lib.shell import escape_value
-except ImportError:
-	def escape_value(v): sys.exit(1) # FIXME: univention.lib clashed during install
+from pipes import quote as escape_value
 
 variable_pattern = re.compile('@%@([^@]+)@%@')
 variable_token = re.compile('@%@')
@@ -1052,8 +1049,8 @@ def randpw():
 
 def replog(method, scope, ucr, var, value=None):
 	"""
- 	This function writes a new entry to replication logfile if
-    this feature has been enabled.
+	This function writes a new entry to replication logfile if
+	this feature has been enabled.
 	"""
 	if ucr.is_true('ucr/replog/enabled',False):
 		if method == 'set':
@@ -1091,14 +1088,14 @@ def handler_set( args, opts = {}, quiet = False ):
 	current_scope = ConfigRegistry.NORMAL
 	reg = None
 	if opts.get( 'ldap-policy', False ):
- 		current_scope = ConfigRegistry.LDAP
- 		reg = ConfigRegistry( write_registry = current_scope )
+		current_scope = ConfigRegistry.LDAP
+		reg = ConfigRegistry( write_registry = current_scope )
 	elif opts.get( 'force', False ):
- 		current_scope = ConfigRegistry.FORCED
- 		reg = ConfigRegistry( write_registry = current_scope)
+		current_scope = ConfigRegistry.FORCED
+		reg = ConfigRegistry( write_registry = current_scope)
 	elif opts.get( 'schedule', False ):
- 		current_scope = ConfigRegistry.SCHEDULE
- 		reg = ConfigRegistry( write_registry = current_scope)
+		current_scope = ConfigRegistry.SCHEDULE
+		reg = ConfigRegistry( write_registry = current_scope)
 	else:
 		reg = ConfigRegistry()
 
@@ -1152,17 +1149,17 @@ def handler_unset( args, opts = {} ):
 	"""
 	Unset config registry variables in args.
 	"""
- 	current_scope = ConfigRegistry.NORMAL
+	current_scope = ConfigRegistry.NORMAL
 	reg = None
 	if opts.get( 'ldap-policy', False ):
- 		current_scope = ConfigRegistry.LDAP
- 		reg = ConfigRegistry( write_registry = current_scope )
+		current_scope = ConfigRegistry.LDAP
+		reg = ConfigRegistry( write_registry = current_scope )
 	elif opts.get( 'force', False ):
- 		current_scope = ConfigRegistry.FORCED
- 		reg = ConfigRegistry( write_registry = current_scope)
+		current_scope = ConfigRegistry.FORCED
+		reg = ConfigRegistry( write_registry = current_scope)
 	elif opts.get( 'schedule', False ):
- 		current_scope = ConfigRegistry.SCHEDULE
- 		reg = ConfigRegistry( write_registry = current_scope)
+		current_scope = ConfigRegistry.SCHEDULE
+		reg = ConfigRegistry( write_registry = current_scope)
 	else:
 		reg = ConfigRegistry()
 	reg.lock()
@@ -1329,24 +1326,24 @@ def handler_search( args, opts = {} ):
 	all_vars = {}
 	for key, var in info.get_variables (category).items ():
 		all_vars [ key ] = ( None, var, None )
- 	for key, scope_value in b.items( getscope = True ):
- 		var_triple = all_vars.get ( key )
- 		if var_triple:
- 			all_vars [ key ] = ( scope_value[1], var_triple[1], scope_value[0] )
+	for key, scope_value in b.items( getscope = True ):
+		var_triple = all_vars.get ( key )
+		if var_triple:
+			all_vars [ key ] = ( scope_value[1], var_triple[1], scope_value[0] )
 		elif not category:
- 			all_vars [ key ] = ( scope_value[1], None, scope_value[0] )
+			all_vars [ key ] = ( scope_value[1], None, scope_value[0] )
 
- 	for key, var_triple in all_vars.items():
+	for key, var_triple in all_vars.items():
 		for reg in regex:
 			if \
 				( search_keys and reg.search ( key ) ) or \
- 				( search_values and var_triple[0] and reg.search ( var_triple[0] ) ) or \
+				( search_values and var_triple[0] and reg.search ( var_triple[0] ) ) or \
 				( search_all and ( \
 				  ( reg.search ( key ) ) or \
- 				  ( var_triple[0] and reg.search ( var_triple[0] ) ) or \
- 				  ( var_triple[1] and reg.search ( var_triple[1].get ( 'description', '' ) ) ) ) \
+				  ( var_triple[0] and reg.search ( var_triple[0] ) ) or \
+				  ( var_triple[1] and reg.search ( var_triple[1].get ( 'description', '' ) ) ) ) \
 				):
- 				print_variable_info_string ( key, var_triple[0], var_triple[1], var_triple[2], show_scope, brief, non_empty, verbose )
+				print_variable_info_string ( key, var_triple[0], var_triple[1], var_triple[2], show_scope, brief, non_empty, verbose )
 				break
 
 def handler_get( args, opts = {} ):

@@ -1,3 +1,9 @@
+univention-config-registry (7.0.33-2) unstable; urgency=low
+
+  * Don't use univention-lib because of circular dependency (Bug #27836)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Jul 2012 15:38:07 +0200
+
 univention-config-registry (7.0.33-1) unstable; urgency=low
 
   * modified format of the install script usage messages (Bug #19853)
