@@ -1,3 +1,10 @@
+univention-dhcp (6.0.22-2) unstable; urgency=low
+
+  * Added usr/lib/univention-server/server_password_change.d/univention-dhcp
+    so that dhcp daemon gets restarted after server password change (Bug #27771).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 06 Jul 2012 11:27:34 +0200
+
 univention-dhcp (6.0.22-1) unstable; urgency=low
 
   * fixed typo in UCR template; Bug #26838
