@@ -284,7 +284,8 @@ if [ "$samba4_role" = 'DC' ]; then
 	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
 	samba4_ldap_base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
 	univention-config-registry set samba4/ldap/base="$samba4_ldap_base" \
-							server/password/change=no
+							server/password/change=no \
+							samba/share/netlogon=yes
 
 	## check if we there already is a **domaincontroller** providing the service "Samba 4"
 	samba4servicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc

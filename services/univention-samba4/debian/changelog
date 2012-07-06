@@ -1,3 +1,10 @@
+univention-samba4 (1.0.156-1) unstable; urgency=low
+
+  * Set samba/share/netlogon in 96univention-samba4.inst on DC to yes.
+    This prevents s3/s4 upgrade issues (Bug #26305)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Jul 2012 15:12:04 +0200
+
 univention-samba4 (1.0.155-1) unstable; urgency=low
 
   * if /etc/samba/shares.conf.d does not exist, it is created when setting up a new share (Bug #26146)
