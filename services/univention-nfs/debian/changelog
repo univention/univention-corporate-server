@@ -1,3 +1,11 @@
+univention-nfs (4.0.8-3) unstable; urgency=low
+
+  * removed unused file
+    debian/univention-nfs.univention-config-registry
+    (Bug #24153)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 06 Jul 2012 09:50:52 +0200
+
 univention-nfs (4.0.8-2) unstable; urgency=low
 
   * fixed bashism (Bug #11559) 
