@@ -109,7 +109,7 @@ for interface in eth0 eth1 eth2 eth3; do
 					while :
 					do
 						# check if virtual interface is free
-						if ! univention-config-registry shell "interfaces/${interface}_.*/.*" | cut -d_ -f3 | grep -Fqs "$virtual"
+						if [ -z "$(univention-config-registry search "interfaces/${interface}_${virtual}.*"; grep -Es "interfaces/${interface}_${virtual}" $profile_file)" ]
 						then
 							echo "interfaces/${interface}_${virtual}/netmask=$(univention-config-registry get "interfaces/$interface/netmask")" >> "$profile_file"
 							echo "interfaces/${interface}_${virtual}/address=$(univention-config-registry get "interfaces/$interface/address")" >> "$profile_file"
