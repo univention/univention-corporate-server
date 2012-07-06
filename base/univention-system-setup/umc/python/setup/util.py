@@ -433,8 +433,9 @@ def run_joinscript( progressParser, _username, password ):
 			progressParser.parse( line )
 			f.write( line )
 
-	# write password file
+	cmd = [ PATH_JOIN_SCRIPT, '--appliance_mode' ]
 	if _username and password:
+		# write password file
 		fp = open(PATH_PASSWORD_FILE, 'w')
 		fp.write('%s' % password)
 		fp.close()
@@ -445,13 +446,13 @@ def run_joinscript( progressParser, _username, password ):
 		username = reg.sub('_', _username)
 
 		# run join scripts
-		runit( [ PATH_JOIN_SCRIPT, '--dcaccount', username, '--password_file', PATH_PASSWORD_FILE ] )
+		runit( cmd + [ '--dcaccount', username, '--password_file', PATH_PASSWORD_FILE ] )
 
 		# remove password file
 		os.remove(PATH_PASSWORD_FILE)
 	else:
 		# run join scripts
-		runit( PATH_JOIN_SCRIPT )
+		runit( cmd )
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()

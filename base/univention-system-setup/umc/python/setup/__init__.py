@@ -176,7 +176,7 @@ class Instance(umcm.Base):
 		newrole = values.get('server/role', oldrole)
 		if newrole == 'basesystem' or orgValues.get('joined'):
 			raise Exception( _('Base systems and already joined systems cannot be joined.') )
-		
+
 		def _thread(request, obj, username, password):
 			# acquire the lock until the scripts have been executed
 			self._finishedResult = False

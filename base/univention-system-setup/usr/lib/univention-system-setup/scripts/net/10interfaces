@@ -31,11 +31,16 @@
 # <http://www.gnu.org/licenses/>.
 
 network_only=0
+appliance_mode=0
 
 while [ "$#" -gt 0 ]; do
     case $1 in
         --network-only)
 			network_only=1
+            shift 1
+            ;;
+        --appliance-mode)
+			appliance_mode=1
             shift 1
             ;;
         *)
@@ -97,7 +102,8 @@ for interface in eth0 eth1 eth2 eth3; do
 				if [ -z "$old_address" ]; then
 					ifup="$ifup $interface"
 				fi
-				if [ ! -f /var/univention-join/joined -a "$(univention-config-registry get server/role)" = 'domaincontroller_master' ]
+				# keep alive the current ip address (otherwise the user will lose the connection during setup if ip changed)
+				if [ $appliance_mode = 1 ]
 				then
 					virtual='0'
 					while :

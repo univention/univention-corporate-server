@@ -38,6 +38,10 @@ while [ "$#" -gt 0 ]; do
 			network_only=1
             shift 1
             ;;
+        --appliance-mode)
+	# not needed, but dont warn
+            shift 1
+            ;;
         *)
             echo "WARNING: Unknown parameter $1"
 			shift 1
