@@ -175,9 +175,8 @@ if __name__ == "__main__":
 						[univention.admin.filter.expression('objectClass', 'sambaGroupMapping'),])
 				   ])
 				])),
-		# Do not move DCs: https://forge.univention.org/bugzilla/show_bug.cgi?id=26379
-		#'dc':
-		#	mapping.s4_mapping['dc'].match_filter,
+		'dc':
+			mapping.s4_mapping['dc'].match_filter,
 		'windowscomputer':
 			mapping.s4_mapping['windowscomputer'].match_filter,
 	}
