@@ -214,6 +214,14 @@ def initialize():
 		finally:
 			listener.unsetuid()
 
+def prerun():
+	if not os.path.exists('/etc/samba/shares.conf.d'):
+		listener.setuid(0)
+		try:
+			os.mkdir('/etc/samba/shares.conf.d')
+		finally:
+			listener.unsetuid()
+
 def clean():
 	global ucr_handlers
 	listener.setuid(0)
