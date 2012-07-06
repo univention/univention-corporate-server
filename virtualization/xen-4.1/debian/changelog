@@ -1,3 +1,9 @@
+xen-4.1 (4.1.2-7) ucs3-0-0-0; urgency=low
+
+  * Fix CVE-2012-0029, CVE-2012-0217, CVE-2012-0218 (Bug #26029)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 06 Jul 2012 12:38:37 +0200
+
 xen-4.1 (4.1.2-6) ucs3-0-0-0; urgency=low
 
   * Revert switch to external libaio1 (Bug #18357)
