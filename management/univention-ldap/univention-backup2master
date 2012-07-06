@@ -39,7 +39,7 @@ opt_verbose=0
 
 Usage() {
   local message=$1
-  printf "Usage:\n  %s: [-c old-master] [-d] [-f] [-h] [-r old-master] [-v] [-w 0]\n\n" $( basename $0 )
+  printf "Usage:\n  %s: [-f] [-h] [-v] [-w 0]\n\n" $( basename $0 )
   printf "Example:\n"
   printf "  %s -h\n\n" $( basename $0 )
   printf "  This script converts a UCS backup into a UCS master.\n"
@@ -48,13 +48,8 @@ Usage() {
   printf "  Choose among the options as needed. Default values are listed in parentheses.\n"
   printf "\n"
   printf "Options:\n"
-  printf "  -c old-master  do not convert UCS backup, just check objects that reference old master ($opt_old_master).\n"
-  printf "                 combine this with option -v to see the exact references\n"
-  printf "  -d             do not convert UCS backup, just check environment and report any problems ($opt_dry_run)\n"
   printf "  -f             force execution of script, even if checks fail ($opt_force).\n"
   printf "  -h             do not convert UCS backup, but print this helpful text\n"
-  printf "  -r old-master  do not convert UCS backup, just resolve share references to old master ($opt_reference) interactively.\n"
-  printf "                 use this option after conversion to change remaining references\n"
   printf "  -v             enable verbose log output ($opt_verbose).\n"
   printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
   printf "\n"
@@ -101,73 +96,86 @@ resolve_reference() {
   # So the DN may possibly span several fields.
   # Beware when quoting DN.
   while read -u 5 DN; do
-    echo ""
-    echo "udm $module (attribute $attribute) contains a reference to $old_ldap_master in $DN"
-    old_value=$( udm $module list $udm_options | \
-      awk -vold=$old_ldap_master -vdn="$DN" -vattr=$attribute \
-        '/^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
-         dn==DN && $1 ~ attr && $0 ~ old { $1=""; sub(/^[ ]+/, ""); print $0 ; exit }
-        ' )
-    new_value=${old_value//$old_ldap_master/$ldap_master}
-    echo "Do you want this reference to be changed from"
-    echo "  \"$old_value\""
-    echo "to"
-    echo "  \"$new_value\""
-    # When changing references to hosts in udm module shares/share first
-    # check if the path already exists on the new host.
-    if [ "$module" = "shares/share" ] ; then
-      echo "[Y|n|remove]? "
-      udm $module list |\
-        awk -vdn="$DN" -vtarget=$new_value '
-          /^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
-          $1 == "host:" { host = $2 }
-          $1 == "path:" { path = $2 }
-          dn == DN && path { old_path = path }
-          host && path { count [ host ":" path ] ++ ; host=path="" }
-          END {
-            if ( (target ":" old_path) in count )
-              print "WARNING: path", old_path, "already exists on new host", target
-          }
-        '
-    else
-      # Removal not offered (only for shares).
-      echo "[Y|n]? "
-    fi
-    while true; do
-      read answer
-      case $answer in
-        [yY] )
-          echo "Ok, changing $attribute in $DN"
-          if [ "$module" = "shares/share" ] ; then
-            # shares/share can have only one host
-            udm $module modify --dn "$DN" --set $attribute="$new_value"
-          else 
-            # other modules can have the same attribute several times
-            udm $module modify --dn "$DN" --append $attribute="$new_value"
-            udm $module modify --dn "$DN" --remove $attribute="$old_value"
-          fi
-          break ;;
-        [nN] )
-          echo "Ok, leaving $DN unchanged"
-          break ;;
-        remove )
-          if [ "$module" = "shares/share" ] ; then
-            echo "Ok, removing $n";
-            udm $module remove --dn "$DN"
-            break
-          else
-            echo "removal is offered only with udm module shares/share" 
-            echo "changing nothing, try again [Y|n]? " 
-          fi
-          ;;
-        * )
-          if [ "$module" = "shares/share" ] ; then
-            echo "[Y|n|remove]? "
-          else
-            echo "[Y|n]? "
-          fi
-          ;;
-      esac
+	while [ 1 ]; do 
+      old_value=$( udm $module list $udm_options | \
+        awk -vold=$old_ldap_master -vdn="$DN" -vattr=$attribute \
+          '/^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
+           dn==DN && $1 ~ attr && $0 ~ old { $1=""; sub(/^[ ]+/, ""); print $0 ; exit }
+          ' )
+      if [ -z "$old_value" -o "$last_answer" = n ]; then
+		last_answer=""
+      	break
+      fi
+
+      echo ""
+      echo "udm $module (attribute $attribute) contains a reference to $old_ldap_master in $DN"
+      new_value=${old_value//$old_ldap_master/$ldap_master}
+      echo
+      echo "Do you want this reference to be changed from"
+      echo "  \"$old_value\""
+      echo "to"
+      echo "  \"$new_value\""
+      # When changing references to hosts in udm module shares/share first
+      # check if the path already exists on the new host.
+      if [ "$module" = "shares/share" ] ; then
+        echo "[Y|n|remove]? "
+        udm $module list |\
+          awk -vdn="$DN" -vtarget=$new_value '
+            /^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
+            $1 == "host:" { host = $2 }
+            $1 == "path:" { path = $2 }
+            dn == DN && path { old_path = path }
+            host && path { count [ host ":" path ] ++ ; host=path="" }
+            END {
+              if ( (target ":" old_path) in count )
+                print "WARNING: path", old_path, "already exists on new host", target
+            }
+          '
+      else
+        # Removal not offered (only for shares).
+        echo -n "[Y|n]? "
+      fi
+      while true; do
+        read answer
+		# Set default to y
+		if [ -z "$answer" ]; then
+			answer=y
+		fi
+        case $answer in
+          [yY] )
+            echo "Ok, changing $attribute in $DN"
+            if [ "$module" = "shares/share" -o "$attribute" = "mailHomeServer" ] ; then
+              # some attributes are single values, like hosts or mailHomeSevers
+              udm $module modify --dn "$DN" --set $attribute="$new_value"
+            else 
+              # other modules can have the same attribute several times
+              udm $module modify --dn "$DN" --append $attribute="$new_value"
+              udm $module modify --dn "$DN" --remove $attribute="$old_value"
+            fi
+            break ;;
+          [nN] )
+			last_answer=n
+            echo "Ok, leaving $DN unchanged"
+            break ;;
+          remove )
+            if [ "$module" = "shares/share" ] ; then
+              echo "Ok, removing $n";
+              udm $module remove --dn "$DN"
+              break
+            else
+              echo "removal is offered only with udm module shares/share" 
+              echo "changing nothing, try again [Y|n]? " 
+            fi
+            ;;
+          * )
+            if [ "$module" = "shares/share" ] ; then
+              echo -n "[Y|n|remove]? "
+            else
+              echo -n "[Y|n]? "
+            fi
+            ;;
+        esac
+      done
     done
   done 
   # Close fd 5 (domain names) and remove the file.
@@ -210,14 +218,11 @@ consider_termination() {
   done
 }
 
-while getopts c:dfhr:vw: name
+while getopts dfhvw: name
 do
   case "$name" in
-    c)  opt_old_master="${OPTARG}"  ;;
-    d)  opt_dry_run=1               ;;
     f)  opt_force=1                 ;;
     h)  Usage ; exit                ;;
-    r)  opt_reference="${OPTARG}"   ;;
     v)  opt_verbose=1               ;;
     w)  opt_wait="${OPTARG}"        ;;
   esac
@@ -231,8 +236,7 @@ fi
 
 # Check if the script univention-config-registry can be executed.
 if ! univention-config-registry 2> /dev/null > /dev/null ; then
-  Usage "this is not a proper UCS host (cannot find command univention-config-registry)"
-  printf "use -f to proceed anyway\n"
+  printf "ERROR: This is not a proper UCS host (cannot find command univention-config-registry). Use -f to proceed anyway\n"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
@@ -240,8 +244,7 @@ fi
 
 # Check if the current user has root permissions.
 if [ $( id -u ) -ne 0 ]; then
-  Usage "you are user $( id -u ) and not root, so you are not allowed to do this"
-  printf "use -f to proceed anyway\n"
+  printf "ERROR: You are user $( id -u ) and not root, so you are not allowed to do this. Use -f to proceed anyway\n"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
@@ -250,9 +253,9 @@ fi
 # Read all Univention variables into shell variables.
 eval "$(univention-config-registry shell)"
 
-# Check if the current host has been configured to become DC master.
+# Check if the current host has been configured to become DC master
 if [ "$server_role" != "domaincontroller_backup" ]; then
-  Usage "ERROR: univention-backup2master can only be started on a domain controller backup."
+  printf "ERROR: univention-backup2master can only be started on a domain controller backup. Use -f to proceed anyway\n"
   # Does it make sense to allow enforcement on a master ?
   # Yes, immediately after conversion, we use this script to report remainders.
   if [ $opt_force -eq 0 ] ; then
@@ -262,62 +265,10 @@ fi
 
 # Try to connect to DC master, check if connection is possible
 if nc -z $ldap_master $ldap_master_port 2> /dev/null > /dev/null ; then
-  Usage "the LDAP Domain Controller master host ($ldap_master:$ldap_master_port) is still running"
-  printf "use -f to proceed anyway\n"
+  printf "ERROR: The LDAP Domain Controller master host ($ldap_master:$ldap_master_port) is still running. Use -f to proceed anyway\n"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
-fi
-
-# Find all objects in the LDAP database that still contain the name
-# of the DC master that is going to be switched off.
-if [ -n "$opt_old_master" ] ; then
-  printf "\nChecking if LDAP database contains any remaining references to old master %s\n" $opt_old_master
-  printf "Each and every remaining textual appearance of the name will be reported\n"
-  printf "Notice that some containers are named after hosts and it is normal that\n"
-  printf "some container names survive after the initial master has disappeared\n"
-  univention-ldapsearch  | ldapsearch-wrapper | \
-    awk -vname=$opt_old_master -vverbose=$opt_verbose '
-      # Treat LDIF input as multi-line input: an empty line separates records.
-      BEGIN {RS=""; FS="\n" }
-      # If the name of the old master still appears in an object then report it.
-      match($0, name) {
-        if (verbose)
-          print "\n" $1
-        print $2
-        if (verbose) {
-          for (i=2; i<=NF; i++)
-            if (match($i, name))
-              print $i
-        }
-      };
-    '
-  printf "\nChecking if the SRV records contain any remaining references to old master %s\n" $opt_old_master
-  host -t SRV -l ${domainname}  | grep $opt_old_master
-  printf "\n"
-
-  # This was just a check, stop now and don't convert to master.
-  exit
-fi
-
-# Interactively change all shares in the LDAP database that still contain the name
-# of the DC master that is going to be switched off.
-if [ -n "$opt_reference" ] ; then
-  printf "\nInteractively resolve remaining share references to old master %s\n" $opt_reference
-  resolve_reference shares/share     host       "$opt_reference"    "$ldap_backup"   ""
-  resolve_reference dns/forward_zone nameserver "$opt_reference."   "$ldap_backup."  ""
-  resolve_reference dns/reverse_zone nameserver "$opt_reference."   "$ldap_backup."  ""
-  resolve_reference dns/srv_record   location   "$opt_reference"    "$hostname"      "--superordinate zoneName=$domainname,cn=dns,$ldap_base"
-  # This was just the interactive resolution, stop now and don't convert to master.
-  exit
-fi
-
-# If this is a dry-run, then stop now because everything has been said,
-# except for the actual conversion itself.  
-if [ $opt_dry_run -ne 0 ] ; then
-  echo "Terminating dry-run here as requested."
-  echo "Use this script without option -d to convert $(hostname) to master."
-  exit 0
 fi
 
 # The environment seems proper, now start the actual conversion to master.
@@ -445,6 +396,18 @@ univention-run-join-scripts
 # Resolve any LDAP references to the old master
 resolve_reference shares/share   host     $old_ldap_master_hostname $hostname ""
 resolve_reference dns/srv_record location $old_ldap_master_hostname $hostname "--superordinate zoneName=$domainname,cn=dns,$ldap_base"
+
+# Is the new DC master a IMAP server?
+res="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(&(cn=$hostname)(objectClass=univentionDomainController)(univentionService=IMAP))")"
+# Do we have any users who use the old DC master as IMAP server?
+res_users="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(univentionMailHomeServer=$old_ldap_master)")"
+if [ -n "$res" -a -n "$res_users" ]; then
+	resolve_reference users/user     mailHomeServer  "$old_ldap_master_hostname"    "$hostname"      ""
+elif [ -n "$res_users" ]; then
+	echo
+	echo "WARNING: The old domain controller master was a IMAP server. This server is not a registered IMAP server."
+	echo
+fi
 
 # Remove the old master from the default settings of thin clients
 def_dn=$(univention-directory-manager policies/thinclient list | sed -ne 's|DN: ||p')

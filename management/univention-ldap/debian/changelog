@@ -1,3 +1,14 @@
+univention-ldap (8.0.87-1) unstable; urgency=low
+
+  * Cleanup backup2master: Bug #5774
+    * remove options -r, -c and -d
+    * support SRV records with multi locations for one host
+    * cleanup some messages
+    * check if old DC master was a IMAP server and change the user mail
+      attributes or print a warning
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Jul 2012 08:49:41 +0200
+
 univention-ldap (8.0.86-5) unstable; urgency=low
 
   * univention-backup2master: Removed svn:keywords property.
