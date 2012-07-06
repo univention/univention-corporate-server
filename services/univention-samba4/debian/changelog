@@ -1,3 +1,9 @@
+univention-samba4 (1.0.154-1) unstable; urgency=low
+
+  * changed default value of UCR variable samba/debug/level to 1 (Bug #26755)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 06 Jul 2012 10:01:39 +0200
+
 univention-samba4 (1.0.153-1) unstable; urgency=low
 
   * add more features to s4search-decode (Bug #27752)
