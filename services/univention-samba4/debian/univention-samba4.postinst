@@ -218,4 +218,9 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 
 fi
 
+# Re-create /etc/krb5.keytab
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
+/usr/share/univention-samba4/scripts/create-keytab.sh
+
+
 exit 0

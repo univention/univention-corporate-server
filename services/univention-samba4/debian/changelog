@@ -1,3 +1,11 @@
+univention-samba4 (1.0.158-1) quantal; urgency=low
+
+  * Added a simple bash scripts which re creates the /etc/krb5.keytab and
+    call the script in postinst and in 96univention-samba4.inst
+    (Bug #27426)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 07 Jul 2012 21:37:07 +0200
+
 univention-samba4 (1.0.157-1) unstable; urgency=low
 
   * Merge changes from UCS@school to UCS 3.0-2 (Bug #26510)

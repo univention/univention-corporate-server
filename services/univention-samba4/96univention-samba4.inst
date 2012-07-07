@@ -627,6 +627,10 @@ fi
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 
+# re-create /etc/krb5.keytab
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
+/usr/share/univention-samba4/scripts/create-keytab.sh
+
 joinscript_save_current_version
 
 exit 0
