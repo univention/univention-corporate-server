@@ -1,3 +1,9 @@
+univention-samba4 (1.0.157-1) unstable; urgency=low
+
+  * Merge changes from UCS@school to UCS 3.0-2 (Bug #26510)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 07 Jul 2012 21:24:22 +0200
+
 univention-samba4 (1.0.156-1) unstable; urgency=low
 
   * Set samba/share/netlogon in 96univention-samba4.inst on DC to yes.

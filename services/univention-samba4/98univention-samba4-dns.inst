@@ -97,6 +97,10 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "
 	
 fi
 
+if [ -n "$samba4_join_site" ]; then
+	site="--site=$samba4_join_site"
+fi
+
 if [ $JS_LAST_EXECUTED_VERSION -le 1 ]; then
 ## Set DNS records again in case Bug #26285 occured in UCS 3.0-0. 
 ## Flow control copied from 96univention-samba4.inst
@@ -105,17 +109,17 @@ if [ $JS_LAST_EXECUTED_VERSION -le 1 ]; then
 
 		if [ "$s4connectorservicedcs" = "$hostname" ]; then
 
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --gc --pdc "$@"
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "$site"
 
 		else
 
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc "$@"
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "$site"
 
 		fi
 
 	elif [ "$samba4_role" = "RODC" ]; then
 
-		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc "$@"
+		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --rodc "$site"
 
 	fi
 

@@ -328,6 +328,12 @@ Description[en]=Selects Samba 4 site for domain join
 Type=str
 Categories=service-samba
 
+[samba4/provision/secondary]
+Description[de]=Falls vor dem initialen Join von univention-samba4 aktiviert, werden auch sekundäre Samba 4 DCs per Provision installiert statt per Samba domain join. Diese Variable sollte nicht manuell angepasst werden.
+Description[en]=If enabled before the initial join of univention-samba4, secondary Samba 4 DCs will also be initialized with provision instead of performing a regular Samba domain join. This variable should not be modified manually.
+Type=str
+Categories=service-samba
+
 [samba4/disabled]
 Description[de]=Verhindert die Ausführung der Join-Skripte von univention-samba4 (default: false)
 Description[en]=Prevents the execution of the join-scripts of univention samba4 (default: false)
@@ -340,6 +346,11 @@ Description[en]=If samba4/join/dnsupdate is set to true, the tool samba_dnsupdat
 Type=str
 Categories=service-samba
 
+[samba4/provision/primary]
+Description[de]=Falls vor dem initialen Join von univention-samba4 aktiviert, werden auch sekundäre Samba 4 DCs per Provision installiert statt per Samba domain join. Diese Variable sollte nur in ganz speziellen dokumentierten Fällen gesetzt werden. Im Unterschied zu samba4/provision/secondary wird hier auch Global Catalogue und PDC Rolle gesetzt.
+Description[en]=If enabled before the initial join of univention-samba4, secondary Samba 4 DCs will also be initialized with provision instead of performing a regular Samba domain join. This variable should only be modified in very sepcific documented cases. In contrast to samba4/provision/secondary this als sets the Global Catalogue und PDC roles.
+Type=str
+Categories=service-samba
 [samba/usershare/max_shares]
 Description[de]=Definiert die maximale Anzahl an Usershares
 Description[en]=Defines the maximum amount of usershares

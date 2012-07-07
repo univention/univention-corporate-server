@@ -278,13 +278,21 @@ if [ -z "$samba4_role" ]; then
 	univention-config-registry set samba4/role="$samba4_role"
 fi
 
+## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
+samba4_ldap_base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
+univention-config-registry set samba4/ldap/base="$samba4_ldap_base"
+
+if [ -n "$samba4_join_site" ]; then
+	if [ "$samba4_role" = 'DC' ] ||  [ "$samba4_role" = 'RODC' ]; then
+		create_site "$samba4_join_site"
+		SITE_OPTION="--site=$samba4_join_site"
+		## use "${SITE_OPTION[@]}" below instead of "$SITE_OPTION" for propper quoting and to avoid passing an empty string
+	fi
+fi
 
 if [ "$samba4_role" = 'DC' ]; then
 
-	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
-	samba4_ldap_base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
-	univention-config-registry set samba4/ldap/base="$samba4_ldap_base" \
-							server/password/change=no \
+	univention-config-registry set server/password/change=no \
 							samba/share/netlogon=yes
 
 	## check if we there already is a **domaincontroller** providing the service "Samba 4"
@@ -292,12 +300,12 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	/etc/init.d/samba4 stop
 
-
-	if [ -z "$samba4servicedcs" ]; then	## we are the first domainctontroller to provide this service
+	is_ucr_true samba4/provision/primary
+	if [ $? -eq 0 ] || [ -z "$samba4servicedcs" ]; then	## we are the first domainctontroller to provide this service
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 			## Provision Samba4
-			/usr/share/univention-samba4/scripts/setup-s4.sh "$@"
+			/usr/share/univention-samba4/scripts/setup-s4.sh "$@" "${SITE_OPTION[@]}"
 			rc="$?"
 			if [ "$rc" != 0 ]; then
 				exit "$rc"
@@ -307,7 +315,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 		## Adding DNS records is currently necessary, probably this will can be avoided with dlz-dlopen on samba4
 		## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
-		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --gc --pdc "$@"
+		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "${SITE_OPTION[@]}"
 
 		operatingSystem_attribute replace
 
@@ -336,78 +344,63 @@ if [ "$samba4_role" = 'DC' ]; then
 			sleep 1
 		fi
 
-		if [ -z "$samba4_join_site" ]; then
-			## normal domain join
+		is_ucr_true samba4/provision/secondary
+		if [ $? -eq 0 ]; then
+			## secondary provision for selective replication
+
+			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+				## special case: provision another instance of Samba 4
+				## this is similar to univention-samba-slave-pdc
+				/usr/share/univention-samba4/scripts/setup-s4.sh "$@" "${SITE_OPTION[@]}"
+				rc="$?"
+				if [ "$rc" != 0 ]; then
+					exit "$rc"
+				fi
+
+				## Adding DNS records is currently necessary, probably this can be avoided with samba_dnsupdate
+				## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
+				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
+
+				operatingSystem_attribute replace
+
+				# Don't use the default RID pool
+				ldbmodify -H /var/lib/samba/private/sam.ldb <<-%EOF
+dn: CN=RID Set,CN=$hostname,OU=Domain Controllers,$samba4_ldap_base
+changetype: modify
+replace: rIDAllocationPool
+rIDAllocationPool: 2100-2599
+-
+replace: rIDPreviousAllocationPool
+rIDPreviousAllocationPool: 2100-2599
+-
+replace: rIDNextRID
+rIDNextRID: 2101
+%EOF
+			fi
+
+		else
+			## regular join
+
 			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-									--machinepass="$(cat /etc/machine.secret)"
+								--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}"
 			if [ $? != 0 ]; then
 				# try again with --server
-				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
-										--machinepass="$(cat /etc/machine.secret)"
-			else
-				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
-										--machinepass="$(cat /etc/machine.secret)"
-			fi
-
-		else
-			## site join
-			create_site "$samba4_join_site"
-
-			is_ucr_true samba4/join/essentialonly
-			rc=$?
-			if [ "$rc" -eq 0 ] || [ -z "$samba4_join_essentialonly" ]; then
-
-				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-									--machinepass="$(cat /etc/machine.secret)" \
-									--site="$samba4_join_site"
-				# try again with --server
 				if [ -n "$samba4_dc" ]; then
 					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
-										--machinepass="$(cat /etc/machine.secret)" \
-										--site="$samba4_join_site"
+										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}"
 				else
 					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
-										--machinepass="$(cat /etc/machine.secret)" \
-										--site="$samba4_join_site"
+										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}"
 				fi
-
-			elif [ "$rc" -eq 1 ]; then
-				## site join with essential DRS replication only
-
-				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-									--machinepass="$(cat /etc/machine.secret)" \
-									--site="$samba4_join_site" \
-									--domain-critical-only
-				# try again with --server
-				if [ -n "$samba4_dc" ]; then
-					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
-										--machinepass="$(cat /etc/machine.secret)" \
-										--site="$samba4_join_site" \
-										--domain-critical-only
-				else
-					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
-										--machinepass="$(cat /etc/machine.secret)" \
-										--site="$samba4_join_site" \
-										--domain-critical-only
-				fi
-
 			fi
-		fi
 
-		is_ucr_true samba4/service/drepl
-		if [ $? -eq 1 ]; then
-			create_local_rid_pool 500
-		fi
+			## Adding DNS records is currently necessary, probably this can be avoided with samba_dnsupdate
+			## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
 
-		## Adding DNS records is currently necessary, probably this can be avoided with samba_dnsupdate
-		## see https://wiki.samba.org/index.php/Samba4/HOWTO/Join_a_domain_as_a_DC#A_note_on_DNS_updates
-		if [ -z "$samba4_join_site" ]; then
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc "$@"
-		else
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --site="$samba4_join_site" "$@"
-		fi
+			operatingSystem_attribute add
 
-		operatingSystem_attribute add
+		fi
 
 		## determine default sysvol parent for this host from univentionService="S4 Connector"
 		if [ -z "$samba4_sysvol_sync_host" ]; then
@@ -475,10 +468,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 		exit 1
 	fi
 
-	## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
-	samba4_ldap_base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
-	univention-config-registry set samba4/ldap/base="$samba4_ldap_base" \
-							server/password/change=no
+	univention-config-registry set server/password/change=no
 
 	/etc/init.d/samba4 stop
 
@@ -496,30 +486,9 @@ elif [ "$samba4_role" = "RODC" ]; then
 		sleep 1
 	fi
 
-	if [ -z "$samba4_join_site" ]; then
-		samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-							--machinepass="$(cat /etc/machine.secret)"
-
-		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc "$@"
-	else
-		# site join
-		create_site "$samba4_join_site"
-
-		is_ucr_true samba4/join/essentialonly
-		rc=$?
-		if [ "$rc" -eq 0 ] || [ -z "$samba4_join_essentialonly" ]; then
-			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-								--machinepass="$(cat /etc/machine.secret)" \
-								--site="$samba4_join_site"
-		else
-			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-								--machinepass="$(cat /etc/machine.secret)" \
-								--site="$samba4_join_site" \
-								--domain-critical-only
-		fi
-
-		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc --site="$samba4_join_site" "$@"
-	fi
+	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+							--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}"
+	/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --rodc "${SITE_OPTION[@]}"
 
 	operatingSystem_attribute add
 

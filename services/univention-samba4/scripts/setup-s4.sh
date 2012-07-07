@@ -57,6 +57,19 @@ while getopts  "h-:W:" option; do
 				bindpwd="${!OPTIND}"
 				OPTIND=$((OPTIND+1))
 				;;
+			site|site=*)
+				## allow "--site=foo" and "--site foo"
+				val=${OPTARG#*=}
+				if [ "$val" != "$OPTARG" ]; then
+					opt=${OPTARG%=$val}
+				else
+					val="${!OPTIND}"
+					opt="${OPTARG}"
+					OPTIND=$((OPTIND+1))
+				fi
+				## store the sitename
+				sitename="$val"
+				;;
 			help)
 				usage
 				;;
@@ -169,10 +182,18 @@ if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
 		DOMAIN_SID="$(univention-newsid)"
 	fi
 
-	/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
-						--function-level="$samba4_function_level" \
-						--adminpass="$adminpw" --server-role='domain controller'	\
-						--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+	if [ -z "$sitename" ]; then
+		/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
+							--function-level="$samba4_function_level" \
+							--adminpass="$adminpw" --server-role='domain controller'	\
+							--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+	else
+		/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
+							--function-level="$samba4_function_level" \
+							--adminpass="$adminpw" --server-role='domain controller'	\
+							--sitename="$sitename" \
+							--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+	fi
 
 else
 	## Before starting the upgrade check for Samba accounts that are not POSIX accounts:
