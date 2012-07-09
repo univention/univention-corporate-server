@@ -62,15 +62,13 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
 	if [ -x /etc/init.d/slapd ]; then
 		/etc/init.d/slapd restart
 	fi
-		
-fi
 
-# Set DNS backend to ldap
-if [ "$1" = "remove" ]; then
+	# Set DNS backend to ldap
 	if [ "$dns_backend" = "samba4" ]; then
 		ucr set dns/backend=ldap
 		test -x /etc/init.d/bind9 && invoke-rc.d bind9 restart
 	fi
+		
 fi
 
 exit 0

@@ -1,3 +1,9 @@
+univention-samba4 (1.0.160-2) unstable; urgency=low
+
+  * Set dns/backend to ldap on purging too (Bug #26135)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Jul 2012 10:58:15 +0200
+
 univention-samba4 (1.0.160-1) unstable; urgency=low
 
   * Set DNS backend to ldap if univention-samba4 will be removed
