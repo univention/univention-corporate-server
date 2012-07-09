@@ -1,3 +1,12 @@
+univention-server (7.0.17-4) unstable; urgency=low
+
+  * server_password_change: /etc/machine.secret is now changed
+    earlier so that it can be used by the Listener during replication.
+    If the replication fails for some reason, then /etc/machine.secret
+    gets rolled back to its old value (Bug #27577).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Mon, 09 Jul 2012 11:25:34 +0200
+
 univention-server (7.0.17-3) unstable; urgency=low
 
   * server_password_change: Additional safety check; access to
