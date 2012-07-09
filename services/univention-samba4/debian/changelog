@@ -1,3 +1,9 @@
+univention-samba4 (1.0.164-2) unstable; urgency=low
+
+  * add copyright header to create_dns-host_spn.py (Bug #26641)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 09 Jul 2012 16:59:34 +0200
+
 univention-samba4 (1.0.164-1) unstable; urgency=low
 
   * create SAM account, SPN and local dns-keytab for dns-$hostname on joined DCs
