@@ -216,7 +216,15 @@ class UMCP_Dispatcher( object ):
 					queuerequest.sessionid = str( uuid.uuid4() )
 				# create new session / umcp client
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
-				client = SessionClient(timeout = _session_timeout + 5)
+				try:
+					client = SessionClient(timeout = _session_timeout + 5)
+				except Exception, e:
+					CORE.process( 'Failed to create UMC connection: %s' % str(e))
+					response = umcp.Response( queuerequest.request )
+					response.status = httplib.UNAUTHORIZED # set status to unauthorized
+					queuerequest.response_queue.put( response )
+					continue
+
 				cls.sessions[queuerequest.sessionid] = client
 				callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
 				client.client.signal_connect( 'closed', callback )

@@ -1,3 +1,10 @@
+univention-management-console-frontend (1.0.384-1) unstable; urgency=low
+
+  * fixed deadlock situation in univention-management-console-web-server
+    (Bug #26884)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 09 Jul 2012 18:24:44 +0200
+
 univention-management-console-frontend (1.0.383-2) unstable; urgency=low
 
   * Version bump (Bug #25031)
