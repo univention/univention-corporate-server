@@ -135,11 +135,13 @@ create_site() {
 		exit 1
 	fi
 
-	/usr/share/univention-samba4/scripts/univention-samba4-site-tool.py \
-			-H "ldap://$ldap_master" \
-			-U"$dcaccount"%"$bindpwd" \
-			--site "$1" --createsite \
-			--ignore-exists
+	if ldbsearch -k no -U"$dcaccount"%"$bindpwd" -H "ldap://$ldap_master" -s base > /dev/null 2>&1; then
+		/usr/share/univention-samba4/scripts/univention-samba4-site-tool.py \
+				-H "ldap://$ldap_master" \
+				-U"$dcaccount"%"$bindpwd" \
+				--site "$1" --createsite \
+				--ignore-exists
+	fi
 }
 
 allocate_rid_pool() {
