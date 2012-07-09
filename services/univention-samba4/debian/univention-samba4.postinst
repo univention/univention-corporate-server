@@ -220,7 +220,9 @@ fi
 
 # Re-create /etc/krb5.keytab
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
-/usr/share/univention-samba4/scripts/create-keytab.sh
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.159-1 ; then
+	/usr/share/univention-samba4/scripts/create-keytab.sh
+fi
 
 
 exit 0

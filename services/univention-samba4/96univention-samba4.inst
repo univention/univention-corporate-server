@@ -266,7 +266,7 @@ SYSVOL_PATH='/var/lib/samba/sysvol'
 if [ -z "$samba4_role" ]; then
 	case "$server_role" in
 		domaincontroller_*)
-			domaincontroller=true; break;;
+			domaincontroller=true;;
 	esac
 
 	if [ "$domaincontroller" = 'true' ]; then
