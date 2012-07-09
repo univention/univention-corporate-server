@@ -1,3 +1,9 @@
+univention-installer (7.0.161-1) unstable; urgency=low
+
+  * Only 13 characters are valid for an AD DC hostname (Bug #27307)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Jul 2012 09:45:18 +0200
+
 univention-installer (7.0.160-1) unstable; urgency=low
 
   * added mapping of x-keymaps to the corresponding keymaps

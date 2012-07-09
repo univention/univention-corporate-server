@@ -1192,10 +1192,10 @@ msgstr ""
 
 #: installer/modules/50_basis.py:299
 msgid ""
-"A valid netbios name can not be longer than 15 characters. If samba is "
+"A valid netbios name can not be longer than 13 characters. If samba is "
 "installed, the hostname should be shortened."
 msgstr ""
-"Ein gültiger NetBIOS Name darf nicht länger als 15 Zeichen sein. Wenn Samba "
+"Ein gültiger NetBIOS Name darf nicht länger als 13 Zeichen sein. Wenn Samba "
 "installiert wird, sollte der Rechnername gekürzt werden"
 
 #: installer/modules/50_basis.py:306

@@ -292,11 +292,11 @@ class object(content):
 					self.move_focus( self.get_elem_id('IN_FQDN') )
 				return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
 
-		if len(hostname) > 15:
+		if len(hostname) > 13:
 			# The warning will be displayed only once
 			if hostname != self.hostname_last_warning:
 				self.hostname_last_warning = hostname
-				return _("A valid netbios name can not be longer than 15 characters. If samba is installed, the hostname should be shortened.")
+				return _("A valid netbios name can not be longer than 13 characters. If samba is installed, the hostname should be shortened.")
 
 		if self.oxae:
 			if oxmaildomain.strip() == '' or oxmaildomain.strip().find(' ') != -1 or not self.syntax_is_domainname(oxmaildomain):
