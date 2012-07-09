@@ -313,7 +313,7 @@ class Instance(umcm.Base):
 
 		# basis
 		_check('hostname', util.is_hostname, _('The hostname is not a valid fully qualified domain name in lowercase (e.g. host.example.com).'))
-		_check('hostname', lambda x: len(x) <= 15, _('A valid netbios name can not be longer than 15 characters. If Samba is installed, the hostname should be shortened.'))
+		_check('hostname', lambda x: len(x) <= 13, _('A valid netbios name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.'))
 
 		_check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com)."))
 

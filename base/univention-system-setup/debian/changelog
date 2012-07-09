@@ -1,3 +1,9 @@
+univention-system-setup (5.0.187-1) unstable; urgency=low
+
+  * Only 13 characters are valid for an AD DC hostname (Bug #27307)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Jul 2012 09:45:44 +0200
+
 univention-system-setup (5.0.186-1) unstable; urgency=low
 
   * fixed problems with virtual interfaces in appliance mode; Bug #27847
