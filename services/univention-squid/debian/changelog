@@ -1,4 +1,4 @@
-univention-squid (5.0.18-1) unstable; urgency=low
+univention-squid (5.0.18-2) unstable; urgency=low
 
   * fixed ucr var description (Bug #24281)
 

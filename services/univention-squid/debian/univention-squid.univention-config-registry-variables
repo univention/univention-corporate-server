@@ -24,7 +24,7 @@ Categories=service-webproxy
 
 [squid/basicauth]
 Description[de]=Basic Authentifizierung am Squid
-Description[en]=squid basicn authentication 
+Description[en]=Squid basic authentication 
 Type=str
 Categories=service-webproxy
 
@@ -76,7 +76,6 @@ Description[en]=Networks, which squid accesses without using a parent proxy
 Type=str
 Categories=service-webproxy
 
-
 [squid/webports]
 Description[de]=Ports, auf die über squid zugegriffen werden darf
 Description[en]=Ports that may be accessed through squid
@@ -86,6 +85,12 @@ Categories=service-webproxy
 [squid/transparentproxy]
 Description[de]=iptables-Regeln für transparenten Proxy aktivieren
 Description[en]=Activate iptables rules for transparent proxy
+Type=str
+Categories=service-webproxy
+
+[squid/ntlmauth]
+Description[de]=NTML Authentifizierung am Squid
+Description[en]=NTLM squid authentication
 Type=str
 Categories=service-webproxy
 
