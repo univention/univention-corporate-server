@@ -40,7 +40,7 @@ import univention.uldap
 
 def usage():
 	print 'univention-pkgdb-scan: Scan all packages in the local system and send this data to the database pkgdb.'
-	print 'Copyright (c) 2005-2011 Univention GmbH, Germany'
+	print 'Copyright (c) 2005-2012 Univention GmbH, Germany'
 	print ''
 	print 'Syntax:'
 	print '  univention-pkgdb-scan [options]'
