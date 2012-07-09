@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.276-1) unstable; urgency=low
+
+  * fixed potential NameError in complex syntax (Bug #26850)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 09 Jul 2012 16:43:46 +0200
+
 univention-directory-manager-modules (7.0.275-1) unstable; urgency=low
 
   * added computers/ubuntu module (Bug #27581)
