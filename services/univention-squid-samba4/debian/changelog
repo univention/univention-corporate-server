@@ -1,0 +1,5 @@
+univention-samba4-squid (1.0.0-1) unstable; urgency=low
+
+  * initial release
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Jul 2012 13:42:40 +0200
