@@ -421,6 +421,14 @@ ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5Princip
 printf "\nReplacing package univention-server-backup with univention-server-master.\n"
 apt-get -y install univention-server-master univention-server-backup-
 
+# Move Samba4 FSMO roles to this host
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=26986
+if [ -x /usr/sbin/samba-tool ]; then
+	if samba-tool fsmo show | grep -qi "CN=${old_ldap_master_hostname},CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration"; then
+		samba-tool fsmo seize --role=all
+	fi
+fi
+
 # Any bind9 that might be running shall be restarted.
 test -x /etc/init.d/bind9 && /etc/init.d/bind9 force-reload
 
