@@ -1,3 +1,10 @@
+univention-samba4 (1.0.160-1) unstable; urgency=low
+
+  * Set DNS backend to ldap if univention-samba4 will be removed
+    (Bug #26135)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Jul 2012 10:40:46 +0200
+
 univention-samba4 (1.0.159-1) unstable; urgency=low
 
   * Merge changes from UCS@school to UCS 3.0-2 (Bug #26510)
