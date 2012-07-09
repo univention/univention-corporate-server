@@ -73,10 +73,12 @@ class SessionClient(object):
 		self.client = umcp.Client()
 		self.client.signal_connect( 'authenticated', self._authenticated )
 		self.client.signal_connect( 'response', self._response )
-		if self.client.connect():
+		try:
+			self.client.connect()
 			CORE.info('SessionClient(0x%x): connected to UMC server' % (id(self),))
-		else:
-			CORE.process('SessionClient(0x%x): connection to UMC server failed' % (id(self),))
+		except umcp.NoSocketError:
+			CORE.warn('SessionClient(0x%x): connection to UMC server failed' % (id(self),))
+			raise umcp.NoSocketError( 'Connection failed' )
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
