@@ -1,3 +1,9 @@
+univention-squid-kerberos (1.0.0-2) unstable; urgency=low
+
+  * fixed control file (Bug #27278) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Jul 2012 14:19:07 +0200
+
 univention-squid-kerberos (1.0.0-1) unstable; urgency=low
 
   * initial release

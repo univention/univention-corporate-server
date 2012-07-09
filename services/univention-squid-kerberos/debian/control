@@ -11,8 +11,8 @@ Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib,
  univention-squid,
- univention-samba4
- univention-heimdal-common (>>5.0.24-1),
+ univention-samba4,
+ univention-heimdal-common (>>5.0.24-1)
 Suggests: univention-firewall
 Description: Kerberos authentication for UCS Squid web proxy
  This package provides the kerberos (negotiate) authentification
