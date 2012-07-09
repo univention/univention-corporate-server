@@ -5,5 +5,5 @@ Variables: server/amazon
 
 Type: subfile
 Multifile: etc/pam.d/common-session
-Subfile: conffiles/etc/pam.d/common-session.d/20system-setup-login-message
+Subfile: etc/pam.d/common-session.d/20system-setup-login-message
 Variables: system/setup/showloginmessage

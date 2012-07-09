@@ -1,3 +1,11 @@
+univention-system-setup (5.0.187-2) unstable; urgency=low
+
+  * univention-system-setup-boot.univention-config-registry:
+    Removed the superfluous "conffiles/" from Subfile entry
+    (Bug #27798).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Mon, 09 Jul 2012 14:47:04 +0200
+
 univention-system-setup (5.0.187-1) unstable; urgency=low
 
   * Only 13 characters are valid for an AD DC hostname (Bug #27307)
