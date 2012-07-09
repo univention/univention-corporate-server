@@ -1,3 +1,10 @@
+univention-samba4 (1.0.164-1) unstable; urgency=low
+
+  * create SAM account, SPN and local dns-keytab for dns-$hostname on joined DCs
+    just like it is done on a provisioned DC (Bug #26641)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 09 Jul 2012 16:49:31 +0200
+
 univention-samba4 (1.0.163-1) unstable; urgency=low
 
   * create the propper DomainGUID LDAP SRV record (Bug #26325)
