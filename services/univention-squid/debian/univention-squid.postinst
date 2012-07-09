@@ -80,6 +80,5 @@ ucr set security/packetfilter/package/univention-squid/tcp/3128/all="ACCEPT" \
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 call_joinscript 79univention-squid.inst
-## cannot call joinscript 98univention-squid-samba4.inst here, maybe the samba4 joinscript did not run yet
 
 exit 0
