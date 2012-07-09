@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.275-1) unstable; urgency=low
+
+  * added computers/ubuntu module (Bug #27581)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 09 Jul 2012 15:56:15 +0200
+
 univention-directory-manager-modules (7.0.274-1) unstable; urgency=low
 
   * added tool convert-user-base64-photos

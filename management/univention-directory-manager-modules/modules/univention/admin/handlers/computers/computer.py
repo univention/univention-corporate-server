@@ -68,7 +68,8 @@ childmodules=[	"computers/managedclient",
 				"computers/windows_domaincontroller",
 				"computers/mobileclient",
 				"computers/trustaccount",
-				"computers/ipmanagedclient"]
+				"computers/ipmanagedclient",
+				"computers/ubuntu"]
 
 childs=0
 short_description=_('Computer')

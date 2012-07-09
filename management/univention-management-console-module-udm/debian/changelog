@@ -1,3 +1,12 @@
+univention-management-console-module-udm (1.0.283-2) unstable; urgency=low
+
+  * associate 'computers/ubuntu' with 'defaultClientGroup' when
+    determining it's primaryGroup
+  * added icon for 'computers/ubuntu' module
+  (Bug #27581)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 09 Jul 2012 14:49:00 +0200
+
 univention-management-console-module-udm (1.0.283-1) unstable; urgency=low
 
   * show full message also in frontend when a password

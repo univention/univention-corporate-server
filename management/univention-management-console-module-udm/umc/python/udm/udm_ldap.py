@@ -774,7 +774,7 @@ class UDM_Settings( object ):
 			return self.groups[ 'defaultDomainControllerMBGroup' ]
 		if module_name in ( 'computers/memberserver', ):
 			return self.groups[ 'defaultMemberServerGroup' ]
-		if module_name in ( 'computers/mobileclient', 'computers/managedclient', 'computers/macos' ):
+		if module_name in ( 'computers/mobileclient', 'computers/managedclient', 'computers/macos', 'computers/ubuntu' ):
 			return self.groups[ 'defaultClientGroup' ]
 		if module_name.startswith( 'computers/' ):
 			return self.groups[ 'defaultComputerGroup' ]
