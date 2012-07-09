@@ -1,3 +1,10 @@
+univention-samba4 (1.0.161-1) unstable; urgency=low
+
+  * New UCR variable samba4/provision/primary to force PDC+GC provision
+    (Bug #27513)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 11 Jun 2012 19:54:50 +0200
+
 univention-samba4 (1.0.160-2) unstable; urgency=low
 
   * Set dns/backend to ldap on purging too (Bug #26135)
