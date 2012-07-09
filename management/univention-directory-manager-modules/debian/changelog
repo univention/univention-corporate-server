@@ -1,3 +1,13 @@
+univention-directory-manager-modules (7.0.274-1) unstable; urgency=low
+
+  * added tool convert-user-base64-photos
+  * the attribute jpegPhoto is treated as binary format in LDAP now
+  * base64 encoded jpegPhoto values are converted automatically when
+    updating
+  Bug #26872
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 09 Jul 2012 15:29:34 +0200
+
 univention-directory-manager-modules (7.0.273-1) unstable; urgency=low
 
   * univention-sync-memberuid now better bears with inconsistencies (Bug #23601)

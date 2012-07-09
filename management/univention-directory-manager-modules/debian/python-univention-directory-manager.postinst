@@ -35,7 +35,7 @@ eval "$(univention-config-registry shell)"
 #DEBHELPER#
 
 if [ "$1" = configure -a -z "$2" ]; then
-        # only set this for new installations
+	# only set this for new installations
 	univention-config-registry set directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress \
 		password/hashing/method?SHA-512
 fi
@@ -44,6 +44,5 @@ if [ "$1" = "configure" ]; then
 	univention-config-registry set directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300 \
 		password/hashing/method?MD5 # for update keep old behaviour
 fi
-
 
 exit 0

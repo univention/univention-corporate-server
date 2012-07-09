@@ -1228,14 +1228,25 @@ mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
 mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
 
-def unmapCertificate( value ):
-	return base64.encodestring( value[ 0 ] )
+def unmapBase64( value ):
+	try:
+		return base64.encodestring( value[ 0 ] )
+	except Exception, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
+	return ""
 
-def mapCertificate( value ):
-	return base64.decodestring( value )
+def mapBase64( value ):
+	if value == '*':
+		# special case for filter pattern '*'
+		return value
+	try:
+		return base64.decodestring( value )
+	except Exception, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
+	return ""
 
-mapping.register('userCertificate', 'userCertificate;binary', mapCertificate, unmapCertificate )
-mapping.register('jpegPhoto', 'jpegPhoto', None, univention.admin.mapping.ListToString)
+mapping.register('userCertificate', 'userCertificate;binary', mapBase64, unmapBase64 )
+mapping.register('jpegPhoto', 'jpegPhoto', mapBase64, unmapBase64)
 
 class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	module=module

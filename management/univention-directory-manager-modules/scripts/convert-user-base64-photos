@@ -1,0 +1,118 @@
+#!/usr/bin/python2.6
+#
+# Copyright 2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+'''Univention Directory Manager Tools
+convert base64 encoded jpegPhoto LDAP entries to binary entries (Bug #26872)'''
+
+import optparse
+import re
+import sys
+import univention.config_registry as config
+import univention.uldap
+import ldap
+import ldap.modlist
+
+ACTIONS = ( 'test', 'convert' )
+JPEG_HEADER = '\xff\xd8\xff\xe0'
+
+ucr = config.ConfigRegistry()
+ucr.load()
+
+
+def find_users( lo ):
+	return udm_modules.lookup('users/user', None, lo, filter='jpegPhoto=*', base=ucr['ldap/base'], scope='sub')
+
+
+def run(action, verbose = False):
+	lo = univention.uldap.getAdminConnection()
+
+	# find all users with a jpegPhoto attribute
+	print 'Searching for user objects with base64 encoded jpegPhoto attribute...\n'
+	result = lo.search('jpegPhoto=*')
+
+	# iterate over user objects
+	for idn, iobj in result:
+		def log(msg, force = False):
+			if verbose or force:
+				print 'DN: %s\n%s\n' % (idn, msg)
+
+		msg = ''
+		try:
+			b64 = iobj['jpegPhoto'][0]
+		except Exception, e:
+			log('ERROR: failed to open LDAP object: %s' % e)
+			continue
+
+		if not b64:
+			log('jpegPhoto: empty value')
+			continue
+		if b64.startswith(JPEG_HEADER):
+			log('jpegPhoto: binary JPEG image format')
+			continue
+
+		# try to decode + encode again
+		try:
+			bin = b64.decode('base64')
+			_b64 = bin.encode('base64')
+		except Error, e:
+			# no base64 encoded jpeg photo
+			log('jpegPhoto: an error occurred trying to decode the jpegPhoto attribute as base64: %s' % e)
+			continue
+
+		# compare original and decoded + encoded string
+		if _b64 != b64:
+			log('jpegPhoto: unknown format')
+			continue
+
+		if action == 'test':
+			log('jpegPhoto: base64 format -> CAN BE CONVERTED')
+		else:
+			log('jpegPhoto: CONVERTING from base64 to binary format', force=True)
+			ldiff = ldap.modlist.modifyModlist(dict(jpegPhoto=b64), dict(jpegPhoto=bin))
+			lo.modify_s(idn, ldiff)
+
+if __name__ == '__main__':
+	# parse arguments and options
+	parser = optparse.OptionParser( usage = 'Usage: %%prog [options] (%s)\nreplace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version.' % '|'.join( ACTIONS ) )
+	parser.add_option("-v", "--verbose", help="print debug output", dest="verbose", action="store_true")
+	(options, args, ) = parser.parse_args()
+
+	# check argument (action)
+	if not args:
+		print >>sys.stderr, 'warning: no action given. default is test'
+		args = [ 'test' ]
+
+	if args[ 0 ] not in ( 'test', 'convert' ):
+		print >>sys.stderr, 'error: unknown action %s' % args[ 0 ]
+		parser.print_help()
+		sys.exit( 3 )
+
+	# action!
+	run(args[0], verbose = options.verbose)
+
