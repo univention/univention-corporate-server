@@ -1,3 +1,9 @@
+univention-squid (5.0.18-1) unstable; urgency=low
+
+  * fixed ucr var description (Bug #24281)
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Jul 2012 14:44:47 +0200
+
 univention-squid (5.0.17-1) unstable; urgency=low
 
   * removed 98univention-squid-samba4.inst (Bug #27278)

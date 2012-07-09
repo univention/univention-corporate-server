@@ -24,7 +24,7 @@ Categories=service-webproxy
 
 [squid/basicauth]
 Description[de]=Basic Authentifizierung am Squid
-Description[de]=squid basicn authentication 
+Description[en]=squid basicn authentication 
 Type=str
 Categories=service-webproxy
 
