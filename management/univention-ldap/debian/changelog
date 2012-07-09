@@ -1,3 +1,9 @@
+univention-ldap (8.0.89-1) unstable; urgency=low
+
+  * Force the fsmo seize command (Bug #26986)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Jul 2012 13:40:50 +0200
+
 univention-ldap (8.0.88-1) unstable; urgency=low
 
   * backup2master: move Samba 4 roles to the new ldap master (Bug #26986)

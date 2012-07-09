@@ -425,7 +425,7 @@ apt-get -y install univention-server-master univention-server-backup-
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=26986
 if [ -x /usr/sbin/samba-tool ]; then
 	if samba-tool fsmo show | grep -qi "CN=${old_ldap_master_hostname},CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration"; then
-		samba-tool fsmo seize --role=all
+		samba-tool fsmo seize --role=all --force
 	fi
 fi
 
