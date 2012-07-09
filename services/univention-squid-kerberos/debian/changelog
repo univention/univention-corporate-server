@@ -1,4 +1,4 @@
-univention-samba4-squid (1.0.0-1) unstable; urgency=low
+univention-squid-kerberos (1.0.0-1) unstable; urgency=low
 
   * initial release
 

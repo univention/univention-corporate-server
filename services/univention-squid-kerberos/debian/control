@@ -1,4 +1,4 @@
-Source: univention-squid-samba4
+Source: univention-squid-kerberos
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -6,7 +6,7 @@ Build-Depends: debhelper,
  univention-config-dev,
  ucslint
 
-Package: univention-squid-samba4
+Package: univention-squid-kerberos
 Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib,
