@@ -1,3 +1,9 @@
+univention-system-setup (5.0.188-1) unstable; urgency=low
+
+  * Unset ldap/translogfile on no dc master systems (Bug #27834)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Jul 2012 14:58:02 +0200
+
 univention-system-setup (5.0.187-2) unstable; urgency=low
 
   * univention-system-setup-boot.univention-config-registry:

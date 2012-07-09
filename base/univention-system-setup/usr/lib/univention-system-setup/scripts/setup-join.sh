@@ -102,6 +102,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		chmod 600 /var/lib/univention-ldap/root.secret
 	fi
 	unset p
+else
+	univention-config-registry unset ldap/translogfile
 fi
 # set root password
 /usr/lib/univention-system-setup/scripts/basis/18root_password
