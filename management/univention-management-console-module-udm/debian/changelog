@@ -1,4 +1,4 @@
-univention-management-console-module-udm (1.0.283-2) unstable; urgency=low
+univention-management-console-module-udm (1.0.284-1) unstable; urgency=low
 
   * associate 'computers/ubuntu' with 'defaultClientGroup' when
     determining it's primaryGroup
