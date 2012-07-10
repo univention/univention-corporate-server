@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-06-12 15:43+0200\n"
+"POT-Creation-Date: 2012-07-05 12:44+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,7 +128,7 @@ msgid "Business unit"
 msgstr "Abteilung"
 
 #: umc/js/setup.js:234 umc/js/setup.js:348 umc/js/setup.js:553
-#: umc/js/setup.js:600 umc/js/setup.js:632 umc/js/_setup/BasisPage.js:236
+#: umc/js/setup.js:600 umc/js/setup.js:632 umc/js/_setup/BasisPage.js:244
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -181,11 +181,11 @@ msgstr "Konfiguration abgeschlossen"
 msgid "Configuration of the UCS system role"
 msgstr "Konfiguration der UCS-Systemrolle"
 
-#: umc/js/setup.js:351 umc/js/_setup/BasisPage.js:240
+#: umc/js/setup.js:351 umc/js/_setup/BasisPage.js:248
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: umc/js/setup.js:770
+#: umc/js/setup.js:771
 msgid "Continue unjoined"
 msgstr "Ungejoint fortfahren"
 
@@ -256,7 +256,7 @@ msgstr ""
 "Warnung, die Einstellungen können mit dem aktuell gewählten Namen "
 "gespeichert werden."
 
-#: umc/js/_setup/BasisPage.js:206
+#: umc/js/_setup/BasisPage.js:210
 msgid "Fully qualified domain name"
 msgstr "Vollständiger Rechnername"
 
@@ -295,6 +295,10 @@ msgstr "Hilfe"
 #: umc/js/_setup/BasisPage.js:97
 msgid "Host and domain settings"
 msgstr "Rechner- und Domänen-Einstellungen"
+
+#: umc/js/_setup/BasisPage.js:238
+msgid "Hostname and windows domain may not be equal."
+msgstr "Hostname und Windows Domäne dürfen nicht gleich sein."
 
 #: umc/js/_setup/NetworkPage.js:103
 msgid "IPv4 address"
@@ -394,7 +398,7 @@ msgstr "Join"
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: umc/js/_setup/BasisPage.js:81 umc/js/_setup/BasisPage.js:210
+#: umc/js/_setup/BasisPage.js:81 umc/js/_setup/BasisPage.js:214
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
@@ -430,7 +434,7 @@ msgstr "Netzwerk"
 msgid "Network settings"
 msgstr "Netzwerk-Einstellungen"
 
-#: umc/js/_setup/BasisPage.js:218
+#: umc/js/_setup/BasisPage.js:222
 msgid "New root password"
 msgstr "Neues Root-Passwort"
 
@@ -453,11 +457,11 @@ msgstr ""
 msgid "No device"
 msgstr "Kein Gerät"
 
-#: umc/js/setup.js:726
+#: umc/js/setup.js:727
 msgid "Not all changes could be applied successfully:"
 msgstr "Nicht alle Änderungen konnten erfolgreich übernommen werden."
 
-#: umc/js/setup.js:730
+#: umc/js/setup.js:731
 msgid "Ok"
 msgstr "Ok"
 
@@ -485,7 +489,7 @@ msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup.js:770
+#: umc/js/setup.js:771
 msgid "Reconfigure, retry"
 msgstr "Ändern, wiederholen"
 
@@ -501,7 +505,7 @@ msgstr "Zurücksetzen"
 msgid "Root password"
 msgstr "Root-Passwort"
 
-#: umc/js/_setup/BasisPage.js:234
+#: umc/js/_setup/BasisPage.js:242
 msgid "Root password empty. Continue?"
 msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 
@@ -532,11 +536,11 @@ msgstr "Bundesland"
 msgid "System role"
 msgstr "Systemrolle"
 
-#: umc/js/setup.js:715 umc/js/setup.js:720
+#: umc/js/setup.js:715 umc/js/setup.js:721
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:764
+#: umc/js/setup.js:765
 msgid ""
 "The configuration was successful. Please confirm to complete the process."
 msgstr ""
@@ -563,7 +567,7 @@ msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
-#: umc/js/setup.js:775
+#: umc/js/setup.js:776
 msgid ""
 "The settings can be changed in the UMC module \"Basic settings\" after the "
 "join process has been completed. Please confirm now to complete the process."
@@ -590,11 +594,11 @@ msgstr ""
 "Die angegebenen Einstellungen werden auf das System übertragen, dies kann "
 "einen Moment dauern. Bitte bestätigen Sie um fortzufahren."
 
-#: umc/js/setup.js:767
+#: umc/js/setup.js:768
 msgid "The system join was not successful."
 msgstr "Der Domänenbeitritt war nicht erfolgreich."
 
-#: umc/js/setup.js:773
+#: umc/js/setup.js:774
 msgid ""
 "The system join was successful, however, errors occurred while applying the "
 "configuration settings:"
@@ -618,11 +622,11 @@ msgstr "UCS Erstkonfiguration"
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/_setup/BasisPage.js:87 umc/js/_setup/BasisPage.js:214
+#: umc/js/_setup/BasisPage.js:87 umc/js/_setup/BasisPage.js:218
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: umc/js/setup.js:769
+#: umc/js/setup.js:770
 msgid ""
 "You may return, reconfigure the settings, and retry the join process. You "
 "may also continue and end the wizard leaving the system unjoined. The system "

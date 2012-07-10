@@ -1,3 +1,9 @@
+univention-system-setup (5.0.189-1) unstable; urgency=low
+
+  * do not allow hostname equal to windows domain (Bug #27810)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 10 Jul 2012 11:53:24 +0200
+
 univention-system-setup (5.0.188-1) unstable; urgency=low
 
   * Unset ldap/translogfile on no dc master systems (Bug #27834)

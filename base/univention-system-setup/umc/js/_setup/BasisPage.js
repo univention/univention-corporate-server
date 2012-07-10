@@ -233,8 +233,12 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 	},
 
 	validate: function() {
-		var empty_password = this._form.getWidget('root_password').get('value') == '';
-		if (empty_password) {
+		var values = this.getValues();
+		if (values.hostname.toLowerCase() == values['windows/domain'].toLowerCase()) {
+			umc.dialog.alert(this._('Hostname and windows domain may not be equal.'));
+			return false;
+		}
+		if (!values.root_password) {
 			return umc.dialog.confirm(this._('Root password empty. Continue?'),
 				[{
 					label: this._('Cancel'),
