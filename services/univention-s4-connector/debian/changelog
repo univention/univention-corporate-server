@@ -1,3 +1,9 @@
+univention-s4-connector (6.0.170-1) unstable; urgency=low
+
+  * Fixed typo while synchronize DNS cnames from S4 to UCS (Bug #26346)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Jul 2012 08:00:44 +0200
+
 univention-s4-connector (6.0.169-1) unstable; urgency=low
 
   * Undo last commit: univention-s4-position-sync: do not move DC

@@ -580,7 +580,7 @@ def ucs_cname_create(s4connector, object):
 		newRecord= univention.admin.handlers.dns.alias.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord['name']=relativeDomainName
-		newRecord['cname']=c
+		newRecord['cname']=c[0]
 		newRecord.create()
 	
 
