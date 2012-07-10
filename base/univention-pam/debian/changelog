@@ -1,3 +1,9 @@
+univention-pam (5.0.20-1) unstable; urgency=low
+
+  * fix handling multiple servers in ldap/server/addition (Bug #27050)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Jul 2012 14:33:59 +0200
+
 univention-pam (5.0.19-1) unstable; urgency=low
 
   * Allow '-' in addition to hard and soft in limits.conf (Bug #27709)
