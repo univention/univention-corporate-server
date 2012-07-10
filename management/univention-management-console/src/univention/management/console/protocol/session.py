@@ -64,6 +64,8 @@ from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
 
+TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
+
 class State( signals.Provider ):
 	"""Holds information about the state of an active session
 
@@ -470,6 +472,13 @@ class Processor( signals.Provider ):
 		result = []
 		for file_obj in msg.options:
 			tmpfilename = file_obj[ 'tmpfile' ]
+			# limit files to tmpdir
+			if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
+				response.status = BAD_REQUEST_INVALID_ARGS
+				response.message = status_description( response.status )
+				self.signal_emit( 'response', response )
+				return
+
 			if not os.path.isfile( tmpfilename ):
 				response.status = BAD_REQUEST
 				response.message = status_description( response.status )

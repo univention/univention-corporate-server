@@ -70,6 +70,8 @@ class InvalidArgumentsError( Exception ):
 MIMETYPE_JSON = 'application/json'
 MIMETYPE_JPEG = 'image/jpeg'
 MIMETYPE_PNG = 'image/png'
+MIMETYPE_PLAIN = 'text/plain'
+MIMETYPE_HTML = 'text/html'
 
 class Message( object ):
 	"""Represents a protocol message of UMCP. It is able to parse
@@ -103,19 +105,24 @@ class Message( object ):
 		if data:
 			self.parse( data )
 
+	@staticmethod
+	def _formattedMessage(_id, _type, mimetype, command, body, arguments):
+		'''Returns formatted message.'''
+		type = 'RESPONSE'
+		if _type == Message.REQUEST:
+			type = 'REQUEST'
+		if mimetype == MIMETYPE_JSON:
+			data = json.dumps( body )
+		else:
+			data = body
+		args = ''
+		if arguments:
+			args = ' '.join( map( lambda x: str( x ), arguments ) )
+		return '%s/%s/%d/%s: %s %s\n%s' % ( type, _id, len( data ), mimetype, command, args, data )
+
 	def __str__( self ):
 		'''Returns the formatted message'''
-		type = 'RESPONSE'
-		if self._type == Message.REQUEST:
-			type = 'REQUEST'
-		if self.mimetype == MIMETYPE_JSON:
-			data = json.dumps( self.body )
-		else:
-			data = self.body
-		args = ''
-		if self.arguments:
-			args = ' '.join( map( lambda x: str( x ), self.arguments ) )
-		return '%s/%s/%d/%s: %s %s\n%s' % ( type, self._id, len( data ), self.mimetype, self.command, args, data )
+		return Message._formattedMessage(self._id, self._type, self.mimetype, self.command, self.body, self.arguments)
 
 	def _create_id( self ):
 		# cut off 'L' for long
