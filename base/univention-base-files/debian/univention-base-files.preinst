@@ -30,7 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=666
 dpkg-divert --rename --quiet --divert /etc/motd.debian --package univention-base-files --add /etc/motd
+
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=27759
+dpkg-divert --rename --quiet --divert /var/run/motd.debian --package univention-base-files --add /var/run/motd
+
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/set_locale.py 1.0.48~ -- "$@"
 rm -f /etc/univention/templates/modules/set_locale.pyc || true
 
