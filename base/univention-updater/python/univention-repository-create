@@ -59,14 +59,14 @@ def check_preconditions( options ):
 		print "Are you sure you want to create a local repository? [yN] ",
 		sys.stdin.flush()
 		if not sys.stdin.readline().startswith( 'y' ):
-			print 'Aborted.'
+			print >> sys.stderr, 'Aborted.'
 			sys.exit( 1 )
 
 	# install univention-debmirror
 	print 'Installing univention-debmirror'
 	ret=subprocess.call( ['univention-install', '--yes', 'univention-debmirror' ] )
 	if ret != 0:
-		print 'Error: Failed to install univention-debmirror'
+		print >> sys.stderr, 'Error: Failed to install univention-debmirror'
 		sys.exit( 1 )
 
 	ret, msg = urepo.is_debmirror_installed()
@@ -109,7 +109,8 @@ def copy_repository( options ):
 		shutil.copy2( os.path.join( options.mount_point, '.univention_install' ), _mirror_base )
 	except:
 		print 'failed.'
-	print 'done.'
+	else:
+		print 'done.'
 
 	# copy kernel and grub config
 	print '  copying kernel and boot configuration ...',
@@ -164,10 +165,12 @@ def mount( options ):
 	if options.mount:
 		print "Mounting %s ..." % options.mount_point,
 		devnull = open( os.path.devnull, 'w' )
-		ret = subprocess.call( [ 'mount', options.mount_point ], stdout = devnull, stderr = subprocess.STDOUT )
+		try:
+			ret = subprocess.call(('mount', options.mount_point), stdout=devnull, stderr=subprocess.STDOUT)
+		finally:
+			devnull.close()
 		# if exit code is 0 or 32 (already mounted)
-		devnull.close()
-		if not ret or ret == 32:
+		if ret in (0, 32):
 			print 'done.'
 		else:
 			print 'failed.'
