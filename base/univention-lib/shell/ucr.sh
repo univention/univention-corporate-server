@@ -27,7 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-is_ucr_true () { # test if UCS variable is "true" or "false"
+is_ucr_true () { # test if UCR variable is "true" or "false"
 	local value
 	value="$(univention-config-registry get "$1")"
 	case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
