@@ -293,14 +293,14 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 				if configRegistry.is_true('local/repository', False):
 					# Repository update is already complete
 					cmd.append('--no-repository-update')
-				# all output should go to stdout for us to grab
-				process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, env=os.environ)
-				while process.poll() is None:
+				# all output of univention-errata-update should go to stdout for us to grab
+				pipe = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, env=os.environ).stdout
+				while True:
 					# blocking! make sure to flush() in process, especially print
-					out = process.stdout.readline()
-					# more than '\n'? dont know why, but it happens a lot at the end...
-					if out != '\n':
-						dprint(silent, out)
+					line = pipe.readline()
+					if not line:
+						break
+					dprint(silent, line)
 				retcode = process.returncode
 				if retcode:
 					dprint(silent, 'exitcode of univention-errata-update: %s' % retcode, debug=True)

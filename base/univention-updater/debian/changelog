@@ -1,3 +1,10 @@
+univention-updater (7.0.177-1) unstable; urgency=low
+
+  * make code for verbosity of easyupgrade more consistent with other scripts
+    doing similar things (Bug #27011)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 10 Jul 2012 17:27:19 +0200
+
 univention-updater (7.0.176-1) unstable; urgency=low
 
   * Silence debugging output (Bug #24760)
