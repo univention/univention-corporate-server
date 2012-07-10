@@ -10,7 +10,6 @@ if configRegistry.is_true("auth/" + scope + "/restrict", False):
 print '@include common-account'
 print '@include common-auth'
 print '@include common-session'
-print 'session    optional   pam_lastlog.so'
 print 'session    optional   pam_mail.so standard noenv'
 print 'session    optional   pam_motd.so'
 print '@include common-password'

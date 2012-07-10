@@ -1,3 +1,10 @@
+univention-pam (5.0.21-1) unstable; urgency=low
+
+  * Removed pam_lastlog from sshd PAM configuration otherwise the last
+    log will be displayed twice (Bug #27759)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Jul 2012 16:31:27 +0200
+
 univention-pam (5.0.20-1) unstable; urgency=low
 
   * fix handling multiple servers in ldap/server/addition (Bug #27050)
