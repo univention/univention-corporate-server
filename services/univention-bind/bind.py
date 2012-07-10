@@ -178,10 +178,10 @@ def _reload(zones, restart=False):
 		if os.path.exists(RNDC_BIN):
 			for zone in zones:
 				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Reloading zone %s' % (zone,))
-				cmd = ['rndc', '-p 55555', 'reload', zone]
+				cmd = ['rndc', '-p', '55555', 'reload', zone]
 				pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
 				pids[pid] = cmd
-				cmd = ['rndc', '-p 953', 'reload', zone]
+				cmd = ['rndc', '-p', '953', 'reload', zone]
 				pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
 				pids[pid] = cmd
 		else:
