@@ -1,3 +1,9 @@
+univention-samba4 (1.0.165-1) unstable; urgency=low
+
+  * remove samba(3) system startup links in postinst script (Bug #26087) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Jul 2012 10:23:33 +0200
+
 univention-samba4 (1.0.164-2) unstable; urgency=low
 
   * add copyright header to create_dns-host_spn.py (Bug #26641)
