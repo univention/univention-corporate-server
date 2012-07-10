@@ -52,7 +52,7 @@ except ImportError:
 
 import univention.config_registry as ucr
 
-from univention.updater import UniventionUpdater, UCS_Version, PreconditionError, ConfigurationError
+from univention.updater import UniventionUpdater, UCS_Version, PreconditionError, ConfigurationError, RequiredComponentError
 from univention.updater.tools import LocalUpdater
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 import univention.updater.tools
@@ -196,7 +196,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 			updater = LocalUpdater()
 		try:
 			assert updater.server.access('')
-			nextversion = updater.release_update_available()
+			nextversion = updater.release_update_available(errorsto='exception')
 		except DownloadError:
 			raise UpdateError('A local repository was not found.\n' +
 					'       Please check the UCR variable repository/mirror/basepath\n' +
@@ -258,9 +258,14 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 
 	elif mode == 'net':
 		dprint('Checking network repository')
-		if not updater:
-			updater = UniventionUpdater()
-		nextversion = updater.release_update_available()
+		try:
+			if not updater:
+				updater = UniventionUpdater()
+			nextversion = updater.release_update_available(errorsto='exception')
+		except RequiredComponentError, ex:
+			raise UpdateError('The required component %s is missing for version %s.' % (ex.component, ex.version), errorsource='PREPARATION')
+		except ConfigurationError:
+			raise UpdateError('The configured repository is unavailable.', errorsource='SETTINGS')
 
 	if nextversion in (None,'none'):
 		return None
