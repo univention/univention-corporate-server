@@ -1,3 +1,9 @@
+univention-ldap (8.0.90-1) unstable; urgency=low
+
+  * fix handling multiple servers in ldap/server/addition (Bug #27050) 
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Jul 2012 14:58:59 +0200
+
 univention-ldap (8.0.89-1) unstable; urgency=low
 
   * Force the fsmo seize command (Bug #26986)
