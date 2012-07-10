@@ -5,7 +5,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 @!@
 disabled = ''
 debug = ''
-if not configRegistry.get('update/check/cron/enabled','no').lower() in ('yes','true','enabled','1'):
+if not configRegistry.is_true('update/check/cron/enabled', False):
         disabled = '# '
 if not configRegistry.get('update/check/cron/debug','no').lower() in ('yes','true','enabled','1','2','3','4'):
         debug = '2> /dev/null > /dev/null'
@@ -13,7 +13,7 @@ print '%s%s   root   [ -x /usr/share/univention-updater/univention-updater-check
 
 disabled = ''
 debug = ''
-if not configRegistry.get('update/check/boot/enabled','no').lower() in ('yes','true','enabled','1'):
+if not configRegistry.is_true('update/check/boot/enabled', False):
         disabled = '# '
 if not configRegistry.get('update/check/boot/debug','no').lower() in ('yes','true','enabled','1','2','3','4'):
         debug = '2> /dev/null > /dev/null'

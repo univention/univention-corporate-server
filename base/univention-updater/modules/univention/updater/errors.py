@@ -36,6 +36,7 @@ class UpdaterException(Exception):
 	pass
 
 class RequiredComponentError(UpdaterException):
+	"""Signal required component not available."""
 	def __init__(self, version, component):
 		self.version = version
 		self.component = component

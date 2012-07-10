@@ -31,12 +31,14 @@
 # <http://www.gnu.org/licenses/>.
 
 eval "$(univention-config-registry shell)"
+. /usr/share/univention-lib/ucr.sh
 
 if [ "$1" = "--silent" ] ; then
 	exec > /dev/null 2> /dev/null
 fi
 
-if [ "$update_umc_updateprocess_easy" = "yes" -o "$update_umc_updateprocess_easy" = "true" -o "$update_umc_updateprocess_easy" = "enabled" -o "$update_umc_updateprocess_easy" = "enable" ] ; then
+if is_ucr_true "$update_umc_updateprocess_easy"
+then
 	# univention-upgrade can handle UCR variable update/available on its own
 	univention-upgrade --check --setucr
 else

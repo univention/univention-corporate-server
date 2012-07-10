@@ -73,7 +73,11 @@ stdout_orig=sys.stdout
 updater_status = {}
 
 class UpdateError(Exception):
-	""" Exception to signal errors on update """
+	""" Exception to signal errors on update.
+
+	msg: Human readable message.
+	errorsource: One of 'SETTINGS', 'PREPARATION', 'PREUP', 'UPDATE', 'POSTUP'
+	"""
 	def __init__(self, msg=None, errorsource=None):
 		Exception.__init__(self, msg)
 		self.errorsource = errorsource
@@ -245,13 +249,13 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 		if nextversion:
 			try:
 				ver = UCS_Version(nextversion)
-			except ValueError, e:
+			except ValueError:
 				pass
 			else:
 				mm_version = UCS_Version.FORMAT % ver
 				if not updater:
 					updater = LocalUpdater()
-				components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), updater.get_components())
+				components = updater.get_current_components()
 				for component in components:
 					if not updater.get_component_repositories(component, [mm_version], False):
 						raise UpdateError('The required component %s is missing for version %s.' % (component, mm_version), errorsource='PREPARATION')
