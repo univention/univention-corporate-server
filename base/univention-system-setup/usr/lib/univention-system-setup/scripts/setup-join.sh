@@ -33,7 +33,6 @@
 
 password_file=""
 dcaccount=""
-appliance_mode=0
 
 while [ "$#" -gt 0 ]; do
     case $1 in
@@ -45,17 +44,13 @@ while [ "$#" -gt 0 ]; do
 			password_file="$2"
             shift 2
             ;;
-        --appliance_mode)
-			appliance_mode=1
-            shift 1
-            ;;
         --help)
-            echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile> --appliance_mode]"
+            echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
 			exit 1
             ;;
         *)
             echo "WARNING: Unknown parameter $1"
-            echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile> --appliance_mode]"
+            echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
 			exit 1
     esac
 done
@@ -148,11 +143,7 @@ run-parts /usr/lib/univention-system-setup/scripts/modules/
 
 # Do network stuff
 echo "Starting re-configuration of network"
-if [ $appliance_mode = 0 ]; then
-	run-parts -a --network-only -- /usr/lib/univention-system-setup/scripts/net/
-else
-	run-parts -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/net/
-fi
+run-parts -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/net/
 
 # Install selected software
 echo "Starting re-configuration of software packages"

@@ -433,7 +433,7 @@ def run_joinscript( progressParser, _username, password ):
 			progressParser.parse( line )
 			f.write( line )
 
-	cmd = [ PATH_JOIN_SCRIPT, '--appliance_mode' ]
+	cmd = [ PATH_JOIN_SCRIPT ]
 	if _username and password:
 		# write password file
 		fp = open(PATH_PASSWORD_FILE, 'w')

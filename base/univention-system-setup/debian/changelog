@@ -1,3 +1,10 @@
+univention-system-setup (5.0.191-1) unstable; urgency=low
+
+  * remove --appliance-mode option in a script that should only be called
+    from appliance mode (Bug #27826)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 10 Jul 2012 17:09:44 +0200
+
 univention-system-setup (5.0.190-1) unstable; urgency=low
 
   * fixed typo (Bug #27810)
