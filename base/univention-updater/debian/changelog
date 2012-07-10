@@ -1,3 +1,10 @@
+univention-updater (7.0.178-1) unstable; urgency=low
+
+  * Fix test regression (Bug #26257)
+  * Fix ucr_true handling.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 Jul 2012 18:09:12 +0200
+
 univention-updater (7.0.177-1) unstable; urgency=low
 
   * make code for verbosity of easyupgrade more consistent with other scripts

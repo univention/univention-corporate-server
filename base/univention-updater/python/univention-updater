@@ -258,7 +258,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 				components = updater.get_current_components()
 				for component in components:
 					if not updater.get_component_repositories(component, [mm_version], False):
-						raise UpdateError('The required component %s is missing for version %s.' % (component, mm_version), errorsource='PREPARATION')
+						raise RequiredComponentError(mm_version, component)
 
 	elif mode == 'net':
 		dprint('Checking network repository')
@@ -266,10 +266,10 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 			if not updater:
 				updater = UniventionUpdater()
 			nextversion = updater.release_update_available(errorsto='exception')
-		except RequiredComponentError, ex:
-			raise UpdateError('The required component %s is missing for version %s.' % (ex.component, ex.version), errorsource='PREPARATION')
-		except ConfigurationError:
-			raise UpdateError('The configured repository is unavailable.', errorsource='SETTINGS')
+		except RequiredComponentError:
+			raise
+		except ConfigurationError, ex:
+			raise UpdateError('The configured repository is unavailable: %s' % (ex,), errorsource='SETTINGS')
 
 	if nextversion in (None,'none'):
 		return None
@@ -385,6 +385,9 @@ def main():
 				dprint("Error: %s" % msg)
 				print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
 				# Errors are handles as "update currently no available"
+			except RequiredComponentError, ex:
+				dprint('The required component %s is missing for version %s.' % \
+						(ex.component, ex.version))
 			else:
 				dprint('System is up to date') # Sync with /etc/cron.d/univention-maintenance
 			sys.exit(0)
@@ -585,6 +588,9 @@ if __name__ == '__main__':
 			except ConfigurationError, e:
 				msg = 'Update aborted due to configuration error: %s' % e
 				raise UpdateError(msg, errorsource='SETTINGS')
+			except RequiredComponentError, ex:
+				update_status(status='DONE', errorsource='PREPARATION')
+				dprint(ex)
 			except PreconditionError, (phase, order, component, script):
 				if phase == 'preup':
 					phase = 'pre-update'

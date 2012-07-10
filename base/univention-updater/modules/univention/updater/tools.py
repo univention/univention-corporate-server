@@ -619,10 +619,11 @@ class UniventionUpdater:
 					mm_version = UCS_Version.FORMAT % ver
 					if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
 						self.log.error('Missing component %s', component)
+						ex = RequiredComponentError(mm_version, component)
 						if errorsto == 'stderr':
-							print >>sys.stderr, "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (mm_version, component, component)
+							print >> sys.stderr, ex
 						elif errorsto == 'exception':
-							raise RequiredComponentError( mm_version, component )
+							raise ex
 						return None
 				else:
 					self.log.info('Going for version %s', ver)
