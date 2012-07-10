@@ -1,6 +1,7 @@
 usr/sbin/
 var/cache/univention-system-setup
 usr/share/univention-system-setup
+usr/lib/univention-system-setup/appliance-hooks.d
 usr/lib/univention-system-setup/scripts
 usr/lib/univention-system-setup/scripts/modules
 usr/lib/univention-system-setup/scripts/timezone

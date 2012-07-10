@@ -236,5 +236,10 @@ ucr set system/setup/showloginmessage=false
 # allow a restart of server components without actually restarting them
 /usr/share/univention-updater/enable-apache2-umc --no-restart
 
+# last but not least: call hooks
+if [ -d /usr/lib/univention-system-setup/appliance-hooks.d ]; then
+	run-parts /usr/lib/univention-system-setup/appliance-hooks.d
+fi
+
 exit 0
 

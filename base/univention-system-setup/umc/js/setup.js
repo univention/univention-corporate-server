@@ -458,12 +458,6 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			role = this._orgValues['server/role'];
 		}
 
-		if (!nchanges && this.local_mode && !this.wizard_mode) {
-			// no changes have been made we can shut down the web browser directly
-			_cleanup(this._('No changes have been made. Please confirm to continue with the boot process.'), true);
-			return;
-		}
-
 		// only submit data to server if there are changes and the system is joined
 		if (!nchanges && !this.wizard_mode) {
 			umc.dialog.alert(this._('No changes have been made.'));
