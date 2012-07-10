@@ -1,3 +1,2 @@
 univention-update-memberof usr/share/univention-ldap-overlay-memberof/
-univention-ldap-overlay-memberof.schema usr/share/univention-ldap/schema/
 

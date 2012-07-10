@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/usr/bin/python2.6
 #
-# Univention LDAP Server
-#  postrm script for the debian package
+# Univention update uniqueMember
 #
 # Copyright 2008-2012 Univention GmbH
 #
@@ -30,31 +29,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+import univention.uldap
+import univention.config_registry
+import ldap
+cr = univention.config_registry.ConfigRegistry()
+cr.load()
 
-eval "$(univention-config-registry shell)"
+if cr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroller_backup"]:
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ] ; then
-	USER_NAME="x$(date +%s$RANDOM)x"
-	USER_DN="uid=${USER_NAME},$ldap_base"
-	univention-directory-manager users/user create \
-		--ignore_exists \
-		--position "$ldap_base" \
-		--set username="$USER_NAME" \
-		--set password="${RANDOM}${RANDOM}" \
-		--set lastname="tempuser" \
-		--set description="temporary user for script univention-update-memberof"
+	# ldap connection
+	try:
+		lo = univention.uldap.getAdminConnection()
+	except Exception, e:
+		print "failed to get ldap connection: %s" % e
 
-	OLDIFS="$IFS"
-	# DO NOT CHANGE FOLLOWING TWO LINES! THE LINEBREAK IS IMPORTANT!
-	IFS="
-"
-	for dn in $(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret objectClass=posixGroup dn | grep ^dn | cut -b 5-) ; do
-		echo "*** UPDATING GROUP $dn ***";
-		univention-directory-manager groups/group modify --dn "$dn" --append users="$USER_DN"
-		univention-directory-manager groups/group modify --dn "$dn" --remove users="$USER_DN"
-		echo "************ DONE **************"
-	done
-	IFS="$OLDIFS"
-	univention-directory-manager users/user remove --dn "$USER_DN"
-fi
+	# search groups and del/add uniqueMember
+	results = lo.search(base=cr.get("ldap/base"), attr=["uniqueMember"], filter="(&(objectClass=posixGroup)(uniqueMember=*))")
+	for result in results:
+		dn = result[0]
+		uniqueMember = result[1].get("uniqueMember", [""])
+		if dn and uniqueMember:
+			try:
+				# delete uniqueMember
+				lo.modify(dn, [("uniqueMember", uniqueMember, [])])
+				# add uniqueMember
+				lo.modify(dn, [("uniqueMember", [], uniqueMember)])
+			except Exception, e:
+				print "   modifing %s failed: %s" % (dn, e)
