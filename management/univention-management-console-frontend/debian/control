@@ -33,7 +33,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-frontend,
  univention-management-console-server,
- python-univention-management-console (>= 4.0.258-1),
+ python-univention-management-console (>= 4.0.268),
  python-cherrypy3,
  python-daemon,
  python-simplejson

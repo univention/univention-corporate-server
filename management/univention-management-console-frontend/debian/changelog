@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.385-1) unstable; urgency=low
+
+  * the session is now bound to ip address (Bug #26635) (Bug #26637)
+
+ -- Florian Best <best@univention.de>  Tue, 10 Jul 2012 12:09:43 +0200
+
 univention-management-console-frontend (1.0.384-1) unstable; urgency=low
 
   * fixed deadlock situation in univention-management-console-web-server
