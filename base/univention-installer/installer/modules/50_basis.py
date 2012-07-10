@@ -45,6 +45,7 @@ class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
 		self.hostname_last_warning = ''
 		self.domainname_last_warning = ''
+		self.windomain_last_warning = ''
 		self.guessed = {}
 		content.__init__(self, max_y, max_x, last, file, cmdline)
 		self.interactive=False
@@ -285,6 +286,15 @@ class object(content):
 				if focus:
 					self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
 				return _("The length of the windows domain name is greater than 14 characters.")
+
+		if windows_domain.strip().lower() ==  hostname.strip().lower():
+			if not self.ignore('windows_domain'):
+				# The warning will be displayed only once
+				if windows_domain != self.windomain_last_warning
+					self.windomain_last_warning = windows_domain
+					if focus:
+						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+					return _("For Active Directory domains the hostname and the windows domain name may not be the same. This warning is shown only once, the installation can be continued with the name currently given."
 
 		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
 			if not self.ignore('hostname'):

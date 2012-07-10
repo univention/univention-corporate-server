@@ -1215,6 +1215,16 @@ msgstr ""
 "Warnung, die Installation kann mit dem aktuell gewählten Namen fortgesetzt "
 "werden."
 
+#: installer/modules/50_basis.py:296
+msgid ""
+"For Active Directory domains the hostname and the windows domain name may "
+"not be the same. This warning is shown only once, the installation can be "
+"continued with the name currently given."
+msgstr ""
+"In Active Directory Domänen dürfen der Rechnername und der Name der "
+"Windows-Domäne nicht gleich sein. Dies ist eine einmalige Warnung, "
+"die Installation kann mit dem aktuell gewählten Namen fortgesetzt werden."
+
 #: installer/modules/50_basis.py:327
 msgid ""
 "The length of fully qualified domain name is greater than 63 characters."
