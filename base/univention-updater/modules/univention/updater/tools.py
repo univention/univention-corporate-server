@@ -60,6 +60,8 @@ import shutil
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
 
+MIN_GZIP = 100  # size of non-empty gzip file
+
 class UCS_Version( object ):
 	'''Version object consisting of major-, minor-number and patch-level'''
 	FORMAT = '%(major)d.%(minor)d'
@@ -382,7 +384,10 @@ class UCSHttpServer(object):
 		try:
 			res = UCSHttpServer.opener.open(req)
 			try:
-				return (res.code, res.read())
+				code = res.code
+				size = int(res.headers.get('content-length', 0))
+				content = res.read()
+				return (code, size, content)
 			finally:
 				res.close()
 		# direct   | proxy                                        | Error cause
@@ -460,13 +465,14 @@ class UCSLocalServer(object):
 		path = uri[len('file://'):]
 		if os.path.exists(path):
 			if os.path.isdir(path):
-				return (httplib.OK, '') # 200
+				return (httplib.OK, 0, '')  # 200
 			elif os.path.isfile(path):
 				f = open(path, 'r')
 				try:
-					return (httplib.OK, f.read()) # 200
+					data = f.read()
 				finally:
 					f.close()
+				return (httplib.OK, len(data), data)  # 200
 		raise DownloadError(uri, -1)
 
 class UniventionUpdater:
@@ -995,8 +1001,9 @@ class UniventionUpdater:
 								found_patchlevel = True
 								for ver.arch in archs: # architecture
 									try:
-										assert server.access(ver.path())
-										yield ver
+										code, size, content = server.access(ver.path())
+										if size >= MIN_GZIP:
+											yield ver
 									except DownloadError, e:
 										ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 								del ver.arch
@@ -1130,8 +1137,9 @@ class UniventionUpdater:
 				if self.sources:
 					ver.arch = "source"
 					try:
-						assert server.access(ver.path("Sources.gz"))
-						result.append( ver.deb("deb-src") )
+						code, size, content = server.access(ver.path("Sources.gz"))
+						if size >= MIN_GZIP:
+							result.append(ver.deb("deb-src"))
 					except DownloadError, e:
 						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
@@ -1178,8 +1186,9 @@ class UniventionUpdater:
 				if self.sources:
 					ver.arch = "source"
 					try:
-						assert server.access(ver.path("Sources.gz"))
-						result.append( ver.deb("deb-src") )
+						code, size, content = server.access(ver.path("Sources.gz"))
+						if size >= MIN_GZIP:
+							result.append(ver.deb("deb-src"))
 					except DownloadError, e:
 						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
@@ -1233,8 +1242,9 @@ class UniventionUpdater:
 				if self.sources:
 					ver.arch = "source"
 					try:
-						assert server.access(ver.path("Sources.gz"))
-						result.append( ver.deb("deb-src") )
+						code, size, content = server.access(ver.path("Sources.gz"))
+						if size >= MIN_GZIP:
+							result.append(ver.deb("deb-src"))
 					except DownloadError, e:
 						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
@@ -1418,8 +1428,9 @@ class UniventionUpdater:
 					if self.sources:
 						ver.arch = "source"
 						try:
-							assert server.access(ver.path("Sources.gz"))
-							result.append( ver.deb("deb-src") )
+							code, size, content = server.access(ver.path("Sources.gz"))
+							if size >= MIN_GZIP:
+								result.append(ver.deb("deb-src"))
 						except DownloadError, e:
 							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
@@ -1595,7 +1606,7 @@ class UniventionUpdater:
 				path = struct.path(name)
 				ud.debug(ud.ADMIN, ud.ALL, "Accessing %s" % path)
 				try:
-					code, script = server.access(path, get=True)
+					code, size, script = server.access(path, get=True)
 					yield server, struct, phase, path, script
 				except DownloadError, e:
 					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)

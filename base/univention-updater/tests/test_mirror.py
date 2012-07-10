@@ -9,6 +9,7 @@ from shutil import rmtree
 from mockups import *  # pylint: disable-msg=W0401
 
 UM = M.UniventionMirror
+DATA = 'x' * U.MIN_GZIP
 
 
 class TestUniventionMirror(unittest.TestCase):
@@ -93,23 +94,23 @@ class TestUniventionMirror(unittest.TestCase):
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
             })
         uris = {
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, 'all'): '',
+            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, 'all'): DATA,
             '%d.%d/maintained/%d.%d-%d/%s/preup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): 'r_pre',
             '%d.%d/maintained/%d.%d-%d/%s/postup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): 'r_post',
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, ARCH): '',
-            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): '',
+            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, ARCH): DATA,
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): 'a_pre',
             '%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): 'a_post',
-            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', ARCH): '',
-            '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): '',
-            '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): '',
+            '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', ARCH): DATA,
+            '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
+            '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): 'b_pre',
             '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): 'b_post',
             }
         self._uri(uris)
         self.m.mirror_update_scripts()
         for key, value in uris.items():
-            if not value:
+            if not value != DATA:
                 continue
             # "base_dir+mock" for the mock_open redirector
             # "base_dir+repo+mirror" as the configured repository_root

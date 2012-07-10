@@ -67,7 +67,8 @@ class MockUCSHttpServer(U.UCSLocalServer):
         self.mock_uri = self.join(rel)
         self.mock_uris.append(self.mock_uri)
         try:
-            return (httplib.OK, MockUCSHttpServer.mock_content[self.mock_uri])
+            data = MockUCSHttpServer.mock_content[self.mock_uri]
+            return (httplib.OK, len(data), data)
         except KeyError:
             raise U.DownloadError(self.mock_uri, -1)
 
