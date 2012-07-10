@@ -3,16 +3,3 @@ Description[de]=FQDN des CUPS-Druckservers
 Description[en]=FQDN of the CUPS printserver
 Type=str
 Categories=service-cups
-
-[cups/lp/command]
-Description[de]=Definiert das von lp verwendete Druckprogramm (default: lp)
-Description[en]=Defines the print command for the lp commando (default: lp)
-Type=str
-Categories=service-cups
-
-[cups/lpr/command]
-Description[de]=Definiert das von lpr verwendete Druckprogramm (default: lpr)
-Description[en]=Defines the print command for the lpr commando (default: lpr)
-Type=str
-Categories=service-cups
-
