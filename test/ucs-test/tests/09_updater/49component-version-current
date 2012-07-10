@@ -34,7 +34,7 @@ config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"
 
 (
 	set -e
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}" "${DIRS[1]}"
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[1]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
