@@ -63,6 +63,16 @@ RE_SPLIT_MULTI = re.compile('[ ,]+')
 
 MIN_GZIP = 100  # size of non-empty gzip file
 
+try:
+	NullHandler = logging.NullHandler
+except AttributeError:
+	class NullHandler(logging.Handler):
+		"""Returns a new instance of the NullHandler class."""
+		def emit(self, record):
+			"""This method does nothing."""
+			pass
+
+
 class UCS_Version( object ):
 	'''Version object consisting of major-, minor-number and patch-level'''
 	FORMAT = '%(major)d.%(minor)d'
@@ -298,6 +308,7 @@ class UCSHttpServer(object):
 
 	def __init__(self, server, port=80, prefix='', username=None, password=None):
 		self.log = logging.getLogger('updater.UCSHttp')
+		self.log.addHandler(NullHandler())
 		self.server = server
 		self.port = int(port)
 		prefix = str(prefix).strip('/')
@@ -438,6 +449,7 @@ class UCSLocalServer(object):
 	'''Access to UCS compatible local update server.'''
 	def __init__(self, prefix):
 		self.log = logging.getLogger('updater.UCSFile')
+		self.log.addHandler(NullHandler())
 		prefix = str(prefix).strip('/')
 		if prefix:
 			self.prefix = '%s/' % prefix
@@ -499,6 +511,7 @@ class UniventionUpdater:
 		"""Create new updater with settings from UCS.
 		Throws ConfigurationError when configured server is not available immediately."""
 		self.log = logging.getLogger('updater.Updater')
+		self.log.addHandler(NullHandler())
 		self.check_access = check_access
 		self.connection = None
 		self.architectures = [ os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1] ]
@@ -1653,6 +1666,7 @@ class LocalUpdater(UniventionUpdater):
 	def __init__(self):
 		UniventionUpdater.__init__(self)
 		self.log = logging.getLogger('updater.LocalUpdater')
+		self.log.addHandler(NullHandler())
 		repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
 		self.server = UCSLocalServer("%s/mirror/" % repository_path)
 

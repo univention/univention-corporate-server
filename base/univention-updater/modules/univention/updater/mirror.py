@@ -38,7 +38,7 @@ import subprocess
 import itertools
 import logging
 
-from tools import UniventionUpdater, UCS_Version
+from tools import UniventionUpdater, UCS_Version, NullHandler
 try:
 	import univention.debug as ud
 except ImportError:
@@ -48,6 +48,7 @@ class UniventionMirror( UniventionUpdater ):
 	def __init__(self, check_access=True):
 		UniventionUpdater.__init__(self, check_access)
 		self.log = logging.getLogger('updater.Mirror')
+		self.log.addHandler(NullHandler())
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 
 		version_end = self.configRegistry.get('repository/mirror/version/end') or self.current_version
