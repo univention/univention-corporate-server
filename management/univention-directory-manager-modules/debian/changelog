@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.277-1) unstable; urgency=low
+
+  * commented out code to overwrite the UDM module layout via UCR; Bug #26673
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 10 Jul 2012 16:08:45 +0200
+
 univention-directory-manager-modules (7.0.276-1) unstable; urgency=low
 
   * fixed potential NameError in complex syntax (Bug #26850)
