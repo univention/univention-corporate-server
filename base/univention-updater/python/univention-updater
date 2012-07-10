@@ -410,7 +410,7 @@ def main():
 	architecture=os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1]
 
 	# if there is no _new_ repository server -> exit
-	if baseConfig.get( 'local/repository', '' ).lower() in ( 'yes', 'true' ) and baseConfig.has_key( 'repository/local/old' ):
+	if baseConfig.is_true('local/repository', False) and baseConfig.get('repository/local/old'):
 		dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0')
 		sys.exit( 1 )
 

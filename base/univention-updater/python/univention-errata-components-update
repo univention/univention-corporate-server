@@ -231,7 +231,7 @@ if __name__ == '__main__':
 			if configRegistry.is_true('local/repository', False):
 				local_repository = True
 				# if there is no _new_ repository server -> exit
-				if configRegistry.has_key( 'repository/local/old' ):
+				if configRegistry.get('repository/local/old'):
 					update_status( status='FAILED', errorsource='SETTINGS' )
 					dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0', [fp_debug,sys.stderr] )
 					sys.exit( 1 )

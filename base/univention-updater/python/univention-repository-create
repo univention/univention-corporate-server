@@ -251,7 +251,7 @@ if __name__ == '__main__':
 		ucr.handler_set( [ 'repository/online/server=%s' % fqdn ] )
 
 		# unset UCR variable marking old repository
-		if configRegistry.has_key( 'repository/local/old' ):
+		if 'repository/local/old' in configRegistry:
 			ucr.handler_unset( 'repository/local/old' )
 
 		# set start version for synchronsation of repository

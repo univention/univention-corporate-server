@@ -217,8 +217,8 @@ if __name__ == '__main__':
 		migrate_repository( options )
 
 		# unset UCR variable makring old repository
-		if configRegistry.has_key( 'repository/local/old' ):
-			os.system('/usr/sbin/univention-config-registry unset repository/local/old')
+		if 'repository/local/old' in configRegistry:
+			ucr.handler_unset( 'repository/local/old' )
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'

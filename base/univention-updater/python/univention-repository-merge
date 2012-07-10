@@ -84,9 +84,10 @@ def walking(arg, dirname, names):
 					arch = ' '.join(line.split(' ', 1)[1:])
 
 			key = (package, arch)
-			if l_package.has_key(key):
-				if compare(version, l_package[key][1]):
-					p_remove.append(l_package[key][0])
+			record = l_package.get(key)
+			if record:
+				if compare(version, record[1]):
+					p_remove.append(record[0])
 					l_package[key]=[file, version, arg]
 				else:
 					p_remove.append(file)

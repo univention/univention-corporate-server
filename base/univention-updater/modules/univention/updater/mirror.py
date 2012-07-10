@@ -48,14 +48,10 @@ class UniventionMirror( UniventionUpdater ):
 		UniventionUpdater.__init__(self, check_access)
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 
-		if self.configRegistry.has_key( 'repository/mirror/version/end' ):
-			self.version_end = UCS_Version( self.configRegistry.get( 'repository/mirror/version/end' ) )
-		else:
-			self.version_end = UCS_Version( ( self.version_major, self.version_minor, self.patchlevel ) )
-		if self.configRegistry.has_key( 'repository/mirror/version/start' ):
-			self.version_start = UCS_Version( self.configRegistry.get( 'repository/mirror/version/start' ) )
-		else:
-			self.version_start = UCS_Version( ( self.version_major, 0, 0 ) )
+		version_end = self.configRegistry.get('repository/mirror/version/end') or self.current_version
+		self.version_end = UCS_Version(version_end)
+		version_start = self.configRegistry.get('repository/mirror/version/start') or (self.version_major, 0, 0)
+		self.version_start = UCS_Version(version_start)
 		# set architectures to mirror
 		archs = self.configRegistry.get( 'repository/mirror/architectures', '' )
 		if archs:
