@@ -36,6 +36,7 @@ import errno
 import re
 import subprocess
 import itertools
+import logging
 
 from tools import UniventionUpdater, UCS_Version
 try:
@@ -46,6 +47,7 @@ except ImportError:
 class UniventionMirror( UniventionUpdater ):
 	def __init__(self, check_access=True):
 		UniventionUpdater.__init__(self, check_access)
+		self.log = logging.getLogger('updater.Mirror')
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 
 		version_end = self.configRegistry.get('repository/mirror/version/end') or self.current_version
@@ -109,6 +111,7 @@ class UniventionMirror( UniventionUpdater ):
 
 		all_repos = itertools.chain(repos, errata, comp) # concatenate all generators into a single one
 		for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos):
+			self.log.info('Mirroring %s:%r/%s to %s', server, struct, phase, path)
 			assert script is not None, 'No script'
 
 			# use prefix if defined - otherwise file will be stored in wrong directory

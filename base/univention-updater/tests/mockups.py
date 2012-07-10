@@ -68,8 +68,10 @@ class MockUCSHttpServer(U.UCSLocalServer):
         self.mock_uris.append(self.mock_uri)
         try:
             data = MockUCSHttpServer.mock_content[self.mock_uri]
+            self.log.info('Retrieved %s: %d', self.mock_uri, len(data))
             return (httplib.OK, len(data), data)
         except KeyError:
+            self.log.info('Failed %s', self.mock_uri)
             raise U.DownloadError(self.mock_uri, -1)
 
     @classmethod
@@ -88,7 +90,7 @@ class MockUCSHttpServer(U.UCSLocalServer):
     def mock_dump(self, out=sys.stdout):
         """Print accessed URIs."""
         print >> out, 'Registered URIs:'
-        print >> out, '\n'.join(MockUCSHttpServer.mock_content)
+        print >> out, '\n'.join(sorted(MockUCSHttpServer.mock_content))
         print >> out, 'Requested URIs:'
         print >> out, '\n'.join(self.mock_uris)
 

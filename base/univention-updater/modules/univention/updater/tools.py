@@ -56,6 +56,7 @@ from operator import attrgetter, itemgetter
 import new
 import tempfile
 import shutil
+import logging
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -296,6 +297,7 @@ class UCSHttpServer(object):
 				return None
 
 	def __init__(self, server, port=80, prefix='', username=None, password=None):
+		self.log = logging.getLogger('updater.UCSHttp')
 		self.server = server
 		self.port = int(port)
 		prefix = str(prefix).strip('/')
@@ -369,6 +371,7 @@ class UCSHttpServer(object):
 			UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.username, passwd=self.password)
 		req = urllib2.Request(uri)
 		if req.get_host() in self.failed_hosts:
+			self.log.error('Already failed %s', req.get_host())
 			raise DownloadError(uri, -1)
 		if not get and UCSHttpServer.http_method != 'GET':
 			# Overwrite get_method() to return "HEAD"
@@ -380,6 +383,7 @@ class UCSHttpServer(object):
 					return method
 			req.get_method = new.instancemethod(get_method, req, urllib2.Request)
 
+		self.log.info('Requesting %s', req.get_full_url())
 		ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
 		try:
 			res = UCSHttpServer.opener.open(req)
@@ -387,6 +391,7 @@ class UCSHttpServer(object):
 				code = res.code
 				size = int(res.headers.get('content-length', 0))
 				content = res.read()
+				self.log.info("Got %s %s: %d %d", req.get_method(), req.get_full_url(), code, size)
 				return (code, size, content)
 			finally:
 				res.close()
@@ -400,6 +405,7 @@ class UCSHttpServer(object):
 		# GAI:-2   | HTTP:502/4URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
 		# HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
 		except urllib2.HTTPError, res:
+			self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), res)
 			if res.code == httplib.UNAUTHORIZED: # 401
 				raise ConfigurationError(uri, 'credentials not accepted')
 			if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED: # 407
@@ -409,6 +415,7 @@ class UCSHttpServer(object):
 				raise ConfigurationError(uri, 'host is unresolvable')
 			raise DownloadError(uri, res.code)
 		except urllib2.URLError, e:
+			self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), e)
 			if isinstance(e.reason, basestring):
 				reason = e.reason
 			else:
@@ -430,6 +437,7 @@ class UCSHttpServer(object):
 class UCSLocalServer(object):
 	'''Access to UCS compatible local update server.'''
 	def __init__(self, prefix):
+		self.log = logging.getLogger('updater.UCSFile')
 		prefix = str(prefix).strip('/')
 		if prefix:
 			self.prefix = '%s/' % prefix
@@ -459,12 +467,13 @@ class UCSLocalServer(object):
 	def access(self, rel, get=False):
 		'''Access URI and optionally get data. Return None on errors.'''
 		uri = self.join(rel)
-		ud.debug(ud.NETWORK, ud.ALL, "updater: %s", uri)
+		ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,))
 		# urllib2.urlopen() doesn't work for directories
 		assert uri.startswith('file://')
 		path = uri[len('file://'):]
 		if os.path.exists(path):
 			if os.path.isdir(path):
+				self.log.info("Got %s", path)
 				return (httplib.OK, 0, '')  # 200
 			elif os.path.isfile(path):
 				f = open(path, 'r')
@@ -472,7 +481,9 @@ class UCSLocalServer(object):
 					data = f.read()
 				finally:
 					f.close()
+				self.log.info("Got %s: %d", path, len(data))
 				return (httplib.OK, len(data), data)  # 200
+		self.log.error("Failed %", path)
 		raise DownloadError(uri, -1)
 
 class UniventionUpdater:
@@ -487,6 +498,7 @@ class UniventionUpdater:
 	def __init__(self, check_access=True):
 		"""Create new updater with settings from UCS.
 		Throws ConfigurationError when configured server is not available immediately."""
+		self.log = logging.getLogger('updater.Updater')
 		self.check_access = check_access
 		self.connection = None
 		self.architectures = [ os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1] ]
@@ -549,17 +561,22 @@ class UniventionUpdater:
 				try:
 					assert self.server.access('/univention-repository/')
 					self.server += '/univention-repository/'
+					self.log.info('Using detected prefix /univention-repository/')
 				except DownloadError, e:
+					self.log.info('No prefix /univention-repository/ detected, using /')
 					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 				return # already validated or implicit /
 			# Validate server settings
 			try:
 				assert self.server.access('')
+				self.log.info('Using configured prefix %s', self.repository_prefix)
 			except DownloadError, e:
+				self.log.exception('Failed configured prefix %s', self.repository_prefix)
 				uri, code = e
-				raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (str(self.repository_prefix), str(uri)))
+				raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repository_prefix, uri))
 		except ConfigurationError, e:
 			if self.check_access:
+				self.log.exception('Failed server detection: %s' % (e,))
 				raise
 
 	def get_next_version(self, version, components=[], errorsto='stderr'):
@@ -580,17 +597,22 @@ class UniventionUpdater:
 
 		for ver in versions(version.major, version.minor, version.patchlevel):
 			repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
+			self.log.info('Checking for version %s', repo)
 			try:
 				assert self.server.access(repo.path())
+				self.log.info('Found version %s', repo.path())
 				for component in components:
+					self.log.info('Checking for component %s', component)
 					mm_version = UCS_Version.FORMAT % ver
 					if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
+						self.log.error('Missing component %s', component)
 						if errorsto == 'stderr':
 							print >>sys.stderr, "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (mm_version, component, component)
 						elif errorsto == 'exception':
 							raise RequiredComponentError( mm_version, component )
 						return None
 				else:
+					self.log.info('Going for version %s', ver)
 					return UCS_Version.FULLFORMAT % ver
 			except DownloadError, e:
 				ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
@@ -616,11 +638,13 @@ class UniventionUpdater:
 			try:
 				ucs_version = self.get_next_version(UCS_Version(ucs_version), components, errorsto='exception')
 			except RequiredComponentError, e:
+				self.log.warn('Update blocked by component %s', e.component)
 				# e.component blocks update to next version ==> return current list and blocking component
 				return result, e.component
 
 			if ucs_version:
 				result.append(ucs_version)
+		self.log.info('Found release updates %r', result)
 		return result, None
 
 	def release_update_available( self, ucs_version = None, errorsto='stderr' ):
@@ -705,6 +729,7 @@ class UniventionUpdater:
 				result.append( secver )
 			else:
 				break
+		self.log.info('Found security updates %r', result)
 		return result
 
 	def get_all_available_errata_updates(self):
@@ -723,6 +748,7 @@ class UniventionUpdater:
 				result.append( secver )
 			else:
 				break
+		self.log.info('Found errata updates %r', result)
 		return result
 
 	def get_all_available_errata_component_updates(self):
@@ -754,6 +780,7 @@ class UniventionUpdater:
 			if component_versions:
 				result.append( (component, component_versions) )
 
+		self.log.info('Found component errata updates %r', result)
 		return result
 
 	def security_update_available(self, version=None):
@@ -982,6 +1009,7 @@ class UniventionUpdater:
 
 	def _iterate_versions(self, ver, start, end, parts, archs, server):
 		'''Iterate through all versions of repositories between start and end.'''
+		self.log.info('Searching %s:%r [%s..%s) in %s and %s', server, ver, start, end, parts, archs)
 		(ver.major, ver.minor, ver.patchlevel) = (start.major, start.minor, start.patchlevel)
 
 		# Workaround version of start << first available repository version,
@@ -990,6 +1018,7 @@ class UniventionUpdater:
 		while ver <= end and ver.major <= 99: # major
 			try:
 				while ver.minor <= 99:
+					self.log.info('Checking version %s', ver.path())
 					assert server.access(ver.path()) # minor
 					findFirst = False
 					found_patchlevel = True
@@ -997,11 +1026,13 @@ class UniventionUpdater:
 						found_patchlevel = False
 						for ver.part in parts: # part
 							try:
+								self.log.info('Checking version %s', ver.path())
 								assert server.access(ver.path()) # patchlevel
 								found_patchlevel = True
 								for ver.arch in archs: # architecture
 									try:
 										code, size, content = server.access(ver.path())
+										self.log.info('Found content: code=%d size=%d', code, size)
 										if size >= MIN_GZIP:
 											yield ver
 									except DownloadError, e:
@@ -1031,6 +1062,7 @@ class UniventionUpdater:
 
 	def _iterate_version_repositories(self, start, end, parts, archs, dists=False):
 		'''Iterate over all releases and return (server, version).'''
+		self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
 		server = self.server
 		if dists:
 			struct = UCSRepoDist(prefix=self.server)
@@ -1042,6 +1074,7 @@ class UniventionUpdater:
 
 	def _iterate_security_repositories(self, start, end, parts, archs, hotfixes=False):
 		'''Iterate over all security releases and return (server, version).'''
+		self.log.info('Searching security [%s..%s), hotfix=%s', start, end, hotfixes)
 		server = self.server
 		struct = UCSRepoPool(prefix=self.server, patch="sec%(patchlevel)d", patchlevel_reset=1)
 		for ver in self._iterate_versions(struct, start, end, parts, archs, server):
@@ -1055,6 +1088,7 @@ class UniventionUpdater:
 
 	def _iterate_errata_repositories(self, start, end, parts, archs):
 		'''Iterate over all errata releases and return (server, version).'''
+		self.log.info('Searching errata [%s..%s)', start, end)
 		server = self.server
 		struct = UCSRepoPool(prefix=self.server, patch="errata%(patchlevel)d", patchlevel_reset=1, patchlevel_max=999)
 		for ver in self._iterate_versions(struct, start, end, parts, archs, server):
@@ -1068,6 +1102,7 @@ class UniventionUpdater:
 			repositories for mirror.list.
 		'''
 
+		self.log.info('Searching components %r [%s..%s)', components, start, end)
 		# Components are ... different:
 		for component in components:
 			# server, port, prefix
@@ -1081,6 +1116,7 @@ class UniventionUpdater:
 			else:
 				versions = self._get_component_versions(component, start, end)
 
+			self.log.info('Component %s from %s versions %r', component, server, versions)
 			for version in versions:
 				# Get a list of all availble errata updates for this component and version
 
@@ -1462,6 +1498,7 @@ class UniventionUpdater:
 				version.minor += 1
 			version.minor = 0
 
+		self.log.info('Releases [%s..%s) are %r', start, end, result)
 		return result
 
 	def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False):
@@ -1615,6 +1652,7 @@ class LocalUpdater(UniventionUpdater):
 	"""Direct file access to local repository."""
 	def __init__(self):
 		UniventionUpdater.__init__(self)
+		self.log = logging.getLogger('updater.LocalUpdater')
 		repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
 		self.server = UCSLocalServer("%s/mirror/" % repository_path)
 

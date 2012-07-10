@@ -218,4 +218,11 @@ class TestUniventionMirrorList(unittest.TestCase):
         self.assertDeepEqual(sorted(result), sorted(self.repos))
 
 if __name__ == '__main__':
+    if False:
+        import univention.debug as ud
+        ud.init('stderr', ud.NO_FUNCTION, ud.NO_FLUSH)
+        ud.set_level(ud.NETWORK, ud.ALL+1)
+    if False:
+        import logging
+        logging.basicConfig(level=logging.DEBUG)
     unittest.main()
