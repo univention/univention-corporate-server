@@ -82,9 +82,11 @@ def update_status(**kwargs):
 def dprint(str, fd=[]):
 	""" print message to multiple destinations or stdout """
 	if len(fd) < 1:
-		print str
+		fd = [sys.stdout]
 	for f in fd:
 		print >>f, str
+		# flush in case someone reads from stream (e.g. univention-upgrade)
+		f.flush()
 
 def add_temporary_sources_list ( debline ):
 	fp = open(TMPSOURCE, 'a+')

@@ -60,12 +60,12 @@ from univention.updater.commands import cmd_update
 _ = umc.Translation('univention-management-console-module-updater').translate
 
 # Base UCR path definitions
-ONLINE_BASE		= 'repository/online'
+ONLINE_BASE	= 'repository/online'
 COMPONENT_BASE	= '%s/component' % ONLINE_BASE
 
 # Parameter names for component definitions
-COMP_PARTS		= ['maintained','unmaintained']
-COMP_PARAMS		= ['description','server','prefix','password','username','defaultpackages','version']
+COMP_PARTS	= ['maintained','unmaintained']
+COMP_PARAMS	= ['description','server','prefix','password','username','defaultpackages','version']
 
 # the file whose file time is used as the 'serial' value for the 'Components' grid.
 COMPONENTS_SERIAL_FILE	= '/etc/apt/sources.list.d/20_ucs-online-component.list'
@@ -83,16 +83,16 @@ UPDATE_SERIAL_FILES = [
 HOOK_DIRECTORY = '/usr/share/pyshared/univention/management/console/modules/updater/hooks'
 
 # Symbolic error codes for UCR write operations
-PUT_SUCCESS				= 0
-PUT_PARAMETER_ERROR		= 1				# content of request record isn't valid
+PUT_SUCCESS		= 0
+PUT_PARAMETER_ERROR	= 1				# content of request record isn't valid
 PUT_PROCESSING_ERROR	= 2				# some error while parameter processing
-PUT_WRITE_ERROR			= 3				# some error while saving data
-PUT_UPDATER_ERROR		= 4				# after saving options, any errors related to repositories
-PUT_UPDATER_NOREPOS		= 5				# nothing committed, but not found any valid repository
+PUT_WRITE_ERROR		= 3				# some error while saving data
+PUT_UPDATER_ERROR	= 4				# after saving options, any errors related to repositories
+PUT_UPDATER_NOREPOS	= 5				# nothing committed, but not found any valid repository
 
 # Status codes for the 'execute' function
-RUN_SUCCESS				= 0
-RUN_PARAMETER_ERROR		= 1
+RUN_SUCCESS		= 0
+RUN_PARAMETER_ERROR	= 1
 RUN_PROCESSING_ERROR	= 2
 
 STATUS_ICONS = {
@@ -104,38 +104,38 @@ DEFAULT_ICON = 'updater-unknown'		# any states not defined above
 
 INSTALLERS = {
 	'errata': {
-		'purpose':		_("Install all errata updates"),
-		'command':		'/usr/share/univention-updater/univention-errata-update net; /usr/share/univention-updater/univention-errata-components-update net',
-		'logfile':		'/var/log/univention/errata-updates.log',
+		'purpose':	_("Install all errata updates"),
+		'command':	'/usr/share/univention-updater/univention-errata-update net; /usr/share/univention-updater/univention-errata-components-update net',
+		'logfile':	'/var/log/univention/errata-updates.log',
 		'statusfile':	'/var/lib/univention-updater/univention-errata-update.status',
 	},
 	'release':	{
-		'purpose':		_("Perform release update up to version '%s'"),
-		'command':		"/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
-		'logfile':		'/var/log/univention/updater.log',
-		'statusfile':	'/var/lib/univention-updater/univention-updater.status'
+		'purpose':	_("Perform release update up to version '%s'"),
+		'command':	"/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
+		'logfile':	'/var/log/univention/updater.log',
+		'statusfile':	'/var/lib/univention-updater/univention-updater.status',
 	},
 	# *** IMPORTANT! *** the arg list from our request contains the COMPONENT name but the command
 	#					here must contain the list of DEFAULTPACKAGES!
 	# cmd = '/usr/share/univention-updater/univention-updater-umc-univention-install %s' % (' '.join(pkglist))
 	'component': {
-		'purpose':		_("Install component '%s'"),
-		'command':		"/usr/share/univention-updater/univention-updater-umc-univention-install %s",
-		'logfile':		'/var/log/univention/actualise.log',
-		'statusfile':	'/var/lib/univention-updater/umc-univention-install.status'
+		'purpose':	_("Install component '%s'"),
+		'command':	"/usr/share/univention-updater/univention-updater-umc-univention-install %s",
+		'logfile':	'/var/log/univention/actualise.log',
+		'statusfile':	'/var/lib/univention-updater/umc-univention-install.status',
 	},
 	'distupgrade': {
-		'purpose':		_("Install all package updates"),
-		'command':		"/usr/share/univention-updater/univention-updater-umc-dist-upgrade",
-		'logfile':		'/var/log/univention/updater.log',
-		'statusfile':	'/var/lib/univention-updater/umc-dist-upgrade.status'
+		'purpose':	_("Install all package updates"),
+		'command':	"/usr/share/univention-updater/univention-updater-umc-dist-upgrade",
+		'logfile':	'/var/log/univention/updater.log',
+		'statusfile':	'/var/lib/univention-updater/umc-dist-upgrade.status',
 	},
 	# This is the call to be invoked when EASY mode is switched on.
 	'easyupgrade': {
-		'purpose':		_("Install all available updates for the current release"),
-		'command':		'/usr/sbin/univention-upgrade --noninteractive --ignoressh --ignoreterm',
-		'logfile':		'/var/log/univention/updater.log',
-		'statusfile':	'/var/lib/univention-updater/univention-upgrade.status'
+		'purpose':	_("Install all available updates for the current release"),
+		'command':	'/usr/sbin/univention-upgrade --noninteractive --ignoressh --ignoreterm',
+		'logfile':	'/var/log/univention/updater.log',
+		'statusfile':	'/var/lib/univention-updater/univention-upgrade.status',
 	}
 }
 
@@ -150,13 +150,13 @@ class Watched_File(object):
 		self._file = file
 		self._count = count
 
-		self._last_returned_stamp = 0		# the last result we returned to the caller. will be returned
-											# as long as there are not enough changes.
+		self._last_returned_stamp = 0	# the last result we returned to the caller. will be
+						# returned as long as there are not enough changes.
 
-		self._unchanged_count = 0			# incremented if size and timestamp didn't change
+		self._unchanged_count = 0	# incremented if size and timestamp didn't change
 
-		self._last_stamp = 0				# last timestamp we've seen
-		self._last_size = 0					# last size we've seen
+		self._last_stamp = 0		# last timestamp we've seen
+		self._last_size = 0		# last size we've seen
 		self._last_md5 = ''
 
 	def timestamp(self):
@@ -252,8 +252,8 @@ class Instance(umcm.Base):
 			self.ucr = univention.config_registry.ConfigRegistry()
 			self.ucr.load()
 
-			self._changes = {}				# collects changed UCR vars, for committing the corresponding files
-			self._current_job = {}			# remembers last seen status of an installer job
+			self._changes = {}	# collects changed UCR vars, for committing the corresponding files
+			self._current_job = {}	# remembers last seen status of an installer job
 
 			self._serial_file = Watched_File(COMPONENTS_SERIAL_FILE)
 			self._updates_serial = Watched_Files(UPDATE_SERIAL_FILES)
@@ -1168,7 +1168,7 @@ class Instance(umcm.Base):
 		self._current_job = {}
 
 		result = {}
-		result['status'] = 0		# successful. If not: set result['message'] too.
+		result['status'] = 0	# successful. If not: set result['message'] too.
 
 		subject = request.options.get('job','')
 		detail = request.options.get('detail','')
