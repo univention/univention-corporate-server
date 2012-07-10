@@ -11,7 +11,7 @@ set recreate_packages @%@repository/mirror/recreate_packages@%@
 
 @!@
 import sys
-
+import traceback
 from univention.updater import UniventionMirror, UCS_Version
 
 try:
@@ -31,9 +31,10 @@ try:
 		print mirror.print_security_repositories( clean = True, start = start, end = end, all_security_updates = True )
 		print mirror.print_errata_repositories( clean = True, start = start, end = end, all_errata_updates = True )
 		print mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True)
-except:
+except Exception:
 	print '# An error occurred during the repository check. The error message:'
-	print '#   %s: %s' % sys.exc_info()[:2]
+	for line in traceback.format_exc().splitlines():
+		print '#   %s' % line
 	print '#'
 	print ''
 	print '# After fixing this issue, you should rewrite this file with the following command:'

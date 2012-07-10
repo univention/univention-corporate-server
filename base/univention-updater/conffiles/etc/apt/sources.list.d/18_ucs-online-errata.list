@@ -2,6 +2,7 @@
 
 @!@
 import sys
+import traceback
 from univention.updater import UniventionUpdater
 
 try:
@@ -13,9 +14,10 @@ try:
 		print '# The online repository is disabled and can be enabled with:'
 		print '#   univention-config-registry set repository/online=true'
 		print ''
-except:
+except Exception:
 	print '# An error occurred during the repository check. The error message:'
-	print '#   %s: %s' % sys.exc_info()[:2]
+	for line in traceback.format_exc().splitlines():
+		print '#   %s' % line
 	print '#'
 	print ''
 	print '# After fixing this issue, you should rewrite this file with the following command:'

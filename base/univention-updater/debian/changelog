@@ -3,6 +3,7 @@ univention-updater (7.0.174-1) unstable; urgency=low
   * Skip using empty Packages (Bug #26983)
   * Add optional debugging output (Bug #24760)
   * Also update version/erratalevel (Bug #27835, Bug #27141)
+  * Print traceback when exception occurs (Bug #23345)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 08 May 2012 16:48:06 +0200
 
