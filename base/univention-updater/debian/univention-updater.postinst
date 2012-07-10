@@ -88,7 +88,6 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/debug?no \
 		update/available?no \
 		version/erratalevel?0
-
 fi
 
 call_joinscript 41univention-updater.inst
@@ -115,7 +114,5 @@ elif host univention-repository.$domainname > /dev/null 2>&1; then
 else
 	univention-config-registry set repository/online/server?"updates.software-univention.de"
 fi
-
-univention-config-registry set repository/online/errata/start=30
 
 exit 0

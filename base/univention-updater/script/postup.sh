@@ -132,8 +132,11 @@ if [ -f /etc/cron.d/univention-shares ]; then
 fi
 # end purge univention-shares Bug #24610
 
+ERRATA=93 # Last errata included with UCS-3.0-2
+[ 0$(ucr get version/erratalevel) -lt $ERRATA ] && UPDATE=version/erratalevel=$ERRATA
+univention-config-registry set repository/online/errata/start=$((1 + $ERRATA)) $UPDATE
+
 echo "done."
 date >>"$UPDATER_LOG" 2>&1
 
 exit 0
-
