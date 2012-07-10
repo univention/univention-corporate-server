@@ -1,3 +1,10 @@
+univention-join (4.0.43-1) unstable; urgency=low
+
+  * univention-jon: the error message parsing for univention-server-join has
+    been corrected, error messages begin with "^E:"; Bug #27861
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 10 Jul 2012 11:47:28 +0200
+
 univention-join (4.0.42-1) unstable; urgency=low
 
   * fix new lines in failed_message; important for Bug #25805

@@ -181,7 +181,7 @@ if [ -z "$BINDDN" ]; then
 		BINDDN="$(ldapsearch -x "(&(uid=$BINDACCOUNT)(objectclass=posixAccount))" dn | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 		log 0 "found BINDDN: $BINDDN" >>$LOGFILE
 		if [ -z "$BINDDN" ]; then
-			log 1 "failed to get binddn for $BINDACCOUNT"
+			log 1 "E: failed to get binddn for $BINDACCOUNT"
 			exit 1
 		fi
 	fi

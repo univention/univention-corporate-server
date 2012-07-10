@@ -353,7 +353,7 @@ if [ -n "$server_role" ]; then
 	univention-scp "$DCPWD" "$DCPWD" "$DCACCOUNT@$DCNAME:$DCPWD" >>/var/log/univention/join.log 2>&1
 	res=`univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/share/univention-join/univention-server-join -role $server_role -hostname $hostname -domainname $domainname $ip_cmd $mac_cmd $position_cmd $auth_cmd 2>>/var/log/univention/join.log`
 	univention-ssh $DCPWD $DCACCOUNT@$DCNAME "rm $DCPWD" >>/var/log/univention/join.log 2>&1
-	res_message=`echo $res | grep uexception | sed -e 's|.*univention.admin.uexceptions.||'g`
+	res_message=`echo "$res" | sed -n '/^E:/ { s/^E:\s*// p }'`
 	if [ -z "$res_message" ]; then
 		echo -e "\033[60Gdone"
 	fi
@@ -382,10 +382,9 @@ if [ -n "$res" ]; then
 		fi
 	else
 		if [ -n "$res_message" ]; then
-			# this may have copyright information in it. dont use that
-			failed_message `echo "$res_message" | tail -n 1`
+			failed_message "$res_message"
 		else
-			failed_message `echo "$res" | tail -n 1`
+			failed_message "$res"
 		fi
 	fi
 
