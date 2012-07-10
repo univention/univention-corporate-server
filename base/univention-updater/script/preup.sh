@@ -91,8 +91,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://download.univention.de/doc/release-notes-3.0-1_en.pdf"
-echo " German version:  http://download.univention.de/doc/release-notes-3.0-1.pdf"
+echo " English version: http://download.univention.de/doc/release-notes-3.0-2_en.pdf"
+echo " German version:  http://download.univention.de/doc/release-notes-3.0-2.pdf"
 # echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
 # echo "Please note that Univention Corporate Server (UCS) 3.0 is under development."
 # echo "At the moment UCS 3.0 is not ready for production use!"

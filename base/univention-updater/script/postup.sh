@@ -122,7 +122,7 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
-# For UCS 3.0-1 a reboot is required
+# For UCS 3.0-2 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
 # purge univention-shares Bug #24610

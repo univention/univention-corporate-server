@@ -1,4 +1,10 @@
-univention-updater (7.0.175-1) quantal; urgency=low
+univention-updater (7.0.176-1) unstable; urgency=low
+
+  * Update pre- and postup scripts to UCS 3.0-2 (Bug #27840)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Jul 2012 15:55:14 +0200
+
+univention-updater (7.0.175-1) unstable; urgency=low
 
   * Be more verbose when installing erratas in easyupgrade mode (Bug #27011)
 
