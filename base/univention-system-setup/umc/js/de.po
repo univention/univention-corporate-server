@@ -298,7 +298,7 @@ msgstr "Rechner- und Domänen-Einstellungen"
 
 #: umc/js/_setup/BasisPage.js:238
 msgid "Hostname and windows domain may not be equal."
-msgstr "Hostname und Windows Domäne dürfen nicht gleich sein."
+msgstr "Hostname und Windows-Domäne dürfen nicht gleich sein."
 
 #: umc/js/_setup/NetworkPage.js:103
 msgid "IPv4 address"
