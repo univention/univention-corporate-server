@@ -25,7 +25,7 @@ case "$1" in
 			fi
 		done
 		for srv in $NTPSERVERS; do
-			if /usr/sbin/ntpdate -b -t 0.2 $srv >/dev/null 2>&1; then
+			if /usr/sbin/ntpdate -b -t 0.2 -u 54321 $srv >/dev/null 2>&1; then
 				echo " done."
 				exit 0
 			fi

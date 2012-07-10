@@ -1,3 +1,10 @@
+univention-base-files (1.0.50-1) unstable; urgency=low
+
+  * let ntpdate use an unprivileged port 54321 to stop it colliding with ntpd
+    (Bug #22793)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Jul 2012 17:08:33 +0200
+
 univention-base-files (1.0.49-1) unstable; urgency=low
 
   * Divert /var/run/motd to avoid the Debian WARRANTY (Bug #27759)
