@@ -623,6 +623,8 @@ class simpleLdap(base):
 				if self.descriptions[name].default(self):
 					self[name]
 
+		# iterate over all properties and call checkLdap() of corresponding syntax
+		self._call_checkLdap_on_all_property_syntaxes()
 
 		al=self._ldap_addlist()
 		al.extend(self._ldap_modlist())
@@ -738,6 +740,9 @@ class simpleLdap(base):
 						if self.descriptions[name].default(self):
 							self[name]
 							break
+
+		# iterate over all properties and call checkLdap() of corresponding syntax
+		self._call_checkLdap_on_all_property_syntaxes()
 
 #+++# MODLIST #+++#
 		ml=self._ldap_modlist()
@@ -1041,6 +1046,18 @@ class simpleLdap(base):
 	def cancel(self):
 		# method stub which is implemented by subclasses (see Bug #21070)
 		pass
+
+	def _call_checkLdap_on_all_property_syntaxes(self):
+		""" calls checkLdap() method on every property if present.
+			checkLdap() may rise an exception if the value does not match
+			the constraints of the underlying syntax.
+		"""
+		properties = {}
+		if hasattr(self, 'descriptions'):
+			properties = self.descriptions
+		for pname, prop in properties.items():
+			if hasattr(prop.syntax, 'checkLdap'):
+				prop.syntax.checkLdap(self.lo, self.info.get(pname))
 
 
 class simpleComputer( simpleLdap ):
