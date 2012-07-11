@@ -60,7 +60,8 @@ fi
 if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi
-cat >>/instmnt/hostname.sh <<__EOT__
+cat >/instmnt/hostname.sh <<__EOT__
+#!/bin/sh
 if [ -n "$to_scan" ] || [ -n "$scan" ]; then
 	for ts in $to_scan $scan; do
 		if [ "\$ts" = "hostname" ]; then
@@ -84,7 +85,8 @@ __EOT__
 chmod +x /instmnt/hostname.sh
 chroot /instmnt ./hostname.sh
 
-cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
+cat >/instmnt/postconfigure_config_registry.sh <<__EOT__
+#!/bin/sh
 univention-config-registry set \
 	domainname="$domainname" \
 	windows/domain="$windows_domain"

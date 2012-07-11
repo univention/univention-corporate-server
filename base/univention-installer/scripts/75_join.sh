@@ -54,7 +54,8 @@ fi
 echo -n "$root_password" >/instmnt/var/lib/univention-ldap/root.secret
 chmod 600 /instmnt/var/lib/univention-ldap/root.secret
 
-cat >>/instmnt/join.sh <<__EOT__
+cat >/instmnt/join.sh <<__EOT__
+#!/bin/sh
 progress_filter () {
 	# this pipe redirects stdout to read stdout (/proc/\$\$/fd/1) and modifys a copy
 	# of stdout via sed and pushes the result to filedescriptor 9

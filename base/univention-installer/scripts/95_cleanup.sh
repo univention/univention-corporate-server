@@ -52,12 +52,14 @@ rm -Rf /instmnt/dead.letter
 sync
 
 cat >/instmnt/tmp/cleanup.sh <<__EOT__
+#!/bin/sh
 umount -a >/dev/null 2>&1
 __EOT__
 chmod +x /instmnt/tmp/cleanup.sh
 chroot /instmnt ./tmp/cleanup.sh
 
 cat >/instmnt/tmp/cleanup.sh <<__EOT__
+#!/bin/sh
 if [ -x /etc/init.d/nscd ]; then
 	/etc/init.d/nscd stop
 fi

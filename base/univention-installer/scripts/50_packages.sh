@@ -116,7 +116,8 @@ fi
 # default packages
 packages="$packages $default_packages"
 
-cat >>/instmnt/install_packages.sh <<__EOT__
+cat >/instmnt/install_packages.sh <<__EOT__
+#!/bin/sh
 echo "PROGRESS: $0: Calculating number of packages"
 case "$server_role" in
 	domaincontroller_master) pkglist="univention-server-master" ;;

@@ -37,6 +37,7 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Setting hardware clock")" >&9
 . /tmp/installation_profile
 
 cat >>/instmnt/hwclock.sh <<__EOT__
+#!/bin/sh
 echo "Setting hwclock to current system time"
 /sbin/hwclock --systohc --utc
 __EOT__

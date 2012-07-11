@@ -49,7 +49,7 @@ if [ -e /sbin/rpc.statd ]; then
 	cp /sbin/rpc.statd /instmnt/sbin/
 fi
 
-cat >>/instmnt/preconfigure.sh <<__EOT__
+cat >/instmnt/preconfigure.sh <<__EOT__
 #!/bin/sh
 
 mount proc /proc -t proc

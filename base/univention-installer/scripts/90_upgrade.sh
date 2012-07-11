@@ -43,7 +43,7 @@ if [ "$update_system_after_installation" = "true" ] || [ "$update_system_after_i
 
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		# Update to latest patchlevel
-		cat >> /instmnt/upgrade.sh <<"__EOT__"
+		cat >/instmnt/upgrade.sh <<"__EOT__"
 #!/bin/sh
 eval "$(ucr shell)"
 echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
@@ -51,7 +51,8 @@ univention-upgrade --noninteractive --updateto "$version_version-99"
 __EOT__
 	else
 		# Try to update to the same version as DC master
-		cat >> /instmnt/upgrade.sh <<"__EOT__"
+		cat >/instmnt/upgrade.sh <<"__EOT__"
+#!/bin/sh
 eval "$(ucr shell)"
 if [ -e /var/univention-join/joined ]; then
 	vv=$(univention-ssh /etc/machine.secret $hostname\$@$hostname /usr/sbin/ucr get version/version 2>/dev/null)

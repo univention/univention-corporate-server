@@ -86,7 +86,8 @@ if [ 0 -eq $? ]; then
 	xen_kernel="univention-kernel-image-${boot_version}-xen"
 fi
 
-cat >>/instmnt/install_kernel.sh <<__EOT__
+cat >/instmnt/install_kernel.sh <<__EOT__
+#!/bin/sh
 export DEBIAN_FRONTEND=noninteractive
 
 echo "PROGRESS: $0: Calculating number of packages"
@@ -116,7 +117,8 @@ chmod +x /instmnt/install_kernel.sh
 chroot /instmnt ./install_kernel.sh
 
 # install mdadm if necessary and then grub
-cat >>/instmnt/install_mdadm.sh <<__EOT__
+cat >/instmnt/install_mdadm.sh <<__EOT__
+#!/bin/sh
 export DEBIAN_FRONTEND=noninteractive
 
 mount | grep /dev/md 2>&1 1>/dev/null

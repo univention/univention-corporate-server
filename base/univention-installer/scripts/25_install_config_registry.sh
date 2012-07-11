@@ -37,7 +37,8 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Installing Univention base pack
 cp /etc/univention/base.conf /instmnt/etc/univention/base.conf
 
 PIPE="yes yes '' |"
-cat >>/instmnt/install_config_registry.sh <<__EOT__
+cat >/instmnt/install_config_registry.sh <<__EOT__
+#!/bin/sh
 echo "PROGRESS: $0: Calculating number of packages"
 PKGCNT="\$(apt-get -y -o APT::Get::AllowUnauthenticated=1 install -s -y --ignore-missing univention-config-registry bind9-host | grep "^Inst " | wc -l)"
 echo "__STEPS__:\$((\$PKGCNT * 3))" >&9
