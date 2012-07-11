@@ -123,6 +123,16 @@ class simple( ISyntax ):
 	def any(self):
 		return '*'
 
+	@classmethod
+	def checkLdap( self, lo, value ):
+		""" parseLdap() checks the given value against the current LDAP state by
+			reading directly from LDAP directory. The function returns nothing
+			or raises an exception, if the value does not match with predefined
+			constrains.
+		"""
+		pass
+
+
 class select( ISyntax ):
 	"""Select item from list of choices.
 	self.choice = [(id, _("Display text"), ...]
