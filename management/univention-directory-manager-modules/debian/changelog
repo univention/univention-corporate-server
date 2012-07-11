@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.278-1) unstable; urgency=low
+
+  * proof_uniqueMembers: also add memberUid entry (Bug #27775)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 11 Jul 2012 10:05:09 +0200
+
 univention-directory-manager-modules (7.0.277-1) unstable; urgency=low
 
   * commented out code to overwrite the UDM module layout via UCR; Bug #26673

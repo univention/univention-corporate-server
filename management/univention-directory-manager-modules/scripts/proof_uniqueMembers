@@ -73,7 +73,7 @@ if options.basedn: basedn = options.basedn
 
 # GID's will only be found in posixAccount
 try:
-	res_pA=lo.search_s(basedn, ldap.SCOPE_SUBTREE, 'objectClass=posixAccount', ['gidNumber'])
+	res_pA=lo.search_s(basedn, ldap.SCOPE_SUBTREE, 'objectClass=posixAccount', ['gidNumber', 'uid'])
 except ldap.NO_SUCH_OBJECT:
 	print "ldap search in %s failed (no such base dn)" % basedn
 	sys.exit(1)
@@ -82,6 +82,7 @@ print "\n  proof if users are member of their primary group"
 for i in range(0,len(res_pA)):
 	gidNumber_pA=''
 	dn_pA=res_pA[i][0]
+	memberUid_pA = res_pA[i][1]['uid'][0]
 	if res_pA[i][1].has_key('gidNumber'):
 		gidNumber_pA=res_pA[i][1]['gidNumber'][0]
 	else:
@@ -89,7 +90,7 @@ for i in range(0,len(res_pA)):
 		warning = warning + 1
 
 	# search corresponding group
-	res_uG=lo.search_s(basedn, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionGroup)(gidNumber='+gidNumber_pA+"))", ['uniqueMember'])
+	res_uG=lo.search_s(basedn, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionGroup)(gidNumber='+gidNumber_pA+"))", ['uniqueMember', 'memberUid'])
 
 	# there must be excactly one group with this gid
 	if len(res_uG)>1:
@@ -99,25 +100,32 @@ for i in range(0,len(res_pA)):
 		print "Warning: found no univentionGroup for",dn_pA,"gidNumber",gidNumber_pA,"!"
 		warning = warning +1
 	# well change all if there are more -- the user needs to delete all but one of them
-	for i in range(0,len(res_uG)):
-		uniqueMember_uG = ()
-		dn_uG=res_uG[i][0]
-		found_uM = 0
+	for group in res_uG:
+		dn_uG = group[0]
 		# look for the needed entry
-		if res_uG[i][1].has_key('uniqueMember'):
-			uniqueMember_uG = res_uG[i][1]['uniqueMember']
-			for el in uniqueMember_uG:
-				if el == dn_pA: found_uM = 1
+		uniqueMembers_uG = group[1].get('uniqueMember', [])
+		memberUids_uG = group[1].get('memberUid', [])
+		modlist = []
+		for el in uniqueMembers_uG:
+			if el == dn_pA:
+				break
+		else:
+			modlist.append((ldap.MOD_ADD,'uniqueMember',dn_pA))
+
+		for el in memberUids_uG:
+			if el == memberUid_pA:
+				break
+		else:
+			modlist.append((ldap.MOD_ADD,'memberUid',memberUid_pA))
 		# no entry found, gonna add one
-		if not found_uM:
-			print "add uniqueMember entry for",dn_pA,"in",dn_uG
-			modlist = [(ldap.MOD_ADD,'uniqueMember',dn_pA)]
+		if modlist:
+			print "add uniqueMember and memberUid entry for",dn_pA,"in",dn_uG
 			try:
 				lo.modify_s(dn_uG,modlist)
 				count_changes = count_changes +1
 			except:
-				print "Warning: failed to modify Group %s"%dn_uG
 				warning = warning + 1
+				print "Warning: failed to modify Group %s"%dn_uG
 
 print "  proof of",len(res_pA),"posixAccounts finished, changed",count_changes,"of them.\n"
 
