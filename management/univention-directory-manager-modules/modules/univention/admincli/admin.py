@@ -390,9 +390,8 @@ def doit(arglist):
 
 		# collect error information
 		msg = [getattr(e, 'message', '')]
-		eargs = getattr(e, 'args', False)
-		if eargs:
-			if eargs[0] != msg[0] or len(eargs) != 1:
+		if getattr(e, 'args', False):
+			if e.args[0] != msg[0] or len(e.args) != 1:
 				msg.extend(e.args)
 
 		# strip elements and make sure that a ':' is printed iff further information follows

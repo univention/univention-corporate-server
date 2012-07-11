@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.282-1) unstable; urgency=low
+
+  * fixed typo (Bug #7389)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 11 Jul 2012 15:52:31 +0200
+
 univention-directory-manager-modules (7.0.281-1) unstable; urgency=low
 
   * print every error message only once on cli (Bug #7389)
