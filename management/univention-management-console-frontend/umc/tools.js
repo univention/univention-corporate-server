@@ -42,9 +42,6 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 }));
 dojo.mixin(umc.tools, {
 
-	// default value for the session timeout
-	// it will be replaced by the ucr variable 'umc/http/session/timeout' onLogin
-	_sessionTimeout: 300,
 	_sessionID: '',
 	_sessionDuration: 0,
 
@@ -96,11 +93,12 @@ dojo.mixin(umc.tools, {
 		return this._sessionID;
 	},
 
-	setSession: function(sessionID, duration) {
+	setSession: function(/*String*/ sessionID, /*Integer*/ duration) {
 		// summary:
 		// 		sets the sessionid and sessiontimeout
-		// sessionID: string
-		// duration: int
+		// sessionID: String
+		// 		the session id
+		// duration: Integer
 		// 		the session timeout in milliseconds
 		this._sessionID = sessionID;
 		this._sessionDuration = duration;
@@ -252,7 +250,7 @@ dojo.mixin(umc.tools, {
 					// request finished
 					if (xhrRequest.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id')) {
 						// reset the sessionId and sessionTimeout
-						umc.tools.setSession(xhrRequest.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id'), 1000 * (parseInt(xhrRequest.ioArgs.xhr.getResponseHeader('X-UMC-Session-Timeout')) || this._sessionTimeout));
+						umc.tools.setSession(xhrRequest.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id'), 1000 * parseInt(xhrRequest.ioArgs.xhr.getResponseHeader('X-UMC-Session-Timeout')));
 					}
 					this._dialog.hide();
 					this._dialog.destroyRecursive();
@@ -370,7 +368,7 @@ dojo.mixin(umc.tools, {
 			var call = xcall.then(function(data) {
 				if (xcall.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id')) {
 					// reset the sessionId and sessionTimeout
-					umc.tools.setSession(xcall.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id'), 1000 * (parseInt(xcall.ioArgs.xhr.getResponseHeader('X-UMC-Session-Timeout')) || this._sessionTimeout));
+					umc.tools.setSession(xcall.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id'), 1000 * parseInt(xcall.ioArgs.xhr.getResponseHeader('X-UMC-Session-Timeout')));
 				}
 				return data;
 			});

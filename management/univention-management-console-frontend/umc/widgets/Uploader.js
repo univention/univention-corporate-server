@@ -177,7 +177,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 					}
 					// mixin the iframe information and sessionID
 					dojo.mixin(params, {
-						iframe: (this._uploader.uploadType === 'iframe') ? true : false,
+						iframe: (this._uploader.uploadType === 'iframe'),
 						X-UMC-Session-Id: umc.tools.getSessionId()
 					});
 					this._uploader.upload(params);

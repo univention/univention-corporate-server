@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.387-1) unstable; urgency=low
+
+  * removed umc.tools._sessionTimeout (Bug #26635)
+
+ -- Florian Best <best@univention.de>  Wed, 11 Jul 2012 14:09:14 +0200
+
 univention-management-console-frontend (1.0.386-1) unstable; urgency=low
 
   * added sessionId as http header field instead of a cookie (Bug #26635)

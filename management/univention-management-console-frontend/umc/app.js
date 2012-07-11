@@ -118,11 +118,6 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
 		umc.tools.status('username', username);
 
-		// set the UCR session timeout value
-		umc.tools.ucr('umc/http/session/timeout').then( function(res) {
-			umc.tools._sessionTimeout = parseInt( res['umc/http/session/timeout'] , 10 );
-		} );
-
 		// start the timer for session checking
 		umc.tools.checkSession(true);
 
