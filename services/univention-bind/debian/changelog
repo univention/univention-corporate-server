@@ -1,3 +1,9 @@
+univention-bind (6.0.41-5) unstable; urgency=low
+
+  * Fix crestart handling (Bug #26560)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 Jul 2012 19:56:25 +0200
+
 univention-bind (6.0.41-4) unstable; urgency=low
 
   * Fix timeout zone updates in listener (Bug #25868)

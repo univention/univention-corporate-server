@@ -33,13 +33,22 @@ eval "$(univention-config-registry shell dns/backend)"
 
 . /lib/lsb/init-functions
 
-sv_action ()
-{
-	if [ -e /etc/runit/univention/$2 ]; then
-		 sv $1 $2 >>/var/log/daemon.log
+sv_action () { # Silently toggle runit state: $action $service_name
+	if [ -e "/etc/runit/univention/$2" ]; then
+		 sv "$1" "$2" >>/var/log/daemon.log
 	fi
 }
 
+sv_running () { # Check wanted state: $service name
+	local status=$(LC_ALL=C sv status "$1")
+	case "$status" in
+	run:*) return 0 ;; # requested running
+	down:) return 1 ;; # requested shutdown
+	finish:*normally\ down,\ want\ down) return 1 ;; # shutting down
+	finish:*normally\ down) return 0 ;; # down due to error
+	*) logger -p daemon.notice "Unknown bind9 status: $status" ; return 1 ;;
+	esac
+}
 
 case "$1" in
 	start)
@@ -90,23 +99,26 @@ case "$1" in
 			check_autostart univention-bind-proxy bind/autostart
 		fi
 		if [ "$dns_backend" = "samba4" ]; then
-			if sv status univention-bind-samba4 | grep ^run: > /dev/null 2>&1; then
-				$0 restart
+			if sv_running univention-bind-samba4
+			then
+				"$0" restart
 			fi
 		elif [ "$dns_backend" = "ldap" ]; then
-			if sv status univention-bind | grep ^run: > /dev/null 2>&1; then
-				$0 restart
+			if sv_running univention-bind
+			then
+				"$0" restart
 			fi
-
-			if sv status univention-bind-proxy | grep ^run: > /dev/null 2>&1; then
-				$0 restart
+			if sv_running univention-bind-proxy
+			then
+				"$0" restart
 			fi
 		fi
 		;;
 	status)
-		if	sv status univention-bind-samba4 | grep ^run: > /dev/null 2>&1 ||
-		sv status univention-bind | grep ^run: > /dev/null 2>&1 ||
-		sv status univention-bind-proxy | grep ^run: > /dev/null 2>&1; then
+		if	sv status univention-bind-samba4 | grep -qs ^run: ||
+			sv status univention-bind | grep -qs ^run: ||
+			sv status univention-bind-proxy | grep -qs ^run:
+		then
 			log_success_msg "bind9 is running"
 			exit 0
 		else
@@ -115,7 +127,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		log_action_msg "Usage: /etc/init.d/bind9 {start|stop|restart|crestart|force-reload|status}"
+		log_action_msg "Usage: $0 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac
