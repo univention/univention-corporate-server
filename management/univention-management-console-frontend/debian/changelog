@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.387-2) unstable; urgency=low
+
+  * fixed typo (Bug #26635)
+
+ -- Florian Best <best@univention.de>  Wed, 11 Jul 2012 15:34:52 +0200
+
 univention-management-console-frontend (1.0.387-1) unstable; urgency=low
 
   * removed umc.tools._sessionTimeout (Bug #26635)
