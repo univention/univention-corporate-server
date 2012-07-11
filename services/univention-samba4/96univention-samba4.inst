@@ -384,15 +384,18 @@ rIDNextRID: 2101
 			## regular join
 
 			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-								--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}"
+								--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+								--keep-existing
 			if [ $? != 0 ]; then
 				# try again with --server
 				if [ -n "$samba4_dc" ]; then
 					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
-										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}"
+										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+										--keep-existing
 				else
 					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
-										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}"
+										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+										--keep-existing
 				fi
 			fi
 
@@ -491,7 +494,8 @@ elif [ "$samba4_role" = "RODC" ]; then
 	fi
 
 	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-							--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}"
+							--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+							--keep-existing
 	/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --rodc "${SITE_OPTION[@]}"
 
 	operatingSystem_attribute add
