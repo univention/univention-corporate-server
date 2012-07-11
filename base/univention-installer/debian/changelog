@@ -1,3 +1,11 @@
+univention-installer (7.0.163-1) unstable; urgency=low
+
+  * Ensure bind is running while starting the upgrade after the
+    installation of UCS (Bug #26560)
+  * Fixed syntax errors in modules/50_basis.py (Bug #27809)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jul 2012 07:34:27 +0200
+
 univention-installer (7.0.162-1) unstable; urgency=low
 
   * added check for hostname and windows domain (Bug #27809)

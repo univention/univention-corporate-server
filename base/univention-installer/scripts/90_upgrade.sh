@@ -42,18 +42,30 @@ if [ "$update_system_after_installation" = "true" ] || [ "$update_system_after_i
 	echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Updating system")" >&9
 	echo "__SUBMSG__:$(LC_ALL=$INSTALLERLOCALE gettext "This might take a while depending on the number of pending updates.")" >&9
 
+	# Start with the upgrade script
+	cat >> /instmnt/upgrade.sh <<"__EOT__"
+#!/bin/sh
+
+# ensure bind is running
+if ! pgrep -c named >/dev/null; then
+	if [ -x /etc/init.d/bind9 ]; then
+		invoke-rc.d bind9 restart
+		sleep 2
+	fi
+fi
+
+eval "$(ucr shell)"
+__EOT__
+
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		# Update to latest patchlevel
 		cat >> /instmnt/upgrade.sh <<"__EOT__"
-#!/bin/sh
-eval "$(ucr shell)"
 echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
 univention-upgrade --noninteractive --updateto "$version_version-99"
 __EOT__
 	else
 		# Try to update to the same version as DC master
 		cat >> /instmnt/upgrade.sh <<"__EOT__"
-eval "$(ucr shell)"
 if [ -e /var/univention-join/joined ]; then
 	vv=$(univention-ssh /etc/machine.secret $hostname\$@$hostname /usr/sbin/ucr get version/version 2>/dev/null)
 	pl=$(univention-ssh /etc/machine.secret $hostname\$@$hostname /usr/sbin/ucr get version/patchlevel 2>/dev/null)
