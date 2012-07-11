@@ -1,3 +1,9 @@
+univention-printclient (6.0.4-3) unstable; urgency=low
+
+  * move old template in preinst (Bug #25472) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Jul 2012 09:22:03 +0200
+
 univention-printclient (6.0.4-2) unstable; urgency=low
 
   * manually update ucr in postinst (Bug #25472) 
