@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-11 15:47+0200\n"
-"PO-Revision-Date: 2012-07-11 15:47+0200\n"
+"POT-Creation-Date: 2012-07-11 17:19+0200\n"
+"PO-Revision-Date: 2012-07-11 17:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -43,10 +43,6 @@ msgstr ""
 #, python-format
 msgid ": type was %s"
 msgstr ": Typ war %s"
-
-#: __init__.py:359
-msgid "General"
-msgstr "Allgemein"
 
 #: modules.py:151 modules.py:460
 msgid "Custom"
@@ -435,19 +431,16 @@ msgstr "Keine gültige E-Mail-Adresse"
 #: syntax.py:950
 #, python-format
 msgid ""
-"The following mail address' domains do not match any mail domain object: %s"
-msgstr ""
-"Die Domänen der folgenden Mailadressen passen nicht zu den vorhandenen Mail-"
-"Domänen-Objekten: %s"
+"The domain part of the following mail addresses is not in list of configured "
+"mail domains: %s"
+msgstr "Der Domänenteil der folgenden Mailadressen ist nicht in der Liste der eingerichteten Maildomänen enthalten: %s"
 
 #: syntax.py:979
 #, python-format
 msgid ""
-"The following mail primary address' domain does not match to any mail domain "
-"object: %s"
-msgstr ""
-"Die Domäne der folgenden primären Mailadresse passt nicht zu den vorhandenen "
-"Mail-Domänen-Objekten: %s"
+"The domain part of the primary mail address is not in list of configured "
+"mail domains: %s"
+msgstr "Der Domänenteil der primären Mailadresse ist nicht in der Liste der eingerichteten Maildomänen enthalten: %s"
 
 #: syntax.py:994
 msgid "The given date does not conform to iso8601, example: \"2009-01-01\"."
@@ -1424,6 +1417,9 @@ msgstr "Authentisierung fehlgeschlagen"
 #: uldap.py:389
 msgid "Moving childs is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
+
+#~ msgid "General"
+#~ msgstr "Allgemein"
 
 #~ msgid "The given mail address is not of type \"string\""
 #~ msgstr "Die angegebene Mail-Adresse ist nicht vom Datentyp \"string\"."

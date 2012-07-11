@@ -947,7 +947,7 @@ class emailAddressTemplate(simple):
 
 class emailAddressValidDomain(emailAddress):
 	name = 'emailAddressValidDomain'
-	errMsgDomain = _("The following mail address' domains do not match any mail domain object: %s")
+	errMsgDomain = _("The domain part of the following mail addresses is not in list of configured mail domains: %s")
 
 	@classmethod
 	def checkLdap(self, lo, mailaddresses):
@@ -976,7 +976,7 @@ class emailAddressValidDomain(emailAddress):
 
 class primaryEmailAddressValidDomain(emailAddressValidDomain):
 	name = 'primaryEmailAddressValidDomain'
-	errMsgDomain = _("The following mail primary address' domain does not match to any mail domain object: %s")
+	errMsgDomain = _("The domain part of the primary mail address is not in list of configured mail domains: %s")
 
 
 class iso8601Date(simple):
