@@ -1,3 +1,9 @@
+univention-installer (7.0.165-1) unstable; urgency=low
+
+  * Set erratalevel for new installations (Bug #27835)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 Jul 2012 17:28:18 +0200
+
 univention-installer (7.0.164-1) unstable; urgency=low
 
   * Undo bind9 check and start in 90_upgrade.sh (Bug #26560)

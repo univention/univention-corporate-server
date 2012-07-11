@@ -43,6 +43,11 @@ pci_acpi_off=`grep "pci=noacpi" /proc/cmdline`
 pci_acpi_on=`grep "pci=acpi" /proc/cmdline`
 version_version=`sed -ne 's|VERSION=||p' </instmnt/sourcedevice/.univention_install`
 version_patchlevel=`sed -ne 's|PATCHLEVEL=||p' </instmnt/sourcedevice/.univention_install`
+case "${version_version}-${version_patchlevel}" in # Bug #27835
+3.0-0) version_erratalevel=0 ;;
+3.0-1) version_erratalevel=30 ;;
+3.0-2) version_erratalevel=93 ;;
+esac
 
 # get x keyboard config
 if [ -n "$locale_default" ]; then
@@ -292,7 +297,9 @@ fi
 
 univention-config-registry set \
 	version/version="$version_version" \
-	version/patchlevel="$version_patchlevel"
+	version/patchlevel="$version_patchlevel" \
+	${version_erratalevel:+version/erratalevel=$version_erratalevel} \
+	${version_erratalevel:+repository/online/errata/start=$((1 + $version_erratalevel))}
 
 univention-config-registry commit
 
