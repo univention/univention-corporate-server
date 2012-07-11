@@ -1,3 +1,10 @@
+univention-base-files (1.0.51-1) unstable; urgency=low
+
+  * Divert /etc/motd.tail instead of /var/run/motd because /var/run/motd
+    will be created by /etc/init.d/bootlogs (Bug #27759)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jul 2012 19:51:03 +0200
+
 univention-base-files (1.0.50-1) unstable; urgency=low
 
   * let ntpdate use an unprivileged port 54321 to stop it colliding with ntpd
