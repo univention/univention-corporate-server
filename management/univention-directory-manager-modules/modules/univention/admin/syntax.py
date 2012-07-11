@@ -945,6 +945,40 @@ class emailAddressTemplate(simple):
 			return text
 		raise univention.admin.uexceptions.valueError,_("Not a valid email address!")
 
+class emailAddressValidDomain(emailAddress):
+	name = 'emailAddressValidDomain'
+	errMsgDomain = _("The following mail address' domains do not match any mail domain object: %s")
+
+	@classmethod
+	def checkLdap(self, lo, mailaddresses):
+		# convert mailaddresses to array if neccessary
+		mailaddresses = copy.deepcopy(mailaddresses)
+		if type(mailaddresses) == str:
+			mailaddresses = [ mailaddresses ]
+
+		faillist = []
+		domainCache = {}
+		# iterate over mail addresses
+		for mailaddress in mailaddresses:
+			if mailaddress:
+				domain = mailaddress.rsplit('@',1)[-1]
+				if not domain in domainCache:
+					ldapfilter = '(&(objectClass=univentionMailDomainname)(cn=%s))' % domain
+					result = lo.searchDn(filter=ldapfilter)
+					domainCache[domain] = bool(result)
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.%s: address=%r   domain=%r   result=%r' % (self.name, mailaddress, domain, result))
+				if not domainCache[domain]:
+					faillist.append(mailaddress)
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.%s: address=%r   domain=%r' % (self.name, mailaddress, domain))
+
+		if faillist:
+			raise univention.admin.uexceptions.valueError, self.errMsgDomain % (', '.join(faillist),)
+
+class primaryEmailAddressValidDomain(emailAddressValidDomain):
+	name = 'primaryEmailAddressValidDomain'
+	errMsgDomain = _("The following mail primary address' domain does not match to any mail domain object: %s")
+
+
 class iso8601Date(simple):
 	'''A date of the format:
 	yyyy-ddd   (2009-213)
