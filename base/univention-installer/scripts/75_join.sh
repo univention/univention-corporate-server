@@ -55,7 +55,6 @@ echo -n "$root_password" >/instmnt/var/lib/univention-ldap/root.secret
 chmod 600 /instmnt/var/lib/univention-ldap/root.secret
 
 cat >>/instmnt/join.sh <<__EOT__
-
 progress_filter () {
 	# this pipe redirects stdout to read stdout (/proc/\$\$/fd/1) and modifys a copy
 	# of stdout via sed and pushes the result to filedescriptor 9
@@ -100,7 +99,6 @@ if [ "$server_role" != "domaincontroller_master" ] && [ -n "$domain_controller_a
 	fi
 fi
 
-
 if [ "$server_role" = "domaincontroller_master" ]; then
     mkdir -p /var/univention-join/
     mkdir -p /usr/share/univention-join/
@@ -120,11 +118,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
         done
     fi
 fi
-
 __EOT__
-
 chmod +x /instmnt/join.sh
 chroot /instmnt ./join.sh
 
 rm -f /instmnt/var/lib/univention-ldap/root.secret
-

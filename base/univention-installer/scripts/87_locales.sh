@@ -37,21 +37,14 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Generating locales")" >&9
 . /tmp/installation_profile
 
 cat >>/instmnt/locales.sh <<__EOT__
-
 echo "Generating locales (this might take a while)"
 locale-gen  >/dev/null 2>&1
-
 __EOT__
-
 chmod +x /instmnt/locales.sh
 chroot /instmnt ./locales.sh
 
-
 cat >>/instmnt/sources2.sh <<__EOT__
-
 apt-get update  >/dev/null 2>&1
-
 __EOT__
-
 chmod +x /instmnt/sources2.sh
 chroot /instmnt ./sources2.sh

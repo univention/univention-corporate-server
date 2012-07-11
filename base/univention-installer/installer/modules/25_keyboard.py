@@ -44,6 +44,7 @@ from local import _
 HEIGHT = 25
 WIDTH = 40
 
+
 class object(content):
 	def checkname(self):
 		return ['keymap']
@@ -59,7 +60,6 @@ class object(content):
 			return False
 
 	def run_profiled(self):
-
 		if self.all_results.has_key('country'):
 			map = self.all_results['country']
 		else:
@@ -73,7 +73,6 @@ class object(content):
 			return { 'keymap': self.all_results['keymap']}
 
 	def get_keymaps(self, all=False):
-
 		maps = {}
 
 		if all:
@@ -95,11 +94,10 @@ class object(content):
 				parts[0] = parts[0].replace(" Standard ", "")
 				parts[0] = parts[0].replace("Standard", "")
 				maps[parts[0]] = parts[1]
-		
+
 		return maps
 
 	def create_kmap_list(self, language, showAll=False):
-		
 		if showAll:
 			maps = self.get_keymaps(all=True)
 		else:
@@ -122,7 +120,6 @@ class object(content):
 		return dict, default_position, showAll
 
 	def layout(self):
-
 		if self.all_results.has_key('keymap'):
 			default_value = self.all_results['keymap']
 		else:
@@ -177,12 +174,11 @@ class object(content):
 		return 'Keyboard'
 
 	def loadkeys(self, map):
-
 		if ":" in map:
 			map = map.split(":")[1]
 
 		mapFile = "/usr/keymaps/%s.kmap" % map
-		
+
 		if os.path.exists(mapFile):
 			self.debug('binary-keyset: %s' % mapFile)
 			os.system('/bin/loadkeys < %s > /dev/null 2>&1'% mapFile)
@@ -192,8 +188,6 @@ class object(content):
 		# ???
 		if os.path.exists('/lib/univention-installer-startup.d/S88keyboard'):
 			os.system('/lib/univention-installer-startup.d/S88keyboard > /dev/null 2>&1')
-
-
 
 	def result(self):
 		result = {}

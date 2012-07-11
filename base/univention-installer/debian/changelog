@@ -39,7 +39,7 @@ univention-installer (7.0.160-1) unstable; urgency=low
 
 univention-installer (7.0.159-1) unstable; urgency=low
 
-  * add mount option acl for ext2 partitions in /etc/fstab (Bug #27466) 
+  * add mount option acl for ext2 partitions in /etc/fstab (Bug #27466)
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jun 2012 13:18:39 +0200
 
@@ -76,7 +76,7 @@ univention-installer (7.0.154-1) unstable; urgency=low
 
 univention-installer (7.0.153-1) unstable; urgency=low
 
-  * fixed standard profiles (Bug #24494) 
+  * fixed standard profiles (Bug #24494)
 
  -- Felix Botner <botner@univention.de>  Mon, 05 Dec 2011 12:45:00 +0100
 
@@ -154,7 +154,7 @@ univention-installer (7.0.143-1) unstable; urgency=low
 
 univention-installer (7.0.142-1) unstable; urgency=low
 
-  * updated standard profiles (Bug #24494) 
+  * updated standard profiles (Bug #24494)
 
  -- Felix Botner <botner@univention.de>  Thu, 10 Nov 2011 17:26:04 +0100
 
@@ -380,7 +380,7 @@ univention-installer (7.0.114-2) unstable; urgency=low
 
 univention-installer (7.0.114-1) unstable; urgency=low
 
-  * added installer/locale/country_codes (Bug #22904) 
+  * added installer/locale/country_codes (Bug #22904)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Oct 2011 12:47:09 +0200
 
@@ -481,7 +481,7 @@ univention-installer (7.0.101-3) unstable; urgency=low
   * fixed double back/next buttons (Bug #22869)
   * allow ext4 on /boot (Bug #24013)
   * updated end message (Bug #3796, Bug #23955)
-  
+
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 13 Oct 2011 11:52:13 +0200
 
 univention-installer (7.0.101-2) unstable; urgency=low
@@ -493,19 +493,19 @@ univention-installer (7.0.101-2) unstable; urgency=low
   * clear screen before reboot
   * generate a locale for selected installer language (Bug #3796)
   * create small "helper lib" for installer scripts
-  * added new RegExTranslation object for easy translation of debootstrap and apt-get      
+  * added new RegExTranslation object for easy translation of debootstrap and apt-get
   * small gui update (Bug #3796)
   * merged success/error message from end.py (Bug #3796)
   * limit length of error messages
   * updated script for updating translation files (Bug #3796)
   * use gettext to translate progress headlines in scripts
   * pay attention to auto_reboot (Bug #3796)
-     
+
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 12 Oct 2011 17:56:46 +0200
 
 univention-installer (7.0.101-1) unstable; urgency=low
 
-  * added new python script progress.py for displaying progress 
+  * added new python script progress.py for displaying progress
     dialog (Bug #3796)
   * disable kernel messages on tty
   * mount cdrom_device read-only and only once
@@ -601,7 +601,7 @@ univention-installer (7.0.90-1) unstable; urgency=low
 
 univention-installer (7.0.89-1) unstable; urgency=low
 
-  * fixed vga=788 kernel parameter (Bug #23767) 
+  * fixed vga=788 kernel parameter (Bug #23767)
 
  -- Felix Botner <botner@univention.de>  Wed, 05 Oct 2011 16:19:10 +0200
 
@@ -613,7 +613,7 @@ univention-installer (7.0.88-1) unstable; urgency=low
 
 univention-installer (7.0.87-1) unstable; urgency=low
 
-  * removed gfxpayload=keep and set vga=788 kernel parameter (Bug #23767) 
+  * removed gfxpayload=keep and set vga=788 kernel parameter (Bug #23767)
 
  -- Felix Botner <botner@univention.de>  Wed, 05 Oct 2011 16:02:48 +0200
 
@@ -626,13 +626,13 @@ univention-installer (7.0.86-1) unstable; urgency=low
 
 univention-installer (7.0.85-1) unstable; urgency=low
 
-  * added reset_layout to clear layout in some modules (Bug #22869) 
+  * added reset_layout to clear layout in some modules (Bug #22869)
 
  -- Felix Botner <botner@univention.de>  Wed, 05 Oct 2011 09:46:00 +0200
 
 univention-installer (7.0.84-1) unstable; urgency=low
 
-  * fixed std_buttons() (Bug #22869) 
+  * fixed std_buttons() (Bug #22869)
 
  -- Felix Botner <botner@univention.de>  Tue, 04 Oct 2011 17:30:54 +0200
 
@@ -647,7 +647,7 @@ univention-installer (7.0.82-1) unstable; urgency=low
   * allow IPv6 addresses as DNS server (Bug #22872)
   * increased width of "more" window in networking module
   * only show IPv4 address in overview if value has been set
-  
+
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 04 Oct 2011 13:48:17 +0200
 
 univention-installer (7.0.81-1) unstable; urgency=low
@@ -739,7 +739,7 @@ univention-installer (7.0.73-1) unstable; urgency=low
 
   * fixed traceback related to DHCP requests in networking module (Bug #22872)
   * copy dns_forwarder_* to nameserver_* if domainnameserver widget has
-    been disabled (e.g. on DC master) (Bug #22872) 
+    been disabled (e.g. on DC master) (Bug #22872)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Sep 2011 12:28:23 +0200
 
@@ -789,12 +789,12 @@ univention-installer (7.0.67-1) unstable; urgency=low
   * Merge patches from UCS 2.4-3
 
    [ Sönke Schwardt-Krummrich ]
-    * only switch from /dev/tty1 to /dev/hvc0 if /dev/hvc0 exists 
-      (Bug #21984) 
+    * only switch from /dev/tty1 to /dev/hvc0 if /dev/hvc0 exists
+      (Bug #21984)
 
    [ Felix Botner ]
     * wait for device in installer/network.sh Bug #22505
-    * sleep wait for network in installer/network.sh Bug #22505 
+    * sleep wait for network in installer/network.sh Bug #22505
     * fixed installer/network.sh Bug #22505
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 20:42:36 +0200
@@ -867,7 +867,7 @@ univention-installer (7.0.57-1) unstable; urgency=low
 
 univention-installer (7.0.56-1) unstable; urgency=low
 
-  * changed grub menu color (Bug #22707) 
+  * changed grub menu color (Bug #22707)
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Sep 2011 08:52:17 +0200
 
@@ -968,7 +968,7 @@ univention-installer (7.0.42-1) unstable; urgency=low
 
 univention-installer (7.0.41-1) unstable; urgency=low
 
-  * removed vga kernel options, use gfxpaxload=keep instead (Bug #22707) 
+  * removed vga kernel options, use gfxpaxload=keep instead (Bug #22707)
 
  -- Felix Botner <botner@univention.de>  Fri, 09 Sep 2011 09:16:43 +0200
 
@@ -982,13 +982,13 @@ univention-installer (7.0.40-3) unstable; urgency=low
 univention-installer (7.0.40-2) unstable; urgency=low
 
   * No longer set grub/boot for new installations, since it's no longer used by
-    Grub 2 (Bug #22115)	 
+    Grub 2 (Bug #22115)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 08 Sep 2011 17:55:54 +0200
 
 univention-installer (7.0.40-1) unstable; urgency=low
 
-  * save debootstrap.log in /var/log/univention (Bug #23283) 
+  * save debootstrap.log in /var/log/univention (Bug #23283)
 
  -- Felix Botner <botner@univention.de>  Fri, 26 Aug 2011 16:02:45 +0200
 
@@ -1018,13 +1018,13 @@ univention-installer (7.0.36-1) unstable; urgency=low
 
 univention-installer (7.0.35-1) unstable; urgency=low
 
-  * changed installer messsages and add translations (Bug #22869) 
+  * changed installer messsages and add translations (Bug #22869)
 
  -- Felix Botner <botner@univention.de>  Fri, 05 Aug 2011 12:56:24 +0200
 
 univention-installer (7.0.34-1) unstable; urgency=low
 
-  * changed vga=771 to vga=788 in grub2 config  
+  * changed vga=771 to vga=788 in grub2 config
     to match up the kernel vga setting and the grub2
     gfxmode configuration (Bug #22707)
 
@@ -1086,7 +1086,7 @@ univention-installer (7.0.26-1) unstable; urgency=low
 
 univention-installer (7.0.25-1) unstable; urgency=low
 
-  * set grub2 timeout to 60 (Bug #22707) 
+  * set grub2 timeout to 60 (Bug #22707)
 
  -- Felix Botner <botner@univention.de>  Mon, 01 Aug 2011 14:35:54 +0200
 
@@ -1144,12 +1144,12 @@ univention-installer (7.0.17-1) unstable; urgency=low
 univention-installer (7.0.16-1) unstable; urgency=low
 
   * CD/DVD detection (Bug #22602)
-    - automatically add block devices with filesystems 
+    - automatically add block devices with filesystems
     - display name of successfully tested device
     - switch automatically to next module after successful detection
     - added kernel parameter nfsdelay=X to wait X seconds before mounting NFS source
-    - test against ANY configured network interface and not only "eth0"  
-  
+    - test against ANY configured network interface and not only "eth0"
+
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 28 Jul 2011 11:30:21 +0200
 
 univention-installer (7.0.15-2) unstable; urgency=low
@@ -1172,13 +1172,13 @@ univention-installer (7.0.14-7) unstable; urgency=low
 
 univention-installer (7.0.14-6) unstable; urgency=low
 
-  * removed bashism (Bug #22707) 
+  * removed bashism (Bug #22707)
 
  -- Felix Botner <botner@univention.de>  Fri, 22 Jul 2011 15:18:02 +0200
 
 univention-installer (7.0.14-5) unstable; urgency=low
 
-  * changed grub layout (Bug #22707) 
+  * changed grub layout (Bug #22707)
 
  -- Felix Botner <botner@univention.de>  Fri, 22 Jul 2011 14:46:15 +0200
 
@@ -1190,19 +1190,19 @@ univention-installer (7.0.14-4) unstable; urgency=low
 
 univention-installer (7.0.14-3) unstable; urgency=low
 
-  * added grub2 config for recover dvd (Bug #22707) 
+  * added grub2 config for recover dvd (Bug #22707)
 
  -- Felix Botner <botner@univention.de>  Wed, 13 Jul 2011 16:52:16 +0200
 
 univention-installer (7.0.14-2) unstable; urgency=low
 
-  * fixed grub config (Bug #22707) 
+  * fixed grub config (Bug #22707)
 
  -- Felix Botner <botner@univention.de>  Wed, 13 Jul 2011 16:39:52 +0200
 
 univention-installer (7.0.14-1) unstable; urgency=low
 
-  * added grub2 config (Bug #22707) 
+  * added grub2 config (Bug #22707)
 
  -- Felix Botner <botner@univention.de>  Wed, 13 Jul 2011 14:47:55 +0200
 
@@ -1227,7 +1227,7 @@ univention-installer (7.0.12-3) unstable; urgency=low
 
 univention-installer (7.0.12-2) unstable; urgency=low
 
-  * fixed parameter handling in sbin/univention-installer (Bug #22546) 
+  * fixed parameter handling in sbin/univention-installer (Bug #22546)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Jul 2011 08:38:57 +0200
 
@@ -1306,14 +1306,14 @@ univention-installer (7.0.5-1) unstable; urgency=low
   * use devtmpfs
   * hide message loading USB HID module
   * mount 64MiB ramdisk to /tmp
-  
+
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 17 Jun 2011 15:02:43 +0200
 
 univention-installer (7.0.4-1) unstable; urgency=low
 
   * set executable bit (Bug #22448)
   * hide messages if in quiet mode
-  * added new "Loading" message 
+  * added new "Loading" message
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 16 Jun 2011 11:26:48 +0200
 
@@ -1370,7 +1370,7 @@ univention-installer (6.0.50-1) unstable; urgency=low
 
 univention-installer (6.0.49-1) unstable; urgency=low
 
-  * merged changes from component oxse4ucs (-r 21773:HEAD), 
+  * merged changes from component oxse4ucs (-r 21773:HEAD),
     except installer/package_list.py (Bug #21184)
 
  -- Felix Botner <botner@univention.de>  Wed, 09 Feb 2011 14:26:29 +0100
@@ -1429,7 +1429,7 @@ univention-installer (6.0.44-1) unstable; urgency=low
 
 univention-installer (6.0.43-1) unstable; urgency=low
 
-  * make virtualization server packages in packages list 
+  * make virtualization server packages in packages list
     visible only for server roles Bug #19045
 
  -- Felix Botner <botner@univention.de>  Tue, 10 Aug 2010 14:55:22 +0200
@@ -1456,7 +1456,7 @@ univention-installer (6.0.39-1) unstable; urgency=low
 
   * redirect install-mbr output to /dev/null Bug #19122
   * install univention-kernel-image-VERSION-xen if
-    xen virtualization node is selected Bug #19045 
+    xen virtualization node is selected Bug #19045
 
  -- Felix Botner <botner@univention.de>  Thu, 29 Jul 2010 16:06:51 +0200
 
@@ -1488,7 +1488,7 @@ univention-installer (6.0.35-1) unstable; urgency=low
 
 univention-installer (6.0.34-4) unstable; urgency=low
 
-  * fixed S90virt startup script Bug #18958 
+  * fixed S90virt startup script Bug #18958
 
  -- Felix Botner <botner@univention.de>  Mon, 26 Jul 2010 13:35:40 +0200
 
@@ -1501,7 +1501,7 @@ univention-installer (6.0.34-3) unstable; urgency=low
 
 univention-installer (6.0.33-2) unstable; urgency=low
 
-  * fixed debian/rules Bug #18958 
+  * fixed debian/rules Bug #18958
 
  -- Felix Botner <botner@univention.de>  Thu, 22 Jul 2010 12:53:55 +0200
 
@@ -1525,7 +1525,7 @@ univention-installer (6.0.31-1) unstable; urgency=low
 
 univention-installer (6.0.30-1) unstable; urgency=low
 
-  * added uvmm to installer Bug #19045 
+  * added uvmm to installer Bug #19045
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Jul 2010 12:08:05 +0200
 
@@ -1543,7 +1543,7 @@ univention-installer (6.0.28-1) unstable; urgency=low
 
 univention-installer (6.0.27-1) unstable; urgency=low
 
-  * fixed translation (Bug #13552) 
+  * fixed translation (Bug #13552)
 
  -- Felix Botner <botner@univention.de>  Fri, 16 Jul 2010 14:01:13 +0200
 
@@ -1579,25 +1579,25 @@ univention-installer (6.0.22-1) unstable; urgency=low
 
 univention-installer (6.0.21-3) unstable; urgency=low
 
-  * in partition module wait for udev to create device files Bug #12524 
+  * in partition module wait for udev to create device files Bug #12524
 
  -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 09:57:13 +0200
 
 univention-installer (6.0.21-2) unstable; urgency=low
 
-  * firmware-all package is now firmware-linux Bug #18323 
+  * firmware-all package is now firmware-linux Bug #18323
 
  -- Felix Botner <botner@univention.de>  Mon, 07 Jun 2010 13:14:35 +0200
 
 univention-installer (6.0.21-1) unstable; urgency=low
 
-  * make udev default, disabled via noudev kernel parameter Bug #12524 
+  * make udev default, disabled via noudev kernel parameter Bug #12524
 
  -- Felix Botner <botner@univention.de>  Mon, 07 Jun 2010 12:32:07 +0200
 
 univention-installer (6.0.20-2) unstable; urgency=low
 
-  * udev test Bug #12524 
+  * udev test Bug #12524
 
  -- Felix Botner <botner@univention.de>  Wed, 02 Jun 2010 14:24:03 +0200
 
@@ -1651,7 +1651,7 @@ univention-installer (6.0.13-1) unstable; urgency=low
 
 univention-installer (6.0.12-1) unstable; urgency=low
 
-  * sort profile files/dirs case insensitiv in profile menu Bug #15605 
+  * sort profile files/dirs case insensitiv in profile menu Bug #15605
 
  -- Felix Botner <botner@univention.de>  Thu, 27 May 2010 13:22:09 +0200
 
@@ -1670,7 +1670,7 @@ univention-installer (6.0.10-1) unstable; urgency=low
 
 univention-installer (6.0.9-1) unstable; urgency=low
 
-  * allow leading digits in domain name Bug #15829 
+  * allow leading digits in domain name Bug #15829
 
  -- Felix Botner <botner@univention.de>  Wed, 26 May 2010 14:38:08 +0200
 
@@ -1746,13 +1746,13 @@ univention-installer (5.0.59-1) unstable; urgency=low
 
 univention-installer (5.0.58-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:37:39 +0100
 
 univention-installer (5.0.57-1) unstable; urgency=low
 
-  * fixed typo in packages list Bug #16611 
+  * fixed typo in packages list Bug #16611
 
  -- Felix Botner <botner@univention.de>  Wed, 30 Dec 2009 14:16:07 +0100
 
@@ -1954,7 +1954,7 @@ univention-installer (5.0.28-1) unstable; urgency=low
 
 univention-installer (5.0.27-2) unstable; urgency=low
 
-  * fixed packages_list (Bug: #14418)  
+  * fixed packages_list (Bug: #14418)
 
  -- Felix Botner <botner@univention.de>  Fri, 23 Oct 2009 14:40:42 +0200
 
@@ -1999,7 +1999,7 @@ univention-installer (5.0.24-10) unstable; urgency=low
 
   * Some join scripts touch(1) the .index.txt file prior
     to using accessing it. In that case the creation of
-    the symbolic link fails. To prevent that failure we 
+    the symbolic link fails. To prevent that failure we
     remove the .index.txt file during the join sequence
     on a DC Master. (Bug #14846)
 
@@ -2019,7 +2019,7 @@ univention-installer (5.0.24-8) unstable; urgency=low
 
 univention-installer (5.0.24-7) unstable; urgency=low
 
-  * do not mark ext4 as experimental fs (Bug: #14417) 
+  * do not mark ext4 as experimental fs (Bug: #14417)
 
  -- Felix Botner <botner@univention.de>  Fri, 16 Oct 2009 08:52:42 +0200
 
@@ -2046,7 +2046,7 @@ univention-installer (5.0.24-4) unstable; urgency=low
 
 univention-installer (5.0.24-3) unstable; urgency=low
 
-  * fixed translation (Bug: #13683) 
+  * fixed translation (Bug: #13683)
 
  -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2009 12:44:06 +0200
 
@@ -2082,7 +2082,7 @@ univention-installer (5.0.22-6) unstable; urgency=low
 
 univention-installer (5.0.22-5) unstable; urgency=low
 
-  * new usb-storage detection in kernel 2.6.30  (Bug: #15921) 
+  * new usb-storage detection in kernel 2.6.30  (Bug: #15921)
 
  -- Felix Botner <botner@univention.de>  Fri,  9 Oct 2009 16:28:52 +0200
 
@@ -2406,13 +2406,13 @@ univention-installer (5.0.2-8) unstable; urgency=low
 
 univention-installer (5.0.2-7) unstable; urgency=low
 
-  * more infos about locked-down setup in 50_security.py (Bug: #10103) 
+  * more infos about locked-down setup in 50_security.py (Bug: #10103)
 
  -- Felix Botner <botner@univention.de>  Thu, 18 Jun 2009 16:30:05 +0200
 
 univention-installer (5.0.2-6) unstable; urgency=low
 
-  * check more network devices in installer scripts (Bug: #9906) 
+  * check more network devices in installer scripts (Bug: #9906)
 
  -- Felix Botner <botner@univention.de>  Fri, 12 Jun 2009 10:31:25 +0200
 

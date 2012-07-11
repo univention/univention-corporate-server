@@ -41,6 +41,7 @@ from local import _
 import string
 import re
 
+
 class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
 		self.hostname_last_warning = ''
@@ -55,7 +56,6 @@ class object(content):
 		return ['hostname','domainname','ldap_base']
 
 	def profile_complete(self):
-
 		if self.interactive:
 			self.message=self.incomplete()
 			if self.message:
@@ -113,7 +113,7 @@ class object(content):
 			fqdn = '%s.%s' % (self.all_results['hostname'], self.all_results['domainname'])
 
 		# fqdn
-		self.add_elem('TXT_FQDN', 
+		self.add_elem('TXT_FQDN',
 			textline(_('Fully qualified domain name (e.g. host.example.com):'), self.minY+index, self.minX+5))#2
 		index += 1
 		self.add_elem('IN_FQDN', input(fqdn, self.minY+index, self.minX+5,30))#3
@@ -131,10 +131,10 @@ class object(content):
 		# ucs ldap base
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] == 'domaincontroller_master':
 			if not self.oxae:
-				self.add_elem('TXT_LDAPBASE', 
+				self.add_elem('TXT_LDAPBASE',
 					textline(_('LDAP base:'), self.minY+index, self.minX+5))#6
 				index += 1
-				self.add_elem('IN_LDAPBASE', 
+				self.add_elem('IN_LDAPBASE',
 					input(self.all_results['ldap_base'], self.minY+index, self.minX+5,30))#7
 				index += 2
 				if self.all_results.has_key('ldap_base') and self.all_results['ldap_base']:
@@ -160,7 +160,6 @@ class object(content):
 		index += 1
 
 	def tab(self):
-
 		# fqdn
 		if self.current == self.get_elem_id('IN_FQDN'):
 			elem_fqdn = self.get_elem('IN_FQDN')
@@ -174,7 +173,7 @@ class object(content):
 				self.draw()
 			if elem_fqdn.text:
 
-				# IF oxmaildomain is not set OR oxmaildomain has not been guessed yet 
+				# IF oxmaildomain is not set OR oxmaildomain has not been guessed yet
 				# OR oxmaildomain is currently equal to guessed oxmaildomain THEN
 				if self.oxae:
 					fqdn = elem_fqdn.text
@@ -202,7 +201,7 @@ class object(content):
 						or self.guessed['ldap_base'] == element.text:
 							if '.' in fqdn:
 								dom = fqdn[fqdn.find('.')+1:]
-								if dom:	
+								if dom:
 									base = "dc=" + string.join(dom.split( '.' ), ',dc=').lower()
 									self.guessed['ldap_base'] = base
 									element.text = base
@@ -226,7 +225,7 @@ class object(content):
 									element.set_off()
 									element.draw()
 									self.draw()
-				
+
 		# win dom for ucs master and oxae
 		elem_id = "IN_LDAPBASE"
 		if self.oxae:
@@ -250,7 +249,7 @@ class object(content):
 							element.set_off()
 							element.draw()
 							self.draw()
-					
+
 		# upper case win dom
 		if self.current == self.get_elem_id('IN_WINDOMAIN'):
 			elem = self.get_elem('IN_WINDOMAIN')
@@ -273,7 +272,6 @@ class object(content):
 			return self.get_elem_by_id(self.current).key_event(key)
 
 	def check_values (self, hostname, domainname, oxmaildomain, windows_domain, ldap_base, root_password1, root_password2, focus=True):
-
 		if not windows_domain.strip() == '':
 			if not self.syntax_is_windowsdomainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
 				if not self.ignore('windows_domain'):
@@ -424,7 +422,6 @@ class object(content):
 					return _("Illegal password: A password may not contain quotation marks.")
 		return 0
 
-
 	def incomplete(self):
 		ldap_base=''
 
@@ -433,7 +430,6 @@ class object(content):
 		else:
 			hostname = self.get_elem('IN_FQDN').result().strip().lower()
 			domainname = ''
-
 
 		if self.oxae:
 			oxmaildomain = self.get_elem('IN_MAILDOMAIN').result()

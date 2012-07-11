@@ -1,5 +1,5 @@
    * all-kmaps - Alle Layouts
-   * default-kmaps - StandardLayouts für eine Sprache 
+   * default-kmaps - StandardLayouts für eine Sprache
    -> diese Dateien werden über getkeymaps.pl auf einem 3.0 System erzeugt
 
    * languagelist - Liste der unterstützen Sprachen (aus dem Debian Installer
@@ -13,7 +13,7 @@
    * short-list/*.short - enthält für jede Sprache, die in mehrere Ländern
      gesprochen wird eine Liste der Länder (short-list/de.short -> Belgium,
      Germany, Liechtenstein, Luxembourg, Austria, Switzerland)
-     Aus dem Debian Installer 
+     Aus dem Debian Installer
 
    * locale2xkblayout.sh - mapping von locale zu xkblayout und variante
      sh locale2xkblayout.sh --layout fr_CH -> ch
@@ -22,4 +22,3 @@
 
    * country_codes - Mapping von Country zu Country-Code
      (http://en.wikipedia.org/wiki/ISO_3166-1)
-

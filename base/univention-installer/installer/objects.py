@@ -1567,9 +1567,9 @@ class content:
 		# is always an input element, which isn't true for several modules
 		# Fixing this at a lower level would require quite some restructuring,
 		# so catch the exception for now
-		
+
 		self.current=0
-		
+
 		try:
 			self.elements[self.current].set_on()
 		except:

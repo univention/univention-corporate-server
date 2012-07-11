@@ -37,7 +37,6 @@
 export server_role="$system_role"
 
 if [ "$update_system_after_installation" = "true" ] || [ "$update_system_after_installation" = "yes" ]; then
-
 	. /tmp/progress.lib
 	echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Updating system")" >&9
 	echo "__SUBMSG__:$(LC_ALL=$INSTALLERLOCALE gettext "This might take a while depending on the number of pending updates.")" >&9
@@ -65,8 +64,6 @@ else
 fi
 __EOT__
 	fi
-
 	chmod +x /instmnt/upgrade.sh
 	chroot /instmnt ./upgrade.sh </dev/tty1
 fi
-

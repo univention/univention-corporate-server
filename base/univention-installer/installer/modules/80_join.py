@@ -67,7 +67,6 @@ class object(content):
 
 		return True
 
-
 	def mod_depends(self):
 		return {'system_role': ['domaincontroller_backup','domaincontroller_slave','memberserver','managed_client','mobile_client'] }
 
@@ -131,7 +130,6 @@ class object(content):
 			return self.elements[self.current].key_event(key)
 
 	def incomplete(self):
-
 		if self.elements[7].disabled and self.elements[9].disabled and self.elements[11].disabled and self.elements[13].disabled:
 			return 0
 

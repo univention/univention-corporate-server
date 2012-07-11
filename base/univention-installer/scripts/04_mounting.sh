@@ -44,17 +44,15 @@ tmp="/tmp/installer.partitions.tmp"
 
 $ucr search --brief installer > $tmp
 
-while read line; do
-
+while read line
+do
 	device=$(echo $line | awk -F / {'print $2'})
 
 	if [ "device" = "$device" ]; then
-
 		value=$(echo $line | awk -F : {'print $2'})
 		key=$(echo $line | awk -F : {'print $1'})
 		count=$(echo $key | awk -F / {'print $3'})
 		typ=$(echo $key | awk -F / {'print $4'})
-
 
 		value=$(echo $value | sed 's/\s//g')
 		if [ -z "$value" ]; then
@@ -72,7 +70,6 @@ while read line; do
 		fi
 
 		if [ -n "$name" ] && [ -n "$fs" ] && [ -n "$mp" ]; then
-
 			if [ "$fs" = "linux-swap" ]; then
 				swapon $name
 			elif [ "$fs" = 'None' -o "$fs" = "none" -o "$fs" = 'unknown' ]; then
@@ -95,8 +92,6 @@ while read line; do
 			unset mp
 		fi
 	fi
-
-
 done < $tmp
 
 rm -f $tmp

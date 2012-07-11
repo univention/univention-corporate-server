@@ -81,7 +81,7 @@ foreach my $family (keys %{$keymaps->{"pc"}}) {
 				my $key = $layoutmaps->{"default"};
 				if (exists $layoutmaps->{$key}) {
 					if (exists $layoutmaps->{$key}->{"Standard"}) {
-						$mapFile = isMapFile($layoutmaps->{$key}->{"Standard"}, $family);	
+						$mapFile = isMapFile($layoutmaps->{$key}->{"Standard"}, $family);
 					}
 				}
 			}

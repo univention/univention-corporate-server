@@ -57,6 +57,7 @@ class object(content):
 			self.elements.append(button(_('Cancel'),self.pos_y+5,self.pos_x+(self.width)-8,align="right")) #3
 			self.elements[1].set_on()
 			self.current=1
+
 		def input(self,key):
 			if key in [ 10, 32 ] and self.elements[2].usable() and self.elements[2].get_status(): # Ok
 				return 0
@@ -79,7 +80,6 @@ class object(content):
 			elif self.elements[self.current].usable():
 				self.elements[self.current].key_event(key)
 			return 1
-
 
 	def profile_complete(self):
 		self.debug('check profile 04_profile')
@@ -207,6 +207,7 @@ class object(content):
 
 	def checkname(self):
 		return ['profile']
+
 	def start(self):
 		self.profile={} #Cache the whole profile
 		# Browser
@@ -236,7 +237,6 @@ class object(content):
 				self.path='/profmnt/profiles'
 				self.sub=self.active(self,'Mounting CD-Rom','','mount',cddev)
 				self.sub.draw()
-
 
 			self.currentpath=self.path
 
@@ -324,6 +324,7 @@ class object(content):
 			if val[2] == line:
 				return val
 		return 0
+
 	def incomplete(self, what=''):
 		if not what:
 			if self.elements[3].usable() and self.getfile(self.elements[3].result()[0])[1] == 'FILE':
@@ -333,6 +334,7 @@ class object(content):
 				return _('You have to select a Profile.')
 		else:
 			return what
+
 	def helptext(self): # All about this Modul - '###' creates a newline
 		return _('Profile \n \n Select a predefined installation profile or enter the position of your own profile. \n \n Please mark the device with the preconfigured profile. \n  \n Press F2 to add a missing device or F3 to browse for the correct path.')
 
@@ -352,6 +354,7 @@ class object(content):
 		else:
 			self.incomplete()
 		return result
+
 	def readprofile(self, profile):
 		self.debug('profile read')
 		file=open(profile,'r')
@@ -419,6 +422,7 @@ class object(content):
 			return tmplist
 		else:
 			return 0
+
 	def listdir(self, path):
 		'''
 		Collects file sizes and marks dirs as DIR - files as FILE
@@ -449,6 +453,7 @@ class object(content):
 			return tmp
 		else:
 			return 0
+
 	def scandir(self, path):
 		'''
 		Scans a whole directory tree.
@@ -466,6 +471,7 @@ class object(content):
 			self.action=action
 			self.data=data
 			act_win.__init__(self,parent,header,text)
+
 		def function(self):
 			if self.action == 'loadmodule':
 				for module in self.data:

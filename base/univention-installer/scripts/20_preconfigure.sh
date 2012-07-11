@@ -84,10 +84,8 @@ for d in hvc[0-9] ; do
         fi
 done
 
-
 echo "Setting up devices, this may take a while."
 mount devtmpfs -t devtmpfs /dev -o size=10M
-
 
 mount -a
 #mount /mnt/installation
@@ -129,9 +127,6 @@ else
 fi
 apt-get clean
 apt-get update
-
 __EOT__
-
 chmod +x /instmnt/preconfigure.sh
 chroot /instmnt ./preconfigure.sh
-

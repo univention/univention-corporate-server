@@ -13,4 +13,3 @@ tty4::respawn:/bin/tail -f /var/log/syslogd
 
 
 ::ctrlaltdel:/bin/reboot
-

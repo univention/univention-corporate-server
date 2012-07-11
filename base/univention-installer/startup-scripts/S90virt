@@ -34,7 +34,7 @@ if [ ! -e /sys/devices ]; then
 	if [ ! -d /sys ]; then
 		mkdir /sys
 	fi
-        mount -t sysfs none /sys
+	mount -t sysfs none /sys
 fi
 
 # create xen specific devices
@@ -42,35 +42,34 @@ if test -d /proc/xen
 then
 	for i in blktap netloop xenscsi xenfs xen-netfront xen-blkfront xenblktap; do
 		modinfo $i 1>/dev/null 2>/dev/null
-	        if [ $? -eq 0 ]; then
-	        	modprobe $i 1>/dev/null 2>/dev/null
+		if [ $? -eq 0 ]; then
+			modprobe $i 1>/dev/null 2>/dev/null
 		fi
 	done
 
-        sleep 1
+	sleep 1
 
 	if [ ! -e /proc/xen/capabilities ] && grep -q xenfs /proc/filesystems
 	then
 	    mount -t xenfs xenfs /proc/xen || true
 	fi
 
-        cd /sys/devices/virtual/tty
-        for d in hvc[0-9]; do
+	cd /sys/devices/virtual/tty
+	for d in hvc[0-9]; do
 		[ -d "/sys/devices/virtual/tty/$d" ] || continue
-                cd "/sys/devices/virtual/tty/$d"
-                . ./uevent
+		cd "/sys/devices/virtual/tty/$d"
+		. ./uevent
 		if [ ! -e "/dev/$d" ]; then
-	                mknod "/dev/$d" c "$MAJOR" "$MINOR"
+			mknod "/dev/$d" c "$MAJOR" "$MINOR"
 		fi
 	done
 
 	# console: maybe there is a better solution (changing
         # inittab) but at this point we can not reload inittab
-	if [ ! -d /sys/devices/virtual/graphics/fb0 -a -e /dev/hvc0 ]; then	
-	        rm /dev/tty1
-        	ln -s /dev/hvc0 /dev/tty1
+	if [ ! -d /sys/devices/virtual/graphics/fb0 -a -e /dev/hvc0 ]; then
+		rm /dev/tty1
+		ln -s /dev/hvc0 /dev/tty1
 	fi
-
 fi
 
 # create xen/kvm block device files
@@ -82,9 +81,9 @@ for d in vd[a-z] xvd[a-z]; do
 	if [ ! -e "/dev/$d" ]; then
 		mknod "/dev/$d" b "$MAJOR" "$MINOR"
 	fi
-        for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
-                if [ ! -e "/dev/$d$i" ]; then
-                        mknod "/dev/$d$i" b "$MAJOR" "$(($MINOR + $i))"
-                fi
-        done
+	for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+		if [ ! -e "/dev/$d$i" ]; then
+			mknod "/dev/$d$i" b "$MAJOR" "$(($MINOR + $i))"
+		fi
+	done
 done

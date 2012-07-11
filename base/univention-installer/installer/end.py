@@ -48,6 +48,7 @@ fn_error_msg = "/tmp/installation_error.log"
 fn_success_msg = "/tmp/installation_success.log"
 language_file = "/tmp/language"
 
+
 class MsgWindow(object):
 	def __init__(self, msg = [], x = -1, y = -1, border = 2, title = '[ Univention Corporate Server ]'):
 		global MAX_HEIGHT, MAX_WIDTH
@@ -99,7 +100,7 @@ class MsgWindow(object):
 		curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 		curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_RED)
 
-		# main windows 
+		# main windows
 		self.win = curses.newwin(y, x, int((MAX_HEIGHT-y)/2), int((MAX_WIDTH-x)/2))
 		self.win.bkgd(curses.color_pair(1))
 		self.win.box()

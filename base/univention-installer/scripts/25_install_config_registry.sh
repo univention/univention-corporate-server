@@ -38,7 +38,6 @@ cp /etc/univention/base.conf /instmnt/etc/univention/base.conf
 
 PIPE="yes yes '' |"
 cat >>/instmnt/install_config_registry.sh <<__EOT__
-
 echo "PROGRESS: $0: Calculating number of packages"
 PKGCNT="\$(apt-get -y -o APT::Get::AllowUnauthenticated=1 install -s -y --ignore-missing univention-config-registry bind9-host | grep "^Inst " | wc -l)"
 echo "__STEPS__:\$((\$PKGCNT * 3))" >&9
@@ -48,8 +47,6 @@ apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install unive
 $PIPE dpkg --configure -a
 apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install bind9-host
 $PIPE dpkg --configure -a
-
 __EOT__
-
 chmod +x /instmnt/install_config_registry.sh
 chroot /instmnt ./install_config_registry.sh

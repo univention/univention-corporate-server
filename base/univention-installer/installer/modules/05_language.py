@@ -43,18 +43,16 @@ import linecache
 HEIGHT = 26
 WIDTH = 40
 
+
 class object(content):
 
 	def checkname(self):
 		return ['language']
 
-
 	def profile_complete(self):
-
 		return True
 
 	def run_profiled(self):
-
 		# set default (may be overridden by self.set_language()
 		self.write_language_files("en_US.UTF-8", "en")
 
@@ -67,10 +65,9 @@ class object(content):
 				self.set_language(language)
 
 	def get_language_settings(self):
-
 		dict = {}
 		langConfig = {}
-		
+
 		# this file comes from debian localechooser
 		# langcode;language (en);language (orig);supported_environments;countrycode;fallbacklocale;langlist;console-data
 		try:
@@ -78,10 +75,10 @@ class object(content):
 		except:
 			file = open('/lib/univention-installer/locale/languagelist')
 		languages = file.readlines()
-		
+
 		# preselected language (kernel option lang)
 		presLanguage = self.cmdline.get("lang", "en")
-		
+
 		counter = 0
 		for line in languages:
 			line = line.strip("\n")
@@ -95,12 +92,12 @@ class object(content):
 			fallbacklocale = entries[5]
 			langlist = entries[6]
 			console_data = entries[7]
-			
+
 			# support only languages which are supported in debian text mode
 			# installation
 			if int(supported_environments) >= 4:
 				continue
-			
+
 			counter = counter + 1
 			#dict[language_en + " (" + language_orig + ")"] = [langcode, counter]
 			dict[language_en] = [langcode, counter]
@@ -108,14 +105,13 @@ class object(content):
 			langConfig[langcode]["fallbacklocale"] = fallbacklocale
 			langConfig[langcode]["countrycode"] = countrycode
 			langConfig[langcode]["language_en"] = language_en
-			
+
 			if langcode == presLanguage:
 				selectedLangLine = counter
-		
+
 		return dict, langConfig, selectedLangLine, presLanguage
 
 	def layout(self):
-
 		dict, langConfig, selectedLine, defaultLanguage = self.get_language_settings()
 
 		if self.all_results.has_key('language'):
@@ -130,7 +126,6 @@ class object(content):
 		self.move_focus(self.get_elem_id('LANGUAGE'))
 
 	def input(self,key):
-
 		if key in [ 10, 32 ] and self.btn_next():
 			return 'next'
 		elif key in [ 10, 32 ] and self.btn_back():
@@ -151,7 +146,6 @@ class object(content):
 		return 'Language'
 
 	def get_default_kmap(self, language):
-
 		try:
 			file = open('locale/default-kmaps')
 		except:
@@ -167,7 +161,6 @@ class object(content):
 		return "us"
 
 	def set_language(self, language):
-
 		dict, langConfig, selectedLine, defaultLanguage = self.get_language_settings()
 
 		if not langConfig.get(language, ""):
@@ -196,7 +189,6 @@ class object(content):
 		if os.path.exists(kmapFile):
 			os.system('/bin/loadkeys < %s 2>&1 > /dev/null' % kmapFile)
 
-
 	def write_language_files(self, defaultLocale, language):
 		# write default_locale to /etc/locale.gen in installer ramdisk
 		# ==> required for translated installation progress dialog
@@ -209,9 +201,7 @@ class object(content):
 		fp.write("%s" % language)
 		fp.close()
 
-
 	def result(self):
-
 		result = {}
 		language = self.get_elem('LANGUAGE').result()[0]
 		self.set_language(language)

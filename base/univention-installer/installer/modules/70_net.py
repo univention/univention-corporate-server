@@ -36,7 +36,6 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
-
 import re
 import curses
 import objects
@@ -51,6 +50,7 @@ import threading
 PATH_SYS_CLASS_NET = '/sys/class/net'
 LEN_IPv4_ADDR = 15
 LEN_IPv6_ADDR = 40
+
 
 class NetworkInterface(object):
 	def __init__(self, name):
@@ -96,11 +96,9 @@ class object(content):
 		# boolean: True, if edition "oxae" is specified
 		self.is_ox = 'oxae' in self.cmdline.get('edition',[])
 
-
 	def depends(self):
 		self.debug('depends()')
 		return {'system_role': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem', 'managed_client', 'mobile_client'] }
-
 
 	def debug(self, txt):
 		"""
@@ -125,7 +123,6 @@ class object(content):
 			delattr(self,'sub')
 			self.draw()
 		self.draw()
-
 
 	def dhclient(self, interface, timeout=None):
 		"""
@@ -177,7 +174,6 @@ class object(content):
 		os.unlink(tempfilename)
 		return dhcp_dict
 
-
 	def detect_interfaces(self):
 		"""
 		Function to detect network interfaces in local sysfs.
@@ -222,7 +218,6 @@ class object(content):
 				return False
 		return True
 
-
 	def is_ipaddr(self, addr):
 		try:
 			x = ipaddr.IPAddress(addr)
@@ -258,7 +253,6 @@ class object(content):
 			return False
 		return True
 
-
 	def start(self):
 		self.debug('start()')
 		self.debug('all_results=%r' % self.all_results)
@@ -292,7 +286,6 @@ class object(content):
 			if IPv4_dhcp:
 				self.container['%s_type' % name] = 'dynamic'
 
-
 			# set RA flag
 			IPv6_ra = ( self.all_results.get('%s_acceptra' % name,'').lower().strip() in [ '1', 'yes', 'true' ] )
 			self.container['%s_acceptra' % name] = str(IPv6_ra).lower()
@@ -316,9 +309,7 @@ class object(content):
 
 	def profile_prerun(self):
 		self.debug('profile_prerun()')
-
 		self.start()
-
 
 	def profile_complete(self):
 		self.debug('profile_complete()')
@@ -375,7 +366,6 @@ class object(content):
 					self.message=invalid+_('Proxy, example http://10.201.1.1:8080')
 					return False
 
-
 		complete_cnt = 0
 		REinterfaces = re.compile('^eth(\d+)_')
 		iface_list= set([ 'eth%s' % REinterfaces.search(i).group(1) for i in self.all_results.keys() if REinterfaces.search(i) ])
@@ -401,7 +391,6 @@ class object(content):
 				return False
 
 		return True
-
 
 	#def std_button():
 	#def draw():
@@ -441,7 +430,6 @@ class object(content):
 			if self.container.get('%s_ip' % iface.name) or self.container.get('%s_type' % iface.name) in ['dynamic', 'dhcp']:
 				val_ipv4_cb = [0]
 			card.add_elem('CB_IPv4', checkbox(val_ipv4, 2, 1, 30, 2, val_ipv4_cb, position_parent=card))
-
 
 			# IPv4 DHCP
 			cb_ipv4dhcp = []
@@ -549,12 +537,10 @@ class object(content):
 
 		self.update_widget_states()
 
-
 	def update_widget_states(self):
 		"""
 		Update disabled/enabled status of elements depending on other elements
 		"""
-
 		# check if any interface has IPv4 enabled
 		self.ipv4_found = False
 		for card in self.cards.values():
@@ -639,7 +625,6 @@ class object(content):
 		for name in [ 'INP_GATEWAY4', 'INP_GATEWAY6' ]:
 			self.get_elem(name).draw()
 
-
 	def copy_elem_to_container(self):
 		"""
 		Copy values of current elements to self.container.
@@ -693,7 +678,6 @@ class object(content):
 				self.container[key] = self.get_elem(elem).result().strip()
 			else:
 				self.container[key] = ''
-
 
 	def tab(self):
 		"""
@@ -763,8 +747,6 @@ class object(content):
 			self.update_widget_states()
 			return val
 
-
-
 	def incomplete(self):
 		self.debug('incomplete()')
 
@@ -775,7 +757,7 @@ class object(content):
 		if not self.ipv4_found and not self.ipv6_found:
 			return _('At least one interface must be configured.')
 
-		# count static ipv6 addresses 
+		# count static ipv6 addresses
 		cnt_static_ipv6_addresses = 0
 
 		# check every interface if config is complete
@@ -853,7 +835,6 @@ class object(content):
 
 		return 0
 
-
 	def addr_netmask2result(self, name, addr, netmask, copyOnError=False):
 		"""
 		Converts given ipv4 address and netmask to dict with result variables.
@@ -884,7 +865,6 @@ class object(content):
 			result['%s_network' % name] = str(IPv4_addr.network)
 
 		return result
-
 
 	def result(self):
 		"""
@@ -922,20 +902,16 @@ class object(content):
 
 		return result
 
-
 	def helptext(self):
 		self.debug('helptext()')
 
 		return _('Network \n \n In this module the network configuration is done. \n \n In the upper part, all detected interfaces are show. By pressing F2 or F3 the next/previous interface can be selected. \n \n For each interface an IPv4 address with netmask and/or IPv6 address with prefix can be entered. \n The configuration of interfaces can also be done automatically: \n \n Dynamic (DHCP): \n   Mark this field if you want this interface to retrieve its IPv4 configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Dynamic (Stateless address autoconfiguration (SLAAC)): \n   Mark this field if you want this interface to retrieve its IPv6 configuration via ND (IPv6 neighbour discovery) \n\n IPv4 Gateway: \n Default gateway to be used for IPv4 traffic. \n IPv6 Gateway: \n Default gateway to be used for IPv6 traffic. \n \n Domain DNS server: \n Enter the IP address of the primary name server, if you are adding a system to an existing UCS domain. \n More: \n Enter additional name servers \n \n External DNS server: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter additional DNS forwarders \n \n HTTP-Proxy: \n Enter IP address and port number of HTTP-Proxy to be used (example: http://192.168.1.123:5858)')
 
-
 	def modheader(self):
 		return _('Network')
 
-
 	def profileheader(self):
 		return 'Network'
-
 
 
 class dhclient_active(act_win):

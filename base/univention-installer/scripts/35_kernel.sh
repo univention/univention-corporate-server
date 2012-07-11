@@ -57,7 +57,6 @@ else
 	if [ -n "$boot_version" ]; then
 		kernel_package="univention-kernel-image"
 	else
-
 		if [ "$system_role" = "managed_client" ]; then
 			kernel_extension="-managedclient"
 		elif [ "$system_role" = "mobile_client" ]; then
@@ -65,7 +64,7 @@ else
 		fi
 
 		boot_version=`uname -r | awk -F"-" '{print $1}'`
-		if uname -r | grep -iq bigmem; then 
+		if uname -r | grep -iq bigmem; then
 			boot_version="$boot_version-64gb"
 		fi
 
@@ -77,7 +76,6 @@ else
 			kernel_package="univention-kernel-image${kernel_extension}-${boot_version}"
 			fallback_kernel_package="univention-kernel-image-2.6.18"
 		fi
-
 	fi
 fi
 
@@ -89,7 +87,6 @@ if [ 0 -eq $? ]; then
 fi
 
 cat >>/instmnt/install_kernel.sh <<__EOT__
-
 export DEBIAN_FRONTEND=noninteractive
 
 echo "PROGRESS: $0: Calculating number of packages"
@@ -114,9 +111,7 @@ if [ -n "$xen_kernel" ]; then
 fi
 
 univention-config-registry commit
-
 __EOT__
-
 chmod +x /instmnt/install_kernel.sh
 chroot /instmnt ./install_kernel.sh
 
@@ -130,9 +125,6 @@ if [ 0 -eq \$? ]; then
 fi
 
 apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install univention-grub
-
 __EOT__
-
 chmod +x /instmnt/install_mdadm.sh
 chroot /instmnt ./install_mdadm.sh
-

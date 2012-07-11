@@ -52,4 +52,3 @@ if [ -e /instmnt/dev/.udev.disabled ]; then
 	# enable udev, also see 10_debootstrap.sh
 	mv /instmnt/dev/.udev.disabled /instmnt/dev/.udev
 fi
-

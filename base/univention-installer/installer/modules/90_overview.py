@@ -158,7 +158,6 @@ class object(content):
 		cb_selection = [0]
 		self.add_elem('CB_UPDATE', checkbox(cb_val, linecnt, self.minX+5, 55, 2, cb_selection))
 
-
 	def draw(self):
 		self.layout()
 		content.draw(self)

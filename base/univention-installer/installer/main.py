@@ -220,11 +220,13 @@ for file in files:
 			modules.append(temp[0])
 modules.sort()
 
+
 def exit_curses():
 	stdscr.keypad(0)
 	curses.nocbreak()
 	curses.echo()
 	curses.endwin()
+
 
 def abort(max_x,max_y):
 	text=_('Press Ctrl+c to exit or any key to continue. After exiting the installer please reboot the system or press Ctrl+Alt+F2 to get an shell prompt.')
@@ -233,11 +235,13 @@ def abort(max_x,max_y):
 	c = stdscr.getch()
 	return 0
 
+
 def debug(text):
 	file='/tmp/installer.log'
 	f=open(file, 'a+')
 	f.write("(main) %s\n" % text)
 	f.close()
+
 
 class error_message(subwin):
 	def __init__(self,parent,pos_y,pos_x,width,height, message):
@@ -293,6 +297,7 @@ class error_message(subwin):
 		else:
 			return self.elements[self.current].key_event(key)
 
+
 class mods:
 	def __init__(self,modules,max_x,max_y,initialized=1, cmdline={}):
 		self.max_x=max_x
@@ -334,7 +339,6 @@ class mods:
 			self.obj[0].initialized=1
 		self.left_menu()
 
-
 	def mainwin(self):
 		window = curses.newpad(37,100)
 		window.bkgd(" ",curses.color_pair(4))
@@ -374,7 +378,6 @@ class mods:
 
 		return objects.footline(text,max_y/2+18,max_x/2-(len(text)/2))
 
-
 	def draw(self):
 		for i in range(len(self.modview)):
 			if self.obj[self.current].modheader() == self.modview[i][0].text:
@@ -386,8 +389,8 @@ class mods:
 		# refresh header, footer and buttons (language update)
 		self.footline1=self.footer((0,0))
 		self.footline2=self.footer((0,1))
-		self.footline3=self.footer((1,0)) 
-		self.footline4=self.footer((1,1)) 
+		self.footline3=self.footer((1,0))
+		self.footline4=self.footer((1,1))
 		self.obj[self.current].std_button()
 		self.obj[self.current].refresh_modheader()
 
@@ -587,7 +590,6 @@ if max_y == 24:
 stdscr.refresh()
 
 def next_screen_profile(view_warning):
-
 	installer.obj[installer.current].put_result(installer.result)
 	installer.obj[installer.current].profile_prerun()
 
@@ -633,6 +635,7 @@ def next_screen_profile(view_warning):
 		installer.draw_all()
 		return 1
 
+
 def next_screen():
 	if hasattr(installer.obj[installer.current], 'postrun'):
 		installer.obj[installer.current].postrun()
@@ -655,6 +658,7 @@ def next_screen():
 			return 1
 		return 0
 
+
 def prev_screen():
 	i=1
 
@@ -667,8 +671,8 @@ def prev_screen():
 		return 1
 	return 0
 
-try:
 
+try:
 	debug('Commandline: %s' % cmdline)
 
 	# init main window
@@ -764,8 +768,6 @@ try:
 					break
 				else:
 					installer.draw_all()
-
-
 except KeyboardInterrupt:
 	#info = sys.exc_info()
 	exit_curses()

@@ -39,9 +39,7 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Performing system test")" >&9
 instmnt="/instmnt"
 log="/tmp/installation_error.log"
 
-
 test_retval () {
-
 	retval=$1
 	level=$2
 	msg=$3
@@ -87,7 +85,6 @@ should_be_joined="$(echo "$call_master_joinscripts" | tr '[:upper:]' '[:lower:]'
 
 #only check on a DC Master
 if [ "$server_role" = "domaincontroller_master" -a ! "$should_be_joined" = "false" -a ! "$should_be_joined" = "no" ]; then
-
 	# Administrator
 	chroot $instmnt << __EOF__
 id Administrator 1>/tmp/installer.log || exit 1
@@ -99,7 +96,6 @@ __EOF__
 getent group | grep "Domain Admins" | grep Administrator >/tmp/installer.log || exit 1
 __EOF__
 	test_retval $? "error" "User Administrator is not member of \"Domain Admins\" group."
-
 fi
 
 # test join status

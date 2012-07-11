@@ -37,7 +37,7 @@ if [ -n "$cciss" ]; then
 	rm -f /dev/sdc*
 	rm -f /dev/sdd*
 	rm -f /dev/cciss/c0d*
-	mknod /dev/cciss/c0d0 b 8 0 
+	mknod /dev/cciss/c0d0 b 8 0
 	mknod /dev/cciss/c0d1 b 8 16
 	mknod /dev/cciss/c0d2 b 8 32
 	mknod /dev/cciss/c0d3 b 8 48
@@ -59,6 +59,4 @@ if [ -n "$cciss" ]; then
 	sleep 3
 
 	cat /proc/partitions | sed -e 's|sda$|cciss/c0d0|;s|sdb$|cciss/c0d1|;s|sdc$|cciss/c0d2|;s|sdd$|cciss/c0d3|;s|sda|cciss/c0d0p|;s|sdb|cciss/c0d1p|;s|sdc|cciss/c0d2p|;s|sdd|cciss/c0d3p|' > /lib/univention-installer/partitions
-
 fi
-

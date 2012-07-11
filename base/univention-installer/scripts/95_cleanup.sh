@@ -75,6 +75,5 @@ echo "done."
 umount -a >/dev/null 2>&1
 rm -Rf /sourcedevice >/dev/null 2>&1
 __EOT__
-
 chmod +x /instmnt/tmp/cleanup.sh
 chroot /instmnt ./tmp/cleanup.sh

@@ -50,7 +50,6 @@ if [ "$1" = "2.4" ]; then
 		Dev=`echo $dev_scsi |sed -e 's|_.*||'`
 		scsi=`echo $dev_scsi | sed -e 's|.*_||'`
 
-
 		#Kernel 2.4
 		file=`grep -l $scsi /proc/scsi/usb-storage-*/*`
 		if [ -z "$file" ]; then
@@ -59,9 +58,7 @@ if [ "$1" = "2.4" ]; then
 		a=`grep Attached $file | awk -F ':' '{print $2}'`
 		attached=`echo $a | sed -e 's| ||g'`
 
-
 		if [ "$attached" = "Yes" ] ; then
-
 			vendor=`grep Vendor  $file | awk -F: '{print $2}' | sed -e 's| |_|g'`
 			echo "$i $vendor $scsi $Dev"
 

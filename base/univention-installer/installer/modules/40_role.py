@@ -76,7 +76,6 @@ class object(content):
 		elif value in ['basesystem','Base']:
 			return 'basesystem'
 
-
 	def layout(self):
 		oxae = False
 		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
@@ -146,9 +145,7 @@ class object(content):
 		idx = self.get_elem_id('TEXTAREA')
 		self.elements[idx] = textarea( descriptions.get(selected_role,'UNKNOWN'), self.minY-1, self.minX+6, 15, MAXLENGTH)
 
-
 	def input(self,key):
-
 		self.debug('key_event=%d' % key)
 		if key in [10, 32] and self.btn_next():
 			return 'next'

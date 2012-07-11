@@ -1,4 +1,4 @@
-# generate with find 
+# generate with find
 # -> /usr/share/zoneinfo/posix -type f \
 #    | sed 's/\/usr\/share\/zoneinfo\/posix//' \
 #    | sed 's/^\///' | sort

@@ -171,9 +171,8 @@ fi
 # set IPv6 gateway
 if [ -n "$gateway6" ]; then
 	python2.6 /sbin/univention-config-registry set "ipv6/gateway=$gateway6"
-	ip -6 route add ::/0 via "$gateway6" 
+	ip -6 route add ::/0 via "$gateway6"
 fi
-
 
 if [ -n "$nameserver_1" ]; then
 	echo "nameserver $nameserver_1" >>/etc/resolv.conf

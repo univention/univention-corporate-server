@@ -43,7 +43,6 @@ if [ -d /mnt/packages ]; then
 #UCS Installation
 
 deb file:/sourcedevice/packages ./
-
 __EOT__
 else
     version=`cat /mnt/.univention_install | grep VERSION | sed -e 's|VERSION=||'`

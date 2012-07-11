@@ -80,6 +80,7 @@ ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
 DISKLABEL_GPT = 'GPT'
 DISKLABEL_UNKNOWN = 'UNKNOWN'
 
+
 class object(content):
 	def __init__(self,max_y,max_x,last=(1,1), file='/tmp/installer.log', cmdline={}):
 		self.written=0
@@ -241,7 +242,6 @@ class object(content):
 					disklist_usbstorage.append( '/dev/%s' % items[-1] )
 		self.debug('found usb storage devices = %s' % disklist_usbstorage)
 		return disklist_usbstorage
-
 
 	def check_space_for_autopart(self):
 		self.debug('checking free space for autopart...')
@@ -696,7 +696,6 @@ class object(content):
 #dev_4="PHY /dev/sdb1 0 0 linux-swap 0.01M 500.01M None None"
 #dev_5="LVM /dev/vg_ucs/homefs LVMLV 0 ext3 0M 2000M /home None"
 
-
 	def read_profile(self):
 		self.debug('read_profile')
 		self.container['result']={}
@@ -1000,7 +999,6 @@ class object(content):
 				return items
 		return []
 
-
 	def parse_syntax(self,entry): # need to test different types of profile
 		num=0
 		if len(entry.split('/')) > 2 and entry.split('/')[1] == 'dev' and len(entry.split('-')) > 1 and entry.split('-')[1].isdigit(): # got something like /dev/sda-2
@@ -1098,7 +1096,6 @@ class object(content):
 			if debug:
 				self.parent.debug('\n=> %s' % output.replace('\n','\n=> '))
 			return output
-
 
 		def function(self):
 			if self.action == 'prof_read_lvm':
@@ -1247,7 +1244,6 @@ class object(content):
 
 			self.stop()
 
-
 	def read_lvm_pv(self):
 #		p = os.popen('pvscan 2> /dev/null')
 #		p.close()
@@ -1267,7 +1263,6 @@ class object(content):
 													   'freePE': int( item[9] ),
 													   'allocPE': int( item[10] ),
 													   }
-
 
 	def read_lvm_vg(self):
 #		p = os.popen('vgscan 2> /dev/null')
@@ -1354,7 +1349,6 @@ class object(content):
 		output = p.read()
 		p.close()
 		self.debug('\n=> %s' % output.replace('\n','\n=> '))
-
 
 	def read_lvm(self):
 		# read initial LVM status
@@ -1618,7 +1612,7 @@ class object(content):
 				# start is used as identifier but extended and logical partition can have same start point
 				while start in partList.keys():
 					start += 0.00000001
-				# EVIL EVIL EVIL END 
+				# EVIL EVIL EVIL END
 
 				size=end-start
 				type=cols[4]
@@ -1680,7 +1674,7 @@ class object(content):
 					last_end=start
 				else:
 					last_end=end
-			# 
+			#
 			if ( mb_size - last_end) > self.container['min_size']:
 				if last_end == 0:
 					free_start = self.getCHSandPosition( 0.5, geometry, PARTTYPE_FREESPACE_PRIMARY, correction = 'decrease', force = True )['position']
@@ -1711,7 +1705,6 @@ class object(content):
 		self.debug('diskProblemList=%s' % diskProblemList)
 		return diskList, diskProblemList
 
-
 	def scan_extended_size(self):
 		for disk in self.container['disk'].keys():
 			part_list = self.container['disk'][disk]['partitions'].keys()
@@ -1741,8 +1734,6 @@ class object(content):
 				elif extended_end > end+float(0.1):
 					self.container['temp'][disk]=[extended_start,start+float(0.01),end]
 
-
-
 	def generate_freespace(self,start,end):
 		return {'type':PARTTYPE_FREESPACE_PRIMARY,
 			'touched':0,
@@ -1754,8 +1745,6 @@ class object(content):
 			'flag':[],
 			'format':0
 			}
-
-
 
 	def use_mpoint(self,mpoint):
 		for disk in self.container['disk']:
@@ -1854,10 +1843,7 @@ class object(content):
 			self.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
 							  (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
 
-
-
 	class partition(subwin):
-
 		def __init__(self,parent,pos_y,pos_x,width,height):
 			self.part_objects = {}
 			subwin.__init__(self,parent,pos_y,pos_x,width,height)
@@ -1872,7 +1858,6 @@ class object(content):
 			self.auto_partitioning(result)
 
 		def auto_partitioning(self, result):
-
 			# create disk list with usb storage devices
 			disk_blacklist = self.parent.get_usb_storage_device_list()
 			if len(disk_blacklist) > 0 and self.container['autopart_usbstorage'] == None:
@@ -2064,13 +2049,11 @@ class object(content):
 			currentLE = vg['freePE']
 			self.lv_create(vgname, lvname, currentLE, format, fstype, flag, mpoint)
 
-
 			self.parent.debug('AUTOPART FINISHED - INTERNAL STATUS:')
 			for pvname, pv in self.container['lvm']['pv'].items():
 				self.parent.debug('PV[%s]=%s' % (pvname, pv))
 			for vgname, vg in self.container['lvm']['vg'].items():
 				self.parent.debug('VG[%s]=%s' % (vgname, vg))
-
 
 		def ask_lvm_enable_callback(self, result):
 			self.parent.set_lvm( (result == 'BT_YES') )
@@ -2216,7 +2199,6 @@ class object(content):
 				self.sub = yes_no_win(self, self.pos_y+11, self.pos_x+4, self.width-8, self.height-25, msglist, default='yes',
 									  callback_yes=self.ask_lvm_enable_callback, callback_no=self.ask_lvm_enable_callback)
 				self.draw()
-
 
 		def draw(self):
 			self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
@@ -2390,7 +2372,6 @@ class object(content):
 							self.part_objects[ len(dict) ] = [ 'lvm_vg_free', vgname, None ]
 							dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
 
-
 			self.container['dict']=dict
 
 			msg = _('This module is used for partitioning the existing hard drives. It is recommended to use at least two partitions - one for the root file system, and one for the swap area.\n\nPlease note:\nIf automatic partitioning has been selected, all the data stored on these hard drives will be lost during this process! Should the proposed partitioning be undesirable, it can be rejected by pressing the F5 function key.')
@@ -2438,8 +2419,6 @@ class object(content):
 					return "%sp%s" % (dev.split('/')[-1],part['num'])
 				elif type == "full":
 					return "%sp%s" % (dev,part['num'])
-
-
 
 		def helptext(self):
 			return _('UCS-Partition-Tool \n \n This tool is designed for creating, editing and deleting partitions during the installation. \n \n Use \"F2-Create\" to add a new partition. \n \n Use \"F3-Edit\" to configure an already existing partition. \n \n Use \"F4-Delete\" to remove a partition. \n \n Use the \"Reset changes\" button to discard changes to the partition table. \n \n Use the \"Write Partitions\" button to create and/or format your partitions.')
@@ -2505,7 +2484,6 @@ class object(content):
 					self.get_elem_by_id(active+1).set_on()
 					self.current=active+1
 					self.draw()
-
 
 			elif len(self.get_elem('SEL_part').result()) > 0:
 				selected = self.part_objects[ self.get_elem('SEL_part').result()[0] ]
@@ -2642,7 +2620,6 @@ class object(content):
 		def pv_delete(self, parttype, disk, part, force=False):
 			# returns False if pv has been deleted
 			# return True if pv cannot be deleted
-
 			forceflag=''
 			if force:
 				forceflag='-ff'
@@ -2727,9 +2704,7 @@ class object(content):
 			self.layout()
 			self.draw()
 
-
 		def part_delete_generic(self, arg_parttype, arg_disk, arg_part, force=False):
-
 			if self.pv_delete(arg_parttype, arg_disk, arg_part, force):
 				return
 
@@ -2850,7 +2825,6 @@ class object(content):
 			self.parent.debug("new_part_end_corr=%s" % str(new_part_end))
 			self.parent.debug("new_part_size=%s" % str(new_part_size))
 
-
 			if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL: #create new primary/logical disk
 				current = arg_part
 				if type == PARTTYPE_LOGICAL: # need to modify/create extended
@@ -2880,7 +2854,7 @@ class object(content):
 														  self.parent.MiB2CHSstr(arg_disk, ext_part),
 														  self.parent.MiB2CHSstr(arg_disk, ext_part+ext_part_size)))
 
-					else: # resize extended 
+					else: # resize extended
 						for part in self.container['disk'][arg_disk]['partitions'].keys():
 							if self.container['disk'][arg_disk]['partitions'][part]['type'] == PARTTYPE_EXTENDED:
 								break #found extended leaving loop
@@ -2979,7 +2953,6 @@ class object(content):
 
 			self.parent.printPartitionsCHS()
 
-
 		def pv_create(self, disk, part):
 			device = '%s%d' % (disk,self.container['disk'][disk]['partitions'][part]['num'])
 			ucsvgname = self.container['lvm']['ucsvgname']
@@ -3020,9 +2993,6 @@ class object(content):
 #				self.container['history'].append('/sbin/vgscan')
 			else:
 				self.container['history'].append('/sbin/vgextend %s %s' % (ucsvgname, device))
-
-
-
 
 		def minimize_extended_old(self, disk):
 			self.parent.debug('### minimize: %s'%disk)
@@ -3066,10 +3036,8 @@ class object(content):
 													  self.parent.MiB2CHSstr(disk, start),
 													  self.parent.MiB2CHSstr(disk, new_end)))
 
-
 			self.layout()
 			self.draw()
-
 
 		def minimize_extended(self, disk):
 			self.parent.debug('minimize_extended: %s' % disk)
@@ -3131,7 +3099,6 @@ class object(content):
 
 				self.layout()
 				self.draw()
-
 
 		def rebuild_table(self, disc, device):
 			part=disc['partitions'].keys()
@@ -3234,7 +3201,6 @@ class object(content):
 						extended = part[i]
 						last_new=part[i]
 
-
 				else:
 					new[part[i]]=old[part[i]]
 					last_new=part[i]
@@ -3256,7 +3222,6 @@ class object(content):
 				if disk['partitions'][part]['type'] == PARTTYPE_LOGICAL and disk['partitions'][part]['num'] > deleted:
 					disk['partitions'][part]['num'] -= 1
 			return disk
-
 
 		def possible_type(self, disk, p_index):
 			# 1 -> primary only
@@ -3288,7 +3253,6 @@ class object(content):
 			else:
 				return 3
 
-
 		def lv_create(self, vgname, lvname, currentLE, format, fstype, flag, mpoint):
 			vg = self.parent.container['lvm']['vg'][ vgname ]
 			size = int(vg['PEsize'] * currentLE / 1024.0)
@@ -3315,8 +3279,6 @@ class object(content):
 			self.parent.container['lvm']['vg'][ vgname ]['freePE'] -= currentLE
 			self.parent.container['lvm']['vg'][ vgname ]['allocPE'] += currentLE
 
-
-
 		def resolve_type(self,type):
 			mapping = { PARTTYPE_PRIMARY: 'primary',
 						PARTTYPE_LOGICAL: 'logical',
@@ -3336,7 +3298,6 @@ class object(content):
 
 		def get_result(self):
 			pass
-
 
 		# returns False if one or more device files cannot be found - otherwise True
 		def write_devices_check(self):
@@ -3451,7 +3412,6 @@ class object(content):
 				self.parent.layout()
 				self.stop()
 
-
 		class edit(subwin):
 			def __init__(self,parent,pos_x,pos_y,width,heigth):
 				self.close_on_subwin_exit = False
@@ -3475,7 +3435,6 @@ class object(content):
 					format=0
 					self.parent.part_create(selected,mpoint,size,fstype,type,flag,format)
 				return 0
-
 
 			def no_format_callback_part_edit(self, result, path, part):
 				fstype=self.parent.container['temp']['fstype']
@@ -3684,7 +3643,7 @@ class object(content):
 						if self.current == self.get_elem_id('INP_mpoint'):
 							self.get_elem('INP_mpoint').set_on()
 							self.get_elem('INP_mpoint').draw()
-						
+
 				elif self.operation == 'create':
 					if self.elem_exists('CB_lvmpv') and self.get_elem('CB_lvmpv').result():
 						# partition is LVM PV
@@ -3839,7 +3798,6 @@ class object(content):
 						if filesystem_num == 3:
 							self.get_elem('INP_mpoint').disable()
 
-
 		class edit_lvm_lv(subwin):
 			def __init__(self,parent,pos_x,pos_y,width,heigth):
 				self.close_on_subwin_exit = False
@@ -3976,12 +3934,8 @@ class object(content):
 								self.sub.draw()
 								return 1
 
-	
-
 						elif self.operation is 'edit': # Speichern
-
 							# get and save values
-
 							oldfstype = self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['fstype']
 							fstype = self.get_elem('SEL_fstype').result()[0]
 							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['touched'] = 1
@@ -4026,7 +3980,6 @@ class object(content):
 													  lv=self.parent.container['lvm']['vg'][vgname]['lv'][lvname] )
 								self.sub.draw()
 								return 1
-
 
 						self.parent.layout()
 						self.parent.draw()
@@ -4211,7 +4164,6 @@ class object(content):
 			def get_result(self):
 				pass
 
-
 		class ask_lvm_vg(subwin):
 			def input(self, key):
 				if key in [ 10, 32 ]:
@@ -4321,7 +4273,6 @@ class object(content):
 				if not self.parent.write_devices_check():
 					return 1  # do not return 0 ==> will close self.sub, but write_devices_check replaced self.sub with new msg win
 				return 0
-
 
 		class wrong_rootfs(subwin):
 			def layout(self):

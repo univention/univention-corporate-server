@@ -54,7 +54,7 @@ class object(content):
 	def depends(self):
 		return {}
 
- 	def mapping(self,value):
+	def mapping(self,value):
 		if value in ['normal','Normal']:
 			return 'normal'
 		elif value in ['strict','Strict']:
@@ -89,7 +89,7 @@ class object(content):
 				select = 0
 			elif self.all_results['security/profile'] == "strict":
 				select = 2
-		
+
 		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+5,self.minX+2,50,10,[select]))
 		self.get_elem('security_profile_radio').current = select
 

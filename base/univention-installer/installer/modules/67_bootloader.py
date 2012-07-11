@@ -39,7 +39,6 @@
 import objects, re, inspect
 from objects import *
 from local import _
-
 import os
 
 class object(content):
@@ -148,7 +147,6 @@ class object(content):
 			self.selected_device = self.devices.keys()[0]
 		self.debug('self.selected_device: %s' % self.selected_device)
 
-
 	def layout(self):
 		## clear layout
 		self.reset_layout()
@@ -166,7 +164,6 @@ class object(content):
 		self.add_elem('DEVICE',select(self.devices, pos + 3, self.minX+5, self.max_length, 15, self.devices.get(self.selected_device,[0,0])[1]))
 		self.move_focus(self.get_elem_id('DEVICE'))
 
-
 	def input(self,key):
 		if key in [ 10, 32 ] and self.btn_next():
 			return 'next'
@@ -175,22 +172,17 @@ class object(content):
 		else:
 			return self.elements[self.current].key_event(key)
 
-
 	def incomplete(self):
 		return 0
-
 
 	def helptext(self):
 		return _('Boot loader \nSelect where you want the GRUB boot loader to be installed. \n ')
 
-
 	def modheader(self):
 		return _('Boot loader')
 
-
 	def profileheader(self):
 		return 'Boot loader'
-
 
 	def result(self):
 		result = { 'bootloader_record': '%s' % self.get_elem('DEVICE').result()[0] }

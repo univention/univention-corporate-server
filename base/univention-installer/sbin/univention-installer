@@ -92,15 +92,12 @@ if [ -n "$expert_partition" ]; then
 fi
 
 if [ -n "$recover" ]; then
-
-
 	/bin/python2.6 -OO /lib/univention-installer/main.py "${params[@]}"
 	echo "Starting recover shell"
 	echo ""
 	/bin/sh
 else
 	while [ ! -e /tmp/installation_profile ]; do
-
 		/bin/python2.6 -OO /lib/univention-installer/main.py "${params[@]}"
 
 		if [ ! -e /tmp/installation_profile ]; then

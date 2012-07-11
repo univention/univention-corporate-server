@@ -39,7 +39,7 @@ usage () {
 cmd="$1"
 locale="$2"
 
-if [ -z "$cmd" ]; then 
+if [ -z "$cmd" ]; then
 	usage
 fi
 

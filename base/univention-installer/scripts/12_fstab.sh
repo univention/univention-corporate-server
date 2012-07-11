@@ -60,7 +60,6 @@ $root_device	/	$root_fs	$options	0	1
 proc		/proc		proc	defaults	0	0
 __EOT__
 
-
 eval `python2.6 /sbin/univention-config-registry shell`
 
 set | egrep -v "installer_device_0_mp=/" | egrep "installer_device_.*name=" | while read line; do
@@ -92,12 +91,10 @@ __EOT__
 		continue
 	fi
 
-cat >>/instmnt/etc/fstab <<__EOT__
+	cat >>/instmnt/etc/fstab <<__EOT__
 $device  $mp 	$fs	defaults$acl	0	0
 __EOT__
-
 done
-
 
 for i in /proc/ide/ide*; do
 	for j in $i/hd*; do

@@ -36,7 +36,7 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Installing basesystem")" >&9
 
 . /tmp/installation_profile
 
-# send number of trigger lines to progress process 
+# send number of trigger lines to progress process
 # manually counted ==> 128*Configuring, 128*Unpacking, 65*Extracting, 127*Retrieving, 126*Validating
 echo '__STEPS__:574' >&9
 

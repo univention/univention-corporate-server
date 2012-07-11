@@ -62,7 +62,6 @@ if [ -n "$ip_cmdline" ]; then
 		_networksleep=10
 	fi
 	sleep $_networksleep
-
 fi
 
 echo ""

@@ -41,5 +41,3 @@ modprobe -q unix >/dev/null 2>&1 || true
 [ -n "$printmsg" ] && echo -n "syslogd, "
 /bin/klogd -c 2
 [ -n "$printmsg" ] && echo "klogd"
-
-

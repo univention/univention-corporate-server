@@ -87,7 +87,6 @@ The network settings (IP address) can be configured on next screen (press F12). 
 
 Hint: The network settings have to be confirmed before the system boot process will continue/the configuration frontend will be available.''')
 
-
 		msglen = 22
 
 		# description text
@@ -175,7 +174,6 @@ Hint: The network settings have to be confirmed before the system boot process w
 						self.move_focus( self.get_elem_id('IN_ROOTPW2') )
 					return _("Illegal password: A password may not contain quotation marks.")
 		return 0
-
 
 	def incomplete(self):
 		ldap_base=''

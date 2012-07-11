@@ -43,13 +43,12 @@ from local import _
 HEIGHT = 25
 WIDTH = 40
 
+
 class object(content):
 	def checkname(self):
 		return ['timezone']
 
-
 	def profile_complete(self):
-
 		if self.check('timezone') or self.check('locales') or self.check('locale_default'):
 			return False
 		if self.all_results.has_key('timezone') and self.all_results.has_key('locales') and self.all_results.has_key('locale_default'):
@@ -60,7 +59,6 @@ class object(content):
 			return False
 
 	def get_locale_from_language(self, language, countrycode):
-
 		try:
 			file = open('/usr/share/i18n/SUPPORTED')
 		except:
@@ -88,7 +86,6 @@ class object(content):
 		return fallback
 
 	def get_countrycode_from_timezone(self, timezone):
-		
 		try:
 			file = open('locale/countrycode2timezone')
 		except:
@@ -105,12 +102,11 @@ class object(content):
 		return "DE"
 
 	def get_default_timezone(self, countrycode):
-
 		try:
 			file = open('locale/countrycode2timezone')
 		except:
 			file = open('/lib/univention-installer/locale/countrycode2timezone')
-	
+
 		for line in file:
 			if line.startswith("#"): continue
 			line = line.strip("\n")
@@ -118,11 +114,10 @@ class object(content):
 			if len(parts) > 1:
 				if countrycode.upper() == parts[0].upper():
 					return parts[1]
-	
+
 		return "Europe/Berlin"
 
 	def get_timezone_shortlist(self, countrycode):
-
 		timezones = {}
 		shortFile = "locale/short-list/%s.short" % countrycode
 
@@ -142,7 +137,6 @@ class object(content):
 		return timezones
 
 	def get_all_timezones(self):
-
 		timezones = {}
 		try:
 			file = open('locale/timezone')
@@ -156,9 +150,7 @@ class object(content):
 
 		return timezones
 
-
 	def create_timezone_list(self, defaultTimeZone, showAll=False):
-
 		zones = {}
 
 		zones = self.get_timezone_shortlist(self.cmdline.get("DEFAULT_COUNTRYCODE", "DE").lower())
@@ -184,10 +176,7 @@ class object(content):
 
 		return dict, default_position, showAll
 
-
 	def layout(self):
-
-
 		if self.all_results.has_key('timezone'):
 			self.timezone_default = self.all_results['timezone']
 		else:
@@ -213,7 +202,6 @@ class object(content):
 		self.elements[idx] = elem
 
 	def input(self,key):
-
 		if key in [ 10, 32 ] and self.btn_next():
 			return 'next'
 		elif key in [ 10, 32 ] and self.btn_back():

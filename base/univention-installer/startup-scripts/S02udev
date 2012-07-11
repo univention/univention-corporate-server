@@ -38,7 +38,7 @@ else
 	fi
 	mount -t sysfs none /sys
 
-	# move dev 
+	# move dev
 	mv /dev /dev.old
 	mkdir /dev
 

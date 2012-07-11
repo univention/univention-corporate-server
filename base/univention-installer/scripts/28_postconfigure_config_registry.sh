@@ -52,7 +52,7 @@ esac
 # get x keyboard config
 if [ -n "$locale_default" ]; then
 	myLocale=$(echo "$locale_default" | awk -F : '{print $1}')
-	
+
 	xkbLayout=$(sh /lib/univention-installer/locale/locale2xkblayout.sh --layout "$myLocale")
 	xkbVariant=$(sh /lib/univention-installer/locale/locale2xkblayout.sh --variant "$myLocale")
 fi
@@ -81,12 +81,10 @@ elif [ -n "$hostname" ]; then
 fi
 hostname \`univention-config-registry get hostname\`		# finally
 __EOT__
-
 chmod +x /instmnt/hostname.sh
 chroot /instmnt ./hostname.sh
 
 cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
-
 univention-config-registry set \
 	domainname="$domainname" \
 	windows/domain="$windows_domain"
@@ -103,10 +101,9 @@ fi
 if [ -n "$eth3_type" -a "$eth3_type" = "dynamic" ]; then
 	univention-config-registry set interfaces/eth3/type=dhcp
 fi
-
 __EOT__
 
-for i in 0 1 2 3; do 
+for i in 0 1 2 3; do
 	for j in 0 1 2 3; do
 		nettmpxzy=$(eval echo  \$eth${i}_${j}_type)
 cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
@@ -118,7 +115,6 @@ __EOT__
 done
 
 cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
-
 if [ -n "$use_external_nameserver" -a "$use_external_nameserver" = "true" ]; then
 	univention-config-registry set nameserver/external=true
 else
@@ -150,7 +146,6 @@ if [ -z "$security_profile" ] ; then
 fi
 
 if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
-
   univention-config-registry set security/profile="strict"
 
   if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
@@ -163,7 +158,6 @@ if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
       security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/time="disabled" security/services/umc="disabled"
   fi
 
-
   # Right now the selection is identical to DC M/B, eventually merge later
   if [ "$server_role" = "managed_client" -o "$server_role" = "mobile_client" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" -o "$server_role" = "basesystem" ]; then
     univention-config-registry set \
@@ -174,14 +168,9 @@ if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
       security/services/postgres="disabled" security/services/samba="disabled" \
       security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/time="disabled" security/services/umc="disabled"
   fi
-
 fi
 
-
-
-
 if [ -n "$security_profile" -a "$security_profile" = "normal" ]; then
-
   univention-config-registry set security/profile="normal"
 
   if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
@@ -204,13 +193,10 @@ if [ -n "$security_profile" -a "$security_profile" = "normal" ]; then
 fi
 
 if [ -n "$security_profile" -a "$security_profile" = "open" ]; then
-
   univention-config-registry set \
     security/profile="open" \
     security/packetfilter/disabled="true"
-
 fi
-
 
 if [ -n "$ldap_position" ]; then
 	univention-config-registry set ldap/position="$ldap_position"
@@ -311,7 +297,6 @@ __EOT__
 set | grep ^ssl_ | while read line ; do
     echo "univention-config-registry set $(echo "$line" | sed -e 's,^ssl_,ssl/,')" >> /instmnt/postconfigure_config_registry.sh
 done
-
 
 chmod +x /instmnt/postconfigure_config_registry.sh
 chroot /instmnt ./postconfigure_config_registry.sh

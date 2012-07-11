@@ -49,7 +49,6 @@ class object(content):
 		return ['expert partitioning']
 
 	def layout(self):
-
 		msg = [
 			_('Univention Installer has been started with the'),
 			_('Software RAID option. The hard disk has to be'),

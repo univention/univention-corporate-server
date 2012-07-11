@@ -53,13 +53,11 @@ check_device () {
 		return 0
 	else
 		return 1
-
 	fi
 }
 
 # check sysfs for kernel 2630 and later
 sysfs2630 () {
-
 	local bus=$1
 	local type=$2
 
@@ -69,7 +67,7 @@ sysfs2630 () {
 		wanted_type=5
 	elif [ "$type" = "disc" ]; then
 		wanted_type=0
-	else 
+	else
 		wanted_type=all
 	fi
 
@@ -94,7 +92,6 @@ sysfs2630 () {
 
 # check sysfs for kernel 2619 and later
 sysfs2619 () {
-	
 	local bus=$1
 	local type=$2
 
@@ -104,33 +101,32 @@ sysfs2619 () {
 		wanted_type=5
 	elif [ "$type" = "disc" ]; then
 		wanted_type=0
-	else 
+	else
 		wanted_type=all
 	fi
 
 	# usb
 	if [ "$bus" = "usb" -o "$bus" = "all" ]; then
-	        dir="${sysfsmtpt}/bus/usb/drivers/usb-storage"
-        	for s in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block:* 2>/dev/null`; do 
+		dir="${sysfsmtpt}/bus/usb/drivers/usb-storage"
+		for s in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block:* 2>/dev/null`; do
 			# Nearly everything we need is encoded in this path, let's grab the pieces:
 			str=$(echo "$s" | /bin/sed -e "s|${dir}/\(.\+\):.\+/host\(.\+\)/target\2:\(.\+\):\(.\+\)/\2:\3:\4:.\+/block:\(.\+\)|\1 scsi\2 \5|")
-		        token=`echo $str| awk '{ print $1 }'`
-		        bus=`echo $str| awk '{ print $2 }'`
-          		device=`echo $str| awk '{ print $3 }'`
-          		manufact=$(/bin/cat /sys/bus/usb/devices/"${token}"/manufacturer | /bin/sed -e 's| *$||' -e 's| |_|g')
+			token=`echo $str| awk '{ print $1 }'`
+			bus=`echo $str| awk '{ print $2 }'`
+			device=`echo $str| awk '{ print $3 }'`
+			manufact=$(/bin/cat /sys/bus/usb/devices/"${token}"/manufacturer | /bin/sed -e 's| *$||' -e 's| |_|g')
 			dev=${device:0:2}
 			media=$(cat $s/device/type)
 			if check_device "$wanted_type" "$media"; then
 				devs[$devscount]="$device/$manufact/$bus"
 				devscount=$(($devscount + 1))
 			fi
-	        done
+		done
 	fi
 
 	# scsi
 
 	# ide
-
 }
 
 

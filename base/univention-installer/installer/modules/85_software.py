@@ -36,7 +36,6 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
-
 import objects
 import string
 import os
@@ -47,7 +46,6 @@ NewPackageList = []
 
 
 class object(content):
-
 	class active(act_win):
 		def function(self):
 			if self.action == 'preparing-package-list':
@@ -94,7 +92,6 @@ class object(content):
 						if not active:
 							failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
 
-
 						for p in package_list.PackageList[i]['Packages'][j]['Packages']:
 							if os.path.exists('/usr/bin/apt-cache'):
 								res = os.system('apt-cache show %s >/dev/null 2>&1' % p )
@@ -116,6 +113,7 @@ class object(content):
 								NewPackageList[position]['Packages'].append(package_list.PackageList[i]['Packages'][j])
 
 			self.stop()
+
 	def draw(self):
 		if hasattr(self, 'system_role'):
 			if self.system_role != self.all_results['system_role']:
@@ -144,7 +142,6 @@ class object(content):
 		self.sub.draw()
 		self.samba3_warning = False
 		self.samba4_warning = False
-
 
 	def _init_categories(self):
 		self.categories={}
@@ -185,7 +182,6 @@ class object(content):
 				else:
 					self.categories[NewPackageList[i]['Category']]=[NewPackageList[i]['Category'], count, 1, NewPackageList[i]['Description']]
 				count=count+1
-
 
 	def _init_packages(self):
 		self.packages=[]
@@ -257,10 +253,12 @@ class object(content):
 		for i in self.categories.keys():
 			if self.categories[i][1] == index:
 				return i
+
 	def _get_category_by_name(self, index):
 		for c in self.categories.keys():
 			if index == c:
 				return self.categories[c][1]
+
 	def _get_category_list_by_name(self, index):
 		l=[]
 		for c in self.categories.keys():
@@ -378,7 +376,6 @@ class object(content):
 			self.real_tab_reverse()
 
 	def input(self,key):
-
 		current_category=self._get_category_by_index(self.current)
 		if current_category:
 			self._save_packages(current_category, self.get_elem('packages_%s' % current_category).result())
@@ -416,7 +413,7 @@ class object(content):
 		p_list=[]
 		s3 = s4 = None
 		kvm = xen = None
-		
+
 		for c in self.categories.keys():
 			index=self.categories[c][1]
 			for key in self.packages[index].keys():

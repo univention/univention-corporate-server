@@ -35,7 +35,7 @@ case "$reason" in
 		# The DHCP client is requesting that an interface be
 		# configured as required in order to send packets prior to
 		# receiving an actual address. - dhclient-script(8)
-		
+
 		#if [ -n "$alias_ip_address" ]; then
 		#	# Bring down alias interface. Its routes will disappear too.
 		#	ifconfig $interface:0- inet 0
@@ -47,7 +47,7 @@ case "$reason" in
 
 		# basic interface setup if it is not already up
 		ifconfig $interface | grep -w UP || ifconfig $interface inet 0 up
-		
+
 		# We need to give the kernel some time to get the interface up.
 		sleep 1
 		# echo "$PRINTK" >/proc/sys/kernel/printk
