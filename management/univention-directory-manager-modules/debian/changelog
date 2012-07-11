@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.280-1) unstable; urgency=low
+
+  * Cleanup LM hash handling (Bug #26512)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jul 2012 11:14:02 +0200
+
 univention-directory-manager-modules (7.0.279-1) unstable; urgency=low
 
   * Added a UCR variable password/samba/lmhash to define whether the LM
