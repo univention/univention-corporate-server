@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.283-2) unstable; urgency=low
+
+  * bumped version
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 11 Jul 2012 16:22:40 +0200
+
 univention-directory-manager-modules (7.0.283-1) unstable; urgency=low
 
   * added new syntax method checkLdap() (Bug #23525)
