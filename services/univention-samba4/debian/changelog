@@ -1,3 +1,9 @@
+univention-samba4 (1.0.166-1) unstable; urgency=low
+
+  * use ldap/server/port in ldapsam passdb backend (Bug #27539)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Jul 2012 11:31:52 +0200
+
 univention-samba4 (1.0.165-1) unstable; urgency=low
 
   * remove samba(3) system startup links in postinst script (Bug #26087) 

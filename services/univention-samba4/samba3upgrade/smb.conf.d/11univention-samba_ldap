@@ -6,7 +6,9 @@ if configRegistry.has_key('server/role') and configRegistry['server/role'] != 'm
 	ldapserver = configRegistry['ldap/server/name'].split(' ')
 	if configRegistry.get('ldap/server/addition',''):
 		ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
-	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver)
+	ldapserverport = configRegistry['ldap/server/port']
+	ldapserver_and_port = [ "%s:%s" % (s, ldapserverport) for s in ldapserver ]
+	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver_and_port)
 	print '\tauth methods = %s' % configRegistry.get('samba/auth/methods', 'guest sam winbind')
 
 if configRegistry.get('server/role') == 'memberserver' and configRegistry.get('samba/memberserver/passdb/ldap','').lower() in ('yes', 'true'):
