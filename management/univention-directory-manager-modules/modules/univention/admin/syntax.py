@@ -955,6 +955,8 @@ class emailAddressValidDomain(emailAddress):
 		mailaddresses = copy.deepcopy(mailaddresses)
 		if type(mailaddresses) == str:
 			mailaddresses = [ mailaddresses ]
+		if type(mailaddresses) != list:
+			return
 
 		faillist = []
 		domainCache = {}
