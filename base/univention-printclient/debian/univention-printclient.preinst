@@ -30,15 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# remove old templates (lp, lpr) for this update
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.4-2; then
-
-	if [ ! -d /etc/univention/templates/removed/ ] ; then
-		mkdir -p /etc/univention/templates/removed/
-	fi
-	mv /etc/univention/templates/files/usr/bin/lpr "/etc/univention/templates/removed/lpr.template.$(date +%Y%m%d_%H%M%S_%N)"
-
-fi
+case "$1" in
+	install|upgrade)
+		# remove old templates (lp, lpr) for this update
+		if [ -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.4-2; then	
+			if [ ! -d /etc/univention/templates/removed/ ] ; then
+				mkdir -p /etc/univention/templates/removed/
+			fi
+			mv /etc/univention/templates/files/usr/bin/lpr "/etc/univention/templates/removed/lpr.template.$(date +%Y%m%d_%H%M%S_%N)"
+			mv /etc/univention/templates/files/usr/bin/lp "/etc/univention/templates/removed/lp.template.$(date +%Y%m%d_%H%M%S_%N)"
+		fi
+esac
 
 #DEBHELPER#
 
