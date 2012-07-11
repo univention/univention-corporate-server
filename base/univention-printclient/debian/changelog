@@ -1,3 +1,9 @@
+univention-printclient (6.0.4-2) unstable; urgency=low
+
+  * manually update ucr in postinst (Bug #25472) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Jul 2012 09:03:41 +0200
+
 univention-printclient (6.0.4-1) unstable; urgency=low
 
   * remove templates for lp and lpr (Bug #25472)
