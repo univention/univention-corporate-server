@@ -1,4 +1,4 @@
-univention-directory-manager-modules (7.0.282-2) unstable; urgency=low
+univention-directory-manager-modules (7.0.283-1) unstable; urgency=low
 
   * added new syntax method checkLdap() (Bug #23525)
 
