@@ -568,7 +568,7 @@ property_descriptions={
 	'mailPrimaryAddress': univention.admin.property(
 			short_description=_('Primary e-mail address'),
 			long_description='',
-			syntax=univention.admin.syntax.emailAddress,
+			syntax=univention.admin.syntax.primaryEmailAddressValidDomain,
 			multivalue=0,
 			options=['mail'],
 			required=0,
@@ -579,7 +579,7 @@ property_descriptions={
 	'mailAlternativeAddress': univention.admin.property(
 			short_description=_('Alternative e-mail addresses'),
 			long_description='',
-			syntax=univention.admin.syntax.emailAddress,
+			syntax=univention.admin.syntax.emailAddressValidDomain,
 			multivalue=1,
 			options=['mail'],
 			required=0,

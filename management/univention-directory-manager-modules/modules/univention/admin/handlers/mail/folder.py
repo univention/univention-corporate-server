@@ -125,7 +125,7 @@ property_descriptions={
 	'mailPrimaryAddress': univention.admin.property(
 			short_description=_('E-Mail address'),
 			long_description='',
-			syntax=univention.admin.syntax.emailAddress,
+			syntax=univention.admin.syntax.emailAddressValidDomain,
 			multivalue=0,
 			required=0,
 			dontsearch=0,
