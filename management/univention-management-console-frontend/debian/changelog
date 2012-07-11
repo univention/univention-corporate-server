@@ -1,3 +1,12 @@
+univention-management-console-frontend (1.0.386-1) unstable; urgency=low
+
+  * added sessionId as http header field instead of a cookie (Bug #26635)
+  * added default ip address to get_ip_address (Bug #26635)
+  * htmlencode http errors (Bug #26635)
+  * default mimetype has been set to text/plain (Bug #26635)
+
+ -- Florian Best <best@univention.de>  Wed, 11 Jul 2012 09:55:54 +0200
+
 univention-management-console-frontend (1.0.385-1) unstable; urgency=low
 
   * the session is now bound to ip address (Bug #26635) (Bug #26637)

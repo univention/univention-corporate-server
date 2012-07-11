@@ -40,6 +40,7 @@ messages are based on the class :class:`.Message`.
 import mimetypes
 import time
 import re
+import copy
 
 try:
 	import simplejson as json
@@ -302,6 +303,13 @@ class Response( Message ):
 		# FIXME: should check size first
 		self.body = fd.read()
 		fd.close()
+
+	def __str__( self ):
+		'''Returns the formatted message without request options'''
+		body = copy.copy(self.body)
+		if 'options' in body:
+			del body['options']
+		return Message._formattedMessage(self._id, self._type, self.mimetype, self.command, body, self.arguments)
 
 if __name__ == '__main__':
 	# encode

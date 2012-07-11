@@ -292,12 +292,10 @@ class QueueRequest(object):
 		self.response_queue = response_queue
 		self.ip = ip
 
-def update_session_cookie(cookiejar, sessionid):
+def update_session(headers, sessionid):
 	"""Defines a new cookie for the given session ID."""
-	cookiejar['UMCSessionId'] = sessionid
-	cookiejar['UMCSessionId']['max-age'] = _session_timeout
-	cookiejar['UMCSessionId']['version'] = 1
-	cookiejar['UMCSessionId']['path'] = '/'
+	headers['X-UMC-Session-Id'] = sessionid
+	headers['X-UMC-Session-Timeout'] = _session_timeout
 
 class CPgeneric(object):
 
@@ -317,7 +315,7 @@ class CPgeneric(object):
 
 	def _log(self, loglevel, _msg):
 		remote = cherrypy.request.remote
-		msg = '%s (%s:%s) %s' % (self.name,  remote.ip, remote.port, _msg)
+		msg = '%s (%s:%s) %s' % (self.name,  self.get_ip_address(), remote.port, _msg)
 		self._logOptions.get(loglevel, CORE.info)(msg)
 
 	def get_request(self, request, json):
@@ -326,7 +324,7 @@ class CPgeneric(object):
 
 	def get_ip_address(self):
 		"""get the IP address of client by last entry in X-FORWARDED-FOR header"""
-		return cherrypy.request.headers.get('X-FORWARDED-FOR', '').rsplit(', ', 1).pop()
+		return cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).rsplit(', ', 1).pop()
 
 	@cherrypy.expose
 	def default( self, *args, **kwargs ):
@@ -334,9 +332,9 @@ class CPgeneric(object):
 		self._log('info', 'got new request')
 
 		# check for a valid session key
-		cookie = cherrypy.request.cookie
-		if cookie.get('UMCSessionId'):
-			sessionid = cookie['UMCSessionId'].value
+		headers = cherrypy.request.headers
+		if headers.get('X-UMC-Session-Id'):
+			sessionid = headers['X-UMC-Session-Id']
 			self._log('info', 'found sessionid')
 			self._log(99, 'sessionid="%s"' % (sessionid))
 		else:
@@ -346,13 +344,7 @@ class CPgeneric(object):
 
 		req = None
 
-		iframe = False
-		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ): # upload
-			if not cherrypy.request.path_info.startswith( '/upload' ):
-				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
-			json = kwargs
-			iframe = 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0'))
-		elif cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
+		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
 			if not cherrypy.request.headers.get(u"Content-Length", u""):
 				json = ''
 				self._log('warn', 'missing Content-Length header')
@@ -385,14 +377,10 @@ class CPgeneric(object):
 		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
 
 		if response.status == umcp.SUCCESS:
-			update_session_cookie(cherrypy.response.cookie, sessionid)
-			if iframe:
-				# this is a workaround to make iframe uploads work, they need the textarea field
-				return '<html><body><textarea>%s</textarea></body></html>' % (simplejson.dumps(response.body))
-			else:
-				return simplejson.dumps(response.body)
+			update_session(cherrypy.response.headers, sessionid)
+			return simplejson.dumps(response.body)
 		elif response.mimetype != umcp.MIMETYPE_JSON:
-			update_session_cookie(cherrypy.response.cookie, sessionid)
+			update_session(cherrypy.response.headers, sessionid)
 			cherrypy.response.headers[ 'Content-Type' ] = response.mimetype
 			return response.body
 
@@ -401,7 +389,7 @@ class CPgeneric(object):
 		self._log('error', 'response message: %s' % response.message)
 		message = response.message
 		if isinstance(message, basestring):
-			message = message.replace('"', "'")
+			message = cherrypy._cperror._escape(message.replace('"', "'"))
 		raise cherrypy.HTTPError(response.status, message)
 
 
@@ -477,6 +465,57 @@ class CPUpload( CPgeneric ):
 		req.body['options'] = options
 		return req
 
+	@cherrypy.expose
+	def default( self, *args, **kwargs ):
+		remote = cherrypy.request.remote
+		self._log('info', 'got new request')
+
+		# check for a valid session key
+		if 'X-UMC-Session-Id' in kwargs:
+			sessionid = kwargs['X-UMC-Session-Id']
+			self._log('info', 'found sessionid')
+			self._log(99, 'sessionid="%s"' % (sessionid))
+		else:
+			# a sessionid is required to use this command
+			self._log('info', 'no sessionid found')
+			raise cherrypy.HTTPError(httplib.UNAUTHORIZED)
+
+		if not cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ):
+			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
+
+		# check if the request is a iframe upload
+		iframe = 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0'))
+
+		# create new UMCP request
+		req = self.get_request( cherrypy.request, kwargs )
+
+		# create new response queue
+		response_queue = Queue.Queue()
+
+		# send request to UMC server
+		request = QueueRequest(sessionid, req, response_queue, self.get_ip_address())
+		UMCP_Dispatcher._queue_send.put(request)
+
+		self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response (sessionid="%s")' % (id(req), id(response_queue), sessionid))
+		response = response_queue.get()
+		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
+
+		if response.status == umcp.SUCCESS:
+			update_session(cherrypy.response.headers, sessionid)
+			if iframe:
+				# this is a workaround to make iframe uploads work, they need the textarea field
+				cherrypy.response.headers[ 'Content-Type' ] = umcp.MIMETYPE_HTML
+				return '<html><body><textarea>%s</textarea></body></html>' % (simplejson.dumps(response.body))
+
+			return simplejson.dumps(response.body)
+
+		# something bad happened
+		self._log('error', 'response status code: %s' % response.status)
+		self._log('error', 'response message: %s' % response.message)
+		message = response.message
+		if isinstance(message, basestring):
+			message = cherrypy._cperror._escape(message.replace('"', "'"))
+		raise cherrypy.HTTPError(response.status, message)
 
 class CPCommand(CPgeneric):
 	requestprefix = '/command'
@@ -508,7 +547,7 @@ class CPAuth(CPgeneric):
 	@cherrypy.expose
 	def default(self):
 		remote = cherrypy.request.remote
-		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (remote.ip, remote.port, remote.name))
+		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (self.get_ip_address(), remote.port, remote.name))
 
 		if not cherrypy.request.headers.get(u"Content-Length", u""):
 			CORE.process('CPRoot/auth: missing Content-Length header')
@@ -547,13 +586,13 @@ class CPAuth(CPgeneric):
 
 		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
 			CORE.info('CPRoot/auth: creating cookie with sessionid=%s' % response.body.get('sessionid'))
-			update_session_cookie(cherrypy.response.cookie, response.body['sessionid'])
+			update_session(cherrypy.response.headers, response.body['sessionid'])
 			return ""
 
 		CORE.process('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
 		message = response.message
 		if isinstance(message, basestring):
-			message = message.replace('"', "'")
+			message = cherrypy._cperror._escape(message.replace('"', "'"))
 		raise cherrypy.HTTPError(response.status, message)
 
 class CPRoot(object):
@@ -572,6 +611,10 @@ def run_cherrypy():
 		'server.socket_host': configRegistry.get( 'umc/http/interface', '127.0.0.1' ),
 		'server.request_queue_size' : 100,
 		'engine.autoreload_on': False,
+		'tools.response_headers.on': True,
+		'tools.response_headers.headers': [
+			('Content-Type', umcp.MIMETYPE_PLAIN)
+		]
 	} )
 	cherrypy.tools.proxy(base=None, local='X-Forwarded-Host', remote='X-Forwarded-For', scheme='X-Forwarded-Proto')
 

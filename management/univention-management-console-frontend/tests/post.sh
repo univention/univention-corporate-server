@@ -24,7 +24,8 @@ User-Agent: Mozilla/5.0 (X11; Linux i686; rv:6.0.2) Gecko/20100101 Firefox/6.0.2
 Content-Type: application/json
 X-Requested-With:XMLHttpRequest
 Content-Length: ${#json}
-Cookie: UMCLang=de-DE; UMCSessionId=$key; UMCUsername=$username
+Cookie: UMCLang=de-DE; UMCUsername=$username
+X-UMC-Session-Id: $key
 
 $json"
 }
@@ -49,7 +50,7 @@ for line in sys.stdin:
 
 # authenticate at UMCP server
 function authenticate {
-	key=$(umcp auth '{"username":"'$username'", "password":"'$password'"}' | send | sed -n 's/^.*UMCSessionId=\([^;]*\).*$/\1/p')
+	key=$(umcp auth '{"username":"'$username'", "password":"'$password'"}' | send | sed -n 's/^.*X-UMC-Session-Id=\([^;]*\).*$/\1/p')
 	echo "got session key: $key"
 }
 
