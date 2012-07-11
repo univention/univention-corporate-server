@@ -389,11 +389,11 @@ def doit(arglist):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, traceback.format_exc())
 
 		# collect error information
-		msg = []
-		if getattr(e, 'message', False):
-			msg.append(e.message)
-		if getattr(e, 'args', False):
-			msg.extend(e.args)
+		msg = [getattr(e, 'message', '')]
+		eargs = getattr(e, 'args', False)
+		if eargs:
+			if eargs[0] != msg[0] or len(eargs) != 1:
+				msg.extend(e.args)
 
 		# strip elements and make sure that a ':' is printed iff further information follows
 		msg = [i.strip() for i in msg]
