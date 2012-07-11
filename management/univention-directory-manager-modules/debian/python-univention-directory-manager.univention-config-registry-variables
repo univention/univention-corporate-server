@@ -28,6 +28,12 @@ Description[en]=Selects the algorithm to use for saving passwords in the LDAP di
 Type=str
 Categories=system-password
 
+[password/samba/lmhash]
+Description[de]=Definiert ob der Samba LM Hash im LDAP-Verzeichnis gespeichert werden soll
+Description[en]=Defines whether the samba LM hash will be saved in the LDAP directory
+Type=str
+Categories=system-password
+
 [directory/manager/child/cn/ou]
 Description[de]=Definiert ob es gestattet ist einen container/ou als untergeordnetes Objekt von container/cn zu erstellen.
 Description[en]=Defines whether it is allowed to create a container/ou as child object of a container/cn.

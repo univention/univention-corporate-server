@@ -67,7 +67,12 @@ def crypt(password):
 def ntlm(password):
 	"""return tuple with NT and LanMan hash"""
 
-	(lm, nt) = smbpasswd.hash(password)
+	nt = smbpasswd.nthash(password)
+
+	if configRegistry.is_true('password/samba/lmhash', False):
+		lm = smbpasswd.lmhash(password)
+	else:
+		lm = ''
 
 	return (nt, lm)
 

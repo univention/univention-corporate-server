@@ -1,3 +1,13 @@
+univention-directory-manager-modules (7.0.279-1) unstable; urgency=low
+
+  * Added a UCR variable password/samba/lmhash to define whether the LM
+    hash should be saved or not (Bug #26512)
+  * Added a script to remove the LM hashes from the LDAP directory:
+    /usr/share/univention-directory-manager-tools/remove_sambalmpassword
+    (Bug #26512)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jul 2012 10:55:19 +0200
+
 univention-directory-manager-modules (7.0.278-1) unstable; urgency=low
 
   * proof_uniqueMembers: also add memberUid entry (Bug #27775)
