@@ -1,3 +1,9 @@
+univention-samba (6.0.41-1) unstable; urgency=low
+
+  * improve error output of univention-ssh-rsync calls (Bug #23136)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Jul 2012 12:37:47 +0200
+
 univention-samba (6.0.40-2) unstable; urgency=low
 
   * added missing UCR variables samba/share/.*/hosts/deny,
