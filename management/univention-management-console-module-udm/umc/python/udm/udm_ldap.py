@@ -1054,6 +1054,10 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 					id = obj.get( store )
 				elif store in obj.oldattr and obj.oldattr[ store ]:
 					id = obj.oldattr[ store ][ 0 ]
+				else:
+					# no valid store object, ignore
+					MODULE.warn('LDAP_Search syntax "%s": "%s" is no valid property for object "%s" - ignoring entry.' % (options['syntax'], store, dn))
+					continue
 
 			# find the value to display
 			if display == 'dn':
