@@ -37,8 +37,6 @@
 #
 
 import curses
-import textwrap
-import objects
 from objects import *
 from local import _
 

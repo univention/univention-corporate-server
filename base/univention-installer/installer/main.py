@@ -34,10 +34,7 @@
 # Module
 import sys
 import os
-import string
-import types
 import traceback
-import thread
 import curses
 import curses.ascii
 import objects

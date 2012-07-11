@@ -37,7 +37,6 @@
 #
 
 import subprocess
-import objects
 import time, os
 import re
 from objects import *

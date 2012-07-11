@@ -36,8 +36,6 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
-import objects
-import string
 from objects import *
 from local import _
 

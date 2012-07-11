@@ -36,7 +36,8 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
-import objects, re, inspect
+import re
+import inspect
 from objects import *
 from local import _
 import os

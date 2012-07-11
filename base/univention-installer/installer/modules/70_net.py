@@ -38,7 +38,6 @@
 
 import re
 import curses
-import objects
 from objects import *
 from local import _
 import inspect

@@ -43,7 +43,6 @@
 #  - imported and created profiles use factor 1000 for KB and MB !!!
 # ==> look at MiB2MB and MB2MiB
 
-import objects
 from objects import *
 from local import _
 import os, re, string, curses

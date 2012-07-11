@@ -36,11 +36,8 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
-import textwrap
-import objects
 from objects import *
 from local import _
-import string
 
 MAXLENGTH = 65
 
