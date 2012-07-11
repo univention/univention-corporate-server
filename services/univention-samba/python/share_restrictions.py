@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# This file is part of univention-lib and have to contain python2.4 valid code
+
 from univention.config_registry import ConfigRegistry
 
 from ConfigParser import ConfigParser
@@ -184,13 +186,16 @@ class ShareConfiguration( object ):
 		if os.path.isfile( ShareConfiguration.CUPS_CONF ):
 			reg_cups = re.compile('\s*<Printer\s+([^>]+)>')
 
-			with file("/etc/cups/printers.conf") as fd:
+			try:
+				fd = file("/etc/cups/printers.conf")
 				for line in fd.readlines():
 					m_cups = reg_cups.match( line )
 
 					if m_cups:
 						prt = Printer( m_cups.group( 1 ).strip() )
 						self._printers[ prt.name ] = prt
+			finally:
+				fd.close()
 
 		# samba
 		if not os.path.exists( ShareConfiguration.PRINTERS_UDM_DIR ):
@@ -339,9 +344,12 @@ class ShareConfiguration( object ):
 
 		# write conf file with global options
 		if len( globals ):
-			with file( ShareConfiguration.GLOBAL_CONF, 'w' ) as fd:
+			try:
+				fd = file( ShareConfiguration.GLOBAL_CONF, 'w' )
 				fd.write("[global]\n")
 				fd.write( ''.join( map( lambda item: '%s = %s\n' % item, globals.items() ) ) )
+			finally:
+				fd.close()
 
 			include.add( 'include = %s' % ShareConfiguration.GLOBAL_CONF )
 
@@ -352,7 +360,8 @@ class ShareConfiguration( object ):
 				continue
 
 			share_filename = os.path.join( ShareConfiguration.SHARES_DIR, share.name + ShareConfiguration.POSTFIX )
-			with  file( share_filename, "w" ) as fd:
+			try:
+				fd = file( share_filename, "w" )
 				fd.write("[" + share.name + "]\n")
 				for option in share:
 					if share[ option ] is None:
@@ -360,6 +369,8 @@ class ShareConfiguration( object ):
 					fd.write( '%s = ' % option )
 					fd.write( ' '.join( share[ option ] ) )
 					fd.write( '\n' )
+			finally:
+				fd.close()
 			includes.add( 'include = %s' % share_filename )
 
 		# write print share configs
@@ -371,7 +382,8 @@ class ShareConfiguration( object ):
 			filename = os.path.join( ShareConfiguration.SHARES_DIR, ShareConfiguration.PREFIX + prt.name + ShareConfiguration.POSTFIX )
 			includes.add( 'include = %s' % filename )
 
-			with file( filename, 'w' ) as fd:
+			try:
+				fd = file( filename, 'w' )
 				if not prt.smbname:
 					fd.write( '[%s]\n' % prt.name )
 				else:
@@ -386,11 +398,16 @@ class ShareConfiguration( object ):
 						fd.write( '%s = ' % option )
 						fd.write( ' '.join( prt[ option ] ) )
 						fd.write( '\n' )
+			finally:
+				fd.close()
 
 
 		# all include statements go to this file (create file een if there is no include
-		with file( ShareConfiguration.INCLUDE_CONF, 'w' ) as f:
+		try:
+			f = file( ShareConfiguration.INCLUDE_CONF, 'w' )
 			f.write( '\n'.join( includes ) + '\n' )
+		finally:
+			f.close()
 
 	@property
 	def globals( self ):

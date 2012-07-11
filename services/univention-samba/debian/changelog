@@ -1,3 +1,9 @@
+univention-samba (6.0.41-2) unstable; urgency=low
+
+  * backport to python2.4 valid code in share_restrictions.py (Bug #27848)
+
+ -- Florian Best <best@univention.de>  Wed, 11 Jul 2012 15:04:05 +0200
+
 univention-samba (6.0.41-1) unstable; urgency=low
 
   * improve error output of univention-ssh-rsync calls (Bug #23136)
