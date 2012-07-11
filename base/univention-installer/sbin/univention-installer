@@ -97,22 +97,20 @@ if [ -n "$recover" ]; then
 	echo ""
 	/bin/sh
 else
-	while [ ! -e /tmp/installation_profile ]; do
+	while true; do
 		/bin/python2.6 -OO /lib/univention-installer/main.py "${params[@]}"
 
-		if [ ! -e /tmp/installation_profile ]; then
-			echo "Press Return to restart the installer program."
-			read foo
-			continue
+		if [ -s /tmp/installation_profile ]; then
+			echo "" >> /tmp/installer.log
+			echo "------------------------------------------" >> /tmp/installer.log
+			echo " PROFILE COMPLETE - STARTING INSTALLATION" >> /tmp/installer.log
+			echo "------------------------------------------" >> /tmp/installer.log
+			echo "" >> /tmp/installer.log
+
+			/bin/python2.6 -OO /lib/univention-installer/progress.py "${progparams[@]}"
 		fi
 
-		echo "" >> /tmp/installer.log
-		echo "------------------------------------------" >> /tmp/installer.log
-		echo " PROFILE COMPLETE - STARTING INSTALLATION" >> /tmp/installer.log
-		echo "------------------------------------------" >> /tmp/installer.log
-		echo "" >> /tmp/installer.log
-
-		/bin/python2.6 -OO /lib/univention-installer/progress.py "${progparams[@]}"
-
+		echo "Press Return to restart the installer program."
+		read foo
 	done
 fi

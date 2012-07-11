@@ -3,7 +3,7 @@
 ::sysinit:/sbin/univention-installer-startup
 
 #installer
-tty1::once:/sbin/univention-installer
+tty1::respawn:/sbin/univention-installer
 
 tty2::askfirst:/bin/sh
 tty3::askfirst:/bin/sh
