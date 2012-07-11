@@ -1,3 +1,9 @@
+univention-samba4 (1.0.167-1.1) unstable; urgency=low
+
+  * Fixed unnecessary command and removed false indentation  (Bug #26755)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 11 Jul 2012 16:35:08 +0200
+
 univention-samba4 (1.0.167-1) unstable; urgency=low
 
   * keep existing machine account in join (Bug #27027)

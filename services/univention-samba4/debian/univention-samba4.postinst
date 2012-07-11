@@ -98,7 +98,7 @@ then
 fi
 
 univention-config-registry set \
-    samba/debug/level?1 \
+	samba/debug/level?1 \
 	samba4/sysvol/sync/jitter?60 \
 	samba4/service/smb?'smbd' \
 	samba4/service/nmb?'nmbd' \
@@ -169,7 +169,6 @@ if [ "$1" = "configure" ]; then
 			fi
 		fi
 
-		echo $samba_debug_level	
 		if dpkg --compare-versions "$2" lt-nl "1.0.154-1"; then
 			if [ "$samba_debug_level" = 2 ]; then
 				#only set this when value does not differ from the previous default value and the package is upgraded from a version which did not include this paragraph
