@@ -218,7 +218,7 @@ for file in files:
 			if not cmdline.has_key("expert_partition") and temp[0] == "60_expert_partition":
 				continue
 			modules.append(temp[0])
-	modules.sort()
+modules.sort()
 
 def exit_curses():
 	stdscr.keypad(0)
