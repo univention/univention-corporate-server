@@ -1,3 +1,9 @@
+univention-management-console-module-udm (1.0.286-1) unstable; urgency=low
+
+  * print every error message only once (Bug #27087)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 11 Jul 2012 15:40:01 +0200
+
 univention-management-console-module-udm (1.0.285-1) unstable; urgency=low
 
   * LDAP objects that do not have the attributes specified by LDAP search

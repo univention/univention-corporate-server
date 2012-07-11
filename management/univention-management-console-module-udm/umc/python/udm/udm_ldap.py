@@ -68,12 +68,11 @@ _password = None
 
 
 def get_exception_msg(e):
-	msg = ''
-	if getattr(e, 'message', False):
-		msg += e.message
+	msg = getattr(e, 'message', '')
 	if getattr(e, 'args', False):
-		for arg in e.args:
-			msg += arg
+		if e.args[0] != msg or len(e.args) != 1:
+			for arg in e.args:
+				msg += arg
 	return msg
 
 def set_credentials( dn, passwd ):
