@@ -56,11 +56,13 @@ trap "rm -f '$stderr_ssh_rsync'" EXIT
 mkdir -p $NETLOGON_PATH
 if ! univention-ssh-rsync /etc/machine.secret -aAz $RSYNC_OPTS "$hostname\$@$PDC:$NETLOGON_PATH/" "$NETLOGON_PATH" 2>"$stderr_ssh_rsync"; then
 	cat "$stderr_ssh_rsync" >&2
+	exit 1
 fi
 
 mkdir -p $ACCOUNT_PATH
 if ! univention-ssh-rsync /etc/machine.secret -aAz $RSYNC_OPTS "$hostname\$@$PDC:$ACCOUNT_PATH/" "$ACCOUNT_PATH" 2>"$stderr_ssh_rsync"; then
 	cat "$stderr_ssh_rsync" >&2
+	exit 1
 fi
 
 if [ -e "$ACCOUNT_PATH/$ACCOUNT_FILE" ]; then
