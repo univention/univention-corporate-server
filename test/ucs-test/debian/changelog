@@ -1,3 +1,9 @@
+ucs-test (2.0.1-5) unstable; urgency=low
+
+  * Bump version (Bug #23527)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 Jul 2012 18:57:21 +0200
+
 ucs-test (2.0.1-4) unstable; urgency=low
 
   * 09/78mirror-local: Check for secure_apt (Bug #26668)
