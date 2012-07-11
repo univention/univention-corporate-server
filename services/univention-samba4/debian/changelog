@@ -1,3 +1,10 @@
+univention-samba4 (1.0.169-1) unstable; urgency=low
+
+  * Work around RID pool timing issue in create_dns-host_spn.py
+    (Bug #26641)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Jul 2012 22:35:29 +0200
+
 univention-samba4 (1.0.168-1) unstable; urgency=low
 
   * Fixed unnecessary command and removed false indentation  (Bug #26755)

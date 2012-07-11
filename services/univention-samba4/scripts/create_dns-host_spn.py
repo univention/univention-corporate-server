@@ -47,6 +47,7 @@
 """Add SAM account for dns-$hostname to create dns.keytab"""
 
 import samba
+import time
 from base64 import b64encode
 from samba.samdb import SamDB
 from samba.auth import system_session
@@ -109,9 +110,12 @@ if __name__ == '__main__':
 			msg = samdb.search(base=names.domaindn, scope=samba.ldb.SCOPE_DEFAULT,
 				expression='(sAMAccountName=dns-%s)' % (names.hostname),
 				attrs=['clearTextPassword'])
-			dn = msg[0].dn
-			samdb.delete(dn)
+			if msg:
+				print "removing sAMAccountName=dns-%s" % (names.hostname)
+				dn = msg[0].dn
+				samdb.delete(dn)
 		except Exception:
+			print "exception while removing sAMAccountName=dns-%s" % (names.hostname)
 			pass
 
 		setup_add_ldif(secretsdb, setup_path("secrets_dns.ldif"), {
@@ -124,12 +128,18 @@ if __name__ == '__main__':
 				names.netbiosname.lower(), names.dnsdomain.lower())
 			})
 
-		setup_add_ldif(samdb, setup_path("provision_dns_add_samba.ldif"), {
-			"DNSDOMAIN": names.dnsdomain,
-			"DOMAINDN": names.domaindn,
-			"DNSPASS_B64": b64encode(dnspass.encode('utf-16-le')),
-			"HOSTNAME" : names.hostname,
-			"DNSNAME" : '%s.%s' % (
-				names.netbiosname.lower(), names.dnsdomain.lower())
-			})
-
+		account_created = False
+		while not account_created:
+			try:
+				setup_add_ldif(samdb, setup_path("provision_dns_add_samba.ldif"), {
+					"DNSDOMAIN": names.dnsdomain,
+					"DOMAINDN": names.domaindn,
+					"DNSPASS_B64": b64encode(dnspass.encode('utf-16-le')),
+					"HOSTNAME" : names.hostname,
+					"DNSNAME" : '%s.%s' % (
+						names.netbiosname.lower(), names.dnsdomain.lower())
+					})
+				account_created = True
+			except:
+				print "Waiting for RID pool"
+				time.sleep(1)

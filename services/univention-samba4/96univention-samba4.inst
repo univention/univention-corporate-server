@@ -405,8 +405,6 @@ rIDNextRID: 2101
 
 			operatingSystem_attribute add
 
-			/usr/share/univention-samba4/scripts/create_dns-host_spn.py
-
 		fi
 
 		## determine default sysvol parent for this host from univentionService="S4 Connector"
@@ -423,6 +421,7 @@ rIDNextRID: 2101
 		## set the predefined NTACL which the provision uses on sysvol
 		/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH" 2>/dev/null
 
+		/usr/share/univention-samba4/scripts/create_dns-host_spn.py
 
 	fi
 
