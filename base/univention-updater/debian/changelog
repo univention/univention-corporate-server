@@ -1,3 +1,9 @@
+univention-updater (7.0.179-1) unstable; urgency=low
+
+  * purge php5-curl if packages was removed (Bug #27666)
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Jul 2012 12:37:18 +0200
+
 univention-updater (7.0.178-1) unstable; urgency=low
 
   * Fix test regression (Bug #26257)

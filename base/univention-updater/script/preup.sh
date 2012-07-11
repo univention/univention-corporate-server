@@ -292,6 +292,12 @@ if [ -e /usr/sbin/apache2 ]; then
 	chmod a-x /usr/sbin/apache2
 fi
 
+# BEGIN 3.0-2 remove php5-curl config if package is removed Bug #27666 
+if [ "$(dpkg-query -W -f='${Status}\n' php5-curl 2>/dev/null)" = "deinstall ok config-files" ]; then
+	dpkg -P php5-curl >&3 2>&3
+fi
+# END 3.0-2 remove php5-curl config if package is removed Bug #27666
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
