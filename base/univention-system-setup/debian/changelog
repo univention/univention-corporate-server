@@ -1,3 +1,10 @@
+univention-system-setup (5.0.193-1) unstable; urgency=low
+
+  * system-setup-boot: added kde-window-manager to recommends
+    (Bug #27694)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jul 2012 09:54:27 +0200
+
 univention-system-setup (5.0.192-1) unstable; urgency=low
 
   * add appliance-hooks directory and call it at the end of join (Bug #27725)

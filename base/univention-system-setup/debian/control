@@ -51,7 +51,8 @@ Depends: ${misc:Depends},
  univention-server-master,
  univention-network-common
 Recommends: firefox,
- xinit
+ xinit,
+ kde-window-manager
 Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot
  This package configures the computer to launch UCS System Setup on its next
