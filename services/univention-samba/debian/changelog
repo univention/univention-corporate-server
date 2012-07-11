@@ -1,3 +1,9 @@
+univention-samba (6.0.43-1) unstable; urgency=low
+
+  * Create /etc/samba/local.config.conf in postinst (Bug #27764)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jul 2012 19:47:01 +0200
+
 univention-samba (6.0.42-1) unstable; urgency=low
 
   * restore set -e behaviour in slave-sync (Bug #23136)
