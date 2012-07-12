@@ -54,17 +54,14 @@ dojo.declare("umc.modules._udm.MultiObjectSelect", [ umc.widgets.MultiObjectSele
 	umcpCommand: umc.tools.ucmpCommand,
 
 	queryCommand: function(options) {
-		// return a dojo.Deferred
-		return this.umcpCommand('udm/query', options).then(function(data) {
-			// transform query to array with id-label-dict entries
-			return dojo.map(data.result, function(iobj) {
-				return {
-					id: iobj.$dn$, // the object's LDAP DN
-					label: iobj.name // for now the label is the object's identity property
-				};
-			});
-		});
-	},
+        // return a dojo.Deferred
+        options.syntax = this.syntax;
+        return this.umcpCommand('udm/syntax/choices', options).then(function(data) {
+            // return array of id-label-pairs directly
+            return data.result
+        });
+    },
+
 
 	// our formatter converts a list of DNs to a list with id-label-dict entries
 	formatter: function(dnList) {

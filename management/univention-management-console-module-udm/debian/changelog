@@ -1,3 +1,10 @@
+univention-management-console-module-udm (1.0.287-1) unstable; urgency=low
+
+  * only show valid nagios hosts when adding assigned hosts to
+    nagios services (Bug #26065)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 11 Jul 2012 17:50:09 +0200
+
 univention-management-console-module-udm (1.0.286-1) unstable; urgency=low
 
   * print every error message only once (Bug #27087)
