@@ -27,6 +27,9 @@ import re, os
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+	RE_PYTHON = re.compile('@!@')
+	RE_VAR = re.compile('@%@')
+
 	def __init__(self):
 		uub.UniventionPackageCheckBase.__init__(self)
 		self.name = '0004-CheckUCR'
@@ -63,6 +66,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				 '0004-28': [ uub.RESULT_ERROR,  'invalid formatted line without ":" found' ],
 				 '0004-29': [ uub.RESULT_ERROR,  'UCR template file contains UCR variables that are not registered in .info-file' ],
 				 '0004-30': [ uub.RESULT_ERROR,  'debian/*.univention-config-registry-variables contains non-UTF-8 strings' ],
+				 '0004-31': [uub.RESULT_ERROR,  'UCR template file contains odd number of %!% markers'],
+				 '0004-32': [uub.RESULT_ERROR,  'UCR template file contains odd number of %@% markers'],
 				 }
 
 	def postinit(self, path):
@@ -466,6 +471,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 							not conffiles[ conffn ]['bcwarning'] and \
 							not conffiles[ conffn ]['ucrwarning']:
 						self.addmsg( '0004-16', 'UCR header is missing', fn )
+				self.test_marker(os.path.join(path, 'conffiles', fn))
 
 		# Part2: subfile templates
 		for mfn, items in all_subfiles.items():
@@ -500,3 +506,26 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				x = line.decode('utf-8')
 			except UnicodeError:
 				self.addmsg( '0004-30', 'contains invalid characters', tmpfn, linecnt )
+
+	def test_marker(self, fn):
+		"""Bug #24728: count of murkers must be evem."""
+		count_python = 0
+		count_var = 0
+		try:
+			f = open(fn, 'r')
+		except IOError, e:
+			#self.addmsg('0004-27', 'cannot open/read file', fn)
+			return
+		try:
+			for l in f:
+				for m in UniventionPackageCheck.RE_PYTHON.finditer(l):
+					count_python += 1
+				for m in UniventionPackageCheck.RE_VAR.finditer(l):
+					count_var += 1
+		finally:
+			f.close()
+
+		if count_python % 2:
+			self.addmsg('0004-31', 'odd number of @!@ markers', fn)
+		if count_var % 2:
+			self.addmsg('0004-32', 'odd number of @%@ markers', fn)

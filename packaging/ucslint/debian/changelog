@@ -1,6 +1,7 @@
 ucslint (2.0.22-1) unstable; urgency=low
 
   * Add dependency tests (Bug #24156)
+  * Add marker test (Bug #24728)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 02 Dec 2011 11:50:09 +0100
 
