@@ -40,14 +40,14 @@ if [ "$1" = "configure" ]; then
 	if [ ! -d /var/lib/samba/sysvol ]; then
 		   mkdir -p /var/lib/samba/sysvol
 		   chown -R root.adm /var/lib/samba/sysvol
-		   chmod 644 /var/lib/samba/sysvol
+		   chmod 755 /var/lib/samba/sysvol
 	fi
 fi
 
 # Fix permissions for the sysvol share
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=27249
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.175-1 ; then
-	chmod 644 /var/lib/samba/sysvol
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.176-1 ; then
+	chmod 755 /var/lib/samba/sysvol
 fi
 
 

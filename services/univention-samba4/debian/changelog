@@ -1,3 +1,9 @@
+univention-samba4 (1.0.176-1) quantal; urgency=low
+
+  * Set mode to 755 for the sysvol dir (Bug #27249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jul 2012 16:40:41 +0200
+
 univention-samba4 (1.0.175-1) unstable; urgency=low
 
   * Fix sysvol permission during the update (Bug #27249)
