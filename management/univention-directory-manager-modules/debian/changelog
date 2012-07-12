@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.283-5) unstable; urgency=low
+
+  * only call convert-user-base64-photos on a DC master in the postinst;
+    Bug #26872
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 12 Jul 2012 12:15:49 +0200
+
 univention-directory-manager-modules (7.0.283-4) unstable; urgency=low
 
   * fixed traceback in emailAddressValidDomain (Bug #23525)
@@ -78,6 +85,7 @@ univention-directory-manager-modules (7.0.274-1) unstable; urgency=low
 
   * added tool convert-user-base64-photos
   * the attribute jpegPhoto is treated as binary format in LDAP now
+  * Non-maintainer upload.
   * base64 encoded jpegPhoto values are converted automatically when
     updating
   Bug #26872
