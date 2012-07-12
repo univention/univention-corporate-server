@@ -1,3 +1,10 @@
+univention-samba4 (1.0.170-1) unstable; urgency=low
+
+  * Merge changes from UCS@school to UCS 3.0-2, removed duplicated UCR
+    defintion (Bug #26510)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jul 2012 06:37:45 +0200
+
 univention-samba4 (1.0.169-1) unstable; urgency=low
 
   * Work around RID pool timing issue in create_dns-host_spn.py
