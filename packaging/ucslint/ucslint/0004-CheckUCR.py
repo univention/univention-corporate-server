@@ -4,7 +4,8 @@ try:
 	import univention.ucslint.base as uub
 except:
 	import ucslint.base as uub
-import re, os
+import re
+import os
 
 # Check 4
 # 1) Nach UCR-Templates suchen und prüfen, ob die Templates in einem info-File auftauchen
@@ -22,8 +23,6 @@ import re, os
 # TODO / FIXME
 # - auf unbekannte Keywords in debian/*.univention-config-registry testen ==> WARNING
 #
-
-
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckBase):
@@ -59,7 +58,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				 '0004-21': [ uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: file" with multiple "Preinst:" line' ],
 				 '0004-22': [ uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: file" with multiple "Postinst:" line' ],
 				 '0004-23': [ uub.RESULT_ERROR,  'debian/*.univention-config-registry exists but debian/rules contains no univention-install-config-registry' ],
-				 '0004-24': [ uub.RESULT_STYLE,	 'debian/*.univention-config-registry exists but no corresponding debian/*.univention-config-registry-variables file' ],
+				 '0004-24': [ uub.RESULT_STYLE,  'debian/*.univention-config-registry exists but no corresponding debian/*.univention-config-registry-variables file' ],
 				 '0004-25': [ uub.RESULT_STYLE,  'debian/rules contains old univention-install-baseconfig call' ],
 				 '0004-26': [ uub.RESULT_STYLE,  'DEPRECATED: debian/*.univention-config-registry-variables exists but debian/rules contains no univention-install-config-registry-info' ],
 				 '0004-27': [ uub.RESULT_WARN,   'cannot open/read file' ],
@@ -191,11 +190,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		else:
 			# read debian/rules
 			fn_rules = os.path.join(path, 'debian', 'rules' )
-			if os.path.exists( fn_rules ):
-				try:
-					rules_content = open(fn_rules, 'r').read()
-				except:
-					rules_content = ''
+			try:
+				rules_content = open(fn_rules, 'r').read()
+			except IOError:
+				rules_content = ''
 			if 'univention-install-baseconfig' in rules_content:
 				self.addmsg( '0004-25', 'file contains old univention-install-baseconfig call', 'debian/rules')
 
@@ -495,17 +493,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def test_config_registry_variables(self, tmpfn):
 		try:
-			lines = open(tmpfn,'r').readlines()
-		except:
-			lines = []
-
-		linecnt = 0
-		for line in lines:
-			linecnt += 1
-			try:
-				x = line.decode('utf-8')
-			except UnicodeError:
-				self.addmsg( '0004-30', 'contains invalid characters', tmpfn, linecnt )
+			f = open(tmpfn, 'r')
+		except IOError:
+			self.addmsg('0004-27', 'cannot open/read file', fn)
+			return
+		try:
+			for linecnt, line in enumerate(f):
+				try:
+					x = line.decode('utf-8')
+				except UnicodeError:
+					self.addmsg( '0004-30', 'contains invalid characters', tmpfn, linecnt )
+		finally:
+			f.close()
 
 	def test_marker(self, fn):
 		"""Bug #24728: count of murkers must be evem."""

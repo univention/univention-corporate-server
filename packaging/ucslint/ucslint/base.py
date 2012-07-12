@@ -227,11 +227,10 @@ class UPCFileTester(object):
 			raise Exception('no file has been loaded')
 
 		msglist = []
-		linenum = 0
 		for t in self.tests:
 			t.cnt = 0
 		# iterate over all lines
-		for line in self.lines:
+		for linenum, line in enumerate(self.lines):
 			# iterate over all tests
 			for t in self.tests:
 				# test regex with current line
@@ -249,7 +248,6 @@ class UPCFileTester(object):
 							msg = msg % { 'startline': startline, 'startpos': startpos, 'endline': endline, 'endpos': endpos, 'basename': self.basename, 'filename': self.filename }
 						# append UPCMessage
 						msglist.append( UPCMessage( t.msgid, msg=msg, filename=self.filename, line=startline, pos=startpos ) )
-			linenum += 1
 
 		# check if mincnt has been reached by counter - if not then add UPCMessage
 		for t in self.tests:
