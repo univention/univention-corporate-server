@@ -1,3 +1,11 @@
+univention-samba4 (1.0.174-1) unstable; urgency=low
+
+  * Merge changes from UCS@school to UCS 3.0-2,
+    s/S3_DOMAIN_SID_FOR_MY_DOMAIN/DOMAIN_SID/ in scripts/setup-s4.sh
+    (Bug #26510)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jul 2012 14:29:38 +0200
+
 univention-samba4 (1.0.173-1) unstable; urgency=low
 
   * Set default permission for /var/lib/samba/sysvol to 644 (Bug #27249)

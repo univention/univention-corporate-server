@@ -174,8 +174,8 @@ if [ -z "$samba4_function_level" ]; then
 fi
 
 
-S3_DOMAIN_SID_FOR_MY_DOMAIN="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
-if [ -z "$S3_DCS" ] || [ -z "$S3_DOMAIN_SID_FOR_MY_DOMAIN" ]; then
+DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
+if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ]; then
 
 	if [ -z "$DOMAIN_SID" ]; then
 		# No SID for this windows/domain has been generated
