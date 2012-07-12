@@ -40,7 +40,7 @@ if [ "$1" = "configure" ]; then
 	if [ ! -d /var/lib/samba/sysvol ]; then
 		   mkdir -p /var/lib/samba/sysvol
 		   chown -R root.adm /var/lib/samba/sysvol
-		   chmod 640 /var/lib/samba/sysvol
+		   chmod 644 /var/lib/samba/sysvol
 	fi
 
 fi

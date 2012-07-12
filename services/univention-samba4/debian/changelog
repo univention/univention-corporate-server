@@ -1,3 +1,9 @@
+univention-samba4 (1.0.173-1) unstable; urgency=low
+
+  * Set default permission for /var/lib/samba/sysvol to 644 (Bug #27249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jul 2012 14:23:50 +0200
+
 univention-samba4 (1.0.172-1) unstable; urgency=low
 
   * remove samba3 startup links for this update and new installations (Bug #26087) 
