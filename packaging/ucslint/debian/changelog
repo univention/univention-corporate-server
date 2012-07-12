@@ -3,6 +3,7 @@ ucslint (2.0.22-1) unstable; urgency=low
   * Add dependency tests (Bug #24156)
   * Add marker test (Bug #24728)
   * Add raise "Text" test (Bug #22492)
+  * Fix handling comments in debian/control (Bug #22556)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 02 Dec 2011 11:50:09 +0100
 

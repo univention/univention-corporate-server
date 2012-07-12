@@ -95,6 +95,9 @@ class DebianControlEntry(dict):
 		inDescription = False
 		# handle multiline entries and merge them into one line
 		while i < len(lines):
+			if not lines[i] or lines[i].startswith('#'):
+				del lines[i]
+				continue
 			if lines[i].startswith(' ') or lines[i].startswith('\t'):
 				if not inDescription:
 					lines[i-1] += ' %s' % lines[i].lstrip(' \t')
@@ -105,12 +108,13 @@ class DebianControlEntry(dict):
 		# split lines into dictionary
 		for line in lines:
 			if not ':' in line:
-				raise DebianControlParsingError()
-			key, val = line.split(': ',1)
+				raise DebianControlParsingError(line)
+			key, val = line.split(': ', 1)
 			self[ key ] = val
 
 
 class ParserDebianControl(object):
+	"""Parse debian/control file."""
 	def __init__(self, filename):
 		self.filename = filename
 		self.source_section = None
@@ -118,7 +122,7 @@ class ParserDebianControl(object):
 
 		try:
 			content = open(self.filename, 'r').read()
-		except:
+		except IOError:
 			raise FailedToReadFile(self.filename)
 
 		parts = content.split('\n\n')
@@ -127,7 +131,9 @@ class ParserDebianControl(object):
 
 		self.source_section = DebianControlEntry(parts[0])
 		for part in parts[1:]:
-			self.binary_sections.append( DebianControlEntry(part) )
+			package = DebianControlEntry(part)
+			if package:
+				self.binary_sections.append(package)
 
 class RegExTest(object):
 	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
