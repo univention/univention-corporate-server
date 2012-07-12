@@ -1,3 +1,9 @@
+univention-updater (7.0.180-3) unstable; urgency=low
+
+  * Fix spelling mistakes (Bug #17290)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Jul 2012 12:50:59 +0200
+
 univention-updater (7.0.180-2) unstable; urgency=low
 
   * Silence setting erratalevel (Bug #27835)
@@ -66,7 +72,7 @@ univention-updater (7.0.173-1) unstable; urgency=low
 
 univention-updater (7.0.172-1) unstable; urgency=low
 
-  * Fixed the check mode for errata updates univnetion-upgrade
+  * Fixed the check mode for errata updates univention-upgrade
     (Bug #26451)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Jul 2012 12:18:58 +0200
@@ -1055,7 +1061,7 @@ univention-updater (7.0.60-1) unstable; urgency=low
 
 univention-updater (7.0.59-1) unstable; urgency=low
 
-  * Use upgrade.log in univnetion-upgrade and return exit code
+  * Use upgrade.log in univention-upgrade and return exit code
     of dist-upgrade (Bug #23453)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 18:08:24 +0200
@@ -2347,11 +2353,11 @@ univention-updater (5.0.72-1) unstable; urgency=low
 
 univention-updater (5.0.71-1) unstable; urgency=low
 
-  * univetion-actualise now reports errors (Bug #7229)
-  * univetion-actualise handles parameters on Basissystems (Bug #15476)
-  * univetion-actualise mentions log-file on errors (Bug #6949)
-  * univetion-actualise only updates pkgdb if configured (Bug #9353)
-  * univetion-actualise reports success if already up-to-date (Bug #15704)
+  * univention-actualise now reports errors (Bug #7229)
+  * univention-actualise handles parameters on Basissystems (Bug #15476)
+  * univention-actualise mentions log-file on errors (Bug #6949)
+  * univention-actualise only updates pkgdb if configured (Bug #9353)
+  * univention-actualise reports success if already up-to-date (Bug #15704)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 19 Feb 2010 11:58:35 +0100
 
@@ -4460,7 +4466,7 @@ univention-updater (1.36-10) unstable; urgency=low
 
 univention-updater (1.36-2) unstable; urgency=low
 
-  * make univentino-repository-merge aware of different package architectures
+  * make univention-repository-merge aware of different package architectures
 
  -- Martin Kuehl <kuehl@univention.de>  Wed,  8 Mar 2006 14:27:17 +0100
 

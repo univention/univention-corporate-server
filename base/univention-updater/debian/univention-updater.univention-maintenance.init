@@ -180,8 +180,8 @@ case "$1" in
 				issue_warning "$SSH_TTY"
 			fi
 		else
-			if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
-				echo -e "\033[31;1mUnivention Updater is updating the system.\033[0m"
+			if echo $update_warning_coloured | egrep -qi 'yes|true'; then
+				echo -e "\033[31;1m""Univention Updater is updating the system.\033[0m"
 			else
 				echo "Univention Updater is updating the system."
 			fi
