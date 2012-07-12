@@ -1,0 +1,4 @@
+[system-ssl]
+name[de]=System: Zertifikatsverwaltung
+name[en]=System: Certificate Management
+icon=system-ssl.gif

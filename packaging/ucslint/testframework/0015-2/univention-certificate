@@ -1,0 +1,144 @@
+#!/bin/sh
+#
+# Univention SSL
+#  openssl wrapper
+#
+# Copyright (C) 2004-2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+usage ()
+{
+	if [ -n "$1" ]; then
+		echo ""
+		echo "$1"
+		echo ""
+	fi
+
+	echo ""
+	echo "Usage: univention-certificate command [options] "
+	echo ""
+	echo "Commands:"
+	echo "        new"
+	echo "        revoke"
+	echo "        renew"
+	echo "        check"
+	echo "        dump"
+	echo "        list"
+	echo ""
+	echo "Options"
+	echo "        -name <name>"
+	echo "        -days <days>"
+	echo ""
+
+	exit
+}
+
+command="$1"
+shift
+
+if [ "$command" != "new" -a "$command" != "revoke" -a "$command" != "renew" -a "$command" != "check" -a "$command" != "list" -a "$command" != "dump" ]; then
+	if [ -n "$command" ]; then
+		usage "unknown command: $command"
+	else
+		usage
+	fi
+fi
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+	"-path")
+		shift
+		path="$1"
+		shift
+		;;
+	"-name")
+		shift
+		name="$1"
+		shift
+		;;
+	"-days")
+		shift
+		days="$1"
+		shift
+		;;
+	*)
+		usage "unknown option $1"
+		shift
+		;;
+	esac
+done
+
+if [ "$command" != "list" -a -z "$name" ]; then
+	usage "missing -name"
+fi
+
+cd /etc/univention/ssl
+
+. /usr/share/univention-ssl/make-certificates.sh
+
+case "$command" in
+	"new")
+		echo "Creating certificate: $name"
+		gencert "/etc/uninvention/ssl/$name" "$name"
+		if [ -n "$days" ]; then
+			renew_cert "$name" "$days"
+		fi
+		getent group "DC Backup Hosts" 2>&1 >/dev/null
+		if [ $? = 0 ]; then
+			chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$name"
+			chmod -R g+rx "/etc/univention/ssl/$name"
+		fi
+		;;
+	"revoke")
+		echo "Revoke certificate: $name"
+		revoke_cert "$name"
+		;;
+	"renew")
+		if [ -z "$days" ]; then
+			usage "missing -days"
+		fi
+		echo "Renew certificate: $name"
+		renew_cert "$name" "$days"
+		;;
+	"check")
+		echo -n "Certificate \"$name\" is "
+		has_valid_cert $name
+		if [ $? = 0 ]; then
+			echo "valid"
+		else
+			echo "invalid"
+		fi
+		;;
+	"list")
+		echo "List all certificates"
+		list_cert_names
+		;;
+	"dump")
+		echo "Dump certificate: $name"
+		openssl x509 -in /etc/univention/ssl/$name/cert.pem -noout -text
+		;;
+esac
+

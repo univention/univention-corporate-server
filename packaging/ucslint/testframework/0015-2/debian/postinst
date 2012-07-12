@@ -1,0 +1,114 @@
+#!/bin/bash -e
+#
+# Univention SSL
+#  postinst script
+#
+# Copyright (C) 2004-2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# update paths (dir name changed on switch from 1.3-2 to 2.0-0)
+if [ ! -e /etc/univention/ssl/ucsCA -a -d /etc/univention/ssl/udsCA ] ; then
+	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
+fi
+
+CERTPATH=/etc/univention/ssl/ucsCA/certs
+
+test -d $CERTPATH || /bin/mkdir -p $CERTPATH
+
+# add symlink for backward compatibility (will be removed in future releases!)
+if [ ! -e /etc/univention/ssl/udsCA ] ; then
+	ln -s ucsCA /etc/univention/ssl/udsCA
+fi
+
+eval `univention-baseconfig shell domainname`
+
+univention-baseconfig set ssl/country?DE
+univention-baseconfig set ssl/state?Bremen
+univention-baseconfig set ssl/locality?Bremen
+univention-baseconfig set ssl/organization?"Univention GmbH"
+univention-baseconfig set ssl/organizationalunit?"Univention Corporate Server"
+univention-baseconfig set ssl/common?"Univention Corporate Server Root CA"
+univention-baseconfig set ssl/email?"ssl@$domainname"
+univention-baseconfig set ssl/default/days?730
+univention-baseconfig set ssl/validity/warning?30
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.5-1; then
+	# on update explicitely set hashfunction to md5 for backwards compatibility
+	univention-config-registry set ssl/default/hashfunction?md5
+fi
+# on new installations, where hashfunction ist unset, default to sha1
+univention-config-registry set ssl/default/hashfunction?sha1
+
+eval `univention-baseconfig shell`
+
+if [ ! -e "/var/log/univention/ssl-sync.log" ]; then
+	touch /var/log/univention/ssl-sync.log
+	chown root:adm /var/log/univention/ssl-sync.log
+	chmod 640 /var/log/univention/ssl-sync.log
+fi
+if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ "$server_role" = "basesystem" ]; then
+	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/$hostname.$domainname" ]; then
+
+		# try to set the clock before generating the root CA, otherwise it is possible that the certificate is not valid at the end of the installation
+		# Bug #13549
+		rdate time.fu-berlin.de || rdate 130.133.1.10 || true
+
+		. /usr/share/univention-ssl/make-certificates.sh;
+		init;
+		univention-certificate new -name $hostname.$domainname
+		ln -sf /etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/$hostname
+	else
+		echo "skipped. SSL Certificate found in $CERTPATH ";
+	fi
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.3; then
+	# generate root ca request
+	(cd /etc/univention/ssl
+	openssl x509 -x509toreq -in ucsCA/CAcert.pem -signkey ucsCA/private/CAkey.pem -out ucsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
+	)
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.3-1; then
+	ln -sf /etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/$hostname
+fi
+
+if [ "$1" = "$configure" -a -z "$2" ]; then
+	# generate root ca request
+	(cd /etc/univention/ssl
+	openssl x509 -x509toreq -in ucsCA/CAcert.pem -signkey ucsCA/private/CAkey.pem -out ucsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
+	)
+fi
+
+if [ "$1" = "configure" ]; then
+	if test -f /etc/init.d/univention-directory-listener
+		then
+		/etc/init.d/univention-directory-listener crestart || true
+	fi
+fi
+
+#DEBHELPER#
+
+exit 0

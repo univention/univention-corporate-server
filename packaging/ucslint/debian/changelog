@@ -1,3 +1,9 @@
+ucslint (2.0.23-1) unstable; urgency=low
+
+  * added 0015-FuzzyNames.py: test for incorrect spelling of "univention" (Bug #17290)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 11 Jul 2012 18:47:46 +0200
+
 ucslint (2.0.22-1) unstable; urgency=low
 
   * Add dependency tests (Bug #24156)

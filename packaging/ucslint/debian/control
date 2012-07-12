@@ -9,7 +9,7 @@ Standards-Version: 3.6.1
 
 Package: ucslint
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, devscripts
+Depends: ${python:Depends}, ${misc:Depends}, devscripts, python-libtre
 Conflicts: ucs-tools (<< 1.2.5)
 Description: ucslint - Univention packaging check tool
  This package contains the Univention tool ucslint that
