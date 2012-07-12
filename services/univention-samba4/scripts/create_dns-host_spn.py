@@ -92,6 +92,7 @@ if __name__ == '__main__':
 		base="OU=Domain Controllers,%s" % basedn,
 		scope=samba.ldb.SCOPE_ONELEVEL, attrs=["dNSHostName"])
 	names.hostname = str(res4[0]["dNSHostName"]).replace("." + names.dnsdomain,"")
+	names.hostname = names.hostname.lower()
 
 	dnspass = samba.generate_random_password(128, 255)
 
