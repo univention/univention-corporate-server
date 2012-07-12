@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention ucslint
+"""Check UCS packages for policy compliance."""
 #
 # Copyright 2008-2012 Univention GmbH
 #
@@ -40,11 +41,17 @@ import re
 try:
 	import univention.ucslint.base as uub
 except ImportError:
-	print >> sys.stderr, 'using fallback ucslint.base instead of univention.ucslint.base'
-	import ucslint.base as uub
+	try:
+		import ucslint.base as uub
+		print >> sys.stderr, 'using fallback ucslint.base instead of univention.ucslint.base'
+	except ImportError:
+		sys.path.insert(0, os.path.curdir)
+		import ucslint.base as uub
+		print >> sys.stderr, 'using local ucslint.base instead of univention.ucslint.base'
 
 
 class DebianPackageCheck(object):
+	"""Check Debian package for policy compliance."""
 	def __init__(self, path, plugindirs, enabled_modules=None, disabled_modules=None, debuglevel=0):
 		self.path = path
 		self.plugindirs = plugindirs
@@ -59,11 +66,12 @@ class DebianPackageCheck(object):
 
 
 	def loadplugins(self):
+		"""Load modules from plugin directory."""
 		for plugindir in plugindirs:
 			plugindir = os.path.expanduser(plugindir)
 			if not os.path.exists(plugindir):
 				if self.debuglevel:
-					print 'WARNING: plugindir %s does not exist' % plugindir
+					print >> sys.stderr, 'WARNING: plugindir %s does not exist' % plugindir
 			else:
 				for f in os.listdir( plugindir ):
 					if f.endswith('.py') and f[0:4].isdigit():
@@ -77,17 +85,18 @@ class DebianPackageCheck(object):
 								exec fd in module.__dict__
 								self.pluginlist[modname] = module
 								if self.debuglevel:
-									print 'Loaded module %s' % modname
-							except:
-								print 'ERROR: Loading module %s failed' % f
+									print >> sys.stderr, 'Loaded module %s' % modname
+							except Exception:
+								print >> sys.stderr, 'ERROR: Loading module %s failed' % f
 								if self.debuglevel:
 									raise
 						else:
 							if self.debuglevel:
-								print 'Module %s is not enabled' % f
+								print >> sys.stderr, 'Module %s is not enabled' % f
 
 
 	def check(self):
+		"""Run plugin on files in path."""
 		for plugin in self.pluginlist.values():
 			obj = plugin.UniventionPackageCheck()
 			self.msgidlist.update( obj.getMsgIds() )
@@ -98,9 +107,10 @@ class DebianPackageCheck(object):
 
 
 	def modifyMsgIdList(self, newmap):
-		""" newmap == { RESULT_WARN: [ '0004-1', '0019-17', ... ],
-						RESULT_ERROR: [ '0004-2' ],
-						}
+		"""Set severity level of messages.
+		newmap == { RESULT_WARN: [ '0004-1', '0019-17', ... ],
+					RESULT_ERROR: [ '0004-2' ],
+					}
 		"""
 		for level, idlist in newmap.items():
 			for curid in idlist:
@@ -109,14 +119,16 @@ class DebianPackageCheck(object):
 
 
 	def loadOverrides(self):
+		"""Parse debian/ucslint.overrides file.
+		"""
 		self.overrides = set()
 		fn = os.path.join( self.path, 'debian', 'ucslint.overrides' )
 		if os.path.isfile(fn):
 			lines = []
 			try:
-				lines = open(fn,'r').readlines()
-			except:
-				print >>sys.stderr, 'WARNING: cannot load debian/ucslint.overrides'
+				lines = open(fn, 'r').readlines()
+			except IOError:
+				print >> sys.stderr, 'WARNING: cannot load debian/ucslint.overrides'
 
 			reModule = re.compile('^(\d+-\d+):?\s*')
 			reFilename = re.compile('^(.*?)(:\d+)?$')
@@ -149,6 +161,7 @@ class DebianPackageCheck(object):
 				self.overrides.add( (module, filename, linenumber, ) )
 
 	def inOverrides(self, module, filename, linenumber):
+		"""Check message agains overrides."""
 		if (module, None, None, ) in self.overrides:
 			return True
 		for (modulename, pattern, number, ) in self.overrides:
@@ -159,6 +172,7 @@ class DebianPackageCheck(object):
 		return False
 
 	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories ):
+		"""Print result of cheks."""
 		incident_cnt = 0
 		exitcode_cnt = 0
 
@@ -182,28 +196,32 @@ class DebianPackageCheck(object):
 
 		return incident_cnt, exitcode_cnt
 
+
 def clean_id(idstr):
+	"""Format ID strng."""
 	if not '-' in idstr:
-		raise Exception('no valid id (%s) - missing dash' % idstr)
-	modid, msgid = idstr.strip().split('-',1)
+		raise ValueError('no valid id (%s) - missing dash' % idstr)
+	modid, msgid = idstr.strip().split('-', 1)
 	return '%s-%s' % (clean_modid(modid), clean_msgid(msgid))
 
+
 def clean_modid(modid):
+	"""Format module ID string."""
 	if not modid.isdigit():
-		raise Exception('modid contains invalid characters: %s' % modid)
-	return '%s%s' % ((4-len(modid.strip())) * '0', modid)
+		raise ValueError('modid contains invalid characters: %s' % modid)
+	return '%04d' % (int(modid))
+
 
 def clean_msgid(msgid):
+	"""Format message ID string."""
 	if not msgid.isdigit():
-		raise Exception('msgid contains invalid characters: %s' % msgid)
+		raise ValueError('msgid contains invalid characters: %s' % msgid)
 	return '%d' % int(msgid)
 
 
-def usage():
-	print 'ucslint [-d] [<path>]'
-
 if __name__ == '__main__':
-	parser = optparse.OptionParser()
+	usage = "usage: %prog [options] [<path>]"
+	parser = optparse.OptionParser(usage=usage)
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
 					   dest = 'debug', default = 0,
 					   help = 'if set, debugging is activated and set to the specified level' )
@@ -243,21 +261,17 @@ if __name__ == '__main__':
 		pkgpath = args[0]
 
 	if not os.path.exists( pkgpath ):
-		print "ERROR: directory %s does not exist!" % pkgpath
-		sys.exit(1)
+		parser.error("directory %s does not exist!" % pkgpath)
 
 	if not os.path.isdir( pkgpath ):
-		print "ERROR: %s is no directory!" % pkgpath
-		sys.exit(1)
+		parser.error("%s is no directory!" % pkgpath)
 
 	if not os.path.isdir( os.path.join(pkgpath, 'debian') ):
-		print "ERROR: %s/debian does not exist or is not a directory!" % pkgpath
-		sys.exit(1)
+		parser.error("%s/debian does not exist or is not a directory!" % pkgpath)
 
 	plugindirs = [
-		'/usr/lib/python2.4/site-packages/univention/ucslint',
-		'/usr/lib/pymodules/python2.6/univention/ucslint',
 		'~/.ucslint',
+		os.path.dirname(uub.__file__),
 		]
 
 	# override plugin directories
@@ -290,5 +304,3 @@ if __name__ == '__main__':
 
 	if exitcode_cnt:
 		sys.exit(1)
-	sys.exit(0)
-

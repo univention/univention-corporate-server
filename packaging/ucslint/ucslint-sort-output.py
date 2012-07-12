@@ -1,9 +1,10 @@
 #!/usr/bin/python
 #
-import sys, os, re
+import sys
+import re
 
 if len(sys.argv) < 2:
-	print 'ucslint-sort-output.py <filename>'
+	print >>sys.stderr, 'ucslint-sort-output.py <filename>'
 	sys.exit(1)
 
 reID = re.compile('^[UWEIS]:\d\d\d\d-\d+: ')
