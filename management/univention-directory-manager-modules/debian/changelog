@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.285-1) unstable; urgency=low
+
+  * fixed error handling (Bug #7389)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 12 Jul 2012 15:29:43 +0200
+
 univention-directory-manager-modules (7.0.284-1) unstable; urgency=low
 
   * replaced objectClass "univentionClient" by "univentionUbuntuClient"
