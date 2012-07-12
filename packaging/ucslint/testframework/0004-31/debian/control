@@ -1,0 +1,6 @@
+Source: foo
+Build-Depends: ucslint, univention-config-dev
+
+Package: foo
+Architecture: all
+Description: foo
