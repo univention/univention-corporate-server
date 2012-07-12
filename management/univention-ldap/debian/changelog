@@ -1,3 +1,10 @@
+univention-ldap (8.0.91-1) unstable; urgency=low
+
+  * added objectClass "univentionUbuntuClient" to
+    ldap schema (Bug #27581)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 12 Jul 2012 13:57:02 +0200
+
 univention-ldap (8.0.90-1) unstable; urgency=low
 
   * fix handling multiple servers in ldap/server/addition (Bug #27050) 

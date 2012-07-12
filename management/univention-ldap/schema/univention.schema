@@ -178,6 +178,11 @@ objectclass ( 1.3.6.1.4.1.10176.75 NAME 'univentionDomainController'
 	MUST ( cn )
 	MAY ( univentionServerRole $ univentionService $ univentionServerReinstall $ univentionServerInstallationProfile $ univentionServerInstallationText $ univentionServerInstallationPath $ univentionServerInstallationOption) )
 
+objectclass ( 1.3.6.1.4.1.10176.76 NAME 'univentionUbuntuClient'
+	SUP 'univentionHost' AUXILIARY
+	DESC 'Univention Ubuntu client'
+	MUST ( cn ) )
+
 objectclass ( 1.3.6.1.4.1.10176.78 NAME 'univentionDomain'
 	SUP ('domain' $ 'sambaDomain') STRUCTURAL
 	DESC 'Additional univention-vars for Groups' )
