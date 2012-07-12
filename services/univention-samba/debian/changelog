@@ -1,3 +1,9 @@
+univention-samba (6.0.44-1) unstable; urgency=low
+
+  * try/finally fixes (Bug #27848)
+
+ -- Florian Best <best@univention.de>  Thu, 12 Jul 2012 14:49:04 +0200
+
 univention-samba (6.0.43-1) unstable; urgency=low
 
   * Create /etc/samba/local.config.conf in postinst (Bug #27764)
