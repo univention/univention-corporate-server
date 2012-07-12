@@ -342,7 +342,7 @@ class CPgeneric(object):
 		if req.headers.get('X-UMC-Session-Id'):
 			sessionid = req.headers['X-UMC-Session-Id']
 		elif req.cookie.get('UMCSessionId'):
-			sessionid = req.cookie['UMCSessionId']
+			sessionid = req.cookie['UMCSessionId'].value
 		else:
 			# a sessionid is required to use this command
 			self._log('info', 'no sessionid found')
@@ -350,6 +350,7 @@ class CPgeneric(object):
 
 		self._log('info', 'found sessionid')
 		self._log(99, 'sessionid="%s"' % (sessionid))
+		return sessionid
 
 	@cherrypy.expose
 	def default( self, *args, **kwargs ):
@@ -592,7 +593,7 @@ class CPAuth(CPgeneric):
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		cookie = bool(json[ 'options' ].get('umcVersion',''))
+		cookie = not bool(json[ 'options' ].get('version',''))
 		request = QueueRequest(None, req, response_queue, self.get_ip_address(), cookie=cookie)
 		UMCP_Dispatcher._queue_send.put(request)
 

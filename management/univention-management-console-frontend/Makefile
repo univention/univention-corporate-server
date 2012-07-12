@@ -63,13 +63,13 @@ $(buildDir)/js/umc/build.js:
 	cd /usr/share/univention-dojo/util/buildscripts; \
 	./build.sh profileFile='$(tmpDir)/build_profile.js' releaseDir="$(CURDIR)/build/js" version="$(version)"
 	@# index page .. replace the HASH with a timestamp
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' index.html > "$(buildDir)/index.html"
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/;' index.html > "$(buildDir)/debug.html"
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' index.html > "$(buildDir)/index.html"
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' index.html > "$(buildDir)/debug.html"
 	@# copy css style sheets and images
 	rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
 	@# static login pages
 	for i in login blank; do \
-		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
+		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
 	done;
 
 build-dev: build-common
@@ -80,7 +80,7 @@ build-dev: build-common
 		ln -fs /usr/share/univention-dojo/$$i "$(buildDir)/js"; \
 	done
 	@# index page .. replace the HASH with a timestamp
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; /<script.*umc\/build.js.*<\/script>/d;' index.html > "$(buildDir)/index.html"
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; /<script.*umc\/build.js.*<\/script>/d; s/%VERSION%/$(version)/;' index.html > "$(buildDir)/index.html"
 	@# symlinks for css style sheets and images
 	cp -rfs "$(CURDIR)/css" "$(CURDIR)/images" "$(buildDir)"
 	@# symlinks for UMC code
