@@ -4,9 +4,12 @@ try:
 	import univention.ucslint.base as uub
 except:
 	import ucslint.base as uub
-import re, os
+import re
+import os
+
 
 class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+	"""Python specific checks."""
 	def __init__(self):
 		uub.UniventionPackageCheckBase.__init__(self)
 		self.name = '0009-Python'
@@ -17,6 +20,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				 '0009-3': [ uub.RESULT_ERROR, 'python file specifies wrong python version in hashbang' ],
 				 '0009-4': [ uub.RESULT_WARN, 'python file contains whitespace and maybe arguments after python command' ],
 				 '0009-5': [ uub.RESULT_WARN, 'dict.has_key is deprecated in python3 - please use "if key in dict:"' ],
+				 '0009-6': [ uub.RESULT_WARN, 'raise "text" is deprecated in python3' ],
 				 }
 
 	def postinit(self, path):
@@ -53,6 +57,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 		tester = uub.UPCFileTester()
 		tester.addTest( re.compile('.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0 )
+		tester.addTest( re.compile(r'''\braise\s*(?:'[^']+'|"[^"]+")'''), '0009-6', 'raise "text" is deprecated in python3', cntmax=0 )
 		for fn in py_files:
 			try:
 				content = open(fn, 'r').read(100)
