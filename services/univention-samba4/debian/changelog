@@ -1,3 +1,9 @@
+univention-samba4 (1.0.172-1) unstable; urgency=low
+
+  * remove samba3 startup links for this update and new installations (Bug #26087) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Jul 2012 13:14:09 +0200
+
 univention-samba4 (1.0.171-1) unstable; urgency=low
 
   * create lowercase samaccountname in create_dns-host_spn.py
