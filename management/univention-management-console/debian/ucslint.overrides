@@ -5,3 +5,4 @@
 0010-4: umc-module-templates/simple_form/umc/python/MODULEID/__init__.py
 0010-4: umc-module-templates/simple_form/debian/rules
 0010-4: umc-module-templates/debian/rules
+0014-3: debian/rules
