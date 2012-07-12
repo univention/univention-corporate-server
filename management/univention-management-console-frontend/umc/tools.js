@@ -170,7 +170,7 @@ dojo.mixin(umc.tools, {
 	_PollingHandler: function(url, content, finishedDeferred, opts) {
 		// save the current session ID locally, as the cookie might expire when
 		// the time and timezone settings are updated
-		var _oldSessionID = this._sessionID;
+		var _oldSessionID = umc.tools.getSessionId();
 
 		return {
 			finishedDeferred: finishedDeferred,
@@ -225,8 +225,8 @@ dojo.mixin(umc.tools, {
 				// therefore the cookie is not updated (which is checked for the
 				// session timeout), however, the server will renew the session
 				// with each valid request that it receives
-				var currentSessionID = this._sessionID;
-				if (!currentSessionID || 'undefined' == currentSessionID) {
+				var currentSessionID = umc.tool.getSessionId();
+				if (!currentSessionID) {
 					// restore last valid session ID
 					currentSessionID = _oldSessionID;
 				}
@@ -241,7 +241,7 @@ dojo.mixin(umc.tools, {
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
-						'X-UMC-Session-Id': umc.tools._sessionID
+						'X-UMC-Session-Id': umc.tools.getSessionId()
 					},
 					postData: this.content,
 					timeout: 1000 * this.xhrTimeout
@@ -360,7 +360,7 @@ dojo.mixin(umc.tools, {
 				handleAs: 'json',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-UMC-Session-Id': umc.tools._sessionID
+					'X-UMC-Session-Id': umc.tools.getSessionId()
 				},
 				postData: body
 			});
