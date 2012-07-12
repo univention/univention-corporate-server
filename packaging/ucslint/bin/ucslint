@@ -166,7 +166,7 @@ class DebianPackageCheck(object):
 			return True
 		for (modulename, pattern, number, ) in self.overrides:
 			if modulename == module:
-				if fnmatch.fnmatch(filename, pattern):
+				if fnmatch.fnmatch(os.path.abspath(filename), os.path.abspath(pattern)):
 					if number is None or number == linenumber:
 						return True
 		return False
