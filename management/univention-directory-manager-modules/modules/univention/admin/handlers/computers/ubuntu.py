@@ -395,7 +395,7 @@ class object(univention.admin.handlers.simpleComputer):
 			raise univention.admin.uexceptions.invalidOptions(_(' At least posix or kerberos is required.'))
 		
 		
-		ocs=['top', 'person', 'univentionHost', 'univentionClient']
+		ocs=['top', 'person', 'univentionHost', 'univentionUbuntuClient']
 		al=[]
 		if 'kerberos' in self.options:
 			domain=univention.admin.uldap.domain(self.lo, self.position)
@@ -562,7 +562,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	else:
 		filter=univention.admin.filter.conjunction('&',[
 			univention.admin.filter.expression('objectClass', 'univentionHost'),
-			univention.admin.filter.expression('objectClass', 'univentionClient'),
+			univention.admin.filter.expression('objectClass', 'univentionUbuntuClient'),
 			univention.admin.filter.conjunction('|', [
 				univention.admin.filter.expression('objectClass', 'posixAccount'),
 				univention.admin.filter.conjunction('&', [
@@ -583,4 +583,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 def identify(dn, attr, canonical=0):
 		
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionClient' in attr.get('objectClass', []) and ( 'posixAccount' in attr.get('objectClass', []) or ( 'krb5KDCEntry' in attr.get('objectClass', []) and 'krb5Principal' in attr.get('objectClass', []) ) )
+	return 'univentionHost' in attr.get('objectClass', []) and 'univentionUbuntuClient' in attr.get('objectClass', []) and ( 'posixAccount' in attr.get('objectClass', []) or ( 'krb5KDCEntry' in attr.get('objectClass', []) and 'krb5Principal' in attr.get('objectClass', []) ) )

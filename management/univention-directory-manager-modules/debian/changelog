@@ -1,3 +1,10 @@
+univention-directory-manager-modules (7.0.284-1) unstable; urgency=low
+
+  * replaced objectClass "univentionClient" by "univentionUbuntuClient"
+    in computers.ubuntu module (Bug #27581)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 12 Jul 2012 14:07:25 +0200
+
 univention-directory-manager-modules (7.0.283-5) unstable; urgency=low
 
   * only call convert-user-base64-photos on a DC master in the postinst;
