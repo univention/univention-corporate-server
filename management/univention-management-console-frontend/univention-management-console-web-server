@@ -471,8 +471,11 @@ class CPUpload( CPgeneric ):
 		self._log('info', 'got new request')
 
 		# check for a valid session key
-		if 'X-UMC-Session-Id' in kwargs:
-			sessionid = kwargs['X-UMC-Session-Id']
+		if cherrypy.request.headers.get('X-UMC-Session-Id') or 'X-UMC-Session-Id' in kwargs:
+			if 'X-UMC-Session-Id' in kwargs:
+				sessionid = kwargs['X-UMC-Session-Id']
+			else:
+				sessionid = cherrypy.request.headers['X-UMC-Session-Id']
 			self._log('info', 'found sessionid')
 			self._log(99, 'sessionid="%s"' % (sessionid))
 		else:

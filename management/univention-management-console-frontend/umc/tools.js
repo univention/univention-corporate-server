@@ -241,7 +241,7 @@ dojo.mixin(umc.tools, {
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
-						'X-UMC-Session-Id': this._sessionID
+						'X-UMC-Session-Id': umc.tools._sessionID
 					},
 					postData: this.content,
 					timeout: 1000 * this.xhrTimeout
@@ -360,7 +360,7 @@ dojo.mixin(umc.tools, {
 				handleAs: 'json',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-UMC-Session-Id': this._sessionID
+					'X-UMC-Session-Id': umc.tools._sessionID
 				},
 				postData: body
 			});
