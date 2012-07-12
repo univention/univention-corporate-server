@@ -225,7 +225,7 @@ dojo.mixin(umc.tools, {
 				// therefore the cookie is not updated (which is checked for the
 				// session timeout), however, the server will renew the session
 				// with each valid request that it receives
-				var currentSessionID = umc.tool.getSessionId();
+				var currentSessionID = umc.tools.getSessionId();
 				if (!currentSessionID) {
 					// restore last valid session ID
 					currentSessionID = _oldSessionID;

@@ -1,3 +1,11 @@
+univention-management-console-frontend (1.0.390-1) unstable; urgency=low
+
+  * temporary deactivated univention-management-console-frontend-doc in
+  	Makefile
+  * fixed typo; Bug #26635
+
+ -- Florian Best <best@univention.de>  Thu, 12 Jul 2012 12:47:33 +0200
+
 univention-management-console-frontend (1.0.389-1) unstable; urgency=low
 
   * fixed references to umc.tools._sessionID; Bug #26635

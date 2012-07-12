@@ -121,12 +121,13 @@ build-common: i18n
 api-doc: umc.xml
 
 umc.xml:
-	@# generate umc.xml for univention-dojo-api-viewer
-	cp -r /usr/share/univention-dojo/ '$(dojo_tmp_dir)'
-	echo 'location = $(rel_root_path)$(CURDIR)/umc/' > '$(dojo_tmp_dir)/util/docscripts/modules/umc.module.properties'
-	cd '$(dojo_tmp_dir)/util/docscripts/'; \
-	php generate.php umc dojo dijit dojox --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
-	rm -rf $(dojo_tmp_dir)
+	touch umc.xml
+#	@# generate umc.xml for univention-dojo-api-viewer
+#	cp -r /usr/share/univention-dojo/ '$(dojo_tmp_dir)'
+#	echo 'location = $(rel_root_path)$(CURDIR)/umc/' > '$(dojo_tmp_dir)/util/docscripts/modules/umc.module.properties'
+#	cd '$(dojo_tmp_dir)/util/docscripts/'; \
+#	php generate.php umc dojo dijit dojox --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
+#	rm -rf $(dojo_tmp_dir)
 
 i18n:
 	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
