@@ -1,0 +1,6 @@
+#!/usr/bin/make -f
+%:
+	dh $*
+dummy:
+	univention-install-config-registry
+	dh-umc-module-build

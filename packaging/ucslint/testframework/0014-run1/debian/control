@@ -1,0 +1,29 @@
+Source: ucslint
+Build-Depends: foo
+Build-Depends-Indep: bar
+
+Package: preinst-fail
+Architecture: all
+Depends: univention-config
+Description: preinst
+
+Package: dep-fail
+Architecture: all
+Description: postinst prerm postrm
+
+Package: preinst-ok
+Architecture: all
+Pre-Depends: univention-config
+Depends: univention-base-files
+Description: preinst
+
+Package: dep-ok
+Architecture: all
+Depends: univention-config, univention-base-files
+Description: postinst prerm postrm
+
+Package: misc-ok
+Architecture: all
+Depends: ${misc:Depends},
+ univention-base-files
+Description: postinst prerm postrm

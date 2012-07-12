@@ -1,0 +1,1 @@
+/usr/sbin/univention-config-registry set foo=bar
