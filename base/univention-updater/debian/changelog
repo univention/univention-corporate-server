@@ -1,3 +1,9 @@
+univention-updater (8.0.180-1) unstable; urgency=low
+
+  * fix regression introduced in 7.0.177 (Bug #27885)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 Jul 2012 11:09:52 +0200
+
 univention-updater (7.0.179-1) unstable; urgency=low
 
   * purge php5-curl if packages was removed (Bug #27666)

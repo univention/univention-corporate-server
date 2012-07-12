@@ -294,13 +294,14 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 					# Repository update is already complete
 					cmd.append('--no-repository-update')
 				# all output of univention-errata-update should go to stdout for us to grab
-				pipe = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, env=os.environ).stdout
+				process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, env=os.environ)
 				while True:
 					# blocking! make sure to flush() in process, especially print
-					line = pipe.readline()
+					line = process.stdout.readline()
 					if not line:
 						break
-					dprint(silent, line)
+					# remove trailing \n (its always there: readline())
+					dprint(silent, line[:-1])
 				retcode = process.returncode
 				if retcode:
 					dprint(silent, 'exitcode of univention-errata-update: %s' % retcode, debug=True)
