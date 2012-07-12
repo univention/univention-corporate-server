@@ -80,8 +80,8 @@ def str2pat( string ):
 
 class MemorySize( object ):
 	"""Parse and convert size with optional prefix from and to numbers."""
-	UNITS = ( 'B', 'KB', 'MB', 'GB', 'TB' )
-	SIZE_REGEX = re.compile( '^ *(?P<size>[0-9]+(?:[,.][0-9]+)?)[ \t]*(?P<unit>(%s))? *$' % '|'.join( UNITS ) )
+	UNITS = ('', 'K', 'M', 'G', 'T', 'P')
+	SIZE_REGEX = re.compile('^ *(?P<size>[0-9]+(?:[,.][0-9]+)?)[ \t]*(?:(?P<unit>[%s])(?:[Ii]?[Bb])?|[Bb])? *$' % (''.join(UNITS) + ''.join(UNITS).lower(),))
 
 	@staticmethod
 	def num2str( size, unit = 'B' ):
@@ -91,6 +91,7 @@ class MemorySize( object ):
 		>>> MemorySize.num2str(512, unit='MB')
 		'512.0 MB'
 		"""
+		unit = unit.rstrip('IiBb')
 		block_size = 1
 		for item in MemorySize.UNITS:
 			if item == unit:
@@ -104,16 +105,22 @@ class MemorySize( object ):
 			unit += 1
 
 		if unit > 0:
-			return '%.1f %s' % ( size, MemorySize.UNITS[ unit ] )
+			return '%.1f %sB' % (size, MemorySize.UNITS[unit])
 		else:
-			return '%.0f %s' % ( size, MemorySize.UNITS[ unit ] )
+			return '%.0f %sB' % (size, MemorySize.UNITS[unit])
 
 	@staticmethod
 	def str2num( size, block_size = 1, unit = 'B' ):
 		"""Parse string consisting of size and prefix into number.
 		>>> MemorySize.str2num('512')
 		512L
+		>>> MemorySize.str2num('512 B')
+		512L
+		>>> MemorySize.str2num('512 M')
+		536870912L
 		>>> MemorySize.str2num('512 MB')
+		536870912L
+		>>> MemorySize.str2num('512 MiB')
 		536870912L
 		>>> MemorySize.str2num('512,0 MB')
 		536870912L
@@ -123,20 +130,27 @@ class MemorySize( object ):
 		8589934592L
 		>>> MemorySize.str2num('2.,0 GB')
 		-1
+		>>> MemorySize.str2num('2 XB')
+		-1
+		>>> MemorySize.str2num('2', unit='XB')
+		-1
 		"""
 		match = MemorySize.SIZE_REGEX.match( size )
 		if not match:
-			return -1
+			return -1 # raise ValueError(size)
 
-		grp = match.groupdict()
-		grp[ 'size' ] = grp[ 'size' ].replace( ',', '.' )
-		size = float( grp[ 'size' ] )
-		factor = 0
-		if 'unit' in grp and grp[ 'unit' ] in MemorySize.UNITS:
-			unit = grp[ 'unit' ]
-		while MemorySize.UNITS[ factor ] != unit:
-				factor +=1
-		size = size * math.pow( 1024, factor )
+		m_size, m_unit = match.groups()
+		m_size = m_size.replace(',', '.')
+		size = float(m_size)
+		if m_unit:
+			unit = m_unit.upper()
+		for _ in MemorySize.UNITS:
+			if _ == unit:
+				break
+			else:
+				size *= 1024.0
+		else:
+			return -1 # raise ValueError(unit)
 
 		return long( size / float( block_size ) )
 
