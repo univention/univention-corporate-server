@@ -160,6 +160,9 @@ if [ "$1" = "configure" ]; then
 			univention-config-registry set windows/wins-server?$ldap_master
 		fi
 
+		## New installation, the 
+		update-rc.d -f samba remove > /dev/null
+
 	elif [ -n "$2" ]; then
 
 		if [ -r /var/run/samba.pid ]; then
@@ -169,12 +172,24 @@ if [ "$1" = "configure" ]; then
 			fi
 		fi
 
+		## The following block of code can be removed after ucs3.0-2
 		if dpkg --compare-versions "$2" lt-nl "1.0.154-1"; then
 			if [ "$samba_debug_level" = 2 ]; then
 				#only set this when value does not differ from the previous default value and the package is upgraded from a version which did not include this paragraph
 				univention-config-registry set samba/debug/level=1
 			fi
+			
+			# Re-create /etc/krb5.keytab
+			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
+			/usr/share/univention-samba4/scripts/create-keytab.sh
+
+			## remove samba(3) system startup links
+			update-rc.d -f samba remove > /dev/null
+
+			## create dns-$hostname account for bind9 SPN
+			/usr/share/univention-samba4/scripts/create_dns-host_spn.py
 		fi
+
 	fi
 
 	if test -f /etc/init.d/univention-directory-listener; then
@@ -215,21 +230,6 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 
 	fi
 
-fi
-
-# Re-create /etc/krb5.keytab
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.159-1 ; then
-	/usr/share/univention-samba4/scripts/create-keytab.sh
-fi
-
-## remove samba(3) system startup links
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.172-1 ; then
-	update-rc.d -f samba remove > /dev/null
-fi
-## New installation, the 
-if [ "$1" = configure -a -z "$2" ];  then
-	update-rc.d -f samba remove > /dev/null
 fi
 
 exit 0

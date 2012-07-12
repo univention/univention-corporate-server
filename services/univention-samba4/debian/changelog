@@ -1,4 +1,11 @@
-univention-samba4 (1.0.176-1) quantal; urgency=low
+univention-samba4 (1.0.177-1) unstable; urgency=low
+
+  * create dns SPN account also on upgrade to ucs3.0-2 in postinst (Bug #26641)
+  * consolidate ucs3.0-2 update specific code into one block
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Jul 2012 17:09:30 +0200
+
+univention-samba4 (1.0.176-1) unstable; urgency=low
 
   * Set mode to 755 for the sysvol dir (Bug #27249)
 
