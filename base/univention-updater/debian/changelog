@@ -1,4 +1,4 @@
-univention-updater (8.0.180-1) unstable; urgency=low
+univention-updater (7.0.180-1) unstable; urgency=low
 
   * fix regression introduced in 7.0.177 (Bug #27885)
 
