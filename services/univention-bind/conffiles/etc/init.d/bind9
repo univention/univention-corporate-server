@@ -40,7 +40,8 @@ sv_action () { # Silently toggle runit state: $action $service_name
 }
 
 sv_running () { # Check wanted state: $service name
-	local status=$(LC_ALL=C sv status "$1")
+	local status
+	status="$(LC_ALL=C sv status "$1")"
 	case "$status" in
 	run:*) return 0 ;; # requested running
 	down:) return 1 ;; # requested shutdown

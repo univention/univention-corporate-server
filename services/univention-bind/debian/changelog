@@ -1,3 +1,9 @@
+univention-bind (6.0.41-6) unstable; urgency=low
+
+  * Fix shell quoting in crestart handling (Bug #26560)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Jul 2012 10:22:02 +0200
+
 univention-bind (6.0.41-5) unstable; urgency=low
 
   * Fix crestart handling (Bug #26560)
