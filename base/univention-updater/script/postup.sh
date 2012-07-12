@@ -35,24 +35,24 @@ UPDATE_NEXT_VERSION="$2"
 
 install ()
 {
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install $1 >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install "$@" >>"$UPDATER_LOG" 2>&1
 }
 reinstall ()
 {
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes --reinstall install $1 >>"$UPDATER_LOG" 2>&1
+	install --reinstall "$@"
 }
 check_and_install ()
 {
-	state="$(dpkg --get-selections $1 2>/dev/null | awk '{print $2}')"
+	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
-		install $1
+		install "$1"
 	fi
 }
 check_and_reinstall ()
 {
-	state="$(dpkg --get-selections $1 2>/dev/null | awk '{print $2}')"
+	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
-		reinstall $1
+		reinstall "$1"
 	fi
 }
 
@@ -75,7 +75,7 @@ if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role
 elif [ "$server_role" = "domaincontroller_master" ]; then
 	install univention-server-master
 elif [ "$server_role" = "domaincontroller_backup" ]; then
-	install univention-server-backup  >>"$UPDATER_LOG" 2>&1
+	install univention-server-backup
 elif [ "$server_role" = "domaincontroller_slave" ]; then
 	install univention-server-slave
 elif [ "$server_role" = "memberserver" ]; then
@@ -101,12 +101,12 @@ if [ ! -z "$update_custom_postup" ]; then
 		if [ -x "$update_custom_postup" ]; then
 			echo -n "Running custom postupdate script $update_custom_postup"
 			"$update_custom_postup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" >>"$UPDATER_LOG" 2>&1
-			echo "Custom postupdate script $update_custom_postup exited with exitcode: $?" >>"$UPDATER_LOG" 2>&1
+			echo "Custom postupdate script $update_custom_postup exited with exitcode: $?" >>"$UPDATER_LOG"
 		else
-			echo "Custom postupdate script $update_custom_postup is not executable" >>"$UPDATER_LOG" 2>&1
+			echo "Custom postupdate script $update_custom_postup is not executable" >>"$UPDATER_LOG"
 		fi
 	else
-		echo "Custom postupdate script $update_custom_postup not found" >>"$UPDATER_LOG" 2>&1
+		echo "Custom postupdate script $update_custom_postup not found" >>"$UPDATER_LOG"
 	fi
 fi
 
@@ -126,7 +126,7 @@ fi
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
 # purge univention-shares Bug #24610
-dpkg -P univention-shares 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
+dpkg -P univention-shares >>"$UPDATER_LOG" 2>&1
 if [ -f /etc/cron.d/univention-shares ]; then
 	rm -f /etc/cron.d/univention-shares
 fi
@@ -134,9 +134,9 @@ fi
 
 ERRATA=93 # Last errata included with UCS-3.0-2
 [ 0$(ucr get version/erratalevel) -lt $ERRATA ] && UPDATE=version/erratalevel=$ERRATA
-univention-config-registry set repository/online/errata/start=$((1 + $ERRATA)) $UPDATE
+univention-config-registry set repository/online/errata/start=$((1 + $ERRATA)) $UPDATE >>"$UPDATER_LOG" 2>&1
 
 echo "done."
-date >>"$UPDATER_LOG" 2>&1
+date >>"$UPDATER_LOG"
 
 exit 0

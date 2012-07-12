@@ -1,3 +1,9 @@
+univention-updater (7.0.180-2) unstable; urgency=low
+
+  * Silence setting erratalevel (Bug #27835)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Jul 2012 11:56:48 +0200
+
 univention-updater (7.0.180-1) unstable; urgency=low
 
   * fix regression introduced in 7.0.177 (Bug #27885)
