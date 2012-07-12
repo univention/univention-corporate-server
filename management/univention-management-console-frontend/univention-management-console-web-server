@@ -66,7 +66,7 @@ except TypeError, ValueError:
 _thread_http = None
 
 class SessionClient(object):
-	def __init__( self, timeout = 300, ip = None ):
+	def __init__( self, timeout = 300, ip = None, cookie = False ):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
 		self.client = umcp.Client()
 		self.client.signal_connect( 'authenticated', self._authenticated )
@@ -85,6 +85,7 @@ class SessionClient(object):
 		self._timer()  # launch the timer
 		self._lock = threading.Lock()
 		self.ip = ip
+		self.cookie = cookie
 
 	def renew_timer( self ):
 		"""Refresh the remaining time the session is will be held open."""
@@ -218,7 +219,7 @@ class UMCP_Dispatcher( object ):
 				# create new session / umcp client
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
 				try:
-					client = SessionClient(timeout = _session_timeout + 5, ip = queuerequest.ip)
+					client = SessionClient(timeout = _session_timeout + 5, ip = queuerequest.ip, cookie = queuerequest.cookie)
 				except Exception, e:
 					CORE.process( 'Failed to create UMC connection: %s' % str(e))
 					response = umcp.Response( queuerequest.request )
@@ -286,16 +287,24 @@ _upload_manager = UploadManager()
 class QueueRequest(object):
 	"""Element for the request queue containing the assoziated session
 	ID, the request object, a response queue and the request ip address."""
-	def __init__(self, sessionid, request, response_queue, ip):
+	def __init__(self, sessionid, request, response_queue, ip, cookie = False):
 		self.sessionid = sessionid
 		self.request = request
 		self.response_queue = response_queue
 		self.ip = ip
+		self.cookie = cookie
 
-def update_session(headers, sessionid):
+def update_session(response, sessionid):
 	"""Defines a new cookie for the given session ID."""
-	headers['X-UMC-Session-Id'] = sessionid
-	headers['X-UMC-Session-Timeout'] = _session_timeout
+	session = UMCP_Dispatcher.sessions.get(sessionid)
+	if session and session.cookie:
+		response.cookie['UMCSessionId'] = sessionid
+		response.cookie['UMCSessionId']['max-age'] = _session_timeout
+		response.cookie['UMCSessionId']['version'] = 1
+		response.cookie['UMCSessionId']['path'] = '/'
+	else:
+		response.headers['X-UMC-Session-Id'] = sessionid
+		response.headers['X-UMC-Session-Timeout'] = _session_timeout
 
 class CPgeneric(object):
 
@@ -326,22 +335,29 @@ class CPgeneric(object):
 		"""get the IP address of client by last entry in X-FORWARDED-FOR header"""
 		return cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).rsplit(', ', 1).pop()
 
-	@cherrypy.expose
-	def default( self, *args, **kwargs ):
-		remote = cherrypy.request.remote
-		self._log('info', 'got new request')
-
+	def get_session_id(self):
+		"""get the current session ID, either set via headers or cookie."""
 		# check for a valid session key
-		headers = cherrypy.request.headers
-		if headers.get('X-UMC-Session-Id'):
-			sessionid = headers['X-UMC-Session-Id']
-			self._log('info', 'found sessionid')
-			self._log(99, 'sessionid="%s"' % (sessionid))
+		req = cherrypy.request
+		if req.headers.get('X-UMC-Session-Id'):
+			sessionid = req.headers['X-UMC-Session-Id']
+		elif req.cookie.get('UMCSessionId'):
+			sessionid = req.cookie['UMCSessionId']
 		else:
 			# a sessionid is required to use this command
 			self._log('info', 'no sessionid found')
 			raise cherrypy.HTTPError(httplib.UNAUTHORIZED)
 
+		self._log('info', 'found sessionid')
+		self._log(99, 'sessionid="%s"' % (sessionid))
+
+	@cherrypy.expose
+	def default( self, *args, **kwargs ):
+		remote = cherrypy.request.remote
+		self._log('info', 'got new request')
+
+		# get the session id from the request
+		sessionid = self.get_session_id()
 		req = None
 
 		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
@@ -377,10 +393,10 @@ class CPgeneric(object):
 		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
 
 		if response.status == umcp.SUCCESS:
-			update_session(cherrypy.response.headers, sessionid)
+			update_session(cherrypy.response, sessionid)
 			return simplejson.dumps(response.body)
 		elif response.mimetype != umcp.MIMETYPE_JSON:
-			update_session(cherrypy.response.headers, sessionid)
+			update_session(cherrypy.response, sessionid)
 			cherrypy.response.headers[ 'Content-Type' ] = response.mimetype
 			return response.body
 
@@ -471,17 +487,13 @@ class CPUpload( CPgeneric ):
 		self._log('info', 'got new request')
 
 		# check for a valid session key
-		if cherrypy.request.headers.get('X-UMC-Session-Id') or 'X-UMC-Session-Id' in kwargs:
-			if 'X-UMC-Session-Id' in kwargs:
-				sessionid = kwargs['X-UMC-Session-Id']
-			else:
-				sessionid = cherrypy.request.headers['X-UMC-Session-Id']
+		if 'X-UMC-Session-Id' in kwargs:
+			# allow for X-UMC-Sesssion-Id as entry in a multi-form (=upload) request
+			sessionid = kwargs['X-UMC-Session-Id']
 			self._log('info', 'found sessionid')
 			self._log(99, 'sessionid="%s"' % (sessionid))
 		else:
-			# a sessionid is required to use this command
-			self._log('info', 'no sessionid found')
-			raise cherrypy.HTTPError(httplib.UNAUTHORIZED)
+			sessionid = self.get_session_id()
 
 		if not cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ):
 			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
@@ -504,7 +516,7 @@ class CPUpload( CPgeneric ):
 		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
 
 		if response.status == umcp.SUCCESS:
-			update_session(cherrypy.response.headers, sessionid)
+			update_session(cherrypy.response, sessionid)
 			if iframe:
 				# this is a workaround to make iframe uploads work, they need the textarea field
 				cherrypy.response.headers[ 'Content-Type' ] = umcp.MIMETYPE_HTML
@@ -580,7 +592,8 @@ class CPAuth(CPgeneric):
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		request = QueueRequest(None, req, response_queue, self.get_ip_address())
+		cookie = bool(json[ 'options' ].get('umcVersion',''))
+		request = QueueRequest(None, req, response_queue, self.get_ip_address(), cookie=cookie)
 		UMCP_Dispatcher._queue_send.put(request)
 
 		CORE.info('CPRoot/auth: pushed request to queue - waiting for response')
@@ -589,7 +602,7 @@ class CPAuth(CPgeneric):
 
 		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
 			CORE.info('CPRoot/auth: creating cookie with sessionid=%s' % response.body.get('sessionid'))
-			update_session(cherrypy.response.headers, response.body['sessionid'])
+			update_session(cherrypy.response, response.body['sessionid'])
 			return ""
 
 		CORE.process('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))

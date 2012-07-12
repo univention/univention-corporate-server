@@ -69,7 +69,7 @@ $(buildDir)/js/umc/build.js:
 	rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
 	@# static login pages
 	for i in login blank; do \
-		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
+		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
 	done;
 
 build-dev: build-common
@@ -91,7 +91,7 @@ build-dev: build-common
 	@# static login pages
 	for i in login blank; do \
 		rm "$(buildDir)/js/umc/$$i.html"; \
-		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
+		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
 	done;
 
 build-common: i18n

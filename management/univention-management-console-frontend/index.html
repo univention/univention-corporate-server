@@ -75,8 +75,11 @@
 			dojo.require("umc.app");
 			dojo.require("umc.widgets.ContainerWidget");
 
-			// start the application when everything has been loaded
 			dojo.addOnLoad(function() {
+				// set the version of the UMC frontend
+				umc.tools.status('version', '%VERSION%');
+
+				// start the application when everything has been loaded
 				umc.app.start({
 					username: getQuery('username'),
 					password: getQuery('password'),

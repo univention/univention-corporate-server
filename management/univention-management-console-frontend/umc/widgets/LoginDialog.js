@@ -232,7 +232,9 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		this.standby(true);
 		umc.tools.umcpCommand('auth', {
 			username: username,
-			password: password
+			password: password,
+			// send also the version of the UMC frontend package
+			version: umc.tools.status('version')
 		}).then(dojo.hitch(this, function(data) {
 			// disable standby in any case
 			this.standby(false);

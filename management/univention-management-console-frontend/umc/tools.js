@@ -53,7 +53,8 @@ dojo.mixin(umc.tools, {
 		displayUsername: true,
 		width: null,
 		setupGui: false,
-		loggingIn: false
+		loggingIn: false,
+		version: ''
 	},
 
 	status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -65,6 +66,7 @@ dojo.mixin(umc.tools, {
 		//		With two parameters, sets the value of the specified key.
 		//		Also contains the properties given
 		//		to `umc.app.start()`. The following properties exist:
+		//		* version (String): The version of the UMC frontend package.
 		//		* username (String): The username of the authenticated user.
 		//		* hostname (String): The hostname on which the UMC is running.
 		//		* domainname (String): The domainname on which the UMC is running.
