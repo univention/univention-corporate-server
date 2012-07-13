@@ -394,7 +394,7 @@ def doit(arglist):
 			msg.append(e.message)
 		if getattr(e, 'args', None):
 			#avoid duplicate messages
-			if not len(msg) or len(e.args) > e.args[0] or e.args != msg[0]:
+			if not len(msg) or len(e.args) > 1 or e.args[0] != msg[0]:
 				msg.extend(e.args)
 
 		# strip elements and make sure that a ':' is printed iff further information follows

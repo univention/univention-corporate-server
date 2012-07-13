@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.288-1) unstable; urgency=low
+
+  * fixed typo in error handling (Bug #7389)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 13 Jul 2012 11:24:29 +0200
+
 univention-directory-manager-modules (7.0.287-1) unstable; urgency=low
 
   * import computers/ubuntu in computers module (Bug #27581)
