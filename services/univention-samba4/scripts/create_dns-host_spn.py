@@ -48,6 +48,7 @@
 
 import samba
 import time
+import sys
 from base64 import b64encode
 from samba.samdb import SamDB
 from samba.auth import system_session
@@ -130,6 +131,7 @@ if __name__ == '__main__':
 			})
 
 		account_created = False
+		count = 0
 		while not account_created:
 			try:
 				setup_add_ldif(samdb, setup_path("provision_dns_add_samba.ldif"), {
@@ -142,5 +144,9 @@ if __name__ == '__main__':
 					})
 				account_created = True
 			except:
+				count += 1
+				if count > 300:
+					print 'ERROR: failed to create dns-$hostname'
+					sys.exit(1)
 				print "Waiting for RID pool"
 				time.sleep(1)

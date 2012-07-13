@@ -1,3 +1,12 @@
+univention-samba4 (1.0.178-1) unstable; urgency=low
+
+  * Test if the password from /etc/machine.secret is the valid password
+    for the S4 host account and set it in secrets.ldb if another
+    password is set there (Bug #26641)
+  * Added a timeout in create_dns-host_spn.py
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Jul 2012 06:54:57 +0200
+
 univention-samba4 (1.0.177-1) unstable; urgency=low
 
   * create dns SPN account also on upgrade to ucs3.0-2 in postinst (Bug #26641)

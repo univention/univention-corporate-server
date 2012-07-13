@@ -165,6 +165,33 @@ if [ "$1" = "configure" ]; then
 
 	elif [ -n "$2" ]; then
 
+		## Is the password in secrets.ldb the valid password? In some cases
+		## the password from machine.secret is the correct password.
+		##  https://forge.univention.org/bugzilla/show_bug.cgi?id=26641
+
+		# get the secret from ldb
+		secret="$(ldbsearch -H /var/lib/samba/private/secrets.ldb  flatname=$windows_domain secret | sed -ne 's|secret: ||p')"
+		# get the host dn
+		dn="$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(cn=$hostname)(objectClass=computer))" dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p')"
+		if [ -n "$dn" -a -n "$secret" ]; then
+			machine_secret="$(cat /etc/machine.secret)"
+			# try to search with the machine secret in S4 LDAP
+			s_res="$(univention-ldapsearch -s base -h $hostname.$domainname -p 389 -w "$machine_secret" -D "$dn" dn | sed -ne 's|^dn: ||p')"
+			if [ -n "$s_res" ]; then
+				# the password from machine.secret is the valid password, so change the secrets.ldb
+				if [ "$secret" != "$machine_secret" ]; then
+					echo "Set secret for flatname=$windows_domain,cn=Primary Domains"
+					ldbmodify -H //var/lib/samba/private/secrets.ldb <<-%EOF
+dn: flatname=$windows_domain,cn=Primary Domains
+changetype: modify
+replace: secret
+secret: $machine_secret
+-
+%EOF
+				fi
+			fi
+		fi
+		
 		if [ -r /var/run/samba.pid ]; then
 			processname=$(ps -p $(cat /var/run/samba.pid) -o comm= )
 			if [ "$processname" = 'samba' ]; then
