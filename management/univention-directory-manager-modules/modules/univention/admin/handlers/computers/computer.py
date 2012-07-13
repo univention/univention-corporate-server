@@ -183,6 +183,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	else:
 		return univention.admin.handlers.computers.macos.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.thinclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.ubuntu.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.managedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.mobileclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.windows.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\

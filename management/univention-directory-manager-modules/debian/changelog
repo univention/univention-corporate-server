@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.286-1) unstable; urgency=low
+
+  * display computers/ubuntu objects in UMC-UDM (Bug #27581)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 13 Jul 2012 10:29:55 +0200
+
 univention-directory-manager-modules (7.0.285-1) unstable; urgency=low
 
   * fixed error handling (Bug #7389)
