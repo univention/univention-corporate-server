@@ -1,3 +1,9 @@
+univention-updater (7.0.181-1) unstable; urgency=low
+
+  * Fix 'detail' not set when restarting during release update (Bug #26318)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Jul 2012 11:16:23 +0200
+
 univention-updater (7.0.180-3) unstable; urgency=low
 
   * Fix spelling mistakes (Bug #17290)

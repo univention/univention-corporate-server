@@ -1100,6 +1100,15 @@ class Instance(umcm.Base):
 							result[f] = int(result[f])
 				if inst == '':
 					result['running'] = False
+			else:
+				# no job running but status for release was asked? 
+				# maybe the server restarted after job finished
+				# and the frontend did not get that information
+				# Bug #26318
+				if job == 'release':
+					result['detail'] = '%s-%s' % (self.ucr.get('version/version'), self.ucr.get('version.patchlevel'))
+				else:
+					result['detail'] = _('Unknown')
 
 			# -------------- additional fields -----------------
 
@@ -1122,12 +1131,14 @@ class Instance(umcm.Base):
 			# this LANG is properly propagated to us)
 			if 'purpose' in result:
 				if result['purpose'].find('%') != -1:
-					result['label'] = result['purpose'] % result['detail']
+					# make sure to not explode (Bug #26318), better show nothing
+					if 'detail' in result:
+						result['label'] = result['purpose'] % result['detail']
 				else:
 					result['label'] = result['purpose']
 			# Affordance to reboot... hopefully this gets set before
 			# we stop polling on this job status
-			self.ucr.load()		# make it as current as possible
+			self.ucr.load()	# make it as current as possible
 			result['reboot'] = self.ucr.is_true('update/reboot/required',False)
 
 		# ----------- DEBUG -----------------
