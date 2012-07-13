@@ -58,7 +58,15 @@ def register_iface(configRegistry, iface, verbose):
 			null = open(os.path.devnull, 'w' )
 			stdout = sys.stdout
 			sys.stdout = null
+
+			# Disable ifdown / ifup while setting new UCR variables to avoid an endless loop
+			restart = configRegistry.get('interfaces/restart/auto', 'true')
+			univention.config_registry.handler_set(['interfaces/restart/auto=false'], quiet=True)
+			
+			# Set values
 			univention.config_registry.handler_set(ucr_set, quiet=True)
+
+			univention.config_registry.handler_set(['interfaces/restart/auto=%s' % restart], quiet=True)
 			sys.stdout = stdout
 	return True
 
