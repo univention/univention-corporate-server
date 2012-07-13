@@ -1,3 +1,10 @@
+univention-updater (7.0.183-1) unstable; urgency=low
+
+  * Fix erratalevel information (Bug #26318)
+  * Fix newline in LogViewer (Bug #27912)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Jul 2012 12:08:12 +0200
+
 univention-updater (7.0.182-1) unstable; urgency=low
 
   * Fix fuzzy in de.po introduced in 7.0.181-1 (related to Bug #26318)

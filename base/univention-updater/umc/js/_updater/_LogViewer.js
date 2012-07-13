@@ -148,7 +148,11 @@ dojo.declare('umc.modules._updater._LogViewer', [
 
 		if (dojo.isArray(content))
 		{
-			content = content.join("<br/>\n");
+			// dont forget to add one last line because a 5-elem-array
+			// will only add 4 newlines with join, resulting in an
+			// ugly logfile
+			var newline = "<br/>\n";
+			content = content.join(newline) + newline;
 		}
 		try
 		{

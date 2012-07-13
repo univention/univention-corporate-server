@@ -1106,7 +1106,7 @@ class Instance(umcm.Base):
 				# and the frontend did not get that information
 				# Bug #26318
 				if job == 'release':
-					result['detail'] = '%s-%s' % (self.ucr.get('version/version'), self.ucr.get('version.patchlevel'))
+					result['detail'] = '%s-%s' % (self.ucr.get('version/version'), self.ucr.get('version/patchlevel'))
 				else:
 					result['detail'] = _('Unknown')
 
