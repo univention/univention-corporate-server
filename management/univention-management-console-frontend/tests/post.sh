@@ -18,7 +18,7 @@ if [ -z "$2" ]; then
 else
         json='{"options":'"$2"'}'
 fi
-echo "POST http://${host}/$url HTTP/1.1
+echo "POST http://${host}/umcp/$url HTTP/1.1
 Host: ${host}
 User-Agent: Mozilla/5.0 (X11; Linux i686; rv:6.0.2) Gecko/20100101 Firefox/6.0.2
 Content-Type: application/json
@@ -50,7 +50,7 @@ for line in sys.stdin:
 
 # authenticate at UMCP server
 function authenticate {
-	key=$(umcp auth '{"username":"'$username'", "password":"'$password'"}' | send | sed -n 's/^.*X-UMC-Session-Id=\([^;]*\).*$/\1/p')
+	key=$(umcp auth '{"username":"'$username'", "password":"'$password'", "version":"1.0.394-1"}' | send | sed -n 's/^.*X-UMC-Session-Id: \(.*\)$/\1/pi')
 	echo "got session key: $key"
 }
 
