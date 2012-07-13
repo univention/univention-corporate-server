@@ -43,6 +43,10 @@ msgstr "Alle verfügbaren Aktualisierungen installieren"
 msgid "Install all errata updates"
 msgstr "Alle Errata-Aktualisierungen installieren"
 
+#: umc/python/updater/__init__.py:1111
+msgid "Unknown"
+msgstr "Unbekannt"
+
 #: umc/python/updater/__init__.py:128
 msgid "Install all package updates"
 msgstr "Alle Paket-Aktualisierungen installieren"

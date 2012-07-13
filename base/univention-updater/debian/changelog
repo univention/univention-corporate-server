@@ -1,3 +1,9 @@
+univention-updater (7.0.182-1) unstable; urgency=low
+
+  * Fix fuzzy in de.po introduced in 7.0.181-1 (related to Bug #26318)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Jul 2012 11:23:12 +0200
+
 univention-updater (7.0.181-1) unstable; urgency=low
 
   * Fix 'detail' not set when restarting during release update (Bug #26318)
