@@ -1,3 +1,9 @@
+univention-updater (7.0.184-1) unstable; urgency=low
+
+  * fixed typos; Bug #26235
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 13 Jul 2012 13:21:46 +0200
+
 univention-updater (7.0.183-1) unstable; urgency=low
 
   * Fix erratalevel information (Bug #26318)

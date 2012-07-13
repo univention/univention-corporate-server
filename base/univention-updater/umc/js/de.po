@@ -289,13 +289,6 @@ msgid ""
 msgstr ""
 "Um die kürzlich ausgeführte Aktion abzuschließen, ist es erforderlich, das System neu zu starten."
 
-#: umc/js/_updater/ProgressPage.js:132
-msgid ""
-"In order to complete the update, it is strongly recommended to reboot the "
-"system."
-msgstr ""
-"Um das ausgeführte pdate abzuschließen, ist es erforderlich, das System neu zu starten."
-
 #: umc/js/updater.js:312 umc/js/updater.js:388
 #: umc/js/_updater/ComponentsPage.js:128
 msgid "Install"

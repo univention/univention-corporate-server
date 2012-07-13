@@ -129,7 +129,7 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 
 				if (this._reboot_required) {
 					// show an alert
-					umc.dialog.alert(this._('In order to complete the update, it is strongly recommended to reboot the system.'));
+					umc.dialog.alert(this._('In order to complete the recently executed action, it is required to reboot the system.'));
 					_closeLogView();
 				}
 				else {
