@@ -20,3 +20,8 @@
 # ucslint-Bug #24816: Does not handle dh-umc-module-install
 0001-6: 45univention-management-console-module-uvmm.inst
 0001-7:
+# Spelling univention
+0015-2: src/univention/uvmm/helpers.py:104
+0015-2: src/univention/uvmm/helpers.py:104
+0015-2: src/univention/uvmm/helpers.py:111
+0015-2: src/univention/uvmm/helpers.py:111

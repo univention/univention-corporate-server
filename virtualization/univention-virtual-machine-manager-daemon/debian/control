@@ -16,6 +16,7 @@ Build-Depends: debhelper (>= 7.0.50~),
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
+ univention-base-files,
  univention-directory-manager-tools (>> 7.0.147),
  univention-ssl,
  python-univention (>> 5.0.10),
