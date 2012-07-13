@@ -1,3 +1,10 @@
+univention-system-setup (5.0.195-1) unstable; urgency=low
+
+  * Use the old interface informations from UCR whether not all
+    informations for one interface have been set (Bug #27928)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Jul 2012 17:31:51 +0200
+
 univention-system-setup (5.0.194-1) unstable; urgency=low
 
   * Add timer to keep session alive when prompted for cleanup confirmation

@@ -343,14 +343,34 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 	for device in $to_change; do
 		device=`echo "$device" | sed -e 's|^ *||'`
 		if [ -z "$device" ]; then continue; fi
-		new_ip=$(get_profile_var "interfaces/$device/address")
+
 		old_ip=$(univention-config-registry get interfaces/$device/address)
-		new_network=$(get_profile_var "interfaces/$device/network")
+  		if ! is_variable_set "interfaces/$device/address"; then
+			new_ip="$(get_profile_var "interfaces/$device/address")"
+		else
+			new_ip="$old_ip"
+		fi
+			
 		old_network=$(univention-config-registry get interfaces/$device/network)
- 		new_netmask=$(get_profile_var "interfaces/$device/netmask")
+  		if ! is_variable_set "interfaces/$device/network"; then
+			new_network=$(get_profile_var "interfaces/$device/network")
+		else
+			new_network="$old_network"
+		fi
+
 		old_netmask=$(univention-config-registry get interfaces/$device/netmask)
- 		new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
+  		if ! is_variable_set "interfaces/$device/netmask"; then
+ 			new_netmask=$(get_profile_var "interfaces/$device/netmask")
+		else
+ 			new_netmask="$old_netmask"
+		fi
+
  		old_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
+  		if ! is_variable_set "interfaces/$device/broadcast"; then
+ 			new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
+		else
+ 			new_broadcast="$old_broadcast"
+		fi
 
  		# interface dhcp type handling for server roles
 		if eval test -n \"\$${device}_hook_old_type\"; then
