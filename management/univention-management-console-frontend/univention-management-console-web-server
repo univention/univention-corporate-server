@@ -302,9 +302,9 @@ def update_session(response, sessionid):
 		response.cookie['UMCSessionId']['max-age'] = _session_timeout
 		response.cookie['UMCSessionId']['version'] = 1
 		response.cookie['UMCSessionId']['path'] = '/'
-	else:
-		response.headers['X-UMC-Session-Id'] = sessionid
-		response.headers['X-UMC-Session-Timeout'] = _session_timeout
+	# always send headers
+	response.headers['X-UMC-Session-Id'] = sessionid
+	response.headers['X-UMC-Session-Timeout'] = _session_timeout
 
 class CPgeneric(object):
 

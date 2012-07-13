@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.392-1) unstable; urgency=low
+
+  * always send X-UMC-Session-Id header; Bug #26635
+
+ -- Florian Best <best@univention.de>  Fri, 13 Jul 2012 08:11:00 +0200
+
 univention-management-console-frontend (1.0.391-1) unstable; urgency=low
 
   * allow UMC web server to use cookies or the header X-UMC-Session-Id;
