@@ -50,6 +50,7 @@ import univention.admin.handlers.computers.domaincontroller_backup
 import univention.admin.handlers.computers.domaincontroller_slave
 import univention.admin.handlers.computers.memberserver
 import univention.admin.handlers.computers.trustaccount
+import univention.admin.handlers.computers.ubuntu
 
 module='computers/computer'
 usewizard=1
