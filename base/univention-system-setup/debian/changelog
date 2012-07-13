@@ -1,3 +1,10 @@
+univention-system-setup (5.0.194-1) unstable; urgency=low
+
+  * Add timer to keep session alive when prompted for cleanup confirmation
+    (frontend). Make sure to cleanup (backend). Bug #27919
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Jul 2012 17:14:18 +0200
+
 univention-system-setup (5.0.193-1) unstable; urgency=low
 
   * system-setup-boot: added kde-window-manager to recommends

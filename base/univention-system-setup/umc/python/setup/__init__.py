@@ -61,12 +61,22 @@ class Instance(umcm.Base):
 		self._finishedLock = threading.Lock()
 		self._finishedResult = True
 		self._progressParser = util.ProgressParser()
+		self._cleanup_required = False
 		# reset umask to default
 		os.umask( 0022 )
 
 	def init( self ):
 		util.installer_i18n.set_language( str( self.locale ) )
 		os.environ[ 'LC_ALL' ] =  str( self.locale )
+
+	def destroy(self):
+		if self._cleanup_required:
+			MODULE.info('Appliance mode: cleanup by timeout')
+			if util.cleanup():
+				MODULE.info('... cleanup successful')
+			else:
+				MODULE.warn('... cleanup operation failed')
+		return super(Instance, self).destroy()
 
 	def _check_thread_error( self, thread, result, request ):
 		"""Checks if the thread returned an exception. In that case in
@@ -204,6 +214,10 @@ class Instance(umcm.Base):
 			# done :)
 			self._finishedResult = True
 			obj._finishedLock.release()
+
+			# we should do a cleanup now
+			self._cleanup_required = True
+
 			return True
 
 		def _finished( thread, result ):
@@ -266,6 +280,8 @@ class Instance(umcm.Base):
 		# (see Bug #27632)
 		MODULE.info('Appliance mode: cleanup')
 		self.finished(request.id, True)
+		# put it here just in case destroy gets called during util
+		self._cleanup_required = False
 		if util.cleanup():
 			MODULE.info('... cleanup successful')
 		else:

@@ -72,11 +72,25 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// internal flag to indicate whether a fatal join error occurred
 	_joinError: null,
 
+	// a timer used it in _cleanup
+	// to make sure the session does not expire
+	_keepAlive: null,
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
 		// query the system role
 		this.standby(true);
+
+		// make the session not expire
+		// before the user can confirm the cleanup dialog
+		// started (and stopped) in _cleanup
+		this._keepAlive = new dojox.timing.Timer(1000 * 30);
+		this._keepAlive.onTick = function() {
+			// dont do anything important here, just
+			// make sure that umc does not forget us
+			umc.tools.umcpCommand('setup/finished')
+		};
 
 		// load some ucr variables
 		var deferred_ucr = umc.tools.ucr(['server/role', 'system/setup/boot/select/role', 'system/setup/boot/pages/whitelist', 'system/setup/boot/pages/blacklist']);
@@ -367,16 +381,12 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}];
 			}
 
-			// get the session ID
-			var sessionID = dojo.cookie('UMCSessionId');
+			this._keepAlive.start();
 
-			// make the session valid for the next 24 hours, otherwise the session expired
-			// before the user can confirm the cleanup dialog
-			umc.tools.holdSession();
-
-			return umc.dialog.confirm(msg, choices).then(dojo.hitch(this, function(response) {
+			return umc.dialog.confirm(msg, choices, true).then(dojo.hitch(this, function(response) {
 				if (response == 'cancel') {
 					// do not continue
+					this._keepAlive.stop();
 					if (loadAfterCancel) {
 						this.load();
 					}
