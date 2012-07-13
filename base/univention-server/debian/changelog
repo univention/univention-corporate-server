@@ -1,3 +1,9 @@
+univention-server (7.0.18-2) unstable; urgency=low
+
+  * redirect listener restart output to log file (Bug #27577) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Jul 2012 10:21:03 +0200
+
 univention-server (7.0.18-1) unstable; urgency=low
 
   * restart listener if machine.secret is changed (Bug #27577) 
