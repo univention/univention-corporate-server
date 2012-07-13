@@ -70,7 +70,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		umc.tools.status('width', props.width);
 		umc.tools.status('displayUsername', umc.tools.isTrue(props.displayUsername));
 		// username will be overriden by final authenticated username
-		umc.tools.status('username', props.username);
+		umc.tools.status('username', props.username || dojo.cookie('UMCUsername'));
 		// password has been given in the query string... in this case we may cache it, as well
 		umc.tools.status('password', props.password);
 
@@ -91,26 +91,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			umc.tools.status('overview', umc.tools.isTrue(props.overview));
 		}
 
-		if (props.username && props.password && dojo.isString(props.username) && dojo.isString(props.password)) {
-			// username and password are given, try to login directly
-			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
-			return;
-		}
-
-		// check whether we still have a possibly valid cookie
-		var sessionCookie = dojo.cookie('UMCSessionId');
-		var usernameCookie = dojo.cookie('UMCUsername');
-		if (undefined !== sessionCookie && usernameCookie !== undefined
-			&& (!umc.tools.status('username') || umc.tools.status('username') == usernameCookie)) {
-			// the following conditions need to be given for an automatic login
-			// * session and username need to be set via cookie
-			// * if a username is given via the query string, it needs to match the
-			//   username saved in the cookie
-			this.onLogin(dojo.cookie('UMCUsername'));
-		}
-		else {
-			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
-		}
+		umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
 	},
 
 	onLogin: function(username) {

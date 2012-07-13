@@ -602,7 +602,7 @@ class CPAuth(CPgeneric):
 		CORE.info('CPRoot/auth: got response with status %s' % response.status)
 
 		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
-			CORE.info('CPRoot/auth: creating cookie with sessionid=%s' % response.body.get('sessionid'))
+			CORE.info('CPRoot/auth: creating session with sessionid=%s' % response.body.get('sessionid'))
 			update_session(cherrypy.response, response.body['sessionid'])
 			return ""
 
