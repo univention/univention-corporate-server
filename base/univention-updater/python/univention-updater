@@ -554,20 +554,6 @@ def main():
 	update_status( status='DONE' )
 	os.execv(sys.argv[0], sys.argv)
 
-def reenable_apache2_and_umc():
-	'''
-		executable flags have been removed at apache2 and umc-server during update
-		to prevent restart of those services. This method reenables these services.
-	'''
-	devnull = open(os.path.devnull, 'w' )
-	for prog in ( 'apache2', 'univention-management-console-server' ):
-		filename = os.path.join( '/usr/sbin/', prog )
-		if os.path.isfile( filename ):
-			os.chmod( filename, 0755 )
-			subprocess.call( ( 'dpkg-statoverride', '--remove', filename ), stdout = devnull, stderr = devnull )
-	devnull.close()
-
-
 if __name__ == '__main__':
 	if '-h' in sys.argv or '-?' in sys.argv or '--help' in sys.argv:
 		usage()
@@ -618,7 +604,6 @@ if __name__ == '__main__':
 			dprint("Error: %s" % msg)
 			print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
 			subprocess.call(['touch', failure])
-			reenable_apache2_and_umc()
 			# disable update of UCR variable update/available to prevent call loop of univention-updater
 			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
 			do_ucr_update = False
@@ -626,7 +611,6 @@ if __name__ == '__main__':
 		except KeyboardInterrupt:
 			update_status( status='FAILED' )
 			dprint("\nUpdate aborted by user (ctrl-c)\n")
-			reenable_apache2_and_umc()
 			# disable update of UCR variable update/available to prevent call loop of univention-updater
 			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
 			do_ucr_update = False

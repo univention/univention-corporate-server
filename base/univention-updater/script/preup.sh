@@ -55,19 +55,6 @@ conffile_is_unmodified () {
 	return 1
 }
 
-cleanup () {
-	# remove statoverride for UMC and apache in case of error during preup script
-	if [ -e /usr/sbin/univention-management-console-server ]; then
-		dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
-		chmod +x /usr/sbin/univention-management-console-server 2>&3
-	fi
-	if [ -e /usr/sbin/apache2 ]; then
-		dpkg-statoverride --remove /usr/sbin/apache2 >/dev/null 2>&1
-		chmod +x /usr/sbin/apache2 2>&3
-	fi
-}
-trap cleanup EXIT
-
 readcontinue ()
 {
     while true ; do
@@ -274,22 +261,6 @@ then
 	echo "       contains the deprecated option 'skip-bdb'. The option MUST be removed"
 	echo "       before the update can continue."
 	exit 1
-fi
-
-# ensure that UMC is not restarted during the update process
-if [ -e /usr/sbin/univention-management-console-server ]; then
-	dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server >/dev/null 2>&1
-	chmod a-x /usr/sbin/univention-management-console-server
-fi
-
-if [ -e /usr/sbin/univention-management-console-web-server ]; then
-	dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-web-server >/dev/null 2>&1
-	chmod a-x /usr/sbin/univention-management-console-web-server
-fi
-
-if [ -e /usr/sbin/apache2 ]; then
-	dpkg-statoverride --add root root 0644 /usr/sbin/apache2 >/dev/null 2>&1
-	chmod a-x /usr/sbin/apache2
 fi
 
 # BEGIN 3.0-2 remove php5-curl config if package is removed Bug #27666 

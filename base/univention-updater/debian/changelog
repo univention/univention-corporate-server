@@ -1,3 +1,10 @@
+univention-updater (7.0.185-1) unstable; urgency=low
+
+  * removed dpkg-statoverride and chmod directives in preup.sh and
+    univention-updater as they are no longer needed; Bug #27925
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 13 Jul 2012 16:00:16 +0200
+
 univention-updater (7.0.184-1) unstable; urgency=low
 
   * fixed typos; Bug #26235

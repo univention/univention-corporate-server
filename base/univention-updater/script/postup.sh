@@ -87,7 +87,8 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 fi
 
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
-# Restart apache & Co see https://forge.univention.org/bugzilla/show_bug.cgi?id=26298
+# Restart apache & Co see Bug #26298
+# FIXME: should be removed for 3.1 (Bug #27925)
 /usr/share/univention-updater/enable-apache2-umc 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 
 # removes temporary sources list (always required)
