@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (1.0.111-4) unstable; urgency=low
+
+  * Fix validate memory size (Bug #27747)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 Jul 2012 12:35:39 +0200
+
 univention-virtual-machine-manager-daemon (1.0.111-3) unstable; urgency=low
 
   * Validate memory size (Bug #27747)

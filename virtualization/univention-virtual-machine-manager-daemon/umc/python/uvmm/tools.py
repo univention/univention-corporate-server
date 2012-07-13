@@ -134,6 +134,10 @@ class MemorySize( object ):
 		-1
 		>>> MemorySize.str2num('2', unit='XB')
 		-1
+		>>> MemorySize.str2num('2', unit='XX')
+		-1
+		>>> MemorySize.str2num('2', unit='BI')
+		-1
 		"""
 		match = MemorySize.SIZE_REGEX.match( size )
 		if not match:
@@ -144,6 +148,7 @@ class MemorySize( object ):
 		size = float(m_size)
 		if m_unit:
 			unit = m_unit.upper()
+		unit = unit.rstrip('Bb').rstrip('Ii')
 		for _ in MemorySize.UNITS:
 			if _ == unit:
 				break
