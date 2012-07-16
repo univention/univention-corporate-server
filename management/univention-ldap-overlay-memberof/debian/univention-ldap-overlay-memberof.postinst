@@ -42,6 +42,12 @@ univention-config-registry set \
 	ldap/overlay/memberof/refint?false \
 	ldap/overlay/memberof/modifiersname?"cn=admin,$ldap_base"
 
+# START - remove old template in 3.0-2 Bug #24433
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
+	univention-config-registry update
+fi
+# END - remove old template in 3.0-2 Bug #24433
+
 # read perm for the ldap master (ipv4 read permissions)
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	. /usr/share/univention-lib/all.sh 

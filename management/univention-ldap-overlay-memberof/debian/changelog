@@ -1,3 +1,9 @@
+univention-ldap-overlay-memberof (4.0.3-2) unstable; urgency=low
+
+  * remove obsolete slapd template in 3.0-2 (Bug #24433)
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Jul 2012 09:49:27 +0200
+
 univention-ldap-overlay-memberof (4.0.3-1) unstable; urgency=low
 
   * removed schema, changed group update script (Bug #24433)

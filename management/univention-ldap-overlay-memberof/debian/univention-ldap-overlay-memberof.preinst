@@ -1,8 +1,9 @@
-#!/usr/bin/python2.6
+#!/bin/sh
 #
-# Univention update uniqueMember
+# Univention overlay memberof
+#  preinst script
 #
-# Copyright 2008-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,34 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.uldap
-import univention.config_registry
-import ldap
-import sys
+case "$1" in
+        install|upgrade)
+                # remove old templates for this update 3.0-2
+                if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
+                        if [ ! -d /etc/univention/templates/removed/ ] ; then
+                                mkdir -p /etc/univention/templates/removed/
+                        fi
+						mytemplate=/etc/univention/templates/files/etc/ldap/slapd.conf.d/11univention-ldap-overlay-memberof
+                        mv $mytemplate "/etc/univention/templates/removed/$(basename $mytemplate).template.$(date +%Y%m%d_%H%M%S_%N)"
+                fi
+esac
 
-cr = univention.config_registry.ConfigRegistry()
-cr.load()
+#DEBHELPER#
 
-if cr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroller_backup"]:
-
-	# ldap connection
-	try:
-		lo = univention.uldap.getAdminConnection()
-	except Exception, e:
-		print "failed to get ldap connection: %s" % e
-
-	# search groups and del/add uniqueMember
-	results = lo.search(base=cr.get("ldap/base"), attr=["uniqueMember"], filter="(&(objectClass=posixGroup)(uniqueMember=*))")
-	for result in results:
-		dn = result[0]
-		uniqueMember = result[1].get("uniqueMember", [""])
-		if dn and uniqueMember:
-			try:
-				# delete uniqueMember
-				lo.modify(dn, [("uniqueMember", uniqueMember, [])])
-				# add uniqueMember
-				lo.modify(dn, [("uniqueMember", [], uniqueMember)])
-			except Exception, e:
-				sys.stderr.write("E: modifing %s failed error with %s\n" % (dn, e))
-				sys.stderr.write("   please check the membership of this group\n")
-				sys.exit(1)
+exit 0
