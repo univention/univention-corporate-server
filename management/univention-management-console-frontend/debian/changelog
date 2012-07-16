@@ -1,3 +1,9 @@
+univention-management-console-frontend (1.0.395-1) unstable; urgency=low
+
+  * allow ::1 and 127.0.0.1 as the same local addresses for request; Bug #26635
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 16 Jul 2012 15:20:23 +0200
+
 univention-management-console-frontend (1.0.394-1) unstable; urgency=low
 
   * fixed SessionId in tests/post.sh; Bug #26635

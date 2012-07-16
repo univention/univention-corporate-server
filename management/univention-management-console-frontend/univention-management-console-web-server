@@ -199,8 +199,9 @@ class UMCP_Dispatcher( object ):
 			# stop here if sessionid is missing or unknown and request is no AUTH request
 			try:
 				client = cls.sessions[queuerequest.sessionid]
-				if queuerequest.ip != client.ip:
-					raise ValueError('The sessionid is not valid for this IP address')
+				if queuerequest.ip != client.ip and not (queuerequest.ip in ('127.0.0.1', '::1') and client.ip in ('127.0.0.1', '::1')):
+					MODULE.process('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip) )
+					raise ValueError()
 			except (KeyError, ValueError):
 				if queuerequest.request.command != 'AUTH':
 					CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%r' % (queuerequest.sessionid))
