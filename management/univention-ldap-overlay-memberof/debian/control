@@ -10,7 +10,8 @@ Build-Depends: debhelper (>> 7),
 Package: univention-ldap-overlay-memberof
 Architecture: all
 Depends: ${misc:Depends},
- univention-ldap-server
+ univention-ldap-server,
+ shell-univention-lib (>= 1.0.80)
 Description: configuration for OpenLDAP memberOf overlay module
  This package contains the general configuration for the
  OpenLDAP memberOf overlay module.
