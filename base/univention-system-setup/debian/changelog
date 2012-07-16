@@ -1,3 +1,10 @@
+univention-system-setup (5.0.197-1) unstable; urgency=low
+
+  * Copy packages from /var/cache/univention-system-setup/packages to
+    /var/cache/apt/archives/ (Bug #27935)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Jul 2012 15:48:26 +0200
+
 univention-system-setup (5.0.196-1) unstable; urgency=low
 
   * Dont handle errors when just keeping session alive (Bug #27919)

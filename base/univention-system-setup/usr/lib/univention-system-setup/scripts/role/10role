@@ -57,6 +57,9 @@ if [ -z "$profile_role" ] || [ "$profile_role" = "$ucr_role" ]; then
 	exit 0
 fi
 
+# Copy local files into the local cache
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27935
+cp /var/cache/univention-system-setup/packages/*.deb /var/cache/apt/archives/
 
 role_package="$(get_role_package $profile_role)"
 ucr_role_package="$(get_role_package $ucr_role)"
