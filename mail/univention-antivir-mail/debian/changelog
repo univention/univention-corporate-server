@@ -1,3 +1,9 @@
+univention-antivir-mail (4.0.3-1) unstable; urgency=low
+
+  * added initial virus signatures (Bug #27881) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Jul 2012 10:34:00 +0200
+
 univention-antivir-mail (4.0.2-2) unstable; urgency=low
 
   * version bump (as changes for Bug #19471 have been modified)
