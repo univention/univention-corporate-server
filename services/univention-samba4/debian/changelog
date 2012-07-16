@@ -1,3 +1,9 @@
+univention-samba4 (1.0.179-1) unstable; urgency=low
+
+  * provide default for ldap/server/port in ldapsam passdb backend (Bug #27539)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Jul 2012 11:54:52 +0200
+
 univention-samba4 (1.0.178-1) unstable; urgency=low
 
   * Test if the password from /etc/machine.secret is the valid password
