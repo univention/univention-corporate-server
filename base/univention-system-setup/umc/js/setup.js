@@ -89,7 +89,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._keepAlive.onTick = function() {
 			// dont do anything important here, just
 			// make sure that umc does not forget us
-			umc.tools.umcpCommand('setup/finished')
+			// dont even handle errors
+			umc.tools.umcpCommand('setup/finished', {}, false)
 		};
 
 		// load some ucr variables

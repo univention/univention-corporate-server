@@ -72,6 +72,9 @@ class Instance(umcm.Base):
 	def destroy(self):
 		if self._cleanup_required:
 			MODULE.info('Appliance mode: cleanup by timeout')
+			# cleanup restarts umc, so MODULE.info will never
+			# be called. but leave it that way, maybe it can
+			# be called in the future.
 			if util.cleanup():
 				MODULE.info('... cleanup successful')
 			else:

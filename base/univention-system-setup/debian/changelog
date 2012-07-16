@@ -1,3 +1,9 @@
+univention-system-setup (5.0.196-1) unstable; urgency=low
+
+  * Dont handle errors when just keeping session alive (Bug #27919)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Jul 2012 15:38:45 +0200
+
 univention-system-setup (5.0.195-1) unstable; urgency=low
 
   * Use the old interface informations from UCR whether not all
