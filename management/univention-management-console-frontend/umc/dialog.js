@@ -68,8 +68,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 			// try to authenticate via long polling... i.e., in case of an error try again until it works
 			this._loginDeferred = umc.tools.umcpCommand('auth', {
 				username: username,
-				password: password,
-				version: umc.tools.status('version')
+				password: password
 			}, false, undefined, {
 				message: this._('So far the authentification failed. Continuing nevertheless.'),
 				noLogin: true

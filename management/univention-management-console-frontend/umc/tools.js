@@ -42,8 +42,9 @@ dojo.mixin(umc.tools, new umc.i18n.Mixin({
 }));
 dojo.mixin(umc.tools, {
 
-	_sessionID: '',
-	_sessionDuration: 0,
+	// default value for the session timeout
+	// it will be replaced by the ucr variable 'umc/http/session/timeout' onLogin
+	_sessionTimeout: 300,
 
 	_status: {
 		username: null,
@@ -53,8 +54,7 @@ dojo.mixin(umc.tools, {
 		displayUsername: true,
 		width: null,
 		setupGui: false,
-		loggingIn: false,
-		version: ''
+		loggingIn: false
 	},
 
 	status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -66,7 +66,6 @@ dojo.mixin(umc.tools, {
 		//		With two parameters, sets the value of the specified key.
 		//		Also contains the properties given
 		//		to `umc.app.start()`. The following properties exist:
-		//		* version (String): The version of the UMC frontend package.
 		//		* username (String): The username of the authenticated user.
 		//		* hostname (String): The hostname on which the UMC is running.
 		//		* domainname (String): The domainname on which the UMC is running.
@@ -91,38 +90,39 @@ dojo.mixin(umc.tools, {
 		return undefined;
 	},
 
-	getSessionId: function() {
-		return this._sessionID;
-	},
-
-	setSession: function(/*String*/ sessionID, /*Integer*/ duration) {
-		// summary:
-		// 		sets the sessionid and sessiontimeout
-		// sessionID: String
-		// 		the session id
-		// duration: Integer
-		// 		the session timeout in milliseconds
-		this._sessionID = sessionID;
-		this._sessionDuration = duration;
-	},
-
-	checkSessionActive: function() {
-		return this._sessionID && this._sessionDuration > 0;
-	},
-
 	closeSession: function() {
 		// summary:
-		//		Reset the session in order to close the session from the client side.
-		this.setSession('', -1);
+		//		Reset the session cookie in order to close the session from the client side.
+		dojo.cookie('UMCSessionId', null, {
+			expires: -1,
+			path: '/'
+		});
 	},
 
-	holdSession: function(/*String*/ id) {
+	holdSession: function(/*String?*/ id) {
 		// summary:
-		//		Set the expiration time of the current session in to 24 hours.
+		//		Set the expiration time of the current session cookie in to 24 hours.
 		// id: String
 		//		If specified, the session ID will be set to this value, otherwise the
-		//		ID will not change.
-		this.setSession(id || this._sessionID, 1000 * 60 * 60 * 24);
+		//		ID will be read from the cookie automatically.
+		var date = new Date((new Date()).getTime() + 1000 * 60 * 60 * 24);
+		dojo.cookie('UMCSessionId', id || dojo.cookie('UMCSessionId'), {
+			expires: date.toUTCString(),
+			path: '/'
+		});
+	},
+
+	_renewIESession : function() {
+		// summary:
+		//		Reset the Internet Explorer Session. Internet Explorer can not handle max-age cookies.
+		//		This is required for automatically show the login dialogue when the session is expired.
+		if(dojo.isIE !== undefined) {
+			var date = new Date((new Date()).getTime() + 1000 * this._sessionTimeout);
+			dojo.cookie('UMCSessionId', dojo.cookie('UMCSessionId'), {
+				expires: date.toUTCString(),
+				path: '/'
+			});
+		}
 	},
 
 	_checkSessionTimer: null,
@@ -143,7 +143,7 @@ dojo.mixin(umc.tools, {
 			// create a new timer instance
 			this._checkSessionTimer = new dojox.timing.Timer(1000);
 			this._checkSessionTimer.onTick = function() {
-				if (!umc.tools.checkSessionActive()) {
+				if (!dojo.isString(dojo.cookie('UMCSessionId'))) {
 					umc.tools._checkSessionTimer.stop();
 					if (umc.tools.status['loggingIn']) {
 						// login dialog is already running
@@ -156,8 +156,6 @@ dojo.mixin(umc.tools, {
 							umc.tools._checkSessionTimer.start();
 						}
 					});
-				} else {
-					umc.tools._sessionDuration -= 1000;
 				}
 			};
 		}
@@ -172,7 +170,7 @@ dojo.mixin(umc.tools, {
 	_PollingHandler: function(url, content, finishedDeferred, opts) {
 		// save the current session ID locally, as the cookie might expire when
 		// the time and timezone settings are updated
-		var _oldSessionID = umc.tools.getSessionId();
+		var _oldSessionID = dojo.cookie('UMCSessionId');
 
 		return {
 			finishedDeferred: finishedDeferred,
@@ -223,12 +221,12 @@ dojo.mixin(umc.tools, {
 
 			sendRequest: function() {
 				// switch off the automatic check for session timeout...
-				// the problem here is as follows, we do not receive a response,
+				// the proble here is as follows, we do not receive a response,
 				// therefore the cookie is not updated (which is checked for the
 				// session timeout), however, the server will renew the session
 				// with each valid request that it receives
-				var currentSessionID = umc.tools.getSessionId();
-				if (!currentSessionID) {
+				var currentSessionID = dojo.cookie('UMCSessionId');
+				if (!currentSessionID || 'undefined' == currentSessionID) {
 					// restore last valid session ID
 					currentSessionID = _oldSessionID;
 				}
@@ -237,23 +235,18 @@ dojo.mixin(umc.tools, {
 
 				// send AJAX command
 				this._lastRequestTime = (new Date()).getTime();
-				var xhrRequest = dojo.xhrPost({
+				dojo.xhrPost({
 					url: this.url,
 					preventCache: true,
 					handleAs: 'json',
 					headers: {
-						'Content-Type': 'application/json',
-						'X-UMC-Session-Id': umc.tools.getSessionId()
+						'Content-Type': 'application/json'
 					},
 					postData: this.content,
 					timeout: 1000 * this.xhrTimeout
-				});
-				xhrRequest.then(dojo.hitch(this, function(data) {
+				}).then(dojo.hitch(this, function(data) {
 					// request finished
-					if (xhrRequest.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id')) {
-						// reset the sessionId and sessionTimeout
-						umc.tools.setSession(xhrRequest.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id'), 1000 * parseInt(xhrRequest.ioArgs.xhr.getResponseHeader('X-UMC-Session-Timeout')));
-					}
+					umc.tools._renewIESession();
 					this._dialog.hide();
 					this._dialog.destroyRecursive();
 					this.finishedDeferred.resolve(data);
@@ -356,22 +349,18 @@ dojo.mixin(umc.tools, {
 		}
 		else {
 			// normal AJAX call
-			var xcall = dojo.xhrPost({
+			var call = dojo.xhrPost({
 				url: url,
 				preventCache: true,
 				handleAs: 'json',
 				headers: {
-					'Content-Type': 'application/json',
-					'X-UMC-Session-Id': umc.tools.getSessionId()
+					'Content-Type': 'application/json'
 				},
 				postData: body
 			});
 
-			var call = xcall.then(function(data) {
-				if (xcall.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id')) {
-					// reset the sessionId and sessionTimeout
-					umc.tools.setSession(xcall.ioArgs.xhr.getResponseHeader('X-UMC-Session-Id'), 1000 * parseInt(xcall.ioArgs.xhr.getResponseHeader('X-UMC-Session-Timeout')));
-				}
+			call = call.then(function(data) {
+				umc.tools._renewIESession();
 				return data;
 			});
 

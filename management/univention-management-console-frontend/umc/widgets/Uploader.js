@@ -175,10 +175,9 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 							dojo.mixin(params, this.dynamicOptions);
 						}
 					}
-					// mixin the iframe information and sessionID
+					// mixin the iframe information
 					dojo.mixin(params, {
-						iframe: (this._uploader.uploadType === 'iframe'),
-						'X-UMC-Session-Id': umc.tools.getSessionId()
+						iframe: (this._uploader.uploadType === 'iframe') ? true : false
 					});
 					this._uploader.upload(params);
 					this.onUploadStarted(data[0]);

@@ -91,13 +91,37 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			umc.tools.status('overview', umc.tools.isTrue(props.overview));
 		}
 
-		umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+		if (props.username && props.password && dojo.isString(props.username) && dojo.isString(props.password)) {
+			// username and password are given, try to login directly
+			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+			return;
+		}
+
+		// check whether we still have a possibly valid cookie
+		var sessionCookie = dojo.cookie('UMCSessionId');
+		var usernameCookie = dojo.cookie('UMCUsername');
+		if (undefined !== sessionCookie && usernameCookie !== undefined
+			&& (!umc.tools.status('username') || umc.tools.status('username') == usernameCookie)) {
+			// the following conditions need to be given for an automatic login
+			// * session and username need to be set via cookie
+			// * if a username is given via the query string, it needs to match the
+			//   username saved in the cookie
+			this.onLogin(dojo.cookie('UMCUsername'));
+		}
+		else {
+			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+		}
 	},
 
 	onLogin: function(username) {
 		// save the username internally and as cookie
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
 		umc.tools.status('username', username);
+
+		// set the UCR session timeout value
+		umc.tools.ucr('umc/http/session/timeout').then( function(res) {
+			umc.tools._sessionTimeout = parseInt( res['umc/http/session/timeout'] , 10 );
+		} );
 
 		// start the timer for session checking
 		umc.tools.checkSession(true);
