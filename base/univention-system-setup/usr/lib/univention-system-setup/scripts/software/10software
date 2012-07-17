@@ -138,6 +138,7 @@ while [ "$statResult" != 1 -a "$stdoutResult" != 1 -a "$stderrResult" != 1 ]; do
     if [ $statResult = 0 ]; then
         # status information, parse the string and print out current step
         # as well as a descriptive information of what dpkg is doing
+        echo "### $line"
         IFS=$':'
         list=($line)
         IFS=$'\n\t '
@@ -159,15 +160,15 @@ while [ "$statResult" != 1 -a "$stdoutResult" != 1 -a "$stderrResult" != 1 ]; do
             fi
         fi
 
-        # ignore download status
-        [ "$statusType" = "dlstatus" ] && continue
-
-        # check whether we have passed to the next command
-        [ "$percentage" -lt "$lastPercentage" ] && icommand=$((icommand+1))
-        lastPercentage=$percentage
-
-        # print current step
-        progress_next_step "$((percentage + icommand * 100))"
+        # handle only package management status
+        if [ "$statusType" = "pmstatus" ]; then
+            # check whether we have passed to the next command
+            [ "$percentage" -lt "$lastPercentage" ] && icommand=$((icommand+1))
+            lastPercentage=$percentage
+            
+            # print current step
+            progress_next_step "$((percentage + icommand * 100))"
+        fi
     fi
 done
 
