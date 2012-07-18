@@ -406,3 +406,8 @@ Description[en]=Selects the storage mode for NTACL
 Type=str
 Categories=service-samba
 
+[samba/winbind/max/clients]
+Description[de]=Maximale Anzahl der winbindd socket Verbindungen (Default: 500)
+Description[en]=Maximum number of simultaneous winbindd socket connections (default: 500)
+Type=str
+Categories=service-samba

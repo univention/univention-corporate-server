@@ -1,3 +1,12 @@
+univention-samba (7.0.1-1) unstable; urgency=low
+
+  * Version bump for UCS 3.1-0 branch 
+  * Adjustments for Samba 3.6.6 (Bug #24231):
+  * New UCR variable samba/winbind/max/clients replacing static
+    UCS default of 500
+
+ -- Arvid Requate <requate@univention.de>  Wed, 18 Jul 2012 14:38:32 +0200
+
 univention-samba (6.0.44-1) unstable; urgency=low
 
   * try/finally fixes (Bug #27848)

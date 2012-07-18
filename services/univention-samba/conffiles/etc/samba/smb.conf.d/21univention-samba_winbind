@@ -57,10 +57,11 @@ if idmap_domains:
 if configRegistry.get('samba/winbind/trusted/domains/only', 'no') in ('yes', 'true'):
 	print '\twinbind trusted domains only = yes'	# deprecated legacy setting
 
+print '\n\twinbind max clients = %s' % configRegistry.get('samba/winbind/max/clients', '500')
+
 if configRegistry.has_key('samba/winbind/nested/groups') and configRegistry['samba/winbind/nested/groups']:
 	print '\twinbind nested groups = %s' % configRegistry['samba/winbind/nested/groups']
 @!@
-	
 	winbind enum users = yes
 	winbind enum groups = yes
 	winbind separator = +

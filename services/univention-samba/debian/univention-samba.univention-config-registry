@@ -51,6 +51,7 @@ Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
 Variables: samba/winbind/trusted/domains/only
+Variables: samba/winbind/max/clients
 Variables: samba/idmap/domains
 
 Type: subfile
