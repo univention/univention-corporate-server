@@ -220,7 +220,7 @@ class Module( JSON_Object ):
 	def append_flavors(self, flavors):
 		for flavor in flavors:
 			# remove duplicated flavors
-			if flavor.id not in [iflavor.id for iflavor in self.flavors] or flavor.deactivated:
+			if flavor.id not in [iflavor.id for iflavor in self.flavors]:
 				self.flavors.append(flavor)
 			else:
 				RESOURCES.warn('Duplicated flavor for module %s: %s' % (self.id, flavor.id))

@@ -1,10 +1,3 @@
-univention-management-console (4.0.270-1) unstable; urgency=low
-
-  * fix interference between flavor duplicate check and flavor
-    deactivation (Bug #27984)
-
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 Jul 2012 17:12:53 +0200
-
 univention-management-console (4.0.269-1) unstable; urgency=low
 
   * removed request options from response (Bug #26635)

@@ -63,7 +63,7 @@ Package: python-univention-management-console
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention-config-registry,
- python-univention-lib (>= 1.0.80),
+ python-univention-lib,
  univention-join,
  python-univention,
  python-pyopenssl,
