@@ -1,5 +1,3 @@
-@%@UCRWARNING=# @%@
-
 @!@
 print '\tusershare max shares = %s' % configRegistry.get('samba/usershare/max_shares', '0')
 
