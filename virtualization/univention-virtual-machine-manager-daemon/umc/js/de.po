@@ -117,7 +117,7 @@ msgid ""
 "A name for the virtual instance is required and should not be the same as "
 "the given name prefix"
 msgstr ""
-"Der Name für die virtuelle Instanz wird benötigt und sollte nicht der "
+"Der Name für die virtuelle Instanz wird benötigt and sollte nicht der "
 "vorgeschlagenen Namenspräfix entsprechen"
 
 #: umc/js/uvmm.js:654
