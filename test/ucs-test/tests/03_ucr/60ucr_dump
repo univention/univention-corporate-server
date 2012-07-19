@@ -8,7 +8,7 @@ UCRLINK=ucr
 UCR=univention-config-registry
 
 Dump () {
-	"$@" dump >"${TMPDIR}/$1.dump"
+	"$@" dump >"${TMPDIR}/${1##*/}.dump"
 	local rc=$?
 	if [ $rc -ne 0 ]
 	then
@@ -18,7 +18,7 @@ Dump () {
 }
 
 Diff () {
-	diff "${TMPDIR}/$1.dump" "${TMPDIR}/$2.dump"
+	diff "${TMPDIR}/${1##*/}.dump" "${TMPDIR}/${2##*/}.dump"
 }
 
 ##### Beginning #####
@@ -26,6 +26,7 @@ TMPDIR=$(mktemp -d) || (echo "Unable to create temporary directory"; exit 140)
 trap "rm -rf '${TMPDIR}'" EXIT
 
 ##### dump #####
+echo "Checking dump..."
 Dump "${BASECONFIG}"
 Dump "${UCRLINK}"
 Dump "${UCR}"
@@ -37,6 +38,7 @@ then
 fi
 
 ##### --shell dump #####
+echo "Checking dump --shell..."
 Dump "${BASECONFIG}" --shell
 Dump "${UCRLINK}" --shell
 Dump "${UCR}" --shell
@@ -47,12 +49,20 @@ then
 	exit 110
 fi
 
-if grep -ve '=".*"' "${TMPDIR}/${BASECONFIG}.dump"
-then
+echo "Checking quoting..."
+"${UCR}" --keys-only search | while read key
+do
+	key_val="$("${UCR}" shell "$key")"
+	eval "value=${key_val#*=}"
+	[ "${value}" = "$("${UCR}" get "$key")" ] || {
+		echo "$key=${value}" >&2
+		exit 1
+	}
+done || {
 	echo "Test failed. Output of --shell dump contains non-quoted values."
 	echo "Bug exists as expected: Bug #16637"
 	exit 121
-fi
+}
 
-##### End ##### 
+##### End #####
 exit 0
