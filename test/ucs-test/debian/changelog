@@ -1,6 +1,7 @@
 ucs-test (2.0.2-1) unstable; urgency=low
 
   * 03/6[02]: Fix shell quoting test (Bug #27836)
+  * 09/47: Fix empty Packages (Bug #26983)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 19 Jul 2012 10:49:26 +0200
 

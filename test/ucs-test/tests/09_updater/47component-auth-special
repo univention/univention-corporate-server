@@ -21,10 +21,7 @@ compname="test${RANDOM}"
 setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
-if "${CHECK_INSTALL}"
-then
-	mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-fi
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
 
 cat <<-EOF >"${DIR}/../.htaccess"
