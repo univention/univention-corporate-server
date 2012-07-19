@@ -55,7 +55,14 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	// 'javascript:functionName'
 	// function(ids) { ... }
 	// may return dojo.Deferred
-	formatter: function(ids) { return ids; },
+	formatter: function(ids) {
+		dojo.forEach(ids, function(id, i) {
+			if (dojo.isString(id)) {
+				ids[i] = {label: id, id: id};
+			}
+		});
+		return ids;
+	},
 
 	// autoSearch: String
 	//	  Specifies whether or not a query is executed as soon as the dialog is

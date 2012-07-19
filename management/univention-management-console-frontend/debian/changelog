@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.0-1) unstable; urgency=low
+
+  * fixed initialisation of static values in MultiObjectSelect widget (Bug #26780)
+
+ -- Florian Best <best@univention.de>  Thu, 19 Jul 2012 18:26:10 +0200
+
 univention-management-console-frontend (1.0.396-1) unstable; urgency=low
 
   * reverted changes for javascript session handling; Bug #26635

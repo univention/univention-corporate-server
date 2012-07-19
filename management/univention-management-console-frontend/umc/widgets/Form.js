@@ -111,6 +111,8 @@ dojo.declare("umc.widgets.Form", [
 
 	_initializingElements: 0,
 
+	_initializedDeferred: null,
+
 	postMixInProperties: function() {
 		this.inherited(arguments);
 
@@ -169,6 +171,8 @@ dojo.declare("umc.widgets.Form", [
 	buildRendering: function() {
 		this.inherited(arguments);
 
+		this._initializedDeferred = new dojo.Deferred();
+
 		if (this.scrollable) {
 			dojo.style(this.containerNode, {
 				overflow: 'auto'
@@ -210,6 +214,7 @@ dojo.declare("umc.widgets.Form", [
 			}
 		}
 
+
 		// send an event when all dynamic elements have been initialized
 		this._initializingElements = 0;
 		umc.tools.forIn(this._widgets, function(iname, iwidget) {
@@ -228,7 +233,7 @@ dojo.declare("umc.widgets.Form", [
 
 					// send event when the last element has been initialized
 					if (0 === this._initializingElements) {
-						this.onValuesInitialized();
+						this._initializedDeferred.resolve();
 					}
 				}));
 			}
@@ -236,8 +241,16 @@ dojo.declare("umc.widgets.Form", [
 
 		// maybe all elements are already initialized
 		if (!this._initializingElements) {
-			this.onValuesInitialized();
+			this._initializedDeferred.resolve();
 		}
+
+	},
+
+	startup: function() {
+		this.inherited(arguments);
+		this._initializedDeferred.then(dojo.hitch(this, function(result) {
+			this.onValuesInitialized();
+		}));
 	},
 
 	postCreate: function() {
