@@ -2,7 +2,7 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
 import re
 import os
@@ -54,7 +54,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in check_files:
 			try:
 				content = open(fn, 'r').read()
-			except:
+			except IOError:
 				self.addmsg( '0010-1', 'failed to open and read file', filename=fn )
 				continue
 			self.debug('testing %s' % fn)

@@ -2,9 +2,10 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
-import re, os
+import re
+import os
 
 # 1) check if translation strings are correct; detect something like  _('foo %s bar' % var)  ==> _('foo %s bar') % var
 # 2) check if all translation strings are translated in de.po file
@@ -31,8 +32,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		fnlist_joinscripts = {}
-
 		regEx1 = re.compile("[\\(\\[\\{\s,:]_\\(\s*'[^']+'\s*%", re.DOTALL)
 		regEx2 = re.compile('[\\(\\[\\{\s,:]_\\(\s*"[^"]+"\s*%', re.DOTALL)
 
@@ -47,7 +46,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in py_files:
 			try:
 				content = open(fn, 'r').read()
-			except:
+			except IOError:
 				self.addmsg( '0008-2', 'failed to open and read file', filename=fn )
 				continue
 			self.debug('testing %s' % fn)
@@ -70,7 +69,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in po_files:
 			try:
 				content = open(fn, 'r').read()
-			except:
+			except IOError:
 				self.addmsg( '0008-2', 'failed to open and read file', fn )
 				continue
 
@@ -94,4 +93,3 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						line = content.count('\n', 0, match.start() + 1 ) + 1
 						pos = match.end()
 						self.addmsg( errid, errtxt, fn, line )
-

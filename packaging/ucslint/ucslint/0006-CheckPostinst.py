@@ -2,9 +2,10 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
-import re, os
+import re
+import os
 import copy
 
 # Prüfen, ob #DEBHELPER# in (pre|post)(inst|rm) enthalten ist
@@ -58,7 +59,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for js in fnlist_scripts.keys():
 			try:
 				content = open(os.path.join(path, 'debian', js), 'r').read()
-			except:
+			except IOError:
 				content = ''
 
 			if not content:

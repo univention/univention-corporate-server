@@ -2,10 +2,9 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
 import re
-import os
 import subprocess
 
 

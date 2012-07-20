@@ -2,9 +2,10 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
-import re, os
+import re
+import os
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):
@@ -38,7 +39,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		fn = os.path.join(path, 'debian', 'changelog')
 		try:
 			content_changelog = open(fn, 'r').read(1024)
-		except:
+		except IOError:
 			self.addmsg( '0011-1', 'failed to open and read file', filename=fn )
 			return
 

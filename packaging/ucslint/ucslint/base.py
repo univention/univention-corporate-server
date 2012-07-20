@@ -31,7 +31,6 @@ class UPCMessage(object):
 			self.filename = self.filename[2:]
 
 	def __str__(self):
-		s = ''
 		if self.filename:
 			s = '%s' % self.filename
 			if self.line is not None:
@@ -369,7 +368,7 @@ class FilteredDirWalkGenerator(object):
 				if self.reHashBang:
 					try:
 						content = open(fn,'r').read(self.readSize)
-					except:
+					except IOError:
 						continue
 					if not self.reHashBang.search(content):
 						continue

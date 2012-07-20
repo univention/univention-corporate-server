@@ -2,10 +2,9 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
 import re
-import os
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -31,8 +30,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		fnlist_joinscripts = {}
-
 		py_files = []
 		for fn in uub.FilteredDirWalkGenerator(path):
 			if fn.endswith('.py'): # add all files to list that end with ".py"
@@ -53,7 +50,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in py_files:
 			try:
 				content = open(fn, 'r').read(100)
-			except:
+			except OSError:
 				self.addmsg( '0009-1', 'failed to open and read file', filename=fn )
 				continue
 			self.debug('testing %s' % fn)

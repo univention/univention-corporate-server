@@ -2,9 +2,10 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
-import re, os
+import re
+import os
 
 # Prüfen, ob ein Join-Skript im Paket vorhanden ist
 # - Prüfen, ob das Join-Skript in rules installiert wird
@@ -71,7 +72,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for js in fnlist_joinscripts.keys():
 			try:
 				content = open( os.path.join(path, js), 'r').read()
-			except:
+			except IOError:
 				self.addmsg( '0001-9', 'failed to open and read file', fn )
 				continue
 
@@ -157,7 +158,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in fnlist:
 			try:
 				content = open(fn, 'r').read()
-			except:
+			except IOError:
 				self.addmsg( '0001-9', 'failed to open and read file', fn )
 
 			for js in fnlist_joinscripts.keys():
@@ -178,7 +179,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.debug('loading %s' % (fn))
 				try:
 					content = open(fn, 'r').read()
-				except:
+				except IOError:
 					self.addmsg( '0001-9', 'failed to open and read file', fn )
 					continue
 
@@ -197,8 +198,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									if not match:
 										self.addmsg( '0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % js, fn )
 
-
 		for js in fnlist_joinscripts.keys():
 			if not fnlist_joinscripts[js]:
 				self.addmsg( '0001-7', 'Join script %s is not mentioned in debian/*.postinst' % js )
-

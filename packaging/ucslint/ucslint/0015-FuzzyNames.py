@@ -2,13 +2,11 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
 import re
 import os
-import time
 import tre
-import sys
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):

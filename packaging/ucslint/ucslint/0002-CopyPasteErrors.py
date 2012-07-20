@@ -2,9 +2,9 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
-import re, os
+import os
 
 # 1) check if strings like "dc=univention,dc=qa" appear in debian/* and conffiles/*
 # 2) check if strings like "univention.qa" appear in debian/* and conffiles/*
@@ -28,8 +28,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		fnlist_joinscripts = {}
-
 		files = []
 		# scan directory only
 		for dir in [ 'debian' ]:
@@ -46,7 +44,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in files:
 			try:
 				content = open(fn, 'r').read()
-			except:
+			except IOError:
 				self.addmsg( '0002-1', 'failed to open and read file', fn )
 				continue
 

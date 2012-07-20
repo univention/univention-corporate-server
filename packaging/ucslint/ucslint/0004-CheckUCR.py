@@ -2,7 +2,7 @@
 
 try:
 	import univention.ucslint.base as uub
-except:
+except ImportError:
 	import ucslint.base as uub
 import re
 import os
@@ -121,7 +121,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in conffiles.keys():
 			try:
 				content = open(fn,'r').read()
-			except:
+			except IOError:
 				self.addmsg( '0004-27', 'cannot open/read file', fn)
 				continue
 
@@ -222,7 +222,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.debug('Reading %s' % fn)
 					try:
 						content = open(fn, 'r').read()
-					except Exception, e:
+					except IOError:
 						self.addmsg( '0004-27', 'cannot open/read file', fn )
 						continue
 
@@ -247,7 +247,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						for line in part.splitlines():
 							try:
 								key, val = line.split(': ',1)
-							except:
+							except ValueError:
 								self.addmsg( '0004-28', 'file contains line without ":"', fn )
 								continue
 							if entry.has_key(key):
