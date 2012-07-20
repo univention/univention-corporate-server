@@ -33,7 +33,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			return
 
 		REchangelog = re.compile('^ -- [^<]+ <[^>]+>', re.M )
-		REticket = re.compile('(Bug:? #[0-9]{1,6}|Ticket(#: |:? #)2[0-9]{3}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])1[0-9]{7})([^0-9]|$)')
+		REticket = re.compile('(Bug:? #[0-9]{1,6}|Ticket(#: |:? #)2[0-9]{3}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(?:1[0-9]{7}|21[0-9]{6}))([^0-9]|$)')
 
 		firstEntry = REchangelog.split( content )[0]
 		match = REticket.search(firstEntry)

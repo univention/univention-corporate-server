@@ -7,6 +7,7 @@ ucslint (3.0.0-1) unstable; urgency=low
   * 0013: Add missing int() typecast (Bug #27429)
   * 0008: Add multiline handling (Bug #22479)
   * Add manual page.
+  * Fix Ticket number regular expression (Bug #27444)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 20 Jul 2012 12:09:41 +0200
 

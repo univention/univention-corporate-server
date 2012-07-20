@@ -1,0 +1,127 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export DH_COMPAT=3
+
+D=$(CURDIR)/debian/ucs-tools
+
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	# Add here commands to configure the package.
+
+	touch configure-stamp
+
+
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+
+	# Add here commands to compile the package.
+	#$(MAKE)
+	#docbook-to-man debian/ucs-tools.sgml > ucs-tools.1
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	# Add here commands to clean up after the build process.
+	#-$(MAKE) clean
+
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+
+	# Add here commands to install the package into debian/ucs-tools.
+	#$(MAKE) install DESTDIR=$(CURDIR)/debian/ucs-tools
+	mkdir -p $(D)/usr/bin/
+	mkdir -p $(D)/usr/lib/python2.4/site-packages/univention/aze/
+	install -m644 aze-query/__init__.py $(D)/usr/lib/python2.4/site-packages/univention/aze/
+	install -m644 aze-query/query.py $(D)/usr/lib/python2.4/site-packages/univention/aze/
+	install -m755 aze-query/gze.py $(D)/usr/bin/gze
+	install -m755 aze-query/aze-query.py $(D)/usr/bin/aze-query
+
+	mkdir -p $(D)/usr/lib/python2.4/site-packages/univention/ucslint/
+	@for i in $(shell find ucslint/ -name '*.py'); do\
+		o=$(D)/usr/lib/python2.4/site-packages/univention/$$i;\
+		install -m755 $$i $$o;\
+	done
+	install -m755 ucslint.py $(D)/usr/bin/ucslint
+
+	install APTdupes  $(D)/usr/bin/APTdupes
+	install vmwares-count-userwise  $(D)/usr/bin/vmwares-count-userwise
+	install vmwares-count-serverwise  $(D)/usr/bin/vmwares-count-serverwise
+	install unikontakt  $(D)/usr/bin/unikontakt
+	install unisvnmerge  $(D)/usr/bin/unisvnmerge
+
+	cp 34univention-management-console-server.inst $(D)/usr/lib/univention-install/
+
+	mkdir -p $(D)/usr/local/bin/
+	install sshrm  $(D)/usr/local/bin/sshrm
+	install remote-licenseinstall  $(D)/usr/local/bin/remote-licenseinstall
+	install test-pkg $(D)/usr/local/bin/test-pkg
+	install fixvmware $(D)/usr/local/bin/fixvmware 
+	install fixxmodmap $(D)/usr/local/bin/fixxmodmap
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs 
+	dh_installdocs
+	dh_installexamples
+#	dh_install
+#	dh_installmenu
+#	dh_installdebconf	
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+#	dh_installinfo
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_perl
+#	dh_python
+#	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

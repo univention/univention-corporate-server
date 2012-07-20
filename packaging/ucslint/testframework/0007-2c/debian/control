@@ -1,0 +1,14 @@
+Source: ucs-tools
+Section: tools
+Priority: optional
+Maintainer: Andre Fenske <packages@univention.de>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.1
+
+Package: ucs-tools
+Architecture: all
+Depends: python (>=2.4), python2.4-pygresql, python-gtk2
+Description: tool-collection for ucs (APTdupes,remote-licenseinstall, test-pgk, vmware-count*, aze-query)
+ Package consisting of different additional tools for ucs like: APTdupes, remote-licenseinstall, test-pkg,
+ vmware-count-userwise, vmware-count-servervise and aze-query (and libs)
+
