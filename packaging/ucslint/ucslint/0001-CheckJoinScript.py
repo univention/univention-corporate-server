@@ -150,7 +150,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		found = {}
 		debianpath = os.path.join( path, 'debian' )
 		# get all .install files
-		fnlist = [ x for x in uub.FilteredDirWalkGenerator( debianpath,	suffixes=['.install'] ).items() ]
+		fnlist = [x for x in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install'])]
 		# append debian/rules
 		fnlist.append( os.path.join( debianpath, 'rules' ) )
 

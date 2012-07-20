@@ -40,11 +40,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		# scan directory recursively
 		for dir in [ 'conffiles' ]:
-			for dirpath, dirnames, filenames in os.walk( os.path.join(path, dir) ):
-				if '/.svn/' in dirpath or dirpath.endswith('/.svn'):   # ignore svn files
-					continue
-				for fn in filenames:
-					files.append( os.path.join( dirpath, fn ) )
+			for fn in uub.FilteredDirWalkGenerator(os.path.join(path, dir)):
+				files.append(fn)
 
 		for fn in files:
 			try:

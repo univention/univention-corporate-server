@@ -34,23 +34,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		fnlist_joinscripts = {}
 
 		py_files = []
-		for dirpath, dirnames, filenames in os.walk( path ):
-			if '/.svn/' in dirpath or dirpath.endswith('/.svn'):   # ignore svn files
+		for fn in uub.FilteredDirWalkGenerator(path):
+			if fn.endswith('.py'): # add all files to list that end with ".py"
+				py_files.append(fn)
 				continue
-			for fn in filenames:
-				if fn.endswith('~'):
-					continue
 
-				if fn.endswith('.py'): # add all files to list that end with ".py"
-					py_files.append( os.path.join( dirpath, fn ) )
-					continue
-
-				try:
-					content = open( os.path.join( dirpath, fn), 'r').read(100)  # add all files that contain a hashbang in first line
-					if content.startswith('#!'):
-						py_files.append( os.path.join( dirpath, fn ) )
-				except:
-					pass
+			try:
+				content = open(fn, 'r').read(100)  # add all files that contain a hashbang in first line
+			except OSError:
+				pass
+			else:
+				if content.startswith('#!'):
+					py_files.append(fn)
 
 		tester = uub.UPCFileTester()
 		tester.addTest( re.compile('.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0 )

@@ -32,7 +32,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		for fn in uub.FilteredDirWalkGenerator( path,
 												ignore_suffixes=['~','.py','.bak','.po'],
-												reHashBang=re.compile('^#![ \t]*/bin/sh')  ).items():
+												reHashBang=re.compile('^#![ \t]*/bin/sh')):
 			self.debug('Testing file %s' % fn)
 			p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			stdout, stderr = p.communicate()

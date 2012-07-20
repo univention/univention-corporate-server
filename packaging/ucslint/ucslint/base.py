@@ -286,7 +286,7 @@ class UPCFileTester(object):
 		return msglist
 
 
-class FilteredDirWalkGenerator:
+class FilteredDirWalkGenerator(object):
 	def __init__(self, path, ignore_dirs=None, prefixes=None, suffixes=None, ignore_suffixes=None, ignore_files=None, ignore_debian_subdirs=True, reHashBang=None, readSize=2048):
 		"""
 		FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
@@ -302,12 +302,12 @@ class FilteredDirWalkGenerator:
         - readSize: number of bytes that will be read for e.g. reHashBang
 
 		example:
-		>>> for fn in FilteredDirWalkGenerator(path, suffixes=['.py']).items():
+		>>> for fn in FilteredDirWalkGenerator(path, suffixes=['.py']):
 		>>>   print fn
 		"""
 		self.path = path
 		if ignore_dirs is None:
-			self.ignore_dirs = [ '.git', '.svn' ]
+			self.ignore_dirs = ['.git', '.svn', 'CVS']
 		else:
 			self.ignore_dirs = ignore_dirs
 		self.prefixes = prefixes
@@ -324,7 +324,7 @@ class FilteredDirWalkGenerator:
 		self.reHashBang = reHashBang
 		self.readSize = readSize
 
-	def items(self):
+	def __iter__(self):
 		for dirpath, dirnames, filenames in os.walk( self.path ):
 			# remove undesired directories
 			if self.ignore_dirs:

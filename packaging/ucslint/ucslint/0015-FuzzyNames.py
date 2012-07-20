@@ -55,11 +55,7 @@ univentionr\\._baseconfig
 		fz = tre.Fuzzyness(maxerr = 2)
 		pt = tre.compile("\<univention\>", tre.EXTENDED | tre.ICASE)
 
-		for root, dirs, files in os.walk('.'):
-			for f in files:
-				path = os.path.join(root, f)[2:]
-				if not os.path.exists(path):
-					continue
+		for path in uub.FilteredDirWalkGenerator(os.path.curdir):
 				try:
 					fd = open(path,'r')
 					for lnr, line in enumerate(fd):
@@ -78,9 +74,3 @@ univentionr\\._baseconfig
 								break
 				finally:
 					fd.close()
-			if 'CVS' in dirs:
-				dirs.remove('CVS')
-			if '.svn' in dirs:
-				dirs.remove('.svn')
-			if '.git' in dirs:
-				dirs.remove('.git')

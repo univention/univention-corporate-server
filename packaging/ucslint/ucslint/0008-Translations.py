@@ -38,14 +38,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		py_files = []
 		po_files = []
-		for dirpath, dirnames, filenames in os.walk( path ):
-			if '/.svn/' in dirpath and dirpath.endswith('/.svn'):   # ignore svn files
-				continue
-			for fn in filenames:
-				if fn.endswith('.py'):
-					py_files.append( os.path.join( dirpath, fn ) )
-				if fn.endswith('.po'):
-					po_files.append( os.path.join( dirpath, fn ) )
+		for fn in uub.FilteredDirWalkGenerator(path, suffixes=('.py', '.po')):
+			if fn.endswith('.py'):
+				py_files.append(fn)
+			if fn.endswith('.po'):
+				po_files.append(fn)
 
 		for fn in py_files:
 			try:

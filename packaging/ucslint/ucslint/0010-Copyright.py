@@ -43,18 +43,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				check_files.append( fn )
 
 		# looking for python files
-		for dirpath, dirnames, filenames in os.walk( path ):
-			if '.svn' in dirnames:
-				dirnames.remove('.svn')
-			for fn in filenames:
-				if fn.endswith('~'):
-					continue
-				try:
-					content = open( os.path.join( dirpath, fn), 'r').read(100)
-					if content.startswith('#!'):
-						check_files.append( os.path.join( dirpath, fn ) )
-				except:
-					pass
+		for fn in uub.FilteredDirWalkGenerator(path, reHashBang=re.compile('^#!'), readSize=100):
+			check_files.append(fn)
 
 		# Copyright (C) 2004, 2005, 2006 Univention GmbH
 		# Copyright 2008 by
