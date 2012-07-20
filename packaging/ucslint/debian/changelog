@@ -5,6 +5,7 @@ ucslint (3.0.0-1) unstable; urgency=low
   * Fix off-by-one line number (Bug #24156)
   * debian/rules: Cleanup (Bug #22484)
   * 0013: Add missing int() typecast (Bug #27429)
+  * 0008: Add multiline handling (Bug #22479)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 20 Jul 2012 12:09:41 +0200
 

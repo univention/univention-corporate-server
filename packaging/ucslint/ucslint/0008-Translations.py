@@ -16,7 +16,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.name = '0008-Translations'
 
 	def getMsgIds(self):
-		return { '0008-1': [ uub.RESULT_ERROR, 'file contains construct like _("foo %s bar" % var) that cannot be translated correctly' ],
+		return { '0008-1': [ uub.RESULT_ERROR, 'substitutes before translation' ],
 				 '0008-2': [ uub.RESULT_WARN, 'failed to open file' ],
 				 '0008-3': [ uub.RESULT_ERROR, 'po-file contains "fuzzy" string' ],
 				 '0008-4': [ uub.RESULT_WARN, 'po-file contains empty msg string' ],
@@ -45,8 +45,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def check_py(self, py_files):
 		"""Check Python files."""
-		regEx1 = re.compile(r"[([{\s,:]_\(\s*'[^']+'\s*%", re.DOTALL)
-		regEx2 = re.compile(r'[([{\s,:]_\(\s*"[^"]+"\s*%', re.DOTALL)
+		regEx1 = re.compile(r"""^(?:[^'"#\n]| # non string, non comment prefix
+				(?: # matched strings
+					('''|""\").*?(?<!\\)\1
+					|'(?:[^'\n]|\\')*?'
+					|"(?:[^"\n]|\\")*?"
+				))*
+				[([{\s,:](_\(\s* # translation
+				(?: # matched strings
+					('''|""\").*?(?<!\\)\3
+					|'(?:[^'\n]|\\')*?'
+					|"(?:[^"\n]|\\")*?"
+				)\s*%\s*    # substitution
+				(?:[^)]+\))?)""", re.DOTALL | re.MULTILINE | re.VERBOSE)
 
 		for fn in py_files:
 			try:
@@ -55,7 +66,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg( '0008-2', 'failed to open and read file', filename=fn )
 				continue
 			self.debug('testing %s' % fn)
-			for regex in (regEx1, regEx2):
+			for regex in (regEx1,):
 				flen = len(content)
 				pos = 0
 				while pos < flen:
@@ -65,7 +76,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					else:
 						line = content.count('\n', 0, match.start()) + 1
 						pos = match.end()
-						self.addmsg( '0008-1', 'file contains construct like _("foo %s bar" % var)', fn, line )
+						self.addmsg( '0008-1', 'substitutes before translation: %s' % match.group(2), fn, line )
 
 	def check_po(self, po_files):
 		"""Check Portable Object files."""

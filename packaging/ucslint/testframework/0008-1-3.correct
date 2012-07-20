@@ -1,3 +1,11 @@
-E:0008-1: src/irgendwas.py:9: file contains construct like _("foo %s bar" % var)
+E:0008-1: src/irgendwas.py:11: substitutes before translation: _('foo %s bar' % x)
+E:0008-1: src/irgendwas.py:12: substitutes before translation: _('foo %s \'bar' % x)
+E:0008-1: src/irgendwas.py:13: substitutes before translation: _("foo %s bar" % x)
+E:0008-1: src/irgendwas.py:14: substitutes before translation: _("foo %s \"bar" % x)
+E:0008-1: src/irgendwas.py:15: substitutes before translation: _('''foo %s bar''' % x)
+E:0008-1: src/irgendwas.py:16: substitutes before translation: _("""foo %s bar""" % x)
+E:0008-1: src/irgendwas.py:17: substitutes before translation: _('''foo %s \'''bar''' % x)
+E:0008-1: src/irgendwas.py:18: substitutes before translation: _("""foo %s \"""bar""" % x)
+E:0008-1: src/irgendwas.py:9: substitutes before translation: _('Aber %s knallts' % x)
 E:0008-3: src/de.po:59: contains "fuzzy"
 E:0008-3: src/de.po:80: contains "fuzzy"
