@@ -49,7 +49,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.addmsg( '0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n','\\n').replace('\r','\\r'), filename=str(fn))
 						continue
 
-					line = match.group(1)
+					line = int(match.group(1))
 					msg = match.group(2)
 					code = match.group(3)
 
