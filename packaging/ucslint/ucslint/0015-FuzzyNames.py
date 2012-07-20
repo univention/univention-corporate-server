@@ -58,7 +58,7 @@ univentionr\\._baseconfig
 		for path in uub.FilteredDirWalkGenerator(os.path.curdir):
 				try:
 					fd = open(path,'r')
-					for lnr, line in enumerate(fd):
+					for lnr, line in enumerate(fd, start=1):
 						origline = line
 						if whiteline.match(line):
 							continue
@@ -67,8 +67,8 @@ univentionr\\._baseconfig
 							m = pt.search(line[pos:], fz)
 							if m:
 								if not whiteword.match(m[0]):
-									self.debug('%s:%d: found="%s"  origline="%s"' % (path, lnr+1, m[0], origline))
-									self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % m[0], filename=path, line=lnr+1)
+									self.debug('%s:%d: found="%s"  origline="%s"' % (path, lnr, m[0], origline))
+									self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % m[0], filename=path, line=lnr)
 								pos += m.groups()[0][1]
 							else:
 								break

@@ -57,7 +57,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				while pos < flen:
 					match = regex.search( content, pos )
 					if not match:
-						pos = flen+1
+						pos = flen + 1
 					else:
 						line = content.count('\n', 0, match.start()) + 1
 						pos = match.end()
@@ -88,7 +88,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				while pos < flen:
 					match = regex.search( content, pos )
 					if not match:
-						pos = flen+1
+						pos = flen + 1
 					else:
 						# match.start() + 1 ==> avoid wrong line numbers because regEx1 starts with \n
 						line = content.count('\n', 0, match.start() + 1 ) + 1

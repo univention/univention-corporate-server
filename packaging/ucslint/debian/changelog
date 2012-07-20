@@ -2,6 +2,7 @@ ucslint (3.0.0-1) unstable; urgency=low
 
   * Refacture common debian/ test (Bug #22479)
   * Skip VCS directories (Bug #22482)
+  * Fix off-by-one line number (Bug #24156)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 20 Jul 2012 12:09:41 +0200
 

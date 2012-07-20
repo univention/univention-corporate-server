@@ -220,8 +220,7 @@ class UPCFileTester(object):
 		position values corresponding to the raw file.
 		Counting of lines and position starts at 1, so first byte is at line 1 pos 1!
 		"""
-		pos = sum(map(len, self.lines[:linenumber]))
-		pos += linenumber
+		pos = sum((len(_) + 1 for _ in self.lines[:linenumber]))
 		pos += pos_in_line
 		raw = self.raw[:pos]
 		realpos = len(raw) - raw.rfind('\n')

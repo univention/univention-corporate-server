@@ -500,7 +500,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			self.addmsg('0004-27', 'cannot open/read file', fn)
 			return
 		try:
-			for linecnt, line in enumerate(f):
+			for linecnt, line in enumerate(f, start=1):
 				try:
 					x = line.decode('utf-8')
 				except UnicodeError:
