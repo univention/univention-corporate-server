@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-15 -*-
-#
+# pylint: disable-msg=C0103,C0111,C0301,R0902,R0903,R0912,R0913
 
 import os
 
@@ -19,9 +19,11 @@ RESULT_INT2STR = {
 	RESULT_STYLE: 'S',
 	}
 
+
 class UPCMessage(object):
-	def __init__(self, id, msg=None, filename=None, line=None, pos=None):
-		self.id = id
+	"""Univention Policy Check message."""
+	def __init__(self, id_, msg=None, filename=None, line=None, pos=None):
+		self.id = id_
 		self.msg = msg
 		self.filename = filename
 		self.line = line
@@ -43,6 +45,7 @@ class UPCMessage(object):
 	def getId(self):
 		return self.id
 
+
 class UniventionPackageCheckBase(object):
 	def __init__(self):
 		self.name = None
@@ -50,9 +53,10 @@ class UniventionPackageCheckBase(object):
 		self.debuglevel = 0
 
 	def addmsg(self, msgid, msg=None, filename=None, line=None, pos=None):
-		self.msg.append( UPCMessage( msgid, msg=msg, filename=filename, line=line, pos=None ) )
+		message = UPCMessage(msgid, msg=msg, filename=filename, line=line, pos=pos)
+		self.msg.append(message)
 
-	def getMsgIds(self):
+	def getMsgIds(self):  # pylint: disable-msg=R0201
 		return {}
 
 	def setdebug(self, level):
@@ -100,9 +104,11 @@ class DebianControlParsingError(UCSLintException):
 
 
 class FailedToReadFile(UCSLintException):
+	"""File reading exception."""
 	def __init__(self, fn):
 		UCSLintException.__init__(self)
 		self.fn = fn
+
 
 class DebianControlEntry(dict):
 	def __init__(self, content):
@@ -153,6 +159,7 @@ class ParserDebianControl(object):
 			if package:
 				self.binary_sections.append(package)
 
+
 class RegExTest(object):
 	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
 		self.regex = regex
@@ -167,6 +174,7 @@ class RegExTest(object):
 			if val in msg:
 				self.formatmsg = True
 				break
+
 
 class UPCFileTester(object):
 	""" Univention Package Check - File Tester
@@ -239,7 +247,7 @@ class UPCFileTester(object):
 
 		an exception will be raised if neither cntmin nor cntmax has been set
 		"""
-		if cntmin==None and cntmax==None:
+		if cntmin is None and cntmax is None:
 			raise ValueError('cntmin or cntmax has to be set')
 		self.tests.append( RegExTest( regex, msgid, msg, cntmin, cntmax) )
 
@@ -378,7 +386,8 @@ class FilteredDirWalkGenerator(object):
 		return
 
 
-if __name__ == '__main__':
+def _test():
+	"""Run simple test."""
 	import re
 	x = UPCFileTester()
 	x.addTest( re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
@@ -391,3 +400,7 @@ if __name__ == '__main__':
 	msglist = x.runTests()
 	for msg in msglist:
 		print str(msg)
+
+
+if __name__ == '__main__':
+    _test()

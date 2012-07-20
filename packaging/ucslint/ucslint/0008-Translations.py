@@ -32,9 +32,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		regEx1 = re.compile("[\\(\\[\\{\s,:]_\\(\s*'[^']+'\s*%", re.DOTALL)
-		regEx2 = re.compile('[\\(\\[\\{\s,:]_\\(\s*"[^"]+"\s*%', re.DOTALL)
-
 		py_files = []
 		po_files = []
 		for fn in uub.FilteredDirWalkGenerator(path, suffixes=('.py', '.po')):
@@ -42,6 +39,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				py_files.append(fn)
 			if fn.endswith('.po'):
 				po_files.append(fn)
+
+		self.check_py(py_files)
+		self.check_po(po_files)
+
+	def check_py(self, py_files):
+		"""Check Python files."""
+		regEx1 = re.compile(r"[([{\s,:]_\(\s*'[^']+'\s*%", re.DOTALL)
+		regEx2 = re.compile(r'[([{\s,:]_\(\s*"[^"]+"\s*%', re.DOTALL)
 
 		for fn in py_files:
 			try:
@@ -62,6 +67,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						pos = match.end()
 						self.addmsg( '0008-1', 'file contains construct like _("foo %s bar" % var)', fn, line )
 
+	def check_po(self, po_files):
+		"""Check Portable Object files."""
 		regEx1 = re.compile('\n#.*?fuzzy')
 		regEx2 = re.compile('msgstr ""\n\n', re.DOTALL)
 		regExCharset = re.compile('"Content-Type: text/plain; charset=(.*?)\\\\n"', re.DOTALL)
