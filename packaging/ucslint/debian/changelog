@@ -9,6 +9,7 @@ ucslint (3.0.0-1) unstable; urgency=low
   * Add manual page.
   * Fix Ticket number regular expression (Bug #27444)
   * Print full pathname in message (Bug #27889)
+  * Skip comments in check (Bug #23465)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 20 Jul 2012 12:09:41 +0200
 

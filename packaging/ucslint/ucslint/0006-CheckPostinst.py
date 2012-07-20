@@ -65,16 +65,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if not content:
 				continue
 
-			if '#DEBHELPER#' in content:
+			lines = content.splitlines()
+
+			if '#DEBHELPER#' in lines:
 				checks['debhelper'] = True
 
 			# look for "set -e" in hashbang
-			hashbang = content.splitlines()[0]
+			hashbang = lines[0]
 			if '/bin/sh -e' in hashbang or '/bin/bash -e' in hashbang:
 				checks['set-e-hashbang'] += 1
 
-			for line in content.splitlines():
+			for line in lines:
 				line = line.strip()
+				if not line or line.startswith('#'):
+					continue
 				self.debug('line: %s' % line)
 				for cmd in [ 'univention-directory-manager ', '/usr/sbin/univention-directory-manager ', 'univention-admin ', '/usr/sbin/univention-admin ' ]:
 					if line.startswith( cmd ):
@@ -92,10 +96,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				elif 'set -e' in line:
 					checks['set-e-body'] = True
 
-			tmpcontent = copy.deepcopy(content)
-			tmpcontent = tmpcontent.strip(' \n\r\t')
-			if tmpcontent.endswith('exit 0'):
-				checks['endswith-exit-0'] = True
+				checks['endswith-exit-0'] = line.endswith('exit 0')
 
 		#
 		# create result

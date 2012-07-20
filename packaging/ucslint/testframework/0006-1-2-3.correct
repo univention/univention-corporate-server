@@ -1,3 +1,2 @@
 E:0006-2: debian/postinst: script contains 1 calls of univention-directory-manager or univention-admin - use a join script
 W:0006-1: debian/postinst: script does not contain #DEBHELPER#
-W:0006-3: debian/postinst: script may contain 1 calls of univention-directory-manager or univention-admin - please check and use a join script
