@@ -25,12 +25,12 @@ import os
 #
 
 
-class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_PYTHON = re.compile('@!@')
 	RE_VAR = re.compile('@%@')
 
 	def __init__(self):
-		uub.UniventionPackageCheckBase.__init__(self)
+		super(UniventionPackageCheck, self).__init__()
 		self.name = '0004-CheckUCR'
 		self.UCR_VALID_SPECIAL_CHARACTERS = '/_-'
 
@@ -90,6 +90,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def check(self, path):
 		""" the real check """
+		super(UniventionPackageCheck, self).check(path)
 
 		#
 		# search UCR templates

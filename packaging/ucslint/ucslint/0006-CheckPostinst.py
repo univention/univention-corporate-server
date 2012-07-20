@@ -9,9 +9,9 @@ import copy
 
 # Prüfen, ob #DEBHELPER# in (pre|post)(inst|rm) enthalten ist
 
-class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):
-		uub.UniventionPackageCheckBase.__init__(self)
+		super(UniventionPackageCheck, self).__init__()
 		self.name = '0006-CheckPostinst'
 
 	def getMsgIds(self):
@@ -30,13 +30,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def check(self, path):
 		""" the real check """
+		super(UniventionPackageCheck, self).check(path)
 
 		fnlist_scripts = {}
 		REucr_shell = re.compile('eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*')
-
-		if not os.path.isdir( os.path.join(path, 'debian') ):
-			print "ERROR: directory %s does not exist!" % path
-			return
 
 		#
 		# search debian scripts

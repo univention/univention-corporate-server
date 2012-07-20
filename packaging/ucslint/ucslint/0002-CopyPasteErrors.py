@@ -9,9 +9,9 @@ import re, os
 # 1) check if strings like "dc=univention,dc=qa" appear in debian/* and conffiles/*
 # 2) check if strings like "univention.qa" appear in debian/* and conffiles/*
 
-class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):
-		uub.UniventionPackageCheckBase.__init__(self)
+		super(UniventionPackageCheck, self).__init__()
 		self.name = '0002-CopyPasteErrors'
 
 	def getMsgIds(self):
@@ -26,12 +26,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def check(self, path):
 		""" the real check """
+		super(UniventionPackageCheck, self).check(path)
 
 		fnlist_joinscripts = {}
-
-		if not os.path.isdir( os.path.join(path, 'debian') ):
-			print "ERROR: directory %s does not exist!" % path
-			return
 
 		files = []
 		# scan directory only

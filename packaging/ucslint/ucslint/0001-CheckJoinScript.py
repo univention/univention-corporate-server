@@ -20,9 +20,9 @@ import re, os
 #           ==> mit "|| true" und Abfrage auf DC Master oder DC Backup
 
 
-class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):
-		uub.UniventionPackageCheckBase.__init__(self)
+		super(UniventionPackageCheck, self).__init__()
 		self.name = '0001-CheckJoinScript'
 
 	def getMsgIds(self):
@@ -49,16 +49,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def check(self, path):
 		""" the real check """
+		super(UniventionPackageCheck, self).check(path)
 
 		RElineEndsWithTrue = re.compile('\|\|[ \t]+true[ \t]*$')
 		RElineContainsSetE = re.compile('\n[\t ]*set -e', re.M)
 		REucr_shell = re.compile('eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*')
 
 		fnlist_joinscripts = {}
-
-		if not os.path.isdir( os.path.join(path, 'debian') ):
-			print "ERROR: directory %s does not exist!" % path
-			return
 
 		#
 		# search join scripts

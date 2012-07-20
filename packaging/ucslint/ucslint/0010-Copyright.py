@@ -8,9 +8,9 @@ import re
 import os
 import time
 
-class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):
-		uub.UniventionPackageCheckBase.__init__(self)
+		super(UniventionPackageCheck, self).__init__()
 		self.name = '0010-Copyright'
 
 	def getMsgIds(self):
@@ -27,10 +27,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def check(self, path):
 		""" the real check """
-
-		if not os.path.isdir( os.path.join(path, 'debian') ):
-			print "ERROR: directory %s does not exist!" % path
-			return
+		super(UniventionPackageCheck, self).check(path)
 
 		check_files = []
 

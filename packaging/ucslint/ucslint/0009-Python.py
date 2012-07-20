@@ -8,10 +8,10 @@ import re
 import os
 
 
-class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	"""Python specific checks."""
 	def __init__(self):
-		uub.UniventionPackageCheckBase.__init__(self)
+		super(UniventionPackageCheck, self).__init__()
 		self.name = '0009-Python'
 
 	def getMsgIds(self):
@@ -29,12 +29,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def check(self, path):
 		""" the real check """
+		super(UniventionPackageCheck, self).check(path)
 
 		fnlist_joinscripts = {}
-
-		if not os.path.isdir( os.path.join(path, 'debian') ):
-			print "ERROR: directory %s does not exist!" % path
-			return
 
 		py_files = []
 		for dirpath, dirnames, filenames in os.walk( path ):

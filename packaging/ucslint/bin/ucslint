@@ -102,7 +102,10 @@ class DebianPackageCheck(object):
 			self.msgidlist.update( obj.getMsgIds() )
 			obj.setdebug( self.debuglevel )
 			obj.postinit( self.path )
-			obj.check( self.path )
+			try:
+				obj.check( self.path )
+			except uub.UCSLintException, ex:
+				print >> sys.stderr, ex
 			self.msglist.extend( obj.result() )
 
 
@@ -299,7 +302,10 @@ if __name__ == '__main__':
 		options.disabled_modules = []
 
 	chk = DebianPackageCheck( pkgpath, plugindirs, enabled_modules=options.enabled_modules, disabled_modules=options.disabled_modules, debuglevel=options.debug )
-	chk.check()
+	try:
+		chk.check()
+	except uub.UCSLintException, ex:
+		print >> sys.stderr, ex
 	incident_cnt, exitcode_cnt = chk.printResult( options.ignore_IDs, options.display_only_IDs, options.display_only_categories, options.exitcode_categories )
 
 	if exitcode_cnt:

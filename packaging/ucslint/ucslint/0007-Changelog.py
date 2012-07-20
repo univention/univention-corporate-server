@@ -6,9 +6,9 @@ except:
 	import ucslint.base as uub
 import re, os
 
-class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):
-		uub.UniventionPackageCheckBase.__init__(self)
+		super(UniventionPackageCheck, self).__init__()
 		self.name = '0007-Changelog'
 
 	def getMsgIds(self):
@@ -22,18 +22,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def check(self, path):
 		""" the real check """
+		super(UniventionPackageCheck, self).check(path)
 
 		fnlist_joinscripts = {}
 
-		if not os.path.isdir( os.path.join(path, 'debian') ):
-			print "ERROR: directory %s/debian does not exist!" % path
-			return
-
 		fn = os.path.join(path, 'debian', 'changelog')
-		if not os.path.exists( fn ):
-			print "ERROR: file %s does not exist!" % fn
-			return
-
 		try:
 			content = open(fn, 'r').read()
 		except:

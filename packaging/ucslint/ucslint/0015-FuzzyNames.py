@@ -10,9 +10,9 @@ import time
 import tre
 import sys
 
-class UniventionPackageCheck(uub.UniventionPackageCheckBase):
+class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):
-		uub.UniventionPackageCheckBase.__init__(self)
+		super(UniventionPackageCheck, self).__init__()
 		self.name = '0015-Names'
 
 	def getMsgIds(self):
@@ -26,10 +26,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def check(self, path):
 		""" the real check """
-
-		if not os.path.isdir( os.path.join(path, 'debian') ):
-			print "ERROR: directory %s does not exist!" % path
-			return
+		super(UniventionPackageCheck, self).check(path)
 
 		whiteword = re.compile('|'.join("""
 [0-9][0-9]univention
