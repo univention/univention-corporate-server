@@ -1,2 +1,2 @@
-E:0004-9: debian/univention-lilo.univention-config-registry: file contains entry without valid "Type:" entry (Type: myTestTypeForUcslint)
+E:0004-9: debian/univention-lilo.univention-config-registry: file contains entry with invalid "Type: myTestTypeForUcslint"
 W:0004-14: conffiles/etc/lilo.conf: template file is not registered in *.univention-config-registry

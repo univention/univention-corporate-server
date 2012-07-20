@@ -10,13 +10,6 @@ except ImportError:
     import ucslint.base as uub
 
 
-def debug(lvl, msg):
-    """Print debug message."""
-    if lvl <= debug.level:
-        print >>sys.stderr, '%s: %s' % ('>' * lvl, msg)
-debug.level = 0
-
-
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FIELD = re.compile("([a-z0-9_]+)[ \t]*(?:(<<|<=|=|>=|>>)[ \t]*([-a-zA-Z0-9.+~]+))?")
     RE_INIT = re.compile("^(?:File|Subfile): (etc/init.d/.+)$")
@@ -62,7 +55,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def _scan_script(self, fn):
         """find calls to 'univention-install-', 'ucr' and use of 'init-autostart.lib' in file 'fn'."""
         need = set()
-        debug(1, 'Reading %s' % (fn,))
+        self.debug('Reading %s' % (fn,))
         try:
             f = open(fn, 'r')
         except (OSError, IOError), e:
@@ -72,7 +65,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             for l in f:
                 for (key, (regexp, pkgs)) in UniventionPackageCheck.DEPS.items():
                     if regexp.search(l):
-                        debug(2, 'Found %s in %s' % (key.upper(), fn))
+                        self.debug('Found %s in %s' % (key.upper(), fn))
                         need.add(key)
         finally:
             f.close()
@@ -83,11 +76,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         build_arch = source_section.get('Build-Depends', '')
         build_arch = self._split_field(build_arch)
         build_arch = set(build_arch)
-        debug(2, 'Build-Depends: %s' % (build_arch,))
+        self.debug('Build-Depends: %s' % (build_arch,))
         build_indep = source_section.get('Build-Depends-Indep', '')
         build_indep = self._split_field(build_indep)
         build_indep = set(build_indep)
-        debug(2, 'Build-Depends-Indep: %s' % (build_indep,))
+        self.debug('Build-Depends-Indep: %s' % (build_indep,))
         build_deps = build_arch | build_indep
 
         fn = os.path.join(self.path, 'debian', 'rules')
@@ -104,16 +97,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check_package(self, section):
         """Check binary package for dependencies."""
         pkg = section['Package']
-        debug(1, 'Package: %s' % (pkg,))
+        self.debug('Package: %s' % (pkg,))
 
         pre = section.get('Pre-Depends', '')
         pre = self._split_field(pre)
         pre = set(pre)
-        debug(2, 'Pre-Depends: %s' % (pre,))
+        self.debug('Pre-Depends: %s' % (pre,))
         dep = section.get('Depends', '')
         dep = self._split_field(dep)
         dep = set(dep)
-        debug(2, 'Depends: %s' % (dep,))
+        self.debug('Depends: %s' % (dep,))
         all = pre | dep
 
         # Assert packages using "ucr" in preinst pre-depend on "univention-config"
@@ -170,7 +163,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         super(UniventionPackageCheck, self).check(path)
 
         fn = os.path.join(path, 'debian', 'control')
-        debug(1, 'Reading %s' % (fn,))
+        self.debug('Reading %s' % (fn,))
         try:
             parser = uub.ParserDebianControl(fn)
             self.path = path

@@ -1,4 +1,5 @@
 # -*- coding: iso-8859-15 -*-
+# pylint: disable-msg=C0301
 
 try:
 	import univention.ucslint.base as uub
@@ -48,13 +49,92 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
 		pass
 
+	RE_UCR_SHELL = re.compile('eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*')
+	RE_LINE_ENDS_WITH_TRUE = re.compile('\|\|[ \t]+true[ \t]*$')
+	RE_LINE_CONTAINS_SET_E = re.compile('\n[\t ]*set -e', re.M)
+
+	def check_join_script(self, filename):
+		"""Check a single join script."""
+		try:
+			content = open(filename, 'r').read()
+		except IOError:
+			self.addmsg('0001-9', 'failed to open and read file', filename)
+			return
+
+		lines = content.splitlines()
+		cnt = { 'unquoted_ucr_shell' : 0,
+				'version': 0,
+				'vversion': 0,
+				'credential_arg_missing': 0,
+				'unquoted_credential_arg': 0,
+				'old_cmd_name': 0,
+				'joinscripthelper.lib': 0,
+				'joinscript_init': 0,
+				'joinscript_save_current_version': 0,
+				}
+		for line in lines:
+			line = line.strip()
+			if not line or line.startswith('#'):
+				continue
+			if UniventionPackageCheck.RE_UCR_SHELL.search(line):
+				self.debug('unquoted ucr_shell found')
+				cnt['unquoted_ucr_shell'] += 1
+
+			# check for old style joinscript
+			if line.startswith( 'VERSION=' ):
+				cnt['version'] += 1
+			if line.find( ' v${VERSION} ' ) >= 0:
+				cnt['vversion'] += 1
+
+			# check for new style joinscript
+			if line.startswith('source /usr/share/univention-join/joinscripthelper.lib') or line.startswith('. /usr/share/univention-join/joinscripthelper.lib'):
+				cnt['joinscripthelper.lib'] += 1
+			if 'joinscript_init' in line:
+				cnt['joinscript_init'] += 1
+			if 'joinscript_save_current_version' in line:
+				cnt['joinscript_save_current_version'] += 1
+
+			# check udm calls
+			if 'univention-admin ' in line or 'univention-directory-manager ' in line or 'udm ' in line:
+					if 'univention-admin ' in line:
+						cnt['old_cmd_name'] += 1
+					if not ' $@ ' in line and not ' "$@" ' in line:
+						cnt['credential_arg_missing'] += 1
+						self.debug('line contains no $@:\n%s' % line)
+			if ' $@ ' in line:
+				cnt['unquoted_credential_arg'] += 1
+				self.debug('line contains unquoted $@:\n%s' % line)
+
+		if cnt['old_cmd_name'] > 0:
+			self.addmsg( '0001-1', 'join script contains %d lines using "univention-admin"' % (cnt['old_cmd_name']), filename)
+		if cnt['credential_arg_missing'] > 0:
+			self.addmsg( '0001-2', 'join script contains %s lines with missing "$@"' % (cnt['credential_arg_missing']), filename)
+		if cnt['unquoted_credential_arg'] > 0:
+			self.addmsg( '0001-11', 'join script contains %d lines with unquoted $@' % (cnt['unquoted_credential_arg']), filename)
+
+		if cnt['version'] == 0:
+			self.addmsg( '0001-3', 'join script does not set VERSION', filename)
+		if cnt['version'] > 1:
+			self.addmsg( '0001-12', 'join script does set VERSION more than once', filename)
+
+		if cnt['unquoted_ucr_shell'] > 0:
+			self.addmsg( '0001-10', 'join script contains %s lines with unquoted calls of eval $(ucr shell)' % (cnt['unquoted_ucr_shell']), filename)
+
+		if not cnt['joinscripthelper.lib']:
+			# no usage of joinscripthelper.lib
+			if cnt['vversion'] > 0 and cnt['vversion'] < 2:
+				self.addmsg( '0001-4', 'join script does not grep for " v${VERSION} "', filename)
+			elif cnt['vversion'] == 0:
+				self.addmsg( '0001-13', 'join script does not use joinscripthelper.lib', filename)
+		else:
+			if not cnt['joinscript_init']:
+				self.addmsg( '0001-14', 'join script does not use joinscript_init', filename)
+			if not cnt['joinscript_save_current_version']:
+				self.addmsg( '0001-15', 'join script does not use joinscript_save_current_version', filename)
+
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
-
-		RElineEndsWithTrue = re.compile('\|\|[ \t]+true[ \t]*$')
-		RElineContainsSetE = re.compile('\n[\t ]*set -e', re.M)
-		REucr_shell = re.compile('eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*')
 
 		fnlist_joinscripts = {}
 
@@ -62,7 +142,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# search join scripts
 		#
 		for f in os.listdir( path ):
-			if len(f) > 2 and f[0:2].isdigit() and f.endswith('.inst'):
+			if f.endswith('.inst') and f[0:2].isdigit():
 				fn = os.path.join(path, f)
 				fnlist_joinscripts[fn] = False
 				self.debug('found %s' % fn)
@@ -71,88 +151,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# check if join scripts use versioning
 		#
 		for js in fnlist_joinscripts.keys():
-			try:
-				content = open(js, 'r').read()
-			except IOError:
-				self.addmsg('0001-9', 'failed to open and read file', js)
-				continue
-
-			lines = content.splitlines()
-			cnt = { 'unquoted_ucr_shell' : 0,
-					'version': 0,
-					'vversion': 0,
-					'credential_arg_missing': 0,
-					'unquoted_credential_arg': 0,
-					'old_cmd_name': 0,
-					'joinscripthelper.lib': 0,
-					'joinscript_init': 0,
-					'joinscript_save_current_version': 0,
-					}
-			for line in lines:
-				if REucr_shell.search(line):
-					self.debug('unquoted ucr_shell found')
-					cnt['unquoted_ucr_shell'] += 1
-
-				# check for old style joinscript
-				if line.startswith( 'VERSION=' ):
-					cnt['version'] += 1
-				if line.find( ' v${VERSION} ' ) >= 0:
-					cnt['vversion'] += 1
-
-				# check for new style joinscript
-				if line.strip().startswith('source /usr/share/univention-join/joinscripthelper.lib') or line.strip().startswith('. /usr/share/univention-join/joinscripthelper.lib'):
-					cnt['joinscripthelper.lib'] += 1
-				if 'joinscript_init' in line:
-					cnt['joinscript_init'] += 1
-				if 'joinscript_save_current_version' in line:
-					cnt['joinscript_save_current_version'] += 1
-
-				# check udm calls
-				if 'univention-admin ' in line or 'univention-directory-manager ' in line or 'udm ' in line:
-					if not line.lstrip()[0] == '#':
-						if 'univention-admin ' in line:
-							cnt['old_cmd_name'] += 1
-						if not ' $@ ' in line and not ' "$@" ' in line:
-							cnt['credential_arg_missing'] += 1
-							self.debug('line contains no $@:\n%s' % line)
-				if ' $@ ' in line:
-					cnt['unquoted_credential_arg'] += 1
-					self.debug('line contains unquoted $@:\n%s' % line)
-
-			if cnt['old_cmd_name'] > 0:
-				self.addmsg( '0001-1', 'join script contains %d lines using "univention-admin"' % (cnt['old_cmd_name']), js )
-			if cnt['credential_arg_missing'] > 0:
-				self.addmsg( '0001-2', 'join script contains %s lines with missing "$@"' % (cnt['credential_arg_missing']), js )
-			if cnt['unquoted_credential_arg'] > 0:
-				self.addmsg( '0001-11', 'join script contains %d lines with unquoted $@' % (cnt['unquoted_credential_arg']), js )
-
-			if cnt['version'] == 0:
-				self.addmsg( '0001-3', 'join script does not set VERSION', js )
-			if cnt['version'] > 1:
-				self.addmsg( '0001-12', 'join script does set VERSION more than once', js )
-
-			if cnt['unquoted_ucr_shell'] > 0:
-				self.addmsg( '0001-10', 'join script contains %s lines with unquoted calls of eval $(ucr shell)' % (cnt['unquoted_ucr_shell']), js )
-
-			if not cnt['joinscripthelper.lib']:
-				# no usage of joinscripthelper.lib
-				if cnt['vversion'] > 0 and cnt['vversion'] < 2:
-					self.addmsg( '0001-4', 'join script does not grep for " v${VERSION} "', js )
-				elif cnt['vversion'] == 0:
-					self.addmsg( '0001-13', 'join script does not use joinscripthelper.lib', js )
-			else:
-				if not cnt['joinscript_init']:
-					self.addmsg( '0001-14', 'join script does not use joinscript_init', js )
-				if not cnt['joinscript_save_current_version']:
-					self.addmsg( '0001-15', 'join script does not use joinscript_save_current_version', js )
+			self.check_join_script(js)
 
 		#
-		# check if join scripts are present in debian/rules
+		# check if join scripts are present in debian/rules || debian/*.install
 		#
 		found = {}
 		debianpath = os.path.join( path, 'debian' )
 		# get all .install files
-		fnlist = [x for x in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install'])]
+		fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
 		# append debian/rules
 		fnlist.append( os.path.join( debianpath, 'rules' ) )
 
@@ -193,15 +200,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						fnlist_joinscripts[js] = True
 						self.debug('found %s in %s' % (name, fn))
 
-						match = RElineContainsSetE.search(content)
+						match = UniventionPackageCheck.RE_LINE_CONTAINS_SET_E.search(content)
 						if match:
 							self.debug('found "set -e" in %s' % fn)
 							for line in content.splitlines():
 								if name in line:
-									match = RElineEndsWithTrue.search(line)
+									match = UniventionPackageCheck.RE_LINE_ENDS_WITH_TRUE.search(line)
 									if not match:
 										self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn)
 
-		for js in fnlist_joinscripts.keys():
-			if not fnlist_joinscripts[js]:
+		for js, found in fnlist_joinscripts.items():
+			if not found:
 				self.addmsg( '0001-7', 'Join script is not mentioned in debian/*.postinst', js)
