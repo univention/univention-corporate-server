@@ -38,4 +38,4 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		firstEntry = REchangelog.split( content )[0]
 		match = REticket.search(firstEntry)
 		if not match:
-			self.addmsg( '0007-2', 'latest changelog entry does not contain bug or ticket number' )
+			self.addmsg( '0007-2', 'latest changelog entry does not contain bug or ticket number', fn)

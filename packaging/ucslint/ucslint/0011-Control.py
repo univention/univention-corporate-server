@@ -36,21 +36,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		fn = os.path.join(path, 'debian', 'changelog')
+		fn_changelog = os.path.join(path, 'debian', 'changelog')
 		try:
-			content_changelog = open(fn, 'r').read(1024)
+			content_changelog = open(fn_changelog, 'r').read(1024)
 		except IOError:
-			self.addmsg( '0011-1', 'failed to open and read file', filename=fn )
+			self.addmsg('0011-1', 'failed to open and read file', filename=fn_changelog)
 			return
 
-		fn = os.path.join(path, 'debian', 'control')
+		fn_control = os.path.join(path, 'debian', 'control')
 		try:
-			parser = uub.ParserDebianControl(fn)
+			parser = uub.ParserDebianControl(fn_control)
 		except uub.FailedToReadFile:
-			self.addmsg( '0011-1', 'failed to open and read file', filename=fn )
+			self.addmsg('0011-1', 'failed to open and read file', filename=fn_control)
 			return
 		except uub.UCSLintException:
-			self.addmsg( '0011-11', 'parsing error', filename=fn )
+			self.addmsg('0011-11', 'parsing error', filename=fn_control)
 			return
 
 		# compare package name
@@ -60,32 +60,32 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			srcpkgname = match.group(1)
 		else:
 			srcpkgname = None
-			self.addmsg( '0011-9', 'cannot determine source package name', filename='debian/changelog' )
+			self.addmsg('0011-9', 'cannot determine source package name', filename=fn_changelog)
 
 		controlpkgname = parser.source_section.get('Source')
 		if not controlpkgname:
-			self.addmsg( '0011-9', 'cannot determine source package name', filename='debian/control' )
+			self.addmsg('0011-9', 'cannot determine source package name', filename=fn_control)
 
 		if srcpkgname and controlpkgname:
 			if srcpkgname != controlpkgname:
-				self.addmsg( '0011-2', 'source package name differs in debian/changelog and debian/control' )
+				self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', filename=fn_changelog)
 
 
 		# parse source section of debian/control
 		if not parser.source_section.get('Section', '') in ( 'univention' ):
-			self.addmsg( '0011-3', 'wrong Section entry - should be "univention"', filename='debian/control' )
+			self.addmsg('0011-3', 'wrong Section entry - should be "univention"', filename=fn_control)
 
 		if not parser.source_section.get('Priority', '') in ( 'optional' ):
-			self.addmsg( '0011-4', 'wrong Priority entry - should be "optional"', filename='debian/control' )
+			self.addmsg('0011-4', 'wrong Priority entry - should be "optional"', filename=fn_control)
 
 		if not parser.source_section.get('Maintainer', '') in ( 'Univention GmbH <packages@univention.de>' ):
-			self.addmsg( '0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', filename='debian/control' )
+			self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', filename=fn_control)
 
 		if parser.source_section.get('XS-Python-Version', ''):
-			self.addmsg( '0011-11', 'XS-Python-Version is not required any longer', filename='debian/control' )
+			self.addmsg('0011-11', 'XS-Python-Version is not required any longer', filename=fn_control)
 
 		if 'python-central' in parser.source_section.get('Build-Depends', ''):
-			self.addmsg( '0011-12', 'please use python-support instead of python-central in Build-Depends', filename='debian/control' )
+			self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', filename=fn_control)
 
 		if not 'ucslint' in parser.source_section.get('Build-Depends', ''):
-			self.addmsg( '0011-13', 'ucslint is missing in Build-Depends', filename='debian/control' )
+			self.addmsg('0011-13', 'ucslint is missing in Build-Depends', filename=fn_control)

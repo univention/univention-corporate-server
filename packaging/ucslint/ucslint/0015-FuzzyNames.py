@@ -53,9 +53,9 @@ univentionr\\._baseconfig
 		fz = tre.Fuzzyness(maxerr = 2)
 		pt = tre.compile("\<univention\>", tre.EXTENDED | tre.ICASE)
 
-		for path in uub.FilteredDirWalkGenerator(os.path.curdir):
+		for fn in uub.FilteredDirWalkGenerator(path):
+				fd = open(fn, 'r')
 				try:
-					fd = open(path,'r')
 					for lnr, line in enumerate(fd, start=1):
 						origline = line
 						if whiteline.match(line):
@@ -65,8 +65,8 @@ univentionr\\._baseconfig
 							m = pt.search(line[pos:], fz)
 							if m:
 								if not whiteword.match(m[0]):
-									self.debug('%s:%d: found="%s"  origline="%s"' % (path, lnr, m[0], origline))
-									self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % m[0], filename=path, line=lnr)
+									self.debug('%s:%d: found="%s"  origline="%s"' % (fn, lnr, m[0], origline))
+									self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % m[0], filename=fn, line=lnr)
 								pos += m.groups()[0][1]
 							else:
 								break

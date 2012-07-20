@@ -43,7 +43,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			fn = os.path.join(path, 'debian', f)
 			if f.endswith('.preinst') or f.endswith('.postinst') or f.endswith('.prerm') or f.endswith('.postrm') or \
 					f in [ 'preinst', 'postinst', 'prerm', 'postrm' ]:
-				fnlist_scripts[f] = { 	'debhelper' : False,
+				fnlist_scripts[fn] = { 	'debhelper' : False,
 										'udm_calls': 0,
 										'unquoted_ucr_shell': 0,
 										'udm_in_line': 0,
@@ -56,9 +56,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		#
 		# check scripts
 		#
-		for js in fnlist_scripts.keys():
+		for fn, checks in fnlist_scripts.items():
 			try:
-				content = open(os.path.join(path, 'debian', js), 'r').read()
+				content = open(fn, 'r').read()
 			except IOError:
 				content = ''
 
@@ -66,58 +66,57 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 
 			if '#DEBHELPER#' in content:
-				fnlist_scripts[js]['debhelper'] = True
+				checks['debhelper'] = True
 
 			# look for "set -e" in hashbang
 			hashbang = content.splitlines()[0]
 			if '/bin/sh -e' in hashbang or '/bin/bash -e' in hashbang:
-				fnlist_scripts[js]['set-e-hashbang'] += 1
+				checks['set-e-hashbang'] += 1
 
 			for line in content.splitlines():
 				line = line.strip()
 				self.debug('line: %s' % line)
 				for cmd in [ 'univention-directory-manager ', '/usr/sbin/univention-directory-manager ', 'univention-admin ', '/usr/sbin/univention-admin ' ]:
 					if line.startswith( cmd ):
-						fnlist_scripts[js]['udm_calls'] += 1
+						checks['udm_calls'] += 1
 					elif cmd in line:
-						fnlist_scripts[js]['udm_in_line'] += 1
+						checks['udm_in_line'] += 1
 
 				if REucr_shell.search(line):
 					self.debug('unquoted ucr_shell found')
-					fnlist_scripts[js]['unquoted_ucr_shell'] += 1
+					checks['unquoted_ucr_shell'] += 1
 
 				# search for "set -e" in line
 				if line.startswith( 'set -e' ):
-					fnlist_scripts[js]['set-e-body'] = True
+					checks['set-e-body'] = True
 				elif 'set -e' in line:
-					fnlist_scripts[js]['set-e-body'] = True
+					checks['set-e-body'] = True
 
 			tmpcontent = copy.deepcopy(content)
 			tmpcontent = tmpcontent.strip(' \n\r\t')
 			if tmpcontent.endswith('exit 0'):
-				fnlist_scripts[js]['endswith-exit-0'] = True
+				checks['endswith-exit-0'] = True
 
 		#
 		# create result
 		#
-		for js in fnlist_scripts.keys():
-			fn = os.path.join('debian',js)
-			if not fnlist_scripts[js]['debhelper']:
+		for fn, checks in fnlist_scripts.items():
+			if not checks['debhelper']:
 				self.addmsg( '0006-1', 'script does not contain #DEBHELPER#', fn )
 
-			if fnlist_scripts[js]['set-e-hashbang']:
+			if checks['set-e-hashbang']:
 				self.addmsg( '0006-4', 'script contains "sh -e" in hashbang', fn )
 
-			if fnlist_scripts[js]['set-e-body']:
+			if checks['set-e-body']:
 				self.addmsg( '0006-5', 'script contains "set -e"', fn )
 
-			if fnlist_scripts[js]['udm_calls'] > 0:
-				self.addmsg( '0006-2', 'script contains %d calls of univention-directory-manager or univention-admin - use a join script' % fnlist_scripts[js]['udm_calls'], fn )
-			if fnlist_scripts[js]['udm_in_line'] > 0:
-				self.addmsg( '0006-3', 'script may contain %d calls of univention-directory-manager or univention-admin - please check and use a join script' % fnlist_scripts[js]['udm_in_line'], fn )
+			if checks['udm_calls'] > 0:
+				self.addmsg('0006-2', 'script contains %(udm_calls)d calls of univention-directory-manager or univention-admin - use a join script' % checks, fn)
+			if checks['udm_in_line'] > 0:
+				self.addmsg('0006-3', 'script may contain %(udm_in_line)d calls of univention-directory-manager or univention-admin - please check and use a join script' % checks, fn)
 
-			if not fnlist_scripts[js]['endswith-exit-0']:
+			if not checks['endswith-exit-0']:
 				self.addmsg( '0006-6', 'script contains no "exit 0" at end of file', fn )
 
-			if fnlist_scripts[js]['unquoted_ucr_shell'] > 0:
-				self.addmsg( '0006-7', 'script contains %d unquoted calls of eval $(ucr shell)' % fnlist_scripts[js]['unquoted_ucr_shell'], fn )
+			if checks['unquoted_ucr_shell'] > 0:
+				self.addmsg('0006-7', 'script contains %(unquoted_ucr_shell)d unquoted calls of eval $(ucr shell)' % checks, fn)

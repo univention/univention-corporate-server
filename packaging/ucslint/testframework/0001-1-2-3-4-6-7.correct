@@ -3,4 +3,4 @@ S:0001-1: 34univention-management-console-server.inst: join script contains 36 l
 W:0001-3: 35univention-management-console-proxy.inst: join script does not set VERSION
 W:0001-4: 35univention-management-console-proxy.inst: join script does not grep for " v${VERSION} "
 W:0001-6: 35univention-management-console-proxy.inst: join script is not mentioned in debian/rules or *.install files
-W:0001-7: Join script 35univention-management-console-proxy.inst is not mentioned in debian/*.postinst
+W:0001-7: 35univention-management-console-proxy.inst: Join script is not mentioned in debian/*.postinst

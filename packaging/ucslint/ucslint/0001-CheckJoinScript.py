@@ -63,17 +63,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		#
 		for f in os.listdir( path ):
 			if len(f) > 2 and f[0:2].isdigit() and f.endswith('.inst'):
-				fnlist_joinscripts[f] = False
-				self.debug('found %s' % f)
+				fn = os.path.join(path, f)
+				fnlist_joinscripts[fn] = False
+				self.debug('found %s' % fn)
 
 		#
 		# check if join scripts use versioning
 		#
 		for js in fnlist_joinscripts.keys():
 			try:
-				content = open( os.path.join(path, js), 'r').read()
+				content = open(js, 'r').read()
 			except IOError:
-				self.addmsg( '0001-9', 'failed to open and read file', fn )
+				self.addmsg('0001-9', 'failed to open and read file', js)
 				continue
 
 			lines = content.splitlines()
@@ -162,8 +163,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg( '0001-9', 'failed to open and read file', fn )
 
 			for js in fnlist_joinscripts.keys():
-				self.debug('looking for %s in debian/rules' % js)
-				if js in content:
+				name = os.path.basename(js)
+				self.debug('looking for %s in %s' % (name, fn))
+				if name in content:
+					self.debug('found %s in %s' % (name, fn))
 					found[js] = found.get(js,0) + 1
 
 		for js in fnlist_joinscripts.keys():
@@ -184,20 +187,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					continue
 
 				for js in fnlist_joinscripts.keys():
-					self.debug('looking for %s in %s' % (js, fn))
-					if js in content:
+					name = os.path.basename(js)
+					self.debug('looking for %s in %s' % (name, fn))
+					if name in content:
 						fnlist_joinscripts[js] = True
-						self.debug('found %s in %s' % (js, fn))
+						self.debug('found %s in %s' % (name, fn))
 
 						match = RElineContainsSetE.search(content)
 						if match:
 							self.debug('found "set -e" in %s' % fn)
 							for line in content.splitlines():
-								if js in line:
+								if name in line:
 									match = RElineEndsWithTrue.search(line)
 									if not match:
-										self.addmsg( '0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % js, fn )
+										self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn)
 
 		for js in fnlist_joinscripts.keys():
 			if not fnlist_joinscripts[js]:
-				self.addmsg( '0001-7', 'Join script %s is not mentioned in debian/*.postinst' % js )
+				self.addmsg( '0001-7', 'Join script is not mentioned in debian/*.postinst', js)

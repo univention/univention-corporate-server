@@ -46,11 +46,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 					match = reBashism.search(item)
 					if not match:
-						self.addmsg( '0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n','\\n').replace('\r','\\r'), filename=str(fn))
+						self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n','\\n').replace('\r','\\r'), filename=fn)
 						continue
 
 					line = int(match.group(1))
 					msg = match.group(2)
 					code = match.group(3)
 
-					self.addmsg( '0013-2', 'possible bashism (%s):\n%s' % (msg, code), filename=str(fn), line=line )
+					self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), filename=fn, line=line)

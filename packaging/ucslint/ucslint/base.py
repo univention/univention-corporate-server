@@ -339,9 +339,8 @@ class FilteredDirWalkGenerator(object):
 						dirnames.remove(item)
 
 			# ignore all subdirectories in debian directory if requested
-			if self.ignore_debian_subdirs:
-				if dirpath.startswith( os.path.join(self.path, 'debian', '') ):
-					continue
+			if self.ignore_debian_subdirs and os.path.basename(dirpath) == 'debian':
+				del dirnames[:]
 
 			# iterate over filenames
 			for filename in filenames:

@@ -32,8 +32,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		check_files = []
 
 		# check if copyright file is missing
-		if not os.path.exists( os.path.join(path, 'debian', 'copyright' ) ):
-			self.addmsg( '0010-5', 'file is missing', filename='debian/copyright' )
+		fn = os.path.join(path, 'debian', 'copyright')
+		if not os.path.exists(fn):
+			self.addmsg('0010-5', 'file is missing', filename=fn)
 
 		# looking for files below debian/
 		for f in os.listdir( os.path.join(path, 'debian') ):

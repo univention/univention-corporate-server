@@ -171,9 +171,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				reUCRHeaderFile = re.compile('#[\t ]+(/etc/univention/templates/files(/[^ \n\t\r]*?))[ \n\t\r]')
 				match = reUCRHeaderFile.search(content)
 				if match:
-					if match.group(2) != fn[ fn.find('/conffiles/')+10 : ]:
+					fname = fn[fn.find('/conffiles/') + 10:]
+					if match.group(2) != fname:
 						self.addmsg( '0004-1', 'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files%s\n      - path in header    = %s' %
-											( fn[ fn.find('/conffiles/')+10 : ], match.group(1) ), fn )
+											(fname, match.group(1)), fn)
 
 
 		#
@@ -186,18 +187,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		all_scripts = []     # [ OBJ, OBJ, ... ]
 		all_preinst = []     # [ FN, FN, ... ]
 		all_postinst = []    # [ FN, FN, ... ]
-		if not os.path.exists( os.path.join(path, 'debian') ):
-			self.addmsg( '0004-2', 'file is missing', 'debian/rules' )
-			return
-		else:
+		if True:  # TODO reindent
 			# read debian/rules
 			fn_rules = os.path.join(path, 'debian', 'rules' )
 			try:
 				rules_content = open(fn_rules, 'r').read()
 			except IOError:
+				self.addmsg('0004-2', 'file is missing', fn_rules)
 				rules_content = ''
 			if 'univention-install-baseconfig' in rules_content:
-				self.addmsg( '0004-25', 'file contains old univention-install-baseconfig call', 'debian/rules')
+				self.addmsg( '0004-25', 'file contains old univention-install-baseconfig call', fn_rules)
 
 			# find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
 			reUICR = re.compile('[\n\t ]univention-install-(baseconfig|config-registry)[\n\t ]')
@@ -213,7 +212,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.test_config_registry_variables(tmpfn)
 
 					if not reUICR.search(rules_content):
-						self.addmsg( '0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, 'debian/rules' )
+						self.addmsg( '0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, fn_rules)
 						break
 
 			for f in os.listdir( os.path.join(path, 'debian') ):
@@ -497,7 +496,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			f = open(tmpfn, 'r')
 		except IOError:
-			self.addmsg('0004-27', 'cannot open/read file', fn)
+			self.addmsg('0004-27', 'cannot open/read file', tmpfn)
 			return
 		try:
 			for linecnt, line in enumerate(f, start=1):
