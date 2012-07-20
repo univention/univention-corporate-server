@@ -1,0 +1,69 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UCSLINT "1" "January 2012" "UCS" "User Commands"
+
+.SH NAME
+ucslint \- UCS package checker
+
+.SH SYNOPSIS
+.B ucslint
+.RI [ options ]
+
+.SH DESCRIPTION
+.B ucslint
+dissects Univention packages and reports bugs and policy violations.
+It contains automated checks for many aspects of UCS policy as well as some checks for common errors.
+
+.SH OPTIONS
+.TP
+\fB\-h\fP, \fB\-\-help\fP
+show this help message and exit
+.TP
+\fB\-d\fP \fIDEBUG\fP, \fB\-\-debug\fP=\fIDEBUG\fP
+if set, debugging is activated and set to the specified level
+.TP
+\fB\-m\fP \fIENABLED_MODULES\fP, \fB\-\-modules\fP=\fIENABLED_MODULES\fP
+list of modules to load (e.g. \fB\-m\fP 0009,0027)
+.TP
+\fB\-o\fP \fIDISPLAY_ONLY_IDS\fP, \fB\-\-display\-only\fP=\fIDISPLAY_ONLY_IDS\fP
+list of IDs to be displayed (e.g. \fB\-o\fP 0009\-1,0027\-12)
+.TP
+\fB\-i\fP \fIIGNORE_IDS\fP, \fB\-\-ignore\fP=\fIIGNORE_IDS\fP
+list of IDs to be ignored (e.g. \fB\-i\fP 0003\-4,0019\-27)
+.TP
+\fB\-p\fP \fIPLUGINDIR\fP, \fB\-\-plugindir\fP=\fIPLUGINDIR\fP
+override plugin directory with \fI<plugindir>\fP
+.TP
+\fB\-c\fP \fIDISPLAY_ONLY_CATEGORIES\fP, \fB\-\-display\-categories\fP=\fIDISPLAY_ONLY_CATEGORIES\fP
+categories to be displayed (e.g. \fB\-c\fP EWIS)
+.TP
+\fB\-e\fP \fIEXITCODE_CATEGORIES\fP, \fB\-\-exitcode\-categories\fP=\fIEXITCODE_CATEGORIES\fP
+categories that cause an exitcode != 0 (e.g. \fB\-e\fP EWIS)
+
+
+.SH FILES
+.TP
+.I ./debian/
+Indicator for a source directory.
+.TP
+.I ./debian/ucslint.overrides
+This text file can be used to disable a complete module or to just ignore specific tests.
+Each line consists of up to three \fB:\fP separated fields.
+.br
+.IR module-ID [\fB:\fP filename [\fB:\fP line-number ]]
+.TP
+.I /usr/lib/python2.4/site-packages/univention/ucslint/
+Directory containing default plugins until-2.4.
+.TP
+.I /usr/lib/pymodules/python2.6/univention/ucslint/
+.\" .I /usr/share/pyshared/univention/ucslint/
+Directory containing default plugins starting UCS-3.0.
+.TP
+.I $HOME/.ucslint/
+Directory containing custom plugins.
+
+.SH SEE ALSO
+.BR lintian (1),
+https://billy.knut.univention.de/uniwiki/index.php/UCS_Tools#ucslint
+
+.SH AUTHOR
+Copyright (c) 2001-2012 Univention GmbH, Germany
