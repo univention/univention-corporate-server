@@ -179,13 +179,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.check_package(section)
 
         # Assert all files debian/$pkg.$suffix belong to a package $pkg declared in debian/control
-        exists = set()
+        exists = {}
         for suffix in ('.univention-config-registry', '.univention-config-registry-variables', '.univention-config-registry-categories', '.univention-service'):
             pat = os.path.join(path, 'debian', '*%s' % (suffix,))
-            exists |= set((os.path.basename(fn)[:-len(suffix)] for fn in glob(pat)))
+            for fn in glob(pat):
+                pkg = os.path.basename(fn)[:-len(suffix)]
+                exists.setdefault(pkg, []).append(fn)
         known = set((section['Package'] for section in parser.binary_sections))
-        for pkg in exists - known:
-            self.addmsg('0014-7', 'Undeclared package "%s" has UCR files' % (pkg,))
+        for pkg in set(exists.keys()) - known:
+            for fn in exists[pkg]:
+                self.addmsg('0014-7', 'Undeclared package "%s" has UCR files' % (pkg,), fn)
 
 
 if __name__ == '__main__':

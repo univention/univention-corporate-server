@@ -1,2 +1,2 @@
-W:0004-16: etc/lilo.conf: UCR header is missing
-W:0004-17: etc/hosts.d/99-ucs-test-unknown: UCR template file is registered but not found in conffiles/ (2)
+W:0004-16: conffiles/etc/lilo.conf: UCR header is missing
+W:0004-17: debian/univention-lilo.univention-config-registry: UCR template file "etc/hosts.d/99-ucs-test-unknown" is registered but not found in conffiles/ (2)

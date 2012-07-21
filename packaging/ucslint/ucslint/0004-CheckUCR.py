@@ -67,6 +67,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-30': [ uub.RESULT_ERROR,  'debian/*.univention-config-registry-variables contains non-UTF-8 strings' ],
 				 '0004-31': [uub.RESULT_ERROR,  'UCR template file contains odd number of %!% markers'],
 				 '0004-32': [uub.RESULT_ERROR,  'UCR template file contains odd number of %@% markers'],
+				 '0004-33': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: file" without "File:" line'],
 				 }
 
 	def postinit(self, path):
@@ -96,9 +97,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_UCR_PLACEHOLDER_VAR1 = re.compile('@%@([^@]+)@%@')
 
 	def check_conffiles(self, path):
-		#
-		# search UCR templates
-		#
+		"""search UCR templates."""
 		conffiles = {}
 
 		for fn in uub.FilteredDirWalkGenerator(os.path.join(path, 'conffiles')):
@@ -190,6 +189,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		all_scripts = []     # [ OBJ, OBJ, ... ]
 		all_preinst = []     # [ FN, FN, ... ]
 		all_postinst = []    # [ FN, FN, ... ]
+		all_definitions = {} # [ FN, ... ]
 		if True:  # TODO reindent
 			# read debian/rules
 			fn_rules = os.path.join(path, 'debian', 'rules' )
@@ -275,9 +275,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								elif 'Multifile' not in entry:
 									self.addmsg( '0004-6', 'file contains subfile entry without "Multifile:" line', fn )
 								else:
-									if len(entry['Subfile']) != 1:
+									sfile = entry.get('Subfile', [])
+									if len(sfile) != 1:
 										self.addmsg( '0004-7', 'file contains subfile entry with multiple "Subfile:" lines', fn )
+									for _ in sfile:
+										all_definitions.setdefault(_, set()).add(fn)
 									mfile = entry['Multifile']
+									for _ in mfile:
+										all_definitions.setdefault(_, set()).add(fn)
 									if len(mfile) != 1:
 										self.addmsg( '0004-8', 'file contains subfile entry with multiple "Multifile:" lines', fn )
 									if len(entry.get('Preinst',[])) > 1:
@@ -293,6 +298,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 										postinst.append( entry['Postinst'][0] )
 
 							elif typ == 'file':
+								sfile = entry.get('File', [])
+								if len(sfile) != 1:
+									self.addmsg('0004-33', 'file contains file entry with multiple "File:" lines', fn)
+								for _ in sfile:
+									all_definitions.setdefault(_, set()).add(fn)
 								files.append( entry )
 								if len(entry.get('Preinst',[])) > 0:
 									preinst.append( entry['Preinst'][0] )
@@ -460,12 +470,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			else:
 				conffn = short2conffn.get( fn, '' )
 				if not conffn:
-					self.addmsg( '0004-15', 'UCR template file is registered but not found in conffiles/ (1)', fn )
+					for _ in all_definitions[fn]:
+						self.addmsg('0004-15', 'UCR template file "%s" is registered but not found in conffiles/ (1)' % (fn,), _)
 				else:
 					if not conffiles[ conffn ]['headerfound'] and \
 							not conffiles[ conffn ]['bcwarning'] and \
 							not conffiles[ conffn ]['ucrwarning']:
-						self.addmsg( '0004-16', 'UCR header is missing', fn )
+						self.addmsg('0004-16', 'UCR header is missing', conffn)
 				self.test_marker(os.path.join(path, 'conffiles', fn))
 
 		# Part2: subfile templates
@@ -480,14 +491,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					try:
 						conffn = short2conffn[fn]
 					except LookupError:
-						self.addmsg( '0004-17', 'UCR template file is registered but not found in conffiles/ (2)', fn )
+						for _ in all_definitions[fn]:
+							self.addmsg( '0004-17', 'UCR template file "%s" is registered but not found in conffiles/ (2)' % (fn,), _)
 					else:
 						if conffiles[ conffn ]['headerfound']:
 							found = True
 						if conffiles[ conffn ]['bcwarning'] or conffiles[ conffn ]['ucrwarning']:
 							found = True
 			if not found:
-				self.addmsg( '0004-18', 'UCR header is maybe missing in multifile %s' % mfn )
+				for _ in all_definitions[mfn]:
+					self.addmsg('0004-18', 'UCR header is maybe missing in multifile "%s"' % (mfn,), _)
 
 
 	def test_config_registry_variables(self, tmpfn):
