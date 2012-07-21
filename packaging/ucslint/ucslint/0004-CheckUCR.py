@@ -121,19 +121,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 
 			for regEx in (UniventionPackageCheck.RE_UCR_PLACEHOLDER_VAR1, ):
-				flen = len(content)
 				pos = 0
-				while pos < flen:
+				while True:
 					match = regEx.search( content, pos )
 					if not match:
-						pos = flen+1
+						break
 					else:
-						if match.group(1).startswith('BCWARNING='):
+						var = match.group(1)
+						if var.startswith('BCWARNING='):
 							checks['bcwarning'] = True
-						elif match.group(1).startswith('UCRWARNING='):
+						elif var.startswith('UCRWARNING='):
 							checks['ucrwarning'] = True
-						elif not match.group(1) in checks['placeholder']:
-							checks['placeholder'].append( match.group(1) )
+						elif not var in checks['placeholder']:
+							checks['placeholder'].append(var)
 						pos = match.end()
 				if checks['placeholder']:
 					self.debug('found UCR placeholder variables in %s\n- %s' % (fn, '\n- '.join(checks['placeholder'])))
@@ -146,15 +146,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					'Warnung: Diese Datei wurde automatisch generiert und kann durch' in content:
 					checks['headerfound'] = True
 
-				flen = len(content)
 				pos = 0
-				while pos < flen:
+				while True:
 					match = regEx.search( content, pos )
 					if not match:
-						pos = flen+1
+						break
 					else:
-						if not match.group(1) in checks['variables']:
-							checks['variables'].append(match.group(1))
+						var = match.group(1)
+						if not var in checks['variables']:
+							checks['variables'].append(var)
 						pos = match.end()
 				if checks['variables']:
 					self.debug('found UCR variables in %s\n- %s' % (fn, '\n- '.join(checks['variables'])))
