@@ -52,6 +52,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_UCR_SHELL = re.compile('eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*')
 	RE_LINE_ENDS_WITH_TRUE = re.compile('\|\|[ \t]+true[ \t]*$')
 	RE_LINE_CONTAINS_SET_E = re.compile('\n[\t ]*set -e', re.M)
+	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b')
 
 	def check_join_script(self, filename):
 		"""Check a single join script."""
@@ -161,7 +162,25 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# get all .install files
 		fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
 		# append debian/rules
-		fnlist.append( os.path.join( debianpath, 'rules' ) )
+		fn_rules = os.path.join(path, 'debian', 'rules' )
+		fnlist.append(fn_rules)
+
+		# Look for dh-umc-modules-install
+		try:
+			content = open(fn_rules, 'r').read()
+		except IOError:
+			self.addmsg( '0001-9', 'failed to open and read file', fn )
+		else:
+			if UniventionPackageCheck.RE_DH_UMC.search(content):
+				self.debug('Detected use of dh-umc-module-install')
+				for fn in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.umc-modules']):
+					package = os.path.basename(fn)[:-len('.umc-modules')]
+					inst = '%s.inst' % (package,)
+					for js in fnlist_joinscripts.keys():
+						if js.endswith(inst):
+							self.debug('%s installed by dh-umc-module-install' % (js,))
+							found[js] = found.get(js, 0) + 1
+							fnlist_joinscripts[js] = True
 
 		for fn in fnlist:
 			try:

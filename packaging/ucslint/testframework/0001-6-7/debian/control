@@ -1,0 +1,23 @@
+Source: 0001-6-7
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~),
+ python-support,
+ univention-management-console-dev,
+ python-all,
+ ucslint
+Standards-Version: 3.7.2
+
+Package: 0001-6-7
+Architecture: all
+Depends: ${misc:Depends},
+ univention-management-console-server,
+ devscripts
+Description: Dummy modules
+ Dummy modules
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
