@@ -41,7 +41,7 @@ do
 
         if diff -u "${dir}.correct" "${dir}.test" >"$tmpdiff" 2>&1
         then
-            [ -z "$quiet" ] && echo "${green}OK{$norm}"
+            [ -z "$quiet" ] && echo "${green}OK${norm}"
             [ -n "$clean" ] && rm -f "${dir}.test"
         else
             [ -z "$quiet" ] && echo "${red}FAILED${norm}"
