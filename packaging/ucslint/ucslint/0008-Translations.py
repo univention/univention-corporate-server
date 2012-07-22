@@ -67,12 +67,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 			self.debug('testing %s' % fn)
 			for regex in (regEx1,):
-				flen = len(content)
 				pos = 0
-				while pos < flen:
+				while True:
 					match = regex.search( content, pos )
 					if not match:
-						pos = flen + 1
+						break
 					else:
 						line = content.count('\n', 0, match.start()) + 1
 						pos = match.end()
@@ -100,12 +99,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			self.debug('testing %s' % fn)
 			for regex, errid, errtxt in [ (regEx1, '0008-3', 'contains "fuzzy"'),
 										  (regEx2, '0008-4', 'contains empty msgstr') ]:
-				flen = len(content)
 				pos = 0
-				while pos < flen:
+				while True:
 					match = regex.search( content, pos )
 					if not match:
-						pos = flen + 1
+						break
 					else:
 						# match.start() + 1 ==> avoid wrong line numbers because regEx1 starts with \n
 						line = content.count('\n', 0, match.start() + 1 ) + 1

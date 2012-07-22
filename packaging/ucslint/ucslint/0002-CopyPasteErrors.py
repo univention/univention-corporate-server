@@ -59,12 +59,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def _searchString(self, content, txt):
 		result = []
-		flen = len(content)
 		pos = 0
-		while pos < flen:
+		while True:
 			fpos = content.find( txt, pos )
 			if fpos < 0:
-				pos = flen+1
+				break
 			else:
 				line = content.count('\n', 0, fpos) + 1
 				pos = fpos + len(txt) - 1
