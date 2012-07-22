@@ -22,11 +22,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0009-6': [ uub.RESULT_WARN, 'raise "text" is deprecated in python3' ],
 				 '0009-7': [uub.RESULT_STYLE, 'fragile comparison with None'],
 				 '0009-8': [uub.RESULT_STYLE, 'use ucr.is_true() or .is_false()'],
+				 '0009-9': [uub.RESULT_ERROR, 'hashbang contains more than one option'],
 				 }
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
 		pass
+
+	RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
 
 	def check(self, path):
 		""" the real check """
@@ -72,14 +75,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			self.msg.extend( msglist )
 
 			firstline = content.splitlines()[0]
-			if firstline.startswith('#! /'):
-				firstline = '#!' + firstline[3:]
-			if firstline.startswith('#!/usr/bin/python'):
-				if firstline == '#!/usr/bin/python' or firstline.startswith('#!/usr/bin/python '):
+			match = UniventionPackageCheck.RE_HASHBANG.match(firstline)
+			if match:
+				version, space, option, tail = match.groups()
+				if not version:
 					self.addmsg( '0009-2', 'file does not specify python version in hashbang', filename=fn )
-				elif firstline.startswith('#!/usr/bin/python2.') and not firstline.startswith('#!/usr/bin/python2.6'):
+				elif version != '2.6':
 					self.addmsg( '0009-3', 'file specifies wrong python version in hashbang', filename=fn )
-				elif firstline.startswith('#!/usr/bin/python3'):
-					self.addmsg( '0009-3', 'file specifies wrong python version in hashbang', filename=fn )
-				elif firstline.startswith('#!/usr/bin/python2.6 '):
+				if space and not option:
 					self.addmsg( '0009-4', 'file contains whitespace after python command', filename=fn )
+				if tail:
+					self.addmsg('0009-9', 'hashbang contains more than one option', filename=fn)

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4 -O
+#!/usr/bin/python2.4 
 import foo
 import bar
 
