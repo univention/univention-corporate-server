@@ -1,0 +1,5 @@
+ucslint (3.0.0-1) unstable; urgency=low
+
+  * 0011: Check prefix of debian/$pkg.debhelper (Bug #23482)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Jul 2012 12:09:41 +0200

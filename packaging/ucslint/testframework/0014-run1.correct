@@ -8,7 +8,3 @@ W:0014-6: conffiles/etc/init.d/dep-fail: Missing Depends: univention-base-files
 W:0014-6: conffiles/etc/init.d/preinst-fail: Missing Depends: univention-base-files
 W:0014-6: debian/dep-fail.init: Missing Depends: univention-base-files
 W:0014-6: debian/preinst-fail.init: Missing Depends: univention-base-files
-W:0014-7: debian/xa.univention-config-registry: Undeclared package "xa" has UCR files
-W:0014-7: debian/xb.univention-config-registry-variables: Undeclared package "xb" has UCR files
-W:0014-7: debian/xc.univention-config-registry-categories: Undeclared package "xc" has UCR files
-W:0014-7: debian/xd.univention-service: Undeclared package "xd" has UCR files

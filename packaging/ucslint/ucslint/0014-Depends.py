@@ -186,9 +186,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 pkg = os.path.basename(fn)[:-len(suffix)]
                 exists.setdefault(pkg, []).append(fn)
         known = set((section['Package'] for section in parser.binary_sections))
-        for pkg in set(exists.keys()) - known:
-            for fn in exists[pkg]:
-                self.addmsg('0014-7', 'Undeclared package "%s" has UCR files' % (pkg,), fn)
 
 
 if __name__ == '__main__':

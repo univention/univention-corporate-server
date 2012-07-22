@@ -1,0 +1,14 @@
+Source: test0011-14
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, ucslint
+Standards-Version: 3.5.5
+
+Package: foo
+Architecture: all
+Description: 0011-14 dummy foo
+
+Package: bar
+Architecture: all
+Description: 0011-14 dummy bar
