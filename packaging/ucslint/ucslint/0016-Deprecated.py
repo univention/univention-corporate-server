@@ -58,5 +58,5 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.msg.extend(msglist)
 
         for fn in uub.FilteredDirWalkGenerator(os.path.join(path, 'debian'),
-                suffixes='.univention-baseconfig'):
+                suffixes=('.univention-baseconfig',)):
             self.addmsg('0016-6', 'Use of deprecated "debian/*.univention-baseconfig"', fn)
