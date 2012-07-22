@@ -13,6 +13,8 @@ ucslint (3.0.0-1) unstable; urgency=low
   * Skip testing generated files (Bug #22498)
   * 0001: Handle dh-umc-module-install (Bug #24816)
   * 0016: Check for deprecated usage (Bug #23566)
+  * 0009: Check for None comparison (Bug #22487)
+  * 0009: Check for ucr.is_true(), .is_false() (Bug #22485)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 20 Jul 2012 12:09:41 +0200
 

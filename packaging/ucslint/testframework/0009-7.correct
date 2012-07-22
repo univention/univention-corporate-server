@@ -1,0 +1,3 @@
+S:0009-7: none.py:4:2: fragile comparison with None
+S:0009-7: none.py:6:2: fragile comparison with None
+S:0009-7: none.py:8:2: fragile comparison with None

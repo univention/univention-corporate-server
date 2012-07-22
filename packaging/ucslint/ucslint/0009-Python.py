@@ -20,6 +20,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0009-4': [ uub.RESULT_WARN, 'python file contains whitespace and maybe arguments after python command' ],
 				 '0009-5': [ uub.RESULT_WARN, 'dict.has_key is deprecated in python3 - please use "if key in dict:"' ],
 				 '0009-6': [ uub.RESULT_WARN, 'raise "text" is deprecated in python3' ],
+				 '0009-7': [uub.RESULT_STYLE, 'fragile comparison with None'],
+				 '0009-8': [uub.RESULT_STYLE, 'use ucr.is_true() or .is_false()'],
 				 }
 
 	def postinit(self, path):
@@ -47,6 +49,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		tester = uub.UPCFileTester()
 		tester.addTest( re.compile('.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0 )
 		tester.addTest( re.compile(r'''\braise\s*(?:'[^']+'|"[^"]+")'''), '0009-6', 'raise "text" is deprecated in python3', cntmax=0 )
+		tester.addTest(re.compile(r"""\b(?:if|while)\b.*(?:(?:!=|<>|==)\s*None\b|\bNone\s*(?:!=|<>|==)).*:"""),
+			'0009-7', 'fragile comparison with None', cntmax=0)
+		tester.addTest(re.compile(r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*
+		                              [[(]
+		                              (?:\s*(['"])(?:yes|no|1|0|true|false|on|off|enabled?|disabled?)\1\s*,?\s*){3,}
+		                              [])]''', re.VERBOSE | re.IGNORECASE),
+			'0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
 		for fn in py_files:
 			try:
 				content = open(fn, 'r').read(100)

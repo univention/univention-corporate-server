@@ -1,0 +1,2 @@
+S:0009-8: true.py:8:11: use ucr.is_true() or .is_false()
+S:0009-8: true.py:9:11: use ucr.is_true() or .is_false()
