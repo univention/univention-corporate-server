@@ -68,6 +68,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-31': [uub.RESULT_ERROR,  'UCR template file contains odd number of %!% markers'],
 				 '0004-32': [uub.RESULT_ERROR,  'UCR template file contains odd number of %@% markers'],
 				 '0004-33': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: file" without "File:" line'],
+				 '0004-34': [uub.RESULT_ERROR,  'UCR warning before file type magic'],
 				 }
 
 	def postinit(self, path):
@@ -95,6 +96,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		re.compile("""(?:baseConfig|configRegistry).is_(?:true|false)\s*\(\s*['"]([^'"]+)['"]\s*"""),
 		]
 	RE_UCR_PLACEHOLDER_VAR1 = re.compile('@%@([^@]+)@%@')
+	RE_IDENTIFIER = re.compile(r"""<!DOCTYPE|<\?xml|<\?php|#!\s*/""", re.MULTILINE)
 
 	def check_conffiles(self, path):
 		"""search UCR templates."""
@@ -120,6 +122,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg( '0004-27', 'cannot open/read file', fn)
 				continue
 
+			warning_pos = 0
 			for regEx in (UniventionPackageCheck.RE_UCR_PLACEHOLDER_VAR1, ):
 				pos = 0
 				while True:
@@ -130,13 +133,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						var = match.group(1)
 						if var.startswith('BCWARNING='):
 							checks['bcwarning'] = True
+							warning_pos = warning_pos or match.start() + 1
 						elif var.startswith('UCRWARNING='):
 							checks['ucrwarning'] = True
+							warning_pos = warning_pos or match.start() + 1
 						elif not var in checks['placeholder']:
 							checks['placeholder'].append(var)
 						pos = match.end()
 				if checks['placeholder']:
 					self.debug('found UCR placeholder variables in %s\n- %s' % (fn, '\n- '.join(checks['placeholder'])))
+
+			match = UniventionPackageCheck.RE_IDENTIFIER.search(content, 0)
+			if warning_pos and match:
+				identifier = match.group()
+				pos = match.start()
+				self.debug('Identifier "%s" found at %d' % (identifier, pos))
+				if warning_pos < pos:
+					self.addmsg('0004-34', 'UCR warning before file type magic "%s"' % (identifier,), fn)
 
 			for regEx in UniventionPackageCheck.RE_UCR_VARLIST:
 				#

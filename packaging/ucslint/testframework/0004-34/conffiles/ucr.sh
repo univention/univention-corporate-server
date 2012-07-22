@@ -1,0 +1,3 @@
+@%@UCRWARNING=# @%@
+#!/bin/sh
+:

@@ -1,0 +1,10 @@
+Source: test0004-34
+Section: univention
+Priority: standard
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.2
+Build-Depends: debhelper, univention-config-dev
+
+Package: test0004-34
+Architecture: all
+Description: dummy test package

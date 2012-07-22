@@ -1,0 +1,3 @@
+@%@BCWARNING=# @%@
+#!/bin/sh
+:
