@@ -45,19 +45,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def check_py(self, py_files):
 		"""Check Python files."""
-		regEx1 = re.compile(r"""^(?:[^'"#\n]| # non string, non comment prefix
+		regEx1 = re.compile("""^(?:[^'"#\n]| # non string, non comment prefix
 				(?: # matched strings
-					('''|""\").*?(?<!\\)\1
-					|'(?:[^'\n]|\\')*?'
-					|"(?:[^"\n]|\\")*?"
+					('''|""\").*?(?<!\\\\)\\\1
+					|'(?:[^'\n]|\\\\')*?'
+					|"(?:[^"\n]|\\\\")*?"
 				))*
-				[([{\s,:](_\(\s* # translation
+				[([{\s,:](_\\(\s* # translation
 				(?: # matched strings
-					('''|""\").*?(?<!\\)\3
-					|'(?:[^'\n]|\\')*?'
-					|"(?:[^"\n]|\\")*?"
+					('''|""\").*?(?<!\\\\)\\3
+					|'(?:[^'\n]|\\\\')*?'
+					|"(?:[^"\n]|\\\\")*?"
 				)\s*%\s*    # substitution
-				(?:[^)]+\))?)""", re.DOTALL | re.MULTILINE | re.VERBOSE)
+				(?:[^)]+\\))?)""", re.DOTALL | re.MULTILINE | re.VERBOSE)
 
 		for fn in py_files:
 			try:
