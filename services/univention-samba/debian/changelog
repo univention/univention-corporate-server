@@ -1,3 +1,9 @@
+univention-samba (7.0.1-8) unstable; urgency=low
+
+  * fix index error introduced during code cleanup (Bug #24231)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 23 Jul 2012 15:38:14 +0200
+
 univention-samba (7.0.1-7) unstable; urgency=low
 
   * code cleanup: replace dict.has_key by dict.get (Bug #24231)
