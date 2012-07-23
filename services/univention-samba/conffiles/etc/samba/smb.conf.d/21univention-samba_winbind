@@ -27,19 +27,6 @@ defaultrange = '1000-54999'
 range = configRegistry.get('samba/idmap/%s/range' % mydomain, configRegistry.get('samba/idmap/%s/range' % mydomain.lower(), defaultrange))
 print '\tidmap config %s : backend = nss' % (mydomain, )
 print '\tidmap config %s : range = %s' % (mydomain, range)
-
-idmap_domains=configRegistry.get('samba/idmap/domains')
-if idmap_domains:
-	for domain in idmap_domains.replace('"','').strip().split(' '):
-		domain = domain.upper() # canonicalize to uppercase
-		defaultrange = '55000-64000'
-		# try uppercase domain, then allow for lowercase, otherwise use defaultrange
-		range = configRegistry.get('samba/idmap/%s/range' % domain, configRegistry.get('samba/idmap/%s/range' % domain.lower(), defaultrange))
-		print '\tidmap config %s : backend\t= ldap' % (domain, )
-		print '\tidmap config %s : range\t\t %s' % (domain, range)
-		print '\tidmap config %s : ldap_user_dn\t= %s' % (domain, admindn)
-		print '\tidmap config %s : ldap_url\t= ldap://%s:%s' % (domain, ldap_server_name, ldap_server_port)
-		## print '\tidmap config %s : ldap_base_dn\t= cn=idmap,cn=univention,%s' % (ldap_base)
 ### </idmap config v6 for Samba 3.6.0>
 
 if configRegistry.get('samba/winbind/trusted/domains/only', 'no') in ('yes', 'true'):

@@ -100,10 +100,8 @@ if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver
 									samba/user/pwdfile?"/etc/machine.secret"
 	smbpasswd -w $(cat /etc/machine.secret)
 
-	for idmap_ldap_config in '*' ${samba_idmap_domains}; do
-		echo "setting idmap secret for '${idmap_ldap_config}' from /etc/machine.secret"
-		net idmap secret "${idmap_ldap_config}" $(cat /etc/machine.secret) 2>/dev/null
-	done
+	echo "setting idmap secret for '*' from /etc/machine.secret"
+	net idmap secret '*' $(cat /etc/machine.secret) 2>/dev/null
 
 else
 	univention-config-registry set	samba/user?"cn=admin,$ldap_base" \
@@ -112,10 +110,8 @@ else
 
 	smbpasswd -w $(cat /etc/ldap.secret)
 
-	for idmap_ldap_config in '*' ${samba_idmap_domains}; do
-		echo "setting idmap secret for '${idmap_ldap_config}' from /etc/ldap.secret"
-		net idmap secret "${idmap_ldap_config}" $(cat /etc/ldap.secret) 2>/dev/null
-	done
+	echo "setting idmap secret for '*' from /etc/ldap.secret"
+	net idmap secret '*' $(cat /etc/ldap.secret) 2>/dev/null
 fi
 
 eval "$(univention-config-registry shell samba/user/pwdfile samba/user)"
