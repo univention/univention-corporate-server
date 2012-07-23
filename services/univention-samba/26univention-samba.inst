@@ -174,9 +174,9 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	test -x /etc/init.d/winbind && /etc/init.d/winbind stop
 	sleep 1
 	/etc/init.d/samba start
-	test -x /etc/init.d/winbind && /etc/init.d/winbind start
 	sleep 1
-	
+	test -x /etc/init.d/winbind && { /etc/init.d/winbind start; sleep 3; }
+
 	# set default printer permissions
 	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
 	net rpc rights -U${samba_account}%${samba_pwd} grant Administrator SePrintOperatorPrivilege
