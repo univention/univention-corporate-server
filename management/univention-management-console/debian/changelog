@@ -1,3 +1,9 @@
+univention-management-console (5.0.1-1) unstable; urgency=low
+
+  * fixed typo; Bug #27875
+
+ -- Florian Best <best@univention.de>  Mon, 23 Jul 2012 18:53:25 +0200
+
 univention-management-console (5.0.0-1) unstable; urgency=low
 
   * fix interference between flavor duplicate check and flavor

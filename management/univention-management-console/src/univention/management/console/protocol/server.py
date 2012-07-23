@@ -211,7 +211,7 @@ class MagicBucket( object ):
 			response.status = SUCCESS
 			if 'ucr' in msg.arguments:
 				for value in msg.options:
-					if value[ -1 ] == '*':
+					if value.endswith('*'):
 						value = value[ : -1 ]
 						for var in filter( lambda x: x.startswith( value ), ucr.keys() ):
 							response.result[ var ] = ucr.get( var )
