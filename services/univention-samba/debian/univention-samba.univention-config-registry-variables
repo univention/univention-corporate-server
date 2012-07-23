@@ -411,3 +411,15 @@ Description[de]=Maximale Anzahl der winbindd socket Verbindungen (Default: 500)
 Description[en]=Maximum number of simultaneous winbindd socket connections (default: 500)
 Type=str
 Categories=service-samba
+
+[samba/vfs/acl_xattr/ignore_system_acls]
+Description[de]=Soll das VFS Modul acl_xattr die Posix ACLs von Dateien und Ordnern ignorieren und nicht mit NTACLs synchronisieren? (Default: Nein, nicht ignorieren)
+Description[en]=Shall the VFS module acl_xattr ignore the Posix ACLs of files and folders and not synchronize them with NTACLs? (default: No, don't ignore)
+Type=str
+Categories=service-samba
+
+[samba/max_protocol]
+Description[de]=SMB-Protokoll Version (Default: NT1)
+Description[en]=SMB protocol version (default: NT1)
+Type=str
+Categories=service-samba

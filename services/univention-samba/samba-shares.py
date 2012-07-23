@@ -163,6 +163,8 @@ def handler(dn, new, old, command):
 			samba4_ntacl_backend = listener.configRegistry.get('samba4/ntacl/backend', 'native')
 			if samba4_ntacl_backend == 'native':
 				vfs_objects.append('acl_xattr')
+				if listener.configRegistry.is_true('samba/vfs/acl_xattr/ignore_system_acls', False):
+					print 'acl_xattr:ignore system acls = yes'
 			elif samba4_ntacl_backend == 'tdb':
 				vfs_objects.append('acl_tdb')
 

@@ -24,6 +24,7 @@ Variables: samba/charset.*
 Variables: samba/enable-privileges
 Variables: samba/socket_options
 Variables: samba/max_open_files
+Variables: samba/max_protocol
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -52,7 +53,6 @@ Variables: samba/domainmaster
 Variables: samba/user
 Variables: samba/winbind/trusted/domains/only
 Variables: samba/winbind/max/clients
-Variables: samba/idmap/domains
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -172,6 +172,7 @@ Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/share/netlogon
 Variables: samba4/ntacl/backend
+Variables: samba/vfs/acl_xattr/ignore_system_acls
 
 Type: file
 File: etc/samba/debian_config

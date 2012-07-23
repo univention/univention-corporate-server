@@ -1,3 +1,12 @@
+univention-samba (7.0.1-5) unstable; urgency=low
+
+  * "use spnego" default should not be set explicitly to avoid
+    deprecation warning (Bug #24231)
+  * New UCR variable samba/vfs/acl_xattr/ignore_system_acls
+  * New UCR variable samba/max_protocol
+
+ -- Arvid Requate <requate@univention.de>  Mon, 23 Jul 2012 10:32:26 +0200
+
 univention-samba (7.0.1-4) unstable; urgency=low
 
   * remove second UCRWARNING in 90univention-samba_user_shares (Bug #24231)

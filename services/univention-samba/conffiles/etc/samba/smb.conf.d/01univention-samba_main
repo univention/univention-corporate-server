@@ -10,7 +10,7 @@
 max_open_files = configRegistry.get('samba/max_open_files')
 if max_open_files:
 	print '\tmax open files = %s' % max_open_files
-if configRegistry.has_key('samba/serverstring') and configRegistry['samba/serverstring']:
+if configRegistry.get('samba/serverstring'):
 	print '\tserver string = %s' % configRegistry['samba/serverstring']
 else:
 	print '\tserver string = %h univention corporate server'
@@ -20,10 +20,11 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/unix', 'unix charset'),
 		       ('samba/charset/display', 'display charset'),
 		       ('samba/enable-privileges', 'enable privileges'),
+		       ('samba/max_protocol', 'max protocol'),
 			   ('samba/interfaces/bindonly', 'bind interfaces only'),]:
-	if configRegistry.has_key(key) and configRegistry[key]:
+	if configRegistry.get(key):
 		print '\t%s = %s' % (smbstring, configRegistry[key])
 
-if configRegistry.has_key('samba/socket_options') and configRegistry['samba/socket_options']:
+if configRegistry.get('samba/socket_options'):
 	print '\tsocket options = %s' % configRegistry['samba/socket_options']
 @!@
