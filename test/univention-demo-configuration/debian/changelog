@@ -1,3 +1,9 @@
+univention-demo-configuration (0.0.4-2) unstable; urgency=low
+
+  * added ucslint.overrides file (Bug #27978)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 23 Jul 2012 17:50:41 +0200
+
 univention-demo-configuration (0.0.4-1) unstable; urgency=low
 
   * updated setup.xml to fit current umc (Bug #27978)
