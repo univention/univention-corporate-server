@@ -72,7 +72,7 @@ limits users time.soft=-1 time.hard=-1
 if configRegistry['ldap/server/type'] == "slave":
 	if configRegistry.is_true("ldap/online/master", True):
 		print 'rootdn\t"cn=update,%s"'%configRegistry['ldap/base']
-		print 'include\t"/etc/ldap/rootpw.conf"'
+		print 'include\t/etc/ldap/rootpw.conf'
 		print 'updatedn\t"cn=update,%s"'%configRegistry["ldap/base"]
 		print 'updateref\tldap://%s:%s'% (configRegistry["ldap/master"], configRegistry.get("ldap/master/port", 7389))
 @!@

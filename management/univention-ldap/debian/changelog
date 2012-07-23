@@ -1,3 +1,11 @@
+univention-ldap (9.0.1-1) unstable; urgency=low
+
+  * fix include for rootpw.conf: include statements in slapd.conf are usually
+    not quoted, otherwise slapd.postinst tries to open '"/etc/ldap/rootpw.conf"'
+    (Bug #27992)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 23 Jul 2012 18:27:35 +0200
+
 univention-ldap (8.0.91-1) unstable; urgency=low
 
   * added objectClass "univentionUbuntuClient" to
