@@ -1,3 +1,9 @@
+ucs-test (2.0.2-2) unstable; urgency=low
+
+  * debian/ucs-test-base.install: Add (Bug #23527)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 23 Jul 2012 17:38:31 +0200
+
 ucs-test (2.0.2-1) unstable; urgency=low
 
   * 03/6[02]: Fix shell quoting test (Bug #27836)
