@@ -36,7 +36,7 @@ if configRegistry['server/role'] != 'memberserver':
 	elif configRegistry['samba/profileserver'] and configRegistry['samba/profilepath']:
 		print '\tlogon path = \\\\%s\%s' % (configRegistry['samba/profileserver'],configRegistry['samba/profilepath'])
 
-	if configRegistry.has_key('samba/logonscript'):
+	if configRegistry.get('samba/logonscript'):
 		print '\tlogon script = %s' % configRegistry['samba/logonscript']
 
 
@@ -46,7 +46,7 @@ print '\tshort preserve case = %s' % configRegistry.get('samba/short_preserve_ca
 
 print '\ttime server = %s' % configRegistry.get('samba/time_server', 'yes')
 
-if configRegistry.has_key('samba/enable-msdfs') and configRegistry['samba/enable-msdfs'] == 'yes':
+if configRegistry.is_true('samba/enable-msdfs', False):
 	print '\thost msdfs = yes'
 else:
 	print '\thost msdfs = no'

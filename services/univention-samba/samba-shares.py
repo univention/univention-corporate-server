@@ -37,7 +37,7 @@ import univention.debug
 import univention.lib.listenerSharePath
 import cPickle
 
-if listener.baseConfig.has_key('samba/ha/master') and listener.baseConfig['samba/ha/master']:
+if listener.baseConfig.get('samba/ha/master'):
 	hostname=listener.baseConfig['samba/ha/master']
 else:
 	hostname=listener.baseConfig['hostname']
@@ -176,7 +176,7 @@ def handler(dn, new, old, command):
 				print >>fp, 'vfs objects = %s' % ' '.join(vfs_objects)
 
 			for attr, var in mapping:
-				if not new.has_key(attr):
+				if not new.get(attr):
 					continue
 				if attr == 'univentionShareSambaVFSObjects':
 					continue
@@ -199,7 +199,7 @@ def handler(dn, new, old, command):
 						"%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
 	
 
-			if new.has_key('univentionShareSambaCustomSetting') and new['univentionShareSambaCustomSetting']:
+			if new.get('univentionShareSambaCustomSetting'):
 				for setting in new['univentionShareSambaCustomSetting']:
 					print >>fp, setting
 		finally:
@@ -234,7 +234,7 @@ def postrun():
 		for f in os.listdir('/etc/samba/shares.conf.d'):
 			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
 		fp.close()
-		if listener.baseConfig.has_key('samba/ha/master') and listener.baseConfig['samba/ha/master']:
+		if listener.baseConfig.get('samba/ha/master'):
 			initscript='/etc/heartbeat/resource.d/samba'
 		else:
 			initscript='/etc/init.d/samba'

@@ -48,11 +48,11 @@ lo, position = univention.admin.uldap.getAdminConnection()
 
 for dn, attrs in lo.search(filter='(|(sambaSID=*)(sambaPrimaryGroupSID=*))', attr=['sambaSID','sambaPrimaryGroupSID']):
 	ml=[]
-	if attrs.has_key('sambaPrimaryGroupSID') and attrs['sambaPrimaryGroupSID'][0].startswith(oldsid):
+	if attrs.get('sambaPrimaryGroupSID',[])[0].startswith(oldsid):
 		oldval=attrs['sambaPrimaryGroupSID'][0]
 		newval=oldval.replace(oldsid, newsid)
 		ml.append(('sambaPrimaryGroupSID', oldval, newval))
-	if attrs.has_key('sambaSID') and attrs['sambaSID'][0].startswith(oldsid):
+	if attrs.get('sambaSID', [])[0].startswith(oldsid):
 		oldval=attrs['sambaSID'][0]
 		newval=oldval.replace(oldsid, newsid)
 		ml.append(('sambaSID', oldval, newval))

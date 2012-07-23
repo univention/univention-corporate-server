@@ -182,8 +182,9 @@ if __name__ == '__main__':
 
 			# check if the user was disabled
 			disabled = False
-			if attrs.has_key('sambaAcctFlags') and len(attrs['sambaAcctFlags']) > 0:
-				if 'D' in attrs['sambaAcctFlags'][0]:
+			sambaAcctFlags = attrs.get('sambaAcctFlags', '')
+			if len(sambaAcctFlags) > 0:
+				if 'D' in sambaAcctFlags[0]:
 					disabled = True
 
 			principal=attrs['uid'][0]+'@'+realm
@@ -199,7 +200,7 @@ if __name__ == '__main__':
 			else:
 				flag = '126'
 			
-			if not attrs.get('sambaAcctFlags', False):
+			if not sambaAcctFlags:
 				ml.append(('sambaAcctFlags', None, '[U          ]'))
 
 			if not attrs.get('sambaPasswordHistory', False):
@@ -269,27 +270,17 @@ if __name__ == '__main__':
 					('krb5MaxRenew', None, '604800'),
 					('krb5KeyVersionNumber', None, '1'),
 				])
-			if attrs.has_key( 'krb5KDCFlags' ):
-				old_flag = attrs[ 'krb5KDCFlags' ]
-			else:
-				old_flag = [ ]
 
-
-			if attrs.has_key( 'krb5Key' ):
-				old_keys = attrs[ 'krb5Key' ]
-			else:
-				old_keys = [ ]
+			old_flag = attrs.get( 'krb5KDCFlags', [] )
+			old_keys = attrs.get( 'krb5Key', [] )
 
 			ml.extend([
 				('krb5Key', old_keys, nt_password_to_arcfour_hmac_md5(attrs['sambaNTPassword'][0])),
 				('krb5KDCFlags', old_flag, flag)
 			])
 
-			if attrs.has_key( 'sambaLMPassword' ) and not attrs['sambaLMPassword'][0] == "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX":
-				if attrs.has_key( 'userPassword' ):
-					old_password = attrs[ 'userPassword' ]
-				else:
-					old_password = [ ]
+			if attrs.get( 'sambaLMPassword' ) not in [ "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX", None ]:
+				old_password = attrs.get( 'userPassword', [] )
 				if disabled:
 					ml.extend([
 						('userPassword', old_password, [ '{LANMAN}!%s' % attrs['sambaLMPassword'][0]])
