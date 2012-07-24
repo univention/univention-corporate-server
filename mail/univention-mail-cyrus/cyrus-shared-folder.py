@@ -43,6 +43,7 @@ description='Create shared folders'
 filter='(&(objectClass=univentionMailSharedFolder)(|(univentionMailHomeServer=%s)(univentionMailHomeServer=%s.%s)))' % (ip, hostname, domainname)
 
 directory='/var/cache/univention-mail-cyrus/'
+defaultAnyoneACLFlags = "p"
 
 modrdn='1'
 
@@ -74,6 +75,16 @@ def handler(dn, new, old, command):
 
 	# Done as function because it is called quite often
 	def setacl(mailbox, email, policy):
+
+
+		# add defaul acls for anyone
+		if email == "anyone":
+			if policy == "none":
+				policy = defaultAnyoneACLFlags
+			else:
+				for flag in defaultAnyoneACLFlags:
+					if not flag in policy:
+						policy += flag
 		try:
 			listener.setuid(0)
 			p = os.popen( '/usr/sbin/univention-cyrus-set-acl %s \'%s\' %s' % ( mailbox, email, policy ) )
@@ -111,13 +122,6 @@ def handler(dn, new, old, command):
 
 		return policy
 
-	def fix_anyone_acl( new, email, policy ):
-		if email == 'anyone' and new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
-			for flag in 'p':
-				if not flag in policy:
-					policy += flag
-		return policy
-
 	# split acl entry into mail adress/group name and access right
 	def split_acl_entry(entry):
 		last_space = entry.rfind(" ")
@@ -149,9 +153,6 @@ def handler(dn, new, old, command):
 						# Set our new policy
 						policy = getpolicy(policy)
 
-						# add permissions "lrps" for user anyone if missing for mail delivery to shared folders
-						policy = fix_anyone_acl(new, email, policy)
-
 						if policy < 0:
 							univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-shared-folder: Wrong policy entry "%s" for email %s' % (policy, email))
 							continue
@@ -160,12 +161,9 @@ def handler(dn, new, old, command):
 								anyone_acl_set = True
 							setacl(name, email, policy)
 
-				# set at least "anyone lrps" permissions for mail delivery to shared folders
-				if not anyone_acl_set and new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
-					email = 'anyone'
-					policy = ''
-					policy = fix_anyone_acl( new, email, policy )
-					setacl(name, email, policy)
+				# set special anyone acl for mail delivery to shared folders
+				if not anyone_acl_set:
+					setacl(name, "anyone", "none")
 
 				if new.has_key('univentionMailUserQuota') and new['univentionMailUserQuota'][0]:
 					setquota(name, new['univentionMailUserQuota'][0])
@@ -217,7 +215,6 @@ def handler(dn, new, old, command):
 			for entry in new['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
 				policy = getpolicy(policy)
-				policy = fix_anyone_acl(new, email, policy)
 				curacl[email]=policy
 
 		if old.has_key('univentionMailACL'):

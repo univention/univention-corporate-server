@@ -1,3 +1,9 @@
+univention-mail-cyrus (5.0.0-1) unstable; urgency=low
+
+  * always apply default policy for shared folders (Bug #17994)
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Jul 2012 13:21:00 +0200
+
 univention-mail-cyrus (4.0.37-1) unstable; urgency=low
 
   * fixed quota in cyrus-shared-folder.py (Bug #26891)
