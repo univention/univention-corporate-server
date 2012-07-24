@@ -123,7 +123,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			umc.tools._sessionTimeout = parseInt( res['umc/http/session/timeout'] , 10 );
 
 			umc.tools.status('feedbackAddress', res['umc/web/feedback/mail'] || umc.tools.status('feedbackAddress'));
-			umc.tools.status('feedbackSubject', encodeURI(res['umc/web/feedback/description']) || umc.tools.status('feedbackSubject'));
+			umc.tools.status('feedbackSubject', encodeURIComponent(res['umc/web/feedback/description']) || umc.tools.status('feedbackSubject'));
 		} );
 
 		// start the timer for session checking
