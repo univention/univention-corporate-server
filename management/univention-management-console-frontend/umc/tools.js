@@ -511,7 +511,7 @@ dojo.mixin(umc.tools, {
 					dojo.version
 				]);
 
-				feedbackLink = dojo.string.substitue('<a href="mailto:${email}?body=${body}&amp;subject=${subject}">${title}</a>', {
+				feedbackLink = dojo.string.substitute('<a href="mailto:${email}?body=${body}&amp;subject=${subject}">${title}</a>', {
 					email: this.status('feedbackAddress'),
 					body: encodeURI(feedbackLink),
 					subject: this.status('feedbackSubject'),

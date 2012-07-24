@@ -271,11 +271,43 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 			}
 		}
 
+		var msg = dojo.isString(message) ? new umc.widgets.Text({'content': message}) : message;
+		return umc.dialog.confirmForm([msg], undefined, undefined, options);
+
+//		// create confirmation dialog
+//		var confirmDialog = new umc.widgets.ConfirmDialog({
+//			title: this._('Confirmation'),
+//			style: 'max-width: 550px;',
+//			message: message,
+//			options: options
+//		});
+
+//		// connect to 'onConfirm' event to close the dialog in any case
+//		var deferred = new dojo.Deferred();
+//		dojo.connect(confirmDialog, 'onConfirm', function(response) {
+//			confirmDialog.close();
+//			deferred.resolve(response);
+//		});
+
+//		// show the confirmation dialog
+//		confirmDialog.show();
+
+//		return deferred;
+	},
+
+	confirmForm: function(/*Object[]*/widgets, /*Object[]*/buttons, /*Object[]?*/layout, /*Object[]*/ options) {
+	// TODO: options for the confirm dialog? maybe move to the form?
+		var form = new umc.widgets.Form({
+			widgets: widgets,
+			buttons: buttons,
+			layout: layout
+		});
+
 		// create confirmation dialog
 		var confirmDialog = new umc.widgets.ConfirmDialog({
 			title: this._('Confirmation'),
 			style: 'max-width: 550px;',
-			message: message,
+			message: form,
 			options: options
 		});
 
@@ -284,6 +316,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		dojo.connect(confirmDialog, 'onConfirm', function(response) {
 			confirmDialog.close();
 			deferred.resolve(response);
+			form.destroyRecursive();
 		});
 
 		// show the confirmation dialog
