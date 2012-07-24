@@ -1,3 +1,10 @@
+univention-management-console (5.0.2-1) unstable; urgency=low
+
+  * The ACL evaluation has been changed to improve the login performance
+    of UMC in large environments (Bug #26490)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2012 14:10:23 +0200
+
 univention-management-console (5.0.1-1) unstable; urgency=low
 
   * fixed typo; Bug #27875

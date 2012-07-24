@@ -60,6 +60,8 @@ used ::
 
 import os, sys, ldap, re
 import cPickle
+import itertools
+import operator
 
 from .config import ucr
 from .log import *
@@ -207,9 +209,7 @@ class ACLs( object ):
 			for command in ldap_object.get( 'umcOperationSetCommand', '' ):
 				command, options = self.__parse_command( command )
 				new_rule = Rule( { 'fromUser': fromUser, 'host': host, 'command': command, 'options': options, 'flavor' : flavor[ 0 ] } )
-				# do not add rule multiple times
-				if not new_rule in self.acls:
-					self.acls.append( new_rule )
+				self.acls.append( new_rule )
 
 	def __compare_rules( self, rule1, rule2 ):
 		"""Hacky version of rule comparison"""
@@ -415,6 +415,17 @@ class LDAP_ACLs ( ACLs ):
 			if 'umcPolicyGrantedOperationSet' in policy:
 				for value in policy[ 'umcPolicyGrantedOperationSet' ][ 'value' ]:
 					self._append( LDAP_ACLs.FROM_GROUP, self.lo.get( value ) )
+
+		
+		# make the ACLs unique
+		getvals = operator.itemgetter( 'fromUser', 'host', 'command', 'options', 'flavor')
+		self.acls.sort(key=getvals)
+
+		result = []
+		for k, g in itertools.groupby(self.acls, getvals):
+			result.append(g.next())
+
+		self.acls[:] = result
 
 
 if __name__ == '__main__':
