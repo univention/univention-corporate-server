@@ -1,3 +1,9 @@
+univention-mail-postfix (7.0.0-2) unstable; urgency=low
+
+  * added variables to ldap.* multifile ucr definition (Bug #27305)
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Jul 2012 17:41:15 +0200
+
 univention-mail-postfix (7.0.0-1) unstable; urgency=low
 
   * fixed @%@ldap/server/port@%@ in templates (Bug #27305) 

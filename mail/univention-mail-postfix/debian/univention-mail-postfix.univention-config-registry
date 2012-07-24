@@ -137,6 +137,8 @@ Variables: mail/archivefolder
 Type: multifile
 Multifile: etc/postfix/ldap.groups
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -148,6 +150,8 @@ Subfile: etc/postfix/ldap.groups.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.transport
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -159,6 +163,8 @@ Subfile: etc/postfix/ldap.transport.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.virtualwithcanonical
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -170,6 +176,8 @@ Subfile: etc/postfix/ldap.virtualwithcanonical.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.sharedfolderremote
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -181,6 +189,8 @@ Subfile: etc/postfix/ldap.sharedfolderremote.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.virtual
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -192,6 +202,8 @@ Subfile: etc/postfix/ldap.virtual.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.virtualdomains
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -203,6 +215,8 @@ Subfile: etc/postfix/ldap.virtualdomains.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.sharedfolderlocal
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -214,6 +228,8 @@ Subfile: etc/postfix/ldap.sharedfolderlocal.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.canonicalrecipient
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -225,6 +241,8 @@ Subfile: etc/postfix/ldap.canonicalrecipient.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.distlist
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
@@ -236,6 +254,8 @@ Subfile: etc/postfix/ldap.distlist.d/10_base
 Type: multifile
 Multifile: etc/postfix/ldap.canonicalsender
 Variables: mail/postfix/virtual/.*
+Variables: ldap/server/name
+Variables: ldap/server/port
 User: postfix
 Group: root
 Mode: 0440
