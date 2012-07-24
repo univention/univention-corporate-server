@@ -1,3 +1,9 @@
+univention-demo-configuration (1.0.1-1) unstable; urgency=low
+
+  * version bump for UCS 3.1 (Bug #27978)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 24 Jul 2012 13:16:31 +0200
+
 univention-demo-configuration (0.0.4-2) unstable; urgency=low
 
   * added ucslint.overrides file (Bug #27978)
