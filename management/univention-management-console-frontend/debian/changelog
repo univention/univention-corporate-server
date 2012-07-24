@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.1-1) unstable; urgency=low
+
+  * use umc/web/feedback/mail as feedback email adress; Bug #27702
+  * open module and hide overview if only one module is presend; Bug #26901
+
+ -- Florian Best <best@univention.de>  Tue, 24 Jul 2012 13:13:34 +0200
+
 univention-management-console-frontend (2.0.0-1) unstable; urgency=low
 
   * fixed initialisation of static values in MultiObjectSelect widget (Bug #26780)

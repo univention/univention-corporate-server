@@ -1,0 +1,11 @@
+[umc/web/feedback/mail]
+Description[de]=E-Mail adresse, die für feedback-Emails verwendet wird
+Description[en]=E-mail address which is used for feedback emails
+Type=str
+Categories=Management
+
+[umc/web/feedback/description]
+Description[de]=Betreff, der für feedback E-Mails verwendet wird
+Description[en]=Subject which is used for feedback emails
+Type=str
+Categories=Management

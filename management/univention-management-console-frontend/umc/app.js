@@ -118,9 +118,12 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
 		umc.tools.status('username', username);
 
-		// set the UCR session timeout value
-		umc.tools.ucr('umc/http/session/timeout').then( function(res) {
+		// load required ucr variables
+		umc.tools.ucr(['umc/web/feedback/mail', 'umc/web/feedback/description', 'umc/http/session/timeout']).then( function(res) {
 			umc.tools._sessionTimeout = parseInt( res['umc/http/session/timeout'] , 10 );
+
+			umc.tools.status('feedbackAddress', res['umc/web/feedback/mail'] || umc.tools.status('feedbackAddress'));
+			umc.tools.status('feedbackSubject', encodeURI(res['umc/web/feedback/description']) || umc.tools.status('feedbackSubject'));
 		} );
 
 		// start the timer for session checking
@@ -190,6 +193,10 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 
 	onModulesLoaded: function() {
 		this.setupGui();
+		// if only one module exists open it
+		if (this._modules.length === 1) {
+			this.openModule(this._modules[0].id, this._modules[0].flavor);
+		}
 	},
 
 	_modules: [],
@@ -238,6 +245,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				}, module));
 			}));
 			this._modules.sort(_cmp);
+
+			// disable overview if only one module exists
+			 umc.tools.status('overview', (this._modules.length !== 1) && umc.tools.status('overview'));
 
 			// loading is done
 			this.onModulesLoaded();

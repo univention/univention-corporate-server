@@ -54,7 +54,9 @@ dojo.mixin(umc.tools, {
 		displayUsername: true,
 		width: null,
 		setupGui: false,
-		loggingIn: false
+		loggingIn: false,
+		feedbackSubject: '[UMC-Feedback]%20Traceback',
+		feedbackAddress: 'feedback@univention.de'
 	},
 
 	status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -500,15 +502,21 @@ dojo.mixin(umc.tools, {
 			// handle Tracebacks
 			else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 
-				var feedbackLink = this._('Please take a second to provide the following information:');
-				feedbackLink += "\n\n1) " + this._('steps to reproduce the failure');
-				feedbackLink += "\n2) " + this._('expected result');
-				feedbackLink += "\n3) " + this._('actual result');
-				feedbackLink += "\n\n----------\n\n";
-				feedbackLink += message.replace(/<br>/g, "\n");
-				feedbackLink += "\n\n----------\n\n";
-				feedbackLink += "univention-management-console-frontend " + dojo.version;
-				feedbackLink = '<a href="mailto:feedback@univention.de?body=' + encodeURI( feedbackLink ) + '&amp;subject=[UMC-Feedback]%20Traceback">' + this._('Send feedback mail to Univention') + '</a>';
+				var feedbackLink = dojo.string.substitute("${0}\n\n1) ${1}\n2) ${2}\n3) ${3}\n\n----------\n\n${4}\n\n----------\n\nunivention-management-console-frontend ${5}", [
+					this._('Please take a second to provide the following information:'),
+					this._('steps to reproduce the failure'),
+					this._('expected result'),
+					this._('actual result'),
+					message.replace(/<br *\/?>/g, "\n"),
+					dojo.version
+				]);
+
+				feedbackLink = dojo.string.substitue('<a href="mailto:${email}?body=${body}&amp;subject=${subject}">${title}</a>', {
+					email: this.status('feedbackAddress'),
+					body: encodeURI(feedbackLink),
+					subject: this.status('feedbackSubject'),
+					title: this._('Send feedback mail to Univention')
+				});
 
 				var content = '<pre>' + message + '</pre><br>' + feedbackLink;
 				var hideLink = '<a>' + this._('Hide server error message') + '</a>';
