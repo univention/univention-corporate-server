@@ -1,3 +1,9 @@
+univention-mail-postfix (7.0.0-1) unstable; urgency=low
+
+  * fixed @%@ldap/server/port@%@ in templates (Bug #27305) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Jul 2012 15:56:37 +0200
+
 univention-mail-postfix (6.0.38-1) unstable; urgency=low
 
   * fixed switch from univention-mail-postfix to univention-mail-server

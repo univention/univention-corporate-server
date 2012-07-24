@@ -3,7 +3,6 @@
 # LDAP Mail Groups
 #
 
-server_host = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@
 search_base = @%@ldap/base@%@
 query_filter = (&(mailPrimaryAddress=%s)(objectclass=posixGroup))
 result_attribute = mailPrimaryAddress
@@ -14,6 +13,7 @@ version = 3
 bind_dn = @%@ldap/hostdn@%@
 @!@
 import os
+print "server_host = ldap://%s:%s" % (configRegistry.get("ldap/server/name"), configRegistry.get("ldap/server/port", "7389"))
 if os.path.exists('/etc/machine.secret'):
 	print 'bind_pw = %s' % (open('/etc/machine.secret','r').read())
 else:
