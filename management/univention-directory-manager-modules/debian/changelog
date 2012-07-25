@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.1-1) unstable; urgency=low
+
+  * Version bump for UCS 3.1
+  * fixed license handling for UDM module mail/* with UCS license; Bug #27985
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 25 Jul 2012 11:46:50 +0200
+
 univention-directory-manager-modules (7.0.288-1) unstable; urgency=low
 
   * fixed typo in error handling (Bug #7389)
