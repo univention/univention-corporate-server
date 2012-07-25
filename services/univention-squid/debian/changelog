@@ -1,3 +1,9 @@
+univention-squid (6.0.0-1) unstable; urgency=low
+
+  * cleaned up the squid.conf template (Bug #27815)
+
+ -- Florian Best <best@univention.de>  Wed, 25 Jul 2012 09:34:37 +0200
+
 univention-squid (5.0.18-2) unstable; urgency=low
 
   * fixed ucr var description (Bug #24281)
