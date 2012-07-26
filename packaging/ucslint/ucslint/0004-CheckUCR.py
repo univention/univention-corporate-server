@@ -90,6 +90,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-52': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line'],
 				 '0004-53': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line'],
 				 '0004-54': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line'],
+				 '0004-55': [uub.RESULT_WARN,   'UCR .info-file may contain globbing pattern instead of regular expression'],
 				 }
 
 	def postinit(self, path):
@@ -454,6 +455,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 							else:
 								self.addmsg('0004-9', 'file contains entry with invalid "Type: %s"' % (typ,), fn)
+								continue
+
+							vars = entry.get('Variables', [])
+							for var in vars:
+								if '*' in var and '.*' not in var:
+									self.addmsg('0004-55', 'UCR .info-file may contain globbing pattern instead of regular expression: "%s"' % (var,), fn)
+									break
 
 					self.debug('Multifiles: %s' % multifiles)
 					self.debug('Subfiles: %s' % subfiles)
@@ -514,6 +522,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				else:
 					print >> sys.stderr, 'FIXME: no File or Subfile or Module or Script entry: %s' % obj
 					continue
+
 				if cfn == shortconffn:
 					conffnfound = True
 					notregistered = []
@@ -531,45 +540,33 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							if cfn == sf.get('Subfile',[''])[0]:
 								# ...then add variables to list of known variables
 								knownvars.update( sf.get('Variables',[]) )
+					else:
+						# no subfile ==> File, Module, Script
+						knownvars = obj.get('Variables', [])
 
-						# check all variables against knownvars
-						for var in conffiles[conffn]['variables']:
-							if not var in knownvars:
-								# if not found check if regex matches
-								for rvar in knownvars:
-									if '.*' in rvar:
-										regEx = re.compile(rvar)
-										if regEx.match( var ):
-											break
-								else:
-									notregistered.append(var)
+					# check all variables against knownvars
+					for var in conffiles[conffn]['variables']:
+						if not var in knownvars:
+							# if not found check if regex matches
+							for rvar in knownvars:
+								if '.*' in rvar:
+									regEx = re.compile(rvar)
+									if regEx.match( var ):
+										break
+							else:
+								notregistered.append(var)
+						# check for invalid UCR variable names
+						if self.check_invalid_variable_name(var):
+							invalidUCRVarNames.add(var)
 
-							# check for invalid UCR variable names
-							if self.check_invalid_variable_name(var):
-								invalidUCRVarNames.add(var)
-
-						if len(notregistered):
+					if len(notregistered):
+						if mfn and mfn in all_multifiles:
+						# "Multifile" entry exists ==> obj is a subfile
 							self.debug('cfn = %r' % cfn)
 							self.debug('knownvars(mf+sf) = %r' % knownvars)
 							self.addmsg( '0004-29', 'template file contains variables that are not registered in multifile or subfile entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
-
-					else:
-						# no subfile ==> File, Module, Script
-						for var in conffiles[conffn]['variables']:
-							if not var in obj.get('Variables',[]):
-								for rvar in obj.get('Variables',[]):
-									if '.*' in rvar:
-										regEx = re.compile(rvar)
-										if regEx.match( var ):
-											break
-								else:
-									notregistered.append(var)
-
-							# check for invalid UCR variable names
-							if self.check_invalid_variable_name(var):
-								invalidUCRVarNames.add(var)
-
-						if len(notregistered):
+						else:
+							# no subfile ==> File, Module, Script
 							self.addmsg( '0004-12', 'template file contains variables that are not registered in file entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
 
 					for var in conffiles[conffn]['placeholder']:
