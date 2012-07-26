@@ -1,3 +1,11 @@
+univention-directory-manager-modules (8.0.2-1) unstable; urgency=low
+
+  * The two syntax classes SharedFolderSimpleUserACL and
+    SharedFolderSimpleGroupACL have been added syntax.py in order to circumvent
+    performance problems in large environments; Bug #28084
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 Jul 2012 15:16:27 +0200
+
 univention-directory-manager-modules (8.0.1-1) unstable; urgency=low
 
   * Version bump for UCS 3.1

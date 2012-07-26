@@ -1246,6 +1246,12 @@ class SharedFolderUserACL( complex ):
 class SharedFolderGroupACL( complex ):
 	subsyntaxes = ( ( _( 'Group' ), GroupName ), ( _( 'Access right' ), IMAP_Right ) )
 
+class SharedFolderSimpleUserACL( complex ):
+	subsyntaxes = ( ( _( 'User' ), string ), ( _( 'Access right' ), IMAP_Right ) )
+
+class SharedFolderSimpleGroupACL( complex ):
+	subsyntaxes = ( ( _( 'Group' ), string ), ( _( 'Access right' ), IMAP_Right ) )
+
 class ldapDnOrNone(simple):
 	_re=re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 
