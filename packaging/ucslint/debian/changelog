@@ -20,6 +20,7 @@ ucslint (3.0.0-1) unstable; urgency=low
   * 0004: Check for UCR warning before identifier (Bug #21431)
   * ucslint-sort-output.py: Support reading stdin.
   * 0004: Check Python module (Bug #14201)
+  * 0004: Check for unexpected keys.
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 20 Jul 2012 12:09:41 +0200
 

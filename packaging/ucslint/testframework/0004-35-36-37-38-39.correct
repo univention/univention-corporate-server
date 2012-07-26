@@ -6,3 +6,9 @@ E:0004-38: conffiles/preinst.py: Missing Python function "postinst(ucr, changes)
 E:0004-39: conffiles/postinst.py: Missing Python function "handler(ucr, changes)"
 E:0004-39: conffiles/shell.sh: Missing Python function "handler(ucr, changes)"
 W:0004-35: conffiles/shell.sh: Invalid module file name
+W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Postinst"
+W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Postinst"
+W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Postinst"
+W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Preinst"
+W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Preinst"
+W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Preinst"

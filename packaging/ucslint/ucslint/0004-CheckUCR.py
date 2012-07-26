@@ -23,7 +23,6 @@ import sys
 
 #
 # TODO / FIXME
-# - auf unbekannte Keywords in debian/*.univention-config-registry testen ==> WARNING
 #
 
 
@@ -78,6 +77,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-39': [uub.RESULT_ERROR,  'Missing Python function "handler(ucr, changes)"'],
 				 '0004-40': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: module" with multiple "Module:" line'],
 				 '0004-41': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: script" with multiple "Script:" line'],
+				 '0004-42': [uub.RESULT_WARN,   'UCR .info-file contains entry with unexpected key'],
 				 }
 
 	def postinit(self, path):
@@ -312,6 +312,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									self.addmsg('0004-4', 'file contains multifile entry without "Multifile:" line', fn)
 								else:
 									multifiles[mfile] = entry
+								for key in set(entry.keys()) - set(('Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode')):
+									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							elif typ == 'subfile':
 								if 'Subfile' not in entry:
@@ -342,6 +344,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									all_postinst |= set(post)
 
 									subfiles.setdefault(mfile[0], []).append(entry)
+								for key in set(entry.keys()) - set(('Type', 'Subfile', 'Multifile', 'Variables')):
+									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							elif typ == 'file':
 								sfile = entry.get('File', [])
@@ -361,6 +365,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									self.addmsg('0004-22', 'file contains file entry with %d "Postinst:" lines' % (len(post),), fn)
 								all_postinst |= set(post)
 
+								for key in set(entry.keys()) - set(('Type', 'File', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst')):
+									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
+
 							elif typ == 'module':
 								modules.append( entry )
 								module = entry.get('Module', [])
@@ -369,12 +376,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									check
 								all_module |= set(module)
 
+								for key in set(entry.keys()) - set(('Type', 'Module', 'Variables')):
+									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
+
 							elif typ == 'script':
 								scripts.append( entry )
 								script = entry.get('Script', [])
 								if len(script) != 1:
 									self.addmsg('0004-39', 'UCR .info-file contains entry of "Type: script" with %d "Script:" lines' % (len(script),), fn)
 								all_script |= set(script)
+
+								for key in set(entry.keys()) - set(('Type', 'Script', 'Variables')):
+									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							else:
 								self.addmsg('0004-9', 'file contains entry with invalid "Type: %s"' % (typ,), fn)

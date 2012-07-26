@@ -1,3 +1,4 @@
 E:0004-4: debian/univention-lilo.univention-config-registry: file contains multifile entry without "Multifile:" line
 E:0004-5: debian/univention-lilo.univention-config-registry: file contains subfile entry without "Subfile:" line
 W:0004-14: conffiles/etc/lilo.conf: template file is not registered in *.univention-config-registry
+W:0004-42: debian/univention-lilo.univention-config-registry: UCR .info-file contains entry with unexpected key "Subfile"
