@@ -93,6 +93,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-54': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line'],
 				 '0004-55': [uub.RESULT_WARN,   'UCR .info-file may contain globbing pattern instead of regular expression'],
 				 '0004-56': [uub.RESULT_INFO,   'No UCR variables used'],
+				 '0004-57': [uub.RESULT_INFO,   'No description found for UCR variable'],
 				 }
 
 	def postinit(self, path):
@@ -250,6 +251,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		all_module = set()   # [ FN, FN, ... ]
 		all_script = set()   # [ FN, FN, ... ]
 		all_definitions = {} # { SHORT-FN ==> FULL-FN }
+		all_descriptions = set() # [ FN, FN, ... ]
+		all_variables = set() # [ VAR, VAR, ... ]
 		objlist = {}         # { CONF-FN ==> [ OBJ, OBJ, ... ] }
 		if True:  # TODO reindent
 			# read debian/rules
@@ -273,7 +276,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.addmsg( '0004-24', '%s exists but corresponding %s is missing' % (f, tmpfn), tmpfn )
 					else:
 						# test debian/$PACKAGENAME.u-c-r-variables
-						self.test_config_registry_variables(tmpfn)
+						vars = self.test_config_registry_variables(tmpfn)
+						all_descriptions |= vars
 
 					if not reUICR.search(rules_content):
 						self.addmsg( '0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, fn_rules)
@@ -557,9 +561,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							for rvar in knownvars:
 								if '.*' in rvar:
 									if re.match(rvar, var):
+										all_variables.add(rvar)
 										break
 							else:
 								notregistered.append(var)
+								all_variables.add(var)
+						else:
+							all_variables.add(var)
 						# check for invalid UCR variable names
 						if self.check_invalid_variable_name(var):
 							invalidUCRVarNames.add(var)
@@ -579,6 +587,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						if self.check_invalid_variable_name(var):
 							invalidUCRVarNames.add(var)
 						knownvars.add(var)
+						all_variables.add(var)
 
 					if invalidUCRVarNames:
 						invalidUCRVarNames = list(invalidUCRVarNames)
@@ -659,20 +668,30 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if f in all_module and not checks['handler']:
 				self.addmsg('0004-39', 'Missing Python function "handler(ucr, changes)"', fn)
 
+		# Disbale the following test to check for descriptions because it is too verbose
+		return
+		for var in all_variables - all_descriptions:
+			self.addmsg('0004-57', 'No description found for UCR variable "%s"' % (var,))
+
 	def test_config_registry_variables(self, tmpfn):
+		"""Parse debian/*.univention-config-registry-variables file."""
+		variables = set()
 		try:
 			f = open(tmpfn, 'r')
 		except IOError:
 			self.addmsg('0004-27', 'cannot open/read file', tmpfn)
-			return
+			return variables
 		try:
 			for linecnt, line in enumerate(f, start=1):
+				var = line.strip(' \t[]')
+				variables.add(var)
 				try:
 					_ = line.decode('utf-8')
 				except UnicodeError:
 					self.addmsg( '0004-30', 'contains invalid characters', tmpfn, linecnt )
 		finally:
 			f.close()
+		return variables
 
 	def test_marker(self, fn):
 		"""Bug #24728: count of markers must be even."""
