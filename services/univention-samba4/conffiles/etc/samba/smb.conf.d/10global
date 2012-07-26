@@ -24,6 +24,8 @@ print '\tserver string\t=', samba_serverstring
 server_services=[]
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	server_services.append('-smb')
+elif configRegistry.get('samba4/service/smb', 's3fs'):
+	server_services.extend(['-smb', '+s3fs'])
 if configRegistry.get('samba4/service/nmb', 'nmbd') == 'nmbd':
 	server_services.append('-nbtd')
 if configRegistry.is_false('samba4/service/drepl'):

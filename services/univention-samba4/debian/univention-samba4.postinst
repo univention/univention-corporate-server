@@ -100,7 +100,7 @@ fi
 univention-config-registry set \
 	samba/debug/level?1 \
 	samba4/sysvol/sync/jitter?60 \
-	samba4/service/smb?'smbd' \
+	samba4/service/smb?'s3fs' \
 	samba4/service/nmb?'nmbd' \
 	samba4/ntacl/backend?'native'
 
@@ -215,6 +215,14 @@ secret: $machine_secret
 
 			## create dns-$hostname account for bind9 SPN
 			/usr/share/univention-samba4/scripts/create_dns-host_spn.py
+		fi
+
+		### The following block of code may be removed after ucs_3.1-0
+		if dpkg --compare-versions "$2" lt-nl "2.0.1-1"; then
+			if [ "$samba4_service_smb" = 'smb' ]; then
+				## only set this when value does not differ from the previous default value
+				univention-config-registry set samba4/service/smb='s3fs'
+			fi
 		fi
 
 	fi
