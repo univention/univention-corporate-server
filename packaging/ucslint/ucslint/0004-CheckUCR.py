@@ -1,4 +1,5 @@
 # -*- coding: iso-8859-15 -*-
+# pylint: disable-msg=C0301,C0103,C0324,C0111,R0201,R0912,R0914,R0915
 
 try:
 	import univention.ucslint.base as uub
@@ -70,6 +71,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-32': [uub.RESULT_ERROR,  'UCR template file contains odd number of %@% markers'],
 				 '0004-33': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: file" without "File:" line'],
 				 '0004-34': [uub.RESULT_ERROR,  'UCR warning before file type magic'],
+				 '0004-35': [uub.RESULT_WARN,   'Invalid module file name'],
+				 '0004-36': [uub.RESULT_ERROR,  'Module file does not exist'],
+				 '0004-37': [uub.RESULT_ERROR,  'Missing Python function "preinst(ucr, changes)"'],
+				 '0004-38': [uub.RESULT_ERROR,  'Missing Python function "postinst(ucr, changes)"'],
+				 '0004-39': [uub.RESULT_ERROR,  'Missing Python function "handler(ucr, changes)"'],
+				 '0004-40': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: module" with multiple "Module:" line'],
+				 '0004-41': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: script" with multiple "Script:" line'],
 				 }
 
 	def postinit(self, path):
@@ -97,18 +105,27 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		]
 	RE_UCR_PLACEHOLDER_VAR1 = re.compile('@%@([^@]+)@%@')
 	RE_IDENTIFIER = re.compile(r"""<!DOCTYPE|<\?xml|<\?php|#!\s*/\S+""", re.MULTILINE)
+	RE_PYTHON_FNAME = re.compile(r'^[0-9A-Z_a-z][0-9A-Z_a-z-]*(?:/[0-9A-Z_a-z-][0-9A-Z_a-z-]*)*\.py$')
+	RE_FUNC_HANDLER = re.compile(r'^def\s+handler\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:', re.MULTILINE)
+	RE_FUNC_PREINST = re.compile(r'^def\s+preinst\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:', re.MULTILINE)
+	RE_FUNC_POSTINST = re.compile(r'^def\s+postinst\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:', re.MULTILINE)
 
 	def check_conffiles(self, path):
 		"""search UCR templates."""
 		conffiles = {}
 
-		for fn in uub.FilteredDirWalkGenerator(os.path.join(path, 'conffiles')):
+		confdir = os.path.join(path, 'conffiles')
+		for fn in uub.FilteredDirWalkGenerator(confdir):
 			conffiles[fn] = {
 					'headerfound': False,
 					'variables': [],
 					'placeholder': [],
 					'bcwarning': False,
-					'ucrwarning': False
+					'ucrwarning': False,
+					'pythonic': False,
+					'preinst': False,
+					'postinst': False,
+					'handler': False,
 					}
 		self.debug('found conffiles: %s' % conffiles.keys())
 
@@ -116,11 +133,25 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# search UCR variables
 		#
 		for fn, checks in conffiles.items():
+			match = UniventionPackageCheck.RE_PYTHON_FNAME.match(os.path.relpath(fn, confdir))
+			if match:
+				checks['pythonic'] = True
+
 			try:
 				content = open(fn,'r').read()
 			except IOError:
 				self.addmsg( '0004-27', 'cannot open/read file', fn)
 				continue
+
+			match = UniventionPackageCheck.RE_FUNC_PREINST.search(content)
+			if match:
+				checks['preinst'] = True
+			match = UniventionPackageCheck.RE_FUNC_POSTINST.search(content)
+			if match:
+				checks['postinst'] = True
+			match = UniventionPackageCheck.RE_FUNC_HANDLER.search(content)
+			if match:
+				checks['handler'] = True
 
 			warning_pos = 0
 			for regEx in (UniventionPackageCheck.RE_UCR_PLACEHOLDER_VAR1, ):
@@ -202,6 +233,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		all_scripts = []     # [ OBJ, OBJ, ... ]
 		all_preinst = set()  # [ FN, FN, ... ]
 		all_postinst = set() # [ FN, FN, ... ]
+		all_module = set()   # [ FN, FN, ... ]
+		all_script = set()   # [ FN, FN, ... ]
 		all_definitions = {} # { SHORT-FN ==> FULL-FN }
 		if True:  # TODO reindent
 			# read debian/rules
@@ -299,12 +332,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 										all_definitions.setdefault(_, set()).add(fn)
 
 									pre = entry.get('Preinst', [])
-									if len(pre) > 1:
+									if len(pre) > 0:
 										self.addmsg('0004-19', 'file contains subfile entry with %d "Preinst:" lines' % (len(pre),), fn)
 									all_preinst |= set(pre)
 
 									post = entry.get('Postinst', [])
-									if len(post) > 1:
+									if len(post) > 0:
 										self.addmsg('0004-20', 'file contains subfile entry with %d "Postinst:" lines' % (len(post),), fn)
 									all_postinst |= set(post)
 
@@ -330,8 +363,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 							elif typ == 'module':
 								modules.append( entry )
+								module = entry.get('Module', [])
+								if len(module) != 1:
+									self.addmsg('0004-38', 'UCR .info-file contains entry of "Type: module" with %d "Module:" lines' % (len(module),), fn)
+									check
+								all_module |= set(module)
+
 							elif typ == 'script':
 								scripts.append( entry )
+								script = entry.get('Script', [])
+								if len(script) != 1:
+									self.addmsg('0004-39', 'UCR .info-file contains entry of "Type: script" with %d "Script:" lines' % (len(script),), fn)
+								all_script |= set(script)
+
 							else:
 								self.addmsg('0004-9', 'file contains entry with invalid "Type: %s"' % (typ,), fn)
 
@@ -462,11 +506,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						invalidUCRVarNames.sort()
 						self.addmsg( '0004-13', 'template contains invalid UCR variable names:\n      - %s' % ('\n      - '.join(invalidUCRVarNames)), conffn )
 
-			if not conffnfound:
-				if conffn.rsplit('/')[-1] in all_preinst:
-					conffnfound = True
-				if conffn.rsplit('/')[-1] in all_postinst:
-					conffnfound = True
+			conffnfound |= conffn.rsplit('/')[-1] in (all_preinst | all_postinst | all_module | all_script)
 
 			if not conffnfound:
 				self.addmsg( '0004-14', 'template file is not registered in *.univention-config-registry', conffn )
@@ -514,6 +554,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				for _ in all_definitions[mfn]:
 					self.addmsg('0004-18', 'UCR header is maybe missing in multifile "%s"' % (mfn,), _)
 
+		# Test modules / scripts
+		for f in all_preinst | all_postinst | all_module | all_script:
+			fn = os.path.join(path, 'conffiles', f)
+			try:
+				checks = conffiles[fn]
+			except KeyError:
+				self.addmsg('0004-36', 'Module file "%s" does not exist' % (f,))
+				continue
+			if f in all_preinst | all_postinst | all_module and not checks['pythonic']:
+				self.addmsg('0004-35', 'Invalid module file name', fn)
+			if f in all_preinst and not checks['preinst']:
+				self.addmsg('0004-37', 'Missing Python function "preinst(ucr, changes)"', fn)
+			if f in all_postinst and not checks['postinst']:
+				self.addmsg('0004-38', 'Missing Python function "postinst(ucr, changes)"', fn)
+			if f in all_module and not checks['handler']:
+				self.addmsg('0004-39', 'Missing Python function "handler(ucr, changes)"', fn)
 
 	def test_config_registry_variables(self, tmpfn):
 		try:

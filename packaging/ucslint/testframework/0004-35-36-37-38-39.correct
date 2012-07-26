@@ -1,0 +1,8 @@
+E:0004-36: Module file "missing.sh" does not exist
+E:0004-37: conffiles/postinst.py: Missing Python function "preinst(ucr, changes)"
+E:0004-37: conffiles/shell.sh: Missing Python function "preinst(ucr, changes)"
+E:0004-38: conffiles/handler.py: Missing Python function "postinst(ucr, changes)"
+E:0004-38: conffiles/preinst.py: Missing Python function "postinst(ucr, changes)"
+E:0004-39: conffiles/postinst.py: Missing Python function "handler(ucr, changes)"
+E:0004-39: conffiles/shell.sh: Missing Python function "handler(ucr, changes)"
+W:0004-35: conffiles/shell.sh: Invalid module file name

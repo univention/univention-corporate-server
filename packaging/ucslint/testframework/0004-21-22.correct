@@ -1,2 +1,4 @@
 E:0004-21: debian/univention-lilo.univention-config-registry: file contains file entry with 2 "Preinst:" lines
 E:0004-22: debian/univention-lilo.univention-config-registry: file contains file entry with 2 "Postinst:" lines
+E:0004-36: Module file "foobar.sh" does not exist
+E:0004-36: Module file "foobar2.sh" does not exist

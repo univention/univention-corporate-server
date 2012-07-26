@@ -1,0 +1,57 @@
+Type: file
+File: file1
+Preinst: shell.sh
+Postinst: handler.py
+
+Type: file
+File: file2
+Preinst: postinst.py
+Postinst: preinst.py
+
+Type: file
+File: file3
+Preinst: preinst.py
+Postinst: postinst.py
+
+Type: multifile
+Multifile: multi1
+Preinst: shell.sh
+Postinst: handler.py
+
+Type: subfile
+Multifile: multi1
+Subfile: multi1
+
+Type: multifile
+Multifile: multi2
+Preinst: postinst.py
+Postinst: preinst.py
+
+Type: subfile
+Multifile: multi2
+Subfile: multi2
+
+Type: multifile
+Multifile: multi3
+Preinst: pretinst.py
+Postinst: postinst.py
+
+Type: subfile
+Multifile: multi3
+Subfile: multi3
+
+Type: script
+Script: missing.sh
+Variables: test
+
+Type: module
+Module: shell.sh
+Variables: test
+
+Type: module
+Module: postinst.py
+Variables: test
+
+Type: module
+Module: handler.py
+Variables: test
