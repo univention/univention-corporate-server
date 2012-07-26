@@ -9,6 +9,8 @@ if configRegistry.get('samba4/service/smb', 's3fs'):
 
 	if configRegistry.is_false('samba4/rpc/endpoint/drsuapi'):
 		print '-drsuapi'
+	else
+		print ''
 
 elif configRegistry.get('samba4/service/smb', 'smbd'):
 	if configRegistry['samba4/role'] != 'MEMBER':	## otherwise it's already set in 10global
