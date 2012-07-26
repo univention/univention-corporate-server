@@ -1,3 +1,13 @@
+univention-system-setup (6.0.1-1) unstable; urgency=low
+
+  * Version bump for UCS 3.1
+  * The firefox dialog "Will you help improve Firefox...?" has been disabled
+    for the setup wizard in appliance mode; Bug #27975
+  * adapted script 10software to avoid broken installations which occurred in
+    some cases; Bug #27976
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 Jul 2012 11:44:02 +0200
+
 univention-system-setup (5.0.198-1) unstable; urgency=low
 
   * Analyze only pmstatus messages and add a debug line (Bug #27951)

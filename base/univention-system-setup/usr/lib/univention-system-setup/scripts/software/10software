@@ -79,13 +79,13 @@ mkfifo "$stdoutFifo" "$statFifo" #"$stderrFifo"
 
     # update
     echo "apt-get $APT_PARAMS update"
-    apt-get $APT_PARAMS update
+    LC_ALL=C apt-get $APT_PARAMS update
     echo "pmstatus:_:100:" >&4
 
     # remove packages
     for p in $packages_remove; do
         echo "apt-get $APT_PARAMS install $p- $base" 
-        apt-get $APT_PARAMS install $p- $base
+        LC_ALL=C apt-get $APT_PARAMS install $p- $base
         aptResult=$?
         if [ $aptResult -gt 0 ]; then
             progress_error "$p: $(gettext "Failed to uninstall")"
@@ -94,13 +94,13 @@ mkfifo "$stdoutFifo" "$statFifo" #"$stderrFifo"
 
     # run autoremove
     if [ -n "$packages_remove" ]; then
-        apt-get $APT_PARAMS autoremove
+        LC_ALL=C apt-get $APT_PARAMS autoremove
     fi
 
     # install packages
     for p in $packages_install; do
         echo "apt-get $APT_PARAMS install $p $base"
-        apt-get $APT_PARAMS install $p $base
+        LC_ALL=C apt-get $APT_PARAMS install $p $base
         aptResult=$?
         if [ $aptResult -gt 0 ]; then
             progress_error "$p: $(gettext "Failed to install")"
@@ -160,12 +160,12 @@ while [ "$statResult" != 1 -a "$stdoutResult" != 1 -a "$stderrResult" != 1 ]; do
             fi
         fi
 
-        # handle only package management status
-        if [ "$statusType" = "pmstatus" ]; then
+        # handle only package management status and make sure that percentage is an integer
+        if [ "$statusType" = "pmstatus" ] && echo "$percentage" | grep -qE '^[[:digit:]]+$'; then
             # check whether we have passed to the next command
             [ "$percentage" -lt "$lastPercentage" ] && icommand=$((icommand+1))
             lastPercentage=$percentage
-            
+
             # print current step
             progress_next_step "$((percentage + icommand * 100))"
         fi

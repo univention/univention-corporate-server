@@ -130,7 +130,8 @@ count=1' >> "$HOME"/.kde/share/config/kwinrulesrc
 # do not show the "know your rights" popup
 echo 'user_pref("browser.rights.3.shown", true);' >> "$profilePath"/prefs.js
 # do not ask for performance reporting
-echo 'user_pref("toolkit.telemetry.prompted", true);' >> "$profilePath"/prefs.js
+echo 'user_pref("toolkit.telemetry.prompted", 2);' >> "$profilePath"/prefs.js
+echo 'user_pref("toolkit.telemetry.rejected", true);' >> "$profilePath"/prefs.js
 # do not store passwords
 echo 'user_pref("signon.rememberSignons", false);' >> "$profilePath"/prefs.js
 # hide tabbar with only one tab
