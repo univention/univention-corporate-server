@@ -1,0 +1,4 @@
+#!/usr/bin/make -f
+%:
+	univention-install-config-registry
+	dh $@

@@ -1,0 +1,16 @@
+Source: test0004-42--54
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 7), ucslint
+Standards-Version: 3.6.1
+
+Package: test1
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Description: test1
+
+Package: test2
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Description: test2

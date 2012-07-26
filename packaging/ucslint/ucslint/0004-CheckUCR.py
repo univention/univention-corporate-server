@@ -78,6 +78,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-40': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: module" with multiple "Module:" line'],
 				 '0004-41': [uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: script" with multiple "Script:" line'],
 				 '0004-42': [uub.RESULT_WARN,   'UCR .info-file contains entry with unexpected key'],
+				 '0004-43': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: file" with invalid "User: " line'],
+				 '0004-44': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: file" with multiple "User: " line'],
+				 '0004-45': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: file" with invalid "Group: " line'],
+				 '0004-46': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: file" with multiple "Group: " line'],
+				 '0004-47': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line'],
+				 '0004-48': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: file" with multiple "Mode: " line'],
+				 '0004-49': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with invalid "User: " line'],
+				 '0004-50': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with multiple "User: " line'],
+				 '0004-51': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with invalid "Group: " line'],
+				 '0004-52': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line'],
+				 '0004-53': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line'],
+				 '0004-54': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line'],
 				 }
 
 	def postinit(self, path):
@@ -306,44 +318,72 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							self.addmsg( '0004-3', 'file contains entry without "Type:"', fn )
 						else:
 							if typ == 'multifile':
-								try:
-									mfile = entry['Multifile'][0]
-								except LookupError:
+								mfile = entry.get('Multifile', [])
+								if not mfile:
 									self.addmsg('0004-4', 'file contains multifile entry without "Multifile:" line', fn)
+								elif len(mfile) != 1:
+									self.addmsg('0004-4', 'file contains multifile entry with %d "Multifile:" line' % (len(mfile),), fn)
 								else:
-									multifiles[mfile] = entry
+									multifiles[mfile[0]] = entry
+
+								user = entry.get('User', [])
+								if len(user) == 1:
+									if user[0].isdigit():  # must be an symbolic name
+										self.addmsg('0004-43', 'UCR .info-file contains entry of "Type: file" with invalid "User: " line', fn)
+								elif len(user) > 1:
+									self.addmsg('0004-44', 'UCR .info-file contains entry of "Type: file" with multiple "User: " line', fn)
+
+								group = entry.get('Group', [])
+								if len(group) == 1:
+									if group[0].isdigit():  # must be an symbolic name
+										self.addmsg('0004-45', 'UCR .info-file contains entry of "Type: file" with invalid "Group: " line', fn)
+								elif len(group) > 1:
+									self.addmsg('0004-46', 'UCR .info-file contains entry of "Type: file" with multiple "Group: " line', fn)
+
+								mode = entry.get('Mode', [])
+								for m in mode:
+									try:
+										if not 0 <= int(m, 8) <= 07777:
+											self.addmsg('0004-47', 'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line', fn)
+									except (TypeError, ValueError):
+										self.addmsg('0004-47', 'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line', fn)
+								if len(mode) > 1:
+									self.addmsg('0004-48', 'UCR .info-file contains entry of "Type: file" with multiple "Mode: " line', fn)
+
 								for key in set(entry.keys()) - set(('Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode')):
 									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							elif typ == 'subfile':
-								if 'Subfile' not in entry:
+								sfile = entry.get('Subfile', [])
+								if not sfile:
 									self.addmsg( '0004-5', 'file contains subfile entry without "Subfile:" line', fn )
-								elif 'Multifile' not in entry:
+									continue
+								elif len(sfile) != 1:
+									self.addmsg('0004-7', 'file contains subfile entry with %d "Subfile:" lines' % (len(sfile),), fn)
+
+								mfile = entry.get('Multifile', [])
+								if not mfile:
 									self.addmsg( '0004-6', 'file contains subfile entry without "Multifile:" line', fn )
-								else:
-									sfile = entry.get('Subfile', [])
-									if len(sfile) != 1:
-										self.addmsg('0004-7', 'file contains subfile entry with %d "Subfile:" lines' % (len(sfile),), fn)
-									for _ in sfile:
-										all_definitions.setdefault(_, set()).add(fn)
+									continue
+								elif len(mfile) != 1:
+									self.addmsg('0004-8', 'file contains subfile entry with %d "Multifile:" lines' % (len(mfile),), fn)
 
-									mfile = entry['Multifile']
-									if len(mfile) != 1:
-										self.addmsg('0004-8', 'file contains subfile entry with %d "Multifile:" lines' % (len(mfile),), fn)
-									for _ in mfile:
-										all_definitions.setdefault(_, set()).add(fn)
+								for _ in sfile:
+									all_definitions.setdefault(_, set()).add(fn)
+								for _ in mfile:
+									all_definitions.setdefault(_, set()).add(fn)
 
-									pre = entry.get('Preinst', [])
-									if len(pre) > 0:
-										self.addmsg('0004-19', 'file contains subfile entry with %d "Preinst:" lines' % (len(pre),), fn)
-									all_preinst |= set(pre)
+								pre = entry.get('Preinst', [])
+								if len(pre) > 0:
+									self.addmsg('0004-19', 'file contains subfile entry with %d "Preinst:" lines' % (len(pre),), fn)
+								all_preinst |= set(pre)
 
-									post = entry.get('Postinst', [])
-									if len(post) > 0:
-										self.addmsg('0004-20', 'file contains subfile entry with %d "Postinst:" lines' % (len(post),), fn)
-									all_postinst |= set(post)
+								post = entry.get('Postinst', [])
+								if len(post) > 0:
+									self.addmsg('0004-20', 'file contains subfile entry with %d "Postinst:" lines' % (len(post),), fn)
+								all_postinst |= set(post)
 
-									subfiles.setdefault(mfile[0], []).append(entry)
+								subfiles.setdefault(mfile[0], []).append(entry)
 								for key in set(entry.keys()) - set(('Type', 'Subfile', 'Multifile', 'Variables')):
 									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
@@ -354,6 +394,30 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								for _ in sfile:
 									all_definitions.setdefault(_, set()).add(fn)
 								files.append( entry )
+
+								user = entry.get('User', [])
+								if len(user) == 1:
+									if user[0].isdigit():  # must be an symbolic name
+										self.addmsg('0004-49', 'UCR .info-file contains entry of "Type: multifile" with invalid "User: " line', fn)
+								elif len(user) > 1:
+									self.addmsg('0004-50', 'UCR .info-file contains entry of "Type: multifile" with multiple "User: " line', fn)
+
+								group = entry.get('Group', [])
+								if len(group) == 1:
+									if group[0].isdigit():  # must be an symbolic name
+										self.addmsg('0004-51', 'UCR .info-file contains entry of "Type: multifile" with invalid "Group: " line', fn)
+								elif len(group) > 1:
+									self.addmsg('0004-52', 'UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line', fn)
+
+								mode = entry.get('Mode', [])
+								for m in mode:
+									try:
+										if not 0 <= int(m, 8) <= 07777:
+											self.addmsg('0004-53', 'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line', fn)
+									except (TypeError, ValueError):
+										self.addmsg('0004-53', 'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line', fn)
+								if len(mode) > 1:
+									self.addmsg('0004-54', 'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line', fn)
 
 								pre = entry.get('Preinst', [])
 								if len(pre) > 1:
@@ -373,7 +437,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								module = entry.get('Module', [])
 								if len(module) != 1:
 									self.addmsg('0004-38', 'UCR .info-file contains entry of "Type: module" with %d "Module:" lines' % (len(module),), fn)
-									check
 								all_module |= set(module)
 
 								for key in set(entry.keys()) - set(('Type', 'Module', 'Variables')):

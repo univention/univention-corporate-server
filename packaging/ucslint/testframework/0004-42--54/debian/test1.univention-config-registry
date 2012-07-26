@@ -1,0 +1,54 @@
+Type: file
+File: file1
+Variables: test1
+Variables: test2
+User: root
+User: Domain Admins
+Group: root
+Group: Domain Users
+Mode: 1
+Mode: 9999
+Preinst: hook1.py
+Preinst: hook2.py
+Postinst: hook1.py
+Postinst: hook2.py
+Foo: bar
+
+Type: multifile
+Multifile: multi1
+Variables: test1
+Variables: test2
+User: root
+User: Domain Admins
+Group: root
+Group: Domain Users
+Mode: 1
+Mode: 9999
+Preinst: hook1.py
+Preinst: hook2.py
+Postinst: hook1.py
+Postinst: hook2.py
+Foo: bar
+
+Type: subfile
+Multifile: multi1
+Multifile: multi2
+Subfile: multi1
+Subfile: multi1
+Variables: test1
+Variables: test2
+Foo: bar
+
+Type: module
+Module: hook1.py
+Module: hook2.py
+Variables: test1
+Variables: test2
+Foo: bar
+
+Type: script
+Script: hook1.py
+Script: hook2.py
+Variables: test1
+Variables: test2
+Foo: bar

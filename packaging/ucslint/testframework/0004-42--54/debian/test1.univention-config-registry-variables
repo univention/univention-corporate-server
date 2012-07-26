@@ -1,0 +1,11 @@
+[test1]
+Description[de]=test
+Description[en]=test
+Type=str
+Category=test
+
+[test2]
+Description[de]=test
+Description[en]=test
+Type=str
+Category=test

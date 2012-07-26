@@ -1,0 +1,28 @@
+Type: file
+File: file2
+User: 0
+Group: 0
+Mode: u=rw,g=rw,o=
+Foo: bar
+
+Type: multifile
+Multifile: multi1
+User: 0
+Group: 0
+Mode: u=rw,g=rw,o=
+Foo: bar
+
+Type: subfile
+Multifile: multi1
+Subfile: multi1
+Foo: bar
+
+Type: module
+Module: hook1.py
+Variables: test1
+Foo: bar
+
+Type: script
+Script: hook1.py
+Variables: test1
+Foo: bar
