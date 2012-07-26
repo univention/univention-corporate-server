@@ -6,6 +6,7 @@ except ImportError:
 	import ucslint.base as uub
 import re
 import os
+import sys
 
 # Check 4
 # 1) Nach UCR-Templates suchen und prüfen, ob die Templates in einem info-File auftauchen
@@ -79,8 +80,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		"""
 	 	Returns True if given variable name contains invalid characters
 	 	"""
-		for i in range(0,len(var)):
-			c = var[i]
+		for i, c in enumerate(var):
 			if not c.isalpha() and not c.isdigit() and not c in self.UCR_VALID_SPECIAL_CHARACTERS:
 				if c == '%' and ( i < len(var)-1 ):
 					if not var[i+1] in [ 'd', 's' ]:
@@ -96,7 +96,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		re.compile("""(?:baseConfig|configRegistry).is_(?:true|false)\s*\(\s*['"]([^'"]+)['"]\s*"""),
 		]
 	RE_UCR_PLACEHOLDER_VAR1 = re.compile('@%@([^@]+)@%@')
-	RE_IDENTIFIER = re.compile(r"""<!DOCTYPE|<\?xml|<\?php|#!\s*/""", re.MULTILINE)
+	RE_IDENTIFIER = re.compile(r"""<!DOCTYPE|<\?xml|<\?php|#!\s*/\S+""", re.MULTILINE)
 
 	def check_conffiles(self, path):
 		"""search UCR templates."""
@@ -200,9 +200,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		all_files = []       # [ OBJ, OBJ, ... ]
 		all_modules = []     # [ OBJ, OBJ, ... ]
 		all_scripts = []     # [ OBJ, OBJ, ... ]
-		all_preinst = []     # [ FN, FN, ... ]
-		all_postinst = []    # [ FN, FN, ... ]
-		all_definitions = {} # [ FN, ... ]
+		all_preinst = set()  # [ FN, FN, ... ]
+		all_postinst = set() # [ FN, FN, ... ]
+		all_definitions = {} # { SHORT-FN ==> FULL-FN }
 		if True:  # TODO reindent
 			# read debian/rules
 			fn_rules = os.path.join(path, 'debian', 'rules' )
@@ -255,8 +255,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					files = []       # [ OBJ, OBJ, ... ]
 					modules = []     # [ OBJ, OBJ, ... ]
 					scripts = []     # [ OBJ, OBJ, ... ]
-					preinst = []     # [ FN, FN, ... ]
-					postinst = []    # [ FN, FN, ... ]
 					for part in content.split('\n\n'):
 						entry = {}
 						for line in part.splitlines():
@@ -290,42 +288,45 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								else:
 									sfile = entry.get('Subfile', [])
 									if len(sfile) != 1:
-										self.addmsg( '0004-7', 'file contains subfile entry with multiple "Subfile:" lines', fn )
+										self.addmsg('0004-7', 'file contains subfile entry with %d "Subfile:" lines' % (len(sfile),), fn)
 									for _ in sfile:
 										all_definitions.setdefault(_, set()).add(fn)
+
 									mfile = entry['Multifile']
+									if len(mfile) != 1:
+										self.addmsg('0004-8', 'file contains subfile entry with %d "Multifile:" lines' % (len(mfile),), fn)
 									for _ in mfile:
 										all_definitions.setdefault(_, set()).add(fn)
-									if len(mfile) != 1:
-										self.addmsg( '0004-8', 'file contains subfile entry with multiple "Multifile:" lines', fn )
-									if len(entry.get('Preinst',[])) > 1:
-										self.addmsg( '0004-19', 'file contains subfile entry with multiple "Preinst:" lines', fn )
-									if len(entry.get('Postinst',[])) > 1:
-										self.addmsg( '0004-20', 'file contains subfile entry with multiple "Postinst:" lines', fn )
+
+									pre = entry.get('Preinst', [])
+									if len(pre) > 1:
+										self.addmsg('0004-19', 'file contains subfile entry with %d "Preinst:" lines' % (len(pre),), fn)
+									all_preinst |= set(pre)
+
+									post = entry.get('Postinst', [])
+									if len(post) > 1:
+										self.addmsg('0004-20', 'file contains subfile entry with %d "Postinst:" lines' % (len(post),), fn)
+									all_postinst |= set(post)
 
 									subfiles.setdefault(mfile[0], []).append(entry)
-
-									if len(entry.get('Preinst',[])) > 0:
-										preinst.append( entry['Preinst'][0] )
-									if len(entry.get('Postinst',[])) > 0:
-										postinst.append( entry['Postinst'][0] )
 
 							elif typ == 'file':
 								sfile = entry.get('File', [])
 								if len(sfile) != 1:
-									self.addmsg('0004-33', 'file contains file entry with multiple "File:" lines', fn)
+									self.addmsg('0004-33', 'file contains file entry with %d "File:" lines' % (len(sfile),), fn)
 								for _ in sfile:
 									all_definitions.setdefault(_, set()).add(fn)
 								files.append( entry )
-								if len(entry.get('Preinst',[])) > 0:
-									preinst.append( entry['Preinst'][0] )
-									if len(entry['Preinst']) != 1:
-										self.addmsg( '0004-21', 'file contains file entry with multiple "Preinst:" lines', fn )
 
-								if len(entry.get('Postinst',[])) > 0:
-									postinst.append( entry['Postinst'][0] )
-									if len(entry['Postinst']) != 1:
-										self.addmsg( '0004-22', 'file contains file entry with multiple "Postinst:" lines', fn )
+								pre = entry.get('Preinst', [])
+								if len(pre) > 1:
+									self.addmsg('0004-21', 'file contains file entry with %d "Preinst:" lines' % (len(pre),), fn)
+								all_preinst |= set(pre)
+
+								post = entry.get('Postinst', [])
+								if len(post) > 1:
+									self.addmsg('0004-22', 'file contains file entry with %d "Postinst:" lines' % (len(post),), fn)
+								all_postinst |= set(post)
 
 							elif typ == 'module':
 								modules.append( entry )
@@ -366,8 +367,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					all_files.extend( files )
 					all_modules.extend( modules )
 					all_scripts.extend( scripts )
-					all_preinst.extend( preinst )
-					all_postinst.extend( postinst )
 
 		#
 		# check if all variables are registered
@@ -390,7 +389,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					try:
 						cfn = obj[typ][0]
 						break
-					except:
+					except LookupError:
 						continue
 				else:
 					print >> sys.stderr, 'FIXME: no File or Subfile or Module or Script entry: %s' % obj
@@ -525,26 +524,26 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			for linecnt, line in enumerate(f, start=1):
 				try:
-					x = line.decode('utf-8')
+					_ = line.decode('utf-8')
 				except UnicodeError:
 					self.addmsg( '0004-30', 'contains invalid characters', tmpfn, linecnt )
 		finally:
 			f.close()
 
 	def test_marker(self, fn):
-		"""Bug #24728: count of murkers must be evem."""
+		"""Bug #24728: count of markers must be even."""
 		count_python = 0
 		count_var = 0
 		try:
 			f = open(fn, 'r')
-		except IOError, e:
+		except IOError:
 			#self.addmsg('0004-27', 'cannot open/read file', fn)
 			return
 		try:
 			for l in f:
-				for m in UniventionPackageCheck.RE_PYTHON.finditer(l):
+				for _ in UniventionPackageCheck.RE_PYTHON.finditer(l):
 					count_python += 1
-				for m in UniventionPackageCheck.RE_VAR.finditer(l):
+				for _ in UniventionPackageCheck.RE_VAR.finditer(l):
 					count_var += 1
 		finally:
 			f.close()

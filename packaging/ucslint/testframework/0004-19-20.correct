@@ -1,2 +1,2 @@
-E:0004-19: debian/univention-lilo.univention-config-registry: file contains subfile entry with multiple "Preinst:" lines
-E:0004-20: debian/univention-lilo.univention-config-registry: file contains subfile entry with multiple "Postinst:" lines
+E:0004-19: debian/univention-lilo.univention-config-registry: file contains subfile entry with 2 "Preinst:" lines
+E:0004-20: debian/univention-lilo.univention-config-registry: file contains subfile entry with 2 "Postinst:" lines
