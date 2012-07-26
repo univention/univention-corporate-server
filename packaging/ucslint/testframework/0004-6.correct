@@ -1,2 +1,1 @@
 E:0004-6: debian/univention-lilo.univention-config-registry: file contains subfile entry without "Multifile:" line
-W:0004-14: conffiles/etc/hosts.d/99-ucs-test: template file is not registered in *.univention-config-registry

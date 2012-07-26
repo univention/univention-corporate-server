@@ -4,6 +4,9 @@ E:0004-38: debian/test1.univention-config-registry: UCR .info-file contains entr
 E:0004-39: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: script" with 2 "Script:" lines
 E:0004-7: debian/test1.univention-config-registry: file contains subfile entry with 2 "Subfile:" lines
 E:0004-8: debian/test1.univention-config-registry: file contains subfile entry with 2 "Multifile:" lines
+W:0004-10: debian/test1.univention-config-registry: file contains subfile entry without corresponding multifile entry.
+      - subfile = multi1
+      - multifile = multi2
 W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Foo"
 W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Foo"
 W:0004-42: debian/test1.univention-config-registry: UCR .info-file contains entry with unexpected key "Foo"
