@@ -1,2 +1,3 @@
+I:0004-56: conffiles/etc/hosts.d/99-ucs-test: No UCR variables used
 W:0004-16: conffiles/etc/lilo.conf: UCR header is missing
 W:0004-17: debian/univention-lilo.univention-config-registry: UCR template file "etc/hosts.d/99-ucs-test-unknown" is registered but not found in conffiles/ (2)

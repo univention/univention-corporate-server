@@ -6,4 +6,12 @@ E:0004-34: conffiles/ucr.html: UCR warning before file type magic "<!DOCTYPE"
 E:0004-34: conffiles/ucr.php: UCR warning before file type magic "<?php"
 E:0004-34: conffiles/ucr.sh: UCR warning before file type magic "#!/bin/sh"
 E:0004-34: conffiles/ucr.xml: UCR warning before file type magic "<?xml"
+I:0004-56: conffiles/bc.html: No UCR variables used
+I:0004-56: conffiles/bc.php: No UCR variables used
+I:0004-56: conffiles/bc.sh: No UCR variables used
+I:0004-56: conffiles/bc.xml: No UCR variables used
+I:0004-56: conffiles/ucr.html: No UCR variables used
+I:0004-56: conffiles/ucr.php: No UCR variables used
+I:0004-56: conffiles/ucr.sh: No UCR variables used
+I:0004-56: conffiles/ucr.xml: No UCR variables used
 S:0004-24: debian/test0004-34.univention-config-registry-variables: test0004-34.univention-config-registry exists but corresponding ./debian/test0004-34.univention-config-registry-variables is missing

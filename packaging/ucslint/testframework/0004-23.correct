@@ -1,1 +1,2 @@
 E:0004-23: debian/rules: univention-lilo.univention-config-registry exists but debian/rules contains no univention-install-config-registry
+I:0004-56: conffiles/etc/hosts.d/99-ucs-test: No UCR variables used

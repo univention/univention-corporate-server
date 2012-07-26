@@ -23,6 +23,7 @@ ucslint (3.0.0-1) unstable; urgency=low
   * 0004: Check for unexpected keys.
   * 0004: Check User, Group, Mode (Bug #14070)
   * 0004: Check for Variable globbing (Bug #13015)
+  * 0004: Check for conffiles without UCR variables (Bug #22434)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 20 Jul 2012 12:09:41 +0200
 

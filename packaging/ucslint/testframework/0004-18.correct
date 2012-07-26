@@ -1,1 +1,2 @@
+I:0004-56: conffiles/etc/hosts.d/99-ucs-test: No UCR variables used
 W:0004-18: debian/univention-lilo.univention-config-registry: UCR header is maybe missing in multifile "etc/hosts"

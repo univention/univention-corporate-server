@@ -92,6 +92,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-53': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line'],
 				 '0004-54': [uub.RESULT_WARN,   'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line'],
 				 '0004-55': [uub.RESULT_WARN,   'UCR .info-file may contain globbing pattern instead of regular expression'],
+				 '0004-56': [uub.RESULT_INFO,   'No UCR variables used'],
 				 }
 
 	def postinit(self, path):
@@ -577,11 +578,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						# check for invalid UCR placeholder variable names
 						if self.check_invalid_variable_name(var):
 							invalidUCRVarNames.add(var)
+						knownvars.add(var)
 
 					if invalidUCRVarNames:
 						invalidUCRVarNames = list(invalidUCRVarNames)
 						invalidUCRVarNames.sort()
 						self.addmsg( '0004-13', 'template contains invalid UCR variable names:\n      - %s' % ('\n      - '.join(invalidUCRVarNames)), conffn )
+
+					# Last test: add all Subfile variables
+					if mfn and mfn in all_multifiles:
+						for sf in all_subfiles[mfn]:
+							knownvars.update(sf.get('Variables', []))
+					if not knownvars:
+						self.addmsg('0004-56', 'No UCR variables used', conffn)
 
 			conffnfound |= conffn.rsplit('/')[-1] in (all_preinst | all_postinst | all_module | all_script)
 

@@ -1,3 +1,4 @@
+I:0004-56: conffiles/etc/hosts.d/99-ucs-test: No UCR variables used
 W:0004-10: debian/univention-lilo.univention-config-registry: file contains subfile entry without corresponding multifile entry.
       - subfile = etc/hosts.d/99-ucs-test
       - multifile = etc/hosts

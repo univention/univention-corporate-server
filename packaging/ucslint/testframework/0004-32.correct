@@ -1,1 +1,2 @@
 E:0004-32: conffiles/foo: odd number of @%@ markers
+I:0004-56: conffiles/foo: No UCR variables used

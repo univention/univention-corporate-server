@@ -1,1 +1,2 @@
+I:0004-56: conffiles/etc/hosts.d/99-ucs-test: No UCR variables used
 S:0004-25: debian/rules: file contains old univention-install-baseconfig call
