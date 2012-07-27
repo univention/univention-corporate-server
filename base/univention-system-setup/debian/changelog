@@ -1,3 +1,10 @@
+univention-system-setup (6.0.2-1) unstable; urgency=low
+
+  * added "ucr commit" to ensure that local packages will be installed
+    correctly during setup-join.sh; Bug #28089
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Jul 2012 09:59:52 +0200
+
 univention-system-setup (6.0.1-1) unstable; urgency=low
 
   * Version bump for UCS 3.1

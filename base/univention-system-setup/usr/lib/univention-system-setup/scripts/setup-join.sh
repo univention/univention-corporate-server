@@ -64,6 +64,10 @@ echo "no-ldap" > /var/run/univention-system-setup.ldap
 # do not allow the UMC or webserver to be restarted
 /usr/share/univention-updater/disable-apache2-umc
 
+# Re-create sources.list files before installing the role packages
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=28089
+ucr commit /etc/apt/sources.list.d/*
+
 # Install the server package
 /usr/lib/univention-system-setup/scripts/role/10role
 
@@ -144,6 +148,9 @@ run-parts /usr/lib/univention-system-setup/scripts/modules/
 # Do network stuff
 echo "Starting re-configuration of network"
 run-parts -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/net/
+
+# Re-create sources.list files
+ucr commit /etc/apt/sources.list.d/*
 
 # Install selected software
 echo "Starting re-configuration of software packages"
