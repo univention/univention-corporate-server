@@ -52,7 +52,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-13': [ uub.RESULT_ERROR, 'UCR template file contains UCR variables with invalid characters' ],
 				 '0004-14': [ uub.RESULT_WARN,  'UCR template file is found in directory conffiles/ but is not registered in any debian/*.univention-config-registry file ' ],
 				 '0004-15': [ uub.RESULT_WARN,  'UCR template file is registered in UCR .info-file but cannot be found in conffiles/' ],
-				 '0004-16': [ uub.RESULT_WARN,  'UCR template file contains no UCR header (please use "@%@BCWARNING=# @%@")' ],
+				 '0004-16': [ uub.RESULT_WARN,  'UCR template file contains no UCR header (please use "@%@UCSWARNING=# @%@")' ],
 				 '0004-17': [ uub.RESULT_WARN,  'UCR template file is registered in UCR .info-file but cannot be found in conffiles/' ],
 				 '0004-18': [ uub.RESULT_WARN,  'UCR header is maybe missing in UCR multifile (please check all subfiles)' ],
 				 '0004-19': [ uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: subfile" with multiple "Preinst:" line' ],
