@@ -1,7 +1,7 @@
 #!/bin/bash
 ## desc: Test account locking via shadow/ldap, smb, krb
 ## roles: [domaincontroller_master]
-## tags: [basic]
+## tags: [basic, univention]
 ## packages: [univention-directory-manager-tools, openssh-server, smbclient, heimdal-clients]
 ## exposure: dangerous
 ## versions:
@@ -21,7 +21,7 @@ ucr set \
 tdir=$(mktemp -d)
 trap "rm -rf '$tdir' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
 passwd="$tdir/passwd"
-echo "univention" >"$passwd"
+echo -n "${BINDPWD}" >"$passwd"
 
 posix_login () {
 	local name pass lstchg min max warn inact expire flag

@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Deleting a host remains an inconsistend Nagios-Config
 ## bugs: [8620]
-## tags: [basic]
+## tags: [basic, univention]
 ## exposure: safe
 ## packages:
 ##  - univention-directory-manager-tools
@@ -26,7 +26,6 @@
 STRINGLENGTH=10 #length of the random-hostname
 NAGIOSSERVICE="UNIVENTION_PING"
 BINDUSER="Administrator"
-BINDPW="univention"
 
 HOSTNAME=$(computer_randomname)
 IP=$(random_ipv4)
@@ -46,14 +45,14 @@ univention-directory-manager "computers/$server_role" create \
 	--set ip="$IP" \
 	--set dnsEntryZoneForward="zoneName=$domainname,cn=dns,$ldap_base $IP" \
 	--option nagios \
-	--binddn="uid=$BINDUSER,cn=users,$ldap_base" \
-	--bindpw="$BINDPW"
+	--binddn="$BINDDN" \
+	--bindpw="$BINDPWD"
 
 udm nagios/service modify \
 	--dn "cn=$NAGIOSSERVICE,cn=nagios,$ldap_base" \
 	--append assignedHosts="cn=$HOSTNAME,cn=computers,$ldap_base" \
-	--binddn="uid=$BINDUSER,cn=users,$ldap_base" \
-	--bindpw="$BINDPW"
+	--binddn="$BINDDN" \
+	--bindpw="$BINDPWD"
 
 # wait am moment for the UD-Listener to commit the changes
 sleep 2
@@ -69,8 +68,8 @@ fi
 # delete the computer
 udm "computers/$server_role" remove \
 	--dn "cn=$HOSTNAME,cn=computers,$ldap_base" \
-	--binddn="uid=$BINDUSER,cn=users,$ldap_base" \
-	--bindpw="$BINDPW"
+	--binddn="$BINDDN" \
+	--bindpw="$BINDPWD"
 
 # wait a moment agian
 sleep 2

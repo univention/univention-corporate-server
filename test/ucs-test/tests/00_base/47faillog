@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test faillog via ssh
 ## roles: [domaincontroller_master]
-## tags: [basic]
+## tags: [basic, univention]
 ## packages: [univention-directory-manager-tools, openssh-server]
 ## exposure: dangerous
 ## versions:
@@ -28,7 +28,7 @@ trap "rm -rf '$tdir' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh resta
 fake_passwd="$tdir/fake_passwd"
 echo "foobar1234" >"$fake_passwd"
 passwd="$tdir/passwd"
-echo "univention" >"$passwd"
+echo -n "${BINDPWD}" >"$passwd"
 
 ssh_login () {
 	univention-ssh -timeout 10 "$1" -o NumberOfPasswordPrompts=3 "$NAME@$hostname.$domainname" /usr/sbin/ucr get hostname

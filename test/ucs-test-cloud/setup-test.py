@@ -318,6 +318,14 @@ finally:
     ini_file.close()
 sftp.chmod('ucs-test.ini', 0600)
 
+# Store root password
+pw_file = sftp.file('root.secret', 'w')
+try:
+    pw_file.write(password)
+finally:
+    pw_file.close()
+sftp.chmod('root.secret', 0600)
+
 # Remove temporary APT configuration again
 cmd = 'rm -f /etc/apt/sources.list.d/*.list ; ' + \
         'univention-config-registry set repository/online/unmaintained=no ' + \

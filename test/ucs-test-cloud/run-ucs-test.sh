@@ -14,7 +14,8 @@ cd "$HOME" || exit 1
 exec </dev/null >"$HOME/run.log" 2>&1 || true
 
 [ -r /etc/default/locale ] && . /etc/default/locale
-export LANG
+[ -r /root/root.secret ] && read BINDPWD </root/root.secret
+export LANG BINDPWD
 
 # Clean up previous data
 rm -rf "$HOME/ucs-test.log" "$HOME/test-reports"
