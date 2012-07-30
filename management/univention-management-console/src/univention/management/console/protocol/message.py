@@ -307,7 +307,7 @@ class Response( Message ):
 	def __str__( self ):
 		'''Returns the formatted message without request options'''
 		body = copy.copy(self.body)
-		if 'options' in body:
+		if 'options' in body and isinstance(body, dict):
 			del body['options']
 		return Message._formattedMessage(self._id, self._type, self.mimetype, self.command, body, self.arguments)
 
