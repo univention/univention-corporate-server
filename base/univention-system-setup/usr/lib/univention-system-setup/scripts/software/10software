@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
-# Univention Setup
-#  software change script
+# Univention System Setup
+#  software installation script
 #
 # Copyright 2004-2012 Univention GmbH
 #
@@ -29,151 +30,489 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+import sys
+import os
+import locale
+locale.resetlocale()
+import os.path
+import re
+from contextlib import contextmanager
+import apt_pkg
+import apt
+import apt.progress
+from apt.cache import FetchFailedException, LockFailedException
+import univention.config_registry
+from univention.management.console.modules.setup.util import PATH_SETUP_SCRIPTS, PATH_PROFILE
+# FIXME: This should be done in util.py!!
+if not PATH_SETUP_SCRIPTS.endswith('/'):
+	PATH_SETUP_SCRIPTS += '/'
+ucr = univention.config_registry.ConfigRegistry()
 
-. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+apt_pkg.init()
 
-info_header "$0" "$(gettext "Configuring software components")"
 
-if [ "$check_ldap_access" = "1" ]; then
-    exit 0
-fi
+from univention.lib.i18n import Translation
+_ = Translation('univention-system-setup-scripts').translate
 
-packages_remove=`get_profile_var "packages_remove"`
-packages_install=`get_profile_var "packages_install"`
+# TODO: extract and use as helper for other python-join-scripts
+###############
+# THIS SHOULD BE ../setup_script.py
+###############
 
-if [ -z "$packages_remove" -a -z "$packages_install" ]; then
-    exit 0
-fi
+class SetupScript:
+	'''Baseclass for all Python-based Setup-Scripts.
 
-eval "$(univention-config-registry shell)"
+	Script lifecycle:
+	  __init__() -> up()
+	  run() -> inner_run() -> down()
 
-if [ "$server_role" = "domaincontroller_master" ]; then
-    base="univention-server-master+"
-elif [ $server_role = "domaincontroller_backup" ]; then
-    base="univention-server-backup+"
-elif [ $server_role = "domaincontroller_slave" ]; then
-    base="univention-server-slave+"
-elif [ $server_role = "memberserver" ]; then
-    base="univention-server-member+"
-elif [ $server_role = "fatclient" ]; then
-    base="univention-managed-client+"
-elif [ $server_role = "mobileclient" ]; then
-    base="univention-mobile-client+"
-fi
+	up(), inner_run(), and down() and encapsulated by try-blocks,
+	so the script should under no cirucumstances break.
 
-# create named pipes in order to merge status information and stdout
-stdoutFifo=$(mktemp -u /tmp/apt.stdout.XXXXXXXX)
-#stderrFifo=$(mktemp -u /tmp/apt.stderr.XXXXXXXX)
-statFifo=$(mktemp -u /tmp/apt.stat.XXXXXXXX)
-mkfifo "$stdoutFifo" "$statFifo" #"$stderrFifo"
+	You should define name and script_name class (or instance) variables
+	where name is localised and will show up at top of the progress and
+	script_name is for logging and internal infos found at
+	univention.management.console.modules.setup.util.ProgressParser.FRACTIONS
+	You probably want to set script_name to os.path.abspath(__file__)
 
-# run the installation in a background process
-( 
-    # set options
-    export DEBIAN_FRONTEND=noninteractive
-    export APT_PARAMS="-o APT::Status-FD=4 -o DPkg::Options::=--force-confold -y --force-yes -o APT::Get::AllowUnauthenticated=1"
+	You should define your own inner_run-method, and, if needed,
+	override (initially dummy) up() and down()
 
-    # redirection of stdout/stderr and status information
-    # exec >$stdoutFifo 2>$stderrFifo 4>$statFifo </dev/pts/2
-    exec >$stdoutFifo 2>$stdoutFifo 4>$statFifo </dev/null
+	You should execute a script like so:
+	script = MySetupScript()
+	script.run()
+	Or maybe even better like so, as it calls sys.exit
+	if __name__ == '__main__':
+		script = MySetupScript()
+		main(script) # helper function defined in here
 
-    # update
-    echo "apt-get $APT_PARAMS update"
-    LC_ALL=C apt-get $APT_PARAMS update
-    echo "pmstatus:_:100:" >&4
+	You may control the progress parser with these methods:
+	self.header(msg) # automatically called by run()
+	self.message(msg)
+	self.error(msg)
+	self.join_error(msg)
+	self.steps(steps)
+	self.step(step)
+	'''
+	name = ''
 
-    # remove packages
-    for p in $packages_remove; do
-        echo "apt-get $APT_PARAMS install $p- $base" 
-        LC_ALL=C apt-get $APT_PARAMS install $p- $base
-        aptResult=$?
-        if [ $aptResult -gt 0 ]; then
-            progress_error "$p: $(gettext "Failed to uninstall")"
-        fi
-    done
+	# you almost definitely want to assign os.path.abspath(__file__)
+	script_name = '' 
 
-    # run autoremove
-    if [ -n "$packages_remove" ]; then
-        LC_ALL=C apt-get $APT_PARAMS autoremove
-    fi
+	def __init__(self, *args, **kwargs):
+		'''Initialise Script. Will call self.up() with same *args
+		and **kwargs as __init__() (which itself will leave them
+		untouched)
 
-    # install packages
-    for p in $packages_install; do
-        echo "apt-get $APT_PARAMS install $p $base"
-        LC_ALL=C apt-get $APT_PARAMS install $p $base
-        aptResult=$?
-        if [ $aptResult -gt 0 ]; then
-            progress_error "$p: $(gettext "Failed to install")"
-        fi
-    done
-) &
+		So dont override this method, instead write your own up().
+		The default up()-method does nothing.
 
-# number of commands = number of installed/removed packages +1 (for the update command)
-nCommands=$(( $(echo $packages_install | wc -w) + $(echo $packages_remove | wc -w) + 1 ))
-progress_steps $((nCommands * 100))  # each command is in the range [0, 100]
+		self.up() is called in a try-except-block. If an exception
+		was raised by up(), it will be saved and raised as soon as
+		run() is called. You should make sure that this does not
+		happen.
+		'''
+		# get a fresh ucr in every script
+		ucr.load()
+		self._step = 1
+		# remove script path from name
+		if self.script_name:
+			if self.script_name.startswith(PATH_SETUP_SCRIPTS):
+				self.script_name = self.script_name[len(PATH_SETUP_SCRIPTS):]
+		try:
+			self.up(*args, **kwargs)
+		except Exception as e:
+			# save caught exception. raise later (in run())
+			self._broken = e
+		else:
+			self._broken = False
 
-# read from stdout/stderr and status information output via the named pipes
-# ordering is important!
-#exec 5<$stdoutFifo 7<$stderrFifo 6<$statFifo
-exec 5<$stdoutFifo 6<$statFifo
-statResult=0
-stdoutResult=0
-stderrResult=0
-icommand=0
-lastPercentage=0
-while [ "$statResult" != 1 -a "$stdoutResult" != 1 -a "$stderrResult" != 1 ]; do
-    # read from apt-get stdout
-    read -u 5 -t 0.01 line
-    stdoutResult=$?
-    [ $stdoutResult = 0 ] && echo "$line"
+	def inform_progress_parser(self, progress_attribute, msg):
+		'''Internal method to inform progress parser.
 
-    # read from apt-get stderr
-    #read -u 7 -t 0.01 line
-    #stderrResult=$?
-    #[ $stderrResult = 0 ] && progress_error "$line"
+		At the moment it writes info in a file which will be
+		read by the parser. In a more advanced version, the script
+		could change the state of the progress directly.
+		'''
+		msg = '__%s__:%s' % (progress_attribute.upper(), msg)
+		if not msg.endswith('\n'):
+			msg += '\n'
+		sys.stdout.write(msg)
+		sys.stdout.flush()
 
-    # read from apt-get status information
-    read -u 6 -t 0.01 line
-    statResult=$?
-    if [ $statResult = 0 ]; then
-        # status information, parse the string and print out current step
-        # as well as a descriptive information of what dpkg is doing
-        echo "### $line"
-        IFS=$':'
-        list=($line)
-        IFS=$'\n\t '
-        statusType=${list[0]}
-        package=${list[1]}
-        percentage=${list[2]%.*}  # the precentage might be floating point, remove fractions
-        msg=${list[3]}
+	def header(self, msg):
+		'''Write header info of this script.
 
-        # print out message
-        if [ -n "$msg" ]; then
-            if [ "$statusType" = "setuperror" ]; then
-                progress_error "$package: $msg" && sleep 0.1 # give parser some time
-            else
-            #if [ "$statusType" = "pmerror" ]; then
-            #    progress_error "$package: $msg"
-            #    sleep 0.1 # give parser some time
-            #else
-                progress_msg "$msg"
-            fi
-        fi
+		Called automatically by run(). Probably unneeded by developers
+		'''
+		self.inform_progress_parser('name', '%s %s' % (self.script_name, msg))
 
-        # handle only package management status and make sure that percentage is an integer
-        if [ "$statusType" = "pmstatus" ] && echo "$percentage" | grep -qE '^[[:digit:]]+$'; then
-            # check whether we have passed to the next command
-            [ "$percentage" -lt "$lastPercentage" ] && icommand=$((icommand+1))
-            lastPercentage=$percentage
+	def message(self, msg):
+		'''Write a harmless __MSG__: for the parser
+		'''
+		self.inform_progress_parser('msg', msg)
 
-            # print current step
-            progress_next_step "$((percentage + icommand * 100))"
-        fi
-    fi
-done
+	def error(self, msg):
+		'''Write a non-critical __ERR__: for the parser
+		The parser will save the error and inform the frontend
+		that something went wrong
+		'''
+		self.inform_progress_parser('err', msg)
 
-# remove named pipes
-rm -f "$stdoutFifo" "$statFifo" #"$stderrFifo"
+	def join_error(self, msg):
+		'''Write a critical __JOINERR__: for the parser.
+		The parser will save it and inform the frontend that something
+		went terribly wrong leaving the system in an unjoined state
+		'''
+		self.inform_progress_parser('joinerr', msg)
 
-exit 0
+	def steps(self, steps):
+		'''Total number of __STEPS__: to come throughout the whole
+		script. Progress within the script should be done with
+		step() which is relative to steps()
+		'''
+		self.inform_progress_parser('steps', steps)
+
+	def step(self, step=None):
+		'''Inform parser that the next __STEP__: in this script
+		was done. You can provide an exact number or None
+		in which case an internal counter will be incremented
+		'''
+		if step is not None:
+			self._step = step
+		self.inform_progress_parser('step', self._step)
+		self._step += 1
+
+	def log(self, *msgs):
+		'''Log messages in a log file'''
+		print '### LOG ###'
+		for msg in msgs:
+			print msg,
+		print
+
+	def get_ucr_var(self, var_name):
+		'''Retrieve the value of var_name from ucr'''
+		return ucr.get(var_name)
+
+	def get_profile_var(self, var_name, default=''):
+		'''Retrieve the value of var_name from the profile file.
+		If not found, return default.
+		'''
+		if not hasattr(self, '_profile_vars'):
+			self._profile_vars = {}
+			with open(PATH_PROFILE) as f:
+				for line in f.readlines():
+					match = re.match(r'^(.+)="(.*)"\n$', line)
+					if match:
+						self._profile_vars[match.groups()[0]] = match.groups()[1]
+		return self._profile_vars.get(var_name, default)
+
+	def get_profile_var_list(self, var_name, split_by=' '):
+		'''Retrieve the value of var_name from the profile file.
+		Return the string as a list split by split_by.
+		'''
+		val = self.get_profile_var(var_name)
+		if not val:
+			return []
+		else:
+			return val.split(split_by)
+
+	def run(self):
+		'''Run the SetupScript.
+		Dont override this method, instead define your own
+		inner_run()-method.
+
+		Call self.header()
+		If up() failed raise its exception.
+		Run inner_run() in a try-except-block
+		Return False if an exception occurred
+		Otherwise return True/False depending on
+		return code of inner_run itself.
+		*In any case*, run self.down() in a try-except-block
+		afterwards. If this should fail, return False.
+		'''
+		if self.name:
+			self.header(self.name)
+		try:
+			if self._broken:
+				raise self._broken
+			else:
+				success = self.inner_run()
+		except Exception as e:
+			self.error(str(e))
+			success = False
+		finally:
+			try:
+				self.down()
+			except:
+				success = False
+		return success is not False
+
+	def inner_run(self):
+		'''Main function, called by run().
+		Override this method in your SetupScriptClass.
+		You may return True or False which will be propagated
+		to run() itself. If you dont return False, True will be
+		used implicitely.
+		'''
+		raise NotImplementedError('Define you own inner_run() method, please.')
+
+	def up(self, *args, **kwargs):
+		'''Override this method if needed.
+		It is called during __init__ with the very same parameters
+		as __init__ was called.
+		'''
+		pass
+
+	def down(self):
+		'''Override this method if needed.
+		It is called at the end of run() even when an error in up()
+		or inner_run() occurred.
+		'''
+		pass
+
+def main(setup_script, exit=True):
+	'''Helper function to run the setup_script and evaluate its
+	return code as a "shell-compatible" one. You may sys.exit immediately
+	'''
+	success = setup_script.run()
+	ret_code = 1 - int(success)
+	if exit:
+		sys.exit(ret_code)
+	else:
+		return ret_code
+
+###############
+# THIS IS THE "REAL" 10software
+###############
+
+class MessageWriter(object):
+	'''Mimics a file object (default: stdout)
+	supports flush and write. Writes no '\\r',
+	writes no empty strings, writes not just spaces.
+	If it writes its tweaking output: '__MSG__:%s\\n' '''
+
+	def __init__(self, file_object=None):
+		if file_object is None:
+			file_object = sys.stdout
+		self.file_object = file_object
+
+	def flush(self):
+		self.file_object.flush()
+
+	def write(self, msg):
+		msg = msg.replace('\r', '').strip()
+		if msg:
+			self.file_object.write('__MSG__:%s\n' % msg)
+
+class FetchProgress(apt.progress.text.AcquireProgress):
+	'''Used to handle information about fetching packages.
+	Writes a lot of __MSG__es, as it uses MessageWriter
+	'''
+	def __init__(self, outfile=None):
+		super(FetchProgress, self).__init__()
+		self._file = MessageWriter()
+
+	# dont use _winch
+	def start(self):
+		super(apt.progress.text.AcquireProgress, self).start()
+		import signal
+		self._signal = signal.SIG_IGN
+
+	# force defaults
+	def _write(self, msg, newline=True, maximize=True):
+		super(FetchProgress, self)._write(msg, newline=False, maximize=False)
+
+class DpkgProgress(apt.progress.base.InstallProgress):
+	'''Progress when installing or removing software.
+	Writes messages (and percentage) from apts status file descriptor
+	'''
+	def __init__(self, script):
+		super(DpkgProgress, self).__init__()
+		self.script = script
+
+	# status == pmstatus
+	def status_change(self, pkg, percent, status):
+		self.script.message('%s' % (status))
+		self.script.step(self.script.tasks_finished * 100 + int(percent))
+
+	# status == pmerror
+	def error(self, pkg, errormsg):
+		self.script.log('ERROR!! %s: %s' % (pkg, errormsg))
+
+#	def start_update(self):
+#		self.script.log('SUPDATE')
+#
+#	def finish_update(self):
+#		self.script.log('FUPDATE')
+#
+#	def conffile(self, current, new):
+#		self.script.log('CONFF', current, new)
+#
+#	def dpkg_status_change(self, pkg, status):
+#		self.script.log('DPKG', pkg, status)
+#
+#	def processing(self, pkg, stage):
+#		self.script.log('PROCESS', pkg, status)
+#
+
+class SetupScript(SetupScript):
+	name = _('Configuring software components')
+	script_name = os.path.abspath(__file__)
+
+	def up(self):
+		# dont ever ask for user input (as there is no user...)
+		os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
+		apt_pkg.config['APT::Get::Assume-Yes'] = 'true'
+		apt_pkg.config['APT::Get::force-yes'] = 'true'
+		apt_pkg.config['APT::Get::AllowUnauthenticated'] = '1'
+		apt_pkg.config['DPkg::Options::'] = '--force-confold'
+
+		# get this scripts configuration options
+		self.packages_remove = self.get_profile_var_list('packages_remove')
+		self.packages_install = self.get_profile_var_list('packages_install')
+		self.server_role = self.get_ucr_var('server/role')
+		self.tasks_finished = 0
+		self.roles_package_map = {
+			'domaincontroller_master' : 'univention-server-master',
+			'domaincontroller_backup' : 'univention-server-backup',
+			'domaincontroller_slave' : 'univention-server-slave',
+			'memberserver' : 'univention-server-member',
+			'fatclient' : 'univention-managed-client',
+			'mobileclient' : 'univention-mobile-client',
+			}
+		self.base_package = None
+
+		# initialise the cache as well as progress objects
+		self.cache = apt.Cache()
+		self.fetch_progress = FetchProgress(sys.stdout)
+		self.dpkg_progress = DpkgProgress(self)
+
+	def finish_task(self, *log_msgs):
+		'''Task is finished. Increment counter and inform
+		the progress parser. Reopen the cache (maybe unneeded
+		but does not slow us down too much).
+		'''
+		# dont log msgs for now
+		self.tasks_finished += 1
+		self.step(self.tasks_finished * 100)
+		self.cache.open()
+
+	def inner_run(self):
+		# +1 for update + 1 for autoremove
+		ntasks = len(self.packages_remove) + len(self.packages_install) + 2
+		self.steps(ntasks * 100)
+
+		# apt-get update
+		try:
+			self.cache.update(self.fetch_progress)
+		except FetchFailedException:
+			self.error('Fetch failed')
+			return False
+		except LockFailedException:
+			self.error('Failed to lock')
+			return False
+		else:
+			self.finish_task('Update')
+		try:
+			# get "real" package for server/role
+			base_pkg_name = self.roles_package_map[self.server_role]
+			self.base_package = self.cache[base_pkg_name]
+		except KeyError:
+			self.error(_('Failed to get package for Role %s') % self.server_role)
+			return False
+
+		for pkg in self.packages_remove:
+			# apt-get remove pkg
+			self.instant_delete(pkg)
+
+		# apt-get autoremove
+		self.autoremove()
+
+		for pkg in self.packages_install:
+			# apt-get install pkg
+			self.instant_install(pkg)
+
+		return True
+
+	def commit(self, pkg_name=None, msg_if_failed=''):
+		result = False
+		try:
+			result = self.cache.commit(fetch_progress=self.fetch_progress, install_progress=self.dpkg_progress)
+		except SystemError:
+			pass
+		if not result:
+			if msg_if_failed:
+				msg = msg_if_failed
+				if pkg_name:
+					msg = '%s: %s' % (pkg_name, msg)
+				self.error(msg)
+
+	def autoremove(self):
+		'''It seems that there is nothing like
+		self.cache.autoremove
+		So, we need to implement it by hand
+		acts as apt-get autoremove
+		'''
+		for pkg_name in self.cache.keys():
+			pkg = self.cache[pkg_name]
+			if pkg.is_auto_removable:
+				self.message(_('Deleting unneeded %s') % pkg.name)
+				pkg.mark_delete()
+		if self.cache.get_changes():
+			self.commit(msg_if_failed=_('Autoremove failed'))
+		self.finish_task('Autoremove')
+
+	@contextmanager
+	def get_for_instant_action(self, pkg_name):
+		'''Yields the real package if found and commits the
+		changes afterwards (removing that package or installing it).
+		Makes sure that the system/role-pkg is not uninstalled.
+		The task is finished.
+		If no package is found, yields None (should be handled in code)
+		'''
+		if pkg_name in self.cache:
+			pkg = self.cache[pkg_name]
+			yield pkg
+			if self.cache.get_changes():
+				self.base_package.mark_install()
+				self.commit(pkg_name)
+		else:
+			yield None
+		self.finish_task(pkg_name)
+
+	def instant_delete(self, pkg_name):
+		'''Instantly deletes a pkg if it was found'''
+		with self.get_for_instant_action(pkg_name) as pkg:
+			if pkg is not None:
+				if pkg.id != self.base_package.id: # just in case...
+					self.log('Deleting %s' % pkg.name)
+					pkg.mark_delete()
+		try:
+			pkg = self.cache[pkg_name]
+			if pkg.is_installed:
+				raise SystemError()
+		except KeyError:
+			self.error('%s: %s' % (pkg_name, _('No such package')))
+		except SystemError:
+			self.error('%s: %s' % (pkg_name, _('Failed to uninstall')))
+
+	def instant_install(self, pkg_name):
+		'''Instantly installs a pkg if it was found'''
+		with self.get_for_instant_action(pkg_name) as pkg:
+			if pkg is not None:
+				self.log('Installing %s' % pkg.name)
+				pkg.mark_install()
+		try:
+			pkg = self.cache[pkg_name]
+			if not pkg.is_installed:
+				raise SystemError()
+		except KeyError:
+			self.error('%s: %s' % (pkg_name, _('No such package')))
+		except SystemError:
+			self.error('%s: %s' % (pkg_name, _('Failed to install')))
+
+if __name__ == '__main__':
+	script = SetupScript()
+	main(script)
 

@@ -104,6 +104,22 @@ msgstr "Deinstallation fehlgeschlagen"
 msgid "Failed to install"
 msgstr "Installation fehlgeschlagen"
 
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Deleting unneeded %s"
+msgstr "Deinstalliere unbenutztes Paket %s"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "No such package"
+msgstr "Paket existiert nicht"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Failed to get package for Role %s"
+msgstr "Es konnte kein Paket für die Rolle %s gefunden werden"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Autoremove failed"
+msgstr "Deinstallation unbenutzter Pakete fehlgeschlagen"
+
 #: usr/lib/univention-system-setup/scripts/ssl/10ssl:50
 msgid "Generating SSL certificate"
 msgstr "Erstellen der SSL-Zertifikate"

@@ -1,3 +1,9 @@
+univention-system-setup (6.0.3-1) unstable; urgency=low
+
+  * replace 10software with a python-based script Bug #28010
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 30 Jul 2012 11:44:45 +0200
+
 univention-system-setup (6.0.2-1) unstable; urgency=low
 
   * added "ucr commit" to ensure that local packages will be installed
