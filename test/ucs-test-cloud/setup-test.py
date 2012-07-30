@@ -124,6 +124,7 @@ hostname, domainname = fqdn.split('.', 1)
 ip_tuple = hostname.split('-')[1:5]
 hostname = 'ip%s' % (''.join(['%02x' % (int(_),) for _ in ip_tuple]))
 windom = domainname.split('.', 1)[0].upper()
+ldap_base = 'dc=%s' % (domainname.replace('.', ',dc='),)
 
 # Create password for instance
 chars = string.letters + string.digits
@@ -182,7 +183,7 @@ try:
     print >> profile, "system_role='domaincontroller_master'"
     print >> profile, 'domainname="%s"' % (domainname,)
     print >> profile, 'hostname="%s"' % (hostname,)
-    print >> profile, 'ldap/base="dc=%s"' % (domainname.replace('.', ',dc='),)
+    print >> profile, 'ldap/base="%s"' % (ldap_base,)
     print >> profile, 'fqdn="%s.%s"' % (hostname, domainname)
     print >> profile, 'windows/domain="%s"' % (windom,)
     print >> profile, 'root_password="%s"' % (password,)
@@ -238,6 +239,13 @@ def ssh_exec(command, idle_timeout=10*60):
 # Setup instance
 logger.debug('Running setup...')
 cmd = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
+rv = ssh_exec(cmd)
+
+# System-setup does not create the mail/domain object
+logger.debug('Fixing maildomain...')
+cmd = 'univention-directory-manager mail/domain create --ignore_exists' + \
+        ' --position cn=domain,cn=mail,%s' + \
+        ' --set name=%s' % (escape_shell(ldap_base), escape_shell(domainname))
 rv = ssh_exec(cmd)
 
 # Configure instance
