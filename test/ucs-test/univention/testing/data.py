@@ -567,9 +567,11 @@ class TestCase(object):
                     log_stderr.append(data)
 
         if log_stdout:
-            result.attach('stdout', 'text/plain', ''.join(log_stdout))
+            utf8 = ''.join(log_stdout).decode(sys.getfilesystemencoding())
+            result.attach('stdout', 'text/plain', utf8)
         if log_stderr:
-            result.attach('stderr', 'text/plain', ''.join(log_stderr))
+            utf8 = ''.join(log_stderr).decode(sys.getfilesystemencoding())
+            result.attach('stderr', 'text/plain', utf8)
 
     def _translate_result(self, result):
         """Translate exit code into result."""

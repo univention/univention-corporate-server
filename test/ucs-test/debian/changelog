@@ -1,3 +1,9 @@
+ucs-test (2.0.2-3) unstable; urgency=low
+
+  * Fix file encoding (Bug #28042)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 30 Jul 2012 13:30:12 +0200
+
 ucs-test (2.0.2-2) unstable; urgency=low
 
   * debian/ucs-test-base.install: Add (Bug #23527)
