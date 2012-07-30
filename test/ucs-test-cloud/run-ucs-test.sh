@@ -10,11 +10,11 @@ USER=root
 USERNAME=root
 export HOME LOGNAME USER USERNAME
 
-[ -r /etc/default/locale ] && . /etc/default/locale
-export LANG
-
 cd "$HOME" || exit 1
 exec </dev/null >"$HOME/run.log" 2>&1 || true
+
+[ -r /etc/default/locale ] && . /etc/default/locale
+export LANG
 
 # Clean up previous data
 rm -rf "$HOME/ucs-test.log" "$HOME/test-reports"
