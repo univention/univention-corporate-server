@@ -115,11 +115,9 @@ msgstr ""
 "%(text)s"
 
 #: src/univention/management/console/protocol/modserver.py:227
-#, fuzzy, python-format
 msgid ""
-"The init function of the module has failed: %s: %s\n"
-"%s"
-msgstr "Die init-Funktion des Moduls ist fehlgeschlagen: %s"
+"The init function of the module has failed: %s: %s\n%s"
+msgstr "Die init-Funktion des Moduls ist fehlgeschlagen: %s: %s\n%s"
 
 #: src/univention/management/console/protocol/definitions.py:96
 #: src/univention/management/console/protocol/definitions.py:160

@@ -1,3 +1,9 @@
+univention-management-console (5.0.5-1) unstable; urgency=low
+
+  * fixed missing translations; Bug #27875
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 30 Jul 2012 16:45:50 +0200
+
 univention-management-console (5.0.4-1) unstable; urgency=low
 
   * adapted error handling of UCR requests; Bug #27875
