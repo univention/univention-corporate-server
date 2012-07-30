@@ -244,8 +244,8 @@ rv = ssh_exec(cmd)
 # System-setup does not create the mail/domain object
 logger.debug('Fixing maildomain...')
 cmd = 'univention-directory-manager mail/domain create --ignore_exists' + \
-        ' --position cn=domain,cn=mail,%s' + \
-        ' --set name=%s' % (escape_shell(ldap_base), escape_shell(domainname))
+        ' --position cn=domain,cn=mail,%s' % (escape_shell(ldap_base),) + \
+        ' --set name=%s' % (escape_shell(domainname),)
 rv = ssh_exec(cmd)
 
 # Configure instance
