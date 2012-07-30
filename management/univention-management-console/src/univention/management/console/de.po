@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 20:26+0200\n"
+"POT-Creation-Date: 2012-07-30 16:27+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,12 +15,55 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: syntax.py:122
+#: src/univention/management/console/verify.py:86
+msgid "Value is not an boolean"
+msgstr "Es ist kein bool'scher Wert"
+
+#: src/univention/management/console/verify.py:98
+msgid "Value is not an integer"
+msgstr "Es ist kein ganzzahliger Wert"
+
+#: src/univention/management/console/verify.py:110
+msgid "Value is not n floating point number"
+msgstr "Es ist keine Gleitkommazahl"
+
+#: src/univention/management/console/verify.py:118
+#, python-format
+msgid "Invalid regular expression (%(regex)s): %(message)s"
+msgstr "Ungültiger regulärer Ausdruck (%(regex)s): %(message)s"
+
+#: src/univention/management/console/verify.py:132
+#: src/univention/management/console/verify.py:192
+msgid "Value is not of type string"
+msgstr "Der Wert ist keine Zeichenkette"
+
+#: src/univention/management/console/verify.py:137
+#: src/univention/management/console/verify.py:141
+msgid "Value contains invalid characters"
+msgstr "Im Wert sind ungültige Zeichen enthalten"
+
+#: src/univention/management/console/verify.py:153
+msgid "Value is not a list"
+msgstr "Es ist keine Liste"
+
+#: src/univention/management/console/verify.py:166
+msgid "Value is not a dictionary"
+msgstr "Es handelt sich nicht um ein Dictionary"
+
+#: src/univention/management/console/verify.py:195
+msgid "No valid choices specified"
+msgstr "Es wurden keine Auswahlmöglichkeiten definiert"
+
+#: src/univention/management/console/verify.py:198
+msgid "Value does not match any of the specified choices"
+msgstr "Der Wert entspricht keinem der angegebenen Auswahlmöglichkeiten"
+
+#: src/univention/management/console/syntax.py:194
 #, python-format
 msgid "Unknown syntax %s"
 msgstr "Unbekannte Syntax %s"
 
-#: syntax.py:135
+#: src/univention/management/console/syntax.py:207
 #, python-format
 msgid ""
 "Base type verification failed (type %(base)s): no verify function defined"
@@ -28,7 +71,7 @@ msgstr ""
 "Basistypprüfung is fehlgeschlagen (Typ %(base)s): Es ist keine "
 "Überprüfungsfunktion definiert"
 
-#: syntax.py:141
+#: src/univention/management/console/syntax.py:213
 #, python-format
 msgid ""
 "Base type verification failed (type %(base)s): function to verify syntax "
@@ -37,7 +80,7 @@ msgstr ""
 "Basistypprüfung is fehlgeschlagen (Typ %(base)s): Es konnte keine "
 "Überprüfungsfunktion gefunden werden"
 
-#: syntax.py:147
+#: src/univention/management/console/syntax.py:219
 #, python-format
 msgid ""
 "Execution of verification function %(function)s for syntax %(base)s failed:"
@@ -45,164 +88,22 @@ msgstr ""
 "Die Ausführung der Überprüfungsfunktion %(function)s für die Syntax %(base)s "
 "ist fehlgeschlagen:"
 
-#: protocol/message.py:132 protocol/message.py:139
-#, python-format
-msgid "Attribute %s just available for MIME type %s"
-msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
-
-#: protocol/message.py:162 protocol/definitions.py:118
-msgid "Unparsable message header"
-msgstr "Unverständlicher nachrichtenkopf"
-
-#: protocol/message.py:171
-msgid "Invalid length information"
-msgstr "Ungültige Längenangabe"
-
-#: protocol/message.py:177
-#, python-format
-msgid "Unknown UMCP command: %s"
-msgstr "Unbekanntes UMCP Kommando: %s"
-
-#: protocol/message.py:184
-#, python-format
-msgid "The command '%s' do not have any arguments"
-msgstr "Das Kommando '%s' hat keine Argumente"
-
-#: protocol/message.py:190
-msgid "The message body is not (yet) complete"
-msgstr "Der Nachrichtenrumpf ist (noch) nicht vollständig"
-
-#: protocol/message.py:205
-msgid "error parsing UMCP message body"
-msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
-
-#: protocol/message.py:221
-#, python-format
-msgid "'%s' is not a valid UMCP command"
-msgstr "'%s' ist kein gültiges UMCP-Kommando"
-
-#: protocol/message.py:261
-msgid "Unknown mime type"
-msgstr "Unbekannter MIME-Typ"
-
-#: protocol/modserver.py:202
-#, python-format
-msgid "The init function of the module has failed: %s"
-msgstr "Die init-Funktion des Moduls ist fehlgeschlagen: %s"
-
-#: protocol/session.py:255
-msgid "name"
-msgstr "Name"
-
-#: protocol/definitions.py:92 protocol/definitions.py:147
-msgid "Unknown status code"
-msgstr "Unbekannter Status-Code"
-
-#: protocol/definitions.py:95
-msgid "OK, operation successful"
-msgstr "OK, Operation erfolgreich"
-
-#: protocol/definitions.py:96
-msgid "OK, containing report message"
-msgstr "OK, enthält Nachricht"
-
-#: protocol/definitions.py:97
-msgid "OK, partial response"
-msgstr "OK, Partielle Antwort"
-
-#: protocol/definitions.py:98
-msgid "OK, operation successful ask for shutdown of connection"
-msgstr "OK, Anfrage zum Beenden des Moduls"
-
-#: protocol/definitions.py:100
-msgid "A non-fatal error has occured processing may continue"
-msgstr ""
-"Ein nicht fataler Fehler ist aufgetreten; die Bearbeitung wird fortgesetzt"
-
-#: protocol/definitions.py:102
-msgid "Bad request"
-msgstr "Fehlerhafte Anfrage"
-
-#: protocol/definitions.py:103
-msgid "Unauthorized"
-msgstr "Nicht authorisiert"
-
-#: protocol/definitions.py:104
-msgid "Forbidden"
-msgstr "Verboten"
-
-#: protocol/definitions.py:105
-msgid "Not found"
-msgstr "Nicht gefunden"
-
-#: protocol/definitions.py:106
-msgid "Invalid command arguments"
-msgstr "Ungültige Kommandoargumente"
-
-#: protocol/definitions.py:107
-msgid "Invalid or missing command options"
-msgstr "Ungültige or fehlende Kommando-Optionen"
-
-#: protocol/definitions.py:108
-msgid "The authentication has failed"
-msgstr "Authentisierung ist fehlgeschlagen"
-
-#: protocol/definitions.py:109
-msgid "The account is expired and can not be used anymore"
-msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden"
-
-#: protocol/definitions.py:110
-msgid "The account as been disabled"
-msgstr "Das Konto wurde deaktiviert"
-
-#: protocol/definitions.py:111
-msgid "Specified locale is not available"
-msgstr "Angegebene Sprache ist nicht verfügbar"
-
-#: protocol/definitions.py:113
-msgid "Internal error"
-msgstr "Interner Fehler"
-
-#: protocol/definitions.py:114
-msgid "Module process died unexpectedly"
-msgstr "Modulprozess hat sich unerwartet beendet"
-
-#: protocol/definitions.py:115
-msgid "Connection to module process failed"
-msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
-
-#: protocol/definitions.py:116
-msgid "SSL server certificate is not trustworthy"
-msgstr "SSL-Zertifikat ist nicht vertrauenswürdig"
-
-#: protocol/definitions.py:119
-msgid "Unparsable message body"
-msgstr "Unverständlicher nachrichtenrumpf"
-
-#: protocol/definitions.py:121
-msgid "Error occuried during command processing"
-msgstr "Fehler ist während der Kommandoverarbeitung aufgetreten"
-
-#: protocol/definitions.py:122
-msgid "The execution of a command caused an fatal error"
-msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
-
-#: modules/__init__.py:100
+#: src/univention/management/console/modules/__init__.py:198
 #, python-format
 msgid "An option passed to %s has the wrong type: %s"
 msgstr "Eine Option für %s hat den falschen Typ: %s"
 
-#: modules/__init__.py:102
+#: src/univention/management/console/modules/__init__.py:200
 #, python-format
 msgid "One or more options to %s are missing: %s"
 msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
 
-#: modules/__init__.py:104
+#: src/univention/management/console/modules/__init__.py:202
 #, python-format
 msgid "The command has failed: %s"
 msgstr "Das Kommando ist fehlgeschlagen: %s"
 
-#: modules/__init__.py:107
+#: src/univention/management/console/modules/__init__.py:205
 #, python-format
 msgid ""
 "Execution of command '%(command)s' has failed:\n"
@@ -213,55 +114,164 @@ msgstr ""
 "\n"
 "%(text)s"
 
-#: verify.py:64
-msgid "Value is not an boolean"
-msgstr "Es ist kein bool'scher Wert"
+#: src/univention/management/console/protocol/modserver.py:227
+#, fuzzy, python-format
+msgid ""
+"The init function of the module has failed: %s: %s\n"
+"%s"
+msgstr "Die init-Funktion des Moduls ist fehlgeschlagen: %s"
 
-#: verify.py:70
-msgid "Value is not an integer"
-msgstr "Es ist kein ganzzahliger Wert"
+#: src/univention/management/console/protocol/definitions.py:96
+#: src/univention/management/console/protocol/definitions.py:160
+msgid "Unknown status code"
+msgstr "Unbekannter Status-Code"
 
-#: verify.py:76
-msgid "Value is not n floating point number"
-msgstr "Es ist keine Gleitkommazahl"
+#: src/univention/management/console/protocol/definitions.py:101
+msgid "OK, operation successful"
+msgstr "OK, Operation erfolgreich"
 
-#: verify.py:84
+#: src/univention/management/console/protocol/definitions.py:102
+msgid "OK, containing report message"
+msgstr "OK, enthält Nachricht"
+
+#: src/univention/management/console/protocol/definitions.py:103
+msgid "OK, partial response"
+msgstr "OK, Partielle Antwort"
+
+#: src/univention/management/console/protocol/definitions.py:104
+msgid "OK, operation successful ask for shutdown of connection"
+msgstr "OK, Anfrage zum Beenden des Moduls"
+
+#: src/univention/management/console/protocol/definitions.py:106
+msgid "A non-fatal error has occured processing may continue"
+msgstr ""
+"Ein nicht fataler Fehler ist aufgetreten; die Bearbeitung wird fortgesetzt"
+
+#: src/univention/management/console/protocol/definitions.py:109
+msgid "Bad request"
+msgstr "Fehlerhafte Anfrage"
+
+#: src/univention/management/console/protocol/definitions.py:110
+msgid "Unauthorized"
+msgstr "Nicht authorisiert"
+
+#: src/univention/management/console/protocol/definitions.py:111
+msgid "Forbidden"
+msgstr "Verboten"
+
+#: src/univention/management/console/protocol/definitions.py:112
+msgid "Not found"
+msgstr "Nicht gefunden"
+
+#: src/univention/management/console/protocol/definitions.py:113
+msgid "Invalid command arguments"
+msgstr "Ungültige Kommandoargumente"
+
+#: src/univention/management/console/protocol/definitions.py:114
+msgid "Invalid or missing command options"
+msgstr "Ungültige or fehlende Kommando-Optionen"
+
+#: src/univention/management/console/protocol/definitions.py:115
+msgid "The authentication has failed"
+msgstr "Authentisierung ist fehlgeschlagen"
+
+#: src/univention/management/console/protocol/definitions.py:116
+msgid "The account is expired and can not be used anymore"
+msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden"
+
+#: src/univention/management/console/protocol/definitions.py:117
+msgid "The account as been disabled"
+msgstr "Das Konto wurde deaktiviert"
+
+#: src/univention/management/console/protocol/definitions.py:118
+msgid "Specified locale is not available"
+msgstr "Angegebene Sprache ist nicht verfügbar"
+
+#: src/univention/management/console/protocol/definitions.py:121
+msgid "Internal error"
+msgstr "Interner Fehler"
+
+#: src/univention/management/console/protocol/definitions.py:122
+msgid "Module process died unexpectedly"
+msgstr "Modulprozess hat sich unerwartet beendet"
+
+#: src/univention/management/console/protocol/definitions.py:123
+msgid "Connection to module process failed"
+msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
+
+#: src/univention/management/console/protocol/definitions.py:124
+msgid "SSL server certificate is not trustworthy"
+msgstr "SSL-Zertifikat ist nicht vertrauenswürdig"
+
+#: src/univention/management/console/protocol/definitions.py:127
+#: src/univention/management/console/protocol/message.py:195
+msgid "Unparsable message header"
+msgstr "Unverständlicher nachrichtenkopf"
+
+#: src/univention/management/console/protocol/definitions.py:128
+msgid "Unknown command"
+msgstr "Unbekanntes Kommando"
+
+#: src/univention/management/console/protocol/definitions.py:129
+msgid "Invalid number of arguments"
+msgstr "Ungültige Anzahl von Argumenten"
+
+#: src/univention/management/console/protocol/definitions.py:130
+msgid "Unparsable message body"
+msgstr "Unverständlicher nachrichtenrumpf"
+
+#: src/univention/management/console/protocol/definitions.py:133
+msgid "Error occuried during command processing"
+msgstr "Fehler ist während der Kommandoverarbeitung aufgetreten"
+
+#: src/univention/management/console/protocol/definitions.py:134
+msgid "The execution of a command caused an fatal error"
+msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
+
+#: src/univention/management/console/protocol/message.py:208
+msgid "Invalid length information"
+msgstr "Ungültige Längenangabe"
+
+#: src/univention/management/console/protocol/message.py:214
 #, python-format
-msgid "Invalid regular expression (%(regex)s): %(message)s"
-msgstr "Ungültiger regulärer Ausdruck (%(regex)s): %(message)s"
+msgid "Unknown UMCP command: %s"
+msgstr "Unbekanntes UMCP Kommando: %s"
 
-#: verify.py:90 verify.py:129
-msgid "Value is not of type string"
-msgstr "Der Wert ist keine Zeichenkette"
+#: src/univention/management/console/protocol/message.py:221
+#, python-format
+msgid "The command '%s' do not have any arguments"
+msgstr "Das Kommando '%s' hat keine Argumente"
 
-#: verify.py:95 verify.py:99
-msgid "Value contains invalid characters"
-msgstr "Im Wert sind ungültige Zeichen enthalten"
+#: src/univention/management/console/protocol/message.py:227
+msgid "The message body is not (yet) complete"
+msgstr "Der Nachrichtenrumpf ist (noch) nicht vollständig"
 
-#: verify.py:105
-msgid "Value is not a list"
-msgstr "Es ist keine Liste"
+#: src/univention/management/console/protocol/message.py:243
+msgid "error parsing UMCP message body"
+msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
 
-#: verify.py:111
-msgid "Value is not a dictionary"
-msgstr "Es handelt sich nicht um ein Dictionary"
+#: src/univention/management/console/protocol/message.py:259
+#, python-format
+msgid "'%s' is not a valid UMCP command"
+msgstr "'%s' ist kein gültiges UMCP-Kommando"
 
-#: verify.py:132
-msgid "No valid choices specified"
-msgstr "Es wurden keine Auswahlmöglichkeiten definiert"
+#: src/univention/management/console/protocol/message.py:300
+msgid "Unknown mime type"
+msgstr "Unbekannter MIME-Typ"
 
-#: verify.py:135
-msgid "Value does not match any of the specified choices"
-msgstr "Der Wert entspricht keinem der angegebenen Auswahlmöglichkeiten"
+#: src/univention/management/console/protocol/server.py:232
+#, python-format
+msgid "Invalid UCR variable requested: %s"
+msgstr "Ungültige UCR-Variable: %s"
+
+#~ msgid "Attribute %s just available for MIME type %s"
+#~ msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
+
+#~ msgid "name"
+#~ msgstr "Name"
 
 #~ msgid "Part of the body is missing"
 #~ msgstr "Ein Teil des Nachrichtenrumpfes fehlt"
 
 #~ msgid "Command not allowed"
 #~ msgstr "Kommando ist nicht erlaubt"
-
-#~ msgid "Unknown command"
-#~ msgstr "Unbekanntes Kommando"
-
-#~ msgid "Invalid number of arguments"
-#~ msgstr "Ungültige Anzahl von Argumenten"

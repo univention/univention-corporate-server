@@ -1,3 +1,10 @@
+univention-management-console (5.0.4-1) unstable; urgency=low
+
+  * adapted error handling of UCR requests; Bug #27875
+  * added script refresh-i18n
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 30 Jul 2012 16:30:44 +0200
+
 univention-management-console (5.0.3-1) unstable; urgency=low
 
   * a missing type check has been fixed in the Response object which could

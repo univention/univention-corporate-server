@@ -51,6 +51,10 @@ import notifier.signals as signals
 from OpenSSL import *
 import pyinotify
 
+# i18n
+from univention.lib.i18n import Translation
+_ = Translation( 'univention.management.console' ).translate
+
 # internal packages
 from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError
 from .session import State, Processor
@@ -211,12 +215,22 @@ class MagicBucket( object ):
 			response.status = SUCCESS
 			if 'ucr' in msg.arguments:
 				for value in msg.options:
-					if value.endswith('*'):
-						value = value[ : -1 ]
-						for var in filter( lambda x: x.startswith( value ), ucr.keys() ):
-							response.result[ var ] = ucr.get( var )
-					else:
-						response.result[ value ] = ucr.get( value )
+					try:
+						if not value:
+							# make sure that 'value' is non-empty
+							CORE.warn('Empty UCR variable requested. Ignoring value...')
+							continue
+						if value.endswith('*'):
+							value = value[ : -1 ]
+							for var in filter( lambda x: x.startswith( value ), ucr.keys() ):
+								response.result[ var ] = ucr.get( var )
+						else:
+							response.result[ value ] = ucr.get( value )
+					except ( TypeError, IndexError, AttributeError ), e:
+						CORE.warn('Invalid UCR variable requested: %s' % value)
+						response.status = BAD_REQUEST_INVALID_ARGS
+						response.message = _('Invalid UCR variable requested: %s') % value
+
 			elif 'info' in msg.arguments:
 				try:
 					fd = gzip.open( '/usr/share/doc/univention-management-console-server/changelog.Debian.gz' )
