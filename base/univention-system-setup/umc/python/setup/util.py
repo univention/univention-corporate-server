@@ -58,7 +58,7 @@ ucr=univention.config_registry.ConfigRegistry()
 ucr.load()
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
-PATH_SETUP_SCRIPTS = '/usr/lib/univention-system-setup/scripts'
+PATH_SETUP_SCRIPTS = '/usr/lib/univention-system-setup/scripts/'
 PATH_JOIN_SCRIPT = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
 PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'

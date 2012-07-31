@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention System Setup
-#  software installation script
+#  python setup script base
 #
 # Copyright 2012 Univention GmbH
 #
@@ -32,16 +32,20 @@
 # <http://www.gnu.org/licenses/>.
 import sys
 import re
+from datetime import datetime
+
+# translation: manually set_language() because
+# for some reason, the default locale is not used by default
+import locale
+from univention.lib.i18n import Translation
+translation = Translation('univention-system-setup-scripts')
+translation.set_language(locale.getdefaultlocale()[0])
+_ = translation.translate
+locale.resetlocale() # needed for external translation (e.g. apt)
 
 import univention.config_registry
 from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
-# FIXME: This should be done in util.py!!
-if not PATH_SETUP_SCRIPTS.endswith('/'):
-	PATH_SETUP_SCRIPTS += '/'
 ucr = univention.config_registry.ConfigRegistry()
-
-from univention.lib.i18n import Translation
-_ = Translation('univention-system-setup-scripts').translate
 
 class SetupScript(object):
 	'''Baseclass for all Python-based Setup-Scripts.
@@ -125,10 +129,11 @@ class SetupScript(object):
 		sys.stdout.flush()
 
 	def header(self, msg):
-		'''Write header info of this script.
+		'''Write header info of this script (for log file and parser).
 
-		Called automatically by run(). Probably unneeded by developers
+		Called automatically by run(). Probably unneeded for developers
 		'''
+		print '===', self.script_name, datetime.now().strftime('(%Y-%m-%d %H:%M:%S)'), '==='
 		self.inform_progress_parser('name', '%s %s' % (self.script_name, msg))
 
 	def message(self, msg):
@@ -194,7 +199,8 @@ class SetupScript(object):
 				for line in f.readlines():
 					match = re.match(r'^(.+)="(.*)"\n$', line)
 					if match:
-						self._profile_vars[match.groups()[0]] = match.groups()[1]
+						var, val = match.groups()
+						self._profile_vars[var] = val
 		return self._profile_vars.get(var_name, default)
 
 	def get_profile_var_list(self, var_name, split_by=' '):
@@ -442,6 +448,7 @@ class AptScript(SetupScript):
 				pkgs.append(pkg)
 		self.commit(install=pkgs)
 		for pkg in pkgs:
+			pkg = self.cache[pkg.name] # fresh from cache
 			if not pkg.is_installed:
 				self.error('%s: %s' % (pkg.name, _('Failed to install')))
 
@@ -454,6 +461,7 @@ class AptScript(SetupScript):
 				pkgs.append(pkg)
 		self.commit(install=self.always_install, remove=pkgs)
 		for pkg in pkgs:
+			pkg = self.cache[pkg.name] # fresh from cache
 			if pkg.is_installed:
 				self.error('%s: %s' % (pkg.name, _('Failed to uninstall')))
 

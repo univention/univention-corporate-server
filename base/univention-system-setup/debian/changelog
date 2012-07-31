@@ -1,3 +1,9 @@
+univention-system-setup (6.0.5-1) unstable; urgency=low
+
+  * cleaner code, fixed caching problem for Bug #28010
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 31 Jul 2012 13:29:11 +0200
+
 univention-system-setup (6.0.4-4) unstable; urgency=low
 
   * modified recommends (firefox-en, firefox-de ->

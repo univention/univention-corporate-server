@@ -36,11 +36,6 @@ import shutil
 import glob
 import apt_pkg
 
-# reset locale to default i.e. from os.env LC_ALL
-# (set in the setup module)
-import locale
-locale.resetlocale()
-
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
 
 class RoleScript(AptScript):
