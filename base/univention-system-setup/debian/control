@@ -51,6 +51,7 @@ Depends: ${misc:Depends},
  univention-server-master,
  univention-network-common
 Recommends: firefox-en,
+ firefox-de,
  xinit,
  kde-window-manager
 Replaces: univention-setup-boot, univention-system-setup-appliance

@@ -1,3 +1,10 @@
+univention-system-setup (6.0.4-3) unstable; urgency=low
+
+  * modified recommends (firefox-en -> firefox-en, firefox-de)
+   (Bug #27909)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 31 Jul 2012 11:20:58 +0200
+
 univention-system-setup (6.0.4-2) unstable; urgency=low
 
   * modified recommends (firefox -> firefox-en)
