@@ -1,3 +1,9 @@
+univention-system-setup (6.0.4-1) unstable; urgency=low
+
+  * replace 10role with a python-based script Bug #28010
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 31 Jul 2012 08:41:37 +0200
+
 univention-system-setup (6.0.3-1) unstable; urgency=low
 
   * replace 10software with a python-based script Bug #28010

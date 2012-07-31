@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
 # Univention Setup
 #  role change script
@@ -29,84 +30,102 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+import sys
+import os.path
+import shutil
+import glob
+import apt_pkg
 
-. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+# reset locale to default i.e. from os.env LC_ALL
+# (set in the setup module)
+import locale
+locale.resetlocale()
 
-info_header "$0" "$(gettext "Configuring server role")"
+from univention.management.console.modules.setup.setup_script import AptScript, main, _
 
-# These packages will be removed if the server role was changed to memberserver or basesystem
-BASE_REMOVE_PACKAGES="samba-common samba samba4 slapd univention-directory-notifier bind9 isc-dhcp-server \
-        			heimdal-kdc heimdal-servers univention-ldap-acl-slave univention-directory-manager \
-					univention-virtual-machine-manager-schema univention-management-console-module-udm nagios3-core"
+class RoleScript(AptScript):
+	name = _('Configuring server role')
+	script_name = os.path.abspath(__file__)
+	brutal_apt_options = True
 
-# mapping of role to package
-get_role_package ()
-{
-	test "$1" = "domaincontroller_master" && echo "univention-server-master"
-	test "$1" = "domaincontroller_backup" && echo "univention-server-backup"
-	test "$1" = "domaincontroller_slave" && echo "univention-server-slave"
-	test "$1" = "memberserver" && echo "univention-server-member"
-	test "$1" = "basesystem" && echo "univention-basesystem"
-}
+	def inner_run(self):
+		# preparation update install autoremove
+		self.steps(4 * 100)
 
-profile_role=$(get_profile_var "server/role")
-ucr_role=$(univention-config-registry get server/role)
+		if not self.wanted_server_role or self.wanted_server_role == self.current_server_role:
+			# nothing to do
+			return True
 
-if [ -z "$profile_role" ] || [ "$profile_role" = "$ucr_role" ]; then
-	# nothing to do
-	exit 0
-fi
+		# These packages will be removed if the server role was changed to memberserver or basesystem
+		base_remove_packages = [
+			'samba-common',
+			'samba',
+			'samba4',
+			'slapd',
+			'univention-directory-notifier',
+			'bind9',
+			'isc-dhcp-server',
+			'heimdal-kdc',
+			'heimdal-servers',
+			'univention-ldap-acl-slave',
+			'univention-directory-manager',
+			'univention-virtual-machine-manager-schema',
+			'univention-management-console-module-udm',
+			'nagios3-core',
+			]
 
-# Copy local files into the local cache
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27935
-cp /var/cache/univention-system-setup/packages/*.deb /var/cache/apt/archives/
+		# Copy local files into the local cache
+		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27935
+		for filename in glob.glob('/var/cache/univention-system-setup/packages/*.deb'):
+			shutil.copy(filename, '/var/cache/apt/archives/')
+		self.cache.open()
 
-role_package="$(get_role_package $profile_role)"
-ucr_role_package="$(get_role_package $ucr_role)"
+		current_server_role_package = self.get_package_for_role(self.current_server_role)
+		wanted_server_role_package = self.get_package_for_role(self.wanted_server_role)
+		if current_server_role_package is None or wanted_server_role_package is None:
+			return False
+		self.finish_task()
 
-# --force-yes is required because not all packages are signed
-install_cmd="$(univention-config-registry get update/commands/install) --force-yes"
+		if not self.update():
+			return False
 
-progress_next_step
+		# Remove server packages
+		if self.wanted_server_role in ['basesystem', 'memberserver']:
+			self.uninstall(*base_remove_packages)
 
-export DEBIAN_FRONTEND=noninteractive
-apt-get update
+		self.finish_task()
 
-APT_PARAMS="-o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 --force-yes"
-if [ "$profile_role" = "basesystem" ] || [ "$profile_role" = "memberserver" ]; then
-	# Remove server packages
-	apt-get remove $APT_PARAMS --purge $BASE_REMOVE_PACKAGES
-fi
+		if current_server_role_package:
+			self.commit(install=[wanted_server_role_package], remove=[current_server_role_package])
+		else:
+			self.commit(install=[wanted_server_role_package])
 
-progress_next_step
-	
+		self.finish_task()
 
-if [ -n "$role_package" -a -n "$ucr_role_package" ]; then
-	$install_cmd ${role_package}+ ${ucr_role_package}-
-elif [ -n "$role_package" ]; then
-	$install_cmd ${role_package}+
-fi
+		# mark these packages as manually installed
+		self.install('univention-pam', 'univention-management-console')
 
-progress_next_step
+		# apt-get autoremove
+		self.autoremove()
 
-# mark these packages as manually installed
-apt-get install univention-pam univention-management-console
+		if self.wanted_server_role == 'memberserver':
+			# reinstall listener on memberserver because the ldap-server package
+			# will remove too much:
+			# https://forge.univention.org/bugzilla/show_bug.cgi?id=26269
+			apt_pkg.config['APT::Get::ReInstall'] = 'true'
+			self.install('univention-directory-listener')
 
-apt-get autoremove $APT_PARAMS
+		self.finish_task()
 
-if [ "$profile_role" = "memberserver" ]; then
-	# reinstall listener on memberserver because the ldap-server package
-	# will remove too much:
-	# https://forge.univention.org/bugzilla/show_bug.cgi?id=26269
-	$install_cmd --reinstall univention-directory-listener
-fi
+		self.set_ucr_var('server/role', self.wanted_server_role)
 
-univention-config-registry set server/role="$profile_role"
+		# Cleanup
+		## rm -f /etc/apt/sources.list/05univention-system-setup.list
+		## rm -Rf /var/cache/univention-system-setup/packages
 
-# Cleanup
-## rm -f /etc/apt/sources.list/05univention-system-setup.list
-## rm -Rf /var/cache/univention-system-setup/packages
+		return True
 
-
-exit 0
+if __name__ == '__main__':
+	script = RoleScript()
+	main(script)
 
