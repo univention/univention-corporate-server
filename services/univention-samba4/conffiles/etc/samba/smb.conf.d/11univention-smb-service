@@ -9,7 +9,7 @@ if configRegistry.get('samba4/service/smb', 's3fs'):
 
 	if configRegistry.is_false('samba4/rpc/endpoint/drsuapi'):
 		print '-drsuapi'
-	else
+	else:
 		print ''
 
 elif configRegistry.get('samba4/service/smb', 'smbd'):
