@@ -1,3 +1,10 @@
+univention-samba (7.0.1-10) unstable; urgency=low
+
+  * added quotes to eval $(ucr shell) call in addmachine.sh
+   (Bug #18443)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 31 Jul 2012 10:11:26 +0200
+
 univention-samba (7.0.1-9) unstable; urgency=low
 
   * fix timing issue for net prc rights grant after smbd+winbind start

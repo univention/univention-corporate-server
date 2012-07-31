@@ -38,7 +38,7 @@ if [ -z "$name" ] || [ "$name" = "-h" -o "$name" = "-?" -o "$name" = "-help" -o 
 	exit 1
 fi
 
-eval $(ucr shell ldap/master hostname)
+eval "$(ucr shell ldap/master hostname)"
 
 # Create the windows computer via UMC
 /usr/sbin/umc-command -s "$ldap_master" -y /etc/machine.secret -U "$hostname$" selectiveudm/create_windows_computer -o name="$name" -o samba3_mode=True; rc=$?
