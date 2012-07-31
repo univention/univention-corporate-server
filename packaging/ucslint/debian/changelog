@@ -1,3 +1,12 @@
+ucslint (3.0.1-1) unstable; urgency=low
+
+  * added a test for unquoted calls of eval $(ucr shell)
+  * removed testing for unquoted calls of eval $(ucr shell)
+    from 0006 and 0001
+    (Bug #18443)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 30 Jul 2012 16:54:10 +0200
+
 ucslint (3.0.0-1) unstable; urgency=low
 
   * Refacture common debian/ test (Bug #22479)

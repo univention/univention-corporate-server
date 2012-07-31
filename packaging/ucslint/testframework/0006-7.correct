@@ -1,1 +1,0 @@
-E:0006-7: debian/postinst: script contains 17 unquoted calls of eval $(ucr shell)

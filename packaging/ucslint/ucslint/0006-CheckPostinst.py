@@ -22,7 +22,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0006-4': [ uub.RESULT_WARN,   'script contains "sh -e" in hashbang' ],
 				 '0006-5': [ uub.RESULT_WARN,   'script contains "set -e"' ],
 				 '0006-6': [ uub.RESULT_ERROR,  'script contains no "exit 0" at end of file' ],
-				 '0006-7': [ uub.RESULT_ERROR,  'script contains "eval $(ucr shell)" without proper quoting' ],
 				 }
 
 	def postinit(self, path):
@@ -34,7 +33,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		super(UniventionPackageCheck, self).check(path)
 
 		fnlist_scripts = {}
-		REucr_shell = re.compile('eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*')
 
 		#
 		# search debian scripts
@@ -86,10 +84,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					elif cmd in line:
 						checks['udm_in_line'] += 1
 
-				if REucr_shell.search(line):
-					self.debug('unquoted ucr_shell found')
-					checks['unquoted_ucr_shell'] += 1
-
 				# search for "set -e" in line
 				if line.startswith( 'set -e' ):
 					checks['set-e-body'] = True
@@ -119,5 +113,3 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if not checks['endswith-exit-0']:
 				self.addmsg( '0006-6', 'script contains no "exit 0" at end of file', fn )
 
-			if checks['unquoted_ucr_shell'] > 0:
-				self.addmsg('0006-7', 'script contains %(unquoted_ucr_shell)d unquoted calls of eval $(ucr shell)' % checks, fn)
