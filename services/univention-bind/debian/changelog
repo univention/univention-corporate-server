@@ -1,3 +1,9 @@
+univention-bind (7.0.1-1) unstable; urgency=low
+
+  * adjust named.conf.samba4 to new path of dlz_bind9 (for Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 31 Jul 2012 15:17:34 +0200
+
 univention-bind (6.0.41-6) unstable; urgency=low
 
   * Fix shell quoting in crestart handling (Bug #26560)

@@ -48,7 +48,7 @@ else:
 	print '};'
 
 print '''dlz "samba4.zone" {
-	database "dlopen /usr/lib/samba/libdlz_bind9.so {
+	database "dlopen /usr/lib/samba/bind9/dlz_bind9.so {
 			/*
 			 * update-policy {
 			 * 		grant %(kerberos/realm)s ms-self * A AAAA;
