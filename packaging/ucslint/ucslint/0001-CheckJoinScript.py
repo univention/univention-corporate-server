@@ -37,11 +37,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0001-7': [ uub.RESULT_WARN,  'join script seems not to be called in any postinst file' ],
 				 '0001-8': [ uub.RESULT_WARN,  'join scripts should be called with "|| true" do avoid failing postinst scripts if "set -e" is used' ],
 				 '0001-9': [ uub.RESULT_WARN,  'cannot open specified file' ],
-				 '0001-10': [ uub.RESULT_ERROR, 'join script contains lines with unquoted $@' ],
-				 '0001-11': [ uub.RESULT_ERROR, 'join script contains more than one line with VERSION=  statement' ],
-				 '0001-12': [ uub.RESULT_ERROR, 'join script does not include "joinscripthelper.lib"' ],
-				 '0001-13': [ uub.RESULT_ERROR, 'join script does not call "joinscript_init"' ],
-				 '0001-14': [ uub.RESULT_ERROR, 'join script does not call "joinscript_save_current_version"' ],
+				 '0001-10': [ uub.RESULT_ERROR, 'join script contains "eval $(ucr shell)" without proper quoting' ], # unused, moved to 0017
+				 '0001-11': [ uub.RESULT_ERROR, 'join script contains lines with unquoted $@' ],
+				 '0001-12': [ uub.RESULT_ERROR, 'join script contains more than one line with VERSION=  statement' ],
+				 '0001-13': [ uub.RESULT_ERROR, 'join script does not include "joinscripthelper.lib"' ],
+				 '0001-14': [ uub.RESULT_ERROR, 'join script does not call "joinscript_init"' ],
+				 '0001-15': [ uub.RESULT_ERROR, 'join script does not call "joinscript_save_current_version"' ],
 				 }
 
 	def postinit(self, path):
@@ -110,19 +111,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		if cnt['version'] == 0:
 			self.addmsg( '0001-3', 'join script does not set VERSION', filename)
 		if cnt['version'] > 1:
-			self.addmsg( '0001-11', 'join script does set VERSION more than once', filename)
+			self.addmsg( '0001-12', 'join script does set VERSION more than once', filename)
 
 		if not cnt['joinscripthelper.lib']:
 			# no usage of joinscripthelper.lib
 			if cnt['vversion'] > 0 and cnt['vversion'] < 2:
 				self.addmsg( '0001-4', 'join script does not grep for " v${VERSION} "', filename)
 			elif cnt['vversion'] == 0:
-				self.addmsg( '0001-12', 'join script does not use joinscripthelper.lib', filename)
+				self.addmsg( '0001-13', 'join script does not use joinscripthelper.lib', filename)
 		else:
 			if not cnt['joinscript_init']:
-				self.addmsg( '0001-13', 'join script does not use joinscript_init', filename)
+				self.addmsg( '0001-14', 'join script does not use joinscript_init', filename)
 			if not cnt['joinscript_save_current_version']:
-				self.addmsg( '0001-14', 'join script does not use joinscript_save_current_version', filename)
+				self.addmsg( '0001-15', 'join script does not use joinscript_save_current_version', filename)
 
 	def check(self, path):
 		""" the real check """

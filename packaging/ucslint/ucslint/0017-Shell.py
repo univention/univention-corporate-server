@@ -44,14 +44,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# search shell scripts
 		#
 		scripts = []
-		for root, dirs, files in os.walk('.'):
-			for file in files:
-				script_path = file
-				if not root.startswith('.'):
-					script_path = '%s%s' % (root, script_path)
-				if file.endswith('.sh') or containsHashBang(script_path):
-					scripts.append(script_path)
-					self.debug('found %s' % script_path)
+		files = uub.FilteredDirWalkGenerator('.')
+		for file in files:
+			if file.endswith('.sh') or containsHashBang(file):
+				scripts.append(file[2:])
 
 
 
