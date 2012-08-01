@@ -1,3 +1,9 @@
+univention-samba4 (2.0.1-4) unstable; urgency=low
+
+  * run dbcheck on updates but backup first (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 01 Aug 2012 19:46:57 +0200
+
 univention-samba4 (2.0.1-3) unstable; urgency=low
 
   * fix typo in UCR template (for Bug #27457)
