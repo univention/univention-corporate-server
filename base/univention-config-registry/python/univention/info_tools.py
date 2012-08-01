@@ -75,10 +75,10 @@ class LocalizedDictionary( dict ):
 		matches = LocalizedDictionary._locale_regex.match( key )
 		# localized value?
 		if matches:
-			grp = matches.groupdict()
-			if not self.has_key( grp[ 'key' ] ):
-				dict.__setitem__( self, grp[ 'key' ], LocalizedValue() )
-			dict.__getitem__( self, grp[ 'key' ] ).set( value, grp[ 'lang' ] )
+			key, lang = matches.groups()
+			if not self.has_key( key ):
+				dict.__setitem__( self, key, LocalizedValue() )
+			dict.__getitem__( self, key ).set( value, lang )
 		else:
 			if not self.has_key( key ):
 				dict.__setitem__( self, key, LocalizedValue() )
@@ -89,10 +89,10 @@ class LocalizedDictionary( dict ):
 		matches = LocalizedDictionary._locale_regex.match( key )
 		# localized value?
 		if matches:
-			grp = matches.groupdict()
-			if self.has_key( grp[ 'key' ] ):
-				value = dict.__getitem__( self, grp[ 'key' ] )
-				return value.get( value, grp[ 'lang' ] )
+			key, lang = matches.groups()
+			if self.has_key( key ):
+				value = dict.__getitem__( self, key )
+				return value.get( lang )
 		else:
 			if self.has_key( key ):
 				return dict.__getitem__( self, key ).get()

@@ -1,3 +1,11 @@
+univention-config-registry (8.0.0-1) unstable; urgency=low
+
+  * Version bump for 3.1
+  * Fix terrible bug in info_tools' LocalizedDictionary
+    making it more or less unusable (related to Bug #27742)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Aug 2012 13:41:04 +0200
+
 univention-config-registry (7.0.33-2) unstable; urgency=low
 
   * Don't use univention-lib because of circular dependency (Bug #27836)
