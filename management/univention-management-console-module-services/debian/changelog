@@ -1,3 +1,11 @@
+univention-management-console-module-services (2.0.0-1) unstable; urgency=low
+
+  * Fix not using localised descriptions (Bug #27742)
+  * Fix search (Bug #28132)
+  * Use fancy new decorators (Bug #27716)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Aug 2012 13:47:22 +0200
+
 univention-management-console-module-services (1.0.5-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)

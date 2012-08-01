@@ -40,10 +40,11 @@ import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import simple_response
 from univention.management.console.protocol.definitions import *
 
 import univention.service_info as usi
-import univention.config_registry as ucr
+import univention.config_registry
 
 _ = umc.Translation('univention-management-console-module-services').translate
 
@@ -55,28 +56,35 @@ class Instance(umcm.Base):
 				failed.append(srv)
 		return failed
 
-	def query(self, request):
+	@simple_response
+	def query(self, filter='*'):
 		srvs = usi.ServiceInfo()
-		ucr_reg = ucr.ConfigRegistry()
-		ucr_reg.load()
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
 
 		result = []
 		for name, srv in srvs.services.items():
 			entry = {}
 			entry['service'] = name
 			if 'description' in srv:
-				entry['description'] = srv['description']
+				try:
+					lang = _.im_self.locale.language
+					if lang in (None, 'C'):
+						lang = 'en'
+					entry['description'] = srv['description[%s]' % lang]
+				except KeyError:
+					entry['description'] = srv['description']
 			else:
 				entry['description'] = None
 			key = '%s/autostart' % name
-			# default: autostart=yes
 			if 'start_type' in srv:
 				key = srv['start_type']
-			if not ucr_reg.get(key):
+			# default: autostart=yes
+			if not ucr.get(key):
 				entry['autostart'] = 'yes'
-			elif ucr_reg.get(key).lower() in ('no'):
+			elif ucr.get(key).lower() in ('no'):
 				entry['autostart']  = 'no'
-			elif ucr_reg.get(key).lower() in ('manually'):
+			elif ucr.get(key).lower() in ('manually'):
 				entry['autostart']  = 'manually'
 			else:
 				entry['autostart'] = 'yes'
@@ -85,15 +93,12 @@ class Instance(umcm.Base):
 				entry['isRunning'] = True
 			else:
 				entry['isRunning'] = False
-			# Check filter options
-			filter_ = request.options.get('filter', '*')
-			for value in entry.items():
-				if fnmatch(str(value), filter_):
+			for value in entry.values():
+				if fnmatch(str(value), filter):
 					result.append(entry)
 					break
 
-		request.status = SUCCESS
-		self.finished(request.id, result)
+		return result
 
 	def start(self, request):
 		if self.permitted('services/start', request.options):
@@ -170,7 +175,7 @@ class Instance(umcm.Base):
 					value = 'manually'
 				if request.arguments[0] == 'services/start_never':
 					value = 'no'
-				ucr.handler_set(['%s=%s' % (key, value)])
+				univention.config_registry.handler_set(['%s=%s' % (key, value)])
 			else:
 				failed.append(name)
 
