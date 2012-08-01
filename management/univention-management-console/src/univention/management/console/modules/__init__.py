@@ -136,13 +136,16 @@ from ..log import MODULE
 
 _ = Translation( 'univention.management.console' ).translate
 
-class UMC_OptionTypeError( Exception ):
+class UMC_Error( Exception ):
 	pass
 
-class UMC_OptionMissing( Exception ):
+class UMC_OptionTypeError( UMC_Error ):
 	pass
 
-class UMC_CommandError( Exception ):
+class UMC_OptionMissing( UMC_Error ):
+	pass
+
+class UMC_CommandError( UMC_Error ):
 	pass
 
 class Base( signals.Provider, Translation ):

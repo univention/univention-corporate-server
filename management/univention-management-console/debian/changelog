@@ -1,3 +1,9 @@
+univention-management-console (5.0.6-1) unstable; urgency=low
+
+  * add decorators to help developers: simple_response Bug #27716
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Aug 2012 13:37:51 +0200
+
 univention-management-console (5.0.5-1) unstable; urgency=low
 
   * fixed missing translations; Bug #27875

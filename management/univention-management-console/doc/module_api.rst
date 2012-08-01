@@ -7,3 +7,8 @@ UMC modules
 	:undoc-members:
 	:show-inheritance:
 
+.. automodule:: univention.management.console.modules.decorators
+	:members:
+	:undoc-members:
+	:show-inheritance:
+
