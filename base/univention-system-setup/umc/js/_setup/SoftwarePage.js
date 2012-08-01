@@ -99,7 +99,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 		// show notes when samba 3/4 is selected
 		dojo.forEach(['samba', 'samba4'], function(ikey) {
 			this.connect(this._form.getWidget('components'), 'onChange', function(newVal) {
-				var components = newVal.join(' ');
+				var components = this._getInstalledComponents();
 				if ((new RegExp('univention-' + ikey + '\\b')).test(components)) {
 					// only show the note when the samba 3 or 4 package is selected
 					this._showNote(ikey);

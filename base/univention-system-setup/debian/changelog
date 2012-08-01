@@ -1,3 +1,11 @@
+univention-system-setup (6.0.6-1) unstable; urgency=low
+
+  * don't display samba3/samba4 combination warning when
+    adding a softwarecomponent while a samba version is
+    already installed (Bug #27949)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 01 Aug 2012 10:20:29 +0200
+
 univention-system-setup (6.0.5-1) unstable; urgency=low
 
   * cleaner code, fixed caching problem for Bug #28010
