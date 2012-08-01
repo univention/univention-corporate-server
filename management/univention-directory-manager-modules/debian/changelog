@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.4-1) unstable; urgency=low
+
+  * fixed typo (Bug #27267)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 01 Aug 2012 14:10:47 +0200
+
 univention-directory-manager-modules (8.0.3-1) unstable; urgency=low
 
   * changed layout of the samba domain page (Bug #27267)

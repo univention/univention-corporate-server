@@ -235,7 +235,7 @@ layout = [
 		] ),
 		Group(_( 'Password' ), layout = [
 			["passwordLength", "passwordHistory"],
-			["minPasswordArge", "maxPasswordAge"],
+			["minPasswordAge", "maxPasswordAge"],
 			["logonToChangePW", "refuseMachinePWChange"],
 		] ),
 		Group( _('Connection'), layout = [
