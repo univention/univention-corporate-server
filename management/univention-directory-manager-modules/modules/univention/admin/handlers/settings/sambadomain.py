@@ -70,7 +70,7 @@ long_description=''
 options={}
 property_descriptions={
 	'name': univention.admin.property(
-	        short_description=_('Samba Domain Name'),
+	        short_description=_('Samba domain name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -91,7 +91,7 @@ property_descriptions={
 			identifies=0
 			),
 	'NextUserRid': univention.admin.property(
-			short_description=_('Next User RID'),
+			short_description=_('Next user RID'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -102,7 +102,7 @@ property_descriptions={
 			identifies=0
 		),
 	'NextGroupRid': univention.admin.property(
-			short_description=_('Next Group RID'),
+			short_description=_('Next group RID'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -124,7 +124,7 @@ property_descriptions={
 			identifies=0
 			),
 	'passwordLength': univention.admin.property(
-			short_description=_('Password Length'),
+			short_description=_('Password length'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -134,7 +134,7 @@ property_descriptions={
 			identifies=0
 			),
 	'passwordHistory': univention.admin.property(
-			short_description=_('Password History'),
+			short_description=_('Password history'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -144,7 +144,7 @@ property_descriptions={
 			identifies=0
 		),
 	'minPasswordAge': univention.admin.property(
-			short_description=_('Minimum Password Age'),
+			short_description=_('Minimum password age'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
@@ -154,7 +154,7 @@ property_descriptions={
 			identifies=0
 		),
 	'badLockoutAttempts': univention.admin.property(
-			short_description=_('Bad Lockout Attempts'),
+			short_description=_('Bad lockout attempts'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -164,7 +164,7 @@ property_descriptions={
 			identifies=0
 		),
 	'logonToChangePW': univention.admin.property(
-			short_description=_('User must Logon to Change Password'),
+			short_description=_('User must logon to change password'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -174,7 +174,7 @@ property_descriptions={
 			identifies=0
 		),
 	'maxPasswordAge': univention.admin.property(
-			short_description=_('Maximum Password Age'),
+			short_description=_('Maximum password age'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
@@ -184,7 +184,7 @@ property_descriptions={
 			identifies=0
 		),
 	'lockoutDuration': univention.admin.property(
-			short_description=_('Lockout Duration Minutes'),
+			short_description=_('Lockout duration minutes'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
@@ -194,7 +194,7 @@ property_descriptions={
 			identifies=0
 		),
 	'resetCountMinutes': univention.admin.property(
-			short_description=_('Reset Count Minutes'),
+			short_description=_('Reset count minutes'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -204,7 +204,7 @@ property_descriptions={
 			identifies=0
 		),
 	'disconnectTime': univention.admin.property(
-			short_description=_('Disconnect Time'),
+			short_description=_('Disconnect time'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
@@ -214,7 +214,7 @@ property_descriptions={
 			identifies=0
 		),
 	'refuseMachinePWChange': univention.admin.property(
-			short_description=_('Refuse Machine Password Change'),
+			short_description=_('Refuse machine password change'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -229,13 +229,20 @@ layout = [
 	Tab(_('General'),_('Basic Values'), layout = [
 		Group( _( 'General' ), layout = [
 			["name", "SID"],
-			["NextUserRid", "NextGroupRid"],
-			"NextRid",
+			["NextRid"],
+			["NextUserRid"],
+			["NextGroupRid"],
+		] ),
+		Group(_( 'Password' ), layout = [
 			["passwordLength", "passwordHistory"],
-			["minPasswordAge", "maxPasswordAge"],
-			["badLockoutAttempts", "lockoutDuration"],
-			["resetCountMinutes", "logonToChangePW"],
-			["disconnectTime", "refuseMachinePWChange"],
+			["minPasswordArge", "maxPasswordAge"],
+			["logonToChangePW", "refuseMachinePWChange"],
+		] ),
+		Group( _('Connection'), layout = [
+			["badLockoutAttempts"],
+			["resetCountMinutes"],
+			["lockoutDuration"],
+			["disconnectTime"],
 		] ),
 	] ),
 ]

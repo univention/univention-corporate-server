@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-27 07:03+0200\n"
+"POT-Creation-Date: 2012-08-01 13:45+0200\n"
 "PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -621,43 +621,43 @@ msgstr "Einstellungen: Samba-Konfiguration"
 msgid "Configuration Name"
 msgstr "Konfigurationsname"
 
-#: sambaconfig.py:80 sambadomain.py:127
+#: sambaconfig.py:80
 msgid "Password Length"
 msgstr "Passwort-Länge"
 
-#: sambaconfig.py:90 sambadomain.py:137
+#: sambaconfig.py:90
 msgid "Password History"
 msgstr "Passwort-History"
 
-#: sambaconfig.py:100 sambadomain.py:147
+#: sambaconfig.py:100
 msgid "Minimum Password Age"
 msgstr "Minimales Passwortalter"
 
-#: sambaconfig.py:110 sambadomain.py:157
+#: sambaconfig.py:110
 msgid "Bad Lockout Attempts"
 msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
 
-#: sambaconfig.py:120 sambadomain.py:167
+#: sambaconfig.py:120
 msgid "User must Logon to Change Password"
 msgstr "Änderung des Passwortes erfordert Anmeldung"
 
-#: sambaconfig.py:130 sambadomain.py:177
+#: sambaconfig.py:130
 msgid "Maximum Password Age"
 msgstr "Maximales Passwortalter"
 
-#: sambaconfig.py:140 sambadomain.py:187
+#: sambaconfig.py:140
 msgid "Lockout Duration Minutes"
 msgstr "Dauer der Aussperrung"
 
-#: sambaconfig.py:150 sambadomain.py:197
+#: sambaconfig.py:150
 msgid "Reset Count Minutes"
 msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
 
-#: sambaconfig.py:160 sambadomain.py:207
+#: sambaconfig.py:160
 msgid "Disconnect Time"
 msgstr "Verbindung trennen nach"
 
-#: sambaconfig.py:170 sambadomain.py:217
+#: sambaconfig.py:170
 msgid "Refuse Machine Password Change"
 msgstr "Änderung des Rechnerpasswortes ablehnen"
 
@@ -666,7 +666,7 @@ msgid "Settings: Samba Domain"
 msgstr "Einstellungen: Samba-Domäne"
 
 #: sambadomain.py:73
-msgid "Samba Domain Name"
+msgid "Samba domain name"
 msgstr "Samba-Domänenname"
 
 #: sambadomain.py:83
@@ -674,16 +674,64 @@ msgid "Samba SID"
 msgstr "Samba-SID"
 
 #: sambadomain.py:94
-msgid "Next User RID"
-msgstr "nächste Benutzer-RID"
+msgid "Next user RID"
+msgstr "Nächste Benutzer-RID"
 
 #: sambadomain.py:105
-msgid "Next Group RID"
-msgstr "nächste Gruppen-RID"
+msgid "Next group RID"
+msgstr "Nächste Gruppen-RID"
 
 #: sambadomain.py:116
 msgid "Next RID"
-msgstr "nächste RID"
+msgstr "Nächste RID"
+
+#: sambadomain.py:127
+msgid "Password length"
+msgstr "Passwort-Länge"
+
+#: sambadomain.py:137
+msgid "Password history"
+msgstr "Passwort-History"
+
+#: sambadomain.py:147
+msgid "Minimum password age"
+msgstr "Minimales Passwortalter"
+
+#: sambadomain.py:157
+msgid "Bad lockout attempts"
+msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
+
+#: sambadomain.py:167
+msgid "User must logon to change password"
+msgstr "Änderung des Passwortes erfordert Anmeldung"
+
+#: sambadomain.py:177
+msgid "Maximum password age"
+msgstr "Maximales Passwortalter"
+
+#: sambadomain.py:187
+msgid "Lockout duration minutes"
+msgstr "Dauer der Aussperrung"
+
+#: sambadomain.py:197
+msgid "Reset count minutes"
+msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
+
+#: sambadomain.py:207
+msgid "Disconnect time"
+msgstr "Verbindung trennen nach"
+
+#: sambadomain.py:217
+msgid "Refuse machine password change"
+msgstr "Änderung des Rechnerpasswortes ablehnen"
+
+#: sambadomain.py:236
+msgid "Password"
+msgstr "Passwort"
+
+#: sambadomain.py:241
+msgid "Connection"
+msgstr "Verbindung"
 
 #: service.py:47
 msgid "Settings: Service"
@@ -1169,9 +1217,6 @@ msgstr "X Konfiguration Auswahl"
 
 #~ msgid "Short Description"
 #~ msgstr "Kurzbeschreibung"
-
-#~ msgid "Long Description"
-#~ msgstr "Ausführliche Beschreibung"
 
 #~ msgid "Number on Tab"
 #~ msgstr "Nummer auf der Karteikarte"
