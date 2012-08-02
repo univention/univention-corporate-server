@@ -39,7 +39,6 @@ import ipaddr
 
 import univention.debug
 
-from univention.admin.layout import Tab
 import univention.admin.filter
 import univention.admin.uldap
 import univention.admin.mapping
@@ -2595,40 +2594,6 @@ class simplePolicy(simpleLdap):
 			self.referring_object_dn=None
 
 		simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes )
-
-		# append attribute and layout information for a list of objects
-		# referencing this policy (if it exists)
-		self.layout = copy.copy( univention.admin.modules.layout( self.module ) )
-		self.__add_reference_list()
-
-	def __add_reference_list( self ):
-		if self.dn:
-			# create syntax object
-			ldap_search = univention.admin.syntax.LDAP_Search(
-				filter = '(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))' % self.dn,
-				viewonly = True )
-
-			# create property
-			prop = univention.admin.property( \
-				short_description = '',
-				long_description = '',
-				syntax = ldap_search,
-				multivalue = 1,
-				dontsearch = 1,
-				required = 0,
-				may_change = 0,
-				identifies = 0 )
-
-			# add property to list
-			self.descriptions[ '_view_referencing_objects' ] = prop
-
-			# add property to layout
-			tab = Tab( _( 'Referencing objects' ), _( 'Objects referencing this policy object' ),
-					   layout = [ '_view_referencing_objects' ] )
-			self.layout.append( tab )
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__add_reference_list: appended tab with referencing objects' )
-		else:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__add_reference_list: No object DN set!' )
 
 	def copyIdentifier(self, from_object):
 		"""Activate the result mode and set the referring object"""

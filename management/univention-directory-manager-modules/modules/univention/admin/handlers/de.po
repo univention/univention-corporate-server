@@ -114,14 +114,6 @@ msgstr "DHCP"
 msgid "DNS Alias"
 msgstr "DNS-Alias"
 
-#: __init__.py:2492
-msgid "Referencing objects"
-msgstr "Referenzierende Objekte"
-
-#: __init__.py:2492
-msgid "Objects referencing this policy object"
-msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
-
 #~ msgid "There is more than one DNS Forward-Zone-Entry."
 #~ msgstr "Es existiert mehr als ein Eintrag in einer DNS-Forward-Zone."
 
