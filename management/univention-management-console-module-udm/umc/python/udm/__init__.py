@@ -673,12 +673,7 @@ class Instance( Base ):
 		"""
 		module = self._get_module( request )
 		object_dn = request.options.get( 'objectDN' )
-		if object_dn:
-			# FIXME: this hack is necessary because of caching problems:
-			# an object may change module properties (e.g. policies with
-			# referencing objects) Bug #25638
-			module.get( object_dn )
-		properties = module.properties
+		properties = module.get_properties( object_dn )
 		if request.options.get( 'searchable', False ):
 			properties = filter( lambda prop: prop.get( 'searchable', False ), properties )
 		self.finished( request.id, properties )

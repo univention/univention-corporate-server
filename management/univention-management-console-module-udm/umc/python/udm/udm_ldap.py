@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
 import operator
 import threading
 
@@ -38,6 +39,8 @@ from univention.management.console import Translation
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 
 import univention.admin as udm
+import univention.admin.handlers as udm_handlers
+import univention.admin.layout as udm_layout
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uldap as udm_uldap
@@ -487,21 +490,20 @@ class UDM_Module( object ):
 			modules.append( { 'id' : child, 'label' : getattr( mod, 'short_description', child ) } )
 		return modules
 
+	def is_policy_module( self ):
+		return self.name.startswith('policies/') and self.name != 'policies/policy'
+
 	def get_layout( self, ldap_dn = None ):
 		"""Layout information"""
-		layout = []
+		layout = getattr( self.module, 'layout', [] )
 		if ldap_dn is not None:
 			mod = get_module( None, ldap_dn )
-			if mod.name != self.name:
-				layout = getattr( self.module, 'layout', [] )
-			else:
-				obj = self.get( ldap_dn )
-				if hasattr( obj, 'layout' ):
-					layout = obj.layout
-				else:
-					layout = getattr( self.module, 'layout', [] )
-		else:
-			layout = getattr( self.module, 'layout', [] )
+			if self.name == mod.name and self.is_policy_module():
+				layout = copy.copy( layout )
+				tab = udm_layout.Tab( _( 'Referencing objects' ), _( 'Objects referencing this policy object' ),
+					layout = [ '_view_referencing_objects' ]
+				)
+				layout.append(tab)
 
 		if layout and isinstance( layout[ 0 ], udm.tab ):
 			return self._parse_old_layout( layout )
@@ -534,6 +536,38 @@ class UDM_Module( object ):
 				passwords.append( key )
 
 		return passwords
+
+	def get_properties( self, ldap_dn=None ):
+		properties = self.properties
+		if ldap_dn:
+			# hack reference list for policies into items
+			if self.is_policy_module():
+				# create syntax object
+				syntax = udm_syntax.LDAP_Search(
+					filter = '(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))' % ldap_dn,
+					viewonly = True )
+
+				# create item
+				item = {
+					'id' : '_view_referencing_objects',
+					'label' : '',
+					'description' : '',
+					'syntax' : syntax.name,
+					'size' : syntax.size,
+					'required' : False,
+					'editable' : False,
+					'options' : [],
+					'readonly' : False,
+					'searchable' : False,
+					'multivalue' : True,
+					'identifies' : False,
+					}
+
+				# read UCR configuration
+				item.update( widget( syntax, item ) )
+				properties.append(item)
+
+		return properties
 
 	@property
 	def properties( self ):
@@ -646,7 +680,7 @@ class UDM_Module( object ):
 		"""Searches in all policy objects for the given object type and
 		returns a list of all matching policy types"""
 
-		policyTypes = policyTypes = udm_modules.policyTypes( self.name )
+		policyTypes = udm_modules.policyTypes( self.name )
 		if not policyTypes and self.childs:
 			# allow all policies for containers
 			policyTypes = filter( lambda x: x.startswith( 'policies/' ) and x != 'policies/policy', udm_modules.modules )

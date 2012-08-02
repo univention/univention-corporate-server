@@ -1,3 +1,10 @@
+univention-management-console-module-udm (2.0.1-1) unstable; urgency=low
+
+  * Fix Bug #25638 a bit more elegant. Migrate broken (misplaced) backend-code
+    to working frontend-code, avoiding static value changes at all
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Aug 2012 17:19:32 +0200
+
 univention-management-console-module-udm (2.0.0-1) unstable; urgency=low
 
   * Fix caching problem, resulting in wrong policy-reference-list

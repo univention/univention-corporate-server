@@ -62,6 +62,14 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
+#: umc/python/udm/udm_ldap.py:504
+msgid "Referencing objects"
+msgstr "Referenzierende Objekte"
+
+#: umc/python/udm/udm_ldap.py:504
+msgid "Objects referencing this policy object"
+msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
+
 #: umc/python/udm/udm_ldap.py:622
 msgid "None"
 msgstr "Keins"
@@ -181,3 +189,4 @@ msgstr ""
 #: umc/python/udm/__init__.py:476
 msgid "text file"
 msgstr "Textdatei"
+
