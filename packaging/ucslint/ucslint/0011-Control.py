@@ -102,6 +102,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'compat', # dh
 			'control',
 			'copyright', # dh_installdocs default
+			'files', # dh_builddeb
 			'NEWS', # dh_installchangelogs default
 			'rules',
 			'source.lintian-overrides', # dh_lintian
@@ -123,6 +124,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'cron.hourly', # dh_installcron
 			'cron.monthly', # dh_installcron
 			'cron.weekly', # dh_installcron
+			'debhelper.log', # dh
 			'default', # dh_installinit
 			'dirs', # dh_installdirs
 			'doc-base', # dh_installdocs
@@ -175,6 +177,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'udev', # dh_installudev
 			'umc-modules', # dh-umc-modules-install
 			'univention-config-registry-categories', # univention-install-config-registry-info
+			'univention-config-registry-mapping', # univention-install-config-registry-info
 			'univention-config-registry', # univention-install-config-registry
 			'univention-config-registry-variables', # univention-install-config-registry-info
 			'univention-service', # univention-install-service-info
