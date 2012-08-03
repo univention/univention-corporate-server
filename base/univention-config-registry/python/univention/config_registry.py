@@ -54,11 +54,11 @@ script_dir = '/etc/univention/templates/scripts'
 module_dir = '/etc/univention/templates/modules'
 info_dir = '/etc/univention/templates/info'
 
-invalid_key_chars = re.compile ('[\\r\\n\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\<\>\\\]')
+invalid_key_chars = re.compile('[\\r\\n\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\<\>\\\]')
 invalid_value_chars = '\r\n'
 shell_valid_key_chars = string.ascii_letters + string.digits + '_'
 
-warning_text='''Warning: This file is auto-generated and might be overwritten by
+warning_text = '''Warning: This file is auto-generated and might be overwritten by
          univention-config-registry.
          Please edit the following file(s) instead:
 Warnung: Diese Datei wurde automatisch generiert und kann durch
@@ -73,13 +73,13 @@ def warning_string(prefix='# ', width=80, srcfiles=set(), enforce_ascii=False):
 
 	for line in warning_text.split('\n'):
 		if enforce_ascii:
-			line = replaceUmlaut(line).encode ('ascii', 'replace')
+			line = replaceUmlaut(line).encode('ascii', 'replace')
 		res.append(prefix+line)
 	res.append(prefix)
 
 	for srcfile in srcfiles:
 		if enforce_ascii:
-			srcfile = srcfile.encode ('ascii', 'replace')
+			srcfile = srcfile.encode('ascii', 'replace')
 		res.append(prefix+'\t%s' % srcfile)
 	res.append(prefix)
 
@@ -164,7 +164,7 @@ class ConfigRegistry( dict ):
 				return True
 		return False
 
-	def iterkeys ( self ):
+	def iterkeys(self):
 		merge = self._merge()
 		for key in merge:
 			yield key
@@ -221,7 +221,7 @@ class ConfigRegistry( dict ):
 
 	def __str__( self ):
 		merge = self._merge()
-		return '\n'.join( [ '%s: %s' % ( key, val ) for key, val in merge.items() ] )
+		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
 
 	def is_true(self, key, default = False):
 		"""Return if the strings value of key is considered as true."""
@@ -310,7 +310,7 @@ class _ConfigRegistry( dict ):
 			# errno 13: Permission denied
 			#
 			# suppress certain errors
-			if not errno in [ 13 ]:
+			if not errno in [13]:
 				raise
 
 	def save(self):
@@ -342,13 +342,14 @@ class _ConfigRegistry( dict ):
 				raise StrictModeException('value is not UTF-8 encoded')
 		return dict.__setitem__(self, key, value)
 
-	def removeInvalidChars (self, seq):
+	def removeInvalidChars(self, seq):
 		for letter in invalid_value_chars:
 			seq = seq.replace(letter,'')
 		return seq
 
 	def __str__(self):
-		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars (val)) for key, val in sorted(self.items())])
+		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars(val)) for
+			key, val in sorted(self.items())])
 
 def directoryFiles(dir):
 	"""Return a list of all files below the given directory."""
@@ -1052,9 +1053,9 @@ def replog(method, scope, ucr, var, value=None):
 	This function writes a new entry to replication logfile if
 	this feature has been enabled.
 	"""
-	if ucr.is_true('ucr/replog/enabled',False):
+	if ucr.is_true('ucr/replog/enabled', False):
 		if method == 'set':
-			varvalue = "%s=%s" % (var,escape_value(value))
+			varvalue = "%s=%s" % (var, escape_value(value))
 		else:
 			varvalue = "'%s'" % var
 
@@ -1070,7 +1071,7 @@ def replog(method, scope, ucr, var, value=None):
 		try:
 			if not os.path.isfile(replog_file):
 				os.close(os.open(replog_file, os.O_CREAT, 0640))
-			logfile = open(replog_file,"a+")
+			logfile = open(replog_file, "a+")
 			logfile.write(str)
 			logfile.close()
 		except Exception, e:
@@ -1190,7 +1191,7 @@ def handler_unset( args, opts = {} ):
 def handler_dump( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
-	for line in str ( b ).split ( '\n' ):
+	for line in str(b).split('\n'):
 		print line
 
 def handler_update( args, opts = {} ):
@@ -1248,13 +1249,13 @@ def keyShellEscape(line):
 		raise ValueError('got empty line')
 	new_line = []
 	if line[0] in string.digits:
-		new_line.append ('_')
+		new_line.append('_')
 	for letter in line:
 		if letter in shell_valid_key_chars:
-			new_line.append (letter)
+			new_line.append(letter)
 		else:
-			new_line.append ('_')
-	return ''.join (new_line)
+			new_line.append('_')
+	return ''.join(new_line)
 
 def validateKey(k):
 	"""Check if key consists of only shell valid characters."""
@@ -1266,7 +1267,7 @@ def validateKey(k):
 		return 0
 
 	if len(k) > 0:
-		match = invalid_key_chars.search(k);
+		match = invalid_key_chars.search(k)
 
 		if not match:
 			return 1
@@ -1283,13 +1284,13 @@ def handler_filter( args, opts = {} ):
 def handler_search( args, opts = {} ):
 	global info_handler
 	info_handler = None
-	category = opts.get ( 'category', None )
-	non_empty = opts.get ( 'non-empty', False )
-	brief = opts.get ( 'brief', False )
-	search_keys = opts.get ( 'key', False )
-	search_values = opts.get ( 'value', False )
-	search_all = opts.get ( 'all', False )
-	verbose = opts.get ( 'verbose', False )
+	category = opts.get( 'category', None )
+	non_empty = opts.get( 'non-empty', False )
+	brief = opts.get( 'brief', False )
+	search_keys = opts.get( 'key', False )
+	search_values = opts.get( 'value', False )
+	search_all = opts.get( 'all', False )
+	verbose = opts.get( 'verbose', False )
 
 	if (search_keys and search_values) or (search_values and search_all) or (search_keys and search_all):
 		sys.stderr.write( 'E: at most one out of [--key|--value|--all] may be set\n' )
@@ -1299,23 +1300,23 @@ def handler_search( args, opts = {} ):
 
 	regex = []
 	if not args:
-		regex = [ re.compile ('') ]
+		regex = [re.compile('')]
 	else:
 		for arg in args:
 			try:
-				regex.append ( re.compile ( arg ) )
+				regex.append(re.compile(arg))
 			except re.error:
-				sys.stderr.write ( 'E: invalid regular expression: %s\n' % arg )
-				sys.exit ( 1 )
+				sys.stderr.write('E: invalid regular expression: %s\n' % arg)
+				sys.exit(1)
 
 	#Import located here, because on module level, a circular import would be created
 	import config_registry_info as cri
-	cri.set_language ( 'en' )
-	info = cri.ConfigRegistryInfo ( install_mode = False )
+	cri.set_language('en')
+	info = cri.ConfigRegistryInfo(install_mode=False)
 
-	if category and not info.get_category ( category ):
-		sys.stderr.write ( 'E: unknown category: "%s"\n' % category )
-		sys.exit ( 1 )
+	if category and not info.get_category(category):
+		sys.stderr.write('E: unknown category: "%s"\n' % category)
+		sys.exit(1)
 
 	b = ConfigRegistry()
 	b.load()
@@ -1324,26 +1325,26 @@ def handler_search( args, opts = {} ):
 	brief |= b.is_true('ucr/output/brief', False)
 
 	all_vars = {}
-	for key, var in info.get_variables (category).items ():
-		all_vars [ key ] = ( None, var, None )
+	for key, var in info.get_variables(category).items():
+		all_vars[key] = (None, var, None)
 	for key, scope_value in b.items( getscope = True ):
-		var_triple = all_vars.get ( key )
+		var_triple = all_vars.get(key)
 		if var_triple:
-			all_vars [ key ] = ( scope_value[1], var_triple[1], scope_value[0] )
+			all_vars[key] = ( scope_value[1], var_triple[1], scope_value[0] )
 		elif not category:
-			all_vars [ key ] = ( scope_value[1], None, scope_value[0] )
+			all_vars[key] = ( scope_value[1], None, scope_value[0] )
 
 	for key, var_triple in all_vars.items():
 		for reg in regex:
 			if \
-				( search_keys and reg.search ( key ) ) or \
-				( search_values and var_triple[0] and reg.search ( var_triple[0] ) ) or \
-				( search_all and ( \
-				  ( reg.search ( key ) ) or \
-				  ( var_triple[0] and reg.search ( var_triple[0] ) ) or \
-				  ( var_triple[1] and reg.search ( var_triple[1].get ( 'description', '' ) ) ) ) \
+				(search_keys and reg.search(key)) or \
+				(search_values and var_triple[0] and reg.search(var_triple[0])) or \
+				(search_all and ( \
+				  (reg.search(key)) or \
+				  (var_triple[0] and reg.search(var_triple[0])) or \
+				  (var_triple[1] and reg.search(var_triple[1].get('description', '')))) \
 				):
-				print_variable_info_string ( key, var_triple[0], var_triple[1], var_triple[2], show_scope, brief, non_empty, verbose )
+				print_variable_info_string(key, var_triple[0], var_triple[1], var_triple[2], show_scope, brief, non_empty, verbose)
 				break
 
 def handler_get( args, opts = {} ):
@@ -1359,16 +1360,16 @@ def handler_get( args, opts = {} ):
 	else:
 		print b.get( args[ 0 ], '' )
 
-class UnknownKeyException ( Exception ):
-	def __init__ (self, value):
+class UnknownKeyException(Exception):
+	def __init__(self, value):
 		self.value = value
-	def __str__ (self):
-		return repr (self.value)
+	def __str__(self):
+		return repr(self.value)
 
 def print_variable_info_string( key, value, variable_info, scope=None, show_scope=False, brief=False, non_empty=False, verbose=False ):
 	value_string = None
 	if value == None and not variable_info:
-		raise UnknownKeyException ( 'W: unknown key: "%s"' % key )
+		raise UnknownKeyException('W: unknown key: "%s"' % key)
 	elif value in ( None, '' ) and non_empty:
 		return
 	elif value == None:
@@ -1393,17 +1394,17 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 		info_string = key_value
 	else:
 		info = [ key_value ]
-#		info.append ( ' ' + variable_info.get ( 'description', 'no description available' ) )
+#		info.append(' ' + variable_info.get('description', 'no description available'))
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=15556
 # Workaround:
-		description = variable_info.get ( 'description' )
-		if not description or not description.strip ():
+		description = variable_info.get( 'description' )
+		if not description or not description.strip():
 			description = 'no description available'
-		info.append ( ' ' + description )
+		info.append(' ' + description)
 		if verbose or info_handler:
-			info.append ( ' Categories: ' + variable_info.get ( 'categories', 'none' ) )
+			info.append(' Categories: ' + variable_info.get('categories', 'none'))
 
-		info_string = '\n'.join (info)
+		info_string = '\n'.join(info)
 
 	if brief and not verbose:
 		print info_string
@@ -1412,19 +1413,19 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 
 def handler_info( args, opts = {} ):
 	global info_handler
-	reg = ConfigRegistry ()
-	reg.load ()
+	reg = ConfigRegistry()
+	reg.load()
 	#Import located here, because on module level, a circular import would be created
 	import config_registry_info as cri
-	cri.set_language ( 'en' )
-	info = cri.ConfigRegistryInfo ( install_mode = False )
+	cri.set_language('en')
+	info = cri.ConfigRegistryInfo(install_mode=False)
 	info_handler = True
 
 	for arg in args:
 		try:
-			print_variable_info_string (arg, reg.get (arg, None), info.get_variable (arg))
+			print_variable_info_string(arg, reg.get(arg, None), info.get_variable(arg))
 		except UnknownKeyException, e:
-			sys.stderr.write ( e.value + '\n' )
+			sys.stderr.write(e.value + '\n')
 
 def handler_help( args, opts = {} ):
 	print '''
@@ -1505,12 +1506,12 @@ def handler_version( args, opts = {} ):
 def missing_parameter(action):
 	print 'error: too few arguments for command [%s]' % action
 	print 'try `univention-config-registry --help` for more information'
-	sys.exit(1);
+	sys.exit(1)
 
 def exception_occured():
 	print 'error: your request could not be fulfilled'
 	print 'try `univention-config-registry --help` for more information'
-	sys.exit(1);
+	sys.exit(1)
 
 def filter_shell( args, text ):
 	out = []
@@ -1535,10 +1536,11 @@ def filter_sort( args, text ):
 
 class Output:
 	def __init__(self):
-		self.text=[]
+		self.text = []
+
 	def write(self, line):
-		if line and line.strip ():
-			self.text.append (line)
+		if line and line.strip():
+			self.text.append(line)
 
 	def writelines(self, lines):
 		for l in lines:
@@ -1562,17 +1564,17 @@ handlers = {
 # action options: each of these options perform an action
 opt_actions = {
 	# name : ( function, state, ( alias list ) )
-	'help' : [ handler_help, False, ( '-h', '-?' ) ],
-	'version' : [ handler_version, False, ( '-v', ) ],
+	'help': [handler_help, False, ('-h', '-?')],
+	'version': [handler_version, False, ('-v',)],
 	}
 # filter options: these options define filter for the output
 opt_filters = {
 	# id : ( name, function, state, ( valid actions ) )
-	0  : [ 'keys-only', filter_keys_only, False, ( 'dump', 'search' ) ],
-	10 : [ 'sort', filter_sort, False, ( 'dump', 'search', 'info' ) ],
-	99 : [ 'shell', filter_shell, False, ( 'dump', 'search', 'shell', 'get' ) ],
+	0: ['keys-only', filter_keys_only, False, ('dump', 'search')],
+	10: ['sort', filter_sort, False, ('dump', 'search', 'info')],
+	99: ['shell', filter_shell, False, ('dump', 'search', 'shell', 'get')],
 	}
-BOOL, STRING = range ( 2 )
+BOOL, STRING = range(2)
 opt_commands = {
 	'set' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
 	'unset' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
@@ -1639,7 +1641,7 @@ def main(args):
 			args = tmp
 
 		# set 'sort' option by default for dump and search
-		if action in [ 'dump', 'search', 'info' ]:
+		if action in ['dump', 'search', 'info']:
 			opt_filters[ 10 ][ 2 ] = True
 
 		# set brief option when generating shell output
@@ -1673,9 +1675,9 @@ def main(args):
 				if cmd_opt_tuple[0] == BOOL:
 					cmd_opts[ cmd_opt ] = (BOOL, True)
 				else: #STRING
-					if len (args) < 2:
-						sys.stderr.write ( 'E: Option %s for command %s expects an argument\n' % (arg, action) )
-						sys.exit ( 1 )
+					if len(args) < 2:
+						sys.stderr.write('E: Option %s for command %s expects an argument\n' % (arg, action))
+						sys.exit(1)
 					cmd_opts[ cmd_opt ] = (STRING, args[ 1 ])
 					skip_next_arg = True
 			else:
@@ -1684,7 +1686,7 @@ def main(args):
 				sys.exit( 1 )
 			args.pop( 0 )
 
-		for cmd_opt, opt_tuple in copy.copy ( cmd_opts ).items ():
+		for cmd_opt, opt_tuple in copy.copy(cmd_opts).items():
 			cmd_opts[ cmd_opt ] = opt_tuple[ 1 ]
 
 		# action!
@@ -1713,7 +1715,7 @@ def main(args):
 			sys.exit( 1 )
 
 	except IOError, TypeError:
-		exception_occured();
+		exception_occured()
 
 if __name__ == '__main__':
 	try:
