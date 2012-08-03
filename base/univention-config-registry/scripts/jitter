@@ -45,12 +45,4 @@ if [ $# -lt 2 ]
 sleep $sec
 
 shift
-EXEC=''
-
-while [ $# -gt 0 ]
-  do
-   EXEC="${EXEC} $1"
-  shift
-done
-
-exec $EXEC
+exec "$@"
