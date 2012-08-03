@@ -17,6 +17,7 @@
 0009-5:tests/test_info_tools.py
 0010-2:tests/test_info_tools.py
 0010-2:tests/multifile.sh
+0010-2:tests/test_cli.sh
 0010-2:tests/unwrap/unwrap.sh
 0010-2:tests/unwrap/test.sh
 0010-2:tests/unwrap/unwrap.sed

@@ -35,7 +35,6 @@ import sys
 import re
 import string
 import cPickle
-import copy
 import subprocess
 import fcntl
 import pwd
@@ -1332,16 +1331,9 @@ def handler_filter( args, opts = {} ):
 	sys.stdout.write(filter(sys.stdin.read(), b, opts = opts))
 
 def handler_search( args, opts = {} ):
-	global info_handler
-	info_handler = None
-	category = opts.get( 'category', None )
-	non_empty = opts.get( 'non-empty', False )
-	brief = opts.get( 'brief', False )
 	search_keys = opts.get( 'key', False )
 	search_values = opts.get( 'value', False )
 	search_all = opts.get( 'all', False )
-	verbose = opts.get( 'verbose', False )
-
 	count_search = int(search_keys) + int(search_values) + int(search_all)
 	if count_search > 1:
 		print >> sys.stderr, 'E: at most one out of [--key|--value|--all] may be set'
@@ -1365,6 +1357,7 @@ def handler_search( args, opts = {} ):
 	cri.set_language('en')
 	info = cri.ConfigRegistryInfo(install_mode=False)
 
+	category = opts.get('category', None)
 	if category and not info.get_category(category):
 		print >> sys.stderr, 'E: unknown category: "%s"' % (category,)
 		sys.exit(1)
@@ -1372,8 +1365,15 @@ def handler_search( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
-	show_scope = b.is_true('ucr/output/scope', False)
-	brief |= b.is_true('ucr/output/brief', False)
+	details = SHOW_EMPTY | SHOW_DESCRIPTION
+	if opts.get('non-empty', False):
+		details &= ~SHOW_EMPTY
+	if opts.get('brief', False) or b.is_true('ucr/output/brief', False):
+		details &= ~SHOW_DESCRIPTION
+	if b.is_true('ucr/output/scope', False):
+		details |= SHOW_SCOPE
+	if opts.get('verbose', False):
+		details |= SHOW_CATEGORIES | SHOW_DESCRIPTION
 
 	all_vars = {}  # key: (value, vinfo, scope)
 	for key, var in info.get_variables(category).items():
@@ -1391,86 +1391,81 @@ def handler_search( args, opts = {} ):
 					(search_values and value and reg.search(value)) or
 					(search_all and vinfo and reg.search(vinfo.get('description', '')))
 					):
-				print_variable_info_string(key, value, vinfo, scope, show_scope, brief, non_empty, verbose)
+				print_variable_info_string(key, value, vinfo, details=details)
 				break
 
 def handler_get( args, opts = {} ):
-	global opt_filters
-	
 	b = ConfigRegistry()
 	b.load()
 
 	if not args[ 0 ] in b:
 		return
-	if opt_filters[ 99 ][ 2 ]:
+	if OPT_FILTERS['shell'][2]:
 		print '%s: %s' % ( args[ 0 ], b.get( args[ 0 ], '' ) )
 	else:
 		print b.get( args[ 0 ], '' )
 
 class UnknownKeyException(Exception):
 	def __init__(self, value):
-		self.value = value
-	def __str__(self):
-		return repr(self.value)
+		Exception.__init__(self, value)
 
-def print_variable_info_string( key, value, variable_info, scope=None, show_scope=False, brief=False, non_empty=False, verbose=False ):
-	value_string = None
+	def __str__(self):
+		return 'W: Unknown key: "%s"' % self.args
+
+SHOW_EMPTY, SHOW_DESCRIPTION, SHOW_SCOPE, SHOW_CATEGORIES = (1 << _ for _ in range(4))
+def print_variable_info_string(key, value, variable_info, scope=None, details=SHOW_DESCRIPTION):
+	"""Print UCR variable key, value, description, scope and categories."""
 	if value is None and not variable_info:
-		raise UnknownKeyException('W: unknown key: "%s"' % key)
-	elif value in ( None, '' ) and non_empty:
+		raise UnknownKeyException(key)
+	elif value in (None, '') and not SHOW_EMPTY & details:
 		return
 	elif value is None:
 		# if not shell filter option is set
-		if not opt_filters[ 99 ][ 2 ]:
+		if not OPT_FILTERS['shell'][2]:
 			value_string = '<empty>'
 		else:
 			value_string = ''
 	else:
 		value_string = '%s' % value
-	if not show_scope or scope in (None, 0) or scope > len(SCOPE):
+
+	if scope in (None, 0) or \
+			scope > len(SCOPE) or \
+			not SHOW_SCOPE & details or \
+			OPT_FILTERS['shell'][2]: # Do not display scope in shell export filter
 		key_value = '%s: %s' % (key, value_string)
 	else:
-		if opt_filters[ 99 ][ 2 ]: # Do not display scope in shell export filter
-			key_value = '%s: %s' % (key, value_string)
-		else:
-			key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
-			
+		key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
 
-	info_string = None
-	if brief and not verbose or not variable_info:
-		info_string = key_value
-	else:
-		info = [ key_value ]
-#		info.append(' ' + variable_info.get('description', 'no description available'))
-# https://forge.univention.org/bugzilla/show_bug.cgi?id=15556
-# Workaround:
-		description = variable_info.get( 'description' )
+	info = [key_value]
+	if variable_info and SHOW_DESCRIPTION & details:
+		# info.append(' ' + variable_info.get('description', 'no description available'))
+		# <https://forge.univention.org/bugzilla/show_bug.cgi?id=15556>
+		# Workaround:
+		description = variable_info.get('description')
 		if not description or not description.strip():
 			description = 'no description available'
 		info.append(' ' + description)
-		if verbose or info_handler:
-			info.append(' Categories: ' + variable_info.get('categories', 'none'))
 
-		info_string = '\n'.join(info)
+	if variable_info and SHOW_CATEGORIES & details:
+		info.append(' Categories: ' + variable_info.get('categories', 'none'))
 
-	if brief and not verbose:
-		print info_string
-	else:
-		print info_string + '\n'
+	if (SHOW_CATEGORIES | SHOW_DESCRIPTION) & details:
+		info.append('')
+
+	print '\n'.join(info)
 
 def handler_info( args, opts = {} ):
-	global info_handler
 	reg = ConfigRegistry()
 	reg.load()
 	#Import located here, because on module level, a circular import would be created
 	import config_registry_info as cri
 	cri.set_language('en')
 	info = cri.ConfigRegistryInfo(install_mode=False)
-	info_handler = True
 
 	for arg in args:
 		try:
-			print_variable_info_string(arg, reg.get(arg, None), info.get_variable(arg))
+			print_variable_info_string(arg, reg.get(arg, None), info.get_variable(arg),
+					details=SHOW_EMPTY | SHOW_DESCRIPTION | SHOW_CATEGORIES)
 		except UnknownKeyException, ex:
 			print >> sys.stderr, ex
 
@@ -1593,7 +1588,7 @@ class Output:
 		for l in lines:
 			self.text.append(l)
 
-handlers = {
+HANDLERS = {
 	'set': (handler_set, 1),
 	'unset': (handler_unset, 1),
 	'dump': (handler_dump, 0),
@@ -1609,72 +1604,79 @@ handlers = {
 	'info': (handler_info, 1),
 	}
 # action options: each of these options perform an action
-opt_actions = {
-	# name : ( function, state, ( alias list ) )
+OPT_ACTIONS = {
+	# name: [function, state, (alias list)]
 	'help': [handler_help, False, ('-h', '-?')],
 	'version': [handler_version, False, ('-v',)],
 	}
 # filter options: these options define filter for the output
-opt_filters = {
-	# id : ( name, function, state, ( valid actions ) )
-	0: ['keys-only', filter_keys_only, False, ('dump', 'search')],
-	10: ['sort', filter_sort, False, ('dump', 'search', 'info')],
-	99: ['shell', filter_shell, False, ('dump', 'search', 'shell', 'get')],
+OPT_FILTERS = {
+	# name: [prio, function, state, (valid actions)]
+	'keys-only': [0, filter_keys_only, False, ('dump', 'search')],
+	'sort': [10, filter_sort, False, ('dump', 'search', 'info')],
+	'shell': [99, filter_shell, False, ('dump', 'search', 'shell', 'get')],
 	}
 BOOL, STRING = range(2)
-opt_commands = {
-	'set' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
-	'unset' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
-	'search' : { 'key' : (BOOL, False), 'value' : (BOOL, False), 'all' : (BOOL, False), \
-				 'brief' : (BOOL, False), 'category' : (STRING, None), 'non-empty' : (BOOL, False), \
-				 'verbose' : (BOOL, False) },
-	'filter' : { 'encode-utf8' : (BOOL, False) }
+OPT_COMMANDS = {
+	'set': {
+		'force': [BOOL, False],
+		'ldap-policy': [BOOL, False],
+		'schedule': [BOOL, False],
+		},
+	'unset': {
+		'force': [BOOL, False],
+		'ldap-policy': [BOOL, False],
+		'schedule': [BOOL, False],
+		},
+	'search': {
+		'key': [BOOL, False],
+		'value': [BOOL, False],
+		'all' : [BOOL, False],
+		'brief': [BOOL, False],
+		'category': [STRING, None],
+		'non-empty': [BOOL, False],
+		'verbose': [BOOL, False],
+		},
+	'filter': {
+		'encode-utf8': [BOOL, False],
+		}
 	}
 
 def main(args):
-	global handlers, opt_actions, opt_filters, opt_commands
-
 	try:
 		# close your eyes ...
-		if not args: args.append( '--help' )
+		if not args:
+			args.append('--help')
 		# search for options in command line arguments
-		for arg in copy.copy( args ):
-			if not arg[ 0 ] == '-': break
-
+		while args and args[0].startswith('-'):
+			arg = args.pop(0)
 			# is action option?
-			for key, opt in opt_actions.items():
-				if arg[ 2 : ] == key or arg in opt[ 2 ]:
-					opt_actions[ key ][ 1 ] = True
+			for key, opt in OPT_ACTIONS.items():
+				if arg[2:] == key or arg in opt[2]:
+					opt[1] = True
 					break
 			else:
 				# not an action option; is a filter option?
-				for id, opt in opt_filters.items():
-					if arg[ 2 : ] == opt[ 0 ]:
-						opt[ 2 ] = True
-						break
-				else:
+				try:
+					OPT_FILTERS[arg[2:]][2] = True
+				except LookupError:
 					print >> sys.stderr, 'E: unknown option %s' % (arg,)
-					handler_help(args, out=sys.stderr)
 					sys.exit(1)
 
-			# remove option from command line arguments
-			args.pop( 0 )
-
 		# is action already defined by global option?
-		for k in opt_actions:
-			if opt_actions[ k ][ 1 ]:
-				opt_actions[ k ][ 0 ](args)
+		for name, (func, state, _aliases) in OPT_ACTIONS.items():
+			if state:
+				func(args)
 
 		# find action
-		action = args[ 0 ]
-		args.pop( 0 )
+		action = args.pop(0)
 		# COMPAT: the 'shell' command is now an option and equivalent to --shell search
 		if action == 'shell':
 			action = 'search'
 			# activate shell option
-			opt_filters[ 99 ][ 2 ] = True
+			OPT_FILTERS['shell'][2] = True
 			# switch to old, brief output
-			opt_commands[ 'search' ][ 'brief' ] = (BOOL, True)
+			OPT_COMMANDS['search']['brief'][1] = True
 
 			tmp = []
 			if not args:
@@ -1689,77 +1691,73 @@ def main(args):
 
 		# set 'sort' option by default for dump and search
 		if action in ['dump', 'search', 'info']:
-			opt_filters[ 10 ][ 2 ] = True
+			OPT_FILTERS['sort'][2] = True
 
 		# set brief option when generating shell output
-		if opt_filters[ 99 ][ 2 ] == True:
-			opt_commands[ 'search' ][ 'brief' ] = (BOOL, True)
+		if OPT_FILTERS['shell'][2]:
+			OPT_COMMANDS['search']['brief'][1] = True
 
 		# if a filter option is set: verify that a valid command is given
-		filter = False
-		for id, opt in opt_filters.items():
-			if opt[ 2 ]:
-				if not action in opt[ 3 ]:
-					print >> sys.stderr, 'E: invalid option --%s for command %s' % (opt[0], action)
-					sys.exit( 1 )
+		post_filter = False
+		for name, (prio, func, state, actions) in OPT_FILTERS.items():
+			if state:
+				if not action in actions:
+					print >> sys.stderr, 'E: invalid option --%s for command %s' % (name, action)
+					sys.exit(1)
 				else:
-					filter = True
+					post_filter = True
 
 		# check command options
-		cmd_opts = opt_commands.get( action, {} )
-		skip_next_arg = False
-		for arg in copy.copy( args ):
-			if skip_next_arg:
-				skip_next_arg = False
-				args.pop( 0 )
-				continue
-			if not arg.startswith( '--' ): break
-			cmd_opt = arg[ 2: ]
-			if action in ('set', 'unset', ) and cmd_opt == 'forced':
-				cmd_opt = 'force'
-			if cmd_opt in cmd_opts.keys():
-				cmd_opt_tuple = cmd_opts[ cmd_opt ]
-				if cmd_opt_tuple[0] == BOOL:
-					cmd_opts[ cmd_opt ] = (BOOL, True)
-				else: #STRING
-					if len(args) < 2:
-						sys.stderr.write('E: Option %s for command %s expects an argument\n' % (arg, action))
-						sys.exit(1)
-					cmd_opts[ cmd_opt ] = (STRING, args[ 1 ])
-					skip_next_arg = True
+		cmd_opts = OPT_COMMANDS.get(action, {})
+		while args and args[0].startswith('--'):
+			arg = args.pop(0)
+			if action in ('set', 'unset') and arg == '--forced':
+				arg = '--force'
+			try:
+				cmd_opt_tuple = cmd_opts[arg[2:]]
+			except LookupError:
+				print >> sys.stderr, 'E: invalid option %s for command %s' % (arg, action)
+				sys.exit(1)
 			else:
-				opt_actions[ 'help' ][ 1 ] = True
-				print >> sys.stderr, 'invalid option %s for command %s' % (arg, action)
-				sys.exit( 1 )
-			args.pop( 0 )
+				if cmd_opt_tuple[0] == BOOL:
+					cmd_opt_tuple[1] = True
+				else: #STRING
+					try:
+						cmd_opt_tuple[1] = args.pop(0)
+					except IndexError:
+						print >> sys.stderr, 'E: Option %s for command %s expects an argument' % (arg, action)
+						sys.exit(1)
 
-		for cmd_opt, opt_tuple in copy.copy(cmd_opts).items():
-			cmd_opts[ cmd_opt ] = opt_tuple[ 1 ]
+		# Drop type
+		cmd_opts = dict(((key, value) for key, (typ, value) in cmd_opts.items()))
 
 		# action!
-		if action in handlers.keys():
+		try:
+			handler_func, min_args = HANDLERS[action]
+		except LookupError:
+			print >> sys.stderr, 'E: unknown action: %s' % (action,)
+			handler_help(args, out=sys.stderr)
+			sys.exit(1)
+		else:
 			# enough arguments?
-			if len( args ) < handlers[ action ][ 1 ]:
+			if len(args) < min_args:
 				missing_parameter( action )
 			# if any filter option is set
-			if filter:
+			if post_filter:
 				old_stdout = sys.stdout
 				sys.stdout = Output()
-			handlers[ action ][ 0 ]( args, cmd_opts )
+			handler_func(args, cmd_opts)
 			# let the filter options do their job
-			if filter:
+			if post_filter:
 				out = sys.stdout
 				text = out.text
 				sys.stdout = old_stdout
-				for id, opt in opt_filters.items():
-					if opt[ 2 ]:
-						text = opt[ 1 ]( args, text )
+				for prio, (name, filter_func, state, actions) in sorted(OPT_FILTERS.items(),
+						key=lambda (k, v): v[0]):
+					if state:
+						text = filter_func(args, text)
 				for line in text:
 					print line
-		else:
-			print >> sys.stderr, 'E: unknown action: %s' % (action,)
-			handler_help(args, out=sys.stderr)
-			sys.exit( 1 )
 
 	except (EnvironmentError, TypeError):
 		exception_occured()
