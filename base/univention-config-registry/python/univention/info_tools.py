@@ -32,8 +32,6 @@
 
 import ConfigParser
 import re
-import string
-import codecs
 
 # default locale
 _locale = 'de'
@@ -54,10 +52,7 @@ class LocalizedValue( dict ):
 
 	def set( self, value, locale = None ):
 		global _locale
-		if locale:
-			self[ locale ] = value
-		else:
-			self[ _locale ] = value
+		self[locale or _locale] = value
 
 	def set_default( self, default ):
 		self.__default = default
@@ -73,7 +68,7 @@ class LocalizedDictionary( dict ):
 		dict.__init__( self )
 
 	def __setitem__( self, key, value ):
-		key = string.lower( key )
+		key = key.lower()
 		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		# localized value?
 		if matches:
@@ -85,7 +80,7 @@ class LocalizedDictionary( dict ):
 			val.set_default(value)
 
 	def __getitem__( self, key ):
-		key = string.lower( key )
+		key = key.lower()
 		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		# localized value?
 		if matches:

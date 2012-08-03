@@ -381,12 +381,11 @@ def filter(template, dir, srcfiles=set(), opts = {}):
 			else:
 				match = warning_pattern.match(name)
 				if match:
-					mode = match.group(1)
-					prefix = match.group(2)
+					mode, prefix = match.groups()
 					if mode == "UCRWARNING_ASCII":
-						value = warning_string(match.group(2), srcfiles=srcfiles, enforce_ascii=True)
+						value = warning_string(prefix, srcfiles=srcfiles, enforce_ascii=True)
 					else:
-						value = warning_string(match.group(2), srcfiles=srcfiles)
+						value = warning_string(prefix, srcfiles=srcfiles)
 				else:
 					value = ''
 
@@ -701,7 +700,7 @@ class configHandlers:
 				if version <= 1:
 					# version <= 1: _handlers[multifile] -> [handlers]
 					# version >= 2: _handlers[multifile] -> set([handlers])
-					self._handlers = map((k, set(v)) for k, v in self._handlers.items())
+					self._handlers = dict(((k, set(v)) for k, v in self._handlers.items()))
 					# version <= 1: _files UNUSED
 					_files = p.load()
 				self._subfiles = p.load()
@@ -1283,7 +1282,7 @@ def handler_randpw( args, opts = {} ):
 
 def replaceDict(line, dict):
 	''' Map any character from line to its value from dict '''
-	return ''.join(map(lambda c: dict.get(c, c), line))
+	return ''.join((dict.get(_, _) for _ in line))
 
 def replaceUmlaut(line):
 	umlauts = { 'Ä': 'Ae',
@@ -1344,22 +1343,23 @@ def handler_search( args, opts = {} ):
 	search_all = opts.get( 'all', False )
 	verbose = opts.get( 'verbose', False )
 
-	if (search_keys and search_values) or (search_values and search_all) or (search_keys and search_all):
+	count_search = int(search_keys) + int(search_values) + int(search_all)
+	if count_search > 1:
 		sys.stderr.write( 'E: at most one out of [--key|--value|--all] may be set\n' )
 		sys.exit( 1 )
-	if not search_keys and not search_values and not search_all:
+	elif count_search == 0:
 		search_keys = True
+	search_values |= search_all
+	search_keys |= search_all
 
-	regex = []
 	if not args:
 		regex = [re.compile('')]
 	else:
-		for arg in args:
-			try:
-				regex.append(re.compile(arg))
-			except re.error:
-				sys.stderr.write('E: invalid regular expression: %s\n' % arg)
-				sys.exit(1)
+		try:
+			regex = [re.compile(_) for _ in args]
+		except re.error, ex:
+			print >> sys.stderr, 'E: invalid regular expression: %s' % (ex,)
+			sys.exit(1)
 
 	#Import located here, because on module level, a circular import would be created
 	import config_registry_info as cri
@@ -1376,27 +1376,23 @@ def handler_search( args, opts = {} ):
 	show_scope = b.is_true('ucr/output/scope', False)
 	brief |= b.is_true('ucr/output/brief', False)
 
-	all_vars = {}
+	all_vars = {}  # key: (value, vinfo, scope)
 	for key, var in info.get_variables(category).items():
 		all_vars[key] = (None, var, None)
-	for key, scope_value in b.items( getscope = True ):
-		var_triple = all_vars.get(key)
-		if var_triple:
-			all_vars[key] = ( scope_value[1], var_triple[1], scope_value[0] )
-		elif not category:
-			all_vars[key] = ( scope_value[1], None, scope_value[0] )
+	for key, (scope, value) in b.items(getscope=True):
+		try:
+			all_vars[key] = (value, all_vars[key][1], scope)
+		except LookupError:
+			all_vars[key] = (value, None, scope)
 
-	for key, var_triple in all_vars.items():
+	for key, (value, vinfo, scope) in all_vars.items():
 		for reg in regex:
-			if \
-				(search_keys and reg.search(key)) or \
-				(search_values and var_triple[0] and reg.search(var_triple[0])) or \
-				(search_all and ( \
-				  (reg.search(key)) or \
-				  (var_triple[0] and reg.search(var_triple[0])) or \
-				  (var_triple[1] and reg.search(var_triple[1].get('description', '')))) \
-				):
-				print_variable_info_string(key, var_triple[0], var_triple[1], var_triple[2], show_scope, brief, non_empty, verbose)
+			if (
+					(search_keys and reg.search(key)) or
+					(search_values and value and reg.search(value)) or
+					(search_all and vinfo and reg.search(vinfo.get('description', '')))
+					):
+				print_variable_info_string(key, value, vinfo, scope, show_scope, brief, non_empty, verbose)
 				break
 
 def handler_get( args, opts = {} ):
@@ -1420,11 +1416,11 @@ class UnknownKeyException(Exception):
 
 def print_variable_info_string( key, value, variable_info, scope=None, show_scope=False, brief=False, non_empty=False, verbose=False ):
 	value_string = None
-	if value == None and not variable_info:
+	if value is None and not variable_info:
 		raise UnknownKeyException('W: unknown key: "%s"' % key)
 	elif value in ( None, '' ) and non_empty:
 		return
-	elif value == None:
+	elif value is None:
 		# if not shell filter option is set
 		if not opt_filters[ 99 ][ 2 ]:
 			value_string = '<empty>'

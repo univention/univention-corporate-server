@@ -96,7 +96,7 @@ class ServiceInfo( object ):
 	CUSTOMIZED = '_customized'
 	FILE_SUFFIX = '.cfg'
 
-	RUNLEVELS = map( lambda x: str( x ), range( 0, 7 ) ) + [ 'S' ]
+	RUNLEVELS = map(str, range(7)) + ['S']
 	INIT_SCRIPT_REGEX = re.compile( '(?P<action>[SK])(?P<code>[0-9]+)(?P<name>.*)' )
 
 	def __init__( self, install_mode = False ):

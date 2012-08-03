@@ -31,10 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import locale
 import os
 import re
-import string
 
 import univention.config_registry as ucr
 import univention.info_tools as uit
@@ -125,8 +123,8 @@ class ConfigRegistryInfo( object ):
 		cfg.read( filename )
 		for sec in cfg.sections():
 			# category already known?
-			cat_name = string.lower( sec )
-			if cat_name in self.categories.keys():
+			cat_name = sec.lower()
+			if cat_name in self.categories:
 				continue
 			cat = Category()
 			for name, value in cfg.items( sec ):
@@ -142,7 +140,7 @@ class ConfigRegistryInfo( object ):
 
 	def check_patterns( self ):
 		# in install mode
-		if self.__configRegistry == None:
+		if self.__configRegistry is None:
 			return
 		for pattern, data in self.__patterns.items():
 			regex = re.compile( pattern )
@@ -176,14 +174,16 @@ class ConfigRegistryInfo( object ):
 
 	def __write_variables( self, filename = None, package = None ):
 		"""Persist the variable descriptions into a file."""
-		if not filename and not package:
-			raise AttributeError( "neither 'filename' nor 'package' is specified" )
-		if not filename:
+		if filename:
+			pass
+		elif package:
 			filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
 									 package + ConfigRegistryInfo.FILE_SUFFIX )
+		else:
+			raise AttributeError( "neither 'filename' nor 'package' is specified" )
 		try:
 			fd = open( filename, 'w' )
-		except:
+		except IOError:
 			return False
 
 		cfg = uit.UnicodeConfig()
@@ -208,11 +208,13 @@ class ConfigRegistryInfo( object ):
 
 	def read_variables( self, filename = None, package = None, override = False ):
 		"""Read variable descriptions."""
-		if not filename and not package:
-			raise AttributeError( "neither 'filename' nor 'package' is specified" )
-		if not filename:
+		if filename:
+			pass
+		elif package:
 			filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
 									 package + ConfigRegistryInfo.FILE_SUFFIX )
+		else:
+			raise AttributeError( "neither 'filename' nor 'package' is specified" )
 		cfg = uit.UnicodeConfig()
 		cfg.read( filename )
 		for sec in cfg.sections():
@@ -221,13 +223,13 @@ class ConfigRegistryInfo( object ):
 				self.__patterns[ sec ] = cfg.items( sec )
 				continue
 			# variable already known?
-			if not override and sec in self.variables.keys():
+			if not override and sec in self.variables:
 				continue
 			var = Variable()
 			for name, value in cfg.items( sec ):
 				var[ name ] = value
 			# get current value
-			if self.__configRegistry != None:
+			if self.__configRegistry is not None:
 				var.value = self.__configRegistry.get( sec, None )
 			self.variables[ sec ] = var
 
@@ -273,9 +275,11 @@ class ConfigRegistryInfo( object ):
 			return self.variables
 		temp = {}
 		for name, var in self.variables.items():
-			if not var.get( 'categories' ): continue
-			if category in map( lambda x: string.lower( x ), var[ 'categories' ].split( ',' ) ):
-				temp[ name ] = var
+			categories = var.get('categories')
+			if not categories:
+				continue
+			if category in [_.lower() for _ in categories.split(',')]:
+				temp[name] = var
 		return temp
 
 	def get_variable( self, key ):
