@@ -10,7 +10,8 @@ Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386]
 Description: UCS - Linux kernel (standard)
- This meta-package installs the current kernel image.
+ This meta-package depends on the latest UCS kernel image suitable for 32 bit
+ systems with up to 4 GiB RAM.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -22,7 +23,8 @@ Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersionXen}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386]
 Description: UCS - Linux kernel (Xen)
- This meta-package installs the current kernel image.
+ This meta-package depends on the latest UCS kernel image suitable as the Xen
+ control domain (dom0) for 32 bit systems.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -34,7 +36,9 @@ Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion64}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386]
 Description: UCS - Linux kernel (PAE)
- This meta-package installs the current kernel image.
+ This meta-package depends on the latest UCS kernel image suitable for 32 bit
+ systems with up to 64 GiB RAM, where the CPU supports the Physical Address
+ Extension (PAE).
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -45,7 +49,8 @@ Package: univention-kernel-headers-2.6.32
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers (standard)
- This meta-package installs the current kernel headers.
+ This meta-package depends on the latest UCS kernel headers suitable for 32 bit
+ systems with up to 4 GiB RAM.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -56,7 +61,9 @@ Package: univention-kernel-headers-2.6.32-64gb
 Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
 Description: UCS - Linux kernel headers (PAE)
- This meta-package installs the current kernel headers.
+ This meta-package depends on the latest UCS kernel headers suitable for 32 bit
+ systems with up to 64 GiB RAM, where the CPU supports the Physical Address
+ Extension (PAE).
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -67,7 +74,8 @@ Package: univention-kernel-headers-2.6.32-xen
 Architecture: any
 Depends: linux-headers-${F:KernelVersionXen}
 Description: UCS - Linux kernel headers (Xen)
- This meta-package installs the current kernel headers.
+ This meta-package depends on the latest UCS kernel headers suitable as the Xen
+ control domain (dom0) for 32 bit systems.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -78,7 +86,8 @@ Package: univention-kernel-source-2.6.32
 Architecture: any
 Depends: linux-source-${F:KernelVersion}
 Description: UCS - Linux kernel source (standard)
- This meta-package installs the current kernel source.
+ This meta-package depends on the latest UCS kernel source suitable for 32 bit
+ systems with up to 4 GiB RAM.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -89,7 +98,9 @@ Package: univention-kernel-source-2.6.32-64gb
 Architecture: any
 Depends: linux-source-${F:KernelVersion64}
 Description: UCS - Linux kernel source (PAE)
- This meta-package installs the current kernel source.
+ This meta-package depends on the latest UCS kernel source suitable for 32 bit
+ systems with up to 64 GiB RAM, where the CPU supports the Physical Address
+ Extension (PAE).
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -111,7 +122,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-2.6.18-xen
 Architecture: any
 Depends: univention-kernel-image-2.6.32-xen
-Description: UCS - Linux kernel
+Description: UCS - Linux kernel (Xen)
  Transitional package to facilitate the upgrade to the
  2.6.32 based kernel.
  .
@@ -123,7 +134,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-2.6.18-64gb
 Architecture: any
 Depends: univention-kernel-image-2.6.32-64gb
-Description: UCS - Linux kernel
+Description: UCS - Linux kernel (PAE)
  Transitional package to facilitate the upgrade to the
  2.6.32 based kernel.
  .
@@ -147,7 +158,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-headers-2.6.18-64gb
 Architecture: any
 Depends: univention-kernel-headers-2.6.32-64gb
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers (PAE)
  Transitional package to facilitate the upgrade to the
  2.6.32 based kernel.
  .
@@ -159,7 +170,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-headers-2.6.18-xen
 Architecture: any
 Depends: univention-kernel-headers-2.6.32-xen
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers (Xen)
  Transitional package to facilitate the upgrade to the
  2.6.32 based kernel.
  .
@@ -183,7 +194,7 @@ Description: UCS - Linux kernel source
 Package: univention-kernel-source-2.6.18-64gb
 Architecture: any
 Depends: univention-kernel-source-2.6.32-64gb
-Description: UCS - Linux kernel source
+Description: UCS - Linux kernel source (PAE)
  Transitional package to facilitate the upgrade to the
  2.6.32 based kernel.
  .

@@ -1,3 +1,10 @@
+univention-kernel-image-2.6.32 (6.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Extend kernel package descriptions (Bug #26297)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Aug 2012 01:16:01 +0200
+
 univention-kernel-image-2.6.32 (5.0.1-2) unstable; urgency=low
 
   * Depend on new kernel (Bug #27431)
@@ -30,9 +37,9 @@ univention-kernel-image-2.6.32 (5.0.0-2) unstable; urgency=low
 
 univention-kernel-image-2.6.32 (5.0.0-1) unstable; urgency=low
 
-  * Bump version number. The source package builds the transitional package 
+  * Bump version number. The source package builds the transitional package
     univention-kernel-headers-2.6.18, which was already at version 4.0.1-2
-    in UCS 2.4 (Bug #25116)	
+    in UCS 2.4 (Bug #25116)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 05 Dec 2011 09:08:17 +0100
 
@@ -68,7 +75,7 @@ univention-kernel-image-2.6.32 (2.0.0-8) unstable; urgency=low
 
 univention-kernel-image-2.6.32 (2.0.0-7) unstable; urgency=low
 
-  * Consistently add Pre-Depends on univention-initrd and 
+  * Consistently add Pre-Depends on univention-initrd and
     module-init-tools to all kernel images. They are needed since
     otherwise the UCR template for /etc/initramfs-tools/initramfs.conf
     isn't written when the generation of the initrds is done (Bug #22440)
@@ -83,13 +90,12 @@ univention-kernel-image-2.6.32 (2.0.0-6) unstable; urgency=low
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 17 Aug 2011 09:50:57 +0200
 
-
 univention-kernel-image-2.6.32 (2.0.0-5) unstable; urgency=low
 
   * Add transitional packages for 2.6.18 kernels (Bug #22440)
   * Drop meta packages for mobile client and managed clients, since
     UCD will be shipping separate kernel images starting with
-    the UCS 3.0 release.	 
+    the UCS 3.0 release.
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 16 Aug 2011 15:45:25 +0200
 
@@ -102,7 +108,7 @@ univention-kernel-image-2.6.32 (2.0.0-4) unstable; urgency=low
 univention-kernel-image-2.6.32 (2.0.0-3) unstable; urgency=low
 
   * Convert univention-initrd predependency to a regular dep
-    (Bug #22440)	
+    (Bug #22440)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 12 May 2011 15:07:20 +0200
 
@@ -117,11 +123,11 @@ univention-kernel-image-2.6.32 (2.0.0-1) unstable; urgency=low
   * Update for UCS 3.0 (Bug #22440)
   * Drop obsolete metapackages for cpqhealth, avm, serverview, fsc-srv, vmware4,
     vmware5, vmware-gsx, vmware-gsx3, vmware-server, vmware-player, capi-fcpci,
-    drbd	
-  * Drop historic Conflicts	
+    drbd
+  * Drop historic Conflicts
   * Integrate ucslint
-  * Improve package descriptions (Bug #16161)	
-  * Update dependencies on firmware packages (Bug #21321)	
+  * Improve package descriptions (Bug #16161)
+  * Update dependencies on firmware packages (Bug #21321)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 06 May 2011 12:24:43 +0200
 
@@ -134,7 +140,7 @@ univention-kernel-image-2.6.32 (1.0.14-1) unstable; urgency=low
 univention-kernel-image-2.6.32 (1.0.13-5) unstable; urgency=low
 
   * Update kernel for security update (Bug #20223)
-  * Update copyright	
+  * Update copyright
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 02 Feb 2011 09:05:55 +0100
 
