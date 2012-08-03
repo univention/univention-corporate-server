@@ -5,6 +5,7 @@ univention-config-registry (8.0.1-1) unstable; urgency=low
   * ldapsearch-wrapper: Handle \t (Bug #27842)
   * Improve error reporting in install helpers (Bug #18507)
   * Convert from has_key() to "in" (Bug #27745)
+  * Use most specific pattern (Bug #28131)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 17:19:21 +0200
 

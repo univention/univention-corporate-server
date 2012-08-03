@@ -138,30 +138,34 @@ class ConfigRegistryInfo( object ):
 			for filename in os.listdir( path ):
 				self.read_categories( os.path.join( path, filename ) )
 
+	@staticmethod
+	def __pattern_sorter(args):
+		"""Sort more specific (longer) regular expressions first."""
+		pattern, data = args
+		return ((len(pattern), pattern), data)
+
 	def check_patterns( self ):
 		# in install mode
 		if self.__configRegistry is None:
 			return
-		for pattern, data in self.__patterns.items():
+		# Try more specific (longer) regular expressions first
+		for pattern, data in sorted(self.__patterns.items(),
+				key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
 			regex = re.compile( pattern )
-			vars = []
 			# find config registry variables that match this pattern and are
 			# not already listed in self.variables
-			for bvar in self.__configRegistry.keys():
-				if regex.match( bvar ) and not bvar in self.variables.keys():
-					# Does another pattern match this variable too?
-					if not bvar in vars:
-						vars.append( bvar )
-
-			# add a reference for each config registry variable to the
-			# Variable object
-			for key in vars:
+			for key, value in self.__configRegistry.items():
+				if key in self.variables:
+					continue
+				if not regex.match(key):
+					continue
 				# create variable object with values
 				var = Variable()
+				var.value = value
+				# var.update() does not use __setitem__()
 				for name, value in data:
-					var[ name ] = value
-				var.value = self.__configRegistry.get( key, None )
-				self.variables[ key ] = var
+					var[name] = value
+				self.variables[key] = var
 
 		# all patterns processed
 		self.__patterns = {}
