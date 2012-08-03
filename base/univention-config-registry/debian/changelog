@@ -4,6 +4,7 @@ univention-config-registry (8.0.1-1) unstable; urgency=low
   * Fix quoting in jitter (Bug #16428)
   * ldapsearch-wrapper: Handle \t (Bug #27842)
   * Improve error reporting in install helpers (Bug #18507)
+  * Convert from has_key() to "in" (Bug #27745)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 17:19:21 +0200
 

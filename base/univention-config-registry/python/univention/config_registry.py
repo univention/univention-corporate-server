@@ -734,40 +734,71 @@ class configHandlers:
 			handler = configHandlerFile(from_path, name)
 			if os.path.exists(from_path):
 				handler.variables = grepVariables(open(from_path, 'r').read())
-			if entry.has_key('Preinst'):
+
+			try:
 				handler.preinst = entry['Preinst'][0]
-			if entry.has_key('Postinst'):
+			except LookupError:
+				pass
+
+			try:
 				handler.postinst = entry['Postinst'][0]
-			if entry.has_key('Variables'):
-				handler.variables |= set(entry['Variables'])
-			if entry.has_key('User'):
+			except LookupError:
+				pass
+
+			handler.variables |= set(entry.get('Variables', set()))
+
+			try:
+				user = entry['User'][0]
+			except LookupError:
+				pass
+			else:
 				try:
-					handler.user = pwd.getpwnam(entry['User'][0]).pw_uid
-				except:
-					print 'Warning: failed to convert the username %s to the uid' % entry['User'][0]
-			if entry.has_key('Group'):
+					handler.user = pwd.getpwnam(user).pw_uid
+				except LookupError:
+					print 'Warning: failed to convert the username %s to the uid' % (user,)
+
+			try:
+				group = entry['Group'][0]
+			except LookupError:
+				pass
+			else:
 				try:
-					handler.group = grp.getgrnam(entry['Group'][0]).gr_gid
-				except:
-					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
-			if entry.has_key('Mode'):
-				handler.mode = int(entry['Mode'][0], 8)
+					handler.group = grp.getgrnam(group).gr_gid
+				except LookupError:
+					print 'Warning: failed to convert the groupname %s to the gid' % (group,)
+
+			try:
+				mode = entry['Mode'][0]
+			except LookupError:
+				pass
+			else:
+				try:
+					handler.mode = int(mode, 8)
+				except ValueError:
+					print 'Warning: failed to convert mode %s' % (mode,)
+
 			return handler
 
 	def _get_handler_script(self, entry):
 			"""Parse script entry and return Handler instance."""
-			if not entry.has_key('Variables') or not entry.has_key('Script'):
+			try:
+				script = entry['Script'][0]
+				variables = entry['Variables']
+			except LookupError:
 				return None
-			handler = configHandlerScript(os.path.join(script_dir, entry['Script'][0]))
-			handler.variables = set(entry['Variables'])
+			handler = configHandlerScript(os.path.join(script_dir, script))
+			handler.variables = set(variables)
 			return handler
 
 	def _get_handler_module(self, entry):
 			"""Parse module entry and return Handler instance."""
-			if not entry.has_key('Variables') or not entry.has_key('Module'):
+			try:
+				module = entry['Module'][0]
+				variables = entry['Variables']
+			except LookupError:
 				return None
-			handler = configHandlerModule(os.path.splitext(entry['Module'][0])[0])
-			handler.variables = set(entry['Variables'])
+			handler = configHandlerModule(os.path.splitext(module)[0])
+			handler.variables = set(variables)
 			return handler
 
 	def _get_handler_multifile(self, entry):
@@ -782,20 +813,40 @@ class configHandlers:
 			except KeyError:
 				from_path = os.path.join(file_dir, mfile)
 				handler = configHandlerMultifile(from_path, mfile)
-			if entry.has_key('Variables'):
-				handler.variables |= set(entry['Variables'])
-			if entry.has_key('User'):
+
+			handler.variables |= set(entry.get('Variables', set()))
+
+			try:
+				user = entry['User'][0]
+			except LookupError:
+				pass
+			else:
 				try:
-					handler.user = pwd.getpwnam(entry['User'][0]).pw_uid
-				except:
-					print 'Warning: failed to convert the username %s to the uid' % entry['User'][0]
-			if entry.has_key('Group'):
+					handler.user = pwd.getpwnam(user).pw_uid
+				except LookupError:
+					print 'Warning: failed to convert the username %s to the uid' % (user,)
+
+			try:
+				group = entry['Group'][0]
+			except LookupError:
+				pass
+			else:
 				try:
-					handler.group = grp.getgrnam(entry['Group'][0]).gr_gid
-				except:
-					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
-			if entry.has_key('Mode'):
-				handler.mode = int(entry['Mode'][0], 8)
+					handler.group = grp.getgrnam(group).gr_gid
+				except LookupError:
+					print 'Warning: failed to convert the groupname %s to the gid' % (group,)
+
+			try:
+				mode = entry['Mode'][0]
+			except LookupError:
+				pass
+			else:
+				try:
+					handler.mode = int(mode, 8)
+				except ValueError:
+					print 'Warning: failed to convert mode %s' % (mode,)
+
+
 			# Add pending subfiles from earlier entries
 			self._multifiles[mfile] = handler
 			try:
@@ -803,6 +854,7 @@ class configHandlers:
 				handler.addSubfiles(file_vars)
 			except KeyError:
 				pass
+
 			return handler
 
 	def _get_handler_subfile(self, entry):

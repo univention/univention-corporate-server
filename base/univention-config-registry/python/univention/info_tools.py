@@ -39,6 +39,7 @@ import codecs
 _locale = 'de'
 
 class LocalizedValue( dict ):
+	"""Localized description entry."""
 	def __init__( self ):
 		dict.__init__( self )
 		self.__default = ''
@@ -47,7 +48,7 @@ class LocalizedValue( dict ):
 		global _locale
 		if not locale:
 			locale = _locale
-		if self.has_key( locale ):
+		if locale in self:
 			return self[ locale ]
 		return self.__default
 
@@ -65,57 +66,51 @@ class LocalizedValue( dict ):
 		return self.__default
 
 class LocalizedDictionary( dict ):
-	_locale_regex = re.compile( '(?P<key>[a-zA-Z]*)\[(?P<lang>[a-z]*)\]' )
+	"""Localized descriptions."""
+	_LOCALE_REGEX = re.compile('(?P<key>[a-zA-Z]*)\[(?P<lang>[a-z]*)\]$')
 
 	def __init__( self ):
 		dict.__init__( self )
 
 	def __setitem__( self, key, value ):
 		key = string.lower( key )
-		matches = LocalizedDictionary._locale_regex.match( key )
+		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		# localized value?
 		if matches:
 			key, lang = matches.groups()
-			if not self.has_key( key ):
-				dict.__setitem__( self, key, LocalizedValue() )
-			dict.__getitem__( self, key ).set( value, lang )
+		val = self.setdefault(key, LocalizedValue())
+		if matches:
+			val.set(value, lang)
 		else:
-			if not self.has_key( key ):
-				dict.__setitem__( self, key, LocalizedValue() )
-			dict.__getitem__( self, key ).set_default( value )
+			val.set_default(value)
 
 	def __getitem__( self, key ):
 		key = string.lower( key )
-		matches = LocalizedDictionary._locale_regex.match( key )
+		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		# localized value?
 		if matches:
 			key, lang = matches.groups()
-			if self.has_key( key ):
-				value = dict.__getitem__( self, key )
-				return value.get( lang )
 		else:
-			if self.has_key( key ):
-				return dict.__getitem__( self, key ).get()
-
-		raise KeyError( key )
+			lang = None
+		return dict.__getitem__(self, key).get(lang)
 
 	def get( self, key, default = None ):
-		if self.has_key( key ):
-			try:
-				value = self.__getitem__( key )
-				if not value:
-					return default
-				return value
-			except KeyError:
-				return default
-			
-		return default
+		try:
+			value = self.__getitem__(key) or default
+			return value
+		except KeyError:
+			return default
 
-	def has_key( self, key ):
-		return dict.has_key( self, string.lower( key ) )
+	def __contains__(self, key):
+		key = key.lower()
+		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
+		if matches:
+			key = matches.group(1)
+		return dict.__contains__(self, key)
+	has_key = __contains__
 
 	def __normalize_key( self, key ):
-		if not self.has_key( key ):
+		if key not in self:
 			return {}
 
 		temp = {}
@@ -137,7 +132,7 @@ class LocalizedDictionary( dict ):
 		return temp
 
 	def get_dict( self, key ):
-		if not self.has_key( key ):
+		if key not in self:
 			return {}
 		return dict.__getitem__( self, key )
 

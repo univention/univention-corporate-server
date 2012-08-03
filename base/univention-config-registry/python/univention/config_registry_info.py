@@ -247,7 +247,7 @@ class ConfigRegistryInfo( object ):
 			self.check_patterns()
 			if not registered_only:
 				for key, value in self.__configRegistry.items():
-					if self.variables.has_key( key ):
+					if key in self.variables:
 						continue
 					var = Variable( registered = False )
 					var.value = value
@@ -263,8 +263,8 @@ class ConfigRegistryInfo( object ):
 	def get_category( self, name ):
 		'''returns a category object associated with the given name or
 		None'''
-		if self.categories.has_key( string.lower( name ) ):
-			return self.categories[ string.lower( name ) ]
+		if name.lower() in self.categories:
+			return self.categories[name.lower()]
 		return None
 
 	def get_variables( self, category = None ):
