@@ -43,7 +43,7 @@ Categories=system-ssl
 [ssl/default/days]
 Description[de]=Standard Lebensdauer für neue SSL-Zertifikate
 Description[en]=Default lifetime of new SSL certificates
-Type=str
+Type=int
 Categories=system-ssl
 
 [ssl/default/hashfunction]
@@ -55,13 +55,13 @@ Categories=system-ssl
 [ssl/validity/check]
 Description[de]=Aktiviere/Deaktiviere die regelmäßige Gültigkeitsprüfung für Zertifikate
 Description[en]=Enable/Disable regular checks for certificate validity
-Type=str
+Type=bool
 Categories=system-ssl
 
 [ssl/validity/days]
 Description[de]=Anzahl an Tagen die das Root SSL-Zertifikat gültig ist
 Description[en]=Number of days which the root certificate is valid
-Type=str
+Type=int
 Categories=system-ssl
 
 [ssl/validity/warning]

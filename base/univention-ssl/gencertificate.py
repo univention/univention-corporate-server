@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention SSL
-#  listener ssl module
+"""SSL listener module."""
 #
 # Copyright 2004-2012 Univention GmbH
 #
@@ -30,164 +30,171 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__='' 	# workaround for PEP 366
-from listener import *
+# pylint: disable-msg=C0103,W0704
+
+__package__ = ''	# workaround for PEP 366
+from listener import configRegistry, setuid, unsetuid
 import grp
+import os
 
-import univention.debug
-import univention.misc
+import univention.debug as ud
+import subprocess
 
-name='gencertificate'
-description='Generate new Certificates'
-filter='(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMobileClient)(objectClass=univentionMemberServer))'
-attributes=[]
+name = 'gencertificate'
+description = 'Generate new Certificates'
+filter = '(|' + \
+		'(objectClass=univentionDomainController)' + \
+		'(objectClass=univentionClient)' + \
+		'(objectClass=univentionMobileClient)' + \
+		'(objectClass=univentionMemberServer))'
+attributes = []
 
 
 uidNumber = 0
 gidNumber = 0
 saved_uid = 65545
-
-def set_privileges_cert(root=0):
-	global saved_uid
-	if root:
-		saved_uid=os.geteuid()
-		os.seteuid(0)
-	else:
-		os.seteuid(saved_uid)
+SSLDIR = '/etc/univention/ssl'
 
 def initialize():
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Initialize' )
-	return
+	"""Initialize the module once on first start or after clean."""
+	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Initialize')
 
 def handler(dn, new, old):
-	global uidNumber
-	global gidNumber
-	set_privileges_cert(root=1)
-
-	if baseConfig['server/role'] != 'domaincontroller_master':
-		set_privileges_cert(root=0)
-		return
-
+	"""Handle changes to 'dn'."""
+	setuid(0)
 	try:
+		if configRegistry['server/role'] != 'domaincontroller_master':
+			return
+
+		global uidNumber
 		try:
 			uidNumber = int(new.get('uidNumber', ['0'])[0])
-		except:
+		except (LookupError, TypeError, ValueError):
 			uidNumber = 0
 
+		global gidNumber
 		try:
 			gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
-		except:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
+		except (LookupError, TypeError, ValueError):
+			ud.debug(ud.LISTENER, ud.WARN,
+					'CERTIFICATE: Failed to get groupID for "%s"' % dn)
 			gidNumber = 0
 
-		if new and not old:			
-			if new.has_key('associatedDomain'):
-				domain=new['associatedDomain'][0]
-			else:
-				domain=baseConfig['domainname']
-			create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=domain)
+		if new and not old:
+			# changeType: add
+			try:
+				domain = new['associatedDomain'][0]
+			except LookupError:
+				domain = configRegistry['domainname']
+			create_certificate(new['cn'][0], domainname=domain)
 		elif old and not new:
-			if old.has_key('associatedDomain'):
-				domain=old['associatedDomain'][0]
-			else:
-				domain=baseConfig['domainname']
+			# changeType: delete
+			try:
+				domain = old['associatedDomain'][0]
+			except LookupError:
+				domain = configRegistry['domainname']
 			remove_certificate(old['cn'][0], domainname=domain)
 		else:
-			if old.has_key('associatedDomain'):
-				old_domain=old['associatedDomain'][0]
-			else:
-				old_domain=baseConfig['domainname']
+			# changeType: modify
+			try:
+				old_domain = old['associatedDomain'][0]
+			except LookupError:
+				old_domain = configRegistry['domainname']
 
-			if new.has_key('associatedDomain'):
-				new_domain=new['associatedDomain'][0]
-			else:
-				new_domain=baseConfig['domainname']
+			try:
+				new_domain = new['associatedDomain'][0]
+			except LookupError:
+				new_domain = configRegistry['domainname']
 
 			if new_domain != old_domain:
 				remove_certificate(old['cn'][0], domainname=old_domain)
-				create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=new_domain)
+				create_certificate(new['cn'][0], domainname=new_domain)
 			else:
 				# Reset permissions
-				ssldir='/etc/univention/ssl'
-				certpath=os.path.join(ssldir,"%s.%s" % (new['cn'][0],new_domain))
-				a=os.path.walk(certpath,set_permissions, None)
+				fqdn = "%s.%s" % (new['cn'][0], new_domain)
+				certpath = os.path.join(SSLDIR, fqdn)
+				os.path.walk(certpath, set_permissions, None)
 	finally:
-		set_privileges_cert(root=0)
-	return
+		unsetuid()
 
-def set_permissions(tmp1, directory, filename):
-	global uidNumber
-	global gidNumber
-	
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
+def set_permissions(_arg, directory, fnames):
+	"""Set file permission on directory and files within."""
+	ud.debug(ud.LISTENER, ud.PROCESS,
+			'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % \
+					(directory, gidNumber, uidNumber))
 	os.chown(directory, uidNumber, gidNumber)
 	os.chmod(directory, 0750)
 
-	for f in filename:
-		file=os.path.join(directory,f)
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (file, gidNumber, uidNumber))
-		os.chown(file, uidNumber, gidNumber)
-		os.chmod(file, 0750)
+	for fname in fnames:
+		filename = os.path.join(directory, fname)
+		ud.debug(ud.LISTENER, ud.PROCESS,
+				'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % \
+						(filename, gidNumber, uidNumber))
+		os.chown(filename, uidNumber, gidNumber)
+		os.chmod(filename, 0640)
 
-def remove_dir(tmp1, directory, filename):
-	for f in filename:
-		file=os.path.join(directory,f)
-		os.remove(file)
+def remove_dir(_arg, directory, fnames):
+	"""Remove directory and all files within."""
+	for fname in fnames:
+		filename = os.path.join(directory, fname)
+		os.remove(filename)
 	os.rmdir(directory)
 
-def create_certificate(name, serverUidNumber, domainname):
-	global uidNumber
-	global gidNumber
-	uidNumber = serverUidNumber
-	
-	ssldir='/etc/univention/ssl'
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'CERTIFICATE: Creating certificate %s' % name)
+def create_certificate(hostname, domainname):
+	"""Create SSL host certificate."""
+	fqdn = '%s.%s' % (hostname, domainname)
+	certpath = os.path.join(SSLDIR, fqdn)
+	link_path = os.path.join(SSLDIR, hostname)
 
-	certpath=os.path.join(ssldir,name+'.'+domainname)
 	if os.path.exists(certpath):
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Certificate for host %s.%s already exists' % (name,domainname))
-		if not os.path.islink("%s/%s" % (ssldir,name)):
-			p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir,name,domainname,ssldir,name) )
-			p.close
-		a=os.path.walk(certpath,set_permissions, None)
-		return
+		ud.debug(ud.LISTENER, ud.WARN,
+				'CERTIFICATE: Certificate for host %s already exists' % (fqdn,))
+		if os.path.islink(link_path):
+			return
+	else:
+		if len(fqdn) > 64:
+			ud.debug(ud.LISTENER, ud.ERROR,
+					'CERTIFICATE: can\'t create certificate, Common Name too long: %s' % \
+							(fqdn,))
+			return
 
+		ud.debug(ud.LISTENER, ud.PROCESS,
+				'CERTIFICATE: Creating certificate %s' % hostname)
 
-	if len("%s.%s" % (name,domainname)) > 64:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: can\'t create certificate, Common Name too long: %s.%s' % (name,domainname))
-		return
+		cmd = '. /usr/share/univention-ssl/make-certificates.sh;gencert "%s" "%s"' % \
+				(fqdn, fqdn)
+		subprocess.call(cmd, shell=True)
 
-	p = os.popen('. /usr/share/univention-ssl/make-certificates.sh; gencert %s.%s %s.%s' % (name,domainname,name,domainname) )
-	p.close()
-	p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir,name,domainname,ssldir,name) )
-	p.close()
+	# Create symlink
+	try:
+		os.remove(link_path)
+	except OSError:
+		pass
+	try:
+		os.symlink(certpath, link_path)
+	except OSError:
+		pass
+	# Fix permissions
+	os.path.walk(certpath, set_permissions, None)
 
-	
-	a=os.path.walk(certpath,set_permissions, None)
+def remove_certificate(hostname, domainname):
+	"""Remove SSL host certificate."""
+	fqdn = '%s.%s' % (hostname, domainname)
+	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Revoke certificate %s' % (fqdn,))
+	subprocess.call(('/usr/sbin/univention-certificate', 'revoke', '-name', fqdn))
 
-	return
-
-def remove_certificate(name, domainname):
-
-	ssldir='/etc/univention/ssl'
-
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Revoke certificate %s.%s' % (name,domainname))
-	p = os.popen('/usr/sbin/univention-certificate revoke -name %s.%s' % (name,domainname) )
-	p.close()
-
-	link_path=os.path.join(ssldir,name)
+	link_path = os.path.join(SSLDIR, hostname)
 	if os.path.exists(link_path):
 		os.remove(link_path)
 
-	certpath=os.path.join(ssldir,"%s.%s" % (name,domainname))
+	certpath = os.path.join(SSLDIR, fqdn)
 	if os.path.exists(certpath):
-		a=os.path.walk(certpath,remove_dir, None)
-
-	return
+		os.path.walk(certpath, remove_dir, None)
 
 def clean():
+	"""Handle request to clean-up the module."""
 	return
 
 def postrun():
+	"""Transition from prepared-state to not-prepared."""
 	return
-

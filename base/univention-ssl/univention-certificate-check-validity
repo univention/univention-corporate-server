@@ -37,9 +37,9 @@ import calendar
 
 from M2Crypto import X509
 
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 
-_bc = univention_baseconfig.baseConfig()
+_bc = ConfigRegistry()
 _bc.load()
 
 def get_validity_date(certFile):

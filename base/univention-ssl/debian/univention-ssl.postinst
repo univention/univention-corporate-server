@@ -76,12 +76,12 @@ if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ 
 		# Bug #13549
 		rdate time.fu-berlin.de || rdate 130.133.1.10 || true
 
-		. /usr/share/univention-ssl/make-certificates.sh;
-		init;
-		univention-certificate new -name $hostname.$domainname
-		ln -sf /etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/$hostname
+		. /usr/share/univention-ssl/make-certificates.sh
+		init
+		univention-certificate new -name "$hostname.$domainname"
+		ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
 	else
-		echo "skipped. SSL Certificate found in $CERTPATH ";
+		echo "skipped. SSL Certificate found in $CERTPATH"
 	fi
 fi
 
@@ -93,7 +93,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.3; then
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.3-1; then
-	ln -sf /etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/$hostname
+	ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
 fi
 
 if [ "$1" = "$configure" -a -z "$2" ]; then
@@ -105,7 +105,7 @@ fi
 
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
-		then
+	then
 		/etc/init.d/univention-directory-listener crestart || true
 	fi
 fi

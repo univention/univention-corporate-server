@@ -32,7 +32,7 @@
 # postrm script for univention-ssl
 
 if [ "$1" = "purge" ]; then
-	rm -rf /etc/univention/ssl;
+	rm -rf /etc/univention/ssl
 fi
 
 #DEBHELPER#

@@ -35,9 +35,9 @@
 # http://www.pca.dfn.de/dfnpca/certify/ssl/handbuch/ossl092/
 
 if [ -n "$sslbase" ]; then
-        SSLBASE="$sslbase"
+	SSLBASE="$sslbase"
 else
-        SSLBASE=/etc/univention/ssl
+	SSLBASE=/etc/univention/ssl
 fi
 
 CA=ucsCA
@@ -57,23 +57,20 @@ else
 fi
 
 mk_config () {
+	local outfile=$1
+	local password=$2
+	local days=$3
+	local name=$4
 
-    local outfile=$1;
-    local password=$2;
-    local days=$3
-    local name=$4
-
-	if test -e $outfile; then
-        rm $outfile;
+	if test -e "$outfile"; then
+		rm -f "$outfile"
 	fi
-    touch $outfile;
-    chmod 0600 $outfile;
+	touch "$outfile"
+	chmod 0600 "$outfile"
 
 	eval "$(univention-config-registry shell ssl/country ssl/state ssl/locality ssl/organization ssl/organizationalunit ssl/email)"
 
-
-    cat <<EOF >>$outfile
-
+	cat >"$outfile" <<EOF
 # HOME			= .
 # RANDFILE		= \$ENV::HOME/.rnd
 # oid_section		= new_oids
@@ -136,17 +133,16 @@ default_keyfile 	= privkey.pem
 distinguished_name	= req_distinguished_name
 attributes		= req_attributes
 x509_extensions		= v3_ca
-
 EOF
 
-if [ "$password" ]; then
-cat <<EOF >>$outfile
+	if [ -n "$password" ]; then
+		cat >>"$outfile" <<EOF
 input_password = $password
 output_password = $password
 EOF
-fi;
+	fi
 
-cat <<EOF >>$outfile
+	cat >>"$outfile" <<EOF
 
 string_mask = nombstr
 req_extensions = v3_req
@@ -219,38 +215,38 @@ nsComment               = This certificate is a Root CA Certificate
 
 issuerAltName           = issuer:copy
 authorityKeyIdentifier  = keyid:always,issuer:always
-
 EOF
-chmod 0600 $outfile
-
+	chmod 0600 "$outfile"
 }
 
 move_cert () {
-    local new;
-    local count=0;
-    local linkname;
-    local hash;
-    local OPWD=`pwd`;
-    cd "$SSLBASE";
+	local count=0
+	local OPWD=$(pwd)
+	cd "$SSLBASE"
 
-    for i; do
-	if [ -f "$i" ]; then
-	    new="${SSLBASE}/${CA}/certs/"`basename $i`;
-	    mv "$i" "$new";
-	    hash=`openssl x509 -hash -noout -in "$new"`;
-	    while :; do
-		linkname="${CA}/certs/""$hash"".""$count";
-		if [ -h "$linkname" ]; then
-		    count=$((count + 1));
-		    continue;
-		else
-		    ln -s "$new" "$linkname";
-		    break;
-		fi;
-	    done;
-	fi;
-    done;
-    cd "$OPWD"
+	local i
+	for i in "$@"
+	do
+		if [ -f "$i" ]
+		then
+			local new="${SSLBASE}/${CA}/certs/$(basename "$i")"
+			mv "$i" "$new"
+			local hash=$(openssl x509 -hash -noout -in "$new")
+			while :
+			do
+				local linkname="${CA}/certs/${hash}.${count}"
+				if [ -h "$linkname" ]
+				then
+					count=$((count + 1))
+					continue
+				else
+					ln -s "$new" "$linkname"
+					break
+				fi
+			done
+		fi
+	done
+	cd "$OPWD"
 }
 
 init () {
@@ -266,137 +262,137 @@ init () {
 		chmod 600 "$SSLBASE/password"
 		makepasswd > "$SSLBASE/password"
 	fi
-	PASSWD=`cat "$SSLBASE/password"`
+	local PASSWD=`cat "$SSLBASE/password"`
 
-	local OPWD=`pwd`;
+	local OPWD=$(pwd)
 
 	# create directory infrastructure
 	cd "$SSLBASE"
-	mkdir -m 700 -p ${CA};
-	mkdir -p ${CA}/{certs,crl,newcerts,private};
-	echo "01" > ${CA}/serial;
-	touch ${CA}/index.txt;
+	mkdir -m 700 -p "${CA}"
+	mkdir -p "${CA}/"{certs,crl,newcerts,private}
+	echo "01" >"${CA}/serial"
+	touch "${CA}/index.txt"
 
 	eval "$(ucr shell ssl/common)"
 
 	# make the root-CA configuration file
-	mk_config openssl.cnf $PASSWD $DEFAULT_DAYS "$ssl_common"
+	mk_config openssl.cnf "$PASSWD" "$DEFAULT_DAYS" "$ssl_common"
 
-
-	openssl genrsa -des3 -passout pass:"$PASSWD" -out ${CA}/private/CAkey.pem 2048
-	yes '' | openssl req -config openssl.cnf -new -x509 -days $DEFAULT_DAYS -key ${CA}/private/CAkey.pem -out ${CA}/CAcert.pem
+	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${CA}/private/CAkey.pem" 2048
+	yes '' | openssl req -config openssl.cnf -new -x509 -days "$DEFAULT_DAYS" -key "${CA}/private/CAkey.pem" -out "${CA}/CAcert.pem"
 
 	# copy the public key to a place, from where browsers can access it
-	openssl x509 -in ${CA}/CAcert.pem -out /var/www/ucs-root-ca.crt
+	openssl x509 -in "${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt
 
 	# mv the certificate to the certs dir and link it to its hash value
-	cp ${CA}/CAcert.pem ${CA}/newcerts/00.pem
-	move_cert ${CA}/newcerts/00.pem
+	cp "${CA}/CAcert.pem" "${CA}/newcerts/00.pem"
+	move_cert "${CA}/newcerts/00.pem"
 
 	# generate root ca request
-	openssl x509 -x509toreq -in ${CA}/CAcert.pem -signkey ${CA}/private/CAkey.pem -out ${CA}/CAreq.pem -passin pass:$PASSWD
+	openssl x509 -x509toreq -in "${CA}/CAcert.pem" -signkey "${CA}/private/CAkey.pem" -out "${CA}/CAreq.pem" -passin pass:"$PASSWD"
 
-	find ${CA} -type f | xargs chmod 600
-	find ${CA} -type d | xargs chmod 700
+	find "${CA}" -type f -exec chmod 600 {} +
+	find "${CA}" -type d -exec chmod 700 {} +
 
-	chmod 755 ${CA}
-	chmod 644 ${CA}/CAcert.pem
-	#generate empty crl at installation time	
-	openssl ca -config openssl.cnf -gencrl -out ${CA}/crl/crl.pem -passin pass:"$PASSWD"
-	openssl crl -in ${CA}/crl/crl.pem -out /var/www/${CA}.crl -inform pem -outform der
+	chmod 755 "${CA}"
+	chmod 644 "${CA}/CAcert.pem"
+	#generate empty crl at installation time
+	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD"
+	openssl crl -in "${CA}/crl/crl.pem" -out "/var/www/${CA}.crl" -inform pem -outform der
 
 	cd "$OPWD"
 }
 
-
 list_cert_names () {
-   local OPWD=`pwd`
-   cd "$SSLBASE"
-   awk 'BEGIN { FS="\t"; }
-    { if ( $1 == "V" )
-	{
-	    split ( $6, X, "/" );
-	    for ( i=2; X[i] != ""; i++ ) {
-		if ( X[i] ~ /^CN=/ ) {
-		    split ( X[i], Y, "=" );
-		    print $4 "\t" Y[2];
+	local OPWD=$(pwd)
+	cd "$SSLBASE"
+	awk 'BEGIN { FS="\t"; }
+	{ if ( $1 == "V" ) {
+			split ( $6, X, "/" );
+			for ( i=2; X[i] != ""; i++ ) {
+				if ( X[i] ~ /^CN=/ ) {
+					split ( X[i], Y, "=" );
+					print $4 "\t" Y[2];
+				}
+			}
 		}
-	    }
-	}
-    }'< ${CA}/index.txt
-    cd "$OPWD"
+	}' <"${CA}/index.txt"
+	cd "$OPWD"
 }
 
-
 has_valid_cert () {
-    list_cert_names | egrep -q "$1$";
+	list_cert_names | egrep -q "$1$"
 }
 
 renew_cert () {
-	local OPWD=`pwd`;
-	cd "$SSLBASE";
-	
+	local OPWD=$(pwd)
+	cd "$SSLBASE"
+
 	if [ -z "$1" ]; then
-		echo "missing certificate name" 1>&2;
-		return 1;
+		echo "missing certificate name" >&2
+		cd "$OPWD"
+		return 1
 	fi
-	
-	local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`;
+
+	local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`
 	if [ -z "$NUM" ]; then
-		echo "no certificate for $1 registered" 1>&2;
-		return 1;
-	fi;
-	
+		echo "no certificate for $1 registered" >&2
+		cd "$OPWD"
+		return 1
+	fi
+
 	if [ -z "$2" ]; then
 		days=$DEFAULT_DAYS
 	fi
-	
+
 	# revoke cert
-	revoke_cert $1
+	revoke_cert "$1"
 
 	# get host extension file
 	hostExt=$(ucr get ssl/host/extensions)
 	if [ -s "$hostExt" ]; then
-		source $hostExt
+		. "$hostExt"
 		extFile=$(createHostExtensionsFile "$1")
-	fi	
-	
+	fi
+
 	# sign the request
 	if [ -s "$extFile" ]; then
-		openssl ca -batch -config openssl.cnf -days $days -in "$1/req.pem" \
-		-out "$1/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
+		openssl ca -batch -config openssl.cnf -days "$days" -in "$1/req.pem" \
+			-out "$1/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
 		rm -f "$extFile"
 	else
-		openssl ca -batch -config openssl.cnf -days $days -in "$1/req.pem" \
-		-out "$1/cert.pem" -passin pass:"$PASSWD"
+		openssl ca -batch -config openssl.cnf -days "$days" -in "$1/req.pem" \
+			-out "$1/cert.pem" -passin pass:"$PASSWD"
 	fi
-	
+
 	# move the new certificate to its place
-	move_cert ${CA}/newcerts/*;
-	cd "$OPWD";
+	move_cert "${CA}/newcerts/"*
+	cd "$OPWD"
 }
 
 # Parameter 1: Name des CN dessen Zertifikat wiederufen werden soll
 
 revoke_cert () {
-	local OPWD=`pwd`;
-	cd "$SSLBASE";
+	local OPWD=`pwd`
+	cd "$SSLBASE"
 
 	if [ -z "$1" ]; then
-		echo "missing certificate name" 1>&2;
-		return 1;
+		echo "missing certificate name" >&2
+		cd "$OPWD"
+		return 1
 	fi
 
-	local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`;
+	local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`
 	if [ -z "$NUM" ]; then
-		echo "no certificate for $1 registered" 1>&2;
-		return 1;
-	fi;
-	openssl ca -config openssl.cnf -revoke ${CA}/certs/${NUM}.pem -passin pass:"$PASSWD"
-	openssl ca -config openssl.cnf -gencrl -out ${CA}/crl/crl.pem -passin pass:"$PASSWD"
-	openssl crl -in ${CA}/crl/crl.pem -out /var/www/${CA}.crl -inform pem -outform der
+		echo "no certificate for $1 registered" >&2
+		cd "$OPWD"
+		return 1
+	fi
+	openssl ca -config openssl.cnf -revoke "${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
+	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD"
+	openssl crl -in "${CA}/crl/crl.pem" -out "/var/www/${CA}.crl" -inform pem -outform der
 
-	cd "$OPWD";
+	cd "$OPWD"
 }
 
 
@@ -410,40 +406,40 @@ gencert () {
 	local OPWD=`pwd`
 	cd "$SSLBASE"
 	if has_valid_cert "$2"; then
-	    revoke_cert "$2";
-	fi;
+		revoke_cert "$2"
+	fi
 
-	days=$(/usr/sbin/univention-config-registry get ssl/default/days)
+	local days=$(/usr/sbin/univention-config-registry get ssl/default/days)
 	if [ -z "$days" ]; then
 		days=$DEFAULT_DAYS
 	fi
 	# generate a key pair
-	mkdir -pm 700 $name
-	mk_config "$name/openssl.cnf" "" $days "$cn"
+	mkdir -pm 700 "$name"
+	mk_config "$name/openssl.cnf" "" "$days" "$cn"
 	openssl genrsa -out "$name/private.key" 1024
 	yes '' | openssl req -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 
 	# get host extension file
-	hostExt=$(ucr get ssl/host/extensions)
+	local hostExt=$(ucr get ssl/host/extensions)
 	if [ -s "$hostExt" ]; then
-		source $hostExt
-		extFile=$(createHostExtensionsFile "$cn")
-	fi	
+		. "$hostExt"
+		local extFile=$(createHostExtensionsFile "$cn")
+	fi
 
 	# sign the key
 	if [ -s "$extFile" ]; then
 		openssl ca -batch -config openssl.cnf -days $days -in "$name/req.pem" \
-		-out "$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
+			-out "$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
 		rm -f "$extFile"
 	else
 		openssl ca -batch -config openssl.cnf -days $days -in "$name/req.pem" \
-		-out "$name/cert.pem" -passin pass:"$PASSWD"
+			-out "$name/cert.pem" -passin pass:"$PASSWD"
 	fi
 
 	# move the new certificate to its place
-	move_cert ${CA}/newcerts/*;
+	move_cert "${CA}/newcerts/"*
 
-	find $name -type f | xargs chmod 600
-	find $name -type d | xargs chmod 700
+	find "$name" -type f -exec chmod 600 {} +
+	find "$name" -type d -exec chmod 700 {} +
 	cd "$OPWD"
 }

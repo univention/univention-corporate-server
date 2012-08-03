@@ -1,6 +1,25 @@
+univention-ssl (7.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump
+  * Fix handling of "univention-certificate -path ..." handling (Bug #26572)
+  * Fix handling of missing arguments to options.
+  * Return useful exit values for scripting usage.
+  * Fix file permission for certificate: no +x needed.
+  * Print error messages to stderr to help parsing output.
+  * Quote variables (password!)
+  * Replace univention-baseconfig by univention-config-registry
+  * Use subprocess.call() instead of os.popen()
+  * Make variables function local
+  * Update copyright
+  * Remove trailing blanks on lines
+  * Remove semicolon on end of line
+  * Remove space before tabs
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Aug 2012 01:02:26 +0200
+
 univention-ssl (6.0.14-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:37:24 +0100
 
@@ -13,7 +32,7 @@ univention-ssl (6.0.13-2) unstable; urgency=low
 univention-ssl (6.0.13-1) unstable; urgency=low
 
   * replaced deprecated shell construct in make-certificates.sh
-    (Bug #24187) 
+    (Bug #24187)
 
  -- Felix Botner <botner@univention.de>  Tue, 25 Oct 2011 16:36:00 +0200
 
@@ -54,7 +73,7 @@ univention-ssl (6.0.9-1) unstable; urgency=low
 
 univention-ssl (6.0.8-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:33:21 +0200
 
@@ -79,7 +98,7 @@ univention-ssl (6.0.5-1) unstable; urgency=low
 
    [ Moritz Muehlenhoff ]
     * Modify gencertificate listener module so that the SSL certificates are
-      owned by the "DC Backup Hosts" group (Bug #22068)	 
+      owned by the "DC Backup Hosts" group (Bug #22068)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 20:39:31 +0200
 
@@ -328,7 +347,7 @@ univention-ssl (2.0.0-1) unstable; urgency=low
 
 univention-ssl (1.10.4-1) unstable; urgency=low
 
-  * add shebang line to cron script 
+  * add shebang line to cron script
 
  -- Andreas BÃŒsching <buesching@univention.de>  Wed, 20 Dec 2006 08:48:33 +0100
 
@@ -338,7 +357,7 @@ univention-ssl (1.10.3-2) unstable; urgency=low
     certificate and stores it Univention Baseconfig (ssl/validity/*)
   * add a daily cron that updates the validity information if
     ssl/validity/check=yes
-  * add #DEBHELPER# to postinst 
+  * add #DEBHELPER# to postinst
 
  -- Andreas BÃŒsching <buesching@univention.de>  Tue, 19 Dec 2006 18:01:23 +0100
 

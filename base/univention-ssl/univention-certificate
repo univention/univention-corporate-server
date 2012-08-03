@@ -29,7 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
+set -o errfail
 
 usage ()
 {
@@ -50,12 +50,12 @@ usage ()
 	echo "        dump"
 	echo "        list"
 	echo ""
-	echo "Options"
+	echo "Options:"
 	echo "        -name <name>"
 	echo "        -days <days>"
 	echo ""
 
-	exit
+	exit 2
 }
 
 command="$1"
@@ -63,38 +63,34 @@ shift
 
 if [ "$command" != "new" -a "$command" != "revoke" -a "$command" != "renew" -a "$command" != "check" -a "$command" != "list" -a "$command" != "dump" ]; then
 	if [ -n "$command" ]; then
-		usage "unknown command: $command"
+		usage "unknown command: $command" >&2
 	else
-		usage
+		usage >&2
 	fi
 fi
 
 while [ $# -gt 0 ]; do
 	case "$1" in
 	"-path")
-		shift
-		path="$1"
-		shift
+		path="$2"
+		shift 2 || usage "Missing argument to -path" >&2
 		;;
 	"-name")
-		shift
-		name="$1"
-		shift
+		name="$2"
+		shift 2 || usage "Missing argument to -name" >&2
 		;;
 	"-days")
-		shift
-		days="$1"
-		shift
+		days="$2" || usage "Missing argument to -days" >&2
+		shift 2
 		;;
 	*)
-		usage "unknown option $1"
-		shift
+		usage "unknown option $1" >&2
 		;;
 	esac
 done
 
 if [ "$command" != "list" -a -z "$name" ]; then
-	usage "missing -name"
+	usage "missing -name" >&2
 fi
 
 cd /etc/univention/ssl
@@ -105,10 +101,10 @@ case "$command" in
 	"new")
 		echo "Creating certificate: $name"
 		gencert "/etc/univention/ssl/$name" "$name"
-		getent group "DC Backup Hosts" 2>&1 >/dev/null
-		if [ $? = 0 ]; then
+		if getent group "DC Backup Hosts" 2>&1 >/dev/null
+		then
 			chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$name"
-			chmod -R g+rx "/etc/univention/ssl/$name"
+			chmod g+rx "/etc/univention/ssl/$name"
 		fi
 		;;
 	"revoke")
@@ -117,18 +113,20 @@ case "$command" in
 		;;
 	"renew")
 		if [ -z "$days" ]; then
-			usage "missing -days"
+			usage "missing -days" >&2
 		fi
 		echo "Renew certificate: $name"
 		renew_cert "$name" "$days"
 		;;
 	"check")
 		echo -n "Certificate \"$name\" is "
-		has_valid_cert $name
-		if [ $? = 0 ]; then
+		if has_valid_cert "$name"
+		then
 			echo "valid"
+			exit 0
 		else
 			echo "invalid"
+			exit 1
 		fi
 		;;
 	"list")
@@ -137,7 +135,6 @@ case "$command" in
 		;;
 	"dump")
 		echo "Dump certificate: $name"
-		openssl x509 -in /etc/univention/ssl/$name/cert.pem -noout -text
+		openssl x509 -in "/etc/univention/ssl/$name/cert.pem" -noout -text
 		;;
 esac
-
