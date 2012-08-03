@@ -78,10 +78,15 @@ static char* read_pwd_from_file(char *filename)
 
 	if ((fp = fopen(filename, "r")) == NULL)
 		return NULL;
-	if (fgets(line, 1024, fp) == NULL)
+	if (fgets(line, 1024, fp) == NULL) {
+		fclose(fp);
 		return NULL;
+	}
+	fclose(fp);
 
 	len = strlen(line);
+	if (!len)
+		return NULL;
 	if (line[len-1] == '\n')
 		line[len-1] = '\0';
 
