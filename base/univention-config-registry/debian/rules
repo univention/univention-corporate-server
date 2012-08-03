@@ -50,6 +50,7 @@ override_dh_auto_test:
 	ucslint
 	python tests/test_info_tools.py
 	make -C tests check
+	tests/unwrap/test.sh
 
 version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
 override_dh_auto_install:

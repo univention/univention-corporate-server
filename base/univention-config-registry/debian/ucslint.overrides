@@ -8,9 +8,17 @@
 # Internal use of custom has_key
 0009-5: python/univention/config_registry.py:1177
 0009-5: python/univention/config_registry.py:1226
+# #!python, since they only use default modules
+0009-2: scripts/ldapsearch-wrapper
+0009-2: scripts/ldapsearch-decode64
 # Internal unit tests: no copyright, has_key, #!python
+0009-2:tests/unwrap/unwrap.py
 0009-2:tests/test_info_tools.py
 0009-5:tests/test_info_tools.py
 0010-2:tests/test_info_tools.py
 0010-2:tests/multifile.sh
+0010-2:tests/unwrap/unwrap.sh
+0010-2:tests/unwrap/test.sh
+0010-2:tests/unwrap/unwrap.sed
+0010-2:tests/unwrap/unwrap.sed2
 0013-2:tests/multifile.sh
