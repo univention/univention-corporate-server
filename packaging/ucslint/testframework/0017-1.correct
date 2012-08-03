@@ -1,78 +1,78 @@
-W:0017-1: 0017-1-1, line 3: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 4: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 6: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 7: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 9: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 10: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 13: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 14: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 16: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 17: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 19: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 20: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 24: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 25: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 48: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 49: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 51: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 52: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 54: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 55: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 58: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 59: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 61: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 62: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 64: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-1, line 65: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 3: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 4: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 6: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 7: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 9: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 10: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 13: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 14: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 16: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 17: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 19: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 20: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 24: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 25: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 48: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 49: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 51: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 52: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 54: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 55: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 58: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 59: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 61: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 62: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 64: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-2, line 65: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 1: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 2: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 4: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 5: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 7: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 8: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 11: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 12: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 14: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 15: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 17: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 18: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 22: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 23: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 46: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 47: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 49: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 50: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 52: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 53: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 56: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 57: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 59: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 60: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 62: unquoted call of eval $(ucr shell)
-W:0017-1: 0017-1-3.sh, line 63: unquoted call of eval $(ucr shell)
+W:0017-1: 0017-1-1:10:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:13:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:14:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:16:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:17:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:19:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:20:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:24:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:25:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:3:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:48:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:49:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:4:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:51:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:52:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:54:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:55:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:58:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:59:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:61:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:62:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:64:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:65:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:6:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:7:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-1:9:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:10:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:13:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:14:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:16:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:17:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:19:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:20:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:24:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:25:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:3:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:48:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:49:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:4:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:51:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:52:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:54:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:55:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:58:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:59:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:61:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:62:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:64:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:65:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:6:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:7:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-2:9:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:11:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:12:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:14:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:15:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:17:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:18:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:1:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:22:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:23:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:2:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:46:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:47:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:49:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:4:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:50:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:52:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:53:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:56:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:57:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:59:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:5:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:60:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:62:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:63:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:7:1: unquoted call of eval "$(ucr shell)"
+W:0017-1: 0017-1-3.sh:8:1: unquoted call of eval "$(ucr shell)"
