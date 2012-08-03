@@ -1,0 +1,13 @@
+Source: foo
+Priority: optional
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 7),
+ univention-config-dev,
+ ucslint
+Standards-Version: 3.6.1
+
+Package: foo
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Description: foo

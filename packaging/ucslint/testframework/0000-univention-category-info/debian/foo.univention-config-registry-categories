@@ -1,0 +1,18 @@
+[missing_name]
+icon=icon
+
+[missing_icon]
+name=name
+
+[illegal_value]
+name=name
+icon=/.../there is no file
+
+[unknown_key]
+name=name
+icon=icon
+foo=bar
+
+[empty_key]
+name=name
+icon=

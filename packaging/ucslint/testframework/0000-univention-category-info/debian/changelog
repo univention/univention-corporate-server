@@ -1,0 +1,5 @@
+foo (1) unstable; urgency=low
+
+  * Initial release (Bug #18507)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 20:07:31 +0200
