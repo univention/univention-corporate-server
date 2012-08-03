@@ -167,8 +167,24 @@ class ConfigRegistryInfo( object ):
 					var[name] = value
 				self.variables[key] = var
 
-		# all patterns processed
-		self.__patterns = {}
+	def describe_search_term(self, term):
+		"""Try to apply a description to a search term.
+
+		This is not complete, because it would require a complete "intersect
+		two regular languages" algorithm.
+		"""
+		patterns = {}
+		for pattern, data in sorted(self.__patterns.items(),
+				key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
+			regex = re.compile(pattern)
+			match = regex.search(term)
+			if match:
+				var = Variable()
+				# var.update() does not use __setitem__()
+				for name, value in data:
+					var[name] = value
+				patterns[pattern] = var
+		return patterns
 
 	def write_customized( self ):
 		"""Persist the customized variable descriptions."""

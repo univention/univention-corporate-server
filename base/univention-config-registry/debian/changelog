@@ -7,6 +7,7 @@ univention-config-registry (8.0.1-1) unstable; urgency=low
   * Convert from has_key() to "in" (Bug #27745)
   * Use most specific pattern (Bug #28131)
   * Output errors to stderr (Bug #23968)
+  * Show unmatched pattern entries in search (Bug #18254)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 17:19:21 +0200
 

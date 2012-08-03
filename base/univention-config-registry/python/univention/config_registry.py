@@ -1407,6 +1407,13 @@ def handler_search( args, opts = {} ):
 				print_variable_info_string(key, value, vinfo, details=details)
 				break
 
+	if SHOW_EMPTY & details and not OPT_FILTERS['shell'][2]:
+		patterns = {}
+		for arg in args or ('',):
+			patterns.update(info.describe_search_term(arg))
+		for pattern, vinfo in patterns.items():
+			print_variable_info_string(pattern, None, vinfo, details=details)
+
 def handler_get( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
