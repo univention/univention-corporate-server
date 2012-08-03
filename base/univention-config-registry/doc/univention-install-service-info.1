@@ -1,5 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION-INSTALL-SERVICE-INFO 1 2010-04-09 UCS
+.TH UNIVENTION-INSTALL-SERVICE-INFO 1 2012-08-01 UCS
 
 .SH NAME
 univention\-install\-service\-info \- install UCS service description files into package build directories
@@ -9,14 +9,17 @@ univention\-install\-service\-info \- install UCS service description files into
 
 .SH DESCRIPTION
 .B univention\-install\-service\-info
-is a debhelper like programm that is responsible for installing a service description file into
-.I etc/univention/service.info/services/
-in the package build directory. The files
-.I debian/PACKAGE.univention\-service
-are installed.
+is a debhelper like program that is responsible for installing a service description file.
+
+.SH FILES
+.TP
+debian/\fIpackage\fP.univention\-service
+Describe the services of the package.
+The file itself is installed in \fI/etc/univention/service.info/services/*.cfg\fP.
 
 .SH EXAMPLES
-A service description file has the following format:
+A service description file consists of multiple service entries separated by one blank line.
+Each entry has the following format:
 .RS 5
 .nf
 [service_name]

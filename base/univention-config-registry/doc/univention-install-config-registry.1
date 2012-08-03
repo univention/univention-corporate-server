@@ -1,5 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION-INSTALL-CONFIG-REGISTRY 1 2012-02-16 UCS
+.TH UNIVENTION-INSTALL-CONFIG-REGISTRY 1 2012-08-01 UCS
 
 .SH NAME
 univention\-install\-config\-registry \- install UCR template files into package build directories
@@ -9,16 +9,33 @@ univention\-install\-config\-registry \- install UCR template files into package
 
 .SH DESCRIPTION
 .B univention\-install\-config\-registry
-is a debhelper like programm that is responsible for installing template files using univention config registry (UCR) variables into
-.I etc/univention/templates/
-in the package build directory. The templates references by
-.I debian/PACKAGE.univention\-config\-registry
-are installed.
+is a debhelper like program that is responsible for installing template files using univention config registry (UCR) variables.
+
+.SH FILES
+.TP
+debian/\fIpackage\fP.univention\-config\-registry
+Describe the files of the package to install as UCR templates.
+The file itself is installed in \fI/etc/univention/templates/info/*.info\fP.
+.TP
+debian/\fIpackage\fP.univention\-config\-registry\-mapping
+Lists pairs of LDAP attribute names and UCR variable names. Each pair should be put on its own line, separated by a single equal sign ("\fB=\fP").
+This mapping is used by
+.BR univention_policy_result (1)
+to map values defined through policies from their LDAP name to a corresponding UCR variable.
+The file itself is installed in \fI/etc/univention/templates/mapping/*.univention-config-registry-mapping\fP.
+.TP
+conffiles/\fI*\fP
+The templates files, modules, and scripts referenced from the
+\fIdebian/*.univention\-config\-registry\fP files are installed to
+\fI/etc/univention/templates/files/\fP,
+\fI/etc/univention/templates/modules/\fP, and
+\fI/etc/univention/templates/scripts/\fP, respectively.
 
 .SH EXAMPLES
 A
 .I univention\-config\-registry
-file has the following formats:
+file consists of multiple entries separated by one blank line.
+Each entry may have one of the following formats:
 .SS Single file
 Each time one of the listed UCR variables gets changed, the File will be re-created.
 .RS 5
@@ -31,12 +48,13 @@ Each time one of the listed UCR variables gets changed, the File will be re-crea
 \fBUser:\fP \fIuser_name\fP [OPTIONAL]
 \fBGroup:\fP \fIgroup_name\fP [OPTIONAL]
 \fBMode:\fP \fIoctal_file_mode\fP [OPTIONAL]
-\fBEncode-utf8:\fP \fBtrue\fP|\fByes\fP [OPTIONAL]
+\fBEncode-utf8:\fP \fBtrue\fP|\fByes\fP [DEPRECATED]
 .fi
 .RE
 .P
 The template file is scanned for variable substitutions using the \fB@%@\fP\fIvariable\fP\fB@%@\fP syntax, which are automatically registered with this entry.
 Additional variables can be explicitly registered using the \fBVariables\fP statement, one variable per statement.
+Multiple variables can be matched using Python regular expressions.
 .P
 If \fBPreinst\fP und \fBPostinst\fP are used, the module must implement the following Python functions:
 .RS 5
@@ -68,7 +86,7 @@ Each time one of the listed UCR variables gets changed, the Multifile will be re
 \fBUser:\fP \fIuser_name\fP [OPTIONAL]
 \fBGroup:\fP \fIgroup_name\fP [OPTIONAL]
 \fBMode:\fP \fIoctal_file_mode\fP [OPTIONAL]
-\fBEncode-utf8:\fP \fBtrue\fP|\fByes\fP [OPTIONAL]
+\fBEncode-utf8:\fP \fBtrue\fP|\fByes\fP [DEPRECATED]
 
 \fBType: subfile\fP
 \fBMultifile:\fP \fIetc/name_of_aggregating_file\fP
@@ -78,6 +96,7 @@ Each time one of the listed UCR variables gets changed, the Multifile will be re
 .P
 The sub-template files are scanned for variable substitutions using the \fB@%@\fP\fIvariable\fP\fB@%@\fP syntax, which are automatically registered with the multifile entry.
 Additional variables can be explicitly registered using the \fBVariables\fP statement, one variable per statement.
+Multiple variables can be matched using Python regular expressions.
 .fi
 .RE
 .P
@@ -95,6 +114,7 @@ Each time one of the listed UCR variables gets changed, the script will be execu
 .RE
 .P
 Variables to trigger the script must be explicitly registered using the \fBVariables\fP statement, one variable per statement.
+Multiple variables can be matched using Python regular expressions.
 .P
 The script receives the list of changes as \fIkey\fP\fB@%@\fP\fIold_value\fP\fB@%@\fP\fInew_value\fP on standard input.
 
@@ -109,6 +129,7 @@ Each time one of the listed UCR variables gets changed, the Python module will b
 .RE
 .P
 Variables to trigger the module must be explicitly registered using the \fBVariables\fP statement, one variable per statement.
+Multiple variables can be matched using Python regular expressions.
 .P
 The module should implement the following Python function:
 .RS 5
@@ -129,6 +150,11 @@ Otherwise, it may cause multiple instances of the same text to be added to maint
 
 .SH BUGS
 File names must not start with the leading slash, they should be relative to \fI/\fP.
+
+.SH ENVIRONMENT
+.IP "\s-1DH_VERBOSE\s0" 4
+Set to 1 to enable verbose mode.
+Debhelper will output every command it runs that modifies files on the build system.
 
 .SH SEE ALSO
 .BR univention\-install\-config\-registry\-info (1),

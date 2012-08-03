@@ -1,5 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH JITTER 1 2011-05-20
+.TH JITTER 1 2012-08-01
 .SH NAME
 jitter \- delay program execution for limited random time
 
@@ -12,8 +12,8 @@ jitter \- delay program execution for limited random time
 This manual page documents briefly the
 .B jitter
 command.
-It sleeps for a random time between 0 and \fIseconds\fP before executing \fIcommand\fP with the giveb \fIcommand-options\fP.
-It is useful for deskewing
+It sleeps for a random time between 0 and \fIseconds\fP before executing \fIcommand\fP with the given \fIcommand-options\fP.
+It is useful for de-skewing
 .BR crontab (5)
 entries, so they don't overload a network server by connecting to it at exactly the same time.
 
@@ -23,7 +23,7 @@ entries, so they don't overload a network server by connecting to it at exactly 
 Maximum number of \fIseconds\fP to wait.
 .TP
 .IR command\  [ command-options ..]
-The \fIcommand\fP to execute after the randomly choosen delay has passed.
+The \fIcommand\fP to execute after the randomly chosen delay has passed.
 The \fIoptions\fP are passed to the command as is.
 
 .SH EXAMPLE

@@ -1,5 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION-INSTALL-CONFIG-REGISTRY-INFO 1 2010-05-03 UCS
+.TH UNIVENTION-INSTALL-CONFIG-REGISTRY-INFO 1 2012-08-01 UCS
 
 .SH NAME
 univention\-install\-config\-registry\-info \- install UCR variable description into package build directories
@@ -9,18 +9,21 @@ univention\-install\-config\-registry\-info \- install UCR variable description 
 
 .SH DESCRIPTION
 .B univention\-install\-config\-registry\-info
-is a debhelper like programm that is responsible for installing univention config registry (UCR) variable and category descriptions into
-.I etc/univention/registry.info/variables/
-and
-.I /etc/univention/registry.info/categories/
-in the package build directory. The files
-.I debian/PACKAGE.univention\-config\-registry\-variables
-and
-.I debian/PACKAGE.univention\-config\-registry\-categories
-are installed.
+is a debhelper like programm that is responsible for installing univention config registry (UCR) variable and category descriptions.
+
+.SH FILES
+.TP
+debian/\fIpackage\fP.univention\-config\-registry\-variables
+Describe the UCR variables.
+The file itself is installed in \fI/etc/univention/registry.info/variables/*.cfg\fP.
+.TP
+debian/\fIpackage\fP.univention\-config\-registry\-categories
+Describes the categories used to group related UCR variables.
+The file itself is installed in \fI/etc/univention/registry.info/categories/*.cfg\fP.
 
 .SH EXAMPLES
-A variable description file has the following format:
+A variable description file consists of multiple entries separated by one blank line.
+Each entry has the following format:
 .RS 5
 .nf
 [top_level/sub_level/variable_name]
@@ -32,6 +35,7 @@ Categories=Management|...
 .RE
 .IP \fB[\fP\fItop_level/sub_level/variable_name\fP\fB]\fP
 Name of the UCR-variable.
+Only the regular expression "\fB.*\fP" can be used inside the name to match multiple variables.
 .IP \fBdescription\fP[\fIlanguage\fP]\fB=\fP\fItext\fP
 Description for the service for different languages.
 .IP \fBType=\fP\fItype\fP
@@ -39,13 +43,13 @@ Type of the variable used for syntax checking, currently unused.
 On of \fBstr\fP (for string), \fBbool\fP (for boolean), \fBint\fP (for integer).
 .IP \fBCategories=\fP\fIstring\fP.
 Category the UCR-variable belongs to.
-Currenty used values are:
+Currently used values are:
 .RS 5
 AD\-Connector, Connector\-Notes, Desktop, digitemp, LDAP, Mail, Management, management\-udm, management\-umc, Misc, Network, Printing, Samba, service\-adcon, service\-apache, service\-apache, system\-services, service\-backup, service\-bind, service\-bind, system\-services, service\-cups, service\-dhcp, service\-dhcp, system\-services, service\-heimdal, service\-ldap, service\-mail, service\-mail, system\-network, service\-mail, system\-services, service\-nagios, service\-nagios, system\-services, service\-pkgdb, service\-proxy, service\-samba, service\-software\-management, service\-ssh, service\-webproxy, service\-xen, SSL, System, system\-base, system\-desktop, system\-locale, system\-network, system\-services, system\-ssl, system\-swmon, uvmm
 .RE
-Multiple variables can be defined in one file separated by one blank line between two descriptions.
 .P
-A category description file has the following format:
+A category description file consists of multiple service entries separated by one blank line.
+Each entry has the following format:
 .RS 5
 .nf
 [category_name]

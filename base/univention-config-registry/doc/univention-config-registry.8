@@ -1,5 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION-CONFIG-REGISTRY 8 2011-05-24 UCS
+.TH UNIVENTION-CONFIG-REGISTRY 8 2012-08-01 UCS
 
 .SH NAME
 univention\-config\-registry \- base configuration for UCS
@@ -39,22 +39,22 @@ Print only the keys, not the values.
 Only valid for the \fBdump\fP and \fBsearch\fP actions.
 .SH COMMANDS
 .TP
-\fBset\fP [\fB\-\-forced\fP|\fB\-\-schedule\fP|\fB\-\-ldap-policy\fP] \fI<key>\fP=\fI<value>\fP [... \fI<key>\fP=\fI<value>\fP]
+\fBset\fP [\fB\-\-forced\fP|\fB\-\-schedule\fP|\fB\-\-ldap-policy\fP] \fIkey\fP=\fIvalue\fP [... \fIkey\fP=\fIvalue\fP]
 Set one or more \fIkeys\fP to specified \fIvalues\fP; if a \fIkey\fP is non-existent in the configuration registry it will be created.
 .br
-Keys can also be set conditionally by using \fB?\fP instead of \fB=\fP between \fIkey\fP and \fIvalue\fP:
+Keys can also be set conditionally by using a question mark ("\fB?\fP") instead of an equal sign ("\fB=\fP") between \fIkey\fP and \fIvalue\fP:
 If the \fIkey\fP does alread exist, it is not modified.
 .TP
-.BI get\  <key>
+.BI get\  key
 Retrieve the value of the specified \fIkey\fP from the configuration database.
 .TP
-\fBunset\fP [\fB\-\-forced\fP|\fB\-\-schedule\fP|\fB\-\-ldap-policy\fP] \fI<key>\fP [... \fI<key>\fP]
+\fBunset\fP [\fB\-\-forced\fP|\fB\-\-schedule\fP|\fB\-\-ldap-policy\fP] \fIkey\fP [... \fIkey\fP]
 Remove one or more \fIkeys\fP (and its associated values) from configuration database.
 .TP
 .B dump
 Display all key/value pairs which are stored in the configuration database.
 .TP
-\fBsearch\fP [\fB\-\-key\fP|\fB\-\-value\fP|\fB\-\-all\fP] [\fB\-\-category\fP \fI<category>\fP] [\fB\-\-brief\fP] [\fB\-\-non-empty\fP] [... \fI<regex>\fP]
+\fBsearch\fP [\fB\-\-key\fP|\fB\-\-value\fP|\fB\-\-all\fP] [\fB\-\-category\fP \fIcategory\fP] [\fB\-\-brief\fP|\fB\-\-verbose\fP] [\fB\-\-non-empty\fP] [\fIregex\fP ...]
 Displays all key/value pairs and their descriptions that match at least one of the given \fIregular expressions\fP.
 .RS
 .TP
@@ -67,20 +67,23 @@ Only search the values.
 .B \-\-all
 Search keys, values and descriptions.
 .TP
-.B \-\-category
-Limit search to variables of \fI<category>\fP.
+.BI \-\-category\  category
+Limit search to variables of \fIcategory\fP.
 .TP
 .B \-\-brief
 Don't print descriptions (can be enabled by default via \fBucr/output/brief\fP).
 .TP
+.B \-\-verbose
+Undo \fB\-\-brief\fP and also print categories for each variable.
+.TP
 .B \-\-non-empty
 Only search in non-empty variables.
 .TP
-No \fI<regex>\fP given
+No \fIregex\fP given
 Display all variables.
 .RE
 .TP
-\fBinfo\fP \fI<key>\fP [... \fI<key>\fP]
+\fBinfo\fP \fIkey\fP [... \fIkey\fP]
 Display verbose information for the specified variable(s).
 .TP
 \fBshell\fP [\fIkey\fP]:
@@ -96,7 +99,8 @@ Rebuild configuration \fIfile\fP from univention template;
 if no \fIfile\fP is specified ALL configuration files are rebuilt.
 .TP
 \fBfilter\fP [\fB\-\-encode\-utf8\fP] [<\fIfile\fP]
-Evaluate a template \fIfile\fP, optionaly expect python inline code in UTF8 (default: US-ASCII)
+Evaluate a template \fIfile\fP, optionaly expect Python inline code in UTF-8.
+(the \fB\-\-encode-utf8\fP option is deprecated and enabled by default)
 
 .SS Additional commands
 .TP
