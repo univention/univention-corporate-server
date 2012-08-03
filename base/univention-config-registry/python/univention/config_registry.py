@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Configuration Registry
+"""Univention Configuration Registry."""
 #  main configuration registry classes
 #
 # Copyright 2004-2012 Univention GmbH
@@ -30,10 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# API stability :pylint: disable-msg=R0201,R0903,R0913,C0103,W0613
+# Too pedantic  :pylint: disable-msg=C0301,W0704
+# Rewrite       :pylint: disable-msg=R0912,R0914,R0915,C0302
+# WIP           :pylint: disable-msg=C0111,W0622,W0102
+
 import os
 import sys
 import re
-import string
+import string  # pylint: disable-msg=W0402
 import cPickle
 import subprocess
 import fcntl
@@ -41,7 +46,7 @@ import pwd
 import grp
 import time
 import errno
-from debhelper import parseRfc822
+from debhelper import parseRfc822  # pylint: disable-msg=W0403
 from pipes import quote as escape_value
 
 variable_pattern = re.compile('@%@([^@]+)@%@')
@@ -96,6 +101,7 @@ class ConfigRegistry( dict ):
 	BASES = { NORMAL : 'base.conf', LDAP : 'base-ldap.conf', SCHEDULE : 'base-schedule.conf', FORCED : 'base-forced.conf' }
 
 	def __init__( self, filename = None, write_registry = NORMAL ):
+		dict.__init__(self)
 		if os.getenv( 'UNIVENTION_BASECONF' ):
 			self.file = os.getenv( 'UNIVENTION_BASECONF' )
 		elif filename:
@@ -226,13 +232,13 @@ class ConfigRegistry( dict ):
 	def is_true(self, key, default = False):
 		"""Return if the strings value of key is considered as true."""
 		if key in self:
-			return self.get(key).lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
+			return self.get(key).lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')  # pylint: disable-msg=E1103
 		return default
 
 	def is_false(self, key, default = False):
 		"""Return if the strings value of key is considered as false."""
 		if key in self:
-			return self.get(key).lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
+			return self.get(key).lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')  # pylint: disable-msg=E1103
 		return default
 
 class _ConfigRegistry( dict ):
@@ -250,6 +256,7 @@ class _ConfigRegistry( dict ):
 		self.backup_file = self.file + '.bak'
 		self.lock_filename = self.file + '.lock'
 		self.strict_encoding = False # will be set by <ConfigRegistry> for each <_ConfigRegistry> - <True> means the backend files are valid UTF-8 and should stay that way --> only accept valid UTF-8
+		self.lock_file = None
 
 	def load(self):
 		self.clear()
@@ -454,6 +461,7 @@ class configHandlerDiverting(configHandler):
 	"""File diverting config handler."""
 
 	def __init__(self, to_file):
+		super(configHandlerDiverting, self).__init__()
 		self.to_file = os.path.join('/', to_file)
 		self.user = None
 		self.group = None
@@ -515,7 +523,7 @@ class configHandlerDiverting(configHandler):
 class configHandlerMultifile(configHandlerDiverting):
 
 	def __init__(self, dummy_from_file, to_file):
-		configHandlerDiverting.__init__(self, to_file)
+		super(configHandlerMultifile, self).__init__(to_file)
 		self.variables = set()
 		self.from_files = set()
 		self.dummy_from_file = dummy_from_file
@@ -524,7 +532,7 @@ class configHandlerMultifile(configHandlerDiverting):
 	def __setstate__(self, state):
 		"""Load state upon unpickling."""
 		self.__dict__.update(state)
-		self.def_count # may raise AttributeError, which forces UCR to rebuild the cache
+		self.def_count # may raise AttributeError, which forces UCR to rebuild the cache :pylint: disable-msg=W0104
 
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
@@ -587,7 +595,7 @@ class configHandlerMultifile(configHandlerDiverting):
 class configHandlerFile(configHandlerDiverting):
 
 	def __init__(self, from_file, to_file):
-		configHandlerDiverting.__init__(self, to_file)
+		super(configHandlerFile, self).__init__(to_file)
 		self.from_file = from_file
 		self.preinst = None
 		self.postinst = None
@@ -634,10 +642,11 @@ class configHandlerFile(configHandlerDiverting):
 class configHandlerScript(configHandler):
 
 	def __init__(self, script):
+		super(configHandlerScript, self).__init__()
 		self.script = script
 
 	def __call__(self, args):
-		ucr, changed = args
+		_ucr, changed = args
 		print 'Script: '+self.script
 		if os.path.isfile(self.script):
 			runScript(self.script, 'generate', changed)
@@ -645,6 +654,7 @@ class configHandlerScript(configHandler):
 class configHandlerModule(configHandler):
 
 	def __init__(self, module):
+		super(configHandlerModule, self).__init__()
 		self.module = module
 
 	def __call__(self, args):
@@ -673,6 +683,9 @@ class configHandlers:
 	_handlers = {} # variable -> set(handlers)
 	_multifiles = {} # multifile -> handler
 	_subfiles = {} # multifile -> [(subfile, variables)] // pending
+
+	def __init__(self):
+		pass
 
 	def _get_cache_version(self, fp):
 		line = fp.readline()	# IOError is propagated
@@ -1091,7 +1104,7 @@ def randpw():
 		'6', '7', '8', '9' ]
 	pw = ''
 	fp = open('/dev/urandom', 'r')
-	for i in range(0,8):
+	for _ in range(8):
 		o = fp.read(1)
 		pw += valid[(ord(o) % len(valid))]
 	fp.close()
@@ -1116,12 +1129,12 @@ def replog(method, scope, ucr, var, value=None):
 		elif scope == ConfigRegistry.SCHEDULE:
 			scope_arg = '--schedule '
 
-		str = '%s: %s %s%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue)
+		log = '%s: %s %s%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue)
 		try:
 			if not os.path.isfile(replog_file):
 				os.close(os.open(replog_file, os.O_CREAT, 0640))
 			logfile = open(replog_file, "a+")
-			logfile.write(str)
+			logfile.write(log)
 			logfile.close()
 		except EnvironmentError, ex:
 			print >> sys.stderr, "E: exception occurred while writing to replication log: %s" % (ex,)
@@ -1353,7 +1366,7 @@ def handler_search( args, opts = {} ):
 			sys.exit(1)
 
 	#Import located here, because on module level, a circular import would be created
-	import config_registry_info as cri
+	import config_registry_info as cri  # pylint: disable-msg=W0403
 	cri.set_language('en')
 	info = cri.ConfigRegistryInfo(install_mode=False)
 
@@ -1458,7 +1471,7 @@ def handler_info( args, opts = {} ):
 	reg = ConfigRegistry()
 	reg.load()
 	#Import located here, because on module level, a circular import would be created
-	import config_registry_info as cri
+	import config_registry_info as cri  # pylint: disable-msg=W0403
 	cri.set_language('en')
 	info = cri.ConfigRegistryInfo(install_mode=False)
 
