@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
-#  install config registry information files
+"""Install service files."""
 #
 # Copyright 2007-2012 Univention GmbH
 #
@@ -31,49 +31,63 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys
+import os
+import sys
 import univention.service_info as us_info
 from univention.debhelper import doIt, binary_packages
+from optparse import OptionParser
 
+def install_services(info, package):
+    """Process debian/$package.univention-service."""
+    cfile = '%s.univention-service' % (package,)
+    source = os.path.join('debian', cfile)
+    if not os.path.exists(source):
+        return
 
-def usage():
-	print '''
-	Usage: univention-install-service-info
-	install UCS service description files into package build directories
+    info.read_services(source)
+    failed = info.check_services()
+    if failed:
+        print >> sys.stderr, 'Incomplete entries in services definition %s' % \
+                (cfile,)
+        for service, keys in failed.items():
+            print >> sys.stderr, '  [%s]' % (service,)
+            for key in keys:
+                print >> sys.stderr, '    %s' % (key,)
+        sys.exit(1)
+    dest_path = os.path.join('debian', package,
+            us_info.ServiceInfo.BASE_DIR[1:],
+            us_info.ServiceInfo.SERVICES)
+    dest = os.path.join(dest_path, package + us_info.ServiceInfo.FILE_SUFFIX)
 
-	univention-install-service-info is a debhelper like programm that is  respon‐
-	sible for installing a service description file into etc/univention/ser‐
-	vice.info/services/ in the package build directory. The files debian/PACK‐
-	AGE.univention-service are installed.
+    doIt('install', '-m', '755', '-d', dest_path)
+    doIt('install', '-m', '644', source, dest)
 
-'''
+def main():
+    """Install service files."""
+    usage = "%prog"
+    epilog = '''univention-install-service-info is a debhelper like programm
+to install service related description files into the package build directories.
+
+The service descriptions debian/*.univention-service go to
+/etc/univention/service.info/*.cfg.
+    '''
+    parser = OptionParser(usage=usage, epilog=epilog)
+    parser.add_option('-v', '--verbose',
+            dest='verbose', action='store_true',
+            help='Verbose mode: show all commands that modify the package build directory.')
+    options, args = parser.parse_args()
+    if options.verbose:
+        os.environ['DH_VERBOSE'] = '1'
+    if args:
+        parser.error('No argument expected')
+
+    info = us_info.ServiceInfo( install_mode = True )
+    try:
+        for package in binary_packages():
+            install_services(info, package)
+    except IOError, ex:
+        print >> sys.stderr, ex
+        sys.exit(1)
 
 if __name__ == '__main__':
-	if '--help' in sys.argv or '-h' in sys.argv:
-		usage()
-		sys.exit(0)
-
-	info = us_info.ServiceInfo( install_mode = True )
-	try:
-		for package in binary_packages():
-			# services
-			source = os.path.join( 'debian', package + '.univention-service' )
-
-			if not os.path.exists( source ):
-				continue
-
-			info.read_services( source )
-			failed = info.check_services()
-			if failed:
-				print >>sys.stderr, 'The following services definitions are invalid: %s' % \
-				  	  ', '.join( failed )
-				sys.exit( 1 )
-			dest_path = os.path.join( 'debian', package, us_info.ServiceInfo.BASE_DIR[ 1 : ],
-					  	  us_info.ServiceInfo.SERVICES )
-			dest = os.path.join( dest_path, package + us_info.ServiceInfo.FILE_SUFFIX )
-
-			doIt('install', '-m', '755', '-d', dest_path)
-			doIt('install', '-m', '644', source, dest)
-	except IOError, e:
-		print >> sys.stderr, e
-		sys.exit(1)
+    main()

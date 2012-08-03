@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
-#  install configuration registry information files
+"""Install configuration registry information files."""
 #
 # Copyright 2007-2012 Univention GmbH
 #
@@ -31,72 +31,94 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys
+import os
+import sys
 import univention.config_registry_info as ucr_info
 from univention.debhelper import doIt, binary_packages
+from optparse import OptionParser
 
-def usage():
-	print '''
-	Usage: univention-install-config-registry-info
-	install UCR variable description into package build directories
+def install_categories(info, package):
+    """Process debian/$package.univention-config-registry-categories."""
+    cfile = '%s.univention-config-registry-categories' % (package,)
+    source = os.path.join('debian', cfile)
+    if not os.path.exists(source):
+        return
 
-	univention-install-config-registry-info is a debhelper like programm that is
-	responsible for installing univention config registry (UCR) variable and cat‐
-	egory descriptions into etc/univention/registry.info/variables/ and /etc/uni‐
-	vention/registry.info/categories/ in the package build directory. The files
-	debian/PACKAGE.univention-config-registry-variables and debian/PACKAGE.uni‐
-	vention-config-registry-categories are installed.
+    info.read_categories(source)
+    failed = info.check_categories()
+    if failed:
+        print >> sys.stderr, 'Incomplete entries in category definition %s' % \
+                (cfile,)
+        for category, keys in failed.items():
+            print >> sys.stderr, '  [%s]' % (category,)
+            for key in keys:
+                print >> sys.stderr, '    %s' % (key,)
+        sys.exit(1)
+    dest_path = os.path.join('debian', package,
+            ucr_info.ConfigRegistryInfo.BASE_DIR[1:],
+            ucr_info.ConfigRegistryInfo.CATEGORIES)
+    dest = os.path.join(dest_path,
+            package + ucr_info.ConfigRegistryInfo.FILE_SUFFIX)
 
-'''
+    doIt('install', '-m', '755', '-d', dest_path)
+    doIt('install', '-m', '644', source, dest)
 
+def install_variables(info, package):
+    """Process debian/$package.univention-config-registry-variables."""
+    cfile = '%s.univention-config-registry-variables' % (package,)
+    source = os.path.join('debian', cfile)
+    if not os.path.exists(source):
+        return
 
+    info.read_variables(source)
+    failed = info.check_variables()
+    if failed:
+        print >> sys.stderr, 'Incomplete entries in variable definition %s' % \
+                (cfile,)
+        for variable, keys in failed.items():
+            print >> sys.stderr, '  %s:' % (variable,)
+            for key in keys:
+                print >> sys.stderr, '    %s' % (key,)
+        sys.exit(1)
+    dest_path = os.path.join( 'debian', package,
+            ucr_info.ConfigRegistryInfo.BASE_DIR[1:],
+            ucr_info.ConfigRegistryInfo.VARIABLES)
+    dest = os.path.join(dest_path,
+            package + ucr_info.ConfigRegistryInfo.FILE_SUFFIX)
 
+    doIt('install', '-m', '755', '-d', dest_path)
+    doIt('install', '-m', '644', source, dest)
 
+def main():
+    """Install configuration registry information files."""
+    usage = "%prog"
+    epilog = '''univention-install-config-registry-info is a debhelper like
+program to install Univention Config Registry (UCR) related description files
+into the package build direcories.
+
+The variable descriptions debian/*.univention-config-registry-info go to
+/etc/univention/registry.info/variables/*.cfg.
+The category descriptions debian/*.univention-config-registry-categories got to
+/etc/univention/registry.info/categories/*.cfg.
+    '''
+    parser = OptionParser(usage=usage, epilog=epilog)
+    parser.add_option('-v', '--verbose',
+            dest='verbose', action='store_true',
+            help='Verbose mode: show all commands that modify the package build directory.')
+    options, args = parser.parse_args()
+    if options.verbose:
+        os.environ['DH_VERBOSE'] = '1'
+    if args:
+        parser.error('No argument expected')
+
+    info = ucr_info.ConfigRegistryInfo( install_mode = True )
+    try:
+        for package in binary_packages():
+            install_categories(info, package)
+            install_variables(info, package)
+    except IOError, ex:
+        print >> sys.stderr, ex
+        sys.exit(1)
 
 if __name__ == '__main__':
-	if '--help' in sys.argv or '-h' in sys.argv:
-		usage()
-		sys.exit(0)
-	info = ucr_info.ConfigRegistryInfo( install_mode = True )
-	try:	
-		for package in binary_packages():
-			# categories
-			source = os.path.join( 'debian', package + '.univention-config-registry-categories' )
-			if os.path.exists( source ):
-				info.read_categories( source )
-				failed = info.check_categories()
-				if failed:
-					print >>sys.stderr, 'The following category definitions are invalid: %s' % \
-					  	  ', '.join( failed )
-					sys.exit( 1 )
-				dest_path = os.path.join( 'debian', package, ucr_info.ConfigRegistryInfo.BASE_DIR[ 1 : ],
-									  	  ucr_info.ConfigRegistryInfo.CATEGORIES )
-				dest = os.path.join( dest_path, package + '.cfg' )
-
-				doIt('install', '-m', '755', '-d', dest_path)
-				doIt('install', '-m', '644', source, dest)
-
-				real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR,
-										  	  ucr_info.ConfigRegistryInfo.CATEGORIES,
-										  	  package + '.cfg' )
-
-			# variables
-			source = os.path.join( 'debian', package + '.univention-config-registry-variables' )
-			if not os.path.exists( source ):
-				continue
-
-			info.read_variables( source )
-			failed = info.check_variables()
-			if failed:
-				print >>sys.stderr, 'The following variable definition are invalid: %s' % \
-				  	  ', '.join( failed )
-				sys.exit( 1 )
-			dest_path = os.path.join( 'debian', package, ucr_info.ConfigRegistryInfo.BASE_DIR[ 1 : ],
-								  	  ucr_info.ConfigRegistryInfo.VARIABLES )
-			dest = os.path.join( dest_path, package + '.cfg' )
-
-			doIt('install', '-m', '755', '-d', dest_path)
-			doIt('install', '-m', '644', source, dest)
-	except IOError, e:
-		print >> sys.stderr, e
-		sys.exit(1)
+    main()

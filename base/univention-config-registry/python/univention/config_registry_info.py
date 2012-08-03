@@ -43,34 +43,39 @@ import univention.info_tools as uit
 _locale = 'de'
 
 class Variable( uit.LocalizedDictionary ):
+	"""UCR variable description."""
 	def __init__( self, registered = True ):
 		uit.LocalizedDictionary.__init__( self )
 		self.value = None
 		self._registered = registered
 
 	def check( self ):
+		"""Check description for completeness."""
+		missing = []
 		if not self._registered:
-			return True
+			return missing
 
 		for key in ( 'description', 'type', 'categories' ):
 			if not self.get( key, None ):
-				return False
-
-		return True
+				missing.append(key)
+		return missing
 
 
 class Category( uit.LocalizedDictionary ):
+	"""UCR category description."""
 	def __init__( self ):
 		uit.LocalizedDictionary.__init__( self )
 
 	def check( self ):
+		"""Check description for completeness."""
+		missing = []
 		for key in ( 'name', 'icon' ):
-			if not self.has_key( key ) or not self[ key ]:
-				return False
-
-		return True
+			if not self.get(key, None):
+				missing.append(key)
+		return missing
 
 class ConfigRegistryInfo( object ):
+	"""UCR variable and category descriptions."""
 	BASE_DIR = '/etc/univention/registry.info'
 	CATEGORIES = 'categories'
 	VARIABLES = 'variables'
@@ -78,6 +83,12 @@ class ConfigRegistryInfo( object ):
 	FILE_SUFFIX = '.cfg'
 
 	def __init__( self, install_mode = False, registered_only = True, load_customized=True ):
+		"""Initialize variable and category descriptions.
+
+		install_mode=True deactivates the use of an UCR instance.
+		registered_only=False creates syntetic entries for all undescribed but set variables.
+		load_customized=False deactivates loading customized descriptions.
+		"""
 		self.categories = {}
 		self.variables = {}
 		self.__patterns = {}
@@ -90,20 +101,26 @@ class ConfigRegistryInfo( object ):
 			self.__configRegistry = None
 
 	def check_categories( self ):
-		failed = []
+		"""Return dictionary of incomplete category descriptions."""
+		"""Check all categories for completeness."""
+		incomplete = {}
 		for name, cat in self.categories.items():
-			if not cat.check():
-				failed.append( name )
-		return failed
+			miss = cat.check()
+			if miss:
+				incomplete[name] = miss
+		return incomplete
 
 	def check_variables( self ):
-		failed = []
+		"""Return dictionary of incomplete variable descriptions."""
+		incomplete = {}
 		for name, var in self.variables.items():
-			if not var.check():
-				failed.append( name )
-		return failed
+			miss = var.check()
+			if miss:
+				incomplete[name] = miss
+		return incomplete
 
 	def read_categories( self, filename ):
+		"""Load a single category description file."""
 		cfg = uit.UnicodeConfig()
 		cfg.read( filename )
 		for sec in cfg.sections():
@@ -117,6 +134,7 @@ class ConfigRegistryInfo( object ):
 			self.categories[ cat_name ] = cat
 
 	def load_categories( self ):
+		"""Load all category description files."""
 		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.CATEGORIES )
 		if os.path.exists ( path ):
 			for filename in os.listdir( path ):
@@ -151,11 +169,13 @@ class ConfigRegistryInfo( object ):
 		self.__patterns = {}
 
 	def write_customized( self ):
+		"""Persist the customized variable descriptions."""
 		filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
 								 ConfigRegistryInfo.CUSTOMIZED )
 		self.__write_variables( filename )
 
 	def __write_variables( self, filename = None, package = None ):
+		"""Persist the variable descriptions into a file."""
 		if not filename and not package:
 			raise AttributeError( "neither 'filename' nor 'package' is specified" )
 		if not filename:
@@ -181,11 +201,13 @@ class ConfigRegistryInfo( object ):
 		return True
 
 	def read_customized( self ):
+		"""Read customized variable descriptions."""
 		filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
 								 ConfigRegistryInfo.CUSTOMIZED )
 		self.read_variables( filename, override = True )
 
 	def read_variables( self, filename = None, package = None, override = False ):
+		"""Read variable descriptions."""
 		if not filename and not package:
 			raise AttributeError( "neither 'filename' nor 'package' is specified" )
 		if not filename:
@@ -204,12 +226,18 @@ class ConfigRegistryInfo( object ):
 			var = Variable()
 			for name, value in cfg.items( sec ):
 				var[ name ] = value
-			# set current value
+			# get current value
 			if self.__configRegistry != None:
 				var.value = self.__configRegistry.get( sec, None )
 			self.variables[ sec ] = var
 
 	def __load_variables( self, registered_only = True, load_customized=True ):
+		"""Read default and customized variable descriptions.
+
+		With default registered_only=True only variables for which a
+		description exists are loaded, otherwise all currently set variables
+		are also included.
+		"""
 		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES )
 		if os.path.exists ( path ):
 			for entry in os.listdir( path ):
@@ -240,6 +268,7 @@ class ConfigRegistryInfo( object ):
 		return None
 
 	def get_variables( self, category = None ):
+		"""Return dictionary of variable info blocks belonging to given category."""
 		if not category:
 			return self.variables
 		temp = {}
@@ -250,6 +279,7 @@ class ConfigRegistryInfo( object ):
 		return temp
 
 	def get_variable( self, key ):
+		"""Return the description of requested variable."""
 		return self.variables.get( key, None )
 
 	def add_variable( self, key, variable ):
@@ -258,6 +288,7 @@ class ConfigRegistryInfo( object ):
 		self.variables[ key ] = variable
 
 def set_language( lang ):
+	"""Set the default language."""
 	global _locale
 	_locale = lang
 	uit.set_language(lang)

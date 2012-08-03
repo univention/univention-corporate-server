@@ -49,11 +49,12 @@ class Service( uit.LocalizedDictionary ):
 		self.running = False
 
 	def check( self ):
+		"""Check service entry for validity, returning list of incomplete entries."""
+		incomplete = []
 		for key in ( 'description', 'programs' ):
 			if not self.get( key, None ):
-				return False
-
-		return True
+				incomplete.append(key)
+		return incomplete
 
 def pidof( name ):
 	result = []
@@ -139,11 +140,13 @@ class ServiceInfo( object ):
 			self.__update_status( name, serv )
 
 	def check_services( self ):
-		failed = []
+		"""Return dictionary of incomplete service descriptions."""
+		incomplete = {}
 		for name, srv in self.services.items():
-			if not srv.check():
-				failed.append( name )
-		return failed
+			miss = srv.check()
+			if miss:
+				incomplete[name] = miss
+		return incomplete
 
 	def write_customized( self ):
 		filename = os.path.join( ServiceInfo.BASE_DIR, ServiceInfo.SERVICES,
@@ -181,7 +184,7 @@ class ServiceInfo( object ):
 			srv = Service()
 			for name, value in cfg.items( sec ):
 				srv[ name ] = value
-			for path in srv['programs'].split(','):
+			for path in srv.get('programs', '').split(','):
 				# "programs" defines the "/proc/self/cmdline" of the service,
 				# not the executable, therefore we test for a leading "/":
 				# check if it is a real file    split to remove parameters
@@ -219,5 +222,5 @@ class ServiceInfo( object ):
 	def add_service( self, name, service ):
 		'''this methods adds a new service object or overrides an old
 		entry'''
-		if service.check():
+		if not service.check():
 			self.services[ name ] = service
