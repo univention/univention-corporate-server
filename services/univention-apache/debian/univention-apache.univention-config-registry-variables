@@ -19,7 +19,7 @@ Categories=service-apache
 [apache2/autostart]
 Description[de]=Automatischer Start des Apache Webservers
 Description[en]=Automatically start of the apache webserver
-Type=str
+Type=bool
 Categories=service-apache,system-services
 
 [apache2/proxy/access/order]
@@ -43,7 +43,7 @@ Categories=service-apache
 [apache2/maxclients]
 Description[de]=Wie viele Verbindungen gleichzeitig verarbeitet werden
 Description[en]=Maximum number of connections that will be processed simultaneously
-Type=str
+Type=int
 Categories=service-apache
 
 [apache2/ssl/certificate]
@@ -55,5 +55,17 @@ Categories=service-apache
 [apache2/ssl/key]
 Description[de]=Pfad zur PEM-codierten privaten .key Schlüsseldatei. Der Schlüssel muss ein RSA oder DSA-Key sein.
 Description[en]=Path to the PEM-encodet private key (.key) file. The key must be a RSA or DSA-Key.
+Type=str
+Categories=service-apache
+
+[apache2/documentroot]
+Description[de]=Wurzelverzeichnis für die Dokumente des Web-Server [/var/www/]
+Description[en]=Root directory for documents of the web server [/var/www/]
+Type=str
+Categories=service-apache
+
+[apache2/loglevel]
+Description[de]=Loglevel für den Web-Server: emerg alert crit error warn notice info debug [warn]
+Description[en]=Log level for the web server: emerg alert crit error warn notice info debug [warn]
 Type=str
 Categories=service-apache

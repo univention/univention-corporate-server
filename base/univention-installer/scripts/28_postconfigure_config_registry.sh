@@ -258,10 +258,7 @@ if [ -n "$locale_default" ]; then
 	short_form=`echo $locale_default | awk -F ':' '{print $1}'`
 
 	univention-config-registry set \
-	  locale/default="$locale_default" \
-	  admin/web/language="$short_form" \
-	  console/web/language="$short_form" \
-	  gdm/language="$locale_default"
+	  locale/default="$locale_default"
 fi
 
 echo "$timezone" >/etc/timezone

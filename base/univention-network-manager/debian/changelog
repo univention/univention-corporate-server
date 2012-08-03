@@ -1,3 +1,11 @@
+univention-network-manager (4.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Move common data to univention-network-common (Bug #24282)
+  * Add UCR variable description (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 09:28:32 +0200
+
 univention-network-manager (3.0.23-1) unstable; urgency=low
 
   * Disable auto restart of interface in univention-register-network-
@@ -183,7 +191,7 @@ univention-network-manager (3.0.0-1) unstable; urgency=low
 
 univention-network-manager (2.0.1-1) unstable; urgency=low
 
-  * reload gdm in /etc/network/if-up.d/50_gdm only if last 
+  * reload gdm in /etc/network/if-up.d/50_gdm only if last
     start was at least 5s ago (Bug #18317)
 
  -- Felix Botner <botner@univention.de>  Wed, 17 Nov 2010 13:58:51 +0100

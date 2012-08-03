@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.2-1) unstable; urgency=low
+
+  * Add UCR variable description (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 14:20:30 +0200
+
 univention-management-console-frontend (2.0.1-1) unstable; urgency=low
 
   * use umc/web/feedback/mail as feedback email adress; Bug #27702

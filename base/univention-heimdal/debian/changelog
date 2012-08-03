@@ -1,3 +1,10 @@
+univention-heimdal (6.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Add UCR variable descriptions (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 10:50:34 +0200
+
 univention-heimdal (5.0.29-1) unstable; urgency=low
 
   * Consider dns/register/srv_records/kerberos and /ldap UCR variables

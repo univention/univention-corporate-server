@@ -1,37 +1,37 @@
 [gdm/allowremoteroot]
 Description[de]=Erlaube root Login via XDMCP
 Description[en]=Allow login as root via XDMCP
-Type=str
+Type=bool
 Categories=system-desktop
 
 [gdm/allowroot]
 Description[de]=Erlaube root Login am GDM
 Description[en]=Allow root login at GDM
-Type=str
+Type=bool
 Categories=system-desktop
 
 [gdm/relaxpermissions]
 Description[de]=Nutze Dateien und Ordner welche für andere Nutzer als den Besitzer schreibbar sind: 0 = nein, 1 = gruppenweit schreibbar, 2 = für jeden schreibbar
 Description[en]=Use files and directories writable to other users than the owner: 0 = no, 1 = group writable 2 = world writable
-Type=str
+Type=int
 Categories=system-desktop
 
 [gdm/menu/language]
 Description[de]=Aktiviere/Deaktiviere die Schaltfläche für die Sprachauswahl
 Description[en]=Enable/Disable language button
-Type=str
+Type=bool
 Categories=system-desktop
 
 [gdm/menu/securesystem]
 Description[de]=Erlaube/Verbiete Benutzern das Herrunterfahren des Systems
 Description[en]=Allow/Disallow users to shutdown the system
-Type=str
+Type=bool
 Categories=system-desktop
 
 [gdm/menu/system]
 Description[de]=Aktiviere/Deaktiviere GMD-Menüs
 Description[en]=Enalbe/Disable GDM menus
-Type=str
+Type=bool
 Categories=system-desktop
 
 [gdm/theme]
@@ -61,13 +61,13 @@ Categories=system-desktop
 [gdm/xdmcp]
 Description[de]=Aktiviert Unterstützung für das XDMCP-Login-Protokoll
 Description[en]=Activates support for the XDMCP login protocol
-Type=str
+Type=bool
 Categories=Desktop
 
 [univentionAutoStartScript]
 Description[de]=Aktiviere automatischen Login
 Description[en]=Enable automatic login
-Type=str
+Type=bool
 Categories=system-desktop
 
 [gdm/autostart/user]

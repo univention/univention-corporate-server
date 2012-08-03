@@ -1,0 +1,5 @@
+[server/password/interval]
+Description[de]=Interval in Tagen für den Passwortwechsel des Maschinenkontos [21]
+Description[en]=Password change interval in days for the machine account [21]
+Type=int
+Categories=system-base

@@ -7,7 +7,7 @@ Categories=service-mail
 [mail/antivir]
 Description[de]=Aktiviert/Deaktiviert die Virenprüfung von E-Mails
 Description[en]=Enable/Disable virus checking for e-mails
-Type=str
+Type=bool
 Categories=service-mail
 
 [mail/hosteddomains]
@@ -25,7 +25,7 @@ Categories=service-mail
 [mail/messagesizelimit]
 Description[de]=Maximale Größe von E-Mails (Angabe in Bytes)
 Description[en]=Maximum size of e-mails (specified in bytes)
-Type=str
+Type=int
 Categories=service-mail
 
 [mail/postfix/mynetworks]
@@ -49,7 +49,7 @@ Categories=service-mail
 [mail/relayauth]
 Description[de]=Aktiviert/Deaktiviert die Authentifizierung am Relay-Server
 Description[en]=Enable/Disable authentication for relay host
-Type=str
+Type=bool
 Categories=service-mail
 
 [mail/smtp/helo/name]
@@ -61,19 +61,19 @@ Categories=service-mail
 [mail/smtpport]
 Description[de]=Port des SMTP-Servers
 Description[en]=Port for SMTP server to use
-Type=str
+Type=int
 Categories=service-mail
 
 [postfix/autostart]
 Description[de]=Aktiviert/Deaktiviert den automatischen Start von Postfix
 Description[en]=Enable/Disable the automatic of Postfix
-Type=str
+Type=bool
 Categories=service-mail
 
 [mail/localmailboxsizelimit]
 Description[de]=Maximale Dateigröße lokaler mailbox- oder maildir-Dateien (Angabe in Bytes)
 Description[en]=Maximum size of any local mailbox or maildir file (specified in bytes)
-Type=str
+Type=int
 Categories=service-mail
 
 [mail/postfix/masquerade/domains]
@@ -97,7 +97,7 @@ Categories=service-mail
 [mail/postfix/dnslookups]
 Description[de]=Mailserver führt selbständig DNS-Lookups für MX-Records durch
 Description[en]=Mailserver runs dns lookups for mx records
-Type=str
+Type=bool
 Categories=service-mail
 
 [mail/postfix/local/header/rewrite/clients]
@@ -139,19 +139,19 @@ Categories=service-mail
 [mail/postfix/ldap/timeout]
 Description[de]=Timeout für LDAP-Abfragen in Sekunden (Default: 15)
 Description[en]=Timeout for ldap requests given in seconds (default: 15)
-Type=str
+Type=int
 Categories=service-mail
 
 [mail/postfix/policy/listfilter]
 Description[de]=Falls diese Variable auf "yes" oder "true" gesetzt ist, wird das Postfix Policy Skript zur Beschränkung von Mailgruppen und Mailverteilerlisten verwendet
 Description[en]=If true or yes, the postfix policy listfilter for restriction of mailgroups and distributions lists is used
-Type=str
+Type=bool
 Categories=service-mail
 
 [mail/postfix/policy/listfilter/maxproc]
 Description[de]=Anzahl der maximalen Prozesse für das Postfix policy Skript listfilter
 Description[en]=Number of processes for the postfix policy script listfilter
-Type=str
+Type=int
 Categories=service-mail
 
 [mail/postfix/smtpd/restrictions/recipient/.*]
@@ -200,4 +200,22 @@ Categories=service-mail
 Description[de]=Liste mit Protokollen, die in Postfix aktiviert werden (Mögliche Werte: "all", "ipv4", "ipv6", "ipv4, ipv6"; Standard: "ipv4")
 Description[en]=List of protocols activated in postfix (Valid values: "all", "ipv4", "ipv6", "ipv4, ipv6"; Default: "ipv4")
 Type=str
+Categories=service-mail
+
+[mail/postfix/inet/interfaces]
+Description[de]=Liste der Netzwerkinterface, auf denen Postfix Post entgegennimmt: all, loopback-only, IP-Adressen
+Description[en]=List of network interfaces, on which Postfix accepts incoming mail: all, loopback-only, IP-Adressen
+Type=str
+Categories=service-mail
+
+[mail/postfix/transport/ldap/enabled]
+Description[de]=Binden zusätzliche eine per LDAP zur Verfügung gestellte transport_maps ein
+Description[en]=Includes a additional transport_maps provided via LDAP
+Type=bool
+Categories=service-mail
+
+[mail/postfix/virtual/enabled]
+Description[de]=Aktiviert die Unterstützung für virtuelle Mail-Domains
+Description[en]=Activated the support for virtual mail domains
+Type=bool
 Categories=service-mail

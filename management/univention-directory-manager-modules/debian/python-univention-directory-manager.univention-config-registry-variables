@@ -7,7 +7,13 @@ Categories=management-udm
 [directory/manager/web/modules/groups/group/caching/uniqueMember/timeout]
 Description[de]=Timeout für das Caching des Typs von Gruppenmitgliedern (Angabe in Sekunden; Standard: 300; Deaktivieren des Cache: -1)
 Description[en]=Caching timeout of group member's type - given in seconds (default: 300; cache disabled: -1)
-Type=str
+Type=int
+Categories=management-udm
+
+[directory/manager/web/modules/groups/group/checks/circular_dependency]
+Description[de]=Überprüft die Gruppen-in-Gruppen-Mitgliedschaft auf zirkuläre Abhängigkeiten [yes]
+Description[en]=Checks the group-in-group membership for circular dependencies [yes]
+Type=bool
 Categories=management-udm
 
 [directory/manager/usercn/attributes]
@@ -19,7 +25,7 @@ Categories=management-udm
 [directory/manager/samba3/legacy]
 Description[de]=In Samba 4 Umgebungen werden die Samba Attribute durch Samba 4 generiert. Wenn diese Variable auf yes gesetzt ist, so werden die Samba Attribute durch den UDM generiert
 Description[en]=The samba attributes will be generated through Samba 4 in a Samba 4 environment. The UDM will generate the samba attributes if this variale is set to yes
-Type=str
+Type=bool
 Categories=management-udm
 
 [password/hashing/method]
@@ -31,11 +37,59 @@ Categories=system-password
 [password/samba/lmhash]
 Description[de]=Definiert ob der Samba LM Hash im LDAP-Verzeichnis gespeichert werden soll
 Description[en]=Defines whether the samba LM hash will be saved in the LDAP directory
-Type=str
+Type=bool
 Categories=system-password
 
 [directory/manager/child/cn/ou]
 Description[de]=Definiert ob es gestattet ist einen container/ou als untergeordnetes Objekt von container/cn zu erstellen.
 Description[en]=Defines whether it is allowed to create a container/ou as child object of a container/cn.
+Type=str
+Categories=management-udm
+
+[directory/manager/web/modules/autosearch]
+Description[de]=Führt beim öffnen eines UDM Moduls automatisch eine erste Suche durch
+Description[en]=Automatically executes a first search when opening a UDM module
+Type=bool
+Categories=management-udm
+
+[directory/manager/web/modules/.*/.*/search/autosearch]
+Description[de]=Führt beim öffnen dieses UDM Moduls automatisch eine erste Suche durch
+Description[en]=Automatically executes a first search when opening this UDM module
+Type=bool
+Categories=management-udm
+
+[directory/manager/web/modules/.*/.*/search/default]
+Description[de]=Definiert das Attribut, nach dem standardmäßig gesucht wird
+Description[en]=Defines the attribute which is used by default for searching
+Type=str
+Categories=management-udm
+
+[directory/manager/web/modules/.*/.*/add/default]
+Description[de]=Definiert das UDM Modul, das standardmäßig zum erzeugen neuer Unterobjekte verwendet wird
+Description[en]=Defines the UDM module which is used by default to create new sub objects
+Type=str
+Categories=management-udm
+
+[directory/manager/web/modules/.*/.*/properties/.*/.*]
+Description[de]=Überschreibt eine Eigenschaft eines UDM Moduls
+Description[en]=Overwrite a property of an UDM module
+Type=str
+Categories=management-udm
+
+[directory/manager/web/modules/.*/.*/layout/.*]
+Description[de]=Überschreibt die Anordnung der Elemente auf einem Reiter eines UDM Moduls
+Description[en]=Overwrite the layout of elements on a tab of an UDM module
+Type=str
+Categories=management-udm
+
+[directory/manager/web/modules/.*/.*/layout/.*/name]
+Description[de]=Überschreibt den Namen eines Reiters eines UDM Moduls
+Description[en]=Overwrites the name of a tab of an UDM module
+Type=str
+Categories=management-udm
+
+[directory/manager/web/modules/.*/.*/layout/.*/description]
+Description[de]=Überschreibt den Beschreibungstext eines Reiters eines UDM Moduls
+Description[en]=Overwrite the descriptive text of a tab of an UDM module
 Type=str
 Categories=management-udm

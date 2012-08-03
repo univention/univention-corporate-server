@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.6-1) unstable; urgency=low
+
+  * Add UCR variable descriptions (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 13:28:28 +0200
+
 univention-directory-manager-modules (8.0.5-1) unstable; urgency=low
 
   * Fix Bug #25638 a bit more elegant. Migrate broken (misplaced) backend-code

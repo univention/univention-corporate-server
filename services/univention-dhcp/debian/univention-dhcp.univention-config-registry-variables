@@ -5,8 +5,14 @@ Type=str
 Categories=service-dhcp
 
 [dhcpd/autostart]
-Description[de]=Definiert, ob der DHCP-Dienst automatisch gestartet werden soll
-Description[en]=Defines if the DHCP service should be started automatically
+Description[de]=Definiert, ob der DHCP-Dienst automatisch beim Systemstart gestartet werden soll
+Description[en]=Defines if the DHCP service should be started automatically at system startup
+Type=bool
+Categories=service-dhcp,system-services
+
+[dhcpd/restart/listener]
+Description[de]=Definiert, ob der DHCP-Dienst automatisch durch den Listener neu gestartet wird
+Description[en]=Defines if the DHCP service should be re-started automatically by the Listener
 Type=bool
 Categories=service-dhcp,system-services
 

@@ -1,6 +1,6 @@
 [foobar]
 Description[de]=Test
 Description[en]=Test
-Type=string
+Type=str
 Categories=test
 

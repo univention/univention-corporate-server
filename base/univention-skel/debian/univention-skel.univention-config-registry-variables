@@ -1,0 +1,18 @@
+[skel/lock/retry]
+Description[de]=Anzahl der Versuche um exklusiven Zugriff zu bekommen [5]
+Description[en]=Retry count for acquiring exclusive access [5]
+Type=int
+Categories=system-base
+
+[skel/permissions/directory]
+Description[de]=Berechtigung für Verzeichnisse [0700]
+Description[en]=Permissions for directories
+Type=int
+Categories=system-base
+
+[skel/permissions/file]
+Description[de]=Berechtigung für Dateien [0600]
+Description[en]=Permissions for files [0600]
+Type=int
+Categories=system-base
+

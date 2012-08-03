@@ -1,0 +1,41 @@
+[dhclient/options/timeout]
+Description[de]=Definiert die Zeit in Sekunden, die der DHCP-Client versucht eine IP-Konfiguration zu beziehen
+Description[en]=Defines the amount of time in seconds that the DHCP clients tries to get an IP configuration
+Type=int
+Categories=system-base
+
+[dhclient/options/retry]
+Description[de]=Definiert die Zeit in Sekunden, die der DHCP-Client vor einem erneuten Versuch wartet
+Description[en]=Defines the amount of time in seconds that the DHCP clients waits before trying again
+Type=int
+Categories=system-base
+
+[dhclient/linklocal/fallback]
+Description[de]=Definiert ob eine Link Local IP Adresse konfiguriert wird, wenn per DHCP keine IP Adresse bezogen werden konnte (Default: true)
+Description[en]=Defines whether a link local IP address is configured if no IP address could be obtained via DHCP (default: true)
+Type=str
+Categories=system-base
+
+[dhclient/options/ddns]
+Description[de]=Aktiviert DDNS per DHCP für externe DNS-Dienste [disabled]
+Description[en]=Activates DDNS via DHCP for external DNS-Services [disabled]
+Type=bool
+Categories=system-base
+
+[dhclient/options/ddns/zone]
+Description[de]=Definiert die DNS Zone, die bei aktiviertem DDNS per DHCP verwendet werden soll [domainname]
+Description[en]=Defines the DNS Zone which will be updated when DDNS via DHCP is enabled [domainname]
+Type=str
+Categories=system-base
+
+[dhclient/options/ddns/serverupdate]
+Description[de]=Ersucht den DHCP-Server den A-Record in der Forward-Zone zu aktualisieren (Standard: yes)
+Description[en]=Request DHCP server to update the A record in the forward zone (default: yes)
+Type=bool
+Categories=system-base
+
+[nameserver/external]
+Description[de]=Übernimmt einen per DHCP bezogenen externen Domain Name Servers als dns/forwarder [yes]
+Description[en]=Transfers an external Domain Name Server acquired through DHCP to an dns/forwarder [yes]
+Type=bool
+Categories=system-base

@@ -1,0 +1,11 @@
+[notifier/debug/level]
+Description[de]=Debug level des Univention Directory Notifiers (0-4)
+Description[en]=Debug level of Univention Directory Notifiers (0-4)
+Type=int
+Categories=service-ldap
+
+[notifier/autostart]
+Description[de]=Automatischer Start des Notifier-Dienstes beim Systemstart
+Description[en]=Automatically start the Notifier daemon on system startup
+Type=bool
+Categories=service-ldap

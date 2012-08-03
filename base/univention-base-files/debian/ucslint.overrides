@@ -1,0 +1,40 @@
+# No Build-Dep: self
+0006-5: debian/univention-base-files.postrm
+0006-6: debian/univention-base-files.postrm
+0014-6
+0011-16: debian/univention-base-files.univention-config-registry-mapping
+# More complex regular expression
+0004-55: debian/univention-base-files.univention-config-registry
+# Not using UCR variables is no sin
+0004-56: conffiles/boot/boot.msg
+0004-56: conffiles/etc/bash.bashrc
+0004-56: conffiles/etc/default/ssh
+0004-56: conffiles/etc/init.d/cron
+0004-56: conffiles/etc/init.d/klogd
+0004-56: conffiles/etc/init.d/networking
+0004-56: conffiles/etc/init.d/nscd
+0004-56: conffiles/etc/init.d/ntp
+0004-56: conffiles/etc/init.d/openbsd-inetd
+0004-56: conffiles/etc/init.d/portmap
+0004-56: conffiles/etc/init.d/rdate
+0004-56: conffiles/etc/inputrc
+0004-56: conffiles/etc/networks
+0004-56: conffiles/etc/python2.6/sitecustomize.py.d/00header.py
+0004-56: conffiles/etc/python2.6/sitecustomize.py.d/10apport.py
+0004-56: conffiles/etc/python2.6/sitecustomize.py.d/20utf8.py
+# Python substitution in UCR variable name
+0004-12: conffiles/etc/default/ntpdate
+0004-12: conffiles/etc/ntp.conf
+# No header in displayed files
+0004-16: conffiles/etc/hostname
+0004-16: conffiles/boot/boot.msg
+# No copyright claim for copied files
+0010-2: conffiles/etc/init.d/nscd
+0010-2: conffiles/etc/init.d/ntp
+0010-2: conffiles/etc/init.d/rdate
+0010-2: conffiles/etc/init.d/openbsd-inetd
+0010-2: conffiles/etc/init.d/portmap
+0010-2: conffiles/etc/init.d/cron
+0010-2: conffiles/etc/init.d/networking
+0010-2: conffiles/etc/init.d/klogd
+0010-2: etc/X11/Xsession.d/33-univention-environment

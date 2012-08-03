@@ -1,6 +1,12 @@
+[umc/http/autostart]
+Description[de]=Automatischer Start des UMC-Webserver-Dienstes beim Systemstart
+Description[en]=Automatically start the UMC web server daemon on system startup
+Type=bool
+Categories=Management
+
 [umc/http/port]
-Description[de]=Port des UMC-HTTP-Servers
-Description[en]=Port of UMC HTTP server
+Description[de]=Port des UMC-HTTP-Servers [8090]
+Description[en]=Port of UMC HTTP server [8090]
 Type=int
 Categories=Management
 
@@ -10,8 +16,14 @@ Description[en]=Network interface to be used by UMC HTTP server when listening (
 Type=str
 Categories=Management
 
+[umc/http/session/timeout]
+Description[de]=Zeitraum in Sekunden, nachdem der Web-Sitzung veraltet [5 Minuten]
+Description[en]=Time period in seconds, after which the web session times out [5 minutes]
+Type=int
+Categories=Management
+
 [umc/server/upload/min_free_space]
 Description[de]=Legt die minimale Größe (in KB) an freiem Festplattenspeicher fest, die notwendig ist um Dateien hochladen zu können
 Description[en]=Sets the minimum size of free disk space (in kb) which must be available to upload files
-Type=str
+Type=int
 Categories=Management

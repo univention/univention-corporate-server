@@ -1,3 +1,9 @@
+univention-management-console (5.0.7-1) unstable; urgency=low
+
+  * Add UCR variable description (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 14:26:49 +0200
+
 univention-management-console (5.0.6-1) unstable; urgency=low
 
   * add decorators to help developers: simple_response Bug #27716
@@ -310,7 +316,7 @@ univention-management-console (4.0.202-3) unstable; urgency=low
 
 univention-management-console (4.0.202-2) unstable; urgency=low
 
-  * added dependency on univention-management-console-module-vnc (Bug #25107) 
+  * added dependency on univention-management-console-module-vnc (Bug #25107)
 
  -- Lukas Walter <walter@univention.de>  Wed, 15 Feb 2012 09:33:27 +0100
 
@@ -401,13 +407,13 @@ univention-management-console (4.0.91-1) unstable; urgency=low
 
 univention-management-console (4.0.90-1) unstable; urgency=low
 
-  * added logrotate config for directory-reports-cleanup (Bug #18002) 
+  * added logrotate config for directory-reports-cleanup (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Thu, 24 Nov 2011 12:22:55 +0100
 
 univention-management-console (4.0.89-1) unstable; urgency=low
 
-  * fixed logrotate configuration (Bug #18002)  
+  * fixed logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 16:21:05 +0100
 
@@ -628,14 +634,14 @@ univention-management-console (4.0.66-1) unstable; urgency=low
 
 univention-management-console (4.0.65-2) unstable; urgency=low
 
-  * changed dependency from univention-management-console-module-online to 
+  * changed dependency from univention-management-console-module-online to
     *-update (Bug #22898)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 13:44:20 +0200
 
 univention-management-console (4.0.65-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:24:32 +0200
 
@@ -1331,7 +1337,7 @@ univention-management-console (3.0.79-1) unstable; urgency=low
 
   * passwd_cache can be disabled by setting auth/passwdcache=no
     (Ticket#2011022810000861)
-  * fix return status for pam_krb5.so success 
+  * fix return status for pam_krb5.so success
     (Ticket#2011022810000861 and Bug #20956)
 
  -- Arvid Requate <requate@univention.de>  Mon, 28 Feb 2011 16:36:42 +0100
@@ -1344,7 +1350,7 @@ univention-management-console (3.0.78-1) unstable; urgency=low
 
 univention-management-console (3.0.77-1) unstable; urgency=low
 
-  * prevent error msg if UCR category has no description 
+  * prevent error msg if UCR category has no description
     (Bug #21094) (Bug #21163)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 11 Jan 2011 14:20:00 +0100
@@ -1589,7 +1595,7 @@ univention-management-console (3.0.43-1) unstable; urgency=low
 univention-management-console (3.0.42-1) unstable; urgency=low
 
   * do not crash UMC server if socket to module process is broken
-  * invalidate all pending requests correctly if module process 
+  * invalidate all pending requests correctly if module process
     has shut down (unexpectedly) (Bug #14015)
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 16 Jul 2010 14:00:50 +0200
@@ -1873,7 +1879,7 @@ univention-management-console (2.0.40-1) unstable; urgency=low
 
 univention-management-console (2.0.39-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:51:39 +0100
 
@@ -1885,7 +1891,7 @@ univention-management-console (2.0.38-1) unstable; urgency=low
 
 univention-management-console (2.0.37-1) unstable; urgency=low
 
-  * fixed error handling in mrtg Bug #16943 
+  * fixed error handling in mrtg Bug #16943
 
  -- Felix Botner <botner@univention.de>  Thu, 31 Dec 2009 09:41:24 +0100
 
@@ -1966,7 +1972,7 @@ univention-management-console (2.0.27-1) unstable; urgency=low
 
 univention-management-console (2.0.26-1) unstable; urgency=low
 
-  * changed text in mrtg module (Bug: #15191) 
+  * changed text in mrtg module (Bug: #15191)
 
  -- Felix Botner <botner@univention.de>  Mon, 16 Nov 2009 10:20:38 +0100
 
@@ -2036,7 +2042,7 @@ univention-management-console (2.0.19-1) unstable; urgency=low
 
 univention-management-console (2.0.18-1) unstable; urgency=low
 
-  * attributes "onmouseover" and "onmouseout" can now be set for 
+  * attributes "onmouseover" and "onmouseout" can now be set for
     umcd.Link (Bug: #14085)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 02 Apr 2009 16:56:03 +0200
@@ -2094,7 +2100,7 @@ univention-management-console (2.0.10-3) unstable; urgency=low
     add a dependency on univention-join to python-univention-management-console
   * Add missing include of LSB library in univention-management-console-server
     init script
-    
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 25 Jun 2009 10:55:37 +0200
 
 univention-management-console (2.0.10-2) unstable; urgency=low
@@ -2185,7 +2191,7 @@ univention-management-console (2.0.3-1) unstable; urgency=low
 
 univention-management-console (2.0.2-1) unstable; urgency=low
 
-  * merged dojo date widget; Bug #12977 
+  * merged dojo date widget; Bug #12977
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 23 Dec 2008 11:24:38 +0100
 

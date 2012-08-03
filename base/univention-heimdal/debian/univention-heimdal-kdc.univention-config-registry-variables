@@ -75,3 +75,9 @@ Description[de]=Liste der Kerberos Adminbenutzer, die in kadmind.acl eingetragen
 Description[en]=List of kerberos adminusers which will be added to kadmind.acl
 Type=str
 Categories=System
+
+[kerberos/autostart]
+Description[de]=Automatischer Start des Kerberos-Dienstes beim Systemstart
+Description[en]=Automatically start the Kerberos daemon on system startup
+Type=bool
+Categories=System

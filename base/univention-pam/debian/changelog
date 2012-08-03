@@ -1,3 +1,10 @@
+univention-pam (6.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Add UCR variable descriptions (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 09:19:02 +0200
+
 univention-pam (5.0.21-1) unstable; urgency=low
 
   * Removed pam_lastlog from sshd PAM configuration otherwise the last
@@ -21,7 +28,7 @@ univention-pam (5.0.19-1) unstable; urgency=low
 
 univention-pam (5.0.18-1) unstable; urgency=low
 
-  * added use_authtok in common-password (Bug #25898)  
+  * added use_authtok in common-password (Bug #25898)
 
  -- Felix Botner <botner@univention.de>  Wed, 15 Feb 2012 13:22:40 +0100
 
@@ -58,7 +65,7 @@ univention-pam (5.0.16-1) unstable; urgency=low
 
 univention-pam (5.0.15-1) unstable; urgency=low
 
-  * made univention-nscd executable (Bug #23366) 
+  * made univention-nscd executable (Bug #23366)
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Sep 2011 10:24:42 +0200
 
@@ -83,7 +90,7 @@ univention-pam (5.0.12-1) unstable; urgency=low
 
 univention-pam (5.0.11-1) unstable; urgency=low
 
-  * fixed univention-pam.univention-config-registry-variables (Bug #20138) 
+  * fixed univention-pam.univention-config-registry-variables (Bug #20138)
 
  -- Felix Botner <botner@univention.de>  Thu, 01 Sep 2011 17:26:31 +0200
 
@@ -182,7 +189,7 @@ univention-pam (5.0.1-1) unstable; urgency=low
 
 univention-pam (5.0.0-2) unstable; urgency=low
 
-  * added univention-pam.install (Bug #20138) 
+  * added univention-pam.install (Bug #20138)
 
  -- Felix Botner <botner@univention.de>  Mon, 09 May 2011 16:20:28 +0200
 
@@ -561,7 +568,7 @@ univention-pam (1.1.1-1) unstable; urgency=low
 
 univention-pam (1.1.0-15) unstable; urgency=low
 
-  * fixed syntax for pam passwd cache for sucessful authentifications 
+  * fixed syntax for pam passwd cache for sucessful authentifications
 
  -- Bastian Neumann <neumann@univention.de>  Tue, 21 Aug 2007 10:57:36 +0200
 
@@ -643,13 +650,13 @@ univention-pam (1.1.0-4) unstable; urgency=low
 univention-pam (1.1.0-3) unstable; urgency=low
 
   * changed name of baseconfig variable auth/max_user to
-    auth/passwdcache/max_user 
+    auth/passwdcache/max_user
 
  -- Bastian Neumann <neumann@univention.de>  Tue, 29 May 2007 10:41:51 +0200
 
 univention-pam (1.1.0-2) unstable; urgency=low
 
-  * number of cached authentifications can be set with univention-baseconfig 
+  * number of cached authentifications can be set with univention-baseconfig
 
  -- Bastian Neumann <neumann@univention.de>  Tue, 29 May 2007 09:17:43 +0200
 

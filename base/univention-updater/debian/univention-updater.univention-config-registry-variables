@@ -254,17 +254,77 @@ Categories=service-software-management
 [update/doc/releasenotes/url]
 Description[de]=URL zu den offiziellen Release Notes
 Description[en]=URL refers to official release notes
-Type=string
+Type=str
 Categories=service-software-management
 
 [update/doc/releasenotes/description]
 Description[de]=Beschreibung zur Release-Notes-URL
 Description[en]=Description for release notes URL
-Type=string
+Type=str
 Categories=service-software-management
 
 [update/warning/releasenotes]
 Description[de]=Aktiviere/deaktiviere Hinweis auf Release Notes vor Updates (boolean)
 Description[en]=Enable/disable release notes hint before starting update (boolean)
 Type=bool
+Categories=service-software-management
+
+[update/commands/configure]
+Description[de]=Kommando zum Konfigurieren der Pakete
+Description[en]=Command to configure packages
+Type=str
+Categories=service-software-management
+
+[update/commands/distupgrade]
+Description[de]=Kommando zum Aktualisieren des Systems
+Description[en]=Command to upgrade the system
+Type=str
+Categories=service-software-management
+
+[update/commands/distupgrade/simulate]
+Description[de]=Kommando zum Simulieren einer Aktualisierung des Systems
+Description[en]=Command to simulate the upgrade of the system
+Type=str
+Categories=service-software-management
+
+[update/commands/install]
+Description[de]=Kommando zum automatischen Installieren eines einzelnen Pakets
+Description[en]=Command to install a single package automatically
+Type=str
+Categories=service-software-management
+
+[update/commands/install/interactive]
+Description[de]=Kommando zum interaktiven Installieren eines einzelnen Pakets
+Description[en]=Command to install a single package interactively
+Type=str
+Categories=service-software-management
+
+[update/commands/remove]
+Description[de]=Kommando zum Deinstallieren eines einzelnen Pakets
+Description[en]=Command to remove a single package
+Type=str
+Categories=service-software-management
+
+[update/commands/show]
+Description[de]=Kommando zum Anzeigen von Paketinformationen
+Description[en]=Command to show details of a package
+Type=str
+Categories=service-software-management
+
+[update/commands/update]
+Description[de]=Kommando zum Aktualisieren der Paketlisten
+Description[en]=Command to update the list of packages
+Type=str
+Categories=service-software-management
+
+[update/commands/upgrade]
+Description[de]=Kommando zum Aktualisieren alles installierter Pakete
+Description[en]=Command to upgrade all installed packages
+Type=str
+Categories=service-software-management
+
+[update/commands/upgrade/simulate]
+Description[de]=Kommando zum Simulieren einer Aktualisierung aller installierter Pakete
+Description[en]=Command to simulate the upgrade of all installed packages
+Type=str
 Categories=service-software-management

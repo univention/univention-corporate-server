@@ -1,17 +1,35 @@
+[umc/server/autostart]
+Description[de]=Automatischer Start des UMC-Server-Dienstes beim Systemstart
+Description[en]=Automatically start the UMC server daemon on system startup
+Type=bool
+Categories=Management
+
 [umc/server/debug/level]
 Description[de]=Univention Management Console Server Debuglevel (ab debug/level 99 werden XML Daten und Klartext-Passwörter im Log-File gespeichert)
 Description[en]=Univention Management Console Server debug level (with debug/level >= 99 xml data and cleartext password will be saved in log files)
-Type=str
+Type=int
 Categories=Management
 
 [umc/server/upload/max]
 Description[de]=Legt die maximale Größe von hochladbaren Dateien in Kilobyte fest
 Description[en]=Defines the maximum size of file uploads in kilobyte
-Type=str
+Type=int
 Categories=Management
 
 [umc/module/debug/level]
 Description[de]=Debuglevel der Module der Univention Management Console
 Description[en]=Debug level of the Univention Management Console modules
+Type=int
+Categories=Management
+
+[umc/module/timeout]
+Description[de]=Zeitraum in Sekunden, nachdem ein UMC-Modul veraltet
+Description[en]=Time period in seconds, after which the UMC module times out
+Type=int
+Categories=Management
+
+[umc/server/languages/.*]
+Description[de]=Definiert die Verfügbarkeit einer Sprachversion und legt deren Name fest
+Description[en]=Defines the availability of a language version and defines the associated name
 Type=str
 Categories=Management

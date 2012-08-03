@@ -168,7 +168,7 @@ Categories=service-adcon
 [con.*/ldap/server]
 Description[de]=Der Fully Qualified Domain Name des UCS LDAP Servers. Wenn der Wert nicht gesetzt ist, wird der DC Master verwendet. Dieser Wert sollte nur im write Modus angepasst werden.
 Description[en]=The fully qualified domain name of the UCS LDAP server. If the value is not set, the DC master will be used. This value should only changed in write mode.
-Type=string
+Type=str
 Categories=service-adcon
 
 [con.*/ldap/port]

@@ -17,20 +17,20 @@ Type=int
 Categories=system-base
 
 [nscd/hosts/maxdbsize]
-Description[de]:Maximal erlaubte Größe für hosts-service in Bytes.
-Description[en]:The maximum allowable size for the hosts-service.
+Description[de]=Maximal erlaubte Größe für hosts-service in Bytes.
+Description[en]=The maximum allowable size for the hosts-service.
 Type=int
 Categories=system-base
 
 [nscd/passwd/maxdbsize]
-Description[de]:Maximal erlaubte Größe für passwd-service in Bytes.
-Description[en]:The maximum allowable size for the passwd-service.
+Description[de]=Maximal erlaubte Größe für passwd-service in Bytes.
+Description[en]=The maximum allowable size for the passwd-service.
 Type=int
 Categories=system-base
 
 [nscd/group/maxdbsize]
-Description[de]:Maximal erlaubte Größe für group-service in Bytes.
-Description[en]:The maximum allowable size for the group-service.
+Description[de]=Maximal erlaubte Größe für group-service in Bytes.
+Description[en]=The maximum allowable size for the group-service.
 Type=int
 Categories=system-base
 
@@ -55,13 +55,13 @@ Categories=system-base
 [nscd/logfile]
 Description[de]=Gibt den Dateiname für die Log-Datei an
 Description[en]=Specifies the name of the log-file
-Type=int
+Type=str
 Categories=system-base
 
 [nscd/threads]
 Description[de]=Gibt die Anzahl der zu startenden Threads für parallele Verarbeitung an
 Description[en]=Specifies the number threads to start for parallel processing of requests
-Type=bool
+Type=int
 Categories=system-base
 
 [nscd/.*/persistent]
@@ -72,7 +72,7 @@ Categories=system-base
 
 [nscd/restart]
 Description[de]=Aktiviert den Paranoid-Modus. Dabei startet sich nscd periodisch selbst neu
-Description[en]=Activates the paranod mode. Thereby	the nscd restarts itself periodically
+Description[en]=Activates the paranod mode. Thereby the nscd restarts itself periodically
 Type=bool
 Categories=system-base
 
@@ -91,7 +91,19 @@ Categories=system-base
 [nscd/group/invalidate_cache_on_changes]
 Description[de]=NSCD Gruppen Cache invalidieren, sobald Gruppenzugehörigkeiten verändert wurden? (yes/no).
 Description[en]=Invalidate NSCD group cache whenever a group membership has been modified? (yes/no).
-Type=str
+Type=bool
+Categories=system-base
+
+[auth/methods]
+Description[de]=Leerzeichen separierte Liste der verwendeten Authentifizierungsmethoden: ldap krb5 winbind cache
+Description[en]=Space separated list of used authentication methods: ldap krb5 winbind cache
+Type=bool
+Categories=system-base
+
+[nsswitch/ldap]
+Description[de]=Aktiviert oder deaktiviert die Verwendung von LDAP im Name Service Switch.
+Description[en]=Activates or deactivates the use of LDAP in the Name Service Switch.
+Type=bool
 Categories=system-base
 
 [nssldap/tls/checkpeer]
@@ -133,49 +145,49 @@ Categories=system-base
 [security/limits/user/.*/soft/.*]
 Description[de]=Definiert den anfänglichen Wert für das entsprechende Limit für den Benutzer.
 Description[en]=Specifies the initial value of the corresponding limit for the user.
-Type=str
+Type=int
 Categories=system-base
 
 [security/limits/group/.*/hard/.*]
 Description[de]=Definiert den maximalen Wert auf den ein Benutzer der Gruppe das entsprechende Limit setzen kann.
 Description[en]=Specifies the maximalen value users in the group can change the corresponding limit to.
-Type=str
+Type=int
 Categories=system-base
 
 [security/limits/group/.*/soft/.*]
 Description[de]=Definiert den anfänglichen Wert für das entsprechende Limit für die Benutzer der Gruppe.
 Description[en]=Specifies the initial value of the corresponding limit for users in the group.
-Type=str
+Type=int
 Categories=system-base
 
 [auth/faillog]
 Description[de]=Aktiviert das automatische Sperren von Benutzern falls die Anmeldung zu häufig fehlschlägt. (default: no)
 Description[en]=Enabled user locking if too many login attemps fail. (default: no)
-Type=str
+Type=bool
 Categories=system-base
 
 [auth/faillog/limit]
 Description[de]=Die Anzahl an erlaubten fehlerhaften Anmeldeversuchen bevor der Account gesperrt wird. (default: 5)
 Description[en]=The maximum allowed attempts before the account will be locked. (default: 5)
-Type=str
+Type=int
 Categories=system-base
 
 [auth/faillog/root]
 Description[de]=Der Root Account kann bei aktiviertem auth/faillog gesperrt werden. (default: no)
 Description[en]=The root account can become locked if auth/faillog is enabled. (default: no)
-Type=str
+Type=bool
 Categories=system-base
 
 [auth/faillog/unlock_time]
 Description[de]=Definiert die Zeit in Sekunden an ab wann der Benutzer automatisch wieder entsperrt wird, nachdem die maximale Anzahl an fehlgeschlagenen Anmeldeversuchen erreicht wurde. Der Wert 0 deaktiviert das automatische Entsperren. (default: 0)
 Description[en]=The user will be locked out for the specified amount of time (seconds) after he exceeded his maximum allowed attempts. The value 0 disables the auto locked out. (default: 0)
-Type=str
+Type=int
 Categories=system-base
 
 [auth/faillog/lock_global]
 Description[de]=Das Sperren des Benutzers wird global durchgeführt, wenn die Anzahl der erlaubten fehlerhaften Anmeldeversuche erreicht wurde. (default: no)
 Description[en]=The user lock will be saved global if maximum allowed attempts has been reached. (default: no)
-Type=str
+Type=bool
 Categories=system-base
 
 [auth/.*/restrict]

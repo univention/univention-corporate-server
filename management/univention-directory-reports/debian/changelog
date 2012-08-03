@@ -1,3 +1,10 @@
+univention-directory-reports (5.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Add UCR variable descriptions (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 13:10:14 +0200
+
 univention-directory-reports (4.0.9-1) unstable; urgency=low
 
   * fixed typo in ./templates/en_US/computers.csv (Bug #24358)

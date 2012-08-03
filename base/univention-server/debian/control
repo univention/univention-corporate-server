@@ -14,38 +14,18 @@ Recommends: univention-nagios-client,
  openssh-server,
  python-univention-license
 Depends: ${misc:Depends},
- univention-config-registry,
- univention-join,
+ univention-role-server-common (= ${source:Version}),
  univention-ldap-server,
- univention-maintenance,
- univention-showload,
  univention-heimdal-kdc,
  univention-directory-notifier,
- univention-directory-listener,
- univention-updater,
  nscd,
- univention-policy-tools,
- univention-ldap-client,
  univention-ldap-acl-master,
  ntp | ntp-server,
- univention-home-mounter,
- univention-nfs-server,
  univention-license-import,
- univention-mail-postfix| mail-transport-agent,
- univention-quota,
- univention-pkgdb-tools,
- univention-directory-manager-tools,
- univention-system-setup,
  univention-bind,
- univention-firewall,
- univention-grub,
- univention-archive-key,
- univention-ifplugd | univention-network-manager,
  univention-management-console-module-udm,
  univention-management-console-module-ipchange,
  univention-management-console,
- shell-univention-lib (>= 1.0.25-1),
- python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - master domain controller
  This package installs a UCS master domain controller.
@@ -63,39 +43,19 @@ Recommends: univention-nagios-client,
  python-univention-license
 Pre-Depends: univention-config (>= 7.0.25)
 Depends: ${misc:Depends},
- univention-config-registry,
- univention-join,
+ univention-role-server-common (= ${source:Version}),
  univention-ssl,
  univention-ldap-server,
  univention-directory-replication,
- univention-maintenance,
- univention-showload,
  univention-heimdal-kdc,
  univention-directory-notifier,
- univention-directory-listener,
- univention-updater,
  nscd,
- univention-policy-tools,
- univention-ldap-client,
  univention-ldap-acl-master,
  ntp | ntp-server,
- univention-home-mounter,
- univention-nfs-server,
  univention-license-import,
- univention-mail-postfix | mail-transport-agent,
- univention-quota,
- univention-pkgdb-tools,
- univention-directory-manager-tools,
- univention-system-setup,
- univention-firewall,
- univention-grub,
- univention-archive-key,
- univention-ifplugd | univention-network-manager,
  univention-management-console-module-udm,
  univention-management-console-module-ipchange,
  univention-management-console,
- shell-univention-lib (>= 1.0.25-1),
- python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
@@ -114,33 +74,13 @@ Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
 Depends: ${misc:Depends},
- univention-config-registry,
- univention-join,
+ univention-role-server-common (= ${source:Version}),
  univention-ldap-server,
- univention-maintenance,,
- univention-showload,
  univention-heimdal-kdc,
- univention-directory-listener,
- univention-updater,
  nscd,
- univention-policy-tools,
  univention-directory-replication,
- univention-ldap-client,
  univention-ldap-acl-slave,
- univention-home-mounter,
- univention-nfs-server,
  ntp | ntp-server,
- univention-mail-postfix | mail-transport-agent,
- univention-quota,
- univention-pkgdb-tools,
- univention-directory-manager-tools,
- univention-system-setup,
- univention-firewall,
- univention-grub,
- univention-archive-key,
- univention-ifplugd | univention-network-manager,
- shell-univention-lib (>= 1.0.25-1),
- python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - slave domain controller
  This package installs a UCS slave domain controller.
@@ -158,29 +98,8 @@ Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
 Depends: ${misc:Depends},
- univention-config-registry,
- univention-join,
- univention-showload,
- univention-maintenance,
+ univention-role-server-common (= ${source:Version}),
  univention-heimdal-member,
- univention-directory-listener,
- univention-updater,
- univention-policy-tools,
- univention-policy-tools,
- univention-ldap-client,
- univention-home-mounter,
- univention-nfs-server,
- univention-mail-postfix | mail-transport-agent,
- univention-quota,
- univention-pkgdb-tools,
- univention-directory-manager-tools,
- univention-system-setup,
- univention-firewall,
- univention-grub,
- univention-archive-key,
- univention-ifplugd | univention-network-manager,
- shell-univention-lib (>= 1.0.25-1),
- python-univention-lib (>= 1.0.25-1)
 Conflicts: exim
 Description: UCS - member server
  This package installs a UCS member server.
@@ -197,8 +116,7 @@ Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
 Depends: ${misc:Depends},
- univention-policy-tools,
- univention-updater,
+ univention-role-common (= ${source:Version}),
  ldap-utils,
  univention-x-core,
  univention-join,
@@ -218,17 +136,10 @@ Depends: ${misc:Depends},
  nfs-common,
  univention-directory-policy,
  univention-printclient,
- univention-pkgdb-tools,
  univention-gdm-sessions,
  univention-directory-manager-tools,
- univention-firewall,
- univention-grub,
- univention-system-setup,
  hibernate,
  acpid,
- univention-archive-key,
- shell-univention-lib (>= 1.0.25-1),
- python-univention-lib (>= 1.0.25-1)
 Description: UCS - Mobile Client
  This is a Meta-package, that sets up a UCS mobile client
  .
@@ -250,8 +161,7 @@ Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
 Depends: ${misc:Depends},
- univention-policy-tools,
- univention-updater,
+ univention-role-common (= ${source:Version}),
  ldap-utils,
  univention-x-core,
  univention-join,
@@ -271,18 +181,55 @@ Depends: ${misc:Depends},
  nfs-common,
  univention-directory-policy,
  univention-printclient,
- univention-pkgdb-tools,
  univention-gdm-sessions,
  univention-directory-manager-tools,
- univention-firewall,
- univention-grub,
- univention-system-setup,
  acpid,
- univention-archive-key,
- shell-univention-lib (>= 1.0.25-1),
- python-univention-lib (>= 1.0.25-1)
 Description: UCS - Managed Client
  This is a Meta-package, that sets up a UCS managed client
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-role-server-common
+Architecture: all
+Depends: ${misc:Depends},
+ univention-role-common (= ${source:Version}),
+ univention-showload,
+ univention-maintenance,
+ univention-directory-listener,
+ univention-ldap-client,
+ univention-home-mounter,
+ univention-quota,
+ univention-directory-manager-tools,
+ univention-ifplugd | univention-network-manager,
+ univention-mail-postfix | mail-transport-agent,
+ univention-nfs-server,
+Description: UCS system server role common dependencies and files
+ This package contains common files used by all server system roles.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-role-common
+Architecture: all
+Depends: ${misc:Depends},
+ univention-config-registry,
+ univention-join,
+ univention-updater,
+ univention-archive-key,
+ univention-grub,
+ univention-policy-tools,
+ univention-system-setup,
+ univention-firewall,
+ univention-pkgdb-tools,
+ shell-univention-lib (>= 1.0.25-1),
+ python-univention-lib (>= 1.0.25-1)
+Description: UCS system role common dependencies and files
+ This package contains common files used by all system roles.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

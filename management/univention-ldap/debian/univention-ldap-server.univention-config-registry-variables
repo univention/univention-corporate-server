@@ -7,7 +7,7 @@ Categories=service-ldap
 [ldap/replog]
 Description[de]=Aktiviere/Deaktiviere das Schreiben der Replikations-Logdatei
 Description[en]=Enable/Disable writing of replication log file
-Type=str
+Type=bool
 Categories=service-ldap
 
 [ldap/translogfile]
@@ -17,39 +17,39 @@ Type=str
 Categories=service-ldap
 
 [slapd/port]
-Description[de]=Port des LDAP-Servers slapd, beispielsweise 389,7389
-Description[en]=Port of LDAP server slapd, e.g. 389,7389
+Description[de]=Ports des LDAP-Servers slapd, beispielsweise 389,7389
+Description[en]=Ports of LDAP server slapd, e.g. 389,7389
 Type=str
 Categories=service-ldap
 
 [slapd/port/ldaps]
-Description[de]=Port des LDAP-Servers slapd für ldaps, beispielsweise 636,7636
-Description[en]=Port of LDAP server slapd for ldaps, e.g. 636,7636
+Description[de]=Ports des LDAP-Servers slapd für ldaps, beispielsweise 636,7636
+Description[en]=Ports of LDAP server slapd for ldaps, e.g. 636,7636
 Type=str
 Categories=service-ldap
 
 [ldap/page-results]
 Description[de]=Aktiviere/Deaktiviere das Aufteilen der Ergebnisse einer Suchoperation
 Description[en]=Enable/Disable pagination of data returned by search operations
-Type=str
+Type=bool
 Categories=service-ldap
 
 [ldap/sizelimit]
 Description[de]=Maximale Anzahl von Einträgen, die von einer Suchoperation zurückgegeben werden
 Description[en]=Maximum amount of entries returned by a search operation
-Type=str
+Type=int
 Categories=service-ldap
 
 [ldap/threads]
 Description[de]=Anzahl der verwendeten Server-Threads
 Description[en]=Threads used by the LDAP server
-Type=str
+Type=int
 Categories=service-ldap
 
 [ldap/maxopenfiles]
 Description[de]=Maximale Anzahl der gleichzeitig offenen Dateideskriptoren des slapd
 Description[en]=Maximum amount of simultaneously open file handles for slapd
-Type=str
+Type=int
 Categories=service-ldap
 
 [ldap/schema/export]
@@ -85,19 +85,19 @@ Categories=service-ldap
 [ldap/database/bdb/set_cachesize]
 Description[de]=Anzahl der Einträge die vom BDB-Backend zwischengespeichert werden
 Description[en]=Amount of entries being cached by the BDB LDAP backend
-Type=str
+Type=int
 Categories=service-ldap
 
 [ldap/database/bdb/set_lg_bsize]
 Description[de]=Maximale Größe der BDB-Transaction-Logdateien in Byte
 Description[en]=Maximum size of BDB transaction logs in byte
-Type=str
+Type=int
 Categories=service-ldap
 
 [ldap/database/bdb/set_lg_max]
 Description[de]=Maximales Alter der BDB-Transaction-Logdateien
 Description[en]=Maximum age of BDB transaction logs
-Type=str
+Type=int
 Categories=service-ldap
 
 [ldap/database/bdb/db_config_options]
@@ -133,19 +133,19 @@ Categories=service-ldap
 [ldap/index/autorebuild]
 Description[de]=LDAP-Indizes bei Updates automatisch anpassen und neu erzeugen
 Description[en]=Adjust and rebuild LDAP indices automatically during updates
-Type=str
+Type=bool
 Categories=service-ldap
 
 [ldap/online/master]
 Description[de]=Falls auf no oder false gesetzt, wird auf DC Slaves das Update Referral zum DC Master nicht aktiviert
 Description[en]=If no or false the Update Referral to the DC Master on DC Slaves will not be activated
-Type=str
+Type=bool
 Categories=service-ldap
 
 [ldap/acl/read/anonymous]
 Description[de]=Falls auf yes oder true gesetzt, wird anonyme Suche im Verzeichnisdienst auf alle Objekte erlaubt, für die keine spezifischeren ACLs greifen
 Description[en]=If set to yes or true anonymous search in the directory is allowed on objects not matching more specific ACLs
-Type=str
+Type=bool
 Categories=service-ldap
 
 [ldap/acl/read/ips]
@@ -158,4 +158,34 @@ Categories=service-ldap
 Description[de]=Aktiviert das k5pwd Overlay-Modul
 Description[en]=Activates th k5pwd overlay module
 Type=bool
+Categories=service-ldap
+
+[ldap/acl/slavepdc]
+Description[de]=Erlaubt den Zugriff für DC-Slaves [yes]
+Description[en]=Allows access for DC slaves [yes]
+Type=bool
+Categories=service-ldap
+
+[ldap/autostart]
+Description[de]=Automatischer Start des LDAP-Dienstes beim Systemstart
+Description[en]=Automatically start the LDAP daemon on system startup
+Type=bool
+Categories=service-ldap
+
+[ldap/cachesize]
+Description[de]=Größe für den LDAP-Server internen Caches [20000]
+Description[en]=Size for the LDAP server internal cache [20000]
+Type=int
+Categories=service-ldap
+
+[ldap/idlcachesize]
+Description[de]=Größe für den Suchergebniscache des Indexes [20000]
+Description[en]=Size for the search result cache of indexes [20000]
+Type=int
+Categories=service-ldap
+
+[ldap/idletimeout]
+Description[de]=Zeitraum in Sekunden, nachdem der Server eine inaktive Verbindung beendet [6 Minuten]
+Description[en]=Time period in seconds, after which the server closes unused connections [6 minutes]
+Type=int
 Categories=service-ldap

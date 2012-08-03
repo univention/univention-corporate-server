@@ -1,5 +1,11 @@
 [nfs/autostart]
 Description[de]=Automatischer Start des NFS-Dienstes beim Systemstart
 Description[en]=Automatically start of the NFS-service at system startup
+Type=bool
+Categories=nfs
+
+[nfs/ports]
+Description[de]=Bei 'static' werden feste IP-Portnummern für die NFS-Dienste vergeben [static]
+Description[en]=With 'static' fixed IP port numbers are assigned to NFS services [static]
 Type=str
 Categories=nfs

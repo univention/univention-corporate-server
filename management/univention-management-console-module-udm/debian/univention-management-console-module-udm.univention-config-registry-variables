@@ -1,0 +1,11 @@
+[directory/reports/cleanup/age]
+Description[de]=Zeitspanne in Sekunden, nachdem UDM-Reports automatisch gelöscht wird [12 Stunden]
+Description[en]=Time span in seconds, after which UDM reports are automatically deleted [12 hours]
+Type=int
+Categories=management-udm
+
+[directory/reports/cleanup/cron]
+Description[de]=Cronjob-Interval für das regelmäßige Löschen von alten UDM-Reports
+Description[en]=Cron job interval for regular deletion of old UDM reports
+Type=bool
+Categories=management-udm

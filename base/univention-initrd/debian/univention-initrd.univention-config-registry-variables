@@ -1,0 +1,11 @@
+[initramfs/busybox]
+Description[de]=Busybox innerhalb der initialen Ramdisk verwenden [yes]
+Description[en]=Use busybox insie the initial ram disk [yes]
+Type=bool
+Categories=system-base
+
+[initramfs/modules]
+Description[de]=Methode, um die Module zu bestimen, die in die initiale Ramdisk aufgenommen werden sollen: most, netboot, dep, list. [most]
+Description[en]=Method used to specify the modules to include into the inital ram disk: most, netboot, dep, list. [most]
+Type=str
+Categories=system-base

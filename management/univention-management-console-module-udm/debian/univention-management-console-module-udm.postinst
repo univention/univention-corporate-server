@@ -128,8 +128,7 @@ if [ -n "${VARIABLES}" ]; then
 			directory/manager/web/modules/computers/computer/add/default?"computers/windows"
 fi
 
-univention-config-registry set directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
-	directory/manager/web/update/available/groups?"Domain Admins"
+univention-config-registry set directory/manager/web/modules/groups/group/checks/circular_dependency?"yes"
 
 # activate new sites
 a2ensite univention-directory-manager

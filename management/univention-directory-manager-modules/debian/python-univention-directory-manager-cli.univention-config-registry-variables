@@ -1,0 +1,11 @@
+[directory/manager/cmd/debug/level]
+Description[de]=Debug level des Univention Directory Manager Kommandozeilenprogramm (0-4)
+Description[en]=Debug level of Univention Directory Notifiers command line tool (0-4)
+Type=int
+Categories=service-ldap
+
+[directory/manager/cmd/timeout]
+Description[de]=Zeitspanne in Sekunden, nach der sich der Univention Directory Manager Server bei Nichtbenutzung automatisch beendet [5 Minuten]
+Description[en]=Time span after which an idle Univention Directory Manager server automatically terminates [5 minutes]
+Type=int
+Categories=service-ldap

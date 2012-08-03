@@ -42,7 +42,6 @@ fi
 univention-config-registry set interfaces/handler=ifplugd
 
 univention-config-registry set networkmanager/action/mount?"no"
-univention-config-registry set networkmanager/dhcp/options/fallback?"no"
 
 univention-config-registry set dhclient/options/timeout?"40"
 univention-config-registry set dhclient/options/retry?"60"

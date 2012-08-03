@@ -9,21 +9,3 @@ Description[de]=Ist diese Variable gesetzt, dann wird versucht die Heimatverzeic
 Description[en]=If this variable is set the home directory share will be mounted via NFS if possible
 Type=bool
 Categories=system-base
-
-[dhclient/options/timeout]
-Description[de]=Definiert die Zeit in Sekunden, die der DHCP-Client versucht eine IP-Konfiguration zu beziehen
-Description[en]=Defines the amount of time in seconds that the DHCP clients tries to get an IP configuration
-Type=int
-Categories=system-base
-
-[dhclient/options/retry]
-Description[de]=Definiert die Zeit in Sekunden, die der DHCP-Client vor einem erneuten Versuch wartet
-Description[en]=Defines the amount of time in seconds that the DHCP clients waits before trying again
-Type=int
-Categories=system-base
-
-[dhclient/linklocal/fallback]
-Description[de]=Definiert ob eine Link Local IP Adresse konfiguriert wird, wenn per DHCP keine IP Adresse bezogen werden konnte (Default: true)
-Description[en]=Defines whether a link local IP address is configured if no IP address could be obtained via DHCP (default: true)
-Type=str
-Categories=system-base

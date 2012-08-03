@@ -12,7 +12,7 @@ Architecture: all
 Conflicts: ifplugd,
  univention-ifplugd
 Depends: ${misc:Depends},
- univention-network-common,
+ univention-network-common (= ${source:Version}),
  network-manager
 Description: UCS - Support for the Network Manager
  This package installs the configuration for the network manager.
@@ -27,7 +27,7 @@ Architecture: all
 Conflicts: network-manager,
  univention-network-manager
 Depends: ${misc:Depends},
- univention-network-common,
+ univention-network-common (= ${source:Version}),
  ifplugd,
  isc-dhcp-client | dhcp3-client
 Description: UCS - Support for ifplugd
@@ -43,6 +43,8 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-server,
  python-netifaces
+Replaces: univention-network-manager,
+ univention-ifplugd
 Description: UCS - Network tools for ifplugd and network-manager (common)
  This package installs tools required by univention-ifplugd and
  univention-network-manager.

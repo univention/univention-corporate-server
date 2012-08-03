@@ -23,8 +23,8 @@ Type=int
 Categories=system-base
 
 [sshd/autostart]
-Description[de]=Definiert, ob der SSH-Dienst automatisch gestartet werden soll
-Description[en]=defines if the SSH daemon should be started automatically
+Description[de]=Automatischer Start des SSH-Dienstes beim Systemstart
+Description[en]=Automatically start the SSH daemon on system startup
 Type=bool
 Categories=service-ssh
 
@@ -193,6 +193,12 @@ Description[en]=Enable/Disable automatic network restart while setting network U
 Type=bool
 Categories=system-network
 
+[interfaces/handler]
+Description[de]=Legt das Programm zur Verwaltung der Netzwerke fest: ifplugd, networkmanager
+Description[en]=Defines the program to manage the networks: ifplugd, networkmanager
+Type=str
+Categories=system-network
+
 [hosts/static/.*]
 Description[de]=Zusätzliche /etc/hosts Einträge
 Description[en]=Additional entries for /etc/hosts
@@ -307,43 +313,43 @@ Categories=service-ldap
 Description[de]=Zusätzliche Kernel-Optionen für den Lilo-Bootloader
 Description[en]=Additional kernel options passed to the Lilo boot loader
 Type=str
-Categories=system-base
+Categories=deprecated
 
 [lilo/append/.*acpi]
 Description[de]=Hinzufügen von ACPI Option für Lilo
 Description[en]=Add ACPI options for lilo
 Type=str
-Categories=system-base
+Categories=deprecated
 
 [lilo/boot]
 Description[de]=Wo lilo installiert werden soll
 Description[en]=Where to install lilo
 Type=str
-Categories=system-base
+Categories=deprecated
 
 [lilo/compact]
 Description[de]=Beschleunigung des Bootvorgangs mt Lilo
 Description[en]=Increase speed for boot process with lilo
 Type=str
-Categories=system-base
+Categories=deprecated
 
 [lilo/default]
 Description[de]=Standardkernel für den Lilo-Bootloader
 Description[en]=Default kernel for the Lilo boot loader
 Type=str
-Categories=system-base
+Categories=deprecated
 
 [lilo/root]
 Description[de]=Wurzelverzeichnis für Lilo-Bootloader
 Description[en]=Root device of Lilo boot loader
 Type=str
-Categories=system-base
+Categories=deprecated
 
 [lilo/vga]
 Description[de]=Graphikmodus in Lilo
 Description[en]=Graphics mode for lilo
 Type=str
-Categories=system-base
+Categories=deprecated
 
 [locale]
 Description[de]=Installierte Lokalisierungen (Sprache der Oberfläche, Zeichensätze, etc.)
@@ -441,6 +447,18 @@ Description[en]=System role
 Type=str
 Categories=system-base
 
+[ntp/autostart]
+Description[de]=Automatischer Start des NTP-Zeitdienstes beim Systemstart
+Description[en]=Automatically start the Network Time Protocol daemon on system startup
+Type=bool
+Categories=service-base
+
+[ntp/signed]
+Description[de]=NTP Signierung aktivieren
+Description[en]=Activate Signed NTP
+Type=bool
+Categories=system-base
+
 [timeserver]
 Description[de]=Der erste NTP-Server
 Description[en]=The first NTP server
@@ -477,6 +495,12 @@ Description[en]=Create nightly backup of UCR data (yes, no)
 Type=bool
 Categories=system-base
 
+[ucr/encoding/strict]
+Description[de]=Akzeptiert nur gültige UTF-8 Eingaben [yes]
+Description[en]=Only accept valid UTF-8 encoded input [yes]
+Type=bool
+Categories=system-base
+
 [version/patchlevel]
 Description[de]=Patchlevel der UCS Version
 Description[en]=Patchlevel of the UCS version
@@ -486,6 +510,12 @@ Categories=system-base
 [version/security-patchlevel]
 Description[de]=Security-Patchlevel der UCS Version
 Description[en]=Security patchlevel of the UCS version
+Type=int
+Categories=system-base
+
+[version/erratalevel]
+Description[de]=Errata-Patchlevel der UCS Version
+Description[en]=Errata patchlevel of the UCS version
 Type=int
 Categories=system-base
 
@@ -603,8 +633,51 @@ Description[en]=Xorg keyboard options
 Type=str
 Categories=system-desktop
 
-[ntp/signed]
-Description[de]=NTP Signierung aktivieren
-Description[en]=Activate Signed NTP
+[update/secure_apt]
+Description[de]=Erlaubt nur die Installation von signierten Paketen.
+Description[en]=Only allow the installation of signed packages.
+Type=bool
+Categories=system-base
+
+[cron/autostart]
+Description[de]=Automatischer Start des CRON-Dienstes beim Systemstart
+Description[en]=Automatically start the CRON daemon on system startup
+Type=bool
+Categories=service-base
+
+[inetd/autostart]
+Description[de]=Automatischer Start des Interner "super-server"-Dienstes beim Systemstart
+Description[en]=Automatically start the internet "super-server" daemon on system startup
+Type=bool
+Categories=service-base
+
+[nscd/autostart]
+Description[de]=Automatischer Start des Caching-Dienstes für Namen beim Systemstart
+Description[en]=Automatically start the Name Service Caching daemon on system startup
+Type=bool
+Categories=service-base
+
+[portmap/autostart]
+Description[de]=Automatischer Start des RPC-Registrierungsdienstes beim Systemstart
+Description[en]=Automatically start the RPC registry daemon on system startup
+Type=bool
+Categories=service-base
+
+[installer/device/.*/fs]
+Description[de]=Partitionierungsinformation von der Installation: Dateisystem
+Description[en]=Partition information from installation: file system
 Type=str
-Categories=system-desktop
+Categories=service-base
+
+[installer/device/.*/mp]
+Description[de]=Partitionierungsinformation von der Installation: Einhängepunkt
+Description[en]=Partition information from installation: mount point
+Type=str
+Categories=service-base
+
+[installer/device/.*/name]
+Description[de]=Partitionierungsinformation von der Installation: Gerätename
+Description[en]=Partition information from installation: device name
+Type=str
+Categories=service-base
+

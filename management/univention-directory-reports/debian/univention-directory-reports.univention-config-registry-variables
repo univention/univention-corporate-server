@@ -1,0 +1,17 @@
+[directory/reports/logo]
+Description[de]=Pfad zu einer Bilddatei, die in PDF-Report als Logo eingebundn wird
+Description[en]=Path to a picture file, which is included in PDF reports as a logo
+Type=int
+Categories=management-udm
+
+[directory/reports/templates/csv/.*]
+Description[de]=Beschreibung einer Vorlage für einen CSV-Report.
+Description[en]=Desciption of a template for a CSV report
+Type=str
+Categories=management-udm
+
+[directory/reports/templates/pdf/.*]
+Description[de]=Beschreibung einer Vorlage für einen PDF-Report
+Description[en]=Desciption of a template for a PDF report
+Type=str
+Categories=management-udm

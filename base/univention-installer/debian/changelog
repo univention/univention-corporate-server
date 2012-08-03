@@ -1,3 +1,10 @@
+univention-installer (8.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Rmove setting unused UCR variables (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 12:03:53 +0200
+
 univention-installer (7.0.165-1) unstable; urgency=low
 
   * Set erratalevel for new installations (Bug #27835)

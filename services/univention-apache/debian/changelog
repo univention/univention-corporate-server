@@ -1,3 +1,9 @@
+univention-apache (5.0.10-1) unstable; urgency=low
+
+  * Add UCR variable descriptions (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 11:46:24 +0200
+
 univention-apache (5.0.9-2) unstable; urgency=low
 
   * version bump (Bug #17659)

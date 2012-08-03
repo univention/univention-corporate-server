@@ -1,3 +1,18 @@
+univention-base-files (2.0.1-1) unstable; urgency=low
+
+  * Add UCR variable descriptions (Bug #28134)
+  * Drop setting deprecated UCR variable:
+    - browser-cache
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 11:33:27 +0200
+
+univention-base-files (2.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Add UCR variable descriptions (Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 08:46:51 +0200
+
 univention-base-files (1.0.51-1) unstable; urgency=low
 
   * Divert /etc/motd.tail instead of /var/run/motd because /var/run/motd

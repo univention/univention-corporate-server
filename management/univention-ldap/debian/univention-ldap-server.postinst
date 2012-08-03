@@ -97,7 +97,6 @@ univention-config-registry set	ldap/debug/level?0 \
 								ldap/acl/slavepdc?yes \
 								ldap/acl/nestedgroups?yes \
 								ldap/database/bdb/db_config_options?"set_flags" \
-								ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE" \
 								ldap/autostart?yes \
 								ldap/maxopenfiles?8192 # Bug #17705
 

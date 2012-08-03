@@ -1,3 +1,12 @@
+univention-directory-notifier (7.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Add UCR variable descriptions (Bug #28134)
+  * Remove setting unsued UCR variable:
+    - listener/supply/notifier?yes
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 12:54:46 +0200
+
 univention-directory-notifier (6.0.8-2) unstable; urgency=low
 
   * src/network.c: Notifier opened socket only with AF_INET6
@@ -39,13 +48,13 @@ univention-directory-notifier (6.0.6-1) unstable; urgency=low
 
 univention-directory-notifier (6.0.5-2) unstable; urgency=low
 
-  * added logrotate template (Bug #18002) 
+  * added logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:16:38 +0200
 
 univention-directory-notifier (6.0.5-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:13:04 +0200
 

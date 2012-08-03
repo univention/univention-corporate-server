@@ -1,3 +1,11 @@
+univention-management-console-module-udm (2.0.2-1) unstable; urgency=low
+
+  * Add UCR variable descriptions (Bug #28134)
+  * Remove setting unsed UCR variable:
+    - directory/manager/web/update/available/groups
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 13:12:20 +0200
+
 univention-management-console-module-udm (2.0.1-1) unstable; urgency=low
 
   * Fix Bug #25638 a bit more elegant. Migrate broken (misplaced) backend-code
