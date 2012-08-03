@@ -1,3 +1,9 @@
+univention-directory-listener (7.0.0-2) unstable; urgency=low
+
+  * Fix file descriptor leak (Bug #27729)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Aug 2012 01:29:23 +0200
+
 univention-directory-listener (7.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.
