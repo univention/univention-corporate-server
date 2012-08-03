@@ -1,3 +1,9 @@
+univention-config-registry (8.0.1-1) unstable; urgency=low
+
+  * Add unit test for univention.info_tools.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 16:44:36 +0200
+
 univention-config-registry (8.0.0-1) unstable; urgency=low
 
   * Version bump for 3.1

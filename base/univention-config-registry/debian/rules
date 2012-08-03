@@ -46,6 +46,11 @@ override_dh_auto_configure:
 	automake --add-missing
 	./configure --prefix=/usr
 
+override_dh_auto_test:
+	ucslint
+	python tests/test_info_tools.py
+	make -C tests check
+
 version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
 override_dh_auto_install:
 	dh_auto_install --buildsystem=makefile
