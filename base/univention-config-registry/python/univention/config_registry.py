@@ -41,6 +41,7 @@ import fcntl
 import pwd
 import grp
 import time
+import errno
 from debhelper import parseRfc822
 from pipes import quote as escape_value
 
@@ -256,14 +257,14 @@ class _ConfigRegistry( dict ):
 		import_failed = False
 		try:
 			fp = open(self.file, 'r')
-		except:
+		except EnvironmentError:
 			import_failed = True
 
 		if import_failed or len(fp.readlines()) < 3: # only comment or nothing
 			import_failed = True # not set if file is to short
 			try:
 				fp = open(self.backup_file, 'r')
-			except IOError:
+			except EnvironmentError:
 				return
 
 		fp.seek(0)
@@ -290,8 +291,8 @@ class _ConfigRegistry( dict ):
 			try:
 				fd = os.open( self.file, os.O_CREAT | os.O_RDONLY, 0644 )
 				os.close( fd )
-			except OSError:
-				print "error: the configuration file '%s' does not exist und could not be created" % self.file
+			except EnvironmentError:
+				print >> sys.stderr, "E: the configuration file '%s' does not exist und could not be created" % (self.file,)
 				exception_occured()
 
 	def __save_file(self, filename):
@@ -306,11 +307,9 @@ class _ConfigRegistry( dict ):
 			os.fsync(fp.fileno())
 			# close fd
 			fp.close()
-		except IOError, (errno, strerror):
-			# errno 13: Permission denied
-			#
+		except EnvironmentError, ex:
 			# suppress certain errors
-			if not errno in [13]:
+			if ex.errno != errno.EACCES:
 				raise
 
 	def save(self):
@@ -444,8 +443,8 @@ def runModule(modpath, arg, ucr, changes):
 	try:
 		module = __import__( module_name.replace( os.path.sep, '.' ) )
 		arg2meth[arg](module)(ucr, changes)
-	except (AttributeError, ImportError), err:
-		print err
+	except (AttributeError, ImportError), ex:
+		print >> sys.stderr, ex
 	del sys.path[ 0 ]
 
 class configHandler(object):
@@ -509,7 +508,7 @@ class configHandlerDiverting(configHandler):
 		"""Undo diversion of file."""
 		try:
 			os.unlink(self.to_file)
-		except OSError:
+		except EnvironmentError:
 			pass
 		d = '%s.debian' % self.to_file
 		self._call_silent('dpkg-divert', '--quiet', '--rename', '--divert', d, '--remove', self.to_file)
@@ -561,7 +560,7 @@ class configHandlerMultifile(configHandlerDiverting):
 		for from_file in sorted(self.from_files, key=lambda x: os.path.basename(x)):
 			try:
 				from_fp = open(from_file, 'r')
-			except IOError:
+			except EnvironmentError:
 				continue
 			to_fp.write(filter(from_fp.read(), ucr, srcfiles = self.from_files, opts = filter_opts))
 
@@ -608,8 +607,8 @@ class configHandlerFile(configHandlerDiverting):
 
 		try:
 			st = os.stat(self.from_file)
-		except OSError:
-			print "The referenced template file does not exist"
+		except EnvironmentError:
+			print >> sys.stderr, "The referenced template file does not exist"
 			return None
 		from_fp = open(self.from_file, 'r')
 		to_fp = open(self.to_file, 'w')
@@ -707,7 +706,7 @@ class configHandlers:
 				self._multifiles = p.load()
 			finally:
 				fp.close()
-		except (IOError, TypeError, ValueError, cPickle.UnpicklingError, EOFError, AttributeError):
+		except (EnvironmentError, TypeError, ValueError, cPickle.UnpicklingError, EOFError, AttributeError):
 			self.update()
 
 	def stripBasepath(self, path, basepath):
@@ -754,7 +753,7 @@ class configHandlers:
 				try:
 					handler.user = pwd.getpwnam(user).pw_uid
 				except LookupError:
-					print 'Warning: failed to convert the username %s to the uid' % (user,)
+					print >> sys.stderr, 'W: failed to convert the username %s to the uid' % (user,)
 
 			try:
 				group = entry['Group'][0]
@@ -764,7 +763,7 @@ class configHandlers:
 				try:
 					handler.group = grp.getgrnam(group).gr_gid
 				except LookupError:
-					print 'Warning: failed to convert the groupname %s to the gid' % (group,)
+					print >> sys.stderr, 'W: failed to convert the groupname %s to the gid' % (group,)
 
 			try:
 				mode = entry['Mode'][0]
@@ -774,7 +773,7 @@ class configHandlers:
 				try:
 					handler.mode = int(mode, 8)
 				except ValueError:
-					print 'Warning: failed to convert mode %s' % (mode,)
+					print >> sys.stderr, 'W: failed to convert mode %s' % (mode,)
 
 			return handler
 
@@ -823,7 +822,7 @@ class configHandlers:
 				try:
 					handler.user = pwd.getpwnam(user).pw_uid
 				except LookupError:
-					print 'Warning: failed to convert the username %s to the uid' % (user,)
+					print >> sys.stderr, 'W: failed to convert the username %s to the uid' % (user,)
 
 			try:
 				group = entry['Group'][0]
@@ -833,7 +832,7 @@ class configHandlers:
 				try:
 					handler.group = grp.getgrnam(group).gr_gid
 				except LookupError:
-					print 'Warning: failed to convert the groupname %s to the gid' % (group,)
+					print >> sys.stderr, 'W: failed to convert the groupname %s to the gid' % (group,)
 
 			try:
 				mode = entry['Mode'][0]
@@ -843,7 +842,7 @@ class configHandlers:
 				try:
 					handler.mode = int(mode, 8)
 				except ValueError:
-					print 'Warning: failed to convert mode %s' % (mode,)
+					print >> sys.stderr, 'W: failed to convert mode %s' % (mode,)
 
 
 			# Add pending subfiles from earlier entries
@@ -871,8 +870,8 @@ class configHandlers:
 					variables |= grepVariables(f.read())
 				finally:
 					f.close()
-			except IOError, e:
-				print >>sys.stderr, "Failed to process Subfile %s" % (name,)
+			except EnvironmentError:
+				print >> sys.stderr, "Failed to process Subfile %s" % (name,)
 				return None
 			qentry = (name, variables)
 			# if multifile handler does not yet exists, queue subfiles for later
@@ -989,7 +988,7 @@ class configHandlers:
 				sfile = section['Subfile'][0]
 				try:
 					handler = self._multifiles[mfile]
-				except KeyError, e:
+				except KeyError:
 					continue # skip SubFile w/o MultiFile
 				name = os.path.join(file_dir, sfile)
 				handler.remove_subfile(name)
@@ -1000,7 +999,7 @@ class configHandlers:
 			else:
 				continue
 			if not handler: # Bug #17913
-				print >>sys.stderr, "Skipping internal error: no handler for %r in %s" % (section, package)
+				print >> sys.stderr, "Skipping internal error: no handler for %r in %s" % (section, package)
 				continue
 			handlers.add(handler)
 			handler.uninstall_divert()
@@ -1014,7 +1013,7 @@ class configHandlers:
 		try:
 			# remove cache file to force rebuild of cache
 			os.unlink(configHandlers.CACHE_FILE)
-		except OSError:
+		except EnvironmentError:
 			pass
 		return handlers
 
@@ -1125,8 +1124,8 @@ def replog(method, scope, ucr, var, value=None):
 			logfile = open(replog_file, "a+")
 			logfile.write(str)
 			logfile.close()
-		except Exception, e:
-			print "error: exception occurred while writing to replication log: %s" % str(e)
+		except EnvironmentError, ex:
+			print >> sys.stderr, "E: exception occurred while writing to replication log: %s" % (ex,)
 			exception_occured()
 
 def handler_set( args, opts = {}, quiet = False ):
@@ -1160,7 +1159,7 @@ def handler_set( args, opts = {}, quiet = False ):
 			sep_set = arg.find('=') # set
 			sep_def = arg.find('?') # set if not already set
 			if sep_set == -1 and sep_def == -1:
-				print "Warning: Missing value for config registry variable '%s'" % arg
+				print >> sys.stderr, "W: Missing value for config registry variable '%s'" % (arg,)
 				continue
 			else:
 				if sep_set > 0 and sep_def == -1:
@@ -1180,7 +1179,7 @@ def handler_set( args, opts = {}, quiet = False ):
 						print 'Create '+key
 					k = reg.get(key, None, getscope=True)
 					if k and k[0] > current_scope:
-						print 'Warning: %s is overridden by scope "%s"' % (key, SCOPE[k[0]])
+						print >> sys.stderr, 'W: %s is overridden by scope "%s"' % (key, SCOPE[k[0]])
 				reg[key] = value
 				changed[key] = (old, value)
 				replog( 'set', current_scope, reg, key, value )
@@ -1231,9 +1230,9 @@ def handler_unset( args, opts = {} ):
 				k = reg.get(arg, None, getscope=True)
 				replog( 'unset', current_scope, reg, arg )
 				if k and k[0] > current_scope:
-					print 'Warning: %s is still set in scope "%s"' % (arg, SCOPE[k[0]])
+					print >> sys.stderr, 'W: %s is still set in scope "%s"' % (arg, SCOPE[k[0]])
 			else:
-				print "Warning: The config registry variable '%s' does not exist" % arg
+				print >> sys.stderr, "W: The config registry variable '%s' does not exist" % arg
 		reg.save()
 	finally:
 		reg.unlock()
@@ -1314,7 +1313,7 @@ def validateKey(k):
 	k = replaceUmlaut(k)
 
 	if old != k:
-		sys.stderr.write('Please fix invalid umlaut in config variables key "%s" to %s \n' % (old, k))
+		print >> sys.stderr, 'Please fix invalid umlaut in config variables key "%s" to %s' % (old, k)
 		return 0
 
 	if len(k) > 0:
@@ -1323,7 +1322,7 @@ def validateKey(k):
 		if not match:
 			return 1
 		else:
-			sys.stderr.write('Please fix invalid char "%s" in config registry key "%s"\n'% (match.group(), k));
+			print >> sys.stderr, 'Please fix invalid char "%s" in config registry key "%s"' % (match.group(), k)
 	return 0
 
 def handler_filter( args, opts = {} ):
@@ -1345,7 +1344,7 @@ def handler_search( args, opts = {} ):
 
 	count_search = int(search_keys) + int(search_values) + int(search_all)
 	if count_search > 1:
-		sys.stderr.write( 'E: at most one out of [--key|--value|--all] may be set\n' )
+		print >> sys.stderr, 'E: at most one out of [--key|--value|--all] may be set'
 		sys.exit( 1 )
 	elif count_search == 0:
 		search_keys = True
@@ -1367,7 +1366,7 @@ def handler_search( args, opts = {} ):
 	info = cri.ConfigRegistryInfo(install_mode=False)
 
 	if category and not info.get_category(category):
-		sys.stderr.write('E: unknown category: "%s"\n' % category)
+		print >> sys.stderr, 'E: unknown category: "%s"' % (category,)
 		sys.exit(1)
 
 	b = ConfigRegistry()
@@ -1472,11 +1471,11 @@ def handler_info( args, opts = {} ):
 	for arg in args:
 		try:
 			print_variable_info_string(arg, reg.get(arg, None), info.get_variable(arg))
-		except UnknownKeyException, e:
-			sys.stderr.write(e.value + '\n')
+		except UnknownKeyException, ex:
+			print >> sys.stderr, ex
 
-def handler_help( args, opts = {} ):
-	print '''
+def handler_help(args, opts={}, out=sys.stdout):
+	print >> out, '''
 univention-config-registry: base configuration for UCS
 copyright (c) 2001-2012 Univention GmbH, Germany
 
@@ -1552,13 +1551,13 @@ def handler_version( args, opts = {} ):
 	sys.exit(0)
 
 def missing_parameter(action):
-	print 'error: too few arguments for command [%s]' % action
-	print 'try `univention-config-registry --help` for more information'
+	print >> sys.stderr, 'E: too few arguments for command [%s]' % (action,)
+	print >> sys.stderr, 'try `univention-config-registry --help` for more information'
 	sys.exit(1)
 
 def exception_occured():
-	print 'error: your request could not be fulfilled'
-	print 'try `univention-config-registry --help` for more information'
+	print >> sys.stderr, 'E: your request could not be fulfilled'
+	print >> sys.stderr, 'try `univention-config-registry --help` for more information'
 	sys.exit(1)
 
 def filter_shell( args, text ):
@@ -1654,9 +1653,9 @@ def main(args):
 						opt[ 2 ] = True
 						break
 				else:
-					print 'E: unknown option %s' % arg
-					opt_actions[ 'help' ][ 1 ] = True
-					break
+					print >> sys.stderr, 'E: unknown option %s' % (arg,)
+					handler_help(args, out=sys.stderr)
+					sys.exit(1)
 
 			# remove option from command line arguments
 			args.pop( 0 )
@@ -1701,7 +1700,7 @@ def main(args):
 		for id, opt in opt_filters.items():
 			if opt[ 2 ]:
 				if not action in opt[ 3 ]:
-					print 'invalid option --%s for command %s' % ( opt[ 0 ], action )
+					print >> sys.stderr, 'E: invalid option --%s for command %s' % (opt[0], action)
 					sys.exit( 1 )
 				else:
 					filter = True
@@ -1730,7 +1729,7 @@ def main(args):
 					skip_next_arg = True
 			else:
 				opt_actions[ 'help' ][ 1 ] = True
-				print 'invalid option %s for command %s' % ( arg, action )
+				print >> sys.stderr, 'invalid option %s for command %s' % (arg, action)
 				sys.exit( 1 )
 			args.pop( 0 )
 
@@ -1758,17 +1757,17 @@ def main(args):
 				for line in text:
 					print line
 		else:
-			print 'E: unknown action: %s' % action
-			opt_actions[ 'help' ][ 0 ]( args )
+			print >> sys.stderr, 'E: unknown action: %s' % (action,)
+			handler_help(args, out=sys.stderr)
 			sys.exit( 1 )
 
-	except IOError, TypeError:
+	except (EnvironmentError, TypeError):
 		exception_occured()
 
 if __name__ == '__main__':
 	try:
 		main(sys.argv[1:])
-	except StrictModeException, e:
-		print 'Error: UCR is running in strict mode and thus cannot accept the given input:'
-		print e
+	except StrictModeException, ex2:
+		print >> sys.stderr, 'E: UCR is running in strict mode and thus cannot accept the given input:'
+		print >> sys.stderr, ex2
 		sys.exit(1)
