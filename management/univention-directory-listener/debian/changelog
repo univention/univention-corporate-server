@@ -1,3 +1,9 @@
+univention-directory-listener (6.0.26-1) unstable; urgency=low
+
+  * Fix file descriptor leak (Bug #27729)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Aug 2012 01:29:23 +0200
+
 univention-directory-listener (6.0.25-1) unstable; urgency=low
 
   * Fix memory double free bug (Bug #27313)
