@@ -1,3 +1,9 @@
+univention-ssl (7.0.0-2) unstable; urgency=low
+
+  * Use library function to create logfile (Bug #22011)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Aug 2012 01:56:02 +0200
+
 univention-ssl (7.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump

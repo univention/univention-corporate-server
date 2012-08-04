@@ -30,11 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ ! -e /var/log/univention/managed-client.log ] ; then
-	touch /var/log/univention/managed-client.log
-	chown root:adm /var/log/univention/managed-client.log
-	chmod 640 /var/log/univention/managed-client.log
-fi
+. /usr/share/univention-lib/base.sh
+create_logfile_if_missing /var/log/univention/managed-client.log "root:adm" 640
 
 case $1 in
 	start)

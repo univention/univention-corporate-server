@@ -1,3 +1,10 @@
+univention-pkgdb (6.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Use library function to create logfile (Bug #22011)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Aug 2012 01:54:33 +0200
+
 univention-pkgdb (5.0.18-1) unstable; urgency=low
 
   * UMC: applied patch from Bug #22896, Comment 14

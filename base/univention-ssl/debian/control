@@ -15,6 +15,7 @@ Depends: ${misc:Depends},
  makepasswd,
  univention-directory-listener,
  openssl-blacklist,
+ shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Description: UCS - SSL/TLS certificates
  This packages can create a root CA certificate to be used

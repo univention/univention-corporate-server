@@ -3,6 +3,7 @@ univention-server (8.0.0-1) unstable; urgency=low
   * UCS-3.1 version bump.
   * Add UCR variable description (Bug #28134)
   * Remove unused conffiles/etc/default/ifplugd.
+  * Use library function to create logfile (Bug #22011)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 09:37:35 +0200
 
