@@ -1,8 +1,9 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
+# pylint: disable-msg=E0611,W0621,C0103,E1101,W0601
 #
 # Univention Admin Modules
-#  easy to create and modify dns objects
+"""Create and modify dns objects easily."""
 #
 # Copyright 2004-2012 Univention GmbH
 #
@@ -32,381 +33,365 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import os, sys, getopt, codecs, string, time
-import univention.debug
-univention.debug.init('/var/log/univention/admin-cmd.log', 1, 1)
+import sys
+import time
+from optparse import OptionParser
+import univention.debug as ud
+ud.init('/var/log/univention/admin-cmd.log', ud.FLUSH, ud.FUNCTION)
 
 import univention.config_registry
-import univention.admin.uldap
+import univention.admin.uldap as uldap
 import univention.admin.config
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.filter
-import univention.admin.handlers.dns.forward_zone
-import univention.admin.handlers.dns.reverse_zone
-import univention.admin.handlers.dns.host_record
-import univention.admin.handlers.dns.txt_record
-import univention.admin.handlers.dns.ptr_record
-import univention.admin.handlers.dns.srv_record
-import univention.admin.handlers.dns.alias
+import univention.admin.handlers.dns.forward_zone as forward_zone
+import univention.admin.handlers.dns.reverse_zone as reverse_zone
+import univention.admin.handlers.dns.host_record as host_record
+import univention.admin.handlers.dns.txt_record as txt_record
+import univention.admin.handlers.dns.ptr_record as ptr_record
+import univention.admin.handlers.dns.srv_record as srv_record
+import univention.admin.handlers.dns.alias as alias
 import univention.admin.uexceptions
 
-options={}
-options['ignore-missing-zone']=0
-options['ignore-exists']=0
-options['quiet']=0
-options['reverse']=0
-options['overwrite']=0
-options['stoptls']=0
-options['binddn']=0
-options['bindpwd']=0
-options['help']=0
 
-def usage():
-	print >>sys.stderr, 'Usage: %s command [args]' % sys.argv[0]
+def parse():
+    """Parse command line."""
+    usage = 'Usage: %prog zone command type [args]'
+    description = '''
+%prog my.dns.zone add    srv   ldap tcp 0 100 7389 master.fqdn
+%prog my.dns.zone remove srv   ldap tcp 0 100 7389 master.fqdn
+%prog my.dns.zone add    txt   entry-name  "Some text"
+%prog 192.168.122 add    ptr   42  host.fqdn  --reverse
+%prog my.dns.zone add    cname univention-repository apt.knut.univention.de.
+%prog my.dns.zone add    a     host  1.2.3.4  5.6.7.8
+%prog my.dns.zone add    zone  root@fqdn 1 28800 7200 25200 10800 ns.fqdn
+'''  # FIXME: OptionParser reformats this
+    global parser
+    parser = OptionParser(usage=usage, description=description)
+    parser.add_option('--ignore-missing-zone',
+            action='store_true', dest='ignore_missing_zone',
+            help='Skip if zone does not exist')
+    parser.add_option('--ignore-exists',
+            action='store_true', dest='ignore_exists',
+            help='Skip if entry already exists')
+    parser.add_option('--quiet',
+            action='store_true', dest='quiet',
+            help='Turn off verbose messages')  # not implemented
+    parser.add_option('--reverse',
+            action='store_true', dest='reverse',
+            help='Modify revers zone instead of forward zone')
+    parser.add_option('--overwrite',
+            action='store_true', dest='overwrite',
+            help='Overwrite exising record')
+    parser.add_option('--stoptls',
+            action='store_true', dest='stoptls',
+            help='Disable TLS')
+    parser.add_option('--binddn',
+            action='store', dest='binddn',
+            help='bind DN')
+    parser.add_option('--bindpwd',
+            action='store', dest='bindpwd',
+            help='bind password')
 
-def help():
-	print >>sys.stderr,"Valid Commands are:"
-	for elements in options.keys():
-		print >>sys.stderr,elements
+    options, arguments = parser.parse_args()
+    msg = None
+    if options.binddn and not options.bindpwd:
+        msg = 'authentication error: missing --bindpwd'
+    elif not options.binddn and options.bindpwd:
+        msg = 'authentication error: missing --binddn'
+    if msg:
+        ud.debug(ud.ADMIN, ud.ERROR, msg)
+        parser.error(msg)
 
-for elements in sys.argv[1:]:
-        if elements.startswith('--'):
-		elements=elements.replace('--','')
-                if elements not in options.keys():
-                        err = '%s: Unknown Command %s' % (sys.argv[0], elements)
-                        univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, err)
-                        print err
-                        sys.exit(1)
+    try:
+        zone_name, command, typ = arguments[0:3]
+    except ValueError:
+        parser.error('Missing command or value. See --help.')
 
-opts, args=getopt.getopt(sys.argv[1:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite','help'])
+    return options, zone_name, command, typ, arguments[3:]
 
 
-for opt, val in opts:
-	if opt == '--ignore-missing-zone':
-		options['ignore-missing-zone']=1
-	elif opt == '--ignore-exists':
-		options['ignore-exists']=1
-	elif opt == '--quiet':
-		options['quiet']=1
-	elif opt == '--reverse':
-		options['reverse']=1
-	elif opt == '--stoptls':
-		options['stoptls']=1
-	elif opt == '--overwrite':
-		options['overwrite']=1
-	elif opt == '--binddn':
-		options['binddn']=val
-	elif opt == '--bindpwd':
-		options['bindpwd']=val
-	elif opt == '--help':
-		help()
-		sys.exit(1)
-
-co=None
-lo=None
-position=None
-if options['stoptls']:
-	start_tls=0
-else:
-	start_tls=2
-
-configRegistry=univention.config_registry.ConfigRegistry()
-configRegistry.load()
-
-timeout=time.time() + 120	# 2 minutes from now
 def bind():
-	if time.time() > timeout:
-		err = '%s: LDAP server %s unreachable, aborting' % (sys.argv[0], configRegistry['ldap/master'])
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, err)
-		print err
-		sys.exit(1)
-	if options['binddn'] and options['bindpwd']:
-		try:
-			lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=configRegistry['ldap/base'], binddn=options['binddn'], bindpw=options['bindpwd'], start_tls=start_tls)
-			position=univention.admin.uldap.position(lo.base)
-			return lo, position
-		except univention.admin.uexceptions.authFail, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
-			print 'authentication error: %s' % str(e)
-			sys.exit(1)
-		except univention.admin.uexceptions.ldapError, e:
-			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], configRegistry['ldap/master'])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, msg)
-			print msg
-			time.sleep(10)
-			lo, position = bind()
-			return lo, position
-		except univention.admin.uldap.ldap.LDAPError, e:
-			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], configRegistry['ldap/master'])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, msg)
-			print msg
-			time.sleep(10)
-			lo, position = bind()
-			return lo, position
-	elif not options['binddn'] and not options['bindpwd']:
-		try:
-			lo, position=univention.admin.uldap.getAdminConnection(start_tls)
-			return lo, position
-		except univention.admin.uexceptions.authFail, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
-			print 'authentication error: %s' % str(e)
-			sys.exit(1)
-		except univention.admin.uexceptions.ldapError, e:
-			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], configRegistry['ldap/master'])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, msg)
-			print msg
-			time.sleep(10)
-			lo, position = bind()
-			return lo, position
-		except univention.admin.uldap.ldap.LDAPError, e:
-			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], configRegistry['ldap/master'])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, msg)
-			print msg
-			time.sleep(10)
-			lo, position = bind()
-			return lo, position
-	elif options['binddn']:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: missing --bindpwd')
-		print 'authentication error: missing --bindpwd'
-		sys.exit(1)
-	else:	# options['bindpwd']
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: missing --binddn')
-		print 'authentication error: missing --binddn'
-		sys.exit(1)
-lo, position = bind()
+    """Bind to LDAP service."""
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
+    timeout = time.time() + 120  # 2 minutes from now
+    if time.time() > timeout:
+        err = '%s: LDAP server %s unreachable, aborting' % \
+                (sys.argv[0], ucr['ldap/master'])
+        ud.debug(ud.ADMIN, ud.WARN, err)
+        print >> sys.stderr, err
+        sys.exit(1)
+    if options.stoptls:
+        start_tls = 0
+    else:
+        start_tls = 2
+    try:
+        if options.binddn and options.bindpwd:
+            lo = uldap.access(
+                    host=ucr['ldap/master'],
+                    port=int(ucr.get('ldap/master/port', '7389')),
+                    base=ucr['ldap/base'],
+                    binddn=options.binddn,
+                    bindpw=options.bindpwd,
+                    start_tls=start_tls)
+            position = uldap.position(lo.base)
+        else:
+            lo, position = uldap.getAdminConnection(start_tls)
+        return lo, position
+    except univention.admin.uexceptions.authFail, ex:
+        msg = 'authentication error: %s' % (ex,)
+        ud.debug(ud.ADMIN, ud.WARN, msg)
+        print >> sys.stderr, msg
+        sys.exit(1)
+    except (univention.admin.uexceptions.ldapError,
+            uldap.ldap.LDAPError):
+        msg = '%s: timeout while trying to contact LDAP server %s' % \
+                (sys.argv[0], ucr['ldap/master'])
+        ud.debug(ud.ADMIN, ud.WARN, msg)
+        print >> sys.stderr, msg
+        time.sleep(10)
+        return bind()  # recursion
+
 
 def lookup_zone(zone_name):
-	if not options['reverse']:
-		zones=univention.admin.handlers.dns.forward_zone.lookup(co, lo, '(zone=%s)' % zone_name, scope='domain', base=position.getDomain(), unique=1)
-	else:
-		zones=univention.admin.handlers.dns.reverse_zone.lookup(co, lo, '(subnet=%s)' % zone_name, scope='domain', base=position.getDomain(), unique=1)
-	if not zones:
-		if options['ignore-missing-zone']:
-			sys.exit(0)
-		else:
-			print >>sys.stderr, 'E: Zone %s does not exist.' % zone_name
-			sys.exit(1)
-	return zones[0]
-
-try:
-	zone_name=args[0]
-	command=args[1]
-	type=args[2]
-except IndexError:
-	print >>sys.stderr, 'E: Missing command or value. Use --help for further Information'
-	sys.exit(1)
-
-if type != 'zone' or command == 'remove':
-	zone=lookup_zone(zone_name)
-	position.setDn(zone.dn)
-else:
-	position.setDn(univention.admin.config.getDefaultContainer(lo, 'dns/'))
-
-def add_srv_record(args):
-	service=args[0]
-	protocol=args[1]
-	location=args[2:6]
-
-	name=[service, protocol]
-	filter=univention.admin.filter.expression('name', name)
-
-	records=univention.admin.handlers.dns.srv_record.lookup(co, lo, filter, scope='domain', base=position.getDomain(), superordinate=zone, unique=1)
-	if records:
-		record=records[0]
-	else:
-		record=univention.admin.handlers.dns.srv_record.object(co, lo, position, superordinate=zone)
-		record['name']=name
-
-	l=record['location']
-	if location in l:
-		return
-	l.append(location)
-	record['location']=l
-
-	if records:
-		record.modify()
-	else:
-		record.create()
-
-def remove_srv_record(args):
-	service=args[0]
-	protocol=args[1]
-	location=args[2:6]
-
-	name=[service, protocol]
-	filter=univention.admin.filter.expression('name', name)
-
-	records=univention.admin.handlers.dns.srv_record.lookup(co, lo, filter, scope='domain', base=position.getDomain(), superordinate=zone, unique=1)
-	if records:
-		record=records[0]
-	else:
-		record=univention.admin.handlers.dns.srv_record.object(co, lo, position, superordinate=zone)
-		record['name']=name
-
-	l=record['location']
-	if location in l:
-		l.remove(location)
-		record['location']=l
-
-	if records:
-		record.modify()
-
-def add_txt_record(args):
-	name=args[0]
-	text=args[1]
-
-	filter=univention.admin.filter.expression('name', name)
-	records=univention.admin.handlers.dns.txt_record.lookup(co, lo, filter, scope='domain', base=position.getDomain(), superordinate=zone, unique=1)
-	if records:
-		record=records[0]
-	else:
-		record=univention.admin.handlers.dns.txt_record.object(co, lo, position, superordinate=zone)
-		record['name']=name
-		record['zonettl']=['80600']
-	
-	t=record['txt']
-	if text in t:
-		return
-	t.append(text)
-	record['txt']=t
-
-	if records:
-		record.modify()
-	else:
-		record.create()
-
-def add_a_record(args):
-	name=args[0]
-	a=args[1:]
-
-	filter=univention.admin.filter.expression('name', name)
-	records=univention.admin.handlers.dns.host_record.lookup(co, lo, filter, scope='domain', base=position.getDomain(), superordinate=zone, unique=1)
-	if records:
-		record=records[0]
-	else:
-		record=univention.admin.handlers.dns.host_record.object(co, lo, position, superordinate=zone)
-		record['name']=name
-		record['zonettl']=['80600']
-	
-	t=record['a']
-	for i in a:
-		if not i in t:
-			t.append(i)
-	record['a']=t
-
-	if records:
-		record.modify()
-	else:
-		record.create()
+    """Lookup zone and return UDM object."""
+    if not options.reverse:
+        zones = forward_zone.lookup(co, lo, '(zone=%s)' % (zone_name,),
+                scope='domain', base=position.getDomain(), unique=1)
+    else:
+        zones = reverse_zone.lookup(co, lo, '(subnet=%s)' % (zone_name,),
+                scope='domain', base=position.getDomain(), unique=1)
+    if not zones:
+        if options.ignore_missing_zone:
+            sys.exit(0)
+        else:
+            print >> sys.stderr, 'E: Zone %s does not exist.' % (zone_name,)
+            sys.exit(1)
+    return zones[0]
 
 
-def add_cname_record(args):
-	name=args[0]
-	cname=args[1]
+def add_srv_record(service, protocol, priority, weight, port, host):
+    """Add DNS service record."""
+    name = [service, protocol]
+    location = [priority, weight, port, host]
+    filt = univention.admin.filter.expression('name', name)
 
-	filter=univention.admin.filter.expression('name', name)
-	records=univention.admin.handlers.dns.alias.lookup(co, lo, filter, scope='domain', base=position.getDomain(), superordinate=zone, unique=1)
-	if records:
-		record=records[0]
-	else:
-		record=univention.admin.handlers.dns.alias.object(co, lo, position, superordinate=zone)
-		record['name']=name
-		record['zonettl']=['80600']
-	
-	if record['cname'] and not record['cname'] == cname and not options['overwrite'] and not options['ignore-exists']:
-		print >>sys.stderr, 'E: Record exists and points to different address'
-		sys.exit(1)
-	if record['cname'] == cname:
-		return
-	record['cname']=cname
+    records = srv_record.lookup(co, lo, filt, scope='domain',
+            base=position.getDomain(), superordinate=zone, unique=1)
+    if records:
+        record = records[0]
+    else:
+        record = srv_record.object(co, lo, position, superordinate=zone)
+        record['name'] = name
 
-	if records:
-		record.modify()
-	else:
-		record.create()
+    loc = record['location']
+    if location in loc:
+        return
+    loc.append(location)
+    record['location'] = loc
+
+    if records:
+        record.modify()
+    else:
+        record.create()
 
 
-def add_ptr_record(args):
-	address=args[0]
-	ptr=args[1]
+def remove_srv_record(service, protocol, priority, weight, port, host):
+    """Remove DNS service record."""
+    name = [service, protocol]
+    location = [priority, weight, port, host]
+    filt = univention.admin.filter.expression('name', name)
 
-	filter=univention.admin.filter.expression('address', address)
-	records=univention.admin.handlers.dns.ptr_record.lookup(co, lo, filter, scope='domain', base=position.getDomain(), superordinate=zone, unique=1)
-	if records:
-		record=records[0]
-	else:
-		record=univention.admin.handlers.dns.ptr_record.object(co, lo, position, superordinate=zone)
-		record['address']=address
-	
-	if record['ptr_record'] and not record['ptr_record'] == ptr and not options['overwrite']:
-		print >>sys.stderr, 'E: Record exists and points to different address'
-		sys.exit(1)
-	if record['ptr_record'] == ptr:
-		return
-	record['ptr_record']=ptr
+    records = srv_record.lookup(co, lo, filt, scope='domain',
+            base=position.getDomain(), superordinate=zone, unique=1)
+    if records:
+        record = records[0]
+    else:
+        record = srv_record.object(co, lo, position, superordinate=zone)
+        record['name'] = name
 
-	if records:
-		record.modify()
-	else:
-		record.create()
+    loc = record['location']
+    if location in loc:
+        loc.remove(location)
+        record['location'] = loc
 
-def add_zone(args):
-	contact, serial, refresh, retry, expire, ttl=args[0:6]
-	nameserver=args[6:]
+    if records:
+        record.modify()
 
-	if not options['reverse']:
-		zone=univention.admin.handlers.dns.forward_zone.object(co, lo, position)
-		zone['zone']=zone_name
-	else:
-		zone=univention.admin.handlers.dns.reverse_zone.object(co, lo, position)
-		zone['subnet']=zone_name
-	zone['contact']=contact
-	zone['serial']=serial
-	zone['refresh']=[refresh]
-	zone['retry']=[retry]
-	zone['expire']=[expire]
-	zone['ttl']=[ttl]
-	zone['nameserver']=nameserver
-	zone.create()
 
-if command == 'add':
-	nargs=args[3:]
-	
-	print 'Adding %s record "%s" to zone %s...' % (type.upper(), string.join(nargs, ' '), zone_name),
+def add_txt_record(name, text):
+    """Add DNS text record."""
+    filt = univention.admin.filter.expression('name', name)
+    records = txt_record.lookup(co, lo, filt, scope='domain',
+            base=position.getDomain(), superordinate=zone, unique=1)
+    if records:
+        record = records[0]
+    else:
+        record = txt_record.object(co, lo, position, superordinate=zone)
+        record['name'] = name
+        record['zonettl'] = ['80600']
 
-	try:
-		if type == 'srv':
-			add_srv_record(nargs)
-		elif type == 'txt':
-			add_txt_record(nargs)
-		elif type == 'ptr' and options['reverse']:
-			add_ptr_record(nargs)
-		elif type == 'cname':
-			add_cname_record(nargs)
-		elif type == 'a':
-			add_a_record(nargs)
-		elif type == 'zone':
-			add_zone(nargs)
-	except univention.admin.uexceptions.objectExists:
-		if not options['ignore-exists']:
-			print >>sys.stderr, 'E: Object exists'
-			sys.exit(1)
-	except ValueError,e:
-		print 'failed'
-		print 'E: %s'%e
-		sys.exit(1)
-	except univention.admin.uexceptions.valueInvalidSyntax,err:
-		print 'failed'
-		print 'E: %s'%err
-		sys.exit(1)
-	
-	print 'done'
-elif command == 'remove':
-	nargs=args[3:]
-	if type == 'srv':
-		remove_srv_record(nargs)
-	pass
-else:
-	print >>sys.stderr, 'E: No valid command found. Use --help for further information'
-	sys.exit(1)
+    tmp = record['txt']
+    if text in tmp:
+        return
+    tmp.append(text)
+    record['txt'] = tmp
+
+    if records:
+        record.modify()
+    else:
+        record.create()
+
+
+def add_a_record(name, *adresses):
+    """Add DNS IPv4 address records."""
+    filt = univention.admin.filter.expression('name', name)
+    records = host_record.lookup(co, lo, filt, scope='domain',
+            base=position.getDomain(), superordinate=zone, unique=1)
+    if records:
+        record = records[0]
+    else:
+        record = host_record.object(co, lo, position, superordinate=zone)
+        record['name'] = name
+        record['zonettl'] = ['80600']
+
+    tmp = record['a']
+    for addr in adresses:
+        if not addr in tmp:
+            tmp.append(addr)
+    record['a'] = tmp
+
+    if records:
+        record.modify()
+    else:
+        record.create()
+
+
+def add_cname_record(name, cname):
+    """Add DNS canonical name record."""
+    filt = univention.admin.filter.expression('name', name)
+    records = alias.lookup(co, lo, filt, scope='domain',
+            base=position.getDomain(), superordinate=zone, unique=1)
+    if records:
+        record = records[0]
+    else:
+        record = alias.object(co, lo, position, superordinate=zone)
+        record['name'] = name
+        record['zonettl'] = ['80600']
+
+    if record['cname'] and not (record['cname'] == cname or
+            options.overwrite or options.ignore_exists):
+        print >> sys.stderr, 'E: Record exists and points to different address'
+        sys.exit(1)
+    if record['cname'] == cname:
+        return
+    record['cname'] = cname
+
+    if records:
+        record.modify()
+    else:
+        record.create()
+
+
+def add_ptr_record(address, ptr):
+    """Add DNS pointer record."""
+    filt = univention.admin.filter.expression('address', address)
+    records = ptr_record.lookup(co, lo, filt, scope='domain',
+            base=position.getDomain(), superordinate=zone, unique=1)
+    if records:
+        record = records[0]
+    else:
+        record = ptr_record.object(co, lo, position, superordinate=zone)
+        record['address'] = address
+
+    if record['ptr_record'] and not (record['ptr_record'] == ptr or
+            options.overwrite):
+        print >> sys.stderr, 'E: Record exists and points to different address'
+        sys.exit(1)
+    if record['ptr_record'] == ptr:
+        return
+    record['ptr_record'] = ptr
+
+    if records:
+        record.modify()
+    else:
+        record.create()
+
+
+def add_zone(contact, serial, refresh, retry, expire, ttl, *nameserver):
+    """Add DNS zone."""
+    if not options.reverse:
+        zone = forward_zone.object(co, lo, position)
+        zone['zone'] = zone_name
+    else:
+        zone = reverse_zone.object(co, lo, position)
+        zone['subnet'] = zone_name
+    zone['contact'] = contact
+    zone['serial'] = serial
+    zone['refresh'] = [refresh]
+    zone['retry'] = [retry]
+    zone['expire'] = [expire]
+    zone['ttl'] = [ttl]
+    zone['nameserver'] = list(nameserver)
+    zone.create()
+
+
+def main():
+    """Run DNS edit."""
+    global options
+    global zone_name
+    options, zone_name, command, typ, args = parse()
+    global co
+    co = None
+    global lo
+    global position
+    lo, position = bind()
+
+    if typ != 'zone' or command == 'remove':
+        global zone
+        zone = lookup_zone(zone_name)
+        position.setDn(zone.dn)
+    else:
+        position.setDn(univention.admin.config.getDefaultContainer(lo, 'dns/'))
+
+    try:
+        if command == 'add':
+            print 'Adding %s record "%s" to zone %s...' % \
+                    (typ.upper(), ' '.join(args), zone_name)
+            if typ == 'srv':
+                add_srv_record(*args)
+            elif typ == 'txt':
+                add_txt_record(*args)
+            elif typ == 'ptr' and options.reverse:
+                add_ptr_record(*args)
+            elif typ == 'cname':
+                add_cname_record(*args)
+            elif typ == 'a':
+                add_a_record(*args)
+            elif typ == 'zone':
+                add_zone(*args)
+            else:
+                parser.error('Unknown type "%s"' % (typ,))
+            print 'done'
+        elif command == 'remove':
+            if typ == 'srv':
+                remove_srv_record(*args)
+            else:
+                parser.error('Unknown type "%s"' % (typ,))
+        else:
+            parser.error('E: No valid command "%s". See --help.' % (command,))
+    except univention.admin.uexceptions.objectExists, ex:
+        if not options.ignore_exists:
+            print >> sys.stderr, 'E: Object "%s" exists' % (ex,)
+            sys.exit(1)
+    except (ValueError, TypeError,
+            univention.admin.uexceptions.valueInvalidSyntax,
+            univention.admin.uexceptions.valueRequired), ex:
+        print >> sys.stderr, 'E: failed %s' % (ex,)
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()
