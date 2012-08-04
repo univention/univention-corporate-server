@@ -1,7 +1,10 @@
 #!/usr/bin/python2.6
 #
 # Univention Admin Modules
-#  synchronise attributes uniqueMember and memberUID of group objects
+"""synchronise attributes uniqueMember to memberUID of group objects.
+
+Update the UIDs in memberUid of all groups to match the uid of the objects
+referenced by uniqueMember."""
 #
 # Copyright 2007-2012 Univention GmbH
 #
@@ -30,96 +33,109 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
-import ldap, string, sys
+import ldap
+import sys
 from optparse import OptionParser
 
 import univention.config_registry
 
 import univention.debug as ud
 
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
+class ConsistencyError(Exception):
+    """Inconsistence detected."""
+    pass
 
-parser = OptionParser( usage = "usage: %prog [options]" )
-parser.add_option( '-t', '--test', action = 'store_true',
-		dest = 'test', default = False, help = 'just test the modification' )
-parser.add_option( '-d', action = 'store', default = 2, type = 'int',
-		dest = 'debug', help = 'set debug level' )
-parser.add_option( '-c', '--continue', action = 'store_true',
-		dest = 'cont', default = False, help = 'continue on error' )
+def main():
+    """synchronise attributes uniqueMember to memberUID of group objects."""
+    configRegistry = univention.config_registry.ConfigRegistry()
+    configRegistry.load()
 
-( options, arguments ) = parser.parse_args()
+    parser = OptionParser(usage="usage: %prog [options]")
+    parser.add_option('-t', '--test', action='store_true',
+            dest='test', default=False, help='just test the modification')
+    parser.add_option('-d', action='store', default=2, type='int',
+            dest='debug', help='set debug level')
+    parser.add_option('-c', '--continue', action='store_true',
+            dest='cont', default=False, help='continue on error')
 
-ud.init( '/var/log/univention/sync-memberuid.log', 1, 0 )
-ud.set_level( ud.ADMIN, options.debug )
+    (options, _arguments) = parser.parse_args()
 
-baseDN = configRegistry[ 'ldap/base' ]
+    ud.init('/var/log/univention/sync-memberuid.log', ud.FLUSH, ud.NO_FUNCTION)
+    ud.set_level( ud.ADMIN, options.debug)
 
-lo=ldap.open( 'localhost', 7389 )
-bindpw=open( '/etc/ldap.secret' ).read()
-if bindpw[ -1 ] == '\n':
-	bindpw = bindpw[ 0 : -1 ]
-lo.simple_bind_s( "cn=admin," + baseDN, bindpw )
+    base_dn = configRegistry['ldap/base']
 
-groups = lo.search_s( baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=posixGroup)(objectClass=univentionGroup))',
-		( 'uniqueMember', 'memberUid' ) )
+    lo = ldap.open('localhost', 7389)
+    bindpw = open('/etc/ldap.secret' ).read()
+    if bindpw[-1] == '\n':
+        bindpw = bindpw[:-1]
+    lo.simple_bind_s("cn=admin," + base_dn, bindpw)
 
-if options.test:
-	print 'Test Mode: The following groups have to be modified:'
-for grp in groups:
-	dn, attrs = grp
-	old = []
-	new = []
-	if attrs.has_key( 'memberUid' ):
-		old = attrs[ 'memberUid' ]
+    try:
+        process_groups(lo, base_dn, options.test, options.cont)
+    except ConsistencyError:
+        sys.exit(1)
 
-	ud.debug( ud.ADMIN, ud.PROCESS, 'Group: %s' % dn )
-	for uniqueMember in attrs.get( 'uniqueMember', [] ):
-		try:
-			result = lo.search_s( uniqueMember, ldap.SCOPE_BASE, '(objectclass=*)' )
-		except Exception, e:
-			ud.debug( ud.ADMIN, ud.ERROR, 'reading uid of %s failed: %s' % (uniqueMember, str(e)) )
-			print 'ERROR: cannot read uid of DN %s' % uniqueMember
-			continue
-		if not result:
-			ud.debug( ud.ADMIN, ud.ERROR, 'empty result for uniqueMember %s' % uniqueMember)
-			print 'ERROR: empty result for uniqueMember %s' % uniqueMember
-			continue
-		uniqueMemberAttrs = result[0][1]
-		if uniqueMemberAttrs.get('uid'):
-			new.append( uniqueMemberAttrs['uid'][0] )
+def process_groups(lo, base_dn, test=False, cont=False):
+    groups = lo.search_s(base_dn, ldap.SCOPE_SUBTREE,
+            '(&(objectClass=posixGroup)(objectClass=univentionGroup))',
+            ('uniqueMember', 'memberUid'))
 
-	old.sort()
-	new.sort()
+    if test:
+        print 'Test Mode: The following groups have to be modified:'
+    for grp_dn, grp_attrs in groups:
+        old = set(grp_attrs.get('memberUid', ()))
 
-	if old != new:
-		ud.debug( ud.ADMIN, ud.INFO, '  members: %s' % attrs.get( 'uniqueMember', [] ) )
-		ud.debug( ud.ADMIN, ud.INFO, '  old memberUid: %s' % old )
-		ud.debug( ud.ADMIN, ud.INFO, '  new memberUid: %s' % new )
-		if options.test:
-			print 'Group:', dn
-			continue
-		add = []
-		for n in new:
-			if not n in old:
-				add.append( n )
-		if add:
-			try:
-				lo.modify_s( dn, [ ( ldap.MOD_ADD, 'memberUid', add ) ] )
-			except Exception, e:
-				ud.debug( ud.ADMIN, ud.ERROR, 'adding memberUid entries failed: %s' % str( e ) )
-				if not options.cont:
-					sys.exit( 1 )
-		remove = []
-		for o in old:
-			if not o in new:
-				remove.append( o )
-		if remove:
-			try:
-				lo.modify_s( dn, [ ( ldap.MOD_DELETE, 'memberUid', remove ) ] )
-			except Exception, e:
-				ud.debug( ud.ADMIN, ud.ERROR, 'removing memberUid entries failed: %s' % str( e ) )
-				if not options.cont:
-					sys.exit( 1 )
+        ud.debug(ud.ADMIN, ud.PROCESS, 'Group: %s' % grp_dn)
+        new = set()
+        member_dns = grp_attrs.get('uniqueMember', ())
+        for uniqueMember in member_dns:
+            try:
+                result = lo.search_s(uniqueMember, ldap.SCOPE_BASE,
+                        '(objectclass=*)')
+            except ldap.NO_SUCH_OBJECT, ex:
+                ud.debug(ud.ADMIN, ud.WARN,
+                        'searching %s failed: %s' % (uniqueMember, ex))
+                print >> sys.stderr, 'WARNING: DN %s not found' % uniqueMember
+                continue
+            if not result:
+                ud.debug(ud.ADMIN, ud.WARN,
+                        'empty result for uniqueMember %s' % uniqueMember)
+                print >> sys.stderr, \
+                        'WARNING: empty result for uniqueMember %s' % \
+                        uniqueMember
+                continue
+            _, uniqueMemberAttrs = result[0]
+            uniqueMemberUid = uniqueMemberAttrs.get('uid')
+            if uniqueMemberUid:
+                new.add(uniqueMemberUid[0])
 
+        if old != new:
+            ud.debug(ud.ADMIN, ud.INFO, '  members: %s' % member_dns)
+            ud.debug(ud.ADMIN, ud.INFO, '  old memberUid: %s' % old)
+            ud.debug(ud.ADMIN, ud.INFO, '  new memberUid: %s' % new)
+            if test:
+                print 'Group:', grp_dn
+                continue
+            add = list(new - old)
+            if add:
+                try:
+                    lo.modify_s(grp_dn, [(ldap.MOD_ADD, 'memberUid', add)])
+                except ldap.LDAPError, ex:
+                    ud.debug(ud.ADMIN, ud.ERROR,
+                            'adding memberUid entries failed: %s' % ex)
+                    if not cont:
+                        raise ConsistencyError()
+            remove = list(old - new)
+            if remove:
+                try:
+                    lo.modify_s(grp_dn,
+                            [(ldap.MOD_DELETE, 'memberUid', remove)])
+                except ldap.LDAPError, ex:
+                    ud.debug(ud.ADMIN, ud.ERROR,
+                            'removing memberUid entries failed: %s' % ex)
+                    if not cont:
+                        raise ConsistencyError()
+
+if __name__ == '__main__':
+    main()
