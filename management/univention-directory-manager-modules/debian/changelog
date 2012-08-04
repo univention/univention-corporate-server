@@ -1,6 +1,12 @@
 univention-directory-manager-modules (8.0.6-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)
+  * Improve proof_uniqueMembers (Bug #27929)
+    -  Remove memberUids when user no longer exists
+    -  Add --dry-run mode.
+    -  Use pprint for pretty printing.
+    -  Redirect errors to STDERR.
+    -  Return meaningful exit codes.
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 13:28:28 +0200
 

@@ -1,8 +1,9 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
+# pylint: disable-msg=C0103
 #
 # Univention Directory Manager Modules
-#  check if users are member of their primary group
+"""Check if users are member of their primary group."""
 #
 # Copyright 2004-2012 Univention GmbH
 #
@@ -31,144 +32,208 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
-import ldap, string
+import ldap
 import sys
-import univention.baseconfig
-import pprint
+from univention.config_registry import ConfigRegistry
 from optparse import OptionParser
 
-baseConfig=univention.baseconfig.baseConfig()
-baseConfig.load()
-binddn= "cn=admin," + baseConfig['ldap/base']
-basedn = baseConfig['ldap/base']
-count_changes = 0
-warning = 0
-pp = pprint.PrettyPrinter(indent=4)
+
+def info(msg, *args, **kwargs):
+    """Print info."""
+    print msg % (args or kwargs)
 
 
-
-parser = OptionParser()
-parser.add_option("-b", "--base-dn", help="ldap base dn", dest="basedn", action="store", type="str")
-(options, args) = parser.parse_args()
-
-def ldapbind (binddn):
-	bindpw=open('/etc/ldap.secret').read()
-	bindpw = bindpw.split("\n")[0]
-	lo=ldap.open('localhost', 7389)
-	try:
-		lo.simple_bind_s(binddn, bindpw)
-	except:
-		print "could not bind to %s" % binddn
-		sys.exit(1)
-
-	return lo
+def warn(msg, *args, **kwargs):
+    """Print warning."""
+    print >> sys.stderr, 'Warning: ' + (msg % (args or kwargs))
+    warn.warnings += 1
+warn.warnings = 0
 
 
-lo = ldapbind(binddn)
+def fatal(msg, *args, **kwargs):
+    """Print error."""
+    print >> sys.stderr, 'Error: ' + (msg % (args or kwargs))
+    sys.exit(1)
 
 
-if options.basedn: basedn = options.basedn
+def ldapbind(basedn):
+    """Open local LDAP connection and do bind."""
+    binddn = "cn=admin,%s" % (basedn,)
+    try:
+        bindpw = open('/etc/ldap.secret').read().rstrip('\n')
+    except IOError:
+        fatal('Could no read /etc/ldap.secrer')
+    conn = ldap.open('localhost', 7389)
+    try:
+        conn.simple_bind_s(binddn, bindpw)
+    except ldap.LDAPError:
+        fatal("Could not bind to %s", binddn)
+
+    return conn
 
 
-# GID's will only be found in posixAccount
-try:
-	res_pA=lo.search_s(basedn, ldap.SCOPE_SUBTREE, 'objectClass=posixAccount', ['gidNumber', 'uid'])
-except ldap.NO_SUCH_OBJECT:
-	print "ldap search in %s failed (no such base dn)" % basedn
-	sys.exit(1)
+def check_primary(conn, basedn):
+    """Check if users are member of their primary group."""
+    info("Checking if users are member of their primary group...")
+    try:
+        # GID's will only be found in posixAccount
+        user_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE,
+                '(objectClass=posixAccount)', ['gidNumber', 'uid'])
+    except ldap.NO_SUCH_OBJECT:
+        fatal("ldap search in %s failed (no such base dn)", basedn)
+    count_changes = 0
+    for user_dn, account in user_result:
+        user_uid = account['uid'][0]
+        user_gid = account.get('gidNumber', [])[0]
+        if not user_gid:
+            warn("posixAccount without gidNumber: %s", user_dn)
 
-print "\n  proof if users are member of their primary group"
-for i in range(0,len(res_pA)):
-	gidNumber_pA=''
-	dn_pA=res_pA[i][0]
-	memberUid_pA = res_pA[i][1]['uid'][0]
-	if res_pA[i][1].has_key('gidNumber'):
-		gidNumber_pA=res_pA[i][1]['gidNumber'][0]
-	else:
-		print "Warning, posixAccount without gidNumber",res_pA[i]
-		warning = warning + 1
+        # search corresponding group
+        group_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE,
+                '(&(objectClass=univentionGroup)(gidNumber=%s))' % (user_gid,),
+                ['uniqueMember', 'memberUid'])
 
-	# search corresponding group
-	res_uG=lo.search_s(basedn, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionGroup)(gidNumber='+gidNumber_pA+"))", ['uniqueMember', 'memberUid'])
-
-	# there must be excactly one group with this gid
-	if len(res_uG)>1:
-		print "Warning: found more than one univentionGroup for",dn_pA,"gidNumber",gidNumber_pA,"!"
-		warning = warning + 1
-	if len(res_uG)<1 and not gidNumber_pA=="0":
-		print "Warning: found no univentionGroup for",dn_pA,"gidNumber",gidNumber_pA,"!"
-		warning = warning +1
-	# well change all if there are more -- the user needs to delete all but one of them
-	for group in res_uG:
-		dn_uG = group[0]
-		# look for the needed entry
-		uniqueMembers_uG = group[1].get('uniqueMember', [])
-		memberUids_uG = group[1].get('memberUid', [])
-		modlist = []
-		for el in uniqueMembers_uG:
-			if el == dn_pA:
-				break
-		else:
-			modlist.append((ldap.MOD_ADD,'uniqueMember',dn_pA))
-
-		for el in memberUids_uG:
-			if el == memberUid_pA:
-				break
-		else:
-			modlist.append((ldap.MOD_ADD,'memberUid',memberUid_pA))
-		# no entry found, gonna add one
-		if modlist:
-			print "add uniqueMember and memberUid entry for",dn_pA,"in",dn_uG
-			try:
-				lo.modify_s(dn_uG,modlist)
-				count_changes = count_changes +1
-			except:
-				warning = warning + 1
-				print "Warning: failed to modify Group %s"%dn_uG
-
-print "  proof of",len(res_pA),"posixAccounts finished, changed",count_changes,"of them.\n"
-
-count_changes=0
-print "  proof if group-members exist"
-res_pG=lo.search_s(basedn, ldap.SCOPE_SUBTREE, 'objectClass=posixGroup', ['uniqueMember'])
-for i in range(0,len(res_pG)):
-	dn_pG = res_pG[i][0]
-	members = []
-	if res_pG[i][1].has_key('uniqueMember'):
-		members = res_pG[i][1]['uniqueMember']
-
-	remmembers=[]
-	
-	for member in members:
-		n=string.find(member,',')
-		base=member[n+1:]
-		filter=member[:n]
-
-		try:
-			res_pU=lo.search_s(base, ldap.SCOPE_ONELEVEL, filter, ['objectClass'])
-			if len(res_pU) > 1:
-				print "Warning: more than one object found while searching for %s of group %s -- clear manually"%(member,dn_pG)
-				warning+=1
-			elif len(res_pU) < 1:
-				print "  no object found while searching for %s, will be removed"%member
-				remmembers.append(member)
-		except:
-			print "Warning: Search for member %s of group %s failed -- clear manually"%(member,dn_pG)
-			warning+=1
+        # there must be exactly one group with this gid
+        if len(group_result) > 1:
+            warn("found more than one univentionGroup for gidNumber=%s!",
+                    user_gid)
+        elif len(group_result) < 1 and not user_gid == "0":
+            warn("found no univentionGroup for gidNumber=%s!", user_gid)
+        # we change them all -- the user needs to delete all but one of them
+        for group_dn, group in group_result:
+            # look for the needed entry
+            group_member_dns = group.get('uniqueMember', [])
+            group_member_uids = group.get('memberUid', [])
+            modlist = []
+            if user_dn not in group_member_dns:
+                modlist.append((ldap.MOD_ADD, 'uniqueMember', user_dn))
+            if user_uid not in group_member_uids:
+                modlist.append((ldap.MOD_ADD, 'memberUid', user_uid))
+            # no entry found, gonna add one
+            if modlist:
+                info("Adding uniqueMember and memberUid entry for '%s' in '%s'",
+                        user_dn, group_dn)
+                try:
+                    conn.modify_s(group_dn, modlist)
+                    count_changes += 1
+                except ldap.LDAPError:
+                    warn("failed to modify group %s", group_dn)
+    info("Checked %d posixAccounts, fixed %d issues.",
+            len(user_result), count_changes)
 
 
-	for member in remmembers:
-		modlist = [(ldap.MOD_DELETE,'uniqueMember',member)]
-		try:
-			lo.modify_s(dn_pG,modlist)
-			count_changes = count_changes +1
-		except:
-			print "Warning: failed to remove %s from Group %s"%(member,dn_pG)
-			warning = warning + 1
-			
-print "  proof of",len(res_pG),"posixGroups finished, changed",count_changes,"of them.\n"
+def check_groups(conn, basedn):
+    """Check if members of group exist."""
+    info("Checking if group-members exist...")
+    try:
+        group_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE,
+                '(objectClass=posixGroup)', ['uniqueMember', 'memberUid'])
+    except ldap.NO_SUCH_OBJECT:
+        fatal("ldap search in %s failed (no such base dn)", basedn)
+
+    count_changes = 0
+    for group_dn, group in group_result:
+        count_changes += check_groups_by_dn(conn, group_dn, group)
+        count_changes += check_groups_by_uid(conn, basedn, group_dn, group)
+
+    info("Checked %d posixGroups, fixed %d issues.",
+            len(group_result), count_changes)
 
 
-if warning: print "There were %s warning(s) !"%warning
+def check_groups_by_dn(conn, group_dn, group):
+    """Check by 'uniqueMember'."""
+    group_member_dns = group.get('uniqueMember', [])
+    count_changes = 0
+    remmembers = set()
+    for member_dn in group_member_dns:
+        # Split uid=USER, cn=user,dc=FQDN
+        member_filter, base = member_dn.split(',', 1)
+        try:
+            member_result = conn.search_s(base, ldap.SCOPE_ONELEVEL,
+                    member_filter, ['objectClass'])
+        except ldap.LDAPError:
+            warn("Manual: Search for member DN '%s' of group '%s' failed",
+                    member_dn, group_dn)
+        else:
+            if len(member_result) > 1:
+                warn("Manual: Multiple members for DN '%s' of group '%s'",
+                        member_dn, group_dn)
+            elif len(member_result) < 1:
+                warn("No member for DN '%s', will be removed", member_dn)
+                remmembers.add(member_dn)
+    for member_dn in remmembers:
+        info("Removing member DN '%s' from '%s'", member_dn, group_dn)
+        modlist = [(ldap.MOD_DELETE, 'uniqueMember', member_dn)]
+        try:
+            conn.modify_s(group_dn, modlist)
+            count_changes += 1
+        except ldap.LDAPError:
+            warn("failed to remove DN '%s' from group '%s'",
+                    member_dn, group_dn)
+    return count_changes
 
+
+def check_groups_by_uid(conn, basedn, group_dn, group):
+    """Check by 'memberUid'."""
+    group_member_uids = group.get('memberUid', [])
+    count_changes = 0
+    remmembers = set()
+    for member_uid in group_member_uids:
+        try:
+            member_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE,
+                    '(uid=%s)' % (member_uid,), ['objectClass'])
+        except ldap.LDAPError:
+            warn("Manual: Search for member UID '%s' of group '%s' failed",
+                    member_uid, group_dn)
+        else:
+            if len(member_result) > 1:
+                warn("Manual: Multiple members for UID '%s' of group '%s'",
+                        member_uid, group_dn)
+            elif len(member_result) < 1:
+                warn("No member for UID '%s', will be removed", member_uid)
+                remmembers.add(member_uid)
+    for member_uid in remmembers:
+        info("Removing member UID '%s' from '%s'", member_uid, group_dn)
+        modlist = [(ldap.MOD_DELETE, 'memberUid', member_uid)]
+        try:
+            conn.modify_s(group_dn, modlist)
+            count_changes += 1
+        except ldap.LDAPError:
+            warn("Failed to remove UID '%s' from group '%s'",
+                    member_uid, group_dn)
+    return count_changes
+
+
+def main():
+    """Check group membership."""
+    parser = OptionParser()
+    parser.add_option("-b", "--base-dn",
+            dest="basedn", action="store",
+            help="ldap base DN for user search")
+    parser.add_option("-c", "--check",
+            dest="check", action="store_true",
+            help="Only check, do not modify")
+    (options, _args) = parser.parse_args()
+
+    ucr = ConfigRegistry()
+    ucr.load()
+    basedn = ucr['ldap/base']
+
+    conn = ldapbind(basedn)
+
+    if options.basedn:
+        basedn = options.basedn
+    if options.check:
+        conn.modify_s = lambda dn, modlist: None
+
+    check_primary(conn, basedn)
+    check_groups(conn, basedn)
+    if warn.warnings:
+        info("There were %d warning(s)!", warn.warnings)
+        sys.exit(2)
+    else:
+        sys.exit(0)
+
+
+if __name__ == '__main__':
+    main()
