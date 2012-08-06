@@ -509,6 +509,12 @@ msgstr "Root-Passwort"
 msgid "Root password empty. Continue?"
 msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 
+#: umc/js/_setup/BasisPage.js:242
+msgid "If at any time samba should be used on this system, the length of the "
+"hostname may be at most 13 characters."
+msgstr "Falls zu irgendeinem Zeitpunkt Samba uf diesem System verwendet "
+"werden soll, darf der Hostname maximal 13 Zeichen lang sein."
+
 #: umc/js/_setup/CertificatePage.js:190
 msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"

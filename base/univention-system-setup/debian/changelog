@@ -1,3 +1,12 @@
+univention-system-setup (6.0.8-1) unstable; urgency=low
+
+  * Add warning in frontend if len(hostname) >= 13 (because of samba)
+    Bug #27854
+  * Only invalidate request with long hostname in backend if samba should
+    be installed at the same time. Bug #27854, too
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Aug 2012 18:37:10 +0200
+
 univention-system-setup (6.0.7-1) unstable; urgency=low
 
   * Only show help texts for pages that are actually loaded

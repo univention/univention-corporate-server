@@ -239,8 +239,15 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			umc.dialog.alert(this._('Hostname and windows domain may not be equal.'));
 			return false;
 		}
+		var warnings = [];
+		if (values.hostname.length > 13) {
+			warnings.push(this._('If at any time samba should be used on this system, the length of the hostname may be at most 13 characters.'));
+		}
 		if (!values.root_password) {
-			return umc.dialog.confirm(this._('Root password empty. Continue?'),
+			warnings.push(this._('Root password empty. Continue?'));
+		}
+		if (warnings.length) {
+			return umc.dialog.confirm(warnings.join('<br />'),
 				[{
 					label: this._('Cancel'),
 					'default': true,

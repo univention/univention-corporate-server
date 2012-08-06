@@ -310,13 +310,15 @@ class Instance(umcm.Base):
 				allValues[ikey] = ival
 
 		# helper functions
-		def _check(key, check, message):
-			if not key in values:
+		# TODO: 'valid' is not correctly evaluated in frontend
+		# i.e. if valid you may continue without getting message
+		def _check(key, check, message, critical=True):
+			if key not in values:
 				return
 			if not check(values[key]):
 				messages.append({
 					'message': message,
-					'valid': False,
+					'valid': not critical,
 					'key': key
 				})
 
@@ -331,8 +333,12 @@ class Instance(umcm.Base):
 		_check('server/role', lambda x: not(orgValues.get('joined')) or (orgValues.get('server/role') == values.get('server/role')), _('The system role may not change on a system that has already joined to domain.'))
 
 		# basis
+		regSpaces = re.compile(r'\s+')
+		components = regSpaces.split(values.get('components', ''))
+		packages = set(reduce(lambda x, y: x + y, [ i.split(':') for i in components ]))
+
 		_check('hostname', util.is_hostname, _('The hostname is not a valid fully qualified domain name in lowercase (e.g. host.example.com).'))
-		_check('hostname', lambda x: len(x) <= 13, _('A valid netbios name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.'))
+		_check('hostname', lambda x: len(x) <= 13, _('A valid netbios name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.'), critical=('univention-samba' in packages or 'univention-samba4' in packages))
 
 		_check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com)."))
 
@@ -528,9 +534,6 @@ class Instance(umcm.Base):
 			_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
 
 		# software checks
-		regSpaces = re.compile(r'\s+')
-		components = regSpaces.split(values.get('components', ''))
-		packages = set(reduce(lambda x, y: x + y, [ i.split(':') for i in components ]))
 		if 'univention-virtual-machine-manager-node-kvm' in packages and 'univention-virtual-machine-manager-node-xen' in packages:
 			_append('components', _('It is not possible to install KVM and XEN components on one system. Please select only one of these components.'))
 		if 'univention-samba' in packages and 'univention-samba4' in packages:

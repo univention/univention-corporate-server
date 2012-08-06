@@ -512,7 +512,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var allValid = true;
 			dojo.forEach(data.result, function(ivalidation) {
 				allValid = allValid && ivalidation.valid;
-				if (!ivalidation.valid) {
+				if (ivalidation.message) {
 					// find the correct description to be displayed
 					dojo.forEach(summaries, function(idesc) {
 						if (matchesSummary(ivalidation.key, idesc)) {
