@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="firewall" icon="firewall" version="1.0">
+	<name>Firewall</name>
+	<description>Firewall description</description>
+	<categories>
+		<category name="system"/>
+	</categories>
+	</module>
+</umc>

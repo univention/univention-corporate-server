@@ -1,9 +1,10 @@
-#!/usr/bin/make -f
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
-# Univention Firewall
-#  rules file for the debian package
+# Univention Management Console
+#  module: Firewall
 #
-# Copyright 2007-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,23 +30,3 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
-
-override_dh_auto_install:
-	univention-install-config-registry
-	dh-umc-module-install
-	dh_auto_install 
-
-override_dh_installinit:
-	dh_installinit -r -u"defaults 05 99"
-
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
-%:
-	dh $@
-

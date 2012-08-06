@@ -1,3 +1,11 @@
+univention-firewall (5.0.0-1) unstable; urgency=low
+
+  * Fix typo in debian/control
+  * Add a dummy UMC module (Bug #24121)
+  * Bump version for UCS 3.1
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 06 Aug 2012 12:34:14 +0200
+
 univention-firewall (4.0.6-7) unstable; urgency=low
 
   * debian/ucslint.overrides: workaround as long as Bug #27429 is open;

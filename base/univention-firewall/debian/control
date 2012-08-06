@@ -3,9 +3,11 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Architecture: i386
 Build-Depends: debhelper,
+ python-all,
+ python-support,
  univention-config-dev,
+ univention-management-console-dev,
  ucslint
 
 Package: univention-firewall
@@ -16,6 +18,19 @@ Depends: ${misc:Depends},
 Description: UCS - firewall integration
  This package contains scripts to combine iptables with
  univention-config-registry.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-management-console-module-firewall
+Architecture: all
+Depends: ${misc:Depends},
+ univention-firewall,
+ univention-management-console-server
+Description: UMC module for the firewall
+ This package contains the UMC module for the firewall
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
