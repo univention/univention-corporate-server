@@ -43,8 +43,6 @@ import sys
 import tempfile
 import time
 import threading
-import urllib
-import urlparse
 import uuid
 
 import notifier
@@ -328,9 +326,8 @@ class CPgeneric(object):
 		msg = '%s (%s:%s) %s' % (self.name,  self.get_ip_address(), remote.port, _msg)
 		self._logOptions.get(loglevel, CORE.info)(msg)
 
-	def get_request(self, request, json):
-		req = umcp.Request( [ 'generic' ], opts = {} )
-		return req
+	def get_request(self, path, args):
+		return umcp.Request( [ 'generic' ], opts = {} )
 
 	def get_ip_address(self):
 		"""get the IP address of client by last entry in X-FORWARDED-FOR header"""
@@ -353,35 +350,42 @@ class CPgeneric(object):
 		self._log(99, 'sessionid="%s"' % (sessionid))
 		return sessionid
 
+	def load_json(self, body):
+		try:
+			json = simplejson.loads(body)
+			if not isinstance(json, dict):
+				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'JSON document have to be dict')
+		except ValueError:
+			self._log('error', 'cannot parse JSON body')
+			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Invalid JSON document')
+		return json
+
 	@cherrypy.expose
-	def default( self, *args, **kwargs ):
-		remote = cherrypy.request.remote
+	def default( self, *path, **kwargs ):
 		self._log('info', 'got new request')
 
 		# get the session id from the request
 		sessionid = self.get_session_id()
-		req = None
 
-		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal request
-			if not cherrypy.request.headers.get(u"Content-Length", u""):
-				json = ''
-				self._log('warn', 'missing Content-Length header')
-			else:
-				# get body and parse json
-				body = ''
-				if cherrypy.request.body:
-					body = cherrypy.request.body.read()
+		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal (json) request
+			# get body and parse json
+			body = '{}'
+			if cherrypy.request.method in cherrypy.request.methods_with_bodies:
+				if not cherrypy.request.headers.get(u"Content-Length"):
+					self._log('warn', 'missing Content-Length header')
+					raise cherrypy.HTTPError(httplib.LENGTH_REQUIRED, 'Missing Content-Length header')
+				body = cherrypy.request.body.read()
 
-				try:
-					json = simplejson.loads(body)
-				except ValueError:
-					self._log('error', 'cannot parse JSON body')
-					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Invalid JSON document')
+			args = self.load_json(body)
 		else:
-			json = ''
+			# request is not json
+			args = kwargs
 
+		return self.get_response(sessionid, path, args)
+
+	def get_response(self, sessionid, path, args):
 		# create new UMCP request
-		req = self.get_request( cherrypy.request, json )
+		req = self.get_request( '/'.join(path), args )
 
 		# create new response queue
 		response_queue = Queue.Queue()
@@ -394,64 +398,49 @@ class CPgeneric(object):
 		response = response_queue.get()
 		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
 
-		if response.status == umcp.SUCCESS:
+		if 200 <= response.status < 300:
 			update_session(cherrypy.response, sessionid)
-			return simplejson.dumps(response.body)
-		elif response.mimetype != umcp.MIMETYPE_JSON:
-			update_session(cherrypy.response, sessionid)
+			cherrypy.response.status = response.status
 			cherrypy.response.headers[ 'Content-Type' ] = response.mimetype
+			if response.mimetype == umcp.MIMETYPE_JSON:
+				return simplejson.dumps(response.body)
 			return response.body
+
+		# TODO: 3xx handling
 
 		# something bad happened
 		self._log('error', 'response status code: %s' % response.status)
 		self._log('error', 'response message: %s' % response.message)
-		message = response.message
-		if isinstance(message, basestring):
-			message = cherrypy._cperror._escape(message.replace('"', "'"))
-		raise cherrypy.HTTPError(response.status, message)
+		raise cherrypy.HTTPError(response.status, response.message)
 
 
 class CPGet(CPgeneric):
-	requestprefix = '/get'
-
-	def get_request(self, request, json):
-		args = request.path_info
-
-		if args.startswith( self.requestprefix ):
-			args = args[ len(self.requestprefix)+1 : ]
-
-		if not args:
-			self._log('error', 'get_request: args is empty')
+	def get_request(self, path, args):
+		if not path:
+			self._log('error', 'get_request: path is empty')
 			raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
-		req = umcp.Request( 'GET', arguments = [ args ], options = json.get( 'options', {} ) )
-
-		return req
+		return umcp.Request( 'GET', arguments = [ path ], options = args.get( 'options', {} ) )
 
 
 class CPSet(CPgeneric):
-	requestprefix = '/set'
-
-	def get_request(self, request, json):
-		return umcp.Request( 'SET', options = json.get( 'options', {} ) )
+	def get_request(self, path, args):
+		return umcp.Request( 'SET', options = args.get( 'options', {} ) )
 
 
 class CPUpload( CPgeneric ):
-	requestprefix = '/upload'
-
-	def get_request(self, request, fields ):
+	def get_request(self, path, args ):
 		self._log( 'info', 'Handle upload command' )
 		global _upload_manager
-		custom_command = request.path_info[ len( self.requestprefix ) + 1 : ]
-		if custom_command:
+		if path:
 			self._log( 'info', 'Send upload to module function' )
-			req = umcp.Request( 'COMMAND', arguments = [ custom_command ] )
+			req = umcp.Request( 'COMMAND', arguments = [ path ] )
 		else:
 			req = umcp.Request( 'UPLOAD' )
 
 		options = []
 		body = {}
-		for iid, ifield in fields.iteritems():
+		for iid, ifield in args.iteritems():
 			if isinstance(ifield, cherrypy._cpcgifs.FieldStorage):
 				# field is a FieldStorage object
 				store = ifield
@@ -484,11 +473,10 @@ class CPUpload( CPgeneric ):
 		return req
 
 	@cherrypy.expose
-	def default( self, *args, **kwargs ):
-		remote = cherrypy.request.remote
+	def default( self, *path, **kwargs ):
 		self._log('info', 'got new request')
 
-		# check for a valid session key
+		# check for a valid session key in GET/POST data
 		if 'X-UMC-Session-Id' in kwargs:
 			# allow for X-UMC-Sesssion-Id as entry in a multi-form (=upload) request
 			sessionid = kwargs['X-UMC-Session-Id']
@@ -500,62 +488,25 @@ class CPUpload( CPgeneric ):
 		if not cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ):
 			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
 
+		response = self.get_response(sessionid, path, kwargs)
+
 		# check if the request is a iframe upload
-		iframe = 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0'))
+		if 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0')):
+			# this is a workaround to make iframe uploads work, they need the textarea field
+			cherrypy.response.headers[ 'Content-Type' ] = umcp.MIMETYPE_HTML
+			return '<html><body><textarea>%s</textarea></body></html>' % (response.body)
 
-		# create new UMCP request
-		req = self.get_request( cherrypy.request, kwargs )
-
-		# create new response queue
-		response_queue = Queue.Queue()
-
-		# send request to UMC server
-		request = QueueRequest(sessionid, req, response_queue, self.get_ip_address())
-		UMCP_Dispatcher._queue_send.put(request)
-
-		self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response (sessionid="%s")' % (id(req), id(response_queue), sessionid))
-		response = response_queue.get()
-		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
-
-		if response.status == umcp.SUCCESS:
-			update_session(cherrypy.response, sessionid)
-			if iframe:
-				# this is a workaround to make iframe uploads work, they need the textarea field
-				cherrypy.response.headers[ 'Content-Type' ] = umcp.MIMETYPE_HTML
-				return '<html><body><textarea>%s</textarea></body></html>' % (simplejson.dumps(response.body))
-
-			return simplejson.dumps(response.body)
-
-		# something bad happened
-		self._log('error', 'response status code: %s' % response.status)
-		self._log('error', 'response message: %s' % response.message)
-		message = response.message
-		if isinstance(message, basestring):
-			message = cherrypy._cperror._escape(message.replace('"', "'"))
-		raise cherrypy.HTTPError(response.status, message)
+		return response
 
 class CPCommand(CPgeneric):
-	requestprefix = '/command'
-
-	def get_request(self, request, json):
-		parse_result = urlparse.urlparse( request.path_info )
-		args = parse_result.path
-
-		if args.startswith( self.requestprefix ):
-			args = args[ len(self.requestprefix)+1 : ]
-
-		if not args:
-			self._log('error', 'get_request: args is empty')
+	def get_request(self, path, args):
+		if not path:
+			self._log('error', 'get_request: path is empty')
 			raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
-		if cherrypy.request.method == 'POST':
-			req = umcp.Command( [ args ], options = json.get( 'options', {} ) )
-			if 'flavor' in json:
-				req.flavor = json[ 'flavor' ]
-		elif cherrypy.request.method == 'GET':
-			req = umcp.Command( [ args ], options = {} )
-			for key, value in urlparse.parse_qsl( cherrypy.request.query_string ):
-				req.options[ key ] = urllib.unquote( value )
+		req = umcp.Command( [ path ], options = args.get( 'options', {} ) )
+		if 'flavor' in args:
+			req.flavor = args[ 'flavor' ]
 
 		return req
 
@@ -566,22 +517,20 @@ class CPAuth(CPgeneric):
 		remote = cherrypy.request.remote
 		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (self.get_ip_address(), remote.port, remote.name))
 
-		if not cherrypy.request.headers.get(u"Content-Length", u""):
+		content_length = cherrypy.request.headers.get(u"Content-Length")
+		if not content_length:
 			CORE.process('CPRoot/auth: missing Content-Length header')
 			raise cherrypy.HTTPError(httplib.LENGTH_REQUIRED)
 
-		# TODO FIXME check body length and stop here if too much data has been sent by client
-
 		# get body and parse json
 		body = ''
-		if cherrypy.request.body:
+		if cherrypy.request.method in cherrypy.request.methods_with_bodies:
+			max_length = 512
+			if content_length <= max_length:
+				raise cherrypy.HTTPError(httplib.REQUEST_ENTITY_TOO_LARGE, 'Request data is to large, allowed length is %d' % max_length)
 			body = cherrypy.request.body.read()
 
-		try:
-			json = simplejson.loads(body)
-		except ValueError:
-			CORE.process('CPRoot/auth: cannot parse JSON body')
-			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Invalid JSON document')
+		json = self.load_json(body)
 
 		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info )
 
@@ -608,18 +557,22 @@ class CPAuth(CPgeneric):
 			return ""
 
 		CORE.process('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
-		message = response.message
-		if isinstance(message, basestring):
-			message = cherrypy._cperror._escape(message.replace('"', "'"))
-		raise cherrypy.HTTPError(response.status, message)
+		raise cherrypy.HTTPError(response.status, response.message)
 
 class CPRoot(object):
-	def index(self):
+	@cherrypy.expose
+	def index(self, **kw):
 		"""
 		http://localhost:<ucr:umc/http/port>/
 		"""
 		raise cherrypy.HTTPError(httplib.NOT_FOUND)
-	index.exposed = True
+
+def default_error_page(**kwargs):
+	cherrypy.response.headers['Content-type'] = umcp.MIMETYPE_JSON
+	# escape json and html
+	for key, value in kwargs.items():
+		kwargs[key] = cherrypy._cperror._escape(str(value), True)
+	return cherrypy._cperror._HTTPErrorTemplate % kwargs
 
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
@@ -631,8 +584,9 @@ def run_cherrypy():
 		'engine.autoreload_on': False,
 		'tools.response_headers.on': True,
 		'tools.response_headers.headers': [
-			('Content-Type', umcp.MIMETYPE_PLAIN)
-		]
+			('Content-Type', umcp.MIMETYPE_JSON)
+		],
+		'error_page.default': default_error_page
 	} )
 	cherrypy.tools.proxy(base=None, local='X-Forwarded-Host', remote='X-Forwarded-For', scheme='X-Forwarded-Proto')
 

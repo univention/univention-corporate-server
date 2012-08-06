@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.3-1) unstable; urgency=low
+
+  * univention-management-conosole-web-server cleanup (Bug #27850)
+
+ -- Florian Best <best@univention.de>  Mon, 06 Aug 2012 15:50:42 +0200
+
 univention-management-console-frontend (2.0.2-1) unstable; urgency=low
 
   * Add UCR variable description (Bug #28134)
