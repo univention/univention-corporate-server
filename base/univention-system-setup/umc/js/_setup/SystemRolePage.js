@@ -59,6 +59,7 @@ dojo.declare("umc.modules._setup.SystemRolePage", [ umc.widgets.Page, umc.i18n.M
 
 		this.title = this._('System role');
 		this.headerText = this._('System role');
+		this.helpText = this._('If the system is not part of a domain yet, the <i>system role</i> may be changed.');
 	},
 
 	buildRendering: function() {

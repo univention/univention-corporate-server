@@ -65,6 +65,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 
 		this.title = this._('General');
 		this.headerText = this._('Basic settings');
+		this.helpText = this._('The <i>basic settings</i> define essential properties, such as host and domain name, LDAP base, Windows domain name as well as the system administrators (root) password.');
 	},
 
 	buildRendering: function() {

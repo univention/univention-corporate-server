@@ -70,6 +70,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 
 		this.title = this._('Network');
 		this.headerText = this._('Network settings');
+		this.helpText = this._('In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as name servers, gateways, and HTTP proxies may be specified.');
 	},
 
 	buildRendering: function() {

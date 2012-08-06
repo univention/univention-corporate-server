@@ -227,6 +227,13 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// connect to onValuesChanged callback of every page
 				this.connect(ipage, 'onValuesChanged', 'updateAllValues');
 			}, this);
+			// Now we know which pages were loaded, adjust HelpPage text
+			dojo.forEach(this._pages, dojo.hitch(this, function(page) {
+				// if page is HelpPage...
+				if (page.setHelp !== undefined) {
+					page.setHelp(this._pages);
+				}
+			}));
 		}
 		else {
 			// normal mode... we need a TabContainer

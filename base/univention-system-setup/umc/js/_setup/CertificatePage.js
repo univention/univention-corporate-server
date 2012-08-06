@@ -68,6 +68,7 @@ dojo.declare("umc.modules._setup.CertificatePage", [ umc.widgets.Page, umc.i18n.
 
 		this.title = this._('Certificate');
 		this.headerText = this._('Certificate settings');
+		this.helpText = this._('Following the <i>certificate settings</i>, a new root certificate will be created for the domain. Note that this step only applies to systems with the role "domaincontroller master".');
 		this._orgVals = {};
 	},
 

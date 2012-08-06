@@ -1,3 +1,11 @@
+univention-system-setup (6.0.7-1) unstable; urgency=low
+
+  * Only show help texts for pages that are actually loaded
+    in wizard_mode (Bug #27733)
+  * Some translations were in the wrong place (Bug #28010)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Aug 2012 14:04:41 +0200
+
 univention-system-setup (6.0.6-1) unstable; urgency=low
 
   * only display samba3/samba4 combination warning

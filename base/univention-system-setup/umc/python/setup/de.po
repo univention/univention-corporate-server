@@ -232,6 +232,38 @@ msgstr "Die Windows-Domäne kann nur aus Großbuchstaben bestehen."
 msgid "The windows domain name is not valid."
 msgstr "Die Windows-Domäne ist nicht gültig."
 
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Autoremove failed"
+msgstr "Deinstallation unbenutzter Pakete fehlgeschlagen"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Deleting unneeded %s"
+msgstr "Deinstalliere unbenutztes Paket %s"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Failed to get package for Role %s"
+msgstr "Es konnte kein Paket für die Rolle %s gefunden werden"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "No such package"
+msgstr "Paket existiert nicht"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:92
+msgid "Failed to uninstall"
+msgstr "Deinstallation fehlgeschlagen"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Failed to install"
+msgstr "Installation fehlgeschlagen"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Fetch failed"
+msgstr "Herunterladen fehlgeschlagen"
+
+#: usr/lib/univention-system-setup/scripts/software/10software:108
+msgid "Failed to lock"
+msgstr "Sperren des Systems fehlgeschlagen"
+
 #~ msgid "Failed to shut down the web browser."
 #~ msgstr "Der Beendevorgang des Web-Browsers ist fehlgeschlagen."
 

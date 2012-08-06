@@ -97,11 +97,23 @@ dojo.declare("umc.modules._setup.HelpPage", [ umc.widgets.Page, umc.i18n.Mixin, 
 
 			dojo.place(langContainer.domNode, pane._titlePane.domNode, 'first');
 		}
-		var text = new umc.widgets.Text({
+		this.text = new umc.widgets.Text({
 			content: html,
 			style: "overflow: auto;"
 		});
-		pane.addChild(text);
+		pane.addChild(this.text);
+	},
+
+	setHelp: function(pages) {
+		var help_html_steps = [];
+		dojo.forEach(pages, function(page) {
+			if (page.helpText) {
+				help_html_steps.push('<li>' + page.helpText + '</li>');
+			}
+		});
+		var html = this.text.content;
+		html = html.replace('<!-- HELP -->', help_html_steps.join('\n'));
+		this.text._setContentAttr(html);
 	},
 
 	setValues: function(_vals) {

@@ -65,6 +65,7 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 
 		this.title = this._('Software');
 		this.headerText = this._('Software settings');
+		this.helpText = this._('Via the <i>software settings</i>, particular software components may be installed or removed.');
 	},
 
 	buildRendering: function() {

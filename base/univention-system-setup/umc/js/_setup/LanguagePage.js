@@ -64,6 +64,7 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 
 		this.title = this._('Language');
 		this.headerText = this._('Language settings');
+		this.helpText = this._('<i>Language settings</i> incorporate all language relevant configurations, such as time zone, keyboard layout, and system locales.');
 	},
 
 	buildRendering: function() {
