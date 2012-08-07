@@ -1,3 +1,10 @@
+univention-system-setup (6.0.10-1) unstable; urgency=low
+
+  * use try-finally block in threads in order to release Lock object;
+    Bug #28108
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 07 Aug 2012 15:30:05 +0200
+
 univention-system-setup (6.0.9-1) unstable; urgency=low
 
   * Remove a mere warning about empty root password when it is required

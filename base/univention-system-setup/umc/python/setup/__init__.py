@@ -130,41 +130,43 @@ class Instance(umcm.Base):
 			# acquire the lock until the scripts have been executed
 			self._finishedResult = False
 			obj._finishedLock.acquire()
-			self._progressParser.reset()
+			try:
+				self._progressParser.reset()
 
-			# write the profile file and run setup scripts
-			orgValues = util.load_values()
-			util.pre_save(values, orgValues)
+				# write the profile file and run setup scripts
+				orgValues = util.load_values()
+				util.pre_save(values, orgValues)
 
-			MODULE.info('saving profile values')
-			util.write_profile(values)
+				MODULE.info('saving profile values')
+				util.write_profile(values)
 
-			if not values:
-				MODULE.error( 'No property "values" given for save().' )
+				if not values:
+					MODULE.error( 'No property "values" given for save().' )
+					return False
+
+				# in case of changes of the IP address, restart UMC server and web server
+				# for this we ignore changes of virtual or non-default devices
+				MODULE.info('Check whether ip addresses have been changed')
+				regIpv6 = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/default/(prefix|address)$')
+				regIpv4 = re.compile(r'^interfaces/(eth[0-9]+)/(address|netmask)$')
+				regSsl = re.compile(r'^ssl/.*')
+				restart = False
+				for ikey, ival in values.iteritems():
+					if regIpv4.match(ikey) or regIpv6.match(ikey) or regSsl.match(ikey):
+						restart = True
+						break
+				MODULE.info('Restart servers: %s' % restart)
+
+				# on a joined system or on a basesystem, we can run the setup scripts
+				MODULE.info('runnning system setup scripts')
+				util.run_scripts( self._progressParser, restart )
+
+				# done :)
+				self._finishedResult = True
+				return True
+			finally:
 				obj._finishedLock.release()
-				return False
 
-			# in case of changes of the IP address, restart UMC server and web server
-			# for this we ignore changes of virtual or non-default devices
-			MODULE.info('Check whether ip addresses have been changed')
-			regIpv6 = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/default/(prefix|address)$')
-			regIpv4 = re.compile(r'^interfaces/(eth[0-9]+)/(address|netmask)$')
-			regSsl = re.compile(r'^ssl/.*')
-			restart = False
-			for ikey, ival in values.iteritems():
-				if regIpv4.match(ikey) or regIpv6.match(ikey) or regSsl.match(ikey):
-					restart = True
-					break
-			MODULE.info('Restart servers: %s' % restart)
-
-			# on a joined system or on a basesystem, we can run the setup scripts
-			MODULE.info('runnning system setup scripts')
-			util.run_scripts( self._progressParser, restart )
-
-			# done :)
-			self._finishedResult = True
-			obj._finishedLock.release()
-			return True
 
 		def _finished( thread, result ):
 			if isinstance( result, BaseException ):
@@ -194,34 +196,36 @@ class Instance(umcm.Base):
 			# acquire the lock until the scripts have been executed
 			self._finishedResult = False
 			obj._finishedLock.acquire()
-			self._progressParser.reset()
+			try:
+				self._progressParser.reset()
 
-			# write the profile file and run setup scripts
-			util.pre_save(values, orgValues)
+				# write the profile file and run setup scripts
+				util.pre_save(values, orgValues)
 
-			# on unjoined DC master the nameserver must be set to the external nameserver
-			if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
-				for i in range(1,4):
-					# overwrite these values only if they are set, because the UMC module
-					# will save only changed values
-					if values.get( 'dns/forwarder%d'%i ):
-						values[ 'nameserver%d'%i ] = values.get( 'dns/forwarder%d'%i )
+				# on unjoined DC master the nameserver must be set to the external nameserver
+				if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
+					for i in range(1,4):
+						# overwrite these values only if they are set, because the UMC module
+						# will save only changed values
+						if values.get( 'dns/forwarder%d'%i ):
+							values[ 'nameserver%d'%i ] = values.get( 'dns/forwarder%d'%i )
 
-			MODULE.info('saving profile values')
-			util.write_profile(values)
+				MODULE.info('saving profile values')
+				util.write_profile(values)
 
-			# unjoined DC master (that is not being converted to a basesystem) -> run the join script
-			MODULE.info('runnning system setup join script')
-			util.run_joinscript( self._progressParser, username, password )
+				# unjoined DC master (that is not being converted to a basesystem) -> run the join script
+				MODULE.info('runnning system setup join script')
+				util.run_joinscript( self._progressParser, username, password )
 
-			# done :)
-			self._finishedResult = True
-			obj._finishedLock.release()
+				# done :)
+				self._finishedResult = True
 
-			# we should do a cleanup now
-			self._cleanup_required = True
+				# we should do a cleanup now
+				self._cleanup_required = True
 
-			return True
+				return True
+			finally:
+				obj._finishedLock.release()
 
 		def _finished( thread, result ):
 			if isinstance( result, BaseException ):
