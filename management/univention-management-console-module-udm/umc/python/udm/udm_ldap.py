@@ -179,19 +179,19 @@ class UDM_ModuleCache( dict ):
 	@LDAP_Connection
 	def get( self, name, template_object = None, ldap_connection = None, ldap_position = None ):
 		UDM_ModuleCache.lock.acquire()
-		if name in self:
-			UDM_ModuleCache.lock.release()
+		try:
+			if name in self:
+				return self[ name ]
+
+			self[ name ] = udm_modules.get( name )
+			if self[ name ] is None:
+				return None
+
+			udm_modules.init( ldap_connection, ldap_position, self[ name ], template_object )
+
 			return self[ name ]
-
-		self[ name ] = udm_modules.get( name )
-		if self[ name ] is None:
+		finally:
 			UDM_ModuleCache.lock.release()
-			return None
-
-		udm_modules.init( ldap_connection, ldap_position, self[ name ], template_object )
-		UDM_ModuleCache.lock.release()
-
-		return self[ name ]
 
 _module_cache = UDM_ModuleCache()
 
