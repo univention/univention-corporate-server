@@ -4,6 +4,12 @@ Description[en]=Whether a Java plugin ("internal") or a vnc://-Link ("external")
 Type=str
 Categories=uvmm
 
+[uvmm/umc/vnc/host]
+Description[de]=Kontrolliert den Aufbau des VNC-Links. Mögliche Werte sind 'IPv4', 'IPv4 <regex>', 'IPv6', 'IPv6 <regex>', 'NAME', 'NAME <old>=<new>[ <old>=<new>...]', '<leer>' oder '<ansonsten>', wobei '<regex>' ein Python-Regular-Expression sein kann; bei 'NAME' oder einem leeren Wert wird der Name des Hosts verwendet, in dem Optional alle <old> durch <new> ersetzt werden; jeder andere Wert überschreibt ansonsten den individuellen Hostnamen durch den festen Wert.
+Description[en]=Controlls the format of the VNC link. Allowed values are 'IPv4', 'IPv4 <regex>', 'IPv6', 'IPv6 <regex>', 'NAME', 'NAME <old>=<new>[ <old>=<new>...], '<empty>', or '<other>', where '<regex>' can be a Python regular expression; 'NAME' or an empty value is translated to the name of the host, where optionally all <old> are replaced by <new>; any other value overwrites the individual host name with the static value.
+Type=str
+Categories=uvmm
+
 [uvmm/pool/default/path]
 Description[de]=Pfad des standard-Speicherbereichs für Image-Dateien.
 Description[en]=Path of the 'default' storage pool for image files.

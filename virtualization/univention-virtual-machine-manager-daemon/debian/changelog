@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (2.0.1-1) unstable; urgency=low
 
   * Fix XML escaping (Bug #27189)
+  * Allow VNC host override (Bug #28104)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 06 Aug 2012 11:17:09 +0200
 

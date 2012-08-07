@@ -32,6 +32,7 @@
 
 import os
 import socket
+import re
 
 from univention.lib.i18n import Translation
 
@@ -53,6 +54,15 @@ _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Domains( object ):
 	STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
+	RE_VNC = re.compile(r'^(IPv[46])(?: (.+))?$|^(?:NAME(?: (.+=.*))?)$')
+	SOCKET_FAMILIES = {
+			'IPv4': socket.AF_INET,
+			'IPv6': socket.AF_INET6,
+			}
+	SOCKET_FORMATS = {
+			socket.AF_INET: '%s',
+			socket.AF_INET6: '[%s]',
+			}
 
 	def domain_query( self, request ):
 		"""Returns a list of domains matching domainPattern on the nodes matching nodePattern.
@@ -151,32 +161,50 @@ class Domains( object ):
 					disk[ 'size' ] = MemorySize.num2str( disk[ 'size' ] )
 
 			# graphics
-			if json[ 'graphics' ]:
+			if json['graphics']:
 				try:
 					gfx = json[ 'graphics' ][ 0 ]
 					json[ 'vnc' ] = True
+					json[ 'vncHost' ] = None
+					json[ 'vncPort' ] = None
 					json[ 'kblayout' ] = gfx[ 'keymap' ]
 					json[ 'vnc_remote' ] = gfx[ 'listen' ] == '0.0.0.0'
 					json[ 'vnc_password' ] = gfx[ 'passwd' ]
 					# vnc_password will not be send to frontend
 					port = int( json[ 'graphics' ][ 0 ][ 'port' ] )
 					if port == -1:
-						raise ValueError
-					VNC_LINK_BY_NAME, VNC_LINK_BY_IPV4, VNC_LINK_BY_IPV6 = range(3)
-					vnc_link_format = VNC_LINK_BY_IPV4
-					if vnc_link_format == VNC_LINK_BY_IPV4:
-						addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET )
-						(family, socktype, proto, canonname, sockaddr) = addrs[0]
-						host = sockaddr[0]
-					elif vnc_link_format == VNC_LINK_BY_IPV6:
-						addrs = socket.getaddrinfo( node_uri.netloc, port, socket.AF_INET6 )
-						(family, socktype, proto, canonname, sockaddr) = addrs[0]
-						host = '[%s]' % sockaddr[0]
+						raise ValueError()
+					host = node_uri.netloc
+					host = 'tester.phahn.dev' # FIXME
+					vnc_link_format = ucr.get('uvmm/umc/vnc/host', 'IPv4') or ''
+					match = Domains.RE_VNC.match(vnc_link_format)
+					if match:
+						family, pattern, substs = match.groups()
+						if family:  # IPvX
+							family = Domains.SOCKET_FAMILIES[family]
+							regex = re.compile(pattern or '.*')
+							addrs = socket.getaddrinfo(host, port, family, socket.SOCK_STREAM, socket.SOL_TCP)
+							for (family, _socktype, _proto, _canonname, sockaddr) in addrs:
+								host, port = sockaddr[:2]
+								if regex.search(host):
+									break
+							else:
+								raise LookupError(pattern)
+							host = Domains.SOCKET_FORMATS[family] % (host,)
+						elif substs:  # NAME
+							for subst in substs.split():
+								old, new = subst.split('=', 1)
+								host = host.replace(old, new)
+					elif vnc_link_format:  # overwrite all hosts with fixed host
+						host = vnc_link_format
 					json[ 'vncHost' ] = host
 					json[ 'vncPort' ] = port
-				except ValueError: # port is not valid
-					json[ 'vncHost' ] = None
-					json[ 'vncPort' ] = None
+				except re.error, ex: # port is not valid
+					MODULE.warn('Invalid VNC regex: %s' % (ex,))
+				except socket.gaierror, ex:
+					MODULE.warn('Invalid VNC host: %s' % (ex,))
+				except (ValueError, LookupError), ex: # port is not valid
+					MODULE.warn('Failed VNC lookup: %s' % (ex,))
 
 			# profile (MUST be after mapping annotations)
 			profile_dn = json.get( 'profile' )
