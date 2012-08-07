@@ -4,6 +4,7 @@ univention-virtual-machine-manager-daemon (2.0.1-1) unstable; urgency=low
   * Allow VNC host override (Bug #28104)
   * Add link for external VNC viewer if Java applet does not start.
   * Silence error log (Bug #24135)
+  * Make logging configurabel (Bug #28136)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 06 Aug 2012 11:17:09 +0200
 

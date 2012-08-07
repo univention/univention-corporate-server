@@ -39,6 +39,11 @@ univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" 
 			"uvmm/umc/autosearch?true" \
             "uvmm/check/interval?2" \
             "uvmm/check/timeout?10" \
+            "uvmm/debug?DEBUG" \
+            "uvmm/debug/command?INFO" \
+            "uvmm/debug/ldap?WARNING" \
+            "uvmm/debug/node?INFO" \
+            "uvmm/debug/unix?WARNING" \
             "auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf"
 
 case "$1" in

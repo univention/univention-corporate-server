@@ -93,3 +93,9 @@ Description[de]=Timeout in Sekunden in dem der UVMM-Dienst auf die Überprüfung
 Description[en]=Timeout in seconds in which the UVMM daemon must reply on the check (Default: 5)
 Type=int
 Categories=uvmm
+
+[uvmm/debug.*]
+Description[de]=Log level for UVMM-Dienst: DEBUG, INFO, WARNING, ERROR, CRITICAL
+Description[en]=Log level for UVMM daemon: DEBUG, INFO, WARNING, ERROR, CRITICAL
+Type=str
+Categories=uvmm

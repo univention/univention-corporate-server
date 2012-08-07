@@ -1,4 +1,3 @@
-src/uvmmd.ini etc/univention
 TightVncViewer.jar var/www
 src/univention-virtual-machine-manager-daemon src/univention-virtual-machine-manager usr/sbin
 uvmmd-check.sh usr/lib/univention-virtual-machine-manager-daemon

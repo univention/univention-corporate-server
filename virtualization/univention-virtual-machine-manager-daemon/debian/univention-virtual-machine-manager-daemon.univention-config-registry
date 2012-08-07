@@ -1,4 +1,8 @@
 Type: file
+File: etc/univention/uvmmd.ini
+Variables: uvmm/debug.*
+
+Type: file
 File: etc/security/access-uvmmd.conf
 
 Type: file
