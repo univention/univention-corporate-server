@@ -26,11 +26,11 @@ msgstr ""
 
 #: umc/python/setup/__init__.py:316
 msgid ""
-"A valid netbios name can not be longer than 13 characters. If Samba is "
+"A valid NetBIOS name can not be longer than 13 characters. If Samba is "
 "installed, the hostname should be shortened."
 msgstr ""
 "Ein gültiger NetBIOS Name darf nicht länger als 13 Zeichen sein. Wenn Samba "
-"installiert wird, sollte der Rechnername gekürzt werden"
+"installiert wird, sollte der Rechnername gekürzt werden."
 
 #: umc/python/setup/__init__.py:492
 #, python-format

@@ -161,7 +161,7 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 		_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode && this._firstSetValues);
 		_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues);
 		_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues, role == 'domaincontroller_master' || role == 'basesystem');
-		_set('root_password', false, this.wizard_mode && !this.local_mode);
+		_set('root_password', false, this.wizard_mode && this.local_mode);
 
 		if (role != 'basesystem' && this.wizard_mode) {
 			// add dynamic value computation from FQDN for windows domain
@@ -244,7 +244,10 @@ dojo.declare("umc.modules._setup.BasisPage", [ umc.widgets.Page, umc.i18n.Mixin 
 			warnings.push(this._('If at any time samba should be used on this system, the length of the hostname may be at most 13 characters.'));
 		}
 		if (!values.root_password) {
-			warnings.push(this._('Root password empty. Continue?'));
+			var widget = this._form.getWidget('root_password');
+			if (!widget.required) {
+				warnings.push(this._('Root password empty. Continue?'));
+			} // else it is invalid and will be caught in save()
 		}
 		if (warnings.length) {
 			return umc.dialog.confirm(warnings.join('<br />'),

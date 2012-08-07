@@ -1,3 +1,10 @@
+univention-system-setup (6.0.9-1) unstable; urgency=low
+
+  * Remove a mere warning about empty root password when it is required
+    (Bug #28155)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Aug 2012 12:38:04 +0200
+
 univention-system-setup (6.0.8-1) unstable; urgency=low
 
   * Add warning in frontend if len(hostname) >= 13 (because of samba)
