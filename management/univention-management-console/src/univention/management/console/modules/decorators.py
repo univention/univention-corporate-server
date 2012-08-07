@@ -58,10 +58,10 @@ from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
 from ..protocol.definitions import BAD_REQUEST_INVALID_OPTS
-from ..modules import UMC_Error, UMC_OptionMissing, UMC_OptionTypeError
+from ..modules import UMC_Error, UMC_OptionTypeError
 from ..log import MODULE
 
-def simple_response(function):
+def simple_response(function=None, with_flavor=None):
 	'''If your function is as simple as: "Just return some variables"
 	this decorator is for you.
 
@@ -83,6 +83,22 @@ def simple_response(function):
 	variable is not found, it either returns a failure or sets it to a
 	default value (if specified by you).
 
+	If you need to get the flavor passed to the function you can do it
+	like this::
+
+	 @simple_response(with_flavor=True)
+	 def my_func(self, flavor, var1, var2='default'): pass
+
+	With *with_flavor* set, the flavor is extracted from the *request*.
+	You can also set with_flavor='varname', in which case the variable
+	name for the flavor is *varname*. *True* means 'flavor'.
+	As with ordinary option arguments, you may specify a default value
+	for flavor in the function definition::
+	
+	 @simple_response(with_flavor='module_flavor')
+	 def my_func(self, flavor='this comes from request.options',
+	     module_flavor='this is the flavor (and its default value)'): pass
+
 	Instead of stating at the end of your function
 	
 	.. code-block:: python
@@ -95,48 +111,51 @@ def simple_response(function):
 
 	 return some_value
 
-	You may raise one of the Exceptions derived from
-	:class:`~univention.management.console.modules.UMC_Error`.
-	It will be correctly propagated if initialised like this::
-
-	 raise UMC_Error(406, 'This is the error message')
-	
-	Note that some status codes are translated to 500 for HTTP.
-
-	Other exceptions are not supported and will be handled by the UMC
-	server itself which results in a 500 Internal Server Error.
-
 	Before::
 
 	 def my_func(self, response):
-	   variable1 = response.options.get('variable')
+	   variable1 = response.options.get('variable1')
 	   variable2 = response.options.get('variable2')
+	   flavor = response.flavor or 'default flavor'
 	   if variable1 is None:
 	     self.finished(request.id, None, message='variable1 is required', success=False)
 	     return
 	   if variable2 is None:
 	     variable2 = ''
 	   try:
-	     value = '%s_%s' % (self._saved_dict[variable1], variable2)
+	     value = '%s_%s_%s' % (self._saved_dict[variable1], variable2, flavor)
 	   except KeyError:
-	     self.finished(required.id, None, message='Something went wrong', success=False, status=407)
+	     self.finished(required.id, None, message='Something went wrong', success=False, status=500)
 	     return
 	   self.finished(request.id, value)
 
 	After::
 
-	 @simple_response
-	 def my_func(self, variable1, variable2=''):
+	 @simple_response(with_flavor=True)
+	 def my_func(self, variable1, variable2='', flavor='default_flavor'):
 	   try:
-	     return '%s_%s' % (self._saved_dict[variable1], variable2)
+	     return '%s_%s_%s' % (self._saved_dict[variable1], variable2, flavor)
 	   except KeyError:
-	     raise UMC_CommandError(407, 'Something went wrong')
+	     raise UMC_CommandError('Something went wrong')
 
 	'''
+	if function is None:
+		if with_flavor is not None:
+			return lambda f: _simple_response(f, with_flavor)
+		else:
+			raise RuntimeError('Dont use @simple_response without a function')
+	return _simple_response(function, bool(with_flavor))
+
+def _simple_response(function, with_flavor):
+	# name of flavor argument. default: 'flavor' (if given, of course)
+	if with_flavor is True:
+		with_flavor = 'flavor'
 	# argument names of the function, including 'self'
 	argspec = inspect.getargspec(function)
-	# remove self, use all the others
+	# remove self, use all the others except with_flavor
 	arguments = argspec.args[1:]
+	if with_flavor:
+		arguments.remove(with_flavor)
 	defaults = argspec.defaults
 	# use defaults as dict
 	if defaults:
@@ -155,6 +174,8 @@ def simple_response(function):
 		for arg in arguments:
 			# as we checked before, it is either in request.options or defaults
 			kwargs[arg] = request.options.get(arg, defaults.get(arg))
+		if with_flavor:
+			kwargs[with_flavor] = request.flavor or defaults.get(with_flavor)
 		ret = function(self, **kwargs)
 		self.finished(request.id, ret)
 	# copy __doc__, otherwise it would not show up in api and such
@@ -178,7 +199,7 @@ def check_request_options(seq = dict):
 	def check(self, function):
 		def _response(self, request):
 			if not isinstance(request.options, seq):
-				raise UMC_OptionTypeError( _("argument type has to be '%r'" % (seq)) )
+				raise UMC_OptionTypeError( _("argument type has to be '%r'") % seq )
 			return function(self, request)
 		return _response
 	return check
@@ -196,4 +217,6 @@ def log_request_options(sensitive = []):
 			return function(self, request)
 		return _response
 	return log
+
+__all__ = ['simple_response', 'log_request_options', 'check_request_options']
 

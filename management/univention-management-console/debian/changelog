@@ -1,3 +1,9 @@
+univention-management-console (5.0.8-1) unstable; urgency=low
+
+  * extend decorator simple_response: support flavor (Bug #27716)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Aug 2012 10:24:35 +0200
+
 univention-management-console (5.0.7-1) unstable; urgency=low
 
   * Add UCR variable description (Bug #28134)
