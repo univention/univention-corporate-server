@@ -41,6 +41,7 @@ from optparse import OptionParser, OptionGroup
 from univention.uvmm.helpers import TranslatableException, _, N_
 import os
 import signal
+import libvirt
 
 def createDaemon(options):
 	"""http://code.activestate.com/recipes/278731/"""
@@ -226,18 +227,11 @@ if __name__ == '__main__':
 
 	if options.daemonize:
 		createDaemon(options)
-	elif False:
-		# libvirt loggs hard-coded to stderr by default. Until there is a
-		# Python-binding for virSetErrorFunc(), move sys.stderr to diffferent
-		# file-descriptor and open stderr as /dev/null to silence libvirt.
-		fd_old = sys.stderr.fileno()
-		fd_new = os.dup(fd_old)
-		sys.stderr = os.fdopen(fd_new, 'a')
-		os.close(fd_old)
-		fd_tmp = os.open(os.path.devnull, os.O_WRONLY)
-		if fd_tmp != fd_old:
-			os.dup2(fd_tmp, fd_old)
-			os.close(fd_tmp)
+
+	# Silence libvirt to not log non-connection-related messages to stderr.
+	def uvmm_libvirt_logger(ctx, error):
+		pass
+	libvirt.registerErrorHandler(uvmm_libvirt_logger, ctx=None)
 
 	install_signal_handlers(options)
 
