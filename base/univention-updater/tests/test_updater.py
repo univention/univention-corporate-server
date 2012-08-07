@@ -228,9 +228,6 @@ class TestUniventionUpdater(unittest.TestCase):
             'deb file:///mock/%d.%d/maintained/ errata%d/%s/' % (MAJOR, MINOR, ERRAT + 1, ARCH),
             )), set(tmp))
 
-    #def test_errata_component_update_temporary_sources_list(self):
-    #    raise NotImplemented('Bug #27152') # FIXME
-
     def test_get_all_available_security_updates(self):
         """Test next available security updates."""
         self._uri({
