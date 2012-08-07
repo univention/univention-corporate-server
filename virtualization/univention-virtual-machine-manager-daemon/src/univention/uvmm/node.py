@@ -56,6 +56,7 @@ import errno
 import fnmatch
 import re
 import random
+from xml.sax.saxutils import escape as xml_escape
 try:
 	import xml.etree.ElementTree as ET
 except ImportError:
@@ -1591,7 +1592,7 @@ def domain_snapshot_create(uri, domain, snapshot):
 		if dom_stat.pd.snapshots is None:
 			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
 		old_state = dom_stat.key()
-		xml = '''<domainsnapshot><name>%s</name></domainsnapshot>''' % snapshot
+		xml = '''<domainsnapshot><name>%s</name></domainsnapshot>''' % (xml_escape(snapshot),)
 		s = dom.snapshotCreateXML(xml, 0)
 
 		dom_stat.update(dom)

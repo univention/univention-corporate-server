@@ -44,6 +44,7 @@ import os.path
 from treeview import *
 from tools import *
 from uvmmd import UvmmError
+from xml.sax.saxutils import escape as xml_escape
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 _uvmm_locale = umc.Translation('univention.virtual.machine.manager').translate
@@ -158,7 +159,7 @@ class DriveCommands( object ):
 			detach = umcp.SimpleCommand( 'uvmm/drive/remove', options = opts )
 
 			if rm_disk.source and rm_disk.type != uvmmn.Disk.TYPE_BLOCK:
-				lst.add_row([umcd.Cell(umcd.HTML(_('The drive will be detached from the virtual instance.<br/>Additionally the associated image <i>%(image)s</i> may be deleted permanently.') % {'image': rm_disk.source}), attributes={'colspan': '3'})])
+				lst.add_row([umcd.Cell(umcd.HTML(_('The drive will be detached from the virtual instance.<br/>Additionally the associated image <i>%(image)s</i> may be deleted permanently.') % {'image': xml_escape(rm_disk.source)}), attributes={'colspan': '3'})])
 				btn_cancel = umcd.Button(_('Cancel'), actions=[umcd.Action(overview)])
 				btn_detach = umcd.Button(_('Detach'), actions=[umcd.Action(detach), umcd.Action(overview)], default=not do_delete)
 				btn_delete = umcd.Button(_('Delete'), actions=[umcd.Action(remove), umcd.Action(overview)], default=do_delete)
@@ -183,7 +184,7 @@ class DriveCommands( object ):
 				resp = self.uvmm.domain_configure(node_uri, domain_info )
 			except UvmmError, e:
 				res.status( 301 )
-				self.finished(object.id(), res, report=_('Detaching the drive <i>%(drive)s</i> failed') % {'drive': target_dev})
+				self.finished(object.id(), res, report=_('Detaching the drive <i>%(drive)s</i> failed') % {'drive': xml_escape(target_dev)})
 				return
 
 			if rm_disk.source and object.options.get('drive-remove', False):
@@ -191,12 +192,12 @@ class DriveCommands( object ):
 					self.uvmm.storage_volumes_destroy(node_uri, [rm_disk.source,])
 				except UvmmError, e:
 					res.status( 301 )
-					self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached successfully, but removing the image <i>%(image)s</i> failed. It must be removed manually.') % {'drive': target_dev, 'image': rm_disk.source})
+					self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached successfully, but removing the image <i>%(image)s</i> failed. It must be removed manually.') % {'drive': xml_escape(target_dev), 'image': xml_escape(rm_disk.source)})
 					return
 				res.status( 201 )
-				self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> removed successfully.') % {'drive': target_dev, 'image': rm_disk.source})
+				self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> removed successfully.') % {'drive': xml_escape(target_dev), 'image': xml_escape(rm_disk.source)})
 			res.status( 201 )
-			self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached successfully.') % {'drive': target_dev})
+			self.finished(object.id(), res, report=_('The drive <i>%(drive)s</i> was detached successfully.') % {'drive': xml_escape(target_dev)})
 
 	def uvmm_drive_edit( self, object ):
 		"""Edit drive: chnage use of VirtIO / PV."""
@@ -277,7 +278,7 @@ class DriveCommands( object ):
 
 					conf.add_row([umcd.HTML('<i>%s</i>' % _('Storage pool')), pool_name])
 					if len(basename) > 60:
-						conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), umcd.HTML('<p title="%s">%s...</p>' %(basename, basename[0:60]))])
+						conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), umcd.HTML('<p title="%s">%s...</p>' %(xml_escape(basename), xml_escape(basename[0:60])))])
 					else:
 						conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), basename])
 					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), driver_type])
@@ -359,7 +360,7 @@ class DriveCommands( object ):
 			self.finished( object.id(), res )
 		except UvmmError, e:
 			res.status( 301 )
-			self.finished(object.id(), res, report=_('Setting the drive <i>%(drive)s</i> as boot device as failed') % {'drive': object.options['disk']})
+			self.finished(object.id(), res, report=_('Setting the drive <i>%(drive)s</i> as boot device as failed') % {'drive': xml_escape(object.options['disk'])})
 
 	def uvmm_drive_media_change(self, request):
 		"""Eject or change media from device"""

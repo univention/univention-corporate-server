@@ -42,6 +42,7 @@ from protocol import Disk, Data_Pool
 import os.path
 import univention.config_registry as ucr
 import time
+from xml.sax.saxutils import escape as xml_escape
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -63,8 +64,8 @@ def create_storage_pool(conn, dir, pool_name='default'):
 		</target>
 	</pool>
 	''' % {
-			'pool': pool_name,
-			'path': dir,
+			'pool': xml_escape(pool_name),
+			'path': xml_escape(dir),
 			}
 	try:
 		p = conn.storagePoolDefineXML(xml, 0)
@@ -127,7 +128,7 @@ def create_storage_volume(conn, domain, disk):
 		size = 8 << 30 # GiB
 
 	values = {
-			'name': os.path.basename(disk.source),
+			'name': xml_escape(os.path.basename(disk.source)),
 			'size': size,
 			}
 
@@ -137,7 +138,7 @@ def create_storage_volume(conn, domain, disk):
 	pool_type = doc.firstChild.getAttribute('type')
 	if pool_type in ('dir', 'fs', 'netfs'):
 		if hasattr(disk, 'driver_type') and disk.driver_type not in (None, 'iso', 'aio'):
-			values['type'] = disk.driver_type
+			values['type'] = xml_escape(disk.driver_type)
 		else:
 			values['type'] = 'raw'
 		# permissions
@@ -146,7 +147,10 @@ def create_storage_volume(conn, domain, disk):
 		for access in ( 'owner', 'group', 'mode' ):
 			value = configRegistry.get( 'uvmm/volume/permissions/%s' % access, None )
 			if value and value.isdigit():
-				permissions += '<%(tag)s>%(value)s</%(tag)s>\n' % { 'tag' : access, 'value' : value }
+				permissions += '<%(tag)s>%(value)s</%(tag)s>\n' % {
+						'tag': xml_escape(access),
+						'value': xml_escape(value),
+						}
 				found = True
 		if found:
 			permissions += '</permissions>'

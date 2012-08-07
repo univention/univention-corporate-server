@@ -36,6 +36,7 @@ dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.ProgressBar");
 dojo.require("dojo.DeferredList");
+dojo.require("dojox.html.entities");
 dojo.require("dojox.string.sprintf");
 dojo.require("umc.dialog");
 dojo.require("umc.i18n");
@@ -291,9 +292,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		umc.tools.umcpCommand( 'uvmm/domain/get', { domainURI : ids[ 0 ] } ).then( dojo.hitch( this, function( response ) {
 			var w = window.open();
 			var html = dojo.replace( "<html><head><title>{domainName} on {nodeName}</title></head><body><applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'><param name='host' value='{vncHost}' /><param name='port' value='{vncPort}' /><param name='offer relogin' value='no' /></applet></body></html>", {
-				domainName: items[ 0 ].label,
-				nodeName: items[ 0 ].nodeName,
-				vncHost: response.result.vncHost,
+				domainName: dojox.html.entities.encode(items[ 0 ].label),
+				nodeName: dojox.html.entities.encode(items[ 0 ].nodeName),
+				vncHost: dojox.html.entities.encode(response.result.vncHost),
 				vncPort: response.result.vncPort
 			} );
 			w.document.write( html );
@@ -401,7 +402,9 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			{
 				type: 'Text',
 				name: 'question',
-				content: '<p>' + dojo.replace( this._( 'Should the selected virtual instance {label} be removed?' ), domain ) + '</p>',
+				content: '<p>' + dojo.replace( this._( 'Should the selected virtual instance {label} be removed?' ), {
+					label: dojox.html.entities.encode(domain.label)
+				} ) + '</p>',
 				label: ''
 			} ];
 		var _widgets = null;
@@ -470,7 +473,10 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					widgets.push( {
 						type: 'Text',
 						name: disk.source,
-						content: '<p>' + this._( 'Not removable' ) + ': ' + dojo.replace( this._( '{volumeFilename} (Pool: {pool})' ), disk ) + '</p>',
+						content: '<p>' + this._( 'Not removable' ) + ': ' + dojo.replace( this._( '{volumeFilename} (Pool: {pool})' ), {
+							volumeFilename: dojox.html.entities.encode(disk.volumeFilename),
+							pool: dojox.html.entities.encode(disk.pool)
+						} ) + '</p>',
 						label: '',
 						$id$: { pool : disk.pool, volumeFilename : disk.volumeFilename }
 					} );

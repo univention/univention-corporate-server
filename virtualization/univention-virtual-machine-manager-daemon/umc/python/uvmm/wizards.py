@@ -48,6 +48,7 @@ from types import *
 from tools import *
 import udm
 import uvmmd
+from xml.sax.saxutils import escape as xml_escape
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
@@ -241,7 +242,7 @@ class DriveWizard( umcd.IWizard ):
 			if r.pool_path:
 				conf.add_row([umcd.HTML('<i>%s</i>' % _('Storage pool')), _('path: %(path)s') % {'path': r.pool_path}])
 				if len(r.vol_path) > 60:
-					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), umcd.HTML('<p title="%s">%s...</p>' %(r.vol_path, r.vol_path[0:60]))])
+					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), umcd.HTML('<p title="%s">%s...</p>' %(xml_escape(r.vol_path), xml_escape(r.vol_path[0:60])))])
 				else:
 					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), r.vol_path])
 				conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), r.driver_type])
@@ -700,9 +701,9 @@ class InstanceWizard( umcd.IWizard ):
 			self.replace_title( _( 'Create a virtual instance' ) )
 		else:
 			if not object.options.get( 'name' ):
-				self.replace_title( _( 'Create a virtual instance (profile: %(profile)s)' ) % { 'profile' : object.options[ 'instance-profile' ] } )
+				self.replace_title(_('Create a virtual instance (profile: %(profile)s)') % {'profile': xml_escape(object.options['instance-profile'])})
 			else:
-				self.replace_title( _( 'Create a virtual instance <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
+				self.replace_title(_('Create a virtual instance <i>%(name)s</i>') % {'name': xml_escape(object.options['name'])})
 		tech = self.node_uri[ : self.node_uri.find( ':' ) ]
 		if self.current is None:
 
@@ -861,10 +862,10 @@ class InstanceWizard( umcd.IWizard ):
 					if pool.path == dir:
 						values['size'] = MemorySize.num2str(dev.size)
 						if len(os.path.basename(dev.source)) > 40:
-							values['image'] = "%s..." % os.path.basename(dev.source)[0:40]
+							values['image'] = xml_escape("%s..." % os.path.basename(dev.source)[0:40])
 						else:
-							values['image'] = os.path.basename(dev.source)
-						values['pool'] = pool.name
+							values['image'] = xml_escape(os.path.basename(dev.source))
+						values['pool'] = xml_escape(pool.name)
 						html += _('<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>') % values
 						break
 				else:
@@ -948,7 +949,7 @@ class InstanceWizard( umcd.IWizard ):
 		name = object.options['name']
 		self.drive_wizard_active = True
 		self.drive_wizard_cancel = cancel
-		self.drive_wizard.replace_title(_('Add drive to <i>%(name)s</i>') % {'name': name})
+		self.drive_wizard.replace_title(_('Add drive to <i>%(name)s</i>') % {'name': xml_escape(name)})
 		self.drive_wizard.domain_name = name
 		self.drive_wizard.domain_virttech( object.options['type'] )
 		self.drive_wizard.blacklist = [os.path.basename(drive.source) for drive in self.drives if drive.source]
