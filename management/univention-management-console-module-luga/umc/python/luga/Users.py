@@ -37,6 +37,7 @@ from copy import deepcopy
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError, UMC_CommandError, UMC_OptionMissing, Base
+from univention.management.console.modules.decorators import *
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
@@ -65,82 +66,80 @@ class Users:
 		shadows = {}
 
 		try:
-			shadow = open('/etc/shadow')
-			passwd = open('/etc/passwd')
-
 			# Parse /etc/shadow
-			for user in shadow:
-				user = user[:-1].split(':')
-				user.pop()
-				shadows[ user.pop(0) ] = user
-			shadow.close()
+			with open('/etc/shadow') as shadow:
+				for user in shadow:
+					user = user[:-1].split(':')
+					user.pop()
+					shadows[ user.pop(0) ] = user
 
 			# Parse /etc/passwd
-			for user in passwd:
-				# remove trailing newline, split by ':' seperator
-				(username, password, uid, gid, gecos, homedir, shell) = user[:-1].split(':')
+			with open('/etc/passwd') as passwd:
+				for user in passwd:
+					# remove trailing newline, split by ':' seperator
+					(username, password, uid, gid, gecos, homedir, shell) = user[:-1].split(':')
 
-				# Groups
-				group = self._gid2name(gid) # primary group
-				groups = self._get_additional_groups(username)
-				groups_mixin = groups + [group]
+					# Groups
+					group = self._gid2name(gid) # primary group
+					groups = self._get_additional_groups(username)
+					groups_mixin = groups + [group]
 
-				# Filter
-				value = { 'username': username, 'uid': uid, 'gid': gid, 'gecos': gecos.split(','), 'fullname': gecos.split(',').pop(0), 'homedir': homedir, 'shell': shell, 'group': groups_mixin }.get(category, 'username')
-				if list is type(value):
-					for val in value:
-						if fnmatch(str(value), pattern):
-							break
-					else:
+					# Filter
+					value = { 'username': username, 'uid': uid, 'gid': gid, 'gecos': gecos.split(','), 'fullname': gecos.split(',').pop(0), 'homedir': homedir, 'shell': shell, 'group': groups_mixin }.get(category, 'username')
+					if list is type(value):
+						for val in value:
+							if fnmatch(str(value), pattern):
+								break
+						else:
+							continue
+					elif not fnmatch(str(value), pattern):
 						continue
-				elif not fnmatch(str(value), pattern):
-					continue
 
-				# Shadow
-				shadow = shadows.get(username, [password, '', '', '', '', '', ''])
-				password = shadow.pop(0)
+					# Shadow
+					shadow = shadows.get(username, [password, '', '', '', '', '', ''])
+					password = shadow.pop(0)
 
-				pw_is_empty = password in ('NP', '!', '', '*')
-				deactivated = (password != '') and (('!' == password[0]) or ('*' == password[0]) or ('LK' == password))
-				pw_is_expired = (password == '!!' or shadow[5].isdigit())
+					pw_is_empty = password in ('NP', '!', '', '*')
+					deactivated = (password != '') and (('!' == password[0]) or ('*' == password[0]) or ('LK' == password))
+					pw_is_expired = (password == '!!' or shadow[5].isdigit())
 
-				shadow[0] = date.isoformat(date.fromtimestamp(int(shadow[0]) * 86400))
-				if shadow[5].isdigit():
-					shadow[5] = date.isoformat(date.fromtimestamp(int(shadow[5]) * 86400))
+					shadow[0] = date.isoformat(date.fromtimestamp(int(shadow[0]) * 86400))
+					if shadow[5].isdigit():
+						shadow[5] = date.isoformat(date.fromtimestamp(int(shadow[5]) * 86400))
 
-				for i in (1, 2, 3, 4):
-					if not shadow[i].isdigit():
-						shadow[i] = 0
+					for i in (1, 2, 3, 4):
+						if not shadow[i].isdigit():
+							shadow[i] = 0
 
-				# Gecos
-				gecos = gecos.split(',')
-				while len(gecos) < 5:
-					gecos.append('')
+					# Gecos
+					gecos = gecos.split(',')
+					while len(gecos) < 5:
+						gecos.append('')
 
-				users.append( {
-					'username': username,
-					'uid': int(uid),
-					'gid': int(gid),
-					'group': group,
-					'groups': groups,
-					'homedir': homedir,
-					'shell': shell,
-					'fullname': gecos[0],
-					'roomnumber': gecos[1],
-					'tel_business': gecos[2],
-					'tel_private': gecos[3],
-					'miscellaneous': gecos[4],
-					'pw_last_change': shadow[0],
-					'pw_mindays': int(shadow[1]),
-					'pw_maxdays': int(shadow[2]),
-					'pw_warndays': int(shadow[3]),
-					'pw_disabledays': int(shadow[4]),
-					'disabled_since': shadow[5], 
-					'lock': deactivated,
-					'pw_is_expired': pw_is_expired,
-					'pw_is_empty': pw_is_empty
-				} )
-			passwd.close()
+					users.append( {
+						'username': username,
+						'uid': int(uid),
+						'gid': int(gid),
+						'group': group,
+						'groups': groups,
+						'homedir': homedir,
+						'shell': shell,
+						'fullname': gecos[0],
+						'roomnumber': gecos[1],
+						'tel_business': gecos[2],
+						'tel_private': gecos[3],
+						'miscellaneous': gecos[4],
+						'pw_last_change': shadow[0],
+						'pw_mindays': int(shadow[1]),
+						'pw_maxdays': int(shadow[2]),
+						'pw_warndays': int(shadow[3]),
+						'pw_disabledays': int(shadow[4]),
+						'disabled_since': shadow[5], 
+						'lock': deactivated,
+						'pw_is_expired': pw_is_expired,
+						'pw_is_empty': pw_is_empty
+					} )
+
 		except (KeyError, IndexError, ValueError):
 			raise UMC_CommandError(_('passwd/shadow file is corrupt'))
 		except IOError:
@@ -211,7 +210,10 @@ class Users:
 
 		return True
 
-	def users_query( self, request ):
+	@check_request_options()
+	@log_request_options()
+	@simple_response
+	def users_query( self, category = 'username', pattern = '*'):
 		"""
 			returns a list containing dicts of all users filtered by category with bash-like-pattern
 			the following wildcars can be used in request.options.pattern:
@@ -222,34 +224,24 @@ class Users:
 			request.options.category:
 				one of [username, uid, gid, gecos, homedir, shell, group] default: username
 		"""
-		MODULE.info( 'luga.users_query: options: %s' % str(request.options) )
-
-		if dict is not type(request.options):
-			raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
-
-		category = request.options.get('category', 'username')
-		pattern = request.options.get('pattern', '*')
 
 		response = self._parse_users( category, pattern )
-
 		MODULE.info( 'luga.users_query: results: %s' % response )
-		self.finished(request.id, response, status=SUCCESS)
+		return response
 
-	def get_users(self, request):
+	@log_request_options()
+	#@check_request_options()
+	@simple_response
+	def users_get_users(self, category = 'username', pattern = '*'):
 		"""
 			returns a shorten list containing a dict for each user
 			[ {'id': <username>, 'label': <username>}, ... ]
 		"""
-		MODULE.info( 'luga.users_getUsers: options: %s' % str(request.options) )
-		o = self.sanitize_dict(request.options)
-		category = request.options.get('category', 'username')
-		pattern = request.options.get('pattern', '*')
-
 #		response = [ {'id': u['username'], 'label': u['username']} for u in self._parse_users(category, pattern) ]
 		response = [ u['username'] for u in self._parse_users(category, pattern) ]
 
 		MODULE.info( 'luga.users_query: results: %s' % str(response) )
-		self.finished(request.id, response, status=SUCCESS)
+		return response
 
 	def _get_group_members(self, groupname):
 		"""
@@ -258,17 +250,14 @@ class Users:
 		"""
 		return map( lambda u: u['username'], self._parse_users('groupname', groupname) )
 
+	@log_request_options()
+	@check_request_options(list)
 	def users_get( self, request ):
 		"""
 			returns a list of dicts containing user information from requested usernames
 			param request.options = [ <username>, <username2>, ... ]
 			return [ {<user>}, {<user2>}, ... ]
 		"""
-		MODULE.info( 'luga.users_get: options: %s' % str(request.options) )
-
-		if list is not type(request.options):
-			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
-
 		userdict = {}
 		for user in self._parse_users():
 			if user['username'] in request.options:
@@ -355,19 +344,12 @@ class Users:
 
 		return cmd
 
+	@log_request_options(['password'])
+	@check_request_options((list, tuple,))
 	def users_put( self, request ):
-		MODULE.info( 'luga.users_put: options: %s' % str(request.options) )
 		"""
 			modify a local user
 		"""
-
-		if list is not type(request.options):
-			MODULE.info( 'luga.users_put: options: %s' % (request.options) )
-			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
-		else:
-			c = deepcopy(request.options)
-			map(lambda d: type(d) is dict and 'object' in d and 'password' in d['object'] and type(d['object']) is dict and d['object'].pop('password'), c)
-			MODULE.info( 'luga.users_put: options: %s' % c )
 
 		response = []
 		errors = {
@@ -377,8 +359,8 @@ class Users:
 		for o in request.options:
 			try:
 				message = ''
-				if dict is not type(o) or dict is not type(o.get('object', {})):
-					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
+				self.validate_type(o, dict)
+				self.validate_type(o.get('object', {}), dict)
 				option = o.get('object', {})
 
 				# Username
@@ -424,18 +406,12 @@ class Users:
 		MODULE.info( 'luga.users_edit: results: %s' % str(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
+	@log_request_options(['password'])
+	@check_request_options((list, tuple,))
 	def users_add(self, request):
 		"""
 			add a local user
 		"""
-
-		if list is not type(request.options):
-			MODULE.info( 'luga.users_add: options: %s' % (request.options) )
-			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
-		else:
-			c = deepcopy(request.options)
-			map(lambda d: type(d) is dict and 'object' in d and 'password' in d['object'] and type(d['object']) is dict and d['object'].pop('password'), c)
-			MODULE.info( 'luga.users_add: options: %s' % (c) )
 
 		response = []
 		errors = {
@@ -453,9 +429,8 @@ class Users:
 		for o in request.options:
 			try:
 				message = ''
-				if dict is not type(o) or dict is not type(o.get('object', {})):
-					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
-
+				self.validate_type(o, dict)
+				self.validate_type(o.get('object', {}), dict)
 				option = o.get('object', {})
 
 				# Username
@@ -492,6 +467,8 @@ class Users:
 		MODULE.info( 'luga.users_add: results: %s' % str(response) )
 		self.finished(request.id, response, status=SUCCESS)
 
+	@log_request_options()
+	@check_request_options((list, tuple,))
 	def users_remove(self, request):
 		"""
 			remove a list of local users
@@ -499,10 +476,6 @@ class Users:
 				force: force removal of files, even if not owned by user
 				remove: remove home directory and mail spool
 		"""
-		MODULE.info( 'luga.users_remove: options: %s' % str(request.options) )
-
-		if list is not type(request.options):
-			raise UMC_OptionTypeError( _("argument type has to be 'list'") )
 
 		response = []
 		errors = {

@@ -43,21 +43,32 @@ import re
 
 _ = Translation( 'univention-management-console-module-luga' ).translate
 
-class Process:
+class Instance(Users, Groups, Base):
+	@staticmethod
+	def validate_type(obj, seq, cast = False):
+		"""
+			check if obj is of type seq, if not raise an UMC_OptionTypeError
+			param obj: the object to check
+			param class|type|tuple seq: sequence of types
+			param bool cast: cast the given object to seq
+		"""
+		if cast:
+			obj = seq(obj)
+		if not isinstance(obj, seq):
+			raise UMC_OptionTypeError( _("argument type has to be '%r'") % (seq,) )
+		return True
+
 	def sanitize_arg(self, arg):
 		if ':' in str(arg):
 			raise ValueError(_('arguments can not contain ":"'))
 		return arg
 
 	def sanitize_int(self, num):
-		num = str(num)
-		if num.isdigit() or (num[0] == '-' and num[1:].isdigit()):
-			if type(int(num)) is int:
-				return int(num)
-		raise UMC_OptionTypeError( _("argument type has to be 'int': %s") % num )
+		self.validate_type(num, int, True)
+		return int(num)
 
 	def sanitize_dict(self, d):
-		return d if type(d) is dict else {}
+		return d if isinstance(d, dict) else {}
 
 	def validate_name(self, name):
 		if not name:
@@ -85,9 +96,3 @@ class Process:
 			raise ValueError( _('Command failed') )
 
 		return p.returncode
-
-class Instance(Users, Groups, Base, Process):
-	def __init__(self):
-		Base.__init__(self)
-
-
