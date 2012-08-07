@@ -32,7 +32,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, os, gzip
+import os
+import gzip
 
 def get_ppd_infos( filename ):
 	nickname = manufacturer = None
@@ -43,9 +44,9 @@ def get_ppd_infos( filename ):
 		file = open(filename)
 	for line in file:
 		if line.startswith( '*NickName:' ):
-			nickname = line.split( '"' )[ 1 ]		
+			nickname = line.split( '"' )[ 1 ]
 		if line.startswith( '*Manufacturer:' ):
-			manufacturer = line.split( '"' )[ 1 ]		
+			manufacturer = line.split( '"' )[ 1 ]
 		if manufacturer and nickname:
 			break
 	return ( manufacturer, nickname )
@@ -62,16 +63,13 @@ def __check_dir( commands, dirname, files ):
 		if os.path.isfile( filename ) and ( filename.endswith( '.ppd' ) or filename.endswith( '.ppd.gz' ) ):
 			rel_path = filename[ len( '/usr/share/ppd/' ) : ]
 			manu, nick = get_ppd_infos( filename )
-			if commands.has_key( manu ):
-				commands[ manu ].append( ( rel_path, nick ) )
-			else:
-				commands[ manu ] = [ ( rel_path, nick ) ]
+			commands.setdefault(manu, []).append((rel_path, nick))
 	return files
 
 if __name__ == '__main__':
 	printers = {}
 	cmds = []
-	os.path.walk( '/usr/share/ppd/', __check_dir, printers ) 
+	os.path.walk( '/usr/share/ppd/', __check_dir, printers )
 	for manu, models in printers.items():
 		cmds.append( get_udm_command( manu, models ) )
 	print '\n\n'.join(cmds)

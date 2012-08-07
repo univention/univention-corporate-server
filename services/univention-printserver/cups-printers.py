@@ -32,22 +32,25 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os, string, time
-import univention.debug
+import os
+import time
+import univention.debug as ud
 ## for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers
 ucr_handlers = configHandlers()
 ucr_handlers.load()
 
-hostname=listener.baseConfig['hostname']
-domainname=listener.baseConfig['domainname']
-ip=listener.baseConfig['interfaces/eth0/address']
-ldap_base=listener.baseConfig['ldap/base']
+hostname = listener.baseConfig['hostname']
+domainname = listener.baseConfig['domainname']
+ip = listener.baseConfig['interfaces/eth0/address']
+ldap_base = listener.baseConfig['ldap/base']
 
 name='cups-printers'
 description='Manage CUPS printer configuration'
 filter='(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
 attributes=['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName','univentionPrinterPricePerPage','univentionPrinterPricePerJob','univentionPrinterQuotaSupport','univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype',]
+
+EMPTY = ('',)
 
 def lpadmin(args):
 
@@ -55,13 +58,13 @@ def lpadmin(args):
 	args = map(lambda x: '%s' % x.replace("'", '').strip(), args)
 
 	# Show this info message by default
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "cups-printers: info: univention-lpadmin %s" % string.join(args, ' '))
+	ud.debug(ud.LISTENER, ud.WARN, "cups-printers: info: univention-lpadmin %s" % ' '.join(args))
 
 	rc = listener.run('/usr/sbin/univention-lpadmin', ['univention-lpadmin']+args, uid=0)
 	if rc != 0:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "cups-printers: Failed to execute the univention-lpadmin command. Please check the cups state.")
-		filename=os.path.join('/var/cache/univention-printserver/','%f.sh' % time.time())
-		f=open(filename, 'w+')
+		ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Failed to execute the univention-lpadmin command. Please check the cups state.")
+		filename = os.path.join('/var/cache/univention-printserver/', '%f.sh' % time.time())
+		f = open(filename, 'w+')
 		os.chmod(filename, 0755)
 		print >>f, '#!/bin/sh'
 		print >>f, '/usr/sbin/univention-lpadmin ' + ' '.join(map(lambda x: "'%s'" % x, args))
@@ -71,48 +74,45 @@ def pkprinters(args):
 	listener.setuid(0)
 	try:
 		if os.path.exists("/usr/sbin/pkprinters"):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "cups-printers: pkprinters args=%s" % args)
-			os.system("/usr/sbin/pkprinters %s" % string.join(args, ' '))
+			ud.debug(ud.LISTENER, ud.INFO, "cups-printers: pkprinters args=%s" % args)
+			os.system("/usr/sbin/pkprinters %s" % ' '.join(args))
 		elif os.path.exists("/usr/bin/pkprinters"):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "cups-printers: pkprinters args=%s" % args)
-			os.system("/usr/bin/pkprinters %s" % string.join(args, ' '))
+			ud.debug(ud.LISTENER, ud.INFO, "cups-printers: pkprinters args=%s" % args)
+			os.system("/usr/bin/pkprinters %s" % ' '.join(args))
 		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "cups-printers: pkprinters binary not found")
+			ud.debug(ud.LISTENER, ud.INFO, "cups-printers: pkprinters binary not found")
 	finally:
 		listener.unsetuid()
 
 def filter_match(object):
-	if object.has_key('univentionPrinterSpoolHost'):
-		for i in range(0,len(object['univentionPrinterSpoolHost'])):
-			if object['univentionPrinterSpoolHost'][i] == ip:
-				return 1
-			elif object['univentionPrinterSpoolHost'][i] == '%s.%s' % (hostname, domainname):
-				return 1
-	return 0
+	for host in object.get('univentionPrinterSpoolHost', ()):
+		if host == ip:
+			return True
+		elif host == '%s.%s' % (hostname, domainname):
+			return True
+	return False
 
 def handler(dn, new, old):
-	need_to_reload_samba = 0
-	need_to_reload_cups = 0
-	printer_is_group = 0
-	quota_support = 0
+	need_to_reload_samba = False
+	need_to_reload_cups = False
+	printer_is_group = False
+	quota_support = False
 
-	changes=[]
+	changes = []
 
 	if old:
-		if old.has_key('objectClass'):
-			if old['objectClass'][1] == 'univentionPrinterGroup':
-				printer_is_group=1
-		if old.has_key('univentionPrinterQuotaSupport') and (old['univentionPrinterQuotaSupport'][0] == "1"):
-			quota_support = 1
+		if 'univentionPrinterGroup' in old.get('objectClass', ()):
+			printer_is_group = True
+		if old.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
+			quota_support = True
 	if new:
-		if new.has_key('objectClass'):
-			if new['objectClass'][1]== 'univentionPrinterGroup':
-				printer_is_group=1
-		if new.has_key('univentionPrinterQuotaSupport') and (new['univentionPrinterQuotaSupport'][0] == "1"):
-			quota_support = 1
+		if 'univentionPrinterGroup' in new.get('objectClass', ()):
+			printer_is_group = True
+		if new.get('univentionPrinterQuotaSupport', EMPTY) == "1":
+			quota_support = True
 		else:
-			quota_support = 0
-	modified_uri=''
+			quota_support = False
+	modified_uri = ''
 	for n in new.keys():
 		if new.get(n, []) != old.get(n, []):
 			changes.append(n)
@@ -130,7 +130,7 @@ def handler(dn, new, old):
 			else:
 				modified_uri = old['univentionPrinterURI'][0]
 
-	options={
+	options = {
 		'univentionPrinterURI': '-v',
 		'univentionPrinterLocation': '-L',
 		'description': '-D',
@@ -144,9 +144,9 @@ def handler(dn, new, old):
 			listener.baseConfig.load()
 			printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
 			printer_is_restricted = printer_name in printer_list
-			if printer_is_restricted and not listener.baseConfig.get('cups/automaticrestrict', "true") in ['false','no']:
+			if printer_is_restricted and not listener.baseConfig.is_false('cups/automaticrestrict', False):
 				printer_list.remove (printer_name)
-				keyval = 'cups/restrictedprinters=%s' % string.join(printer_list, ' ')
+				keyval = 'cups/restrictedprinters=%s' % ' '.join(printer_list)
 				listener.setuid (0)
 				try:
 					univention.config_registry.handler_set( [ keyval.encode() ] )
@@ -155,15 +155,15 @@ def handler(dn, new, old):
 
 			#Deletions done via lpadmin
 			lpadmin(['-x', old['cn'][0]])
-			if old.has_key('univentionPrinterQuotaSupport') and old['univentionPrinterQuotaSupport'][0] == "1":
+			if old.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
 				if printer_is_group:
 					for member in old['univentionPrinterGroupMember']:
 						pkprinters(['--groups', old['cn'][0], '--remove', member])
 				pkprinters(['--delete', old['cn'][0]])
-			need_to_reload_samba = 1
+			need_to_reload_samba = True
 
 		#Deletions done via editing the Samba config
-		if old.has_key('univentionPrinterSambaName') and old['univentionPrinterSambaName']:
+		if old.get('univentionPrinterSambaName'):
 			filename = '/etc/samba/printers.conf.d/%s' % old['univentionPrinterSambaName'][0]
 			listener.setuid(0)
 			try:
@@ -178,7 +178,7 @@ def handler(dn, new, old):
 			if os.path.exists(filename):
 				os.unlink(filename)
 		finally:
-			 listener.unsetuid()
+			listener.unsetuid()
 
 	if filter_match(new):
 		#Modifications done via UCR-Variables
@@ -196,46 +196,44 @@ def handler(dn, new, old):
 			printer_list.append (printer_name)
 			update_restricted_printers = True
 
-		if update_restricted_printers and not listener.baseConfig.get('cups/automaticrestrict', "true") in ['false','no']:
-			keyval = 'cups/restrictedprinters=%s' % string.join (printer_list, ' ')
+		if update_restricted_printers and not listener.baseConfig.is_false('cups/automaticrestrict', False):
+			keyval = 'cups/restrictedprinters=%s' % ' '.join(printer_list)
 			listener.setuid (0)
 			try:
 				univention.config_registry.handler_set( [ keyval.encode() ] )
 			finally:
 				listener.unsetuid ()
-			need_to_reload_cups=1
+			need_to_reload_cups = True
 
 		#Modifications done via lpadmin
-		description=""
-		page_price=0
-		job_price=0
+		description = ""
+		page_price = 0
+		job_price = 0
 		aclUsers = []
 		aclGroups = []
-		
+
 		args = [] # lpadmin args
 
-		if new.has_key('univentionPrinterSambaName'):
-			description=new['univentionPrinterSambaName'][0]
-		if new.has_key('univentionPrinterPricePerPage'):
-			page_price=new['univentionPrinterPricePerPage'][0]
-		if new.has_key('univentionPrinterPricePerJob'):
-			job_price=new['univentionPrinterPricePerJob'][0]
+		if new.get('univentionPrinterSambaName'):
+			description = new['univentionPrinterSambaName'][0]
+		if new.get('univentionPrinterPricePerPage'):
+			page_price = new['univentionPrinterPricePerPage'][0]
+		if new.get('univentionPrinterPricePerJob'):
+			job_price = new['univentionPrinterPricePerJob'][0]
 
-		if new.has_key('univentionPrinterACLtype'):
+		if new.get('univentionPrinterACLtype'):
 			if new['univentionPrinterACLtype'][0] == 'allow all':
-				args+=['-u', 'allow:all', '-o', 'auth-info-required=none']
-			elif (new.has_key('univentionPrinterACLUsers') and len(new['univentionPrinterACLUsers']) > 0) or (new.has_key('univentionPrinterACLGroups') and len(new['univentionPrinterACLGroups']) > 0):
+				args += ['-u', 'allow:all', '-o', 'auth-info-required=none']
+			elif new.get('univentionPrinterACLUsers') or new.get('univentionPrinterACLGroups'):
 				args.append('-u')
 				argument = "%s:" % new['univentionPrinterACLtype'][0]
-				if new.has_key('univentionPrinterACLUsers'):
-					for userDn in new['univentionPrinterACLUsers']:
-						argument += '%s,' % userDn[userDn.find('=')+1:userDn.find(',')]
-				if new.has_key('univentionPrinterACLGroups'):
-					for groupDn in new['univentionPrinterACLGroups']:
-						argument += '@%s,' % groupDn[groupDn.find('=')+1:groupDn.find(',')]
+				for userDn in new.get('univentionPrinterACLUsers', ()):
+					argument += '%s,' % userDn[userDn.find('=')+1:userDn.find(',')]
+				for groupDn in new.get('univentionPrinterACLGroups', ()):
+					argument += '@%s,' % groupDn[groupDn.find('=')+1:groupDn.find(',')]
 				args.append(argument[:-1])
 		else:
-			args+=['-o', 'auth-info-required=none']
+			args += ['-o', 'auth-info-required=none']
 
 		# Add/Modify Printergroup
 		if printer_is_group:
@@ -250,24 +248,24 @@ def handler(dn, new, old):
 
 
 			else: # Create new group
-				add=new['univentionPrinterGroupMember']
+				add = new['univentionPrinterGroupMember']
 
-			if new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0] == "1":
-				pkprinters(["--add","-D","%s"%description,"--charge","%s,%s"%(page_price,job_price), new['cn'][0]])
+			if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
+				pkprinters(["--add", "-D", "%s" % description, "--charge", "%s,%s" % (page_price, job_price), new['cn'][0]])
 				for member in new['univentionPrinterGroupMember']:
-					pkprinters([ "--groups",new['cn'][0],member])
-			elif new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0] == "0" and old:
+					pkprinters([ "--groups", new['cn'][0],member])
+			elif new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "0" and old:
 				for member in old['univentionPrinterGroupMember']:
 					pkprinters(['--groups', old['cn'][0], '--remove', member])
 
 			for add_member in add: # Add Members
-				args+=['-p', add_member, '-c', new['cn'][0]]
-				if new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0] == "1":
-					pkprinters([ "--groups",new['cn'][0],add_member])
+				args += ['-p', add_member, '-c', new['cn'][0]]
+				if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
+					pkprinters([ "--groups", new['cn'][0], add_member])
 			if old: # Remove Members
 				for rem_member in rem:
-					args+=['-p', rem_member, '-r', new['cn'][0]]
-					pkprinters([ "--groups",new['cn'][0],"--remove",rem_member])
+					args += ['-p', rem_member, '-r', new['cn'][0]]
+					pkprinters(["--groups", new['cn'][0], "--remove", rem_member])
 
 			lpadmin(args)
 		# Add/Modify Printer
@@ -277,9 +275,9 @@ def handler(dn, new, old):
 			args.append(new['cn'][0])
 			for a in changes:
 				if a == 'univentionPrinterQuotaSupport':
-					if new.has_key('univentionPrinterQuotaSupport'):
-						if new['univentionPrinterQuotaSupport'][0]=='1':
-							pkprinters(["--add","-D","\"%s\""%description,"--charge","%s,%s"%(page_price,job_price), new['cn'][0]])
+					if new.get('univentionPrinterQuotaSupport'):
+						if new['univentionPrinterQuotaSupport'][0] == '1':
+							pkprinters(["--add", "-D", "\"%s\"" % description, "--charge", "%s,%s" % (page_price, job_price), new['cn'][0]])
 						else:
 							pkprinters(['--delete', new['cn'][0]])
 
@@ -287,68 +285,67 @@ def handler(dn, new, old):
 					continue
 
 				if a == 'univentionPrinterSpoolHost' and not 'univentionPrinterModel' in changes:
-					if new.get('univentionPrinterModel', [''])[0] == 'None':
+					if new.get('univentionPrinterModel', EMPTY)[0] == 'None':
 						continue
 
-					if new.get('univentionPrinterModel', [''])[0] == 'smb':
+					if new.get('univentionPrinterModel', EMPTY)[0] == 'smb':
 						continue
 
-					args+=[options['univentionPrinterModel'], new.get('univentionPrinterModel', [''])[0]]
+					args += [options['univentionPrinterModel'], new.get('univentionPrinterModel', EMPTY)[0]]
 
-				if not options.has_key(a):
+				if not a in options:
 					continue
 
 				if a == 'univentionPrinterModel':
-					if new.get(a, [''])[0] == 'None':
+					if new.get(a, EMPTY)[0] == 'None':
 						continue
 
-					if new.get(a, [''])[0] == 'smb':
+					if new.get(a, EMPTY)[0] == 'smb':
 						continue
 
-					args+=[options[a], new.get(a, [''])[0]]
+					args += [options[a], new.get(a, EMPTY)[0]]
 
 				else:
-					args+=[options[a], '%s' % new.get(a, [''])[0]]
+					args += [options[a], '%s' % new.get(a, EMPTY)[0]]
 
-			args+=[options['univentionPrinterURI'], modified_uri]
+			args += [options['univentionPrinterURI'], modified_uri]
 
-			args+=['-E']
+			args += ['-E']
 
 			# insert printer
 			lpadmin(args)
-			need_to_reload_samba = 1
+			need_to_reload_samba = True
 
 			#Modifications done via editing Samba config
 			printername = new['cn'][0]
-			if new.has_key('univentionPrinterSambaName') and new['univentionPrinterSambaName']:
+			if new.get('univentionPrinterSambaName'):
 				printername = new['univentionPrinterSambaName'][0]
 
 			filename = '/etc/samba/printers.conf.d/%s' % printername
 			listener.setuid(0)
 
-			if (new.has_key('univentionPrinterSambaName') and new['univentionPrinterSambaName']) or \
-			(new.has_key('univentionPrinterACLtype') and new['univentionPrinterACLtype'][0] == "allow") or \
-			(new.has_key('univentionPrinterACLtype') and new['univentionPrinterACLtype'][0] == "deny"):
+			if new.get('univentionPrinterSambaName') or \
+					new.get('univentionPrinterACLtype', EMPTY)[0] in ("allow", "deny"):
 
 				# samba permissions
 				perm = ""
-	
+
 				# users
-				if new.has_key('univentionPrinterACLUsers'):
-					for dn in new['univentionPrinterACLUsers']:
-						user = dn[dn.find('=')+1:dn.find(',')]
-						if " " in user: user = "\"" + user + "\""
-						perm = perm + " " + user
+				for dn in new.get('univentionPrinterACLUsers', ()):
+					user = dn[dn.find('=')+1:dn.find(',')]
+					if " " in user:
+						user = "\"" + user + "\""
+					perm = perm + " " + user
 				# groups
-				if new.has_key('univentionPrinterACLGroups'):
-					for dn in new['univentionPrinterACLGroups']:
-						group = "@" + dn[dn.find('=')+1:dn.find(',')]
-						if " " in group : group = "\"" + group + "\""
-						perm = perm + " " + group
-	
+				for dn in new.get('univentionPrinterACLGroups', ()):
+					group = "@" + dn[dn.find('=')+1:dn.find(',')]
+					if " " in group:
+						group = "\"" + group + "\""
+					perm = perm + " " + group
+
 				try:
 					fp = open(filename, 'w')
-	
+
 					print >>fp, '[%s]' % printername
 					print >>fp, 'printer name = %s' % new['cn'][0]
 					print >>fp, 'path = /tmp'
@@ -359,30 +356,30 @@ def handler(dn, new, old):
 							print >>fp, 'valid users = %s' % perm
 						if new['univentionPrinterACLtype'][0] == 'deny':
 							print >>fp, 'invalid users = %s' %perm
-	
-	
+
+
 					uid = 0
 					gid = 0
 					mode = '0755'
-	
+
 					os.chmod(filename,int(mode,0))
 					os.chown(filename,uid,gid)
 				finally:
 					listener.unsetuid()
 
-		if need_to_reload_cups == 1:
+		if need_to_reload_cups:
 			reload_daemon ('cups', 'cups-printers: ')
 
-		if need_to_reload_samba == 1:
+		if need_to_reload_samba:
 			reload_daemon ('samba', 'cups-printers: ')
 
 def reload_daemon(daemon, prefix):
 	script = os.path.join ('/etc/init.d', daemon)
 	if os.path.exists(script):
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s %s reload" % (prefix, daemon) )
+		ud.debug(ud.LISTENER, ud.INFO, "%s %s reload" % (prefix, daemon) )
 		listener.run(script, [daemon,'reload'], uid=0)
 	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s no %s to reload found" % (prefix, daemon) )
+		ud.debug(ud.LISTENER, ud.INFO, "%s no %s to reload found" % (prefix, daemon) )
 
 def initialize():
 	if not os.path.exists('/etc/samba/printers.conf.d'):
@@ -420,10 +417,10 @@ def postrun():
 		if run_ucs_commit:
 			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 		if os.path.exists('/etc/init.d/samba4'):
-			initscript='/etc/init.d/samba4'
+			initscript = '/etc/init.d/samba4'
 			os.spawnv(os.P_WAIT, initscript, ['samba4', 'reload'])
 		if os.path.exists('/etc/init.d/samba'):
-			initscript='/etc/init.d/samba'
+			initscript = '/etc/init.d/samba'
 			os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
 	finally:
 		listener.unsetuid()

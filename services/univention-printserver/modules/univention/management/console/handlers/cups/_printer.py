@@ -106,7 +106,7 @@ class Commands( object ):
 		self.finished( object.id(), ( printerdata, res_pykota ) )
 
 	def cups_quota_user_show( self, object ):
-		if object.options.has_key( 'printer' ) and object.options.has_key( 'user' ):
+		if object.options.get('printer') and object.options.get('user'):
 			cb = notifier.Callback( self._cups_quota_user_show_return, object )
 			pykota._pykota_get_quota_users( [ object.options[ 'printer' ] ], cb )
 		else:
@@ -119,10 +119,10 @@ class Commands( object ):
 					'softlimit': 0,
 					'hardlimit': 0 }
 
-		if object.options.has_key( 'printer' ):
+		if object.options.get('printer'):
 			quota['printer'] = object.options[ 'printer' ]
 
-		if object.options.has_key( 'printer' ) and object.options.has_key( 'user' ):
+		if object.options.get('printer') and object.options.get('user'):
 			quota['user'] = object.options[ 'user' ]
 
 			if res_pykota:

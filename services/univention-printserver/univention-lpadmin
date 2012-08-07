@@ -31,7 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, re
+import sys
+import re
 import pwd, os
 from pexpect import *
 import univention.config_registry
@@ -44,10 +45,10 @@ baseConfig.load()
 
 lpadminexec = '/usr/sbin/lpadmin'
 for path in [ '/usr/bin/enable', '/usr/sbin/cupsenable' ]:
-	if os.path.exists(path):	
+	if os.path.exists(path):
 		enableexec = path
 for path in [ '/usr/sbin/accept', '/usr/sbin/cupsaccept' ]:
-	if os.path.exists(path):	
+	if os.path.exists(path):
 		acceptexec = path
 
 # read machine password
@@ -74,14 +75,14 @@ while not i == 3:
 
 	if attempt > 3:
 		print 'Failed to create the printer with the following command: '
-		print '  %s %s' % (lpadminexec, string.join(args, ' '))
+		print '  %s %s' % (lpadminexec, ' '.join(args))
 		print 'Please check the machine account or the PAM configuration.'
 		sys.exit(1)
-		
+
 if child.isalive():
 	child.close()
 if child.exitstatus and child.exitstatus != 0:
-	print 'The command "%s %s" returned %d' % (lpadminexec, string.join(args, ' ') , child.exitstatus)
+	print 'The command "%s %s" returned %d' % (lpadminexec, ' '.join(args) , child.exitstatus)
 	sys.exit(child.exitstatus)
 
 if '-c' in args:
@@ -116,4 +117,3 @@ if '-c' in args:
 		sys.exit(child.exitstatus)
 
 sys.exit(0)
-

@@ -45,7 +45,7 @@ class Commands( object ):
 	def cups_job_cancel( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.job_cancel: options: %s' % \
 				  object.options )
-		if object.options.has_key( 'printer' ):
+		if object.options.get('printer'):
 			cmd = '/usr/bin/cancel -U %s\$ %s %s' % \
 				  ( umc.registry[ 'hostname' ], ' '.join( object.options[ 'jobs' ] ),
 					object.options[ 'printer' ] )

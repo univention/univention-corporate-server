@@ -45,14 +45,14 @@ def parse_lpstat_v( buffer, printers ):
 		matches = regex.match(line)
 		if matches:
 			items = matches.groupdict()
-			if printers.has_key( items['printer'] ):
+			if printers.get( items['printer'] ):
 				if items['device'].startswith('cupspykota:'):
 					printers[ items['printer'] ][ 'quotastate' ] = True
 				else:
 					printers[ items['printer'] ][ 'quotastate' ] = False
 
 	for key in printers.keys():
-		if not printers[key].has_key('quotastate'):
+		if not printers[key].get('quotastate'):
 			printers[key]['quotastate'] = _( 'inactive' )
 
 	return printers
@@ -86,7 +86,7 @@ def parse_lpstat_l( buffer, filter = '*', key = 'printer' ):
 	for printer, attrs in printers.items():
 		if key == 'printer' and not fnmatch( printer, filter ):
 			continue
-		elif attrs.has_key( key ) and not fnmatch( attrs[ key ], filter ):
+		elif attrs.get(key) and not fnmatch(attrs[key], filter):
 			continue
 		filtered[ printer ] = attrs
 	return filtered

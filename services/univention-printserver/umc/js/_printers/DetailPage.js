@@ -47,14 +47,14 @@ dojo.declare("umc.modules._printers.DetailPage",
 
 	i18nClass:              'umc.modules.printers',
 	_printer_id:			'',
-	
+
 	postMixInProperties: function() {
-		
+
 		dojo.mixin(this,{
 			helpText:		this._("You see the details of this printer and its print jobs. You can activate/deactivate the printer, edit its quota definitions if quota is enabled, and cancel print jobs."),
 			headerText:		this._("Printer details")
 		});
-		
+
 		this.inherited(arguments);
 	},
 
@@ -66,7 +66,7 @@ dojo.declare("umc.modules._printers.DetailPage",
         	title:				this._("Printer details")
         });
         this.addChild(pane);
-        
+
         var f_widgets = [
 			{
 				name:				'message',
@@ -75,12 +75,12 @@ dojo.declare("umc.modules._printers.DetailPage",
 				style:				'padding-bottom:.5em;'		// force bottom distance to the buttons
 			}
         ];
-        
+
         var f_layout = [
 	        [ 'message' ],
 	        [ 'activate', 'deactivate', 'editquota', 'submit' ]
         ];
-        
+
         var f_buttons = [
 			{
 				name:		'activate',
@@ -121,8 +121,8 @@ dojo.declare("umc.modules._printers.DetailPage",
 				label:		'nothing'
 			}
 		];
-        
-        // we make this a form so we can add buttons 
+
+        // we make this a form so we can add buttons
         this._head = new umc.widgets.Form({
         	region:			'top',
         	widgets:		f_widgets,
@@ -131,7 +131,7 @@ dojo.declare("umc.modules._printers.DetailPage",
         	onSubmit:		function() {}		// don't want to have any kind of submit here!
         });
         pane.addChild(this._head);
-        
+
         var columns = [
 		   {
 			   name:		'job',
@@ -150,7 +150,7 @@ dojo.declare("umc.modules._printers.DetailPage",
 			   label:		this._("Submitted at")
 		   }
         ];
-        
+
         var actions = [
 			{
 				name:				'cancel',
@@ -191,7 +191,7 @@ dojo.declare("umc.modules._printers.DetailPage",
 	        	})
 			}
         ];
-        
+
         this._grid = new umc.widgets.Grid({
         	region:			'center',
         	columns:		columns,
@@ -199,36 +199,36 @@ dojo.declare("umc.modules._printers.DetailPage",
         	moduleStore:	umc.store.getModuleStore('job','printers/jobs')
         });
         pane.addChild(this._grid);
-                
+
 	},
-    
+
 	// Overview page passes args here. Arg is here the printer ID.
 	setArgs: function(args) {
-		
-		this._printer_id = args;				
+
+		this._printer_id = args;
 		this._refresh_view();
 	},
-	
+
 	// no matter where we came from: if the page is to be shown we
 	// have to refresh all data elements.
 	onShow: function() {
 		this._refresh_view();
 	},
-	
+
 	// called when the page is shown, but can equally be called
 	// on a manual or automatic refresh.
 	_refresh_view: function() {
-		
+
 		// if the function is called before setArgs has given us a valid printer name
 		// then we should simply do nothing.
 		if (! this._printer_id)
 		{
 			return;
 		}
-		
+
 		umc.tools.umcpCommand('printers/get',{printer:this._printer_id}).then(
 			dojo.hitch(this, function(data) {
-				
+
 				// Yes I know, I should have this done by the layout capabilities of
 				// the Form class... but given the fact that this is only an informative
 				// overview message I've decided to wrap it into a single 'Text' element,
@@ -238,7 +238,7 @@ dojo.declare("umc.modules._printers.DetailPage",
 				var st_h = 'font-size:115%;text-decoration:underline;';	// header line
 				var st_l = 'text-align:right;padding-left:1em;';		// left column
 				var st_r = 'padding-left:.5em;';						// right column
-				
+
 				// status text must be translated in our official wording...
 				var status = this._("unknown");
 				switch(res['status'])
@@ -246,7 +246,7 @@ dojo.declare("umc.modules._printers.DetailPage",
 					case 'enabled': status = this._("active"); break;
 					case 'disabled':status = this._("inactive"); break;
 				}
-				
+
 				var txt = "<p style='" + st_h + "'>" + dojo.replace(this._("Details for printer <b>{printer}</b>"),res) + '</p>';
 				txt += "<table>\n";
 				txt += "<tr><td style='" + st_l + "'>" + this._("Server")		+ ":</td><td style='" + st_r + "'>" + res['server']			+ "</td></tr>\n";
@@ -259,29 +259,29 @@ dojo.declare("umc.modules._printers.DetailPage",
 				txt += "<tr><td style='" + st_l + "'>" + this._("Location")		+ ":</td><td style='" + st_r + "'>" + res['location']		+ "</td></tr>\n";
 				txt += "<tr><td style='" + st_l + "'>" + this._("Description")	+ ":</td><td style='" + st_r + "'>" + res['description']	+ "</td></tr>\n";
 				txt += "</table>\n";
-				
+
 				this._head.getWidget('message').set('content',txt);
-				
+
 				// show/hide corresponding buttons
-				
+
 				this._show_button('activate',res['status'] == 'disabled');
 				this._show_button('deactivate',res['status'] == 'enabled');
 				this._show_button('editquota',res['quota']);
 				this._show_button('submit',false);			// always invisible.
-				
+
 				this.layout();		// whenever you change a non-center region of a BorderLayout...
 			}),
 			dojo.hitch(this, function(data) {
 				this._grid.filter();		// clears stale grid data
 			})
 		);
-		
+
 		// read job list
 		this._grid.filter({printer:this._printer_id});
 	},
-	
+
 	_show_button: function(button,on) {
-		
+
 		try
 		{
 			dojo.toggleClass(this._head._buttons[button].domNode,'dijitHidden',!on);
@@ -291,9 +291,9 @@ dojo.declare("umc.modules._printers.DetailPage",
 			console.error("show_button(" + button + "," + on + "): " + ex.message);
 		}
 	},
-	
+
     _manage_callback: function(success,message) {
-    	
+
     	if (success)
     	{
     		this._refresh_view();
@@ -303,12 +303,12 @@ dojo.declare("umc.modules._printers.DetailPage",
     		umc.dialog.alert(message);
     	}
     },
-    
+
 	// main module listens here, to carry out direct printer
 	// management functions.
 	managePrinter: function(printer,func,arg) {
 	},
-	
+
     // main module listens here to return to the overview.
 	// args are passed back to the Overview page.
     closeDetail: function(args) {
@@ -316,10 +316,10 @@ dojo.declare("umc.modules._printers.DetailPage",
 		this._head.getWidget('message').set('content','<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;');		// six empty lines
 		this._grid.filter();
     },
-    
+
     // main module listens here to open the quota page.
     editQuota: function(args) {
     }
 
-    
+
 });

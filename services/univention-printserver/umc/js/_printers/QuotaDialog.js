@@ -46,11 +46,11 @@ dojo.declare("umc.modules._printers.QuotaDialog",
 ], {
 
 	i18nClass:              'umc.modules.printers',
-	
+
     buildRendering: function() {
 
         this.inherited(arguments);
-        
+
         var buttons = [
 	    	{
 	    		name:			'submit',
@@ -69,7 +69,7 @@ dojo.declare("umc.modules._printers.QuotaDialog",
 	    		})
 	    	}
     	];
-        
+
         var widgets = [
 			{
 				name:				'printer',
@@ -99,7 +99,7 @@ dojo.declare("umc.modules._printers.QuotaDialog",
 				label:				this._("Hard limit")
 			}
 		];
-        
+
         var layout = [
 			[ 'printer' ],
 			[ 'user' ],
@@ -119,29 +119,29 @@ dojo.declare("umc.modules._printers.QuotaDialog",
         	})
         });
         this.set('content',this._form);
-        
+
         dojo.connect(this._form,'onCancel',dojo.hitch(this,function() {
         	this.onCancel();
         }));
-        
+
         // check 'submit' allowance on every field change
         umc.tools.forIn(this._form._widgets, function(wname, wobj) {
 			dojo.connect(wobj,'onChange',dojo.hitch(this, function() {
 				this._check_valid(wname);
 			}));
 		}, this);
-        
+
     },
-    
+
     // checks that all dialog elements are valid, allows
     // or forbids the 'submit' button.
     _check_valid: function(title) {
-    	
+
     	var allow = true;
     	for (var w in this._form._widgets)
     	{
     		var wid = this._form._widgets[w];
-    		
+
     		if (! wid.isValid())
     		{
     			allow = false;
@@ -149,12 +149,12 @@ dojo.declare("umc.modules._printers.QuotaDialog",
     		}
     	}
     	this._form._buttons['submit'].setDisabled(! allow);
-    	    	
+
     	return allow;
     },
-    
+
     onShow: function() {
-    	
+
     	this.inherited(arguments);
 
     	// reset all error indicators
@@ -166,7 +166,7 @@ dojo.declare("umc.modules._printers.QuotaDialog",
     	// allow/forbid SUBMIT according to current form contents
     	this._check_valid();
     },
-    
+
     // will be called from QuotaPage just before showing
     // the dialog. the 'values' are now composed from
     // different things:
@@ -176,11 +176,11 @@ dojo.declare("umc.modules._printers.QuotaDialog",
     //	(3)	the list of users to show in the ComboBox
     //
 	setValues: function(values) {
-		
+
 		// for 'add quota entry': set a list of users, excluding those
 		// that already have a quota entry
 		var userlist = [];
-		
+
 		if (values['users'])
 		{
 			for (var u in values['users'])
@@ -195,7 +195,7 @@ dojo.declare("umc.modules._printers.QuotaDialog",
 		// catch the case where we have an entry for a user that doesn't exist
 		// anymore.
 		var disabled = false;
-		
+
 		if (values['user'])
 		{
 			this._work_mode = 'edit';
@@ -210,20 +210,20 @@ dojo.declare("umc.modules._printers.QuotaDialog",
 		}
 		this._form.getWidget('user').set('staticValues',userlist);
     	this._form.getWidget('user').setDisabled(disabled);
-		
+
 		if (values['title'])
 		{
 			this.set('title',values['title']);
 		}
-		
+
 		this._form.setFormValues(values);
 	},
-	
+
 	// event stubs for our caller
-	onSubmit: function(values) {		
+	onSubmit: function(values) {
 		this.hide();
 	},
-	
+
 	onCancel: function() {
 		this.hide();
 	}

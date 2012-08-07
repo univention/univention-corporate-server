@@ -32,8 +32,7 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os, string
-import univention.debug
+import univention.debug as ud
 import univention.config_registry
 
 name='cups-pdf'
@@ -46,15 +45,14 @@ sharename="pdfPrinterShare"
 # the pdf pseudo printer is changed
 def handler(dn, new, old):
 
-	if new.has_key('cn') and new['cn'][0] == sharename:
-
-		if new.has_key('univentionSharePath') and new.has_key('univentionShareHost'):
+	if new.get('cn', ('',))[0] == sharename:
+		if new.get('univentionSharePath') and new.get('univentionShareHost'):
 			path = new['univentionSharePath'][0]
 			server = new['univentionShareHost'][0]
 			me = listener.baseConfig.get('hostname') + "." + listener.baseConfig.get('domainname')
 
 			if me == server:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "cups-pdf: setting cups-pdf path to %s according to sharepath in %s on %s" % (path, sharename, server))
+				ud.debug(ud.LISTENER, ud.INFO, "cups-pdf: setting cups-pdf path to %s according to sharepath in %s on %s" % (path, sharename, server))
 				list = []
 				list.append('cups/cups-pdf/directory=%s' % (path))
 				list.append('cups/cups-pdf/anonymous=%s' % (path))

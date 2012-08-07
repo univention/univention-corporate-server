@@ -31,18 +31,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, copy
+import re
+import copy
 import notifier.popen
 import univention.debug as ud
 import univention.management.console as umc
 
 _ = umc.Translation( 'univention.management.console.handlers.cups' ).translate
 
+RE_PRINTERNAME = re.compile('.*?on printer (?P<printername>.*?) \(.*?\)')
+RE_GRACETIME = re.compile('^Pages grace time: (?P<gracetime>[0-9]+ days)')
+RE_JOBPRICE = re.compile('^Price per job: (?P<jobprice>[.0-9]+)')
+RE_PAGEPRICE = re.compile('^Price per page: (?P<pageprice>[.0-9]+)')
+RE_USERQUOTA = re.compile('^(?P<user>[^ ]+) +[+-Q]+ +(?P<overcharge>[.0-9]+) +(?P<pagecounter>[0-9]+) +(?P<softlimit>([0-9]+|None)) +(?P<hardlimit>([0-9]+|None)) +(?P<balance>[.0-9]+) +(?P<datelimit>[\S]+)? +(?P<lifetimepagecounter>[0-9]+) +(?P<lifetimepaid>[.0-9]+) +(?P<warncount>[0-9]+)')
+RE_TOTAL = re.compile('^ *Total : *(?P<totalpages>[0-9]+) *(?P<totalpaid>[.0-9]+) *')
+RE_REAL = re.compile('^ *Real : *(?P<realpages>([0-9]+|unknown))')
+
+
 class PrinterQuotaUser( object ):
 	def __init__( self, data ):
 		datacopy = copy.deepcopy(data)
-		for key in [ 'user', 'overcharge', 'pagecounter', 'softlimit', 'hardlimit', 'balance', 'datelimit', 'lifetimepagecounter', 'lifetimepaid', 'warncounter' ]:
-			if datacopy.has_key(key):
+		for key in ['user', 'overcharge', 'pagecounter', 'softlimit', 'hardlimit', 'balance', 'datelimit', 'lifetimepagecounter', 'lifetimepaid', 'warncounter']:
+			if key in datacopy:
 				self.__dict__[key] = datacopy[key]
 			else:
 				self.__dict__[key] = ''
@@ -50,8 +60,8 @@ class PrinterQuotaUser( object ):
 class PrinterQuotaStatus( object ):
 	def __init__( self, data ):
 		datacopy = copy.deepcopy(data)
-		for key in [ 'printername', 'gracetime', 'jobprice', 'pageprice', 'totalpages', 'totalpaid', 'realpages', 'userlist', 'grouplist' ]:
-			if datacopy.has_key(key):
+		for key in ['printername', 'gracetime', 'jobprice', 'pageprice', 'totalpages', 'totalpaid', 'realpages', 'userlist', 'grouplist']:
+			if key in datacopy:
 				self.__dict__[key] = datacopy[key]
 			else:
 				self.__dict__[key] = ''
@@ -72,40 +82,31 @@ def _pykota_get_quota_users( printernamelist, callback ):
 def _pykota_get_quota_users_return( pid, status, buffer, callback ):
 	result = []
 
-	re_printername = re.compile( '.*?on printer (?P<printername>.*?) \(.*?\)' )
-	re_gracetime = re.compile( '^Pages grace time: (?P<gracetime>[0-9]+ days)' )
-	re_jobprice = re.compile( '^Price per job: (?P<jobprice>[.0-9]+)' )
-	re_pageprice = re.compile( '^Price per page: (?P<pageprice>[.0-9]+)' )
-	re_userquota = re.compile( '^(?P<user>[^ ]+) +[+-Q]+ +(?P<overcharge>[.0-9]+) +(?P<pagecounter>[0-9]+) +(?P<softlimit>([0-9]+|None)) +(?P<hardlimit>([0-9]+|None)) +(?P<balance>[.0-9]+) +(?P<datelimit>[\S]+)? +(?P<lifetimepagecounter>[0-9]+) +(?P<lifetimepaid>[.0-9]+) +(?P<warncount>[0-9]+)' )
-	re_total = re.compile( '^ *Total : *(?P<totalpages>[0-9]+) *(?P<totalpaid>[.0-9]+) *' )
-	re_real = re.compile( '^ *Real : *(?P<realpages>([0-9]+|unknown))' )
-
 	usrinfo = []
 	prninfo = { }
 
 	for line in buffer:
 		if len(line) == 0:
-			if prninfo.has_key('printername'):
+			if prninfo.get('printername'):
 				prninfo['userlist'] = usrinfo
 				result.append( PrinterQuotaStatus( prninfo ) )
 				usrinfo = []
 				prninfo = { }
 
 		# match user quota regex
-		matches = re_userquota.match(line)
+		matches = RE_USERQUOTA.match(line)
 		if matches:
 			grps = matches.groupdict()
 			usrinfo.append( PrinterQuotaUser(grps) )
 			continue
 
 		# match other regex
-		for regex in [ re_printername, re_gracetime, re_jobprice, re_pageprice, re_total, re_real ]:
+		for regex in [ RE_PRINTERNAME, RE_GRACETIME, RE_JOBPRICE, RE_PAGEPRICE, RE_TOTAL, RE_REAL ]:
 			matches = regex.match(line)
 			if matches:
 				for key in matches.groupdict().keys():
 					prninfo[key] = matches.groupdict()[key]
 					continue
-
 
 	callback( status, result )
 
@@ -128,28 +129,28 @@ def _pykota_set_quota( callback, **kwargs ):
 
 	# check for boolean arguments
 	for arg in [ 'add', 'delete', 'reset', 'hardreset' ]:
-		if kwargs.has_key( arg ) and kwargs[ arg ] == True:
+		if kwargs.get(arg) == True:
 			cmd += '--%s ' % arg
 
-	if kwargs.has_key('printers') and kwargs['printers']:
+	if kwargs.get('printers'):
 		cmd += '--printer %s ' % ','.join(kwargs['printers'])
 
-	if kwargs.has_key('softlimit') and kwargs['softlimit']:
+	if kwargs.get('softlimit'):
 		cmd += '-S %s ' % kwargs['softlimit']
 
-	if kwargs.has_key('hardlimit') and kwargs['hardlimit']:
+	if kwargs.get('hardlimit'):
 		cmd += '-H %s ' % kwargs['hardlimit']
 
-	if kwargs.has_key('lifetimecounter') and kwargs['lifetimecounter']:
+	if kwargs.get('lifetimecounter'):
 		cmd += '--used %s ' % kwargs['lifetimecounter']
 
-	if kwargs.has_key('balance') and kwargs['balance']:
+	if kwargs.get('balance'):
 		cmd += '--balance %s ' % str(kwargs['balance'])
 
-	if kwargs.has_key('balance') and kwargs['balance']:
+	if kwargs.get('balance'):
 		cmd += '--overcharge %s ' % str(kwargs['balance'])
 
-	if kwargs.has_key('userlist') and kwargs['userlist']:
+	if kwargs.get('userlist'):
 		cmd += ' %s ' % ' '.join(kwargs['userlist'])
 
 	ud.debug( ud.ADMIN, ud.PROCESS, 'run: %s' % cmd )

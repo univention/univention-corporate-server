@@ -28,7 +28,7 @@
  */
 /*global console MyError dojo dojox dijit umc window */
 
-dojo.provide("umc.modules.printers"); 
+dojo.provide("umc.modules.printers");
 
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
@@ -47,13 +47,13 @@ dojo.declare("umc.modules.printers", [
 {
 
 	i18nClass: 			'umc.modules.printers',
-	
+
 	_quota_from_page:	'',			// remembers the page from which the 'editQuota' was called
-	
+
 	buildRendering: function() {
 
 		this.inherited(arguments);
-		
+
 		this._pages = {
 			'overview':		new umc.modules._printers.OverviewPage(),
 			'detail':		new umc.modules._printers.DetailPage(),
@@ -70,27 +70,27 @@ dojo.declare("umc.modules.printers", [
 		dojo.connect(this._pages['overview'],'openDetail',dojo.hitch(this,function(args) {
 			this._switch_page('detail',args);
 		}));
-		
+
 		dojo.connect(this._pages['overview'],'editQuota',dojo.hitch(this, function(args) {
 			this._quota_from_page = 'overview';
 			this._switch_page('quota',args);
 		}));
-		
+
 		dojo.connect(this._pages['detail'],'editQuota',dojo.hitch(this, function(args) {
 			this._quota_from_page = 'detail';
 			this._switch_page('quota',args);
 		}));
-		
+
 		dojo.connect(this._pages['detail'],'closeDetail',dojo.hitch(this, function(args) {
 			this._switch_page('overview',args);
 		}));
-		
+
 		dojo.connect(this._pages['quota'],'closeQuota',dojo.hitch(this, function(args) {
 			this._switch_page(this._quota_from_page,args);
 		}));
-		
+
 		// ------------- work events: printer management ---------------
-		
+
 		dojo.connect(this._pages['overview'],'managePrinter',dojo.hitch(this, function(printer,func,callback) {
 			this._manage_printer(printer,func,callback);
 		}));
@@ -98,29 +98,29 @@ dojo.declare("umc.modules.printers", [
 			this._manage_printer(printer,func,callback);
 		}));
  	},
- 	
+
  	startup: function() {
- 		
+
  		this.inherited(arguments);
- 		
+
  		this._switch_page('overview');
  	},
- 	
+
  	_switch_page: function(name, args) {
- 		
+
  		if ((args) && (typeof (this._pages[name].setArgs) == 'function'))
 		{
 			this._pages[name].setArgs(args);
 		}
- 		
+
  		this.selectChild(this._pages[name]);
- 		
+
  	},
- 	
+
  	// Most management functions can be called from overview or detail view, so we write
  	// the functions here.
  	_manage_printer: function(printer,func,callback) {
- 		
+
  		var cmd = '';
  		var args = {};
  		switch(func)
@@ -153,5 +153,5 @@ dojo.declare("umc.modules.printers", [
  			);
  		}
  	}
-	
+
 });
