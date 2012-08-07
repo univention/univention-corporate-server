@@ -1,0 +1,44 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Checking domain join and ntlm authentication"
+## exposure: safe
+## packages:
+##  - winbind
+##  - univention-config
+##  - univention-directory-manager-tools
+##  - univention-samba
+## roles-not: [basesystem]
+## tags: [basic]
+## join: true
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+
+username=`user_randomname`
+password=univention
+
+# delete user
+trap "user_remove $username" INT TERM EXIT
+
+# create samba domain admin
+
+univention-directory-manager users/user create --option posix --option samba \
+	--set "primaryGroup=cn=Domain Admins,cn=groups,$ldap_base" \
+	--set "unixhome=/tmp" \
+	--set "password=$password" \
+	--set "lastname=$username" \
+	--set "username=$username" \
+	--position "cn=users,$ldap_base" || fail_fast 1 "could not create domain admin"
+
+
+# domain join
+net join "$windows_domain" -U"$username%$password" || fail_fast 1 "could not join into windows domain"
+
+# start/restart winbind
+/etc/init.d/winbind restart || fail_fast 1 "could not restart winbind"
+
+# ntml auth
+ntlm_auth --domain="$windows_domain" --"username=$username" --"password=${password}2" && fail_fast 1 "ntlm_auth was sucessful with an wrong password"
+ntlm_auth --domain="$windows_domain" --"username=${username}2" --"password=${password}" && fail_fast 1 "ntlm_auth was sucessful with an wrong username"
+ntlm_auth --domain="$windows_domain" --"username=$username" --"password=$password" || fail_fast 1 "ntlm_auth failed"
+
+exit 0

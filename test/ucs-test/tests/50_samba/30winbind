@@ -1,0 +1,48 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Winbind Test"
+## exposure: safe
+## packages:
+##  - winbind
+## roles-not: [basesystem]
+## tags: [basic]
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+
+SAMBA="true"
+MAIL="false"
+KERBEROS="false"
+PERSON="false"
+POSIX="true"
+
+NAME=`user_randomname`
+trap "user_remove $Name" INT TERM EXIT
+user_create $NAME
+
+wbinfo -t || \
+	{ fail_fast 1 "Checking shared secret failed"; }
+
+wbinfo --ping || \
+	{ fail_fast 1 "failed to ping the winbind-daemon"; }
+
+wbinfo --ping-dc || \
+	{ fail_fast 1 "No connection to NETLOGON"; }
+
+wbinfo --krb5auth=$NAME%univention || \
+	{ fail_fast 1 "failed to authenticate testuser"; }
+
+wbinfo -a "$(wbinfo -s $(wbinfo -U $(wbinfo -S $(wbinfo -n $NAME | cut -d' '  -f1) | cut -d' ' -f1)  | cut -d' ' -f1) | cut -d' '  -f1)%univention" || \
+	{ fail_fast 1 "User authentification failed"; }
+
+for i in $(wbinfo --trusted-domains);
+	do wbinfo -D $i || \
+		{ fail_fast 1 "Failed to look up domaininfo"; };
+done
+
+for groupsid in $(wbinfo --user-domgroups=$(wbinfo -n $NAME | cut -d' ' -f1));
+do
+	wbinfo -Y $(wbinfo -n "$(wbinfo -s $(wbinfo -G $(wbinfo -Y $groupsid) ) | sed 's/ [0-9]*$//')" | cut -d' '  -f1 ) || \
+		{ fail_fast 1 "Group lookup failed"; };
+done
+
+exit 0

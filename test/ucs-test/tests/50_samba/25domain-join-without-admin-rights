@@ -1,0 +1,40 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Join a domain without admin rights"
+## exposure: safe
+## packages:
+##  - univention-samba
+## roles: [domaincontroller_master, domaincontroller_slave]
+## tags: [basic]
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+
+if ! current_ucs_version_greater_equal 2.3; then
+	exit 131
+fi
+
+SAMBA="true"
+MAIL="false"
+KERBEROS="false"
+PERSON="false"
+POSIX="true"
+if [ "$(ucr get server/role)" == "domaincontroller_slave" ] && [ "$(ucr get samba/domainmaster)" == "" ]
+then
+	exit 134
+fi
+NAME=`user_randomname`
+trap "user_remove $NAME" INT TERM EXIT
+user_create $NAME
+
+net rpc join -U $NAME%univention && \
+	{ fail_fast 1 "Did a Domain join without the SeMachineAccountPrivilege"; }
+
+net rpc rights grant -U Administrator%univention $NAME SeMachineAccountPrivilege || \
+	{ fail_fast 1 "Couldn't assign SeMachineAccountPrivilege to the user"; }
+
+for i in {0..10}
+do
+	net rpc join -U $NAME%univention || \
+	{ fail_fast 1 "Domain join failed"; }
+done
+
+exit 0

@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Display samba Groups as normal user"
+## exposure: safe
+## packages:
+##  - univention-samba
+## roles-not: [basesystem]
+## tags: [basic]
+
+. "$TESTLIBPATH/user.sh" || exit 137
+
+SAMBA="true"
+MAIL="false"
+KERBEROS="false"
+PERSON="false"
+POSIX="false"
+
+
+NAME=`user_randomname`
+
+trap "user_remove $NAME" INT TERM EXIT
+user_create "$NAME"
+
+sleep 20 # wait for replication
+
+if [ -z "`net rpc group -U $NAME%univention | grep \"Domain Users\"`" ]
+then
+	fail_fast 1 "The test trying to display samba-Groups as a user failed"
+else
+	echo "***The test trying to display samba-Groups as a user went like it should, everything is ok"
+fi	
+
+
+exit $RETVAL
