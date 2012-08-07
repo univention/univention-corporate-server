@@ -78,7 +78,7 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.objectNamePlural = objNames[this.moduleFlavor][1];
 
 		// create the module store
-		this.moduleStore = umc.store.getModuleStore(this.idProperty, 'luga/'+this.moduleFlavor, this.moduleFlavor);
+		this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleFlavor, this.moduleFlavor);
 
 		// Set the opacity for the standby animation to 100% in order to mask
 		// GUI changes when the module is opened. Call this.standby(true|false)

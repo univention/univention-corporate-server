@@ -452,8 +452,8 @@ class Users:
 				cmd.append(self.sanitize_arg(username))
 				returncode = self.process(cmd)
 				if 0 != returncode:
-					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
-					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
+					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode))
+					error = errors.get( returncode, _('unknown error with statuscode %d occurred') % (returncode) )
 					raise ValueError( error )
 
 				# Change Password + options
