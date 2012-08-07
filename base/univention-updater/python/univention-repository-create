@@ -164,9 +164,13 @@ def mount( options ):
 		sys.stdin.readline()
 	if options.mount:
 		print "Mounting %s ..." % options.mount_point,
+		if options.iso:
+			cmd = ('mount', '-o', 'loop,ro', options.iso, options.mount_point)
+		else:
+			cmd = ('mount', '-o', 'ro', options.mount_point)
 		devnull = open( os.path.devnull, 'w' )
 		try:
-			ret = subprocess.call(('mount', options.mount_point), stdout=devnull, stderr=subprocess.STDOUT)
+			ret = subprocess.call(cmd, stdout=devnull, stderr=subprocess.STDOUT)
 		finally:
 			devnull.close()
 		# if exit code is 0 or 32 (already mounted)
@@ -223,11 +227,13 @@ if __name__ == '__main__':
 	parser.add_option( '-m', '--mount-point', action = 'store',
 					   dest = 'mount_point', default = '/cdrom',
 					   help = 'devices mount point for CD-ROM drive' )
++	parser.add_option('-i', '--iso', action='store', dest='iso',
++	                  default=None, help='define filename of an ISO image')
 
 	( options, arguments ) = parser.parse_args()
 
 	if options.silent:
-		sys.stdout = open( '/dev/null', 'w' )
++		sys.stdout = open(os.path.devnull, 'w')
 
 	try:
 		lock = univention.updater.tools.updater_lock_acquire()
