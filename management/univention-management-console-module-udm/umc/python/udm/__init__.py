@@ -43,7 +43,8 @@ import traceback
 
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing
+from univention.management.console.modules.decorators import simple_response
 from univention.management.console.log import MODULE
 
 import univention.admin.modules as udm_modules
@@ -79,7 +80,22 @@ class Instance( Base ):
 			self.reports_cfg = udr.Config()
 			self.modules_with_childs = container_modules()
 
-	def _get_module( self, request, object_type = None ):
+	def _get_module( self, object_type, flavor=None ):
+		"""Tries to determine to UDM module to use. If no specific
+		object type is given or is 'all', the request
+		flavor is chosen. Failing all this will raise in
+		UMC_OptionMissing exception. On success a UMC_Module object is
+		returned."""
+		module_name = object_type
+		if not module_name or 'all' == module_name:
+			module_name = flavor
+
+		if not module_name:
+			raise UMC_OptionMissing( _( 'No flavor or valid UDM module name specified' ) )
+
+		return UDM_Module( module_name )
+
+	def _get_module_by_request( self, request, object_type = None ):
 		"""Tries to determine to UDM module to use. If no specific
 		object type is given the request option 'objectType' is used. In
 		case none if this leads to a valid object type the request
@@ -87,16 +103,8 @@ class Instance( Base ):
 		UMC_OptionMissing exception. On success a UMC_Module object is
 		returned."""
 		if object_type is None:
-			module_name = request.options.get( 'objectType' )
-		else:
-			module_name = object_type
-		if not module_name or 'all' == module_name:
-			module_name = request.flavor
-
-		if not module_name:
-			raise UMC_OptionMissing( _( 'No flavor or valid UDM module name specified' ) )
-
-		return UDM_Module( module_name )
+			object_type = request.options.get( 'objectType' )
+		return self._get_module(object_type, request.flavor)
 
 	def _check_thread_error( self, thread, result, request ):
 		"""Checks if the thread returned an exception. In that case in
@@ -260,7 +268,7 @@ class Instance( Base ):
 				options = obj.get( 'options', {} )
 				properties = obj.get( 'object', {} )
 
-				module = self._get_module( request, object_type = options.get( 'objectType' ) )
+				module = self._get_module_by_request( request, object_type = options.get( 'objectType' ) )
 				if '$labelObjectType$' in properties:
 					del properties[ '$labelObjectType$' ]
 				try:
@@ -400,7 +408,7 @@ class Instance( Base ):
 		"""
 
 		def _thread( request ):
-			module = self._get_module( request )
+			module = self._get_module_by_request( request )
 
 			superordinate = request.options.get( 'superordinate' )
 			if superordinate == 'None':
@@ -467,7 +475,7 @@ class Instance( Base ):
 			udr.admin.connect( access = ldap_connection )
 			udr.admin.clear_cache()
 			cfg = udr.Config()
-			module = self._get_module( request )
+			module = self._get_module_by_request( request )
 			template = cfg.get_report( request.flavor, request.options[ 'report' ] )
 			doc = udr.Document( template, header = cfg.get_header( request.flavor, request.options[ 'report' ] ), footer = cfg.get_footer( request.flavor, request.options[ 'report' ] ) )
 			tmpfile = doc.create_source( request.options[ 'objects' ] )
@@ -512,7 +520,7 @@ class Instance( Base ):
 
 		return: <value>
 		"""
-		module = self._get_module( request )
+		module = self._get_module_by_request( request )
 		property_name = request.options.get( 'objectProperty' )
 		if property_name == 'None':
 			result = None
@@ -531,7 +539,7 @@ class Instance( Base ):
 		return: {}
 		"""
 		self.required_options( request, 'networkDN' )
-		module = self._get_module( None, object_type = 'networks/network' )
+		module = self._get_module( 'networks/network' )
 		obj = module.get( request.options[ 'networkDN' ] )
 
 		if not obj:
@@ -545,7 +553,8 @@ class Instance( Base ):
 			obj.stepIp()
 			obj.modify()
 
-	def containers( self, request ):
+	@simple_response(with_flavor=True)
+	def containers( self, flavor, objectType=None ):
 		"""Returns the list of default containers for the given object
 		type. Therefor the python module and the default object in the
 		LDAP directory are searched.
@@ -555,12 +564,15 @@ class Instance( Base ):
 
 		return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
 		"""
-		module = self._get_module( request )
+		module = self._get_module( objectType, flavor )
+
+		containers = module.containers
 
 		if self.settings is not None:
-			self.finished( request.id, module.containers + self.settings.containers( request.flavor ) )
-		else:
-			self.finished( request.id, module.containers )
+			containers += self.settings.containers( flavor )
+
+		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
+		return containers
 
 	def superordinates( self, request ):
 		"""Returns the list of superordinate containers for the given
@@ -571,7 +583,7 @@ class Instance( Base ):
 
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
-		module = self._get_module( request )
+		module = self._get_module_by_request( request )
 		self.finished( request.id, module.superordinates )
 
 	def templates( self, request ):
@@ -583,7 +595,7 @@ class Instance( Base ):
 
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
-		module = self._get_module( request )
+		module = self._get_module_by_request( request )
 
 		result = []
 		if module.template:
@@ -656,7 +668,7 @@ class Instance( Base ):
 
 		return: <layout data structure (see UDM python modules)>
 		"""
-		module = self._get_module( request )
+		module = self._get_module_by_request( request )
 		if request.flavor == 'users/self':
 			object_dn = None
 		else:
@@ -671,7 +683,7 @@ class Instance( Base ):
 
 		return: [ {}, ... ]
 		"""
-		module = self._get_module( request )
+		module = self._get_module_by_request( request )
 		object_dn = request.options.get( 'objectDN' )
 		properties = module.get_properties( object_dn )
 		if request.options.get( 'searchable', False ):
@@ -686,12 +698,12 @@ class Instance( Base ):
 
 		return: [ {}, ... ]
 		"""
-		module = self._get_module( request )
+		module = self._get_module_by_request( request )
 		self.finished( request.id, module.options )
 
 	def policies( self, request ):
 		"""Returns a list of policy types that apply to the given object type"""
-		module = self._get_module( request )
+		module = self._get_module_by_request( request )
 		self.finished( request.id, module.policies )
 
 	def validate( self, request ):
@@ -705,7 +717,7 @@ class Instance( Base ):
 		"""
 
 		def _thread( request ):
-			module = self._get_module( request )
+			module = self._get_module_by_request( request )
 
 			result = []
 			for property_name, value in request.options.get( 'properties' ).items():

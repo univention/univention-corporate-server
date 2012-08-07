@@ -1,3 +1,10 @@
+univention-management-console-module-udm (2.0.3-1) unstable; urgency=low
+
+  * Sort containers (Bug #28069)
+  * Use decorator (Bug #27716)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Aug 2012 10:27:27 +0200
+
 univention-management-console-module-udm (2.0.2-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)
