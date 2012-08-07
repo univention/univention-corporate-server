@@ -291,7 +291,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	vncLink: function( ids, items ) {
 		umc.tools.umcpCommand( 'uvmm/domain/get', { domainURI : ids[ 0 ] } ).then( dojo.hitch( this, function( response ) {
 			var w = window.open();
-			var html = dojo.replace( "<html><head><title>{domainName} on {nodeName}</title></head><body><applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'><param name='host' value='{vncHost}' /><param name='port' value='{vncPort}' /><param name='offer relogin' value='no' /></applet></body></html>", {
+			var html = dojo.replace( "<html><head><title>{domainName} on {nodeName}</title></head><body><applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'><param name='host' value='{vncHost}' /><param name='port' value='{vncPort}' /><param name='offer relogin' value='no' />VNC-Java-Applet does not work; try external VNC viewer <a href='vnc://{vncHost}:{vncPort}'>vnc://{vncHost}:{vncPort}</a>.</applet></body></html>", {
 				domainName: dojox.html.entities.encode(items[ 0 ].label),
 				nodeName: dojox.html.entities.encode(items[ 0 ].nodeName),
 				vncHost: dojox.html.entities.encode(response.result.vncHost),
@@ -825,7 +825,7 @@ dojo.declare("umc.modules.uvmm", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			} ),
 			callback: dojo.hitch(this, 'vncLink' ),
 			canExecute: function(item) {
-				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc && item.node_available;
+				return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.port && item.node_available;
 			}
 		}, {
 			name: 'migrate',
