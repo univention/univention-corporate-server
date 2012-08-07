@@ -198,19 +198,23 @@ class Base( signals.Provider, Translation ):
 			func( request )
 			return
 		except UMC_OptionTypeError, e:
+			status = BAD_REQUEST
 			message = _(  'An option passed to %s has the wrong type: %s' ) % ( method, str( e ) )
 		except UMC_OptionMissing, e:
+			status = BAD_REQUEST
 			message = _(  'One or more options to %s are missing: %s' ) % ( method, str( e ) )
 		except UMC_CommandError, e:
+			status = BAD_REQUEST
 			message = _(  'The command has failed: %s' ) % str( e )
 		except BaseException, e:
+			status = MODULE_ERR_COMMAND_FAILED
 			import traceback
 			message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
 					  { 'command' : request.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }
 		res = Response( request )
 		res.message = message
 		MODULE.process( str( res.message ) )
-		res.status = MODULE_ERR_COMMAND_FAILED 
+		res.status = status
 		self.signal_emit( 'failure', res )
 		if request.id in self.__requests:
 			del self.__requests[ request.id ]

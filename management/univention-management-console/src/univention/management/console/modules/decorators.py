@@ -58,7 +58,8 @@ from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
 from ..protocol.definitions import BAD_REQUEST_INVALID_OPTS
-from ..modules import UMC_Error, UMC_OptionMissing
+from ..modules import UMC_Error, UMC_OptionMissing, UMC_OptionTypeError
+from ..log import MODULE
 
 def simple_response(function):
 	'''If your function is as simple as: "Just return some variables"
@@ -143,41 +144,56 @@ def simple_response(function):
 	else:
 		defaults = {}
 	def _response(self, request):
-		# try: as long as error handling in umc.modules is mercyless
-		# we need to catch them here and return a status code not
-		# as hard as 500
-		try:
-			try:
-				# check for required arguments (those without default)
-				self.required_options(request, *[arg for arg in arguments if arg not in defaults])
-			except UMC_OptionMissing as e:
-				# insert a status_code here
-				# better raise 40x
-				# codes like CLIENT_ERR_NONFATAL 301 are mapped to 500 for HTTP requests.
-				raise UMC_OptionMissing(BAD_REQUEST_INVALID_OPTS, str(e))
+		# check for required arguments (those without default)
+		self.required_options(request, *[arg for arg in arguments if arg not in defaults])
 
-			# extract arguments from request or take from default
-			# pass arguments as **kwargs, not *args to be more flexible with defaults
-			kwargs = {}
-			# safely iterate over arguments, dont merge the whole request.options at once
-			# who knows what else the user sent?
-			for arg in arguments:
-				# as we checked before, it is either in request.options or defaults
-				kwargs[arg] = request.options.get(arg, defaults.get(arg))
-			ret = function(self, **kwargs)
-		except UMC_Error as e:
-			try:
-				# we hope it was initialized this way:
-				# UMC_Error(status_code, message)
-				self.finished(request.id, None, message=e.args[1], success=False, status=e.args[0])
-				return
-			except:
-				pass
-			# otherwise we should let UMC handle it (with a meaningful traceback)
-			raise
-		else:
-			self.finished(request.id, ret)
+		# extract arguments from request or take from default
+		# pass arguments as **kwargs, not *args to be more flexible with defaults
+		kwargs = {}
+		# safely iterate over arguments, dont merge the whole request.options at once
+		# who knows what else the user sent?
+		for arg in arguments:
+			# as we checked before, it is either in request.options or defaults
+			kwargs[arg] = request.options.get(arg, defaults.get(arg))
+		ret = function(self, **kwargs)
+		self.finished(request.id, ret)
 	# copy __doc__, otherwise it would not show up in api and such
 	_response.__doc__ = function.__doc__
 	return _response
+
+
+def _remove_sensitive_data(data, sensitives):
+	""" recursive remove sensitive data from containing dicts """
+	if isinstance(data, (list, tuple)):
+		for i in len(data):
+			data[i] = self._remove_sensitive_data(data[i], sensitives)
+	elif isinstance(data, dict):
+		for sensitive in sensitives:
+			if sensitive in data:
+				data.pop(sensitive)
+	return data
+
+def check_request_options(seq = dict):
+	""" check if request options type is valid """
+	def check(self, function):
+		def _response(self, request):
+			if not isinstance(request.options, seq):
+				raise UMC_OptionTypeError( _("argument type has to be '%r'" % (seq)) )
+			return function(self, request)
+		return _response
+	return check
+
+def log_request_options(sensitive = []):
+	""" log request options, strip sensitive data """
+	def log(self, function):
+		def _response(self, request):
+			options = request.options
+			if sensitive:
+				from copy import deepcopy
+				options = deepcopy(options)
+				_remove_sensitive_data(options, sensitive)
+			MODULE.info( '%s.%s: options: %s' % (self.__class__.__name__, function.func_name, options) )
+			return function(self, request)
+		return _response
+	return log
 
