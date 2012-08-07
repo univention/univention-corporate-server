@@ -8,7 +8,7 @@ Standards-Version: 3.8.2
 Package: univention-kernel-image-2.6.32
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386]
+Depends: linux-image-${F:KernelVersion}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom
 Description: UCS - Linux kernel (standard)
  This meta-package depends on the latest UCS kernel image suitable for 32 bit
  systems with up to 4 GiB RAM.
@@ -21,7 +21,7 @@ Description: UCS - Linux kernel (standard)
 Package: univention-kernel-image-2.6.32-xen
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersionXen}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386]
+Depends: linux-image-${F:KernelVersionXen}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom
 Description: UCS - Linux kernel (Xen)
  This meta-package depends on the latest UCS kernel image suitable as the Xen
  control domain (dom0) for 32 bit systems.
@@ -34,7 +34,7 @@ Description: UCS - Linux kernel (Xen)
 Package: univention-kernel-image-2.6.32-64gb
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion64}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386]
+Depends: linux-image-${F:KernelVersion64}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom
 Description: UCS - Linux kernel (PAE)
  This meta-package depends on the latest UCS kernel image suitable for 32 bit
  systems with up to 64 GiB RAM, where the CPU supports the Physical Address
@@ -101,102 +101,6 @@ Description: UCS - Linux kernel source (PAE)
  This meta-package depends on the latest UCS kernel source suitable for 32 bit
  systems with up to 64 GiB RAM, where the CPU supports the Physical Address
  Extension (PAE).
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-image-2.6.18
-Architecture: any
-Depends: univention-kernel-image-2.6.32
-Description: UCS - Linux kernel
- Transitional package to facilitate the upgrade to the
- 2.6.32 based kernel.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-image-2.6.18-xen
-Architecture: any
-Depends: univention-kernel-image-2.6.32-xen
-Description: UCS - Linux kernel (Xen)
- Transitional package to facilitate the upgrade to the
- 2.6.32 based kernel.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-image-2.6.18-64gb
-Architecture: any
-Depends: univention-kernel-image-2.6.32-64gb
-Description: UCS - Linux kernel (PAE)
- Transitional package to facilitate the upgrade to the
- 2.6.32 based kernel.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-headers-2.6.18
-Architecture: any
-Depends: univention-kernel-headers-2.6.32
-Description: UCS - Linux kernel headers
- Transitional package to facilitate the upgrade to the
- 2.6.32 based kernel.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-headers-2.6.18-64gb
-Architecture: any
-Depends: univention-kernel-headers-2.6.32-64gb
-Description: UCS - Linux kernel headers (PAE)
- Transitional package to facilitate the upgrade to the
- 2.6.32 based kernel.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-headers-2.6.18-xen
-Architecture: any
-Depends: univention-kernel-headers-2.6.32-xen
-Description: UCS - Linux kernel headers (Xen)
- Transitional package to facilitate the upgrade to the
- 2.6.32 based kernel.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-source-2.6.18
-Architecture: any
-Depends: univention-kernel-source-2.6.32
-Description: UCS - Linux kernel source
- Transitional package to facilitate the upgrade to the
- 2.6.32 based kernel.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-source-2.6.18-64gb
-Architecture: any
-Depends: univention-kernel-source-2.6.32-64gb
-Description: UCS - Linux kernel source (PAE)
- Transitional package to facilitate the upgrade to the
- 2.6.32 based kernel.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
