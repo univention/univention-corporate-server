@@ -62,11 +62,11 @@ class UniventionMirror( UniventionUpdater ):
 
 	def config_repository( self ):
 		""" Retrieve configuration to access repository. Overrides UniventionUpdater. """
-		self.online_repository = self.configRegistry.get('repository/mirror', 'yes').lower() in ('yes', 'true', 'enabled', '1')
+		self.online_repository = self.configRegistry.is_true('repository/mirror', True)
 		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'updates.software-univention.de' )
 		self.repository_port = self.configRegistry.get( 'repository/mirror/port', '80' )
 		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' ).strip('/')
-		self.sources = self.configRegistry.get( 'repository/mirror/sources', 'no' ).lower() in ( 'true', 'yes' )
+		self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
 		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
 
 

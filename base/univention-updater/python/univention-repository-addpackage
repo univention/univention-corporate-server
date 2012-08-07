@@ -37,7 +37,7 @@ import shutil, sys
 import getopt, time
 import re
 
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 import univention.updater.repository as urepo
 import univention.updater.tools
 
@@ -107,10 +107,10 @@ if __name__ == '__main__':
 		print >> sys.stderr, "Error: No Debian packages specified."
 		sys.exit(1)
 
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
+	ucr = ConfigRegistry()
+	ucr.load()
 
-	if baseConfig.get('local/repository', 'no').lower() in [ 'no', 'false' ]:
+	if ucr.is_false('local/repository', True):
 		print >> sys.stderr, 'Error: The local repository is disabled. Check if univention-debmirror ist installed.'
 		sys.exit(1)
 

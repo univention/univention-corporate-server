@@ -1,3 +1,4 @@
 0010-2:tests/test_updater.py
 0010-2:tests/test_mirror.py
 0010-2:tests/mockups.py
+0011-14: debian/univention-updater.univention-maintenance.init

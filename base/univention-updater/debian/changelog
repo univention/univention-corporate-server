@@ -3,6 +3,7 @@ univention-updater (8.0.2-1) unstable; urgency=low
   * Add UCR variable descriptions (Bug #28134)
   * Support univention-repository-update --iso (Bug #26239)
   * Remove duplicate code (Bug #27152)
+  * Cleanup old code (Bug #27745)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 10:30:41 +0200
 

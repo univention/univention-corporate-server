@@ -130,12 +130,12 @@ def update_net( options ):
 	""" Copy packages and scripts from remote mirror into local repository """
 	mirror = UniventionMirror()
 	# update local repository if available
-	if not configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' ):
+	if not configRegistry.is_true('local/repository', False):
 		print >> options.teefile, 'Error: The local repository is not activated. Set the Univention Configuration Registry variable local/repository to yes'
 		sys.exit( 1 )
 	# mirror.run calls "apt-mirror", which needs /etc/apt/mirror.conf, which is
 	# only generated with repository/mirror=true
-	if not configRegistry.get( 'repository/mirror', 'no' ).lower() in ( 'yes', 'true' ):
+	if not configRegistry.is_true('repository/mirror', False):
 		print >> options.teefile, 'Error: Mirroring for the local repository is disabled. Set the Univention Configuration Registry variable repository/mirror to yes.'
 		sys.exit( 1 )
 
@@ -254,7 +254,7 @@ if __name__ == '__main__':
 
 	print '***** Starting univention-repository-update at %s\n' % time.ctime()
 
-	if not configRegistry.get( 'local/repository', 'yes' ).lower() in ( 'yes','true' ):
+	if not configRegistry.is_true('local/repository', True):
 		print >>options.teefile, 'Error: The local repository is disabled. To create a local repository use univention-repository-create.'
 		sys.exit( 1 )
 

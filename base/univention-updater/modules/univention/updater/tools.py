@@ -672,7 +672,7 @@ class UniventionUpdater:
 
 	def release_update_temporary_sources_list(self, version, components=None):
 		'''Return list of Debian repository statements for the release update including all enabled components.'''
-		if components == None:
+		if components is None:
 			components = self.get_components()
 
 		mmp_version = UCS_Version(version)

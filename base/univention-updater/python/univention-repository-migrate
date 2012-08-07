@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
 	print '***** Starting univention-repository-migrate at %s\n' % time.ctime()
 
-	if not configRegistry.get( 'local/repository', 'yes' ).lower() in ( 'yes','true' ):
+	if not configRegistry.is_true('local/repository', True):
 		print >> options.teefile, 'Error: The local repository is disabled. Migration process is stopped.'
 		sys.exit( 1 )
 

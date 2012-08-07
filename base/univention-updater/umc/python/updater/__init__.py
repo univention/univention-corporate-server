@@ -659,7 +659,7 @@ class Instance(umcm.Base):
 			# if nothing is returned -> convert to empty string.
 			what = 'querying available release updates'
 			result['release_update_available']	= self.uu.release_update_available()
-			if result['release_update_available'] == None:
+			if result['release_update_available'] is None:
 				result['release_update_available'] = ''
 
 			what = 'querying update-blocking components'
@@ -1218,7 +1218,7 @@ class Instance(umcm.Base):
 				for line in file:
 					count += 1
 			finally:
-				if file != None:
+				if file is not None:
 					file.close()
 			self._current_job['lines'] = count
 			self._current_job['logfile'] = fname
@@ -1525,7 +1525,7 @@ class Instance(umcm.Base):
 					if (count > 0) and (len(lines) > count):
 						lines.pop(0)
 		finally:
-			if file != None:
+			if file is not None:
 				file.close()
 		return lines
 

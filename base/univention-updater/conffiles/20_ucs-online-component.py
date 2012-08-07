@@ -41,7 +41,7 @@ def postinst(baseConfig, changes):
 		for key in baseConfig.keys():
 			if key.startswith('repository/online/component/'):
 				component_part = key.split('repository/online/component/')[1]
-				if component_part.find('/') == -1 and baseConfig[key].lower() in [ 'true', 'yes', 'enabled', '1']:
+				if component_part.find('/') == -1 and baseConfig.is_true(key, False):
 					check = True
 					break
 
