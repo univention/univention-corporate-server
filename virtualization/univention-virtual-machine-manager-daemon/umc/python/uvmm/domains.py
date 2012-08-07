@@ -175,7 +175,6 @@ class Domains( object ):
 					if port == -1:
 						raise ValueError()
 					host = node_uri.netloc
-					host = 'tester.phahn.dev' # FIXME
 					vnc_link_format = ucr.get('uvmm/umc/vnc/host', 'IPv4') or ''
 					match = Domains.RE_VNC.match(vnc_link_format)
 					if match:
