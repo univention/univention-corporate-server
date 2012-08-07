@@ -30,6 +30,11 @@ user_create "$name"
 
 group_adduser $name $name
 
+if [ -z "`net -V | grep "Version"`" ]; then
+	fail_fast 1 "net is not available";
+fi;
+
+
 info "Querying group members"
 
 OUTPUT="$(net rpc -d1 group members "$name" -U Administrator%univention 2>&1)"
