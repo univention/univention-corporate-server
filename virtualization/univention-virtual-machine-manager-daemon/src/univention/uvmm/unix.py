@@ -92,7 +92,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					buffer += data
 				try:
 					packet = protocol.Packet.parse(buffer)
-					if packet == None:
+					if packet is None:
 						continue # waiting
 				except protocol.PacketError, e: # (translatable_text, dict):
 					logger.warning("[%d] Invalid packet received: %s" % (self.client_id, e))
@@ -147,7 +147,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 		else:
 			try:
 				res = cmd(self, command)
-				if res == None:
+				if res is None:
 					res = protocol.Response_OK()
 			except CommandError, e:
 				logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, e))

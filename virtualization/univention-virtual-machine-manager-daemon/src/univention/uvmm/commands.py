@@ -103,7 +103,7 @@ class _Commands:
 			hz = int(request.hz)
 		except TypeError:
 			raise CommandError('NODE_FREQUENCY', _('hz != int: %(hz)s'), hz=request.hz)
-		if request.uri != None and not isinstance(request.uri, basestring):
+		if request.uri is not None and not isinstance(request.uri, basestring):
 			raise CommandError('NODE_FREQUENCY', _('uri != string: %(uri)s'), uri=request.uri)
 		logger.debug('NODE_FREQUENCY %d %s' % (hz,request.uri))
 		try:

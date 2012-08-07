@@ -80,7 +80,7 @@ class UVMM_ClientSocket(object):
 				else:
 					buffer += data
 				packet = protocol.Packet.parse(buffer)
-				if packet == None:
+				if packet is None:
 					continue # waiting
 
 				(length, res) = packet

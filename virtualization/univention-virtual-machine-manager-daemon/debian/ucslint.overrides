@@ -25,3 +25,6 @@
 0015-2: src/univention/uvmm/helpers.py:104
 0015-2: src/univention/uvmm/helpers.py:111
 0015-2: src/univention/uvmm/helpers.py:111
+# No UCR variables
+0004-56: conffiles/etc/runit/univention-virtual-machine-manager-daemon/run
+0004-56: conffiles/etc/security/access-uvmmd.conf
