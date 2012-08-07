@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.4-1) unstable; urgency=low
+
+  * args in CPgeneric is now a dict containing options and flavor (Bug #27850)
+
+ -- Florian Best <best@univention.de>  Tue, 07 Aug 2012 15:27:29 +0200
+
 univention-management-console-frontend (2.0.3-1) unstable; urgency=low
 
   * univention-management-conosole-web-server cleanup (Bug #27850)

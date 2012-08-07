@@ -379,7 +379,7 @@ class CPgeneric(object):
 			args = self.load_json(body)
 		else:
 			# request is not json
-			args = kwargs
+			args = {'options': kwargs, 'flavor': kwargs.get('flavor')}
 
 		return self.get_response(sessionid, path, args)
 
