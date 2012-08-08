@@ -93,9 +93,6 @@ def usage():
 	print '  Scans all packages in the local system and sends this data to the database pkgdb.'
 	print '  If any options are given, no scan is run.'
 	print ''
-	print 'Known-Bugs:'
-	print '  -None-'
-	print ''
 	sys.exit(1)
 
 # ------------------------------------------------------------------------------

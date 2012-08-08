@@ -125,9 +125,6 @@ def usage():
 	out.append('  on command line level.')
 	out.append('  Use "univention-directory-manager modules" for a list of available modules.')
 	out.append('')
-	out.append('Known-Bugs:')
-	out.append('  -None-')
-	out.append('')
 	return out
 
 def version():

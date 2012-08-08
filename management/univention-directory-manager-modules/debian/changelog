@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.7-1) unstable; urgency=low
+
+  * remove useless "known bugs" message (Bug #25379)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 18 Jul 2012 17:37:44 +0200
+
 univention-directory-manager-modules (8.0.6-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)

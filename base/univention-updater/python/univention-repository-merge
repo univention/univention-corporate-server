@@ -53,9 +53,6 @@ def usage(fd=sys.stdout):
 	print >>fd, '  univention-repository-merge --dest <destination_dir> --src <source_dir> [--src <source_dir>]'
 	print >>fd, '  univention-repository-merge [--help] '
 	print >>fd, ''
-	print >>fd, 'Known-Bugs:'
-	print >>fd, '  -None-'
-	print >>fd, ''
 
 
 def compare(version1, version2):

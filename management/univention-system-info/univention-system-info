@@ -88,9 +88,6 @@ display_help() {
 	  $0 collects some hardware-related informations
 	  about your system, e.g. CPU, memory and filesystems.
 
-	Known-Bugs:
-	  -None-
-
 	EOL
 	exit 0
 }

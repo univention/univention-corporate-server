@@ -1,3 +1,9 @@
+univention-join (5.0.0-1) unstable; urgency=low
+
+  * remove useless "known bugs" message (Bug #25379)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 18 Jul 2012 17:36:31 +0200
+
 univention-join (4.0.43-1) unstable; urgency=low
 
   * univention-jon: the error message parsing for univention-server-join has

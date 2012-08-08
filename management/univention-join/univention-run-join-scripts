@@ -52,9 +52,6 @@ display_help() {
 	Description:
 	  univention-run-join-scripts runs all join scripts existing on local computer.
 
-	Known-Bugs:
-	  -None-
-
 	EOL
 }
 

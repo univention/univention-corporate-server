@@ -50,9 +50,6 @@ def usage(fd=sys.stdout):
 	print >>fd, '  univention-repository-addpackage --dest <destination_dir> --file <debian_package> <debian_package>'
 	print >>fd, '  univention-repository-addpackage [--help] '
 	print >>fd, ''
-	print >>fd, 'Known-Bugs:'
-	print >>fd, '  -None-'
-	print >>fd, ''
 
 def rewrite_url(url):
     """ Replace illegal characters in url with underscores """

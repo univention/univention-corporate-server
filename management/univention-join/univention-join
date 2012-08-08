@@ -63,9 +63,6 @@ display_help() {
 	  univention-join joins a computer to an ucs domain,
 	  e.g. univention-join -dcaccount backup_join -dcpwd /tmp/pwd_secret
 
-	Known-Bugs:
-	  -None-
-
 	EOL
 }
 

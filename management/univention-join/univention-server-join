@@ -71,9 +71,6 @@ display_help() {
 	  univention-server-join joins a server to an univention domain,
 	  e.g. univention-server-join -role memberserver -hostname membsrv -ip 1.2.3.4
 
-	Known-Bugs:
-	  -None-
-
 	EOL
 }
 
