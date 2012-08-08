@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.8-1) unstable; urgency=low
+
+  * Bug #27864: Fix ucslint warning
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Aug 2012 16:15:12 +0200
+
 univention-directory-manager-modules (8.0.7-1) unstable; urgency=low
 
   * remove useless "known bugs" message (Bug #25379)
