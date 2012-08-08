@@ -32,8 +32,9 @@
 
 #DEBHELPER#
 
-if [ install = "$1" -o upgrade = "$1" ]; then
-   dpkg-divert --package univention-network-manager --add --rename --divert /usr/lib/NetworkManager/nm-dhcp-client.action.real /usr/lib/NetworkManager/nm-dhcp-client.action
-fi
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/dbus-1/system.d/ucs-networkmanager.conf -- "$@"
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/NetworkManager/nm-system-settings.conf -- "$@"
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/info/univention-network-manager.info -- "$@"
+dpkg-maintscript-helper rm_conffile /etc/univention/registry.info/variables/univention-network-manager.cfg -- "$@"
 
 exit 0

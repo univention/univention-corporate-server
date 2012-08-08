@@ -6,6 +6,7 @@ univention-network-manager (4.0.0-1) unstable; urgency=low
   * Transition from /etc/dhcp3/ to /etc/dhcp/ (Bug #27829)
   * Update /etc/dhcp/dhclient.conf template from lates Debian file.
   * Move debug files to /var/run/ to prevent symlink attack.
+  * Remove support for Network Manager (Bug #26609)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 09:28:32 +0200
 

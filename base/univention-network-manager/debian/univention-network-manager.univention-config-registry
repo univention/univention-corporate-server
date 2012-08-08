@@ -1,7 +1,0 @@
-Type: file
-File: etc/dbus-1/system.d/ucs-networkmanager.conf
-Variables: networkmanager/group
-
-Type: file
-File: etc/NetworkManager/nm-system-settings.conf
-Variables: networkmanager/all_interfaces

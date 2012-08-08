@@ -9,13 +9,12 @@ Standards-Version: 3.5.2
 
 Package: univention-network-manager
 Architecture: all
-Conflicts: ifplugd,
- univention-ifplugd
-Depends: ${misc:Depends},
- univention-network-common (= ${source:Version}),
- network-manager
-Description: UCS - Support for the Network Manager
- This package installs the configuration for the network manager.
+Pre-Depends: dpkg (>= 1.15.7.2)
+Depends: ${misc:Depends}
+Recommends: univention-ifplugd
+Description: UCS - transitional package for the Network Manager
+ This is an empty package which cleans up any left overs from previous versions
+ of this package. It can be savely removed after upgrade.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
