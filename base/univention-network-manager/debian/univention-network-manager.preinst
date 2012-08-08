@@ -32,8 +32,8 @@
 
 #DEBHELPER#
 
-if [ install = "$1" -o upgrade = "$1" ]; then 
+if [ install = "$1" -o upgrade = "$1" ]; then
    dpkg-divert --package univention-network-manager --add --rename --divert /usr/lib/NetworkManager/nm-dhcp-client.action.real /usr/lib/NetworkManager/nm-dhcp-client.action
-fi  
+fi
 
 exit 0

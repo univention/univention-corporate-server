@@ -37,7 +37,8 @@ eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/all.sh
 
-if [ -n "$nameserver_option_timeout" ] && ! grep timeout /etc/resolv.conf &>/dev/null; then
+if [ -n "$nameserver_option_timeout" ] && ! grep -q -s timeout /etc/resolv.conf
+then
 	echo "options timeout:$nameserver_option_timeout" >> /etc/resolv.conf
 fi
 
@@ -45,7 +46,7 @@ interface_type="$(ucr get interfaces/${IFACE}/type)"
 
 is_ns ()
 {
-	server="$1"
+	local server="$1"
 	eval "$(ucr shell dns/forwarder1 dns/forwarder2 dns/forwarder3 nameserver1 nameserver2 nameserver3)"
 
 	if	[ "$dns_forwarder1" = "$server" ] || [ "$dns_forwarder2" = "$server" ] || [ "$dns_forwarder3" = "$server" ] || \
@@ -57,20 +58,26 @@ is_ns ()
 }
 
 # On a joined DNS server the DHCP nameserver should be converted to a dns/forwarder.
-# But at least one nameserver must be configured via ucr and nameserver/external 
+# But at least one nameserver must be configured via ucr and nameserver/external
 # must not be set to true
 if	[ -e /var/univention-join/joined ] && is_domain_controller && \
 	[ -n "$nameserver1" -o -n "$nameserver2" -o -n "$nameserver3" ] && \
 	[ "$interface_type" = "dhcp" ] && \
-	! is_ucr_true "nameserver/external"; then
+	! is_ucr_true "nameserver/external"
+then
+	need_restart=false
 	i=1
-	cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do
-		if ! is_ns "$ns"; then
+	while read key ns
+	do
+		[ "$key" = nameserver ] || continue
+		if ! is_ns "$ns"
+		then
 			ucr set "dns/forwarder$i=$ns" >/dev/null
-			invoke-rc.d bind9 restart
+			need_restart=true
 		fi
 		i=$((i+1))
-	done
+	done </etc/resolv.conf
+	"$need_restart" && invoke-rc.d bind9 restart
 	ucr commit /etc/resolv.conf
 elif [ "$interface_type" = "dhcp" ]; then
 	# Add the local configured nameserver to the resolv.conf
@@ -78,7 +85,8 @@ elif [ "$interface_type" = "dhcp" ]; then
 		dns="nameserver$i"
 		if [ -n "${!dns}" ]; then
 			# Don't add the nameserver twice
-			if ! grep "nameserver *${!dns}\$" /etc/resolv.conf &>/dev/null; then
+			if ! grep -q -s "nameserver *${!dns}\$" /etc/resolv.conf
+			then
 				echo "nameserver ${!dns}" >> /etc/resolv.conf
 			fi
 		fi
