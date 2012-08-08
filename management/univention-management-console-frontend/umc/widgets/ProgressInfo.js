@@ -33,7 +33,7 @@ dojo.provide("umc.widgets.ProgressInfo");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("dijit.ProgressBar");
 
-dojo.declare("umc.widgets.ProgressInfo", umc.widgets.ContainerWidget, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.ContainerWidget, {
 	// summary:
 	//		widget used displaying progress information
 

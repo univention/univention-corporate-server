@@ -30,7 +30,7 @@
 
 dojo.provide("umc.dialog");
 
-dojo.require("dojo.cookie");
+dojo.require("/*REQUIRE:"dojo/cookie"*/ cookie");
 dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.LoginDialog");
@@ -39,7 +39,7 @@ dojo.require("umc.widgets.ConfirmDialog");
 dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.Button");
 
-dojo.mixin(umc.dialog, new umc.i18n.Mixin({
+/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.dialog, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 }), {
@@ -52,7 +52,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		// summary:
 		//		Show the login screen.
 		// returns:
-		//		A dojo.Deferred object that is called upon successful login.
+		//		A /*REQUIRE:"dojo/Deferred"*/ Deferred object that is called upon successful login.
 		//		The callback receives the authorized username as parameter.
 
 		if (this._loginDeferred) {
@@ -64,7 +64,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		this._loginDeferred = null;
 		var username = umc.tools.status('username');
 		var password = umc.tools.status('password');
-		if (username && password && dojo.isString(username) && dojo.isString(password)) {
+		if (username && password && typeof username == "string" && typeof password == "string") {
 			// try to authenticate via long polling... i.e., in case of an error try again until it works
 			this._loginDeferred = umc.tools.umcpCommand('auth', {
 				username: username,
@@ -78,11 +78,11 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		}
 		else {
 			// reject deferred to force login
-			this._loginDeferred = new dojo.Deferred();
+			this._loginDeferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
 			this._loginDeferred.reject();
 		}
 
-		this._loginDeferred = this._loginDeferred.then(null, dojo.hitch(umc.dialog, function() {
+		this._loginDeferred = this._loginDeferred.then(null, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(umc.dialog, function() {
 			// auto authentication could not be executed or failed...
 
 			if (!this._loginDialog) {
@@ -96,8 +96,8 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 			umc.tools.status('loggingIn', true);
 
 			// connect to the dialog's onLogin event
-			var deferred = new dojo.Deferred();
-			var signalHandle = dojo.connect(this._loginDialog, 'onLogin', dojo.hitch(umc.dialog, function(username) {
+			var deferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
+			var signalHandle = /*REQUIRE:"dojo/on"*/ /*TODO*/ on(this._loginDialog, 'onLogin', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(umc.dialog, function(username) {
 				// disconnect from onLogin handle
 				dojo.disconnect(signalHandle);
 				umc.tools.status('loggingIn', false);
@@ -110,7 +110,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 
 		// after login, set the locale and make sure that the username is passed
 		// over to the next callback
-		this._loginDeferred = this._loginDeferred.then(dojo.hitch(umc.dialog, function(username) {
+		this._loginDeferred = this._loginDeferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(umc.dialog, function(username) {
 			// set the locale
 			return umc.tools.umcpCommand('set', {
 				locale: dojo.locale.replace('-', '_')
@@ -173,7 +173,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 				style: 'max-width: 650px;',
 				options: [{
 					label: buttonLabel || this._('Ok'),
-					callback: dojo.hitch(this, function() {
+					callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 						// hide dialog upon confirmation by click on 'OK'
 						this._alertDialog.hide();
 					}),
@@ -206,7 +206,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		//		The user needs to confirm the dialog by clicking on one of
 		//		multiple defined buttons (=choice). When any of the buttons
 		//		is pressed, the dialog is automatically closed.
-		//		The function returns a dojo.Deferred object. Registered callback
+		//		The function returns a /*REQUIRE:"dojo/Deferred"*/ Deferred object. Registered callback
 		//		methods are called with the corresponding choice name as parameter.
 		// message:
 		//		The message that is displayed in the dialog, can also be a _Widget.
@@ -245,18 +245,18 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		// |	    label: 'Delete item',
 		// |		name: 'delete',
 		// |	    'default': true,
-		// |	    callback: dojo.hitch(myObj, 'foo')
+		// |	    callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(myObj, 'foo')
 		// |	}, {
 		// |	    label: 'Cancel',
 		// |		name: 'cancel',
-		// |	    callback: dojo.hitch(myObj, 'foo')
+		// |	    callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(myObj, 'foo')
 		// |	}]);
 
 		// if the user has switched off confirmations, try to find a default option
 		if (umc.tools.preferences('confirm') === false) {
 			var cb = undefined;
 			var response = undefined;
-			dojo.forEach(options, function(i, idx) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(options, function(i, idx) {
 				// check for default option
 				if (true === i.auto) {
 					cb = i.callback;
@@ -264,7 +264,7 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 					return false; // break loop
 				}
 			});
-			if (cb && dojo.isFunction(cb)) {
+			if (cb && typeof cb == "function") {
 				// we found a default item .. call the callback and exit
 				cb(response);
 				return;
@@ -280,8 +280,8 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		});
 
 		// connect to 'onConfirm' event to close the dialog in any case
-		var deferred = new dojo.Deferred();
-		dojo.connect(confirmDialog, 'onConfirm', function(response) {
+		var deferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ on(confirmDialog, 'onConfirm', function(response) {
 			confirmDialog.close();
 			deferred.resolve(response);
 		});
@@ -301,15 +301,15 @@ dojo.mixin(umc.dialog, new umc.i18n.Mixin({
 		// templateFile:
 		//		The template file to use
 		// keys:
-		//		An object with values that should be replaced in the template (using dojo.replace)
+		//		An object with values that should be replaced in the template (using /*REQUIRE:"dojo/_base/lang"*/ lang.replace)
 		// title:
 		//		An optional title for the popup window
 		// buttonLabel:
 		//		An alternative label for the button
 		var message = dojo.cache( templateModule, templateFile );
-		message = dojo.replace( message, keys );
+		message = /*REQUIRE:"dojo/_base/lang"*/ lang.replace( message, keys );
 		var widget = new umc.widgets.Text( {  content : message } );
-		dojo.addClass( widget.domNode, 'umcPopup' );
+		/*REQUIRE:"dojo/dom-class"*/ domClass.add( widget.domNode, 'umcPopup' );
 		this.alert( widget, title || 'UMC', buttonLabel );
 	}
 });

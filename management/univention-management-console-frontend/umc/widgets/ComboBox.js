@@ -35,7 +35,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("umc.widgets._SelectMixin");
 dojo.require("umc.widgets._FormWidgetMixin");
 
-dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._SelectMixin, umc.widgets._FormWidgetMixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.FilteringSelect, umc.widgets._SelectMixin, umc.widgets._FormWidgetMixin ], {
 	// the widget's class name as CSS class
 	'class': 'umcComboBox',
 
@@ -62,7 +62,7 @@ dojo.declare("umc.widgets.ComboBox", [ dijit.form.FilteringSelect, umc.widgets._
 	postCreate: function() {
 		this.inherited(arguments);
 
-		var handle = this.connect(this, 'onValuesLoaded', function(values) {
+		var handle = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onValuesLoaded', function(values) {
 			if (this.autoHide) {
 				// show the widget in case there are more than 1 values 
 				this.set('visible', values.length > 1);

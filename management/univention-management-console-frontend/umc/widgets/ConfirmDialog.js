@@ -35,7 +35,7 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("dojox.widget.Dialog");
 dojo.require("umc.widgets.ContainerWidget");
 
-dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit.Dialog, {
 	// summary:
 	//		Class that provides a customizable confirmation dialog.
 	//		(For easier access see umc.dialog.confirm().)
@@ -62,8 +62,8 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 	// |		}]
 	// |	});
 	// |
-	// |	// instead of using the 'callback' property, we can also use dojo.connect()
-	// |	dojo.connect(myDialog, 'onConfirm', function(answer) {
+	// |	// instead of using the 'callback' property, we can also use /*REQUIRE:"dojo/on"*/ /*TODO*/ on()
+	// |	/*REQUIRE:"dojo/on"*/ /*TODO*/ on(myDialog, 'onConfirm', function(answer) {
 	// |		if ('something' == answer) {
 	// |			// do something
 	// |			// ...
@@ -110,7 +110,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		}
 
 		// add the new message
-		if (dojo.isString(this.message)) {
+		if (typeof this.message == "string") {
 			var widget = new umc.widgets.Text({
 				'class': 'umcConfirmDialogText',
 				content: message
@@ -119,7 +119,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		}
 		if (dojo.isObject(this.message) && 'declaredClass' in this.message) {
 			// message is a widget
-			dojo.addClass(this.message.domNode, 'umcConfirmDialogText');
+			/*REQUIRE:"dojo/dom-class"*/ domClass.add(this.message.domNode, 'umcConfirmDialogText');
 			this._container.addChild(this.message, 0);
 		}
 	},
@@ -133,11 +133,11 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 			'class': 'umcButtonRow'
 		});
 		var defaultButton = null;
-		dojo.forEach(this.options, dojo.hitch(this, function(ichoice, idx) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.options, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(ichoice, idx) {
 			var button = new umc.widgets.Button({
 				label: ichoice.label,
 				defaultButton: true === ichoice['default'],
-				onClick: dojo.hitch(this, function(values) {
+				onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(values) {
 					// the response is either a custom response or the choice (button) index
 					var response = ichoice.name || idx;
 
@@ -161,7 +161,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 		// make sure that the default button is focused
 		defaultButton = defaultButton || buttons.getChildren()[0];
 		if (defaultButton) {
-			this.connect(this, 'onFocus', function() {
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onFocus', function() {
 				defaultButton.focus();
 			});
 		}
@@ -182,7 +182,7 @@ dojo.declare('umc.widgets.ConfirmDialog', dijit.Dialog, {
 	close: function() {
 		// summary:
 		//		Hides the dialog and destroys it after the fade-out animation.
-		this.hide().then(dojo.hitch(this, function() {
+		this.hide().then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 			this.destroyRecursive();
 		}));
 	},

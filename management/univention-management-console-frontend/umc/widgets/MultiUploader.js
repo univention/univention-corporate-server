@@ -39,7 +39,7 @@ dojo.require("umc.widgets.ProgressInfo");
 dojo.require("umc.tools");
 dojo.require("umc.dialog");
 
-dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
 	'class': 'umcMultiUploader',
 
 	i18nClass: 'umc.app',
@@ -119,7 +119,7 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 		this._container.addChild(new umc.widgets.Button({
 			label: this._('Remove'),
 			iconClass: 'umcIconDelete',
-			onClick: dojo.hitch(this, '_removeFiles'),
+			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_removeFiles'),
 			style: 'float: right;'
 		}));
 		this.addChild(this._container);
@@ -170,7 +170,7 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 		}
 
 		// make sure we may remove the selected items
-		dojo.when(this.canRemove(selectedFiles), dojo.hitch(this, function(doUpload) {
+		/*REQUIRE:"dojo/when"*/ when(this.canRemove(selectedFiles), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(doUpload) {
 			if (!doUpload) {
 				// removal canceled
 				return;
@@ -178,8 +178,8 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 
 			// remove items
 			var files = this.get('value');
-			files = dojo.filter(files, function(ifile) {
-				return dojo.indexOf(selectedFiles, ifile) < 0;
+			files = /*REQUIRE:"dojo/_base/array"*/ array.filter(files, function(ifile) {
+				return /*REQUIRE:"dojo/_base/array"*/ array.indexOf(selectedFiles, ifile) < 0;
 			});
 			this.set('value', files);
 		}));
@@ -206,7 +206,7 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 
 		var currentVal = 0;
 		var nDone = 0;
-		dojo.forEach(this._uploadingFiles, function(ifile) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._uploadingFiles, function(ifile) {
 			nDone += ifile.done || 0;
 			currentVal += ifile.done ? 1.0 : ifile.decimal || 0;
 		});
@@ -235,8 +235,8 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 
 		// register events
 		var uploader = this._uploader;
-		var startedSignal = this.connect(uploader, 'onUploadStarted', function(file) {
-			//console.log('### onUploadStarted:', dojo.toJson(file));
+		var startedSignal = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(uploader, 'onUploadStarted', function(file) {
+			//console.log('### onUploadStarted:', /*REQUIRE:"dojo/jsone"*/ json.stringify(file));
 			this.disconnect(startedSignal);
 
 			// add current file to the list of uploading items
@@ -248,10 +248,10 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 			this._uploadingFiles.push(file);
 			this._updateProgress();
 
-			var progressSignal = this.connect(uploader, 'onProgress', function(info) {
+			var progressSignal = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(uploader, 'onProgress', function(info) {
 				// update progress information
-				//console.log('### onProgress:', dojo.toJson(info));
-				dojo.mixin(file, info);
+				//console.log('### onProgress:', /*REQUIRE:"dojo/jsone"*/ json.stringify(info));
+				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(file, info);
 				this._updateProgress();
 			});
 
@@ -276,14 +276,14 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 
 				// when all files are uploaded, update the internal list of files
 				var allDone = true;
-				dojo.forEach(this._uploadingFiles, function(ifile) {
+				/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._uploadingFiles, function(ifile) {
 					allDone = allDone && ifile.done;
 				});
 				if (allDone) {
 					// add files to internal list of files
 					this._files.standby(false);
 					var vals = this.get('value');
-					dojo.forEach(this._uploadingFiles, function(ifile) {
+					/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._uploadingFiles, function(ifile) {
 						//console.log('### adding:', ifile.name);
 						if (file.success) {
 							vals.unshift(ifile.name);
@@ -295,8 +295,8 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 					this._uploadingFiles = [];
 				}
 			};
-			uploadSignal = this.connect(uploader, 'onUploaded', dojo.hitch(this, _done, true));
-			errorSignal = this.connect(uploader, 'onError', dojo.hitch(this, _done, false));
+			uploadSignal = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(uploader, 'onUploaded', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, _done, true));
+			errorSignal = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(uploader, 'onError', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, _done, false));
 
 			// hide uploader widget and add a new one
 			dojo.style(uploader.domNode, {
@@ -310,7 +310,7 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 	canUpload: function(fileInfo) {
 		// summary:
 		//		Before uploading a file, this function is called to make sure
-		//		that the given filename is valid. Return boolean or dojo.Deferred.
+		//		that the given filename is valid. Return boolean or /*REQUIRE:"dojo/Deferred"*/ Deferred.
 		// fileInfo: Object
 		//		Info object for the requested file, contains properties 'name',
 		//		'size', 'type'.
@@ -321,7 +321,7 @@ dojo.declare("umc.widgets.MultiUploader", [ umc.widgets.ContainerWidget, umc.wid
 		// summary:
 		//		Before removing a files from the current list, this function
 		//		is called to make sure that the given file may be removed.
-		//		Return boolean or dojo.Deferred.
+		//		Return boolean or /*REQUIRE:"dojo/Deferred"*/ Deferred.
 		// filenames: String[]
 		//		List of filenames.
 		return true;

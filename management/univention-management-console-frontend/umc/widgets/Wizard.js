@@ -37,7 +37,7 @@ dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.widgets.StandbyMixin");
 
-dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.StackContainer, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	// summary:
 	//		This wizard class allows to specify a list of pages which will be
 	//		shown in a controlable manner.
@@ -62,31 +62,31 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 
 		// render all pages
 		this._pages = {};
-		dojo.forEach(this.pages, function(ipage) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.pages, function(ipage) {
 			// setup the footer buttons
 			var footerButtons = [{
 				name: 'previous',
 				label: this._('Back'),
 				align: 'right',
-				callback: dojo.hitch(this, '_previous', ipage.name)
+				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_previous', ipage.name)
 			}, {
 				name: 'next',
 				defaultButton: true,
 				label: this._('Next'),
-				callback: dojo.hitch(this, '_next', ipage.name)
+				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_next', ipage.name)
 			}, {
 				name: 'finish',
 				defaultButton: true,
 				label: this._('Finish'),
-				callback: dojo.hitch(this, '_finish', ipage.name)
+				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_finish', ipage.name)
 			}, {
 				name: 'cancel',
 				label: this._('Cancel'),
-				callback: dojo.hitch(this, 'onCancel')
+				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'onCancel')
 			}];
 
 			// render the page
-			var pageConf = dojo.clone(ipage);
+			var pageConf = /*REQUIRE:"dojo/_base/lang"*/ lang.clone(ipage);
 			delete pageConf.widgets;
 			delete pageConf.buttons;
 			delete pageConf.layout;
@@ -101,11 +101,11 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 					buttons: ipage.buttons,
 					layout: ipage.layout,
 					scrollable: true,
-					onSubmit: dojo.hitch(this, function(e) {
+					onSubmit: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(e) {
 						if (e && e.preventDefault) {
 							e.preventDefault();
 						}
-						dojo.stopEvent(e);
+						/*REQUIRE:"dojo/_base/event"*/ event.stop(e);
 						if (this.hasNext(ipage.name)) {
 							this._next(ipage.name);
 						}
@@ -132,7 +132,7 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 
 	_getPageIndex: function(/*String*/ pageName) {
 		var idx = -1;
-		dojo.forEach(this.pages, function(ipage, i) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.pages, function(ipage, i) {
 			if (ipage.name == pageName) {
 				idx = i;
 				return false;
@@ -157,7 +157,7 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 			widgetName = arguments[0];
 		}
 		var widget = false;
-		dojo.forEach( this.pages, dojo.hitch( this, function( page ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this.pages, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( page ) {
 			var w = this.getWidget( page.name, widgetName );
 			if ( undefined !== w ) {
 				widget = w;
@@ -170,10 +170,10 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 
 	_updateButtons: function(/*String*/ pageName) {
 		var buttons = this._pages[pageName]._footerButtons;
-		dojo.toggleClass(buttons.cancel.domNode, 'dijitHidden', !this.canCancel(pageName));
-		dojo.toggleClass(buttons.next.domNode, 'dijitHidden', !this.hasNext(pageName));
-		dojo.toggleClass(buttons.finish.domNode, 'dijitHidden', this.hasNext(pageName));
-		dojo.toggleClass(buttons.previous.domNode, 'dijitHidden', !this.hasPrevious(pageName));
+		/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(buttons.cancel.domNode, 'dijitHidden', !this.canCancel(pageName));
+		/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(buttons.next.domNode, 'dijitHidden', !this.hasNext(pageName));
+		/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(buttons.finish.domNode, 'dijitHidden', this.hasNext(pageName));
+		/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(buttons.previous.domNode, 'dijitHidden', !this.hasPrevious(pageName));
 	},
 
 	hasNext: function(/*String*/ pageName) {
@@ -188,9 +188,9 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 
 	_next: function(/*String*/ currentPage) {
 		// update visibilty of buttons and show next page
-		dojo.when(this.next(currentPage), dojo.hitch(this, function(nextPage) {
+		/*REQUIRE:"dojo/when"*/ when(this.next(currentPage), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(nextPage) {
 			if (!nextPage) {
-				throw new Error('ERROR: received invalid page name [' + dojo.toJson(nextPage) + '] for Wizard.next(' + dojo.toJson(currentPage) + ')');
+				throw new Error('ERROR: received invalid page name [' + /*REQUIRE:"dojo/jsone"*/ json.stringify(nextPage) + '] for Wizard.next(' + /*REQUIRE:"dojo/jsone"*/ json.stringify(currentPage) + ')');
 			}
 			this._updateButtons(nextPage);
 			this.selectChild(this._pages[nextPage]);
@@ -227,7 +227,7 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 
 	_previous: function(/*String*/ currentPage) {
 		// update visibilty of buttons and show previous page
-		dojo.when(this.previous(currentPage), dojo.hitch(this, function(previousPage) {
+		/*REQUIRE:"dojo/when"*/ when(this.previous(currentPage), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(previousPage) {
 			this._updateButtons(previousPage);
 			this.selectChild(this._pages[previousPage]);
 		}));
@@ -259,9 +259,9 @@ dojo.declare("umc.widgets.Wizard", [ dijit.layout.StackContainer, umc.widgets.St
 		// summary:
 		//		Collects all entered values and returns a dict.
 		var values = {};
-		dojo.forEach(this.pages, function(ipage) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.pages, function(ipage) {
 			if (this._pages[ipage.name]._form) {
-				dojo.mixin(values, this._pages[ipage.name]._form.gatherFormValues());
+				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(values, this._pages[ipage.name]._form.gatherFormValues());
 			}
 		}, this);
 		return values;

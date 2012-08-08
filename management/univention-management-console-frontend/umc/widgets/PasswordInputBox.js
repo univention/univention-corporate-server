@@ -37,7 +37,7 @@ dojo.require("umc.widgets.PasswordBox");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.PasswordInputBox", [ 
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ 
 	umc.widgets.ContainerWidget, 
 	umc.widgets._FormWidgetMixin, 
 	umc.widgets._WidgetsInWidgetsMixin,
@@ -100,19 +100,19 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 			required: this.required,
 			disabled: this.disabled,
 			name: this.name + '_1',
-			validator: dojo.hitch(this, '_checkValidity', 1)
+			validator: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_checkValidity', 1)
 		});
 		this._secondWidget = this.adopt(umc.widgets.PasswordBox, {
 			required: this.required,
 			disabled: this.disabled,
 			name: this.name + '_2',
-			validator: dojo.hitch(this, '_checkValidity', 2),
+			validator: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_checkValidity', 2),
 			invalidMessage: this._('The passwords do not match, please retype again.')
 		});
 		this._setLabelAttr(this.label);
 
 		// register to 'onChange' events
-		this.connect(this._secondWidget, 'onChange', 'onChange');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._secondWidget, 'onChange', 'onChange');
 
 		// create layout
 		var container = this.adopt(umc.widgets.ContainerWidget, {});
@@ -130,7 +130,7 @@ dojo.declare("umc.widgets.PasswordInputBox", [
 		this.inherited(arguments);
 
 		// hook validate for the second box with the onChange event of the first one
-		this.connect(this._firstWidget, 'onChange', dojo.hitch(this._secondWidget, 'validate', false));
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._firstWidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this._secondWidget, 'validate', false));
 	},
 
 	_getValueAttr: function() {

@@ -31,7 +31,7 @@
 dojo.provide("umc.store");
 
 dojo.require("umc.tools");
-dojo.require("dojo.DeferredList");
+dojo.require("/*REQUIRE:"dojo/Deferred"*/ DeferredList");
 dojo.require("dojo.store.util.QueryResults");
 dojo.require("dojo.store.Observable");
 dojo.require("dojo.store.Memory");
@@ -73,7 +73,7 @@ umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath,
 	return stores[key];
 };
 
-dojo.declare("umc.store.Memory", dojo.store.Memory, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dojo.store.Memory, {
 	// summary:
 	//		Enhances the original Memory class with a onChange event for the Grid.
 
@@ -105,7 +105,7 @@ dojo.declare("umc.store.Memory", dojo.store.Memory, {
 	}
 });
 
-dojo.declare("umc.store.UmcpModuleStore", null, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(null, {
 	// idProperty: String
 	//		Indicates the property to use as the identity property. 
 	//		The values of this property should be unique.
@@ -121,7 +121,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	umcpCommand: umc.tools.umcpCommand,
 
 	constructor: function(params) {
-		dojo.mixin(this, params);
+		/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this, params);
 	},
 
 	getIdentity: function(object) {
@@ -130,19 +130,19 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		// object: Object
 		//		The object to get the identity from
 		//	returns: String
-		//console.log('getIdentity: ' + dojo.toJson(arguments));
+		//console.log('getIdentity: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
 		return object[this.idProperty];
 	},
 
 	_genericCmd: function(type, param) {
-		//console.log('_genericCmd: ' + dojo.toJson(arguments));
+		//console.log('_genericCmd: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
 		if (this._doingTransaction) {
 			this._addTransactions(type, [param]);
 		}
 		else {
 			return this._genericMultiCmd(type, [param]).
 				then(function(results) {
-					if (results && dojo.isArray(results)) {
+					if (results && results instanceof Array) {
 						return results[0];
 					}
 				});
@@ -150,14 +150,14 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	},
 
 	_genericMultiCmd: function(type, params) {
-		//console.log('_genericMultiCmd: ' + dojo.toJson(arguments));
+		//console.log('_genericMultiCmd: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
 		if (this._doingTransaction) {
 			this._addTransactions(type, params);
 		}
 		else {
 			// send the UMCP command
 			return this.umcpCommand(this.storePath + '/' + type, params).
-				then(dojo.hitch(this, function(data) {
+				then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 					// make sure that we get an non-empty array
 					//console.log('# _genericMultiCmd - deferred: data=' + String(data));
 					var res = dojo.getObject('result', false, data);
@@ -167,27 +167,27 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 						this.onChange();
 					}
 
-					//umc.tools.assert(res && dojo.isArray(res) && res.length == params.length,
-					//	dojo.replace('UMCP result from {0}/{1} did not yield an non-empty array!', [this.storePath, type]));
+					//umc.tools.assert(res && res instanceof Array && res.length == params.length,
+					//	/*REQUIRE:"dojo/_base/lang"*/ lang.replace('UMCP result from {0}/{1} did not yield an non-empty array!', [this.storePath, type]));
 					return res;
 				}));
 		}
 	},
 
 	get: function(id) {
-		//console.log('get: ' + dojo.toJson(arguments));
+		//console.log('get: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
 		//	summary:
 		//		Retrieves an object by its identity. This will trigger an UMCP request 
 		//		calling the module method 'GET'.
 		//	id: Number
 		//		The identity to use to lookup the object
-		//	returns: dojo.Deferred
+		//	returns: /*REQUIRE:"dojo/Deferred"*/ Deferred
 		//		The object in the store that matches the given id.
 		return this._genericCmd('get', id);
 	},
 
 	put: function(object, options) {
-		//console.log('put: ' + dojo.toJson(arguments));
+		//console.log('put: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
 		// summary:
 		//		Stores an object. This will trigger an UMCP request calling the module
 		//		method 'SET'.
@@ -195,7 +195,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		//		The object to store.
 		// options:
 		//		This parameter is currently ignored.
-		// returns: dojo.Deferred
+		// returns: /*REQUIRE:"dojo/Deferred"*/ Deferred
 		return this._genericCmd('put', {
 			object: object, 
 			options: options || null
@@ -203,7 +203,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	},
 
 	add: function(object, options) {
-		//console.log('add: ' + dojo.toJson(arguments));
+		//console.log('add: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
 		// summary:
 		//		Stores an object. This will trigger an UMCP request calling the module
 		//		method 'SET'.
@@ -218,7 +218,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	},
 
 	remove: function( object, options ) {
-		//console.log('remove: ' + dojo.toJson(arguments));
+		//console.log('remove: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
 		// summary:
 		//		Deletes an object by its identity. This will trigger an UCMP request
 		//		calling the module method 'UNSET'
@@ -233,7 +233,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	},
 
 	query: function(_query, options) {
-		//console.log('query: ' + dojo.toJson(arguments));
+		//console.log('query: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
 		// summary:
 		//		Queries the store for objects. This will trigger a GET request to the server, with the
 		//		query added as a query string.
@@ -248,10 +248,10 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		var query = {};
 		var nQueryEl = 0;
 		umc.tools.forIn(_query, function(ikey, ival) {
-			query[ikey] = (dojo.isString(ival) || typeof ival == 'boolean' || 'null' === ival) ? ival : String(ival);
+			query[ikey] = (typeof ival == "string" || typeof ival == 'boolean' || 'null' === ival) ? ival : String(ival);
 			++nQueryEl;
 		}, this, true);
-		var deferred = new dojo.Deferred();
+		var deferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
 		if (nQueryEl) {
 			// non-empty query
 			deferred = this.umcpCommand(this.storePath + '/query', query);
@@ -301,27 +301,27 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 	_commitTransactions: function() {
 		// perform the transactions group-wise, the order of the command groups is respected,
 		// a group of commands is submitted after the preceding one succeeded.
-		var deferred = new dojo.Deferred();
+		var deferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
 		deferred.resolve();
 		var results = [];
 		this._doingTransaction = false;
 		this._noEvents = true; // switch off event notifications
 		var dataModified = false;
-		dojo.forEach(this._groupedTransactions, dojo.hitch(this, function(igroup, i) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._groupedTransactions, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(igroup, i) {
 			// check whether the data is modified
 			dataModified = dataModified || 'remove' == igroup.type || 'put' == igroup.type || 'add' == igroup.type;
 
 			// chain all deferred commands
-			deferred = deferred.then(dojo.hitch(this, function(data) {
+			deferred = deferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 				return this._genericMultiCmd(igroup.type, igroup.params).then(function(data) {
 					results = results.concat(data);
-					//console.log(dojo.replace('# deferred: i={0} data={1}', [i, String(data)]));
+					//console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace('# deferred: i={0} data={1}', [i, String(data)]));
 					return null;
 				});
 			}));
 		}));
 
-		var _cleanup = dojo.hitch(this, function() {
+		var _cleanup = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 			// switch back on events and send onChange event
 			this._noEvents = false;
 			if (dataModified) {
@@ -333,7 +333,7 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 
 		});
 
-		deferred = deferred.then(dojo.hitch(this, function() {
+		deferred = deferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 			// clean up
 			_cleanup();
 
@@ -356,12 +356,12 @@ dojo.declare("umc.store.UmcpModuleStore", null, {
 		//		Note that all transactions are (for now) executed in an undefined order.
 		// returns: dojo.store.api.Store.Transaction
 		//		This represents the new current transaction. `commit()` returns a 
-		//		`dojo.DeferredList` object for all transactions.
+		//		`/*REQUIRE:"dojo/Deferred"*/ DeferredList` object for all transactions.
 		umc.tools.assert(!this._doingTransaction, 'Another UMCP transaction is already being processed, cannot perform two transactions simultaneously.');
 		this._doingTransaction = true;
 		return {
-			commit: dojo.hitch(this, this._commitTransactions),
-			abort: dojo.hitch(this, this._abortTransactions)
+			commit: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this._commitTransactions),
+			abort: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this._abortTransactions)
 		};
 	},
 

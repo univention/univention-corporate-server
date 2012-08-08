@@ -34,7 +34,7 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.tools");
 dojo.require("umc.render");
 
-dojo.declare("umc.widgets.WidgetGroup", umc.widgets.ContainerWidget, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.ContainerWidget, {
 	// summary:
 	//		Groups a set of widgets and returns the value of all widgets as a dictionary
 
@@ -65,7 +65,7 @@ dojo.declare("umc.widgets.WidgetGroup", umc.widgets.ContainerWidget, {
 
 		// register onChange event
 		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
-			this.connect( iwidget, 'onChange', dojo.hitch( this, function( newValue ) {
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( iwidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( newValue ) {
 				this.onChange( newValue, iname );
 			} ) );
 		}, this );

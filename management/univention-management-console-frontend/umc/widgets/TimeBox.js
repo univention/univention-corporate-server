@@ -37,7 +37,7 @@ dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.TimeBox", [
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
 	umc.widgets.ContainerWidget,
 	umc.widgets._FormWidgetMixin,
 	umc.widgets._WidgetsInWidgetsMixin
@@ -67,7 +67,7 @@ dojo.declare("umc.widgets.TimeBox", [
 		this.addChild(this._timeBox);
 
 		// hook to the onChange event
-		this.connect(this._timeBox, 'onChange', function(val) {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._timeBox, 'onChange', function(val) {
 			this.onChange(this.get('value'));
 		});
 	},

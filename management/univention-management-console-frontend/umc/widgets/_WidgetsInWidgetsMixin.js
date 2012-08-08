@@ -35,7 +35,7 @@ dojo.provide("umc.widgets._WidgetsInWidgetsMixin");
 // http://higginsforpresident.net/2010/01/widgets-within-widgets/
 //
 
-dojo.declare("umc.widgets._WidgetsInWidgetsMixin", null, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(null, {
     // summary:
     //    The Foundation widget for our things. Includes _Widget and _Templated with some custom addin methods.
 
@@ -94,7 +94,7 @@ dojo.declare("umc.widgets._WidgetsInWidgetsMixin", null, {
         //
         // example:
         //  Clear out all the children in an array, but do not destroy them.
-        //  |   dojo.forEach(this._thumbs, this.orphan, this);
+        //  |   /*REQUIRE:"dojo/_base/array"*/ array.forEach(this._thumbs, this.orphan, this);
         //
         // example:
         //  Create and destroy a button cleanly:
@@ -102,7 +102,7 @@ dojo.declare("umc.widgets._WidgetsInWidgetsMixin", null, {
         //  |   this.orphan(x, true);
         //
         this._addedItems = this._addedItems || [];
-        var i = dojo.indexOf(this._addedItems, widget);
+        var i = /*REQUIRE:"dojo/_base/array"*/ array.indexOf(this._addedItems, widget);
         if (i >= 0) {
 			this._addedItems.splice(i, 1);
 		}
@@ -123,7 +123,7 @@ dojo.declare("umc.widgets._WidgetsInWidgetsMixin", null, {
 
     destroy: function(){
         // summary: override the default destroy function to account for programatically added children.
-        dojo.forEach(this._addedItems, this._kill);
+        /*REQUIRE:"dojo/_base/array"*/ array.forEach(this._addedItems, this._kill);
         this.inherited(arguments);
     }
 });

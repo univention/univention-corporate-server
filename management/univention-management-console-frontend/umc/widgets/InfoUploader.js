@@ -33,7 +33,7 @@ dojo.provide("umc.widgets.InfoUploader");
 dojo.require("umc.widgets.Uploader");
 dojo.require("umc.widgets.Text");
 
-dojo.declare("umc.widgets.InfoUploader", [ umc.widgets.Uploader ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.Uploader ], {
 	'class': 'umcInfoUploader',
 
 	i18nClass: 'umc.app',

@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.5-1) unstable; urgency=low
+
+  * WIP: migration to Dojo 1.8; Bug #26857
+  * Note: package is currently not buildable!
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Aug 2012 17:17:29 +0200
+
 univention-management-console-frontend (2.0.4-1) unstable; urgency=low
 
   * args in CPgeneric is now a dict containing options and flavor (Bug #27850)

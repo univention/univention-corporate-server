@@ -38,7 +38,7 @@ dojo.require("umc.tools");
 dojo.require("umc.i18n");
 dojo.require("umc.render");
 
-dojo.declare("umc.widgets.UnixAccessRights", [ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
 	// summary:
 	//		Displays a matrix of UNIX access rights
 
@@ -73,7 +73,7 @@ dojo.declare("umc.widgets.UnixAccessRights", [ umc.widgets.ContainerWidget, umc.
 			{ type: 'Text', name: 'groupLabel', content: this._( 'Group' ) },
 			{ type: 'Text', name: 'otherLabel', content: this._( 'Others' ) }
 		];
-		dojo.forEach( [ 'owner', 'group', 'other' ], dojo.hitch( this, function( item ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'owner', 'group', 'other' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
 			this.widgets.push( { type: 'CheckBox', name: item + 'Read', disabled: this.disabled } );
 			this.widgets.push( { type: 'CheckBox', name: item + 'Write', disabled: this.disabled } );
 			this.widgets.push( { type: 'CheckBox', name: item + 'Execute', disabled: this.disabled } );
@@ -111,7 +111,7 @@ dojo.declare("umc.widgets.UnixAccessRights", [ umc.widgets.ContainerWidget, umc.
 		this._container.addChild( this._widgets.write );
 		this._container.addChild( this._widgets.access );
 		// other rows
-		dojo.forEach( [ 'owner', 'group', 'other' ], dojo.hitch( this, function( item ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'owner', 'group', 'other' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
 			this._container.addChild( this._widgets[ item + 'Label' ] );
 			this._container.addChild( this._widgets[ item + 'Read' ] );
 			this._container.addChild( this._widgets[ item + 'Write' ] );
@@ -123,7 +123,7 @@ dojo.declare("umc.widgets.UnixAccessRights", [ umc.widgets.ContainerWidget, umc.
 			if ( 'Text' == iwidget.type ) { // ignore labels
 				return;
 			}
-			this.connect( iwidget, 'onChange', dojo.hitch( this, function( newValue ) {
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( iwidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( newValue ) {
 				this.onChange( newValue, iname );
 			} ) );
 		}, this );
@@ -135,7 +135,7 @@ dojo.declare("umc.widgets.UnixAccessRights", [ umc.widgets.ContainerWidget, umc.
 	_getValueAttr: function() {
 		var rights = 0;
 
-		dojo.forEach( [ 'owner', 'group', 'other' ], dojo.hitch( this, function( item ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'owner', 'group', 'other' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
 			rights += this._widgets[ item + 'Execute' ].get( 'checked' ) ? 1 : 0;
 			rights += this._widgets[ item + 'Write' ].get( 'checked' ) ? 2 : 0;
 			rights += this._widgets[ item + 'Read' ].get( 'checked' ) ? 4 : 0;
@@ -150,7 +150,7 @@ dojo.declare("umc.widgets.UnixAccessRights", [ umc.widgets.ContainerWidget, umc.
 	_setValueAttr: function( value ) {
 		var rights = parseInt( value, 8 );
 
-		dojo.forEach( [ 'other', 'group', 'owner' ], dojo.hitch( this, function( item ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'other', 'group', 'owner' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
 			this._widgets[ item + 'Execute' ].set( 'checked', rights & 1 );
 			this._widgets[ item + 'Write' ].set( 'checked', rights & 2 );
 			this._widgets[ item + 'Read' ].set( 'checked', rights & 4 );

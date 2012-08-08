@@ -39,7 +39,7 @@ dojo.require("umc.i18n");
 dojo.require("umc.tools");
 dojo.require("umc.dialog");
 
-dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
 	'class': 'umcUploader',
 
 	i18nClass: 'umc.app',
@@ -125,16 +125,16 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 				return null;
 			}
 		});
-		dojo.addClass(this._uploader.button.domNode, 'umcButton');
-		this._uploader.button.set('iconClass', 'umcIconAdd');
-		dojo.style(this._uploader.button.domNode, 'display', 'inline-block');
+		/*REQUIRE:"dojo/dom-class"*/ domClass.add(this._uploader.domNode, 'umcButton');
+		this._uploader.set('iconClass', 'umcIconAdd');
+		/*REQUIRE:"dojo/dom-style"*/ style.set(this._uploader.domNode, 'display', 'inline-block');
 		this.addChild(this._uploader);
 
 		if ( this.showClearButton ) {
 			this._clearButton = new umc.widgets.Button({
 				label: this.clearButtonLabel,
 				iconClass: 'umcIconDelete',
-				callback: dojo.hitch(this, function() {
+				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 					this.set('data', null);
 				})
 			});
@@ -146,9 +146,9 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		this.inherited(arguments);
 
 		// as soon as the user has selected a file, start the upload
-		this.connect(this._uploader, 'onChange', function(data) {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onChange', function(data) {
 			var allOk = true;
-			dojo.forEach(data, function(ifile) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(data, function(ifile) {
 				allOk = allOk && ifile.size <= this.maxSize;
 				return allOk;
 			}, this);
@@ -157,7 +157,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 				this._uploader.reset();
 			}
 			else {
-				dojo.when(this.canUpload(data[0]), dojo.hitch(this, function(doUpload) {
+				/*REQUIRE:"dojo/when"*/ when(this.canUpload(data[0]), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(doUpload) {
 					if (!doUpload) {
 						// upload canceled
 						this._uploader.reset();
@@ -168,15 +168,15 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 					this._updateLabel();
 					var params = {};
 					if (this.dynamicOptions) {
-						if (dojo.isFunction(this.dynamicOptions)) {
-							dojo.mixin(params, this.dynamicOptions(params));
+						if (typeof this.dynamicOptions == "function") {
+							/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions(params));
 						}
 						else if (dojo.isObject(this.dynamicOptions)) {
-							dojo.mixin(params, this.dynamicOptions);
+							/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
 						}
 					}
 					// mixin the iframe information
-					dojo.mixin(params, {
+					/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, {
 						iframe: (this._uploader.uploadType === 'iframe') ? true : false
 					});
 					this._uploader.upload(params);
@@ -186,11 +186,11 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		});
 
 		// hook for showing the progress
-		this.connect(this._uploader, 'onProgress', 'onProgress');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onProgress', 'onProgress');
 
 		// notification as soon as the file has been uploaded
-		this.connect(this._uploader, 'onComplete', function(data) {
-			if (data && dojo.isArray(data.result)) {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onComplete', function(data) {
+			if (data && data.result instanceof Array) {
 				this.set('data', data.result[0]);
 				this.onUploaded(this.data);
 			}
@@ -210,9 +210,9 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 		});
 
 		// setup events
-		this.connect(this._uploader, 'onCancel', '_resetLabel');
-		this.connect(this._uploader, 'onAbort', '_resetLabel');
-		this.connect(this._uploader, 'onError', '_resetLabel');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onCancel', '_resetLabel');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onAbort', '_resetLabel');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onError', '_resetLabel');
 
 		// update the view
 		this.set('value', this.value);
@@ -233,7 +233,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 
 		if ( this.showClearButton ) {
 			// decide whether to show/hide remove button
-			dojo.toggleClass(this._clearButton.domNode, 'dijitHidden', !(dojo.isString(this.value) && this.value !== ""));
+			/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(this._clearButton.domNode, 'dijitHidden', !(typeof this.value == "string" && this.value !== ""));
 		}
 
 		// send events
@@ -242,7 +242,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	},
 
 	_resetLabel: function() {
-		if (!this._uploader.button) {
+		if (!this._uploader) {
 			return;
 		}
 		this.set('disabled', false);
@@ -259,19 +259,19 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	},
 
 	_setButtonLabelAttr: function(newVal) {
-		if (!this._uploader.button) {
+		if (!this._uploader) {
 			return;
 		}
 		this.buttonLabel = newVal;
-		this._uploader.button.set('label', newVal);
+		this._uploader.set('label', newVal);
 	},
 
 	_setDisabledAttr: function(newVal) {
-		if (!this._uploader.button) {
+		if (!this._uploader || !this._uploader.inputNode) {
 			return;
 		}
 		this._uploader.set('disabled', newVal);
-		dojo.style(this._uploader.button.domNode, 'display', 'inline-block');
+		/*REQUIRE:"dojo/dom-style"*/ style.set(this._uploader.domNode, 'display', 'inline-block');
 	},
 
 	_getDisabledAttr: function() {
@@ -281,7 +281,7 @@ dojo.declare("umc.widgets.Uploader", [ umc.widgets.ContainerWidget, umc.widgets.
 	canUpload: function(fileInfo) {
 		// summary:
 		//		Before uploading a file, this function is called to make sure
-		//		that the given filename is valid. Return boolean or dojo.Deferred.
+		//		that the given filename is valid. Return boolean or /*REQUIRE:"dojo/Deferred"*/ Deferred.
 		// fileInfo: Object
 		//		Info object for the requested file, contains properties 'name',
 		//		'size', 'type'.

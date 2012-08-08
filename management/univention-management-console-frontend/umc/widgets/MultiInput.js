@@ -37,7 +37,7 @@ dojo.require("umc.render");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.MultiInput", [
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
 	umc.widgets.ContainerWidget,
 	umc.widgets._FormWidgetMixin,
 	umc.widgets._WidgetsInWidgetsMixin,
@@ -101,7 +101,7 @@ dojo.declare("umc.widgets.MultiInput", [
 			if (elapsedTime > 100 || !(dojo.getObject('then', false, _valueOrDeferred) && dojo.getObject('cancel', false, _valueOrDeferred))) {
 				_valueOrDeferred = ifunc(options);
 			}
-			//console.log('# new deferred: ', iname, ' elapsedTime: ', elapsedTime, ' options: ', dojo.toJson(options), ' values: ', _valueOrDeferred);
+			//console.log('# new deferred: ', iname, ' elapsedTime: ', elapsedTime, ' options: ', /*REQUIRE:"dojo/jsone"*/ json.stringify(options), ' values: ', _valueOrDeferred);
 
 			// return the value
 			return _valueOrDeferred;
@@ -114,7 +114,7 @@ dojo.declare("umc.widgets.MultiInput", [
 		this.sizeClass = null;
 
 		// check the property 'subtypes'
-		umc.tools.assert(dojo.isArray(this.subtypes),
+		umc.tools.assert(this.subtypes instanceof Array,
 				'umc.widgets.ContainerWidget: The property subtypes needs to be a string or an array of strings: ' + this.subtypes);
 
 		// initiate other properties
@@ -123,17 +123,17 @@ dojo.declare("umc.widgets.MultiInput", [
 
 		// we need to rewire the dependencies through this widget to the row widgets
 		this.depends = [];
-		dojo.forEach(this.subtypes, function(iwidget, i) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.subtypes, function(iwidget, i) {
 			// gather all dependencies so form can notify us
-			dojo.forEach(umc.tools.stringOrArray(iwidget.depends), function(idep) {
-				if (dojo.indexOf(this.depends, idep) < 0) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(umc.tools.stringOrArray(iwidget.depends), function(idep) {
+				if (/*REQUIRE:"dojo/_base/array"*/ array.indexOf(this.depends, idep) < 0) {
 					this.depends.push(idep);
 				}
 			}, this);
 
 			// parse the dynamic value function and create a handler
 			var ifunc = umc.tools.stringOrFunction(iwidget.dynamicValues, this.umcpCommand || umc.tools.umcpCommand);
-			var handler = dojo.hitch(this, this._createHandler(ifunc, iwidget));
+			var handler = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this._createHandler(ifunc, iwidget));
 
 			// replace the widget handler for dynamicValues with our version
 			iwidget.dynamicValues = handler;
@@ -150,8 +150,8 @@ dojo.declare("umc.widgets.MultiInput", [
 	_loadValues: function(depends) {
 		// delegate the call to _loadValues to all widgets
 		this._lastDepends = depends;
-		dojo.forEach(this._widgets, function(iwidgets) {
-			dojo.forEach(iwidgets, function(jwidget) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._widgets, function(iwidgets) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(iwidgets, function(jwidget) {
 				if ('_loadValues' in jwidget) {
 					jwidget._loadValues(depends);
 				}
@@ -161,7 +161,7 @@ dojo.declare("umc.widgets.MultiInput", [
 
 	_setAllValues: function(_valList) {
 		var valList = _valList;
-		if (!dojo.isArray(valList)) {
+		if (!valList instanceof Array) {
 			valList = [];
 		}
 
@@ -175,14 +175,14 @@ dojo.declare("umc.widgets.MultiInput", [
 		}
 
 		// set all values
-		dojo.forEach(valList, function(ival, irow) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(valList, function(ival, irow) {
 			if (irow >= this._widgets.length) {
 				// break
 				return false;
 			}
 
 			var rowVals = [];
-			if (dojo.isString(ival)) {
+			if (typeof ival == "string") {
 				// entry is string .. we need to parse it if we have a delimiter
 				if (this.delimiter) {
 					rowVals = ival.split(this.delimiter);
@@ -191,7 +191,7 @@ dojo.declare("umc.widgets.MultiInput", [
 					rowVals = [ ival ];
 				}
 			}
-			else if (dojo.isArray(ival)) {
+			else if (ival instanceof Array) {
 				rowVals = ival;
 			}
 
@@ -210,8 +210,8 @@ dojo.declare("umc.widgets.MultiInput", [
 
 	_setValueAttr: function(_vals) {
 		// remove all empty elements
-		var vals = dojo.filter(_vals, function(ival) {
-			return (dojo.isString(ival) && '' !== ival) || (dojo.isArray(ival) && ival.length);
+		var vals = /*REQUIRE:"dojo/_base/array"*/ array.filter(_vals, function(ival) {
+			return (typeof ival == "string" && '' !== ival) || (ival instanceof Array && ival.length);
 		});
 
 		// append an empty element
@@ -224,7 +224,7 @@ dojo.declare("umc.widgets.MultiInput", [
 	_setDisabledAttr: function ( value ) {
 		var i;
 		for ( i = 0; i < this._rowContainers.length; ++i) {
-			dojo.forEach( this._rowContainers[ i ].getChildren(), function( widget ) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._rowContainers[ i ].getChildren(), function( widget ) {
 				widget.set( 'disabled', value );
 			} );
 		}
@@ -260,11 +260,11 @@ dojo.declare("umc.widgets.MultiInput", [
 	_getValueAttr: function() {
 		// only return non-empty entries
 		var vals = [];
-		dojo.forEach(this._getAllValues(), function(ival) {
-			if (dojo.isString(ival) && '' !== ival) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._getAllValues(), function(ival) {
+			if (typeof ival == "string" && '' !== ival) {
 				vals.push(ival);
 			}
-			else if (dojo.isArray(ival) && ival.length) {
+			else if (ival instanceof Array && ival.length) {
 				// if we only have one subtype, do not use arrays as representation
 				vals.push(1 == ival.length ? ival[0] : ival);
 			}
@@ -287,7 +287,7 @@ dojo.declare("umc.widgets.MultiInput", [
 
 		// verify whether label information for subtypes are given
 		var hasSubTypeLabels = false;
-		dojo.forEach(this.subtypes, function(iwidget) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.subtypes, function(iwidget) {
 			hasSubTypeLabels = hasSubTypeLabels || iwidget.label;
 		});
 
@@ -295,7 +295,7 @@ dojo.declare("umc.widgets.MultiInput", [
 		var btn = this.adopt(dijit.form.Button, {
 			disabled: this.disabled,
 			iconClass: 'umcIconAdd',
-			onClick: dojo.hitch(this, '_appendElements', 1),
+			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_appendElements', 1),
 			'class': 'umcMultiInputAddButton'
 		});
 
@@ -321,14 +321,14 @@ dojo.declare("umc.widgets.MultiInput", [
 		for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
 			// add all other elements with '__' such that they will be ignored by umc.widgets.form
 			var order = [], widgetConfs = [];
-			dojo.forEach(this.subtypes, function(iwidget, i) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.subtypes, function(iwidget, i) {
 				// add the widget configuration dict to the list of widgets
 				var iname = '__' + this.name + '-' + irow + '-' + i;
-				var iconf = dojo.mixin({}, iwidget, {
+				var iconf = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, iwidget, {
 					disabled: this.disabled,
 					name: iname,
 					value: '',
-					dynamicValues: dojo.partial(iwidget.dynamicValues, iname)
+					dynamicValues: /*REQUIRE:"dojo/_base/lang"*/ lang.partial(iwidget.dynamicValues, iname)
 				});
 				widgetConfs.push(iconf);
 
@@ -344,25 +344,25 @@ dojo.declare("umc.widgets.MultiInput", [
 			// current element
 			umc.tools.forIn(widgets, function(ikey, iwidget) {
 				var myrow = irow;
-				if (umc.tools.inheritsFrom(iwidget, 'umc.widgets.Button') && dojo.isFunction(iwidget.callback)) {
+				if (umc.tools.inheritsFrom(iwidget, 'umc.widgets.Button') && typeof iwidget.callback == "function") {
 					var callbackOrg = iwidget.callback;
-					iwidget.callback = dojo.hitch(this, function() {
+					iwidget.callback = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 						callbackOrg(this.get('value')[myrow], myrow);
 					});
 				}
 			}, this);
 
 			// find out whether all items do have a label
-			var hasSubTypeLabels = dojo.filter(this.subtypes, function(iwidget) {
+			var hasSubTypeLabels = /*REQUIRE:"dojo/_base/array"*/ array.filter(this.subtypes, function(iwidget) {
 				return iwidget.label;
 			}).length > 0;
 
 			// layout widgets
-			var visibleWidgets = dojo.map(order, function(iname) {
+			var visibleWidgets = /*REQUIRE:"dojo/_base/array"*/ array.map(order, function(iname) {
 				return widgets[iname];
 			});
 			var rowContainer = this.adopt(umc.widgets.ContainerWidget, {});
-			dojo.forEach(order, function(iname) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(order, function(iname) {
 				// add widget to row container (wrapped by a LabelPane)
 				// only keep the label for the first row
 				var iwidget = widgets[iname];
@@ -377,7 +377,7 @@ dojo.declare("umc.widgets.MultiInput", [
 				}));
 
 				// register to 'onChange' events
-				this.connect(iwidget, 'onChange', function() {
+				/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(iwidget, 'onChange', function() {
 					this.onChange(this.get('value'));
 				});
 			}, this);
@@ -386,7 +386,7 @@ dojo.declare("umc.widgets.MultiInput", [
 			var button = this.adopt(dijit.form.Button, {
 				disabled: this.disabled,
 				iconClass: 'umcIconDelete',
-				onClick: dojo.hitch(this, '_removeElement', irow),
+				onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_removeElement', irow),
 				'class': 'umcMultiInputRemoveButton'
 			});
 			rowContainer.addChild(new umc.widgets.LabelPane({
@@ -401,7 +401,7 @@ dojo.declare("umc.widgets.MultiInput", [
 			this.addChild(rowContainer);
 
 			// call the _loadValues method by hand
-			dojo.forEach(order, function(iname) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(order, function(iname) {
 				var iwidget = widgets[iname];
 				if ('_loadValues' in iwidget) {
 					iwidget._loadValues(this._lastDepends);
@@ -468,8 +468,8 @@ dojo.declare("umc.widgets.MultiInput", [
 		//		Arrays indicate specific states for each element
 		var i, j;
 		for (i = 0; i < this._widgets.length; ++i) {
-			var imessage = dojo.isArray(messages) ? messages[i] : messages;
-			var iisValid = dojo.isArray(areValid) ? areValid[i] : areValid;
+			var imessage = messages instanceof Array ? messages[i] : messages;
+			var iisValid = areValid instanceof Array ? areValid[i] : areValid;
 			for (j = 0; j < this._widgets[i].length; ++j) {
 				this._widgets[i][j].setValid(iisValid, imessage);
 			}

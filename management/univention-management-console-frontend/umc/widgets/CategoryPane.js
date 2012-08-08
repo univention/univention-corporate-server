@@ -39,7 +39,7 @@ dojo.require("umc.widgets.Tooltip");
 
 //TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
 //      http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
-dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Contained], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([dijit.layout.ContentPane, dijit._Contained], {
 	modID: '',
 	modIcon: '',
 	label: '',
@@ -50,7 +50,7 @@ dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Con
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
-		dojo.mixin(this, {
+		/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this, {
 			baseClass: 'modLaunchButton',
 			'class': umc.tools.getIconClass(this.modIcon, 50),
 			content: '<div>' + this.label + '</div>'
@@ -67,22 +67,22 @@ dojo.declare( "umc.widgets._CategoryItem", [dijit.layout.ContentPane, dijit._Con
 		});
 
 		//this.domNode.innerHtml = '<div>' + this.description + '</div>';
-		this.connect(this, 'onMouseOver', function(evt) {
-			dojo.addClass(this.domNode, 'modLaunchButtonHover');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onMouseOver', function(evt) {
+			/*REQUIRE:"dojo/dom-class"*/ domClass.add(this.domNode, 'modLaunchButtonHover');
 		});
-		this.connect(this, 'onMouseOut', function(evt) {
-			dojo.removeClass(this.domNode, 'modLaunchButtonHover');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onMouseOut', function(evt) {
+			/*REQUIRE:"dojo/dom-class"*/ domClass.remove(this.domNode, 'modLaunchButtonHover');
 		});
-		this.connect(this, 'onMouseDown', function(evt) {
-			dojo.addClass(this.domNode, 'modLaunchButtonClick');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onMouseDown', function(evt) {
+			/*REQUIRE:"dojo/dom-class"*/ domClass.add(this.domNode, 'modLaunchButtonClick');
 		});
-		this.connect(this, 'onMouseUp', function(evt) {
-			dojo.removeClass(this.domNode, 'modLaunchButtonClick');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onMouseUp', function(evt) {
+			/*REQUIRE:"dojo/dom-class"*/ domClass.remove(this.domNode, 'modLaunchButtonClick');
 		});
 	}
 });
 
-dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([dijit.TitlePane, dijit._Container], {
 	// summary:
 	//		Widget that displays an overview of all modules belonging to a 
 	//		given category along with their icon and description.
@@ -109,7 +109,7 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 		this.inherited(arguments);
 
 		// iterate over all modules
-		dojo.forEach(this.modules, dojo.hitch(this, function(imod) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.modules, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(imod) {
 			// create a new button widget for each module
 			var modWidget = new umc.widgets._CategoryItem({
 				modID: imod.id,
@@ -119,7 +119,7 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 			});
 
 			// hook to the onClick event of the module
-			this.connect(modWidget, 'onClick', function(evt) {
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(modWidget, 'onClick', function(evt) {
 				this.onOpenModule(imod);
 			});
 
@@ -129,7 +129,7 @@ dojo.declare( "umc.widgets.CategoryPane", [dijit.TitlePane, dijit._Container], {
 
 		// we need to add a <br> at the end, otherwise we will get problems 
 		// with the visualizaton
-		//this.containerNode.appendChild(dojo.create('br', { clear: 'all' }));
+		//this.containerNode.appendChild(/*REQUIRE:"dojo/dom-construct"*/ construct.create('br', { clear: 'all' }));
 	},
 
 	onOpenModule: function(imod) {

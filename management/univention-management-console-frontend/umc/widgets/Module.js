@@ -34,7 +34,7 @@ dojo.require("dijit.layout.StackContainer");
 dojo.require("umc.widgets._ModuleMixin");
 dojo.require("umc.widgets.StandbyMixin");
 
-dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets._ModuleMixin, umc.widgets.StandbyMixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.StackContainer, umc.widgets._ModuleMixin, umc.widgets.StandbyMixin ], {
 	// summary:
 	//		Basis class for module classes.
 	//		It extends dijit.layout.StackContainer and adds some module specific
@@ -59,12 +59,12 @@ dojo.declare("umc.widgets.Module", [ dijit.layout.StackContainer, umc.widgets._M
 		//        on an inactive tab.
 
 		// iterate over all tabs
-		dojo.forEach(this.getChildren(), function(ipage) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.getChildren(), function(ipage) {
 			// find all widgets that inherit from dojox.grid._Grid on the tab
-			dojo.forEach(ipage.getDescendants(), function(iwidget) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(ipage.getDescendants(), function(iwidget) {
 				if (umc.tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 					// hook to onShow event
-					this.connect(ipage, 'onShow', function() {
+					/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(ipage, 'onShow', function() {
 						iwidget.startup();
 					});
 				}

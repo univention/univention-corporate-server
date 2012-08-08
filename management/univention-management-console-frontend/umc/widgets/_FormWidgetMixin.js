@@ -30,7 +30,7 @@
 
 dojo.provide("umc.widgets._FormWidgetMixin");
 
-dojo.declare("umc.widgets._FormWidgetMixin", null, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(null, {
 	// by default, set required to 'false'
 	required: false,
 
@@ -57,9 +57,9 @@ dojo.declare("umc.widgets._FormWidgetMixin", null, {
 		this.inherited( arguments );
 
 		if ( this.sizeClass ) {
-			dojo.addClass( this.domNode, 'umcSize-' + this.sizeClass );
+			/*REQUIRE:"dojo/dom-class"*/ domClass.add( this.domNode, 'umcSize-' + this.sizeClass );
 		}
-		dojo.addClass( this.domNode, 'umcFormWidget' );
+		/*REQUIRE:"dojo/dom-class"*/ domClass.add( this.domNode, 'umcFormWidget' );
 	},
 
 	// provide 'onChange' method stub in case it does not exist yet

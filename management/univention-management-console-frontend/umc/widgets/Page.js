@@ -36,7 +36,7 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets.Text");
 dojo.require("umc.i18n");
 
-dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.BorderContainer, umc.i18n.Mixin ], {
 	// summary:
 	//		Class that abstracts a displayable page for a module.
 	//		Offers the possibility to enter a help text that is shown or not
@@ -145,9 +145,9 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 			this._footer.addChild(footerRight);
 
 			// render all buttons and add them to the footer
-			if (this.footerButtons && dojo.isArray(this.footerButtons) && this.footerButtons.length) {
+			if (this.footerButtons && this.footerButtons instanceof Array && this.footerButtons.length) {
 				var buttons = umc.render.buttons(this.footerButtons);
-				dojo.forEach(buttons.$order$, function(ibutton) {
+				/*REQUIRE:"dojo/_base/array"*/ array.forEach(buttons.$order$, function(ibutton) {
 					if ('submit' == ibutton.type || ibutton.defaultButton || 'right' == ibutton.align) {
 						footerRight.addChild(ibutton);
 					}
@@ -169,7 +169,7 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		}
 		else {
 			// register for events to hide the help text information
-			this._subscriptionHandle = dojo.subscribe('/umc/preferences/moduleHelpText', dojo.hitch(this, function(show) {
+			this._subscriptionHandle = /*REQUIRE:"dojo/topic"*/ topic.subscribe('/umc/preferences/moduleHelpText', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(show) {
 				if (false === show) {
 					this.hideDescription();
 				}
@@ -182,7 +182,7 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 
 	uninitialize: function() {
 		// unsubscribe upon destruction
-		dojo.unsubscribe(this._subscriptionHandle);
+		this._subscriptionHandle.remove();
 	},
 
 	_createHelpTextPane: function() {
@@ -218,7 +218,7 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		//this.layout();
 
 		// fade in the help text
-		dojo.fadeIn({
+		/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeIn({
 			node: this._helpTextPane.domNode,
 			duration: 500
 		}).play();
@@ -231,10 +231,10 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 		}
 
 		// fade out the help text
-		dojo.fadeOut({
+		/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeOut({
 			node: this._helpTextPane.domNode,
 			duration: 500,
-			onEnd: dojo.hitch(this, function() {
+			onEnd: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				// remove the text from the layout and destroy widget
 				this.removeChild(this._helpTextPane);
 				this._helpTextPane.destroyRecursive();
@@ -253,26 +253,26 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 			'class': 'umcPageNote'
 		});
 		dojo.query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
-			this.connect(inode, 'onmousedown', function() {
-				dojo.addClass(inode, 'dijitTabCloseButtonActive');
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmousedown', function() {
+				/*REQUIRE:"dojo/dom-class"*/ domClass.add(inode, 'dijitTabCloseButtonActive');
 			});
-			this.connect(inode, 'onmouseup', function() {
-				dojo.removeClass(inode, 'dijitTabCloseButtonActive');
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmouseup', function() {
+				/*REQUIRE:"dojo/dom-class"*/ domClass.remove(inode, 'dijitTabCloseButtonActive');
 			});
-			this.connect(inode, 'onmouseover', function() {
-				dojo.addClass(inode, 'dijitTabCloseButtonHover');
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmouseover', function() {
+				/*REQUIRE:"dojo/dom-class"*/ domClass.add(inode, 'dijitTabCloseButtonHover');
 			});
-			this.connect(inode, 'onmouseout', function() {
-				dojo.removeClass(inode, 'dijitTabCloseButtonHover');
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmouseout', function() {
+				/*REQUIRE:"dojo/dom-class"*/ domClass.remove(inode, 'dijitTabCloseButtonHover');
 			});
-			this.connect(inode, 'onclick', function() {
-				dojo.fadeOut({
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onclick', function() {
+				/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeOut({
 					node: note.domNode,
 					duration: 500,
-					onEnd: dojo.hitch(this, function() {
+					onEnd: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 						this.removeChild(note);
 						note.destroyRecursive();
-						this._notes = dojo.filter( this._notes, function( inote ) {
+						this._notes = /*REQUIRE:"dojo/_base/array"*/ array.filter( this._notes, function( inote ) {
 							return inote !== note;
 						} );
 					})
@@ -285,7 +285,7 @@ dojo.declare("umc.widgets.Page", [ dijit.layout.BorderContainer, umc.i18n.Mixin 
 	},
 
 	clearNotes: function() {
-		dojo.forEach(this._notes, function(inote) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._notes, function(inote) {
 			this.removeChild(inote);
 			inote.destroyRecursive();
 		}, this);

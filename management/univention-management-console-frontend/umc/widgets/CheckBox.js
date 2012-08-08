@@ -34,7 +34,7 @@ dojo.require("dijit.form.CheckBox");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.CheckBox", [ dijit.form.CheckBox, umc.widgets._FormWidgetMixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.CheckBox, umc.widgets._FormWidgetMixin ], {
 	// by default, the checkbox is turned off
 	value: false,
 

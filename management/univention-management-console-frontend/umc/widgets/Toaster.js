@@ -34,7 +34,7 @@ dojo.require("dojox.widget.Toaster");
 
 // TODO: the css property box-shadow does not work since a clipping is set dynamically,
 //		 this could be fixed...
-dojo.declare("umc.widgets.Toaster", dojox.widget.Toaster, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dojox.widget.Toaster, {
 	// summary:
 	//		Extension of dojox.widget.Toaster in order to allow centered notification.
 
@@ -55,7 +55,7 @@ dojo.declare("umc.widgets.Toaster", dojox.widget.Toaster, {
 
 		// get the viewport and node size
 		var view = dojo.window.getBox();
-		var nodeSize = dojo.marginBox(this.containerNode);
+		var nodeSize = /*REQUIRE:"dojo/dom-geometry"*/ geometry.getMarginBox(this.containerNode);
 
 		// set up the position for a centered toaster
 		var style = this.clipNode.style;

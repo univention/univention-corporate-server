@@ -35,7 +35,7 @@ dojo.require("dijit.form.Button");
 dojo.require("dijit.form.DropDownButton");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.TabContainer");
-dojo.require("dojo.cookie");
+dojo.require("/*REQUIRE:"dojo/cookie"*/ cookie");
 dojo.require("umc.tools");
 dojo.require("umc.dialog");
 dojo.require("umc.help");
@@ -47,7 +47,7 @@ dojo.require("umc.widgets.Text");
 dojo.require("umc.widgets.Button");
 dojo.require("umc.i18n");
 
-dojo.mixin(umc.app, new umc.i18n.Mixin({
+/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.app, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: [ 'umc.branding', 'umc.app' ]
 }), {
@@ -70,20 +70,20 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		umc.tools.status('width', props.width);
 		umc.tools.status('displayUsername', umc.tools.isTrue(props.displayUsername));
 		// username will be overriden by final authenticated username
-		umc.tools.status('username', props.username || dojo.cookie('UMCUsername'));
+		umc.tools.status('username', props.username || /*REQUIRE:"dojo/cookie"*/ cookie('UMCUsername'));
 		// password has been given in the query string... in this case we may cache it, as well
 		umc.tools.status('password', props.password);
 
-		if (dojo.isString(props.module)) {
+		if (typeof props.module == "string") {
 			// a startup module is specified
-			var handle = dojo.connect(this, 'onGuiDone', dojo.hitch(this, function() {
+			var handle = /*REQUIRE:"dojo/on"*/ /*TODO*/ on(this, 'onGuiDone', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				dojo.disconnect(handle);
 				this.openModule(props.module, props.flavor);
 				this._tabContainer.layout();
 
 				// put focus into the CategoryPane for scrolling
 				/*dijit.focus(this._categoryPane.domNode);
-				this.connect(_categoryPane, 'onShow', function() {
+				/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(_categoryPane, 'onShow', function() {
 					dijit.focus(this._categoryPane.domNode);
 				});*/
 			}));
@@ -91,31 +91,31 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			umc.tools.status('overview', umc.tools.isTrue(props.overview));
 		}
 
-		if (props.username && props.password && dojo.isString(props.username) && dojo.isString(props.password)) {
+		if (props.username && props.password && typeof props.username == "string" && typeof props.password == "string") {
 			// username and password are given, try to login directly
-			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+			umc.dialog.login().then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'onLogin'));
 			return;
 		}
 
 		// check whether we still have a possibly valid cookie
-		var sessionCookie = dojo.cookie('UMCSessionId');
-		var usernameCookie = dojo.cookie('UMCUsername');
+		var sessionCookie = /*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId');
+		var usernameCookie = /*REQUIRE:"dojo/cookie"*/ cookie('UMCUsername');
 		if (undefined !== sessionCookie && usernameCookie !== undefined
 			&& (!umc.tools.status('username') || umc.tools.status('username') == usernameCookie)) {
 			// the following conditions need to be given for an automatic login
 			// * session and username need to be set via cookie
 			// * if a username is given via the query string, it needs to match the
 			//   username saved in the cookie
-			this.onLogin(dojo.cookie('UMCUsername'));
+			this.onLogin(/*REQUIRE:"dojo/cookie"*/ cookie('UMCUsername'));
 		}
 		else {
-			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+			umc.dialog.login().then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'onLogin'));
 		}
 	},
 
 	onLogin: function(username) {
 		// save the username internally and as cookie
-		dojo.cookie('UMCUsername', username, { expires: 100, path: '/' });
+		/*REQUIRE:"dojo/cookie"*/ cookie('UMCUsername', username, { expires: 100, path: '/' });
 		umc.tools.status('username', username);
 
 		// load required ucr variables
@@ -157,7 +157,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		}
 
 		// create a new tab
-		var params = dojo.mixin({
+		var params = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({
 			title: module.name,
 			iconClass: umc.tools.getIconClass(module.icon),
 			closable: umc.tools.status('overview'),  // closing tabs is only enabled of the overview is visible
@@ -178,7 +178,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 	},
 
 	focusTab: function(tab) {
-		if (dojo.indexOf(this._tabContainer.getChildren(), tab) >= 0) {
+		if (/*REQUIRE:"dojo/_base/array"*/ array.indexOf(this._tabContainer.getChildren(), tab) >= 0) {
 			this._tabContainer.selectChild(tab, true);
 		}
 	},
@@ -209,7 +209,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			return;
 		}
 
-		umc.tools.umcpCommand('get/modules/list', null, false).then(dojo.hitch(this, function(data) {
+		umc.tools.umcpCommand('get/modules/list', null, false).then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 			// helper function for sorting, sort indeces with priority < 0 to be at the end
 			var _cmp = function(x, y) {
 				if (y.priority == x.priority) {
@@ -219,28 +219,35 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			};
 
 			// get all categories
-			dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(icat, i) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(dojo.getObject('categories', false, data), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(icat, i) {
 				icat._orgIndex = i;  // save the element's original index
 				this._categories.push(icat);
 			}));
 			this._categories.sort(_cmp);
 
 			// get all modules
-			dojo.forEach(dojo.getObject('modules', false, data), dojo.hitch(this, function(module, i) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(dojo.getObject('modules', false, data), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(module, i) {
 				// try to load the module
 				try {
 					dojo['require']('umc.modules.' + module.id);
 				}
 				catch (error) {
 					// log as warning and continue with the next element in the list
-					console.log('WARNING: Loading of module ' + module.id + ' failed. Ignoring it for now!');
+					console.log('INFO: Loading of module ' + module.id + ' failed. Ignoring it for now!');
+					return true;
+				}
+
+				// ignore empty modules
+				var baseClass = dojo.getObject('umc.modules.' + module.id);
+				if (!baseClass) {
+					console.log('INFO: Ignoring empty module ' + module.id + '!');
 					return true;
 				}
 
 				// load the module
 				// add module config class to internal list of available modules
-				this._modules.push(dojo.mixin({
-					BaseClass: dojo.getObject('umc.modules.' + module.id),
+				this._modules.push(/*REQUIRE:"dojo/_base/lang"*/ lang.mixin({
+					BaseClass: baseClass,
 					_orgIndex: i  // save the element's original index
 				}, module));
 			}));
@@ -252,8 +259,8 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			// loading is done
 			this.onModulesLoaded();
 			this._modulesLoaded = true;
-		}), dojo.hitch(this, function(error) {
-			umc.dialog.login().then(dojo.hitch(this, 'onLogin'));
+		}), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(error) {
+			umc.dialog.login().then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'onLogin'));
 		}));
 	},
 
@@ -330,7 +337,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			gutters: false,
 			// force a displayed width if specified
 			style: umc.tools.status('width') ? 'width:' + umc.tools.status('width') + 'px;' : null 
-		}).placeAt(dojo.body());
+		}).placeAt(/*REQUIRE:"dojo/_base/window"*/ window.body());
 
 		// container for all modules tabs
 		this._tabContainer = new dijit.layout.TabContainer({
@@ -354,7 +361,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			this._tabContainer.addChild(overviewPage);
 
 			// get needed UCR variables
-			umc.tools.umcpCommand( 'get/ucr', [ 'ssl/validity/days', 'ssl/validity/warning', 'update/available', 'update/reboot/required' ] ).then( dojo.hitch( this, function( data ) {
+			umc.tools.umcpCommand( 'get/ucr', [ 'ssl/validity/days', 'ssl/validity/warning', 'update/available', 'update/reboot/required' ] ).then( /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( data ) {
 				// check validity of SSL certificates
 				var days = parseInt( data.result[ 'ssl/validity/days' ], 10 );
 				var warning = parseInt( data.result[ 'ssl/validity/warning' ], 10 );
@@ -379,7 +386,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 			var categories = umc.widgets.ContainerWidget({
 				scrollable: true
 			});
-			dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.getCategories(), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(icat) {
 				// ignore empty categories
 				var modules = this.getModules(icat.id);
 				if (0 === modules.length) {
@@ -394,7 +401,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 				});
 
 				// register to requests for opening a module
-				dojo.connect(this._categoryPane, 'onOpenModule', dojo.hitch(this, this.openModule));
+				/*REQUIRE:"dojo/on"*/ /*TODO*/ on(this._categoryPane, 'onOpenModule', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this.openModule));
 
 				// add category pane to overview page
 				categories.addChild(this._categoryPane);
@@ -467,7 +474,7 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		} );
 		headerRight.addChild(hostInfo);
 		umc.tools.umcpCommand('get/ucr', [ 'domainname', 'hostname' ]).
-			then(dojo.hitch(this, function(data) {
+			then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 				var domainname = data.result.domainname;
 				var hostname = data.result.hostname;
 				hostInfo.set('content', this._('umcHostInfo', {
@@ -519,11 +526,11 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		headerRight.addChild(new umc.widgets.Button({
 			label: '<img src="images/logout.png">',
 			'class': 'umcHeaderButton umcLogoutButton',
-			onClick: dojo.hitch(this, function() {
+			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				umc.dialog.confirm(this._('Do you really want to logout?'), [{
 					label: this._('Logout'),
 					auto: true,
-					callback: dojo.hitch(this, function() {
+					callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 						umc.tools.closeSession();
 						window.location.reload();
 					})
@@ -538,9 +545,9 @@ dojo.mixin(umc.app, new umc.i18n.Mixin({
 		topContainer.startup();
 
 		// subscribe to requests for opening modules and closing/focusing tabs
-		dojo.subscribe('/umc/modules/open', dojo.hitch(this, 'openModule'));
-		dojo.subscribe('/umc/tabs/close', dojo.hitch(this, 'closeTab'));
-		dojo.subscribe('/umc/tabs/focus', dojo.hitch(this, 'focusTab'));
+		/*REQUIRE:"dojo/topic"*/ topic.subscribe('/umc/modules/open', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'openModule'));
+		/*REQUIRE:"dojo/topic"*/ topic.subscribe('/umc/tabs/close', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'closeTab'));
+		/*REQUIRE:"dojo/topic"*/ topic.subscribe('/umc/tabs/focus', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'focusTab'));
 
 		// set a flag that GUI has been build up
 		umc.tools.status('setupGui', true);

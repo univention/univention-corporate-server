@@ -32,7 +32,7 @@ dojo.provide("umc.widgets.SubmitButton");
 
 dojo.require("umc.widgets.Button");
 
-dojo.declare("umc.widgets.SubmitButton", umc.widgets.Button, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.Button, {
 	type: 'submit',
 
 	// defaultButton: Boolean

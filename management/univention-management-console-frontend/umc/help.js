@@ -30,12 +30,12 @@
 
 dojo.provide("umc.help");
 
-dojo.require("dojo.cookie");
+dojo.require("/*REQUIRE:"dojo/cookie"*/ cookie");
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
 dojo.require("dojo.cache");
 
-dojo.mixin(umc.help, new umc.i18n.Mixin({
+/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.help, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 } ), {

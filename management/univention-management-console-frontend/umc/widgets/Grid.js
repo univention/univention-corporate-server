@@ -52,7 +52,7 @@ dojo.require("umc.widgets.StandbyMixin");
 dojo.require("umc.widgets.Tooltip");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin, umc.widgets.StandbyMixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.BorderContainer, umc.widgets._WidgetsInWidgetsMixin, umc.i18n.Mixin, umc.widgets.StandbyMixin ], {
 	// summary:
 	//		Encapsulates a complex grid with store, UMCP commands and action buttons;
 	//		offers easy access to select items etc.
@@ -150,13 +150,13 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		// summary:
 		//		Generates a formatter functor for a given value and icon field.
 
-		return dojo.hitch(this, function(value, rowIndex) {
+		return /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(value, rowIndex) {
 			// get the iconNamae
 			var item = this._grid.getItem(rowIndex);
 			var iconName = this._dataStore.getValue(item, iconField);
 
 			// create an HTML image that contains the icon
-			var html = dojo.string.substitute('<img src="images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${value}', {
+			var html = dojo.replace('<img src="images/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
 				icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
 				height: '16px',
 				width: '16px',
@@ -180,17 +180,17 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	_getHeaderWidth: function(text) {
 		// if we do not have a temporary cell yet, create it
 		if (!this._tmpCell && !this._tmpCellHeader) {
-			this._tmpCellHeader = dojo.create('div', { 'class': 'dojoxGridHeader dijitOffScreen' });
-			this._tmpCell = dojo.create('div', { 'class': 'dojoxGridCell' });
-			dojo.place(this._tmpCell, this._tmpCellHeader);
-			dojo.place(this._tmpCellHeader, dojo.body());
+			this._tmpCellHeader = /*REQUIRE:"dojo/dom-construct"*/ construct.create('div', { 'class': 'dojoxGridHeader dijitOffScreen' });
+			this._tmpCell = /*REQUIRE:"dojo/dom-construct"*/ construct.create('div', { 'class': 'dojoxGridCell' });
+			/*REQUIRE:"dojo/dom-construct"*/ construct.place(this._tmpCell, this._tmpCellHeader);
+			/*REQUIRE:"dojo/dom-construct"*/ construct.place(this._tmpCellHeader, /*REQUIRE:"dojo/_base/window"*/ window.body());
 		}
 
 		// set the text
-		dojo.attr(this._tmpCell, 'innerHTML', text);
+		/*REQUIRE:"dojo/dom-attr"*/ attr.set(this._tmpCell, 'innerHTML', text);
 
 		// get the width of the cell
-		return dojo.marginBox(this._tmpCell).w;
+		return /*REQUIRE:"dojo/dom-geometry"*/ geometry.getMarginBox(this._tmpCell).w;
 	},
 
 	_getFooterCellWidths: function() {
@@ -198,8 +198,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		var outerWidths = [];
 		var innerWidths = [];
 		dojo.query('th', this._grid.viewsHeaderNode).forEach(function(i) { 
-			outerWidths.push(dojo.marginBox(i).w);
-			innerWidths.push(dojo.contentBox(i).w);
+			outerWidths.push(/*REQUIRE:"dojo/dom-geometry"*/ geometry.getMarginBox(i).w);
+			innerWidths.push(/*REQUIRE:"dojo/dom-geometry"*/ geometry.getContentBox(i).w);
 		});
 
 		// merge all data columns
@@ -217,7 +217,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	},
 
 	_setColumnsAttr: function ( columns ) {
-		umc.tools.assert(dojo.isArray(columns), 'The property columns needs to be defined for umc.widgets.Grid as an array.');
+		umc.tools.assert(columns instanceof Array, 'The property columns needs to be defined for umc.widgets.Grid as an array.');
 		this.columns = columns;
 
 		if (!this._grid) {
@@ -230,28 +230,28 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		//
 		
 		// remove all children from context menu
-		dojo.forEach(this._contextMenu.getChildren(), function(ichild) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._contextMenu.getChildren(), function(ichild) {
 			this._contextMenu.removeChild(ichild);
 			ichild.destroyRecursive();
 		}, this);
 		delete this._contextMenu.focusedChild;
 
 		// populate context menu
-		dojo.forEach(this.actions, function(iaction) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.actions, function(iaction) {
 			// make sure we get all context actions
 			if (false === iaction.isContextAction) {
 				return;
 			}
 
 			// get icon and label (these properties may be functions)
-			var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass() : iaction.iconClass;
-			var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
+			var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
+			var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
 
 			// create a new menu item
 			var item = new dijit.MenuItem({
 				label: ilabel,
 				iconClass: iiconClass,
-				onClick: dojo.hitch(this, function() {
+				onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 					if (iaction.callback) {
 						iaction.callback([this._contextItemID], [this._contextItem]);
 					}
@@ -267,11 +267,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		// create the layout for the grid columns
 		var gridColumns = [];
-		dojo.forEach(columns, function(icol) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(columns, function(icol) {
 			umc.tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
 
 			// set common properties
-			var col = dojo.mixin({
+			var col = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({
 				width: 'auto',
 				editable: false,
 				description: ''
@@ -287,7 +287,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			}
 
 			// set cell type
-			if (dojo.isString(icol.type) && 'checkbox' == icol.type.toLowerCase()) {
+			if (typeof icol.type == "string" && 'checkbox' == icol.type.toLowerCase()) {
 				col.cellType = dojox.grid.cells.Bool;
 			}
 
@@ -304,19 +304,19 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}, this);
 
 		// add additional columns for standard actions
-		dojo.forEach(this.actions, function(iaction) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.actions, function(iaction) {
 			// get all standard context actions
 			if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
 				return;
 			}
-			var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
+			var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
 			gridColumns.push({
 				field: iaction.field || this.moduleStore.idProperty,
 				name: this.actionLabel ? ilabel : ' ',
 				width: ! this.actionLabel && iaction.iconClass ? '28px':  this._getHeaderWidth( ilabel ) + 'px',
 				description: iaction.description,
 				editable: false,
-				formatter: dojo.hitch(this, function(key, rowIndex) {
+				formatter: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(key, rowIndex) {
 					// do not show buttons in case the row is disabled
 					if (this._grid.rowSelectCell.disabled(rowIndex)) {
 						return '';
@@ -324,8 +324,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 					// get icon and label (these properties may be functions)
 					var item = this._grid.getItem(rowIndex);
-					var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass(item) : iaction.iconClass;
-					var ilabel = dojo.isFunction(iaction.label) ? iaction.label(item) : iaction.label;
+					var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
+					var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
 
 					// by default only create a button with icon
 					var props = { iconClass: iiconClass };
@@ -336,7 +336,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 					// add callback handler
 					if (iaction.callback) {
-						props.onClick = dojo.hitch(this, function() {
+						props.onClick = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 							iaction.callback([key], [item]);
 						});
 					}
@@ -350,16 +350,16 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 					// return final button
 					var btn = new umc.widgets.Button( props );
 					if ( iaction.description ) {
-						var idescription = dojo.isFunction( iaction.description ) ? iaction.description( item ) : iaction.description;
+						var idescription = typeof  iaction.description  == "function" ? iaction.description( item ) : iaction.description;
 						var tooltip = new umc.widgets.Tooltip( {
 							label: idescription,
 							connectId: [ btn.domNode ]
 						});
 						if ( iaction.onShowDescription ) {
-							tooltip = dojo.mixin( tooltip, { onShow: function( target ) { iaction.onShowDescription( target, item ); } } );
+							tooltip = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin( tooltip, { onShow: function( target ) { iaction.onShowDescription( target, item ); } } );
 						}
 						if ( iaction.onHideDescription ) {
-							tooltip = dojo.mixin( tooltip, { onHide: function() { iaction.onHideDescription( item ); } } );
+							tooltip = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin( tooltip, { onHide: function() { iaction.onHideDescription( item ); } } );
 						}
 						// destroy the tooltip when the widget is destroyed
 						tooltip.connect( btn, 'destroy', 'destroy' );
@@ -370,7 +370,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}, this);
 
 		// add additional column for all other actions
-		var tmpActions = dojo.filter(this.actions, function(iaction) {
+		var tmpActions = /*REQUIRE:"dojo/_base/array"*/ array.filter(this.actions, function(iaction) {
 			return !iaction.isStandardAction && (false !== iaction.isContextAction);
 		});
 		if (tmpActions.length) {
@@ -378,7 +378,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 				field: this.moduleStore.idProperty,
 				name: ' ',
 				editable: false,
-				formatter: dojo.hitch(this, function(key, rowIndex) {
+				formatter: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(key, rowIndex) {
 					// do not show buttons in case the row is disabled
 					if (this._grid.rowSelectCell.disabled(rowIndex)) {
 						return '';
@@ -389,7 +389,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 					// create context menu
 					var menu = dijit.Menu({});
-					dojo.forEach(tmpActions, function(iaction) {
+					/*REQUIRE:"dojo/_base/array"*/ array.forEach(tmpActions, function(iaction) {
 						// call canExecute to make sure the action can be executed
 						if (iaction.canExecute && !iaction.canExecute(item)) {
 							// the action cannot be executed... return an empty string
@@ -397,14 +397,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 						}
 
 						// get icon and label (these properties may be functions)
-						var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass(item) : iaction.iconClass;
-						var ilabel = dojo.isFunction(iaction.label) ? iaction.label(item) : iaction.label;
+						var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
+						var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
 
 						// add the menu entry
 						menu.addChild(new dijit.MenuItem({
 							label: ilabel,
 							iconClass: iiconClass,
-							onClick: dojo.hitch(this, function() {
+							onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 								if (iaction.callback) {
 									iaction.callback([key], [item]);
 								}
@@ -432,7 +432,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 	},
 
 	_setActionsAttr: function(actions, /*Boolean?*/ doSetColumns) {
-		umc.tools.assert(dojo.isArray(actions), 'The property actions needs to be defined for umc.widgets.Grid as an array.');
+		umc.tools.assert(actions instanceof Array, 'The property actions needs to be defined for umc.widgets.Grid as an array.');
 		this.actions = actions;
 
 		//
@@ -440,13 +440,13 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		//
 
 		var myActions = [];
-		dojo.forEach(actions, dojo.hitch(this, function(iaction) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(actions, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(iaction) {
 			var jaction = iaction;
 			if (iaction.callback) {
-				jaction = dojo.mixin({}, iaction); // shallow copy
+				jaction = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, iaction); // shallow copy
 
 				// call custom callback with selected values
-				jaction.callback = dojo.hitch(this, function() {
+				jaction.callback = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 					iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 				});
 			}
@@ -455,7 +455,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		// render buttons
 		var buttonsCfg = [];
-		dojo.forEach(myActions, function(iaction) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(myActions, function(iaction) {
 			// make sure we get all standard actions
 			if (false === iaction.isContextAction) {
 				buttonsCfg.push(iaction);
@@ -465,13 +465,13 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		var buttons = umc.render.buttons(buttonsCfg);
 
 		// clear old buttons
-		dojo.forEach(this._toolbar.getChildren(), function(ibutton) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._toolbar.getChildren(), function(ibutton) {
 			this._toolbar.removeChild(ibutton);
 			ibutton.destroyRecursive();
 		}, this);
 
 		// add buttons to toolbar
-		dojo.forEach(buttons.$order$, function(ibutton) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(buttons.$order$, function(ibutton) {
 			this._toolbar.addChild(ibutton);
 		}, this);
 
@@ -513,12 +513,12 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 					rowMenu: this._contextMenu
 				}
 			},
-			canSort: dojo.hitch(this, function(col) {
+			canSort: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(col) {
 				// disable sorting for the action columns
 				return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
 			})
 		});
-		this.connect( this._grid, 'onRowClick', '_onRowClick' );
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( this._grid, 'onRowClick', '_onRowClick' );
 
 		// add the toolbar to the bottom of the widget which contains all multi-actions
 		this._toolbar = new umc.widgets.ContainerWidget({
@@ -546,15 +546,15 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		//
 
 		// connect to layout() and adjust widths of the footer cells
-		this.connect(this._grid, '_resize', '_updateFooter');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._grid, '_resize', '_updateFooter');
 
 		// in case of any changes in the module store, refresh the grid
-		this.connect(this.moduleStore, 'onChange', function() {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this.moduleStore, 'onChange', function() {
 			this.filter(this.query);
 		});
 
 		// standby animation when loading data
-		this.connect(this._grid, "_onFetchComplete", function() {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._grid, "_onFetchComplete", function() {
 			if (this._ignoreNextFetch) {
 				this._ignoreNextFetch = false;
 				return;
@@ -567,7 +567,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			this.onFilterDone(true);
 			this._grid.resize();
 		});
-		this.connect(this._grid, "_onFetchError", function() {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._grid, "_onFetchError", function() {
 			if (this._ignoreNextFetch) {
 				this._ignoreNextFetch = false;
 				return;
@@ -582,14 +582,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		});
 
 		// when a cell gets modified, save the changes directly back to the server
-		this.connect(this._grid, 'onApplyCellEdit', dojo.hitch(this._dataStore, 'save'));
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._grid, 'onApplyCellEdit', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this._dataStore, 'save'));
 
 		// disable edit menu in case there is more than one item selected
-		this.connect(this._grid, 'onSelectionChanged', '_updateFooterContent');
-		this.connect(this._grid, 'onSelectionChanged', '_updateFooterCells');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._grid, 'onSelectionChanged', '_updateFooterContent');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._grid, 'onSelectionChanged', '_updateFooterCells');
 
 		/*// disable edit menu in case there is more than one item selected
-		this.connect(this._grid, 'onSelectionChanged', function() {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._grid, 'onSelectionChanged', function() {
 			var nItems = this._grid.selection.getSelectedCount();
 			this._selectMenuItems.edit.set('disabled', nItems > 1);
 		});*/
@@ -597,7 +597,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		// save internally for which row the cell context menu was opened and when 
 		// -> handle context menus when clicked in the last column
 		// -> call custom handler when clicked on any other cell
-		this.connect(this._grid, 'onCellContextMenu', '_updateContextItem');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._grid, 'onCellContextMenu', '_updateContextItem');
 	},
 
 	_onRowClick: function( ev ) {
@@ -608,13 +608,13 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		var item = this._grid.getItem( ev.rowIndex );
 		var identity = item[ this.moduleStore.idProperty ];
 
-		var defaultAction = dojo.isFunction(this.defaultAction) ? 
+		var defaultAction = typeof this.defaultAction == "function" ? 
 				this.defaultAction( [ identity ], [ item ] ) : this.defaultAction;
 
 		if ( defaultAction && ! this.disabled ) {
-			dojo.forEach( this.actions, function( action ) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach( this.actions, function( action ) {
 				if ( action.name == defaultAction ) {
-					var isExecutable = dojo.isFunction(action.canExecute) ? action.canExecute(item) : true;
+					var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
 					if ( action.callback && isExecutable && !this.getDisabledItem(identity)) {
 						action.callback( [ identity ], [ item ] );
 					}
@@ -626,7 +626,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 	_disableAllItems: function( disable ) {
 		var items = this.getAllItems();
-		dojo.forEach( items, dojo.hitch( this, function( iitem ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( items, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( iitem ) {
 			var idx = this.getItemIndex( iitem[ this.moduleStore.idProperty ] );
 			if (idx >= 0) {
 				this._grid.rowSelectCell.setDisabled( idx, undefined === disable ? true : disable );
@@ -644,14 +644,14 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		this._updateDisabledItems();
 
 		// disable actions in footer
-		dojo.forEach( this._footerCells, dojo.hitch( this, function( cell ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._footerCells, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( cell ) {
 			var widget = cell.getChildren()[ 0 ];
 			if ( widget instanceof umc.widgets.Button || widget instanceof dijit.form.DropDownButton ) {
 				widget.set( 'disabled', value );
 			}
 		} ) );
 		// disable actions in toolbar
-		dojo.forEach( this._toolbar.getChildren(), dojo.hitch( this, function( widget ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._toolbar.getChildren(), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( widget ) {
 			if ( widget instanceof umc.widgets.Button ) {
 				widget.set( 'disabled', value );
 			}
@@ -664,7 +664,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			return;
 		}
 
-		dojo.forEach( this._footerCells, dojo.hitch( this, function( cell ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._footerCells, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( cell ) {
 			var nSelected = this._grid.selection.getSelectedCount();
 			var widget = cell.getChildren()[ 0 ];
 			if ( widget instanceof umc.widgets.Button || widget instanceof dijit.form.DropDownButton ) {
@@ -677,7 +677,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		var nItems = this._grid.selection.getSelectedCount();
 		var nItemsTotal = this._grid.rowCount;
 		var msg = '';
-		if (dojo.isFunction(this.footerFormatter)) {
+		if (typeof this.footerFormatter == "function") {
 			msg = this.footerFormatter(nItems, nItemsTotal);
 		}
 		else {
@@ -701,11 +701,11 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		// in case the row is disabled, or in case the action cannot be executed,
 		// disable the context menu items
 		var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
-		dojo.forEach(this._contextMenu.getChildren(), function(iMenuItem, i) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._contextMenu.getChildren(), function(iMenuItem, i) {
 			var iaction = iMenuItem._action;
 			var idisabled = rowDisabled || (iaction.canExecute && !iaction.canExecute(item));
-			var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass(item) : iaction.iconClass;
-			var ilabel = dojo.isFunction(iaction.label) ? iaction.label(item) : iaction.label;
+			var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
+			var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
 			iMenuItem.set('disabled', idisabled);
 			iMenuItem.set('label', ilabel);
 			iMenuItem.set('iconClass', iiconClass);
@@ -719,7 +719,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}
 		
 		// remove all footer cells
-		dojo.forEach(this._footerCells, function(icell) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._footerCells, function(icell) {
 			this._footer.removeChild(icell);
 			icell.destroyRecursive();
 		}, this);
@@ -736,7 +736,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		// this method may be called when the grid has not been rendered yet
 		var footerCellWidths = this._getFooterCellWidths();
 		var width = 0;
-		dojo.forEach(footerCellWidths, function(i) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(footerCellWidths, function(i) {
 			width += i;
 		});
 		if (!width) {
@@ -745,7 +745,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		// add one div per footer element
 		this._footerCells = [];
-		dojo.forEach(footerCellWidths, function(iwidth, i) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(footerCellWidths, function(iwidth, i) {
 			// use display:inline-block; we need a hack for IE7 here, see:
 			//   http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
 			var padding = '0 5px';
@@ -766,7 +766,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		this._footerCells[0].addChild(this._footerLegend);
 
 		var i = 1;
-		dojo.forEach(this.actions, function(iaction) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.actions, function(iaction) {
 			// get all standard context actions
 			if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
 				return;
@@ -775,8 +775,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			// only add action if it is a multi action
 			if (iaction.isMultiAction) {
 				// get icon and label (these properties may be functions)
-				var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass() : iaction.iconClass;
-				var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
+				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
+				var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
 
 				// by default only create a button with icon
 				var props = { iconClass: iiconClass };
@@ -787,7 +787,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 				// add callback handler
 				if (iaction.callback) {
-					props.onClick = dojo.hitch(this, function() {
+					props.onClick = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 						iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 					});
 				}
@@ -806,21 +806,21 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}, this);
 
 		// add remaining actions to a combo button
-		var tmpActions = dojo.filter(this.actions, function(iaction) {
+		var tmpActions = /*REQUIRE:"dojo/_base/array"*/ array.filter(this.actions, function(iaction) {
 			return !iaction.isStandardAction && (false !== iaction.isContextAction) && iaction.isMultiAction;
 		});
 		if (tmpActions.length) {
 			var moreActionsMenu = dijit.Menu({});
-			dojo.forEach(tmpActions, function(iaction) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(tmpActions, function(iaction) {
 				// get icon and label (these properties may be functions)
-				var iiconClass = dojo.isFunction(iaction.iconClass) ? iaction.iconClass() : iaction.iconClass;
-				var ilabel = dojo.isFunction(iaction.label) ? iaction.label() : iaction.label;
+				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
+				var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
 
 				// create menu entry
 				moreActionsMenu.addChild(new dijit.MenuItem({
 					label: ilabel,
 					iconClass: iiconClass,
-					onClick: dojo.hitch(this, function() {
+					onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 						if (iaction.callback) {
 							iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 						}
@@ -839,7 +839,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			}
 		}
 
-		dojo.forEach(this._footerCells, function(icell) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._footerCells, function(icell) {
 			this._footer.addChild(icell);
 		}, this);
 		this._footer.startup();
@@ -860,23 +860,23 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}
 
 		// adjust the margin of the first cell in order to align correctly
-		var margin = dojo.position(dojo.query('th', this._grid.viewsHeaderNode)[0]).x;
-		margin -= dojo.position(this._grid.domNode).x;
-		dojo.style(this._footerCells[0].domNode, 'margin-left', margin + 'px');
+		var margin = /*REQUIRE:"dojo/dom-geometry"*/ geometry.position(dojo.query('th', this._grid.viewsHeaderNode)[0]).x;
+		margin -= /*REQUIRE:"dojo/dom-geometry"*/ geometry.position(this._grid.domNode).x;
+		/*REQUIRE:"dojo/dom-style"*/ style.set(this._footerCells[0].domNode, 'margin-left', margin + 'px');
 
 		// update footer cell widths
-		dojo.forEach(this._getFooterCellWidths(), function(iwidth, i) {
-			dojo.contentBox(this._footerCells[i].containerNode, { w: iwidth });
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._getFooterCellWidths(), function(iwidth, i) {
+			/*REQUIRE:"dojo/dom-geometry"*/ geometry.setContentSize(this._footerCells[i].containerNode, { w: iwidth });
 		}, this);
 	},
 
 	unitialize: function() {
 		// remove the temporary cell from the DOM
 		if (this._tmpCellHeader) {
-			dojo.destroy(this._tmpCellHeader);
+			/*REQUIRE:"dojo/dom-construct"*/ construct.destroy(this._tmpCellHeader);
 		}
 		if (this._tmpCell) {
-			dojo.destroy(this._tmpCell);
+			/*REQUIRE:"dojo/dom-construct"*/ construct.destroy(this._tmpCell);
 		}
 	},
 
@@ -926,7 +926,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		//		Convenience method to fetch all attributes of an item as dictionary.
 		var values = {};
 		var item = this._grid.getItem(rowIndex);
-		dojo.forEach(this._dataStore.getAttributes(item), dojo.hitch(this, function(key) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._dataStore.getAttributes(item), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(key) {
 			values[key] = this._dataStore.getValue(item, key);
 		}));
 		return values;
@@ -974,7 +974,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 
 		var ids = umc.tools.stringOrArray(_ids);
 		disable = undefined === disable ? true : disable;
-		dojo.forEach(ids, function(id) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(ids, function(id) {
 			this._disabledIDs[id] = disable;
 		}, this);
 		this._updateDisabledItems();
@@ -990,7 +990,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		//		Item ID or list of IDs.
 
 		var ids = umc.tools.stringOrArray(_ids);
-		var result = dojo.map(ids, function(id) {
+		var result = /*REQUIRE:"dojo/_base/array"*/ array.map(ids, function(id) {
 			var idx = this.getItemIndex(id);
 			if (idx >= 0) {
 				return this._grid.rowSelectCell.disabled(idx);
@@ -999,7 +999,7 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		}, this);
 
 		// return Boolean or array depending on the input
-		if (!dojo.isArray(_ids)) {
+		if (!_ids instanceof Array) {
 			return result[0]; // Boolean
 		}
 		return result; // Boolean[]
@@ -1022,8 +1022,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 		var actionObj = null;
 		var executableItems = [];
 
-		if ( dojo.isString( action ) ) {
-			var tmpActions = dojo.filter(this.actions, function(iaction) {
+		if ( typeof  action  == "string" ) {
+			var tmpActions = /*REQUIRE:"dojo/_base/array"*/ array.filter(this.actions, function(iaction) {
 				return iaction.isMultiAction && iaction.name == action;
 			} );
 			if ( ! tmpActions.length ) {
@@ -1031,8 +1031,8 @@ dojo.declare("umc.widgets.Grid", [ dijit.layout.BorderContainer, umc.widgets._Wi
 			}
 			actionObj = tmpActions[ 0 ];
 		}
-		executableItems = dojo.filter( items, function( iitem ) {
-			return dojo.isFunction( actionObj.canExecute ) ? actionObj.canExecute( iitem ) : true;
+		executableItems = /*REQUIRE:"dojo/_base/array"*/ array.filter( items, function( iitem ) {
+			return typeof  actionObj.canExecute  == "function" ? actionObj.canExecute( iitem ) : true;
 		} );
 
 		return executableItems;

@@ -37,7 +37,7 @@ dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.DateBox", [
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
 	umc.widgets.ContainerWidget,
 	umc.widgets._FormWidgetMixin,
 	umc.widgets._WidgetsInWidgetsMixin
@@ -67,7 +67,7 @@ dojo.declare("umc.widgets.DateBox", [
 		this.addChild(this._dateBox);
 
 		// hook to the onChange event
-		this.connect(this._dateBox, 'onChange', 'onChange');
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._dateBox, 'onChange', 'onChange');
 	},
 
 	_dateToString: function(dateObj) {

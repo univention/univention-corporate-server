@@ -32,7 +32,7 @@ dojo.provide("umc.widgets.ResetButton");
 
 dojo.require("umc.widgets.Button");
 
-dojo.declare("umc.widgets.ResetButton", umc.widgets.Button, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.Button, {
 	type: 'reset',
 
 	// the widget's class name as CSS class

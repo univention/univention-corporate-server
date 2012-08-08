@@ -32,7 +32,7 @@ dojo.provide("umc.widgets.Button");
 
 dojo.require("dijit.form.Button");
 
-dojo.declare("umc.widgets.Button", dijit.form.Button, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit.form.Button, {
 	// defaultButton: Boolean
 	//		If set to 'true', button will be rendered as default, i.e., submit button.
 	defaultButton: false,
@@ -47,7 +47,7 @@ dojo.declare("umc.widgets.Button", dijit.form.Button, {
 	type: 'button',
 
 	constructor: function(props) {
-		dojo.mixin(this, props);
+		/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this, props);
 		if (this.defaultButton) {
 			this['class'] = 'umcSubmitButton';
 		}
@@ -62,8 +62,8 @@ dojo.declare("umc.widgets.Button", dijit.form.Button, {
 	postCreate: function() {
 		this.inherited(arguments);
 
-		if (dojo.isFunction(this.callback)) {
-			this.connect(this, 'onClick', 'callback');
+		if (typeof this.callback == "function") {
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onClick', 'callback');
 		}
 	}
 });

@@ -36,7 +36,7 @@ dojo.require("umc.widgets._SelectMixin");
 dojo.require("umc.tools");
 dojo.require("umc.render");
 
-dojo.declare("umc.widgets.LinkList", [ umc.widgets.ContainerWidget, umc.widgets._SelectMixin, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._SelectMixin, umc.i18n.Mixin ], {
 	// summary:
 	//		Provides a list of buttons opening a given object 
 
@@ -53,8 +53,8 @@ dojo.declare("umc.widgets.LinkList", [ umc.widgets.ContainerWidget, umc.widgets.
 
 	onDynamicValuesLoaded: function() {
 		this.store.fetch( {
-						  onComplete: dojo.hitch( this, function ( items ) {
-							  dojo.forEach( items, dojo.hitch( this, function( item ) {
+						  onComplete: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function ( items ) {
+							  /*REQUIRE:"dojo/_base/array"*/ array.forEach( items, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
 												var btn = umc.widgets.Button( {
 																				 name : 'close',
 																				 label : item.label,
@@ -81,8 +81,8 @@ dojo.declare("umc.widgets.LinkList", [ umc.widgets.ContainerWidget, umc.widgets.
 													}
 												};
 												this.store.getValue( item, 'objectType', null );
-												dojo.connect( btn, "onClick", moduleProps, function () {
-																  dojo.publish( "/umc/modules/open", [ moduleProps.module, moduleProps.flavor, moduleProps ] );
+												/*REQUIRE:"dojo/on"*/ /*TODO*/ on( btn, "onClick", moduleProps, function () {
+																  /*REQUIRE:"dojo/topic"*/ topic.publish( "/umc/modules/open", [ moduleProps.module, moduleProps.flavor, moduleProps ] );
 															  } );
 												this.addChild( btn );
 											} ) );

@@ -38,7 +38,7 @@ dojo.require("dojox.grid.EnhancedGrid");
 dojo.require("dojox.grid.cells");
 dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
 
-dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._FormWidgetMixin, umc.widgets._SelectMixin, umc.widgets.StandbyMixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dojox.grid.EnhancedGrid, umc.widgets._FormWidgetMixin, umc.widgets._SelectMixin, umc.widgets.StandbyMixin ], {
 	// summary:
 	//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
 	//		to the behaviour expected from a MultiSelect widget.
@@ -78,12 +78,12 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 
 	postMixInProperties: function() {
 		// initiate a new Deferred object
-		this._loadingDeferred = new dojo.Deferred();
+		this._loadingDeferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
 
 		this.inherited(arguments);
 
 		// in case 'value' is not specified, generate a new array
-		if (!dojo.isArray(this.value)) {
+		if (!this.value instanceof Array) {
 			this.value = [];
 		}
 	},
@@ -95,7 +95,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 		dojo.query('.dojoxGridHeader', this.domNode).style('height', '0px');
 
 		// send an onChange event when the selection has changed
-		dojo.connect(this, 'onSelectionChanged', function() {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ on(this, 'onSelectionChanged', function() {
 			this.onChange(this.get('value'));
 		});
 	},
@@ -111,12 +111,12 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 	_setValueAttr: function(/*String|String[]*/ values) {
 		// in case we have a string, assume it is a comma separated list of values
 		// and transform it into an array
-		if (dojo.isString(values)) {
+		if (typeof values == "string") {
 			values = values.split(',');
 		}
 
 		// ignore anything that is not an array at this point
-		if (!dojo.isArray(values)) {
+		if (!values instanceof Array) {
 			values = [];
 		}
 
@@ -125,17 +125,17 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 
 		// in case the values are loading, we need to postpone the manipulation
 		// of the selection after the grid has been loaded
-		this._loadingDeferred.then(dojo.hitch(this, function() {
+		this._loadingDeferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 			// map all selected items into a dict for faster access
 			var _map = {};
-			dojo.forEach(values, function(i) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(values, function(i) {
 				_map[i] = true;
 			});
 
 			// deselect all elements and update the given selection according to the values
 			this.selection.clear();
 			this.store.fetch({
-				onItem: dojo.hitch(this, function(iitem) {
+				onItem: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(iitem) {
 					// check whether the item has been selected
 					var iid = this.store.getValue(iitem, 'id');
 					if (iid in _map) {
@@ -167,18 +167,18 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 		// summary:
 		//		Returns all select items is array of dicts (with id and label entries)
 		var vals = this.get('value');
-		if (!dojo.isArray(vals)) {
+		if (!vals instanceof Array) {
 			return [];
 		}
 
 		// create a map of the selected ids
 		var map = {};
-		dojo.forEach(vals, function(iid) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(vals, function(iid) {
 			map[iid] = true;
 		});
 
 		// get all store items and find the labels for the selected ones
-		var items = dojo.filter(this.getAllItems(), function(iitem) {
+		var items = /*REQUIRE:"dojo/_base/array"*/ array.filter(this.getAllItems(), function(iitem) {
 			return iitem.id in map;
 		});
 		return items;
@@ -189,7 +189,7 @@ dojo.declare("umc.widgets.MultiSelect", [ dojox.grid.EnhancedGrid, umc.widgets._
 
 		// initiate a new Deferred, if the current one has already been resolved
 		if (this._loadingDeferred.fired >= 0) {
-			this._loadingDeferred = new dojo.Deferred();
+			this._loadingDeferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
 		}
 
 		// start standby animation

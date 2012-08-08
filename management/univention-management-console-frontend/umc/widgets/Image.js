@@ -34,7 +34,7 @@ dojo.require("umc.tools");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("umc.widgets._FormWidgetMixin");
 
-dojo.declare("umc.widgets.Image", [ dijit.layout.ContentPane, umc.widgets._FormWidgetMixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.ContentPane, umc.widgets._FormWidgetMixin ], {
 	// the widget's class name as CSS class
 	'class': 'umcImage',
 
@@ -55,7 +55,7 @@ dojo.declare("umc.widgets.Image", [ dijit.layout.ContentPane, umc.widgets._FormW
 	},
 
 	_setValueAttr: function(newVal) {
-		this.value = dojo.isString(newVal) ? newVal : "";
+		this.value = typeof newVal == "string" ? newVal : "";
 		this._updateContent();
 	},
 
@@ -69,7 +69,7 @@ dojo.declare("umc.widgets.Image", [ dijit.layout.ContentPane, umc.widgets._FormW
 			this.set('content', '');
 		}
 		else {
-			this.set('content', dojo.replace('<img src="data:image/{imageType};base64,{value}"/>', this));
+			this.set('content', /*REQUIRE:"dojo/_base/lang"*/ lang.replace('<img src="data:image/{imageType};base64,{value}"/>', this));
 		}
 	}
 });

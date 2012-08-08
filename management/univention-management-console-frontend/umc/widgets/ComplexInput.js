@@ -34,7 +34,7 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.tools");
 dojo.require("umc.render");
 
-dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.ContainerWidget, {
 	// summary:
 	//		Groups a set of widgets and returns the value of all widgets as a list
 
@@ -61,10 +61,10 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 		var widgetConfs = [];
 		this._order = [];
 
-		dojo.forEach( this.subtypes, function( widget, i ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this.subtypes, function( widget, i ) {
 			// add the widget configuration dict to the list of widgets
 			var iname = '__' + this.name + '-' + i;
-			widgetConfs.push( dojo.mixin( {}, widget, {
+			widgetConfs.push( /*REQUIRE:"dojo/_base/lang"*/ lang.mixin( {}, widget, {
 				disabled: this.disabled,
 				name: iname,
 				dynamicValues: widget.dynamicValues,
@@ -81,7 +81,7 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 
 		// register onChange event
 		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
-			this.connect( iwidget, 'onChange', dojo.hitch( this, function( newValue ) {
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( iwidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( newValue ) {
 				this.onChange( this.get( 'value' ), iname );
 			} ) );
 		}, this );
@@ -91,7 +91,7 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 		this._container.startup();
 
 		// call the _loadValues method by hand
-		dojo.forEach( this._order, function( iname ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._order, function( iname ) {
 			var iwidget = this._widgets[ iname ];
 			if ( '_loadValues' in iwidget ) {
 				iwidget._loadValues( this._lastDepends );
@@ -102,7 +102,7 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 
 	_getValueAttr: function() {
 		var vals = [];
-		dojo.forEach( this._order, function( iname ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._order, function( iname ) {
 			vals.push( this._widgets[ iname ].get( 'value' ) );
 		}, this );
 
@@ -110,7 +110,7 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 	},
 
 	_setValueAttr: function( value ) {
-		dojo.forEach( this._order, function( iname, i ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._order, function( iname, i ) {
 			this._widgets[ iname ].set( 'value', value[ i ] );
 		}, this );
 	},
@@ -123,9 +123,9 @@ dojo.declare("umc.widgets.ComplexInput", umc.widgets.ContainerWidget, {
 	setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
 		// summary:
 		//		Set all child elements to valid/invalid.
-		dojo.forEach( this._order, function( iname, i ) {
-			var imessage = dojo.isArray(messages) ? messages[i] : messages;
-			var iisValid = dojo.isArray(areValid) ? areValid[i] : areValid;
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._order, function( iname, i ) {
+			var imessage = messages instanceof Array ? messages[i] : messages;
+			var iisValid = areValid instanceof Array ? areValid[i] : areValid;
 			this._widgets[ iname ].setValid( iisValid, imessage );
 		}, this );
 	}

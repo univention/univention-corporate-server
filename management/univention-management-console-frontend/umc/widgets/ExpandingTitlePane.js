@@ -32,7 +32,7 @@ dojo.provide("umc.widgets.ExpandingTitlePane");
 
 dojo.require("dijit.layout.BorderContainer");
 
-dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit.layout.BorderContainer, {
 	// summary:
 	//		Widget visually similar to dijit.TitlePane which expands in height/width
 	//		(e.g., in a dijit.layout.BorderContainer) and can display scollable	content.
@@ -62,7 +62,7 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 
 	constructor: function(props) {
 		// store the user defined properties
-		this._userProps = dojo.mixin({}, props);
+		this._userProps = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, props);
 	},
 
 	postMixInProperties: function() {
@@ -87,7 +87,7 @@ dojo.declare("umc.widgets.ExpandingTitlePane", dijit.layout.BorderContainer, {
 
 		// create the container for the main content... add css classes to be similar
 		// the dijit.TitlePane container
-		var props = dojo.mixin({}, this._userProps, {
+		var props = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, this._userProps, {
 			region: 'center',
 			gutters: false,
 			'class': 'dijitTitlePaneContentOuter dijitTitlePaneContentInner'

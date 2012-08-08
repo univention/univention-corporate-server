@@ -34,7 +34,7 @@ dojo.require("umc.widgets.Uploader");
 dojo.require("umc.widgets.Image");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets.ImageUploader", [ umc.widgets.Uploader ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.Uploader ], {
 	'class': 'umcImageUploader',
 
 	i18nClass: 'umc.app',

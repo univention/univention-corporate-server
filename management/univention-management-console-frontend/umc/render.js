@@ -37,7 +37,7 @@ dojo.require("umc.widgets.LabelPane");
 dojo.require("umc.widgets.TitlePane");
 dojo.require("umc.widgets.Tooltip");
 
-dojo.mixin(umc.render, new umc.i18n.Mixin({
+/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.render, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 }), {
@@ -49,14 +49,14 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 
 		// iterate over all widget config objects
 		var widgets = { };
-		dojo.forEach(widgetsConf, function(iconf) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(widgetsConf, function(iconf) {
 			// ignore empty elements
 			if (!iconf || !dojo.isObject(iconf)) {
 				return true;
 			}
 
 			// copy the property 'id' to 'name'
-			var conf = dojo.mixin({}, iconf);
+			var conf = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, iconf);
 			conf.name = iconf.id || iconf.name;
 
 			// render the widget
@@ -74,12 +74,12 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			return undefined;
 		}
 		if (!widgetConf.type) {
-			console.log(dojo.replace("WARNING in umc.render.widget: The type '{type}' of the widget '{name}' is invalid. Ignoring error.", widgetConf));
+			console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in umc.render.widget: The type '{type}' of the widget '{name}' is invalid. Ignoring error.", widgetConf));
 			return undefined;
 		}
 
 		// make a copy of the widget's config object and remove 'type'
-		var conf = dojo.mixin({}, widgetConf);
+		var conf = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, widgetConf);
 		delete conf.type;
 
 		// remove property 'id'
@@ -114,7 +114,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		}
 		catch (error) { }
 		if (!WidgetClass) {
-			console.log(dojo.replace("WARNING in umc.render.widget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
+			console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in umc.render.widget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
 			return undefined;
 		}
 		var widget = new WidgetClass(conf); // Widget
@@ -147,13 +147,13 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		// returns:
 		//		A dictionary of button widgets.
 
-		umc.tools.assert(dojo.isArray(buttonsConf), 'buttons: The list of buttons is expected to be an array.');
+		umc.tools.assert(buttonsConf instanceof Array, 'buttons: The list of buttons is expected to be an array.');
 
 		// render all buttons
 		var buttons = {
 			$order$: [] // internal field to store the correct order of the buttons
 		};
-		dojo.forEach(buttonsConf, function(i) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(buttonsConf, function(i) {
 			var btn = this.button(i);
 			buttons[i.name] = btn;
 			buttons.$order$.push(btn);
@@ -165,7 +165,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 
 	button: function(/*Object*/ _buttonConf) {
 		// make a local copy of the config object
-		var buttonConf = dojo.mixin({}, _buttonConf);
+		var buttonConf = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, _buttonConf);
 
 		// specific button types need special care: submit, reset
 		var buttonClassName = 'Button';
@@ -183,8 +183,8 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		// get icon and label (these properties may be functions)
 		var iiconClass = buttonConf.iconClass;
 		var ilabel = buttonConf.label;
-		buttonConf.iconClass = dojo.isFunction(iiconClass) ? iiconClass() : iiconClass;
-		buttonConf.label = dojo.isFunction(ilabel) ? ilabel() : ilabel;
+		buttonConf.iconClass = typeof iiconClass == "function" ? iiconClass() : iiconClass;
+		buttonConf.label = typeof ilabel == "function" ? ilabel() : ilabel;
 
 		// render the button
 		var button = new ButtonClass(buttonConf);
@@ -203,7 +203,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 		var globalContainer = new umc.widgets.ContainerWidget({});
 
 		// check whether the parameters are correct
-		umc.tools.assert(dojo.isArray(layout),
+		umc.tools.assert(layout instanceof Array,
 				'umc.render.layout: Invalid layout configuration object!');
 
 		// iterate through the layout elements
@@ -215,11 +215,11 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			//   Object -> grouped widgets -> recursive call of layout()
 			var el = layout[iel];
 			var elList = null;
-			if (dojo.isString(el)) {
+			if (typeof el == "string") {
 				elList = [el];
 				layout[iel] = elList;
 			}
-			else if (dojo.isArray(el)) {
+			else if (el instanceof Array) {
 				elList = el;
 			}
 
@@ -227,17 +227,17 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			if (elList) {
 				// see how many buttons and how many widgets there are in this row
 				var nWidgetsWithLabel = 0;
-				dojo.forEach(elList, function(jel) {
+				/*REQUIRE:"dojo/_base/array"*/ array.forEach(elList, function(jel) {
 					nWidgetsWithLabel += jel in widgets && (widgets[jel].label ? 1 : 0);
 				});
 
 				// add current form widgets to layout
 				var elContainer = new umc.widgets.ContainerWidget({});
 				var label = null;
-				dojo.forEach(elList, function(jel) {
+				/*REQUIRE:"dojo/_base/array"*/ array.forEach(elList, function(jel) {
 					// make sure the reference to the widget/button exists
 					if (!(widgets && jel in widgets) && !(buttons && jel in buttons)) {
-						console.log(dojo.replace("WARNING in umc.render.layout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
+						console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in umc.render.layout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
 						return true;
 					}
 
@@ -245,7 +245,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 					var widget = widgets ? widgets[jel] : null;
 					var button = buttons ? buttons[jel] : null;
 					if ((widget && widget.$isRendered$) || (button && button.$isRendered$)) {
-						console.log(dojo.replace("WARNING in umc.render.layout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
+						console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in umc.render.layout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
 						return true;
 					}
 
@@ -256,7 +256,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 					}
 					else if (widget) {
 						// add show and hide function to widget
-						dojo.mixin( widget, {
+						/*REQUIRE:"dojo/_base/lang"*/ lang.mixin( widget, {
 							show: function() {
 								this.set( 'visible', true );
 							},
@@ -280,7 +280,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 					} else if (button) {
 						if (nWidgetsWithLabel) {
 							// add show and hide function to widget
-							dojo.mixin( button, {
+							/*REQUIRE:"dojo/_base/lang"*/ lang.mixin( button, {
 								show: function() {
 									this.set( 'visible', true );
 								},
@@ -305,7 +305,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 								button.set('style', 'float: ' + button.align);
 							}
 							// but then we should have show/hide methods to be consistent
-							dojo.mixin( button, {
+							/*REQUIRE:"dojo/_base/lang"*/ lang.mixin( button, {
 								show: function() {
 									this.set( 'visible', true );
 								},
@@ -314,7 +314,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 								},
 								_setVisibleAttr: function(newVal) {
 									this.visible = newVal;
-									dojo.toggleClass(this.domNode, 'dijitHidden', !newVal);
+									/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(this.domNode, 'dijitHidden', !newVal);
 								}
 							} );
 							button._setVisibleAttr(button.visible); // make sure that the button is set correctly
@@ -343,7 +343,7 @@ dojo.mixin(umc.render, new umc.i18n.Mixin({
 			// add all buttons that have not been rendered so far to a separate container
 			// and respect their correct order (i.e., using the interal array field $order$)
 			var buttonContainer = new umc.widgets.ContainerWidget({});
-			dojo.forEach(buttons.$order$, function(ibutton) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(buttons.$order$, function(ibutton) {
 				if (!ibutton.$isRendered$) {
 					buttonContainer.addChild(ibutton);
 					ibutton.$isRendered$ = true;

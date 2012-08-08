@@ -36,11 +36,11 @@ dojo.require("dijit.Dialog");
 dojo.require("dojox.timing");
 dojo.require("dojox.html.styles");
 
-dojo.mixin(umc.tools, new umc.i18n.Mixin({
+/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.tools, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 }));
-dojo.mixin(umc.tools, {
+/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.tools, {
 
 	// default value for the session timeout
 	// it will be replaced by the ucr variable 'umc/http/session/timeout' onLogin
@@ -81,7 +81,7 @@ dojo.mixin(umc.tools, {
 			// return the whole dictionary
 			return this._status;
 		}
-		if (dojo.isString(key)) {
+		if (typeof key == "string") {
 			if (undefined === value) {
 				// return the specified key
 				return this._status[key];
@@ -95,7 +95,7 @@ dojo.mixin(umc.tools, {
 	closeSession: function() {
 		// summary:
 		//		Reset the session cookie in order to close the session from the client side.
-		dojo.cookie('UMCSessionId', null, {
+		/*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId', null, {
 			expires: -1,
 			path: '/'
 		});
@@ -108,7 +108,7 @@ dojo.mixin(umc.tools, {
 		//		If specified, the session ID will be set to this value, otherwise the
 		//		ID will be read from the cookie automatically.
 		var date = new Date((new Date()).getTime() + 1000 * 60 * 60 * 24);
-		dojo.cookie('UMCSessionId', id || dojo.cookie('UMCSessionId'), {
+		/*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId', id || /*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId'), {
 			expires: date.toUTCString(),
 			path: '/'
 		});
@@ -120,7 +120,7 @@ dojo.mixin(umc.tools, {
 		//		This is required for automatically show the login dialogue when the session is expired.
 		if(dojo.isIE !== undefined) {
 			var date = new Date((new Date()).getTime() + 1000 * this._sessionTimeout);
-			dojo.cookie('UMCSessionId', dojo.cookie('UMCSessionId'), {
+			/*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId', /*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId'), {
 				expires: date.toUTCString(),
 				path: '/'
 			});
@@ -145,7 +145,7 @@ dojo.mixin(umc.tools, {
 			// create a new timer instance
 			this._checkSessionTimer = new dojox.timing.Timer(1000);
 			this._checkSessionTimer.onTick = function() {
-				if (!dojo.isString(dojo.cookie('UMCSessionId'))) {
+				if (!typeof /*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId' == "string")) {
 					umc.tools._checkSessionTimer.stop();
 					if (umc.tools.status['loggingIn']) {
 						// login dialog is already running
@@ -172,7 +172,7 @@ dojo.mixin(umc.tools, {
 	_PollingHandler: function(url, content, finishedDeferred, opts) {
 		// save the current session ID locally, as the cookie might expire when
 		// the time and timezone settings are updated
-		var _oldSessionID = dojo.cookie('UMCSessionId');
+		var _oldSessionID = /*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId');
 
 		return {
 			finishedDeferred: finishedDeferred,
@@ -227,7 +227,7 @@ dojo.mixin(umc.tools, {
 				// therefore the cookie is not updated (which is checked for the
 				// session timeout), however, the server will renew the session
 				// with each valid request that it receives
-				var currentSessionID = dojo.cookie('UMCSessionId');
+				var currentSessionID = /*REQUIRE:"dojo/cookie"*/ cookie('UMCSessionId');
 				if (!currentSessionID || 'undefined' == currentSessionID) {
 					// restore last valid session ID
 					currentSessionID = _oldSessionID;
@@ -237,7 +237,7 @@ dojo.mixin(umc.tools, {
 
 				// send AJAX command
 				this._lastRequestTime = (new Date()).getTime();
-				dojo.xhrPost({
+				/*REQUIRE:"dojo/request"*/ /*TODO*/ request({
 					url: this.url,
 					preventCache: true,
 					handleAs: 'json',
@@ -246,25 +246,25 @@ dojo.mixin(umc.tools, {
 					},
 					postData: this.content,
 					timeout: 1000 * this.xhrTimeout
-				}).then(dojo.hitch(this, function(data) {
+				}).then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 					// request finished
 					umc.tools._renewIESession();
 					this._dialog.hide();
 					this._dialog.destroyRecursive();
 					this.finishedDeferred.resolve(data);
-				}), dojo.hitch(this, function(error) {
+				}), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(error) {
 					var result = umc.tools.parseError(error);
 
 					if (!this.noLogin) {
 						// handle login cases
 						if (401 == result.status) {
 							// command was rejected, user is not authorized... continue to poll after successful login
-							umc.dialog.login().then(dojo.hitch(this, 'sendRequest'));
+							umc.dialog.login().then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'sendRequest'));
 							return;
 						}
 						if (411 == result.status) {
 							// login failed... continue to poll after successful login
-							umc.dialog.login().then(dojo.hitch(this, 'sendRequest'));
+							umc.dialog.login().then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'sendRequest'));
 							umc.dialog.notify(umc.tools._statusMessages[result.status]);
 							return;
 						}
@@ -283,7 +283,7 @@ dojo.mixin(umc.tools, {
 						var elapsedErrorTime = ((new Date()).getTime() - this._firstErrorTime) / 1000.0;
 						if (this.messageInterval > 0 && elapsedErrorTime > this.messageInterval && !this._dialog.get('open')) {
 							// show message to user
-							this._dialog.set('content', dojo.replace(this.message, { time: Math.round(elapsedErrorTime) }));
+							this._dialog.set('content', /*REQUIRE:"dojo/_base/lang"*/ lang.replace(this.message, { time: Math.round(elapsedErrorTime) }));
 							this._dialog.show();
 						}
 					}
@@ -294,7 +294,7 @@ dojo.mixin(umc.tools, {
 					}
 
 					// try again
-					setTimeout(dojo.hitch(this, 'sendRequest'), 1000 * Math.min(this.timeoutRetry * this._nErrors, this.maxTimeoutRetry));
+					setTimeout(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'sendRequest'), 1000 * Math.min(this.timeoutRetry * this._nErrors, this.maxTimeoutRetry));
 				}));
 			}
 		};
@@ -315,7 +315,7 @@ dojo.mixin(umc.tools, {
 		// when logging in, ignore all except the AUTH command
 		if (umc.tools.status('loggingIn') && !(/^auth$/i).test(commandStr)) {
 			console.log(umc.tools._('WARNING: Ignoring command "%s" since user is logging in', commandStr));
-			var deferred = new dojo.Deferred();
+			var deferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
 			deferred.reject();
 			return deferred;
 		}
@@ -334,24 +334,24 @@ dojo.mixin(umc.tools, {
 		var _body = {
 			 options: dataObj
 		};
-		if (dojo.isString(flavor)) {
+		if (typeof flavor == "string") {
 			_body.flavor = flavor;
 		}
-		var body = dojo.toJson(_body);
+		var body = /*REQUIRE:"dojo/jsone"*/ json.stringify(_body);
 
 		if (longPollingOptions) {
 			// long polling AJAX call
 
 			// new handler
-			var finishedDeferred = new dojo.Deferred();
+			var finishedDeferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
 			var handler = new umc.tools._PollingHandler(url, body, finishedDeferred, longPollingOptions);
 			handler.sendRequest();
 
-			return finishedDeferred; // dojo.Deferred
+			return finishedDeferred; // /*REQUIRE:"dojo/Deferred"*/ Deferred
 		}
 		else {
 			// normal AJAX call
-			var call = dojo.xhrPost({
+			var call = /*REQUIRE:"dojo/request"*/ /*TODO*/ request({
 				url: url,
 				preventCache: true,
 				handleAs: 'json',
@@ -462,7 +462,7 @@ dojo.mixin(umc.tools, {
 			var jsonResponse = dojo.getObject('responseText', false, error) || '{}';
 			// replace all newlines with '<br>' because strings in json must not have line breaks
 			jsonResponse = jsonResponse.replace(/\n/g, '<br>');
-			var response = dojo.fromJson(jsonResponse);
+			var response = /*REQUIRE:"dojo/json"*/ json.parse(jsonResponse);
 			status = parseInt(dojo.getObject('status', false, response) || error.status, 10) || status;
 			message = dojo.getObject('message', false, response) || error.message || '';
 		}
@@ -502,16 +502,16 @@ dojo.mixin(umc.tools, {
 			// handle Tracebacks
 			else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 
-				var feedbackLink = dojo.string.substitute("${0}\n\n1) ${1}\n2) ${2}\n3) ${3}\n\n----------\n\n${4}\n\n----------\n\nunivention-management-console-frontend ${5}", [
+				var feedbackLink = dojo.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\nunivention-management-console-frontend {5}", [
 					this._('Please take a second to provide the following information:'),
 					this._('steps to reproduce the failure'),
 					this._('expected result'),
 					this._('actual result'),
 					message.replace(/<br *\/?>/g, "\n"),
-					dojo.version
+					umc.tools.status('version')
 				]);
 
-				feedbackLink = dojo.string.substitute('<a href="mailto:${email}?body=${body}&amp;subject=${subject}">${title}</a>', {
+				feedbackLink = dojo.replace('<a href="mailto:{email}?body={body}&amp;subject={subject}">{title}</a>', {
 					email: this.status('feedbackAddress'),
 					body: encodeURIComponent(feedbackLink),
 					subject: this.status('feedbackSubject'),
@@ -571,7 +571,7 @@ dojo.mixin(umc.tools, {
 		//		This method is similar to dojox.lang.functional.forIn wher no hasOwnProperty()
 		//		check is carried out.
 
-		scope = scope || dojo.global;
+		scope = scope || /*REQUIRE:"dojo/_base/window"*/ window.global;
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i) || inheritedProperties) {
 				if ( false === callback.call(scope, i, obj[i], obj ) ) {
@@ -583,23 +583,23 @@ dojo.mixin(umc.tools, {
 
 	mapWalk: function(/*Array*/ array, /*Function*/ callback, /*Object?*/ scope) {
 		// summary:
-		//		Equivalent to dojo.map(), however this function is intended to be used
+		//		Equivalent to /*REQUIRE:"dojo/_base/array"*/ array.map(), however this function is intended to be used
 		//		with multi-dimensional arrays.
 
 		// make sure we have an array
-		if (!dojo.isArray(array)) {
+		if (!array instanceof Array) {
 			return callback.call(scope, array);
 		}
 
 		// clone array and walk through it
-		scope = scope || dojo.global;
-		var res = dojo.clone(array);
+		scope = scope || /*REQUIRE:"dojo/_base/window"*/ window.global;
+		var res = /*REQUIRE:"dojo/_base/lang"*/ lang.clone(array);
 		var stack = [ res ];
 		while (stack.length) {
 			// new array, go through its elements
 			var iarray = stack.pop();
-			dojo.forEach(iarray, function(iobj, i) {
-				if (dojo.isArray(iobj)) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(iarray, function(iobj, i) {
+				if (iobj instanceof Array) {
 					// put arrays on the stack
 					stack.push(iobj);
 				}
@@ -671,7 +671,7 @@ dojo.mixin(umc.tools, {
 
 		// in case we got a single array as argument,
 		var args = arguments;
-		if (1 == arguments.length && dojo.isArray(arguments[0])) {
+		if (1 == arguments.length && arguments[0] instanceof Array) {
 			args = arguments[0];
 		}
 
@@ -686,7 +686,7 @@ dojo.mixin(umc.tools, {
 			};
 
 			// entry for ordering can by a String or an Object
-			if (dojo.isString(args[i])) {
+			if (typeof args[i] == "string") {
 				o.attr = args[i];
 			}
 			else if (dojo.isObject(args[i]) && 'attribute' in args[i]) {
@@ -696,7 +696,7 @@ dojo.mixin(umc.tools, {
 			}
 			else {
 				// error case
-				umc.tools.assert(false, 'Wrong parameter for umc.tools.cmpObjects(): ' + dojo.toJson(args));
+				umc.tools.assert(false, 'Wrong parameter for umc.tools.cmpObjects(): ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(args));
 			}
 
 			// add order entry to list
@@ -742,7 +742,7 @@ dojo.mixin(umc.tools, {
 		if(typeof a !== typeof b) { return false; }
 
 		// check whether we have arrays
-		if (dojo.isArray(a) && dojo.isArray(b)) {
+		if (a instanceof Array && b instanceof Array) {
 			if (a.length !== b.length) {
 				return false;
 			}
@@ -754,7 +754,7 @@ dojo.mixin(umc.tools, {
 			return true;
 		}
 		if (dojo.isObject(a) && dojo.isObject(b) && !(a === null || b === null)) {
-			var allKeys = dojo.mixin({}, a, b);
+			var allKeys = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, a, b);
 			var result = true;
 			umc.tools.forIn(allKeys, function(key) {
 					result = result && umc.tools.isEqual(a[key], b[key]);
@@ -774,11 +774,11 @@ dojo.mixin(umc.tools, {
 			s: size,
 			icon: iconName
 		};
-		var iconClass = dojo.replace('icon{s}-{icon}', values);
+		var iconClass = /*REQUIRE:"dojo/_base/lang"*/ lang.replace('icon{s}-{icon}', values);
 		if (!(iconClass in this._existingIconClasses)) {
 			try {
 				// add dynamic style sheet information for the given icon
-				var css = dojo.replace(
+				var css = /*REQUIRE:"dojo/_base/lang"*/ lang.replace(
 					'background: no-repeat;' +
 					'width: {s}px; height: {s}px;' +
 					'background-image: url("images/icons/{s}x{s}/{icon}.png");',
@@ -789,7 +789,7 @@ dojo.mixin(umc.tools, {
 				this._existingIconClasses[iconClass] = true;
 			}
 			catch (error) {
-				console.log(dojo.replace("ERROR: Could not create CSS information for the icon name '{icon}' of size {s}", values));
+				console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("ERROR: Could not create CSS information for the icon name '{icon}' of size {s}", values));
 			}
 		}
 		return iconClass;
@@ -828,9 +828,9 @@ dojo.mixin(umc.tools, {
 		var cookieStr = '';
 		if (!this._userPreferences) {
 			// not yet cached .. get all preferences via cookies
-			this._userPreferences = dojo.clone(this._defaultPreferences);
-			cookieStr = dojo.cookie('UMCPreferences') || '{}';
-			dojo.mixin(this._userPreferences, dojo.fromJson(cookieStr));
+			this._userPreferences = /*REQUIRE:"dojo/_base/lang"*/ lang.clone(this._defaultPreferences);
+			cookieStr = /*REQUIRE:"dojo/cookie"*/ cookie('UMCPreferences') || '{}';
+			/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this._userPreferences, /*REQUIRE:"dojo/json"*/ json.parse(cookieStr));
 		}
 
 		// no arguments, return full preference object
@@ -838,7 +838,7 @@ dojo.mixin(umc.tools, {
 			return this._userPreferences; // Object
 		}
 		// only one parameter, type: String -> return specified preference
-		if (1 == arguments.length && dojo.isString(param1)) {
+		if (1 == arguments.length && typeof param1 == "string") {
 			if (param1 in this._defaultPreferences) {
 				return this._userPreferences[param1]; // Boolean|String|Integer
 			}
@@ -846,19 +846,19 @@ dojo.mixin(umc.tools, {
 		}
 
 		// backup the old preferences
-		var oldPrefs = dojo.clone(this._userPreferences);
+		var oldPrefs = /*REQUIRE:"dojo/_base/lang"*/ lang.clone(this._userPreferences);
 
 		// only one parameter, type: Object -> set all parameters as specified in the object
 		if (1 == arguments.length) {
 			// only consider keys that are defined in defaultPreferences
-			umc.tools.forIn(this._defaultPreferences, dojo.hitch(this, function(key, val) {
+			umc.tools.forIn(this._defaultPreferences, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(key, val) {
 				if (key in param1) {
 					this._userPreferences[key] = param1[key];
 				}
 			}));
 		}
 		// two parameters, type parameter1: String -> set specified user preference
-		else if (2 == arguments.length && dojo.isString(param1)) {
+		else if (2 == arguments.length && typeof param1 == "string") {
 			// make sure preference is in defaultPreferences
 			if (param1 in this._defaultPreferences) {
 				this._userPreferences[param1] = value;
@@ -873,13 +873,13 @@ dojo.mixin(umc.tools, {
 		umc.tools.forIn(this._userPreferences, function(key, val) {
 			if (val != oldPrefs[key]) {
 				// entry has changed
-				dojo.publish('/umc/preferences/' + key, [val]);
+				/*REQUIRE:"dojo/topic"*/ topic.publish('/umc/preferences/' + key, [val]);
 			}
 		});
 
 		// set the cookie with all preferences
-		cookieStr = dojo.toJson(this._userPreferences);
-		dojo.cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
+		cookieStr = /*REQUIRE:"dojo/jsone"*/ json.stringify(this._userPreferences);
+		/*REQUIRE:"dojo/cookie"*/ cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
 		return; // undefined
 	},
 
@@ -888,17 +888,17 @@ dojo.mixin(umc.tools, {
 		//		Function that fetches with the given query the UCR variables.
 		// query: String|String[]
 		//		Query string (or array of query strings) that is matched on the UCR variable names.
-		// return: dojo.Deferred
-		//		Returns a dojo.Deferred that expects a callback to which is passed
+		// return: /*REQUIRE:"dojo/Deferred"*/ Deferred
+		//		Returns a /*REQUIRE:"dojo/Deferred"*/ Deferred that expects a callback to which is passed
 		//		a dict of variable name -> value entries.
 
-		return this.umcpCommand('get/ucr', dojo.isArray( query ) ? query : [ query ] ).then(function(data) {
+		return this.umcpCommand('get/ucr',  query  instanceof Array ? query : [ query ] ).then(function(data) {
 			return data.result;
 		});
 	},
 
 	isFalse: function(/*mixed*/ input) {
-		if (dojo.isString(input)) {
+		if (typeof input == "string") {
 			switch (input.toLowerCase()) {
 				case 'no':
 				case 'not':
@@ -930,11 +930,11 @@ dojo.mixin(umc.tools, {
 		//		If set to true, the type part ('.*=') of each LDAP DN part will be removed.
 
 		var res = [];
-		if (dojo.isString(dn)) {
+		if (typeof dn == "string") {
 			res = dn.split(',');
 		}
 		if (noTypes) {
-			res = dojo.map(res, function(x) {
+			res = /*REQUIRE:"dojo/_base/array"*/ array.map(res, function(x) {
 				return x.slice(x.indexOf('=')+1);
 			});
 		}
@@ -968,7 +968,7 @@ dojo.mixin(umc.tools, {
 		}
 
 		var matched = false;
-		dojo.forEach(bases, function(ibase) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(bases, function(ibase) {
 			if (ibase.prototype.declaredClass == c) {
 				matched = true;
 				return false;
@@ -980,7 +980,7 @@ dojo.mixin(umc.tools, {
 	capitalize: function(/*String*/ str) {
 		// summary:
 		//		Return a string with the first letter in upper case.
-		if (!dojo.isString(str)) {
+		if (!typeof str == "string") {
 			return str;
 		}
 		return str.slice(0, 1).toUpperCase() + str.slice(1);
@@ -992,10 +992,10 @@ dojo.mixin(umc.tools, {
 		//		and if input is an array, the array is not modified. In any other
 		//		case, the function returns an empty array.
 
-		if (dojo.isString(input)) {
+		if (typeof input == "string") {
 			return [ input ];
 		}
-		if (dojo.isArray(input)) {
+		if (input instanceof Array) {
 			return input;
 		}
 		return [];
@@ -1008,10 +1008,10 @@ dojo.mixin(umc.tools, {
 		//		is specified, and leaves a function a function.
 		//		Anything else will be converted to a dummy function.
 
-		if (dojo.isFunction(input)) {
+		if (typeof input == "function") {
 			return input;
 		}
-		if (dojo.isString(input)) {
+		if (typeof input == "string") {
 			if (0 === input.indexOf('javascript:')) {
 				// string starts with 'javascript:' to indicate a reference to a javascript function
 				try {

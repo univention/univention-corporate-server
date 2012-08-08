@@ -34,7 +34,7 @@ dojo.require("umc.widgets.Form");
 dojo.require("dijit.form.Form");
 dojo.require("umc.i18n");
 
-dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.Form, umc.i18n.Mixin ], {
 	// summary:
 	//		Encapsulates a complete search form with standard search and cancel
 	//		buttons. This builds on top of umc.widget.Form.
@@ -58,8 +58,8 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 		var stack = [this.layout];
 		while (stack.length) {
 			var el = stack.pop();
-			if (dojo.isArray(el)) {
-				dojo.forEach(el, function(i) {
+			if (el instanceof Array) {
+				/*REQUIRE:"dojo/_base/array"*/ array.forEach(el, function(i) {
 					stack.push(i);
 				});
 			}
@@ -78,7 +78,7 @@ dojo.declare("umc.widgets.SearchForm", [ umc.widgets.Form, umc.i18n.Mixin ], {
 	postCreate: function() {
 		this.inherited(arguments);
 
-		this.connect(this, 'onSubmit', function() {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onSubmit', function() {
 			this.onSearch(this.gatherFormValues());
 		});
 	},

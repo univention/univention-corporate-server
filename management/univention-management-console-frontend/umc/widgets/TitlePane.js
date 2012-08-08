@@ -33,7 +33,7 @@ dojo.provide("umc.widgets.TitlePane");
 dojo.require("dijit.TitlePane");
 dojo.require("dijit._Container");
 
-dojo.declare("umc.widgets.TitlePane", [ dijit.TitlePane, dijit._Container ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.TitlePane, dijit._Container ], {
 	// summary:
 	//		Widget that extends dijit.TitlePane with methods of a container widget.
 
@@ -47,9 +47,9 @@ dojo.declare("umc.widgets.TitlePane", [ dijit.TitlePane, dijit._Container ], {
 		//        in a closed TitlePane
 
 		// iterate over all tabs
-		dojo.forEach(this.getChildren(), function(ipage) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.getChildren(), function(ipage) {
 			// find all widgets that inherit from dojox.grid._Grid on the tab
-			dojo.forEach(ipage.getDescendants(), function(iwidget) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(ipage.getDescendants(), function(iwidget) {
 				if (umc.tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 					// hook to changes for 'open'
 					this.watch('open', function(attr, oldVal, newVal) {

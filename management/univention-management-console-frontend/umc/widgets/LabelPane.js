@@ -34,7 +34,7 @@ dojo.require("dijit._Widget");
 dojo.require("dijit._Templated");
 dojo.require("dijit._Container");
 
-dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._Container ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit._Widget, dijit._Templated, dijit._Container ], {
 	// summary:
 	//		Simple widget that displays a widget/HTML code with a label above.
 
@@ -77,18 +77,18 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		if (dojo.getObject('content.watch', false, this)) {
 			if (!umc.tools.inheritsFrom(this.content, 'umc.widgets.Button')) {
 				// only watch the label and required property if widget is not a button
-				this.content.watch('label', dojo.hitch(this, function(attr, oldVal, newVal) {
+				this.content.watch('label', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(attr, oldVal, newVal) {
 					this.set('label', newVal || '');
 				}));
-				this.content.watch('required', dojo.hitch(this, function(attr, oldVal, newVal) {
+				this.content.watch('required', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(attr, oldVal, newVal) {
 					this.set('label', this.content.get('label') || '');
 				}));
 			}
-			this.content.watch('visible', dojo.hitch(this, function(attr, oldVal, newVal) {
-				dojo.toggleClass(this.domNode, 'dijitHidden', !newVal);
+			this.content.watch('visible', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(attr, oldVal, newVal) {
+				/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(this.domNode, 'dijitHidden', !newVal);
 			}));
 		}
-		else if (!dojo.isString(this.label)) {
+		else if (!typeof this.label == "string") {
 			this.label = '';
 		}
 	},
@@ -96,7 +96,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		dojo.toggleClass(this.domNode, 'dijitHidden', this.content.visible === false);
+		/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(this.domNode, 'dijitHidden', this.content.visible === false);
 	}, 
 
 	_setLabelAttr: function(label) {
@@ -115,20 +115,20 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 
 		// set the labels' 'for' attribute
 		if (dojo.getObject('id', false, this.content) && dojo.getObject('declaredClass', false, this.content)) {
-			dojo.attr(this.labelNodeRight, 'for', this.content.id);
-			dojo.attr(this.labelNodeTop, 'for', this.content.id);
+			/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeRight, 'for', this.content.id);
+			/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeTop, 'for', this.content.id);
 		}
 
 		// only for check boxes, place the label right of the widget
 		if (umc.tools.inheritsFrom(this.content, 'dijit.form.CheckBox')) {
-			dojo.attr(this.labelNodeRight, 'innerHTML', label);
+			/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeRight, 'innerHTML', label);
 			if (label) {
-				dojo.attr(this.labelNodeTop, 'innerHTML', '');
-				dojo.addClass(this.domNode, 'umcLabelPaneCheckBox');
+				/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeTop, 'innerHTML', '');
+				/*REQUIRE:"dojo/dom-class"*/ domClass.add(this.domNode, 'umcLabelPaneCheckBox');
 			}
 		}
 		else {
-			dojo.attr(this.labelNodeTop, 'innerHTML', label);
+			/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeTop, 'innerHTML', label);
 		}
 	},
 
@@ -136,7 +136,7 @@ dojo.declare("umc.widgets.LabelPane", [ dijit._Widget, dijit._Templated, dijit._
 		this.content = content;
 
 		// we have a string
-		if (dojo.isString(content)) {
+		if (typeof content == "string") {
 			this.contentNode.innerHTML = content;
 		}
 		// if we have a widget, clear the content and hook in the domNode directly

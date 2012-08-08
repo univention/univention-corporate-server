@@ -34,7 +34,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dojo.Stateful");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dojo.Stateful, {
 	// umcpCommand:
 	//		Reference to the umcpCommand the widget should use.
 	//		In order to make the widget send information such as module flavor
@@ -44,7 +44,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	// dynamicValues: String|Function
 	//		Either an UMCP command to query data from or a javascript function.
-	//		The javascript function may return an array or a dojo.Deferred object.
+	//		The javascript function may return an array or a /*REQUIRE:"dojo/Deferred"*/ Deferred object.
 	//		The format is in either case expected to have the same format as for
 	//		staticValues. Dynamic values may be mixed with staticValues.
 	dynamicValues: null,
@@ -126,7 +126,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	postCreate: function() {
 		this.inherited(arguments);
 
-		this.connect(this, 'onChange', function(newVal) {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onChange', function(newVal) {
 			if (this.focused) {
 				// the user has entered a value, use this value as initial value
 				this._saveInitialValue();
@@ -149,7 +149,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 			// make sure the following default internal store item properties are ignored
 			// (as defined in dojo.data.ItemFileReadStore)
 			var ignore = false;
-			dojo.forEach(['_storeRefPropName', '_itemNumPropName', '_rootItemPropName', '_reverseRefMap'], function(ikey) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(['_storeRefPropName', '_itemNumPropName', '_rootItemPropName', '_reverseRefMap'], function(ikey) {
 				if (this.store[ikey] == attr) {
 					ignore = true;
 					return false;
@@ -159,7 +159,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				return true;
 			}
 
-			if ( dojo.isArray( value ) && value.length == 1 ) {
+			if (  value  instanceof Array && value.length == 1 ) {
 				entry[ attr ] = value[ 0 ];
 			} else {
 				entry[ attr ] = null;
@@ -172,7 +172,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 	getAllItems: function() {
 		// summary:
 		//		Converts all store items to "normal" dictionaries
-		return dojo.map( this.store._getItemsArray(), function ( item ) {
+		return /*REQUIRE:"dojo/_base/array"*/ array.map( this.store._getItemsArray(), function ( item ) {
 			return this.item2object( item );
 		}, this );
 	},
@@ -230,8 +230,8 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 	_clearValues: function() {
 		this.store.fetch( { 
-			onComplete: dojo.hitch( this, function( items ) {
-				dojo.forEach( items, dojo.hitch( this, function( item ) {
+			onComplete: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( items ) {
+				/*REQUIRE:"dojo/_base/array"*/ array.forEach( items, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
 					this.store.deleteItem( item );
 				} ) )
 			} )
@@ -255,10 +255,10 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		//   }, ... ]
 		var items = [];
 
-		if (dojo.isArray(_items)) {
-			dojo.forEach(_items, function(iitem) {
+		if (_items instanceof Array) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(_items, function(iitem) {
 				// string
-				if (dojo.isString(iitem)) {
+				if (typeof iitem == "string") {
 					items.push({
 						id: iitem,
 						label: iitem
@@ -267,7 +267,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				// array of dicts
 				else if (dojo.isObject(iitem)) {
 					if (!('id' in iitem && 'label' in iitem)) {
-						console.log("WARNING: umc.widgets._SelectMixin: One of the entries specified does not have the properties 'id' and 'label', ignoring item: " + dojo.toJson(iitem));
+						console.log("WARNING: umc.widgets._SelectMixin: One of the entries specified does not have the properties 'id' and 'label', ignoring item: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(iitem));
 					}
 					else {
 						items.push(iitem);
@@ -275,7 +275,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 				}
 				// unknown format
 				else {
-					console.log("WARNING: umc.widgets._SelectMixin: Given items are in incorrect format, ignoring item: " + dojo.toJson(_items));
+					console.log("WARNING: umc.widgets._SelectMixin: Given items are in incorrect format, ignoring item: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(_items));
 				}
 			});
 		}
@@ -297,7 +297,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 		// add all static values to the store
 		this._ids = {};
-		dojo.forEach(staticValues, function(iitem) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(staticValues, function(iitem) {
 			// store the first value of the list
 			if (null === this._firstValueInList) {
 				this._firstValueInList = iitem.id;
@@ -305,7 +305,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 			// add item to store
 			if (iitem.id in this._ids) {
-				console.log("WARNING: umc.widgets._SelectMixin: Entry already previously defined, ignoring: " + dojo.toJson(iitem));
+				console.log("WARNING: umc.widgets._SelectMixin: Entry already previously defined, ignoring: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(iitem));
 			}
 			else {
 				this.store.newItem(iitem);
@@ -319,7 +319,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		this.store.save();
 
 		// set the user specified value if we don't have dynamic values
-		if (!dojo.isString(this.dynamicValues) || !this.dynamicValues) {
+		if (!typeof this.dynamicValues == "string" || !this.dynamicValues) {
 			this._setCustomValue();
 		}
 	},
@@ -337,7 +337,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		}
 
 		// add items to the store
-		dojo.forEach(items, function(iitem) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(items, function(iitem) {
 			if (iitem) {
 				// store the first value of the list
 				if (null === this._firstValueInList) {
@@ -346,7 +346,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 				// add item to store
 				if (iitem.id in this._ids) {
-					console.log("WARNING: umc.widgets._SelectMixin: Entry already previously defined, ignoring: " + dojo.toJson(iitem));
+					console.log("WARNING: umc.widgets._SelectMixin: Entry already previously defined, ignoring: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(iitem));
 				}
 				else {
 					this.store.newItem(iitem);
@@ -371,8 +371,8 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		this._valuesLoaded = true;
 
 		// unify `depends` property to be an array
-		var dependList = dojo.isArray(this.depends) ? this.depends :
-			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
+		var dependList = this.depends instanceof Array ? this.depends :
+			(this.depends && typeof this.depends == "string") ? [ this.depends ] : [];
 
 		// check whether all necessary values are specified
 		var params = {};
@@ -394,11 +394,11 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 		// mixin additional options for the UMCP command
 		if (this.dynamicOptions) {
-			if (dojo.isFunction(this.dynamicOptions)) {
-				dojo.mixin(params, this.dynamicOptions(params));
+			if (typeof this.dynamicOptions == "function") {
+				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions(params));
 			}
 			else if (dojo.isObject(this.dynamicOptions)) {
-				dojo.mixin(params, this.dynamicOptions);
+				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
 			}
 		}
 
@@ -413,12 +413,12 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		var deferredOrValues = func(params);
 		this._deferredOrValues = deferredOrValues;
 
-		// make sure we have an array or a dojo.Deferred object
+		// make sure we have an array or a /*REQUIRE:"dojo/Deferred"*/ Deferred object
 		if (deferredOrValues &&
-				(dojo.isArray(deferredOrValues) ||
+				(deferredOrValues instanceof Array ||
 				(dojo.isObject(deferredOrValues) && 'then' in deferredOrValues && 'cancel' in deferredOrValues))) {
 			this.onLoadDynamicValues();
-			dojo.when(deferredOrValues, dojo.hitch(this, function(res) {
+			/*REQUIRE:"dojo/when"*/ when(deferredOrValues, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(res) {
 				// callback handler
 				// update dynamic and static values
 				this._clearValues();
@@ -431,7 +431,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 
 				// unblock value loading
 				this._deferredOrValues = null;
-			}), dojo.hitch(this, function() {
+			}), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				// set only the static values
 				this._clearValues();
 				this._setStaticValues();
@@ -478,7 +478,7 @@ dojo.declare("umc.widgets._SelectMixin", dojo.Stateful, {
 		//		Array containing all dynamic and static values.
 
 		// if we can (data grid), perform a refresh
-		//if (dojo.isFunction(this._refresh)) {
+		//if (typeof this._refresh == "function") {
 		//	this._refresh();
 		//}
 

@@ -33,7 +33,7 @@ dojo.provide("umc.widgets.StandbyMixin");
 dojo.require("dojox.widget.Standby");
 dojo.require("dijit._Widget");
 
-dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit._Widget, {
 	// summary:
 	//		Mixin class to make a widget "standby-able"
 
@@ -73,7 +73,7 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 
 	_updateContent: function(content) {
 		// type check of the content
-		if (dojo.isString(content)) {
+		if (typeof content == "string") {
 			// string
 			this._cleanUp();
 			this._standbyWidget.set('text', content);
@@ -88,7 +88,7 @@ dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 				this._standbyWidget.set('centerIndicator', 'text');
 
 				// hook the given widget to the text node
-				dojo.place(content.domNode, this._standbyWidget._textNode);
+				/*REQUIRE:"dojo/dom-construct"*/ construct.place(content.domNode, this._standbyWidget._textNode);
 				content.startup();
 			}
 		}

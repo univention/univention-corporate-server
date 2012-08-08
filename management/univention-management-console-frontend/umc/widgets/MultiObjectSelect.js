@@ -42,7 +42,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 dojo.require("dojo.store.DataStore");
 
-dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc.i18n.Mixin, umc.widgets._FormWidgetMixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.i18n.Mixin, umc.widgets._FormWidgetMixin ], {
 	// summary:
 	//		???
 
@@ -54,10 +54,10 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 
 	// 'javascript:functionName'
 	// function(ids) { ... }
-	// may return dojo.Deferred
+	// may return /*REQUIRE:"dojo/Deferred"*/ Deferred
 	formatter: function(ids) {
-		dojo.forEach(ids, function(id, i) {
-			if (dojo.isString(id)) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(ids, function(id, i) {
+			if (typeof id == "string") {
 				ids[i] = {label: id, id: id};
 			}
 		});
@@ -99,7 +99,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		this.inherited(arguments);
 
 		// in case 'value' is not specified, generate a new array
-		if (!dojo.isArray(this.value)) {
+		if (!this.value instanceof Array) {
 			this.value = [];
 		}
 
@@ -120,7 +120,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		this._multiSelect = new umc.widgets.MultiSelect({});
 		this._attachObjectStore();
 		if ( 'setStore' in this._multiSelect ) {
-			dojo.connect( this._multiSelect, 'setStore', this, '_attachObjectStore' );
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ on( this._multiSelect, 'setStore', this, '_attachObjectStore' );
 		}
 		var container = new umc.widgets.ContainerWidget({});
 		container.addChild(this._multiSelect);
@@ -131,19 +131,19 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		container.addChild(new umc.widgets.Button({
 			label: this._('Add'),
 			iconClass: 'umcIconAdd',
-			onClick: dojo.hitch(this, function() {
+			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				if (!this._detailDialog) {
 					// dialog does not exist, create a new one
 					this._detailDialog = new umc.widgets._MultiObjectSelectDetailDialog({
 						widgets: this.queryWidgets,
-						queryCommand: dojo.hitch( this, 'queryCommand' ),
+						queryCommand: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, 'queryCommand' ),
 						queryOptions: this.queryOptions || {},
 						autoSearch: this.autoSearch,
 						title: this.dialogTitle
 					});
 
 					// register the event handler
-					this.connect(this._detailDialog, 'onAdd', '_addElements');
+					/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._detailDialog, 'onAdd', '_addElements');
 					this.onCreateDialog( this._detailDialog );
 				}
 				this.onShowDialog( this._detailDialog );
@@ -153,15 +153,15 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 		container.addChild(new umc.widgets.Button({
 			label: this._('Remove'),
 			iconClass: 'umcIconDelete',
-			onClick: dojo.hitch(this, '_removeSelectedElements'),
+			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_removeSelectedElements'),
 			style: 'float: right;'
 		}));
 		this.addChild(container);
 	},
 
 	_setValueAttr: function(_values) {
-		// handle possible dojo.Deferred object returned by the formatter
-		dojo.when(this._formatter(_values), dojo.hitch(this, function(values) {
+		// handle possible /*REQUIRE:"dojo/Deferred"*/ Deferred object returned by the formatter
+		/*REQUIRE:"dojo/when"*/ when(this._formatter(_values), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(values) {
 			// sort the array according to the labels
 			values.sort(umc.tools.cmpObjects('label'));
 
@@ -188,7 +188,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	_addElements: function( ids ) {
 		// only add elements that do not exist already
 		var dialog_store = dojo.store.DataStore( { store: this._detailDialog._multiSelect.store } );
-		dojo.forEach( ids , dojo.hitch( this, function( id ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach( ids , /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( id ) {
 			var item = dialog_store.get( id );
 			try {
 				this._objectStore.get( id );
@@ -202,7 +202,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 
 	_removeSelectedElements: function() {
 		// create a dict for all selected elements
-		dojo.forEach(this._multiSelect.getSelectedItems(), dojo.hitch( this, function( iid ) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._multiSelect.getSelectedItems(), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( iid ) {
 			this._objectStore.remove( iid.id );
 		} ) );
 		this._multiSelect.selection.clear();
@@ -224,7 +224,7 @@ dojo.declare("umc.widgets.MultiObjectSelect", [ umc.widgets.ContainerWidget, umc
 	}
 });
 
-dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.Dialog, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	widgets: [],
 
 	queryCommand: '',
@@ -263,14 +263,14 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		this._container.placeAt(this.containerNode);
 
 		// for the layout, all Elements should be below each other
-		var layout = dojo.map(this.widgets, function(iwidget) {
+		var layout = /*REQUIRE:"dojo/_base/array"*/ array.map(this.widgets, function(iwidget) {
 			return iwidget.name;
 		});
 		this._form = new umc.widgets.SearchForm({
 			widgets: this.widgets,
 			layout: layout,
-			onSearch: dojo.hitch(this, 'search'),
-			onValuesInitialized: dojo.hitch(this, function() {
+			onSearch: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'search'),
+			onValuesInitialized: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				// trigger the search if autoSearch is specified and as soon as all form
 				// elements have been initialized
 				if (this.autoSearch) {
@@ -295,7 +295,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 			label: this._('Add'),
 			iconClass: 'umcIconAdd',
 			style: 'float: right;',
-			onClick: dojo.hitch(this, function() {
+			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				// get all elements an trigger onAdd event
 				var ids = this._multiSelect.get('value');
 				if (ids.length) {
@@ -313,7 +313,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		this._container.addChild(new umc.widgets.Button({
 			label: this._('Cancel'),
 			defaultButton: true,
-			onClick: dojo.hitch(this, function() {
+			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				// hide the dialog
 				this.hide();
 
@@ -324,7 +324,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 		}));
 
 		// put focus to last widget in the SearchForm
-		this.connect(this, 'onFocus', function() {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onFocus', function() {
 			if (this.widgets.length) {
 				var lastConf = this.widgets[this.widgets.length - 1];
 				var lastName = lastConf.id || lastConf.name;
@@ -338,7 +338,7 @@ dojo.declare("umc.widgets._MultiObjectSelectDetailDialog", [ dijit.Dialog, umc.w
 
 	search: function(_values) {
 		// set dynamicOptions which will trigger a reload
-		var values = dojo.mixin({}, this.queryOptions, _values);
+		var values = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, this.queryOptions, _values);
 		this._multiSelect.set('dynamicOptions', values);
 
 		if (!this._multiSelect.dynamicValues) {

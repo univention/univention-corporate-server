@@ -38,7 +38,7 @@ dojo.require("umc.widgets.ComboBox");
 dojo.require("umc.widgets.StandbyMixin");
 dojo.require("dijit.Dialog");
 
-dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
 	// our own variables
 	_connections: null,
 	_iframe: null,
@@ -56,8 +56,8 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 
 	postMixInProperties: function() {
 		this.inherited(arguments);
-		this.containerNode = dojo.byId('umc_LoginDialog');
-		this.domNode = dojo.byId('umc_LoginWrapper');
+		this.containerNode = /*REQUIRE:"dojo/dom"*/ dom.byId('umc_LoginDialog');
+		this.domNode = /*REQUIRE:"dojo/dom"*/ dom.byId('umc_LoginWrapper');
 	},
 
 	buildRendering: function() {
@@ -69,7 +69,7 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 			'class': 'dijitDialogUnderlay'
 		};
 
-		this._iframe = dojo.byId('umc_LoginDialog_Iframe');
+		this._iframe = /*REQUIRE:"dojo/dom"*/ dom.byId('umc_LoginDialog_Iframe');
 		// initialize the iframe
 		this._initForm();
 
@@ -95,12 +95,12 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		this._languageLabel.startup();
 		this._languageLabel.placeAt('umc_LoginDialog_FormContainer');
 		// register onchange event
-		this.connect(this._languageBox, 'onChange', function(lang) {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._languageBox, 'onChange', function(lang) {
 			umc.i18n.setLanguage(lang);
 		});
 		// automatically resize the DialogUnderlay container
-		this.connect(window, 'onresize', function() {
-			if (dijit._DialogLevelManager.isTop(this)) {
+		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(window, 'onresize', function() {
+			if (dijit.Dialog._DialogLevelManager.isTop(this)) {
 				dijit._underlay.layout();
 			}
 		});
@@ -108,23 +108,23 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 
 	_initForm: function() {
 		// wait until the iframe is completely loaded
-		setTimeout(dojo.hitch(this, function() {
+		setTimeout(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 			// check whether the form is available or not
 			var	state = dojo.getObject('contentWindow.state', false, this._iframe);
 			if (state === 'loaded') {
 				// we are able to access the form
-				dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
+				dojo.withGlobal(this._iframe.contentWindow, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 					// because of the iframe we need to manually translate the content
-					dojo.attr(dojo.byId('umc_LabelPane_Username'), 'innerHTML', this._('Username'));
-					dojo.attr(dojo.byId('umc_LabelPane_Password'), 'innerHTML', this._('Password'));
-					dojo.attr(dojo.byId('umc_SubmitButton_label'), 'innerHTML', this._('Login'));
+					/*REQUIRE:"dojo/dom-attr"*/ attr.set(/*REQUIRE:"dojo/dom"*/ dom.byId('umc_LabelPane_Username'), 'innerHTML', this._('Username'));
+					/*REQUIRE:"dojo/dom-attr"*/ attr.set(/*REQUIRE:"dojo/dom"*/ dom.byId('umc_LabelPane_Password'), 'innerHTML', this._('Password'));
+					/*REQUIRE:"dojo/dom-attr"*/ attr.set(/*REQUIRE:"dojo/dom"*/ dom.byId('umc_SubmitButton_label'), 'innerHTML', this._('Login'));
 				}));
 
 				// each time the page is loaded, we need to connect to the form events
 				this._connectEvents();
 
 				this._isRendered = true;
-				dojo.setObject('contentWindow.state', 'initialized', this._iframe);
+				/*REQUIRE:"dojo/_base/lang"*/ lang.setObject('contentWindow.state', 'initialized', this._iframe);
 				this._initForm();
 			} else {
 				// we can't access the form, or it has already been initialized
@@ -142,18 +142,18 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		var passwordInput;
 		var passwordContainer;
 
-		dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
-			form = dojo.byId('umc_Form');
-			usernameInput = dojo.byId('umc_UsernameInput');
-			usernameContainer = dojo.byId('umc_UsernameContainer');
-			passwordInput = dojo.byId('umc_PasswordInput');
-			passwordContainer = dojo.byId('umc_PasswordContainer');
+		dojo.withGlobal(this._iframe.contentWindow, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
+			form = /*REQUIRE:"dojo/dom"*/ dom.byId('umc_Form');
+			usernameInput = /*REQUIRE:"dojo/dom"*/ dom.byId('umc_UsernameInput');
+			usernameContainer = /*REQUIRE:"dojo/dom"*/ dom.byId('umc_UsernameContainer');
+			passwordInput = /*REQUIRE:"dojo/dom"*/ dom.byId('umc_PasswordInput');
+			passwordContainer = /*REQUIRE:"dojo/dom"*/ dom.byId('umc_PasswordContainer');
 		}));
 
 		this._connections = [];
 		// register all events
 		this._connections.push(
-			this.connect(form, 'onsubmit', function(event) {
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(form, 'onsubmit', function(event) {
 				this._authenticate(usernameInput.value, passwordInput.value);
 				this._isRendered = false;
 				this._initForm();
@@ -170,15 +170,15 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 			['onfocus', this._setFocus, true],
 			['onblur', this._setFocus, false]
 		];
-		dojo.forEach(fields, dojo.hitch(this, function(field) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(fields, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(field) {
 			var input = field[0];
 			var container = field[1];
-			dojo.forEach(settingsArray, dojo.hitch(this, function(setting) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(settingsArray, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(setting) {
 				var event = setting[0];
 				var func = setting[1];
 				var flag = setting[2];
 				this._connections.push(
-					dojo.connect(input, event, function(e) {
+					/*REQUIRE:"dojo/on"*/ /*TODO*/ on(input, event, function(e) {
 						func(container, flag);
 					})
 				);
@@ -187,26 +187,26 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 	},
 
 	_disconnectEvents: function() {
-		dojo.forEach(this._connections, dojo.disconnect);
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._connections, dojo.disconnect);
 	},
 
 	_setInitialFocus: function() {
-		dojo.withGlobal(this._iframe.contentWindow, dojo.hitch(this, function() {
+		dojo.withGlobal(this._iframe.contentWindow, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 			if (umc.tools.status('username')) {
 				// username is specified, we need to auto fill
 				// the username and disable the textbox.
-				dojo.attr('umc_UsernameInput', 'value', umc.tools.status('username'));
-				dojo.byId('umc_PasswordInput').focus();
+				/*REQUIRE:"dojo/dom-attr"*/ attr.set('umc_UsernameInput', 'value', umc.tools.status('username'));
+				/*REQUIRE:"dojo/dom"*/ dom.byId('umc_PasswordInput').focus();
 				this._setFocus('umc_PasswordContainer', true);
 
 				// disable the username field during relogin, i.e., when the GUI has been previously set up
 				if (umc.tools.status('setupGui')) {
-					dojo.attr('umc_UsernameInput', 'disabled', true);
-					dojo.addClass('umc_UsernameContainer', 'dijitTextBoxDisabled dijitValidationTextBoxDisabled dijitDisabled');
+					/*REQUIRE:"dojo/dom-attr"*/ attr.set('umc_UsernameInput', 'disabled', true);
+					/*REQUIRE:"dojo/dom-class"*/ domClass.add('umc_UsernameContainer', 'dijitTextBoxDisabled dijitValidationTextBoxDisabled dijitDisabled');
 				}
 			} else {
 				// initial focus on username input
-				dojo.byId('umc_UsernameInput').focus();
+				/*REQUIRE:"dojo/dom"*/ dom.byId('umc_UsernameInput').focus();
 				this._setFocus('umc_UsernameContainer', true);
 			}
 		}));
@@ -214,17 +214,17 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 
 	_setFocus: function(obj, enable) {
 		if (enable === true) {
-			dojo.addClass(obj, 'dijitTextBoxFocused dijitValidationTextBoxFocused dijitFocused');
+			/*REQUIRE:"dojo/dom-class"*/ domClass.add(obj, 'dijitTextBoxFocused dijitValidationTextBoxFocused dijitFocused');
 		} else if (enable === false) {
-			dojo.removeClass(obj, 'dijitTextBoxFocused dijitValidationTextBoxFocused dijitFocused');
+			/*REQUIRE:"dojo/dom-class"*/ domClass.remove(obj, 'dijitTextBoxFocused dijitValidationTextBoxFocused dijitFocused');
 		}
 	},
 
 	_setHover: function(obj, enable) {
 		if (enable === true) {
-			dojo.addClass(obj, 'dijitTextBoxHover dijitValidationTextBoxHover dijitHover');
+			/*REQUIRE:"dojo/dom-class"*/ domClass.add(obj, 'dijitTextBoxHover dijitValidationTextBoxHover dijitHover');
 		} else if (enable === false) {
-			dojo.removeClass(obj, 'dijitTextBoxHover dijitValidationTextBoxHover dijitHover');
+			/*REQUIRE:"dojo/dom-class"*/ domClass.remove(obj, 'dijitTextBoxHover dijitValidationTextBoxHover dijitHover');
 		}
 	},
 
@@ -233,17 +233,17 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		umc.tools.umcpCommand('auth', {
 			username: username,
 			password: password
-		}).then(dojo.hitch(this, function(data) {
+		}).then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 			// disable standby in any case
 			this.standby(false);
 
 			// make sure that we got data
 			this.onLogin(username);
 			this.hide();
-		}), dojo.hitch(this, function(error) {
+		}), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(error) {
 			// disable standby in any case
 			this.standby(false);
-			dijit._DialogLevelManager.hide(this);
+			dijit.Dialog._DialogLevelManager.hide(this);
 		}));
 	},
 
@@ -277,12 +277,12 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 		if (this._isRendered) {
 			dojo.query('.umcShowHide').style('display', 'block');
 			this._setInitialFocus();
-			dijit._DialogLevelManager.show(this, this.underlayAttrs);
+			dijit.Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 		} else {
-			var handler = this.connect(this, '_connectEvents', function() {
+			var handler = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, '_connectEvents', function() {
 				dojo.query('.umcShowHide').style('display', 'block');
 				this._setInitialFocus();
-				dijit._DialogLevelManager.show(this, this.underlayAttrs);
+				dijit.Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 				this.disconnect(handler);
 			});
 		}
@@ -297,7 +297,7 @@ dojo.declare('umc.widgets.LoginDialog', [ umc.widgets.StandbyMixin, umc.i18n.Mix
 
 		// hide the dialog
 		dojo.query('.umcShowHide').style('display', 'none');
-		dijit._DialogLevelManager.hide(this);
+		dijit.Dialog._DialogLevelManager.hide(this);
 	},
 
 	onLogin: function(/*String*/ username) {

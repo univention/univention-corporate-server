@@ -4,7 +4,7 @@ dojo.provide("umc.widgets.Tree");
 
 dojo.require("dijit.Tree");
 
-dojo.declare("umc.widgets.Tree", dijit.Tree, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit.Tree, {
 	// summary:
 	//		Extension of `dijit.Tree` with a `refresh()` method.
 	// description:
@@ -36,7 +36,7 @@ dojo.declare("umc.widgets.Tree", dijit.Tree, {
 		if(this.rootNode){
 			this.rootNode.destroyRecursive();
 		}
-		if(this.dndController && !dojo.isString(this.dndController)){
+		if(this.dndController && !typeof this.dndController == "string"){
 			this.dndController.destroy();
 		}
 		this.rootNode = null;
@@ -53,8 +53,8 @@ dojo.declare("umc.widgets.Tree", dijit.Tree, {
 		 * simplify all nodes of paths-array to strings of identifiers because 
 		 * after reload the nodes may have different ids and therefore the 
 		 * paths may not be applied */ 
-		var reloadPaths = dojo.map(this.get('paths'), dojo.hitch(this, function(path) {
-			return dojo.map(path, dojo.hitch(this, function(pathItem) {
+		var reloadPaths = /*REQUIRE:"dojo/_base/array"*/ array.map(this.get('paths'), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(path) {
+			return /*REQUIRE:"dojo/_base/array"*/ array.map(path, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(pathItem) {
 				return this.model.getIdentity(pathItem) + '';
 			}));
 		}));
@@ -84,11 +84,11 @@ dojo.declare("umc.widgets.Tree", dijit.Tree, {
 		this.postCreate();
 		
 		/* reset the paths */
-		this._reloadOnLoadConnect = dojo.connect(this, 'onLoad', dojo.hitch(this, function() {
+		this._reloadOnLoadConnect = /*REQUIRE:"dojo/on"*/ /*TODO*/ on(this, 'onLoad', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 			/* restore old paths.   
 			 * FIXME: this will result in an error if a formerly selected item 
 			 * is no longer existent in the tree after reloading! */
-			this.set('paths', reloadPaths).then(dojo.hitch(this, function() {
+			this.set('paths', reloadPaths).then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				if (this.get('selectedNode')) {
 					this.focusNode(this.get('selectedNode'));
 				}

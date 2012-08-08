@@ -39,7 +39,7 @@ dojo.require("dojox.form.manager._ClassMixin");
 dojo.require("umc.tools");
 dojo.require("umc.render");
 
-dojo.declare("umc.widgets.Form", [
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
 		dijit.form.Form
 /*		dojox.form.manager._Mixin,
 		dojox.form.manager._ValueMixin,
@@ -119,7 +119,7 @@ dojo.declare("umc.widgets.Form", [
 		// in case no layout is specified and no content, either, create one automatically
 		if ((!this.layout || !this.layout.length) && !this.content) {
 			this.layout = [];
-			dojo.forEach(this.widgets, function(iwidget) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.widgets, function(iwidget) {
 				// add the name (or undefined) to the row
 				this.layout.push(dojo.getObject('name', false, iwidget));
 			}, this);
@@ -128,7 +128,7 @@ dojo.declare("umc.widgets.Form", [
 		// in case no submit button has been defined, we define one and hide it
 		// this allows us to connect to the onSubmit event in any case
 		var submitButtonDefined = false;
-		dojo.forEach(this.buttons, function(ibutton) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.buttons, function(ibutton) {
 			if ('submit' == ibutton.name) {
 				submitButtonDefined = true;
 				return false; // break loop
@@ -136,7 +136,7 @@ dojo.declare("umc.widgets.Form", [
 		});
 		if (!submitButtonDefined) {
 			// no submit button defined, add a hidden one :)
-			this.buttons = dojo.isArray(this.buttons) ? this.buttons : [];
+			this.buttons = this.buttons instanceof Array ? this.buttons : [];
 			this.buttons.push({
 				label: 'submit',
 				name: 'submit',
@@ -171,7 +171,7 @@ dojo.declare("umc.widgets.Form", [
 	buildRendering: function() {
 		this.inherited(arguments);
 
-		this._initializedDeferred = new dojo.Deferred();
+		this._initializedDeferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
 
 		if (this.scrollable) {
 			dojo.style(this.containerNode, {
@@ -198,8 +198,8 @@ dojo.declare("umc.widgets.Form", [
 			this.content.placeAt(this.containerNode);
 
 			// create internal dictionary of widgets
-			if (dojo.isArray(this.widgets)) {
-				dojo.forEach(this.widgets, function(iwidget) {
+			if (this.widgets instanceof Array) {
+				/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.widgets, function(iwidget) {
 					// make sure the object looks like a widget
 					umc.tools.assert(iwidget.domNode && iwidget.declaredClass, errMsg);
 					umc.tools.assert(iwidget.name, "umc.widgets.Form: Each widget needs to specify the property 'name'.");
@@ -223,7 +223,7 @@ dojo.declare("umc.widgets.Form", [
 				// widget values have not been loaded completely so far
 				//console.log('iwidget:', iwidget.name);
 				++this._initializingElements;
-				var handle = this.connect(iwidget, 'onValuesLoaded', dojo.hitch(this, function() {
+				var handle = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(iwidget, 'onValuesLoaded', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 					//console.log('onValuesLoaded:', iwidget.name, iwidget.get('value'));
 					// disconnect from the signal
 					this.disconnect(handle);
@@ -248,7 +248,7 @@ dojo.declare("umc.widgets.Form", [
 
 	startup: function() {
 		this.inherited(arguments);
-		this._initializedDeferred.then(dojo.hitch(this, function(result) {
+		this._initializedDeferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(result) {
 			this.onValuesInitialized();
 		}));
 	},
@@ -266,7 +266,7 @@ dojo.declare("umc.widgets.Form", [
 			// loop over all dependencies and cache the dependencies as a map from
 			// publishers -> receivers
 			var depends = umc.tools.stringOrArray(iwidget.depends);
-			dojo.forEach(depends, dojo.hitch(this, function(idep) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(depends, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(idep) {
 				this._dependencyMap[idep] = this._dependencyMap[idep] || [];
 				this._dependencyMap[idep].push(iwidget);
 			}));
@@ -275,7 +275,7 @@ dojo.declare("umc.widgets.Form", [
 		// register all necessary onChange events to handle dependencies
 		umc.tools.forIn(this._dependencyMap, function(iname) {
 			if (iname in this._widgets) {
-				this.connect(this._widgets[iname], 'onChange', function() {
+				/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._widgets[iname], 'onChange', function() {
 					this._updateDependencies(iname);
 				});
 			}
@@ -287,14 +287,14 @@ dojo.declare("umc.widgets.Form", [
 			if (orgCallback) {
 				this._buttons[ibutton].callback = function() { };
 			}
-			this.connect(this, ievent, function(e) {
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, ievent, function(e) {
 				// prevent standard form submission
 				if (e && e.preventDefault) {
 					e.preventDefault();
 				}
 
 				// if there is a custom callback, call it with all form values
-				if (dojo.isFunction(orgCallback)) {
+				if (typeof orgCallback == "function") {
 					orgCallback(this.gatherFormValues());
 				}
 			});
@@ -331,10 +331,10 @@ dojo.declare("umc.widgets.Form", [
 			// value could be a string, an array, or a dict... query first the value
 			// and reset the value accordingly
 			var val = iwidget.get('value');
-			if (dojo.isString(val)) {
+			if (typeof val == "string") {
 				iwidget.set('value', '');
 			}
-			else if (dojo.isArray(val)) {
+			else if (val instanceof Array) {
 				iwidget.set('value', []);
 			}
 			else if (dojo.isObject(val)) {
@@ -381,13 +381,13 @@ dojo.declare("umc.widgets.Form", [
 
 	_updateDependencies: function(publisherName) {
 		var tmp = [];
-		dojo.forEach(this._dependencyMap[publisherName], function(i) {
+		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._dependencyMap[publisherName], function(i) {
 			tmp.push(i.name);
 		});
-		//console.log(dojo.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, dojo.toJson(tmp)]));
+		//console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, /*REQUIRE:"dojo/jsone"*/ json.stringify(tmp)]));
 		if (publisherName in this._dependencyMap) {
 			var values = this.gatherFormValues();
-			dojo.forEach(this._dependencyMap[publisherName], function(ireceiver) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._dependencyMap[publisherName], function(ireceiver) {
 				if (ireceiver && ireceiver._loadValues) {
 					ireceiver._loadValues(values);
 				}
@@ -406,7 +406,7 @@ dojo.declare("umc.widgets.Form", [
 		umc.tools.assert(itemID, 'The specifid itemID for umc.widgets.Form.load() must valid.');
 
 		// query data from server
-		var deferred = this.moduleStore.get(itemID).then(dojo.hitch(this, function(data) {
+		var deferred = this.moduleStore.get(itemID).then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 			var values = this.gatherFormValues();
 			var newValues = {};
 
@@ -425,7 +425,7 @@ dojo.declare("umc.widgets.Form", [
 			this.onLoaded(true);
 
 			return data;
-		}), dojo.hitch(this, function(error) {
+		}), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(error) {
 			// fire event also in error case
 			this.onLoaded(false);
 		}));
@@ -456,11 +456,11 @@ dojo.declare("umc.widgets.Form", [
 			}
 			deferred = this.moduleStore.put(values, options);
 		}
-		deferred = deferred.then(dojo.hitch(this, function(data) {
+		deferred = deferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 			// fire event
 			this.onSaved(true);
 			return data;
-		}), dojo.hitch(this, function(error) {
+		}), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(error) {
 			// fire event also in error case
 			this.onSaved(false);
 		}));

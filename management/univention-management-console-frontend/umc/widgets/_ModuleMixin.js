@@ -33,7 +33,7 @@ dojo.provide("umc.widgets._ModuleMixin");
 dojo.require("umc.store");
 dojo.require("umc.tools");
 
-dojo.declare("umc.widgets._ModuleMixin", null, {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(null, {
 	// summary:
 	//		Mixin class for all module classes. It adds some module specific
 	//		properties/methods.

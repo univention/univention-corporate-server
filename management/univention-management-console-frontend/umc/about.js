@@ -30,12 +30,12 @@
 
 dojo.provide("umc.about");
 
-dojo.require("dojo.cookie");
+dojo.require("/*REQUIRE:"dojo/cookie"*/ cookie");
 dojo.require("umc.i18n");
 dojo.require("umc.dialog");
 dojo.require("dojo.cache");
 
-dojo.mixin(umc.about, new umc.i18n.Mixin({
+/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.about, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 } ), {
@@ -49,7 +49,7 @@ dojo.mixin(umc.about, new umc.i18n.Mixin({
 			labelUMC_Version : this._( 'UMC version' ),
 			UMC_Version : info.umc_version,
 			labelSSL_ValidityDate : this._( 'Validity date of the SSL certificate' ),
-			SSL_ValidityDate : dojo.date.locale.format(new Date(info.ssl_validity_date), {
+			SSL_ValidityDate : /*REQUIRE:"dojo/date/locale"*/ locale.format(new Date(info.ssl_validity_date), {
 				fullYear: true,
 				timePattern: " ",
 				formatLength: "long"

@@ -33,7 +33,7 @@ dojo.provide("umc.widgets.ContainerForm");
 dojo.require("dijit.form.Form");
 dojo.require("dijit._Container");
 
-dojo.declare("umc.widgets.ContainerForm", [dijit.form.Form, dijit._Container], {
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([dijit.form.Form, dijit._Container], {
 	// description:
 	//		Combination of Form and Container class.
 });

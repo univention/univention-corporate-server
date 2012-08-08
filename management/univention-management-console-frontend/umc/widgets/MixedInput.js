@@ -35,7 +35,7 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
-dojo.declare("umc.widgets.MixedInput", [
+/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
 	dijit.layout.ContentPane,
 	umc.widgets._FormWidgetMixin,
 	umc.widgets._WidgetsInWidgetsMixin
@@ -79,11 +79,11 @@ dojo.declare("umc.widgets.MixedInput", [
 		props.disabled = this.disabled;
 
 		// store user defined properties
-		this._userProperties = dojo.clone(props);
+		this._userProperties = /*REQUIRE:"dojo/_base/lang"*/ lang.clone(props);
 
 		// only copy the properties that we need, the rest is for the actual form widget
 		this.dynamicValues = props.dynamicValues;
-		umc.tools.assert(this.dynamicValues && (dojo.isString(this.dynamicValues) || dojo.isFunction(this.dynamicValues)), "For MixedInput, the property 'dynamicValues' needs to be specified.");
+		umc.tools.assert(this.dynamicValues && (typeof this.dynamicValues == "string" || typeof this.dynamicValues == "function"), "For MixedInput, the property 'dynamicValues' needs to be specified.");
 		this.depends = props.depends;
 		//umc.tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
 		this.umcpCommand = props.umcpCommand || umc.tools.umcpCommand;
@@ -114,8 +114,8 @@ dojo.declare("umc.widgets.MixedInput", [
 
 	_loadValues: function(/*Object?*/ _dependValues) {
 		// unify `depends` property to be an array
-		var dependList = dojo.isArray(this.depends) ? this.depends :
-			(this.depends && dojo.isString(this.depends)) ? [ this.depends ] : [];
+		var dependList = this.depends instanceof Array ? this.depends :
+			(this.depends && typeof this.depends == "string") ? [ this.depends ] : [];
 
 		// check whether all necessary values are specified
 		var params = {};
@@ -137,16 +137,16 @@ dojo.declare("umc.widgets.MixedInput", [
 
 		// mixin additional options for the UMCP command
 		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
-			dojo.mixin(params, this.dynamicOptions);
+			/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
 		}
-		else if (this.dynamicOptions && dojo.isFunction(this.dynamicOptions)) {
+		else if (this.dynamicOptions && typeof this.dynamicOptions == "function") {
 			var res = this.dynamicOptions();
-			umc.tools.assert(res && dojo.isObject(res), 'The return type of a function specified by umc.widgets.MixedInput.dynamicOptions() needs to return a dictionary: ' + dojo.toJson(res));
-			dojo.mixin(params, res);
+			umc.tools.assert(res && dojo.isObject(res), 'The return type of a function specified by umc.widgets.MixedInput.dynamicOptions() needs to return a dictionary: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(res));
+			/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, res);
 		}
 
 		// get new values from the server and create a new form widget dynamically
-		this.umcpCommand(this.dynamicValues, params).then(dojo.hitch(this, function(data) {
+		this.umcpCommand(this.dynamicValues, params).then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 			this._setValues(data.result);
 		}));
 	},
@@ -157,7 +157,7 @@ dojo.declare("umc.widgets.MixedInput", [
 		//   true/false -> CheckBox
 		//   otherwise  -> TextBox
 		var newWidgetClass = 'umc.widgets.TextBox';
-		if (dojo.isArray(values)) {
+		if (values instanceof Array) {
 			newWidgetClass = 'umc.widgets.ComboBox';
 		}
 		else if (true === values || false === values || 'true' == values || 'false' == values) {
@@ -183,7 +183,7 @@ dojo.declare("umc.widgets.MixedInput", [
 			this.set('content', this._widget);
 
 			// hook to the onChange event
-			this.connect(this._widget, 'onChange', 'onChange');
+			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._widget, 'onChange', 'onChange');
 		}
 
 		// set the indicated values
@@ -192,7 +192,7 @@ dojo.declare("umc.widgets.MixedInput", [
 			this._widget._clearValues();
 			this._widget._setDynamicValues(values);
 		}
-		else if (!dojo.isArray(values)) {
+		else if (!values instanceof Array) {
 			this._widget.set('value', values);
 		}
 		this._widget.startup();
