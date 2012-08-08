@@ -35,16 +35,15 @@
 eval "$(univention-config-registry shell)"
 
 if [ -z "$ifplugd_action_mount" ]; then
-	   ifplugd_action_mount="yes"
+    ifplugd_action_mount="yes"
 fi
 
 # set "interfaces/handler" in any case to "ifplugd"
-univention-config-registry set interfaces/handler=ifplugd
-
-univention-config-registry set networkmanager/action/mount?"no"
-
-univention-config-registry set dhclient/options/timeout?"40"
-univention-config-registry set dhclient/options/retry?"60"
+univention-config-registry set \
+    interfaces/handler=ifplugd \
+    networkmanager/action/mount?"no" \
+    dhclient/options/timeout?"40" \
+    dhclient/options/retry?"60"
 
 for i in $(seq 0 10); do
 	var="interfaces_eth${i}_networkmanager"
@@ -64,6 +63,19 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.18-1
 		mkdir -p /var/univention-backup/old_conffiles/network/if-down.d
 		mv /etc/network/if-down.d/50_gdm /var/univention-backup/old_conffiles/network/if-down.d
 	fi
+fi
+
+# Transition from /etc/dhcp3/ to /etc/dhcp/
+dpkg-maintscript-helper mv_conffile \
+    "/etc/dhcp3/dhclient-enter-hooks.d/univention-ifplugd-enter-hook" \
+    "/etc/dhcp/dhclient-enter-hooks.d/univention-ifplugd-enter-hook" \
+    4.0.0-1~ univention-ifplugd -- "$@"
+dpkg-maintscript-helper rm_conffile \
+    "/etc/dhcp3/dhclient-enter-hooks.univention.d/00_fallback.py" \
+    4.0.0-1~ univention-ifplugd -- "$@"
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1~;
+then
+    rmdir -p /etc/dhcp3/dhclient-enter-hooks.d /etc/dhcp3/dhclient-enter-hooks.univention.d 2>/dev/null || true
 fi
 
 exit 0

@@ -26,6 +26,7 @@ Package: univention-ifplugd
 Architecture: all
 Conflicts: network-manager,
  univention-network-manager
+Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${misc:Depends},
  univention-network-common (= ${source:Version}),
  ifplugd,
@@ -41,6 +42,7 @@ Description: UCS - Support for ifplugd
 Package: univention-network-common
 Architecture: all
 Depends: ${misc:Depends},
+ ${python:Depends},
  univention-management-console-server,
  python-netifaces
 Replaces: univention-network-manager,

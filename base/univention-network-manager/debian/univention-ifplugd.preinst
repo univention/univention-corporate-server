@@ -1,9 +1,9 @@
-#!/bin/sh
+#! /bin/sh
 #
-# Univention ifplugd
-#  dhclient hook script
+# Univention Network ifplugd
+#  preinst script
 #
-# Copyright 2009-2012 Univention GmbH
+# Copyright 2004-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,15 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-HOOKS_DIR=/etc/dhcp/dhclient-enter-hooks.univention.d/
+set -e
 
-# debugging
-env | egrep '(new_|old_|reason)' > /var/run/ifplugd-env-old
+#DEBHELPER#
 
-# call hooks: each hook script might write shell script to standard output to change environment variables
-for script in $(find ${HOOKS_DIR} -type f -name "*.py" -o -name "*.sh"); do
-	eval $($script | egrep "^export ")
-done
+dpkg-maintscript-helper mv_conffile \
+    "/etc/dhcp3/dhclient-enter-hooks.d/univention-ifplugd-enter-hook" \
+    "/etc/dhcp/dhclient-enter-hooks.d/univention-ifplugd-enter-hook" \
+    4.0.0-1~ univention-ifplugd -- "$@"
+dpkg-maintscript-helper rm_conffile \
+    "/etc/dhcp3/dhclient-enter-hooks.univention.d/00_fallback.py" \
+    4.0.0-1~ univention-ifplugd -- "$@"
 
-# debugging
-set | egrep '(new_|old_|reason)' > /var/run/ifplugd-env-new
+exit 0

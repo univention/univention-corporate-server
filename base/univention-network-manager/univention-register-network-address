@@ -62,7 +62,7 @@ def register_iface(configRegistry, iface, verbose):
 			# Disable ifdown / ifup while setting new UCR variables to avoid an endless loop
 			restart = configRegistry.get('interfaces/restart/auto', 'true')
 			univention.config_registry.handler_set(['interfaces/restart/auto=false'], quiet=True)
-			
+
 			# Set values
 			univention.config_registry.handler_set(ucr_set, quiet=True)
 
@@ -99,5 +99,5 @@ if __name__ == '__main__':
 				retcode += 1
 		elif options.verbose:
 			print 'INFO: %s is not configured as dhcp device.' % iface
-		
+
 	sys.exit(retcode)
