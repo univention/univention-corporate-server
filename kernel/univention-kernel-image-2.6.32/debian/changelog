@@ -1,9 +1,12 @@
 univention-kernel-image-2.6.32 (6.0.0-2) unstable; urgency=low
 
+  * Update meta packages to new binary package names. The new meta packages
+    no longer include a version number	  
   * Depend on firmware-linux-free instead of firmware-linux (which is now
     a meta package) (Bug #27456)	
   * Add new dependencies on firmware-libertas, firmware-myricom (Bug #27456)
   * Remove the transitional meta packages for 2.6.18->2.6.32, no longer needed	
+  * Add new transition packages for migration 2.6.32->3.2
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 07 Aug 2012 11:12:38 +0200
 

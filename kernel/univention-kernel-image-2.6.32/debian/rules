@@ -37,11 +37,11 @@ ABI := ucs64
 amd64_SOURCE_VERSION := 2.6.32
 amd64_VERSION := 2.6.32-${ABI}-amd64
 amd64_VERSION_64 := 2.6.32-${ABI}-amd64
-amd64_VERSION_XEN := 2.6.32-${ABI}-xen-amd64
+amd64_VERSION_XEN := 2.6.32-${ABI}-amd64
 i386_SOURCE_VERSION := 2.6.32
-i386_VERSION := 2.6.32-${ABI}-686
-i386_VERSION_64 := 2.6.32-${ABI}-686-bigmem
-i386_VERSION_XEN := 2.6.32-${ABI}-xen-686
+i386_VERSION := 2.6.32-${ABI}-486
+i386_VERSION_64 := 2.6.32-${ABI}-pae
+i386_VERSION_XEN := 2.6.32-${ABI}-pae
 
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
@@ -80,77 +80,65 @@ binary-arch: build install
 	dh_shlibdeps
 	ucslint
 
-	# Server kernel packages
-	dh_gencontrol -punivention-kernel-image-2.6.32 -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_md5sums -punivention-kernel-image-2.6.32
-	dh_builddeb -punivention-kernel-image-2.6.32
+	dh_gencontrol -punivention-kernel-image -u-VF:KernelVersion="${KERNELVERSION}"
+	dh_md5sums -punivention-kernel-image
+	dh_builddeb -punivention-kernel-image
 
-	dh_gencontrol -punivention-kernel-image-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_md5sums -punivention-kernel-image-2.6.18
-	dh_builddeb -punivention-kernel-image-2.6.18
+	dh_gencontrol -punivention-kernel-headers -u-VF:KernelVersion="${KERNELVERSION}"
+	dh_md5sums -punivention-kernel-headers
+	dh_builddeb -punivention-kernel-headers
 
-	dh_gencontrol -punivention-kernel-headers-2.6.32 -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_md5sums -punivention-kernel-headers-2.6.32
-	dh_builddeb -punivention-kernel-headers-2.6.32
+	dh_gencontrol -punivention-kernel-source -u-VF:KernelVersion="${SOURCEVERSION}"
+	dh_md5sums -punivention-kernel-source
+	dh_builddeb -punivention-kernel-source
 
-	dh_gencontrol -punivention-kernel-headers-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_md5sums -punivention-kernel-headers-2.6.18
-	dh_builddeb -punivention-kernel-headers-2.6.18
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
+	dh_gencontrol -punivention-kernel-image-pae -u-VF:KernelVersion64="${KERNELVERSION64}"
+	dh_md5sums -punivention-kernel-image-pae
+	dh_builddeb -punivention-kernel-image-pae
 
-	dh_gencontrol -punivention-kernel-source-2.6.32 -u-VF:KernelVersion="${SOURCEVERSION}"
-	dh_md5sums -punivention-kernel-source-2.6.32
-	dh_builddeb -punivention-kernel-source-2.6.32
+	dh_gencontrol -punivention-kernel-headers-pae -u-VF:KernelVersion="${KERNELVERSION}"
+	dh_md5sums -punivention-kernel-headers-pae
+	dh_builddeb -punivention-kernel-headers-pae
 
-	dh_gencontrol -punivention-kernel-source-2.6.18 -u-VF:KernelVersion="${SOURCEVERSION}"
-	dh_md5sums -punivention-kernel-source-2.6.18
-	dh_builddeb -punivention-kernel-source-2.6.18
+	dh_gencontrol -punivention-kernel-source-pae -u-VF:KernelVersion="${SOURCEVERSION}"
+	dh_md5sums -punivention-kernel-source-pae
+	dh_builddeb -punivention-kernel-source-pae
+endif
+
 
 ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-image-2.6.32-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-image-2.6.32-64gb
 	dh_builddeb -punivention-kernel-image-2.6.32-64gb
-
-	dh_gencontrol -punivention-kernel-image-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
-	dh_md5sums -punivention-kernel-image-2.6.18-64gb
-	dh_builddeb -punivention-kernel-image-2.6.18-64gb
 endif
 
 	dh_gencontrol -punivention-kernel-image-2.6.32-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
 	dh_md5sums -punivention-kernel-image-2.6.32-xen
 	dh_builddeb -punivention-kernel-image-2.6.32-xen
 
-	dh_gencontrol -punivention-kernel-image-2.6.18-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
-	dh_md5sums -punivention-kernel-image-2.6.18-xen
-	dh_builddeb -punivention-kernel-image-2.6.18-xen
-
-
 ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-headers-2.6.32-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-headers-2.6.32-64gb
 	dh_builddeb -punivention-kernel-headers-2.6.32-64gb
-
-	dh_gencontrol -punivention-kernel-headers-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
-	dh_md5sums -punivention-kernel-headers-2.6.18-64gb
-	dh_builddeb -punivention-kernel-headers-2.6.18-64gb
 endif
 
 	dh_gencontrol -punivention-kernel-headers-2.6.32-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
 	dh_md5sums -punivention-kernel-headers-2.6.32-xen
 	dh_builddeb -punivention-kernel-headers-2.6.32-xen
 
-	dh_gencontrol -punivention-kernel-headers-2.6.18-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
-	dh_md5sums -punivention-kernel-headers-2.6.18-xen
-	dh_builddeb -punivention-kernel-headers-2.6.18-xen
+	dh_gencontrol -punivention-kernel-image-2.6.32 -u-VF:KernelVersion="${KERNELVERSION}"
+	dh_md5sums -punivention-kernel-image-2.6.32
+	dh_builddeb -punivention-kernel-image-2.6.32
 
-ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
-	dh_gencontrol -punivention-kernel-source-2.6.32-64gb -u-VF:KernelVersion64="${SOURCEVERSION}"
-	dh_md5sums -punivention-kernel-source-2.6.32-64gb
-	dh_builddeb -punivention-kernel-source-2.6.32-64gb
+	dh_gencontrol -punivention-kernel-headers-2.6.32 -u-VF:KernelVersion="${KERNELVERSION}"
+	dh_md5sums -punivention-kernel-headers-2.6.32
+	dh_builddeb -punivention-kernel-headers-2.6.32
 
-	dh_gencontrol -punivention-kernel-source-2.6.18-64gb -u-VF:KernelVersion64="${SOURCEVERSION}"
-	dh_md5sums -punivention-kernel-source-2.6.18-64gb
-	dh_builddeb -punivention-kernel-source-2.6.18-64gb
-endif
+	dh_gencontrol -punivention-kernel-source-2.6.32 -u-VF:KernelVersion="${SOURCEVERSION}"
+	dh_md5sums -punivention-kernel-source-2.6.32
+	dh_builddeb -punivention-kernel-source-2.6.32
+
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure
