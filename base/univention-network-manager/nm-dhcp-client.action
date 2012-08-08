@@ -42,10 +42,8 @@ for script in $(find ${HOOKS_DIR} -type f -name "*.py" -o -name "*.sh"); do
 done
 
 # debugging
-set | egrep '(new_|old_|reason)' > /tmp/nm-env
+env | egrep '(new_|old_|reason)' > /var/run/nm-env
  
 /usr/lib/NetworkManager/nm-dhcp-client.action.real
 
 exit 0
-
-	
