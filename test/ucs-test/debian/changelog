@@ -1,3 +1,9 @@
+ucs-test (2.0.2-7) unstable; urgency=low
+
+  * 50_samba/35smbclient_auth is now executable as DC Backup (Bug #26807)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 08 Aug 2012 13:27:45 +0200
+
 ucs-test (2.0.2-6) unstable; urgency=low
 
   * 50_samba/22overlapping_user_and_group_memberquery fails now when net is not

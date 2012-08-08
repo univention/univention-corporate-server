@@ -67,6 +67,9 @@ else
 	delay=10
 fi
 
+SHARE_HOST="$ldap_master"
+SHARE_POSITION="cn=$ldap_master,cn=shares,$ldap_base"
+
 #create user
 username=`user_randomname`
 password=univention
