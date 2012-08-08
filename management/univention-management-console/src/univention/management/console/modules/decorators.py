@@ -61,6 +61,75 @@ from ..protocol.definitions import BAD_REQUEST_INVALID_OPTS
 from ..modules import UMC_Error, UMC_OptionTypeError
 from ..log import MODULE
 
+def _error_handler(options, exception):
+	raise exception
+
+def _simple_response(function, with_flavor):
+	# name of flavor argument. default: 'flavor' (if given, of course)
+	if with_flavor is True:
+		with_flavor = 'flavor'
+	# argument names of the function, including 'self'
+	argspec = inspect.getargspec(function)
+	# remove self, use all the others except with_flavor
+	arguments = argspec.args[1:]
+	if with_flavor:
+		arguments.remove(with_flavor)
+	defaults = argspec.defaults
+	# use defaults as dict
+	if defaults:
+		defaults = dict(zip(arguments[-len(defaults):], defaults))
+	else:
+		defaults = {}
+	def _response(self, request):
+		if not isinstance(request.options, dict):
+			raise UMC_OptionTypeError(_("argument type has to be '%s'") % 'dict')
+		# check for required arguments (those without default)
+		self.required_options(request, *[arg for arg in arguments if arg not in defaults])
+
+		# extract arguments from request or take from default
+		# pass arguments as **kwargs, not *args to be more flexible with defaults
+		kwargs = {}
+		# safely iterate over arguments, dont merge the whole request.options at once
+		# who knows what else the user sent?
+		for arg in arguments:
+			# as we checked before, it is either in request.options or defaults
+			kwargs[arg] = request.options.get(arg, defaults.get(arg))
+		if with_flavor:
+			kwargs[with_flavor] = request.flavor or defaults.get(with_flavor)
+		return function(self, **kwargs)
+	# copy __doc__, otherwise it would not show up in api and such
+	_response.__doc__ = function.__doc__
+	return _response
+
+def _multi_response(function, with_flavor, error_handler):
+	def _response(self, request):
+		if not isinstance(request.options, (list,tuple)):
+			raise UMC_OptionTypeError(_("argument type has to be '%s'") % 'list')
+
+		simple = _simple_response(function, with_flavor)
+
+		response = []
+		for option in request.options:
+			try:
+				req = type('request', (object,), {'options' : options, 'flavor': request.flavor})
+				res = simple(self, req)
+				#res = simple(self, type('request', (object,), {'options' : options, 'flavor': request.flavor}))
+			except Exception, e:
+				res = error_handler(option, e)
+			finally:
+				response.append(res)
+
+		self.finished(request.id, response)
+	return _response
+
+def multi_response(function=None, with_flavor=None, error_handler=_error_handler):
+	if function is None:
+		if with_flavor is not None:
+			return lambda f: _multi_response(f, with_flavor, error_handler)
+		else:
+			raise RuntimeError('Dont use @multi_response without a function')
+	return _multi_response(function, bool(with_flavor), error_handler)
+
 def simple_response(function=None, with_flavor=None):
 	'''If your function is as simple as: "Just return some variables"
 	this decorator is for you.
@@ -139,84 +208,54 @@ def simple_response(function=None, with_flavor=None):
 	     raise UMC_CommandError('Something went wrong')
 
 	'''
+	def _response(self, request):
+		self.finished(request.id, _simple_response(function, with_flavor)(self, request))
 	if function is None:
 		if with_flavor is not None:
-			return lambda f: _simple_response(f, with_flavor)
+			return lambda f: simple_response(f, with_flavor)
 		else:
 			raise RuntimeError('Dont use @simple_response without a function')
-	return _simple_response(function, bool(with_flavor))
-
-def _simple_response(function, with_flavor):
-	# name of flavor argument. default: 'flavor' (if given, of course)
-	if with_flavor is True:
-		with_flavor = 'flavor'
-	# argument names of the function, including 'self'
-	argspec = inspect.getargspec(function)
-	# remove self, use all the others except with_flavor
-	arguments = argspec.args[1:]
-	if with_flavor:
-		arguments.remove(with_flavor)
-	defaults = argspec.defaults
-	# use defaults as dict
-	if defaults:
-		defaults = dict(zip(arguments[-len(defaults):], defaults))
-	else:
-		defaults = {}
-	def _response(self, request):
-		# check for required arguments (those without default)
-		self.required_options(request, *[arg for arg in arguments if arg not in defaults])
-
-		# extract arguments from request or take from default
-		# pass arguments as **kwargs, not *args to be more flexible with defaults
-		kwargs = {}
-		# safely iterate over arguments, dont merge the whole request.options at once
-		# who knows what else the user sent?
-		for arg in arguments:
-			# as we checked before, it is either in request.options or defaults
-			kwargs[arg] = request.options.get(arg, defaults.get(arg))
-		if with_flavor:
-			kwargs[with_flavor] = request.flavor or defaults.get(with_flavor)
-		ret = function(self, **kwargs)
-		self.finished(request.id, ret)
-	# copy __doc__, otherwise it would not show up in api and such
-	_response.__doc__ = function.__doc__
 	return _response
 
-
-def _remove_sensitive_data(data, sensitives):
-	""" recursive remove sensitive data from containing dicts """
+def _replace_sensitive_data(data, sensitives):
+	""" recursive replace sensitive data with ****** from containing dicts """
 	if isinstance(data, (list, tuple)):
 		for i in len(data):
-			data[i] = self._remove_sensitive_data(data[i], sensitives)
+			data[i] = _replace_sensitive_data(data[i], sensitives)
 	elif isinstance(data, dict):
 		for sensitive in sensitives:
 			if sensitive in data:
-				data.pop(sensitive)
+				data[sensitive] = '******'
 	return data
 
-def check_request_options(seq = dict):
+def check_request_options(function=None, types=dict):
 	""" check if request options type is valid """
-	def check(self, function):
+	def check(function):
 		def _response(self, request):
-			if not isinstance(request.options, seq):
-				raise UMC_OptionTypeError( _("argument type has to be '%r'") % seq )
+			if not isinstance(request.options, types):
+				typename = ', '.join(map(lambda t: str(t.__name__), types)) if isinstance(types, tuple) else types.__name__
+				raise UMC_OptionTypeError( _("argument type has to be '%r'") % typename )
 			return function(self, request)
 		return _response
+	if function is not None:
+		return check(function)
 	return check
 
-def log_request_options(sensitive = []):
+def log_request_options(function=None, sensitive=[]):
 	""" log request options, strip sensitive data """
-	def log(self, function):
+	def log(function):
 		def _response(self, request):
 			options = request.options
 			if sensitive:
 				from copy import deepcopy
 				options = deepcopy(options)
-				_remove_sensitive_data(options, sensitive)
+				_replace_sensitive_data(options, sensitive)
 			MODULE.info( '%s.%s: options: %s' % (self.__class__.__name__, function.func_name, options) )
 			return function(self, request)
 		return _response
+	if function is not None:
+		return log(function)
 	return log
 
-__all__ = ['simple_response', 'log_request_options', 'check_request_options']
+__all__ = ['simple_response', 'multi_response', 'log_request_options', 'check_request_options']
 

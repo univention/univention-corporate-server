@@ -1,3 +1,9 @@
+univention-management-console (5.0.9-1) unstable; urgency=low
+
+  * added decorator multi_response (Bug #27716)
+
+ -- Florian Best <best@univention.de>  Wed, 08 Aug 2012 11:26:54 +0200
+
 univention-management-console (5.0.8-1) unstable; urgency=low
 
   * extend decorator simple_response: support flavor (Bug #27716)
