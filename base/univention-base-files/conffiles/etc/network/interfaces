@@ -94,15 +94,15 @@ for i in eth_devices:
 		for key,value in configRegistry.items():
 			if key.startswith('interfaces/%s/route/' % i):
 				if value.startswith('host ') or value.startswith('net '):
-					print '\tup route add -%s dev %s' % (value, i)
+					print '\tup route add -%s dev %s' % (value, iface)
 
 		for key,value in configRegistry.items():
 			if key.startswith('interfaces/%s/options/' % i):
 				print value
 		if i == "eth0":
 			if configRegistry.get('interfaces/eth0/netmask', "") == "255.255.255.255" and gateway:
-				print "\tup ip route add %s/32 dev eth0" % gateway
-				print "\tup route add default gw %s" % gateway
+				print "\tup ip route add %s/32 dev %s" % (gateway, iface)
+				print "\tup ip route add default via %s" % gateway
 
 print
 gateway_found = False
