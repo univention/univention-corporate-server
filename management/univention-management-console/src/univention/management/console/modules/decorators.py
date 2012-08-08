@@ -111,9 +111,9 @@ def _multi_response(function, with_flavor, error_handler):
 		response = []
 		for option in request.options:
 			try:
-				req = type('request', (object,), {'options' : options, 'flavor': request.flavor})
+				req = type('request', (object,), {'options' : option, 'flavor': request.flavor})
 				res = simple(self, req)
-				#res = simple(self, type('request', (object,), {'options' : options, 'flavor': request.flavor}))
+				#res = simple(self, type('request', (object,), {'options' : option, 'flavor': request.flavor}))
 			except Exception, e:
 				res = error_handler(option, e)
 			finally:
@@ -220,7 +220,7 @@ def simple_response(function=None, with_flavor=None):
 def _replace_sensitive_data(data, sensitives):
 	""" recursive replace sensitive data with ****** from containing dicts """
 	if isinstance(data, (list, tuple)):
-		for i in len(data):
+		for i in range(len(data)):
 			data[i] = _replace_sensitive_data(data[i], sensitives)
 	elif isinstance(data, dict):
 		for sensitive in sensitives:
