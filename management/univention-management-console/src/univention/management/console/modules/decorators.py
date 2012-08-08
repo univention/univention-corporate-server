@@ -234,7 +234,7 @@ def check_request_options(function=None, types=dict):
 		def _response(self, request):
 			if not isinstance(request.options, types):
 				typename = ', '.join(map(lambda t: str(t.__name__), types)) if isinstance(types, tuple) else types.__name__
-				raise UMC_OptionTypeError( _("argument type has to be '%r'") % typename )
+				raise UMC_OptionTypeError( _("argument type has to be '%s'") % typename )
 			return function(self, request)
 		return _response
 	if function is not None:
