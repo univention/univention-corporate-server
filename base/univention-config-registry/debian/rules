@@ -49,6 +49,7 @@ override_dh_auto_configure:
 override_dh_auto_test:
 	ucslint
 	python tests/test_info_tools.py
+	python python/univention/debhelper.py
 	make -C tests check
 	tests/unwrap/test.sh
 

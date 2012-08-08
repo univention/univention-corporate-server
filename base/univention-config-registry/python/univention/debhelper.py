@@ -37,7 +37,7 @@ def doIt(*argv):
 	"""
 	Execute argv and wait.
 	
-	>>> doIt('echo', '1')
+	>>> doIt('true')
 	0
 	"""
 	if os.environ.get('DH_VERBOSE', False):
@@ -64,31 +64,37 @@ def binary_packages():
 	return packages
 
 def parseRfc822(f):
-	"""
+	r"""
 	Parses string 'f' as a RFC822 conforming file and returns list of sections, each a dict mapping keys to lists of values.
 	Splits file into multiple sections seperated by blank line.
 
 	Node: For real Debian files, use the 'debian.deb822' module from the 'python-debian' package.
 
-	>>> parseRfc822('Type: file\\nFile: /etc/fstab\\n\\nType: Script\\nScript: /bin/false\\n')
-	[{'Type': ['file'], 'File': ['/etc/fstab']}, {'Type': ['Script'], 'Script': ['/bin/false']}]
+	>>> res = parseRfc822('Type: file\nFile: /etc/fstab\n\nType: Script\nScript: /bin/false\n')
+	>>> res == [{'Type': ['file'], 'File': ['/etc/fstab']}, {'Type': ['Script'], 'Script': ['/bin/false']}]
+	True
 	>>> parseRfc822('')
 	[]
-	>>> parseRfc822('\\n\\n')
+	>>> parseRfc822('\n')
+	[]
+	>>> parseRfc822('\n\n')
 	[]
 	"""
 	res = []
-	entries = f.split('\n\n')
-	for entry in entries:
-		ent = {}
-		lines = entry.split('\n')
-		for line in lines:
-			if line.find(': ') == -1:
-				continue
-			key, value = line.split(': ', 1)
-			ent.setdefault(key, []).append(value)
-		if ent:
+	ent = {}
+	for line in f.splitlines():
+		if line:
+			try:
+				key, value = line.split(': ', 1)
+			except ValueError:
+				pass
+			else:
+				ent.setdefault(key, []).append(value)
+		elif ent:
 			res.append(ent)
+			ent = {}
+	if ent:
+		res.append(ent)
 	return res
 
 if __name__ == '__main__':

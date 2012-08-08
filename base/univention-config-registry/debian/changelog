@@ -1,3 +1,9 @@
+univention-config-registry (8.0.1-2) unstable; urgency=low
+
+  * Fix error handling in univention-install-config-registry (Bug #3952)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Aug 2012 15:27:43 +0200
+
 univention-config-registry (8.0.1-1) unstable; urgency=low
 
   * Add unit test for univention.info_tools.
@@ -53,7 +59,7 @@ univention-config-registry (7.0.30-1) unstable; urgency=low
 
 univention-config-registry (7.0.29-2) unstable; urgency=low
 
-  * fixed last commit (Bug #25206) 
+  * fixed last commit (Bug #25206)
 
  -- Felix Botner <botner@univention.de>  Mon, 20 Feb 2012 12:55:44 +0100
 
@@ -188,7 +194,7 @@ univention-config-registry (7.0.16-2) unstable; urgency=low
   * Add a new sub directory for UCR templates, which are removed during
     a version upgrade. If the local administrator has made any changes
     which might need to be merged back, they can be checked manually.
-    (Needed for Bug #22576)	  
+    (Needed for Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Aug 2011 10:22:35 +0200
 
@@ -369,7 +375,7 @@ univention-config-registry (7.0.2-1) unstable; urgency=low
   * Drop all references to baseconfig.
   * debian/control:
     - Change libunivention-config-dev from all to any.
-    - Tighten inter-package-dependencies 
+    - Tighten inter-package-dependencies
     - Cleanup external Depends.
     - Switch to newer autoconf-1.11.
   * conffiles/init.d/rdate: Fix she-bang after BCWARNING (Bug #21431)
@@ -429,7 +435,7 @@ univention-config-registry (6.0.41-2) unstable; urgency=low
 
 univention-config-registry (6.0.41-1) unstable; urgency=low
 
-  * Don't logrotate /var/log/univention/virtual-machine-manager-daemon.log 
+  * Don't logrotate /var/log/univention/virtual-machine-manager-daemon.log
     (Bug #18002, Bug #20465)
   * python/univention-install-*: Support DH_VERBOSE.
   * debian/rules: Use $(shell ...) instead of `...`
@@ -476,13 +482,13 @@ univention-config-registry (6.0.37-1) unstable; urgency=low
 
 univention-config-registry (6.0.36-2) unstable; urgency=low
 
-  * small fix in etc/profile template (Bug #16020) 
+  * small fix in etc/profile template (Bug #16020)
 
  -- Felix Botner <botner@univention.de>  Mon, 08 Nov 2010 16:02:58 +0100
 
 univention-config-registry (6.0.36-1) unstable; urgency=low
 
-  * added UCR var proxy/no_proxy (Bug #16020) 
+  * added UCR var proxy/no_proxy (Bug #16020)
 
  -- Felix Botner <botner@univention.de>  Mon, 08 Nov 2010 14:01:07 +0100
 
@@ -501,7 +507,7 @@ univention-config-registry (6.0.34-1) unstable; urgency=low
 
 univention-config-registry (6.0.32-2) unstable; urgency=low
 
-  * moved univention-system-stats to univention-maintenance Bug#20121 
+  * moved univention-system-stats to univention-maintenance Bug#20121
 
  -- Felix Botner <botner@univention.de>  Thu, 30 Sep 2010 13:02:26 +0200
 
@@ -514,14 +520,14 @@ univention-config-registry (6.0.32-1) unstable; urgency=low
 
 univention-config-registry (6.0.31-1) unstable; urgency=low
 
-  * renamed ucr variable password/quality/credit/digist to digits, Bug #19585 
+  * renamed ucr variable password/quality/credit/digist to digits, Bug #19585
 
  -- Tim Petersen <petersen@univention.de>  Thu, 16 Sep 2010 09:50:00 +0200
 
 univention-config-registry (6.0.30-1) unstable; urgency=low
 
-  * set default for syslog/mail/mirrorto/syslog to no for 
-    new installations Bug #9510 
+  * set default for syslog/mail/mirrorto/syslog to no for
+    new installations Bug #9510
 
  -- Felix Botner <botner@univention.de>  Mon, 16 Aug 2010 09:35:30 +0200
 
@@ -620,7 +626,7 @@ univention-config-registry (6.0.15-1) unstable; urgency=low
 
 univention-config-registry (6.0.14-2) unstable; urgency=low
 
-  * added syslog template (Bug #9510 #17853) 
+  * added syslog template (Bug #9510 #17853)
 
  -- Felix Botner <botner@univention.de>  Tue, 27 Jul 2010 09:42:18 +0200
 
@@ -698,7 +704,7 @@ univention-config-registry (6.0.4-1) unstable; urgency=low
 
 univention-config-registry (6.0.3-1) unstable; urgency=low
 
-  * chmod 640 all logfiles in /var/log/univention after logrotat Bug #17798 
+  * chmod 640 all logfiles in /var/log/univention after logrotat Bug #17798
 
  -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 11:56:28 +0200
 
@@ -711,13 +717,13 @@ univention-config-registry (6.0.2-1) unstable; urgency=low
 
 univention-config-registry (6.0.1-2) unstable; urgency=low
 
-  * fixed is_false() and is_true() in configRegistry() Bug #15125 
+  * fixed is_false() and is_true() in configRegistry() Bug #15125
 
  -- Felix Botner <botner@univention.de>  Thu, 27 May 2010 11:50:43 +0200
 
 univention-config-registry (6.0.1-1) unstable; urgency=low
 
-  * added is_false() and is_true() to configRegistry() Bug #15125 
+  * added is_false() and is_true() to configRegistry() Bug #15125
 
  -- Felix Botner <botner@univention.de>  Thu, 27 May 2010 11:20:32 +0200
 
@@ -770,8 +776,8 @@ univention-config-registry (5.0.82-3) unstable; urgency=low
   * Reset permissions of /var/log/mail.[log|err|warn|info] and
     /var/log/apache2/other_vhosts_access.log to 640 root:adm
     in univention-set-logfile-permissions, since they may
-    potentially contain sensitive data (Bug #17795) and 
-    (Bug #17796) 	 
+    potentially contain sensitive data (Bug #17795) and
+    (Bug #17796)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Mar 2010 09:55:16 +0200
 
@@ -784,7 +790,7 @@ univention-config-registry (5.0.82-2) unstable; urgency=low
 
 univention-config-registry (5.0.82-1) unstable; urgency=low
 
-  * allow '#' in ucr values Bug #8417 
+  * allow '#' in ucr values Bug #8417
 
  -- Felix Botner <botner@univention.de>  Tue, 23 Mar 2010 10:20:28 +0100
 
@@ -865,7 +871,7 @@ univention-config-registry (5.0.72-2) unstable; urgency=low
 
 univention-config-registry (5.0.72-1) unstable; urgency=low
 
-  * fixed service_info Bug #17311 
+  * fixed service_info Bug #17311
 
  -- Felix Botner <botner@univention.de>  Fri, 15 Jan 2010 15:49:42 +0100
 
@@ -889,7 +895,7 @@ univention-config-registry (5.0.69-1) unstable; urgency=low
 
 univention-config-registry (5.0.68-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:05:00 +0100
 
@@ -1341,7 +1347,7 @@ univention-config-registry (5.0.7-1) unstable; urgency=low
 
 univention-config-registry (5.0.6-1) unstable; urgency=low
 
-  * Do not remove default gateway if UCR variable "gateway" has not 
+  * Do not remove default gateway if UCR variable "gateway" has not
     been modified (Bug #13648)
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 29 Jun 2009 16:36:34 +0200
@@ -1443,7 +1449,7 @@ univention-config-registry (4.0.4-1) unstable; urgency=low
 univention-config-registry (4.0.3-1) unstable; urgency=low
 
   * provide config_registry.py with "--schedule" power (Bug: #12014 and Bug
-    #12051) 
+    #12051)
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri, 22 Aug 2008 13:10:11 +0200
 
@@ -1510,7 +1516,7 @@ univention-config-registry (3.0.6-5) unstable; urgency=low
 
 univention-config-registry (3.0.6-4) unstable; urgency=low
 
-  * init script update (ntp, portmap, nscd ...) 
+  * init script update (ntp, portmap, nscd ...)
 
  -- Felix Botner <fbotner@omar.knut.univention.de>  Mon, 27 Oct 2008 17:18:29 +0100
 
@@ -1547,13 +1553,13 @@ univention-config-registry (3.0.4-4) unstable; urgency=low
 
 univention-config-registry (3.0.4-3) unstable; urgency=low
 
-  * more flexiblity in univention/service_info.py (Bug: #12068) 
+  * more flexiblity in univention/service_info.py (Bug: #12068)
 
  -- Felix Botner <botner@univention.de>  Tue,  2 Sep 2008 09:46:12 +0200
 
 univention-config-registry (3.0.4-2) unstable; urgency=low
 
-  * quote bash command in univention-policy-update-config-registry.py 
+  * quote bash command in univention-policy-update-config-registry.py
 
  -- Felix Botner <botner@univention.de>  Fri, 15 Aug 2008 12:49:29 +0200
 
@@ -1776,7 +1782,7 @@ univention-config-registry (2.4.11-1) unstable; urgency=low
 univention-config-registry (2.4.10-1) unstable; urgency=low
 
   * fix check for existence of self.__configRegistry object (do not use
-    __nonzero__ operator) 
+    __nonzero__ operator)
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 25 Oct 2007 14:41:06 +0200
 
@@ -1864,7 +1870,7 @@ univention-config-registry (2.4.2-2) unstable; urgency=low
 
 univention-config-registry (2.4.2-1) unstable; urgency=low
 
-  * pattern matching was skipped because of a buggy condition 
+  * pattern matching was skipped because of a buggy condition
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 19 Sep 2007 14:51:03 +0200
 
@@ -1876,7 +1882,7 @@ univention-config-registry (2.4.1-4) unstable; urgency=low
 
 univention-config-registry (2.4.1-3) unstable; urgency=low
 
-  * add pre-dependency to cron and netbase 
+  * add pre-dependency to cron and netbase
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 18 Sep 2007 14:28:17 +0200
 
@@ -2075,7 +2081,7 @@ univention-config-registry (2.2.5-2) unstable; urgency=low
   * register new init scripts as configuration registry variables
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 12:02:25 +0200
- 
+
 univention-config-registry (2.2.5-1) unstable; urgency=low
 
   * add init scripts for ntp, cron, inetd, portmap, nscd
@@ -2144,7 +2150,7 @@ univention-config-registry (2.2.1-1) unstable; urgency=low
 
 univention-config-registry (2.2.0-13) unstable; urgency=low
 
-  * fixed interface handling  
+  * fixed interface handling
 
  -- Bastian Neumann <neumann@univention.de>  Thu, 19 Jul 2007 09:07:53 +0200
 
@@ -2162,7 +2168,7 @@ univention-config-registry (2.2.0-11) unstable; urgency=low
 
 univention-config-registry (2.2.0-10) unstable; urgency=low
 
-  * changed setting of kernel/ramdisk 
+  * changed setting of kernel/ramdisk
 
  -- Tobias Scherer <scherer@univention.de>  Mon, 16 Jul 2007 11:09:17 +0200
 
@@ -2187,7 +2193,7 @@ univention-config-registry (2.2.0-7) unstable; urgency=low
 univention-config-registry (2.2.0-6) unstable; urgency=low
 
   * add link /usr/bin/univention-install-baseconfig ->
-    univention-install-config-registry for compatibility 
+    univention-install-config-registry for compatibility
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 12 Jul 2007 15:14:26 +0200
 
@@ -2279,13 +2285,13 @@ univention-baseconfig (2.1.6-2) unstable; urgency=low
 
 univention-baseconfig (2.1.6-1) unstable; urgency=low
 
-  * fixed typo in service_info.py 
+  * fixed typo in service_info.py
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 11 Jun 2007 14:31:11 +0200
 
 univention-baseconfig (2.1.5-1) unstable; urgency=low
 
-  * find running daemon by comparing the program name and the arguments 
+  * find running daemon by comparing the program name and the arguments
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 11 Jun 2007 13:00:10 +0200
 
@@ -2341,7 +2347,7 @@ univention-baseconfig (2.1.0-1) unstable; urgency=low
 
 univention-baseconfig (2.0.2-5) unstable; urgency=low
 
-  * baseconfig variables can be set without an value 
+  * baseconfig variables can be set without an value
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 23 May 2007 15:11:14 +0200
 
