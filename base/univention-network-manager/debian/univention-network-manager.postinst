@@ -45,11 +45,8 @@ univention-config-registry set networkmanager/action/mount?"no"
 univention-config-registry set networkmanager/group?"root"
 univention-config-registry set networkmanager/all_interfaces?"yes"
 
-univention-config-registry set dhclient/options/timeout?"40"
-univention-config-registry set dhclient/options/retry?"60"
-
 # need to reload dbus to read new permissions for networkmanager/group
-/etc/init.d/dbus reload
+invoke-rc.d dbus reload
 
 for i in $(seq 0 10); do
 	var="interfaces_eth${i}_ifplugd"
@@ -59,16 +56,5 @@ for i in $(seq 0 10); do
 		univention-config-registry unset "${!var}"
 	fi
 done
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.18-1; then
-	if [ -e /etc/network/if-up.d/50_gdm ]; then
-		mkdir -p /var/univention-backup/old_conffiles/network/if-up.d
-		mv /etc/network/if-up.d/50_gdm /var/univention-backup/old_conffiles/network/if-up.d
-	fi
-	if [ -e /etc/network/if-down.d/50_gdm ]; then
-		mkdir -p /var/univention-backup/old_conffiles/network/if-down.d
-		mv /etc/network/if-down.d/50_gdm /var/univention-backup/old_conffiles/network/if-down.d
-	fi
-fi
 
 exit 0
