@@ -1,3 +1,12 @@
+univention-nfs (5.0.1-1) unstable; urgency=low
+
+  * cleanup postinst:
+    * call joinscript
+    * remove old migration code
+    * do not set UCRV on package removal
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 08 Aug 2012 12:38:59 +0200
+
 univention-nfs (5.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.
