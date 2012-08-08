@@ -4,6 +4,7 @@ univention-base-files (2.0.1-1) unstable; urgency=low
   * Drop setting deprecated UCR variable:
     - browser-cache
   * Fix host route un-escaping (Bug #27198)
+  * Order /etc/hosts by interface names (Bug #19440)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 11:33:27 +0200
 
