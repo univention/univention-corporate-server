@@ -1,6 +1,6 @@
 univention-management-console-frontend (2.0.5-1) unstable; urgency=low
 
-  * WIP: migration to Dojo 1.8; Bug #26857
+  * WIP: migration to Dojo 1.8, finished i18n AMD plugin; Bug #26857
   * Note: package is currently not buildable!
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Aug 2012 17:17:29 +0200
