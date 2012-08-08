@@ -3,6 +3,8 @@ univention-dhcp (7.0.0-1) unstable; urgency=low
   * UCS-3.1 version bump.
   * Add UCR variable description (Bug #28134)
   * Use library function to create logfile (Bug #22011)
+  * Fix file permission (Bug #25377)
+  * Reference /etc/init.d/univention-dhcp (Bug #17802)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 10:26:37 +0200
 

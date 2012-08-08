@@ -13,6 +13,7 @@ Variables: domainname
 
 Type: file
 File: etc/init.d/isc-dhcp-server
+Mode: 0755
 
 Type: file
 File: etc/logrotate.d/univention-dhcp

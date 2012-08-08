@@ -40,4 +40,6 @@
 # Description:       Dynamic Host Configuration Protocol Server
 ### END INIT INFO
 
+. /lib/lsb/init-functions
+log_action_msg "This script is disabled, use /etc/init.d/univention-dhcp."
 exit 0
