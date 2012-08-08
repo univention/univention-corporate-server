@@ -12,3 +12,8 @@ UMC modules
 	:undoc-members:
 	:show-inheritance:
 
+.. automodule:: univention.management.console.modules.sanitizers
+	:members:
+	:undoc-members:
+	:show-inheritance:
+

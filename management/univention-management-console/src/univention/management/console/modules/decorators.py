@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  Decorators for functions inUMC 2.0 modules
+#  Decorators for functions in UMC 2.0 modules
 #
 # Copyright 2012 Univention GmbH
 #
@@ -57,9 +57,98 @@ import univention.debug as ud
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
-from ..protocol.definitions import BAD_REQUEST_INVALID_OPTS
+from ..protocol.definitions import BAD_REQUEST, BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_INVALID_ARGS
 from ..modules import UMC_Error, UMC_OptionTypeError
 from ..log import MODULE
+
+from .sanitizers import ValidationError
+
+def sanitize(**kwargs):
+	"""
+	Decorator that lets you sanitize the user input.
+	
+	The sanitize function can be used to validate the input
+	as well as change it.
+
+	Note that changing a value here will actually alter the request
+	object. This should be no problem though.
+
+	If the validation step fails an error will be passed to the user
+	instead of executing the function. This step should not raise
+	anything other than
+	:class:`~univention.management.console.modules.sanitizers.ValidationError`
+	or
+	:class:`~univention.management.console.modules.sanitizers.UnformattedValidationError`
+	(one should use the method
+	:meth:`~univention.management.console.modules.sanitizers.Sanitizer.raise_validation_error`).
+
+	You can find some predefined Sanitize classes in the
+	corresponding module or you define one yourself, deriving it from
+	:class:`~univention.management.console.modules.sanitizers.Sanitizer`::
+
+	 class SplitPathSanitizer(Sanitizer):
+	     def __init__(self):
+	         super(SplitPathSanitizer, self).__init__(
+		   validate_none=True,
+		   may_change_value=True)
+
+	     def _sanitize(self, value, name, further_fields):
+		 if value is None:
+	             return []
+	         try:
+		     return value.split('/')
+	         except:
+		     self.raise_validation_error('Split failed')
+
+	Before::
+
+	 def my_func(self, request):
+	     var1 = request.options.get('var1')
+	     var2 = request.options.get('var2')
+	     try:
+	         var1 = int(var1)
+		 var2 = int(var2)
+             except ValueError:
+	         self.finished(request.id, None, 'Cannot convert to int', success=False, status=BAD_REQUEST)
+		 return
+	     if var2 < 10:
+	         self.finished(request.id, None, 'var2 must be >= 10', success=False, status=BAD_REQUEST)
+		 return
+	     self.finished(request.id, var1 + var2)
+
+	After::
+
+	 @sanitize(var1=IntegerSanitizer(required=True),
+	   var2=IntegerSanitizer(required=True, minimum=10))
+	 def add(self, request):
+	     var1 = request.options.get('var1')
+	     var2 = request.options.get('var2')
+	     self.finished(request.id, var1 + var2)
+
+	The decorator can be combined with other decorators like
+	:func:`simple_response` (be careful with ordering of decorators here)::
+
+	 @sanitize(var1=IntegerSanitizer(required=True),
+	   var2=IntegerSanitizer(required=True, minimum=10))
+	 @simple_response
+	 def add(self, var1, var2):
+	     return var1 + var2
+	"""
+	return lambda function: _sanitize(function, kwargs)
+
+def _sanitize(function, sanitized_arguments):
+	def _response(self, request):
+		copied_options = request.options.copy()
+		for field, sanitizer in sanitized_arguments.iteritems():
+			try:
+				value, value_might_be_changed = sanitizer.sanitize(field, copied_options)
+				if value_might_be_changed and sanitizer.may_change_value:
+					request.options[field] = value
+			except ValidationError as e:
+				self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST)
+				return
+		return function(self, request)
+	return _response
 
 def _error_handler(options, exception):
 	raise exception
@@ -70,16 +159,18 @@ def _simple_response(function, with_flavor):
 		with_flavor = 'flavor'
 	# argument names of the function, including 'self'
 	argspec = inspect.getargspec(function)
-	# remove self, use all the others except with_flavor
+	# remove self
 	arguments = argspec.args[1:]
-	if with_flavor:
-		arguments.remove(with_flavor)
 	defaults = argspec.defaults
 	# use defaults as dict
 	if defaults:
 		defaults = dict(zip(arguments[-len(defaults):], defaults))
 	else:
 		defaults = {}
+	# remove flavor argument, if given
+	# do it here to have a chance to add it in defaults
+	if with_flavor:
+		arguments.remove(with_flavor)
 	def _response(self, request):
 		if not isinstance(request.options, dict):
 			raise UMC_OptionTypeError(_("argument type has to be '%s'") % 'dict')
@@ -121,14 +212,6 @@ def _multi_response(function, with_flavor, error_handler):
 
 		self.finished(request.id, response)
 	return _response
-
-def multi_response(function=None, with_flavor=None, error_handler=_error_handler):
-	if function is None:
-		if with_flavor is not None:
-			return lambda f: _multi_response(f, with_flavor, error_handler)
-		else:
-			raise RuntimeError('Dont use @multi_response without a function')
-	return _multi_response(function, bool(with_flavor), error_handler)
 
 def simple_response(function=None, with_flavor=None):
 	'''If your function is as simple as: "Just return some variables"
@@ -217,6 +300,14 @@ def simple_response(function=None, with_flavor=None):
 			raise RuntimeError('Dont use @simple_response without a function')
 	return _response
 
+def multi_response(function=None, with_flavor=None, error_handler=_error_handler):
+	if function is None:
+		if with_flavor is not None:
+			return lambda f: _multi_response(f, with_flavor, error_handler)
+		else:
+			raise RuntimeError('Dont use @multi_response without a function')
+	return _multi_response(function, with_flavor, error_handler)
+
 def _replace_sensitive_data(data, sensitives):
 	""" recursive replace sensitive data with ****** from containing dicts """
 	if isinstance(data, (list, tuple)):
@@ -257,5 +348,5 @@ def log_request_options(function=None, sensitive=[]):
 		return log(function)
 	return log
 
-__all__ = ['simple_response', 'multi_response', 'log_request_options', 'check_request_options']
+__all__ = ['simple_response', 'multi_response', 'log_request_options', 'check_request_options', 'sanitize']
 

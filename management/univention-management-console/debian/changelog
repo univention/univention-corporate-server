@@ -1,3 +1,10 @@
+univention-management-console (5.0.10-1) unstable; urgency=low
+
+  * added alternative possibility to check syntax (Bug #27720)
+  * added sanitizer decorator (Bug #27716)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 08 Aug 2012 20:04:33 +0200
+
 univention-management-console (5.0.9-1) unstable; urgency=low
 
   * added decorator multi_response (Bug #27716)

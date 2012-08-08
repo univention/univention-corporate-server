@@ -262,6 +262,15 @@ msgstr "Unbekannter MIME-Typ"
 msgid "Invalid UCR variable requested: %s"
 msgstr "Ungültige UCR-Variable: %s"
 
+msgid "Argument required"
+msgstr "Argument erforderlich"
+
+msgid "Cannot be converted to a number"
+msgstr "Kann nicht in eine Zahl umgewandelt werden"
+
+msgid "Should stay %s"
+msgstr "Sollte %s bleiben"
+
 #~ msgid "Attribute %s just available for MIME type %s"
 #~ msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
 
