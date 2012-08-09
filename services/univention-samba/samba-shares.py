@@ -35,24 +35,30 @@ import listener
 import os, re, string
 import univention.debug
 import univention.lib.listenerSharePath
+from univention.config_registry import ConfigRegistry
 import cPickle
 
-if listener.baseConfig.get('samba/ha/master'):
-	hostname=listener.baseConfig['samba/ha/master']
-else:
-	hostname=listener.baseConfig['hostname']
 domainname=listener.baseConfig['domainname']
-ip=listener.baseConfig['interfaces/eth0/address']
 
 name='samba-shares'
 description='Create configuration for Samba shares'
-filter='(&(objectClass=univentionShare)(objectClass=univentionShareSamba)(|(univentionShareHost=%s.%s)(univentionShareHost=%s)))' % (hostname, domainname, ip)
+filter='(&(objectClass=univentionShare)(objectClass=univentionShareSamba))'	# filter fqdn/ip in handler
 attributes=[]
 modrdn='1'
 
 tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + ".oldObject")
 
 def handler(dn, new, old, command):
+
+	configRegistry = ConfigRegistry()
+	configRegistry.load()
+
+	# dymanic module object filter
+	current_fqdn = "%s.%s" % (configRegistry['hostname'], domainname)
+	current_ip = configRegistry['interfaces/eth0/address']
+	univentionShareHost = new.get('univentionShareHost')
+	if not univentionShareHost in (current_fqdn, current_ip):
+		return
 
 	# create tmp dir
 	tmpDir = os.path.dirname(tmpFile)

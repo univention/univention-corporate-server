@@ -1,3 +1,10 @@
+univention-samba (7.0.4-1) unstable; urgency=low
+
+  * make samba-shares module listen on current FQDN and eth0 IP
+    (Bug #27253)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Aug 2012 19:14:30 +0200
+
 univention-samba (7.0.3-1) unstable; urgency=low
 
   * let univention-samba depend on winbind, as it is needed for
