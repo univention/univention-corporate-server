@@ -21,7 +21,7 @@ Description: UCS - Linux kernel (standard)
 Package: univention-kernel-image-pae
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersionXen}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom
+Depends: linux-image-${F:KernelVersionPAE}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom
 Description: UCS - Linux kernel (PAE/Xen)
  This meta-package depends on the latest UCS kernel image supporting 64 GB
  of main memory.
