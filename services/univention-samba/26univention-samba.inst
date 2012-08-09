@@ -231,7 +231,7 @@ ucs_addServiceToLocalhost 'Samba 3' "$@"
 # sync netlogon share
 /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
 
-if [ "$JS_LAST_EXECUTED_VERSION" -le 8 ]; then
+if [ "$JS_LAST_EXECUTED_VERSION" -lt 8 ]; then
 	## this block and script may be removed after update to ucs3.1 (Bug #21262)
 	/usr/share/univention-samba/adopt_ucs_domain_password_length_policy.sh
 fi
