@@ -1,3 +1,9 @@
+univention-samba (7.0.2-2) unstable; urgency=low
+
+  * add copyright header (Bug #21262).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Aug 2012 18:09:36 +0200
+
 univention-samba (7.0.2-1) unstable; urgency=low
 
   * Adjust min password length in Samba domain policy if old default (=5)
