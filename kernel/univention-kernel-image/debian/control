@@ -1,4 +1,4 @@
-Source: univention-kernel-image-2.6.32
+Source: univention-kernel-image
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
