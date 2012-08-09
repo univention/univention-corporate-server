@@ -44,8 +44,8 @@ dojo.require("dojox.grid.cells");
 dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
 dojo.require("dojox.grid.enhanced.plugins.Menu");
 dojo.require("umc.i18n");
-dojo.require("umc.tools");
-dojo.require("umc.render");
+dojo.require("tools");
+dojo.require("render");
 dojo.require("umc.widgets.Button");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.StandbyMixin");
@@ -85,7 +85,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 	//		when the module has loaded.
 	query: null,
 
-	// moduleStore: umc.store.UmcpModuleStore
+	// moduleStore: store.UmcpModuleStore
 	//		Object store for module requests using UMCP commands.
 	moduleStore: null,
 
@@ -156,7 +156,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 			var iconName = this._dataStore.getValue(item, iconField);
 
 			// create an HTML image that contains the icon
-			var html = dojo.replace('<img src="images/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
+			var html = /*REQUIRE:"dojo/_base/lang"*/ lang.replace('<img src="images/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
 				icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
 				height: '16px',
 				width: '16px',
@@ -197,7 +197,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		// query the widths of all columns
 		var outerWidths = [];
 		var innerWidths = [];
-		dojo.query('th', this._grid.viewsHeaderNode).forEach(function(i) { 
+		/*REQUIRE:"dojo/query"*/ query('th', this._grid.viewsHeaderNode).forEach(function(i) { 
 			outerWidths.push(/*REQUIRE:"dojo/dom-geometry"*/ geometry.getMarginBox(i).w);
 			innerWidths.push(/*REQUIRE:"dojo/dom-geometry"*/ geometry.getContentBox(i).w);
 		});
@@ -217,7 +217,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 	},
 
 	_setColumnsAttr: function ( columns ) {
-		umc.tools.assert(columns instanceof Array, 'The property columns needs to be defined for umc.widgets.Grid as an array.');
+		tools.assert(columns instanceof Array, 'The property columns needs to be defined for umc.widgets.Grid as an array.');
 		this.columns = columns;
 
 		if (!this._grid) {
@@ -268,7 +268,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		// create the layout for the grid columns
 		var gridColumns = [];
 		/*REQUIRE:"dojo/_base/array"*/ array.forEach(columns, function(icol) {
-			umc.tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
+			tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
 
 			// set common properties
 			var col = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({
@@ -419,7 +419,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 					// by default only create a button with icon
 					return this.adopt(dijit.form.DropDownButton, {
-						label: this._('more'),
+						label: _('more'),
 						dropDown: menu
 					});
 				})
@@ -432,7 +432,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 	},
 
 	_setActionsAttr: function(actions, /*Boolean?*/ doSetColumns) {
-		umc.tools.assert(actions instanceof Array, 'The property actions needs to be defined for umc.widgets.Grid as an array.');
+		tools.assert(actions instanceof Array, 'The property actions needs to be defined for umc.widgets.Grid as an array.');
 		this.actions = actions;
 
 		//
@@ -462,7 +462,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 			}
 
 		}, this);
-		var buttons = umc.render.buttons(buttonsCfg);
+		var buttons = render.buttons(buttonsCfg);
 
 		// clear old buttons
 		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._toolbar.getChildren(), function(ibutton) {
@@ -681,12 +681,12 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 			msg = this.footerFormatter(nItems, nItemsTotal);
 		}
 		else {
-			msg = this._('%d entries of %d selected', nItems, nItemsTotal);
+			msg = _('%d entries of %d selected', nItems, nItemsTotal);
 			if (0 === nItemsTotal) {
-				msg = this._('No entries could be found');
+				msg = _('No entries could be found');
 			}
 			else if (1 == nItems) {
-				msg = this._('1 entry of %d selected', nItemsTotal);
+				msg = _('1 entry of %d selected', nItemsTotal);
 			}
 		}
 		this._footerLegend.set('content', msg);
@@ -761,7 +761,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 		// add a legend that states how many objects are currently selected
 		this._footerLegend = new umc.widgets.Text({
-			content: this._('No object selected')
+			content: _('No object selected')
 		});
 		this._footerCells[0].addChild(this._footerLegend);
 
@@ -833,7 +833,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 			}
 			else {
 				this._footerCells[i].addChild(new dijit.form.DropDownButton({
-					label: this._('more'),
+					label: _('more'),
 					dropDown: moreActionsMenu
 				}));
 			}
@@ -860,7 +860,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		}
 
 		// adjust the margin of the first cell in order to align correctly
-		var margin = /*REQUIRE:"dojo/dom-geometry"*/ geometry.position(dojo.query('th', this._grid.viewsHeaderNode)[0]).x;
+		var margin = /*REQUIRE:"dojo/dom-geometry"*/ geometry.position(/*REQUIRE:"dojo/query"*/ query('th', this._grid.viewsHeaderNode)[0]).x;
 		margin -= /*REQUIRE:"dojo/dom-geometry"*/ geometry.position(this._grid.domNode).x;
 		/*REQUIRE:"dojo/dom-style"*/ style.set(this._footerCells[0].domNode, 'margin-left', margin + 'px');
 
@@ -950,11 +950,11 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		//		Returns the item for a given ID.
 		// id: String
 
-		return dojo.getObject('item', false, this._grid._by_idty[id]);
+		return /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('item', false, this._grid._by_idty[id]);
 	},
 
 	_updateDisabledItems: function() {
-		umc.tools.forIn(this._disabledIDs, function(id, disabled) {
+		tools.forIn(this._disabledIDs, function(id, disabled) {
 			if (disabled) {
 				var idx = this.getItemIndex(id);
 				if (idx >= 0) {
@@ -972,7 +972,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		// disable: Boolean?
 		//		Disable or enable the specified items.
 
-		var ids = umc.tools.stringOrArray(_ids);
+		var ids = tools.stringOrArray(_ids);
 		disable = undefined === disable ? true : disable;
 		/*REQUIRE:"dojo/_base/array"*/ array.forEach(ids, function(id) {
 			this._disabledIDs[id] = disable;
@@ -989,7 +989,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		// ids: String|String[]
 		//		Item ID or list of IDs.
 
-		var ids = umc.tools.stringOrArray(_ids);
+		var ids = tools.stringOrArray(_ids);
 		var result = /*REQUIRE:"dojo/_base/array"*/ array.map(ids, function(id) {
 			var idx = this.getItemIndex(id);
 			if (idx >= 0) {

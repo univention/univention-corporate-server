@@ -50,7 +50,7 @@ dojo.require("dijit._Container");
 		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.getChildren(), function(ipage) {
 			// find all widgets that inherit from dojox.grid._Grid on the tab
 			/*REQUIRE:"dojo/_base/array"*/ array.forEach(ipage.getDescendants(), function(iwidget) {
-				if (umc.tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 					// hook to changes for 'open'
 					this.watch('open', function(attr, oldVal, newVal) {
 						if (newVal) {

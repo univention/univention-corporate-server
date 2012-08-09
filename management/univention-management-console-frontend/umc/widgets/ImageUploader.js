@@ -32,7 +32,7 @@ dojo.provide("umc.widgets.ImageUploader");
 
 dojo.require("umc.widgets.Uploader");
 dojo.require("umc.widgets.Image");
-dojo.require("umc.tools");
+dojo.require("tools");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.Uploader ], {
 	'class': 'umcImageUploader',
@@ -48,8 +48,8 @@ dojo.require("umc.tools");
 	_image: null,
 
 	constructor: function() {
-		this.buttonLabel = this._('Upload new image');
-		this.clearButtonLabel = this._('Clear image data');
+		this.buttonLabel = _('Upload new image');
+		this.clearButtonLabel = _('Clear image data');
 	},
 
 	postMixInProperties: function() {

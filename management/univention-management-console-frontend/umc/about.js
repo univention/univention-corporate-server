@@ -32,7 +32,7 @@ dojo.provide("umc.about");
 
 dojo.require("/*REQUIRE:"dojo/cookie"*/ cookie");
 dojo.require("umc.i18n");
-dojo.require("umc.dialog");
+dojo.require("dialog");
 dojo.require("dojo.cache");
 
 /*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.about, new umc.i18n.Mixin({
@@ -42,19 +42,19 @@ dojo.require("dojo.cache");
 
 	show: function( info ) {
 		var keys = {
-			labelServer : this._( 'Server' ),
+			labelServer : _( 'Server' ),
 			server : info.server,
-			labelUCS_Version : this._( 'UCS version' ),
+			labelUCS_Version : _( 'UCS version' ),
 			UCS_Version : info.ucs_version,
-			labelUMC_Version : this._( 'UMC version' ),
+			labelUMC_Version : _( 'UMC version' ),
 			UMC_Version : info.umc_version,
-			labelSSL_ValidityDate : this._( 'Validity date of the SSL certificate' ),
+			labelSSL_ValidityDate : _( 'Validity date of the SSL certificate' ),
 			SSL_ValidityDate : /*REQUIRE:"dojo/date/locale"*/ locale.format(new Date(info.ssl_validity_date), {
 				fullYear: true,
 				timePattern: " ",
 				formatLength: "long"
 			})
 		};
-		umc.dialog.templateDialog( "umc", "about.html", keys, this._( 'About UMC' ), this._( 'Close' ) );
+		dialog.templateDialog( "umc", "about.html", keys, _( 'About UMC' ), _( 'Close' ) );
 	}
 } );

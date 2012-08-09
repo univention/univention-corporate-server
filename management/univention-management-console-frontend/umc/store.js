@@ -28,9 +28,9 @@
  */
 /*global console dojo dojox dijit umc */
 
-dojo.provide("umc.store");
+dojo.provide("store");
 
-dojo.require("umc.tools");
+dojo.require("tools");
 dojo.require("/*REQUIRE:"dojo/Deferred"*/ DeferredList");
 dojo.require("dojo.store.util.QueryResults");
 dojo.require("dojo.store.Observable");
@@ -39,11 +39,11 @@ dojo.require("dojo.data.ObjectStore");
 
 
 // internal dict of static module store references
-umc.store._moduleStores = {};
+store._moduleStores = {};
 
-umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath, /*String?*/ moduleFlavor) {
+store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath, /*String?*/ moduleFlavor) {
 	// summary:
-	//		Returns (and if necessary creates) a singleton instance of umc.store.UmcpModuleStore
+	//		Returns (and if necessary creates) a singleton instance of store.UmcpModuleStore
 	//		for the given path to the store and (if specified) the given flavor.
 	// idProperty: String
 	//		Indicates the property to use as the identity property.
@@ -58,15 +58,15 @@ umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath,
 
 	// create a singleton for the module store for each flavor; this is to ensure that
 	// the correct flavor of the module is send to the server
-	var stores = dojo.getObject('umc.store._moduleStores', true);
+	var stores = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('store._moduleStores', true);
 	var key = storePath + '@' + (moduleFlavor || 'default');
 	if (!stores[key]) {
 		// the store does not exist, we need to create a new singleton
-		stores[key] = dojo.store.Observable(new umc.store.UmcpModuleStore({
+		stores[key] = dojo.store.Observable(new store.UmcpModuleStore({
 			idProperty: idProperty,
 			storePath: storePath,
 			umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
-				return umc.tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || moduleFlavor );
+				return tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || moduleFlavor );
 			}
 		}));
 	}
@@ -118,7 +118,7 @@ umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath,
 
 	// umcpCommand: Function
 	//		Reference to a particularly flavored umcpCommand.
-	umcpCommand: umc.tools.umcpCommand,
+	umcpCommand: tools.umcpCommand,
 
 	constructor: function(params) {
 		/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this, params);
@@ -160,14 +160,14 @@ umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath,
 				then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
 					// make sure that we get an non-empty array
 					//console.log('# _genericMultiCmd - deferred: data=' + String(data));
-					var res = dojo.getObject('result', false, data);
+					var res = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('result', false, data);
 
 					// send event when changes occurred
 					if (!this._noEvents && ('remove' == type || 'put' == type || 'add' == type)) {
 						this.onChange();
 					}
 
-					//umc.tools.assert(res && res instanceof Array && res.length == params.length,
+					//tools.assert(res && res instanceof Array && res.length == params.length,
 					//	/*REQUIRE:"dojo/_base/lang"*/ lang.replace('UMCP result from {0}/{1} did not yield an non-empty array!', [this.storePath, type]));
 					return res;
 				}));
@@ -240,14 +240,14 @@ umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath,
 		// query: Object
 		//		The query to use for retrieving objects from the store.
 		// options: 
-		//		Query options, such as 'sort' (see also umc.tools.cmpObjects()).
+		//		Query options, such as 'sort' (see also tools.cmpObjects()).
 		// returns: dojo.store.api.Store.QueryResults
 		//		The results of the query, extended with iterative methods.
 
 		// if called via dojo.data.ObjectStore, queries can be translated to regexps
 		var query = {};
 		var nQueryEl = 0;
-		umc.tools.forIn(_query, function(ikey, ival) {
+		tools.forIn(_query, function(ikey, ival) {
 			query[ikey] = (typeof ival == "string" || typeof ival == 'boolean' || 'null' === ival) ? ival : String(ival);
 			++nQueryEl;
 		}, this, true);
@@ -258,9 +258,9 @@ umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath,
 			deferred = deferred.then(function(data) {
 				var result = data.result;
 				// if requested, sort the list
-				var sort = dojo.getObject('sort', false, options);
+				var sort = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('sort', false, options);
 				if (sort) {
-					result.sort(umc.tools.cmpObjects(sort));
+					result.sort(tools.cmpObjects(sort));
 				}
 				return result;
 			});
@@ -357,7 +357,7 @@ umc.store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath,
 		// returns: dojo.store.api.Store.Transaction
 		//		This represents the new current transaction. `commit()` returns a 
 		//		`/*REQUIRE:"dojo/Deferred"*/ DeferredList` object for all transactions.
-		umc.tools.assert(!this._doingTransaction, 'Another UMCP transaction is already being processed, cannot perform two transactions simultaneously.');
+		tools.assert(!this._doingTransaction, 'Another UMCP transaction is already being processed, cannot perform two transactions simultaneously.');
 		this._doingTransaction = true;
 		return {
 			commit: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this._commitTransactions),

@@ -31,7 +31,7 @@
 dojo.provide("umc.widgets.MixedInput");
 
 dojo.require("dijit.layout.ContentPane");
-dojo.require("umc.tools");
+dojo.require("tools");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
@@ -45,7 +45,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 	//		In order to make the widget send information such as module flavor
 	//		etc., it can be necessary to specify a module specific umcpCommand
 	//		method.
-	umcpCommand: umc.tools.umcpCommand,
+	umcpCommand: tools.umcpCommand,
 
 	// dynamicValues: String|Function
 	//		see description at `umc.widgets._SelectMixin`
@@ -83,10 +83,10 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 		// only copy the properties that we need, the rest is for the actual form widget
 		this.dynamicValues = props.dynamicValues;
-		umc.tools.assert(this.dynamicValues && (typeof this.dynamicValues == "string" || typeof this.dynamicValues == "function"), "For MixedInput, the property 'dynamicValues' needs to be specified.");
+		tools.assert(this.dynamicValues && (typeof this.dynamicValues == "string" || typeof this.dynamicValues == "function"), "For MixedInput, the property 'dynamicValues' needs to be specified.");
 		this.depends = props.depends;
-		//umc.tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
-		this.umcpCommand = props.umcpCommand || umc.tools.umcpCommand;
+		//tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
+		this.umcpCommand = props.umcpCommand || tools.umcpCommand;
 	},
 
 	postMixInProperties: function() {
@@ -120,7 +120,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		// check whether all necessary values are specified
 		var params = {};
 		var nDepValues = 0;
-		if (dependList.length && dojo.isObject(_dependValues)) {
+		if (dependList.length && typeof _dependValues == "object") {
 			// check whether all necessary values are specified
 			for (var i = 0; i < dependList.length; ++i) {
 				if (_dependValues[dependList[i]]) {
@@ -136,12 +136,12 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		}
 
 		// mixin additional options for the UMCP command
-		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
+		if (this.dynamicOptions && typeof this.dynamicOptions == "object") {
 			/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
 		}
 		else if (this.dynamicOptions && typeof this.dynamicOptions == "function") {
 			var res = this.dynamicOptions();
-			umc.tools.assert(res && dojo.isObject(res), 'The return type of a function specified by umc.widgets.MixedInput.dynamicOptions() needs to return a dictionary: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(res));
+			tools.assert(res && typeof res == "object", 'The return type of a function specified by umc.widgets.MixedInput.dynamicOptions() needs to return a dictionary: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(res));
 			/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, res);
 		}
 
@@ -175,7 +175,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		if (!this._widget) {
 			// create the new widget according to its type
 			dojo['require'](newWidgetClass);
-			var WidgetClass = dojo.getObject(newWidgetClass);
+			var WidgetClass = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject(newWidgetClass);
 			if (!WidgetClass) {
 				throw new Error('MixedInput: Could not instantiate the class ' + newWidgetClass);
 			}
@@ -229,14 +229,14 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
 		if (this._widget) {
-			umc.tools.delegateCall(this, arguments, this._widget);
+			tools.delegateCall(this, arguments, this._widget);
 		}
 	},
 
 	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
 		if (this._widget) {
-			umc.tools.delegateCall(this, arguments, this._widget);
+			tools.delegateCall(this, arguments, this._widget);
 		}
 	},
 
@@ -245,7 +245,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 	},
 
 	focus: function() {
-		if (dojo.getObject('_widget.focus', false, this)) {
+		if (/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('_widget.focus', false, this)) {
 			this._widget.focus();
 		}
 	}

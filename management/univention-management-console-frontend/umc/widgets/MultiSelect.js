@@ -33,7 +33,7 @@ dojo.provide("umc.widgets.MultiSelect");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets._SelectMixin");
 dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.tools");
+dojo.require("tools");
 dojo.require("dojox.grid.EnhancedGrid");
 dojo.require("dojox.grid.cells");
 dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
@@ -92,7 +92,7 @@ dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
 		this.inherited(arguments);
 
 		// hide the header
-		dojo.query('.dojoxGridHeader', this.domNode).style('height', '0px');
+		/*REQUIRE:"dojo/query"*/ query('.dojoxGridHeader', this.domNode).style('height', '0px');
 
 		// send an onChange event when the selection has changed
 		/*REQUIRE:"dojo/on"*/ /*TODO*/ on(this, 'onSelectionChanged', function() {

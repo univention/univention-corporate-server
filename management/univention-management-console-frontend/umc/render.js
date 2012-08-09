@@ -28,16 +28,16 @@
  */
 /*global dojo dijit dojox umc console window */
 
-dojo.provide("umc.render");
+dojo.provide("render");
 
 dojo.require("umc.i18n");
-dojo.require("umc.tools");
+dojo.require("tools");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.LabelPane");
 dojo.require("umc.widgets.TitlePane");
 dojo.require("umc.widgets.Tooltip");
 
-/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.render, new umc.i18n.Mixin({
+/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(render, new umc.i18n.Mixin({
 	// use the framework wide translation file
 	i18nClass: 'umc.app'
 }), {
@@ -51,7 +51,7 @@ dojo.require("umc.widgets.Tooltip");
 		var widgets = { };
 		/*REQUIRE:"dojo/_base/array"*/ array.forEach(widgetsConf, function(iconf) {
 			// ignore empty elements
-			if (!iconf || !dojo.isObject(iconf)) {
+			if (!iconf || !typeof iconf == "object") {
 				return true;
 			}
 
@@ -74,7 +74,7 @@ dojo.require("umc.widgets.Tooltip");
 			return undefined;
 		}
 		if (!widgetConf.type) {
-			console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in umc.render.widget: The type '{type}' of the widget '{name}' is invalid. Ignoring error.", widgetConf));
+			console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in render.widget: The type '{type}' of the widget '{name}' is invalid. Ignoring error.", widgetConf));
 			return undefined;
 		}
 
@@ -88,7 +88,7 @@ dojo.require("umc.widgets.Tooltip");
 		// register onChange event handler
 		var onChangeCallback = null;
 		if ('onChange' in conf) {
-			onChangeCallback = umc.tools.stringOrFunction(conf.onChange);
+			onChangeCallback = tools.stringOrFunction(conf.onChange);
 			delete conf.onChange;
 		}
 
@@ -110,11 +110,11 @@ dojo.require("umc.widgets.Tooltip");
 			dojo['require'](path);
 
 			// create the new widget according to its type
-			WidgetClass = dojo.getObject(path);
+			WidgetClass = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject(path);
 		}
 		catch (error) { }
 		if (!WidgetClass) {
-			console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in umc.render.widget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
+			console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in render.widget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
 			return undefined;
 		}
 		var widget = new WidgetClass(conf); // Widget
@@ -147,7 +147,7 @@ dojo.require("umc.widgets.Tooltip");
 		// returns:
 		//		A dictionary of button widgets.
 
-		umc.tools.assert(buttonsConf instanceof Array, 'buttons: The list of buttons is expected to be an array.');
+		tools.assert(buttonsConf instanceof Array, 'buttons: The list of buttons is expected to be an array.');
 
 		// render all buttons
 		var buttons = {
@@ -178,7 +178,7 @@ dojo.require("umc.widgets.Tooltip");
 
 		// load the java script code for the button class
 		dojo['require']('umc.widgets.' + buttonClassName);
-		var ButtonClass = dojo.getObject('umc.widgets.' + buttonClassName);
+		var ButtonClass = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('umc.widgets.' + buttonClassName);
 
 		// get icon and label (these properties may be functions)
 		var iiconClass = buttonConf.iconClass;
@@ -203,8 +203,8 @@ dojo.require("umc.widgets.Tooltip");
 		var globalContainer = new umc.widgets.ContainerWidget({});
 
 		// check whether the parameters are correct
-		umc.tools.assert(layout instanceof Array,
-				'umc.render.layout: Invalid layout configuration object!');
+		tools.assert(layout instanceof Array,
+				'render.layout: Invalid layout configuration object!');
 
 		// iterate through the layout elements
 		for (var iel = 0; iel < layout.length; ++iel) {
@@ -237,7 +237,7 @@ dojo.require("umc.widgets.Tooltip");
 				/*REQUIRE:"dojo/_base/array"*/ array.forEach(elList, function(jel) {
 					// make sure the reference to the widget/button exists
 					if (!(widgets && jel in widgets) && !(buttons && jel in buttons)) {
-						console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in umc.render.layout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
+						console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in render.layout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
 						return true;
 					}
 
@@ -245,11 +245,11 @@ dojo.require("umc.widgets.Tooltip");
 					var widget = widgets ? widgets[jel] : null;
 					var button = buttons ? buttons[jel] : null;
 					if ((widget && widget.$isRendered$) || (button && button.$isRendered$)) {
-						console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in umc.render.layout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
+						console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace("WARNING in render.layout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
 						return true;
 					}
 
-					if (widget && umc.tools.inheritsFrom(widget, 'umc.widgets.HiddenInput')) {
+					if (widget && tools.inheritsFrom(widget, 'umc.widgets.HiddenInput')) {
 						// do wrap HiddenInput field with LabelPane
 						elContainer.addChild(widget);
 						widget.$isRendered$ = true;
@@ -326,7 +326,7 @@ dojo.require("umc.widgets.Tooltip");
 				globalContainer.addChild(elContainer);
 			}
 			// for Object (i.e., a grouping box)
-			else if (dojo.isObject(el) && el.layout) {
+			else if (typeof el == "object" && el.layout) {
 				el.$refTitlePane$ = new umc.widgets.TitlePane({
 					title: el.label,
 					'class': 'umcFormLevel' + iLevel,

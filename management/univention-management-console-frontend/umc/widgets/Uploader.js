@@ -36,8 +36,8 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.Button");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.i18n");
-dojo.require("umc.tools");
-dojo.require("umc.dialog");
+dojo.require("tools");
+dojo.require("dialog");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
 	'class': 'umcUploader',
@@ -103,8 +103,8 @@ dojo.require("umc.dialog");
 	_settingData: false,
 
 	constructor: function() {
-		this.buttonLabel = this._('Upload');
-		this.clearButtonLabel = this._('Clear data');
+		this.buttonLabel = _('Upload');
+		this.clearButtonLabel = _('Clear data');
 	},
 
 	postMixInProperties: function() {
@@ -153,7 +153,7 @@ dojo.require("umc.dialog");
 				return allOk;
 			}, this);
 			if (!allOk) {
-				umc.dialog.alert(this._('File cannot be uploaded, its maximum size may be %.1f MB.', this.maxSize / 1048576.0));
+				dialog.alert(_('File cannot be uploaded, its maximum size may be %.1f MB.', this.maxSize / 1048576.0));
 				this._uploader.reset();
 			}
 			else {
@@ -171,7 +171,7 @@ dojo.require("umc.dialog");
 						if (typeof this.dynamicOptions == "function") {
 							/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions(params));
 						}
-						else if (dojo.isObject(this.dynamicOptions)) {
+						else if (typeof this.dynamicOptions == "object") {
 							/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
 						}
 					}
@@ -196,10 +196,10 @@ dojo.require("umc.dialog");
 			}
 			else {
 				this.set('data', null);
-				var error = umc.tools.parseError(data);
+				var error = tools.parseError(data);
 				if (200 !== error.status) {
 					if (this.displayErrorMessage) {
-						umc.dialog.alert(error.message);
+						dialog.alert(error.message);
 					}
 					this.onError(error);
 				} else {
@@ -255,7 +255,7 @@ dojo.require("umc.dialog");
 			// make sure the button is disabled
 			this.set('disabled', true);
 		}
-		this.set('buttonLabel', this._('Uploading...'));
+		this.set('buttonLabel', _('Uploading...'));
 	},
 
 	_setButtonLabelAttr: function(newVal) {

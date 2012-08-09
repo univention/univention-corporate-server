@@ -34,9 +34,9 @@ dojo.require( "dijit.form.CheckBox" );
 dojo.require( "dojox.layout.TableContainer" );
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.tools");
+dojo.require("tools");
 dojo.require("umc.i18n");
-dojo.require("umc.render");
+dojo.require("render");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
 	// summary:
@@ -69,9 +69,9 @@ dojo.require("umc.render");
 
 		// create widgets
 		this.widgets = [
-			{ type: 'Text', name: 'ownerLabel', content: this._( 'Owner' ) },
-			{ type: 'Text', name: 'groupLabel', content: this._( 'Group' ) },
-			{ type: 'Text', name: 'otherLabel', content: this._( 'Others' ) }
+			{ type: 'Text', name: 'ownerLabel', content: _( 'Owner' ) },
+			{ type: 'Text', name: 'groupLabel', content: _( 'Group' ) },
+			{ type: 'Text', name: 'otherLabel', content: _( 'Others' ) }
 		];
 		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'owner', 'group', 'other' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
 			this.widgets.push( { type: 'CheckBox', name: item + 'Read', disabled: this.disabled } );
@@ -83,17 +83,17 @@ dojo.require("umc.render");
 			{
 				type: 'Text',
 				name: 'read',
-				content: this._( 'Read' )
+				content: _( 'Read' )
 			},
 			{
 				type: 'Text',
 				name: 'write',
-				content: this._( 'Write' )
+				content: _( 'Write' )
 			},
 			{
 				type: 'Text',
 				name: 'access',
-				content: this._( 'Access' )
+				content: _( 'Access' )
 			},
 			{
 				type: 'Text',
@@ -101,7 +101,7 @@ dojo.require("umc.render");
 				content: ''
 			}
 		] );
-		this._widgets = umc.render.widgets( this.widgets );
+		this._widgets = render.widgets( this.widgets );
 
 		this._container = new dojox.layout.TableContainer( { cols : 4, customClass: 'umcUNIXAccessRights', showLabels: false } );
 
@@ -119,7 +119,7 @@ dojo.require("umc.render");
 		} ) );
 
 		// register onChange event
-		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
+		tools.forIn( this._widgets, function( iname, iwidget ) {
 			if ( 'Text' == iwidget.type ) { // ignore labels
 				return;
 			}

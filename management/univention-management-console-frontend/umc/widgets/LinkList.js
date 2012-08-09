@@ -33,8 +33,8 @@ dojo.provide("umc.widgets.LinkList");
 dojo.require("dijit.form.Button");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets._SelectMixin");
-dojo.require("umc.tools");
-dojo.require("umc.render");
+dojo.require("tools");
+dojo.require("render");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._SelectMixin, umc.i18n.Mixin ], {
 	// summary:
@@ -58,7 +58,7 @@ dojo.require("umc.render");
 												var btn = umc.widgets.Button( {
 																				 name : 'close',
 																				 label : item.label,
-																				 iconClass: umc.tools.getIconClass( item.icon, 16 )
+																				 iconClass: tools.getIconClass( item.icon, 16 )
 																			 } );
 												if ( ! this.store.hasAttribute( item, 'module' ) ) {
 													console.log( 'LinkList: attribute module is missing');

@@ -49,7 +49,7 @@ dojo.require("umc.i18n");
 		if (!this.buttons) {
 			this.buttons = [ {
 				name: 'submit',
-				label: this._( 'Search' )
+				label: _( 'Search' )
 			}];
 		}
 

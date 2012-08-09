@@ -1,12 +1,14 @@
 #!/bin/sed -f
 s%dojo\.isString(\([^)]*\))%typeof \1 == "string"%g
 s%dojo\.isFunction(\([^)]*\))%typeof \1 == "function"%g
+s%dojo\.isObject(\([^)]*\))%typeof \1 == "object"%g
 s%dojo\.isArray(\([^)]*\))%\1 instanceof Array%g
-s%dojo\.\(clone\|hitch\|mixin\|partial\|replace\|setObject\|trim\)\>%/*REQUIRE:"dojo/_base/lang"*/ lang.\1%g
+s%dojo\.\(clone\|hitch\|mixin\|partial\|replace\|setObject\|getObject\|trim\)\>%/*REQUIRE:"dojo/_base/lang"*/ lang.\1%g
 s%dojo\.\(forEach\|map\|filter\|every\|some\|indexOf\)\>%/*REQUIRE:"dojo/_base/array"*/ array.\1%g
-s%dojo\.isIE()%/*REQUIRE:"dojo/sniff"*/ has(\'ie\')%g
+s%dojo\.isIE%/*REQUIRE:"dojo/sniff"*/ has(\'ie\')%g
 s%dojo\.addOnLoad%/*REQUIRE:"dojo/ready"*/ ready%g
 s%dojo\.ready%/*REQUIRE:"dojo/ready"*/ ready%g
+s%dojo\.query%/*REQUIRE:"dojo/query"*/ query%g
 s%dojo\.connect(%/*REQUIRE:"dojo/on"*/ /*TODO*/ on(%g
 s%this\.connect(%/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(%g
 s%dojo\.stopEvent%/*REQUIRE:"dojo/_base/event"*/ event.stop%g
@@ -31,7 +33,7 @@ s%dojo\.style(\([^,]*\),\([^,]*\),\([^)]*\))%/*REQUIRE:"dojo/dom-style"*/ style.
 s%dojo\.style(\([^,]*\),\([^)]*\))%/*REQUIRE:"dojo/dom-style"*/ style.get(\1,\2)%g
 s%dojo\.\(body\|global\|doc\)\>%/*REQUIRE:"dojo/_base/window"*/ window.\1%g
 s%dojo\.fromJson%/*REQUIRE:"dojo/json"*/ json.parse%g
-s%dojo\.toJson%/*REQUIRE:"dojo/jsone"*/ json.stringify%g
+s%dojo\.toJson%/*REQUIRE:"dojo/json"*/ json.stringify%g
 s%dojo\.declare([^,]*,\s*%/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(%g
 s%dojo\.fadeIn%/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeIn%g
 s%dojo\.fadeOut%/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeOut%g
@@ -43,3 +45,4 @@ s%dojo\.xhrGet%/*REQUIRE:"dojo/request"*/ /*TODO*/ request%g
 s%dojo\.cookie%/*REQUIRE:"dojo/cookie"*/ cookie%g
 s%dojo\.date\.locale\.format%/*REQUIRE:"dojo/date/locale"*/ locale.format%g
 s%this._\>%_%g
+s%umc\.\(tools\|dialog\|render\|store\)%\1%g

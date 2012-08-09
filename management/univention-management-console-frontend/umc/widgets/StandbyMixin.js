@@ -79,7 +79,7 @@ dojo.require("dijit._Widget");
 			this._standbyWidget.set('text', content);
 			this._standbyWidget.set('centerIndicator', 'text');
 		}
-		else if (dojo.isObject(content) && content.declaredClass && content.domNode) {
+		else if (typeof content == "object" && content.declaredClass && content.domNode) {
 			// widget
 			if (!this._lastContent || this._lastContent != content) {
 				// we only need to add a new widget to the DOM

@@ -30,8 +30,8 @@
 
 dojo.provide("umc.widgets._ModuleMixin");
 
-dojo.require("umc.store");
-dojo.require("umc.tools");
+dojo.require("store");
+dojo.require("tools");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(null, {
 	// summary:
@@ -54,7 +54,7 @@ dojo.require("umc.tools");
 	//		(Is specified automatically.)
 	moduleID: '',
 
-	// moduleStore: umc.store.UmcpModuleStore
+	// moduleStore: store.UmcpModuleStore
 	//		A dojo object store interface for query/get/put/remove methods for the UMC
 	//		module. Requests for operations on module items should be executed through
 	//		this store interface. In this way, changes will be immediatly reflected to
@@ -71,12 +71,12 @@ dojo.require("umc.tools");
 		this.inherited(arguments);
 
 		if (this.idProperty) {
-			this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleID, this.moduleFlavor);
+			this.moduleStore = store.getModuleStore(this.idProperty, this.moduleID, this.moduleFlavor);
 		}
 	},
 
 	umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor, /*Object?*/ longPollingOptions ) {
-		return umc.tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || this.moduleFlavor, longPollingOptions );
+		return tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || this.moduleFlavor, longPollingOptions );
 	}
 });
 

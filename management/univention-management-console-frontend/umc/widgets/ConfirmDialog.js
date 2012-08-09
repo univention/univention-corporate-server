@@ -38,7 +38,7 @@ dojo.require("umc.widgets.ContainerWidget");
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit.Dialog, {
 	// summary:
 	//		Class that provides a customizable confirmation dialog.
-	//		(For easier access see umc.dialog.confirm().)
+	//		(For easier access see dialog.confirm().)
 	// description:
 	//		The dialog expects a title, a message, and a list of choices the
 	//		user can choose from. For each choice, a callback handler can be
@@ -117,7 +117,7 @@ dojo.require("umc.widgets.ContainerWidget");
 			});
 			this._container.addChild(widget, 0);
 		}
-		if (dojo.isObject(this.message) && 'declaredClass' in this.message) {
+		if (typeof this.message == "object" && 'declaredClass' in this.message) {
 			// message is a widget
 			/*REQUIRE:"dojo/dom-class"*/ domClass.add(this.message.domNode, 'umcConfirmDialogText');
 			this._container.addChild(this.message, 0);

@@ -35,8 +35,8 @@ dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets.MultiSelect");
 dojo.require("umc.widgets.SearchForm");
 dojo.require("umc.widgets.LabelPane");
-dojo.require("umc.tools");
-dojo.require("umc.render");
+dojo.require("tools");
+dojo.require("render");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
@@ -104,7 +104,7 @@ dojo.require("dojo.store.DataStore");
 		}
 
 		// convert 'formatter' to a function
-		this._formatter = umc.tools.stringOrFunction(this.formatter);
+		this._formatter = tools.stringOrFunction(this.formatter);
 	},
 
 	_attachObjectStore: function() {
@@ -129,7 +129,7 @@ dojo.require("dojo.store.DataStore");
 		// add the Buttons
 		container = new umc.widgets.ContainerWidget({});
 		container.addChild(new umc.widgets.Button({
-			label: this._('Add'),
+			label: _('Add'),
 			iconClass: 'umcIconAdd',
 			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				if (!this._detailDialog) {
@@ -151,7 +151,7 @@ dojo.require("dojo.store.DataStore");
 			})
 		}));
 		container.addChild(new umc.widgets.Button({
-			label: this._('Remove'),
+			label: _('Remove'),
 			iconClass: 'umcIconDelete',
 			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_removeSelectedElements'),
 			style: 'float: right;'
@@ -163,7 +163,7 @@ dojo.require("dojo.store.DataStore");
 		// handle possible /*REQUIRE:"dojo/Deferred"*/ Deferred object returned by the formatter
 		/*REQUIRE:"dojo/when"*/ when(this._formatter(_values), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(values) {
 			// sort the array according to the labels
-			values.sort(umc.tools.cmpObjects('label'));
+			values.sort(tools.cmpObjects('label'));
 
 			// callback handler
 			this._multiSelect.set('staticValues', values);
@@ -251,7 +251,7 @@ dojo.require("dojo.store.DataStore");
 	postMixInProperties: function() {
 		this.inherited(arguments);
 		if (!this.title) {
-			this.title = this._('Add objects');
+			this.title = _('Add objects');
 		}
 	},
 
@@ -283,7 +283,7 @@ dojo.require("dojo.store.DataStore");
 		// for visualizing the search results, use a MultiSelect
 		this._multiSelect = new umc.widgets.MultiSelect({
 			height: '250px',
-			label: this._('Search results:')
+			label: _('Search results:')
 		});
 		this._container.addChild(new umc.widgets.LabelPane({ 
 			content: this._multiSelect,
@@ -292,7 +292,7 @@ dojo.require("dojo.store.DataStore");
 
 		// add the final buttons to close the dialog
 		this._container.addChild(new umc.widgets.Button({
-			label: this._('Add'),
+			label: _('Add'),
 			iconClass: 'umcIconAdd',
 			style: 'float: right;',
 			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
@@ -311,7 +311,7 @@ dojo.require("dojo.store.DataStore");
 			})
 		}));
 		this._container.addChild(new umc.widgets.Button({
-			label: this._('Cancel'),
+			label: _('Cancel'),
 			defaultButton: true,
 			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 				// hide the dialog
@@ -329,7 +329,7 @@ dojo.require("dojo.store.DataStore");
 				var lastConf = this.widgets[this.widgets.length - 1];
 				var lastName = lastConf.id || lastConf.name;
 				var widget = this._form.getWidget(lastName);
-				if (dojo.getObject('focus', false, widget)) {
+				if (/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('focus', false, widget)) {
 					widget.focus();
 				}
 			}

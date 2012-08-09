@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.6-1) unstable; urgency=low
+
+  * WIP: migration to Dojo 1.8, finished umc.tools, umc.dialog, LoginDialog;
+    Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Aug 2012 18:44:56 +0200
+
 univention-management-console-frontend (2.0.5-1) unstable; urgency=low
 
   * WIP: migration to Dojo 1.8, finished i18n AMD plugin

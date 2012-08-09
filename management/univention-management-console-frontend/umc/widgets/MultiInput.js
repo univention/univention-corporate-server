@@ -32,8 +32,8 @@ dojo.provide("umc.widgets.MultiInput");
 
 dojo.require("dijit.form.Button");
 dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.tools");
-dojo.require("umc.render");
+dojo.require("tools");
+dojo.require("render");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
@@ -50,7 +50,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 	// subtypes: Object[]
 	//		Essentially an array of object that describe the widgets for one element
 	//		of the MultiInput widget, the 'name' needs not to be specified, this
-	//		property is passed to umc.render.widgets().
+	//		property is passed to render.widgets().
 	subtypes: null,
 
 	// max: Number
@@ -98,7 +98,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 			// if the elapsed time is too big, or we have not a Deferred object (i.e., value
 			// are directly computed by a function without AJAX calls), execute the function
-			if (elapsedTime > 100 || !(dojo.getObject('then', false, _valueOrDeferred) && dojo.getObject('cancel', false, _valueOrDeferred))) {
+			if (elapsedTime > 100 || !(/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('then', false, _valueOrDeferred) && /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('cancel', false, _valueOrDeferred))) {
 				_valueOrDeferred = ifunc(options);
 			}
 			//console.log('# new deferred: ', iname, ' elapsedTime: ', elapsedTime, ' options: ', /*REQUIRE:"dojo/jsone"*/ json.stringify(options), ' values: ', _valueOrDeferred);
@@ -114,7 +114,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		this.sizeClass = null;
 
 		// check the property 'subtypes'
-		umc.tools.assert(this.subtypes instanceof Array,
+		tools.assert(this.subtypes instanceof Array,
 				'umc.widgets.ContainerWidget: The property subtypes needs to be a string or an array of strings: ' + this.subtypes);
 
 		// initiate other properties
@@ -125,14 +125,14 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		this.depends = [];
 		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.subtypes, function(iwidget, i) {
 			// gather all dependencies so form can notify us
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(umc.tools.stringOrArray(iwidget.depends), function(idep) {
+			/*REQUIRE:"dojo/_base/array"*/ array.forEach(tools.stringOrArray(iwidget.depends), function(idep) {
 				if (/*REQUIRE:"dojo/_base/array"*/ array.indexOf(this.depends, idep) < 0) {
 					this.depends.push(idep);
 				}
 			}, this);
 
 			// parse the dynamic value function and create a handler
-			var ifunc = umc.tools.stringOrFunction(iwidget.dynamicValues, this.umcpCommand || umc.tools.umcpCommand);
+			var ifunc = tools.stringOrFunction(iwidget.dynamicValues, this.umcpCommand || tools.umcpCommand);
 			var handler = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this._createHandler(ifunc, iwidget));
 
 			// replace the widget handler for dynamicValues with our version
@@ -239,7 +239,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 			for (j = 0; j < this._widgets[i].length; ++j) {
 				val = this._widgets[i][j].get('value');
 				isSet = isSet || ('' !== val);
-				if (!umc.tools.inheritsFrom(this._widgets[i][j], 'umc.widgets.Button')) {
+				if (!tools.inheritsFrom(this._widgets[i][j], 'umc.widgets.Button')) {
 					rowVals.push(val);
 				}
 			}
@@ -338,13 +338,13 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 
 
 			// render the widgets
-			var widgets = umc.render.widgets(widgetConfs);
+			var widgets = render.widgets(widgetConfs);
 
 			// if we have a button, we need to pass the value and index if the
 			// current element
-			umc.tools.forIn(widgets, function(ikey, iwidget) {
+			tools.forIn(widgets, function(ikey, iwidget) {
 				var myrow = irow;
-				if (umc.tools.inheritsFrom(iwidget, 'umc.widgets.Button') && typeof iwidget.callback == "function") {
+				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button') && typeof iwidget.callback == "function") {
 					var callbackOrg = iwidget.callback;
 					iwidget.callback = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
 						callbackOrg(this.get('value')[myrow], myrow);
@@ -367,7 +367,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 				// only keep the label for the first row
 				var iwidget = widgets[iname];
 				var label = irow !== 0 ? '' : null;
-				if (umc.tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
+				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
 					label = irow !== 0 ? '' : '&nbsp;';
 				}
 				rowContainer.addChild(new umc.widgets.LabelPane({
@@ -479,14 +479,14 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
 		if (this._widget) {
-			umc.tools.delegateCall(this, arguments, this._widget);
+			tools.delegateCall(this, arguments, this._widget);
 		}
 	},
 
 	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
 		if (this._widget) {
-			umc.tools.delegateCall(this, arguments, this._widget);
+			tools.delegateCall(this, arguments, this._widget);
 		}
 	},
 

@@ -34,7 +34,7 @@ dojo.require("dijit.layout.StackContainer");
 dojo.require("umc.widgets.Form");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.i18n");
-dojo.require("umc.tools");
+dojo.require("tools");
 dojo.require("umc.widgets.StandbyMixin");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.StackContainer, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
@@ -66,22 +66,22 @@ dojo.require("umc.widgets.StandbyMixin");
 			// setup the footer buttons
 			var footerButtons = [{
 				name: 'previous',
-				label: this._('Back'),
+				label: _('Back'),
 				align: 'right',
 				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_previous', ipage.name)
 			}, {
 				name: 'next',
 				defaultButton: true,
-				label: this._('Next'),
+				label: _('Next'),
 				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_next', ipage.name)
 			}, {
 				name: 'finish',
 				defaultButton: true,
-				label: this._('Finish'),
+				label: _('Finish'),
 				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_finish', ipage.name)
 			}, {
 				name: 'cancel',
-				label: this._('Cancel'),
+				label: _('Cancel'),
 				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, 'onCancel')
 			}];
 
@@ -148,7 +148,7 @@ dojo.require("umc.widgets.StandbyMixin");
 	getWidget: function(pageName, _widgetName) {
 		var widgetName = _widgetName;
 		if ( arguments.length >= 2 && pageName ) {
-			return dojo.getObject('_pages.' + pageName + '._form._widgets.' + widgetName, false, this);
+			return /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('_pages.' + pageName + '._form._widgets.' + widgetName, false, this);
 		}
 
 		// if no page name is given search on all pages

@@ -45,7 +45,7 @@ dojo.provide("umc.widgets._WidgetsInWidgetsMixin");
         //  is removed.
         //
         // Class: Function
-        //      The class to instantiate. Cannot be a string. Use dojo.getObject to get a full class object if you
+        //      The class to instantiate. Cannot be a string. Use /*REQUIRE:"dojo/_base/lang"*/ lang.getObject to get a full class object if you
         //      must.
         //
         // props: Object?

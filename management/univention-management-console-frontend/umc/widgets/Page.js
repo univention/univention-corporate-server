@@ -31,8 +31,8 @@
 dojo.provide("umc.widgets.Page");
 
 dojo.require("dijit.layout.BorderContainer");
-dojo.require("umc.render");
-dojo.require("umc.tools");
+dojo.require("render");
+dojo.require("tools");
 dojo.require("umc.widgets.Text");
 dojo.require("umc.i18n");
 
@@ -122,7 +122,7 @@ dojo.require("umc.i18n");
 		});
 		this.addChild(this._headerTextPane);
 
-		if (umc.tools.preferences('moduleHelpText') && this.helpText) {
+		if (tools.preferences('moduleHelpText') && this.helpText) {
 			// display the module helpText
 			this._createHelpTextPane();
 			this.addChild(this._helpTextPane, 1);
@@ -146,7 +146,7 @@ dojo.require("umc.i18n");
 
 			// render all buttons and add them to the footer
 			if (this.footerButtons && this.footerButtons instanceof Array && this.footerButtons.length) {
-				var buttons = umc.render.buttons(this.footerButtons);
+				var buttons = render.buttons(this.footerButtons);
 				/*REQUIRE:"dojo/_base/array"*/ array.forEach(buttons.$order$, function(ibutton) {
 					if ('submit' == ibutton.type || ibutton.defaultButton || 'right' == ibutton.align) {
 						footerRight.addChild(ibutton);
@@ -248,11 +248,11 @@ dojo.require("umc.i18n");
 		var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="Close"></span>';
 
 		var note = new umc.widgets.Text({
-			content: closeButton + '<b>' + this._('Note') + ':</b> ' + message,
+			content: closeButton + '<b>' + _('Note') + ':</b> ' + message,
 			region: 'top',
 			'class': 'umcPageNote'
 		});
-		dojo.query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
+		/*REQUIRE:"dojo/query"*/ query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
 			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmousedown', function() {
 				/*REQUIRE:"dojo/dom-class"*/ domClass.add(inode, 'dijitTabCloseButtonActive');
 			});

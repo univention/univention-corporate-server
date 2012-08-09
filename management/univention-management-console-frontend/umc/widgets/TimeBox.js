@@ -35,7 +35,7 @@ dojo.require("dijit.form.TimeTextBox");
 dojo.require("umc.widgets.ContainerWidget");
 dojo.require("umc.widgets._FormWidgetMixin");
 dojo.require("umc.widgets._WidgetsInWidgetsMixin");
-dojo.require("umc.tools");
+dojo.require("tools");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
 	umc.widgets.ContainerWidget,
@@ -109,12 +109,12 @@ dojo.require("umc.tools");
 
 	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
-		umc.tools.delegateCall(this, arguments, this._timeBox);
+		tools.delegateCall(this, arguments, this._timeBox);
 	},
 
 	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
 		// execute the inherited functionality in the widget's scope
-		umc.tools.delegateCall(this, arguments, this._timeBox);
+		tools.delegateCall(this, arguments, this._timeBox);
 	}
 });
 

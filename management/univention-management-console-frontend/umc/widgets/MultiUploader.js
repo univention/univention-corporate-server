@@ -36,8 +36,8 @@ dojo.require("umc.widgets.Button");
 dojo.require("umc.widgets.Uploader");
 dojo.require("umc.widgets.MultiSelect");
 dojo.require("umc.widgets.ProgressInfo");
-dojo.require("umc.tools");
-dojo.require("umc.dialog");
+dojo.require("tools");
+dojo.require("dialog");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
 	'class': 'umcMultiUploader',
@@ -99,7 +99,7 @@ dojo.require("umc.dialog");
 	_uploadingFiles: [],
 
 	constructor: function() {
-		this.buttonLabel = this._('Upload');
+		this.buttonLabel = _('Upload');
 		this._uploadingFiles = [];
 	},
 
@@ -117,7 +117,7 @@ dojo.require("umc.dialog");
 		// prepare remove button and container for upload/remove buttons
 		this._container = new umc.widgets.ContainerWidget({});
 		this._container.addChild(new umc.widgets.Button({
-			label: this._('Remove'),
+			label: _('Remove'),
 			iconClass: 'umcIconDelete',
 			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_removeFiles'),
 			style: 'float: right;'
@@ -196,7 +196,7 @@ dojo.require("umc.dialog");
 			maximum: 1
 		});
 		this._progressBar._progressBar.set('style', 'min-width: 30em;');
-		this._progressBar.updateTitle(this._('No upload in progress'));
+		this._progressBar.updateTitle(_('No upload in progress'));
 	},
 
 	_updateProgress: function() {
@@ -213,10 +213,10 @@ dojo.require("umc.dialog");
 		currentVal = Math.min(currentVal / this._uploadingFiles.length, 0.99);
 		if (!this._uploadingFiles.length || nDone == this._uploadingFiles.length) {
 			// all uploads are finished
-			this._progressBar.update(1, '', this._('Uploads finished'));
+			this._progressBar.update(1, '', _('Uploads finished'));
 		}
 		else {
-			this._progressBar.update(currentVal, '', this._('Uploading... %d of %d files remaining.', this._uploadingFiles.length - nDone, this._uploadingFiles.length));
+			this._progressBar.update(currentVal, '', _('Uploading... %d of %d files remaining.', this._uploadingFiles.length - nDone, this._uploadingFiles.length));
 		}
 	},
 

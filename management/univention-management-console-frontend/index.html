@@ -73,15 +73,12 @@
 		<script type="text/javascript" src="js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
 		<script type="text/javascript" src="js%HASH%/umc/build.js%JSSUFFIX%"></script>
 		<script type="text/javascript">
-			dojo.require("umc.app");
-			dojo.require("umc.widgets.ContainerWidget");
-
-			dojo.addOnLoad(function() {
+			/*require(["umc/app", "umc/tools", "dojo/domReady!"], function(app, tools){
 				// set the version of the UMC frontend
-				umc.tools.status('version', '%VERSION%');
+				tools.status('version', '%VERSION%');
 
 				// start the application when everything has been loaded
-				umc.app.start({
+				app.start({
 					username: getQuery('username'),
 					password: getQuery('password'),
 					module: getQuery('module'),
@@ -90,7 +87,7 @@
 					width: getQuery('width'),
 					displayUsername: getQuery('displayUsername', true)
 				});
-			});
+			});*/
 		</script>
 	</head>
 	<body class="umc">
@@ -98,9 +95,9 @@
 		<div id="umc_LoginWrapper" class="umcShowHide" style="position: absolute; height: 100%; width: 100%; display: none;">
 			<div class="umcShowHide" style="height:50%; margin-bottom:-190px;"></div>
 			<div id="umc_LoginDialog" class="umcShowHide dijitDialog dojoxDialog umcLoginDialog">
-				<div id="umc_LoginDialog_ContainerWidget" data-dojo-type="umc.widgets.ContainerWidget">
+				<div id="umc_LoginDialog_ContainerWidget" data-dojo-type="umc/widgets/ContainerWidget">
 					<div id="umc_LoginDialog_FormContainer" class="umcLoginForm umcLoginDialogFormContainer">
-						<iframe id="umc_LoginDialog_Iframe" src="js%HASH%/umc/login.html" frameborder="0" class="umcLoginDialogFormContainer"></iframe>
+						<!--<iframe id="umc_LoginDialog_Iframe" src="js%HASH%/umc/login.html" frameborder="0" class="umcLoginDialogFormContainer"></iframe>-->
 					</div>
 				</div>
 			</div>

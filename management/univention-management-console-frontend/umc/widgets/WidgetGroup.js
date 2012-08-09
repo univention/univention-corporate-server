@@ -31,8 +31,8 @@
 dojo.provide("umc.widgets.WidgetGroup");
 
 dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.tools");
-dojo.require("umc.render");
+dojo.require("tools");
+dojo.require("render");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.ContainerWidget, {
 	// summary:
@@ -60,11 +60,11 @@ dojo.require("umc.render");
 		this.inherited(arguments);
 
 		// render the widgets and the layout if no content is given
-		this._widgets = umc.render.widgets( this.widgets );
-		this._container = umc.render.layout( this.layout, this._widgets );
+		this._widgets = render.widgets( this.widgets );
+		this._container = render.layout( this.layout, this._widgets );
 
 		// register onChange event
-		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
+		tools.forIn( this._widgets, function( iname, iwidget ) {
 			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( iwidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( newValue ) {
 				this.onChange( newValue, iname );
 			} ) );
@@ -76,7 +76,7 @@ dojo.require("umc.render");
 
 	_getValueAttr: function() {
 		var vals = {};
-		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
+		tools.forIn( this._widgets, function( iname, iwidget ) {
 			vals[ iname ] = iwidget.get( 'value' );
 		}, this );
 
@@ -84,7 +84,7 @@ dojo.require("umc.render");
 	},
 
 	_setValueAttr: function( value ) {
-		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
+		tools.forIn( this._widgets, function( iname, iwidget ) {
 			if (iname in value) {
 				iwidget.set( 'value', value[ iname ] );
 			}

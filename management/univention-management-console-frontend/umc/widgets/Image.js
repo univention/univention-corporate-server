@@ -30,7 +30,7 @@
 
 dojo.provide("umc.widgets.Image");
 
-dojo.require("umc.tools");
+dojo.require("tools");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("umc.widgets._FormWidgetMixin");
 

@@ -62,7 +62,7 @@ dojo.require("umc.widgets.StandbyMixin");
 		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.getChildren(), function(ipage) {
 			// find all widgets that inherit from dojox.grid._Grid on the tab
 			/*REQUIRE:"dojo/_base/array"*/ array.forEach(ipage.getDescendants(), function(iwidget) {
-				if (umc.tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 					// hook to onShow event
 					/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(ipage, 'onShow', function() {
 						iwidget.startup();

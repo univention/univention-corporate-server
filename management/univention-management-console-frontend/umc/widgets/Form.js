@@ -36,8 +36,8 @@ dojo.require("dojox.form.manager._ValueMixin");
 dojo.require("dojox.form.manager._EnableMixin");
 dojo.require("dojox.form.manager._DisplayMixin");
 dojo.require("dojox.form.manager._ClassMixin");
-dojo.require("umc.tools");
-dojo.require("umc.render");
+dojo.require("tools");
+dojo.require("render");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
 		dijit.form.Form
@@ -84,7 +84,7 @@ dojo.require("umc.render");
 	//		content.
 	content: null,
 
-	// moduleStore: umc.store.UmcpModuleStore
+	// moduleStore: store.UmcpModuleStore
 	//		Object store for module requests using UMCP commands. If given, form data
 	//		can be loaded/saved by the form itself.
 	moduleStore: null,
@@ -121,7 +121,7 @@ dojo.require("umc.render");
 			this.layout = [];
 			/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.widgets, function(iwidget) {
 				// add the name (or undefined) to the row
-				this.layout.push(dojo.getObject('name', false, iwidget));
+				this.layout.push(/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('name', false, iwidget));
 			}, this);
 		}
 
@@ -181,9 +181,9 @@ dojo.require("umc.render");
 
 		// render the widgets and the layout if no content is given
 		if (!this.content) {
-			this._widgets = umc.render.widgets(this.widgets);
-			this._buttons = umc.render.buttons(this.buttons || []);
-			this._container = umc.render.layout(this.layout, this._widgets, this._buttons);
+			this._widgets = render.widgets(this.widgets);
+			this._buttons = render.buttons(this.buttons || []);
+			this._container = render.layout(this.layout, this._widgets, this._buttons);
 
 			// start processing the layout information
 			this._container.placeAt(this.containerNode);
@@ -194,22 +194,22 @@ dojo.require("umc.render");
 			var errMsg = "umc.widgets.Form: As 'content' is specified, the property 'widgets' is expected to be an array of widgets.";
 
 			// register content
-			umc.tools.assert(this.content.domNode && this.content.declaredClass, errMsg);
+			tools.assert(this.content.domNode && this.content.declaredClass, errMsg);
 			this.content.placeAt(this.containerNode);
 
 			// create internal dictionary of widgets
 			if (this.widgets instanceof Array) {
 				/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.widgets, function(iwidget) {
 					// make sure the object looks like a widget
-					umc.tools.assert(iwidget.domNode && iwidget.declaredClass, errMsg);
-					umc.tools.assert(iwidget.name, "umc.widgets.Form: Each widget needs to specify the property 'name'.");
+					tools.assert(iwidget.domNode && iwidget.declaredClass, errMsg);
+					tools.assert(iwidget.name, "umc.widgets.Form: Each widget needs to specify the property 'name'.");
 
 					// add entry to dictionary
 					this._widgets[iwidget.name] = iwidget;
 				}, this);
 			}
 			// `widgets` is already a dictionary
-			else if (dojo.isObject(this.widgets)) {
+			else if (typeof this.widgets == "object") {
 				this._widgets = this.widgets;
 			}
 		}
@@ -217,7 +217,7 @@ dojo.require("umc.render");
 
 		// send an event when all dynamic elements have been initialized
 		this._initializingElements = 0;
-		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+		tools.forIn(this._widgets, function(iname, iwidget) {
 			// only consider elements that load values dynamically
 			if ('onValuesLoaded' in iwidget && !(iwidget._valuesLoaded && !iwidget._deferredOrValues)) {
 				// widget values have not been loaded completely so far
@@ -257,7 +257,7 @@ dojo.require("umc.render");
 		this.inherited(arguments);
 
 		// prepare registration of onChange events
-		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+		tools.forIn(this._widgets, function(iname, iwidget) {
 			// check whether the widget has a `depends` field
 			if (!iwidget.depends) {
 				return;
@@ -265,7 +265,7 @@ dojo.require("umc.render");
 
 			// loop over all dependencies and cache the dependencies as a map from
 			// publishers -> receivers
-			var depends = umc.tools.stringOrArray(iwidget.depends);
+			var depends = tools.stringOrArray(iwidget.depends);
 			/*REQUIRE:"dojo/_base/array"*/ array.forEach(depends, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(idep) {
 				this._dependencyMap[idep] = this._dependencyMap[idep] || [];
 				this._dependencyMap[idep].push(iwidget);
@@ -273,7 +273,7 @@ dojo.require("umc.render");
 		}, this);
 
 		// register all necessary onChange events to handle dependencies
-		umc.tools.forIn(this._dependencyMap, function(iname) {
+		tools.forIn(this._dependencyMap, function(iname) {
 			if (iname in this._widgets) {
 				/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._widgets[iname], 'onChange', function() {
 					this._updateDependencies(iname);
@@ -282,8 +282,8 @@ dojo.require("umc.render");
 		}, this);
 
 		// register callbacks for onSubmit and onReset events
-		umc.tools.forIn({ 'submit': 'onSubmit', 'reset': 'onReset' }, function(ibutton, ievent) {
-			var orgCallback = dojo.getObject(ibutton + '.callback', false, this._buttons);
+		tools.forIn({ 'submit': 'onSubmit', 'reset': 'onReset' }, function(ibutton, ievent) {
+			var orgCallback = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject(ibutton + '.callback', false, this._buttons);
 			if (orgCallback) {
 				this._buttons[ibutton].callback = function() { };
 			}
@@ -305,7 +305,7 @@ dojo.require("umc.render");
 	gatherFormValues: function() {
 		// gather values from all registered widgets
 		var vals = {};
-		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+		tools.forIn(this._widgets, function(iname, iwidget) {
 			// ignore elements that start with '__'
 			if ('__' != iname.substr(0, 2)) {
 				var val = iwidget.get('value');
@@ -317,7 +317,7 @@ dojo.require("umc.render");
 		}, this);
 
 		// add item ID to the dictionary in case it is not already included
-		var idProperty = dojo.getObject('moduleStore.idProperty', false, this);
+		var idProperty = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('moduleStore.idProperty', false, this);
 		if (idProperty && !(idProperty in vals) && null !== this._loadedID) {
 			vals[idProperty] = this._loadedID;
 		}
@@ -327,7 +327,7 @@ dojo.require("umc.render");
 
 	clearFormValues: function() {
 		// clear all values based on or list of widgets
-		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+		tools.forIn(this._widgets, function(iname, iwidget) {
 			// value could be a string, an array, or a dict... query first the value
 			// and reset the value accordingly
 			var val = iwidget.get('value');
@@ -337,7 +337,7 @@ dojo.require("umc.render");
 			else if (val instanceof Array) {
 				iwidget.set('value', []);
 			}
-			else if (dojo.isObject(val)) {
+			else if (typeof val == "object") {
 				iwidget.set('value', {});
 			}
 			else if (typeof val == 'number') {
@@ -351,7 +351,7 @@ dojo.require("umc.render");
 
 	setFormValues: function(values) {
 		// set all values based on or list of widgets
-		umc.tools.forIn(values, function(iname, ival) {
+		tools.forIn(values, function(iname, ival) {
 			if (this._widgets[iname]) {
 				this._widgets[iname].set('value', ival);
 				if (this._widgets[iname].setInitialValue) {
@@ -402,8 +402,8 @@ dojo.require("umc.render");
 		// itemID: String
 		//		ID of the object that should be loaded.
 
-		umc.tools.assert(this.moduleStore, 'In order to load form data from the server, the umc.widgets.Form.moduleStore needs to be set.');
-		umc.tools.assert(itemID, 'The specifid itemID for umc.widgets.Form.load() must valid.');
+		tools.assert(this.moduleStore, 'In order to load form data from the server, the umc.widgets.Form.moduleStore needs to be set.');
+		tools.assert(itemID, 'The specifid itemID for umc.widgets.Form.load() must valid.');
 
 		// query data from server
 		var deferred = this.moduleStore.get(itemID).then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
@@ -411,7 +411,7 @@ dojo.require("umc.render");
 			var newValues = {};
 
 			// copy all the fields that exist in the form
-			umc.tools.forIn(data, function(ikey, ival) {
+			tools.forIn(data, function(ikey, ival) {
 				if (ikey in values) {
 					newValues[ikey] = ival;
 				}
@@ -438,7 +438,7 @@ dojo.require("umc.render");
 		//		Gather all form values and send them to the server via UMCP.
 		//		For this, the field umcpSetCommand needs to be set.
 
-		umc.tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
+		tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
 
 		// sending the data to the server
 		var values = this.gatherFormValues();
@@ -450,7 +450,7 @@ dojo.require("umc.render");
 			// prepare an options dict containing the original id of the object
 			// (in case the object id is being changed)
 			var options = {};
-			var idProperty = dojo.getObject('moduleStore.idProperty', false, this);
+			var idProperty = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('moduleStore.idProperty', false, this);
 			if (idProperty) {
 				options[idProperty] = this._loadedID;
 			}
@@ -475,7 +475,7 @@ dojo.require("umc.render");
 	getInvalidWidgets: function() {
 		var widgets = [];
 
-		umc.tools.forIn(this._widgets, function(iname, iwidget) {
+		tools.forIn(this._widgets, function(iname, iwidget) {
 			if ( iwidget.validate !== undefined ) {
 				if ( iwidget._maskValidSubsetError !== undefined ) {
 					iwidget._maskValidSubsetError = false;

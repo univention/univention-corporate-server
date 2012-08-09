@@ -69,7 +69,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 		this.label = newLabel;
 		if (this._firstWidget && this._secondWidget) {
 			this._firstWidget.set('label', this.label);
-			this._secondWidget.set('label', this._('%(label)s (retype)', this));
+			this._secondWidget.set('label', _('%(label)s (retype)', this));
 		}
 	},
 
@@ -107,7 +107,7 @@ dojo.require("umc.widgets._WidgetsInWidgetsMixin");
 			disabled: this.disabled,
 			name: this.name + '_2',
 			validator: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_checkValidity', 2),
-			invalidMessage: this._('The passwords do not match, please retype again.')
+			invalidMessage: _('The passwords do not match, please retype again.')
 		});
 		this._setLabelAttr(this.label);
 

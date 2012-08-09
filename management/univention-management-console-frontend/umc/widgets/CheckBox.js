@@ -32,7 +32,7 @@ dojo.provide("umc.widgets.CheckBox");
 
 dojo.require("dijit.form.CheckBox");
 dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.tools");
+dojo.require("tools");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.CheckBox, umc.widgets._FormWidgetMixin ], {
 	// by default, the checkbox is turned off
@@ -55,7 +55,7 @@ dojo.require("umc.tools");
 
 	_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){
 		// based on the code from dijit.form.CheckBox
-		this.value = newValue = umc.tools.isTrue( newValue );
+		this.value = newValue = tools.isTrue( newValue );
 
 		// this is important, otherwise the inital state is displayed wrong
 		if(this._created){

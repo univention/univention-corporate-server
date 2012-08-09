@@ -43,7 +43,7 @@ dojo.require("umc.widgets.Text");
 	_text: null,
 
 	constructor: function() {
-		this.buttonLabel = this._( 'Upload' );
+		this.buttonLabel = _( 'Upload' );
 	},
 
 	postMixInProperties: function() {

@@ -31,7 +31,7 @@
 dojo.provide("umc.widgets.Tooltip");
 
 dojo.require("dijit.Tooltip");
-dojo.require("umc.tools");
+dojo.require("tools");
 
 /*dojo.extend(dijit._MasterTooltip, {
 	buildRendering: function() {
@@ -65,7 +65,7 @@ dojo.require("umc.tools");
 
 	_onHover: function(/*Event*/ e) {
 		// only show the tooltip if the config cookie for this is not set or set to 'true'
-		if (umc.tools.preferences('tooltips')) {
+		if (tools.preferences('tooltips')) {
 			this.inherited(arguments);
 		}
 	}

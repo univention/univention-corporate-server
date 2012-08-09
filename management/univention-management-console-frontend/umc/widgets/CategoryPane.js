@@ -34,7 +34,7 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit._Contained");
 dojo.require("dijit._Container");
 dojo.require("dijit.TitlePane");
-dojo.require("umc.tools");
+dojo.require("tools");
 dojo.require("umc.widgets.Tooltip");
 
 //TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
@@ -52,7 +52,7 @@ dojo.require("umc.widgets.Tooltip");
 		this.inherited(arguments);
 		/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this, {
 			baseClass: 'modLaunchButton',
-			'class': umc.tools.getIconClass(this.modIcon, 50),
+			'class': tools.getIconClass(this.modIcon, 50),
 			content: '<div>' + this.label + '</div>'
 		});
 	},

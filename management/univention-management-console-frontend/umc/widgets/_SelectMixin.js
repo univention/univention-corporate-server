@@ -32,7 +32,7 @@ dojo.provide("umc.widgets._SelectMixin");
 
 dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dojo.Stateful");
-dojo.require("umc.tools");
+dojo.require("tools");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dojo.Stateful, {
 	// umcpCommand:
@@ -113,7 +113,7 @@ dojo.require("umc.tools");
 		// The store needs to be available already at construction time, otherwise an
 		// error will be thrown. We need to define it here, in order to create a new
 		// store for each instance.a
-		this.umcpCommand = umc.tools.umcpCommand;
+		this.umcpCommand = tools.umcpCommand;
 		this.store = this._createStore();
 	},
 
@@ -145,7 +145,7 @@ dojo.require("umc.tools");
 		//		Converts a store item to a "normal" dictionary
 		var entry = {};
 
-		umc.tools.forIn( item, function( attr, value ) {
+		tools.forIn( item, function( attr, value ) {
 			// make sure the following default internal store item properties are ignored
 			// (as defined in dojo.data.ItemFileReadStore)
 			var ignore = false;
@@ -265,7 +265,7 @@ dojo.require("umc.tools");
 					});
 				}
 				// array of dicts
-				else if (dojo.isObject(iitem)) {
+				else if (typeof iitem == "object") {
 					if (!('id' in iitem && 'label' in iitem)) {
 						console.log("WARNING: umc.widgets._SelectMixin: One of the entries specified does not have the properties 'id' and 'label', ignoring item: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(iitem));
 					}
@@ -289,7 +289,7 @@ dojo.require("umc.tools");
 
 		if (this.sortStaticValues) {
 			// sort items according to their displayed name
-			staticValues.sort(umc.tools.cmpObjects({
+			staticValues.sort(tools.cmpObjects({
 				attribute: 'label',
 				ignoreCase: true
 			}));
@@ -330,7 +330,7 @@ dojo.require("umc.tools");
 
 		if (this.sortDynamicValues) {
 			// sort items according to their displayed name
-			items.sort(umc.tools.cmpObjects({
+			items.sort(tools.cmpObjects({
 				attribute: 'label',
 				ignoreCase: true
 			}));
@@ -377,7 +377,7 @@ dojo.require("umc.tools");
 		// check whether all necessary values are specified
 		var params = {};
 		var nDepValues = 0;
-		if (dependList.length && dojo.isObject(_dependValues) && _dependValues) {
+		if (dependList.length && typeof _dependValues == "object" && _dependValues) {
 			// check whether all necessary values are specified
 			for (var i = 0; i < dependList.length; ++i) {
 				if (_dependValues[dependList[i]]) {
@@ -397,7 +397,7 @@ dojo.require("umc.tools");
 			if (typeof this.dynamicOptions == "function") {
 				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions(params));
 			}
-			else if (dojo.isObject(this.dynamicOptions)) {
+			else if (typeof this.dynamicOptions == "object") {
 				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
 			}
 		}
@@ -409,14 +409,14 @@ dojo.require("umc.tools");
 		}
 
 		// get dynamic values
-		var func = umc.tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
+		var func = tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
 		var deferredOrValues = func(params);
 		this._deferredOrValues = deferredOrValues;
 
 		// make sure we have an array or a /*REQUIRE:"dojo/Deferred"*/ Deferred object
 		if (deferredOrValues &&
 				(deferredOrValues instanceof Array ||
-				(dojo.isObject(deferredOrValues) && 'then' in deferredOrValues && 'cancel' in deferredOrValues))) {
+				(typeof deferredOrValues == "object" && 'then' in deferredOrValues && 'cancel' in deferredOrValues))) {
 			this.onLoadDynamicValues();
 			/*REQUIRE:"dojo/when"*/ when(deferredOrValues, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(res) {
 				// callback handler

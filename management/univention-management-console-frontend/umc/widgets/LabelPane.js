@@ -74,8 +74,8 @@ dojo.require("dijit._Container");
 			this.label = this.content.label || '';
 		}
 		// register watch handler for label and visibility changes
-		if (dojo.getObject('content.watch', false, this)) {
-			if (!umc.tools.inheritsFrom(this.content, 'umc.widgets.Button')) {
+		if (/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('content.watch', false, this)) {
+			if (!tools.inheritsFrom(this.content, 'umc.widgets.Button')) {
 				// only watch the label and required property if widget is not a button
 				this.content.watch('label', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(attr, oldVal, newVal) {
 					this.set('label', newVal || '');
@@ -100,27 +100,27 @@ dojo.require("dijit._Container");
 	}, 
 
 	_setLabelAttr: function(label) {
-		if (dojo.getObject('content.isLabelDisplayed', false, this)) {
+		if (/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('content.isLabelDisplayed', false, this)) {
 			// the widget displays the label itself
 			return;
 		}
 
 		// if we have a widget which is required, add the string ' (*)' to the label
-		if (dojo.getObject('domNode', false, this.content) &&
-				dojo.getObject('declaredClass', false, this.content) &&
-				dojo.getObject('required', false, this.content)) {
+		if (/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('domNode', false, this.content) &&
+				/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('declaredClass', false, this.content) &&
+				/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('required', false, this.content)) {
 			label = label + ' (*)';
 		}
 		this.label = label;
 
 		// set the labels' 'for' attribute
-		if (dojo.getObject('id', false, this.content) && dojo.getObject('declaredClass', false, this.content)) {
+		if (/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('id', false, this.content) && /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('declaredClass', false, this.content)) {
 			/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeRight, 'for', this.content.id);
 			/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeTop, 'for', this.content.id);
 		}
 
 		// only for check boxes, place the label right of the widget
-		if (umc.tools.inheritsFrom(this.content, 'dijit.form.CheckBox')) {
+		if (tools.inheritsFrom(this.content, 'dijit.form.CheckBox')) {
 			/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeRight, 'innerHTML', label);
 			if (label) {
 				/*REQUIRE:"dojo/dom-attr"*/ attr.set(this.labelNodeTop, 'innerHTML', '');
@@ -140,7 +140,7 @@ dojo.require("dijit._Container");
 			this.contentNode.innerHTML = content;
 		}
 		// if we have a widget, clear the content and hook in the domNode directly
-		else if (dojo.getObject('domNode', false, content) && dojo.getObject('declaredClass', false, content)) {
+		else if (/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('domNode', false, content) && /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('declaredClass', false, content)) {
 			this.contentNode.innerHTML = '';
 			this.addChild(content);
 		}

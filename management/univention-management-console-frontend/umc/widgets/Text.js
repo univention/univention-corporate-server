@@ -26,30 +26,30 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define console */
 
-dojo.provide("umc.widgets.Text");
+define([
+	"dojo/_base/declare",
+	"dijit/_WidgetBase",
+	"dijit/_TemplatedMixin"
+], function(declare, _WidgetBase, _TemplatedMixin) {
+	return declare([_WidgetBase, _TemplatedMixin], {
+		// summary:
+		//		Simple widget that displays a given label, e.g., some text to
+		//		be rendered in a form. Can also render HTML code.
 
-dojo.require("dijit._Widget");
-dojo.require("dijit._Templated");
+		templateString: '<div dojoAttachPoint="contentNode">${content}</div>',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit._Widget, dijit._Templated ], {
-	// summary:
-	//		Simple widget that displays a given label, e.g., some text to
-	//		be rendered in a form. Can also render HTML code.
+		// label: String
+		//		String which contains the text (or HTML code) to be rendered.
+		content: '',
 
-	templateString: '<div dojoAttachPoint="contentNode">${content}</div>',
+		// the widget's class name as CSS class
+		'class': 'umcText',
 
-	// label: String
-	//		String which contains the text (or HTML code) to be rendered.
-	content: '',
-
-	// the widget's class name as CSS class
-	'class': 'umcText',
-
-	_setContentAttr: function(content) {
-		this.content = content;
-		this.contentNode.innerHTML = content;
-	}
+		_setContentAttr: function(content) {
+			this.content = content;
+			this.contentNode.innerHTML = content;
+		}
+	});
 });
-

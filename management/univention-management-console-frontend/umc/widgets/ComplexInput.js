@@ -31,8 +31,8 @@
 dojo.provide("umc.widgets.ComplexInput");
 
 dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.tools");
-dojo.require("umc.render");
+dojo.require("tools");
+dojo.require("render");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.ContainerWidget, {
 	// summary:
@@ -41,7 +41,7 @@ dojo.require("umc.render");
 	// subtypes: Object[]
 	//		Essentially an array of object that describe the widgets for one element
 	//		of the MultiInput widget, the 'name' needs not to be specified, this
-	//		property is passed to umc.render.widgets().
+	//		property is passed to render.widgets().
 	subtypes: null,
 
 	// the widget's class name as CSS class
@@ -53,7 +53,7 @@ dojo.require("umc.render");
 
 	_order: null,
 
-	umcpCommand: umc.tools.umcpCommand,
+	umcpCommand: tools.umcpCommand,
 
 	buildRendering: function() {
 		this.inherited(arguments);
@@ -76,11 +76,11 @@ dojo.require("umc.render");
 		}, this);
 
 		// render the widgets and layout them
-		this._widgets = umc.render.widgets( widgetConfs );
-		this._container = umc.render.layout( [ this._order ], this._widgets );
+		this._widgets = render.widgets( widgetConfs );
+		this._container = render.layout( [ this._order ], this._widgets );
 
 		// register onChange event
-		umc.tools.forIn( this._widgets, function( iname, iwidget ) {
+		tools.forIn( this._widgets, function( iname, iwidget ) {
 			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( iwidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( newValue ) {
 				this.onChange( this.get( 'value' ), iname );
 			} ) );

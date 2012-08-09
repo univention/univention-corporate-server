@@ -32,7 +32,7 @@ dojo.provide("umc.widgets.TextBox");
 
 dojo.require("dijit.form.ValidationTextBox");
 dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.tools");
+dojo.require("tools");
 
 /*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.ValidationTextBox, umc.widgets._FormWidgetMixin ], {
 	// the widget's class name as CSS class
@@ -53,18 +53,18 @@ dojo.require("umc.tools");
 	//		In order to make the widget send information such as module flavor
 	//		etc., it can be necessary to specify a module specific umcpCommand
 	//		method.
-	umcpCommand: umc.tools.umcpCommand,
+	umcpCommand: tools.umcpCommand,
 
 	//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,
 	//       and the check for all met dependencies should be done in the Form
 	_loadValues: function(/*Object?*/ params) {
 		// mixin additional options for the UMCP command
-		if (this.dynamicOptions && dojo.isObject(this.dynamicOptions)) {
+		if (this.dynamicOptions && typeof this.dynamicOptions == "object") {
 			/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
 		}
 
 		// get the dynamic values, block concurrent events for value loading
-		var func = umc.tools.stringOrFunction(this.dynamicValue, this.umcpCommand);
+		var func = tools.stringOrFunction(this.dynamicValue, this.umcpCommand);
 		var deferredOrValues = func(params);
 
 		// make sure we have an array or a /*REQUIRE:"dojo/Deferred"*/ Deferred object

@@ -26,36 +26,38 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console window */
+/*global define console */
 
-dojo.provide("umc.widgets.ContainerWidget");
+define([
+	"dojo/_base/declare",
+	"dojo/dom-style",
+	"dijit/_WidgetBase",
+	"dijit/_Container"
+], function(declare, style, _WidgetBase, _Container) {
+	return declare([_WidgetBase, _Container], {
+		// description:
+		//		Combination of Widget and Container class.
+		style: '',
 
-dojo.require("dijit._Widget");
-dojo.require("dijit._Container");
+		'class': 'umcContainerWidget',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([dijit._Widget, dijit._Container], {
-	// description:
-	//		Combination of Widget and Container class.
-	style: '',
+		// scrollable: Boolean
+		//		If set to true, the container will set its width/height to 100% in order
+		//		to enable scrollbars.
+		scrollable: false,
 
-	'class': 'umcContainerWidget',
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	// scrollable: Boolean
-	//		If set to true, the container will set its width/height to 100% in order
-	//		to enable scrollbars.
-	scrollable: false,
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		if (this.scrollable) {
-			dojo.style(this.containerNode, {
-				width: '100%',
-				height: '100%',
-				overflow: 'auto'
-			});
+			if (this.scrollable) {
+				style.set(this.containerNode, {
+					width: '100%',
+					height: '100%',
+					overflow: 'auto'
+				});
+			}
 		}
-	}
+	});
 });
 
 
