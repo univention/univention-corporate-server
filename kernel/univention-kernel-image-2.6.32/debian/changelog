@@ -1,5 +1,6 @@
-univention-kernel-image-2.6.32 (6.0.0-2) unstable; urgency=low
+univention-kernel-image (6.0.0-2) unstable; urgency=low
 
+  * Rename the source package	
   * Update meta packages to new binary package names. The new meta packages
     no longer include a version number. Also simplify the names of the meta
     packages.	   
