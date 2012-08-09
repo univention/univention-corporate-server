@@ -10,23 +10,27 @@ Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom
 Description: UCS - Linux kernel (standard)
- This meta-package depends on the latest UCS kernel image suitable for 32 bit
- systems with up to 4 GiB RAM.
+ This meta-package depends on the latest UCS kernel image. It supports up to
+ 64 GB RAM on 32 bit CPUs and up to 128 TB memory on 64 CPUs.
+ .
+ This kernel is also suitable for operation with Xen (both Dom0 and DomU).
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-image-pae
+Package: univention-kernel-image-486
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersionPAE}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom
-Description: UCS - Linux kernel (PAE/Xen)
- This meta-package depends on the latest UCS kernel image supporting 64 GB
- of main memory.
+Depends: linux-image-${F:KernelVersion486}, univention-initrd, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom
+Description: UCS - Linux kernel (for old systems)
+ This meta-package depends on the latest UCS kernel image compatible
+ with older 32 bit CPUs. The standard kernel in UCS for i386 requires
+ PAE, which is not available on 486/Pentium CPUs.
  .
- This kernel is also suitable for operation with Xen (both Dom0 and DomU).
+ This kernel should only be used if your system does not support
+ PAE.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -37,21 +41,23 @@ Package: univention-kernel-headers
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers (standard)
- This meta-package depends on the latest UCS kernel headers suitable for 32 bit
- systems with up to 4 GiB RAM.
+ This meta-package depends on the latest UCS kernel headers.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-headers-pae
+Package: univention-kernel-headers-486
 Architecture: any
-Depends: linux-headers-${F:KernelVersion64}
+Depends: linux-headers-${F:KernelVersion486}
 Description: UCS - Linux kernel headers (PAE)
- This meta-package depends on the latest UCS kernel headers suitable for 32 bit
- systems with up to 64 GiB RAM, where the CPU supports the Physical Address
- Extension (PAE). It also supports operation of Xen as Dom0 or DomU.
+ This meta-package depends on the latest UCS kernel headers compatible
+ with older 32 bit CPUs. The standard kernel in UCS for i386 requires
+ PAE, which is not available on 486/Pentium CPUs.
+ .
+ These headers should only be used if your system does not support
+ PAE.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -70,22 +76,9 @@ Description: UCS - Linux kernel source (standard)
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-source-pae
-Architecture: any
-Depends: linux-source-${F:KernelVersion64}
-Description: UCS - Linux kernel source (PAE)
- This meta-package depends on the latest UCS kernel source suitable for 32 bit
- systems with up to 64 GiB RAM, where the CPU supports the Physical Address
- Extension (PAE).
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
 Package: univention-kernel-source-2.6.32-64gb
 Architecture: any
-Depends: univention-kernel-source-pae
+Depends: univention-kernel-source
 Description: UCS - Linux kernel source
  Transitional package to facilitate the upgrade to the
  3.2 based kernel.
@@ -109,7 +102,7 @@ Description: UCS - Linux kernel source
 
 Package: univention-kernel-headers-2.6.32-xen
 Architecture: any
-Depends: univention-kernel-headers-pae
+Depends: univention-kernel-headers
 Description: UCS - Linux kernel headers
  Transitional package to facilitate the upgrade to the
  3.2 based kernel.
@@ -121,7 +114,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-headers-2.6.32-64gb
 Architecture: any
-Depends: univention-kernel-headers-pae
+Depends: univention-kernel-headers
 Description: UCS - Linux kernel headers
  Transitional package to facilitate the upgrade to the
  3.2 based kernel.
@@ -145,7 +138,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-image-2.6.32-64gb
 Architecture: any
-Depends: univention-kernel-image-pae
+Depends: univention-kernel-image
 Description: UCS - Linux kernel image
  Transitional package to facilitate the upgrade to the
  3.2 based kernel.
@@ -157,7 +150,7 @@ Description: UCS - Linux kernel image
 
 Package: univention-kernel-image-2.6.32-xen
 Architecture: any
-Depends: univention-kernel-image-pae
+Depends: univention-kernel-image
 Description: UCS - Linux kernel image
  Transitional package to facilitate the upgrade to the
  3.2 based kernel.

@@ -48,7 +48,7 @@ DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 KERNELVERSION := ${${DEB_BUILD_ARCH}_VERSION}
 KERNELVERSION64 := ${${DEB_BUILD_ARCH}_VERSION_64}
 KERNELVERSIONXEN := ${${DEB_BUILD_ARCH}_VERSION_XEN}
-KERNELVERSIONPAE := 3.2.0-${ABI}-686-pae
+KERNELVERSION486 := 3.2.0-${ABI}-486
 
 configure:
 
@@ -92,14 +92,17 @@ binary-arch: build install
 	dh_builddeb -punivention-kernel-source
 
 ifeq ($(DEB_BUILD_GNU_TYPE), i486-linux-gnu)
-	dh_gencontrol -punivention-kernel-image-pae -u-VF:KernelVersionPAE="${KERNELVERSIONPAE}"
-	dh_md5sums -punivention-kernel-image-pae
-	dh_builddeb -punivention-kernel-image-pae
+	dh_gencontrol -punivention-kernel-image-486 -u-VF:KernelVersion486="${KERNELVERSION486}"
+	dh_md5sums -punivention-kernel-image-486
+	dh_builddeb -punivention-kernel-image-486
 
-	dh_gencontrol -punivention-kernel-headers-pae -u-VF:KernelVersion64="${KERNELVERSION}"
-	dh_md5sums -punivention-kernel-headers-pae
-	dh_builddeb -punivention-kernel-headers-pae
+	dh_gencontrol -punivention-kernel-headers-486 -u-VF:KernelVersion486="${KERNELVERSION486}"
+	dh_md5sums -punivention-kernel-headers-486
+	dh_builddeb -punivention-kernel-headers-486
+endif
 
+
+ifeq ($(DEB_BUILD_GNU_TYPE), i486-linux-gnu)
 	dh_gencontrol -punivention-kernel-image-2.6.32-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-image-2.6.32-64gb
 	dh_builddeb -punivention-kernel-image-2.6.32-64gb
@@ -117,6 +120,17 @@ endif
 	dh_md5sums -punivention-kernel-headers-2.6.32-xen
 	dh_builddeb -punivention-kernel-headers-2.6.32-xen
 
+ifeq ($(DEB_BUILD_GNU_TYPE), i486-linux-gnu)
+	dh_gencontrol -punivention-kernel-image-2.6.32 -u-VF:KernelVersion="${KERNELVERSION486}"
+	dh_md5sums -punivention-kernel-image-2.6.32
+	dh_builddeb -punivention-kernel-image-2.6.32
+
+	dh_gencontrol -punivention-kernel-headers-2.6.32 -u-VF:KernelVersion="${KERNELVERSION486}"
+	dh_md5sums -punivention-kernel-headers-2.6.32
+	dh_builddeb -punivention-kernel-headers-2.6.32
+endif
+
+ifeq ($(DEB_BUILD_GNU_TYPE), x86_64-linux-gnu)
 	dh_gencontrol -punivention-kernel-image-2.6.32 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-image-2.6.32
 	dh_builddeb -punivention-kernel-image-2.6.32
@@ -124,6 +138,7 @@ endif
 	dh_gencontrol -punivention-kernel-headers-2.6.32 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-headers-2.6.32
 	dh_builddeb -punivention-kernel-headers-2.6.32
+endif
 
 	dh_gencontrol -punivention-kernel-source-2.6.32 -u-VF:KernelVersion="${SOURCEVERSION}"
 	dh_md5sums -punivention-kernel-source-2.6.32
