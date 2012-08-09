@@ -56,8 +56,11 @@ def handler(dn, new, old, command):
 	# dymanic module object filter
 	current_fqdn = "%s.%s" % (configRegistry['hostname'], domainname)
 	current_ip = configRegistry['interfaces/eth0/address']
-	univentionShareHost = new.get('univentionShareHost')
-	if not univentionShareHost in (current_fqdn, current_ip):
+	if new and not new.get('univentionShareHost') in (current_fqdn, current_ip):
+		new = []	## new object is not for this host
+	if old and not old.get('univentionShareHost') in (current_fqdn, current_ip):
+		old = []	## old object is not for this host
+	if not (new or old):
 		return
 
 	# create tmp dir
@@ -240,10 +243,7 @@ def postrun():
 		for f in os.listdir('/etc/samba/shares.conf.d'):
 			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
 		fp.close()
-		if listener.baseConfig.get('samba/ha/master'):
-			initscript='/etc/heartbeat/resource.d/samba'
-		else:
-			initscript='/etc/init.d/samba'
+		initscript='/etc/init.d/samba'
 		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
 	finally:
 		listener.unsetuid()
