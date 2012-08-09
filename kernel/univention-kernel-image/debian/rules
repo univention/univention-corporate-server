@@ -38,7 +38,7 @@ SOURCEVERSION := 3.2
 amd64_VERSION := 3.2.0-${ABI}-amd64
 amd64_VERSION_64 := 3.2.0-${ABI}-amd64
 amd64_VERSION_XEN := 3.2.0-${ABI}-amd64
-i386_VERSION := 3.2.0-${ABI}-486
+i386_VERSION := 3.2.0-${ABI}-pae
 i386_VERSION_64 := 3.2.0-${ABI}-pae
 i386_VERSION_XEN := 3.2.0-${ABI}-pae
 
