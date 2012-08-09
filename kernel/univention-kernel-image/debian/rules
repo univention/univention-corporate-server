@@ -50,15 +50,6 @@ KERNELVERSION64 := ${${DEB_BUILD_ARCH}_VERSION_64}
 KERNELVERSIONXEN := ${${DEB_BUILD_ARCH}_VERSION_XEN}
 KERNELVERSION486 := 3.2.0-${ABI}-486
 
-ifeq ($(DEB_BUILD_GNU_TYPE), x86_64-linux-gnu)
-	KERNELNAME := "univention-kernel-image"
-	HEADERNAME := "univention-kernel-headers"
-endif
-
-ifeq ($(DEB_BUILD_GNU_TYPE), i486-linux-gnu)
-	KERNELNAME := "univention-kernel-image-486"
-	HEADERNAME := "univention-kernel-headers-486"
-endif
 
 
 
