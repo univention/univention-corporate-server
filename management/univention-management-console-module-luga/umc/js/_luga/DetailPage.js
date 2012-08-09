@@ -497,12 +497,12 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}
 			else {
 				// print error message to user
-				message = '';
+				var message = '';
 				dojo.forEach(result, function(err) {
 					if (!err.success) {
 						message += err.message;
 					}
-				}
+				});
 				if (message !== '') {
 					umc.dialog.alert(message);
 				} else {
