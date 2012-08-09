@@ -1,3 +1,11 @@
+univention-samba (7.0.2-1) unstable; urgency=low
+
+  * Adjust min password length in Samba domain policy if old default (=5)
+    is active and it does not match a unique domain wide password policy.
+    This shall only be done once on update to UCS 3.1-0 (Bug #21262).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Aug 2012 17:42:21 +0200
+
 univention-samba (7.0.1-10) unstable; urgency=low
 
   * added quotes to eval $(ucr shell) call in addmachine.sh
