@@ -162,7 +162,7 @@ Description: UCS - Linux kernel image
 
 Package: univention-kernel-image-2.6.32
 Architecture: any
-Depends: univention-kernel-image
+Depends: univention-kernel-image-486
 Description: UCS - Linux kernel image
  Transitional package to facilitate the upgrade to the
  3.2 based kernel.

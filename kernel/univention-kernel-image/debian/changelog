@@ -1,3 +1,9 @@
+univention-kernel-image (6.0.0-5) unstable; urgency=low
+
+  * Fix transition kernel for 486 (Bug #27456) 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 09 Aug 2012 14:30:20 +0200
+
 univention-kernel-image (6.0.0-4) unstable; urgency=low
 
   * Fix kernel name (Bug #27456) 
