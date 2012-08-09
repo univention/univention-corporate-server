@@ -310,9 +310,11 @@ dojo.declare("umc.modules.luga", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		if(result && result.length) {
 			var message = this._('The following errors occured while deleting the selected %s:', this._objectNamePlural) + '<ul>';
 			if(dojo.isArray(result)) {
-					dojo.forEach(result, function(err) {
-						message += '<li>' + err + '</li>';
-					}, this);
+				dojo.forEach(result, function(err) {
+					if (!err.success) {
+						message += '<li>' + err.message + '</li>';
+					}
+				}, this);
 			} else {
 				message += '<li>' + result + '</li>';
 			}

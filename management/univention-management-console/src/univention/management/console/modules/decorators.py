@@ -311,8 +311,7 @@ def multi_response(function=None, with_flavor=None, error_handler=_error_handler
 def _replace_sensitive_data(data, sensitives):
 	""" recursive replace sensitive data with ****** from containing dicts """
 	if isinstance(data, (list, tuple)):
-		for i in range(len(data)):
-			data[i] = _replace_sensitive_data(data[i], sensitives)
+		data = [_replace_sensitive_data(d) for d in data]
 	elif isinstance(data, dict):
 		for sensitive in sensitives:
 			if sensitive in data:

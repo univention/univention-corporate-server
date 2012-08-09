@@ -67,10 +67,10 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 		this.standbyOpacity = 1;
 
 		// set the page header
-		if (this.moduleFlavor === 'users') {
+		if (this.moduleFlavor === 'luga/users') {
 			this.headerText = this._('Properties for user %s', '');
 			this.helpText = this._('Create or modify an local user.');
-		} else if (this.moduleFlavor === 'groups') {
+		} else if (this.moduleFlavor === 'luga/groups') {
 			this.headerText = this._('Group properties');
 			this.helpText = this._('Create or modify a local group');
 		}
@@ -107,7 +107,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			return validator(value) && (-1 === value.search(','));
 		};
 
-		if (this.moduleFlavor === 'users') {
+		if (this.moduleFlavor === 'luga/users') {
 			// specify all widgets
 			widgets = [{
 				type: 'TextBox',
@@ -274,7 +274,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				label: this._('Options and Password'), // TODO: better description
 				layout: [ 'pw_last_change', 'disabled_since', 'pw_mindays', 'pw_maxdays', 'pw_warndays', 'pw_disabledays' ]
 			}];
-		} else if (this.moduleFlavor === 'groups') {
+		} else if (this.moduleFlavor === 'luga/groups') {
 			widgets = [{
 				type: 'TextBox',
 				name: 'groupname',
@@ -453,7 +453,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			return;
 		}
 
-		if (this.moduleFlavor === 'users') {
+		if (this.moduleFlavor === 'luga/users') {
 			// set the original username
 			values.$username$ = this._receivedObjFormData.username;
 
@@ -473,7 +473,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				this._saveValues(values);
 			}
 		}
-		else if (this.moduleFlavor === 'groups') {
+		else if (this.moduleFlavor === 'luga/groups') {
 			values.id = this._receivedObjFormData.groupname;
 			this._saveValues(values);
 		}
@@ -497,7 +497,17 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			}
 			else {
 				// print error message to user
-				umc.dialog.alert(result);
+				message = '';
+				dojo.forEach(result, function(err) {
+					if (!err.success) {
+						message += err.message;
+					}
+				}
+				if (message !== '') {
+					umc.dialog.alert(message);
+				} else {
+					this.onClose();
+				}
 			}
 		}), dojo.hitch(this, function() {
 			this.standby(false);
@@ -602,7 +612,7 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 				w.set('disabled', false);
 			}
 		}, this);
-		if (this.moduleFlavor === 'users') {
+		if (this.moduleFlavor === 'luga/users') {
 			this._form.getWidget('groups').set('value', []);
 			if (this._newObject) {
 				this._form.getWidget('group').set('value', '');
@@ -631,9 +641,9 @@ dojo.declare("umc.modules._luga.DetailPage", [ umc.widgets.Page, umc.widgets.Sta
 			this._receivedObjFormData = this._form.gatherFormValues();
 
 			// prepare the Form, initialize connects
-			if (this.moduleFlavor === 'users') {
+			if (this.moduleFlavor === 'luga/users') {
 				this.prepareFormUsers();
-			} else if (this.moduleFlavor === 'groups') {
+			} else if (this.moduleFlavor === 'luga/groups') {
 				this.prepareFormGroups();
 			}
 

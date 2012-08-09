@@ -197,7 +197,7 @@ class Users:
 			if 0 != returncode:
 				MODULE.error("cmd '%s' failed with returncode %d" % (pwd, returncode)) 
 				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
-				raise ValueError( _('an error accured while changing password: %s') % (error) )
+				raise ValueError( _('an error occurred while changing password: %s') % (error) )
 
 		# Change options
 		if len(cmd) > 2:
@@ -206,12 +206,11 @@ class Users:
 			if 0 != returncode:
 				MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
 				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
-				raise ValueError( _('an error accured while changing password options: %s') % (error) )
+				raise ValueError( _('an error occurred while changing password options: %s') % (error) )
 
 		return True
 
-	@check_request_options()
-	@log_request_options()
+	@log_request_options
 	@simple_response
 	def users_query( self, category = 'username', pattern = '*'):
 		"""
@@ -229,19 +228,23 @@ class Users:
 		MODULE.info( 'luga.users_query: results: %s' % response )
 		return response
 
-	@log_request_options()
-	#@check_request_options()
-	@simple_response
-	def users_get_users(self, category = 'username', pattern = '*'):
+	@log_request_options
+	@check_request_options
+	def users_get_users(self, request):
 		"""
 			returns a shorten list containing a dict for each user
 			[ {'id': <username>, 'label': <username>}, ... ]
 		"""
+
+		o = self.sanitize_dict(request.options)
+		category = request.options.get('category', 'username')
+		pattern = request.options.get('pattern', '*')
+
 #		response = [ {'id': u['username'], 'label': u['username']} for u in self._parse_users(category, pattern) ]
 		response = [ u['username'] for u in self._parse_users(category, pattern) ]
 
 		MODULE.info( 'luga.users_query: results: %s' % str(response) )
-		return response
+		self.finished(request.id, response, status=SUCCESS)
 
 	def _get_group_members(self, groupname):
 		"""
@@ -250,8 +253,8 @@ class Users:
 		"""
 		return map( lambda u: u['username'], self._parse_users('groupname', groupname) )
 
-	@log_request_options()
-	@check_request_options(list)
+	@log_request_options
+	@check_request_options(types=list)
 	def users_get( self, request ):
 		"""
 			returns a list of dicts containing user information from requested usernames
@@ -344,9 +347,9 @@ class Users:
 
 		return cmd
 
-	@log_request_options(['password'])
-	@check_request_options((list, tuple,))
-	def users_put( self, request ):
+	@log_request_options(sensitive=['password'])
+	@multi_response
+	def users_put(self, object):
 		"""
 			modify a local user
 		"""
@@ -356,64 +359,60 @@ class Users:
 			# no information about returncodes, yet
 		}
 
-		for o in request.options:
-			try:
-				message = ''
-				self.validate_type(o, dict)
-				self.validate_type(o.get('object', {}), dict)
-				option = o.get('object', {})
+		try:
+			success = True
+			message = ''
+			self.validate_type(object, dict)
 
-				# Username
-				username = option.get('$username$')
-				new_username = option.get('username')
-				if not username:
-					raise ValueError( _('No username given') )
+			# Username
+			username = object.get('$username$')
+			new_username = object.get('username')
+			if not username:
+				raise ValueError( _('No username given') )
 
-				pwoptions = {}
-				cmd = ['/usr/sbin/usermod']
-				cmd += self._get_common_args( option, pwoptions )
+			pwoptions = {}
+			cmd = ['/usr/sbin/usermod']
+			cmd += self._get_common_args( object, pwoptions )
 
-				# Change username
-				if new_username and username != new_username:
-					self.validate_name(new_username)
-					cmd += ['-l', self.sanitize_arg(new_username)]
+			# Change username
+			if new_username and username != new_username:
+				self.validate_name(new_username)
+				cmd += ['-l', self.sanitize_arg(new_username)]
 
-				# Account deactivation
-				if pwoptions.get('lock'):
-					cmd.append('-L')
+			# Account deactivation
+			if pwoptions.get('lock'):
+				cmd.append('-L')
 
-				elif option.get('unlock'):
-					cmd.append('-U')
+			elif object.get('unlock'):
+				cmd.append('-U')
 
-				# Password
-				password = option.get('password')
-				self._change_user_password(username, password, pwoptions)
+			# Password
+			password = object.get('password')
+			self._change_user_password(username, password, pwoptions)
 
-				# Execute
-				if len(cmd) > 1:
-					cmd.append(self.sanitize_arg(username))
-					returncode = self.process(cmd)
-					if returncode != 0:
-						MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode))
-						error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
-						raise ValueError( error )
+			# Execute
+			if len(cmd) > 1:
+				cmd.append(self.sanitize_arg(username))
+				returncode = self.process(cmd)
+				if returncode != 0:
+					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode))
+					error = errors.get( returncode, _('unknown error with statuscode %d occurred') % (returncode) )
+					raise ValueError( error )
 
-			except ValueError as e:
-				message = (username + ': ' if type(username) is str else '') + str(e)
-			finally:
-				response.append( message )
+		except ValueError as e:
+			success = False
+			message = (username + ': ' if type(username) is str else '') + str(e)
+		finally:
+			MODULE.info( 'luga.users_edit: results: %s' % (message,) )
+			return {'message': message, 'success': success}
 
-		MODULE.info( 'luga.users_edit: results: %s' % str(response) )
-		self.finished(request.id, response, status=SUCCESS)
-
-	@log_request_options(['password'])
-	@check_request_options((list, tuple,))
-	def users_add(self, request):
+	@log_request_options(sensitive=['password'])
+	@multi_response
+	def users_add(self, object):
 		"""
 			add a local user
 		"""
 
-		response = []
 		errors = {
 			1: _('could not update password file'),
 			2: _('invalid command syntax'),
@@ -426,58 +425,55 @@ class Users:
 			13: _('could not create mail spool'),
 		}
 
-		for o in request.options:
-			try:
-				message = ''
-				self.validate_type(o, dict)
-				self.validate_type(o.get('object', {}), dict)
-				option = o.get('object', {})
+		try:
+			success = True
+			message = ''
+			self.validate_type(object, dict)
 
-				# Username
-				username = option.get('username')
-				self.validate_name(username)
+			# Username
+			username = object.get('username')
+			self.validate_name(username)
 
-				pwoptions = {}
-				cmd = ['/usr/sbin/useradd', '-r']
+			pwoptions = {}
+			cmd = ['/usr/sbin/useradd', '-r']
 
-				if username == option.get('group'):
-					option['create_usergroup'] = True
-					cmd.append('-U')
-				else:
-					cmd.append('-N')
+			if username == object.get('group'):
+				object['create_usergroup'] = True
+				cmd.append('-U')
+			else:
+				cmd.append('-N')
 
-				cmd += self._get_common_args( option, pwoptions )
+			cmd += self._get_common_args( object, pwoptions )
 
-				# Execute
-				cmd.append(self.sanitize_arg(username))
-				returncode = self.process(cmd)
-				if 0 != returncode:
-					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode))
-					error = errors.get( returncode, _('unknown error with statuscode %d occurred') % (returncode) )
-					raise ValueError( error )
+			# Execute
+			cmd.append(self.sanitize_arg(username))
+			returncode = self.process(cmd)
+			if 0 != returncode:
+				MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode))
+				error = errors.get( returncode, _('unknown error with statuscode %d occurred') % (returncode) )
+				raise ValueError( error )
 
-				# Change Password + options
-				password = option.get('password')
-				self._change_user_password(username, password, pwoptions)
-			except ValueError as e:
-				message = (username + ': ' if type(username) is str else '') + str(e)
-			finally:
-				response.append( message )
+			# Change Password + options
+			password = object.get('password')
+			self._change_user_password(username, password, pwoptions)
+		except ValueError as e:
+			success = False
+			message = (username + ': ' if type(username) is str else '') + str(e)
+		finally:
+			MODULE.info( 'luga.users_add: results: %s' % (message,) )
+			return {'message': message, 'success': success}
 
-		MODULE.info( 'luga.users_add: results: %s' % str(response) )
-		self.finished(request.id, response, status=SUCCESS)
-
-	@log_request_options()
-	@check_request_options((list, tuple,))
-	def users_remove(self, request):
+	@log_request_options
+	@multi_response
+	def users_remove(self, object=None, options={}):
 		"""
 			remove a list of local users
 			param request.options = [ { username: <string>, force: <bool>, remove: <bool> }, ...]
 				force: force removal of files, even if not owned by user
 				remove: remove home directory and mail spool
+			# TODO: message could be a dict with success and message
 		"""
 
-		response = []
 		errors = {
 			1: _('could not update password file'),
 			2: _('invalid command syntax'),
@@ -487,36 +483,34 @@ class Users:
 			12: _('could not remove home directory or mail spool')
 		}
 
-		for option in request.options:
-			try:
-				message = ''
-				if dict is not type(option):
-					raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
+		try:
+			success = True
+			message = ''
+			if not isinstance(options, dict):
+				raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
-				cmd = ['/usr/sbin/userdel']
+			cmd = ['/usr/sbin/userdel']
 
-				username = option.get('object')
-				if None is username:
-					raise ValueError( _('No username given') )
+			username = object
+			if None is username:
+				raise ValueError( _('No username given') )
 
-				options = self.sanitize_dict(option.get('options', {}))
-				if options.get('force'):
-					cmd.append('-f')
-				if options.get('remove'):
-					cmd.append('-r')
+			if options.get('force'):
+				cmd.append('-f')
+			if options.get('remove'):
+				cmd.append('-r')
 
-				cmd.append(self.sanitize_arg(username))
+			cmd.append(self.sanitize_arg(username))
 
-				returncode = self.process(cmd)
-				if returncode != 0:
-					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
-					error = errors.get( returncode, _('unknown error with statuscode %d accured') % (returncode) )
-					raise ValueError( error )
-			except ValueError as e:
-				message = (username + ': ' if type(username) is str else '') + str(e)
-			finally:
-				response.append( message )
-
-		MODULE.info( 'luga.users_remove: results: %s' % str(response) )
-		self.finished(request.id, response, status=SUCCESS)
+			returncode = self.process(cmd)
+			if returncode != 0:
+				MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
+				error = errors.get( returncode, _('unknown error with statuscode %d occurred') % (returncode) )
+				raise ValueError( error )
+		except ValueError as e:
+			success = False
+			message = (username + ': ' if isinstance(username, basestring) else '') + str(e)
+		finally:
+			MODULE.info( 'luga.users_remove: results: %s' % (message,) )
+			return {'message': message, 'success': success}
 
