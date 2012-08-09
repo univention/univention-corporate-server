@@ -56,10 +56,15 @@ def handler(dn, new, old, command):
 	# dymanic module object filter
 	current_fqdn = "%s.%s" % (configRegistry['hostname'], domainname)
 	current_ip = configRegistry['interfaces/eth0/address']
-	if new and not new.get('univentionShareHost') in (current_fqdn, current_ip):
-		new = []	## new object is not for this host
-	if old and not old.get('univentionShareHost') in (current_fqdn, current_ip):
-		old = []	## old object is not for this host
+
+	new_univentionShareHost = new.get('univentionShareHost', [None])[0]
+	if new and not new_univentionShareHost in (current_fqdn, current_ip):
+		new = {}	## new object is not for this host
+
+	old_univentionShareHost = old.get('univentionShareHost', [None])[0]
+	if old and not old_univentionShareHost in (current_fqdn, current_ip):
+		old = {}	## old object is not for this host
+
 	if not (new or old):
 		return
 
