@@ -126,7 +126,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-headers-2.6.32
 Architecture: any
-Depends: univention-kernel-headers
+Depends: ${F:HeaderName}
 Description: UCS - Linux kernel headers
  Transitional package to facilitate the upgrade to the
  3.2 based kernel.
@@ -162,7 +162,7 @@ Description: UCS - Linux kernel image
 
 Package: univention-kernel-image-2.6.32
 Architecture: any
-Depends: univention-kernel-image-486
+Depends: ${F:KernelName}
 Description: UCS - Linux kernel image
  Transitional package to facilitate the upgrade to the
  3.2 based kernel.
