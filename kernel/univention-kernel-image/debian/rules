@@ -50,6 +50,16 @@ KERNELVERSION64 := ${${DEB_BUILD_ARCH}_VERSION_64}
 KERNELVERSIONXEN := ${${DEB_BUILD_ARCH}_VERSION_XEN}
 KERNELVERSION486 := 3.2.0-${ABI}-486
 
+ifeq ($(DEB_BUILD_GNU_TYPE), x86_64-linux-gnu)
+	KERNELNAME := "univention-kernel-image"
+	HEADERNAME := "univention-kernel-headers"
+endif
+
+ifeq ($(DEB_BUILD_GNU_TYPE), i486-linux-gnu)
+	KERNELNAME := "univention-kernel-image-486"
+	HEADERNAME := "univention-kernel-headers-486"
+endif
+
 
 
 configure:
@@ -122,25 +132,13 @@ endif
 	dh_md5sums -punivention-kernel-headers-2.6.32-xen
 	dh_builddeb -punivention-kernel-headers-2.6.32-xen
 
-ifeq ($(DEB_BUILD_GNU_TYPE), i486-linux-gnu)
-	dh_gencontrol -punivention-kernel-image-2.6.32 -u-VF:KernelName="univention-kernel-image-486"
+	dh_gencontrol -punivention-kernel-image-2.6.32 -u-VF:KernelName="${KERNELNAME}"
 	dh_md5sums -punivention-kernel-image-2.6.32
 	dh_builddeb -punivention-kernel-image-2.6.32
 
-	dh_gencontrol -punivention-kernel-headers-2.6.32 -u-VF:HeaderName="univention-kernel-headers-486"
+	dh_gencontrol -punivention-kernel-headers-2.6.32 -u-VF:HeaderName="${HEADERNAME}"
 	dh_md5sums -punivention-kernel-headers-2.6.32
 	dh_builddeb -punivention-kernel-headers-2.6.32
-endif
-
-ifeq ($(DEB_BUILD_GNU_TYPE), x86_64-linux-gnu)
-	dh_gencontrol -punivention-kernel-image-2.6.32 -u-VF:KernelName="univention-kernel-image"
-	dh_md5sums -punivention-kernel-image-2.6.32
-	dh_builddeb -punivention-kernel-image-2.6.32
-
-	dh_gencontrol -punivention-kernel-headers-2.6.32 -u-VF:HeaderName="univention-kernel-headers"
-	dh_md5sums -punivention-kernel-headers-2.6.32
-	dh_builddeb -punivention-kernel-headers-2.6.32
-endif
 
 
 
