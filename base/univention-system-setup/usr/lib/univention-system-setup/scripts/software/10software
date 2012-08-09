@@ -61,7 +61,7 @@ class SoftwareScript(AptScript):
 		if self.base_package is None:
 			return False
 		else:
-			self.always_install = [self.base_package]
+			self.set_always_install(self.base_package)
 
 		for pkg in self.packages_remove:
 			# apt-get remove pkg

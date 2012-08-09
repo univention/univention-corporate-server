@@ -73,7 +73,7 @@ class RoleScript(AptScript):
 		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27935
 		for filename in glob.glob('/var/cache/univention-system-setup/packages/*.deb'):
 			shutil.copy(filename, '/var/cache/apt/archives/')
-		self.cache.open()
+		self.reopen_cache()
 
 		current_server_role_package = self.get_package_for_role(self.current_server_role)
 		wanted_server_role_package = self.get_package_for_role(self.wanted_server_role)
