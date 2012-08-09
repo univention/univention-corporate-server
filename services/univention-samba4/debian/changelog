@@ -1,3 +1,17 @@
+univention-samba4 (2.0.2-2) unstable; urgency=low
+
+  * make samba-shares module listen on old value as well.. 
+    (Bug #27253)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Aug 2012 19:39:45 +0200
+
+univention-samba4 (2.0.2-1) unstable; urgency=low
+
+  * make samba-shares module listen on current FQDN and eth0 IP
+    (Bug #27253)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Aug 2012 19:16:57 +0200
+
 univention-samba4 (2.0.1-4) unstable; urgency=low
 
   * run dbcheck on updates but backup first (Bug #27457)

@@ -37,23 +37,34 @@ import univention.debug
 import univention.lib.listenerSharePath
 import cPickle
 ## for the ucr commit below in postrun we need ucr configHandlers
-from univention.config_registry import configHandlers
+from univention.config_registry import configHandlers, ConfigRegistry
 ucr_handlers = configHandlers()
 ucr_handlers.load()
 
-hostname=listener.baseConfig['hostname']
 domainname=listener.baseConfig['domainname']
-ip=listener.baseConfig['interfaces/eth0/address']
 
 name='samba-shares'
 description='Create configuration for Samba shares'
-filter='(&(objectClass=univentionShare)(objectClass=univentionShareSamba)(|(univentionShareHost=%s.%s)(univentionShareHost=%s)))' % (hostname, domainname, ip)
+filter='(&(objectClass=univentionShare)(objectClass=univentionShareSamba))'	# filter fqdn/ip in handler
 attributes=[]
 modrdn='1'
 
 tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + ".oldObject")
 
 def handler(dn, new, old, command):
+
+	configRegistry = ConfigRegistry()
+	configRegistry.load()
+
+	# dymanic module object filter
+	current_fqdn = "%s.%s" % (configRegistry['hostname'], domainname)
+	current_ip = configRegistry['interfaces/eth0/address']
+	if new and not new.get('univentionShareHost') in (current_fqdn, current_ip):
+		new = []	## new object is not for this host
+	if old and not old.get('univentionShareHost') in (current_fqdn, current_ip):
+		old = []	## old object is not for this host
+	if not (new or old):
+		return
 
 	# create tmp dir
 	tmpDir = os.path.dirname(tmpFile)
