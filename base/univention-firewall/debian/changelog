@@ -1,3 +1,9 @@
+univention-firewall (5.0.1-1) unstable; urgency=low
+
+  * UMC: Add initial firewall backend (Bug #24121)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 10 Aug 2012 15:46:53 +0200
+
 univention-firewall (5.0.0-1) unstable; urgency=low
 
   * Fix typo in debian/control
