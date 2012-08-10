@@ -98,14 +98,16 @@ dojo.declare("umc.modules._setup.SoftwarePage", [ umc.widgets.Page, umc.i18n.Mix
 		this.addChild(this._form);
 
 		// show notes when samba 3/4 is selected
-		dojo.forEach(['samba', 'samba4'], function(ikey) {
-			this.connect(this._form.getWidget('components'), 'onChange', function(newVal) {
-				var components = this._getInstalledComponents();
-				if ((new RegExp('univention-' + ikey + '\\b')).test(components)) {
-					// only show the note when the samba 3 or 4 package is selected
-					this._showNote(ikey);
-				}
-			});
+		this.connect(this._form.getWidget('components'), 'onChange', function(newVal) {
+			dojo.forEach(['samba', 'samba4'], function(ikey) {
+				var r = new RegExp('univention-' + ikey + '\\b');
+				dojo.forEach(this._getInstalledComponents(), function(icomponent) {
+					if (r.test(icomponent)) {
+						this._showNote(ikey);
+						return false; // break foreach loop
+					}
+				}, this);
+			}, this);
 		}, this);
 
 		// show notes for changes in the software settings

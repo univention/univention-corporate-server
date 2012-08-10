@@ -1,3 +1,10 @@
+univention-system-setup (6.0.12-1) unstable; urgency=low
+
+  * modified changes for Bug #27949 in order to
+    fit W3C specifications
+
+ -- Lukas Walter <walter@univention.de>  Fri, 10 Aug 2012 11:15:33 +0200
+
 univention-system-setup (6.0.11-1) unstable; urgency=low
 
   * Reuse univention.lib.package_manager instead of own one (Bug #28010)
