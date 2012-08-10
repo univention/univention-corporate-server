@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.7-1) unstable; urgency=low
+
+  * fixed a typo for iframe uploads (Bug #27850)
+
+ -- Florian Best <best@univention.de>  Fri, 10 Aug 2012 08:44:33 +0200
+
 univention-management-console-frontend (2.0.6-1) unstable; urgency=low
 
   * WIP: migration to Dojo 1.8, finished umc.tools, umc.dialog, LoginDialog;

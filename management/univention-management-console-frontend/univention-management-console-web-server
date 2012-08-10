@@ -496,7 +496,7 @@ class CPUpload( CPgeneric ):
 		if 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0')):
 			# this is a workaround to make iframe uploads work, they need the textarea field
 			cherrypy.response.headers[ 'Content-Type' ] = umcp.MIMETYPE_HTML
-			return '<html><body><textarea>%s</textarea></body></html>' % (response.body)
+			return '<html><body><textarea>%s</textarea></body></html>' % (response)
 
 		return response
 
