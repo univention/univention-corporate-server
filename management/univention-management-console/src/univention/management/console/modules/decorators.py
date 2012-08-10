@@ -148,6 +148,7 @@ def _sanitize(function, sanitized_arguments):
 				self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST)
 				return
 		return function(self, request)
+	copy_function_meta_data(function, _response)
 	return _response
 
 def _error_handler(options, exception):
@@ -157,11 +158,10 @@ def _simple_response(function, with_flavor):
 	# name of flavor argument. default: 'flavor' (if given, of course)
 	if with_flavor is True:
 		with_flavor = 'flavor'
+	arguments, defaults = arginspect(function)
 	# argument names of the function, including 'self'
-	argspec = inspect.getargspec(function)
 	# remove self
-	arguments = argspec.args[1:]
-	defaults = argspec.defaults
+	arguments = arguments[1:]
 	# use defaults as dict
 	if defaults:
 		defaults = dict(zip(arguments[-len(defaults):], defaults))
@@ -188,8 +188,7 @@ def _simple_response(function, with_flavor):
 		if with_flavor:
 			kwargs[with_flavor] = request.flavor or defaults.get(with_flavor)
 		return function(self, **kwargs)
-	# copy __doc__, otherwise it would not show up in api and such
-	_response.__doc__ = function.__doc__
+	copy_function_meta_data(function, _response)
 	return _response
 
 def _multi_response(function, with_flavor, error_handler):
@@ -211,6 +210,7 @@ def _multi_response(function, with_flavor, error_handler):
 				response.append(res)
 
 		self.finished(request.id, response)
+	copy_function_meta_data(function, _response)
 	return _response
 
 def simple_response(function=None, with_flavor=None):
@@ -294,18 +294,13 @@ def simple_response(function=None, with_flavor=None):
 	def _response(self, request):
 		self.finished(request.id, _simple_response(function, with_flavor)(self, request))
 	if function is None:
-		if with_flavor is not None:
-			return lambda f: simple_response(f, with_flavor)
-		else:
-			raise RuntimeError('Dont use @simple_response without a function')
+		return lambda f: simple_response(f, with_flavor)
+	copy_function_meta_data(function, _response)
 	return _response
 
 def multi_response(function=None, with_flavor=None, error_handler=_error_handler):
 	if function is None:
-		if with_flavor is not None:
-			return lambda f: _multi_response(f, with_flavor, error_handler)
-		else:
-			raise RuntimeError('Dont use @multi_response without a function')
+		return lambda f: _multi_response(f, with_flavor, error_handler)
 	return _multi_response(function, with_flavor, error_handler)
 
 def _replace_sensitive_data(data, sensitives):
@@ -331,6 +326,93 @@ def check_request_options(function=None, types=dict):
 		return check(function)
 	return check
 
+def arginspect(function):
+	argspec = inspect.getargspec(function)
+	if hasattr(function, '_original_argument_names'):
+		arguments = function._original_argument_names
+	else:
+		arguments = argspec.args
+	if hasattr(function, '_original_argument_defaults'):
+		defaults = function._original_argument_defaults
+	else:
+		defaults = argspec.defaults
+	return arguments, defaults
+
+def copy_function_meta_data(original_function, new_function, copy_arg_inspect=False):
+	# set function attrs to allow another arginspect to get original info
+	# (used in @simple_response / @log - combo)
+	if copy_arg_inspect:
+		arguments, defaults = arginspect(original_function)
+		new_function._original_argument_names = arguments
+		new_function._original_argument_defaults = defaults
+	# copy __doc__, otherwise it would not show up in api and such
+	new_function.__doc__ = original_function.__doc__
+	# copy __name__, otherwise it would be something like "_response"
+	new_function.__name__ = original_function.__name__
+	# copy __module__, otherwise it would be "univention.management.console.modules.decorators"
+	new_function.__module__ = original_function.__module__
+
+def log(function=None, sensitives=()):
+	'''Log decorator to be used with
+	:func:`simple_response`::
+
+	 @simple_response
+	 @log
+	 def my_func(self, var1, var2):
+	     return "%s__%s" % (var1, var2)
+
+	The above example will write two lines into the logfile for the
+	module (given that the the UCR variable *umc/module/debug/level*
+	is set to at least 3)::
+
+	 <date>  MODULE      ( INFO    ) : var1='value1', var2='value2'
+	 <date>  MODULE      ( INFO    ) : my_func returned: 'value1__value2'
+
+	The variable names are ordered by name and hold the values that
+	are actually going to be passed to the function (i.e. after they were
+	:func:`sanitize` 'd or set to their default value).
+	You may specify the names of sensitive arguments that should not
+	show up in log files::
+
+	 @simple_reponse
+	 @log(sensitives=['password'])
+	 def login(self, username, password):
+	     return self._login_user(username, password)
+
+	This results in::
+
+	 <date>  MODULE      ( INFO    ) : password='********', username='Administrator'
+	 <date>  MODULE      ( INFO    ) : login returned: True
+
+	The decorator also works with :func:`multi_response`::
+
+	 @multi_response
+	 @log
+	 def multi_my_func(self, var1, var2):
+	     return "%s__%s" % (var1, var2)
+
+	This will give two lines in the logfile for each element in the
+	list of *request.options*::
+
+	 <date>  MODULE      ( INFO    ) : var1='value1', var2='value2'
+	 <date>  MODULE      ( INFO    ) : myfunc returned: 'value1__value2'
+	 <date>  MODULE      ( INFO    ) : var1='value3', var2='value4'
+	 <date>  MODULE      ( INFO    ) : myfunc returned: 'value3__value4'
+
+	'''
+	if function is None:
+		return lambda f: log(f, sensitives)
+	sensitives = dict([(key, '********') for key in sensitives])
+	def _response(self, **kwargs):
+		argument_representation = ['%s=%r' % (key, sensitives.get(key, kwargs[key])) for key in sorted(kwargs.keys())]
+		if argument_representation:
+			MODULE.info(', '.join(argument_representation))
+		ret = function(self, **kwargs)
+		MODULE.info('%s returned: %r' % (function.__name__, ret))
+		return ret
+	copy_function_meta_data(function, _response, copy_arg_inspect=True)
+	return _response
+
 def log_request_options(function=None, sensitive=[]):
 	""" log request options, strip sensitive data """
 	def log(function):
@@ -347,5 +429,5 @@ def log_request_options(function=None, sensitive=[]):
 		return log(function)
 	return log
 
-__all__ = ['simple_response', 'multi_response', 'log_request_options', 'check_request_options', 'sanitize']
+__all__ = ['simple_response', 'multi_response', 'log_request_options', 'check_request_options', 'sanitize', 'log']
 
