@@ -1,3 +1,10 @@
+univention-samba4 (2.0.4-1) unstable; urgency=low
+
+  * fix traceback in scripts/univention-samba4-site-tool.py
+    (Bug #27153)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Aug 2012 15:18:30 +0200
+
 univention-samba4 (2.0.3-2) unstable; urgency=low
 
   * fix source path for install (Bug #24703)
