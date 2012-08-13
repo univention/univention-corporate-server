@@ -51,7 +51,7 @@ fi
 LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
 domaindn="DC=${kerberos_realm//./,DC=}"	# that's what /usr/share/pyshared/samba/provision.py uses
 if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn: $domaindn"; then
-	echo "Samba4 backend database not available yet, exiting joinscript 98nivention-samba4-dns."
+	echo "Samba4 backend database not available yet, exiting joinscript 98univention-samba4-dns."
 	exit 1
 fi
 

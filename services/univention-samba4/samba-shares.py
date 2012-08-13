@@ -194,7 +194,7 @@ def handler(dn, new, old, command):
 				print >>fp, 'vfs objects = %s' % ' '.join(vfs_objects)
 
 			for attr, var in mapping:
-				if not new.has_key(attr):
+				if not attr in new:
 					continue
 				if attr == 'univentionShareSambaVFSObjects':
 					continue
@@ -216,7 +216,7 @@ def handler(dn, new, old, command):
 						univention.debug.LISTENER, univention.debug.ERROR,
 						"%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
 
-			if new.has_key('univentionShareSambaCustomSetting') and new['univentionShareSambaCustomSetting']:
+			if new.get('univentionShareSambaCustomSetting'):
 				for setting in new['univentionShareSambaCustomSetting']:
 					print >>fp, setting
 		finally:
