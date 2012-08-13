@@ -50,7 +50,7 @@ define([
 ], function(lang, array, window, query, request, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
-	// the Widget needs umc.tools), we define umc/dialog as an empty object and
+	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitely
 	var dialog = {
 		login: function() {
@@ -89,7 +89,7 @@ define([
 			// summary:
 			//		Sets/gets status information. With no parameters given,
 			//		returns a dict with status information (username, domainname,
-			//		hostname, isSetUpGUI, ...). 
+			//		hostname, isSetUpGUI, ...).
 			//		With one parameter given, returns the value of the specified key.
 			//		With two parameters, sets the value of the specified key.
 			//		Also contains the properties given
@@ -203,7 +203,7 @@ define([
 			return {
 				finishedDeferred: finishedDeferred,
 
-				// url to which 
+				// url to which
 				url: url,
 
 				// JSON data that is being sent
@@ -227,7 +227,7 @@ define([
 				// will be shown.
 				messageInterval: lang.getObject('messageInterval', false, opts) || 120,
 
-				// message that is displayed to the user in case the 
+				// message that is displayed to the user in case the
 				message: lang.getObject('message', false, opts) || _('So far, the connection to the server could not be established after {time} seconds. This can be a normal behavior. In any case, the process will continue to establish the connection.'),
 
 				// set to true, the _PollingHandler will not try a login
@@ -298,7 +298,7 @@ define([
 						// error case
 						var elapsedTime = ((new Date()).getTime() - this._lastRequestTime) / 1000.0;
 						if (elapsedTime < this.failureInterval) {
-							// the server could not been reached within a short time interval 
+							// the server could not been reached within a short time interval
 							// -> that is an error
 							++this._nErrors;
 							if (this._nErrors == 1) {
@@ -875,7 +875,7 @@ define([
 			// only one parameter, type: Object -> set all parameters as specified in the object
 			if (1 == arguments.length) {
 				// only consider keys that are defined in defaultPreferences
-				tools.forIn(this._defaultPreferences, lang.hitch(this, function(key, val) {
+				tools.forIn(this._defaultPreferences, lang.hitch(this, function(key) {
 					if (key in param1) {
 						this._userPreferences[key] = param1[key];
 					}
@@ -984,7 +984,6 @@ define([
 		inheritsFrom: function(/*Object*/ _o, /*String*/ c) {
 			// summary:
 			//		Returns true in case object _o inherits from class c.
-			var o = _o;
 			var bases = lang.getObject('_meta.bases', false, _o.constructor);
 			if (!bases) {
 				// no dojo object
