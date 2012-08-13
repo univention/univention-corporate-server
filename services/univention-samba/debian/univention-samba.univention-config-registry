@@ -195,6 +195,11 @@ File: etc/logrotate.d/univention-samba
 Variables: logrotate/.*
 
 Type: file
+File: etc/logrotate.d/winbind
+Variables: windows/domain
+Variables: logrotate/.*
+
+Type: file
 File: etc/security/packetfilter.d/90_univention-samba.sh
 User: root
 Group: root
