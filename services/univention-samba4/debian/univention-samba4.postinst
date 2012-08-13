@@ -235,6 +235,7 @@ secret: $machine_secret
 					samba-tool dbcheck --cross-ncs --fix --yes
 				fi
 			fi
+			univention-config-registry set server/password/change=yes
 		fi
 
 	fi

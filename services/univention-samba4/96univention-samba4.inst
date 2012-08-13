@@ -294,8 +294,7 @@ fi
 
 if [ "$samba4_role" = 'DC' ]; then
 
-	univention-config-registry set server/password/change=no \
-							samba/share/netlogon=yes
+	univention-config-registry set samba/share/netlogon=yes
 
 	## check if we there already is a **domaincontroller** providing the service "Samba 4"
 	samba4servicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
@@ -473,8 +472,6 @@ elif [ "$samba4_role" = "RODC" ]; then
 		echo "to complete the domain join."
 		exit 1
 	fi
-
-	univention-config-registry set server/password/change=no
 
 	/etc/init.d/samba4 stop
 

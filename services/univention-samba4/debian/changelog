@@ -1,3 +1,9 @@
+univention-samba4 (2.0.3-1) unstable; urgency=low
+
+  * activate password rotation for Samba4 DCs (Bug #24703)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Aug 2012 13:52:12 +0200
+
 univention-samba4 (2.0.2-3) unstable; urgency=low
 
   * fix retrival of univentionShareHost attribute (Bug #27253)
