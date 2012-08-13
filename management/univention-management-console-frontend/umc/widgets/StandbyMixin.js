@@ -26,96 +26,97 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define console */
 
-dojo.provide("umc.widgets.StandbyMixin");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/dom-construct",
+	"dijit/_WidgetBase",
+	"dojox/widget/Standby"
+], function(declare, lang, construct, _WidgetBase, Standby) {
+	return declare("umc.widgets.StandbyMixin", _WidgetBase, {
+		// summary:
+		//		Mixin class to make a widget "standby-able"
 
-dojo.require("dojox.widget.Standby");
-dojo.require("dijit._Widget");
+		_standbyWidget: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit._Widget, {
-	// summary:
-	//		Mixin class to make a widget "standby-able"
+		standbyOpacity: 0.75,
 
-	_standbyWidget: null,
+		_lastContent: null,
 
-	standbyOpacity: 0.75,
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	_lastContent: null,
+			// create a standby widget targeted at this module
+			this._standbyWidget = new Standby({
+				target: this.domNode,
+				duration: 200,
+				//zIndex: 99999999,
+				opacity: this.standbyOpacity,
+				color: '#FFF'
+			});
+			this.domNode.appendChild(this._standbyWidget.domNode);
+			this._standbyWidget.startup();
+		},
 
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		// create a standby widget targeted at this module
-		this._standbyWidget = new dojox.widget.Standby({
-			target: this.domNode,
-			duration: 200,
-			//zIndex: 99999999,
-			opacity: this.standbyOpacity,
-			color: '#FFF'
-		});
-		this.domNode.appendChild(this._standbyWidget.domNode);
-		this._standbyWidget.startup();
-	},
-
-	_cleanUp: function() {
-		if (this._lastContent && this._lastContent.declaredClass && this._lastContent.domNode) {
-			// we got a widget as last element, remove it from the DOM
-			try {
-				this._standbyWidget._textNode.removeChild(this._lastContent.domNode);
+		_cleanUp: function() {
+			if (this._lastContent && this._lastContent.declaredClass && this._lastContent.domNode) {
+				// we got a widget as last element, remove it from the DOM
+				try {
+					this._standbyWidget._textNode.removeChild(this._lastContent.domNode);
+				}
+				catch(e) {
+					console.log('Could remove standby widget from DOM:', e);
+				}
+				this._lastContent = null;
 			}
-			catch(e) {
-				console.log('Could remove standby widget from DOM:', e);
-			}
-			this._lastContent = null;
-		}
-	},
+		},
 
-	_updateContent: function(content) {
-		// type check of the content
-		if (typeof content == "string") {
-			// string
-			this._cleanUp();
-			this._standbyWidget.set('text', content);
-			this._standbyWidget.set('centerIndicator', 'text');
-		}
-		else if (typeof content == "object" && content.declaredClass && content.domNode) {
-			// widget
-			if (!this._lastContent || this._lastContent != content) {
-				// we only need to add a new widget to the DOM
+		_updateContent: function(content) {
+			// type check of the content
+			if (typeof content == "string") {
+				// string
 				this._cleanUp();
-				this._standbyWidget.set('text', '');
+				this._standbyWidget.set('text', content);
 				this._standbyWidget.set('centerIndicator', 'text');
+			}
+			else if (typeof content == "object" && content.declaredClass && content.domNode) {
+				// widget
+				if (!this._lastContent || this._lastContent != content) {
+					// we only need to add a new widget to the DOM
+					this._cleanUp();
+					this._standbyWidget.set('text', '');
+					this._standbyWidget.set('centerIndicator', 'text');
 
-				// hook the given widget to the text node
-				/*REQUIRE:"dojo/dom-construct"*/ construct.place(content.domNode, this._standbyWidget._textNode);
-				content.startup();
+					// hook the given widget to the text node
+					construct.place(content.domNode, this._standbyWidget._textNode);
+					content.startup();
+				}
+			}
+			else {
+				// set default image
+				this._cleanUp();
+				this._standbyWidget.set('centerIndicator', 'image');
+			}
+
+			// cache the widget
+			this._lastContent = content;
+		},
+
+		standby: function(/*Boolean*/ doStandby, /*mixed?*/ content) {
+			if (doStandby) {
+				// update the content of the standby widget
+				this._updateContent(content);
+
+				// show standby widget
+				this._standbyWidget.show();
+			}
+			else {
+				// hide standby widget
+				this._standbyWidget.hide();
 			}
 		}
-		else {
-			// set default image
-			this._cleanUp();
-			this._standbyWidget.set('centerIndicator', 'image');
-		}
-
-		// cache the widget
-		this._lastContent = content;
-	},
-
-	standby: function(/*Boolean*/ doStandby, /*mixed?*/ content) {
-		if (doStandby) {
-			// update the content of the standby widget
-			this._updateContent(content);
-
-			// show standby widget
-			this._standbyWidget.show();
-		}
-		else {
-			// hide standby widget
-			this._standbyWidget.hide();
-		}
-	}
+	});
 });
-
-
 

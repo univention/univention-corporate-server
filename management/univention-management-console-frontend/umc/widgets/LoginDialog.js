@@ -48,8 +48,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/app"
 ], function(declare, lang, array, win, aspect, on, dom, query, attr, domClass, Dialog, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
-
-	return declare([ StandbyMixin ], {
+	return declare("umc.widgets.LoginDialog", StandbyMixin, {
 		// our own variables
 		_connections: null,
 		_iframe: null,

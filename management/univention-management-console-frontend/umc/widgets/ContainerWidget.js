@@ -34,7 +34,7 @@ define([
 	"dijit/_WidgetBase",
 	"dijit/_Container"
 ], function(declare, style, _WidgetBase, _Container) {
-	return declare([_WidgetBase, _Container], {
+	return declare("umc.widgets.ContainerWidget", [_WidgetBase, _Container], {
 		// description:
 		//		Combination of Widget and Container class.
 		style: '',

@@ -33,7 +33,7 @@ define([
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin"
 ], function(declare, _WidgetBase, _TemplatedMixin) {
-	return declare([_WidgetBase, _TemplatedMixin], {
+	return declare("umc.widgets.Text", [_WidgetBase, _TemplatedMixin], {
 		// summary:
 		//		Simple widget that displays a given label, e.g., some text to
 		//		be rendered in a form. Can also render HTML code.

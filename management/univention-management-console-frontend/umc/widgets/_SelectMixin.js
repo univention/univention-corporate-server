@@ -26,319 +26,285 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console */
+/*global define console*/
 
-dojo.provide("umc.widgets._SelectMixin");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/Deferred",
+	"dojo/when",
+	"dojo/on",
+	"dojo/json",
+	"dojo/Stateful",
+	// TODO: should use dojo/store/
+	"dojo/data/ItemFileWriteStore",
+	"umc/tools"
+], function(declare, lang, array, Deferred, when, on, json, Stateful, ItemFileWriteStore, tools) {
+	return declare("umc.widgets._SelectMixin", Stateful, {
+		// umcpCommand:
+		//		Reference to the umcpCommand the widget should use.
+		//		In order to make the widget send information such as module flavor
+		//		etc., it can be necessary to specify a module specific umcpCommand
+		//		method.
+		umcpCommand: null,
 
-dojo.require("dojo.data.ItemFileWriteStore");
-dojo.require("dojo.Stateful");
-dojo.require("tools");
+		// dynamicValues: String|Function
+		//		Either an UMCP command to query data from or a javascript function.
+		//		The javascript function may return an array or a Deferred object.
+		//		The format is in either case expected to have the same format as for
+		//		staticValues. Dynamic values may be mixed with staticValues.
+		dynamicValues: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dojo.Stateful, {
-	// umcpCommand:
-	//		Reference to the umcpCommand the widget should use.
-	//		In order to make the widget send information such as module flavor
-	//		etc., it can be necessary to specify a module specific umcpCommand
-	//		method.
-	umcpCommand: null,
+		// dynamicOptions: Object?|Function?
+		//		Reference to a dictionary containing options that are passed over to
+		//		the UMCP command specified by `dynamicValues`. Can be a function that
+		//		is expected to return a dictionary, it is called with a dict of all
+		//		values of the widget's dependencies.
+		dynamicOptions: null,
 
-	// dynamicValues: String|Function
-	//		Either an UMCP command to query data from or a javascript function.
-	//		The javascript function may return an array or a /*REQUIRE:"dojo/Deferred"*/ Deferred object.
-	//		The format is in either case expected to have the same format as for
-	//		staticValues. Dynamic values may be mixed with staticValues.
-	dynamicValues: null,
+		// sortDynamicValues: Boolean
+		//		Controls whether dynamic values are sorted automatically.
+		sortDynamicValues: true,
 
-	// dynamicOptions: Object?|Function?
-	//		Reference to a dictionary containing options that are passed over to
-	//		the UMCP command specified by `dynamicValues`. Can be a function that
-	//		is expected to return a dictionary, it is called with a dict of all
-	//		values of the widget's dependencies.
-	dynamicOptions: null,
+		// staticValues: Object[]
+		//		Array of id/label objects containing predefined values, e.g.
+		//		[ { id: 'de', label: 'German' }, { id: 'en', label: 'English' } ].
+		//		Can be mixed with dynamicValues with the predefined values being
+		//		displayed first. May also be only an array with strings (i.e., id==label).
+		staticValues: [],
 
-	// sortDynamicValues: Boolean
-	//		Controls whether dynamic values are sorted automatically.
-	sortDynamicValues: true,
+		// sortStaticValues: Boolean
+		//		Controls whether static values are sorted automatically.
+		sortStaticValues: false,
 
-	// staticValues: Object[]
-	//		Array of id/label objects containing predefined values, e.g.
-	//		[ { id: 'de', label: 'German' }, { id: 'en', label: 'English' } ].
-	//		Can be mixed with dynamicValues with the predefined values being
-	//		displayed first. May also be only an array with strings (i.e., id==label).
-	staticValues: [],
+		// depends: String?|String[]?
+		//		Specifies that values need to be loaded dynamically depending on
+		//		other form fields.
+		depends: null,
 
-	// sortStaticValues: Boolean
-	//		Controls whether static values are sorted automatically.
-	sortStaticValues: false,
+		// searchAttr needs to specified, otherwise the values from the store will not be displayed.
+		searchAttr: 'label',
 
-	// depends: String?|String[]?
-	//		Specifies that values need to be loaded dynamically depending on
-	//		other form fields.
-	depends: null,
+		store: null,
 
-	// searchAttr needs to specified, otherwise the values from the store will not be displayed.
-	searchAttr: 'label',
+		value: null,
 
-	store: null,
+		// internal variable to keep track of which ids have already been added
+		_ids: {},
 
-	value: null,
+		_firstValueInList: null,
 
-	// internal variable to keep track of which ids have already been added
-	_ids: {},
+		_initialValue: null,
 
-	_firstValueInList: null,
+		//_isAutoValue: false,
 
-	_initialValue: null,
+		//_isInitialized: false,
 
-	//_isAutoValue: false,
+		_valuesLoaded: false,
 
-	//_isInitialized: false,
+		_deferredOrValues: null,
 
-	_valuesLoaded: false,
+		_createStore: function() {
+			return new ItemFileWriteStore({
+				data: {
+					identifier: 'id',
+					label: 'label',
+					items: []
+				},
+				clearOnClose: true
+			});
+		},
 
-	_deferredOrValues: null,
+		constructor: function() {
+			// The store needs to be available already at construction time, otherwise an
+			// error will be thrown. We need to define it here, in order to create a new
+			// store for each instance.a
+			this.umcpCommand = tools.umcpCommand;
+			this.store = this._createStore();
+		},
 
-	_createStore: function() {
-		return new dojo.data.ItemFileWriteStore({
-			data: {
-				identifier: 'id',
-				label: 'label',
-				items: []
-			},
-			clearOnClose: true
-		});
-	},
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	constructor: function() {
-		// The store needs to be available already at construction time, otherwise an
-		// error will be thrown. We need to define it here, in order to create a new
-		// store for each instance.a
-		this.umcpCommand = tools.umcpCommand;
-		this.store = this._createStore();
-	},
+			this._saveInitialValue();
+		},
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+		postCreate: function() {
+			this.inherited(arguments);
 
-		this._saveInitialValue();
-	},
-
-	postCreate: function() {
-		this.inherited(arguments);
-
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onChange', function(newVal) {
-			if (this.focused) {
-				// the user has entered a value, use this value as initial value
-				this._saveInitialValue();
-			}
-		});
-	},
-
-	startup: function() {
-		this.inherited(arguments);
-
-		this._loadValues();
-	},
-
-	item2object: function( item ) {
-		// summary:
-		//		Converts a store item to a "normal" dictionary
-		var entry = {};
-
-		tools.forIn( item, function( attr, value ) {
-			// make sure the following default internal store item properties are ignored
-			// (as defined in dojo.data.ItemFileReadStore)
-			var ignore = false;
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(['_storeRefPropName', '_itemNumPropName', '_rootItemPropName', '_reverseRefMap'], function(ikey) {
-				if (this.store[ikey] == attr) {
-					ignore = true;
-					return false;
-				}
-			}, this);
-			if (ignore) {
-				return true;
-			}
-
-			if (  value  instanceof Array && value.length == 1 ) {
-				entry[ attr ] = value[ 0 ];
-			} else {
-				entry[ attr ] = null;
-			}
-		}, this );
-
-		return entry;
-	},
-
-	getAllItems: function() {
-		// summary:
-		//		Converts all store items to "normal" dictionaries
-		return /*REQUIRE:"dojo/_base/array"*/ array.map( this.store._getItemsArray(), function ( item ) {
-			return this.item2object( item );
-		}, this );
-	},
-
-	getNumItems: function() {
-		// summary:
-		//		Returns number of items in combobox
-		return this.store._getItemsArray().length;
-	},
-
-	_setValueAttr: function(newVal) {
-		this.inherited(arguments);
-
-		// store the value as intial value after the widget has been intialized
-		//if (this._isInitialized) {
-		//	this._saveInitialValue();
-		//}
-	},
-
-	_saveInitialValue: function() {
-		// rember the intial value since it will be overridden by the dojo
-		// methods since at initialization time the store is empty
-		try {
-			this._initialValue = this.get('value');
-		}
-		catch (error) {
-			// failed to access 'value', probably too early in the widget construction 
-			// (e.g., DOM elements are not ready yet)
-			this._initialValue = this.value;
-		}
-	},
-
-	setInitialValue: function(value, setValue) {
-		// summary:
-		//		Forces to set this given initial value.
-		setValue = undefined === setValue ? true : setValue;
-		this._initialValue = value;
-		if (setValue) {
-			this.set('value', value);
-		}
-	},
-
-	_setCustomValue: function() {
-		if (null === this._initialValue || undefined === this._initialValue) {
-			// no initial value is given, use the first value in the list
-			this.set('value', this._firstValueInList);
-			this._resetValue = this._firstValueInList;
-		}
-		else {
-			// otherwise use the initial value
-			this.set('value', this._initialValue);
-			this._resetValue = this._initialValue;
-		}
-	},
-
-	_clearValues: function() {
-		this.store.fetch( { 
-			onComplete: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( items ) {
-				/*REQUIRE:"dojo/_base/array"*/ array.forEach( items, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
-					this.store.deleteItem( item );
-				} ) )
-			} )
-		} );
-		this.store.save();
-
-		//if (this._isAutoValue) {
-		//	// reset the _initialValue in case we chose it automatically
-		//	this._initialValue = null;
-		//}
-		//this._isAutoValue = false;
-		this._firstValueInList = null;
-		this.set('value', this._initialValue);
-	},
-
-	_convertItems: function(_items) {
-		// unify the items into the format:
-		//   [{
-		//       id: '...',
-		//       label: '...'
-		//   }, ... ]
-		var items = [];
-
-		if (_items instanceof Array) {
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(_items, function(iitem) {
-				// string
-				if (typeof iitem == "string") {
-					items.push({
-						id: iitem,
-						label: iitem
-					});
-				}
-				// array of dicts
-				else if (typeof iitem == "object") {
-					if (!('id' in iitem && 'label' in iitem)) {
-						console.log("WARNING: umc.widgets._SelectMixin: One of the entries specified does not have the properties 'id' and 'label', ignoring item: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(iitem));
-					}
-					else {
-						items.push(iitem);
-					}
-				}
-				// unknown format
-				else {
-					console.log("WARNING: umc.widgets._SelectMixin: Given items are in incorrect format, ignoring item: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(_items));
+			this.watch('value', function(attr, oldVal, newVal) {
+				if (this.focused) {
+					// the user has entered a value, use this value as initial value
+					this._saveInitialValue();
 				}
 			});
-		}
+		},
 
-		return items;
-	},
+		startup: function() {
+			this.inherited(arguments);
 
-	_setStaticValues: function() {
-		// convert items to the correct format
-		var staticValues = this._convertItems(this.staticValues);
+			this._loadValues();
+		},
 
-		if (this.sortStaticValues) {
-			// sort items according to their displayed name
-			staticValues.sort(tools.cmpObjects({
-				attribute: 'label',
-				ignoreCase: true
-			}));
-		}
+		item2object: function( item ) {
+			// summary:
+			//		Converts a store item to a "normal" dictionary
+			var entry = {};
 
-		// add all static values to the store
-		this._ids = {};
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(staticValues, function(iitem) {
-			// store the first value of the list
-			if (null === this._firstValueInList) {
-				this._firstValueInList = iitem.id;
+			tools.forIn( item, function( attr, value ) {
+				// make sure the following default internal store item properties are ignored
+				// (as defined in ItemFileReadStore)
+				var ignore = false;
+				array.forEach(['_storeRefPropName', '_itemNumPropName', '_rootItemPropName', '_reverseRefMap'], function(ikey) {
+					if (this.store[ikey] == attr) {
+						ignore = true;
+						return false;
+					}
+				}, this);
+				if (ignore) {
+					return true;
+				}
+
+				if (  value  instanceof Array && value.length == 1 ) {
+					entry[ attr ] = value[ 0 ];
+				} else {
+					entry[ attr ] = null;
+				}
+			}, this );
+
+			return entry;
+		},
+
+		getAllItems: function() {
+			// summary:
+			//		Converts all store items to "normal" dictionaries
+			return array.map( this.store._getItemsArray(), function ( item ) {
+				return this.item2object( item );
+			}, this );
+		},
+
+		getNumItems: function() {
+			// summary:
+			//		Returns number of items in combobox
+			return this.store._getItemsArray().length;
+		},
+
+		_setValueAttr: function(newVal) {
+			this.inherited(arguments);
+
+			// store the value as intial value after the widget has been intialized
+			//if (this._isInitialized) {
+			//	this._saveInitialValue();
+			//}
+		},
+
+		_saveInitialValue: function() {
+			// rember the intial value since it will be overridden by the dojo
+			// methods since at initialization time the store is empty
+			try {
+				this._initialValue = this.get('value');
 			}
+			catch (error) {
+				// failed to access 'value', probably too early in the widget construction 
+				// (e.g., DOM elements are not ready yet)
+				this._initialValue = this.value;
+			}
+		},
 
-			// add item to store
-			if (iitem.id in this._ids) {
-				console.log("WARNING: umc.widgets._SelectMixin: Entry already previously defined, ignoring: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(iitem));
+		setInitialValue: function(value, setValue) {
+			// summary:
+			//		Forces to set this given initial value.
+			setValue = undefined === setValue ? true : setValue;
+			this._initialValue = value;
+			if (setValue) {
+				this.set('value', value);
+			}
+		},
+
+		_setCustomValue: function() {
+			if (null === this._initialValue || undefined === this._initialValue) {
+				// no initial value is given, use the first value in the list
+				this.set('value', this._firstValueInList);
+				this._resetValue = this._firstValueInList;
 			}
 			else {
-				this.store.newItem(iitem);
-
-				// cache the values in a dict
-				this._ids[iitem.id] = iitem.label;
+				// otherwise use the initial value
+				this.set('value', this._initialValue);
+				this._resetValue = this._initialValue;
 			}
-		}, this);
+		},
 
-		// save the store in order for the changes to take effect
-		this.store.save();
+		_clearValues: function() {
+			this.store.fetch( { 
+				onComplete: lang.hitch( this, function( items ) {
+					array.forEach( items, lang.hitch( this, function( item ) {
+						this.store.deleteItem( item );
+					} ) );
+				} )
+			} );
+			this.store.save();
 
-		// set the user specified value if we don't have dynamic values
-		if (!typeof this.dynamicValues == "string" || !this.dynamicValues) {
-			this._setCustomValue();
-		}
-	},
+			//if (this._isAutoValue) {
+			//	// reset the _initialValue in case we chose it automatically
+			//	this._initialValue = null;
+			//}
+			//this._isAutoValue = false;
+			this._firstValueInList = null;
+			this.set('value', this._initialValue);
+		},
 
-	_setDynamicValues: function(/*Object[]*/ values) {
-		// convert items to the correct format
-		var items = this._convertItems(values);
+		_convertItems: function(_items) {
+			// unify the items into the format:
+			//   [{
+			//       id: '...',
+			//       label: '...'
+			//   }, ... ]
+			var items = [];
 
-		if (this.sortDynamicValues) {
-			// sort items according to their displayed name
-			items.sort(tools.cmpObjects({
-				attribute: 'label',
-				ignoreCase: true
-			}));
-		}
+			if (_items instanceof Array) {
+				array.forEach(_items, function(iitem) {
+					// string
+					if (typeof iitem == "string") {
+						items.push({
+							id: iitem,
+							label: iitem
+						});
+					}
+					// array of dicts
+					else if (typeof iitem == "object") {
+						if (!('id' in iitem && 'label' in iitem)) {
+							console.log("WARNING: _SelectMixin: One of the entries specified does not have the properties 'id' and 'label', ignoring item: " + json.stringify(iitem));
+						}
+						else {
+							items.push(iitem);
+						}
+					}
+					// unknown format
+					else {
+						console.log("WARNING: _SelectMixin: Given items are in incorrect format, ignoring item: " + json.stringify(_items));
+					}
+				});
+			}
 
-		// add items to the store
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(items, function(iitem) {
-			if (iitem) {
+			return items;
+		},
+
+		_setStaticValues: function() {
+			// convert items to the correct format
+			var staticValues = this._convertItems(this.staticValues);
+
+			if (this.sortStaticValues) {
+				// sort items according to their displayed name
+				staticValues.sort(tools.cmpObjects({
+					attribute: 'label',
+					ignoreCase: true
+				}));
+			}
+
+			// add all static values to the store
+			this._ids = {};
+			array.forEach(staticValues, function(iitem) {
 				// store the first value of the list
 				if (null === this._firstValueInList) {
 					this._firstValueInList = iitem.id;
@@ -346,183 +312,224 @@ dojo.require("tools");
 
 				// add item to store
 				if (iitem.id in this._ids) {
-					console.log("WARNING: umc.widgets._SelectMixin: Entry already previously defined, ignoring: " + /*REQUIRE:"dojo/jsone"*/ json.stringify(iitem));
+					console.log("WARNING: _SelectMixin: Entry already previously defined, ignoring: " + json.stringify(iitem));
 				}
 				else {
 					this.store.newItem(iitem);
 
 					// cache the values in a dict
 					this._ids[iitem.id] = iitem.label;
+				}
+			}, this);
 
-					// set pre-selected item
-					if (iitem.preselected) {
-						this._initialValue = iitem.id;
+			// save the store in order for the changes to take effect
+			this.store.save();
+
+			// set the user specified value if we don't have dynamic values
+			if (typeof this.dynamicValues != "string" || !this.dynamicValues) {
+				this._setCustomValue();
+			}
+		},
+
+		_setDynamicValues: function(/*Object[]*/ values) {
+			// convert items to the correct format
+			var items = this._convertItems(values);
+
+			if (this.sortDynamicValues) {
+				// sort items according to their displayed name
+				items.sort(tools.cmpObjects({
+					attribute: 'label',
+					ignoreCase: true
+				}));
+			}
+
+			// add items to the store
+			array.forEach(items, function(iitem) {
+				if (iitem) {
+					// store the first value of the list
+					if (null === this._firstValueInList) {
+						this._firstValueInList = iitem.id;
+					}
+
+					// add item to store
+					if (iitem.id in this._ids) {
+						console.log("WARNING: _SelectMixin: Entry already previously defined, ignoring: " + json.stringify(iitem));
+					}
+					else {
+						this.store.newItem(iitem);
+
+						// cache the values in a dict
+						this._ids[iitem.id] = iitem.label;
+
+						// set pre-selected item
+						if (iitem.preselected) {
+							this._initialValue = iitem.id;
+						}
+					}
+				}
+			}, this);
+
+			// save the store in order for the changes to take effect and set the value
+			this.store.save();
+			this._setCustomValue();
+		},
+
+		_loadValues: function(/*Object?*/ _dependValues) {
+			this._valuesLoaded = true;
+
+			// unify `depends` property to be an array
+			var dependList = this.depends instanceof Array ? this.depends :
+				(this.depends && typeof this.depends == "string") ? [ this.depends ] : [];
+
+			// check whether all necessary values are specified
+			var params = {};
+			var nDepValues = 0;
+			if (dependList.length && typeof _dependValues == "object" && _dependValues) {
+				// check whether all necessary values are specified
+				for (var i = 0; i < dependList.length; ++i) {
+					if (_dependValues[dependList[i]]) {
+						params[dependList[i]] = _dependValues[dependList[i]];
+						++nDepValues;
 					}
 				}
 			}
-		}, this);
 
-		// save the store in order for the changes to take effect and set the value
-		this.store.save();
-		this._setCustomValue();
-	},
+			// only load dynamic values in case all dependencies are fullfilled
+			if (dependList.length != nDepValues) {
+				return;
+			}
 
-	_loadValues: function(/*Object?*/ _dependValues) {
-		this._valuesLoaded = true;
-
-		// unify `depends` property to be an array
-		var dependList = this.depends instanceof Array ? this.depends :
-			(this.depends && typeof this.depends == "string") ? [ this.depends ] : [];
-
-		// check whether all necessary values are specified
-		var params = {};
-		var nDepValues = 0;
-		if (dependList.length && typeof _dependValues == "object" && _dependValues) {
-			// check whether all necessary values are specified
-			for (var i = 0; i < dependList.length; ++i) {
-				if (_dependValues[dependList[i]]) {
-					params[dependList[i]] = _dependValues[dependList[i]];
-					++nDepValues;
+			// mixin additional options for the UMCP command
+			if (this.dynamicOptions) {
+				if (typeof this.dynamicOptions == "function") {
+					lang.mixin(params, this.dynamicOptions(params));
+				}
+				else if (typeof this.dynamicOptions == "object") {
+					lang.mixin(params, this.dynamicOptions);
 				}
 			}
-		}
 
-		// only load dynamic values in case all dependencies are fullfilled
-		if (dependList.length != nDepValues) {
-			return;
-		}
-
-		// mixin additional options for the UMCP command
-		if (this.dynamicOptions) {
-			if (typeof this.dynamicOptions == "function") {
-				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions(params));
+			// block concurrent events for value loading
+			if (this._deferredOrValues) {
+				// another request is pending
+				return;
 			}
-			else if (typeof this.dynamicOptions == "object") {
-				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
+
+			// get dynamic values
+			var func = tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
+			var deferredOrValues = func(params);
+			this._deferredOrValues = deferredOrValues;
+
+			// make sure we have an array or a Deferred object
+			if (deferredOrValues &&
+					(deferredOrValues instanceof Array ||
+					(typeof deferredOrValues == "object" && 'then' in deferredOrValues && 'cancel' in deferredOrValues))) {
+				this.onLoadDynamicValues();
+				when(deferredOrValues, lang.hitch(this, function(res) {
+					// callback handler
+					// update dynamic and static values
+					this._clearValues();
+					this._setStaticValues();
+					this._setDynamicValues(res);
+					this.onDynamicValuesLoaded(res);
+
+					// values have been loaded
+					this.onValuesLoaded(this.getAllItems());
+
+					// unblock value loading
+					this._deferredOrValues = null;
+				}), lang.hitch(this, function() {
+					// set only the static values
+					this._clearValues();
+					this._setStaticValues();
+
+					// error handler
+					this.onDynamicValuesLoaded([]);
+					this.onValuesLoaded(this.getAllItems());
+
+					// unblock value loading
+					this._deferredOrValues = null;
+				}));
 			}
-		}
-
-		// block concurrent events for value loading
-		if (this._deferredOrValues) {
-			// another request is pending
-			return;
-		}
-
-		// get dynamic values
-		var func = tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
-		var deferredOrValues = func(params);
-		this._deferredOrValues = deferredOrValues;
-
-		// make sure we have an array or a /*REQUIRE:"dojo/Deferred"*/ Deferred object
-		if (deferredOrValues &&
-				(deferredOrValues instanceof Array ||
-				(typeof deferredOrValues == "object" && 'then' in deferredOrValues && 'cancel' in deferredOrValues))) {
-			this.onLoadDynamicValues();
-			/*REQUIRE:"dojo/when"*/ when(deferredOrValues, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(res) {
-				// callback handler
-				// update dynamic and static values
+			else {
+				// set only the static values
 				this._clearValues();
 				this._setStaticValues();
-				this._setDynamicValues(res);
-				this.onDynamicValuesLoaded(res);
 
 				// values have been loaded
 				this.onValuesLoaded(this.getAllItems());
 
 				// unblock value loading
 				this._deferredOrValues = null;
-			}), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-				// set only the static values
-				this._clearValues();
-				this._setStaticValues();
+			}
+		},
 
-				// error handler
-				this.onDynamicValuesLoaded([]);
-				this.onValuesLoaded(this.getAllItems());
+		onLoadDynamicValues: function() {
+			// summary:
+			//		This event is triggered when a query is set to load the dynamic values (and
+			//		only the dynamic values).
+		},
 
-				// unblock value loading
-				this._deferredOrValues = null;
-			}));
+		onDynamicValuesLoaded: function(values) {
+			// summary:
+			//		This event is triggered when the dynamic values (and only the dynamic values)
+			//		have been loaded.
+			// values:
+			//		Array containing all dynamic values.
+		},
+
+		onValuesLoaded: function(values) {
+			// summary:
+			//		This event is triggered when all values (static and dynamic) have been loaded.
+			// values:
+			//		Array containing all dynamic and static values.
+
+			// if we can (data grid), perform a refresh
+			//if (typeof this._refresh == "function") {
+			//	this._refresh();
+			//}
+
+			// if the value is not set (undefined/null), automatically choose the first element in the list
+			if (null === this.get('value') || undefined === this.get('value')) {
+				this.set('value', this._firstValueInList);
+			}
+		},
+
+		// setter for staticValues
+		_setDynamicValuesAttr: function(newVals) {
+			this.dynamicValues = newVals;
+
+			// we only need to call _loadValues() if it has been called before
+			if (this._valuesLoaded) {
+				this._loadValues();
+			}
+		},
+
+		// setter for staticValues
+		_setDynamicOptionsAttr: function(newOpts) {
+			this.dynamicOptions = newOpts;
+
+			// we only need to call _loadValues() if it has been called before
+			if (this._valuesLoaded) {
+				this._loadValues();
+			}
+		},
+
+		// setter for staticValues
+		_setStaticValuesAttr: function(newVals) {
+			this.staticValues = newVals;
+
+			// we only need to call _loadValues() if it has been called before
+			if (this._valuesLoaded) {
+				this._loadValues();
+			}
+		},
+
+		reloadDynamicValues: function() {
+			if (this._valuesLoaded) {
+				this._loadValues();
+			}
 		}
-		else {
-			// set only the static values
-			this._clearValues();
-			this._setStaticValues();
-
-			// values have been loaded
-			this.onValuesLoaded(this.getAllItems());
-
-			// unblock value loading
-			this._deferredOrValues = null;
-		}
-	},
-
-	onLoadDynamicValues: function() {
-		// summary:
-		//		This event is triggered when a query is set to load the dynamic values (and
-		//		only the dynamic values).
-	},
-
-	onDynamicValuesLoaded: function(values) {
-		// summary:
-		//		This event is triggered when the dynamic values (and only the dynamic values)
-		//		have been loaded.
-		// values:
-		//		Array containing all dynamic values.
-	},
-
-	onValuesLoaded: function(values) {
-		// summary:
-		//		This event is triggered when all values (static and dynamic) have been loaded.
-		// values:
-		//		Array containing all dynamic and static values.
-
-		// if we can (data grid), perform a refresh
-		//if (typeof this._refresh == "function") {
-		//	this._refresh();
-		//}
-
-		// if the value is not set (undefined/null), automatically choose the first element in the list
-		if (null === this.get('value') || undefined === this.get('value')) {
-			this.set('value', this._firstValueInList);
-		}
-	},
-
-	// setter for staticValues
-	_setDynamicValuesAttr: function(newVals) {
-		this.dynamicValues = newVals;
-
-		// we only need to call _loadValues() if it has been called before
-		if (this._valuesLoaded) {
-			this._loadValues();
-		}
-	},
-
-	// setter for staticValues
-	_setDynamicOptionsAttr: function(newOpts) {
-		this.dynamicOptions = newOpts;
-
-		// we only need to call _loadValues() if it has been called before
-		if (this._valuesLoaded) {
-			this._loadValues();
-		}
-	},
-
-	// setter for staticValues
-	_setStaticValuesAttr: function(newVals) {
-		this.staticValues = newVals;
-
-		// we only need to call _loadValues() if it has been called before
-		if (this._valuesLoaded) {
-			this._loadValues();
-		}
-	},
-
-	reloadDynamicValues: function() {
-		if (this._valuesLoaded) {
-			this._loadValues();
-		}
-	}
+	});
 });
-
 

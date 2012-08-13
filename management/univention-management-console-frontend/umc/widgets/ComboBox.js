@@ -26,50 +26,50 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console */
+/*global define console */
 
-dojo.provide("umc.widgets.ComboBox");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/on",
+	"dijit/form/FilteringSelect",
+	"umc/widgets/_SelectMixin",
+	"umc/widgets/_FormWidgetMixin"
+], function(declare, lang, on, FilteringSelect, _SelectMixin, _FormWidgetMixin) {
+	return declare("umc.widgets.ComboBox", [ FilteringSelect , _SelectMixin, _FormWidgetMixin ], {
+		// the widget's class name as CSS class
+		'class': 'umcComboBox',
 
-dojo.require("dijit.form.FilteringSelect");
-dojo.require("dojo.data.ItemFileWriteStore");
-dojo.require("umc.widgets._SelectMixin");
-dojo.require("umc.widgets._FormWidgetMixin");
+		// search for the substring when typing
+		queryExpr: '*${0}*',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.FilteringSelect, umc.widgets._SelectMixin, umc.widgets._FormWidgetMixin ], {
-	// the widget's class name as CSS class
-	'class': 'umcComboBox',
+		// no auto completion, otherwise this gets weired in combination with the '*${0}*' search
+		autoComplete: false,
 
-	// search for the substring when typing
-	queryExpr: '*${0}*',
+		// autoHide: Boolean
+		//		If true, the ComboBox will only be visible if there it lists more than 
+		//		one element.
+		autoHide: false,
 
-	// no auto completion, otherwise this gets weired in combination with the '*${0}*' search
-	autoComplete: false,
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	// autoHide: Boolean
-	//		If true, the ComboBox will only be visible if there it lists more than 
-	//		one element.
-	autoHide: false,
-
-	postMixInProperties: function() {
-		this.inherited(arguments);
-
-		if (this.autoHide) {
-			// autoHide ist set, by default the widget will be hidden
-			this.visible = false;
-		}
-	},
-
-	postCreate: function() {
-		this.inherited(arguments);
-
-		var handle = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onValuesLoaded', function(values) {
 			if (this.autoHide) {
-				// show the widget in case there are more than 1 values 
-				this.set('visible', values.length > 1);
+				// autoHide ist set, by default the widget will be hidden
+				this.visible = false;
 			}
-			this.disconnect(handle);
-		});
-	}
-});
+		},
 
+		postCreate: function() {
+			this.inherited(arguments);
+
+			on.once(this, 'onValuesLoaded', function(values) {
+				if (this.autoHide) {
+					// show the widget in case there are more than 1 values 
+					this.set('visible', values.length > 1);
+				}
+			});
+		}
+	});
+});
 

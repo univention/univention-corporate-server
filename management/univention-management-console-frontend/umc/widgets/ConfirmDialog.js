@@ -26,179 +26,183 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console window */
+/*global define console*/
 
-dojo.provide("umc.widgets.ConfirmDialog");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/on",
+	"dojo/dom-class",
+	"dijit/Dialog",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/Text",
+	"umc/widgets/Text"
+], function(declare, lang, array, on, domClass, Dialog, ContainerWidget, Button, Text) {
+	return declare("umc/widgets/ConfirmDialog", [ Dialog ], {
+		// summary:
+		//		Class that provides a customizable confirmation dialog.
+		//		(For easier access see dialog.confirm().)
+		// description:
+		//		The dialog expects a title, a message, and a list of choices the
+		//		user can choose from. For each choice, a callback handler can be
+		//		specified.
+		// example:
+		// 		This is a simple basic example that demonstrates all provided features.
+		// |	var myDialog = new ConfirmDialog({
+		// |		title: 'Please confirm...',
+		// |		message: 'Please confirm <b>now</b>!',
+		// |		options: [{
+		// |		    label: 'Do nothing',
+		// |			name: 'nothing'
+		// |		}, {
+		// |		    label: 'Do something',
+		// |			name: 'something',
+		// |			callback: function() {
+		// |				// we may provide a callback handler directly
+		// |				// ... we need to close the dialog manually
+		// |				myDialog.close();
+		// |			}
+		// |		}]
+		// |	});
+		// |
+		// |	// instead of using the 'callback' property, we can also use on()
+		// |	on(myDialog, 'onConfirm', function(answer) {
+		// |		if ('something' == answer) {
+		// |			// do something
+		// |			// ...
+		// | 			// dialog will be closed by the callback function
+		// |		}
+		// |		else {
+		// |			// close the dialog for the choice 'nothing'
+		// |			myDialog.close();
+		// |		}
+		// |	});
 
-dojo.require("dijit.Dialog");
-dojo.require("dijit.layout.ContentPane");
-dojo.require("dojox.widget.Dialog");
-dojo.require("umc.widgets.ContainerWidget");
+		// message: String|Object
+		//		The message to be displayed, can also be a widget.
+		message: '',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit.Dialog, {
-	// summary:
-	//		Class that provides a customizable confirmation dialog.
-	//		(For easier access see dialog.confirm().)
-	// description:
-	//		The dialog expects a title, a message, and a list of choices the
-	//		user can choose from. For each choice, a callback handler can be
-	//		specified.
-	// example:
-	// 		This is a simple basic example that demonstrates all provided features.
-	// |	var myDialog = new umc.widgets.ConfirmDialog({
-	// |		title: 'Please confirm...',
-	// |		message: 'Please confirm <b>now</b>!',
-	// |		options: [{
-	// |		    label: 'Do nothing',
-	// |			name: 'nothing'
-	// |		}, {
-	// |		    label: 'Do something',
-	// |			name: 'something',
-	// |			callback: function() {
-	// |				// we may provide a callback handler directly
-	// |				// ... we need to close the dialog manually
-	// |				myDialog.close();
-	// |			}
-	// |		}]
-	// |	});
-	// |
-	// |	// instead of using the 'callback' property, we can also use /*REQUIRE:"dojo/on"*/ /*TODO*/ on()
-	// |	/*REQUIRE:"dojo/on"*/ /*TODO*/ on(myDialog, 'onConfirm', function(answer) {
-	// |		if ('something' == answer) {
-	// |			// do something
-	// |			// ...
-	// | 			// dialog will be closed by the callback function
-	// |		}
-	// |		else {
-	// |			// close the dialog for the choice 'nothing'
-	// |			myDialog.close();
-	// |		}
-	// |	});
+		// title: String
+		//		The title of the dialog window.
+		title: '',
 
-	// message: String|Object
-	//		The message to be displayed, can also be a widget.
-	message: '',
+		// options: Object[]
+		//		Array of objects with all available choices (=buttons). Each entry must have the
+		//		property 'label' and may have a 'callback', i.e., a user specified function
+		//		that is called. The optional property 'default' renders the corresponding
+		//		button in the style of a submit button. The callback will receive as parameter
+		//		the option chosen, i.e., an integer or - if specified - the corresponding
+		//		'name' property of the button.
+		options: [],
 
-	// title: String
-	//		The title of the dialog window.
-	title: '',
+		// the widget's class name as CSS class
+		'class': 'umcConfirmDialog',
 
-	// options: Object[]
-	//		Array of objects with all available choices (=buttons). Each entry must have the
-	//		property 'label' and may have a 'callback', i.e., a user specified function
-	//		that is called. The optional property 'default' renders the corresponding
-	//		button in the style of a submit button. The callback will receive as parameter
-	//		the option chosen, i.e., an integer or - if specified - the corresponding
-	//		'name' property of the button.
-	options: [],
+		// our own settings
+		closable: false,
 
-	// the widget's class name as CSS class
-	'class': 'umcConfirmDialog',
+		_container: null,
 
-	// our own settings
-	closable: false,
-
-	_container: null,
-
-	_setMessageAttr: function(message) {
-		this.message = message;
-		var childs = this._container.getChildren();
-		if (childs.length > 1) {
-			// a message/widget has been added previously... remove it
-			this._container.removeChild(childs[0]);
-			childs[0].destroyRecursive();
-		}
-
-		// add the new message
-		if (typeof this.message == "string") {
-			var widget = new umc.widgets.Text({
-				'class': 'umcConfirmDialogText',
-				content: message
-			});
-			this._container.addChild(widget, 0);
-		}
-		if (typeof this.message == "object" && 'declaredClass' in this.message) {
-			// message is a widget
-			/*REQUIRE:"dojo/dom-class"*/ domClass.add(this.message.domNode, 'umcConfirmDialogText');
-			this._container.addChild(this.message, 0);
-		}
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		// put buttons into separate container
-		var buttons = new umc.widgets.ContainerWidget({
-			style: 'text-align: center;',
-			'class': 'umcButtonRow'
-		});
-		var defaultButton = null;
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.options, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(ichoice, idx) {
-			var button = new umc.widgets.Button({
-				label: ichoice.label,
-				defaultButton: true === ichoice['default'],
-				onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(values) {
-					// the response is either a custom response or the choice (button) index
-					var response = ichoice.name || idx;
-
-					// send 'onClick' event
-					this.onConfirm(response);
-
-					// call custom callback if specified
-					if (ichoice.callback) {
-						ichoice.callback(response);
-					}
-				})
-			});
-			buttons.addChild(button);
-
-			// remember default button
-			if (ichoice['default']) {
-				defaultButton = button;
+		_setMessageAttr: function(message) {
+			this.message = message;
+			var childs = this._container.getChildren();
+			if (childs.length > 1) {
+				// a message/widget has been added previously... remove it
+				this._container.removeChild(childs[0]);
+				childs[0].destroyRecursive();
 			}
-		}));
 
-		// make sure that the default button is focused
-		defaultButton = defaultButton || buttons.getChildren()[0];
-		if (defaultButton) {
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onFocus', function() {
-				defaultButton.focus();
+			// add the new message
+			if (typeof this.message == "string") {
+				var widget = new Text({
+					'class': 'umcConfirmDialogText',
+					content: message
+				});
+				this._container.addChild(widget, 0);
+			}
+			if (typeof this.message == "object" && 'declaredClass' in this.message) {
+				// message is a widget
+				domClass.add(this.message.domNode, 'umcConfirmDialogText');
+				this._container.addChild(this.message, 0);
+			}
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// put buttons into separate container
+			var buttons = new ContainerWidget({
+				style: 'text-align: center;',
+				'class': 'umcButtonRow'
 			});
+			var defaultButton = null;
+			array.forEach(this.options, lang.hitch(this, function(ichoice, idx) {
+				var button = new Button({
+					label: ichoice.label,
+					defaultButton: true === ichoice['default'],
+					onClick: lang.hitch(this, function(values) {
+						// the response is either a custom response or the choice (button) index
+						var response = ichoice.name || idx;
+
+						// send 'onClick' event
+						this.onConfirm(response);
+
+						// call custom callback if specified
+						if (ichoice.callback) {
+							ichoice.callback(response);
+						}
+					})
+				});
+				buttons.addChild(button);
+
+				// remember default button
+				if (ichoice['default']) {
+					defaultButton = button;
+				}
+			}));
+
+			// make sure that the default button is focused
+			defaultButton = defaultButton || buttons.getChildren()[0];
+			if (defaultButton) {
+				this.on('focus', function() {
+					defaultButton.focus();
+				});
+			}
+
+			// put the layout together
+			this._container = new ContainerWidget({});
+			this._container.addChild(buttons);
+			this._container.startup();
+
+			// attach layout to dialog
+			this.set('content', this._container);
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+		},
+
+		close: function() {
+			// summary:
+			//		Hides the dialog and destroys it after the fade-out animation.
+			this.hide().then(lang.hitch(this, function() {
+				this.destroyRecursive();
+			}));
+		},
+
+		onConfirm: function(/*String*/ choice) {
+			// summary:
+			//		Event that is fired when the user confirms the dialog
+			//		either with true or false.
+			// choice:
+			//		The key of option that has been chosen.
+		},
+
+		destroy: function() {
+			this.inherited(arguments);
+			this._container.destroyRecursive();
 		}
-
-		// put the layout together
-		this._container = new umc.widgets.ContainerWidget({});
-		this._container.addChild(buttons);
-		this._container.startup();
-
-		// attach layout to dialog
-		this.set('content', this._container);
-	},
-
-	postCreate: function() {
-		this.inherited(arguments);
-	},
-
-	close: function() {
-		// summary:
-		//		Hides the dialog and destroys it after the fade-out animation.
-		this.hide().then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-			this.destroyRecursive();
-		}));
-	},
-
-	onConfirm: function(/*String*/ choice) {
-		// summary:
-		//		Event that is fired when the user confirms the dialog
-		//		either with true or false.
-		// choice:
-		//		The key of option that has been chosen.
-	},
-
-	destroy: function() {
-		this.inherited(arguments);
-		this._container.destroyRecursive();
-	}
+	});
 });
-
 

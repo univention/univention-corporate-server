@@ -26,7 +26,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console setTimeout */
+/*global define require console setTimeout */
+
 
 define([
 	"dojo/_base/lang",
@@ -43,12 +44,28 @@ define([
 	"dijit/TitlePane",
 	"dojox/timing/_base",
 	"dojox/html/styles",
-	"umc/dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, window, query, request, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, dialog, ContainerWidget, Text, _) {
+], function(lang, array, window, query, request, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
 
+	// in order to break circular dependencies (umc.tools needs a Widget and
+	// the Widget needs umc.tools), we define umc/dialog as an empty object and
+	// require it explicitely
+	var dialog = {
+		login: function() {
+			return new Deferred();
+		},
+		notify: function() {},
+		alert: function() {},
+		centerAlertDialog: function() {}
+	};
+	require(['umc/dialog'], function(_dialog) {
+		// register the real umc/dialog module in the local scope
+		dialog = _dialog;
+	});
+
+	// define umc/tools
 	var tools = {};
 	lang.mixin(tools, {
 		// default value for the session timeout
@@ -987,7 +1004,7 @@ define([
 		capitalize: function(/*String*/ str) {
 			// summary:
 			//		Return a string with the first letter in upper case.
-			if (!typeof str == "string") {
+			if (typeof str != "string") {
 				return str;
 			}
 			return str.slice(0, 1).toUpperCase() + str.slice(1);

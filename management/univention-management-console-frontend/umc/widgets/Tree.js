@@ -1,4 +1,4 @@
-/*global dojo dijit dojox umc console clearTimeout */
+/*global define console*/
 
 dojo.provide("umc.widgets.Tree");
 

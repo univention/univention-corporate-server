@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.8-1) unstable; urgency=low
+
+  * WIP: umc/dialog and umc/tools can be required now; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 13 Aug 2012 16:52:49 +0200
+
 univention-management-console-frontend (2.0.7-1) unstable; urgency=low
 
   * fixed a typo for iframe uploads (Bug #27850)

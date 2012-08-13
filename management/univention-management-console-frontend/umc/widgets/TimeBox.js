@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console */
+/*global define console*/
 
 dojo.provide("umc.widgets.TimeBox");
 

@@ -26,63 +26,65 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console */
+/*global define console */
 
-dojo.provide("umc.widgets.Toaster");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/window",
+	"dojo/dom-geometry",
+	"dojox/widget/Toaster"
+], function(declare, win, geometry, Toaster) {
+	// TODO: the css property box-shadow does not work since a clipping is set dynamically,
+	//		 this could be fixed...
+	return declare("umc.widgets.Toaster", Toaster, {
+		// summary:
+		//		Extension of Toaster in order to allow centered notification.
 
-dojo.require("dojox.widget.Toaster");
+		// positionDirection: String
+		//		Position from which message slides into screen, one of
+		//		["br-up", "br-left", "bl-up", "bl-right", "tr-down", "tr-left", "tl-down", "tl-right"]
+		positionDirection: "tc-down",
 
-// TODO: the css property box-shadow does not work since a clipping is set dynamically,
-//		 this could be fixed...
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dojox.widget.Toaster, {
-	// summary:
-	//		Extension of dojox.widget.Toaster in order to allow centered notification.
+		// positionDirectionTypes: Array
+		//		Possible values for positionDirection parameter
+		positionDirectionTypes: ["br-up", "br-left", "bc-up", "bl-up", "bl-right", "tr-down", "tr-left", "tc-down", "tl-down", "tl-right"],
 
-	// positionDirection: String
-	//		Position from which message slides into screen, one of
-	//		["br-up", "br-left", "bl-up", "bl-right", "tr-down", "tr-left", "tl-down", "tl-right"]
-	positionDirection: "tc-down",
+		// extend internal method for placing elements
+		_placeClip: function() {
+			//TODO: Could be made smarter for the case the clip is displayed somewhere 
+			//      else than the top center.
+			this.inherited(arguments);
 
-	// positionDirectionTypes: Array
-	//		Possible values for positionDirection parameter
-	positionDirectionTypes: ["br-up", "br-left", "bc-up", "bl-up", "bl-right", "tr-down", "tr-left", "tc-down", "tl-down", "tl-right"],
+			// get the viewport and node size
+			var view = win.getBox();
+			var nodeSize = geometry.getMarginBox(this.containerNode);
 
-	// extend internal method for placing elements
-	_placeClip: function() {
-		//TODO: Could be made smarter for the case the clip is displayed somewhere 
-		//      else than the top center.
-		this.inherited(arguments);
+			// set up the position for a centered toaster
+			var style = this.clipNode.style;
+			var pd = this.positionDirection;
+			if(pd.match(/^[tb]c-/)){
+				style.left = ((view.w - nodeSize.w) / 2 - view.l - 5)+"px";
+				style.height = (nodeSize.h+5)+"px";
+				style.width = (nodeSize.w+10)+"px";
+			}
 
-		// get the viewport and node size
-		var view = dojo.window.getBox();
-		var nodeSize = /*REQUIRE:"dojo/dom-geometry"*/ geometry.getMarginBox(this.containerNode);
+			// redo the clipping
+			style.clip = "rect(0px, " + (nodeSize.w + 10) + "px, " + (nodeSize.h + 5) + "px, -5px)";
+		},
 
-		// set up the position for a centered toaster
-		var style = this.clipNode.style;
-		var pd = this.positionDirection;
-		if(pd.match(/^[tb]c-/)){
-			style.left = ((view.w - nodeSize.w) / 2 - view.l - 5)+"px";
-			style.height = (nodeSize.h+5)+"px";
-			style.width = (nodeSize.w+10)+"px";
+		setContent: function(/*String|Function*/message, /*String*/messageType, /*int?*/duration) {
+			//TODO: Could be made smarter for the case the clip is displayed somewhere 
+			//      else than the top center.
+			this.inherited(arguments);
+
+			var style = this.containerNode.style;
+			style.left = '5px';
+			this.slideAnim.stop();
+			this.slideAnim.properties.left = 5;
+			this.slideAnim.play();
 		}
 
-		// redo the clipping
-		style.clip = "rect(0px, " + (nodeSize.w + 10) + "px, " + (nodeSize.h + 5) + "px, -5px)";
-	},
-
-	setContent: function(/*String|Function*/message, /*String*/messageType, /*int?*/duration) {
-		//TODO: Could be made smarter for the case the clip is displayed somewhere 
-		//      else than the top center.
-		this.inherited(arguments);
-
-		var style = this.containerNode.style;
-		style.left = '5px';
-		this.slideAnim.stop();
-		this.slideAnim.properties.left = 5;
-		this.slideAnim.play();
-	}
-
+	});
 });
-
 
 

@@ -26,47 +26,48 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console */
+/*global define console*/
 
-dojo.provide("umc.widgets.Button");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dijit/form/Button"
+], function(declare, lang, Button) {
+	return declare("umc.widgets.Button", [ Button ], {
+		// defaultButton: Boolean
+		//		If set to 'true', button will be rendered as default, i.e., submit button.
+		defaultButton: false,
 
-dojo.require("dijit.form.Button");
+		// callback: Function
+		//		Convenience property for onClick callback handler.
+		callback: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit.form.Button, {
-	// defaultButton: Boolean
-	//		If set to 'true', button will be rendered as default, i.e., submit button.
-	defaultButton: false,
+		// the widget's class name as CSS class
+		'class': 'umcButton',
 
-	// callback: Function
-	//		Convenience property for onClick callback handler.
-	callback: null,
+		type: 'button',
 
-	// the widget's class name as CSS class
-	'class': 'umcButton',
+		constructor: function(props) {
+			lang.mixin(this, props);
+			if (this.defaultButton) {
+				this['class'] = 'umcSubmitButton';
+			}
+		},
 
-	type: 'button',
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	constructor: function(props) {
-		/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this, props);
-		if (this.defaultButton) {
-			this['class'] = 'umcSubmitButton';
+			this.set('iconClass', this.iconClass);
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			if (typeof this.callback == "function") {
+				this.on('click', 'callback');
+			}
 		}
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		this.set('iconClass', this.iconClass);
-	},
-	
-	postCreate: function() {
-		this.inherited(arguments);
-
-		if (typeof this.callback == "function") {
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onClick', 'callback');
-		}
-	}
+	});
 });
-
 
 

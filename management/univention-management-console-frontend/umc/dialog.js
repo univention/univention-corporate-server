@@ -44,7 +44,6 @@ define([
 	"umc/tools",
 	"umc/i18n!umc/app"
 ], function(dojo, lang, array, on, json, Deferred, domClass, LoginDialog, Toaster, ConfirmDialog, Text, Button, tools, _) {
-
 	var dialog = {};
 	lang.mixin(dialog, {
 		_loginDialog: null, // internal reference to the login dialog
