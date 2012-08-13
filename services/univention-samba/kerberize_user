@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap, sys, getopt, subprocess, string, md5, struct
+import ldap, sys, getopt, subprocess, string, hashlib, struct
 import univention.config_registry
 import univention.debug
 univention.debug.init('/dev/null', 1, 1)
@@ -39,11 +39,11 @@ import univention.uldap
 from datetime import datetime
 from time import strftime
 
-baseConfig = univention.config_registry.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 lo = univention.uldap.getAdminConnection(decode_ignorelist = [ 'krb5Key' ])
-krbbase='ou=krb5,'+baseConfig['ldap/base']
-realm=baseConfig['kerberos/realm']
+krbbase='ou=krb5,'+configRegistry['ldap/base']
+realm=configRegistry['kerberos/realm']
 
 univentionPWExpiryInterval = 'univentionPWExpiryInterval'
 UNIXDAY=3600*24
@@ -70,7 +70,7 @@ def __getsmbPWHistory(newpassword, smbpwhistory, smbpwhlen):
 	#calculating hash. sored as a 32byte hex in sambePasswordHistory,
 	#syntax like that: [Salt][MD5(Salt+Hash)]
 	#	First 16bytes ^		^ last 16bytes.
-	pwdhash = md5.md5(salt + pwd).hexdigest().upper()
+	pwdhash = hashlib.md5(salt + pwd).hexdigest().upper()
 	smbpwhash = hexsalt+pwdhash
 	if len(pwlist) < smbpwhlen:
 		#just append
@@ -102,7 +102,7 @@ def getbytes(string):
 def getPolicyResult(dn, attr):
 	# print 'DEBUG: Starting System call univention-policy-result'
 	policy = {}
-	p1 = subprocess.Popen(['univention-policy-result', '-D', baseConfig['ldap/hostdn'], '-y', '/etc/machine.secret', dn], stdout=subprocess.PIPE)
+	p1 = subprocess.Popen(['univention-policy-result', '-D', configRegistry['ldap/hostdn'], '-y', '/etc/machine.secret', dn], stdout=subprocess.PIPE)
 	p2 = subprocess.Popen(['grep', '-A1', '^Attribute: '+attr], stdin=p1.stdout, stdout=subprocess.PIPE)
 	result = p2.communicate()[0]
 	# if univention-policy-result fails then quit and do not parse output
