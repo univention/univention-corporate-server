@@ -1,0 +1,3 @@
+# Copyright for internal tests
+0010-2: tests/test-univention-ipcalc.sh
+0010-2: tests/test-all.sh
