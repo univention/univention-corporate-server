@@ -91,11 +91,8 @@ End if
 dim attrlist
 dim clientdn
 ' get DN for CLIENTNAME
-dim dnlist: dnlist = RunExternalCmd(ldapsearchCmd & " -b " & ldapsearchBaseDN & " (uid=" & CLIENTNAME & "$) dn")
+dim dnlist: dnlist = RunExternalCmd(ldapsearchCmd & "  -b " & ldapsearchBaseDN & " (uid=" & CLIENTNAME & "$) -S dn")
 dnlist = replace(dnlist, vbCrLf & " ", "")
-if showDebug Then
-  Wscript.echo "client dn: " & dnlist
-end If
 ' extract requested attributes
 attrlist = GetAttribute(dnlist,"dn")
 ' if attribute list is empty then quit
@@ -111,15 +108,24 @@ clientdn = attrlist(0)
 ' get assigned printers for CLIENTNAME
 dim prnlist: prnlist = RunExternalCmd(ldapsearchCmd & " -b " & ldapsearchBaseDN & " ""(&(objectClass=univentionGroup)(uniqueMember=" & clientdn & ")(univentionAssignedPrinter=*))"" univentionAssignedPrinter")
 prnlist = replace(prnlist, vbCrLf & " ", "")
-if showDebug Then
-  Wscript.echo "Assigned printers: " & prnlist
-end If
+
+' sort the search-result, so that it is possible to define another standard-printer
+unsort_list=Split(prnlist, VBNewLine + VBNewLine)
+prnlist=""
+
+sort_list=bubblesort(unsort_list)
+for each sort_dn in sort_list
+        prnlist = prnlist & VBNewLine & CStr(sort_dn)
+next
+
 ' extract requested attributes
 attrlist = GetAttribute(prnlist,"univentionAssignedPrinter")
 ' if attribute list is empty then quit
 if UBound(attrlist) < 0 Then
   wscript.quit
 End if
+
+
 
 Dim defaultPrinterSet : defaultPrinterSet = 0
 
@@ -150,6 +156,19 @@ for each prndn in attrlist
 next
 
 wscript.quit
+
+function bubblesort(arrSortieren)
+   for i = 0 to ubound(arrSortieren)
+     for j = i + 1 to ubound(arrSortieren)
+       if LCase(arrSortieren(i)) > LCase(arrSortieren(j)) then
+	arrTemp = arrSortieren(i)
+        arrSortieren(i) = arrSortieren(j)
+	arrSortieren(j) = arrTemp
+       end if
+     next
+   next
+   bubblesort = arrSortieren
+end function
 
 
 sub RemoveAllPrinters()
