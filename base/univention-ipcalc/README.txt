@@ -24,8 +24,6 @@ base/univention-system-setup/usr/lib/univention-system-setup/scripts/net/11ipv6i
 management/univention-join/univention-server-join
     ipcalc network
     using udm to create ptr entry for host
-    BUG: this is the last user of the old tool
-    BUG: "--output network" is wrong for an /32 IPv4 subnet
 
 management/univention-ldap/10univention-ldap-server.inst
     ipcalc6 reverse

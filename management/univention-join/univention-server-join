@@ -298,10 +298,10 @@ create_entry () {
 
 if [ -n "$IP" ]; then
 	if [ -n "$NETMASK" ]; then
-		subnet=`univention-ipcalc --ip $IP --netmask $NETMASK --output network --calcdns`
+		subnet="$(univention-ipcalc6 --ip "$IP" --netmask "$NETMASK" --output reverse --calcdns)"
 	else
 		# Fallback
-		subnet=`univention-ipcalc --ip $IP --netmask $interfaces_eth0_netmask --output network --calcdns`
+		subnet="$(univention-ipcalc6 --ip "$IP" --netmask "$interfaces_eth0_netmask" --output reverse --calcdns)"
 	fi
 	log 0 "	Calculated subnet = $subnet"
 
