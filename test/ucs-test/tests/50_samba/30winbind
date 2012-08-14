@@ -16,8 +16,11 @@ PERSON="false"
 POSIX="true"
 
 NAME=`user_randomname`
-trap "user_remove $Name" INT TERM EXIT
+trap "user_remove $NAME" INT TERM EXIT
 user_create $NAME
+if [ "$(ucr get server/role)" == "memberserver" ]; then
+	NAME=`ucr get windows/domain`+$NAME
+fi
 
 wbinfo -t || \
 	{ fail_fast 1 "Checking shared secret failed"; }

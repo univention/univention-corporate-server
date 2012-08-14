@@ -1,3 +1,9 @@
+ucs-test (2.0.2-8) unstable; urgency=low
+
+  * 50_samba/30winbind now works for a memberserver (Bug #27654)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 14 Aug 2012 14:25:18 +0200
+
 ucs-test (2.0.2-7) unstable; urgency=low
 
   * 50_samba/35smbclient_auth is now executable as DC Backup (Bug #26807)
