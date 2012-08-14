@@ -1,6 +1,7 @@
 univention-join (5.0.1-1) unstable; urgency=low
 
   * Fix /32 network (Bug #28143)
+  * Fix copying password (Bug #19430)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 14 Aug 2012 07:27:43 +0200
 
@@ -64,7 +65,7 @@ univention-join (4.0.36-1) unstable; urgency=low
 
   * univention-server-join: Improved error checking (Bug #16214)
   * Replaced "if [ $? = 1 ]" with "if [ $? -gt 0 ]" in several
-    places so that all errors reported by udm are detected 
+    places so that all errors reported by udm are detected
   * Added such a check after "udm groups/group modify"
   * Replaced internal variable name HOSTNAME with NEWHOSTNAME
     because HOSTNAME is always set by default with the local
@@ -138,13 +139,13 @@ univention-join (4.0.28-2) unstable; urgency=low
 
 univention-join (4.0.28-1.1) unstable; urgency=low
 
-  * adapted captions and translations (Bug #24724) 
+  * adapted captions and translations (Bug #24724)
 
  -- Lukas Walter <walter@univention.de>  Mon, 21 Nov 2011 13:28:30 +0100
 
 univention-join (4.0.28-1) unstable; urgency=low
 
-  * removed join.log from logrotate config (Bug #18002) 
+  * removed join.log from logrotate config (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 09:41:58 +0100
 
@@ -156,7 +157,7 @@ univention-join (4.0.27-2) unstable; urgency=low
 
 univention-join (4.0.27-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:47:34 +0100
 
@@ -241,19 +242,19 @@ univention-join (4.0.19-1) unstable; urgency=low
 
 univention-join (4.0.18-3) unstable; urgency=low
 
-  * added more logrotate configurations (Bug #18002) 
+  * added more logrotate configurations (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:10:48 +0200
 
 univention-join (4.0.18-2) unstable; urgency=low
 
-  * added univention-install-config-registry to rules file (Bug #18002) 
+  * added univention-install-config-registry to rules file (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:56:20 +0200
 
 univention-join (4.0.18-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:47:10 +0200
 
@@ -470,7 +471,7 @@ univention-join (3.0.0-1) unstable; urgency=low
 
 univention-join (2.0.26-1) unstable; urgency=low
 
-  * fix for joinusers with long Bind-DN in univentio-join and
+  * fix for joinusers with long Bind-DN in univention-join and
     univention-run-join-scripts Bug #16210
 
  -- Arvid Requate <requate@univention.de>  Mon, 29 Mar 2010 13:22:12 +0200
@@ -582,7 +583,7 @@ univention-join (2.0.13-2) unstable; urgency=low
 
 univention-join (2.0.13-1) unstable; urgency=low
 
-  * chmod ldap-backup.secret to 640 (Bug: #15557) 
+  * chmod ldap-backup.secret to 640 (Bug: #15557)
 
  -- Felix Botner <botner@univention.de>  Fri, 25 Sep 2009 16:45:55 +0200
 
@@ -697,7 +698,7 @@ univention-join (2.0.0-1) unstable; urgency=low
     Also adapt univention-join to the new file location
   * Use univention-config-registry rather than univention-baseconfig in the scripts
   * Update copyright notes
-  
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Jun 2009 16:47:44 +0200
 
 univention-join (2.0.0-0) unstable; urgency=low

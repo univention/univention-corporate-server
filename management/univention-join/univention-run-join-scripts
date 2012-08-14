@@ -65,7 +65,6 @@ display_version() {
 	echo "univention-run-join-scripts @%@package_version@%@"
 }
 
-
 failed_message () {
 	echo ""
 	echo ""
@@ -74,9 +73,6 @@ failed_message () {
 	echo "**************************************************************************"
 	echo "* Message:  $@"
 	echo "**************************************************************************"
-	if [ -n "$REMOVE_PWD_FILE" -a -n "$DCPWD" ]; then
-		rm -f $DCPWD
-	fi
 	exit 1
 }
 
@@ -84,14 +80,12 @@ while [ $# -gt 0 ]
 do
 	case "$1" in
 		"-dcaccount")
-			shift
-			DCACCOUNT=$1
-			shift
+			DCACCOUNT="${2:?missing account name for bind}"
+			shift 2 || exit 2
 			;;
 		"-dcpwd")
-			shift
-			DCPWD=$1
-			shift
+			DCPWD="${2:?missing password file for bind}"
+			shift 2 || exit 2
 			;;
 		"--ask-pass")
 			ASK_PASS=1
@@ -99,7 +93,11 @@ do
 			;;
 		"--version")
 			display_version
-			exit 1
+			exit 0
+			;;
+		"--help"|"-h"|"-?")
+			display_help
+			exit 0
 			;;
 		*)
 			display_help
@@ -112,7 +110,7 @@ display_header
 
 if [ ! -e /var/univention-join/joined ]; then
     echo "The system hasn't been joined yet. univention-run-join-scripts can only be"
-    echo "used after an initial, successful join. You should run univention-join instead." 
+    echo "used after an initial, successful join. You should run univention-join instead."
     exit 1
 fi
 
@@ -125,8 +123,8 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 		echo -n "Enter DC Master Password: "
 		read -s password
 		DCPWD=$(mktemp)
+		trap "rm -f '$DCPWD'" EXIT
 		echo "$password" >>$DCPWD
-		REMOVE_PWD_FILE="1"
 		echo ""
 		echo ""
 	fi
@@ -148,10 +146,10 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 		ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
 			   "ldapsearch -x -LLL \'\(\&\(uid=$DCACCOUNT\)\(objectClass=person\)\)\' dn")
 		for i in $(echo "$ldap_result" | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p'); do
-			   if [ -n "$binddn" ]; then
-					   failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
-			   fi
-			   binddn="$i"
+			if [ -n "$binddn" ]; then
+				failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
+			fi
+			binddn="$i"
 		done
 
 	fi
@@ -168,48 +166,49 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 	fi
 fi
 
-echo >>/var/log/univention/join.log 2>&1
-echo "univention-run-join-scripts started"  >>/var/log/univention/join.log 2>&1
-date >>/var/log/univention/join.log 2>&1
-echo >>/var/log/univention/join.log 2>&1
-if test -e "/usr/lib/univention-install/"; then
-	for i in /usr/lib/univention-install/*.inst; do
-		echo -n "Running `basename $i` "
-		echo "RUNNING `basename $i` " >>/var/log/univention/join.log
+# Save STDOUT to fd3, redirect to logfile
+exec 3>&1 >>/var/log/univention/join.log 2>&1
+
+echo
+echo "univention-run-join-scripts started"
+date
+echo
+if [ -e "/usr/lib/univention-install/" ]
+then
+	for i in /usr/lib/univention-install/*.inst
+	do
+		echo -n "Running $(basename "$i")" >&3
+		echo "RUNNING $(basename "$i")"
 
 		if ! joinscript_extern_init "$i"; then
-			echo -e "\033[60Gskipped (invalid joinscript)"
-			echo "EXITCODE=invalid_joinscript" >>/var/log/univention/join.log 2>&1
+			echo -e "\033[60Gskipped (invalid joinscript)" >&3
+			echo "EXITCODE=invalid_joinscript"
 			continue
 		fi
 		if joinscript_check_already_executed; then
-			echo -e "\033[60Gskipped (already executed)"
-			echo "EXITCODE=already_executed" >>/var/log/univention/join.log 2>&1
+			echo -e "\033[60Gskipped (already executed)" >&3
+			echo "EXITCODE=already_executed"
 			continue
 		fi
 
 		if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
-			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
+			"$i" --binddn "$binddn" --bindpwd "$(cat "$DCPWD")"
 		else
-			$i >>/var/log/univention/join.log 2>&1
+			"$i"
 		fi
 		RET=$?
-		echo "EXITCODE=$RET" >>/var/log/univention/join.log 2>&1
+		echo "EXITCODE=$RET"
 		if [ $RET != 0 ]; then
-			echo -e "\033[60Gfailed (exitcode: $RET)"
+			echo -e "\033[60Gfailed (exitcode: $RET)" >&3
 		else
-			echo -e "\033[60Gdone"
+			echo -e "\033[60Gdone" >&3
 		fi
 	done
 fi
 
-if [ -n "$REMOVE_PWD_FILE" -a -n "$DCPWD" ]; then
-	rm -f $DCPWD
-fi
-
-echo >>/var/log/univention/join.log 2>&1
-date >>/var/log/univention/join.log 2>&1
-echo "univention-run-join-scripts finished"  >>/var/log/univention/join.log 2>&1
-echo >>/var/log/univention/join.log 2>&1
+echo
+date
+echo "univention-run-join-scripts finished"
+echo
 
 exit 0

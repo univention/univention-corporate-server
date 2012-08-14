@@ -32,16 +32,16 @@
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
-ADMINOPTIONS=""
+ADMINOPTIONS=()
 LOGFILE="/var/log/univention/server-join.log"
 if [ "$USER" != "root" ]; then
-    if [ "$HOME" ]; then
-	LOGFILE="$HOME/.univention-server-join.log"
-    else
-	USERTMP=`mktemp -d`
-	LOGFILE="$USERTMP/.univention-server-join.log"
-    fi
-    ADMINOPTIONS="$ADMINOPTIONS --logfile $LOGFILE"
+	if [ "$HOME" ]; then
+		LOGFILE="$HOME/.univention-server-join.log"
+	else
+		USERTMP="$(mktemp -d)"
+		LOGFILE="$USERTMP/.univention-server-join.log"
+	fi
+	ADMINOPTIONS+=(--logfile "$LOGFILE")
 fi
 
 display_help() {
@@ -84,9 +84,8 @@ display_version() {
 	echo "univention-server-join @%@package_version@%@"
 }
 
-
 log() {
-	if [ $1 = 1 ]; then
+	if [ "$1" = 1 ]; then
 		shift
 		echo "$@"				>>"$LOGFILE"
 		echo "$@"
@@ -107,63 +106,56 @@ while [ $# -gt 0 ]
 do
 	case "$1" in
 		"-role")
-			shift
-			ROLE=$1
-			shift
+			ROLE="${2:?missing role}"
+			shift 2 || exit 2
 			;;
 		"-hostname")
-			shift
-			NEWHOSTNAME=$1
-			shift
+			NEWHOSTNAME="${2:?missing host name}"
+			shift 2 || exit 2
 			;;
 		"-domainname")
-			shift
-			DOMAINNAME=$1
-			shift
+			DOMAINNAME="${2:?missing domain name}"
+			shift 2 || exit 2
 			;;
 		"-ip")
-			shift
-			IP=$1
-			shift
+			IP="${2:?missing IP address}"
+			shift 2 || exit 2
 			;;
 		"-netmask")
-			shift
-			NETMASK=$1
-			shift
+			NETMASK="${2:?missing netmask}"
+			shift 2 || exit 2
 			;;
 		"-certs")
-			shift
-			CERTS="$1"
-			shift
+			CERTS="${2:?missing certificate}"
+			shift 2 || exit 2
 			;;
 		"-mac")
-			shift
-			MAC="$1"
-			shift
+			MAC="${2:?missing ethernet MAC address}"
+			shift 2 || exit 2
 			;;
 		"-bindaccount")
-			shift
-			BINDACCOUNT="$1"
-			shift
+			BINDACCOUNT="${2:?missing account name for bind}"
+			shift 2 || exit 2
 			;;
 		"-binddn")
-			shift
-			BINDDN="$1"
-			shift
+			BINDDN="${2:?missing bind DN}"
+			shift 2 || exit 2
 			;;
 		"-bindpwfile")
-			shift
-			BINDPWFILE="$1"
-			shift
+			BINDPWFILE="${2:?missing password file for bind}"
+			shift 2 || exit 2
 			;;
 		"-position")
-			shift
-			POSITION="$1"
-			shift
+			POSITION="${2:?missing LDAP position}"
+			shift 2 || exit 2
 			;;
 		"--version")
 			display_version
-			exit 1
+			exit 0
+			;;
+		"--help"|"-h"|"-?")
+			display_help
+			exit 0
 			;;
 		*)
 			display_help
@@ -175,8 +167,9 @@ done
 # extend options for univention-directory-manager
 if [ -z "$BINDDN" ]; then
 	if [ -n "$BINDACCOUNT" ]; then
+		# FIXME: This not longer works with anonymous bind disabled!
 		BINDDN="$(ldapsearch -x "(&(uid=$BINDACCOUNT)(objectclass=posixAccount))" dn | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
-		log 0 "found BINDDN: $BINDDN" >>$LOGFILE
+		log 0 "found BINDDN: $BINDDN" >>"$LOGFILE"
 		if [ -z "$BINDDN" ]; then
 			log 1 "E: failed to get binddn for $BINDACCOUNT"
 			exit 1
@@ -184,11 +177,11 @@ if [ -z "$BINDDN" ]; then
 	fi
 fi
 
-if [ "$BINDDN" ]; then
-    ADMINOPTIONS="$ADMINOPTIONS --binddn $BINDDN"
+if [ -n "$BINDDN" ]; then
+	ADMINOPTIONS+=(--binddn "$BINDDN")
 fi
-if [ "$BINDPWFILE" ]; then
-    ADMINOPTIONS="$ADMINOPTIONS --bindpw `cat $BINDPWFILE`"
+if [ -n "$BINDPWFILE" ]; then
+	ADMINOPTIONS+=(--bindpw "$(<"$BINDPWFILE")")
 fi
 
 
@@ -210,90 +203,109 @@ fi
 
 display_header
 create_entry () {
-# $1 desc
-# $2 module
-# $3 position
-# $4 primaryGroup
-# $5 group
-	log 0 "Join $1"
+	local desc="${1?:missing description}"
+	local module="${2?:missing computer module}"
+	local position="${3?:missing LDAP position}"
+	local primaryGroup="$4"
+	local group="$5"
+	log 0 "Join $desc"
 
-	old_dn=`univention-directory-manager $2 list --filter name=$NEWHOSTNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep "DN: " | sed -e "s|.*DN: ||"`
+	old_dn="$(univention-directory-manager "$module" list --filter name="$NEWHOSTNAME" "${ADMINOPTIONS[@]}" | sed -ne "s|^DN: ||p")"
 	if [ $? -gt 0 ]; then
-		log 1 "E: failed search $1 [$old_dn]"
+		log 1 "E: failed search $desc [$old_dn]"
 		exit 1
 	fi
 
+	args=()
 	if [ -z "$old_dn" ]; then
-		log 0 "	Create new $1 "
+		log 0 "	Create new $desc "
 
 		if [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/managedclient" ]; then
-			mac_cmd="--set mac=$MAC --set dhcpEntryZone=$dhcpEntry"
+			args+=(--set mac="$MAC" --set dhcpEntryZone="$dhcpEntry")
 		elif [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/mobileclient" ]; then
-			mac_cmd="--set mac=$MAC --set dhcpEntryZone=$dhcpEntry"
+			args+=(--set mac="$MAC" --set dhcpEntryZone="$dhcpEntry")
 		elif [ -n "$MAC" ]; then
-			mac_cmd="--set mac=$MAC"
+			args+=(--set mac="$MAC")
 		fi
 
 		if [ -n "$IP" ]; then
-			ip_cmd="--set ip=$IP"
+			args+=(--set ip="$IP")
 			if [ -n "$forwardZone" ]; then
-				ip_cmd="$ip_cmd --set dnsEntryZoneForward=$forwardZone "
+				args+=(--set dnsEntryZoneForward="$forwardZone")
 				if [ -n "$reverseZone" ]; then
-					ip_cmd="$ip_cmd --set dnsEntryZoneReverse=$reverseZone "
+					args+=(--set dnsEntryZoneReverse="$reverseZone")
 				fi
 			fi
 		fi
 
-		rc=`univention-directory-manager $2 create --position "$3"\
-			--set name=$NEWHOSTNAME $ip_cmd \
-			--set domain=$DOMAINNAME \
-			--set password=$computerPassword --set unixhome=/dev/null --set shell=/bin/sh --set primaryGroup="$4" $mac_cmd $ADMINOPTIONS`
-		if [ $? -gt 0 ]; then
-			log 1 "E: failed to create $1 (1) [$rc]"
+		cmd=(univention-directory-manager "$module" create \
+			--position "$position" \
+			--set name="$NEWHOSTNAME" \
+			--set domain="$DOMAINNAME" \
+			--set password="$computerPassword" \
+			--set unixhome=/dev/null \
+			--set shell=/bin/sh \
+			--set primaryGroup="$primaryGroup" \
+			"${args[@]}" "${ADMINOPTIONS[@]}")
+		#log 0 "${cmd[@]}"
+		if ! rc="$("${cmd[@]}")"
+		then
+			log 1 "E: failed to create $desc (1) [$rc]"
 			exit 1
 		fi
 
 		if [ -z "$rc" ]; then
-			log 1 "E: failed to create $1: no result"
+			log 1 "E: failed to create $desc: no result"
 			exit 1
 		fi
 
-		ldap_dn=`echo $rc | grep "Object created:" | sed -e 's|Object created: ||'`
+		ldap_dn="$(echo $rc | sed -ne 's|Object created: ||p')"
 		if [ -z "$ldap_dn" ]; then
-			log 1 "E: failed to create $1 (2) [$rc]"
+			log 1 "E: failed to create $desc (2) [$rc]"
 			exit 1
 		fi
 
 		echo "ldap_dn=\"$ldap_dn\""
 
-		if [ -n "$5" ]; then
-			rc=`univention-directory-manager groups/group modify --dn="$5" --append users="$ldap_dn" $ADMINOPTIONS`
+		if [ -n "$group" ]; then
+			rc="$(univention-directory-manager groups/group modify \
+				--dn="$group" \
+				--append users="$ldap_dn" \
+				"${ADMINOPTIONS[@]}")"
 			if [ $? -gt 0 ]; then
-				log 1 "E: failed to modify groups/group for $1 [$rc]"
+				log 1 "E: failed to modify groups/group for $desc [$rc]"
 				exit 1
 			fi
 		fi
 	else
-		log 0 "Modify $1 [$old_dn]"
+		log 0 "Modify $desc [$old_dn]"
 
 		if [ -n "$MAC" ]; then
-			mac_cmd="--set mac=$MAC"
+			args+=(--set mac="$MAC")
 		fi
 		if [ -n "$IP" ]; then
-			ip_cmd="--set ip=$IP"
+			args+=(--set ip="$IP")
 		fi
-		rc=`univention-directory-manager $2 modify --dn "$old_dn" --set password=$computerPassword --set domain=$DOMAINNAME $mac_cmd $ip_cmd $ADMINOPTIONS`
-
+		rc="$(univention-directory-manager "$module" modify \
+			--dn "$old_dn" \
+			--set password="$computerPassword" \
+			--set domain="$DOMAINNAME" \
+			"${args[@]}" "${ADMINOPTIONS[@]}")"
 		if [ $? -gt 0 ]; then
-			log 1 "E: failed to modify $1 $old_dn [$rc]"
+			log 1 "E: failed to modify $desc $old_dn [$rc]"
 			exit 1
 		fi
 
 		echo "ldap_dn=\"$old_dn\" "
-
 	fi
 
-
+	# Invalidate caches
+	if [ "$USER" = "root" ]
+	then
+		nscd -i passwd || true
+		nscd -i group || true
+		nscd -i hosts || true
+	fi
 }
 
 if [ -n "$IP" ]; then
@@ -305,58 +317,62 @@ if [ -n "$IP" ]; then
 	fi
 	log 0 "	Calculated subnet = $subnet"
 
-	forwardZone=`univention-directory-manager dns/forward_zone list --filter zone=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
-	reverseZone=`univention-directory-manager dns/reverse_zone list --filter subnet=$subnet  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
-	dhcpEntry=`univention-directory-manager dhcp/service list --filter name=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
+	forwardZone="$(univention-directory-manager dns/forward_zone list \
+		--filter zone="$DOMAINNAME" \
+		"${ADMINOPTIONS[@]}" | sed -ne 's/^DN: //p')"
+	reverseZone="$(univention-directory-manager dns/reverse_zone list \
+		--filter subnet="$subnet" \
+		"${ADMINOPTIONS[@]}" | sed -ne 's/^DN: //p')"
+	dhcpEntry="$(univention-directory-manager dhcp/service list \
+		--filter name="$DOMAINNAME" \
+		"${ADMINOPTIONS[@]}" | sed -ne 's/^DN: //p')"
 
-	log 0 "	forwardZone $forwardZone "
-	log 0 "	reverseZone $reverseZone "
+	log 0 "	forwardZone $forwardZone"
+	log 0 "	reverseZone $reverseZone"
+	log 0 "	dhcpEntry $dhcpEntry"
 fi
 
-computerPassword=`makepasswd --chars=8`
+computerPassword="$(makepasswd --chars=8)"
 
-if [ "$ROLE" = "domaincontroller_master" ]; then
-	if [ -n "$POSITION" ]; then
-		create_entry "DC Master" "computers/domaincontroller_master" "$POSITION" "cn=DC Backup Hosts,cn=groups,$ldap_base"
-	else
-		create_entry "DC Master" "computers/domaincontroller_master" "cn=dc,cn=computers,$ldap_base" "cn=DC Backup Hosts,cn=groups,$ldap_base"
-	fi
-
-elif [ "$ROLE" = "domaincontroller_backup" ]; then
-	if [ -n "$POSITION" ]; then
-		create_entry "DC Backup" "computers/domaincontroller_backup" "$POSITION" "cn=DC Backup Hosts,cn=groups,$ldap_base" "cn=DC Slave Hosts,cn=groups,$ldap_base"
-	else
-		create_entry "DC Backup" "computers/domaincontroller_backup" "cn=dc,cn=computers,$ldap_base" "cn=DC Backup Hosts,cn=groups,$ldap_base" "cn=DC Slave Hosts,cn=groups,$ldap_base"
-	fi
-	kadmin -l add --random-key --use-defaults ldap/$NEWHOSTNAME.$DOMAINNAME
-elif [ "$ROLE" = "domaincontroller_slave" ]; then
-	if [ -n "$POSITION" ]; then
-		create_entry "DC Slave" "computers/domaincontroller_slave" "$POSITION" "cn=DC Slave Hosts,cn=groups,$ldap_base"
-	else
-		create_entry "DC Slave" "computers/domaincontroller_slave" "cn=dc,cn=computers,$ldap_base" "cn=DC Slave Hosts,cn=groups,$ldap_base"
-	fi
-	kadmin -l add --random-key --use-defaults ldap/$NEWHOSTNAME.$DOMAINNAME
-elif [ "$ROLE" = "memberserver" ]; then
-	if [ -n "$POSITION" ]; then
-		create_entry "Member Server" "computers/memberserver" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
-	else
-		create_entry "Member Server" "computers/memberserver" "cn=memberserver,cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
-	fi
-elif [ "$ROLE" = "client" ]; then
-	if [ -n "$POSITION" ]; then
-		create_entry "Client" "computers/managedclient" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
-	else
-		create_entry "Client" "computers/managedclient" "cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
-	fi
-elif [ "$ROLE" = "mobileclient" ]; then
-	if [ -n "$POSITION" ]; then
-		create_entry "Client" "computers/mobileclient" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
-	else
-		create_entry "Client" "computers/mobileclient" "cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
-	fi
-else
+case "$ROLE" in
+domaincontroller_master)
+	create_entry "DC Master" "computers/domaincontroller_master" \
+		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
+		"cn=DC Backup Hosts,cn=groups,$ldap_base"
+	kadmin -l add --random-key --use-defaults "ldap/$NEWHOSTNAME.$DOMAINNAME"
+	;;
+domaincontroller_backup)
+	create_entry "DC Backup" "computers/domaincontroller_backup" \
+		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
+		"cn=DC Backup Hosts,cn=groups,$ldap_base" \
+		"cn=DC Slave Hosts,cn=groups,$ldap_base"
+	kadmin -l add --random-key --use-defaults "ldap/$NEWHOSTNAME.$DOMAINNAME"
+	;;
+domaincontroller_slave)
+	create_entry "DC Slave" "computers/domaincontroller_slave" \
+		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
+		"cn=DC Slave Hosts,cn=groups,$ldap_base"
+	kadmin -l add --random-key --use-defaults "ldap/$NEWHOSTNAME.$DOMAINNAME"
+	;;
+memberserver)
+	create_entry "Member Server" "computers/memberserver" \
+		"${POSITION:-cn=memberserver,cn=computers,$ldap_base}" \
+		"cn=Computers,cn=groups,$ldap_base"
+	;;
+client)
+	create_entry "Client" "computers/managedclient" \
+		"${POSITION:-cn=computers,$ldap_base}" \
+		"cn=Computers,cn=groups,$ldap_base"
+	;;
+mobileclient)
+	create_entry "Client" "computers/mobileclient" \
+		"${POSITION:-cn=computers,$ldap_base}" \
+		"cn=Computers,cn=groups,$ldap_base"
+	;;
+*)
 	log 1 "E: 	-role $ROLE is unknown"
 	exit 1
-fi
+esac
 
 echo "KerberosPasswd=\"$computerPassword\" "
+# vim:set sw=4 ts=4 noet:
