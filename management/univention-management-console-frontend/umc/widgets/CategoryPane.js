@@ -26,115 +26,121 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.CategoryPane");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/on",
+	"dojo/mouse",
+	"dojo/dom-class",
+	"dijit/layout/ContentPane",
+	"dijit/_Container",
+	"dijit/_Contained",
+	"dijit/TitlePane",
+	"umc/tools",
+	"umc/widgets/Tooltip"
+], function(declare, lang, array, on, mouse, domClass, ContentPane, _Container, _Contained, TitlePane, tools, Tooltip) {
+	//TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
+	//      http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/a
+	var _CategoryItem = declare("umc.widgets._CategoryItem", [ContentPane, _Contained], {
+		modID: '',
+		modIcon: '',
+		label: '',
+		description: '',
+		_tooltip: null,
 
-dojo.require("dijit.layout.ContentPane");
-dojo.require("dijit._Contained");
-dojo.require("dijit._Container");
-dojo.require("dijit.TitlePane");
-dojo.require("tools");
-dojo.require("umc.widgets.Tooltip");
+		// the widget's class name as CSS class
+		'class': 'umcCategoryItem',
 
-//TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
-//      http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([dijit.layout.ContentPane, dijit._Contained], {
-	modID: '',
-	modIcon: '',
-	label: '',
-	description: '',
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			lang.mixin(this, {
+				baseClass: 'modLaunchButton',
+				'class': tools.getIconClass(this.modIcon, 50),
+				content: '<div>' + this.label + '</div>'
+			});
+		},
 
-	// the widget's class name as CSS class
-	'class': 'umcCategoryItem',
+		postCreate: function() {
+			this.inherited(arguments);
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
-		/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this, {
-			baseClass: 'modLaunchButton',
-			'class': tools.getIconClass(this.modIcon, 50),
-			content: '<div>' + this.label + '</div>'
-		});
-	},
+			// add a tooltip
+			this._tooltip = new Tooltip({
+				label: this.description,
+				connectId: [ this.domNode ]
+			});
 
-	postCreate: function() {
-		this.inherited(arguments);
+			//this.domNode.innerHtml = '<div>' + this.description + '</div>';
+			this.on(mouse.enter, function() {
+				domClass.add(this.domNode, 'modLaunchButtonHover');
+			});
+			this.on(mouse.leave, function() {
+				domClass.remove(this.domNode, 'modLaunchButtonHover');
+			});
+			this.on('mousedown', function() {
+				domClass.add(this.domNode, 'modLaunchButtonClick');
+			});
+			this.on('mouseup', function() {
+				domClass.remove(this.domNode, 'modLaunchButtonClick');
+			});
+		}
+	});
 
-		// add a tooltip
-		var tooltip = new umc.widgets.Tooltip({
-			label: this.description,
-			connectId: [ this.domNode ]
-		});
-
-		//this.domNode.innerHtml = '<div>' + this.description + '</div>';
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onMouseOver', function(evt) {
-			/*REQUIRE:"dojo/dom-class"*/ domClass.add(this.domNode, 'modLaunchButtonHover');
-		});
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onMouseOut', function(evt) {
-			/*REQUIRE:"dojo/dom-class"*/ domClass.remove(this.domNode, 'modLaunchButtonHover');
-		});
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onMouseDown', function(evt) {
-			/*REQUIRE:"dojo/dom-class"*/ domClass.add(this.domNode, 'modLaunchButtonClick');
-		});
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onMouseUp', function(evt) {
-			/*REQUIRE:"dojo/dom-class"*/ domClass.remove(this.domNode, 'modLaunchButtonClick');
-		});
-	}
-});
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([dijit.TitlePane, dijit._Container], {
-	// summary:
-	//		Widget that displays an overview of all modules belonging to a 
-	//		given category along with their icon and description.
-
-	// modules: Array
-	//		Array of modules in the format {id:'...', title:'...', description:'...'}
-	modules: [],
-
-	// title: String
-	//		Title of category for which the modules shall be displayed
-	title: '',
-
-	// the widget's class name as CSS class
-	'class': 'umcCategoryPane',
-
-	postMixInProperties: function() {
-		this.inherited(arguments);
-	},
-
-	buildRendering: function() {
+	return declare("umc.widgets.CategoryPane", [TitlePane, _Container], {
 		// summary:
-		//		Render a list of module items for the given category.
+		//		Widget that displays an overview of all modules belonging to a
+		//		given category along with their icon and description.
 
-		this.inherited(arguments);
+		// modules: Array
+		//		Array of modules in the format {id:'...', title:'...', description:'...'}
+		modules: [],
 
-		// iterate over all modules
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.modules, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(imod) {
-			// create a new button widget for each module
-			var modWidget = new umc.widgets._CategoryItem({
-				modID: imod.id,
-				modIcon: imod.icon,
-				label: imod.name,
-				description: imod.description
-			});
+		// title: String
+		//		Title of category for which the modules shall be displayed
+		title: '',
 
-			// hook to the onClick event of the module
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(modWidget, 'onClick', function(evt) {
-				this.onOpenModule(imod);
-			});
+		// the widget's class name as CSS class
+		'class': 'umcCategoryPane',
 
-			// add module widget to the container
-			this.addChild(modWidget);
-		}));
+		postMixInProperties: function() {
+			this.inherited(arguments);
+		},
 
-		// we need to add a <br> at the end, otherwise we will get problems 
-		// with the visualizaton
-		//this.containerNode.appendChild(/*REQUIRE:"dojo/dom-construct"*/ construct.create('br', { clear: 'all' }));
-	},
+		buildRendering: function() {
+			// summary:
+			//		Render a list of module items for the given category.
 
-	onOpenModule: function(imod) {
-		// event stub
-	}
+			this.inherited(arguments);
+
+			// iterate over all modules
+			array.forEach(this.modules, lang.hitch(this, function(imod) {
+				// create a new button widget for each module
+				var modWidget = new _CategoryItem({
+					modID: imod.id,
+					modIcon: imod.icon,
+					label: imod.name,
+					description: imod.description
+				});
+
+				// hook to the onClick event of the module
+				this.own(on(modWidget, 'click', function() {
+					this.onOpenModule(imod);
+				}));
+
+				// add module widget to the container
+				this.addChild(modWidget);
+			}));
+
+			// we need to add a <br> at the end, otherwise we will get problems
+			// with the visualizaton
+			//this.containerNode.appendChild(domConstruct.create('br', { clear: 'all' }));
+		},
+
+		onOpenModule: function(imod) {
+			// event stub
+		}
+	});
 });
-
 

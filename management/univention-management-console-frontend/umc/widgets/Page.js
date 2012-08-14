@@ -26,271 +26,281 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.Page");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/_base/fx",
+	"dojo/on",
+	"dojo/mouse",
+	"dojo/query",
+	"dojo/dom-style",
+	"dojo/dom-class",
+	"dojo/topic",
+	"dijit/layout/BorderContainer",
+	"umc/tools",
+	"umc/render",
+	"umc/widgets/Text",
+	"umc/widgets/ContainerWidget",
+	"umc/i18n!umc/app"
+], function(declare, lang, array, baseFX, on, mouse, query, style, domClass, topic, BorderContainer, tools, render, Text, ContainerWidget, _) {
+	return declare("umc.widgets.Page", BorderContainer, {
+		// summary:
+		//		Class that abstracts a displayable page for a module.
+		//		Offers the possibility to enter a help text that is shown or not
+		//		depending on the user preferences.
+		//		The widget itself is also a container such that children widgets
+		//		may be adde via the 'addChild()' method.
 
-dojo.require("dijit.layout.BorderContainer");
-dojo.require("render");
-dojo.require("tools");
-dojo.require("umc.widgets.Text");
-dojo.require("umc.i18n");
+		// helpText: String
+		//		Text that describes the module, will be displayed at the top of a page.
+		helpText: '',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.BorderContainer, umc.i18n.Mixin ], {
-	// summary:
-	//		Class that abstracts a displayable page for a module.
-	//		Offers the possibility to enter a help text that is shown or not
-	//		depending on the user preferences.
-	//		The widget itself is also a container such that children widgets
-	//		may be adde via the 'addChild()' method.
+		// headerText: String
+		//		Text that will be displayed as header title.
+		headerText: '&lt;Title missing&gt;',
 
-	// helpText: String
-	//		Text that describes the module, will be displayed at the top of a page.
-	helpText: '',
+		// footer: Object[]?
+		//		Optional array of dicts that describes buttons that shall be added
+		//		to the footer. The default button will be displayed on the right
+		footerButtons: null,
 
-	// headerText: String
-	//		Text that will be displayed as header title.
-	headerText: '&lt;Title missing&gt;',
+		// title: String
+		//		Title of the page. This option is necessary for tab pages.
+		title: '',
 
-	// footer: Object[]?
-	//		Optional array of dicts that describes buttons that shall be added
-	//		to the footer. The default button will be displayed on the right
-	footerButtons: null,
+		// noFooter: Boolean
+		//		Disable the page footer.
+		noFooter: false,
 
-	// title: String
-	//		Title of the page. This option is necessary for tab pages.
-	title: '',
+		// forceHelpText: Boolean
+		//		If set to true, forces the help text to be shown.
+		forceHelpText: false,
 
-	// noFooter: Boolean
-	//		Disable the page footer.
-	noFooter: false,
+		// the widget's class name as CSS class
+		'class': 'umcPage',
 
-	// forceHelpText: Boolean
-	//		If set to true, forces the help text to be shown.
-	forceHelpText: false,
+		i18nClass: 'umc.app',
 
-	// the widget's class name as CSS class
-	'class': 'umcPage',
+		gutters: false,
 
-	i18nClass: 'umc.app',
+		//style: 'width: 100%; height: 100%;',
 
-	gutters: false,
+		_helpTextPane: null,
+		_headerTextPane: null,
+		_subscriptionHandle: null,
+		_footer: null,
+		_notes: null,
+		_footerButtons: null,
 
-	//style: 'width: 100%; height: 100%;',
+		_setHelpTextAttr: function(newVal) {
+			this.helpText = newVal;
+			if (this._helpTextPane) {
+				this._helpTextPane.set('content', newVal);
+				this.layout();
+			}
+		},
 
-	_helpTextPane: null,
-	_headerTextPane: null,
-	_subscriptionHandle: null,
-	_footer: null,
-	_notes: null,
-	_footerButtons: null,
+		_setHeaderTextAttr: function(newVal) {
+			this.headerText = newVal;
+			if (this._headerTextPane) {
+				this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
+				this.layout();
+			}
+		},
 
-	_setHelpTextAttr: function(newVal) {
-		this.helpText = newVal;
-		if (this._helpTextPane) {
-			this._helpTextPane.set('content', newVal);
-			this.layout();
-		}
-	},
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	_setHeaderTextAttr: function(newVal) {
-		this.headerText = newVal;
-		if (this._headerTextPane) {
-			this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
-			this.layout();
-		}
-	},
+			// remove title from the attributeMap
+			delete this.attributeMap.title;
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+			// initiate array for notes
+			this._notes = [];
+		},
 
-		// remove title from the attributeMap
-		delete this.attributeMap.title;
+		buildRendering: function() {
+			this.inherited(arguments);
 
-		// initiate array for notes
-		this._notes = [];
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		// add the header
-		this._headerTextPane = new umc.widgets.Text({
-			content: '<h1>' + this.headerText + '</h1>',
-			region: 'top',
-			'class': 'umcPageHeader'
-		});
-		this.addChild(this._headerTextPane);
-
-		if (tools.preferences('moduleHelpText') && this.helpText) {
-			// display the module helpText
-			this._createHelpTextPane();
-			this.addChild(this._helpTextPane, 1);
-		}
-
-		if (!this.noFooter) {
-			// create the footer container(s)
-			this._footer = new umc.widgets.ContainerWidget({
-				region: 'bottom',
-				'class': 'umcPageFooter'
+			// add the header
+			this._headerTextPane = new Text({
+				content: '<h1>' + this.headerText + '</h1>',
+				region: 'top',
+				'class': 'umcPageHeader'
 			});
-			this.addChild(this._footer);
-			var footerLeft = new umc.widgets.ContainerWidget({
-				style: 'float: left'
-			});
-			this._footer.addChild(footerLeft);
-			var footerRight = new umc.widgets.ContainerWidget({
-				style: 'float: right'
-			});
-			this._footer.addChild(footerRight);
+			this.addChild(this._headerTextPane);
 
-			// render all buttons and add them to the footer
-			if (this.footerButtons && this.footerButtons instanceof Array && this.footerButtons.length) {
-				var buttons = render.buttons(this.footerButtons);
-				/*REQUIRE:"dojo/_base/array"*/ array.forEach(buttons.$order$, function(ibutton) {
-					if ('submit' == ibutton.type || ibutton.defaultButton || 'right' == ibutton.align) {
-						footerRight.addChild(ibutton);
+			if (tools.preferences('moduleHelpText') && this.helpText) {
+				// display the module helpText
+				this._createHelpTextPane();
+				this.addChild(this._helpTextPane, 1);
+			}
+
+			if (!this.noFooter) {
+				// create the footer container(s)
+				this._footer = new ContainerWidget({
+					region: 'bottom',
+					'class': 'umcPageFooter'
+				});
+				this.addChild(this._footer);
+				var footerLeft = new ContainerWidget({
+					style: 'float: left'
+				});
+				this._footer.addChild(footerLeft);
+				var footerRight = new ContainerWidget({
+					style: 'float: right'
+				});
+				this._footer.addChild(footerRight);
+
+				// render all buttons and add them to the footer
+				if (this.footerButtons && this.footerButtons instanceof Array && this.footerButtons.length) {
+					var buttons = render.buttons(this.footerButtons);
+					array.forEach(buttons.$order$, function(ibutton) {
+						if ('submit' == ibutton.type || ibutton.defaultButton || 'right' == ibutton.align) {
+							footerRight.addChild(ibutton);
+						}
+						else {
+							footerLeft.addChild(ibutton);
+						}
+					}, this);
+					this._footerButtons = buttons;
+				}
+			}
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			if (this.forceHelpText) {
+				// help text should be displayed in any case
+				this.showDescription();
+			}
+			else {
+				// register for events to hide the help text information
+				this._subscriptionHandle = topic.subscribe('/umc/preferences/moduleHelpText', lang.hitch(this, function(show) {
+					if (false === show) {
+						this.hideDescription();
 					}
 					else {
-						footerLeft.addChild(ibutton);
+						this.showDescription();
 					}
-				}, this);
-				this._footerButtons = buttons;
+				}));
 			}
-		}
-	},
+		},
 
-	postCreate: function() {
-		this.inherited(arguments);
+		uninitialize: function() {
+			// unsubscribe upon destruction
+			this._subscriptionHandle.remove();
+		},
 
-		if (this.forceHelpText) {
-			// help text should be displayed in any case
-			this.showDescription();
-		}
-		else {
-			// register for events to hide the help text information
-			this._subscriptionHandle = /*REQUIRE:"dojo/topic"*/ topic.subscribe('/umc/preferences/moduleHelpText', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(show) {
-				if (false === show) {
-					this.hideDescription();
-				}
-				else {
-					this.showDescription();
-				}
-			}));
-		}
-	},
-
-	uninitialize: function() {
-		// unsubscribe upon destruction
-		this._subscriptionHandle.remove();
-	},
-
-	_createHelpTextPane: function() {
-		this._helpTextPane = new umc.widgets.Text({
-			content: this.helpText,
-			region: 'top',
-			'class': 'umcPageHelpText'
-		});
-	},
-
-	addChild: function(child) {
-		// use 'center' as default region
-		if (!child.region) {
-			child.region = 'center';
-		}
-		this.inherited(arguments);
-	},
-
-	showDescription: function() {
-		// if we don't have a help text, ignore call
-		if (this._helpTextPane || !this.helpText) {
-			return;
-		}
-
-		// put the help text in a Text widget and then add it to the container
-		// make the node transparent, yet displayable
-		this._createHelpTextPane();
-		dojo.style(this._helpTextPane.domNode, {
-			opacity: 0,
-			display: 'block'
-		});
-		this.addChild(this._helpTextPane, 1);
-		//this.layout();
-
-		// fade in the help text
-		/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeIn({
-			node: this._helpTextPane.domNode,
-			duration: 500
-		}).play();
-	},
-
-	hideDescription: function() {
-		// if we don't have a help text visible, ignore call
-		if (!this._helpTextPane) {
-			return;
-		}
-
-		// fade out the help text
-		/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeOut({
-			node: this._helpTextPane.domNode,
-			duration: 500,
-			onEnd: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-				// remove the text from the layout and destroy widget
-				this.removeChild(this._helpTextPane);
-				this._helpTextPane.destroyRecursive();
-				this._helpTextPane = null;
-				//this.layout();
-			})
-		}).play();
-	},
-
-	addNote: function(message) {
-		var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="Close"></span>';
-
-		var note = new umc.widgets.Text({
-			content: closeButton + '<b>' + _('Note') + ':</b> ' + message,
-			region: 'top',
-			'class': 'umcPageNote'
-		});
-		/*REQUIRE:"dojo/query"*/ query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmousedown', function() {
-				/*REQUIRE:"dojo/dom-class"*/ domClass.add(inode, 'dijitTabCloseButtonActive');
+		_createHelpTextPane: function() {
+			this._helpTextPane = new Text({
+				content: this.helpText,
+				region: 'top',
+				'class': 'umcPageHelpText'
 			});
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmouseup', function() {
-				/*REQUIRE:"dojo/dom-class"*/ domClass.remove(inode, 'dijitTabCloseButtonActive');
-			});
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmouseover', function() {
-				/*REQUIRE:"dojo/dom-class"*/ domClass.add(inode, 'dijitTabCloseButtonHover');
-			});
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onmouseout', function() {
-				/*REQUIRE:"dojo/dom-class"*/ domClass.remove(inode, 'dijitTabCloseButtonHover');
-			});
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(inode, 'onclick', function() {
-				/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeOut({
-					node: note.domNode,
-					duration: 500,
-					onEnd: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-						this.removeChild(note);
-						note.destroyRecursive();
-						this._notes = /*REQUIRE:"dojo/_base/array"*/ array.filter( this._notes, function( inote ) {
-							return inote !== note;
-						} );
-					})
-				}).play();
-			});
-		}, this);
-		this.addChild(note);
-		this._notes.push(note);
-		return note;
-	},
+		},
 
-	clearNotes: function() {
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._notes, function(inote) {
-			this.removeChild(inote);
-			inote.destroyRecursive();
-		}, this);
-		this._notes = [];
-	}
+		addChild: function(child) {
+			// use 'center' as default region
+			if (!child.region) {
+				child.region = 'center';
+			}
+			this.inherited(arguments);
+		},
+
+		showDescription: function() {
+			// if we don't have a help text, ignore call
+			if (this._helpTextPane || !this.helpText) {
+				return;
+			}
+
+			// put the help text in a Text widget and then add it to the container
+			// make the node transparent, yet displayable
+			this._createHelpTextPane();
+			style.set(this._helpTextPane.domNode, {
+				opacity: 0,
+				display: 'block'
+			});
+			this.addChild(this._helpTextPane, 1);
+			//this.layout();
+
+			// fade in the help text
+			baseFX.fadeIn({
+				node: this._helpTextPane.domNode,
+				duration: 500
+			}).play();
+		},
+
+		hideDescription: function() {
+			// if we don't have a help text visible, ignore call
+			if (!this._helpTextPane) {
+				return;
+			}
+
+			// fade out the help text
+			baseFX.fadeOut({
+				node: this._helpTextPane.domNode,
+				duration: 500,
+				onEnd: lang.hitch(this, function() {
+					// remove the text from the layout and destroy widget
+					this.removeChild(this._helpTextPane);
+					this._helpTextPane.destroyRecursive();
+					this._helpTextPane = null;
+					//this.layout();
+				})
+			}).play();
+		},
+
+		addNote: function(message) {
+			var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="Close"></span>';
+
+			var note = new Text({
+				content: closeButton + '<b>' + _('Note') + ':</b> ' + message,
+				region: 'top',
+				'class': 'umcPageNote'
+			});
+			query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
+				this.own(on(inode, 'mousedown', function() {
+					domClass.add(inode, 'dijitTabCloseButtonActive');
+				}));
+				this.own(on(inode, 'mouseup', function() {
+					domClass.remove(inode, 'dijitTabCloseButtonActive');
+				}));
+				this.own(on(inode, mouse.enter, function() {
+					domClass.add(inode, 'dijitTabCloseButtonHover');
+				}));
+				this.own(on(inode, mouse.leave, function() {
+					domClass.remove(inode, 'dijitTabCloseButtonHover');
+				}));
+				this.own(on(inode, 'click', lang.hitch(this, function() {
+					baseFX.fadeOut({
+						node: note.domNode,
+						duration: 500,
+						onEnd: lang.hitch(this, function() {
+							this.removeChild(note);
+							note.destroyRecursive();
+							this._notes = array.filter( this._notes, function( inote ) {
+								return inote !== note;
+							} );
+						})
+					}).play();
+				})));
+			}, this);
+			this.addChild(note);
+			this._notes.push(note);
+			return note;
+		},
+
+		clearNotes: function() {
+			array.forEach(this._notes, function(inote) {
+				this.removeChild(inote);
+				inote.destroyRecursive();
+			}, this);
+			this._notes = [];
+		}
+	});
 });
-
 

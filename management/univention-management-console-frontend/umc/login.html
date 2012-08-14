@@ -18,16 +18,17 @@
 
 		<script type="text/javascript">
 			var dojoConfig = {
-				parseOnLoad: true
+				async: true
 			};
 		</script>
 		<script type="text/javascript" src="../../js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
 		<script type="text/javascript" src="../../js%HASH%/umc/build.js%JSSUFFIX%"></script>
 		<script type="text/javascript">
-			dojo.require("umc.widgets.SubmitButton");
-
+			require(["dojo/parser"], function(parser){
+				parser.parse();
+			});
 			var state = "unloaded";
-			dojo.addOnLoad(function() {
+			require(["dojo/domReady!"], function() {
 			    state = "loaded";
 			});
 		</script>
@@ -54,7 +55,7 @@
 					</div>
 				</div>
 			</div>
-			<button id="umc_SubmitButton" name="submit" type="submit" data-dojo-type="umc.widgets.SubmitButton"></button>
+			<button id="umc_SubmitButton" name="submit" type="submit" data-dojo-type="./widgets/SubmitButton"></button>
 		</form>
 	</body>
 </html>

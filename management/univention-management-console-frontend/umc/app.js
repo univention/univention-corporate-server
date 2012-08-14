@@ -574,4 +574,5 @@ define([
 			// event stub
 		}
 	});
+	return app;
 });

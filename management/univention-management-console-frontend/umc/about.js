@@ -26,35 +26,33 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.about");
-
-dojo.require("/*REQUIRE:"dojo/cookie"*/ cookie");
-dojo.require("umc.i18n");
-dojo.require("dialog");
-dojo.require("dojo.cache");
-
-/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.about, new umc.i18n.Mixin({
-	// use the framework wide translation file
-	i18nClass: 'umc.app'
-} ), {
-
-	show: function( info ) {
-		var keys = {
-			labelServer : _( 'Server' ),
-			server : info.server,
-			labelUCS_Version : _( 'UCS version' ),
-			UCS_Version : info.ucs_version,
-			labelUMC_Version : _( 'UMC version' ),
-			UMC_Version : info.umc_version,
-			labelSSL_ValidityDate : _( 'Validity date of the SSL certificate' ),
-			SSL_ValidityDate : /*REQUIRE:"dojo/date/locale"*/ locale.format(new Date(info.ssl_validity_date), {
-				fullYear: true,
-				timePattern: " ",
-				formatLength: "long"
-			})
-		};
-		dialog.templateDialog( "umc", "about.html", keys, _( 'About UMC' ), _( 'Close' ) );
-	}
+define([
+	"dojo/_base/lang",
+	"dojo/date/locale",
+	"umc/dialog",
+	"umc/i18n!umc/app"
+], function(lang, locale, dialog, _) {
+	var about = {};
+	lang.mixin(about, {
+		show: function( info ) {
+			var keys = {
+				labelServer : _( 'Server' ),
+				server : info.server,
+				labelUCS_Version : _( 'UCS version' ),
+				UCS_Version : info.ucs_version,
+				labelUMC_Version : _( 'UMC version' ),
+				UMC_Version : info.umc_version,
+				labelSSL_ValidityDate : _( 'Validity date of the SSL certificate' ),
+				SSL_ValidityDate : locale.format(new Date(info.ssl_validity_date), {
+					fullYear: true,
+					timePattern: " ",
+					formatLength: "long"
+				})
+			};
+			dialog.templateDialog( "umc", "about.html", keys, _( 'About UMC' ), _( 'Close' ) );
+		}
+	});
+	return about;
 } );

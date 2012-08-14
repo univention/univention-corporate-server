@@ -150,7 +150,7 @@ define([
 				}, function(error) {
 					// i18n data could not be loaded, ignore them in the future
 					_ignore(language, scopes[i][0], scopes[i][1]);
-					console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace('INFO: Localization files for scope {0}/{1} in language "{2}" not available!', [scopes[i][0], scopes[i][1], language]));
+					console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace('INFO: Localization files for scope "{0}/{1}" in language "{2}" not available!', [scopes[i][0], scopes[i][1], language]));
 
 					// check whether all requests are finished
 					++ndone;

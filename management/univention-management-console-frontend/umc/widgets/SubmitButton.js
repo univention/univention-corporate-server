@@ -28,18 +28,19 @@
  */
 /*global define console*/
 
-dojo.provide("umc.widgets.SubmitButton");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"umc/widgets/Button"
+], function(declare, lang, Button) {
+	return declare("umc.widgets.SubmitButton", Button, {
+		type: 'submit',
 
-dojo.require("umc.widgets.Button");
+		// defaultButton: Boolean
+		//		The submit button will always be rendered as the default button
+		defaultButton: true,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.Button, {
-	type: 'submit',
-
-	// defaultButton: Boolean
-	//		The submit button will always be rendered as the default button
-	defaultButton: true,
-
-	// the widget's class name as CSS class
-	'class': 'umcSubmitButton'
+		// the widget's class name as CSS class
+		'class': 'umcSubmitButton'
+	});
 });
-

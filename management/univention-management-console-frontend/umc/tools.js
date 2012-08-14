@@ -28,13 +28,12 @@
  */
 /*global define require console setTimeout */
 
-
 define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/query",
-	"dojo/request",
+	"dojo/request/xhr",
 	"dojo/Deferred",
 	"dojo/json",
 	"dojo/topic",
@@ -47,7 +46,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, window, query, request, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
+], function(lang, array, window, query, xhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -263,7 +262,7 @@ define([
 
 					// send AJAX command
 					this._lastRequestTime = (new Date()).getTime();
-					request(this.url, {
+					xhr.post(this.url, {
 						data: this.content,
 						preventCache: true,
 						handleAs: 'json',
@@ -376,9 +375,8 @@ define([
 			}
 			else {
 				// normal AJAX call
-				var call = request(url, {
+				var call = xhr.post(url, {
 					data: body,
-					preventCache: true,
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json'

@@ -26,42 +26,44 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.TitlePane");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/array",
+	"dijit/TitlePane",
+	"dijit/_Container",
+	"umc/tools"
+], function(declare, array, TitlePane, _Container, tools) {
+	return declare("umc.widgets.TitlePane", [ TitlePane, _Container ], {
+		// summary:
+		//		Widget that extends dijit.TitlePane with methods of a container widget.
 
-dojo.require("dijit.TitlePane");
-dojo.require("dijit._Container");
+		// the widget's class name as CSS class
+		'class': 'umcTitlePane',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.TitlePane, dijit._Container ], {
-	// summary:
-	//		Widget that extends dijit.TitlePane with methods of a container widget.
+		startup: function() {
+			this.inherited(arguments);
 
-	// the widget's class name as CSS class
-	'class': 'umcTitlePane',
+			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
+			//        in a closed TitlePane
 
-	startup: function() {
-		this.inherited(arguments);
-
-		// FIXME: Workaround for refreshing problems with datagrids when they are rendered
-		//        in a closed TitlePane
-
-		// iterate over all tabs
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.getChildren(), function(ipage) {
-			// find all widgets that inherit from dojox.grid._Grid on the tab
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(ipage.getDescendants(), function(iwidget) {
-				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
-					// hook to changes for 'open'
-					this.watch('open', function(attr, oldVal, newVal) {
-						if (newVal) {
-							// recall startup when the TitelPane gets shown
-							iwidget.startup();
-						}
-					});
-				}
+			// iterate over all tabs
+			array.forEach(this.getChildren(), function(ipage) {
+				// find all widgets that inherit from dojox.grid._Grid on the tab
+				array.forEach(ipage.getDescendants(), function(iwidget) {
+					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+						// hook to changes for 'open'
+						this.watch('open', function(attr, oldVal, newVal) {
+							if (newVal) {
+								// recall startup when the TitelPane gets shown
+								iwidget.startup();
+							}
+						});
+					}
+				}, this);
 			}, this);
-		}, this);
-	}
+		}
+	});
 });
-
 

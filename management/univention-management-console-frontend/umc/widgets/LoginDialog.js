@@ -161,7 +161,7 @@ define([
 			this._connections = [];
 			// register all events
 			this._connections.push(
-				this.on(form, 'submit', lang.hitch(this, function(event) {
+				on(form, 'submit', lang.hitch(this, function(evt) {
 					this._authenticate(usernameInput.value, passwordInput.value);
 					this._isRendered = false;
 					this._initForm();
@@ -182,10 +182,10 @@ define([
 				var input = field[0];
 				var container = field[1];
 				array.forEach(settingsArray, lang.hitch(this, function(setting) {
-					var event = setting[0];
+					var evt = setting[0];
 					var func = setting[1];
 					var flag = setting[2];
-					this._connections.push(on(input, event, function(e) {
+					this._connections.push(on(input, evt, function(e) {
 						func(container, flag);
 					}));
 				}));

@@ -26,39 +26,37 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.help");
+define([
+	"dojo/_base/lang",
+	"dojo/_base/kernel",
+	"umc/dialog",
+	"umc/i18n!umc/app"
+], function(lang, dojo, dialog, _) {
+	var help = {};
+	lang.mixin(help, {
+		show: function() {
+			var introduction = _( 'Univention Management Console (UMC) is the central web-application for comfortable domain and computer administration in Univention Corporate Server (UCS). UMC allows to manage users, groups or computers, to control services, and to check or adjust system settings. The web-based interface of UMC is described in detail in the current manual of Univention Corporate Server (UCS). You can find the manual and further important information at the given links below. ' );
 
-dojo.require("/*REQUIRE:"dojo/cookie"*/ cookie");
-dojo.require("umc.i18n");
-dojo.require("dialog");
-dojo.require("dojo.cache");
-
-/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(umc.help, new umc.i18n.Mixin({
-	// use the framework wide translation file
-	i18nClass: 'umc.app'
-} ), {
-
-	show: function() {
-		var introduction = _( 'Univention Management Console (UMC) is the central web-application for comfortable domain and computer administration in Univention Corporate Server (UCS). UMC allows to manage users, groups or computers, to control services, and to check or adjust system settings. The web-based interface of UMC is described in detail in the current manual of Univention Corporate Server (UCS). You can find the manual and further important information at the given links below. ' );
-
-		var lang = dojo.locale.slice( 0, 2 ).toLowerCase();
-		var keys = {
-			introduction : introduction,
-			manual : _( 'Current manual (PDF)' ),
-			manualURL : _( 'http://www.univention.de/fileadmin/download/documentation_english/ucs-3.0-manual_en.pdf' ),
-			add_doc : _( 'Additional documentation for UCS' ),
-			addDocURL : _( 'http://www.univention.de/en/download/documentation/documentation/' ),
-			sdb : _( 'Univention support data base (SDB)' ),
-			wiki : _( 'Univention Wiki' ),
-			forum : _( 'Univention forum' ),
-			support : _( 'Univention support' ),
-			supportURL : lang == 'de' ? 'http://www.univention.de/univention/kontakt/kontaktformular/' : 'http://www.univention.de/en/about-univention/contact/',
-			titleDoc : _( 'Manual and documentation' ),
-			titleSup : _( 'Supplementary information' ),
-			titleAss : _( 'Support and assistance' )
-		};
-		dialog.templateDialog( "umc", "help.html", keys, _( 'Help' ), _( 'Close' ) );
-	}
-} );
+			var lang = dojo.locale.slice( 0, 2 ).toLowerCase();
+			var keys = {
+				introduction : introduction,
+				manual : _( 'Current manual (PDF)' ),
+				manualURL : _( 'http://www.univention.de/fileadmin/download/documentation_english/ucs-3.0-manual_en.pdf' ),
+				add_doc : _( 'Additional documentation for UCS' ),
+				addDocURL : _( 'http://www.univention.de/en/download/documentation/documentation/' ),
+				sdb : _( 'Univention support data base (SDB)' ),
+				wiki : _( 'Univention Wiki' ),
+				forum : _( 'Univention forum' ),
+				support : _( 'Univention support' ),
+				supportURL : lang == 'de' ? 'http://www.univention.de/univention/kontakt/kontaktformular/' : 'http://www.univention.de/en/about-univention/contact/',
+				titleDoc : _( 'Manual and documentation' ),
+				titleSup : _( 'Supplementary information' ),
+				titleAss : _( 'Support and assistance' )
+			};
+			dialog.templateDialog( "umc", "help.html", keys, _( 'Help' ), _( 'Close' ) );
+		}
+	});
+	return help;
+});

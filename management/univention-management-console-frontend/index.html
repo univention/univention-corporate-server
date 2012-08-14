@@ -62,7 +62,6 @@
 				locale = locale.replace('_', '-');
 			}
 			var dojoConfig = {
-			    parseOnLoad: true,
 				isDebug: false,
 				debugAtAllCosts: false,
 				locale: locale,
@@ -73,7 +72,10 @@
 		<script type="text/javascript" src="js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
 		<script type="text/javascript" src="js%HASH%/umc/build.js%JSSUFFIX%"></script>
 		<script type="text/javascript">
-			/*require(["umc/app", "umc/tools", "dojo/domReady!"], function(app, tools){
+			require(["dojo/parser"], function(parser){
+				parser.parse();
+			});
+			require(["umc/app", "umc/tools", "dojo/domReady!"], function(app, tools){
 				// set the version of the UMC frontend
 				tools.status('version', '%VERSION%');
 
@@ -87,7 +89,7 @@
 					width: getQuery('width'),
 					displayUsername: getQuery('displayUsername', true)
 				});
-			});*/
+			});
 		</script>
 	</head>
 	<body class="umc">
@@ -97,7 +99,7 @@
 			<div id="umc_LoginDialog" class="umcShowHide dijitDialog dojoxDialog umcLoginDialog">
 				<div id="umc_LoginDialog_ContainerWidget" data-dojo-type="umc/widgets/ContainerWidget">
 					<div id="umc_LoginDialog_FormContainer" class="umcLoginForm umcLoginDialogFormContainer">
-						<!--<iframe id="umc_LoginDialog_Iframe" src="js%HASH%/umc/login.html" frameborder="0" class="umcLoginDialogFormContainer"></iframe>-->
+						<iframe id="umc_LoginDialog_Iframe" src="js%HASH%/umc/login.html" frameborder="0" class="umcLoginDialogFormContainer"></iframe>
 					</div>
 				</div>
 			</div>
