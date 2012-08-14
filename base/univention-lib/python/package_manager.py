@@ -45,9 +45,7 @@ apt_pkg.init()
 
 from univention.lib.locking import get_lock, release_lock
 from univention.lib.i18n import Translation
-translation = Translation('univention-system-setup-scripts')
-translation.set_language(locale.getdefaultlocale()[0])
-_ = translation.translate
+_ = Translation('univention-lib').translate
 
 class LockError(Exception):
 	'''Lock error for the package manager.
@@ -338,7 +336,7 @@ class PackageManager(object):
 		for pkg_name in self.cache.keys():
 			pkg = self.cache[pkg_name]
 			if pkg.is_auto_removable:
-				self.message(_('Deleting unneeded %s') % pkg.name)
+				self.progress_state.info(_('Deleting unneeded %s') % pkg.name)
 				pkg.mark_delete()
 		if self.cache.get_changes():
 			self.commit(msg_if_failed=_('Autoremove failed'))

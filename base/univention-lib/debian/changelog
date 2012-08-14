@@ -1,3 +1,9 @@
+univention-lib (2.0.1-1) unstable; urgency=low
+
+  * Add translation file for PackageManager (Bug #28010)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 Aug 2012 13:53:13 +0200
+
 univention-lib (2.0.0-1) unstable; urgency=low
 
   * Add a PackageManager (Bug #28010)
