@@ -1,3 +1,9 @@
+univention-management-console-module-udm (2.0.5-1) unstable; urgency=low
+
+  * added validation of upload path in licence import; Bug #28189
+
+ -- Florian Best <best@univention.de>  Tue, 14 Aug 2012 14:38:19 +0200
+
 univention-management-console-module-udm (2.0.4-1) unstable; urgency=low
 
   * use try-finally block in threads in order to release Lock object;
