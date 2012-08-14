@@ -1,6 +1,6 @@
 #!/usr/bin/python2.6
 #
-# Univention IP Calculator (IPv6 edition)
+"""Univention IP Calculator for DNS records (IPv6 edition)."""
 #
 # Copyright 2011-2012 Univention GmbH
 #
@@ -29,74 +29,180 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import sys
 import ipaddr
 import optparse
 
-def parseOptions():
-	parser = optparse.OptionParser()
-	parser.add_option('--ip', dest='address')
-	parser.add_option('--netmask', dest='netmask')
-	parser.add_option('--output', dest='output')
-	parser.add_option('--calcdns', dest='calcdns', action='store_true', default=False)
-	(options, args, ) = parser.parse_args()
-	if not options.calcdns:
-		raise NotImplementedError('--calcdns must be set')
-	if not options.output in ('network', 'reverse', 'pointer', ):
-		raise NotImplementedError('--output invalid')
-	if options.address is None:
-		raise ValueError('missing --ip')
-	if options.netmask is None:
-		raise ValueError('missing --netmask')
-	return options
+# IPv4: 4.3.                            2.1.                        IN-ADDR.ARPA
+# IPv6: f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.IP6.ARPA
+#       \__________ pointer __________/ \__________ reverse __________/
+# network: "full network address"
+# reverse: dns/reverse_zone.subnet (forward notation)
+#          dns/reverse_zone.zoneName (backward notation)
+# pointer: dns/ptr_record.address (LDAP: relativeDomainName)
 
-def calculateIPv6reverse(network):
-	prefixlen = network.prefixlen
-	if prefixlen == network.max_prefixlen:
-		prefixlen-= 1 # at least one part must remain for zone entry
-	reverse = list(network.ip.exploded.replace(':', ''))[:prefixlen / 4]
-	return ':'.join([''.join(reverse[i:i+4]) for i in xrange(0, len(reverse), 4)])
+def parse_options():
+    """Parse command line options."""
+    usage = '%prog --calcdns --ip <addr> --netmask <mask> --output <type>'
+    epilog = 'Calculate network values from network address for DNS records.'
+    parser = optparse.OptionParser(usage=usage, epilog=epilog)
+    parser.add_option('--ip', dest='address',
+            help='IPv4 or IPv6 address')
+    parser.add_option('--netmask', dest='netmask',
+            help='Netmask or prefix length')
+    parser.add_option('--output', dest='output',
+            choices=('network', 'reverse', 'pointer'),
+            help='Specify requested output typ')
+    parser.add_option('--calcdns', dest='calcdns',
+            action='store_true', default=False,
+            help='Request to calcuale DNS record entries')
+    parser.add_option('--test-internal', action='callback', callback=__test,
+            help=optparse.SUPPRESS_HELP)
+    (options, _args) = parser.parse_args()
+    if not options.calcdns:
+        parser.error('Only --calcdns is supported')
+    if options.output is None:
+        parser.error('missing --output')
+    if options.address is None:
+        parser.error('missing --ip')
+    if options.netmask is None:
+        parser.error('missing --netmask')
+    return options
 
-def calculateIPv4reverse(network):
-	prefixlen = network.prefixlen
-	if prefixlen == network.max_prefixlen:
-		prefixlen-= 1 # at least one part must remain for zone entry
-	return '.'.join(network.ip.exploded.split('.')[:prefixlen / 8])
+def calculate_ipv6_reverse(network):
+    """Return reversed network part of IPv4 network.
+    >>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
+    '0'
+    >>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/1'))
+    '0'
+    >>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/4'))
+    '0'
+    >>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/16'))
+    '0123'
+    >>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/124'))
+    '0123:4567:89ab:cdef:0123:4567:89ab:cde'
+    >>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/128'))
+    '0123:4567:89ab:cdef:0123:4567:89ab:cde'
+    """
+    # at least one part must remain for zone entry
+    prefixlen = min(network.prefixlen / 4, network.max_prefixlen / 4 - 1) or 1
+    prefix = network.ip.exploded.replace(':', '')[:prefixlen]
+    return ':'.join([prefix[i:i+4] for i in xrange(0, len(prefix), 4)])
 
-def calculateIPv6network(network):
-	prefixlen = network.prefixlen
-	reverse = list(network.ip.exploded.replace(':', ''))[:prefixlen / 4]
-	return ':'.join([''.join(reverse[i:i+4]) for i in xrange(0, len(reverse), 4)])
+def calculate_ipv4_reverse(network):
+    """Return reversed network part of IPv4 network.
+    >>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/0'))
+    '1'
+    >>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/8'))
+    '1'
+    >>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/16'))
+    '1.2'
+    >>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/24'))
+    '1.2.3'
+    >>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/32'))
+    '1.2.3'
+    """
+    # at least one part must remain for zone entry
+    prefixlen = min(network.prefixlen / 8, network.max_prefixlen / 8 - 1) or 1
+    prefix = network.ip.exploded.split('.')[:prefixlen]
+    return '.'.join(prefix)
 
-def calculateIPv4network(network):
-	prefixlen = network.prefixlen
-	return '.'.join(network.ip.exploded.split('.')[:prefixlen / 8])
+def calculate_ipv6_network(network):
+    """Return network part of IPv6 network.
+    >>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
+    ''
+    >>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/1'))
+    ''
+    >>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/4'))
+    '0'
+    >>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/16'))
+    '0123'
+    >>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/112'))
+    '0123:4567:89ab:cdef:0123:4567:89ab'
+    >>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/128'))
+    '0123:4567:89ab:cdef:0123:4567:89ab:cdef'
+    """
+    prefixlen = network.prefixlen / 4
+    prefix = network.ip.exploded.replace(':', '')[:prefixlen]
+    return ':'.join([prefix[i:i+4] for i in xrange(0, len(prefix), 4)])
 
-def calculateIPv6pointer(network):
-	return '.'.join(reversed(list(network.ip.exploded.replace(':', ''))[network.prefixlen / 4:]))
+def calculate_ipv4_network(network):
+    """Return network part of IPv4 network.
+    >>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/0'))
+    ''
+    >>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/1'))
+    ''
+    >>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/8'))
+    '1'
+    >>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/24'))
+    '1.2.3'
+    >>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/32'))
+    '1.2.3.4'
+    """
+    prefixlen = network.prefixlen / 8
+    prefix = network.ip.exploded.split('.')[:prefixlen]
+    return '.'.join(prefix)
 
-def calculateIPv4pointer(network):
-	return '.'.join(reversed(network.ip.exploded.split('.')[network.prefixlen / 8:]))
+def calculate_ipv6_pointer(network):
+    """Return host part of IPv6 network.
+    >>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
+    'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1'
+    >>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/1'))
+    'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1'
+    >>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/4'))
+    'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1'
+    >>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/124'))
+    'f'
+    >>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/128'))
+    'f'
+    """
+    prefixlen = min(network.prefixlen / 4, network.max_prefixlen / 4 - 1) or 1
+    suffix = network.ip.exploded.replace(':', '')[prefixlen:]
+    return '.'.join(reversed(suffix))
+
+def calculate_ipv4_pointer(network):
+    """Return host part of IPv4 network.
+    >>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/0'))
+    '4.3.2'
+    >>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/1'))
+    '4.3.2'
+    >>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/8'))
+    '4.3.2'
+    >>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/24'))
+    '4'
+    >>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/32'))
+    '4'
+    """
+    prefixlen = min(network.prefixlen / 8, network.max_prefixlen / 8 - 1) or 1
+    suffix = network.ip.exploded.split('.')[prefixlen:]
+    return '.'.join(reversed(suffix))
 
 def main():
-	options = parseOptions()
-	ipaddr.IPAddress(options.address)
-	network = ipaddr.IPNetwork('%s/%s' % (options.address, options.netmask, ))
-	if type(network) is ipaddr.IPv6Network:
-		if options.output == 'reverse':
-			print calculateIPv6reverse(network)
-		if options.output == 'network':
-			print calculateIPv6network(network)
-		if options.output == 'pointer':
-			print calculateIPv6pointer(network)
-	elif type(network) is ipaddr.IPv4Network:
-		if options.output == 'reverse':
-			print calculateIPv4reverse(network)
-		if options.output == 'network':
-			print calculateIPv4network(network)
-		if options.output == 'pointer':
-			print calculateIPv4pointer(network)
-	else:
-		raise AssertionError('invalid type')
+    """Calculate IP adress parameters-"""
+    options = parse_options()
+    try:
+        _addr = ipaddr.IPAddress(options.address)
+        network = ipaddr.IPNetwork('%s/%s' % (options.address, options.netmask))
+    except ValueError, ex:
+        print >> sys.stderr, ex
+        sys.exit(1)
+    try:
+        if isinstance(network, ipaddr.IPv6Network):
+            family = 'ipv6'
+        elif isinstance(network, ipaddr.IPv4Network):
+            family = 'ipv4'
+        func = globals()['calculate_%s_%s' % (family, options.output)]
+    except (NameError, KeyError):
+        print >> sys.stderr, "Unknown address format"
+        sys.exit(1)
+    else:
+        print func(network)
+
+def __test(_option, _opt_str, _value, _parser):
+    """Run internal test suite."""
+    import doctest
+    res = doctest.testmod()
+    sys.exit(int(bool(res[0])))
 
 if __name__ == "__main__":
-	main()
+    main()

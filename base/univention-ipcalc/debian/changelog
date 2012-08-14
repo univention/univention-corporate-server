@@ -1,3 +1,10 @@
+univention-ipcalc (4.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Add --help, fix IPv6 output (Bug #28143)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Aug 2012 22:16:24 +0200
+
 univention-ipcalc (3.0.1-1) unstable; urgency=low
 
   * add univention-ipcalc6 (Bug #23942)
