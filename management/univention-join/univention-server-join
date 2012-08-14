@@ -220,16 +220,9 @@ create_entry () {
 	if [ -z "$old_dn" ]; then
 		log 0 "	Create new $desc "
 
-		if [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/managedclient" ]; then
-			args+=(--set mac="$MAC" --set dhcpEntryZone="$dhcpEntry")
-		elif [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/mobileclient" ]; then
-			args+=(--set mac="$MAC" --set dhcpEntryZone="$dhcpEntry")
-		elif [ -n "$MAC" ]; then
-			args+=(--set mac="$MAC")
-		fi
-
 		if [ -n "$IP" ]; then
 			args+=(--set ip="$IP")
+			# DNS
 			if [ -n "$forwardZone" ]; then
 				args+=(--set dnsEntryZoneForward="$forwardZone")
 				if [ -n "$reverseZone" ]; then
@@ -237,6 +230,17 @@ create_entry () {
 				fi
 			fi
 		fi
+		if [ -n "$MAC" ]; then
+			args+=(--set mac="$MAC")
+		fi
+		# DHCP
+		case "$module" in
+		computers/managedclient|computers/mobileclient)
+			if [ -n "$dhcpEntry" ] && [ -n "$IP" ] && [ -n "$MAC" ]; then
+				args+=(--set dhcpEntryZone="$dhcpEntry $IP $MAC")
+			fi
+			;;
+		esac
 
 		cmd=(univention-directory-manager "$module" create \
 			--position "$position" \

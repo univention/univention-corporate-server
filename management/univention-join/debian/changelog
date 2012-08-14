@@ -2,6 +2,7 @@ univention-join (5.0.1-1) unstable; urgency=low
 
   * Fix /32 network (Bug #28143)
   * Fix copying password (Bug #19430)
+  * Fix DHCP entry creation (Bug #28209)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 14 Aug 2012 07:27:43 +0200
 
