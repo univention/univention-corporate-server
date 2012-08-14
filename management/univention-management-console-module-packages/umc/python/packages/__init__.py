@@ -31,270 +31,169 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import pprint
 import re
-import time
-from os import stat,listdir,chmod,unlink,path
-from subprocess import Popen
+import notifier
+import notifier.threads
 
 import apt
 
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-import univention.config_registry
+from univention.management.console.modules.decorators import simple_response, sanitize
+from sanitizers import AptFunctionSanitizer
 
+from univention.lib.package_manager import PackageManager, LockError
 
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
 
 _ = umc.Translation('univention-management-console-module-packages').translate
 
 class Instance(umcm.Base):
 	def init(self):
-		MODULE.warn("Initializing 'packages' module with LANG = '%s'" % self.locale)
-		
-		self._counter		= 0											# sane start value
-		self._tempscript	= '/tmp/umc_packages_runscripts.sh'				# temp script name for invoking scripts
-		self._logname		= '/tmp/umc_packages_logfile.tmp'				# holds log output
+		self.package_manager	= None
 
-	def sections(self,request):
+	@simple_response
+	def sections(self):
 		""" fills the 'sections' combobox in the search form """
-		# ----------- DEBUG -----------------
-		MODULE.warn("packages/sections invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.warn("   << %s" % s)
-		# -----------------------------------
-		
-		sections = []
-		result = []
-		cache = apt.Cache()
-		for package in cache.keys():
-			section = cache[package].section
-			if not section in sections:
-				sections.append(section)
-		for section in sections:
-			result.append({
-				'id':		section,
-				'label':	section
-			})
-			
-		# ---------- DEBUG --------------
-		MODULE.warn("packages/sections returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = ''
-		if len(result) > 5:
-			tmp = result[0:5]
-			MODULE.warn("   >> %d entries, first 5 are:" % len(result))
-			st = pp.pformat(tmp).split("\n")
-		else:
-			st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.warn("   >> %s" % s)
-		# --------------------------------
-		self.finished(request.id,result)
 
-	def query(self,request):
+		cache = apt.Cache()
+		sections = set()
+		for package in cache.keys():
+			sections.add(cache[package].section)
+
+		return [{'id' : section, 'label' : section} for section in sorted(sections)]
+
+	@simple_response
+	def query(self, installed=False, section='all', key='', pattern='*'):
 		""" Query to fill the grid. Structure is fixed here.
 		"""
-		# ----------- DEBUG -----------------
-		MODULE.warn("packages/query invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.warn("   << %s" % s)
-		# -----------------------------------
-		
-		installed	= request.options.get('installed',False)
-		section		= request.options.get('section','all')
-		key			= request.options.get('key','')
-		pattern		= request.options.get('pattern','')
-		
+
 		result = []
 		cache = apt.Cache()
-		if  key == 'package':
-			_re=re.compile( '^%s$' % pattern.replace('*','.*') )
+		if key == 'package':
+			_re = re.compile( '^%s$' % pattern.replace('*','.*') )
 		elif key == 'description':
-			_re=re.compile( '%s' % pattern.replace('*','.*').lower() )
+			_re = re.compile( '%s' % pattern.replace('*','.*').lower() )
 		for pkey in cache.keys():
 			if (not installed) or cache[pkey].is_installed:
-				if section == 'all' or cache[pkey].section == section:
+				pkg = cache[pkey]
+				if section == 'all' or pkg.section == section:
 					toshow = False
 					if pattern == '*':
 						toshow = True
 					elif key == 'package' and _re.search(pkey):
 						toshow = True
-					elif key == 'description' and _re.search(cache[pkey].rawDescription.lower()):
+					elif key == 'description' and _re.search(pkg.rawDescription.lower()):
 						toshow = True
 					if toshow:
-						result.append(self._package_to_dict(cache[pkey],False))
+						result.append(self._package_to_dict(pkg, full=False))
 
-		# ---------- DEBUG --------------
-		MODULE.warn("packages/query returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = ''
-		if len(result) > 5:
-			tmp = result[0:5]
-			MODULE.warn("   >> %d entries, first 5 are:" % len(result))
-			st = pp.pformat(tmp).split("\n")
-		else:
-			st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.warn("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
+		return result
 		
-	def get(self,request):
+	@simple_response
+	def get(self, package):
 		""" retrieves full properties of one package """
-		# ----------- DEBUG -----------------
-		MODULE.warn("packages/get invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.warn("   << %s" % s)
-		# -----------------------------------
-		
-		pkg = request.options.get('package','')
+
 		cache = apt.Cache()
-		
-		result = {}
-		if pkg in cache:
-			result = self._package_to_dict(cache[pkg], True)
-		
-		# ---------- DEBUG --------------
-		MODULE.warn("packages/get returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.warn("   >> %s" % s)
-		# --------------------------------
-		
-		self.finished(request.id,result)
-		
-	def invoke(self,request):
+
+		if package in cache:
+			return self._package_to_dict(cache[package], full=True)
+		else:
+			# TODO: 404?
+			return {}
+
+	@sanitize(function=AptFunctionSanitizer(required=True, may_change_value=True))
+	def invoke(self, request):
 		""" executes an installer action """
-		# ----------- DEBUG -----------------
-		MODULE.warn("packages/invoke invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.warn("   << %s" % s)
-		# -----------------------------------
-		
-		pkg = request.options.get('package','')
-		fnc = request.options.get('function','')
-		
-		fncarg = {
-			'install':		'install',
-			'upgrade':		'install',
-			'uninstall':	'remove',
-		}
-		
-		self._counter = 20
-		result = {}
-		
-		# tool to call, command, args, package name
-		args = [
-			'apt-get',
-			fncarg[fnc],
-			 "-o", "DPkg::Options::=--force-confold", "-y", "--force-yes",
-			 pkg
-		]
-		
-		# Can't do without asynchronous job. The module management would
-		# happily kill a module, returning a 502 and leaving a crashed
-		# dpkg state... 
-		cmds = [
-			'#!/bin/bash',
-			'trap "rm -f %s" EXIT' % self._tempscript,
-			'(',
-			'  echo "`date`: Starting to %s %s"' % (fnc,pkg),
-			'  /usr/share/univention-updater/disable-apache2-umc',  # disable UMC server components restart
-			'  %s' % (' '.join(args)),
-			'  ret=$?',
-			'  /usr/share/univention-updater/enable-apache2-umc --no-restart',  # enable UMC server components restart
-			'  echo "`date`: finished with ${ret}"',
-			') >%s 2>&1' % self._logname
-		]
-		result = self._run_shell_script(cmds)
+		package = request.options.get('package')
+		function = request.options.get('function')
 
-		
-		# ---------- DEBUG --------------
-		MODULE.warn("packages/invoke returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.warn("   >> %s" % s)
-		# --------------------------------
-		
-		self.finished(request.id,result)
-		
-	def logview(self,request):
-		""" Frontend to the _logview() function: returns
-			either the timestamp of the log file or
-			some log lines.
-		"""
-		# ----------- DEBUG -----------------
-		MODULE.info("packages/logview invoked with:")
-		MODULE.info("   << LANG = '%s'" % self.locale)
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-		
-		result = self._logview(int(request.options.get('count',10)))
-		request.status = SUCCESS
-		
-		# ---------- DEBUG --------------
-		# TODO: We should not repeat the whole log into
-		# the module log file!
-		MODULE.info("packages/logview returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
+		if self._pm_running():
+			# this module instance already has a running package manager
+			raise umcm.UMC_Error(_('Another package operation is in progress'))
+		try:
+			self.package_manager = PackageManager(
+				info_handler=MODULE.process,
+				step_handler=None,
+				error_handler=MODULE.warn,
+			)
+		except LockError as e:
+			# make it thread safe: another process started a package manager
+			raise umcm.UMC_Error(str(e))
+		else:
+			package_found = bool(self.package_manager.get_package(package))
+			self.finished(request.id, package_found)
 
-		self.finished(request.id,result)
-		
-	def running(self,request):
-		""" returns true while a job is running, simply by checking
-			that the script file exists. """
-		result = path.exists(self._tempscript)
-		self.finished(request.id,result)
-		
-	def _package_to_dict(self,package,full):
+			if package_found:
+				def _thread(package_manager, function, package):
+					with package_manager.noninteractive():
+						if function == 'install':
+							package_manager.install(package)
+						else:
+							package_manager.uninstall(package)
+					package_manager.unlock()
+				def _finished(thread, result):
+					if isinstance(result, BaseException):
+						MODULE.warn('Exception during %s %s: %s' % (function, package, str(result)))
+				thread = notifier.threads.Simple('invoke', 
+					notifier.Callback(_thread, self.package_manager, function, package), _finished)
+				thread.run()
+
+	@simple_response
+	def progress(self):
+		timeout = 5
+		errors = []
+		if self._pm_running(if_not_locked_free_him_and_save_errors_to=errors):
+			return self.package_manager.poll(timeout)
+		else:
+			if errors:
+				return {'errors' : errors}
+		return None
+
+	def _pm_running(self, if_not_locked_free_him_and_save_errors_to=None):
+		if self.package_manager is None:
+			return False
+		locked = self.package_manager.is_locked()
+		if locked:
+			return True
+		else:
+			if if_not_locked_free_him_and_save_errors_to is not None:
+				for error in self.package_manager.progress_state._errors:
+					if_not_locked_free_him_and_save_errors_to.append(error)
+				# free him
+				del self.package_manager
+				self.package_manager = None
+		return False
+
+	def _package_to_dict(self, package, full):
 		""" Helper that extracts properties from a 'apt_pkg.Package' object
 			and stores them into a dictionary. Depending on the 'full'
 			switch, stores only limited (for grid display) or full
 			(for detail view) set of properties.
 		"""
 		result = {
-			'package':		package.name,
-			'section':		package.section,
+			'package':	package.name,
+			'section':	package.section,
 			'installed':	package.is_installed,
 			'upgradable':	package.is_upgradable,
-			'summary':		package.summary
+			'summary':	package.summary
 		}
 		
 		# add (and translate) a combined status field
 		# *** NOTE *** we translate it here: if we would use the Custom Formatter
-		#				of the grid then clicking on the sort header would not work.
+		#		of the grid then clicking on the sort header would not work.
 		if package.is_installed:
 			if package.is_upgradable:
-				result['status'] = _("upgradeable")
+				result['status'] = _('upgradable')
 			else:
-				result['status'] = _("installed")
+				result['status'] = _('installed')
 		else:
-			result['status'] = _("not installed")
+			result['status'] = _('not installed')
 
 		# additional fields needed for detail view
 		if full:
 			result['description']	= package.description
-			result['priority']		= package.priority
+			result['priority']	= package.priority
 			# Some fields differ depending on whether the package is installed or not:
 			if package.is_installed:
 				# If an upgrade is available the 'Packages' class returns zero in the
@@ -309,63 +208,20 @@ class Instance(umcm.Base):
 			else:
 				del result['upgradable']	# not installed: don't show 'upgradable' at all
 				result['size'] = package.packageSize
-			
+			# format size to handle bytes
+			size = result['size']
+			byte_mods = ['B', 'kB', 'MB']
+			for byte_mod in byte_mods:
+				if size < 10000:
+					break
+				size = float(size) / 1024
+			else:
+				size = size * 1024 # once too often
+			if size == int(size):
+				format_string = '%d %s'
+			else:
+				format_string = '%.2f %s'
+			result['size'] = format_string % (size, byte_mod)
+
 		return result
 	
-	def _run_shell_script(self,cmds):
-		"""internal helper for running a script:
-		 -	arg is a list of lines to write into a temporary shell script
-		 -	create that script, flag it executable
-		 -	create process, store in self._process
-		 -	on any error, returns error text, else empty string"""
-		if path.exists(self._tempscript):
-			# this is shown at the frontend, so we have to translate it.
-			return _("Another package operation is in progress")
-		file = None
-		try:
-			MODULE.info("Creating temporary script:")
-			file = open(self._tempscript,'w')
-			for line in cmds:
-				MODULE.info("   ++ %s" % line)
-				file.write("%s\n" % line)
-			file.close()
-			chmod(self._tempscript,0700)
-			self._process = Popen(self._tempscript)
-		except Exception, ex:
-			self._process = None
-			if file != None:
-				file.close()
-			if path.exists(self._tempscript):
-				unlink(self._tempscript)
-			MODULE.warn("ERROR: %s" % str(ex))		# print to module log
-			return str(ex)
-		return ''
-
-	def _logview(self,count):
-		"""Contains all functions needed to view or 'tail' the join log.
-		Argument 'count' can have different values:
-		< 0 ... return Unix timestamp of log file, to avoid fetching unchanged file.
-		0 ..... return the whole file, splitted into lines.
-		> 0 ... return the last 'count' lines of the file. (a.k.a. tail)"""
-		lines = []
-		if count < 0:
-			try:
-				st = stat(self._logname)
-				if st:
-					MODULE.info("   >> log file stamp = '%s'" % st[9])
-					return st[9]
-				return 0
-			except:
-				return 0
-		try:
-			file = open(self._logname,'r')
-			for line in file:
-				l = line.rstrip()
-				lines.append(l)
-				if (count) and (len(lines) > count):
-					lines.pop(0)
-		finally:
-			if file != None:
-				file.close()
-		return lines
-

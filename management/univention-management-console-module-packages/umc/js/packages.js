@@ -39,6 +39,8 @@ dojo.require("umc.widgets.Grid");
 
 dojo.require("umc.modules.lib.server");
 
+dojo.require("umc.widgets.ProgressBar");
+
 dojo.require("umc.modules._packages.SearchForm");
 
 dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
@@ -49,7 +51,11 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	buildRendering: function() {
 
+		pack = this;
+
 		this.inherited(arguments);
+
+		this._progressBar = new umc.widgets.ProgressBar();
 
 		var page = new umc.widgets.Page({
 			headerText:		this._("Package management"),
@@ -159,37 +165,13 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		});
 
 		// TODO create progress view widgets
-		this._logview = new umc.widgets.Text({
-			region:			'center',
-			content:		'this is the log viewer',
-			style:			'font-family:monospace;border:solid 1px #e0e0e0;background-color:#f0f0f0;overflow:auto;',
-			scrollable:		true		// doesn't work?
-		});
-
 		this._progress = new umc.widgets.Text({
 			region:			'top',
 			content:		'this is the progress title zone'
 		});
-		// will be shown when the installer is finished
-		this._back = new umc.widgets.Button({
-			region:			'bottom',
-			name:			'back',
-			label:			this._( 'Back to search' ),
-			callback:		dojo.hitch(this, function() {
-				umc.modules.lib.server.askRestart(this._('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
-					function() {
-						// if user confirms, he is redirected to the login page
-						// no need to do anythin fancy here :)
-					},
-					dojo.hitch(this, function() {
-						// user canceled -> switch back to initial view
-						this._switch_to_progress(false);
-					}
-				));
-			})
-		});
-
-		this._switch_to_progress(false);
+		this._refresh_grid();
+		this._pane.addChild(this._form);
+		this._pane.addChild(this._grid);
 	},
 
 	_refresh_grid: function() {
@@ -229,12 +211,13 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				txt += "<table>\n";
 				var width = 550;	// mimic the default of umc.dialog.confirm
 				var order = this._detail_field_order();
-				for (var fi in  order)
+				for (var fi in order)
 				{
 					var f = order[fi];
 					if (typeof(data.result[f]) != 'undefined')
 					{
 						var fl = this._detail_field_label(f);
+						fl = fl[0].toUpperCase() + fl.substr(1);
 						if (fl)
 						{
 							txt += "<tr>\n";
@@ -295,6 +278,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				// always: a button to close the dialog.
 				buttons.push({
 					name:		'cancel',
+					'default':	true,
 					label:		this._("Close")
 				});
 
@@ -455,8 +439,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		this.moduleStore.umcpCommand('packages/invoke',{'function':func, 'package':id}).then(
 			dojo.hitch(this, function(data) {
-				this._switch_to_progress(true);
-				this._fetch_job_status();			// start logfile polling
+				this._switch_to_progress_bar(id);
 			}),
 			dojo.hitch(this, function(data) {
 				umc.dialog.alert(data.message);
@@ -464,95 +447,27 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		);
 	},
 
-	// switches between normal (search form + result grid) and progress (title + log tail) view
-	_switch_to_progress: function(on) {
+	_switch_to_progress_bar: function(packageName) {
+		this.standby(true, this._progressBar);
+		this._progressBar.reset(packageName);
+		this._progressBar.auto('packages/progress',
+			{},
+			dojo.hitch(this, '_restartOrReload')
+		);
+	},
 
-		if (on)
-		{
-			this._pane.removeChild(this._grid);
-			this._pane.removeChild(this._form);
-			this._pane.addChild(this._progress);
-			// clear log view from previous content.
-			this._logview.set('content','');
-			this._pane.addChild(this._logview);
-		}
-		else
-		{
+	_restartOrReload: function() {
+		umc.modules.lib.server.askRestart(this._('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
+		function() {
+			// if user confirms, he is redirected to the login page
+			// no need to do anythin fancy here :)
+		},
+		dojo.hitch(this, function() {
+			// user canceled -> switch back to initial view
+			this.standby(false);
 			this._refresh_grid();
-
-			this._pane.removeChild(this._logview);
-			this._pane.removeChild(this._progress);
-			this._pane.removeChild(this._back);
-			this._pane.addChild(this._form);
-			this._pane.addChild(this._grid);
-
-		}
-	},
-
-	// schedules the next cycle of log file polling.
-	// Made this a seperate function since it is called
-	// from different places.
-	//
-	// Avoids starting next cycle if it encounters the job
-	// is finished -> then it enables the 'back' button.
-	_start_next_job_cycle: function() {
-
-		this.moduleStore.umcpCommand('packages/running').then(
-			dojo.hitch(this, function(data) {
-				if (data.result)	// running?
-				{
-					window.setTimeout(dojo.hitch(this, function() {
-						this._fetch_job_status();
-					}),1000);
-				}
-				else
-				{
-					this._progress.set('content',this._("The current installer job is now finished."));
-					this._pane.addChild(this._back);
-				}
-			}),
-			dojo.hitch(this, function(data) {
-				umc.dialog.notify(data.message);
-				this._pane.addChild(this._back);
-			})
-		);
-
-	},
-
-	// Timeout handler that fetches the output of the current
-	// installer job.
-	_fetch_job_status: function() {
-
-		this.moduleStore.umcpCommand('packages/logview',{count:-1}).then(
-			dojo.hitch(this, function(data) {
-				if (data.result != this._last_log_stamp)
-				{
-					this._last_log_stamp = data.result;
-					// log file content changed -> fetch it.
-					this.moduleStore.umcpCommand('packages/logview',{count:0}).then(
-						dojo.hitch(this, function(data) {
-							this._logview.set('content',data.result.join('<br/>'));
-							this._start_next_job_cycle();
-						}),
-						dojo.hitch(this, function(data) {
-							// error callback
-							umc.dialog.notify(data.message);
-							this._pane.addChild(this._back);	// allow the 'back' button on error.
-						})
-					);
-				}
-				else
-				{
-					// log file content unchanged, only continue polling.
-					this._start_next_job_cycle();
-				}
-			}),
-			dojo.hitch(this, function(data) {
-				// error callback
-				umc.dialog.notify(data.message);
-				this._pane.addChild(this._back);	// allow the 'back' button on error.
-			})
-		);
+		}));
 	}
 
 });
+

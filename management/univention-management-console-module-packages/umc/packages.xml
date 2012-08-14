@@ -32,13 +32,8 @@
 	<!-- Sections: fill the 'sections' combobox. -->
 	<command name="packages/sections" function="sections"/>
 
-	<!-- Logview: tail -f on the installer log. -->
-	<command name="packages/logview" function="logview">
-		<attribute name="count" syntax="Integer"/>
-	</command>
-
-	<!-- Running: ask if an installer job is running. -->
-	<command name="packages/running" function="running"/>
+	<!-- Progress: information for the progress bar. -->
+	<command name="packages/progress" function="progress"/>
 
   </module>
 </umc>

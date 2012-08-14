@@ -1,3 +1,12 @@
+univention-management-console-module-packages (2.0.0-1) unstable; urgency=low
+
+  * Use univention.lib.package_manager (Bug #28010)
+  * Use decorators (Bug #27716)
+  * Use progress bar instead of log file view (Bug #25558)
+  * Big cleanup (removed unneeded functionality)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 Aug 2012 14:17:28 +0200
+
 univention-management-console-module-packages (1.0.5-1) unstable; urgency=low
 
   * added missing translations

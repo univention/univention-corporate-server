@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-packages\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-07-04 12:38+0200\n"
+"POT-Creation-Date: 2012-08-14 12:43+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,18 +12,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/packages/__init__.py:323
+#: umc/python/packages/__init__.py:121
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
-#: umc/python/packages/__init__.py:290
+#: umc/python/packages/sanitizers.py:16
+#, python-format
+msgid "Should be in %r"
+msgstr "Sollte aus %r sein"
+
+#: umc/python/packages/__init__.py:197
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/packages/__init__.py:292
+#: umc/python/packages/__init__.py:199
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/packages/__init__.py:288
-msgid "upgradeable"
+#: umc/python/packages/__init__.py:195
+msgid "upgradable"
 msgstr "aktualisierbar"
