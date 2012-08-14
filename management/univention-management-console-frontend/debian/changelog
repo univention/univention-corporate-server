@@ -4,7 +4,6 @@ univention-management-console-frontend (2.0.11-1) unstable; urgency=low
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Aug 2012 18:18:53 +0200
 
-=======
 univention-management-console-frontend (2.0.10-1) unstable; urgency=low
 
   * Added ProgressBar (Bug #25558). May be merged with ProgressInfo
