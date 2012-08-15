@@ -24,7 +24,7 @@
 		<script type="text/javascript" src="../../js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
 		<script type="text/javascript" src="../../js%HASH%/umc/build.js%JSSUFFIX%"></script>
 		<script type="text/javascript">
-			require(["dojo/parser"], function(parser){
+			require(["dojo/parser", "umc/widgets/SubmitButton"], function(parser){
 				parser.parse();
 			});
 			var state = "unloaded";
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 			</div>
-			<button id="umc_SubmitButton" name="submit" type="submit" data-dojo-type="./widgets/SubmitButton"></button>
+			<button id="umc_SubmitButton" name="submit" type="submit" data-dojo-type="umc/widgets/SubmitButton"></button>
 		</form>
 	</body>
 </html>

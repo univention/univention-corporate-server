@@ -64,7 +64,7 @@ define([
 			this.inherited(arguments);
 
 			if (typeof this.callback == "function") {
-				this.on('click', 'callback');
+				this.on('click', lang(this, 'callback'));
 			}
 		}
 	});

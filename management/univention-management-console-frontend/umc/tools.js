@@ -170,7 +170,7 @@ define([
 				// create a new timer instance
 				this._checkSessionTimer = new timing.Timer(1000);
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
-					if (!typeof cookie('UMCSessionId' == "string")) {
+					if (typeof cookie('UMCSessionId') != 'string') {
 						this._checkSessionTimer.stop();
 						if (tools.status('loggingIn')) {
 							// login dialog is already running

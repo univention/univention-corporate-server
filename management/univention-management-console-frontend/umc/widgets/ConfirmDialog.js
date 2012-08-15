@@ -36,7 +36,7 @@ define([
 	"dojo/dom-class",
 	"dijit/Dialog",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/Text",
+	"umc/widgets/Button",
 	"umc/widgets/Text"
 ], function(declare, lang, array, on, domClass, Dialog, ContainerWidget, Button, Text) {
 	return declare("umc/widgets/ConfirmDialog", [ Dialog ], {

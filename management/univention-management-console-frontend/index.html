@@ -72,7 +72,7 @@
 		<script type="text/javascript" src="js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
 		<script type="text/javascript" src="js%HASH%/umc/build.js%JSSUFFIX%"></script>
 		<script type="text/javascript">
-			require(["dojo/parser"], function(parser){
+			require(["dojo/parser", "umc/widgets/ContainerWidget"], function(parser){
 				parser.parse();
 			});
 			require(["umc/app", "umc/tools", "dojo/domReady!"], function(app, tools){

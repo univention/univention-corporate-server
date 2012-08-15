@@ -104,7 +104,7 @@ define([
 					tools.status('loggingIn', false);
 
 					// submit the username to the deferred callback
-					deferred.callback(username);
+					deferred.resolve(username);
 				});
 				return deferred;
 			}));

@@ -250,14 +250,15 @@ define([
 				// get all modules
 				array.forEach(modules, lang.hitch(this, function(module, i) {
 					// try to load the module
-					require(['umc/modules/' + module.id], lang.hitch(this, function(baseClass) {
+					/*require(['umc/modules/' + module.id], lang.hitch(this, function(baseClass) {
 						// add module config class to internal list of available modules
 						this._modules.push(lang.mixin({
 							BaseClass: baseClass,
 							_orgIndex: i  // save the element's original index
 						}, module));
 						incDeps();
-					}));
+					}));*/
+					incDeps();
 
 				}));
 
