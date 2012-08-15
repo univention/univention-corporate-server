@@ -1,3 +1,10 @@
+ucs-test (2.0.3-1) unstable; urgency=low
+
+  * 09_updater/84mirror-component-errata: Mirror localhost component errata
+    (Bug #28187)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2012 08:14:54 +0200
+
 ucs-test (2.0.2-8) unstable; urgency=low
 
   * 50_samba/30winbind now works for a memberserver (Bug #27654)

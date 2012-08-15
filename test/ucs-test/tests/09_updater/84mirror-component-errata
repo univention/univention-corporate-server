@@ -1,0 +1,63 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Mirror localhost component errata
+##  1. create two errata updates for a component
+##  2. configura a local mirror
+##  3. check if the errata components would be mirrored
+##  4. check that not a further errata component would be mirrored (errata3)
+## bugs: [28187]
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+compname="test${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+# Create two errata updates for this component
+mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--component/${compname}-errata1" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${_version_version}--component/${compname}-errata2" maintained "${ARCH}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+comp="repository/online/component/${compname}"
+
+config_mirror \
+	version/version="${major}.2" \
+	version/patchlevel=0 \
+	version/erratalevel=0 \
+	repository/mirror/version/end="${major}.2-1" \
+	"${comp}=yes" "${comp}/parts=maintained" "${comp}/server=localhost"
+
+
+# Dump the mirror.list for debug
+echo "Debug: cat /etc/apt/mirror.list"
+cat /etc/apt/mirror.list
+echo "Debug: cat /etc/apt/mirror.list (done)"
+
+(
+	set -e
+	grep -E "^deb http://localhost/univention-repository/${_version_version}/maintained/component/ ${compname}/${ARCH}" /etc/apt/mirror.list
+	grep -E "^deb http://localhost/univention-repository/${_version_version}/maintained/component/ ${compname}-errata1/${ARCH}" /etc/apt/mirror.list
+	grep -E "^deb http://localhost/univention-repository/${_version_version}/maintained/component/ ${compname}-errata2/${ARCH}" /etc/apt/mirror.list
+)
+[ $? -eq 0 ] && RETVAL=100
+
+# errata3 must not be available
+grep -E "^deb http://localhost/univention-repository/${_version_version}/maintained/component/ ${compname}-errata3/${ARCH}" /etc/apt/mirror.list
+[ $? -eq 0 ] && RETVAL=110
+
+exit ${RETVAL}
+# vim:set ft=sh:
