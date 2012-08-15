@@ -1129,7 +1129,8 @@ class UniventionUpdater:
 				if iterate_errata:
 					if errata_level:
 						patch_names = ['%s-errata%s' % (component, errata_level)]
-					else:
+					elif not for_mirror_list:
+						# see below for mirror.list handling
 						errata_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
 						patch_names += ['%s-errata%d' % (component, x) for x in range(1, errata_level + 1)]
 
@@ -1144,6 +1145,20 @@ class UniventionUpdater:
 						# then raise error, otherwise ignore it
 						if component in self.get_current_components():
 							raise
+
+				# Go through all errata level for this component and break if the first errata level is missing
+				if for_mirror_list:
+					for i in range(1,1000):
+						valid = False
+						patch_name = '%s-errata%s' % (component, i)
+						for (UCSRepoPoolVariant, subarchs) in ((UCSRepoPool, archs), (UCSRepoPoolNoArch, ('all',))):
+							struct = UCSRepoPoolVariant(prefix=server, patch=patch_name)
+							for ver in self._iterate_versions(struct, version, version, parts, subarchs, server):
+								yield server, ver
+								valid = True
+						if not valid:
+							break
+						
 
 	def print_version_repositories( self, clean = False, dists = False, start = None, end = None ):
 		'''Return a string of Debian repository statements for all UCS versions

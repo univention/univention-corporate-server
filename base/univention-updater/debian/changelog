@@ -1,3 +1,10 @@
+univention-updater (8.0.4-1) unstable; urgency=low
+
+  * Mirror errata updates for components into the local repository
+    (Bug #28187)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2012 07:32:41 +0200
+
 univention-updater (8.0.3-1) unstable; urgency=low
 
   * remove useless "known bugs" message (Bug #25379)
