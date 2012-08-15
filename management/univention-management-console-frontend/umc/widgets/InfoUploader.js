@@ -26,47 +26,46 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.InfoUploader");
+define([
+	"dojo/_base/declare",
+	"umc/widgets/Uploader",
+	"umc/widgets/Text",
+	"umc/i18n!umc/app"
+], function(declare, Uploader, Text, _) {
+	return declare("umc.widgets.InfoUploader", Uploader, {
+		'class': 'umcInfoUploader',
 
-dojo.require("umc.widgets.Uploader");
-dojo.require("umc.widgets.Text");
+		maxSize: 512000,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.Uploader ], {
-	'class': 'umcInfoUploader',
+		_text: null,
 
-	i18nClass: 'umc.app',
+		constructor: function() {
+			this.buttonLabel = _( 'Upload' );
+		},
 
-	maxSize: 512000,
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	_text: null,
+			this.sizeClass = null;
+		},
 
-	constructor: function() {
-		this.buttonLabel = _( 'Upload' );
-	},
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+			// create an image widget
+			this._text = new Text({
+				label: '',
+				content: ''
+			});
+			this.addChild(this._text, 0);
+		},
 
-		this.sizeClass = null;
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		// create an image widget
-		this._text = new umc.widgets.Text({
-			label: '',
-			content: ''
-		});
-		this.addChild(this._text, 0);
-	},
-
-	updateView: function(value, data) {
-		this._text.set( 'content', value );
-	}
+		updateView: function(value) {
+			this._text.set( 'content', value );
+		}
+	});
 });
-
 
 

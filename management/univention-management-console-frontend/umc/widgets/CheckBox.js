@@ -26,47 +26,47 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.CheckBox");
+define([
+	"dojo/_base/declare",
+	"dijit/form/CheckBox",
+	"umc/tools",
+	"umc/widgets/_FormWidgetMixin"
+], function(declare, CheckBox, tools, _FormWidgetMixin) {
+	return declare("umc.widgets.CheckBox", [ CheckBox, _FormWidgetMixin ], {
+		// by default, the checkbox is turned off
+		value: false,
 
-dojo.require("dijit.form.CheckBox");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("tools");
+		// the widget's class name as CSS class
+		'class': 'umcCheckBox',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.CheckBox, umc.widgets._FormWidgetMixin ], {
-	// by default, the checkbox is turned off
-	value: false,
+		// a checkbox is always true
+		valid: true,
 
-	// the widget's class name as CSS class
-	'class': 'umcCheckBox',
+		// internal cache of the initial value
+		_initialValue: null,
 
-	// a checkbox is always true
-	valid: true,
+		postMixInProperties: function() {
+			this._initialValue = this.checked = this.value;
+			this.inherited( arguments );
+			this.sizeClass = null;
+		},
 
-	// internal cache of the initial value
-	_initialValue: null,
+		_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){
+			// based on the code from dijit.form.CheckBox
+			this.value = newValue = tools.isTrue( newValue );
 
-	postMixInProperties: function() {
-		this._initialValue = this.checked = this.value;
-		this.inherited( arguments );
-		this.sizeClass = null;
-	},
+			// this is important, otherwise the inital state is displayed wrong
+			if(this._created){
+				this.set('checked', newValue, priorityChange);
+			}
+		},
 
-	_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){
-		// based on the code from dijit.form.CheckBox
-		this.value = newValue = tools.isTrue( newValue );
-
-		// this is important, otherwise the inital state is displayed wrong
-		if(this._created){
-			this.set('checked', newValue, priorityChange);
+		_getValueAttr: function() {
+			return this.get('checked');
 		}
-	},
-
-	_getValueAttr: function() {
-		return this.get('checked');
-	}
+	});
 });
-
 
 

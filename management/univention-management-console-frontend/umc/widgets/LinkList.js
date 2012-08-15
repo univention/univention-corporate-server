@@ -28,72 +28,72 @@
  */
 /*global define console*/
 
-dojo.provide("umc.widgets.LinkList");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/on",
+	"dojo/topic",
+	"dijit/form/Button",
+	"umc/tools",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/_SelectMixin"
+], function(declare, lang, array, on, topic, Button, tools, ContainerWidget, _SelectMixin) {
+	return declare("umc.widgets.LinkList", [ ContainerWidget, _SelectMixin ], {
+		// summary:
+		//		Provides a list of buttons opening a given object
 
-dojo.require("dijit.form.Button");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets._SelectMixin");
-dojo.require("tools");
-dojo.require("render");
+		name: '',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._SelectMixin, umc.i18n.Mixin ], {
-	// summary:
-	//		Provides a list of buttons opening a given object 
+		value: null,
 
-	name: '',
+		disabled: false,
 
-	value: null,
+		// the widget's class name as CSS class
+		'class': 'umcLinkList',
 
-	disabled: false,
+		onDynamicValuesLoaded: function() {
+			this.store.fetch( {
+				onComplete: lang.hitch( this, function ( items ) {
+					array.forEach( items, lang.hitch( this, function( item ) {
+						var btn = Button( {
+							name : 'close',
+							label : item.label,
+							iconClass: tools.getIconClass( item.icon, 16 )
+						} );
+						if ( ! this.store.hasAttribute( item, 'module' ) ) {
+							console.log( 'LinkList: attribute module is missing');
+							return;
+						}
+						if ( ! this.store.hasAttribute( item, 'id' ) ) {
+							console.log( 'LinkList: attribute objectDN is missing');
+							return;
+						}
+						if ( ! this.store.hasAttribute( item, 'objectType' ) ) {
+							console.log( 'LinkList: attribute objectType is missing');
+							return;
+						}
+						var moduleProps = {
+							flavor : this.store.getValue( item, 'flavor', null ),
+							module : this.store.getValue( item, 'module', null ),
+							openObject: {
+								objectDN : this.store.getValue( item, 'id', null ),
+								objectType : this.store.getValue( item, 'objectType', null )
+							}
+						};
+						this.store.getValue( item, 'objectType', null );
+						on( btn, "click", moduleProps, function () {
+							topic.publish( "/umc/modules/open", [ moduleProps.module, moduleProps.flavor, moduleProps ] );
+						} );
+						this.addChild( btn );
+					} ) );
+				} )
+			} );
+		},
 
-	i18nClass: 'umc.app',
-
-	// the widget's class name as CSS class
-	'class': 'umcLinkList',
-
-	onDynamicValuesLoaded: function() {
-		this.store.fetch( {
-						  onComplete: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function ( items ) {
-							  /*REQUIRE:"dojo/_base/array"*/ array.forEach( items, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
-												var btn = umc.widgets.Button( {
-																				 name : 'close',
-																				 label : item.label,
-																				 iconClass: tools.getIconClass( item.icon, 16 )
-																			 } );
-												if ( ! this.store.hasAttribute( item, 'module' ) ) {
-													console.log( 'LinkList: attribute module is missing');
-													return;
-												}
-												if ( ! this.store.hasAttribute( item, 'id' ) ) {
-													console.log( 'LinkList: attribute objectDN is missing');
-													return;
-												}
-												if ( ! this.store.hasAttribute( item, 'objectType' ) ) {
-													console.log( 'LinkList: attribute objectType is missing');
-													return;
-												}
-												var moduleProps = {
-													flavor : this.store.getValue( item, 'flavor', null ),
-													module : this.store.getValue( item, 'module', null ),
-													openObject: {
-														objectDN : this.store.getValue( item, 'id', null ),
-														objectType : this.store.getValue( item, 'objectType', null )
-													}
-												};
-												this.store.getValue( item, 'objectType', null );
-												/*REQUIRE:"dojo/on"*/ /*TODO*/ on( btn, "onClick", moduleProps, function () {
-																  /*REQUIRE:"dojo/topic"*/ topic.publish( "/umc/modules/open", [ moduleProps.module, moduleProps.flavor, moduleProps ] );
-															  } );
-												this.addChild( btn );
-											} ) );
-							  } ) } );
-	},
-
-
-	isValid: function() {
-		return true;
-	}
-
+		isValid: function() {
+			return true;
+		}
+	});
 });
-
 

@@ -26,16 +26,17 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.ContainerForm");
-
-dojo.require("dijit.form.Form");
-dojo.require("dijit._Container");
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([dijit.form.Form, dijit._Container], {
-	// description:
-	//		Combination of Form and Container class.
+define([
+	"dojo/_base/declare",
+	"dijit/form/Form",
+	"dijit/_Container"
+], function(declare, Form, _Container) {
+	return declare("umc.widgets.ContainerForm", [Form, _Container], {
+		// description:
+		//		Combination of Form and Container class.
+	});
 });
 
 

@@ -26,473 +26,464 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.MultiInput");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/array",
+	"dijit/form/Button",
+	"umc/tools",
+	"umc/render",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/widgets/LabelPane"
+], function(declare, lang, array, Button, tools, render, ContainerWidget, _FormWidgetMixin, LabelPane) {
+	return declare([ContainerWidget, _FormWidgetMixin ], {
+		// summary:
+		//		Widget for a small list of simple and complex entries. An entry can be one or
+		//		multiple input fields (TextBox, ComboBox, etc.).
 
-dojo.require("dijit.form.Button");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("tools");
-dojo.require("render");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.widgets._WidgetsInWidgetsMixin");
+		// subtypes: Object[]
+		//		Essentially an array of object that describe the widgets for one element
+		//		of the MultiInput widget, the 'name' needs not to be specified, this
+		//		property is passed to render.widgets().
+		subtypes: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
-	umc.widgets.ContainerWidget,
-	umc.widgets._FormWidgetMixin,
-	umc.widgets._WidgetsInWidgetsMixin,
-	umc.i18n.Mixin
-], {
-	// summary:
-	//		Widget for a small list of simple and complex entries. An entry can be one or
-	//		multiple input fields (TextBox, ComboBox, etc.).
+		// max: Number
+		//		Maximal number of elements.
+		max: Infinity,
 
-	// subtypes: Object[]
-	//		Essentially an array of object that describe the widgets for one element
-	//		of the MultiInput widget, the 'name' needs not to be specified, this
-	//		property is passed to render.widgets().
-	subtypes: null,
+		// the widget's class name as CSS class
+		'class': 'umcMultiInput',
 
-	// max: Number
-	//		Maximal number of elements.
-	max: Infinity,
+		depends: null,
 
-	// the widget's class name as CSS class
-	'class': 'umcMultiInput',
+		name: '',
 
-	depends: null,
+		value: null,
 
-	name: '',
+		delimiter: '',
 
-	value: null,
+		disabled: false,
 
-	delimiter: '',
+		_widgets: null,
 
-	disabled: false,
+		_nRenderedElements: 0,
 
-	i18nClass: 'umc.app',
+		_rowContainers: null,
 
-	_widgets: null,
+		_newButton: null,
 
-	_nRenderedElements: 0,
+		_lastDepends: null,
 
-	_rowContainers: null,
+		_createHandler: function(ifunc) {
+			// This handler will be called by all subwidgets of the MultiInput widget.
+			// When the first request comes in, we will execute the function to compute
+			// the dynamic values. Request within a small time interval will get the
+			// same result in order to have a caching mechanism for multiple queries.
+			var _valueOrDeferred = null;
+			var _lastCall = 0;
 
-	_newButton: null,
+			return function(iname, options) {
+				// current timestamp
+				var currentTime = (new Date()).getTime();
+				var elapsedTime = Math.abs(currentTime - _lastCall);
+				_lastCall = currentTime;
 
-	_lastDepends: null,
+				// if the elapsed time is too big, or we have not a Deferred object (i.e., value
+				// are directly computed by a function without AJAX calls), execute the function
+				if (elapsedTime > 100 || !(lang.getObject('then', false, _valueOrDeferred) && lang.getObject('cancel', false, _valueOrDeferred))) {
+					_valueOrDeferred = ifunc(options);
+				}
+				//console.log('# new deferred: ', iname, ' elapsedTime: ', elapsedTime, ' options: ', json.stringify(options), ' values: ', _valueOrDeferred);
 
-	_createHandler: function(ifunc) {
-		// This handler will be called by all subwidgets of the MultiInput widget.
-		// When the first request comes in, we will execute the function to compute
-		// the dynamic values. Request within a small time interval will get the
-		// same result in order to have a caching mechanism for multiple queries.
-		var _valueOrDeferred = null;
-		var _lastCall = 0;
+				// return the value
+				return _valueOrDeferred;
+			};
+		},
 
-		return function(iname, options) {
-			// current timestamp
-			var currentTime = (new Date()).getTime();
-			var elapsedTime = Math.abs(currentTime - _lastCall);
-			_lastCall = currentTime;
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-			// if the elapsed time is too big, or we have not a Deferred object (i.e., value
-			// are directly computed by a function without AJAX calls), execute the function
-			if (elapsedTime > 100 || !(/*REQUIRE:"dojo/_base/lang"*/ lang.getObject('then', false, _valueOrDeferred) && /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('cancel', false, _valueOrDeferred))) {
-				_valueOrDeferred = ifunc(options);
+			this.sizeClass = null;
+
+			// check the property 'subtypes'
+			tools.assert(this.subtypes instanceof Array,
+					'umc/widgets/ContainerWidget: The property subtypes needs to be a string or an array of strings: ' + this.subtypes);
+
+			// initiate other properties
+			this._rowContainers = [];
+			this._widgets = [];
+
+			// we need to rewire the dependencies through this widget to the row widgets
+			this.depends = [];
+			array.forEach(this.subtypes, function(iwidget) {
+				// gather all dependencies so form can notify us
+				array.forEach(tools.stringOrArray(iwidget.depends), function(idep) {
+					if (array.indexOf(this.depends, idep) < 0) {
+						this.depends.push(idep);
+					}
+				}, this);
+
+				// parse the dynamic value function and create a handler
+				var ifunc = tools.stringOrFunction(iwidget.dynamicValues, this.umcpCommand || tools.umcpCommand);
+				var handler = lang.hitch(this, this._createHandler(ifunc, iwidget));
+
+				// replace the widget handler for dynamicValues with our version
+				iwidget.dynamicValues = handler;
+			}, this);
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// add empty element
+			this._appendElements(1);
+		},
+
+		_loadValues: function(depends) {
+			// delegate the call to _loadValues to all widgets
+			this._lastDepends = depends;
+			array.forEach(this._widgets, function(iwidgets) {
+				array.forEach(iwidgets, function(jwidget) {
+					if ('_loadValues' in jwidget) {
+						jwidget._loadValues(depends);
+					}
+				});
+			});
+		},
+
+		_setAllValues: function(_valList) {
+			var valList = _valList;
+			if (!valList instanceof Array) {
+				valList = [];
 			}
-			//console.log('# new deferred: ', iname, ' elapsedTime: ', elapsedTime, ' options: ', /*REQUIRE:"dojo/jsone"*/ json.stringify(options), ' values: ', _valueOrDeferred);
 
-			// return the value
-			return _valueOrDeferred;
-		};
-	},
+			// adjust the number of rows
+			var diff = valList.length - this._nRenderedElements;
+			if (diff > 0) {
+				this._appendElements(diff);
+			}
+			else if (diff < 0) {
+				this._popElements(-diff);
+			}
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+			// set all values
+			array.forEach(valList, function(ival, irow) {
+				if (irow >= this._widgets.length) {
+					// break
+					return false;
+				}
 
-		this.sizeClass = null;
+				var rowVals = [];
+				if (typeof ival == "string") {
+					// entry is string .. we need to parse it if we have a delimiter
+					if (this.delimiter) {
+						rowVals = ival.split(this.delimiter);
+					}
+					else {
+						rowVals = [ ival ];
+					}
+				}
+				else if (ival instanceof Array) {
+					rowVals = ival;
+				}
 
-		// check the property 'subtypes'
-		tools.assert(this.subtypes instanceof Array,
-				'umc.widgets.ContainerWidget: The property subtypes needs to be a string or an array of strings: ' + this.subtypes);
+				// set values
+				for (var j = 0; j < this.subtypes.length; ++j) {
+					var val = j >= rowVals.length ? '' : rowVals[j];
+					this._widgets[irow][j].set('value', val);
 
-		// initiate other properties
-		this._rowContainers = [];
-		this._widgets = [];
-
-		// we need to rewire the dependencies through this widget to the row widgets
-		this.depends = [];
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.subtypes, function(iwidget, i) {
-			// gather all dependencies so form can notify us
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(tools.stringOrArray(iwidget.depends), function(idep) {
-				if (/*REQUIRE:"dojo/_base/array"*/ array.indexOf(this.depends, idep) < 0) {
-					this.depends.push(idep);
+					// for dynamic combo boxes, we need to save the value as "initial value"
+					if (this._widgets[irow][j].setInitialValue) {
+						this._widgets[irow][j].setInitialValue(val, false);
+					}
 				}
 			}, this);
+		},
 
-			// parse the dynamic value function and create a handler
-			var ifunc = tools.stringOrFunction(iwidget.dynamicValues, this.umcpCommand || tools.umcpCommand);
-			var handler = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this._createHandler(ifunc, iwidget));
-
-			// replace the widget handler for dynamicValues with our version
-			iwidget.dynamicValues = handler;
-		}, this);
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		// add empty element
-		this._appendElements(1);
-	},
-
-	_loadValues: function(depends) {
-		// delegate the call to _loadValues to all widgets
-		this._lastDepends = depends;
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._widgets, function(iwidgets) {
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(iwidgets, function(jwidget) {
-				if ('_loadValues' in jwidget) {
-					jwidget._loadValues(depends);
-				}
+		_setValueAttr: function(_vals) {
+			// remove all empty elements
+			var vals = array.filter(_vals, function(ival) {
+				return (typeof ival == "string" && '' !== ival) || (ival instanceof Array && ival.length);
 			});
-		});
-	},
 
-	_setAllValues: function(_valList) {
-		var valList = _valList;
-		if (!valList instanceof Array) {
-			valList = [];
-		}
+			// append an empty element
+			vals.push([]);
 
-		// adjust the number of rows
-		var diff = valList.length - this._nRenderedElements;
-		if (diff > 0) {
-			this._appendElements(diff);
-		}
-		else if (diff < 0) {
-			this._popElements(-diff);
-		}
+			// set the values
+			this._setAllValues(vals);
+		},
 
-		// set all values
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(valList, function(ival, irow) {
-			if (irow >= this._widgets.length) {
-				// break
-				return false;
+		_setDisabledAttr: function ( value ) {
+			var i;
+			for ( i = 0; i < this._rowContainers.length; ++i) {
+				array.forEach( this._rowContainers[ i ].getChildren(), function( widget ) {
+					widget.set( 'disabled', value );
+				} );
 			}
+			this.disabled = value;
+		},
 
-			var rowVals = [];
-			if (typeof ival == "string") {
-				// entry is string .. we need to parse it if we have a delimiter
+		_getAllValues: function() {
+			var i, j, val, isSet, vals = [], rowVals = [];
+			for (i = 0; i < this._widgets.length; ++i) {
+				rowVals = [];
+				isSet = false;
+				for (j = 0; j < this._widgets[i].length; ++j) {
+					val = this._widgets[i][j].get('value');
+					isSet = isSet || ('' !== val);
+					if (!tools.inheritsFrom(this._widgets[i][j], 'umc.widgets.Button')) {
+						rowVals.push(val);
+					}
+				}
 				if (this.delimiter) {
-					rowVals = ival.split(this.delimiter);
+					// delimiter is given, represent rows as strings
+					// ... and empty rows as empty string
+					vals.push(isSet ? rowVals.join(this.delimiter) : '');
 				}
 				else {
-					rowVals = [ ival ];
+					// delimiter is not given, represent rows as arrays
+					// ... and empty rows as empty array
+					vals.push(isSet ? rowVals : []);
 				}
 			}
-			else if (ival instanceof Array) {
-				rowVals = ival;
-			}
+			return vals;
+		},
 
-			// set values
-			for (var j = 0; j < this.subtypes.length; ++j) {
-				var val = j >= rowVals.length ? '' : rowVals[j];
-				this._widgets[irow][j].set('value', val);
-
-				// for dynamic combo boxes, we need to save the value as "initial value"
-				if (this._widgets[irow][j].setInitialValue) {
-					this._widgets[irow][j].setInitialValue(val, false);
+		_getValueAttr: function() {
+			// only return non-empty entries
+			var vals = [];
+			array.forEach(this._getAllValues(), function(ival) {
+				if (typeof ival == "string" && '' !== ival) {
+					vals.push(ival);
 				}
-			}
-		}, this);
-	},
-
-	_setValueAttr: function(_vals) {
-		// remove all empty elements
-		var vals = /*REQUIRE:"dojo/_base/array"*/ array.filter(_vals, function(ival) {
-			return (typeof ival == "string" && '' !== ival) || (ival instanceof Array && ival.length);
-		});
-
-		// append an empty element
-		vals.push([]);
-
-		// set the values
-		this._setAllValues(vals);
-	},
-
-	_setDisabledAttr: function ( value ) {
-		var i;
-		for ( i = 0; i < this._rowContainers.length; ++i) {
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._rowContainers[ i ].getChildren(), function( widget ) {
-				widget.set( 'disabled', value );
-			} );
-		}
-		this.disabled = value;
-	},
-
-	_getAllValues: function() {
-		var i, j, val, isSet, vals = [], rowVals = [];
-		for (i = 0; i < this._widgets.length; ++i) {
-			rowVals = [];
-			isSet = false;
-			for (j = 0; j < this._widgets[i].length; ++j) {
-				val = this._widgets[i][j].get('value');
-				isSet = isSet || ('' !== val);
-				if (!tools.inheritsFrom(this._widgets[i][j], 'umc.widgets.Button')) {
-					rowVals.push(val);
+				else if (ival instanceof Array && ival.length) {
+					// if we only have one subtype, do not use arrays as representation
+					vals.push(1 == ival.length ? ival[0] : ival);
 				}
-			}
-			if (this.delimiter) {
-				// delimiter is given, represent rows as strings 
-				// ... and empty rows as empty string
-				vals.push(isSet ? rowVals.join(this.delimiter) : '');
-			}
-			else {
-				// delimiter is not given, represent rows as arrays
-				// ... and empty rows as empty array
-				vals.push(isSet ? rowVals : []);
-			}
-		}
-		return vals;
-	},
-
-	_getValueAttr: function() {
-		// only return non-empty entries
-		var vals = [];
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._getAllValues(), function(ival) {
-			if (typeof ival == "string" && '' !== ival) {
-				vals.push(ival);
-			}
-			else if (ival instanceof Array && ival.length) {
-				// if we only have one subtype, do not use arrays as representation
-				vals.push(1 == ival.length ? ival[0] : ival);
-			}
-		});
-		return vals;
-	},
-
-	_removeNewButton: function() {
-		if (this._newButton) {
-			this.orphan(this._newButton, true);
-			this._newButton = null;
-		}
-	},
-
-	_addNewButton: function() {
-		// add the 'new' button to the last row
-		if (this._nRenderedElements < 1) {
-			return;
-		}
-
-		// verify whether label information for subtypes are given
-		var hasSubTypeLabels = false;
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.subtypes, function(iwidget) {
-			hasSubTypeLabels = hasSubTypeLabels || iwidget.label;
-		});
-
-		// create 'new' button
-		var btn = this.adopt(dijit.form.Button, {
-			disabled: this.disabled,
-			iconClass: 'umcIconAdd',
-			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_appendElements', 1),
-			'class': 'umcMultiInputAddButton'
-		});
-
-		// wrap a button with a LabelPane
-		this._newButton = this.adopt(umc.widgets.LabelPane, {
-			content: btn,
-			label: this._nRenderedElements === 1 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
-		});
-
-		// add button to last row
-		this._rowContainers[this._rowContainers.length - 1].addChild(this._newButton);
-	},
-
-	_appendElements: function(n) {
-		if (n < 1) {
-			return;
-		}
-
-		// remove the 'new' button
-		this._removeNewButton();
-
-		var nFinal = this._nRenderedElements + n;
-		for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
-			// add all other elements with '__' such that they will be ignored by umc.widgets.form
-			var order = [], widgetConfs = [];
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.subtypes, function(iwidget, i) {
-				// add the widget configuration dict to the list of widgets
-				var iname = '__' + this.name + '-' + irow + '-' + i;
-				var iconf = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, iwidget, {
-					disabled: this.disabled,
-					name: iname,
-					value: '',
-					dynamicValues: /*REQUIRE:"dojo/_base/lang"*/ lang.partial(iwidget.dynamicValues, iname)
-				});
-				widgetConfs.push(iconf);
-
-				// add the name of the widget to the list of widget names
-				order.push(iname);
-			}, this);
-
-
-			// render the widgets
-			var widgets = render.widgets(widgetConfs);
-
-			// if we have a button, we need to pass the value and index if the
-			// current element
-			tools.forIn(widgets, function(ikey, iwidget) {
-				var myrow = irow;
-				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button') && typeof iwidget.callback == "function") {
-					var callbackOrg = iwidget.callback;
-					iwidget.callback = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-						callbackOrg(this.get('value')[myrow], myrow);
-					});
-				}
-			}, this);
-
-			// find out whether all items do have a label
-			var hasSubTypeLabels = /*REQUIRE:"dojo/_base/array"*/ array.filter(this.subtypes, function(iwidget) {
-				return iwidget.label;
-			}).length > 0;
-
-			// layout widgets
-			var visibleWidgets = /*REQUIRE:"dojo/_base/array"*/ array.map(order, function(iname) {
-				return widgets[iname];
 			});
-			var rowContainer = this.adopt(umc.widgets.ContainerWidget, {});
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(order, function(iname) {
-				// add widget to row container (wrapped by a LabelPane)
-				// only keep the label for the first row
-				var iwidget = widgets[iname];
-				var label = irow !== 0 ? '' : null;
-				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
-					label = irow !== 0 ? '' : '&nbsp;';
-				}
-				rowContainer.addChild(new umc.widgets.LabelPane({
+			return vals;
+		},
+
+		_removeNewButton: function() {
+			if (this._newButton) {
+				this.orphan(this._newButton, true);
+				this._newButton = null;
+			}
+		},
+
+		_addNewButton: function() {
+			// add the 'new' button to the last row
+			if (this._nRenderedElements < 1) {
+				return;
+			}
+
+			// verify whether label information for subtypes are given
+			var hasSubTypeLabels = false;
+			array.forEach(this.subtypes, function(iwidget) {
+				hasSubTypeLabels = hasSubTypeLabels || iwidget.label;
+			});
+
+			// create 'new' button
+			var btn = this.own(new Button({
+				disabled: this.disabled,
+				iconClass: 'umcIconAdd',
+				onClick: lang.hitch(this, '_appendElements', 1),
+				'class': 'umcMultiInputAddButton'
+			}))[0];
+
+			// wrap a button with a LabelPane
+			this._newButton = this.own(new LabelPane({
+				content: btn,
+				label: this._nRenderedElements === 1 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
+			}))[0];
+
+			// add button to last row
+			this._rowContainers[this._rowContainers.length - 1].addChild(this._newButton);
+		},
+
+		_appendElements: function(n) {
+			if (n < 1) {
+				return;
+			}
+
+			// remove the 'new' button
+			this._removeNewButton();
+
+			var nFinal = this._nRenderedElements + n;
+			for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
+				// add all other elements with '__' such that they will be ignored by umc/widgets/Form
+				var order = [], widgetConfs = [];
+				array.forEach(this.subtypes, function(iwidget, i) {
+					// add the widget configuration dict to the list of widgets
+					var iname = '__' + this.name + '-' + irow + '-' + i;
+					var iconf = lang.mixin({}, iwidget, {
+						disabled: this.disabled,
+						name: iname,
+						value: '',
+						dynamicValues: lang.partial(iwidget.dynamicValues, iname)
+					});
+					widgetConfs.push(iconf);
+
+					// add the name of the widget to the list of widget names
+					order.push(iname);
+				}, this);
+
+
+				// render the widgets
+				var widgets = render.widgets(widgetConfs);
+
+				// if we have a button, we need to pass the value and index if the
+				// current element
+				tools.forIn(widgets, function(ikey, iwidget) {
+					var myrow = irow;
+					if (tools.inheritsFrom(iwidget, 'umc.widgets.Button') && typeof iwidget.callback == "function") {
+						var callbackOrg = iwidget.callback;
+						iwidget.callback = lang.hitch(this, function() {
+							callbackOrg(this.get('value')[myrow], myrow);
+						});
+					}
+				}, this);
+
+				// find out whether all items do have a label
+				var hasSubTypeLabels = array.filter(this.subtypes, function(iwidget) {
+					return iwidget.label;
+				}).length > 0;
+
+				// layout widgets
+				var visibleWidgets = array.map(order, function(iname) {
+					return widgets[iname];
+				});
+				var rowContainer = this.own(new ContainerWidget({}))[0];
+				array.forEach(order, function(iname) {
+					// add widget to row container (wrapped by a LabelPane)
+					// only keep the label for the first row
+					var iwidget = widgets[iname];
+					var label = irow !== 0 ? '' : null;
+					if (tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
+						label = irow !== 0 ? '' : '&nbsp;';
+					}
+					rowContainer.addChild(new LabelPane({
+						disabled: this.disabled,
+						content: iwidget,
+						label: label
+					}));
+
+					// register to 'onChange' events
+					this.own(iwidget.watch('value', lang.hitch(this, function() {
+						this._set('value', this.get('value'));
+					})));
+				}, this);
+
+				// add a 'remove' button at the end of the row
+				var button = this.own(new Button({
 					disabled: this.disabled,
-					content: iwidget,
-					label: label
+					iconClass: 'umcIconDelete',
+					onClick: lang.hitch(this, '_removeElement', irow),
+					'class': 'umcMultiInputRemoveButton'
+				}))[0];
+				rowContainer.addChild(new LabelPane({
+					content: button,
+					label: irow === 0 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
 				}));
 
-				// register to 'onChange' events
-				/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(iwidget, 'onChange', function() {
-					this.onChange(this.get('value'));
-				});
-			}, this);
+				// add row
+				this._widgets.push(visibleWidgets);
+				this._rowContainers.push(rowContainer);
+				rowContainer.startup();
+				this.addChild(rowContainer);
 
-			// add a 'remove' button at the end of the row
-			var button = this.adopt(dijit.form.Button, {
-				disabled: this.disabled,
-				iconClass: 'umcIconDelete',
-				onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_removeElement', irow),
-				'class': 'umcMultiInputRemoveButton'
-			});
-			rowContainer.addChild(new umc.widgets.LabelPane({
-				content: button,
-				label: irow === 0 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
-			}));
+				// call the _loadValues method by hand
+				array.forEach(order, function(iname) {
+					var iwidget = widgets[iname];
+					if ('_loadValues' in iwidget) {
+						iwidget._loadValues(this._lastDepends);
+					}
+				}, this);
+			}
 
-			// add row
-			this._widgets.push(visibleWidgets);
-			this._rowContainers.push(rowContainer);
-			rowContainer.startup();
-			this.addChild(rowContainer);
+			// add the new button
+			if (this._nRenderedElements < this.max) {
+				this._addNewButton();
+			}
+		},
 
-			// call the _loadValues method by hand
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(order, function(iname) {
-				var iwidget = widgets[iname];
-				if ('_loadValues' in iwidget) {
-					iwidget._loadValues(this._lastDepends);
-				}
-			}, this);
-		}
+		_popElements: function(n) {
+			if (n < 1) {
+				return;
+			}
 
-		// add the new button 
-		if (this._nRenderedElements < this.max) {
+			// remove the 'new' button
+			this._removeNewButton();
+
+			for (var irow = this._nRenderedElements - 1; irow >= this._nRenderedElements - n; --irow) {
+				// destroy the row container
+				this.orphan(this._rowContainers[irow], true);
+
+				// clean up internal arrays
+				this._rowContainers.pop();
+				this._widgets.pop();
+			}
+
+			// update the number of render elements
+			this._nRenderedElements -= n;
+
+			// add the new button
 			this._addNewButton();
-		}
-	},
+		},
 
-	_popElements: function(n) {
-		if (n < 1) {
-			return;
-		}
+		_removeElement: function(idx) {
+			var vals = this._getAllValues();
+			vals.splice(idx, 1);
 
-		// remove the 'new' button
-		this._removeNewButton();
+			// add an empty line in case we removed the last element
+			if (!vals.length) {
+				vals.push('');
+			}
+			this._setAllValues(vals);
+		},
 
-		for (var irow = this._nRenderedElements - 1; irow >= this._nRenderedElements - n; --irow) {
-			// destroy the row container
-			this.orphan(this._rowContainers[irow], true);
+		isValid: function() {
+			var areValid = true;
+			var i, j;
+			for (i = 0; i < this._widgets.length; ++i) {
+				for (j = 0; j < this._widgets[i].length; ++j) {
+					areValid = areValid && (!this._widgets[i][j].isValid || this._widgets[i][j].isValid());
+				}
+			}
+			return areValid;
+		},
 
-			// clean up internal arrays
-			this._rowContainers.pop();
-			this._widgets.pop();
-		}
+		setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
+			// summary:
+			//		Set all child elements to valid/invalid.
+			//		Parameters can be either simple values (Boolean/String) or arrays.
+			//		Arrays indicate specific states for each element
+			var i, j;
+			for (i = 0; i < this._widgets.length; ++i) {
+				var imessage = messages instanceof Array ? messages[i] : messages;
+				var iisValid = areValid instanceof Array ? areValid[i] : areValid;
+				for (j = 0; j < this._widgets[i].length; ++j) {
+					this._widgets[i][j].setValid(iisValid, imessage);
+				}
+			}
+		},
 
-		// update the number of render elements
-		this._nRenderedElements -= n;
+		_setBlockOnChangeAttr: function(/*Boolean*/ value) {
+			// execute the inherited functionality in the widget's scope
+			if (this._widget) {
+				tools.delegateCall(this, arguments, this._widget);
+			}
+		},
 
-		// add the new button
-		this._addNewButton();
-	},
-
-	_removeElement: function(idx) {
-		var vals = this._getAllValues();
-		vals.splice(idx, 1);
-
-		// add an empty line in case we removed the last element
-		if (!vals.length) {
-			vals.push('');
-		}
-		this._setAllValues(vals);
-	},
-
-	isValid: function() {
-		var areValid = true;
-		var i, j;
-		for (i = 0; i < this._widgets.length; ++i) {
-			for (j = 0; j < this._widgets[i].length; ++j) {
-				areValid = areValid && (!this._widgets[i][j].isValid || this._widgets[i][j].isValid());
+		_getBlockOnChangeAttr: function(/*Boolean*/ value) {
+			// execute the inherited functionality in the widget's scope
+			if (this._widget) {
+				tools.delegateCall(this, arguments, this._widget);
 			}
 		}
-		return areValid;
-	},
-
-	setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
-		// summary:
-		//		Set all child elements to valid/invalid.
-		//		Parameters can be either simple values (Boolean/String) or arrays.
-		//		Arrays indicate specific states for each element
-		var i, j;
-		for (i = 0; i < this._widgets.length; ++i) {
-			var imessage = messages instanceof Array ? messages[i] : messages;
-			var iisValid = areValid instanceof Array ? areValid[i] : areValid;
-			for (j = 0; j < this._widgets[i].length; ++j) {
-				this._widgets[i][j].setValid(iisValid, imessage);
-			}
-		}
-	},
-
-	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
-		// execute the inherited functionality in the widget's scope
-		if (this._widget) {
-			tools.delegateCall(this, arguments, this._widget);
-		}
-	},
-
-	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
-		// execute the inherited functionality in the widget's scope
-		if (this._widget) {
-			tools.delegateCall(this, arguments, this._widget);
-		}
-	},
-
-	onChange: function(newValue) {
-		// stub for onChange event
-	}
+	});
 });
-
 

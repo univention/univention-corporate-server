@@ -26,89 +26,85 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.DateBox");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojox/string/sprintf",
+	"dijit/form/DateTextBox",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/tools"
+], function(declare, lang, sprintf, DateTextBox, ContainerWidget, _FormWidgetMixin, tools) {
+	return declare("umc.widgets.DateBox", [ ContainerWidget, _FormWidgetMixin ], {
+		// the widget's class name as CSS class
+		'class': 'umcDateBox',
 
-dojo.require("dijit.form.DateTextBox");
-dojo.require("dojox.string.sprintf");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.widgets._WidgetsInWidgetsMixin");
-dojo.require("tools");
+		_dateBox: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
-	umc.widgets.ContainerWidget,
-	umc.widgets._FormWidgetMixin,
-	umc.widgets._WidgetsInWidgetsMixin
-], {
-	// the widget's class name as CSS class
-	'class': 'umcDateBox',
+		sizeClass: null,
 
-	_dateBox: null,
+		disabled: false,
 
-	sizeClass: null,
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	disabled: false,
+			this.sizeClass = null;
+		},
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+		buildRendering: function() {
+			this.inherited(arguments);
 
-		this.sizeClass = null;
-	},
+			this._dateBox = this.own(new DateTextBox({
+				name: this.name,
+				disabled: this.disabled
+			}))[0];
+			this.addChild(this._dateBox);
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			// hook to the onChange event
+			this.own(this._dateBox.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
+				this._set('value', this._dateToString(newVal));
+			})));
+		},
 
-		this._dateBox = this.adopt(dijit.form.DateTextBox, {
-			name: this.name,
-			disabled: this.disabled
-		});
-		this.addChild(this._dateBox);
+		_dateToString: function(dateObj) {
+			if (dateObj && dateObj instanceof Date) {
+				return sprintf('%04d-%02d-%02d', dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate());
+			}
+			return dateObj;
+		},
 
-		// hook to the onChange event
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._dateBox, 'onChange', 'onChange');
-	},
+		// return ISO8601/RFC3339 format (yyyy-MM-dd) as string
+		_getValueAttr: function() {
+			return this._dateToString(this._dateBox.get('value'));
+		},
 
-	_dateToString: function(dateObj) {
-		return dojox.string.sprintf('%04d-%02d-%02d', dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate());
-	},
-
-	// return ISO8601/RFC3339 format (yyyy-MM-dd) as string
-	_getValueAttr: function() {
-		var dateObj = this._dateBox.get('value');
-		if (dateObj && dateObj instanceof Date) {
-			return this._dateToString(dateObj);
-		}
-		return dateObj;
-	},
-
-	_setValueAttr: function(/*String|Date*/ newVal) {
-		if (newVal && newVal instanceof Date) {
+		_setValueAttr: function(/*String|Date*/ newVal) {
 			newVal = this._dateToString(newVal);
+			this._dateBox.set('value', newVal);
+			this._set('value', newVal);
+		},
+
+		isValid: function() {
+			// use the property 'valid' in case it has been set
+			// otherwise fall back to the default
+			if (null !== this.valid) {
+				return this.get('valid');
+			}
+			return this._dateBox.isValid();
+		},
+
+		_setBlockOnChangeAttr: function(/*Boolean*/ value) {
+			// execute the inherited functionality in the widget's scope
+			tools.delegateCall(this, arguments, this._dateBox);
+		},
+
+		_getBlockOnChangeAttr: function(/*Boolean*/ value) {
+			// execute the inherited functionality in the widget's scope
+			tools.delegateCall(this, arguments, this._dateBox);
 		}
-		this._dateBox.set('value', newVal);
-	},
-
-	isValid: function() {
-		// use the property 'valid' in case it has been set
-		// otherwise fall back to the default
-		if (null !== this.valid) {
-			return this.get('valid');
-		}
-		return this._dateBox.isValid();
-	},
-
-	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
-		// execute the inherited functionality in the widget's scope
-		tools.delegateCall(this, arguments, this._dateBox);
-	},
-
-	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
-		// execute the inherited functionality in the widget's scope
-		tools.delegateCall(this, arguments, this._dateBox);
-	}
+	});
 });
-
 
 

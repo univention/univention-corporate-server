@@ -26,103 +26,106 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.ExpandingTitlePane");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dijit/layout/ContentPane",
+	"dijit/layout/BorderContainer"
+], function(declare, lang, ContentPane, BorderContainer) {
+	return declare("umc.widgets.ExpandingTitlePane", BorderContainer, {
+		// summary:
+		//		Widget visually similar to dijit/TitlePane which expands in height/width
+		//		(e.g., in a dijit/layout/BorderContainer) and can display scollable	content.
+		// description:
+		//		This widget is visually similar to a (non-closable) dijit/TitlePane.
+		//		However, it can be used in cases where the size of the widgets is
+		//		adapted to a given layout (e.g., as a center element in a
+		//		dijit/layout.BorderContainer), and where the content may be scrollable.
 
-dojo.require("dijit.layout.BorderContainer");
+		// title: String
+		//		Title displayed in the header element of the widget.
+		title: '',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dijit.layout.BorderContainer, {
-	// summary:
-	//		Widget visually similar to dijit.TitlePane which expands in height/width
-	//		(e.g., in a dijit.layout.BorderContainer) and can display scollable	content.
-	// description:
-	//		This widget is visually similar to a (non-closable) dijit.TitlePane.
-	//		However, it can be used in cases where the size of the widgets is
-	//		adapted to a given layout (e.g., as a center element in a
-	//		dijit.layout.BorderContainer), and where the content may be scrollable.
+		// the widget's class name as CSS class
+		'class': 'umcExpandingTitlePane',
 
-	// title: String
-	//		Title displayed in the header element of the widget.
-	title: '',
+		// gutters are set to false by default
+		gutters: false,
 
-	// the widget's class name as CSS class
-	'class': 'umcExpandingTitlePane',
+		// internal reference to the main container to which child elements are added
+		_contentContainer: null,
 
-	// gutters are set to false by default
-	gutters: false,
+		// internal reference to the ContentPane that holds the title
+		_titlePane: null,
 
-	// internal reference to the main container to which child elements are added
-	_contentContainer: null,
+		_userProps: null,
 
-	// internal reference to the ContentPane that holds the title
-	_titlePane: null,
+		constructor: function(props) {
+			// store the user defined properties
+			this._userProps = lang.mixin({}, props);
+		},
 
-	_userProps: null,
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	constructor: function(props) {
-		// store the user defined properties
-		this._userProps = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, props);
-	},
+			this.design = 'sidebar';
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+			// remove title from the attributeMap
+			delete this.attributeMap.title;
+		},
 
-		this.design = 'sidebar';
+		buildRendering: function() {
+			this.inherited(arguments);
 
-		// remove title from the attributeMap
-		delete this.attributeMap.title;
-	},
+			// create the title element... style it to look like the head of a dijit/TitlePane
+			this._titlePane = new ContentPane({
+				'class': 'dijitTitlePaneTitle',
+				content: '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>',
+				region: 'top'
+			});
+			this.inherited('addChild', [ this._titlePane ]);
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			// create the container for the main content... add css classes to be similar
+			// the dijit/TitlePane container
+			var props = lang.mixin({}, this._userProps, {
+				region: 'center',
+				gutters: false,
+				'class': 'dijitTitlePaneContentOuter dijitTitlePaneContentInner'
+			});
+			this._contentContainer = new BorderContainer(props);
+			this.inherited('addChild', [ this._contentContainer ]);
+		},
 
-		// create the title element... style it to look like the head of a dijit.TitlePane
-		this._titlePane = new dijit.layout.ContentPane({
-			'class': 'dijitTitlePaneTitle',
-			content: '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>',
-			region: 'top'
-		});
-		this.inherited('addChild', [ this._titlePane ]);
+		addChild: function(child) {
+			if (!child.region) {
+				child.region = 'center';
+			}
+			this._contentContainer.addChild(child);
+		},
 
-		// create the container for the main content... add css classes to be similar
-		// the dijit.TitlePane container
-		var props = /*REQUIRE:"dojo/_base/lang"*/ lang.mixin({}, this._userProps, {
-			region: 'center',
-			gutters: false,
-			'class': 'dijitTitlePaneContentOuter dijitTitlePaneContentInner'
-		});
-		this._contentContainer = new dijit.layout.BorderContainer(props);
-		this.inherited('addChild', [ this._contentContainer ]);
-	},
+		removeChild: function(child) {
+			this._contentContainer.removeChild(child);
+		},
 
-	addChild: function(child) {
-		if (!child.region) {
-			child.region = 'center';
+		startup: function() {
+			this.inherited(arguments);
+			this._contentContainer.startup();
+		},
+
+		layout: function() {
+			this.inherited(arguments);
+			this._contentContainer.layout();
+		},
+
+		_setTitleAttr: function(newTitle) {
+			this.title = newTitle;
+			if (this._titlePane) {
+				this._titlePane.set('content', '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>');
+			}
+			_set('title', newTitle);
 		}
-		this._contentContainer.addChild(child);
-	},
-
-	removeChild: function(child) {
-		this._contentContainer.removeChild(child);
-	},
-
-	startup: function() {
-		this.inherited(arguments);
-		this._contentContainer.startup();
-	},
-
-	layout: function() {
-		this.inherited(arguments);
-		this._contentContainer.layout();
-	},
-
-	_setTitleAttr: function(newTitle) {
-		this.title = newTitle;
-		if (this._titlePane) {
-			this._titlePane.set('content', '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>');
-		}
-	}
+	});
 });
-
 

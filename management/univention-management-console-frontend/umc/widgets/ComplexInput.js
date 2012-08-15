@@ -26,109 +26,107 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.ComplexInput");
-
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("tools");
-dojo.require("render");
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.ContainerWidget, {
-	// summary:
-	//		Groups a set of widgets and returns the value of all widgets as a list
-
-	// subtypes: Object[]
-	//		Essentially an array of object that describe the widgets for one element
-	//		of the MultiInput widget, the 'name' needs not to be specified, this
-	//		property is passed to render.widgets().
-	subtypes: null,
-
-	// the widget's class name as CSS class
-	'class': 'umcComplexInput',
-
-	_widgets: null,
-
-	_container: null,
-
-	_order: null,
-
-	umcpCommand: tools.umcpCommand,
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		var widgetConfs = [];
-		this._order = [];
-
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this.subtypes, function( widget, i ) {
-			// add the widget configuration dict to the list of widgets
-			var iname = '__' + this.name + '-' + i;
-			widgetConfs.push( /*REQUIRE:"dojo/_base/lang"*/ lang.mixin( {}, widget, {
-				disabled: this.disabled,
-				name: iname,
-				dynamicValues: widget.dynamicValues,
-				umcpCommand: this.umcpCommand
-			}));
-
-			// add the name of the widget to the list of widget names
-			this._order.push(iname);
-		}, this);
-
-		// render the widgets and layout them
-		this._widgets = render.widgets( widgetConfs );
-		this._container = render.layout( [ this._order ], this._widgets );
-
-		// register onChange event
-		tools.forIn( this._widgets, function( iname, iwidget ) {
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( iwidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( newValue ) {
-				this.onChange( this.get( 'value' ), iname );
-			} ) );
-		}, this );
-
-		// start processing the layout information
-		this._container.placeAt(this.containerNode);
-		this._container.startup();
-
-		// call the _loadValues method by hand
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._order, function( iname ) {
-			var iwidget = this._widgets[ iname ];
-			if ( '_loadValues' in iwidget ) {
-				iwidget._loadValues( this._lastDepends );
-			}
-		}, this);
-
-	},
-
-	_getValueAttr: function() {
-		var vals = [];
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._order, function( iname ) {
-			vals.push( this._widgets[ iname ].get( 'value' ) );
-		}, this );
-
-		return vals;
-	},
-
-	_setValueAttr: function( value ) {
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._order, function( iname, i ) {
-			this._widgets[ iname ].set( 'value', value[ i ] );
-		}, this );
-	},
-
-	// provide 'onChange' method stub in case it does not exist yet
-	onChange: function( newValue, widgetName ) {
-		// event stub
-	},
-
-	setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"umc/tools",
+	"umc/render",
+	"umc/widgets/ContainerWidget"
+], function(declare, lang, array, tools, render, ContainerWidget) {
+	return declare("umc.widgets.ComplexInput", ContainerWidget, {
 		// summary:
-		//		Set all child elements to valid/invalid.
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( this._order, function( iname, i ) {
-			var imessage = messages instanceof Array ? messages[i] : messages;
-			var iisValid = areValid instanceof Array ? areValid[i] : areValid;
-			this._widgets[ iname ].setValid( iisValid, imessage );
-		}, this );
-	}
-});
+		//		Groups a set of widgets and returns the value of all widgets as a list
 
+		// subtypes: Object[]
+		//		Essentially an array of object that describe the widgets for one element
+		//		of the MultiInput widget, the 'name' needs not to be specified, this
+		//		property is passed to render.widgets().
+		subtypes: null,
+
+		// the widget's class name as CSS class
+		'class': 'umcComplexInput',
+
+		_widgets: null,
+
+		_container: null,
+
+		_order: null,
+
+		umcpCommand: tools.umcpCommand,
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			var widgetConfs = [];
+			this._order = [];
+
+			array.forEach( this.subtypes, function( widget, i ) {
+				// add the widget configuration dict to the list of widgets
+				var iname = '__' + this.name + '-' + i;
+				widgetConfs.push( lang.mixin( {}, widget, {
+					disabled: this.disabled,
+					name: iname,
+					dynamicValues: widget.dynamicValues,
+					umcpCommand: this.umcpCommand
+				}));
+
+				// add the name of the widget to the list of widget names
+				this._order.push(iname);
+			}, this);
+
+			// render the widgets and layout them
+			this._widgets = render.widgets( widgetConfs );
+			this._container = render.layout( [ this._order ], this._widgets );
+
+			// register for value changes
+			tools.forIn(this._widgets, function(iname, iwidget) {
+				this.own(iwidget.watch('value', lang.hitch(this, function(name, oldValue, newValue) {
+					this._set('value', this.get('value'));
+				})));
+			}, this);
+
+			// start processing the layout information
+			this._container.placeAt(this.containerNode);
+			this._container.startup();
+
+			// call the _loadValues method by hand
+			array.forEach( this._order, function( iname ) {
+				var iwidget = this._widgets[ iname ];
+				if ( '_loadValues' in iwidget ) {
+					iwidget._loadValues( this._lastDepends );
+				}
+			}, this);
+
+		},
+
+		_getValueAttr: function() {
+			var vals = [];
+			array.forEach( this._order, function( iname ) {
+				vals.push( this._widgets[ iname ].get( 'value' ) );
+			}, this );
+
+			return vals;
+		},
+
+		_setValueAttr: function( value ) {
+			array.forEach( this._order, function( iname, i ) {
+				this._widgets[ iname ].set( 'value', value[ i ] );
+			}, this );
+			this._set(value);
+		},
+
+		setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
+			// summary:
+			//		Set all child elements to valid/invalid.
+			array.forEach( this._order, function( iname, i ) {
+				var imessage = messages instanceof Array ? messages[i] : messages;
+				var iisValid = areValid instanceof Array ? areValid[i] : areValid;
+				this._widgets[ iname ].setValid( iisValid, imessage );
+			}, this );
+		}
+	});
+});
 

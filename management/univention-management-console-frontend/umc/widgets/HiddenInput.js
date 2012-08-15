@@ -26,19 +26,19 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.HiddenInput");
+define([
+	"dojo/_base/declare",
+	"dijit/form/TextBox",
+	"umc/widgets/_FormWidgetMixin"
+], function(declare, TextBox, _FormWidgetMixin) {
+	return declare("umc.widgets.HiddenInput", [ TextBox, _FormWidgetMixin ], {
+		type: 'hidden',
 
-dojo.require("dijit.form.TextBox");
-dojo.require("umc.widgets._FormWidgetMixin");
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.TextBox, umc.widgets._FormWidgetMixin ], {
-	type: 'hidden',
-
-	// the widget's class name as CSS class
-	'class': 'umcHiddenInput'
+		// the widget's class name as CSS class
+		'class': 'umcHiddenInput'
+	});
 });
-
 
 

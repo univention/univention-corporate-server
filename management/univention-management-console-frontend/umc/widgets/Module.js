@@ -26,51 +26,53 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.Module");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/array",
+	"dijit/layout/StackContainer",
+	"umc/tools",
+	"umc/widgets/_ModuleMixin",
+	"umc/widgets/StandbyMixin"
+], function(declare, array, StackContainer, tools, _ModuleMixin, StandbyMixin) {
+	return declare("umc.widgets.Module", [ StackContainer, _ModuleMixin, StandbyMixin ], {
+		// summary:
+		//		Basis class for module classes.
+		//		It extends dijit.layout.StackContainer and adds some module specific
+		//		properties/methods.
 
-dojo.require("dijit.layout.StackContainer");
-dojo.require("umc.widgets._ModuleMixin");
-dojo.require("umc.widgets.StandbyMixin");
+		// initial title set for the module
+		defaultTitle: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.StackContainer, umc.widgets._ModuleMixin, umc.widgets.StandbyMixin ], {
-	// summary:
-	//		Basis class for module classes.
-	//		It extends dijit.layout.StackContainer and adds some module specific
-	//		properties/methods.
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.defaultTitle = this.title;
+		},
 
-	// initial title set for the module
-	defaultTitle: null,
+		resetTitle: function() {
+			this.set( 'title', this.defaultTitle );
+		},
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
-		this.defaultTitle = this.title;
-	},
+		startup: function() {
+			this.inherited(arguments);
 
-	resetTitle: function() {
-		this.set( 'title', this.defaultTitle );
-	},
+			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
+			//        on an inactive tab.
 
-	startup: function() {
-		this.inherited(arguments);
-
-		// FIXME: Workaround for refreshing problems with datagrids when they are rendered
-		//        on an inactive tab.
-
-		// iterate over all tabs
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this.getChildren(), function(ipage) {
-			// find all widgets that inherit from dojox.grid._Grid on the tab
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(ipage.getDescendants(), function(iwidget) {
-				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
-					// hook to onShow event
-					/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(ipage, 'onShow', function() {
-						iwidget.startup();
-					});
-				}
+			// iterate over all tabs
+			array.forEach(this.getChildren(), function(ipage) {
+				// find all widgets that inherit from dojox.grid._Grid on the tab
+				array.forEach(ipage.getDescendants(), function(iwidget) {
+					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+						// hook to onShow event
+						this.on(ipage, 'show', function() {
+							iwidget.startup();
+						});
+					}
+				}, this);
 			}, this);
-		}, this);
-	}
+		}
+	});
 });
-
 

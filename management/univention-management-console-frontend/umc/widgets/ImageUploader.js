@@ -26,52 +26,50 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.ImageUploader");
+define([
+	"dojo/_base/declare",
+	"umc/widgets/Uploader",
+	"umc/widgets/Image",
+	"umc/i18n!umc/app"
+], function(declare, Uploader, Image, _) {
+	return declare("umc.widgets.ImageUploader", Uploader, {
+		'class': 'umcImageUploader',
 
-dojo.require("umc.widgets.Uploader");
-dojo.require("umc.widgets.Image");
-dojo.require("tools");
+		// imageType: String
+		//		Image type: 'jpeg', 'png'
+		imageType: 'jpeg',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.Uploader ], {
-	'class': 'umcImageUploader',
+		maxSize: 262400,
 
-	i18nClass: 'umc.app',
+		_image: null,
 
-	// imageType: String
-	//		Image type: 'jpeg', 'png'
-	imageType: 'jpeg',
+		constructor: function() {
+			this.buttonLabel = _('Upload new image');
+			this.clearButtonLabel = _('Clear image data');
+		},
 
-	maxSize: 262400,
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	_image: null,
+			this.sizeClass = null;
+		},
 
-	constructor: function() {
-		this.buttonLabel = _('Upload new image');
-		this.clearButtonLabel = _('Clear image data');
-	},
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+			// create an image widget
+			this._image = new Image({
+				imageType: this.imageType
+			});
+			this.addChild(this._image, 0);
+		},
 
-		this.sizeClass = null;
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		// create an image widget
-		this._image = new umc.widgets.Image({
-			imageType: this.imageType
-		});
-		this.addChild(this._image, 0);
-	},
-
-	updateView: function(value, data) {
-		this._image.set('value', value);
-	}
+		updateView: function(value) {
+			this._image.set('value', value);
+		}
+	});
 });
-
 
 

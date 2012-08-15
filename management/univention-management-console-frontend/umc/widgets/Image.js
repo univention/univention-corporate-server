@@ -26,52 +26,52 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.Image");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dijit/layout/ContentPane",
+	"umc/widgets/_FormWidgetMixin"
+], function(declare, lang, ContentPane, _FormWidgetMixin) {
+	return declare("umc.widgets.Image", [ ContentPane, _FormWidgetMixin ], {
+		// the widget's class name as CSS class
+		'class': 'umcImage',
 
-dojo.require("tools");
-dojo.require("dijit.layout.ContentPane");
-dojo.require("umc.widgets._FormWidgetMixin");
+		// imageType: String
+		//		Image type: 'jpeg', 'png'
+		imageType: 'jpeg',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.layout.ContentPane, umc.widgets._FormWidgetMixin ], {
-	// the widget's class name as CSS class
-	'class': 'umcImage',
+		// value: String
+		//		base64 encoded string that contains image data.
+		value: null,
 
-	// imageType: String
-	//		Image type: 'jpeg', 'png'
-	imageType: 'jpeg',
+		sizeClass: null,
 
-	// value: String
-	//		base64 encoded string that contains image data.
-	value: null,
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	sizeClass: null,
+			this.sizeClass = null;
+		},
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+		_setValueAttr: function(newVal) {
+			this._set('value', (typeof newVal == "string") ? newVal : "");
+			this._updateContent();
+		},
 
-		this.sizeClass = null;
-	},
+		_setImageTypeAttr: function(newVal) {
+			this._set('imageType', newVal);
+			this._updateContent();
+		},
 
-	_setValueAttr: function(newVal) {
-		this.value = typeof newVal == "string" ? newVal : "";
-		this._updateContent();
-	},
-
-	_setImageTypeAttr: function(newVal) {
-		this.imageType = newVal;
-		this._updateContent();
-	},
-
-	_updateContent: function() {
-		if (!this.value) {
-			this.set('content', '');
+		_updateContent: function() {
+			if (!this.value) {
+				this.set('content', '');
+			}
+			else {
+				this.set('content', lang.replace('<img src="data:image/{imageType};base64,{value}"/>', this));
+			}
 		}
-		else {
-			this.set('content', /*REQUIRE:"dojo/_base/lang"*/ lang.replace('<img src="data:image/{imageType};base64,{value}"/>', this));
-		}
-	}
+	});
 });
-
 
