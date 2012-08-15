@@ -1,3 +1,9 @@
+univention-samba4 (2.0.5-4) unstable; urgency=low
+
+  * stop samba4/smbd before s3fs update steps (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 15 Aug 2012 16:57:50 +0200
+
 univention-samba4 (2.0.5-3) unstable; urgency=low
 
   * call samba_upgradedns on update (Bug #27457)
