@@ -226,45 +226,15 @@ class ProgressState( object ):
 		self.steps = 1
 		self.step = 0
 		self.max = 100
-		self._join_error = ''
-		self._join_errors = []
-		self._misc_error = ''
-		self._misc_errors = []
-
-	# make sure the error is only send once
-	def _pop_error( self, error_name ):
-		# error attrs are "hidden"
-		error_name = '_%s' % error_name
-		error = getattr(self, error_name)
-		setattr(self, error_name, '')
-		return error
-
-	def pop_misc_error( self ):
-		return self._pop_error('misc_error')
-
-	def pop_join_error( self ):
-		return self._pop_error('join_error')
-
-	# make sure the error is preserved even if it cannot be returned now
-	def _add_error( self, error_name, error ):
-		error_name = '_%s' % error_name
-		# simplify error (to not have to use nested lists)
-		error = '%s: %s' % (self.fractionName, error)
-		setattr(self, error_name, error)
-		getattr(self, error_name + 's').append(error)
-
-	def add_misc_error( self, error ):
-		self._add_error('misc_error', error)
-
-	def add_join_error( self, error ):
-		self._add_error('join_error', error)
+		self.errors = []
+		self.critical = False
 
 	@property
 	def percentage( self ):
 		return ( self._percentage + self.fraction * ( self.step / float( self.steps ) ) ) / self.max * 100
 
 	def __eq__( self, other ):
-		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self._join_error == self._join_error and self._misc_error == other._misc_error
+		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.errors == self.errors and self.critical == self.critical
 
 	def __ne__( self, other ):
 		return not self.__eq__( other )
@@ -364,13 +334,16 @@ class ProgressParser( object ):
 		# error message: why did the join fail?
 		match = ProgressParser.JOINERROR.match( line )
 		if match is not None:
-			self.current.add_join_error( match.groups()[ 0 ] )
+			error = '%s: %s' % (self.current.fractionName, match.groups()[ 0 ])
+			self.current.errors.append( error )
+			self.current.critical = True
 			return True
 
 		# error message: why did the script fail?
 		match = ProgressParser.ERROR.match( line )
 		if match is not None:
-			self.current.add_misc_error( match.groups()[ 0 ] )
+			error = '%s: %s' % (self.current.fractionName, match.groups()[ 0 ])
+			self.current.errors.append( error )
 			return True
 
 		return False

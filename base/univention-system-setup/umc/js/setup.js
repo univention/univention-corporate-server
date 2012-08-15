@@ -41,7 +41,7 @@ dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.TitlePane");
 dojo.require("umc.modules.lib.server");
 
-dojo.require("umc.modules._setup.ProgressInfo");
+dojo.require("umc.widgets.ProgressBar");
 
 dojo.declare("umc.modules._setup.CancelDialogException", null, {
 	// empty class that indicates that the user canceled a dialog
@@ -64,13 +64,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	_currentPage: -1,
 
-	_progressInfo: null,
+	_progressBar: null,
 
 	// internal dict to save error messages while polling
 	_saveErrors: null,
-
-	// internal flag to indicate whether a fatal join error occurred
-	_joinError: null,
 
 	// a timer used it in _cleanup
 	// to make sure the session does not expire
@@ -107,8 +104,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	renderPages: function(ucr, values) {
-		this._progressInfo = new umc.modules._setup.ProgressInfo();
-		// this._progressInfo.buildRendering();
+		this._progressBar = new umc.widgets.ProgressBar();
 		this.standby(true);
 
 		// console.log('joined=' + values.joined);
@@ -662,45 +658,11 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				username = username || null;
 				password = password || null;
 
-				this.resetErrors();
-				var self = this;
-				var _Poller = function( _parent, _deferred ) {
-					return {
-						deferred: _deferred,
-						parent: _parent,
-						check: function() {
-							var message = dojo.replace( this.parent._( 'The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}.' ), { 
-								time: '{time}',
-								linkStart : umc_url ? '<a href="' + umc_url + '">' : '',
-								linkEnd : umc_url ? '</a>' : ''
-							} );
-							this.parent.umcpCommand( 'setup/finished', {}, undefined, undefined, {
-								// long polling options
-								messageInterval: 30,
-								message: message,
-								xhrTimeout: 40
-							} ).then( dojo.hitch( this, function( response ) {
-								self.addError( response.result.error );
-								self.addErrors( response.result.all_errors );
-								self.addError( response.result.join_error, true );
-								self.addErrors( response.result.all_join_errors, true );
-								if ( response.result.finished ) {
-									this.parent._progressInfo.setInfo(this.parent._('Configuration finished'), '', 100);
-									this.deferred.resolve();
-									return;
-								}
-								this.parent._progressInfo.setInfo( response.result.name, response.result.message, response.result.percentage );
-								setTimeout( dojo.hitch( this, 'check' ), 100 );
-							} ) );
-						}
-					};
-				};
-
 				var deferred = new dojo.Deferred();
 
 				// send save command to server
-				this._progressInfo.reset();
-				this.standby( true, this._progressInfo );
+				this._progressBar.reset(this._( 'Initialize the configuration process ...' ));
+				this.standby( true, this._progressBar );
 				var command = null;
 				if (!this.wizard_mode || role == 'basesystem') {
 					command = this.umcpCommand('setup/save', {
@@ -715,8 +677,18 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				}
 				command.then(dojo.hitch(this, function() {
 					// poll whether script has finished
-					var poller = new _Poller( this, deferred );
-					poller.check();
+					this._progressBar.auto(
+						'setup/finished',
+						{},
+						dojo.hitch(deferred, 'resolve'),
+						dojo.replace( this._( 'The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}.' ), { 
+							time: '{time}',
+							linkStart : umc_url ? '<a href="' + umc_url + '">' : '',
+							linkEnd : umc_url ? '</a>' : ''
+						} ),
+						this._('Configuration finished'),
+						true
+					);
 				}));
 
 				return deferred;
@@ -772,10 +744,11 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			if (this.wizard_mode) {
 				// kill the browser and restart the UMC services in wizard mode
 				deferred = deferred.then(dojo.hitch(this, function() {
-					var errorHtml = this._buildErrorHtml();
+					var errors = this._progressBar.getErrors();
+					var errorHtml = this._buildErrorHtml(errors.errors);
 					if (!errorHtml) {
 						return _cleanup(this._('The configuration was successful. Please confirm to complete the process.'));
-					} else if (this._joinError) {
+					} else if (errors.critical) {
 						return _cleanup(this._embedErrorHTML(
 							this._('The system join was not successful.'),
 							errorHtml,
@@ -793,7 +766,8 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			else {
 				// show success/error message and eventually restart UMC server components
 				deferred = deferred.then(dojo.hitch(this, function() {
-					var errorHtml = this._buildErrorHtml();
+					var errors = this._progressBar.getErrors();
+					var errorHtml = this._buildErrorHtml(errors.errors);
 					if (errorHtml) {
 						// errors have occurred
 						return _failure(errorHtml);
@@ -810,40 +784,20 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			}
 
 			// error case, turn off standby animation
-			var self = this;
-			deferred.then(function() {}, function() {
-				self.standby(false);
-			});
+			deferred.then(
+				function() {},
+				dojo.hitch(this, function() {
+					this.standby(false); 
+				})
+			);
 		}), dojo.hitch(this, function() {
 			this.standby(false);
 		}));
 	},
 
-	resetErrors: function() {
-		this._saveErrors = [];
-		this._joinError = false;
-	},
-
-	addErrors: function(errors, is_join_error) {
-		dojo.forEach(errors, dojo.hitch(this, function(error) {
-			this.addError(error, is_join_error);
-		}));
-	},
-
-	addError: function(error, is_join_error) {
-		if ( error ) {
-			if ( dojo.indexOf( this._saveErrors, error ) === -1 ) {
-				this._saveErrors.push( error );
-			}
-			if (is_join_error) {
-				this._joinError = true;
-			}
-		}
-	},
-
-	_buildErrorHtml: function() {
+	_buildErrorHtml: function(errors) {
 		var errorHtml = '';
-		dojo.forEach(this._saveErrors, function(error) {
+		dojo.forEach(errors, function(error) {
 			errorHtml += '<li>' + error + '</li>';
 		});
 		if (errorHtml) {

@@ -243,6 +243,14 @@ class Instance(umcm.Base):
 		have been executed or due to a timeout. If it returns because of the timeout, a new
 		try can be started.'''
 		def _thread(request, obj):
+			def progress_info(state, **kwargs):
+				info = { 'component' : state.fractionName,
+					 'info' : state.message,
+					 'errors' : state.errors,
+					 'critical' : state.critical,
+					 'steps' : state.percentage }
+				info.update(kwargs)
+				return info
 			# acquire the lock in order to wait for the join/setup scripts to finish
 			# do this for 30 sec and then return anyway
 			SLEEP_TIME = 0.200
@@ -251,12 +259,7 @@ class Instance(umcm.Base):
 			while not obj._finishedLock.acquire(False):
 				if ntries <= 0 or self._progressParser.changed and self._progressParser.current:
 					state = self._progressParser.current
-					return { 'finished' : False,
-						 'name' : state.fractionName,
-						 'message' : state.message,
-						 'join_error' : state.pop_join_error(),
-						 'error' : state.pop_misc_error(),
-						 'percentage' : state.percentage }
+					return progress_info(state, finished=False)
 				time.sleep( SLEEP_TIME )
 				ntries -= 1
 
@@ -265,16 +268,7 @@ class Instance(umcm.Base):
 			# scripts are done, return final result
 			# return all errors that we gathered throughout the setup
 			state = self._progressParser.current
-			return { 
-				'finished' : obj._finishedResult,
-				'name' : state.fractionName,
-				'message' : state.message,
-				'join_error' : state.pop_join_error(),
-				'error' : state.pop_misc_error(),
-				'all_join_errors' : state._join_errors,
-				'all_errors' : state._misc_errors,
-				'percentage' : state.percentage,
-				 }
+			return progress_info(state, finished=obj._finishedResult)
 
 		thread = notifier.threads.Simple( 'check_finished',
 			notifier.Callback( _thread, request, self ),

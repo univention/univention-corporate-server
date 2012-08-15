@@ -1,3 +1,9 @@
+univention-system-setup (6.0.13-1) unstable; urgency=low
+
+  * Use umc.widgets.ProgressBar instead of own ProgressInfo (Bug #25558)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Aug 2012 18:27:30 +0200
+
 univention-system-setup (6.0.12-1) unstable; urgency=low
 
   * modified changes for Bug #27949 in order to
