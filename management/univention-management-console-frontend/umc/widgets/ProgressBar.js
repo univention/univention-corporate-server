@@ -85,15 +85,15 @@ dojo.declare("umc.widgets.ProgressBar", [ umc.widgets.ContainerWidget, umc.i18n.
 		this._progressBar.set( 'value', 0 );
 	},
 
-	setInfo: function( component, message, percentage, errors, critical ) {
+	setInfo: function(component, message, percentage, errors, critical) {
 		if (component) {
-			this._component.set( 'content', component );
+			this._component.set('content', component);
 		}
 		if (percentage) {
-			this._progressBar.set( 'value', percentage );
+			this._progressBar.set('value', percentage);
 		}
-		if (message) {
-			this._message.set( 'content', message );
+		if (message || component) {
+			this._message.set('content', message || '&nbsp;');
 		}
 		this._addErrors(errors);
 		if (critical) {
@@ -111,7 +111,7 @@ dojo.declare("umc.widgets.ProgressBar", [ umc.widgets.ContainerWidget, umc.i18n.
 		}));
 	},
 
-	auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg) {
+	auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors) {
 		if (pollErrorMsg !== undefined) {
 			pollErrorMsg = this._('Fetching information from the server failed!');
 		}
@@ -125,17 +125,21 @@ dojo.declare("umc.widgets.ProgressBar", [ umc.widgets.ContainerWidget, umc.i18n.
 		).then(dojo.hitch(this, function(data) {
 			var result = data.result;
 			if (result) {
-				this.setInfo(result.component, result.info, result.steps, result.errors);
-				this.auto(umcpCommand, umcpOptions, callback, pollErrorMsg);
-			} else {
-				this.stop(callback)
+				this.setInfo(result.component, result.info, result.steps, result.errors, result.critical);
+				if (!result.finished) {
+					this.auto(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors);
+				}
+			}
+			if (!result || result.finished) {
+				this.stop(callback, stopComponent, !dontHandleErrors)
 			}
 		}));
 	},
 
-	stop: function(callback) {
+	stop: function(callback, stopComponent, handleErrors) {
+		this.setInfo(stopComponent);
 		var errors = this.getErrors().errors;
-		if (errors.length) {
+		if (errors.length && handleErrors) {
 			msg = '';
 			if (errors.length == 1) {
 				msg = this._('An error occurred: ') + errors[0];

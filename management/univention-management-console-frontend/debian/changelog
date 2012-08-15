@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.14-1) unstable; urgency=low
+
+  * Modify ProgressBar to work with system-setup (Bug #25558)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Aug 2012 18:29:13 +0200
+
 univention-management-console-frontend (2.0.13-1) unstable; urgency=low
 
   * WIP: continued porting missing widgets to Dojo 2.0 syntax; Bug #26857
