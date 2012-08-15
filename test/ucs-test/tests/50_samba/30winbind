@@ -22,6 +22,8 @@ if [ "$(ucr get server/role)" == "memberserver" ]; then
 	NAME=`ucr get windows/domain`+$NAME
 fi
 
+nscd -i passwd
+
 wbinfo -t || \
 	{ fail_fast 1 "Checking shared secret failed"; }
 

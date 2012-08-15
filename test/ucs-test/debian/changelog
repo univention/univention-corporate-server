@@ -1,3 +1,10 @@
+ucs-test (2.0.3-2) unstable; urgency=low
+
+  * 50_samba/30winbind: prevented possible conflict with nscd (Bug #21765)
+  * 50_samba/35smbclient_auth is now executable as DC Slave and memberserver (Bug #26807)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 15 Aug 2012 14:37:54 +0200
+
 ucs-test (2.0.3-1) unstable; urgency=low
 
   * 09_updater/84mirror-component-errata: Mirror localhost component errata

@@ -6,6 +6,8 @@
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
+## - domaincontroller_slave
+## - memberserver
 
 . "$TESTLIBPATH/master.sh" || exit 137
 . "$TESTLIBPATH/base.sh" || exit 137
