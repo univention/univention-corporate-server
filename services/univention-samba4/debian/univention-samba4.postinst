@@ -237,6 +237,10 @@ secret: $machine_secret
 				samba-tool dbcheck --cross-ncs --fix --yes
 			fi
 
+			## Migrate DNS data to new separate DOMAIN/FOREST partitions
+			/usr/sbin/samba_upgradedns
+
+			## activate server password chages again
 			univention-config-registry set server/password/change=yes
 		fi
 
