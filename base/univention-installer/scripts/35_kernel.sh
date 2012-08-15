@@ -45,45 +45,11 @@ if [ -n "$modules" ]; then
 	modules=$(echo $modules | sed -e 's| |;|g')
 fi
 
-if [ -n "$kernel_version" ]; then
-	v=`echo $kernel_version | grep ^2.4`
-	if [ -n "$v" ]; then
-		kernel_package="univention-kernel-image"
-	else
-		kernel_package="univention-kernel-image-$kernel_version"
-	fi
-else
-	boot_version=`uname -r | grep ^2.4`
-	if [ -n "$boot_version" ]; then
-		kernel_package="univention-kernel-image"
-	else
-		if [ "$system_role" = "managed_client" ]; then
-			kernel_extension="-managedclient"
-		elif [ "$system_role" = "mobile_client" ]; then
-			kernel_extension="-mobileclient"
-		fi
+kernel_package="univention-kernel-image"
 
-		boot_version=`uname -r | awk -F"-" '{print $1}'`
-		if uname -r | grep -iq bigmem; then
-			boot_version="$boot_version-64gb"
-		fi
-
-		if [ "$boot_version" = "2.6.14" ]; then
-			# booting the default kernel image
-			kernel_package="univention-kernel-image${kernel_extension}-2.6.18"
-			fallback_kernel_package="univention-kernel-image-2.6-18"
-		else
-			kernel_package="univention-kernel-image${kernel_extension}-${boot_version}"
-			fallback_kernel_package="univention-kernel-image-2.6.18"
-		fi
-	fi
-fi
-
-# install xen kernel on xen virtualization server
-boot_version=`uname -r | awk -F"-" '{print $1}'`
-echo "$packages" | grep -qi univention-virtual-machine-manager-node-xen
-if [ 0 -eq $? ]; then
-	xen_kernel="univention-kernel-image-${boot_version}-xen"
+# 486 legacy kernel
+if [ "486" = "$(uname -r | awk -F - '{print $NF}')" ]; then
+	kernel_package="univention-kernel-image-486"
 fi
 
 cat >/instmnt/install_kernel.sh <<__EOT__

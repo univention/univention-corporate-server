@@ -1,7 +1,13 @@
+univention-installer (8.0.1-1) unstable; urgency=low
+
+  * install univention-kernel-image (-486) in scripts/35_kernel.sh (Bug #28210)
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Aug 2012 12:28:49 +0200
+
 univention-installer (8.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.
-  * Rmove setting unused UCR variables (Bug #28134)
+  * Remove setting unused UCR variables (Bug #28134)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 12:03:53 +0200
 
