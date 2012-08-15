@@ -219,22 +219,24 @@ secret: $machine_secret
 
 		### The following block of code may be removed after ucs_3.1-0
 		if dpkg --compare-versions "$2" lt-nl "2.0.1-1"; then
-			if [ "$samba4_service_smb" = 'smb' ]; then
+			if [ "$samba4_service_smb" = 'smbd' ]; then
 				## only set this when value does not differ from the previous default value
 				univention-config-registry set samba4/service/smb='s3fs'
 
-				## run dbcheck on update but backup first.
-				if [ -d /var/lib/samba/private ]; then
-					backup_id=$(date +%Y%m%d-%H%M%S)
-					backup_dir="/var/backups/samba4.$backup_id"
-					if [ -d "$backup_dir" ]; then
-						rm -rf "$backup_dir"
-					fi
-					mkdir "$backup_dir" && \
-					cp -a /var/lib/samba/private "$backup_dir" && \
-					samba-tool dbcheck --cross-ncs --fix --yes
-				fi
 			fi
+
+			## run dbcheck on update but backup first.
+			if [ -d /var/lib/samba/private ]; then
+				backup_id=$(date +%Y%m%d-%H%M%S)
+				backup_dir="/var/backups/samba4.$backup_id"
+				if [ -d "$backup_dir" ]; then
+					rm -rf "$backup_dir"
+				fi
+				mkdir "$backup_dir" && \
+				cp -a /var/lib/samba/private "$backup_dir" && \
+				samba-tool dbcheck --cross-ncs --fix --yes
+			fi
+
 			univention-config-registry set server/password/change=yes
 		fi
 
