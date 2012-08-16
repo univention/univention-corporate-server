@@ -161,7 +161,7 @@ class object(content):
 		self.joinact = TestJoin(self, _('Testing join credentials'), _('Please wait ...'), name='joinact', data=data)
 		self.joinact.draw()
 		if os.path.exists(JOINTEST):
-        	os.unlink(JOINTEST)
+			os.unlink(JOINTEST)
 			msg = _("Connection to the UCS master failed! Please check network and domain join settings.")
 			return msg
 
@@ -198,7 +198,14 @@ class TestJoin(act_win):
 	def function(self):
 
 		if os.path.exists("/sbin/univention-installer-check-join"):
-			cmd = ["/sbin/univention-installer-check-join", host, user, password, nameserver]
+			cmd = [
+				"/sbin/univention-installer-check-join",
+				self.data.get("host", ""),
+				self.data.get("user", ""),
+				self.data.get("password", ""),
+				self.data.get("domain", ""),
+				self.data.get("nameserver", ""),
+			]
 			process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			(stdoutdata, stderrdata) = process.communicate()
 			self.debug("==> activateNetwork networkInstallerStartup stdout): %s" % stdoutdata)
