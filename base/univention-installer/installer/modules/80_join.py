@@ -208,8 +208,8 @@ class TestJoin(act_win):
 			]
 			process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			(stdoutdata, stderrdata) = process.communicate()
-			self.debug("==> activateNetwork networkInstallerStartup stdout): %s" % stdoutdata)
-			self.debug("==> activateNetwork networkInstallerStartup stderr): %s" % stderrdata)
+			self.parent.debug("==> TestJoin stdout): %s" % stdoutdata)
+			self.parent.debug("==> TestJoin stderr): %s" % stderrdata)
 			if os.path.exists(JOINTEST):
 				os.unlink(JOINTEST)
 			if process.returncode != 0:

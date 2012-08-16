@@ -1,3 +1,9 @@
+univention-installer (8.0.1-5) unstable; urgency=low
+
+  * mount devpts in ramdisk in order to use sshpass (Bug #7444) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Aug 2012 13:06:32 +0200
+
 univention-installer (8.0.1-4) unstable; urgency=low
 
   * test join credentials in 80_join.py (Bug #7444) 

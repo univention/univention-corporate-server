@@ -32,3 +32,7 @@
 if [ ! -e /sbin/ucr ]; then
 	ln -s /sbin/univention-config-registry /sbin/ucr
 fi
+
+# needed for sshpass
+mkdir /dev/pts
+mount -f -t devpts -o defaults devpts /dev/pts

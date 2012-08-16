@@ -929,8 +929,8 @@ class object(content):
 			cmd = ["/sbin/univention-installer-network-startup"]
 			process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			(stdoutdata, stderrdata) = process.communicate()
-			self.debug("==> activateNetwork networkInstallerStartup stdout): %s" % stdoutdata)
-			self.debug("==> activateNetwork networkInstallerStartup stderr): %s" % stderrdata)
+			self.debug("==> activateNetwork stdout): %s" % stdoutdata)
+			self.debug("==> activateNetwork stderr): %s" % stderrdata)
 	
 		return
 
