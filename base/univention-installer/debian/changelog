@@ -1,3 +1,9 @@
+univention-installer (8.0.1-3) unstable; urgency=low
+
+  * test join credentials in 80_join.py (Bug #7444) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Aug 2012 11:35:28 +0200
+
 univention-installer (8.0.1-2) unstable; urgency=low
 
   * start network in installer module net (Bug #7444) 

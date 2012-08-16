@@ -41,6 +41,8 @@ from local import _
 
 import subprocess
 
+JOINTEST="/tmp/.join-test-failed"
+
 class object(content):
 
 	def checkname(self):
@@ -150,10 +152,19 @@ class object(content):
 			return _('Passwords did not match.')
 
 		# test join credentials
-		host = self.elements[7].result().strip()
-		user = self.elements[9].result().strip()
-		password = self.elements[11].result().strip()
-			
+		data = {}
+		data["host"] = self.elements[7].result().strip()
+		data["user"] = self.elements[9].result().strip()
+		data["password"] = self.elements[11].result().strip()
+		data["domain"] = self.all_results.get("domainname")
+		data["nameserver"] = self.all_results.get("nameserver_1")
+		self.joinact = TestJoin(self, _('Testing join credentials'), _('Please wait ...'), name='joinact', data=data)
+		self.joinact.draw()
+		if os.path.exists(JOINTEST):
+        	os.unlink(JOINTEST)
+			msg = _("Connection to the UCS master failed! Please check network and domain join settings.")
+			return msg
+
 		return 0
 
 	def helptext(self):
@@ -175,3 +186,28 @@ class object(content):
 			result['domain_controller_account']='%s'%self.elements[9].result()
 			result['domain_controller_password']='%s'%self.elements[11].result()
 		return result
+
+class TestJoin(act_win):
+
+	def __init__(self, parent, header, text, name, data):
+		self.pos_x = parent.minX + 10
+		self.pos_y = parent.minY + 2
+		act_win.__init__(self, parent, header, text, name)
+		self.data = data
+
+	def function(self):
+
+		if os.path.exists("/sbin/univention-installer-check-join"):
+			cmd = ["/sbin/univention-installer-check-join", host, user, password, nameserver]
+			process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+			(stdoutdata, stderrdata) = process.communicate()
+			self.debug("==> activateNetwork networkInstallerStartup stdout): %s" % stdoutdata)
+			self.debug("==> activateNetwork networkInstallerStartup stderr): %s" % stderrdata)
+			if os.path.exists(JOINTEST):
+				os.unlink(JOINTEST)
+			if process.returncode != 0:
+				fh = open(JOINTEST, "w+")
+				fh.close()
+				msg = _("Connection to the UCS master failed! Please check network and domain join settings.")
+				return msg
+
