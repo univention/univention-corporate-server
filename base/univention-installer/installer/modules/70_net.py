@@ -389,6 +389,9 @@ class object(content):
 				self.message = _("You have to configure one or more network interfaces.")
 				return False
 
+		# activate network in profile mode
+		self.activateNetwork(self.all_results)
+
 		return True
 
 	#def std_button():
@@ -832,6 +835,11 @@ class object(content):
 		if not self.is_proxy(proxy):
 			return invalid+_('Proxy, example http://10.201.1.1:8080')
 
+		# activate network
+		results = self.result()
+		self.netact = ActivateNet(self, _('Setting up network'), _('Please wait ...'), name='netact', results=results)
+		self.netact.draw()
+
 		return 0
 
 	def addr_netmask2result(self, name, addr, netmask, copyOnError=False):
@@ -901,6 +909,31 @@ class object(content):
 
 		return result
 
+	def activateNetwork(self, result):
+
+		self.debug("==> activateNetwork(net)")
+	
+		# write network profile
+		profile = "/tmp/network_profile"
+		if os.path.exists(profile):
+			os.unlink(profile)
+		networkFH = open(profile, "w+")
+		for key in result.keys():
+			if result[key]:
+				networkFH.write("%s='%s'\n" % (key, result[key]))
+		networkFH.flush()
+		networkFH.close()
+	
+		# start network startup script
+		if os.path.exists("/sbin/univention-installer-network-startup"):
+			cmd = ["/sbin/univention-installer-network-startup"]
+			process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+			(stdoutdata, stderrdata) = process.communicate()
+			self.debug("==> activateNetwork networkInstallerStartup stdout): %s" % stdoutdata)
+			self.debug("==> activateNetwork networkInstallerStartup stderr): %s" % stderrdata)
+	
+		return
+
 	def helptext(self):
 		self.debug('helptext()')
 
@@ -912,6 +945,17 @@ class object(content):
 	def profileheader(self):
 		return 'Network'
 
+
+class ActivateNet(act_win):
+
+	def __init__(self, parent, header, text, name, results):
+		self.pos_x = parent.minX + 10
+		self.pos_y = parent.minY + 2
+		act_win.__init__(self,parent,header,text,name)
+		self.results = results
+
+	def function(self):
+		self.parent.activateNetwork(self.results)
 
 class dhclient_active(act_win):
 	# dhclient activity indicator window

@@ -585,7 +585,7 @@ Please visit the following websites to learn more about %(name)s:
 
 
 	def call_installer_scripts(self):
-		IGNORE_LIST = [ '00_scripts.sh', '95_completemsg.sh', '99_reboot.sh' ]
+		IGNORE_LIST = [ '00_scripts.sh', '95_completemsg.sh', '99_reboot.sh' , '06_network.sh']
 
 		# regenerate locale: 05_language.py wrote locale to /etc/locale.gen
 		self.call_cmd('/sbin/locale-gen 2>&1 >> /tmp/installer.log', shell=True)

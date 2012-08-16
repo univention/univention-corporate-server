@@ -1,8 +1,14 @@
+univention-installer (8.0.1-2) unstable; urgency=low
+
+  * start network in installer module net (Bug #7444) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Aug 2012 10:30:03 +0200
+
 univention-installer (8.0.1-1) unstable; urgency=low
 
   * install univention-kernel-image (-486) in scripts/35_kernel.sh (Bug #28210)
 
- -- Felix Botner <botner@univention.de>  Wed, 15 Aug 2012 12:28:49 +0200
+ -- Felix Botner <botner@univention.de>  Thu, 16 Aug 2012 10:30:00 +0200
 
 univention-installer (8.0.0-1) unstable; urgency=low
 

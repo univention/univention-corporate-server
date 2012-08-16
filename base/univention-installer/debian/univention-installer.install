@@ -5,6 +5,7 @@ etc/passwd  etc/
 etc/apt/sources.list etc/apt/
 sbin/univention-installer sbin/
 sbin/univention-installer-startup sbin/
+sbin/univention-installer-network-startup sbin/
 parted/PartedCreate sbin/
 profiles/[a-zA-Z]* profiles/
 boot/grub/uniboot.png boot/grub/

@@ -39,7 +39,10 @@
 from objects import *
 from local import _
 
+import subprocess
+
 class object(content):
+
 	def checkname(self):
 		return ['domain_controller_account','domain_controller_password']
 
@@ -47,6 +50,7 @@ class object(content):
 		return ['domain_controller','domain_controller_account','domain_controller_password']
 
 	def profile_complete(self):
+
 		message=_('The following value is missing: ')
 		if self.check('auto_join') | self.check('domain_controller_account') | self.check('domain_controller_password'):
 			return False
@@ -129,6 +133,7 @@ class object(content):
 			return self.elements[self.current].key_event(key)
 
 	def incomplete(self):
+
 		if self.elements[7].disabled and self.elements[9].disabled and self.elements[11].disabled and self.elements[13].disabled:
 			return 0
 
@@ -143,6 +148,12 @@ class object(content):
 			return message+_('Password for Root (retype)')
 		elif self.elements[11].result().strip() != self.elements[13].result().strip():
 			return _('Passwords did not match.')
+
+		# test join credentials
+		host = self.elements[7].result().strip()
+		user = self.elements[9].result().strip()
+		password = self.elements[11].result().strip()
+			
 		return 0
 
 	def helptext(self):
