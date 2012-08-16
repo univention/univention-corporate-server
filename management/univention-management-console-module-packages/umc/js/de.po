@@ -22,8 +22,8 @@ msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
 #: umc/js/packages.js:426
-msgid "<p>You're currently {verb} the '{id}' package:</p>"
-msgstr "<p>Das Paket '{id}' wird momentan {verb}</p>"
+msgid "You're currently {verb} the '{id}' package:"
+msgstr "Das Paket '{id}' wird momentan {verb}"
 
 #: umc/js/packages.js:179
 msgid ""
@@ -40,7 +40,7 @@ msgid "Close"
 msgstr "Schließen"
 
 #: umc/js/packages.js:101 umc/js/packages.js:279
-msgid "Deinstall"
+msgid "Uninstall"
 msgstr "Deinstallieren"
 
 #: umc/js/packages.js:347
@@ -70,6 +70,10 @@ msgstr "Nur installierte Pakete anzeigen"
 #: umc/js/packages.js:352
 msgid "Installed version"
 msgstr "Installierte Version"
+
+#: umc/js/packages.js:352
+msgid "Candidate version"
+msgstr "Anwärterversion"
 
 #: umc/js/packages.js:348
 msgid "Is installed"

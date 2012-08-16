@@ -12,6 +12,7 @@ XS-Python-Version: >= 2.6
 Package: univention-management-console-module-packages
 Architecture: all
 Depends: univention-management-console-server,
+ python-univention-lib,
  univention-updater,
  univention-management-console-module-lib
 Description: UMC module for software management

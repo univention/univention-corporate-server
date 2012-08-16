@@ -94,7 +94,7 @@ dojo.declare("umc.modules._packages.SearchForm",
 						label:					this._("Pattern"),
 						type:					'TextBox',
 						value:					'*',
-						required:				true,
+						required:				false,
 						onChange:				dojo.hitch(this, function() {
 							this._check_submit_allow();
 						})

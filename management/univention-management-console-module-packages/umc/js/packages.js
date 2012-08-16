@@ -72,7 +72,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._form = new umc.modules._packages.SearchForm({
 			region:				'top'
 		});
-		dojo.connect(this._form,'onSubmit',dojo.hitch(this, function() {
+		dojo.connect(this._form, 'onSubmit', dojo.hitch(this, function() {
 			this._refresh_grid();
 		}));
 
@@ -104,7 +104,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			},
 			{
 				name:				'uninstall',
-				label:				this._("Deinstall"),
+				label:				this._("Uninstall"),
 				isContextAction:	true,
 				isStandardAction:	false,
 				isMultiAction:		false,
@@ -124,8 +124,8 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				canExecute: dojo.hitch(this, function(values) {
 					return this._can_upgrade(values);
 				}),
-				callback:	dojo.hitch(this, function(ids,items) {
-					this._call_installer('upgrade',ids,items);
+				callback:	dojo.hitch(this, function(ids, items) {
+					this._call_installer('upgrade', ids, items);
 				})
 			}
 		];
@@ -186,7 +186,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 	// shows details about a package in a popup dialog
 	// ** NOTE ** 'items' is not processed here at all.
-	_show_details: function(ids,items) {
+	_show_details: function(ids, items) {
 
 		var id = ids;
 		if (dojo.isArray(ids))
@@ -196,7 +196,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		this._grid.standby(true);
 
-		this.moduleStore.umcpCommand('packages/get',{'package':id}).then(
+		this.moduleStore.umcpCommand('packages/get', {'package': id}).then(
 			dojo.hitch(this, function(data) {
 
 				this._grid.standby(false);
@@ -259,7 +259,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 				{
 					buttons.push({
 						name:		'uninstall',
-						label:		this._("Deinstall"),
+						label:		this._("Uninstall"),
 						callback:	dojo.hitch(this, function() {
 							this._call_installer('uninstall',data.result['package'],false);
 						})
@@ -282,21 +282,20 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 					label:		this._("Close")
 				});
 
-                var confirmDialog = new umc.widgets.ConfirmDialog({
-                    title: this._('Package details'),
-                    style: dojo.replace('min-width:500px;max-width: {width}px;',{width: width}),		// umc.dialog.confirm doesn't exceed 550px
-                    message: txt,
-                    options: buttons
-	            });
+				var confirmDialog = new umc.widgets.ConfirmDialog({
+					title: this._('Package details'),
+					style: dojo.replace('min-width:500px;max-width: {width}px;',{width: width}),		// umc.dialog.confirm doesn't exceed 550px
+					message: txt,
+					options: buttons
+				});
 
-	            // connect to 'onConfirm' event to close the dialog in any case
-	            dojo.connect(confirmDialog, 'onConfirm', function(response) {
-	                    confirmDialog.close();
-	            });
+				// connect to 'onConfirm' event to close the dialog in any case
+				dojo.connect(confirmDialog, 'onConfirm', function(response) {
+					confirmDialog.close();
+				});
 
-	            // show the confirmation dialog
-	            confirmDialog.show();
-
+				// show the confirmation dialog
+				confirmDialog.show();
 
 			}),
 			dojo.hitch(this, function(data) {
@@ -310,8 +309,16 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// detail view in a well-defined order
 	_detail_field_order: function() {
 
-		return (['package','summary','section','installed',
-		         'installed_version','upgradable','size','priority','description'
+		return (['package', 
+			 'summary',
+			 'section',
+			 'installed',
+		         'installed_version',
+			 'upgradable',
+			 'candidate_version',
+			 'size',
+			 'priority',
+			 'description'
 		         ]);
 	},
 
@@ -334,6 +341,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			case 'size':				return this._("Package size");
 			case 'priority':			return this._("Priority");
 			case 'installed_version':	return this._("Installed version");
+			case 'candidate_version':	return this._("Candidate version");
 		}
 		return null;
 	},
@@ -407,7 +415,7 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			case 'upgrade':		verb = this._("upgrade");	verb1 = this._("upgrading"); break;
 		}
 
-		this._progress.set('content', dojo.replace(this._("<p>You're currently {verb} the '{id}' package:</p>"),{verb: verb1, id: id}));
+		msg = dojo.replace(this._("You're currently {verb} the '{id}' package:"), {verb: verb1, id: id});
 
 		if (confirm)
 		{
@@ -423,23 +431,23 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	            	'default':		true,
 	            	label:			this._("Yes"),
 	            	callback:		dojo.hitch(this, function() {
-	            		this._execute_installer(func,id);
+	            		this._execute_installer(func, id, msg);
 	            	})
 	            }
 			]);
 		}
 		else
 		{
-			this._execute_installer(func,id);
+			this._execute_installer(func, id, msg);
 		}
 	},
 
 	// Starts the installer and switches to progress view.
-	_execute_installer: function(func,id) {
+	_execute_installer: function(func, id, msg) {
 
-		this.moduleStore.umcpCommand('packages/invoke',{'function':func, 'package':id}).then(
+		this.moduleStore.umcpCommand('packages/invoke', {'function': func, 'package': id}).then(
 			dojo.hitch(this, function(data) {
-				this._switch_to_progress_bar(id);
+				this._switch_to_progress_bar(msg);
 			}),
 			dojo.hitch(this, function(data) {
 				umc.dialog.alert(data.message);
@@ -447,9 +455,9 @@ dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		);
 	},
 
-	_switch_to_progress_bar: function(packageName) {
+	_switch_to_progress_bar: function(msg) {
 		this.standby(true, this._progressBar);
-		this._progressBar.reset(packageName);
+		this._progressBar.reset(msg);
 		this._progressBar.auto('packages/progress',
 			{},
 			dojo.hitch(this, '_restartOrReload')

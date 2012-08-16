@@ -1,3 +1,11 @@
+univention-management-console-module-packages (2.0.1-1) unstable; urgency=low
+
+  * Use PatternSanitizer, fix translations, be more verbose when invoking an
+    action, add univention-lib dependency
+  * Add candidate_version in details (Bug #17337)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 16 Aug 2012 18:57:52 +0200
+
 univention-management-console-module-packages (2.0.0-1) unstable; urgency=low
 
   * Use univention.lib.package_manager (Bug #28010)

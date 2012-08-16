@@ -40,7 +40,7 @@ import apt
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.modules.decorators import simple_response, sanitize
-from sanitizers import AptFunctionSanitizer
+from sanitizers import AptFunctionSanitizer, PatternSanitizer
 
 from univention.lib.package_manager import PackageManager, LockError
 
@@ -63,31 +63,26 @@ class Instance(umcm.Base):
 
 		return [{'id' : section, 'label' : section} for section in sorted(sections)]
 
+	@sanitize(pattern=PatternSanitizer())
 	@simple_response
-	def query(self, installed=False, section='all', key='', pattern='*'):
+	def query(self, pattern, installed=False, section='all', key='package'):
 		""" Query to fill the grid. Structure is fixed here.
 		"""
-
 		result = []
 		cache = apt.Cache()
-		if key == 'package':
-			_re = re.compile( '^%s$' % pattern.replace('*','.*') )
-		elif key == 'description':
-			_re = re.compile( '%s' % pattern.replace('*','.*').lower() )
 		for pkey in cache.keys():
 			if (not installed) or cache[pkey].is_installed:
 				pkg = cache[pkey]
 				if section == 'all' or pkg.section == section:
 					toshow = False
-					if pattern == '*':
+					if pattern.pattern == '.*':
 						toshow = True
-					elif key == 'package' and _re.search(pkey):
+					elif key == 'package' and pattern.search(pkey):
 						toshow = True
-					elif key == 'description' and _re.search(pkg.rawDescription.lower()):
+					elif key == 'description' and pattern.search(pkg.rawDescription):
 						toshow = True
 					if toshow:
 						result.append(self._package_to_dict(pkg, full=False))
-
 		return result
 		
 	@simple_response
@@ -205,9 +200,12 @@ class Instance(umcm.Base):
 					MODULE.warn("Package '%s': is_installed=true but installedPackageSize=0: using packageSize instead" % package.name)
 					result['size'] = package.packageSize
 				result['installed_version'] = package.installedVersion
+				if package.is_upgradable:
+					result['candidate_version'] = package.candidateVersion
 			else:
 				del result['upgradable']	# not installed: don't show 'upgradable' at all
 				result['size'] = package.packageSize
+				result['candidate_version'] = package.candidateVersion
 			# format size to handle bytes
 			size = result['size']
 			byte_mods = ['B', 'kB', 'MB']
