@@ -158,11 +158,11 @@ class object(content):
 		data["password"] = self.elements[11].result().strip()
 		data["domain"] = self.all_results.get("domainname")
 		data["nameserver"] = self.all_results.get("nameserver_1")
-		self.joinact = TestJoin(self, _('Testing join credentials'), _('Please wait ...'), name='joinact', data=data)
+		self.joinact = TestJoin(self, _('Testing join settings'), _('Please wait ...'), name='joinact', data=data)
 		self.joinact.draw()
 		if os.path.exists(JOINTEST):
 			os.unlink(JOINTEST)
-			msg = _("Connection to the UCS master failed! Please check network and domain join settings.")
+			msg = _("Connection to the UCS master failed! Please check network and join settings.")
 			return msg
 
 		return 0
@@ -215,6 +215,4 @@ class TestJoin(act_win):
 			if process.returncode != 0:
 				fh = open(JOINTEST, "w+")
 				fh.close()
-				msg = _("Connection to the UCS master failed! Please check network and domain join settings.")
-				return msg
 

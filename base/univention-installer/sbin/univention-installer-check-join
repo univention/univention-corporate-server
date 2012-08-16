@@ -40,6 +40,7 @@ errorAndExit () {
 
 	local msg="$1"
 	echo "$msg" >&2
+	echo "$msg" >> /tmp/.$(basename $0).failed
 	exit 1
 }
 

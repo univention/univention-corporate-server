@@ -2300,6 +2300,10 @@ msgstr ""
 "In Nur-IPv6-Umgebungen muss mindestens eine statische IPv6-Adresse vergeben "
 "werden!"
 
+#: installer/modules/70_net.py:840
+msgid "Setting up network"
+msgstr "Richte Netzwerk ein"
+
 #: installer/modules/70_net.py:929
 msgid ""
 "Network \n"
@@ -2469,6 +2473,14 @@ msgstr ""
 #: installer/modules/80_join.py:155
 msgid "Join settings"
 msgstr "Join-Einstellungen"
+
+#: installer/modules/80_join.py:161
+msgid "Testing join settings"
+msgstr "Teste Join-Einstellungen"
+
+#: installer/modules/80_join.py:165
+msgid "Connection to the UCS master failed! Please check network and join settings."
+msgstr "Verbindung zum UCS Master konnte nicht aufgebaut werden! Bitte prüfen sie die Netzwerk- und Join-Einstellungen."
 
 #: installer/modules/85_software.py:142
 msgid "Preparing package list"
