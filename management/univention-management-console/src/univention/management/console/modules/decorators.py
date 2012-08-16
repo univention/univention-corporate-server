@@ -365,7 +365,7 @@ def log(function=None, sensitives=()):
 	module (given that the the UCR variable *umc/module/debug/level*
 	is set to at least 3)::
 
-	 <date>  MODULE      ( INFO    ) : var1='value1', var2='value2'
+	 <date>  MODULE      ( INFO    ) : my_func got: var1='value1', var2='value2'
 	 <date>  MODULE      ( INFO    ) : my_func returned: 'value1__value2'
 
 	The variable names are ordered by name and hold the values that
@@ -381,7 +381,7 @@ def log(function=None, sensitives=()):
 
 	This results in::
 
-	 <date>  MODULE      ( INFO    ) : password='********', username='Administrator'
+	 <date>  MODULE      ( INFO    ) : login got: password='********', username='Administrator'
 	 <date>  MODULE      ( INFO    ) : login returned: True
 
 	The decorator also works with :func:`multi_response`::
@@ -394,21 +394,22 @@ def log(function=None, sensitives=()):
 	This will give two lines in the logfile for each element in the
 	list of *request.options*::
 
-	 <date>  MODULE      ( INFO    ) : var1='value1', var2='value2'
-	 <date>  MODULE      ( INFO    ) : myfunc returned: 'value1__value2'
-	 <date>  MODULE      ( INFO    ) : var1='value3', var2='value4'
-	 <date>  MODULE      ( INFO    ) : myfunc returned: 'value3__value4'
+	 <date>  MODULE      ( INFO    ) : multi_my_func got: var1='value1', var2='value2'
+	 <date>  MODULE      ( INFO    ) : multi_my_func returned: 'value1__value2'
+	 <date>  MODULE      ( INFO    ) : multi_my_func got: var1='value3', var2='value4'
+	 <date>  MODULE      ( INFO    ) : multi_my_func returned: 'value3__value4'
 
 	'''
 	if function is None:
 		return lambda f: log(f, sensitives)
 	sensitives = dict([(key, '********') for key in sensitives])
 	def _response(self, **kwargs):
+		name = function.__name__ # perhaps something like self.__class__.__module__?
 		argument_representation = ['%s=%r' % (key, sensitives.get(key, kwargs[key])) for key in sorted(kwargs.keys())]
 		if argument_representation:
-			MODULE.info(', '.join(argument_representation))
+			MODULE.info('%s got: %s' % (name, ', '.join(argument_representation)))
 		ret = function(self, **kwargs)
-		MODULE.info('%s returned: %r' % (function.__name__, ret))
+		MODULE.info('%s returned: %r' % (name, ret))
 		return ret
 	copy_function_meta_data(function, _response, copy_arg_inspect=True)
 	return _response

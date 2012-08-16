@@ -45,6 +45,8 @@ The main job of sanitizers is to alter values if needed so that they
 cannot do something harmful in the exposed UMC-functions. But they are also
 very helpful when one needs to just validate input.
 """
+import re
+
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
@@ -94,7 +96,10 @@ class Sanitizer(object):
 		correct values and returns the new value (together with a flag
 		indicating whether the value was found at all).
 		If you write your own Sanitize class, you probably want to
-		override _sanitize.
+		override :meth:`~Sanitizer._sanitize`.
+
+		.. document private functions
+		.. automethod:: _sanitize
 		'''
 		if name not in options:
 			if self.required:
@@ -118,31 +123,34 @@ class Sanitizer(object):
 		override this method in your Sanitize class.
 
 		:param object value: the value as found in *request.options*
-		  (or None if not found but told to sanitize anyway).
+		  (or *None* if not found but told to
+		  :attr:`~Sanitizer.validate_none`).
 		:param string name: the name of the argument currently
 		  sanitized.
-		:param {string : object} further_arguments: dictionary
+		:param further_arguments: dictionary
 		  holding the values of those additional arguments 
 		  in *request.options* that are needed for sanitizing.
 		  the arguments come straight from the not altered
 		  options dict (i.e. before potentially changing
 		  sanitizing happened).
+		:type further_arguments: {string : object}
 		'''
 		return value
 
 	def raise_validation_error(self, msg):
-		'''Used to more or less uniformly raise a ValidationError.
-		This will actually raise an UnformattedValidationError
-		for your convenience. If used in _sanitize(), it will be
+		'''Used to more or less uniformly raise a
+		:class:`~ValidationError`. This will actually raise an
+		:class:`~UnformattedValidationError` for your convenience.
+		If used in :meth:`~Sanitizer._sanitize`, it will be
 		automatically enriched with name, value und formatting in
-		sanitize().
+		:meth:`~Sanitizer.sanitize`.
 		'''
 		raise UnformattedValidationError(msg)
 
 	def raise_formatted_validation_error(self, msg, name, value):
-		'''Used to more or less uniformly raise a ValidationError.
-		*name* and *value* need to passed because the sanitizer
-		should be thread safe.
+		'''Used to more or less uniformly raise a
+		:class:`~ValidationError`. *name* and *value* need to passed
+		because the sanitizer should be thread safe.
 		
 		:param string msg: error message
 		:param string name: name of the argument
@@ -198,4 +206,50 @@ class IntegerSanitizer(Sanitizer):
 					if value <= self.maximum:
 						self.raise_validation_error(_('Should stay %s') % '<= %(maximum)d')
 			return value
+
+class PatternSanitizer(Sanitizer):
+	'''PatternSanitizer converts the input into a regular expression.
+	It can handle anything (through the inputs __str__ method), but
+	only strings seem to make sense.
+
+	The input should be a string with asterisks (*) if needed. An
+	askterisk stands for anything at any length (regular expression: .*).
+
+	The sanitizer escapes the input, replaces * with .* and applies
+	the params.
+
+	You can give the same parameters as the base class without
+	:attr:`~Sanitizer.may_change_value`, as it always may.
+	Plus:
+
+	:param bool add_asterisks: add asterisks at the beginning and the end
+	  of the value if needed. "string" -> "\*string*", "" -> "*"
+	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
+	  to search case insensitive.
+	'''
+	def __init__(self, add_asterisks=True, ignore_case=True, further_arguments=None, required=False, validate_none=False):
+		super(PatternSanitizer, self).__init__(further_arguments, required, validate_none, may_change_value=True)
+		self.add_asterisks = add_asterisks
+		self.ignore_case = ignore_case
+
+	def _sanitize(self, value, name, further_fields):
+		# if someone wants to validate_none
+		if value is None:
+			value = ''
+		try:
+			value = str(value)
+			if self.add_asterisks:
+				if not value.startswith('*'):
+					value = '*%s' % value
+				if not value.endswith('*'):
+					value = '%s*' % value
+			value = re.escape(value)
+			value = value.replace(r'\*', '.*')
+			flags = 0
+			if self.ignore_case:
+				flags = flags | re.IGNORECASE
+			return re.compile(value, flags)
+		except:
+			# although i cant think of a case were this should fail
+			self.raise_validation_error(_('Not a valid search pattern'))
 

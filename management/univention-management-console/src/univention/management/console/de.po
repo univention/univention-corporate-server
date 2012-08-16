@@ -271,6 +271,9 @@ msgstr "Kann nicht in eine Zahl umgewandelt werden"
 msgid "Should stay %s"
 msgstr "Sollte %s bleiben"
 
+msgid "Not a valid search pattern"
+msgstr "Kein gültiges Suchmuster"
+
 #~ msgid "Attribute %s just available for MIME type %s"
 #~ msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
 
