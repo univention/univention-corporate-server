@@ -113,6 +113,12 @@ if [ -n "$kolab" ]; then
 	export packages=`echo $packages | sed -e 's|univention-mail-postfix ||g;s|univention-mail-cyrus-imap ||g;s|univention-mail-cyrus-pop ||g;s|univention-mail-cyrus ||g;s|univention-spamassassin ||g'`
 fi
 
+# install firefox-de if desktop is selected
+echo "$packages" | grep -iq univention-kde
+if [ $? -eq 0 -a -n "$language" -a "$language" = "de" ]; then
+	packages="firefox-de $packages"
+fi
+
 # default packages
 packages="$packages $default_packages"
 

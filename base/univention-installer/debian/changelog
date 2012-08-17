@@ -1,3 +1,9 @@
+univention-installer (8.0.1-8) unstable; urgency=low
+
+  * install firefox-de on systems with de as language (Bug #28006) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Aug 2012 11:31:59 +0200
+
 univention-installer (8.0.1-7) unstable; urgency=low
 
   * more window domain name tests (Bug #26027) 
