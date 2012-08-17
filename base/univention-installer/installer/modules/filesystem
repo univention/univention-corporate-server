@@ -1,6 +1,8 @@
-3 ext3
-2 ext2
-1 xfs
-4 linux-swap
-5 vfat
+1 ext4
+2 ext3
+3 ext2
+4 xfs
+5 linux-swap
+6 vfat
 7 msdos
+8 btrfs

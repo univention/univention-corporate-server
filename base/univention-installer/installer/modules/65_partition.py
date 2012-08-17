@@ -654,7 +654,7 @@ class object(content):
 			if disksize > PARTSIZE_BOOT and not added_boot:
 				start = sizeused
 				end = sizeused + PARTSIZE_BOOT
-				self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 ext3 %sM %sM /boot boot' % (diskname, partnum, start, end)
+				self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 ext4 %sM %sM /boot boot' % (diskname, partnum, start, end)
 				dev_i += 1
 				partnum += 1
 				disksize -= PARTSIZE_BOOT
@@ -685,7 +685,7 @@ class object(content):
 			dev_i += 1
 
 		rootsize = (disksizeall - swapsize_result - PARTSIZE_BOOT) * 0.95
-		self.all_results['dev_%d' % dev_i] = 'LVM /dev/vg_ucs/rootfs LVMLV 0 ext3 0 %sM / None' % rootsize
+		self.all_results['dev_%d' % dev_i] = 'LVM /dev/vg_ucs/rootfs LVMLV 0 ext4 0 %sM / None' % rootsize
 		dev_i += 1
 
 #dev_0="LVM /dev/vg_ucs/rootfs LVMLV 0 ext3 0M 7000M / None"
@@ -1322,8 +1322,12 @@ class object(content):
 				fstype = 'ext2'
 			elif 'ext3 filesystem data' in data:
 				fstype = 'ext3'
+			elif 'ext4 filesystem data' in data:
+				fstype = 'ext4'
 			elif 'swap file' in data and 'Linux' in data:
 				fstype = 'linux-swap'
+			elif 'BTRFS Filesystem' in data:
+				fstype = 'btrfs'
 			elif 'FAT (16 bit)' in data:
 				fstype = 'fat16'
 			elif 'FAT (32 bit)' in data:
@@ -1958,7 +1962,7 @@ class object(content):
 					break
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
-				self.part_create_generic(targetdisk, targetpart, '/boot', PARTSIZE_BOOT, 'ext3', PARTTYPE_PRIMARY, ['boot'], 1)
+				self.part_create_generic(targetdisk, targetpart, '/boot', PARTSIZE_BOOT, 'ext4', PARTTYPE_PRIMARY, ['boot'], 1)
 			else:
 				msglist = [ _('Not enough disk space found for /boot!'),
 							_('Auto partitioning aborted.') ]
@@ -2042,7 +2046,7 @@ class object(content):
 			vg = self.parent.container['lvm']['vg'][ vgname ]
 			lvname = 'rootfs'
 			format = 1
-			fstype = 'ext3'
+			fstype = 'ext4'
 			mpoint = '/'
 			flag = []
 			currentLE = vg['freePE']
