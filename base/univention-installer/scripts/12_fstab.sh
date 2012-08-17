@@ -30,6 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+getUUID () {
+
+	local device="$1"
+	uuid="$(blkid -o value "$device" | head -1)"
+	if [ -n "$uuid" ]; then
+		echo "UUID=$uuid"
+	fi
+}
+
 # update progress message
 . /tmp/progress.lib
 echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring basesystem")" >&9
@@ -42,7 +51,7 @@ cat >/instmnt/etc/fstab <<__EOT__
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 __EOT__
 
-#ROOT Device
+# root device
 root_device=`python2.6 /sbin/univention-config-registry get installer/device/0/name`
 root_fs=`python2.6 /sbin/univention-config-registry get installer/device/0/fs`
 if [ "$root_fs" = "xfs" ]; then
@@ -53,6 +62,12 @@ else
 	else
 		options="errors=remount-ro"
 	fi
+fi
+
+# convert root device to uuid if possible
+uuid="$(getUUID "$root_device")"
+if [ -n "$uuid" ]; then
+	root_device="$uuid"
 fi
 
 cat >>/instmnt/etc/fstab <<__EOT__
@@ -70,6 +85,12 @@ set | egrep -v "installer_device_0_mp=/" | egrep "installer_device_.*name=" | wh
 
 	if [ -z "$device" ] || [ -z "$fs" ]; then
 		continue
+	fi
+
+	# convert root device to uuid if possible
+	uuid="$(getUUID "$device")"
+	if [ -n "$uuid" ]; then
+		device="$uuid"
 	fi
 
 	if [ "$fs" = "linux-swap" ]; then
