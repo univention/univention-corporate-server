@@ -26,19 +26,19 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.PasswordBox");
+define([
+	"dojo/_base/declare",
+	"umc/widgets/TextBox",
+	"umc/widgets/_FormWidgetMixin"
+], function(declare, TextBox, _FormWidgetMixin) {
+	return declare("umc.widgets.PasswordBox", [ TextBox, _FormWidgetMixin ], {
+		type: 'password',
 
-dojo.require("umc.widgets.TextBox");
-dojo.require("umc.widgets._FormWidgetMixin");
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.TextBox, umc.widgets._FormWidgetMixin ], {
-	type: 'password',
-
-	// the widget's class name as CSS class
-	'class': 'umcPasswordBox'
+		// the widget's class name as CSS class
+		'class': 'umcPasswordBox'
+	});
 });
-
 
 

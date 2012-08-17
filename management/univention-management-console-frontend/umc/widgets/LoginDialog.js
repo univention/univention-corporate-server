@@ -107,11 +107,11 @@ define([
 			});
 
 			// automatically resize the DialogUnderlay container
-			this.own(on(win.global, 'resize', function() {
+			this.own(on(win.global, 'resize', lang.hitch(this, function() {
 				if (Dialog._DialogLevelManager.isTop(this)) {
 					this.show();
 				}
-			}));
+			})));
 		},
 
 		_initForm: function() {

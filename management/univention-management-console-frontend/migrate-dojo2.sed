@@ -3,7 +3,7 @@ s%dojo\.isString(\([^)]*\))%typeof \1 == "string"%g
 s%dojo\.isFunction(\([^)]*\))%typeof \1 == "function"%g
 s%dojo\.isObject(\([^)]*\))%typeof \1 == "object"%g
 s%dojo\.isArray(\([^)]*\))%\1 instanceof Array%g
-s%dojo\.\(clone\|hitch\|mixin\|partial\|replace\|setObject\|getObject\|trim\)\>%/*REQUIRE:"dojo/_base/lang"*/ lang.\1%g
+s%dojo\.\(clone\|hitch\|mixin\|partial\|replace\|setObject\|getObject\|trim\)\>%lang.\1%g
 s%dojo\.\(forEach\|map\|filter\|every\|some\|indexOf\)\>%/*REQUIRE:"dojo/_base/array"*/ array.\1%g
 s%dojo\.isIE%/*REQUIRE:"dojo/sniff"*/ has(\'ie\')%g
 s%dojo\.addOnLoad%/*REQUIRE:"dojo/ready"*/ ready%g
@@ -34,7 +34,7 @@ s%dojo\.style(\([^,]*\),\([^)]*\))%/*REQUIRE:"dojo/dom-style"*/ style.get(\1,\2)
 s%dojo\.\(body\|global\|doc\)\>%/*REQUIRE:"dojo/_base/window"*/ window.\1%g
 s%dojo\.fromJson%/*REQUIRE:"dojo/json"*/ json.parse%g
 s%dojo\.toJson%/*REQUIRE:"dojo/json"*/ json.stringify%g
-s%dojo\.declare([^,]*,\s*%/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(%g
+s%dojo\.declare(%/*TODO*/ return declare(%g
 s%dojo\.fadeIn%/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeIn%g
 s%dojo\.fadeOut%/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeOut%g
 s%dojo\.Deferred%/*REQUIRE:"dojo/Deferred"*/ Deferred%g
@@ -46,4 +46,4 @@ s%dojo\.cookie%/*REQUIRE:"dojo/cookie"*/ cookie%g
 s%dojo\.date\.locale\.format%/*REQUIRE:"dojo/date/locale"*/ locale.format%g
 s%this._\>%_%g
 s%umc\.\(tools\|dialog\|render\|store\)%\1%g
-s%^/\*global.*\<dojo\>.*\*/%/*global define console*/%g
+s%^/\*global.*\<dojo\>.*\*/%/*global define*/%g

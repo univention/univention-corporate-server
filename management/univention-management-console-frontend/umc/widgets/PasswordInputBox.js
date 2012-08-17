@@ -26,156 +26,153 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.PasswordInputBox");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/LabelPane",
+	"umc/widgets/PasswordBox",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/i18n!umc/app"
+], function(declare, lang, ContainerWidget, LabelPane, PasswordBox, _FormWidgetMixin, _) {
+	return declare("umc.widgets.PasswordInputBox", [ ContainerWidget, _FormWidgetMixin ], {
+		// summary:
+		//		Simple widget that displays a widget/HTML code with a label above.
 
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.HiddenInput");
-dojo.require("umc.widgets.LabelPane");
-dojo.require("umc.widgets.PasswordBox");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.widgets._WidgetsInWidgetsMixin");
+		isLabelDisplayed: true,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ 
-	umc.widgets.ContainerWidget, 
-	umc.widgets._FormWidgetMixin, 
-	umc.widgets._WidgetsInWidgetsMixin,
-	umc.i18n.Mixin 
-], {
-	// summary:
-	//		Simple widget that displays a widget/HTML code with a label above.
+		name: '',
 
-	isLabelDisplayed: true,
+		label: '',
 
-	name: '',
+		required: '',
 
-	label: '',
+		disabled: false,
 
-	required: '',
+		// the widget's class name as CSS class
+		'class': 'umcPasswordInputBox',
 
-	disabled: false,
+		_firstWidget: null,
 
-	i18nClass: 'umc.app',
+		_secondWidget: null,
 
-	// the widget's class name as CSS class
-	'class': 'umcPasswordInputBox',
+		_setLabelAttr: function(newLabel) {
+			this.label = newLabel;
+			if (this._firstWidget && this._secondWidget) {
+				this._firstWidget.set('label', this.label);
+				this._secondWidget.set('label', _('%(label)s (retype)', this));
+			}
+		},
 
-	_firstWidget: null,
+		_setRequiredAttr: function(newVal) {
+			this.required = newVal;
+			if (this._firstWidget && this._secondWidget) {
+				this._firstWidget.set('required', this.required);
+				this._secondWidget.set('required', this.required);
+			}
+		},
 
-	_secondWidget: null,
+		_setValueAttr: function(newVal) {
+			this._firstWidget.set('value', newVal);
+			this._secondWidget.set('value', newVal);
+		},
 
-	_setLabelAttr: function(newLabel) {
-		this.label = newLabel;
-		if (this._firstWidget && this._secondWidget) {
-			this._firstWidget.set('label', this.label);
-			this._secondWidget.set('label', _('%(label)s (retype)', this));
-		}
-	},
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	_setRequiredAttr: function(newVal) {
-		this.required = newVal;
-		if (this._firstWidget && this._secondWidget) {
-			this._firstWidget.set('required', this.required);
-			this._secondWidget.set('required', this.required);
-		}
-	},
+			this.sizeClass = null;
+		},
 
-	_setValueAttr: function(newVal) {
-		this._firstWidget.set('value', newVal);
-		this._secondWidget.set('value', newVal);
-	},
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+			// create password fields
+			this._firstWidget = this.own(new PasswordBox({
+				required: this.required,
+				disabled: this.disabled,
+				name: this.name + '_1',
+				validator: lang.hitch(this, '_checkValidity', 1)
+			}))[0];
+			this._secondWidget = this.own(new PasswordBox({
+				required: this.required,
+				disabled: this.disabled,
+				name: this.name + '_2',
+				validator: lang.hitch(this, '_checkValidity', 2),
+				invalidMessage: _('The passwords do not match, please retype again.')
+			}))[0];
+			this._setLabelAttr(this.label);
 
-		this.sizeClass = null;
-	},
+			// register to 'onChange' events
+			this.own(this._secondWidget.watch('value', lang.hitch(function(name, oldVal, newVal) {
+				this._set('value', newVal);
+			})));
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			// create layout
+			var container = this.own(new ContainerWidget({}))[0];
+			this.addChild(container);
+			container.addChild(new LabelPane({
+				content: this._firstWidget
+			}));
+			container.addChild(new LabelPane({
+				content: this._secondWidget
+			}));
+			this.startup();
+		},
 
-		// create password fields
-		this._firstWidget = this.adopt(umc.widgets.PasswordBox, {
-			required: this.required,
-			disabled: this.disabled,
-			name: this.name + '_1',
-			validator: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_checkValidity', 1)
-		});
-		this._secondWidget = this.adopt(umc.widgets.PasswordBox, {
-			required: this.required,
-			disabled: this.disabled,
-			name: this.name + '_2',
-			validator: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_checkValidity', 2),
-			invalidMessage: _('The passwords do not match, please retype again.')
-		});
-		this._setLabelAttr(this.label);
+		postCreate: function() {
+			this.inherited(arguments);
 
-		// register to 'onChange' events
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._secondWidget, 'onChange', 'onChange');
+			// hook validate for the second box with the onChange event of the first one
+			this.own(this._firstWidget.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
+				this._secondWidget.validate(false);
+			})));
+		},
 
-		// create layout
-		var container = this.adopt(umc.widgets.ContainerWidget, {});
-		this.addChild(container);
-		container.addChild(new umc.widgets.LabelPane({
-			content: this._firstWidget
-		}));
-		container.addChild(new umc.widgets.LabelPane({
-			content: this._secondWidget
-		}));
-		this.startup();
-	},
+		_getValueAttr: function() {
+			return this._firstWidget.get('value');
+		},
 
-	postCreate: function() {
-		this.inherited(arguments);
+		_checkValidity: function(ipwBox) {
+			// make sure we can access the widgets
+			if (!this._firstWidget || !this._secondWidget) {
+				return true;
+			}
 
-		// hook validate for the second box with the onChange event of the first one
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._firstWidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this._secondWidget, 'validate', false));
-	},
+			// always return true if the user is writing in the first box
+			// and always return true for the first box
+			if (this._firstWidget.focused || 1 == ipwBox) {
+				return true;
+			}
 
-	_getValueAttr: function() {
-		return this._firstWidget.get('value');
-	},
-
-	_checkValidity: function(ipwBox) {
-		// make sure we can access the widgets
-		if (!this._firstWidget || !this._secondWidget) {
+			// compare passwords
+			var pw1 = this._firstWidget.get('value');
+			var pw2 = this._secondWidget.get('value');
+			if (!this._secondWidget.focused && pw1 != pw2) {
+				// user stopped typing (i.e., no focus) and passwords do not match
+				return false;
+			}
+			if (this._secondWidget.focused &&
+					(pw2.length <= pw1.length && pw1.substr(0, pw2.length) != pw2) ||
+					pw2.length > pw1.length) {
+				// user is typing the second password and do not partly match
+				return false;
+			}
 			return true;
-		}
+		},
 
-		// always return true if the user is writing in the first box
-		// and always return true for the first box
-		if (this._firstWidget.focused || 1 == ipwBox) {
-			return true;
-		}
+		isValid: function() {
+			var res = this.inherited(arguments);
+			if (undefined !== res && null !== res) {
+				return res;
+			}
 
-		// compare passwords
-		var pw1 = this._firstWidget.get('value');
-		var pw2 = this._secondWidget.get('value');
-		if (!this._secondWidget.focused && pw1 != pw2) {
-			// user stopped typing (i.e., no focus) and passwords do not match
-			return false;
+			// compare passwords
+			var pw1 = this._firstWidget.get('value');
+			var pw2 = this._secondWidget.get('value');
+			return pw1 == pw2 && !(this.required === true && !pw1);
 		}
-		if (this._secondWidget.focused && 
-				(pw2.length <= pw1.length && pw1.substr(0, pw2.length) != pw2) ||
-				pw2.length > pw1.length) {
-			// user is typing the second password and do not partly match
-			return false;
-		}
-		return true;
-	},
-
-	isValid: function() {
-		var res = this.inherited(arguments);
-		if (undefined !== res && null !== res) {
-			return res;
-		}
-
-		// compare passwords
-		var pw1 = this._firstWidget.get('value');
-		var pw2 = this._secondWidget.get('value');
-		return pw1 == pw2 && !(this.required === true && !pw1);
-	}
+	});
 });
-
 

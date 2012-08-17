@@ -26,143 +26,136 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.UnixAccessRights");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojox/layout/TableContainer",
+	"umc/tools",
+	"umc/render",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/i18n!umc/app"
+], function(declare, lang, array, TableContainer, tools, render, ContainerWidget, _FormWidgetMixin, _) {
+	return declare("umc.widgets.UnixAccessRights", [ ContainerWidget, _FormWidgetMixin ], {
+		// summary:
+		//		Displays a matrix of UNIX access rights
 
-dojo.require( "dijit.form.CheckBox" );
-dojo.require( "dojox.layout.TableContainer" );
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("tools");
-dojo.require("umc.i18n");
-dojo.require("render");
+		// widgets: Object[]|dijit.form._FormWidget[]|Object
+		//		Array of config objects that specify the widgets that are going to
+		//		be used in the form. Can also be a list of dijit.form._FormWidget
+		//		instances or a dictionary with name->Widget entries in which case
+		//		no layout is rendered and `content` is expected to be specified.
+		widgets: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
-	// summary:
-	//		Displays a matrix of UNIX access rights
+		// layout: String[][]?
+		//		Array of strings that specifies the position of each element in the
+		//		layout. If not specified, the order of the widgets is used directly.
+		//		You may specify a widget entry as `undefined` or `null` in order
+		//		to leave a place free.
+		layout: null,
 
-	// widgets: Object[]|dijit.form._FormWidget[]|Object
-	//		Array of config objects that specify the widgets that are going to
-	//		be used in the form. Can also be a list of dijit.form._FormWidget
-	//		instances or a dictionary with name->Widget entries in which case
-	//		no layout is rendered and `content` is expected to be specified.
-	widgets: null,
+		disabled: false,
 
-	// layout: String[][]?
-	//		Array of strings that specifies the position of each element in the
-	//		layout. If not specified, the order of the widgets is used directly.
-	//		You may specify a widget entry as `undefined` or `null` in order
-	//		to leave a place free.
-	layout: null,
+		_widgets: null,
 
-	i18nClass: 'umc.app',
+		_container: null,
 
-	disabled: false,
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	_widgets: null,
-
-	_container: null,
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		// create widgets
-		this.widgets = [
-			{ type: 'Text', name: 'ownerLabel', content: _( 'Owner' ) },
-			{ type: 'Text', name: 'groupLabel', content: _( 'Group' ) },
-			{ type: 'Text', name: 'otherLabel', content: _( 'Others' ) }
-		];
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'owner', 'group', 'other' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
-			this.widgets.push( { type: 'CheckBox', name: item + 'Read', disabled: this.disabled } );
-			this.widgets.push( { type: 'CheckBox', name: item + 'Write', disabled: this.disabled } );
-			this.widgets.push( { type: 'CheckBox', name: item + 'Execute', disabled: this.disabled } );
-		} ) );
-
-		this.widgets = this.widgets.concat( [
-			{
-				type: 'Text',
-				name: 'read',
-				content: _( 'Read' )
-			},
-			{
-				type: 'Text',
-				name: 'write',
-				content: _( 'Write' )
-			},
-			{
-				type: 'Text',
-				name: 'access',
-				content: _( 'Access' )
-			},
-			{
-				type: 'Text',
-				name: 'empty',
-				content: ''
-			}
-		] );
-		this._widgets = render.widgets( this.widgets );
-
-		this._container = new dojox.layout.TableContainer( { cols : 4, customClass: 'umcUNIXAccessRights', showLabels: false } );
-
-		// first row
-		this._container.addChild( this._widgets.empty );
-		this._container.addChild( this._widgets.read );
-		this._container.addChild( this._widgets.write );
-		this._container.addChild( this._widgets.access );
-		// other rows
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'owner', 'group', 'other' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
-			this._container.addChild( this._widgets[ item + 'Label' ] );
-			this._container.addChild( this._widgets[ item + 'Read' ] );
-			this._container.addChild( this._widgets[ item + 'Write' ] );
-			this._container.addChild( this._widgets[ item + 'Execute' ] );
-		} ) );
-
-		// register onChange event
-		tools.forIn( this._widgets, function( iname, iwidget ) {
-			if ( 'Text' == iwidget.type ) { // ignore labels
-				return;
-			}
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( iwidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( newValue ) {
-				this.onChange( newValue, iname );
+			// create widgets
+			this.widgets = [
+				{ type: 'Text', name: 'ownerLabel', content: _( 'Owner' ) },
+				{ type: 'Text', name: 'groupLabel', content: _( 'Group' ) },
+				{ type: 'Text', name: 'otherLabel', content: _( 'Others' ) }
+			];
+			array.forEach( [ 'owner', 'group', 'other' ], lang.hitch( this, function( item ) {
+				this.widgets.push( { type: 'CheckBox', name: item + 'Read', disabled: this.disabled } );
+				this.widgets.push( { type: 'CheckBox', name: item + 'Write', disabled: this.disabled } );
+				this.widgets.push( { type: 'CheckBox', name: item + 'Execute', disabled: this.disabled } );
 			} ) );
-		}, this );
-		// start processing the layout information
-		this._container.placeAt(this.containerNode);
-		this._container.startup();
-	},
 
-	_getValueAttr: function() {
-		var rights = 0;
+			this.widgets = this.widgets.concat( [
+				{
+					type: 'Text',
+					name: 'read',
+					content: _( 'Read' )
+				},
+				{
+					type: 'Text',
+					name: 'write',
+					content: _( 'Write' )
+				},
+				{
+					type: 'Text',
+					name: 'access',
+					content: _( 'Access' )
+				},
+				{
+					type: 'Text',
+					name: 'empty',
+					content: ''
+				}
+			] );
+			this._widgets = render.widgets( this.widgets );
 
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'owner', 'group', 'other' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
-			rights += this._widgets[ item + 'Execute' ].get( 'checked' ) ? 1 : 0;
-			rights += this._widgets[ item + 'Write' ].get( 'checked' ) ? 2 : 0;
-			rights += this._widgets[ item + 'Read' ].get( 'checked' ) ? 4 : 0;
-			rights <<= 3;
-		} ) );
+			this._container = new TableContainer( { cols : 4, customClass: 'umcUNIXAccessRights', showLabels: false } );
 
-		rights >>= 3;
+			// first row
+			this._container.addChild( this._widgets.empty );
+			this._container.addChild( this._widgets.read );
+			this._container.addChild( this._widgets.write );
+			this._container.addChild( this._widgets.access );
+			// other rows
+			array.forEach( [ 'owner', 'group', 'other' ], lang.hitch( this, function( item ) {
+				this._container.addChild( this._widgets[ item + 'Label' ] );
+				this._container.addChild( this._widgets[ item + 'Read' ] );
+				this._container.addChild( this._widgets[ item + 'Write' ] );
+				this._container.addChild( this._widgets[ item + 'Execute' ] );
+			} ) );
 
-		return '0' + rights.toString( 8 );
-	},
+			// watch value changes
+			tools.forIn( this._widgets, function( iname, iwidget ) {
+				if ( 'Text' == iwidget.type ) { // ignore labels
+					return;
+				}
+				this.own(iwidget.watch('value', lang.hitch( this, function( name, oldValue, newValue ) {
+					this._set( 'value', this.get('value') );
+				} ) ) );
+			}, this );
+			// start processing the layout information
+			this._container.placeAt(this.containerNode);
+			this._container.startup();
+		},
 
-	_setValueAttr: function( value ) {
-		var rights = parseInt( value, 8 );
+		_getValueAttr: function() {
+			var rights = 0;
 
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach( [ 'other', 'group', 'owner' ], /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( item ) {
-			this._widgets[ item + 'Execute' ].set( 'checked', rights & 1 );
-			this._widgets[ item + 'Write' ].set( 'checked', rights & 2 );
-			this._widgets[ item + 'Read' ].set( 'checked', rights & 4 );
+			array.forEach( [ 'owner', 'group', 'other' ], lang.hitch( this, function( item ) {
+				rights += this._widgets[ item + 'Execute' ].get( 'checked' ) ? 1 : 0;
+				rights += this._widgets[ item + 'Write' ].get( 'checked' ) ? 2 : 0;
+				rights += this._widgets[ item + 'Read' ].get( 'checked' ) ? 4 : 0;
+				rights <<= 3;
+			} ) );
+
 			rights >>= 3;
-		} ) );
-	},
 
-	// provide 'onChange' method stub in case it does not exist yet
-	onChange: function( newValue, widgetName ) {
-		// event stub
-	}
+			return '0' + rights.toString( 8 );
+		},
 
+		_setValueAttr: function( value ) {
+			var rights = parseInt( value, 8 );
+
+			array.forEach( [ 'other', 'group', 'owner' ], lang.hitch( this, function( item ) {
+				this._widgets[ item + 'Execute' ].set( 'checked', rights & 1 );
+				this._widgets[ item + 'Write' ].set( 'checked', rights & 2 );
+				this._widgets[ item + 'Read' ].set( 'checked', rights & 4 );
+				rights >>= 3;
+			} ) );
+		}
+	});
 });
-
 

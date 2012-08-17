@@ -26,201 +26,199 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.MultiSelect");
-
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets._SelectMixin");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("tools");
-dojo.require("dojox.grid.EnhancedGrid");
-dojo.require("dojox.grid.cells");
-dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dojox.grid.EnhancedGrid, umc.widgets._FormWidgetMixin, umc.widgets._SelectMixin, umc.widgets.StandbyMixin ], {
-	// summary:
-	//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
-	//		to the behaviour expected from a MultiSelect widget.
-
-	// size: Integer
-	//		The attribute 'size' is mapped to 'autoHeight'.
-
-	// value: String[]
-	//		The widgets value, an array of strings containing all elements that are selected.
-	value: [],
-
-	_loadingDeferred: null,
-
-	// we need the plugin for selection via checkboxes
-	plugins : {
-		indirectSelection: {
-			headerSelector: true,
-			name: 'Selection',
-			width: '25px',
-			styles: 'text-align: center;'
-		}
-	},
-
-	// simple grid structure, only one column
-	structure: [{
-		field: 'label',
-		name: 'Name',
-		width: '100%'
-	}],
-
-
-	// the widget's class name as CSS class
-	'class': 'umcMultiSelect',
-
-	// force the height of the widget
-	height: '110px',
-
-	postMixInProperties: function() {
-		// initiate a new Deferred object
-		this._loadingDeferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
-
-		this.inherited(arguments);
-
-		// in case 'value' is not specified, generate a new array
-		if (!this.value instanceof Array) {
-			this.value = [];
-		}
-	},
-
-	postCreate: function() {
-		this.inherited(arguments);
-
-		// hide the header
-		/*REQUIRE:"dojo/query"*/ query('.dojoxGridHeader', this.domNode).style('height', '0px');
-
-		// send an onChange event when the selection has changed
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ on(this, 'onSelectionChanged', function() {
-			this.onChange(this.get('value'));
-		});
-	},
-
-	_getSizeAttr: function() {
-		return this.get('autoHeight');
-	},
-
-	_setSizeAttr: function(newVal) {
-		this.set('autoHeight', newVal);
-	},
-
-	_setValueAttr: function(/*String|String[]*/ values) {
-		// in case we have a string, assume it is a comma separated list of values
-		// and transform it into an array
-		if (typeof values == "string") {
-			values = values.split(',');
-		}
-
-		// ignore anything that is not an array at this point
-		if (!values instanceof Array) {
-			values = [];
-		}
-
-		// cache results
-		this.value = values;
-
-		// in case the values are loading, we need to postpone the manipulation
-		// of the selection after the grid has been loaded
-		this._loadingDeferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-			// map all selected items into a dict for faster access
-			var _map = {};
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(values, function(i) {
-				_map[i] = true;
-			});
-
-			// deselect all elements and update the given selection according to the values
-			this.selection.clear();
-			this.store.fetch({
-				onItem: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(iitem) {
-					// check whether the item has been selected
-					var iid = this.store.getValue(iitem, 'id');
-					if (iid in _map) {
-						// item in in the given list, activate the selection
-						var idx = this.getItemIndex(iitem);
-						this.selection.addToSelection(idx);
-					}
-				})
-			});
-		}));
-	},
-
-	_getValueAttr: function() {
-		// if the grid is loading, return the cached value
-		if (this._loadingDeferred.fired < 0) {
-			return this.value; // String[]
-		}
-
-		// otherwise get all selected items
-		var items = this.selection.getSelected();
-		var vars = [];
-		for (var iitem = 0; iitem < items.length; ++iitem) {
-			vars.push(this.store.getValue(items[iitem], 'id'));
-		}
-		return vars; // String[]
-	},
-
-	getSelectedItems: function() {
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/Deferred",
+	"dojo/query",
+	"dojox/grid/EnhancedGrid",
+	"umc/widgets/_SelectMixin",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/widgets/StandbyMixin",
+	"dojox/grid/enhanced/plugins/IndirectSelection",
+	"dojox/grid/cells"
+], function(declare, lang, array, Deferred, query, EnhancedGrid, _SelectMixin, _FormWidgetMixin, StandbyMixin) {
+	return declare("umc.tools.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin ], {
 		// summary:
-		//		Returns all select items is array of dicts (with id and label entries)
-		var vals = this.get('value');
-		if (!vals instanceof Array) {
-			return [];
+		//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
+		//		to the behaviour expected from a MultiSelect widget.
+
+		// size: Integer
+		//		The attribute 'size' is mapped to 'autoHeight'.
+
+		// value: String[]
+		//		The widgets value, an array of strings containing all elements that are selected.
+		value: [],
+
+		_loadingDeferred: null,
+
+		// we need the plugin for selection via checkboxes
+		plugins : {
+			indirectSelection: {
+				headerSelector: true,
+				name: 'Selection',
+				width: '25px',
+				styles: 'text-align: center;'
+			}
+		},
+
+		// simple grid structure, only one column
+		structure: [{
+			field: 'label',
+			name: 'Name',
+			width: '100%'
+		}],
+
+		// the widget's class name as CSS class
+		'class': 'umcMultiSelect',
+
+		// force the height of the widget
+		height: '110px',
+
+		postMixInProperties: function() {
+			// initiate a new Deferred object
+			this._loadingDeferred = new Deferred();
+
+			this.inherited(arguments);
+
+			// in case 'value' is not specified, generate a new array
+			if (!this.value instanceof Array) {
+				this.value = [];
+			}
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			// hide the header
+			query('.dojoxGridHeader', this.domNode).style('height', '0px');
+
+			// send an onChange event when the selection has changed
+			this.on('selectionChanged', function() {
+				this._set('value', this.get('value'));
+			});
+		},
+
+		_getSizeAttr: function() {
+			return this.get('autoHeight');
+		},
+
+		_setSizeAttr: function(newVal) {
+			this.set('autoHeight', newVal);
+		},
+
+		_setValueAttr: function(/*String|String[]*/ values) {
+			// in case we have a string, assume it is a comma separated list of values
+			// and transform it into an array
+			if (typeof values == "string") {
+				values = values.split(',');
+			}
+
+			// ignore anything that is not an array at this point
+			if (!(values instanceof Array)) {
+				values = [];
+			}
+
+			// cache results
+			this.value = values;
+
+			// in case the values are loading, we need to postpone the manipulation
+			// of the selection after the grid has been loaded
+			this._loadingDeferred.then(lang.hitch(this, function() {
+				// map all selected items into a dict for faster access
+				var _map = {};
+				array.forEach(values, function(i) {
+					_map[i] = true;
+				});
+
+				// deselect all elements and update the given selection according to the values
+				this.selection.clear();
+				this.store.fetch({
+					onItem: lang.hitch(this, function(iitem) {
+						// check whether the item has been selected
+						var iid = this.store.getValue(iitem, 'id');
+						if (iid in _map) {
+							// item in in the given list, activate the selection
+							var idx = this.getItemIndex(iitem);
+							this.selection.addToSelection(idx);
+						}
+					})
+				});
+			}));
+		},
+
+		_getValueAttr: function() {
+			// if the grid is loading, return the cached value
+			if (this._loadingDeferred.fired < 0) {
+				return this.value; // String[]
+			}
+
+			// otherwise get all selected items
+			var items = this.selection.getSelected();
+			var vars = [];
+			for (var iitem = 0; iitem < items.length; ++iitem) {
+				vars.push(this.store.getValue(items[iitem], 'id'));
+			}
+			return vars; // String[]
+		},
+
+		getSelectedItems: function() {
+			// summary:
+			//		Returns all select items is array of dicts (with id and label entries)
+			var vals = this.get('value');
+			if (!vals instanceof Array) {
+				return [];
+			}
+
+			// create a map of the selected ids
+			var map = {};
+			array.forEach(vals, function(iid) {
+				map[iid] = true;
+			});
+
+			// get all store items and find the labels for the selected ones
+			var items = array.filter(this.getAllItems(), function(iitem) {
+				return iitem.id in map;
+			});
+			return items;
+		},
+
+		onLoadDynamicValues: function() {
+			this.inherited(arguments);
+
+			// initiate a new Deferred, if the current one has already been resolved
+			if (this._loadingDeferred.fired >= 0) {
+				this._loadingDeferred = new Deferred();
+			}
+
+			// start standby animation
+			this.standby(true);
+		},
+
+		onValuesLoaded: function(values) {
+			this.inherited(arguments);
+
+			// resolve the Deferred
+			if (this._loadingDeferred.fired < 0) {
+				this._loadingDeferred.resolve();
+			}
+
+			// stop standby animation and re-render
+			this.standby(false);
+			this.render();
 		}
 
-		// create a map of the selected ids
-		var map = {};
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(vals, function(iid) {
-			map[iid] = true;
-		});
-
-		// get all store items and find the labels for the selected ones
-		var items = /*REQUIRE:"dojo/_base/array"*/ array.filter(this.getAllItems(), function(iitem) {
-			return iitem.id in map;
-		});
-		return items;
-	},
-
-	onLoadDynamicValues: function() {
-		this.inherited(arguments);
-
-		// initiate a new Deferred, if the current one has already been resolved
-		if (this._loadingDeferred.fired >= 0) {
-			this._loadingDeferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
-		}
-
-		// start standby animation
-		this.standby(true);
-	},
-
-	onValuesLoaded: function(values) {
-		this.inherited(arguments);
-
-		// resolve the Deferred
-		if (this._loadingDeferred.fired < 0) {
-			this._loadingDeferred.resolve();
-		}
-
-		// stop standby animation and re-render
-		this.standby(false);
-		this.render();
-	},
-
-	onChange: function(newValues) {
-		// event stub
-	}
-
-	/*adaptHeight: function() {
-		this.inherited(arguments);
-		console.log('# adaptHeight');
-		if (this.height) {
-			console.log('# height', this.height, parseInt(this.height, 10));
-			this.scroller.windowHeight = parseInt(this.height, 10);
-		}
-	}*/
+		/*adaptHeight: function() {
+			this.inherited(arguments);
+			console.log('# adaptHeight');
+			if (this.height) {
+				console.log('# height', this.height, parseInt(this.height, 10));
+				this.scroller.windowHeight = parseInt(this.height, 10);
+			}
+		}*/
+	});
 });
-
 

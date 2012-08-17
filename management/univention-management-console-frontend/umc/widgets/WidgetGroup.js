@@ -26,76 +26,71 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.WidgetGroup");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"umc/tools",
+	"umc/render",
+	"umc/widgets/ContainerWidget"
+], function(declare, lang, tools, render, ContainerWidget) {
+	return declare("umc.widgets.WidgetGroup", ContainerWidget, {
+		// summary:
+		//		Groups a set of widgets and returns the value of all widgets as a dictionary
 
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("tools");
-dojo.require("render");
+		// widgets: Object[]|dijit.form._FormWidget[]|Object
+		//		Array of config objects that specify the widgets that are going to
+		//		be used in the form. Can also be a list of dijit.form._FormWidget
+		//		instances or a dictionary with name->Widget entries in which case
+		//		no layout is rendered and `content` is expected to be specified.
+		widgets: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.ContainerWidget, {
-	// summary:
-	//		Groups a set of widgets and returns the value of all widgets as a dictionary
+		// layout: String[][]?
+		//		Array of strings that specifies the position of each element in the
+		//		layout. If not specified, the order of the widgets is used directly.
+		//		You may specify a widget entry as `undefined` or `null` in order
+		//		to leave a place free.
+		layout: null,
 
-	// widgets: Object[]|dijit.form._FormWidget[]|Object
-	//		Array of config objects that specify the widgets that are going to
-	//		be used in the form. Can also be a list of dijit.form._FormWidget
-	//		instances or a dictionary with name->Widget entries in which case
-	//		no layout is rendered and `content` is expected to be specified.
-	widgets: null,
+		_widgets: null,
 
-	// layout: String[][]?
-	//		Array of strings that specifies the position of each element in the
-	//		layout. If not specified, the order of the widgets is used directly.
-	//		You may specify a widget entry as `undefined` or `null` in order
-	//		to leave a place free.
-	layout: null,
+		_container: null,
 
-	_widgets: null,
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	_container: null,
+			// render the widgets and the layout if no content is given
+			this._widgets = render.widgets( this.widgets );
+			this._container = render.layout( this.layout, this._widgets );
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			// register for value changes
+			tools.forIn( this._widgets, function( iname, iwidget ) {
+				this.own(iwidget.watch('value', lang.hitch( this, function( name, oldValue, newValue ) {
+					this._set('value', this.get('value'));
+				} ) ) );
+			}, this );
+			// start processing the layout information
+			this._container.placeAt(this.containerNode);
+			this._container.startup();
+		},
 
-		// render the widgets and the layout if no content is given
-		this._widgets = render.widgets( this.widgets );
-		this._container = render.layout( this.layout, this._widgets );
+		_getValueAttr: function() {
+			var vals = {};
+			tools.forIn( this._widgets, function( iname, iwidget ) {
+				vals[ iname ] = iwidget.get( 'value' );
+			}, this );
 
-		// register onChange event
-		tools.forIn( this._widgets, function( iname, iwidget ) {
-			/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on( iwidget, 'onChange', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch( this, function( newValue ) {
-				this.onChange( newValue, iname );
-			} ) );
-		}, this );
-		// start processing the layout information
-		this._container.placeAt(this.containerNode);
-		this._container.startup();
-	},
+			return vals;
+		},
 
-	_getValueAttr: function() {
-		var vals = {};
-		tools.forIn( this._widgets, function( iname, iwidget ) {
-			vals[ iname ] = iwidget.get( 'value' );
-		}, this );
-
-		return vals;
-	},
-
-	_setValueAttr: function( value ) {
-		tools.forIn( this._widgets, function( iname, iwidget ) {
-			if (iname in value) {
-				iwidget.set( 'value', value[ iname ] );
-			}
-		}, this );
-	},
-
-	// provide 'onChange' method stub in case it does not exist yet
-	onChange: function( newValue, widgetName ) {
-		// event stub
-	}
-
+		_setValueAttr: function( value ) {
+			tools.forIn( this._widgets, function( iname, iwidget ) {
+				if (iname in value) {
+					iwidget.set( 'value', value[ iname ] );
+				}
+			}, this );
+		}
+	});
 });
-
 

@@ -26,74 +26,75 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.ProgressInfo");
+define([
+	"dojo/_base/declare",
+	"dijit/ProgressBar",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/Text"
+], function(declare, ProgressBar, ContainerWidget, Text) {
+	return declare("umc.widgets.ProgressInfo", ContainerWidget, {
+		// summary:
+		//		widget used displaying progress information
 
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("dijit.ProgressBar");
+		_titleWidget: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.ContainerWidget, {
-	// summary:
-	//		widget used displaying progress information
+		_infoWidget: null,
 
-	_titleWidget: null,
+		_progressBar: null,
 
-	_infoWidget: null,
+		maximum: 100,
 
-	_progressBar: null,
+		current: 0,
 
-	maximum: 100,
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	current: 0,
+			// setup a progress bar with some info text
+			this._titleWidget = new Text( {
+				content: ''
+			} );
+			this._infoWidget = new Text( {
+				content: ''
+			} );
+			this._progressBar = new ProgressBar({
+				'class' : 'umcProgressInfo'
+			});
+			this.addChild( this._titleWidget );
+			this.addChild( this._progressBar );
+			this.addChild( this._infoWidget );
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			this.startup();
+		},
 
-		// setup a progress bar with some info text
-		this._titleWidget = new umc.widgets.Text( {
-			content: ''
-		} );
-		this._infoWidget = new umc.widgets.Text( {
-			content: ''
-		} );
-		this._progressBar = new dijit.ProgressBar({
-			'class' : 'umcProgressInfo'
-		});
-		this.addChild( this._titleWidget );
-		this.addChild( this._progressBar );
-		this.addChild( this._infoWidget );
+		updateTitle: function( title ) {
+			if ( title !== undefined ) {
+				this._titleWidget.set( 'content', title );
+			}
+		},
 
-		this.startup();
-	},
+		updateInfo: function( information ) {
+			if ( information !== undefined ) {
+				this._infoWidget.set( 'content', information );
+			}
+		},
 
-	updateTitle: function( title ) {
-		if ( title !== undefined ) {
-			this._titleWidget.set( 'content', title );
+		update: function( value, information, title ) {
+			if ( value === 0 ) {
+				// initiate the progressbar and start the standby
+				this._progressBar.set( 'maximum', this.maximum );
+				this._progressBar.set( 'value', 0 );
+			} else if ( value >= this.maximum || value < 0 ) {
+				// finish the progress bar
+				this._progressBar.set( 'value', this.maximum );
+			} else {
+				this._progressBar.set( 'value', value );
+			}
+			this.updateInfo( information );
+			this.updateTitle( title );
 		}
-	},
-
-	updateInfo: function( information ) {
-		if ( information !== undefined ) {
-			this._infoWidget.set( 'content', information );
-		}
-	},
-
-	update: function( value, information, title ) {
-		if ( value === 0 ) {
-			// initiate the progressbar and start the standby
-			this._progressBar.set( 'maximum', this.maximum );
-			this._progressBar.set( 'value', 0 );
-		} else if ( value >= this.maximum || value < 0 ) {
-			// finish the progress bar
-			this._progressBar.set( 'value', this.maximum );
-		} else {
-			this._progressBar.set( 'value', value );
-		}
-		this.updateInfo( information );
-		this.updateTitle( title );
-	}
+	});
 });
-
 
 

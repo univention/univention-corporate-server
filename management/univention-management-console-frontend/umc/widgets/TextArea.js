@@ -26,55 +26,57 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.TextArea");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/when",
+	"dijit/form/SimpleTextarea",
+	"umc/tools",
+	"umc/widgets/_FormWidgetMixin"
+], function(declare, lang, when, SimpleTextarea, tools, _FormWidgetMixin) {
+	return declare("umc.widgets.TextArea", [ SimpleTextarea, _FormWidgetMixin ], {
+		// the widget's class name as CSS class
+		'class': 'umcTextArea',
 
-dojo.require("dijit.form.SimpleTextarea");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("tools");
+		// dynamicValue: String|Function
+		//		Either an UMCP command to query a value from or a javascript function.
+		//		The javascript function may return a String or a dojo/Deferred object.
+		dynamicValue: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.SimpleTextarea, umc.widgets._FormWidgetMixin ], {
-	// the widget's class name as CSS class
-	'class': 'umcTextArea',
+		// depends: String?|String[]?
+		//		Specifies that values need to be loaded dynamically depending on
+		//		other form fields.
+		depends: null,
 
-	// dynamicValue: String|Function
-	//		Either an UMCP command to query a value from or a javascript function.
-	//		The javascript function may return a String or a /*REQUIRE:"dojo/Deferred"*/ Deferred object.
-	dynamicValue: null,
+		// umcpCommand:
+		//		Reference to the umcpCommand the widget should use.
+		//		In order to make the widget send information such as module flavor
+		//		etc., it can be necessary to specify a module specific umcpCommand
+		//		method.
+		umcpCommand: tools.umcpCommand,
 
-	// depends: String?|String[]?
-	//		Specifies that values need to be loaded dynamically depending on
-	//		other form fields.
-	depends: null,
+		//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,
+		//       and the check for all met dependencies should be done in the Form
+		_loadValues: function(/*Object?*/ params) {
+			// mixin additional options for the UMCP command
+			if (this.dynamicOptions && typeof this.dynamicOptions == "object") {
+				lang.mixin(params, this.dynamicOptions);
+			}
 
-	// umcpCommand:
-	//		Reference to the umcpCommand the widget should use.
-	//		In order to make the widget send information such as module flavor
-	//		etc., it can be necessary to specify a module specific umcpCommand
-	//		method.
-	umcpCommand: tools.umcpCommand,
+			// get the dynamic values, block concurrent events for value loading
+			var func = tools.stringOrFunction(this.dynamicValue, this.umcpCommand);
+			var deferredOrValues = func(params);
 
-	//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,
-	//       and the check for all met dependencies should be done in the Form
-	_loadValues: function(/*Object?*/ params) {
-		// mixin additional options for the UMCP command
-		if (this.dynamicOptions && typeof this.dynamicOptions == "object") {
-			/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
+			// make sure we have an array or a dojo/Deferred object
+			if (deferredOrValues) {
+				when(deferredOrValues, lang.hitch(this, function(res) {
+					this.set('value', res);
+				}));
+			}
 		}
-
-		// get the dynamic values, block concurrent events for value loading
-		var func = tools.stringOrFunction(this.dynamicValue, this.umcpCommand);
-		var deferredOrValues = func(params);
-
-		// make sure we have an array or a /*REQUIRE:"dojo/Deferred"*/ Deferred object
-		if (deferredOrValues) {
-			/*REQUIRE:"dojo/when"*/ when(deferredOrValues, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(res) {
-				this.set('value', res);
-			}));
-		}
-	}
+	});
 });
-
 
 

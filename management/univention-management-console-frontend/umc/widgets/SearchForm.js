@@ -26,68 +26,66 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.SearchForm");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/array",
+	"umc/widgets/Form",
+	"umc/i18n!umc/app"
+], function(declare, array, Form, _) {
+	return declare("umc.widgets.SearchForm", Form, {
+		// summary:
+		//		Encapsulates a complete search form with standard search and cancel
+		//		buttons. This builds on top of umc/widgets/Form.
 
-dojo.require("umc.widgets.Form");
-dojo.require("dijit.form.Form");
-dojo.require("umc.i18n");
+		// the widget's class name as CSS class
+		'class': 'umcSearchForm',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.Form, umc.i18n.Mixin ], {
-	// summary:
-	//		Encapsulates a complete search form with standard search and cancel
-	//		buttons. This builds on top of umc.widget.Form.
-
-	i18nClass: 'umc.app',
-
-	// the widget's class name as CSS class
-	'class': 'umcSearchForm',
-
-	postMixInProperties: function() {
-		// in case no buttons are defined, define the standard 'submit' button
-		if (!this.buttons) {
-			this.buttons = [ {
-				name: 'submit',
-				label: _( 'Search' )
-			}];
-		}
-
-		// add the buttons in a new row in case they have not been specified in the layout
-		var buttonsExist = false;
-		var stack = [this.layout];
-		while (stack.length) {
-			var el = stack.pop();
-			if (el instanceof Array) {
-				/*REQUIRE:"dojo/_base/array"*/ array.forEach(el, function(i) {
-					stack.push(i);
-				});
+		postMixInProperties: function() {
+			// in case no buttons are defined, define the standard 'submit' button
+			if (!this.buttons) {
+				this.buttons = [ {
+					name: 'submit',
+					label: _( 'Search' )
+				}];
 			}
-			else if ( 'submit' == el ) {
-				buttonsExist = true;
-				break;
+
+			// add the buttons in a new row in case they have not been specified in the layout
+			var buttonsExist = false;
+			var stack = [this.layout];
+			while (stack.length) {
+				var el = stack.pop();
+				if (el instanceof Array) {
+					array.forEach(el, function(i) {
+						stack.push(i);
+					});
+				}
+				else if ( 'submit' == el ) {
+					buttonsExist = true;
+					break;
+				}
 			}
+			if (!buttonsExist) {
+				this.layout.push( [ 'submit' ] );
+			}
+
+			this.inherited(arguments);
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			this.on('submit', function() {
+				this.onSearch(this.gatherFormValues());
+			});
+		},
+
+		onSearch: function(values) {
+			// event stub
 		}
-		if (!buttonsExist) {
-			this.layout.push( [ 'submit' ] );
-		}
-
-		this.inherited(arguments);
-	},
-
-	postCreate: function() {
-		this.inherited(arguments);
-
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this, 'onSubmit', function() {
-			this.onSearch(this.gatherFormValues());
-		});
-	},
-
-	onSearch: function(values) {
-		// event stub
-	}
+	});
 });
-
 
 
 

@@ -26,294 +26,299 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.Uploader");
 
-dojo.require("dojox.form.Uploader");
-dojo.require("dojox.form.uploader.plugins.IFrame");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.Button");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.i18n");
-dojo.require("tools");
-dojo.require("dialog");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/when",
+	"dojo/on",
+	"dojo/dom-class",
+	"dojo/dom-style",
+	"dojox/form/Uploader",
+	"umc/tools",
+	"umc/dialog",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/Button",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/i18n!umc/app",
+	"dojox/form/uploader/plugins/IFrame"
+], function(declare, lang, array, when, on, domClass, style, Uploader, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
+	return declare("umc.widgets.Uploader", [ ContainerWidget, _FormWidgetMixin ], {
+		'class': 'umcUploader',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
-	'class': 'umcUploader',
+		// command: String
+		//		The UMCP command to which the data shall be uploaded.
+		//		If not given, the data is sent to umcp/upload which will return the
+		//		file content encoded as base64.
+		command: '',
 
-	i18nClass: 'umc.app',
+		// dynamicOptions: Object?|Function?
+		//		Reference to a dictionary containing options that are passed over to
+		//		the upload command. Can be a function that is expected to return a
+		//		dictionary.
+		dynamicOptions: null,
 
-	// command: String
-	//		The UMCP command to which the data shall be uploaded.
-	//		If not given, the data is sent to umcp/upload which will return the
-	//		file content encoded as base64.
-	command: '',
+		// buttonLabel: String
+		//		The label that is displayed on the upload button.
+		buttonLabel: 'Upload',
 
-	// dynamicOptions: Object?|Function?
-	//		Reference to a dictionary containing options that are passed over to
-	//		the upload command. Can be a function that is expected to return a
-	//		dictionary.
-	dynamicOptions: null,
+		// showClearButton: Boolean
+		//		The clear button is shown only if this attribute is set to true.
+		showClearButton: true,
 
-	// buttonLabel: String
-	//		The label that is displayed on the upload button.
-	buttonLabel: 'Upload',
+		// clearButtonLabel: String
+		//		The label that is displayed on the upload button.
+		clearButtonLabel: 'Clear data',
 
-	// showClearButton: Boolean
-	//		The clear button is shown only if this attribute is set to true.
-	showClearButton: true,
+		// displayErrorMessage: Boolean
+		// 		Show message if error occured when uploading file.
+		displayErrorMessage: true,
 
-	// clearButtonLabel: String
-	//		The label that is displayed on the upload button.
-	clearButtonLabel: 'Clear data',
+		// data: Object
+		//		An object containing the file data that has been uploaded.
+		data: null,
 
-	// displayErrorMessage: Boolean
-	// 		Show message if error occured when uploading file.
-	displayErrorMessage: true,
+		// value: String
+		//		The content of the base64 encoded file data.
+		value: "",
 
-	// data: Object
-	//		An object containing the file data that has been uploaded.
-	data: null,
+		// maxSize: Number
+		//		A size limit for the uploaded file.
+		maxSize: 524288,
 
-	// value: String
-	//		The content of the base64 encoded file data.
-	value: "",
+		// make sure that no sizeClass is being set
+		sizeClass: null,
 
-	// maxSize: Number
-	//		A size limit for the uploaded file.
-	maxSize: 524288,
+		// this form element should always be valid
+		valid: true,
 
-	// make sure that no sizeClass is being set
-	sizeClass: null,
+		// reference to the dojox/form/Uploader instance
+		_uploader: null,
 
-	// this form element should always be valid
-	valid: true,
+		// internal reference to 'clear' button
+		_clearButton: null,
 
-	// reference to the dojox.form.Uploader instance
-	_uploader: null,
+		// internal reference to the original user specified label
+		_origButtonLabel: null,
 
-	// internal reference to 'clear' button
-	_clearButton: null,
+		// internal flag that indicates that the data is being set
+		_settingData: false,
 
-	// internal reference to the original user specified label
-	_origButtonLabel: null,
+		constructor: function() {
+			this.buttonLabel = _('Upload');
+			this.clearButtonLabel = _('Clear data');
+		},
 
-	// internal flag that indicates that the data is being set
-	_settingData: false,
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	constructor: function() {
-		this.buttonLabel = _('Upload');
-		this.clearButtonLabel = _('Clear data');
-	},
+			// save the original label
+			this._origButtonLabel = this.buttonLabel;
+		},
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+		buildRendering: function() {
+			this.inherited(arguments);
 
-		// save the original label
-		this._origButtonLabel = this.buttonLabel;
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		this._uploader = new dojox.form.Uploader({
-			url: '/umcp/upload' + (this.command ? '/' + this.command : ''),
-			label: this.buttonLabel,
-			getForm: function() {
-				// make sure that the Uploader does not find any of our encapsulating forms
-				return null;
-			}
-		});
-		/*REQUIRE:"dojo/dom-class"*/ domClass.add(this._uploader.domNode, 'umcButton');
-		this._uploader.set('iconClass', 'umcIconAdd');
-		/*REQUIRE:"dojo/dom-style"*/ style.set(this._uploader.domNode, 'display', 'inline-block');
-		this.addChild(this._uploader);
-
-		if ( this.showClearButton ) {
-			this._clearButton = new umc.widgets.Button({
-				label: this.clearButtonLabel,
-				iconClass: 'umcIconDelete',
-				callback: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-					this.set('data', null);
-				})
+			this._uploader = new Uploader({
+				url: '/umcp/upload' + (this.command ? '/' + this.command : ''),
+				label: this.buttonLabel,
+				getForm: function() {
+					// make sure that the Uploader does not find any of our encapsulating forms
+					return null;
+				}
 			});
-			this.addChild(this._clearButton);
-		}
-	},
+			domClass.add(this._uploader.domNode, 'umcButton');
+			this._uploader.set('iconClass', 'umcIconAdd');
+			style.set(this._uploader.domNode, 'display', 'inline-block');
+			this.addChild(this._uploader);
 
-	postCreate: function() {
-		this.inherited(arguments);
-
-		// as soon as the user has selected a file, start the upload
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onChange', function(data) {
-			var allOk = true;
-			/*REQUIRE:"dojo/_base/array"*/ array.forEach(data, function(ifile) {
-				allOk = allOk && ifile.size <= this.maxSize;
-				return allOk;
-			}, this);
-			if (!allOk) {
-				dialog.alert(_('File cannot be uploaded, its maximum size may be %.1f MB.', this.maxSize / 1048576.0));
-				this._uploader.reset();
+			if ( this.showClearButton ) {
+				this._clearButton = new Button({
+					label: this.clearButtonLabel,
+					iconClass: 'umcIconDelete',
+					callback: lang.hitch(this, function() {
+						this.set('data', null);
+					})
+				});
+				this.addChild(this._clearButton);
 			}
-			else {
-				/*REQUIRE:"dojo/when"*/ when(this.canUpload(data[0]), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(doUpload) {
-					if (!doUpload) {
-						// upload canceled
-						this._uploader.reset();
-						return;
-					}
+		},
 
-					// perform the upload
-					this._updateLabel();
-					var params = {};
-					if (this.dynamicOptions) {
-						if (typeof this.dynamicOptions == "function") {
-							/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions(params));
+		postCreate: function() {
+			this.inherited(arguments);
+
+			// as soon as the user has selected a file, start the upload
+			this.own(this._uploader.watch('value', lang.hitch(this, function(data) {
+				var allOk = true;
+				array.forEach(data, function(ifile) {
+					allOk = allOk && ifile.size <= this.maxSize;
+					return allOk;
+				}, this);
+				if (!allOk) {
+					dialog.alert(_('File cannot be uploaded, its maximum size may be %.1f MB.', this.maxSize / 1048576.0));
+					this._uploader.reset();
+				}
+				else {
+					when(this.canUpload(data[0]), lang.hitch(this, function(doUpload) {
+						if (!doUpload) {
+							// upload canceled
+							this._uploader.reset();
+							return;
 						}
-						else if (typeof this.dynamicOptions == "object") {
-							/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, this.dynamicOptions);
+
+						// perform the upload
+						this._updateLabel();
+						var params = {};
+						if (this.dynamicOptions) {
+							if (typeof this.dynamicOptions == "function") {
+								lang.mixin(params, this.dynamicOptions(params));
+							}
+							else if (typeof this.dynamicOptions == "object") {
+								lang.mixin(params, this.dynamicOptions);
+							}
 						}
-					}
-					// mixin the iframe information
-					/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(params, {
-						iframe: (this._uploader.uploadType === 'iframe') ? true : false
-					});
-					this._uploader.upload(params);
-					this.onUploadStarted(data[0]);
-				}));
-			}
-		});
+						// mixin the iframe information
+						lang.mixin(params, {
+							iframe: (this._uploader.uploadType === 'iframe') ? true : false
+						});
+						this._uploader.upload(params);
+						this.onUploadStarted(data[0]);
+					}));
+				}
+			})));
 
-		// hook for showing the progress
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onProgress', 'onProgress');
+			// hook for showing the progress
+			this.own(on(this._uploader, 'progress', lang.hitch(this, 'onProgress')));
 
-		// notification as soon as the file has been uploaded
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onComplete', function(data) {
-			if (data && data.result instanceof Array) {
-				this.set('data', data.result[0]);
-				this.onUploaded(this.data);
-			}
-			else {
-				this.set('data', null);
-				var error = tools.parseError(data);
-				if (200 !== error.status) {
-					if (this.displayErrorMessage) {
-						dialog.alert(error.message);
-					}
-					this.onError(error);
-				} else {
+			// notification as soon as the file has been uploaded
+			this.own(on(this._uploader, 'complete', lang.hitch(this, function(data) {
+				if (data && data.result instanceof Array) {
+					this.set('data', data.result[0]);
 					this.onUploaded(this.data);
 				}
+				else {
+					this.set('data', null);
+					var error = tools.parseError(data);
+					if (200 !== error.status) {
+						if (this.displayErrorMessage) {
+							dialog.alert(error.message);
+						}
+						this.onError(error);
+					} else {
+						this.onUploaded(this.data);
+					}
+				}
+				this._resetLabel();
+			})));
+
+			// setup events
+			this.own(on(this._uploader, 'cancel', lang.hitch(this, '_resetLabel')));
+			this.own(on(this._uploader, 'abort', lang.hitch(this, '_resetLabel')));
+			this.own(on(this._uploader, 'error', lang.hitch(this, '_resetLabel')));
+
+			// update the view
+			this.set('value', this.value);
+		},
+
+		_setDataAttr: function(newVal) {
+			this.data = newVal;
+			this._settingData = true;
+			this.set( 'value', newVal && 'content' in newVal ? newVal.content : '' );
+			this._settingData = false;
+		},
+
+		_setValueAttr: function(newVal) {
+			if (!this._settingData) {
+				this.data = null;
 			}
-			this._resetLabel();
-		});
+			this.value = newVal;
 
-		// setup events
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onCancel', '_resetLabel');
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onAbort', '_resetLabel');
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._uploader, 'onError', '_resetLabel');
+			if ( this.showClearButton ) {
+				// decide whether to show/hide remove button
+				domClass.toggle(this._clearButton.domNode, 'dijitHidden', !(typeof this.value == "string" && this.value !== ""));
+			}
 
-		// update the view
-		this.set('value', this.value);
-	},
+			// send events
+			this.onChange(newVal);
+			this.updateView(this.value, this.data);
+		},
 
-	_setDataAttr: function(newVal) {
-		this.data = newVal;
-		this._settingData = true;
-		this.set( 'value', newVal && 'content' in newVal ? newVal.content : '' );
-		this._settingData = false;
-	},
+		_resetLabel: function() {
+			if (!this._uploader) {
+				return;
+			}
+			this.set('disabled', false);
+			this.set('buttonLabel', this._origButtonLabel);
+			this._uploader.reset();
+		},
 
-	_setValueAttr: function(newVal) {
-		if (!this._settingData) {
-			this.data = null;
+		_updateLabel: function() {
+			if (!this.get('disabled')) {
+				// make sure the button is disabled
+				this.set('disabled', true);
+			}
+			this.set('buttonLabel', _('Uploading...'));
+		},
+
+		_setButtonLabelAttr: function(newVal) {
+			if (!this._uploader) {
+				return;
+			}
+			this.buttonLabel = newVal;
+			this._uploader.set('label', newVal);
+		},
+
+		_setDisabledAttr: function(newVal) {
+			if (!this._uploader || !this._uploader.inputNode) {
+				return;
+			}
+			this._uploader.set('disabled', newVal);
+			style.set(this._uploader.domNode, 'display', 'inline-block');
+		},
+
+		_getDisabledAttr: function() {
+			return this._uploader.get('disabled');
+		},
+
+		canUpload: function(fileInfo) {
+			// summary:
+			//		Before uploading a file, this function is called to make sure
+			//		that the given filename is valid. Return boolean or dojo/Deferred.
+			// fileInfo: Object
+			//		Info object for the requested file, contains properties 'name',
+			//		'size', 'type'.
+			return true;
+		},
+
+		onUploadStarted: function(fileInfo) {
+			// event stub
+		},
+
+		onUploaded: function(data) {
+			// event stub
+		},
+
+		onError: function(data) {
+			// event stub
+		},
+
+		onProgress: function(data) {
+			// event stub
+		},
+
+		onChange: function(data) {
+			// event stub
+		},
+
+		updateView: function(value, data) {
+			// summary:
+			//		Custom view function that renders the file content that has been uploaded.
+			//		The default is empty.
 		}
-		this.value = newVal;
-
-		if ( this.showClearButton ) {
-			// decide whether to show/hide remove button
-			/*REQUIRE:"dojo/dom-class"*/ domClass.toggle(this._clearButton.domNode, 'dijitHidden', !(typeof this.value == "string" && this.value !== ""));
-		}
-
-		// send events
-		this.onChange(newVal);
-		this.updateView(this.value, this.data);
-	},
-
-	_resetLabel: function() {
-		if (!this._uploader) {
-			return;
-		}
-		this.set('disabled', false);
-		this.set('buttonLabel', this._origButtonLabel);
-		this._uploader.reset();
-	},
-
-	_updateLabel: function() {
-		if (!this.get('disabled')) {
-			// make sure the button is disabled
-			this.set('disabled', true);
-		}
-		this.set('buttonLabel', _('Uploading...'));
-	},
-
-	_setButtonLabelAttr: function(newVal) {
-		if (!this._uploader) {
-			return;
-		}
-		this.buttonLabel = newVal;
-		this._uploader.set('label', newVal);
-	},
-
-	_setDisabledAttr: function(newVal) {
-		if (!this._uploader || !this._uploader.inputNode) {
-			return;
-		}
-		this._uploader.set('disabled', newVal);
-		/*REQUIRE:"dojo/dom-style"*/ style.set(this._uploader.domNode, 'display', 'inline-block');
-	},
-
-	_getDisabledAttr: function() {
-		return this._uploader.get('disabled');
-	},
-
-	canUpload: function(fileInfo) {
-		// summary:
-		//		Before uploading a file, this function is called to make sure
-		//		that the given filename is valid. Return boolean or /*REQUIRE:"dojo/Deferred"*/ Deferred.
-		// fileInfo: Object
-		//		Info object for the requested file, contains properties 'name',
-		//		'size', 'type'.
-		return true;
-	},
-
-	onUploadStarted: function(fileInfo) {
-		// event stub
-	},
-
-	onUploaded: function(data) {
-		// event stub
-	},
-
-	onError: function(data) {
-		// event stub
-	},
-
-	onProgress: function(data) {
-		// event stub
-	},
-
-	onChange: function(data) {
-		// event stub
-	},
-
-	updateView: function(value, data) {
-		// summary:
-		//		Custom view function that renders the file content that has been uploaded.
-		//		The default is empty.
-	}
+	});
 });
-
 
 

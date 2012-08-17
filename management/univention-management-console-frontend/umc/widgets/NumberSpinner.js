@@ -26,17 +26,17 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.NumberSpinner");
-
-dojo.require("dijit.form.NumberSpinner");
-dojo.require("umc.widgets._FormWidgetMixin");
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ dijit.form.NumberSpinner, umc.widgets._FormWidgetMixin ], {
-	// the widget's class name as CSS class
-	'class': 'umcNumberSpinner'
+define([
+	"dojo/_base/declare",
+	"dijit/form/NumberSpinner",
+	"umc/widgets/_FormWidgetMixin"
+], function(declare, NumberSpinner, _FormWidgetMixin) {
+	return declare("umc.widgets.NumberSpinner", [ NumberSpinner, _FormWidgetMixin ], {
+		// the widget's class name as CSS class
+		'class': 'umcNumberSpinner'
+	});
 });
-
 
 

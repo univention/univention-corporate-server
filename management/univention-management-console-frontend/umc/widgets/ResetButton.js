@@ -26,19 +26,18 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.ResetButton");
+define([
+	"dojo/_base/declare",
+	"umc/widgets/Button"
+], function(declare, Button) {
+	return declare(Button, {
+		type: 'reset',
 
-dojo.require("umc.widgets.Button");
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(umc.widgets.Button, {
-	type: 'reset',
-
-	// the widget's class name as CSS class
-	'class': 'umcResetButton'
+		// the widget's class name as CSS class
+		'class': 'umcResetButton'
+	});
 });
-
-
 
 

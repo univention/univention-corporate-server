@@ -26,139 +26,138 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.widgets.ProgressBar");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dijit/ProgressBar",
+	"umc/tools",
+	"umc/dialog",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/Text",
+	"umc/i18n!umc/app"
+], function(declare, lang, array, tools, dialog, ProgressBar, ContainerWidget, Text, _) {
+	return declare("umc.widgets.ProgressBar", ContainerWidget, {
+		// summary:
+		//		This class provides a widget providing detailed progress information
 
-dojo.require("umc.i18n");
-dojo.require("umc.tools");
-dojo.require("umc.widgets.Text");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("dijit.ProgressBar");
+		i18nClass: 'umc.modules.setup',
 
-dojo.declare("umc.widgets.ProgressBar", [ umc.widgets.ContainerWidget, umc.i18n.Mixin ], {
-	// summary:
-	//		This class provides a widget providing detailed progress information
+		style: 'width: 400px',
 
-	i18nClass: 'umc.modules.setup',
+		_component: null,
+		_message: null,
+		_progressBar: null,
+		_errors: null,
+		_criticalError: null,
 
-	style: 'width: 400px',
+		_initialComponent: null,
 
-	_component: null,
-	_message: null,
-	_progressBar: null,
-	_errors: null,
-	_criticalError: null,
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	_initialComponent: null,
+			this._component = new Text( { content : '' , style : 'width: 100%' } );
+			this.addChild( this._component );
+			this._progressBar = new ProgressBar( { style : 'width: 100%' } );
+			this.addChild( this._progressBar );
+			this._message = new Text( { content : '&nbsp;', style : 'width: 100%' } );
+			this.addChild( this._message );
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			this._progressBar.set( 'value', 0 );
+			this._progressBar.set( 'maximum', 100 );
 
-		this._component = new umc.widgets.Text( { content : '' , style : 'width: 100%' } );
-		this.addChild( this._component );
-		this._progressBar = new dijit.ProgressBar( { style : 'width: 100%' } );
-		this.addChild( this._progressBar );
-		this._message = new umc.widgets.Text( { content : '&nbsp;', style : 'width: 100%' } );
-		this.addChild( this._message );
+			this.reset();
+			this.startup();
+		},
 
-		this._progressBar.set( 'value', 0 );
-		this._progressBar.set( 'maximum', 100 );
+		reset: function(initialComponent) {
+			if (initialComponent) {
+				this._initialComponent = initialComponent;
+			}
+			this._criticalError = false;
+			this._errors = [];
 
-		this.reset();
-		this.startup();
-	},
+			this._component.set( 'content', this._initialComponent);
 
-	reset: function(initialComponent) {
-		if (initialComponent) {
-			this._initialComponent = initialComponent;
-		}
-		this._criticalError = false;
-		this._errors = [];
+			// make sure that at least a not breakable space is printed
+			// ... this avoids vertical jumping of widgets
+			this._message.set( 'content', '&nbsp;' );
 
-		this._component.set( 'content', this._initialComponent);
+			this._progressBar.set( 'value', 0 );
+		},
 
-		// make sure that at least a not breakable space is printed
-		// ... this avoids vertical jumping of widgets
-		this._message.set( 'content', '&nbsp;' );
+		setInfo: function( component, message, percentage, errors, critical ) {
+			if (component) {
+				this._component.set( 'content', component );
+			}
+			if (percentage) {
+				this._progressBar.set( 'value', percentage );
+			}
+			if (message) {
+				this._message.set( 'content', message );
+			}
+			this._addErrors(errors);
+			if (critical) {
+				this._criticalError = true;
+			}
+		},
 
-		this._progressBar.set( 'value', 0 );
-	},
-
-	setInfo: function(component, message, percentage, errors, critical) {
-		if (component) {
-			this._component.set('content', component);
-		}
-		if (percentage) {
-			this._progressBar.set('value', percentage);
-		}
-		if (message || component) {
-			this._message.set('content', message || '&nbsp;');
-		}
-		this._addErrors(errors);
-		if (critical) {
-			this._criticalError = true;
-		}
-	},
-
-	_addErrors: function(errors) {
-		dojo.forEach(errors, dojo.hitch(this, function(error) {
-			if (error) {
-				if (dojo.indexOf(this._errors, error) === -1) {
-					this._errors.push(error);
+		_addErrors: function(errors) {
+			array.forEach(errors, lang.hitch(this, function(error) {
+				if (error) {
+					if (array.indexOf(this._errors, error) === -1) {
+						this._errors.push(error);
+					}
 				}
-			}
-		}));
-	},
+			}));
+		},
 
-	auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors) {
-		if (pollErrorMsg !== undefined) {
-			pollErrorMsg = this._('Fetching information from the server failed!');
-		}
-		umc.tools.umcpCommand(umcpCommand,
-			umcpOptions, undefined, undefined,
-			{
-				messageInterval: 30,
-				message: pollErrorMsg,
-				xhrTimeout: 40
+		auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg) {
+			if (pollErrorMsg !== undefined) {
+				pollErrorMsg = _('Fetching information from the server failed!');
 			}
-		).then(dojo.hitch(this, function(data) {
-			var result = data.result;
-			if (result) {
-				this.setInfo(result.component, result.info, result.steps, result.errors, result.critical);
-				if (!result.finished) {
-					this.auto(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors);
+			tools.umcpCommand(umcpCommand,
+				umcpOptions, undefined, undefined,
+				{
+					messageInterval: 30,
+					message: pollErrorMsg,
+					xhrTimeout: 40
 				}
-			}
-			if (!result || result.finished) {
-				this.stop(callback, stopComponent, !dontHandleErrors)
-			}
-		}));
-	},
+			).then(lang.hitch(this, function(data) {
+				var result = data.result;
+				if (result) {
+					this.setInfo(result.component, result.info, result.steps, result.errors);
+					this.auto(umcpCommand, umcpOptions, callback, pollErrorMsg);
+				} else {
+					this.stop(callback);
+				}
+			}));
+		},
 
-	stop: function(callback, stopComponent, handleErrors) {
-		this.setInfo(stopComponent);
-		var errors = this.getErrors().errors;
-		if (errors.length && handleErrors) {
-			msg = '';
-			if (errors.length == 1) {
-				msg = this._('An error occurred: ') + errors[0];
+		stop: function(callback) {
+			var errors = this.getErrors().errors;
+			if (errors.length) {
+				var msg = '';
+				if (errors.length == 1) {
+					msg = _('An error occurred: ') + errors[0];
+				} else {
+					msg = lang.replace(_('{number} errors occurred: '), {number : errors.length});
+					msg += '<ul><li>' + errors.join('</li><li>') + '</li></ul>';
+				}
+				dialog.confirm(msg, [{
+					label: 'Ok',
+					'default': true,
+					callback: callback
+				}]);
 			} else {
-				msg = dojo.replace(this._('{number} errors occurred: '), {number : errors.length});
-				msg += '<ul><li>' + errors.join('</li><li>') + '</li></ul>';
+				callback();
 			}
-			umc.dialog.confirm(msg, [{
-				label: 'Ok',
-				'default': true,
-				callback: callback
-			}]);
-		} else {
-			callback();
+		},
+
+		getErrors: function() {
+			return {'errors' : this._errors, 'critical' : this._criticalError};
 		}
-	},
-
-	getErrors: function() {
-		return {'errors' : this._errors, 'critical' : this._criticalError}
-	}
+	});
 });
-

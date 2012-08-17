@@ -28,95 +28,91 @@
  */
 /*global define console*/
 
-dojo.provide("umc.widgets.TimeBox");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dijit/form/TimeTextBox",
+	"dojox/string/sprintf",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/tools"
+], function(declare, lang, TimeTextBox, sprintf, ContainerWidget, _FormWidgetMixin, tools) {
+	return declare("umc.widgets.TimeBox", [ ContainerWidget, _FormWidgetMixin ], {
+		// the widget's class name as CSS class
+		'class': 'umcTimeBox',
 
-dojo.require("dijit.form.TimeTextBox");
-//dojo.require("dojox.string.sprintf");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets._FormWidgetMixin");
-dojo.require("umc.widgets._WidgetsInWidgetsMixin");
-dojo.require("tools");
+		_timeBox: null,
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([
-	umc.widgets.ContainerWidget,
-	umc.widgets._FormWidgetMixin,
-	umc.widgets._WidgetsInWidgetsMixin
-], {
-	// the widget's class name as CSS class
-	'class': 'umcTimeBox',
+		sizeClass: null,
 
-	_timeBox: null,
+		disabled: false,
 
-	sizeClass: null,
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	disabled: false,
+			this.sizeClass = null;
+		},
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
+		buildRendering: function() {
+			this.inherited(arguments);
 
-		this.sizeClass = null;
-	},
+			this._timeBox = this.adopt(TimeTextBox, {
+				name: this.name,
+				disabled: this.disabled
+			});
+			this.addChild(this._timeBox);
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			// hook to value changes
+			this.own(this._timeBox.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
+				this._set('value', this.get('value'));
+			})));
+		},
 
-		this._timeBox = this.adopt(dijit.form.TimeTextBox, {
-			name: this.name,
-			disabled: this.disabled
-		});
-		this.addChild(this._timeBox);
+		_dateToTime: function(dateObj) {
+			try {
+				return sprintf('%02d:%02d', dateObj.getHours(), dateObj.getMinutes());
+			} catch(e) {
+				return '';
+			}
+		},
 
-		// hook to the onChange event
-		/*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(this._timeBox, 'onChange', function(val) {
-			this.onChange(this.get('value'));
-		});
-	},
+		// return time in the format 'HH:MM'
+		_getValueAttr: function() {
+			return this._dateToTime(this._timeBox.get('value'));
+		},
 
-	_dateToTime: function(dateObj) {
-		try {
-			return dojox.string.sprintf('%02d:%02d', dateObj.getHours(), dateObj.getMinutes());
-		} catch(e) {
-			return '';
+		_setValueAttr: function(newVal) {
+			if (newVal && newVal instanceof Date) {
+				newVal = this._dateToTime(newVal);
+			}
+			try {
+				var parts = newVal.split(':');
+				this._timeBox.set('value', new Date(1970, 1, 1, parseInt(parts[0], 10) || 0, parseInt(parts[1], 10) || 0));
+			} catch(e) {
+				console.log('ERROR: invalid time format: ' + newVal);
+				this._timeBox.set('value', null);
+			}
+		},
+
+		isValid: function() {
+			// use the property 'valid' in case it has been set
+			// otherwise fall back to the default
+			if (null !== this.valid) {
+				return this.get('valid');
+			}
+			return this._timeBox.isValid();
+		},
+
+		_setBlockOnChangeAttr: function(/*Boolean*/ value) {
+			// execute the inherited functionality in the widget's scope
+			tools.delegateCall(this, arguments, this._timeBox);
+		},
+
+		_getBlockOnChangeAttr: function(/*Boolean*/ value) {
+			// execute the inherited functionality in the widget's scope
+			tools.delegateCall(this, arguments, this._timeBox);
 		}
-	},
-
-	// return time in the format 'HH:MM'
-	_getValueAttr: function() {
-		return this._dateToTime(this._timeBox.get('value'));
-	},
-
-	_setValueAttr: function(newVal) {
-		if (newVal && newVal instanceof Date) {
-			newVal = this._dateToTime(newVal);
-		}
-		try {
-			var parts = newVal.split(':');
-			this._timeBox.set('value', new Date(1970, 1, 1, parseInt(parts[0], 10) || 0, parseInt(parts[1], 10) || 0));
-		} catch(e) {
-			console.log('ERROR: invalid time format: ' + newVal);
-			this._timeBox.set('value', null);
-		}
-	},
-
-	isValid: function() {
-		// use the property 'valid' in case it has been set
-		// otherwise fall back to the default
-		if (null !== this.valid) {
-			return this.get('valid');
-		}
-		return this._timeBox.isValid();
-	},
-
-	_setBlockOnChangeAttr: function(/*Boolean*/ value) {
-		// execute the inherited functionality in the widget's scope
-		tools.delegateCall(this, arguments, this._timeBox);
-	},
-
-	_getBlockOnChangeAttr: function(/*Boolean*/ value) {
-		// execute the inherited functionality in the widget's scope
-		tools.delegateCall(this, arguments, this._timeBox);
-	}
+	});
 });
-
 
 

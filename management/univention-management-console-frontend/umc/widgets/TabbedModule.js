@@ -26,22 +26,22 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("umc.widgets.TabbedModule");
+define([
+	"dojo/_base/declare",
+	"umc/widgets/TabContainer",
+	"umc/widgets/_ModuleMixin",
+	"umc/widgets/StandbyMixin"
+], function(declare, TabContainer, _ModuleMixin, StandbyMixin) {
+	return declare("umc.widgets.TabbedModule", [ TabContainer, _ModuleMixin, StandbyMixin ], {
+		// summary:
+		//		Basis class for module classes.
+		//		It extends dijit.layout.TabContainer and adds some module specific
+		//		properties/methods.
 
-dojo.require("umc.widgets.TabContainer");
-dojo.require("umc.widgets._ModuleMixin");
-dojo.require("umc.widgets.StandbyMixin");
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.TabContainer, umc.widgets._ModuleMixin, umc.widgets.StandbyMixin ], {
-	// summary:
-	//		Basis class for module classes.
-	//		It extends dijit.layout.TabContainer and adds some module specific
-	//		properties/methods.
-
-	// subtabs should be displayed as nested tabs
-	nested: true
+		// subtabs should be displayed as nested tabs
+		nested: true
+	});
 });
-
 

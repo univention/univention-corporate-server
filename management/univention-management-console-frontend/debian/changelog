@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.15-1) unstable; urgency=low
+
+  * WIP: migrated missing modules to Dojo 2.0 syntax; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Aug 2012 17:23:05 +0200
+
 univention-management-console-frontend (2.0.14-1) unstable; urgency=low
 
   * Modify ProgressBar to work with system-setup (Bug #25558)

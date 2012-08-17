@@ -26,315 +26,316 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define */
 
-dojo.provide("umc.widgets.MultiUploader");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/when",
+	"dojo/on",
+	"dojo/dom-style",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/widgets/Button",
+	"umc/widgets/Uploader",
+	"umc/widgets/MultiSelect",
+	"umc/widgets/ProgressInfo",
+	"umc/i18n!umc/app"
+], function(declare, lang, array, when, on, style, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
+	return declare("umc.widgets.MultiUploader", [ ContainerWidget, _FormWidgetMixin ], {
+		'class': 'umcMultiUploader',
 
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.i18n");
-dojo.require("umc.widgets.Button");
-dojo.require("umc.widgets.Uploader");
-dojo.require("umc.widgets.MultiSelect");
-dojo.require("umc.widgets.ProgressInfo");
-dojo.require("tools");
-dojo.require("dialog");
+		// command: String
+		//		The UMCP command to which the data shall be uploaded.
+		//		If not given, the data is sent to umcp/upload which will return the
+		//		file content encoded as base64.
+		command: '',
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare([ umc.widgets.ContainerWidget, umc.widgets._FormWidgetMixin, umc.i18n.Mixin ], {
-	'class': 'umcMultiUploader',
+		// dynamicOptions: Object?|Function?
+		//		see umc/widgets/Uploader
+		dynamicOptions: null,
 
-	i18nClass: 'umc.app',
+		// buttonLabel: String
+		//		The label that is displayed on the upload button.
+		buttonLabel: 'Upload',
 
-	// command: String
-	//		The UMCP command to which the data shall be uploaded.
-	//		If not given, the data is sent to umcp/upload which will return the
-	//		file content encoded as base64.
-	command: '',
+		// value: String[]
+		//		'value' contains an array of the uploaded file names.
+		value: [],
 
-	// dynamicOptions: Object?|Function?
-	//		see umc.widgets.Uploader
-	dynamicOptions: null,
+		// maxSize: Number
+		//		A size limit for the uploaded file.
+		maxSize: 524288,
 
-	// buttonLabel: String
-	//		The label that is displayed on the upload button.
-	buttonLabel: 'Upload',
+		// make sure that no sizeClass is being set
+		sizeClass: null,
 
-	// value: String[]
-	//		'value' contains an array of the uploaded file names.
-	value: [],
+		// this form element should always be valid
+		valid: true,
 
-	// maxSize: Number
-	//		A size limit for the uploaded file.
-	maxSize: 524288,
+		/*=====
+		// state: String
+		//		Specifies in which state the widget is:
+		//		'Complete' -> default,
+		//		'Incomplete' -> uploads are not completed yet
+		state: 'Complete',
+		=====*/
 
-	// make sure that no sizeClass is being set
-	sizeClass: null,
+		// internal reference to the MultiSelect widget containing all filenames
+		_files: null,
 
-	// this form element should always be valid
-	valid: true,
+		// internal reference to the current Uploader widget
+		_uploader: null,
 
-	/*=====
-	// state: String
-	//		Specifies in which state the widget is:
-	//		'Complete' -> default,
-	//		'Incomplete' -> uploads are not completed yet
-	state: 'Complete',
-	=====*/
+		// internal reference to the progress bar
+		_progressBar: null,
 
-	// internal reference to the MultiSelect widget containing all filenames
-	_files: null,
+		// button for removing entries
+		_removeButton: null,
 
-	// internal reference to the current Uploader widget
-	_uploader: null,
+		// container for the upload and remove buttons
+		_container: null,
 
-	// internal reference to the progress bar
-	_progressBar: null,
+		// internal reference to the currently uploading files
+		_uploadingFiles: [],
 
-	// button for removing entries
-	_removeButton: null,
+		constructor: function() {
+			this.buttonLabel = _('Upload');
+			this._uploadingFiles = [];
+		},
 
-	// container for the upload and remove buttons
-	_container: null,
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	// internal reference to the currently uploading files
-	_uploadingFiles: [],
+			// MultiSelect widget for displaying the file list
+			this._files = new MultiSelect({
+				style: 'width: 50em'
+			});
+			this.addChild(this._files);
 
-	constructor: function() {
-		this.buttonLabel = _('Upload');
-		this._uploadingFiles = [];
-	},
+			this._createProgressBar();
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			// prepare remove button and container for upload/remove buttons
+			this._container = new ContainerWidget({});
+			this._container.addChild(new Button({
+				label: _('Remove'),
+				iconClass: 'umcIconDelete',
+				onClick: lang.hitch(this, '_removeFiles'),
+				style: 'float: right;'
+			}));
+			this.addChild(this._container);
 
-		// MultiSelect widget for displaying the file list
-		this._files = new umc.widgets.MultiSelect({
-			style: 'width: 50em'
-		});
-		this.addChild(this._files);
+			// add the uploader button
+			this._addUploader();
+		},
 
-		this._createProgressBar();
+		destroy: function() {
+			this.inherited(arguments);
 
-		// prepare remove button and container for upload/remove buttons
-		this._container = new umc.widgets.ContainerWidget({});
-		this._container.addChild(new umc.widgets.Button({
-			label: _('Remove'),
-			iconClass: 'umcIconDelete',
-			onClick: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, '_removeFiles'),
-			style: 'float: right;'
-		}));
-		this.addChild(this._container);
+			if (this._progressBar) {
+				// destroy the old progress bar
+				this._progressBar.destroyRecursive();
+			}
+		},
 
-		// add the uploader button
-		this._addUploader();
-	},
+		_getStateAttr: function() {
+			return this._uploadingFiles.length ? 'Incomplete' : 'Complete';
+		},
 
-	destroy: function() {
-		this.inherited(arguments);
+		_setValueAttr: function(newVal) {
+			this._files.set('staticValues', newVal);
+		},
 
-		if (this._progressBar) {
-			// destroy the old progress bar
-			this._progressBar.destroyRecursive();
-		}
-	},
+		_getValueAttr: function() {
+			return this._files.get('staticValues');
+		},
 
-	_getStateAttr: function() {
-		return this._uploadingFiles.length ? 'Incomplete' : 'Complete';
-	},
+		_setButtonLabelAttr: function(newVal) {
+			this.buttonLabel = newVal;
+			this._uploader.set('buttonLabel', newVal);
+		},
 
-	_setValueAttr: function(newVal) {
-		this._files.set('staticValues', newVal);
-	},
+		_setDisabledAttr: function(newVal) {
+			this._files.set('disabled', newVal);
+			this._uploader.set('disabled', newVal);
+		},
 
-	_getValueAttr: function() {
-		return this._files.get('staticValues');
-	},
+		_getDisabledAttr: function() {
+			return this._files.get('disabled');
+		},
 
-	_setButtonLabelAttr: function(newVal) {
-		this.buttonLabel = newVal;
-		this._uploader.set('buttonLabel', newVal);
-	},
-
-	_setDisabledAttr: function(newVal) {
-		this._files.set('disabled', newVal);
-		this._uploader.set('disabled', newVal);
-	},
-
-	_getDisabledAttr: function() {
-		return this._files.get('disabled');
-	},
-
-	_removeFiles: function() {
-		var selectedFiles = this._files.get('value');
-		if (!selectedFiles.length) {
-			return;
-		}
-
-		// make sure we may remove the selected items
-		/*REQUIRE:"dojo/when"*/ when(this.canRemove(selectedFiles), /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(doUpload) {
-			if (!doUpload) {
-				// removal canceled
+		_removeFiles: function() {
+			var selectedFiles = this._files.get('value');
+			if (!selectedFiles.length) {
 				return;
 			}
 
-			// remove items
-			var files = this.get('value');
-			files = /*REQUIRE:"dojo/_base/array"*/ array.filter(files, function(ifile) {
-				return /*REQUIRE:"dojo/_base/array"*/ array.indexOf(selectedFiles, ifile) < 0;
-			});
-			this.set('value', files);
-		}));
-	},
-
-	_createProgressBar: function() {
-		if (this._progressBar) {
-			// destroy the old progress bar
-			this._progressBar.destroyRecursive();
-		}
-
-		// create progress bar for displaying the upload information
-		this._progressBar = new umc.widgets.ProgressInfo({
-			maximum: 1
-		});
-		this._progressBar._progressBar.set('style', 'min-width: 30em;');
-		this._progressBar.updateTitle(_('No upload in progress'));
-	},
-
-	_updateProgress: function() {
-		if (!this._progressBar) {
-			return;
-		}
-
-		var currentVal = 0;
-		var nDone = 0;
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._uploadingFiles, function(ifile) {
-			nDone += ifile.done || 0;
-			currentVal += ifile.done ? 1.0 : ifile.decimal || 0;
-		});
-		currentVal = Math.min(currentVal / this._uploadingFiles.length, 0.99);
-		if (!this._uploadingFiles.length || nDone == this._uploadingFiles.length) {
-			// all uploads are finished
-			this._progressBar.update(1, '', _('Uploads finished'));
-		}
-		else {
-			this._progressBar.update(currentVal, '', _('Uploading... %d of %d files remaining.', this._uploadingFiles.length - nDone, this._uploadingFiles.length));
-		}
-	},
-
-	_addUploader: function() {
-		// create a new Uploader widget
-		this._uploader = new umc.widgets.Uploader({
-			showClearButton: false,
-			buttonLabel: this.buttonLabel,
-			command: this.command,
-			dynamicOptions: this.dynamicOptions,
-			maxSize: this.maxSize,
-			canUpload: this.canUpload,
-			style: 'float: left;'
-		});
-		this._container.addChild(this._uploader);
-
-		// register events
-		var uploader = this._uploader;
-		var startedSignal = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(uploader, 'onUploadStarted', function(file) {
-			//console.log('### onUploadStarted:', /*REQUIRE:"dojo/jsone"*/ json.stringify(file));
-			this.disconnect(startedSignal);
-
-			// add current file to the list of uploading items
-			if (!this._uploadingFiles.length) {
-				// first file being uploaded -> show the standby animation
-				//this._createProgressBar();
-				this._files.standby(true, this._progressBar);
-			}
-			this._uploadingFiles.push(file);
-			this._updateProgress();
-
-			var progressSignal = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(uploader, 'onProgress', function(info) {
-				// update progress information
-				//console.log('### onProgress:', /*REQUIRE:"dojo/jsone"*/ json.stringify(info));
-				/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(file, info);
-				this._updateProgress();
-			});
-
-			var uploadSignal;
-			var errorSignal;
-
-			var _done = function(success) {
-				// disconnect events
-				//console.log('### onUploaded');
-				this.disconnect(progressSignal);
-				this.disconnect(uploadSignal);
-				this.disconnect(errorSignal);
-
-				// update progress information
-				file.done = true;
-				file.success = success;
-				this._updateProgress();
-
-				// remove Uploader widget from container
-				this.removeChild(uploader);
-				uploader.destroyRecursive();
-
-				// when all files are uploaded, update the internal list of files
-				var allDone = true;
-				/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._uploadingFiles, function(ifile) {
-					allDone = allDone && ifile.done;
-				});
-				if (allDone) {
-					// add files to internal list of files
-					this._files.standby(false);
-					var vals = this.get('value');
-					/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._uploadingFiles, function(ifile) {
-						//console.log('### adding:', ifile.name);
-						if (file.success) {
-							vals.unshift(ifile.name);
-						}
-					});
-					this.set('value', vals);
-
-					// clear the list of uploading files
-					this._uploadingFiles = [];
+			// make sure we may remove the selected items
+			when(this.canRemove(selectedFiles), lang.hitch(this, function(doUpload) {
+				if (!doUpload) {
+					// removal canceled
+					return;
 				}
-			};
-			uploadSignal = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(uploader, 'onUploaded', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, _done, true));
-			errorSignal = /*REQUIRE:"dojo/on"*/ /*TODO*/ this.own(this.on(uploader, 'onError', /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, _done, false));
 
-			// hide uploader widget and add a new one
-			dojo.style(uploader.domNode, {
-				width: '0',
-				overflow: 'hidden'
+				// remove items
+				var files = this.get('value');
+				files = array.filter(files, function(ifile) {
+					return array.indexOf(selectedFiles, ifile) < 0;
+				});
+				this.set('value', files);
+			}));
+		},
+
+		_createProgressBar: function() {
+			if (this._progressBar) {
+				// destroy the old progress bar
+				this._progressBar.destroyRecursive();
+			}
+
+			// create progress bar for displaying the upload information
+			this._progressBar = new ProgressInfo({
+				maximum: 1
 			});
-			this._addUploader();
-		});
-	},
+			this._progressBar._progressBar.set('style', 'min-width: 30em;');
+			this._progressBar.updateTitle(_('No upload in progress'));
+		},
 
-	canUpload: function(fileInfo) {
-		// summary:
-		//		Before uploading a file, this function is called to make sure
-		//		that the given filename is valid. Return boolean or /*REQUIRE:"dojo/Deferred"*/ Deferred.
-		// fileInfo: Object
-		//		Info object for the requested file, contains properties 'name',
-		//		'size', 'type'.
-		return true;
-	},
+		_updateProgress: function() {
+			if (!this._progressBar) {
+				return;
+			}
 
-	canRemove: function(filenames) {
-		// summary:
-		//		Before removing a files from the current list, this function
-		//		is called to make sure that the given file may be removed.
-		//		Return boolean or /*REQUIRE:"dojo/Deferred"*/ Deferred.
-		// filenames: String[]
-		//		List of filenames.
-		return true;
-	},
+			var currentVal = 0;
+			var nDone = 0;
+			array.forEach(this._uploadingFiles, function(ifile) {
+				nDone += ifile.done || 0;
+				currentVal += ifile.done ? 1.0 : ifile.decimal || 0;
+			});
+			currentVal = Math.min(currentVal / this._uploadingFiles.length, 0.99);
+			if (!this._uploadingFiles.length || nDone == this._uploadingFiles.length) {
+				// all uploads are finished
+				this._progressBar.update(1, '', _('Uploads finished'));
+			}
+			else {
+				this._progressBar.update(currentVal, '', _('Uploading... %d of %d files remaining.', this._uploadingFiles.length - nDone, this._uploadingFiles.length));
+			}
+		},
 
-	onUploaded: function(data) {
-		// event stub
-	},
+		_addUploader: function() {
+			// create a new Uploader widget
+			this._uploader = new Uploader({
+				showClearButton: false,
+				buttonLabel: this.buttonLabel,
+				command: this.command,
+				dynamicOptions: this.dynamicOptions,
+				maxSize: this.maxSize,
+				canUpload: this.canUpload,
+				style: 'float: left;'
+			});
+			this._container.addChild(this._uploader);
 
-	onChange: function(data) {
-		// event stub
-	}
+			// register events
+			var uploader = this._uploader;
+			on.once(uploader, 'uploadStarted', lang.hitch(this, function(file) {
+				//console.log('### onUploadStarted:', json.stringify(file));
+
+				// add current file to the list of uploading items
+				if (!this._uploadingFiles.length) {
+					// first file being uploaded -> show the standby animation
+					//this._createProgressBar();
+					this._files.standby(true, this._progressBar);
+				}
+				this._uploadingFiles.push(file);
+				this._updateProgress();
+
+				var progressSignal = on(uploader, 'progress', lang.hitch(this, function(info) {
+					// update progress information
+					//console.log('### onProgress:', json.stringify(info));
+					lang.mixin(file, info);
+					this._updateProgress();
+				}));
+
+				var uploadSignal;
+				var errorSignal;
+
+				var _done = function(success) {
+					// disconnect events
+					//console.log('### onUploaded');
+					progressSignal.remove();
+					uploadSignal.remove();
+					errorSignal.remove();
+
+					// update progress information
+					file.done = true;
+					file.success = success;
+					this._updateProgress();
+
+					// remove Uploader widget from container
+					this.removeChild(uploader);
+					uploader.destroyRecursive();
+
+					// when all files are uploaded, update the internal list of files
+					var allDone = true;
+					array.forEach(this._uploadingFiles, function(ifile) {
+						allDone = allDone && ifile.done;
+					});
+					if (allDone) {
+						// add files to internal list of files
+						this._files.standby(false);
+						var vals = this.get('value');
+						array.forEach(this._uploadingFiles, function(ifile) {
+							//console.log('### adding:', ifile.name);
+							if (file.success) {
+								vals.unshift(ifile.name);
+							}
+						});
+						this.set('value', vals);
+
+						// clear the list of uploading files
+						this._uploadingFiles = [];
+					}
+				};
+				uploadSignal = on(uploader, 'uploaded', lang.hitch(this, _done, true));
+				errorSignal = on(uploader, 'error', lang.hitch(this, _done, false));
+
+				// hide uploader widget and add a new one
+				style(uploader.domNode, {
+					width: '0',
+					overflow: 'hidden'
+				});
+				this._addUploader();
+			}));
+		},
+
+		canUpload: function(fileInfo) {
+			// summary:
+			//		Before uploading a file, this function is called to make sure
+			//		that the given filename is valid. Return boolean or dojo/Deferred.
+			// fileInfo: Object
+			//		Info object for the requested file, contains properties 'name',
+			//		'size', 'type'.
+			return true;
+		},
+
+		canRemove: function(filenames) {
+			// summary:
+			//		Before removing a files from the current list, this function
+			//		is called to make sure that the given file may be removed.
+			//		Return boolean or dojo/Deferred.
+			// filenames: String[]
+			//		List of filenames.
+			return true;
+		},
+
+		onUploaded: function(data) {
+			// event stub
+		},
+
+		onChange: function(data) {
+			// event stub
+		}
+	});
 });
-
 
 
