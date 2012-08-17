@@ -43,13 +43,21 @@ filter='(objectClass=univentionGroup)'
 attributes=["cn", "memberUid"]
 
 def initialize():
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, '%s: Initialize' % name)
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO, 
+		'%s: Initialize' % name
+	)
 	return
 
 def callPkusers(cmd):
 
 	cmd.insert(0, "pkusers")
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, '%s: calling pkusers with %s' % (name, cmd))
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'%s: calling pkusers with %s' % (name, cmd)
+	)
 	listener.setuid(0)
 	try:
 		listener.run('/usr/bin/pkusers', cmd, uid=0, wait=1)
@@ -58,25 +66,93 @@ def callPkusers(cmd):
 
 	return 0
 
+def cleanUsers(users):
+
+	cUsers = []
+	for user in users:
+		if not user or not user.endswith("$"):
+			cUsers.append(user)
+
+	return cUsers
+
+def addMembers(group, users):
+
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'%s: add "%s" to group %s' % (name, ",".join(users), group)
+	)
+	cmd = ["--ingroups", group, ",".join(users)]
+	callPkusers(cmd)
+
+	return 0
+
+def delMembers(group, users):
+	
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'%s: delete "%s" from group %s' % (name, ",".join(users), group)
+	)
+
+	cmd = ["--ingroups", group, "--remove", ",".join(users)]
+	callPkusers(cmd)
+
+	return 0
+
 def addGroup(group):
 
-	if group.has_key('cn'):
-		cn = group['cn'][0]
-		if group.has_key('memberUid'):
-			# create group only if there are members
-			cmd = ["--groups", "--add", cn]
-			callPkusers(cmd)
-			users = ",".join(group['memberUid'])
-			cmd = ["--ingroups", cn, users]
-			callPkusers(cmd)
+	cn = group["cn"][0]
+
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'%s: create group %s' % (name, cn)
+	)
+
+	cmd = ["--groups", "--add", cn]
+	callPkusers(cmd)
+	users = cleanUsers(group.get("memberUid", []))
+	if users:
+		addMembers(cn, users)
+
 	return 0
 
 def delGroup(group):
 
-	if group.has_key('cn'):
-		cn = group['cn'][0]
-		cmd = ["--groups", "--delete", cn]
-		callPkusers(cmd)
+	cn = group["cn"][0]
+
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'%s: delete group %s' % (name, cn)
+	)
+
+	cmd = ["--groups", "--delete", cn]
+	callPkusers(cmd)
+
+	return 0
+
+def modifyGroup(old, new):
+
+	cn = new["cn"][0]
+
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'%s: modify group %s' % (name, cn)
+	)
+	
+	oldUsers = cleanUsers(old.get("memberUid", []))
+	newUsers = cleanUsers(new.get("memberUid", []))
+	usersToAdd = list(set(newUsers) - set(oldUsers))
+	usersToDel = list(set(oldUsers) - set(newUsers))
+	if usersToDel:
+		delMembers(cn, usersToDel)
+	if usersToAdd:
+		addMembers(cn, usersToAdd)
+
+	return 0
 
 def handler(dn, new, old):
 
@@ -88,8 +164,7 @@ def handler(dn, new, old):
 		delGroup(old)
 	# modified
 	else:
-		delGroup(old)
-		addGroup(new)
+		modifyGroup(old, new)
 	return
 
 def clean():
