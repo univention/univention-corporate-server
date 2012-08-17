@@ -7,7 +7,7 @@ Build-Depends: debhelper, bzip2, unzip, ucslint
 
 Package: firefox-de
 Architecture: i386 amd64
-Depends: libstdc++6, ia32-libs [amd64], ia32-libs-gtk [amd64], ttf-dejavu | ttf-dustin, libasound2, libdbus-glib-1-dev, libgconf2-4
+Depends: libstdc++6, ia32-libs [amd64], ia32-libs-gtk [amd64], ttf-dejavu | ttf-dustin, libasound2, libdbus-glib-1-dev, libgconf2-4, icedtea6-plugin
 Conflicts: mozilla-firefox, iceweasel, firefox-en
 Breaks: firefox (<< 1:10)
 Provides: www-browser
