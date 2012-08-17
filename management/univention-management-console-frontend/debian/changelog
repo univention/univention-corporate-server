@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.16-1) unstable; urgency=low
+
+  * Backport changes from 2.0.14-1 lost in 2.0.15-1 (Bug #25558)
+  * Added translation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Aug 2012 17:54:00 +0200
+
 univention-management-console-frontend (2.0.15-1) unstable; urgency=low
 
   * WIP: migrated missing modules to Dojo 2.0 syntax; Bug #26857

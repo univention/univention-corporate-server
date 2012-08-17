@@ -58,15 +58,15 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._component = new Text( { content : '' , style : 'width: 100%' } );
-			this.addChild( this._component );
-			this._progressBar = new ProgressBar( { style : 'width: 100%' } );
-			this.addChild( this._progressBar );
-			this._message = new Text( { content : '&nbsp;', style : 'width: 100%' } );
-			this.addChild( this._message );
+			this._component = new Text({ content : '' , style : 'width: 100%' });
+			this.addChild(this._component);
+			this._progressBar = new ProgressBar({ style : 'width: 100%' });
+			this.addChild(this._progressBar);
+			this._message = new Text({ content : '&nbsp;', style : 'width: 100%' });
+			this.addChild(this._message);
 
-			this._progressBar.set( 'value', 0 );
-			this._progressBar.set( 'maximum', 100 );
+			this._progressBar.set('value', 0);
+			this._progressBar.set('maximum', 100);
 
 			this.reset();
 			this.startup();
@@ -79,24 +79,24 @@ define([
 			this._criticalError = false;
 			this._errors = [];
 
-			this._component.set( 'content', this._initialComponent);
+			this._component.set('content', this._initialComponent);
 
 			// make sure that at least a not breakable space is printed
 			// ... this avoids vertical jumping of widgets
-			this._message.set( 'content', '&nbsp;' );
+			this._message.set('content', '&nbsp;');
 
-			this._progressBar.set( 'value', 0 );
+			this._progressBar.set('value', 0);
 		},
 
-		setInfo: function( component, message, percentage, errors, critical ) {
+		setInfo: function(component, message, percentage, errors, critical) {
 			if (component) {
-				this._component.set( 'content', component );
+				this._component.set('content', component);
 			}
 			if (percentage) {
-				this._progressBar.set( 'value', percentage );
+				this._progressBar.set('value', percentage);
 			}
-			if (message) {
-				this._message.set( 'content', message );
+			if (message || component) {
+				this._message.set('content', message || '&nbsp;');
 			}
 			this._addErrors(errors);
 			if (critical) {
@@ -114,7 +114,7 @@ define([
 			}));
 		},
 
-		auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg) {
+		auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors) {
 			if (pollErrorMsg !== undefined) {
 				pollErrorMsg = _('Fetching information from the server failed!');
 			}
@@ -128,17 +128,20 @@ define([
 			).then(lang.hitch(this, function(data) {
 				var result = data.result;
 				if (result) {
-					this.setInfo(result.component, result.info, result.steps, result.errors);
-					this.auto(umcpCommand, umcpOptions, callback, pollErrorMsg);
-				} else {
-					this.stop(callback);
+					this.setInfo(result.component, result.info, result.steps, result.errors, result.critical);
+					if (!result.finished) {
+						this.auto(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors);
+					}
+				}
+				if (!result || result.finished) {
+					this.stop(callback, stopComponent, !dontHandleErrors);
 				}
 			}));
 		},
 
-		stop: function(callback) {
+		stop: function(callback, stopComponent, handleErrors) {
 			var errors = this.getErrors().errors;
-			if (errors.length) {
+			if (errors.length && handleErrors) {
 				var msg = '';
 				if (errors.length == 1) {
 					msg = _('An error occurred: ') + errors[0];

@@ -585,6 +585,18 @@ msgstr "Übersicht"
 msgid "umcUserInfo"
 msgstr "Benutzer: %(username)s"
 
+#: umc/widgets/ProgressBar.js:119
+msgid "Fetching information from the server failed!"
+msgstr "Das Holen von Informationen vom Server schlug fehl!"
+
+#: umc/widgets/ProgressBar.js:147
+msgid "An error occurred: "
+msgstr "Ein Fehler ist aufgetreten: "
+
+#: umc/widgets/ProgressBar.js:149
+msgid "{number} errors occurred: "
+msgstr "{number} Fehler sind aufgetreten: "
+
 #~ msgid "%s (used: %s)"
 #~ msgstr "%s (genutzt: %s)"
 
