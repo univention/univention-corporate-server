@@ -1,3 +1,9 @@
+firefox-en (1:10.0.6esr-3) unstable; urgency=low
+
+  * added icedtea6-plugin to depend. (Bug #28246) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Aug 2012 11:15:16 +0200
+
 firefox-en (1:10.0.6esr-2) unstable; urgency=low
 
   * Update to Firefox 10.0.6esr (Bug #27988)
