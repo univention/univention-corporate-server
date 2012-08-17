@@ -284,7 +284,21 @@ class object(content):
 					self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
 				return _("The length of the windows domain name is greater than 14 characters.")
 
-		if windows_domain.strip().lower() ==  hostname.strip().lower():
+		# no . in windom
+		if not windows_domain.find(".") == -1:
+			if not self.ignore('windows_domain'):
+				if focus:
+					self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+				return _("Periods are not allowed in windows domain names.")
+
+		# windom != dns
+		if windows_domain.strip().lower() == domainname.strip().lower():
+			if not self.ignore('windows_domain'):
+				if focus:
+					self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+				return _("The windows domain and the domain name may not be the same.")
+
+		if windows_domain.strip().lower() == hostname.strip().lower():
 			if not self.ignore('windows_domain'):
 				# The warning will be displayed only once
 				if windows_domain != self.windomain_last_warning:

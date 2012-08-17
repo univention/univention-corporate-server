@@ -1176,11 +1176,11 @@ msgstr "Windows-Domäne:"
 
 #: installer/modules/50_basis.py:281
 msgid "Please enter a valid windows domain name."
-msgstr "Bitte geben Sie einen gültigen Windows Domain Namen an."
+msgstr "Bitte geben Sie einen gültigen Windows-Domänennamen an."
 
 #: installer/modules/50_basis.py:287
 msgid "The length of the windows domain name is greater than 14 characters."
-msgstr "Die Länge des Windows Domain Names ist größer als 14 Zeichen."
+msgstr "Die Länge des Windows-Domänennamens ist größer als 14 Zeichen."
 
 #: installer/modules/50_basis.py:293 installer/modules/50_basis.py:312
 msgid ""
@@ -1237,6 +1237,14 @@ msgstr "Systemname ist gleich Domänennamen."
 #: installer/modules/50_basis.py:339
 msgid "Please enter the LDAP base."
 msgstr "Bitte geben Sie die LDAP-Basis an."
+
+#: installer/modules/50_basis.py:250
+msgid "Periods are not allowed in windows domain names."
+msgstr "Punkte sind im Namen der Windows-Domäne nicht erlaubt."
+
+#: installer/modules/50_basis.py:260
+msgid "The windows domain and the domain name may not be the same."
+msgstr "Der Windows-Domänenname und der DNS-Domänennamen dürfen nicht gleich sein."
 
 #: installer/modules/50_basis.py:344
 msgid ""
