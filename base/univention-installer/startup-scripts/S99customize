@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# ucr shortcut
 if [ ! -e /sbin/ucr ]; then
 	ln -s /sbin/univention-config-registry /sbin/ucr
 fi
@@ -36,3 +37,6 @@ fi
 # needed for sshpass
 mkdir /dev/pts
 mount -f -t devpts -o defaults devpts /dev/pts
+
+# enable scp
+ln -s /bin/ssh /usr/bin/ssh

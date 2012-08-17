@@ -1,3 +1,10 @@
+univention-installer (8.0.1-10) unstable; urgency=low
+
+  * ignore installer script ca46682219c96c0b18de340d8cca2bd9 
+    (10_debootstrap.sh) from 2.4-4 Bug #23590 (Bug #25595)
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Aug 2012 13:36:47 +0200
+
 univention-installer (8.0.1-9) unstable; urgency=low
 
   * changed base system description (Bug #25606) 

@@ -39,6 +39,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Preparing installation")" >&9
 # disable kernel messages
 dmesg -n 1
 
+IGNORELIST="
+ca46682219c96c0b18de340d8cca2bd9
+"
+
 if [ -n "$cdrom_device" ]; then
 	nfs=`echo $cdrom_device | grep "nfs:"`
 	smbfs=`echo $cdrom_device | grep "smbfs:"`
@@ -54,7 +58,21 @@ if [ -n "$cdrom_device" ]; then
 fi
 
 if [ -d /mnt/script/installer ]; then
-	cp /mnt/script/installer/* /lib/univention-installer-scripts.d/
+
+	for file in $(ls /mnt/script/installer/*); do
+		md5=$(md5sum "$file" | awk '{print $1}')
+		copyFile=true
+		for ignore in $IGNORELIST; do
+			if [ "$ignore" = "$md5" ]; then
+				copyFile=false
+				break
+			fi
+		done
+		if [ "$copyFile" = "true" ]; then
+			cp "$file" /lib/univention-installer-scripts.d/
+		fi
+	done
+	
 	chmod +x /lib/univention-installer-scripts.d/*
 fi
 
