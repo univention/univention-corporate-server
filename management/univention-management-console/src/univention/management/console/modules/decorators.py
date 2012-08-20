@@ -53,6 +53,7 @@ flexibility.
 """
 
 import inspect
+import copy
 import univention.debug as ud
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
@@ -61,9 +62,9 @@ from ..protocol.definitions import BAD_REQUEST, BAD_REQUEST_INVALID_OPTS, BAD_RE
 from ..modules import UMC_Error, UMC_OptionTypeError
 from ..log import MODULE
 
-from .sanitizers import ValidationError
+from .sanitizers import ValidationError, DictSanitizer, ListSanitizer
 
-def sanitize(**kwargs):
+def sanitize(*args, **kwargs):
 	"""
 	Decorator that lets you sanitize the user input.
 	
@@ -134,22 +135,38 @@ def sanitize(**kwargs):
 	 def add(self, var1, var2):
 	     return var1 + var2
 	"""
-	return lambda function: _sanitize(function, kwargs)
+	return lambda function: _sanitize(function, *args, **kwargs)
 
-def _sanitize(function, sanitized_arguments):
+def _sanitize(function, *args, **kwargs):
+	if args:
+		return _sanitize_list(function, args[0], kwargs)
+	else:
+		return _sanitize_dict(function, kwargs, {})
+
+def sanitize_dict(sanitized_attrs, **kwargs):
+	return lambda function: _sanitize_dict(function, sanitized_attrs, kwargs)
+
+def sanitize_list(sanitizer, **kwargs):
+	return lambda function: _sanitize_list(function, sanitizer, kwargs)
+
+def _sanitize_type(function, sanitizer_class, sanitized_arg, sanitizer_parameter):
 	def _response(self, request):
-		copied_options = request.options.copy()
-		for field, sanitizer in sanitized_arguments.iteritems():
-			try:
-				value, value_might_be_changed = sanitizer.sanitize(field, copied_options)
-				if value_might_be_changed and sanitizer.may_change_value:
-					request.options[field] = value
-			except ValidationError as e:
-				self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST)
-				return
+		sanitizer = sanitizer_class(sanitized_arg, **sanitizer_parameter)
+		try:
+			request.options = sanitizer.sanitize(sanitizer_class.__name__, request.options)
+		except ValidationError as e:
+			self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST_INVALID_OPTS)
+			return
+
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response
+
+def _sanitize_dict(function, sanitized_arguments, sanitizer_parameter):
+	return _sanitize_type(function, DictSanitizer, sanitized_arguments, sanitizer_parameter)
+
+def _sanitize_list(function, sanitizer, sanitizer_parameter):
+	return _sanitize_type(function, ListSanitizer, sanitizer, sanitizer_parameter)
 
 def _error_handler(options, exception):
 	raise exception

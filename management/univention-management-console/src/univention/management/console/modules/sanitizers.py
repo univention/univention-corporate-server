@@ -101,18 +101,13 @@ class Sanitizer(object):
 		.. document private functions
 		.. automethod:: _sanitize
 		'''
-		if name not in options:
-			if self.required:
-				self.raise_formatted_validation_error(_('Argument required'), name, None)
-		value = options.get(name)
-		if value is None and not self.validate_none:
-			return None, False
+		value = options[name]
 		if self.further_arguments:
 			further_arguments = dict([(field, options.get(field)) for field in self.further_arguments])
 		else:
 			further_arguments = {}
 		try:
-			return self._sanitize(value, name, further_arguments), True
+			return self._sanitize(value, name, further_arguments)
 		except UnformattedValidationError as e:
 			self.raise_formatted_validation_error(str(e), name, value)
 
@@ -137,7 +132,8 @@ class Sanitizer(object):
 		'''
 		return value
 
-	def raise_validation_error(self, msg):
+	@classmethod
+	def raise_validation_error(cls, msg):
 		'''Used to more or less uniformly raise a
 		:class:`~ValidationError`. This will actually raise an
 		:class:`~UnformattedValidationError` for your convenience.
@@ -160,6 +156,69 @@ class Sanitizer(object):
 		format_dict.update(self.__dict__)
 		msg = '%(name)s (%(value)r): ' + msg
 		raise ValidationError(msg % format_dict, name, value)
+
+class DictSanitizer(Sanitizer):
+	''' DictSanitizer makes sure that the value is a dict and sanitizes its fields.
+
+	:param dict sanitized_arguments: contains a sanitizer for every key of the dict
+	:param bool validate_none: if the input is None replace it with a empty list
+	:param bool may_change_value: only validate input or change the list input
+	'''
+	def __init__(self, sanitized_arguments, validate_none=False, may_change_value=True):
+		super(DictSanitizer, self).__init__(validate_none=validate_none, may_change_value=may_change_value)
+		for key, sanitizer in sanitized_arguments.iteritems():
+			if not hasattr(sanitizer, 'sanitize') or not hasattr(sanitizer.sanitize, '__call__'):
+				raise RuntimeError("ListSanitizer: expected an instance of class 'Sanitizer', but got '%s' for key '%s'" % (type(sanitizer), key))
+		self.sanitizer = sanitized_arguments
+
+	def sanitize(self, name, options):
+		if not isinstance(options, dict):
+			if self.validate_none and options is None and self.may_change_value:
+				# don't return {} because of required arguments
+				options = {}
+			else:
+				self.raise_formatted_validation_error(_('Not a valid dict'), 'options', type(options))
+
+		copied_options = options.copy()
+		for field, sanitizer in self.sanitizer.iteritems():
+			if field not in options:
+				if sanitizer.required:
+					self.raise_formatted_validation_error(_('Argument required'), field, None)
+			value = options.get(field)
+			if value is None and not self.validate_none:
+				continue
+			try:
+				value = sanitizer.sanitize(field, copied_options)
+			except UnformattedValidationError as e:
+				self.raise_formatted_validation_error(str(e), name, field)
+			if self.may_change_value:
+				options[field] = value
+
+		return options
+
+class ListSanitizer(Sanitizer):
+	''' ListSanitizer makes sure that the value is a list and sanitizes its elements.
+
+	:param Sanitizer sanitizer: a Sanitize class for every list element
+	:param bool validate_none: if the input is None replace it with a empty list
+	:param bool may_change_value: only validate input or change the list input
+	'''
+	def __init__(self, sanitizer, validate_none=False, may_change_value=True):
+		super(ListSanitizer, self).__init__(validate_none=validate_none, may_change_value=may_change_value)
+		if not hasattr(sanitizer, 'sanitize') or not hasattr(sanitizer.sanitize, '__call__'):
+			raise RuntimeError("ListSanitizer: expected an instance of class 'Sanitizer', but got '%s'" % (type(sanitizer),))
+		self.sanitizer = sanitizer
+
+	def sanitize(self, name, options):
+		if not isinstance(options, list):
+			if self.validate_none and options is None and self.may_change_value:
+				return []
+			self.raise_formatted_validation_error(_('Not a valid dict'), 'options', type(options))
+
+#		sanitized_options = [self.sanitizer.sanitize(i, item) for i, item in enumerate(options)] # TODO: i would like to don't give the whole options
+		sanitized_options = [self.sanitizer.sanitize(i, options) for i, item in enumerate(options)]
+
+		return sanitized_options if self.may_change_value else options
 
 class IntegerSanitizer(Sanitizer):
 	'''IntegerSanitizer makes sure that the value is an int.
@@ -203,7 +262,7 @@ class IntegerSanitizer(Sanitizer):
 					if not value < self.maximum:
 						self.raise_validation_error(_('Should stay %s') % '< %(maximum)d')
 				else:
-					if value <= self.maximum:
+					if not value <= self.maximum:
 						self.raise_validation_error(_('Should stay %s') % '<= %(maximum)d')
 			return value
 
