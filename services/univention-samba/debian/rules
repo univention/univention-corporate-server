@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	dh_auto_install 
+override_dh_pysupport:
+	dh_pysupport
 	univention-install-config-registry
 
 override_dh_fixperms:
