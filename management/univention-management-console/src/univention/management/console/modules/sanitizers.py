@@ -46,6 +46,7 @@ cannot do something harmful in the exposed UMC-functions. But they are also
 very helpful when one needs to just validate input.
 """
 import re
+import copy
 
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
@@ -56,7 +57,12 @@ class UnformattedValidationError(Exception):
 	cannot use at all (e.g. letters when an int is expected).
 	Should be "enhanced" to a ValidationError.
 	"""
-	pass
+	def __init__(self, message, kwargs):
+		self.message = message
+		self.kwargs = kwargs
+
+	def __str__(self):
+		return self.message
 
 class ValidationError(Exception):
 	"""
@@ -79,16 +85,18 @@ class Sanitizer(object):
 	  passed along with the actual argument in order to return something
 	  reasonable.
 	:param bool required: if the argument is required.
-	:param bool validate_none: if not required and not given: should the
-	  value be sanitized anyway?
+	:param object default: if not given and not
+	  :attr:`~Sanitizer.required` but :attr:`~Sanitizer.may_change_value`
+	  default is returned. Note that this value is not passing the
+	  sanitizing procedure, so make sure to be able to handle it.
 	:param bool may_change_value: if the process of sanitizing is allowed
 	  to alter *request.options*. If not, the sanitizer can still be used
 	  for validation.
 	'''
-	def __init__(self, further_arguments=None, required=False, validate_none=False, may_change_value=False):
+	def __init__(self, further_arguments=None, required=False, default=None, may_change_value=False):
 		self.further_arguments = further_arguments
 		self.required = required
-		self.validate_none = validate_none
+		self.default = default
 		self.may_change_value = may_change_value
 
 	def sanitize(self, name, options):
@@ -101,15 +109,27 @@ class Sanitizer(object):
 		.. document private functions
 		.. automethod:: _sanitize
 		'''
+		if name not in options:
+			if self.required:
+				self.raise_formatted_validation_error(_('Argument required'), name, None)
+			else:
+				if self.may_change_value:
+					return self.default
+				else:
+					return None
 		value = options[name]
 		if self.further_arguments:
 			further_arguments = dict([(field, options.get(field)) for field in self.further_arguments])
 		else:
 			further_arguments = {}
 		try:
-			return self._sanitize(value, name, further_arguments)
+			new_value = self._sanitize(value, name, further_arguments)
+			if self.may_change_value:
+				return new_value
+			else:
+				return value
 		except UnformattedValidationError as e:
-			self.raise_formatted_validation_error(str(e), name, value)
+			self.raise_formatted_validation_error(str(e), name, value, **e.kwargs)
 
 	def _sanitize(self, value, name, further_arguments):
 		'''The method where the actual sanitizing takes place.
@@ -117,9 +137,7 @@ class Sanitizer(object):
 		The standard method just returns *value* so be sure to
 		override this method in your Sanitize class.
 
-		:param object value: the value as found in *request.options*
-		  (or *None* if not found but told to
-		  :attr:`~Sanitizer.validate_none`).
+		:param object value: the value as found in *request.options*.
 		:param string name: the name of the argument currently
 		  sanitized.
 		:param further_arguments: dictionary
@@ -132,27 +150,30 @@ class Sanitizer(object):
 		'''
 		return value
 
-	@classmethod
-	def raise_validation_error(cls, msg):
+	def raise_validation_error(self, msg, **kwargs):
 		'''Used to more or less uniformly raise a
 		:class:`~ValidationError`. This will actually raise an
 		:class:`~UnformattedValidationError` for your convenience.
 		If used in :meth:`~Sanitizer._sanitize`, it will be
 		automatically enriched with name, value und formatting in
 		:meth:`~Sanitizer.sanitize`.
-		'''
-		raise UnformattedValidationError(msg)
 
-	def raise_formatted_validation_error(self, msg, name, value):
+		:param dict **kwargs: additional arguments for formatting
+		'''
+		raise UnformattedValidationError(msg, kwargs)
+
+	def raise_formatted_validation_error(self, msg, name, value, **kwargs):
 		'''Used to more or less uniformly raise a
 		:class:`~ValidationError`. *name* and *value* need to passed
 		because the sanitizer should be thread safe.
-		
+
 		:param string msg: error message
 		:param string name: name of the argument
 		:param object value: the argument which caused the error
+		:param dict **kwargs: additional arguments for formatting
 		'''
 		format_dict = {'value' : value, 'name' : name}
+		format_dict.update(kwargs)
 		format_dict.update(self.__dict__)
 		msg = '%(name)s (%(value)r): ' + msg
 		raise ValidationError(msg % format_dict, name, value)
@@ -160,65 +181,57 @@ class Sanitizer(object):
 class DictSanitizer(Sanitizer):
 	''' DictSanitizer makes sure that the value is a dict and sanitizes its fields.
 
-	:param dict sanitized_arguments: contains a sanitizer for every key of the dict
-	:param bool validate_none: if the input is None replace it with a empty list
-	:param bool may_change_value: only validate input or change the list input
+	You can give the same parameters as the base class.
+	Plus:
+
+	:param sanitizers: contains a sanitizer for every key of the dict
+	:param bool allow_other_keys: if other keys than those in
+	:attr:`~DictSanitizer.sanitizers` are allowed.
+	:type sanitizers: {string : `~Sanitizer`}.
 	'''
-	def __init__(self, sanitized_arguments, validate_none=False, may_change_value=True):
-		super(DictSanitizer, self).__init__(validate_none=validate_none, may_change_value=may_change_value)
-		for key, sanitizer in sanitized_arguments.iteritems():
-			if not hasattr(sanitizer, 'sanitize') or not hasattr(sanitizer.sanitize, '__call__'):
-				raise RuntimeError("ListSanitizer: expected an instance of class 'Sanitizer', but got '%s' for key '%s'" % (type(sanitizer), key))
-		self.sanitizer = sanitized_arguments
+	def __init__(self, sanitizers, allow_other_keys=True, further_arguments=None, required=False, default=None, may_change_value=True):
+		super(DictSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+		self.sanitizers = sanitizers
+		self.allow_other_keys = allow_other_keys
 
-	def sanitize(self, name, options):
-		if not isinstance(options, dict):
-			if self.validate_none and options is None and self.may_change_value:
-				# don't return {} because of required arguments
-				options = {}
-			else:
-				self.raise_formatted_validation_error(_('Not a valid dict'), 'options', type(options))
+	def _sanitize(self, value, name, further_arguments):
+		if not isinstance(value, dict):
+			self.raise_formatted_validation_error(_('Not a "dict"'), name, type(value).__name__)
 
-		copied_options = options.copy()
-		for field, sanitizer in self.sanitizer.iteritems():
-			if field not in options:
-				if sanitizer.required:
-					self.raise_formatted_validation_error(_('Argument required'), field, None)
-			value = options.get(field)
-			if value is None and not self.validate_none:
-				continue
-			try:
-				value = sanitizer.sanitize(field, copied_options)
-			except UnformattedValidationError as e:
-				self.raise_formatted_validation_error(str(e), name, field)
-			if self.may_change_value:
-				options[field] = value
+		if not self.allow_other_keys and any(key not in self.sanitizers for key in value):
+			self.raise_validation_error(_('Has more than the allowed keys'))
 
-		return options
+		altered_value = copy.deepcopy(value)
+
+		for attr, sanitizer in self.sanitizers.iteritems():
+			altered_value[attr] = sanitizer.sanitize(attr, value)
+
+		return altered_value
 
 class ListSanitizer(Sanitizer):
 	''' ListSanitizer makes sure that the value is a list and sanitizes its elements.
 
-	:param Sanitizer sanitizer: a Sanitize class for every list element
-	:param bool validate_none: if the input is None replace it with a empty list
+	You can give the same parameters as the base class.
+	Plus:
+
+	:param sanitizer: a Sanitize class for every list element
 	:param bool may_change_value: only validate input or change the list input
+	:type sanitizer: `~Sanitizer`.
 	'''
-	def __init__(self, sanitizer, validate_none=False, may_change_value=True):
-		super(ListSanitizer, self).__init__(validate_none=validate_none, may_change_value=may_change_value)
-		if not hasattr(sanitizer, 'sanitize') or not hasattr(sanitizer.sanitize, '__call__'):
-			raise RuntimeError("ListSanitizer: expected an instance of class 'Sanitizer', but got '%s'" % (type(sanitizer),))
+	def __init__(self, sanitizer, further_arguments=None, required=False, default=None, may_change_value=True):
+		super(ListSanitizer, self).__init__(further_arguments, required, default, may_change_value)
 		self.sanitizer = sanitizer
 
-	def sanitize(self, name, options):
-		if not isinstance(options, list):
-			if self.validate_none and options is None and self.may_change_value:
-				return []
-			self.raise_formatted_validation_error(_('Not a valid dict'), 'options', type(options))
+	def _sanitize(self, value, name, further_arguments):
+		if not isinstance(value, list):
+			self.raise_formatted_validation_error(_('Not a "list"'), name, type(value).__name__)
 
-#		sanitized_options = [self.sanitizer.sanitize(i, item) for i, item in enumerate(options)] # TODO: i would like to don't give the whole options
-		sanitized_options = [self.sanitizer.sanitize(i, options) for i, item in enumerate(options)]
-
-		return sanitized_options if self.may_change_value else options
+		altered_value = []
+		for i, item in enumerate(value):
+			name = 'Element #%d' % i
+			result = self.sanitizer.sanitize(name, {name : item})
+			altered_value.append(result)
+		return altered_value
 
 class IntegerSanitizer(Sanitizer):
 	'''IntegerSanitizer makes sure that the value is an int.
@@ -236,9 +249,9 @@ class IntegerSanitizer(Sanitizer):
 	:param bool maximum_strict: if the value must be < maximum
 	  (<= otherwise)
 	'''
-	def __init__(self, further_arguments=None, required=False, validate_none=False,
+	def __init__(self, further_arguments=None, required=False, default=None,
 			minimum=None, maximum=None, minimum_strict=None, maximum_strict=None):
-		super(IntegerSanitizer, self).__init__(further_arguments, required, validate_none, may_change_value=True)
+		super(IntegerSanitizer, self).__init__(further_arguments, required, default, may_change_value=True)
 		self.minimum = minimum
 		self.maximum = maximum
 		self.minimum_strict = minimum_strict
@@ -279,6 +292,12 @@ class PatternSanitizer(Sanitizer):
 
 	You can give the same parameters as the base class without
 	:attr:`~Sanitizer.may_change_value`, as it always may.
+
+	If you specify a string as :attr:`~Sanitizer.default`, it will be
+	compiled to a regular expression. Hints:
+	default='.*' -> matches everything
+	default='(?!)' -> matches nothing
+
 	Plus:
 
 	:param bool add_asterisks: add asterisks at the beginning and the end
@@ -286,17 +305,19 @@ class PatternSanitizer(Sanitizer):
 	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
 	  to search case insensitive.
 	'''
-	def __init__(self, add_asterisks=True, ignore_case=True, further_arguments=None, required=False, validate_none=False):
-		super(PatternSanitizer, self).__init__(further_arguments, required, validate_none, may_change_value=True)
+	def __init__(self, add_asterisks=True, ignore_case=True, further_arguments=None, required=False, default=None):
+		if isinstance(default, basestring):
+			default = re.compile(default)
+		super(PatternSanitizer, self).__init__(further_arguments, required, default, may_change_value=True)
 		self.add_asterisks = add_asterisks
 		self.ignore_case = ignore_case
 
 	def _sanitize(self, value, name, further_fields):
-		# if someone wants to validate_none
 		if value is None:
 			value = ''
 		try:
 			value = str(value)
+			value = re.sub(r'\*+', '*', value)
 			if self.add_asterisks:
 				if not value.startswith('*'):
 					value = '*%s' % value

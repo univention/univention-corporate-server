@@ -54,11 +54,11 @@ flexibility.
 
 import inspect
 import copy
-import univention.debug as ud
+
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
-from ..protocol.definitions import BAD_REQUEST, BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_INVALID_ARGS
+from ..protocol.definitions import BAD_REQUEST_INVALID_OPTS
 from ..modules import UMC_Error, UMC_OptionTypeError
 from ..log import MODULE
 
@@ -110,10 +110,10 @@ def sanitize(*args, **kwargs):
 	         var1 = int(var1)
 		 var2 = int(var2)
              except ValueError:
-	         self.finished(request.id, None, 'Cannot convert to int', success=False, status=BAD_REQUEST)
+	         self.finished(request.id, None, 'Cannot convert to int', success=False, status=BAD_REQUEST_INVALID_OPTS)
 		 return
 	     if var2 < 10:
-	         self.finished(request.id, None, 'var2 must be >= 10', success=False, status=BAD_REQUEST)
+	         self.finished(request.id, None, 'var2 must be >= 10', success=False, status=BAD_REQUEST_INVALID_OPTS)
 		 return
 	     self.finished(request.id, var1 + var2)
 
@@ -135,38 +135,37 @@ def sanitize(*args, **kwargs):
 	 def add(self, var1, var2):
 	     return var1 + var2
 	"""
-	return lambda function: _sanitize(function, *args, **kwargs)
-
-def _sanitize(function, *args, **kwargs):
 	if args:
-		return _sanitize_list(function, args[0], kwargs)
+		return lambda function: _sanitize_list(function, args[0], kwargs)
 	else:
-		return _sanitize_dict(function, kwargs, {})
-
-def sanitize_dict(sanitized_attrs, **kwargs):
-	return lambda function: _sanitize_dict(function, sanitized_attrs, kwargs)
+		return lambda function: _sanitize_dict(function, kwargs, {})
 
 def sanitize_list(sanitizer, **kwargs):
 	return lambda function: _sanitize_list(function, sanitizer, kwargs)
 
-def _sanitize_type(function, sanitizer_class, sanitized_arg, sanitizer_parameter):
+def sanitize_dict(sanitized_attrs, **kwargs):
+	return lambda function: _sanitize_dict(function, sanitized_attrs, kwargs)
+
+def _sanitize_dict(function, sanitized_arguments, sanitizer_parameters):
+	defaults = {'default' : {}, 'required' : True, 'may_change_value' : True}
+	defaults.update(sanitizer_parameters)
+	return _sanitize(function, DictSanitizer(sanitized_arguments, **defaults))
+
+def _sanitize_list(function, sanitizer, sanitizer_parameters):
+	defaults = {'default' : [], 'required' : True, 'may_change_value' : True}
+	defaults.update(sanitizer_parameters)
+	return _sanitize(function, ListSanitizer(sanitizer, **defaults))
+
+def _sanitize(function, sanitizer):
 	def _response(self, request):
-		sanitizer = sanitizer_class(sanitized_arg, **sanitizer_parameter)
 		try:
-			request.options = sanitizer.sanitize(sanitizer_class.__name__, request.options)
+			request.options = sanitizer.sanitize('request.options', {'request.options' : request.options})
 		except ValidationError as e:
 			self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST_INVALID_OPTS)
 			return
-
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response
-
-def _sanitize_dict(function, sanitized_arguments, sanitizer_parameter):
-	return _sanitize_type(function, DictSanitizer, sanitized_arguments, sanitizer_parameter)
-
-def _sanitize_list(function, sanitizer, sanitizer_parameter):
-	return _sanitize_type(function, ListSanitizer, sanitizer, sanitizer_parameter)
 
 def _error_handler(options, exception):
 	raise exception
@@ -294,7 +293,7 @@ def simple_response(function=None, with_flavor=None):
 	   try:
 	     value = '%s_%s_%s' % (self._saved_dict[variable1], variable2, flavor)
 	   except KeyError:
-	     self.finished(required.id, None, message='Something went wrong', success=False, status=500)
+	     self.finished(request.id, None, message='Something went wrong', success=False, status=500)
 	     return
 	   self.finished(request.id, value)
 
@@ -329,19 +328,6 @@ def _replace_sensitive_data(data, sensitives):
 			if sensitive in data:
 				data[sensitive] = '******'
 	return data
-
-def check_request_options(function=None, types=dict):
-	""" check if request options type is valid """
-	def check(function):
-		def _response(self, request):
-			if not isinstance(request.options, types):
-				typename = ', '.join(map(lambda t: str(t.__name__), types)) if isinstance(types, tuple) else types.__name__
-				raise UMC_OptionTypeError( _("argument type has to be '%s'") % typename )
-			return function(self, request)
-		return _response
-	if function is not None:
-		return check(function)
-	return check
 
 def arginspect(function):
 	argspec = inspect.getargspec(function)
@@ -447,5 +433,5 @@ def log_request_options(function=None, sensitive=[]):
 		return log(function)
 	return log
 
-__all__ = ['simple_response', 'multi_response', 'log_request_options', 'check_request_options', 'sanitize', 'log']
+__all__ = ['simple_response', 'multi_response', 'log_request_options', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict']
 

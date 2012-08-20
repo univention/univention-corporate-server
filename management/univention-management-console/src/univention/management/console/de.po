@@ -274,6 +274,15 @@ msgstr "Sollte %s bleiben"
 msgid "Not a valid search pattern"
 msgstr "Kein gültiges Suchmuster"
 
+msgid "Not a \"dict\""
+msgstr "Ist kein \"dict\""
+
+msgid "Not a \"list\""
+msgstr "Ist kein \"list\""
+
+msgid "Has more than the allowed keys"
+msgstr "Hat mehr Schlüssel als erlaubt"
+
 #~ msgid "Attribute %s just available for MIME type %s"
 #~ msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
 

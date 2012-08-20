@@ -1,3 +1,9 @@
+univention-management-console (5.0.15-1) unstable; urgency=low
+
+  * adapted sanitizer, added default argument (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Aug 2012 20:06:16 +0200
+
 univention-management-console (5.0.14-1) unstable; urgency=low
 
   * adapted sanitizer (Bug #27720) 
