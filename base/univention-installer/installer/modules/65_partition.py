@@ -418,8 +418,12 @@ class object(content):
 				start = self.MiB2MB(start)
 			if type(end) == type(0) or type(end)==type(0.0):
 				end = self.MiB2MB(end)
-			self.container['result'][ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s %s" % (entrytype, device, parttype, format, fstype,
-																						  start, end, mpoint, flag)
+			if mpoint == '':
+				mpoint = 'None'
+			if fstype == '':
+				fstype = 'None'
+			self.container['result'][ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s %s" % (entrytype, device, parttype, format, fstype, start, end, mpoint, flag)
+
 			i += 1
 
 		self.debug('run_profiled: adding profile to results')
