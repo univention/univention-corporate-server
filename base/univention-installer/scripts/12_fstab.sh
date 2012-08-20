@@ -104,11 +104,11 @@ __EOT__
 		acl=""
 	fi
 
-	if [ -z "$mp" ]; then
+	if [ -z "$mp" -o "$mp" = "None" -o "$mp" = "none" -o "$mp" = "/" ]; then
 		continue
 	fi
 
-	if [ "$mp" = "None" ] || [ "$mp" = "/" ]; then
+	if [ -z "$fs" -o "$fs" = "None" -o "$fs" = "none" ]; then
 		continue
 	fi
 
