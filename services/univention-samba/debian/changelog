@@ -1,3 +1,9 @@
+univention-samba (7.0.7-1) unstable; urgency=low
+
+  * run dh_pysupport before univention-install-config-registry (Bug #27887)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Aug 2012 15:07:33 +0200
+
 univention-samba (7.0.6-1) unstable; urgency=low
 
   * Add logrotate support for log.winbindd-$windows_domain and
