@@ -479,15 +479,15 @@ class Processor( signals.Provider ):
 					raise InvalidOptionsError
 
 				tmpfilename = file_obj.get('tmpfile', '')
-				# check if file exists
-				if not os.path.isfile( tmpfilename ):
-					response.status = BAD_REQUEST
-					raise ValueError('invalid file: file does not exists')
-
 				# limit files to tmpdir
 				if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
 					response.status = BAD_REQUEST
 					raise ValueError('invalid file: invalid path')
+
+				# check if file exists
+				if not os.path.isfile( tmpfilename ):
+					response.status = BAD_REQUEST
+					raise ValueError('invalid file: file does not exists')
 
 				# don't accept files bigger than umc/server/upload/max
 				st = os.stat( tmpfilename )

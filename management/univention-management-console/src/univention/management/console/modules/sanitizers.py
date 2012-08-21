@@ -260,6 +260,9 @@ class IntegerSanitizer(Sanitizer):
 	def _sanitize(self, value, name, further_arguments):
 		try:
 			value = int(value)
+			if not isinstance(value, int):
+				# value is of type 'long'
+				raise ValueError
 		except (ValueError, TypeError):
 			self.raise_validation_error(_('Cannot be converted to a number'))
 		else:
@@ -333,3 +336,32 @@ class PatternSanitizer(Sanitizer):
 			# although i cant think of a case were this should fail
 			self.raise_validation_error(_('Not a valid search pattern'))
 
+class StringSanitizer(Sanitizer):
+	''' StringSanitizer makges sure that the input is a string.
+		The input can be validated by a regular expression and by string length
+
+		:param basestring|SRE_Pattern regex_pattern: a regex pattern or a string which will be compiled into a regex pattern
+		:param int re_flags: additional regex flags for the regex_pattern which will be compiled if regex_pattern is a string
+		:param int minimum: the minimum length of the string
+		:param int maximum: the maximum length of the string
+	'''
+	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, further_arguments=None, required=False, default=''):
+		super(StringSanitizer, self).__init__(further_arguments, required, default, may_change_value=True)
+		if isinstance(regex_pattern, basestring):
+			regex_pattern = re.compile(regex_pattern, flags = re_flags)
+		self.minimum = minimum
+		self.maximum = maximum
+		self.regex_pattern = regex_pattern
+
+	def _sanitize(self, value, name, further_args):
+		if not isinstance(value, basestring):
+			self.raise_validation_error(_('Value is not a string'))
+
+		if self.minimum and len(value) < self.minimum:
+			self.raise_validation_error(_('Value is too short, it have to be of length %(minimum)d'))
+
+		if self.maximum and len(value) > self.maximum:
+			self.raise_validation_error(_('Value is too long, it have to be of length %(maximum)d'))
+
+		if self.regex_pattern and not self.regex_pattern.match(value):
+			self.raise_validation_error(_('Value is invalid'))
