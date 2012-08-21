@@ -48,6 +48,8 @@ if [ $? -eq 0 ]; then
 	fi
 fi
 
+/bin/umount -l /instmnt > /dev/null 2>&1
+
 sync
 
 reboot
