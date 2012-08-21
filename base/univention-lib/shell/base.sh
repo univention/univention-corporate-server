@@ -34,9 +34,9 @@
 # e.g. create_logfile /tmp/foo.log root:adm 0750
 #
 create_logfile () {
-    touch "$1"
-    chown "$2" "$1"
-    chmod "$3" "$1"
+	touch "$1"
+	chown "$2" "$1"
+	chmod "$3" "$1"
 }
 
 #
@@ -45,9 +45,9 @@ create_logfile () {
 # e.g. create_logfile_if_missing /tmp/foo.log root:adm 0750
 #
 create_logfile_if_missing () {
-    if [ ! -e "$1" ] ; then
+	if [ ! -e "$1" ] ; then
 		create_logfile "$@"
-    fi
+	fi
 }
 
 #
@@ -106,132 +106,52 @@ stop_udm_cli_server () {
 # fi
 #
 is_domain_controller () {
-	role="$(ucr get server/role)"
-	[ "$role" = domaincontroller_master -o "$role" = domaincontroller_backup -o "$role" = domaincontroller_slave ]
+	case "$(ucr get server/role)" in
+	domaincontroller_master) return 0 ;;
+	domaincontroller_backup) return 0 ;;
+	domaincontroller_slave) return 0 ;;
+	*) return 1 ;;
+	esac
 }
 
 #
 # returns the default IP address
 #
 get_default_ip_address () {
-	eval "$(/usr/sbin/univention-config-registry shell \
-					interfaces/eth0/address interfaces/eth1/address \
-					interfaces/eth2/address interfaces/eth3/address \
-					interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
-					interfaces/eth2/ipv6/default/address interfaces/eth3/ipv6/default/address)"
-
-	if [ -n "$interfaces_eth0_address" ]; then
-		echo "$interfaces_eth0_address"
-	elif [ -n "$interfaces_eth1_address" ]; then
-		echo "$interfaces_eth1_address"
-	elif [ -n "$interfaces_eth2_address" ]; then
-		echo "$interfaces_eth2_address"
-	elif [ -n "$interfaces_eth3_address" ]; then
-		echo "$interfaces_eth3_address"
-	elif [ -n "$interfaces_eth0_ipv6_default_address" ]; then
-		echo "$interfaces_eth0_ipv6_default_address"
-	elif [ -n "$interfaces_eth1_ipv6_default_address" ]; then
-		echo "$interfaces_eth1_ipv6_default_address"
-	elif [ -n "$interfaces_eth2_ipv6_default_address" ]; then
-		echo "$interfaces_eth2_ipv6_default_address"
-	elif [ -n "$interfaces_eth3_ipv6_default_address" ]; then
-		echo "$interfaces_eth3_ipv6_default_address"
-	fi
+	PYTHONPATH=/usr/lib/pymodules/python2.6/univention/config_registry python2.6 2>/dev/null \
+	-c 'from interfaces import Interfaces;print Interfaces().get_default_ip_address().ip'
 }
 
 #
 # returns the default IPv4 address
 #
 get_default_ipv4_address () {
-	eval "$(/usr/sbin/univention-config-registry shell \
-					interfaces/eth0/address interfaces/eth1/address \
-					interfaces/eth2/address interfaces/eth3/address)"
-
-	if [ -n "$interfaces_eth0_address" ]; then
-		echo "$interfaces_eth0_address"
-	elif [ -n "$interfaces_eth1_address" ]; then
-		echo "$interfaces_eth1_address"
-	elif [ -n "$interfaces_eth2_address" ]; then
-		echo "$interfaces_eth2_address"
-	elif [ -n "$interfaces_eth3_address" ]; then
-		echo "$interfaces_eth3_address"
-	fi
+	PYTHONPATH=/usr/lib/pymodules/python2.6/univention/config_registry python2.6 2>/dev/null \
+	-c 'from interfaces import Interfaces;print Interfaces().get_default_ipv4_address().ip'
 }
 
 #
 # returns the default IPv6 address
 #
 get_default_ipv6_address () {
-	eval "$(/usr/sbin/univention-config-registry shell \
-					interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
-					interfaces/eth2/ipv6/default/address interfaces/eth3/ipv6/default/address)"
-
-	if [ -n "$interfaces_eth0_ipv6_default_address" ]; then
-		echo "$interfaces_eth0_ipv6_default_address"
-	elif [ -n "$interfaces_eth1_ipv6_default_address" ]; then
-		echo "$interfaces_eth1_ipv6_default_address"
-	elif [ -n "$interfaces_eth2_ipv6_default_address" ]; then
-		echo "$interfaces_eth2_ipv6_default_address"
-	elif [ -n "$interfaces_eth3_ipv6_default_address" ]; then
-		echo "$interfaces_eth3_ipv6_default_address"
-	fi
+	PYTHONPATH=/usr/lib/pymodules/python2.6/univention/config_registry python2.6 2>/dev/null \
+	-c 'from interfaces import Interfaces;print Interfaces().get_default_ipv6_address().ip'
 }
 
 #
 # returns the default netmask
 #
 get_default_netmask () {
-	eval "$(/usr/sbin/univention-config-registry shell \
-					interfaces/eth0/netmask interfaces/eth1/netmask \
-					interfaces/eth2/netmask interfaces/eth3/netmask \
-					interfaces/eth0/ipv6/default/prefix interfaces/eth1/ipv6/default/prefix \
-					interfaces/eth2/ipv6/default/prefix interfaces/eth3/ipv6/default/prefix)"
-
-	if [ -n "$interfaces_eth0_netmask" ]; then
-		echo "$interfaces_eth0_netmask"
-	elif [ -n "$interfaces_eth1_netmask" ]; then
-		echo "$interfaces_eth1_netmask"
-	elif [ -n "$interfaces_eth2_netmask" ]; then
-		echo "$interfaces_eth2_netmask"
-	elif [ -n "$interfaces_eth3_netmask" ]; then
-		echo "$interfaces_eth3_netmask"
-	elif [ -n "$interfaces_eth0_ipv6_default_prefix" ]; then
-		echo "$interfaces_eth0_ipv6_default_prefix"
-	elif [ -n "$interfaces_eth1_ipv6_default_prefix" ]; then
-		echo "$interfaces_eth1_ipv6_default_prefix"
-	elif [ -n "$interfaces_eth2_ipv6_default_prefix" ]; then
-		echo "$interfaces_eth2_ipv6_default_prefix"
-	elif [ -n "$interfaces_eth3_ipv6_default_prefix" ]; then
-		echo "$interfaces_eth3_ipv6_default_prefix"
-	fi
+	PYTHONPATH=/usr/lib/pymodules/python2.6/univention/config_registry python2.6 2>/dev/null \
+	-c 'from interfaces import Interfaces;print Interfaces().get_default_ip_address().netmask'
 }
+
 #
 # returns the default network
 #
 get_default_network () {
-	eval "$(/usr/sbin/univention-config-registry shell \
-					interfaces/eth0/network interfaces/eth1/network \
-					interfaces/eth2/network interfaces/eth3/network \
-					interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
-					interfaces/eth2/ipv6/default/address interfaces/eth3/ipv6/default/address \
-					interfaces/eth0/ipv6/default/prefix interfaces/eth1/ipv6/default/prefix \
-					interfaces/eth2/ipv6/default/prefix interfaces/eth3/ipv6/default/prefix)"
-
-	if [ -n "$interfaces_eth0_network" ]; then
-		echo "$interfaces_eth0_network"
-	elif [ -n "$interfaces_eth1_network" ]; then
-		echo "$interfaces_eth1_network"
-	elif [ -n "$interfaces_eth2_network" ]; then
-		echo "$interfaces_eth2_network"
-	elif [ -n "$interfaces_eth3_network" ]; then
-		echo "$interfaces_eth3_network"
-	elif [ -n "$interfaces_eth0_ipv6_default_address" -a -n "$interfaces_eth0_ipv6_default_prefix" ]; then
-		python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$interfaces_eth0_ipv6_default_address/$interfaces_eth0_ipv6_default_prefix"
-	elif [ -n "$interfaces_eth1_ipv6_default_address" -a -n "$interfaces_eth1_ipv6_default_prefix" ]; then
-		python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$interfaces_eth1_ipv6_default_address/$interfaces_eth1_ipv6_default_prefix"
-	elif [ -n "$interfaces_eth2_ipv6_default_address" -a -n "$interfaces_eth2_ipv6_default_prefix" ]; then
-		python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$interfaces_eth2_ipv6_default_address/$interfaces_eth2_ipv6_default_prefix"
-	elif [ -n "$interfaces_eth3_ipv6_default_address" -a -n "$interfaces_eth3_ipv6_default_prefix" ]; then
-		python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$interfaces_eth3_ipv6_default_address/$interfaces_eth3_ipv6_default_prefix"
-	fi
+	PYTHONPATH=/usr/lib/pymodules/python2.6/univention/config_registry python2.6 2>/dev/null \
+	-c 'from interfaces import Interfaces;print Interfaces().get_default_ip_address().network'
 }
+
+# vim:set sw=4 ts=4 noet:

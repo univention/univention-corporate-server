@@ -11,4 +11,5 @@ python/univention/config_registry/backend.py usr/share/pyshared/univention/confi
 python/univention/config_registry/filter.py usr/share/pyshared/univention/config_registry/
 python/univention/config_registry/frontend.py usr/share/pyshared/univention/config_registry/
 python/univention/config_registry/handler.py usr/share/pyshared/univention/config_registry/
+python/univention/config_registry/interfaces.py usr/share/pyshared/univention/config_registry/
 python/univention/config_registry/misc.py usr/share/pyshared/univention/config_registry/

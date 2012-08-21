@@ -3,6 +3,7 @@ univention-config-registry (8.0.2-1) unstable; urgency=low
   * Support modules for multifiles (Bug #28229)
   * Split UCR into submodules (Bug #26058)
   * Sort list of template files in multi-file (Bug #26886)
+  * Add submodule for interfaces (Bug #26058)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 15 Aug 2012 16:48:51 +0200
 

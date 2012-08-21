@@ -1,3 +1,9 @@
+univention-lib (2.0.2-1) unstable; urgency=low
+
+  * Fix get_default_network_parameter (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Aug 2012 08:54:05 +0200
+
 univention-lib (2.0.1-1) unstable; urgency=low
 
   * Add translation file for PackageManager (Bug #28010)

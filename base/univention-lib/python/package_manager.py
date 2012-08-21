@@ -101,9 +101,9 @@ class ProgressState(object):
 
 	def poll(self):
 		result = {
-			'info' : self._info,
-			'steps' : self._steps,
-			'errors' : self._errors,
+			'info': self._info,
+			'steps': self._steps,
+			'errors': self._errors,
 		}
 		self.reset()
 		return result
@@ -232,16 +232,16 @@ class PackageManager(object):
 				n -= 1
 				continue
 			return status
-		return {'timeout' : True}
+		return {'timeout': True}
 
 	@contextmanager
 	def brutal_noninteractive(self):
 		with self.noninteractive():
 			options = {
-					'DPkg::Options::' : '--force-overwrite',
-					'DPkg::Options::' : '--force-overwrite-dir',
-					'APT::Get::Trivial-Only' : 'no',
-					'quiet' : '1',
+					'DPkg::Options::': '--force-overwrite',
+					'DPkg::Options::': '--force-overwrite-dir',
+					'APT::Get::Trivial-Only': 'no',
+					'quiet': '1',
 			}
 			revert_options = self._set_apt_pkg_config(options)
 			try:
@@ -253,12 +253,12 @@ class PackageManager(object):
 	def noninteractive(self):
 		# dont ever ask for user input
 		old_debian_frontend = os.environ.get('DEBIAN_FRONTEND')
-		os.environ['DEBIAN_FRONTEND']= 'noninteractive'
+		os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 		options = {
-				'APT::Get::Assume-Yes' : 'true',
-				'APT::Get::force-yes' : 'true',
-				'APT::Get::AllowUnauthenticated' : '1',
-				'DPkg::Options::' : '--force-confold',
+				'APT::Get::Assume-Yes': 'true',
+				'APT::Get::force-yes': 'true',
+				'APT::Get::AllowUnauthenticated': '1',
+				'DPkg::Options::': '--force-confold',
 		}
 		revert_options = self._set_apt_pkg_config(options)
 		try:
@@ -266,7 +266,7 @@ class PackageManager(object):
 		finally:
 			self._set_apt_pkg_config(revert_options)
 			if old_debian_frontend:
-				os.environ['DEBIAN_FRONTEND']= old_debian_frontend
+				os.environ['DEBIAN_FRONTEND'] = old_debian_frontend
 			else:
 				del os.environ['DEBIAN_FRONTEND']
 
