@@ -38,6 +38,7 @@ from copy import deepcopy
 from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError, UMC_CommandError, UMC_OptionMissing, Base
 from univention.management.console.modules.decorators import *
+from univention.management.console.modules.sanitizers import *
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
@@ -49,7 +50,7 @@ class Users:
 			return groupname of a group id or empty string if no group was found
 		"""
 		ret = self._search_groups('gid', gid)
-		return ret.pop().get('groupname') if len(ret) < 1 else ''
+		return ret.pop().get('groupname') if ret else ''
 
 	def _parse_users(self, category='username', pattern='*'):
 		""" parse /etc/passwd and /etc/shadow
@@ -86,7 +87,7 @@ class Users:
 
 					# Filter
 					value = { 'username': username, 'uid': uid, 'gid': gid, 'gecos': gecos.split(','), 'fullname': gecos.split(',').pop(0), 'homedir': homedir, 'shell': shell, 'group': groups_mixin }.get(category, 'username')
-					if list is type(value):
+					if isinstance(value, list):
 						for val in value:
 							if fnmatch(str(value), pattern):
 								break
@@ -176,75 +177,60 @@ class Users:
 
 		inactive = options.get('disabledays')
 		if inactive:
-			cmd += ['-i', self.sanitize_int(inactive)]
+			cmd += ['-i', inactive]
 
 		mindays = options.get('mindays')
 		if mindays:
-			cmd += ['-n', self.sanitize_int(mindays)]
+			cmd += ['-n', mindays]
 
 		warndays = options.get('warndays')
 		if warndays:
-			cmd += ['-w', self.sanitize_int(warndays)]
+			cmd += ['-w', warndays]
 			
 		maxdays = options.get('maxdays')
 		if maxdays:
-			cmd += ['-x', self.sanitize_int(maxdays)]
+			cmd += ['-x', maxdays]
 
 		# Change password
 		if password:
-			pwd = ['/usr/bin/passwd', '-q', self.sanitize_arg(username)]
+			pwd = ['/usr/bin/passwd', '-q', username]
 			returncode = self.process(pwd, '%s\n%s' % (password, password))
 			if 0 != returncode:
-				MODULE.error("cmd '%s' failed with returncode %d" % (pwd, returncode)) 
+				MODULE.error("cmd '%s' failed with returncode %d" % (' '.join(pwd), returncode)) 
 				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
 				raise ValueError( _('an error occurred while changing password: %s') % (error) )
 
 		# Change options
 		if len(cmd) > 2:
-			cmd.append(self.sanitize_arg(username))
+			cmd.append(username)
 			returncode = self.process(cmd)
 			if 0 != returncode:
-				MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
+				MODULE.error("cmd '%s' failed with returncode %d" % (' '.join(map(str, cmd)), returncode)) 
 				error = errors.get(returncode, _('unknown error with statuscode %d') % (returncode))
 				raise ValueError( _('an error occurred while changing password options: %s') % (error) )
 
 		return True
 
-	@log_request_options
+	@sanitize(category=ChoiceSanitizer(('username', 'uid', 'gid', 'gecos', 'homedir', 'shell', 'group'), default='username'), pattern=PatternSanitizer(default='.*'))
 	@simple_response
+	@log
 	def users_query( self, category = 'username', pattern = '*'):
+		""" returns a list containing dicts of all users filtered by category using pattern.
+		:param string category: one of [username, uid, gid, gecos, homedir, shell, group]
 		"""
-			returns a list containing dicts of all users filtered by category with bash-like-pattern
-			the following wildcars can be used in request.options.pattern:
-				*       matches everything
-				?       matches any single character
-				[seq]   matches any character in seq
-				[!seq]  matches any char not in seq
-			request.options.category:
-				one of [username, uid, gid, gecos, homedir, shell, group] default: username
-		"""
+		return self._parse_users( category, pattern )
 
-		response = self._parse_users( category, pattern )
-		MODULE.info( 'luga.users_query: results: %s' % response )
-		return response
-
-	@log_request_options
-	@check_request_options
-	def users_get_users(self, request):
+	@sanitize(category=ChoiceSanitizer(('username', 'uid', 'gid', 'gecos', 'homedir', 'shell', 'group'), default='username'), pattern=PatternSanitizer(default='.*'))
+	@simple_response
+	@log
+	def users_get_users(self, pattern, category='username'):
 		"""
 			returns a shorten list containing a dict for each user
 			[ {'id': <username>, 'label': <username>}, ... ]
 		"""
 
-		o = self.sanitize_dict(request.options)
-		category = request.options.get('category', 'username')
-		pattern = request.options.get('pattern', '*')
-
 #		response = [ {'id': u['username'], 'label': u['username']} for u in self._parse_users(category, pattern) ]
-		response = [ u['username'] for u in self._parse_users(category, pattern) ]
-
-		MODULE.info( 'luga.users_query: results: %s' % str(response) )
-		self.finished(request.id, response, status=SUCCESS)
+		return [ u['username'] for u in self._parse_users(category, pattern) ]
 
 	def _get_group_members(self, groupname):
 		"""
@@ -253,8 +239,8 @@ class Users:
 		"""
 		return map( lambda u: u['username'], self._parse_users('groupname', groupname) )
 
-	@log_request_options
-	@check_request_options(types=list)
+	@sanitize(StringSanitizer())
+	@log
 	def users_get( self, request ):
 		"""
 			returns a list of dicts containing user information from requested usernames
@@ -265,55 +251,60 @@ class Users:
 		for user in self._parse_users():
 			if user['username'] in request.options:
 				userdict[user['username']] = user
-		response = [ userdict.get(username) for username in request.options ]
-
-		MODULE.info( 'luga.users_get: results: %s' % str(response) )
-		self.finished(request.id, response, status=SUCCESS)
+		return [ userdict.get(username) for username in request.options ]
 
 	def _get_common_args( self, options, pwoptions={} ):
 		"""
 			get args which are equal for put and add
 			can also modify an dict with password options
-			return string
 		"""
+
+		# sanitizing
+		arg_sanitizer = StringSanitizer(regex_pattern = self.arguments_pattern)
+		int_sanitizer = IntegerSanitizer()
+		dict_sanitize_objects = dict([(key, arg_sanitizer) for key in ['fullname', 'roomnumber', 'tel_business', 'tel_private', 'miscellaneous', 'homedir', 'shell', 'group']])
+		dict_sanitize_objects.update(dict([(key, int_sanitizer) for key in ['uid', 'pw_disabledays', 'pw_mindays', 'pw_warndays','pw_maxdays']]))
+		dict_sanitize_objects.update({'groups': ListSanitizer(arg_sanitizer)})
+		dict_sanitizer = DictSanitizer(dict_sanitize_objects)
+		dict_sanitizer.sanitize('options', {'options': options})
 
 		cmd = []
 
 		# Gecos
 		gecos = [options.get('fullname'), options.get('roomnumber'), options.get('tel_business'), options.get('tel_private'), options.get('miscellaneous')]
-		gecos = set([None]) != set(gecos)
+		gecos = set([None]) != set(gecos) # any(gecos) or '' in gecos
 
 		if gecos:
 			keys = ['fullname', 'roomnumber', 'tel_business', 'tel_private', 'miscellaneous']
 			gecos = map(lambda s: str(options.get(s, '')).replace(',', ''), keys)
-			cmd += ['-c', self.sanitize_arg(','.join(gecos))]
+			cmd += ['-c', ','.join(gecos)]
 
 		# Home directory
 		homedir = options.get('homedir')
 		if homedir:
-			cmd += ['-d', self.sanitize_arg(homedir)]
+			cmd += ['-d', homedir]
 			if options.get('create_home'):
 				cmd.append('-m')
 
 		# Shell
 		shell = options.get('shell')
 		if shell:
-			cmd += ['-s', self.sanitize_arg(shell)]
+			cmd += ['-s', shell]
 
 		# User-ID
 		uid = str(options.get('uid', ''))
 		if uid.isdigit():
-			cmd += ['-u', self.sanitize_int(uid)]
+			cmd += ['-u', uid]
 
 		# Additional groups
 		groups = options.get('groups')
 		if groups:
-			cmd += ['-G', self.sanitize_arg( ','.join(list(groups))) ]
+			cmd += ['-G', ','.join(groups)]
 
 		# Primary Group
 		group = options.get('group')
 		if not options.get('create_usergroup') and group:
-			cmd += ['-g', self.sanitize_arg( group )]
+			cmd += ['-g', group]
 
 		# Password options
 		if options.get('pw_remove'):
@@ -347,6 +338,10 @@ class Users:
 
 		return cmd
 
+	@sanitize(DictSanitizer({'object': DictSanitizer({
+		'$username$': StringSanitizer(required=True),
+		'username': StringSanitizer(self.username_pattern),
+	})}))
 	@log_request_options(sensitive=['password'])
 	@multi_response
 	def users_put(self, object):
@@ -362,22 +357,18 @@ class Users:
 		try:
 			success = True
 			message = ''
-			self.validate_type(object, dict)
 
 			# Username
 			username = object.get('$username$')
 			new_username = object.get('username')
-			if not username:
-				raise ValueError( _('No username given') )
 
 			pwoptions = {}
 			cmd = ['/usr/sbin/usermod']
 			cmd += self._get_common_args( object, pwoptions )
 
 			# Change username
-			if new_username and username != new_username:
-				self.validate_name(new_username)
-				cmd += ['-l', self.sanitize_arg(new_username)]
+			if username != new_username:
+				cmd += ['-l', new_username]
 
 			# Account deactivation
 			if pwoptions.get('lock'):
@@ -392,20 +383,21 @@ class Users:
 
 			# Execute
 			if len(cmd) > 1:
-				cmd.append(self.sanitize_arg(username))
+				cmd.append(username)
 				returncode = self.process(cmd)
 				if returncode != 0:
-					MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode))
+					MODULE.error("cmd '%s' failed with returncode %d" % (' '.join(map(str, cmd)) returncode))
 					error = errors.get( returncode, _('unknown error with statuscode %d occurred') % (returncode) )
 					raise ValueError( error )
 
 		except ValueError as e:
 			success = False
-			message = (username + ': ' if type(username) is str else '') + str(e)
-		finally:
-			MODULE.info( 'luga.users_edit: results: %s' % (message,) )
-			return {'message': message, 'success': success}
+			message = '%s%s' % ('%s: ' % username if isinstance(username, basestring) else '', e,)
 
+		MODULE.info( 'luga.users_edit: results: %s' % (message,) )
+		return {'message': message, 'success': success}
+
+	@sanitize(DictSanitizer({'object': DictSanitizer({'username': StringSanitizer(self.username_pattern)})}))
 	@log_request_options(sensitive=['password'])
 	@multi_response
 	def users_add(self, object):
@@ -428,11 +420,9 @@ class Users:
 		try:
 			success = True
 			message = ''
-			self.validate_type(object, dict)
 
 			# Username
 			username = object.get('username')
-			self.validate_name(username)
 
 			pwoptions = {}
 			cmd = ['/usr/sbin/useradd', '-r']
@@ -446,10 +436,10 @@ class Users:
 			cmd += self._get_common_args( object, pwoptions )
 
 			# Execute
-			cmd.append(self.sanitize_arg(username))
+			cmd.append(username)
 			returncode = self.process(cmd)
 			if 0 != returncode:
-				MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode))
+				MODULE.error("cmd '%s' failed with returncode %d" % (' '.join(map(str, cmd)), returncode))
 				error = errors.get( returncode, _('unknown error with statuscode %d occurred') % (returncode) )
 				raise ValueError( error )
 
@@ -458,14 +448,15 @@ class Users:
 			self._change_user_password(username, password, pwoptions)
 		except ValueError as e:
 			success = False
-			message = (username + ': ' if type(username) is str else '') + str(e)
-		finally:
-			MODULE.info( 'luga.users_add: results: %s' % (message,) )
-			return {'message': message, 'success': success}
+			message = '%s%s' % ('%s: ' % username if isinstance(username, basestring) else '', e,)
 
-	@log_request_options
+		MODULE.info( 'luga.users_add: results: %s' % (message,) )
+		return {'message': message, 'success': success}
+
+	@sanitize(DictSanitizer({'object': StringSanitizer(required=True), 'options': DictSanitizer({}, default = {})}))
 	@multi_response
-	def users_remove(self, object=None, options={}):
+	@log
+	def users_remove(self, object, options={}):
 		"""
 			remove a list of local users
 			param request.options = [ { username: <string>, force: <bool>, remove: <bool> }, ...]
@@ -486,31 +477,25 @@ class Users:
 		try:
 			success = True
 			message = ''
-			if not isinstance(options, dict):
-				raise UMC_OptionTypeError( _("argument type has to be 'dict'") )
 
 			cmd = ['/usr/sbin/userdel']
-
 			username = object
-			if None is username:
-				raise ValueError( _('No username given') )
 
 			if options.get('force'):
 				cmd.append('-f')
 			if options.get('remove'):
 				cmd.append('-r')
 
-			cmd.append(self.sanitize_arg(username))
+			cmd.append(username)
 
 			returncode = self.process(cmd)
 			if returncode != 0:
-				MODULE.error("cmd '%s' failed with returncode %d" % (cmd, returncode)) 
+				MODULE.error("cmd '%s' failed with returncode %d" % (' '.join(map(str, cmd)), returncode))
 				error = errors.get( returncode, _('unknown error with statuscode %d occurred') % (returncode) )
 				raise ValueError( error )
 		except ValueError as e:
 			success = False
-			message = (username + ': ' if isinstance(username, basestring) else '') + str(e)
-		finally:
-			MODULE.info( 'luga.users_remove: results: %s' % (message,) )
-			return {'message': message, 'success': success}
+			message = '%s%s' % ('%s: ' % username if isinstance(username, basestring) else '', e,)
+
+		return {'message': message, 'success': success}
 

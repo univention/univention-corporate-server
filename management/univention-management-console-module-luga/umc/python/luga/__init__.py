@@ -44,53 +44,23 @@ import re
 _ = Translation( 'univention-management-console-module-luga' ).translate
 
 class Instance(Users, Groups, Base):
-	@staticmethod
-	def validate_type(obj, seq, cast = False):
-		"""
-			check if obj is of type seq, if not raise an UMC_OptionTypeError
-			param obj: the object to check
-			param class|type|tuple seq: sequence of types
-			param bool cast: cast the given object to seq
-		"""
-		if cast:
-			obj = seq(obj)
-		if not isinstance(obj, seq):
-			raise UMC_OptionTypeError( _("argument type has to be '%r'") % (seq,) )
-		return True
-
-	def sanitize_arg(self, arg):
-		if ':' in str(arg):
-			raise ValueError(_('arguments can not contain ":"'))
-		return arg
-
-	def sanitize_int(self, num):
-		self.validate_type(num, int, True)
-		return int(num)
-
-	def sanitize_dict(self, d):
-		return d if isinstance(d, dict) else {}
-
-	def validate_name(self, name):
-		if not name:
-			raise ValueError( _('No name given.') )
-		rpattern = r'^[a-zA-Z_äÄüÜöÖ][a-zA-ZäÄüÜöÖ0-9_-]*[$]?$'
-		if None is re.match(rpattern, str(name)):
-			raise ValueError( _('Name may only contain letters, numbers, "-" and "_" and must not start with "-".') )
-		if len(str(name)) > 32:
-			raise ValueError( _('Name may not be longer than 32 characters.') )
+	username_pattern = re.compile(r'^[A-Z_ÄÜÖ](?:[\wÄÜÖ-]{0,31}|[\wÄÜÖ-]{0,30}[$])?$', flags=re.IGNORECASE)
+	arguments_pattern = re.compile(r'^[^:]*$')
 
 	def process(self, args, stdin=None):
 		"""
 			process a shell command
 			
-			param args = array of arguments
-			param stdin = stdin string
-			return int returncode|string 'OSError'
+			:param list args: list of command and arguments
+			:param str stdin: stdin input
+			:returns: int returncode
 		"""
 
 		try:
-			p = Popen( args = map(lambda a: str(a).encode('utf-8'), args), stderr = PIPE, stdin = PIPE )
+			args = map(lambda a: str(a).encode('utf-8'), args)
+			p = Popen( args = args, stderr = PIPE, stdin = PIPE )
 			(stdout, stderr) = p.communicate(stdin)
+			MODULE.debug('%s: stdout=%s; stderr=%s' % (' '.join(args)), stdout, stderr )
 		except OSError as e:
 			MODULE.error( 'Command failed: %s\nException: %s' % (args, str(e)) )
 			raise ValueError( _('Command failed') )

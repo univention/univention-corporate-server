@@ -4,12 +4,12 @@
 		<name>Local user and group administration</name>
 		<description>Administrate local users and groups</description>
 
-		<flavor icon="luga-users" id="luga/users">
+		<flavor icon="luga-users" id="users">
 			<name>Local users</name>
 			<description>Administrate local users</description>
 		</flavor>
 
-		<flavor icon="luga-groups" id="luga/groups">
+		<flavor icon="luga-groups" id="groups">
 			<name>Local groups</name>
 			<description>Administrate local groups</description>
 		</flavor>
@@ -18,69 +18,19 @@
 			<category name="system"/>
 		</categories>
 
-		<command name="luga/users/query" function="users_query">
-			<return syntax="List"/>
-		</command>
-		<command name="luga/users/get" function="users_get">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="luga/users/add" function="users_add">
-			<return syntax="List"/>
-		</command>
-		<command name="luga/users/put" function="users_put">
-			<attribute name="" syntax="luga-users-put" required="True">
-				<attribute name="" syntax="luga-users-put-item" required="True">
-					<attribute name="String" syntax=""/>
-					<attribute name="username" syntax="nonempty-value"/>
-					<attribute name="uid" syntax="Integer"/>
-					<attribute name="pw_mindays" syntax="Integer"/>
-					<attribute name="pw_maxdays" syntax="Integer"/>
-					<attribute name="pw_warndays" syntax="Integer"/>
-					<attribute name="pw_disabledays" syntax="Integer"/>
-					<attribute name="lock" syntax="Boolean"/>
-					<attribute name="unlock" syntax="Boolean"/>
-					<attribute name="pw_remove" syntax="Boolean"/>
-					<attribute name="pw_expire" syntax="Boolean"/>
-					<attribute name="pw_keep_tokens" syntax="Boolean"/>
-					<attribute name="create_home" syntax="Boolean"/>
-					<attribute name="miscellaneous" syntax="geco"/>
-					<attribute name="tel_private" syntax="geco"/>
-					<attribute name="tel_business" syntax="geco"/>
-					<attribute name="roomnumber" syntax="geco"/>
-					<attribute name="fullname" syntax="geco"/>
-					<attribute name="shell" syntax="Path"/>
-					<attribute name="homedir" syntax="Path"/>
-					<attribute name="group" syntax="String"/>
-					<attribute name="groups" syntax="List"/>
-				</attribute>
-			</attribute>
-			<return syntax="List"/>
-		</command>
-		<command name="luga/users/remove" function="users_remove">
-			<return syntax="List"/>
-		</command>
-		<command name="luga/users/get_users" function="users_get_users">
-			<return syntax="List"/>
-		</command>
+		<command name="luga/users/query" function="users_query" />
+		<command name="luga/users/get" function="users_get" />
+		<command name="luga/users/add" function="users_add" />
+		<command name="luga/users/put" function="users_put" />
+		<command name="luga/users/remove" function="users_remove" />
+		<command name="luga/users/get_users" function="users_get_users" />
 
-		<command name="luga/groups/query" function="groups_query">
-			<return syntax="List"/>
-		</command>
-		<command name="luga/groups/get" function="groups_get">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="luga/groups/add" function="groups_add">
-			<return syntax="List"/>
-		</command>
-		<command name="luga/groups/put" function="groups_put">
-			<return syntax="List"/>
-		</command>
-		<command name="luga/groups/remove" function="groups_remove">
-			<return syntax="List"/>
-		</command>
-		<command name="luga/groups/get_groups" function="get_groups">
-			<return syntax="List"/>
-		</command>
+		<command name="luga/groups/query" function="groups_query" />
+		<command name="luga/groups/get" function="groups_get" />
+		<command name="luga/groups/add" function="groups_add" />
+		<command name="luga/groups/put" function="groups_put" />
+		<command name="luga/groups/remove" function="groups_remove" />
+		<command name="luga/groups/get_groups" function="get_groups" />
 	</module>
 </umc>
 

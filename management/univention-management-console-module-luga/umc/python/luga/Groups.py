@@ -46,6 +46,12 @@ _ = Translation( 'univention-management-console-module-luga' ).translate
 
 
 class Groups():
+	def validate_name(self, name):
+		if not name:
+			raise ValueError( _('No name given.') )
+		if not self.username_pattern.match(str(name)):
+			raise ValueError( _('Name may only contain letters, numbers, "-" and "_" and must not start with "-".') )
+
 	def _parse_groups(self):
 		'''
 		Reads every line in /etc/group and /etc/gshadow to collect as many informations
