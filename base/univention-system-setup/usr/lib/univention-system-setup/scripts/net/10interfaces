@@ -68,7 +68,9 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
   serversystem=1
 fi
 
-for interface in eth0 eth1 eth2 eth3; do
+# sed -rne 's,^interfaces/([^/]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1\t\2\t\4\5,p' "$profile_file" | while IFS='	' read interface attr var
+sed -rne 's,^interfaces/([^/]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1,p' "$profile_file" | sort -u | while read interface
+do
 	for attr in address broadcast netmask network type; do
 		is_variable_set "interfaces/$interface/$attr"
 
@@ -134,8 +136,6 @@ for interface in eth0 eth1 eth2 eth3; do
 				fi
 			fi
 		fi
-	
-		
 	done
 
 	# interface dhcp type handling for server roles
@@ -217,16 +217,10 @@ fi
 if [ "$network_only" = 1 ]; then
 	ldap_available=0
 fi
-	
 
-for interface in eth0 eth1 eth2 eth3; do
-	for virtual in 0 1 2 3; do
-		for type in address broadcast netmask network; do
-			is_variable_set "interfaces/${interface}_${virtual}/$type"
-			if [ $? = 0 ]; then
-				continue
-			fi
-			var=`get_profile_var "interfaces/${interface}_${virtual}/$type"`
+sed -rne 's,^interfaces/([^/_]+)_([0-9]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1\t\2\t\3\t\5\6,p' "$profile_file" |
+while IFS='	' read interface virtual type var
+do
 			if [ -z "$var" ]; then
 				baseconfig_unset="$baseconfig_unset interfaces/${interface}_${virtual}/$type"
 				if [ "$type" = "address" ]; then
@@ -241,11 +235,6 @@ for interface in eth0 eth1 eth2 eth3; do
 					fi
 				fi
 			fi
-
-		done
-
-	done
-
 done
 
 if [ -x /usr/sbin/univention-dnsedit ]; then
@@ -345,46 +334,46 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		if [ -z "$device" ]; then continue; fi
 
 		old_ip=$(univention-config-registry get interfaces/$device/address)
-  		if ! is_variable_set "interfaces/$device/address"; then
+		if ! is_variable_set "interfaces/$device/address"; then
 			new_ip="$(get_profile_var "interfaces/$device/address")"
 		else
 			new_ip="$old_ip"
 		fi
 			
 		old_network=$(univention-config-registry get interfaces/$device/network)
-  		if ! is_variable_set "interfaces/$device/network"; then
+		if ! is_variable_set "interfaces/$device/network"; then
 			new_network=$(get_profile_var "interfaces/$device/network")
 		else
 			new_network="$old_network"
 		fi
 
 		old_netmask=$(univention-config-registry get interfaces/$device/netmask)
-  		if ! is_variable_set "interfaces/$device/netmask"; then
- 			new_netmask=$(get_profile_var "interfaces/$device/netmask")
+		if ! is_variable_set "interfaces/$device/netmask"; then
+			new_netmask=$(get_profile_var "interfaces/$device/netmask")
 		else
- 			new_netmask="$old_netmask"
+			new_netmask="$old_netmask"
 		fi
 
- 		old_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
-  		if ! is_variable_set "interfaces/$device/broadcast"; then
- 			new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
+		old_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
+		if ! is_variable_set "interfaces/$device/broadcast"; then
+			new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
 		else
- 			new_broadcast="$old_broadcast"
+			new_broadcast="$old_broadcast"
 		fi
 
- 		# interface dhcp type handling for server roles
+		# interface dhcp type handling for server roles
 		if eval test -n \"\$${device}_hook_old_type\"; then
 			eval hookfunctions=\"\$${device}_hook_old_type\"
- 		  for funct in $hookfunctions; do
- 		    eval $funct
- 		  done
- 		fi
+			for funct in $hookfunctions; do
+				eval $funct
+			done
+		fi
 		if eval test -n \"\$${device}_hook_new_type\"; then
 			eval hookfunctions=\"\$${device}_hook_new_type\"
- 		  for funct in $hookfunctions; do
- 		    eval $funct
- 		  done
- 		fi
+			for funct in $hookfunctions; do
+				eval $funct
+			done
+		fi
 
 		# edit LDAP entry
 		if [ "$server_role" = "fatclient" ]; then
@@ -397,7 +386,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		fi
 
 		if [ $ldap_available = 1 ]; then
-		    ldap_dn=`univention-directory-manager computers/$server_role list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aRecord=$old_ip))" | grep ^DN | sed -e 's|^DN: ||'`
+		    ldap_dn=`univention-directory-manager computers/$server_role list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aRecord=$old_ip))" | sed -ne 's|^DN: ||p;T;q'`
 		    if [ -n "$ldap_dn" ]; then
 				#change the ldap entry
 				if [ -z "$new_ip" ]; then
@@ -474,8 +463,8 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 	#create new DHCP zone
 	if [ $ldap_available = 1 ]; then
-		univention-directory-manager dhcp/service list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN | sed -e 's|^DN: ||' |while read super; do
-			univention-directory-manager dhcp/subnet list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter cn=$old_network | grep ^DN | sed -e 's|DN: ||' | while read old_subnet_dn; do
+		univention-directory-manager dhcp/service list --binddn "$binddn" --bindpwd "$bindpwd" | sed -ne 's|^DN: ||p;T;q' | while read super; do
+			univention-directory-manager dhcp/subnet list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter cn=$old_network | sed -ne 's|^DN: ||p;T;q' | while read old_subnet_dn; do
 				univention-directory-manager dhcp/subnet create --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --ignore_exists --set subnet="$net" --set subnetmask="$mask"
 			done
 		done
@@ -486,7 +475,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		admin_module="$1"
 		ldap_attribute="$2"
 		admin_attribute="$3"
-		univention-directory-manager $admin_module list --binddn "$binddn" --bindpwd "$bindpwd" --filter "($ldap_attribute=$old_ip)" | grep ^DN | sed -e 's|^DN: ||' | while read dn; do
+		univention-directory-manager $admin_module list --binddn "$binddn" --bindpwd "$bindpwd" --filter "($ldap_attribute=$old_ip)" | sed -ne 's|^DN: ||p;T;q' | while read dn; do
 			if [ -n "$4" ]; then
 				univention-directory-manager $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set $admin_attribute="$new_ip"
 			else
@@ -546,11 +535,11 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 	if [ "$ldap_available" = 1 ]; then
 		if [ "$server_role" = "domaincontroller_master" ]; then
-			if [ "$device" = "eth0" ];then
+			if [ "$device" = "${interfaces_primary:-eth0}" ];then
 				univention-directory-manager networks/network remove --dn "cn=default,cn=networks,$ldap_base"
-				forwardZone=`univention-directory-manager dns/forward_zone list --filter zone=\$domainname | grep DN | tail -1 | sed -e 's/DN: //g'`
-				reverseZone=`univention-directory-manager dns/reverse_zone list | grep ^DN | tail -1 | sed -e 's|DN: ||'`
-				dhcpService=`univention-directory-manager dhcp/service list | grep DN | tail -1 | sed -e 's/DN: //g'`
+				forwardZone=`univention-directory-manager dns/forward_zone list --filter zone=\$domainname | sed -ne 's/^DN: //p' | tail -1`
+				reverseZone=`univention-directory-manager dns/reverse_zone list | sed -ne 's/^DN: //p' | tail -1`
+				dhcpService=`univention-directory-manager dhcp/service list | sed -ne 's/^DN: //p' | tail -1`
 				univention-directory-manager networks/network create --position "cn=networks,$ldap_base" --set name=default --set "netmask=$new_netmask" --set "network=$net" --set "dnsEntryZoneForward=$forwardZone" --set "dnsEntryZoneReverse=$reverseZone" --set "dhcpEntryZone=$dhcpService"
 			fi
 		fi

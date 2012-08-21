@@ -20,6 +20,7 @@ XS-Python-Version: 2.6
 Package: univention-printserver
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
+ univention-config (>= 8.0.2),
  univention-directory-manager-tools,
  cups,
  cups-client,

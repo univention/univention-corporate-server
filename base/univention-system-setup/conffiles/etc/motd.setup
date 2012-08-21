@@ -19,8 +19,9 @@ import socket
 import fcntl
 import struct
 import urllib2
+from univention.config_registry.interfaces import Interfaces
 
-def get_ip_address(ifname):  
+def get_ip_address(ifname):
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	try:
 		# SIOCGIFADDR == 0x8915
@@ -39,19 +40,20 @@ if configRegistry.is_true('server/amazon', False):
 		pass
 
 if not res:
-	#IPv4
-	for i in range(0,10):
-		ifname = 'eth%d' % i
-		if configRegistry.get('interfaces/%s/type' % ifname) == 'dhcp':
+	interfaces = Interfaces(configRegistry)
+	for name, iface in interfaces.all_interfaces:
+		#IPv4
+		if iface.type == 'dhcp':
 			addr = get_ip_address(ifname)
+			print '  https://%s/' % (addr,)
+		else:
+			addr = iface.ipv4_address()
 			if addr:
-				print '  https://%s' % get_ip_address(ifname)
-		elif configRegistry.get('interfaces/%s/address' % ifname):
-			print '  https://%s' % configRegistry.get('interfaces/%s/address' % ifname)
-	# IPv6
-	for i in range(0,10):
-		if configRegistry.get('interfaces/eth%d/ipv6/default/address' % i):
-			print '  https://%s' % configRegistry.get('interfaces/eth%d/ipv6/default/address' % i)
+				print '  https://%s/' % (addr.ip,)
+		# IPv6
+		addr = iface.ipv6_address()
+		if addr:
+			print '  https://[%s]/' % (addr.ip,)
 @!@
 The login at the Univention Management Console needs to be done with
 the user root and the new password you entered in the above-mentioned

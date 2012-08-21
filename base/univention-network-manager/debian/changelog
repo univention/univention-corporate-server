@@ -1,3 +1,9 @@
+univention-network-manager (4.0.1-1) unstable; urgency=low
+
+  * Replace hard coded eth* by all_interfaces (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 Aug 2012 13:46:05 +0200
+
 univention-network-manager (4.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.

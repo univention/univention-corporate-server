@@ -315,7 +315,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		
 	setValues: function(_vals) {
 		// save a copy of all original values that may be lists
-		var r = /^(interfaces\/(eth[0-9]+).*|nameserver[1-3]|dns\/forwarder[1-3])$/;
+		var r = /^(interfaces\/[^\/]+\/|nameserver[1-3]|dns\/forwarder[1-3])$/;
 		this._orgValues = {};
 		umc.tools.forIn(_vals, function(ikey, ival) {
 			if (r.test(ikey)) {
@@ -348,7 +348,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		});
 
 		// copy ipv4 interfaces
-		r = /interfaces\/((eth[0-9]+)(_([0-9]))?)\/(.+)/;
+		r = /interfaces\/(([^_\/]+)(_([0-9]+))?)\/(.+)/;
 		var ipv4 = {};
 		dojo.forEach(sortedKeys, function(ikey) {
 			var match = ikey.match(r);
@@ -382,7 +382,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		});
 
 		// copy ipv6 interfaces
-		r = /interfaces\/(eth[0-9]+)\/ipv6\/([^\/]+)\/(.+)/;
+		r = /interfaces\/([^\/]+)\/ipv6\/([^\/]+)\/(.+)/;
 		var ipv6 = {};
 		dojo.forEach(sortedKeys, function(ikey) {
 			var match = ikey.match(r);
@@ -417,7 +417,7 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 		});
 
 		// dynamic ipv6 interfaces
-		r = /interfaces\/(eth[0-9]+)\/ipv6\/acceptRA/;
+		r = /interfaces\/([^\/]+)\/ipv6\/acceptRA/;
 		vals.dynamic_interfaces_ipv6 = [];
 		dojo.forEach(sortedKeys, function(ikey) {
 			var match = ikey.match(r);
@@ -561,15 +561,15 @@ dojo.declare("umc.modules._setup.NetworkPage", [ umc.widgets.Page, umc.widgets.S
 			description: this._('HTTP proxy'),
 			values: vals['proxy/http']
 		}, {
-			variables: [/^interfaces\/eth[0-9]+(_[0-9])?\/(?!ipv6).*/],
+			variables: [/^interfaces\/[^_\/]+(_[0-9]+)?\/(?!ipv6).*/],
 			description: this._('IPv4 network devices'),
 			values: ipv4Str
 		}, {
-			variables: [/^interfaces\/eth[0-9]+\/ipv6\/.*\/(prefix|address)$/],
+			variables: [/^interfaces\/[^\/]+\/ipv6\/.*\/(prefix|address)$/],
 			description: this._('IPv6 network devices'),
 			values: ipv6Str
 		}, {
-			variables: [/^interfaces\/eth[0-9]+\/ipv6\/acceptRA/],
+			variables: [/^interfaces\/[^\/]+\/ipv6\/acceptRA/],
 			description: this._('IPv6 interfaces with autoconfiguration (SLAAC)'),
 			values: vals['dynamic_interfaces_ipv6'].length ? vals['dynamic_interfaces_ipv6'].join(', ') : this._('No device')
 		}];

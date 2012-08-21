@@ -2,6 +2,7 @@ univention-apache (5.0.10-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)
   * Remove interfaces/* from UCR variable triggers (Bug #26058)
+  * Replace hard coded eth* by ipv4_interfaces.
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 11:46:24 +0200
 

@@ -27,6 +27,7 @@ Conflicts: network-manager,
  univention-network-manager
 Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${misc:Depends},
+ univention-config (>= 8.0.2),
  univention-network-common (= ${source:Version}),
  ifplugd,
  isc-dhcp-client | dhcp3-client

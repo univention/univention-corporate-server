@@ -1,6 +1,7 @@
 univention-system-setup (6.0.14-1) unstable; urgency=low
 
   * Remove explicit interfaces/ references (Bug #26058)
+  * Convert hard coded eth* to dynamic.
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 18 Aug 2012 12:47:43 +0200
 

@@ -58,16 +58,6 @@ def pipe(input, cmd1argv, uid=-1, wait=1):
 			listener.setuid(olduid)
 	return output
 
-#import re
-#def getfreeVirtualNetinterface(configRegistry):
-#	p = re.compile('^interface/(eth[^/_]+)/address')
-#	for ucskey in sorted(configRegistry.keys()):
-#		m = p.match(ucskey)
-#		if m:
-#			for i in range(4):
-#				if not 'interface/%s_%s/address' % (m.group(1), i) in configRegistry.keys():
-#					return "%s_%s" % (m.group(1), i)
-
 def initialize():
 	pass
 

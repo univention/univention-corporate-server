@@ -1,6 +1,5 @@
 @%@UCRWARNING=# @%@
 
-
 <IfModule mod_ssl.c>
 Listen 80
 Listen 443
@@ -13,31 +12,13 @@ SSLRandomSeed connect builtin
 </IfModule>
 
 @!@
-active_interfaces = []
-for i in range(0,4):
-	if baseConfig.has_key('interfaces/eth%s/type' % i) and baseConfig['interfaces/eth%s/type' % i] == 'dhcp':
-		continue
-	if baseConfig.has_key('interfaces/eth%s/address' % i):
-		active_interfaces.append(baseConfig['interfaces/eth%s/address' % i])
-		
-	for j in range(0,4):
-		if baseConfig.has_key('interfaces/eth%s_%s/type' % (i,j)) and baseConfig['interfaces/eth%s_%s/type' % (i,j) ] == 'dhcp':
-			continue
-		if baseConfig.has_key('interfaces/eth%s_%s/address' % (i,j)):
-			active_interfaces.append(baseConfig['interfaces/eth%s_%s/address' % (i,j)])
-	
-if len(active_interfaces) > 0:
-	for n in active_interfaces:
-		print 'NameVirtualHost %s:443' % n
-	
-	print '<VirtualHost ',
-	for n in active_interfaces:
-		print '%s:443' % n,
-	print '>'
-else:
-	print 'NameVirtualHost *:443'
-	print ''
-	print '<VirtualHost *:443>'
+from univention.config_registry.interfaces import Interfaces
+interfaces = Interfaces(configRegistry)
+active_interfaces = [iface.ipv4_address().ip for _name, iface in interfaces.ipv4_interfaces if iface.type != 'dhcp'] or ['*']
+for addr in active_interfaces:
+    print 'NameVirtualHost %s:443' % (addr,)
+
+print '<VirtualHost %s:443>' % (' '.join(active_interfaces))
 @!@
 RewriteEngine On
 RewriteOptions inherit
@@ -57,4 +38,3 @@ SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 fo
 </IfModule>
 DocumentRoot /usr/share/univention-admin/www
 </VirtualHost>
-

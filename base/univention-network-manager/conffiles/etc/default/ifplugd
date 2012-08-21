@@ -1,11 +1,10 @@
 @%@UCRWARNING=# @%@
 @!@
-interfaces = ""
-for i in range(10):
-	if (configRegistry.get('interfaces/eth%s/type' % i) == 'dhcp') and (configRegistry.get('interfaces/eth%s/ifplugd' % i, 'yes').lower() in ('yes','true','1')):
-		interfaces = "%s eth%s" % (interfaces, i)
-
-print 'INTERFACES="%s"' % interfaces.strip()
+from univention.config_registry.interfaces import Interfaces
+interfaces = Interfaces(configRegistry)
+managed = [iface.name for _name, iface in interfaces.ipv4_interfaces if
+    iface.type == 'dhcp' and configRegistry.is_true(value=iface.get('ifplugd', '1'))]
+print 'INTERFACES="%s"' % (' '.join(managed),)
 @!@
 HOTPLUG_INTERFACES=""
 ARGS="-q -f -u0 -d10 -w -I"

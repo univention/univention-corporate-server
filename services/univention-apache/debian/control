@@ -10,11 +10,11 @@ Standards-Version: 3.8.2
 Package: univention-apache
 Architecture: all
 Depends: ${misc:Depends},
+ univention-config (>= 8.0.2)
  univention-ssl,
  apache2-mpm-prefork,
  libapache2-mod-auth-pam,
  python2.6,
- univention-config-registry,
  php5
 Conflicts: apache
 Breaks: univention-webui-style

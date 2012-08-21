@@ -38,6 +38,7 @@ import tempfile
 import subprocess
 import threading
 import univention.config_registry
+from univention.config_registry.interfaces import RE_IFACE
 import time
 import fnmatch
 import re
@@ -68,6 +69,8 @@ CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-res
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 
+RE_IPV4_DEVICE = re.compile(r'interfaces/(?P<device>[^/]+)/(?P<type>.*)')
+RE_IPV4_TYPE = re.compile('interfaces/[^/]*/type')
 
 # list of all needed UCR variables
 UCR_VARIABLES = [
@@ -91,14 +94,6 @@ UCR_VARIABLES = [
 	'ssl/organization', 'ssl/organizationalunit', 'ssl/email',
 ]
 
-# net
-for idev in range(0,4):
-	for iattr in ('address', 'netmask', 'type'):
-		UCR_VARIABLES.append('interfaces/eth%d/%s' % (idev, iattr))
-		if iattr != 'type':
-			for ivirt in range(0,4):
-				UCR_VARIABLES.append('interfaces/eth%d_%d/%s' % (idev, ivirt, iattr))
-
 def timestamp():
 	return time.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -107,9 +102,9 @@ def load_values():
 	ucr.load()
 	values = dict([ (ikey, ucr[ikey]) for ikey in UCR_VARIABLES ])
 
-	# net: ipv6 interfaces
+	# net
 	for k, v in ucr.items():
-		if fnmatch.fnmatch(k, 'interfaces/eth*/ipv6/*'):
+		if RE_IFACE.match(k):
 			values[k] = v
 
 	# see whether the system has been joined or not
@@ -153,17 +148,16 @@ def pre_save(newValues, oldValues):
 	'''Modify the final dict before saving it to the profile file.'''
 
 	# add broadcast addresses for ipv4 addresses using the ipaddr library
-	regIpv4Device = re.compile(r'interfaces/(?P<device>[^/]+)/(?P<type>.*)')
 	for ikey, ival in copy.copy( newValues ).iteritems():
-		m = regIpv4Device.match(ikey)
+		m = RE_IPV4_DEVICE.match(ikey)
 		if m:
 			vals = m.groupdict()
 			if vals['type'] == 'address' or vals['type'] == 'netmask':
 				# new value might already exist
-				broadcastKey = 'interfaces/%s/broadcast' % vals['device']
-				networkKey = 'interfaces/%s/network' % vals['device']
-				maskKey = 'interfaces/%s/netmask' % vals['device']
-				addressKey = 'interfaces/%s/address' % vals['device']
+				broadcastKey = 'interfaces/%(device)s/broadcast' % vals
+				networkKey = 'interfaces/%(device)s/network' % vals
+				maskKey = 'interfaces/%(device)s/netmask' % vals
+				addressKey = 'interfaces/%(device)s/address' % vals
 
 				# try to compute the broadcast address
 				address = newValues.get(addressKey, oldValues.get(addressKey, ''))
@@ -461,9 +455,8 @@ def cleanup():
 				p.kill()
 
 	# unset the temporary interface if set
-	_re=re.compile('interfaces/[^/]*/type')
 	for var in ucr.keys():
-		if _re.match(var) and ucr.get(var) == 'appliance-mode-temporary':
+		if RE_IPV4_TYPE.match(var) and ucr.get(var) == 'appliance-mode-temporary':
 			f.write('unset %s' % var)
 			keys = [var]
 			for k in ['netmask', 'address', 'broadcast', 'network']:
@@ -536,8 +529,14 @@ def dhclient(interface, timeout=None):
 	"""
 	tempfilename = tempfile.mkstemp( '.out', 'dhclient.', '/tmp' )[1]
 	pidfilename = tempfile.mkstemp( '.pid', 'dhclient.', '/tmp' )[1]
-	cmd='/sbin/dhclient -1 -lf /tmp/dhclient.leases -pf %s -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (pidfilename, tempfilename, interface)
-	p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+	cmd = ('/sbin/dhclient',
+			'-1',
+			'-lf', '/tmp/dhclient.leases',
+			'-pf', pidfilename,
+			'-sf', '/lib/univention-installer/dhclient-script-wrapper',
+			'-e', 'dhclientscript_outputfile=%s' % (tempfilename,),
+			interface)
+	p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
 	# read from stderr until timeout, following recipe of subprocess.communicate()
 	def _readerthread(fh, stringbufferlist):
@@ -659,28 +658,28 @@ def is_ipv6netmask(addr_netmask):
 
 # from univention-installer/installer/objects.py
 def is_hostname(hostname):
-	_re=re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
-	if _re.match(hostname):
+	if is_hostname.RE.match(hostname):
 		return True
 	return False
+is_hostname.RE = re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
 
 def is_domainname(domainname):
-	_re=re.compile("^([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*$")
-	if _re.match(domainname):
+	if is_domainname.RE.match(domainname):
 		return True
 	return False
+is_domainname.RE = re.compile("^([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*$")
 
 def is_windowsdomainname(domainname):
-	_re=re.compile("^([A-Z]([A-Z0-9-]*[A-Z0-9])*[.])*[A-Z]([A-Z0-9-]*[A-Z0-9])*$")
-	if _re.match(domainname):
+	if is_windowsdomainname.RE.match(domainname):
 		return True
 	return False
+is_windowsdomainname.RE = re.compile("^([A-Z]([A-Z0-9-]*[A-Z0-9])*[.])*[A-Z]([A-Z0-9-]*[A-Z0-9])*$")
 
 def is_domaincontroller(domaincontroller):
-	_re=re.compile("^[a-zA-Z].*\..*$")
-	if _re.match(domaincontroller):
+	if is_domaincontroller.RE.match(domaincontroller):
 		return True
 	return False
+is_domaincontroller.RE = re.compile("^[a-zA-Z].*\..*$")
 
 # new defined methods
 def is_ascii(str):
