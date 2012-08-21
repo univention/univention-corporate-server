@@ -1,3 +1,9 @@
+univention-join (5.0.2-1) unstable; urgency=low
+
+  * Use primary interface by default (Bug #26058}
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 Aug 2012 07:43:47 +0200
+
 univention-join (5.0.1-1) unstable; urgency=low
 
   * Fix /32 network (Bug #28143)

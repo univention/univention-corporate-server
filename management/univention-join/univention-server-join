@@ -317,7 +317,7 @@ if [ -n "$IP" ]; then
 		subnet="$(univention-ipcalc6 --ip "$IP" --netmask "$NETMASK" --output reverse --calcdns)"
 	else
 		# Fallback
-		subnet="$(univention-ipcalc6 --ip "$IP" --netmask "$interfaces_eth0_netmask" --output reverse --calcdns)"
+		subnet="$(univention-ipcalc6 --ip "$IP" --netmask "$interfaces_${interfaces_primary:-eth0}_netmask" --output reverse --calcdns)"
 	fi
 	log 0 "	Calculated subnet = $subnet"
 

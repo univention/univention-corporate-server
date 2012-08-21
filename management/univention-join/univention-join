@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# execute univention-server-join
+}# execute univention-server-join
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
@@ -788,7 +788,7 @@ if [ -d /etc/runit/univention-directory-listener ]; then
 	/etc/init.d/univention-directory-listener restart >>/var/log/univention/join.log 2>&1
 fi
 
-if [ "$interfaces_eth0_type" != "dhcp" ]; then
+if [ "$interfaces_${interfaces_primary:-eth0}_type" != "dhcp" ]; then
 	univention-config-registry commit /etc/resolv.conf >>/var/log/univention/join.log 2>&1
 fi
 
