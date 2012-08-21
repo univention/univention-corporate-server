@@ -32,8 +32,21 @@
 
 . /tmp/installation_profile
 
+/bin/umount /instmnt/proc > /dev/null 2>&1
+/bin/umount /instmnt/sys > /dev/null 2>&1
+/bin/umount /instmnt/dev > /dev/null 2>&1
 /bin/umount /instmnt > /dev/null 2>&1
-/bin/umount -l /instmnt > /dev/null 2>&1
+
+# fsck on ext file systems
+if [ $? -eq 0 ]; then
+	root=$(ucr get installer/device/0/name)
+	fs=$(ucr get installer/device/0/fs)
+	if [ -n "$root" -a -b "$root" -a -n "$fs" ]; then
+		if [ "$fs" = "ext2" -o "$fs" = "ext3" -o "$fs" = "ext4" ]; then
+			e2fsck -y "$root"
+		fi
+	fi
+fi
 
 sync
 

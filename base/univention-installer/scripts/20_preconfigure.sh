@@ -88,7 +88,6 @@ echo "Setting up devices, this may take a while."
 mount devtmpfs -t devtmpfs /dev -o size=10M
 
 mount -a
-#mount /mnt/installation
 
 cp /proc/mounts /etc/mtab
 
@@ -102,17 +101,10 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-#syslogd $LOG
-#/etc/init.d/sysklogd
-
-#tail -f /var/log/syslog >/dev/tty3 2>&1 &
-
 mkdir -p /var/log/univention
 touch /var/log/univention/join.log
 chown root:root /var/log/univention/join.log
 chmod 600 /var/log/univention/join.log
-tail -f /var/log/syslog >/dev/tty3 2>&1 &
-tail -f /var/log/univention/join.log >/dev/tty4 2>&1 &
 
 nfs=`echo $cdrom_device | grep "nfs:"`
 smbfs=`echo $cdrom_device | grep "smbfs:"`
