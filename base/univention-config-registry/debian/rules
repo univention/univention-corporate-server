@@ -50,14 +50,13 @@ override_dh_auto_test:
 	ucslint
 	python tests/test_info_tools.py
 	python python/univention/debhelper.py
+	python python/univention/config_registry/misc.py
 	make -C tests check
 	tests/unwrap/test.sh
 
 version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
-override_dh_auto_install:
-	dh_auto_install --buildsystem=makefile
-
-	install -d debian/tmp/usr/share/pyshared/univention
-	sed -e 's/@%@package_version@%@/$(version)/' <python/univention/config_registry.py >debian/tmp/usr/share/pyshared/univention/config_registry.py
+override_dh_install:
+	dh_install
+	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python-univention-config-registry/usr/share/pyshared/univention/config_registry/frontend.py
 
 override_dh_installinit: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry

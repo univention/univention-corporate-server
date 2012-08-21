@@ -1,13 +1,13 @@
 0014-4:debian/univention-config-registry.preinst
 # Implementation for has_key
 0009-5:python/univention/info_tools.py:101
-0009-5:python/univention/config_registry.py:195
+0009-5:python/univention/config_registry/backend.py:181
 # Detect deprecated base config
 0016-3: python/univention-config-registry:62
 0016-3: python/univention-config-registry:63
 # Internal use of custom has_key
-0009-5: python/univention/config_registry.py:1167
-0009-5: python/univention/config_registry.py:1216
+0009-5: python/univention/config_registry/frontend.py:165
+0009-5: python/univention/config_registry/frontend.py:217
 # #!python, since they only use default modules
 0009-2: scripts/ldapsearch-wrapper
 0009-2: scripts/ldapsearch-decode64

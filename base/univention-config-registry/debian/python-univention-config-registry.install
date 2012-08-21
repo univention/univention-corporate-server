@@ -1,7 +1,14 @@
+python/univention_baseconfig.py usr/share/pyshared/
+
 python/univention/config_registry_info.py usr/share/pyshared/univention/
 python/univention/baseconfig.py usr/share/pyshared/univention/
-python/univention_baseconfig.py usr/share/pyshared/
 python/univention/info_tools.py usr/share/pyshared/univention/
 python/univention/service_info.py usr/share/pyshared/univention/
 python/univention/debhelper.py usr/share/pyshared/univention/
-usr/share/pyshared/univention/config_registry.py 
+
+python/univention/config_registry/__init__.py usr/share/pyshared/univention/config_registry/
+python/univention/config_registry/backend.py usr/share/pyshared/univention/config_registry/
+python/univention/config_registry/filter.py usr/share/pyshared/univention/config_registry/
+python/univention/config_registry/frontend.py usr/share/pyshared/univention/config_registry/
+python/univention/config_registry/handler.py usr/share/pyshared/univention/config_registry/
+python/univention/config_registry/misc.py usr/share/pyshared/univention/config_registry/
