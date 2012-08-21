@@ -1,3 +1,9 @@
+ucslint (3.0.4-1) unstable; urgency=low
+
+  * 0004: Support Pre/Postinst for Multifile (Bug #28229)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Aug 2012 09:31:28 +0200
+
 ucslint (3.0.3-1) unstable; urgency=low
 
   * 0011: Check prefix of debian/$pkg.debhelper (Bug #23482)

@@ -94,6 +94,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0004-55': [uub.RESULT_WARN,   'UCR .info-file may contain globbing pattern instead of regular expression'],
 				 '0004-56': [uub.RESULT_INFO,   'No UCR variables used'],
 				 '0004-57': [uub.RESULT_INFO,   'No description found for UCR variable'],
+				 '0004-58': [ uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: multifile" with multiple "Preinst:" line' ],
+				 '0004-59': [ uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: multifile" with multiple "Postinst:" line' ],
 				 }
 
 	def postinit(self, path):
@@ -355,7 +357,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								if len(mode) > 1:
 									self.addmsg('0004-48', 'UCR .info-file contains entry of "Type: file" with multiple "Mode: " line', fn)
 
-								for key in set(entry.keys()) - set(('Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode')):
+								pre = entry.get('Preinst', [])
+								if len(pre) > 1:
+									self.addmsg('0004-58', 'file contains multifile entry with %d "Preinst:" lines' % (len(pre),), fn)
+								all_preinst |= set(pre)
+
+								post = entry.get('Postinst', [])
+								if len(post) > 1:
+									self.addmsg('0004-59', 'file contains multifile entry with %d "Postinst:" lines' % (len(post),), fn)
+								all_postinst |= set(post)
+
+								for key in set(entry.keys()) - set(('Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst')):
 									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							elif typ == 'subfile':

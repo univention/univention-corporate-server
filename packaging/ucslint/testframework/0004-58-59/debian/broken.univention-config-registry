@@ -1,0 +1,12 @@
+Type: multifile
+Multifile: etc/network/interfaces
+Preinst: interfaces.py
+Preinst: interfaces.py
+Postinst: interfaces.py
+Postinst: interfaces.py
+
+Type: subfile
+Multifile: etc/network/interfaces
+Subfile: etc/network/interfaces.d/00-base
+Preinst: interfaces.py
+Postinst: interfaces.py

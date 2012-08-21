@@ -1,0 +1,7 @@
+E:0004-19: debian/broken.univention-config-registry: file contains subfile entry with 1 "Preinst:" lines
+E:0004-20: debian/broken.univention-config-registry: file contains subfile entry with 1 "Postinst:" lines
+E:0004-58: debian/broken.univention-config-registry: file contains multifile entry with 2 "Preinst:" lines
+E:0004-59: debian/broken.univention-config-registry: file contains multifile entry with 2 "Postinst:" lines
+I:0004-56: conffiles/etc/network/interfaces.d/00-base: No UCR variables used
+W:0004-42: debian/broken.univention-config-registry: UCR .info-file contains entry with unexpected key "Postinst"
+W:0004-42: debian/broken.univention-config-registry: UCR .info-file contains entry with unexpected key "Preinst"

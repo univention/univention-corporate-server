@@ -1,0 +1,11 @@
+Source: univention-base-files
+Section: base
+Priority: optional
+Maintainer: Philipp Hahn <hahn@univention.de>
+Build-Depends-Indep: univention-config-dev
+Standards-Version: 3.5.5
+
+Package: univention-base-files
+Architecture: all
+Depends: univention-config, ${misc:Depends}
+Description: ucslint test package for Multifile Pre/postinst

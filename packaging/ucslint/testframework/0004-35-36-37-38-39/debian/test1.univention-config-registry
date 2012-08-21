@@ -33,7 +33,7 @@ Subfile: multi2
 
 Type: multifile
 Multifile: multi3
-Preinst: pretinst.py
+Preinst: preinst.py
 Postinst: postinst.py
 
 Type: subfile
