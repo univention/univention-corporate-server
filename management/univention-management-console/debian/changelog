@@ -1,3 +1,13 @@
+univention-management-console (5.0.16-1) unstable; urgency=low
+
+  * fixed crashing of UMC-Server when client socket disconnects; Bug #28140
+  * added validation of various requests which leads to crashing of UMC
+  	Server; Bug #28140
+  * filename and name parameter for UMCP UPLOAD are now html encoded; Bug #27883
+  * added catching of TypeError in IntegerSanitizer; Bug #27720
+
+ -- Florian Best <best@univention.de>  Tue, 21 Aug 2012 09:26:22 +0200
+
 univention-management-console (5.0.15-1) unstable; urgency=low
 
   * adapted sanitizer, added default argument (Bug #27720)

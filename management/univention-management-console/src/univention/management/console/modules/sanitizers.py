@@ -260,7 +260,7 @@ class IntegerSanitizer(Sanitizer):
 	def _sanitize(self, value, name, further_arguments):
 		try:
 			value = int(value)
-		except ValueError:
+		except (ValueError, TypeError):
 			self.raise_validation_error(_('Cannot be converted to a number'))
 		else:
 			if self.minimum is not None:

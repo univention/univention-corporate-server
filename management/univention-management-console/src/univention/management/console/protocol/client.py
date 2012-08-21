@@ -206,9 +206,11 @@ class Client( signals.Provider, Translation ):
 						CORE.info( 'Client: _resend: socket is damaged: %s' % str( e ) )
 						self.signal_emit( 'closed' )
 						return False
-					if e[0] != 11:
-						raise
-					return True
+					if e.errno in (errno.ENOTCONN, errno.EAGAIN):
+						# EAGAIN: ?
+						# ENOTCONN: socket not connected
+						return True
+					raise
 				except ( SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError ), e:
 					return True
 				except SSL.Error, e:

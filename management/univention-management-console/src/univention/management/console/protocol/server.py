@@ -56,7 +56,7 @@ from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
 # internal packages
-from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError
+from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError
 from .session import State, Processor
 from .definitions import *
 
@@ -163,23 +163,24 @@ class MagicBucket( object ):
 				self._handle( state, msg )
 		except IncompleteMessageError, e:
 			CORE.info( 'MagicBucket: incomplete message: %s' % str( e ) )
-		except ParseError, e:
-			CORE.process( 'Parser error: %s' % str( e ) )
+		except (ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError), e:
 			state.requests[ msg.id ] = msg
 			res = Response( msg )
-			res.status = UMCP_ERR_UNPARSABLE_BODY
-			self._response( res, state )
-		except UnknownCommandError, e:
-			CORE.process( 'Unknown Command message: %s' % str( e ) )
-			state.requests[ msg.id ] = msg
-			res = Response( msg )
-			res.status = BAD_REQUEST_NOT_FOUND
-			self._response( res, state )
-		except InvalidArgumentsError, e:
-			CORE.process( 'Invalid arguments to UMCP command: %s' % str( e ) )
-			state.requests[ msg.id ] = msg
-			res = Response( msg )
-			res.status = BAD_REQUEST_INVALID_ARGS
+			if isinstance(e, ParseError):
+				CORE.process( 'Parser error: %s' % str( e ) )
+				res.status = UMCP_ERR_UNPARSABLE_BODY
+			elif isinstance(e, UnknownCommandError):
+				CORE.process( 'Unknown Command message: %s' % str( e ) )
+				res.status = BAD_REQUEST_NOT_FOUND
+			elif isinstance(e, InvalidArgumentsError):
+				CORE.process( 'Invalid arguments to UMCP command: %s' % str( e ) )
+				res.status = BAD_REQUEST_INVALID_ARGS
+			elif isinstance(e, InvalidOptionsError):
+				CORE.process( 'Invalid options to UMCP command %s: %r, Exception: %s' % ( msg.command, msg.options, e, ) )
+				res.status = BAD_REQUEST_INVALID_OPTS
+			else:
+				res.status = SERVER_ERROR
+			res.message = status_description(res.status)
 			self._response( res, state )
 
 		return True
@@ -208,12 +209,18 @@ class MagicBucket( object ):
 			self._response( res, state )
 		elif msg.command == 'AUTH':
 			state.authResponse = Response( msg )
-			state.authenticate( msg.body[ 'username' ],	msg.body[ 'password' ] )
+			try:
+				state.authenticate( msg.body[ 'username' ], msg.body[ 'password' ] )
+			except ( TypeError, KeyError ), e:
+				state.authResponse.status = BAD_REQUEST_INVALID_OPTS
+				state.authResponse.message = 'insufficient authentification information'
 		elif msg.command == 'GET' and ( 'ucr' in msg.arguments or 'info' in msg.arguments ):
 			response = Response( msg )
 			response.result = {}
 			response.status = SUCCESS
 			if 'ucr' in msg.arguments:
+				if not isinstance(msg.options, (list, tuple)):
+					raise InvalidOptionsError
 				for value in msg.options:
 					try:
 						if not value:
@@ -227,9 +234,9 @@ class MagicBucket( object ):
 						else:
 							response.result[ value ] = ucr.get( value )
 					except ( TypeError, IndexError, AttributeError ), e:
-						CORE.warn('Invalid UCR variable requested: %s' % value)
-						response.status = BAD_REQUEST_INVALID_ARGS
-						response.message = _('Invalid UCR variable requested: %s') % value
+						CORE.warn('Invalid UCR variable requested: %s' % (value,))
+						response.status = BAD_REQUEST_INVALID_OPTS
+						response.message = _('Invalid UCR variable requested: %s') % (value,)
 
 			elif 'info' in msg.arguments:
 				try:

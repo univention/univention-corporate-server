@@ -41,6 +41,7 @@ import os
 import string
 import sys
 import time
+from xml.sax.saxutils import escape as xml_escape
 
 import notifier
 import notifier.signals as signals
@@ -51,7 +52,7 @@ from OpenSSL import *
 import univention.uldap
 from univention.lib.i18n import Translation, I18N_Error
 
-from .message import Response, Request, MIMETYPE_JSON
+from .message import Response, Request, MIMETYPE_JSON, InvalidOptionsError
 from .client import Client, NoSocketError, ConnectionError
 from .version import VERSION
 from .definitions import *
@@ -158,7 +159,7 @@ class ModuleProcess( Client ):
 		# this commands were generated within the server
 		if msg.command == 'SET' and 'commands/permitted' in msg.arguments:
 			return
-		if msg.command == 'exit' and 'internal' in msg.arguments:
+		if msg.command == 'EXIT' and 'internal' in msg.arguments:
 			return
 
 		self.signal_emit( 'result', msg )
@@ -264,7 +265,7 @@ class Processor( signals.Provider ):
 		argument that contains a valid name of a running UMC module
 		instance the request is returned as a bad request.
 
-		Is the request is valid it is passed on to the module
+		If the request is valid it is passed on to the module
 		process. Additionally a timer of 3000 milliseconds is
 		started. After that amount of time the module process MUST have
 		been exited itself. If not the UMC server will kill the module
@@ -346,6 +347,8 @@ class Processor( signals.Provider ):
 			res.body[ 'categories' ] = categoryManager.all()
 			res.status = SUCCESS # Ok
 		elif 'syntax/verification' in msg.arguments:
+			if not isinstance(msg.options, dict):
+				raise InvalidOptionsError
 			syntax_name = msg.options.get( 'syntax' )
 			value = msg.options.get( 'value' )
 			if not value or not syntax_name:
@@ -381,6 +384,8 @@ class Processor( signals.Provider ):
 			return
 
 		res.status = SUCCESS
+		if not isinstance(msg.options, dict):
+			raise InvalidOptionsError
 		for key, value in msg.options.items():
 			if key == 'locale':
 				try:
@@ -460,42 +465,49 @@ class Processor( signals.Provider ):
 
 		:param Request msg: UMCP request
 		"""
-		# request.options = { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
+		# request.options = ( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
 		response = Response( msg )
-		if not isinstance( msg.options, ( list, tuple ) ):
-			response.status = BAD_REQUEST
-			response.message = status_description( response.status )
-			self.signal_emit( 'response', response )
-			return
-
-		# read tmpfile and convert to base64
-		result = []
-		for file_obj in msg.options:
-			tmpfilename = file_obj[ 'tmpfile' ]
-			# limit files to tmpdir
-			if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
-				response.status = BAD_REQUEST_INVALID_ARGS
-				response.message = status_description( response.status )
-				self.signal_emit( 'response', response )
-				return
-
-			if not os.path.isfile( tmpfilename ):
-				response.status = BAD_REQUEST
-				response.message = status_description( response.status )
-				self.signal_emit( 'response', response )
-				return
-			st = os.stat( tmpfilename )
-			max_size = int( ucr.get( 'umc/server/upload/max', 64 ) ) * 1024
-			if st.st_size > max_size:
-				response.status = BAD_REQUEST
-				response.message = status_description( response.status )
-				self.signal_emit( 'response', response )
-				return
-			buf = open( tmpfilename ).read()
-			b64buf = base64.b64encode( buf )
-			result.append( { 'filename' : file_obj.get( 'filename', None ), 'name' : file_obj.get( 'name', None ), 'content' : b64buf } )
-		response.result = result
 		response.status = SUCCESS
+		if not isinstance( msg.options, ( list, tuple ) ):
+			raise InvalidOptionsError
+
+		try:
+			# read tmpfile and convert to base64
+			result = []
+			for file_obj in msg.options:
+				if not isinstance(file_obj, dict):
+					raise InvalidOptionsError
+
+				tmpfilename = file_obj.get('tmpfile', '')
+				# check if file exists
+				if not os.path.isfile( tmpfilename ):
+					response.status = BAD_REQUEST
+					raise ValueError('invalid file: file does not exists')
+
+				# limit files to tmpdir
+				if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
+					response.status = BAD_REQUEST
+					raise ValueError('invalid file: invalid path')
+
+				# don't accept files bigger than umc/server/upload/max
+				st = os.stat( tmpfilename )
+				max_size = int( ucr.get( 'umc/server/upload/max', 64 ) ) * 1024
+				if st.st_size > max_size:
+					response.status = BAD_REQUEST
+					raise ValueError('filesize is too large, maximum allowed filesize is %d' % (max_size,))
+
+				# escape html chars
+				filename, name = map(xml_escape, (file_obj.get('filename', ''), file_obj.get('name', '')))
+				with open( tmpfilename ) as buf:
+					b64buf = base64.b64encode( buf.read() )
+				result.append( { 'filename' : filename, 'name' : name, 'content' : b64buf } )
+		except ValueError, e:
+			CORE.info( e[0] )
+			response.message = e[0]
+			response.status = BAD_REQUEST_INVALID_OPTS
+		else:
+			response.result = result
+			response.status = SUCCESS
 		self.signal_emit( 'response', response )
 
 	def handle_request_command( self, msg ):

@@ -67,6 +67,9 @@ class UnknownCommandError( Exception ):
 class InvalidArgumentsError( Exception ):
 	pass
 
+class InvalidOptionsError( Exception ):
+	pass
+
 # Constants
 MIMETYPE_JSON = 'application/json'
 MIMETYPE_JPEG = 'image/jpeg'

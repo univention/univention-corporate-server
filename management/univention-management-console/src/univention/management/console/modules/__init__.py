@@ -142,6 +142,9 @@ class UMC_Error( Exception ):
 class UMC_OptionTypeError( UMC_Error ):
 	pass
 
+class UMC_OptionValueError( UMC_Error ):
+	pass
+
 class UMC_OptionMissing( UMC_Error ):
 	pass
 
