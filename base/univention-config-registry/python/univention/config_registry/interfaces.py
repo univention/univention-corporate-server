@@ -33,7 +33,7 @@
 
 # pylint: disable-msg=W0142,C0103,R0201,R0904
 
-from univention.config_registry import ConfigRegistry
+from backend import ConfigRegistry
 from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
 from sys import maxint
 import re
