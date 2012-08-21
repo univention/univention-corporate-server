@@ -36,6 +36,7 @@ import os
 import univention.debug
 import univention.lib.listenerSharePath
 from univention.config_registry import ConfigRegistry
+from univention.config_registry.interfaces import Interfaces
 import cPickle
 
 domainname=listener.baseConfig['domainname']
@@ -52,10 +53,11 @@ def handler(dn, new, old, command):
 
 	configRegistry = ConfigRegistry()
 	configRegistry.load()
+	interfaces = Interfaces(configRegistry)
 
 	# dymanic module object filter
 	current_fqdn = "%s.%s" % (configRegistry['hostname'], domainname)
-	current_ip = configRegistry['interfaces/eth0/address']
+	current_ip = str(interfaces.get_default_ip_address().ip)
 
 	new_univentionShareHost = new.get('univentionShareHost', [None])[0]
 	if new and not new_univentionShareHost in (current_fqdn, current_ip):

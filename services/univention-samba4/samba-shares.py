@@ -32,12 +32,13 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os, re, string
+import os
 import univention.debug
 import univention.lib.listenerSharePath
 import cPickle
 ## for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers, ConfigRegistry
+from univention.config_registry.interfaces import Interfaces
 ucr_handlers = configHandlers()
 ucr_handlers.load()
 
@@ -55,10 +56,11 @@ def handler(dn, new, old, command):
 
 	configRegistry = ConfigRegistry()
 	configRegistry.load()
+	interfaces = Interfaces(configRegistry)
 
 	# dymanic module object filter
 	current_fqdn = "%s.%s" % (configRegistry['hostname'], domainname)
-	current_ip = configRegistry['interfaces/eth0/address']
+	current_ip = str(interfaces.get_default_ip_address().ip)
 
 	new_univentionShareHost = new.get('univentionShareHost', [None])[0]
 	if new and not new_univentionShareHost in (current_fqdn, current_ip):

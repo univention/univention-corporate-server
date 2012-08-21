@@ -32,11 +32,15 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os, univention.debug, cPickle
+import os
+import univention.debug
+import cPickle
+from univention.config_registry.interfaces import Interfaces
 
 hostname=listener.baseConfig['hostname']
 domainname=listener.baseConfig['domainname']
-ip=listener.baseConfig['interfaces/eth0/address']
+interfaces = Interfaces(listener.configRegistry)
+ip = interfaces.get_default_ip_address().ip
 
 name='cyrus-shared-folder'
 description='Create shared folders'

@@ -11,6 +11,7 @@ Package: univention-samba
 Architecture: all
 Pre-Depends: samba (>= 3.0.20)
 Depends: ${misc:Depends},
+ univention-config (>= 8.0.2),
  univention-base-files,
  univention-ldap-client (>= 1.4),
  univention-directory-manager-tools,

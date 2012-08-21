@@ -1,3 +1,9 @@
+univention-nfs (5.0.2-1) unstable; urgency=low
+
+  * Replace hard coded eth0 by get_default (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 Aug 2012 12:24:19 +0200
+
 univention-nfs (5.0.1-1) unstable; urgency=low
 
   * cleanup postinst:

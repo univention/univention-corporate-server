@@ -39,10 +39,12 @@ import univention.debug as ud
 from univention.config_registry import configHandlers
 ucr_handlers = configHandlers()
 ucr_handlers.load()
+from univention.config_registry.interfaces import Interfaces
+interfaces = Interfaces(listener.configRegistry)
 
 hostname = listener.baseConfig['hostname']
 domainname = listener.baseConfig['domainname']
-ip = listener.baseConfig['interfaces/eth0/address']
+ip = str(interfaces.get_default_ip_address().ip)
 ldap_base = listener.baseConfig['ldap/base']
 
 name='cups-printers'

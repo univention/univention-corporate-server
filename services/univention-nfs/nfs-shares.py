@@ -32,14 +32,17 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os, re, string
+import os
+import re
 import univention.debug
 import univention.lib.listenerSharePath
 import cPickle
+from univention.config_registry.interfaces import Interfaces
 
 hostname=listener.baseConfig['hostname']
 domainname=listener.baseConfig['domainname']
-ip=listener.baseConfig['interfaces/eth0/address']
+interfaces = Interfaces(listener.configRegistry)
+ip = interfaces.get_default_ip_address().ip
 
 name='nfs-shares'
 description='Create configuration for NFS shares'
@@ -146,7 +149,7 @@ def handler(dn, new, old, command):
 		listener.setuid(0)
 		try:
 			fp = open(__exports, 'w')
-			fp.write(string.join(new_lines, '\n')+'\n')
+			fp.write('\n'.join(new_lines)+'\n')
 			fp.close()
 
 			# object was renamed
@@ -164,7 +167,7 @@ def handler(dn, new, old, command):
 		listener.setuid(0)
 		try:
 			fp = open(__exports, 'w')
-			fp.write(string.join(new_lines, '\n')+'\n')
+			fp.write('\n'.join(new_lines)+'\n')
 			fp.close()
 
 		finally:
@@ -185,7 +188,7 @@ def clean():
 	listener.setuid(0)
 	try:
 		fp = open(__exports, 'w')
-		fp.write(string.join(new_lines, '\n')+'\n')
+		fp.write('\n'.join(new_lines)+'\n')
 		fp.close()
 	finally:
 		listener.unsetuid()

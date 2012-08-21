@@ -12,7 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-directory-listener (>> 6.0.0),
- univention-config-registry,
+ univention-config-registry (>= 8.0.2),
  libpam-univentionmailcyrus,
  cyrus-imapd-2.4 | cyrus-imapd-2.2,
  cyrus-admin-2.4 | cyrus-admin-2.2,

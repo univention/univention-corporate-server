@@ -10,6 +10,7 @@ Package: univention-nfs-server
 Architecture: all
 Depends: ${misc:Depends},
  nfs-kernel-server,
+ univention-config (>= 8.0.2),
  univention-directory-manager-tools (>> 7.0.147),
  univention-directory-listener,
  python-univention-lib (>= 1.0.45)
@@ -23,4 +24,3 @@ Description: UCS - NFS server
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
