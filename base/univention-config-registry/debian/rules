@@ -51,7 +51,7 @@ override_dh_auto_test:
 	python tests/test_info_tools.py
 	python python/univention/debhelper.py
 	python python/univention/config_registry/misc.py
-	python python/univention/config_registry/interfaces.py
+	UNIVENTION_BASECONF=tests/base.conf python python/univention/config_registry/interfaces.py
 	make -C tests check
 	tests/unwrap/test.sh
 

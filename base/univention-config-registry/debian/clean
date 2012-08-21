@@ -1,1 +1,4 @@
 tests/unwrap/unwrap
+python/univention/*.pyc
+python/univention/config_registry/*.pyc
+tests/base.conf
