@@ -365,3 +365,15 @@ class StringSanitizer(Sanitizer):
 
 		if self.regex_pattern and not self.regex_pattern.match(value):
 			self.raise_validation_error(_('Value is invalid'))
+
+		return value
+
+class ChoiceSanitizer(Sanitizer):
+	def __init__(self, choices, further_arguments=None, required=False, default=None):
+		super(StringSanitizer, self).__init__(further_arguments, required, default, may_change_value=True)
+		self.choices = choices
+
+	def _sanitize(self, value, name, further_args):
+		if value not in self.choices:
+			self.raise_validation_error(_('value have to be in %(choices)s'))
+		return value
