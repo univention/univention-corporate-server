@@ -49,7 +49,7 @@ Description: UCS - base packages
 Package: univention-base-files
 Architecture: all
 Depends: ${misc:Depends},
- univention-config
+ univention-config (>= 8.0.2-1)
 Conflicts: univention-config-registry (<= 7.0.7),
  univention-config (<= 7.0.8)
 Replaces: univention-config-registry (<= 7.0.7),

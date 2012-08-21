@@ -1,3 +1,9 @@
+univention-base-files (2.0.2-1) unstable; urgency=low
+
+  * Convert /etc/univention/interfaces to a multifile template (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Aug 2012 16:20:32 +0200
+
 univention-base-files (2.0.1-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)

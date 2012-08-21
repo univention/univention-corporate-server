@@ -104,10 +104,18 @@ Type: file
 File: etc/sysctl.d/local.conf
 Variables: interfaces/eth.*/ipv6/acceptRA
 
-Type: file
-File: etc/network/interfaces
+Type: multifile
+Multifile: etc/network/interfaces
 Preinst: interfaces.py
 Postinst: interfaces.py
+
+Type: subfile
+Multifile: etc/network/interfaces
+Subfile: etc/network/interfaces.d/00-base
+
+Type: subfile
+Multifile: etc/network/interfaces
+Subfile: etc/network/interfaces.d/10-default
 Variables: interfaces/eth.*
 Variables: interfaces/handler
 Variables: gateway
