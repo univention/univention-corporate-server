@@ -2,6 +2,7 @@ univention-ldap (9.0.2-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)
   * Remove setting ununsed ldap/database/bdb/set_flags.
+  * Remove interfaces/* from UCR variable triggers (Bug #26058)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 12:10:34 +0200
 

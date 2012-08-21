@@ -1,6 +1,5 @@
 Type: multifile
 Multifile: etc/postfix/main.cf
-Variables: interfaces/eth0/netmask
 Variables: hostname
 Variables: domainname
 Variables: ldap/server/name
@@ -78,8 +77,6 @@ Multifile: etc/postfix/master.cf
 Variables: hostname
 Variables: domainname
 Variables: mail/antivir
-Variables: interfaces/eth.*/network
-Variables: interfaces/eth.*/netmask
 Variables: ldap/base
 Variables: ldap/port
 Variables: ldap/server

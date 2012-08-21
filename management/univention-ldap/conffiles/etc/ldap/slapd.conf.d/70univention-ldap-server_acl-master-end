@@ -1,20 +1,13 @@
 @!@
-ldap_base=baseConfig['ldap/base']
-address=baseConfig['interfaces/eth0/address']
-if baseConfig['ldap/server/type']=="master":
+ldap_base = configRegistry['ldap/base']
+if configRegistry.get('ldap/server/type') == "master":
 	usr="write"
 else:
 	usr="read"
 
-nestedGroups = baseConfig.get('ldap/acl/nestedgroups', 'yes')
-if nestedGroups.lower() in ['true', 'yes', 'on', '1']:
-	nestedGroups = True
-else:
-	nestedGroups = False
+nestedGroups = configRegistry.is_true('ldap/acl/nestedgroups', True)
 
-
-if baseConfig.has_key('ldap/acl/slavepdc') and baseConfig['ldap/acl/slavepdc'].lower() in ['yes', 'true']:
-
+if configRegistry.is_true('ldap/acl/slavepdc', True):
 	print 'access to dn.regex="^cn=([^,]+),cn=([^,]+),cn=temporary,cn=univention,%s" filter="(&(objectClass=lock)(!(objectClass=posixAccount)))"' % ldap_base
 	print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
 	if nestedGroups:
@@ -144,15 +137,15 @@ if nestedGroups:
 	print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )
 else:
 	print '   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr )
-if baseConfig.is_false('ldap/acl/read/anonymous'):
+if configRegistry.is_false('ldap/acl/read/anonymous'):
 	print '   by users read'
-	ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips')
+	ldap_acl_read_anonymous_ips = configRegistry.get('ldap/acl/read/ips')
 	if ldap_acl_read_anonymous_ips:
 		for ip in ldap_acl_read_anonymous_ips.split(','):
 			print '   by peername.ip=%s read' % ip
 else:
 	print '   by * read'
 
-if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
+if configRegistry.is_true('ldap/replog', False):
 	print "replogfile /var/lib/univention-ldap/replog/replog"
 @!@

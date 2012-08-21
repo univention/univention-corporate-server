@@ -7,8 +7,6 @@ Variables: apache2/maxclients
 
 Type: file
 File: etc/apache2/mods-available/ssl.conf
-Variables: interfaces/eth.*/type
-Variables: interfaces/eth.*/address
 Variables: hostname
 Variables: domainname
 Variables: apache2/ssl/certificate
