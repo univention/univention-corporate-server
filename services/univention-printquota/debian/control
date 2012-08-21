@@ -30,9 +30,10 @@ Description: UCS - quotasupport for printserver
 Package: univention-printquotadb
 Architecture: all
 Pre-Depends: univention-postgresql,
+ dpkg (>= 1.15.7.2),
  univention-config (>= 7.0.25)
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config-registry (>= 8.0.2),
  pykota,
  makepasswd
 Description: UCS - quotasupport for printserver

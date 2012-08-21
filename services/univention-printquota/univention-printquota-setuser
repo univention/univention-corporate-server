@@ -31,7 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, syslog, os, string, ldap, univention.uldap, univention.config_registry
+import sys
+import syslog
+import os
+import ldap
+from ldap.filter import escape_filter_chars
+import univention.uldap
+import univention.config_registry
+import univention.config_registry.interfaces as interfaces
 
 bc = univention.config_registry.ConfigRegistry()
 bc.load()
@@ -61,19 +68,19 @@ def set_quota(printer, who, soft, hard, group=0):
 	else:
 		callEdpykota("--add %s --printer %s --softlimit %s --hardlimit %s %s" % (arg,printer, soft, hard, who))
 
-if bc.has_key('pykota/policy/debug'):
+if bc.get('pykota/policy/debug'):
 	try:
 		debuglevel = int(bc['pykota/policy/debug'])
 		log(3, "debug level set to %s" % debuglevel)
-	except:
+	except (LookupError, ValueError):
 		log(0, "failed to set debug-level from univention-config-registry")
 
 try:
-	usr_filter=sys.argv[1]
-	prt_filter=sys.argv[2]
-except:
-	log(0, 'exit, To Few Arguments, need username and printer')
-	sys.exit('To Few Arguments, need username and printer')
+	usr_filter = sys.argv[1]
+	prt_filter = sys.argv[2]
+except IndexError:
+	log(0, 'exit, too few arguments, need username and printer')
+	sys.exit('Too few arguments, need username and printer')
 
 lo = univention.uldap.getMachineConnection(secret_file="/etc/pykota.secret", ldap_master=False)
 try:
@@ -127,7 +134,17 @@ for entry in entries:
 ###### single Printers ######
 prt_policies = {}
 try:
-	dn, attrs = lo.search('(&(objectClass=univentionPrinter)(|(univentionPrinterSpoolHost=%s.%s)(univentionPrinterSpoolHost=%s))(cn=%s))' % (bc['hostname'], bc['domainname'], bc['interfaces/eth0/address'], prt_filter), required=1, unique=1)[0]
+	interfaces = Interfaces(bc)
+	default_addr = interfaces.get_default_ip_address()
+	ldap_filter = '(&%s)' % ''.join((
+		'(objectClass=univentionPrinter)',
+		'(|%s)' % ''.join((
+			'(univentionPrinterSpoolHost=%(hostname)s.%(domainname)s)' % bc,
+			'(univentionPrinterSpoolHost=%s)' % (default_addr.ip,),
+			)),
+		'(cn=%s)' % (escape_filter_chars(prt_filter),),
+		))
+	dn, attrs = lo.search(ldap_filter, required=1, unique=1)[0]
 	prt_policies = lo.getPolicies(dn).get('univentionPolicySharePrintQuota', {})
 except ldap.INAPPROPRIATE_MATCHING:
 	log(1, "WARNING: poilicy-result failed, maybe more than one printer found")

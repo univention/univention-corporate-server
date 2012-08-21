@@ -30,6 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+dpkg-maintscript-helper mv_conffile \
+    etc/postgresql/7.4/main/pg_hba.conf.d/11-pg_hba.conf \
+    etc/postgresql/7.4/main/pg_hba.conf.d/11-univention-printquotadb.conf \
+    4.0.6~ -- "$@"
+dpkg-maintscript-helper mv_conffile \
+    etc/postgresql/8.3/main/pg_hba.conf.d/11-pg_hba.conf \
+    etc/postgresql/8.3/main/pg_hba.conf.d/11-univention-printquotadb.conf \
+    4.0.6~ -- "$@"
+dpkg-maintscript-helper mv_conffile \
+    etc/postgresql/8.4/main/pg_hba.conf.d/11-pg_hba.conf \
+    etc/postgresql/8.4/main/pg_hba.conf.d/11-univention-printquotadb.conf \
+    4.0.6~ -- "$@"
+
 #DEBHELPER#
 
 if [ -e /etc/pykota/pykota.secret ]; then
@@ -51,4 +64,3 @@ univention-config-registry set \
 	cups/quota/server/access?"local"
 
 exit 0
-

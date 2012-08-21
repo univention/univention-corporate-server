@@ -1,6 +1,8 @@
 univention-printquota (5.0.1-1) unstable; urgency=low
 
   * Remove explicit interfaces/ references (Bug #26058)
+  * Use interfaces.py to get default address.
+  * Rename etc/postgresql/*/pg_hba.conf template files.
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 18 Aug 2012 12:48:52 +0200
 
