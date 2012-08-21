@@ -1,3 +1,9 @@
+univention-installer (8.0.1-15) unstable; urgency=low
+
+  * allow ext4 on /boot (Bug #23382) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Aug 2012 09:33:14 +0200
+
 univention-installer (8.0.1-14) unstable; urgency=low
 
   * ignore fstype, mpoint == None,none in 12_fstab (Bug #13936) 
