@@ -32,7 +32,7 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os, re, string
+import os
 import univention.debug
 import univention.lib.listenerSharePath
 from univention.config_registry import ConfigRegistry
@@ -102,7 +102,7 @@ def handler(dn, new, old, command):
 			f.close()
 			oldObject = p.get("old", {})
 			oldDn = p.get("dn", {})
-			os.remove(tmpFile)	
+			os.remove(tmpFile)
 	except Exception, e:
 		if os.path.isfile(tmpFile):
 			os.remove(tmpFile)
@@ -170,7 +170,6 @@ def handler(dn, new, old, command):
 				('univentionShareSambaInheritPermissions', 'inherit permissions'),
 				('univentionShareSambaHostsAllow', 'hosts allow'),
 				('univentionShareSambaHostsDeny', 'hosts deny'),
-
 			]
 
 			vfs_objects = []
@@ -211,7 +210,6 @@ def handler(dn, new, old, command):
 					univention.debug.debug(
 						univention.debug.LISTENER, univention.debug.ERROR,
 						"%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
-	
 
 			if new.get('univentionShareSambaCustomSetting'):
 				for setting in new['univentionShareSambaCustomSetting']:

@@ -255,12 +255,12 @@ if [ -x /etc/init.d/heimdal-kdc ]; then
 	univention-config-registry set kerberos/autostart=no
 fi
 
-# during installation samba4/autostart was set to no to prevent                                                                                                                                     
-# a half configured samba server. Set autostart to yes during first join                                                                                                                           
-if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then                                                                                                                                                       
-    univention-config-registry set samba4/autostart=yes                                                                                                                                             
-fi                                                                                                                                                                                                 
-univention-config-registry set samba4/autostart?yes 
+# during installation samba4/autostart was set to no to prevent
+# a half configured samba server. Set autostart to yes during first join
+if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then
+    univention-config-registry set samba4/autostart=yes
+fi
+univention-config-registry set samba4/autostart?yes
 
 SYSVOL_PATH='/var/lib/samba/sysvol'
 /usr/share/univention-samba4/scripts/mount_extfs_with_user_xattr.py
@@ -559,46 +559,13 @@ elif [ "$samba4_role" = "MEMBER" ]; then
 fi
 
 if [ -n "$samba4_join_site" ] && [ "$samba4_role" != "MEMBER" ]; then
-
-	default_network_and_prefix() {
-		eval "$(/usr/sbin/univention-config-registry shell \
-						interfaces/eth0/network interfaces/eth1/network \
-						interfaces/eth2/network interfaces/eth3/network \
-						interfaces/eth0/ipv6/default/address interfaces/eth1/ipv6/default/address \
-						interfaces/eth2/ipv6/default/address interfaces/eth4/ipv6/default/address \
-						interfaces/eth0/ipv6/default/prefix interfaces/eth1/ipv6/default/prefix \
-						interfaces/eth2/ipv6/default/prefix interfaces/eth4/ipv6/default/prefix)"
-
-		if [ -n "$interfaces_eth0_network" ] && [ -n "$interfaces_eth0_netmask" ]; then
-			network="$interfaces_eth0_network/$interfaces_eth0_netmask"
-		elif [ -n "$interfaces_eth1_network" ] && [ -n "$interfaces_eth1_netmask" ]; then
-			network="$interfaces_eth1_network/$interfaces_eth1_netmask"
-		elif [ -n "$interfaces_eth2_network" ] && [ -n "$interfaces_eth2_netmask" ]; then
-			network="$interfaces_eth2_network/$interfaces_eth2_netmask"
-		elif [ -n "$interfaces_eth3_network" ] && [ -n "$interfaces_eth3_netmask" ]; then
-			network="$interfaces_eth3_network/$interfaces_eth3_netmask"
-		elif [ -n "$interfaces_eth0_ipv6_default_address" ] && [ -n "$interfaces_eth0_ipv6_default_prefix" ]; then
-			network="$interfaces_eth0_ipv6_default_address/$interfaces_eth0_ipv6_default_prefix"
-		elif [ -n "$interfaces_eth1_ipv6_default_address" ] && [ -n "$interfaces_eth1_ipv6_default_prefix" ]; then
-			network="$interfaces_eth1_ipv6_default_address/$interfaces_eth1_ipv6_default_prefix"
-		elif [ -n "$interfaces_eth2_ipv6_default_address" ] && [ -n "$interfaces_eth2_ipv6_default_prefix" ]; then
-			network="$interfaces_eth2_ipv6_default_address/$interfaces_eth2_ipv6_default_prefix"
-		elif [ -n "$interfaces_eth3_ipv6_default_address" ] && [ -n "$interfaces_eth3_ipv6_default_prefix" ]; then
-			network="$interfaces_eth3_ipv6_default_address/$interfaces_eth3_ipv6_default_prefix"
-		fi
-		if [ -n "$network" ]; then
-			python -c 'import ipaddr,sys; ip=ipaddr.IPNetwork(sys.argv[1]); print "%s/%s" % ( ip.network, ip.prefixlen)' "$network"
-		fi
-	}
-
 	## create subnet locally
-	subnet=$(default_network_and_prefix)
+	subnet=$(python -c 'from univention.config_registry.interfaces import Interfaces;print Interfaces().get_default_ip_address().masked()' 2>/dev/null)
 	/usr/share/univention-samba4/scripts/univention-samba4-site-tool.py \
 			-H "/var/lib/samba/private/sam.ldb" \
 			--subnet "$subnet" --createsubnet \
 			--site "$samba4_join_site" \
 			--ignore-exists
-
 fi
 
 SAMBA_DRIVERS="/var/lib/samba/drivers"
@@ -607,7 +574,7 @@ chgrp -R "Printer-Admins" $SAMBA_DRIVERS
 chmod g+w $SAMBA_DRIVERS
 chmod +s $SAMBA_DRIVERS
 
-for X in COLOR IA64 W32ALPHA W32MIPS W32PPC W32X86 WIN40 x64; do 
+for X in COLOR IA64 W32ALPHA W32MIPS W32PPC W32X86 WIN40 x64; do
 	mkdir -p $SAMBA_DRIVERS/$X;
 	chgrp -R "Printer-Admins" $SAMBA_DRIVERS/$X
 	chmod g+w $SAMBA_DRIVERS/$X
@@ -638,4 +605,3 @@ ucs_addServiceToLocalhost "${NAME}" "$@"
 joinscript_save_current_version
 
 exit 0
-

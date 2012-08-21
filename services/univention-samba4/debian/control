@@ -14,10 +14,10 @@ Architecture: any
 Conflicts: samba,
  univention-samba
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config-registry (>= 8.0.2-1),
  univention-directory-manager-tools (>> 7.0.147),
- shell-univention-lib (>> 1.0.22),
- python-univention-lib (>> 1.0.45),
+ shell-univention-lib (>= 2.0.2),
+ python-univention-lib (>= 1.0.45),
  python-univention (>= 6.0.9-3),
  samba4 (>= 4.0.0~beta4-1),
  samba4-clients,
@@ -26,7 +26,6 @@ Depends: ${misc:Depends},
  winbind4,
  univention-samba-local-config,
  pwgen,
- python-univention-lib (>= 1.0.45),
  univention-samba4-sysvol-sync (= ${binary:Version})
 Description: UCS - Samba4 integration package
  This package contains the scripts and patches

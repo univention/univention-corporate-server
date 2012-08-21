@@ -55,6 +55,18 @@ _ = Translation('univention-management-console-module-setup').translate
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 
+RE_IPV4 = re.compile(r'^interfaces/(([^/_]+)(_[0-9])?)/(address|netmask)$')
+RE_IPV4_ADDRESS = re.compile(r'^interfaces/(([^/_]+)(_[0-9])?)/address$')
+RE_IPV4_DYNAMIC = re.compile(r'^interfaces/(([^/_]+)(_[0-9])?)/type$')
+RE_IPV6 = re.compile(r'^interfaces/([^/]+)/ipv6/([^/]+)/(prefix|address)$')
+RE_IPV6_ADDRESS = re.compile(r'^interfaces/([^/]+)/ipv6/([^/]+)/address$')
+RE_IPV6_DEFAULT = re.compile(r'^interfaces/([^/]+)/ipv6/default/(prefix|address)$')
+RE_IPV6_DYNAMIC = re.compile(r'^interfaces/([^/]+)/ipv6/acceptRA$')
+RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+$')
+RE_SPACE = re.compile(r'\s+')
+RE_SSL = re.compile(r'^ssl/.*')
+RE_LOCALE = re.compile(r'([^.@ ]+).*')
+
 class Instance(umcm.Base):
 	def __init__(self):
 		umcm.Base.__init__(self)
@@ -111,7 +123,7 @@ class Instance(umcm.Base):
 	def save_keymap(self, request):
 		'''Set the systems x-keymap according to
 		request.options[keymap]'''
-		
+
 		keymap = request.options.get('keymap')
 		if keymap:
 			xkeymap = util._xkeymap(keymap)
@@ -147,12 +159,9 @@ class Instance(umcm.Base):
 				# in case of changes of the IP address, restart UMC server and web server
 				# for this we ignore changes of virtual or non-default devices
 				MODULE.info('Check whether ip addresses have been changed')
-				regIpv6 = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/default/(prefix|address)$')
-				regIpv4 = re.compile(r'^interfaces/(eth[0-9]+)/(address|netmask)$')
-				regSsl = re.compile(r'^ssl/.*')
 				restart = False
 				for ikey, ival in values.iteritems():
-					if regIpv4.match(ikey) or regIpv6.match(ikey) or regSsl.match(ikey):
+					if RE_IPV4.match(ikey) or RE_IPV6_DEFAULT.match(ikey) or RE_SSL.match(ikey):
 						restart = True
 						break
 				MODULE.info('Restart servers: %s' % restart)
@@ -172,7 +181,7 @@ class Instance(umcm.Base):
 			if isinstance( result, BaseException ):
 				MODULE.warn( 'Exception during saving the settings: %s' % str( result ) )
 
-		thread = notifier.threads.Simple( 'save', 
+		thread = notifier.threads.Simple( 'save',
 			notifier.Callback( _thread, request, self ), _finished )
 		thread.run()
 
@@ -181,7 +190,7 @@ class Instance(umcm.Base):
 	def join(self, request):
 		'''Join and reconfigure the system according to the values specified in the dict given as
 		option named "values".'''
-		
+
 		# get old and new values
 		orgValues = util.load_values()
 		values = request.options.get('values', {})
@@ -231,7 +240,7 @@ class Instance(umcm.Base):
 			if isinstance( result, BaseException ):
 				MODULE.warn( 'Exception during saving the settings: %s' % str( result ) )
 
-		thread = notifier.threads.Simple( 'save', 
+		thread = notifier.threads.Simple( 'save',
 			notifier.Callback( _thread, request, self, request.options.get('username'), request.options.get('password')),_finished )
 		thread.run()
 
@@ -321,8 +330,8 @@ class Instance(umcm.Base):
 				})
 
 		def _append(key, message):
-			messages.append({ 
-				'key': key, 
+			messages.append({
+				'key': key,
 				'valid': False,
 				'message': message
 			})
@@ -331,8 +340,7 @@ class Instance(umcm.Base):
 		_check('server/role', lambda x: not(orgValues.get('joined')) or (orgValues.get('server/role') == values.get('server/role')), _('The system role may not change on a system that has already joined to domain.'))
 
 		# basis
-		regSpaces = re.compile(r'\s+')
-		components = regSpaces.split(values.get('components', ''))
+		components = RE_SPACE.split(values.get('components', ''))
 		packages = set(reduce(lambda x, y: x + y, [ i.split(':') for i in components ]))
 
 		_check('hostname', util.is_hostname, _('The hostname is not a valid fully qualified domain name in lowercase (e.g. host.example.com).'))
@@ -365,18 +373,14 @@ class Instance(umcm.Base):
 
 		# net
 		# validate all ipv4 addresses and there netmask
-		regIpv4 = re.compile(r'^interfaces/((eth[0-9]+)(_[0-9])?)/(address|netmask)$')
 		checkedIpv4 = set()
 		for ikey, ival in values.iteritems():
 			if not ival:
 				continue
-			m = regIpv4.match(ikey)
+			m = RE_IPV4.match(ikey)
 			if m:
 				# get the parts
-				idev = m.groups()[1]
-				iname = m.groups()[0]
-				ivirt = m.groups()[2]
-				itype = m.groups()[3]
+				iname, idev, ivirt, itype = m.groups()
 
 				# have we already tested this device?
 				addressKey = 'interfaces/%s/address' % iname
@@ -395,18 +399,14 @@ class Instance(umcm.Base):
 					_append(maskKey, _('IPv4 netmask is not valid [%s%s]: "%s"') % (idev, virtStr, allValues.get(maskKey, '')))
 
 		# validate all ipv6 addresses, their prefix, and identifier
-		regIpv6 = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/(.*)/(prefix|address)$')
-		regIpv6Id = re.compile(r'^[a-zA-Z0-9]+$')
 		checkedIpv6 = set()
 		for ikey, ival in values.iteritems():
 			if not ival:
 				continue
-			m = regIpv6.match(ikey)
+			m = RE_IPV6.match(ikey)
 			if m:
 				# get the parts
-				idev = m.groups()[0]
-				iid = m.groups()[1]
-				itype = m.groups()[2]
+				idev, iid, itype = m.groups()
 
 				# have we already tested this device?
 				addressKey = 'interfaces/%s/ipv6/%s/address' % (idev, iid)
@@ -416,7 +416,7 @@ class Instance(umcm.Base):
 				checkedIpv6.add(addressKey)
 
 				# make sure that the ID is correct
-				if not regIpv6Id.match(iid):
+				if not RE_IPV6_ID.match(iid):
 					_append(addressKey, _('The specified IPv6 identifier may only consist of letters and numbers: %s') % iid)
 
 				# make sure that address and prefix are correct
@@ -434,7 +434,7 @@ class Instance(umcm.Base):
 						# allow empty value
 						continue
 					_check(jkey, util.is_ipaddr, _('The specified IP address (%s) is not valid: %s') % (iname, jval))
-			
+
 		# check gateways
 		if values.get('gateway'): # allow empty value
 			_check('gateway', util.is_ipv4addr, _('The specified gateway IPv4 address is not valid: %s') % values.get('gateway'))
@@ -450,24 +450,17 @@ class Instance(umcm.Base):
 		ipv4HasDynamic = False
 		devIpv4VirtualDevices = set()
 
-		regIpv4Address = re.compile(r'^interfaces/((eth[0-9]+)(_[0-9])?)/address$')
-		regIpv4Dynamic = re.compile(r'^interfaces/((eth[0-9]+)(_[0-9])?)/type$')
-		
 		isSetIpv6 = False
 		ipv6HasAddress = False
 		hasIpv6DefaultDevices = True
 		ipv6HasDynamic = False
-		
-		regIpv6Address = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/(.*)/address$')
-		regIpv6Dynamic = re.compile(r'^interfaces/(eth[0-9]+)/ipv6/acceptRA$')
-		
+
 		tmpUCR = univention.config_registry.ConfigRegistry()
 		devIpv6HasDefaultID = {}
 		for ikey, ival in allValues.iteritems():
-			m = regIpv6Address.match(ikey) 
+			m = RE_IPV6_ADDRESS.match(ikey)
 			if m:
-				idev = m.groups()[0]
-				iid = m.groups()[1]
+				idev, iid = m.groups()
 
 				# see whether the device is in the dict
 				if idev not in devIpv6HasDefaultID:
@@ -478,32 +471,31 @@ class Instance(umcm.Base):
 
 				# ipv6 address
 				ipv6HasAddress |= util.is_ipv6addr(ival)
-			
+
 			# ipv4 address
-			if regIpv4Address.match(ikey):
+			if RE_IPV4_ADDRESS.match(ikey):
 				ipv4HasAddress |= util.is_ipv4addr(ival)
 
 			# dynamic ipv4
-			ipv4HasDynamic |= bool(regIpv4Dynamic.match(ikey) and ival in ('dynamic', 'dhcp'))
-		
+			ipv4HasDynamic |= bool(RE_IPV4_DYNAMIC.match(ikey) and ival in ('dynamic', 'dhcp'))
+
 			# dynamic ipv6
-			if regIpv6Dynamic.match(ikey):
+			if RE_IPV6_DYNAMIC.match(ikey):
 				tmpUCR[ikey] = ival;
 				if tmpUCR.is_true(ikey):
 					ipv6HasDynamic = True
 
 			# ipv6 configuration
-			if regIpv6.match(ikey) and ival:
+			if RE_IPV6.match(ikey) and ival:
 				isSetIpv6 = True
 
 			# ipv4 configuration
-			m = regIpv4.match(ikey) 
+			m = RE_IPV4.match(ikey)
 			if m and ival:
 				isSetIpv4 = True
 
 				# check whether this entry is a virtual device
-				ivirt = m.groups()[2]
-				idev = m.groups()[1]
+				idev, ivirt = m.groups()[1:3]
 				if ivirt:
 					devIpv4VirtualDevices.add(idev)
 
@@ -512,7 +504,7 @@ class Instance(umcm.Base):
 			mask = allValues.get('interfaces/%s/netmask' % idev)
 			address = allValues.get('interfaces/%s/address' % idev)
 			if not mask or not address or not util.is_ipv4netmask('%s/%s' % (address, mask)):
-				_append('interfaces/eth0/address', _('A virtual device cannot be specified alone: %s') % idev)
+				_append('interfaces/%s/address' % idev, _('A virtual device cannot be specified alone: %s') % idev)
 				break
 
 		# check whether all devices have a default entry
@@ -553,14 +545,13 @@ class Instance(umcm.Base):
 		# get all locales that are supported
 		rsupported = csv.reader(fsupported, delimiter=' ')
 		supportedLocales = { 'C': True }
-		regLocale = re.compile(r'([^.@ ]+).*')
 		for ilocale in rsupported:
 			# we only support UTF-8
 			if ilocale[1] != 'UTF-8':
 				continue
 
 			# get the locale
-			m = regLocale.match(ilocale[0])
+			m = RE_LOCALE.match(ilocale[0])
 			if m:
 				supportedLocales[m.groups()[0]] = True
 
@@ -671,7 +662,7 @@ class Instance(umcm.Base):
 		keymaps = [ { 'label': i[0], 'id': i[1] } for i in r if not i[0].startswith('#') ]
 
 		self.finished(request.id, keymaps)
-	
+
 	def lang_countrycodes(self, request):
 		'''Return a list of all countries with their two letter chcountry codes.'''
 		try:
@@ -719,11 +710,9 @@ class Instance(umcm.Base):
 		self.finished(request.id, res)
 
 	def software_components(self, request):
-		'''Return a list of all available software packages. Entries have the properties 
+		'''Return a list of all available software packages. Entries have the properties
 		"id", "label", and "packages" which is an array of the Debian package names.'''
 		role = request.options.get('role')
 		choices = [ { 'id': i['id'], 'label': i['Name'], 'packages': i['Packages'] }
 				for i in util.get_components(role=role) ]
 		self.finished(request.id, choices)
-
-

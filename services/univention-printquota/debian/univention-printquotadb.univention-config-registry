@@ -1,10 +1,3 @@
-Type: multifile
-Multifile: etc/postgresql/7.4/main/pg_hba.conf
-Variables: cups/quota/server/access
-Variables: cups/quota/account
-Variables: interfaces/eth0/address
-Variables: interfaces/eth0/netmask
-
 Type: subfile
 Multifile: etc/postgresql/7.4/main/pg_hba.conf
 Subfile: etc/postgresql/7.4/main/pg_hba.conf.d/11-pg_hba.conf
@@ -13,23 +6,9 @@ Variables: cups/quota/account
 Variables: interfaces/eth0/address
 Variables: interfaces/eth0/netmask
 
-Type: multifile
-Multifile: etc/postgresql/8.3/main/pg_hba.conf
-Variables: cups/quota/server/access
-Variables: cups/quota/account
-Variables: interfaces/eth0/address
-Variables: interfaces/eth0/netmask
-
 Type: subfile
 Multifile: etc/postgresql/8.3/main/pg_hba.conf
 Subfile: etc/postgresql/8.3/main/pg_hba.conf.d/11-pg_hba.conf
-Variables: cups/quota/server/access
-Variables: cups/quota/account
-Variables: interfaces/eth0/address
-Variables: interfaces/eth0/netmask
-
-Type: multifile
-Multifile: etc/postgresql/8.4/main/pg_hba.conf
 Variables: cups/quota/server/access
 Variables: cups/quota/account
 Variables: interfaces/eth0/address
