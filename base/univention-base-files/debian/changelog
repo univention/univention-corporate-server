@@ -1,6 +1,10 @@
 univention-base-files (2.0.2-1) unstable; urgency=low
 
   * Convert /etc/univention/interfaces to a multifile template (Bug #26058)
+  * Add support for VLAN, bridges, bonding (Bug #26058)
+    - Rewrite template to handle interfaces other than eth*.
+    - Introduce UCR variable interfaces/primary to specify primary interface.
+    - Introduce interfaces/*/order to configure ordering.
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 15 Aug 2012 16:20:32 +0200
 

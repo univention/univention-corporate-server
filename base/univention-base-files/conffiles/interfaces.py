@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
-#  config registry module for the network interfaces
+"""config registry module for the network interfaces."""
 #
 # Copyright 2004-2012 Univention GmbH
 #
@@ -30,74 +30,48 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
+import re
+from subprocess import call
 
-def interface(var):
-	if var.startswith('interfaces/') and not var.endswith( 'handler' ):
-		return var.split('/')[1].replace('_', ':')
-	return None
+RE_IFACE = re.compile(r'^interfaces/([^/]+)/((?:ipv6/([^/]+)/)?.*)$')
+SKIP = set(('interfaces/restart/auto',))
+PRIMARY = 'interfaces/primary'
+GATEWAYS = set(('gateway', 'ipv6/gateway'))
+OLD, NEW = range(2)
 
-def stop_iface(iface):
-	if iface:
-		os.system('ifdown %s >/dev/null 2>&1' % iface)
-
-def start_iface(iface):
-	if iface:
-		os.system('ifup %s' % iface)
-
-def point2point(old, new, netmask):
-	if netmask == "255.255.255.255":
-		os.system('ip route del %s' % old)
-		if new:
-			os.system('ip route add %s/32 dev eth0 ' % new)
-
-def restore_gateway(gateway, netmask):
-	if type ( gateway ) == type ( () ):
-		old, new = gateway
-		if new:
-			point2point(old, new, netmask)
-			os.system('route del default >/dev/null 2>&1')
-			os.system('route add default gw %s' % new)
-   		else:
-			point2point(old, False, netmask)
-			os.system('route del default >/dev/null 2>&1')
+def _common(ucr, changes, index, command):
+	"""Run command on changed interfaces."""
+	if not ucr.is_true('interfaces/restart/auto', True):
+		return
+	interfaces = set()
+	if GATEWAYS & set(changes):
+		# Restart all interfaces on gateway change
+		interfaces.add('-a')
 	else:
-		if gateway:
-			point2point(gateway, gateway, netmask)
-			os.system('route del default >/dev/null 2>&1')
-			os.system('route add default gw %s' % gateway)
+		# Restart both old and new primary interfaces
+		if PRIMARY in changes:
+			interfaces |= set((_ for _ in changes[PRIMARY] if _))
+		# Collect changed interfaces
+		for key, old_new in changes.items():
+			if key in SKIP:
+				continue
+			if not old_new[index]:
+				continue
+			match = RE_IFACE.match(key)
+			if not match:
+				continue
+			iface, _subkey, _ipv6_name = match.groups()
+			interfaces.add(iface.replace('_', ':'))
+	# Shutdown changed interfaces
+	for iface in interfaces:
+		call((command, iface))
 
-def restore_v6gateway(gateway):
-	if type(gateway) is tuple:
-		(old, new, ) = gateway
-		if not new:
-			os.system('ip -6 route del to default via %s' % old)
-		elif not old:
-			os.system('ip -6 route del to default')
-			os.system('ip -6 route add to default via %s' % new)
-		else:
-			os.system('ip -6 route del to default via %s' % old)
-			os.system('ip -6 route add to default via %s' % new)
-	else:
-		if gateway:
-			os.system('ip -6 route del to default')
-			os.system('ip -6 route add to default via %s' % gateway)
+def preinst(ucr, changes):
+	"""Pre run handler to shutdown changed interfaces."""
+	_common(ucr, changes, OLD, 'ifdown')
 
-def preinst(configRegistry, changes):
-	if configRegistry.is_true('interfaces/restart/auto', True):
-		for iface in set(changes):
-			if iface in configRegistry:
-				stop_iface(interface(iface))
+def postinst(ucr, changes):
+	"""Post run handler to start changed interfaces."""
+	_common(ucr, changes, NEW, 'ifup')
 
-def postinst(configRegistry, changes):
-	if configRegistry.is_true('interfaces/restart/auto', True):
-		for iface in set(changes):
-			if iface in configRegistry:
-				start_iface(interface(iface))
-		if 'gateway' in set(changes) or 'interfaces/eth0/netmask' in set(changes):
-			if 'gateway' in set(changes):
-				restore_gateway(changes['gateway'], configRegistry.get("interfaces/eth0/netmask", False))
-			else:
-				restore_gateway(configRegistry.get("gateway", False), configRegistry.get("interfaces/eth0/netmask", False))
-		if 'ipv6/gateway' in changes:
-			restore_v6gateway(changes['ipv6/gateway'])
+# vim:set sw=4 ts=4 noet:

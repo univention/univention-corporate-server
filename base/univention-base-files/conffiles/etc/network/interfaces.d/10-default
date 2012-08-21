@@ -1,175 +1,136 @@
 @!@
-import collections
-import ipaddr
+from univention.config_registry.interfaces import Interfaces
+from itertools import groupby
+from operator import itemgetter
 
-try:
-	from univention.ipv4 import networkNumber
-except ImportError:
-	def splitDotted(ip):
-		quad = map(int, ip.split('.'))[:4]
-		while len(quad) < 4:
-			quad.append(0)
-		return quad
-	def joinDotted(ip):
-		return '%d.%d.%d.%d' % tuple(ip[0:4])
-	def networkNumber(dottedIp, dottedNetmask):
-		ip = splitDotted(dottedIp)
-		netmask = splitDotted(dottedNetmask)
-		network = map(lambda (i, n): i & n, zip(ip, netmask))
-		return joinDotted(network)
-
-eth_devices=[]
-
-for key,value in configRegistry.items():
-	if key.startswith('interfaces/eth'):
-		k = key.split("/")[1:2][0]
-		if k not in eth_devices:
-			eth_devices.append(k)
-
-eth_devices.sort()
-
-def check_gateway (ip, netmask, gateway):
-	"""
-	Check if the 'ip' is in the same network as the 'gatewy'.
-
-	>>> check_gateway('1.2.3.4', '255.255.255.0', '1.2.3.1')
-	True
-	"""
-	if not gateway:
-		return False
-	return networkNumber(ip, netmask) == networkNumber(gateway, netmask)
-
-def auto(interface):
+def auto(interface, start):
+	"""Print 'auto iface' statements only once."""
+	print
+	if not start:
+		return
 	if interface not in auto.printed_interfaces:
-		print 'auto %s' % interface
+		print 'auto %s' % (interface,)
 		auto.printed_interfaces.add(interface)
 auto.printed_interfaces = set()
 
-gateway_found = False
-configExists=False
-ifhandler=configRegistry.get('interfaces/handler','ifplugd')
-gateway = configRegistry.get('gateway')
+def ipv4(ucr, interfaces):
+	"""Setup IPv4."""
+	gateway = interfaces.ipv4_gateway
+	if gateway is False:
+		print '# WARNING: invalid IPv4 address in gateway'
 
-
-for i in eth_devices:
-	configExists=False
-	iface = i.replace("_", ":")
-	address = configRegistry.get('interfaces/%s/address' % i)
-	if configRegistry.get('interfaces/%s/type' % i) == 'dhcp':
-		if ifhandler == 'ifplugd' and configRegistry.is_true('interfaces/%s/ifplugd' % i, True):
-			auto(iface)
-			print 'iface %s inet dhcp' % iface
-			configExists=True
-		elif ifhandler == 'networkmanager' and configRegistry.is_false('interfaces/%s/networkmanager' % i, True):
-			auto(iface)
-			print 'iface %s inet dhcp' % iface
-			configExists=True
-	elif address:
-		auto(iface)
-		print 'iface %s inet static' % iface
-		
-		print '\taddress %s' % address
-		network = configRegistry.get('interfaces/%s/network' % i)
-		if network:
-			print '\tnetwork %s' % network
-		netmask = configRegistry.get('interfaces/%s/netmask' % i)
-		if netmask:
-			print '\tnetmask %s' % netmask
-		broadcast = configRegistry.get('interfaces/%s/broadcast' % i)
-		if broadcast:
-			print '\tbroadcast %s' % broadcast
-		if address and netmask and gateway and not gateway_found:
-			if check_gateway(address, netmask, gateway):
-				print '\tgateway %s' % gateway
-				gateway_found = True
-		configExists=True
-
-	if configExists:
-		for key,value in configRegistry.items():
-			if key.startswith('interfaces/%s/route/' % i):
-				if value.startswith('host ') or value.startswith('net '):
-					print '\tup route add -%s dev %s' % (value, iface)
-
-		for key,value in configRegistry.items():
-			if key.startswith('interfaces/%s/options/' % i):
-				print value
-		if i == "eth0":
-			if configRegistry.get('interfaces/eth0/netmask', "") == "255.255.255.255" and gateway:
-				print "\tup ip route add %s/32 dev %s" % (gateway, iface)
-				print "\tup ip route add default via %s" % gateway
-
-print
-gateway_found = False
-gateway = configRegistry.get('ipv6/gateway')
-parsedGateway = None
-try:
-	if gateway:
-		parsedGateway = ipaddr.IPv6Address(gateway)
-except ValueError:
-	print '# WARNING: %r is not a valid IPv6 address! (from UCRV ipv6/gateway)' % (gateway, )
-
-# UCRV format: interfaces/$DEVICE/ipv6/$NAME/{address,prefix}
-#                   0        1      2    3           4
-# $NAME "default" is _the_ v6 address for the interface
-def sortDefaultFirst(x, y):
-	if x == y:
-		return 0
-	elif x == 'default':
-		return -1
-	elif y == 'default':
-		return 1
-	elif x < y:
-		return -1
-	elif x > y:
-		return 1
-
-ipv6_interfaces = collections.defaultdict(set)
-for key in configRegistry:
-	key = key.split('/')
-	if len(key) == 5 and key[0] == 'interfaces' and key[2] == 'ipv6':
-		ipv6_interfaces[key[1]].add(key[3])
-
-for interface in ipv6_interfaces:
-	interface_addresses = []
-	used_interface_addresses = set()
-	for name in sorted(ipv6_interfaces[interface], sortDefaultFirst):
-		address = configRegistry.get('interfaces/%s/ipv6/%s/address' % (interface, name, ))
-		prefix = configRegistry.get('interfaces/%s/ipv6/%s/prefix' % (interface, name, ))
-		parsedAddress = None
-		parsedPrefix = None
-		try:
-			if address:
-				parsedAddress = ipaddr.IPv6Address(address)
-		except ValueError:
-			print '# WARNING: %r is not a valid IPv6 address! (from UCRV interfaces/%s/ipv6/%s/address)' % (address, interface, name, )
-		try:
-			if parsedAddress and prefix:
-				parsedPrefix = ipaddr.IPv6Network(address + '/' + prefix)
-		except ValueError:
-			print '# WARNING: %r is not a valid IPv6 prefix (should be integer 0-128)! (from UCRV interfaces/%s/ipv6/%s/prefix)' % (prefix, interface, name, )
-		if parsedAddress is not None and parsedPrefix is not None:
-			if parsedAddress in used_interface_addresses:
-				print '# WARNING: duplicate address %s for interface (from UCRV interfaces/%s/ipv6/%s/{address,netmask})' % (parsedAddress, interface, name, )
+	for name, iface in interfaces.all_interfaces:
+		addr = iface.ipv4_address()
+		if iface.type == 'dhcp':
+			if interfaces.handler == 'ifplugd' and \
+					ucr.is_true(value=iface.get('ifplugd', '1')):
+				auto(iface.name, iface.start)
+				print 'iface %s inet dhcp' % (iface.name,)
+			else:
 				continue
-			interface_addresses.append((name, address, prefix, parsedPrefix, ))
-			used_interface_addresses.add(parsedAddress)
-	if interface_addresses:
-		print
-		auto(interface)
-		print 'iface %s inet6 static' % (interface, )
-		# check if gateway is local on this interface
-		if not gateway_found and parsedGateway:
-			if [True for (n, a, nm, parsedPrefix, ) in interface_addresses if parsedPrefix and parsedGateway in parsedPrefix]:
-				print '\tgateway %s' % gateway
-				gateway_found = True
-		((name, address, prefix, parsedPrefix, ), interface_addresses, ) = (interface_addresses[0], interface_addresses[1:], )
-		# first address is a special case
-		print '# %s' % (name, )
-		print '\taddress %s' % address
-		print '\tnetmask %s' % prefix
-		# rest via up/down commands
-		for (name, address, prefix, parsedPrefix, ) in interface_addresses:
-			print '# %s' % (name, )
-			print '\tup   /sbin/ip addr add %s/%s dev %s' % (address, prefix, interface, )
-			print '\tdown /sbin/ip addr del %s/%s dev %s' % (address, prefix, interface, )
+		elif iface.type == 'manual':
+			auto(iface.name, iface.start)
+			print 'iface %s inet manual' % (iface.name,)
+		elif addr is False:
+			print '# ERROR: invalid IPv4 address for interface %s' % (name,)
+			continue
+		elif addr:
+			auto(iface.name, iface.start)
+			print 'iface %s inet static' % (iface.name,)
+			print '\taddress %s' % (addr.ip,)
+			print '\tnetmask %s' % (addr.netmask,)
+			if iface.network:
+				print '\tnetwork %s' % (iface.network,)
+			if iface.broadcast:
+				print '\tbroadcast %s' % (iface.broadcast,)
+			if gateway:
+				if addr.prefixlen == addr.max_prefixlen and \
+						interfaces.primary in (name, iface.name):
+					print '\tpointopoint %s' % (gateway,)
+					print '\tgateway %s' % (gateway,)
+					gateway = None
+				elif gateway in addr:
+					print '\tgateway %s' % (gateway,)
+					gateway = None
+		else:
+			continue
+
+		for route in iface.routes:
+			print '\tup route add -%s dev %s' % (route, iface.name)
+
+		for value in iface.options:
+			print '\t%s' % (value,)
+
+def ipv6(interfaces):
+	"""Setup IPv6."""
+	gateway = interfaces.ipv6_gateway
+	if gateway is False:
+		print '# WARNING: invalid IPv6 address in ipv6/gateway)'
+
+	# Validate addresses
+	interface_addresses = {}
+	for iface, name in interfaces.ipv6_interfaces:
+		addr = iface.ipv6_address(name)
+		if addr is False:
+			print '# ERROR: invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
+				(iface.name, name)
+			continue
+		addresses = interface_addresses.setdefault(iface.name, set())
+		if addr in addresses:
+			print '# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
+				(iface.name, name)
+			continue
+		addresses.add(addr)
+
+	# configure interface
+	for iface, names in groupby(interfaces.ipv6_interfaces, itemgetter(0)):
+		try:
+			addresses = interface_addresses[iface.name]
+		except KeyError:
+			continue  # validation failed
+		if not addresses:
+			continue  # validation failed
+
+		auto(iface.name, iface.start)
+		print 'iface %s inet6 static' % (iface.name,)
+
+		for i, (iface, name) in enumerate(names):
+			addr = iface.ipv6_address(name)
+			try:
+				addresses.remove(addr)
+			except KeyError:
+				continue  # invalid or duplicate
+			print '# %s' % (name,)
+			if i == 0:  # first
+				print '\taddress %s' % (addr.ip,)
+				print '\tnetmask %s' % (addr.prefixlen,)
+			else:
+				print '\tup   ip -6 addr add %s dev %s' % (addr.ip, iface.name)
+				print '\tdown ip -6 addr del %s dev %s' % (addr.ip, iface.name)
+			# check if gateway is local on this interface
+			if gateway:
+				if addr.prefixlen == addr.max_prefixlen and \
+						iface.name == interfaces.primary:
+					data = (gateway, iface.name)
+					print '\tup   ip -6 route add %s dev %s' % data
+					print '\tup   ip -6 route add default via %s dev %s' % data
+					print '\tdown ip -6 route del default via %s dev %s' % data
+					print '\tdown ip -6 route del %s dev %s' % data
+					gateway = None
+				elif gateway in addr:
+					print '\tgateway %s' % (gateway,)
+					gateway = None
+
+		if not iface.ipv4_address():
+			for value in iface.options:
+				print '\t%s' % (value,)
+
+def main():
+	"""Create configured interfaces."""
+	interfaces = Interfaces(configRegistry)
+	ipv4(configRegistry, interfaces)
+	ipv6(interfaces)
+
+main()
+# vim:set sw=4 ts=4 noet:
 @!@

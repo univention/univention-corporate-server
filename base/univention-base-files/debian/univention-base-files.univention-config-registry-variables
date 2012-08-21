@@ -115,76 +115,88 @@ Type=str
 Categories=system-network
 ReadOnly=yes
 
-[interfaces/eth.*/address]
+[interfaces/.*/address]
 Description[de]=IPv4-Adresse der Netzschnittstelle
 Description[en]=IPv4 address of the network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/broadcast]
+[interfaces/.*/broadcast]
 Description[de]=IPv4-Broadcast-Adresse der Netzschnittstelle
 Description[en]=IPv4 broadcast address of the network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/mac]
+[interfaces/.*/mac]
 Description[de]=MAC-Adresse der Netzschnittstelle
 Description[en]=MAC address of the network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/netmask]
+[interfaces/.*/netmask]
 Description[de]=IPv4-Netzmaske der Netzschnittstelle
 Description[en]=IPv4 netmask of the network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/network]
+[interfaces/.*/network]
 Description[de]=IPv4-Netzwerk der Netzschnittstelle
 Description[en]=IPv4 network of the network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/type]
+[interfaces/.*/order]
+Description[de]=Kontrolliert die Reihenfolge der Einträge für Netzwerkschnittstellen
+Description[en]=Controlls the order of entries for network interfaces
+Type=int
+Categories=system-network
+
+[interfaces/.*/start]
+Description[de]=Aktiviere/Deaktiviere das automatische Starten der Netzwerkschnittstelle [yes]
+Description[en]=Enable/Disable automatic start of network interfaces [yes]
+Type=bool
+Categories=system-network
+
+[interfaces/.*/type]
 Description[de]=Netztypen für die einzelnen Interfaces
 Description[en]=Type of network for each network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/hosts]
+[interfaces/.*/hosts]
 Description[de]=Rechnername und Domänenname für diese IP-Adresse
 Description[en]=Host name and domain name for this ip address
 Type=str
 Categories=Network
 
-[interfaces/eth.*/route/.*]
+[interfaces/.*/route/.*]
 Description[de]=Zusätzliche Routen für die einzelnen Interfaces
 Description[en]=Additional routing entries for each network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/options/.*]
+[interfaces/.*/options/.*]
 Description[de]=Zusätzliche Einstellungen für die einzelnen Interfaces
 Description[en]=Additional options for each network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/ipv6/.*/address]
+[interfaces/.*/ipv6/.*/address]
 Description[de]=IPv6-Adresse der Netzschnittstelle
 Description[en]=IPv6 address of the network interface
 Type=str
 Categories=system-network
 
-[interfaces/eth.*/ipv6/.*/prefix]
+[interfaces/.*/ipv6/.*/prefix]
 Description[de]=IPv6-Präfix der Netzschnittstelle (CIDR-Notation)
 Description[en]=IPv6 prefix of the network interface (CIDR notation)
-Type=str
+Type=int
 Categories=system-network
 
-[interfaces/eth.*/ipv6/acceptRA]
+[interfaces/.*/ipv6/acceptRA]
 Description[de]=Neighbour Discovery Protocol (NDP) Router Advertisements akzeptieren um die Netzschnittstelle zu konfigurieren
 Description[en]=Accept neighbour discovery protocol (NDP) router advertisements (RA) to configure this interface
-Type=str
+Type=bool
 Categories=system-network
 
 [interfaces/restart/auto]
@@ -194,8 +206,14 @@ Type=bool
 Categories=system-network
 
 [interfaces/handler]
-Description[de]=Legt das Programm zur Verwaltung der Netzwerke fest: ifplugd, networkmanager
-Description[en]=Defines the program to manage the networks: ifplugd, networkmanager
+Description[de]=Legt das Programm zur Verwaltung der Netzwerke fest: ifplugd
+Description[en]=Defines the program to manage the networks: ifplugd
+Type=str
+Categories=system-network
+
+[interfaces/primary]
+Description[de]=Legt das primäre Netzwerkinterface fest [eth0]
+Description[en]=Defines the primary network interface [eth0]
 Type=str
 Categories=system-network
 

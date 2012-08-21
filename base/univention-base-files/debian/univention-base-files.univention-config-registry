@@ -102,7 +102,7 @@ Variables: update/secure_apt
 
 Type: file
 File: etc/sysctl.d/local.conf
-Variables: interfaces/eth.*/ipv6/acceptRA
+Variables: interfaces/[^/]*/ipv6/acceptRA
 
 Type: multifile
 Multifile: etc/network/interfaces
@@ -116,8 +116,10 @@ Subfile: etc/network/interfaces.d/00-base
 Type: subfile
 Multifile: etc/network/interfaces
 Subfile: etc/network/interfaces.d/10-default
-Variables: interfaces/eth.*
+Variables: interfaces/[^/]*/.*
 Variables: interfaces/handler
+Variables: interfaces/primary
+Variables: interfaces/restart/auto
 Variables: gateway
 Variables: ipv6/gateway
 
@@ -127,9 +129,8 @@ Multifile: etc/hosts
 Type: subfile
 Multifile: etc/hosts
 Subfile: etc/hosts.d/00-base
-Variables: interfaces/eth.*/address
-Variables: interfaces/eth.*/type
-Variables: interfaces/eth.*/hosts
+Variables: interfaces/.*/address
+Variables: interfaces/.*/hosts
 Variables: hostname
 Variables: domainname
 
