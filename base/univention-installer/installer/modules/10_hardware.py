@@ -42,6 +42,8 @@ import re
 from objects import *
 from local import _
 
+WAIT_FOR_DRIVERS = 3
+
 class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
 		self.cdrom_test=1
@@ -342,6 +344,11 @@ class object(content):
 			if self.action == 'cdrom-search':
 				#Kernel 2.4
 				cdrom_devices = set()
+
+				# waiting for drivers
+				time.sleep(WAIT_FOR_DRIVERS)
+				os.system("udevadm settle || true")
+
 
 				if os.path.exists('/proc/ide'):
 					for f in os.listdir('/proc/ide/'):

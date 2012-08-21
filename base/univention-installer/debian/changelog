@@ -1,3 +1,9 @@
+univention-installer (8.0.1-18) unstable; urgency=low
+
+  * wait for drivers to settle down in 10_hardware (Bug #20797) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Aug 2012 17:05:39 +0200
+
 univention-installer (8.0.1-17) unstable; urgency=low
 
   * readded umount -l /instmnt (Bug #25284)
