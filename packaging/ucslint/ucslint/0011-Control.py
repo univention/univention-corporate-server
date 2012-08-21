@@ -160,15 +160,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'NEWS', # dh_installchangelogs
 			'pam', # dh_installpam
 			'postinst', # dh_installdeb
+			'postinst.debhelper', # dh_installdeb
 			'postrm', # dh_installdeb
+			'postrm.debhelper', # dh_installdeb
 			'ppp.ip-down', # dh_installppp
 			'ppp.ip-up', # dh_installppp
 			'preinst', # dh_installdeb
+			'preinst.debhelper', # dh_installdeb
 			'prerm', # dh_installdeb
+			'prerm.debhelper', # dh_installdeb
 			'README.Debian', # dh_installdocs
 			'sgmlcatalogs', # dh_installcatalogs
 			'sharedmimeinfo', # dh_installmime
 			'shlibs', # dh_installdeb
+			'substvars', # dh_gencontrol
 			'symbols', # dh_makeshlibs
 			'symbols.i386', # dh_makeshlibs
 			'templates', # dh_installdebconf
