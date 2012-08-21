@@ -28,7 +28,6 @@ Variables: auth/methods
 
 Type: file
 File: etc/default/ssh
-Variables: sshd/autostart
 
 Type: file
 File: etc/init.d/networking
@@ -80,6 +79,7 @@ Variables: ldap/backup
 Variables: timeserver
 Variables: timeserver2
 Variables: timeserver3
+Variables: server/role
 
 Type: file
 File: boot/boot.msg
@@ -123,12 +123,6 @@ Variables: ipv6/gateway
 
 Type: multifile
 Multifile: etc/hosts
-Variables: interfaces/eth0/type
-Variables: interfaces/eth.*/address
-Variables: interfaces/eth.*/hosts
-Variables: hostname
-Variables: domainname
-Variables: hosts/static/.*
 
 Type: subfile
 Multifile: etc/hosts
@@ -165,21 +159,18 @@ Variables: domain/search
 Type: file
 File: etc/locale.gen
 Variables: locale
+Variables: locale/default
 
 Type: file
 File: etc/issue
 Variables: version/version
 Variables: version/patchlevel
-Variables: version/security-patchlevel
-Variables: interfaces/eth.*/address
-Variables: interfaces/eth.*/type
 Variables: server/role
 
 Type: file
 File: etc/issue.net
 Variables: version/version
 Variables: version/patchlevel
-Variables: version/security-patchlevel
 Variables: server/role
 
 Type: file
@@ -195,7 +186,6 @@ Variables: xorg/keyboard/options/XkbModel
 Variables: xorg/keyboard/options/XkbLayout
 Variables: xorg/keyboard/options/XkbVariant
 Variables: xorg/keyboard/options/XkbOptions
-Variables: locale/keymap
 
 Type: module
 Module: xkbKeyboard.py

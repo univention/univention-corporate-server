@@ -1,25 +1,17 @@
 @!@
 @%@UCRWARNING=# @%@
-menutitle=''
-serversystem=False
-recommend_ussnet=False
-
 if   configRegistry['server/role'] == 'fatclient':
 	menutitle="Univention Managed Client"
 elif configRegistry['server/role'] =='mobileclient':
 	menutitle="Univention Mobile Client"
 elif configRegistry['server/role'] =='domaincontroller_master':
 	menutitle="Univention DC Master"
-	serversystem=True
 elif configRegistry['server/role'] =='domaincontroller_backup':
 	menutitle="Univention DC Backup"
-	serversystem=True
 elif configRegistry['server/role'] =='domaincontroller_slave':
 	menutitle="Univention DC Slave"
-	serversystem=True
 elif configRegistry['server/role'] =='memberserver':
 	menutitle="Univention Memberserver"
-	serversystem=True
 else:
 	menutitle="Univention Corporate Server"
 
@@ -27,5 +19,4 @@ if configRegistry.get('version/version'):
 	print  '%s %s-%s' % (menutitle, configRegistry['version/version'], configRegistry['version/patchlevel'])
 else:
 	print 'Univention Thin Client'
-
 @!@

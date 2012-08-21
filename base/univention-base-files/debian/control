@@ -3,7 +3,8 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
- univention-config-dev
+ univention-config-dev,
+ ucslint
 Standards-Version: 3.5.2
 XS-Python-Version: all
 

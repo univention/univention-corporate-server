@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-case $1 in
+case "$1" in
 	--xtordp|--x2rdp)
 		case "$2" in
 			al) #Albanian

@@ -1,7 +1,5 @@
 @!@
 @%@UCRWARNING=# @%@
-menutitle=''
-
 if   configRegistry['server/role'] == 'fatclient':
 	menutitle="Univention Managed Client"
 elif configRegistry['server/role'] =='mobileclient':

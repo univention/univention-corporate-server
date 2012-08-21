@@ -13,24 +13,22 @@ check_autostart () {
     [ -n "$variable" ] || return 0
     [ -x "$ucr" ] || return 0
 
-    autostart=`$ucr get $variable`
+    autostart=$("$ucr" get "$variable")
 
+    case "$autostart" in
     # service disabled
-    if [ "false" = "$autostart" ] || [ "no" = "$autostart" ]; then
+    false|no)
         echo "$service disabled by ucr var $variable=$autostart"
         exit 0
-    fi
-
+        ;;
     # manually start of service
-    # test if system is booting with "pidof getty", maybe
-    # there is a better way ...
-    if [ "manually" = "$autostart" ]; then
-        getties=`pidof getty`
-        if [ -z "$getties" ]; then
+    manually)
+        if [ -n "$INIT_VERSION" ]; then
             echo "$service disabled by ucr var $variable=$autostart"
             exit 0
         fi
-    fi
+        ;;
+    esac
 
     return 0
 }

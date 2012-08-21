@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2007-2012 Univention GmbH
+"""Get UCR settings from LDAP policy."""
 #
 # http://www.univention.de/
 #
@@ -28,119 +29,112 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, getopt
+import os
+import sys
 import subprocess
 import univention.config_registry as confreg
+from optparse import OptionParser
 
-def usage(out=sys.stdout):
-	"""Output usage message."""
-	print >>out, 'syntax: univention-policy-update-config-registry [-a] [-h] [-s] [-v] [<dn>]'
-	print >>out, '     -a, --setall     write all variables set by policy'
-	print >>out, '     -h, --help       print this help'
-	print >>out, '     -s, --simulate   simulate update and show values to be set'
-	print >>out, '     -v, --verbose    print verbose information'
-	print >>out, '     <dn>             distinguished LDAP name of object'
-	print >>out, ''
-
-
-############
-### MAIN ###
-############
-
-def main():
-	if os.environ.has_key('UNIVENTION_BASECONF'):
-		del os.environ['UNIVENTION_BASECONF']
-
-	confregfn = os.path.join(confreg.ConfigRegistry.PREFIX, confreg.ConfigRegistry.BASES[ confreg.ConfigRegistry.LDAP ] )
-
-	configRegistry = confreg.ConfigRegistry()
-	configRegistry.load()
-
-	configRegistryLDAP = confreg.ConfigRegistry( filename = confregfn )
-	configRegistryLDAP.load()
-	unsetList = []
-	setList = {}
-	simulate = False
-	verbose = False
-	setall = False
-	dn = configRegistry.get('ldap/hostdn') or configRegistry.get('ldap/mydn') or None
-
-	# parse command line
-	try:
-		opts, pargs = getopt.getopt(sys.argv[1:], 'ahsv', ['setall', 'help', 'simulate', 'verbose'])
-	except:
-		usage(sys.stderr)
-		sys.exit(2)
-
-	# get command line data
-	for option, value in opts:
-		if option == '-a' or option == '--setall':
-			setall = True
-		elif option == '-h' or option == '--help':
-			usage()
-			sys.exit(0)
-		elif option == '-s' or option == '--simulate':
-			simulate = True
-		elif option == '-v' or option == '--verbose':
-			verbose = True
-
-	if len(pargs) > 0:
-		dn = pargs[0]
-
-	if not dn:
-		print >>sys.stderr, 'ERROR: cannot get ldap/hostdn'
-		sys.exit(1)
-
-	if simulate:
-		print >>sys.stderr, 'Simulating update...'
+def get_policy(host_dn, verbose=False):
+	"""Retriev policy for host_dn."""
+	set_list = {}
 
 	# get policy result
-	ATTR = 'Attribute: univentionRegistry;entry-hex-'
-	VALUE = 'Value: '
 	if verbose:
-		print >>sys.stderr, 'Retrieving policy for %s...' % dn
-	p = subprocess.Popen(['univention_policy_result', '-D', dn, '-y', '/etc/machine.secret', dn], shell=False, stdout=subprocess.PIPE)
-	for line in p.stdout:
+		print >> sys.stderr, 'Retrieving policy for %s...' % (host_dn,)
+	cmd = ('univention_policy_result',
+			'-D', host_dn,
+			'-y', '/etc/machine.secret',
+			host_dn)
+	proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
+	for line in proc.stdout:
 		line = line.rstrip('\n')
 		if line.startswith('Policy: '):
 			key = value = None
-		elif line.startswith(ATTR):
-			key = line[len(ATTR):]
+		elif line.startswith(get_policy.ATTR):
+			key = line[len(get_policy.ATTR):]
 			key = key.decode('hex')
-		elif line.startswith(VALUE) and key:
-			value = line[len(VALUE):]
-			setList[key] = value
+		elif line.startswith(get_policy.VALUE) and key:
+			value = line[len(get_policy.VALUE):]
+			set_list[key] = value
 			if verbose:
-				print >>sys.stderr, "Retrieved %s=%s" % (key, value)
-	if p.wait() != 0:
+				print >> sys.stderr, "Retrieved %s=%s" % (key, value)
+	if proc.wait() != 0:
 		# no output: this script is called by cron
 		# print 'WARN: univention_policy_result failed - LDAP server may be down'
 		sys.exit(1)
+	return set_list
+get_policy.ATTR = 'Attribute: univentionRegistry;entry-hex-'
+get_policy.VALUE = 'Value: '
 
-	if setList:
-		newSetList = []
-		for key, value in setList.items():
+def parse_cmdline():
+	"""Parse command line and return options and dn."""
+	usage = '%prog [options] <host_dn>'
+	epilog = '<host_dn> distinguished LDAP name of the host'
+	parser = OptionParser(usage=usage, epilot=epilog)
+	parser.add_option('-a', '--setall',
+			dest='setall', action='store_true',
+			help='write all variables set by policy')
+	parser.add_option('-s', '--simulate',
+			dest='simulate', action='store_true',
+			help='simulate update and show values to be set')
+	parser.add_option('-v', '--verbose',
+			dest='verbose', action='store_true',
+			help='print verbose information')
+	options, args = parser.parse_args()
+
+	if 'UNIVENTION_BASECONF' in os.environ:
+		del os.environ['UNIVENTION_BASECONF']
+	ucr = confreg.ConfigRegistry()
+	ucr.load()
+
+	if len(args) > 0:
+		host_dn = args[0]
+	else:
+		host_dn = ucr.get('ldap/hostdn') or ucr.get('ldap/mydn') or None
+
+	if not host_dn:
+		print >> sys.stderr, 'ERROR: cannot get ldap/hostdn'
+		sys.exit(1)
+
+	if options.simulate:
+		print >> sys.stderr, 'Simulating update...'
+	return options, host_dn
+
+def main():
+	"""Get UCR settings from LDAP policy."""
+	options, host_dn = parse_cmdline()
+
+	confregfn = os.path.join(confreg.ConfigRegistry.PREFIX,
+			confreg.ConfigRegistry.BASES[confreg.ConfigRegistry.LDAP])
+	ucr_ldap = confreg.ConfigRegistry(filename=confregfn)
+	ucr_ldap.load()
+
+	set_list = get_policy(host_dn, options.verbose)
+	if set_list:
+		new_set_list = []
+		for key, value in set_list.items():
 			record = '%s=%s' % (key, value)
 
-			if configRegistryLDAP.get(key) != value or setall:
-				newSetList.append( record.encode() )
+			if ucr_ldap.get(key) != value or options.setall:
+				new_set_list.append(record.encode())
 
-		if simulate or verbose:
-			for item in newSetList:
-				print >>sys.stderr, 'Setting %s' % item
-		if not simulate:
-			confreg.handler_set( newSetList, { 'ldap-policy': True } )
+		if options.simulate or options.verbose:
+			for item in new_set_list:
+				print >> sys.stderr, 'Setting %s' % item
+		if not options.simulate:
+			confreg.handler_set(new_set_list, {'ldap-policy': True})
 
-	for key, value in configRegistryLDAP.items():
-		if key not in setList:
-			unsetList.append(key.encode())
-
-	if unsetList:
-		if simulate or verbose:
-			for item in unsetList:
-				print >>sys.stderr, 'Unsetting %s' % item
-		if not simulate:
-			confreg.handler_unset( unsetList, { 'ldap-policy': True } )
+	unset_list = []
+	for key, value in ucr_ldap.items():
+		if key not in set_list:
+			unset_list.append(key.encode())
+	if unset_list:
+		if options.simulate or options.verbose:
+			for item in unset_list:
+				print >> sys.stderr, 'Unsetting %s' % item
+		if not options.simulate:
+			confreg.handler_unset(unset_list, {'ldap-policy': True})
 
 if __name__ == '__main__':
 	main()
