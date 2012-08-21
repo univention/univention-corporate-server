@@ -1,3 +1,9 @@
+univention-config-registry (8.0.2-1) unstable; urgency=low
+
+  * Support modules for multifiles (Bug #28229)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Aug 2012 16:48:51 +0200
+
 univention-config-registry (8.0.1-2) unstable; urgency=low
 
   * Fix error handling in univention-install-config-registry (Bug #3952)

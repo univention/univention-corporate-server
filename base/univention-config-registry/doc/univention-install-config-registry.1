@@ -83,6 +83,8 @@ Each time one of the listed UCR variables gets changed, the Multifile will be re
 \fBType: multifile\fP
 \fBMultifile:\fP \fIetc/name_of_aggregating_file\fP
 \fBVariables:\fP \fIvariable_name\fP [OPTIONAL]
+\fBPreinst:\fP \fIname_of_module_in_/etc/univention/templates/modules/\fP [OPTIONAL]
+\fBPostinst:\fP \fIname_of_module_in_/etc/univention/templates/modules/\fP [OPTIONAL]
 \fBUser:\fP \fIuser_name\fP [OPTIONAL]
 \fBGroup:\fP \fIgroup_name\fP [OPTIONAL]
 \fBMode:\fP \fIoctal_file_mode\fP [OPTIONAL]
@@ -93,6 +95,8 @@ Each time one of the listed UCR variables gets changed, the Multifile will be re
 \fBSubfile:\fP \fIetc/00name_of_partial_file\fP
 .fi
 .RE
+.P
+If \fBPreinst\fP und \fBPostinst\fP are used, see the description above for which Python functions the module must implement.
 .P
 The sub-template files are scanned for variable substitutions using the \fB@%@\fP\fIvariable\fP\fB@%@\fP syntax, which are automatically registered with the multifile entry.
 Additional variables can be explicitly registered using the \fBVariables\fP statement, one variable per statement.

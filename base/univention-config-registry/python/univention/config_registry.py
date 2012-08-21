@@ -466,6 +466,8 @@ class configHandlerDiverting(configHandler):
 		self.user = None
 		self.group = None
 		self.mode = None
+		self.preinst = None
+		self.postinst = None
 
 	def __hash__(self):
 		return hash(self.to_file)
@@ -549,6 +551,9 @@ class configHandlerMultifile(configHandlerDiverting):
 		ucr, changed = args
 		print 'Multifile: %s' % self.to_file
 
+		if hasattr(self, 'preinst') and self.preinst:
+			runModule(self.preinst, 'preinst', ucr, changed)
+
 		if self.def_count == 0 or not self.from_files:
 			return
 
@@ -574,6 +579,9 @@ class configHandlerMultifile(configHandlerDiverting):
 		self._set_perm(st)
 		to_fp.close()
 
+		if hasattr( self, 'postinst' ) and self.postinst:
+			runModule(self.postinst, 'postinst', ucr, changed)
+
 		script_file = os.path.join(script_dir, self.to_file.strip("/"))
 		if os.path.isfile(script_file):
 			runScript(script_file, 'postinst', changed)
@@ -597,13 +605,11 @@ class configHandlerFile(configHandlerDiverting):
 	def __init__(self, from_file, to_file):
 		super(configHandlerFile, self).__init__(to_file)
 		self.from_file = from_file
-		self.preinst = None
-		self.postinst = None
 
 	def __call__(self, args):
 		ucr, changed = args
 
-		if hasattr( self, 'preinst') and self.preinst:
+		if hasattr(self, 'preinst') and self.preinst:
 			runModule(self.preinst, 'preinst', ucr, changed)
 
 		print 'File: %s' % self.to_file
@@ -734,6 +740,50 @@ class configHandlers:
 		else:
 			return m(entry)
 
+	def _parse_common_file_handler(self, handler, entry):
+		"""Parse common file and multifile entries."""
+		try:
+			handler.preinst = entry['Preinst'][0]
+		except LookupError:
+			pass
+
+		try:
+			handler.postinst = entry['Postinst'][0]
+		except LookupError:
+			pass
+
+		handler.variables |= set(entry.get('Variables', set()))
+
+		try:
+			user = entry['User'][0]
+		except LookupError:
+			pass
+		else:
+			try:
+				handler.user = pwd.getpwnam(user).pw_uid
+			except LookupError:
+				print >> sys.stderr, 'W: failed to convert the username %s to the uid' % (user,)
+
+		try:
+			group = entry['Group'][0]
+		except LookupError:
+			pass
+		else:
+			try:
+				handler.group = grp.getgrnam(group).gr_gid
+			except LookupError:
+				print >> sys.stderr, 'W: failed to convert the groupname %s to the gid' % (group,)
+
+		try:
+			mode = entry['Mode'][0]
+		except LookupError:
+			pass
+		else:
+			try:
+				handler.mode = int(mode, 8)
+			except ValueError:
+				print >> sys.stderr, 'W: failed to convert mode %s' % (mode,)
+
 	def _get_handler_file(self, entry):
 			"""Parse file entry and return Handler instance."""
 			try:
@@ -745,47 +795,7 @@ class configHandlers:
 			if os.path.exists(from_path):
 				handler.variables = grepVariables(open(from_path, 'r').read())
 
-			try:
-				handler.preinst = entry['Preinst'][0]
-			except LookupError:
-				pass
-
-			try:
-				handler.postinst = entry['Postinst'][0]
-			except LookupError:
-				pass
-
-			handler.variables |= set(entry.get('Variables', set()))
-
-			try:
-				user = entry['User'][0]
-			except LookupError:
-				pass
-			else:
-				try:
-					handler.user = pwd.getpwnam(user).pw_uid
-				except LookupError:
-					print >> sys.stderr, 'W: failed to convert the username %s to the uid' % (user,)
-
-			try:
-				group = entry['Group'][0]
-			except LookupError:
-				pass
-			else:
-				try:
-					handler.group = grp.getgrnam(group).gr_gid
-				except LookupError:
-					print >> sys.stderr, 'W: failed to convert the groupname %s to the gid' % (group,)
-
-			try:
-				mode = entry['Mode'][0]
-			except LookupError:
-				pass
-			else:
-				try:
-					handler.mode = int(mode, 8)
-				except ValueError:
-					print >> sys.stderr, 'W: failed to convert mode %s' % (mode,)
+			self._parse_common_file_handler(handler, entry)
 
 			return handler
 
@@ -824,38 +834,7 @@ class configHandlers:
 				from_path = os.path.join(file_dir, mfile)
 				handler = configHandlerMultifile(from_path, mfile)
 
-			handler.variables |= set(entry.get('Variables', set()))
-
-			try:
-				user = entry['User'][0]
-			except LookupError:
-				pass
-			else:
-				try:
-					handler.user = pwd.getpwnam(user).pw_uid
-				except LookupError:
-					print >> sys.stderr, 'W: failed to convert the username %s to the uid' % (user,)
-
-			try:
-				group = entry['Group'][0]
-			except LookupError:
-				pass
-			else:
-				try:
-					handler.group = grp.getgrnam(group).gr_gid
-				except LookupError:
-					print >> sys.stderr, 'W: failed to convert the groupname %s to the gid' % (group,)
-
-			try:
-				mode = entry['Mode'][0]
-			except LookupError:
-				pass
-			else:
-				try:
-					handler.mode = int(mode, 8)
-				except ValueError:
-					print >> sys.stderr, 'W: failed to convert mode %s' % (mode,)
-
+			self._parse_common_file_handler(handler, entry)
 
 			# Add pending subfiles from earlier entries
 			self._multifiles[mfile] = handler

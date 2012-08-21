@@ -104,6 +104,11 @@ def do_package(package):
 			if os.path.exists(f):
 				doIt('install', '-d', destDir(f, package))
 				doIt('cp', '-a', srcPath(f), destPath(f, package))
+			for key in ('Preinst', 'Postinst'):
+				if key in item:
+					mod = item[key][0]
+					doIt('install', '-d', destDir(mod, package, 'modules'))
+					doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
 		elif typ == 'script':
 			f = item['Script'][0]
 			doIt('install', '-d', destDir(f, package, 'scripts'))
