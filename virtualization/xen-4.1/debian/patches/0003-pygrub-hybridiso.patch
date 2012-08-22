@@ -35,7 +35,7 @@ table parsing.
  
  SECTOR_SIZE=512
  DK_LABEL_LOC=1
-@@ -87,12 +92,19 @@ FDISK_PART_SOLARIS_OLD=0x82
+@@ -94,12 +99,19 @@ FDISK_PART_SOLARIS_OLD=0x82
  FDISK_PART_GPT=0xee
  
  def get_partition_offsets(file):

@@ -1,3 +1,11 @@
+xen-4.1 (5.0.0-1) ucs3-0-0-0; urgency=low
+
+  * UCS-3.1 version bump.
+  * Update to Xen-4.1.3 (Bug #27021)
+  * debian/patches/CVE*: Drop patches applied upstream.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Aug 2012 19:59:15 +0200
+
 xen-4.1 (4.1.2-7) ucs3-0-0-0; urgency=low
 
   * Fix CVE-2012-0029, CVE-2012-0217, CVE-2012-0218 (Bug #26029)

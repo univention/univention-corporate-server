@@ -1,9 +1,9 @@
---- a/tools/libxc/xc_domain_restore.c   Tue May 24 17:12:27 2011 +0100
-+++ b/tools/libxc/xc_domain_restore.c   Tue May 24 10:14:10 2011 +0100
-@@ -1134,23 +1134,19 @@
-
+--- a/tools/libxc/xc_domain_restore.c
++++ b/tools/libxc/xc_domain_restore.c
+@@ -1145,23 +1145,19 @@ int xc_domain_restore(xc_interface *xch,
+ 
      int orig_io_fd_flags;
-
+ 
 -    static struct restore_ctx _ctx = {
 -        .live_p2m = NULL,
 -        .p2m = NULL,
@@ -12,28 +12,27 @@
 +    struct restore_ctx _ctx;
 +    struct restore_ctx *ctx = &_ctx;
      struct domain_info_context *dinfo = &ctx->dinfo;
-
+ 
      pagebuf_init(&pagebuf);
      memset(&tailbuf, 0, sizeof(tailbuf));
      tailbuf.ishvm = hvm;
-
+ 
 -    /* For info only */
 -    ctx->nr_pfns = 0;
 -
      if ( superpages )
          return 1;
-
+ 
 +    memset(ctx, 0, sizeof(*ctx));
 +
      ctxt = xc_hypercall_buffer_alloc(xch, ctxt, sizeof(*ctxt));
-
+ 
      if ( ctxt == NULL )
-diff -r ba8da39c6729 -r 23b423a39557 tools/libxc/xc_domain_save.c
---- a/tools/libxc/xc_domain_save.c      Tue May 24 17:12:27 2011 +0100
-+++ b/tools/libxc/xc_domain_save.c      Tue May 24 10:14:10 2011 +0100
-@@ -958,11 +958,8 @@
+--- a/tools/libxc/xc_domain_save.c
++++ b/tools/libxc/xc_domain_save.c
+@@ -958,11 +958,8 @@ int xc_domain_save(xc_interface *xch, in
      unsigned long mfn;
-
+ 
      struct outbuf ob;
 -    static struct save_ctx _ctx = {
 -        .live_p2m = NULL,
@@ -43,12 +42,12 @@ diff -r ba8da39c6729 -r 23b423a39557 tools/libxc/xc_domain_save.c
 +    struct save_ctx _ctx;
 +    struct save_ctx *ctx = &_ctx;
      struct domain_info_context *dinfo = &ctx->dinfo;
-
+ 
      int completed = 0;
-@@ -976,6 +973,8 @@
-
+@@ -976,6 +973,8 @@ int xc_domain_save(xc_interface *xch, in
+ 
      outbuf_init(xch, &ob, OUTBUF_SIZE);
-
+ 
 +    memset(ctx, 0, sizeof(*ctx));
 +
      /* If no explicit control parameters given, use defaults */

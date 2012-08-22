@@ -20,7 +20,7 @@ export QUILT_PATCHES=$(CURDIR)/debian/patches/
 export DESTDIR=$(CURDIR)/debian/xen-4.1
 PYVERS := $(shell pyversions -vr)
 
-XENVER := 4.1.2
+XENVER := 4.1.3
 
 CFLAGS := -Wall -g
 

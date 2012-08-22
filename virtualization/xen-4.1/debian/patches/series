@@ -4,5 +4,3 @@ fix_save_in_libxl.patch
 0002-pygrub-add-debug-flag.patch
 0003-pygrub-hybridiso.patch
 0004-tap-ctl.patch
-CVE-2012-0029.patch
-CVE-2012-0217_CVE-2012-0218.patch
