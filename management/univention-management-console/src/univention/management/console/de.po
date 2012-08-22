@@ -271,14 +271,14 @@ msgstr "Kann nicht in eine Zahl umgewandelt werden"
 msgid "Should stay %s"
 msgstr "Sollte %s bleiben"
 
-msgid "Not a valid search pattern"
-msgstr "Kein gültiges Suchmuster"
+msgid "The maximum number of asterisks (*) in the search string is %(max_number_of_asterisks)d"
+msgstr "Die Höchstzahl an Sternen (*) im Suchwort ist %(max_number_of_asterisks)d"
 
 msgid "Not a \"dict\""
 msgstr "Ist kein \"dict\""
 
 msgid "Not a \"list\""
-msgstr "Ist kein \"list\""
+msgstr "Ist keine \"list\""
 
 msgid "Has more than the allowed keys"
 msgstr "Hat mehr Schlüssel als erlaubt"

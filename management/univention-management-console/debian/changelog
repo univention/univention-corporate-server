@@ -1,3 +1,11 @@
+univention-management-console (5.0.19-1) unstable; urgency=low
+
+  * added sanitizer for boolean, mapping, and combination of more than one
+    field (Bug #27720)
+  * sanitizers may change value by default (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Aug 2012 09:14:11 +0200
+
 univention-management-console (5.0.18-1) unstable; urgency=low
 
   * introduced ChoicesSanitizer; Bug #27720

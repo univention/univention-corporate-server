@@ -93,7 +93,7 @@ class Sanitizer(object):
 	  to alter *request.options*. If not, the sanitizer can still be used
 	  for validation.
 	'''
-	def __init__(self, further_arguments=None, required=False, default=None, may_change_value=False):
+	def __init__(self, further_arguments=None, required=False, default=None, may_change_value=True):
 		self.further_arguments = further_arguments
 		self.required = required
 		self.default = default
@@ -158,7 +158,7 @@ class Sanitizer(object):
 		automatically enriched with name, value und formatting in
 		:meth:`~Sanitizer.sanitize`.
 
-		:param dict **kwargs: additional arguments for formatting
+		:param dict \**kwargs: additional arguments for formatting
 		'''
 		raise UnformattedValidationError(msg, kwargs)
 
@@ -170,7 +170,7 @@ class Sanitizer(object):
 		:param string msg: error message
 		:param string name: name of the argument
 		:param object value: the argument which caused the error
-		:param dict **kwargs: additional arguments for formatting
+		:param dict \**kwargs: additional arguments for formatting
 		'''
 		format_dict = {'value' : value, 'name' : name}
 		format_dict.update(kwargs)
@@ -184,10 +184,10 @@ class DictSanitizer(Sanitizer):
 	You can give the same parameters as the base class.
 	Plus:
 
-	:param sanitizers: contains a sanitizer for every key of the dict
+	:param sanitizers: will be applied to the content of the sanitized dict
 	:param bool allow_other_keys: if other keys than those in
-	:attr:`~DictSanitizer.sanitizers` are allowed.
-	:type sanitizers: {string : `~Sanitizer`}.
+	  :attr:`~DictSanitizer.sanitizers` are allowed.
+	:type sanitizers: {string : :class:`~Sanitizer`}
 	'''
 	def __init__(self, sanitizers, allow_other_keys=True, further_arguments=None, required=False, default=None, may_change_value=True):
 		super(DictSanitizer, self).__init__(further_arguments, required, default, may_change_value)
@@ -214,17 +214,25 @@ class ListSanitizer(Sanitizer):
 	You can give the same parameters as the base class.
 	Plus:
 
-	:param sanitizer: a Sanitize class for every list element
-	:param bool may_change_value: only validate input or change the list input
-	:type sanitizer: `~Sanitizer`.
+	:param sanitizer: sanitizes each of the sanitized list's elements
+	:param int min_elements: must have at least this number of elements
+	:param int max_elements: must have at most this number of elements
+	:type sanitizer: :class:`~Sanitizer`
 	'''
-	def __init__(self, sanitizer, further_arguments=None, required=False, default=None, may_change_value=True):
+	def __init__(self, sanitizer, min_elements=None, max_elements=None, further_arguments=None, required=False, default=None, may_change_value=True):
 		super(ListSanitizer, self).__init__(further_arguments, required, default, may_change_value)
 		self.sanitizer = sanitizer
+		self.min_elements = min_elements
+		self.max_elements = max_elements
 
 	def _sanitize(self, value, name, further_arguments):
 		if not isinstance(value, list):
 			self.raise_formatted_validation_error(_('Not a "list"'), name, type(value).__name__)
+
+		if self.min_elements is not None and len(value) < self.min_elements:
+			self.raise_validation_error(_('Must have at least %(min_elements)d elements'))
+		if self.max_elements is not None and len(value) > self.max_elements:
+			self.raise_validation_error(_('Must have at most %(max_elements)d elements'))
 
 		altered_value = []
 		for i, item in enumerate(value):
@@ -233,13 +241,22 @@ class ListSanitizer(Sanitizer):
 			altered_value.append(result)
 		return altered_value
 
+class BooleanSanitizer(Sanitizer):
+	def __init__(self, further_arguments=None, required=False, default=None, may_change_value=True):
+		super(BooleanSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+
+	def _sanitize(self, value, name, further_arguments):
+		try:
+			return bool(value)
+		except:
+			self.raise_validation_error(_('Cannot be converted to a boolean'))
+
 class IntegerSanitizer(Sanitizer):
 	'''IntegerSanitizer makes sure that the value is an int.
 	It converts other data types if possible and is able
 	to validate boundaries.
 
-	You can give the same parameters as the base class without
-	:attr:`~Sanitizer.may_change_value`, as it always may.
+	You can give the same parameters as the base class.
 	Plus:
 
 	:param int minimum: minimal value allowed
@@ -249,9 +266,9 @@ class IntegerSanitizer(Sanitizer):
 	:param bool maximum_strict: if the value must be < maximum
 	  (<= otherwise)
 	'''
-	def __init__(self, further_arguments=None, required=False, default=None,
+	def __init__(self, further_arguments=None, required=False, default=None, may_change_value=True,
 			minimum=None, maximum=None, minimum_strict=None, maximum_strict=None):
-		super(IntegerSanitizer, self).__init__(further_arguments, required, default, may_change_value=True)
+		super(IntegerSanitizer, self).__init__(further_arguments, required, default, may_change_value)
 		self.minimum = minimum
 		self.maximum = maximum
 		self.minimum_strict = minimum_strict
@@ -293,8 +310,7 @@ class PatternSanitizer(Sanitizer):
 	The sanitizer escapes the input, replaces * with .* and applies
 	the params.
 
-	You can give the same parameters as the base class without
-	:attr:`~Sanitizer.may_change_value`, as it always may.
+	You can give the same parameters as the base class.
 
 	If you specify a string as :attr:`~Sanitizer.default`, it will be
 	compiled to a regular expression. Hints:
@@ -307,34 +323,41 @@ class PatternSanitizer(Sanitizer):
 	  of the value if needed. "string" -> "\*string*", "" -> "*"
 	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
 	  to search case insensitive.
+	:param int max_number_of_asterisks: An error will be raised if
+	  the number of * in the pattern exceeds this limit. Useful because
+	  searching with too many of these patterns in a regular expression
+	  can be very expensive. Note that * from
+	  :attr:`~PatternSanitizer.add_asterisks` do count. *None* means an
+	  arbitrary number is allowed.
 	'''
-	def __init__(self, add_asterisks=True, ignore_case=True, further_arguments=None, required=False, default=None):
+	def __init__(self, add_asterisks=True, ignore_case=True, max_number_of_asterisks=5, further_arguments=None, required=False, default=None, may_change_value=True):
 		if isinstance(default, basestring):
 			default = re.compile(default)
-		super(PatternSanitizer, self).__init__(further_arguments, required, default, may_change_value=True)
+		super(PatternSanitizer, self).__init__(further_arguments, required, default, may_change_value)
 		self.add_asterisks = add_asterisks
 		self.ignore_case = ignore_case
+		self.max_number_of_asterisks = max_number_of_asterisks
 
 	def _sanitize(self, value, name, further_fields):
 		if value is None:
 			value = ''
-		try:
-			value = str(value)
-			value = re.sub(r'\*+', '*', value)
-			if self.add_asterisks:
-				if not value.startswith('*'):
-					value = '*%s' % value
-				if not value.endswith('*'):
-					value = '%s*' % value
-			value = re.escape(value)
-			value = value.replace(r'\*', '.*')
-			flags = 0
-			if self.ignore_case:
-				flags = flags | re.IGNORECASE
-			return re.compile(value, flags)
-		except:
-			# although i cant think of a case were this should fail
-			self.raise_validation_error(_('Not a valid search pattern'))
+		value = str(value)
+		value = re.sub(r'\*+', '*', value)
+		if self.add_asterisks:
+			if not value.startswith('*'):
+				value = '*%s' % value
+			if not value.endswith('*'):
+				value = '%s*' % value
+		if self.max_number_of_asterisks is not None:
+			if value.count('*') > self.max_number_of_asterisks:
+				# show the possibly changed value
+				self.raise_formatted_validation_error(_('The maximum number of asterisks (*) in the search string is %(max_number_of_asterisks)d'), name, value)
+		value = re.escape(value)
+		value = value.replace(r'\*', '.*')
+		flags = 0
+		if self.ignore_case:
+			flags = flags | re.IGNORECASE
+		return re.compile('^%s$' % value, flags)
 
 class StringSanitizer(Sanitizer):
 	''' StringSanitizer makges sure that the input is a string.
@@ -345,8 +368,8 @@ class StringSanitizer(Sanitizer):
 		:param int minimum: the minimum length of the string
 		:param int maximum: the maximum length of the string
 	'''
-	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, further_arguments=None, required=False, default=''):
-		super(StringSanitizer, self).__init__(further_arguments, required, default, may_change_value=True)
+	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, further_arguments=None, required=False, default='', may_change_value=True):
+		super(StringSanitizer, self).__init__(further_arguments, required, default, may_change_value)
 		if isinstance(regex_pattern, basestring):
 			regex_pattern = re.compile(regex_pattern, flags = re_flags)
 		self.minimum = minimum
@@ -358,22 +381,42 @@ class StringSanitizer(Sanitizer):
 			self.raise_validation_error(_('Value is not a string'))
 
 		if self.minimum and len(value) < self.minimum:
-			self.raise_validation_error(_('Value is too short, it have to be of length %(minimum)d'))
+			self.raise_validation_error(_('Value is too short, it has to be at least of length %(minimum)d'))
 
 		if self.maximum and len(value) > self.maximum:
-			self.raise_validation_error(_('Value is too long, it have to be of length %(maximum)d'))
+			self.raise_validation_error(_('Value is too long, it has to be at most of length %(maximum)d'))
 
 		if self.regex_pattern and not self.regex_pattern.match(value):
 			self.raise_validation_error(_('Value is invalid'))
 
 		return value
 
-class ChoiceSanitizer(Sanitizer):
-	def __init__(self, choices, further_arguments=None, required=False, default=None):
-		super(StringSanitizer, self).__init__(further_arguments, required, default, may_change_value=True)
-		self.choices = choices
+class MappingSanitizer(Sanitizer):
+	def __init__(self, mapping, further_arguments=None, required=False, default=None, may_change_value=True):
+		super(MappingSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+		try:
+			# sorted works with every base data type, even inter-data type!
+			self.sorted_keys = sorted(mapping.keys())
+		except:
+			# but who knows...
+			self.sorted_keys = mapping.keys()
+		self.mapping = mapping
 
 	def _sanitize(self, value, name, further_args):
-		if value not in self.choices:
-			self.raise_validation_error(_('value have to be in %(choices)s'))
-		return value
+		try:
+			return self.mapping[value]
+		except KeyError:
+			self.raise_validation_error(_('Value has to be in %(sorted_keys)r'))
+
+class ChoicesSanitizer(MappingSanitizer):
+	def __init__(self, choices, further_arguments=None, required=False, default=None, may_change_value=True):
+		mapping = dict([(choice, choice) for choice in choices])
+		super(ChoiceSanitizer, self).__init__(mapping, further_arguments, required, default, may_change_value)
+
+class AnySanitizer(Sanitizer):
+	def _sanitize(self, value, name, further_args):
+		any_given = any([value] + further_args.values())
+		if not any_given:
+			self.raise_formatted_validation_error(_('Any of %r must be given') % ([name] + further_args.keys()), name, value)
+		return any_given
+

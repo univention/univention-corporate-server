@@ -62,7 +62,7 @@ from ..protocol.definitions import BAD_REQUEST_INVALID_OPTS
 from ..modules import UMC_Error, UMC_OptionTypeError
 from ..log import MODULE
 
-from .sanitizers import ValidationError, DictSanitizer, ListSanitizer
+from sanitizers import ValidationError, DictSanitizer, ListSanitizer
 
 def sanitize(*args, **kwargs):
 	"""
@@ -90,8 +90,8 @@ def sanitize(*args, **kwargs):
 	 class SplitPathSanitizer(Sanitizer):
 	     def __init__(self):
 	         super(SplitPathSanitizer, self).__init__(
-		   validate_none=True,
-		   may_change_value=True)
+		     validate_none=True,
+		     may_change_value=True)
 
 	     def _sanitize(self, value, name, further_fields):
 		 if value is None:
@@ -105,24 +105,26 @@ def sanitize(*args, **kwargs):
 
 	 def my_func(self, request):
 	     var1 = request.options.get('var1')
-	     var2 = request.options.get('var2')
+	     var2 = request.options.get('var2', 20)
 	     try:
 	         var1 = int(var1)
 		 var2 = int(var2)
-             except ValueError:
-	         self.finished(request.id, None, 'Cannot convert to int', success=False, status=BAD_REQUEST_INVALID_OPTS)
+             except (ValueError, TypeError):
+	         self.finished(request.id, None, 'Cannot convert to int',
+		     success=False, status=BAD_REQUEST_INVALID_OPTS)
 		 return
 	     if var2 < 10:
-	         self.finished(request.id, None, 'var2 must be >= 10', success=False, status=BAD_REQUEST_INVALID_OPTS)
+	         self.finished(request.id, None, 'var2 must be >= 10',
+		     success=False, status=BAD_REQUEST_INVALID_OPTS)
 		 return
 	     self.finished(request.id, var1 + var2)
 
 	After::
 
 	 @sanitize(var1=IntegerSanitizer(required=True),
-	   var2=IntegerSanitizer(required=True, minimum=10))
+	   var2=IntegerSanitizer(required=True, minimum=10, default=20))
 	 def add(self, request):
-	     var1 = request.options.get('var1')
+	     var1 = request.options.get('var1') # could now use ['var1']
 	     var2 = request.options.get('var2')
 	     self.finished(request.id, var1 + var2)
 
@@ -134,11 +136,14 @@ def sanitize(*args, **kwargs):
 	 @simple_response
 	 def add(self, var1, var2):
 	     return var1 + var2
+
+	Note that you lose the capability of specifiying defaults in
+	*@simple_response*. You need to do it in *@sanitize* now.
 	"""
 	if args:
-		return lambda function: _sanitize_list(function, args[0], kwargs)
+		return sanitize_list(args[0], **kwargs)
 	else:
-		return lambda function: _sanitize_dict(function, kwargs, {})
+		return sanitize_dict(kwargs)
 
 def sanitize_list(sanitizer, **kwargs):
 	return lambda function: _sanitize_list(function, sanitizer, kwargs)
@@ -146,10 +151,10 @@ def sanitize_list(sanitizer, **kwargs):
 def sanitize_dict(sanitized_attrs, **kwargs):
 	return lambda function: _sanitize_dict(function, sanitized_attrs, kwargs)
 
-def _sanitize_dict(function, sanitized_arguments, sanitizer_parameters):
+def _sanitize_dict(function, sanitized_attrs, sanitizer_parameters):
 	defaults = {'default' : {}, 'required' : True, 'may_change_value' : True}
 	defaults.update(sanitizer_parameters)
-	return _sanitize(function, DictSanitizer(sanitized_arguments, **defaults))
+	return _sanitize(function, DictSanitizer(sanitized_attrs, **defaults))
 
 def _sanitize_list(function, sanitizer, sanitizer_parameters):
 	defaults = {'default' : [], 'required' : True, 'may_change_value' : True}
@@ -161,8 +166,9 @@ def _sanitize(function, sanitizer):
 		try:
 			request.options = sanitizer.sanitize('request.options', {'request.options' : request.options})
 		except ValidationError as e:
-			self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST_INVALID_OPTS)
-			return
+			raise UMC_OptionTypeError(str(e))
+			#self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST_INVALID_OPTS)
+			#return
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response
@@ -219,10 +225,9 @@ def _multi_response(function, with_flavor, error_handler):
 			try:
 				req = type('request', (object,), {'options' : option, 'flavor': request.flavor})
 				res = simple(self, req)
-				#res = simple(self, type('request', (object,), {'options' : option, 'flavor': request.flavor}))
+				response.append(res)
 			except Exception, e:
 				res = error_handler(option, e)
-			finally:
 				response.append(res)
 
 		self.finished(request.id, response)
