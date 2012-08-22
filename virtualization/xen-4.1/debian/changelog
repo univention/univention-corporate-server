@@ -1,4 +1,4 @@
-xen-4.1 (5.0.0-1) ucs3-0-0-0; urgency=low
+xen-4.1 (4.1.3-1) ucs3-0-0-0; urgency=low
 
   * UCS-3.1 version bump.
   * Update to Xen-4.1.3 (Bug #27021)
