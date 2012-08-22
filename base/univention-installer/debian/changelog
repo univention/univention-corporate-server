@@ -1,3 +1,9 @@
+univention-installer (8.0.1-19) unstable; urgency=low
+
+  * crypt root password with sha-512 (Bug #28271) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Aug 2012 16:25:07 +0200
+
 univention-installer (8.0.1-18) unstable; urgency=low
 
   * wait for drivers to settle down in 10_hardware (Bug #20797) 
