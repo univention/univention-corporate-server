@@ -165,6 +165,38 @@ class _Iface(dict):
             yield v
 
 
+class VengefulConfigRegistry(ConfigRegistry):
+    """Instance wrapper for Config Registry throwing exceptions.
+
+    <https://forge.univention.org/bugzilla/show_bug.cgi?id=28276>
+    <http://stackoverflow.com/questions/1443129/>
+    """
+    def __init__(self, base_object):
+        self.__class__ = type(base_object.__class__.__name__,
+                (self.__class__, base_object.__class__),
+                {})
+        self.__dict__ = base_object.__dict__
+
+    def __getitem__(self, key):
+        """Return registry value."""
+        for reg in (ConfigRegistry.FORCED,
+                ConfigRegistry.SCHEDULE,
+                ConfigRegistry.LDAP,
+                ConfigRegistry.NORMAL,
+                ConfigRegistry.CUSTOM):
+            try:
+                registry = self._registry[reg]
+                # BUG: _ConfigRegistry[key] does not raise a KeyError for unset
+                # keys, but returns ''
+                if key not in registry:
+                    raise KeyError(key)
+                value = registry[key]
+                return value
+            except KeyError:
+                continue
+        raise KeyError(key)
+
+
 class Interfaces(object):
     """Handle network interfaces configured by UCR."""
 
@@ -172,6 +204,8 @@ class Interfaces(object):
         if ucr is None:
             ucr = ConfigRegistry()
             ucr.load()
+        elif isinstance(ucr, ConfigRegistry):
+            ucr = VengefulConfigRegistry(ucr)
 
         self.handler = ucr.get('interfaces/handler', 'ifplugd')
         self.primary = ucr.get('interfaces/primary', 'eth0')

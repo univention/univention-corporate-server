@@ -1,3 +1,9 @@
+univention-config-registry (8.0.2-4) unstable; urgency=low
+
+  * Wrap ConfigRegistry to throw KeyError (Bug #28276)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Aug 2012 14:04:47 +0200
+
 univention-config-registry (8.0.2-3) unstable; urgency=low
 
   * Fix building as non-root-user (Bug #26058)
