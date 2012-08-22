@@ -363,8 +363,9 @@ class StringSanitizer(Sanitizer):
 	''' StringSanitizer makges sure that the input is a string.
 		The input can be validated by a regular expression and by string length
 
-		:param basestring|SRE_Pattern regex_pattern: a regex pattern or a string which will be compiled into a regex pattern
-		:param int re_flags: additional regex flags for the regex_pattern which will be compiled if regex_pattern is a string
+		:param regex_pattern: a regex pattern or a string which will be compiled into a regex pattern
+		:type regex_pattern: basestring or re._pattern_type
+		:param int re_flags: additional regex flags for the :attr:`~StringSanitizer.regex_pattern` which will be compiled if :attr:`~StringSanitizer.regex_pattern` is a string
 		:param int minimum: the minimum length of the string
 		:param int maximum: the maximum length of the string
 	'''

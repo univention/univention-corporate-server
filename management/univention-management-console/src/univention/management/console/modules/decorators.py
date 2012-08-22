@@ -225,10 +225,9 @@ def _multi_response(function, with_flavor, error_handler):
 			try:
 				req = type('request', (object,), {'options' : option, 'flavor': request.flavor})
 				res = simple(self, req)
-				response.append(res)
 			except Exception, e:
 				res = error_handler(option, e)
-				response.append(res)
+			response.append(res)
 
 		self.finished(request.id, response)
 	copy_function_meta_data(function, _response)
