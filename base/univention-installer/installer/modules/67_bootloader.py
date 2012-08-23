@@ -48,6 +48,7 @@ class object(content):
 		content.__init__(self, max_y, max_x, last, file, cmdline)
 		self.auto_input_enabled = True
 		self.max_length = 1
+		self.devices = {}
 
 	def debug(self, txt):
 		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
@@ -60,10 +61,27 @@ class object(content):
 	def modvars(self):
 		return ['bootloader_record']
 
+	def run_profiled(self):
+		self.debug('bootloader => run profiled')
+		if len(self.devices) == 1:
+			self.debug("  using found device %s" % self.devices.keys()[0])
+			return {'bootloader_record' : self.devices.keys()[0]}	
+		return {}
+	
 	def profile_complete(self):
+		self.debug("bootloader => profile complete")
 		if self.check('bootloader_record'):
+			self.debug("  check forced")
 			return False
-		return bool(self.all_results.get('bootloader_record'))
+		if self.all_results.get("bootloader_record"):
+			self.debug("  value %s from profile" % self.all_results["bootloader_record"])
+			return True
+		self.debug("  looking for devices ...")
+		self.find_devices()
+		if len(self.devices) == 1:
+			self.debug("  found one device")
+			return True
+		return False
 
 	def auto_input(self):
 		# Return "next" (== F12) and disable auto_input() function.
@@ -77,7 +95,6 @@ class object(content):
 		return {'bootloader_record': ['boot_partition']}
 
 	def find_devices(self):
-		self.devices = {}
 		# match on any device name that does not end on digit OR
 		# any device name ending with cXdY where X and Y are one or more digits
 		REpartitions = re.compile('^\d+\s+\d+\s+\d+\s+(.*)$')
@@ -117,6 +134,10 @@ class object(content):
 			except ValueError:
 				value = 0
 			if value & 8:
+				continue
+
+			# ignore device mapper devices
+			if os.path.isdir('/sys/block/%s/dm' % device):
 				continue
 
 			# valid device

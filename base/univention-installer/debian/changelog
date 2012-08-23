@@ -1,3 +1,10 @@
+univention-installer (8.0.1-20) unstable; urgency=low
+
+  * ignore device mapper in 67_bootloader
+  * find_devices in profile mode in 67_bootloader (Bug #9936)
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Aug 2012 17:23:28 +0200
+
 univention-installer (8.0.1-19) unstable; urgency=low
 
   * crypt root password with sha-512 (Bug #28271) 
