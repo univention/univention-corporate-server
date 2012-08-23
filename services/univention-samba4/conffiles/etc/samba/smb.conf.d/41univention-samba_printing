@@ -1,5 +1,5 @@
 @!@
-if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
+if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
 	if configRegistry.has_key('cups/server') and configRegistry['cups/server'] in ['127.0.0.1','localhost','%s' % configRegistry['hostname'],'%s.%s' % (configRegistry['hostname'],configRegistry['domainname'])]:
 		print '\t; printing'
 		print '\tload printers = yes'

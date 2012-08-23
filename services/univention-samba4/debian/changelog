@@ -1,3 +1,10 @@
+univention-samba4 (2.0.7-3) unstable; urgency=low
+
+  * More support for samba4/service/smb=s3fs, e.g. for print (for Bug #27457)
+  * remove unused legacy variable samba4/rpc/endpoint/drsuapi
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Aug 2012 18:39:10 +0200
+
 univention-samba4 (2.0.7-2) unstable; urgency=low
 
   * Adjust create_dns-host_spn (upstream Samba bug 9091 is not fixed yet)

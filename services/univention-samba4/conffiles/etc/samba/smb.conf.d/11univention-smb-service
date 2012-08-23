@@ -5,13 +5,6 @@ if configRegistry.get('samba4/service/smb', 's3fs'):
 	debug hirestimestamp = yes
 	debug pid = yes
 
-	dcerpc endpoint servers = -winreg -srvsvc''',
-
-	if configRegistry.is_false('samba4/rpc/endpoint/drsuapi'):
-		print '-drsuapi'
-	else:
-		print ''
-
 elif configRegistry.get('samba4/service/smb', 'smbd'):
 	if configRegistry['samba4/role'] != 'MEMBER':	## otherwise it's already set in 10global
 		print '\tsecurity = ads'
@@ -20,12 +13,8 @@ elif configRegistry.get('samba4/service/smb', 'smbd'):
 	debug hirestimestamp = yes
 	debug pid = yes
 
-	dcerpc endpoint servers = -unixinfo -rpcecho -spoolss -winreg -wkssvc -srvsvc''',
+	dcerpc endpoint servers = -unixinfo -rpcecho -spoolss -winreg -wkssvc -srvsvc'''
 
-	if configRegistry.is_false('samba4/rpc/endpoint/drsuapi'):
-		print '-drsuapi'
-
-	print '''
 	domain logons = yes
 	passdb backend = samba4
 	auth methods = guest samba4

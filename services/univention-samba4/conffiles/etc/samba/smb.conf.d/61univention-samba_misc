@@ -15,7 +15,7 @@ else:
 
 ## and now the legacy options for smbd:
 
-if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
+if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
 
 	print '\tkernel oplocks = %s' % configRegistry.get('samba/kernel_oplocks', 'yes')
 	print '\tdeadtime = %s' % configRegistry.get('samba/deadtime', '15')
