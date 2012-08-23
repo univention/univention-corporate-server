@@ -54,13 +54,15 @@ from samba.samdb import SamDB
 from samba.auth import system_session
 from samba.param import LoadParm
 from samba.provision import (
-	secretsdb_setup_dns,
 	ProvisionPaths,
 	ProvisionNames,
-	setup_add_ldif,
-	setup_ldb,
-	setup_path,
 )
+from samba.provision.common import (
+	setup_path,
+	setup_add_ldif,
+	setup_ldb
+)
+from samba.provision.sambadns import secretsdb_setup_dns
 
 if __name__ == '__main__':
 	## most of this is extracted from source4/scripting/python/samba/provision/*

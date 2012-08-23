@@ -1,3 +1,10 @@
+univention-samba4 (2.0.7-2) unstable; urgency=low
+
+  * Adjust create_dns-host_spn (upstream Samba bug 9091 is not fixed yet)
+    (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Aug 2012 16:48:39 +0200
+
 univention-samba4 (2.0.7-1) unstable; urgency=low
 
   * use machine account on univention-s4search instead of ucs-s4search or
