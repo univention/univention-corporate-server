@@ -1,3 +1,11 @@
+univention-samba4 (2.0.7-1) unstable; urgency=low
+
+  * use machine account on univention-s4search instead of ucs-s4search or
+    connector/s4/ldap/binddn (Bug #28279)
+  * let joinscript fail if samba-tool domain join fails (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Aug 2012 13:16:04 +0200
+
 univention-samba4 (2.0.6-1) unstable; urgency=low
 
   * Remove explicit interfaces/ references (Bug #26058)

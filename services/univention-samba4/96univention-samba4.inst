@@ -395,6 +395,9 @@ rIDNextRID: 2101
 					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
 										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
 										--keep-existing
+					if [ $? != 0 ]; then
+						exit 1
+					fi
 				fi
 			fi
 
