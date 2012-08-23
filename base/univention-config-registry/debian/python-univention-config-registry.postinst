@@ -30,6 +30,11 @@
 
 #DEBHELPER#
 
+# Force pysupport run to make config-registry available NOW
+if which update-python-modules >/dev/null 2>&1; then
+	update-python-modules --post-install
+fi
+
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.29; then
 	if [ -f /var/log/univention/config-registry.replog ]; then
 		chmod 0640 /var/log/univention/config-registry.replog

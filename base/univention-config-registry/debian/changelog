@@ -1,3 +1,9 @@
+univention-config-registry (8.0.2-5) unstable; urgency=low
+
+  * Force pysupport run (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 23 Aug 2012 15:00:16 +0200
+
 univention-config-registry (8.0.2-4) unstable; urgency=low
 
   * Wrap ConfigRegistry to throw KeyError (Bug #28276)
