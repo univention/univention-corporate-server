@@ -186,7 +186,7 @@ class Client( signals.Provider, Translation ):
 			raise e
 
 	def _resend( self, sock ):
-		if self.__resend_queue.has_key(sock):
+		if sock in self.__resend_queue:
 			while len(self.__resend_queue[sock]) > 0:
 				data = str(self.__resend_queue[sock][0])
 				try:

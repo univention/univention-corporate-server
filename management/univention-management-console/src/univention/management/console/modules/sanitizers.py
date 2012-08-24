@@ -57,47 +57,91 @@ class UnformattedValidationError(Exception):
 	cannot use at all (e.g. letters when an int is expected).
 	Should be "enhanced" to a ValidationError.
 	"""
-	def __init__(self, message, kwargs):
-		self.message = message
+	def __init__(self, msg, kwargs):
+		self.msg = msg
 		self.kwargs = kwargs
 
 	def __str__(self):
-		return self.message
+		return self.msg
 
 class ValidationError(Exception):
 	"""
 	Error raised when the sanitizer finds a value he cannot use at all
 	(e.g. letters when an int is expected).
 	"""
-	def __init__(self, message, name, value):
-		self.message = message
+	def __init__(self, msg, name, value):
+		self.msg = msg
 		self.name = name
 		self.value = value
 
 	def __str__(self):
-		return self.message
+		return self.msg
+
+	def number_of_errors(self):
+		'''1...'''
+		return 1
+
+	def result(self):
+		'''Returns the message'''
+		# return {'name' : self.name, 'value' : self.value, 'msg' : self.msg}
+		return self.msg
+
+class MultiValidationError(ValidationError):
+	"""
+	Error used for validation of an arbitrary number of sanitizers.
+	Used by :class:`~DictSanitizer` and :class:`~ListSanitizer`.
+	"""
+	def __init__(self):
+		self.validation_errors = {}
+
+	def add_error(self, e, name):
+		'''Adds a :class:`ValidationError`'''
+		self.validation_errors[name] = e
+
+	def number_of_errors(self):
+		'''Cumulative number of errors found'''
+		num = 0 
+		for k, v in self.validation_errors.iteritems():
+			num += v.number_of_errors()
+		return num
+
+	def __str__(self):
+		return _('%d error(s) occurred') % self.number_of_errors()
+
+	def has_errors(self):
+		'''Found any errors'''
+		return bool(self.validation_errors)
+
+	def result(self):
+		'''Returns a errors in a similar way like the arguments were passed
+		to the sanitizers.'''
+		return dict([(name, e.result()) for name, e in self.validation_errors.iteritems()])
 
 class Sanitizer(object):
 	'''
 	Base class of all sanitizers.
 
+	For reasons of extensibility and for ease of subclassing, the
+	parameters are \**kwargs. But only the following are meaningful:
+
 	:param [string] further_arguments: names of arguments that should be
 	  passed along with the actual argument in order to return something
-	  reasonable.
-	:param bool required: if the argument is required.
+	  reasonable. Default: *None*
+	:param bool required: if the argument is required. Default: *False*
 	:param object default: if not given and not
 	  :attr:`~Sanitizer.required` but :attr:`~Sanitizer.may_change_value`
 	  default is returned. Note that this value is not passing the
 	  sanitizing procedure, so make sure to be able to handle it.
+	  Default: *None*
 	:param bool may_change_value: if the process of sanitizing is allowed
 	  to alter *request.options*. If not, the sanitizer can still be used
-	  for validation.
+	  for validation. Default: *True*
 	'''
-	def __init__(self, further_arguments=None, required=False, default=None, may_change_value=True):
-		self.further_arguments = further_arguments
-		self.required = required
-		self.default = default
-		self.may_change_value = may_change_value
+	def __init__(self, **kwargs):
+		self.further_arguments = kwargs.get('further_arguments', None)
+		self.required = kwargs.get('required', False)
+		self.default = kwargs.get('default', None)
+		self.may_change_value = kwargs.get('may_change_value', True)
 
 	def sanitize(self, name, options):
 		'''Sanitize function. Internally calls _sanitize with the
@@ -189,8 +233,8 @@ class DictSanitizer(Sanitizer):
 	  :attr:`~DictSanitizer.sanitizers` are allowed.
 	:type sanitizers: {string : :class:`~Sanitizer`}
 	'''
-	def __init__(self, sanitizers, allow_other_keys=True, further_arguments=None, required=False, default=None, may_change_value=True):
-		super(DictSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
+		super(DictSanitizer, self).__init__(**kwargs)
 		self.sanitizers = sanitizers
 		self.allow_other_keys = allow_other_keys
 
@@ -203,10 +247,21 @@ class DictSanitizer(Sanitizer):
 
 		altered_value = copy.deepcopy(value)
 
+		multi_error = MultiValidationError()
 		for attr, sanitizer in self.sanitizers.iteritems():
-			altered_value[attr] = sanitizer.sanitize(attr, value)
+			try:
+				altered_value[attr] = sanitizer.sanitize(attr, value)
+			except ValidationError as e:
+				multi_error.add_error(e, attr)
+		if multi_error.has_errors():
+			raise multi_error
 
 		return altered_value
+
+	def __add__(self, other):
+		new = copy.deepcopy(self)
+		new.sanitizers.update(other.sanitizers)
+		return new
 
 class ListSanitizer(Sanitizer):
 	''' ListSanitizer makes sure that the value is a list and sanitizes its elements.
@@ -219,8 +274,8 @@ class ListSanitizer(Sanitizer):
 	:param int max_elements: must have at most this number of elements
 	:type sanitizer: :class:`~Sanitizer`
 	'''
-	def __init__(self, sanitizer, min_elements=None, max_elements=None, further_arguments=None, required=False, default=None, may_change_value=True):
-		super(ListSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+	def __init__(self, sanitizer, min_elements=None, max_elements=None, **kwargs):
+		super(ListSanitizer, self).__init__(**kwargs)
 		self.sanitizer = sanitizer
 		self.min_elements = min_elements
 		self.max_elements = max_elements
@@ -234,17 +289,22 @@ class ListSanitizer(Sanitizer):
 		if self.max_elements is not None and len(value) > self.max_elements:
 			self.raise_validation_error(_('Must have at most %(max_elements)d elements'))
 
+		multi_error = MultiValidationError()
 		altered_value = []
 		for i, item in enumerate(value):
 			name = 'Element #%d' % i
-			result = self.sanitizer.sanitize(name, {name : item})
-			altered_value.append(result)
+			try:
+				altered_value.append(self.sanitizer.sanitize(name, {name : item}))
+			except ValidationError as e:
+				multi_error.add_error(e, i)
+		if multi_error.has_errors():
+			raise multi_error
 		return altered_value
 
 class BooleanSanitizer(Sanitizer):
-	def __init__(self, further_arguments=None, required=False, default=None, may_change_value=True):
-		super(BooleanSanitizer, self).__init__(further_arguments, required, default, may_change_value)
-
+	'''IntegerSanitizer makes sure that the value is a bool.
+	It converts other data types if possible.
+	'''
 	def _sanitize(self, value, name, further_arguments):
 		try:
 			return bool(value)
@@ -266,9 +326,8 @@ class IntegerSanitizer(Sanitizer):
 	:param bool maximum_strict: if the value must be < maximum
 	  (<= otherwise)
 	'''
-	def __init__(self, further_arguments=None, required=False, default=None, may_change_value=True,
-			minimum=None, maximum=None, minimum_strict=None, maximum_strict=None):
-		super(IntegerSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+	def __init__(self, minimum=None, maximum=None, minimum_strict=None, maximum_strict=None, **kwargs):
+		super(IntegerSanitizer, self).__init__(**kwargs)
 		self.minimum = minimum
 		self.maximum = maximum
 		self.minimum_strict = minimum_strict
@@ -330,13 +389,32 @@ class PatternSanitizer(Sanitizer):
 	  :attr:`~PatternSanitizer.add_asterisks` do count. *None* means an
 	  arbitrary number is allowed.
 	'''
-	def __init__(self, add_asterisks=True, ignore_case=True, max_number_of_asterisks=5, further_arguments=None, required=False, default=None, may_change_value=True):
+	def __init__(self, add_asterisks=True, ignore_case=True, max_number_of_asterisks=5, **kwargs):
+		default = kwargs.get('default')
 		if isinstance(default, basestring):
 			default = re.compile(default)
-		super(PatternSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+		kwargs['default'] = default
+		super(PatternSanitizer, self).__init__(**kwargs)
 		self.add_asterisks = add_asterisks
 		self.ignore_case = ignore_case
 		self.max_number_of_asterisks = max_number_of_asterisks
+
+	def __deepcopy__(self, memo):
+		new = PatternSanitizer(
+			self.add_asterisks,
+			self.ignore_case,
+			self.max_number_of_asterisks,
+			further_arguments=copy.copy(self.further_arguments),
+			required=self.required,
+			default=None,
+			may_change_value=self.may_change_value,
+		)
+		try:
+			new.default = re.compile(default.pattern, default.flags)
+		except:
+			# None?
+			pass
+		return new
 
 	def _sanitize(self, value, name, further_fields):
 		if value is None:
@@ -360,22 +438,43 @@ class PatternSanitizer(Sanitizer):
 		return re.compile('^%s$' % value, flags)
 
 class StringSanitizer(Sanitizer):
-	''' StringSanitizer makges sure that the input is a string.
-		The input can be validated by a regular expression and by string length
+	''' StringSanitizer makes sure that the input is a string.
+	The input can be validated by a regular expression and by string length
 
-		:param regex_pattern: a regex pattern or a string which will be compiled into a regex pattern
-		:type regex_pattern: basestring or re._pattern_type
-		:param int re_flags: additional regex flags for the :attr:`~StringSanitizer.regex_pattern` which will be compiled if :attr:`~StringSanitizer.regex_pattern` is a string
-		:param int minimum: the minimum length of the string
-		:param int maximum: the maximum length of the string
+	:param regex_pattern: a regex pattern or a string which will be
+	  compiled into a regex pattern
+	:param int re_flags: additional regex flags for the regex_pattern
+	  which will be compiled if :attr:`~StringSanitizer.regex_pattern`
+	  is a string
+	:param int minimum: the minimum length of the string
+	:param int maximum: the maximum length of the string
+	:type regex_pattern: basestring or re._pattern_type
 	'''
-	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, further_arguments=None, required=False, default='', may_change_value=True):
-		super(StringSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, **kwargs):
+		super(StringSanitizer, self).__init__(**kwargs)
 		if isinstance(regex_pattern, basestring):
 			regex_pattern = re.compile(regex_pattern, flags = re_flags)
 		self.minimum = minimum
 		self.maximum = maximum
 		self.regex_pattern = regex_pattern
+
+	def __deepcopy__(self, memo):
+		new = StringSanitizer(
+			None,
+			0,
+			self.minimum,
+			self.maximum,
+			further_arguments=copy.copy(self.further_arguments),
+			required=self.required,
+			default=self.default,
+			may_change_value=self.may_change_value,
+		)
+		try:
+			new.regex_pattern = re.compile(regex_pattern.pattern, regex_pattern.flags)
+		except:
+			# None?
+			pass
+		return new
 
 	def _sanitize(self, value, name, further_args):
 		if not isinstance(value, basestring):
@@ -393,8 +492,14 @@ class StringSanitizer(Sanitizer):
 		return value
 
 class MappingSanitizer(Sanitizer):
-	def __init__(self, mapping, further_arguments=None, required=False, default=None, may_change_value=True):
-		super(MappingSanitizer, self).__init__(further_arguments, required, default, may_change_value)
+	''' MappingSanitizer makes sure that the input is in a key in a
+	dictionary and returns the corresponding value.
+	
+	:param mapping: the dictionary that is used for sanitizing
+	:type mapping: {object : object}
+	'''
+	def __init__(self, mapping, **kwargs):
+		super(MappingSanitizer, self).__init__(**kwargs)
 		try:
 			# sorted works with every base data type, even inter-data type!
 			self.sorted_keys = sorted(mapping.keys())
@@ -410,14 +515,12 @@ class MappingSanitizer(Sanitizer):
 			self.raise_validation_error(_('Value has to be in %(sorted_keys)r'))
 
 class ChoicesSanitizer(MappingSanitizer):
-	def __init__(self, choices, further_arguments=None, required=False, default=None, may_change_value=True):
+	''' MappingSanitizer makes sure that the input is in a given set of
+	choices.
+	
+	:param [object] choices: the allowed choices used.
+	'''
+	def __init__(self, choices, **kwargs):
 		mapping = dict([(choice, choice) for choice in choices])
-		super(ChoiceSanitizer, self).__init__(mapping, further_arguments, required, default, may_change_value)
-
-class AnySanitizer(Sanitizer):
-	def _sanitize(self, value, name, further_args):
-		any_given = any([value] + further_args.values())
-		if not any_given:
-			self.raise_formatted_validation_error(_('Any of %r must be given') % ([name] + further_args.keys()), name, value)
-		return any_given
+		super(ChoiceSanitizer, self).__init__(mapping, **kwargs)
 

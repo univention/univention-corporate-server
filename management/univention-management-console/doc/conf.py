@@ -255,7 +255,7 @@ epub_copyright = u'2012, Univention GmbH'
 # Allow duplicate toc entries.
 #epub_tocdup = True
 
-## Uniention
+## Univention
 
 # keep sort order as defined by source code
 autodoc_member_order = 'bysource'

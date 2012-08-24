@@ -62,7 +62,7 @@ from ..protocol.definitions import BAD_REQUEST_INVALID_OPTS
 from ..modules import UMC_Error, UMC_OptionTypeError
 from ..log import MODULE
 
-from sanitizers import ValidationError, DictSanitizer, ListSanitizer
+from sanitizers import MultiValidationError, ValidationError, DictSanitizer, ListSanitizer
 
 def sanitize(*args, **kwargs):
 	"""
@@ -164,11 +164,22 @@ def _sanitize_list(function, sanitizer, sanitizer_parameters):
 def _sanitize(function, sanitizer):
 	def _response(self, request):
 		try:
-			request.options = sanitizer.sanitize('request.options', {'request.options' : request.options})
-		except ValidationError as e:
-			raise UMC_OptionTypeError(str(e))
-			#self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST_INVALID_OPTS)
-			#return
+			options_name = 'request.options'
+			try:
+				request.options = sanitizer.sanitize(options_name, {options_name : request.options})
+			except MultiValidationError:
+				raise
+			except ValidationError as e:
+				multi_error = MultiValidationError()
+				multi_error.add_error(e, options_name)
+				raise multi_error
+		except MultiValidationError as e:
+			# raise UMC_OptionTypeError(str(e))
+			# self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST)
+			# FIXME dont use 201 for that, but cherrypy accepts result only
+			# for status 200 - 299. I'd like to have 400 Bad Request
+			self.finished(request.id, e.result(), message=str(e), status=201)
+			return
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response
@@ -195,7 +206,16 @@ def _simple_response(function, with_flavor):
 		arguments.remove(with_flavor)
 	def _response(self, request):
 		if not isinstance(request.options, dict):
-			raise UMC_OptionTypeError(_("argument type has to be '%s'") % 'dict')
+			try:
+				# might be a list, although this is not supported
+				# but JS moduleStore does it like this...
+				args = list(request.options)
+				# min_length = min(len(arguments), len(request.options))
+				# request.options = dict(zip(arguments[:min_length], request.options[:min_length]))
+			except:
+				raise UMC_OptionTypeError(_("Argument type has to be '%s'") % 'dict')
+			return function(self, *args)
+
 		# check for required arguments (those without default)
 		self.required_options(request, *[arg for arg in arguments if arg not in defaults])
 
@@ -216,7 +236,7 @@ def _simple_response(function, with_flavor):
 def _multi_response(function, with_flavor, error_handler):
 	def _response(self, request):
 		if not isinstance(request.options, (list,tuple)):
-			raise UMC_OptionTypeError(_("argument type has to be '%s'") % 'list')
+			raise UMC_OptionTypeError(_("Argument type has to be '%s'") % 'list')
 
 		simple = _simple_response(function, with_flavor)
 

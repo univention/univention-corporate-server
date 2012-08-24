@@ -1,3 +1,10 @@
+univention-management-console (5.0.20-1) unstable; urgency=low
+
+  * sanitizers: validate the whole input, dont stop at first error
+  (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Aug 2012 13:49:20 +0200
+
 univention-management-console (5.0.19-1) unstable; urgency=low
 
   * added sanitizer for boolean, mapping, and combination of more than one

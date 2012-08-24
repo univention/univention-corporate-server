@@ -262,26 +262,82 @@ msgstr "Unbekannter MIME-Typ"
 msgid "Invalid UCR variable requested: %s"
 msgstr "Ungültige UCR-Variable: %s"
 
+#: umc/python/packages/sanitizers.py:109
+#, python-format
+msgid "%d error(s) occurred"
+msgstr "%d Fehler aufgetreten"
+
+#: umc/python/packages/sanitizers.py:158
 msgid "Argument required"
 msgstr "Argument erforderlich"
 
+#: umc/python/packages/sanitizers.py:312
+msgid "Cannot be converted to a boolean"
+msgstr "Kann nicht in einen Wahrheitswert umgewandelt werden"
+
+#: umc/python/packages/sanitizers.py:343
 msgid "Cannot be converted to a number"
 msgstr "Kann nicht in eine Zahl umgewandelt werden"
 
-msgid "Should stay %s"
-msgstr "Sollte %s bleiben"
+#: umc/python/packages/sanitizers.py:246
+msgid "Has more than the allowed keys"
+msgstr "Hat mehr Schlüssel als erlaubt"
 
-msgid "The maximum number of asterisks (*) in the search string is %(max_number_of_asterisks)d"
-msgstr "Die Höchstzahl an Sternen (*) im Suchwort ist %(max_number_of_asterisks)d"
+#: umc/python/packages/sanitizers.py:288
+#, python-format
+msgid "Must have at least %(min_elements)d elements"
+msgstr "Muss mindestens %(min_elements)d Elemente haben"
 
+#: umc/python/packages/sanitizers.py:290
+#, python-format
+msgid "Must have at most %(max_elements)d elements"
+msgstr "Darf höchstens %(max_elements)d Elemente haben"
+
+#: umc/python/packages/sanitizers.py:243
 msgid "Not a \"dict\""
 msgstr "Ist kein \"dict\""
 
+#: umc/python/packages/sanitizers.py:285
 msgid "Not a \"list\""
 msgstr "Ist keine \"list\""
 
-msgid "Has more than the allowed keys"
-msgstr "Hat mehr Schlüssel als erlaubt"
+#: umc/python/packages/sanitizers.py:348 umc/python/packages/sanitizers.py:351
+#: umc/python/packages/sanitizers.py:355 umc/python/packages/sanitizers.py:358
+msgid "Should stay %s"
+msgstr "Sollte %s bleiben"
+
+#: umc/python/packages/sanitizers.py:432
+#, python-format
+msgid ""
+"The maximum number of asterisks (*) in the search string is "
+"%(max_number_of_asterisks)d"
+msgstr "Die Höchstzahl an Sternen (*) im Suchwort ist "
+"%(max_number_of_asterisks)d"
+
+#: umc/python/packages/sanitizers.py:511
+#, python-format
+msgid "Value has to be in %(sorted_keys)r"
+msgstr "Wert muss aus %(sorted_keys)r kommen"
+
+#: umc/python/packages/sanitizers.py:486
+msgid "Value is invalid"
+msgstr "Wert ist ungültig"
+
+#: umc/python/packages/sanitizers.py:477
+msgid "Value is not a string"
+msgstr "Wert ist keine Zeichenkette"
+
+#: umc/python/packages/sanitizers.py:483
+#, python-format
+msgid "Value is too long, it has to be at most of length %(maximum)d"
+msgstr "Wert ist zu lang, seine Länge darf höchstens %(maximum)d "
+"Zeichen betragen"
+
+#: umc/python/packages/sanitizers.py:480
+#, python-format
+msgid "Value is too short, it has to be at least of length %(minimum)d"
+msgstr "Wert ist zu kurz, seine Länge muss mindestens %(minimum)d "
+"Zeichen betragen"
 
 #~ msgid "Attribute %s just available for MIME type %s"
 #~ msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
