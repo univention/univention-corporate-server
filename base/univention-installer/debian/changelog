@@ -1,3 +1,9 @@
+univention-installer (8.0.1-21) unstable; urgency=low
+
+  * allow dhcp for all system roles (Bug #26417) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 Aug 2012 16:32:04 +0200
+
 univention-installer (8.0.1-20) unstable; urgency=low
 
   * ignore device mapper in 67_bootloader

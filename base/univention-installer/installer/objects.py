@@ -600,10 +600,11 @@ class textline:
 		self.pos_x=pos_x
 
 class textarea:
-	def __init__(self, text, pos_y, pos_x, height, width, align='left', position_parent=None, drop_whitespace=True):
+	def __init__(self, text, pos_y, pos_x, height, width, align='left', position_parent=None, drop_whitespace=True, warning=False):
 		self.width = width
 		self.height = height
 		self.drop_whitespace = drop_whitespace
+		self.warning = warning
 
 		if align == 'middle':
 			self.pos_x = pos_x-(self.width/2)
@@ -637,8 +638,15 @@ class textarea:
 			if i >= self.height:
 				break
 
+	def erase(self):
+		self.pad = curses.newpad(self.height, self.width+1)
+		self.bgcolor()
+
 	def bgcolor(self):
-		self.pad.bkgd(" ",curses.color_pair(4))
+		if self.warning:
+			self.pad.bkgd(" ",curses.color_pair(5))
+		else:
+			self.pad.bkgd(" ",curses.color_pair(4))
 
 	def set_text(self, text):
 		self.text=text
