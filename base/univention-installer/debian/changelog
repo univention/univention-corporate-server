@@ -1,3 +1,10 @@
+univention-installer (8.0.2-1) unstable; urgency=low
+
+  * Before the system will be joined, the installer now starts the network
+    via the networking init script (Bug #27931)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Aug 2012 14:54:45 +0200
+
 univention-installer (8.0.1-21) unstable; urgency=low
 
   * allow dhcp for all system roles (Bug #26417) 

@@ -66,24 +66,10 @@ if [ -d /var/lib/univention-ldap/ldap ]; then
 	rm -f /var/lib/univention-ldap/ldap/*
 fi
 
+# be sure the network is up and running
+test -x /etc/init.d/networking && invoke-rc.d networking restart
+
 if [ "$server_role" != "domaincontroller_master" ] && [ -n "$domain_controller_account" -a -n "$domain_controller_password" ]; then
-	if [ -n "$eth0_type" ] && [ "$eth0_type" = "dynamic" -o "$eth0_type" = "dhcp" ]; then
-		dhclient eth0
-	else
-		# be sure eth0 is up and running for join. Bug #19547
-		if [ -n "$eth0_ip" ] ; then
-			ifup eth0
-		fi
-		if [ -n "$eth1_ip" ] ; then
-			ifup eth1
-		fi
-		if [ -n "$eth2_ip" ] ; then
-			ifup eth2
-		fi
-		if [ -n "$eth3_ip" ] ; then
-			ifup eth3
-		fi
-	fi
 	if [ -z "$auto_join" ] || [ "$auto_join" != "FALSE" -a "$auto_join" != "false" -a "$auto_join" != "False" ]; then
 		# send number of join scripts to progress dialog
 		CNT="\$(ls -1 /usr/lib/univention-install/*.inst | wc -l)"
