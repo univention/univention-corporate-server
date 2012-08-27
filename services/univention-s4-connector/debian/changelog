@@ -1,4 +1,4 @@
-univention-s4-connector (6.0.171-1) unstable; urgency=low
+univention-s4-connector (7.0.1-1) unstable; urgency=low
 
   * Search again if the connection was closed and a reopen was needed
     (Bug #27176)
