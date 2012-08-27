@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.2-1) unstable; urgency=low
+
+  * Restart the connector at the end of the join process to use the new
+    values for connector/s4/poll/sleep and connector/s4/retryrejected
+    (Bug #26859)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Aug 2012 14:23:09 +0200
+
 univention-s4-connector (7.0.1-1) unstable; urgency=low
 
   * Search again if the connection was closed and a reopen was needed
