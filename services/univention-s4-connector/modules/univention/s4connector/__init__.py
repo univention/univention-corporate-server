@@ -442,6 +442,8 @@ class ucs:
 			ud.debug( ud.LDAP, ud.INFO, 'Lost connection to the LDAP server. Trying to reconnect ...' )
 			try:
 				self.open_ucs()
+				result = self.lo.search( filter = filter, base = base, scope = scope, attr = attr, unique = unique, required = required, timeout = timeout, sizelimit = sizelimit )
+				return result
 			except ldap.SERVER_DOWN, e:
 				ud.debug( ud.LDAP, ud.INFO, 'LDAP-Server seems to be down' )
 				raise search_exception

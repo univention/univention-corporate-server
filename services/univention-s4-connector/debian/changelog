@@ -1,3 +1,10 @@
+univention-s4-connector (6.0.171-1) unstable; urgency=low
+
+  * Search again if the connection was closed and a reopen was needed
+    (Bug #27176)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Aug 2012 14:11:54 +0200
+
 univention-s4-connector (6.0.170-1) unstable; urgency=low
 
   * Fixed typo while synchronize DNS cnames from S4 to UCS (Bug #26346)
