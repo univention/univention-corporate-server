@@ -938,21 +938,19 @@ def split_module_attr( value ):
 		return value.split( ': ', 1 )
 	return ( None, value )
 
-
-
 def _create_ldap_filter( syn, options ):
-    if syn.depends and not syn.depends in options:
-        return None
-    filter_s = syn.udm_filter % options
-    if callable( syn.udm_filter ):
-        filter_s = syn.udm_filter( options )
-    if options.get('objectProperty') and options.get('objectPropertyValue'):
-        if filter_s and not filter_s.startswith('('):
-            # make sure that the LDAP filter is wrapped in brackets
-            filter_s = '(%s)' % filter_s
-        filter_s = '(&(%s=%s)%s)' % (options.get('objectProperty'), options.get('objectPropertyValue'), filter_s)
-    return filter_s
-
+	if syn.depends and not syn.depends in options:
+		return None
+	if callable( syn.udm_filter ):
+		filter_s = syn.udm_filter( options )
+	else:
+		filter_s = syn.udm_filter % options
+	if options.get('objectProperty') and options.get('objectPropertyValue'):
+		if filter_s and not filter_s.startswith('('):
+			# make sure that the LDAP filter is wrapped in brackets
+			filter_s = '(%s)' % filter_s
+		filter_s = '(&(%s=%s)%s)' % (options.get('objectProperty'), options.get('objectPropertyValue'), filter_s)
+	return filter_s
 
 @LDAP_Connection
 def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap_position = None ):
