@@ -143,7 +143,10 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 
 		this.addChild(this._form);
 
-		dojo.connect(this._form._widgets.locale._multiSelect, 'onChange', dojo.hitch(this, function() { this.setValues(this.getValues()); }));
+//		FIXME: fix depends entry in MultiObjectSelect
+//		dojo.connect(this._form._widgets.locale._multiSelect, 'onChange', dojo.hitch(this, function() {
+//			this._form.getWidget('locale/default').set('staticValues', this.getValues()['locale']);
+//		}));
 	},
 
 	setValues: function(_vals) {
@@ -172,7 +175,6 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 				this._form.getWidget('timezone').set('value', data.result);
 			}));
 		}
-		this._form.getWidget('locale/default').set('staticValues', vals['locale']);
 		this._form.setFormValues(vals);
 	},
 

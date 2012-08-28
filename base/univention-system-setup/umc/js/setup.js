@@ -74,7 +74,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	_keepAlive: null,
 
 	// Date when page was last changed
-	_timePageChanges: Date(),
+	_timePageChanges: new Date(),
 
 	buildRendering: function() {
 		this.inherited(arguments);
@@ -164,7 +164,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						label: this._('Next'),
 						callback: dojo.hitch(this, function() {
 							// don't allow more than one click per 500 milliseconds
-							if (this._timePageChanges && 500 < dojo.date.difference(this._timePageChanges, undefined, 'millisecond')) {
+							if (500 < dojo.date.difference(this._timePageChanges, undefined, 'millisecond')) {
 								this._timePageChanges = new Date();
 
 								// switch to next visible page
