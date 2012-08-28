@@ -2,7 +2,9 @@ Source: ucs-test
 Section: tools
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 8.0.0)
+Build-Depends: debhelper (>= 8.0.0),
+ python-all,
+ python-support
 Standards-Version: 3.6.1
 
 Package: ucs-test
