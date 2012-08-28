@@ -81,7 +81,7 @@ def ucs2con (s4connector, key, object):
 	if 'univentionBase' in object['attributes'].get('objectClass'):
 		# DC object → sync GPO
 	 	if s4connector.configRegistry.is_true('connector/s4/mapping/gpo', True):
-			ucs_val = object['attributes'].get('msGPOLink')[0]	# msGPOLink is a single value
+			ucs_val = object['attributes'].get('msGPOLink', [None])[0]	# msGPOLink is a single value
 			s4_val = s4base_attr.get('msGPOLink')
 			if ucs_val != s4_val:
 				s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, [(ldap.MOD_REPLACE, 'gPLink', univention.s4connector.s4.compatible_modstring(ucs_val))])
@@ -93,7 +93,7 @@ def ucs2con (s4connector, key, object):
 
 		sync_times = [ ('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration') ]
 		for (ucs_attr, s4_attr) in sync_times:
-			ucs_time = long(object['attributes'].get(ucs_attr)[0])
+			ucs_time = long(object['attributes'].get(ucs_attr, [0])[0])
 			s4_time = _nano2s(long(s4base_attr.get(s4_attr, [0])[0]) * -1)
 
 			ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: ucs_time (%s): %s' % (ucs_attr, ucs_time))
@@ -104,8 +104,8 @@ def ucs2con (s4connector, key, object):
 		
 		sync_integers = [ ('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength') ]
 		for (ucs_attr, s4_attr) in sync_integers:
-			ucs_val = object['attributes'].get(ucs_attr)
-			s4_val = s4base_attr.get(s4_attr, [None])[0]
+			ucs_val = object['attributes'].get(ucs_attr, str(0))
+			s4_val = s4base_attr.get(s4_attr, [0])[0]
 			if ucs_val != s4_val:
 				ml.append( (ldap.MOD_REPLACE, s4_attr, ucs_val ) )
 
@@ -135,7 +135,7 @@ def con2ucs (s4connector, key, object):
 
 		sync_times = [ ('maxPasswordAge', 'maxPwdAge'), ('minPasswordAge', 'minPwdAge'), ('lockoutDuration', 'lockoutDuration') ]
 		for (ucs_attr, s4_attr) in sync_times:
-			ucs_time = _unixTimeInverval2seconds(sambadomainnameObject.get(ucs_attr))
+			ucs_time = _unixTimeInverval2seconds(sambadomainnameObject.get(ucs_attr, 0))
 			s4_time = _nano2s(long(object['attributes'].get(s4_attr, [0])[0]) * -1)
 
 			if ucs_time != s4_time:
@@ -144,7 +144,7 @@ def con2ucs (s4connector, key, object):
 		
 		sync_integers = [ ('passwordHistory', 'pwdHistoryLength'), ('passwordLength', 'minPwdLength') ]
 		for (ucs_attr, s4_attr) in sync_integers:
-			ucs_val = sambadomainnameObject.get(ucs_attr)
+			ucs_val = sambadomainnameObject.get(ucs_attr, 0)
 			s4_val = object['attributes'].get(s4_attr, [None])[0]
 			if ucs_val != s4_val:
 				sambadomainnameObject[ucs_attr] = s4_val

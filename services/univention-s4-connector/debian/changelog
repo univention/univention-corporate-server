@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.5-1) unstable; urgency=low
+
+  * Set attributes to 0 in S4 if they were removed in UCS (Bug #24237)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Aug 2012 16:20:06 +0200
+
 univention-s4-connector (7.0.4-1) unstable; urgency=low
 
   * By default write the settings from Samba 4 to UCS during the upgrade
