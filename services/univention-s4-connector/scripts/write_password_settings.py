@@ -97,11 +97,9 @@ def write_to_s4(configRegistry, mod_str):
 		print 'Synchronization of password setting attributes from UCS to Samba 4 was successful.'
 
 
-def search_ucs_sambadomain_object(configRegistry, binddn, bindpwd, SID):
+def search_ucs_sambadomain_object(configRegistry, lo, SID):
 	''' Search all UCS samba domain object
 	'''
-
-	lo = _connect_ucs(configRegistry, binddn, bindpwd)
 
 	ldap_result = lo.search(filter='sambaSID=%s' % SID)
 	if len(ldap_result) == 1:
@@ -115,10 +113,14 @@ def search_ucs_sambadomain_object(configRegistry, binddn, bindpwd, SID):
 # http://msdn.microsoft.com/en-us/library/windows/desktop/ms676863%28v=vs.85%29.aspx
 def _s2nano(seconds):
 	return seconds * 10000000
+def _nano2s(nanoseconds):
+	return nanoseconds / 10000000
+
 
 if __name__ == '__main__':
 
 	parser = OptionParser(usage='msgpo.py (--write2ucs|--write2samba4)')
+	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Write Samba password settings from Samba 4 to UCS", default=False)
 	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write Samba password settings from UCS to Samba 4", default=False)
 	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
 	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
@@ -127,9 +129,24 @@ if __name__ == '__main__':
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if options.write2samba4:
+	lo = _connect_ucs(configRegistry, options.binddn, options.bindpwd)
+
+	if options.write2ucs:
 		s4_object = _get_s4_object(configRegistry.get('samba4/ldap/base'))
-		ucs_object = search_ucs_sambadomain_object(configRegistry, options.binddn, options.bindpwd, s4_object.get('objectSid')[0])
+		ucs_object_dn, ucs_object_attr = search_ucs_sambadomain_object(configRegistry, lo, s4_object.get('objectSid')[0])
+		ml = []
+		sync_times = [ ('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration') ]
+		for (ucs_attr, s4_attr) in sync_times:
+			s4_time = _nano2s(long(s4_object.get(s4_attr, [0])[0]) * -1)
+			ml.append( (ucs_attr, ucs_object_attr.get(ucs_attr), [str(s4_time)] ) )
+		sync_integers = [ ('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength') ]
+		for (ucs_attr, s4_attr) in sync_integers:
+			ml.append( (ucs_attr, ucs_object_attr.get(ucs_attr),s4_object.get(s4_attr, [0]) ) )
+		print ml
+		lo.modify(ucs_object_dn, ml)
+	elif options.write2samba4:
+		s4_object = _get_s4_object(configRegistry.get('samba4/ldap/base'))
+		ucs_object = search_ucs_sambadomain_object(configRegistry, lo, s4_object.get('objectSid')[0])
 
 		# Convert UCS attributes to Samba 4 values
 		mod_str = 'dn: %s\nchangetype: modify\n' % configRegistry.get('samba4/ldap/base')
