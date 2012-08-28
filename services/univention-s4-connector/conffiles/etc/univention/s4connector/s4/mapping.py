@@ -35,13 +35,14 @@ import univention.s4connector.s4.mapping
 import univention.s4connector.s4.password
 import univention.s4connector.s4.sid_mapping
 import univention.s4connector.s4.dns
+import univention.s4connector.s4.dc
 
 global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base@%@',
 			'cn=shares,@%@ldap/base@%@','cn=printers,@%@ldap/base@%@',
 			'cn=networks,@%@ldap/base@%@', 'cn=kerberos,@%@ldap/base@%@',
 			'cn=dhcp,@%@ldap/base@%@',
 			'cn=mail,@%@ldap/base@%@',
-			'cn=samba,@%@ldap/base@%@','cn=nagios,@%@ldap/base@%@',
+			'cn=nagios,@%@ldap/base@%@',
 			'CN=RAS and IAS Servers Access Check,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=FileLinks,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=WinsockServices,CN=System,@%@connector/s4/ldap/base@%@',
@@ -713,31 +714,39 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 @!@
 				},
 		),
-@!@
-if configRegistry.is_true('connector/s4/mapping/gpo', True):
-	print '''
 	'container_dc': univention.s4connector.property (
 			ucs_module='container/dc',
-
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+			ucs_default_dn='cn=samba,@%@ldap/base@%@',
+			con_default_dn='@%@connector/s4/ldap/base@%@',
+			
+			@!@
+if configRegistry.get('connector/s4/mapping/dc/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/dc/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
+@!@
 
 			scope='sub',
 
-			con_search_filter='(objectClass=domain)', # builtinDomain is cn=builtin (with group cn=Administrators)
+			identify=univention.s4connector.s4.dc.identify,
+
+			con_search_filter='(|(objectClass=domain)(objectClass=sambaDomainName))',
+
+@!@
+ignore_filter = ''
+for dns in configRegistry.get('connector/s4/mapping/dc/ignorelist', '').split(','):
+	if dns:
+		ignore_filter += '(%s)' % (dns)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 			
-			attributes= {
-					'gPLink': univention.s4connector.attribute (
-							ucs_attribute='gPLink',
-							ldap_attribute='msGPOLink',
-							con_attribute='gPLink'
-						),
-				},
+			con_sync_function = univention.s4connector.s4.dc.ucs2con,
+			ucs_sync_function = univention.s4connector.s4.dc.con2ucs,
 
 		),
-	'''
-@!@
 }
 
 

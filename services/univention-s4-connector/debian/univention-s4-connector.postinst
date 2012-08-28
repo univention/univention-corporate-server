@@ -72,7 +72,21 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 		# Added GPO objects to S4 rejected table, this will resync these objects
 		/usr/share/univention-s4-connector/upgrade_groupPolicyContainer.py
 		/etc/init.d/univention-s4-connector start
-	else
+		restart=true
+	fi
+
+	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.3-1; then
+		/etc/init.d/univention-s4-connector stop
+		# Create a backup of Samba 4 base object
+		timestamp="$(date +%s)"
+		univention-s4search -s base >"/var/univention-backup/samba4_base_object_${timestamp}"
+		chmod 700 "/var/univention-backup/samba4_base_object_${timestamp}"
+		/usr/share/univention-s4-connector/write_password_settings.py --write2samba4
+		/etc/init.d/univention-s4-connector start
+		restart=true
+	fi
+
+	if [ "$restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
 	fi
 fi

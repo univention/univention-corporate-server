@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.3-1) unstable; urgency=low
+
+  * Synchronize the password settings between the Samba 4 base object
+    and the UCS sambaDomain object (Bug #24237)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Aug 2012 11:46:09 +0200
+
 univention-s4-connector (7.0.2-1) unstable; urgency=low
 
   * Restart the connector at the end of the join process to use the new
