@@ -1,3 +1,9 @@
+ucs-test (3.0.0-3) unstable; urgency=low
+
+  * fix typo in tests/50_samba (Bug #28357)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Aug 2012 19:45:58 +0200
+
 ucs-test (3.0.0-2) unstable; urgency=low
 
   * Code cleanup in tests/50_samba (Bug #28357)

@@ -30,7 +30,7 @@ user_create "$name"
 
 group_adduser "$name" "$name"
 
-if [ -x /usr/bin/net ]; then
+if ! [ -x /usr/bin/net ]; then
 	fail_fast 1 "net is not available";
 fi;
 
