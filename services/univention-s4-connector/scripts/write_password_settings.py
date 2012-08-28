@@ -142,7 +142,6 @@ if __name__ == '__main__':
 		sync_integers = [ ('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength') ]
 		for (ucs_attr, s4_attr) in sync_integers:
 			ml.append( (ucs_attr, ucs_object_attr.get(ucs_attr),s4_object.get(s4_attr, [0]) ) )
-		print ml
 		lo.modify(ucs_object_dn, ml)
 	elif options.write2samba4:
 		s4_object = _get_s4_object(configRegistry.get('samba4/ldap/base'))
