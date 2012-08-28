@@ -15,12 +15,12 @@ Assert () { # Assert $1 = $2, optional error message $3
 	fi
 }
 
-##### Beginning ##### 
+##### Beginning #####
 out="$(mktemp)"
 trap "rm -f '$out' ; ucr_restore >/dev/null" EXIT
 ucr set foo=bar bar=foo >/dev/null 2>&1
 
-##### Test foo and bar  ##### 
+##### Test foo and bar  #####
 ucr search --brief foo >"$out"
 Assert "foo: bar"
 
@@ -28,7 +28,7 @@ ucr search --brief --key foo >"$out"
 Assert "foo: bar"
 
 ucr --shell search --brief --key foo >"$out"
-Assert "foo=\"bar\""
+Assert "foo=\"bar\"\\|foo=bar"
 
 ucr search --brief --value bar >"$out"
 Assert "foo: bar"
@@ -43,5 +43,5 @@ ucr search --brief --key '^(fo{2}|bar)$' >"$out"
 Assert "bar: foo"
 Assert "foo: bar"
 
-##### End ##### 
+##### End #####
 exit 0

@@ -8,7 +8,7 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 pwfile="$(mktemp)"
 trap "rm -f '$pwfile'" EXIT
-echo -n univention >"$pwfile"
+echo -n "${BINDPWD}" >"$pwfile"
 
 result="$(univention-ssh "$pwfile" "root@${hostname}.${domainname}" echo BEFORE \; kill '$$' \; echo AFTER)"
 if [ $? -eq 0 ]

@@ -7,7 +7,7 @@
 . "${TESTLIBPATH}/base.sh" || exit 137
 pwfile="$(mktemp)"
 trap "rm -f '$pwfile'" EXIT
-echo -n univention >"${pwfile}"
+echo -n "${BINDPWD}" >"$pwfile"
 
 if \
 	univention-ssh-rsync "${pwfile}" /etc/hostname "root@${hostname}.${domainname}:/tmp/$$" && \

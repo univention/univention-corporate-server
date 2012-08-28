@@ -15,6 +15,7 @@ import logging
 import signal
 import select
 import errno
+import re
 try:  # >= Python 2.5
     from hashlib import md5
 except ImportError:
@@ -23,6 +24,21 @@ except ImportError:
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
 
+
+# <http://stackoverflow.com/questions/1707890/>
+ILLEGAL_XML_UNICHR = (
+        (0x00, 0x08), (0x0B, 0x1F), (0x7F, 0x84), (0x86, 0x9F),
+        (0xD800, 0xDFFF), (0xFDD0, 0xFDDF), (0xFFFE, 0xFFFF),
+        (0x1FFFE, 0x1FFFF), (0x2FFFE, 0x2FFFF), (0x3FFFE, 0x3FFFF),
+        (0x4FFFE, 0x4FFFF), (0x5FFFE, 0x5FFFF), (0x6FFFE, 0x6FFFF),
+        (0x7FFFE, 0x7FFFF), (0x8FFFE, 0x8FFFF), (0x9FFFE, 0x9FFFF),
+        (0xAFFFE, 0xAFFFF), (0xBFFFE, 0xBFFFF), (0xCFFFE, 0xCFFFF),
+        (0xDFFFE, 0xDFFFF), (0xEFFFE, 0xEFFFF), (0xFFFFE, 0xFFFFF),
+        (0x10FFFE, 0x10FFFF),
+        )
+RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % \
+        (unichr(low), unichr(high)) for (low, high) in ILLEGAL_XML_UNICHR
+        if low < sys.maxunicode)))
 
 class TestEnvironment(object):
     """Test environment for running test cases.
@@ -567,9 +583,20 @@ class TestCase(object):
                     log_stderr.append(data)
 
         if log_stdout:
-            result.attach('stdout', 'text/plain', ''.join(log_stdout))
+            TestCase._attach(result, 'stdout', log_stdout)
         if log_stderr:
-            result.attach('stderr', 'text/plain', ''.join(log_stderr))
+            TestCase._attach(result, 'stderr', log_stderr)
+
+    @staticmethod
+    def _attach(result, part, content):
+        """Attach content."""
+        text = ''.join(content)
+        try:
+            dirty = text.decode(sys.getfilesystemencoding())
+            clean = RE_ILLEGAL_XML.sub(u'\uFFFD', dirty)
+        except UnicodeError:
+            clean = text.encode('hex')
+        result.attach(part, 'text/plain', clean)
 
     def _translate_result(self, result):
         """Translate exit code into result."""

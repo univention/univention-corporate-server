@@ -1,0 +1,106 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Checking all udm nfs options in exports file"
+## exposure: safe
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+##  - univention-samba
+## roles-not: [basesystem]
+## tags: [basic]
+## join: true
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+# some globals
+share_name="$(random_share)"
+SHARE_POSITION="cn=shares,$ldap_base"
+fqdn=`host $hostname | awk {'print $1'}`
+echo "hostname: $hostname"
+echo "fqdn: $fqdn"
+etc="/etc/exports"
+available_options=`udm  shares/share create | grep  --regex "(nfs)" | awk  {'print $1'}`
+
+
+# here we have the udm_option/nfs_value/udm_value
+options="
+writeable/rw/1
+sync/async/async
+subtree_checking/subtree_check/1
+root_squash/root_squash/1
+"
+
+
+# delete share even on abnormal exits
+trap "share_remove $share_name" INT TERM EXIT
+
+# create share
+udm shares/share create --position="$SHARE_POSITION" \
+			--option nfs \
+			--set name="$share_name" \
+			--set path="/$share_name" \
+			--set host="$fqdn" || fail_fast 1 "could not create share"
+
+# wait for samba conf file
+sleep 10
+
+if [ ! -f "$etc" ]; then
+	fail_fast 1 "nfs config file $etc not found"
+fi
+
+# set bash string separator to newline
+IFS=$'\n'
+
+# set samba options via udm and check samba config file
+for i in $options; do
+
+	echo "$i" | grep --regex "^\s*#" > /dev/null
+	if [ 0 -eq "$?" ]; then continue; fi
+
+	echo "$i" | grep --regex "^\s*$" > /dev/null
+	if [ 0 -eq "$?" ]; then continue; fi
+
+	udm_option=`echo $i | awk -F / {'print $1'}`
+	nfs_value=`echo $i | awk -F / {'print $2'}`
+	udm_value=`echo $i | awk -F / {'print $3'}`
+
+	# modify share
+	echo "Debug: Options: $i"
+	echo "Debug: udm call: udm shares/share modify --dn=\"cn=$share_name,cn=shares,$ldap_base\" --set \"$udm_option=$udm_value\""
+	udm shares/share modify --dn="cn=$share_name,cn=shares,$ldap_base" --set "$udm_option=$udm_value" || fail_fast 1 "could not set $udm_option to $udm_value"
+
+	# save search string and the rest in $nfs_search, we can not perform the search here, because
+	# udm needs some time to create the nfs conf file
+	if [ -z "$search" ]; then
+		search="${udm_option}:DELIMETER:${nfs_value}:DELIMETER:${udm_value}"
+	else
+		search="$search 
+		${udm_option}:DELIMETER:${nfs_value}:DELIMETER:${udm_value}"
+	fi
+
+	# clear this options, later we want to check wether we have alle options tested or not
+	available_options=`echo $available_options | sed "s/$udm_option//"`
+
+done
+
+# wait a moment to let udm prepare the samba conf file
+sleep 3
+
+# check the nfs conf file
+for i in $search; do
+	udm=`echo $i | awk -F :DELIMETER: {'print $1'}`
+	nfs=`echo $i | awk -F :DELIMETER: {'print $2'}`
+	value=`echo $i | awk -F :DELIMETER: {'print $3'}`
+
+	cat "$etc" | grep --regex '^"/'"$share_name" | grep --regex '[ (,"]/*'"$nfs"'[ ),"]' > /dev/null || fail_fast 1 "nfs config file <-> udm settings mismatch udm option: $udm nfs options: $nfs udm value: $value"
+done
+
+# test if we checked all udm samba options
+available_options=`echo $available_options | sed 's/^ *//'`
+available_options=`echo $available_options | sed 's/ *$//'`
+if [ -n "$available_options" ]; then
+	fail_fast 122 "forget to test udm option \"$available_options\""
+fi
+
+exit 0

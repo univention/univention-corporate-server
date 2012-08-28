@@ -1,0 +1,225 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check wether many parallel smbclient authentifications are possible
+## exposure: safe
+## packages:
+##  - screen
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## - memberserver
+
+. "$TESTLIBPATH/master.sh" || exit 137
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+
+SAMBA="true"
+MAIL="false"
+KERBEROS="false"
+PERSON="false"
+POSIX="false"
+
+#Parameters for configuration:
+#	smbauth_totalRounds: amount of rounds (default=3)
+#	
+#	smbauth_amountPerRound: amount of authentifications per round (default=8)
+#	
+#	smbauth_roundTime: defines the time in which all authentifications in one
+#		round are triggered (default=5)
+#
+#	$smbauth_delay: delay between each round (default=10)
+
+trap cleanup INT TERM EXIT
+
+#amount of rounds
+if [ ! -z $smbauth_totalRounds  ] && [ $smbauth_totalRounds -gt 0  ] && [ $smbauth_totalRounds -lt 100 ]
+then 
+	totalRounds=$smbauth_totalRounds
+else
+	totalRounds=3 
+fi
+
+
+#defines how many authentifications are triggered for one round
+#amountPerRound=8
+if [ ! -z $smbauth_amountPerRound ] && [ $smbauth_amountPerRound -gt 0 ] && [ $smbauth_amountPerRound -lt 100 ]
+then 
+	amountPerRound=$smbauth_amountPerRound
+else
+	amountPerRound=8
+fi  
+
+#the total number of authentifications
+let amount=$totalRounds*$amountPerRound
+
+#defines the time in which all authentifications in one round are triggered
+if [ ! -z $smbauth_roundTime ] && [ $smbauth_roundTime -gt 0 ] && [ $smbauth_roundTime -lt 100 ]
+then  
+	roundTime=$smbauth_roundTime
+else
+	roundTime=5
+fi
+
+#delay between each round
+if [ ! -z $smbauth_delay ] && [ $smbauth_delay -gt 0 ] && [ $smbauth_delay -lt 100 ]
+then
+	delay=$smbauth_delay
+else
+	delay=10
+fi
+
+SHARE_HOST="$ldap_master"
+SHARE_POSITION="cn=$ldap_master,cn=shares,$ldap_base"
+
+#create user
+username=`user_randomname`
+password=univention
+user_create "$username"
+share_name=`random_share`
+share_create $share_name /$share_name
+share_dn=`univention-directory-manager shares/share list --filter sambaName="$share_name" | sed -ne 's/^DN: //p'`
+udm shares/share modify --dn=$share_dn --set sambaPublic=1
+sleep 10
+
+
+function create_screenconfig
+{
+    
+    echo caption always \"%3n %t%? @%u%?%? [%h]%?%=%c\" > screenconfig_$1
+
+    let i=0
+    while [ $i -lt ${index[round_nr]} ]
+    do
+        echo screen $i >> screenconfig_$1
+        let i=$i+1
+    done
+
+	screen -dmS smbclients_$1 -c screenconfig_$1
+}
+
+function start_round
+{
+
+#	echo create new round
+	let i=0
+	while [ $i -lt $amountPerRound  ]
+	do
+    	screen -S smbclients_$screenIndex -p $authIndex -X stuff "smbclient -U $username%$password //`dig +short ${ldap_master}`/$share_name"`echo -ne '\015'` &
+    	echo Nr. $i
+
+		sleep ${delayArray[$i]}
+
+    	let i=$i+1
+		let authIndex=$authIndex+1
+		
+		temp=0
+		let temp=authIndex%40
+		if [ $temp -eq 0 ]
+		then
+			let authIndex=0
+			let screenIndex=$screenIndex+1
+		fi
+	done
+
+	let roundIndex=$roundIndex+1
+
+	if [ $roundIndex -ne $totalRounds ] 
+	then
+		echo "Wait for $delay seconds"
+    	sleep $delay
+		start_round
+	fi
+}
+
+function calculate_startdelay
+{
+    sum=0
+	sum2=0
+
+#create a random number für every authentification at startup
+    for ((j=0;j<amountPerRound;j++))
+    do
+        delayArray[$j]=$[($RANDOM%9999+1)]
+        delayArray[$j]=`echo "scale=5;${delayArray[j]}/10000" | bc`
+       # echo "nr $j: ${delayArray[$j]}"
+        sum=`echo "scale=5;$sum+${delayArray[$j]}" | bc`
+    done
+   # echo  $sum
+
+#adapt numbers so that the sum of them equals $startTime, hence authentifications start in this time interval 
+    for ((j=0;j<amountPerRound;j++))
+    do
+        delayArray[$j]=`echo "scale=5;${delayArray[$j]}/$sum*$roundTime" | bc`
+        #echo "nr $j: ${delayArray[$j]}"
+							      
+        sum2=`echo "scale=5;$sum2+${delayArray[$j]}" | bc`
+    done
+ #   echo $sum2
+
+}
+
+function cleanup
+{
+rm screenconfig_*					
+let i=O
+while [ $i -le $round_dec ]
+do
+kill `screen -ls | grep smbclients_$i | cut -d '.' -f1`
+        let i=$i+1
+done
+user_remove "$username"
+share_remove "$share_name"
+}
+
+#Beginning
+
+if $random;then 
+    calculate_startdelay
+fi
+
+#calculate how much screen sessions are needed
+#$index is an array which inherits the amount of windows for each session as an int
+#for example: if $amount=92: then index[0]=40 index[1]=40 index[2]=12
+
+let round_dec=$amount/40
+i=0
+while [ $i -lt $round_dec ]
+do
+    index[$i]=40
+    let i=$i+1
+done
+
+let index[$i]=$amount%40
+
+
+
+for ((round_nr=0;round_nr< ${#index[*]};round_nr++))
+do
+    create_screenconfig $round_nr
+done
+sleep 14
+
+screenIndex=0
+roundIndex=0
+authIndex=0
+
+#starts the first round, this function works recursively.
+start_round
+
+#Calculate result
+#needs to be greater than 20 because of the hard coded timeout for one authentification
+sleep 20
+#echo ldap_master:${ldap_master}
+result=`on_master "smbstatus | grep -c $share_name"`
+echo Result:$result
+
+if [ "$result" != "$amount" ]
+then
+fail_test 1 "Only $result of $amount authentifications have been successful"
+fi
+
+
+exit $RETVAL
+
+# vim: set filetype=sh tabstop=4 :

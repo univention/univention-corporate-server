@@ -141,15 +141,15 @@ Description: UCR tests
 # This package includes some scripts for testing the iptables settings and
 # open/filtered ports.
 
-#Package: ucs-test-samba
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for samba (and NFS shares)
-# This package includes some scripts for testing the functionality of the samba
-# domain and NFS shares.
+Package: ucs-test-samba
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for samba (and NFS shares)
+ This package includes some scripts for testing the functionality of the samba
+ domain and NFS shares.
 
 #Package: ucs-test-pkgdb
 #Architecture: all
@@ -335,7 +335,7 @@ Depends:
 # ucs-test-mail,
 # ucs-test-kolab,
 # ucs-test-iptables,
-# ucs-test-samba,
+ ucs-test-samba,
 # ucs-test-pkgdb,
 # ucs-test-udm-dns,
 # ucs-test-udm-computers,

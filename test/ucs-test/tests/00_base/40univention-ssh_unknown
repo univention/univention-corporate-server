@@ -24,7 +24,7 @@ trap restore EXIT
 
 my_mv /etc/ssh/ssh_known_hosts{,.$$}
 my_mv "${HOME}/.ssh/known_hosts"{,.$$}
-echo -n univention >"${pwfile}"
+echo -n "${BINDPWD}" >"$pwfile"
 
 if univention-ssh "${pwfile}" "root@${hostname}.${domainname}" true && \
 	[ -n "$(ssh-keygen -F "${hostname}.${domainname}")" ]

@@ -10,7 +10,7 @@ delay=10
 . "$TESTLIBPATH/base.sh" || exit 137
 pwfile="$(mktemp)"
 trap "rm -f '$pwfile'" EXIT
-echo -n univention > "$pwfile"
+echo -n "${BINDPWD}" >"$pwfile"
 
 univention-ssh "$pwfile" "root@${hostname}.${domainname}" "date +%s ; sleep $delay ; date +%s" | (
 	read a
