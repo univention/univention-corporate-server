@@ -65,7 +65,7 @@ override_dh_fixperms:
 	dh_fixperms
 
 override_dh_auto_test:
-	# ucslint
+	ucslint
 	dh_auto_test
 
 %:
