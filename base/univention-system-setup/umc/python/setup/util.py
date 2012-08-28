@@ -45,6 +45,7 @@ import re
 import sys
 import apt
 import psutil
+import csv
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
@@ -71,6 +72,7 @@ CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 
 RE_IPV4_DEVICE = re.compile(r'interfaces/(?P<device>[^/]+)/(?P<type>.*)')
 RE_IPV4_TYPE = re.compile('interfaces/[^/]*/type')
+RE_LOCALE = re.compile(r'([^.@ ]+).*')
 
 # list of all needed UCR variables
 UCR_VARIABLES = [
@@ -120,6 +122,14 @@ def load_values():
 		f.close()
 	else:
 		values['timezone']=''
+
+	if values['locale']:
+		locales = values['locale'].split()
+#		pattern = re.compile(r'^(?:%s)$' % ('|'.join(map(lambda s: re.escape(s.replace(':UTF-8', '')), locales)))) # fallbacklocale
+		pattern = re.compile(r'^(?:%s)$' % ('|'.join(map(lambda s: re.escape(s[:2]), locales)))) # langcode
+		values['locale'] = list(filter(lambda d: d['id'] in locales, get_available_locales(pattern, 'langcode')))
+	else:
+		values['locale'] = []
 
 	# get installed components
 	values['components'] = ' '.join([icomp['id'] for icomp in get_installed_components()])
@@ -689,3 +699,71 @@ def is_ascii(str):
 	except:
 		return False
 
+def get_available_locales(pattern, category='language_en'):
+	'''Return a list of all available locales.'''
+	try:
+		fsupported = open('/usr/share/i18n/SUPPORTED')
+		flanguages = open('/lib/univention-installer/locale/languagelist')
+	except:
+		MODULE.error( 'Cannot find locale data for languages in /lib/univention-installer/locale' )
+		return
+
+	# get all locales that are supported
+	rsupported = csv.reader(fsupported, delimiter=' ')
+	supportedLocales = { 'C': True }
+	for ilocale in rsupported:
+		# we only support UTF-8
+		if ilocale[1] != 'UTF-8':
+			continue
+
+		# get the locale
+		m = RE_LOCALE.match(ilocale[0])
+		if m:
+			supportedLocales[m.groups()[0]] = True
+
+	category = {'langcode': 0, 'language_en': 1, 'language': 2, 'countrycode': 4, 'fallbacklocale': 5}.get(category, 1)
+
+	# open all languages
+	rlanguages = csv.reader(flanguages, delimiter=';')
+	locales = []
+	for ilang in rlanguages:
+		if ilang[0].startswith('#'):
+			continue
+
+		if not pattern.match(ilang[category]):
+			continue
+
+		# each language might be spoken in several countries
+		ipath = '/lib/univention-installer/locale/short-list/%s.short' % ilang[0]
+		if os.path.exists(ipath):
+			try:
+				# open the short list with countries belonging to the language
+				fshort = open(ipath)
+				rshort = csv.reader(fshort, delimiter='\t')
+
+				# create for each country a locale entry
+				for jcountry in rshort:
+					code = '%s_%s' % (ilang[0], jcountry[0])
+					if code in supportedLocales:
+						locales.append({
+							'id': '%s.UTF-8:UTF-8' % code,
+							'label': '%s (%s)' % (ilang[1], jcountry[2])
+						})
+				continue
+			except Exception, e:
+				pass
+
+		# get the locale code
+		code = ilang[0]
+		if code.find('_') < 0 and code != 'C':
+			# no underscore -> we need to build the locale ourself
+			code = '%s_%s' % (ilang[0], ilang[4])
+
+		# final entry
+		if code in supportedLocales:
+			locales.append({
+				'id': '%s.UTF-8:UTF-8' % code,
+				'label': ilang[1]
+			})
+
+	return locales

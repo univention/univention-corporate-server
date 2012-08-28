@@ -50,6 +50,8 @@ import subprocess
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
+from univention.management.console.modules.sanitizers import PatternSanitizer
+from univention.management.console.modules.decorators import sanitize, simple_response
 
 _ = Translation('univention-management-console-module-setup').translate
 
@@ -65,7 +67,6 @@ RE_IPV6_DYNAMIC = re.compile(r'^interfaces/([^/]+)/ipv6/acceptRA$')
 RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+$')
 RE_SPACE = re.compile(r'\s+')
 RE_SSL = re.compile(r'^ssl/.*')
-RE_LOCALE = re.compile(r'([^.@ ]+).*')
 
 class Instance(umcm.Base):
 	def __init__(self):
@@ -531,71 +532,11 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, messages)
 
-
-	def lang_locales(self, request):
+	@sanitize(pattern=PatternSanitizer(default='.*', required=True, add_asterisks=False))
+	@simple_response
+	def lang_locales(self, pattern, category='language_en'):
 		'''Return a list of all available locales.'''
-		try:
-			fsupported = open('/usr/share/i18n/SUPPORTED')
-			flanguages = open('/lib/univention-installer/locale/languagelist')
-		except:
-			MODULE.error( 'Cannot find locale data for languages in /lib/univention-installer/locale' )
-			self.finished(request.id, None)
-			return
-
-		# get all locales that are supported
-		rsupported = csv.reader(fsupported, delimiter=' ')
-		supportedLocales = { 'C': True }
-		for ilocale in rsupported:
-			# we only support UTF-8
-			if ilocale[1] != 'UTF-8':
-				continue
-
-			# get the locale
-			m = RE_LOCALE.match(ilocale[0])
-			if m:
-				supportedLocales[m.groups()[0]] = True
-
-		# open all languages
-		rlanguages = csv.reader(flanguages, delimiter=';')
-		locales = []
-		for ilang in rlanguages:
-			if ilang[0].startswith('#'):
-				continue
-
-			# each language might be spoken in several countries
-			ipath = '/lib/univention-installer/locale/short-list/%s.short' % ilang[0]
-			if os.path.exists(ipath):
-				try:
-					# open the short list with countries belonging to the language
-					fshort = open(ipath)
-					rshort = csv.reader(fshort, delimiter='\t')
-
-					# create for each country a locale entry
-					for jcountry in rshort:
-						code = '%s_%s' % (ilang[0], jcountry[0])
-						if code in supportedLocales:
-							locales.append({
-								'id': '%s.UTF-8:UTF-8' % code,
-								'label': '%s (%s)' % (ilang[1], jcountry[2])
-							})
-					continue
-				except Exception, e:
-					pass
-
-			# get the locale code
-			code = ilang[0]
-			if code.find('_') < 0 and code != 'C':
-				# no underscore -> we need to build the locale ourself
-				code = '%s_%s' % (ilang[0], ilang[4])
-
-			# final entry
-			if code in supportedLocales:
-				locales.append({
-					'id': '%s.UTF-8:UTF-8' % code,
-					'label': ilang[1]
-				})
-
-		self.finished(request.id, locales)
+		return util.get_available_locales(pattern, category)
 
 	def lang_default_timezone(self, request):
 		'''Returns default timezone for given locale.'''

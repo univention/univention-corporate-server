@@ -1,3 +1,10 @@
+univention-system-setup (6.0.15-1) unstable; urgency=low
+
+  * changing page in wizard mode can only be done every half second; Bug #27734
+  * the widget for the locale has been changed to MultiObjectSelect; Bug #24388
+
+ -- Florian Best <best@univention.de>  Tue, 28 Aug 2012 10:03:21 +0200
+
 univention-system-setup (6.0.14-1) unstable; urgency=low
 
   * Remove explicit interfaces/ references (Bug #26058)

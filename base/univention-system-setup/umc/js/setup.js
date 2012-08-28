@@ -73,6 +73,9 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	// to make sure the session does not expire
 	_keepAlive: null,
 
+	// Date when page was last changed
+	_timePageChanges: Date(),
+
 	buildRendering: function() {
 		this.inherited(arguments);
 
@@ -87,7 +90,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// dont do anything important here, just
 			// make sure that umc does not forget us
 			// dont even handle errors
-			umc.tools.umcpCommand('setup/finished', {}, false)
+			umc.tools.umcpCommand('setup/finished', {}, false);
 		};
 
 		// load some ucr variables
@@ -160,13 +163,18 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						name: 'submit',
 						label: this._('Next'),
 						callback: dojo.hitch(this, function() {
-							// switch to next visible page
-							// precondition: the last page is never invisible!
-							var nextpage = i + 1;
-							while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
-								nextpage += 1;
+							// don't allow more than one click per 500 milliseconds
+							if (this._timePageChanges && 500 < dojo.date.difference(this._timePageChanges, undefined, 'millisecond')) {
+								this._timePageChanges = new Date();
+
+								// switch to next visible page
+								// precondition: the last page is never invisible!
+								var nextpage = i + 1;
+								while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
+									nextpage += 1;
+								}
+								this.selectChildIfValid(nextpage);
 							}
-							this.selectChildIfValid(nextpage);
 						})
 					});
 				}

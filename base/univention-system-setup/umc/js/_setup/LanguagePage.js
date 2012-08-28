@@ -88,11 +88,32 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 				}
 			})
 		}, {
-			type: 'MultiSelect',
+			type: 'MultiObjectSelect',
 			name: 'locale',
 			label: this._('Installed system locales'),
-			umcpCommand: this.umcpCommand,
-			dynamicValues: 'setup/lang/locales',
+			queryCommand: dojo.hitch(this, function(options) {
+				return this.umcpCommand('setup/lang/locales', options).then(function(data) {
+					return data.result;
+				});
+			}),
+			queryWidgets: [{
+				type: 'ComboBox',
+				name: 'category',
+				label: this._('Category'),
+				value: 'language_en',
+				staticValues: [
+					{id: 'language_en', label: this._('Language (english)')},
+					{id: 'language', label: this._('Language')},
+					{id: 'langcode', label: this._('Language code')},
+					{id: 'countrycode', label: this._('Country code')}
+				]
+			}, {
+				type: 'TextBox',
+				name: 'pattern',
+				value: '*',
+				label: this._('Name')
+			}],
+			autosearch: true,
 			height: '200px'
 		}, {
 			type: 'ComboBox',
@@ -101,7 +122,7 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 			depends: 'locale',
 			umcpCommand: this.umcpCommand,
 			dynamicValues: dojo.hitch(this, function(vals) {
-				return this._form.getWidget('locale').getSelectedItems();
+				return this._form.getWidget('locale').get('value');
 			})
 		}];
 
@@ -121,11 +142,12 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 		});
 
 		this.addChild(this._form);
+
+		dojo.connect(this._form._widgets.locale._multiSelect, 'onChange', dojo.hitch(this, function() { this.setValues(this.getValues()); }));
 	},
 
 	setValues: function(_vals) {
 		var vals = dojo.mixin({}, _vals);
-		vals.locale = _vals.locale.split(/\s+/);
 		if (this.wizard_mode && this._firstSetValues) {
 			this._firstSetValues = false;
 			var countrycode = null;
@@ -150,12 +172,12 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 				this._form.getWidget('timezone').set('value', data.result);
 			}));
 		}
+		this._form.getWidget('locale/default').set('staticValues', vals['locale']);
 		this._form.setFormValues(vals);
 	},
 
 	getValues: function() {
 		var vals = this._form.gatherFormValues();
-		vals.locale = vals.locale.join(' ');
 		return vals;
 	},
 	
