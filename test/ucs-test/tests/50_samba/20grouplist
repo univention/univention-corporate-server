@@ -17,17 +17,17 @@ POSIX="false"
 
 NAME=`user_randomname`
 
-trap "user_remove $NAME" INT TERM EXIT
+trap 'user_remove "$NAME"' INT TERM EXIT
 user_create "$NAME"
 
 sleep 20 # wait for replication
 
-if [ -z "`net rpc group -U $NAME%univention | grep \"Domain Users\"`" ]
+if net rpc group -U "$NAME%univention" | grep -q "Domain Users"
 then
-	fail_fast 1 "The test trying to display samba-Groups as a user failed"
-else
 	echo "***The test trying to display samba-Groups as a user went like it should, everything is ok"
-fi	
+else
+	fail_fast 1 "The test trying to display samba-Groups as a user failed"
+fi
 
 
 exit $RETVAL

@@ -17,7 +17,7 @@ username=`user_randomname`
 password=univention
 
 # delete user
-trap "user_remove $username" INT TERM EXIT
+trap 'user_remove "$username"' INT TERM EXIT
 
 # create samba domain admin
 
@@ -37,8 +37,8 @@ net join "$windows_domain" -U"$username%$password" || fail_fast 1 "could not joi
 /etc/init.d/winbind restart || fail_fast 1 "could not restart winbind"
 
 # ntml auth
-ntlm_auth --domain="$windows_domain" --"username=$username" --"password=${password}2" && fail_fast 1 "ntlm_auth was sucessful with an wrong password"
-ntlm_auth --domain="$windows_domain" --"username=${username}2" --"password=${password}" && fail_fast 1 "ntlm_auth was sucessful with an wrong username"
-ntlm_auth --domain="$windows_domain" --"username=$username" --"password=$password" || fail_fast 1 "ntlm_auth failed"
+ntlm_auth --domain="$windows_domain" --username="$username" --password="${password}2" && fail_fast 1 "ntlm_auth was sucessful with an wrong password"
+ntlm_auth --domain="$windows_domain" --username="${username}2" --password="${password}" && fail_fast 1 "ntlm_auth was sucessful with an wrong username"
+ntlm_auth --domain="$windows_domain" --username="$username" --password="$password" || fail_fast 1 "ntlm_auth failed"
 
 exit 0

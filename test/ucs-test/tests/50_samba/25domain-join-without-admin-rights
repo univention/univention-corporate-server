@@ -22,18 +22,18 @@ then
 	exit 134
 fi
 NAME=`user_randomname`
-trap "user_remove $NAME" INT TERM EXIT
-user_create $NAME
+trap 'user_remove "$NAME"' INT TERM EXIT
+user_create "$NAME"
 
-net rpc join -U $NAME%univention && \
+net rpc join -U "$NAME"%univention && \
 	{ fail_fast 1 "Did a Domain join without the SeMachineAccountPrivilege"; }
 
-net rpc rights grant -U Administrator%univention $NAME SeMachineAccountPrivilege || \
+net rpc rights grant -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "$NAME" SeMachineAccountPrivilege || \
 	{ fail_fast 1 "Couldn't assign SeMachineAccountPrivilege to the user"; }
 
 for i in {0..10}
 do
-	net rpc join -U $NAME%univention || \
+	net rpc join -U "$NAME"%univention || \
 	{ fail_fast 1 "Domain join failed"; }
 done
 

@@ -16,10 +16,10 @@ PERSON="false"
 POSIX="true"
 
 NAME=`user_randomname`
-trap "user_remove $NAME" INT TERM EXIT
+trap 'user_remove "$NAME"' INT TERM EXIT
 user_create $NAME
 if [ "$(ucr get server/role)" == "memberserver" ]; then
-	NAME=`ucr get windows/domain`+$NAME
+	NAME="$(ucr get windows/domain)+$NAME"
 fi
 
 nscd -i passwd
@@ -33,20 +33,20 @@ wbinfo --ping || \
 wbinfo --ping-dc || \
 	{ fail_fast 1 "No connection to NETLOGON"; }
 
-wbinfo --krb5auth=$NAME%univention || \
+wbinfo --krb5auth="$NAME"%univention || \
 	{ fail_fast 1 "failed to authenticate testuser"; }
 
-wbinfo -a "$(wbinfo -s $(wbinfo -U $(wbinfo -S $(wbinfo -n $NAME | cut -d' '  -f1) | cut -d' ' -f1)  | cut -d' ' -f1) | cut -d' '  -f1)%univention" || \
+wbinfo -a "$(wbinfo -s "$(wbinfo -U "$(wbinfo -S "$(wbinfo -n "$NAME" | cut -d' '  -f1)" | cut -d' ' -f1)"  | cut -d' ' -f1)" | cut -d' '  -f1)%univention" || \
 	{ fail_fast 1 "User authentification failed"; }
 
 for i in $(wbinfo --trusted-domains);
-	do wbinfo -D $i || \
+	do wbinfo -D "$i" || \
 		{ fail_fast 1 "Failed to look up domaininfo"; };
 done
 
-for groupsid in $(wbinfo --user-domgroups=$(wbinfo -n $NAME | cut -d' ' -f1));
+for groupsid in $(wbinfo --user-domgroups="$(wbinfo -n "$NAME" | cut -d' ' -f1)");
 do
-	wbinfo -Y $(wbinfo -n "$(wbinfo -s $(wbinfo -G $(wbinfo -Y $groupsid) ) | sed 's/ [0-9]*$//')" | cut -d' '  -f1 ) || \
+	wbinfo -Y $(wbinfo -n "$(wbinfo -s "$(wbinfo -G "$(wbinfo -Y $groupsid)" )" | sed 's/ [0-9]*$//')" | cut -d' '  -f1 ) || \
 		{ fail_fast 1 "Group lookup failed"; };
 done
 

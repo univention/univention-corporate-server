@@ -20,30 +20,30 @@ POSIX="true"
 name=`group_randomnameme`
 password="univention"
 
-trap "user_remove "$name" ; group_remove "$name"" INT TERM EXIT
+trap 'user_remove "$name" ; group_remove "$name"' INT TERM EXIT
 
 univention-directory-manager groups/group create \
         --position="cn=groups,$ldap_base" \
-		        --set name=$name
+		        --set name="$name"
 
 user_create "$name"
 
-group_adduser $name $name
+group_adduser "$name" "$name"
 
-if [ -z "`net -V | grep "Version"`" ]; then
+if [ -x /usr/bin/net ]; then
 	fail_fast 1 "net is not available";
 fi;
 
 
 info "Querying group members"
 
-OUTPUT="$(net rpc -d1 group members "$name" -U Administrator%univention 2>&1)"
+OUTPUT=$(net rpc -d1 group members "$name" -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" 2>&1)
 
 info "Got the following answer:"
 info "$OUTPUT"
 
 if echo "$OUTPUT" | grep -qs NT_STATUS_LOGON_FAILURE; then
-	fail_test 137 "Credentials for login not accepted. Probably they're different from the default(Administrator%univention) on this system"
+	fail_test 137 "Credentials for login not accepted. Probably they're different from the \$ADMINISTRATOR_USER%\$ADMINISTRATOR_PASSWORD ($ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD) on this system"
 fi
 
 if echo "$OUTPUT" | grep -qs NT_STATUS_NO_SUCH_GROUP; then

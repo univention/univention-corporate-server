@@ -16,7 +16,7 @@
 #share_name="$(getstringforshares)"
 share_name=`random_share`
 SHARE_POSITION="cn=shares,$ldap_base"
-fqdn=`host $hostname | awk {'print $1'}`
+fqdn=`host "$hostname" | awk {'print $1'}`
 samba_etc="/etc/samba/shares.conf.d/"
 
 options="
@@ -66,7 +66,7 @@ available_options=`udm  shares/share create | grep  --regex "samba\w" | awk  {'p
 
 # delete share even on abnormal exits
 #trap "udm shares/share remove --dn=cn=$share_name,cn=shares,$ldap_base" INT TERM EXIT
-trap "share_remove $share_name" INT TERM EXIT
+trap 'share_remove "$share_name"' INT TERM EXIT
 
 # create share
 udm shares/share create --position="$SHARE_POSITION" --option samba --set name="$share_name" --set path="/opt" --set host="$fqdn" || fail_test 1 "could not create share"
@@ -78,21 +78,18 @@ if [ ! -f "$samba_etc/$share_name" ]; then
     fail_test 1 "samba config file for share $share_name not found"
 fi
 
-# set bash string separator to newline
-IFS=$'\n'
-
 # set samba options via udm and check samba config file
-for i in $options; do
+while read option_line; do
 
-	echo "$i" | grep --regex "^\s*#" > /dev/null
+	echo "$option_line" | grep --regex "^\s*#" > /dev/null
 	if [ 0 -eq "$?" ]; then continue; fi
 
-	echo "$i" | grep --regex "^\s*$" > /dev/null
+	echo "$option_line" | grep --regex "^\s*$" > /dev/null
 	if [ 0 -eq "$?" ]; then continue; fi
 
-	udm_option=`echo $i | awk -F / {'print $1'}`
-	samba_option=`echo $i | awk -F / {'print $2'}`
-	value=`echo $i | awk -F / {'print $3'}`
+	udm_option=`echo "$option_line" | awk -F / {'print $1'}`
+	samba_option=`echo "$option_line" | awk -F / {'print $2'}`
+	value=`echo "$option_line" | awk -F / {'print $3'}`
 
 	# special sambaCustomSettings notation
 	if [ "sambaCustomSettings" = "$udm_option" ]; then
@@ -132,25 +129,25 @@ for i in $options; do
 	fi
 
 	# clear this options, later we want to check wether we have alle options tested or not
-	available_options=`echo $available_options | sed "s/$udm_option//"`
+	available_options=`echo "$available_options" | sed "s/$udm_option//"`
 
-done
+done <<<"$options"
 
 # wait a moment to let udm prepare the samba conf file
 sleep 3
 
 # check the samba conf file
-for i in $samba_search; do
-	udm=`echo $i | awk -F :DELIMETER: {'print $1'}`
-	search=`echo $i | awk -F :DELIMETER: {'print $2'}`
-	value=`echo $i | awk -F :DELIMETER: {'print $3'}`
+while read search_line; do
+	udm=`echo "$search_line" | awk -F :DELIMETER: {'print $1'}`
+	search=`echo "$search_line" | awk -F :DELIMETER: {'print $2'}`
+	value=`echo "$search_line" | awk -F :DELIMETER: {'print $3'}`
 
-	more "$samba_etc/$share_name" | grep --regex "$search" > /dev/null || fail_test 1 "samba config file <-> udm settings mismatch udm option:$udm samba options and value: $search udm value:$value"
-done
+	cat "$samba_etc/$share_name" | grep -q --regex "$search" || fail_test 1 "samba config file <-> udm settings mismatch udm option:$udm samba options and value: $search udm value:$value"
+done <<<"$samba_search"
 
 # test if we checked all udm samba options
-available_options=`echo $available_options | sed 's/^ *//'`
-available_options=`echo $available_options | sed 's/ *$//'`
+available_options=`echo "$available_options" | sed 's/^ *//'`
+available_options=`echo "$available_options" | sed 's/ *$//'`
 if [ -n "$available_options" ]; then
 	fail_test 122 "forget to test udm option \"$available_options\""
 fi
