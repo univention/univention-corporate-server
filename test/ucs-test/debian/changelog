@@ -1,3 +1,9 @@
+ucs-test (3.0.0-0) unstable; urgency=low
+
+  * copy to ucs-3.1 (Bug #28215)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Aug 2012 17:33:38 +0200
+
 ucs-test (2.0.3-2) unstable; urgency=low
 
   * 50_samba/30winbind: prevented possible conflict with nscd (Bug #21765)
