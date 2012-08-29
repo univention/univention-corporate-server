@@ -285,7 +285,11 @@ class PackageManager(object):
 		'''
 		self.reopen_cache()
 		try:
-			self.cache.update(self.fetch_progress)
+			if self.always_noninteractive:
+				with self.noninteractive():
+					self.cache.update(self.fetch_progress)
+			else:
+				self.cache.update(self.fetch_progress)
 		except FetchFailedException:
 			self.progress_state.error(_('Fetch failed'))
 			return False

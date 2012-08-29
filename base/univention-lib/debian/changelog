@@ -1,3 +1,9 @@
+univention-lib (2.0.4-1) unstable; urgency=low
+
+  * Fix noninteractive also for update (Bug #28010)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Aug 2012 16:26:42 +0200
+
 univention-lib (2.0.3-1) unstable; urgency=low
 
   * Fix update not reopening the cache, add option to always run
