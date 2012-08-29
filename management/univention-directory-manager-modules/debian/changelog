@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.10-1) unstable; urgency=low
+
+  * do not convert-user-base64-photos on new installations (Bug #28366)
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Aug 2012 15:30:10 +0200
+
 univention-directory-manager-modules (8.0.9-1) unstable; urgency=low
 
   * fixed typo which prevents deletion of refering dhcp objects for all kinds
