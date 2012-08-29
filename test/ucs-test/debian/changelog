@@ -1,3 +1,10 @@
+ucs-test (3.0.0-4) unstable; urgency=low
+
+  * Fix broken test 50_samba/10samba-share-options (Bug #28360)
+  * Add workaround for Bug 11972 to 10samba-share-options
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Aug 2012 12:20:23 +0200
+
 ucs-test (3.0.0-3) unstable; urgency=low
 
   * fix typo in tests/50_samba (Bug #28357)

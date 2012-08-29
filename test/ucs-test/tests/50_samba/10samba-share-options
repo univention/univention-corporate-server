@@ -69,7 +69,7 @@ available_options=`udm  shares/share create | grep  --regex "samba\w" | awk  {'p
 trap 'share_remove "$share_name"' INT TERM EXIT
 
 # create share
-udm shares/share create --position="$SHARE_POSITION" --option samba --set name="$share_name" --set path="/opt" --set host="$fqdn" || fail_test 1 "could not create share"
+udm shares/share create --position="$SHARE_POSITION" --option samba --set name="$share_name" --set path="/opt" --set host="$fqdn" --set sambaWriteList="workaround for bug #11972" || fail_test 1 "could not create share"
 
 # wait for samba conf file
 sleep 20
@@ -98,7 +98,7 @@ while read option_line; do
 	fi
 
 	# modify share
-	udm shares/share modify --dn="cn=$share_name,cn=shares,$ldap_base" --set "$udm_option=$value" || fail_test 121 "could not set $udm_option to $value. Maybe see #11972"
+	udm shares/share modify --dn="cn=$share_name,cn=shares,$ldap_base" --set "$udm_option=$value" || fail_test 121 "could not set $udm_option to $value."
 
 	# quote search string
 	search="$samba_option $value"
@@ -142,7 +142,7 @@ while read search_line; do
 	search=`echo "$search_line" | awk -F :DELIMETER: {'print $2'}`
 	value=`echo "$search_line" | awk -F :DELIMETER: {'print $3'}`
 
-	cat "$samba_etc/$share_name" | grep -q --regex "$search" || fail_test 1 "samba config file <-> udm settings mismatch udm option:$udm samba options and value: $search udm value:$value"
+	cat "$samba_etc/$share_name" | grep -q -E --regex "$search" || fail_test 1 "samba config file <-> udm settings mismatch udm option:$udm samba options and value: $search udm value:$value"
 done <<<"$samba_search"
 
 # test if we checked all udm samba options
