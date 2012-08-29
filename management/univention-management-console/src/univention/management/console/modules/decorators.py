@@ -213,7 +213,7 @@ def _simple_response(function, with_flavor):
 				# min_length = min(len(arguments), len(request.options))
 				# request.options = dict(zip(arguments[:min_length], request.options[:min_length]))
 			except:
-				raise UMC_OptionTypeError(_("Argument type has to be '%s'") % 'dict')
+				raise UMC_OptionTypeError(_('Not a "dict"'))
 			return function(self, *args)
 
 		# check for required arguments (those without default)
@@ -236,7 +236,7 @@ def _simple_response(function, with_flavor):
 def _multi_response(function, with_flavor, error_handler):
 	def _response(self, request):
 		if not isinstance(request.options, (list,tuple)):
-			raise UMC_OptionTypeError(_("Argument type has to be '%s'") % 'list')
+			raise UMC_OptionTypeError(_('Not a "list"'))
 
 		simple = _simple_response(function, with_flavor)
 

@@ -219,7 +219,7 @@ class Sanitizer(object):
 		format_dict = {'value' : value, 'name' : name}
 		format_dict.update(kwargs)
 		format_dict.update(self.__dict__)
-		msg = '%(name)s (%(value)r): ' + msg
+		# msg = '%(name)s (%(value)r): ' + msg
 		raise ValidationError(msg % format_dict, name, value)
 
 class DictSanitizer(Sanitizer):
@@ -379,7 +379,8 @@ class PatternSanitizer(Sanitizer):
 	Plus:
 
 	:param bool add_asterisks: add asterisks at the beginning and the end
-	  of the value if needed. "string" -> "\*string*", "" -> "*"
+	  of the value if needed.
+	  "string" -> "\*string*", "" -> "*", "string*" -> "string*"
 	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
 	  to search case insensitive.
 	:param int max_number_of_asterisks: An error will be raised if
@@ -421,7 +422,7 @@ class PatternSanitizer(Sanitizer):
 			value = ''
 		value = str(value)
 		value = re.sub(r'\*+', '*', value)
-		if self.add_asterisks:
+		if self.add_asterisks and '*' not in value:
 			if not value.startswith('*'):
 				value = '*%s' % value
 			if not value.endswith('*'):
@@ -522,5 +523,5 @@ class ChoicesSanitizer(MappingSanitizer):
 	'''
 	def __init__(self, choices, **kwargs):
 		mapping = dict([(choice, choice) for choice in choices])
-		super(ChoiceSanitizer, self).__init__(mapping, **kwargs)
+		super(ChoicesSanitizer, self).__init__(mapping, **kwargs)
 
