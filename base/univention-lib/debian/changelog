@@ -1,3 +1,10 @@
+univention-lib (2.0.3-1) unstable; urgency=low
+
+  * Fix update not reopening the cache, add option to always run
+    noninteractive (Bug #28010)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Aug 2012 16:05:09 +0200
+
 univention-lib (2.0.2-2) unstable; urgency=low
 
   * Fix warning when installing: now depends on python2.6 (Bug #28010)

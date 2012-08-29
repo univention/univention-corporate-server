@@ -178,12 +178,13 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 #
 
 class PackageManager(object):
-	def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, handle_only_frontend_errors=False):
+	def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, handle_only_frontend_errors=False, always_noninteractive=False):
 		self.cache = apt.Cache()
 		self.progress_state = ProgressState(info_handler, step_handler, error_handler, handle_only_frontend_errors)
 		self.fetch_progress = FetchProgress(self.progress_state)
 		self.dpkg_progress = DpkgProgress(self.progress_state)
 		self.always_install = None
+		self.always_noninteractive = always_noninteractive
 		self.lock_fd = None
 		if lock:
 			self.lock()
@@ -202,6 +203,14 @@ class PackageManager(object):
 
 	def is_locked(self):
 		return self.lock_fd is not None
+
+	@contextmanager
+	def locked(self):
+		self.lock()
+		try:
+			yield
+		finally:
+			self.unlock()
 
 	def __del__(self):
 		# should be done automatically. i am a bit paranoid
@@ -251,7 +260,7 @@ class PackageManager(object):
 
 	@contextmanager
 	def noninteractive(self):
-		# dont ever ask for user input
+		''' dont ever ask for user input '''
 		old_debian_frontend = os.environ.get('DEBIAN_FRONTEND')
 		os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 		options = {
@@ -274,6 +283,7 @@ class PackageManager(object):
 		'''apt-get update
 		Returns success
 		'''
+		self.reopen_cache()
 		try:
 			self.cache.update(self.fetch_progress)
 		except FetchFailedException:
@@ -283,6 +293,7 @@ class PackageManager(object):
 			self.progress_state.error(_('Failed to lock'))
 			return False
 		else:
+			self.reopen_cache()
 			return True
 
 	def get_package(self, pkg_name):
@@ -293,6 +304,19 @@ class PackageManager(object):
 			return self.cache[pkg_name]
 		except KeyError:
 			self.progress_state.error('%s: %s' % (pkg_name, _('No such package')))
+
+	def is_installed(self, pkg_name, reopen=True):
+		'''Returns whether a package is installed.
+		Returns None if package is not found.
+		'''
+		if reopen:
+			self.reopen_cache()
+		try:
+			package = self.cache[pkg_name]
+		except KeyError:
+			return None
+		else:
+			return package.is_installed
 
 	def commit(self, install=None, remove=None, msg_if_failed=''):
 		'''Really commit changes (mark_install or mark_delete)
@@ -310,7 +334,12 @@ class PackageManager(object):
 			pkg.mark_delete()
 		result = False
 		try:
-			result = self.cache.commit(fetch_progress=self.fetch_progress, install_progress=self.dpkg_progress)
+			kwargs = {'fetch_progress' : self.fetch_progress, 'install_progress' : self.dpkg_progress}
+			if self.always_noninteractive:
+				with self.noninteractive():
+					result = self.cache.commit(**kwargs)
+			else:
+				result = self.cache.commit(**kwargs)
 			if not result:
 				raise SystemError()
 		except SystemError:
