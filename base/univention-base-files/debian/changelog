@@ -1,3 +1,9 @@
+univention-base-files (2.0.4-1) unstable; urgency=low
+
+  * set logrotate size default (Bug #27722) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Aug 2012 10:08:15 +0200
+
 univention-base-files (2.0.3-1) unstable; urgency=low
 
   * Set UCS 3.1 codename to Findorff (Bug #27966)
