@@ -32,15 +32,6 @@
 
 eval "$(univention-config-registry shell)"
 
-
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" -o "$server_role" = "basesystem" ]; then
-	univention-config-registry set	gdm/menu/system?false \
-									gdm/menu/securesystem?true
-else
-	univention-config-registry set	gdm/menu/system?true \
-									gdm/menu/securesystem?false
-fi
-
 if [ "$server_role" = "managedclient" -o "$server_role" = "mobileclient" -o "$server_role" = "fatclient" ]; then
 	adduser --system --home /tmp --shell "/bin/bash" --disabled-password autostart
 fi
@@ -55,7 +46,13 @@ else
 	permitteduser="console"
 fi
 
-univention-config-registry set gdm/autostart?yes gdm/disallow/tcp?yes gdm/autostart/permitteduser?$permitteduser
+univention-config-registry set \
+	gdm/autostart?yes\
+	gdm/disallow/tcp?yes\
+	gdm/autostart/permitteduser?$permitteduser \
+	gdm/menu/system?false \
+	gdm/systemmenu?true \
+	gdm/menu/securesystem?true
 
 #DEBHELPER#
 
