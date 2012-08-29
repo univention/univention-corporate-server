@@ -2403,7 +2403,7 @@ class simpleComputer( simpleLdap ):
 
 		if self['dhcpEntryZone']:
 			for dhcpEntryZone in self['dhcpEntryZone']:
-				dn, ip, mac = self.__split_dns_line( dhcpEntryZone )
+				dn, ip, mac = self.__split_dhcp_line( dhcpEntryZone )
 				try:
 					self.__remove_from_dhcp_object( dn, self[ 'name' ],  None, mac )
 				except Exception,e:

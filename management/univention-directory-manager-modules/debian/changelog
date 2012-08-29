@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.9-1) unstable; urgency=low
+
+  * fixed typo which prevents deletion of refering dhcp objects for all kinds
+  	of computers; Bug #28270
+
+ -- Florian Best <best@univention.de>  Wed, 29 Aug 2012 11:32:44 +0200
+
 univention-directory-manager-modules (8.0.8-1) unstable; urgency=low
 
   * Bug #27864: Fix ucslint warning
