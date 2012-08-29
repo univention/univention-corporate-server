@@ -242,7 +242,7 @@ secret: $machine_secret
 			fi
 
 			## Migrate DNS data to new separate DOMAIN/FOREST partitions
-			/usr/sbin/samba_upgradedns
+			# /usr/sbin/samba_upgradedns
 
 			## activate server password chages again
 			univention-config-registry set server/password/change=yes
