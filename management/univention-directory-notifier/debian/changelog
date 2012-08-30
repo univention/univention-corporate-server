@@ -1,3 +1,9 @@
+univention-directory-notifier (7.0.2-1) unstable; urgency=low
+
+  * Added univention-replicate-one to replicate one DN (Bug #27625)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 07:32:24 +0200
+
 univention-directory-notifier (7.0.1-1) unstable; urgency=low
 
   * Donwgrade the debug level for an info message from WARNING to INFO

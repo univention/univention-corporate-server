@@ -1,0 +1,81 @@
+#!/bin/sh -e
+#
+# Univention Directory Notifier
+#  Replicate one DN
+#
+# Copyright 2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+eval "$(ucr shell)"
+
+usage()
+{
+	echo "Usage: $0 --dn <ldap dn>"
+	echo
+	echo "The given LDAP DN will be replicated as if it has been modified."
+	echo
+}
+
+if [ "$server_role" != "domaincontroller_master" ]; then
+	echo "Abort: This tool must be run on the Domaincontroller Master!"
+	exit 1
+fi
+
+if [ ! -e /var/lib/univention-ldap/notify/transaction ]; then
+	echo "Abort: /var/lib/univention-ldap/notify/transaction was not found."
+	exit 1
+fi
+
+if [ "$#" != 2 ] || [ "$1" != "--dn" ]; then
+	usage
+	exit 1
+fi
+
+dn="$2"
+
+RESTART=0
+if pidof univention-directory-notifier >/dev/null ; then
+	RESTART=1
+	invoke-rc.d univention-directory-notifier stop >/dev/null
+	sleep 1
+	if pidof univention-directory-notifier >/dev/null ; then
+		echo "Abort: Failed to stop the notifier daemon. Please check stop the daemon manually and try again."
+		exit 1
+	fi
+fi
+
+id="$(tail -n 1 /var/lib/univention-ldap/notify/transaction | awk '{print $1}')"
+
+nextid=$((id+1))
+
+echo "$nextid $dn m" >>/var/lib/univention-ldap/notify/transaction
+
+if [ "$RESTART" = 1 ]; then
+	invoke-rc.d univention-directory-notifier start >/dev/null
+fi
+
+exit 0
