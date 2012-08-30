@@ -1,3 +1,9 @@
+univention-network-manager (4.0.4-1) unstable; urgency=low
+
+  * Use the current 169 address as fallback (Bug #27931)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 16:37:34 +0200
+
 univention-network-manager (4.0.3-1) unstable; urgency=low
 
   * Don't depend on UMC server, so univention-base-files can depend on
