@@ -172,6 +172,13 @@ define([
 			var pw1 = this._firstWidget.get('value');
 			var pw2 = this._secondWidget.get('value');
 			return pw1 == pw2 && !(this.required === true && !pw1);
+		},
+
+		reset: function() {
+			dojo.forEach([this._firstWidget, this._secondWidget],
+			             function(iwidget) {
+				             iwidget.reset();
+			             });
 		}
 	});
 });
