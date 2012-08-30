@@ -1,3 +1,9 @@
+univention-pam (6.0.2-1) unstable; urgency=low
+
+  * Added missing cron file from last commit (Bug #28361)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 15:57:22 +0200
+
 univention-pam (6.0.1-1) unstable; urgency=low
 
   * Replaced the libnss-ldap and nscd handling for groups with a dump of
