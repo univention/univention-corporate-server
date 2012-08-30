@@ -1,3 +1,10 @@
+univention-pam (6.0.4-1) unstable; urgency=low
+
+  * nss/group/cachefile/invalidate_interval=disabled disables the cron
+    job (Bug #28361)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 17:16:29 +0200
+
 univention-pam (6.0.3-1) unstable; urgency=low
 
   * Create the NSS group database on upgrade (Bug #28361)
