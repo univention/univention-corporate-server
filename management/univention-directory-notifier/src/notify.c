@@ -104,7 +104,7 @@ static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
 	}
 
 	while ( (rc=lockf( fileno(*l_file), F_TEST, 0 ) ) != 0 ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not get lock for file [%s]; count = %d\n", buf,count);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "ERROR Could not get lock for file [%s]; count = %d\n", buf,count);
 		count++;
 		if (count > notifier_lock_count ) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ERROR Could not get lock for file [%s]; exit\n", buf);
