@@ -92,7 +92,8 @@ if __name__ == '__main__':
 		rdn = ldap.explode_rdn(group[0])
 		groupname = string.join( string.split(rdn[0],'=')[1:], '=')
 		members=_get_members(lo, group, [])
-		fd.write('%s:*:%s:%s\n' % (groupname, group[1].get('gidNumber', [''])[0], string.join(members, ',')))
+		# The list(set(members)) call removes all duplicates from the group members
+		fd.write('%s:*:%s:%s\n' % (groupname, group[1].get('gidNumber', [''])[0], string.join(list(set(members)), ',')))
 	fd.close()
 
 	os.chmod(fdname, 0644)

@@ -129,6 +129,12 @@ if [ -x "/etc/init.d/univention-directory-listener" ] ; then
 	/etc/init.d/univention-directory-listener crestart
 fi
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.2-1; then
+	if ucr_is_true nss/group/cachefile; then
+		/usr/lib/univention-pam/ldap-group-to-file.py
+	fi
+fi
+
 # Reload cron
 test -x /etc/init.d/cron && /etc/init.d/cron reload
 

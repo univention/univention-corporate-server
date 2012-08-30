@@ -1,3 +1,10 @@
+univention-pam (6.0.3-1) unstable; urgency=low
+
+  * Create the NSS group database on upgrade (Bug #28361)
+  * Removed duplicate group members (Bug #28361)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 16:32:16 +0200
+
 univention-pam (6.0.2-1) unstable; urgency=low
 
   * Added missing cron file from last commit (Bug #28361)
