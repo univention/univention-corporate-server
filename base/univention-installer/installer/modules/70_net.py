@@ -1009,6 +1009,7 @@ class ActivateNet(act_win):
 		self.results = results
 
 	def function(self):
+		self.parent.all_results.update(self.results)
 		self.parent.activateNetwork(self.results)
 
 class dhclient_active(act_win):

@@ -1,3 +1,11 @@
+univention-installer (8.0.4-1) unstable; urgency=low
+
+  * removed security/services from 28_postconfigure_config_registry,
+    moved network ucr configuration from 28_postconfigure_config_registry
+    to univention-installer-network-startup (Bug #28374) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Aug 2012 12:25:47 +0200
+
 univention-installer (8.0.3-1) unstable; urgency=low
 
   * install python-univention-lib as first package in

@@ -167,6 +167,7 @@ if [ -n "$gateway" ]; then
 	fi
 	route add default gw $gateway
 fi
+
 # set IPv6 gateway
 if [ -n "$gateway6" ]; then
 	python2.6 /sbin/univention-config-registry set "ipv6/gateway=$gateway6"
@@ -175,22 +176,40 @@ fi
 
 : > /etc/resolv.conf
 
+# nameserver
 if [ -n "$nameserver_1" ]; then
 	echo "nameserver $nameserver_1" >>/etc/resolv.conf
 	python2.6 /sbin/univention-config-registry set nameserver1=$nameserver_1
 fi
-
 if [ -n "$nameserver_2" ]; then
 	echo "nameserver $nameserver_2" >>/etc/resolv.conf
 	python2.6 /sbin/univention-config-registry set nameserver2=$nameserver_2
 fi
-
 if [ -n "$nameserver_3" ]; then
 	echo "nameserver $nameserver_3" >>/etc/resolv.conf
 	python2.6 /sbin/univention-config-registry set nameserver3=$nameserver_3
 fi
 
+# dns forwarder
+if [ -n "$use_external_nameserver" -a "$use_external_nameserver" = "true" ]; then
+	python2.6 /sbin/univention-config-registry set nameserver/external=true
+else
+	python2.6 /sbin/univention-config-registry set nameserver/external=false
+fi
+if [ -n "$dns_forwarder_1" ]; then
+	univention-config-registry set dns/forwarder1="$dns_forwarder_1"
+fi
+if [ -n "$dns_forwarder_2" ]; then
+	univention-config-registry set dns/forwarder2="$dns_forwarder_2"
+fi
+if [ -n "$dns_forwarder_3" ]; then
+	univention-config-registry set dns/forwarder3="$dns_forwarder_3"
+fi
+
+# proxy
 if [ -n "$proxy_http" ]; then
 	python2.6 /sbin/univention-config-registry set proxy/http=$proxy_http
 	python2.6 /sbin/univention-config-registry set proxy/ftp=$proxy_http
 fi
+
+
