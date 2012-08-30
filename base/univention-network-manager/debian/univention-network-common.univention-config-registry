@@ -6,5 +6,6 @@ Variables: dhclient/options/ddns
 Variables: dhclient/options/ddns/zone
 Variables: dhclient/options/ddns/serverupdate
 Variables: dhclient/linklocal/fallback
+Variables: interfaces/.*/address
 Variables: hostname
 Variables: domainname
