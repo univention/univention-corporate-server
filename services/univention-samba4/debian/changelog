@@ -1,3 +1,9 @@
+univention-samba4 (2.0.9-1) unstable; urgency=low
+
+  * Fixed python syntax error in 11univention-smb-service (Bug #27457)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 10:36:15 +0200
+
 univention-samba4 (2.0.8-1) unstable; urgency=low
 
   * disable calling samba_upgradedns on update for testing purposes (Bug #27457)

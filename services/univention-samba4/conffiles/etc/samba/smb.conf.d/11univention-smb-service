@@ -3,7 +3,7 @@ print '; ---------------------<smb service configuration>-----------------------
 if configRegistry.get('samba4/service/smb', 's3fs'):
 	print '''
 	debug hirestimestamp = yes
-	debug pid = yes
+	debug pid = yes'''
 
 elif configRegistry.get('samba4/service/smb', 'smbd'):
 	if configRegistry['samba4/role'] != 'MEMBER':	## otherwise it's already set in 10global
@@ -13,7 +13,7 @@ elif configRegistry.get('samba4/service/smb', 'smbd'):
 	debug hirestimestamp = yes
 	debug pid = yes
 
-	dcerpc endpoint servers = -unixinfo -rpcecho -spoolss -winreg -wkssvc -srvsvc'''
+	dcerpc endpoint servers = -unixinfo -rpcecho -spoolss -winreg -wkssvc -srvsvc
 
 	domain logons = yes
 	passdb backend = samba4
