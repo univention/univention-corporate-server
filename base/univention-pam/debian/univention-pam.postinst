@@ -96,7 +96,11 @@ univention-config-registry set \
 	nssldap/tls/checkpeer?no \
 	auth/faillog?no \
 	nssldap/auth?yes \
-	pamldap/auth?yes
+	pamldap/auth?yes \
+	nss/group/cachefile?yes \
+	nss/group/cachefile/invalidate_on_changes?yes \
+	nss/group/cachefile/invalidate_interval?"*/15 * * * *" \
+	nscd/group/enabled?no
 
 # restrict ssh and local login to admins on domaincontroller hosts
 # allow access to members of groups Computers, DC Slave Hosts and DC
@@ -124,6 +128,12 @@ fi
 if [ -x "/etc/init.d/univention-directory-listener" ] ; then
 	/etc/init.d/univention-directory-listener crestart
 fi
+
+# Reload cron
+test -x /etc/init.d/cron && /etc/init.d/cron reload
+
+# Restart nscd
+test -x /etc/init.d/nscd && /etc/init.d/nscd restart
 
 if [ "$1" = configure ]
 then

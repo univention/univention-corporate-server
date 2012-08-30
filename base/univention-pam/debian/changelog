@@ -1,3 +1,13 @@
+univention-pam (6.0.1-1) unstable; urgency=low
+
+  * Replaced the libnss-ldap and nscd handling for groups with a dump of
+    the LDAP groups and memberships to a single file which is used by
+    nss-extrausers. The dump can be triggered via cron and with a
+    listener module (nss.py). The old mechanism can be re-configured via
+    UCR (Bug #28361)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 15:52:34 +0200
+
 univention-pam (6.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.

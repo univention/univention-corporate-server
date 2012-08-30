@@ -20,6 +20,9 @@ Variables: nscd/hosts/persistent
 Variables: nscd/debug/level
 Variables: nscd/logfile
 Variables: nscd/threads
+Variables: nscd/passwd/enabled
+Variables: nscd/group/enabled
+Variables: nscd/hosts/enabled
 
 Type: file
 File: etc/libnss-ldap.conf
@@ -38,6 +41,7 @@ Type: file
 File: etc/nsswitch.conf
 Variables: auth/methods
 Variables: nsswitch/ldap
+Variables: nss/group/cachefile
 
 Type: file
 File: etc/pam_ldap.conf
@@ -298,3 +302,8 @@ Type: file
 File: etc/security/access-sudo.conf
 Variables: auth/sudo/group/.*
 Variables: auth/sudo/user/.*
+
+Type: file
+File: etc/cron.d/univention-pam
+Variables: nss/group/cachefile
+Variables: nss/group/cachefile/invalidate_interval

@@ -1,10 +1,10 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention nscd Updater
+# Univention nss updater
 #  Univention Listener Module
 #
-# Copyright 2001-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,28 +31,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-name='nscd_update'
-description='Invalidate the NSCD group cache whenever a group membership has been modified.'
+name='nss'
+description='Invalidate the nss group cache whenever a group membership has been modified.'
 filter='(objectClass=univentionGroup)'
 attributes=['uniqueMember', 'cn']
 
 __package__='' 	# workaround for PEP 366
 import listener
-import univention_baseconfig
-import univention.debug
+import univention.config_registry
 
 def handler(dn, new, old):
 	pass
 
 def postrun():
-	baseConfig = univention_baseconfig.baseConfig()
-	baseConfig.load()
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
 
-	if baseConfig.is_true('nscd/group/invalidate_cache_on_changes', False) and baseConfig.is_false('nss/group/cachefile', True):
+	if ucr.is_true('nss/group/cachefile', False) and ucr.is_true('nss/group/cachefile/invalidate_on_changes', True):
 		listener.setuid(0)
-		try:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "calling 'nscd -i group'")
-			listener.run('/usr/sbin/nscd', ['nscd', '-i', 'group'], uid=0)
-		except:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "nscd -i group was not successfull")
+		listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', ['ldap-group-to-file.py'], uid=0)
 		listener.unsetuid()
+

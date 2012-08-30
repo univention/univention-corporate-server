@@ -1,3 +1,20 @@
+[nscd/passwd/enabled]
+Description[de]=Aktiviert den nscd Cache für die NSS-Datenbank passwd (default: true)
+Description[en]=Enabled nscd cache for the NSS database passwd (default: true)
+Type=str
+Categories=system-base
+
+[nscd/group/enabled]
+Description[de]=Aktiviert den nscd Cache für NSS-Datenbank group (default: false)
+Description[en]=Enabled nscd cache for the NSS database group (default: false)
+Type=str
+Categories=system-base
+
+[nscd/hosts/enabled]
+Description[de]=Aktiviert den nscd Cache für die NSS-Datanbank hosts (default: true)
+Description[en]=Enabled nscd cache for the NSS database hosts (default: true)
+Type=str
+Categories=system-base
 [nscd/hosts/size]
 Description[de]=Wert sollte größer oder gleich der Anzahl aller im DNS verfügbarer Hosts sein.
 Description[en]=Value should be greater or equal as number of all hosts reachable via DNS.
@@ -213,3 +230,22 @@ Description[de]=Erlaubt dem Benutzer Zugriff auf den Dienst, z.B. "auth/sshd/use
 Description[en]=Allows access to service by user, e.g. auth/sshd/user/Administrator=yes".
 Type=str
 Categories=system-base
+
+[nss/group/cachefile]
+Description[de]=Aktiviert eine Cache Datei für die NSS-Datenbank group. Die LDAP-Gruppeninformationen werden in einer Datei zwischengespeichert.  Dies führt in grossen Umgebungen zu erheblichen Performanceverbesserungen bei der Gruppenauflösung (default: true)
+Description[en]=Activates a cache file for the NSS database group. The LDAP group information is stored in a file. This results in large environments to significant performance improvements in the group resolution (default: true)
+Type=str
+Categories=system-base
+
+[nss/group/cachefile/invalidate_on_changes]
+Description[de]=Definiert ob der NSS Datenbank group cache neu generiert wird, sobald sich ein Gruppenmitglied ändert (Default: true)
+Description[en]=Defines whether the NSS group database cache will be regenerated whenever a group membership changes (Default: true)
+Type=str
+Categories=system-base
+
+[nss/group/cachefile/invalidate_interval]
+Description[de]=Definiert das Intervall für die automatische Erzeugung der Cache Datei der NSS-Datenbank group im Cron-Format, Default ist alle 15 Minuten (default: */15 * * * *)
+Description[en]=Defines the interval for the automatic generation of the cache file NSS database group in cron format, default is every 15 minutes (default: */15 * * * *)
+Type=str
+Categories=system-base
+
