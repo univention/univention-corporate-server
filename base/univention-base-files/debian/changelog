@@ -1,3 +1,10 @@
+univention-base-files (2.0.5-1) unstable; urgency=low
+
+  * Added univention-network-common to the recommends of univention-
+    base-packages (Bug #27931)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 10:11:53 +0200
+
 univention-base-files (2.0.4-1) unstable; urgency=low
 
   * set logrotate size default (Bug #27722) 

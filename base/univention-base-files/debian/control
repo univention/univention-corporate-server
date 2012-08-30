@@ -36,7 +36,8 @@ Recommends: vim,
  zip,
  unzip,
  eject,
- locate
+ locate,
+ univention-network-common
 Description: UCS - base packages
  This metapackage depends on all packages and recommends several other
  packages which should be installed on a default UCS installation.
