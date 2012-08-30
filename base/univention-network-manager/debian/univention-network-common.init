@@ -42,7 +42,7 @@ case "$1" in
 		ret=0
 		# System must be joined
 		if [ -e /var/univention-join/joined ]; then
-			if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null; then
+			if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null && [ -e /usr/sbin/umc-command ]; then
 				/usr/sbin/univention-register-network-address; ret=$?
 			else
 				ret=1

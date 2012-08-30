@@ -1,3 +1,10 @@
+univention-network-manager (4.0.3-1) unstable; urgency=low
+
+  * Don't depend on UMC server, so univention-base-files can depend on
+    univention-network-common (Bug #27931)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Aug 2012 10:08:36 +0200
+
 univention-network-manager (4.0.2-1) unstable; urgency=low
 
   * start univention-network-common before plymouth (Bug #28287) 

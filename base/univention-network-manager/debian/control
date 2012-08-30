@@ -43,10 +43,11 @@ Package: univention-network-common
 Architecture: all
 Depends: ${misc:Depends},
  ${python:Depends},
- univention-management-console-server,
  python-netifaces
 Replaces: univention-network-manager,
  univention-ifplugd
+Suggests:
+ univention-management-console-server
 Description: UCS - Network tools for ifplugd and network-manager (common)
  This package installs tools required by univention-ifplugd and
  univention-network-manager.
