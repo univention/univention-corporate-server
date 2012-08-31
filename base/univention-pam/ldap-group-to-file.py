@@ -1,4 +1,5 @@
 #!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
 # Univention PAM
 #   Dump all ldap groups with members to a single file
@@ -73,7 +74,12 @@ if __name__ == '__main__':
 	parser.add_option("--verbose", dest="verbose", default=False, action="store_true", help="verbose output")
 	(options, args) = parser.parse_args()
 
-	lo = univention.uldap.getMachineConnection()
+	try:
+		lo = univention.uldap.getMachineConnection()
+	except ldap.SERVER_DOWN:
+		print "Abort: Can't contact LDAP server."
+		sys.exit(1)
+
 	result = []
 	groups = lo.search('objectClass=univentionGroup', attr=['uniqueMember', 'cn', 'gidNumber'])
 	if options.verbose:

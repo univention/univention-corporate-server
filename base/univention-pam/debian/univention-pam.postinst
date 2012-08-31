@@ -130,7 +130,7 @@ if [ -x "/etc/init.d/univention-directory-listener" ] ; then
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.2-1; then
-	if ucr_is_true nss/group/cachefile; then
+	if is_ucr_true nss/group/cachefile; then
 		/usr/lib/univention-pam/ldap-group-to-file.py
 	fi
 fi
