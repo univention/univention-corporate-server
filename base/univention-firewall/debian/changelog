@@ -1,3 +1,11 @@
+univention-firewall (5.0.2-1) unstable; urgency=low
+
+  * UMC: Update python backend
+  * debian/control: restrict python version
+  (Bug #24121)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 30 Aug 2012 13:26:11 +0200
+
 univention-firewall (5.0.1-1) unstable; urgency=low
 
   * UMC: Add initial firewall backend (Bug #24121)

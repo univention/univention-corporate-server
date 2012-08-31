@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="firewall" icon="firewall" version="1.0">
-	<name>Firewall</name>
-	<description>Firewall description</description>
-	<categories>
-		<category name="system"/>
-	</categories>
+		<name>Firewall</name>
+		<description>Firewall description</description>
+		<categories>
+			<category name="system"/>
+		</categories>
+		<command name="firewall/query" function="query" />
+		<command name="firewall/add" function="add" />
+		<command name="firewall/remove" function="remove" />
+		<command name="firewall/put" function="put" />
 	</module>
 </umc>
