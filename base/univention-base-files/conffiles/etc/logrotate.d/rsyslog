@@ -1,0 +1,41 @@
+@%@UCRWARNING=# @%@
+
+/var/log/syslog
+{
+@!@
+import univention.lib.ucrLogrotate
+settings = univention.lib.ucrLogrotate.getLogrotateConfig('syslog', configRegistry)
+for setting in settings.values():
+	print '\t%s' % (setting, )
+@!@
+	delaycompress
+	postrotate
+		invoke-rc.d rsyslog reload > /dev/null
+	endscript
+}
+
+/var/log/mail.info
+/var/log/mail.warn
+/var/log/mail.err
+/var/log/mail.log
+/var/log/daemon.log
+/var/log/kern.log
+/var/log/auth.log
+/var/log/user.log
+/var/log/lpr.log
+/var/log/cron.log
+/var/log/debug
+/var/log/messages
+{
+@!@
+import univention.lib.ucrLogrotate
+settings = univention.lib.ucrLogrotate.getLogrotateConfig('syslog-other', configRegistry)
+for setting in settings.values():
+	print '\t%s' % (setting, )
+@!@
+	delaycompress
+	sharedscripts
+	postrotate
+		invoke-rc.d rsyslog reload > /dev/null
+	endscript
+}

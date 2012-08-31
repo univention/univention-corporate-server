@@ -1,3 +1,10 @@
+univention-base-files (2.0.6-1) unstable; urgency=low
+
+  * make etc/logrotate.d/rsyslog an UCR template (Bug #28292)
+  * set logrotate/syslog/rotate/count to 7 times logorate/rotate/count (Bug #28292)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 31 Aug 2012 12:25:48 +0200
+
 univention-base-files (2.0.5-1) unstable; urgency=low
 
   * Added univention-network-common to the recommends of univention-

@@ -236,5 +236,9 @@ File: etc/logrotate.d/univention-config-registry-replog
 Variables: logrotate/.*
 
 Type: file
+File: etc/logrotate.d/rsyslog
+Variables: logrotate/.*
+
+Type: file
 File: etc/cron.d/univention-config-registry-backup
 Variables: ucr/backup/enabled

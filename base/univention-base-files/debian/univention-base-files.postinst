@@ -66,6 +66,10 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	ucr/backup/enabled?yes \
 	ucr/replog/enabled?yes \
 
+eval "$(univention-config-registry shell logrotate/rotate/count)"
+univention-config-registry set \
+	'logrotate/syslog/rotate/count?'"$(expr "$logrotate_rotate_count" '*' '7')" \
+	'logrotate/syslog/rotate?daily'
 
 # services
 univention-config-registry set cron/autostart?yes \
