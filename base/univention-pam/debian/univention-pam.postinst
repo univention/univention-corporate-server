@@ -122,15 +122,16 @@ if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
     rm /etc/univention/templates/files/etc/pam.d/common-auth
 fi
 
-if [ -x "/etc/init.d/univention-directory-listener" ] ; then
-	/etc/init.d/univention-directory-listener crestart
-fi
-
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.2-1; then
 	if is_ucr_true nss/group/cachefile; then
 		/usr/lib/univention-pam/ldap-group-to-file.py
 		univention-config-registry set	nscd/group/invalidate_cache_on_changes="false"
 	fi
+fi
+
+# Restart listener
+if [ -x "/etc/init.d/univention-directory-listener" ] ; then
+	/etc/init.d/univention-directory-listener crestart
 fi
 
 # Reload cron
