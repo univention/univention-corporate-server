@@ -36,6 +36,10 @@ import subprocess
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 import univention.config_registry
+import univention.admin.uldap
+import univention.admin.modules
+import univention.admin.filter
+import univention.admin.config
 
 from fnmatch import *
 from time import sleep
@@ -56,6 +60,13 @@ class Instance(umcm.Base):
 		self.ucr.load()
 
 		self._hostname = self.ucr.get('hostname')
+
+		self.lo, self.position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+		self.co = univention.admin.config.config()                                            
+		univention.admin.modules.update()
+		self.users_user = univention.admin.modules.get('users/user')                              
+		univention.admin.modules.init(self.lo, self.position, self.users_user)                              
+		self.users_filter = univention.admin.filter.expression('name', '*')                        
 
 
 	def list_printers(self,request):
@@ -247,14 +258,9 @@ class Instance(umcm.Base):
 		# -----------------------------------
 
 		result = []
-		expr = re.compile('^\s*username:\s*(.*?)\s*$')
-		(stdout,stderr,status) = self._shell_command(['/usr/sbin/univention-directory-manager','users/user','list'],{'LANG':'C'})
-		if status == 0:
-			for line in stdout.split("\n"):
-				match = expr.match(line)
-				if match:
-					MODULE.warn("  -> %s" % match.group(1))
-					result.append(match.group(1))
+		objs = self.users_user.lookup(self.co, self.lo, self.users_filter, self.position.getDomain(), scope='domain', unique=0)
+		for obj in objs:
+			result.append(obj["username"])
 
 		# ---------- DEBUG --------------
 		MODULE.info("printers/users/query returns:")
