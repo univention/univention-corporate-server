@@ -41,9 +41,10 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
+	"umc/widgets/Form",
 	"umc/tools",
 	"umc/i18n!umc/app"
-], function(dojo, lang, array, on, json, Deferred, domClass, LoginDialog, Toaster, ConfirmDialog, Text, Button, tools, _) {
+], function(dojo, lang, array, on, json, Deferred, domClass, LoginDialog, Toaster, ConfirmDialog, Text, Button, Form, tools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 		_loginDialog: null, // internal reference to the login dialog
@@ -285,6 +286,37 @@ define([
 			confirmDialog.on('confirm', function(response) {
 				confirmDialog.close();
 				deferred.resolve(response);
+			});
+
+			// show the confirmation dialog
+			confirmDialog.show();
+
+			return deferred;
+		},
+
+		confirmForm: function(/*Object[]*/widgets, /*Object[]*/buttons, /*Object[]?*/layout, /*Object?*/options) {
+			var form = new Form({
+				widgets: widgets,
+				layout: layout
+			});
+
+			// create confirmation dialog
+			var confirmDialog = new ConfirmDialog({
+				title: options && options.title || this._('Confirmation'),
+				style: options && options.style || 'max-width: 550px;',
+				message: form,
+				options: buttons
+			});
+
+			// connect to 'onConfirm' event to close the dialog in any case
+			var deferred = new Deferred();
+			confirmDialog.on('onConfirm', function(response) {
+				confirmDialog.close();
+				deferred.resolve(response);
+			});
+
+			confirmDialog.on('destroy', function() {
+				form.destroyRecursive();
 			});
 
 			// show the confirmation dialog
