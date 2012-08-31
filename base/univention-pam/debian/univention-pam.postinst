@@ -116,9 +116,6 @@ if is_domain_controller; then
 		auth/sshd/user/root?"yes"
 fi
 
-if [ "$1" = "configure" -a -z "$2" ]; then
-	univention-config-registry set	nscd/group/invalidate_cache_on_changes="true"
-fi
 
 # remove old non-multifile template
 if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
@@ -132,6 +129,7 @@ fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.2-1; then
 	if is_ucr_true nss/group/cachefile; then
 		/usr/lib/univention-pam/ldap-group-to-file.py
+		univention-config-registry set	nscd/group/invalidate_cache_on_changes="false"
 	fi
 fi
 
