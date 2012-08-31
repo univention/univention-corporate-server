@@ -30,13 +30,14 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/array",
 	"dojo/_base/lang",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/i18n!umc/app"
-], function(declare, lang, ContainerWidget, LabelPane, PasswordBox, _FormWidgetMixin, _) {
+], function(declare, array, lang, ContainerWidget, LabelPane, PasswordBox, _FormWidgetMixin, _) {
 	return declare("umc.widgets.PasswordInputBox", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:
 		//		Simple widget that displays a widget/HTML code with a label above.
@@ -175,10 +176,10 @@ define([
 		},
 
 		reset: function() {
-			dojo.forEach([this._firstWidget, this._secondWidget],
-			             function(iwidget) {
-				             iwidget.reset();
-			             });
+			var widgets = [this._firstWidget, this._secondWidget];
+			array.forEach(widgets, function(iwidget) {
+				iwidget.reset();
+			});
 		}
 	});
 });
