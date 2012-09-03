@@ -1,3 +1,9 @@
+firefox-en (1:10.0.7esr-1) unstable; urgency=low
+
+  * Update to Firefox 10.0.7esr (Bug #28365)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 03 Sep 2012 15:29:21 +0200
+
 firefox-en (1:10.0.6esr-3) unstable; urgency=low
 
   * added icedtea6-plugin to depend. (Bug #28246) 
