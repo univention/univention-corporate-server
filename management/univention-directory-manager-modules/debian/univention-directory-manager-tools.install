@@ -1,6 +1,6 @@
 univention-dnsedit usr/share/univention-directory-manager-tools
 scripts/check_group_recursion usr/share/univention-directory-manager-tools
-scripts/remove_sambapwdlastset usr/share/univention-directory-manager-tools
+scripts/remove_sambapwdmustchange usr/share/univention-directory-manager-tools
 scripts/remove_sambalmpassword usr/share/univention-directory-manager-tools
 scripts/proof_uniqueMembers usr/share/univention-directory-manager-tools
 scripts/proof_policies usr/share/univention-directory-manager-tools
