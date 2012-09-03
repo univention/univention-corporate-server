@@ -37,9 +37,6 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 import univention.config_registry
 import univention.admin.uldap
-import univention.admin.modules
-import univention.admin.filter
-import univention.admin.config
 
 from fnmatch import *
 from time import sleep
@@ -60,13 +57,6 @@ class Instance(umcm.Base):
 		self.ucr.load()
 
 		self._hostname = self.ucr.get('hostname')
-
-		self.lo, self.position = univention.admin.uldap.getMachineConnection(ldap_master=False)
-		self.co = univention.admin.config.config()                                            
-		univention.admin.modules.update()
-		self.users_user = univention.admin.modules.get('users/user')                              
-		univention.admin.modules.init(self.lo, self.position, self.users_user)                              
-		self.users_filter = univention.admin.filter.expression('name', '*')                        
 
 
 	def list_printers(self,request):
@@ -258,9 +248,10 @@ class Instance(umcm.Base):
 		# -----------------------------------
 
 		result = []
-		objs = self.users_user.lookup(self.co, self.lo, self.users_filter, self.position.getDomain(), scope='domain', unique=0)
+		self.lo, self.position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+		objs = self.lo.search(base=self.position.getDomain(), filter='(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$)))', attr=['uid'])
 		for obj in objs:
-			result.append(obj["username"])
+			result.append(obj[1]["uid"][0])
 
 		# ---------- DEBUG --------------
 		MODULE.info("printers/users/query returns:")
