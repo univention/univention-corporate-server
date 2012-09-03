@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.14-1) unstable; urgency=low
+
+  * added cli option for reading bindpwd from file (Bug #19978)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 03 Sep 2012 11:43:06 +0200
+
 univention-directory-manager-modules (8.0.13-1) unstable; urgency=low
 
   * Allow usernames with upper cases (Bug #25656)

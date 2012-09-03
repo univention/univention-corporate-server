@@ -74,6 +74,7 @@ def usage():
 	out.append('create options:')
 	out.append('  --%-30s %s' % ('binddn', 'bind DN'))
 	out.append('  --%-30s %s' % ('bindpwd', 'bind password'))
+	out.append('  --%-30s %s' % ('bindpwdfile', 'file containing bind password'))
 	out.append('  --%-30s %s' % ('position', 'Set position in tree'))
 	out.append('  --%-30s %s' % ('set', 'Set variable to value, e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('superordinate', 'Use superordinate module'))
@@ -86,6 +87,7 @@ def usage():
 	out.append('modify options:')
 	out.append('  --%-30s %s' % ('binddn', 'bind DN'))
 	out.append('  --%-30s %s' % ('bindpwd', 'bind password'))
+	out.append('  --%-30s %s' % ('bindpwdfile', 'file containing bind password'))
 	out.append('  --%-30s %s' % ('dn', 'Edit object with DN'))
 	out.append('  --%-30s %s' % ('arg', 'Edit object with ARG'))
 	out.append('  --%-30s %s' % ('set', 'Set variable to value, e.g. foo=bar'))
@@ -102,6 +104,7 @@ def usage():
 	out.append('remove options:')
 	out.append('  --%-30s %s' % ('binddn', 'bind DN'))
 	out.append('  --%-30s %s' % ('bindpwd', 'bind password'))
+	out.append('  --%-30s %s' % ('bindpwdfile', 'file containing bind password'))
 	out.append('  --%-30s %s' % ('dn', 'Remove object with DN'))
 	out.append('  --%-30s %s' % ('superordinate', 'Use superordinate module'))
 	out.append('  --%-30s %s' % ('arg', 'Remove object with ARG'))
@@ -117,6 +120,7 @@ def usage():
 	out.append('move options:')
 	out.append('  --%-30s %s' % ('binddn', 'bind DN'))
 	out.append('  --%-30s %s' % ('bindpwd', 'bind password'))
+	out.append('  --%-30s %s' % ('bindpwdfile', 'file containing bind password'))
 	out.append('  --%-30s %s' % ('dn', 'Move object with DN'))
 	out.append('  --%-30s %s' % ('position', 'Move to position in tree'))
 	out.append('')
@@ -426,7 +430,7 @@ def _doit(arglist):
 	remove_referring=0
 	recursive=1
 	# parse options
-	longopts=['position=', 'dn=', 'arg=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'filter=', 'tls=', 'ignore_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'customattribute=', 'customattribute-remove=','policy-reference=','policy-dereference=','remove_referring','recursive']
+	longopts=['position=', 'dn=', 'arg=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'filter=', 'tls=', 'ignore_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'customattribute=', 'customattribute-remove=','policy-reference=','policy-dereference=','remove_referring','recursive']
 	try:
 		opts, args=getopt.getopt(arglist[3:], '', longopts)
 	except getopt.error, msg:
@@ -476,6 +480,13 @@ def _doit(arglist):
 			binddn=val
 		elif opt == '--bindpwd':
 			bindpwd=val
+		elif opt == '--bindpwdfile':
+			try:
+				with open(val) as fp:
+					bindpwd=fp.read().strip()
+			except IOError as e:
+				out.append( 'E: could not read bindpwd from file (%s)' % str(e) )
+				return out + ['OPERATION FAILED']
 		elif opt == '--dn':
 			dn = _2utf8( val )
 		elif opt == '--arg':
@@ -536,6 +547,10 @@ def _doit(arglist):
 	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
 
 	if binddn and bindpwd:
+		fp = open('/var/debug2.txt', 'w')
+		for c in bindpwd:
+			fp.write('lol: %s\n' % c)
+		fp.close()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % binddn)
 		try:
 			lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
