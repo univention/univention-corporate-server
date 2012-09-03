@@ -149,6 +149,10 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		if (this.wizard_mode) {
 			// wizard mode
 
+			// disallow page changing more than every 500 milliseconds
+			this._timerPageChange = new dojox.timing.Timer(500);
+			this._timerPageChange.onTick = dojo.hitch(this, function() { this._timerPageChange.stop(); });
+
 			// create all pages dynamically
 			this._pages = [];
 			dojo.forEach(allPages, function(iclass, i) {
@@ -163,10 +167,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 						name: 'submit',
 						label: this._('Next'),
 						callback: dojo.hitch(this, function() {
-							// don't allow more than one click per 500 milliseconds
-							if (500 < dojo.date.difference(this._timePageChanges, undefined, 'millisecond')) {
-								this._timePageChanges = new Date();
-
+							if (!this._timerPageChange.isRunning) {
 								// switch to next visible page
 								// precondition: the last page is never invisible!
 								var nextpage = i + 1;
@@ -174,6 +175,7 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 									nextpage += 1;
 								}
 								this.selectChildIfValid(nextpage);
+								this._timerPageChange.start();
 							}
 						})
 					});

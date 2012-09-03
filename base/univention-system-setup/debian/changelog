@@ -1,3 +1,9 @@
+univention-system-setup (6.0.16-1) unstable; urgency=low
+
+  * disallowing page changes is now done with a dojox.timer; Bug #27734
+
+ -- Florian Best <best@univention.de>  Mon, 03 Sep 2012 08:12:32 +0200
+
 univention-system-setup (6.0.15-1) unstable; urgency=low
 
   * changing page in wizard mode can only be done every half second; Bug #27734
