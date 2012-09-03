@@ -44,7 +44,7 @@ if [ "$1" = "configure" ]; then
 	univention-config-registry set directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300 \
 		password/hashing/method?MD5 # for update keep old behaviour
 
-	univention-config-registry set password/samba/lmhash?true
+	univention-config-registry set password/samba/lmhash?false
 fi
 
 
