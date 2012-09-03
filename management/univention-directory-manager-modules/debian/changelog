@@ -1,7 +1,7 @@
 univention-directory-manager-modules (8.0.12-1) unstable; urgency=low
 
   * The default for the lmhash save has been change to false
-    (Bug #26512)
+    (Bug #27860)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 03 Sep 2012 09:09:34 +0200
 
