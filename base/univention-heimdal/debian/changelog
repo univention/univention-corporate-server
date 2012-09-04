@@ -1,3 +1,9 @@
+univention-heimdal (6.0.9-1) unstable; urgency=low
+
+  * Restart heimdal-kdc in join script (Bug #25103)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 04 Sep 2012 07:47:08 +0200
+
 univention-heimdal (6.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.

@@ -72,6 +72,8 @@ if [ -z "$samba4dcs" ] && ! local_is_ucr_false dns/register/srv_records/kerberos
 	fi
 fi
 
+# Restart heimdal daemons
+test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc restart
 
 test -n "`grep "univention-heimdal-kdc v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-heimdal-kdc v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
