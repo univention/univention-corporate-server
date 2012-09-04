@@ -1,3 +1,10 @@
+univention-network-manager (4.0.6-1) unstable; urgency=low
+
+  * Change the behaviour of last commit, the UCR nameservers are the
+    default nameservers (Bug #27939)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 04 Sep 2012 07:08:22 +0200
+
 univention-network-manager (4.0.5-1) unstable; urgency=low
 
   * Make the given nameservers via DHCP to the default nameservers
