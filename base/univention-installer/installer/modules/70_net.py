@@ -45,6 +45,7 @@ import tempfile
 import ipaddr
 import subprocess
 import threading
+import random
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 LEN_IPv4_ADDR = 15
@@ -166,8 +167,8 @@ class object(content):
 		file = open(tempfilename)
 		dhcp_dict={}
 		for line in file.readlines():
-			key, value = line.strip().split(':', 1)
-			dhcp_dict[key]=value.lstrip()
+			key, value = line.strip().split('=', 1)
+			dhcp_dict[key]=value.lstrip().strip('"')
 		self.debug('DHCP answer: %s' % dhcp_dict)
 		file.close()
 		os.unlink(tempfilename)
@@ -312,7 +313,6 @@ class object(content):
 
 	def profile_complete(self):
 		self.debug('profile_complete()')
-		REeth = re.compile('^eth[0-9]+_(type|ip|netmask|broadcast|network|ip6|prefix6|acceptra)$')
 
 		for key in [ 'gateway6', 'gateway', 'nameserver_1', 'nameserver_2', 'nameserver_3',
 					 'dns_forwarder_1', 'dns_forwarder_2', 'dns_forwarder_3',
@@ -330,20 +330,8 @@ class object(content):
 					self.debug('check failed for %s' % (var))
 					return False
 
-			# check if all four values have been specified for this interface
-			cnt = 0
-			keylist = [ '%s_ip', '%s_netmask', '%s_broadcast', '%s_network' ]
-			for key in keylist:
-				var = key % iface.name
-				if self.all_results.get(var):
-					cnt += 1
-			if cnt > 0 and cnt < len(keylist):
-				self.debug('Interface %s: count=%s' % (iface.name, cnt))
-				self.message = _('Not all IPv4 values have been specified for interface %s') % iface.name
-				return False
-
+		# is ip address
 		invalid = _("Following value is invalid: ")
-
 		for key, name in ( ('gateway', _('IPv4 Gateway')),
 						   ('gateway6', _('IPv6 Gateway')),
 						   ('nameserver_1', _('Domain DNS Server')),
@@ -356,6 +344,7 @@ class object(content):
 					self.debug(self.message)
 					return False
 
+		# test proxy string
 		proxy = self.all_results.get('proxy_http','').strip()
 		self.debug('PROXY=%s' % proxy)
 		if proxy and proxy !='http://' and proxy !='https://':
@@ -365,23 +354,31 @@ class object(content):
 					self.message=invalid+_('Proxy, example http://10.201.1.1:8080')
 					return False
 
+		# checl ipv4 and ipv6 values
 		complete_cnt = 0
 		REinterfaces = re.compile('^eth(\d+)_')
 		iface_list= set([ 'eth%s' % REinterfaces.search(i).group(1) for i in self.all_results.keys() if REinterfaces.search(i) ])
-		for name in iface_list:
+		for interface in self.interfaces:
+			name = interface.name
+			# dhcp
+			dhcpComplete = False
+			if self.all_results.get("%s_type" % name) in ['dynamic', 'dhcp']:
+				dhcpComplete = True
+			# ipv4
 			ipv4complete = False
 			for key in ('ip', 'netmask', 'broadcast', 'network'):
 				if not self.all_results.get('%s_%s' % (name, key)):
 					break
 			else:
 				ipv4complete = True
+			# ipv6
 			ipv6complete = False
 			for key in ('ip6', 'prefix6'):
 				if not self.all_results.get('%s_%s' % (name, key)):
 					break
 			else:
 				ipv6complete = True
-			if ipv4complete or ipv6complete:
+			if ipv4complete or ipv6complete or dhcpComplete:
 				complete_cnt += 1
 
 		if complete_cnt < 1:
@@ -730,6 +727,18 @@ class object(content):
 				self.draw()
 				self.sub = warning(_('No DHCP answer, please check DHCP server and network connectivity.'), self.pos_y+39, self.pos_x+93)
 				self.sub.draw()
+				r1 = random.randrange(0, 255)
+				r2 = random.randrange(0, 255)
+				ip_input = self.get_elem('INP_IPv4ADDR')
+				ip_input.text = "169.254.%s.%s" % (r1, r2)
+				ip_input.set_cursor(len(ip_input.text))
+				ip_input.paste_text()
+				ip_input.draw()
+				netmask_input = self.get_elem('INP_IPv4NETMASK')
+				netmask_input.text = "255.255.255.0"
+				netmask_input.set_cursor(len(netmask_input.text))
+				netmask_input.paste_text()
+				netmask_input.draw()
 			else:
 				addr_elem = self.get_elem('INP_IPv4ADDR')
 				if addr_elem.result():
@@ -754,6 +763,7 @@ class object(content):
 
 		invalid = _('Following value is invalid: ')
 		invalid_value = _('An invalid value has been entered for interface %(interface)s: %(elemname)s')
+		anyDhcp = False
 
 		# nothing configured?
 		if not self.ipv4_found and not self.ipv6_found:
@@ -769,6 +779,8 @@ class object(content):
 				addr = card.get_elem('INP_IPv4ADDR').result().strip()
 				netmask = card.get_elem('INP_IPv4NETMASK').result().strip()
 				self.debug('%s: DHCP:%s  %s/%s' % (name, dhcp, addr, netmask))
+				if dhcp:
+					anyDhcp = True
 				# check values agains IPv4 syntax
 				if addr and not self.is_ipv4addr(addr):
 					return invalid_value % { 'interface': name, 'elemname': _('IPv4 Address') }
@@ -777,8 +789,6 @@ class object(content):
 				# at least dhcp or valid IPv4 has to be set
 				if not(dhcp or (addr and netmask)):
 					return _('Neither DHCP is activated nor an IPv4 address with netmask has been entered for interface "%s".') % name
-				if (dhcp and not(addr and netmask)):
-					return _('For a server role an IPv4 address must be set if DHCP is enabled, please select interface "%s" and press F5 or deselect the DHCP option for interface "%s".') % (name, name)
 
 			if card.get_elem('CB_IPv6').result():
 				acceptra = bool(card.get_elem('CB_IPv6RA').result())
@@ -811,9 +821,9 @@ class object(content):
 			testlist.append( [ 'gateway', _('IPv4 Gateway'), False, '4' ] )
 		if self.ipv6_found:
 			testlist.append( [ 'gateway6', _('IPv6 Gateway'), False, '6' ] )
-		if self.ask_forwarder:
+		if self.ask_forwarder and not anyDhcp:
 			testlist.append( [ 'dns_forwarder_1', _('External DNS Server'), False, '46' ] )
-		if self.ask_domainnameserver:
+		if self.ask_domainnameserver and not anyDhcp:
 			testlist.append( [ 'nameserver_1', _('Domain DNS Server'), True, '46' ] )
 
 		for key, name, required, addrtype in testlist:
@@ -970,20 +980,20 @@ class dhclient_active(act_win):
 		# dhclient call and result evaluation
 		interface = self.parent.get_elem('CARDBOX1').get_card().name
 		dhcp_dict = self.parent.dhclient(interface, 45)
-		ip_str = dhcp_dict.get('address') or ''
+		ip_str = dhcp_dict.get('%s_ip' % interface) or ''
 		if not ip_str:
 			self.parent.dhcpanswer = False
 		else:
 			self.parent.dhcpanswer = True
 
 			ip_input = self.parent.get_elem('INP_IPv4ADDR')
-			ip_input.text = dhcp_dict.get('address') or ''
+			ip_input.text = dhcp_dict.get('%s_ip' % interface) or ''
 			ip_input.set_cursor(len(ip_input.text))
 			ip_input.paste_text()
 			ip_input.draw()
 
 			netmask_input = self.parent.get_elem('INP_IPv4NETMASK')
-			netmask_input.text = dhcp_dict.get('netmask') or ''
+			netmask_input.text = dhcp_dict.get('%s_netmask' % interface) or ''
 			netmask_input.set_cursor(len(netmask_input.text))
 			netmask_input.paste_text()
 			netmask_input.draw()

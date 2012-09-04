@@ -63,14 +63,14 @@ case "$reason" in
 		done
 		if [ -n "$dhclientscript_outputfile" ]; then
 			cat > $dhclientscript_outputfile <<%EOF%
-address: $new_ip_address
-netmask: $new_subnet_mask
-broadcast: $new_broadcast_address
-gateway: $first_router
-nameserver_1: $nameserver_1
-nameserver_2: $nameserver_2
-nameserver_3: $nameserver_3
-domainname: $new_domain_name
+${interface}_ip="$new_ip_address"
+${interface}_netmask="$new_subnet_mask"
+${interface}_broadcast="$new_broadcast_address"
+gateway="$first_router"
+nameserver_1="$nameserver_1"
+nameserver_2="$nameserver_2"
+nameserver_3="$nameserver_3"
+domainname="$new_domain_name"
 %EOF%
 		fi
 

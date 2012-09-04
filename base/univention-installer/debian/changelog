@@ -1,3 +1,9 @@
+univention-installer (8.0.5-1) unstable; urgency=low
+
+  * allow dhcp for all system roles (Bug #26417) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 04 Sep 2012 11:37:07 +0200
+
 univention-installer (8.0.4-1) unstable; urgency=low
 
   * removed security/services from 28_postconfigure_config_registry,

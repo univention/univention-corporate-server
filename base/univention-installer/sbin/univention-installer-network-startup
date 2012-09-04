@@ -49,110 +49,125 @@ if [ "$?" -ne 0 ]; then
 	ifconfig eth0
 fi
 
-# setup physical interfaces during first run
-# setup virtual interfaces during second run
-for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
-    set | egrep "${ifaceregex}type=" | while read line; do
-    	ucr_network_device=`echo $line | sed -e 's|_type.*||'`
-    	if [ -z "$ucr_network_device" ]; then
-    		continue
-    	fi
-    	dynamic=`echo $line | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-    	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
-    		python2.6 /sbin/univention-config-registry set interfaces/$ucr_network_device/type=dhcp
+startNetworkInterface() {
 
-			address=`set | egrep "^${ucr_network_device}_ip=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-			if [ -n "$address" ]; then
-				netmask=`set | egrep "^${ucr_network_device}_netmask=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-				broadcast=`set | egrep "^${ucr_network_device}_broadcast=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-				network=`set | egrep "^${ucr_network_device}_network=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-				if [ -n "$netmask" ] || [ -n "$broadcast" ] || [ -n "$network" ]; then
-					# for serverroles with ${ucr_network_device}_type='dynamic' or 'dhcp' the installer module 20_net also outputs
-					# the data that was determined by dhclient at configuration time,
-					# these values are recorded here to reflect the status that is written in the directory
-					python2.6 /sbin/univention-config-registry set \
-						interfaces/$ucr_network_device/fallback/address=$address \
-						interfaces/$ucr_network_device/fallback/netmask=$netmask \
-						interfaces/$ucr_network_device/fallback/broadcast=$broadcast \
-						interfaces/$ucr_network_device/fallback/network=$network
-				fi
-			fi
-    	fi
+	local address="$1"
+	local netmask="$2"
+	local broadcast="$3"
+	local network="$4"
+	local interface="$5"
 
-    	network_device=`echo $ucr_network_device | sed -e 's|_|:|g'`
+	if [ -z "$address" -o -z "$netmask" -o -z "$broadcast" -o -z "$interface" ]; then
+		return
+	fi
 
-		# try to bring up interface
-		ifconfig $network_device up
-		mkdir -p /var/lib/dhcp3/
-		dhclient $network_device
-    done
-    set | egrep "${ifaceregex}ip=" | while read line; do
+	python2.6 /sbin/univention-config-registry set interfaces/$interface/address=$address
+	python2.6 /sbin/univention-config-registry set interfaces/$interface/netmask=$netmask
+	python2.6 /sbin/univention-config-registry set interfaces/$interface/broadcast=$broadcast
 
-    	network_device=`echo $line | sed -e 's|_ip.*||'`
+	if [ -n "$network" ]; then
+		python2.6 /sbin/univention-config-registry set interfaces/$interface/network=$network
+	fi
 
-    	if [ -z "$network_device" ]; then
-    		continue
-    	fi
+	ifconfig $interface inet 0
+	ifconfig $interface $address netmask $netmask broadcast $broadcast up
+}
 
-    	address=`echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
-    	netmask=`set | egrep "^${network_device}_netmask=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
-    	broadcast=`set | egrep "^${network_device}_broadcast=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
-    	network=`set | egrep "^${network_device}_network=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
+ifaceregex="^eth[0-9]+_"
+interfaces="$(set | egrep "${ifaceregex}" | awk -F _ '{print $1}' | sort -u)"
 
-    	if [ -z "$address" ] || [ -z "$netmask" ] || [ -z "$broadcast" ] || [ -z "$network" ]; then
-    		continue
-    	fi
+# setup interface
+for interface in $interfaces; do
 
-		# Note: if installer saved an address then configure the device now with that address, even if type=dynamic
-		python2.6 /sbin/univention-config-registry set interfaces/$network_device/address=$address
-		python2.6 /sbin/univention-config-registry set interfaces/$network_device/netmask=$netmask
-		python2.6 /sbin/univention-config-registry set interfaces/$network_device/broadcast=$broadcast
-		python2.6 /sbin/univention-config-registry set interfaces/$network_device/network=$network
-
-		network_device=`echo $network_device | sed -e 's|_|:|g'`
-
-		ifconfig $network_device $address netmask $netmask broadcast $broadcast up
-    done
-
-	# set IPv6 acceptra
-    set | egrep "${ifaceregex}acceptra=" | while read line; do
-    	network_device=`echo $line | sed -e 's|_acceptra.*||'`
-    	if [ -z "$network_device" ]; then
-    		continue
-    	fi
-
-    	acceptra="$(echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
-
-		python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=false"
-		if [ -n "$acceptra" ] ; then
-			if [ "$acceptra" = "true" ] ; then
-				python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=$acceptra"
-				sysctl -w "net.ipv6.conf.${network_device}.accept_ra=1"
-			else
-				sysctl -w "net.ipv6.conf.${network_device}.accept_ra=0"
-			fi
+	address="$(eval echo \$$interface\_ip)"
+	netmask="$(eval echo \$$interface\_netmask)"
+	broadcast="$(eval echo \$$interface\_broadcast)"
+	network="$(eval echo \$$interface\_network)"
+	dynamic="$(eval echo \$$interface\_type)"
+	
+	# dhcp request
+	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
+	
+		python2.6 /sbin/univention-config-registry set interfaces/$interface/type=dhcp
+	
+		# dhclient only if no address is set
+		if [ -z "$address" -o -z "$netmask" ]; then
+			ifconfig $interface up
+			outfile="/tmp/dhclient-$interface.$$"
+			mkdir -p /var/lib/dhcp3/
+			dhclient -1 \
+				-sf /lib/univention-installer/dhclient-script-wrapper \
+				-e dhclientscript_outputfile="$outfile" \
+				$interface
+			if [ -s "$outfile" ]; then
+				. "$outfile"
+				rm -f "$outfile"
+			fi 
 		fi
+	
+		# test dhcp
+		address="$(eval echo \$$interface\_ip)"
+		netmask="$(eval echo \$$interface\_netmask)"
+		if [ -z "$address" -o -z "$netmask" ]; then
+			r1=$((RANDOM % 255))
+			r2=$((RANDOM % 255))
+			eval $interface\_ip="169.254.$r1.$r2"
+			eval $interface\_netmask="255.255.255.0"
+			eval $interface\_broadcast="169.254.$r1.255"
+			eval $interface\_network="169.254.$r1.0"
+		fi
+	
+		# do it
+		address="$(eval echo \$$interface\_ip)"
+		netmask="$(eval echo \$$interface\_netmask)"
+		broadcast="$(eval echo \$$interface\_broadcast)"
+		network="$(eval echo \$$interface\_network)"
+	fi
+	
+	startNetworkInterface "$address" "$netmask" "$broadcast" "$network" "$interface"
+
+done
+
+# set IPv6 acceptra
+set | egrep "${ifaceregex}acceptra=" | while read line; do
+	network_device=`echo $line | sed -e 's|_acceptra.*||'`
+	if [ -z "$network_device" ]; then
+		continue
+	fi
+
+	acceptra="$(echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
+
+	python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=false"
+	if [ -n "$acceptra" ] ; then
+		if [ "$acceptra" = "true" ] ; then
+			python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/acceptRA=$acceptra"
+			sysctl -w "net.ipv6.conf.${network_device}.accept_ra=1"
+		else
+			sysctl -w "net.ipv6.conf.${network_device}.accept_ra=0"
+		fi
+	fi
+	ip link set "$network_device" up
+done
+
+# set IPv6 address
+set | egrep "${ifaceregex}ip6=" | while read line; do
+
+	network_device=`echo $line | sed -e 's|_ip6.*||'`
+
+	if [ -z "$network_device" ]; then
+		continue
+	fi
+
+	address="$(echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
+	prefix="$(set | egrep "^${network_device}_prefix6=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
+
+	if [ -n "$address" -a -n "$prefix" ] ; then
+		python2.6 /sbin/univention-config-registry set \
+			"interfaces/$network_device/ipv6/default/address=$address" \
+			"interfaces/$network_device/ipv6/default/prefix=$prefix"
 		ip link set "$network_device" up
-	done
-
-	# set IPv6 address
-    set | egrep "${ifaceregex}ip6=" | while read line; do
-
-    	network_device=`echo $line | sed -e 's|_ip6.*||'`
-
-    	if [ -z "$network_device" ]; then
-    		continue
-    	fi
-
-    	address="$(echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
-		prefix="$(set | egrep "^${network_device}_prefix6=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g")"
-
-    	if [ -n "$address" -a -n "$prefix" ] ; then
-			python2.6 /sbin/univention-config-registry set "interfaces/$network_device/ipv6/default/address=$address" "interfaces/$network_device/ipv6/default/prefix=$prefix"
-			ip link set "$network_device" up
-			ip -6 addr add "$address/$prefix" dev "${network_device}"
-    	fi
-    done
+		ip -6 addr add "$address/$prefix" dev "${network_device}"
+	fi
 done
 
 route del default
