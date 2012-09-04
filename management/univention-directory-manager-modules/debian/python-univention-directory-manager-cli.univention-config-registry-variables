@@ -9,3 +9,9 @@ Description[de]=Zeitspanne in Sekunden, nach der sich der Univention Directory M
 Description[en]=Time span after which an idle Univention Directory Manager server automatically terminates [5 minutes]
 Type=int
 Categories=service-ldap
+
+[directory/manager/cmd/sockettimeout]
+Description[de]=Zeitspanne in Sekunden die der CLI-Client auf ein Socketfile des CLI-Servers wartet.
+Description[en]=Time span in secconds the cli client is waits for a socket file of the cli server.
+Type=int
+Categories=service-ldap

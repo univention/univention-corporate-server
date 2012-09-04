@@ -1,3 +1,11 @@
+univention-directory-manager-modules (8.0.15-1) unstable; urgency=low
+
+  * added ucr variable "directory/manager/cmd/sockettimeout"
+    to make time span the cli client waits for a socket
+    file of the cli server configurable (Bug #27736)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 04 Sep 2012 15:43:30 +0200
+
 univention-directory-manager-modules (8.0.14-1) unstable; urgency=low
 
   * added cli option for reading bindpwd from file (Bug #19978)

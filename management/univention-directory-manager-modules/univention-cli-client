@@ -39,6 +39,7 @@ import os
 import sys
 import string
 import codecs
+from univention.config_registry import ConfigRegistry
 
 socket_dir='/tmp/admincli_%s/' % os.getuid()
 socket_filename='sock'
@@ -79,16 +80,18 @@ except:
 			os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', ['univention-cli-server'])
 	else:
 		os.waitpid(pid, os.P_NOWAIT)
-	
-	timeout=10
+
+	ucr = ConfigRegistry()
+	ucr.load()
+	socket_timeout = int(ucr.get('directory/manager/cmd/sockettimeout', '50'))
 	stime=int(time.time())
 	while not os.path.exists('%s' % socket_path):
 		time.sleep(0.1)
-		if int(time.time()) > stime+timeout:
-			print 'E: Can`t find running daemon after %s Seconds. (No socketfile)' % timeout
+		if int(time.time()) > stime+socket_timeout:
+			print 'E: Can`t find running daemon after %s Seconds. (No socketfile)' % socket_timeout
 			sys.exit(1)
 	
-	timeout=30 # this took a long time if getfqdn(host) was used in cli-server
+	connection_timeout=30 # this took a long time if getfqdn(host) was used in cli-server
 	stime=int(time.time())
 	socking=0
 	while socking == 0:
@@ -97,8 +100,8 @@ except:
 			socking=1
 		except:
 			time.sleep(0.1)
-			if int(time.time()) > stime+timeout:
-				print 'E: Can`t connect daemon after %s seconds.' % timeout
+			if int(time.time()) > stime+connection_timeout:
+				print 'E: Can`t connect daemon after %s seconds.' % connection_timeout
 				sys.exit(1)
 			
 			#sys.exit(1)
