@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (2.0.0-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 04 Sep 2012 17:30:03 +0200
+
 univention-management-console-module-ucr (1.0.32-1) unstable; urgency=low
 
   * fixed autoselection of search text (Bug #22881)
