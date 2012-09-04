@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.20-1) unstable; urgency=low
+
+  * first round of dojo 1.8 update completed; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 04 Sep 2012 15:20:03 +0200
+
 univention-management-console-frontend (2.0.19-1) unstable; urgency=low
 
   * adapted MultiObjectSelect to not set values directly in the object store

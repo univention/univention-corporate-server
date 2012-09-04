@@ -113,7 +113,7 @@ define([
 			this.inherited(arguments);
 
 			domClass.toggle(this.domNode, 'dijitHidden', this.content.visible === false);
-		}, 
+		},
 
 		_setLabelAttr: function(label) {
 			if (lang.getObject('content.isLabelDisplayed', false, this)) {

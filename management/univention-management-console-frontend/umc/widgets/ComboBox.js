@@ -47,7 +47,7 @@ define([
 		autoComplete: false,
 
 		// autoHide: Boolean
-		//		If true, the ComboBox will only be visible if there it lists more than 
+		//		If true, the ComboBox will only be visible if there it lists more than
 		//		one element.
 		autoHide: false,
 
@@ -65,7 +65,7 @@ define([
 
 			on.once(this, 'onValuesLoaded', function(values) {
 				if (this.autoHide) {
-					// show the widget in case there are more than 1 values 
+					// show the widget in case there are more than 1 values
 					this.set('visible', values.length > 1);
 				}
 			});

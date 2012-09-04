@@ -114,7 +114,7 @@ define([
 			this.postCreate();
 
 			/* reset the paths */
-			this._reloadOnLoadConnect = this.on('load', function() {
+			this._reloadOnLoadConnect = this.on('load', lang.hitch(this, function() {
 				/* restore old paths.
 				 * FIXME: this will result in an error if a formerly selected item
 				 * is no longer existent in the tree after reloading! */
@@ -125,7 +125,7 @@ define([
 					this._reloadOnLoadConnect.remove();
 					this._reloadOnLoadConnect = null;
 				}));
-			});
+			}));
 		}
 	});
 });

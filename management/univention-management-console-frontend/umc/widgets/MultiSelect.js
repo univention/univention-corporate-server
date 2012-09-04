@@ -97,9 +97,9 @@ define([
 			query('.dojoxGridHeader', this.domNode).style('height', '0px');
 
 			// send an onChange event when the selection has changed
-			this.on('selectionChanged', function() {
+			this.on('selectionChanged', lang.hitch(this, function() {
 				this._set('value', this.get('value'));
-			});
+			}));
 		},
 
 		_getSizeAttr: function() {

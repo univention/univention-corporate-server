@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define */
+/*global define require */
 
 define([
 	"dojo/_base/declare",
@@ -36,142 +36,147 @@ define([
 	"dojo/aspect",
 	"dojo/when",
 	"dojo/store/DataStore",
-	"dijit/Dialog",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
-	"umc/widgets/StandbyMixin",
 	"umc/widgets/Button",
-	"umc/widgets/SearchForm",
 	"umc/widgets/MultiSelect",
 	"umc/widgets/LabelPane",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, on, aspect, when, DataStore, Dialog, tools, ContainerWidget, _FormWidgetMixin, StandbyMixin, Button, SearchForm, MultiSelect, LabelPane, _) {
+], function(declare, lang, array, on, aspect, when, DataStore, tools, ContainerWidget, _FormWidgetMixin, Button, MultiSelect, LabelPane, _) {
 
-	var DetailDialog = declare([ Dialog, StandbyMixin ], {
-		widgets: [],
+	// lazy defining of the dialog in order to avoid circular dependencies with umc/render
+	var DetailDialog = declare(null, {});
+	require([
+		"dijit/Dialog",
+		"umc/widgets/StandbyMixin",
+		"umc/widgets/SearchForm"
+	], function(Dialog, StandbyMixin, SearchForm) {
+		DetailDialog = declare([ Dialog, StandbyMixin ], {
+			widgets: [],
 
-		queryCommand: '',
+			queryCommand: '',
 
-		queryOptions: {},
+			queryOptions: {},
 
-		autoSearch: true,
+			autoSearch: true,
 
-		'class': 'umcMultiObjectSelectDetailDialog',
+			'class': 'umcMultiObjectSelectDetailDialog',
 
-		_form: null,
+			_form: null,
 
-		_multiSelect: null,
+			_multiSelect: null,
 
-		_container: null,
+			_container: null,
 
-		uninitialize: function() {
-			// make sure that the container widget is destroyed correctly
-			this._container.destroyRecursive();
-		},
+			uninitialize: function() {
+				// make sure that the container widget is destroyed correctly
+				this._container.destroyRecursive();
+			},
 
-		postMixInProperties: function() {
-			this.inherited(arguments);
-			if (!this.title) {
-				this.title = _('Add objects');
-			}
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			// create a container for all widgets
-			this._container = new ContainerWidget({});
-			this._container.placeAt(this.containerNode);
-
-			// for the layout, all Elements should be below each other
-			var layout = array.map(this.widgets, function(iwidget) {
-				return iwidget.name;
-			});
-			this._form = new SearchForm({
-				widgets: this.widgets,
-				layout: layout,
-				onSearch: lang.hitch(this, 'search'),
-				onValuesInitialized: lang.hitch(this, function() {
-					// trigger the search if autoSearch is specified and as soon as all form
-					// elements have been initialized
-					if (this.autoSearch) {
-						this.search(this._form.gatherFormValues());
-					}
-				})
-			});
-			this._container.addChild(this._form);
-
-			// for visualizing the search results, use a MultiSelect
-			this._multiSelect = new MultiSelect({
-				height: '250px',
-				label: _('Search results:')
-			});
-			this._container.addChild(new LabelPane({
-				content: this._multiSelect,
-				style: 'display: block;' // do not allow for floating
-			}));
-
-			// add the final buttons to close the dialog
-			this._container.addChild(new Button({
-				label: _('Add'),
-				iconClass: 'umcIconAdd',
-				style: 'float: right;',
-				onClick: lang.hitch(this, function() {
-					// get all elements an trigger onAdd event
-					var ids = this._multiSelect.get('value');
-					if (ids.length) {
-						// only trigger event if there are more then 0 entries
-						this.onAdd(ids);
-					}
-
-					// hide the dialog
-					this.hide();
-
-					// unselect all elements
-					this._multiSelect.set('value', []);
-				})
-			}));
-			this._container.addChild(new Button({
-				label: _('Cancel'),
-				defaultButton: true,
-				onClick: lang.hitch(this, function() {
-					// hide the dialog
-					this.hide();
-
-					// unselect all elements
-					this._multiSelect.set('value', []);
-
-				})
-			}));
-
-			// put focus to last widget in the SearchForm
-			this.on('focus', function() {
-				if (this.widgets.length) {
-					var lastConf = this.widgets[this.widgets.length - 1];
-					var lastName = lastConf.id || lastConf.name;
-					var widget = this._form.getWidget(lastName);
-					if (lang.getObject('focus', false, widget)) {
-						widget.focus();
-					}
+			postMixInProperties: function() {
+				this.inherited(arguments);
+				if (!this.title) {
+					this.title = _('Add objects');
 				}
-			});
-		},
+			},
 
-		search: function(_values) {
-			// set dynamicOptions which will trigger a reload
-			var values = lang.mixin({}, this.queryOptions, _values);
-			this._multiSelect.set('dynamicOptions', values);
+			buildRendering: function() {
+				this.inherited(arguments);
 
-			if (!this._multiSelect.dynamicValues) {
-				// the first time we need to set dynamicValues
-				this._multiSelect.set('dynamicValues', this.queryCommand);
+				// create a container for all widgets
+				this._container = new ContainerWidget({});
+				this._container.placeAt(this.containerNode);
+
+				// for the layout, all Elements should be below each other
+				var layout = array.map(this.widgets, function(iwidget) {
+					return iwidget.name;
+				});
+				this._form = new SearchForm({
+					widgets: this.widgets,
+					layout: layout,
+					onSearch: lang.hitch(this, 'search'),
+					onValuesInitialized: lang.hitch(this, function() {
+						// trigger the search if autoSearch is specified and as soon as all form
+						// elements have been initialized
+						if (this.autoSearch) {
+							this.search(this._form.gatherFormValues());
+						}
+					})
+				});
+				this._container.addChild(this._form);
+
+				// for visualizing the search results, use a MultiSelect
+				this._multiSelect = new MultiSelect({
+					height: '250px',
+					label: _('Search results:')
+				});
+				this._container.addChild(new LabelPane({
+					content: this._multiSelect,
+					style: 'display: block;' // do not allow for floating
+				}));
+
+				// add the final buttons to close the dialog
+				this._container.addChild(new Button({
+					label: _('Add'),
+					iconClass: 'umcIconAdd',
+					style: 'float: right;',
+					onClick: lang.hitch(this, function() {
+						// get all elements an trigger onAdd event
+						var ids = this._multiSelect.get('value');
+						if (ids.length) {
+							// only trigger event if there are more then 0 entries
+							this.onAdd(ids);
+						}
+
+						// hide the dialog
+						this.hide();
+
+						// unselect all elements
+						this._multiSelect.set('value', []);
+					})
+				}));
+				this._container.addChild(new Button({
+					label: _('Cancel'),
+					defaultButton: true,
+					onClick: lang.hitch(this, function() {
+						// hide the dialog
+						this.hide();
+
+						// unselect all elements
+						this._multiSelect.set('value', []);
+
+					})
+				}));
+
+				// put focus to last widget in the SearchForm
+				this.on('focus', lang.hitch(this, function() {
+					if (this.widgets.length) {
+						var lastConf = this.widgets[this.widgets.length - 1];
+						var lastName = lastConf.id || lastConf.name;
+						var widget = this._form.getWidget(lastName);
+						if (lang.getObject('focus', false, widget)) {
+							widget.focus();
+						}
+					}
+				}));
+			},
+
+			search: function(_values) {
+				// set dynamicOptions which will trigger a reload
+				var values = lang.mixin({}, this.queryOptions, _values);
+				this._multiSelect.set('dynamicOptions', values);
+
+				if (!this._multiSelect.dynamicValues) {
+					// the first time we need to set dynamicValues
+					this._multiSelect.set('dynamicValues', this.queryCommand);
+				}
+			},
+
+			onAdd: function(ids) {
+				// event stub
 			}
-		},
-
-		onAdd: function(ids) {
-			// event stub
-		}
+		});
 	});
 
 	return declare("umc.widgets.MultiObjectSelect", [ ContainerWidget, _FormWidgetMixin ], {

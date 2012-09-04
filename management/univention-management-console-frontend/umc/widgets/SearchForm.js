@@ -30,10 +30,11 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"dojo/_base/array",
 	"umc/widgets/Form",
 	"umc/i18n!umc/app"
-], function(declare, array, Form, _) {
+], function(declare, lang, array, Form, _) {
 	return declare("umc.widgets.SearchForm", Form, {
 		// summary:
 		//		Encapsulates a complete search form with standard search and cancel
@@ -76,9 +77,9 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
-			this.on('submit', function() {
+			this.on('submit', lang.hitch(this, function() {
 				this.onSearch(this.gatherFormValues());
-			});
+			}));
 		},
 
 		onSearch: function(values) {

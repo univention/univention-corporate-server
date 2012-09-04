@@ -124,7 +124,7 @@ define([
 			if (this._titlePane) {
 				this._titlePane.set('content', '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>');
 			}
-			_set('title', newTitle);
+			this._set('title', newTitle);
 		}
 	});
 });

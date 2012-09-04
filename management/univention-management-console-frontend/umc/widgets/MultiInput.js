@@ -31,7 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/array",
+	"dojo/_base/array",
 	"dijit/form/Button",
 	"umc/tools",
 	"umc/render",

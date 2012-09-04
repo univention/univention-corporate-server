@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define console require */
 
 define([
 	"dojo/_base/lang",
@@ -37,7 +37,10 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Tooltip",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/app",
+	"umc/widgets/Button",
+	"umc/widgets/SubmitButton",
+	"umc/widgets/ResetButton"
 ], function(lang, array, domClass, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, _) {
 	var render = {};
 	lang.mixin(render, {
@@ -51,7 +54,7 @@ define([
 			var widgets = { };
 			array.forEach(widgetsConf, function(iconf) {
 				// ignore empty elements
-				if (!iconf || !typeof iconf == "object") {
+				if (!iconf || typeof iconf != "object") {
 					return true;
 				}
 
@@ -103,14 +106,11 @@ define([
 			try {
 				// include the corresponding module for the widget
 				path = widgetConf.type;
-				if (path.indexOf('.') < 0) {
-					// the name does not contain a dot, thus we need to add 'umc/widgets.' as path prefix
-					path = 'umc.widgets.' + path;
+				if (path.indexOf('/') < 0) {
+					// the name does not contain a slash, thus we need to add 'umc/widgets.' as path prefix
+					path = 'umc/widgets/' + path;
 				}
-				dojo['require'](path);
-
-				// create the new widget according to its type
-				WidgetClass = lang.getObject(path);
+				WidgetClass = require(path);
 			}
 			catch (error) { }
 			if (!WidgetClass) {
@@ -177,8 +177,7 @@ define([
 			}
 
 			// load the java script code for the button class
-			dojo['require']('umc.widgets.' + buttonClassName);
-			var ButtonClass = lang.getObject('umc.widgets.' + buttonClassName);
+			var ButtonClass = require('umc/widgets/' + buttonClassName);
 
 			// get icon and label (these properties may be functions)
 			var iiconClass = buttonConf.iconClass;
@@ -359,4 +358,6 @@ define([
 			return globalContainer; // dojox.layout.TableContainer
 		}
 	});
+
+	return render;
 });

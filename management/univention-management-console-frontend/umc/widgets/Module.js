@@ -30,12 +30,14 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
 	"dijit/layout/StackContainer",
 	"umc/tools",
 	"umc/widgets/_ModuleMixin",
 	"umc/widgets/StandbyMixin"
-], function(declare, array, StackContainer, tools, _ModuleMixin, StandbyMixin) {
+], function(declare, lang, array, on, StackContainer, tools, _ModuleMixin, StandbyMixin) {
 	return declare("umc.widgets.Module", [ StackContainer, _ModuleMixin, StandbyMixin ], {
 		// summary:
 		//		Basis class for module classes.
@@ -66,9 +68,9 @@ define([
 				array.forEach(ipage.getDescendants(), function(iwidget) {
 					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 						// hook to onShow event
-						this.on(ipage, 'show', function() {
+						this.own(on(ipage, 'show', lang.hitch(this, function() {
 							iwidget.startup();
-						});
+						})));
 					}
 				}, this);
 			}, this);

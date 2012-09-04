@@ -51,7 +51,7 @@ define([
 
 		// extend internal method for placing elements
 		_placeClip: function() {
-			//TODO: Could be made smarter for the case the clip is displayed somewhere 
+			//TODO: Could be made smarter for the case the clip is displayed somewhere
 			//      else than the top center.
 			this.inherited(arguments);
 
@@ -73,7 +73,7 @@ define([
 		},
 
 		setContent: function(/*String|Function*/message, /*String*/messageType, /*int?*/duration) {
-			//TODO: Could be made smarter for the case the clip is displayed somewhere 
+			//TODO: Could be made smarter for the case the clip is displayed somewhere
 			//      else than the top center.
 			this.inherited(arguments);
 

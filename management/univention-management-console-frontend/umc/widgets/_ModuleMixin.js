@@ -55,7 +55,7 @@ define([
 		//		(Is specified automatically.)
 		moduleID: '',
 
-		// moduleStore: store.UmcpModuleStore
+		// moduleStore: umc/store/_UmcpModuleStore
 		//		A dojo object store interface for query/get/put/remove methods for the UMC
 		//		module. Requests for operations on module items should be executed through
 		//		this store interface. In this way, changes will be immediatly reflected to
@@ -72,7 +72,7 @@ define([
 			this.inherited(arguments);
 
 			if (this.idProperty) {
-				this.moduleStore = store.getModuleStore(this.idProperty, this.moduleID, this.moduleFlavor);
+				this.moduleStore = store(this.idProperty, this.moduleID, this.moduleFlavor);
 			}
 		},
 

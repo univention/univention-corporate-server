@@ -26,27 +26,28 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console */
+/*global define require console */
 
 define([
 	"./i18n/tools",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/kernel",
 	"dojo/request",
 	"dojo/promise/all",
 	"dojo/json",
 	"dojo/Deferred",
 	"dojox/string/sprintf"
-], function(i18nTools, lang, array, request, all, json, Deferred, sprintf) {
+], function(i18nTools, lang, array, kernel, request, all, json, Deferred, sprintf) {
 
 	// internal function and list of erroneous/missing translation information
 	var _ignoreModules = {};
 	var _ignore = function(language, modPath, modName) {
 		lang.setObject(lang.replace('{0}.{1}.{2}', [language, modPath, modName]), true, _ignoreModules);
-	}
+	};
 	var _ignored = function(language, modPath, modName) {
 		return lang.getObject(lang.replace('{0}.{1}.{2}', [language, modPath, modName]), false, _ignoreModules) || false;
-	}
+	};
 
 	// Internal regular expression to split the module name into the module
 	// path and name.
@@ -107,7 +108,7 @@ define([
 			};
 
 			// detect the locale language (ignore territory)
-			var m = _i18nLocalRegExp.exec(dojo.locale);
+			var m = _i18nLocalRegExp.exec(kernel.locale);
 			var language = m[1] || 'en'; // default is English
 			language = language.toLowerCase();
 
@@ -127,7 +128,7 @@ define([
 
 			// ignore i18n files that could not be loaded previously
 			scopes = array.filter(scopes, function(iscope) {
-				return !_ignored(language, iscope[0], iscope[1])
+				return !_ignored(language, iscope[0], iscope[1]);
 			});
 
 			// try to load the JSON translation file for the current language

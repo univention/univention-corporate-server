@@ -73,17 +73,18 @@ define([
 			});
 
 			//this.domNode.innerHtml = '<div>' + this.description + '</div>';
+			var domNode = this.domNode;
 			this.on(mouse.enter, function() {
-				domClass.add(this.domNode, 'modLaunchButtonHover');
+				domClass.add(domNode, 'modLaunchButtonHover');
 			});
 			this.on(mouse.leave, function() {
-				domClass.remove(this.domNode, 'modLaunchButtonHover');
+				domClass.remove(domNode, 'modLaunchButtonHover');
 			});
 			this.on('mousedown', function() {
-				domClass.add(this.domNode, 'modLaunchButtonClick');
+				domClass.add(domNode, 'modLaunchButtonClick');
 			});
 			this.on('mouseup', function() {
-				domClass.remove(this.domNode, 'modLaunchButtonClick');
+				domClass.remove(domNode, 'modLaunchButtonClick');
 			});
 		}
 	});
@@ -125,9 +126,9 @@ define([
 				});
 
 				// hook to the onClick event of the module
-				this.own(on(modWidget, 'click', function() {
+				this.own(on(modWidget, 'click', lang.hitch(this, function() {
 					this.onOpenModule(imod);
-				}));
+				})));
 
 				// add module widget to the container
 				this.addChild(modWidget);

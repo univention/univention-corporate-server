@@ -206,7 +206,7 @@ define([
 				this._initialValue = this.get('value');
 			}
 			catch (error) {
-				// failed to access 'value', probably too early in the widget construction 
+				// failed to access 'value', probably too early in the widget construction
 				// (e.g., DOM elements are not ready yet)
 				this._initialValue = this.value;
 			}
@@ -236,7 +236,7 @@ define([
 		},
 
 		_clearValues: function() {
-			this.store.fetch( { 
+			this.store.fetch( {
 				onComplete: lang.hitch( this, function( items ) {
 					array.forEach( items, lang.hitch( this, function( item ) {
 						this.store.deleteItem( item );

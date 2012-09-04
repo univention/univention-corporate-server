@@ -26,349 +26,349 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
-dojo.provide("store");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/Deferred",
+	"dojo/store/util/QueryResults",
+	"dojo/store/Observable",
+	"umc/tools"
+], function(declare, lang, array, Deferred, QueryResults, Observable, tools) {
+	/*
+	var _Memory = declare(dojo.store.Memory, {
+		// summary:
+		//		Enhances the original Memory class with a onChange event for the Grid.
 
-dojo.require("tools");
-dojo.require("/*REQUIRE:"dojo/Deferred"*/ DeferredList");
-dojo.require("dojo.store.util.QueryResults");
-dojo.require("dojo.store.Observable");
-dojo.require("dojo.store.Memory");
-dojo.require("dojo.data.ObjectStore");
+		onChange: function() {
+			// event stub
+		},
 
+		put: function() {
+			var res = this.inherited(arguments);
+			this.onChange();
+			return res;
+		},
 
-// internal dict of static module store references
-store._moduleStores = {};
+		add: function() {
+			var res = this.inherited(arguments);
+			this.onChange();
+			return res;
+		},
 
-store.getModuleStore = function(/*String*/ idProperty, /*String*/ storePath, /*String?*/ moduleFlavor) {
-	// summary:
-	//		Returns (and if necessary creates) a singleton instance of store.UmcpModuleStore
-	//		for the given path to the store and (if specified) the given flavor.
-	// idProperty: String
-	//		Indicates the property to use as the identity property.
-	//		The values of this property need to be unique.
-	// storePath: String?
-	//		UMCP URL of the module where query, set, remove, put, and add
-	//		methods can be found. By default this is the module ID.
-	// moduleFlavor: String?
-	//		Specifies the module flavor which may need to be communicated to
-	//		the server via `umc.tool.umcpCommand()`.
-	//		(Is specified automatically.)
+		remove: function() {
+			var res = this.inherited(arguments);
+			this.onChange();
+			return res;
+		},
 
-	// create a singleton for the module store for each flavor; this is to ensure that
-	// the correct flavor of the module is send to the server
-	var stores = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('store._moduleStores', true);
-	var key = storePath + '@' + (moduleFlavor || 'default');
-	if (!stores[key]) {
-		// the store does not exist, we need to create a new singleton
-		stores[key] = dojo.store.Observable(new store.UmcpModuleStore({
-			idProperty: idProperty,
-			storePath: storePath,
-			umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
-				return tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || moduleFlavor );
+		setData: function() {
+			this.inherited(arguments);
+			this.onChange();
+		}
+	});
+	*/
+
+	var _UmcpModuleStore = declare("umc.store.UmcpModuleStore", null, {
+		// idProperty: String
+		//		Indicates the property to use as the identity property.
+		//		The values of this property should be unique.
+		idProperty: '',
+
+		// storePath: String
+		//		UMCP URL of the module where query, set, remove, put, and add
+		//		methods can be found.
+		storePath: '',
+
+		// umcpCommand: Function
+		//		Reference to a particularly flavored umcpCommand.
+		umcpCommand: tools.umcpCommand,
+
+		constructor: function(params) {
+			lang.mixin(this, params);
+		},
+
+		getIdentity: function(object) {
+			// summary:
+			//		Returns an object's identity
+			// object: Object
+			//		The object to get the identity from
+			//	returns: String
+			//console.log('getIdentity: ' + json.stringify(arguments));
+			return object[this.idProperty];
+		},
+
+		_genericCmd: function(type, param) {
+			//console.log('_genericCmd: ' + json.stringify(arguments));
+			if (this._doingTransaction) {
+				this._addTransactions(type, [param]);
 			}
-		}));
-	}
-	return stores[key];
-};
+			else {
+				return this._genericMultiCmd(type, [param]).
+					then(function(results) {
+						if (results && results instanceof Array) {
+							return results[0];
+						}
+					});
+			}
+		},
 
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(dojo.store.Memory, {
-	// summary:
-	//		Enhances the original Memory class with a onChange event for the Grid.
+		_genericMultiCmd: function(type, params) {
+			//console.log('_genericMultiCmd: ' + json.stringify(arguments));
+			if (this._doingTransaction) {
+				this._addTransactions(type, params);
+			}
+			else {
+				// send the UMCP command
+				return this.umcpCommand(this.storePath + '/' + type, params).
+					then(lang.hitch(this, function(data) {
+						// make sure that we get an non-empty array
+						//console.log('# _genericMultiCmd - deferred: data=' + String(data));
+						var res = lang.getObject('result', false, data);
 
-	onChange: function() {
-		// event stub
-	},
+						// send event when changes occurred
+						if (!this._noEvents && ('remove' == type || 'put' == type || 'add' == type)) {
+							this.onChange();
+						}
 
-	put: function() {
-		var res = this.inherited(arguments);
-		this.onChange();
-		return res;
-	},
+						//tools.assert(res && res instanceof Array && res.length == params.length,
+						//	lang.replace('UMCP result from {0}/{1} did not yield an non-empty array!', [this.storePath, type]));
+						return res;
+					}));
+			}
+		},
 
-	add: function() {
-		var res = this.inherited(arguments);
-		this.onChange();
-		return res;
-	},
+		get: function(id) {
+			//console.log('get: ' + json.stringify(arguments));
+			//	summary:
+			//		Retrieves an object by its identity. This will trigger an UMCP request
+			//		calling the module method 'GET'.
+			//	id: Number
+			//		The identity to use to lookup the object
+			//	returns: dojo/Deferred
+			//		The object in the store that matches the given id.
+			return this._genericCmd('get', id);
+		},
 
-	remove: function() {
-		var res = this.inherited(arguments);
-		this.onChange();
-		return res;
-	},
-
-	setData: function() {
-		this.inherited(arguments);
-		this.onChange();
-	}
-});
-
-/*REQUIRE:"dojo/_base/declare"*/ /*TODO*/return declare(null, {
-	// idProperty: String
-	//		Indicates the property to use as the identity property. 
-	//		The values of this property should be unique.
-	idProperty: '',
-
-	// storePath: String
-	//		UMCP URL of the module where query, set, remove, put, and add 
-	//		methods can be found.
-	storePath: '',
-
-	// umcpCommand: Function
-	//		Reference to a particularly flavored umcpCommand.
-	umcpCommand: tools.umcpCommand,
-
-	constructor: function(params) {
-		/*REQUIRE:"dojo/_base/lang"*/ lang.mixin(this, params);
-	},
-
-	getIdentity: function(object) {
-		// summary:
-		//		Returns an object's identity
-		// object: Object
-		//		The object to get the identity from
-		//	returns: String
-		//console.log('getIdentity: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
-		return object[this.idProperty];
-	},
-
-	_genericCmd: function(type, param) {
-		//console.log('_genericCmd: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
-		if (this._doingTransaction) {
-			this._addTransactions(type, [param]);
-		}
-		else {
-			return this._genericMultiCmd(type, [param]).
-				then(function(results) {
-					if (results && results instanceof Array) {
-						return results[0];
-					}
-				});
-		}
-	},
-
-	_genericMultiCmd: function(type, params) {
-		//console.log('_genericMultiCmd: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
-		if (this._doingTransaction) {
-			this._addTransactions(type, params);
-		}
-		else {
-			// send the UMCP command
-			return this.umcpCommand(this.storePath + '/' + type, params).
-				then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
-					// make sure that we get an non-empty array
-					//console.log('# _genericMultiCmd - deferred: data=' + String(data));
-					var res = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('result', false, data);
-
-					// send event when changes occurred
-					if (!this._noEvents && ('remove' == type || 'put' == type || 'add' == type)) {
-						this.onChange();
-					}
-
-					//tools.assert(res && res instanceof Array && res.length == params.length,
-					//	/*REQUIRE:"dojo/_base/lang"*/ lang.replace('UMCP result from {0}/{1} did not yield an non-empty array!', [this.storePath, type]));
-					return res;
-				}));
-		}
-	},
-
-	get: function(id) {
-		//console.log('get: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
-		//	summary:
-		//		Retrieves an object by its identity. This will trigger an UMCP request 
-		//		calling the module method 'GET'.
-		//	id: Number
-		//		The identity to use to lookup the object
-		//	returns: /*REQUIRE:"dojo/Deferred"*/ Deferred
-		//		The object in the store that matches the given id.
-		return this._genericCmd('get', id);
-	},
-
-	put: function(object, options) {
-		//console.log('put: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
-		// summary:
-		//		Stores an object. This will trigger an UMCP request calling the module
-		//		method 'SET'.
-		// object: Object
-		//		The object to store.
-		// options:
-		//		This parameter is currently ignored.
-		// returns: /*REQUIRE:"dojo/Deferred"*/ Deferred
-		return this._genericCmd('put', {
-			object: object, 
-			options: options || null
-		});
-	},
-
-	add: function(object, options) {
-		//console.log('add: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
-		// summary:
-		//		Stores an object. This will trigger an UMCP request calling the module
-		//		method 'SET'.
-		// object: Object
-		//		The object to store.
-		// options:
-		//		This parameter is currently ignored.
-		return this._genericCmd('add', {
-			object: object, 
-			options: options || null
-		});
-	},
-
-	remove: function( object, options ) {
-		//console.log('remove: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
-		// summary:
-		//		Deletes an object by its identity. This will trigger an UCMP request
-		//		calling the module method 'UNSET'
-		// object: Object
-		//		The object to store.
-		// options:
-		//		bla fasel
-		return this._genericCmd('remove', {
-			object: object,
-			options: options || null
-		} );
-	},
-
-	query: function(_query, options) {
-		//console.log('query: ' + /*REQUIRE:"dojo/jsone"*/ json.stringify(arguments));
-		// summary:
-		//		Queries the store for objects. This will trigger a GET request to the server, with the
-		//		query added as a query string.
-		// query: Object
-		//		The query to use for retrieving objects from the store.
-		// options: 
-		//		Query options, such as 'sort' (see also tools.cmpObjects()).
-		// returns: dojo.store.api.Store.QueryResults
-		//		The results of the query, extended with iterative methods.
-
-		// if called via dojo.data.ObjectStore, queries can be translated to regexps
-		var query = {};
-		var nQueryEl = 0;
-		tools.forIn(_query, function(ikey, ival) {
-			query[ikey] = (typeof ival == "string" || typeof ival == 'boolean' || 'null' === ival) ? ival : String(ival);
-			++nQueryEl;
-		}, this, true);
-		var deferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
-		if (nQueryEl) {
-			// non-empty query
-			deferred = this.umcpCommand(this.storePath + '/query', query);
-			deferred = deferred.then(function(data) {
-				var result = data.result;
-				// if requested, sort the list
-				var sort = /*REQUIRE:"dojo/_base/lang"*/ lang.getObject('sort', false, options);
-				if (sort) {
-					result.sort(tools.cmpObjects(sort));
-				}
-				return result;
+		put: function(object, options) {
+			//console.log('put: ' + json.stringify(arguments));
+			// summary:
+			//		Stores an object. This will trigger an UMCP request calling the module
+			//		method 'SET'.
+			// object: Object
+			//		The object to store.
+			// options:
+			//		This parameter is currently ignored.
+			// returns: Deferred
+			return this._genericCmd('put', {
+				object: object,
+				options: options || null
 			});
-		}
-		else {
-			// empty query -> return an empty list 
-			// this is the query the grid will send automatically at the beginning
-			deferred.callback([]);
-		}
-		return dojo.store.util.QueryResults(deferred);
-	},
+		},
 
-	// _doingTransaction: Boolean
-	//		Internal variable that tells user whether we are performing an transaction.
-	_doingTransaction: false,
+		add: function(object, options) {
+			//console.log('add: ' + json.stringify(arguments));
+			// summary:
+			//		Stores an object. This will trigger an UMCP request calling the module
+			//		method 'SET'.
+			// object: Object
+			//		The object to store.
+			// options:
+			//		This parameter is currently ignored.
+			return this._genericCmd('add', {
+				object: object,
+				options: options || null
+			});
+		},
 
-	_groupedTransactions: [],
+		remove: function( object, options ) {
+			//console.log('remove: ' + json.stringify(arguments));
+			// summary:
+			//		Deletes an object by its identity. This will trigger an UCMP request
+			//		calling the module method 'UNSET'
+			// object: Object
+			//		The object to store.
+			// options:
+			//		bla fasel
+			return this._genericCmd('remove', {
+				object: object,
+				options: options || null
+			} );
+		},
 
-	_addTransactions: function(type, params) {
-		var lastGroupType = (0 === this._groupedTransactions.length ? 
-			'' : this._groupedTransactions[this._groupedTransactions.length - 1].type);
-		if (lastGroupType != type) {
-			// if no transactions have been submitted before or if the last type of
-			// transaction does not match the current one, start a new group of transactions
-			var newGroup = {
-				type: type,
-				params: params
-			};
-			this._groupedTransactions.push(newGroup);
-		}
-		else {
-			// otherwise append the current commands to the last group
-			var lastGroup = this._groupedTransactions[this._groupedTransactions.length - 1];
-			lastGroup.params = lastGroup.params.concat(params);
-		}
-	},
+		query: function(_query, options) {
+			//console.log('query: ' + json.stringify(arguments));
+			// summary:
+			//		Queries the store for objects. This will trigger a GET request to the server, with the
+			//		query added as a query string.
+			// query: Object
+			//		The query to use for retrieving objects from the store.
+			// options:
+			//		Query options, such as 'sort' (see also tools.cmpObjects()).
+			// returns: dojo/store/api/QueryResults
+			//		The results of the query, extended with iterative methods.
 
-	_commitTransactions: function() {
-		// perform the transactions group-wise, the order of the command groups is respected,
-		// a group of commands is submitted after the preceding one succeeded.
-		var deferred = new /*REQUIRE:"dojo/Deferred"*/ Deferred();
-		deferred.resolve();
-		var results = [];
-		this._doingTransaction = false;
-		this._noEvents = true; // switch off event notifications
-		var dataModified = false;
-		/*REQUIRE:"dojo/_base/array"*/ array.forEach(this._groupedTransactions, /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(igroup, i) {
-			// check whether the data is modified
-			dataModified = dataModified || 'remove' == igroup.type || 'put' == igroup.type || 'add' == igroup.type;
-
-			// chain all deferred commands
-			deferred = deferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function(data) {
-				return this._genericMultiCmd(igroup.type, igroup.params).then(function(data) {
-					results = results.concat(data);
-					//console.log(/*REQUIRE:"dojo/_base/lang"*/ lang.replace('# deferred: i={0} data={1}', [i, String(data)]));
-					return null;
+			// if called via dojo/data/ObjectStore, queries can be translated to regexps
+			var query = {};
+			var nQueryEl = 0;
+			tools.forIn(_query, function(ikey, ival) {
+				query[ikey] = (typeof ival == "string" || typeof ival == 'boolean' || 'null' === ival) ? ival : String(ival);
+				++nQueryEl;
+			}, this, true);
+			var deferred = new Deferred();
+			if (nQueryEl) {
+				// non-empty query
+				deferred = this.umcpCommand(this.storePath + '/query', query);
+				deferred = deferred.then(function(data) {
+					var result = data.result;
+					// if requested, sort the list
+					var sort = lang.getObject('sort', false, options);
+					if (sort) {
+						result.sort(tools.cmpObjects(sort));
+					}
+					return result;
 				});
-			}));
-		}));
-
-		var _cleanup = /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-			// switch back on events and send onChange event
-			this._noEvents = false;
-			if (dataModified) {
-				this.onChange();
 			}
+			else {
+				// empty query -> return an empty list
+				// this is the query the grid will send automatically at the beginning
+				deferred.callback([]);
+			}
+			return QueryResults(deferred);
+		},
 
-			// remove all transactions 
+		// _doingTransaction: Boolean
+		//		Internal variable that tells user whether we are performing an transaction.
+		_doingTransaction: false,
+
+		_groupedTransactions: [],
+
+		_addTransactions: function(type, params) {
+			var lastGroupType = (0 === this._groupedTransactions.length ?
+				'' : this._groupedTransactions[this._groupedTransactions.length - 1].type);
+			if (lastGroupType != type) {
+				// if no transactions have been submitted before or if the last type of
+				// transaction does not match the current one, start a new group of transactions
+				var newGroup = {
+					type: type,
+					params: params
+				};
+				this._groupedTransactions.push(newGroup);
+			}
+			else {
+				// otherwise append the current commands to the last group
+				var lastGroup = this._groupedTransactions[this._groupedTransactions.length - 1];
+				lastGroup.params = lastGroup.params.concat(params);
+			}
+		},
+
+		_commitTransactions: function() {
+			// perform the transactions group-wise, the order of the command groups is respected,
+			// a group of commands is submitted after the preceding one succeeded.
+			var deferred = new Deferred();
+			deferred.resolve();
+			var results = [];
+			this._doingTransaction = false;
+			this._noEvents = true; // switch off event notifications
+			var dataModified = false;
+			array.forEach(this._groupedTransactions, lang.hitch(this, function(igroup) {
+				// check whether the data is modified
+				dataModified = dataModified || 'remove' == igroup.type || 'put' == igroup.type || 'add' == igroup.type;
+
+				// chain all deferred commands
+				deferred = deferred.then(lang.hitch(this, function() {
+					return this._genericMultiCmd(igroup.type, igroup.params).then(function(data) {
+						results = results.concat(data);
+						//console.log(lang.replace('# deferred: i={0} data={1}', [i, String(data)]));
+						return null;
+					});
+				}));
+			}));
+
+			var _cleanup = lang.hitch(this, function() {
+				// switch back on events and send onChange event
+				this._noEvents = false;
+				if (dataModified) {
+					this.onChange();
+				}
+
+				// remove all transactions
+				this._groupedTransactions = [];
+
+			});
+
+			deferred = deferred.then(lang.hitch(this, function() {
+				// clean up
+				_cleanup();
+
+				// return all results
+				return results;
+			}), _cleanup);
+
+			return deferred;
+		},
+
+		_abortTransactions: function() {
 			this._groupedTransactions = [];
+			this._doingTransaction = false;
+		},
 
-		});
+		transaction: function() {
+			// summary:
+			//		Starts a new transaction.
+			// description:
+			//		Note that all transactions are (for now) executed in an undefined order.
+			// returns: dojo.store.api.Store.Transaction
+			//		This represents the new current transaction. `commit()` returns a
+			//		`dojo/Deferred` object for all transactions.
+			tools.assert(!this._doingTransaction, 'Another UMCP transaction is already being processed, cannot perform two transactions simultaneously.');
+			this._doingTransaction = true;
+			return {
+				commit: lang.hitch(this, this._commitTransactions),
+				abort: lang.hitch(this, this._abortTransactions)
+			};
+		},
 
-		deferred = deferred.then(/*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, function() {
-			// clean up
-			_cleanup();
+		_noEvents: false,
+		onChange: function() {
+			// event stub
+		}
+	});
 
-			// return all results
-			return results;
-		}), _cleanup);
+	// internal dict of static module store references
+	var _moduleStores = {};
 
-		return deferred;
-	},
-
-	_abortTransactions: function() {
-		this._groupedTransactions = [];
-		this._doingTransaction = false;
-	},
-
-	transaction: function() {
+	return function(/*String*/ idProperty, /*String*/ storePath, /*String?*/ moduleFlavor) {
 		// summary:
-		//		Starts a new transaction.
-		// description:
-		//		Note that all transactions are (for now) executed in an undefined order.
-		// returns: dojo.store.api.Store.Transaction
-		//		This represents the new current transaction. `commit()` returns a 
-		//		`/*REQUIRE:"dojo/Deferred"*/ DeferredList` object for all transactions.
-		tools.assert(!this._doingTransaction, 'Another UMCP transaction is already being processed, cannot perform two transactions simultaneously.');
-		this._doingTransaction = true;
-		return {
-			commit: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this._commitTransactions),
-			abort: /*REQUIRE:"dojo/_base/lang"*/ lang.hitch(this, this._abortTransactions)
-		};
-	},
+		//		Returns (and if necessary creates) a singleton instance of store.UmcpModuleStore
+		//		for the given path to the store and (if specified) the given flavor.
+		// idProperty: String
+		//		Indicates the property to use as the identity property.
+		//		The values of this property need to be unique.
+		// storePath: String?
+		//		UMCP URL of the module where query, set, remove, put, and add
+		//		methods can be found. By default this is the module ID.
+		// moduleFlavor: String?
+		//		Specifies the module flavor which may need to be communicated to
+		//		the server via `umc.tool.umcpCommand()`.
+		//		(Is specified automatically.)
 
-	_noEvents: false,
-	onChange: function() {
-		// event stub
-	}
+		// create a singleton for the module store for each flavor; this is to ensure that
+		// the correct flavor of the module is send to the server
+		var key = storePath + '@' + (moduleFlavor || 'default');
+		if (!_moduleStores[key]) {
+			// the store does not exist, we need to create a new singleton
+			_moduleStores[key] = Observable(new _UmcpModuleStore({
+				idProperty: idProperty,
+				storePath: storePath,
+				umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
+					return tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || moduleFlavor );
+				}
+			}));
+		}
+		return _moduleStores[key];
+	};
 });
-
 

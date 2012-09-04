@@ -35,7 +35,7 @@ define([
 	"dojo/Deferred",
 	"dojo/on",
 	"dojo/dom-style",
-	"dijit/Form",
+	"dijit/form/Form",
 	"umc/tools",
 	"umc/render"
 ], function(declare, lang, array, Deferred, on, style, Form, tools, render) {
@@ -224,8 +224,8 @@ define([
 					// widget values have not been loaded completely so far
 					//console.log('iwidget:', iwidget.name);
 					++this._initializingElements;
-					on.once(iwidget, 'onValuesLoaded', lang.hitch(this, function() {
-						//console.log('onValuesLoaded:', iwidget.name, iwidget.get('value'));
+					on.once(iwidget, 'valuesLoaded', lang.hitch(this, function() {
+						//console.log('valuesLoaded:', iwidget.name, iwidget.get('value'));
 						// decrement the internal counter
 						--this._initializingElements;
 
@@ -285,7 +285,7 @@ define([
 				if (orgCallback) {
 					this._buttons[ievent].callback = function() { };
 				}
-				this.on(ievent, function(e) {
+				this.on(ievent, lang.hitch(this, function(e) {
 					// prevent standard form submission
 					if (e && e.preventDefault) {
 						e.preventDefault();
@@ -295,7 +295,7 @@ define([
 					if (typeof orgCallback == "function") {
 						orgCallback(this.gatherFormValues());
 					}
-				});
+				}));
 			}, this);
 		},
 
@@ -497,6 +497,11 @@ define([
 
 		onValuesInitialized: function() {
 			// event stub
+		},
+
+		onSubmit: function() {
+			// prevent page reload
+			return false;
 		}
 	});
 });
