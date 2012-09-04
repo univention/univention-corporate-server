@@ -78,8 +78,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://download.univention.de/doc/release-notes-3.0-2_en.pdf"
-echo " German version:  http://download.univention.de/doc/release-notes-3.0-2.pdf"
+echo " English version: http://download.univention.de/doc/release-notes-3.1_en.pdf"
+echo " German version:  http://download.univention.de/doc/release-notes-3.1.pdf"
 # echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
 # echo "Please note that Univention Corporate Server (UCS) 3.0 is under development."
 # echo "At the moment UCS 3.0 is not ready for production use!"
@@ -103,7 +103,7 @@ echo ""
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update30_ignoressh" != "yes" ]; then
+	if [ "$update31_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 		exit 1
@@ -111,7 +111,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update30_ignoreterm" != "yes" ]; then
+	if [ "$update31_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 		exit 1
@@ -163,7 +163,7 @@ pruneOldKernel () {
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | egrep -v "linux-image-$(uname -r)|$ignore_kver" | tr "\n" " ") >>/var/log/univention/updater.log 2>&1
 }
 
-if [ "$update30_pruneoldkernel" = "yes" ]; then
+if [ "$update31_pruneoldkernel" = "yes" ]; then
 	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
 	pruneOldKernel "2.6.18"
 	pruneOldKernel "2.6.26"
@@ -187,10 +187,10 @@ check_space(){
 		echo "         If neccessary you can skip this check by setting the value of the"
 		echo "         config registry variable update30/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" -a ! "$update30_pruneoldkernel" = "yes" ] ; then
+		if [ "$partition" = "/boot" -a ! "$update31_pruneoldkernel" = "yes" ] ; then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
-			echo "         update30/pruneoldkernel to \"yes\"."
+			echo "         update31/pruneoldkernel to \"yes\"."
 		fi
 		echo ""
 		# kill the running univention-updater process
@@ -206,7 +206,7 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
-if [ ! "$update30_checkfilesystems" = "no" ]
+if [ ! "$update31_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "800000" "0,8 GB"

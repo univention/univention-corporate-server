@@ -1,3 +1,10 @@
+univention-updater (8.0.5-1) unstable; urgency=low
+
+  * Rename UCR variables in preup from 30 (UCS 3.0) to 31 (UCS 3.1)
+    (Bug #28393)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 04 Sep 2012 06:20:29 +0200
+
 univention-updater (8.0.4-1) unstable; urgency=low
 
   * Mirror errata updates for components into the local repository
