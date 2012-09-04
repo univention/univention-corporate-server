@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.19-1) unstable; urgency=low
+
+  * adapted MultiObjectSelect to not set values directly in the object store
+  	to trigger onChange events; Bug #24388
+
+ -- Florian Best <best@univention.de>  Tue, 04 Sep 2012 10:54:03 +0200
+
 univention-management-console-frontend (2.0.18-1) unstable; urgency=low
 
   * umc.dialog: Added confirmForm function (Bug #26791)

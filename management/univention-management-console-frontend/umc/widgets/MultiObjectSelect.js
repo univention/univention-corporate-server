@@ -315,28 +315,41 @@ define([
 			return this._detailDialog._form.getWidget(name);
 		},
 
+		getAllItems: function() {
+			return this._multiSelect.getAllItems();
+		},
+
 		_addElements: function( ids ) {
 			// only add elements that do not exist already
 			var dialog_store = DataStore( { store: this._detailDialog._multiSelect.store } );
-			array.forEach( ids , lang.hitch( this, function( id ) {
-				var item = dialog_store.get( id );
+			var elements = [];
+			array.forEach( ids.concat(this.get('value')) , lang.hitch( this, function( id ) {
+				var item;
 				try {
-					this._objectStore.get( id );
+					item = this._objectStore.get( id );
 				} catch( e ) {
-					// object does not exist ...
-					this._objectStore.put( item );
+					// object does not exist, so we add it ...
+					item = dialog_store.get( id );
+				}
+				if(-1 === array.indexOf(elements, item)) {
+					elements.push(item);
 				}
 			} ) );
-			this._multiSelect.store.save();
+			this.set('value', elements);
 		},
 
 		_removeSelectedElements: function() {
 			// create a dict for all selected elements
+			var values = this.get('value');
 			array.forEach(this._multiSelect.getSelectedItems(), lang.hitch( this, function( iid ) {
-				this._objectStore.remove( iid.id );
+				values.splice(array.indexOf(values, iid.id), 1);
 			} ) );
+			var elements = [];
+			array.forEach(values, lang.hitch(this, function(id) {
+				elements.push(this._objectStore.get(id));
+			}));
 			this._multiSelect.selection.clear();
-			this._multiSelect.store.save();
+			this.set('value', elements);
 		},
 
 		uninitialize: function() {
