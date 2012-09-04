@@ -1,3 +1,10 @@
+univention-printserver (6.0.4-2) unstable; urgency=low
+
+  * patch QuotaDialog.py too (Bug #28291)                                        
+  * fix _userList caching 
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Sep 2012 16:23:08 +0200
+
 univention-printserver (6.0.4-1) unstable; urgency=low
 
   * move userList lookup into _add_quota_entry function (Bug #28291)

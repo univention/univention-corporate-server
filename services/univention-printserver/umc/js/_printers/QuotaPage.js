@@ -241,7 +241,7 @@ dojo.declare("umc.modules._printers.QuotaPage",
 						// we keep this list unchanged; it will be fetched only once.
 						// on open of 'add quota' dialog, we pass a userlist that
 						// is cleaned up from users already having a quota entry.
-						this._userlist = this._cleaned_userlist(data.result);
+						this._userList = data.result
 					}
 					return data.result;
 				}),
@@ -265,7 +265,7 @@ dojo.declare("umc.modules._printers.QuotaPage",
 				printer: 		this._printer_id,
 				soft:			null,
 				hard:			null,
-				users:			userList,
+				users:			this._cleaned_userlist(userList),
 				title:			this._("Add quota entry")
 			});
 		}));

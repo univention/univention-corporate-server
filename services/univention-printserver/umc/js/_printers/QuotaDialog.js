@@ -38,10 +38,12 @@ dojo.require("umc.tools");
 dojo.require("umc.widgets.Page");
 dojo.require("umc.widgets.Grid");
 dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets.StandbyMixin");
 
 dojo.declare("umc.modules._printers.QuotaDialog",
 [
 	dijit.Dialog,
+	umc.widgets.StandbyMixin,
 	umc.i18n.Mixin
 ], {
 
