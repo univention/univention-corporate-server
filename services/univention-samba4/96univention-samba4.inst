@@ -77,8 +77,17 @@ extract_binddn_and_bindpwd_from_args() {
 }
 
 operatingSystem_attribute() {
-	operation="$1"
-	## Warning: editing sam.ldb via tdb should only be done when samba4 is not running!
+	operation=$1
+
+	if [ "$operation"  == 'add' ]; then
+		operatingSystem="$(ldbsearch -H tdb:///var/lib/samba/private/sam.ldb \               
+			-b "CN=$hostname,OU=Domain Controllers,$samba4_ldap_base" \              
+			operatingSystem)"
+		if [ -z "$operatingSystem" ]; then
+			operation=replace
+		fi
+	fi
+
 	ldbmodify -H tdb:///var/lib/samba/private/sam.ldb <<-%EOF
 	dn: CN=$hostname,OU=Domain Controllers,$samba4_ldap_base
 	changetype: modify

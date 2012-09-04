@@ -1,3 +1,10 @@
+univention-samba4 (2.0.10-1) unstable; urgency=low
+
+  * fix non-critical traceback due to existing operatingSystem attribute
+    (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Sep 2012 13:42:20 +0200
+
 univention-samba4 (2.0.9-1) unstable; urgency=low
 
   * Fixed python syntax error in 11univention-smb-service (Bug #27457)
