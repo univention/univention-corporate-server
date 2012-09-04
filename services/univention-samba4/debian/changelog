@@ -1,3 +1,12 @@
+univention-samba4 (2.0.10-5) unstable; urgency=low
+
+  * Backup KRB5 keytab before joining.
+  * If the KRB5 key version number increased after the join (usually
+    after a full univention-join), merge the old keys into the new
+    keytab, so the other DCs can still communicate with us (Bug #25393)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Sep 2012 18:20:08 +0200
+
 univention-samba4 (2.0.10-4) unstable; urgency=low
 
   * only crate/trigger the DNS application partition on this update

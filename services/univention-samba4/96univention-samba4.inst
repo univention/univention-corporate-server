@@ -391,6 +391,28 @@ rIDNextRID: 2101
 		else
 			## regular join
 
+			## backup old keytab if samba4 generated it
+			pre_join_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb sAMAccountName="$hostname\$" msDS-KeyVersionNumber | sed -n 's/^msDS-KeyVersionNumber: \(.*\)/\1/p')
+			if [ -n "$pre_join_kvno" ]; then
+				if ! [ -f /etc/krb5.keytab ]; then
+					## usually the keytab is removed during 03univention-directory-listener.inst
+					## so recreate it with the last known key version
+					/usr/share/univention-samba4/scripts/create-keytab.sh
+				fi
+				if [ -f /etc/krb5.keytab ]; then
+					## create a backup from the old keytab
+					if [ -d /var/lib/samba/private ]; then
+						backup_id=$(date +%Y%m%d-%H%M%S)
+						backup_dir="/var/backups/samba4.$backup_id"
+						if [ -d "$backup_dir" ]; then
+							rm -rf "$backup_dir"
+						fi
+						mkdir "$backup_dir" && \
+						cp /etc/krb5.keytab "$backup_dir"
+					fi
+				fi
+			fi
+
 			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
 									--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
@@ -409,6 +431,17 @@ rIDNextRID: 2101
 							exit 1
 						fi
 					fi
+				fi
+			fi
+
+			## if the key version number increased, merge the old keys into the new keytab
+			if [ -n "$pre_join_kvno" ] && [ -f "$backup_dir/krb5.keytab" ]; then
+				post_join_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb sAMAccountName="$hostname\$" msDS-KeyVersionNumber | sed -n 's/^msDS-KeyVersionNumber: \(.*\)/\1/p')
+				if [ "$post_join_kvno" -gt "$pre_join_kvno" ]; then
+					tmp_krb5_keytab=$(mktemp)
+					cp "$backup_dir/krb5.keytab" "$tmp_krb5_keytab"
+					ktutil copy /etc/krb5.keytab "$tmp_krb5_keytab"
+					mv "$tmp_krb5_keytab" /etc/krb5.keytab
 				fi
 			fi
 
