@@ -1,3 +1,9 @@
+univention-printserver (6.0.4-1) unstable; urgency=low
+
+  * move userList lookup into _add_quota_entry function (Bug #28291)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Sep 2012 12:41:23 +0200
+
 univention-printserver (6.0.3-1) unstable; urgency=low
 
   * Fix CUPS netmask handling (Bug #26058)

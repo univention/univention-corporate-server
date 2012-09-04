@@ -155,21 +155,6 @@ dojo.declare("umc.modules._printers.QuotaPage",
 		
 		this.inherited(arguments);
 		
-        // fetch the userlist
-		umc.tools.umcpCommand('printers/users/query').then(
-			dojo.hitch(this, function(data) {
-				if (data.result.length)
-				{
-					// we keep this list unchanged; it will be fetched only once.
-					// on open of 'add quota' dialog, we pass a userlist that
-					// is cleaned up from users already having a quota entry.
-					this._userlist = data.result;
-				}
-			}),
-			dojo.hitch(this, function(data) {
-				umc.dialog.alert('Error fetching userlist: ' + data.message);
-			})
-		);
 	},
     
 	// Calling page passes args here. Arg is here the printer ID.
@@ -244,17 +229,46 @@ dojo.declare("umc.modules._printers.QuotaPage",
     		})
 		);
 	},
+
+	_getUserList: function() {
+		if (!this._userList) {
+			this._dialog.standby(true);
+			return umc.tools.umcpCommand('printers/users/query').then(
+				dojo.hitch(this, function(data) {
+					this._dialog.standby(false);
+					if (data.result.length)
+					{
+						// we keep this list unchanged; it will be fetched only once.
+						// on open of 'add quota' dialog, we pass a userlist that
+						// is cleaned up from users already having a quota entry.
+						this._userlist = this._cleaned_userlist(data.result);
+					}
+					return data.result;
+				}),
+				dojo.hitch(this, function(data) {
+					this._dialog.standby(false);
+					umc.dialog.alert('Error fetching userlist: ' + data.message);
+					return [];
+				})
+			);
+		}
+		else {
+				return this._userList;
+		}
+	},
 	
 	// prepares everything to add a new quota entry.
 	_add_quota_entry: function() {
-		this._dialog.setValues({
-			printer: 		this._printer_id,
-			soft:			null,
-			hard:			null,
-			users:			this._cleaned_userlist(),
-			title:			this._("Add quota entry")
-		});
 		this._dialog.show();
+		dojo.when(this._getUserList(), dojo.hitch(this, function(userList) {
+			this._dialog.setValues({
+				printer: 		this._printer_id,
+				soft:			null,
+				hard:			null,
+				users:			userList,
+				title:			this._("Add quota entry")
+			});
+		}));
 	},
 	
 	// prepares the edit dialog and shows it.
@@ -324,10 +338,9 @@ dojo.declare("umc.modules._printers.QuotaPage",
 	//
 	// Will be called only directly before a 'add quota entry' dialog
 	// will be shown.
-	_cleaned_userlist: function() {
+	_cleaned_userlist: function(src) {
 		
 		var result = [];
-		var src = this._userlist;
 		
 		var usr = {};	// not an array: i want to to check for containedness!
 		var items = this._grid.getAllItems();
