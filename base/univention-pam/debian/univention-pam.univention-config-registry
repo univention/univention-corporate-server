@@ -307,3 +307,4 @@ Type: file
 File: etc/cron.d/univention-pam
 Variables: nss/group/cachefile
 Variables: nss/group/cachefile/invalidate_interval
+Variables: nss/group/cachefile/check_member

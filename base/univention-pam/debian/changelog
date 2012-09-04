@@ -1,3 +1,10 @@
+univention-pam (6.0.5-1) unstable; urgency=low
+
+  * Added option nss/group/cachefile/check_member and check the member
+    by default (Bug #28401)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 04 Sep 2012 15:09:38 +0200
+
 univention-pam (6.0.4-4) unstable; urgency=low
 
   * Restart listener later (Bug #28361)

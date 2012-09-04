@@ -249,3 +249,9 @@ Description[en]=Defines the interval for the automatic generation of the cache f
 Type=str
 Categories=system-base
 
+[nss/group/cachefile/check_member]
+Description[de]=Definiert ob die Gruppenmitglieder nochmal im LDAP Verzeichnisdienst überprüft werden sollen (default: true)
+Description[en]=Defines whether the group members should be re-checked in the LDAP directory (default: true)
+Type=bool
+Categories=system-base
+

@@ -40,10 +40,19 @@ import os
 import tempfile
 
 
-def _get_members(lo, g, recursion_list):
+def _get_members(lo, g, recursion_list, check_member = False):
 	result = []
 	for m in g[1].get('uniqueMember', []):
 		if m.startswith('uid='):
+			# Does the member exist?
+			if check_member:
+				try:
+					res = lo.search(base=m, scope=ldap.SCOPE_BASE, filter='uid=*', attr=['uid'])
+					if len(res) < 1:
+						# Not found
+						continue
+				except ldap.NO_SUCH_OBJECT:
+					continue
 			mrdn = ldap.explode_rdn(m)
 			mname = string.join( string.split(mrdn[0],'=')[1:], '=')
 			result.append(mname)
@@ -60,7 +69,7 @@ def _get_members(lo, g, recursion_list):
 			if 'univentionGroup' in member[1].get('objectClass', []):
 				if member[0] not in recursion_list:
 					recursion_list.append(g[0])
-					result += _get_members(lo, member, recursion_list)
+					result += _get_members(lo, member, recursion_list, options.check_member)
 				else:
 					# Recursion !!!
 					pass
@@ -72,6 +81,7 @@ if __name__ == '__main__':
 	parser = optparse.OptionParser( )
 	parser.add_option("--file", dest="file", default='/var/lib/extrausers/group', action="store", help="write result to the given file, default is /var/lib/extrausers/group")
 	parser.add_option("--verbose", dest="verbose", default=False, action="store_true", help="verbose output")
+	parser.add_option("--check_member", dest="check_member", default=False, action="store_true", help="checks if the member exists")
 	(options, args) = parser.parse_args()
 
 	try:
@@ -97,7 +107,7 @@ if __name__ == '__main__':
 	for group in groups:
 		rdn = ldap.explode_rdn(group[0])
 		groupname = string.join( string.split(rdn[0],'=')[1:], '=')
-		members=_get_members(lo, group, [])
+		members=_get_members(lo, group, [], options.check_member)
 		# The list(set(members)) call removes all duplicates from the group members
 		fd.write('%s:*:%s:%s\n' % (groupname, group[1].get('gidNumber', [''])[0], string.join(list(set(members)), ',')))
 	fd.close()
