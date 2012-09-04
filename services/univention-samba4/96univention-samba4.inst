@@ -428,7 +428,7 @@ rIDNextRID: 2101
 			fi
 		fi
 
-		if [ $JS_LAST_EXECUTED_VERSION -lt 4 ]; then
+		if [ $JS_LAST_EXECUTED_VERSION -lt 4 ] && [ $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
 			if [ "$s4connectorservicedcs" = "$hostname" ]; then
 				## create new DOMAIN/FOREST application partitions
 				/usr/sbin/samba_upgradedns

@@ -1,3 +1,10 @@
+univention-samba4 (2.0.10-4) unstable; urgency=low
+
+  * only crate/trigger the DNS application partition on this update
+    (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Sep 2012 14:20:53 +0200
+
 univention-samba4 (2.0.10-3) unstable; urgency=low
 
   * Call samba_upgradedns in join script on update only on the system
