@@ -1,3 +1,12 @@
+univention-samba4 (2.0.10-3) unstable; urgency=low
+
+  * Call samba_upgradedns in join script on update only on the system
+    providing the S4 connector service (Bug #27457)
+  * On other DCs trigger replication the new DNS application partitions
+  * Only join DCs, RODCs and MEMBERs during initial joinscript run
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Sep 2012 14:12:57 +0200
+
 univention-samba4 (2.0.10-1) unstable; urgency=low
 
   * fix non-critical traceback due to existing operatingSystem attribute

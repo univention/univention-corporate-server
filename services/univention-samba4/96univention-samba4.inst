@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -391,21 +391,23 @@ rIDNextRID: 2101
 		else
 			## regular join
 
-			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-								--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-								--keep-existing
-			if [ $? != 0 ]; then
-				# try again with --server
-				if [ -n "$samba4_dc" ]; then
-					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
-										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-										--keep-existing
-				else
-					samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
-										--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-										--keep-existing
-					if [ $? != 0 ]; then
-						exit 1
+			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+									--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+									--keep-existing
+				if [ $? != 0 ]; then
+					# try again with --server
+					if [ -n "$samba4_dc" ]; then
+						samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
+											--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+											--keep-existing
+					else
+						samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$ldap_master" \
+											--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+											--keep-existing
+						if [ $? != 0 ]; then
+							exit 1
+						fi
 					fi
 				fi
 			fi
@@ -423,6 +425,20 @@ rIDNextRID: 2101
 			s4connectorservicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
 			if [ -n "$s4connectorservicedcs" ]; then
 				univention-config-registry set samba4/sysvol/sync/host="$s4connectorservicedcs"
+			fi
+		fi
+
+		if [ $JS_LAST_EXECUTED_VERSION -lt 4 ]; then
+			if [ "$s4connectorservicedcs" = "$hostname" ]; then
+				## create new DOMAIN/FOREST application partitions
+				/usr/sbin/samba_upgradedns
+			elif [ -n "$s4connectorservicedcs" ]; then
+				## replicate new DOMAIN/FOREST application partitions
+				for part in ForestDnsZones, DomainDnsZones; do
+					samba-tool drs replicate --full-sync \
+										"$s4connectorservicedcs" "$hostname" \
+										"DC=$part,$samba4_ldap_base"
+				done
 			fi
 		fi
 
@@ -499,11 +515,12 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 		/etc/init.d/slapd crestart
 		sleep 1
+
+		samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+								--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+								--keep-existing
 	fi
 
-	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-							--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-							--keep-existing
 	/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --rodc "${SITE_OPTION[@]}"
 
 	operatingSystem_attribute add
@@ -563,8 +580,12 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 elif [ "$samba4_role" = "MEMBER" ]; then
 
-	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" \
+							--realm="$kerberos_realm" \
 							--machinepass="$(cat /etc/machine.secret)"
+	fi
+
 	univention-config-registry set samba/share/netlogon?no \
 									samba/share/sysvol?no
 
