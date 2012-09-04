@@ -1,3 +1,10 @@
+univention-system-setup (6.0.17-1) unstable; urgency=low
+
+  * the default locale wizard on LanguagePage displays now the correct label;
+  	Bug #24388
+
+ -- Florian Best <best@univention.de>  Tue, 04 Sep 2012 10:59:48 +0200
+
 univention-system-setup (6.0.16-1) unstable; urgency=low
 
   * disallowing page changes is now done with a dojox.timer; Bug #27734

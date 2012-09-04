@@ -122,7 +122,7 @@ dojo.declare("umc.modules._setup.LanguagePage", [ umc.widgets.Page, umc.i18n.Mix
 			depends: 'locale',
 			umcpCommand: this.umcpCommand,
 			dynamicValues: dojo.hitch(this, function(vals) {
-				return this._form.getWidget('locale').get('value');
+				return this._form.getWidget('locale').getAllItems();
 			})
 		}];
 
