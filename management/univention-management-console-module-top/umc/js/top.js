@@ -26,149 +26,154 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules.top");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojox/string/sprintf",
+	"umc/dialog",
+	"umc/widgets/Module",
+	"umc/widgets/Page",
+	"umc/widgets/ExpandingTitlePane",
+	"umc/widgets/Grid",
+	"umc/widgets/SearchForm",
+	"umc/widgets/ComboBox",
+	"umc/widgets/TextBox",
+	"umc/i18n!umc/modules/top"
+], function(declare, lang, sprintf, dialog, Module, Page, ExpandingTitlePane, Grid, SearchForm, ComboBox, TextBox, _) {
+	return declare("umc.modules.top", [ Module ], {
 
-dojo.require("dojox.string.sprintf");
-dojo.require("umc.dialog");
-dojo.require("umc.i18n");
-dojo.require("umc.dialog");
-dojo.require("umc.widgets.ExpandingTitlePane");
-dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.SearchForm");
+		_grid: null,
+		_store: null,
+		_searchWidget: null,
+		_contextVariable: null,
+		_page: null,
 
-dojo.declare("umc.modules.top", [ umc.widgets.Module, umc.i18n.Mixin ], {
+		i18nClass: 'umc.modules.top',
+		idProperty: 'pid',
 
-	_grid: null,
-	_store: null,
-	_searchWidget: null,
-	_contextVariable: null,
-	_page: null,
-
-	i18nClass: 'umc.modules.top',
-	idProperty: 'pid',
-
-	killProcesses: function(signal, pids) {
-		var params = {
-			signal: signal,
-			pid: pids
-		};
-		if (pids.length == 1) {
-			var msg = this._('Please confirm sending %s to the selected process!', signal);
-		}
-		else {
-			var msg = this._('Please confirm sending %(sig)s to the %(pids)s selected processes!', {sig: signal, pid: pids.length});
-		}
-		umc.dialog.confirm(msg, [{
-			label: this._('OK'),
-			callback: dojo.hitch(this, function() {
-				this.umcpCommand('top/kill', params).then(dojo.hitch(this, function() {
-					umc.dialog.notify(this._('Signal (%s) sent successfully', signal));
-				}));
-			})
-		}, {
-			label: this._('Cancel')
-		}]);
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		this._page = new umc.widgets.Page({
-			headerText: this._('Process overview'),
-			helpText: this._('This module generates an overview of all running processes. The search function can reduce the number of results. Specified processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).')
-		});
-		this.addChild(this._page);
-
-		var titlePane = new umc.widgets.ExpandingTitlePane({
-			title: this._('Entries')
-		});
-		this._page.addChild(titlePane);
-
-		var actions = [{
-			name: 'terminate',
-			label: this._('Terminate'),
-			callback: dojo.hitch(this, 'killProcesses', 'SIGTERM'),
-			isStandardAction: false,
-			isMultiAction: true
-		}, {
-			name: 'kill',
-			label: this._('Force terminate'),
-			callback: dojo.hitch(this, 'killProcesses', 'SIGKILL'),
-			isStandardAction: false,
-			isMultiAction: true
-		}];
-
-		var columns = [{
-			name: 'user',
-			label: this._('User'),
-            width: '100px'
-		}, {
-			name: 'pid',
-			label: this._('PID'),
-            width: '70px'
-		}, {
-			name: 'cpu',
-			label: this._('CPU (%)'),
-			width: 'adjust',
-			formatter: function(value) {
-				return dojox.string.sprintf('%.1f', value);
+		killProcesses: function(signal, pids) {
+			var params = {
+				signal: signal,
+				pid: pids
+			};
+			var msg;
+			if (pids.length == 1) {
+				msg = _('Please confirm sending %s to the selected process!', signal);
 			}
-		}, {
-			name: 'mem',
-			label: this._('Memory (%)'),
-			width: 'adjust',
-			formatter: function(value) {
-				return dojox.string.sprintf('%.1f', value);
+			else {
+				msg = _('Please confirm sending %(sig)s to the %(pids)s selected processes!', {sig: signal, pid: pids.length});
 			}
-		}, {
-			name: 'command',
-			label: this._('Command'),
-            width: 'auto'
-		}];
+			dialog.confirm(msg, [{
+				label: _('OK'),
+				callback: lang.hitch(this, function() {
+					this.umcpCommand('top/kill', params).then(lang.hitch(this, function() {
+						dialog.notify(_('Signal (%s) sent successfully', signal));
+					}));
+				})
+			}, {
+				label: _('Cancel')
+			}]);
+		},
 
-		this._grid = new umc.widgets.Grid({
-			region: 'center',
-			actions: actions,
-			columns: columns,
-			moduleStore: this.moduleStore,
-			sortIndex: '-3',
-			query: {
-                category: 'all',
-                filter: '*'
-            }
-		});
-		titlePane.addChild(this._grid);
+		buildRendering: function() {
+			this.inherited(arguments);
 
-		var widgets = [{
-			type: 'ComboBox',
-			name: 'category',
-			value: 'all',
-			label: this._('Category'),
-			staticValues: [
-				{id: 'all', label: this._('All')},
-				{id: 'user', label: this._('User')},
-				{id: 'pid', label: this._('PID')},
-				{id: 'command', label: this._('Command')}
-			]
-		}, {
-			type: 'TextBox',
-			name: 'filter',
-			value: '*',
-			label: this._('Keyword')
-		}];
+			this._page = new Page({
+				headerText: _('Process overview'),
+				helpText: _('This module generates an overview of all running processes. The search function can reduce the number of results. Specified processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).')
+			});
+			this.addChild(this._page);
 
-		this._searchWidget = new umc.widgets.SearchForm({
-			region: 'top',
-			widgets: widgets,
-			layout: [[ 'category', 'filter', 'submit', 'reset' ]],
-			onSearch: dojo.hitch(this._grid, 'filter')
-		});
+			var titlePane = new ExpandingTitlePane({
+				title: _('Entries')
+			});
+			this._page.addChild(titlePane);
 
-		titlePane.addChild(this._searchWidget);
+			var actions = [{
+				name: 'terminate',
+				label: _('Terminate'),
+				callback: lang.hitch(this, 'killProcesses', 'SIGTERM'),
+				isStandardAction: false,
+				isMultiAction: true
+			}, {
+				name: 'kill',
+				label: _('Force terminate'),
+				callback: lang.hitch(this, 'killProcesses', 'SIGKILL'),
+				isStandardAction: false,
+				isMultiAction: true
+			}];
 
-		this._page.startup();
-    }
+			var columns = [{
+				name: 'user',
+				label: _('User'),
+				width: '100px'
+			}, {
+				name: 'pid',
+				label: _('PID'),
+				width: '70px'
+			}, {
+				name: 'cpu',
+				label: _('CPU (%)'),
+				width: 'adjust',
+				formatter: function(value) {
+					return sprintf('%.1f', value);
+				}
+			}, {
+				name: 'mem',
+				label: _('Memory (%)'),
+				width: 'adjust',
+				formatter: function(value) {
+					return sprintf('%.1f', value);
+				}
+			}, {
+				name: 'command',
+				label: _('Command'),
+				width: 'auto'
+			}];
+
+			this._grid = new Grid({
+				region: 'center',
+				actions: actions,
+				columns: columns,
+				moduleStore: this.moduleStore,
+				sortIndex: '-3',
+				query: {
+					category: 'all',
+					filter: '*'
+				}
+			});
+			titlePane.addChild(this._grid);
+
+			var widgets = [{
+				type: ComboBox,
+				name: 'category',
+				value: 'all',
+				label: _('Category'),
+				staticValues: [
+					{id: 'all', label: _('All')},
+					{id: 'user', label: _('User')},
+					{id: 'pid', label: _('PID')},
+					{id: 'command', label: _('Command')}
+				]
+			}, {
+				type: TextBox,
+				name: 'filter',
+				value: '*',
+				label: _('Keyword')
+			}];
+
+			this._searchWidget = new SearchForm({
+				region: 'top',
+				widgets: widgets,
+				layout: [[ 'category', 'filter', 'submit', 'reset' ]],
+				onSearch: lang.hitch(this._grid, 'filter')
+			});
+
+			titlePane.addChild(this._searchWidget);
+
+			this._page.startup();
+		}
+	});
 });

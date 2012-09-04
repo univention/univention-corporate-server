@@ -1,3 +1,9 @@
+univention-management-console-module-top (2.0.0-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 04 Sep 2012 17:42:50 +0200
+
 univention-management-console-module-top (1.0.15-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)
