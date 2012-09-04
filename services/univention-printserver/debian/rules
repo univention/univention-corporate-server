@@ -32,9 +32,14 @@
 
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
+DRIVERS := $(basename $(notdir $(wildcard /usr/share/foomatic/db/source/driver/*.xml)))
 
 %.mo:   %.po
 	msgfmt --check -o $@ $<
+
+override_dh_clean:
+	dh_clean
+	$(RM) -r foomatic-rip
 
 override_dh_auto_build: $(MO_FILES)
 	dh-umc-module-build
@@ -46,7 +51,7 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	dh-umc-module-install
-	for i in $$(ls /usr/share/foomatic/db/source/driver/ | sed 's|\.xml$$||'); do foomatic-compiledb -d $$(pwd)/foomatic-rip/ -f -t ppd -j 5 "$$i"; done
+	foomatic-compiledb -d $(CURDIR)/foomatic-rip/ -f -t ppd -j 5 $(DRIVERS)
 	dh_auto_install
 	univention-install-config-registry
 	@for i in $(MO_FILES); do\
