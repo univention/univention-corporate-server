@@ -1,3 +1,14 @@
+ucs-test (3.0.0-7) unstable; urgency=low
+
+  *  Added ucs-test/51_samba4 and debian/ucs-test-samba4.install (Bug #28262)
+  *  Added 51_samba4/10samba-share-options (Bug #28341)
+  *  Added 51_samba4/15nfs-share-options (Bug #28342)
+  *  Added 51_samba4/20grouplist (Bug #28343)
+  *  Added 51_samba4/35smbclient_auth (Bug #28348)
+  *  modified dependencies for 50_samba/35smbclient_auth (Bug #26807)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 04 Sep 2012 17:08:40 +0200
+
 ucs-test (3.0.0-6) unstable; urgency=low
 
   * 50_samba/25domain-join-without-admin-rights is now only executed as a

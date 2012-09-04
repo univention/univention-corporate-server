@@ -153,6 +153,16 @@ Description: Test scripts for samba (and NFS shares)
  This package includes some scripts for testing the functionality of the samba
  domain and NFS shares.
 
+Package: ucs-test-samba4
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for samba4 (and NFS shares)
+ This package includes some scripts for testing the functionality of the samba4
+ domain and NFS shares.
+
 #Package: ucs-test-pkgdb
 #Architecture: all
 #Recommends: ucs-test-framework

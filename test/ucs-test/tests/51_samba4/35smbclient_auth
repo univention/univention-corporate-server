@@ -3,7 +3,7 @@
 ## exposure: safe
 ## packages:
 ##  - screen
-##  - univention-samba
+##  - univention-samba4
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
@@ -17,9 +17,9 @@
 
 SAMBA="true"
 MAIL="false"
-KERBEROS="false"
+KERBEROS="true"
 PERSON="false"
-POSIX="false"
+POSIX="true"
 
 #Parameters for configuration:
 #	smbauth_totalRounds: amount of rounds (default=3)
@@ -48,7 +48,7 @@ if [ ! -z $smbauth_amountPerRound ] && [ $smbauth_amountPerRound -gt 0 ] && [ $s
 then 
 	amountPerRound=$smbauth_amountPerRound
 else
-	amountPerRound=10
+	amountPerRound=8
 fi  
 
 #the total number of authentifications
@@ -59,7 +59,7 @@ if [ ! -z $smbauth_roundTime ] && [ $smbauth_roundTime -gt 0 ] && [ $smbauth_rou
 then  
 	roundTime=$smbauth_roundTime
 else
-	roundTime=1
+	roundTime=3
 fi
 
 #delay between each round
@@ -67,19 +67,13 @@ if [ ! -z $smbauth_delay ] && [ $smbauth_delay -gt 0 ] && [ $smbauth_delay -lt 1
 then
 	delay=$smbauth_delay
 else
-	delay=1
+	delay=3
 fi
 
 #create user
 username=`user_randomname`
 password=univention
-user_create "$username"
 share_name=`random_share`
-share_create $share_name /$share_name
-share_dn=`univention-directory-manager shares/share list --filter sambaName="$share_name" | sed -ne 's/^DN: //p'`
-udm shares/share modify --dn=$share_dn --set sambaPublic=1
-sleep 20
-
 
 function create_screenconfig
 {
@@ -103,12 +97,12 @@ function start_round
 	let i=0
 	while [ $i -lt $amountPerRound  ]
 	do
-    	screen -S smbclients_$screenIndex -p $authIndex -X stuff "smbclient -U "$username%$password" //$ldap_master/$share_name"$'\n' &
+    	screen -S smbclients_$screenIndex -p $authIndex -X stuff "smbclient4 -U "$username%$password" //$ldap_master/$share_name"$'\n' &
     	echo Nr. $i
 
-		if [ $roundIndex != $totalRounds ]; then
+	#	if [ $roundIndex != $totalRounds ]; then
 			sleep ${delayArray[$i]}
-		fi
+	#	fi
 
     	let i=$i+1
 		let authIndex=$authIndex+1
@@ -169,6 +163,14 @@ share_remove "$share_name"
 }
 
 #Beginning
+
+user_create "$username"
+share_create $share_name /var/$share_name
+sleep 20
+
+if [ -z `univention-s4search "sAMAccountName=$username" objectsid 2>/dev/null | sed -n 's/^objectSid: \(.*\)/\1/p' | cut -c1,2 | grep "S-"` ]; then
+        fail_fast 1
+fi
 
 if $random;then 
     calculate_startdelay
