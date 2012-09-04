@@ -1,3 +1,10 @@
+univention-config-registry (8.0.3-1) unstable; urgency=low
+
+  * Don't evaluate the values during the tab completion and use single
+    quotes instead of double quotes (Bug #27573)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 04 Sep 2012 20:48:16 +0200
+
 univention-config-registry (8.0.2-5) unstable; urgency=low
 
   * Force pysupport run (Bug #26058)
