@@ -1,3 +1,9 @@
+univention-management-console-module-mrtg (2.0.0-1) unstable; urgency=low
+
+  * ported module to be dojo 1.8 compatibility; Bug #26857
+
+ -- Florian Best <best@univention.de>  Tue, 04 Sep 2012 17:39:08 +0200
+
 univention-management-console-module-mrtg (1.0.7-1) unstable; urgency=low
 
   * fix fuzzy po-file (Bug #24724)

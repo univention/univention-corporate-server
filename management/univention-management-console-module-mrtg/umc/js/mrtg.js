@@ -26,134 +26,133 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/* global console MyError dojo dojox dijit umc */
-
-dojo.provide("umc.modules.mrtg");
-
-dojo.require("umc.i18n");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.Text");
-dojo.require("umc.widgets.ExpandingTitlePane");
-dojo.require("umc.widgets.ContainerForm");
-dojo.require("umc.widgets.TabbedModule");
-dojo.require("dojox.layout.TableContainer");
-dojo.require("dojox.string.sprintf");
+/*global define*/
 
 // Inheriting from umc.widgets.TabbedModule so any pages being added
 // will become tabs automatically.
-dojo.declare("umc.modules.mrtg", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dijit/layout/ContentPane",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/Page",
+	"umc/widgets/ExpandingTitlePane",
+	"umc/widgets/TabbedModule",
+	"dojox/layout/TableContainer",
+	"dojox/string/sprintf",
+	"umc/i18n!umc/modules/mrtg"
+], function(declare, lang, array, DijitContentPane, ContainerWidget, Page, ExpandingTitlePane, TabbedModule, TableContainer, sprintf, _) {
+	return declare("umc.modules.mrtg", TabbedModule, {
 
-	_page: null,
-	_form: null,
-	
-	// TODO should be set in the base class -> then remove it here.
-	nested: true,		// my tabs are 2nd level
-
-	i18nClass: 'umc.modules.mrtg',
-
-	buildRendering: function() {
-		this.inherited(arguments);
+		_page: null,
+		_form: null,
 		
-		// key ...... the file name stub for all images on this tab
-		// label .... the label of the tab itself
-		// heading .. page heading of the tab contents
-		// desc ..... help text (switchable)
-		var page_setup = [
-			{
-				key:		"0load",
-				label:		this._("Load"),
-				heading:	this._("System load"),
-				desc:		this._("System load in percent")
-			},
-			{
-				key:		"1sessions",
-				label:		this._("Sessions"),
-				heading:	this._("Terminal server sessions"),
-				desc:		this._("Number of active terminal server sessions")
-			},
-			{
-				key:		"2mem",
-				label:		this._("Memory"),
-				heading:	this._("Memory usage"),
-				desc:		this._("Utilization of system memory in percent")
-			},
-			{
-				key:		"3swap",
-				label:		this._("Swap"),
-				heading:	this._("Swap space"),
-				desc:		this._("Utilization of swap space in percent")
-			}
-		];
-		
-		// key ...... file name stub (2nd part) for the corresponding PNG image
-		// label .... how to label this image
-		var tab_setup = [
-			{
-				key:		"day",
-				label:		this._("Previous day")
-			},
-			{
-				key:		"week",
-				label:		this._("Previous week")
-			},
-			{
-				key:		"month",
-				label:		this._("Previous month")
-			},
-			{
-				key:		"year",
-				label:		this._("Previous year")
-			}
-		];
+		// TODO should be set in the base class -> then remove it here.
+		nested: true,		// my tabs are 2nd level
 
-		// Build tabs and attach them to page
-		for (var idx=0; idx<page_setup.length; idx++)
-		{
-			var tab = new umc.widgets.Page({
-				title:			page_setup[idx].label,
-				headerText:		page_setup[idx].heading,
-				closable:		false
+		buildRendering: function() {
+			this.inherited(arguments);
+			
+			// key ...... the file name stub for all images on this tab
+			// label .... the label of the tab itself
+			// heading .. page heading of the tab contents
+			// desc ..... help text (switchable)
+			var page_setup = [
+				{
+					key:		"0load",
+					label:		_("Load"),
+					heading:	_("System load"),
+					desc:		_("System load in percent")
+				},
+				{
+					key:		"1sessions",
+					label:		_("Sessions"),
+					heading:	_("Terminal server sessions"),
+					desc:		_("Number of active terminal server sessions")
+				},
+				{
+					key:		"2mem",
+					label:		_("Memory"),
+					heading:	_("Memory usage"),
+					desc:		_("Utilization of system memory in percent")
+				},
+				{
+					key:		"3swap",
+					label:		_("Swap"),
+					heading:	_("Swap space"),
+					desc:		_("Utilization of swap space in percent")
+				}
+			];
+			
+			// key ...... file name stub (2nd part) for the corresponding PNG image
+			// label .... how to label this image
+			var tab_setup = [
+				{
+					key:		"day",
+					label:		_("Previous day")
+				},
+				{
+					key:		"week",
+					label:		_("Previous week")
+				},
+				{
+					key:		"month",
+					label:		_("Previous month")
+				},
+				{
+					key:		"year",
+					label:		_("Previous year")
+				}
+			];
+
+			// Build tabs and attach them to page
+			for (var idx=0; idx<page_setup.length; idx++)
+			{
+				var tab = new Page({
+					title:			page_setup[idx].label,
+					headerText:		page_setup[idx].heading,
+					closable:		false
+					});
+				this.addChild(tab);
+
+				// Title pane without rollup/down
+				var cont = new ExpandingTitlePane({
+					title:			page_setup[idx].desc
 				});
-			this.addChild(tab);
-
-			// Title pane without rollup/down
-			var cont = new umc.widgets.ExpandingTitlePane({
-				title:			page_setup[idx].desc
-			});
-			tab.addChild(cont);
-			
-			// ExpandingTitlePane doesn't honor 'scrollable'
-			// but we might need it
-			var scroll = new umc.widgets.ContainerWidget({
-				scrollable:		true
-			});
-			cont.addChild(scroll);
-			
-			// three-column grid layout
-			var grid = new dojox.layout.TableContainer({
-				cols: 3
-			});
-			scroll.addChild(grid);
-			for (var i=0; i<tab_setup.length; i++)
-			{
-				grid.addChild(new dijit.layout.ContentPane({
-					content: 	dojox.string.sprintf(
-									"<span style='white-space:nowrap;'>%s</span>",
-									tab_setup[i].label)
-				}));
-				grid.addChild(new dijit.layout.ContentPane({
-					content:	dojox.string.sprintf(
-									"<img src='/statistik/ucs_%s-%s.png'>",
-									page_setup[idx].key,
-									tab_setup[i].key)
-				}));
-				// third column used as spacer
-				grid.addChild(new dijit.layout.ContentPane({
-					content:	'&nbsp;'
-				}));
+				tab.addChild(cont);
+				
+				// ExpandingTitlePane doesn't honor 'scrollable'
+				// but we might need it
+				var scroll = new ContainerWidget({
+					scrollable:		true
+				});
+				cont.addChild(scroll);
+				
+				// three-column grid layout
+				var grid = new TableContainer({
+					cols: 3
+				});
+				scroll.addChild(grid);
+				for (var i=0; i<tab_setup.length; i++)
+				{
+					grid.addChild(new DijitContentPane({
+						content: 	sprintf(
+										"<span style='white-space:nowrap;'>%s</span>",
+										tab_setup[i].label)
+					}));
+					grid.addChild(new DijitContentPane({
+						content:	sprintf(
+										"<img src='/statistik/ucs_%s-%s.png'>",
+										page_setup[idx].key,
+										tab_setup[i].key)
+					}));
+					// third column used as spacer
+					grid.addChild(new DijitContentPane({
+						content:	'&nbsp;'
+					}));
+				}
 			}
-		}
-	}	
+		}	
+	});
 });

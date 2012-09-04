@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (2.0.0-1) unstable; urgency=low
+
+  * ported module to be dojo 1.8 compatibility; Bug #26857
+
+ -- Florian Best <best@univention.de>  Tue, 04 Sep 2012 17:41:01 +0200
+
 univention-management-console-module-reboot (1.0.18-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)

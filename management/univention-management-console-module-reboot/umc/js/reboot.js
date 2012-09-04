@@ -26,94 +26,98 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules.reboot");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dijit/TitlePane",
+	"umc/dialog",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/Form",
+	"umc/widgets/Module",
+	"umc/widgets/Page",
+	"umc/widgets/TextBox",
+	"umc/widgets/ComboBox",
+	"umc/i18n!umc/modules/reboot"
+], function(declare, lang, array, DijitTitlePane, dialog, ContainerWidget, Form, Module, Page, TextBox, ComboBox, _) {
 
-dojo.require("dijit.TitlePane");
-dojo.require("umc.dialog");
-dojo.require("umc.i18n");
-dojo.require("umc.widgets.ContainerWidget");
-dojo.require("umc.widgets.Form");
-dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.TitlePane");
+	return declare("umc.modules.reboot", Module, {
 
-dojo.declare("umc.modules.reboot", [ umc.widgets.Module, umc.i18n.Mixin ], {
+		_page: null,
+		_form: null,
 
-	_page: null,
-	_form: null,
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	i18nClass: 'umc.modules.reboot',
+			this._page = new Page({
+				helpText: _("This module can be used to restart or shut down the system remotely. The optionally given message will be displayed on the console and written to the syslog."),
+				headerText: _("Reboot or shutdown the system")
+			});
+			this.addChild(this._page);
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			var widgets = [{
+				type: ComboBox,
+				name: 'action',
+				value: 'reboot',
+				label: _('Action'),
+				staticValues: [
+					{id: 'reboot', label: _('Reboot')},
+					{id: 'halt', label: _('Stop')}
+				]
+			}, {
+				type: TextBox,
+				name: 'message',
+				label: _('Reason for this reboot/shutdown')
+			}];
 
-		this._page = new umc.widgets.Page({
-			helpText: this._("This module can be used to restart or shut down the system remotely. The optionally given message will be displayed on the console and written to the syslog."),
-			headerText: this._("Reboot or shutdown the system")
-		});
-		this.addChild(this._page);
+			var buttons = [{
+				name: 'submit',
+				label: _('Execute'),
+				callback: lang.hitch(this, function() {
+					var vals = this._form.gatherFormValues();
+					this.shutdown(vals);
+				})
+			}];
 
-		var widgets = [{
-			type: 'ComboBox',
-			name: 'action',
-			value: 'reboot',
-			label: this._('Action'),
-			staticValues: [
-				{id: 'reboot', label: this._('Reboot')},
-				{id: 'halt', label: this._('Stop')}
-			]
-		}, {
-			type: 'TextBox',
-			name: 'message',
-			label: this._('Reason for this reboot/shutdown')
-		}];
+			var layout = [['action'], ['message']];
 
-		var buttons = [{
-			name: 'submit',
-			label: this._('Execute'),
-			callback: dojo.hitch(this, function() {
-				var vals = this._form.gatherFormValues();
-				this.shutdown(vals);
-			})
-		}];
+			this._form = new Form({
+				widgets: widgets,
+				buttons: buttons,
+				layout: layout
+			});
 
-		var layout = [['action'], ['message']];
+			var container = new ContainerWidget({
+				scrollable: true
+			});
+			this._page.addChild(container);
 
-		this._form = new umc.widgets.Form({
-			widgets: widgets,
-			buttons: buttons,
-			layout: layout
-		});
+			var titlePane = new DijitTitlePane({
+				title: _('Actions'),
+				content: this._form
+			});
 
-		var container = new umc.widgets.ContainerWidget({
-			scrollable: true
-		});
-		this._page.addChild(container);
+			container.addChild(titlePane);
+		},
 
-		var titlePane = new dijit.TitlePane({
-			title: this._('Actions'),
-			content: this._form
-		});
+		shutdown: function(data) {
+			var message;
+			if (data.action == 'reboot') {
+				message = _('Please confirm to reboot the computer');
+			} else {
+				message = _('Please confirm to shutdown the computer');
+			}
 
-		container.addChild(titlePane);
-	},
-
-	shutdown: function(data) {
-		if (data.action == 'reboot') {
-			var message = this._('Please confirm to reboot the computer');
-		} else {
-			var message = this._('Please confirm to shutdown the computer');
+			dialog.confirm(message, [{
+				label: _('OK'),
+				callback: lang.hitch(this, function() {
+					this.umcpCommand('reboot/reboot', data);
+				})
+			}, {
+				label: _('Cancel')
+			}]);
 		}
-
-		umc.dialog.confirm(message, [{
-			label: this._('OK'),
-			callback: dojo.hitch(this, function() {
-				this.umcpCommand('reboot/reboot', data);
-			})
-		}, {
-			label: this._('Cancel')
-		}]);
-	}
+	});
 });

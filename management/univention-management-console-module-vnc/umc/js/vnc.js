@@ -27,266 +27,268 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules.vnc");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"umc/tools",
+	"umc/widgets/ExpandingTitlePane",
+	"umc/widgets/Module",
+	"umc/widgets/Page",
+	"umc/widgets/Text",
+	"umc/widgets/Form",
+	"umc/widgets/PasswordInputBox",
+	"umc/i18n!umc/modules/vnc"
+], function(declare, lang, array, tools, ExpandingTitlePane, Module, Page, Text, Form, PasswordInputBox, _) {
 
-dojo.require("umc.i18n");
-dojo.require("umc.widgets.ExpandingTitlePane");
-dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.PasswordInputBox");
+	var _VNCPage = declare("umc.modules.vnc._VNCPage", Page, {
 
-dojo.declare("umc.modules.vnc", [ umc.widgets.Module, umc.i18n.Mixin ], {
+		// internal reference to the formular containing all form widgets
+		_form: null,
 
-	// internal reference to the VNC page
-	_vncPage: null,
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	// internal reference to the password page
-	_passwordPage: null,
-
-	standbyOpacity: 1.00,
-
-	buildRendering: function() {
-		this.inherited(arguments);
-		this.standby(true);
-
-		this.renderVNCPage();
-		this.renderPasswordPage();
-
-		this.init();
-    },
-
-	renderVNCPage: function() {
-		this._vncPage = new umc.modules.vnc._VNCPage({
-			headerText: this._('VNC'),
-			helpText: this._('A connection to the VNC server can be established now. A click on the corresponding button launches a VNC browser client. To login, enter username and the password for VNC connection as specified in this module.')
-		});
-		this.addChild(this._vncPage);
-
-		this.connect(this._vncPage, 'onStart', function() {
-			this.standby(true);
-			umc.tools.umcpCommand('vnc/start').then(
-				dojo.hitch(this, function(data) {
-					this.init();
-					this.standby(false);
-				}),
-				dojo.hitch(this, function() {
-					this.standby(false);
+			var widgets = [{
+				type: Text,
+				name: 'info',
+				content: _('Status: ')
+			}];
+			var buttons = [{
+				name: 'start',
+				label: _('Start VNC server'),
+				callback: lang.hitch(this, function() {
+					this.onStart();
 				})
-			);
-		});
-
-		this.connect(this._vncPage, 'onStop', function() {
-			this.standby(true);
-			umc.tools.umcpCommand('vnc/stop').then(
-				dojo.hitch(this, function(data) {
-					this.init();
-					this.standby(false);
-				}),
-				dojo.hitch(this, function() {
-					this.standby(false);
+			}, {
+				name: 'stop',
+				label: _('Stop VNC server'),
+				callback: lang.hitch(this, function() {
+					this.onStop();
 				})
-			);
-		});
-
-		this.connect(this._vncPage, 'onConnect', function() {
-			umc.tools.umcpCommand('vnc/connect').then(
-				dojo.hitch( this, function( response ) {
-					var w = window.open();
-					var html = dojo.replace( '<html><head><title>{host}</title></head><body><applet archive="/vnc/TightVncViewer.jar" code="com.tightvnc.vncviewer.VncViewer" height="100%%" width="100%%"><param name="host" value="localhost"/><param name="port" value="{port}"/><param name="socketfactory" value="com.tightvnc.vncviewer.SshTunneledSocketFactory"><param name="sshhost" value="{host}"><param name="offer relogin" value="no" /></applet></body></html>', {
-						host: response.result.host,
-						port: response.result.port
-					} );
-					w.document.write( html );
-					w.document.close();
+			}, {
+				name: 'connect',
+				label: _('Connect to the VNC server'),
+				callback: lang.hitch(this, function() {
+					this.onConnect();
 				})
-			);
-		});
-	},
+			}];
+			var layout = [['info'], ['start', 'stop', 'connect']];
+			this._form = new Form({
+				widgets: widgets,
+				buttons: buttons,
+				layout: layout
+			});
 
-	renderPasswordPage: function() {
-		this._passwordPage = new umc.modules.vnc._PasswordPage({
-			headerText: this._('VNC'),
-			helpText: this._('This UMC module allows direct access to the graphical interface of the server via the VNC protocol. For this, a VNC server will be started first, then a connection can be established.')
-		});
-		this.addChild(this._passwordPage);
+			var titlePane = new ExpandingTitlePane({
+				title: _('VNC configuration')
+			});
+			this.addChild(titlePane);
+			titlePane.addChild(this._form);
 
-		this.connect(this._passwordPage, 'onSetPassword', function(password) {
-			this.standby(true);
-			umc.tools.umcpCommand('vnc/password', {'password': password}).then(
-				dojo.hitch(this, function(data) {
-					this.init();
-					this.standby(false);
-				}),
-				dojo.hitch(this, function() {
-					this.standby(false);
-				})
-			);
-		});
-	},
-
-	init: function() {
-		umc.tools.umcpCommand('vnc/status').then(
-			dojo.hitch(this, function(data) {
-				if (! data.result.isSetPassword) {
-					this.selectChild(this._passwordPage);
-				} else {
-					this._vncPage.init(data.result.isRunning);
-					this.selectChild(this._vncPage);
-				}
-				this.standby(false);
-			}),
-			dojo.hitch(this, function() {
-				this.standby(false);
-			})
-		);
-	}
-});
-
-dojo.declare("umc.modules.vnc._VNCPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
-
-	// internal reference to the formular containing all form widgets
-	_form: null,
-
-	// use i18n information from umc.modules.vnc
-	i18nClass: 'umc.modules.vnc',
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		var widgets = [{
-			type: 'Text',
-			name: 'info',
-			content: this._('Status: ')
-		}];
-		var buttons = [{
-			name: 'start',
-			label: this._('Start VNC server'),
-			callback: dojo.hitch(this, function() {
-				this.onStart();
-			})
-		}, {
-			name: 'stop',
-			label: this._('Stop VNC server'),
-			callback: dojo.hitch(this, function() {
-				this.onStop();
-			})
-		}, {
-			name: 'connect',
-			label: this._('Connect to the VNC server'),
-			callback: dojo.hitch(this, function() {
-				this.onConnect();
-			})
-		}];
-		var layout = [['info'], ['start', 'stop', 'connect']];
-		this._form = new umc.widgets.Form({
-			widgets: widgets,
-			buttons: buttons,
-			layout: layout
-		});
-
-		var titlePane = new umc.widgets.ExpandingTitlePane({
-			title: this._('VNC configuration')
-		});
-		this.addChild(titlePane);
-		titlePane.addChild(this._form);
-
-		this._form.getButton('start').set('visible', false);
-		this._form.getButton('stop').set('visible', false);
-		this._form.getButton('connect').set('visible', false);
-	},
-
-	init: function(isRunning) {
-		var message = this._('Status: ');
-		if (isRunning) {
 			this._form.getButton('start').set('visible', false);
-			this._form.getButton('stop').set('visible', true);
-			this._form.getButton('connect').set('visible', true);
-			message += this._('VNC server is running and password is set.');
-			this._form.getWidget('info').set('content', message);
-		} else {
-			this._form.getButton('start').set('visible', true);
 			this._form.getButton('stop').set('visible', false);
 			this._form.getButton('connect').set('visible', false);
-			message += this._('VNC server is not running.');
-			this._form.getWidget('info').set('content', message);
+		},
+
+		init: function(isRunning) {
+			var message = _('Status: ');
+			if (isRunning) {
+				this._form.getButton('start').set('visible', false);
+				this._form.getButton('stop').set('visible', true);
+				this._form.getButton('connect').set('visible', true);
+				message += _('VNC server is running and password is set.');
+				this._form.getWidget('info').set('content', message);
+			} else {
+				this._form.getButton('start').set('visible', true);
+				this._form.getButton('stop').set('visible', false);
+				this._form.getButton('connect').set('visible', false);
+				message += _('VNC server is not running.');
+				this._form.getWidget('info').set('content', message);
+			}
+		},
+
+		onStart: function() {
+			return true;
+		},
+
+		onStop: function() {
+			return true;
+		},
+
+		onConnect: function() {
+			return true;
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			this.startup();
 		}
-	},
+	});
 
-	onStart: function() {
-		return true;
-	},
+	var _PasswordPage = declare("umc.modules.vnc._PasswordPage", Page, {
 
-	onStop: function() {
-		return true;
-	},
+		// internal reference to the formular containing all form widgets
+		_form: null,
 
-	onConnect: function() {
-		return true;
-	},
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	postCreate: function() {
-		this.inherited(arguments);
-		this.startup();
-	}
-});
+			var widgets = [{
+				type: Text,
+				name: 'info',
+				content: _('To setup a VNC session a password is required.')
+			}, {
+				type: PasswordInputBox,
+				name: 'password',
+				label: _('Password'),
+				required: true
+			}];
 
-dojo.declare("umc.modules.vnc._PasswordPage", [ umc.widgets.Page, umc.i18n.Mixin ], {
+			var buttons = [{
+				name: 'submit',
+				label: _('Set'),
+				callback: lang.hitch(this, function(data) {
+					// TODO: Check if password value is ''
+					if (this._form.getWidget('password').isValid()) {
+						this.onSetPassword(data.password);
+					}
+				})
+			}];
 
-	// internal reference to the formular containing all form widgets
-	_form: null,
+			var layout = [['info'], ['password'], ['submit']];
 
-	// use i18n information from umc.modules.vnc
-	i18nClass: 'umc.modules.vnc',
+			this._form = new Form({
+				widgets: widgets,
+				buttons: buttons,
+				layout: layout
+			});
 
-	buildRendering: function() {
-		this.inherited(arguments);
+			var titlePane = new ExpandingTitlePane({
+				title: _('VNC configuration')
+			});
 
-		var widgets = [{
-			type: 'Text',
-			name: 'info',
-			content: this._('To setup a VNC session a password is required.')
-		}, {
-			type: 'PasswordInputBox',
-			name: 'password',
-			label: this._('Password'),
-			required: true
-		}];
+			this.addChild(titlePane);
+			titlePane.addChild(this._form);
+		},
 
-		var buttons = [{
-			name: 'submit',
-			label: this._('Set'),
-			callback: dojo.hitch(this, function(data) {
-				// TODO: Check if password value is ''
-				if (this._form.getWidget('password').isValid()) {
-					this.onSetPassword(data.password);
-				}
-			})
-		}];
+		postCreate: function() {
+			this.inherited(arguments);
+			this.startup();
+		},
 
-		var layout = [['info'], ['password'], ['submit']];
+		onSetPassword: function() {
+			return true;
+		}
+	});
 
-		this._form = new umc.widgets.Form({
-			widgets: widgets,
-			buttons: buttons,
-			layout: layout
-		});
+	return declare("umc.modules.vnc", Module, {
 
-		var titlePane = new umc.widgets.ExpandingTitlePane({
-			title: this._('VNC configuration')
-		});
+		// internal reference to the VNC page
+		_vncPage: null,
 
-		this.addChild(titlePane);
-		titlePane.addChild(this._form);
-	},
+		// internal reference to the password page
+		_passwordPage: null,
 
-	postCreate: function() {
-		this.inherited(arguments);
-		this.startup();
-	},
+		standbyOpacity: 1.00,
 
-	onSetPassword: function() {
-		return true;
-	}
+		buildRendering: function() {
+			this.inherited(arguments);
+			this.standby(true);
+
+			this.renderVNCPage();
+			this.renderPasswordPage();
+
+			this.init();
+    	},
+
+		renderVNCPage: function() {
+			this._vncPage = new _VNCPage({
+				headerText: _('VNC'),
+				helpText: _('A connection to the VNC server can be established now. A click on the corresponding button launches a VNC browser client. To login, enter username and the password for VNC connection as specified in this module.')
+			});
+			this.addChild(this._vncPage);
+
+			this._vncPage.on('start', function() {
+				this.standby(true);
+				tools.umcpCommand('vnc/start').then(
+					lang.hitch(this, function(data) {
+						this.init();
+						this.standby(false);
+					}),
+					lang.hitch(this, function() {
+						this.standby(false);
+					})
+				);
+			});
+
+			this._vncPage.on('stop', function() {
+				this.standby(true);
+				tools.umcpCommand('vnc/stop').then(
+					lang.hitch(this, function(data) {
+						this.init();
+						this.standby(false);
+					}),
+					lang.hitch(this, function() {
+						this.standby(false);
+					})
+				);
+			});
+
+			this._vncPage.on('connect', function() {
+				tools.umcpCommand('vnc/connect').then(
+					lang.hitch( this, function( response ) {
+						var w = window.open();
+						var html = lang.replace( '<html><head><title>{host}</title></head><body><applet archive="/vnc/TightVncViewer.jar" code="com.tightvnc.vncviewer.VncViewer" height="100%%" width="100%%"><param name="host" value="localhost"/><param name="port" value="{port}"/><param name="socketfactory" value="com.tightvnc.vncviewer.SshTunneledSocketFactory"><param name="sshhost" value="{host}"><param name="offer relogin" value="no" /></applet></body></html>', {
+							host: response.result.host,
+							port: response.result.port
+						} );
+						w.document.write( html );
+						w.document.close();
+					})
+				);
+			});
+		},
+
+		renderPasswordPage: function() {
+			this._passwordPage = new _PasswordPage({
+				headerText: _('VNC'),
+				helpText: _('This UMC module allows direct access to the graphical interface of the server via the VNC protocol. For this, a VNC server will be started first, then a connection can be established.')
+			});
+			this.addChild(this._passwordPage);
+
+			this._passwordPage.on('SetPassword', function(password) {
+				this.standby(true);
+				tools.umcpCommand('vnc/password', {'password': password}).then(
+					lang.hitch(this, function(data) {
+						this.init();
+						this.standby(false);
+					}),
+					lang.hitch(this, function() {
+						this.standby(false);
+					})
+				);
+			});
+		},
+
+		init: function() {
+			tools.umcpCommand('vnc/status').then(
+				lang.hitch(this, function(data) {
+					if (! data.result.isSetPassword) {
+						this.selectChild(this._passwordPage);
+					} else {
+						this._vncPage.init(data.result.isRunning);
+						this.selectChild(this._vncPage);
+					}
+					this.standby(false);
+				}),
+				lang.hitch(this, function() {
+					this.standby(false);
+				})
+			);
+		}
+	});
+
 });
