@@ -1,3 +1,10 @@
+ucs-test (3.0.0-6) unstable; urgency=low
+
+  * 50_samba/25domain-join-without-admin-rights is now only executed as a
+  * memberserver (Bug #27654)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 04 Sep 2012 15:06:33 +0200
+
 ucs-test (3.0.0-5) unstable; urgency=low
 
   *	Improved the code in 50_samba/35smbclient_auth (Bug #26807)

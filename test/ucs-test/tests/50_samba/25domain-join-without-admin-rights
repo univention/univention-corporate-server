@@ -3,7 +3,7 @@
 ## exposure: safe
 ## packages:
 ##  - univention-samba
-## roles: [domaincontroller_master, domaincontroller_slave]
+## roles: [memberserver]
 ## tags: [basic]
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
@@ -17,19 +17,24 @@ MAIL="false"
 KERBEROS="false"
 PERSON="false"
 POSIX="true"
-if [ "$(ucr get server/role)" == "domaincontroller_slave" ] && [ "$(ucr get samba/domainmaster)" == "" ]
-then
-	exit 134
-fi
 NAME=`user_randomname`
 trap 'user_remove "$NAME"' INT TERM EXIT
 user_create "$NAME"
 
+ADMINISTRATOR_DN=$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')
+USER_DN=$(univention-directory-manager users/user list --filter uid="$NAME" | sed -ne 's/^DN: //p')
+
 net rpc join -U "$NAME"%univention && \
 	{ fail_fast 1 "Did a Domain join without the SeMachineAccountPrivilege"; }
 
-net rpc rights grant -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "$NAME" SeMachineAccountPrivilege || \
-	{ fail_fast 1 "Couldn't assign SeMachineAccountPrivilege to the user"; }
+#net rpc rights grant -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "$NAME" SeMachineAccountPrivilege || \
+#	{ fail_fast 1 "Couldn't assign SeMachineAccountPrivilege to the user"; }
+
+
+univention-directory-manager users/user modify --binddn "$ADMINISTRATOR_DN" \
+                                 	--bindpw "$ADMINISTRATOR_PASSWORD" \
+									--dn "$USER_DN" \
+									--set "sambaPrivileges=SeMachineAccountPrivilege"
 
 for i in {0..10}
 do
