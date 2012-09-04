@@ -1,18 +1,12 @@
-With IE8 dojo.style was called by the Standby widget with a DOM node of the 
-type fragment node (nodeType == 11) which did not have a style entry and thus
-caused an error. 
-
-This bug has been sent upstream: http://bugs.dojotoolkit.org/ticket/14191
-
---- dojo-release-1.6.1-src/dojo/_base/html.js.orig	2011-11-01 17:39:49.000000000 +0100
-+++ dojo-release-1.6.1-src/dojo/_base/html.js	2011-11-01 17:40:36.000000000 +0100
-@@ -630,6 +630,9 @@
+--- dojo-release-1.8.0-src/dojo/dom-style.js.orig	2012-09-04 18:33:32.000000000 +0200
++++ dojo-release-1.8.0-src/dojo/dom-style.js	2012-09-04 18:33:36.000000000 +0200
+@@ -292,6 +292,9 @@
  		//	|	});
  
- 		var n = byId(node), args = arguments.length, op = (style == "opacity");
+ 		var n = dom.byId(node), l = arguments.length, op = (name == "opacity");
 +		if (!n || !n.style) {
-+			return
++			return;
 +		}
- 		style = _floatAliases[style] || style;
- 		if(args == 3){
- 			return op ? d._setOpacity(n, value) : n.style[style] = value; /*Number*/
+ 		name = _floatAliases[name] || name;
+ 		if(l == 3){
+ 			return op ? _setOpacity(n, value) : n.style[name] = value; // Number

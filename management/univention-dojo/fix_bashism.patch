@@ -1,10 +1,9 @@
-this patch fixes bashism errors in dojo scripts
---- dojo-release-1.6.1-src.orig/dojox/mobile/build/build.sh	2011-01-07 22:16:10.000000000 +0100
-+++ dojo-release-1.6.1-src/dojox/mobile/build/build.sh	2011-07-20 09:53:20.000000000 +0200
-@@ -33,13 +33,13 @@
+--- dojo-release-1.8.0-src/dojox/mobile/build/build.sh.orig	2012-04-12 08:20:13.000000000 +0200
++++ dojo-release-1.8.0-src/dojox/mobile/build/build.sh	2012-09-04 18:17:44.000000000 +0200
+@@ -14,10 +14,10 @@
  profile=mobile
  dir=release-mobile-separate
- webkit=
+ #standalone=standaloneScrollable=true
 -if [ "$1" == "single" ]; then
 +if [ "$1" = "single" ]; then
    profile=mobile-all
@@ -13,19 +12,4 @@ this patch fixes bashism errors in dojo scripts
 +if [ "$1" = "single" ]; then
    dir=release-mobile-single
  fi
--if [ "$2" == "webkit" ]; then
-+if [ "$2" = "webkit" ]; then
-   webkit=webkitMobile=true
- fi
- 
---- dojo-release-1.6.1-src.orig/util/shrinksafe/build.sh	2009-06-24 16:45:11.000000000 +0200
-+++ dojo-release-1.6.1-src/util/shrinksafe/build.sh	2011-07-20 09:53:20.000000000 +0200
-@@ -15,7 +15,7 @@
- rm -rf bin
- 
- # call build.sh test to run the unit tests immediately
--if [ "$TEST" == "test" ]; then
-+if [ "$TEST" = "test" ]; then
- 	echo "Running tests."
- 	cd tests
- 	./runner.sh  #| grep errors -1
+ shift 1

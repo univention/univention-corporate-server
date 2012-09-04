@@ -1,19 +1,15 @@
-Currently, dojo.io.iframe expects a response which is embedded in a
-IFrame. However, CherryPy has been modified and therefore the response
-is pure JSON. The attached patch corrects this behavior.
-
---- dojo-release-1.6.1-src/dojo/io/iframe.js.orig	2012-06-28 09:52:18.018976745 +0200
-+++ dojo-release-1.6.1-src/dojo/io/iframe.js	2012-06-28 10:13:34.022840955 +0200
-@@ -178,7 +178,11 @@
- 								value = dojo._contentHandlers["xml"](fauxXhr); // DOMDocument
- 							}
- 						}else{
--							value = ifd.getElementsByTagName("textarea")[0].value; //text
-+							try {
-+								value = ifd.getElementsByTagName("textarea")[0].value; //text
-+							} catch(err) {
-+								value = ifd.getElementsByTagName("body")[0].innerHTML; //text
-+							}
- 							if(handleAs == "json"){
- 								value = dojo.fromJson(value); //json
- 							}else if(handleAs == "javascript"){
+--- dojo-release-1.8.0-src/dojo/request/iframe.js.orig	2012-09-04 18:39:08.000000000 +0200
++++ dojo-release-1.8.0-src/dojo/request/iframe.js	2012-09-04 18:41:20.000000000 +0200
+@@ -309,7 +309,11 @@
+ 						}
+ 					}else{
+ 						// 'json' and 'javascript' and 'text'
+-						response.text = doc.getElementsByTagName('textarea')[0].value; // text
++						try {
++							response.text = doc.getElementsByTagName("textarea")[0].value; //text
++						} catch(err) {
++							response.text = doc.getElementsByTagName("body")[0].innerHTML; //text
++						}
+ 					}
+ 					handlers(response);
+ 				}else{

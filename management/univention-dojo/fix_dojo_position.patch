@@ -1,13 +1,12 @@
-Same problem as descriobed in fix_dojo_style.patch
---- dojo-release-1.6.1-src/dojo/_base/html.js.orig	2011-11-02 14:46:28.000000000 +0100
-+++ dojo-release-1.6.1-src/dojo/_base/html.js	2011-11-02 14:47:17.000000000 +0100
-@@ -1162,6 +1162,9 @@
- 		//		not margin).  Does not act as a setter.
+--- dojo-release-1.8.0-src/dojo/dom-geometry.js.orig	2012-09-04 18:29:00.000000000 +0200
++++ dojo-release-1.8.0-src/dojo/dom-geometry.js	2012-09-04 18:29:17.000000000 +0200
+@@ -525,6 +525,9 @@
+ 		// returns: Object
  
- 		node = byId(node);
+ 		node = dom.byId(node);
 +		if (node.nodeType != 1) {
 +			return { x: 0, y: 0, w: 0, h: 0 };
 +		}
- 		var	db = d.body(),
- 			dh = db.parentNode,
+ 		var	db = win.body(node.ownerDocument),
  			ret = node.getBoundingClientRect();
+ 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};

@@ -1,23 +1,27 @@
-This patch disables the automatic focus of a dojox.grid.EnhancedGrid instance.
-In the UMC-UDM module, when editing an UDM object (e.g., user), this caused the
-browser to scroll towards the grid widget. (Bug #23195)
---- ./dojo-release-1.6.1-src/dojox/grid/enhanced/_FocusManager.js.orig	2011-09-14 14:21:57.000000000 +0200
-+++ ./dojo-release-1.6.1-src/dojox/grid/enhanced/_FocusManager.js	2011-09-14 14:23:33.000000000 +0200
-@@ -472,7 +472,7 @@
+--- dojo-release-1.8.0-src/dojox/grid/enhanced/_FocusManager.js.orig	2012-07-21 10:59:18.000000000 +0200
++++ dojo-release-1.8.0-src/dojox/grid/enhanced/_FocusManager.js	2012-09-04 18:23:21.000000000 +0200
+@@ -500,7 +500,7 @@
  		var didFocus = false;
  		this.inherited(arguments);
- 		if(this._colHeadNode && dojo.style(this._colHeadNode, 'display') != "none"){
--			dijit.focus(this._colHeadNode);
-+			//dijit.focus(this._colHeadNode);
+ 		if(this._colHeadNode && html.style(this._colHeadNode, 'display') != "none"){
+-			dijitFocus.focus(this._colHeadNode);
++			//dijitFocus.focus(this._colHeadNode);
  			this._stopEvent(evt);
  			didFocus = true;
  		}
-@@ -521,7 +521,7 @@
+@@ -549,7 +549,7 @@
  		//		Overwritten
  		this.inherited(arguments);
  		//EDG now will decorate event on header key events, if no focus, the cell will be wrong
--		dijit.focus(this._colHeadNode);
-+		//dijit.focus(this._colHeadNode);
+-		dijitFocus.focus(this._colHeadNode);
++		//dijitFocus.focus(this._colHeadNode);
  	},
  	//---------------Content Area------------------------------------------
  	findAndFocusGridCell: function(){
+@@ -784,4 +784,4 @@
+ 		return true;
+ 	}
+ });
+-});
+\ Kein Zeilenumbruch am Dateiende.
++});
