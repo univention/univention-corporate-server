@@ -45,10 +45,6 @@ if [ ! -e /var/lib/univention-ldap/listener/listener ]; then
 	chown listener /var/lib/univention-ldap/listener/listener*
 fi
 
-# Scriptposition changed, force remove old
-update-rc.d -f univention-ldap-listener remove >/dev/null 2>&1
-
-
 #DEBHELPER#
 
 univention-config-registry set listener/debug/level?2 \

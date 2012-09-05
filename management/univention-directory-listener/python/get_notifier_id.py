@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-#  read the notifier id from the dc master
+"""Read the notifier id from the DC master"""
 #
 # Copyright 2004-2012 Univention GmbH
 #
@@ -32,25 +32,34 @@
 # <http://www.gnu.org/licenses/>.
 
 import socket
-import univention.config_registry
+from univention.config_registry import ConfigRegistry
 import sys
 
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
+def main():
+    """Retrive current Univention Directory Notifier transaction ID."""
+    configRegistry = ConfigRegistry()
+    configRegistry.load()
 
-if not configRegistry.has_key( 'ldap/master' ):
-	print 'Error: ldap/master not set'
-	sys.exit(-1)
+    master = configRegistry.get('ldap/master')
+    if not master:
+        print >> sys.stderr, 'Error: ldap/master not set'
+        sys.exit(1)
 
-s = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
-s.connect ( (configRegistry['ldap/master'], 6669) )
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((master, 6669))
 
-s.send('Version: 2\nCapabilities: \n\n')
-s.recv(100)
+        sock.send('Version: 2\nCapabilities: \n\n')
+        sock.recv(100)
 
-s.send('MSGID: 1\nGET_ID\n\n')
-notifierResult = s.recv(100)
+        sock.send('MSGID: 1\nGET_ID\n\n')
+        notifier_result = sock.recv(100)
 
-if notifierResult:
-	print "%s" % notifierResult.split('\n')[1]
+        if notifier_result:
+            print "%s" % notifier_result.splitlines()[1]
+    except socket.error, ex:
+        print >> sys.stderr, 'Error: %s' % (ex,)
+        sys.exit(1)
 
+if __name__ == '__main__':
+    main()

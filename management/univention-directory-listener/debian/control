@@ -17,6 +17,8 @@ Build-Depends: debhelper (>> 7),
 Package: univention-directory-listener
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends},
+ ${python:Depends},
+ univention-base-files,
  shell-univention-lib (>= 1.0.6),
  univention-runit,
  python2.6-univention | python2.6-univention-2005,
