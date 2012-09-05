@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
+eval "$(/usr/sbin/univention-config-registry shell)"
 
 ## check for option -D to avoid "ldapsearch: -D previously specified"
 ## check for option -w to avoid "ldapsearch: -y incompatible with -w"
