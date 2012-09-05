@@ -1,3 +1,9 @@
+univention-join (5.0.3-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Florian Best <best@univention.de>  Wed, 05 Sep 2012 09:17:06 +0200
+
 univention-join (5.0.2-1) unstable; urgency=low
 
   * Use primary interface by default (Bug #26058}
