@@ -50,62 +50,56 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 {
 	char buf[PATH_MAX];
 	FILE *file;
+	int count = 0;
+	int l_fd;
 
 	snprintf( buf, sizeof(buf), "%s.lock", name );
 
-	if ( (*l_file = fopen ( buf, type )) == NULL ) {
+	if ((*l_file = fopen(buf, "a")) == NULL) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open lock file [%s]\n", buf);
 		return NULL;
 	}
 
-	if (*type != 'r') {
-		int count = 0;
-		int fd = fileno(*l_file);
-		for (;;) {
-			int rc = lockf(fd, F_TLOCK, 0);
-			if (!rc)
-				break;
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d\n", buf, count);
-			count++;
-			if (count > listener_lock_count) {
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit\n", buf);
-				exit(0);
-			}
-			usleep(1000);
+	l_fd = fileno(*l_file);
+	for (;;) {
+		int rc = lockf(l_fd, F_TLOCK, 0);
+		if (!rc)
+			break;
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d\n", buf, count);
+		count++;
+		if (count > listener_lock_count) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit\n", buf);
+			exit(0);
 		}
+		usleep(1000);
 	}
 
-	if ( (file = fopen( name, type ) ) == NULL ) {
+	if ((file = fopen(name, type)) == NULL) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open file [%s]\n", name);
 
-		lockf( fileno(*l_file), F_ULOCK, 0 );
+		lockf(l_fd, F_ULOCK, 0);
 		fclose(*l_file);
-		l_file  = NULL;
+		*l_file = NULL;
 	}
 
 	return file;
 }
 
-static int fclose_lock ( FILE *file, FILE *l_file )
+static int fclose_lock(FILE **file, FILE **l_file)
 {
-	int rc;
-	if ( file != NULL ) {
-		if ( file->_fileno != -1 ) {
-			fclose ( file );
-		}
+	if (*file != NULL) {
+		fclose(*file);
+		*file = NULL;
 	}
-	file  = NULL;
 
-
-	rc=lockf( fileno(l_file), F_ULOCK, 0 );
-	if ( rc == 0 ) {
-		if ( l_file != NULL ) {
-			if ( l_file->_fileno != -1 ) {
-				fclose(l_file);
-			}
-		}
+	if (*l_file != NULL) {
+		int l_fd = fileno(*l_file);
+		int rc = lockf(l_fd, F_ULOCK, 0);
+		if (rc)
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ALL, "unlockf(): %d", rc);
+		fclose(*l_file);
+		*l_file = NULL;
 	}
-	l_file  = NULL;
 
 	return 0;
 }
@@ -114,7 +108,7 @@ static int fclose_lock ( FILE *file, FILE *l_file )
 int notifier_write_transaction_file(NotifierEntry entry)
 {
 	FILE *file, *l_file;
-	int res;
+	int res = -1;
 
 	struct stat stat_buf;
 
@@ -122,18 +116,17 @@ int notifier_write_transaction_file(NotifierEntry entry)
 	 * otherwise the notifier notifiies the other listeners and nothing changed
 	 * in our local LDAP.
 	 */
-	if( (stat(failed_ldif_file, &stat_buf)) != 0 ) {
-
+	if (stat(failed_ldif_file, &stat_buf) != 0) {
 		if ((file = fopen_lock(transaction_file, "a+", &l_file)) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open %s\n", transaction_file);
+			return res;
 		}
 
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "write to transaction file dn=[%s], command=[%c]", entry.dn, entry.command);
 		fprintf(file, "%ld %s %c\n", entry.id, entry.dn, entry.command);
-		res = fclose_lock ( file, l_file );
+		res = fclose_lock(&file, &l_file);
 	} else {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not write to transaction file %s. Check for %s\n", transaction_file, failed_ldif_file);
-		res = -1;
 	}
 
 	return res;
