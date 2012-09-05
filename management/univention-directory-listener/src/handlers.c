@@ -40,6 +40,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <sys/types.h>
 #include <python2.6/Python.h>
 #include <python2.6/compile.h>
@@ -700,10 +701,10 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 	/* check if attributes for handler have changed */
 	if (cache_entry_module_present(old, handler->name)) {
 		char **cur;
-		int uptodate = 0;
+		bool uptodate = false;
 
 		if (changes == NULL) {
-			uptodate = 1;
+			uptodate = true;
 			goto up_to_date;
 		}
 		for (cur = handler->attributes; cur != NULL && *cur != NULL; cur++) {
@@ -711,7 +712,7 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 				break;
 		}
 		if (cur != NULL && *cur == NULL && handler->attributes != NULL && *handler->attributes != NULL) {
-			uptodate = 1;
+			uptodate = true;
 			goto up_to_date;
 		}
 

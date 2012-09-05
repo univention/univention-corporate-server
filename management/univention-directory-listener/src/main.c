@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <fcntl.h>
 #include <dirent.h>
 #include <pwd.h>
@@ -323,15 +324,15 @@ int main(int argc, char* argv[])
 	char *server_role;
 #ifdef WITH_KRB5
 	univention_krb5_parameters_t	*kp = NULL;
-	int				 do_kinit = 0;
+	bool do_kinit = false;
 #else
 	void				*kp = NULL ;
 #endif
-	int				 debugging = 0,
-					 from_scratch = 0,
-					 foreground = 0,
-					 initialize_only = 0,
-					 write_transaction_file = 0;
+	int debugging = 0;
+	bool from_scratch = false;
+	bool foreground = false;
+	bool initialize_only = false;
+	bool write_transaction_file = false;
 	int				 rv;
 	NotifierID			 id = -1;
 #ifndef WITH_DB42
@@ -368,7 +369,7 @@ int main(int argc, char* argv[])
 			debugging=atoi(optarg);
 			break;
 		case 'F':
-			foreground = 1;
+			foreground = true;
 			break;
 		case 'H':
 			lp->uri=strdup(optarg);
@@ -430,19 +431,19 @@ int main(int argc, char* argv[])
 			break;
 #ifdef WITH_KRB5
 		case 'K':
-			do_kinit = 1;
+			do_kinit = true;
 			break;
 #endif
 		case 'g':
-			from_scratch = 1;
+			from_scratch = true;
 			break;
 		case 'i':
-			initialize_only = 1;
-			from_scratch = 1;
-			foreground = 1;
+			initialize_only = true;
+			from_scratch = true;
+			foreground = true;
 			break;
 		case 'o':
-			write_transaction_file = 1;
+			write_transaction_file = true;
 			break;
 		case 'B':
 			backup_notifier = 1;
@@ -466,7 +467,7 @@ int main(int argc, char* argv[])
 	snprintf(pidfile, PATH_MAX, "%s/pid", cache_dir);
 	signals_init();
 
-	if (foreground == 0 && daemonize() != 0)
+	if (!foreground && daemonize() != 0)
 		exit(EXIT_FAILURE);
 
 	drop_privileges();

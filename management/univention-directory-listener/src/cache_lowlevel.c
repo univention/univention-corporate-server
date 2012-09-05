@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 #include <sys/types.h>
 
 #include <univention/debug.h>
@@ -209,14 +210,14 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 	while ((type = read_header(data, size, &pos, &key_data, &key_size, &data_data, &data_size)) > 0) {
 		if (type == 1) {
 			CacheEntryAttribute **attribute;
-			int found=0;
+			bool found = false;
 			
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "attribute is \"%s\"", (char*)key_data);
 			
 			for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "current attribute is \"%s\"", (*attribute)->name);
 				if (strcmp((*attribute)->name, (char*)key_data) == 0) {
-					found=1;
+					found = true;
 					break;
 				}
 			}

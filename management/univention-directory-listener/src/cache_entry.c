@@ -32,6 +32,7 @@
 
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdbool.h>
 #include <string.h>
 #include <ldap.h>
 
@@ -186,10 +187,10 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 	char *_dn;
 	int rv = 0;
 
-	int memberUidMode = 0;
-	int uniqueMemberMode = 0;
-	int duplicateMemberUid = 0;
-	int duplicateUniqueMember = 0;
+	bool memberUidMode = false;
+	bool uniqueMemberMode = false;
+	bool duplicateMemberUid = false;
+	bool duplicateUniqueMember = false;
 	int i;
 
 	/* convert LDAP entry to cache entry */
@@ -221,7 +222,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		cache_entry->attributes[cache_entry->attribute_count]->value_count=0;
 		cache_entry->attributes[cache_entry->attribute_count+1]=NULL;
 		
-		memberUidMode = 0;
+		memberUidMode = false;
 		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid", strlen("memberUid")) ) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/memberuid/skip");
@@ -231,7 +232,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				free(ucrval);
 			}
 		}
-		uniqueMemberMode = 0;
+		uniqueMemberMode = false;
 		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember", strlen("uniqueMember")) ) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/uniquemember/skip");
@@ -261,28 +262,28 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate memberUid entry:");
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s",  *dn);
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "memberUid: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
-						duplicateMemberUid = 1;
+						duplicateMemberUid = true;
 						break;
 					}
 				}
-				if ( duplicateMemberUid == 1) {
+				if (duplicateMemberUid) {
 					/* skip this memberUid entry if listener/memberuid/skip is set to yes */
 					continue;
 				}
 			}
 			if (uniqueMemberMode) {
 				/* avoid duplicate uniqueMember entries https://forge.univention.org/bugzilla/show_bug.cgi?id=18692 */
-				duplicateUniqueMember = 0;
+				duplicateUniqueMember = false;
 				for (i=0; i<cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
 					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len+1) ) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate uniqueMember entry:");
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s",  *dn);
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "uniqueMember: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
-						duplicateUniqueMember = 1;
+						duplicateUniqueMember = true;
 						break;
 					}
 				}
-				if ( duplicateUniqueMember == 1) {
+				if (duplicateUniqueMember) {
 					/* skip this uniqueMember entry if listener/uniquemember/skip is set to yes */
 					continue;
 				}
