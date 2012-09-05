@@ -1,6 +1,7 @@
 univention-directory-notifier (7.0.4-1) unstable; urgency=low
 
   * Drop LDAP dependencies.
+  * Fix atomic locking (Bug #27330)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 05 Sep 2012 07:19:15 +0200
 

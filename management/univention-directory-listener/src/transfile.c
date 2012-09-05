@@ -57,13 +57,11 @@ static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
 		return NULL;
 	}
 
-	while ( (rc=lockf( fileno(*l_file), F_TEST, 0 ) ) != 0 ) {
+	while ( (rc=lockf( fileno(*l_file), F_TLOCK, 0 ) ) != 0 ) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Could not get lock for file [%s]; count = %d\n", buf,count);
 		count++;
 		usleep(1000);
 	}
-
-	lockf( fileno(*l_file), F_LOCK, 0 );
 
 	if ( (file = fopen( name, type ) ) == NULL ) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open file [%s]\n", name);

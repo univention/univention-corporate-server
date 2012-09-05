@@ -103,7 +103,7 @@ static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
 		return NULL;
 	}
 
-	while ( (rc=lockf( fileno(*l_file), F_TEST, 0 ) ) != 0 ) {
+	while ( (rc=lockf( fileno(*l_file), F_TLOCK, 0 ) ) != 0 ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "ERROR Could not get lock for file [%s]; count = %d\n", buf,count);
 		count++;
 		if (count > notifier_lock_count ) {
@@ -112,8 +112,6 @@ static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
 		}
 		usleep(notifier_lock_time);
 	}
-
-	lockf( fileno(*l_file), F_LOCK, 0 );
 
 	if ( (file = fopen( name, type ) ) == NULL ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open file [%s]\n", name);
