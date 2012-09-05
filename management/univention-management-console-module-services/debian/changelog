@@ -1,3 +1,9 @@
+univention-management-console-module-services (2.0.1-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Florian Best <best@univention.de>  Wed, 05 Sep 2012 07:53:06 +0200
+
 univention-management-console-module-services (2.0.0-1) unstable; urgency=low
 
   * Fix not using localised descriptions (Bug #27742)
