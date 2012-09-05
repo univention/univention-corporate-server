@@ -34,11 +34,11 @@ define([
 	"dijit/layout/StackContainer",
 	"umc/tools",
 	"umc/store",
-	"umc/modules/_quota/PartitionPage",
-	"umc/modules/_quota/DetailPage",
+	"umc/modules/quota/PartitionPage",
+	"umc/modules/quota/DetailPage",
 	"umc/i18n!umc/modules/quota"
 ], function(declare, lang, StackContainer, tools, store, PartitionPage, DetailPage, _) {
-	return declare("umc.modules._quota.PageContainer", [ StackContainer ], {
+	return declare("umc.modules.quota.PageContainer", [ StackContainer ], {
 
 		moduleID: null,
 		partitionDevice: null,

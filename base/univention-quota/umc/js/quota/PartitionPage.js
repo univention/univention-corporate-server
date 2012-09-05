@@ -43,7 +43,7 @@ define([
 	"umc/widgets/ExpandingTitlePane",
 	"umc/i18n!umc/modules/quota"
 ], function(declare, lang, array, sprintf, dialog, tools, Grid, Page, SearchForm, Text, TextBox, ExpandingTitlePane, _) {
-	return declare("umc.modules._quota.PartitionPage", [ Page ], {
+	return declare("umc.modules.quota.PartitionPage", [ Page ], {
 
 		moduleStore: null,
 		partitionDevice: null,

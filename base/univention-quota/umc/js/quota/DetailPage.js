@@ -43,7 +43,7 @@ define([
 	"umc/i18n!umc/modules/quota"
 ], function(declare, lang, array, dialog, tools, Form, Text, TextBox,  Page, NumberSpinner, ExpandingTitlePane, _) {
 
-	return declare("umc.modules._quota.DetailPage", [ Page ], {
+	return declare("umc.modules.quota.DetailPage", [ Page ], {
 
 		partitionDevice: null,
 		_form: null,

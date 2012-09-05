@@ -39,7 +39,7 @@ define([
 	"umc/widgets/Grid",
 	"umc/widgets/TabbedModule",
 	"umc/widgets/Page",
-	"umc/modules/_quota/PageContainer",
+	"umc/modules/quota/PageContainer",
 	"umc/widgets/ExpandingTitlePane",
 	"umc/i18n!umc/modules/quota"
 ], function(declare, lang, array, sprintf, dialog, tools, store, Grid, TabbedModule, Page, PageContainer, ExpandingTitlePane, _) {
@@ -58,7 +58,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.moduleStore = store.getModuleStore(this.idProperty, this.moduleID + '/partitions');
+			this.moduleStore = store(this.idProperty, this.moduleID + '/partitions');
 		},
 
 		renderOverviewPage: function() {
