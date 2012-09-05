@@ -1,3 +1,9 @@
+univention-base-files (2.0.6-2) unstable; urgency=low
+
+  * Build only for Python 2.6 (Bug #26852)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 09:27:35 +0200
+
 univention-base-files (2.0.6-1) unstable; urgency=low
 
   * make etc/logrotate.d/rsyslog an UCR template (Bug #28292)

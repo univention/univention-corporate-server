@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  ucslint
 Standards-Version: 3.5.2
-XS-Python-Version: all
+XS-Python-Version: 2.6
 
 Package: univention-base-packages
 Architecture: all

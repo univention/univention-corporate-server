@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.1-2) unstable; urgency=low
+
+  * Build only for Python 2.6 (Bug #26852)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 09:27:37 +0200
+
 univention-management-console-module-packages (2.0.1-1) unstable; urgency=low
 
   * Use PatternSanitizer, fix translations, be more verbose when invoking an

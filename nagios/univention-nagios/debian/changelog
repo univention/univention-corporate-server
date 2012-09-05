@@ -1,3 +1,10 @@
+univention-nagios (6.0.0-1) unstable; urgency=low
+
+  * Build only for Python 2.6 (Bug #26852)
+  * Bump version for UCS 3.1 (Bug #27966)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 09:27:39 +0200
+
 univention-nagios (5.0.21-1) unstable; urgency=low
 
   * apply UNIVENTION_NTP to dc's only (Bug #25128) 

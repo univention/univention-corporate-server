@@ -1,3 +1,9 @@
+univention-config-registry (8.0.4-1) unstable; urgency=low
+
+  * Build only for Python 2.6 (Bug #26852)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 09:27:36 +0200
+
 univention-config-registry (8.0.3-1) unstable; urgency=low
 
   * Don't evaluate the values during the tab completion and use single

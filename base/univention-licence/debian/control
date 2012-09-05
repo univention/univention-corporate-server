@@ -16,7 +16,7 @@ Build-Depends: debhelper,
  libunivention-policy-dev,
  libldap2-dev,
  ucslint
-XS-Python-Version: all
+XS-Python-Version: 2.6
 
 Package: libunivention-license0
 Architecture: any
