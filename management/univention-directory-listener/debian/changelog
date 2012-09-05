@@ -1,7 +1,7 @@
 univention-directory-listener (7.0.2-1) unstable; urgency=low
 
   * Set the default for listener/uniquemember/skip and
-    listener/uniquemember/skip to no (Bug #19491)
+    listener/memberuid/skip to no (Bug #19491)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 12:11:10 +0200
 
