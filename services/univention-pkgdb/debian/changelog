@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.2-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Florian Best <best@univention.de>  Wed, 05 Sep 2012 14:27:40 +0200
+
 univention-pkgdb (6.0.1-2) unstable; urgency=low
 
   * Build only for Python 2.6 (Bug #26852)

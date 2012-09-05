@@ -26,18 +26,18 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
 dojo.provide("umc.modules.pkgdb");
 
 dojo.require("umc.i18n");
-dojo.require("umc.dialog");
+dojo.require("dialog");
 dojo.require("umc.widgets.TabbedModule");
 
 dojo.require("umc.modules._pkgdb.Page");
 
 
-dojo.declare("umc.modules.pkgdb", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
+/*TODO*/ return declare("umc.modules.pkgdb", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
 	
 	i18nClass:		'umc.modules.pkgdb',
 	
@@ -45,25 +45,25 @@ dojo.declare("umc.modules.pkgdb", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], 
 		this.inherited(arguments);
 			
 		var syspage = new umc.modules._pkgdb.Page({
-			title:			this._("Systems"),
-			headerText:		this._("Search systems"),
-			helpText:		this._("Search for systems with specific software properties"),
+			title:			_("Systems"),
+			headerText:		_("Search systems"),
+			helpText:		_("Search for systems with specific software properties"),
 			pageKey:		'systems'
 		});
 		this.addChild(syspage);
 
 		var packpage = new umc.modules._pkgdb.Page({
-			title:			this._("Packages"),
-			headerText:		this._("Search packages"),
-			helpText:		this._("Search for packages with specific software properties"),
+			title:			_("Packages"),
+			headerText:		_("Search packages"),
+			helpText:		_("Search for packages with specific software properties"),
 			pageKey:		'packages'
 		});
 		this.addChild(packpage);
 		
 		var propage = new umc.modules._pkgdb.Page({
-			title:			this._("Problems"),
-			headerText:		this._("Identify problems"),
-			helpText:		this._("Find problems related to software package installation"),
+			title:			_("Problems"),
+			headerText:		_("Identify problems"),
+			helpText:		_("Find problems related to software package installation"),
 			pageKey:		'problems'
 		});
 		this.addChild(propage);
