@@ -37,7 +37,6 @@
 
 #include "network.h"
 #include "cache_entry.h"
-#include <stdbool.h>
 
 
 #ifdef WITH_DB42

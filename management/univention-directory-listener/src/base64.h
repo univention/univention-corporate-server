@@ -33,6 +33,9 @@
 #ifndef _BASE64_H_
 #define _BASE64_H_
 
+#include <unistd.h>
+#include <sys/types.h>
+
 #define BASE64_ENCODE_LEN(n)      (((n)+2)/3 * 4)
 #define BASE64_DECODE_LEN(n)      (((n)+3)/4 * 3)
 
