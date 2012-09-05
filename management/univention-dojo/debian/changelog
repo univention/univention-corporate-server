@@ -1,3 +1,9 @@
+univention-dojo (6.0.1-1) unstable; urgency=low
+
+  * fixed ucslint errors; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Sep 2012 10:20:30 +0200
+
 univention-dojo (6.0.0-1) unstable; urgency=low
 
   * added Dojo 1.8 version and ported patches; Bug #26857
