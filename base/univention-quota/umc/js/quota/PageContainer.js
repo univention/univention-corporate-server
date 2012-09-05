@@ -59,7 +59,7 @@ define([
 		renderPartitionPage: function() {
 			this._partitionPage = new PartitionPage({
 				partitionDevice: this.partitionDevice,
-				moduleStore: store.getModuleStore('id', this.moduleID + '/users'),
+				moduleStore: store('id', this.moduleID + '/users'),
 				headerText: _('Partition: %s', this.partitionDevice),
 				helpText: _('Set, unset and modify filesystem quota')
 			});
