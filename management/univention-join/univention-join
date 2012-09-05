@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-}# execute univention-server-join
+# execute univention-server-join
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
