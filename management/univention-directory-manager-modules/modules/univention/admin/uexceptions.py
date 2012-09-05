@@ -32,6 +32,7 @@
 
 import exceptions
 import univention.admin.localization
+from univention.admin import configRegistry
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
@@ -80,13 +81,19 @@ class authFail(base):
 	message=_('Authentication Failed.')
 
 class uidAlreadyUsed(base):
-	message=_('The username is already in use.')
+	if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
+		message=_('The username is already in use as username or as groupname.')
+	else:
+		message=_('The username is already in use.')
 
 class sidAlreadyUsed(base):
 	message=_('The relative ID (SAMBA) is already in use.')
 
 class groupNameAlreadyUsed(base):
-	message=_('The groupname is already in use.')
+	if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
+		message=_('The groupname is already in use as groupname or as username.')
+	else:
+		message=_('The groupname is already in use.')
 
 class prohibitedUsername(base):
 	message=_('Prohibited username.')

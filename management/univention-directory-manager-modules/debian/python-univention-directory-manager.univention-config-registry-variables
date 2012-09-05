@@ -93,3 +93,9 @@ Description[de]=Überschreibt den Beschreibungstext eines Reiters eines UDM Modu
 Description[en]=Overwrite the descriptive text of a tab of an UDM module
 Type=str
 Categories=management-udm
+
+[directory/manager/user_group/uniqueness]
+Description[de]=Definiert ob ein Benutzername und ein Gruppenname eindeutig sein muss. Das bedeutet wenn es einen Benutzer test gibt, dann darf es nicht auch noch eine Gruppe test geben (default: true)
+Description[en]=Definies whether a username and a groupname must be uniqueness. That means if there is a user test, then a group with the name test is not allowed (default: true)
+Type=str
+Categories=management-udm
