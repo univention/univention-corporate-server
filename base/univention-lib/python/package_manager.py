@@ -69,6 +69,11 @@ class ProgressState(object):
 		self.reset()
 		self._start_steps = 0
 		self._errors = []
+		self._max_steps = 0
+		self._finished = False
+
+	def set_finished(self):
+		self._finished = True
 
 	def info(self, info):
 		self._info = info
@@ -101,10 +106,13 @@ class ProgressState(object):
 
 	def poll(self):
 		result = {
-			'info': self._info,
-			'steps': self._steps,
-			'errors': self._errors,
+			'info' : self._info,
+			'steps' : self._steps,
+			'errors' : self._errors,
+			'finished' : self._finished,
 		}
+		if self._max_steps and result['steps']:
+			result['steps'] = int((result['steps'] / self._max_steps) * 100)
 		self.reset()
 		return result
 
@@ -183,11 +191,26 @@ class PackageManager(object):
 		self.progress_state = ProgressState(info_handler, step_handler, error_handler, handle_only_frontend_errors)
 		self.fetch_progress = FetchProgress(self.progress_state)
 		self.dpkg_progress = DpkgProgress(self.progress_state)
-		self.always_install = None
+		self._always_install = []
 		self.always_noninteractive = always_noninteractive
 		self.lock_fd = None
 		if lock:
 			self.lock()
+
+	def always_install(self, pkgs=None, just_mark=False):
+		'''Set packages that should be installed and never
+		uninstalled. If you overwrite old always_install-pkgs,
+		make sure to reopen_cache()
+		'''
+		if not just_mark:
+			if pkgs is None:
+				pkgs = []
+			self._always_install = pkgs
+		for pkg in self._always_install:
+			if pkg.is_installed:
+				pkg.mark_keep()
+			else:
+				pkg.mark_install()
 
 	def lock(self, raise_on_fail=True):
 		self.lock_fd = get_lock('univention-lib-package-manager', nonblocking=True)
@@ -205,16 +228,21 @@ class PackageManager(object):
 		return self.lock_fd is not None
 
 	@contextmanager
-	def locked(self):
+	def locked(self, reset_status=False, set_finished=False):
 		self.lock()
+		if reset_status:
+			self.reset_status()
 		try:
 			yield
 		finally:
+			if set_finished:
+				self.set_finished()
 			self.unlock()
 
 	def __del__(self):
 		# should be done automatically. i am a bit paranoid
-		self.unlock()
+		if self.lock_fd is not None:
+			self.unlock()
 
 	def _set_apt_pkg_config(self, options):
 		revert_options = {}
@@ -227,6 +255,12 @@ class PackageManager(object):
 	def add_hundred_percent(self):
 		self.progress_state.add_start_steps(100)
 		self.progress_state.percentage(0)
+
+	def set_max_steps(self, steps):
+		self.progress_state._max_steps = steps
+
+	def set_finished(self):
+		self.progress_state.set_finished()
 
 	def poll(self, timeout):
 		SLEEP_TIME = 0.2
@@ -242,6 +276,9 @@ class PackageManager(object):
 				continue
 			return status
 		return {'timeout': True}
+
+	def reset_status(self):
+		self.progress_state.hard_reset()
 
 	@contextmanager
 	def brutal_noninteractive(self):
@@ -322,22 +359,66 @@ class PackageManager(object):
 		else:
 			return package.is_installed
 
+	def mark(self, install, remove, dry_run=False):
+		'''Marks packages, returns all
+		installed, removed or broken packages.
+		'''
+		to_be_installed = set()
+		to_be_removed = set()
+		broken = set()
+		if install is None:
+			install = []
+		if remove is None:
+			remove = []
+		for pkg in remove:
+			try:
+				pkg.mark_delete()
+			except SystemError:
+				broken.add(pkg.name)
+		for pkg in install:
+			try:
+				pkg.mark_install()
+			except SystemError:
+				broken.add(pkg.name)
+		for pkg in self.cache.get_changes():
+			if pkg.marked_install:
+				to_be_installed.add(pkg.name)
+			if pkg.marked_delete:
+				to_be_removed.add(pkg.name)
+			if pkg.is_inst_broken:
+				broken.add(pkg.name)
+		# some actions can change flags in other pkgs,
+		# e.g. install firefox-de and firefox-en: one will
+		# silently not be installed
+		for pkg in remove:
+			if not pkg.marked_delete:
+				broken.add(pkg.name)
+		for pkg in install:
+			if not pkg.marked_install:
+				# maybe its already installed...
+				if pkg.marked_delete or not pkg.is_installed:
+					broken.add(pkg.name)
+		if dry_run:
+			self.reopen_cache()
+		return sorted(to_be_installed), sorted(to_be_removed), sorted(broken)
+
 	def commit(self, install=None, remove=None, msg_if_failed=''):
 		'''Really commit changes (mark_install or mark_delete)
 		or pass Package-objects that shall be commited.
 		Never forgets to pass progress objects, may print error
 		messages, always reopens cache.
 		'''
-		if install is None:
-			install = []
-		if remove is None:
-			remove = []
-		for pkg in install:
-			pkg.mark_install()
-		for pkg in remove:
-			pkg.mark_delete()
 		result = False
+		broken = []
+		if install or remove:
+			# only if commit does something. if it is just called
+			# to really commit changes made manually, dont dry_run
+			# as it reopens the cache
+			_, _, broken = self.mark(install, remove, dry_run=True)
 		try:
+			if broken:
+				raise SystemError()
+			self.mark(install, remove, dry_run=False)
 			kwargs = {'fetch_progress' : self.fetch_progress, 'install_progress' : self.dpkg_progress}
 			if self.always_noninteractive:
 				with self.noninteractive():
@@ -359,6 +440,7 @@ class PackageManager(object):
 		Has to be done when the apt database changed.
 		'''
 		self.cache.open()
+		self.always_install(just_mark=True)
 
 	def autoremove(self):
 		'''It seems that there is nothing like
@@ -370,9 +452,18 @@ class PackageManager(object):
 			pkg = self.cache[pkg_name]
 			if pkg.is_auto_removable:
 				self.progress_state.info(_('Deleting unneeded %s') % pkg.name)
-				pkg.mark_delete()
-		if self.cache.get_changes():
-			self.commit(msg_if_failed=_('Autoremove failed'))
+				# dont autofix. maybe some errors magically
+				# disappear if we just remove
+				# enough packages...
+				pkg.mark_delete(auto_fix=False)
+
+		failed_msg = _('Autoremove failed')
+		# but in the end we should test
+		if self.cache.broken_count:
+			self.progress_state.error(failed_msg)
+		else:
+			if self.cache.get_changes():
+				self.commit(msg_if_failed=failed_msg)
 
 	def install(self, *pkg_names):
 		'''Instantly installs packages when found.
@@ -382,11 +473,12 @@ class PackageManager(object):
 			pkg = self.get_package(pkg_name)
 			if pkg is not None:
 				pkgs.append(pkg)
-		self.commit(install=pkgs)
+		result = self.commit(install=pkgs)
 		for pkg in pkgs:
 			pkg = self.cache[pkg.name] # fresh from cache
 			if not pkg.is_installed:
 				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to install')))
+		return result
 
 	def uninstall(self, *pkg_names):
 		'''Instantly deletes packages when found'''
@@ -395,9 +487,10 @@ class PackageManager(object):
 			pkg = self.get_package(pkg_name)
 			if pkg is not None:
 				pkgs.append(pkg)
-		self.commit(install=self.always_install, remove=pkgs)
+		result = self.commit(install=self._always_install, remove=pkgs)
 		for pkg in pkgs:
 			pkg = self.cache[pkg.name] # fresh from cache
 			if pkg.is_installed:
 				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to uninstall')))
+		return result
 
