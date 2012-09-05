@@ -1,3 +1,9 @@
+univention-directory-notifier (7.0.4-1) unstable; urgency=low
+
+  * Drop LDAP dependencies.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 05 Sep 2012 07:19:15 +0200
+
 univention-directory-notifier (7.0.3-1) unstable; urgency=low
 
   * Write changes to /var/lib/univention-ldap/listener/listener instead
@@ -470,5 +476,3 @@ univention-ldap-notifier (0.01) unstable; urgency=low
   * Initial release.
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Sep 2003 13:03:44 +0200
-
-

@@ -4,7 +4,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper (>> 7),
  libssl-dev,
- libldap2-dev,
  libunivention-debug-dev,
  libunivention-config-dev,
  univention-config-dev,
@@ -13,6 +12,7 @@ Build-Depends: debhelper (>> 7),
 Package: univention-directory-notifier
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends},
+ univention-base-files,
  shell-univention-lib (>= 1.0.6),
  univention-runit,
  univention-ssl,

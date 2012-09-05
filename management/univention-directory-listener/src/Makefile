@@ -38,27 +38,27 @@ CFLAGS=-g -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
 LDADD=-g -luniventiondebug
 LISTENER_LDADD=$(LDADD) -luniventionpolicy -lldap -lpython2.6 $(DB_LDADD)
 LISTENER_OBJS=main.o notifier.o transfile.o handlers.o cache.o cache_entry.o cache_lowlevel.o change.o network.o filter.o signals.o base64.o select_server.o
-DUMP_LDADD=$(LDADD) -lldap -luniventionpolicy $(DB_LDADD)
+DUMP_LDADD=$(LDADD) -lldap -luniventionconfig $(DB_LDADD)
 DUMP_OBJS=dump.o dump_signals.o $(DB_OBJS)
 DEMO_LDADD=$(LDADD) -luniventionconfig
 DEMO_OBJS=demo.o network.o
-VERIFY_LDADD=$(LDADD) -lldap -luniventionpolicy $(DB_LDADD)
+VERIFY_LDADD=$(LDADD) -lldap -luniventionconfig $(DB_LDADD)
 VERIFY_OBJS=verify.o dump_signals.o $(DB_OBJS)
 
 .PHONY: all
 all: listener dump verify
 
 listener: $(LISTENER_OBJS)
-	$(CC) -o listener $(LISTENER_OBJS) $(LISTENER_LDADD)
+	$(CC) -o $@ $^ $(LISTENER_LDADD)
 
 dump: $(DUMP_OBJS)
-	$(CC) -o dump $(DUMP_OBJS) $(DUMP_LDADD)
+	$(CC) -o $@ $^ $(DUMP_LDADD)
 
 demo: $(DEMO_OBJS)
-	$(CC) -o demo $(DEMO_OBJS) $(DEMO_LDADD)
+	$(CC) -o $@ $^ $(DEMO_LDADD)
 
 verify: $(VERIFY_OBJS)
-	$(CC) -o verify $(VERIFY_OBJS) $(VERIFY_LDADD)
+	$(CC) -o $@ $^ $(VERIFY_LDADD)
 
 .PHONY: clean
 clean:

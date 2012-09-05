@@ -29,22 +29,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
-CC=gcc
-CFLAGS=-Wall -g -D_FILE_OFFSET_BITS=64
-LDADD=-luniventiondebug
-NOTIFIER_OBJS=index.o sem.o cache.o callback.o network.o notify.o univention-directory-notifier.o
-NOTIFIER_LDADD=$(LDADD) -lldap -lpthread
-DUMP_OBJS=index.o index-dump.o
-DUMP_LDADD=$(LDADD)
+CFLAGS := -Wall -g -D_FILE_OFFSET_BITS=64
+LDADD := -luniventiondebug
+NOTIFIER_LDADD = $(LDADD) -lpthread
+DUMP_LDADD = $(LDADD)
 
 
 all: univention-directory-notifier
 
-univention-directory-notifier: $(NOTIFIER_OBJS)
-	$(CC) $(CFLAGS) -o univention-directory-notifier $(NOTIFIER_OBJS) $(NOTIFIER_LDADD)
-	
-univention-directory-notifier-index-dump: $(DUMP_OBJS)
-	$(CC) $(CFLAGS) -o univention-directory-notifier-index-dump $(DUMP_OBJS) $(DUMP_LDADD)
+univention-directory-notifier: index.o sem.o cache.o callback.o network.o notify.o univention-directory-notifier.o
+	$(CC) $(CFLAGS) -o $@ $^ $(NOTIFIER_LDADD)
+
+univention-directory-notifier-index-dump: index.o index-dump.o
+	$(CC) $(CFLAGS) -o $@ $^ $(DUMP_LDADD)
 
 clean:
-	@rm -f *.o core univention-directory-notifier univention-directory-notifier-index-dump
+	$(RM) *.o core univention-directory-notifier univention-directory-notifier-index-dump

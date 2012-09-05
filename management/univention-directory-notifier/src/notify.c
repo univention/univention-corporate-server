@@ -616,8 +616,7 @@ void notify_replog_change_callback(int sig, siginfo_t *si, void *data)
 	char line[MAX_LINE];
 
 	int first = 1;
-	int randval=0;
-	
+
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "notify_replog_change_callback");
 
 	/* wir muessen uns merken, ob wir etwas gefunden haben in der replog Datei,

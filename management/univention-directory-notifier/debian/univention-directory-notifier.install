@@ -2,4 +2,3 @@ src/univention-directory-notifier usr/sbin/
 02univention-directory-notifier.inst usr/lib/univention-install/
 15univention-directory-notifier-post.inst usr/lib/univention-install/
 univention-replicate-one usr/sbin/
-

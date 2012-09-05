@@ -38,4 +38,3 @@ if [ -e /etc/init.d/univention-ldap-notifier ]; then
 fi
 
 exit 0
-

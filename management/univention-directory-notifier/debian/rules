@@ -31,19 +31,19 @@
 # <http://www.gnu.org/licenses/>.
 
 override_dh_auto_clean:
-	cd src; $(MAKE) clean; cd -
+	$(MAKE) -C src clean
 	dh_auto_clean
 
 override_dh_auto_install:
 	univention-install-config-registry
-	dh_auto_install 
+	dh_auto_install
 	touch debian/univention-directory-notifier/etc/runit/univention-directory-notifier/down
 
 override_dh_installinit:
 	dh_installinit --no-start -r
 
 override_dh_auto_build:
-	cd src; $(MAKE); cd -
+	$(MAKE) -C src
 	dh_auto_build
 
 override_dh_auto_test:
@@ -52,4 +52,3 @@ override_dh_auto_test:
 
 %:
 	dh $@
-
