@@ -26,222 +26,228 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules.quota");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojox/string/sprintf",
+	"umc/dialog",
+	"umc/tools",
+	"umc/store",
+	"umc/widgets/Grid",
+	"umc/widgets/TabbedModule",
+	"umc/widgets/Page",
+	"umc/modules/_quota/PageContainer",
+	"umc/widgets/ExpandingTitlePane",
+	"umc/i18n!umc/modules/quota"
+], function(declare, lang, array, sprintf, dialog, tools, store, Grid, TabbedModule, Page, PageContainer, ExpandingTitlePane, _) {
 
-dojo.require("dojox.string.sprintf");
-dojo.require("umc.i18n");
-dojo.require("umc.store");
-dojo.require("umc.widgets.Grid");
-dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.TabbedModule");
+	return declare("umc.modules.quota", [ TabbedModule ], {
 
-dojo.require("umc.modules._quota.PageContainer");
+		idProperty: 'partitionDevice',
+		moduleStore: null,
+		_overviewPage: null,
+		_pageContainer: null,
 
-dojo.declare("umc.modules.quota", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
+		buildRendering: function() {
+			this.inherited(arguments);
+			this.renderOverviewPage();
+		},
 
-	idProperty: 'partitionDevice',
-	moduleStore: null,
-	_overviewPage: null,
-	_pageContainer: null,
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.moduleStore = store.getModuleStore(this.idProperty, this.moduleID + '/partitions');
+		},
 
-	buildRendering: function() {
-		this.inherited(arguments);
-		this.renderOverviewPage();
-	},
+		renderOverviewPage: function() {
+			this._overviewPage = new Page({
+				title: _('Partitions'),
+				moduleStore: this.moduleStore,
+				headerText: _('List partitions'),
+				helpText: _('Set, unset and modify filesystem quota')
+			});
+			this.addChild(this._overviewPage);
 
-	postMixInProperties: function() {
-		this.inherited(arguments);
-		this.moduleStore = umc.store.getModuleStore(this.idProperty, this.moduleID + '/partitions');
-	},
+			var titlePane = new ExpandingTitlePane({
+				title: _('Partition overview')
+			});
+			this._overviewPage.addChild(titlePane);
 
-	renderOverviewPage: function() {
-		this._overviewPage = new umc.widgets.Page({
-			title: this._('Partitions'),
-			moduleStore: this.moduleStore,
-			headerText: this._('List partitions'),
-			helpText: this._('Set, unset and modify filesystem quota')
-		});
-		this.addChild(this._overviewPage);
+			var actions = [{
+				name: 'activate',
+				label: lang.hitch(this, function(item) {
+					if (item === undefined) {
+						return _('(De)activate');
+					} else if (item.inUse === true) {
+						return _('Deactivate');
+					} else {
+						return _('Activate');
+					}
+				}),
+				isStandardAction: true,
+				canExecute: function(item) {
+					if (item.mountPoint == '/') {
+						return false;
+					} else {
+						return true;
+					}
+				},
+				callback: lang.hitch(this, function(partitionDevice) {
+					var doActivate = true;
+					var item = this._grid.getItem(partitionDevice);
+					if (item.inUse === true) {
+						doActivate = false;
+					}
+					this.activateQuota(partitionDevice, doActivate);
+				})
+			}, {
+				name: 'edit',
+				label: _('Configure'),
+				iconClass: 'umcIconEdit',
+				isStandardAction: true,
+				isMultiAction: false,
+				canExecute: function(item) {
+					if (item.inUse === true && item.mountPoint != '/') {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				callback: lang.hitch(this, function(partitionDevice) {
+					this.createPageContainer(partitionDevice[0]);
+				})
+			}, {
+				name: 'refresh',
+				label: _('Refresh'),
+				isContextAction: false,
+				isStandardAction: true,
+				isMultiAction: false,
+				callback: lang.hitch(this, function() {
+					this._grid.filter({'dummy': 'dummy'});
+				})
+			}];
 
-		var titlePane = new umc.widgets.ExpandingTitlePane({
-			title: this._('Partition overview')
-		});
-		this._overviewPage.addChild(titlePane);
-
-		var actions = [{
-			name: 'activate',
-			label: dojo.hitch(this, function(item) {
-				if (item === undefined) {
-					return this._('(De)activate');
-				} else if (item.inUse === true) {
-					return this._('Deactivate');
-				} else {
-					return this._('Activate');
+			var columns = [{
+				name: 'partitionDevice',
+				label: _('Partition'),
+				width: 'auto'
+			}, {
+				name: 'mountPoint',
+				label: _('Mount point'),
+				width: 'auto'
+			}, {
+				name: 'inUse',
+				label: _('Quota'),
+				width: '85px',
+				formatter: lang.hitch(this, function(value) {
+					if (value === null) {
+						return _('Unknown');
+					} else if (value === true) {
+						return _('Activated');
+					} else {
+						return _('Deactivated');
+					}
+				})
+			}, {
+				name: 'partitionSize',
+				label: _('Size (GB)'),
+				width: 'adjust',
+				formatter: function(value) {
+					if (value === null) {
+						return '-';
+					} else {
+						return sprintf('%.1f', value);
+					}
 				}
-			}),
-			isStandardAction: true,
-			canExecute: function(item) {
-				if (item.mountPoint == '/') {
-					return false;
-				} else {
-					return true;
+			}, {
+				name: 'freeSpace',
+				label: _('Free (GB)'),
+				width: 'adjust',
+				formatter: function(value) {
+					if (value === null) {
+						return '-';
+					} else {
+						return sprintf('%.1f', value);
+					}
 				}
-			},
-			callback: dojo.hitch(this, function(partitionDevice) {
-				var doActivate = true;
-				var item = this._grid.getItem(partitionDevice);
-				if (item.inUse === true) {
-					doActivate = false;
-				}
-				this.activateQuota(partitionDevice, doActivate);
-			})
-		}, {
-			name: 'edit',
-			label: this._('Configure'),
-			iconClass: 'umcIconEdit',
-			isStandardAction: true,
-			isMultiAction: false,
-			canExecute: function(item) {
-				if (item.inUse === true && item.mountPoint != '/') {
-					return true;
-				} else {
-					return false;
-				}
-			},
-			callback: dojo.hitch(this, function(partitionDevice) {
-				this.createPageContainer(partitionDevice[0]);
-			})
-		}, {
-			name: 'refresh',
-			label: this._('Refresh'),
-			isContextAction: false,
-			isStandardAction: true,
-			isMultiAction: false,
-			callback: dojo.hitch(this, function() {
-				this._grid.filter({'dummy': 'dummy'});
-			})
-		}];
+			}];
 
-		var columns = [{
-			name: 'partitionDevice',
-			label: this._('Partition'),
-			width: 'auto'
-		}, {
-			name: 'mountPoint',
-			label: this._('Mount point'),
-			width: 'auto'
-		}, {
-			name: 'inUse',
-			label: this._('Quota'),
-			width: '85px',
-			formatter: dojo.hitch(this, function(value) {
-				if (value === null) {
-					return this._('Unknown');
-				} else if (value === true) {
-					return this._('Activated');
-				} else {
-					return this._('Deactivated');
+			this._grid = new Grid({
+				region: 'center',
+				actions: actions,
+				columns: columns,
+				moduleStore: this.moduleStore,
+				query: {
+					dummy: 'dummy'
 				}
-			})
-		}, {
-			name: 'partitionSize',
-			label: this._('Size (GB)'),
-			width: 'adjust',
-			formatter: function(value) {
-				if (value === null) {
-					return '-';
-				} else {
-					return dojox.string.sprintf('%.1f', value);
-				}
+			});
+			titlePane.addChild(this._grid);
+			this._grid.on('FilterDone', function() {
+				var gridItems = this._grid.getAllItems(); // TODO rename?
+				array.forEach(gridItems, lang.hitch(this, function(item) {
+					if (item.inUse === null) {
+						this._grid.setDisabledItem(item.partitionDevice, true);
+					}
+				}));
+			});
+
+			this._overviewPage.startup();
+		},
+
+		activateQuota: function(partitionDevice, doActivate) {
+			var dialogMessage = '';
+			if (doActivate === true) {
+				dialogMessage = _('Please confirm quota support activation on device: %s', partitionDevice);
+			} else {
+				dialogMessage = _('Please confirm quota support deactivation on device: %s', partitionDevice);
 			}
-		}, {
-			name: 'freeSpace',
-			label: this._('Free (GB)'),
-			width: 'adjust',
-			formatter: function(value) {
-				if (value === null) {
-					return '-';
-				} else {
-					return dojox.string.sprintf('%.1f', value);
-				}
+			dialog.confirm(dialogMessage, [{
+				label: _('OK'),
+				callback: lang.hitch(this, function() {
+					tools.umcpCommand('quota/partitions/' + (doActivate ? 'activate' : 'deactivate'),
+									  	  {"partitionDevice" : partitionDevice.shift()}).then(
+										  	  lang.hitch(this, function(data) {
+											  	  if (data.result.success === true) {
+												  	  this._grid.filter({'dummy': 'dummy'});
+											  	  } else {
+												  	  this._showActivateQuotaDialog(data.result, doActivate);
+											  	  }
+										  	  })
+									  	  );
+				})
+			}, {
+				label: _('Cancel')
+			}]);
+		},
+
+		_showActivateQuotaDialog: function(result, doActivate) {
+			var message = [];
+			if (doActivate === true) {
+				message = _('Failed to activate quota support: ');
+			} else {
+				message = _('Failed to deactivate quota support: ');
 			}
-		}];
-
-		this._grid = new umc.widgets.Grid({
-			region: 'center',
-			actions: actions,
-			columns: columns,
-			moduleStore: this.moduleStore,
-			query: {
-				dummy: 'dummy'
-			}
-		});
-		titlePane.addChild(this._grid);
-		this.connect(this._grid, 'onFilterDone', function() {
-			var gridItems = this._grid.getAllItems(); // TODO rename?
-			dojo.forEach(gridItems, dojo.hitch(this, function(item) {
-				if (item.inUse === null) {
-					this._grid.setDisabledItem(item.partitionDevice, true);
+			array.forEach(result.objects, function(item) {
+				if (item.success === false) {
+					message = message + item.message;
 				}
-			}));
-		});
+			});
+			dialog.confirm(message, [{
+				label: _('OK')
+			}]);
+		},
 
-		this._overviewPage.startup();
-	},
-
-	activateQuota: function(partitionDevice, doActivate) {
-		var dialogMessage = '';
-		if (doActivate === true) {
-			dialogMessage = this._('Please confirm quota support activation on device: %s', partitionDevice);
-		} else {
-			dialogMessage = this._('Please confirm quota support deactivation on device: %s', partitionDevice);
+		createPageContainer: function(partitionDevice) {
+			this._pageContainer = new PageContainer({
+				title: partitionDevice,
+				closable: true,
+				moduleID: this.moduleID,
+				partitionDevice: partitionDevice
+			});
+			this.addChild(this._pageContainer);
+			this.selectChild(this._pageContainer);
 		}
-		umc.dialog.confirm(dialogMessage, [{
-			label: this._('OK'),
-			callback: dojo.hitch(this, function() {
-				umc.tools.umcpCommand('quota/partitions/' + (doActivate ? 'activate' : 'deactivate'),
-									  {"partitionDevice" : partitionDevice.shift()}).then(
-										  dojo.hitch(this, function(data) {
-											  if (data.result.success === true) {
-												  this._grid.filter({'dummy': 'dummy'});
-											  } else {
-												  this._showActivateQuotaDialog(data.result, doActivate);
-											  }
-										  })
-									  );
-			})
-		}, {
-			label: this._('Cancel')
-		}]);
-	},
-
-	_showActivateQuotaDialog: function(result, doActivate) {
-		var message = [];
-		if (doActivate === true) {
-			message = this._('Failed to activate quota support: ');
-		} else {
-			message = this._('Failed to deactivate quota support: ');
-		}
-		dojo.forEach(result.objects, function(item) {
-			if (item.success === false) {
-				message = message + item.message;
-			}
-		});
-		umc.dialog.confirm(message, [{
-			label: this._('OK')
-		}]);
-	},
-
-	createPageContainer: function(partitionDevice) {
-		this._pageContainer = new umc.modules._quota.PageContainer({
-			title: partitionDevice,
-			closable: true,
-			moduleID: this.moduleID,
-			partitionDevice: partitionDevice
-		});
-		this.addChild(this._pageContainer);
-		this.selectChild(this._pageContainer);
-	}
+	});
 });

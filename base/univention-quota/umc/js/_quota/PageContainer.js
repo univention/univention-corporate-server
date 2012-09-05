@@ -26,67 +26,68 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules._quota.PageContainer");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dijit/layout/StackContainer",
+	"umc/tools",
+	"umc/store",
+	"umc/modules/_quota/PartitionPage",
+	"umc/modules/_quota/DetailPage",
+	"umc/i18n!umc/modules/quota"
+], function(declare, lang, StackContainer, tools, store, PartitionPage, DetailPage, _) {
+	return declare("umc.modules._quota.PageContainer", [ StackContainer ], {
 
-dojo.require("umc.i18n");
-dojo.require("umc.store");
+		moduleID: null,
+		partitionDevice: null,
+		_partitionPage: null,
+		_detailPage: null,
 
-dojo.require("umc.modules._quota.PartitionPage");
-dojo.require("umc.modules._quota.DetailPage");
+		buildRendering: function(partitionDevice) {
+			this.inherited(arguments);
+			this.renderPartitionPage();
+			this.renderDetailPage();
+		},
 
-dojo.declare("umc.modules._quota.PageContainer", [ dijit.layout.StackContainer, umc.i18n.Mixin ], {
+		postCreate: function() {
+			this.inherited(arguments);
+			this.selectChild(this._pageContainer);
+		},
 
-	moduleID: null,
-	partitionDevice: null,
-	_partitionPage: null,
-	_detailPage: null,
+		renderPartitionPage: function() {
+			this._partitionPage = new PartitionPage({
+				partitionDevice: this.partitionDevice,
+				moduleStore: store.getModuleStore('id', this.moduleID + '/users'),
+				headerText: _('Partition: %s', this.partitionDevice),
+				helpText: _('Set, unset and modify filesystem quota')
+			});
+			this.addChild(this._partitionPage);
+			this._partitionPage.on('ShowDetailPage', function(userQuota) {
+				this._detailPage.init(userQuota);
+				this.selectChild(this._detailPage);
+			});
+		},
 
-	i18nClass: 'umc.modules.quota',
-
-	buildRendering: function(partitionDevice) {
-		this.inherited(arguments);
-		this.renderPartitionPage();
-		this.renderDetailPage();
-	},
-
-	postCreate: function() {
-		this.inherited(arguments);
-		this.selectChild(this._pageContainer);
-	},
-
-	renderPartitionPage: function() {
-		this._partitionPage = new umc.modules._quota.PartitionPage({
-			partitionDevice: this.partitionDevice,
-			moduleStore: umc.store.getModuleStore('id', this.moduleID + '/users'),
-			headerText: this._('Partition: %s', this.partitionDevice),
-			helpText: this._('Set, unset and modify filesystem quota')
-		});
-		this.addChild(this._partitionPage);
-		this.connect(this._partitionPage, 'onShowDetailPage', function(userQuota) {
-			this._detailPage.init(userQuota);
-			this.selectChild(this._detailPage);
-		});
-	},
-
-	renderDetailPage: function() {
-		this._detailPage = new umc.modules._quota.DetailPage({
-			partitionDevice: this.partitionDevice,
-			headerText: this._('Add quota setting for a user on partition'),
-			helpText: this._('Add quota setting for a user on partition')
-		});
-		this.addChild(this._detailPage);
-		this.connect(this._detailPage, 'onClosePage', function() {
-			this.selectChild(this._partitionPage);
-		});
-		this.connect(this._detailPage, 'onSetQuota', function(values) {
-			umc.tools.umcpCommand('quota/users/set', values).then(dojo.hitch(this, function(data) {
-				if (data.result.success === true) {
-					this.selectChild(this._partitionPage);
-					this._partitionPage.filter();
-				}
-			}));
-		});
-	}
+		renderDetailPage: function() {
+			this._detailPage = new DetailPage({
+				partitionDevice: this.partitionDevice,
+				headerText: _('Add quota setting for a user on partition'),
+				helpText: _('Add quota setting for a user on partition')
+			});
+			this.addChild(this._detailPage);
+			this._detailPage.on('ClosePage', function() {
+				this.selectChild(this._partitionPage);
+			});
+			this._detailPage.on('SetQuota', function(values) {
+				tools.umcpCommand('quota/users/set', values).then(lang.hitch(this, function(data) {
+					if (data.result.success === true) {
+						this.selectChild(this._partitionPage);
+						this._partitionPage.filter();
+					}
+				}));
+			});
+		}
+	});
 });

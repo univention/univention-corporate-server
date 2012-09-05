@@ -1,3 +1,9 @@
+univention-quota (7.0.0-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Florian Best <best@univention.de>  Wed, 05 Sep 2012 10:30:13 +0200
+
 univention-quota (6.0.18-1) unstable; urgency=low
 
   * UMC: add unicode support
