@@ -57,7 +57,12 @@ def _get_members(lo, g, recursion_list, check_member = False):
 			mname = string.join( string.split(mrdn[0],'=')[1:], '=')
 			result.append(mname)
 		elif m.startswith('cn='):
-			members = lo.search(base=m, scope=ldap.SCOPE_BASE, filter='objectClass=*', attr=['uniqueMember', 'gidNumber', 'objectClass', 'cn'])
+			try:
+				members = lo.search(base=m, scope=ldap.SCOPE_BASE, filter='objectClass=*', attr=['uniqueMember', 'gidNumber', 'objectClass', 'cn'])
+			except ldap.NO_SUCH_OBJECT
+				# Member not found
+				continue
+
 			if len(members) == 1:
 				member = members[0]
 			elif len(members) > 1:
