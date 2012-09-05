@@ -1,3 +1,9 @@
+univention-printserver (6.0.5-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Florian Best <best@univention.de>  Wed, 05 Sep 2012 13:51:28 +0200
+
 univention-printserver (6.0.4-2) unstable; urgency=low
 
   * patch QuotaDialog.py too (Bug #28291)                                        

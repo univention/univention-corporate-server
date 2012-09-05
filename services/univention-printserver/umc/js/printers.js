@@ -26,132 +26,127 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc window */
+/*global define*/
 
-dojo.provide("umc.modules.printers");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/aspect",
+	"umc/tools",
+	"umc/widgets/Module",
+	"umc/modules/printers/OverviewPage",
+	"umc/modules/printers/DetailPage",
+	"umc/modules/printers/QuotaPage",
+	"umc/i18n!umc/modules/printers"
+], function(declare, lang, aspect, tools, Module, OverviewPage, DetailPage, QuotaPage, _) {
 
-dojo.require("umc.i18n");
-dojo.require("umc.dialog");
-dojo.require("umc.widgets.ConfirmDialog");
-dojo.require("umc.tools");
+	return declare("umc.modules.printers",  [ Module ], {
 
-// ----------- sub pages ---------------
-dojo.require("umc.modules._printers.OverviewPage");
-dojo.require("umc.modules._printers.DetailPage");
-dojo.require("umc.modules._printers.QuotaPage");
+		_quota_from_page:	'',			// remembers the page from which the 'editQuota' was called
 
-dojo.declare("umc.modules.printers", [
-	umc.widgets.Module,
-	umc.i18n.Mixin
-	],
-{
+		buildRendering: function() {
 
-	i18nClass: 			'umc.modules.printers',
+			this.inherited(arguments);
 
-	_quota_from_page:	'',			// remembers the page from which the 'editQuota' was called
+			this._pages = {
+				'overview':		new OverviewPage(),
+				'detail':		new DetailPage(),
+				'quota':		new QuotaPage()
+			};
 
-	buildRendering: function() {
+			// forIn behaves like forEach just for dicts :) ... important it checks for hasOwnProperty!
+			tools.forIn(this._pages, function(iname, ipage) {
+				this.addChild(ipage);
+			}, this);
 
-		this.inherited(arguments);
+			// -------------- Events for page switching ----------------
 
-		this._pages = {
-			'overview':		new umc.modules._printers.OverviewPage(),
-			'detail':		new umc.modules._printers.DetailPage(),
-			'quota':		new umc.modules._printers.QuotaPage()
-		};
+			this.own(aspect.after(this._pages.overview,'openDetail',lang.hitch(this,function(args) {
+				this._switch_page('detail',args);
+			})));
 
-		// forIn behaves like forEach just for dicts :) ... important it checks for hasOwnProperty!
-		umc.tools.forIn(this._pages, function(iname, ipage) {
-			this.addChild(ipage);
-		}, this);
+			this.own(aspect.after(this._pages.overview,'editQuota',lang.hitch(this, function(args) {
+				this._quota_from_page = 'overview';
+				this._switch_page('quota',args);
+			})));
 
-		// -------------- Events for page switching ----------------
+			this.own(aspect.after(this._pages.detail,'editQuota',lang.hitch(this, function(args) {
+				this._quota_from_page = 'detail';
+				this._switch_page('quota',args);
+			})));
 
-		dojo.connect(this._pages['overview'],'openDetail',dojo.hitch(this,function(args) {
-			this._switch_page('detail',args);
-		}));
+			this.own(aspect.after(this._pages.detail,'closeDetail',lang.hitch(this, function(args) {
+				this._switch_page('overview',args);
+			})));
 
-		dojo.connect(this._pages['overview'],'editQuota',dojo.hitch(this, function(args) {
-			this._quota_from_page = 'overview';
-			this._switch_page('quota',args);
-		}));
+			this.own(aspect.after(this._pages.quota,'closeQuota',lang.hitch(this, function(args) {
+				this._switch_page(this._quota_from_page,args);
+			})));
 
-		dojo.connect(this._pages['detail'],'editQuota',dojo.hitch(this, function(args) {
-			this._quota_from_page = 'detail';
-			this._switch_page('quota',args);
-		}));
+			// ------------- work events: printer management ---------------
 
-		dojo.connect(this._pages['detail'],'closeDetail',dojo.hitch(this, function(args) {
-			this._switch_page('overview',args);
-		}));
+			this.own(aspect.after(this._pages.overview,'managePrinter',lang.hitch(this, function(printer,func,callback) {
+				this._manage_printer(printer,func,callback);
+			})));
+			this.own(aspect.after(this._pages.detail,'managePrinter',lang.hitch(this, function(printer,func,callback) {
+				this._manage_printer(printer,func,callback);
+			})));
+ 		},
 
-		dojo.connect(this._pages['quota'],'closeQuota',dojo.hitch(this, function(args) {
-			this._switch_page(this._quota_from_page,args);
-		}));
+ 		startup: function() {
 
-		// ------------- work events: printer management ---------------
+ 			this.inherited(arguments);
 
-		dojo.connect(this._pages['overview'],'managePrinter',dojo.hitch(this, function(printer,func,callback) {
-			this._manage_printer(printer,func,callback);
-		}));
-		dojo.connect(this._pages['detail'],'managePrinter',dojo.hitch(this, function(printer,func,callback) {
-			this._manage_printer(printer,func,callback);
-		}));
- 	},
+ 			this._switch_page('overview');
+ 		},
 
- 	startup: function() {
+ 		_switch_page: function(name, args) {
 
- 		this.inherited(arguments);
+ 			if ((args) && (typeof (this._pages[name].setArgs) == 'function'))
+			{
+				this._pages[name].setArgs(args);
+			}
 
- 		this._switch_page('overview');
- 	},
+ 			this.selectChild(this._pages[name]);
 
- 	_switch_page: function(name, args) {
+ 		},
 
- 		if ((args) && (typeof (this._pages[name].setArgs) == 'function'))
-		{
-			this._pages[name].setArgs(args);
-		}
+ 		// Most management functions can be called from overview or detail view, so we write
+ 		// the functions here.
+ 		_manage_printer: function(printer,func,callback) {
 
- 		this.selectChild(this._pages[name]);
-
- 	},
-
- 	// Most management functions can be called from overview or detail view, so we write
- 	// the functions here.
- 	_manage_printer: function(printer,func,callback) {
-
- 		var cmd = '';
- 		var args = {};
- 		switch(func)
- 		{
- 			case 'activate':
- 				cmd = 'printers/enable';
- 				args = { printer: printer, on: true };
- 				break;
- 			case 'deactivate':
- 				cmd = 'printers/enable';
- 				args = { printer: printer, on: false };
- 				break;
- 		}
- 		if (cmd)
- 		{
- 			umc.tools.umcpCommand(cmd,args).then(
- 				dojo.hitch(this, function(data) {
- 					if (data.result.length)
- 					{
+ 			var cmd = '';
+ 			var args = {};
+ 			switch(func)
+ 			{
+ 				case 'activate':
+ 					cmd = 'printers/enable';
+ 					args = { printer: printer, on: true };
+ 					break;
+ 				case 'deactivate':
+ 					cmd = 'printers/enable';
+ 					args = { printer: printer, on: false };
+ 					break;
+ 			}
+ 			if (cmd)
+ 			{
+ 				tools.umcpCommand(cmd,args).then(
+ 					lang.hitch(this, function(data) {
+ 						if (data.result.length)
+ 						{
+ 							callback(false,data.result);
+ 						}
+ 						else
+ 						{
+ 							callback(true);
+ 						}
+ 					}),
+ 					lang.hitch(this, function(data) {
  						callback(false,data.result);
- 					}
- 					else
- 					{
- 						callback(true);
- 					}
- 				}),
- 				dojo.hitch(this, function(data) {
- 					callback(false,data.result);
- 				})
- 			);
+ 					})
+ 				);
+ 			}
  		}
- 	}
 
+	});
 });
