@@ -1,6 +1,12 @@
+univention-ldap (9.0.3-2) unstable; urgency=low
+
+  * Write Computers with a upper 'C' (Bug #20334)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 08:37:05 +0200
+
 univention-ldap (9.0.3-1) unstable; urgency=low
 
-  * Added group DC Slave Hosts to the group computers (Bug #20334)
+  * Added group DC Slave Hosts to the group Computers (Bug #20334)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 08:23:23 +0200
 

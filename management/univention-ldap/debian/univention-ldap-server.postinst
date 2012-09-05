@@ -235,7 +235,7 @@ fi
 # With UCS 3.1 DC Slave Hosts should be a member of computers
 if [ "$1" = "configure" -a "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt-nl 9.0.3-1; then
 	univention-directory-manager groups/group modify \
-		--dn "cn=computers,cn=groups,$ldap_base" \
+		--dn "cn=Computers,cn=groups,$ldap_base" \
    		--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base"
 fi
 
