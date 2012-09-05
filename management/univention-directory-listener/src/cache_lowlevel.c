@@ -223,15 +223,24 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			}
 			if (!found) {
 				entry->attributes = realloc(entry->attributes, (entry->attribute_count+2)*sizeof(CacheEntryAttribute*));
-				if (entry->attributes == NULL)
+				if (entry->attributes == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
+					abort(); // FIXME
+				}
 				entry->attributes[entry->attribute_count] = malloc(sizeof(CacheEntryAttribute));
-				if (entry->attributes[entry->attribute_count] == NULL)
+				if (entry->attributes[entry->attribute_count] == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "malloc failed");
+					abort(); // FIXME
+				}
 				entry->attributes[entry->attribute_count+1] = NULL;
 			
 				attribute=entry->attributes+entry->attribute_count;
 				(*attribute)->name = strndup((char*)key_data, key_size);
+				if ((*attribute)->name == NULL) {
+					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
+					abort(); // FIXME
+				}
+				entry->attributes[entry->attribute_count+1] = NULL;
 				(*attribute)->values = NULL;
 				(*attribute)->length = NULL;
 				(*attribute)->value_count = 0;
@@ -240,12 +249,21 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", (*attribute)->name, *attribute);
 			}
 			(*attribute)->values = realloc((*attribute)->values, ((*attribute)->value_count+2)*sizeof(char*));
-			if ((*attribute)->values == NULL)
+			if ((*attribute)->values == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
+				abort(); // FIXME
+			}
 			(*attribute)->length = realloc((*attribute)->length, ((*attribute)->value_count+2)*sizeof(int));
-			if ((*attribute)->length == NULL)
+			if ((*attribute)->length == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
+				abort(); // FIXME
+			}
+			// TODO: stdndup() copies until the first \0, which would be incorrect if data is binary!
 			(*attribute)->values[(*attribute)->value_count] = strndup((char*)data_data, data_size);
+			if ((*attribute)->values[(*attribute)->value_count] == NULL) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
+				abort(); // FIXME
+			}
 			(*attribute)->length[(*attribute)->value_count] = data_size;
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "value is \"%s\"", (*attribute)->values[(*attribute)->value_count]);
 			(*attribute)->values[(*attribute)->value_count+1] = NULL;
@@ -253,6 +271,10 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 		} else if (type == 2) {
 			entry->modules = realloc(entry->modules, (entry->module_count+2)*sizeof(char*));
 			entry->modules[entry->module_count] = strndup((char*)key_data, key_size);
+			if (entry->modules[entry->module_count] == NULL) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
+				abort(); // FIXME
+			}
 			entry->modules[entry->module_count+1] = NULL;
 			entry->module_count++;
 		} else {

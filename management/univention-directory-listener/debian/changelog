@@ -6,6 +6,7 @@ univention-directory-listener (7.0.1-1) unstable; urgency=low
   * Fix atomic locking (Bug #27330)
   * Fix cache_entry_ldap_filter_match() (Bug #27329)
   * Fix error reporting (Bug #27376)
+  * Fix out-of-memory conditions (Bug #27330)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 05 Sep 2012 07:10:28 +0200
 
