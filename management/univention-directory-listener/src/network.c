@@ -333,6 +333,7 @@ int notifier_client_new(NotifierClient *client,
 		} else if (!strcmp(ucrvalue, "ipv6")) {
 		    hints.ai_family = AF_INET6;
 		}
+		free(ucrvalue);
 	}
 
 	address4.sin_family = AF_INET;

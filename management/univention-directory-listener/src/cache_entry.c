@@ -221,29 +221,25 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		cache_entry->attributes[cache_entry->attribute_count]->value_count=0;
 		cache_entry->attributes[cache_entry->attribute_count+1]=NULL;
 		
+		memberUidMode = 0;
 		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid", strlen("memberUid")) ) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/memberuid/skip");
 
-			if ( !strncmp(ucrval, "yes", strlen("yes")) || !strncmp(ucrval, "true", strlen("true")) ) {
-				memberUidMode=1;
-			} else {
-				memberUidMode=0;
+			if (ucrval) {
+				memberUidMode = !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
+				free(ucrval);
 			}
-		} else {
-			memberUidMode=0;
 		}
+		uniqueMemberMode = 0;
 		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember", strlen("uniqueMember")) ) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/uniquemember/skip");
 
-			if ( !strncmp(ucrval, "yes", strlen("yes")) || !strncmp(ucrval, "true", strlen("true")) ) {
-				uniqueMemberMode=1;
-			} else {
-				uniqueMemberMode=0;
+			if (ucrval) {
+				uniqueMemberMode = !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
+				free(ucrval);
 			}
-		} else {
-			uniqueMemberMode=0;
 		}
 		if ((val=ldap_get_values_len(ld, ldap_entry, attr)) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ldap_get_values failed");
@@ -257,7 +253,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				rv = 1;
 				goto result;
 			}
-			if ( memberUidMode == 1 ) {
+			if (memberUidMode) {
 				/* avoid duplicate memberUid entries https://forge.univention.org/bugzilla/show_bug.cgi?id=17998 */
 				duplicateMemberUid = 0;
 				for (i=0; i<cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
@@ -274,7 +270,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 					continue;
 				}
 			}
-			if ( uniqueMemberMode == 1 ) {
+			if (uniqueMemberMode) {
 				/* avoid duplicate uniqueMember entries https://forge.univention.org/bugzilla/show_bug.cgi?id=18692 */
 				duplicateUniqueMember = 0;
 				for (i=0; i<cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {

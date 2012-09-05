@@ -173,6 +173,7 @@ int select_server(univention_ldap_parameters_t *lp)
 				if (port > 0)
 					lp->port = port;
 			}
+			free(ldap_backups);
 		} else {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 					 "No Backup found, server is ldap/master");
