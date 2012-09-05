@@ -103,7 +103,10 @@ static int daemonize(void)
 
 	fd = open(pidfile, O_WRONLY|O_CREAT|O_EXCL);
 	if (fd < 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "pidfile %s exists, aborting...", pidfile);
+		if (errno == EEXIST)
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "pidfile %s exists, aborting...%d %s", pidfile, errno, strerror(errno));
+		else
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Can not create pidfile %s: %s, aborting...", pidfile, strerror(errno));
 		return 1;
 	}
 
