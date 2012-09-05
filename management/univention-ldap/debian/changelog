@@ -1,3 +1,9 @@
+univention-ldap (9.0.3-1) unstable; urgency=low
+
+  * Added group DC Slave Hosts to the group computers (Bug #20334)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 08:23:23 +0200
+
 univention-ldap (9.0.2-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)

@@ -751,6 +751,7 @@ sambaSID: @@%%@@sid@@%%@@-11015
 sambaGroupType: 2
 gidNumber: 5007
 uniqueMember: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
+uniqueMember: cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@
 
 dn: cn=backup,@%@ldap/base@%@
 objectClass: top
