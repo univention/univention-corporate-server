@@ -75,12 +75,10 @@ void notify_id_get_next(NotifyId_t *next_notify);
 
 
 
-static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
+static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 {
 	char buf[MAX_PATH_LEN];
 	FILE *file;
-	int count=0;
-	int rc;
 
 	if ( !(strcmp(name, FILE_NAME_ORF)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_ORF);
@@ -103,14 +101,21 @@ static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
 		return NULL;
 	}
 
-	while ( (rc=lockf( fileno(*l_file), F_TLOCK, 0 ) ) != 0 ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "ERROR Could not get lock for file [%s]; count = %d\n", buf,count);
-		count++;
-		if (count > notifier_lock_count ) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ERROR Could not get lock for file [%s]; exit\n", buf);
-			exit(0);
+	if (*type != 'r') {
+		int count = 0;
+		int fd = fileno(*l_file);
+		for (;;) {
+			int rc = lockf(fd, F_TLOCK, 0);
+			if (!rc)
+				break;
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d\n", buf, count);
+			count++;
+			if (count > notifier_lock_count) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit\n", buf);
+				exit(0);
+			}
+			usleep(notifier_lock_time);
 		}
-		usleep(notifier_lock_time);
 	}
 
 	if ( (file = fopen( name, type ) ) == NULL ) {

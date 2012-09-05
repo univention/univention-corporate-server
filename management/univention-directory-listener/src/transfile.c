@@ -31,6 +31,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
 #include <sys/types.h>
@@ -43,13 +44,12 @@
 
 char *transaction_file = "/var/lib/univention-ldap/listener/listener";
 static const char *failed_ldif_file = "/var/lib/univention-directory-replication/failed.ldif";
+extern long long listener_lock_count;
 
-static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
+static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 {
 	char buf[PATH_MAX];
 	FILE *file;
-	int count=0;
-	int rc;
 
 	snprintf( buf, sizeof(buf), "%s.lock", name );
 
@@ -58,10 +58,21 @@ static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
 		return NULL;
 	}
 
-	while ( (rc=lockf( fileno(*l_file), F_TLOCK, 0 ) ) != 0 ) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Could not get lock for file [%s]; count = %d\n", buf,count);
-		count++;
-		usleep(1000);
+	if (*type != 'r') {
+		int count = 0;
+		int fd = fileno(*l_file);
+		for (;;) {
+			int rc = lockf(fd, F_TLOCK, 0);
+			if (!rc)
+				break;
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d\n", buf, count);
+			count++;
+			if (count > listener_lock_count) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit\n", buf);
+				exit(0);
+			}
+			usleep(1000);
+		}
 	}
 
 	if ( (file = fopen( name, type ) ) == NULL ) {

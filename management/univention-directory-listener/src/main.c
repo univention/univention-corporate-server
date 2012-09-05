@@ -68,6 +68,7 @@ int backup_notifier=0;
 
 char **module_dirs = NULL;
 int module_dir_count = 0;
+long long listener_lock_count = 100;
 char pidfile[PATH_MAX];
 extern int maxnbackups;
 
