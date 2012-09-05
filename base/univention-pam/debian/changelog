@@ -1,5 +1,11 @@
 univention-pam (6.0.6-2) unstable; urgency=low
 
+  * Fixed python syntax error (Bug #28361)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 12:31:59 +0200
+
+univention-pam (6.0.6-1) unstable; urgency=low
+
   * Catch exception if the member (group or host) does not exist
     (Bug #28361)
 
