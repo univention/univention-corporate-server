@@ -80,7 +80,7 @@
 #include "signals.h"
 
 #define MASTER_KEY "__master__"
-#define MASTER_KEY_SIZE 11 /* strlen(MASTER_KEY+"\0") */
+#define MASTER_KEY_SIZE (sizeof MASTER_KEY)
 
 extern int INIT_ONLY;
 
@@ -107,11 +107,11 @@ static char* _convert_to_lower(char *dn)
 
 	dn_length = strlen(dn);
 	lower_dn = malloc((dn_length+1) * sizeof(char));
-	memset(lower_dn, 0, dn_length+1);
 
 	for(i=0; i<dn_length; i++) {
 		lower_dn[i] = tolower(dn[i]);
 	}
+	lower_dn[dn_length] = '\0';
 
 	return lower_dn;
 }
