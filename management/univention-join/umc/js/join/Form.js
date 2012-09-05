@@ -26,17 +26,15 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules._join.Form");
+define([
+	"dojo/_base/declare",
+	"umc/widgets/Form",
+	"umc/widgets/StandbyMixin",
+], function(declare, Form, StandbyMixin) {
 
-dojo.require("umc.widgets.Form");
-dojo.require("umc.widgets.StandbyMixin");
-
-dojo.declare("umc.modules._join.Form", [
-    umc.widgets.Form,
-	umc.widgets.StandbyMixin
-	],
-{
-	// that's all.
+	return declare("umc.modules.join.Form", [ Form, StandbyMixin ], {
+		// that's all.
+	});
 });

@@ -53,7 +53,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/Form",
-	"umc/modules/_join/Form",
+	"umc/modules/join/Form",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/join"
 ], function(declare, lang, aspect, sprintf, TableContainer, Deferred, all, dojowindow, StackContainer, BorderContainer, DijitDialog,
@@ -544,7 +544,7 @@ define([
 
 			this._grid = new Grid({
 				region:			'center',
-				moduleStore:	store.getModuleStore('script','join/scripts'),
+				moduleStore:	store('script','join/scripts'),
 				// query:			this._grid_query,		// why?
 				actions:
 				[
