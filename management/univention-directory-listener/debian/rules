@@ -32,6 +32,7 @@
 
 override_dh_auto_clean:
 	$(MAKE) -C src clean
+	$(MAKE) -C tests clean
 	dh_auto_clean
 
 override_dh_auto_build:
@@ -56,7 +57,7 @@ override_dh_installinit:
 
 override_dh_auto_test:
 	ucslint
-	dh_auto_test
+	make -C tests
 
 override_dh_strip:
 	dh_strip --dbg-package=univention-directory-listener-dbg
