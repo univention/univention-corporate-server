@@ -57,7 +57,6 @@ PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old);
 PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command);
 
 extern int INIT_ONLY;
-extern char *cache_dir;
 extern char **module_dirs;
 extern int module_dir_count;
 

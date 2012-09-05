@@ -199,6 +199,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 	void *key_data, *data_data;
 	u_int32_t key_size, data_size;
 	u_int32_t pos=0;
+	char *f;
 
 	entry->attributes=NULL;
 	entry->attribute_count=0;
@@ -260,10 +261,12 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "first 100 bytes of current entry:");
 			hex_dump(UV_DEBUG_ERROR, data, pos, pos+1000 > size ? size-pos : 1000);
 
-			if ((file=fopen("/var/lib/univention-directory-listener/bad_cache", "w")) != NULL) {
+			if (asprintf(&f, "%s/bad_cache", cache_dir) < 0) abort();
+			if ((file = fopen(f, "w")) != NULL) {
 				fprintf(file, "Check log file");
 				fclose(file);
 			}
+			free(f);
 
 			return -1;
 		}

@@ -35,6 +35,8 @@
 
 #include "cache.h"
 
+extern char *cache_dir;
+
 int	unparse_entry	(void		**data,
 			 u_int32_t	 *size,
 			 CacheEntry	 *entry);

@@ -340,10 +340,7 @@ int main(int argc, char* argv[])
 	CacheMasterEntry		 master_entry;
 #endif
 	struct stat			 stbuf;
-
-	if (stat("/var/lib/univention-directory-listener/bad_cache", &stbuf) == 0) {
-		exit(3);
-	}
+	char *f = NULL;
 
 	univention_debug_init("stderr", 1, 1);
 
@@ -455,6 +452,12 @@ int main(int argc, char* argv[])
 			exit(1);
 		}
 	}
+
+	if (asprintf(&f, "%s/bad_cache", cache_dir) < 0) abort();
+	if (stat(f, &stbuf) == 0) {
+		exit(3);
+	}
+	free(f);
 
 	univention_debug_set_level(UV_DEBUG_LISTENER, debugging);
 	univention_debug_set_level(UV_DEBUG_LDAP, debugging);
