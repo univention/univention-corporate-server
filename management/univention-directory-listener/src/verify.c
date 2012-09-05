@@ -55,17 +55,17 @@ struct dn {
 	char		*dn;
 	struct dn	*next;
 };
-struct dn	*dns = NULL;
+static struct dn	*dns = NULL;
 
 
-void add_dn(char *dn) {
+static void add_dn(char *dn) {
 	struct dn *new = malloc(sizeof(struct dn));
 	new->dn = strdup(dn);
 	new->next = dns;
 	dns = new;
 }
 
-int has_dn(char *dn) {
+static int has_dn(char *dn) {
 	struct dn *cur;
 	for (cur = dns; cur != NULL; cur=cur->next) {
 		if (strcmp(dn, cur->dn) == 0) {
@@ -75,7 +75,7 @@ int has_dn(char *dn) {
 	return 0;
 }
 
-void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *ldap_entry)
+static void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *ldap_entry)
 {
 	CacheEntry	  lentry;
 	char		**changes;
@@ -122,7 +122,7 @@ void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *ldap_en
 	free(changes);
 }
 
-void usage(void)
+static void usage(void)
 {
 	fprintf(stderr, "Usage: univention-directory-listener-verify [options]\n");
 	fprintf(stderr, "Options:\n");

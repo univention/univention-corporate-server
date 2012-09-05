@@ -1,6 +1,7 @@
 univention-directory-listener (7.0.1-1) unstable; urgency=low
 
   * Handle cache_dir consistently (Bug #27314)
+  * Make several functions static (Bug #27315)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 05 Sep 2012 07:10:28 +0200
 

@@ -248,7 +248,7 @@ static void convert_cookie(void)
 #endif
 }
 
-void purge_cache(const char *cache_dir)
+static void purge_cache(const char *cache_dir)
 {
 	DIR* dir;
 	struct dirent *dirent;
@@ -277,7 +277,7 @@ void purge_cache(const char *cache_dir)
 	free(dirname);
 }
 
-void prepare_cache(const char *cache_dir)
+static void prepare_cache(const char *cache_dir)
 {
 	char *dirname;
 	struct stat stbuf;
@@ -289,7 +289,7 @@ void prepare_cache(const char *cache_dir)
 	free(dirname);
 }
 
-int do_connection(univention_ldap_parameters_t *lp)
+static int do_connection(univention_ldap_parameters_t *lp)
 {
 	LDAPMessage *res;
 	struct  timeval timeout;

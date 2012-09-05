@@ -51,7 +51,7 @@ char *cache_dir = "/var/lib/univention-directory-listener";
 
 int INIT_ONLY=0;
 
-void usage(void)
+static void usage(void)
 {
 	fprintf(stderr, "Usage: univention-directory-listener-dump [options]\n");
 	fprintf(stderr, "Options:\n");

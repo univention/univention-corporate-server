@@ -100,7 +100,7 @@ static void cache_panic_call(DB_ENV *dbenvp, int errval)
 }
 #endif
 
-char* _convert_to_lower(char *dn)
+static char* _convert_to_lower(char *dn)
 {
 	char *lower_dn = NULL;
 	int i, dn_length;

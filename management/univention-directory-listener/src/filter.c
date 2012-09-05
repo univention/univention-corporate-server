@@ -44,7 +44,7 @@
 #include "common.h"
 #include "filter.h"
 
-int cache_entry_match_attribute_value(char *attribute, char *value, CacheEntry *entry)
+static int cache_entry_match_attribute_value(char *attribute, char *value, CacheEntry *entry)
 {
 	CacheEntryAttribute	**a;
 	char			**v;
