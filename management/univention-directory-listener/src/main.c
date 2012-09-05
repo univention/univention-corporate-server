@@ -490,8 +490,7 @@ int main(int argc, char* argv[])
 	server_list = malloc(sizeof(struct server_list[maxnbackups+1]));
 
 	/* choose server to connect to */
-	if (lp->host == 0) {
-		free(lp->host);
+	if (lp->host == NULL && lp->uri == NULL) {
 		lp->ld = NULL;
 		select_server(lp);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
