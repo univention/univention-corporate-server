@@ -1,3 +1,9 @@
+univention-system-info (3.0.1-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Florian Best <best@univention.de>  Wed, 05 Sep 2012 08:27:29 +0200
+
 univention-system-info (3.0.0-1) unstable; urgency=low
 
   * remove useless "known bugs" message (Bug #25379)
