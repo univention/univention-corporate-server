@@ -102,12 +102,12 @@ def check_primary(conn, basedn):
         # we change them all -- the user needs to delete all but one of them
         for group_dn, group in group_result:
             # look for the needed entry
-            group_member_dns = group.get('uniqueMember', [])
-            group_member_uids = group.get('memberUid', [])
+            group_member_dns = map(lambda dn: dn.lower(), group.get('uniqueMember', []))
+            group_member_uids = map(lambda uid: uid.lower(), group.get('memberUid', []))
             modlist = []
-            if user_dn not in group_member_dns:
+            if user_dn.lower() not in group_member_dns:
                 modlist.append((ldap.MOD_ADD, 'uniqueMember', user_dn))
-            if user_uid not in group_member_uids:
+            if user_uid.lower() not in group_member_uids:
                 modlist.append((ldap.MOD_ADD, 'memberUid', user_uid))
             # no entry found, gonna add one
             if modlist:
