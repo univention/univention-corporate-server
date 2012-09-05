@@ -187,7 +187,7 @@ def main(argv):
 		try:
 			bindpw = default_pw()
 		except IOError:
-			raise UsageError, "Permission denied, try `--binddn' and `--bindpw'"
+			raise UsageError, "Permission denied, try `--binddn' and `--bindpwd'"
 	try:
 		lo = univention.admin.uldap.access(host = master,
 						   port = port,
@@ -195,7 +195,7 @@ def main(argv):
 						   binddn = binddn,
 						   bindpw = bindpw)
 	except uexceptions.authFail:
-		raise UsageError, "Authentication failed, try `--bindpw'"
+		raise UsageError, "Authentication failed, try `--bindpwd'"
 	try:
 		_license.init_select(lo, 'admin')
 		return check_license(lo, None, options.has_key('list-dns'), 0)

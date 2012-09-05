@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.19-1) unstable; urgency=low
+
+  * Fix -bindpwd command line option in messages (Bug #19978)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 05 Sep 2012 10:48:08 +0200
+
 univention-directory-manager-modules (8.0.18-1) unstable; urgency=low
 
   * removed obsolete debug code (Bug #19978)

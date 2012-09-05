@@ -31,7 +31,13 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, getopt, types, re, codecs, string, time, base64, os, subprocess, traceback
+import getopt
+import re
+import string
+import base64
+import os
+import subprocess
+import traceback
 
 import univention.debug
 
@@ -174,7 +180,7 @@ def _print_property( module, action, name, output ):
 	if property.options:
 		if flags:
 			flags += ','
-		flags += string.join( property.options, ',' )
+		flags += ','.join(property.options)
 	if property.multivalue:
 		if flags:
 			flags += ','
@@ -571,7 +577,7 @@ def _doit(arglist):
 		try:
 			secretFile=open(secretFileName,'r')
 		except IOError:
-			out.append('E: Permission denied, try --binddn and --bindpw')
+			out.append('E: Permission denied, try --binddn and --bindpwd')
 			return out + ["OPERATION FAILED"]
 		pwdLine=secretFile.readline()
 		pwd=re.sub('\n','',pwdLine)
