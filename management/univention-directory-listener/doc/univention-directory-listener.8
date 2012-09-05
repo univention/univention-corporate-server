@@ -2,9 +2,11 @@
 .TH UNIVENTION-DIRECTORY-LISTENER 8 2012-03-16 UCS
 .SH NAME
 univention\-directory\-listener \- UCS LDAP directory listener
+
 .SH SYNOPSIS
 .B univention\-directory\-listener
 .RI [ options ]
+
 .SH DESCRIPTION
 This manual page documents briefly the
 .B univention\-directory\-listener
@@ -12,6 +14,7 @@ command, which implements the listening part of the univention LDAP replication 
 It polls updates from an
 .BR univention\-directory\-notifier (8)
 running on TCP port 6669 on the server specified through the "\fInotifier/server\fP" univention-config-registry variable.
+
 .SH OPTIONS
 A summary of options is included below.
 .TP
@@ -66,8 +69,11 @@ Listener module path (may be specified multiple times).
 .B \-B
 Only use dc backup notifier.
 .TP
-.BI \-c\  cache
+.BI \-c\  cache_dir
 Listener cache path, default is \fI/var/lib/univention\-directory\-listener\fP.
+.TP
+.BI \-l\  ldap_dir
+LDAP state path, default is \fI/var/lib/univention\-ldap\fP.
 .TP
 .B \-g
 Start from scratch (remove cache).
@@ -77,6 +83,7 @@ Initialize handlers only.
 .TP
 .BI \-o\  file
 Write transaction \fIfile\fP.
+
 .SH FILES
 .TP
 .I /var/log/univention/listener.log
@@ -86,14 +93,21 @@ Log file for the listener.
 Cache of LDAP data.
 .TP
 .I /var/lib/univention\-directory\-listener/notifier_id
-Number of the last processed transaction
+Number of the last processed transaction.
 .TP
 .I /var/lib/univention\-directory\-listener/handlers/
-Directory containing ???
+Directory containing the state of the Listener modules.
+.TP
+.I /var/lib/univention-ldap/schema/id/id
+Schema epoch version.
+.TP
+.I /var/lib/univention-ldap/listener/listener
+File containing pending transactions (id, dn, command) not yet handles by notifier.
+
 .SH UNIVENTION CONFIG REGISTRY VARIABLES
 .TP
 .B server/role
-Used to determin the host on which 
+Used to determin the host on which
 .BR univention\-directory\-notifier (8)
 runs.
 .TP
@@ -102,11 +116,13 @@ Space separated list of LDAP server host names used by all roles expect domainco
 .TP
 .B ldap/master
 Host name of the LDAP server for domaincontroller_masters, backups and all other roles.
+
 .SH SEE ALSO
 .BR univention\-directory\-notifier (8),
 .BR slapd (8).
 .br
 This program is documented fully in the
 .IR "Univention Corporate Server Manual" .
+
 .SH AUTHOR
 Copyright (c) 2001-2012 Univention GmbH, Germany
