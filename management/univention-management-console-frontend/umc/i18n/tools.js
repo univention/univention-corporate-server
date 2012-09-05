@@ -27,16 +27,19 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-/*global define window*/
+/*global define require window*/
 
 define([
 	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/json",
 	"dojo/io-query",
-	"dojo/cookie",
-	"dojo/text!/univention-management-console/languages.json"
-], function(dojo, array, json, ioQuery, cookie, _availableLanguages) {
+	"dojo/cookie"
+	//FIXME: for now, the text-loader cannot process .json files
+	// -> http://bugs.dojotoolkit.org/ticket/15867
+	// should be fixed later on
+	//"dojo/text!/univention-management-console/languages.json"
+], function(dojo, array, json, ioQuery, cookie) {
 	var i18nTools = {};
 
 	// i18nTools.availableLanguages: Object[]
@@ -47,7 +50,8 @@ define([
 	//		umc/server/languages/*
 	i18nTools.availableLanguages = [];
 	try {
-		i18nTools.availableLanguages = json.parse(_availableLanguages);
+		// TODO
+		i18nTools.availableLanguages = json.parse(require.getText('/univention-management-console/languages.json', false));
 	}
 	catch(e) { }
 

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.22-1) unstable; urgency=low
+
+  * adapted build process to Dojo 1.8; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Sep 2012 17:56:18 +0200
+
 univention-management-console-frontend (2.0.21-1) unstable; urgency=low
 
   * fixed adaptations for 1.8; Bug #26857

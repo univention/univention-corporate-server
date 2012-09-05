@@ -26,44 +26,19 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-// Dojo build documentation:
-//   http://dojotoolkit.org/reference-guide/build/index.html
-//   http://dojotoolkit.org/reference-guide/build/buildScript.html
-//   http://dojotoolkit.org/documentation/tutorials/1.6/build/
 
 var profile = (function() {
 	return {
-		//stripConsole : "all",
-		basePath : ".",
-		releaseDir : "build",
-		releaseName : "js",
-		action : "release",
+		resourceTags:{
+			copyOnly: function(filename, mid) {
+				// copy all .html and .css
+				return /\.(html|css)$/.test(filename) || mid == 'umc/umc.profile.js';
+			},
 
-		packages:[{
-			name: "dojo",
-			location: "/usr/share/univention-dojo/dojo"
-		}, {
-			name: "dijit",
-			location: "/usr/share/univention-dojo/dijit"
-		}, {
-			name: "dojox",
-			location: "/usr/share/univention-dojo/dojox"
-		}, {
-			name: "umc",
-			location: "umc"
-		}],
-
-		optimize : "shrinksafe.keepLines",
-		//localeList : "de-de,en-us",
-		cssOptimize: "comments.keepLines",
-		copyTests: false,
-
-		layers: {
-			"dojo/dojo": {
-				include: [ "dojo/dojo", "umc/app", "umc/widgets" ],
-				customBase: true,
-				boot: true
+			amd: function(filename, mid) {
+				return mid != 'umc/umc.profile.js' && /\.js$/.test(filename);
 			}
 		}
 	};
-})();
+}());
+

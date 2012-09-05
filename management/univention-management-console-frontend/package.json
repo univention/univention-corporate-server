@@ -1,0 +1,36 @@
+{
+	"name": "umc",
+	"description": "Univention Management Console.",
+	"version": "%VERSION%",
+	"keywords": ["JavaScript", "Univention", "UMC", "Management", "Management Console", "Server Management", "Active Directory", "Dojo"],
+	"maintainers": [{
+		"name": "Univention GmbH",
+		"email": "packages@univention.de",
+		"web": "http://www.univention.com"
+	}],
+	"contributors": [{
+		"name": "Univention GmbH"
+	}],
+	"licenses": [{
+		"type": "AGPLv3",
+		"url": "http://www.gnu.org/licenses/agpl.txt"
+	},{
+		"type": "AFLv2.1",
+		"url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L43"
+	},{
+		"type": "BSD",
+		"url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L13"
+	}],
+	"bugs": "https://forge.univention.org/bugzilla/",
+	"repositories": [{
+		"type": "svn",
+		"url": "http://forge.univention.org/svn/dev",
+		"path": "branches/ucs-3.1/ucs/management/univention-management-console-frontend"
+	}],
+	"dependencies": {
+		"dojo": "~1.8",
+		"dijit": "~1.8",
+		"dojox": "~1.8"
+	},
+	"dojoBuild": "umc.profile.js"
+}

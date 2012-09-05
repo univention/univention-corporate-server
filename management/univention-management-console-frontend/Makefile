@@ -39,38 +39,40 @@ tmpDir:=$(buildDir)/_tmp$(timestamp)
 dojo_tmp_dir:=$(buildDir)/univention-dojo
 rel_root_path:=$(shell echo '$(dojo_tmp_dir)/util/docscripts' | sed -e 's,/[^/]*,../,g')
 
-.PHONY: build build-dev build-common api-doc install clean jslint i18n
+.PHONY: build build-dev build-common api-doc install clean jslint i18n umc/package.json
 
-build: build-common api-doc $(buildDir)/js/umc/build.js
+build: build-common api-doc $(buildDir)/js/dojo/dojo.js.uncompressed.js $(buildDir)/css $(buildDir)/images
 
-$(buildDir)/js/umc/build.js:
-	@# create a temp directory
-	mkdir -p '$(tmpDir)'
-	@# create the module umc.widgets containing a require for all umc widgets
-	@# include all translation files
-	( \
-		echo '/*global dojo */'; \
-		echo 'dojo.provide("_tmp$(timestamp).widgets");'; \
-		find umc/widgets/ -name "*.js" | sed 's|/|.|g; s|^\(.*\).js$$|dojo.require("\1");|'; \
-		for i in "$(CURDIR)/umc/"*.json; do \
-			lang=$${i##*/}; \
-			lang=$${lang%.*}; \
-			echo 'dojo.cache("umc", "i18n/'$$lang'/app.json")'; \
-		done; \
-	) > '$(tmpDir)/include.js'
-	@# dojo build
-	sed 's|%CURDIR%|$(CURDIR)|g; s|%TIMESTAMP%|$(timestamp)|g' "$(CURDIR)/build_profile.js" > '$(tmpDir)/build_profile.js'
-	cd /usr/share/univention-dojo/util/buildscripts; \
-	./build.sh profileFile='$(tmpDir)/build_profile.js' releaseDir="$(CURDIR)/build/js" version="$(version)"
-	@# index page .. replace the HASH with a timestamp
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' index.html > "$(buildDir)/index.html"
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' index.html > "$(buildDir)/debug.html"
-	@# copy css style sheets and images
+# the automatically generated module umc/widgets contains a require to all umc widgets
+umc/widgets.js:
+	deplist=""; \
+	for imod in umc/widgets/*.js; do \
+		deplist="$${deplist}\"$${imod%.js}\", "; \
+	done; \
+	echo "define([$${deplist%, }], function() { })" > $@
+
+umc/package.json:
+	sed 's/%VERSION%/$(version)/' package.json > $@
+
+# convert .po to .json files
+i18n:
+	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
+
+# rule for the main dojo build process
+$(buildDir)/js/dojo/dojo.js.uncompressed.js:
+	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(version)"
+
+# index page... replace the HASH with a timestamp
+$(buildDir)/index.html: index.html
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' $< > $@
+
+# index page for debug mode... replace the HASH with a timestamp
+$(buildDir)/debug.html: index.html
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' $< > $@
+
+# copy css style sheets and images
+$(buildDir)/css $(buildDir)/images:
 	rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
-	@# static login pages
-	for i in login blank; do \
-		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
-	done;
 
 build-dev: build-common
 	mkdir -p "$(buildDir)/js"
@@ -80,7 +82,6 @@ build-dev: build-common
 		ln -fs /usr/share/univention-dojo/$$i "$(buildDir)/js"; \
 	done
 	@# index page .. replace the HASH with a timestamp
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; /<script.*umc\/build.js.*<\/script>/d; s/%VERSION%/$(version)/;' index.html > "$(buildDir)/index.html"
 	@# symlinks for css style sheets and images
 	cp -rfs "$(CURDIR)/css" "$(CURDIR)/images" "$(buildDir)"
 	@# symlinks for UMC code
@@ -88,13 +89,8 @@ build-dev: build-common
 	@# symlinks for installed modules/icons
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(buildDir)/js/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(buildDir)/images/icons/
-	@# static login pages
-	for i in login blank; do \
-		rm "$(buildDir)/js/umc/$$i.html"; \
-		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
-	done;
 
-build-common: i18n
+build-common: i18n umc/widgets.js umc/package.json $(buildDir)/index.html $(buildDir)/index.html
 	@# scale all icons
 	for s in 16x16 50x50; do \
 		mkdir -p "$(buildDir)/images/icons/$$s"; \
@@ -114,9 +110,13 @@ build-common: i18n
 	for i in "$(CURDIR)/umc/"*.json; do \
 		lang=$${i##*/}; \
 		lang=$${lang%.*}; \
-		mkdir -p "$(CURDIR)/umc/i18n/$$lang"; \
-		cp $$i "$(CURDIR)/umc/i18n/$$lang/app.json"; \
+		mkdir -p "$(buildDir)/js/umc/i18n/$$lang"; \
+		cp $$i "$(buildDir)/js/umc/i18n/$$lang/app.json"; \
 	done
+	@# static login pages
+	for i in login blank; do \
+		sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//;' umc/$$i.html > "$(buildDir)/js/umc/$$i.html"; \
+	done;
 
 api-doc: umc.xml
 
@@ -129,9 +129,6 @@ umc.xml:
 #	php generate.php umc dojo dijit dojox --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
 #	rm -rf $(dojo_tmp_dir)
 
-i18n:
-	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
-
 install: build
 	@# move umc.xml
 	mkdir -p '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
@@ -141,8 +138,5 @@ install: build
 	rsync -rpl --exclude ".svn" --exclude "_tmp"'$(timestamp)' "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
 
 clean:
-	rm -rf build umc.xml
-
-jslint:
-	jslint $(jsFiles) | grep -v "\['require'\] is better written in dot notation" || true
+	rm -rf build umc.xml umc/widgets.js umc/{en,de}.json umc/package.json
 
