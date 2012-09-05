@@ -131,35 +131,31 @@ static PyObject* module_get_object(PyObject *module, char *name)
 static char* module_get_string(PyObject *module, char *name)
 {
 	PyObject *var;
-	char *str1, *str2;
+	char *str1, *str2 = NULL;
 
 	if ((var=PyObject_GetAttrString(module, name)) == NULL)
-		return NULL;
+		goto error0;
 	PyArg_Parse(var, "s", &str1);
 	str2 = strdup(str1);
 	Py_XDECREF(var);
-
+error0:
 	return str2;
 }
 
 static char** module_get_string_list(PyObject *module, char *name)
 {
 	PyObject *list;
-	char **res;
+	char **res = NULL;
 	int len, i;
 
 	if ((list=PyObject_GetAttrString(module, name)) == NULL)
-		return NULL;
-	if (!PyList_Check(list)) {
-		Py_XDECREF(list);
-		return NULL;
-	}
+		goto error0;
+	if (!PyList_Check(list))
+		goto error1;
 	
 	len = PyList_Size(list);
-	if ((res = malloc((len+1)*sizeof(char*))) == NULL) {
-		Py_XDECREF(list);
-		return NULL;
-	}
+	if ((res = malloc((len+1)*sizeof(char*))) == NULL)
+		goto error1;
 	for (i = 0; i < len; i++) {
 		PyObject *var;
 		var = PyList_GetItem(list, i);
@@ -167,16 +163,20 @@ static char** module_get_string_list(PyObject *module, char *name)
 		Py_XDECREF(var);
 	}
 	res[len] = NULL;
+error1:
 	Py_XDECREF(list);
-
+	if (PyErr_Occurred())
+		PyErr_Print();
+error0:
+	PyErr_Clear(); // Silent error when attribute is not set
 	return res;
 }
 
 /* load handler and insert it into list of handlers */
 static int handler_import(char* filename)
 {
-	char *filter;
-	int num_filters;
+	char *filter, *error_msg = NULL;
+	int num_filters = 0;
 	char *state_filename;
 	FILE *state_fp;
 	Handler *handler;
@@ -189,55 +189,134 @@ static int handler_import(char* filename)
 
 	if ((handler->module=module_import(filename)) == NULL) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "import of filename=%s failed", filename);
-		PyErr_Print();
-		free(handler);
-		return 1;
+		error_msg = "module_import()";
+		goto error;
 	}
 	
-	handler->name = module_get_string(handler->module, "name");
-	if ( PyObject_HasAttrString(handler->module, "modrdn")) {
-		handler->modrdn = module_get_string(handler->module, "modrdn");
-	} else {
-		handler->modrdn = NULL;
+	handler->name = module_get_string(handler->module, "name"); /* required */
+	if (handler->name == NULL) {
+		error_msg = "module_get_string(\"name\")";
+		goto error;
 	}
-	handler->description = module_get_string(handler->module, "description");
 
-	num_filters = 0;
-	if ((filter = module_get_string(handler->module, "filter")) != NULL) {
+	if ( PyObject_HasAttrString(handler->module, "modrdn")) { /* optional */
+		handler->modrdn = module_get_string(handler->module, "modrdn");
+		if (handler->modrdn == NULL) {
+			error_msg = "module_get_string(\"modrdn\")";
+			goto error;
+		}
+	}
+	PyErr_Clear(); // Silent error when attribute is not set
+
+	handler->description = module_get_string(handler->module, "description"); /* required */
+	if (handler->description == NULL) {
+		error_msg = "module_get_string(\"description\")";
+		goto error;
+	}
+
+	if ((filter = module_get_string(handler->module, "filter")) != NULL) { /* optional */
 		handler->filters = realloc(handler->filters, (num_filters+2)*sizeof(struct filter*));
+		if (handler->filters == NULL) {
+			error_msg = "malloc(struct filter[])";
+			goto error;
+		}
 		handler->filters[0] = malloc(sizeof(struct filter));
+		if (handler->filters[0] == NULL) {
+			error_msg = "malloc(struct filter)";
+			goto error;
+		}
 		handler->filters[0]->base = NULL;
 		handler->filters[0]->scope = LDAP_SCOPE_SUBTREE;
 		handler->filters[0]->filter = filter;
 		num_filters++;
 		handler->filters[num_filters] = NULL;
+	} else {
+		PyErr_Clear(); // Silent error when attribute is not set
 	}
 
-	if (PyObject_HasAttrString(handler->module, "filters")) {
+	if (PyObject_HasAttrString(handler->module, "filters")) { /* optional */
 		PyObject *filters = PyObject_GetAttrString(handler->module, "filters");
 		int len = PyList_Size(filters), i;
 		handler->filters = realloc(handler->filters, (num_filters+len+1)*sizeof(struct filter*));
+		if (handler->filters == NULL) {
+			error_msg = "realloc(struct filter[])";
+			goto error;
+		}
 		for (i = 0; i < len; i++) {
 			PyObject *py_tuple = PyList_GetItem(filters, i);
+			if (py_tuple == NULL) {
+				error_msg = "PyList_GetItem(filters)";
+				goto error0;
+			}
 			PyObject *py_base = PyTuple_GetItem(py_tuple, 0);
+			if (py_base == NULL) {
+				error_msg = "PyTuple_GetItem(filters[0])";
+				goto error1;
+			}
 			PyObject *py_scope = PyTuple_GetItem(py_tuple, 1);
+			if (py_scope == NULL) {
+				error_msg = "PyTuple_GetItem(filters[1])";
+				goto error2;
+			}
 			PyObject *py_filter = PyTuple_GetItem(py_tuple, 2);
+			if (py_filter == NULL) {
+				error_msg = "PyTuple_GetItem(filters[2])";
+				goto error3;
+			}
 			
 			handler->filters[num_filters] = malloc(sizeof(struct filter));
+			if (handler->filters[num_filters] == NULL) {
+				error_msg = "malloc(struct filter)";
+				goto error4;
+			}
+			memset(handler->filters[num_filters], 0, sizeof(struct filter));
 			handler->filters[num_filters]->base = strdup(PyString_AsString(py_base));
+			if (handler->filters[num_filters]->base == NULL) {
+				error_msg = "PyString_AsString(filters[0])";
+				goto error5;
+			}
 			handler->filters[num_filters]->scope = PyInt_AsLong(py_scope);
+			if (handler->filters[num_filters]->scope == -1 && PyErr_Occurred()) {
+				error_msg = "PyInt_AsString(filters[1])";
+				goto error6;
+			}
 			handler->filters[num_filters]->filter = strdup(PyString_AsString(py_filter));
+			if (handler->filters[num_filters]->filter == NULL) {
+				error_msg = "PyString_AsString(filters[2])";
+				goto error7;
+			}
 			num_filters++;
-			Py_XDECREF(py_tuple);
-			Py_XDECREF(py_base);
-			Py_XDECREF(py_scope);
+			goto okay;
+error7:
+			free(handler->filters[num_filters]->filter);
+error6:
+			free(handler->filters[num_filters]->base);
+error5:
+			free(handler->filters[num_filters]);
+okay:
+error4:
 			Py_XDECREF(py_filter);
+error3:
+			Py_XDECREF(py_scope);
+error2:
+			Py_XDECREF(py_base);
+error1:
+			Py_XDECREF(py_tuple);
+error0:
+			if (PyErr_Occurred()) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Invalid filters in %s: %s", filename, error_msg ? error_msg : "???");
+				PyErr_Print();
+				PyErr_Clear();
+			}
 		}
 		handler->filters[num_filters] = NULL;
 		Py_XDECREF(filters);
 	}
 
-	handler->attributes = module_get_string_list(handler->module, "attributes");
+	handler->attributes = module_get_string_list(handler->module, "attributes"); /* optional */
+	if (handler->attributes == NULL) {
+		PyErr_Clear(); // Silent error when attribute is not set
+	}
 
 	handler->handler = module_get_object(handler->module, "handler");
 	handler->initialize = module_get_object(handler->module, "initialize");
@@ -249,9 +328,9 @@ static int handler_import(char* filename)
 	/* read handler state */
 	asprintf(&state_filename, "%s/handlers/%s", cache_dir, handler->name);
 	state_fp = fopen(state_filename, "r");
-	if (state_fp == NULL)
+	if (state_fp == NULL) {
 		handler->state = 0;
-	else {
+	} else {
 		fscanf(state_fp, "%d", &handler->state);
 		fclose(state_fp);
 	}
@@ -271,8 +350,35 @@ static int handler_import(char* filename)
 		handler->next = NULL;
 	}
 
-
 	return 0;
+error:
+	if (PyErr_Occurred()) {
+		PyErr_Print();
+	}
+	Py_XDECREF(handler->setdata);
+	Py_XDECREF(handler->postrun);
+	Py_XDECREF(handler->prerun);
+	Py_XDECREF(handler->clean);
+	Py_XDECREF(handler->initialize);
+	Py_XDECREF(handler->handler);
+	if (handler->attributes) {
+		char **c;
+		for (c = handler->attributes; *c; c++)
+			free(*c);
+		free(handler->attributes);
+	}
+	while (num_filters-- > 0) {
+		free(handler->filters[num_filters]->filter);
+		free(handler->filters[num_filters]->base);
+		free(handler->filters[num_filters]);
+	}
+	free(handler->filters);
+	free(handler->description);
+	free(handler->modrdn);
+	free(handler->name);
+	free(handler);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "import of filename=%s failed in %s", filename, error_msg ? error_msg : "???");
+	return 1;
 }
 
 /* run prerun handler; this only needs to be done once for multiple calls
