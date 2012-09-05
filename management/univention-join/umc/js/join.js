@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/aspect",
 	"dojox/string/sprintf",
+	"dojox/layout/TableContainer",
 	"dojo/Deferred",
 	"dojo/promise/all",
 	"dojo/window",
@@ -40,21 +41,23 @@ define([
 	"dijit/layout/BorderContainer",
 	"dijit/Dialog",
 	"umc/dialog",
+	"umc/tools",
+	"umc/store",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
-	"umc/widgets/Button"
-	"umc/widgets/ExpandingTitlePane"
-	"umc/widgets/Grid"
+	"umc/widgets/Button",
+	"umc/widgets/ExpandingTitlePane",
+	"umc/widgets/Grid",
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/Form",
-	"umc/modules/_join/Form"
-	"umc/modules/lib/server"
+	"umc/modules/_join/Form",
+	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, aspect, sprintf, Deferred, all, dojowindow, StackContainer, BorderContainer, DijitDialog, dialog,
-	ContainerWidget, Module, Page, Text, Button, ExpandingTitlePane, Grid, TextBox, PasswordBox, Form, 
+], function(declare, lang, aspect, sprintf, TableContainer, Deferred, all, dojowindow, StackContainer, BorderContainer, DijitDialog,
+	dialog, tools, store, ContainerWidget, Module, Page, Text, Button, ExpandingTitlePane, Grid, TextBox, PasswordBox, Form, 
 	JoinForm, Lib_Server, _) {
 
 	return declare("umc.modules.join", [ Module ], {
@@ -237,7 +240,7 @@ define([
 					txt = txt + sprintf("(%s)<br/>&nbsp;...<br/>\n",
 							lang.replace(tmp,{logcount: this._logcount}));
 				}
-				for (line in result)
+				for (var line in result)
 				{
 					txt = txt + sprintf("%s<br/>\n",result[line]);
 				}
@@ -630,7 +633,7 @@ define([
 
 			// Now we can add a different layout container here: a 2x1 table with adjacent
 			// left- and right-aligned cells. CSS class is copied from the base class.
-			this._footer = new dojox.layout.TableContainer({
+			this._footer = new TableContainer({
 				region:				'bottom',
 				cols:				2,
 				style:				'width:100%;',

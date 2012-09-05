@@ -37,9 +37,9 @@ s%dojo\.toJson%/*REQUIRE:"dojo/json"*/ json.stringify%g
 s%dojo\.declare(%/*TODO*/ return declare(%g
 s%dojo\.fadeIn%/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeIn%g
 s%dojo\.fadeOut%/*REQUIRE:"dojo/_base/fx"*/ baseFX.fadeOut%g
+s%dojo\.DeferredList%/*REQUIRE:"dojo/promise/all"*/ all%g
 s%dojo\.Deferred%/*REQUIRE:"dojo/Deferred"*/ Deferred%g
 s%dojo\.when%/*REQUIRE:"dojo/when"*/ when%g
-s%dojo\.DeferredList%/*REQUIRE:"dojo/promise/all"*/ all%g
 s%dojo\.xhrPost%/*REQUIRE:"dojo/request"*/ /*TODO*/ request%g
 s%dojo\.xhrGet%/*REQUIRE:"dojo/request"*/ /*TODO*/ request%g
 s%dojo\.cookie%/*REQUIRE:"dojo/cookie"*/ cookie%g

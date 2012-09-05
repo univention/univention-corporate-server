@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"umc/dialog",
+	"umc/tools",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/widgets/ExpandingTitlePane",
@@ -40,7 +41,7 @@ define([
 	"umc/widgets/SearchForm",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/services"
-], function(declare, lang, array, dialog, Module, Page, ExpandingTitlePane, Grid, SearchForm, TextBox, _) {
+], function(declare, lang, array, dialog, tools, Module, Page, ExpandingTitlePane, Grid, SearchForm, TextBox, _) {
 	return declare("umc.modules.services", [ Module ], {
 
 		moduleStore: null,
