@@ -2,12 +2,21 @@ Source: univention-bacula
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), ucslint
+Build-Depends: debhelper (>> 3.0.0),
+ ucslint,
+ univention-config-dev
 Standards-Version: 3.8.2
 
 Package: univention-bacula
 Architecture: all
-Depends: univention-postgresql, bacula, bacula-client, bacula-server, bacula-common, bacula-director-pgsql, bacula-common-pgsql, bacula-sd-pgsql
+Depends: univention-postgresql,
+ bacula,
+ bacula-client,
+ bacula-server,
+ bacula-common,
+ bacula-director-pgsql,
+ bacula-common-pgsql,
+ bacula-sd-pgsql
 Description: UCS - Bacula package
  This packages provides the meta packages for the backup software bacula.
  .
