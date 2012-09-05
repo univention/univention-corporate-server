@@ -169,30 +169,34 @@ static int __cache_entry_ldap_filter_match(char* filter, int first, int last, Ca
 int cache_entry_ldap_filter_match(struct filter **filter, char *dn, CacheEntry *entry)
 {
 	struct filter **f;
+	size_t dn_len = strlen(dn);
 
 	for (f = filter; f != NULL && *f != NULL; f++) {
-		int len = strlen((*f)->filter);
-
 		/* check if base and scope match */
 		if ((*f)->base != NULL && (*f)->base[0] != '\0') {
-			char *p = strstr(dn, (*f)->base);
-		
-			/* strstr only finds the first occurance of the needle in the
-			 * haystack; hence, we keep on looping thru the results while
-			 * the result isn't at the end of the haystack */
-			while (p != NULL && p+strlen(p) != (*f)->base+strlen((*f)->base)) {
-				p = strstr(p+1, (*f)->base);
-			}
-			if (p == NULL) /* base doesn't match at all*/
+			size_t b_len = strlen((*f)->base);
+			/* No match if required base is longer then tested dn */
+			if (b_len > dn_len)
+				continue;
+			/* No match if testes dn does not end on required base */
+			if (strcmp(dn + dn_len - b_len, (*f)->base))
 				continue;
 
-			if ( /* scope doesn't match */
-					((*f)->scope == LDAP_SCOPE_BASE && strchr(dn, ',') <= p) ||
-					((*f)->scope == LDAP_SCOPE_ONELEVEL && strchr(dn, ',')+1 != p))
-				continue;
+			switch ((*f)->scope) {
+				case LDAP_SCOPE_BASE:
+					/* skip if more levels exists. */
+					if (strchr(dn, '.') <= dn + dn_len - b_len)
+						continue;
+					break;
+				case LDAP_SCOPE_ONELEVEL:
+					/* skip if more then one level */
+					if (strchr(dn, '.') + 1 != dn + dn_len - b_len)
+						continue;
+					break;
+			}
 		}
 
-		
+		int len = strlen((*f)->filter);
 		if (__cache_entry_ldap_filter_match((*f)->filter, 0, len-1, entry))
 			return 1;
 	}
