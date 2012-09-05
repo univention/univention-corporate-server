@@ -376,7 +376,7 @@ msgstr "Informationen über die Erstkonfiguration"
 
 #: umc/js/setup.js:672
 msgid "Initialize the configuration process ..."
-msgstr "Initalisiere den Konfigurationsvorgang ..."
+msgstr "Initialisiere den Konfigurationsvorgang ..."
 
 #: umc/js/_setup/SoftwarePage.js:87
 msgid "Installation of software components"

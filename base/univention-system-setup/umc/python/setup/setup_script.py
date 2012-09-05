@@ -297,7 +297,7 @@ class AptScript(SetupScript):
 		self.wanted_server_role = self.get_profile_var('server/role')
 
 	def set_always_install(self, *packages):
-		self.package_manager.always_install = packages
+		self.package_manager.always_install(packages)
 
 	@contextmanager
 	def noninteractive(self):

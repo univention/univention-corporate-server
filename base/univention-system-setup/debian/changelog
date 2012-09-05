@@ -1,3 +1,11 @@
+univention-system-setup (6.0.18-1) unstable; urgency=low
+
+  * Use new method from univention-lib package manager (Bug #28010)
+  * Fix typo in translation file
+  * Use dojo.indexOf instead of variable.indexOf
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 05 Sep 2012 16:49:46 +0200
+
 univention-system-setup (6.0.17-1) unstable; urgency=low
 
   * the default locale wizard on LanguagePage displays now the correct label;

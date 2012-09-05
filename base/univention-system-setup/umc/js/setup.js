@@ -137,12 +137,12 @@ dojo.declare("umc.modules.setup", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			var white_list = ucr['system/setup/boot/pages/whitelist'];
 			if (white_list) {
 				white_list = white_list.split(' ');
-				allPages = dojo.filter(allPages, function(page) { return white_list.indexOf(page) > -1; });
+				allPages = dojo.filter(allPages, function(page) { return dojo.indexOf(white_list, page) > -1; });
 			}
 			var black_list = ucr['system/setup/boot/pages/blacklist'];
 			if (black_list) {
 				black_list = black_list.split(' ');
-				allPages = dojo.filter(allPages, function(page) { return black_list.indexOf(page) == -1; });
+				allPages = dojo.filter(allPages, function(page) { return dojo.indexOf(black_list, page) == -1; });
 			}
 		}
 
