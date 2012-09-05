@@ -16,7 +16,8 @@ Depends: univention-postgresql,
  bacula-common,
  bacula-director-pgsql,
  bacula-common-pgsql,
- bacula-sd-pgsql
+ bacula-sd-pgsql,
+ univention-config-registry
 Description: UCS - Bacula package
  This packages provides the meta packages for the backup software bacula.
  .
