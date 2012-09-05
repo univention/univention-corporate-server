@@ -547,10 +547,6 @@ def _doit(arglist):
 	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
 
 	if binddn and bindpwd:
-		fp = open('/var/debug2.txt', 'w')
-		for c in bindpwd:
-			fp.write('lol: %s\n' % c)
-		fp.close()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % binddn)
 		try:
 			lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)

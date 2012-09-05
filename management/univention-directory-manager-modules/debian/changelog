@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.18-1) unstable; urgency=low
+
+  * removed obsolete debug code (Bug #19978)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 05 Sep 2012 09:52:13 +0200
+
 univention-directory-manager-modules (8.0.17-1) unstable; urgency=low
 
   * Make the uniqueMember and memberUid check case-insensitive
