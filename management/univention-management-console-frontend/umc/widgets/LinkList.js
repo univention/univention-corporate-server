@@ -56,7 +56,7 @@ define([
 			this.store.fetch( {
 				onComplete: lang.hitch( this, function ( items ) {
 					array.forEach( items, lang.hitch( this, function( item ) {
-						var btn = Button( {
+						var btn = new Button( {
 							name : 'close',
 							label : item.label,
 							iconClass: tools.getIconClass( item.icon, 16 )

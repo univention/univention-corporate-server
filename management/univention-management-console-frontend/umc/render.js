@@ -37,11 +37,10 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Tooltip",
-	"umc/i18n!umc/app",
 	"umc/widgets/Button",
 	"umc/widgets/SubmitButton",
 	"umc/widgets/ResetButton"
-], function(lang, array, domClass, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, _) {
+], function(lang, array, domClass, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, Button, SubmitButton, ResetButton) {
 	var render = {};
 	lang.mixin(render, {
 		widgets: function(/*Object[]*/ widgetsConf) {
@@ -101,18 +100,23 @@ define([
 				delete conf.size;
 			}
 
-			var WidgetClass = undefined;
-			var path;
-			try {
-				// include the corresponding module for the widget
-				path = widgetConf.type;
-				if (path.indexOf('/') < 0) {
-					// the name does not contain a slash, thus we need to add 'umc/widgets.' as path prefix
-					path = 'umc/widgets/' + path;
-				}
-				WidgetClass = require(path);
+			var WidgetClass;
+			if (widgetConf.type && typeof widgetConf.type != 'string') {
+				// assume that we got the class directly
+				WidgetClass = widgetConf.type
 			}
-			catch (error) { }
+			else if (typeof widgetConf.type == 'string') {
+				try {
+					// include the corresponding module for the widget
+					var path = widgetConf.type;
+					if (path.indexOf('/') < 0) {
+						// the name does not contain a slash, thus we need to add 'umc/widgets.' as path prefix
+						path = 'umc/widgets/' + path;
+					}
+					WidgetClass = require(path);
+				}
+				catch (err) { }
+			}
 			if (!WidgetClass) {
 				console.log(lang.replace("WARNING in render.widget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
 				return undefined;
@@ -121,7 +125,7 @@ define([
 
 			// register event handler
 			if (onChangeCallback) {
-				widget.connect(widget, 'onChange', function(newVal) {
+				widget.watch('value', function(attr, oldVal, newVal) {
 					// hand over the changed value plus the dict of all widgets
 					onChangeCallback(newVal, widgets);
 				});
@@ -168,16 +172,13 @@ define([
 			var buttonConf = lang.mixin({}, _buttonConf);
 
 			// specific button types need special care: submit, reset
-			var buttonClassName = 'Button';
+			var ButtonClass = Button;
 			if ('submit' == buttonConf.name) {
-				buttonClassName = 'SubmitButton';
+				ButtonClass = SubmitButton;
 			}
 			if ('reset' == buttonConf.name) {
-				buttonClassName = 'ResetButton';
+				ButtonClass = ResetButton;
 			}
-
-			// load the java script code for the button class
-			var ButtonClass = require('umc/widgets/' + buttonClassName);
 
 			// get icon and label (these properties may be functions)
 			var iiconClass = buttonConf.iconClass;

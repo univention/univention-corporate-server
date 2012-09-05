@@ -276,7 +276,7 @@ define([
 
 			// create the layout for the grid columns
 			var gridColumns = [];
-			 array.forEach(columns, function(icol) {
+			array.forEach(columns, function(icol) {
 				tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
 
 				// set common properties
@@ -313,7 +313,7 @@ define([
 			}, this);
 
 			// add additional columns for standard actions
-			 array.forEach(this.actions, function(iaction) {
+			array.forEach(this.actions, function(iaction) {
 				// get all standard context actions
 				if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
 					return;
@@ -397,8 +397,8 @@ define([
 						var item = this._grid.getItem(rowIndex);
 
 						// create context menu
-						var menu = Menu({});
-						 array.forEach(tmpActions, function(iaction) {
+						var menu = new Menu({});
+						array.forEach(tmpActions, function(iaction) {
 							// call canExecute to make sure the action can be executed
 							if (iaction.canExecute && !iaction.canExecute(item)) {
 								// the action cannot be executed... return an empty string
@@ -430,7 +430,7 @@ define([
 						return this.own(new DropDownButton({
 							label: _('more'),
 							dropDown: menu
-						}));
+						}))[0];
 					})
 				});
 			}
@@ -821,7 +821,7 @@ define([
 				return !iaction.isStandardAction && (false !== iaction.isContextAction) && iaction.isMultiAction;
 			});
 			if (tmpActions.length) {
-				var moreActionsMenu = Menu({});
+				var moreActionsMenu = new Menu({});
 				 array.forEach(tmpActions, function(iaction) {
 					// get icon and label (these properties may be functions)
 					var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
