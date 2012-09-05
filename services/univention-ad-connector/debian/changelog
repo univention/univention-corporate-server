@@ -1,3 +1,9 @@
+univention-ad-connector (7.0.0-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Florian Best <best@univention.de>  Wed, 05 Sep 2012 09:48:43 +0200
+
 univention-ad-connector (6.0.60-1) unstable; urgency=low
 
   * Check the primary group setting for new users (Bug #26809)
