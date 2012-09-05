@@ -42,7 +42,7 @@
 
 int INIT_ONLY=0;
 
-void usage(const char *name)
+static void usage(const char *name)
 {
 	fprintf(stderr, "Usage: %s <HOST> get_id\n"
 			"       %s <HOST> get_schema_id\n"
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	}
 	
 	if (optind > argc-2) {
-		printf("x\n");
+		fprintf(stderr, "Missing arguments\n");
 		usage(argv[0]);
 		return 1;
 	}
