@@ -35,6 +35,7 @@
 
 #include "network.h"
 
+extern char *transaction_file;
 int	notifier_write_transaction_file	(NotifierEntry entry);
 
 #endif /* _TRANSFILE_H_ */

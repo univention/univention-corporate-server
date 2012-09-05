@@ -47,8 +47,6 @@
 #include "cache.h"
 #include "common.h"
 
-char *cache_dir = "/var/lib/univention-directory-listener";
-
 int INIT_ONLY=0;
 
 static void usage(void)

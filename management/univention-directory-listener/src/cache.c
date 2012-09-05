@@ -84,7 +84,8 @@
 
 extern int INIT_ONLY;
 
-extern char *cache_dir;
+char *cache_dir = "/var/lib/univention-directory-listener";
+char *ldap_dir = "/var/lib/univention-ldap";
 
 DB *dbp;
 DBC *dbc_cur = NULL;
@@ -200,7 +201,7 @@ int cache_set_schema_id(const char *key, const NotifierID value)
 	char file[PATH_MAX];
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Set Schema ID to %ld", value);
-	snprintf(file, PATH_MAX, "/var/lib/univention-ldap/schema/id/id");
+	snprintf(file, PATH_MAX, "%s/schema/id/id", ldap_dir);
 	if ((fp = fopen(file, "w")) == NULL) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to open file %s", file);
 		return 1;
@@ -216,7 +217,7 @@ int cache_get_schema_id(const char *key, NotifierID *value, const long def)
 
 	*value = def;
 
-	snprintf(file, PATH_MAX, "/var/lib/univention-ldap/schema/id/id");
+	snprintf(file, PATH_MAX, "%s/schema/id/id", ldap_dir);
 	if ((fp = fopen(file, "r")) == NULL)
 		return 1;
 	fscanf(fp, "%ld", value);

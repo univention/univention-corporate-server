@@ -57,6 +57,7 @@
 #include "notifier.h"
 #include "network.h"
 #include "select_server.h"
+#include "transfile.h"
 
 int INIT_ONLY=0;
 
@@ -65,7 +66,6 @@ struct server_list *server_list = NULL;
 int server_list_entries = 0;
 int backup_notifier=0;
 
-char *cache_dir = "/var/lib/univention-directory-listener";
 char **module_dirs = NULL;
 int module_dir_count = 0;
 char pidfile[PATH_MAX];
@@ -177,6 +177,7 @@ static void usage(void)
 	fprintf(stderr, "   -m   Listener module path (may be specified multiple times)\n");
 	fprintf(stderr, "   -B   Only use dc backup notifier\n");
 	fprintf(stderr, "   -c   Listener cache path\n");
+	fprintf(stderr, "   -l   LDAP schema and transaction path\n");
 	fprintf(stderr, "   -g   start from scratch (remove cache)\n");
 	fprintf(stderr, "   -i   initialize handlers only\n");
 	fprintf(stderr, "   -o   write transaction file\n");
@@ -238,11 +239,13 @@ static void convert_cookie(void)
 		free(filename);
 	}
 
-	if ((fp = fopen("/var/lib/univention-ldap/schema/id/id", "r")) != NULL) {
+	if (asprintf(&filename, "%s/schema/id/id", ldap_dir) < 0) abort();
+	if ((fp = fopen(filename, "r")) != NULL) {
 		fscanf(fp, "%ld", &master_entry.schema_id);
 		fclose(fp);
 	} else
 		master_entry.schema_id = 0;
+	free(filename);
 
 	if ((rv=cache_update_master_entry(&master_entry, NULL)) != 0)
 		exit(1); /* XXX */
@@ -361,7 +364,7 @@ int main(int argc, char* argv[])
 	for (;;) {
 		int c;
 
-		c = getopt(argc, argv, "d:FH:h:p:b:D:w:y:xZY:U:R:Km:Bc:gio");
+		c = getopt(argc, argv, "d:FH:h:p:b:D:w:y:xZY:U:R:Km:Bc:giol:");
 		if (c < 0)
 			break;
 		switch (c) {
@@ -393,6 +396,10 @@ int main(int argc, char* argv[])
 			break;
 		case 'c':
 			cache_dir=strdup(optarg);
+			break;
+		case 'l':
+			ldap_dir = strdup(optarg);
+			if (asprintf(&transaction_file, "%s/listener/listener", ldap_dir) < 0) abort();
 			break;
 		case 'D':
 			lp->binddn=strdup(optarg);

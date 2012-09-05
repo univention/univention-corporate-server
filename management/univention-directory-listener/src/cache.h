@@ -38,6 +38,8 @@
 #include "network.h"
 #include "cache_entry.h"
 
+extern char *cache_dir;
+extern char *ldap_dir;
 
 #ifdef WITH_DB42
 struct _CacheMasterEntry {
