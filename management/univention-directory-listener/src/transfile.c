@@ -32,6 +32,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -41,11 +42,10 @@
 #include "transfile.h"
 
 #define TRANSACTION_FILE "/var/lib/univention-ldap/listener/listener"
-#define MAX_PATH_LEN 4096
 
 static FILE* fopen_lock ( const char *name, const char *type, FILE **l_file )
 {
-	char buf[MAX_PATH_LEN];
+	char buf[PATH_MAX];
 	FILE *file;
 	int count=0;
 	int rc;
