@@ -6,3 +6,9 @@ fix_save_in_libxl.patch
 0004-tap-ctl.patch
 CVE-2012-0029.patch
 CVE-2012-0217_CVE-2012-0218.patch
+CVE-2012-3432.patch
+CVE-2012-3433.patch
+CVE-2012-3494.patch
+CVE-2012-3495.patch
+CVE-2012-3496.patch
+CVE-2012-3498.patch

@@ -1,3 +1,15 @@
+xen-4.1 (4.1.2-8) unstable; urgency=low
+
+  * Fix multiple security issues: (Bug #28111)
+  * CVE-2012-3432
+  * CVE-2012-3433
+  * CVE-2012-3494
+  * CVE-2012-3495
+  * CVE-2012-3496
+  * CVE-2012-3498
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 06 Sep 2012 16:36:57 +0200
+
 xen-4.1 (4.1.2-7) ucs3-0-0-0; urgency=low
 
   * Fix CVE-2012-0029, CVE-2012-0217, CVE-2012-0218 (Bug #26029)
