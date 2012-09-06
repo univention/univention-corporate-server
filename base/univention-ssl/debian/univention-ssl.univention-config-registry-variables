@@ -58,21 +58,21 @@ Description[en]=Enable/Disable regular checks for certificate validity
 Type=bool
 Categories=system-ssl
 
-[ssl/validity/days]
-Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Rechner- bzw Root-Zertifikat.
-Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the host (or root) certificate.
+[ssl/validity/host]
+Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Rechner-Zertifikat.
+Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the host certificate.
+Type=int
+Categories=system-ssl
+
+[ssl/validity/root]
+Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Root-Zertifikat.
+Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the root certificate.
 Type=int
 Categories=system-ssl
 
 [ssl/validity/warning]
 Description[de]=Warnmeldungen ausgeben wenn die Gültigkeit des Root-Zertifikats die angegebenen Tage unterschreitet
 Description[en]=Print warnings if the root certificates validity ends within this amount of days
-Type=str
-Categories=system-ssl
-
-[ssl/validity/ca]
-Description[de]=Gibt an, ob sich ssl/validity/days auf das Rechnerzertifikat (false) oder die Root CA (true) bezieht
-Description[en]=Specifies whether ssl/validity/days refers to the host certificate (false) or the root ca (true)
 Type=str
 Categories=system-ssl
 

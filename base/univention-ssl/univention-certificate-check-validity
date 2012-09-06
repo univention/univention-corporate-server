@@ -68,14 +68,10 @@ if __name__ == '__main__':
 	days = get_validity_days('/etc/univention/ssl/%s/cert.pem' % fqdn)
 	days_ca = get_validity_days('/etc/univention/ssl/ucsCA/CAcert.pem')
 
-	if days_ca and days_ca < days:
-		days = days_ca
-		caExpiry = True
+	if days and days != _bc.get( 'ssl/validity/host', -1 ):
+		_bc[ 'ssl/validity/host' ] = str( days )
+		_bc.save()
 
-	if days and days != _bc.get( 'ssl/validity/days', -1 ):
-		_bc[ 'ssl/validity/days' ] = str( days )
-		if caExpiry:
-			_bc[ 'ssl/validity/ca' ] = "true"
-		else:
-			_bc[ 'ssl/validity/ca' ] = "false"
+	if days_ca and days_ca != _bc.get( 'ssl/validity/root', -1 ):
+		_bc[ 'ssl/validity/root' ] = str( days_ca )
 		_bc.save()

@@ -1,3 +1,11 @@
+univention-ssl (7.0.3-1) unstable; urgency=low
+
+  * removed ssl/validity/days, instead
+    added ssl/validity/host (host cert) and
+    ssl/validity/root (root ca) (Bug #27002) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 17:25:15 +0200
+
 univention-ssl (7.0.2-1) unstable; urgency=low
 
   * set ssl/validity/check?yes in postinst (Bug #19736)
