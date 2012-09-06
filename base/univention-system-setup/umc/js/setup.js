@@ -38,7 +38,7 @@ define([
 	"dojo/json",
 	"dojo/Deferred",
 	"dijit/Dialog",
-	"dojox/timing/Timer",
+	"dojox/timing/_base",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Text",
@@ -56,7 +56,7 @@ define([
 	"umc/modules/setup/SoftwarePage",
 	"umc/modules/setup/SystemRolePage",
 	"umc/modules/setup/HelpPage"
-], function(declare, lang, array, all, topic, when, json, Deferred, DijitDialog, Timer,
+], function(declare, lang, array, all, topic, when, json, Deferred, DijitDialog, timing,
 	tools, dialog, Text, Form, Module, TabContainer, ProgressBar, libServer, _) {
 
 	var CancelDialogException = declare("umc.modules.setup.CancelDialogException", null, {
@@ -99,7 +99,7 @@ define([
 			// make the session not expire
 			// before the user can confirm the cleanup dialog
 			// started (and stopped) in _cleanup
-			this._keepAlive = new Timer(1000 * 30);
+			this._keepAlive = new timing.Timer(1000 * 30);
 			this._keepAlive.onTick = function() {
 				// dont do anything important here, just
 				// make sure that umc does not forget us
@@ -164,7 +164,7 @@ define([
 				// wizard mode
 
 				// disallow page changing more than every 500 milliseconds
-				this._timerPageChange = new Timer(500);
+				this._timerPageChange = new timing.Timer(500);
 				this._timerPageChange.onTick = lang.hitch(this, function() { this._timerPageChange.stop(); });
 
 				// create all pages dynamically
@@ -643,13 +643,13 @@ define([
 						content: form,
 						style: 'max-width: 400px;'
 					});
-					_dialog.on('Hide', function() {
+					_dialog.on('Hide', lang.hitch(this, function() {
 						if (deferred.fired < 0) {
 							// user clicked the close button
 							this.standby(false);
 							deferred.reject();
 						}
-					});
+					}));
 					_dialog.show();
 					return deferred;
 				});

@@ -201,11 +201,11 @@ define([
 			// add onChange handlers that show the note
 			array.forEach(['interfaces_ipv4', 'interfaces_ipv6'], function(iname) {
 				var iwidget = this._form.getWidget(iname);
-				iwidget.watch('value', function() {
+				iwidget.watch('value', lang.hitch(this, function() {
 					if (iwidget.focused) {
 						this._showNote();
 					}
-				});
+				}));
 			}, this);
 			
 			this.addChild(this._form);

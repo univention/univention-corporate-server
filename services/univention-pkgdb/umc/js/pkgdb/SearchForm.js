@@ -149,16 +149,16 @@ define([
 			}));
 			
 			// whenever one of the dialog values is being changed...
-			this.getWidget('key').watch('value', lang.hitch(this, function(value) {
+			this.getWidget('key').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('key',value);
 			}));
-			this.getWidget('operator').watch('value', lang.hitch(this, function(value) {
+			this.getWidget('operator').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('operator',value);
 			}));
-			this.getWidget('pattern_text').watch('value', lang.hitch(this, function(value) {
+			this.getWidget('pattern_text').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('pattern_text',value);
 			}));
-			this.getWidget('pattern_list').watch('value', lang.hitch(this, function(value) {
+			this.getWidget('pattern_list').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('pattern_list',value);
 			}));
 		},

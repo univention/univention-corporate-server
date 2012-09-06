@@ -1,3 +1,9 @@
+univention-printserver (6.0.7-1) unstable; urgency=low
+
+  * version bump; Bug #26857
+
+ -- Florian Best <best@univention.de>  Thu, 06 Sep 2012 13:53:58 +0200
+
 univention-printserver (6.0.6-1) unstable; urgency=low
 
   * Fix quota support (Bug #17548)

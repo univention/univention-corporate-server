@@ -109,8 +109,8 @@ define([
 				scrollable: true
 			});
 
-			this._form.getWidget('fqdn').watch('value', 'onValuesChanged');
-			var fc = this._form.getWidget('fqdn').watch('value', function(name, oldVal, newVal) {
+			this._form.getWidget('fqdn').watch('value', lang.hitch(this, 'onValuesChanged'));
+			var fc = this._form.getWidget('fqdn').watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				function count(s) { 
 					var n = 0;
 					var i = 0;
@@ -125,7 +125,7 @@ define([
 					this.addNote(_("For Active Directory domains the fully qualified domain name must have at least two dots (e.g. host.example.com). This warning is shown only once, the installation can be continued with the name currently given."));
 				}
 				fc.remove();
-			});
+			}));
 
 			this.addChild(this._form);
 		},

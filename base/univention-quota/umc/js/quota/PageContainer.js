@@ -64,10 +64,10 @@ define([
 				helpText: _('Set, unset and modify filesystem quota')
 			});
 			this.addChild(this._partitionPage);
-			this._partitionPage.on('ShowDetailPage', function(userQuota) {
+			this._partitionPage.on('ShowDetailPage', lang.hitch(this, function(userQuota) {
 				this._detailPage.init(userQuota);
 				this.selectChild(this._detailPage);
-			});
+			}));
 		},
 
 		renderDetailPage: function() {
@@ -77,17 +77,17 @@ define([
 				helpText: _('Add quota setting for a user on partition')
 			});
 			this.addChild(this._detailPage);
-			this._detailPage.on('ClosePage', function() {
+			this._detailPage.on('ClosePage', lang.hitch(this, function() {
 				this.selectChild(this._partitionPage);
-			});
-			this._detailPage.on('SetQuota', function(values) {
+			}));
+			this._detailPage.on('SetQuota', lang.hitch(this, function(values) {
 				tools.umcpCommand('quota/users/set', values).then(lang.hitch(this, function(data) {
 					if (data.result.success === true) {
 						this.selectChild(this._partitionPage);
 						this._partitionPage.filter();
 					}
 				}));
-			});
+			}));
 		}
 	});
 });

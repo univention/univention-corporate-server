@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2011-2012 Univention GmbH
  *
  * http://www.univention.de/
@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/topic",
+	"umc/tools",
 	"umc/widgets/Module",
 	"umc/widgets/Wizard",
 	"umc/widgets/StandbyMixin",
@@ -42,7 +43,7 @@ define([
 	"umc/widgets/TextArea",
 	"umc/widgets/CheckBox",
 	"umc/i18n!umc/modules/sysinfo"
-], function(declare, lang, array, topic, Module, Wizard, StandbyMixin, ComboBox, TextBox, Text, TextArea, CheckBox, _) {
+], function(declare, lang, array, topic, tools, Module, Wizard, StandbyMixin, ComboBox, TextBox, Text, TextArea, CheckBox, _) {
 
 	var SysinfoWizard = declare("umc.modules.sysinfo.Wizard", [ Wizard, StandbyMixin ], {
 
@@ -376,12 +377,12 @@ define([
 			this._wizard = new SysinfoWizard({});
 			this.addChild(this._wizard);
 
-			this._wizard.on('Finished', function() {
+			this._wizard.on('Finished', lang.hitch(this, function() {
 				topic.publish('/umc/tabs/close', [ this ]);
-			});
-			this._wizard.on('Cancel', function() {
+			}));
+			this._wizard.on('Cancel', lang.hitch(this, function() {
 				topic.publish('/umc/tabs/close', [ this ]);
-			});
+			}));
 		}
 	});
 

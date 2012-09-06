@@ -247,13 +247,13 @@ define([
 					variables: response.result
 				} );
 				this.set( 'content', this._wizard );
-				this._wizard.on('Finished', function() {
+				this._wizard.on('Finished', lang.hitch(this, function() {
 					this.onSaved();
-				} );
-				this._wizard.on('Cancel', function() {
+				} ));
+				this._wizard.on('Cancel', lang.hitch(this, function() {
 					this.hide();
 					this.destroyRecursive();
-				} );
+				} ));
 				this._wizard.startup();
 			} ) );
 		},

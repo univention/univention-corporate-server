@@ -112,7 +112,7 @@ define([
 			// show notes for changes in the software settings
 			this._form.getWidget('components').watch('value', function() {
 				this._showNote('software');
-			});
+			}, this);
 
 			// remeber which notes have already been showed
 			this._noteShowed = { };

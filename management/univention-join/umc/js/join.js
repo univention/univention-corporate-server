@@ -922,13 +922,13 @@ define([
 				content: form,
 				style: 'max-width: 400px;'
 			});
-			_dialog.on('hide', function() {
+			_dialog.on('hide', lang.hitch(this, function() {
 				if (deferred.fired < 0) {
 					// user clicked the close button
 					this.standby(false);
 					deferred.reject();
 				}
-			});
+			}));
 			_dialog.show();
 			return deferred;
 		},

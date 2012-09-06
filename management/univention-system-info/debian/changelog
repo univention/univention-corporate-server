@@ -1,3 +1,9 @@
+univention-system-info (3.0.2-1) unstable; urgency=low
+
+  * version bump; Bug #26857
+
+ -- Florian Best <best@univention.de>  Thu, 06 Sep 2012 13:55:10 +0200
+
 univention-system-info (3.0.1-1) unstable; urgency=low
 
   * ported module to Dojo 1.8; Bug #26857

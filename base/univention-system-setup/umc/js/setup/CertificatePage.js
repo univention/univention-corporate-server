@@ -127,16 +127,16 @@ define([
 			});
 
 			tools.forIn(this._form._widgets, function(iname, iwidget) {
-				iwidget.on('KeyUp', function() {
+				iwidget.on('KeyUp', lang.hitch(this, function() {
 					if (iwidget.focused) {
 						this._showNote();
 					}
-				});
-				iwidget.watch('value', function() {
+				}));
+				iwidget.watch('value', lang.hitch(this, function() {
 					if (iwidget.focused) {
 						this._showNote();
 					}
-				});
+				}));
 			}, this);
 
 			this.addChild(this._form);

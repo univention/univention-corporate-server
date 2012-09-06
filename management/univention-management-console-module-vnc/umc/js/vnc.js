@@ -211,7 +211,7 @@ define([
 			});
 			this.addChild(this._vncPage);
 
-			this._vncPage.on('start', function() {
+			this._vncPage.on('start', lang.hitch(this, function() {
 				this.standby(true);
 				tools.umcpCommand('vnc/start').then(
 					lang.hitch(this, function(data) {
@@ -222,9 +222,9 @@ define([
 						this.standby(false);
 					})
 				);
-			});
+			}));
 
-			this._vncPage.on('stop', function() {
+			this._vncPage.on('stop', lang.hitch(this, function() {
 				this.standby(true);
 				tools.umcpCommand('vnc/stop').then(
 					lang.hitch(this, function(data) {
@@ -235,9 +235,9 @@ define([
 						this.standby(false);
 					})
 				);
-			});
+			}));
 
-			this._vncPage.on('connect', function() {
+			this._vncPage.on('connect', lang.hitch(this, function() {
 				tools.umcpCommand('vnc/connect').then(
 					lang.hitch( this, function( response ) {
 						var w = window.open();
@@ -249,7 +249,7 @@ define([
 						w.document.close();
 					})
 				);
-			});
+			}));
 		},
 
 		renderPasswordPage: function() {
@@ -259,7 +259,7 @@ define([
 			});
 			this.addChild(this._passwordPage);
 
-			this._passwordPage.on('SetPassword', function(password) {
+			this._passwordPage.on('SetPassword', lang.hitch(this, function(password) {
 				this.standby(true);
 				tools.umcpCommand('vnc/password', {'password': password}).then(
 					lang.hitch(this, function(data) {
@@ -270,7 +270,7 @@ define([
 						this.standby(false);
 					})
 				);
-			});
+			}));
 		},
 
 		init: function() {

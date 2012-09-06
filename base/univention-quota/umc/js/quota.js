@@ -184,14 +184,14 @@ define([
 				}
 			});
 			titlePane.addChild(this._grid);
-			this._grid.on('FilterDone', function() {
+			this._grid.on('FilterDone', lang.hitch(this, function() {
 				var gridItems = this._grid.getAllItems(); // TODO rename?
 				array.forEach(gridItems, lang.hitch(this, function(item) {
 					if (item.inUse === null) {
 						this._grid.setDisabledItem(item.partitionDevice, true);
 					}
 				}));
-			});
+			}));
 
 			this._overviewPage.startup();
 		},

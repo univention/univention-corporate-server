@@ -1,3 +1,9 @@
+univention-join (5.0.6-1) unstable; urgency=low
+
+  * version bump; Bug #26857
+
+ -- Florian Best <best@univention.de>  Thu, 06 Sep 2012 13:55:34 +0200
+
 univention-join (5.0.5-1) unstable; urgency=low
 
   * Consider nss/group/cachefile in join script (Bug #28361)
