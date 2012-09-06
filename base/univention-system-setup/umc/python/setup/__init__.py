@@ -636,6 +636,11 @@ class Instance(umcm.Base):
 		interfaces = [ idev['name'] for idev in util.detect_interfaces() ]
 		self.finished(request.id, interfaces)
 
+	def net_interfaces_query(self, request):
+		'''Return a list of all available network interfaces.'''
+		interfaces = [ {'if': idev['name'], 'ip': '10.200.27.150', 'nm': '255.255.255.0'} for idev in util.detect_interfaces() ]
+		self.finished(request.id, interfaces)
+
 	def net_dhclient(self, request):
 		'''Request a DHCP address. Expects as options a dict containing the key
 		"interface" and optionally the key "timeout" (in seconds).'''

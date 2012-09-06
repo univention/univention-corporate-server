@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-DEST_DIR=/usr/share/univention-management-console-frontend/js/umc/modules/_setup
+DEST_DIR=/usr/share/univention-management-console-frontend/js/umc/modules/setup
 DEST_NAME=help.html
 DEFAULT_NAME=help_default.html
 UCR_NAME=system/setup/boot/help

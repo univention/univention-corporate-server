@@ -244,7 +244,7 @@ define([
 					this._pages.push(ipage);
 
 					// connect to onValuesChanged callback of every page
-					ipage.on('onValuesChanged', this.updateAllValues);
+					ipage.on('onValuesChanged', lang.hitch(this, 'updateAllValues'));
 				}, this);
 				// Now we know which pages were loaded, adjust HelpPage text
 				array.forEach(this._pages, lang.hitch(this, function(page) {
@@ -310,7 +310,7 @@ define([
 					this._pages.push(ipage);
 
 					// connect to onValuesChanged callback of every page
-					ipage.on('onValuesChanged', this.updateAllValues);
+					ipage.on('onValuesChanged', lang.hitch(this, 'updateAllValues'));
 
 					// hide tab if page is not visible
 					ipage.watch('visible', function(name, oldval, newval) {

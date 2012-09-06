@@ -37,6 +37,6 @@ create_logfile /var/log/univention/setup.log "root:adm" 640
 
 chmod -R 700 /var/cache/univention-system-setup
 
-univention-config-registry set 'system/setup/boot/help?/usr/share/univention-management-console-frontend/js/umc/modules/_setup/:help_default.html'
+univention-config-registry set 'system/setup/boot/help?/usr/share/univention-management-console-frontend/js/umc/modules/setup/:help_default.html'
 
 exit 0
