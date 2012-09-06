@@ -31,8 +31,8 @@ var profile = (function() {
 	return {
 		resourceTags:{
 			copyOnly: function(filename, mid) {
-				// copy all .html and .css
-				return /\.(html|css)$/.test(filename) || mid == 'umc/umc.profile.js';
+				// copy all .html, .css, and .json files
+				return /\.(html|css|json)$/.test(filename) || mid == 'umc/umc.profile.js';
 			},
 
 			amd: function(filename, mid) {

@@ -41,16 +41,16 @@ var profile = (function() {
 
 		packages:[{
 			name: "dojo",
-			location: "/usr/share/univention-dojo/dojo"
+			location: "tmp/dojo"
 		}, {
 			name: "dijit",
-			location: "/usr/share/univention-dojo/dijit"
+			location: "tmp/dijit"
 		}, {
 			name: "dojox",
-			location: "/usr/share/univention-dojo/dojox"
+			location: "tmp/dojox"
 		}, {
 			name: "umc",
-			location: "umc"
+			location: "tmp/umc"
 		}],
 
 		optimize : "shrinksafe.keepLines",

@@ -33,15 +33,17 @@
 jsFiles:=$(shell find umc -name "*.js")
 pkgDir:=/usr/share/univention-management-console-frontend/
 timestamp:=$$$(shell date +'%Y%d%m%H%M%S')$$
+dojoDir:=/usr/share/univention-dojo
 version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir:=$(CURDIR)/build
-tmpDir:=$(buildDir)/_tmp$(timestamp)
 dojo_tmp_dir:=$(buildDir)/univention-dojo
 rel_root_path:=$(shell echo '$(dojo_tmp_dir)/util/docscripts' | sed -e 's,/[^/]*,../,g')
+tmpDir:=$(CURDIR)/tmp
+themesDir:=$(tmpDir)/dijit/themes
 
 .PHONY: build build-dev build-common api-doc install clean jslint i18n umc/package.json
 
-build: build-common api-doc $(buildDir)/js/dojo/dojo.js.uncompressed.js $(buildDir)/css $(buildDir)/images
+build: build-common api-doc $(tmpDir) $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
 
 # the automatically generated module umc/widgets contains a require to all umc widgets
 umc/widgets.js:
@@ -53,6 +55,12 @@ umc/widgets.js:
 
 umc/package.json:
 	sed 's/%VERSION%/$(version)/' package.json > $@
+
+# temp directory
+$(tmpDir):
+	mkdir -p $@
+	cp -rfs $(dojoDir)/dojo $(dojoDir)/dijit $(dojoDir)/dojox $@
+	cp -rfs "$(CURDIR)/umc" $@
 
 # convert .po to .json files
 i18n:
@@ -74,52 +82,46 @@ $(buildDir)/debug.html: $(buildDir) index.html
 	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' index.html > $@
 
 # login page
-$(buildDir)/js/umc/login.html: $(buildDir) login.html
+$(tmpDir)/umc/login.html: login.html
 	mkdir -p $(dir $@)
 	sed 's/%HASH%/_$(timestamp)/;' login.html > $@
 
-# copy css style sheets and images
-$(buildDir)/css $(buildDir)/images: $(buildDir)
-	rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
-
-build-dev: build-common
-	mkdir -p "$(buildDir)/js"
-	@# create the module umc.widgets containing a require for all umc widgets
-	@# symlinks to dojo source code
-	for i in dojo dijit dojox; do \
-		ln -fs /usr/share/univention-dojo/$$i "$(buildDir)/js"; \
-	done
-	@# index page .. replace the HASH with a timestamp
+# copy css and image data into umc themes directory
+$(themesDir)/umc: $(tmpDir) css
+	@#rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css $@
 	@# symlinks for css style sheets and images
-	cp -rfs "$(CURDIR)/css" "$(CURDIR)/images" "$(buildDir)"
-	@# symlinks for UMC code
-	cp -rfs "$(CURDIR)/umc" "$(buildDir)/js"
-	@# symlinks for installed modules/icons
-	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(buildDir)/js/umc/modules
-	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(buildDir)/images/icons/
+	cp -rfs "$(CURDIR)/css" "$@"
 
-build-common: i18n umc/widgets.js umc/package.json $(buildDir)/index.html $(buildDir)/debug.html $(buildDir)/js/umc/login.html
+$(themesDir)/umc/images/icons: $(themesDir)/umc
 	@# scale all icons
 	for s in 16x16 50x50; do \
-		mkdir -p "$(buildDir)/images/icons/$$s"; \
+		mkdir -p "$@/$$s"; \
 		for i in icons/*.png; do \
-			dest="$(buildDir)/images/icons/$$s/$${i##*/}"; \
+			dest="$@/$$s/$${i##*/}"; \
 			if [ ! -e "$$dest" ]; then \
 				convert "$$i" -resize $$s "$$dest"; \
 			fi; \
 		done; \
 	done
-	@# symlinks as temporary directories with timestamp
-	for i in js css; do \
-		rm -f "$(buildDir)/$${i}_"*; \
-		ln -s "$$i" "$(buildDir)/$${i}_"'$(timestamp)'; \
-	done;
+
+build-dev: build-common
+	@# symlinks for installed modules/icons
+	mkdir -p $(tmpDir)/umc/modules
+	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules
+	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(themesDir)/umc/images/icons/
+	@# symlink javascript code
+	ln -s $(tmpDir) $(buildDir)/js
+
+build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)/umc/images/icons $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+	@# symlink to javascript dir with timestamp
+	rm -f "$(buildDir)/js_"*
+	ln -s "js" "$(buildDir)/js_"'$(timestamp)'
 	@# install JSON translation file for framework
 	for i in "$(CURDIR)/umc/"*.json; do \
 		lang=$${i##*/}; \
 		lang=$${lang%.*}; \
-		mkdir -p "$(buildDir)/js/umc/i18n/$$lang"; \
-		cp $$i "$(buildDir)/js/umc/i18n/$$lang/app.json"; \
+		mkdir -p "$(tmpDir)/umc/i18n/$$lang"; \
+		cp $$i "$(tmpDir)/umc/i18n/$$lang/app.json"; \
 	done
 
 api-doc: umc.xml
@@ -139,8 +141,8 @@ install: build
 	cp umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
 	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
-	rsync -rpl --exclude ".svn" --exclude "_tmp"'$(timestamp)' "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
+	rsync -rpl --exclude ".svn" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
 
 clean:
-	rm -rf $(buildDir) umc.xml umc/widgets.js umc/{en,de}.json umc/package.json
+	rm -rf $(tmpDir) $(buildDir) umc.xml umc/widgets.js umc/{en,de}.json umc/package.json
 

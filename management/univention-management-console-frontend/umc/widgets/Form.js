@@ -175,7 +175,7 @@ define([
 			this._initializedDeferred = new Deferred();
 
 			if (this.scrollable) {
-				style(this.containerNode, {
+				style.set(this.containerNode, {
 					overflow: 'auto'
 				});
 			}

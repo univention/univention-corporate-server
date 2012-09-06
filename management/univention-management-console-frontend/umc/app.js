@@ -546,7 +546,7 @@ define([
 
 			// add logout button
 			headerRight.addChild(new Button({
-				label: '<img src="images/logout.png">',
+				label: '<img src="js/dijit/themes/umc/logout.png">',
 				'class': 'umcHeaderButton umcLogoutButton',
 				onClick: lang.hitch(this, function() {
 					dialog.confirm(_('Do you really want to logout?'), [{
