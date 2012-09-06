@@ -1,3 +1,10 @@
+univention-updater (8.0.6-1) unstable; urgency=low
+
+  * Remove functionality: Updater now just installs updates,
+    no components, no settings (Bug #25784)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 06 Sep 2012 14:04:53 +0200
+
 univention-updater (8.0.5-1) unstable; urgency=low
 
   * Rename UCR variables in preup from 30 (UCS 3.0) to 31 (UCS 3.1)

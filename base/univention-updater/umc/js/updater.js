@@ -39,14 +39,10 @@ dojo.require("umc.tools");
 // ------- Overloaded classes --------
 dojo.require("umc.modules._updater.Module");
 dojo.require("umc.modules._updater.Page");
-dojo.require("umc.modules._updater.Grid");
 dojo.require("umc.modules._updater.Form");
 
 // ------- Pages inside the module ----------
 dojo.require("umc.modules._updater.UpdatesPage");
-dojo.require("umc.modules._updater.ComponentsPage");
-dojo.require("umc.modules._updater.DetailsPage");
-dojo.require("umc.modules._updater.SettingsPage");
 dojo.require("umc.modules._updater.ProgressPage");
 
 dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
@@ -66,15 +62,9 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		this.inherited(arguments);
 
 		this._updates = new umc.modules._updater.UpdatesPage({});
-		this._components = new  umc.modules._updater.ComponentsPage({});
-		this._details = new umc.modules._updater.DetailsPage({});
-		this._settings = new umc.modules._updater.SettingsPage({});
 		this._progress = new umc.modules._updater.ProgressPage({});
 
 		this.addChild(this._updates);
-		this.addChild(this._components);
-		this.addChild(this._details);
-		this.addChild(this._settings);
 		this.addChild(this._progress);
 
 		// --------------------------------------------------------------------------
@@ -82,33 +72,9 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		//		Connections that make the UI work (mostly tab switching)
 		//
 
-		// switches from 'add' or 'edit' (components grid) to the detail form
-		dojo.connect(this._components,'showDetail',dojo.hitch(this, function(id) {
-			this.exchangeChild(this._components,this._details);
-			// if an ID is given: pass it to the detail page and let it load
-			// the corresponding component record
-			if (id)
-			{
-				this._details.startEdit(false,id);
-			}
-			// if ID is empty: ask the SETTINGS module for default values.
-			else
-			{
-				this._details.startEdit(true,this._settings.getComponentDefaults());
-			}
-		}));
-
-		// closes detail form and returns to grid view.
-		dojo.connect(this._details,'closeDetail',dojo.hitch(this, function(args) {
-			this.exchangeChild(this._details,this._components);
-		}));
-
-		// waits for the Progress Page to be closed (automatically or by a close button)
 		dojo.connect(this._progress,'stopWatching',dojo.hitch(this, function(tab) {
 			this.hideChild(this._progress);
 			this.showChild(this._updates);
-			this.showChild(this._components);
-			this.showChild(this._settings);
 
 			// Revert to the 'Updates' page if the installer action encountered
 			// the 'reboot' affordance.
@@ -124,7 +90,6 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		// XXX can remain this way
 		dojo.connect(this._progress,'jobFinished',dojo.hitch(this, function() {
 			this._updates.refreshPage(true);
-			this._components.refreshPage();
 		}));
 
 		// waits for the Progress Page to notify us that a job is running
@@ -138,31 +103,12 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		//		them to other pages
 		//
 
-		// *** NOTE *** the Components Grid is able to refresh itself automatically,
-		//				so we don't have to refresh it manually on any changes.
-
 		// *** NOTE *** the Updates Page also has some mechanisms to refresh itself
 		//				on changes that reflect themselves in the sources.list
 		//				snippet files. But this refresh is intentionally slow (once
 		//				in 5 secs) to avoid resource congestion. The callbacks here
 		//				should immediately trigger refresh whenever something was
 		//				done at the frontend UI.
-
-		// listens for changes on the 'settings' tab and refreshes the 'updates' page.
-		dojo.connect(this._settings,'dataChanged',dojo.hitch(this, function() {
-			this._updates.refreshPage();
-		}));
-
-		// called whenever detail form is successfully saved. Should refresh 'Updates' page.
-		dojo.connect(this._details,'dataChanged',dojo.hitch(this, function(args) {
-			this._updates.refreshPage();
-		}));
-
-		// listens for changes on the 'components' grid (enabling/disabling) and
-		// refreshes the 'Updates' page.
-		dojo.connect(this._components,'dataChanged',dojo.hitch(this, function() {
-			this._updates.refreshPage();
-		}));
 
 		// ---------------------------------------------------------------------------
 		//
@@ -187,15 +133,6 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 		//		Connections that centralize the work of the installer:
 		//		listen for events that should start UniventionUpdater
 		//
-
-		// invokes the installer from the 'install' button (components grid)
-		dojo.connect(this._components,'installComponent',dojo.hitch(this, function(name) {
-			this._call_installer({
-				job:		'component',
-				detail:		name,
-				confirm:	dojo.replace(this._("Do you really want to install the '{name}' component?"),{name: name})
-			});
-		}));
 
 		// invokes the installer from the 'release update' button (Updates Page)
 		dojo.connect(this._updates,'runReleaseUpdate',dojo.hitch(this, function(release) {
@@ -238,7 +175,6 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 
 		this.inherited(arguments);
 
-		this.hideChild(this._details);
 		this.hideChild(this._progress);
 
 	},
@@ -443,8 +379,6 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 			}
 
 			this.hideChild(this._updates);
-			this.hideChild(this._components);
-			this.hideChild(this._settings);
 
 			this.showChild(this._progress);
 			this.selectChild(this._progress);
@@ -523,7 +457,6 @@ dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
 						// is already active.
 						this._updates.refreshPage();
 						this._updates.startPolling();
-						this._components.startPolling();
 						this._progress.startPolling();
 					})
 					);

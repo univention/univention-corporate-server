@@ -42,7 +42,7 @@ dojo.require("umc.widgets.StandbyMixin");
 //
 dojo.declare("umc.modules._updater.Page", [
 	umc.widgets.Page,
-    umc.widgets.StandbyMixin,
+	umc.widgets.StandbyMixin,
 	umc.i18n.Mixin
 	] ,
 {
@@ -104,3 +104,4 @@ dojo.declare("umc.modules._updater.Page", [
 	_query_success: function(subject) {
 	}
 });
+

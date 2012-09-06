@@ -8,33 +8,6 @@
 	</categories>
 
 	<!--
-		ONLINE/COMPONENTS namespace: drives the components grid
-		and the associated 'component details' form.
-	 -->
-	<!-- QUERY: return a list of components, along with their status -->
-	<command name="updater/components/query" function="query_components"/>
-	<!-- SERIAL: an interface to track changedness -->
-	<command name="updater/components/serial" function="serial"/>
-	<!-- GET: retrieve one element with this ID -->
-	<command name="updater/components/get" function="get_components">
-		<!-- TODO: specify the arg list that umcpModuleStore.get() gives to us -->
-	</command>
-	<!-- PUT: write back settings for one component -->
-	<command name="updater/components/put" function="put_components">
-		<attribute name="enabled" syntax="Boolean"/>
-		<attribute name="name" syntax="String"/>
-		<attribute name="description" syntax="String"/>
-		<attribute name="server" syntax="String"/>
-		<attribute name="prefix" syntax="String"/>
-		<attribute name="maintained" syntax="Boolean"/>
-		<attribute name="unmaintained" syntax="Boolean"/>
-		<attribute name="username" syntax="String"/>
-		<attribute name="password" syntax="String"/>
-	</command>
-	<!-- DEL: remove the given component -->
-	<command name="updater/components/del" function="del_components"/>
-
-	<!--
 		ONLINE/UPDATES namespace: to fetch the elements of
 		the overview 'updates' page.
 	 -->
@@ -48,21 +21,6 @@
 	<command name="updater/updates/available" function="updates_available"/>
 	<!-- CHECK: return a list of packages eligible for update/install/remove -->
 	<command name="updater/updates/check" function="updates_check"/>
-
-	<!--
-		ONLINE/SETTINGS namespace: to fetch and write settings. Even if this
-		is not really a tabular namespace, we treat it this way, and will
-		always get/set the first and only 'record'.
-	 -->
-	<!-- GET: retrieve the settings. -->
-	<command name="updater/settings/get" function="get_settings"/>
-	<!-- PUT: write back settings. -->
-	<command name="updater/settings/put" function="put_settings">
-		<attribute name="server" syntax="String"/>
-		<attribute name="prefix" syntax="String"/>
-		<attribute name="maintained" syntax="Boolean"/>
-		<attribute name="unmaintained" syntax="Boolean"/>
-	</command>
 
 	<!--
 		ONLINE/INSTALLER namespace:

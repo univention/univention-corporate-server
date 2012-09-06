@@ -407,7 +407,7 @@ dojo.declare("umc.modules._updater.ProgressPage", umc.modules._updater.Page, {
 			'running': {
 				// title:			this._("Update in progress"),
 				headerText:		this._("Univention Updater is working"),
-				helpText:		this._("As long as the Univention Updater is updating your system, you're not allowed to manage settings or components. You may watch the progress, or close the module.")
+				helpText:		this._("As long as the Univention Updater is updating your system, you're not allowed to manage settings. You may watch the progress, or close the module.")
 			},
 			'success': {
 				// title:			this._("Update finished"),
