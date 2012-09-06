@@ -1,3 +1,10 @@
+univention-dansguardian (6.0.0-1) unstable; urgency=low
+
+  * disable virus scan if squid/virusscan is false (Bug #13674)
+  * version bump for UCS 3.1
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 14:40:41 +0200
+
 univention-dansguardian (5.0.1-14) unstable; urgency=low
 
   * Update transitional relations (Bug #22576) 
