@@ -3,7 +3,7 @@
 #
 # Univention Nagios
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,7 +36,6 @@ import os
 import time
 
 import univention_baseconfig
-
 
 class SSLCertificateCheck:
 	def __init__(self):
@@ -103,22 +102,28 @@ class SSLCertificateCheck:
 		_bc = univention_baseconfig.baseConfig()
 		_bc.load()
 
-		expiredate = -1
-		if _bc.has_key('ssl/validity/days'):
-			expiredate = _bc['ssl/validity/days']
-		if int(expiredate) > 0:
-			today = int(time.time()) / 60 / 60 / 24
-			diff = int(expiredate) - today
+		today = int(time.time()) / 60 / 60 / 24
+		rootc = int(_bc.get("ssl/validity/root", -1))
+		hostc = int(_bc.get("ssl/validity/host", -1))
+
+		# check root ca or host cert
+		certValid = rootc
+		certType = "SSL root CA"
+		if rootc >= hostc:
+			certValid = hostc
+			certType = "SSL host certificate"
+
+		if certValid > 0:
+			diff = certValid - today
 			if diff <= self.days_critical:
 				state = 'CRITICAL'
 			elif diff <= self.days_warning:
 				state = 'WARNING'
 			else:
 				state = 'OK'
-
-			msg = 'SSL certificate expires in %s days (warn@%s - crit@%s)' % (diff, self.days_warning, self.days_critical)
+			msg = "%s expires in %s days (warn@%s - crit@%s)" % (certType, diff, self.days_warning, self.days_critical)
 		else:
-			msg = 'unable to determine expire date - baseconfig variable ssl/validity/days is not set'
+			msg = 'unable to determine expire date - ucr variables ssl/validity/host|root are not set'
 
 		self.exit_with_status(state, msg)
 

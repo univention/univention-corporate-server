@@ -1,3 +1,10 @@
+univention-nagios (6.0.1-1) unstable; urgency=low
+
+  * added ssl/validity/root|host support in  
+    check_univention_ssl_certificate (Bug #27002)
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 17:30:26 +0200
+
 univention-nagios (6.0.0-1) unstable; urgency=low
 
   * Build only for Python 2.6 (Bug #26852)
