@@ -1,3 +1,9 @@
+univention-system-setup (6.0.19-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Florian Best <best@univention.de>  Thu, 06 Sep 2012 09:25:43 +0200
+
 univention-system-setup (6.0.18-1) unstable; urgency=low
 
   * Use new method from univention-lib package manager (Bug #28010)
