@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.29-1) unstable; urgency=low
+
+  * removed unused css files; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 06 Sep 2012 20:25:29 +0200
+
 univention-management-console-frontend (2.0.28-1) unstable; urgency=low
 
   * reorganized css files and images; Bug #26857
