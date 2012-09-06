@@ -42,9 +42,9 @@ define([
 	"umc/widgets/TextArea",
 	"umc/widgets/CheckBox",
 	"umc/i18n!umc/modules/sysinfo"
-], function(declare, lang, array, topic, Module, Wizard, StandbyMixin, ComboBox, TextBox, Text, TextArea, CheckBox _) {
+], function(declare, lang, array, topic, Module, Wizard, StandbyMixin, ComboBox, TextBox, Text, TextArea, CheckBox, _) {
 
-	var SysinfoWizard = declare("umc.modules._sysinfo.Wizard", [ Wizard, StandbyMixin ], {
+	var SysinfoWizard = declare("umc.modules.sysinfo.Wizard", [ Wizard, StandbyMixin ], {
 
 		standbyOpacity: 1.00,
 

@@ -43,7 +43,7 @@ define([
 	"umc/i18n!umc/modules/printers"
 ], function(declare, lang, when, dialog, store, tools, Page, Grid, Text, ExpandingTitlePane, QuotaDialog, _) {
 
-	return declare("umc.modules._printers.QuotaPage", [ Page ], { 
+	return declare("umc.modules.printers.QuotaPage", [ Page ], { 
 		
 		postMixInProperties: function() {
 			
