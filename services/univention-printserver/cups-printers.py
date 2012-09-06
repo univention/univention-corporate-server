@@ -110,7 +110,7 @@ def handler(dn, new, old):
 	if new:
 		if 'univentionPrinterGroup' in new.get('objectClass', ()):
 			printer_is_group = True
-		if new.get('univentionPrinterQuotaSupport', EMPTY) == "1":
+		if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
 			quota_support = True
 		else:
 			quota_support = False
