@@ -337,6 +337,13 @@ class PackageManager(object):
 			self.reopen_cache()
 			return True
 
+	def get_packages(self, pkg_names):
+		'''Get many Package-objects at once
+		(only those that exist, write error
+		for others)
+		'''
+		return filter(None, map(self.get_package, pkg_names))
+
 	def get_package(self, pkg_name):
 		'''Get Package-object for package_name
 		Otherwise write an error
@@ -358,6 +365,13 @@ class PackageManager(object):
 			return None
 		else:
 			return package.is_installed
+
+	def packages(self, reopen=False):
+		'''Yields all packages in cache'''
+		if reopen:
+			self.reopen_cache()
+		for pkg in self.cache:
+			yield pkg
 
 	def mark(self, install, remove, dry_run=False):
 		'''Marks packages, returns all
@@ -392,7 +406,9 @@ class PackageManager(object):
 		# silently not be installed
 		for pkg in remove:
 			if not pkg.marked_delete:
-				broken.add(pkg.name)
+				# maybe its already removed...
+				if pkg.is_installed:
+					broken.add(pkg.name)
 		for pkg in install:
 			if not pkg.marked_install:
 				# maybe its already installed...
@@ -468,11 +484,7 @@ class PackageManager(object):
 	def install(self, *pkg_names):
 		'''Instantly installs packages when found.
 		works like apt-get install and apt-get upgrade'''
-		pkgs = []
-		for pkg_name in pkg_names:
-			pkg = self.get_package(pkg_name)
-			if pkg is not None:
-				pkgs.append(pkg)
+		pkgs = self.get_packages(pkg_names)
 		result = self.commit(install=pkgs)
 		for pkg in pkgs:
 			pkg = self.cache[pkg.name] # fresh from cache
@@ -482,11 +494,7 @@ class PackageManager(object):
 
 	def uninstall(self, *pkg_names):
 		'''Instantly deletes packages when found'''
-		pkgs = []
-		for pkg_name in pkg_names:
-			pkg = self.get_package(pkg_name)
-			if pkg is not None:
-				pkgs.append(pkg)
+		pkgs = self.get_packages(pkg_names)
 		result = self.commit(install=self._always_install, remove=pkgs)
 		for pkg in pkgs:
 			pkg = self.cache[pkg.name] # fresh from cache
