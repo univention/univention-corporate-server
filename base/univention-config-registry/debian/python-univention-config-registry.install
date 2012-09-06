@@ -8,7 +8,7 @@ python/univention/debhelper.py usr/share/pyshared/univention/
 
 python/univention/config_registry/__init__.py usr/share/pyshared/univention/config_registry/
 python/univention/config_registry/backend.py usr/share/pyshared/univention/config_registry/
-python/univention/config_registry/filter.py usr/share/pyshared/univention/config_registry/
+python/univention/config_registry/filters.py usr/share/pyshared/univention/config_registry/
 python/univention/config_registry/frontend.py usr/share/pyshared/univention/config_registry/
 python/univention/config_registry/handler.py usr/share/pyshared/univention/config_registry/
 python/univention/config_registry/interfaces.py usr/share/pyshared/univention/config_registry/

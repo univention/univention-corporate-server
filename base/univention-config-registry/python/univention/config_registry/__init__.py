@@ -36,7 +36,7 @@ from univention.config_registry.handler import \
         run_filter as filter, ConfigHandlers as configHandlers
 from univention.config_registry.misc import \
         key_shell_escape, validate_key, INVALID_KEY_CHARS as invalid_key_chars
-from univention.config_registry.filter import \
+from univention.config_registry.filters import \
         Output, filter_shell, filter_keys_only, filter_sort
 from univention.config_registry.frontend import \
         REPLOG_FILE, UnknownKeyException, main, \

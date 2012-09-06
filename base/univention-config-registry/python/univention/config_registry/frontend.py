@@ -44,7 +44,7 @@ from univention.config_registry.handler import \
         run_filter, ConfigHandlers
 from univention.config_registry.misc import \
         randpw, validate_key
-from univention.config_registry.filter import \
+from univention.config_registry.filters import \
         Output, filter_shell, filter_keys_only, filter_sort
 
 __all__ = [
