@@ -22,8 +22,8 @@ msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
 #: umc/js/packages.js:426
-msgid "You're currently {verb} the '{id}' package:"
-msgstr "Das Paket '{id}' wird momentan {verb}"
+msgid "You're currently {verb} {id}"
+msgstr "{ids} wird/werden momentan {verb}"
 
 #: umc/js/packages.js:179
 msgid ""
@@ -52,8 +52,8 @@ msgid "Details for package '{package}'"
 msgstr "Details für Paket '{package}'"
 
 #: umc/js/packages.js:430
-msgid "Do you really want to {verb} the '{id}' package?"
-msgstr "Möchten Sie wirklich das Paket '{id}' {verb}?"
+msgid "Do you really want to {verb} {ids}?"
+msgstr "Möchten Sie wirklich {ids} {verb}?"
 
 #: umc/js/packages.js:88 umc/js/packages.js:269
 msgid "Install"
@@ -77,11 +77,11 @@ msgstr "Anwärterversion"
 
 #: umc/js/packages.js:348
 msgid "Is installed"
-msgstr "installiert"
+msgstr "Installiert"
 
 #: umc/js/packages.js:349
-msgid "Is upgradeable"
-msgstr "aktualisierbar"
+msgid "Is upgradable"
+msgstr "Aktualisierbar"
 
 #: umc/js/packages.js:377 umc/js/packages.js:435
 msgid "No"
@@ -188,6 +188,251 @@ msgstr "aktualisieren"
 #: umc/js/packages.js:423
 msgid "upgrading"
 msgstr "aktualisiert"
+
+#: umc/js/_updater/SettingsPage.js:91 umc/js/_updater/DetailsPage.js:112
+msgid "Use maintained repositories"
+msgstr "'Maintained' Repositories benutzen"
+
+#: umc/js/_updater/SettingsPage.js:96 umc/js/_updater/DetailsPage.js:117
+msgid "Use unmaintained repositories"
+msgstr "'Unmaintained' Repositories benutzen"
+
+#: umc/js/_updater/DetailsPage.js:122
+msgid "Username"
+msgstr "Benutzername"
+
+#: umc/js/_updater/DetailsPage.js:132
+msgid "Version"
+msgstr "Version"
+
+#: umc/js/_updater/DetailsPage.js:204
+msgid "Please enter the details for the new component."
+msgstr "Bitte geben Sie die Details für die neue Komponente ein."
+
+#: umc/js/_updater/SettingsPage.js:86 umc/js/_updater/DetailsPage.js:107
+msgid "Repository prefix"
+msgstr "Repository Prefix"
+
+#: umc/js/_updater/SettingsPage.js:81 umc/js/_updater/DetailsPage.js:102
+msgid "Repository server"
+msgstr "Repository Server"
+
+#: umc/js/_updater/DetailsPage.js:228
+msgid "You're editing the details of the component definition."
+msgstr "Sie bearbeiten die Details der Komponenten-Definition."
+
+#: umc/js/_updater/DetailsPage.js:55
+msgid "back to overview"
+msgstr "zurück zur Übersicht"
+
+#: umc/js/_updater/DetailsPage.js:127
+msgid "Password"
+msgstr "Passwort"
+
+#: umc/js/_updater/DetailsPage.js:97
+msgid "Description"
+msgstr "Beschreibung"
+
+#: umc/js/_updater/DetailsPage.js:203
+msgid "Add a new component"
+msgstr "Neue Komponente hinzufügen"
+
+#: umc/js/_updater/DetailsPage.js:149
+msgid "Advanced settings"
+msgstr "Weitere Einstellungen"
+
+#: umc/js/_updater/SettingsPage.js:62 umc/js/_updater/DetailsPage.js:70
+msgid "Apply changes"
+msgstr "Änderungen anwenden"
+
+#: umc/js/_updater/DetailsPage.js:140
+msgid "Basic settings"
+msgstr "Allgemeine Einstellungen"
+
+#: umc/js/_updater/ComponentsPage.js:183 umc/js/_updater/DetailsPage.js:92
+msgid "Component Name"
+msgstr "Name der Komponente"
+
+#: umc/js/_updater/ComponentsPage.js:50 umc/js/_updater/DetailsPage.js:49
+msgid "Components"
+msgstr "Komponenten"
+
+#: umc/js/_updater/ComponentsPage.js:94
+msgid "Disable"
+msgstr "Deaktivieren"
+
+#: umc/js/_updater/ComponentsPage.js:214
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: umc/js/_updater/DetailsPage.js:227
+msgid "Edit component details [{component}]"
+msgstr "Komponenten-Details [{component}] bearbeiten"
+
+#: umc/js/_updater/DetailsPage.js:87
+msgid "Enable this component"
+msgstr "Diese Komponente aktivieren"
+
+#: umc/js/_updater/ComponentsPage.js:86
+msgid "Enable/disable this component"
+msgstr "Diese Komponente aktivieren"
+
+#: umc/js/_updater/ComponentsPage.js:129
+msgid "Install the component's default package(s)"
+msgstr "Die Standardpakete dieser Komponente installieren"
+
+#: umc/js/_updater/ComponentsPage.js:219
+msgid "Installed"
+msgstr "Installiert"
+
+#: umc/js/_updater/ComponentsPage.js:216
+msgid "Not found"
+msgstr "Nicht gefunden"
+
+#: umc/js/_updater/ComponentsPage.js:52
+msgid ""
+"On this page, you find all additional components defined for this system. "
+"You can enable/disable/edit/delete them, and you can add new ones here."
+msgstr ""
+"Auf dieser Seite sehen Sie alle Komponenten, die für dieses System definiert "
+"sind, Die Komponenten können aktiviert oder deaktiviert werden, Details "
+"einer Komponente können geändert, Komponenten gelöscht oder unter bestimmten "
+"Umständen installiert werden."
+
+#: umc/js/_updater/ComponentsPage.js:90
+msgid "On/Off"
+msgstr "An/Aus"
+
+#: umc/js/_updater/ComponentsPage.js:217
+msgid "Permission denied"
+msgstr "Zugriff verweigert"
+
+#: umc/js/_updater/ComponentsPage.js:76
+msgid "Refresh display to see current values"
+msgstr "Anzeige aktualisieren"
+
+#: umc/js/_updater/ComponentsPage.js:75
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#: umc/js/_updater/ComponentsPage.js:205
+msgid "Status"
+msgstr "Status"
+
+#: umc/js/_updater/ComponentsPage.js:218
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: umc/js/_updater/ComponentsPage.js:64
+msgid "Add"
+msgstr "Neu"
+
+#: umc/js/_updater/ComponentsPage.js:65
+msgid "Add a new component definition"
+msgstr "Neue Komponentendefinition hinzufügen"
+
+#: umc/js/_updater/ComponentsPage.js:51
+msgid "Additional components"
+msgstr "Zusätzliche Komponenten"
+
+#: umc/js/_updater/ComponentsPage.js:322
+msgid "Are you sure you want to delete the following components: [{ids}]"
+msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
+
+#: umc/js/_updater/ComponentsPage.js:215
+msgid "Available"
+msgstr "Verfügbar"
+
+#: umc/js/_updater/ComponentsPage.js:328
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: umc/js/_updater/ComponentsPage.js:167 umc/js/_updater/ComponentsPage.js:331
+msgid "Delete"
+msgstr "Löschen"
+
+#: umc/js/_updater/ComponentsPage.js:168
+msgid "Delete the selected component definition"
+msgstr "Diese Komponente löschen"
+
+#: umc/js/_updater/ComponentsPage.js:148
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: umc/js/_updater/ComponentsPage.js:149
+msgid "Edit the detail information about this component"
+msgstr "Detailinformation über diese Komponente bearbeiten"
+
+#: umc/js/_updater/ComponentsPage.js:94
+msgid "Enable"
+msgstr "Aktivieren"
+
+#: umc/js/_updater/SettingsPage.js:146
+msgid "Error saving data"
+msgstr "Fehler beim Speichern"
+
+#: umc/js/_updater/SettingsPage.js:142
+msgid "Invalid data"
+msgstr "Ungültige Daten"
+
+#: umc/js/_updater/SettingsPage.js:141
+msgid "Please correct the corresponding input fields:"
+msgstr "Bitte korrigieren Sie die betreffenden Eingabefelder."
+
+#: umc/js/_updater/SettingsPage.js:54
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: umc/js/_updater/SettingsPage.js:47
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: umc/js/_updater/SettingsPage.js:48
+msgid "Settings for online updates"
+msgstr "Einstellungen für Online-Aktualisierung"
+
+#: umc/js/_updater/SettingsPage.js:145
+msgid "The data you entered could not be saved correctly:"
+msgstr ""
+"Die von Ihnen eingegebenen Daten konnten nicht korrekt gespeichert werden."
+
+#: umc/js/_updater/SettingsPage.js:49
+msgid ""
+"This page lets you modify essential settings that affect where your system "
+"looks for updates, and which of them it will consider."
+msgstr ""
+"Auf dieser Seite kann eingestellt werden, von wo das System Aktualisierungen "
+"bezieht und welche davon eingebunden werden."
+
+#: umc/js/_updater/SettingsPage.js:103
+msgid "Update-related settings"
+msgstr "Allgemeine Einstellungen"
+
+#: umc/js/_updater/SettingsPage.js:149 umc/js/_updater/SettingsPage.js:152
+msgid "Updater warning"
+msgstr "Warnung des Updaters"
+
+#: umc/js/_updater/SettingsPage.js:148
+msgid ""
+"Using the data you entered, no valid repository could be found.<br/>Since "
+"this may be a temporary server problem as well, your data was saved though."
+"<br/>The problem was:"
+msgstr ""
+"Auf dem angegebenen Server konnte kein gültiges Repository gefunden "
+"werden<br/>Da es auch ein temporäres Problem des betreffenden Servers sein "
+"kann, wurden Ihre Eingaben trotzdem gespeichert.<br/>Das Problem ist:"
+
+#: umc/js/_updater/SettingsPage.js:151
+msgid ""
+"With the current (unchanged) settings, the following problem was encountered:"
+msgstr ""
+"Mit den momentanen (unveränderten) Einstellungen ist das folgende Problem "
+"aufgetreten:"
+
+#: umc/js/_updater/SettingsPage.js:137
+#, python-format
+msgid "An unknown error with code %d occured."
+msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
 #~ msgid "Reset"
 #~ msgstr "Rücksetzen"

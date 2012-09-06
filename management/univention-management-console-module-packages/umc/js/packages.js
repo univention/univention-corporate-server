@@ -26,456 +26,99 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global dojo umc */
 
 dojo.provide("umc.modules.packages");
 
 dojo.require("umc.i18n");
-dojo.require("umc.dialog");
-dojo.require("umc.store");
+dojo.require("umc.modules._packages.store");
+//dojo.require("umc.store");
 
-dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Grid");
+dojo.require("umc.widgets.TabbedModule");
+dojo.require("umc.modules._packages.AppCenterPage");
+dojo.require("umc.modules._packages.PackagesPage");
+dojo.require("umc.modules._packages.ComponentsPage");
+dojo.require("umc.modules._packages.DetailsPage");
+dojo.require("umc.modules._packages.SettingsPage");
 
-dojo.require("umc.modules.lib.server");
+dojo.declare("umc.modules.packages", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
 
-dojo.require("umc.widgets.ProgressBar");
-
-dojo.require("umc.modules._packages.SearchForm");
-
-dojo.declare("umc.modules.packages", [ umc.widgets.Module, umc.i18n.Mixin ], {
-
-	i18nClass:			'umc.modules.packages',
-	idProperty:			'package',
-	_last_log_stamp:	0,
+	i18nClass: 'umc.modules.packages',
+	idProperty: 'package',
 
 	buildRendering: function() {
 
 		pack = this;
+		this.inherited(arguments);
+		this._componentsStore = umc.modules._packages.store.getModuleStore('name', 'packages/components')
+
+		this._app_center = new umc.modules._packages.AppCenterPage({});
+		this._packages = new umc.modules._packages.PackagesPage({moduleStore: this.moduleStore});
+		this._components = new umc.modules._packages.ComponentsPage({moduleStore: this._componentsStore});
+		this._details = new umc.modules._packages.DetailsPage({moduleStore: this._componentsStore});
+		this._settings = new umc.modules._packages.SettingsPage({});
+
+		this.addChild(this._app_center);
+		this.addChild(this._packages);
+		this.addChild(this._components);
+		this.addChild(this._details);
+		this.addChild(this._settings);
+
+		// switches from 'add' or 'edit' (components grid) to the detail form
+		dojo.connect(this._components, 'showDetail', dojo.hitch(this, function(id) {
+			this.exchangeChild(this._components, this._details);
+			if (id) {
+				// if an ID is given: pass it to the detail page and let it load
+				// the corresponding component record
+				this._details.startEdit(false, id);
+			} else {
+				// if ID is empty: ask the SETTINGS module for default values.
+				this._details.startEdit(true, this._details.getComponentDefaults());
+			}
+		}));
+
+		// closes detail form and returns to grid view.
+		dojo.connect(this._details, 'closeDetail', dojo.hitch(this, function(args) {
+			this._details._form.clearFormValues();
+			this.exchangeChild(this._details, this._components);
+		}));
+
+	},
+
+	startup: function() {
 
 		this.inherited(arguments);
 
-		this._progressBar = new umc.widgets.ProgressBar();
+		this.hideChild(this._details);
 
-		var page = new umc.widgets.Page({
-			headerText:		this._("Package management"),
-			helpText:		this._("On this page, you see all software packages available on your system, and you can install, deinstall or update them."),
-			title:			this._("Package management")
-		});
-		this.addChild(page);
+	},
 
-		this._pane = new umc.widgets.ExpandingTitlePane({
-			title:			this._("Packages")
-		});
-		page.addChild(this._pane);
-
-		this._form = new umc.modules._packages.SearchForm({
-			region:				'top'
-		});
-		dojo.connect(this._form, 'onSubmit', dojo.hitch(this, function() {
-			this._refresh_grid();
-		}));
-
-		var actions = [
+	// FIXME: this is quite cool. should go into TabbedModule
+	// exchange two tabs, preserve selectedness.
+	exchangeChild: function(from,to) {
+		var what = 'nothing';
+		try
+		{
+			what = 'getting FROM selection';
+			var is_selected = from.get('selected');
+			what = 'hiding FROM';
+			this.hideChild(from);
+			what = 'showing TO';
+			this.showChild(to);
+			if (is_selected)
 			{
-				name:				'view',
-				label:				this._("View Details"),
-				isContextAction:	true,
-				isStandardAction:	false,
-				isMultiAction:		false,
-				callback:	dojo.hitch(this, function(ids,items) {
-					this._show_details(ids,items);
-				})
-			},
-			// isStandardAction=true for the installer actions (install/deinstall/upgrade)
-			// doesn't make sense as long as these actions aren't displayed as icons
-			{
-				name:				'install',
-				label:				this._("Install"),
-				isContextAction:	true,
-				isStandardAction:	false,
-				isMultiAction:		false,
-				canExecute: dojo.hitch(this, function(values) {
-					return this._can_install(values);
-				}),
-				callback:	dojo.hitch(this, function(ids,items) {
-					this._call_installer('install',ids,items);
-				})
-			},
-			{
-				name:				'uninstall',
-				label:				this._("Uninstall"),
-				isContextAction:	true,
-				isStandardAction:	false,
-				isMultiAction:		false,
-				canExecute: dojo.hitch(this, function(values) {
-					return this._can_uninstall(values);
-				}),
-				callback:	dojo.hitch(this, function(ids,items) {
-					this._call_installer('uninstall',ids,items);
-				})
-			},
-			{
-				name:				'upgrade',
-				label:				this._("Upgrade"),
-				isContextAction:	true,
-				isStandardAction:	false,
-				isMultiAction:		false,
-				canExecute: dojo.hitch(this, function(values) {
-					return this._can_upgrade(values);
-				}),
-				callback:	dojo.hitch(this, function(ids, items) {
-					this._call_installer('upgrade', ids, items);
-				})
+				what = 'selecting TO';
+				this.selectChild(to);
 			}
-		];
-
-		var columns = [
-			{
-				name:		'package',
-				width:		'adjust',
-				label:		this._("Package name")
-			},
-			{
-				name:		'section',
-				width:		'adjust',
-				label:		this._("Section")
-			},
-			{
-				name:		'status',
-				label:		this._("Installation status"),		// notinstalled/installed/upgradeable
-				width:		'adjust'
-			},
-			{
-				name:		'summary',
-				label:		this._("Package description")
-			}
-		];
-
-		// create a grid in the 'center' region
-		this._grid = new umc.widgets.Grid({
-			region:			'center',
-			actions:		actions,
-			columns:		columns,
-			moduleStore:	this.moduleStore,
-			defaultAction:	'view',
-			onFilterDone:	dojo.hitch(this, function() {
-				this._form.allowSearchButton(true);
-			})
-		});
-
-		// TODO create progress view widgets
-		this._progress = new umc.widgets.Text({
-			region:			'top',
-			content:		'this is the progress title zone'
-		});
-		this._refresh_grid();
-		this._pane.addChild(this._form);
-		this._pane.addChild(this._grid);
-	},
-
-	_refresh_grid: function() {
-
-		var values = this._form.gatherFormValues();
-		if (values['section'])
-		{
-			this._form.allowSearchButton(false);
-			this._grid.filter(values);
 		}
-	},
-
-	// shows details about a package in a popup dialog
-	// ** NOTE ** 'items' is not processed here at all.
-	_show_details: function(ids, items) {
-
-		var id = ids;
-		if (dojo.isArray(ids))
+		catch(error)
 		{
-			id = ids[0];
+			console.error("exchangeChild: [" + what + "] " + error.message);
 		}
-
-		this._grid.standby(true);
-
-		this.moduleStore.umcpCommand('packages/get', {'package': id}).then(
-			dojo.hitch(this, function(data) {
-
-				this._grid.standby(false);
-
-				var head_style	= 'font-size:120%;font-weight:bold;margin:.5em;text-decoration:underline;';
-				var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
-				var data_style	= 'vertical-align:top;padding-bottom:.25em;';
-
-				var txt = "<p style='" + head_style + "'>" +
-					dojo.replace(this._("Details for package '{package}'"),data.result) +
-					"</p>";
-				txt += "<table>\n";
-				var width = 550;	// mimic the default of umc.dialog.confirm
-				var order = this._detail_field_order();
-				for (var fi in order)
-				{
-					var f = order[fi];
-					if (typeof(data.result[f]) != 'undefined')
-					{
-						var fl = this._detail_field_label(f);
-						fl = fl[0].toUpperCase() + fl.substr(1);
-						if (fl)
-						{
-							txt += "<tr>\n";
-							txt += "<td style='" + label_style + "'>" + fl + "</td>\n";
-							// ----------------------------------------------------------------
-							// if you think the following logic is not needed...
-							// just open the 'devscripts' package and see for yourself.
-							var dfv = this._detail_field_value(f,data.result[f]);
-							var maxlen = 3000;
-							if (dfv.length > maxlen)
-							{
-								// cut text at 'maxlen' chars, optionally adding a hint.
-								dfv = dfv.substr(0,maxlen) + this._("...<br>[%d more chars]",dfv.length-maxlen);
-							}
-							if (f == 'description')
-							{
-								// adjust width according to the length of the 'description' field.
-								width = 500 + (dfv.length / 10);
-							}
-							// ----------------------------------------------------------------
-							txt += "<td style='" + data_style + "'>" + dfv + "</td>\n";
-							txt += "</tr>\n";
-						}
-					}
-				}
-				txt += "</table>\n";
-				var buttons = [];
-				if (this._can_install(data.result))
-				{
-					buttons.push({
-						name:		'install',
-						label:		this._("Install"),
-						callback:	dojo.hitch(this, function() {
-							this._call_installer('install',data.result['package'],false);
-						})
-					});
-				}
-				if (this._can_uninstall(data.result))
-				{
-					buttons.push({
-						name:		'uninstall',
-						label:		this._("Uninstall"),
-						callback:	dojo.hitch(this, function() {
-							this._call_installer('uninstall',data.result['package'],false);
-						})
-					});
-				}
-				if (this._can_upgrade(data.result))
-				{
-					buttons.push({
-						name:		'upgrade',
-						label:		this._("Upgrade"),
-						callback:	dojo.hitch(this, function() {
-							this._call_installer('upgrade',data.result['package'],false);
-						})
-					});
-				}
-				// always: a button to close the dialog.
-				buttons.push({
-					name:		'cancel',
-					'default':	true,
-					label:		this._("Close")
-				});
-
-				var confirmDialog = new umc.widgets.ConfirmDialog({
-					title: this._('Package details'),
-					style: dojo.replace('min-width:500px;max-width: {width}px;',{width: width}),		// umc.dialog.confirm doesn't exceed 550px
-					message: txt,
-					options: buttons
-				});
-
-				// connect to 'onConfirm' event to close the dialog in any case
-				dojo.connect(confirmDialog, 'onConfirm', function(response) {
-					confirmDialog.close();
-				});
-
-				// show the confirmation dialog
-				confirmDialog.show();
-
-			}),
-			dojo.hitch(this, function(data) {
-				this._grid.standby(false);
-				umc.dialog.alert(data.message);
-			})
-		);
-	},
-
-	// Helper function that returns the field names for the
-	// detail view in a well-defined order
-	_detail_field_order: function() {
-
-		return (['package', 
-			 'summary',
-			 'section',
-			 'installed',
-		         'installed_version',
-			 'upgradable',
-			 'candidate_version',
-			 'size',
-			 'priority',
-			 'description'
-		         ]);
-	},
-
-	// Helper function that translates field names for the detail view. This
-	// is made for two purposes:-
-	//
-	//	(1)	this way, we can mention the entries in the source, so our
-	//		automated .po file maintainer script can see them
-	//	(2)	fields not mentioned here should not be displayed in the detail view
-	_detail_field_label: function(name) {
-
-		switch(name)
-		{
-			case 'package':				return this._("Package name");
-			case 'section':				return this._("Section");
-			case 'summary':				return this._("Summary");
-			case 'description':			return this._("Description");
-			case 'installed':			return this._("Is installed");
-			case 'upgradable':			return this._("Is upgradeable");
-			case 'size':				return this._("Package size");
-			case 'priority':			return this._("Priority");
-			case 'installed_version':	return this._("Installed version");
-			case 'candidate_version':	return this._("Candidate version");
-		}
-		return null;
-	},
-
-	// Helper function that translates field values. Mainly used for:
-	//
-	//	(1)	boolean to text (according to field name)
-	//	(2)	HTML-escaping free text (summary,description)
-	//	(3)	adding (eventually) icons
-	//
-	_detail_field_value: function(name,value) {
-
-		switch(name)
-		{
-			case 'summary':
-			case 'description':
-				// TODO find or write a decoder function
-				return value;		// for now
-			case 'installed':
-			case 'upgradable':
-				if ((value === 'true') || (value === true))
-				{
-					return this._("Yes");
-				}
-				return this._("No");
-		}
-		// fallback: return value unchanged
-		return value;
-	},
-
-	// Helper functions that determine if a given function can be executed.
-	// will be called from different places:-
-	//
-	//	(1)	in the 'canExecute' callbacks of grid rows
-	//	(2)	in the detail view to determine which buttons to show
-	//
-	_can_install: function(values) {
-		return ((values['installed'] === false) || (values['installed'] === 'false'));
-	},
-	_can_uninstall: function(values) {
-		return ((values['installed'] === true) || (values['installed'] === 'true'));
-	},
-	_can_upgrade: function(values) {
-		return (
-				((values['installed'] === true) || (values['installed'] === 'true')) &&
-				((values['upgradable'] === true) || (values['upgradable'] == 'true'))
-				);
-	},
-
-	// prepares all data for the acutal execution of the installer.
-	_call_installer: function(func,ids,confirm) {
-
-		if (typeof(confirm) == 'undefined')
-		{
-			confirm = true;
-		}
-		var id = ids;
-		// currently we strictly expect ONE id to be processed here.
-		//
-		// When the grid is capable of dealing with multi-actions in the context
-		// of the 'canExecute' callback -> perhaps it would make sense to accept
-		// multiple IDs here too.
-		if (dojo.isArray(ids)) { id = ids[0]; }
-
-		var verb = '';
-		var verb1 = '';
-		switch(func)
-		{
-			case 'install': 	verb = this._("install");	verb1 = this._("installing"); break;
-			case 'uninstall':	verb = this._("uninstall");	verb1 = this._("uninstalling"); break;
-			case 'upgrade':		verb = this._("upgrade");	verb1 = this._("upgrading"); break;
-		}
-
-		msg = dojo.replace(this._("You're currently {verb} the '{id}' package:"), {verb: verb1, id: id});
-
-		if (confirm)
-		{
-			var question = dojo.replace(this._("Do you really want to {verb} the '{id}' package?"),{verb: verb, id: id});
-
-			umc.dialog.confirm(question,[
-	            {
-	            	name:			'cancel',
-	            	label:			this._("No")
-	            },
-	            {
-	            	name:			'submit',			// I want to catch <Enter> too
-	            	'default':		true,
-	            	label:			this._("Yes"),
-	            	callback:		dojo.hitch(this, function() {
-	            		this._execute_installer(func, id, msg);
-	            	})
-	            }
-			]);
-		}
-		else
-		{
-			this._execute_installer(func, id, msg);
-		}
-	},
-
-	// Starts the installer and switches to progress view.
-	_execute_installer: function(func, id, msg) {
-
-		this.moduleStore.umcpCommand('packages/invoke', {'function': func, 'package': id}).then(
-			dojo.hitch(this, function(data) {
-				this._switch_to_progress_bar(msg);
-			}),
-			dojo.hitch(this, function(data) {
-				umc.dialog.alert(data.message);
-			})
-		);
-	},
-
-	_switch_to_progress_bar: function(msg) {
-		this.standby(true, this._progressBar);
-		this._progressBar.reset(msg);
-		this._progressBar.auto('packages/progress',
-			{},
-			dojo.hitch(this, '_restartOrReload')
-		);
-	},
-
-	_restartOrReload: function() {
-		umc.modules.lib.server.askRestart(this._('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
-		function() {
-			// if user confirms, he is redirected to the login page
-			// no need to do anythin fancy here :)
-		},
-		dojo.hitch(this, function() {
-			// user canceled -> switch back to initial view
-			this.standby(false);
-			this._refresh_grid();
-		}));
 	}
 
+	// TODO hideChild() should check selectedness too, and
+	// select a different tab when needed.
+		
 });
 

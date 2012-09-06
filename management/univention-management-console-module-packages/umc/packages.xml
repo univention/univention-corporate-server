@@ -7,9 +7,19 @@
 	  <category name="system"/>
 	</categories>
 	
-	<!-- straightforward module: one grid with a query, a get method
-		to retrieve details, and some actions.
-	-->
+	<command name="packages/app_center/query" function="app_center_query">
+		<attribute name="pattern" syntax="String"/>
+	</command>
+	<command name="packages/app_center/get" function="app_center_get">
+		<attribute name="application" syntax="String"/>
+	</command>
+	<command name="packages/app_center/invoke" function="app_center_invoke">
+		<attribute name="function" syntax="String"/>
+		<attribute name="application" syntax="String"/>
+	</command>
+	<!-- ATTENTION: same progress function as in packages -->
+	<command name="packages/app_center/progress" function="progress"/>
+
 	<!-- Query: all args are filter args. -->
 	<command name="packages/query" function="query">
 		<attribute name="installed" syntax="Boolean"/>
@@ -23,6 +33,12 @@
 		<attribute name="package" syntax="String"/>
 	</command>
 
+	<!-- Invoke dry run: dont do anything just show changes -->
+	<command name="packages/invoke/test" function="invoke_dry_run">
+		<attribute name="function" syntax="String"/>
+		<attribute name="package" syntax="String"/>
+	</command>
+
 	<!-- Invoke: function is 'install','uninstall' or 'update' -->
 	<command name="packages/invoke" function="invoke">
 		<attribute name="function" syntax="String"/>
@@ -33,7 +49,33 @@
 	<command name="packages/sections" function="sections"/>
 
 	<!-- Progress: information for the progress bar. -->
+	<!-- ATTENTION: same progress function as in app_center/packages -->
 	<command name="packages/progress" function="progress"/>
+
+	<!--
+		ONLINE/COMPONENTS namespace: drives the components grid
+		and the associated 'component details' form.
+	 -->
+	<!-- QUERY: return a list of components, along with their status -->
+	<command name="packages/components/query" function="query_components"/>
+	<!-- GET: retrieve one element with this ID -->
+	<command name="packages/components/get" function="get_components"/>
+	<!-- ADD: add new settings for one component -->
+	<command name="packages/components/add" function="add_components"/>
+	<!-- PUT: write back settings for one component -->
+	<command name="packages/components/put" function="put_components"/>
+	<!-- DEL: remove the given component -->
+	<command name="packages/components/del" function="del_components"/>
+
+	<!--
+		ONLINE/SETTINGS namespace: to fetch and write settings. Even if this
+		is not really a tabular namespace, we treat it this way, and will
+		always get/set the first and only 'record'.
+	 -->
+	<!-- GET: retrieve the settings. -->
+	<command name="packages/settings/get" function="get_settings"/>
+	<!-- PUT: write back settings. -->
+	<command name="packages/settings/put" function="put_settings"/>
 
   </module>
 </umc>

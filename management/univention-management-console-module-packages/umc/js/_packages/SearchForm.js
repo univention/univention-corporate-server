@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global console dojo umc */
 
 dojo.provide("umc.modules._packages.SearchForm");
 
@@ -42,60 +42,59 @@ dojo.declare("umc.modules._packages.SearchForm",
         	umc.i18n.Mixin 
         ], {
 	
-	i18nClass:		'umc.modules.packages',
+	i18nClass: 'umc.modules.packages',
 	
 	postMixInProperties: function() {
 		
-		try
-		{
+		try {
 			dojo.mixin(this, {
 				widgets:
 				[
 					{
-						name:					'section',
-						label:					this._("Package categories"),
-						type:					'ComboBox',
-						staticValues:			[{ id: 'all', label: this._("--- all ---") }],
-						sortStaticValues:		false,
-						required:				true,
-						dynamicValues:			'packages/sections',
-						onDynamicValuesLoaded:	dojo.hitch(this, function() {
+						name: 'section',
+						label: this._("Package categories"),
+						type: 'ComboBox',
+						staticValues: [{ id: 'all', label: this._("--- all ---") }],
+						sortStaticValues: false,
+						required: true,
+						dynamicValues: 'packages/sections',
+						onDynamicValuesLoaded: dojo.hitch(this, function() {
 							this.allowSearchButton(true);
 						}),
-						sortDynamicValues:		true,
-						onChange:				dojo.hitch(this, function() {
+						sortDynamicValues: false,
+						onChange: dojo.hitch(this, function() {
 							this._check_submit_allow();
 						})
 					},
 					{
-						name:					'installed',
-						label:					this._("Installed packages only"),
-						type:					'CheckBox'
+						name: 'installed',
+						label: this._("Installed packages only"),
+						type: 'CheckBox'
 // doesn't make sense: a Bool on its own is always valid.
-//						onChange:				dojo.hitch(this, function() {
+//						onChange: dojo.hitch(this, function() {
 //							this._check_submit_allow();
 //						})
 					},
 					{
-						name:					'key',
-						label:					this._("Search key"),
-						type:					'ComboBox',
+						name: 'key',
+						label: this._("Search key"),
+						type: 'ComboBox',
 						staticValues: [
 		             		 { id: 'package',		label: this._("Package name") },
 		             		 { id: 'description',	label: this._("Package description") }
 						],
-						sortStaticValues:		false,
-						onChange:				dojo.hitch(this, function() {
+						sortStaticValues: false,
+						onChange: dojo.hitch(this, function() {
 							this._check_submit_allow();
 						})
 					},
 					{
-						name:					'pattern',
-						label:					this._("Pattern"),
-						type:					'TextBox',
-						value:					'*',
-						required:				false,
-						onChange:				dojo.hitch(this, function() {
+						name: 'pattern',
+						label: this._("Pattern"),
+						type: 'TextBox',
+						value: '*',
+						required: false,
+						onChange: dojo.hitch(this, function() {
 							this._check_submit_allow();
 						})
 					}
@@ -103,19 +102,18 @@ dojo.declare("umc.modules._packages.SearchForm",
 				buttons:
 				[
 					{
-						name:		'submit',
-						label:		this._("Search")
+						name: 'submit',
+						label: this._("Search")
 					}
 				],
 				layout:
 				[
-					[ 'section', 'installed' ],
-					[ 'key', 'pattern', 'submit'],
+					['installed'],
+					['section'],
+					['key', 'pattern', 'submit']
 				]
 			});
-		}
-		catch(error)
-		{
+		} catch(error) {
 			console.error("SearchForm::postMixInProperties() ERROR: " + error.message);
 		}
 		
@@ -125,8 +123,7 @@ dojo.declare("umc.modules._packages.SearchForm",
 	_check_submit_allow: function() {
 		
 		var allow = true;
-		for (var w in this._widgets)
-		{
+		for (var w in this._widgets) {
 			if (w != 'installed')	// workaround for ComboBox
 			{
 				if (! this._widgets[w].isValid())
