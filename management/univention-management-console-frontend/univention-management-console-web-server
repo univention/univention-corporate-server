@@ -515,7 +515,7 @@ class CPCommand(CPgeneric):
 
 class CPAuth(CPgeneric):
 	@cherrypy.expose
-	def default(self):
+	def default(self, **kw):
 		remote = cherrypy.request.remote
 		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (self.get_ip_address(), remote.port, remote.name))
 
@@ -529,7 +529,7 @@ class CPAuth(CPgeneric):
 		if cherrypy.request.method in cherrypy.request.methods_with_bodies:
 			max_length = 512
 			if content_length <= max_length:
-				raise cherrypy.HTTPError(httplib.REQUEST_ENTITY_TOO_LARGE, 'Request data is to large, allowed length is %d' % max_length)
+				raise cherrypy.HTTPError(httplib.REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
 			body = cherrypy.request.body.read()
 
 		json = self.load_json(body)

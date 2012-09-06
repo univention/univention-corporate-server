@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.25-1) unstable; urgency=low
+
+  * added **kw for auth requests in web-server; Bug #26857
+
+ -- Florian Best <best@univention.de>  Thu, 06 Sep 2012 10:02:59 +0200
+
 univention-management-console-frontend (2.0.24-1) unstable; urgency=low
 
   * added copyrigth note; Bug #26857
