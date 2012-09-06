@@ -1,3 +1,10 @@
+univention-join (5.0.7-1) unstable; urgency=low
+
+  * create ssl/validity/days during join to avoid nagios UNIVENTION_SSL
+    warnings  (Bug #25788)
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 15:53:37 +0200
+
 univention-join (5.0.6-1) unstable; urgency=low
 
   * version bump; Bug #26857
