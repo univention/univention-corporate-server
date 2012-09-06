@@ -58,20 +58,23 @@ umc/package.json:
 i18n:
 	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
 
+$(buildDir):
+	mkdir -p $@
+
 # rule for the main dojo build process
-$(buildDir)/js/dojo/dojo.js.uncompressed.js:
+$(buildDir)/js/dojo/dojo.js.uncompressed.js: $(buildDir)
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(version)"
 
 # index page... replace the HASH with a timestamp
-$(buildDir)/index.html: index.html
+$(buildDir)/index.html: index.html $(buildDir)
 	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' $< > $@
 
 # index page for debug mode... replace the HASH with a timestamp
-$(buildDir)/debug.html: index.html
+$(buildDir)/debug.html: index.html $(buildDir)
 	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' $< > $@
 
 # copy css style sheets and images
-$(buildDir)/css $(buildDir)/images:
+$(buildDir)/css $(buildDir)/images: $(buildDir)
 	rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css images $(buildDir) 
 
 build-dev: build-common
@@ -138,5 +141,5 @@ install: build
 	rsync -rpl --exclude ".svn" --exclude "_tmp"'$(timestamp)' "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
 
 clean:
-	rm -rf build umc.xml umc/widgets.js umc/{en,de}.json umc/package.json
+	rm -rf $(buildDir) umc.xml umc/widgets.js umc/{en,de}.json umc/package.json
 

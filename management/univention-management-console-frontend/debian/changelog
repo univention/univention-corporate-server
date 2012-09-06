@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.23-1) unstable; urgency=low
+
+  * adjusted Makefile; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 06 Sep 2012 09:49:53 +0200
+
 univention-management-console-frontend (2.0.22-1) unstable; urgency=low
 
   * adapted build process to Dojo 1.8; Bug #26857
