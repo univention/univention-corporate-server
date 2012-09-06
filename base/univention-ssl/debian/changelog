@@ -1,3 +1,9 @@
+univention-ssl (7.0.1-1) unstable; urgency=low
+
+  * fixed description of ssl/validity/days (Bug #25788)
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 16:12:10 +0200
+
 univention-ssl (7.0.0-2) unstable; urgency=low
 
   * Use library function to create logfile (Bug #22011)

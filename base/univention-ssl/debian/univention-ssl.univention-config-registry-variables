@@ -59,8 +59,8 @@ Type=bool
 Categories=system-ssl
 
 [ssl/validity/days]
-Description[de]=Anzahl an Tagen die das Root SSL-Zertifikat gültig ist
-Description[en]=Number of days which the root certificate is valid
+Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Rechner- bzw Root-Zertifikat.
+Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the host (or root) certificate.
 Type=int
 Categories=system-ssl
 
