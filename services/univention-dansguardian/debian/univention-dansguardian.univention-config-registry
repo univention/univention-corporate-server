@@ -21,6 +21,7 @@ Type: file
 File: etc/dansguardian/dansguardianf1.conf
 Variables: dansguardian/virus/notifyemail
 Variables: domainname
+Variables: squid/virusscan
 
 Type: file
 File: etc/dansguardian/lists/filtergroupslist
@@ -78,6 +79,7 @@ File: etc/dansguardian/dansguardianfX.conf
 Variables: dansguardian/virus/notifyemail
 Variables: domainname
 Variables: dansguardian/current/group
+Variables: squid/virusscan
 
 Type: file
 File: etc/dansguardian/lists/bannedregexpurllist
