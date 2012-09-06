@@ -1,3 +1,9 @@
+univention-join (5.0.5-1) unstable; urgency=low
+
+  * Consider nss/group/cachefile in join script (Bug #28361)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Sep 2012 10:11:40 +0200
+
 univention-join (5.0.4-2) unstable; urgency=low
 
   * Remove supperious curly brace (Bug #26058)
