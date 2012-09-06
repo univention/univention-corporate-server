@@ -1,3 +1,9 @@
+univention-ssl (7.0.2-1) unstable; urgency=low
+
+  * set ssl/validity/check?yes in postinst (Bug #19736)
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 16:22:36 +0200
+
 univention-ssl (7.0.1-1) unstable; urgency=low
 
   * fixed description of ssl/validity/days (Bug #25788)
