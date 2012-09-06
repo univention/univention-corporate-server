@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.26-1) unstable; urgency=low
+
+  * fixed build targets for index.html and debug.html; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 06 Sep 2012 10:33:16 +0200
+
 univention-management-console-frontend (2.0.25-1) unstable; urgency=low
 
   * added **kw for auth requests in web-server; Bug #26857

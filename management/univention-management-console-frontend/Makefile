@@ -66,12 +66,12 @@ $(buildDir)/js/dojo/dojo.js.uncompressed.js: $(buildDir)
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(version)"
 
 # index page... replace the HASH with a timestamp
-$(buildDir)/index.html: index.html $(buildDir)
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' $< > $@
+$(buildDir)/index.html: $(buildDir) index.html
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' index.html > $@
 
 # index page for debug mode... replace the HASH with a timestamp
-$(buildDir)/debug.html: index.html $(buildDir)
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' $< > $@
+$(buildDir)/debug.html: $(buildDir) index.html
+	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' index.html > $@
 
 # copy css style sheets and images
 $(buildDir)/css $(buildDir)/images: $(buildDir)
@@ -93,7 +93,7 @@ build-dev: build-common
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(buildDir)/js/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(buildDir)/images/icons/
 
-build-common: i18n umc/widgets.js umc/package.json $(buildDir)/index.html $(buildDir)/index.html
+build-common: i18n umc/widgets.js umc/package.json $(buildDir)/index.html $(buildDir)/debug.html
 	@# scale all icons
 	for s in 16x16 50x50; do \
 		mkdir -p "$(buildDir)/images/icons/$$s"; \
