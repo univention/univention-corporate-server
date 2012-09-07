@@ -1,4 +1,71 @@
 #!/usr/bin/rhino
+
+/* 
+ *
+ * Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+ * Upstream-Name: less.js
+ * Upstream-Contact: Alexis Sellier <self@cloudhead.net>
+ * Source: https://github.com/cloudhead/less.js/downloads
+ *  git://github.com/cloudhead/less.js
+ * 
+ * Files: *
+ * Copyright: 2006-2009, Chris Eppstein
+ *   2006-2009, Hampton Catlin
+ *   2006-2009, Nathan Weizenbaum
+ *   2009-2011, Alexis Sellier <self@cloudhead.net>
+ *   2009-2010, dantman Daniel Friesen
+ *   2009-2010, kriskowal Kris Kowal
+ *   2009-2010, tlrobinson Tom Robinson
+ * License: Apache-2.0
+ * 
+ * Files: lib/less/functions.js
+ * Copyright: 2006-2009, Chris Eppstein
+ *   2006-2009, Hampton Catlin
+ *   2006-2009, Nathan Weizenbaum
+ * License: Expat
+ *  http://sass-lang.com
+ * Comment:
+ *  Source lacks licensing info, but footer of referenced website contains
+ *  this:
+ *  .
+ *  Haml © 2006-2010 Hampton Catlin, Nathan Weizenbaum, Chris Eppstein, and
+ *  numerous contributors. It is available for use and modification under
+ *  the MIT license.
+ *  .
+ *  In above text, "MIT license" is a hyperlink to
+ *  http://sass-lang.com/docs/yardoc/file.MIT-LICENSE.html which contains
+ *  the Expat license.
+ * 
+ * Files: build/ecma-5.js
+ * Copyright: 2009-2010, dantman Daniel Friesen
+ *   2009-2010, kriskowal Kris Kowal
+ *   2009-2010, tlrobinson Tom Robinson
+ * License: Expat
+ * Comment:
+ *  Source lacks explicit licensing info, but seems based on the file
+ *  engines/default/lib/global-es5.js in
+ *  git://github.com/280north/narwhal.git which contains this licensing
+ *  info:
+ *  .
+ *  MIT License. http://github.com/280north/narwhal/blob/master/README.md
+ *  .
+ *  Referenced URL (also available at the root of the git), contains the
+ *  Expat license.
+ * 
+ * Files: lib/less/cssmin.js
+ * Copyright: 2011, Yahoo! Inc.
+ * License: BSD-3-Clause~Yahoo
+ *  Permission is hereby granted to use the JavaScript version under the same
+ *  conditions as the YUICompressor (original YUICompressor note below).
+ *  .
+ *  The copyrights embodied in the content of this file are licensed by
+ *  Yahoo! Inc. under the BSD (revised) open source license.
+ * Comment:
+ *  According to http://yuilibrary.com/license/ the referenced licensed is
+ * a derivation of BSD-3-Clause. 
+ */
+
+
 //
 // Stub out `require` in rhino
 //

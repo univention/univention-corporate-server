@@ -64,8 +64,6 @@ $(tmpDir):
 	mkdir -p $@
 	cp -rfs $(dojoDir)/dojo $(dojoDir)/dijit $(dojoDir)/dojox $@
 	cp -rfs "$(CURDIR)/umc" $@
-	cp $(CURDIR)/lessc $@
-	cp $(CURDIR)/import_css.py $@
 
 # convert .po to .json files
 i18n:
@@ -95,7 +93,7 @@ $(tmpDir)/umc/login.html: login.html
 	./lessc $< $@
 
 # copy css and image data into umc themes directory
-$(themesDir)/umc: $(tmpDir) css
+$(themesDir)/umc: $(tmpDir)
 	@#rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css $@
 	@# symlinks for css style sheets and images
 	cp -rfs "$(CURDIR)/css" "$@"

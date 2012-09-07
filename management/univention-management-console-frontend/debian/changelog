@@ -2,7 +2,7 @@ univention-management-console-frontend (2.0.38-1) unstable; urgency=low
 
   * cleaned up remaining css files (Bug #26826)
 
- -- Lukas Walter <walter@univention.de>  Fri, 07 Sep 2012 15:48:50 +0200
+ -- Lukas Walter <walter@univention.de>  Fri, 07 Sep 2012 16:50:43 +0200
 
 univention-management-console-frontend (2.0.37-1) unstable; urgency=low
 
@@ -52,7 +52,6 @@ univention-management-console-frontend (2.0.30-1) unstable; urgency=low
 
  -- Felix Botner <botner@univention.de>  Fri, 07 Sep 2012 10:36:40 +0200
 
->>>>>>> .r35402
 univention-management-console-frontend (2.0.29-1) unstable; urgency=low
 
   * removed unused css files; Bug #26857
