@@ -7,6 +7,8 @@ xen-4.1 (4.1.2-8) unstable; urgency=low
   * CVE-2012-3495
   * CVE-2012-3496
   * CVE-2012-3498
+  * CVE-2012-3515
+  * CVE-2012-4411
 
  -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 06 Sep 2012 16:36:57 +0200
 
