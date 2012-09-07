@@ -26,481 +26,476 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc window */
+/*global define*/
 
-dojo.provide("umc.modules.updater");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/on",
+	"dojo/aspect",
+	"dijit/Dialog",
+	"umc/dialog",
+	"umc/widgets/ConfirmDialog",
+	"umc/widgets/TabbedModule",
+	"umc/modules/updater/Form",
+	"umc/modules/updater/UpdatesPage",
+	"umc/modules/updater/ProgressPage",
+	"umc/i18n!umc/modules/updater"
+], function(declare, lang, on, aspect, Dialog, dialog, ConfirmDialog, TabbedModule, Form, UpdatesPage, ProgressPage, _) {
+	return declare("umc.modules.updater", TabbedModule, {
 
-// ------------ Basics ------------------
-dojo.require("umc.i18n");
-dojo.require("umc.dialog");
-dojo.require("umc.widgets.ConfirmDialog");
-dojo.require("umc.tools");
+		// some variables related to error handling
+		_connection_status:	0, 			// 0 ... successful or not set
+										// 1 ... errors received
+										// 2 ... currently authenticating
+		_busy_dialog: null, 		// a handle to the 'connection lost' dialog while
+								// queries return with errors.
+		_error_count: 0, 		// how much errors in one row
 
-// ------- Overloaded classes --------
-dojo.require("umc.modules._updater.Module");
-dojo.require("umc.modules._updater.Page");
-dojo.require("umc.modules._updater.Form");
+		buildRendering: function() {
 
-// ------- Pages inside the module ----------
-dojo.require("umc.modules._updater.UpdatesPage");
-dojo.require("umc.modules._updater.ProgressPage");
+			this.inherited(arguments);
 
-dojo.declare("umc.modules.updater", umc.modules._updater.Module, {
+			this._updates = new UpdatesPage({});
+			this._progress = new ProgressPage({});
 
-	i18nClass:			'umc.modules.updater',
+			this.addChild(this._updates);
+			this.addChild(this._progress);
 
-	// some variables related to error handling
-	_connection_status:	0,			// 0 ... successful or not set
-									// 1 ... errors received
-									// 2 ... currently authenticating
-	_busy_dialog: null,		// a handle to the 'connection lost' dialog while
-							// queries return with errors.
-	_error_count: 0,		// how much errors in one row
+			// --------------------------------------------------------------------------
+			//
+			//		Connections that make the UI work (mostly tab switching)
+			//
 
-	buildRendering: function() {
+			this.own(aspect.after(this._progress, 'stopWatching', lang.hitch(this, function(tab) {
+				this.hideChild(this._progress);
+				this.showChild(this._updates);
 
-		this.inherited(arguments);
-
-		this._updates = new umc.modules._updater.UpdatesPage({});
-		this._progress = new umc.modules._updater.ProgressPage({});
-
-		this.addChild(this._updates);
-		this.addChild(this._progress);
-
-		// --------------------------------------------------------------------------
-		//
-		//		Connections that make the UI work (mostly tab switching)
-		//
-
-		dojo.connect(this._progress,'stopWatching',dojo.hitch(this, function(tab) {
-			this.hideChild(this._progress);
-			this.showChild(this._updates);
-
-			// Revert to the 'Updates' page if the installer action encountered
-			// the 'reboot' affordance.
-			if (! tab)
-			{
-				tab = this._updates;
-			}
-			this.selectChild(tab);
-		}));
-
-		// waits for the Progress Page to notify us that a job is finished. This
-		// should immediately refresh the 'Updates' and 'Components' pages.
-		// XXX can remain this way
-		dojo.connect(this._progress,'jobFinished',dojo.hitch(this, function() {
-			this._updates.refreshPage(true);
-		}));
-
-		// waits for the Progress Page to notify us that a job is running
-		dojo.connect(this._progress,'jobStarted',dojo.hitch(this, function() {
-			this._switch_to_progress_page();
-		}));
-
-		// --------------------------------------------------------------------------
-		//
-		//		Connections that listen for changes and propagate
-		//		them to other pages
-		//
-
-		// *** NOTE *** the Updates Page also has some mechanisms to refresh itself
-		//				on changes that reflect themselves in the sources.list
-		//				snippet files. But this refresh is intentionally slow (once
-		//				in 5 secs) to avoid resource congestion. The callbacks here
-		//				should immediately trigger refresh whenever something was
-		//				done at the frontend UI.
-
-		// ---------------------------------------------------------------------------
-		//
-		//		Listens for 'query error' and 'query success' events on all attached pages
-		//		and their children, delivering them to our own (central) error handler
-		//
-
-		var ch = this.getChildren();
-		for (var obj in ch)
-		{
-			dojo.connect(ch[obj],'_query_error',dojo.hitch(this,function(subject,data) {
-				this._query_error(subject,data);
-			}));
-
-			dojo.connect(ch[obj],'_query_success',dojo.hitch(this,function(subject) {
-				this._query_success(subject);
-			}));
-		}
-
-		// --------------------------------------------------------------------------
-		//
-		//		Connections that centralize the work of the installer:
-		//		listen for events that should start UniventionUpdater
-		//
-
-		// invokes the installer from the 'release update' button (Updates Page)
-		dojo.connect(this._updates,'runReleaseUpdate',dojo.hitch(this, function(release) {
-			this._call_installer({
-				job:		'release',
-				detail:		release,
-				confirm:	dojo.replace(this._("Do you really want to install release updates up to version {release}?"),{release: release})
-			});
-		}));
-
-		// invokes the installer from the 'errata update' button (Updates Page)
-		dojo.connect(this._updates,'runErrataUpdate',dojo.hitch(this, function() {
-			this._call_installer({
-				job:		'errata',
-				confirm:	this._("Do you really want to install all available errata updates?")
-			});
-		}));
-
-		// invokes the installer from the 'component update' button (Updates Page)
-		dojo.connect(this._updates,'runDistUpgrade',dojo.hitch(this, function() {
-			this._confirm_distupgrade();
-		}));
-
-		// invokes the installer in easy mode
-		dojo.connect(this._updates,'runEasyUpgrade',dojo.hitch(this, function() {
-			this._call_installer({
-				job:		'easyupgrade',
-				confirm:	this._("Do you really want to upgrade your system?")
-			});
-		}));
-
-		// propagate the status information to other pages
-		dojo.connect(this._updates,'onStatusLoaded',dojo.hitch(this, function(vals) {
-			this._progress.updateStatus(vals);
-		}));
-	},
-
-	// We defer these actions until the UI is readily rendered
-	startup: function() {
-
-		this.inherited(arguments);
-
-		this.hideChild(this._progress);
-
-	},
-
-	// Seperate function that can be called the same way as _call_installer:
-	// instead of presenting the usual confirm dialog it presents the list
-	// of packages for a distupgrade.
-	_confirm_distupgrade: function() {
-
-		try
-		{
-			this.standby(true);
-			umc.tools.umcpCommand('updater/updates/check').then(dojo.hitch(this, function(data) {
-				this.standby(false);
-				// FIXME Lots of manual styling to achieve resonable look
-				var txt = "<div style='overflow:auto;max-height:400px;'><table>\n";
-				var upd = data.result['update'];
-				var ins = data.result['install'];
-				var rem = data.result['remove'];
-				if ((! upd.length) && (! ins.length) && (! rem.length))
+				// Revert to the 'Updates' page if the installer action encountered
+				// the 'reboot' affordance.
+				if (! tab)
 				{
-					this._updates.refreshPage(true);
-					return;
+					tab = this._updates;
 				}
-				if (rem.length)
-				{
-					txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be REMOVED"),{count:rem.length}) + "</u></b></td></tr>";
-					for (var i in rem)
-					{
-						txt += "<tr>\n";
-						txt += "<td style='padding-left:1em;'>" + rem[i][0] + "</td>\n";
-						txt += "<td style='padding-left:1em;padding-right:.5em;'>" + rem[i][1] + "</td>\n";
-						txt += "</tr>\n";
-					}
-				}
-				if (upd.length)
-				{
-					txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be updated"),{count:upd.length}) + "</u></b></td></tr>";
-					for (var i in upd)
-					{
-						txt += "<tr>\n";
-						txt += "<td style='padding-left:1em;'>" + upd[i][0] + "</td>\n";
-						txt += "<td style='padding-left:1em;padding-right:.5em;'>" + upd[i][1] + "</td>\n";
-						txt += "</tr>\n";
-					}
-				}
-				if (ins.length)
-				{
-					txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + dojo.replace(this._("{count} packages to be installed"),{count:ins.length}) + "</u></b></td></tr>";
-					for (var i in ins)
-					{
-						txt += "<tr>\n";
-						txt += "<td style='padding-left:1em;'>" + ins[i][0] + "</td>\n";
-						txt += "<td style='padding-left:1em;padding-right:.5em;'>" + ins[i][1] + "</td>\n";
-						txt += "</tr>\n";
-					}
-				}
-				txt += "</table></div>";
-				txt += "<p style='padding:1em;'>" + this._("Do you really want to perform the update/install/remove of the above packages?") + "</p>\n";
-				var dia = new umc.widgets.ConfirmDialog({
-					title:			this._("Start Upgrade?"),
-					message:		txt,
-					style:			'max-width:600px;',
-					options:
-					[
-						{
-							label:		this._('Cancel'),
-							name:		'cancel'
-						},
-						{
-							label:		this._('Install'),
-							name:		'start',
-							'default':	true
-						}
-					]
-				});
+				this.selectChild(tab);
+			})));
 
-				dojo.connect(dia,'onConfirm',dojo.hitch(this, function(answer) {
-					dia.close();
-					if (answer == 'start')
-					{
-						this._call_installer({
-							confirm:		false,
-							job:			'distupgrade',
-							detail:			''
-						});
-					}
-				}));
-				dia.show();
+			// waits for the Progress Page to notify us that a job is finished. This
+			// should immediately refresh the 'Updates' and 'Components' pages.
+			// XXX can remain this way
+			this.own(aspect.after(this._progress, 'jobFinished', lang.hitch(this, function() {
+				this._updates.refreshPage(true);
+			})));
 
-				return;
-			}),
-			dojo.hitch(this, function(data) {
-				this.standby(false);
-			})
-			);
-		}
-		catch(error)
-		{
-			console.error("PACKAGE DIALOG: " + error.message);
-		}
-	},
-
-	// Central entry point into all installer calls. Subject
-	// and detail are passed as args to the 'updater/installer/execute' backend.
-	//
-	// Argument 'confirm' has special meaning:
-	//		true ......... ask for confirmation and run the installer only if confirmed,
-	//		false ........ run the installer unconditionally.
-	//		any string ... the confirmation text to ask.
-	_call_installer: function(args) {
-
-		if (args['confirm'])
-		{
-			var msg = "<h1>" + this._("Attention!") + "</h1><br/>";
-			msg = msg + "<p>" +
-				this._("Installing a system update is a significant change to this system and could have impact to other systems. ") +
-				this._("In normal case, trouble-free use by users is not possible during the update, since system services may need to be restarted. ") +
-				this._("Thus, updates shouldn't be installed on a live system. ") +
-				this._("It is also recommended to evaluate the update in a test environment and to create a backup of the system.") +
-				"</p>";
-			msg = msg + "<p>" +
-				this._("During setup, the web server may be stopped, leading to a termination of the HTTP connection. ") +
-				this._("Nonetheless, the update proceeds and the update can be monitored from a new UMC session. ") +
-				this._("Logfiles can be found in the directory /var/log/univention/.") +
-				"</p>";
-			msg = msg + "<p>" +
-				this._("Please also consider the release notes, changelogs and references posted in the <a href='http://forum.univention.de'>Univention Forum</a>.") +
-				"</p>";
-			if (typeof(args['confirm']) == 'string')
-			{
-				msg = msg + "<p>" + args['confirm'] + "</p>";
-			}
-			else
-			{
-				msg = msg + "<p>" +
-					this._("Do you really wish to proceed?") +
-					"</p>";
-			}
-
-			umc.dialog.confirm(msg,
-			[
-				{
-					label:		this._('Cancel')
-				},
-				{
-					label:		this._('Install'),
-					'default':	true,
-					callback:	dojo.hitch(this,function() {
-						args['confirm'] = false;
-						this._call_installer(args);
-					})
-				}
-			]);
-
-			return;
-		}
-
-		this.standby(true);
-
-		umc.tools.umcpCommand('updater/installer/execute',{
-			job:	args['job'],
-			detail:		args['detail']?args['detail']:''
-		}).then(dojo.hitch(this,function(data) {
-			this.standby(false);
-			if (data.result['status'] == 0)
-			{
+			// waits for the Progress Page to notify us that a job is running
+			this.own(aspect.after(this._progress, 'jobStarted', lang.hitch(this, function() {
 				this._switch_to_progress_page();
-			}
-			else
-			{
-				umc.dialog.alert(dojo.replace(this._("The Univention Updater action could not be started [Error {status}]: {message}"),data.result));
-			}
-		}),
-		// Strongly needed: an error callback! In this case, the built-in error processing
-		// (popup or login prompt) is well suited for the situation, so we don't disable it.
-		dojo.hitch(this,function(data) {
-			this.standby(false);
-		}));
-	},
+			})));
 
+			// --------------------------------------------------------------------------
+			//
+			//		Connections that listen for changes and propagate
+			//		them to other pages
+			//
 
-	// Switches to the progress view: all tabs but the 'update in progess' will disappear.
-	// Remembers the currently selected tab and will restore it when finished.
-	// NOTE that we don't pass any args to the progress page since it is able
-	//		to fetch them all from the AT job.
-	_switch_to_progress_page: function() {
+			// *** NOTE *** the Updates Page also has some mechanisms to refresh itself
+			//				on changes that reflect themselves in the sources.list
+			//				snippet files. But this refresh is intentionally slow (once
+			//				in 5 secs) to avoid resource congestion. The callbacks here
+			//				should immediately trigger refresh whenever something was
+			//				done at the frontend UI.
 
-		try
-		{
-			// No clue why it says that selectedChildWidget() is not a method
-			// of 'this'... so I have to do it differently.
-			//args['last_tab'] = this.selectedChildWidget();
-			var children = this.getChildren();
-			var args = {};
-			for (var tab in children)
-			{
-				if (children[tab].get('selected'))
-				{
-					args['last_tab'] = children[tab];
-				}
+			// ---------------------------------------------------------------------------
+			//
+			//		Listens for 'query error' and 'query success' events on all attached pages
+			//		and their children, delivering them to our own (central) error handler
+			//
+
+			var ch = this.getChildren();
+			for (var obj in ch) {
+				this.own(aspect.after(ch[obj], '_query_error', lang.hitch(this, function(subject, data) {
+					this._query_error(subject, data);
+				})));
+
+				this.own(aspect.after(ch[obj], '_query_success', lang.hitch(this, function(subject) {
+					this._query_success(subject);
+				})));
 			}
 
-			this.hideChild(this._updates);
+			// --------------------------------------------------------------------------
+			//
+			//		Connections that centralize the work of the installer:
+			//		listen for events that should start UniventionUpdater
+			//
 
-			this.showChild(this._progress);
-			this.selectChild(this._progress);
+			// invokes the installer from the 'release update' button (Updates Page)
+			this.own(aspect.after(this._updates, 'runReleaseUpdate', lang.hitch(this, function(release) {
+				this._call_installer({
+					job:		'release',
+					detail:		release,
+					confirm:	lang.replace(_("Do you really want to install release updates up to version {release}?"), {release: release})
+				});
+			})));
 
-			this._progress.startWatching(args);
-		}
-		catch(error)
-		{
-			console.error("switch_progress: " + error.message);
-		}
-	},
+			// invokes the installer from the 'errata update' button (Updates Page)
+			this.own(aspect.after(this._updates, 'runErrataUpdate', lang.hitch(this, function() {
+				this._call_installer({
+					job:		'errata',
+					confirm:	_("Do you really want to install all available errata updates?")
+				});
+			})));
 
-	// We must establish a NO ERROR callback too, so we can reset
-	// the error status
-	_query_success: function(subject) {
+			// invokes the installer from the 'component update' button (Updates Page)
+			this.own(aspect.after(this._updates, 'runDistUpgrade', lang.hitch(this, function() {
+				this._confirm_distupgrade();
+			})));
 
-		//console.error("QUERY '" + subject + "' -> SUCCESS");
-		if (this._connection_status != 0)
-		{
-			this._reset_error_status();
-		}
-	},
+			// invokes the installer in easy mode
+			this.own(aspect.after(this._updates, 'runEasyUpgrade', lang.hitch(this, function() {
+				this._call_installer({
+					job:		'easyupgrade',
+					confirm:	_("Do you really want to upgrade your system?")
+				});
+			})));
 
-	// Recover after any kind of long-term failure:
-	//
-	//	-	set error counter to zero
-	//	-	set connection status to ok
-	//	-	close eventually opened 'connection lost' dialog
-	//	-	refresh Updates page
-	//	-	restart polling
-	_reset_error_status: function() {
+			// propagate the status information to other pages
+			this.own(aspect.after(this._updates, 'statusloaded', lang.hitch(this, function(vals) {
+				this._progress.updateStatus(vals);
+			})));
+		},
 
-		this._connection_status = 0;
-		this._error_count = 0;
-		if (this._busy_dialog)
-		{
-			this._busy_dialog.hide();
-			this._busy_dialog.destroy();
-			this._busy_dialog = null;
-		}
-	},
+		// We defer these actions until the UI is readily rendered
+		startup: function() {
 
-	// Handles gracefully all things related to fatal query errors while
-	// an installer call is running. The background is that all polling
-	// queries are done with 'handleErrors=false', and their corresponding
-	// Error callback hands everything over to this function. So it could
-	// theoretically even survive a reboot...
-	_query_error: function(subject,data) {
+			this.inherited(arguments);
 
-		try
-		{
-			// While the login dialog is open -> all queries return at the
-			// error callback, but without data! (should be documented)
-			if (typeof(data) == 'undefined')
+			this.hideChild(this._progress);
+
+		},
+
+		// Seperate function that can be called the same way as _call_installer:
+		// instead of presenting the usual confirm dialog it presents the list
+		// of packages for a distupgrade.
+		_confirm_distupgrade: function() {
+
+			try
 			{
-				//console.error("QUERY '" + subject + "' without DATA");
-				return;
-			}
-			//console.error("QUERY '" + subject + "' STATUS = " + data.status);
-			if (data.status == 401)
-			{
-				if (this._connection_status != 2)
-				{
-					this._connection_status = 2;
-
-					if (this._busy_dialog)
+				this.standby(true);
+				this.umcpCommand('updater/updates/check').then(lang.hitch(this, function(data) {
+					this.standby(false);
+					// FIXME Lots of manual styling to achieve resonable look
+					var txt = "<div style='overflow:auto;max-height:400px;'><table>\n";
+					var upd = data.result['update'];
+					var ins = data.result['install'];
+					var rem = data.result['remove'];
+					if ((! upd.length) && (! ins.length) && (! rem.length))
 					{
-						this._busy_dialog.hide();
-						this._busy_dialog.destroy();
-						this._busy_dialog = null;
+						this._updates.refreshPage(true);
+						return;
 					}
+					if (rem.length)
+					{
+						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be REMOVED"), {count:rem.length}) + "</u></b></td></tr>";
+						for (var i in rem)
+						{
+							txt += "<tr>\n";
+							txt += "<td style='padding-left:1em;'>" + rem[i][0] + "</td>\n";
+							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + rem[i][1] + "</td>\n";
+							txt += "</tr>\n";
+						}
+					}
+					if (upd.length)
+					{
+						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be updated"), {count:upd.length}) + "</u></b></td></tr>";
+						for (var i in upd)
+						{
+							txt += "<tr>\n";
+							txt += "<td style='padding-left:1em;'>" + upd[i][0] + "</td>\n";
+							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + upd[i][1] + "</td>\n";
+							txt += "</tr>\n";
+						}
+					}
+					if (ins.length)
+					{
+						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be installed"), {count:ins.length}) + "</u></b></td></tr>";
+						for (var i in ins)
+						{
+							txt += "<tr>\n";
+							txt += "<td style='padding-left:1em;'>" + ins[i][0] + "</td>\n";
+							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + ins[i][1] + "</td>\n";
+							txt += "</tr>\n";
+						}
+					}
+					txt += "</table></div>";
+					txt += "<p style='padding:1em;'>" + _("Do you really want to perform the update/install/remove of the above packages?") + "</p>\n";
+					var dia = new ConfirmDialog({
+						title:			_("Start Upgrade?"),
+						message:		txt,
+						style:			'max-width:600px;',
+						options:
+						[
+							{
+								label:		_('Cancel'),
+								name:		'cancel'
+							},
+							{
+								label:		_('Install'),
+								name:		'start',
+								'default':	true
+							}
+						]
+					});
 
-					umc.dialog.login().then(dojo.hitch(this, function(username) {
-						// if authenticated again -> reschedule refresh queries, Note that these
-						// methods are intelligent enough to do nothing if the timer in question
-						// is already active.
-						this._updates.refreshPage();
-						this._updates.startPolling();
-						this._progress.startPolling();
-					})
-					);
+					dia.on('confirm', lang.hitch(this, function(answer) {
+						dia.close();
+						if (answer == 'start')
+						{
+							this._call_installer({
+								confirm:		false,
+								job:			'distupgrade',
+								detail:			''
+							});
+						}
+					}));
+					dia.show();
 
-
-					umc.dialog.notify(this._("Your current session has expired, or the connection to the server was lost. You must authenticate yourself again."));
-				}
-//				else
-//				{
-//					console.error("QUERY '" + subject + "' -> AGAIN STATUS 401");
-//				}
+					return;
+				}),
+				lang.hitch(this, function(data) {
+					this.standby(false);
+				})
+				);
 			}
-			else
+			catch(error)
 			{
-				this._connection_status = 1;
+				console.error("PACKAGE DIALOG: " + error.message);
+			}
+		},
 
-				this._error_count = this._error_count + 1;
-				if (this._error_count < 5)
+		// Central entry point into all installer calls. Subject
+		// and detail are passed as args to the 'updater/installer/execute' backend.
+		//
+		// Argument 'confirm' has special meaning:
+		//		true ......... ask for confirmation and run the installer only if confirmed,
+		//		false ........ run the installer unconditionally.
+		//		any string ... the confirmation text to ask.
+		_call_installer: function(args) {
+
+			if (args['confirm'])
+			{
+				var msg = "<h1>" + _("Attention!") + "</h1><br/>";
+				msg = msg + "<p>" +
+					_("Installing a system update is a significant change to this system and could have impact to other systems. ") +
+					_("In normal case, trouble-free use by users is not possible during the update, since system services may need to be restarted. ") +
+					_("Thus, updates shouldn't be installed on a live system. ") +
+					_("It is also recommended to evaluate the update in a test environment and to create a backup of the system.") +
+					"</p>";
+				msg = msg + "<p>" +
+					_("During setup, the web server may be stopped, leading to a termination of the HTTP connection. ") +
+					_("Nonetheless, the update proceeds and the update can be monitored from a new UMC session. ") +
+					_("Logfiles can be found in the directory /var/log/univention/.") +
+					"</p>";
+				msg = msg + "<p>" +
+					_("Please also consider the release notes, changelogs and references posted in the <a href='http://forum.univention.de'>Univention Forum</a>.") +
+					"</p>";
+				if (typeof(args['confirm']) == 'string')
 				{
-					// this toaster thingy is not really usable!
-					//umc.dialog.notify(this._("Connection to server lost. Trying to reconnect."));
+					msg = msg + "<p>" + args['confirm'] + "</p>";
 				}
 				else
 				{
-					if (this._busy_dialog == null)
+					msg = msg + "<p>" +
+						_("Do you really wish to proceed?") +
+						"</p>";
+				}
+
+				dialog.confirm(msg,
+				[
 					{
-						this._busy_dialog = new dijit.Dialog({
-							title:		this._("Connection lost!"),
-							closable:	false,
-							style:		"width: 300px",
-							'class':	'umcConfirmDialog'
-						});
-						this._busy_dialog.attr("content",
-								'<p>' + this._("The connection to the server was lost, trying to reconnect. You may need to re-authenticate when the connection is restored.") + '</p>' +
-								'<p>' + this._("Alternatively, you may close the current Management Console window, wait some time, and try to open it again.") + '</p>');
-						this._busy_dialog.show();
+						label:		_('Cancel')
+					},
+					{
+						label:		_('Install'),
+						'default':	true,
+						callback:	lang.hitch(this, function() {
+							args['confirm'] = false;
+							this._call_installer(args);
+						})
+					}
+				]);
+
+				return;
+			}
+
+			this.standby(true);
+
+			this.umcpCommand('updater/installer/execute', {
+				job:	args['job'],
+				detail:		args['detail']?args['detail']:''
+			}).then(lang.hitch(this, function(data) {
+				this.standby(false);
+				if (data.result['status'] == 0)
+				{
+					this._switch_to_progress_page();
+				}
+				else
+				{
+					dialog.alert(lang.replace(_("The Univention Updater action could not be started [Error {status}]: {message}"), data.result));
+				}
+			}),
+			// Strongly needed: an error callback! In this case, the built-in error processing
+			// (popup or login prompt) is well suited for the situation, so we don't disable it.
+			lang.hitch(this, function(data) {
+				this.standby(false);
+			}));
+		},
+
+
+		// Switches to the progress view: all tabs but the 'update in progess' will disappear.
+		// Remembers the currently selected tab and will restore it when finished.
+		// NOTE that we don't pass any args to the progress page since it is able
+		//		to fetch them all from the AT job.
+		_switch_to_progress_page: function() {
+
+			try
+			{
+				// No clue why it says that selectedChildWidget() is not a method
+				// of 'this'... so I have to do it differently.
+				//args['last_tab'] = this.selectedChildWidget();
+				var children = this.getChildren();
+				var args = {};
+				for (var tab in children)
+				{
+					if (children[tab].get('selected'))
+					{
+						args['last_tab'] = children[tab];
+					}
+				}
+
+				this.hideChild(this._updates);
+
+				this.showChild(this._progress);
+				this.selectChild(this._progress);
+
+				this._progress.startWatching(args);
+			}
+			catch(error)
+			{
+				console.error("switch_progress: " + error.message);
+			}
+		},
+
+		// We must establish a NO ERROR callback too, so we can reset
+		// the error status
+		_query_success: function(subject) {
+
+			//console.error("QUERY '" + subject + "' -> SUCCESS");
+			if (this._connection_status != 0)
+			{
+				this._reset_error_status();
+			}
+		},
+
+		// Recover after any kind of long-term failure:
+		//
+		//	-	set error counter to zero
+		//	-	set connection status to ok
+		//	-	close eventually opened 'connection lost' dialog
+		//	-	refresh Updates page
+		//	-	restart polling
+		_reset_error_status: function() {
+
+			this._connection_status = 0;
+			this._error_count = 0;
+			if (this._busy_dialog)
+			{
+				this._busy_dialog.hide();
+				this._busy_dialog.destroy();
+				this._busy_dialog = null;
+			}
+		},
+
+		// Handles gracefully all things related to fatal query errors while
+		// an installer call is running. The background is that all polling
+		// queries are done with 'handleErrors=false', and their corresponding
+		// Error callback hands everything over to this function. So it could
+		// theoretically even survive a reboot...
+		_query_error: function(subject, data) {
+
+			try
+			{
+				// While the login dialog is open -> all queries return at the
+				// error callback, but without data! (should be documented)
+				if (typeof(data) == 'undefined')
+				{
+					//console.error("QUERY '" + subject + "' without DATA");
+					return;
+				}
+				//console.error("QUERY '" + subject + "' STATUS = " + data.status);
+				if (data.status == 401)
+				{
+					if (this._connection_status != 2)
+					{
+						this._connection_status = 2;
+
+						if (this._busy_dialog)
+						{
+							this._busy_dialog.hide();
+							this._busy_dialog.destroy();
+							this._busy_dialog = null;
+						}
+
+						dialog.login().then(lang.hitch(this, function(username) {
+							// if authenticated again -> reschedule refresh queries, Note that these
+							// methods are intelligent enough to do nothing if the timer in question
+							// is already active.
+							this._updates.refreshPage();
+							this._updates.startPolling();
+							this._progress.startPolling();
+						})
+						);
+
+
+						dialog.notify(_("Your current session has expired, or the connection to the server was lost. You must authenticate yourself again."));
+					}
+	//				else
+	//				{
+	//					console.error("QUERY '" + subject + "' -> AGAIN STATUS 401");
+	//				}
+				}
+				else
+				{
+					this._connection_status = 1;
+
+					this._error_count = this._error_count + 1;
+					if (this._error_count < 5)
+					{
+						// this toaster thingy is not really usable!
+						//dialog.notify(_("Connection to server lost. Trying to reconnect."));
+					}
+					else
+					{
+						if (this._busy_dialog == null)
+						{
+							this._busy_dialog = new Dialog({
+								title:		_("Connection lost!"),
+								closable:	false,
+								style:		"width: 300px",
+								'class':	'umcConfirmDialog'
+							});
+							this._busy_dialog.attr("content",
+									'<p>' + _("The connection to the server was lost, trying to reconnect. You may need to re-authenticate when the connection is restored.") + '</p>' +
+									'<p>' + _("Alternatively, you may close the current Management Console window, wait some time, and try to open it again.") + '</p>');
+							this._busy_dialog.show();
+						}
 					}
 				}
 			}
+			catch(error)
+			{
+				console.error("HANDLE_ERRORS: " + error.message);
+			}
 		}
-		catch(error)
-		{
-			console.error("HANDLE_ERRORS: " + error.message);
-		}
-	}
+	});
 
 });

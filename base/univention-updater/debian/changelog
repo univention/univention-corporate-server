@@ -1,3 +1,9 @@
+univention-updater (8.0.7-1) unstable; urgency=low
+
+  * Ported JS-part to Dojo 1.8 (Bug #26857)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 07 Sep 2012 09:50:24 +0200
+
 univention-updater (8.0.6-1) unstable; urgency=low
 
   * Remove functionality: Updater now just installs updates,
