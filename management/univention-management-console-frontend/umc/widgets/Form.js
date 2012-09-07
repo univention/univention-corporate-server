@@ -273,9 +273,9 @@ define([
 			// register all necessary onChange events to handle dependencies
 			tools.forIn(this._dependencyMap, function(iname) {
 				if (iname in this._widgets) {
-					this.own(this._widgets[iname].watch('value', function() {
+					this.own(this._widgets[iname].watch('value', lang.hitch(this, function() {
 						this._updateDependencies(iname);
-					}));
+					})));
 				}
 			}, this);
 

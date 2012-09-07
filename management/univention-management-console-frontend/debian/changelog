@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.34-1) unstable; urgency=low
+
+  * fixed missing lang.hitch; Bug #26857
+
+ -- Florian Best <best@univention.de>  Fri, 07 Sep 2012 13:50:44 +0200
+
 univention-management-console-frontend (2.0.33-1) unstable; urgency=low
 
   * fixed typo (missing 'this' for lang.hitch in umc.widgets.Grid); Bug #26857
