@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.31-1) unstable; urgency=low
+
+  * adjusted ucslint.overrides file; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Sep 2012 11:01:21 +0200
+
 univention-management-console-frontend (2.0.30-1) unstable; urgency=low
 
   * fixed ssl/validity check in umc/app.js Bug #27002 
