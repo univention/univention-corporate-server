@@ -269,7 +269,7 @@ define([
 							dialog.confirm( _( 'Should the UMC module be closed? All unsaved modification will be lost.' ), [ {
 								label: _( 'Close' ),
 								callback: lang.hitch( this, function() {
-									topic.publish('/umc/tabs/close', [ this ] );
+									topic.publish('/umc/tabs/close', this );
 								} )
 							}, {
 								label: _( 'Cancel' ),

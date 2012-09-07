@@ -83,7 +83,7 @@ define([
 						};
 						this.store.getValue( item, 'objectType', null );
 						on( btn, "click", moduleProps, function () {
-							topic.publish( "/umc/modules/open", [ moduleProps.module, moduleProps.flavor, moduleProps ] );
+							topic.publish( "/umc/modules/open", moduleProps.module, moduleProps.flavor, moduleProps );
 						} );
 						this.addChild( btn );
 					} ) );

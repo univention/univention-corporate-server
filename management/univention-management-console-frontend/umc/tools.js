@@ -895,7 +895,7 @@ define([
 			tools.forIn(this._userPreferences, function(key, val) {
 				if (val != oldPrefs[key]) {
 					// entry has changed
-					topic.publish('/umc/preferences/' + key, [val]);
+					topic.publish('/umc/preferences/' + key, val);
 				}
 			});
 

@@ -378,10 +378,10 @@ define([
 			this.addChild(this._wizard);
 
 			this._wizard.on('Finished', lang.hitch(this, function() {
-				topic.publish('/umc/tabs/close', [ this ]);
+				topic.publish('/umc/tabs/close', this);
 			}));
 			this._wizard.on('Cancel', lang.hitch(this, function() {
-				topic.publish('/umc/tabs/close', [ this ]);
+				topic.publish('/umc/tabs/close', this);
 			}));
 		}
 	});
