@@ -38,7 +38,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, tools, dialog, ProgressBar, ContainerWidget, Text, _) {
+], function(declare, lang, array, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
 	return declare("umc.widgets.ProgressBar", ContainerWidget, {
 		// summary:
 		//		This class provides a widget providing detailed progress information

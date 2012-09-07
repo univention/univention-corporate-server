@@ -171,7 +171,7 @@ define([
 				this._pages = [];
 				array.forEach(allPages, function(iclass, i) {
 					var ipath = 'umc/modules/setup/' + iclass;
-					var Class = new require(ipath);
+					var Class = require(ipath);
 
 					// get the buttons we need
 					var buttons = [];
@@ -295,7 +295,7 @@ define([
 				array.forEach(allPages, function(iclass) {
 					// create new page
 					var ipath = 'umc/modules/setup/' + iclass;
-					var Class = require(ipath); // FIXME: why was 'new' here ?
+					var Class = require(ipath);
 					var ipage = new Class({
 						umcpCommand: lang.hitch(this, 'umcpCommand'),
 						footerButtons: buttons,
