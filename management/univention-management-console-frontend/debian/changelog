@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.35-1) unstable; urgency=low
+
+  * bug fixes; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Sep 2012 14:02:52 +0200
+
 univention-management-console-frontend (2.0.34-1) unstable; urgency=low
 
   * fixed missing lang.hitch; Bug #26857

@@ -794,7 +794,8 @@ define([
 			size = size || 16;
 			var values = {
 				s: size,
-				icon: iconName
+				icon: iconName,
+				url: require.toUrl('dijit/themes')
 			};
 			var iconClass = lang.replace('icon{s}-{icon}', values);
 			if (!(iconClass in this._existingIconClasses)) {
@@ -803,7 +804,7 @@ define([
 					var css = lang.replace(
 						'background: no-repeat;' +
 						'width: {s}px; height: {s}px;' +
-						'background-image: url("images/icons/{s}x{s}/{icon}.png");',
+						'background-image: url("{url}/umc/images/icons/{s}x{s}/{icon}.png");',
 						values);
 					styles.insertCssRule('.' + iconClass, css);
 

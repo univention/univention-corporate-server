@@ -192,7 +192,9 @@ define([
 
 		uninitialize: function() {
 			// unsubscribe upon destruction
-			this._subscriptionHandle.remove();
+			if (this._subscriptionHandle) {
+				this._subscriptionHandle.remove();
+			}
 		},
 
 		_createHelpTextPane: function() {
