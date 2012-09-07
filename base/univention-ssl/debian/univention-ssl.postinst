@@ -94,6 +94,18 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.3-1; t
 	ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
 fi
 
+# update to 3.1
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.3; then
+	# remove obsolete ucr variable
+	if [ -n "$ssl_validity_days" ]; then
+		ucr unset ssl/validity/days
+	fi
+	# create new ssl/validity/... ucr variables
+	if [ -x /usr/sbin/univention-certificate-check-validity ]; then
+		/usr/sbin/univention-certificate-check-validity
+	fi
+fi
+
 if [ "$1" = "$configure" -a -z "$2" ]; then
 	# generate root ca request
 	(cd /etc/univention/ssl
