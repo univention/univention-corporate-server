@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define window console*/
 
 // Class that provides a logfile viewer. Features are:
 //
@@ -46,9 +46,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"umc/tools",
+	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, tools, ContainerWidget, _) {
+], function(declare, lang, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
 
 		scrollable:			true,
@@ -81,7 +82,7 @@ define([
 
 			this.inherited(arguments);
 
-			this._text = new umc.widgets.Text({
+			this._text = new Text({
 				style:		'font-family:monospace;',
 				content:	_("... loading log file ...")
 			});
@@ -161,7 +162,7 @@ define([
 				// our height measure doesn't strictly reflect what we need, so we add a little tolerance:
 				// regard the positon 'at bottom' if its plus/minus 20px around zero
 				var to_scroll = false;
-				if ( (this._first_call > 0) || ( /* (oldpos['d_bottom'] > -20) && */ (oldpos['d_bottom'] < 20)))
+				if ( (this._first_call > 0) || ( /* (oldpos['d_bottom'] > -20) && */ (oldpos.d_bottom < 20)))
 				{
 					to_scroll = true;
 				}
@@ -186,10 +187,10 @@ define([
 		_get_positions: function() {
 
 			var result = {};
-			result['h_text'] = this._text.contentNode.scrollHeight;						// text height
-			result['h_container'] = this.domNode.clientHeight;							// container widget height
-			result['d_top'] = this._text.contentNode.parentNode.scrollTop;				// scroll distance from top
-			result['d_bottom'] = result['h_text'] - (result['h_container'] + result['d_top']);	// scroll distance from bottom
+			result.h_text = this._text.contentNode.scrollHeight;						// text height
+			result.h_container = this.domNode.clientHeight;							// container widget height
+			result.d_top = this._text.contentNode.parentNode.scrollTop;				// scroll distance from top
+			result.d_bottom = result.h_text - (result.h_container + result.d_top);	// scroll distance from bottom
 
 			return result;
 		},
@@ -208,7 +209,6 @@ define([
 			{
 				return;
 			}
-			var newpos = this._get_positions();
 			var todo = true;
 			var node = this._text.contentNode.parentNode;
 			var skip = 1024;

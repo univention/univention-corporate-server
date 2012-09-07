@@ -37,10 +37,11 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/aspect",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin"
-], function(declare, lang, aspect, Page, StandbyMixin) {
+], function(declare, lang, array, aspect, Page, StandbyMixin) {
 	return declare("umc.modules.updater.Page", [ Page, StandbyMixin ] , {
 		buildRendering: function() {
 
@@ -51,12 +52,12 @@ define([
 				var children = this.getChildren();
 				// the header text element is (currently) not a member variable,
 				// so I have to search for the one element that has region='top'
-				for (var ch in children) {
-					if (children[ch].get('region') == 'top') {
-						children[ch].set('content', '<h1>' + newval + '</h1>');
+				array.forEach(children, function(child) {
+					if (child.get('region') == 'top') {
+						child.set('content', '<h1>' + newval + '</h1>');
 						return;
 					}
-				}
+				});
 			}));
 			this.watch('helpText', lang.hitch(this, function(name, oldval, newval) {
 				this._helpTextPane.set('content', newval);
@@ -73,15 +74,15 @@ define([
 			this.inherited(arguments);
 
 			// Establish generic listeners for all of our direct children.
-			var ch = this.getChildren();
-			for (var i in ch) {
-				this.own(aspect.after(ch[i], '_query_error', lang.hitch(this, function(subject, data) {
+			var children = this.getChildren();
+			array.forEach(children, lang.hitch(this, function(child) {
+				this.own(aspect.after(child, '_query_error', lang.hitch(this, function(subject, data) {
 					this._query_error(subject, data);
 				})));
-				this.own(aspect.after(ch[i], '_query_success', lang.hitch(this, function(subject) {
+				this.own(aspect.after(child, '_query_success', lang.hitch(this, function(subject) {
 					this._query_success(subject);
 				})));
-			}
+			}));
 		},
 
 		// Two callbacks that are used by queries that want to propagate

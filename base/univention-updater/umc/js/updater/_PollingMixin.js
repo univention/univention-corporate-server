@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console window*/
 
 // Mixin that establishes a kind of polling for changes.
 //
@@ -74,25 +74,25 @@ define([
 			// then they'll be called whenever a query returns.
 			if (this.polling)
 			{
-				tools.assert(this.polling['interval'],	"_PollingMixin does not work without 'interval' argument.");
-				tools.assert(this.polling['query'],		"_PollingMixin does not work without 'query' argument.");
-				tools.assert(this.polling['callback'],	"_PollingMixin does not work without 'callback' argument.");
+				tools.assert(this.polling.interval,	"_PollingMixin does not work without 'interval' argument.");
+				tools.assert(this.polling.query,		"_PollingMixin does not work without 'query' argument.");
+				tools.assert(this.polling.callback,	"_PollingMixin does not work without 'callback' argument.");
 
-				this.polling['value'] = 0;		// initial values.
-				this.polling['timer'] = '';
+				this.polling.value = 0;		// initial values.
+				this.polling.timer = '';
 
 				// 'function' starts UMCP command and hands result over to 'handler'
 				this.polling['function'] = lang.hitch(this, function() {
 					try
 					{
-						tools.umcpCommand(this.polling['query'],{},false).then(
+						tools.umcpCommand(this.polling.query,{},false).then(
 							lang.hitch(this,function(data) {
-								this._query_success(this.polling['query']);
-								this.polling['handler'](data);
+								this._query_success(this.polling.query);
+								this.polling.handler(data);
 							}),
-							lang.hitch(this,function(data) {
-								this._query_error(this.polling['query'],data);
-								this.polling['handler'](null);
+							lang.hitch(this,function() {
+								this._query_error(this.polling.query.data);
+								this.polling.handler(null);
 							})
 							);
 					}
@@ -103,29 +103,29 @@ define([
 				});
 
 				// 'handler' checks for changedness, calls callback and reschedules 'function'
-				this.polling['handler'] = lang.hitch(this, function(data) {
+				this.polling.handler = lang.hitch(this, function(data) {
 					try
 					{
 						if (data !== null)
 						{
-							if (data.result != this.polling['value'])
+							if (data.result != this.polling.value)
 							{
-								this.polling['value'] = data.result;
-								this.polling['callback']();
+								this.polling.value = data.result;
+								this.polling.callback();
 							}
 						}
 						// on errors: reset the last seen value, so we ensure the next
 						// sucessful callback will trigger the 'callback()' event.
 						else
 						{
-							this.polling['value'] = 0;
+							this.polling.value = 0;
 						}
-						if ((this.polling['interval']) && (! this.polling['timer']))
+						if ((this.polling.interval) && (! this.polling.timer))
 						{
-							this.polling['timer'] = window.setTimeout(lang.hitch(this,function() {
-								this.polling['timer'] = '';
+							this.polling.timer = window.setTimeout(lang.hitch(this,function() {
+								this.polling.timer = '';
 								this.polling['function']();
-							}),this.polling['interval']);
+							}),this.polling.interval);
 						}
 					}
 					catch(error)
@@ -140,9 +140,9 @@ define([
 
 		// public function to start polling
 		startPolling: function() {
-			if ((this.polling) && (this.polling['handler']) && (typeof(this.polling['handler']) == 'function'))
+			if ((this.polling) && (this.polling.handler) && (typeof(this.polling.handler) == 'function'))
 			{
-				this.polling['handler'](null);
+				this.polling.handler(null);
 			}
 		},
 
@@ -150,7 +150,7 @@ define([
 		stopPolling: function() {
 			if (this.polling)
 			{
-				this.polling['interval'] = 0;
+				this.polling.interval = 0;
 			}
 		},
 

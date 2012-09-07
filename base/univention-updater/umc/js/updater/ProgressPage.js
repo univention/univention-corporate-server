@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define window*/
 
 // Some thoughts about the programmatic page structure:
 //
@@ -42,16 +42,18 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/on",
 	"dojo/aspect",
 	"dojo/dom-class",
 	"umc/dialog",
 	"umc/tools",
 	"umc/modules/updater/Page",
 	"umc/modules/updater/_LogViewer",
+	"umc/widgets/Button",
+	"umc/widgets/Text",
+	"umc/widgets/ExpandingTitlePane",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, on, aspect, domClass, dialog, tools, Page, _LogViewer, libServer, _) {
+], function(declare, lang, aspect, domClass, dialog, tools, Page, _LogViewer, Button, Text, ExpandingTitlePane, libServer, _) {
 	return declare("umc.modules.updater.ProgressPage", Page, {
 
 		// Polling interval for eventually running Updater jobs. If this is
@@ -77,12 +79,12 @@ define([
 
 			this.inherited(arguments);
 
-			this._pane = new umc.widgets.ExpandingTitlePane({
+			this._pane = new ExpandingTitlePane({
 				title:		_("Log file view")
 			});
 			this.addChild(this._pane);
 
-			this._head = new umc.widgets.Text({
+			this._head = new Text({
 				region:		'top',
 				content:	_("... please wait ...")
 			});
@@ -102,7 +104,7 @@ define([
 			})));
 
 			// returns to the calling page
-			this._close = new umc.widgets.Button({
+			this._close = new Button({
 				label:		_("back"),
 				region:		'bottom',
 				onClick:	lang.hitch(this, function() {
@@ -217,7 +219,7 @@ define([
 					var msg = "&nbsp;<br/>";
 					msg = msg + lang.replace(_("The job <b>{label}</b> (started {elapsed} ago) is currently running."), this._last_job);
 
-					if (this._last_job['logfile'])
+					if (this._last_job.logfile)
 					{
 						msg = msg + ('<br/>' + lang.replace(_("You're currently watching its log file <b>{logfile}</b>"), this._last_job));
 					}
@@ -230,7 +232,7 @@ define([
 					// {
 					// }
 
-					if (data.result['running'])
+					if (data.result.running)
 					{
 						// reschedule this as long as the job runs.
 						if ((this._interval) && (! this._timer))
@@ -314,7 +316,7 @@ define([
 					//		by a style or a style class.
 					var msg = "&nbsp;<br/>";
 					msg = msg + lang.replace(_("The current job (<b>{label}</b>) is now finished.<br/>"), this._last_job);
-					if (typeof(this._last_job['elapsed']) != 'undefined')
+					if (this._last_job.elapsed !== undefined)
 					{
 						msg = msg + lang.replace(_("It took {elapsed} to complete.<br/>"), this._last_job);
 					}
@@ -325,7 +327,7 @@ define([
 
 					// set headers according to the outcome
 					var status = 'success';
-					var lstat = this._last_job['_status_'];
+					var lstat = this._last_job._status_;
 					if ((lstat === undefined) || (lstat != 'DONE'))
 					{
 						status = 'failed';
@@ -371,7 +373,7 @@ define([
 		// and reopen the named tab.
 		//
 		// This is a good place to reset the log viewer contents too.
-		stopWatching: function(tab) {
+		stopWatching: function() {
 			this._job_key = '';
 			this._last_job = null;
 			this._log.stopWatching(true);

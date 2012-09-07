@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console*/
 
 // Form with some useful additions:
 //
@@ -42,13 +42,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/on",
 	"dojo/aspect",
+	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/StandbyMixin",
 	"umc/modules/updater/_PollingMixin",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, on, aspect, Form, StandbyMixin, _PollingMixin, _) {
+], function(declare, lang, aspect, tools, Form, StandbyMixin, _PollingMixin, _) {
 	return declare("umc.modules.updater.Form", [ Form, StandbyMixin, _PollingMixin ],
 	{
 		// can be called in the onSave hook to set error flags and messages
@@ -100,43 +100,43 @@ define([
 			if (focus !== '')
 			{
 				this._widgets[focus].focus();
-	// Our focus is not kept... we see it and then something takes control...
-	// Which event do we have to tack the focus() action on?
-	//			this.on('whichEvent?', lang.hitch(this, function() {
-	//				this._widgets[focus].focus();
-	//			}));
+				// Our focus is not kept... we see it and then something takes control...
+				// Which event do we have to tack the focus() action on?
+				//			this.on('whichEvent?', lang.hitch(this, function() {
+				//				this._widgets[focus].focus();
+				//			}));
 			}
 		},
 
 		// can be deleted when the last built version contains this method.
-	    getWidget: function( /*String*/ widget_name) {
-		// summary:
-		//              Return a reference to the widget with the specified name.
-		return this._widgets[widget_name]; // Widget|undefined
-	    },
+		getWidget: function( /*String*/ widget_name) {
+			// summary:
+			//			  Return a reference to the widget with the specified name.
+			return this._widgets[widget_name]; // Widget|undefined
+		},
 
-	    save: function(options) {
-		// summary:
-		//              Gather all form values and send them to the server via UMCP.
-		//              For this, the field umcpSetCommand needs to be set.
+		save: function(options) {
+			// summary:
+			//			  Gather all form values and send them to the server via UMCP.
+			//			  For this, the field umcpSetCommand needs to be set.
 
-		tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
+			tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
 
-		// sending the data to the server
-		var values = this.gatherFormValues();
+			// sending the data to the server
+			var values = this.gatherFormValues();
 
 			// *** CHANGED *** propagate an 'options' dict to the 'put' call of the moduleStore
-		// *** CHANGED *** propagate the result of the put operation to the 'onSaved' callback
-		var deferred = this.moduleStore.put(values, options).then(lang.hitch(this, function(result) {
-		    this.onSaved(true, result);
-		}), lang.hitch(this, function(result) {
-		    this.onSaved(false, result);
-		}));
+			// *** CHANGED *** propagate the result of the put operation to the 'onSaved' callback
+			var deferred = this.moduleStore.put(values, options).then(lang.hitch(this, function(result) {
+				this.onSaved(true, result);
+			}), lang.hitch(this, function(result) {
+				this.onSaved(false, result);
+			}));
 
-		return deferred;
-	    },
+			return deferred;
+		},
 
-		buildRendering: function(args) {
+		buildRendering: function() {
 
 			this.inherited(arguments);
 
@@ -159,9 +159,9 @@ define([
 					// *** CHANGED *** We don't display the message here since
 					//		we don't have the detailed knowledge what the errors
 					//		and error codes mean.
-					if (result['status'])
+					if (result.status)
 					{
-						this.applyErrorIndicators(result['object']);
+						this.applyErrorIndicators(result.object);
 					}
 				}
 			}));

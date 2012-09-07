@@ -26,13 +26,12 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
 	"dojo/dom-class",
 	"dojo/json",
 	"umc/dialog",
@@ -42,7 +41,7 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, on, domClass, json, dialog, tools, store, TitlePane, Page, Form, _) {
+], function(declare, lang, array, domClass, json, dialog, tools, store, TitlePane, Page, Form, _) {
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
 		_last_reboot:	false,
@@ -144,7 +143,7 @@ define([
 
 							if (values.length)
 							{
-								var val = values[values.length-1]['id'];
+								var val = values[values.length-1].id;
 								to_show = true;
 								to_show_msg = false;
 								element_releases.set('value', val);
@@ -165,7 +164,7 @@ define([
 
 							this._form.showWidget('ucs_updates_text', to_show_msg);
 
-							var but = this._form._buttons['run_release_update'];
+							var but = this._form._buttons.run_release_update;
 							but.set('visible', to_show);
 
 							// renew affordance to check for package updates, but only
@@ -393,7 +392,7 @@ define([
 
 			// fetch all known/initial titlepanes and save them with their name
 			// so they can be used later on
-			this._titlepanes = { 
+			this._titlepanes = {
 				reboot: this._form._container.getChildren()[0],
 				easymode: this._form._container.getChildren()[1],
 				release: this._form._container.getChildren()[2],
@@ -412,7 +411,7 @@ define([
 			this._form.showWidget('releases', false);
 			this._form.showWidget('ucs_updates_text', false);
 
-			this._form.on('loaded', lang.hitch(this, function(args) {
+			this._form.on('loaded', lang.hitch(this, function() {
 				try
 				{
 					this._query_success('updater/updates/get');
@@ -422,7 +421,7 @@ define([
 					this.onStatusLoaded(values);
 
 					// before we do anything else: switch visibility of panes dependant of the 'easy mode'
-					this._switch_easy_mode((values['easy_mode'] === true) || (values['easy_mode'] === 'true'));
+					this._switch_easy_mode((values.easy_mode === true) || (values.easy_mode === 'true'));
 
 					// set text that shows release updates.
 					// *** NOTE *** Availability of release updates (and visibility of 'Execute' button) can't be
@@ -433,7 +432,7 @@ define([
 
 					// Text (and button visibility) in EASY mode. We reuse the 'vtxt' variable if the
 					// erratalevel is not yet set.
-					if (values['erratalevel'] !== 0)
+					if (values.erratalevel !== 0)
 					{
 						vtxt = lang.replace(_("The currently installed release version is {ucs_version} errata{erratalevel}"), values);
 					}
@@ -441,8 +440,8 @@ define([
 
 					// easy_update_available -> easy_available_text
 					var element = this._form.getWidget('easy_available_text');
-					var ava = ((values['easy_update_available'] === true) || (values['easy_update_available'] === 'true'));
-					var appliance_mode = ((values['appliance_mode'] === true) || (values['appliance_mode'] === 'true'));
+					var ava = ((values.easy_update_available === true) || (values.easy_update_available === 'true'));
+					var appliance_mode = ((values.appliance_mode === true) || (values.appliance_mode === 'true'));
 					var blocking_component = this._form.getWidget('release_update_blocking_component').get('value');
 					if (ava) {
 						element.set('content', _("There are updates available."));
@@ -451,16 +450,16 @@ define([
 					} else {
 						element.set('content', _("There are no updates available."));
 					}
-					var ebu = this._form._buttons['easy_upgrade'];
+					var ebu = this._form._buttons.easy_upgrade;
 					domClass.toggle(ebu.domNode, 'dijitHidden', ! ava);
 
 					// Text for errata updates. Stuffed into two different widgets so the button on the right
 					// can be aligned at the second sentence.
 
-					var but = this._form._buttons['run_errata_update'];
+					var but = this._form._buttons.run_errata_update;
 					var tmp1;
 					var key;
-					var ucs_errata_count = parseInt(values['latest_errata_update'], 10) - parseInt(values['erratalevel'], 10);
+					var ucs_errata_count = parseInt(values.latest_errata_update, 10) - parseInt(values.erratalevel, 10);
 					if (( ucs_errata_count > 0 ) || ( values.components_errata !== "" ))
 					{
 						// Convert the string back to an object. This is necessary because such a dict
@@ -533,14 +532,13 @@ define([
 					this._form.getWidget('errata_update_text1').set('content', tmp1);
 
 					var tx1 = '';
-					var tx2 = '';
-					if (values['components'] == '0')
+					if (values.components == '0')
 					{
 						tx1 = _("There are no components configured for this system.");
 					}
 					else
 					{
-						if (values['components'] == '1')
+						if (values.components == '1')
 						{
 							tx1 = _("The system knows about 1 component.");
 						}
@@ -549,7 +547,7 @@ define([
 							tx1 = lang.replace(_("The system knows about {components} components."), values);
 						}
 						tx1 += '<br/>';
-						switch(values['enabled'])
+						switch(values.enabled)
 						{
 							case '0':
 								tx1 += _("None of them are currently enabled.");
@@ -565,7 +563,7 @@ define([
 					}
 					this._form.getWidget('package_update_text1').set('content', tx1);
 
-					this._show_reboot_pane(values['reboot_required']);
+					this._show_reboot_pane(values.reboot_required);
 
 				}
 				catch(error)
@@ -577,7 +575,7 @@ define([
 
 			// call hooks updater_show_message and updater_prohibit_update.
 			//
-			// "updater_show_message" has to return its data as a dictionary . 
+			// "updater_show_message" has to return its data as a dictionary .
 			// The returned data will be displayed in a new titlepane for each hook.
 			// data structure:
 			// {
@@ -587,13 +585,12 @@ define([
 			// }
 			//
 			// "updater_prohibit_update" has to return a boolean directly.
-			// If the value "true" is returned by at least one hook, the titlepanes 
+			// If the value "true" is returned by at least one hook, the titlepanes
 			// "easymode", "release", "errata" and "packages" will be hidden and
 			// this._update_prohibited will be set to true.
 
 			tools.umcpCommand('updater/hooks/call', { hooks: ['updater_show_message', 'updater_prohibit_update'] }).then(lang.hitch(this, function(result) {
 				this._update_prohibited = false;
-				var index = 0;
 				var newpane;
 				array.forEach(result.result.updater_show_message, function(hookresult) {
 					if (hookresult.valid) {
@@ -620,7 +617,7 @@ define([
 			try
 			{
 				this._updates_available = avail;
-				var but = this._form._buttons['run_packages_update'];
+				var but = this._form._buttons.run_packages_update;
 				but.set('label', avail ?
 					_("Install package updates") :
 					_("Check for package updates"));
@@ -653,7 +650,7 @@ define([
 								_("Package updates are available.") :
 								_("There are no package updates available."));
 					}),
-					lang.hitch(this, function(data) {
+					lang.hitch(this, function() {
 						this.standby(false);
 						this._set_updates_button(false, _("Update availability could not be checked."));
 					})
@@ -669,8 +666,8 @@ define([
 			}, this);
 		},
 
-		// Switches easy mode on or off. If the update is prohibited via hook, this 
-		// function hides the updater titlepanes. Doesn't touch other panes like the 
+		// Switches easy mode on or off. If the update is prohibited via hook, this
+		// function hides the updater titlepanes. Doesn't touch other panes like the
 		// 'reboot required' pane.
 		_switch_easy_mode: function(yes) {
 			if (this._update_prohibited) {
@@ -704,14 +701,14 @@ define([
 
 			if (yes)
 			{
-				if (typeof(progress) == 'undefined')
+				if (progress === undefined)
 				{
 					progress = false;
 				}
 				this._form.showWidget('reboot_text', ! progress);
 				this._form.showWidget('reboot_progress_text', progress);
 
-				var but = this._form._buttons['reboot'];
+				var but = this._form._buttons.reboot;
 				domClass.toggle(but.domNode, 'dijitHidden', progress);
 			}
 

@@ -26,22 +26,21 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/on",
+	"dojo/_base/array",
 	"dojo/aspect",
 	"dijit/Dialog",
 	"umc/dialog",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/TabbedModule",
-	"umc/modules/updater/Form",
 	"umc/modules/updater/UpdatesPage",
 	"umc/modules/updater/ProgressPage",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, on, aspect, Dialog, dialog, ConfirmDialog, TabbedModule, Form, UpdatesPage, ProgressPage, _) {
+], function(declare, lang, array, aspect, Dialog, dialog, ConfirmDialog, TabbedModule, UpdatesPage, ProgressPage, _) {
 	return declare("umc.modules.updater", TabbedModule, {
 
 		// some variables related to error handling
@@ -111,16 +110,16 @@ define([
 			//		and their children, delivering them to our own (central) error handler
 			//
 
-			var ch = this.getChildren();
-			for (var obj in ch) {
-				this.own(aspect.after(ch[obj], '_query_error', lang.hitch(this, function(subject, data) {
+			var children = this.getChildren();
+			array.forEach(children, lang.hitch(this, function(child) {
+				this.own(aspect.after(child, '_query_error', lang.hitch(this, function(subject, data) {
 					this._query_error(subject, data);
 				})));
 
-				this.own(aspect.after(ch[obj], '_query_success', lang.hitch(this, function(subject) {
-					this._query_success(subject);
+				this.own(aspect.after(child, '_query_success', lang.hitch(this, function(subject, data) {
+					this._query_success(subject, data);
 				})));
-			}
+			}));
 
 			// --------------------------------------------------------------------------
 			//
@@ -185,9 +184,9 @@ define([
 					this.standby(false);
 					// FIXME Lots of manual styling to achieve resonable look
 					var txt = "<div style='overflow:auto;max-height:400px;'><table>\n";
-					var upd = data.result['update'];
-					var ins = data.result['install'];
-					var rem = data.result['remove'];
+					var upd = data.result.update;
+					var ins = data.result.install;
+					var rem = data.result.remove;
 					if ((! upd.length) && (! ins.length) && (! rem.length))
 					{
 						this._updates.refreshPage(true);
@@ -196,35 +195,32 @@ define([
 					if (rem.length)
 					{
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be REMOVED"), {count:rem.length}) + "</u></b></td></tr>";
-						for (var i in rem)
-						{
+						array.forEach(rem, function(pkg) {
 							txt += "<tr>\n";
-							txt += "<td style='padding-left:1em;'>" + rem[i][0] + "</td>\n";
-							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + rem[i][1] + "</td>\n";
+							txt += "<td style='padding-left:1em;'>" + pkg[0] + "</td>\n";
+							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + pkg[1] + "</td>\n";
 							txt += "</tr>\n";
-						}
+						});
 					}
 					if (upd.length)
 					{
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be updated"), {count:upd.length}) + "</u></b></td></tr>";
-						for (var i in upd)
-						{
+						array.forEach(upd, function(pkg) {
 							txt += "<tr>\n";
-							txt += "<td style='padding-left:1em;'>" + upd[i][0] + "</td>\n";
-							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + upd[i][1] + "</td>\n";
+							txt += "<td style='padding-left:1em;'>" + pkg[0] + "</td>\n";
+							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + pkg[1] + "</td>\n";
 							txt += "</tr>\n";
-						}
+						});
 					}
 					if (ins.length)
 					{
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be installed"), {count:ins.length}) + "</u></b></td></tr>";
-						for (var i in ins)
-						{
+						array.forEach(ins, function(pkg) {
 							txt += "<tr>\n";
-							txt += "<td style='padding-left:1em;'>" + ins[i][0] + "</td>\n";
-							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + ins[i][1] + "</td>\n";
+							txt += "<td style='padding-left:1em;'>" + pkg[0] + "</td>\n";
+							txt += "<td style='padding-left:1em;padding-right:.5em;'>" + pkg[1] + "</td>\n";
 							txt += "</tr>\n";
-						}
+						});
 					}
 					txt += "</table></div>";
 					txt += "<p style='padding:1em;'>" + _("Do you really want to perform the update/install/remove of the above packages?") + "</p>\n";
@@ -261,7 +257,7 @@ define([
 
 					return;
 				}),
-				lang.hitch(this, function(data) {
+				lang.hitch(this, function() {
 					this.standby(false);
 				})
 				);
@@ -281,7 +277,7 @@ define([
 		//		any string ... the confirmation text to ask.
 		_call_installer: function(args) {
 
-			if (args['confirm'])
+			if (args.confirm)
 			{
 				var msg = "<h1>" + _("Attention!") + "</h1><br/>";
 				msg = msg + "<p>" +
@@ -298,9 +294,9 @@ define([
 				msg = msg + "<p>" +
 					_("Please also consider the release notes, changelogs and references posted in the <a href='http://forum.univention.de'>Univention Forum</a>.") +
 					"</p>";
-				if (typeof(args['confirm']) == 'string')
+				if (typeof(args.confirm) == 'string')
 				{
-					msg = msg + "<p>" + args['confirm'] + "</p>";
+					msg = msg + "<p>" + args.confirm + "</p>";
 				}
 				else
 				{
@@ -318,7 +314,7 @@ define([
 						label:		_('Install'),
 						'default':	true,
 						callback:	lang.hitch(this, function() {
-							args['confirm'] = false;
+							args.confirm = false;
 							this._call_installer(args);
 						})
 					}
@@ -330,11 +326,11 @@ define([
 			this.standby(true);
 
 			this.umcpCommand('updater/installer/execute', {
-				job:	args['job'],
-				detail:		args['detail']?args['detail']:''
+				job:	args.job,
+				detail:		args.detail ? args.detail : ''
 			}).then(lang.hitch(this, function(data) {
 				this.standby(false);
-				if (data.result['status'] == 0)
+				if (data.result.status === 0)
 				{
 					this._switch_to_progress_page();
 				}
@@ -345,7 +341,7 @@ define([
 			}),
 			// Strongly needed: an error callback! In this case, the built-in error processing
 			// (popup or login prompt) is well suited for the situation, so we don't disable it.
-			lang.hitch(this, function(data) {
+			lang.hitch(this, function() {
 				this.standby(false);
 			}));
 		},
@@ -368,7 +364,7 @@ define([
 				{
 					if (children[tab].get('selected'))
 					{
-						args['last_tab'] = children[tab];
+						args.last_tab = children[tab];
 					}
 				}
 
@@ -390,7 +386,7 @@ define([
 		_query_success: function(subject) {
 
 			//console.error("QUERY '" + subject + "' -> SUCCESS");
-			if (this._connection_status != 0)
+			if (this._connection_status !== 0)
 			{
 				this._reset_error_status();
 			}
@@ -445,7 +441,7 @@ define([
 							this._busy_dialog = null;
 						}
 
-						dialog.login().then(lang.hitch(this, function(username) {
+						dialog.login().then(lang.hitch(this, function() {
 							// if authenticated again -> reschedule refresh queries, Note that these
 							// methods are intelligent enough to do nothing if the timer in question
 							// is already active.
@@ -475,7 +471,7 @@ define([
 					}
 					else
 					{
-						if (this._busy_dialog == null)
+						if (this._busy_dialog === null)
 						{
 							this._busy_dialog = new Dialog({
 								title:		_("Connection lost!"),
