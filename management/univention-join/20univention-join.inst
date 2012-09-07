@@ -120,7 +120,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	fi
 fi
 
-# create ssl/validity/days to avoid nagios UNIVENTION_SSL warnings
+# create ssl/validity/... to avoid nagios UNIVENTION_SSL warnings
 if [ -x /usr/sbin/univention-certificate-check-validity ]; then
 	/usr/sbin/univention-certificate-check-validity
 fi
