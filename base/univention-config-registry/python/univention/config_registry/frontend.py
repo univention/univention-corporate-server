@@ -43,7 +43,7 @@ from univention.config_registry.backend import \
 from univention.config_registry.handler import \
         run_filter, ConfigHandlers
 from univention.config_registry.misc import \
-        randpw, validate_key
+        validate_key
 from univention.config_registry.filters import \
         Output, filter_shell, filter_keys_only, filter_sort
 
@@ -57,7 +57,6 @@ __all__ = [
         'handler_commit',
         'handler_register',
         'handler_unregister',
-        'handler_randpw',
         'handler_filter',
         'handler_search',
         'handler_get',
@@ -283,11 +282,6 @@ def handler_unregister(args, opts=dict()):
     cur = handlers.update()  # cache must be current
     obsolete = handlers.unregister(args[0], ucr)
     handlers.update_divert(cur - obsolete)
-
-
-def handler_randpw(args, opts=dict()):
-    """Print random password."""
-    print randpw()
 
 
 def handler_filter(args, opts=dict()):
@@ -545,7 +539,6 @@ HANDLERS = {
     'commit': (handler_commit, 0),
     'register': (handler_register, 1),
     'unregister': (handler_unregister, 1),
-    'randpw': (handler_randpw, 0),
     'shell': (None, 0),    # for compatibility only
     'filter': (handler_filter, 0),
     'search': (handler_search, 0),

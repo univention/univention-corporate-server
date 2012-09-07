@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__all__ = ['replace_dict', 'replace_umlaut', 'directory_files', 'randpw',
+__all__ = ['replace_dict', 'replace_umlaut', 'directory_files',
         'key_shell_escape', 'validate_key', 'INVALID_KEY_CHARS']
 
 import sys
@@ -114,27 +114,6 @@ def directory_files(directory):
             if os.path.isfile(filename):
                 result.append(filename)
     return result
-
-
-def randpw(length=8):
-    """Create random password.
-    >>> randpw().isalnum()
-    True
-    """
-    password = []
-    rand = open('/dev/urandom', 'r')
-    try:
-        for _ in range(length):
-            octet = ord(rand.read(1))
-            octet %= len(randpw.VALID)  # pylint: disable-msg=E1101
-            char = randpw.VALID[octet]  # pylint: disable-msg=E1101
-            password.append(char)
-    finally:
-        rand.close()
-    return ''.join(password)
-randpw.VALID = ('0123456789' +  # pylint: disable-msg=W0612
-        'abcdefghijklmnopqrstuvwxyz' +
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 
 if __name__ == '__main__':

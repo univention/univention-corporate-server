@@ -32,8 +32,11 @@
 # <http://www.gnu.org/licenses/>.
 # Univention LDAP Listener replication module
 
-import os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64
-import univention_baseconfig
+import os
+import ldap
+import ldap.schema
+import codecs
+from univention.config_registry import ConfigRegistry
 (utf8enc,utf8dec,utf8read,utf8write)=codecs.lookup('utf-8')
 
 EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates']
@@ -124,7 +127,7 @@ def update_schema(attr):
 
 
 if __name__ == '__main__':
-	baseConfig = univention_baseconfig.baseConfig( )
+	baseConfig = ConfigRegistry()
 	baseConfig.load( )
 
 	lo = ldap.open(baseConfig['ldap/master'], 7389)

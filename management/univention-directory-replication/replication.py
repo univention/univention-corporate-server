@@ -39,8 +39,14 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64, string
-import univention_baseconfig, univention.debug
+import os
+import pwd
+import ldap
+import ldap.schema
+import re
+import time
+import base64
+import univention.debug
 import smtplib
 from email.MIMEText import MIMEText
 import univention.uldap
@@ -70,7 +76,7 @@ flatmode_module_prefix = 'ldap/replication/flatmode/module/'
 flatmode_container_prefix = 'ldap/replication/flatmode/container/'
 
 univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode enabled by UCR: %s' % listener.baseConfig.get('ldap/replication/flatmode','no'))
-if listener.baseConfig.get('ldap/replication/flatmode','no') in ['yes','1','true']:
+if listener.baseConfig.is_true('ldap/replication/flatmode', False):
 	# flatmode is enabled
 	try:
 		import univention.admin.uldap
@@ -88,7 +94,7 @@ if listener.baseConfig.get('ldap/replication/flatmode','no') in ['yes','1','true
 				val_mod = listener.baseConfig[ key_mod ]
 				# find container entry
 				key_cn = '%s%s' % (flatmode_container_prefix, id)
-				if listener.baseConfig.has_key( key_cn ):
+				if listener.baseConfig.get(key_cn):
 					val_cn = listener.baseConfig[ key_cn ]
 					# get module
 					mod = univention.admin.modules.get( val_mod )
@@ -569,14 +575,14 @@ def modlist(old, new):
 	for key in new.keys():
 		if key in EXCLUDE_ATTRIBUTES:
 			continue
-		if not old.has_key(key):
+		if key not in old:
 			ml.append((ldap.MOD_ADD, key, new[key]))
 		elif new[key] != old[key]:
 			ml.append((ldap.MOD_REPLACE, key, new[key]))
 	for key in old.keys():
 		if key in EXCLUDE_ATTRIBUTES:
 			continue
-		if not new.has_key(key):
+		if key not in new:
 			ml.append((ldap.MOD_DELETE, key, []))
 	return ml
 
@@ -707,8 +713,8 @@ def flatmodeConvertObject( entry, dn, new ):
 	if new:
 		new['entryDN'][0] = dn
 
-	if new.has_key('uniqueMember'):
-		if flatmode_ldap['lo'] == None:
+	if new.get('uniqueMember'):
+		if flatmode_ldap['lo'] is None:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: second ldap connection is not established - local replica may be corrupt!')
 		else:
 			newMemberDNs = []
@@ -767,10 +773,10 @@ def handlerFlatmode( ldapconn, dn, new, old ):
 
 def flatmode_reconnect():
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication flatmode: ldap reconnect triggered')
-	if ( flatmode_ldap.has_key('ldapserver') and \
-		 flatmode_ldap.has_key('basedn') and \
-		 flatmode_ldap.has_key('binddn') and \
-		 flatmode_ldap.has_key('bindpw')):
+	if ( flatmode_ldap.get('ldapserver') and \
+		 flatmode_ldap.get('basedn') and \
+		 flatmode_ldap.get('binddn') and \
+		 flatmode_ldap.get('bindpw')):
 		try:
 			flatmode_ldap['lo'] = univention.uldap.access( host = flatmode_ldap['ldapserver'],
 														   base = flatmode_ldap['basedn'],
@@ -781,7 +787,7 @@ def flatmode_reconnect():
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: ldap reconnect failed: %s' % str(ex))
 			flatmode_ldap['lo'] = None
 		else:
-			if flatmode_ldap['lo'] == None:
+			if flatmode_ldap['lo'] is None:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: ldap reconnect failed')
 
 def handler(dn, new, listener_old):
@@ -832,7 +838,7 @@ def handler(dn, new, listener_old):
 			if limit < free_space:
 
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Critical disk space. The Univention LDAP Listener was stopped')
-				msg = MIMEText('The Univention Listener process was stopped on %s.%s.\n\n\nThe result of df:\n%s\n\nPlease free up some disk space and restart the Univention LDAP Listener with the following command:\n/etc/init.d/univention-directory-listener start' %(listener.baseConfig['hostname'], listener.baseConfig['domainname'], string.join(df)))
+				msg = MIMEText('The Univention Listener process was stopped on %s.%s.\n\n\nThe result of df:\n%s\n\nPlease free up some disk space and restart the Univention LDAP Listener with the following command:\n/etc/init.d/univention-directory-listener start' %(listener.baseConfig['hostname'], listener.baseConfig['domainname'], ' '.join(df)))
 				msg['Subject'] = 'Alert: Critical disk space on %s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
 				sender = 'root'
 				recipient = listener.baseConfig.get('ldap/replication/filesystem/recipient', sender)
@@ -873,7 +879,7 @@ def handler(dn, new, listener_old):
 				for k in old.keys():
 					if k in EXCLUDE_ATTRIBUTES:
 						continue
-					if not listener_old.has_key(k):
+					if key not in listener_old:
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
 							'listener does not have key %s' % k)
 						match=0
@@ -1001,8 +1007,30 @@ def initialize():
 	new_password()
 	init_slapd('start')
 
+
+def randpw(length=8):
+    """Create random password.
+    >>> randpw().isalnum()
+    True
+    """
+    password = []
+    rand = open('/dev/urandom', 'r')
+    try:
+        for _ in xrange(length):
+            octet = ord(rand.read(1))
+            octet %= len(randpw.VALID)  # pylint: disable-msg=E1101
+            char = randpw.VALID[octet]  # pylint: disable-msg=E1101
+            password.append(char)
+    finally:
+        rand.close()
+    return ''.join(password)
+randpw.VALID = ('0123456789' +  # pylint: disable-msg=W0612
+        'abcdefghijklmnopqrstuvwxyz' +
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+
 def new_password():
-	pw=univention_baseconfig.randpw()
+	pw = randpw()
 
 	listener.setuid(0)
 	try:

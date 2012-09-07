@@ -6,8 +6,8 @@
 0016-3: python/univention-config-registry:62
 0016-3: python/univention-config-registry:63
 # Internal use of custom has_key
-0009-5: python/univention/config_registry/frontend.py:165
-0009-5: python/univention/config_registry/frontend.py:217
+0009-5: python/univention/config_registry/frontend.py:164
+0009-5: python/univention/config_registry/frontend.py:216
 # #!python, since they only use default modules
 0009-2: scripts/ldapsearch-wrapper
 0009-2: scripts/ldapsearch-decode64

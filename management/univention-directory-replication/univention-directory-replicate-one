@@ -31,12 +31,19 @@
 # <http://www.gnu.org/licenses/>.
 # Univention Directory Listener replication module
 
-import sys, os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64
-import univention_baseconfig, univention.debug
+import sys
+import os
+import pwd
+import ldap
+import ldap.schema
+import re
+import time
+import base64
+from univention.config_registry import ConfigRegistry
+import univention.debug
 
-baseConfig = univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
-baseConfig = baseConfig
 
 baseDN = baseConfig['ldap/base']
 
@@ -250,14 +257,14 @@ def modlist(old, new):
 	for key in new.keys():
 		if key in EXCLUDE_ATTRIBUTES:
 			continue
-		if not old.has_key(key):
+		if key not in old:
 			ml.append((ldap.MOD_ADD, key, new[key]))
 		elif new[key] != old[key]:
 			ml.append((ldap.MOD_REPLACE, key, new[key]))
 	for key in old.keys():
 		if key in EXCLUDE_ATTRIBUTES:
 			continue
-		if not new.has_key(key):
+		if key not in new:
 			ml.append((ldap.MOD_DELETE, key, []))
 	return ml
 
@@ -406,8 +413,29 @@ def handler(dn, new, listener_old):
 		handler(dn, new, old)
 
 
+def randpw(length=8):
+    """Create random password.
+    >>> randpw().isalnum()
+    True
+    """
+    password = []
+    rand = open('/dev/urandom', 'r')
+    try:
+        for _ in xrange(length):
+            octet = ord(rand.read(1))
+            octet %= len(randpw.VALID)  # pylint: disable-msg=E1101
+            char = randpw.VALID[octet]  # pylint: disable-msg=E1101
+            password.append(char)
+    finally:
+        rand.close()
+    return ''.join(password)
+randpw.VALID = ('0123456789' +  # pylint: disable-msg=W0612
+        'abcdefghijklmnopqrstuvwxyz' +
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+
 def new_password():
-	pw=univention_baseconfig.randpw()
+	pw = randpw()
 
 	try:
 		f = open('/etc/ldap/rootpw.conf', 'w')
