@@ -330,7 +330,15 @@ msgstr ""
 
 #: umc/app.js:352
 #, python-format
-msgid "The SSL certificate will expire in %d days and should be renewed!"
+msgid "The %s will expire in %d days and should be renewed!"
+msgstr ""
+
+#: umc/app.js:352
+msgid "SSL root certificate"
+msgstr ""
+
+#: umc/app.js:352
+msgid "SSL host certificate"
 msgstr ""
 
 #: umc/tools.js:440

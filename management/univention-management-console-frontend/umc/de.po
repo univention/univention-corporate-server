@@ -355,9 +355,16 @@ msgstr "Unterstützung und Support"
 
 #: umc/app.js:352
 #, python-format
-msgid "The SSL certificate will expire in %d days and should be renewed!"
-msgstr ""
-"Das SSL-Zertifikat wird in %d Tagen ablaufen und sollte erneuert werden!"
+msgid "The %s will expire in %d days and should be renewed!"
+msgstr "Das %s wird in %d Tagen ablaufen und sollte erneuert werden!"
+
+#: umc/app.js:352
+msgid "SSL root certificate"
+msgstr "SSL Wurzel-Zertifikat"
+
+#: umc/app.js:352
+msgid "SSL host certificate"
+msgstr "SSL Rechner-Zertifikat"
 
 #: umc/tools.js:440
 msgid "The account as been disabled."

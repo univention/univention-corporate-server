@@ -383,12 +383,21 @@ define([
 				this._tabContainer.addChild(overviewPage);
 
 				// get needed UCR variables
-				tools.umcpCommand( 'get/ucr', [ 'ssl/validity/days', 'ssl/validity/warning', 'update/available', 'update/reboot/required' ] ).then( lang.hitch( this, function( data ) {
+				tools.umcpCommand( 'get/ucr', [ 'ssl/validity/host', 'ssl/validity/root', 'ssl/validity/warning', 'update/available', 'update/reboot/required' ] ).then( lang.hitch( this, function( data ) {
 					// check validity of SSL certificates
-					var days = parseInt( data.result[ 'ssl/validity/days' ], 10 );
+					var hostCert = parseInt( data.result[ 'ssl/validity/host' ], 10 );
+					var rootCert = parseInt( data.result[ 'ssl/validity/root' ], 10 );
 					var warning = parseInt( data.result[ 'ssl/validity/warning' ], 10 );
+					var certExp = rootCert;
+					var certType = this._('SSL root certificate');
+					if (rootCert >= hostCert) {
+						certExp = hostCert;
+						certType = this._('SSL host certificate');
+					}
+					var today = new Date().getTime() / 1000 / 60 / 60 / 24; // now in days
+					var days = certExp - today;
 					if ( days <= warning ) {
-						overviewPage.addNote( _( 'The SSL certificate will expire in %d days and should be renewed!', days ) );
+						overviewPage.addNote( this._( 'The %s will expire in %d days and should be renewed!', certType, days ) );
 					}
 
 					// check if updates are available
