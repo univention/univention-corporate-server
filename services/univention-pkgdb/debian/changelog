@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.4-1) unstable; urgency=low
+
+  * version bump; Bug #26857
+
+ -- Florian Best <best@univention.de>  Fri, 07 Sep 2012 12:51:48 +0200
+
 univention-pkgdb (6.0.3-1) unstable; urgency=low
 
   * version bump; Bug #26857

@@ -1,3 +1,9 @@
+univention-system-setup (6.0.22-1) unstable; urgency=low
+
+  * version bump; Bug #26857
+
+ -- Florian Best <best@univention.de>  Fri, 07 Sep 2012 12:52:51 +0200
+
 univention-system-setup (6.0.21-1) unstable; urgency=low
 
   * remove useless kerberos_rename script (Bug #28427)
