@@ -269,7 +269,7 @@ define([
 
 		_removeNewButton: function() {
 			if (this._newButton) {
-				this.orphan(this._newButton, true);
+				this._newButton.destroy()
 				this._newButton = null;
 			}
 		},
@@ -420,7 +420,7 @@ define([
 
 			for (var irow = this._nRenderedElements - 1; irow >= this._nRenderedElements - n; --irow) {
 				// destroy the row container
-				this.orphan(this._rowContainers[irow], true);
+				this._rowContainers[irow].destroyRecursive();
 
 				// clean up internal arrays
 				this._rowContainers.pop();
