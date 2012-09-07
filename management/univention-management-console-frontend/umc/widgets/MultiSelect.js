@@ -41,7 +41,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/cells"
 ], function(declare, lang, array, Deferred, query, EnhancedGrid, _SelectMixin, _FormWidgetMixin, StandbyMixin) {
-	return declare("umc.tools.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin ], {
+	return declare("umc.widgets.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin ], {
 		// summary:
 		//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
 		//		to the behaviour expected from a MultiSelect widget.
