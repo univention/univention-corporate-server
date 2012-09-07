@@ -577,7 +577,7 @@ define([
 				this.onFilterDone(true);
 				this._grid.resize();
 			})));
-			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(function() {
+			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(this, function() {
 				if (this._ignoreNextFetch) {
 					this._ignoreNextFetch = false;
 					return;
