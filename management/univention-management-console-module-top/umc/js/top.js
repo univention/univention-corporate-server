@@ -50,7 +50,6 @@ define([
 		_contextVariable: null,
 		_page: null,
 
-		i18nClass: 'umc.modules.top',
 		idProperty: 'pid',
 
 		killProcesses: function(signal, pids) {

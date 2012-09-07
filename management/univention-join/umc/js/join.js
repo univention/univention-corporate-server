@@ -93,7 +93,6 @@ define([
 		_grid_query:		{'*': '*'},		// all?
 
 		idProperty:			'script',		// doesn't help with the sorting problem of selected rows
-		i18nClass: 			'umc.modules.join',
 		standbyOpacity:		1,
 
 		// all functions that deal with the log view pane. Code arg determines what to do:

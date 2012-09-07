@@ -41,19 +41,19 @@ define([
 	// Search form as a seperate class, so the gory details are hidden from the main page.
 	//
 	return declare("umc.modules.pkgdb.SearchForm", [ Form ], {
-		
+
 		// Some status variables
 		_pattern_needed:		true,		// true if a pattern is required by this key+operator 
 		_pattern_is_list:		false,		// true if pattern is ComboBox. false if TextBox.
 		_submit_allowed:		false,		// true if current input allows SUBMIT (including that no queries are pending)
-		
+
 		// true while the corresponding query is pending
 		_keys_pending:			true,
 		_operators_pending:		false,
 		_proposals_pending:		false,
-		
+
 		postMixInProperties: function() {
-			
+
 			lang.mixin(this,{
 				widgets:
 					[
@@ -130,13 +130,13 @@ define([
 		},
 		
 		buildRendering: function() {
-			
+
 			this.inherited(arguments);
-			
+
 			this.showWidget('pattern_text',false);
 			this.showWidget('pattern_list',false);
 			this.showWidget('operator',false);
-			
+
 			// whenever one of our 'pending' vars is changed...
 			this.watch('_keys_pending',lang.hitch(this,function(name,oldval,value) {
 				this._handle_query_changes(name,value);
@@ -147,7 +147,7 @@ define([
 			this.watch('_proposals_pending',lang.hitch(this,function(name,oldval,value) {
 				this._handle_query_changes(name,value);
 			}));
-			
+
 			// whenever one of the dialog values is being changed...
 			this.getWidget('key').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('key',value);
@@ -162,7 +162,7 @@ define([
 				this._handle_query_changes('pattern_list',value);
 			}));
 		},
-		
+
 		// ---------------------------------------------------------------------
 		//
 		//		functions to be called from outside
@@ -171,13 +171,13 @@ define([
 		//		that created us (our ancestor).
 		//
 		// ---------------------------------------------------------------------
-		
+
 		// Will be called when the grid data is readily loaded.
 		// Inside, we use this to show that a query is underway.
 		enableSearchButton: function(on) {
 			this._buttons['submit'].set('disabled',!on);
 		},
-		
+
 		// switch dialog elements (ComboBoxes + TextBox) while a query
 		// is underway, simply to inhibit weird things from impatient users
 		enableEntryElements: function(on) {
@@ -188,16 +188,16 @@ define([
 				widget.set('disabled',!on);
 			}
 		},
-		
+
 		// Reads the corresponding dialog elements and returns the current query
 		// as a dict with key, operand and pattern.
 		//
 		// If this is called even while the dialog state doesn't allow executing
 		// a query -> return an empty dict.
 		getQuery: function() {
-			
+
 			var query = {};
-			
+
 			var crit = this.getWidget('key').get('value');
 			if (crit != '_')
 			{
@@ -215,7 +215,7 @@ define([
 					}
 				}
 			}
-				
+
 			return query;
 		},
 
@@ -234,7 +234,7 @@ define([
 		//		'result' element from there.
 		//
 		// -------------------------------------------------------------------
-		
+
 		// dynamic options for the ComboBox that presents comparison operators
 		// suitable for a given key
 		_operators_query: function() {
@@ -261,11 +261,11 @@ define([
 			// does not make sense at all?
 			return null;
 		},
-		
+
 		// returns proposals for the 'pattern' field for a given combination of
 		// key and operator. (pageKey is added silently)
 		_proposals_query: function() {
-			
+
 			if (this._proposals_pending)
 			{
 				//alert("PROPOSALS already pending!");
@@ -292,7 +292,7 @@ define([
 		//		handlers for return values
 		//
 		// ------------------------------------------------------------
-		
+
 		// handles the result of the operators query. Special functions are:-
 		//
 		//	-	if the value is not an array: hide the operators combobox
@@ -302,7 +302,7 @@ define([
 		//		entirely.
 		//
 		_handle_operators: function(values) {
-			
+
 			var p_label = _("Pattern");
 			var o_show  = false;
 			var p_show  = true;
@@ -325,7 +325,7 @@ define([
 				this._pattern_needed = true;
 				p_label = values;
 			}
-			
+
 			this.showWidget('operator',o_show);
 			
 			if (p_show)
@@ -364,7 +364,7 @@ define([
 				this.showWidget('pattern_list',!is_single);
 			}
 		},
-		
+
 		// sets state of 'this query is pending' in a boolean variable
 		// and in the 'disabled' state of the corresponding dialog element(s)
 		_set_query_pending: function(element,on) {
@@ -399,7 +399,7 @@ define([
 				widget.set('value',widget._firstValueInList);
 			}
 		},
-		
+
 		// We can't inhibit that onSubmit() is being called even if we have
 		// explicitly set a widget to invalid... why do widgets have this
 		// feature if the form doesn't honor it?
@@ -415,19 +415,19 @@ define([
 				this.onExecuteQuery(this.getQuery());
 			}
 		},
-		
+
 		// an internal callback for everything that changes a query, operator or pattern.
 		// should call the external callback 'onQueryChanged' only if something has
 		// changed. This maintains all internal variables that reflect the state of
 		// the current entry and the executability of the query.
 		_handle_query_changes: function(name,value) {
-			
+
 			// start with: allowed if none of our dynamicValues queries is pending
 			var allow = ! (this._keys_pending || this._operators_pending || this._proposals_pending);
-			
+
 			// only allow if the 'key' position is not '--- select one ---'
 			allow = allow && (this.getWidget('key').get('value')!='_');
-			
+
 			// check validation for all elements that must be valid
 			if (allow)
 			{
@@ -468,26 +468,26 @@ define([
 				this.enableSearchButton(allow);
 			}
 		},
-		
+
 		// -----------------------------------------------------------------------
 		//
 		//		callbacks
 		//
 		//		These are stub functions that our ancestor is supposed to listen on.
 		//
-		
+
 		// our follow-up of the submit event, called only if submit is allowed.
 		// For the convenience of the caller, we pass the current query.
 		onExecuteQuery: function(query) {
 			this.enableSearchButton(false);
 			this.enableEntryElements(false);
 		},
-		
+
 		// the invoking Page or Module can listen here to know that the query is become
 		// ready or disabled. Internal function _handle_query_changes() maintains all
 		// state variables and calls this only if the state has changed.
 		onQueryChanged: function(query) {
 		}
-		
+
 	});
 });

@@ -28,46 +28,41 @@
  */
 /*global define*/
 
-dojo.provide("umc.modules.pkgdb");
+define([
+	"dojo/_base/declare",
+	"umc/modules/pkgdb/Page",
+	"umc/widgets/TabbedModule",
+	"umc/i18n!umc/modules/pkgdb"
+], function(declare, Page, TabbedModule, _) {
+	return declare("umc.modules.pkgdb", [ TabbedModule ], {
 
-dojo.require("umc.i18n");
-dojo.require("dialog");
-dojo.require("umc.widgets.TabbedModule");
+		buildRendering: function() {
+			this.inherited(arguments);
 
-dojo.require("umc.modules._pkgdb.Page");
+			var syspage = new Page({
+				title:			_("Systems"),
+				headerText:		_("Search systems"),
+				helpText:		_("Search for systems with specific software properties"),
+				pageKey:		'systems'
+			});
+			this.addChild(syspage);
 
+			var packpage = new Page({
+				title:			_("Packages"),
+				headerText:		_("Search packages"),
+				helpText:		_("Search for packages with specific software properties"),
+				pageKey:		'packages'
+			});
+			this.addChild(packpage);
 
-/*TODO*/ return declare("umc.modules.pkgdb", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
-	
-	i18nClass:		'umc.modules.pkgdb',
-	
-	buildRendering: function() {
-		this.inherited(arguments);
+			var propage = new Page({
+				title:			_("Problems"),
+				headerText:		_("Identify problems"),
+				helpText:		_("Find problems related to software package installation"),
+				pageKey:		'problems'
+			});
+			this.addChild(propage);
 			
-		var syspage = new umc.modules._pkgdb.Page({
-			title:			_("Systems"),
-			headerText:		_("Search systems"),
-			helpText:		_("Search for systems with specific software properties"),
-			pageKey:		'systems'
-		});
-		this.addChild(syspage);
-
-		var packpage = new umc.modules._pkgdb.Page({
-			title:			_("Packages"),
-			headerText:		_("Search packages"),
-			helpText:		_("Search for packages with specific software properties"),
-			pageKey:		'packages'
-		});
-		this.addChild(packpage);
-		
-		var propage = new umc.modules._pkgdb.Page({
-			title:			_("Problems"),
-			headerText:		_("Identify problems"),
-			helpText:		_("Find problems related to software package installation"),
-			pageKey:		'problems'
-		});
-		this.addChild(propage);
-		
-	}
-	
+		}
+	});
 });

@@ -60,33 +60,32 @@ define([
 		_current_query:				null,			// what is being executed right now
 
 		buildRendering: function() {
-			
+
 			this.inherited(arguments);
-			
+
 			this._pane = new ExpandingTitlePane({
 				title:			this.title
 			});
 			this.addChild(this._pane);
-			
+
 			this._searchform = new SearchForm({
 				region:			'top',
 				pageKey:		this.pageKey
 			});
 			this._pane.addChild(this._searchform);
-			
+
 			// Listen to the submit event
 			this._searchform.on('ExecuteQuery',lang.hitch(this, function(query) {
 				this._execute_query(query);
 			}));
-			
 		},
-		
+
 		// fetches the structure of the result grid. The callback returns
 		// the current query to us.
 		_execute_query: function(query) {
-			
+
 			this._current_query = query;
-			
+
 			try
 			{
 				tools.umcpCommand('pkgdb/columns',{
@@ -101,11 +100,11 @@ define([
 				console.error('execute_query: ' + error.message);
 			}
 		},
-		
+
 		// Creates the given result table. 'fields' is an array of column names.
 		// The corresponding query is already stored in this._current_query. 
 		_create_table: function(fields) {
-			
+
 			try
 			{
 				// determine if we have already a grid structured like that
@@ -119,11 +118,11 @@ define([
 					}
 				}			
 				this._last_table_structure = sig;
-				
+
 				if (! grid_usable)
 				{			
 					var columns = [];
-					
+
 					for (var f in fields)
 					{
 						var fname = fields[f];
@@ -138,14 +137,14 @@ define([
 						}
 						columns.push(entry);
 					}
-						
+
 					var newgrid = new Grid({
 						region:			'center',
 						actions:		[],
 						columns:		columns,
 						moduleStore:	store(fields[0],'pkgdb')
 					});
-					
+
 					if (this._grid)
 					{
 						// detach and free old grid instance
@@ -170,7 +169,7 @@ define([
 						this._searchform.enableEntryElements(true);
 					}));
 				}
-				
+
 				domClass.toggle(this._grid.domNode,'dijitHidden',false);
 
 				// Execute the given query (a.k.a. filter) on the grid
@@ -180,14 +179,12 @@ define([
 					},
 					this._current_query)
 				);
-				
+
 			}
 			catch(error)
 			{
 				console.error('create_table: ' + error.message);
 			}
 		}
-		
-		
 	});
 });

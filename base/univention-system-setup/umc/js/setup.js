@@ -115,7 +115,7 @@ define([
 			var deferredlist = new all([deferred_ucr, deferred_variables]);
 			deferredlist.then(lang.hitch(this, function(data) {
 				// pass ucr and values to renderPages()
-				this.renderPages(data[0][1], data[1][1].result);
+				this.renderPages(data[0], data[1].result);
 				this.standbyOpacity = 0.75;  // set back the opacity to 75%
 			}));
 		},
@@ -170,7 +170,7 @@ define([
 				// create all pages dynamically
 				this._pages = [];
 				array.forEach(allPages, function(iclass, i) {
-					var ipath = 'umc.modules.setup.' + iclass;
+					var ipath = 'umc/modules/setup/' + iclass;
 					var Class = new require(ipath);
 
 					// get the buttons we need
@@ -294,7 +294,7 @@ define([
 				this._pages = [];
 				array.forEach(allPages, function(iclass) {
 					// create new page
-					var ipath = 'umc.modules.setup.' + iclass;
+					var ipath = 'umc/modules/setup/' + iclass;
 					var Class = require(ipath); // FIXME: why was 'new' here ?
 					var ipage = new Class({
 						umcpCommand: lang.hitch(this, 'umcpCommand'),

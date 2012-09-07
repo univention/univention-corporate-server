@@ -36,8 +36,6 @@ define([
 	// Helps with i18n issues.
 	return declare("umc.modules.pkgdb.KeyTranslator", [], {
 
-		// i18nClass is already defined in the class where we're being mixed in
-		
 		// This function accepts a field (column) name and returns any additional
 		// options that are needed in construction of the data grid. Even if all
 		// structural information is kept in the Python module, the design properties

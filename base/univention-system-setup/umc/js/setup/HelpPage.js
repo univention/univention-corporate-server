@@ -36,15 +36,14 @@ define([
 	"dojo/cache",
 	"umc/widgets/Page",
 	"umc/widgets/ExpandingTitlePane",
-	"umc/widgets/_WidgetsInWidgetsMixin",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup"
-], function(declare, kernel, array, construct, cache, Page, ExpandingTitlePane, _WidgetsInWidgetsMixin, Text, ContainerWidget, Button, i18nTools, _) {
+], function(declare, kernel, array, construct, cache, Page, ExpandingTitlePane, Text, ContainerWidget, Button, i18nTools, _) {
 
-	return declare("umc.modules.setup.HelpPage", [ Page, _WidgetsInWidgetsMixin ], {
+	return declare("umc.modules.setup.HelpPage", [ Page ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit UDM objects.
@@ -85,9 +84,9 @@ define([
 			this.addChild(pane);
 
 			if (i18nTools.availableLanguages.length > 1) {
-				var langContainer = this.adopt(ContainerWidget, {
+				var langContainer = this.own(new ContainerWidget({
 					style: "float: right; display: inner-block;"
-				});
+				}))[0];
 				array.forEach(i18nTools.availableLanguages, function(ilang) {
 					// create one button per language
 					langContainer.addChild(new Button({
