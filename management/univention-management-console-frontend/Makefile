@@ -40,6 +40,9 @@ dojo_tmp_dir:=$(buildDir)/univention-dojo
 rel_root_path:=$(shell echo '$(dojo_tmp_dir)/util/docscripts' | sed -e 's,/[^/]*,../,g')
 tmpDir:=$(CURDIR)/tmp
 themesDir:=$(tmpDir)/dijit/themes
+jsFiles:=$(shell find umc -name "*.js")
+lessFiles:=$(patsubst css/%,$(themesDir)/umc/%,$(shell find css -name "*.less"))
+cssFiles:=$(patsubst %.less,%.css,$(lessFiles))
 
 .PHONY: build build-dev build-common api-doc install clean jslint i18n umc/package.json
 
@@ -61,6 +64,8 @@ $(tmpDir):
 	mkdir -p $@
 	cp -rfs $(dojoDir)/dojo $(dojoDir)/dijit $(dojoDir)/dojox $@
 	cp -rfs "$(CURDIR)/umc" $@
+	cp $(CURDIR)/lessc $@
+	cp $(CURDIR)/import_css.py $@
 
 # convert .po to .json files
 i18n:
@@ -86,11 +91,18 @@ $(tmpDir)/umc/login.html: login.html
 	mkdir -p $(dir $@)
 	sed 's/%HASH%/_$(timestamp)/;' login.html > $@
 
+%.css: %.less
+	./lessc $< $@
+
 # copy css and image data into umc themes directory
 $(themesDir)/umc: $(tmpDir) css
 	@#rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css $@
 	@# symlinks for css style sheets and images
 	cp -rfs "$(CURDIR)/css" "$@"
+
+# main CSS file
+$(themesDir)/umc/umc.css: $(themesDir)/umc $(cssFiles) $(themesDir)/umc/_umc.css
+	./import_css.py $(themesDir)/umc/_umc.css > $@
 
 $(themesDir)/umc/icons: $(themesDir)/umc
 	@# scale all icons
@@ -112,7 +124,7 @@ build-dev: build-common
 	@# symlink javascript code
 	ln -s $(tmpDir) $(buildDir)/js
 
-build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)/umc/icons $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc/umc.css $(themesDir)/umc/icons $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
 	@# symlink to javascript dir with timestamp
 	rm -f "$(buildDir)/js_"*
 	ln -s "js" "$(buildDir)/js_"'$(timestamp)'
