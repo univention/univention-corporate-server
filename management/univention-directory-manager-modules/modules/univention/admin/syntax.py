@@ -346,6 +346,9 @@ class OneAndAHalfString( string ):
 class FiveThirdsString( string ):
 	size = 'FiveThirds'
 
+class TextArea( string ):
+	pass
+
 # upload classes
 class Upload( ISyntax ):
 	@classmethod
