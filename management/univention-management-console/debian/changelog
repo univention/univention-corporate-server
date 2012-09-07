@@ -1,3 +1,9 @@
+univention-management-console (5.0.22-1) unstable; urgency=low
+
+  * change path for icons; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Sep 2012 15:06:34 +0200
+
 univention-management-console (5.0.21-1) unstable; urgency=low
 
   * unify translations, fix typo bug in ChoicesSanitizer,
@@ -52,7 +58,7 @@ univention-management-console (5.0.15-1) unstable; urgency=low
 
 univention-management-console (5.0.14-1) unstable; urgency=low
 
-  * adapted sanitizer (Bug #27720) 
+  * adapted sanitizer (Bug #27720)
 
  -- Florian Best <best@univention.de>  Mon, 20 Aug 2012 16:56:21 +0200
 

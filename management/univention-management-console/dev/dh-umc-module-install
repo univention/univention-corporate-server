@@ -157,7 +157,7 @@ def do_package( package, core ):
 			for dirname, dirs, files in os.walk( module.icons ):
 				if '.svn' in dirs:
 					dirs.remove( '.svn' )
-				dest = 'debian/%s/usr/share/univention-management-console-frontend/images/icons/%s' % ( package, dirname[ len( module.icons ) : ] )
+				dest = 'debian/%s/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/%s' % ( package, dirname[ len( module.icons ) : ] )
 				if not os.path.exists( dest ):
 					dh_ucs.doIt( 'install', '-d', dest )
 				for icon in files:
