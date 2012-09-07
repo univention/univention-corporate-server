@@ -42,7 +42,7 @@ define([
 	"umc/i18n!umc/modules/lib"
 ], function(declare, lang, style, Deferred, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
 
-	return declare("umc.modules.lib.server", [], { 
+	return { 
 		askRestart: function(_msg) {
 			// TODO: first call to: lib/server/restart/isNeeded
 			//       if no restart is needed -> do not show any alert
@@ -111,6 +111,6 @@ define([
 
 			return deferred;
 		}
-	});
+	}
 
 });

@@ -26,25 +26,17 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules._uvmm.types");
-
-dojo.require("umc.tools");
-
-
-(function() {
-	// translation function
-	var i18n = new umc.i18n.Mixin({
-		i18nClass: 'umc.modules.uvmm'
-	});
-	var _ = dojo.hitch(i18n, '_');
-
-	var self = umc.modules._uvmm.types;
-	dojo.mixin(self, {
+define([
+	"dojo/_base/array",
+	"umc/tools",
+	"umc/i18n!umc/modules/uvmm"
+], function(array, tools, _) {
+	var self = {
 		dict2list: function(dict) {
 			var list = [];
-			umc.tools.forIn(dict, function(ikey, ival) {
+			tools.forIn(dict, function(ikey, ival) {
 				list.push({
 					id: ikey,
 					label: ival
@@ -67,8 +59,8 @@ dojo.require("umc.tools");
 			{ id: 'variable', label: _('Guest controlled'), vt: ['kvm-hvm', 'xen-hvm'] }
 		],
 		getRtcOffset: function(domain_type, rtc_offset) {
-			return dojo.filter(self.rtcOffset, function(irtc) {
-				return dojo.indexOf(irtc.vt, domain_type) >= 0 || irtc.id == rtc_offset;
+			return array.filter(self.rtcOffset, function(irtc) {
+				return array.indexOf(irtc.vt, domain_type) >= 0 || irtc.id == rtc_offset;
 			});
 		},
 		domainStates: {
@@ -88,21 +80,22 @@ dojo.require("umc.tools");
 		parseStorageSize: function(size) {
 			var pattern = /^([0-9]+(?:[,.][0-9]+)?)[ \t]*(?:([KkMmGgTtPp])(?:[Ii]?[Bb])?|[Bb])?$/;
 			var match = pattern.exec(size);
-			if (match === null)
+			if (match === null) {
 				return null;
+			}
 			var mem = parseFloat(match[1].replace(',', '.'));
-			var unit = match[2]
+			var unit = match[2];
 			switch (unit) {
-			case 'P': case 'p':
-				mem *= 1024;
-			case 'T': case 't':
-				mem *= 1024;
-			case 'G': case 'g':
-				mem *= 1024;
-			case 'M': case 'm':
-				mem *= 1024;
-			case 'K': case 'k':
-				mem *= 1024;
+				case 'P': case 'p':
+					mem *= 1024;
+				case 'T': case 't':
+					mem *= 1024;
+				case 'G': case 'g':
+					mem *= 1024;
+				case 'M': case 'm':
+					mem *= 1024;
+				case 'K': case 'k':
+					mem *= 1024;
 			}
 			return mem;
 		},
@@ -114,7 +107,7 @@ dojo.require("umc.tools");
 		getVirtualizationTechnology: function(options) {
 			// return all technologies that are supported by the corresponding
 			// opertating system type (KVM/Xen)
-			return dojo.filter(self.virtualizationTechnology, function(itech) {
+			return array.filter(self.virtualizationTechnology, function(itech) {
 				return itech.id.indexOf(options.domain_type) === 0;
 			});
 		},
@@ -156,7 +149,7 @@ dojo.require("umc.tools");
 		getCPUs: function(options) {
 			// query the domain's node and get its number of CPUs
 			var nodeURI = options.nodeURI || options.domainURI.split('#')[0];
-			return umc.tools.umcpCommand('uvmm/node/query', {
+			return tools.umcpCommand('uvmm/node/query', {
 				nodePattern: nodeURI
 			}).then(function(data) {
 				// query successful
@@ -182,16 +175,16 @@ dojo.require("umc.tools");
 		},
 		getInterfaceModels: function(options) {
 			var list = [];
-			umc.tools.forIn(self.interfaceModels, function(ikey, ilabel) {
+			tools.forIn(self.interfaceModels, function(ikey, ilabel) {
 				if (ikey == 'virtio') {
-					 if (options.domain_type == 'kvm') {
+				 	 if (options.domain_type == 'kvm') {
 						list.push({ id: ikey, label: ilabel });
-					 }
+				 	 }
 				}
 				else if (ikey == 'netfront') {
-					 if (options.domain_type == 'xen') {
+				 	 if (options.domain_type == 'xen') {
 						list.push({ id: ikey, label: ilabel });
-					 }
+				 	 }
 				}
 				else {
 					list.push({ id: ikey, label: ilabel });
@@ -232,10 +225,10 @@ dojo.require("umc.tools");
 			if (!options.nodeURI) {
 				return [];
 			}
-			return umc.tools.umcpCommand('uvmm/storage/pool/query', {
+			return tools.umcpCommand('uvmm/storage/pool/query', {
 				nodeURI: options.nodeURI
 			}).then(function(data) {
-				return dojo.map(data.result, function(iitem) {
+				return array.map(data.result, function(iitem) {
 					return iitem.name;
 				});
 			}, function() {
@@ -247,12 +240,12 @@ dojo.require("umc.tools");
 			if (!options.nodeURI || !options.pool) {
 				return [];
 			}
-			return umc.tools.umcpCommand('uvmm/storage/volume/query', {
+			return tools.umcpCommand('uvmm/storage/volume/query', {
 				nodeURI: options.nodeURI,
 				pool: options.pool,
 				type: options.type || null
 			}).then(function(data) {
-				return dojo.map(data.result, function(iitem) {
+				return array.map(data.result, function(iitem) {
 					return iitem.volumeFilename;
 				});
 			}, function() {
@@ -272,17 +265,17 @@ dojo.require("umc.tools");
 			return list;
 		},
 		getNodes: function() {
-			return umc.tools.umcpCommand('uvmm/query', {
+			return tools.umcpCommand('uvmm/query', {
 				type: 'node',
 				nodePattern: '*'
 			}).then(function(data) {
-				return dojo.filter( data.result, function( node ) {
+				return array.filter( data.result, function( node ) {
 					return node.available;
 				} );
 			});
 		},
 		getProfiles: function(options) {
-			return umc.tools.umcpCommand('uvmm/profile/query', {
+			return tools.umcpCommand('uvmm/profile/query', {
 				nodeURI: options.nodeURI
 			}).then(function(data) {
 				return data.result;
@@ -295,6 +288,6 @@ dojo.require("umc.tools");
 			}
 			return uri.slice( 0, colon );
 		}
-	});
-})();
-
+	};
+	return self;
+});
