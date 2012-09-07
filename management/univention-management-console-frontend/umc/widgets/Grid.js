@@ -165,11 +165,12 @@ define([
 				var iconName = this._dataStore.getValue(item, iconField);
 
 				// create an HTML image that contains the icon
-				var html = lang.replace('<img src="images/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
+				var html = lang.replace('<img src="{url}/umc/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
 					icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
 					height: '16px',
 					width: '16px',
-					value: value
+					value: value,
+					url: require.toUrl('dijit/themes')
 				});
 				return html;
 			});

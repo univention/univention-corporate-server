@@ -804,7 +804,7 @@ define([
 					var css = lang.replace(
 						'background: no-repeat;' +
 						'width: {s}px; height: {s}px;' +
-						'background-image: url("{url}/umc/images/icons/{s}x{s}/{icon}.png");',
+						'background-image: url("{url}/umc/icons/{s}x{s}/{icon}.png");',
 						values);
 					styles.insertCssRule('.' + iconClass, css);
 

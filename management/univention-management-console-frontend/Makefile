@@ -92,7 +92,7 @@ $(themesDir)/umc: $(tmpDir) css
 	@# symlinks for css style sheets and images
 	cp -rfs "$(CURDIR)/css" "$@"
 
-$(themesDir)/umc/images/icons: $(themesDir)/umc
+$(themesDir)/umc/icons: $(themesDir)/umc
 	@# scale all icons
 	for s in 16x16 50x50; do \
 		mkdir -p "$@/$$s"; \
@@ -108,11 +108,11 @@ build-dev: build-common
 	@# symlinks for installed modules/icons
 	mkdir -p $(tmpDir)/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules
-	cp -frs /usr/share/univention-management-console-frontend/images/icons/* $(themesDir)/umc/images/icons/
+	cp -frs /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
 	@# symlink javascript code
 	ln -s $(tmpDir) $(buildDir)/js
 
-build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)/umc/images/icons $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)/umc/icons $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
 	@# symlink to javascript dir with timestamp
 	rm -f "$(buildDir)/js_"*
 	ln -s "js" "$(buildDir)/js_"'$(timestamp)'
