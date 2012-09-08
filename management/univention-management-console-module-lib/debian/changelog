@@ -1,3 +1,9 @@
+univention-management-console-module-lib (1.0.2-1) unstable; urgency=low
+
+  * Minor syntax tweaks to make js validation tool happy; Bug #26857
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 08 Sep 2012 22:19:10 +0200
+
 univention-management-console-module-lib (1.0.1-1) unstable; urgency=low
 
   * version bump; Bug #26857

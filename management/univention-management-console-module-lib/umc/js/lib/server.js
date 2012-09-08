@@ -26,10 +26,9 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define window*/
 
 define([
-	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/dom-style",
 	"dojo/Deferred",
@@ -40,9 +39,9 @@ define([
 	"dijit/Dialog",
 	"dijit/ProgressBar",
 	"umc/i18n!umc/modules/lib"
-], function(declare, lang, style, Deferred, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
+], function(lang, style, Deferred, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
 
-	return { 
+	return {
 		askRestart: function(_msg) {
 			// TODO: first call to: lib/server/restart/isNeeded
 			//       if no restart is needed -> do not show any alert
@@ -95,7 +94,7 @@ define([
 			var deferred = new Deferred();
 			tools.umcpCommand('lib/server/restart', { restart: true }).then(function() {
 				// wait for 10sec before closing the session
-				setTimeout(function() {
+				window.setTimeout(function() {
 					// close the session and force the login dialog to appear
 					tools.checkSession(false);
 					tools.closeSession();
@@ -111,6 +110,6 @@ define([
 
 			return deferred;
 		}
-	}
+	};
 
 });
