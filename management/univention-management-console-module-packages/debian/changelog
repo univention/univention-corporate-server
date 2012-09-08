@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.3-1) unstable; urgency=low
+
+  * WIP: Ported frontend to Dojo 1.8 (Bug #26857)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 08 Sep 2012 22:25:25 +0200
+
 univention-management-console-module-packages (2.0.2-1) unstable; urgency=low
 
   * Take functionality from updater module (Bug #26784)

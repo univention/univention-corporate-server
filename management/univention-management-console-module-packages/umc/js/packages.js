@@ -26,99 +26,98 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo umc */
+/*global define console*/
 
-dojo.provide("umc.modules.packages");
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/aspect",
+	"umc/modules/packages/store",
+	"umc/widgets/TabbedModule",
+	"umc/modules/packages/AppCenterPage",
+	"umc/modules/packages/PackagesPage",
+	"umc/modules/packages/ComponentsPage",
+	"umc/modules/packages/DetailsPage",
+	"umc/modules/packages/SettingsPage",
+	"umc/i18n!umc/modules/packages" // not needed atm
+], function(declare, lang, aspect, store, TabbedModule, AppCenterPage, PackagesPage, ComponentsPage, DetailsPage, SettingsPage, _) {
+	return declare("umc.modules.packages", [ TabbedModule ], {
 
-dojo.require("umc.i18n");
-dojo.require("umc.modules._packages.store");
-//dojo.require("umc.store");
+		idProperty: 'package',
 
-dojo.require("umc.widgets.TabbedModule");
-dojo.require("umc.modules._packages.AppCenterPage");
-dojo.require("umc.modules._packages.PackagesPage");
-dojo.require("umc.modules._packages.ComponentsPage");
-dojo.require("umc.modules._packages.DetailsPage");
-dojo.require("umc.modules._packages.SettingsPage");
+		buildRendering: function() {
 
-dojo.declare("umc.modules.packages", [ umc.widgets.TabbedModule, umc.i18n.Mixin ], {
+			this.inherited(arguments);
+			this._componentsStore = store('name', 'packages/components');
 
-	i18nClass: 'umc.modules.packages',
-	idProperty: 'package',
+			this._app_center = new AppCenterPage({});
+			this._packages = new PackagesPage({moduleStore: this.moduleStore});
+			this._components = new ComponentsPage({moduleStore: this._componentsStore});
+			this._details = new DetailsPage({moduleStore: this._componentsStore});
+			this._settings = new SettingsPage({});
 
-	buildRendering: function() {
+			this.addChild(this._app_center);
+			this.addChild(this._packages);
+			this.addChild(this._components);
+			this.addChild(this._details);
+			this.addChild(this._settings);
 
-		pack = this;
-		this.inherited(arguments);
-		this._componentsStore = umc.modules._packages.store.getModuleStore('name', 'packages/components')
+			// switches from 'add' or 'edit' (components grid) to the detail form
+			this.own(aspect.after(this._components, 'showDetail', lang.hitch(this, function(id) {
+				this.exchangeChild(this._components, this._details);
+				if (id) {
+					// if an ID is given: pass it to the detail page and let it load
+					// the corresponding component record
+					this._details.startEdit(false, id);
+				} else {
+					// if ID is empty: ask the SETTINGS module for default values.
+					this._details.startEdit(true, this._details.getComponentDefaults());
+				}
+			})));
 
-		this._app_center = new umc.modules._packages.AppCenterPage({});
-		this._packages = new umc.modules._packages.PackagesPage({moduleStore: this.moduleStore});
-		this._components = new umc.modules._packages.ComponentsPage({moduleStore: this._componentsStore});
-		this._details = new umc.modules._packages.DetailsPage({moduleStore: this._componentsStore});
-		this._settings = new umc.modules._packages.SettingsPage({});
+			// closes detail form and returns to grid view.
+			this.own(aspect.after(this._details, 'closeDetail', lang.hitch(this, function() {
+				this._details._form.clearFormValues();
+				this.exchangeChild(this._details, this._components);
+			})));
 
-		this.addChild(this._app_center);
-		this.addChild(this._packages);
-		this.addChild(this._components);
-		this.addChild(this._details);
-		this.addChild(this._settings);
+		},
 
-		// switches from 'add' or 'edit' (components grid) to the detail form
-		dojo.connect(this._components, 'showDetail', dojo.hitch(this, function(id) {
-			this.exchangeChild(this._components, this._details);
-			if (id) {
-				// if an ID is given: pass it to the detail page and let it load
-				// the corresponding component record
-				this._details.startEdit(false, id);
-			} else {
-				// if ID is empty: ask the SETTINGS module for default values.
-				this._details.startEdit(true, this._details.getComponentDefaults());
-			}
-		}));
+		startup: function() {
 
-		// closes detail form and returns to grid view.
-		dojo.connect(this._details, 'closeDetail', dojo.hitch(this, function(args) {
-			this._details._form.clearFormValues();
-			this.exchangeChild(this._details, this._components);
-		}));
+			this.inherited(arguments);
 
-	},
+			this.hideChild(this._details);
 
-	startup: function() {
+		},
 
-		this.inherited(arguments);
-
-		this.hideChild(this._details);
-
-	},
-
-	// FIXME: this is quite cool. should go into TabbedModule
-	// exchange two tabs, preserve selectedness.
-	exchangeChild: function(from,to) {
-		var what = 'nothing';
-		try
-		{
-			what = 'getting FROM selection';
-			var is_selected = from.get('selected');
-			what = 'hiding FROM';
-			this.hideChild(from);
-			what = 'showing TO';
-			this.showChild(to);
-			if (is_selected)
+		// FIXME: this is quite cool. should go into TabbedModule
+		// exchange two tabs, preserve selectedness.
+		exchangeChild: function(from,to) {
+			var what = 'nothing';
+			try
 			{
-				what = 'selecting TO';
-				this.selectChild(to);
+				what = 'getting FROM selection';
+				var is_selected = from.get('selected');
+				what = 'hiding FROM';
+				this.hideChild(from);
+				what = 'showing TO';
+				this.showChild(to);
+				if (is_selected)
+				{
+					what = 'selecting TO';
+					this.selectChild(to);
+				}
+			}
+			catch(error)
+			{
+				console.error("exchangeChild: [" + what + "] " + error.message);
 			}
 		}
-		catch(error)
-		{
-			console.error("exchangeChild: [" + what + "] " + error.message);
-		}
-	}
 
-	// TODO hideChild() should check selectedness too, and
-	// select a different tab when needed.
-		
+		// TODO hideChild() should check selectedness too, and
+		// select a different tab when needed.
+			
+	});
 });
 
