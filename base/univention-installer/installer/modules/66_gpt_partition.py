@@ -69,11 +69,27 @@ import inspect
 import subprocess
 import pprint
 
+def B2KiB(value):
+	return value / 1024.0
+
+def KiB2B(value):
+	return value * 1024
+
+def B2MiB(value):
+	return value / 1024.0 / 1024.0
+
+def MiB2B(value):
+	return value * 1024 * 1024
+
+def MiB2MB(value):
+	return value * 1024.0 * 1024.0 / 1000.0 / 1000.0
+
+
 # some autopartitioning config values
-PARTSIZE_BOOT = 512          # size of /boot partition
-PARTSIZE_SYSTEM_MIN = 4096   # minimum free space for system
-PARTSIZE_SWAP_MIN = 192      # lower swap partition limit: 192MB
-PARTSIZE_SWAP_MAX = 2048     # limit swap partition to 2048MB
+PARTSIZE_BOOT = MiB2B(512)          # size of /boot partition: 512 MiB
+PARTSIZE_SYSTEM_MIN = MiB2B(4096)   # minimum free space for system: 4 GiB
+PARTSIZE_SWAP_MIN = MiB2B(512)      # lower swap partition limit 512 MiB
+PARTSIZE_SWAP_MAX = MiB2B(10240)    # limit swap partition to 10 GiB
 
 # ATTENTION: value has to be megabyte aligned!
 # minimum free space between partitions (otherwise ignored)
@@ -114,21 +130,6 @@ DISKLABEL_UNKNOWN = 'unknown'
 
 def prettyformat(val):
 	return pprint.PrettyPrinter(indent=4).pformat(val)
-
-def B2KiB(value):
-	return value / 1024.0
-
-def KiB2B(value):
-	return value * 1024
-
-def B2MiB(value):
-	return value / 1024.0 / 1024.0
-
-def MiB2B(value):
-	return value * 1024 * 1024
-
-def MiB2MB(value):
-	return value * 1024.0 * 1024.0 / 1000.0 / 1000.0
 
 def calc_part_size(start, end):
 	''' start and end have to be integers referring to the first and the last byte of the partition.
@@ -318,8 +319,8 @@ class object(content):
 			disksizeall += disksize
 		self.debug('disklist=%s' % disklist)
 		if disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN:
-			result = _('Not enough space for autopartitioning: sum of disk sizes=%(disksizeall)s  required=%(required)s') % { 'disksizeall': disksizeall,
-																															  'required': (PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN) }
+			result = _('Not enough space for autopartitioning: sum of disk sizes=%(disksizeall)d MiB  required=%(required)d MiB') % { 'disksizeall': B2MiB(disksizeall),
+																															  'required': B2MiB(PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN) }
 			self.debug( result)
 			return result
 
