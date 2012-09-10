@@ -53,7 +53,7 @@ define([
 						onClick: lang.hitch(this, function() {
 							try
 							{
-								this.closeDetail();
+								this.onCloseDetail();
 							}
 							catch(error)
 							{
@@ -173,7 +173,7 @@ define([
 				this.standby(false);
 				try {
 					if (success) {
-						this.closeDetail();
+						this.onCloseDetail();
 					}
 				} catch(error) {
 					console.error("DetailsPage.onSaved: " + error.message);
@@ -216,7 +216,7 @@ define([
 		},
 
 		// return to grid view
-		closeDetail: function() {
+		onCloseDetail: function() {
 		},
 
 		// Returns defaults for a new component definition.

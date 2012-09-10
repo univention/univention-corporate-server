@@ -68,7 +68,7 @@ define([
 					isContextAction: false,
 					isStandardAction: true,
 					callback: lang.hitch(this, function() {
-						this.showDetail('');
+						this.onShowDetail(null);
 					})
 				},
 				{
@@ -86,40 +86,32 @@ define([
 					name: 'onoff',
 					description: _("Enable/disable this component"),
 					label: lang.hitch(this, function(values) {
-						if (typeof(values) == 'undefined')		// renders the header
-						{
+						if (values === undefined) {
 							return _("On/Off");
-						}
-						else
-						{
+						} else {
 							return (values.enabled ? _("Disable") : _("Enable"));
 						}
 					}),
-	//				iconClass: lang.hitch(this, function(values) {
-	//					if (typeof(values) == 'undefined')
-	//					{
-	//						return "";
-	//					}
-	//					return (values['enabled'] ? 'dijitIconFolderClosed' : 'dijitIconFolderOpen');
-	//				}),
+					// iconClass: lang.hitch(this, function(values) {
+					// 	if (value === undefined) {
+					// 		return "";
+					// 	}
+					// 	return (values['enabled'] ? 'dijitIconFolderClosed' : 'dijitIconFolderOpen');
+					// }),
 					isStandardAction: false,
 					isMultiAction: false,
 					isContextAction: true,
-					callback: lang.hitch(this, function(id) {
+					callback: lang.hitch(this, function(ids) {
 						// Multi action doesn't make sense here since the real action depends
 						// row-wise from the value of the 'enabled' property.
-						if (id instanceof Array) { id = id[0]; }
-						try
-						{
+						var id = ids[0];
+						try {
 							var rowIndex = this._grid._grid.getItemIndex({name: id});
-							if (rowIndex != -1)
-							{
+							if (rowIndex != -1) {
 								var values = this._grid.getRowValues(rowIndex);
 								this._enable_component(id, ! values.enabled);
 							}
-						}
-						catch(error)
-						{
+						} catch(error) {
 							console.error("On/Off id = '" + id + "' ERROR: " + error.message);
 						}
 					})
@@ -128,7 +120,7 @@ define([
 					name: 'install',
 					label: _("Install"),
 					description: _("Install the component's default package(s)"),
-	//				iconClass: 'umcIconRefresh',
+					// iconClass: 'umcIconRefresh',
 					isStandardAction: true,
 					isMultiAction: false,
 					isContextAction: true,
@@ -136,12 +128,8 @@ define([
 						// Knowledge is in the Python module!
 						return (values.installable === true);
 					}),
-					callback: lang.hitch(this, function(id) {
-						if (id instanceof Array)
-						{
-							id = id[0];
-						}
-						this.installComponent(id);
+					callback: lang.hitch(this, function(ids) {
+						this.onInstallComponent(ids);
 					})
 				},
 				{
@@ -151,16 +139,8 @@ define([
 					iconClass: 'umcIconEdit',
 					isStandardAction: true,
 					isMultiAction: false,
-					callback: lang.hitch(this, function(id) {
-						if (id instanceof Array)
-						{
-							// Should never happen in our context, but if it does -> take the first element.
-							this.showDetail(id[0]);
-						}
-						else
-						{
-							this.showDetail(id);
-						}
+					callback: lang.hitch(this, function(ids) {
+						this.onShowDetail(ids[0]);
 					})
 				},
 				{
@@ -235,8 +215,7 @@ define([
 		},
 
 		// switch over to the detail edit form, along with this id (empty if 'add')
-		showDetail: function(id) {
-			// we don't have to do something here: our parent Module is connected to this event.
+		onShowDetail: function(id) {
 		},
 
 		// overload our stub from umc.widgets.Page
@@ -260,7 +239,7 @@ define([
 		// the grid itself has to save something.
 		_enable_component: function(ids, enabled) {
 			var args = [];
-			if (! ids instanceof Array) {
+			if (! (ids instanceof Array)) {
 				ids = [ids];
 			}
 			array.forEach(ids, function(id) {
@@ -328,9 +307,9 @@ define([
 			this.refresh();
 		},
 
-		// gives a means to restart polling after reauthentication
-		startPolling: function() {
-			this._grid.startPolling();
+		// Will be used from the main page
+		// ready for multiAction
+		onInstallComponent: function(ids) {
 		}
 
 	});

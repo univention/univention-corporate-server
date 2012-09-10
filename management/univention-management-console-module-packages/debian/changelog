@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.4-1) unstable; urgency=low
+
+  * Ported frontend to Dojo 1.8 (Bug #26857)
+  * Cleanup translations
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 Sep 2012 14:28:05 +0200
+
 univention-management-console-module-packages (2.0.3-1) unstable; urgency=low
 
   * WIP: Ported frontend to Dojo 1.8 (Bug #26857)

@@ -92,7 +92,7 @@ define([
 			} catch(e) {
 			}
 			var widget = this._form.getWidget('name');
-			this._form.connect(widget, 'onKeyUp', lang.hitch(this, 'filterApplications'));
+			widget.on('keyup', lang.hitch(this, 'filterApplications'));
 			this.container = new ContainerWidget({
 				scrollable: true
 			});
@@ -104,11 +104,12 @@ define([
 			// load apps
 			this.standby(true);
 			when(this.getApplications(), lang.hitch(this, function(applications) {
+				console.log(applications);
 				this.standby(false);
 				this._category_pane = CategoryPane({
 					useCategories: true,
 					modules: applications,
-					title: 'Applications',
+					title: _('Applications'),
 					open: true
 				});
 				this._category_pane.on('openmodule', lang.hitch(this, '_show_details'));
@@ -133,7 +134,7 @@ define([
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
 					var txt = "<p style='" + head_style + "'>" +
-						lang.replace(_("'{id} - {name}'"), data.result) +
+						lang.replace(_("Details for Application '{name}'"), data.result) +
 						"</p>";
 					txt += "<table>\n";
 					var width = 550;	// mimic the default of dialog.confirm

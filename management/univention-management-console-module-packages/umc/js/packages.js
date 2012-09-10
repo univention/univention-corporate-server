@@ -31,7 +31,9 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/aspect",
+	"dojo/_base/array",
+	"dojo/when",
+	"dojo/Deferred",
 	"umc/modules/packages/store",
 	"umc/widgets/TabbedModule",
 	"umc/modules/packages/AppCenterPage",
@@ -40,7 +42,7 @@ define([
 	"umc/modules/packages/DetailsPage",
 	"umc/modules/packages/SettingsPage",
 	"umc/i18n!umc/modules/packages" // not needed atm
-], function(declare, lang, aspect, store, TabbedModule, AppCenterPage, PackagesPage, ComponentsPage, DetailsPage, SettingsPage, _) {
+], function(declare, lang, array, when, Deferred, store, TabbedModule, AppCenterPage, PackagesPage, ComponentsPage, DetailsPage, SettingsPage, _) {
 	return declare("umc.modules.packages", [ TabbedModule ], {
 
 		idProperty: 'package',
@@ -62,8 +64,36 @@ define([
 			this.addChild(this._details);
 			this.addChild(this._settings);
 
+			// install default component
+			this._components.on('installcomponent', lang.hitch(this, function(ids) {
+				this.standby(true);
+				try {
+					var last_id = ids[ids.length - 1];
+					var deferred = new Deferred();
+					var pkgs = [];
+					array.forEach(ids, lang.hitch(this, function(id) {
+						this._details._form.load(id).then(function(values) {
+							if (values.installable) {
+								pkgs = pkgs.concat(values.defaultpackages);
+							}
+							if (id == last_id) {
+								deferred.resolve();
+							}
+						});
+					}));
+					when(deferred, lang.hitch(this, function() {
+						this.standby(false);
+						this.selectChild(this._packages);
+						this._packages._call_installer('install', pkgs);
+					}));
+				} catch(error) {
+					console.error("onInstallComponent: " + error.message);
+					this.standby(false);
+				}
+			}));
+
 			// switches from 'add' or 'edit' (components grid) to the detail form
-			this.own(aspect.after(this._components, 'showDetail', lang.hitch(this, function(id) {
+			this._components.on('showdetail', lang.hitch(this, function(id) {
 				this.exchangeChild(this._components, this._details);
 				if (id) {
 					// if an ID is given: pass it to the detail page and let it load
@@ -73,13 +103,13 @@ define([
 					// if ID is empty: ask the SETTINGS module for default values.
 					this._details.startEdit(true, this._details.getComponentDefaults());
 				}
-			})));
+			}));
 
 			// closes detail form and returns to grid view.
-			this.own(aspect.after(this._details, 'closeDetail', lang.hitch(this, function() {
+			this._details.on('closedetail', lang.hitch(this, function() {
 				this._details._form.clearFormValues();
 				this.exchangeChild(this._details, this._components);
-			})));
+			}));
 
 		},
 
@@ -93,31 +123,24 @@ define([
 
 		// FIXME: this is quite cool. should go into TabbedModule
 		// exchange two tabs, preserve selectedness.
-		exchangeChild: function(from,to) {
+		exchangeChild: function(from, to) {
 			var what = 'nothing';
-			try
-			{
+			try {
 				what = 'getting FROM selection';
 				var is_selected = from.get('selected');
 				what = 'hiding FROM';
 				this.hideChild(from);
 				what = 'showing TO';
 				this.showChild(to);
-				if (is_selected)
-				{
+				if (is_selected) {
 					what = 'selecting TO';
 					this.selectChild(to);
 				}
-			}
-			catch(error)
-			{
+			} catch(error) {
 				console.error("exchangeChild: [" + what + "] " + error.message);
 			}
 		}
 
-		// TODO hideChild() should check selectedness too, and
-		// select a different tab when needed.
-			
 	});
 });
 

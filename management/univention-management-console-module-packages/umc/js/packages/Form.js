@@ -31,11 +31,12 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/on",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Form",
 	"umc/i18n!umc/modules/packages" // not used atm
-], function(declare, lang, tools, dialog, Form, _) {
+], function(declare, lang, on, tools, dialog, Form, _) {
 	return declare("umc.modules.packages.Form", [ Form ], {
 		save: function() {
 			tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
@@ -82,7 +83,7 @@ define([
 		 */
 		onValidationError: function(/*Object*/ data) {
 			// naive implementation
-			var focusSet = false;
+			var focus_set = false;
 			tools.forIn(data, lang.hitch(this, function(iwidget, error_msg) {
 				var worked = false;
 				try {
@@ -92,13 +93,13 @@ define([
 					var widget = this.getWidget(iwidget);
 					if (widget && widget['class'] != 'umcCheckBox') {
 						widget.setValid(false, error_msg);
-						if (!focusSet) {
-							widget.focus();
-							focusSet = true;
-						}
-						widget.on.once('keyup', function() {
-							this.setValid(true);
-						});
+						//if (!focus_set) {
+						//	widget.focus();
+						//	focus_set = true;
+						//}
+						//on.once('keyup', function() {
+						//	widget.setValid(true);
+						//});
 						worked = true;
 					}
 				} catch(e) {
