@@ -246,7 +246,7 @@ define([
 				layout: layout,
 				buttons: buttons
 			});
-			this._form.on('submit', lang.hitch(function() {
+			this._form.on('submit', lang.hitch(this, function() {
 				this.onDone(this._form.gatherFormValues());
 				this.destroyRecursive();
 			}));

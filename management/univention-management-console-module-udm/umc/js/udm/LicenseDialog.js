@@ -88,7 +88,7 @@ define([
 					name : 'licenseUpload',
 					label : _( 'License upload' ),
 					command: 'udm/license/import',
-					onUploaded: lang.hitch( function( result ) {
+					onUploaded: lang.hitch( this, function( result ) {
 						if ( typeof  result  == "string" ) {
 							return;
 						}
