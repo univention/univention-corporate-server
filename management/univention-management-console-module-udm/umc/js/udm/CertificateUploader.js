@@ -26,38 +26,53 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console window */
+/*global define*/
 
-dojo.provide("umc.modules._udm.OverwriteLabel");
+define([
+	"dojo/_base/declare",
+	"umc/widgets/Uploader",
+	"umc/widgets/Text",
+	"umc/i18n!umc/modules/udm"
+], function(declare, Uploader, Text, _) {
+	return declare("umc.modules.udm.CertificateUploader", [ Uploader ], {
+		'class': 'umcInfoUploader',
 
-dojo.require("umc.widgets.LabelPane");
-dojo.require("umc.widgets.CheckBox");
-dojo.require("umc.i18n");
+		maxSize: 512000,
 
-dojo.declare('umc.modules._udm.OverwriteLabel', [ umc.widgets.LabelPane, umc.i18n.Mixin ], {
-	// summary:
-	//		Class that provides a widget in the form "[ ] overwrite" for multi-edit mode.
+		_text: null,
 
-	// translation
-	i18nClass: 'umc.modules.udm',
+		constructor: function() {
+			this.buttonLabel = _( 'Upload certificate' );
+			this.clearButtonLabel = _( 'Remove certificate' );
+		},
 
-	style: 'display:block; margin-top:-3px; font-style:italic;',
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-	postMixInProperties: function() {
-		// force label and content
-		this.content = new umc.widgets.CheckBox({
-			label: this._('Overwrite'),
-			value: false
-		});
-	
-		this.inherited(arguments);
-	},
+			this.sizeClass = null;
+		},
 
-	_setValueAttr: function(newVal) {
-		this.content.set('value', newVal);
-	},
+		buildRendering: function() {
+			this.inherited(arguments);
 
-	_getValueAttr: function() {
-		return this.content.get('value');
-	}
+			// create an text widget
+			this._text = new Text({
+				label: '',
+				content: ''
+			});
+			this.addChild(this._text, 0);
+		},
+
+		updateView: function(value, data) {
+			if ( null === data ) {
+				this._text.set( 'content', '' );
+			} else if ( data.content && data.filename ) {
+				this._text.set( 'content', data.filename );
+			} else {
+				this._text.set( 'content', _( 'Failed to upload certificate' ) );
+			}
+		}
+	});
 });
+
+

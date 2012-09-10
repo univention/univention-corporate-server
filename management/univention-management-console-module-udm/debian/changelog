@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.0-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Sep 2012 15:29:39 +0200
+
 univention-management-console-module-udm (2.0.6-1) unstable; urgency=low
 
   * fixed syntax choices if udm_filter is callable. this fixed creation of

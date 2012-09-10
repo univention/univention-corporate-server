@@ -72,13 +72,14 @@ __widgets = (
 	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
-	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and syn.simple == False and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
+	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and syn.simple == False and 'umc/modules/udm/MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.UDM_Attribute, '' ),
-	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc.modules._udm.MultiObjectSelect' or 'ComboBox' ),
+	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc/modules/udm/MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'UnixAccessRights', udm_syntax.UNIX_AccessRight, '000' ),
 	Widget( 'MultiSelect', udm_syntax.MultiSelect, [] ),
-	Widget( 'umc.modules._udm.CertificateUploader', udm_syntax.Base64Upload, '' ),
+	Widget( 'umc/modules/udm/CertificateUploader', udm_syntax.Base64Upload, '' ),
 	Widget( 'ImageUploader', udm_syntax.jpegPhoto, '' ),
+	Widget( 'TextArea', udm_syntax.TextArea, '' ),
 	Widget( 'TextBox', udm_syntax.simple, '*' ),
 	Widget( None, udm_syntax.complex, None, widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'MultiInput' or 'ComplexInput' ),
 	)
@@ -95,7 +96,7 @@ def choices( syntax, udm_property ):
 		else:
 			opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
 		if issubclass( syntax, udm_syntax.network ):
-			opts['onChange'] = 'javascript:umc.modules._udm.setNetwork'
+			opts['onChange'] = 'javascript:umc/modules/udm/setNetwork'
 	elif isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ) or inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : inspect.isclass( syntax ) and syntax.__name__ or syntax.__class__.__name__ } }
 	elif isinstance( syntax, udm_syntax.LDAP_Search ):
@@ -103,7 +104,7 @@ def choices( syntax, udm_property ):
 
 	elif inspect.isclass( syntax ) and issubclass( syntax, udm_syntax.select ):
 		if getattr( syntax, 'depends', None ) is not None:
-			opts = { 'dynamicValues' : 'javascript:umc.modules._udm.setDynamicValues' }
+			opts = { 'dynamicValues' : 'javascript:umc/modules/udm/setDynamicValues' }
 		if syntax.empty_value and syntax.choices and syntax.choices[ 0 ][ 0 ] != '':
 			syntax.choices.insert( 0, ( '', '' ) )
 

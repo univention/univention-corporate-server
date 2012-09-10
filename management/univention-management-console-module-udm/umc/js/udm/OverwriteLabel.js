@@ -26,54 +26,36 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global dojo dijit dojox umc console */
+/*global define*/
 
-dojo.provide("umc.modules._udm.CertificateUploader");
+define([
+	"dojo/_base/declare",
+	"umc/widgets/LabelPane",
+	"umc/widgets/CheckBox",
+	"umc/i18n!umc/modules/udm"
+], function(declare, LabelPane, CheckBox, _) {
+	return declare('umc.modules.udm.OverwriteLabel', [ LabelPane ], {
+		// summary:
+		//		Class that provides a widget in the form "[ ] overwrite" for multi-edit mode.
 
-dojo.require("umc.widgets.Uploader");
-dojo.require("umc.widgets.Text");
+		style: 'display:block; margin-top:-3px; font-style:italic;',
 
-dojo.declare("umc.modules._udm.CertificateUploader", [ umc.widgets.Uploader ], {
-	'class': 'umcInfoUploader',
+		postMixInProperties: function() {
+			// force label and content
+			this.content = new CheckBox({
+				label: _('Overwrite'),
+				value: false
+			});
 
-	i18nClass: 'umc.app',
+			this.inherited(arguments);
+		},
 
-	maxSize: 512000,
+		_setValueAttr: function(newVal) {
+			this.content.set('value', newVal);
+		},
 
-	_text: null,
-
-	constructor: function() {
-		this.buttonLabel = this._( 'Upload certificate' );
-		this.clearButtonLabel = this._( 'Remove certificate' );
-	},
-
-	postMixInProperties: function() {
-		this.inherited(arguments);
-
-		this.sizeClass = null;
-	},
-
-	buildRendering: function() {
-		this.inherited(arguments);
-
-		// create an text widget
-		this._text = new umc.widgets.Text({
-			label: '',
-			content: ''
-		});
-		this.addChild(this._text, 0);
-	},
-
-	updateView: function(value, data) {
-		if ( null === data ) {
-			this._text.set( 'content', '' );
-		} else if ( data.content && data.filename ) {
-			this._text.set( 'content', data.filename );
-		} else {
-			this._text.set( 'content', this._( 'Failed to upload certificate' ) );
+		_getValueAttr: function() {
+			return this.content.get('value');
 		}
-	}
+	});
 });
-
-
-
