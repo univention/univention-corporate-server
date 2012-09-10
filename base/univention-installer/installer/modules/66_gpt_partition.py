@@ -1988,7 +1988,7 @@ class object(content):
 					break
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
-				self.part_create_generic(targetdisk, targetpart, '/boot', PARTSIZE_BOOT, 'ext4', PARTTYPE_USED, ['boot'], 'BOOT', 1)
+				self.part_create_generic(targetdisk, targetpart, '/boot', PARTSIZE_BOOT, 'ext4', PARTTYPE_USED, ['boot'], 'BOOT')
 			else:
 				msglist = [ _('Not enough disk space found for /boot!'),
 							_('Auto partitioning aborted.') ]
@@ -2046,7 +2046,7 @@ class object(content):
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
 				self.parent.debug('AUTOPART: create swap: disk=%s  part=%s  swapsize=%s' % (targetdisk, targetpart, swapsize))
-				self.part_create_generic(targetdisk, targetpart, '', swapsize, 'linux-swap', PARTTYPE_USED, [], 'SWAP', 1)
+				self.part_create_generic(targetdisk, targetpart, '', swapsize, 'linux-swap', PARTTYPE_USED, [], 'SWAP')
 			else:
 				self.parent.debug('AUTOPART: no disk space for swap found')
 				self.parent.debug('AUTOPART: DISK=%s' % self.container['disk'])
@@ -2063,7 +2063,7 @@ class object(content):
 						# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
 						size = self.container['disk'][disk]['partitions'][part]['size']
 						parttype = PARTTYPE_USED
-						self.part_create_generic(disk, part, '', size, '', parttype, ['lvm'], 'LVMPV', 0)
+						self.part_create_generic(disk, part, '', size, '', parttype, ['lvm'], 'LVMPV')
 
 			# create one LVM LV for /-filesystem
 			vgname = self.parent.container['lvm']['ucsvgname']
@@ -2754,11 +2754,11 @@ class object(content):
 			if parttype != PARTTYPE_LVM_LV:
 				self.container['disk'][arg_disk] = self.rebuild_table(self.container['disk'][arg_disk],arg_disk)
 
-		def part_create(self,index,mpoint,size,fstype,parttype,flags,format,label=None,end=0):
+		def part_create(self,index,mpoint,size,fstype,parttype,flags,format,label=None):
 			result = self.part_objects[index]
-			self.part_create_generic(result[1], result[2], mpoint, size, fstype, parttype, flags, format, label, end)
+			self.part_create_generic(result[1], result[2], mpoint, size, fstype, parttype, flags, format, label)
 
-		def part_create_generic(self, arg_disk, arg_part, mpoint, size, fstype, parttype, flags, format, label=None, end=0):
+		def part_create_generic(self, arg_disk, arg_part, mpoint, size, fstype, parttype, flags, format, label=None):
 			"""
 			arg_disk:  defines disk on which a new partition shall be created
 			arg_part:  byte position of free space where the new partition shall be created (has to be megabyte aligned)
@@ -2768,7 +2768,6 @@ class object(content):
 			flags:	   array of flags
 			format:    format new partition?
 			label:     partition label
-			end:       ???
 			"""
 
 			# TODO FIXME what is "end" used for?
