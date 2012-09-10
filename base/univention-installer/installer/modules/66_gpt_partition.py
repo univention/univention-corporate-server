@@ -97,7 +97,8 @@ PARTSIZE_MINIMUM = 1024*1024
 
 # ATTENTION: value has to be megabyte aligned!
 # start of first partition ; first 10MiB have to be free to provide enough space for e.g. GRUB
-EARLIEST_START_OF_FIRST_PARTITION = 10 * 1024 * 1024
+EARLIEST_START_OF_FIRST_PARTITION = MiB2B(10)
+RESERVED_SPACE_AT_END_OF_DISK = MiB2B(20)
 
 # possible partition types
 #POSS_PARTTYPE_UNUSABLE = 0
@@ -1627,6 +1628,8 @@ class object(content):
 				if line.startswith('/'):
 					data = line.split(':')
 					disk_size = int(data[1].strip('B'))
+					if disk_size > RESERVED_SPACE_AT_END_OF_DISK:
+						disk_size -= RESERVED_SPACE_AT_END_OF_DISK
 					parttabletype = data[5]
 					self.debug('DEBUG: disk size = %dB = %fMiB' % (disk_size, B2MiB(disk_size)))
 
