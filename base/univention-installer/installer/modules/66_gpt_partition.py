@@ -134,6 +134,22 @@ DISKLABEL_UNKNOWN = 'unknown'
 def prettyformat(val):
 	return pprint.PrettyPrinter(indent=4).pformat(val)
 
+def align_partition_start(position):
+	''' Align partition start (in bytes) to 1 MiB boundaries by increasing position '''
+	if position % (1024*1024):
+		return MiB2B(int(B2MiB(position))+1)  # cut off remainder after division and increase by one
+	return position
+
+def align_partition_end(position):
+	''' Align partition end (in bytes) to 1 MiB boundaries by decreasing position.
+		Please note: the partition end refers to the last byte of the partition. That means
+					 that "position" is one byte below of an 1 MiB boundary.
+	'''
+
+	if (position+1) % (1024*1024):
+		return MiB2B(int(B2MiB(position+1)))-1    # cut off remainder after division
+	return position
+
 def calc_part_size(start, end):
 	''' start and end have to be integers referring to the first and the last byte of the partition.
 		The method returns the size of the partition in bytes
@@ -1677,11 +1693,11 @@ class object(content):
 					if (start - last_part_end) > PARTSIZE_MINIMUM and start > EARLIEST_START_OF_FIRST_PARTITION:
 						if last_part_end == 0:
 							# free space in front of first partition and enough to use it
-							free_start = EARLIEST_START_OF_FIRST_PARTITION
+							free_start = align_partition_start(EARLIEST_START_OF_FIRST_PARTITION)
 						else:
 							# first free byte starts one after last used byte
-							free_start = last_part_end + 1
-						free_end = start - 1
+							free_start = align_partition_start(last_part_end + 1)
+						free_end = align_partition_end(start - 1)
 						if free_end - free_start > PARTSIZE_MINIMUM:
 							self.debug('Adding free space: start=%d   last_part_end=%d   free_start=%d   free_end=%d' % (start, last_part_end, free_start, free_end))
 							partList[free_start] = self.generate_freespace(free_start, free_end)
@@ -1707,11 +1723,11 @@ class object(content):
 			if ( disk_size - last_part_end) > PARTSIZE_MINIMUM:
 				if last_part_end == 0:
 					# whole disk is empty
-					free_start = EARLIEST_START_OF_FIRST_PARTITION
+					free_start = align_partition_start(EARLIEST_START_OF_FIRST_PARTITION)
 				else:
 					# free space after last partition
-					free_start = last_part_end + 1
-				free_end = disk_size - 1
+					free_start = align_partition_start(last_part_end + 1)
+				free_end = align_partition_end(disk_size - 1)
 				partList[free_start] = self.generate_freespace(free_start, free_end)
 
 			diskList[dev]={ 'partitions': partList,
@@ -2732,12 +2748,12 @@ class object(content):
 
 			if parttype == PARTTYPE_USED:
 				self.container['history'].append(['/sbin/parted', '--script', arg_disk, 'rm', str(self.container['disk'][arg_disk]['partitions'][arg_part]['num'])])
-				self.container['disk'][arg_disk]['partitions'][arg_part]['type'] = PARTTYPE_FREE
-				self.container['disk'][arg_disk]['partitions'][arg_part]['touched'] = 1
-				self.container['disk'][arg_disk]['partitions'][arg_part]['format'] = 0
-				self.container['disk'][arg_disk]['partitions'][arg_part]['label'] = ''
-				self.container['disk'][arg_disk]['partitions'][arg_part]['mpoint'] = ''
-				self.container['disk'][arg_disk]['partitions'][arg_part]['num'] = PARTNUMBER_FREE
+				free_start = align_partition_start(max(EARLIEST_START_OF_FIRST_PARTITION, arg_part)) # first partition should not start earlier than EARLIEST_START_OF_FIRST_PARTITION
+				free_end = align_partition_end(self.container['disk'][arg_disk]['partitions'][arg_part]['end'])
+
+				del self.container['disk'][arg_disk]['partitions'][arg_part]
+				if free_end - free_start >= PARTSIZE_MINIMUM:
+					self.container['disk'][arg_disk]['partitions'][free_start] = self.parent.generate_freespace(free_start, free_end)
 
 			elif parttype == PARTTYPE_LVM_LV:
 				lv = self.container['lvm']['vg'][ arg_disk ]['lv'][ arg_part ]
@@ -2829,7 +2845,8 @@ class object(content):
 			# if "size" is smaller than free space and remaining free space is larger than PARTSIZE_MINIMUM then
 			# create new entry for free space
 			if (free_part_size - size) >= PARTSIZE_MINIMUM:
-				new_free_part_start = new_part_start + size
+				new_free_part_start = align_partition_start(new_part_start + size)
+				# no need to align free_part_end - it should be aligned by initial import of partition table or by removing a partition
 				self.container['disk'][arg_disk]['partitions'][new_free_part_start] = self.parent.generate_freespace(new_free_part_start, free_part_end, touched=1)
 			self.rebuild_table( self.container['disk'][arg_disk], arg_disk)
 
