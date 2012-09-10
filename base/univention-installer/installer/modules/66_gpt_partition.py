@@ -1859,7 +1859,19 @@ class object(content):
 			proc = subprocess.Popen(command, bufsize=0, shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			(stdout, stderr) = proc.communicate()
 			self.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
-							  (proc.returncode, command, '\n=> '.join(stderr), '\n=> '.join(stdout)))
+					   (proc.returncode, command, '\n=> '.join(stderr), '\n=> '.join(stdout)))
+
+	def convert_to_gpt(self, device=None):
+		self.debug('Trying to convert MBR to GPT on device %s' % device)
+		if not os.path.exists(device):
+			self.debug('ERROR: device %s does not exist!' % device)
+		else:
+			command = ['/sbin/sgdisk', '-g', device]
+			self.debug('Calling %s' % command)
+			proc = subprocess.Popen(command, bufsize=0, shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			(stdout, stderr) = proc.communicate()
+			self.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
+					   (proc.returncode, command, '\n=> '.join(stderr), '\n=> '.join(stdout)))
 
 	class partition(subwin):
 		def __init__(self,parent,pos_y,pos_x,width,height):
@@ -2097,6 +2109,16 @@ class object(content):
 			self.container['lvm']['lvmconfigread'] = False
 			self.container['autopartition'] = None
 
+		def convert_to_gpt_interactive(self, result, device=None):
+			self.parent.convert_to_gpt(device)
+			self.container['problemdisk'][device].discard(DISKLABEL_UNKNOWN)
+			self.container['problemdisk'][device].discard(DISKLABEL_MSDOS)
+			self.parent.debug('performing restart of module')
+			self.parent.start()
+			#self.parent.layout()
+			self.parent.debug('module restart done')
+			self.container['lvm']['lvmconfigread'] = False
+			self.container['autopartition'] = None
 
 		def check_partition_table_msg(self):
 			if self.container['partitiontable_checked']:
@@ -2127,27 +2149,27 @@ class object(content):
 					break
 
 				if DISKLABEL_MSDOS in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors
-					self.parent.debug('requesting user input: MSDOS parttable found ==> ignore or install empty MBR?')
-					msglist=[ _('A MSDOS partition table has been found on device %s.') % dev,
-							  _('FIXME MSDOS devices are not supported by the interactive installation.'),
-							  _('FIXME You can proceed by ignoring this device or by removing'),
-							  _('FIXME the existing GPT and writing an empty MBR.'),
+					self.parent.debug('requesting user input: MSDOS parttable found ==> ignore or convert to GPT?')
+					msglist=[ _('A MBR has been found on device %s.') % dev,
+							  _('Devices with MBR are not supported by the interactive installation.'),
+							  _('You can proceed by ignoring this device or by converting'),
+							  _('the existing MBR to GPT immediately.'),
 							  '',
-							  _('WARNING: By choosing "Write MBR" existing data'),
-							  _('on device %s will be lost.') % dev,
+							  _('WARNING: By choosing "Convert to GPT" existing partition'),
+							  _('order may change and affect other operationg systems!'),
 							  '',
 							  _('HINT: Further information for an installation'),
-							  _('on a device with GPT can be found in the'),
+							  _('on a device with MBR can be found in the'),
 							  _('Support & Knowledge Base: http://sdb.univention.de.'),
 							  '',
 							  '',
-							  _('Write an empty MBR to device %s ?') % dev,
+							  _('Convert MBR of device %s to GPT now?') % dev,
 							  ]
 					self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-25, msglist, default='no',
-										  btn_name_yes=_('Write MBR'), btn_name_no=_('Ignore Device'),
-										  callback_yes=self.install_fresh_mbr_interactive, device=dev)
+										  btn_name_yes=_('Convert to GPT'), btn_name_no=_('Ignore Device'),
+										  callback_yes=self.convert_to_gpt_interactive, device=dev)
 					self.draw()
-					self.container['problemdisk'][dev].discard(DISKLABEL_GPT)
+					self.container['problemdisk'][dev].discard(DISKLABEL_MSDOS)
 					break
 			else:
 				# only set check==True if all checks have been made
