@@ -2785,6 +2785,8 @@ class object(content):
 					label = fstype
 				elif 'lvm' in flags:
 					label = 'LVMPV'
+			# truncate label to 36 characters (all non ascii characters are filtered out above)
+			label = label[0:36]
 
 			# create new partition
 			new_part_start = free_part_start
