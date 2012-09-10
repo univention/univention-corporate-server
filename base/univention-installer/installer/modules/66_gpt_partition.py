@@ -1781,7 +1781,7 @@ class object(content):
 	class partition(subwin):
 		def __init__(self,parent,pos_y,pos_x,width,height):
 			self.part_objects = {}
-			subwin.__init__(self,parent,pos_y,pos_x,width,height)
+			subwin.__init__(self,parent,pos_y,pos_x,width,height,show_border=False,show_shadow=False)
 			self.check_partition_table_msg()
 			self.no_devices_msg()
 			self.check_lvm_msg()
@@ -2143,7 +2143,8 @@ class object(content):
 				self.draw()
 
 		def draw(self):
-			self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
+			if self.show_shadow:
+				self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
 			self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 			self.header.draw()
 			for element in self.elements:

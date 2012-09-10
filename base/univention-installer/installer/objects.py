@@ -1832,7 +1832,7 @@ class content:
 		pass
 
 class subwin:
-	def __init__(self,parent,pos_y,pos_x,width,height):
+	def __init__(self,parent,pos_y,pos_x,width,height,show_border=True,show_shadow=True):
 		if parent != None:
 			self.parent=parent
 			self.max_x=self.parent.max_x
@@ -1840,17 +1840,20 @@ class subwin:
 		else:
 			self.max_x=100
 			self.max_y=35
-
+		self.show_border = show_border
+		self.show_shadow = show_shadow
 		self.all_results={}
 		self.width=width
 		self.height=height
 		self.pos_x=pos_x
 		self.pos_y=pos_y
 		self.pad=curses.newpad(self.height,self.width)
-		self.shadow = curses.newpad(self.height, self.width)
 		self.pad.bkgd(" ",curses.color_pair(4))
-		self.shadow.bkgd(" ",curses.color_pair(1))
-		self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
+		if self.show_shadow:
+			self.shadow = curses.newpad(self.height, self.width)
+			self.shadow.bkgd(" ",curses.color_pair(1))
+		if self.show_border:
+			self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
 		self.reset_layout()
 		self.current=0
 		if len(self.strip_header()):
@@ -1899,7 +1902,8 @@ class subwin:
 		if hasattr(self,"sub"):
 			self.sub.draw()
 		else:
-			self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
+			if self.show_shadow:
+				self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
 			self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 			self.header.draw()
 			for element in self.elements:
