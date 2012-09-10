@@ -2843,6 +2843,8 @@ class object(content):
 																KiB2B(self.container['lvm']['vg'][ ucsvgname ]['PEsize']))  # PEsize is stored in KiB
 
 			device = self.parent.get_device(disk, part)
+			# remove LVMPV signature before creating a new one
+			self.container['history'].append(['/sbin/pvremove', '-ff', device])
 #			self.container['history'].append('/sbin/pvscan')
 			self.container['history'].append(['/sbin/pvcreate', device])
 			if not self.container['lvm']['vg'][ ucsvgname ]['created']:

@@ -2984,6 +2984,8 @@ class object(content):
 																self.container['lvm']['vg'][ ucsvgname ]['PEsize'] / 1024.0)
 
 			device = self.parent.get_device(disk, part)
+			# remove LVMPV signature before creating a new one
+			self.container['history'].append('/sbin/pvremove -ff %s' % device)
 #			self.container['history'].append('/sbin/pvscan')
 			self.container['history'].append('/sbin/pvcreate %s' % device)
 			if not self.container['lvm']['vg'][ ucsvgname ]['created']:
