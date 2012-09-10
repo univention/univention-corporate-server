@@ -86,6 +86,7 @@ def MiB2MB(value):
 
 
 # some autopartitioning config values
+PARTSIZE_BIOS_GRUB = MiB2B(2)		# size of BIOS Boot Partition 2 MiB
 PARTSIZE_BOOT = MiB2B(512)          # size of /boot partition: 512 MiB
 PARTSIZE_SYSTEM_MIN = MiB2B(4096)   # minimum free space for system: 4 GiB
 PARTSIZE_SWAP_MIN = MiB2B(512)      # lower swap partition limit 512 MiB
@@ -1802,6 +1803,29 @@ class object(content):
 			self.check_lvm_msg()
 			self.ERROR = False
 
+		def auto_partitioning_get_freespacelist(self, disklist):
+			""" determines sizes of free space regions on given disks.
+				return values:
+					freespacelist → [ (<size:int>, <disk:string>, <part:string>), ... ]
+					freespacemax  → size of largest region
+					freespacesum  → sum of all free space regions
+			"""
+			freespacelist = []
+			freespacemax = 0.0
+			freespacesum = 0.0
+			for disk in disklist:
+				for part in self.container['disk'][disk]['partitions'].keys():
+					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREE ]:
+						freespacelist.append( ( int(self.container['disk'][disk]['partitions'][part]['size']), disk, part ) )
+						freespacesum += int(self.container['disk'][disk]['partitions'][part]['size'])
+						if int(self.container['disk'][disk]['partitions'][part]['size']) > freespacemax:
+							freespacemax = int(self.container['disk'][disk]['partitions'][part]['size'])
+			freespacelist.sort(lambda x,y: int(x[0]) < int(y[0]))
+			self.parent.debug('AUTOPART: freespacelist=%s' % freespacelist)
+			self.parent.debug('AUTOPART: freespacesum=%s' % freespacesum)
+			self.parent.debug('AUTOPART: freespacemax=%s' % freespacemax)
+			return (freespacelist, freespacemax, freespacesum)
+
 		def auto_partitioning_question_usbstorage_callback(self, result):
 			self.container['autopart_usbstorage'] = True
 			self.parent.debug('INCLUDE USB STORAGE DEVICES WITHIN AUTOPART')
@@ -1902,13 +1926,26 @@ class object(content):
 						if int(self.container['disk'][disk]['partitions'][part]['size']) > PARTSIZE_BOOT:
 							targetdisk = disk
 							targetpart = part
-					if targetdisk:
-						break
+							break
 				if targetdisk:
 					break
+
 			if targetdisk:
-				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
-				self.part_create_generic(targetdisk, targetpart, '/boot', PARTSIZE_BOOT, 'ext4', PARTTYPE_USED, ['boot'], 'BOOT')
+				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
+				self.part_create_generic(targetdisk, targetpart, '', PARTSIZE_BIOS_GRUB, '', PARTTYPE_USED, [PARTFLAG_BIOS_GRUB], '')
+			else:
+				msglist = [ _('Not enough disk space found for BIOS boot partition!'),
+							_('Auto partitioning aborted.') ]
+				self.sub = msg_win(self,self.pos_y+8,self.pos_x+5,self.maxWidth,6, msglist)
+				self.draw()
+				return
+
+			# get free space on target disk (first disk)
+			freespacelist, freespacemax, freespacesum = self.auto_partitioning_get_freespacelist([targetdisk])
+
+			if freespacemax >= PARTSIZE_BOOT:
+				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
+				self.part_create_generic(freespacelist[0][1], freespacelist[0][2], '/boot', PARTSIZE_BOOT, 'ext4', PARTTYPE_USED, [PARTFLAG_NONE], '/boot')
 			else:
 				msglist = [ _('Not enough disk space found for /boot!'),
 							_('Auto partitioning aborted.') ]
@@ -1916,21 +1953,8 @@ class object(content):
 				self.draw()
 				return
 
-			# determine size of free space areas
-			freespacelist = []
-			freespacemax = 0.0
-			freespacesum = 0.0
-			for disk in disklist:
-				for part in self.container['disk'][disk]['partitions'].keys():
-					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREE ]:
-						freespacelist.append( ( int(self.container['disk'][disk]['partitions'][part]['size']), disk, part ) )
-						freespacesum += int(self.container['disk'][disk]['partitions'][part]['size'])
-						if int(self.container['disk'][disk]['partitions'][part]['size']) > freespacemax:
-							freespacemax = int(self.container['disk'][disk]['partitions'][part]['size'])
-			freespacelist.sort(lambda x,y: int(x[0]) < int(y[0]))
-			self.parent.debug('AUTOPART: freespacelist=%s' % freespacelist)
-			self.parent.debug('AUTOPART: freespacesum=%s' % freespacesum)
-			self.parent.debug('AUTOPART: freespacemax=%s' % freespacemax)
+			# get free space on all disks
+			freespacelist, freespacemax, freespacesum = self.auto_partitioning_get_freespacelist(disklist)
 
 			# create primary partition on first harddisk for /swap
 			swapsize = 2 * sysmem  # default for swap partition
@@ -1959,14 +1983,13 @@ class object(content):
 						if int(self.container['disk'][disk]['partitions'][part]['size']) > swapsize:
 							targetdisk = disk
 							targetpart = part
-					if targetdisk:
-						break
+							break
 				if targetdisk:
 					break
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
 				self.parent.debug('AUTOPART: create swap: disk=%s  part=%s  swapsize=%s' % (targetdisk, targetpart, swapsize))
-				self.part_create_generic(targetdisk, targetpart, '', swapsize, 'linux-swap', PARTTYPE_USED, [], 'SWAP')
+				self.part_create_generic(targetdisk, targetpart, '', swapsize, FSTYPE_SWAP, PARTTYPE_USED, [PARTFLAG_SWAP], 'SWAP')
 			else:
 				self.parent.debug('AUTOPART: no disk space for swap found')
 				self.parent.debug('AUTOPART: DISK=%s' % self.container['disk'])
