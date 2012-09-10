@@ -1,3 +1,10 @@
+univention-lib (2.0.7-1) unstable; urgency=low
+
+  * removed logrotate/size  (logrotate/rotate=weekly or
+    logrotate/rotate="size 100M" is possible) Bug #27722
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Sep 2012 13:50:52 +0200
+
 univention-lib (2.0.6-1) unstable; urgency=low
 
   * Fix complaining when not removing already removed packages (Bug #28010)

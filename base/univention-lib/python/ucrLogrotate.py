@@ -50,8 +50,6 @@ def getLogrotateConfig(name, configRegistry):
 			settings["rotate"] = configRegistry[var + "rotate"] 
 		if configRegistry.get(var + "rotate/count"): 
 			settings["rotate/count"] = "rotate " + configRegistry[var + "rotate/count"] 
-		if configRegistry.get(var + "size"): 
-			settings["size"] = "size " + configRegistry[var + "size"] 
 		if configRegistry.get(var + "create"): 
 			settings["create"] = "create " + configRegistry[var + "create"] 
 
