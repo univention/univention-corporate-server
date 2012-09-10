@@ -177,35 +177,6 @@ class object(content):
 		content.__init__(self,max_y,max_x,last, file, cmdline)
 		self.debug('init(): max_y=%s  max_x=%s' % (max_y, max_x))
 
-# 	def MiB2CHSstr(self, disk, pos):
-# 		return "%(cyls)d/%(heads)d/%(sectors)d" % self.MiB2CHS(pos, self.container['disk'][disk]['geometry'] )
-
-# 	def MiB2CHS(self, pos, geometry):
-# 		# pos: position as float in MiBytes
-# 		# geometry: disk geometry as dict: { 'cyls': 123, 'heads': 255, 'sectors': 63 }
-# 		# returns dict: { 'cyls': 123, 'heads': 255, 'sectors': 63, 'remainder': 0, 'valid': True }
-
-# 		val = pos * 1024.0 * 1024.0  # convert MiB to Bytes
-# 		result = {}
-# 		size = {}
-
-# 		size['sector'] = 512
-# 		size['head'] = geometry['sectors'] * size['sector']
-# 		size['cyl'] = geometry['heads'] * size['head']
-
-# 		result['cyls'] = int(val / size['cyl'])
-# 		val = val - (result['cyls'] * size['cyl'] )
-
-# 		result['heads'] = int(val / size['head'] )
-# 		val = val - (result['heads'] * size['head'] )
-
-# 		result['sectors'] = int(val / size['sector'] )
-# 		result['remainder'] = val - (result['sectors'] * size['sector'] )
-
-# 		result['valid'] = (result['remainder'] == 0)
-
-# 		return result
-
 	def printPartitions(self):
 		self.debug('PARTITION LIST:')
 		disk_list = self.container['disk'].keys()
@@ -220,72 +191,6 @@ class object(content):
 				end = part['end']
 				self.debug('%s%s:  type=%d	 start=%dB=%fMiB	 end=%dB=%fMiB' % (diskitem, part['num'], part['type'],
 																				   start, B2MiB(start), end, B2MiB(end)))
-
-# 	def CHS2MiB(self, chs, geometry):
-# 		size = {}
-# 		size['sector'] = 512
-# 		size['head'] = geometry['sectors'] * size['sector']
-# 		size['cyl'] = geometry['heads'] * size['head']
-# 		return (chs['cyls'] * size['cyl'] + chs['heads'] * size['head'] + chs['sectors'] * size['sector']) / 1024.0 / 1024.0
-
-# 	def getCHSnextCyl(self, pos_end, geometry, parttype, correction = 'increase', force = True):
-# 		pos = self.getCHSandPosition(pos_end, geometry, parttype, correction = correction, force = force)
-# 		next_pos = (pos['position']*1024.0*1024.0 + 512) / 1024.0 / 1024.0
-# 		next_pos = self.getCHSandPosition(next_pos, geometry, parttype, correction = 'decrease', force = True)
-# 		return next_pos['position']
-
-# 	def getCHSlastCyl(self, pos_end, geometry, parttype, correction = 'decrease', force = True):
-# 		pos = self.getCHSandPosition(pos_end, geometry, parttype, correction = correction, force = force)
-# 		next_pos = (pos['position']*1024.0*1024.0 - 512) / 1024.0 / 1024.0
-# 		next_pos = self.getCHSandPosition(next_pos, geometry, parttype, correction = 'increase', force = True)
-# 		return next_pos['position']
-
-# 	def getCHSandPosition(self, pos, geometry, parttype, correction = False, force = False):
-# 		# correction in [ 'increase', 'decrease' ]
-# 		result = self.MiB2CHS(pos, geometry)
-# 		result['position'] = pos
-
-# 		# consistency check
-# 		if result['cyls'] >= geometry['cyls']:
-# 			self.debug('WARNING: CONSISTENCY CHECK FAILED: cyls is too large (%s) - setting to possible max (%s)' % (result['cyls'], geometry['cyls']-1))
-# 			result['cyls'] = geometry['cyls'] - 1
-# 		if result['heads'] >= geometry['heads']:
-# 			self.debug('WARNING: CONSISTENCY CHECK FAILED: heads is too large (%s) - setting to possible max (%s)' % (result['heads'], geometry['heads']-1))
-# 			result['heads'] = geometry['heads'] - 1
-# 		if result['sectors'] >= geometry['sectors']:
-# 			self.debug('WARNING: CONSISTENCY CHECK FAILED: sectors is too large (%s) - setting to possible max (%s)' % (result['sectors'], geometry['sectors']-1))
-# 			result['sectors'] = geometry['sectors'] - 1
-
-# 		# force increase/decrease
-# 		if force:
-# 			result['valid'] = False
-
-# 		# correct chs values
-# 		if not result['valid'] and correction:
-# 			if correction == 'decrease':
-# 				result['remainder'] = 0
-# 				result['sectors'] = 0
-# 				result['heads'] = 0
-# 				# logical partitions always start at head +1, primary and extended partitions start at head 0
-# 				if parttype == PARTTYPE_LOGICAL:
-# 					result['heads'] += 1
-# 				# first partition always starts at head 1 otherwise 0
-# 				if result['cyls'] == 0:
-# 					result['heads'] += 1
-# 				# calculate new position
-# 				result['position'] = self.CHS2MiB( result, geometry )
-# 				result['valid'] = True
-# 			elif correction == 'increase':
-# 				result['remainder'] = 0
-# 				result['sectors'] = geometry['sectors'] - 1
-# 				result['heads'] = geometry['heads'] - 1
-# 				# calculate new position
-# 				result['position'] = self.CHS2MiB( result, geometry )
-# 				result['valid'] = True
-# 		return result
-
-#geometry = {'cyls': 32635, 'heads': 255, 'sectors': 63 }
-#print getCHSandPosition(0/1024.0/1024.0, geometry, PARTTYPE_PRIMARY, decrease = True, force = True)
 
 	def checkname(self):
 		return ['devices']
@@ -1758,34 +1663,6 @@ class object(content):
 		self.debug('diskProblemList=%s' % diskProblemList)
 		return diskList, diskProblemList
 
-# 	def scan_extended_size(self):
-# 		for disk in self.container['disk'].keys():
-# 			part_list = self.container['disk'][disk]['partitions'].keys()
-# 			part_list.sort()
-# 			start=float(-1)
-# 			end=float(-1)
-# 			found=0
-# 			found_extended=0
-# 			for part in part_list:
-# 				if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
-# 					found=1
-# 					if start < 0:
-# 						start = part
-# 					elif part < start:
-# 						start = part
-# 					if end < part+self.container['disk'][disk]['partitions'][part]['size']:
-# 						end = part+self.container['disk'][disk]['partitions'][part]['size']
-# 				elif self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_EXTENDED:
-# 					found_extended=1
-# 					extended_start = part
-# 					extended_end = part+self.container['disk'][disk]['partitions'][part]['size']
-# 			if found and found_extended:
-# 				self.debug('scan_extended_size: extended_start=%s  start=%s  diff=%s' % (extended_start,start,start - extended_start))
-# 				self.debug('scan_extended_size: extended_end=%s  end=%s  diff=%s' % (extended_end,end, extended_end - end))
-# 				if extended_start < start-float(0.1):
-# 					self.container['temp'][disk]=[extended_start,start-float(0.1),end]
-# 				elif extended_end > end+float(0.1):
-# 					self.container['temp'][disk]=[extended_start,start+float(0.01),end]
 
 	def generate_freespace(self, start, end, touched=0):
 		return {'type': PARTTYPE_FREE,
@@ -2436,13 +2313,6 @@ class object(content):
 			self.add_elem('BT_write', button(_('F6-Write partitions'),self.minY+29,self.minX+(self.width)-37,30)) #6
 			self.add_elem('BT_back', button(_('F11-Back'),self.minY+30,self.minX,30)) #7
 			self.add_elem('BT_next', button(_('F12-Next'),self.minY+30,self.minX+(self.width)-37,30)) #8
-# TODO FIXME
-# 			if self.startIt:
-# 				# TODO FIXME self.parent.scan_extended_size()
-# 				self.parent.debug('SCAN_EXT: %s' % self.container['temp'])
-# 				if len(self.container['temp'].keys()):
-# 					self.sub=self.resize_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-19)
-# 					self.sub.draw()
 
 		def get_col(self, word, width, align='r'):
 			wspace=' '*width
@@ -2554,7 +2424,6 @@ class object(content):
 
 				if key == 266:# F2 - Create
 					self.parent.debug('create')
-# TODO FIXME					if self.resolve_type(type) == 'free' and self.possible_type(self.container['disk'][disk],part):
 					if type == PARTTYPE_FREE:
 						self.parent.debug('create (%s)' % type)
 						self.sub=self.edit(self,self.minY+5,self.minX+4,self.maxWidth,self.maxHeight-8)
@@ -2920,115 +2789,9 @@ class object(content):
 													'%sk' % B2KiB(self.container['lvm']['vg'][ ucsvgname ]['PEsize']),
 													ucsvgname, device])
 				self.container['lvm']['vg'][ ucsvgname ]['created'] = 1
-#				self.container['history'].append('/sbin/vgscan')
 			else:
 				self.container['history'].append(['/sbin/vgextend', ucsvgname, device])
 
-# 		def minimize_extended_old(self, disk):
-# 			self.parent.debug('### minimize: %s'%disk)
-# 			new_start=float(-1)
-# 			start=new_start
-# 			new_end=float(-1)
-# 			end=new_end
-# 			part_list=self.container['disk'][disk]['partitions'].keys()
-# 			part_list.sort()
-# 			for part in part_list:
-# 				# check all logical parts and find minimum size for extended
-# 				if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
-# 					if new_end > 0:
-# 						new_end=part+self.container['disk'][disk]['partitions'][part]['size']
-# 					if new_start < 0 or part < new_start:
-# 						new_start = part
-# 					if new_end < 0 or new_end < part+self.container['disk'][disk]['partitions'][part]['size']:
-# 						new_end = part+self.container['disk'][disk]['partitions'][part]['size']
-# 				elif self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_EXTENDED:
-# 					start = part
-# 					end=start+self.container['disk'][disk]['partitions'][part]['size']
-# 			new_start -= float(0.01)
-# 			if self.container['disk'][disk]['partitions'].has_key(start):
-# 				if new_start > start:
-# 					self.parent.debug('### minimize at start: %s'%[new_start,start])
-# 					self.container['disk'][disk]['partitions'][start]['size']=end-new_start
-# 					self.container['disk'][disk]['partitions'][new_start]=self.container['disk'][disk]['partitions'][start]
-# 					self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s; #1' %
-# 													 (disk,
-# 													  self.container['disk'][disk]['partitions'][start]['num'],
-# 													  self.parent.MiB2CHSstr(disk, new_start),
-# 													  self.parent.MiB2CHSstr(disk, new_end)))
-# 					self.container['disk'][disk]['partitions'].pop(start)
-# 				elif new_end > end:
-# 					self.parent.debug('### minimize at end: %s'%[new_end,end])
-# 					self.container['disk'][disk]['partitions'][part_list[-1]]['type']=PARTTYPE_FREESPACE_LOGICAL
-# 					self.container['disk'][disk]['partitions'][part_list[-1]]['num']=-1
-# 					self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
-# 													 (disk,
-# 													  self.container['disk'][disk]['partitions'][start]['num'],
-# 													  self.parent.MiB2CHSstr(disk, start),
-# 													  self.parent.MiB2CHSstr(disk, new_end)))
-
-# 			self.layout()
-# 			self.draw()
-
-# 		def minimize_extended(self, disk):
-# 			self.parent.debug('minimize_extended: %s' % disk)
-# 			ext_start = float(-1)
-# 			ext_end = float(-1)
-# 			new_start = float(-1)
-# 			new_end = float(-1)
-
-# 			part_list=self.container['disk'][disk]['partitions'].keys()
-# 			# sort part_list to make sure to get all partitions in ascending order
-# 			part_list.sort()
-# 			for part in part_list:
-# 				# check all logical parts and find minimum size for extended
-# 				if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
-# 					# if new_end is not set (-1) or is smaller than the end position of current logical partition then save end pos to new_end
-# 					if new_end < 0 or new_end < part+self.container['disk'][disk]['partitions'][part]['size']:
-# 						new_end = part+self.container['disk'][disk]['partitions'][part]['size']
-# 					if new_start < 0 or part < new_start:
-# 						new_start = part
-# 				elif self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_EXTENDED:
-# 					ext_start = part
-# 					ext_end = part + self.container['disk'][disk]['partitions'][part]['size']
-# 			if new_start >= 0 and new_end >= 0:
-# 				newpos = self.parent.getCHSandPosition( new_start, self.container['disk'][disk]['geometry'], PARTTYPE_EXTENDED, correction = 'decrease', force = True )
-# 				new_start = newpos['position']
-# 				newpos = self.parent.getCHSandPosition( new_end, self.container['disk'][disk]['geometry'], PARTTYPE_EXTENDED, correction = 'increase', force = True )
-# 				new_end = newpos['position']
-
-# 			if ext_start >= 0:
-# 				if new_start > ext_start:
-# 					self.parent.debug('minimize_extended: minimize at start: old_start=%s  new_start=%s' % (ext_start, new_start))
-# 					# correct size if current ext partition
-# 					self.container['disk'][disk]['partitions'][ext_start]['size'] = ext_end - new_start
-# 					self.container['disk'][disk]['partitions'][new_start] = self.container['disk'][disk]['partitions'][ext_start]
-# 					# create primary free space after ext partition
-# 					free_start = ext_start
-# 					free_end = self.parent.getCHSlastCyl( new_start, self.container['disk'][disk]['geometry'], PARTTYPE_FREESPACE_PRIMARY )
-# 					self.container['disk'][disk]['partitions'][ free_start ] = self.parent.generate_freespace( free_start, free_end )
-# 					# run parted
-# 					self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s; #1' %
-# 													 (disk,
-# 													  self.container['disk'][disk]['partitions'][ext_start]['num'],
-# 													  self.parent.MiB2CHSstr(disk, new_start),
-# 													  self.parent.MiB2CHSstr(disk, ext_end)))
-# 				elif new_end < ext_end:
-# 					self.parent.debug('minimize_extended: minimize at end: old_end=%s  new_end=%s' % (ext_end, new_end))
-# 					# correct size of current ext partition
-# 					self.container['disk'][disk]['partitions'][ext_start]['size'] = new_end - ext_start
-# 					# create primary free space after ext partition
-# 					free_end = ext_end
-# 					free_start = self.parent.getCHSnextCyl( new_end, self.container['disk'][disk]['geometry'], PARTTYPE_FREESPACE_PRIMARY )
-# 					self.container['disk'][disk]['partitions'][ free_start ] = self.parent.generate_freespace( free_start, free_end )
-# 					# run parted
-# 					self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
-# 													 (disk,
-# 													  self.container['disk'][disk]['partitions'][ext_start]['num'],
-# 													  self.parent.MiB2CHSstr(disk, ext_start),
-# 													  self.parent.MiB2CHSstr(disk, new_end)))
-
-# 				self.layout()
-# 				self.draw()
 
 		def rebuild_table(self, disk, device):
 			# get ordered list of start positions of all partitions on given disk
@@ -3061,30 +2824,6 @@ class object(content):
 			disk['partitions'] = partitions
 			return disk
 
-# 		def renum_logical(self,disk,deleted): # got to renum partitions Example: Got 5 logical on hda and remove hda7
-# 			parts = disk['partitions'].keys()
-# 			parts.sort()
-# 			for part in parts:
-# 				if disk['partitions'][part]['type'] == PARTTYPE_LOGICAL and disk['partitions'][part]['num'] > deleted:
-# 					disk['partitions'][part]['num'] -= 1
-# 			return disk
-
-# 		def possible_type(self, disk, p_index):
-# 			# 1 -> primary only
-# 			# 2 -> logical only
-# 			# 3 -> both
-# 			# 0 -> unusable
-# 			parts=disk['partitions'].keys()
-# 			parts.sort()
-# 			current=parts.index(p_index)
-# 			if len(disk['partitions'])>1:
-# 				if disk['primary'] < 4:
-# 					return 3
-# 				else:
-# 					return 0
-# 			else:
-# 				return 3
-
 		def lv_create(self, vgname, lvname, currentLE, format, fstype, flag, mpoint):
 			vg = self.parent.container['lvm']['vg'][ vgname ]
 			size = int(vg['PEsize'] * currentLE)
@@ -3110,20 +2849,6 @@ class object(content):
 			# update used/free space on volume group
 			self.parent.container['lvm']['vg'][ vgname ]['freePE'] -= currentLE
 			self.parent.container['lvm']['vg'][ vgname ]['allocPE'] += currentLE
-
-# TODO FIXME		def resolve_type(self,type):
-# 			mapping = { PARTTYPE_USED: 'primary',
-# 						PARTTYPE_FREE: 'free',
-# 						8: 'meta',
-# 						9: 'meta',
-# 						PARTTYPE_LVM_VG: 'lvm_vg',
-# 						PARTTYPE_LVM_LV: 'lvm_lv',
-# 						PARTTYPE_LVM_VG_FREE: 'lvm_lv_free',
-# 						}
-# 			if mapping.has_key(type):
-# 				return mapping[type]
-# 			self.parent.debug('ERROR: resolve_type(%s)=unknown' % type)
-# 			return 'unknown'
 
 		def get_result(self):
 			pass
@@ -3560,10 +3285,6 @@ class object(content):
 					else:  #got a valid partition
 						self.operation = 'edit'
 						self.add_elem('TXT_1', textline(_('Partition: %s') % self.parent.dev_to_part(partition, path, type="full"), self.pos_y+2, self.pos_x+5)) #0
-# TODO FIXME 						if part_type== "primary":
-# 							self.add_elem('TXT_2', textline(_('Typ: primary'),self.pos_y+4,self.pos_x+5))#1
-# 						else:
-# 							self.add_elem('TXT_2', textline(_('Typ: logical'),self.pos_y+4,self.pos_x+5))#1
 						self.add_elem('TXT_3', textline(_('Size: %d MiB') % B2MiB(partition['size']), self.pos_y+4, self.pos_x+33)) #2
 						self.add_elem('TXT_4', textline(_('File system'), self.pos_y+7, self.pos_x+5)) #3
 
@@ -3884,88 +3605,6 @@ class object(content):
 
 					self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+17, self.pos_x+(self.width)-4, align="right")) #8
 					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+17, self.pos_x+4, align='left')) #9
-
-# 		class del_extended(subwin):
-# 			def input(self, key):
-# 				if key in [ 10, 32 ]:
-# 					if self.elements[3].get_status():
-# 						self.parent.part_delete(self.parent.get_elem('SEL_part').result()[0])
-# 						self.parent.layout()
-# 						return 0
-# 					elif self.elements[4].get_status():
-# 						return 0
-# 				elif key == 260 and self.elements[4].active:
-# 					#move left
-# 					self.elements[4].set_off()
-# 					self.elements[3].set_on()
-# 					self.current=3
-# 					self.draw()
-# 				elif key == 261 and self.elements[3].active:
-# 					#move right
-# 					self.elements[3].set_off()
-# 					self.elements[4].set_on()
-# 					self.current=4
-# 					self.draw()
-# 				return 1
-
-# 			def layout(self):
-# 				message=_('The selected partition is the extended partition of this disc.')
-# 				self.elements.append(textline(message,self.pos_y+2,self.pos_x+2)) #0
-# 				message=_('The extended partition contains all logical partitions.')
-# 				self.elements.append(textline(message,self.pos_y+3,self.pos_x+2)) #1
-# 				message=_('Do you really want to delete all logical partitions?')
-# 				self.elements.append(textline(message,self.pos_y+5,self.pos_x+2)) #2
-
-# 				self.elements.append(button(_("Yes"),self.pos_y+8,self.pos_x+10,15)) #3
-# 				self.elements.append(button(_("No"),self.pos_y+8,self.pos_x+40,15)) #4
-# 				self.current=4
-# 				self.elements[4].set_on()
-
-# 			def get_result(self):
-# 				pass
-
-# 		class resize_extended(subwin):
-# 			def input(self, key):
-# 				if key in [ 10, 32 ]:
-# 					if self.elements[2].get_status():
-# 						if self.elements[2].get_status():
-# 							for disk in self.parent.container['temp'].keys():
-# 								self.parent.parent.debug('resize_extended: disk=%s   temp=%s' % (disk, self.parent.container['temp']))
-# 								part=self.parent.container['temp'][disk][0]
-# 								start=self.parent.container['temp'][disk][1]
-# 								end=self.parent.container['temp'][disk][2]
-# 								self.parent.parent.debug('resize_extended: end=%s  start=%s' % (end, start))
-# 								self.parent.container['disk'][disk]['partitions'][part]['size']=end-start
-# 								self.parent.container['disk'][disk]['partitions'][start]=self.parent.container['disk'][disk]['partitions'][part]
-# 								self.parent.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
-# 																		(disk,
-# 																		 self.parent.container['disk'][disk]['partitions'][part]['num'],
-# 																		 self.parent.parent.MiB2CHSstr(disk, start),
-# 																		 self.parent.parent.MiB2CHSstr(disk, end)))
-# 								self.parent.parent.debug('COMMAND: /sbin/parted --script %s unit chs resize %s %s %s' %
-# 														 (disk,
-# 														  self.parent.container['disk'][disk]['partitions'][part]['num'],
-# 														  self.parent.parent.MiB2CHSstr(disk, start),
-# 														  self.parent.parent.MiB2CHSstr(disk, end)))
-# 								self.parent.container['disk'][disk]['partitions'].pop(part)
-# 						self.parent.container['temp']={}
-# 						self.parent.rebuild_table(self.parent.container['disk'][disk],disk)
-# 						self.parent.layout()
-# 						return 0
-# 				return 1
-
-# 			def layout(self):
-# 				message=_('Found over-sized extended partition.')
-# 				self.elements.append(textline(message,self.pos_y+2,self.pos_x+2)) #0
-# 				message=_('This program will resize them to free unused space')
-# 				self.elements.append(textline(message,self.pos_y+3,self.pos_x+2)) #1
-
-# 				self.elements.append(button(_("OK"),self.pos_y+6,self.pos_x+30,15)) #2
-# 				self.current=2
-# 				self.elements[2].set_on()
-
-# 			def get_result(self):
-# 				pass
 
 		class ask_lvm_vg(subwin):
 			def input(self, key):
