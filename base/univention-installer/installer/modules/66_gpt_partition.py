@@ -179,6 +179,29 @@ def calc_next_partition_number(disk):
 		if i not in known_numbers:
 			return i
 
+def get_sanitized_label(label, flags, mpoint, fstype):
+	if not label:
+		label = ''
+		if PARTFLAG_LVM in flags:
+			label = 'LVMPV'
+		elif PARTFLAG_BOOT in flags:
+			label = 'EFI System'
+		elif PARTFLAG_BIOS_GRUB in flags:
+			label = 'BIOS Boot Partition'
+		elif mpoint:
+			for c in mpoint.lower():
+				if c in 'abcdefghijklmnopqrstuvwxyz0123456789-_/':
+					label += c
+				else:
+					label += '_'
+		elif fstype:
+			label = fstype
+		else:
+			label = 'unknown'
+	# truncate label to 36 characters (all non ascii characters are filtered out above)
+	return label[0:36]
+
+
 class object(content):
 	def __init__(self, max_y, max_x, last=(1,1), file='/tmp/installer.log', cmdline={}):
 		self.written=0
@@ -2731,26 +2754,7 @@ class object(content):
 			if mpoint:
 				mpoint = '/%s' % mpoint.lstrip('/')
 
-			if not label:
-				label = ''
-				if PARTFLAG_LVM in flags:
-					label = 'LVMPV'
-				elif PARTFLAG_BOOT in flags:
-					label = 'EFI System'
-				elif PARTFLAG_BIOS_GRUB in flags:
-					label = 'BIOS Boot Partition'
-				elif mpoint:
-					for c in mpoint.lower():
-						if c in 'abcdefghijklmnopqrstuvwxyz0123456789-_/':
-							label += c
-						else:
-							label += '_'
-				elif fstype:
-					label = fstype
-				else:
-					label = 'unknown'
-			# truncate label to 36 characters (all non ascii characters are filtered out above)
-			label = label[0:36]
+			label = get_sanitized_label(label, flags, mpoint, fstype)
 
 			# create new partition
 			new_part_start = free_part_start
