@@ -102,11 +102,10 @@ RESERVED_SPACE_AT_END_OF_DISK = MiB2B(32)
 # reduce size of each PV by at least this amount of megabytes for LVM overhead
 LVM_OVERHEAD = MiB2B(15)
 
-# possible partition types
-#POSS_PARTTYPE_UNUSABLE = 0
-#POSS_PARTTYPE_PRIMARY = 1
-#POSS_PARTTYPE_LOGICAL = 2
-#POSS_PARTTYPE_BOTH = 3
+# filesystem definitions
+FSTYPE_LVMPV = 'LVMPV'
+FSTYPE_SWAP = 'linux-swap'
+FSTYPE_VFAT = 'vfat'
 
 # partition types
 PARTTYPE_USED = 10
@@ -114,6 +113,14 @@ PARTTYPE_FREE = 11
 PARTTYPE_LVM_VG = 100
 PARTTYPE_LVM_LV = 101
 PARTTYPE_LVM_VG_FREE = 102
+
+# partition flags
+PARTFLAG_NONE = 'none'
+PARTFLAG_SWAP = 'linux-swap'     # partition is a swap partition
+PARTFLAG_LVM  = 'lvm'            # partition is a LVM PV
+PARTFLAG_BOOT = 'boot'           # partition is a EFI system partition
+PARTFLAG_BIOS_GRUB = 'bios_grub' # partition is a BIOS boot partition
+VALID_PARTED_FLAGS = [PARTFLAG_LVM, PARTFLAG_BOOT, PARTFLAG_BIOS_GRUB] # flags that are known to parted
 
 # partition index ("num")
 # - indicating partition number if x > 0
@@ -125,7 +132,7 @@ PARTNUMBER_MAXIMUM = 127
 EXPERIMENTAL_FSTYPES = ['btrfs']
 ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3','ext4']
 ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
-BLOCKED_FSTYPES_ON_LVM = ['linux-swap']
+BLOCKED_FSTYPES_ON_LVM = [FSTYPE_SWAP]
 
 DISKLABEL_GPT = 'gpt'
 DISKLABEL_MSDOS = 'msdos'
@@ -438,7 +445,7 @@ class object(content):
 			for part in self.container['disk'][disk]['partitions']:
 				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
 
-					if 'boot' in self.container['disk'][disk]['partitions'][part]['flag']:
+					if PARTFLAG_BOOT in self.container['disk'][disk]['partitions'][part]['flag']:
 						bootable_cnt += 1
 
 					if len(self.container['disk'][disk]['partitions'][part]['mpoint'].strip()):
@@ -814,7 +821,7 @@ class object(content):
 						self.container['profile']['create'][disk]={}
 					if len(parms) >= 5:
 						flag = ''
-						if len(parms) < 6 or parms[5] == 'None' or parms[5] == 'linux-swap':
+						if len(parms) < 6 or parms[5] == 'None' or parms[5] == FSTYPE_SWAP:
 							mpoint = ''
 						else:
 							mpoint = parms[5]
@@ -1149,10 +1156,10 @@ class object(content):
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -s %s -e %s 2>&1' % (disk, type, start, end))
 						else:
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))
-						if 'boot' in flaglist:
+						if PARTFLAG_BOOT in flaglist:
 							self.parent.debug('%s%s: boot flag' % (disk, num))
 							self.run_cmd('/sbin/parted -s %s set %s boot on' % (disk, num))
-						if 'lvm' in flaglist:
+						if PARTFLAG_LVM in flaglist:
 							device = self.get_real_partition_device_name(disk,num)
 							self.parent.debug('%s: lvm flag' % device)
 							ucsvgname = self.parent.container['lvm']['ucsvgname']
@@ -1318,7 +1325,7 @@ class object(content):
 			elif 'ext4 filesystem data' in data:
 				fstype = 'ext4'
 			elif 'swap file' in data and 'Linux' in data:
-				fstype = 'linux-swap'
+				fstype = FSTYPE_SWAP
 			elif 'BTRFS Filesystem' in data:
 				fstype = 'btrfs'
 			elif 'FAT (16 bit)' in data:
@@ -1607,9 +1614,11 @@ class object(content):
 
 					# fix fstypes
 					if fstype == 'linux-swap(v0)':
-						fstype = 'linux-swap'
+						fstype = FSTYPE_SWAP
+						flag.append(PARTFLAG_SWAP)
 					elif fstype == 'linux-swap(v1)':
-						fstype = 'linux-swap'
+						fstype = FSTYPE_SWAP
+						flag.append(PARTFLAG_SWAP)
 
 					# add free space between partitions
 					if (start - last_part_end) > PARTSIZE_MINIMUM and start > EARLIEST_START_OF_FIRST_PARTITION:
@@ -2285,7 +2294,7 @@ class object(content):
 								format = self.get_col('X',col4,'m')
 							size = self.get_col('%d' % B2MiB(lv['size']),col6)
 							type = self.get_col(lv['fstype'],col3)
-							if lv['fstype'] == 'linux-swap':
+							if lv['fstype'] == FSTYPE_SWAP:
 								type = self.get_col('swap',col3)
 							mount = self.get_col(lv['mpoint'],col5,'l')
 							area = self.get_col('',col2)
@@ -2700,11 +2709,11 @@ class object(content):
 
 			if not label:
 				label = ''
-				if 'lvm' in flags:
+				if PARTFLAG_LVM in flags:
 					label = 'LVMPV'
-				elif 'boot' in flags:
+				elif PARTFLAG_BOOT in flags:
 					label = 'EFI System'
-				elif 'bios_grub' in flags:
+				elif PARTFLAG_BIOS_GRUB in flags:
 					label = 'BIOS Boot Partition'
 				elif mpoint:
 					for c in mpoint.lower():
@@ -2745,6 +2754,8 @@ class object(content):
 			self.rebuild_table( self.container['disk'][arg_disk], arg_disk)
 
 			for flag in flags:
+				if flag not in VALID_PARTED_FLAGS:
+					continue
 				# parted --script <device> set <partitionnumber> <flagname> on
 				self.container['history'].append(['/sbin/parted', '--script', arg_disk, 'set',
 													str(self.container['disk'][arg_disk]['partitions'][arg_part]['num']), flag, 'on'])
@@ -2981,11 +2992,24 @@ class object(content):
 				self.stop()
 
 		class edit(subwin):
-			def __init__(self,parent,pos_x,pos_y,width,heigth):
+			OPERATION_EDIT = 'edit'
+			OPERATION_CREATE = 'create'
+
+			def __init__(self,parent,pos_x,pos_y,width,height):
 				self.close_on_subwin_exit = False
 				self.title = 'unknown'
+				self.parent = parent
 				self.load_filesystems()
-				subwin.__init__(self,parent,pos_x,pos_y,width,heigth)
+
+				deviceentry = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
+				partition = self.parent.container['disk'][deviceentry[1]]['partitions'][deviceentry[2]]
+				if partition['type'] == PARTTYPE_FREE:
+					self.operation = self.OPERATION_CREATE
+					height -= 2
+				else:
+					self.operation = self.OPERATION_EDIT
+
+				subwin.__init__(self,parent,pos_x,pos_y,width,height)
 
 			def load_filesystems(self):
 				""" load available filesystems """
@@ -2995,12 +3019,30 @@ class object(content):
 					file = open('/lib/univention-installer/modules/filesystem')
 				self.fsdict={}
 				filesystem = file.readlines()
-				for line in xrange(len(filesystem)):
-					fs = filesystem[line].split(' ')
+				i = 0
+				for line in filesystem:
+					fs = line.split(' ')
 					if len(fs) > 1:
 						entry = fs[1].strip()
-						self.fsdict[entry] = [entry,line]
+						if not entry == FSTYPE_SWAP:
+							self.fsdict[entry] = [entry, i]
+							i += 1
 				file.close()
+				self.parent.parent.debug('self.fsdict = %s' % pretty_format(self.fsdict))
+
+				if self.parent.container['lvm']['enabled']:
+					self.partflags = { _('Data'): [PARTFLAG_NONE, 0],
+									   _('Swap'): [PARTFLAG_SWAP, 1],
+									   _('LVM PV'): [PARTFLAG_LVM, 2],
+									   _('BIOS Boot'): [PARTFLAG_BIOS_GRUB, 3],
+									   _('EFI System'): [PARTFLAG_BOOT, 4],
+									   }
+				else:
+					self.partflags = { _('Data'): [PARTFLAG_NONE, 0],
+									   _('Swap'): [PARTFLAG_SWAP, 1],
+									   _('BIOS Boot'): [PARTFLAG_BIOS_GRUB, 2],
+									   _('EFI System'): [PARTFLAG_BOOT, 3],
+									   }
 
 
 			def helptext(self):
@@ -3075,7 +3117,7 @@ class object(content):
 					if self.get_elem('BT_cancel').usable() and self.get_elem('BT_cancel').get_status():
 						return 0
 					elif ( self.get_elem('BT_save').usable() and self.get_elem('BT_save').get_status() ) or key == 276:
-						if self.operation == 'create': # Speichern
+						if self.operation == self.OPERATION_CREATE: # Speichern
 							part = dev[2]
 							mpoint = self.get_elem('INP_mpoint').result().strip()
 							if self.get_elem('INP_size').result().isdigit():
@@ -3099,21 +3141,25 @@ class object(content):
 								self.parent.debug('edit:input: size given by user is too large. Falling back to size of free space: %d < %d' % (disk['partitions'][part]['size'], size))
 								size = disk['partitions'][part]['size']
 
-							flag = []
-							if self.get_elem('CB_bootable').result():
-								flag.append('boot')
-							if self.elem_exists('CB_lvmpv') and self.get_elem('CB_lvmpv').result():
-								flag.append('lvm')
+							flag = [self.get_elem('SEL_partflags').result()[0]]
+							if PARTFLAG_LVM in flag:
 								mpoint = ''
 								format = 1
-								fstype = 'LVMPV'
+								fstype = FSTYPE_LVMPV
 
-							if fstype == 'linux-swap':
+							if PARTFLAG_BOOT in flag:
+								mpoint = '/boot/efi'
+								format = 1
+								fstype = FSTYPE_VFAT
+
+							if fstype == FSTYPE_SWAP:
 								mpoint = ''
+
 							# sanitize mpoint → add leading '/' if missing
 							if mpoint:
 								mpoint = '/%s' % mpoint.lstrip('/')
-							self.parent.container['temp'] = {'selected':self.parent.get_elem('SEL_part').result()[0],
+
+							self.parent.container['temp'] = {'selected': self.parent.get_elem('SEL_part').result()[0],
 										'mpoint': mpoint,
 										'size': size,
 										'fstype': fstype,
@@ -3134,16 +3180,15 @@ class object(content):
 								self.sub.draw()
 								return 1
 							else:
-								self.parent.container['temp']={}
+								self.parent.container['temp'] = {}
 								format=1
 
-							num=0 # temporary zero
 							self.parent.part_create(self.parent.get_elem('SEL_part').result()[0],mpoint,size,fstype,parttype,flag,format)
-						elif self.operation == 'edit': # Speichern
+
+						elif self.operation == self.OPERATION_EDIT: # Speichern
 							part = dev[2]
 							mpoint = self.get_elem('INP_mpoint').result().strip()
 							fstype = self.get_elem('SEL_fstype').result()[0]
-							flag = []
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
 							EXPERIMENTAL_FSTYPES_MSG = [_('This is a highly experimental filesystem'), _('and should not be used in productive'), _('environments.')]
@@ -3154,32 +3199,37 @@ class object(content):
 								self.sub.draw()
 								return 1
 
-							if self.get_elem('CB_bootable').result():
-								flag.append('boot')
+							flag = [self.get_elem('SEL_partflags').result()[0]]
+							if PARTFLAG_BOOT in flag:
+								mpoint = '/boot/efi'
+								fstype = FSTYPE_VFAT
 
-							self.parent.container['temp']={'fstype':fstype}
-							if fstype == 'linux-swap':
+							if PARTFLAG_LVM in flag:
 								mpoint = ''
+								fstype = FSTYPE_LVMPV
+
+							self.parent.container['temp'] = {'fstype': fstype}
+							if fstype == FSTYPE_SWAP:
+								mpoint = ''
+
 							# sanitize mpoint → add leading '/' if missing
 							if mpoint:
 								mpoint = '/%s' % mpoint.lstrip('/')
 							self.parent.container['disk'][path]['partitions'][part]['mpoint'] = mpoint
-							#if self.get_elem('CB_bootable').result():
 							old_flags = self.parent.container['disk'][path]['partitions'][part]['flag']
 
 							for f in old_flags:
-								if f not in flag:
+								if f not in flag and f in VALID_PARTED_FLAGS:
 									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', str(self.parent.container['disk'][path]['partitions'][part]['num']), f, 'off'])
 							for f in flag:
-								if f not in old_flags:
+								if f not in old_flags and f in VALID_PARTED_FLAGS:
 									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', str(self.parent.container['disk'][path]['partitions'][part]['num']), f, 'on'])
-
-							self.parent.container['disk'][path]['partitions'][part]['flag'] = flag
 
 							rootfs = (mpoint == '/')
 							# if format is not set and mpoint == '/' OR
 							#    format is not set and fstype changed
-							if ( self.parent.container['disk'][path]['partitions'][part]['fstype'] != fstype or rootfs) and not self.get_elem('CB_format').result():
+							if (self.parent.container['disk'][path]['partitions'][part]['flag'] != flag or
+								self.parent.container['disk'][path]['partitions'][part]['fstype'] != fstype or rootfs) and not self.get_elem('CB_format').result():
 								if rootfs:
 									msglist = [ _('This partition is designated as root file system,'),
 												_('but "format" is not selected. This can cause'),
@@ -3207,7 +3257,8 @@ class object(content):
 								else:
 									self.parent.container['disk'][path]['partitions'][part]['format'] = 0
 								self.parent.container['disk'][path]['partitions'][part]['fstype'] = fstype
-						self.parent.container['disk'][path] = self.parent.rebuild_table(disk,path)
+								self.parent.container['disk'][path]['partitions'][part]['flag'] = flag
+						self.parent.container['disk'][path] = self.parent.rebuild_table(disk, path)
 
 						self.parent.layout()
 						self.parent.draw()
@@ -3216,111 +3267,102 @@ class object(content):
 						return self.get_elem_by_id(self.current).key_event(key)
 				if self.get_elem_by_id(self.current).usable():
 					self.get_elem_by_id(self.current).key_event(key)
-				if self.operation == 'edit':
-					# if partition is LVM PV
-					if not self.elem_exists('CB_lvmpv'):
-						self.get_elem('INP_mpoint').enable()
-						self.get_elem('SEL_fstype').enable()
-						self.get_elem('CB_format').enable()
-						self.get_elem('CB_bootable').enable()
 
-						if 'linux-swap' in self.get_elem('SEL_fstype').result():
-							self.get_elem('INP_mpoint').disable()
-						else:
-							self.get_elem('INP_mpoint').enable()
-						if self.current == self.get_elem_id('INP_mpoint'):
-							self.get_elem('INP_mpoint').set_on()
-							self.get_elem('INP_mpoint').draw()
-
-				elif self.operation == 'create':
-					if self.elem_exists('CB_lvmpv') and self.get_elem('CB_lvmpv').result():
-						# partition is LVM PV
-						self.get_elem('INP_mpoint').disable()
-						self.get_elem('SEL_fstype').disable()
-						self.get_elem('CB_format').disable()
-						self.get_elem('CB_bootable').disable()
-					else:
-						# partition is no LVM PV
-						self.get_elem('INP_mpoint').enable()
-						self.get_elem('SEL_fstype').enable()
-						self.get_elem('CB_format').enable()
-						self.get_elem('CB_bootable').enable()
-
-						if 'linux-swap' in self.get_elem('SEL_fstype').result():
-							self.get_elem('INP_mpoint').disable()
-						else:
-							self.get_elem('INP_mpoint').enable()
-					if self.current == self.get_elem_id('INP_mpoint'):
-						self.get_elem('INP_mpoint').set_on()
-						self.get_elem('INP_mpoint').draw()
+				self.update_widget_states()
 				return 1
 
 			def get_result(self):
 				pass
+
+			def update_widget_states(self):
+				if PARTFLAG_NONE in self.get_elem('SEL_partflags').result():
+					self.get_elem('INP_mpoint').enable()
+					self.get_elem('SEL_fstype').enable()
+				else:
+					self.get_elem('INP_mpoint').disable()
+					self.get_elem('SEL_fstype').disable()
+
+				if self.get_elem('SEL_partflags').result()[0] in (PARTFLAG_NONE, PARTFLAG_SWAP, PARTFLAG_BOOT, PARTFLAG_LVM):
+					self.get_elem('CB_format').enable()
+				else:
+					self.get_elem('CB_format').disable()
 
 			def layout(self):
 				dev = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
 				parttype = dev[0]
 				path = dev[1]
 				disk = self.parent.container['disk'][path]
-				self.operation=''
 
 				if parttype is 'part':
 					start = dev[2]
 					partition = disk['partitions'][start]
-					if partition['type'] is PARTTYPE_FREE: # got freespace
-						self.operation = 'create'
+					if self.operation == self.OPERATION_CREATE:
 						self.set_title(_('Create new partition'))
 						self.add_elem('TXT_3', textline(_('Size (MiB):'), self.pos_y+2, self.pos_x+5)) #3
 						self.add_elem('INP_size', input(str(int(B2MiB(partition['size']))), self.pos_y+2, self.pos_x+6+len(_('Mount point:')), 12)) #4
 						self.add_elem('TXT_2', textline(_('Mount point:'), self.pos_y+4, self.pos_x+5)) #1
 						self.add_elem('INP_mpoint', input(partition['mpoint'], self.pos_y+4, self.pos_x+6+len(_('Mount point:')), 35)) #2
-						self.add_elem('TXT_4', textline(_('File system:'), self.pos_y+6, self.pos_x+5)) #5
-						self.add_elem('SEL_fstype', select(self.fsdict, self.pos_y+7, self.pos_x+4, 15, 8)) #6
+
+						self.add_elem('TXT_5', textline(_('Partition type:'), self.pos_y+6, self.pos_x+5))
+						self.add_elem('SEL_partflags', select(self.partflags, self.pos_y+7, self.pos_x+4, 17, 5))
+						self.get_elem('SEL_partflags').set_off()
+
+						self.parent.parent.debug('self.fsdict = %s' % pretty_format(self.fsdict))
+						self.add_elem('TXT_4', textline(_('File system:'), self.pos_y+6, self.pos_x+33))
+						self.add_elem('SEL_fstype', select(self.fsdict, self.pos_y+7, self.pos_x+33, 17, 8))
 						self.get_elem('SEL_fstype').set_off()
-						self.add_elem('CB_bootable', checkbox({_('bootable'):'1'}, self.pos_y+8, self.pos_x+33, 11, 1, [])) #8
-						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+10, self.pos_x+33, 14, 1, [0])) #10
-						if self.parent.container['lvm']['enabled']:
-							self.add_elem('CB_lvmpv', checkbox({_('LVM PV'):'1'}, self.pos_y+12, self.pos_x+33, 14, 1, [])) #13
-						self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+17, self.pos_x+(self.width)-4, align="right")) #11
-						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+17, self.pos_x+4, align="left")) #12
+
+						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+13, self.pos_x+5, 14, 1, [0]))
+
+						self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+15, self.pos_x+(self.width)-4, align="right")) #11
+						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+15, self.pos_x+4, align="left")) #12
 
 						self.current = self.get_elem_id('INP_size')
 						self.get_elem_by_id(self.current).set_on()
-					else:  #got a valid partition
-						self.operation = 'edit'
-						self.set_title(_('Edit partition'))
 
+					else:  #got a valid partition
+						self.set_title(_('Edit partition'))
 						self.add_elem('TXT_1', textline(_('Partition: %s') % self.parent.dev_to_part(partition, path, type="full"), self.pos_y+2, self.pos_x+5)) #0
 						self.add_elem('TXT_3', textline(_('Size: %d MiB') % B2MiB(partition['size']), self.pos_y+4, self.pos_x+5)) #2
 						self.add_elem('TXT_5', textline(_('Mount point:'), self.pos_y+6, self.pos_x+5)) #5
 						self.add_elem('INP_mpoint', input(partition['mpoint'], self.pos_y+6, self.pos_x+6+len(_('Mount point:')), 35)) #2
-						self.add_elem('TXT_4', textline(_('File system:'), self.pos_y+8, self.pos_x+5)) #3
+
+						# get currently selected entry
+						partflags_num = 0
+						for flag in partition['flag']:
+							for name, value in self.partflags.items():
+								if flag == value[0]:
+									partflags_num = value[1]
+									break
+						self.add_elem('TXT_5', textline(_('Partition type:'), self.pos_y+8, self.pos_x+5))
+						self.add_elem('SEL_partflags', select(self.partflags, self.pos_y+9, self.pos_x+4, 17, 5, partflags_num))
+						self.get_elem('SEL_partflags').set_off()
+
+						# get currently selected entry
 						filesystem_num = self.fsdict.get(partition['fstype'], [0,0])[1]
-						self.add_elem('SEL_fstype', select(self.fsdict, self.pos_y+9, self.pos_x+4, 15, 6, filesystem_num)) #4
-						if 'boot' in partition['flag']:
-							self.add_elem('CB_bootable', checkbox({_('bootable'):'1'}, self.pos_y+10, self.pos_x+33, 11, 1, [0])) #7
-						else:
-							self.add_elem('CB_bootable', checkbox({_('bootable'):'1'}, self.pos_y+10, self.pos_x+33, 11, 1, [])) #7
+						self.add_elem('TXT_4', textline(_('File system:'), self.pos_y+8, self.pos_x+33))
+						self.add_elem('SEL_fstype', select(self.fsdict, self.pos_y+9, self.pos_x+33, 17, 7, filesystem_num)) #4
+						self.get_elem('SEL_fstype').set_off()
+
 						if partition['format']:
-							self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+12, self.pos_x+33, 14, 1, [0])) #10
+							self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+15, self.pos_x+5, 14, 1, [0])) #10
 						else:
-							self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+12, self.pos_x+33, 14, 1, [])) #10
+							self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+15, self.pos_x+5, 14, 1, [])) #10
 
 						self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+17, self.pos_x+(self.width)-4, align="right")) #11
 						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+17, self.pos_x+4, align='left')) #12
-						self.current = self.get_elem_id('INP_mpoint')
+						self.update_widget_states()
+						if self.get_elem('INP_mpoint').usable():
+							self.current = self.get_elem_id('INP_mpoint')
+						else:
+							self.current = self.get_elem_id('SEL_partflags')
 						self.get_elem_by_id(self.current).set_on()
-						if filesystem_num == 3:
-							self.get_elem('INP_mpoint').disable()
-							self.current = self.get_elem_id('SEL_fstype')
-							self.get_elem_by_id(self.current).set_on()
 
 		class edit_lvm_lv(subwin):
-			def __init__(self,parent,pos_x,pos_y,width,heigth):
+			def __init__(self,parent,pos_x,pos_y,width,height):
 				self.close_on_subwin_exit = False
 				self.title = 'unknown'
-				subwin.__init__(self,parent,pos_x,pos_y,width,heigth)
+				subwin.__init__(self,parent,pos_x,pos_y,width,height)
 
 			def helptext(self):
 				return self.parent.helptext()
