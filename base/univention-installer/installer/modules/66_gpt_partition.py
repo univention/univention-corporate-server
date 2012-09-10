@@ -1630,18 +1630,14 @@ class object(content):
 					start = int(cols[1].strip('B'))				# partition start
 					end = int(cols[2].strip('B'))				# partition end
 					size = calc_part_size(start, end)			# get partition size
-					fstype = cols[4]							# filesystem type
+					fstype = self.detect_filesystem(self.get_device(dev, '', num))	# filesystem type
 					label = cols[5]								# partition label
 					flag = []
 					if cols[6]:
 						flag = re.split(',[ \t]+', cols[6])     # flags are separated with comma
 
 					# fix fstypes
-					if fstype == 'linux-swap(v0)':
-						fstype = FSTYPE_SWAP
-						flag.append(PARTFLAG_SWAP)
-					elif fstype == 'linux-swap(v1)':
-						fstype = FSTYPE_SWAP
+					if fstype == 'linux-swap':
 						flag.append(PARTFLAG_SWAP)
 
 					# add free space between partitions
@@ -1715,13 +1711,16 @@ class object(content):
 			'format': 0
 			}
 
-	def get_device(self, disk, part):
+	def get_device(self, disk, part, num=None):
 		device="/dev/%s" % disk.replace('/dev/', '').replace('//', '/')
 		regex = re.compile(".*c[0-9]d[0-9]*")
 		match = re.search(regex,disk)
 		if match: # got /dev/cciss/cXdXpX
 			device += "p"
-		device += "%s" % self.container['disk'][disk]['partitions'][part]['num']
+		if num is None:
+			device += "%s" % self.container['disk'][disk]['partitions'][part]['num']
+		else:
+			device += '%d' % num
 		return device
 
 	def result(self):
