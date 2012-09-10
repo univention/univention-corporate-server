@@ -1248,7 +1248,11 @@ class object(content):
 					vg = self.parent.container['lvm']['vg'][ lv['vg'] ]
 					size = self.parent.customsize2MiB( lv['end'] ) - self.parent.customsize2MiB( lv['start'] )
 					self.parent.debug('creating LV: start=%s  end=%s  size=%s' % (lv['start'], lv['end'], size))
-					currentLE = int(round(size * 1024.0 / vg['PEsize'] + 0.5))
+
+					currentLE = int(size / vg['PEsize'])
+					if size % vg['PEsize']: # number of logical extents has to cover at least "size" bytes
+						currentLE += 1
+
 					self.run_cmd('/sbin/lvcreate -l %d --name "%s" "%s" 2>&1' % (currentLE, lvname, lv['vg'] ))
 #				self.run_cmd('/sbin/lvscan 2>&1')
 
@@ -3625,9 +3629,13 @@ class object(content):
 								self.draw()
 								return 1
 
-							currentLE = int(round(size / 1024.0 / vg['PEsize'] + 0.5)) # PEsize is stored in KiB
+							currentLE = size / vg['PEsize']
+							if size % vg['PEsize']: # number of logical extents has to cover at least "size" bytes
+								currentLE += 1
+
 							if currentLE > vg['freePE']:  # decrease logical volume by one physical extent - maybe it fits then
 								currentLE -= 1
+
 							if currentLE > vg['freePE']:
 								self.get_elem_by_id(self.current).set_off()
 								self.current = self.get_elem_id('INP_size')
@@ -3637,7 +3645,6 @@ class object(content):
 								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 7, msglist)
 								self.draw()
 								return 1
-							# size = int(vg['PEsize'] * currentLE * 1024) # PEsize is stored in KiB
 
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
