@@ -2984,7 +2984,24 @@ class object(content):
 			def __init__(self,parent,pos_x,pos_y,width,heigth):
 				self.close_on_subwin_exit = False
 				self.title = 'unknown'
+				self.load_filesystems()
 				subwin.__init__(self,parent,pos_x,pos_y,width,heigth)
+
+			def load_filesystems(self):
+				""" load available filesystems """
+				try:
+					file = open('modules/filesystem')
+				except:
+					file = open('/lib/univention-installer/modules/filesystem')
+				self.fsdict={}
+				filesystem = file.readlines()
+				for line in xrange(len(filesystem)):
+					fs = filesystem[line].split(' ')
+					if len(fs) > 1:
+						entry = fs[1].strip()
+						self.fsdict[entry] = [entry,line]
+				file.close()
+
 
 			def helptext(self):
 				return self.parent.helptext()
@@ -3259,21 +3276,7 @@ class object(content):
 						self.add_elem('TXT_2', textline(_('Mount point:'), self.pos_y+4, self.pos_x+5)) #1
 						self.add_elem('INP_mpoint', input(partition['mpoint'], self.pos_y+4, self.pos_x+6+len(_('Mount point:')), 35)) #2
 						self.add_elem('TXT_4', textline(_('File system:'), self.pos_y+6, self.pos_x+5)) #5
-
-						try:
-							file = open('modules/filesystem')
-						except:
-							file = open('/lib/univention-installer/modules/filesystem')
-						dict={}
-						filesystem_num = 0
-						filesystem = file.readlines()
-						for line in range(len(filesystem)):
-							fs = filesystem[line].split(' ')
-							if len(fs) > 1:
-								entry = fs[1][:-1]
-								dict[entry] = [entry,line]
-						file.close()
-						self.add_elem('SEL_fstype', select(dict, self.pos_y+7, self.pos_x+4, 15, 8)) #6
+						self.add_elem('SEL_fstype', select(self.fsdict, self.pos_y+7, self.pos_x+4, 15, 8)) #6
 						self.get_elem('SEL_fstype').set_off()
 						self.add_elem('CB_bootable', checkbox({_('bootable'):'1'}, self.pos_y+8, self.pos_x+33, 11, 1, [])) #8
 						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+10, self.pos_x+33, 14, 1, [0])) #10
@@ -3293,22 +3296,8 @@ class object(content):
 						self.add_elem('TXT_5', textline(_('Mount point:'), self.pos_y+6, self.pos_x+5)) #5
 						self.add_elem('INP_mpoint', input(partition['mpoint'], self.pos_y+6, self.pos_x+6+len(_('Mount point:')), 35)) #2
 						self.add_elem('TXT_4', textline(_('File system:'), self.pos_y+8, self.pos_x+5)) #3
-						try:
-							file=open('modules/filesystem')
-						except:
-							file=open('/lib/univention-installer/modules/filesystem')
-						dict={}
-						filesystem_num = 0
-						filesystem = file.readlines()
-						for line in range(0, len(filesystem)):
-							fs = filesystem[line].split(' ')
-							if len(fs) > 1:
-								entry = fs[1][:-1]
-								dict[entry] = [entry,line]
-								if entry == partition['fstype']:
-									filesystem_num = line
-						file.close()
-						self.add_elem('SEL_fstype', select(dict, self.pos_y+9, self.pos_x+4, 15, 6, filesystem_num)) #4
+						filesystem_num = self.fsdict.get(partition['fstype'], [0,0])[1]
+						self.add_elem('SEL_fstype', select(self.fsdict, self.pos_y+9, self.pos_x+4, 15, 6, filesystem_num)) #4
 						if 'boot' in partition['flag']:
 							self.add_elem('CB_bootable', checkbox({_('bootable'):'1'}, self.pos_y+10, self.pos_x+33, 11, 1, [0])) #7
 						else:
