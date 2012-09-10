@@ -131,7 +131,7 @@ DISKLABEL_GPT = 'gpt'
 DISKLABEL_MSDOS = 'msdos'
 DISKLABEL_UNKNOWN = 'unknown'
 
-def prettyformat(val):
+def pretty_format(val):
 	return pprint.PrettyPrinter(indent=4).pformat(val)
 
 def align_partition_start(position):
@@ -2106,9 +2106,9 @@ class object(content):
 
 			self.parent.debug('AUTOPART FINISHED - INTERNAL STATUS:')
 			for pvname, pv in self.container['lvm']['pv'].items():
-				self.parent.debug('PV[%s]=%s' % (pvname, pv))
+				self.parent.debug('PV[%s]=%s' % (pvname, pretty_format(pv)))
 			for vgname, vg in self.container['lvm']['vg'].items():
-				self.parent.debug('VG[%s]=%s' % (vgname, vg))
+				self.parent.debug('VG[%s]=%s' % (vgname, pretty_format(vg)))
 
 		def ask_lvm_enable_callback(self, result):
 			self.parent.set_lvm( (result == 'BT_YES') )
@@ -2372,7 +2372,7 @@ class object(content):
 
 					self.part_objects[ len(dict) ] = [ 'part', dev, part_list[i], i ]
 					dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
-					self.parent.debug('==> DEV = %s   PART(%s) = %s' % (dev,part_list[i],part))
+					self.parent.debug('==> DEV = %s   PART(%s) = %s' % (dev,part_list[i],pretty_format(part)))
 
 			# display LVM items if enabled
 			if self.container['lvm']['enabled'] and self.container['lvm'].has_key('vg'):
@@ -3036,7 +3036,7 @@ class object(content):
 			partlist = partitions.keys()
 			partlist.sort()
 
-			self.parent.debug('rebuild_table(%s): OLD VALUES\n%s' % (device, prettyformat(partitions)))
+			self.parent.debug('rebuild_table(%s): OLD VALUES\n%s' % (device, pretty_format(partitions)))
 
 			i = 0
 			# iterate over partlist items with index 0...(len-2)
@@ -3056,7 +3056,7 @@ class object(content):
 					# if not free space and not merged then jump to next entry
 					i += 1
 
-			self.parent.debug('rebuild_table(%s): NEW VALUES\n%s' % (device, prettyformat(partitions)))
+			self.parent.debug('rebuild_table(%s): NEW VALUES\n%s' % (device, pretty_format(partitions)))
 
 			disk['partitions'] = partitions
 			return disk
