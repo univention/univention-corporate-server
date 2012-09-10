@@ -2251,23 +2251,27 @@ class object(content):
 					format=self.get_col('',col4,'m')
 					if part['format']:
 						format=self.get_col('X',col4,'m')
-					if 'lvm' in part['flag']:
-						type=self.get_col('LVMPV',col3)
+					if PARTFLAG_LVM in part['flag']:
+						type = self.get_col('LVMPV',col3)
 
 						device = self.parent.get_device(dev, part_list[i])
 						# display corresponding vg of pv if available
 						if self.container['lvm'].has_key('pv') and self.container['lvm']['pv'].has_key( device ):
 							if self.container['lvm']['pv'][device]['vg']:
-								mount=self.get_col( self.container['lvm']['pv'][device]['vg'], col5, 'l')
+								mount = self.get_col( self.container['lvm']['pv'][device]['vg'], col5, 'l')
 							else:
-								mount=self.get_col( _('(unassigned)'), col5, 'l')
+								mount = self.get_col( _('(unassigned)'), col5, 'l')
 						else:
-							mount=self.get_col('',col5,'l')
+							mount = self.get_col('', col5, 'l')
 					else:
-						type=self.get_col(part['fstype'],col3)
-						if part['fstype']== 'linux-swap':
-							type=self.get_col('swap',col3)
-						mount=self.get_col(part['mpoint'],col5,'l')
+						type = self.get_col(part['fstype'], col3)
+						if part['fstype']== FSTYPE_SWAP:
+							type = self.get_col('swap', col3)
+						if PARTFLAG_BIOS_GRUB in part['flag']:
+							type = self.get_col('BIOS', col3)
+						if PARTFLAG_BOOT in part['flag']:
+							type = self.get_col('EFI', col3)
+						mount = self.get_col(part['mpoint'], col5, 'l')
 
 					size = self.get_col('%d' % B2MiB(part['size']), col6)
 
