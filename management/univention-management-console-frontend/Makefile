@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-jsFiles:=$(shell find umc -name "*.js")
 pkgDir:=/usr/share/univention-management-console-frontend/
 timestamp:=$$$(shell date +'%Y%d%m%H%M%S')$$
 dojoDir:=/usr/share/univention-dojo
@@ -42,7 +41,7 @@ tmpDir:=$(CURDIR)/tmp
 themesDir:=$(tmpDir)/dijit/themes
 jsFiles:=$(shell find umc -name "*.js")
 
-.PHONY: build build-dev build-common api-doc install clean jslint i18n umc/package.json $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+.PHONY: build build-dev build-common api-doc install clean jslint i18n umc/package.json $(tmpDir)/umc/login.html $(buildDir)/index.html $(buildDir)/debug.html
 
 build: build-common api-doc $(tmpDir) $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
 
@@ -71,7 +70,7 @@ $(buildDir):
 	mkdir -p $@
 
 # rule for the main dojo build process
-$(buildDir)/js/dojo/dojo.js.uncompressed.js: $(buildDir)
+$(buildDir)/js/dojo/dojo.js.uncompressed.js: $(jsFiles) $(buildDir)
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(version)"
 
 # index page
