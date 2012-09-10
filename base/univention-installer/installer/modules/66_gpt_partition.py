@@ -2848,6 +2848,71 @@ class object(content):
 				self.container['history'].append(['/sbin/vgextend', ucsvgname, device])
 
 
+		def add_changed_flags_to_history(self, path, part, old_flags, flags):
+			self.parent.debug('add_changed_flags_to_history: old_flags = %s     flags = %s' % (old_flags, flags))
+			for f in old_flags:
+				if f not in flags and f in VALID_PARTED_FLAGS:
+					self.container['history'].append(['/sbin/parted', '--script', path, 'set', str(self.container['disk'][path]['partitions'][part]['num']), f, 'off'])
+			for f in flags:
+				if f not in old_flags and f in VALID_PARTED_FLAGS:
+					self.container['history'].append(['/sbin/parted', '--script', path, 'set', str(self.container['disk'][path]['partitions'][part]['num']), f, 'on'])
+			self.parent.debug('add_changed_flags_to_history: history updated')
+			self.parent.print_history()
+
+		def part_edit_determine_settings(self, disk, part, mpoint, fstype, flags, format, label=None):
+			partition = copy.deepcopy(self.parent.container['disk'][disk]['partitions'][part])
+
+			self.parent.debug('part_edit_determine_settings: format = %r' % format)
+			self.parent.debug('part_edit_determine_settings: fstype = %r' % fstype)
+			self.parent.debug('part_edit_determine_settings: flags = %r' % flags)
+			self.parent.debug('part_edit_determine_settings: mpoint = %r' % mpoint)
+
+			partition['flag'] = flags
+			partition['fstype'] = fstype
+			partition['mpoint'] = mpoint
+
+			# EFI partition will be mounted at /boot/efi with vfat as file system
+			if PARTFLAG_BOOT in flags:
+				partition['mpoint'] = '/boot/efi'
+				partition['fstype'] = FSTYPE_VFAT
+
+			# LVM PV has no mount point
+			if PARTFLAG_LVM in flags:
+				partition['mpoint'] = ''
+				partition['fstype'] = FSTYPE_LVMPV
+
+			# BIOS boot partitions do not need to be formatted
+			if PARTFLAG_BIOS_GRUB in flags:
+				partition['mpoint'] = ''
+				partition['format'] = 0
+
+			# SWAP has no mount point
+			if PARTFLAG_SWAP in flags:
+				partition['mpoint'] = ''
+				partition['fstype'] = FSTYPE_SWAP
+
+			# sanitize mpoint → add leading '/' if missing
+			if partition['mpoint'] and PARTFLAG_BIOS_GRUB not in flags:
+				partition['mpoint'] = '/%s' % partition['mpoint'].lstrip('/')
+
+			# create label if not given
+			if label:
+				partition['label'] = label
+			else:
+				partition['label'] = get_sanitized_label('', partition['flag'], partition['mpoint'], partition['fstype'])
+
+			return partition
+
+		def part_edit_set_settings(self, disk, part, temp_part):
+			self.parent.debug('part_edit_set_settings: temp_part = %s' % pretty_format(temp_part))
+			old_flags = self.parent.container['disk'][disk]['partitions'][part]['flag']
+			if temp_part['format']:
+				self.parent.debug('part_edit_set_settings: calling add_changed_flags_to_history')
+				self.add_changed_flags_to_history(disk, part, old_flags, temp_part['flag'])
+			self.parent.container['disk'][disk]['partitions'][part] = temp_part
+			if PARTFLAG_LVM in temp_part['flag']:
+				self.pv_create(disk, part)
+
 		def rebuild_table(self, disk, device):
 			# get ordered list of start positions of all partitions on given disk
 			partitions = copy.copy(disk['partitions'])
@@ -3086,21 +3151,21 @@ class object(content):
 				self.parent.container['temp'] = {}
 				if result == 'BT_YES':
 					format=1
-					self.parent.part_create(selected, mpoint, size, fstype, parttype, flag, format)
 				elif result == 'BT_NO':
 					format=0
-					self.parent.part_create(selected, mpoint, size, fstype, parttype, flag, format)
+				self.parent.part_create(selected, mpoint, size, fstype, parttype, flag, format)
 				return 0
 
 			def no_format_callback_part_edit(self, result, path, part):
-				fstype = self.parent.container['temp']['fstype']
-				self.parent.container['temp']={}
+				temp_part = self.parent.container['temp']
+				self.parent.container['temp'] = {}
 				if result == 'BT_YES':
-					format=1
+					temp_part['format'] = 1
 				else:
-					format=0
-				self.parent.container['disk'][path]['partitions'][part]['format'] = format
-				self.parent.container['disk'][path]['partitions'][part]['fstype'] = fstype
+					# user declined format / partition type change gets also reverted
+					temp_part['format'] = 0
+					temp_part['flag'] = self.parent.container['disk'][path]['partitions'][part]['flag']
+				self.parent.part_edit_set_settings(path, part, temp_part)
 				return 0
 
 			def ignore_experimental_fstype(self):
@@ -3215,8 +3280,16 @@ class object(content):
 
 						elif self.operation == self.OPERATION_EDIT: # Speichern
 							part = dev[2]
+							old_flags = self.parent.container['disk'][path]['partitions'][part]['flag']
+							old_fstype = self.parent.container['disk'][path]['partitions'][part]['fstype']
+
 							mpoint = self.get_elem('INP_mpoint').result().strip()
 							fstype = self.get_elem('SEL_fstype').result()[0]
+							flags = [self.get_elem('SEL_partflags').result()[0]]
+							format = 0
+							if self.get_elem('CB_format').result():
+								format = 1
+
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
 							EXPERIMENTAL_FSTYPES_MSG = [_('This is a highly experimental filesystem'), _('and should not be used in productive'), _('environments.')]
@@ -3227,37 +3300,29 @@ class object(content):
 								self.sub.draw()
 								return 1
 
-							flag = [self.get_elem('SEL_partflags').result()[0]]
-							if PARTFLAG_BOOT in flag:
-								mpoint = '/boot/efi'
-								fstype = FSTYPE_VFAT
+							# determine new partition settings depending user input
+							temp_part = self.parent.part_edit_determine_settings(path, part, mpoint, fstype, flags, format)
+							temp_part['format'] = format
 
-							if PARTFLAG_LVM in flag:
-								mpoint = ''
-								fstype = FSTYPE_LVMPV
-
-							self.parent.container['temp'] = {'fstype': fstype}
-							if fstype == FSTYPE_SWAP:
-								mpoint = ''
-
-							# sanitize mpoint → add leading '/' if missing
-							if mpoint:
-								mpoint = '/%s' % mpoint.lstrip('/')
-							self.parent.container['disk'][path]['partitions'][part]['mpoint'] = mpoint
-							old_flags = self.parent.container['disk'][path]['partitions'][part]['flag']
-
-							for f in old_flags:
-								if f not in flag and f in VALID_PARTED_FLAGS:
-									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', str(self.parent.container['disk'][path]['partitions'][part]['num']), f, 'off'])
-							for f in flag:
-								if f not in old_flags and f in VALID_PARTED_FLAGS:
-									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', str(self.parent.container['disk'][path]['partitions'][part]['num']), f, 'on'])
+							# save values in temporary object → will be used if format question is shown (see below)
+							self.parent.container['temp'] = temp_part
 
 							rootfs = (mpoint == '/')
-							# if format is not set and mpoint == '/' OR
-							#    format is not set and fstype changed
-							if (self.parent.container['disk'][path]['partitions'][part]['flag'] != flag or
-								self.parent.container['disk'][path]['partitions'][part]['fstype'] != fstype or rootfs) and not self.get_elem('CB_format').result():
+							# if format == 0, check if user shall be asked to format partition:
+							# FROM \ TO | none | swap | lvm | bios_grub | boot |
+							#		\------------------------------------------|
+							#	   none | FSCG |  Y	  |	 Y	|	 N		|  Y   |
+							#	   swap |  Y   |  N	  |	 Y	|	 N		|  Y   |
+							#		lvm |  Y   |  Y	  |	 N	|	 N		|  Y   |
+							# bios_grub |  Y   |  Y	  |	 Y	|	 N		|  Y   |
+							#	   boot |  Y   |  Y	  |	 Y	|	 N		|  N   |
+							#
+							# ==> LVM PV partitions may not be edited at the moment ==> irrelevant
+							# ==> bios_grub partitions to not have to be formatted ==> irrelevant
+							# ==> "FSCG" ==> if filesystem changes on that partition, it has to be formatted or mpoint is '/'
+							#
+							if ((format == 0) and ((old_flags != flags and not PARTFLAG_BIOS_GRUB in flags) or
+												   (PARTFLAG_NONE in flags and (old_fstype != fstype or rootfs)))):
 								if rootfs:
 									msglist = [ _('This partition is designated as root file system,'),
 												_('but "format" is not selected. This can cause'),
@@ -3266,8 +3331,8 @@ class object(content):
 												_('Do you want to format this partition?')
 												]
 								else:
-									msglist = [ _('The selected file system takes no'),
-												_('effect, if "format" is not selected.'),
+									msglist = [ _('The selected file system and partition type'),
+												_('take no effect, if "format" is not selected.'),
 												'',
 												_('Do you want to format this partition?')
 												]
@@ -3279,13 +3344,9 @@ class object(content):
 								self.sub.draw()
 								return 1
 							else:
+								self.parent.part_edit_set_settings(path, part, temp_part)
 								self.parent.container['temp'] = {}
-								if self.get_elem('CB_format').result():
-									self.parent.container['disk'][path]['partitions'][part]['format'] = 1
-								else:
-									self.parent.container['disk'][path]['partitions'][part]['format'] = 0
-								self.parent.container['disk'][path]['partitions'][part]['fstype'] = fstype
-								self.parent.container['disk'][path]['partitions'][part]['flag'] = flag
+
 						self.parent.container['disk'][path] = self.parent.rebuild_table(disk, path)
 
 						self.parent.layout()
