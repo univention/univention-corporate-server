@@ -2727,11 +2727,11 @@ class object(content):
 			if parttype != PARTTYPE_LVM_LV:
 				self.container['disk'][arg_disk] = self.rebuild_table(self.container['disk'][arg_disk],arg_disk)
 
-		def part_create(self,index,mpoint,size,fstype,type,flags,format,label=None,end=0):
+		def part_create(self,index,mpoint,size,fstype,parttype,flags,format,label=None,end=0):
 			result = self.part_objects[index]
-			self.part_create_generic(result[1], result[2], mpoint, size, fstype, type, flags, format, label, end)
+			self.part_create_generic(result[1], result[2], mpoint, size, fstype, parttype, flags, format, label, end)
 
-		def part_create_generic(self, arg_disk, arg_part, mpoint, size, fstype, type, flags, format, label=None, end=0):
+		def part_create_generic(self, arg_disk, arg_part, mpoint, size, fstype, parttype, flags, format, label=None, end=0):
 			"""
 			arg_disk:  defines disk on which a new partition shall be created
 			arg_part:  byte position of free space where the new partition shall be created (has to be megabyte aligned)
@@ -2747,9 +2747,9 @@ class object(content):
 			# TODO FIXME what is "end" used for?
 
 			# consistency checks
-			if type != PARTTYPE_USED:
+			if parttype != PARTTYPE_USED:
 				self.parent.debug('CONSISTENCY CHECK ERROR: requested type is %s but assumed %s' % (type, PARTTYPE_USED))
-			assert(type == PARTTYPE_USED)
+			assert(parttype == PARTTYPE_USED)
 
 			# get start and end point of free space
 			free_part_start = arg_part
@@ -2784,7 +2784,7 @@ class object(content):
 			self.container['disk'][arg_disk]['partitions'][arg_part]['fstype'] = fstype
 			self.container['disk'][arg_disk]['partitions'][arg_part]['flag'] = flags
 			self.container['disk'][arg_disk]['partitions'][arg_part]['format'] = format
-			self.container['disk'][arg_disk]['partitions'][arg_part]['type'] = type
+			self.container['disk'][arg_disk]['partitions'][arg_part]['type'] = parttype
 			self.container['disk'][arg_disk]['partitions'][arg_part]['num'] = calc_next_partition_number(self.container['disk'][arg_disk])
 			self.container['disk'][arg_disk]['partitions'][arg_part]['size'] = size
 			self.container['disk'][arg_disk]['partitions'][arg_part]['end'] = new_part_end
