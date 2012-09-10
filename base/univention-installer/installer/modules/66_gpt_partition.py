@@ -363,10 +363,6 @@ class object(content):
 			self.message='Wrong filesystem type \'%s\' for mountpoint /boot' % boot_fs
 			return False
 
-		if root_fs_type == 'ext4' and boot_fs_type in [ None, 'ext4' ]:
-			self.message='Unbootable config! / on ext4 needs /boot-partition with other than ext4!'
-			return False
-
 		if root_fs_type == 'btrfs' and boot_fs_type in [ None, 'btrfs' ]:
 			self.message='Unbootable config! / on btrfs needs /boot-partition with other than btrfs!'
 			return False
