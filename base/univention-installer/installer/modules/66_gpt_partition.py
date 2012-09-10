@@ -41,26 +41,12 @@
 ########################
 #
 # - this partition module aligns the partitions at SI megabyte boundaries (MiB).
+# - all sizes and start/end points are stored in bytes!
 
-
-#
-# HINT:
-#  - GUI code uses with factor 1024 for KB and MB ==> KiB and MiB
-#  - Profile code uses (mostly) factor 1000 for KB and MB. Some parts (extent calculation for LVM) use factor 1024.
-#  - imported and created profiles use factor 1000 for KB and MB !!!
-# ==> look at MiB2MB and MB2MiB
-
-# TODO FIXME fix LVM display ==> MiB instead of Bytes
-# TODO FIXME fix popup dialogs for displaying MiB but returning bytes
 # TODO FIXME add label to popup dialoges
 # TODO FIXME align MB ranges in grid
 # TODO FIXME count GPT partitions ==> maximum is 127
-# TODO FIXME align free space to megabyte boundaries after loading current partition table
-# TODO FIXME calculate new partition number based on existing partitions (new partitions get first free partition number)
-# TODO FIXME convert MBR to GPT if MBR is present
 # TODO FIXME select old MBR module in GRUB
-# TODO FIXME pprint importieren
-# TODO FIXME fix autopartition
 
 from objects import *
 from local import _
@@ -97,7 +83,7 @@ PARTSIZE_SWAP_MAX = MiB2B(10240)    # limit swap partition to 10 GiB
 PARTSIZE_MINIMUM = MiB2B(8)			# minimum partition size
 
 # ATTENTION: value has to be megabyte aligned!
-# start of first partition ; first 10MiB have to be free to provide enough space for e.g. GRUB
+# start of first partition ; first 16MiB have to be free to provide some spare space
 EARLIEST_START_OF_FIRST_PARTITION = MiB2B(16)
 RESERVED_SPACE_AT_END_OF_DISK = MiB2B(32)
 # reduce size of each PV by at least this amount of megabytes for LVM overhead
