@@ -1343,6 +1343,10 @@ class object(content):
 		#  /dev/sdb4:vg_member50:3907584:-1:8:8:-1:4096:477:477:0:dEMYyK-EdEu-uXvk-OS39-IeBe-whg1-c8fTCF
 
 		for line in content.splitlines():
+			# ignore invalid lines
+			if line.strip().count(':') < 10:
+				continue
+
 			item = line.strip().split(':')
 
 			self.container['lvm']['pv'][ item[0] ] = { 'touched': 0,
@@ -1365,6 +1369,10 @@ class object(content):
 
 		# get available VGs
 		for line in content.splitlines():
+			# ignore invalid lines
+			if line.strip().count(':') < 10:
+				continue
+
 			item = line.strip().split(':')
 			self.container['lvm']['vg'][ item[0] ] = { 'touched': 0,
 													   'PEsize': KiB2B(int(item[12])), # physical extent size is returned in KiB but stored in bytes
@@ -1385,8 +1393,11 @@ class object(content):
 
 		# get available LVs
 		for line in content.splitlines():
-			item = line.strip().split(':')
+			# ignore invalid lines
+			if line.strip().count(':') < 10:
+				continue
 
+			item = line.strip().split(':')
 			vg = item[1]
 			pesize = self.container['lvm']['vg'][ vg ]['PEsize']
 			lvname = item[0].split('/')[-1]
