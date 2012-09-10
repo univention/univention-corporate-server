@@ -2216,7 +2216,7 @@ class object(content):
 			col6=9
 
 			head1=self.get_col(_('Device'),col1,'l')
-			head2=self.get_col(_('Area(MiB)'),col2)
+			head2=self.get_col(_('Region(MiB)'),col2)
 			head3=self.get_col(_('Type'),col3)
 			head4=self.get_col(_('Form.'),col4)
 			head5=self.get_col(_('Mount point'),col5,'l')
@@ -2279,20 +2279,20 @@ class object(content):
 						path = self.get_col(' %s' % self.dev_to_part(part, dev), col1,'l')
 						start = int(B2MiB(part_list[i]))
 						end = int(B2MiB(part['end']))
-						area = self.get_col('%d-%d' % (start, end), col2)
+						region = self.get_col('%d-%d' % (start, end), col2)
 					elif part['type'] == PARTTYPE_FREE: # FREE SPACE
-						area=self.get_col('', col2)
-						mount=self.get_col('', col5, 'l')
+						region = self.get_col('', col2)
+						mount = self.get_col('', col5, 'l')
 						path = self.get_col(' ---', col1, 'l')
 						type = self.get_col(_('free'), col3)
 					else:
-						area=self.get_col('', col2)
+						region=self.get_col('', col2)
 						type=self.get_col(_('unknown'), col3)
 						path=self.get_col('---', col1)
 
 					self.part_objects[ len(dict) ] = [ 'part', dev, part_list[i], i ]
-					dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
-					self.parent.debug('==> DEV = %s   PART(%s) = %s' % (dev,part_list[i],pretty_format(part)))
+					dict.append('%s %s %s %s %s %s' % (path, region, type, format, mount, size))
+					self.parent.debug('==> DEV = %s   PART(%s) = %s' % (dev, part_list[i], pretty_format(part)))
 
 			# display LVM items if enabled
 			if self.container['lvm']['enabled'] and self.container['lvm'].has_key('vg'):
@@ -2324,10 +2324,10 @@ class object(content):
 							if lv['fstype'] == FSTYPE_SWAP:
 								type = self.get_col('swap',col3)
 							mount = self.get_col(lv['mpoint'],col5,'l')
-							area = self.get_col('',col2)
+							region = self.get_col('',col2)
 
 							self.part_objects[ len(dict) ] = [ 'lvm_lv', vgname, lvname ]
-							dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
+							dict.append('%s %s %s %s %s %s' % (path, region, type, format, mount, size))
 
 						# show free space in volume group  ( don't show less than 3 physical extents )
 						if vg['freePE'] > 2:
@@ -2337,11 +2337,11 @@ class object(content):
 							size = self.get_col('%d' % B2MiB(vgfree), col6)
 							type = self.get_col('free', col3)
 							mount = self.get_col('', col5, 'l')
-							area = self.get_col('', col2)
+							region = self.get_col('', col2)
 							self.parent.debug('==> FREE %f MiB' % B2MiB(vgfree))
 
 							self.part_objects[ len(dict) ] = [ 'lvm_vg_free', vgname, None ]
-							dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
+							dict.append('%s %s %s %s %s %s' % (path, region, type, format, mount, size))
 
 			self.container['dict']=dict
 
@@ -3675,9 +3675,9 @@ class object(content):
 					self.add_elem('SEL_fstype', select(dict, self.pos_y+9, self.pos_x+4, 15, 6, filesystem_num)) #4
 
 					if lv['format']:
-						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+12, self.pos_x+33, 14, 1, [0])) #7
+						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+14, self.pos_x+33, 14, 1, [0])) #7
 					else:
-						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+12, self.pos_x+33, 14, 1, [])) #7
+						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+14, self.pos_x+33, 14, 1, [])) #7
 
 					self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+17, self.pos_x+(self.width)-4, align="right")) #8
 					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+17, self.pos_x+4, align='left')) #9
