@@ -1268,6 +1268,27 @@ class object(content):
 
 		return (stdout, stderr)
 
+	def detect_filesystem(self, device):
+		data = self.run_cmd(['/bin/file', '-Ls', device])[0]
+		fstype=''
+		if 'SGI XFS filesystem data' in data:
+			fstype = 'xfs'
+		elif 'ext2 filesystem data' in data:
+			fstype = 'ext2'
+		elif 'ext3 filesystem data' in data:
+			fstype = 'ext3'
+		elif 'ext4 filesystem data' in data:
+			fstype = 'ext4'
+		elif 'swap file' in data and 'Linux' in data:
+			fstype = FSTYPE_SWAP
+		elif 'BTRFS Filesystem' in data:
+			fstype = 'btrfs'
+		elif 'FAT (16 bit)' in data:
+			fstype = 'fat16'
+		elif 'FAT (32 bit)' in data:
+			fstype = 'fat32'
+		return fstype
+
 	def read_lvm_pv(self):
 		self.debug('read_lvm_pv()')
 		content = self.run_cmd(['/sbin/pvdisplay', '-c'])[0]
@@ -1333,24 +1354,8 @@ class object(content):
 			pesize = self.container['lvm']['vg'][ vg ]['PEsize']
 			lvname = item[0].split('/')[-1]
 
-			data = self.run_cmd(['/bin/file', '-Ls', item[0]])[0]
-			fstype=''
-			if 'SGI XFS filesystem data' in data:
-				fstype = 'xfs'
-			elif 'ext2 filesystem data' in data:
-				fstype = 'ext2'
-			elif 'ext3 filesystem data' in data:
-				fstype = 'ext3'
-			elif 'ext4 filesystem data' in data:
-				fstype = 'ext4'
-			elif 'swap file' in data and 'Linux' in data:
-				fstype = FSTYPE_SWAP
-			elif 'BTRFS Filesystem' in data:
-				fstype = 'btrfs'
-			elif 'FAT (16 bit)' in data:
-				fstype = 'fat16'
-			elif 'FAT (32 bit)' in data:
-				fstype = 'fat32'
+			# determine filesystem on device item[0]
+			fstype = self.detect_filesystem(item[0])
 
 			self.container['lvm']['vg'][ item[1] ]['lv'][ lvname ] = {  'dev': item[0],
 																		'vg': item[1],
