@@ -3130,10 +3130,10 @@ class object(content):
 
 							for f in old_flags:
 								if f not in flag:
-									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', self.parent.container['disk'][path]['partitions'][part]['num'], f, 'off'])
+									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', str(self.parent.container['disk'][path]['partitions'][part]['num']), f, 'off'])
 							for f in flag:
 								if f not in old_flags:
-									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', self.parent.container['disk'][path]['partitions'][part]['num'], f, 'on'])
+									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', str(self.parent.container['disk'][path]['partitions'][part]['num']), f, 'on'])
 
 							self.parent.container['disk'][path]['partitions'][part]['flag'] = flag
 
