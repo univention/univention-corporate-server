@@ -164,6 +164,7 @@ def calc_next_partition_number(disk):
 	for i in xrange(1, PARTNUMBER_MAXIMUM):
 		if i not in known_numbers:
 			return i
+	raise Exception('too many partitions')
 
 def get_sanitized_label(label, flags, mpoint, fstype):
 	if not label:
