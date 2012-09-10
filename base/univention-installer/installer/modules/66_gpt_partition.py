@@ -1547,11 +1547,6 @@ class object(content):
 
 			first_line=p.readline().strip()
 			self.debug('first line: [%s]' % first_line)
-			if not first_line == 'BYT;':
-				self.debug('First line of parted output does not start with "BYT;"!')
-				self.debug('Remove device: %s' % dev)
-				devices_remove[dev] = 1
-				continue
 			if _re_warning.match(first_line):
 				self.debug('Firstline starts with warning')
 				self.debug('Remove device: %s' % dev)
@@ -1562,6 +1557,11 @@ class object(content):
 				self.debug('Device %s contains unknown disk label' % dev)
 				self.debug('Removing device %s' % dev)
 				diskProblemList[dev] = diskProblemList.get(dev, set()) | set([DISKLABEL_UNKNOWN]) # add new problem to list
+				devices_remove[dev] = 1
+				continue
+			elif not first_line == 'BYT;':
+				self.debug('First line of parted output does not start with "BYT;"!')
+				self.debug('Remove device: %s' % dev)
 				devices_remove[dev] = 1
 				continue
 

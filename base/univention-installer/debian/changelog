@@ -1,6 +1,12 @@
+univention-installer (8.0.7-1) unstable; urgency=low
+
+  * fixed detection of missing MBR/GPT (Bug #23990)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 10 Sep 2012 20:42:56 +0200
+
 univention-installer (8.0.6-1) unstable; urgency=low
 
-  * added new GPT partition module
+  * added new GPT partition module (Bug #23990)
   * added entry in GRUB for activating deprecated MBR module (Bug #25065)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 10 Sep 2012 12:43:27 +0200
