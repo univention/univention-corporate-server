@@ -2612,9 +2612,6 @@ class object(content):
 		def pv_delete(self, parttype, disk, part, force=False):
 			# returns False if pv has been deleted
 			# return True if pv cannot be deleted
-			forceflag=''
-			if force:
-				forceflag='-ff'
 
 			if 'lvm' in parttype:
 				return False
@@ -2679,7 +2676,10 @@ class object(content):
 							pv['vg'] = ''
 
 						# removing LVM PV signature from partition
-						self.container['history'].append(['/sbin/pvremove', forceflag, device])
+						cmd = ['/sbin/pvremove', device]
+						if force:
+							cmd = ['/sbin/pvremove', '-ff', device]
+						self.container['history'].append(cmd)
 
 			return False
 
