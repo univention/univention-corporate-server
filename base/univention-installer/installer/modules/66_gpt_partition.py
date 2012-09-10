@@ -2976,6 +2976,7 @@ class object(content):
 		class edit(subwin):
 			def __init__(self,parent,pos_x,pos_y,width,heigth):
 				self.close_on_subwin_exit = False
+				self.title = 'unknown'
 				subwin.__init__(self,parent,pos_x,pos_y,width,heigth)
 
 			def helptext(self):
@@ -3011,6 +3012,14 @@ class object(content):
 			def ignore_experimental_fstype(self):
 				self.expFStype = True
 				return 0
+
+			def set_title(self, title):
+				""" set new title/header for subwin """
+				self.title = title
+				self.update_header()
+
+			def modheader(self):
+				return self.title
 
 			def input(self, key):
 				dev = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
@@ -3232,35 +3241,17 @@ class object(content):
 				disk = self.parent.container['disk'][path]
 				self.operation=''
 
-				if parttype is 'disk': # got a diskdrive
-					self.operation='diskinfo'
-					self.add_elem('TXT_1', textline(_('Physical Diskdrive'), self.pos_y+2, self.pos_x+2)) #0
-					self.add_elem('TXT_2', textline(_('Device: %s') % path, self.pos_y+4, self.pos_x+2))  #1
-					self.add_elem('TXT_3', textline(_('Size: %d MiB') % B2MiB(disk['size']), self.pos_y+6, self.pos_x+2)) #2
-					self.add_elem('D1', dummy()) #3
-					self.add_elem('D1a', dummy()) #4
-					self.add_elem('D1b', dummy()) #5
-					self.add_elem('D2', dummy())#6
-					self.add_elem('D3', dummy())#7
-					self.add_elem('D4', dummy())#8
-					self.add_elem('D5', dummy())#9
-					self.add_elem('BT_next', button(_("Next"), self.pos_y+17, self.pos_x+20, 15)) #10
-					self.add_elem('D6', dummy())#11
-					self.current = self.get_elem_id('BT_next')
-					self.get_elem_by_id(self.current).set_on()
-
-				elif parttype is 'part':
+				if parttype is 'part':
 					start = dev[2]
 					partition = disk['partitions'][start]
 					if partition['type'] is PARTTYPE_FREE: # got freespace
 						self.operation = 'create'
-						self.add_elem('TXT_1', textline(_('New Partition:'), self.pos_y+2, self.pos_x+5)) #0
-
+						self.set_title(_('Create new partition'))
+						self.add_elem('TXT_3', textline(_('Size (MiB):'), self.pos_y+2, self.pos_x+5)) #3
+						self.add_elem('INP_size', input(str(int(B2MiB(partition['size']))), self.pos_y+2, self.pos_x+6+len(_('Mount point:')), 12)) #4
 						self.add_elem('TXT_2', textline(_('Mount point:'), self.pos_y+4, self.pos_x+5)) #1
-						self.add_elem('INP_mpoint', input(partition['mpoint'], self.pos_y+4, self.pos_x+6+len(_('Mount point:')), 20)) #2
-						self.add_elem('TXT_3', textline(_('Size (MiB):'), self.pos_y+6, self.pos_x+5)) #3
-						self.add_elem('INP_size', input(str(int(B2MiB(partition['size']))), self.pos_y+6, self.pos_x+6+len(_('Mount point:')), 20)) #4
-						self.add_elem('TXT_4', textline(_('File system'), self.pos_y+8, self.pos_x+5)) #5
+						self.add_elem('INP_mpoint', input(partition['mpoint'], self.pos_y+4, self.pos_x+6+len(_('Mount point:')), 35)) #2
+						self.add_elem('TXT_4', textline(_('File system:'), self.pos_y+6, self.pos_x+5)) #5
 
 						try:
 							file = open('modules/filesystem')
@@ -3275,26 +3266,26 @@ class object(content):
 								entry = fs[1][:-1]
 								dict[entry] = [entry,line]
 						file.close()
-						self.add_elem('SEL_fstype', select(dict, self.pos_y+9, self.pos_x+4, 15, 6)) #6
+						self.add_elem('SEL_fstype', select(dict, self.pos_y+7, self.pos_x+4, 15, 8)) #6
 						self.get_elem('SEL_fstype').set_off()
-						self.add_elem('CB_bootable', checkbox({_('bootable'):'1'}, self.pos_y+12, self.pos_x+33, 11, 1, [])) #8
-						if self.operation == 'create':
-							self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+14, self.pos_x+33, 14, 1, [0])) #10
-						else:
-							self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+14, self.pos_x+33, 14, 1, [])) #10
+						self.add_elem('CB_bootable', checkbox({_('bootable'):'1'}, self.pos_y+8, self.pos_x+33, 11, 1, [])) #8
+						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+10, self.pos_x+33, 14, 1, [0])) #10
 						if self.parent.container['lvm']['enabled']:
-							self.add_elem('CB_lvmpv', checkbox({_('LVM PV'):'1'}, self.pos_y+15, self.pos_x+33, 14, 1, [])) #13
+							self.add_elem('CB_lvmpv', checkbox({_('LVM PV'):'1'}, self.pos_y+12, self.pos_x+33, 14, 1, [])) #13
 						self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+17, self.pos_x+(self.width)-4, align="right")) #11
 						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+17, self.pos_x+4, align="left")) #12
 
-						self.current = self.get_elem_id('INP_mpoint')
-						self.get_elem('INP_mpoint').set_on()
+						self.current = self.get_elem_id('INP_size')
+						self.get_elem_by_id(self.current).set_on()
 					else:  #got a valid partition
 						self.operation = 'edit'
-						self.add_elem('TXT_1', textline(_('Partition: %s') % self.parent.dev_to_part(partition, path, type="full"), self.pos_y+2, self.pos_x+5)) #0
-						self.add_elem('TXT_3', textline(_('Size: %d MiB') % B2MiB(partition['size']), self.pos_y+4, self.pos_x+33)) #2
-						self.add_elem('TXT_4', textline(_('File system'), self.pos_y+7, self.pos_x+5)) #3
+						self.set_title(_('Edit partition'))
 
+						self.add_elem('TXT_1', textline(_('Partition: %s') % self.parent.dev_to_part(partition, path, type="full"), self.pos_y+2, self.pos_x+5)) #0
+						self.add_elem('TXT_3', textline(_('Size: %d MiB') % B2MiB(partition['size']), self.pos_y+4, self.pos_x+5)) #2
+						self.add_elem('TXT_5', textline(_('Mount point:'), self.pos_y+6, self.pos_x+5)) #5
+						self.add_elem('INP_mpoint', input(partition['mpoint'], self.pos_y+6, self.pos_x+6+len(_('Mount point:')), 35)) #2
+						self.add_elem('TXT_4', textline(_('File system:'), self.pos_y+8, self.pos_x+5)) #3
 						try:
 							file=open('modules/filesystem')
 						except:
@@ -3310,9 +3301,7 @@ class object(content):
 								if entry == partition['fstype']:
 									filesystem_num = line
 						file.close()
-						self.add_elem('SEL_fstype', select(dict, self.pos_y+8, self.pos_x+4, 15, 6, filesystem_num)) #4
-						self.add_elem('TXT_5', textline(_('Mount point'), self.pos_y+7, self.pos_x+33)) #5
-						self.add_elem('INP_mpoint', input(partition['mpoint'], self.pos_y+8, self.pos_x+33, 20)) #6
+						self.add_elem('SEL_fstype', select(dict, self.pos_y+9, self.pos_x+4, 15, 6, filesystem_num)) #4
 						if 'boot' in partition['flag']:
 							self.add_elem('CB_bootable', checkbox({_('bootable'):'1'}, self.pos_y+10, self.pos_x+33, 11, 1, [0])) #7
 						else:
@@ -3324,12 +3313,17 @@ class object(content):
 
 						self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+17, self.pos_x+(self.width)-4, align="right")) #11
 						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+17, self.pos_x+4, align='left')) #12
+						self.current = self.get_elem_id('INP_mpoint')
+						self.get_elem_by_id(self.current).set_on()
 						if filesystem_num == 3:
 							self.get_elem('INP_mpoint').disable()
+							self.current = self.get_elem_id('SEL_fstype')
+							self.get_elem_by_id(self.current).set_on()
 
 		class edit_lvm_lv(subwin):
 			def __init__(self,parent,pos_x,pos_y,width,heigth):
 				self.close_on_subwin_exit = False
+				self.title = 'unknown'
 				subwin.__init__(self,parent,pos_x,pos_y,width,heigth)
 
 			def helptext(self):
@@ -3345,6 +3339,14 @@ class object(content):
 
 			def ignore_experimental_fstype(self):
 				self.expFStype = True
+
+			def set_title(self, title):
+				""" set new title/header for subwin """
+				self.title = title
+				self.update_header()
+
+			def modheader(self):
+				return self.title
 
 			def input(self, key):
 				parttype, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
@@ -3542,13 +3544,14 @@ class object(content):
 							break
 
 					self.operation = 'create'
-					self.add_elem('TXT_0', textline(_('New logical volume:'), self.pos_y+2, self.pos_x+5)) #0
-					self.add_elem('INP_name', input(lvname_proposal, self.pos_y+2, self.pos_x+5+len(_('New logical volume:'))+1, 20)) #2
-					self.add_elem('TXT_1', textline(_('Mount point:'), self.pos_y+4, self.pos_x+5)) #1
-					self.add_elem('INP_mpoint', input('', self.pos_y+4, self.pos_x+5+len(_('Mount point:'))+1,20)) #2
-					self.add_elem('TXT_3', textline(_('Size (MB):'), self.pos_y+6, self.pos_x+5)) #3
-					self.add_elem('INP_size', input(str(int(B2MiB(maxsize))), self.pos_y+6, self.pos_x+5+len(_('Mount point:'))+1, 20)) #4
-					self.add_elem('TXT_5', textline(_('File system'), self.pos_y+8, self.pos_x+5)) #5
+					self.set_title(_('Create new LVM logical volume'))
+					self.add_elem('TXT_0', textline(_('Volume name:'), self.pos_y+2, self.pos_x+5)) #0
+					self.add_elem('INP_name', input(lvname_proposal, self.pos_y+2, self.pos_x+5+len(_('Volume name:'))+1, 20)) #2
+					self.add_elem('TXT_3', textline(_('Size (MiB):'), self.pos_y+4, self.pos_x+5)) #3
+					self.add_elem('INP_size', input(str(int(B2MiB(maxsize))), self.pos_y+4, self.pos_x+5+len(_('Mount point:'))+1, 12)) #4
+					self.add_elem('TXT_1', textline(_('Mount point:'), self.pos_y+6, self.pos_x+5)) #1
+					self.add_elem('INP_mpoint', input('', self.pos_y+6, self.pos_x+5+len(_('Mount point:'))+1,35)) #2
+					self.add_elem('TXT_5', textline(_('File system:'), self.pos_y+8, self.pos_x+5)) #5
 
 					try:
 						file=open('modules/filesystem')
@@ -3574,14 +3577,17 @@ class object(content):
 					self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+17, self.pos_x+(self.width)-4, align="right")) #8
 					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+17, self.pos_x+4, align="left")) #9
 
-					self.current=self.get_elem_id('INP_name')
+					self.current = self.get_elem_id('INP_name')
 					self.get_elem_by_id(self.current).set_on()
 				elif parttype is 'lvm_lv':  # EXISTING LOGICAL VOLUME
 					lv = self.parent.container['lvm']['vg'][ vgname ]['lv'][ lvname ]
 					self.operation = 'edit'
-					self.add_elem('TXT_0', textline(_('LVM Logical Volume: %s') % lvname, self.pos_y+2, self.pos_x+5))#0
-					self.add_elem('TXT_2', textline(_('Size: %d MB') % B2MiB(lv['size']), self.pos_y+4, self.pos_x+5))#2
-					self.add_elem('TXT_3', textline(_('File system'), self.pos_y+7, self.pos_x+5)) #3
+					self.set_title(_('Edit LVM logical volume'))
+					self.add_elem('TXT_0', textline(_('Volume name: %s') % lvname, self.pos_y+2, self.pos_x+5))
+					self.add_elem('TXT_2', textline(_('Size: %d MiB') % B2MiB(lv['size']), self.pos_y+4, self.pos_x+5))
+					self.add_elem('TXT_5', textline(_('Mount point:'), self.pos_y+6, self.pos_x+5))
+					self.add_elem('INP_mpoint', input(lv['mpoint'], self.pos_y+6, self.pos_x+6+len(_('Mount point:')), 35))
+					self.add_elem('TXT_3', textline(_('File system:'), self.pos_y+8, self.pos_x+5))
 
 					try:
 						file=open('modules/filesystem')
@@ -3601,9 +3607,7 @@ class object(content):
 									filesystem_num = i
 								i += 1
 					file.close()
-					self.add_elem('SEL_fstype', select(dict, self.pos_y+8, self.pos_x+4, 15, 6, filesystem_num)) #4
-					self.add_elem('TXT_5', textline(_('Mount point'), self.pos_y+7, self.pos_x+33)) #5
-					self.add_elem('INP_mpoint', input(lv['mpoint'], self.pos_y+8, self.pos_x+33, 20)) #6
+					self.add_elem('SEL_fstype', select(dict, self.pos_y+9, self.pos_x+4, 15, 6, filesystem_num)) #4
 
 					if lv['format']:
 						self.add_elem('CB_format', checkbox({_('format'):'1'}, self.pos_y+12, self.pos_x+33, 14, 1, [0])) #7
@@ -3612,6 +3616,8 @@ class object(content):
 
 					self.add_elem('BT_save', button("F12-"+_("Save"), self.pos_y+17, self.pos_x+(self.width)-4, align="right")) #8
 					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"), self.pos_y+17, self.pos_x+4, align='left')) #9
+					self.current = self.get_elem_id('INP_mpoint')
+					self.get_elem_by_id(self.current).set_on()
 
 		class ask_lvm_vg(subwin):
 			def input(self, key):
