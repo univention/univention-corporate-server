@@ -1538,6 +1538,7 @@ class object(content):
 				if dev_match:
 					devices.append('/dev/%s' % dev_match.group())
 					self.debug('Extracting /dev/%s ' % cols[3])
+		fd.close()
 
 		uniqlist = []
 		for dev in devices:
