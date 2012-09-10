@@ -2700,7 +2700,13 @@ class object(content):
 
 			if not label:
 				label = ''
-				if mpoint:
+				if 'lvm' in flags:
+					label = 'LVMPV'
+				elif 'boot' in flags:
+					label = 'EFI System'
+				elif 'bios_grub' in flags:
+					label = 'BIOS Boot Partition'
+				elif mpoint:
 					for c in mpoint.lower():
 						if c in 'abcdefghijklmnopqrstuvwxyz0123456789-_/':
 							label += c
@@ -2708,8 +2714,8 @@ class object(content):
 							label += '_'
 				elif fstype:
 					label = fstype
-				elif 'lvm' in flags:
-					label = 'LVMPV'
+				else:
+					label = 'unknown'
 			# truncate label to 36 characters (all non ascii characters are filtered out above)
 			label = label[0:36]
 
