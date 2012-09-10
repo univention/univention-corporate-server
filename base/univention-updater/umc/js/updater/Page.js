@@ -38,10 +38,9 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/aspect",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin"
-], function(declare, lang, array, aspect, Page, StandbyMixin) {
+], function(declare, lang, array, Page, StandbyMixin) {
 	return declare("umc.modules.updater.Page", [ Page, StandbyMixin ] , {
 		buildRendering: function() {
 
@@ -76,20 +75,16 @@ define([
 			// Establish generic listeners for all of our direct children.
 			var children = this.getChildren();
 			array.forEach(children, lang.hitch(this, function(child) {
-				this.own(aspect.after(child, '_query_error', lang.hitch(this, function(subject, data) {
-					this._query_error(subject, data);
-				})));
-				this.own(aspect.after(child, '_query_success', lang.hitch(this, function(subject) {
-					this._query_success(subject);
-				})));
+				child.on('queryerror', lang.hitch(this, 'onQueryError'));
+				child.on('querysuccess', lang.hitch(this, 'onQuerySuccess'));
 			}));
 		},
 
 		// Two callbacks that are used by queries that want to propagate
 		// their outcome to the main error handlers
-		_query_error: function(subject, data) {
+		onQueryError: function(subject, data) {
 		},
-		_query_success: function(subject) {
+		onQuerySuccess: function(subject) {
 		}
 	});
 

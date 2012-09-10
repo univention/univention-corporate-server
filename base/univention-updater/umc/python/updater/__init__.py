@@ -541,7 +541,8 @@ class Instance(umcm.Base):
 				# Convert the object into a string. This is necessary because such a dict
 				# can not be transferred through a hidden value in java script
 				if res:
-					result['components_errata'] = str(res)
+					# use " instead of ' because of json
+					result['components_errata'] = str(res).replace('\'', '"')
 					MODULE.info('components_errata: %s' % result['components_errata'])
 
 

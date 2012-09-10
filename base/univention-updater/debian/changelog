@@ -1,3 +1,9 @@
+univention-updater (8.0.9-1) unstable; urgency=low
+
+  * Ported JS-part to Dojo 1.8 (Bug #26857)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 Sep 2012 15:40:55 +0200
+
 univention-updater (8.0.8-1) unstable; urgency=low
 
   * Ported JS-part to Dojo 1.8 ctd (Bug #26857)

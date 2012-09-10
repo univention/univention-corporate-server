@@ -37,12 +37,11 @@
 //		is accomplished with a _LogView class that inherits from umc.widgets.Text
 //		and umc.modules._updater._PollingMixin.
 //	(3)	no matter how the page is closed: the main Module is listening to our
-//		stopWatching method to know when our current page can be closed.
+//		onStopWatching method to know when our current page can be closed.
 //
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/aspect",
 	"dojo/dom-class",
 	"umc/dialog",
 	"umc/tools",
@@ -53,7 +52,7 @@ define([
 	"umc/widgets/ExpandingTitlePane",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, aspect, domClass, dialog, tools, Page, _LogViewer, Button, Text, ExpandingTitlePane, libServer, _) {
+], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, Text, ExpandingTitlePane, libServer, _) {
 	return declare("umc.modules.updater.ProgressPage", Page, {
 
 		// Polling interval for eventually running Updater jobs. If this is
@@ -96,12 +95,8 @@ define([
 			});
 			this._pane.addChild(this._log);
 
-			this.own(aspect.after(this._log, '_query_error', lang.hitch(this, function(subject, data) {
-				this._query_error(subject, data);
-			})));
-			this.own(aspect.after(this._log, '_query_success', lang.hitch(this, function(subject) {
-				this._query_success(subject);
-			})));
+			this._log.on('queryerror', lang.hitch(this, 'onQueryError'));
+			this._log.on('querysuccess', lang.hitch(this, 'onQuerySuccess'));
 
 			// returns to the calling page
 			this._close = new Button({
@@ -126,7 +121,7 @@ define([
 							tab = this.last_tab;
 							this.last_tab = null;
 						}
-						this.stopWatching(tab);		// updater Module listens here and will switch display back to the given tab.
+						this.onStopWatching(tab);		// updater Module listens here and will switch display back to the given tab.
 					});
 
 					if (this._reboot_required) {
@@ -189,7 +184,7 @@ define([
 						// know which tab we shall return to on close.
 						if (! this.last_tab)
 						{
-							this.jobStarted();
+							this.onJobStarted();
 						}
 						else
 						{
@@ -274,11 +269,11 @@ define([
 				tools.umcpCommand(
 					'updater/installer/running', {}, false).then(
 					lang.hitch(this, function(data) {
-						this._query_success('updater/installer/running');
+						this.onQuerySuccess('updater/installer/running');
 						this._process_job_status(data);
 					}),
 					lang.hitch(this, function(data) {
-						this._query_error('updater/installer/running', data);		// handles error
+						this.onQueryError('updater/installer/running', data);		// handles error
 						this._process_job_status(null);							// only for rescheduling
 					})
 				);
@@ -287,11 +282,11 @@ define([
 			{
 				tools.umcpCommand('updater/installer/status', {job:this._job_key}, false).then(
 						lang.hitch(this, function(data) {
-							this._query_success("updater/installer/status(" + this._job_key + ")");
+							this.onQuerySuccess("updater/installer/status(" + this._job_key + ")");
 							this._process_job_status(data);
 						}),
 						lang.hitch(this, function(data) {
-							this._query_error('updater/installer/status', data);		// handles error
+							this.onQueryError('updater/installer/status', data);		// handles error
 							this._process_job_status(null);							// only for rescheduling
 						})
 					);
@@ -310,7 +305,7 @@ define([
 				{
 					// First thing to do: notify the Module that the job is finished. So it can already
 					// refresh the 'Updates' and 'Components' pages before the user gets back there.
-					this.jobFinished();
+					this.onJobFinished();
 
 					// FIXME Manually making empty lines before and after this text; should better be done
 					//		by a style or a style class.
@@ -334,7 +329,7 @@ define([
 					}
 					this._switch_headings(status);
 					this._log.scrollToBottom();		// jump to bottom a very last time
-					this._log.stopWatching();		// now log is freely scrollable manually
+					this._log.onStopWatching();		// now log is freely scrollable manually
 
 					this._last_job = null;	// can be deleted, but this._job_key should be retained!
 				}
@@ -349,13 +344,13 @@ define([
 		// This function will be called when the (background) ProgressPage encounters
 		// that a job has been started. The updater Module listens here and will then
 		// call startWatching with the currently opened tab.
-		jobStarted: function() {
+		onJobStarted: function() {
 		},
 
 		// This function will be called when the already opened ProgressPage encounters
 		// the end of the current job. The updater Module listens here and will refresh
 		// the 'Updates' and 'Components' pages.
-		jobFinished: function() {
+		onJobFinished: function() {
 		},
 
 		// updater Module calls this when the ProgressPage is to be opened.
@@ -373,10 +368,10 @@ define([
 		// and reopen the named tab.
 		//
 		// This is a good place to reset the log viewer contents too.
-		stopWatching: function() {
+		onStopWatching: function(tab) {
 			this._job_key = '';
 			this._last_job = null;
-			this._log.stopWatching(true);
+			this._log.onStopWatching(true);
 		},
 
 		// lets the timer loop stop when the module is closed.

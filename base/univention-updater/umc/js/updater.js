@@ -32,7 +32,6 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/aspect",
 	"dijit/Dialog",
 	"umc/dialog",
 	"umc/widgets/ConfirmDialog",
@@ -40,7 +39,7 @@ define([
 	"umc/modules/updater/UpdatesPage",
 	"umc/modules/updater/ProgressPage",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, aspect, Dialog, dialog, ConfirmDialog, TabbedModule, UpdatesPage, ProgressPage, _) {
+], function(declare, lang, array, Dialog, dialog, ConfirmDialog, TabbedModule, UpdatesPage, ProgressPage, _) {
 	return declare("umc.modules.updater", TabbedModule, {
 
 		// some variables related to error handling
@@ -66,7 +65,7 @@ define([
 			//		Connections that make the UI work (mostly tab switching)
 			//
 
-			this.own(aspect.after(this._progress, 'stopWatching', lang.hitch(this, function(tab) {
+			this._progress.on('stopwatching', lang.hitch(this, function(tab) {
 				this.hideChild(this._progress);
 				this.showChild(this._updates);
 
@@ -77,19 +76,19 @@ define([
 					tab = this._updates;
 				}
 				this.selectChild(tab);
-			})));
+			}));
 
 			// waits for the Progress Page to notify us that a job is finished. This
 			// should immediately refresh the 'Updates' and 'Components' pages.
 			// XXX can remain this way
-			this.own(aspect.after(this._progress, 'jobFinished', lang.hitch(this, function() {
+			this._progress.on('jobfinished', lang.hitch(this, function() {
 				this._updates.refreshPage(true);
-			})));
+			}));
 
 			// waits for the Progress Page to notify us that a job is running
-			this.own(aspect.after(this._progress, 'jobStarted', lang.hitch(this, function() {
+			this._progress.on('jobstarted', lang.hitch(this, function() {
 				this._switch_to_progress_page();
-			})));
+			}));
 
 			// --------------------------------------------------------------------------
 			//
@@ -112,13 +111,13 @@ define([
 
 			var children = this.getChildren();
 			array.forEach(children, lang.hitch(this, function(child) {
-				this.own(aspect.after(child, '_query_error', lang.hitch(this, function(subject, data) {
-					this._query_error(subject, data);
-				})));
+				child.on('queryerror', lang.hitch(this, function(subject, data) {
+					this.handleQueryError(subject, data);
+				}));
 
-				this.own(aspect.after(child, '_query_success', lang.hitch(this, function(subject, data) {
-					this._query_success(subject, data);
-				})));
+				child.on('querysuccess', lang.hitch(this, function(subject, data) {
+					this.handleQuerySuccess(subject, data);
+				}));
 			}));
 
 			// --------------------------------------------------------------------------
@@ -128,39 +127,39 @@ define([
 			//
 
 			// invokes the installer from the 'release update' button (Updates Page)
-			this.own(aspect.after(this._updates, 'runReleaseUpdate', lang.hitch(this, function(release) {
+			this._updates.on('runreleaseupdate', lang.hitch(this, function(release) {
 				this._call_installer({
 					job:		'release',
 					detail:		release,
 					confirm:	lang.replace(_("Do you really want to install release updates up to version {release}?"), {release: release})
 				});
-			})));
+			}));
 
 			// invokes the installer from the 'errata update' button (Updates Page)
-			this.own(aspect.after(this._updates, 'runErrataUpdate', lang.hitch(this, function() {
+			this._updates.on('runerrataupdate', lang.hitch(this, function() {
 				this._call_installer({
 					job:		'errata',
 					confirm:	_("Do you really want to install all available errata updates?")
 				});
-			})));
+			}));
 
 			// invokes the installer from the 'component update' button (Updates Page)
-			this.own(aspect.after(this._updates, 'runDistUpgrade', lang.hitch(this, function() {
+			this._updates.on('rundistupgrade', lang.hitch(this, function() {
 				this._confirm_distupgrade();
-			})));
+			}));
 
 			// invokes the installer in easy mode
-			this.own(aspect.after(this._updates, 'runEasyUpgrade', lang.hitch(this, function() {
+			this._updates.on('runeasyupgrade', lang.hitch(this, function() {
 				this._call_installer({
 					job:		'easyupgrade',
 					confirm:	_("Do you really want to upgrade your system?")
 				});
-			})));
+			}));
 
 			// propagate the status information to other pages
-			this.own(aspect.after(this._updates, 'statusloaded', lang.hitch(this, function(vals) {
+			this._updates.on('statusloaded', lang.hitch(this, function(vals) {
 				this._progress.updateStatus(vals);
-			})));
+			}));
 		},
 
 		// We defer these actions until the UI is readily rendered
@@ -383,7 +382,7 @@ define([
 
 		// We must establish a NO ERROR callback too, so we can reset
 		// the error status
-		_query_success: function(subject) {
+		handleQuerySuccess: function(subject) {
 
 			//console.error("QUERY '" + subject + "' -> SUCCESS");
 			if (this._connection_status !== 0)
@@ -416,7 +415,7 @@ define([
 		// queries are done with 'handleErrors=false', and their corresponding
 		// Error callback hands everything over to this function. So it could
 		// theoretically even survive a reboot...
-		_query_error: function(subject, data) {
+		handleQueryError: function(subject, data) {
 
 			try
 			{

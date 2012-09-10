@@ -133,7 +133,7 @@ define([
 						// TODO check updater/installer/running, don't do anything if something IS running
 						try
 						{
-							this._query_success('updater/updates/query');
+							this.onQuerySuccess('updater/updates/query');
 							var element_releases = this._form.getWidget('releases');
 							var to_show = false;
 							var to_show_msg = true;
@@ -284,7 +284,7 @@ define([
 						var element = this._form.getWidget('releases');
 						var release = element.get('value');
 						// TODO check updater/installer/running, don't do action if a job is running
-						this.runReleaseUpdate(release);
+						this.onRunReleaseUpdate(release);
 					}),
 					visible:	false
 				},
@@ -293,7 +293,7 @@ define([
 					label:		_('Install errata update'),
 					callback:	lang.hitch(this, function() {
 						// TODO check updater/installer/running, don't do action if a job is running
-						this.runErrataUpdate();
+						this.onRunErrataUpdate();
 					}),
 					visible:	false
 				},
@@ -324,7 +324,7 @@ define([
 					label:		_("Start Upgrade"), 		// FIXME Label not correct
 					callback:	lang.hitch(this, function() {
 						// TODO check updater/installer/running, don't do action if a job is running
-						this.runEasyUpgrade();
+						this.onRunEasyUpgrade();
 					})
 				}
 			];
@@ -414,7 +414,7 @@ define([
 			this._form.on('loaded', lang.hitch(this, function() {
 				try
 				{
-					this._query_success('updater/updates/get');
+					this.onQuerySuccess('updater/updates/get');
 					var values = this._form.gatherFormValues();
 
 					// send event that value have been loaded
@@ -632,12 +632,12 @@ define([
 		// Internal function that does different things about package updates:
 		//
 		//	- if no package updates are available: check for availability
-		//	- if some are available -> invoke 'runDistUpgrade()' callback.
+		//	- if some are available -> invoke 'onRunDistUpgrade()' callback.
 		_check_dist_upgrade: function() {
 
 			if (this._updates_available)
 			{
-				this.runDistUpgrade();
+				this.onRunDistUpgrade();
 			}
 			else
 			{
@@ -750,7 +750,8 @@ define([
 
 			this.inherited(arguments);
 			this._show_reboot_pane(false);
-			this.refreshPage();
+			// refresh is done onShow. we dont need it here
+			// this.refreshPage();
 
 		},
 
@@ -781,13 +782,13 @@ define([
 
 		// These functions are stubs that the 'updater' Module is listening to,
 		// to start the corresponding installer call.
-		runReleaseUpdate: function(release) {
+		onRunReleaseUpdate: function(release) {
 		},
-		runErrataUpdate: function() {
+		onRunErrataUpdate: function() {
 		},
-		runDistUpgrade: function() {
+		onRunDistUpgrade: function() {
 		},
-		runEasyUpgrade: function() {
+		onRunEasyUpgrade: function() {
 		},
 
 		onStatusLoaded: function(vals) {

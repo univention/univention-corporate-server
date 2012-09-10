@@ -93,7 +93,7 @@ define([
 
 			tools.umcpCommand(this.query,{job:this._current_job, count:-1},false).then(lang.hitch(this,function(data) {
 
-				this._query_success(this.query + " [count=-1]");
+				this.onQuerySuccess(this.query + " [count=-1]");
 				var stamp = data.result;
 				if (stamp != this._last_stamp)
 				{
@@ -104,11 +104,11 @@ define([
 						if( contentLength ) {
 							this._log_position += contentLength;
 						}
-						this._query_success(this.query + " [count=0]");
+						this.onQuerySuccess(this.query + " [count=0]");
 						this.setContentAttr(data.result);
 					}),
 					lang.hitch(this, function(data) {
-						this._query_error(this.query + " [count=0]",data);
+						this.onQueryError(this.query + " [count=0]",data);
 					})
 					);
 				}
@@ -122,7 +122,7 @@ define([
 
 			}),
 			lang.hitch(this,function(data) {
-				this._query_error(this.query + " [count=-1]",data);
+				this.onQueryError(this.query + " [count=-1]",data);
 				// even in case of errors -> reschedule polling!
 				if (this._check_interval)
 				{
@@ -259,7 +259,7 @@ define([
 		// or from inside (as 'uninitialize' handler)
 		//
 		// Argument 'clean' = TRUE -> also clean up display buffer contents.
-		stopWatching: function(clean) {
+		onStopWatching: function(clean) {
 
 			this._check_interval = 0;
 
@@ -272,13 +272,13 @@ define([
 		uninitialize: function() {
 
 			this.inherited(arguments);
-			this.stopWatching();
+			this.onStopWatching();
 		},
 
 		// can be listened to from outside
-		_query_error: function(subject,data) {
+		onQueryError: function(subject,data) {
 		},
-		_query_success: function(subject) {
+		onQuerySuccess: function(subject) {
 		}
 	});
 });

@@ -70,7 +70,7 @@ define([
 			// As we've set the 'handleErrors=false' flag, we can safely repeat the loop while errors
 			// are encountered.
 			//
-			// If the class we're being mixed into contains the _query_error() and _query_success() functions
+			// If the class we're being mixed into contains the onQueryError() and onQuerySuccess() functions
 			// then they'll be called whenever a query returns.
 			if (this.polling)
 			{
@@ -87,11 +87,11 @@ define([
 					{
 						tools.umcpCommand(this.polling.query,{},false).then(
 							lang.hitch(this,function(data) {
-								this._query_success(this.polling.query);
+								this.onQuerySuccess(this.polling.query);
 								this.polling.handler(data);
 							}),
 							lang.hitch(this,function() {
-								this._query_error(this.polling.query.data);
+								this.onQueryError(this.polling.query.data);
 								this.polling.handler(null);
 							})
 							);

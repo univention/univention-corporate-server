@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-07-03 13:13+0200\n"
+"POT-Creation-Date: 2012-09-10 14:58+0200\n"
 "PO-Revision-Date: 2012-02-27 16:03+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,39 +12,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_updater/UpdatesPage.js:489 umc/js/_updater/UpdatesPage.js:518
+#: umc/js/updater/UpdatesPage.js:484 umc/js/updater/UpdatesPage.js:513
 msgid " and for component {component} are {count} errata updates available"
 msgstr ""
 " und für die Komponente {component} sind {count} Errata-Aktualisierungen "
 "verfügbar"
 
-#: umc/js/_updater/UpdatesPage.js:491 umc/js/_updater/UpdatesPage.js:520
+#: umc/js/updater/UpdatesPage.js:486 umc/js/updater/UpdatesPage.js:515
 msgid " and for component {component} is one errata update available"
 msgstr ""
 " und für die Komponente {component} ist eine Errata-Aktualisierung verfügbar"
 
-#: umc/js/_updater/UpdatesPage.js:221 umc/js/_updater/UpdatesPage.js:246
+#: umc/js/updater/UpdatesPage.js:224 umc/js/updater/UpdatesPage.js:249
 msgid "... loading data ..."
 msgstr "... Daten werden geladen ..."
 
-#: umc/js/_updater/ProgressPage.js:363
+#: umc/js/updater/ProgressPage.js:360
 msgid "... loading job data ..."
 msgstr "... Daten werden geladen ..."
 
-#: umc/js/_updater/_LogViewer.js:89 umc/js/_updater/_LogViewer.js:242
-#: umc/js/_updater/_LogViewer.js:267
+#: umc/js/updater/_LogViewer.js:87 umc/js/updater/_LogViewer.js:243
+#: umc/js/updater/_LogViewer.js:268
 msgid "... loading log file ..."
 msgstr "... Protokolldatei wird geladen ..."
 
-#: umc/js/_updater/ProgressPage.js:86
+#: umc/js/updater/ProgressPage.js:88
 msgid "... please wait ..."
 msgstr "... bitte warten ..."
 
-#: umc/js/_updater/UpdatesPage.js:562
+#: umc/js/updater/UpdatesPage.js:556
 msgid "1 of them is currently enabled."
 msgstr "Davon ist 1 Komponente aktiviert."
 
-#: umc/js/updater.js:561
+#: umc/js/updater.js:483
 msgid ""
 "Alternatively, you may close the current Management Console window, wait "
 "some time, and try to open it again."
@@ -52,59 +52,54 @@ msgstr ""
 "Sie können die Management Console jetzt auch schließen, und später wieder "
 "öffnen."
 
-#: umc/js/_updater/ProgressPage.js:410
+#: umc/js/updater/ProgressPage.js:407
 msgid ""
 "As long as the Univention Updater is updating your system, you're not "
-"allowed to manage settings. You may watch the progress, or "
-"close the module."
+"allowed to manage settings. You may watch the progress, or close the module."
 msgstr ""
 "Solange Univention Updater Ihr System aktualisiert, können Sie keine "
-"Einstellungen verändern. Sie können die "
-"Aktualisierung hier verfolgen oder das Modul schliessen."
+"Einstellungen verändern. Sie können die Aktualisierung hier verfolgen oder "
+"das Modul schliessen."
 
-#: umc/js/updater.js:356
+#: umc/js/updater.js:281
 msgid "Attention!"
 msgstr "Achtung!"
 
-#: umc/js/_updater/UpdatesPage.js:53
+#: umc/js/updater/UpdatesPage.js:56
 msgid "Available system updates"
 msgstr "Verfügbare System-Updates"
 
-#: umc/js/updater.js:308 umc/js/updater.js:385
-#: umc/js/_updater/UpdatesPage.js:731
+#: umc/js/updater.js:233 umc/js/updater.js:310
+#: umc/js/updater/UpdatesPage.js:725
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_updater/UpdatesPage.js:299 umc/js/_updater/UpdatesPage.js:629
+#: umc/js/updater/UpdatesPage.js:302 umc/js/updater/UpdatesPage.js:623
 msgid "Check for package updates"
 msgstr "Paket-Aktualisierungen prüfen"
 
-#: umc/js/updater.js:554
+#: umc/js/updater.js:476
 msgid "Connection lost!"
 msgstr "Verbindung zum Server unterbrochen!"
 
-#: umc/js/updater.js:547
+#: umc/js/updater.js:469
 msgid "Connection to server lost. Trying to reconnect."
 msgstr ""
 "Die Verbindung zum Server wurde unterbrochen. Ein erneuter Verbindungsaufbau "
 "wird gestartet."
 
-#: umc/js/updater.js:213
+#: umc/js/updater.js:142
 msgid "Do you really want to install all available errata updates?"
 msgstr ""
 "Möchten Sie wirklich alle verfügbaren Errata-Aktualisierungen installieren?"
 
-#: umc/js/updater.js:205
+#: umc/js/updater.js:134
 msgid "Do you really want to install release updates up to version {release}?"
 msgstr ""
 "Möchten Sie wirklich alle Release-Aktualisierungen bis zur Version "
 "'{release}' installieren?"
 
-#: umc/js/updater.js:196
-msgid "Do you really want to install the '{name}' component?"
-msgstr "Möchten Sie wirklich die Komponente '{name}' installieren?"
-
-#: umc/js/updater.js:300
+#: umc/js/updater.js:225
 msgid ""
 "Do you really want to perform the update/install/remove of the above "
 "packages?"
@@ -112,23 +107,23 @@ msgstr ""
 "Möchten Sie wirklich die genannten Pakete aktualisieren, installieren bzw. "
 "entfernen?"
 
-#: umc/js/_updater/UpdatesPage.js:728
+#: umc/js/updater/UpdatesPage.js:722
 msgid "Do you really want to reboot the machine?"
 msgstr "Möchten Sie die Maschine jetzt neu starten?"
 
-#: umc/js/updater.js:226
+#: umc/js/updater.js:155
 msgid "Do you really want to upgrade your system?"
 msgstr "Möchten Sie Ihr System jetzt aktualisieren?"
 
-#: umc/js/updater.js:378
+#: umc/js/updater.js:303
 msgid "Do you really wish to proceed?"
 msgstr "Möchten Sie wirklich fortfahren?"
 
-#: umc/js/_updater/UpdatesPage.js:75
+#: umc/js/updater/UpdatesPage.js:78
 msgid "During reboot, the connection to the system will be lost. "
 msgstr "Während des Neustarts wird die Verbindung zum System unterbrochen. "
 
-#: umc/js/updater.js:364
+#: umc/js/updater.js:289
 msgid ""
 "During setup, the web server may be stopped, leading to a termination of the "
 "HTTP connection. "
@@ -136,39 +131,41 @@ msgstr ""
 "Während des Updates ist es möglich, dass die Verbindung zum Webserver "
 "unterbrochen wird. "
 
-#: umc/js/_updater/UpdatesPage.js:358
+#: umc/js/updater/UpdatesPage.js:361
 msgid "Errata updates"
 msgstr "Errata-Aktualisierungen"
 
-#: umc/js/_updater/UpdatesPage.js:476
+#: umc/js/updater/UpdatesPage.js:471
 msgid "Errata updates are available for this system."
 msgstr "Es sind Errata-Aktualisierungen für dieses System verfügbar."
 
-#: umc/js/_updater/UpdatesPage.js:482
+#: umc/js/updater/UpdatesPage.js:477
 msgid "For UCS are {errata_count} errata updates available"
 msgstr "Für UCS sind {errata_count} Errata-Aktualisierungen verfügbar"
 
-#: umc/js/_updater/UpdatesPage.js:484
+#: umc/js/updater/UpdatesPage.js:479
 msgid "For UCS is one errata update available"
 msgstr "Für UCS ist eine Errata-Aktualisierung verfügbar"
 
-#: umc/js/_updater/UpdatesPage.js:512
+#: umc/js/updater/UpdatesPage.js:507
 msgid "For component {component} are {count} errata updates available"
 msgstr ""
 "Für die Komponente {component} sind {count} Errata-Aktualisierungen verfügbar"
 
-#: umc/js/_updater/UpdatesPage.js:514
+#: umc/js/updater/UpdatesPage.js:509
 msgid "For component {component} is one errata update available"
 msgstr ""
 "Für die Komponente {component} ist eine Errata-Aktualisierung verfügbar"
 
-#: umc/js/_updater/ProgressPage.js:137
+#: umc/js/updater/ProgressPage.js:134
 msgid ""
 "For the changes to take effect, it is recommended to perform a restart of "
 "the UMC server components."
-msgstr "Damit die Änderungen wirksam werden, ist es empfohlen einen Neustart der UMC-Server-Komponenten durchzuführen."
+msgstr ""
+"Damit die Änderungen wirksam werden, ist es empfohlen einen Neustart der UMC-"
+"Server-Komponenten durchzuführen."
 
-#: umc/js/_updater/UpdatesPage.js:153 umc/js/_updater/UpdatesPage.js:454
+#: umc/js/updater/UpdatesPage.js:156 umc/js/updater/UpdatesPage.js:449
 msgid ""
 "Further release updates are available but cannot be installed because the "
 "component '{0}' is not available for newer release versions."
@@ -177,7 +174,7 @@ msgstr ""
 "werden, da die Komponente '{0}' noch nicht für neuere Releaseversionen "
 "bereitgestellt wurde."
 
-#: umc/js/updater.js:359
+#: umc/js/updater.js:284
 msgid ""
 "In normal case, trouble-free use by users is not possible during the update, "
 "since system services may need to be restarted. "
@@ -185,30 +182,31 @@ msgstr ""
 "Im Normalfall ist während des Updates kein störungsfreies Arbeiten von "
 "Anwendern möglich, da beispielsweise Dienste neu gestartet werden. "
 
-#: umc/js/_updater/UpdatesPage.js:82
+#: umc/js/updater/UpdatesPage.js:85 umc/js/updater/ProgressPage.js:129
 msgid ""
 "In order to complete the recently executed action, it is required to reboot "
 "the system."
 msgstr ""
-"Um die kürzlich ausgeführte Aktion abzuschließen, ist es erforderlich, das System neu zu starten."
+"Um die kürzlich ausgeführte Aktion abzuschließen, ist es erforderlich, das "
+"System neu zu starten."
 
-#: umc/js/updater.js:312 umc/js/updater.js:388
+#: umc/js/updater.js:237 umc/js/updater.js:313
 msgid "Install"
 msgstr "Installieren"
 
-#: umc/js/_updater/UpdatesPage.js:290
+#: umc/js/updater/UpdatesPage.js:293
 msgid "Install errata update"
 msgstr "Errata-Aktualisierungen installieren"
 
-#: umc/js/_updater/UpdatesPage.js:628
+#: umc/js/updater/UpdatesPage.js:622
 msgid "Install package updates"
 msgstr "Paket-Aktualisierungen installieren"
 
-#: umc/js/_updater/UpdatesPage.js:279
+#: umc/js/updater/UpdatesPage.js:282
 msgid "Install release update"
 msgstr "Release-Aktualisierungen installieren"
 
-#: umc/js/updater.js:358
+#: umc/js/updater.js:283
 msgid ""
 "Installing a system update is a significant change to this system and could "
 "have impact to other systems. "
@@ -216,7 +214,7 @@ msgstr ""
 "Das Einspielen eines Updates ist eine signifikante Veränderung des "
 "betreffenden Systems, die auch Auswirkungen auf andere Systeme haben kann. "
 
-#: umc/js/updater.js:361
+#: umc/js/updater.js:286
 msgid ""
 "It is also recommended to evaluate the update in a test environment and to "
 "create a backup of the system."
@@ -224,23 +222,23 @@ msgstr ""
 "Tests in einer Testumgebung und die Erstellung einer Sicherung des Systems "
 "werden ebenfalls empfohlen."
 
-#: umc/js/_updater/ProgressPage.js:319
+#: umc/js/updater/ProgressPage.js:316
 msgid "It took {elapsed} to complete.<br/>"
 msgstr "Er hat {elapsed} benötigt.<br/>"
 
-#: umc/js/_updater/ProgressPage.js:80
+#: umc/js/updater/ProgressPage.js:82
 msgid "Log file view"
 msgstr "Protokoll"
 
-#: umc/js/updater.js:366
+#: umc/js/updater.js:291
 msgid "Logfiles can be found in the directory /var/log/univention/."
 msgstr "Logdateien können im Verzeichnis /var/log/univention/ gefunden werden."
 
-#: umc/js/_updater/UpdatesPage.js:559
+#: umc/js/updater/UpdatesPage.js:553
 msgid "None of them are currently enabled."
 msgstr "Davon sind momentan keine aktiviert."
 
-#: umc/js/updater.js:365
+#: umc/js/updater.js:290
 msgid ""
 "Nonetheless, the update proceeds and the update can be monitored from a new "
 "UMC session. "
@@ -248,24 +246,24 @@ msgstr ""
 "Das Update wird trotzdem weiter durchgeführt, der Vorgang kann in einer "
 "neuen UMC-Sitzung weiter beobachtet werden. "
 
-#: umc/js/_updater/UpdatesPage.js:54
+#: umc/js/updater/UpdatesPage.js:57
 msgid "Overview of all updates that affect the system as a whole."
 msgstr ""
 "Überblick über Software-Aktualisierungen, die das Gesamtsystem betreffen"
 
-#: umc/js/_updater/UpdatesPage.js:171 umc/js/_updater/UpdatesPage.js:267
+#: umc/js/updater/UpdatesPage.js:174 umc/js/updater/UpdatesPage.js:270
 msgid "Package update status not yet checked"
 msgstr "Der Paket-Aktualisierungsstatus wurde noch nicht geprüft."
 
-#: umc/js/_updater/UpdatesPage.js:366
+#: umc/js/updater/UpdatesPage.js:369
 msgid "Package updates"
 msgstr "Paketaktualisierungen"
 
-#: umc/js/_updater/UpdatesPage.js:656
+#: umc/js/updater/UpdatesPage.js:650
 msgid "Package updates are available."
 msgstr "Es sind Paket-Aktualisierungen verfügbar."
 
-#: umc/js/updater.js:369
+#: umc/js/updater.js:294
 msgid ""
 "Please also consider the release notes, changelogs and references posted in "
 "the <a href='http://forum.univention.de'>Univention Forum</a>."
@@ -274,35 +272,35 @@ msgstr ""
 "jeweiligen Update in dem <a href='http://forum.univention.de'>Univention "
 "Forum</a>."
 
-#: umc/js/_updater/UpdatesPage.js:314 umc/js/_updater/UpdatesPage.js:735
+#: umc/js/updater/UpdatesPage.js:317 umc/js/updater/UpdatesPage.js:729
 msgid "Reboot"
 msgstr "Neu starten"
 
-#: umc/js/_updater/UpdatesPage.js:332
+#: umc/js/updater/UpdatesPage.js:335
 msgid "Reboot required"
 msgstr "Neustart erforderlich"
 
-#: umc/js/_updater/UpdatesPage.js:307
+#: umc/js/updater/UpdatesPage.js:310
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: umc/js/_updater/UpdatesPage.js:340
+#: umc/js/updater/UpdatesPage.js:343
 msgid "Release information"
 msgstr "Aktueller Status"
 
-#: umc/js/_updater/UpdatesPage.js:348
+#: umc/js/updater/UpdatesPage.js:351
 msgid "Release updates"
 msgstr "Release-Aktualisierungen"
 
-#: umc/js/_updater/UpdatesPage.js:321
+#: umc/js/updater/UpdatesPage.js:324
 msgid "Start Upgrade"
 msgstr "Aktualisierung starten"
 
-#: umc/js/updater.js:302
+#: umc/js/updater.js:227
 msgid "Start Upgrade?"
 msgstr "Aktualisierung starten?"
 
-#: umc/js/updater.js:413
+#: umc/js/updater.js:338
 msgid ""
 "The Univention Updater action could not be started [Error {status}]: "
 "{message}"
@@ -310,11 +308,11 @@ msgstr ""
 "Der Univention Updater konnte nicht gestartet werden [Fehler {status}]: "
 "{message}"
 
-#: umc/js/_updater/UpdatesPage.js:73
+#: umc/js/updater/UpdatesPage.js:76
 msgid "The computer is now rebooting. "
 msgstr "Der Computer wird jetzt neu gestartet. "
 
-#: umc/js/updater.js:560
+#: umc/js/updater.js:482
 msgid ""
 "The connection to the server was lost, trying to reconnect. You may need to "
 "re-authenticate when the connection is restored."
@@ -323,75 +321,75 @@ msgstr ""
 "wieder aufzunehmen. Wahrscheinlich müssen Sie sich neu anmelden, wenn die "
 "Verbindung wieder hergestellt ist."
 
-#: umc/js/_updater/ProgressPage.js:316
+#: umc/js/updater/ProgressPage.js:313
 msgid "The current job (<b>{label}</b>) is now finished.<br/>"
 msgstr "Der aktuelle Vorgang (<b>{label}</b>) ist jetzt beendet.<br/>"
 
-#: umc/js/_updater/UpdatesPage.js:435
+#: umc/js/updater/UpdatesPage.js:430
 msgid "The currently installed release version is {ucs_version}"
 msgstr "Die momentan installierte Version ist {ucs_version}"
 
-#: umc/js/_updater/UpdatesPage.js:442
+#: umc/js/updater/UpdatesPage.js:437
 msgid ""
 "The currently installed release version is {ucs_version} errata{erratalevel}"
 msgstr ""
 "Die momentan installierte Version ist {ucs_version} errata{erratalevel}"
 
-#: umc/js/_updater/ProgressPage.js:218
+#: umc/js/updater/ProgressPage.js:215
 msgid "The job <b>{label}</b> (started {elapsed} ago) is currently running."
 msgstr ""
 "Momentan läuft der Aktualisierungsauftrag <b>{label}</b> (gestartet vor "
 "{elapsed})"
 
-#: umc/js/_updater/UpdatesPage.js:549
+#: umc/js/updater/UpdatesPage.js:543
 msgid "The system knows about 1 component."
 msgstr "Dem System ist 1 Komponente bekannt."
 
-#: umc/js/_updater/UpdatesPage.js:553
+#: umc/js/updater/UpdatesPage.js:547
 msgid "The system knows about {components} components."
 msgstr "Dem System sind {components} Komponenten bekannt."
 
-#: umc/js/_updater/UpdatesPage.js:543
+#: umc/js/updater/UpdatesPage.js:537
 msgid "There are no components configured for this system."
 msgstr "Momentan sind keine Komponenten konfiguriert."
 
-#: umc/js/_updater/UpdatesPage.js:533
+#: umc/js/updater/UpdatesPage.js:528
 msgid "There are no errata updates available for this system."
 msgstr "Es sind keine Errata-Aktualisierungen für dieses System verfügbar."
 
-#: umc/js/_updater/UpdatesPage.js:657
+#: umc/js/updater/UpdatesPage.js:651
 msgid "There are no package updates available."
 msgstr "Es sind keine Paket-Aktualisierungen verfügbar."
 
-#: umc/js/_updater/UpdatesPage.js:139 umc/js/_updater/UpdatesPage.js:227
+#: umc/js/updater/UpdatesPage.js:142 umc/js/updater/UpdatesPage.js:230
 msgid "There are no release updates available."
 msgstr "Es sind keine Release-Aktualisierungen verfügbar."
 
-#: umc/js/_updater/UpdatesPage.js:456
+#: umc/js/updater/UpdatesPage.js:451
 msgid "There are no updates available."
 msgstr "Es sind keine Aktualisierungen verfügbar."
 
-#: umc/js/_updater/UpdatesPage.js:452
+#: umc/js/updater/UpdatesPage.js:447
 msgid "There are updates available."
 msgstr "Es sind Aktualisierungen verfügbar."
 
-#: umc/js/_updater/UpdatesPage.js:500
+#: umc/js/updater/UpdatesPage.js:495
 msgid "There are {errata_count} errata updates for UCS available."
 msgstr "Es sind {errata_count} Errata-Aktualisierungen für UCS verfügbar."
 
-#: umc/js/_updater/UpdatesPage.js:502
+#: umc/js/updater/UpdatesPage.js:497
 msgid "There is one errata update for UCS available."
 msgstr "Es ist eine Errata-Aktualisierung für UCS verfügbar."
 
-#: umc/js/_updater/UpdatesPage.js:74
+#: umc/js/updater/UpdatesPage.js:77
 msgid "This may take some time. Please be patient. "
 msgstr "Das kann einige Zeit dauern. Bitte haben Sie ewas Geduld. "
 
-#: umc/js/updater.js:360
+#: umc/js/updater.js:285
 msgid "Thus, updates shouldn't be installed on a live system. "
 msgstr "Deshalb sollten Sie das Update nicht im laufenden Betrieb einspielen. "
 
-#: umc/js/_updater/ProgressPage.js:420
+#: umc/js/updater/ProgressPage.js:417
 msgid ""
 "Univention Updater could not successfully complete the current job. The log "
 "file should show the cause of the failure. If you're finished examining the "
@@ -401,7 +399,7 @@ msgstr ""
 "abschließen. Im Protokoll sollten Sie die Ursache des Fehlschlages sehen "
 "können. Der Knopf 'Zurück' schließt die aktuelle Ansicht."
 
-#: umc/js/_updater/ProgressPage.js:415
+#: umc/js/updater/ProgressPage.js:412
 msgid ""
 "Univention Updater has successfully finished the current job. You may read "
 "through the log file. If you're finished you may press the 'back' button to "
@@ -411,47 +409,47 @@ msgstr ""
 "können sich das Protokoll noch anschauen. Drücken Sie dann den 'Zurück' "
 "Knopf, um die Ansicht zu schließen und zur Übersicht zurückzukehren."
 
-#: umc/js/_updater/ProgressPage.js:409
+#: umc/js/updater/ProgressPage.js:406
 msgid "Univention Updater is working"
 msgstr "Univention Updater ist gerade aktiv"
 
-#: umc/js/_updater/ProgressPage.js:414
+#: umc/js/updater/ProgressPage.js:411
 msgid "Univention Updater job completed"
 msgstr "Univention Updater Auftrag abgeschlossen"
 
-#: umc/js/_updater/ProgressPage.js:419
+#: umc/js/updater/ProgressPage.js:416
 msgid "Univention Updater job failed"
 msgstr "Univention Updater Auftrag ist fehlgeschlagen"
 
-#: umc/js/_updater/UpdatesPage.js:661
+#: umc/js/updater/UpdatesPage.js:655
 msgid "Update availability could not be checked."
 msgstr "Verfügbarkeit von Aktualisierungen konnte nicht geprüft werden."
 
-#: umc/js/_updater/ProgressPage.js:418
+#: umc/js/updater/ProgressPage.js:415
 msgid "Update failed"
 msgstr "Aktualisierung fehlgeschlagen"
 
-#: umc/js/_updater/ProgressPage.js:413
+#: umc/js/updater/ProgressPage.js:410
 msgid "Update finished"
 msgstr "Aktualisierung abgeschlossen"
 
-#: umc/js/_updater/ProgressPage.js:408
+#: umc/js/updater/ProgressPage.js:405
 msgid "Update in progress"
 msgstr "Aktualisierung läuft"
 
-#: umc/js/_updater/ProgressPage.js:71
+#: umc/js/updater/ProgressPage.js:73
 msgid "Update progress"
 msgstr "Updatevorgang"
 
-#: umc/js/_updater/UpdatesPage.js:121
+#: umc/js/updater/UpdatesPage.js:124
 msgid "Update system up to release"
 msgstr "System bis zu dieser Version aktualisieren"
 
-#: umc/js/_updater/UpdatesPage.js:52
+#: umc/js/updater/UpdatesPage.js:55
 msgid "Updates"
 msgstr "Aktualisierungen"
 
-#: umc/js/_updater/UpdatesPage.js:76
+#: umc/js/updater/UpdatesPage.js:79
 msgid ""
 "When the connection is back you will be prompted to authenticate yourself "
 "again."
@@ -459,17 +457,17 @@ msgstr ""
 "Wenn die Verbindung wieder hergestellt ist, werden Sie aufgefordert, sich "
 "noch einmal neu anzumelden."
 
-#: umc/js/_updater/ProgressPage.js:321
+#: umc/js/updater/ProgressPage.js:318
 msgid "You may return to the overview by clicking the 'back' button now."
 msgstr ""
 "Sie können jetzt zur Übersicht zurückkehren, indem Sie den 'Zurück'-Knopf "
 "drücken."
 
-#: umc/js/_updater/ProgressPage.js:222
+#: umc/js/updater/ProgressPage.js:219
 msgid "You're currently watching its log file <b>{logfile}</b>"
 msgstr "Sie sehen die Protokolldatei <b>{logfile}</b>"
 
-#: umc/js/updater.js:532
+#: umc/js/updater.js:454
 msgid ""
 "Your current session has expired, or the connection to the server was lost. "
 "You must authenticate yourself again."
@@ -477,33 +475,22 @@ msgstr ""
 "Ihre aktuelle Sitzung ist abgelaufen, oder die Verbindung zum Server war "
 "verlorengegangen. Sie müssen sich noch einmal neu anmelden."
 
-#: umc/js/_updater/ProgressPage.js:106
+#: umc/js/updater/ProgressPage.js:103
 msgid "back"
 msgstr "Zurück"
 
-#: umc/js/updater.js:268
+#: umc/js/updater.js:196
 msgid "{count} packages to be REMOVED"
 msgstr "{count} Pakete werden ENTFERNT"
 
-#: umc/js/updater.js:290
+#: umc/js/updater.js:216
 msgid "{count} packages to be installed"
 msgstr "{count} Pakete werden NEU installiert"
 
-#: umc/js/updater.js:279
+#: umc/js/updater.js:206
 msgid "{count} packages to be updated"
 msgstr "{count} Pakete werden aktualisiert"
 
-#: umc/js/_updater/UpdatesPage.js:565
+#: umc/js/updater/UpdatesPage.js:559
 msgid "{enabled} of them are currently enabled."
 msgstr "Davon sind {enabled} Komponenten aktiviert."
-
-#~ msgid "No errata updates for the current version are installed."
-#~ msgstr ""
-#~ "Für die aktuelle Version sind keine Errata-Aktualisierungen installiert."
-
-#~ msgid "The most recent errata update is {latest_errata_update}."
-#~ msgstr ""
-#~ "Die neueste verfügbare Errata-Aktualisierung ist {latest_errata_update}."
-
-#~ msgid "Your system is at errata level {erratalevel}."
-#~ msgstr "Ihr System ist auf dem Errata-Level {erratalevel}."

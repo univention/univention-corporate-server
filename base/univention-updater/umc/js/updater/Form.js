@@ -169,9 +169,9 @@ define([
 
 		// Two callbacks that are used by queries that want to propagate
 		// their outcome to the main error handlers
-		_query_error: function(subject, data) {
+		onQueryError: function(subject, data) {
 		},
-		_query_success: function(subject) {
+		onQuerySuccess: function(subject) {
 		}
 	});
 });
