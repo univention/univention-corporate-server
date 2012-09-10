@@ -183,7 +183,7 @@ define([
 
 				// propagate value changes
 				this._widget.own(this._widget.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
-					this.set(name, newVal);
+					this._set(name, newVal);
 				})));
 			}
 

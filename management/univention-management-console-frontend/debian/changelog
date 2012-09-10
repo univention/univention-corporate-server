@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.44-1) unstable; urgency=low
+
+  * bug fixes; Bug #26826
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Sep 2012 19:11:43 +0200
+
 univention-management-console-frontend (2.0.43-1) unstable; urgency=low
 
   * fixed issues with rendering of widgets; Bug #26826

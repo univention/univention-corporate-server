@@ -603,19 +603,19 @@ define([
 			}
 		},
 
-		mapWalk: function(/*Array*/ array, /*Function*/ callback, /*Object?*/ scope) {
+		mapWalk: function(/*Array*/ anArray, /*Function*/ callback, /*Object?*/ scope) {
 			// summary:
 			//		Equivalent to array.map(), however this function is intended to be used
 			//		with multi-dimensional arrays.
 
 			// make sure we have an array
-			if (!(array instanceof Array)) {
-				return callback.call(scope, array);
+			if (!(anArray instanceof Array)) {
+				return callback.call(scope, anArray);
 			}
 
 			// clone array and walk through it
 			scope = scope || window.global;
-			var res = lang.clone(array);
+			var res = lang.clone(anArray);
 			var stack = [ res ];
 			while (stack.length) {
 				// new array, go through its elements
