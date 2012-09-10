@@ -1259,6 +1259,7 @@ class object(content):
 			self.stop()
 
 	def run_cmd(self, cmd, log_stdout=False, log_stderr=True):
+		self.debug('run_cmd(%s)' % (cmd,))
 		(stdout, stderr) = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 		if stdout and log_stdout:
 			self.debug('stdout of %r:\n=> %s' % (cmd, '\n=> '.join(stdout.split('\n'))))
