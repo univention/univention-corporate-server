@@ -96,13 +96,16 @@ $(themesDir)/umc: $(tmpDir)
 	rm $@/claro.css
 	for i in $$(find $@ -name "*.less"); do rm -f $${i%.less}.css; done
 	cp -rsf $(CURDIR)/css/* $@
+	@# merge claro variables and our variables (recursive include not possible with less)
 	mv $@/variables.less $@/variables.orig.less
 	cat $(themesDir)/claro/variables.less $@/variables.orig.less > $@/variables.less
-	@# compile all less files
+	@# remove claro compile.js file
+	rm $@/compile.js
+	@# compile all less files and replace ".claro" with ".umc"
 	for i in $$(find $@ -name "*.less"); do \
 		echo ./lessc $$i $${i%.*}.css; \
 		./lessc $$i $${i%.*}.css; \
-		sed -i 's/\.claro\>/.umc/g' $${i%.*}.css; \
+		sed -i 's/\.claro\>/.umc/g; s/"""/"/g;' $${i%.*}.css; \
 	done
 
 $(themesDir)/umc/icons: $(themesDir)/umc

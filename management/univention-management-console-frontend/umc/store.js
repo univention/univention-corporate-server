@@ -234,7 +234,7 @@ define([
 			else {
 				// empty query -> return an empty list
 				// this is the query the grid will send automatically at the beginning
-				deferred.callback([]);
+				deferred.resolve([]);
 			}
 			return QueryResults(deferred);
 		},

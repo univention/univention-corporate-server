@@ -1,6 +1,12 @@
+univention-management-console-frontend (2.0.40-1) unstable; urgency=low
+
+  * fixed CSS integration; Bug #26826
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Sep 2012 13:02:43 +0200
+
 univention-management-console-frontend (2.0.39-1) unstable; urgency=low
 
-  * integrated less files in build process (Bug #26826) 
+  * integrated less files in build process (Bug #26826)
 
  -- Lukas Walter <walter@univention.de>  Fri, 07 Sep 2012 19:07:51 +0200
 
