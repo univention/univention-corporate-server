@@ -441,29 +441,30 @@ class object(content):
 		root_fs_type=None
 		boot_fs_type=None
 		bootable_cnt=0
-		mpoint_temp=[]
+		mpoint_temp = set()
 		for disk in self.container['disk'].keys():
 			for part in self.container['disk'][disk]['partitions']:
 				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
+					mpoint = self.container['disk'][disk]['partitions'][part]['mpoint'].strip()
 
-					if PARTFLAG_BOOT in self.container['disk'][disk]['partitions'][part]['flag']:
+					if ( PARTFLAG_BOOT in self.container['disk'][disk]['partitions'][part]['flag'] or
+						 PARTFLAG_BIOS_GRUB in self.container['disk'][disk]['partitions'][part]['flag']):
 						bootable_cnt += 1
 
-					if len(self.container['disk'][disk]['partitions'][part]['mpoint'].strip()):
-						if self.container['disk'][disk]['partitions'][part]['mpoint'] in mpoint_temp:
-							return _("Double mount point '%s'") % self.container['disk'][disk]['partitions'][part]['mpoint']
-						mpoint_temp.append(self.container['disk'][disk]['partitions'][part]['mpoint'])
+					if mpoint and mpoint in mpoint_temp:
+						return _("Double mount point '%s'") % mpoint
+					mpoint_temp.add(mpoint)
 
-					if self.container['disk'][disk]['partitions'][part]['mpoint'] == '/':
-						root_fs_type=self.container['disk'][disk]['partitions'][part]['fstype']
+					if mpoint == '/':
+						root_fs_type = self.container['disk'][disk]['partitions'][part]['fstype']
 						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ALLOWED_ROOT_FSTYPES:
-							root_fs=self.container['disk'][disk]['partitions'][part]['fstype']
-						root_device=1
+							root_fs = self.container['disk'][disk]['partitions'][part]['fstype']
+						root_device = 1
 
-					if self.container['disk'][disk]['partitions'][part]['mpoint'] == '/boot':
-						boot_fs_type=self.container['disk'][disk]['partitions'][part]['fstype']
+					if mpoint == '/boot':
+						boot_fs_type = self.container['disk'][disk]['partitions'][part]['fstype']
 						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ALLOWED_BOOT_FSTYPES:
-							boot_fs=self.container['disk'][disk]['partitions'][part]['fstype']
+							boot_fs = self.container['disk'][disk]['partitions'][part]['fstype']
 
 		# check LVM Logical Volumes if LVM is enabled
 		if self.container['lvm']['enabled'] and self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
@@ -471,17 +472,16 @@ class object(content):
 			for lvname in vg['lv'].keys():
 				lv = vg['lv'][lvname]
 				mpoint = lv['mpoint'].strip()
-				if len(mpoint):
-					if mpoint in mpoint_temp:
-						return _("Double mount point '%s'") % mpoint
-				mpoint_temp.append(mpoint)
+				if mpoint and mpoint in mpoint_temp:
+					return _("Double mount point '%s'") % mpoint
+				mpoint_temp.add(mpoint)
 				if mpoint == '/':
 					if not lv['fstype'] in ALLOWED_ROOT_FSTYPES:
 						root_fs = lv['fstype']
-					root_device=1
+					root_device = 1
 
 		if not bootable_cnt:
-			return _('One partition must be flagged as bootable. This should usually be /boot.')
+			return _('One partition must be of type "BIOS boot partition" or "EFI system". The correct type depends on your BIOS settings.')
 
 		if not root_device:
 			#self.move_focus( 1 )
@@ -526,7 +526,7 @@ class object(content):
 		if bootfs_is_lvm:
 			return _('Unbootable config! /boot needs non LVM partition')
 
-		if len(self.container['history']) or self.test_changes():
+		if self.container['history'] or self.test_changes():
 			self.sub.sub=self.sub.verify_exit(self.sub,self.sub.minY+(self.sub.maxHeight/3)+2,self.sub.minX+(self.sub.maxWidth/8),self.sub.maxWidth,self.sub.maxHeight-18)
 			self.sub.sub.draw()
 			return 1
