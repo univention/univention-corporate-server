@@ -1788,6 +1788,11 @@ class object(content):
 			self.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
 					   (proc.returncode, command, '\n=> '.join(stderr), '\n=> '.join(stdout)))
 
+	def print_history(self):
+		self.debug("HISTORY")
+		for entry in self.container['history']:
+			self.debug('==> %s' % entry)
+
 	class partition(subwin):
 		def __init__(self,parent,pos_y,pos_x,width,height):
 			self.part_objects = {}
@@ -1881,9 +1886,7 @@ class object(content):
 				del self.container['lvm']['vg'][vgname]
 			self.container['lvm']['pv'] = {}
 
-			self.parent.debug("HISTORY")
-			for entry in self.container['history']:
-				self.parent.debug('==> %s' % entry)
+			self.parent.print_history()
 
 			# reactivate LVM
 			self.parent.set_lvm(True)
@@ -2784,10 +2787,7 @@ class object(content):
 			if 'lvm' in flags:
 				self.pv_create(arg_disk, arg_part)
 
-			self.parent.debug("HISTORY")
-			for entry in self.container['history']:
-				self.parent.debug('==> %s' % entry)
-
+			self.parent.print_history()
 			self.parent.printPartitions()
 
 
@@ -2888,9 +2888,7 @@ class object(content):
 			self.parent.container['history'].append(['/sbin/lvcreate', '-l', str(currentLE), '--name', lvname, vgname])
 #			self.parent.container['history'].append('/sbin/lvscan 2> /dev/null')
 
-			self.parent.debug("HISTORY")
-			for entry in self.parent.container['history']:
-				self.parent.debug('==> %s' % entry)
+			self.parent.print_history()
 
 			# update used/free space on volume group
 			self.parent.container['lvm']['vg'][ vgname ]['freePE'] -= currentLE
@@ -3743,6 +3741,7 @@ class object(content):
 					self.draw()
 				return 1
 			def layout(self):
+				self.parent.parent.print_history()
 				message=_('Do you really want to write all changes?')
 				self.elements.append(textline(message,self.pos_y+2,self.pos_x+(self.width/2),align="middle")) #0
 				message=_('This may destroy all data on modified discs!')
