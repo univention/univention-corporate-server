@@ -3245,8 +3245,9 @@ class object(content):
 								format = 1
 								fstype = FSTYPE_VFAT
 
-							if fstype == FSTYPE_SWAP:
+							if PARTFLAG_SWAP in flag:
 								mpoint = ''
+								fstype = FSTYPE_SWAP
 
 							# sanitize mpoint → add leading '/' if missing
 							if mpoint:
