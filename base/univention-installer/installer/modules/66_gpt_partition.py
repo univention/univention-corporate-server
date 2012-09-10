@@ -1333,7 +1333,7 @@ class object(content):
 			pesize = self.container['lvm']['vg'][ vg ]['PEsize']
 			lvname = item[0].split('/')[-1]
 
-			data = self.run_cmd(['/bin/file', '-Ls'])[0]
+			data = self.run_cmd(['/bin/file', '-Ls', item[0]])[0]
 			fstype=''
 			if 'SGI XFS filesystem data' in data:
 				fstype = 'xfs'
