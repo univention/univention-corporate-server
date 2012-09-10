@@ -1,3 +1,9 @@
+univention-base-files (2.0.8-1) unstable; urgency=low
+
+  * removed ucr description for logrotate/size Bug #27722 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Sep 2012 14:45:05 +0200
+
 univention-base-files (2.0.7-1) unstable; urgency=low
 
   * removed logrotate/size  (logrotate/rotate=weekly or

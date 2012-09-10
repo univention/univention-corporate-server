@@ -381,15 +381,9 @@ Description[en]=Keyboard layout
 Type=str
 Categories=System
 
-[logrotate/size]
-Description[de]=Logdateien anhand des Wertes in size rotieren
-Description[en]=Log files are rotated when they grow bigger than size
-Type=int
-Categories=system-base
-
 [logrotate/rotate]
-Description[de]=Logdateien werden nach einer gewissen Zeit rotiert, "daily", "weekly" (default), "monthly" or "yearly"
-Description[en]=Rotate log files after certain time interval "daily", "weekly" (default), "monthly" or "yearly"
+Description[de]=Logdateien werden nach diesem Kriterium rotiert, z.B. "daily", "weekly" (default), "monthly", "size 100M" etc.
+Description[en]=Log files are rotated according to this criterion, e.g. "daily", "weekly" (default), "monthly", "size 100M" etc.
 Type=int
 Categories=system-base
 
