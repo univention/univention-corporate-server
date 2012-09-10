@@ -1957,7 +1957,7 @@ class object(content):
 
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
-				self.part_create_generic(targetdisk, targetpart, '', PARTSIZE_BIOS_GRUB, '', PARTTYPE_USED, [PARTFLAG_BIOS_GRUB], '')
+				self.part_create_generic(targetdisk, targetpart, '', PARTSIZE_BIOS_GRUB, '', PARTTYPE_USED, [PARTFLAG_BIOS_GRUB], 0, '')
 			else:
 				msglist = [ _('Not enough disk space found for BIOS boot partition!'),
 							_('Auto partitioning aborted.') ]
@@ -1970,7 +1970,7 @@ class object(content):
 
 			if freespacemax >= PARTSIZE_BOOT:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
-				self.part_create_generic(freespacelist[0][1], freespacelist[0][2], '/boot', PARTSIZE_BOOT, 'ext4', PARTTYPE_USED, [PARTFLAG_NONE], '/boot')
+				self.part_create_generic(freespacelist[0][1], freespacelist[0][2], '/boot', PARTSIZE_BOOT, 'ext4', PARTTYPE_USED, [PARTFLAG_NONE], 1, '/boot')
 			else:
 				msglist = [ _('Not enough disk space found for /boot!'),
 							_('Auto partitioning aborted.') ]
@@ -2012,9 +2012,9 @@ class object(content):
 				if targetdisk:
 					break
 			if targetdisk:
-				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
+				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
 				self.parent.debug('AUTOPART: create swap: disk=%s  part=%s  swapsize=%s' % (targetdisk, targetpart, swapsize))
-				self.part_create_generic(targetdisk, targetpart, '', swapsize, FSTYPE_SWAP, PARTTYPE_USED, [PARTFLAG_SWAP], 'SWAP')
+				self.part_create_generic(targetdisk, targetpart, '', swapsize, FSTYPE_SWAP, PARTTYPE_USED, [PARTFLAG_SWAP], 1, 'SWAP')
 			else:
 				self.parent.debug('AUTOPART: no disk space for swap found')
 				self.parent.debug('AUTOPART: DISK=%s' % self.container['disk'])
