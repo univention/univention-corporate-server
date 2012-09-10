@@ -93,7 +93,7 @@ PARTSIZE_SWAP_MAX = MiB2B(10240)    # limit swap partition to 10 GiB
 
 # ATTENTION: value has to be megabyte aligned!
 # minimum free space between partitions (otherwise ignored)
-PARTSIZE_MINIMUM = 1024*1024
+PARTSIZE_MINIMUM = MiB2B(8)			# minimum partition size
 
 # ATTENTION: value has to be megabyte aligned!
 # start of first partition ; first 10MiB have to be free to provide enough space for e.g. GRUB
