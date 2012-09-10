@@ -97,8 +97,10 @@ PARTSIZE_MINIMUM = 1024*1024
 
 # ATTENTION: value has to be megabyte aligned!
 # start of first partition ; first 10MiB have to be free to provide enough space for e.g. GRUB
-EARLIEST_START_OF_FIRST_PARTITION = MiB2B(10)
-RESERVED_SPACE_AT_END_OF_DISK = MiB2B(20)
+EARLIEST_START_OF_FIRST_PARTITION = MiB2B(16)
+RESERVED_SPACE_AT_END_OF_DISK = MiB2B(32)
+# reduce size of each PV by at least this amount of megabytes for LVM overhead
+LVM_OVERHEAD = MiB2B(15)
 
 # possible partition types
 #POSS_PARTTYPE_UNUSABLE = 0
@@ -2830,14 +2832,16 @@ class object(content):
 			pesize = self.container['lvm']['vg'][ ucsvgname ]['PEsize']
 			# number of physical extents
 			pecnt = int(self.container['disk'][disk]['partitions'][part]['size'] / pesize)
-			# LVM uses about 2% of percent for metadata overhead
-			totalpe = int(pecnt * 0.978)
+			# calculate overhead for LVM metadata
+			peoverhead = int(LVM_OVERHEAD / pesize) + 1
+			# reduce total amount of available physical extents by spare physical extents for LVM overhead
+			totalpe = max(0, pecnt - peoverhead)
 
-			self.parent.debug('pv_create: pesize=%sk   partsize=%sMiB=%sk  pecnt=%sPE  totalpe=%sPE' %
+			self.parent.debug('pv_create: pesize=%sk   partsize=%sMiB=%sk  pecnt=%sPE  totalpe=%sPE  peoverhead=%sPE' %
 							  (pesize,
 							   B2MiB(self.container['disk'][disk]['partitions'][part]['size']),
 							   B2KiB(self.container['disk'][disk]['partitions'][part]['size']),
-							   pecnt, totalpe))
+							   pecnt, totalpe, peoverhead))
 
 			self.container['lvm']['pv'][ device ] = { 'touched': 1,
 													  'vg': ucsvgname,
