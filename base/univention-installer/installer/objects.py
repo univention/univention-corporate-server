@@ -1856,11 +1856,7 @@ class subwin:
 			self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
 		self.reset_layout()
 		self.current=0
-		if len(self.strip_header()):
-			y_xtra=0
-		else:
-			y_xtra=1
-		self.header=textline(self.strip_header(), self.pos_y+y_xtra, self.pos_x+self.width-len(self.strip_header())-2)
+		self.update_header()
 		self.startIt=1
 		self.layout()
 		temp=self.current
@@ -1869,6 +1865,13 @@ class subwin:
 				self.current=(self.current+1)%len(self.elements)
 				if self.current==temp:
 					break
+
+	def update_header(self):
+		if len(self.strip_header()):
+			y_xtra=0
+		else:
+			y_xtra=1
+		self.header = textline(self.strip_header(), self.pos_y+y_xtra, self.pos_x+self.width-len(self.strip_header())-2)
 
 	# removes all widgets from window
 	def reset_layout(self):
