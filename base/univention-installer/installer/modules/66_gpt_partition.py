@@ -1234,7 +1234,7 @@ class object(content):
 							ucsvgname = self.parent.container['lvm']['ucsvgname']
 							self.run_cmd('/sbin/pvcreate %s 2>&1' % device)
 							if not vgcreated:
-								self.run_cmd('/sbin/vgcreate --physicalextentsize %sk %s %s 2>&1' % (self.parent.container['lvm']['vg'][ ucsvgname ]['PEsize'], ucsvgname, device))
+								self.run_cmd('/sbin/vgcreate --physicalextentsize %sk %s %s 2>&1' % (B2KiB(self.parent.container['lvm']['vg'][ ucsvgname ]['PEsize']), ucsvgname, device))
 #								self.run_cmd('/sbin/vgscan 2>&1')
 								vgcreated = True
 							self.run_cmd('/sbin/vgextend %s %s 2>&1' % (ucsvgname, device))
@@ -1324,10 +1324,10 @@ class object(content):
 
 			self.container['lvm']['pv'][ item[0] ] = { 'touched': 0,
 													   'vg': item[1],
-													   'PEsize': int( item[7] ), # physical extent size in kilobytes
-													   'totalPE': int( item[8] ),
-													   'freePE': int( item[9] ),
-													   'allocPE': int( item[10] ),
+													   'PEsize': KiB2B(int(item[7])), # physical extent size is returned in KiB but stored in bytes
+													   'totalPE': int(item[8]),
+													   'freePE': int(item[9]),
+													   'allocPE': int(item[10]),
 													   }
 
 	def read_lvm_vg(self):
@@ -1344,11 +1344,11 @@ class object(content):
 		for line in content.splitlines():
 			item = line.strip().split(':')
 			self.container['lvm']['vg'][ item[0] ] = { 'touched': 0,
-													   'PEsize': int(item[12]), # physical extent size in kilobytes
+													   'PEsize': KiB2B(int(item[12])), # physical extent size is returned in KiB but stored in bytes
 													   'totalPE': int(item[13]),
 													   'allocPE': int(item[14]),
 													   'freePE': int(item[15]),
-													   'size': int(item[12])*1024*int(item[13]), # size of VG in bytes
+													   'size': KiB2B(int(item[12]))*int(item[13]), # size of VG in bytes
 													   'created': 1,
 													   'lv': {}
 													   }
@@ -1390,10 +1390,10 @@ class object(content):
 			self.container['lvm']['vg'][ item[1] ]['lv'][ lvname ] = {  'dev': item[0],
 																		'vg': item[1],
 																		'touched': 0,
-																		'PEsize': int(pesize), # physical extent size in kilobytes
+																		'PEsize': pesize, # physical extent size in bytes
 																		'currentLE': int(item[7]),
 																		'format': 0,
-																		'size': int(item[7])*int(pesize)*1024, # size of LV in bytes
+																		'size': int(item[7]) * pesize, # size of LV in bytes
 																		'fstype': fstype,
 																		'flag': '',
 																		'mpoint': '',
@@ -1425,7 +1425,7 @@ class object(content):
 						(self.container['lvm']['lvm1available'], self.container['lvm']['ucsvgname']))
 			if not self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
 				self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ] = { 'touched': 1,
-																					  'PEsize': 4096, # physical extent size in kilobytes
+																					  'PEsize': KiB2B(4096), # physical extent size in bytes (4096 KiB)
 																					  'totalPE': 0,
 																					  'allocPE': 0,
 																					  'freePE': 0,
@@ -2328,8 +2328,7 @@ class object(content):
 
 						txt = '%s  (%s) %s' % (vgname, _('LVM volume group'), '-'*(col1+col2+col3+col4+col5+10))
 						path = self.get_col(txt,col1+col2+col3+col4+col5+4,'l')
-						vgsize = vg['PEsize'] * vg['totalPE'] * 1024
-						size = self.get_col('%d' % B2MiB(vgsize), col6)
+						size = self.get_col('%d' % B2MiB(vg['PEsize'] * vg['totalPE']), col6)
 
 						self.part_objects[ len(dict) ] = [ 'lvm_vg', vgname, None ]
 						dict.append('%s %s' % (path,size))
@@ -2355,7 +2354,7 @@ class object(content):
 						if vg['freePE'] > 2:
 							path = self.get_col(' ---',col1,'l')
 							format = self.get_col('',col4,'m')
-							vgfree = vg['PEsize'] * vg['freePE'] * 1024
+							vgfree = vg['PEsize'] * vg['freePE']
 							size = self.get_col('%d' % B2MiB(vgfree), col6)
 							type = self.get_col('free', col3)
 							mount = self.get_col('', col5, 'l')
@@ -2649,7 +2648,7 @@ class object(content):
 							vg = self.container['lvm']['vg'][ vgname ]
 							vg['freePE'] -= pv['totalPE']
 							vg['totalPE'] -= pv['totalPE']
-							vg['size'] = vg['PEsize'] * vg['totalPE'] / 1024.0
+							vg['size'] = vg['PEsize'] * vg['totalPE']
 							if vg['freePE'] + vg['allocPE'] != vg['totalPE']:
 								self.parent.debug('ASSERTION FAILED: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' % (vg['freePE'], vg['allocPE'], vg['totalPE']))
 							if vg['freePE'] < 0 or vg['allocPE'] < 0 or vg['totalPE'] < 0:
@@ -2818,7 +2817,7 @@ class object(content):
 			# create new PV entry
 			pesize = self.container['lvm']['vg'][ ucsvgname ]['PEsize']
 			# number of physical extents
-			pecnt = int(self.container['disk'][disk]['partitions'][part]['size'] / 1024 / pesize)
+			pecnt = int(self.container['disk'][disk]['partitions'][part]['size'] / pesize)
 			# LVM uses about 2% of percent for metadata overhead
 			totalpe = int(pecnt * 0.978)
 
@@ -2841,7 +2840,7 @@ class object(content):
 			self.container['lvm']['vg'][ ucsvgname ]['totalPE'] += totalpe
 			self.container['lvm']['vg'][ ucsvgname ]['freePE'] += totalpe
 			self.container['lvm']['vg'][ ucsvgname ]['size'] = (self.container['lvm']['vg'][ ucsvgname ]['totalPE'] *
-																KiB2B(self.container['lvm']['vg'][ ucsvgname ]['PEsize']))  # PEsize is stored in KiB
+																self.container['lvm']['vg'][ ucsvgname ]['PEsize'])
 
 			device = self.parent.get_device(disk, part)
 			# remove LVMPV signature before creating a new one
@@ -2850,7 +2849,7 @@ class object(content):
 			self.container['history'].append(['/sbin/pvcreate', device])
 			if not self.container['lvm']['vg'][ ucsvgname ]['created']:
 				self.container['history'].append(['/sbin/vgcreate', '--physicalextentsize',
-													'%sk' % self.container['lvm']['vg'][ ucsvgname ]['PEsize'],
+													'%sk' % B2KiB(self.container['lvm']['vg'][ ucsvgname ]['PEsize']),
 													ucsvgname, device])
 				self.container['lvm']['vg'][ ucsvgname ]['created'] = 1
 #				self.container['history'].append('/sbin/vgscan')
@@ -3020,7 +3019,7 @@ class object(content):
 
 		def lv_create(self, vgname, lvname, currentLE, format, fstype, flag, mpoint):
 			vg = self.parent.container['lvm']['vg'][ vgname ]
-			size = int(vg['PEsize'] * currentLE * 1024) # PEsize is stored in KiB
+			size = int(vg['PEsize'] * currentLE)
 			self.container['lvm']['vg'][vgname]['lv'][lvname] = { 'dev': '/dev/%s/%s' % (vgname, lvname),
 																  'vg': vgname,
 																  'touched': 1,
@@ -3735,10 +3734,10 @@ class object(content):
 
 				if parttype is 'lvm_vg_free':  # FREE SPACE ON VOLUME GROUP
 					vg = self.parent.container['lvm']['vg'][ vgname ]
-					maxsize = (vg['PEsize'] * vg['freePE'] * 1024) # calculate maximum size in bytes
+					maxsize = int(vg['PEsize'] * vg['freePE']) # calculate maximum size in bytes
 
 					lvname_proposal = ''
-					for i in range(1,255):
+					for i in xrange(1, 9999):
 						if not vg['lv'].has_key('vol%d' % i):
 							lvname_proposal = 'vol%d' % i
 							break
