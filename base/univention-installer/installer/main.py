@@ -55,7 +55,7 @@ read_cmdline = False
 
 if len(sys.argv) > 1:
 
-	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'extension=', 'edition=', 'expert_partition', 'nousbstorage', 'nousbcdrom', 'name=', 'codename=']
+	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'extension=', 'edition=', 'expert_partition', 'mbr_partition', 'nousbstorage', 'nousbcdrom', 'name=', 'codename=']
 	try:
 		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
 	except getopt.error, msg:
@@ -102,6 +102,8 @@ if len(sys.argv) > 1:
 			read_cmdline = True
 		elif opt == '--expert_partition':
 			cmdline['expert_partition'] = True
+		elif opt == '--mbr_partition':
+			cmdline['mbr_partition'] = True
 		elif opt == '--nousbstorage':
 			cmdline['nousbstorage'] = True
 		elif opt == '--nousbcdrom':
@@ -159,6 +161,8 @@ if len(sys.argv) < 1 or read_cmdline:
 			cmdline['use_text']=True
 		elif opt == 'expert_partition':
 			cmdline['expert_partition'] = True
+		elif opt == 'mbr_partition':
+			cmdline['mbr_partition'] = True
 		elif opt == 'nousbstorage':
 			cmdline['nousbstorage'] = True
 		elif opt == 'nousbcdrom':
@@ -213,6 +217,10 @@ for file in files:
 			if cmdline.has_key("expert_partition") and temp[0] == "65_partition":
 				continue
 			if not cmdline.has_key("expert_partition") and temp[0] == "60_expert_partition":
+				continue
+			if 'mbr_partition' in cmdline and temp[0] == "66_gpt_partition":
+				continue
+			if not 'mbr_partition' in cmdline and temp[0] == "65_partition":
 				continue
 			modules.append(temp[0])
 modules.sort()

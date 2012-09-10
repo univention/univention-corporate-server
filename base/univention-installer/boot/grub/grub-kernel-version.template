@@ -20,6 +20,11 @@ menuentry 'Univention Installer Software RAID (expert mode)' {
 	initrd /boot/linux-@%@KERNEL@%@.bin
 }
 
+menuentry 'Univention Installer MBR Mode (deprecated)' {
+	linux /boot/linux-@%@KERNEL@%@ root=/dev/ram ro ramdisk_size=160120 flavor=linux nomodeset mbr_partition quiet loglevel=0 vga=788 text
+	initrd /boot/linux-@%@KERNEL@%@.bin
+}
+
 menuentry 'Univention Installer Profil' {
 	linux /boot/linux-@%@KERNEL@%@ root=/dev/ram ro ramdisk_size=160120 flavor=linux nomodeset quiet loglevel=0 vga=788 profile
 	initrd /boot/linux-@%@KERNEL@%@.bin
