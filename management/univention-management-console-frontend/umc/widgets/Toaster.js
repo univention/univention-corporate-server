@@ -30,7 +30,7 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/window",
+	"dojo/window",
 	"dojo/dom-geometry",
 	"dojox/widget/Toaster"
 ], function(declare, win, geometry, Toaster) {
