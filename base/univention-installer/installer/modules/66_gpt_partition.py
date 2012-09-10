@@ -1605,6 +1605,12 @@ class object(content):
 					if cols[6]:
 						flag = re.split(',[ \t]+', cols[6])     # flags are separated with comma
 
+					# fix fstypes
+					if fstype == 'linux-swap(v0)':
+						fstype = 'linux-swap'
+					elif fstype == 'linux-swap(v1)':
+						fstype = 'linux-swap'
+
 					# add free space between partitions
 					if (start - last_part_end) > PARTSIZE_MINIMUM and start > EARLIEST_START_OF_FIRST_PARTITION:
 						if last_part_end == 0:
