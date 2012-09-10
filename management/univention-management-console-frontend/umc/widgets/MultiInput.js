@@ -156,7 +156,7 @@ define([
 
 		_setAllValues: function(_valList) {
 			var valList = _valList;
-			if (!valList instanceof Array) {
+			if (!(valList instanceof Array)) {
 				valList = [];
 			}
 

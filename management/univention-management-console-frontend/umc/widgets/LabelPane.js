@@ -89,20 +89,25 @@ define([
 			if (null === this.label) {
 				this.label = this.content.label || '';
 			}
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
 			// register watch handler for label and visibility changes
 			if (lang.getObject('content.watch', false, this)) {
 				if (!tools.inheritsFrom(this.content, 'umc.widgets.Button')) {
 					// only watch the label and required property if widget is not a button
-					this.content.watch('label', lang.hitch(this, function(attr, oldVal, newVal) {
+					this.own(this.content.watch('label', lang.hitch(this, function(attr, oldVal, newVal) {
 						this.set('label', newVal || '');
-					}));
-					this.content.watch('required', lang.hitch(this, function(attr, oldVal, newVal) {
+					})));
+					this.own(this.content.watch('required', lang.hitch(this, function(attr, oldVal, newVal) {
 						this.set('label', this.content.get('label') || '');
-					}));
+					})));
 				}
-				this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
+				(this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
 					domClass.toggle(this.domNode, 'dijitHidden', !newVal);
-				}));
+				})));
 			}
 			else if (typeof this.label != "string") {
 				this.label = '';

@@ -85,7 +85,7 @@ define([
 			this.inherited(arguments);
 
 			// in case 'value' is not specified, generate a new array
-			if (!this.value instanceof Array) {
+			if (!(this.value instanceof Array)) {
 				this.value = [];
 			}
 		},
@@ -169,7 +169,7 @@ define([
 			// summary:
 			//		Returns all select items is array of dicts (with id and label entries)
 			var vals = this.get('value');
-			if (!vals instanceof Array) {
+			if (!(vals instanceof Array)) {
 				return [];
 			}
 

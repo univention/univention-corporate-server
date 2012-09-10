@@ -1011,7 +1011,7 @@ define([
 			}, this);
 
 			// return Boolean or array depending on the input
-			if (!_ids instanceof Array) {
+			if (!(_ids instanceof Array)) {
 				return result[0]; // Boolean
 			}
 			return result; // Boolean[]

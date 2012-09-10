@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.43-1) unstable; urgency=low
+
+  * fixed issues with rendering of widgets; Bug #26826
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Sep 2012 18:17:32 +0200
+
 univention-management-console-frontend (2.0.42-1) unstable; urgency=low
 
   * fixed Toaster; Bug #26826

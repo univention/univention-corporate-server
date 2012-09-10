@@ -31,8 +31,9 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-class",
 	"dijit/form/Button"
-], function(declare, lang, Button) {
+], function(declare, lang, domClass, Button) {
 	return declare("umc.widgets.Button", [ Button ], {
 		// defaultButton: Boolean
 		//		If set to 'true', button will be rendered as default, i.e., submit button.
@@ -41,6 +42,8 @@ define([
 		// callback: Function
 		//		Convenience property for onClick callback handler.
 		callback: null,
+
+		visible: true,
 
 		// the widget's class name as CSS class
 		'class': 'umcButton',
@@ -66,6 +69,19 @@ define([
 			if (typeof this.callback == "function") {
 				this.on('click', lang.hitch(this, 'callback'));
 			}
+		},
+
+		show: function() {
+			this.set( 'visible', true );
+		},
+
+		hide: function() {
+			this.set( 'visible', false );
+		},
+
+		_setVisibleAttr: function(newVal) {
+			this._set('visible', newVal);
+			domClass.toggle(this.domNode, 'dijitHidden', !newVal);
 		}
 	});
 });

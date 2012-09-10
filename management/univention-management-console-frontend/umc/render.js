@@ -31,7 +31,6 @@
 define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/dom-class",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
@@ -40,7 +39,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/SubmitButton",
 	"umc/widgets/ResetButton"
-], function(lang, array, domClass, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, Button, SubmitButton, ResetButton) {
+], function(lang, array, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, Button, SubmitButton, ResetButton) {
 	var render = {};
 	lang.mixin(render, {
 		widgets: function(/*Object[]*/ widgetsConf) {
@@ -255,16 +254,6 @@ define([
 							widget.$isRendered$ = true;
 						}
 						else if (widget) {
-							// add show and hide function to widget
-							lang.mixin( widget, {
-								show: function() {
-									this.set( 'visible', true );
-								},
-								hide: function() {
-									this.set( 'visible', false );
-								}
-							} );
-
 							// add the widget or button surrounded with a LabelPane
 							label = new LabelPane({
 								label: widget.label,
@@ -279,16 +268,6 @@ define([
 							widget.$isRendered$ = true;
 						} else if (button) {
 							if (nWidgetsWithLabel) {
-								// add show and hide function to widget
-								lang.mixin( button, {
-									show: function() {
-										this.set( 'visible', true );
-									},
-									hide: function() {
-										this.set( 'visible', false );
-									}
-								} );
-
 								// if buttons are displayed along with widgets, we need to add a '&nbps;'
 								// as label in order to display them on the same height
 								label = new LabelPane({
@@ -305,18 +284,6 @@ define([
 									button.set('style', 'float: ' + button.align);
 								}
 								// but then we should have show/hide methods to be consistent
-								lang.mixin( button, {
-									show: function() {
-										this.set( 'visible', true );
-									},
-									hide: function() {
-										this.set( 'visible', false );
-									},
-									_setVisibleAttr: function(newVal) {
-										this.visible = newVal;
-										domClass.toggle(this.domNode, 'dijitHidden', !newVal);
-									}
-								} );
 								button._setVisibleAttr(button.visible); // make sure that the button is set correctly
 								elContainer.addChild(button);
 							}

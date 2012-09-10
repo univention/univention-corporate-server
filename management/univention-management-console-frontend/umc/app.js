@@ -160,24 +160,28 @@ define([
 			}
 
 			// create a new tab
-			var params = lang.mixin({
-				title: module.name,
-				iconClass: tools.getIconClass(module.icon),
-				closable: tools.status('overview'),  // closing tabs is only enabled of the overview is visible
-				moduleFlavor: module.flavor,
-				moduleID: module.id,
-				description: module.description
-				//items: [ new module.BaseClass() ],
-				//layout: 'fit',
-				//closable: true,
-				//autoScroll: true
-				//autoWidth: true,
-				//autoHeight: true
-			}, props);
-			var tab = new module.BaseClass(params);
-			this._tabContainer.addChild(tab);
-			this._tabContainer.selectChild(tab, true);
-			tab.startup();
+			try {
+				var params = lang.mixin({
+					title: module.name,
+					iconClass: tools.getIconClass(module.icon),
+					closable: tools.status('overview'),  // closing tabs is only enabled of the overview is visible
+					moduleFlavor: module.flavor,
+					moduleID: module.id,
+					description: module.description
+					//items: [ new module.BaseClass() ],
+					//layout: 'fit',
+					//closable: true,
+					//autoScroll: true
+					//autoWidth: true,
+					//autoHeight: true
+				}, props);
+				var tab = new module.BaseClass(params);
+				this._tabContainer.addChild(tab);
+				this._tabContainer.selectChild(tab, true);
+				tab.startup();
+			} catch (err) {
+				console.log('Error initializing module ' + module.id + ':', err);
+			}
 		},
 
 		focusTab: function(tab) {

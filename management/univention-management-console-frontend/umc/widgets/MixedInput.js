@@ -165,7 +165,7 @@ define([
 			}
 
 			// destroy old widget in case the type has changed and create a new one
-			if (this._widget && this._widget.declaredClass != newWidgetClass) {
+			if (this._widget && this._widget.declaredClass != newWidgetClass.replace(/\//g, '.')) {
 				// destroy widget
 				this._widget.destroy();
 				this._widget = null;
@@ -193,7 +193,7 @@ define([
 				this._widget._clearValues();
 				this._widget._setDynamicValues(values);
 			}
-			else if (!values instanceof Array) {
+			else if (!(values instanceof Array)) {
 				this._widget.set('value', values);
 			}
 			this._widget.startup();

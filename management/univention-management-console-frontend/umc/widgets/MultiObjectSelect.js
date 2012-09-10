@@ -234,7 +234,7 @@ define([
 			this.inherited(arguments);
 
 			// in case 'value' is not specified, generate a new array
-			if (!this.value instanceof Array) {
+			if (!(this.value instanceof Array)) {
 				this.value = [];
 			}
 

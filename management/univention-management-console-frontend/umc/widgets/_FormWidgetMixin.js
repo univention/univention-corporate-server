@@ -39,6 +39,8 @@ define([
 
 		sizeClass: 'One',
 
+		visible: true,
+
 		//
 		// event handling
 		//
@@ -116,6 +118,19 @@ define([
 				this.set('invalidMessage', message);
 				this._maskValidSubsetError = false;
 			}
+		},
+
+		show: function() {
+			this.set( 'visible', true );
+		},
+
+		hide: function() {
+			this.set( 'visible', false );
+		},
+
+		_setVisibleAttr: function(newVal) {
+			this._set('visible', newVal);
+			domClass.toggle(this.domNode, 'dijitHidden', !newVal);
 		}
 	});
 });

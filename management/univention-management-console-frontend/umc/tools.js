@@ -609,7 +609,7 @@ define([
 			//		with multi-dimensional arrays.
 
 			// make sure we have an array
-			if (!array instanceof Array) {
+			if (!(array instanceof Array)) {
 				return callback.call(scope, array);
 			}
 
