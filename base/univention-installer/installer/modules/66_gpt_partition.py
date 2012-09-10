@@ -531,12 +531,6 @@ class object(content):
 			self.sub.sub.draw()
 			return 1
 
-		if root_fs_type == 'ext4' and boot_fs_type in [ None, 'ext4' ]:
-			return _('Unbootable config! / on ext4 needs /boot-partition with other than ext4!')
-
-		if root_fs_type == 'btrfs' and boot_fs_type in [ None, 'btrfs' ]:
-			return _('Unbootable config! / on btrfs needs /boot-partition with other than btrfs!')
-
 	def profile_f12_run(self):
 		self.debug('profile_f12_run')
 		# send the F12 key event to the subwindow
