@@ -136,6 +136,7 @@ define([
 
 		onSubmit: function() {
 			this.allowSearchButton(false);
+			return this.inherited(arguments);
 		}
 
 	});
