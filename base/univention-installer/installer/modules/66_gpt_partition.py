@@ -2732,8 +2732,9 @@ class object(content):
 			self.container['disk'][arg_disk]['partitions'][arg_part]['size'] = size
 			self.container['disk'][arg_disk]['partitions'][arg_part]['end'] = new_part_end
 			self.container['disk'][arg_disk]['partitions'][arg_part]['label'] = label
+			# WARNING: parted is kind of broken and requires a quoted label as argument → i.e. the value is double quoted
 			self.container['history'].append(['/sbin/parted', '--script', arg_disk, 'unit', 'B',
-												'mkpart', str(label), str(new_part_start), str(new_part_end)])
+												'mkpart', '"%s"' % label, str(new_part_start), str(new_part_end)])
 
 			# if "size" is smaller than free space and remaining free space is larger than PARTSIZE_MINIMUM then
 			# create new entry for free space
