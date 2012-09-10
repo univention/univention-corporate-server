@@ -1905,8 +1905,8 @@ class object(content):
 			for vgname,vg in self.container['lvm']['vg'].items():
 				self.parent.debug('reducing LVM VG: %s' % vgname)
 				if self.container['lvm']['vg'][ vgname ]['created']:
-					self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
-					self.container['history'].append('/sbin/vgremove %s' % vgname)
+					self.container['history'].append(['/sbin/vgreduce', '-a', '--removemissing', vgname])
+					self.container['history'].append(['/sbin/vgremove', vgname])
 					self.container['lvm']['vg'][ vgname ]['created'] = 0
 
 			# remove all logical partitions, next all extended partitions and finally all primary partitions
@@ -1927,8 +1927,8 @@ class object(content):
 			self.container['lvm']['pv'] = {}
 
 			self.parent.debug("HISTORY")
-			for h in self.container['history']:
-				self.parent.debug('==> %s' % h)
+			for entry in self.container['history']:
+				self.parent.debug('==> %s' % entry)
 
 			# reactivate LVM
 			self.parent.set_lvm(True)
@@ -2666,17 +2666,17 @@ class object(content):
 										vg_cnt += 1
 								self.parent.debug('pv_delete: vgname=%s	 vg_cnt=%s' % (vgname, vg_cnt))
 								if vg_cnt > 1:
-									self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
+									self.container['history'].append(['/sbin/vgreduce', vgname, device])
 								elif vg_cnt == 1:
-									self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
-									self.container['history'].append('/sbin/vgremove %s ' % vgname)
+									self.container['history'].append(['/sbin/vgreduce', '-a', '--removemissing', vgname])
+									self.container['history'].append(['/sbin/vgremove', vgname])
 									self.container['lvm']['vg'][ vgname ]['created'] = 0
 								else:
 									self.parent.debug('pv_delete: installer is confused: vg_cnt is 0: doing nothing')
 							pv['vg'] = ''
 
 						# removing LVM PV signature from partition
-						self.container['history'].append('/sbin/pvremove %s %s' % (forceflag, device))
+						self.container['history'].append(['/sbin/pvremove', forceflag, device])
 
 			return False
 
@@ -3108,8 +3108,8 @@ class object(content):
 				act_win.__init__(self, parent, header, text, name)
 
 			def run_command(self, command):
-				self.parent.parent.debug('running "%s"' % command)
-				proc = subprocess.Popen(command, bufsize=0, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				self.parent.parent.debug('running %s' % command)
+				proc = subprocess.Popen(command, bufsize=0, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				(stdout, stderr) = proc.communicate()
 				self.parent.parent.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
 										 (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
@@ -3147,9 +3147,9 @@ class object(content):
 								elif fstype == 'xfs':
 									mkfs_cmd = ['/sbin/mkfs.xfs', '-f', device]
 								elif fstype == 'linux-swap':
-									mkfs_cmd = ['/sbin/mkswap', device]
+									mkfs_cmd = ['/bin/mkswap', device]
 								else:
-									mkfs_cmd = ['/sbin/true', device]
+									mkfs_cmd = ['/bin/true', device]
 								retval = self.run_command(mkfs_cmd)
 								if retval:
 									return
@@ -3166,9 +3166,9 @@ class object(content):
 								elif fstype == 'xfs':
 									mkfs_cmd = ['/sbin/mkfs.xfs', '-f', device]
 								elif fstype == 'linux-swap':
-									mkfs_cmd = ['/sbin/mkswap', device]
+									mkfs_cmd = ['/bin/mkswap', device]
 								else:
-									mkfs_cmd = ['/sbin/true', device]
+									mkfs_cmd = ['/bin/true', device]
 								retval = self.run_command(mkfs_cmd)
 								if retval:
 									return
@@ -3340,10 +3340,10 @@ class object(content):
 
 							for f in old_flags:
 								if f not in flag:
-									self.parent.container['history'].append('/sbin/parted --script %s set %d %s off' % (path, self.parent.container['disk'][path]['partitions'][part]['num'], f))
+									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', self.parent.container['disk'][path]['partitions'][part]['num'], f, 'off'])
 							for f in flag:
 								if f not in old_flags:
-									self.parent.container['history'].append('/sbin/parted --script %s set %d %s on' % (path, self.parent.container['disk'][path]['partitions'][part]['num'], f))
+									self.parent.container['history'].append(['/sbin/parted', '--script', path, 'set', self.parent.container['disk'][path]['partitions'][part]['num'], f, 'on'])
 
 							self.parent.container['disk'][path]['partitions'][part]['flag'] = flag
 
