@@ -2770,11 +2770,16 @@ class object(content):
 
 			if not label:
 				label = ''
-				for c in mpoint.lower():
-					if c in 'abcdefghijklmnopqrstuvwxyz0123456789-_/':
-						label += c
-					else:
-						label += '_'
+				if mpoint:
+					for c in mpoint.lower():
+						if c in 'abcdefghijklmnopqrstuvwxyz0123456789-_/':
+							label += c
+						else:
+							label += '_'
+				elif fstype:
+					label = fstype
+				elif 'lvm' in flags:
+					label = 'LVMPV'
 
 			# create new partition
 			new_part_start = free_part_start
@@ -2790,7 +2795,7 @@ class object(content):
 			self.container['disk'][arg_disk]['partitions'][arg_part]['end'] = new_part_end
 			self.container['disk'][arg_disk]['partitions'][arg_part]['label'] = label
 			self.container['history'].append(['/sbin/parted', '--script', arg_disk, 'unit', 'B',
-												'mkpart', label, str(new_part_start), str(new_part_end)])
+												'mkpart', str(label), str(new_part_start), str(new_part_end)])
 
 			# if "size" is smaller than free space and remaining free space is larger than PARTSIZE_MINIMUM then
 			# create new entry for free space
