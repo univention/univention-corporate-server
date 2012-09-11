@@ -59,7 +59,8 @@ fi
 
 if [ -d /mnt/script/installer ]; then
 
-	for file in $(ls /mnt/script/installer/*); do
+	IFS=$'\n'
+	for file in $(find /mnt/script/installer/ -maxdepth 1 -type f); do
 		md5=$(md5sum "$file" | awk '{print $1}')
 		copyFile=true
 		for ignore in $IGNORELIST; do
@@ -72,6 +73,7 @@ if [ -d /mnt/script/installer ]; then
 			cp "$file" /lib/univention-installer-scripts.d/
 		fi
 	done
+	unset IFS
 	
 	chmod +x /lib/univention-installer-scripts.d/*
 fi
