@@ -231,9 +231,10 @@ ucs_addServiceToLocalhost 'Samba 3' "$@"
 # sync netlogon share
 /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
 
-if [ "$JS_LAST_EXECUTED_VERSION" -lt 8 ]; then
-	## this block and script may be removed after update to ucs3.1 (Bug #21262)
-	/usr/share/univention-samba/adopt_ucs_domain_password_length_policy.sh
+# increase the minimal password length Samba domain policy from 5 to 8
+# characters on the first execution of this script (Bug #21262)
+if ! joinscript_check_any_version_executed; then
+	pdbedit -P "min password length" -C 8
 fi
 
 joinscript_save_current_version
