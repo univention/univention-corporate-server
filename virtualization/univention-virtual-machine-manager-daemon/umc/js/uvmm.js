@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define window*/
 
 define([
 	"dojo/_base/declare",
@@ -41,6 +41,7 @@ define([
 	"dijit/layout/ContentPane",
 	"dijit/ProgressBar",
 	"dijit/Dialog",
+	"dijit/form/_TextBoxMixin",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Module",
@@ -61,7 +62,7 @@ define([
 	"umc/modules/uvmm/DomainWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, Deferred, entities, sprintf, Menu, MenuItem, ContentPane, ProgressBar, Dialog,
+], function(declare, lang, array, string, Deferred, entities, sprintf, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, TreeModel, DomainPage, DomainWizard, types, _) {
 
@@ -283,18 +284,18 @@ define([
 			}));
 		},
 
-		_selectInputText: function() { 
-			// focus on input widget 
-			var widget = this._searchForm.getWidget('pattern'); 
-			widget.focus(); 
- 	 
+		_selectInputText: function() {
+			// focus on input widget
+			var widget = this._searchForm.getWidget('pattern');
+			widget.focus();
+
 			// select the text
-			if (widget.textbox) { 
+			if (widget.textbox) {
 				try {
-					dijit.selectInputText(widget.textbox); 
+					_TextBoxMixin.selectInputText(widget.textbox);
 				}
 				catch (err) { }
-			}   
+			}
 		},
 
 		vncLink: function( ids, items ) {
@@ -946,7 +947,7 @@ define([
 						port: item.vnc_port == -1 ? '' : _( 'VNC-Port: %s', item.vnc_port)
 					} ),
 					connectId: [ widget.domNode ],
-					position: 'below'
+					position: [ 'below' ]
 				});
 
 				// destroy the tooltip when the widget is destroyed

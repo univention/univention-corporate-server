@@ -41,7 +41,7 @@ define([
 ], function(declare, lang, array, when, tools, dialog, Wizard, types, _) {
 
 	return declare("umc.modules.uvmm.DriveWizard", [ Wizard ], {
-		
+
 		domain: null,
 
 		_volumes: null,
@@ -150,7 +150,7 @@ define([
 						type: 'TextBox',
 						required: true,
 						label: _('Size (default unit MB)'),
-						value: this.domain.profileData && this.domain.profileData.diskspace ? this.domain.profileData.diskspace : '12.0 GB'
+						value: lang.getObject('domain.profileData.diskspace', false, this) || '12.0 GB'
 					}, {
 						name: 'pool_exists',
 						type: 'ComboBox',

@@ -161,9 +161,9 @@ define([
 			this._pages.drives.addChild(this._driveContainer);
 
 			// connect to the onShow method of the drives page to adjust the size of the grid
-			this._pages.drives.on('Show', function() {
+			this._pages.drives.on('show', lang.hitch(this, function() {
 				this._driveGrid.resize();
-			});
+			}));
 		},
 
 		next: function(pageName) {
@@ -171,7 +171,7 @@ define([
 			if (pageName == 'profile') {
 				// query the profile settings
 				this.standby(true);
-				var profileDN = this.getWidget('profileDN').get('value'); 
+				var profileDN = this.getWidget('profileDN').get('value');
 				tools.umcpCommand('uvmm/profile/get', {
 					profileDN: profileDN
 				}).then(lang.hitch(this, function(data) {

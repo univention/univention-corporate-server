@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.3-1) unstable; urgency=low
+
+  * bug fixes for Dojo update; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Sep 2012 13:28:30 +0200
+
 univention-virtual-machine-manager-daemon (2.0.2-1) unstable; urgency=low
 
   * ported module to Dojo 1.8; Bug #26857
