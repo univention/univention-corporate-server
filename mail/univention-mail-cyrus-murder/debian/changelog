@@ -1,3 +1,9 @@
+univention-mail-cyrus-murder (4.0.6-1) unstable; urgency=low
+
+  * fixed conffiles/etc/pam.d/mupdate (Bug #27305) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Sep 2012 11:22:35 +0200
+
 univention-mail-cyrus-murder (4.0.5-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)

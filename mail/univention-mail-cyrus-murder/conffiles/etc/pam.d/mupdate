@@ -23,7 +23,16 @@
 ### Authentication Section
 #
 auth    sufficient    pam_unix.so
-auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid binddn=@%@ldap/hostdn@%@ pwfile=/etc/machine.secret ldap_port=@%@ldap/server/port@%@
+@!@
+auth  = "auth    requisite    pam_univentionmailcyrus.so"
+auth += " ldap_host=%s" % configRegistry.get("ldap/server/name")
+auth += " ldap_base=%s" % configRegistry.get("ldap/base")
+auth += " from_attr=mailPrimaryAddress to_attr=uid"
+auth += " binddn=%s" % configRegistry.get("ldap/hostdn")
+auth += " pwfile=/etc/machine.secret"
+auth += " ldap_port=%s" % configRegistry.get("ldap/server/port", "7389")
+print auth
+@!@
 auth    [success=1 default=ignore]    pam_ldap.so use_first_pass 
 auth    [success=ok default=die]      pam_krb5.so use_first_pass
 
