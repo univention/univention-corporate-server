@@ -97,7 +97,7 @@ define([
 			this.addChild(this._form);
 
 			// show notes when samba 3/4 is selected
-			this._form.getWidget('components').watch('value', function(name, oldVal, newVal) {
+			this._form.getWidget('components').watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				array.forEach(['samba', 'samba4'], function(ikey) {
 					var r = new RegExp('univention-' + ikey + '\\b');
 					array.forEach(this._getInstalledComponents(), function(icomponent) {
@@ -107,14 +107,14 @@ define([
 						}
 					}, this);
 				}, this);
-			}, this);
+			}));
 
 			// show notes for changes in the software settings
-			this._form.getWidget('components').watch('value', function() {
+			this._form.getWidget('components').watch('value', lang.hitch(this, function() {
 				this._showNote('software');
-			}, this);
+			}));
 
-			// remeber which notes have already been showed
+			// remember which notes have already been shown
 			this._noteShowed = { };
 			this._myNotes = {
 				samba: _('It is not possible to mix NT and Active Directory compatible domaincontroller. Make sure the existing UCS domain is NT-compatible (Samba 3).'),

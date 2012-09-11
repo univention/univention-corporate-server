@@ -470,6 +470,20 @@ define([
 					var orgVal = this._orgValues[ikey];
 					orgVal = undefined === orgVal || null === orgVal ? '' : orgVal;
 					var newVal = undefined === ival || null === ival ? '' : ival;
+					// some variables (notably locale)
+					// were sent as [{id:id, label:label}, ...]
+					// but will be returned as [id, ...]
+					if (orgVal instanceof Array) {
+						var tmpOrgVal = [];
+						array.forEach(orgVal, function(iOrgVal) {
+							if (iOrgVal.id !== undefined && iOrgVal.label !== undefined) {
+								tmpOrgVal.push(iOrgVal.id);
+							}
+						});
+						if (tmpOrgVal.length) {
+							orgVal = tmpOrgVal;
+						}
+					}
 					if (json.stringify(orgVal) != json.stringify(newVal)) {
 						values[ikey] = newVal;
 						++nchanges;

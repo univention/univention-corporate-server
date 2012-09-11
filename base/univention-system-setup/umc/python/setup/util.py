@@ -201,6 +201,10 @@ def pre_save(newValues, oldValues):
 		installComponents = list(allComponents & (selectedComponents - currentComponents))
 		newValues['packages_install'] = ' '.join([ i.replace(':', ' ') for i in installComponents ])
 
+	if 'locale' in newValues:
+		# js returns locale as list
+		newValues['locale'] = ' '.join(newValues['locale'])
+
 	if 'locale/keymap' in newValues:
 		xkeymap = _xkeymap(newValues['locale/keymap'])
 		if xkeymap:
