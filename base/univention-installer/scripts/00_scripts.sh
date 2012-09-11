@@ -59,7 +59,8 @@ fi
 
 if [ -d /mnt/script/installer ]; then
 
-	IFS=$'\n'
+IFS='
+'
 	for file in $(find /mnt/script/installer/ -maxdepth 1 -type f); do
 		md5=$(md5sum "$file" | awk '{print $1}')
 		copyFile=true
