@@ -620,7 +620,7 @@ class object(content):
 		for line in data.splitlines():
 			match = regex.match(line)
 			if match:
-				sysmem = int(match.group(1)) / 1024
+				sysmem = int(match.group(1)) * 1024
 		self.debug('AUTOPART-PROFILE: sysmem=%s' % sysmem)
 
 		# calc disk sizes
@@ -1922,10 +1922,10 @@ class object(content):
 			for line in data.splitlines():
 				match = regex.match(line)
 				if match:
-					sysmem = int(match.group(1)) / 1024
+					sysmem = int(match.group(1)) * 1024
 			self.parent.debug('AUTOPART: sysmem=%s' % sysmem)
 
-			# create primary partition on first harddisk for /boot
+			# create partition on first harddisk for BIOS_BOOT
 			targetdisk = None
 			targetpart = None
 			for disk in disklist:
@@ -1951,6 +1951,7 @@ class object(content):
 			# get free space on target disk (first disk)
 			freespacelist, freespacemax, freespacesum = self.auto_partitioning_get_freespacelist([targetdisk])
 
+			# create partition on first harddisk for /boot
 			if freespacemax >= PARTSIZE_BOOT:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
 				self.part_create_generic(freespacelist[0][1], freespacelist[0][2], '/boot', PARTSIZE_BOOT, 'ext4', PARTTYPE_USED, [PARTFLAG_NONE], 1, '/boot')
@@ -1979,7 +1980,7 @@ class object(content):
 				self.draw()
 				return
 			while freespacesum - swapsize < PARTSIZE_SYSTEM_MIN:
-				swapsize -= 16
+				swapsize -= MiB2B(8)
 				if swapsize < PARTSIZE_SWAP_MIN:
 					swapsize = PARTSIZE_SWAP_MIN
 
