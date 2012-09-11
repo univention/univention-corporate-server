@@ -710,7 +710,7 @@ class object(content):
 			for dev in re.split('[\s,]+', self.all_results.get('create_partitiontable','')):
 				dev = dev.strip()
 				if dev:
-					self.install_fresh_mbr(dev)
+					self.install_fresh_gpt(dev)
 
 		if 'auto_part' in self.all_results.keys():
 			self.debug('read_profile: auto_part key found: %s' % self.all_results['auto_part'])
@@ -1775,7 +1775,7 @@ class object(content):
 			i += 1
 		return result
 
-	def install_fresh_mbr(self, device=None):
+	def install_fresh_gpt(self, device=None):
 		self.debug('Trying to install fresh partition table on device %s' % device)
 		if not os.path.exists(device):
 			self.debug('ERROR: device %s does not exist!' % device)
@@ -2049,10 +2049,10 @@ class object(content):
 					self.sub = msg_win(self,self.pos_y+11,self.pos_x+5,self.maxWidth,6, msglist)
 					self.draw()
 
-		def install_fresh_mbr_interactive(self, result, device=None):
-			self.parent.install_fresh_mbr(device)
+		def install_fresh_gpt_interactive(self, result, device=None):
+			self.parent.install_fresh_gpt(device)
 			self.container['problemdisk'][device].discard(DISKLABEL_UNKNOWN)
-			self.container['problemdisk'][device].discard(DISKLABEL_GPT)
+			self.container['problemdisk'][device].discard(DISKLABEL_MSDOS)
 			self.parent.debug('performing restart of module')
 			self.parent.start()
 			#self.parent.layout()
@@ -2085,16 +2085,16 @@ class object(content):
 				self.parent.debug('Checking problems for device %s ==> %s' % (dev, self.container['problemdisk'][dev]))
 
 				if DISKLABEL_UNKNOWN in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors
-					self.parent.debug('requesting user input: unknown disklabel ==> write new MBR?')
+					self.parent.debug('requesting user input: unknown disklabel ==> write new GPT?')
 					msglist=[ _('No valid partition table found on device %s.') % dev,
-							  _('Install empty MBR to device %s ?') % dev,
+							  _('Install empty GPT to device %s ?') % dev,
 							  '',
-							  _('WARNING: By choosing "Write MBR" existing data'),
+							  _('WARNING: By choosing "Write GPT" existing data'),
 							  _('on device %s will be lost.') % dev,
 							  ]
 					self.sub = yes_no_win(self, self.pos_y+9, self.pos_x+2, self.width-4, self.height-25, msglist, default='no',
-										  btn_name_yes=_('Write MBR'), btn_name_no=_('Ignore Device'),
-										  callback_yes=self.install_fresh_mbr_interactive, device=dev)
+										  btn_name_yes=_('Write GPT'), btn_name_no=_('Ignore Device'),
+										  callback_yes=self.install_fresh_gpt_interactive, device=dev)
 					self.draw()
 					self.container['problemdisk'][dev].discard(DISKLABEL_UNKNOWN)
 					break
