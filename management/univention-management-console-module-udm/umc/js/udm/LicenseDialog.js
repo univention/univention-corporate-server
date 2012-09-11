@@ -38,7 +38,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Button",
-	"dojo/text!umc.modules.udm/license.html",
+	"dojo/text!umc/modules/udm/license.html",
 	"umc/i18n!umc/modules/udm"
 ], function(declare, lang, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Button, licenseHtml, _) {
 
@@ -203,8 +203,6 @@ define([
 			var message = licenseHtml;
 			this._widgets.message.set( 'content', lang.replace( message, keys ) );
 			this._widgets.ffpu.set( 'content', this.licenseInfo.baseDN == 'Free for personal use edition' ? free_license_info : '' );
-
-			this.layout();
 		},
 
 		close: function() {
