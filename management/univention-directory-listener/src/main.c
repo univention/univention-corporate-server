@@ -59,18 +59,19 @@
 #include "select_server.h"
 #include "transfile.h"
 
-int INIT_ONLY=0;
+int INIT_ONLY = 0;
 
 char *current_server_list = NULL;
 struct server_list *server_list = NULL;
 int server_list_entries = 0;
-int backup_notifier=0;
+int backup_notifier = 0;
 
 char **module_dirs = NULL;
 int module_dir_count = 0;
 long long listener_lock_count = 100;
 char pidfile[PATH_MAX];
 extern int maxnbackups;
+
 
 static char* read_pwd_from_file(char *filename)
 {
@@ -132,10 +133,11 @@ static int daemonize(void)
 	if ((log=open("/var/log/univention/listener.log", O_WRONLY | O_CREAT | O_APPEND)) == -1)
 		log=null;
 	dup2(log, STDERR_FILENO);
-	
+
 	setsid();
 	return 0;
 }
+
 
 void drop_privileges(void)
 {
@@ -158,6 +160,7 @@ void drop_privileges(void)
 		exit(1);
 	}
 }
+
 
 static void usage(void)
 {
@@ -186,6 +189,7 @@ static void usage(void)
 	fprintf(stderr, "   -i   initialize handlers only\n");
 	fprintf(stderr, "   -o   write transaction file\n");
 }
+
 
 static void convert_cookie(void)
 {
@@ -256,6 +260,7 @@ static void convert_cookie(void)
 #endif
 }
 
+
 static void purge_cache(const char *cache_dir)
 {
 	DIR* dir;
@@ -272,7 +277,7 @@ static void purge_cache(const char *cache_dir)
 		closedir(dir);
 	}
 	handlers_clean_all();
-	
+
 	asprintf(&dirname, "%s/handlers", cache_dir);
 	if ((dir = opendir(dirname)) != NULL) {
 		while ((dirent = readdir(dir))) {
@@ -285,17 +290,19 @@ static void purge_cache(const char *cache_dir)
 	free(dirname);
 }
 
+
 static void prepare_cache(const char *cache_dir)
 {
 	char *dirname;
 	struct stat stbuf;
-	
+
 	asprintf(&dirname, "%s/handlers", cache_dir);
 	if (stat(dirname, &stbuf) != 0) {
 		mkdir(dirname, 0700);
 	}
 	free(dirname);
 }
+
 
 static int do_connection(univention_ldap_parameters_t *lp)
 {
@@ -512,7 +519,7 @@ int main(int argc, char* argv[])
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
 		if (lp->host != NULL) {
 			free(lp->host);
-		}	
+		}
 		if ( lp->ld != NULL ) {
 			ldap_unbind_ext(lp->ld, NULL, NULL);
 		}
@@ -593,14 +600,14 @@ int main(int argc, char* argv[])
 			exit(1);
 	} else if (rv != 0)
 		exit(1);
-	
+
 #else
 	cache_get_int("notifier_id", &old_id, -1);
 	if ((long)old_id == -1) {
 		cache_set_int("notifier_id", id);
 	}
 #endif
-	
+
 	if (!initialize_only) {
 		rv=notifier_listen(lp, kp, write_transaction_file, lp_local);
 	}

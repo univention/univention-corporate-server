@@ -84,13 +84,11 @@ options="$options -ZZ -d 1"
 options="$options -i -h $ldap_master -b "$ldap_base" -m $moduledir -c $cachedir"
 
 if [ -n "$server_role" ]; then
-
 	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 		/usr/sbin/univention-directory-listener $options -D "cn=admin,$ldap_base" -y /etc/ldap.secret
 	else
 		/usr/sbin/univention-directory-listener $options -D "`univention-config-registry get ldap/hostdn`" -y /etc/machine.secret
 	fi
-	
 else
 	/usr/sbin/univention-directory-listener $options
 fi

@@ -63,6 +63,7 @@ static void add_dn(char *dn) {
 	dns = new;
 }
 
+
 static int has_dn(char *dn) {
 	struct dn *cur;
 	for (cur = dns; cur != NULL; cur=cur->next) {
@@ -73,23 +74,24 @@ static int has_dn(char *dn) {
 	return 0;
 }
 
+
 static void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *ldap_entry)
 {
 	CacheEntry	  lentry;
 	char		**changes;
 	char		**cur;
-	
+
 	cache_new_entry_from_ldap(NULL, &lentry, ld, ldap_entry);
 	changes = cache_entry_changed_attributes(entry, &lentry);
 
 	for (cur = changes; cur != NULL && *cur != NULL; cur++) {
 		int	  i;
 		struct berval	**values;
-		
+
 		if (changes-cur == 0)
 			printf("E: %s:\n", dn);
 		printf("E:     %s differs\n", *cur);
-		
+
 		for (i=0; entry->attributes != NULL && entry->attributes[i] != NULL; i++) {
 			if (strcmp(entry->attributes[i]->name, *cur) == 0)
 				break;
@@ -106,7 +108,7 @@ static void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *
 			}
 			printf("]\n");
 		}
-		
+
 		printf("E:         LDAP = [");
 		values = ldap_get_values_len(ld, ldap_entry, *cur);
 		for (i=0; values != NULL && values[i] != NULL && values[i]->bv_val != NULL; i++) {
@@ -114,11 +116,11 @@ static void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *
 		}
 		ldap_value_free_len(values);
 		printf("]\n");
-
 	}
 
 	free(changes);
 }
+
 
 static void usage(void)
 {
@@ -130,6 +132,7 @@ static void usage(void)
 	fprintf(stderr, "   -w   LDAP bind password\n");
 	fprintf(stderr, "   -b   LDAP base dn\n");
 }
+
 
 int main(int argc, char* argv[])
 {
@@ -180,7 +183,7 @@ int main(int argc, char* argv[])
 		usage();
 		exit(1);
 	}
-	
+
 	if (debugging > 1) {
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_ALL);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_ALL);
@@ -212,8 +215,8 @@ int main(int argc, char* argv[])
 		fprintf(stderr, "E: Could not bind to LDAP server\n");
 		exit(1);
 	}
-	
-	
+
+
 	if (cache_init() != 0)
 		exit(1);
 
@@ -224,7 +227,7 @@ int main(int argc, char* argv[])
 		if (has_dn(dn)) {
 			printf("E: duplicate entry: %s\n", dn);
 		}
-		
+
 		if ((rv=ldap_search_ext_s(ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)",
 				attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res)) == LDAP_NO_SUCH_OBJECT) {
 			printf("W: %s only in cache\n", dn);
@@ -250,7 +253,7 @@ int main(int argc, char* argv[])
 				cur = ldap_next_entry(ld, cur)) {
 			char *dn = ldap_get_dn(ld, cur);
 			if (has_dn(dn)) continue;
-			
+
 			if ((rv=cache_get_entry(0, dn, &entry)) == DB_NOTFOUND) {
 				printf("E: %s only in LDAP\n", dn);
 			} else if (rv != 0) {

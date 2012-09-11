@@ -44,6 +44,13 @@
 #include "common.h"
 #include "filter.h"
 
+
+/* Check if entry matches value of attribute.
+ * @param attribute Name of attribute.
+ * @param value Expected string value. '*' as a wild-card at the front or end is supported.
+ * @param entry Cached LDAP entry to match.
+ * @return 1 on match, 0 otherwise.
+ */
 static int cache_entry_match_attribute_value(char *attribute, char *value, CacheEntry *entry)
 {
 	CacheEntryAttribute	**a;
@@ -53,17 +60,17 @@ static int cache_entry_match_attribute_value(char *attribute, char *value, Cache
 	char			 *substr = NULL;
 	int			  begins = 0,
 				  ends = 0;
-	
+
 	for (a=entry->attributes; a != NULL && *a != NULL; a++) {
 		if (strcmp((*a)->name, attribute) == 0)
 			break;
 	}
 	if (a == NULL || *a == NULL)
 		return 0;
-	
+
 	if (strcmp(value, "*") == 0)
 		return 1;
-	
+
 	len = strlen(value);
 	begins = value[0] == '*';
 	ends = value[len-1] == '*';
@@ -80,22 +87,30 @@ static int cache_entry_match_attribute_value(char *attribute, char *value, Cache
 			if (rv) break;
 		}
 	}
-	
+
 	free(substr);
 	return rv;
 }
 
-static int __cache_entry_ldap_filter_match(char* filter, int first, int last, CacheEntry *entry)
+
+/* Check if entry matches the LDAP filter.
+ * @param filter LDAP search filter supporting. LIMITED.
+ * @param first Index into filter to specify start character.
+ * @param last Index into filter to specify last character.
+ * @param entry Cached LDAP entry to match.
+ * @return 1 on match, 0 on no match, -1 on errors.
+ */
+static int __cache_entry_ldap_filter_match(char *filter, int first, int last, CacheEntry *entry)
 {
 	/* sanity check */
 	if (filter[first] != '(' || filter[last] != ')')
 		return -1;
-	
+
 	if (filter[first+1] == '&' || filter[first+1] == '|' || filter[first+1] == '!') {
 		int i;
 		int begin = -1;
 		int depth = 0;
-		
+
 		/* sanity check */
 		if (filter[first+2] != '(' || filter[last-1] != ')')
 			return -1;
@@ -107,11 +122,11 @@ static int __cache_entry_ldap_filter_match(char* filter, int first, int last, Ca
 				++depth;
 			} else if (filter[i] == ')' && begin != -1) {
 				int cond_is_true;
-				
+
 				--depth;
 				if (depth != 0)
 					continue;
-				
+
 				cond_is_true = __cache_entry_ldap_filter_match(filter, begin, i, entry);
 				if (!cond_is_true && filter[first+1] == '&')
 					return 0;
@@ -119,7 +134,7 @@ static int __cache_entry_ldap_filter_match(char* filter, int first, int last, Ca
 					return 1;
 				else if (filter[first+1] == '!')
 					return !cond_is_true;
-				
+
 				begin = -1;
 			}
 		}
@@ -135,7 +150,7 @@ static int __cache_entry_ldap_filter_match(char* filter, int first, int last, Ca
 		char *attr, *val;
 		int i;
 		int rv;
-		
+
 		for (i = first+1; i <= last-1; i++) {
 			if (filter[i] == '=' && i > first+1) {
 				if (filter[i-1] == '~')
@@ -156,16 +171,23 @@ static int __cache_entry_ldap_filter_match(char* filter, int first, int last, Ca
 		val = strndup(filter+i+1, last-i-1);
 
 		rv = cache_entry_match_attribute_value(attr, val, entry);
-		
+
 		free(attr);
 		free(val);
-		
+
 		return rv;
 	}
 
 	return -1;
 }
 
+
+/* Check if entry matches LDAP dn.
+ * @param filter An array of LDAP filters, scopes and bases.
+ * @param dn The distinguished name of the cached LDAP entry.
+ * @param entry Cached LDAP entry to match.
+ * @return 1 on match, 0 otherwise.
+ */
 int cache_entry_ldap_filter_match(struct filter **filter, char *dn, CacheEntry *entry)
 {
 	struct filter **f;

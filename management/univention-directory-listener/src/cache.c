@@ -270,7 +270,7 @@ int cache_get_master_entry(CacheMasterEntry *master_entry)
 				"reading master entry from database failed");
 		dbp->err(dbp, rv, "get");
 		return rv;
-	}	
+	}
 
 	if (data.size != sizeof(CacheMasterEntry)) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
@@ -289,10 +289,10 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp)
 	DBT key, data;
 	int rv;
 	int flags;
-	
+
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
-	
+
 	key.data=MASTER_KEY;
 	key.size=MASTER_KEY_SIZE;
 
@@ -305,7 +305,7 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp)
 	else
 #endif
 		flags = 0;
-	
+
 	if ((rv=dbp->put(dbp, dbtxnp, &key, &data, flags)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"storing master entry in database failed");
@@ -349,7 +349,7 @@ DB_TXN* cache_new_transaction(NotifierID id, char *dn)
 			return NULL;
 		} else
 			*old_id = id;
-		
+
 		if (cache_update_master_entry(&master_entry, dbtxnp) != 0) {
 			dbtxnp->abort(dbtxnp);
 			return NULL;
@@ -472,7 +472,7 @@ int cache_delete_entry(NotifierID id, char *dn)
 		dbp->sync(dbp, 0);
 	}
 	signals_unblock();
-	
+
 	return rv;
 }
 
@@ -534,7 +534,7 @@ int cache_get_entry(NotifierID id, char *dn, CacheEntry *entry)
 				dn);
 		return rv;
 	}
-	
+
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "got %d bytes for %s",
 			data.size, dn);
 
@@ -580,7 +580,7 @@ int cache_first_entry(DBC **cur, char **dn, CacheEntry *entry)
 		return rv;
 	}
 	dbc_cur=*cur;
-	
+
 	return cache_next_entry(cur, dn, entry);
 }
 
@@ -616,7 +616,7 @@ int cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 	key.flags = DB_DBT_REALLOC;
 	memset(&data, 0, sizeof(DBT));
 	data.flags = DB_DBT_REALLOC;
-	
+
 	if ((rv=(*cur)->c_get(*cur, &key, &data, DB_NEXT)) == DB_NOTFOUND) {
 		return rv;
 	} else if (rv != 0) {
@@ -630,8 +630,8 @@ int cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 		free(data.data);
 		return cache_next_entry(cur, dn, entry);
 	}
-	
-	if (!*dn) 
+
+	if (!*dn)
 		free(*dn);
 	*dn = strdup(key.data);
 

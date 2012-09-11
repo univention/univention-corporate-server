@@ -70,7 +70,7 @@ int cache_free_entry(char **dn, CacheEntry *entry)
 			free(entry->attributes[i]);
 		}
 	}
-	
+
 	if (entry->attributes) {
 		free(entry->attributes);
 	}
@@ -80,14 +80,14 @@ int cache_free_entry(char **dn, CacheEntry *entry)
 			free(entry->modules[i]);
 		}
 	}
-	
+
 	if(entry->modules) {
 		free(entry->modules);
 	}
 
 	entry->modules = NULL;
 	entry->module_count = 0;
-	
+
 	return 0;
 }
 
@@ -96,7 +96,7 @@ int cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 	CacheEntryAttribute **attribute;
 	char **module;
 	char **value;
-	
+
 	fprintf(fp, "dn: %s\n", dn);
 	int i, j;
 	for(i=0; i<entry->attribute_count; i++) {
@@ -135,7 +135,7 @@ int cache_entry_module_add(CacheEntry *entry, char *module)
 		if (strcmp(*cur, module) == 0)
 			return 0;
 	}
-	
+
 	entry->modules = realloc(entry->modules, (entry->module_count+2)*sizeof(char*));
 	entry->modules[entry->module_count] = strdup(module);
 	entry->modules[entry->module_count+1] = NULL;
@@ -147,12 +147,12 @@ int cache_entry_module_add(CacheEntry *entry, char *module)
 int cache_entry_module_remove(CacheEntry *entry, char *module)
 {
 	char **cur;
-	
+
 	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
 		if (strcmp(*cur, module) == 0)
 			break;
 	}
-	
+
 	if (cur == NULL || *cur == NULL)
 		return 0;
 
@@ -205,7 +205,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 
 	for (attr=ldap_first_attribute(ld, ldap_entry, &ber); attr != NULL; attr=ldap_next_attribute(ld, ldap_entry, ber)) {
 		struct berval **val, **v;
-	
+
 		if ((cache_entry->attributes = realloc(cache_entry->attributes, (cache_entry->attribute_count+2)*sizeof(CacheEntryAttribute*))) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of attributes array failed");
 			rv = 1;
@@ -221,7 +221,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		cache_entry->attributes[cache_entry->attribute_count]->length=NULL;
 		cache_entry->attributes[cache_entry->attribute_count]->value_count=0;
 		cache_entry->attributes[cache_entry->attribute_count+1]=NULL;
-		
+
 		memberUidMode = false;
 		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid", strlen("memberUid")) ) {
 			char *ucrval;
@@ -330,7 +330,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 result:
 	if (rv != 0)
 		cache_free_entry(NULL, cache_entry);
-	
+
 	return rv;
 }
 
@@ -344,7 +344,6 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 	CacheEntryAttribute **cur1, **cur2;
 
 	for (cur1 = new->attributes; cur1 != NULL && *cur1 != NULL; cur1++) {
-
 		for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++)
 			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
 				break;
@@ -362,8 +361,8 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 		changes[changes_count+1] = NULL;
 		changes_count++;
 	}
-	for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++) {
 
+	for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++) {
 		for (cur1 = new->attributes; cur1 != NULL && *cur1 != NULL; cur1++)
 			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
 				break;
@@ -374,7 +373,6 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 		changes[changes_count] = (*cur2)->name;
 		changes[changes_count+1] = NULL;
 		changes_count++;
-
 	}
 
 	return changes;
@@ -437,7 +435,6 @@ int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
 	}
 	char **module_ptr;
 	for (module_ptr=cache_entry->modules; module_ptr != NULL && *module_ptr != NULL; module_ptr++) {
-	
 		backup_cache_entry->modules = realloc(backup_cache_entry->modules, (backup_cache_entry->module_count+2)*sizeof(char*));
 		backup_cache_entry->modules[backup_cache_entry->module_count] = strdup(*module_ptr);
 		backup_cache_entry->modules[backup_cache_entry->module_count+1] = NULL;
@@ -452,13 +449,12 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 	char		**changes;
 	char		**cur;
 	int i=0;
-	
+
 	changes = cache_entry_changed_attributes(lentry, rentry);
 
 	for (cur = changes; cur != NULL && *cur != NULL; cur++) {
-		
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:     %s differs\n", *cur);
-		
+
 		for (i=0; lentry->attributes != NULL && lentry->attributes[i] != NULL; i++) {
 			if (strcmp(lentry->attributes[i]->name, *cur) == 0)
 				break;
@@ -475,7 +471,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 			}
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "]\n");
 		}
-		
+
 		for (i=0; rentry->attributes != NULL && rentry->attributes[i] != NULL; i++) {
 			if (strcmp(rentry->attributes[i]->name, *cur) == 0)
 				break;
@@ -492,14 +488,12 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 			}
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "]\n");
 		}
-		
 	}
 	free(changes);
 
 	char		**cur1, **cur2;
-	
-	for (cur1=lentry->modules; cur1 != NULL && *cur1 != NULL; cur1++) {
 
+	for (cur1=lentry->modules; cur1 != NULL && *cur1 != NULL; cur1++) {
 		for (cur2=rentry->modules; cur2 != NULL && *cur2 != NULL; cur2++)
 			if (strcmp(*cur1, *cur2) == 0)
 				break;
@@ -516,4 +510,3 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:     module %s on rentry missing on lentry\n", *cur2);
 	}
 }
-

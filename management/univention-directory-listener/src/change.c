@@ -78,7 +78,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 			"initializing module %s", handler->name);
-	
+
 	memset(&old_cache_entry, 0, sizeof(CacheEntry));
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"call handler_clean for module %s", handler->name);
@@ -86,7 +86,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"call handler_initialize for module %s", handler->name);
 	handler_initialize(handler);
-	
+
 	/* remove old entries for module */
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"remove old entries for module %s", handler->name);
@@ -94,7 +94,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 			rv=cache_next_entry(&dbc_cur, &dn, &cache_entry)) {
 		if (rv == -1) continue;
 		if (rv < 0) break;
-		
+
 		cache_entry_module_remove(&cache_entry, handler->name);
 		cache_update_or_deleteifunused_entry(0, dn, &cache_entry);
 		cache_free_entry(&dn, &cache_entry);
@@ -138,7 +138,6 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 			return rv;
 		}
 
-
 		long dn_count=0;
 		struct dn_list *dns;
 
@@ -153,7 +152,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 			dns[i].size = strlen(dns[i].dn);
 			i+=1;
 		}
-		
+
 		if ( dn_count > 1 ) {
 			qsort(dns, dn_count, sizeof(struct dn_list), &dn_size_compare);
 		}
@@ -161,7 +160,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 		if ((rv = change_update_schema(lp)) != LDAP_SUCCESS) {
 			ldap_msgfree(res);
 			return rv;
-		}	
+		}
 
 		for (i=0; i<dn_count; i++) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DN: %s", dns[i].dn);
@@ -185,7 +184,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 				rv = LDAP_OTHER;
 				break;
 			}
-	
+
 			signals_block();
 
 			/* First copy the entry for the local cache to be sure the entry in the cache is untouched. Bug #21914 */
@@ -276,7 +275,7 @@ result:
 	cache_free_entry(&dn, &cache_entry);
 	cache_free_entry(NULL, &old_cache_entry);
 	cache_free_entry(NULL, &updated_cache_entry);
-	
+
 	return rv;
 }
 
@@ -285,7 +284,7 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 {
 	CacheEntry entry;
 	int rv;
-	
+
 	if ((rv=cache_get_entry_lower_upper(id-1, dn, &entry)) == DB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "not in cache: %s", dn);
 		return LDAP_SUCCESS;
@@ -293,7 +292,7 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "reading from cache failed: %s", dn);
 		return LDAP_OTHER;
 	}
-	
+
 	signals_block();
 	if (handlers_delete(dn, &entry, command) == 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", dn);
@@ -305,7 +304,7 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 	}
 	signals_unblock();
 	cache_free_entry(NULL, &entry);
-	
+
 	return LDAP_SUCCESS;
 }
 
@@ -373,7 +372,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 			cache_set_schema_id("notifier_schema_id", new_id);
 #endif
 	}
-	
+
 	return rv;
 }
 
@@ -391,7 +390,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	rv = ldap_str2dn(dn, &ldap_dn, flags);
 	if ( rv != LDAP_SUCCESS || ! ldap_dn )
 		return rv;
-	
+
 	char *parent_dn = NULL;
 	rv = ldap_dn2str(&ldap_dn[1], &parent_dn, LDAP_DN_FORMAT_LDAPV3); // skip left most rdn
 	ldap_dnfree( ldap_dn );
@@ -477,9 +476,9 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 	char		*attrs[]={"*", "+", NULL};
 	int		 rv;
 	struct timeval timeout;
-	
+
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "updating %s", dn);
-	
+
 	/* max wait for 5 minutes */
 	timeout.tv_sec = 300;
 	timeout.tv_usec = 0;
@@ -487,7 +486,6 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 	if ((rv=ldap_search_ext_s(lp->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res)) == LDAP_NO_SUCH_OBJECT) {
 		rv = change_delete_dn(id, dn, command);
 	} else if (rv == LDAP_SUCCESS) {
-		
 		if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
 			/* entry exists (since we didn't get NO_SUCH_OBJECT),
 			 * but was probably excluded thru ACLs which makes it

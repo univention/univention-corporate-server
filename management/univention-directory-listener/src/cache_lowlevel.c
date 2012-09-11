@@ -57,7 +57,7 @@ void hex_dump(int level, void *data, u_int32_t start, u_int32_t size)
 	char hex[80];
 	char str[80];
 	const int per_line = 10;
-	
+
 	pos = 0;
 	memset(hex, 0, 80);
 	memset(str, 0, 80);
@@ -95,7 +95,7 @@ static int write_header(void **data, u_int32_t *size, u_int32_t *pos, u_int16_t 
 	u_int32_t need_memory;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "write_header key_size=%d data_size=%d", key_size, data_size);
-	
+
 	need_memory = sizeof(struct cache_entry_header)+key_size+data_size;
 	if (*size < *pos+need_memory) {
 		while (*size < *pos+need_memory)
@@ -113,7 +113,7 @@ static int write_header(void **data, u_int32_t *size, u_int32_t *pos, u_int16_t 
 	append_buffer(data, size, pos, (void*) &h, sizeof(struct cache_entry_header));
 	append_buffer(data, size, pos, key_data, key_size);
 	append_buffer(data, size, pos, data_data, data_size);
-	
+
 	return 0;
 }
 
@@ -156,7 +156,7 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "buffer exceeded pos=%d size=%d", *pos, size);
 		return -1;
 	}
-	
+
 	h = (struct cache_entry_header*)((char*)data+*pos);
 
 	if ((h->type != 1 && h->type != 2) || h->key_size == 0) {
@@ -172,7 +172,7 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "buffer exceeded pos=%d size=%d", *pos, size);
 		return -1;
 	}
-	
+
 	*key_size = h->key_size;
 	*key_data = (void*)((char*)data+*pos);
 	*pos += *key_size;
@@ -189,7 +189,7 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 		*data_data = NULL;
 	}
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "read_header pos=%d type=%d key_size=%d data_size=%d key_data=[%s] data_data=[%s]", *pos, h->type, h->key_size, h->data_size, (char*)*key_data, (char*)*data_data);
-	
+
 	return h->type;
 }
 
@@ -206,14 +206,14 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 	entry->attribute_count=0;
 	entry->modules=NULL;
 	entry->module_count=0;
-	
+
 	while ((type = read_header(data, size, &pos, &key_data, &key_size, &data_data, &data_size)) > 0) {
 		if (type == 1) {
 			CacheEntryAttribute **attribute;
 			bool found = false;
-			
+
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "attribute is \"%s\"", (char*)key_data);
-			
+
 			for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "current attribute is \"%s\"", (*attribute)->name);
 				if (strcmp((*attribute)->name, (char*)key_data) == 0) {
@@ -233,7 +233,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 					abort(); // FIXME
 				}
 				entry->attributes[entry->attribute_count+1] = NULL;
-			
+
 				attribute=entry->attributes+entry->attribute_count;
 				(*attribute)->name = strndup((char*)key_data, key_size);
 				if ((*attribute)->name == NULL) {
@@ -245,7 +245,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 				(*attribute)->length = NULL;
 				(*attribute)->value_count = 0;
 				entry->attribute_count++;
-				
+
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", (*attribute)->name, *attribute);
 			}
 			(*attribute)->values = realloc((*attribute)->values, ((*attribute)->value_count+2)*sizeof(char*));
@@ -294,7 +294,6 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			return -1;
 		}
 	}
-	
+
 	return 0;
 }
-

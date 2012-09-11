@@ -72,7 +72,7 @@ struct _Handler {
 	PyObject	 *clean;
 	PyObject	 *postrun;
 	PyObject	 *prerun;
-	PyObject	 *setdata; 
+	PyObject	 *setdata;
 	struct _Handler	 *next;
 
 	int		  state;

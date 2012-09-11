@@ -46,6 +46,8 @@ char *transaction_file = "/var/lib/univention-ldap/listener/listener";
 static const char *failed_ldif_file = "/var/lib/univention-directory-replication/failed.ldif";
 extern long long listener_lock_count;
 
+
+/* Open file exclusively. */
 static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 {
 	char buf[PATH_MAX];
@@ -85,6 +87,8 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 	return file;
 }
 
+
+/* Close file and lock file. */
 static int fclose_lock(FILE **file, FILE **l_file)
 {
 	if (*file != NULL) {
@@ -105,6 +109,7 @@ static int fclose_lock(FILE **file, FILE **l_file)
 }
 
 
+/* Write entry to transaction file. */
 int notifier_write_transaction_file(NotifierEntry entry)
 {
 	FILE *file, *l_file;
@@ -131,4 +136,3 @@ int notifier_write_transaction_file(NotifierEntry entry)
 
 	return res;
 }
-

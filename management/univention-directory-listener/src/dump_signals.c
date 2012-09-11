@@ -56,4 +56,3 @@ void reload_handler(int sig)
 void signals_init(void)
 {
 }
-

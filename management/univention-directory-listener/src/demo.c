@@ -40,7 +40,8 @@
 #include "network.h"
 #include "common.h"
 
-int INIT_ONLY=0;
+int INIT_ONLY = 0;
+
 
 static void usage(const char *name)
 {
@@ -49,6 +50,7 @@ static void usage(const char *name)
 			"       %s <HOST> get_dn <ID>\n",
 			name, name, name);
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -67,13 +69,13 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 	}
-	
+
 	if (optind > argc-2) {
 		fprintf(stderr, "Missing arguments\n");
 		usage(argv[0]);
 		return 1;
 	}
-	
+
 	if (notifier_client_new(NULL, argv[optind], 1) != 0) {
 		fprintf(stderr, "Could not connect to notifier\n");
 		return 1;
@@ -100,7 +102,7 @@ int main(int argc, char *argv[])
 		} else {
 			getid = atoi(argv[optind+2]);
 		}
-		
+
 		msgid = notifier_get_dn(NULL, getid);
 		notifier_get_dn_result(NULL, msgid, &entry);
 
@@ -109,6 +111,6 @@ int main(int argc, char *argv[])
 		usage(argv[0]);
 		return 1;
 	}
-	
+
 	return 0;
 }

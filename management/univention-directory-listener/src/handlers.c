@@ -54,14 +54,16 @@
 #include "filter.h"
 #include "handlers.h"
 
-PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old);
-PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command);
+static PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old);
+static PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command);
 
 extern int INIT_ONLY;
 extern char **module_dirs;
 extern int module_dir_count;
 
+/* Linked list of handlers. */
 Handler *handlers = NULL;
+
 
 /* Import a Python module (source or compiled) the same way __import__ does.
    Unfortunately there doesn't seem to be any higher level interface for this.
@@ -83,11 +85,11 @@ static PyObject* module_import(char *filename)
 	if ((fp = fopen(filename, "r")) == NULL)
 		return NULL;
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Load file %s", filename);
-	
+
 	namep = strrchr(filename, '.');
 	if ((namep != NULL) && (strcmp(namep, ".pyo") == 0)) {
 		long magic;
-		
+
 		magic = PyMarshal_ReadLongFromFile(fp);
 		/* we should probably check the magic here */
 		(void) PyMarshal_ReadLongFromFile(fp);
@@ -106,7 +108,7 @@ static PyObject* module_import(char *filename)
 		PyNode_Free(n);
 	}
 	fclose(fp);
-	
+
 	if (co == NULL || !PyCode_Check(co)) {
 		Py_XDECREF(co);
 		free(name);
@@ -121,6 +123,8 @@ static PyObject* module_import(char *filename)
 	return m;
 }
 
+
+/* Retrieve object from Python module.  */
 static PyObject* module_get_object(PyObject *module, char *name)
 {
 	if (!PyObject_HasAttrString(module, name))
@@ -128,6 +132,8 @@ static PyObject* module_get_object(PyObject *module, char *name)
 	return PyObject_GetAttrString(module, name);
 }
 
+
+/* Retrieve string from Python module. */
 static char* module_get_string(PyObject *module, char *name)
 {
 	PyObject *var;
@@ -142,6 +148,8 @@ error0:
 	return str2;
 }
 
+
+/* Retrieve list of strings from Python module. */
 static char** module_get_string_list(PyObject *module, char *name)
 {
 	PyObject *list;
@@ -152,7 +160,7 @@ static char** module_get_string_list(PyObject *module, char *name)
 		goto error0;
 	if (!PyList_Check(list))
 		goto error1;
-	
+
 	len = PyList_Size(list);
 	if ((res = malloc((len+1)*sizeof(char*))) == NULL)
 		goto error1;
@@ -171,6 +179,7 @@ error0:
 	PyErr_Clear(); // Silent error when attribute is not set
 	return res;
 }
+
 
 /* load handler and insert it into list of handlers */
 static int handler_import(char* filename)
@@ -192,7 +201,7 @@ static int handler_import(char* filename)
 		error_msg = "module_import()";
 		goto error;
 	}
-	
+
 	handler->name = module_get_string(handler->module, "name"); /* required */
 	if (handler->name == NULL) {
 		error_msg = "module_get_string(\"name\")";
@@ -302,6 +311,7 @@ error:
 	return 1;
 }
 
+
 /* run prerun handler; this only needs to be done once for multiple calls
    to the same handler until the postrun handler is run */
 static int handler_prerun(Handler *handler)
@@ -317,13 +327,14 @@ static int handler_prerun(Handler *handler)
 		drop_privileges();
 		return 1;
 	}
-	
+
 	drop_privileges();
 	handler->prepared=1;
-	
+
 	Py_XDECREF(result);
 	return 0;
 }
+
 
 /* run postrun handler */
 static int handler_postrun(Handler *handler)
@@ -339,14 +350,16 @@ static int handler_postrun(Handler *handler)
 		drop_privileges();
 		return 1;
 	}
-	
+
 	drop_privileges();
 	handler->prepared=0;
-	
+
 	Py_XDECREF(result);
 	return 0;
 }
 
+
+/* run all postrun handlers. */
 int handlers_postrun_all(void)
 {
 	Handler *cur;
@@ -356,6 +369,7 @@ int handlers_postrun_all(void)
 	}
 	return 0;
 }
+
 
 /* execute handler with arguments */
 static int handler_exec(Handler *handler, char *dn, CacheEntry *new, CacheEntry *old, char command)
@@ -403,6 +417,7 @@ static int handler_exec(Handler *handler, char *dn, CacheEntry *new, CacheEntry 
 	return rv;
 }
 
+
 /* call clean function of handler */
 int handler_clean(Handler *handler)
 {
@@ -410,19 +425,21 @@ int handler_clean(Handler *handler)
 
 	if (handler->clean == NULL)
 		return 0;
-	
+
 	if ((result = PyObject_CallObject(handler->clean, NULL)) == NULL) {
 		PyErr_Print();
 		drop_privileges();
 		return 1;
 	}
-	
+
 	drop_privileges();
-	
+
 	Py_XDECREF(result);
 	return 0;
 }
 
+
+/* call clean function on all handlers. */
 int handlers_clean_all(void)
 {
 	Handler *cur;
@@ -431,6 +448,7 @@ int handlers_clean_all(void)
 	}
 	return 0;
 }
+
 
 /* call handler's initialize function */
 int handler_initialize(Handler *handler)
@@ -444,13 +462,15 @@ int handler_initialize(Handler *handler)
 		drop_privileges();
 		return 1;
 	}
-	
+
 	drop_privileges();
-	
+
 	Py_XDECREF(result);
 	return 0;
 }
 
+
+/* call initialize function on all handlers. */
 int handlers_initialize_all(void)
 {
 	Handler *cur;
@@ -460,17 +480,19 @@ int handlers_initialize_all(void)
 	return 0;
 }
 
+
+/* dump internal state of one handler. */
 static void handler_dump(Handler *handler)
 {
 	struct filter **filter;
-	
+
 	printf("name: %s\n", handler->name);
 	printf("description: %s\n", handler->description);
 
 	for (filter = handler->filters; filter != NULL; filter++) {
 		printf("filter: %s %d %s\n", (*filter)->base, (*filter)->scope, (*filter)->filter);
 	}
-	
+
 	printf("clean handler: %d\n", handler->clean != NULL);
 	printf("initialize handler: %d\n", handler->initialize != NULL);
 	printf("prerun handler: %d\n", handler->prerun != NULL);
@@ -478,6 +500,8 @@ static void handler_dump(Handler *handler)
 	printf("setdata handler: %d\n", handler->setdata != NULL);
 }
 
+
+/* dump internal state of all handlers. UNUSED */
 int handlers_dump(void)
 {
 	Handler *handler;
@@ -487,11 +511,13 @@ int handlers_dump(void)
 	return 0;
 }
 
+
+/* Load all handlers from one directory. */
 int handlers_load_path(char *path)
 {
 	struct stat st;
 	int rv = 1;
-	
+
 	stat(path, &st);
 	if (S_ISDIR(st.st_mode)) {
 		DIR *dir;
@@ -539,6 +565,8 @@ int handlers_load_path(char *path)
 	return rv;
 }
 
+
+/* Load handlers from all directories. */
 int handlers_load_all_paths(void)
 {
 	char **module_dir;
@@ -550,6 +578,8 @@ int handlers_load_all_paths(void)
 	return 0;
 }
 
+
+/* Free one handler. */
 int handler_free(Handler *handler)
 {
 	char **a;
@@ -560,7 +590,7 @@ int handler_free(Handler *handler)
 	if ( handler == NULL || handler->name == NULL ) {
 		return 0;
 	}
-	
+
 	/* write handler state */
 	/* XXX: can be removed, once we use a database for this */
 	asprintf(&state_filename, "%s/handlers/%s", cache_dir, handler->name);
@@ -595,6 +625,8 @@ int handler_free(Handler *handler)
 	return 0;
 }
 
+
+/* Free all handlers. */
 int handlers_free_all(void)
 {
 	Handler *cur;
@@ -609,12 +641,16 @@ int handlers_free_all(void)
 	return 0;
 }
 
+
+/* Reload handlers from all paths. */
 int handlers_reload_all_paths(void)
 {
 	handlers_free_all();
 	return handlers_load_all_paths();
 }
 
+
+/* Initialize all handlers. */
 int handlers_init(void)
 {
 	/* all byte-compiled Univention Python modules are compiled optimized,
@@ -624,6 +660,7 @@ int handlers_init(void)
 	handlers_load_all_paths();
 	return 0;
 }
+
 
 /* convert our C entry structure into a Python dictionary */
 static PyObject* handlers_entrydict(CacheEntry *entry)
@@ -639,7 +676,6 @@ static PyObject* handlers_entrydict(CacheEntry *entry)
 		return entrydict;
 
 	for(i=0; i<entry->attribute_count; i++) {
-
 		/* make value list */
 		if ((valuelist = PyList_New(entry->attributes[i]->value_count)) == NULL) {
 			Py_XDECREF (entrydict);
@@ -659,8 +695,9 @@ static PyObject* handlers_entrydict(CacheEntry *entry)
 	return entrydict;
 }
 
+
 /* build Python argument tuple for handler */
-PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old)
+static PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old)
 {
 	PyObject *argtuple;
 	PyObject *newdict;
@@ -680,7 +717,10 @@ PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old)
 
 	return argtuple;
 }
-PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command)
+
+
+/* build Python argument tuple for handler with mod_rdn enabled. */
+static PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command)
 {
 	PyObject *argtuple;
 	PyObject *newdict;
@@ -701,6 +741,7 @@ PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, 
 
 	return argtuple;
 }
+
 
 /* return boolean indicating whether attribute has changed */
 int attribute_has_changed(char** changes, char* attribute)
@@ -773,9 +814,9 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 		rv=1;
 	}
 
-
 	return rv;
 }
+
 
 /* run all handlers if object has changed */
 int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command, CacheEntry *scratch)
@@ -799,9 +840,10 @@ int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command, Ca
 		}
 	}
 	free(changes);
-	
+
 	return rv;
 }
+
 
 /* run given handler if object has changed */
 int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command, CacheEntry *scratch)
@@ -816,9 +858,10 @@ int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler,
 	rv = handler__update(handler, dn, new, old, command, changes, scratch);
 
 	free(changes);
-	
+
 	return rv;
 }
+
 
 /* run handlers if object has been deleted */
 int handlers_delete(char *dn, CacheEntry *old, char command)
@@ -841,16 +884,19 @@ int handlers_delete(char *dn, CacheEntry *old, char command)
 			rv=1;
 		}
 	}
-	
+
 	return rv;
 }
 
+
 /* build filter to match objects for all modules */
-char* handlers_filter(void)
+char *handlers_filter(void)
 {
 	return NULL;
 }
 
+
+/* Pass configuration data from listener to one module. */
 int handler_set_data(Handler *handler, PyObject *argtuple)
 {
 	PyObject *result;
@@ -879,6 +925,8 @@ int handler_set_data(Handler *handler, PyObject *argtuple)
 	return rv;
 }
 
+
+/* Pass configuration data from listener to all modules. */
 int handlers_set_data_all(char *key, char *value)
 {
 	Handler *handler;

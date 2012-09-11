@@ -47,7 +47,8 @@
 #include "cache.h"
 #include "common.h"
 
-int INIT_ONLY=0;
+int INIT_ONLY = 0;
+
 
 static void usage(void)
 {
@@ -61,6 +62,7 @@ static void usage(void)
 	fprintf(stderr, "   -i   ID only\n");
 #endif
 }
+
 
 int main(int argc, char* argv[])
 {
@@ -112,7 +114,7 @@ int main(int argc, char* argv[])
 			exit(1);
 		}
 	}
-	
+
 	if (debugging > 1) {
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_ALL);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_ALL);
@@ -142,17 +144,15 @@ int main(int argc, char* argv[])
 
 #ifdef WITH_DB42
 	if (id_only) {
-
 		CacheMasterEntry master_entry;
 		cache_get_master_entry(&master_entry);
 
 		printf("%ld %ld\n", master_entry.id, master_entry.schema_id);
-		
-	} else {
 
-	exit(0);
+	} else {
+		exit(0);
 #endif
-		
+
 	for (rv=cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND;
 			rv=cache_next_entry(&cur, &dn, &entry)) {
 		if ((rv == 0 && !broken_only) || (rv == -1 && broken_only)) {
@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
 #ifdef WITH_DB42
 	}
 #endif
-	
+
 	cache_close();
 
 	return 0;

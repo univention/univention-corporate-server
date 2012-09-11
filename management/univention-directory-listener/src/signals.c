@@ -51,7 +51,7 @@ sigset_t block_mask;
 void signals_block(void)
 {
 	static int init_done = 0;
-	
+
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "blocking signals (was %d)", sig_block_count);
 	if ((++sig_block_count) != 1)
 		return;
@@ -107,7 +107,7 @@ void exit_handler(int sig)
 	char **c;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
-	
+
 	cache_close();
 	unlink(pidfile);
 

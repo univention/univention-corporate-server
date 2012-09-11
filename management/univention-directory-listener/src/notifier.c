@@ -72,10 +72,8 @@ extern int server_list_entries;
 static int connect_to_ldap(univention_ldap_parameters_t *lp,
 		                univention_krb5_parameters_t *kp)
 {
-
 	/* XXX: Fix when using krb5 */
 	while (univention_ldap_open(lp) != 0  ) {
-
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
 		free(lp->host);
 		lp->host = NULL;
@@ -94,7 +92,6 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 	}
 
 	return LDAP_SUCCESS;
-
 }
 
 /* listen for ldap updates */
@@ -170,7 +167,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 			notifier_entry_free(&entry);
 			return 1;
 		}
-		
+
 		/* ensure that LDAP connection is open */
 		if (lp->ld == NULL) {
 			if ((rv = connect_to_ldap(lp, kp)) != 0) {
@@ -195,7 +192,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 				return rv;
 			}
 		}
-	
+
 		/* rv had better be LDAP_SUCCESS if we get here */
 		assert(rv == LDAP_SUCCESS);
 

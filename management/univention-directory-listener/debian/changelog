@@ -178,13 +178,13 @@ univention-directory-listener (6.0.12-1) unstable; urgency=low
 
 univention-directory-listener (6.0.11-2) unstable; urgency=low
 
-  * fixed logrotate configuration (Bug #18002) 
+  * fixed logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:18:12 +0200
 
 univention-directory-listener (6.0.11-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:12:22 +0200
 
@@ -479,7 +479,7 @@ univention-directory-listener (4.0.4-1) unstable; urgency=low
 
 univention-directory-listener (4.0.3-3) unstable; urgency=low
 
-  * remove mixedcase as well in cache_delete_entry_lower_upper (Bug #16098) 
+  * remove mixedcase as well in cache_delete_entry_lower_upper (Bug #16098)
 
  -- Arvid Requate <requate@univention.de>  Tue, 02 Feb 2010 17:55:11 +0100
 
