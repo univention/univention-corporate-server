@@ -35,12 +35,12 @@ define([
 	"dijit/Dialog",
 	"umc/dialog",
 	"umc/widgets/ConfirmDialog",
-	"umc/widgets/TabbedModule",
+	"umc/widgets/Module",
 	"umc/modules/updater/UpdatesPage",
 	"umc/modules/updater/ProgressPage",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, Dialog, dialog, ConfirmDialog, TabbedModule, UpdatesPage, ProgressPage, _) {
-	return declare("umc.modules.updater", TabbedModule, {
+], function(declare, lang, array, Dialog, dialog, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
+	return declare("umc.modules.updater", Module, {
 
 		// some variables related to error handling
 		_connection_status:	0, 			// 0 ... successful or not set
@@ -65,22 +65,16 @@ define([
 			//		Connections that make the UI work (mostly tab switching)
 			//
 
-			this._progress.on('stopwatching', lang.hitch(this, function(tab) {
-				this.hideChild(this._progress);
-				this.showChild(this._updates);
-
+			this._progress.on('stopwatching', lang.hitch(this, function() {
 				// Revert to the 'Updates' page if the installer action encountered
 				// the 'reboot' affordance.
-				if (! tab)
-				{
-					tab = this._updates;
-				}
-				this.selectChild(tab);
+				this.selectChild(this._updates);
 			}));
 
 			// waits for the Progress Page to notify us that a job is finished. This
 			// should immediately refresh the 'Updates' and 'Components' pages.
 			// XXX can remain this way
+			// but it doubles 
 			this._progress.on('jobfinished', lang.hitch(this, function() {
 				this._updates.refreshPage(true);
 			}));
@@ -109,8 +103,7 @@ define([
 			//		and their children, delivering them to our own (central) error handler
 			//
 
-			var children = this.getChildren();
-			array.forEach(children, lang.hitch(this, function(child) {
+			array.forEach(this.getChildren(), lang.hitch(this, function(child) {
 				child.on('queryerror', lang.hitch(this, function(subject, data) {
 					this.handleQueryError(subject, data);
 				}));
@@ -167,7 +160,7 @@ define([
 
 			this.inherited(arguments);
 
-			this.hideChild(this._progress);
+			this.selectChild(this._updates);
 
 		},
 
@@ -354,25 +347,9 @@ define([
 
 			try
 			{
-				// No clue why it says that selectedChildWidget() is not a method
-				// of 'this'... so I have to do it differently.
-				//args['last_tab'] = this.selectedChildWidget();
-				var children = this.getChildren();
-				var args = {};
-				for (var tab in children)
-				{
-					if (children[tab].get('selected'))
-					{
-						args.last_tab = children[tab];
-					}
-				}
-
-				this.hideChild(this._updates);
-
-				this.showChild(this._progress);
 				this.selectChild(this._progress);
 
-				this._progress.startWatching(args);
+				this._progress.startWatching();
 			}
 			catch(error)
 			{

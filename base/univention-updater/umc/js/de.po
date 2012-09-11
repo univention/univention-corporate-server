@@ -59,7 +59,7 @@ msgid ""
 msgstr ""
 "Solange Univention Updater Ihr System aktualisiert, können Sie keine "
 "Einstellungen verändern. Sie können die Aktualisierung hier verfolgen oder "
-"das Modul schliessen."
+"das Modul schließen."
 
 #: umc/js/updater.js:281
 msgid "Attention!"

@@ -103,25 +103,9 @@ define([
 				label:		_("back"),
 				region:		'bottom',
 				onClick:	lang.hitch(this, function() {
-					var tab = '';
-					// Especially for the 'install a component' functionality: if we encounter
-					// that the 'reboot required' flag has been set we don't want to switch
-					// back to the 'Components' grid but rather to the 'Updates' page. We will
-					// request this by unsetting the _last_tab property, so the switching
-					// logic will revert to the first tab of our tab set.
-					if (this._reboot_required)
-					{
-						this.last_tab = null;
-					}
-
 					// local function to close the log view
 					var _closeLogView = lang.hitch(this, function() {
-						if (this.last_tab)
-						{
-							tab = this.last_tab;
-							this.last_tab = null;
-						}
-						this.onStopWatching(tab);		// updater Module listens here and will switch display back to the given tab.
+						this.onStopWatching();
 					});
 
 					if (this._reboot_required) {
@@ -163,15 +147,7 @@ define([
 				if (typeof(data.result) == 'string')
 				{
 					var txt = data.result;
-					if (txt === '')
-					{
-						// Should never happen
-						if (this.last_tab)
-						{
-							this._allow_close(true);
-						}
-					}
-					else
+					if (txt !== '')
 					{
 						if (this._job_key === '')
 						{
@@ -180,16 +156,9 @@ define([
 						}
 
 						// if the page is currently in background then we must notify
-						// our Module that we want to be shown now, and that we want to
-						// know which tab we shall return to on close.
-						if (! this.last_tab)
-						{
-							this.onJobStarted();
-						}
-						else
-						{
-							this._allow_close(false);		// close button now invisible.
-						}
+						// our Module that we want to be shown now
+						this.onJobStarted();
+						this._allow_close(false);		// close button now invisible.
 					}
 					if (data.result !== '')
 					{
@@ -343,7 +312,7 @@ define([
 
 		// This function will be called when the (background) ProgressPage encounters
 		// that a job has been started. The updater Module listens here and will then
-		// call startWatching with the currently opened tab.
+		// call startWatching.
 		onJobStarted: function() {
 		},
 
@@ -354,21 +323,19 @@ define([
 		},
 
 		// updater Module calls this when the ProgressPage is to be opened.
-		startWatching: function(args) {
+		startWatching: function() {
 
 			// ensure a clean look (and not some stale text from last job)
 			this._head.set('content', _("... loading job data ..."));
 
-			lang.mixin(this, args);						// as simple as possible.
 			this._allow_close(false);					// forbid closing this tab.
 			this._log.startWatching(this._interval);	// start logfile tail
 		},
 
 		// updater Module listens to this event to close the page
-		// and reopen the named tab.
 		//
 		// This is a good place to reset the log viewer contents too.
-		onStopWatching: function(tab) {
+		onStopWatching: function() {
 			this._job_key = '';
 			this._last_job = null;
 			this._log.onStopWatching(true);

@@ -750,8 +750,7 @@ define([
 
 			this.inherited(arguments);
 			this._show_reboot_pane(false);
-			// refresh is done onShow. we dont need it here
-			// this.refreshPage();
+			this.refreshPage();
 
 		},
 
@@ -759,7 +758,8 @@ define([
 		onShow: function() {
 
 			this.inherited(arguments);
-			this.refreshPage(true);
+			// this is done onJobFinished()
+			// this.refreshPage(true);
 		},
 
 		// should refresh any data contained here. (can be called from outside when needed)
