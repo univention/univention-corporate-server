@@ -1,3 +1,9 @@
+univention-directory-notifier (7.0.5-2) unstable; urgency=low
+
+  * Include shell lib before using is_ucr_true (Bug #28361)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Sep 2012 07:48:41 +0200
+
 univention-directory-notifier (7.0.5-1) unstable; urgency=low
 
   * Ensure the NSS group cache is up to date (Bug #28361)

@@ -41,6 +41,8 @@ fi
 
 test -n "`grep "univention-directory-notifier-post v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
+. /usr/share/univention-lib/all.sh
+
 test -x /usr/sbin/nscd && nscd -i passwd
 if is_ucr_true nss/group/cachefile; then
 	/usr/lib/univention-pam/ldap-group-to-file.py
