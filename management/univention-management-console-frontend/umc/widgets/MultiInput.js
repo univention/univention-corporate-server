@@ -371,7 +371,7 @@ define([
 						label: label
 					}));
 
-					// register to 'onChange' events
+					// register to value changes
 					this.own(iwidget.watch('value', lang.hitch(this, function() {
 						this._set('value', this.get('value'));
 					})));

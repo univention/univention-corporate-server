@@ -105,8 +105,8 @@ define([
 			}))[0];
 			this._setLabelAttr(this.label);
 
-			// register to 'onChange' events
-			this.own(this._secondWidget.watch('value', lang.hitch(function(name, oldVal, newVal) {
+			// register to value changes
+			this.own(this._secondWidget.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				this._set('value', newVal);
 			})));
 

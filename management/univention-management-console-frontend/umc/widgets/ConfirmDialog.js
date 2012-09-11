@@ -67,7 +67,7 @@ define([
 		// |	});
 		// |
 		// |	// instead of using the 'callback' property, we can also use on()
-		// |	on(myDialog, 'onConfirm', function(answer) {
+		// |	on(myDialog, 'confirm', function(answer) {
 		// |		if ('something' == answer) {
 		// |			// do something
 		// |			// ...
@@ -145,7 +145,7 @@ define([
 						// the response is either a custom response or the choice (button) index
 						var response = ichoice.name || idx;
 
-						// send 'onClick' event
+						// send 'confirm' event
 						this.onConfirm(response);
 
 						// call custom callback if specified

@@ -67,11 +67,6 @@ define([
 			domClass.add( this.domNode, 'umcFormWidget' );
 		},
 
-		// provide 'onChange' method stub in case it does not exist yet
-		onChange: function(newValue) {
-			// event stub
-		},
-
 		//
 		// methods/variables for validation
 		//

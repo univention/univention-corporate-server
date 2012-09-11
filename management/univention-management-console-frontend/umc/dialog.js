@@ -281,7 +281,7 @@ define([
 				options: options
 			});
 
-			// connect to 'onConfirm' event to close the dialog in any case
+			// connect to 'confirm' event to close the dialog in any case
 			var deferred = new Deferred();
 			confirmDialog.on('confirm', function(response) {
 				confirmDialog.close();
@@ -308,9 +308,9 @@ define([
 				options: buttons
 			});
 
-			// connect to 'onConfirm' event to close the dialog in any case
+			// connect to 'confirm' event to close the dialog in any case
 			var deferred = new Deferred();
-			confirmDialog.on('onConfirm', function(response) {
+			confirmDialog.on('confirm', function(response) {
 				confirmDialog.close();
 				deferred.resolve(response);
 			});

@@ -63,7 +63,7 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
-			on.once(this, 'onValuesLoaded', function(values) {
+			on.once(this, 'valuesLoaded', function(values) {
 				if (this.autoHide) {
 					// show the widget in case there are more than 1 values
 					this.set('visible', values.length > 1);
