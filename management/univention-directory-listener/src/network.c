@@ -374,13 +374,12 @@ int notifier_client_new(NotifierClient *client,
 	  return 1;
 	}
 
-	res = result_addrinfo;
-	while (res) { /* process all results */
+	/* process all results */
+	for (res = result_addrinfo; res != NULL; res = res->ai_next) {
 	    switch (res->ai_family) {
 		    case AF_INET:
 			    if ((client->fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
 				    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv4 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
-					res = res->ai_next;
 					continue;
 				}
 				memcpy(&address4.sin_addr, &((struct sockaddr_in *) res->ai_addr)->sin_addr, sizeof(address4.sin_addr));
@@ -393,7 +392,6 @@ int notifier_client_new(NotifierClient *client,
 		    case AF_INET6:
 			    if ((client->fd = socket(AF_INET6, SOCK_STREAM, 0)) == -1) {
 				    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv6 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
-					res = res->ai_next;
 					continue;
 				}
 				memcpy(&address6.sin6_addr, &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr, sizeof(address6.sin6_addr));
@@ -405,7 +403,6 @@ int notifier_client_new(NotifierClient *client,
 
 		    default:
 			    /* unknown protocol */
-			    res = res->ai_next;
 			    continue;
 		}
 
@@ -413,7 +410,6 @@ int notifier_client_new(NotifierClient *client,
 		    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connection to %s failed with errorcode %d: %s", addrstr, errno, strerror(errno));
 			close(client->fd);
 			client->fd = -1;
-			res = res->ai_next;
 			continue;
 		}
 		break;
