@@ -185,12 +185,12 @@ int cache_entry_ldap_filter_match(struct filter **filter, char *dn, CacheEntry *
 			switch ((*f)->scope) {
 				case LDAP_SCOPE_BASE:
 					/* skip if more levels exists. */
-					if (strchr(dn, '.') <= dn + dn_len - b_len)
+					if (strchr(dn, ',') <= dn + dn_len - b_len)
 						continue;
 					break;
 				case LDAP_SCOPE_ONELEVEL:
 					/* skip if more then one level */
-					if (strchr(dn, '.') + 1 != dn + dn_len - b_len)
+					if (strchr(dn, ',') + 1 != dn + dn_len - b_len)
 						continue;
 					break;
 			}
