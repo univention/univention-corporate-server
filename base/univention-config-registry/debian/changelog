@@ -1,3 +1,9 @@
+univention-config-registry (8.0.4-5) unstable; urgency=low
+
+  * Remove cache on upgrade (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 11 Sep 2012 13:40:15 +0200
+
 univention-config-registry (8.0.4-4) unstable; urgency=low
 
   * Remove randpw (Bug #28431)
