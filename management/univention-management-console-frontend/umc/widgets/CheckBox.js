@@ -65,6 +65,12 @@ define([
 
 		_getValueAttr: function() {
 			return this.get('checked');
+		},
+
+		setValid: function(isValid, message) {
+			// a checkbox cannot be invalid
+			// (for now, we should consider implementing it!)
+			return false;
 		}
 	});
 });

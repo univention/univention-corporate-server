@@ -382,6 +382,7 @@ define([
 			array.forEach(this._dependencyMap[publisherName], function(i) {
 				tmp.push(i.name);
 			});
+			//json = require("dojo/json")
 			//console.log(lang.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, json.stringify(tmp)]));
 			if (publisherName in this._dependencyMap) {
 				var values = this.gatherFormValues();

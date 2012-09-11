@@ -113,6 +113,7 @@ define([
 				this.set('invalidMessage', message);
 				this._maskValidSubsetError = false;
 			}
+			return true;
 		},
 
 		show: function() {

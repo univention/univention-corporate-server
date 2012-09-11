@@ -48,6 +48,7 @@ define([
 		modID: '',
 		modIcon: '',
 		label: '',
+		categories: null,
 		description: '',
 		_tooltip: null,
 
@@ -56,10 +57,14 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			var content = '<div>' + this.label + '</div>'
+			if (this.categories && this.categories.length) {
+				content += '<div style="color: grey; margin-top: 0;">' + this.categories.join(', ') + '</div>';
+			}
 			lang.mixin(this, {
 				baseClass: 'modLaunchButton',
 				'class': tools.getIconClass(this.modIcon, 50),
-				content: '<div>' + this.label + '</div>'
+				content: content
 			});
 		},
 
@@ -105,6 +110,9 @@ define([
 		// the widget's class name as CSS class
 		'class': 'umcCategoryPane',
 
+	        // add a grey categories string at the bottom of the items
+		useCategories: false,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 		},
@@ -118,12 +126,16 @@ define([
 			// iterate over all modules
 			array.forEach(this.modules, lang.hitch(this, function(imod) {
 				// create a new button widget for each module
-				var modWidget = new _CategoryItem({
+				obj = {
 					modID: imod.id,
 					modIcon: imod.icon,
 					label: imod.name,
 					description: imod.description
-				});
+				};
+				if (this.useCategories) {
+					obj.categories = imod.categories;
+				}
+				var modWidget = new _CategoryItem(obj);
 
 				// hook to the onClick event of the module
 				this.own(on(modWidget, 'click', lang.hitch(this, function() {

@@ -133,7 +133,7 @@ define([
 						this.hide();
 
 						// unselect all elements
-						this._multiSelect.set('value', []);
+						this._multiSelect.selection.clear();
 					})
 				}));
 				this._container.addChild(new Button({
@@ -144,7 +144,7 @@ define([
 						this.hide();
 
 						// unselect all elements
-						this._multiSelect.set('value', []);
+						this._multiSelect.selection.clear();
 
 					})
 				}));
@@ -302,6 +302,9 @@ define([
 
 				// callback handler
 				this._multiSelect.set('staticValues', values);
+
+				// notify observers
+				this._set('value', values);
 			}));
 		},
 

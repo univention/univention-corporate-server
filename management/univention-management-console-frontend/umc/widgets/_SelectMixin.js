@@ -386,12 +386,12 @@ define([
 			var nDepValues = 0;
 			if (dependList.length && typeof _dependValues == "object" && _dependValues) {
 				// check whether all necessary values are specified
-				for (var i = 0; i < dependList.length; ++i) {
-					if (_dependValues[dependList[i]]) {
-						params[dependList[i]] = _dependValues[dependList[i]];
+				array.forEach(dependList, function(dep) {
+					if (_dependValues[dep]) {
+						params[dep] = _dependValues[dep];
 						++nDepValues;
 					}
-				}
+				});
 			}
 
 			// only load dynamic values in case all dependencies are fullfilled
