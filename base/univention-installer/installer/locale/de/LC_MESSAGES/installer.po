@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-10 12:13+0200\n"
-"PO-Revision-Date: 2012-09-10 12:24+0200\n"
+"POT-Creation-Date: 2012-09-11 12:59+0200\n"
+"PO-Revision-Date: 2012-09-11 12:59+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -123,7 +123,7 @@ msgstr "Bitte lesen Sie die folgenden Fehlermeldungen sorgfältig."
 msgid "In case of doubt a reinstallation might be reasonable."
 msgstr "Im Zweifelsfall kann eine Neuinstallation notwendig sein."
 
-#: installer/main.py:229
+#: installer/main.py:237
 msgid ""
 "Press Ctrl+c to exit or any key to continue. After exiting the installer "
 "please reboot the system or press Ctrl+Alt+F2 to get an shell prompt."
@@ -132,7 +132,7 @@ msgstr ""
 "um fortzufahren. Nachdem Sie das Installationsprogramm beendet haben, können "
 "Sie das System neu starten oder mittels Strg-Alt-F2 zu einer Shell gelangen."
 
-#: installer/main.py:247
+#: installer/main.py:255
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:145
 msgid ""
 "This error message is shown when an unexpected error occures during the "
@@ -146,17 +146,17 @@ msgstr ""
 "Fehlermeldung allerdings bestätigen, wird die Installation ohne Neustart des "
 "Rechner neu initialisiert."
 
-#: installer/main.py:266
+#: installer/main.py:274
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:164
 msgid "A Python Exception has occured!"
 msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
-#: installer/main.py:285 installer/objects.py:2132
+#: installer/main.py:293 installer/objects.py:2132
 #: installer/modules/10_hardware.py:280 installer/modules/10_hardware.py:314
 #: installer/modules/15_profile.py:58 installer/modules/65_partition.py:4271
 #: installer/modules/65_partition.py:4286
-#: installer/modules/66_gpt_partition.py:3840
-#: installer/modules/66_gpt_partition.py:3855 installer/modules/70_net.py:1110
+#: installer/modules/66_gpt_partition.py:3837
+#: installer/modules/66_gpt_partition.py:3852 installer/modules/70_net.py:1070
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:176
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:203
 #: ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup:222
@@ -165,27 +165,27 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 msgid "Ok"
 msgstr "Ok"
 
-#: installer/main.py:362
+#: installer/main.py:370
 msgid " F1-Help | F12-Start Recover Shell | Strg+c-Exit"
 msgstr " F1-Hilfe | F12-Starte Recover Shell | Strg+c-Abbruch"
 
-#: installer/main.py:364
+#: installer/main.py:372
 msgid " F1-Help | F12-Start Installation | Strg+c-Exit"
 msgstr " F1-Hilfe | F12-Starte Installation | Strg+c-Abbruch"
 
-#: installer/main.py:366
+#: installer/main.py:374
 msgid " F1-Help | F12-Next | Strg+c-Exit"
 msgstr " F1-Hilfe | F12-Weiter | Strg+c-Abbruch"
 
-#: installer/main.py:370
+#: installer/main.py:378
 msgid " F1-Help | F11-Back | F12-Start Recover Shell | Strg+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Starte Recover Shell | Strg+c-Abbruch"
 
-#: installer/main.py:372
+#: installer/main.py:380
 msgid " F1-Help | F11-Back | F12-Start Installation | Strg+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Starte Installation | Strg+c-Abbruch"
 
-#: installer/main.py:374
+#: installer/main.py:382
 msgid " F1-Help | F11-Back | F12-Next | Strg+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | Strg+c-Abbruch"
 
@@ -207,7 +207,7 @@ msgid " End"
 msgstr " Ende"
 
 #: installer/objects.py:1512 installer/modules/65_partition.py:2387
-#: installer/modules/66_gpt_partition.py:2370
+#: installer/modules/66_gpt_partition.py:2367
 #: installer/modules/85_software.py:308
 msgid "F12-Next"
 msgstr "F12-Weiter"
@@ -225,7 +225,7 @@ msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
 #: installer/objects.py:1524 installer/modules/65_partition.py:2386
-#: installer/modules/66_gpt_partition.py:2369
+#: installer/modules/66_gpt_partition.py:2366
 #: installer/modules/85_software.py:304 installer/modules/85_software.py:309
 msgid "F11-Back"
 msgstr "F11-Zurück"
@@ -236,13 +236,13 @@ msgstr "Es existiert keine Hilfe für dieses Modul"
 
 #: installer/objects.py:2022 installer/modules/65_partition.py:4119
 #: installer/modules/65_partition.py:4239
-#: installer/modules/66_gpt_partition.py:3808
+#: installer/modules/66_gpt_partition.py:3805
 msgid "Yes"
 msgstr "Ja"
 
 #: installer/objects.py:2026 installer/modules/65_partition.py:4120
 #: installer/modules/65_partition.py:4240
-#: installer/modules/66_gpt_partition.py:3809
+#: installer/modules/66_gpt_partition.py:3806
 msgid "No"
 msgstr "Nein"
 
@@ -669,16 +669,16 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/65_partition.py:3326
 #: installer/modules/65_partition.py:3330
 #: installer/modules/66_gpt_partition.py:226
-#: installer/modules/66_gpt_partition.py:1055
-#: installer/modules/66_gpt_partition.py:1058
-#: installer/modules/66_gpt_partition.py:1061
-#: installer/modules/66_gpt_partition.py:1064
-#: installer/modules/66_gpt_partition.py:1067
-#: installer/modules/66_gpt_partition.py:2137
-#: installer/modules/66_gpt_partition.py:2978
-#: installer/modules/66_gpt_partition.py:2983
-#: installer/modules/66_gpt_partition.py:2987 installer/modules/70_net.py:642
-#: installer/modules/70_net.py:894 installer/modules/80_join.py:161
+#: installer/modules/66_gpt_partition.py:1051
+#: installer/modules/66_gpt_partition.py:1054
+#: installer/modules/66_gpt_partition.py:1057
+#: installer/modules/66_gpt_partition.py:1060
+#: installer/modules/66_gpt_partition.py:1063
+#: installer/modules/66_gpt_partition.py:2134
+#: installer/modules/66_gpt_partition.py:2975
+#: installer/modules/66_gpt_partition.py:2980
+#: installer/modules/66_gpt_partition.py:2984 installer/modules/70_net.py:724
+#: installer/modules/70_net.py:850 installer/modules/80_join.py:161
 #: installer/modules/85_software.py:139
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
@@ -756,10 +756,10 @@ msgstr "Quellmedium"
 #: installer/modules/65_partition.py:3799
 #: installer/modules/65_partition.py:4047
 #: installer/modules/65_partition.py:4086
-#: installer/modules/66_gpt_partition.py:3395
-#: installer/modules/66_gpt_partition.py:3430
-#: installer/modules/66_gpt_partition.py:3693
-#: installer/modules/66_gpt_partition.py:3733 installer/modules/70_net.py:1109
+#: installer/modules/66_gpt_partition.py:3392
+#: installer/modules/66_gpt_partition.py:3427
+#: installer/modules/66_gpt_partition.py:3690
+#: installer/modules/66_gpt_partition.py:3730 installer/modules/70_net.py:1069
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1356,7 +1356,7 @@ msgstr ""
 
 #: installer/modules/60_expert_partition.py:91
 #: installer/modules/65_partition.py:565
-#: installer/modules/66_gpt_partition.py:567
+#: installer/modules/66_gpt_partition.py:563
 msgid "Partitioning"
 msgstr "Partitionierung"
 
@@ -1384,8 +1384,8 @@ msgstr ""
 "(benötigt=%s)"
 
 #: installer/modules/65_partition.py:459 installer/modules/65_partition.py:481
-#: installer/modules/66_gpt_partition.py:465
-#: installer/modules/66_gpt_partition.py:486
+#: installer/modules/66_gpt_partition.py:461
+#: installer/modules/66_gpt_partition.py:482
 #, python-format
 msgid "Double mount point '%s'"
 msgstr "Doppelter Mount-Point '%s'"
@@ -1398,44 +1398,44 @@ msgstr ""
 "bei /boot der Fall sein."
 
 #: installer/modules/65_partition.py:493
-#: installer/modules/66_gpt_partition.py:498
+#: installer/modules/66_gpt_partition.py:494
 msgid "Missing '/' as mount point"
 msgstr "Fehlender '/' als Mount-Point"
 
 #: installer/modules/65_partition.py:497
-#: installer/modules/66_gpt_partition.py:502
+#: installer/modules/66_gpt_partition.py:498
 #, python-format
 msgid "Wrong file system type '%s' for mount point '/'"
 msgstr "Falsches Dateisystem '%s' für '/'"
 
 #: installer/modules/65_partition.py:501
-#: installer/modules/66_gpt_partition.py:506
+#: installer/modules/66_gpt_partition.py:502
 #, python-format
 msgid "Wrong file system type '%s' for mount point '/boot'"
 msgstr "Falsches Dateisystem '%s' für '/boot'"
 
 #: installer/modules/65_partition.py:523
-#: installer/modules/66_gpt_partition.py:528
+#: installer/modules/66_gpt_partition.py:524
 msgid "Unable to create bootable config!"
 msgstr "Erstellung bootbarer Konfiguration fehlgeschlagen!"
 
 #: installer/modules/65_partition.py:524
-#: installer/modules/66_gpt_partition.py:529
+#: installer/modules/66_gpt_partition.py:525
 msgid "/-partition is located on LVM and"
 msgstr "/-Partition liegt auf einem LVM und"
 
 #: installer/modules/65_partition.py:525
-#: installer/modules/66_gpt_partition.py:530
+#: installer/modules/66_gpt_partition.py:526
 msgid "/boot-partition is missing or located"
 msgstr "die /boot-Partition fehlt oder ist auch"
 
 #: installer/modules/65_partition.py:526
-#: installer/modules/66_gpt_partition.py:531
+#: installer/modules/66_gpt_partition.py:527
 msgid "on LVM too."
 msgstr "auf einem LVM."
 
 #: installer/modules/65_partition.py:532
-#: installer/modules/66_gpt_partition.py:537
+#: installer/modules/66_gpt_partition.py:533
 msgid "Unbootable config! /boot needs non LVM partition"
 msgstr ""
 "Erstellung bootbarer Konfiguration fehlgeschlagen! /boot darf nicht auf "
@@ -1449,136 +1449,133 @@ msgstr ""
 "einer btrfs Partition liegen."
 
 #: installer/modules/65_partition.py:1052
-#: installer/modules/66_gpt_partition.py:1055
+#: installer/modules/66_gpt_partition.py:1051
 msgid "Deleting LVM volumes"
 msgstr "Lösche LVM-Geräte"
 
 #: installer/modules/65_partition.py:1055
-#: installer/modules/66_gpt_partition.py:1058
+#: installer/modules/66_gpt_partition.py:1054
 msgid "Deleting partitions"
 msgstr "Lösche Partitionen"
 
 #: installer/modules/65_partition.py:1058
-#: installer/modules/66_gpt_partition.py:1061
+#: installer/modules/66_gpt_partition.py:1057
 msgid "Creating partitions"
 msgstr "Lösche Partitionen"
 
 #: installer/modules/65_partition.py:1061
-#: installer/modules/66_gpt_partition.py:1064
+#: installer/modules/66_gpt_partition.py:1060
 msgid "Creating LVM volumes"
 msgstr "Erstelle LVM-Geräte"
 
 #: installer/modules/65_partition.py:1064
-#: installer/modules/66_gpt_partition.py:1067
+#: installer/modules/66_gpt_partition.py:1063
 msgid "Formatting partitions"
 msgstr "Formatiere Partitionen"
 
 #: installer/modules/65_partition.py:1865
-#: installer/modules/66_gpt_partition.py:1853
+#: installer/modules/66_gpt_partition.py:1849
 msgid "Include USB storage devices while auto partitioning?"
 msgstr "USB-Geräte während der Auto-Partitionierung verwenden?"
 
 #: installer/modules/65_partition.py:1867
 #: installer/modules/65_partition.py:2165
-#: installer/modules/66_gpt_partition.py:1855
-#: installer/modules/66_gpt_partition.py:2157
+#: installer/modules/66_gpt_partition.py:1851
+#: installer/modules/66_gpt_partition.py:2154
 msgid "WARNING: Choosing \"yes\" prepares for deletion of all"
 msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen auf"
 
 #: installer/modules/65_partition.py:1868
-#: installer/modules/66_gpt_partition.py:1856
+#: installer/modules/66_gpt_partition.py:1852
 msgid "partitions on all disks! This includes USB harddisks"
 msgstr "allen Festplatten vor! Das beinhaltet auch USB-Festplatten"
 
 #: installer/modules/65_partition.py:1869
-#: installer/modules/66_gpt_partition.py:1857
+#: installer/modules/66_gpt_partition.py:1853
 msgid "and USB sticks. In any case *ALL* LVM LV and LVM VG"
 msgstr "und USB-Sticks. Es werden alle LVM LV und LVM VG"
 
 #: installer/modules/65_partition.py:1870
-#: installer/modules/66_gpt_partition.py:1858
+#: installer/modules/66_gpt_partition.py:1854
 msgid "will be deleted!"
 msgstr "gelöscht!"
 
 #: installer/modules/65_partition.py:1964
 #: installer/modules/65_partition.py:2024
-#: installer/modules/66_gpt_partition.py:1962
-#: installer/modules/66_gpt_partition.py:2008
+#: installer/modules/66_gpt_partition.py:1959
+#: installer/modules/66_gpt_partition.py:2005
 msgid "Not enough disk space found for /boot!"
 msgstr "Nicht genug Speicherplatz für /boot!"
 
 #: installer/modules/65_partition.py:1965
 #: installer/modules/65_partition.py:1996
 #: installer/modules/65_partition.py:2025
-#: installer/modules/66_gpt_partition.py:1950
-#: installer/modules/66_gpt_partition.py:1963
-#: installer/modules/66_gpt_partition.py:1981
-#: installer/modules/66_gpt_partition.py:2009
+#: installer/modules/66_gpt_partition.py:1946
+#: installer/modules/66_gpt_partition.py:1960
+#: installer/modules/66_gpt_partition.py:1978
+#: installer/modules/66_gpt_partition.py:2006
 msgid "Auto partitioning aborted."
 msgstr "Automatische Partitionierung abgebrochen."
 
 #: installer/modules/65_partition.py:1995
-#: installer/modules/66_gpt_partition.py:1980
+#: installer/modules/66_gpt_partition.py:1977
 msgid "Not enough disk space found!"
 msgstr "Nicht genügend Speicherplatz vorhanden!"
 
 #: installer/modules/65_partition.py:2066
-#: installer/modules/66_gpt_partition.py:2048
+#: installer/modules/66_gpt_partition.py:2045
 msgid "WARNING: No devices or valid partitions found!"
 msgstr "WARNUNG: Es konnten keine Festplatten oder validen Partitionen"
 
 #: installer/modules/65_partition.py:2067
-#: installer/modules/66_gpt_partition.py:2049
+#: installer/modules/66_gpt_partition.py:2046
 msgid "Please check your harddrive or partitioning."
 msgstr "gefunden werden! Bitte überprüfen Sie die Festplatte oder"
 
 #: installer/modules/65_partition.py:2068
-#: installer/modules/66_gpt_partition.py:2050
+#: installer/modules/66_gpt_partition.py:2047
 msgid "Further information can be found in the"
 msgstr "Partitionierung. Weitere Informationen finden Sie in der"
 
 #: installer/modules/65_partition.py:2069
 #: installer/modules/65_partition.py:2126
-#: installer/modules/66_gpt_partition.py:2051
-#: installer/modules/66_gpt_partition.py:2118
+#: installer/modules/66_gpt_partition.py:2048
+#: installer/modules/66_gpt_partition.py:2115
 msgid "Support & Knowledge Base: http://sdb.univention.de."
 msgstr "Support & Knowledge Base: http://sdb.univention.de."
 
 #: installer/modules/65_partition.py:2101
-#: installer/modules/66_gpt_partition.py:2093
+#: installer/modules/66_gpt_partition.py:2090
 #, python-format
 msgid "No valid partition table found on device %s."
 msgstr "Keine gültige Partitionstabelle auf Gerät %s vorhanden."
 
 #: installer/modules/65_partition.py:2102
-#: installer/modules/66_gpt_partition.py:2094
 #, python-format
 msgid "Install empty MBR to device %s ?"
 msgstr "Einen leeren MBR auf das Gerät %s schreiben?"
 
 #: installer/modules/65_partition.py:2104
 #: installer/modules/65_partition.py:2121
-#: installer/modules/66_gpt_partition.py:2096
 msgid "WARNING: By choosing \"Write MBR\" existing data"
 msgstr "WARNUNG: Durch Auswahl von \"MBR schreiben\" gehen vorhandene"
 
 #: installer/modules/65_partition.py:2105
 #: installer/modules/65_partition.py:2122
-#: installer/modules/66_gpt_partition.py:2097
+#: installer/modules/66_gpt_partition.py:2094
 #, python-format
 msgid "on device %s will be lost."
 msgstr "Daten auf dem Gerät %s verloren."
 
 #: installer/modules/65_partition.py:2108
 #: installer/modules/65_partition.py:2132
-#: installer/modules/66_gpt_partition.py:2100
 msgid "Write MBR"
 msgstr "MBR schreiben"
 
 #: installer/modules/65_partition.py:2108
 #: installer/modules/65_partition.py:2132
-#: installer/modules/66_gpt_partition.py:2100
-#: installer/modules/66_gpt_partition.py:2124
+#: installer/modules/66_gpt_partition.py:2097
+#: installer/modules/66_gpt_partition.py:2121
 msgid "Ignore Device"
 msgstr "Gerät ignorieren"
 
@@ -1600,7 +1597,7 @@ msgid "the existing GPT and writing an empty MBR."
 msgstr "wird oder durch das Entfernen der GPT und Schreiben eines MBR."
 
 #: installer/modules/65_partition.py:2124
-#: installer/modules/66_gpt_partition.py:2116
+#: installer/modules/66_gpt_partition.py:2113
 msgid "HINT: Further information for an installation"
 msgstr "HINWEIS: Weitere Informationen zur Installation"
 
@@ -1614,67 +1611,67 @@ msgid "Write an empty MBR to device %s ?"
 msgstr "Leeren MBR auf Gerät %s schreiben?"
 
 #: installer/modules/65_partition.py:2145
-#: installer/modules/66_gpt_partition.py:2137
+#: installer/modules/66_gpt_partition.py:2134
 msgid "Detecting LVM devices"
 msgstr "Suche LVM-Geräte"
 
 #: installer/modules/65_partition.py:2154
-#: installer/modules/66_gpt_partition.py:2146
+#: installer/modules/66_gpt_partition.py:2143
 msgid "WARNING: not enough free space for auto partitioning!"
 msgstr "WARNUNG: Nicht genug Platz für Autopartitionierung!"
 
 #: installer/modules/65_partition.py:2155
-#: installer/modules/66_gpt_partition.py:2147
+#: installer/modules/66_gpt_partition.py:2144
 msgid "Auto partitioning has been disabled!"
 msgstr "Automatische Partitionierung wurde deaktiviert!"
 
 #: installer/modules/65_partition.py:2163
-#: installer/modules/66_gpt_partition.py:2155
+#: installer/modules/66_gpt_partition.py:2152
 msgid "Do you want to use auto-partitioning?"
 msgstr "Soll die automatische Partitionierung verwendet werden? "
 
 #: installer/modules/65_partition.py:2166
-#: installer/modules/66_gpt_partition.py:2158
+#: installer/modules/66_gpt_partition.py:2155
 msgid "partitions on all disks! If auto-partition result is"
 msgstr "allen Festplatten vor! Wenn der Vorschlag der Auto-Partitionierung"
 
 #: installer/modules/65_partition.py:2167
-#: installer/modules/66_gpt_partition.py:2159
+#: installer/modules/66_gpt_partition.py:2156
 msgid "unsuitable press F5 to restart partitioning."
 msgstr "unpassend ist, drücken Sie F5, um alle Änderungen zu verwerfen."
 
 #: installer/modules/65_partition.py:2176
-#: installer/modules/66_gpt_partition.py:2168
+#: installer/modules/66_gpt_partition.py:2165
 msgid "LVM1 volumes detected. To use LVM1 volumes all"
 msgstr "LVM1-Medium gefunden. Um LVM1-Medien zu nutzen"
 
 #: installer/modules/65_partition.py:2177
-#: installer/modules/66_gpt_partition.py:2169
+#: installer/modules/66_gpt_partition.py:2166
 msgid "existing LVM1 snapshots have to be removed!"
 msgstr "müssen alle LVM1-Snapshots gelöscht werden!"
 
 #: installer/modules/65_partition.py:2178
-#: installer/modules/66_gpt_partition.py:2170
+#: installer/modules/66_gpt_partition.py:2167
 msgid "Otherwise kernel is unable to mount them!"
 msgstr "Anderenfalls kann der Kernel sie nicht einbinden!"
 
 #: installer/modules/65_partition.py:2197
-#: installer/modules/66_gpt_partition.py:2189
+#: installer/modules/66_gpt_partition.py:2186
 msgid "No LVM volume group found on current system."
 msgstr "Keine LVM-Gruppe gefunden."
 
 #: installer/modules/65_partition.py:2198
-#: installer/modules/66_gpt_partition.py:2190
+#: installer/modules/66_gpt_partition.py:2187
 msgid "Do you want to use LVM2?"
 msgstr "Möchten Sie LVM2 verwenden?"
 
 #: installer/modules/65_partition.py:2217
-#: installer/modules/66_gpt_partition.py:2210
+#: installer/modules/66_gpt_partition.py:2207
 msgid " Partitioning dialog "
 msgstr "Partitionierung"
 
 #: installer/modules/65_partition.py:2237
-#: installer/modules/66_gpt_partition.py:2230
+#: installer/modules/66_gpt_partition.py:2227
 msgid "Device"
 msgstr "Gerät"
 
@@ -1683,19 +1680,19 @@ msgid "Area(MB)"
 msgstr "Bereich(MB)"
 
 #: installer/modules/65_partition.py:2239
-#: installer/modules/66_gpt_partition.py:2232
+#: installer/modules/66_gpt_partition.py:2229
 msgid "Type"
 msgstr "Typ"
 
 #: installer/modules/65_partition.py:2240
-#: installer/modules/66_gpt_partition.py:2233
+#: installer/modules/66_gpt_partition.py:2230
 msgid "Form."
 msgstr "Form."
 
 #: installer/modules/65_partition.py:2241
 #: installer/modules/65_partition.py:3782
 #: installer/modules/65_partition.py:4077
-#: installer/modules/66_gpt_partition.py:2234
+#: installer/modules/66_gpt_partition.py:2231
 msgid "Mount point"
 msgstr "Mount-Point"
 
@@ -1704,12 +1701,12 @@ msgid "Size(MB)"
 msgstr "Größe(MB)"
 
 #: installer/modules/65_partition.py:2256
-#: installer/modules/66_gpt_partition.py:2249
+#: installer/modules/66_gpt_partition.py:2246
 msgid "diskdrive"
 msgstr "Festplatte"
 
 #: installer/modules/65_partition.py:2282
-#: installer/modules/66_gpt_partition.py:2275
+#: installer/modules/66_gpt_partition.py:2272
 msgid "(unassigned)"
 msgstr "(nicht zugewiesen)"
 
@@ -1719,22 +1716,22 @@ msgstr "unbenutzbar"
 
 #: installer/modules/65_partition.py:2311
 #: installer/modules/65_partition.py:2315
-#: installer/modules/66_gpt_partition.py:2299
+#: installer/modules/66_gpt_partition.py:2296
 msgid "free"
 msgstr "frei"
 
 #: installer/modules/65_partition.py:2318
-#: installer/modules/66_gpt_partition.py:2302
+#: installer/modules/66_gpt_partition.py:2299
 msgid "unknown"
 msgstr "unbekannt"
 
 #: installer/modules/65_partition.py:2336
-#: installer/modules/66_gpt_partition.py:2320
+#: installer/modules/66_gpt_partition.py:2317
 msgid "LVM volume group"
 msgstr "LVM-Medien-Gruppe"
 
 #: installer/modules/65_partition.py:2377
-#: installer/modules/66_gpt_partition.py:2360
+#: installer/modules/66_gpt_partition.py:2357
 msgid ""
 "This module is used for partitioning the existing hard drives. It is "
 "recommended to use at least two partitions - one for the root file system, "
@@ -1756,32 +1753,32 @@ msgstr ""
 "kann er durch die Funktionstaste F5 verworfen werden."
 
 #: installer/modules/65_partition.py:2381
-#: installer/modules/66_gpt_partition.py:2364
+#: installer/modules/66_gpt_partition.py:2361
 msgid "F2-Create"
 msgstr "F2-Erstellen"
 
 #: installer/modules/65_partition.py:2382
-#: installer/modules/66_gpt_partition.py:2365
+#: installer/modules/66_gpt_partition.py:2362
 msgid "F3-Edit"
 msgstr "F3-Editieren"
 
 #: installer/modules/65_partition.py:2383
-#: installer/modules/66_gpt_partition.py:2366
+#: installer/modules/66_gpt_partition.py:2363
 msgid "F4-Delete"
 msgstr "F4-Löschen"
 
 #: installer/modules/65_partition.py:2384
-#: installer/modules/66_gpt_partition.py:2367
+#: installer/modules/66_gpt_partition.py:2364
 msgid "F5-Reset changes"
 msgstr "F5-Änderungen verwerfen"
 
 #: installer/modules/65_partition.py:2385
-#: installer/modules/66_gpt_partition.py:2368
+#: installer/modules/66_gpt_partition.py:2365
 msgid "F6-Write partitions"
 msgstr "F6-Änderungen schreiben"
 
 #: installer/modules/65_partition.py:2424
-#: installer/modules/66_gpt_partition.py:2401
+#: installer/modules/66_gpt_partition.py:2398
 msgid ""
 "UCS-Partition-Tool \n"
 " \n"
@@ -1820,80 +1817,80 @@ msgstr ""
 #: installer/modules/65_partition.py:2520
 #: installer/modules/65_partition.py:2554
 #: installer/modules/65_partition.py:2576
-#: installer/modules/66_gpt_partition.py:2497
-#: installer/modules/66_gpt_partition.py:2525
-#: installer/modules/66_gpt_partition.py:2547
+#: installer/modules/66_gpt_partition.py:2494
+#: installer/modules/66_gpt_partition.py:2522
+#: installer/modules/66_gpt_partition.py:2544
 msgid "LVM physical volumes cannot be modified!"
 msgstr "LVM Physikalische Medien können nicht verändert werden!"
 
 #: installer/modules/65_partition.py:2520
 #: installer/modules/65_partition.py:2554
 #: installer/modules/65_partition.py:2576
-#: installer/modules/66_gpt_partition.py:2497
-#: installer/modules/66_gpt_partition.py:2525
-#: installer/modules/66_gpt_partition.py:2547
+#: installer/modules/66_gpt_partition.py:2494
+#: installer/modules/66_gpt_partition.py:2522
+#: installer/modules/66_gpt_partition.py:2544
 msgid "If necessary delete this partition."
 msgstr "Wenn es notwendig ist, sollte die Partition gelöscht werden."
 
 #: installer/modules/65_partition.py:2640
 #: installer/modules/65_partition.py:2651
-#: installer/modules/66_gpt_partition.py:2605
-#: installer/modules/66_gpt_partition.py:2616
+#: installer/modules/66_gpt_partition.py:2602
+#: installer/modules/66_gpt_partition.py:2613
 msgid "Unable to remove physical volume from"
 msgstr "Das Löschen des physikalischen Mediums der"
 
 #: installer/modules/65_partition.py:2641
 #: installer/modules/65_partition.py:2652
-#: installer/modules/66_gpt_partition.py:2606
-#: installer/modules/66_gpt_partition.py:2617
+#: installer/modules/66_gpt_partition.py:2603
+#: installer/modules/66_gpt_partition.py:2614
 #, python-format
 msgid "volume group \"%s\"!"
 msgstr "Medien-Gruppe \"%s\" ist fehlgeschlagen!"
 
 #: installer/modules/65_partition.py:2642
 #: installer/modules/65_partition.py:2653
-#: installer/modules/66_gpt_partition.py:2607
-#: installer/modules/66_gpt_partition.py:2618
+#: installer/modules/66_gpt_partition.py:2604
+#: installer/modules/66_gpt_partition.py:2615
 msgid "Physical volume contains physical extents in use!"
 msgstr "Physikalisches Medium enthält verwendete Systemdaten!"
 
 #: installer/modules/65_partition.py:2654
-#: installer/modules/66_gpt_partition.py:2619
+#: installer/modules/66_gpt_partition.py:2616
 msgid "Please use \"pvmove\" to move data to other"
 msgstr "Bitte verschieben Sie die Daten mit \"pvmove\""
 
 #: installer/modules/65_partition.py:2655
-#: installer/modules/66_gpt_partition.py:2620
+#: installer/modules/66_gpt_partition.py:2617
 msgid "physical volumes."
 msgstr "auf ein anderes phys. Medium."
 
 #: installer/modules/65_partition.py:3321
-#: installer/modules/66_gpt_partition.py:2978
+#: installer/modules/66_gpt_partition.py:2975
 msgid "Writing partitions"
 msgstr "Schreibe Partitionen"
 
 #: installer/modules/65_partition.py:3324
-#: installer/modules/66_gpt_partition.py:2981
+#: installer/modules/66_gpt_partition.py:2978
 msgid "Error while writing partitions:"
 msgstr "Fehler beim Anlegen der Partitionen:"
 
 #: installer/modules/65_partition.py:3326
-#: installer/modules/66_gpt_partition.py:2983
+#: installer/modules/66_gpt_partition.py:2980
 msgid "Creating LVM Volumes"
 msgstr "Erstelle LVM-Geräte"
 
 #: installer/modules/65_partition.py:3329
-#: installer/modules/66_gpt_partition.py:2986
+#: installer/modules/66_gpt_partition.py:2983
 msgid "Error while creating LVM volumes:"
 msgstr "Fehler beim Anlegen der LVM Volumes:"
 
 #: installer/modules/65_partition.py:3330
-#: installer/modules/66_gpt_partition.py:2987
+#: installer/modules/66_gpt_partition.py:2984
 msgid "Creating file systems"
 msgstr "Erstelle Dateisysteme"
 
 #: installer/modules/65_partition.py:3333
-#: installer/modules/66_gpt_partition.py:2990
+#: installer/modules/66_gpt_partition.py:2987
 msgid "Error while creating file systems:"
 msgstr "Fehler beim Anlegen der Dateisysteme:"
 
@@ -1901,10 +1898,10 @@ msgstr "Fehler beim Anlegen der Dateisysteme:"
 #: installer/modules/65_partition.py:3557
 #: installer/modules/65_partition.py:3913
 #: installer/modules/65_partition.py:3951
-#: installer/modules/66_gpt_partition.py:3210
-#: installer/modules/66_gpt_partition.py:3282
-#: installer/modules/66_gpt_partition.py:3559
-#: installer/modules/66_gpt_partition.py:3596
+#: installer/modules/66_gpt_partition.py:3207
+#: installer/modules/66_gpt_partition.py:3279
+#: installer/modules/66_gpt_partition.py:3556
+#: installer/modules/66_gpt_partition.py:3593
 #, python-format
 msgid "Filesystem %s:"
 msgstr "Dateisystem %s:"
@@ -1913,10 +1910,10 @@ msgstr "Dateisystem %s:"
 #: installer/modules/65_partition.py:3558
 #: installer/modules/65_partition.py:3914
 #: installer/modules/65_partition.py:3952
-#: installer/modules/66_gpt_partition.py:3211
-#: installer/modules/66_gpt_partition.py:3283
-#: installer/modules/66_gpt_partition.py:3560
-#: installer/modules/66_gpt_partition.py:3597
+#: installer/modules/66_gpt_partition.py:3208
+#: installer/modules/66_gpt_partition.py:3280
+#: installer/modules/66_gpt_partition.py:3557
+#: installer/modules/66_gpt_partition.py:3594
 msgid "This is a highly experimental filesystem"
 msgstr "Dies ist ein experimentelles Dateisystem"
 
@@ -1924,10 +1921,10 @@ msgstr "Dies ist ein experimentelles Dateisystem"
 #: installer/modules/65_partition.py:3558
 #: installer/modules/65_partition.py:3914
 #: installer/modules/65_partition.py:3952
-#: installer/modules/66_gpt_partition.py:3211
-#: installer/modules/66_gpt_partition.py:3283
-#: installer/modules/66_gpt_partition.py:3560
-#: installer/modules/66_gpt_partition.py:3597
+#: installer/modules/66_gpt_partition.py:3208
+#: installer/modules/66_gpt_partition.py:3280
+#: installer/modules/66_gpt_partition.py:3557
+#: installer/modules/66_gpt_partition.py:3594
 msgid "and should not be used in productive"
 msgstr "und sollte nicht in produktiven"
 
@@ -1935,10 +1932,10 @@ msgstr "und sollte nicht in produktiven"
 #: installer/modules/65_partition.py:3558
 #: installer/modules/65_partition.py:3914
 #: installer/modules/65_partition.py:3952
-#: installer/modules/66_gpt_partition.py:3211
-#: installer/modules/66_gpt_partition.py:3283
-#: installer/modules/66_gpt_partition.py:3560
-#: installer/modules/66_gpt_partition.py:3597
+#: installer/modules/66_gpt_partition.py:3208
+#: installer/modules/66_gpt_partition.py:3280
+#: installer/modules/66_gpt_partition.py:3557
+#: installer/modules/66_gpt_partition.py:3594
 msgid "environments."
 msgstr "Umgebungen eingesetzt werden."
 
@@ -1946,16 +1943,16 @@ msgstr "Umgebungen eingesetzt werden."
 #: installer/modules/65_partition.py:3603
 #: installer/modules/65_partition.py:3926
 #: installer/modules/65_partition.py:3972
-#: installer/modules/66_gpt_partition.py:3251
-#: installer/modules/66_gpt_partition.py:3571
-#: installer/modules/66_gpt_partition.py:3617
+#: installer/modules/66_gpt_partition.py:3248
+#: installer/modules/66_gpt_partition.py:3568
+#: installer/modules/66_gpt_partition.py:3614
 msgid "The selected file system takes no"
 msgstr "Das gewählte Dateisystem ist nicht nutzbar,"
 
 #: installer/modules/65_partition.py:3534
 #: installer/modules/65_partition.py:3927
-#: installer/modules/66_gpt_partition.py:3252
-#: installer/modules/66_gpt_partition.py:3572
+#: installer/modules/66_gpt_partition.py:3249
+#: installer/modules/66_gpt_partition.py:3569
 msgid "effect, if format is not selected."
 msgstr "wenn formatieren nicht gewählt wurde."
 
@@ -1965,37 +1962,37 @@ msgstr "wenn formatieren nicht gewählt wurde."
 #: installer/modules/65_partition.py:3929
 #: installer/modules/65_partition.py:3969
 #: installer/modules/65_partition.py:3975
-#: installer/modules/66_gpt_partition.py:3254
-#: installer/modules/66_gpt_partition.py:3319
-#: installer/modules/66_gpt_partition.py:3325
-#: installer/modules/66_gpt_partition.py:3574
-#: installer/modules/66_gpt_partition.py:3614
-#: installer/modules/66_gpt_partition.py:3620
+#: installer/modules/66_gpt_partition.py:3251
+#: installer/modules/66_gpt_partition.py:3316
+#: installer/modules/66_gpt_partition.py:3322
+#: installer/modules/66_gpt_partition.py:3571
+#: installer/modules/66_gpt_partition.py:3611
+#: installer/modules/66_gpt_partition.py:3617
 msgid "Do you want to format this partition?"
 msgstr "Wollen Sie diese Partition formatieren? "
 
 #: installer/modules/65_partition.py:3596
-#: installer/modules/66_gpt_partition.py:3315
+#: installer/modules/66_gpt_partition.py:3312
 msgid "This partition is designated as root file system,"
 msgstr "Diese Partition ist als Root-Dateisystem gekennzeichnet,"
 
 #: installer/modules/65_partition.py:3597
 #: installer/modules/65_partition.py:3966
-#: installer/modules/66_gpt_partition.py:3316
-#: installer/modules/66_gpt_partition.py:3611
+#: installer/modules/66_gpt_partition.py:3313
+#: installer/modules/66_gpt_partition.py:3608
 msgid "but \"format\" is not selected. This can cause"
 msgstr "aber \"Formatieren\" wurde nicht ausgewählt. Dies"
 
 #: installer/modules/65_partition.py:3598
 #: installer/modules/65_partition.py:3967
-#: installer/modules/66_gpt_partition.py:3317
-#: installer/modules/66_gpt_partition.py:3612
+#: installer/modules/66_gpt_partition.py:3314
+#: installer/modules/66_gpt_partition.py:3609
 msgid "problems with preexisting data on disk!"
 msgstr " kann zu Problemen mit existierende Daten führen!"
 
 #: installer/modules/65_partition.py:3604
 #: installer/modules/65_partition.py:3973
-#: installer/modules/66_gpt_partition.py:3618
+#: installer/modules/66_gpt_partition.py:3615
 msgid "effect, if \"format\" is not selected."
 msgstr "wenn \"formatieren\" nicht gewählt wurde."
 
@@ -2049,16 +2046,16 @@ msgstr "Neue Partition"
 #: installer/modules/65_partition.py:4019
 #: installer/modules/65_partition.py:4020
 #: installer/modules/65_partition.py:4022
-#: installer/modules/66_gpt_partition.py:3379
-#: installer/modules/66_gpt_partition.py:3380
-#: installer/modules/66_gpt_partition.py:3381
-#: installer/modules/66_gpt_partition.py:3404
-#: installer/modules/66_gpt_partition.py:3405
-#: installer/modules/66_gpt_partition.py:3666
-#: installer/modules/66_gpt_partition.py:3667
-#: installer/modules/66_gpt_partition.py:3668
-#: installer/modules/66_gpt_partition.py:3703
-#: installer/modules/66_gpt_partition.py:3704
+#: installer/modules/66_gpt_partition.py:3376
+#: installer/modules/66_gpt_partition.py:3377
+#: installer/modules/66_gpt_partition.py:3378
+#: installer/modules/66_gpt_partition.py:3401
+#: installer/modules/66_gpt_partition.py:3402
+#: installer/modules/66_gpt_partition.py:3663
+#: installer/modules/66_gpt_partition.py:3664
+#: installer/modules/66_gpt_partition.py:3665
+#: installer/modules/66_gpt_partition.py:3700
+#: installer/modules/66_gpt_partition.py:3701
 msgid "Mount point:"
 msgstr "Mount-Point"
 
@@ -2093,17 +2090,17 @@ msgstr "PPC PreP"
 #: installer/modules/65_partition.py:4044
 #: installer/modules/65_partition.py:4081
 #: installer/modules/65_partition.py:4083
-#: installer/modules/66_gpt_partition.py:3392
-#: installer/modules/66_gpt_partition.py:3425
-#: installer/modules/66_gpt_partition.py:3427
-#: installer/modules/66_gpt_partition.py:3690
-#: installer/modules/66_gpt_partition.py:3728
-#: installer/modules/66_gpt_partition.py:3730
+#: installer/modules/66_gpt_partition.py:3389
+#: installer/modules/66_gpt_partition.py:3422
+#: installer/modules/66_gpt_partition.py:3424
+#: installer/modules/66_gpt_partition.py:3687
+#: installer/modules/66_gpt_partition.py:3725
+#: installer/modules/66_gpt_partition.py:3727
 msgid "format"
 msgstr "formatieren"
 
 #: installer/modules/65_partition.py:3750
-#: installer/modules/66_gpt_partition.py:3116
+#: installer/modules/66_gpt_partition.py:3113
 msgid "LVM PV"
 msgstr "LVM PV"
 
@@ -2111,15 +2108,15 @@ msgstr "LVM PV"
 #: installer/modules/65_partition.py:3798
 #: installer/modules/65_partition.py:4046
 #: installer/modules/65_partition.py:4085
-#: installer/modules/66_gpt_partition.py:3394
-#: installer/modules/66_gpt_partition.py:3429
-#: installer/modules/66_gpt_partition.py:3692
-#: installer/modules/66_gpt_partition.py:3732
+#: installer/modules/66_gpt_partition.py:3391
+#: installer/modules/66_gpt_partition.py:3426
+#: installer/modules/66_gpt_partition.py:3689
+#: installer/modules/66_gpt_partition.py:3729
 msgid "Save"
 msgstr "Speichern"
 
 #: installer/modules/65_partition.py:3758
-#: installer/modules/66_gpt_partition.py:3402
+#: installer/modules/66_gpt_partition.py:3399
 #, python-format
 msgid "Partition: %s"
 msgstr "Partition: %s"
@@ -2139,32 +2136,32 @@ msgid "Size: %s MB"
 msgstr "Größe: %s MB"
 
 #: installer/modules/65_partition.py:3874
-#: installer/modules/66_gpt_partition.py:3517
+#: installer/modules/66_gpt_partition.py:3514
 msgid "Please enter volume name!"
 msgstr "Geben Sie den Namen des Medium ein!"
 
 #: installer/modules/65_partition.py:3876
-#: installer/modules/66_gpt_partition.py:3519
+#: installer/modules/66_gpt_partition.py:3516
 msgid "Logical volume name contains illegal characters!"
 msgstr "Name des Logischen Mediums enthält nicht erlaubte Zeichen!"
 
 #: installer/modules/65_partition.py:3878
-#: installer/modules/66_gpt_partition.py:3521
+#: installer/modules/66_gpt_partition.py:3518
 msgid "Logical volume name is already in use!"
 msgstr "Der Name des logischen Mediums wird bereits verwendet!"
 
 #: installer/modules/65_partition.py:3893
-#: installer/modules/66_gpt_partition.py:3536
+#: installer/modules/66_gpt_partition.py:3533
 msgid "Size contains non-digit characters!"
 msgstr "Die Größenangabe enthält nicht nur Ziffern"
 
 #: installer/modules/65_partition.py:3906
-#: installer/modules/66_gpt_partition.py:3553
+#: installer/modules/66_gpt_partition.py:3550
 msgid "Not enough free space on volume group!"
 msgstr "Nicht ausreichend Platz in der Medien-Gruppe!"
 
 #: installer/modules/65_partition.py:3965
-#: installer/modules/66_gpt_partition.py:3610
+#: installer/modules/66_gpt_partition.py:3607
 msgid "This volume is designated as root filesystem,"
 msgstr "Dieses Medium ist als Root-Dateisystem gekennzeichnet,"
 
@@ -2200,54 +2197,54 @@ msgstr "Die Größe wird angepasst um die Partitionstabelle zu korrigieren."
 
 #: installer/modules/65_partition.py:4163
 #: installer/modules/65_partition.py:4206
-#: installer/modules/66_gpt_partition.py:3774
+#: installer/modules/66_gpt_partition.py:3771
 msgid "OK"
 msgstr "OK"
 
 #: installer/modules/65_partition.py:4191
-#: installer/modules/66_gpt_partition.py:3759
+#: installer/modules/66_gpt_partition.py:3756
 msgid "UCS Installer supports only one LVM volume group."
 msgstr "UCS Installer unterstützt nur eine LVM-Medien-Gruppe."
 
 #: installer/modules/65_partition.py:4193
-#: installer/modules/66_gpt_partition.py:3761
+#: installer/modules/66_gpt_partition.py:3758
 msgid "Please select volume group to use for installation."
 msgstr "Bitte wählen Sie die Medien-Gruppe für die Installation."
 
 #: installer/modules/65_partition.py:4195
-#: installer/modules/66_gpt_partition.py:3763
+#: installer/modules/66_gpt_partition.py:3760
 msgid "Volume Group:"
 msgstr "Medien-Gruppe:"
 
 #: installer/modules/65_partition.py:4234
-#: installer/modules/66_gpt_partition.py:3803
+#: installer/modules/66_gpt_partition.py:3800
 msgid "Do you really want to write all changes?"
 msgstr "Wollen Sie wirklich alle Änderungen schreiben?"
 
 #: installer/modules/65_partition.py:4236
-#: installer/modules/66_gpt_partition.py:3805
+#: installer/modules/66_gpt_partition.py:3802
 msgid "This may destroy all data on modified discs!"
 msgstr "Dadurch können Daten vernichtet werden!"
 
 #: installer/modules/65_partition.py:4266
-#: installer/modules/66_gpt_partition.py:3835
+#: installer/modules/66_gpt_partition.py:3832
 msgid "No disk detected!"
 msgstr "Keine Festplatte erkannt!"
 
 #: installer/modules/65_partition.py:4268
-#: installer/modules/66_gpt_partition.py:3837
+#: installer/modules/66_gpt_partition.py:3834
 msgid "Please try to load the suitable module and rescan!"
 msgstr ""
 "Bitte versuchen Sie das passende Modul zu laden \n"
 " und es erneut vom Installer erkennen zu lassen!"
 
 #: installer/modules/65_partition.py:4281
-#: installer/modules/66_gpt_partition.py:3850
+#: installer/modules/66_gpt_partition.py:3847
 msgid "Wrong file system type for mount point \"/\" !"
 msgstr "Falsches Dateisystem für '/'"
 
 #: installer/modules/65_partition.py:4283
-#: installer/modules/66_gpt_partition.py:3852
+#: installer/modules/66_gpt_partition.py:3849
 msgid "Please select another file system."
 msgstr ""
 "Bitte wählen Sie ein anderes \n"
@@ -2258,137 +2255,155 @@ msgstr ""
 msgid ""
 "Not enough space for autopartitioning: sum of disk sizes=%(disksizeall)d "
 "MiB  required=%(required)d MiB"
-msgstr "Nicht genügend Platz für Autopartitionierung: vorhanden=%(disksizeall)s MiB  benötigt=%(required)s MiB"
+msgstr ""
+"Nicht genügend Platz für Autopartitionierung: vorhanden=%(disksizeall)s MiB  "
+"benötigt=%(required)s MiB"
 
-#: installer/modules/66_gpt_partition.py:494
+#: installer/modules/66_gpt_partition.py:490
 msgid ""
 "One partition must be of type \"BIOS boot partition\" or \"EFI system\". The "
 "correct type depends on your BIOS settings."
-msgstr "Eine der Partitionen muss vom Typ \"BIOS boot partition\" oder \"EFI system\" sein. Der korrekte Typ is abhängig von den BIOS-Einstellungen."
+msgstr ""
+"Eine der Partitionen muss vom Typ \"BIOS boot partition\" oder \"EFI system"
+"\" sein. Der korrekte Typ is abhängig von den BIOS-Einstellungen."
 
-#: installer/modules/66_gpt_partition.py:1949
+#: installer/modules/66_gpt_partition.py:1945
 msgid "Not enough disk space found for BIOS boot partition!"
 msgstr "Nicht genug Speicherplatz für die BIOS-Boot-Partition!"
 
-#: installer/modules/66_gpt_partition.py:2108
+#: installer/modules/66_gpt_partition.py:2091
+#, python-format
+msgid "Install empty GPT to device %s ?"
+msgstr "Eine leere GPT auf das Gerät %s schreiben?"
+
+#: installer/modules/66_gpt_partition.py:2093
+msgid "WARNING: By choosing \"Write GPT\" existing data"
+msgstr "WARNUNG: Durch Auswahl von \"GPT schreiben\" gehen vorhandene"
+
+#: installer/modules/66_gpt_partition.py:2097
+msgid "Write GPT"
+msgstr "GPT schreiben"
+
+#: installer/modules/66_gpt_partition.py:2105
 #, python-format
 msgid "A MBR has been found on device %s."
 msgstr "Ein Master Boot Record (MBR) wurde auf Gerät %s gefunden."
 
-#: installer/modules/66_gpt_partition.py:2109
+#: installer/modules/66_gpt_partition.py:2106
 msgid "Devices with MBR are not supported by the interactive installation."
 msgstr "Geräte mit MBR werden von der interaktiven Installation nicht"
 
-#: installer/modules/66_gpt_partition.py:2110
+#: installer/modules/66_gpt_partition.py:2107
 msgid "You can proceed by ignoring this device or by converting"
 msgstr "unterstützt. Es kann fortgefahren werden, indem das Gerät ignoriert"
 
-#: installer/modules/66_gpt_partition.py:2111
+#: installer/modules/66_gpt_partition.py:2108
 msgid "the existing MBR to GPT immediately."
 msgstr "oder der MBR in eine GUID-Partitionstabelle (GPT) umgewandelt wird."
 
-#: installer/modules/66_gpt_partition.py:2113
+#: installer/modules/66_gpt_partition.py:2110
 msgid "WARNING: By choosing \"Convert to GPT\" existing partition"
 msgstr "WARNUNG: Durch Auswahl von \"In GPT umwandeln\" ändert sich ggf. die"
 
-#: installer/modules/66_gpt_partition.py:2114
+#: installer/modules/66_gpt_partition.py:2111
 msgid "order may change and affect other operationg systems!"
-msgstr "vorhandene Partitionsreihenfolge und beeinflusst andere Betriebssysteme."
+msgstr ""
+"vorhandene Partitionsreihenfolge und beeinflusst andere Betriebssysteme."
 
-#: installer/modules/66_gpt_partition.py:2117
+#: installer/modules/66_gpt_partition.py:2114
 msgid "on a device with MBR can be found in the"
 msgstr "auf Geräten mit MBR finden Sie in der"
 
-#: installer/modules/66_gpt_partition.py:2121
+#: installer/modules/66_gpt_partition.py:2118
 #, python-format
 msgid "Convert MBR of device %s to GPT now?"
 msgstr "Jetzt den MBR auf Gerät %s in eine GPT umwandeln?"
 
-#: installer/modules/66_gpt_partition.py:2124
+#: installer/modules/66_gpt_partition.py:2121
 msgid "Convert to GPT"
 msgstr "In GPT umwandeln"
 
-#: installer/modules/66_gpt_partition.py:2231
+#: installer/modules/66_gpt_partition.py:2228
 msgid "Region(MiB)"
 msgstr "Region(MiB)"
 
-#: installer/modules/66_gpt_partition.py:2235
+#: installer/modules/66_gpt_partition.py:2232
 msgid "Size(MiB)"
 msgstr "Größe(MiB)"
 
-#: installer/modules/66_gpt_partition.py:3114
-#: installer/modules/66_gpt_partition.py:3121
+#: installer/modules/66_gpt_partition.py:3111
+#: installer/modules/66_gpt_partition.py:3118
 msgid "Data"
 msgstr "Daten"
 
-#: installer/modules/66_gpt_partition.py:3115
-#: installer/modules/66_gpt_partition.py:3122
+#: installer/modules/66_gpt_partition.py:3112
+#: installer/modules/66_gpt_partition.py:3119
 msgid "Swap"
 msgstr "Swap"
 
-#: installer/modules/66_gpt_partition.py:3117
-#: installer/modules/66_gpt_partition.py:3123
+#: installer/modules/66_gpt_partition.py:3114
+#: installer/modules/66_gpt_partition.py:3120
 msgid "BIOS Boot"
 msgstr "BIOS Boot"
 
-#: installer/modules/66_gpt_partition.py:3118
-#: installer/modules/66_gpt_partition.py:3124
+#: installer/modules/66_gpt_partition.py:3115
+#: installer/modules/66_gpt_partition.py:3121
 msgid "EFI System"
 msgstr "EFI System"
 
-#: installer/modules/66_gpt_partition.py:3322
+#: installer/modules/66_gpt_partition.py:3319
 msgid "The selected file system and partition type"
 msgstr "Das gewählte Dateisystem bzw. Partitionstyp ist nicht nutzbar,"
 
-#: installer/modules/66_gpt_partition.py:3323
+#: installer/modules/66_gpt_partition.py:3320
 msgid "take no effect, if \"format\" is not selected."
 msgstr "wenn \"formatieren\" nicht angewählt wurde."
 
-#: installer/modules/66_gpt_partition.py:3377
+#: installer/modules/66_gpt_partition.py:3374
 msgid "Create new partition"
 msgstr "Neue Partition erstellen"
 
-#: installer/modules/66_gpt_partition.py:3378
-#: installer/modules/66_gpt_partition.py:3665
+#: installer/modules/66_gpt_partition.py:3375
+#: installer/modules/66_gpt_partition.py:3662
 msgid "Size (MiB):"
 msgstr "Größe (MiB)"
 
-#: installer/modules/66_gpt_partition.py:3383
-#: installer/modules/66_gpt_partition.py:3414
+#: installer/modules/66_gpt_partition.py:3380
+#: installer/modules/66_gpt_partition.py:3411
 msgid "Partition type:"
 msgstr "Partitionstyp:"
 
-#: installer/modules/66_gpt_partition.py:3388
-#: installer/modules/66_gpt_partition.py:3420
-#: installer/modules/66_gpt_partition.py:3669
-#: installer/modules/66_gpt_partition.py:3705
+#: installer/modules/66_gpt_partition.py:3385
+#: installer/modules/66_gpt_partition.py:3417
+#: installer/modules/66_gpt_partition.py:3666
+#: installer/modules/66_gpt_partition.py:3702
 msgid "File system:"
 msgstr "Dateisystem:"
 
-#: installer/modules/66_gpt_partition.py:3401
+#: installer/modules/66_gpt_partition.py:3398
 msgid "Edit partition"
 msgstr "Partition bearbeiten"
 
-#: installer/modules/66_gpt_partition.py:3403
-#: installer/modules/66_gpt_partition.py:3702
+#: installer/modules/66_gpt_partition.py:3400
+#: installer/modules/66_gpt_partition.py:3699
 #, python-format
 msgid "Size: %d MiB"
 msgstr "Größe: %s MiB"
 
-#: installer/modules/66_gpt_partition.py:3662
+#: installer/modules/66_gpt_partition.py:3659
 msgid "Create new LVM logical volume"
 msgstr "Neues logisches Medium erstellen"
 
-#: installer/modules/66_gpt_partition.py:3663
-#: installer/modules/66_gpt_partition.py:3664
+#: installer/modules/66_gpt_partition.py:3660
+#: installer/modules/66_gpt_partition.py:3661
 msgid "Volume name:"
 msgstr "Name des Mediums:"
 
-#: installer/modules/66_gpt_partition.py:3700
+#: installer/modules/66_gpt_partition.py:3697
 msgid "Edit LVM logical volume"
 msgstr "Logisches Medium bearbeiten"
 
-#: installer/modules/66_gpt_partition.py:3701
+#: installer/modules/66_gpt_partition.py:3698
 #, python-format
 msgid "Volume name: %s"
 msgstr "Name des Mediums: %s"
@@ -2424,108 +2439,107 @@ msgstr ""
 msgid "Boot loader"
 msgstr "Bootloader"
 
-#: installer/modules/70_net.py:373
-#, python-format
-msgid "Not all IPv4 values have been specified for interface %s"
-msgstr "Die IPv4-Angaben für Interface %s sind nicht vollständig."
-
-#: installer/modules/70_net.py:376 installer/modules/70_net.py:809
+#: installer/modules/70_net.py:334 installer/modules/70_net.py:764
 msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/70_net.py:378 installer/modules/70_net.py:530
-#: installer/modules/70_net.py:865 installer/modules/90_overview.py:132
+#: installer/modules/70_net.py:335 installer/modules/70_net.py:494
+#: installer/modules/70_net.py:821 installer/modules/90_overview.py:132
 msgid "IPv4 Gateway"
 msgstr "IPv4-Gateway"
 
-#: installer/modules/70_net.py:379 installer/modules/70_net.py:536
-#: installer/modules/70_net.py:867 installer/modules/90_overview.py:138
+#: installer/modules/70_net.py:336 installer/modules/70_net.py:500
+#: installer/modules/70_net.py:823 installer/modules/90_overview.py:138
 msgid "IPv6 Gateway"
 msgstr "IPv6-Gateway"
 
-#: installer/modules/70_net.py:380 installer/modules/70_net.py:547
-#: installer/modules/70_net.py:871 installer/modules/70_net.py:1081
+#: installer/modules/70_net.py:337 installer/modules/70_net.py:511
+#: installer/modules/70_net.py:827 installer/modules/70_net.py:1041
 #: installer/modules/90_overview.py:144
 msgid "Domain DNS Server"
 msgstr "Domänen-DNS-Server"
 
-#: installer/modules/70_net.py:381 installer/modules/70_net.py:558
-#: installer/modules/70_net.py:869 installer/modules/70_net.py:1085
+#: installer/modules/70_net.py:338 installer/modules/70_net.py:522
+#: installer/modules/70_net.py:825 installer/modules/70_net.py:1045
 #: installer/modules/90_overview.py:150
 msgid "External DNS Server"
 msgstr "Externer DNS-Server"
 
-#: installer/modules/70_net.py:396 installer/modules/70_net.py:890
+#: installer/modules/70_net.py:354 installer/modules/70_net.py:846
 msgid "Proxy, example http://10.201.1.1:8080"
 msgstr "Proxy, z.B. http://10.201.1.1:8080"
 
-#: installer/modules/70_net.py:420
+#: installer/modules/70_net.py:386
 msgid "You have to configure one or more network interfaces."
 msgstr "Es muss mindestens ein Netzwerk-Interface konfiguriert werden."
 
-#: installer/modules/70_net.py:454
+#: installer/modules/70_net.py:420
 #, python-format
 msgid "Settings for interface \"%s\""
 msgstr "Einstellungen für Interface \"%s\""
 
-#: installer/modules/70_net.py:457
+#: installer/modules/70_net.py:423
 #, python-format
 msgid "MAC address: %s"
 msgstr "MAC-Adresse: %s"
 
-#: installer/modules/70_net.py:460
+#: installer/modules/70_net.py:426
 msgid "Enable IPv4"
 msgstr "IPv4 aktivieren"
 
-#: installer/modules/70_net.py:471
+#: installer/modules/70_net.py:437
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: installer/modules/70_net.py:476 installer/modules/90_overview.py:105
+#: installer/modules/70_net.py:439 installer/modules/70_net.py:724
+msgid "DHCP Query"
+msgstr "DHCP Anfrage"
+
+#: installer/modules/70_net.py:443 installer/modules/90_overview.py:105
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
-#: installer/modules/70_net.py:480
+#: installer/modules/70_net.py:447
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: installer/modules/70_net.py:487
+#: installer/modules/70_net.py:451
 msgid "Enable IPv6"
 msgstr "IPv6 aktivieren"
 
-#: installer/modules/70_net.py:494
+#: installer/modules/70_net.py:458
 msgid "Dynamic (Stateless address autoconfiguration (SLAAC))"
 msgstr "Dynamisch (zustandslose Adressenautokonfiguration (SLAAC))"
 
-#: installer/modules/70_net.py:502 installer/modules/90_overview.py:118
+#: installer/modules/70_net.py:466 installer/modules/90_overview.py:118
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
-#: installer/modules/70_net.py:507
+#: installer/modules/70_net.py:471
 msgid "IPv6 prefix"
 msgstr "IPv6-Prefix"
 
-#: installer/modules/70_net.py:514
+#: installer/modules/70_net.py:478
 msgid "F2-Previous Interface"
 msgstr "F2-Vorheriges Interface"
 
-#: installer/modules/70_net.py:515
+#: installer/modules/70_net.py:479
 msgid "F3-Next Interface"
 msgstr "F3-Nächstes Interface"
 
-#: installer/modules/70_net.py:525
+#: installer/modules/70_net.py:489
 msgid "Global Network Settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: installer/modules/70_net.py:549 installer/modules/70_net.py:560
+#: installer/modules/70_net.py:513 installer/modules/70_net.py:524
 msgid "More"
 msgstr "Mehr"
 
-#: installer/modules/70_net.py:565
+#: installer/modules/70_net.py:529
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
-#: installer/modules/70_net.py:569
+#: installer/modules/70_net.py:533
 msgid ""
 "Currently no network card could be detected. Depending on the selected "
 "services and system role an operative network card is required to "
@@ -2544,35 +2558,31 @@ msgstr ""
 "automatisch eine virtuelle Netzwerkkarte geladen, um die Installation "
 "erfolgreich beenden zu können."
 
-#: installer/modules/70_net.py:642
-msgid "DHCP Query"
-msgstr "DHCP Anfrage"
-
-#: installer/modules/70_net.py:659
+#: installer/modules/70_net.py:728
 msgid "No DHCP answer, please check DHCP server and network connectivity."
 msgstr ""
 "Keine DHCP-Antwort, bitte DHCP-Server und Netzwerkverbindung überprüfen."
 
-#: installer/modules/70_net.py:810
+#: installer/modules/70_net.py:765
 #, python-format
 msgid ""
 "An invalid value has been entered for interface %(interface)s: %(elemname)s"
 msgstr ""
 "Ein ungültiger Wert wurde für Interface %(interface)s angegeben: %(elemname)s"
 
-#: installer/modules/70_net.py:814
+#: installer/modules/70_net.py:770
 msgid "At least one interface must be configured."
 msgstr "Es muss mindestens ein Interface konfiguriert werden."
 
-#: installer/modules/70_net.py:828
+#: installer/modules/70_net.py:786
 msgid "IPv4 Address"
 msgstr "IPv4-Adresse"
 
-#: installer/modules/70_net.py:830
+#: installer/modules/70_net.py:788
 msgid "IPv4 Netmask"
 msgstr "IPv4-Netzmaske"
 
-#: installer/modules/70_net.py:833
+#: installer/modules/70_net.py:791
 #, python-format
 msgid ""
 "Neither DHCP is activated nor an IPv4 address with netmask has been entered "
@@ -2581,26 +2591,15 @@ msgstr ""
 "Es wurde weder DHCP aktiviert noch wurde eine gültige IPv4-Adresse inkl. "
 "Netzmaske für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:835
-#, python-format
-msgid ""
-"For a server role an IPv4 address must be set if DHCP is enabled, please "
-"select interface \"%s\" and press F5 or deselect the DHCP option for "
-"interface \"%s\"."
-msgstr ""
-"Für Serversysteme muss eine IPv4-Adresse festgelegt werden, wenn DHCP "
-"aktiviert wurde. Bitte das Interface \"%s\" auswählen und  F5 drücken oder "
-"die DHCP-Option für Interface \"%s\" abwählen."
-
-#: installer/modules/70_net.py:844
+#: installer/modules/70_net.py:800
 msgid "IPv6 Address"
 msgstr "IPv6-Adresse"
 
-#: installer/modules/70_net.py:846
+#: installer/modules/70_net.py:802
 msgid "IPv6 Prefix"
 msgstr "IPv6-Prefix"
 
-#: installer/modules/70_net.py:851
+#: installer/modules/70_net.py:807
 #, python-format
 msgid ""
 "Neither SLAAC is activated nor an IPv6 address with prefix has been entered "
@@ -2609,7 +2608,7 @@ msgstr ""
 "Es wurde weder SLAAC aktiviert noch wurde eine gültige IPv6-Adresse inkl. "
 "Prefix für Interface \"%s\" angegeben."
 
-#: installer/modules/70_net.py:857
+#: installer/modules/70_net.py:813
 #, python-format
 msgid ""
 "The given IPv6 address \"%(addr)s\" of interface \"%(interface)s\" is not a "
@@ -2622,18 +2621,18 @@ msgstr ""
 "Adresse (fc00::/7). Diese Warnung wird nur einmal für jede IP-Adresse "
 "angezeigt. Die Installation kann fortgesetzt werden, kann aber fehlschlagen. "
 
-#: installer/modules/70_net.py:861
+#: installer/modules/70_net.py:817
 msgid ""
 "In IPv6-only environments at least one static IPv6 address has to be defined!"
 msgstr ""
 "In Nur-IPv6-Umgebungen muss mindestens eine statische IPv6-Adresse vergeben "
 "werden!"
 
-#: installer/modules/70_net.py:894
+#: installer/modules/70_net.py:850
 msgid "Setting up network"
 msgstr "Richte Netzwerk ein"
 
-#: installer/modules/70_net.py:994
+#: installer/modules/70_net.py:950
 msgid ""
 "Network \n"
 " \n"
@@ -2719,39 +2718,39 @@ msgstr ""
 " Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
 "nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/70_net.py:997
+#: installer/modules/70_net.py:953
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/70_net.py:1082
+#: installer/modules/70_net.py:1042
 msgid " More Domain DNS Servers"
 msgstr "Weitere Domänen-DNS-Server"
 
-#: installer/modules/70_net.py:1086
+#: installer/modules/70_net.py:1046
 msgid " More External DNS Servers"
 msgstr "Weitere externe DNS-Server"
 
-#: installer/modules/70_net.py:1102
+#: installer/modules/70_net.py:1062
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/70_net.py:1103
+#: installer/modules/70_net.py:1063
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/70_net.py:1104
+#: installer/modules/70_net.py:1064
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/70_net.py:1135 installer/modules/80_join.py:56
+#: installer/modules/70_net.py:1095 installer/modules/80_join.py:56
 #: installer/modules/80_join.py:142
 msgid "The following value is missing: "
 msgstr "Der folgende Wert fehlt:"
 
-#: installer/modules/70_net.py:1136
+#: installer/modules/70_net.py:1096
 msgid "The following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
@@ -3054,10 +3053,6 @@ msgstr "Einbinden des Quelllaufwerks"
 msgid "Mounting target devices"
 msgstr "Einbinden des Ziellaufwerks"
 
-#: scripts/06_network.sh:35
-msgid "Configuring network interfaces"
-msgstr "Konfiguration der Netzwerk-Interfaces"
-
 #: scripts/10_debootstrap.sh:35
 msgid "Installing basesystem"
 msgstr "Installation des Basissystems"
@@ -3132,6 +3127,21 @@ msgstr ""
 #: scripts/95_cleanup.sh:35
 msgid "Performing cleanup"
 msgstr "Ausführen von Aufräumarbeiten"
+
+#~ msgid "Not all IPv4 values have been specified for interface %s"
+#~ msgstr "Die IPv4-Angaben für Interface %s sind nicht vollständig."
+
+#~ msgid ""
+#~ "For a server role an IPv4 address must be set if DHCP is enabled, please "
+#~ "select interface \"%s\" and press F5 or deselect the DHCP option for "
+#~ "interface \"%s\"."
+#~ msgstr ""
+#~ "Für Serversysteme muss eine IPv4-Adresse festgelegt werden, wenn DHCP "
+#~ "aktiviert wurde. Bitte das Interface \"%s\" auswählen und  F5 drücken "
+#~ "oder die DHCP-Option für Interface \"%s\" abwählen."
+
+#~ msgid "Configuring network interfaces"
+#~ msgstr "Konfiguration der Netzwerk-Interfaces"
 
 #~ msgid ""
 #~ "Unbootable config! / on ext4 needs /boot-partition with other than ext4!"
