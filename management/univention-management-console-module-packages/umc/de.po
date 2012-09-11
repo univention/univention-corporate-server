@@ -12,9 +12,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Manage (install/deinstall) software packages on your machine"
+msgid "Manage (install/uninstall) software packages on your machine"
 msgstr "Verwaltung der Software-Pakete auf diesem System"
 
-msgid "Package management"
-msgstr "Paketverwaltung"
+msgid "Software management"
+msgstr "Softwareverwaltung"
 
