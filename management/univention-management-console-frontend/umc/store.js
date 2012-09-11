@@ -35,42 +35,9 @@ define([
 	"dojo/Deferred",
 	"dojo/store/util/QueryResults",
 	"dojo/store/Observable",
+	"dojo/store/util/SimpleQueryEngine",
 	"umc/tools"
-], function(declare, lang, array, Deferred, QueryResults, Observable, tools) {
-	/*
-	var _Memory = declare(dojo.store.Memory, {
-		// summary:
-		//		Enhances the original Memory class with a onChange event for the Grid.
-
-		onChange: function() {
-			// event stub
-		},
-
-		put: function() {
-			var res = this.inherited(arguments);
-			this.onChange();
-			return res;
-		},
-
-		add: function() {
-			var res = this.inherited(arguments);
-			this.onChange();
-			return res;
-		},
-
-		remove: function() {
-			var res = this.inherited(arguments);
-			this.onChange();
-			return res;
-		},
-
-		setData: function() {
-			this.inherited(arguments);
-			this.onChange();
-		}
-	});
-	*/
-
+], function(declare, lang, array, Deferred, QueryResults, Observable, SimpleQueryEngine, tools) {
 	var _UmcpModuleStore = declare("umc.store.UmcpModuleStore", null, {
 		// idProperty: String
 		//		Indicates the property to use as the identity property.
@@ -81,6 +48,10 @@ define([
 		//		UMCP URL of the module where query, set, remove, put, and add
 		//		methods can be found.
 		storePath: '',
+
+		// queryEngine: Function
+		//      Defines the query engine to use for querying the data store
+		queryEngine: SimpleQueryEngine,
 
 		// umcpCommand: Function
 		//		Reference to a particularly flavored umcpCommand.
@@ -130,7 +101,7 @@ define([
 
 						// send event when changes occurred
 						if (!this._noEvents && ('remove' == type || 'put' == type || 'add' == type)) {
-							this.onChange();
+							//this.onChange();
 						}
 
 						//tools.assert(res && res instanceof Array && res.length == params.length,
@@ -291,7 +262,7 @@ define([
 				// switch back on events and send onChange event
 				this._noEvents = false;
 				if (dataModified) {
-					this.onChange();
+					//this.onChange();
 				}
 
 				// remove all transactions
@@ -332,9 +303,9 @@ define([
 		},
 
 		_noEvents: false,
-		onChange: function() {
+		/*onChange: function() {
 			// event stub
-		}
+		}*/
 	});
 
 	// internal dict of static module store references

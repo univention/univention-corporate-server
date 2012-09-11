@@ -34,25 +34,21 @@ define([
 	"umc/dialog",
 	"umc/i18n!umc/app"
 ], function(lang, locale, dialog, _) {
-	var about = {};
-	lang.mixin(about, {
-		show: function( info ) {
-			var keys = {
-				labelServer : _( 'Server' ),
-				server : info.server,
-				labelUCS_Version : _( 'UCS version' ),
-				UCS_Version : info.ucs_version,
-				labelUMC_Version : _( 'UMC version' ),
-				UMC_Version : info.umc_version,
-				labelSSL_ValidityDate : _( 'Validity date of the SSL certificate' ),
-				SSL_ValidityDate : locale.format(new Date(info.ssl_validity_date), {
-					fullYear: true,
-					timePattern: " ",
-					formatLength: "long"
-				})
-			};
-			dialog.templateDialog( "umc", "about.html", keys, _( 'About UMC' ), _( 'Close' ) );
-		}
-	});
-	return about;
+	return function( info ) {
+		var keys = {
+			labelServer : _( 'Server' ),
+			server : info.server,
+			labelUCS_Version : _( 'UCS version' ),
+			UCS_Version : info.ucs_version,
+			labelUMC_Version : _( 'UMC version' ),
+			UMC_Version : info.umc_version,
+			labelSSL_ValidityDate : _( 'Validity date of the SSL certificate' ),
+			SSL_ValidityDate : locale.format(new Date(info.ssl_validity_date), {
+				fullYear: true,
+				timePattern: " ",
+				formatLength: "long"
+			})
+		};
+		dialog.templateDialog( "umc", "about.html", keys, _( 'About UMC' ), _( 'Close' ) );
+	};
 } );

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.45-1) unstable; urgency=low
+
+  * more bug fixes; Bug #26826
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Sep 2012 18:03:54 +0200
+
 univention-management-console-frontend (2.0.44-1) unstable; urgency=low
 
   * bug fixes; Bug #26826

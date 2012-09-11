@@ -463,34 +463,32 @@ define([
 			header.addChild(headerRight);
 
 			// the univention context menu
-			var menu = new Menu({});
-			menu.addChild(new MenuItem({
+			var univentionMenu = new Menu({});
+			univentionMenu.addChild(new MenuItem({
 				label: _('Help'),
-				onClick : function() {
-					help.show();
-				}
+				onClick : help
 			}));
 			if ( this.getModule( 'udm' ) ) {
 				require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
-					menu.addChild(new MenuItem({
+					univentionMenu.addChild(new MenuItem({
 						label: _('License'),
 						onClick : function() {
-							var dlg = LicenseDialog();
+							var dlg = new LicenseDialog();
 							dlg.show();
 						}
-					}));
+					}), 2);
 				});
 			}
-			menu.addChild(new MenuItem({
+			univentionMenu.addChild(new MenuItem({
 				label: _('About UMC'),
 				onClick : function() {
 					tools.umcpCommand( 'get/info' ).then( function( data ) {
-						about.show( data.result );
+						about( data.result );
 					} );
 				}
 			}));
-			menu.addChild(new MenuSeparator({}));
-			menu.addChild(new MenuItem({
+			univentionMenu.addChild(new MenuSeparator({}));
+			univentionMenu.addChild(new MenuItem({
 				label: _('Univention Website'),
 				onClick: function() {
 					var w = window.open( 'http://www.univention.de/', 'UMC' );
@@ -500,7 +498,7 @@ define([
 			headerLeft.addChild(new DropDownButton({
 				'class': 'umcHeaderButton univentionButton',
 				iconClass: 'univentionLogo',
-				dropDown: menu
+				dropDown: univentionMenu
 			}));
 
 			// query domainname and hostname and add this information to the header
@@ -525,15 +523,15 @@ define([
 				}));
 
 			// the user context menu
-			menu = new Menu({});
-			menu.addChild(new CheckedMenuItem({
+			var userMenu = new Menu({});
+			userMenu.addChild(new CheckedMenuItem({
 				label: _('Tooltips'),
 				checked: tools.preferences('tooltips'),
 				onClick: function() {
 					tools.preferences('tooltips', this.checked);
 				}
 			}));
-			/*menu.addChild(new CheckedMenuItem({
+			/*userMenu.addChild(new CheckedMenuItem({
 				label: _('Confirmations'),
 				checked: true,
 				checked: tools.preferences('confirm'),
@@ -541,7 +539,7 @@ define([
 					tools.preferences('confirm', this.checked);
 				}
 			}));*/
-			menu.addChild(new CheckedMenuItem({
+			userMenu.addChild(new CheckedMenuItem({
 				label: _('Module help description'),
 				checked: tools.preferences('moduleHelpText'),
 				onClick: function() {
@@ -554,7 +552,7 @@ define([
 						username: tools.status('username')
 					}),
 					'class': 'umcHeaderButton',
-					dropDown: menu
+					dropDown: userMenu
 				}));
 			}
 

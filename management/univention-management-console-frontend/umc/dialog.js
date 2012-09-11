@@ -343,7 +343,7 @@ define([
 				message = lang.replace( message, keys );
 				var widget = new Text( {  content : message } );
 				domClass.add( widget.domNode, 'umcPopup' );
-				this.alert( widget, title || 'UMC', buttonLabel );
+				dialog.alert( widget, title || 'UMC', buttonLabel );
 			});
 		}
 	});

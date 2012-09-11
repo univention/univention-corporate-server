@@ -126,7 +126,7 @@ define([
 			// iterate over all modules
 			array.forEach(this.modules, lang.hitch(this, function(imod) {
 				// create a new button widget for each module
-				obj = {
+				var obj = {
 					modID: imod.id,
 					modIcon: imod.icon,
 					label: imod.name,

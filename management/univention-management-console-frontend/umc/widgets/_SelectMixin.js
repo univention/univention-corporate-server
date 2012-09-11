@@ -497,7 +497,7 @@ define([
 
 		// setter for staticValues
 		_setDynamicValuesAttr: function(newVals) {
-			this.dynamicValues = newVals;
+			this._set('dynamicValues', newVals);
 
 			// we only need to call _loadValues() if it has been called before
 			if (this._valuesLoaded) {
@@ -507,7 +507,7 @@ define([
 
 		// setter for staticValues
 		_setDynamicOptionsAttr: function(newOpts) {
-			this.dynamicOptions = newOpts;
+			this._set('dynamicOptions', newOpts);
 
 			// we only need to call _loadValues() if it has been called before
 			if (this._valuesLoaded) {
@@ -517,7 +517,7 @@ define([
 
 		// setter for staticValues
 		_setStaticValuesAttr: function(newVals) {
-			this.staticValues = newVals;
+			this._set('staticValues', newVals);
 
 			// we only need to call _loadValues() if it has been called before
 			if (this._valuesLoaded) {
