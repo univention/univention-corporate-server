@@ -559,8 +559,8 @@ define([
 					}));
 					container.addChild(titlePane);
 
-					container.connect(titlePane._wipeIn, 'onEnd', function() { dialog.centerAlertDialog(); } );
-					container.connect(titlePane._wipeOut, 'onEnd', function() { dialog.centerAlertDialog(); } );
+					container.connect(titlePane._wipeIn, 'end', function() { dialog.centerAlertDialog(); } );
+					container.connect(titlePane._wipeOut, 'end', function() { dialog.centerAlertDialog(); } );
 
 					dialog.alert( container );
 				}

@@ -29,10 +29,12 @@
 /*global define require console window*/
 
 define([
+	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/on",
+	"dojo/Evented",
 	"dojo/Deferred",
 	"dojo/cookie",
 	"dojo/topic",
@@ -53,9 +55,8 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app"
-], function(lang, array, win, on, Deferred, cookie, topic, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, CategoryPane, ContainerWidget, Page, Text, Button, _) {
-	var app = {};
-	lang.mixin(app, {
+], function(declare, lang, array, win, on, Evented, Deferred, cookie, topic, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, CategoryPane, ContainerWidget, Page, Text, Button, _) {
+	var _App = declare([ Evented ], {
 		start: function(/*Object*/ props) {
 			// summary:
 			//		Start the UMC, i.e., render layout, request login for a new session etc.
@@ -80,13 +81,13 @@ define([
 
 			if (typeof props.module == "string") {
 				// a startup module is specified
-				on.once(this, 'onGuiDone', lang.hitch(this, function() {
+				on.once(this, 'GuiDone', lang.hitch(this, function() {
 					this.openModule(props.module, props.flavor);
 					this._tabContainer.layout();
 
 					// put focus into the CategoryPane for scrolling
 					/*dijit.focus(this._categoryPane.domNode);
-					this.on(_categoryPane, 'onShow', function() {
+					this.on(_categoryPane, 'show', function() {
 						dijit.focus(this._categoryPane.domNode);
 					});*/
 				}));
@@ -470,7 +471,7 @@ define([
 				}
 			}));
 			if ( this.getModule( 'udm' ) ) {
-				require(['umc/modules/_udm/LicenseDialog'], function(LicenseDialog) {
+				require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
 					menu.addChild(new MenuItem({
 						label: _('License'),
 						onClick : function() {
@@ -593,5 +594,5 @@ define([
 			// event stub
 		}
 	});
-	return app;
+	return new _App();
 });

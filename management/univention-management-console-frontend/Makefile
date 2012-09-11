@@ -121,7 +121,7 @@ $(themesDir)/umc/icons: $(themesDir)/umc
 
 build-dev: build-common
 	@# symlink javascript code
-	[ -e $(buildDir) ] || ln -s $(tmpDir) $(buildDir)/js
+	[ -e $(buildDir)/js ] || ln -s $(tmpDir) $(buildDir)/js
 	@# symlinks for installed modules/icons
 	mkdir -p $(tmpDir)/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules

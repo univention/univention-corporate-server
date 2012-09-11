@@ -35,6 +35,7 @@ define([
 	"dojo/_base/window",
 	"dojo/aspect",
 	"dojo/on",
+	"dojo/mouse",
 	"dojo/dom",
 	"dojo/query",
 	"dojo/dom-attr",
@@ -47,7 +48,7 @@ define([
 	"umc/widgets/StandbyMixin",
 	"umc/i18n/tools",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, win, aspect, on, dom, query, attr, domClass, Dialog, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
+], function(declare, lang, array, win, aspect, on, mouse, dom, query, attr, domClass, Dialog, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
 	return declare("umc.widgets.LoginDialog", StandbyMixin, {
 		// our own variables
 		_connections: null,
@@ -173,10 +174,10 @@ define([
 				[passwordInput, passwordContainer]
 			];
 			var settingsArray = [
-				['onmouseover', this._setHover, true],
-				['onmouseout', this._setHover, false],
-				['onfocus', this._setFocus, true],
-				['onblur', this._setFocus, false]
+				[mouse.enter, this._setHover, true],
+				[mouse.leave, this._setHover, false],
+				['focus', this._setFocus, true],
+				['blur', this._setFocus, false]
 			];
 			array.forEach(fields, lang.hitch(this, function(field) {
 				var input = field[0];
