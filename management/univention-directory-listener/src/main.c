@@ -61,16 +61,12 @@
 
 int INIT_ONLY = 0;
 
-char *current_server_list = NULL;
-struct server_list *server_list = NULL;
-int server_list_entries = 0;
 int backup_notifier = 0;
 
 char **module_dirs = NULL;
 int module_dir_count = 0;
 long long listener_lock_count = 100;
 char pidfile[PATH_MAX];
-extern int maxnbackups;
 
 
 static char* read_pwd_from_file(char *filename)
@@ -495,8 +491,6 @@ int main(int argc, char* argv[])
 
 	prepare_cache(cache_dir);
 
-	server_list = malloc(sizeof(struct server_list[maxnbackups+1]));
-
 	/* choose server to connect to */
 	if (lp->host == NULL && lp->uri == NULL) {
 		lp->ld = NULL;
@@ -525,7 +519,7 @@ int main(int argc, char* argv[])
 		}
 		lp->ld = NULL;
 
-		if (suspend_connect(server_list, server_list_entries)) {
+		if (suspend_connect()) {
 			if ( initialize_only ) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 					"can not connect to any ldap server, exit");

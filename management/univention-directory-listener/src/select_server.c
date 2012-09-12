@@ -39,32 +39,23 @@
 #include <univention/ldap.h>
 #include <univention/config.h>
 
-extern char *current_server_list;
-extern struct server_list *server_list;
-extern int server_list_entries;
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
+static char *current_server_list;
+static struct server_list server_list[128];
+static int server_list_entries = 0;
 extern int backup_notifier;
-int maxnbackups = 128;
 
 
 /* returns true, if all servers in [list] have been contacted same often */
-int suspend_connect(struct server_list *list, int entries)
+int suspend_connect(void)
 {
-	int i = 0;
-	int retval = 1;
-
-	if (server_list != NULL) {
-		if (entries < 2)
-			retval = 1;
-
-		for (i=1; i<entries; i++) {
-			if (list[i].conn_attemp != list[i-1].conn_attemp) {
-				retval = 0;
-				break;
-			}
+	int i;
+	for (i = 1; i < server_list_entries; i++) {
+		if (server_list[i].conn_attemp != server_list[i-1].conn_attemp) {
+			return 0;
 		}
 	}
-
-	return retval;
+	return 1;
 }
 
 int select_server(univention_ldap_parameters_t *lp)
@@ -73,7 +64,6 @@ int select_server(univention_ldap_parameters_t *lp)
 	char *ldap_master;
 	char *ldap_backups = NULL;
 	char *notify_master;
-	int nbackups = 0;
 	int randval = 0;
 	int port = 0;
 
@@ -113,45 +103,40 @@ int select_server(univention_ldap_parameters_t *lp)
 		ldap_backups = univention_config_get_string("ldap/backup");
 
 		/* list of backups and master still up-to-date? */
-		if ((current_server_list != NULL) && (strcmp(ldap_backups, current_server_list) != 0)) {
+		if (current_server_list && (strcmp(ldap_backups, current_server_list) != 0)) {
 			free(current_server_list);
 			current_server_list = NULL;
 		}
 
-		if ( ldap_backups != NULL ) {
-			if ( current_server_list == NULL ) {
-				/* rebuild list and initialize */
-				current_server_list = strdup(ldap_backups);
-				memset(server_list, 0, sizeof(struct server_list[maxnbackups+1]));
-
-				server_list[nbackups].server_name = strtok(ldap_backups, " ");
-
-				while (server_list[nbackups].server_name != NULL) {
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-							"Backup found: %s",
-							server_list[nbackups].server_name);
-					nbackups++;
-					server_list[nbackups].server_name = strtok(NULL, " ");
-
-					if ( nbackups >= maxnbackups-1 ) {
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-								"Too many (more than %d) backup-servers found",
-								maxnbackups);
-						break;
-					}
-				}
-
-				if ( backup_notifier == 0 ) {
-					/* last element in list is the master */
-					server_list[nbackups].server_name = strdup(ldap_master);
-					server_list_entries = nbackups + 1;
-				} else {
-					server_list_entries = nbackups;
-				}
+		if (ldap_backups && !current_server_list) {
+			char *str, *saveptr;
+			/* rebuild list and initialize */
+			current_server_list = strdup(ldap_backups);
+			memset(server_list, 0, sizeof(server_list));
+			server_list_entries = 0;
+			for (str = ldap_backups; server_list_entries < ARRAY_SIZE(server_list); str = NULL) {
+				char *name = strtok_r(str, " ", &saveptr);
+				if (!name)
+					break;
+				if (!name[0])
+					continue;
+				server_list[server_list_entries++].server_name = name;
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Backup found: %s", name);
 			}
+			if (server_list_entries >= ARRAY_SIZE(server_list))
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
+						"Too many (more than %d) backup-servers found",
+						ARRAY_SIZE(server_list));
+			/* Append notifier on DC Master unless explicitly disabled */
+			if (server_list_entries < ARRAY_SIZE(server_list) && !backup_notifier)
+				server_list[server_list_entries++].server_name = strdup(ldap_master);
+		}
+		free(ldap_backups);
 
+		if (server_list_entries) {
+			/* dump server list */
 			int i;
-			for(i=0;i<nbackups;i++) {
+			for(i = 0; i < server_list_entries; i++) {
 				fprintf(stderr, "%d: %s\n", i, server_list[i].server_name);
 			}
 			/* randomize start point of server search */

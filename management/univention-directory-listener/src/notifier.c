@@ -59,11 +59,6 @@
 #include "transfile.h"
 #include "select_server.h"
 
-extern int maxnbackups;
-extern char *current_server_list;
-extern struct server_list *server_list;
-extern int server_list_entries;
-
 #define DELAY_LDAP_CLOSE		15   /* 15 seconds */
 #define DELAY_ALIVE			5*60 /* 5 minutes */
 #define TIMEOUT_NOTIFIER_RECONNECT	5*60 /* 5 minutes */
@@ -79,7 +74,7 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 		lp->host = NULL;
 		lp->ld = NULL;
 
-		if (suspend_connect(server_list, server_list_entries)) {
+		if (suspend_connect()) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 				"can not connect to any ldap server, retrying in 30 seconds");
 			sleep(30);
