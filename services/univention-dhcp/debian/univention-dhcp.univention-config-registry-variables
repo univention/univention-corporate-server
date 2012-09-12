@@ -4,6 +4,12 @@ Description[en]=LDAP base for the DHCP service
 Type=str
 Categories=service-dhcp
 
+[dhcpd/authoritative]
+Description[de]=Definiert, ob der DHCP-Dienst maßgeblich ist und DHCP-NAK-Nachrichten an falsch konfigurierte Rechner sendet [false]
+Description[en]=Defines if the DHCP service is authoritative and sends DHCP-NAK messages to wrongly configured clients [false]
+Type=bool
+Categories=service-dhcp
+
 [dhcpd/autostart]
 Description[de]=Definiert, ob der DHCP-Dienst automatisch beim Systemstart gestartet werden soll
 Description[en]=Defines if the DHCP service should be started automatically at system startup
