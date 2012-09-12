@@ -1,3 +1,9 @@
+univention-system-setup (6.0.26-1) unstable; urgency=low
+
+  * bug fixes due to Dojo update; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Sep 2012 21:50:58 +0200
+
 univention-system-setup (6.0.25-1) unstable; urgency=low
 
   * Dojo 1.8 (Bug #26857)
