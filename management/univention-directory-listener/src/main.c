@@ -546,10 +546,10 @@ int main(int argc, char* argv[])
 	server_role = univention_config_get_string("server/role");
 	if ( server_role != NULL ) {
 		if (!strcmp(server_role, "domaincontroller_backup") || !strcmp(server_role, "domaincontroller_slave")) {	// if not master
-			lp_local->host=strdup("localhost"); // or fqdn e.g. from univention_config_get_string("ldap/server/name");
-			lp_local->base = strduplp->base;
+			lp_local->host = strdup("localhost"); // or fqdn e.g. from univention_config_get_string("ldap/server/name");
+			lp_local->base = strdup(lp->base);
 			lp_local->binddn = strdup(lp->binddn);
-			lp_local->bindpw = stdup(lp->bindpw);
+			lp_local->bindpw = strdup(lp->bindpw);
 		}
 		free(server_role);
 	}
