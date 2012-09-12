@@ -879,7 +879,7 @@ def handler(dn, new, listener_old):
 				for k in old.keys():
 					if k in EXCLUDE_ATTRIBUTES:
 						continue
-					if key not in listener_old:
+					if k not in listener_old:
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
 							'listener does not have key %s' % k)
 						match=0
