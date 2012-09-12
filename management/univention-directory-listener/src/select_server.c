@@ -125,7 +125,7 @@ void select_server(univention_ldap_parameters_t *lp)
 			}
 			if (server_list_entries >= ARRAY_SIZE(server_list))
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-						"Too many (more than %d) backup-servers found",
+						"Too many (more than %zd) backup-servers found",
 						ARRAY_SIZE(server_list));
 			/* Append notifier on DC Master unless explicitly disabled */
 			if (server_list_entries < ARRAY_SIZE(server_list) && !backup_notifier)
