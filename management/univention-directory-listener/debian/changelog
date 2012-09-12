@@ -1,6 +1,7 @@
 univention-directory-listener (7.0.3-2) unstable; urgency=low
 
   * Remove support for multiple filters (Bug #27329)
+  * Fix double free bug (Bug #27730}
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 11 Sep 2012 11:40:18 +0200
 

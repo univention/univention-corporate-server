@@ -68,11 +68,8 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 		                univention_krb5_parameters_t *kp)
 {
 	/* XXX: Fix when using krb5 */
-	while (univention_ldap_open(lp) != 0  ) {
+	while (univention_ldap_open(lp) != LDAP_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
-		free(lp->host);
-		lp->host = NULL;
-		lp->ld = NULL;
 
 		if (suspend_connect()) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
@@ -80,8 +77,6 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 			sleep(30);
 		}
 
-		if (lp->host != NULL)
-			free(lp->host);
 		select_server(lp);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "chosen server: %s:%d", lp->host, lp->port);
 	}
