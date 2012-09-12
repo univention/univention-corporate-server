@@ -31,7 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, time, string
+import os
+import sys
+import time
 import optparse
 import subprocess
 import traceback
@@ -49,6 +51,7 @@ LOGFN = '/var/log/univention/updater.log'
 configRegistry = None
 logfd = None
 def dprint(silent, msg, newline=True, debug=False):
+	"""Print debug output."""
 	if silent:
 		return
 	if logfd:
@@ -65,6 +68,7 @@ def dprint(silent, msg, newline=True, debug=False):
 		sys.stdout.flush()
 
 updater_status = {}
+
 
 def update_status(**kwargs):
 	'''
@@ -93,7 +97,9 @@ def update_status(**kwargs):
 	except:
 		dprint(silent, 'Warning: cannot update %s' % FN_STATUS)
 
+
 def readcontinue(msg):
+	"""Print message and read yes/no/abort answer."""
 	while True:
 		try:
 			print '%s' % msg,
@@ -110,12 +116,14 @@ def readcontinue(msg):
 			print '\n'
 			return False
 
+
 def _package_list(new_packages):
+	"""Return comma separated list of packages."""
 	l = []
 	for p in new_packages:
 		l.append(p[0])
-	return string.join(l, ',')
-		
+	return ','.join(l)
+
 
 def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoreterm=False, interactive=True, silent=False):
 	updater = UniventionUpdater()
@@ -127,9 +135,9 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 		version_updateto = None
 
 	if not checkForUpdates:
-		vv=updater.configRegistry['version/version']
-		vp=updater.configRegistry['version/patchlevel']
-		lastversion='%s-%s' % (vv,vp)
+		vv = updater.configRegistry['version/version']
+		vp = updater.configRegistry['version/patchlevel']
+		lastversion = '%s-%s' % (vv,vp)
 		update_status( current_version=lastversion, status='RUNNING' )
 
 	run = True
@@ -176,7 +184,7 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 					run = readcontinue('Do you want to update to %s [Y|n]?' % version_next)
 				else:
 					dprint(silent, 'found: UCS %s\n' % version_next)
-				
+
 				if run:
 					update_status( next_version=version_next )
 
@@ -350,7 +358,6 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 					sys.exit(1)
 				dprint(silent, 'Errata update component %s at %s...' % (component, time.ctime()), debug=True)
 
-
 	# updates available ==> stop here in "check-mode"
 	if checkForUpdates:
 		return False
@@ -379,7 +386,7 @@ def main():
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
-	
+
 	if options.noninteractive:
 		os.environ['UCS_FRONTEND']='noninteractive'
 
@@ -408,7 +415,6 @@ def main():
 					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--device', options.cdrom ], shell=False, env=os.environ)
 	else:
 		dprint(silent, 'none')
-			
 
 	if options.check:
 		try:
@@ -453,6 +459,8 @@ def main():
 		update_status( status='DONE' )
 
 		# check for new updates after updating ; update UCR variable
+		#
+		# BUG: After an release upgrade this process MUST NOT continue to use old python, ucr, updater, ...
 		try:
 			update_available = performUpdate(options.updateto, checkForUpdates=True, ignoressh=options.ignoressh, ignoreterm=options.ignoreterm, interactive=False, silent=True)
 		except SystemExit, e:
@@ -471,6 +479,7 @@ def main():
 			univention.config_registry.handler_set( [ '%s=yes' % UCR_UPDATE_AVAILABLE ] )
 		elif not update_available and configRegistry.is_true(UCR_UPDATE_AVAILABLE, True):
 			univention.config_registry.handler_set( [ '%s=no' % UCR_UPDATE_AVAILABLE] )
+
 
 if __name__ == '__main__':
 	try:

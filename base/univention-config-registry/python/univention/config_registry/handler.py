@@ -440,9 +440,10 @@ class ConfigHandlers:
     # 0: without version
     # 1: with version header
     # 2: switch to handlers mapping to set, drop file, add multifile.def_count
-    VERSION = 2
-    VERSION_MIN = 0
-    VERSION_MAX = 2
+    # 3: split config_registry into sub modules
+    VERSION = 3
+    VERSION_MIN = 3
+    VERSION_MAX = 3
     VERSION_TEXT = 'univention-config cache, version'
     VERSION_NOTICE = '%s %s\n' % (VERSION_TEXT, VERSION)
     VERSION_RE = re.compile('^%s (?P<version>[0-9]+)$' % VERSION_TEXT)
@@ -488,8 +489,7 @@ class ConfigHandlers:
                 self._multifiles = pickler.load()
             finally:
                 cache_file.close()
-        except (EnvironmentError, TypeError, ValueError,
-                cPickle.UnpicklingError, EOFError, AttributeError):
+        except (StandardError, cPickle.UnpicklingError):
             self.update()
 
     def strip_basepath(self, path, basepath):

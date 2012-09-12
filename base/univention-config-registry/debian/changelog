@@ -1,3 +1,9 @@
+univention-config-registry (8.0.4-6) unstable; urgency=low
+
+  * Handle ImportError in cache load (Bug #26058, Bug #28481)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 Sep 2012 18:07:27 +0200
+
 univention-config-registry (8.0.4-5) unstable; urgency=low
 
   * Remove cache on upgrade (Bug #26058)
