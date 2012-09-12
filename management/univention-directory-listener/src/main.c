@@ -300,14 +300,17 @@ static void prepare_cache(const char *cache_dir)
 }
 
 
+/* Open LDAP and Notifier connection.
+ * @return 0 on success, 1 on error.
+ */
 static int do_connection(univention_ldap_parameters_t *lp)
 {
 	LDAPMessage *res;
-	struct  timeval timeout;
 	int rc;
-
-	timeout.tv_sec=10;
-	timeout.tv_usec=0;
+	struct timeval timeout = {
+		.tv_sec = 10,
+		.tv_usec = 0,
+	};
 
 	if (univention_ldap_open(lp) != 0 || notifier_client_new(NULL, lp->host, 1) != 0) {
 		return 1;
@@ -355,11 +358,11 @@ int main(int argc, char* argv[])
 
 	univention_debug_init("stderr", 1, 1);
 
-	if ((lp=univention_ldap_new()) == NULL)
+	if ((lp = univention_ldap_new()) == NULL)
 		exit(1);
 	lp->authmethod = LDAP_AUTH_SASL;
 
-	if ((lp_local=univention_ldap_new()) == NULL)
+	if ((lp_local = univention_ldap_new()) == NULL)
 		exit(1);
 
 #if WITH_KRB5
@@ -510,7 +513,7 @@ int main(int argc, char* argv[])
 #endif
 
 	while (do_connection(lp) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server %s:%d", lp->host, lp->port);
 		if (lp->host != NULL) {
 			free(lp->host);
 		}
@@ -520,7 +523,7 @@ int main(int argc, char* argv[])
 		lp->ld = NULL;
 
 		if (suspend_connect()) {
-			if ( initialize_only ) {
+			if (initialize_only) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 					"can not connect to any ldap server, exit");
 				exit(1);
@@ -531,11 +534,10 @@ int main(int argc, char* argv[])
 		}
 
 		select_server(lp);
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "choose as server: %s", lp->host);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "chosen server: %s:%d", lp->host, lp->port);
 	}
 
-
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "connection okay to host %s", lp->host);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connection okay to host %s:%d", lp->host, lp->port);
 
 	/* connect to local LDAP server */
 	server_role = univention_config_get_string("server/role");
@@ -603,7 +605,7 @@ int main(int argc, char* argv[])
 #endif
 
 	if (!initialize_only) {
-		rv=notifier_listen(lp, kp, write_transaction_file, lp_local);
+		rv = notifier_listen(lp, kp, write_transaction_file, lp_local);
 	}
 
 	if (rv != 0)

@@ -44,4 +44,3 @@ int select_server(univention_ldap_parameters_t *lp);
 int suspend_connect(void);
 
 #endif
-
