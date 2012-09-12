@@ -1,3 +1,9 @@
+univention-directory-listener (7.0.3-4) unstable; urgency=low
+
+  * Fix double free bug (Bug #27730)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 Sep 2012 13:08:29 +0200
+
 univention-directory-listener (7.0.3-3) unstable; urgency=low
 
   * Fix size_z format string (Bug #27730)
@@ -7,7 +13,7 @@ univention-directory-listener (7.0.3-3) unstable; urgency=low
 univention-directory-listener (7.0.3-2) unstable; urgency=low
 
   * Remove support for multiple filters (Bug #27329)
-  * Fix double free bug (Bug #27730}
+  * Fix double free bug (Bug #27730)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 11 Sep 2012 11:40:18 +0200
 
