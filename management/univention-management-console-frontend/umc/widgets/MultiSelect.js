@@ -152,7 +152,7 @@ define([
 
 		_getValueAttr: function() {
 			// if the grid is loading, return the cached value
-			if (this._loadingDeferred.fired < 0) {
+			if (!this._loadingDeferred.isFulfilled()) {
 				return this.value; // String[]
 			}
 
@@ -190,7 +190,7 @@ define([
 			this.inherited(arguments);
 
 			// initiate a new Deferred, if the current one has already been resolved
-			if (this._loadingDeferred.fired >= 0) {
+			if (this._loadingDeferred.isFulfilled()) {
 				this._loadingDeferred = new Deferred();
 			}
 
@@ -202,7 +202,7 @@ define([
 			this.inherited(arguments);
 
 			// resolve the Deferred
-			if (this._loadingDeferred.fired < 0) {
+			if (!this._loadingDeferred.isFulfilled()) {
 				this._loadingDeferred.resolve();
 			}
 

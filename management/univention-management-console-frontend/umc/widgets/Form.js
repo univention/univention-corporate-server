@@ -188,7 +188,6 @@ define([
 
 				// start processing the layout information
 				this._container.placeAt(this.containerNode);
-				this._container.startup();
 			}
 			// otherwise, register content and create an internal dictionary of widgets
 			else {
@@ -218,16 +217,19 @@ define([
 
 			// send an event when all dynamic elements have been initialized
 			this._initializingElements = 0;
+			//console.log('# Form.buildRendering()');
 			tools.forIn(this._widgets, function(iname, iwidget) {
 				// only consider elements that load values dynamically
+				//console.log('#  iwidget:', iwidget.name);
 				if ('onValuesLoaded' in iwidget && !(iwidget._valuesLoaded && !iwidget._deferredOrValues)) {
 					// widget values have not been loaded completely so far
-					//console.log('iwidget:', iwidget.name);
+					//console.log('#  -> has event "valuesLoaded"');
 					++this._initializingElements;
 					on.once(iwidget, 'valuesLoaded', lang.hitch(this, function() {
-						//console.log('valuesLoaded:', iwidget.name, iwidget.get('value'));
+						//console.log('#  -> valuesLoaded:', iwidget.name, iwidget.get('value'));
 						// decrement the internal counter
 						--this._initializingElements;
+						//console.log('#  _initializingElements:', this._initializingElements);
 
 						// send event when the last element has been initialized
 						if (0 === this._initializingElements) {
@@ -246,8 +248,13 @@ define([
 
 		startup: function() {
 			this.inherited(arguments);
+			if (this._container) {
+				// call the containers startup function if necessary
+				this._container.startup();
+			}
 			this._initializedDeferred.then(lang.hitch(this, function() {
 				this.onValuesInitialized();
+				//console.log('# valuesInitialized');
 			}));
 		},
 
@@ -382,7 +389,7 @@ define([
 			array.forEach(this._dependencyMap[publisherName], function(i) {
 				tmp.push(i.name);
 			});
-			//json = require("dojo/json")
+			json = require("dojo/json")
 			//console.log(lang.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, json.stringify(tmp)]));
 			if (publisherName in this._dependencyMap) {
 				var values = this.gatherFormValues();

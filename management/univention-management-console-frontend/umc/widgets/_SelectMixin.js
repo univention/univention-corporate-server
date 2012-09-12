@@ -139,6 +139,13 @@ define([
 					this._saveInitialValue();
 				}
 			});
+
+			// if the value is not set (undefined/null), automatically choose the first element in the list
+			this.on('valuesLoaded', lang.hitch(this, function() {
+				if (null === this.get('value') || undefined === this.get('value')) {
+					this.set('value', this._firstValueInList);
+				}
+			}));
 		},
 
 		startup: function() {
@@ -375,6 +382,7 @@ define([
 		},
 
 		_loadValues: function(/*Object?*/ _dependValues) {
+			//console.log('###', this.name, ' _loadValues(', _dependValues, ')');
 			this._valuesLoaded = true;
 
 			// unify `depends` property to be an array
@@ -468,6 +476,7 @@ define([
 			// summary:
 			//		This event is triggered when a query is set to load the dynamic values (and
 			//		only the dynamic values).
+			//console.log('###', this.name, ' onLoadDynamicValues()');
 		},
 
 		onDynamicValuesLoaded: function(values) {
@@ -476,6 +485,7 @@ define([
 			//		have been loaded.
 			// values:
 			//		Array containing all dynamic values.
+			//console.log('###', this.name, ' onDynamicValuesLoaded()');
 		},
 
 		onValuesLoaded: function(values) {
@@ -488,11 +498,7 @@ define([
 			//if (typeof this._refresh == "function") {
 			//	this._refresh();
 			//}
-
-			// if the value is not set (undefined/null), automatically choose the first element in the list
-			if (null === this.get('value') || undefined === this.get('value')) {
-				this.set('value', this._firstValueInList);
-			}
+			//console.log('###', this.name, ' onValuesLoaded()');
 		},
 
 		// setter for staticValues

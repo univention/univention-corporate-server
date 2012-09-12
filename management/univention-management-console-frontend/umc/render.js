@@ -319,9 +319,6 @@ define([
 				globalContainer.addChild(buttonContainer);
 			}
 
-			// start processing the layout information
-			globalContainer.startup();
-
 			// return the container
 			return globalContainer; // dojox.layout.TableContainer
 		}

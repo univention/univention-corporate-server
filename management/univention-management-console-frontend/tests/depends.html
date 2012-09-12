@@ -5,13 +5,11 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<style type="text/css">
 			@import url("/univention-management-console/js/dojo/resources/dojo.css");
-			@import url("/univention-management-console/css/dijit/themes/umc/umc.css");
-			@import url("/univention-management-console/css/dojox/grid/resources/Grid.css");
-			@import url("/univention-management-console/css/dojox/grid/resources/umcGrid.css");
-			@import url("/univention-management-console/css/dojox/grid/enhanced/resources/EnhancedGrid.css");
-			@import url("/univention-management-console/css/dojox/grid/enhanced/resources/umc/EnhancedGrid.css");
-			@import url("/univention-management-console/css/dojox/form/resources/CheckedMultiSelect.css");
-			@import url("/univention-management-console/css/dojox/widget/Dialog/Dialog.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/umc.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/umcGrid.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/EnhancedGrid.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/umcEnhancedGrid.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/Toaster.css");
 			h1 {
 				margin-bottom: 5px;
 				margin-top: 10px;
@@ -27,63 +25,70 @@
 				overflow: auto;
 			}
 		</style>
+		<script type="text/javascript">
+			var dojoConfig = {
+				async: true
+			};
+		</script>
 		<script type="text/javascript" src="/univention-management-console/js/dojo/dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("umc.tools");
-			dojo.require("umc.widgets.Form");
-			dojo.require("umc.widgets.MultiInput");
-			dojo.require("umc.widgets.ContainerWidget");
-		</script>
-		<script type="text/javascript">
-			var valuesAnimals = [ 'dog', 'cat', 'eagle', 'polar bear' ];
-			var valuesColors = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent', 'white', 'black' ];
-			var mapContinents = {
-				Africa: [ 'Egypt', 'Sudan', 'Kenia' ],
-				Europe: [ 'France', 'Germany', 'UK' ],
-				NorthAmerica: [ 'USA', 'Canada', 'Mexico' ],
-				SouthAmerica: [ 'Chile', 'Venezuela', 'Brazil' ],
-				Oceania: [ 'Australia' ],
-				Asia: [ 'China', 'India', 'Russia', 'Japan' ]
-			};
-			var continents = [];
-			umc.tools.forIn(mapContinents, function(ikey) {
-				continents.push(ikey);
-			});
+			require([
+				"dojo/_base/window",
+				"dojo/Deferred",
+				"dojo/json",
+				"umc/tools",
+				"umc/widgets/Form",
+				"dojo/domReady!",
+				"umc/widgets"
+			], function(win, Deferred, json, tools, Form) {
+				var valuesAnimals = [ 'dog', 'cat', 'eagle', 'polar bear' ];
+				var valuesColors = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent', 'white', 'black' ];
+				var mapContinents = {
+					Africa: [ 'Egypt', 'Sudan', 'Kenia' ],
+					Europe: [ 'France', 'Germany', 'UK' ],
+					NorthAmerica: [ 'USA', 'Canada', 'Mexico' ],
+					SouthAmerica: [ 'Chile', 'Venezuela', 'Brazil' ],
+					Oceania: [ 'Australia' ],
+					Asia: [ 'China', 'India', 'Russia', 'Japan' ]
+				};
+				var continents = [];
+				tools.forIn(mapContinents, function(ikey) {
+					continents.push(ikey);
+				});
 
-			function _values(deps) {
-				if (deps._dep) {
-					var choice = deps[deps._dep];
-					if (choice in deps._data) {
-						return deps._data[choice];
+				function _values(deps) {
+					if (deps._dep) {
+						var choice = deps[deps._dep];
+						if (choice in deps._data) {
+							return deps._data[choice];
+						}
+						return [];
 					}
-					return [];
+					if (deps._func) {
+						return deps._func();
+					}
+					return deps._data;
 				}
-				if (deps._func) {
-					return deps._func();
-				}
-				return deps._data;
-			}
 
-			function valuesSync(deps) {
-				console.log('# valuesSync: ', dojo.toJson(deps));
-				var ret = _values(deps);
-				console.log('# valuesSync return:', dojo.toJson(ret));
-				return ret;
-			}
-
-			function valuesAsync(deps) {
-				console.log('# valuesAsync:', dojo.toJson(deps));
-				var deferred = new dojo.Deferred();
-				setTimeout(function() {
-					console.log('# valuesAsync: deferred done');
+				function valuesSync(deps) {
+					console.log('# valuesSync: ', json.stringify(deps));
 					var ret = _values(deps);
-					console.log('# valuesAsync return:', dojo.toJson(ret));
-					deferred.callback(ret);
-				}, 1000);
-				return deferred;
-			}
+					console.log('# valuesSync return:', json.stringify(ret));
+					return ret;
+				}
 
-			dojo.addOnLoad(function() {
+				function valuesAsync(deps) {
+					console.log('# valuesAsync:', json.stringify(deps));
+					var deferred = new Deferred();
+					setTimeout(function() {
+						console.log('# valuesAsync: deferred done');
+						var ret = _values(deps);
+						console.log('# valuesAsync return:', json.stringify(ret));
+						deferred.resolve(ret);
+					}, 1000);
+					return deferred;
+				}
+
 				var widgets = [{
 					type: 'Text',
 					label: '',
@@ -120,6 +125,23 @@
 					label: 'ComboBox2',
 					depends: 'ComboBox1-1',
 					dynamicOptions: { _data: mapContinents, _dep: 'ComboBox1-1' },
+					dynamicValues: valuesAsync
+				}, {
+					type: 'Text',
+					label: '',
+					name: 'test1b',
+					content: '<h1>Test case: ComboBox w/static values &larr; ComboBox</h1>'
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox1b-1',
+					label: 'ComboBox1b',
+					staticValues: continents
+				}, {
+					type: 'ComboBox',
+					name: 'ComboBox1b-2',
+					label: 'ComboBox2',
+					depends: 'ComboBox1b-1',
+					dynamicOptions: { _data: mapContinents, _dep: 'ComboBox1b-1' },
 					dynamicValues: valuesAsync
 				}, {
 					type: 'Text',
@@ -267,7 +289,7 @@
 					name: 'submit',
 					label: 'Submit'
 				}];
-				form = new umc.widgets.Form({
+				form = new Form({
 					widgets: widgets,
 					buttons: buttons,
 					layout: [
@@ -282,7 +304,7 @@
 					]
 				});
 				form.startup();
-				form.placeAt(dojo.body());
+				form.placeAt(win.body());
 			});
 		</script>
 	</head>

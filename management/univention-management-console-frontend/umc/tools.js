@@ -1023,28 +1023,60 @@ define([
 			return [];
 		},
 
+		_regFuncAmdStyle: /^javascript:\s*(\w+(\/\w+)*)(:(\w+))?$/,
+		_regFuncDotStyle: /^javascript:\s*(\w+(\.\w+)*)$/,
+
 		stringOrFunction: function(/*String|Function*/ input, /*Function?*/ umcpCommand) {
 			// summary:
 			//		Transforms a string starting with 'javascript:' to a javascript
 			//		function, otherwise to an UMCP command function (if umcpCommand)
 			//		is specified, and leaves a function a function.
 			//		Anything else will be converted to a dummy function.
+			// example:
+			//		Dot-notation, calling the function foo.bar():
+			// |	stringOrFunction('javascript:foo.bar');
+			//		Calling the AMD module foo/bar which is expected to be a function:
+			// |	stringOrFunction('javascript:foo/bar');
+			//		Calling the function doit() of the AMD module foo/bar:
+			// |	stringOrFunction('javascript:foo/bar:doit');
 
 			if (typeof input == "function") {
 				return input;
 			}
 			if (typeof input == "string") {
-				if (0 === input.indexOf('javascript:')) {
-					// string starts with 'javascript:' to indicate a reference to a javascript function
-					try {
-						// evaluate string as javascript code and execute function
-						return eval(input.substr(11));
-					}
-					catch (err) {
-						// will return dummy function at the end...
-					}
+				var match = this._regFuncDotStyle.exec(input);
+				var deferred = null;
+				if (match) {
+					// javascript function in dot style
+					return lang.getObject(match[1]);
 				}
-				else if (umcpCommand) {
+				match = this._regFuncAmdStyle.exec(input);
+				if (match) {
+					// AMD module
+					deferred = new Deferred();
+					try {
+						require([match[1]], function(module) {
+							if (match[4]) {
+								// get the function of the module
+								deferred.resolve(module[match[4]]);
+							}
+							else{
+								// otherwise get the full module
+								deferred.resolve(module);
+							}
+						});
+					} catch(error) {
+						deferred.reject(error);
+					}
+					// wrapper function which waits for the loaded AMD module
+					return function() {
+						var args = arguments;
+						return deferred.then(function(func) {
+							return func.apply(this, args);
+						}, function() {});
+					};
+				}
+				if (umcpCommand) {
 					// we have a reference to an ucmpCommand, we can try to execute the string as an
 					// UMCP command... return function that is ready to query dynamic values via UMCP
 					return function(params) {

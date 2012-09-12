@@ -1,24 +1,32 @@
+univention-management-console-frontend (2.0.46-1) unstable; urgency=low
+
+  * adapted tests/depends.html to Dojo 1.8
+  * bug fixes for Dojo update
+  Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 00:37:14 +0200
+
 univention-management-console-frontend (2.0.45-1) unstable; urgency=low
 
-  * more bug fixes; Bug #26826
+  * more bug fixes; Bug #26857
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Sep 2012 18:03:54 +0200
 
 univention-management-console-frontend (2.0.44-1) unstable; urgency=low
 
-  * bug fixes; Bug #26826
+  * bug fixes; Bug #26857
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Sep 2012 19:11:43 +0200
 
 univention-management-console-frontend (2.0.43-1) unstable; urgency=low
 
-  * fixed issues with rendering of widgets; Bug #26826
+  * fixed issues with rendering of widgets; Bug #26857
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Sep 2012 18:17:32 +0200
 
 univention-management-console-frontend (2.0.42-1) unstable; urgency=low
 
-  * fixed Toaster; Bug #26826
+  * fixed Toaster; Bug #26857
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Sep 2012 13:39:47 +0200
 
