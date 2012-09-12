@@ -33,7 +33,7 @@
 getUUID () {
 
 	local device="$1"
-	uuid="$(blkid -o value "$device" | head -1)"
+	uuid="$(blkid -s UUID -o value "$device")"
 	if [ -n "$uuid" ]; then
 		echo "UUID=$uuid"
 	fi
