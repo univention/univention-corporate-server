@@ -1,3 +1,9 @@
+univention-samba4 (2.0.11-1) unstable; urgency=low
+
+  * fix traceback in scripts/univention-samba4-site-tool.py (Bug #27153)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 12 Sep 2012 09:58:16 +0200
+
 univention-samba4 (2.0.10-5) unstable; urgency=low
 
   * Backup KRB5 keytab before joining.

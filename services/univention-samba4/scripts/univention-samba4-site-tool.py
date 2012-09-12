@@ -120,6 +120,8 @@ if opts.createsite:
 		print >> sys.stderr, "site %s already exists" % opts.site
 		if not opts.ignore_exists:
 			sys.exit(1)
+		else:
+			sys.exit(0)
 
 	if opts.sitelink and not opts.createsitelink:
 		res = samdb.search("CN=Configuration,%s" % samba4_ldap_base, scope=ldb.SCOPE_SUBTREE, expression="(&(objectClass=siteLink)(cn=%s))" % opts.sitelink)
