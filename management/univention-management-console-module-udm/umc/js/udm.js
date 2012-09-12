@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define require console*/
 
 define([
 	"dojo/_base/declare",
@@ -62,7 +62,9 @@ define([
 	"umc/modules/udm/CreateReportDialog",
 	"umc/modules/udm/NewObjectDialog",
 	"umc/modules/udm/DetailPage",
-	"umc/i18n!umc/modules/udm"
+	"umc/i18n!umc/modules/udm",
+	"umc/modules/udm/MultiObjectSelect",
+	"umc/modules/udm/CertificateUploader"
 ], function(declare, lang, array, Deferred, all, on, topic, aspect, json, domClass, registry, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	lang.setObject('umc.modules.udm.setDynamicValues', function(dict) {
 		// return the list specified by the property '$name$'
