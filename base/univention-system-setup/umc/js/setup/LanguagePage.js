@@ -36,9 +36,9 @@ define([
 	"umc/i18n/tools",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
-	"umc/widgets/TextBox", 
-	"umc/widgets/ComboBox", 
-	"umc/widgets/MultiObjectSelect", 
+	"umc/widgets/TextBox",
+	"umc/widgets/ComboBox",
+	"umc/widgets/MultiObjectSelect",
 	"umc/i18n!umc/modules/setup"
 ], function(declare, lang, array, tools, i18nTools, Page, Form, TextBox, ComboBox, MultiObjectSelect, _) {
 
@@ -183,6 +183,7 @@ define([
 					this._form.getWidget('timezone').set('value', data.result);
 				}));
 			}
+			vals.locale = vals.locale.split(/\s+/);
 			this._form.setFormValues(vals);
 			if (this.wizard_mode && this._firstSetValues) {
 				this._localesDeferred.then(lang.hitch(this, function() {
@@ -199,9 +200,10 @@ define([
 
 		getValues: function() {
 			var vals = this._form.gatherFormValues();
+			vals.locale = vals.locale.join(' ');
 			return vals;
 		},
-		
+
 		getSummary: function() {
 			// a list of all components with their labels
 			var allLocales = {};

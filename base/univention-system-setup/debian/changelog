@@ -1,3 +1,9 @@
+univention-system-setup (6.0.27-1) unstable; urgency=low
+
+  * make sure the property 'locale' is transmitted as string; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 01:14:22 +0200
+
 univention-system-setup (6.0.26-1) unstable; urgency=low
 
   * bug fixes due to Dojo update; Bug #26857

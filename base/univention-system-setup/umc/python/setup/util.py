@@ -123,13 +123,13 @@ def load_values():
 	else:
 		values['timezone']=''
 
-	if values['locale']:
-		locales = values['locale'].split()
+#	if values['locale']:
+#		locales = values['locale'].split()
 #		pattern = re.compile(r'^(?:%s)$' % ('|'.join(map(lambda s: re.escape(s.replace(':UTF-8', '')), locales)))) # fallbacklocale
-		pattern = re.compile(r'^(?:%s)$' % ('|'.join(map(lambda s: re.escape(s[:2]), locales)))) # langcode
-		values['locale'] = list(filter(lambda d: d['id'] in locales, get_available_locales(pattern, 'langcode')))
-	else:
-		values['locale'] = []
+#		pattern = re.compile(r'^(?:%s)$' % ('|'.join(map(lambda s: re.escape(s[:2]), locales)))) # langcode
+#		values['locale'] = list(filter(lambda d: d['id'] in locales, get_available_locales(pattern, 'langcode')))
+#	else:
+#		values['locale'] = []
 
 	# get installed components
 	values['components'] = ' '.join([icomp['id'] for icomp in get_installed_components()])
@@ -201,9 +201,9 @@ def pre_save(newValues, oldValues):
 		installComponents = list(allComponents & (selectedComponents - currentComponents))
 		newValues['packages_install'] = ' '.join([ i.replace(':', ' ') for i in installComponents ])
 
-	if 'locale' in newValues:
-		# js returns locale as list
-		newValues['locale'] = ' '.join(newValues['locale'])
+#	if 'locale' in newValues:
+#		# js returns locale as list
+#		newValues['locale'] = ' '.join(newValues['locale'])
 
 	if 'locale/keymap' in newValues:
 		xkeymap = _xkeymap(newValues['locale/keymap'])
