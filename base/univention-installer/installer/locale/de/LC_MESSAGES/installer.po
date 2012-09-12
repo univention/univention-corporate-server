@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-11 12:59+0200\n"
-"PO-Revision-Date: 2012-09-11 12:59+0200\n"
+"POT-Creation-Date: 2012-09-12 11:14+0200\n"
+"PO-Revision-Date: 2012-09-12 12:06+0200\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -2287,7 +2287,7 @@ msgstr "GPT schreiben"
 #: installer/modules/66_gpt_partition.py:2105
 #, python-format
 msgid "A MBR has been found on device %s."
-msgstr "Ein Master Boot Record (MBR) wurde auf Gerät %s gefunden."
+msgstr "Ein MBR wurde auf Gerät %s gefunden."
 
 #: installer/modules/66_gpt_partition.py:2106
 msgid "Devices with MBR are not supported by the interactive installation."
@@ -2307,8 +2307,7 @@ msgstr "WARNUNG: Durch Auswahl von \"In GPT umwandeln\" ändert sich ggf. die"
 
 #: installer/modules/66_gpt_partition.py:2111
 msgid "order may change and affect other operationg systems!"
-msgstr ""
-"vorhandene Partitionsreihenfolge und beeinflusst andere Betriebssysteme."
+msgstr "Partitionsreihenfolge und beeinflusst andere Betriebssysteme."
 
 #: installer/modules/66_gpt_partition.py:2114
 msgid "on a device with MBR can be found in the"
