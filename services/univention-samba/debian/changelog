@@ -1,3 +1,10 @@
+univention-samba (7.0.9-2) unstable; urgency=low
+
+  * removed manual adjustment of the minimal password length in Samba domain
+  * policy (Bug #21262)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 12 Sep 2012 16:47:19 +0200
+
 univention-samba (7.0.9-1) unstable; urgency=low
 
   * minimal password length in Samba domain policy is set to 8 characters on a

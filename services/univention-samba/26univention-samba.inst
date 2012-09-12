@@ -231,12 +231,6 @@ ucs_addServiceToLocalhost 'Samba 3' "$@"
 # sync netlogon share
 /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
 
-# increase the minimal password length Samba domain policy from 5 to 8
-# characters on the first execution of this script (Bug #21262)
-if ! joinscript_check_any_version_executed; then
-	pdbedit -P "min password length" -C 8
-fi
-
 joinscript_save_current_version
 
 exit 0
