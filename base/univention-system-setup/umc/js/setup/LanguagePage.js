@@ -32,15 +32,15 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/_base/kernel",
 	"umc/tools",
+	"umc/i18n/tools",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/TextBox", 
 	"umc/widgets/ComboBox", 
 	"umc/widgets/MultiObjectSelect", 
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, kernel, tools, Page, Form, TextBox, ComboBox, MultiObjectSelect, _) {
+], function(declare, lang, array, tools, i18nTools, Page, Form, TextBox, ComboBox, MultiObjectSelect, _) {
 
 	return declare("umc.modules.setup.LanguagePage", [ Page ], {
 		// summary:
@@ -71,6 +71,13 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			this._localesDeferred = this.umcpCommand('setup/lang/locales', { pattern: "*" }).then(function(data) {
+				var result = {};
+				array.forEach(data.result, function(ientry) {
+					result[ientry.id] = ientry.label;
+				});
+				return result;
+			});
 
 			var widgets = [{
 				type: ComboBox,
@@ -115,6 +122,16 @@ define([
 					value: '*',
 					label: _('Name')
 				}],
+				formatter: lang.hitch(this, function(ids) {
+					return this._localesDeferred.then(function(locales) {
+						return array.map(ids, function(id) {
+							if (typeof id == "string") {
+								return { id: id, label :locales[id] };
+							}
+							return id;
+						});
+					});
+				}),
 				autosearch: true,
 				height: '200px'
 			}, {
@@ -139,9 +156,9 @@ define([
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
-				onSubmit: lang.hitch(this, 'onSave'),
 				scrollable: true
 			});
+			this._form.on('submit', lang.hitch(this, 'onSave'));
 
 			this.addChild(this._form);
 
@@ -150,17 +167,10 @@ define([
 		setValues: function(_vals) {
 			var vals = lang.mixin({}, _vals);
 			if (this.wizard_mode && this._firstSetValues) {
-				this._firstSetValues = false;
-				var countrycode = null;
-				var default_locale_default = null;
-				if (kernel.locale && kernel.locale.split('-').length == 2) {
-					var parts = kernel.locale.split('-');
-					countrycode = parts[1].toLowerCase();
-					default_locale_default = parts[0] + '_' + parts[1] + '.UTF-8:UTF-8';
-				}
-				if (vals.locale.indexOf(default_locale_default) < 0) {
-					vals.locale.push(default_locale_default);
-				}
+				var used_locale = i18nTools.defaultLang();
+				var parts = used_locale.split('-');
+				var countrycode = parts[1].toLowerCase();
+				var default_locale_default = parts[0] + '_' + parts[1] + '.UTF-8:UTF-8';
 				vals['locale/default'] = default_locale_default;
 				this.umcpCommand('setup/lang/default_keymap', {
 					'countrycode': countrycode
@@ -174,6 +184,17 @@ define([
 				}));
 			}
 			this._form.setFormValues(vals);
+			if (this.wizard_mode && this._firstSetValues) {
+				this._localesDeferred.then(lang.hitch(this, function() {
+					this._firstSetValues = false;
+					var locale_widget = this._form.getWidget('locale');
+					var locales = locale_widget.get('value').concat(default_locale_default);
+					locale_widget.set('value', locales);
+				}));
+				//locale_widget._multiSelect._loadingDeferred.then(function() {
+				//	locale_widget._addElements([default_locale_default]);
+				//});
+			}
 		},
 
 		getValues: function() {

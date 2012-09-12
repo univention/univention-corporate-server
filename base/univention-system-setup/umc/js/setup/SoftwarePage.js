@@ -90,9 +90,9 @@ define([
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
-				onSubmit: lang.hitch(this, 'onSave'),
 				scrollable: true
 			});
+			this._form.on('submit', lang.hitch(this, 'onSave'));
 
 			this.addChild(this._form);
 

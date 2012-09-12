@@ -224,22 +224,21 @@ define([
 						footerButtons: buttons,
 						moduleFlavor: this.moduleFlavor,
 						wizard_mode: this.wizard_mode,
-						local_mode: this.local_mode,
-						onSave: lang.hitch(this, function() {
-							if (i < allPages.length - 1) {
-								// switch to next visible page
-								// precondition: the last page is never invisible!
-								var nextpage = i + 1;
-								while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
-									nextpage += 1;
-								}
-								this.selectChildIfValid(nextpage);
-							}
-							else {
-								this.save();
-							}
-						})
+						local_mode: this.local_mode
 					});
+					ipage.on('save', lang.hitch(this, function() {
+						if (i < allPages.length - 1) {
+							// switch to next visible page
+							// precondition: the last page is never invisible!
+							var nextpage = i + 1;
+							while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
+								nextpage += 1;
+							}
+							this.selectChildIfValid(nextpage);
+						} else {
+							this.save();
+						}
+					}));
 					this.addChild(ipage);
 					this._pages.push(ipage);
 
@@ -858,7 +857,20 @@ define([
 			when(current_page.validate === undefined || current_page.validate(),
 				lang.hitch(this, function(value) {
 					if (value) {
-						this.selectChild(this._pages[nextpage]);
+						var page = this._pages[nextpage];
+						this.selectChild(page);
+						// focus first widget in page
+						// if (page._form) {
+						// 	tools.forIn(page._form._widgets, function(iname, iwidget) {
+						// 		if (!iwidget.get('disabled')) {
+						// 			try {
+						// 				iwidget.focus();
+						// 			} catch(e) {
+						// 			}
+						// 			return false;
+						// 		}
+						// 	});
+						// }
 					}
 				})
 			);

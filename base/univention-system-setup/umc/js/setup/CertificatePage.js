@@ -122,9 +122,9 @@ define([
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
-				onSubmit: lang.hitch(this, 'onSave'),
 				scrollable: true
 			});
+			this._form.on('submit', lang.hitch(this, 'onSave'));
 
 			tools.forIn(this._form._widgets, function(iname, iwidget) {
 				iwidget.on('KeyUp', lang.hitch(this, function() {

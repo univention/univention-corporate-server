@@ -105,9 +105,9 @@ define([
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
-				onSubmit: lang.hitch(this, 'onSave'),
 				scrollable: true
 			});
+			this._form.on('submit', lang.hitch(this, 'onSave'));
 
 			this._form.getWidget('fqdn').watch('value', lang.hitch(this, 'onValuesChanged'));
 			var fc = this._form.getWidget('fqdn').watch('value', lang.hitch(this, function(name, oldVal, newVal) {

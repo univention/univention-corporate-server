@@ -48,6 +48,9 @@ class SoftwareScript(AptScript):
 		self.packages_install = self.get_profile_var_list('packages_install')
 
 	def inner_run(self):
+		if not (self.packages_remove or self.packages_install):
+			# nothing to do. dont autoremove either
+			return True
 		# +1 for update + 1 for autoremove
 		ntasks = len(self.packages_remove) + len(self.packages_install) + 2
 		self.steps(ntasks * 100)
