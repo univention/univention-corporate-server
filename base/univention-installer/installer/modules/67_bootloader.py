@@ -95,6 +95,7 @@ class object(content):
 		return {'bootloader_record': ['boot_partition']}
 
 	def find_devices(self):
+		self.devices = {}
 		# match on any device name that does not end on digit OR
 		# any device name ending with cXdY where X and Y are one or more digits
 		REpartitions = re.compile('^\d+\s+\d+\s+\d+\s+(.*)$')
@@ -137,7 +138,7 @@ class object(content):
 				continue
 
 			# ignore device mapper devices
-			if os.path.isdir('/sys/block/%s/dm' % device):
+			if os.path.isdir('/sys/block/%s/dm' % device.replace("/","!")):
 				continue
 
 			# valid device
