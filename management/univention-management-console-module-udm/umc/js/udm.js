@@ -66,67 +66,6 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/CertificateUploader"
 ], function(declare, lang, array, Deferred, all, on, topic, aspect, json, domClass, registry, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
-	lang.setObject('umc.modules.udm.setDynamicValues', function(dict) {
-		// return the list specified by the property '$name$'
-		// make sure that elements do not exist twice
-		var tmpMap = {};
-		var list =  array.filter(dict[dict.$name$], function(ival) {
-			if (!(ival in tmpMap)) {
-				tmpMap[ival] = true;
-				return true;
-			}
-			return false;
-		});
-		if ( dict.$name$ == 'dnsEntryZoneForward' ) {
-			list = array.map( list, function( item ) {
-				return tools.explodeDn( item[ 0 ], true )[ 0 ];
-			} );
-		}
-		return list;
-	});
-
-	lang.setObject('umc.modules.udm.setNetwork', function(newVal, widgets) {
-		if (!lang.getObject('network.focused', false, widgets)) {
-			// only react on user changes of the network
-			return;
-		}
-
-		// query a new IP address and update network configurations automatically...
-		if (!newVal || newVal == 'None') {
-			// empty list
-			widgets.ip.set('value', []);
-			widgets.dnsEntryZoneForward.set('value', []);
-			widgets.dnsEntryZoneReverse.set('value', []);
-			widgets.dhcpEntryZone.set('value', []);
-		}
-		else {
-			tools.umcpCommand('udm/network', {
-				networkDN: newVal,
-				increaseCounter: Boolean(widgets.$dn$.get('value'))
-			}, true, 'computers/computer').then(function(data) {
-				// got values... update corresponding widgets
-				var vals = data.result;
-				widgets.ip.set('value', [vals.ip]);
-				widgets.dnsEntryZoneForward.set('value', [[vals.dnsEntryZoneForward, vals.ip]]);
-				widgets.dnsEntryZoneReverse.set('value', [[vals.dnsEntryZoneReverse, vals.ip]]);
-				var mac = widgets.mac.get('value');
-				if (mac.length && vals.dhcpEntryZone) {
-					// at least one MAC address is specified, update the DHCP entries
-					widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, mac[0]]]);
-				}
-				else if (vals.dhcpEntryZone) {
-					// no MAC address given, enter the DHCP entry and make sure that the MAC
-					// is chosen as soon as it is specified later on (via 'null' value)
-					widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, null]]);
-				}
-				else {
-					// DHCP entry zone does not exist
-					widgets.dhcpEntryZone.set('value', []);
-				}
-			});
-		}
-	});
-
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) UDM objects.
