@@ -227,13 +227,13 @@ if __name__ == '__main__':
 	parser.add_option( '-m', '--mount-point', action = 'store',
 					   dest = 'mount_point', default = '/cdrom',
 					   help = 'devices mount point for CD-ROM drive' )
-+	parser.add_option('-i', '--iso', action='store', dest='iso',
-+	                  default=None, help='define filename of an ISO image')
+	parser.add_option('-i', '--iso', action='store', dest='iso',
+	                  default=None, help='define filename of an ISO image')
 
 	( options, arguments ) = parser.parse_args()
 
 	if options.silent:
-+		sys.stdout = open(os.path.devnull, 'w')
+		sys.stdout = open(os.path.devnull, 'w')
 
 	try:
 		lock = univention.updater.tools.updater_lock_acquire()
