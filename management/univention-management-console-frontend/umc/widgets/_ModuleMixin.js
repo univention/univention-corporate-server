@@ -71,7 +71,7 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			if (this.idProperty) {
+			if (this.idProperty && !this.moduleStore) {
 				this.moduleStore = store(this.idProperty, this.moduleID, this.moduleFlavor);
 			}
 		},

@@ -247,8 +247,7 @@ define([
 				};
 				var errHandle = require.on('error', function(err) {
 					// count the loaded dependencies
-					// TODO: this error handling is not quite correct
-					console.log('### error:', err);
+					// TODO: revise this error handling
 					if (err.message == 'scriptError') {
 						incDeps();
 					}
@@ -259,11 +258,13 @@ define([
 					// try to load the module
 					try {
 						require(['umc/modules/' + module.id], lang.hitch(this, function(baseClass) {
-							// add module config class to internal list of available modules
-							this._modules.push(lang.mixin({
-								BaseClass: baseClass,
-								_orgIndex: i  // save the element's original index
-							}, module));
+							if (typeof baseClass == "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
+								// add module config class to internal list of available modules
+								this._modules.push(lang.mixin({
+									BaseClass: baseClass,
+									_orgIndex: i  // save the element's original index
+								}, module));
+							}
 							incDeps();
 						}));
 					} catch (err) {

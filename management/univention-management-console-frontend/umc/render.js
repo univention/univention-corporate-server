@@ -117,7 +117,7 @@ define([
 				catch (err) { }
 			}
 			if (!WidgetClass || WidgetClass === 'not-a-module') {
-				console.log(lang.replace("WARNING in render.widget: The widget class 'umc.widgets.{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
+				console.log(lang.replace("WARNING in render.widget: The widget class '{type}' defined by widget '{name}' cannot be found. Ignoring error.", widgetConf));
 				return undefined;
 			}
 			var widget = new WidgetClass(conf); // Widget

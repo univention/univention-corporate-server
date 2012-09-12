@@ -33,12 +33,11 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/Deferred",
+	"dojo/Evented",
 	"dojo/store/util/QueryResults",
-	"dojo/store/Observable",
-	"dojo/store/util/SimpleQueryEngine",
 	"umc/tools"
-], function(declare, lang, array, Deferred, QueryResults, Observable, SimpleQueryEngine, tools) {
-	var _UmcpModuleStore = declare("umc.store.UmcpModuleStore", null, {
+], function(declare, lang, array, Deferred, Evented, QueryResults, tools) {
+	var _UmcpModuleStore = declare("umc.store.UmcpModuleStore", [ Evented ], {
 		// idProperty: String
 		//		Indicates the property to use as the identity property.
 		//		The values of this property should be unique.
@@ -49,13 +48,12 @@ define([
 		//		methods can be found.
 		storePath: '',
 
-		// queryEngine: Function
-		//      Defines the query engine to use for querying the data store
-		queryEngine: SimpleQueryEngine,
-
 		// umcpCommand: Function
 		//		Reference to a particularly flavored umcpCommand.
 		umcpCommand: tools.umcpCommand,
+
+		//TODO: for the future, it would be nice to work with query engines
+		queryEngine: null,
 
 		constructor: function(params) {
 			lang.mixin(this, params);
@@ -101,7 +99,7 @@ define([
 
 						// send event when changes occurred
 						if (!this._noEvents && ('remove' == type || 'put' == type || 'add' == type)) {
-							//this.onChange();
+							this.onChange();
 						}
 
 						//tools.assert(res && res instanceof Array && res.length == params.length,
@@ -262,7 +260,7 @@ define([
 				// switch back on events and send onChange event
 				this._noEvents = false;
 				if (dataModified) {
-					//this.onChange();
+					this.onChange();
 				}
 
 				// remove all transactions
@@ -303,9 +301,9 @@ define([
 		},
 
 		_noEvents: false,
-		/*onChange: function() {
+		onChange: function() {
 			// event stub
-		}*/
+		}
 	});
 
 	// internal dict of static module store references
@@ -331,13 +329,13 @@ define([
 		var key = storePath + '@' + (moduleFlavor || 'default');
 		if (!_moduleStores[key]) {
 			// the store does not exist, we need to create a new singleton
-			_moduleStores[key] = Observable(new _UmcpModuleStore({
+			_moduleStores[key] = new _UmcpModuleStore({
 				idProperty: idProperty,
 				storePath: storePath,
 				umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
 					return tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || moduleFlavor );
 				}
-			}));
+			});
 		}
 		return _moduleStores[key];
 	};

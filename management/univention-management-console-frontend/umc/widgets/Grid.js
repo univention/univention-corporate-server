@@ -560,9 +560,11 @@ define([
 
 			// in case of any changes in the module store, refresh the grid
 			// FIXME: should not be needed anymore with Dojo 1.8
-			/*this.own(this.on(this.moduleStore, 'onChange', function() {
-				this.filter(this.query);
-			});*/
+			if (this.moduleStore.on && this.moduleStore.onChange) {
+				this.own(on(this.moduleStore, 'Change', lang.hitch(this, function() {
+					this.filter(this.query);
+				})));
+			}
 
 			// standby animation when loading data
 			this.own(aspect.after(this._grid, "_onFetchComplete", lang.hitch(this, function() {
