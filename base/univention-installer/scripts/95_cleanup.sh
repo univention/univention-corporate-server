@@ -64,6 +64,14 @@ if [ -x /etc/init.d/nscd ]; then
 	/etc/init.d/nscd stop
 fi
 
+if [ -x /etc/init.d/nfs-kernel-server ]; then
+	/etc/init.d/nfs-kernel-server stop
+fi
+
+if [ -x /etc/init.d/nfs-common ]; then
+	/etc/init.d/nfs-common stop
+fi
+
 umount -a >/dev/null 2>&1
 echo -n "Sending all processes the TERM signal... "
 killall5 -15 >/dev/null 2>&1

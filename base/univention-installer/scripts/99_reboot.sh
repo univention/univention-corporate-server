@@ -32,9 +32,25 @@
 
 . /tmp/installation_profile
 
+/bin/umount /instmnt/proc/fs/nfsd > /dev/null 2>&1
 /bin/umount /instmnt/proc > /dev/null 2>&1
 /bin/umount /instmnt/sys > /dev/null 2>&1
 /bin/umount /instmnt/dev > /dev/null 2>&1
+
+IFS='
+'
+for i in $(ucr search --brief installer/.*/mp | awk -F ': ' '{print $2}'); do 
+	if [ "$i" = "/" -o "$i" = "None" -o "$i" = "none" -o "$i" = "unknown" ]; then
+		continue
+	fi
+	if [ ! -d "/instmnst/$i" ]; then
+		continue
+	fi
+	/bin/umount "/instmnst/$i" > /dev/null 2>&1
+done
+unset IFS
+
+# root
 /bin/umount /instmnt > /dev/null 2>&1
 
 # fsck on ext file systems

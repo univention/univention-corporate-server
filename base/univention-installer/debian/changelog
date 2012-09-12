@@ -1,3 +1,9 @@
+univention-installer (8.0.14-1) unstable; urgency=low
+
+  * fixed umount in 99_reboot.sh (Bug #25284) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Sep 2012 14:19:11 +0200
+
 univention-installer (8.0.13-1) unstable; urgency=low
 
   * fixed 67_bootloader.py (Bug #9936)
