@@ -1,3 +1,9 @@
+univention-join (5.0.8-1) unstable; urgency=low
+
+  * bug fixes due to Dojo update; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Sep 2012 21:46:28 +0200
+
 univention-join (5.0.7-2) unstable; urgency=low
 
   * create ssl/validity/... during join to avoid nagios UNIVENTION_SSL

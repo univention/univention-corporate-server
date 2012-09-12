@@ -922,7 +922,7 @@ define([
 				style: 'max-width: 400px;'
 			});
 			_dialog.on('hide', lang.hitch(this, function() {
-				if (deferred.fired < 0) {
+				if (!deferred.isFulfilled()) {
 					// user clicked the close button
 					this.standby(false);
 					deferred.reject();
