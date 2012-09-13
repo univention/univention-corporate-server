@@ -39,7 +39,7 @@ define([
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/LabelPane"
 ], function(declare, lang, array, Button, tools, render, ContainerWidget, _FormWidgetMixin, LabelPane) {
-	return declare([ContainerWidget, _FormWidgetMixin ], {
+	return declare("umc.widgets.MultiInput", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:
 		//		Widget for a small list of simple and complex entries. An entry can be one or
 		//		multiple input fields (TextBox, ComboBox, etc.).
@@ -56,6 +56,8 @@ define([
 
 		// the widget's class name as CSS class
 		'class': 'umcMultiInput',
+
+		sizeClass: null,
 
 		depends: null,
 
@@ -140,6 +142,13 @@ define([
 
 			// add empty element
 			this._appendElements(1);
+		},
+
+		postCreate: function() {
+			// FIXME: this line should not be necessary...
+			this.sizeClass = null;
+
+			this.inherited(arguments);
 		},
 
 		_loadValues: function(depends) {
@@ -361,15 +370,16 @@ define([
 					// add widget to row container (wrapped by a LabelPane)
 					// only keep the label for the first row
 					var iwidget = widgets[iname];
-					var label = irow !== 0 ? '' : null;
+					var label = irow !== 0 ? '' : iwidget.label;
 					if (tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
 						label = irow !== 0 ? '' : '&nbsp;';
 					}
 					rowContainer.addChild(new LabelPane({
 						disabled: this.disabled,
-						content: iwidget,
-						label: label
+						content: iwidget
 					}));
+
+					iwidget.set('label', label);
 
 					// register to value changes
 					this.own(iwidget.watch('value', lang.hitch(this, function() {

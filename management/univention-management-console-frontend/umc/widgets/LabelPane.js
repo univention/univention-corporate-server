@@ -99,7 +99,7 @@ define([
 				if (!tools.inheritsFrom(this.content, 'umc.widgets.Button')) {
 					// only watch the label and required property if widget is not a button
 					this.own(this.content.watch('label', lang.hitch(this, function(attr, oldVal, newVal) {
-						this.set('label', newVal || '');
+						this.set('label', this.content.get('label') || '');
 					})));
 					this.own(this.content.watch('required', lang.hitch(this, function(attr, oldVal, newVal) {
 						this.set('label', this.content.get('label') || '');

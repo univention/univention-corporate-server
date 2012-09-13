@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.47-1) unstable; urgency=low
+
+  * fixed labeling and layout problems with MultiInput; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 11:12:38 +0200
+
 univention-management-console-frontend (2.0.46-1) unstable; urgency=low
 
   * adapted tests/depends.html to Dojo 1.8
