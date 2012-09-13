@@ -41,6 +41,15 @@ define([
 		defaultButton: true,
 
 		// the widget's class name as CSS class
-		'class': 'umcSubmitButton'
+		'class': 'umcSubmitButton',
+
+		uninitialize: function() {
+			// Sometimes after a form is destroyed, there would be tracebacks as a submit
+			// event handler would try to access this.node (see dijit/form/_ButtonMixin:_onClick).
+			// Therefore, set type to 'button' to avoid these problems
+			this.type = 'button';
+
+			this.inherited(arguments);
+		}
 	});
 });

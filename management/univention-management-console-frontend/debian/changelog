@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.48-1) unstable; urgency=low
+
+  * avoid reference problems with SubmitButtons after the form has been
+    destroyed; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 12:21:25 +0200
+
 univention-management-console-frontend (2.0.47-1) unstable; urgency=low
 
   * fixed labeling and layout problems with MultiInput; Bug #26857
