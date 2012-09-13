@@ -1412,7 +1412,7 @@ class simpleComputer( simpleLdap ):
 		# if we only got the ip addres, we remove the ip address
 
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dhcp object: position="%s", name="%s", oldname="%s", mac="%s", ip="%s"' % ( position, name, oldname, mac, ip ) )
-		
+
 		dn = None
 
 		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
@@ -2036,9 +2036,9 @@ class simpleComputer( simpleLdap ):
 			if len(self.info['ip']) == 1 and len(self.info['mac']) == 1 and len(self.info['dhcpEntryZone']):
 				# In this special case, we assume the mapping between ip/mac address to be
 				# unique. The dhcp entry needs to contain the mac address (as sepcified by
-				# the ldap search for dhcp entries), the ip address may not correspond to 
-				# the ip address associated with the computer ldap object, but this would 
-				# be erroneous anyway. We therefore update the dhcp entry to correspond to 
+				# the ldap search for dhcp entries), the ip address may not correspond to
+				# the ip address associated with the computer ldap object, but this would
+				# be erroneous anyway. We therefore update the dhcp entry to correspond to
 				# the current ip and mac address. (Bug #20315)
 				dn, ip, mac = self.__split_dhcp_line( self.info['dhcpEntryZone'][0] )
 

@@ -237,9 +237,9 @@ class License( object ):
 
 	def __countSysAccounts( self, lo ):
 		userfilter = [ univention.admin.filter.expression('uid', account) for account in self.sysAccountNames ]
-                filter=univention.admin.filter.conjunction('&', [
-                         univention.admin.filter.conjunction('|', userfilter),
-                         self.filters[License.ACCOUNT] ])
+		filter = univention.admin.filter.conjunction('&', [
+			univention.admin.filter.conjunction('|', userfilter),
+			self.filters[License.ACCOUNT] ])
 		try:
 			searchResult = lo.searchDn(filter=str(filter))
 			self.sysAccountsFound = len(searchResult)

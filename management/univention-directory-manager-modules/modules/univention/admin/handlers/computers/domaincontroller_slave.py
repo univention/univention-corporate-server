@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin module for the DC Slave hosts 
+#  admin module for the DC Slave hosts
 #
 # Copyright 2004-2012 Univention GmbH
 #
@@ -357,7 +357,7 @@ layout = [
 	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
 		'dnsEntryZoneAlias'
 		] ),
- ]
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

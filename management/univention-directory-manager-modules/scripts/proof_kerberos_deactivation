@@ -126,6 +126,3 @@ for i in range(0,len(res_pA)):
 			print " - no kerberos account"
 	else:
 		print " - WARNING: no key objectClass found !"
-	
-
-

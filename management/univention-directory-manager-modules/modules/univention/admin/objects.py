@@ -119,7 +119,7 @@ def description(object):
 def shadow(lo, module, object, position):
 	'''if object is a container, return object and module the container
 	shadows (that is usually the one that is subordinate in the LDAP tree)'''
-	
+
 	if not object:
 		return (None, None)
 	dn=object.dn
@@ -156,13 +156,13 @@ def ocToType(oc):
 def fixedAttribute(object, key):
 	if not hasattr(object, 'fixedAttributes'):
 		return 0
-	
+
 	return object.fixedAttributes().get(key, 0)
 
 def emptyAttribute(object, key):
 	if not hasattr(object, 'emptyAttributes'):
 		return 0
-	
+
 	return object.emptyAttributes().get(key, 0)
 
 def getPolicyReference(object, policy_type):
@@ -200,7 +200,7 @@ def replacePolicyReference(object, policy_type, new_reference):
 		return
 
 	removePolicyReference(object, policy_type)
-	
+
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'replacePolicyReference: appending reference: %s' % new_reference)
 	object.policies.append(new_reference)
 
@@ -210,7 +210,7 @@ def restorePolicyReference(object, policy_type):
 	module=univention.admin.modules.get(policy_type)
 	if not module:
 		return
-	
+
 	removePolicyReference(object, policy_type)
 
 	restore=None
@@ -231,7 +231,7 @@ def wantsCleanup(object):
 	object_module=univention.admin.modules.get(object_module)
 	if hasattr(object_module, 'docleanup'):
 		wantsCleanup=object_module.docleanup
-	
+
 	return wantsCleanup
 
 def performCleanup(object):

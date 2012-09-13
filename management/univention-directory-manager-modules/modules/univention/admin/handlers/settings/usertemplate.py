@@ -110,17 +110,17 @@ property_descriptions={
 			dontsearch=1,
 			identifies=0
 		),
- 	'disabled': univention.admin.property(
- 			short_description=_('Disabled'),
- 			long_description='',
- 			syntax=univention.admin.syntax.boolean,
- 			multivalue=0,
- 			options=[],
- 			required=0,
- 			may_change=1,
- 			identifies=0,
- 			show_in_lists=1
- 		),
+	'disabled': univention.admin.property(
+			short_description=_('Disabled'),
+			long_description='',
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			show_in_lists=1
+		),
 	'e-mail': univention.admin.property(
 			short_description=_('E-Mail Address'),
 			long_description='',
@@ -142,27 +142,27 @@ property_descriptions={
 			identifies=0,
 			default = '/home/<username>',
 		),
- 	'homeShare': univention.admin.property(
- 			short_description=_('Home Share'),
- 			long_description=_('Share, the user\'s home directory resides on'),
- 			syntax = univention.admin.syntax.WritableShare,
- 			multivalue=0,
- 			required=0,
- 			dontsearch=1,
- 			may_change=1,
- 			identifies=0,
- 		),
- 	'homeSharePath': univention.admin.property(
- 			short_description=_('Home Share Path'),
- 			long_description=_('Path on the home share'),
- 			syntax=univention.admin.syntax.string,
- 			multivalue=0,
- 			options=[],
- 			required=0,
- 			dontsearch=1,
- 			may_change=1,
- 			identifies=0,
- 		),
+	'homeShare': univention.admin.property(
+			short_description=_('Home Share'),
+			long_description=_('Share, the user\'s home directory resides on'),
+			syntax = univention.admin.syntax.WritableShare,
+			multivalue=0,
+			required=0,
+			dontsearch=1,
+			may_change=1,
+			identifies=0,
+		),
+	'homeSharePath': univention.admin.property(
+			short_description=_('Home Share Path'),
+			long_description=_('Path on the home share'),
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			dontsearch=1,
+			may_change=1,
+			identifies=0,
+		),
 	'shell': univention.admin.property(
 			short_description=_('Login Shell'),
 			long_description='',
@@ -284,29 +284,29 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
- 	'groups': univention.admin.property(
- 			short_description=_('Groups'),
- 			long_description='',
- 			syntax=univention.admin.syntax.GroupDN,
- 			multivalue=1,
- 			options=[],
- 			required=0,
- 			may_change=1,
- 			identifies=0
- 		),
- 	'primaryGroup': univention.admin.property(
- 			short_description=_('Primary Group'),
- 			long_description='',
- 			syntax=univention.admin.syntax.GroupDN,
- 			one_only=1,
- 			parent='groups',
- 			multivalue=0,
- 			options=[],
- 			required=0,
- 			dontsearch=1,
- 			may_change=1,
- 			identifies=0
- 		),
+	'groups': univention.admin.property(
+			short_description=_('Groups'),
+			long_description='',
+			syntax=univention.admin.syntax.GroupDN,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'primaryGroup': univention.admin.property(
+			short_description=_('Primary Group'),
+			long_description='',
+			syntax=univention.admin.syntax.GroupDN,
+			one_only=1,
+			parent='groups',
+			multivalue=0,
+			options=[],
+			required=0,
+			dontsearch=1,
+			may_change=1,
+			identifies=0
+		),
 	'mailPrimaryAddress': univention.admin.property(
 			short_description=_('Primary E-Mail Address'),
 			long_description='',
@@ -354,7 +354,7 @@ layout = [
 			[ "_options" ],
 		] ),
 	] ),
- 	Tab(_('User Account'),_('Account Settings'), layout = [
+	Tab(_('User Account'),_('Account Settings'), layout = [
 		Group( _( 'User Account' ), layout = [
 			[ "disabled", "pwdChangeNextLogin" ]
 		] ),
@@ -463,7 +463,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		return ml
 
-
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		self.sambaMungedDialUnmap()
@@ -471,7 +470,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=superordinate, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionUserTemplate' ) ] )
 
@@ -485,6 +483,6 @@ def lookup(co, lo, filter_s, base='', superordinate=superordinate, scope='sub', 
 		res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
-def identify(dn, attr, canonical=0):
 
+def identify(dn, attr, canonical=0):
 	return 'univentionUserTemplate' in attr.get('objectClass', [])

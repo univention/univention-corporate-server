@@ -64,7 +64,7 @@ for arg in sys.argv:
 			except:
 				print "E: Option --logfile requires an argument"
 				sys.exit(1)
-			
+
 try:
 	s.connect(socket_path)
 except:
@@ -90,7 +90,7 @@ except:
 		if int(time.time()) > stime+socket_timeout:
 			print 'E: Can`t find running daemon after %s Seconds. (No socketfile)' % socket_timeout
 			sys.exit(1)
-	
+
 	connection_timeout=30 # this took a long time if getfqdn(host) was used in cli-server
 	stime=int(time.time())
 	socking=0
@@ -103,7 +103,7 @@ except:
 			if int(time.time()) > stime+connection_timeout:
 				print 'E: Can`t connect daemon after %s seconds.' % connection_timeout
 				sys.exit(1)
-			
+
 			#sys.exit(1)
 
 cmdfile=os.path.basename(sys.argv[0])

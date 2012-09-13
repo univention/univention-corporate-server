@@ -49,7 +49,7 @@ long_description=''
 options={}
 property_descriptions={
 	'name': univention.admin.property(
-	        short_description=_('Service Name'),
+			short_description=_('Service Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -71,6 +71,7 @@ layout = [
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 
+
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
@@ -80,7 +81,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.mapping=mapping
 		self.descriptions=property_descriptions
- 		self.options=[]
+		self.options=[]
 
 		self.alloc=[]
 
@@ -99,6 +100,7 @@ class object(univention.admin.handlers.simpleLdap):
 			('objectClass', ocs),
 		]
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter = univention.admin.filter.conjunction( '&', [
@@ -115,6 +117,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
-def identify(dn, attr, canonical=0):
 
+def identify(dn, attr, canonical=0):
 	return 'univentionServiceObject' in attr.get('objectClass', [])

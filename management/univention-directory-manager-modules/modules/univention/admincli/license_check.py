@@ -93,7 +93,7 @@ def find_licenses(lo, baseDN, module='*'):
 			return []
 	filter = 'univentionLicenseModule=%s' % module
 	dirs = [ 'cn=directory,cn=univention,%s' % baseDN,
-		 'cn=default containers,cn=univention,%s' % baseDN ]
+			'cn=default containers,cn=univention,%s' % baseDN ]
 	objects = [ o for d in dirs for o in find_wrap(d) ]
 	containers = [ c for o in objects for c in lo.get(o)['univentionLicenseObject'] ]
 	licenses = [ l for c in containers for l in lo.searchDn(base=c, filter=filter) ]
@@ -132,7 +132,7 @@ def check_license(lo, dn, list_dns, expired):
 			max = [ lo.get(dn)[_license.keys[type]][0]
 				for type in types ]
 		objs = [ lo.searchDn(filter=_license.filters[type])
-		       	for type in types ]
+				for type in types ]
 		num = [ mylen (obj)
 			for obj in objs]
 		expired = _license.checkObjectCounts(max, num)
@@ -147,13 +147,12 @@ def check_license(lo, dn, list_dns, expired):
 			e = i+1
 			l = _license.names[t]
 			if m:
-
-                                if list_dns:
+				if list_dns:
 					out.append("")
 				out.append(format(l, n, m, e == expired, _license.compare))
 				if list_dns and not max == 'unlimited':
 					for dnout in odn:
-	                                	out.extend( [ "  %s" % dnout, ] )
+						out.extend( [ "  %s" % dnout, ] )
 				if list_dns and t == License.ACCOUNT:
 					out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 	def check_time():
@@ -190,10 +189,10 @@ def main(argv):
 			raise UsageError, "Permission denied, try `--binddn' and `--bindpwd'"
 	try:
 		lo = univention.admin.uldap.access(host = master,
-						   port = port,
-						   base = baseDN,
-						   binddn = binddn,
-						   bindpw = bindpw)
+				port = port,
+				base = baseDN,
+				binddn = binddn,
+				bindpw = bindpw)
 	except uexceptions.authFail:
 		raise UsageError, "Authentication failed, try `--bindpwd'"
 	try:

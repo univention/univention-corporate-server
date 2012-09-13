@@ -44,7 +44,7 @@ class Attributes:
 		if not isinstance( license_type, list ):
 			license_type = list( license_type )
 		license_type.sort()
-		
+
 		for key in self._options.keys():
 			skey = list( key )
 			skey.sort()

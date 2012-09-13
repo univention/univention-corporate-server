@@ -50,4 +50,3 @@ for i in lines:
 		syntax = syntax + ","
 
 	print syntax
-		

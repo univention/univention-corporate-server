@@ -45,12 +45,12 @@ def doit(arglist):
 	univention.debug.init('/var/log/univention/admin-cmd.log', 1, 1)
 	out=[]
 	opts, args=getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])
-	
+
 	binddn=None
 	pwdfile=None
 	user=None
 	pwd=None
-	
+
 	for opt, val in opts:
 		if opt == '--binddn':
 			binddn=val
@@ -60,7 +60,7 @@ def doit(arglist):
 			user=val
 		elif opt == '--pwd':
 			pwd=val
-	
+
 	univention.debug.set_level(univention.debug.LDAP, univention.debug.ALL)
 	univention.debug.set_level(univention.debug.ADMIN, univention.debug.ALL)
 
@@ -80,7 +80,7 @@ def doit(arglist):
 	except Exception, e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 		out.append('authentication error: %s' % e)
-		return out	
+		return out
 		pass
 
 	try:

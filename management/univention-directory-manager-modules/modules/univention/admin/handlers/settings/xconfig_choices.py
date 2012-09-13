@@ -208,7 +208,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionXConfigurationChoices'] ) ]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
@@ -226,7 +226,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionXConfigurationChoices' in attr.get('objectClass', [])
 
 

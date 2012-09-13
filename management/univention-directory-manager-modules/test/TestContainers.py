@@ -116,7 +116,7 @@ class ContainerCNTestCase(ContainerBaseCase):
 
 class ContainerOUTestCase(ContainerBaseCase):
 	def __init__(self, *args, **kwargs):
-		self.type = 'ou' 
+		self.type = 'ou'
 		super(ContainerOUTestCase, self).__init__(*args, **kwargs)
 
 

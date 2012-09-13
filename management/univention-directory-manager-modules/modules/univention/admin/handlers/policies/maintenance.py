@@ -43,9 +43,9 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 class maintenanceFixedAttributes(univention.admin.syntax.select):
-	name='maintenanceFixedAttributes'
-	choices=[
-		('univentionCron',_('Maintenance')),
+	name = 'maintenanceFixedAttributes'
+	choices = [
+			('univentionCron',_('Maintenance')),
 		]
 
 module='policies/maintenance'
@@ -263,12 +263,12 @@ class object(univention.admin.handlers.simplePolicy):
 					if str(cron[key][i]) != '*':
 						univention.admin.handlers.simplePolicy.__getitem__(self,key).append(str(cron[key][i]))
 
- 	def __getitem__(self, key):
+	def __getitem__(self, key):
 		value=univention.admin.handlers.simplePolicy.__getitem__(self,key) # need this first to initialize policy-results
 		# set cron if we are in resultmode
 		if self.resultmode and hasattr(self,'policy_attrs') and self.policy_attrs.has_key('univentionCron') \
-			   and (not self.cron_parsed):
- 			self.parse_cron(self.policy_attrs['univentionCron']['value'][0])
+				and (not self.cron_parsed):
+			self.parse_cron(self.policy_attrs['univentionCron']['value'][0])
 			if not self.cron_parsed:
 				self.save()
 				self.changes=0
@@ -301,7 +301,7 @@ class object(univention.admin.handlers.simplePolicy):
 			cron=univention.admin.cron.cron_create(list)
 			ml.append(('univentionCron', self.oldattr.get('univentionCron', []), [cron]))
 		return ml
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [

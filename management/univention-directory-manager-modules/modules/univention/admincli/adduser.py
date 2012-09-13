@@ -74,7 +74,7 @@ def get_user_object(user, position, lo, co):
 	usertype='user'
 	try:
 		# user Account
-		userobject=univention.admin.modules.lookup(univention.admin.handlers.users.user, co, lo, scope='domain', base=position.getDn(), filter='(username=%s)' % user, required=1, unique=1)[0]		
+		userobject=univention.admin.modules.lookup(univention.admin.handlers.users.user, co, lo, scope='domain', base=position.getDn(), filter='(username=%s)' % user, required=1, unique=1)[0]
 	except:
 		# machine Account
 		for handler in [univention.admin.handlers.computers.windows,univention.admin.handlers.computers.domaincontroller_master,univention.admin.handlers.computers.domaincontroller_slave,univention.admin.handlers.computers.domaincontroller_backup,univention.admin.handlers.computers.managedclient,univention.admin.handlers.computers.memberserver]:
@@ -83,7 +83,7 @@ def get_user_object(user, position, lo, co):
 					userobject=univention.admin.modules.lookup(handler, co, lo, scope='domain', base=position.getDn(), filter='(uid=%s)' % user, required=1, unique=1)[0]
 					usertype='machine'
 				except:
-					usertype='unknown'			
+					usertype='unknown'
 	if usertype == 'unknown':
 		out='ERROR: account not found, nothing modified'
 		return out
@@ -117,16 +117,16 @@ def doit(arglist):
 	elif cmd == 'univention-setprimarygroup':
 		scope='user'
 		op='primarygroup'
-	
+
 	opts, args=getopt.getopt(arglist[1:], '', ['status-fd=', 'status-fifo='])
-	
+
 	status_fd=None
 	for opt, val in opts:
 		if opt == '--status-fd':
 			status_fd=int(val)
 		elif opt == '--status-fifo':
 			status_fifo=os.open(val)
-	
+
 	co=None
 	try:
 		lo, position=univention.admin.uldap.getAdminConnection()
@@ -140,13 +140,13 @@ def doit(arglist):
 			out.append('authentication error: %s' % str(e2))
 			return out
 			pass
-	
+
 	for i in range(0, len(args)):
 		try:
 			args[i]=codecs.utf_8_decode(args[i])[0]
 		except:
 			args[i]=codecs.latin_1_decode(args[i])[0]
-	
+
 	if len(args) == 1:
 		if scope == 'machine':
 			machine=args[0]
@@ -169,7 +169,7 @@ def doit(arglist):
 			else:
 				position.setDn(univention.admin.config.getDefaultContainer(lo, 'users/user'))
 		action=op+scope
-			
+
 	elif len(args) == 2:
 		user, group=args
 		if op == 'del':
@@ -179,8 +179,8 @@ def doit(arglist):
 		else:
 			action='addusertogroup'
 	else:
-		return out	
-	
+		return out
+
 	if action == 'adduser':
 		out.append(status('Adding user %s' % codecs.utf_8_encode(user)[0]))
 		object=univention.admin.handlers.users.user.object(co, lo, position=position)
@@ -199,13 +199,13 @@ def doit(arglist):
 		object['primaryGroup']=univention.admin.config.getDefaultValue(lo, 'group')
 		object.create()
 		nscd_invalidate('passwd')
-		
+
 	elif action == 'deluser':
 		out.append(status('Removing user %s' % codecs.utf_8_encode(user)[0]))
 		object=univention.admin.modules.lookup(univention.admin.handlers.users.user, co, lo, scope='domain', base=position.getDomain(), filter='(username=%s)' % user, required=1, unique=1)[0]
 		object.remove()
 		nscd_invalidate('passwd')
-		
+
 	elif action == 'addgroup':
 		out.append(status('Adding group %s' % codecs.utf_8_encode(group)[0]))
 		object=univention.admin.handlers.groups.group.object(co, lo, position=position)
@@ -213,13 +213,13 @@ def doit(arglist):
 		object['name']=group
 		object.create()
 		nscd_invalidate('group')
-		
+
 	elif action == 'delgroup':
 		out.append(status('Removing group %s' % codecs.utf_8_encode(group)[0]))
 		object=univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDomain(), filter='(name=%s)' % group, required=1, unique=1)[0]
 		object.remove()
 		nscd_invalidate('group')
-		
+
 	elif action == 'addusertogroup':
 		ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group='samba/addusertogroup/filter/group'
 		if configRegistry.has_key(ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group) and configRegistry[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group]:
@@ -240,11 +240,11 @@ def doit(arglist):
 				groupobject['users'].append(userobject.dn)
 			groupobject.modify()
 			nscd_invalidate('group')
-			
+
 	elif action == 'deluserfromgroup':
 		out.append(status('Removing user %s from group %s' % (codecs.utf_8_encode(user)[0], codecs.utf_8_encode(group)[0])))
 		groupobject=univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDn(), filter='(name=%s)' % group, required=1, unique=1)[0]
-	
+
 		userobject=get_user_object(user, position, lo, co)
 		if isinstance(userobject,types.StringType):
 			out.append(userobject)
@@ -255,7 +255,7 @@ def doit(arglist):
 			groupobject['users'].remove(userobject.dn)
 			groupobject.modify()
 			nscd_invalidate('group')
-	
+
 	elif action == 'addmachine':
 		out.append(status('Adding machine %s' % codecs.utf_8_encode(machine)[0]))
 		object=univention.admin.handlers.computers.windows.object(co, lo, position=position)
@@ -266,13 +266,13 @@ def doit(arglist):
 		object.create()
 		nscd_invalidate('hosts')
 		nscd_invalidate('passwd')
-		
+
 	elif action == 'delmachine':
 		out.append(status('Removing machine %s' % codecs.utf_8_encode(machine)[0]))
 		object=univention.admin.modules.lookup(univention.admin.handlers.computers.windows, co, lo, scope='domain', base=position.getDomain(), filter='(name=%s)' % machine, required=1, unique=1)[0]
-		object.remove()	
+		object.remove()
 		nscd_invalidate('hosts')
-	
+
 	elif action == 'setprimarygroup':
 		out.append(status('Set primary group %s for user %s' % (codecs.utf_8_encode(group)[0], codecs.utf_8_encode(user)[0])))
 		try:
@@ -290,7 +290,7 @@ def doit(arglist):
 			if 'samba' in userobject.options:
 				userobject.options.remove('samba')
 		userobject.open()
-	
+
 		if userobject.has_key('primaryGroup'):
 			userobject['primaryGroup']=groupobject.dn
 		elif userobject.has_key('machineAccountGroup'):
@@ -298,13 +298,13 @@ def doit(arglist):
 		else:
 			out.append('ERROR: unknown group attribute, nothing modified')
 			return out
-			
+
 		userobject.modify()
-	
+
 		if not userobject.dn in groupobject['users']:
 			groupobject['users'].append(userobject.dn)
 			groupobject.modify()
-	
+
 		nscd_invalidate('group')
 		nscd_invalidate('passwd')
 	return out

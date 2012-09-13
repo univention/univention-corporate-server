@@ -426,8 +426,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	def _ldap_addlist(self):
 		if not 'posix' in self.options and not 'kerberos' in self.options:
 			raise univention.admin.uexceptions.invalidOptions(_(' At least posix or kerberos is required.'))
-		
-		
+
+
 		ocs=['top', 'person', 'univentionHost', 'univentionClient']
 		al=[]
 		if 'kerberos' in self.options:
@@ -458,7 +458,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ocs.extend(['posixAccount','shadowAccount'])
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))
-		
+
 		if self.modifypassword or self['password']:
 			if 'kerberos' in self.options:
 				krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
@@ -634,6 +634,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-		
+
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionClient' in attr.get('objectClass', []) and ( 'posixAccount' in attr.get('objectClass', []) or ( 'krb5KDCEntry' in attr.get('objectClass', []) and 'krb5Principal' in attr.get('objectClass', []) ) )
 

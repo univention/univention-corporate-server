@@ -101,10 +101,10 @@ do
 		;;
 		"-l")
 		dolist="1"
-		;;	
+		;;
 		"-u")
 		douser="1"
-		;;	
+		;;
 		"-x")
 		doextended="1"
 		;;
@@ -163,8 +163,8 @@ do
 		"-w")
 		;;
 		*)
-		describe 
-		;;  
+		describe
+		;;
 	esac
 	shift 1
 done
@@ -255,20 +255,20 @@ cleanup() {
 	olist[77]="sambaDomainName=testsambadomainsetting,$ldap_base"
 	olist[78]="cn=testservicesetting,$ldap_base"
 
-	
+
 	for i in `seq 1 78 `;
 	do
-		if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${olist[${i}]}" 2>/dev/null >/dev/null 
+		if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${olist[${i}]}" 2>/dev/null >/dev/null
 		then
 			echo "there were leftovers in ${olist[${i}]}"
 		fi
 	done
 
-	ldapsearch -x  -b "cn=computers,$ldap_base" -s ONE "(&(cn=test*)(objectClass=univentionHost))" cn |grep "^cn: "| sed 's/^cn: //'| 
+	ldapsearch -x  -b "cn=computers,$ldap_base" -s ONE "(&(cn=test*)(objectClass=univentionHost))" cn |grep "^cn: "| sed 's/^cn: //'|
 	{
 		while read x
 		do
-			echo "there were leftovers in cn=$x,cn=computers,cn=$ldap_base " 
+			echo "there were leftovers in cn=$x,cn=computers,cn=$ldap_base "
 			ldapdelete -x -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "cn=$x,cn=computers,$ldap_base" #2>/dev/null >/dev/null
 		done
 	}
@@ -277,12 +277,12 @@ cleanup() {
 	ldapdelete -x -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" -r "cn=there,$ldap_base" 2>/dev/null >/dev/null
 
 
-	ldapsearch -x -LLL  -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "(objectClass=lock)"|grep "^dn: " |sed 's/^dn: //' | cut -d"," -f "1,2,3"| sed "s/\(.\)$/\1,cn=univention,$ldap_base/" |{ 
-		while read x 
+	ldapsearch -x -LLL  -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "(objectClass=lock)"|grep "^dn: " |sed 's/^dn: //' | cut -d"," -f "1,2,3"| sed "s/\(.\)$/\1,cn=univention,$ldap_base/" |{
+		while read x
 		do
-			echo "there were leftovers in $x"						 
+			echo "there were leftovers in $x"
 			ldapdelete -x -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "$x" #2>/dev/null >/dev/null
-		done 
+		done
 	}
 	if test -e /etc/ldap/slapd.conf.testbackup
 	then
@@ -319,15 +319,15 @@ doprint ()
 	echo
 	echo $2
 }
-doexit () { 
+doexit () {
 	if [ -z "$stay" ]
 	then
-		echo -e "ERR at $1" 
-		echo -e "ERR at $1 ">>"${errorlog}" 
+		echo -e "ERR at $1"
+		echo -e "ERR at $1 ">>"${errorlog}"
 		exit 1
 	else
-		echo -e "ERR at $1" 
-		echo -e "ERR at $1 ">>"${errorlog}" 
+		echo -e "ERR at $1"
+		echo -e "ERR at $1 ">>"${errorlog}"
 	fi
 }
 
@@ -358,7 +358,7 @@ cknthere () {
 helpcheck () {
 	y=""
 	x=`ldapsearch -LLL -x -b "$1,$ldap_base" "(objectClass=*)" -s BASE  "$2" 2>/dev/null`
-	echo $x|sed "s/$2: /\n/g"|grep -v '^dn: '| { 
+	echo $x|sed "s/$2: /\n/g"|grep -v '^dn: '| {
 		while read y
 		do  if [ "$y" = "$3" ]
 			then
@@ -370,7 +370,7 @@ helpcheck () {
 
 getvalue () {
 	ret=`ldapsearch -LLL -x -b "$1,$ldap_base" "(objectClass=*)" -s BASE "$2" 2>/dev/null |grep "^$2:" |sed "s/$2: //"`
-	echo $ret	
+	echo $ret
 }
 
 ckeq () {
@@ -406,12 +406,12 @@ module_list () {
 	fi
 }
 clearlocks () {
-ldapsearch -x -LLL  -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "(objectClass=lock)"|grep "^dn: " |sed 's/^dn: //' | cut -d"," -f "1,2,3"| sed "s/\(.\)$/\1,cn=univention,$ldap_base/" |{ 
-			while read x 
+ldapsearch -x -LLL  -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "(objectClass=lock)"|grep "^dn: " |sed 's/^dn: //' | cut -d"," -f "1,2,3"| sed "s/\(.\)$/\1,cn=univention,$ldap_base/" |{
+			while read x
 			do
-				echo "there were leftovers in $x"						 
+				echo "there were leftovers in $x"
 				ldapdelete -x -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "$x" #2>/dev/null >/dev/null
-			done 
+			done
 		}
 	}
 checklockshelper () {
@@ -557,27 +557,27 @@ if [ -n "$doextended" ]
 then
 	cat << EOF >/etc/ldap/schema/testolb.schema
 attributetype ( 1.3.6.1.4.1.10176.2.899.939 NAME 'testfilialbereich'
-	DESC 'testFilialbereich'        
-	EQUALITY caseIgnoreMatch        
-	SUBSTR caseIgnoreSubstringsMatch        
+	DESC 'testFilialbereich'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
 
 objectclass (	1.3.6.1.4.1.10176.1.899.939 NAME 'testfiliale'
-	DESC 'testFilialbereich'         
-	SUP top AUXILIARY        
+	DESC 'testFilialbereich'
+	SUP top AUXILIARY
 	MAY ( testfilialbereich ) )
 
-attributetype ( 1.3.6.1.4.1.10176.2.898.939 
-	NAME 'testisInternetAccount'        
-	DESC 'testInternet Account'        
-	EQUALITY caseIgnoreMatch        
-	SUBSTR caseIgnoreSubstringsMatch        
+attributetype ( 1.3.6.1.4.1.10176.2.898.939
+	NAME 'testisInternetAccount'
+	DESC 'testInternet Account'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} SINGLE-VALUE)
 
-objectclass (	1.3.6.1.4.1.10176.1.898.939 
-	NAME 'testinternetAccount'        
-	DESC 'Internet Account'         
-	SUP top AUXILIARY        
+objectclass (	1.3.6.1.4.1.10176.1.898.939
+	NAME 'testinternetAccount'
+	DESC 'Internet Account'
+	SUP top AUXILIARY
 	MAY ( testisInternetAccount ) )
 
 attributetype (1.3.6.1.4.1.9465.1.3.939
@@ -644,7 +644,7 @@ EOF
 	adminwrap $LINENO settings/customattribute create --set module=users/user --set objectClass=testolbPermission --set syntax=string --set ldapMapping=testolbaccess --set shortDescription=testOLBACCESS --set longDescription=ÖLBtestaccess --set name=testolbaccess --set multivalue=1  --position \"cn=custom attributes,cn=univention,$ldap_base\"
 
 	adminwrap $LINENO settings/customattribute create --set module=users/user --set objectClass=organizationalPerson --set syntax=string --set ldapMapping=ou --set shortDescription=testou --set longDescription=\"testOrganisationseinheit\" --set name=testou --position \"cn=custom attributes,cn=univention,$ldap_base\"
-	
+
 	adminwrap $LINENO settings/customattribute create --set module=computers/windows --set objectClass=testolbPc --set syntax=string --set ldapMapping=testpctyp --set shortDescription=testpctyp --set longDescription=\"TESTPCTYP\" --set name=testpctyp --position \"cn=custom attributes,cn=univention,$ldap_base\" --set multivalue=0
 	endnum=511
 
@@ -664,8 +664,8 @@ then
 		cknthere "uid=foobar2,cn=users" "BASE" "(objectClass=*)" "foobar2" "existence" $LINENO
 	fi
 for i in `seq 1 $endnum`;do
-	if [ $(( $i%8 )) -eq 0 ]	# this cuts out all cases, where no option is given which 
-	then						# are equivalent to those that have all options anyway 
+	if [ $(( $i%8 )) -eq 0 ]	# this cuts out all cases, where no option is given which
+	then						# are equivalent to those that have all options anyway
 		continue				# but would not be handled correctly by the script
 	fi
 
@@ -696,34 +696,34 @@ for i in `seq 1 $endnum`;do
 	else kerberosopt="1"
 	fi
 	if [ "0" -eq $(( (i/16)%2 )) ]
-	then 
+	then
 		customattopt=""
 		customattsettings=""
-	else 
+	else
 		customattopt="1"
 		customattsettings=" --customattribute \"testFilial bereich\"=bremen "
 	fi
 	if [ "0" -eq $(( (i/32)%2 )) ]
-	then 
+	then
 		customatt2opt=""
 		customattsettings2=""
-	else 
+	else
 		customatt2opt="1"
 		customattsettings2=" --customattribute testou=whatever "
 	fi
 	if [ "0" -eq $(( (i/64)%2 )) ]
-	then 
+	then
 		customatt3opt=""
 		customattsettings3=""
-	else 
+	else
 		customatt3opt="1"
 		customattsettings3=" --customattribute testisInternet=1 --customattribute testOLBACCESS=gogogo "
 	fi
 	if [ "0" -eq $(( (i/128)%2 )) -o "$customatt3opt" = "1" ]	# prevent setting testisInternet twice
-	then 
+	then
 		customatt4opt=""
 		customattsettings4=""
-	else 
+	else
 		customatt4opt="1"
 		customattsettings4=" --customattribute testisInternet=0 "
 	fi
@@ -733,7 +733,7 @@ for i in `seq 1 $endnum`;do
 	else
 		mailopt="1"
 	fi
-	
+
 	if [ "1" -eq "$endnum" ]
 	then
 		posixopt="1"
@@ -756,7 +756,7 @@ for i in `seq 1 $endnum`;do
 	if [ -n "$personopt"	]
 	then
 		optionstring="$optionstring --option person"
-	fi	
+	fi
 	if [ -n "$sambaopt"		]
 	then
 		optionstring="$optionstring --option samba"
@@ -788,7 +788,7 @@ for i in `seq 1 $endnum`;do
 
 	if [ -n "$sambaopt" ]
 	then
-		sambasettings="--set sambahome=\"//Master/home\" --set scriptpath=\"Master/script\" --set homedrive=\"Master/foo\" --set profilepath=\"//Master/foobar\" --set sambaLogonHours=011111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111 --set disabled=1" 
+		sambasettings="--set sambahome=\"//Master/home\" --set scriptpath=\"Master/script\" --set homedrive=\"Master/foo\" --set profilepath=\"//Master/foobar\" --set sambaLogonHours=011111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111 --set disabled=1"
 		pskopt="1"
 	fi
 
@@ -833,7 +833,7 @@ for i in `seq 1 $endnum`;do
 		psksettings="--set password=\"foobarbazü\" --set disabled=\"1\" --set userexpiry=\"22.02.15\""
 
 	fi
-	
+
 	user_dn="uid=foobar,cn=users,$ldap_base"
 	adminwrap $LINENO users/user create --position \"cn=users,$ldap_base\" $optionstring --set username=foobar --set lastname=Bar --set description=Testuser $sambasettings $personsettings $posixsettings $psksettings $kerberossettings $customattsettings $customattsettings2 $customattsettings3 $customattsettings4 $mailsettings
 
@@ -876,7 +876,7 @@ for i in `seq 1 $endnum`;do
 		ckthere "uid=foobar,cn=users" "BASE" "(sambaLogonScript=Master/script)" "foobar" "scriptpath" $LINENO
 		ckthere "uid=foobar,cn=users" "BASE" "(sambaLogonHours=feffffffffffffffffffffffffffffffffffffffff)" "foobar" "logon hours" $LINENO
 		result_dn=`ldapsearch -x -D "cn=admin,$ldap_base" -w \`cat /etc/ldap.secret\` -b "uid=foobar,cn=users,$ldap_base" -s BASE -LLL \
-		'(uid=*)' 2>/dev/null| grep "sambaAcctFlags: "|grep D` 
+		'(uid=*)' 2>/dev/null| grep "sambaAcctFlags: "|grep D`
 		if [ -z "$result_dn" ]; then
 			iscorrect=""
 			echo "foobar: Sambauser not disabled while should be" >>"${errorlog}"
@@ -924,7 +924,7 @@ for i in `seq 1 $endnum`;do
 		# disabled
 		############################################################################
 		result_dn=`ldapsearch -x -D "uid=foobar,cn=users,$ldap_base" -w "foobarbaz" -b "uid=foobar,cn=users,$ldap_base" -s BASE -LLL \
-		'(uid=*)' 2>/dev/null| grep "dn: "` 
+		'(uid=*)' 2>/dev/null| grep "dn: "`
 		if [ -n "$result_dn" ]; then
 			iscorrect=""
 			echo "foobar: Unixuser not disabled while should be" >>"${errorlog}"
@@ -937,13 +937,13 @@ for i in `seq 1 $endnum`;do
 	if [ -n "$mailopt" ]
 	then
 		ckthere "uid=foobar,cn=users" "BASE" "(mailPrimaryAddress=foobar@nomail.com)" "foobar" "primemail" $LINENO
-                ckthere "uid=foobar,cn=users" "BASE" "(mailAlternativeAddress=barfooze@nomail.com)" "foobar" "altmail" $LINENO
+		ckthere "uid=foobar,cn=users" "BASE" "(mailAlternativeAddress=barfooze@nomail.com)" "foobar" "altmail" $LINENO
 		ckthere "uid=foobar,cn=users" "BASE" "(mailGlobalSpamFolder=1)" "foobar" "spamfolder" $LINENO
 	fi
 	if [ -n "$dolocking" ]
 	then
 		checklocks $LINENO
-	
+
 		adminfailwrap $LINENO users/user create --position \"$ldap_base\" $optionstring --set username=foobar --set lastname=Bar --set description=Testuser $sambasettings $personsettings $posixsettings $psksettings $kerberossettings $customattsettings $customattsettings2 $customattsettings3 $customattsettings4 $mailsettings
 		checklocks $LINENO
 		uidnumber=`getvalue "uid=foobar,cn=users" uidNumber`
@@ -954,7 +954,7 @@ for i in `seq 1 $endnum`;do
 	fi
 
 	#######################################################################################################################
-	# Modify users/user	
+	# Modify users/user
 	#######################################################################################################################
 	pskopt=""
 	posixsettings=""
@@ -971,7 +971,7 @@ for i in `seq 1 $endnum`;do
 	if [ -n "$personopt"	]
 	then
 		optionstring="$optionstring --option person"
-	fi	
+	fi
 	if [ -n "$sambaopt"		]
 	then
 		optionstring="$optionstring --option samba"
@@ -980,49 +980,49 @@ for i in `seq 1 $endnum`;do
 	then
 		optionstring="$optionstring --option kerberos"
 	fi
-        if [ -n "$mailopt" ]
+	if [ -n "$mailopt" ]
 	then
 	         optionstring="$optionstring --option mail"
 	fi
-					
+
 	if [ "0" -eq $(( (i/16)%2 )) ]
-	then 
+	then
 		customattopt=""
 		customattsettings=""
-	else 
+	else
 		customattopt="1"
 		customattsettings=" --customattribute \"testFilial bereich\"=bonn "
 	fi
 	if [ "0" -eq $(( (i/32)%2 )) ]
-	then 
+	then
 		customatt2opt=""
 		customattsettings2=""
-	else 
+	else
 		customatt2opt="1"
 		customattsettings2=" --customattribute testou=whereever "
 	fi
 	if [ "0" -eq $(( (i/64)%2 )) ]
-	then 
+	then
 		customatt3opt=""
 		customattsettings3=""
-	else 
+	else
 		customatt3opt="1"
 		customattsettings3=" --customattribute testOLBACCESS=stop --customattribute testisInternet=0 "
 	fi
 	if [ "0" -eq $(( (i/128)%2 )) -o "$customatt3opt" = "1" ]	# prevent setting testisInternet twice
-	then 
+	then
 		customatt4opt=""
 		customattsettings4=""
-	else 
+	else
 		customatt4opt="1"
 		customattsettings4=" --customattribute testisInternet=1 "
 	fi
-        if [ "0" -eq $(( (i/256)%2 )) ]
-        then
-                mailopt=""
-        else
-                mailopt="1"
-        fi
+	if [ "0" -eq $(( (i/256)%2 )) ]
+	then
+		mailopt=""
+	else
+		mailopt="1"
+	fi
 
 	if [ -n "$sambaopt" ]
 	then
@@ -1038,7 +1038,7 @@ for i in `seq 1 $endnum`;do
 
 	if [ -n "$posixopt" ]
 	then
-		posixsettings=" --set unixhome=\"/home/foobari\" --set shell=\"/bin/kshi\" --set primaryGroup=\"cn=Domain Guests,cn=groups,$ldap_base\" --set groups=\"cn=Users,cn=groups,$ldap_base\" --set overridePWHistory=1 " 
+		posixsettings=" --set unixhome=\"/home/foobari\" --set shell=\"/bin/kshi\" --set primaryGroup=\"cn=Domain Guests,cn=groups,$ldap_base\" --set groups=\"cn=Users,cn=groups,$ldap_base\" --set overridePWHistory=1 "
 		pskopt="1"
 	fi
 
@@ -1048,11 +1048,11 @@ for i in `seq 1 $endnum`;do
 		pskopt="1"
 	fi
 
-        if [ -n "$mailopt" ]
-        then
-                mailsettings="--set mailPrimaryAddress=\"foo_bar@nomail.com\" --set mailAlternativeAddress=\"bar_fooze@nomail.com\" --set mailGlobalSpamFolder=0"
-        fi
-											
+	if [ -n "$mailopt" ]
+	then
+		mailsettings="--set mailPrimaryAddress=\"foo_bar@nomail.com\" --set mailAlternativeAddress=\"bar_fooze@nomail.com\" --set mailGlobalSpamFolder=0"
+	fi
+
 	if [ -n "$pskopt" ]
 	then
 		psksettings=" --set password=\"foobarbaüz\" --set disabled=\"1\" --set userexpiry=\"22.02.15\""
@@ -1063,7 +1063,7 @@ for i in `seq 1 $endnum`;do
 	userpass="barfoolatz"
 	adminwrap $LINENO users/user modify --dn \"uid=foobar,cn=users,$ldap_base\" $optionstring --set lastname=Bar --set description=Testuser $sambasettings $personsettings $posixsettings $psksettings $kerberossettings $customattsettings $customattsettings2 $customattsettings3 $customattsettings4 $mailsettings
 
-	adminwrap $LINENO users/user move --dn \"uid=foobar,cn=users,$ldap_base\" --position \"cn=groups,$ldap_base\"	
+	adminwrap $LINENO users/user move --dn \"uid=foobar,cn=users,$ldap_base\" --position \"cn=groups,$ldap_base\"
 	ckthere "uid=foobar,cn=groups" "BASE" "(objectClass=*)" "foobar" "existence" $LINENO
 	adminwrap $LINENO users/user move --dn \"uid=foobar,cn=groups,$ldap_base\" --position \"cn=users,$ldap_base\"
 	if [ -n "$customattopt" ]
@@ -1115,7 +1115,7 @@ for i in `seq 1 $endnum`;do
 		# disabled
 		############################################################################
 		result_dn=`ldapsearch -x -D "uid=foobar,cn=users,$ldap_base" -w "foobarbaz" -b "uid=foobar,cn=users,$ldap_base" -s BASE -LLL \
-		'(uid=*)' 2>/dev/null| grep "dn: "` 
+		'(uid=*)' 2>/dev/null| grep "dn: "`
 		if [ -n "$result_dn" ]; then
 			iscorrect=""
 			echo "foobar: Unixuser not disabled while should be" >>"${errorlog}"
@@ -1125,7 +1125,7 @@ for i in `seq 1 $endnum`;do
 	if [ -n "$sambaopt" ]
 	then
 		result_dn=`ldapsearch -x -D "cn=admin,$ldap_base" -w \`cat /etc/ldap.secret\` -b "uid=foobar,cn=users,$ldap_base" -s BASE -LLL \
-		'(uid=*)' 2>/dev/null| grep "sambaAcctFlags: "|grep D` 
+		'(uid=*)' 2>/dev/null| grep "sambaAcctFlags: "|grep D`
 		if [ -z "$result_dn" ]; then
 			iscorrect=""
 			echo "foobar: Sambauser not disabled while should be" >>"${errorlog}"
@@ -1162,12 +1162,12 @@ for i in `seq 1 $endnum`;do
 		ckeq "uid=foobar,cn=users" "homePostalAddress" "somewhere3" $LINENO
 	fi
 
-        if [ -n "$mailopt" ]
-        then
-                ckthere "uid=foobar,cn=users" "BASE" "(mailPrimaryAddress=foo_bar@nomail.com)" "foobar" "primemail" $LINENO
-                ckthere "uid=foobar,cn=users" "BASE" "(mailAlternativeAddress=bar_fooze@nomail.com)" "foobar" "altmail" $LINENO
-                ckthere "uid=foobar,cn=users" "BASE" "(mailGlobalSpamFolder=0)" "foobar" "spamfolder" $LINENO
-        fi
+	if [ -n "$mailopt" ]
+	then
+		ckthere "uid=foobar,cn=users" "BASE" "(mailPrimaryAddress=foo_bar@nomail.com)" "foobar" "primemail" $LINENO
+		ckthere "uid=foobar,cn=users" "BASE" "(mailAlternativeAddress=bar_fooze@nomail.com)" "foobar" "altmail" $LINENO
+		ckthere "uid=foobar,cn=users" "BASE" "(mailGlobalSpamFolder=0)" "foobar" "spamfolder" $LINENO
+	fi
 
 	adminwrap $LINENO users/user remove --dn \"uid=foobar,cn=users,$ldap_base\"
 	cknthere "uid=foobar,cn=users" "BASE" "(objectClass=*)" "foobar" "existence" $LINENO
@@ -1177,7 +1177,7 @@ for i in `seq 1 $endnum`;do
 	# TODO Kerberos specific data has to be checked
 done
 	adminwrap $LINENO users/user create --set username="foobar" --position="\"cn=users,$ldap_base\"" --set lastname="baba" --set password=mumubaba --set sambaRID=11
-	
+
 	sambaSID=`getvalue "uid=foobar,cn=users" "sambaSID"`
 	sambaRID=`echo $sambaSID| sed 's/.*-//g'`
 	if [ "$sambaRID" -ne 11 ]
@@ -1223,7 +1223,7 @@ then
 	cknthere "cn=default containers,cn=univention" "BASE" "(univentionComputersObject=$ct=t\C3\B6st$ct,$ldap_base)" "t\C3\B6st$ct" "computer path" $LINENO
 	cknthere "cn=default containers,cn=univention" "BASE" "(univentionDhcpObject=$ct=t\C3\B6st$ct,$ldap_base)" "t\C3\B6st$ct" "dhcp path" $LINENO
 	ckthere "$ct=t\C3\B6st$ct" "BASE" "(description=funny CoNtainer)" "t\C3\B6st$ct" "description" $LINENO
-	
+
 
 	############################################################################
 	# modify container
@@ -1251,7 +1251,7 @@ then
 	###########################################################################
 	# remove container
 	###########################################################################
-	adminwrap $LINENO container/$ct remove --dn \"$ct=töst$ct,$ldap_base\" 
+	adminwrap $LINENO container/$ct remove --dn \"$ct=töst$ct,$ldap_base\"
 
 	cknthere "$ct=t\C3\B6st$ct" "BASE" "objectClass=*" "t\C3\B6st$ct" "removal" $LINENO
 	cknthere "cn=default containers,cn=univention" "BASE" "(univentionDnsObject=$ct=t\C3\B6st$ct,$ldap_base)" "t\C3\B6st$ct" "dns path" $LINENO
@@ -1287,7 +1287,7 @@ then
 	--set sambaGroupType="2" \
 	--append users=\"uid=u1,$ldap_base\" \
 	--append users=\"uid=u2,$ldap_base\"
-	
+
 	adminwrap $LINENO groups/group create 	--position \"cn=groups,$ldap_base\" \
 	--set name="t" \
 	--set description="bla" \
@@ -1296,7 +1296,7 @@ then
 	--append users=\"uid=u2,$ldap_base\"
 
 	ckthere "cn=t,cn=groups" "BASE" "(objectClass=*)" "one letter group" "existence" $LINENO
-	
+
 	sambaSID=`getvalue "cn=t,cn=groups" "sambaSID"`
 	sambaRID=`echo $sambaSID| sed 's/.*-//g'`
 	if [ "$sambaRID" -ne 11 ]
@@ -1314,7 +1314,7 @@ then
 		checklocks $LINENO
 		adminfailwrap $LINENO groups/group create --set name="testgroup"
 		checklocks $LINENO
-		gidnumber=`getvalue "cn=testgroup,cn=groups" gidNumber`	
+		gidnumber=`getvalue "cn=testgroup,cn=groups" gidNumber`
 		adminfailwrap $LINENO groups/group create --set name="mootestgroup" --set gidNumber=$gidnumber
 		checklocks $LINENO
 	fi
@@ -1326,7 +1326,7 @@ then
 	--set description="blubb" \
 	--set sambaGroupType=3 \
 	--remove users=\"uid=u1,$ldap_base\" \
-	--append users=\"uid=u3,$ldap_base\" 
+	--append users=\"uid=u3,$ldap_base\"
 
 	adminwrap $LINENO groups/group move     --dn \"cn=testgroup,cn=groups,$ldap_base\" --position \"$ldap_base\"
 	ckthere "cn=testgroup" "BASE" "(description=blubb)" "testgroup" "description" $LINENO
@@ -1334,13 +1334,13 @@ then
 	ckthere "cn=testgroup" "BASE" "(uniqueMember=uid=u2,$ldap_base)" "testgroup" "members" $LINENO
 	ckthere "cn=testgroup" "BASE" "(uniqueMember=uid=u3,$ldap_base)" "testgroup" "members" $LINENO
 	ckthere "cn=testgroup" "BASE" "(sambaGroupType=3)" "testgroup" "sambaGroupType" $LINENO
-	
+
 	if [ -n "$dolocking" ]
 	then
 		checklocks $LINENO
 		adminfailwrap $LINENO groups/group create --set name="testgroup"
 		checklocks $LINENO
-		gidnumber=`getvalue "cn=testgroup" gidNumber`	
+		gidnumber=`getvalue "cn=testgroup" gidNumber`
 		adminfailwrap $LINENO groups/group create --set name="mootestgroup" --set gidNumber=$gidnumber
 		checklocks $LINENO
 	fi
@@ -1349,9 +1349,9 @@ then
 	# remove groups/group
 	############################################################################
 	univention-admin users/user modify --dn uid=u2,$ldap_base --set primaryGroup="cn=testgroup,$ldap_base" >/dev/null 2>/dev/null
-	adminfailwrap $LINENO groups/group remove --dn \"cn=testgroup,$ldap_base\" 
+	adminfailwrap $LINENO groups/group remove --dn \"cn=testgroup,$ldap_base\"
 	univention-admin users/user modify --dn uid=u2,$ldap_base --set primaryGroup="cn=Domain Users,cn=groups,$ldap_base" >/dev/null 2>/dev/null
-	adminwrap $LINENO groups/group remove --dn \"cn=testgroup,$ldap_base\" 
+	adminwrap $LINENO groups/group remove --dn \"cn=testgroup,$ldap_base\"
 
 	adminwrap $LINENO groups/group remove 	--dn \"cn=t,cn=groups,$ldap_base\"
 	cknthere "cn=testgroup,cn=groups" "BASE" "(objectClass=*)" "testgroup" "existence" $LINENO
@@ -1362,7 +1362,7 @@ fi
 
 if [ -n "$domail" ]
 then
-	
+
 	############################################################################
 	# create mail/domain
 	############################################################################
@@ -1373,7 +1373,7 @@ then
 	############################################################################
 	adminwrap $LINENO mail/domain modify --dn \"cn=testmaildomambo,$ldap_base\" --set name=testmaildomain
 	checklocks $LINENO
-	
+
 	############################################################################
 	# create mail/folder
 	############################################################################
@@ -1392,7 +1392,7 @@ then
 		ckthere "cn=testmailfolder@$domainname" "BASE" "(acl=Domain Admins all)" "mail/folder" "sharedFolderGroupACL" $LINENO
 		ckthere "cn=testmailfolder@$domainname" "BASE" "(cyrus-userquota=2)" "mail/folder" "cyrus-userquota" $LINENO
 		ckthere "cn=testmailfolder@$domainname" "BASE" "(univentionKolabUserNamespace=FALSE)" "mail/folder" "userNamespace" $LINENO
-	
+
 	############################################################################
 	# modify mail/folder
 	############################################################################
@@ -1410,14 +1410,14 @@ then
 		ckthere "cn=testmailfolder@$domainname" "BASE" "(acl=Domain Admins all)" "mail/folder" "sharedFolderGroupACL" $LINENO
 		ckthere "cn=testmailfolder@$domainname" "BASE" "(cyrus-userquota=4)" "mail/folder" "cyrus-userquota" $LINENO
 		ckthere "cn=testmailfolder@$domainname" "BASE" "(univentionKolabUserNamespace=FALSE)" "mail/folder" "userNamespace" $LINENO
-	
+
 	############################################################################
 	# remove mail/folder
 	############################################################################
 	adminwrap $LINENO mail/folder remove --dn \"cn=testmailfolder@$domainname,$ldap_base\"
 	cknthere "cn=testmailfolder@$domainname" "BASE" "(objectClass=*)" "mail/folder" "existence" $LINENO
-	
-	
+
+
 	############################################################################
 	# create mail/lists
 	############################################################################
@@ -1427,7 +1427,7 @@ then
 		--set mailAddress=devnull@$domainname \
 		--append members=nobody@$domainname \
 		--append members=nogroup@$domainname
-		
+
 		ckthere "cn=testmailinglist" "BASE" "(description=useless)" "mail/lists" "description" $LINENO
 		ckthere "cn=testmailinglist" "BASE" "(mailPrimaryAddress=devnull@$domainname)" "mail/lists" "mailAddress" $LINENO
 		ckthere "cn=testmailinglist" "BASE" "(univentionKolabMember=nobody@$domainname)" "mail/lists" "members" $LINENO
@@ -1442,7 +1442,7 @@ then
 		--remove members=nobody@$domainname \
 		--append members=nogroup@$domainname \
 		--append members=mooh@$domainname
-		
+
 		ckthere "cn=testmailinglist" "BASE" "(description=ornot)" "mail/lists" "description" $LINENO
 		ckthere "cn=testmailinglist" "BASE" "(mailPrimaryAddress=devzero@$domainname)" "mail/lists" "mailAddress" $LINENO
 		cknthere "cn=testmailinglist" "BASE" "(univentionKolabMember=nobody@$domainname)" "mail/lists" "members" $LINENO
@@ -1453,7 +1453,7 @@ then
 	############################################################################
 	adminwrap $LINENO mail/lists remove --dn \"cn=testmailinglist,$ldap_base\"
 	cknthere "cn=testmailinglist" "BASE" "(objectClass=*)" "mail/lists" "existence" $LINENO
-			
+
 	############################################################################
 	# remove mail/domain
 	############################################################################
@@ -1476,19 +1476,19 @@ then
 	###########################################################################
 	# create dhcp/service
 	###########################################################################
-	adminwrap $LINENO dhcp/service create 	--position \"cn=dhcp,$ldap_base\" --set service="testdhcpservice" 
+	adminwrap $LINENO dhcp/service create 	--position \"cn=dhcp,$ldap_base\" --set service="testdhcpservice"
 
 	univention-admin dhcp/service create 	--position "cn=dhcp,$ldap_base" --set service="testdhcpservice2" 2>>"${errorlog}" >>"${errorlog}"
 
 	###########################################################################
 	# create dhcp/server
 	###########################################################################
-	adminwrap $LINENO dhcp/server create  	--superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" --set server="testdhcpserver" 
+	adminwrap $LINENO dhcp/server create  	--superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" --set server="testdhcpserver"
 
 	###########################################################################
 	# create dhcp/subnet
 	###########################################################################
-	adminwrap $LINENO dhcp/subnet create  	--superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" --set subnet="19.168.1.0" --set subnetmask="255.255.255.0" --append range=\"19.168.1.100 19.168.1.150\" --append range=\"19.168.1.151 19.168.1.200\" 
+	adminwrap $LINENO dhcp/subnet create  	--superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" --set subnet="19.168.1.0" --set subnetmask="255.255.255.0" --append range=\"19.168.1.100 19.168.1.150\" --append range=\"19.168.1.151 19.168.1.200\"
 
 	ckthere "cn=19.168.1.0,cn=testdhcpservice,cn=dhcp" "BASE" "(dhcpNetMask=24)" "testdhcpsubnet" "subnetmask" $LINENO
 	ckthere "cn=19.168.1.0,cn=testdhcpservice,cn=dhcp" "BASE" "(dhcpRange=19.168.1.100 19.168.1.150)" "testdhcpsubnet" "range" $LINENO
@@ -1511,7 +1511,7 @@ then
 	--set failover_peer="192.168.0.99"\
 	--set dynamic_bootp_clients="deny"\
 	--set known_clients="allow"\
-	--set unknown_clients="allow" 
+	--set unknown_clients="allow"
 
 	ckthere "cn=dhcptestpool,cn=19.168.1.0,cn=testdhcpservice,cn=dhcp" "base" "(objectClass=univentionDhcpPool)" "dhcptestpool" "object classes" $LINENO
 
@@ -1535,7 +1535,7 @@ then
 	--set failover_peer=""\
 	--set dynamic_bootp_clients="allow"\
 	--set known_clients="deny"\
-	--set unknown_clients="deny" 
+	--set unknown_clients="deny"
 
 	ckthere "cn=dhcptestpool,cn=19.168.1.0,cn=testdhcpservice,cn=dhcp" "base" "(objectClass=univentionDhcpPool)" "dhcptestpool" "object classes" $LINENO
 
@@ -1549,14 +1549,14 @@ then
 	###########################################################################
 	# remove dhcp/pool
 	###########################################################################
-	adminwrap $LINENO dhcp/pool remove --superordinate \"cn=19.168.1.0,cn=testdhcpservice,cn=dhcp,$ldap_base\" --dn \"cn=dhcptestpool,cn=19.168.1.0,cn=testdhcpservice,cn=dhcp,$ldap_base\" 
+	adminwrap $LINENO dhcp/pool remove --superordinate \"cn=19.168.1.0,cn=testdhcpservice,cn=dhcp,$ldap_base\" --dn \"cn=dhcptestpool,cn=19.168.1.0,cn=testdhcpservice,cn=dhcp,$ldap_base\"
 
 	cknthere "cn=dhcptestpool,cn=19.168.1.0,cn=testdhcpservice,cn=dhcp" "base" "(objectClass=*)" "dhcptestpool" "existence" $LINENO
 
 	###########################################################################
 	# modify dhcp/subnet
 	###########################################################################
-	adminwrap $LINENO dhcp/subnet modify     --dn \"cn=19.168.1.0,cn=testdhcpservice,cn=dhcp,$ldap_base\" --remove range=\"19.168.1.100 19.168.1.150\" --append range=\"19.168.1.100 19.168.1.130\" --set subnetmask="255.255.0.0" 
+	adminwrap $LINENO dhcp/subnet modify     --dn \"cn=19.168.1.0,cn=testdhcpservice,cn=dhcp,$ldap_base\" --remove range=\"19.168.1.100 19.168.1.150\" --append range=\"19.168.1.100 19.168.1.130\" --set subnetmask="255.255.0.0"
 
 	ckthere "cn=19.168.1.0,cn=testdhcpservice,cn=dhcp" "BASE" "(dhcpNetMask=16)" "testdhcpsubnet" "subnetmask" $LINENO
 	cknthere "cn=19.168.1.0,cn=testdhcpservice,cn=dhcp" "BASE" "(dhcpRange=19.168.1.100 19.168.1.150)" "testdhcpsubnet" "range" $LINENO
@@ -1567,14 +1567,14 @@ then
 	# remove dhcp/subnet
 	###########################################################################
 
-	adminwrap $LINENO dhcp/subnet remove --superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" 	--dn \"cn=19.168.1.0,cn=testdhcpservice,cn=dhcp,$ldap_base\" 
+	adminwrap $LINENO dhcp/subnet remove --superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" 	--dn \"cn=19.168.1.0,cn=testdhcpservice,cn=dhcp,$ldap_base\"
 
 	cknthere "cn=19.168.1.0,cn=testdhcpservice,cn=dhcp" "BASE" "(objectClass=*)" "testdhcpsubnet" "existence" $LINENO
 
 	###########################################################################
 	# create dhcp/host
 	###########################################################################
-	adminwrap $LINENO dhcp/host create 	--superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" --set host="testdhcphost" --set hwaddress=\"ethernet 55:44:33:22:11:00\" --append fixedaddress="19.168.1.2" --append fixedaddress="19.168.1.3"  
+	adminwrap $LINENO dhcp/host create 	--superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" --set host="testdhcphost" --set hwaddress=\"ethernet 55:44:33:22:11:00\" --append fixedaddress="19.168.1.2" --append fixedaddress="19.168.1.3"
 
 	ckthere "cn=testdhcphost,cn=testdhcpservice,cn=dhcp" "BASE" "(dhcpHWAddress=ethernet 55:44:33:22:11:00)" "testdhcphost" "hwaddress" $LINENO
 	ckthere "cn=testdhcphost,cn=testdhcpservice,cn=dhcp" "BASE" "(univentionDhcpFixedAddress=19.168.1.2)" "testdhcphost" "fixed address" $LINENO
@@ -1594,7 +1594,7 @@ then
 	# remove dhcp/host
 	############################################################################
 
-	adminwrap $LINENO dhcp/host remove --superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" 	--dn \"cn=testdhcphost,cn=testdhcpservice,cn=dhcp,$ldap_base\" 
+	adminwrap $LINENO dhcp/host remove --superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\" 	--dn \"cn=testdhcphost,cn=testdhcpservice,cn=dhcp,$ldap_base\"
 
 	cknthere "cn=testdhcphost,cn=testdhcpservice,cn=dhcp" "BASE" "(objectClass=*)" "testdhcphost" "existence" $LINENO
 
@@ -1607,9 +1607,9 @@ then
 	#####################################################################################
 	# create dns/forward_zone
 	###################################################################################
-	zrefresh="10" 
-	zzonettl="10" 
-	zretry="10" 
+	zrefresh="10"
+	zzonettl="10"
+	zretry="10"
 	zttl="20"
 	zonename="dnstestzone"
 	zonename2="dnstestzone2"
@@ -1627,7 +1627,7 @@ then
 	--set zone="$zonename" \
 	--set contact="$zcontact" \
 	--set expire="$zexpire" \
-	--set serial="$zserial" 
+	--set serial="$zserial"
 
 	adminwrap $LINENO dns/forward_zone create --position \"cn=dns,$ldap_base\" \
 	--set refresh="$zrefresh" \
@@ -1711,7 +1711,7 @@ then
 	azonettl="5"
 
 	adminwrap $LINENO dns/alias create --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" \
-	--set name="testdnsalias" --set cname=$acname --set zonettl=$azonettl 
+	--set name="testdnsalias" --set cname=$acname --set zonettl=$azonettl
 
 	ckthere "relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns" "BASE" "(objectClass=dnsZone)" "testdnsalias" "object class" $LINENO
 	ckthere "relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns" "BASE" "(CNAMERecord=$acname)" "testdnsalias" "cname" $LINENO
@@ -1721,13 +1721,13 @@ then
 	azonettl="77"
 
 	adminwrap $LINENO dns/alias modify --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns,$ldap_base\" \
-	--set cname=$acname --set zonettl=$azonettl 
+	--set cname=$acname --set zonettl=$azonettl
 
 	ckthere "relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns" "BASE" "(objectClass=dnsZone)" "testdnsalias" "object class" $LINENO
 	ckthere "relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns" "BASE" "(CNAMERecord=$acname)" "testdnsalias" "CName" $LINENO
 	ckthere "relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns" "BASE" "(DNSTTL=$azonettl)" "testdnsalias" "zone ttl" $LINENO
 
-	adminwrap $LINENO dns/alias remove --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns,$ldap_base\" 
+	adminwrap $LINENO dns/alias remove --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns,$ldap_base\"
 
 	cknthere "relativeDomainName=testdnsalias,zoneName=dnstestzone,cn=dns" "BASE" "(objectClass=*)" "testdnsalias" "existence" $LINENO
 
@@ -1759,7 +1759,7 @@ then
 	--append mx=\"$hmx\" \
 	--append mx=\"$hmx2\" \
 	--append a="$ha" \
-	--append a="$ha2"  
+	--append a="$ha2"
 
 	ckthere "relativeDomainName=$hname,zoneName=$zonename,cn=dns" "BASE" "(objectClass=dnsZone)" "$hname" "objectClass" $LINENO
 	ckthere "relativeDomainName=$hname,zoneName=$zonename,cn=dns" "BASE" "(TXTRecord=$htxt)" "$hname" "TXT" $LINENO
@@ -1782,7 +1782,7 @@ then
 	--append mx=\"$hmx3\" \
 	--remove a="$ha" \
 	--append a="$ha3"
-	
+
 	ckthere "relativeDomainName=$hname,zoneName=$zonename,cn=dns" "BASE" "(objectClass=dnsZone)" "$hname" "objectClass" $LINENO
 	cknthere "relativeDomainName=$hname,zoneName=$zonename,cn=dns" "BASE" "(TXTRecord=$htxt)" "$hname" "TXT" $LINENO
 	ckthere "relativeDomainName=$hname,zoneName=$zonename,cn=dns" "BASE" "(TXTRecord=$htxt2)" "$hname" "TXT" $LINENO
@@ -1811,7 +1811,7 @@ then
 	--set zonettl=\"$szonettl\" \
 	--append location=\"$slocation\" \
 	--append location=\"$slocation2\" \
-	--set name=\"$sname\" 
+	--set name=\"$sname\"
 
 
 	ckthere "relativeDomainName=$srname,zoneName=dnstestzone,cn=dns" "base" "(objectClass=dnsZone)" "testdnssrvrecord" "objectClass" $LINENO
@@ -1848,7 +1848,7 @@ then
 	####################################################################################
 	####################################################################################
 	adminwrap $LINENO dns/zone_txt_record create --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" \
-	--set txt="nocheintesttext" 
+	--set txt="nocheintesttext"
 
 	ckthere "zoneName=dnstestzone,cn=dns" "BASE" "(TXTRecord=nocheintesttext)" "dnstestzone" "TXT" $LINENO
 	#####################################################################################
@@ -1856,7 +1856,7 @@ then
 	#####################################################################################
 
 	adminwrap $LINENO dns/zone_txt_record modify --dn \"zoneName=dnstestzone,cn=dns,$ldap_base\" --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --arg "nocheintesttext"\
-	--set txt=\"ein esel lese nie\" 
+	--set txt=\"ein esel lese nie\"
 
 	ckthere "zoneName=dnstestzone,cn=dns" "BASE" "(TXTRecord=ein esel lese nie)" "dnstestzone" "TXT" $LINENO
 
@@ -1864,7 +1864,7 @@ then
 	# remove dns/zone_text_record
 	#####################################################################################
 
-	adminwrap $LINENO dns/zone_txt_record remove --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"zoneName=dnstestzone,cn=dns,$ldap_base\" --arg \"ein esel lese nie\" 
+	adminwrap $LINENO dns/zone_txt_record remove --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"zoneName=dnstestzone,cn=dns,$ldap_base\" --arg \"ein esel lese nie\"
 
 	cknthere "zoneName=dnstestzone,cn=dns" "BASE" "(TXTRecord=ein esel lese nie)" "dnstestzone" "TXT" $LINENO
 
@@ -1880,18 +1880,18 @@ then
 	####################################################################################
 	####################################################################################
 	adminwrap $LINENO dns/zone_mx_record create --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" \
-	--set mx=\"4 winzigweich\" 
+	--set mx=\"4 winzigweich\"
 
 	ckthere "zoneName=dnstestzone,cn=dns" "BASE" "(MXRecord=4 winzigweich)" "dnstestzone" "MX" $LINENO
 
 	adminwrap $LINENO dns/zone_mx_record modify --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"zoneName=dnstestzone,cn=dns,$ldap_base\" --arg \"4 winzigweich\"\
-	--set mx=\"10 univention\" 
+	--set mx=\"10 univention\"
 
 	ckthere "zoneName=dnstestzone,cn=dns" "BASE" "(MXRecord=10 univention)" "dnstestzone" "MX" $LINENO
 	cknthere "zoneName=dnstestzone,cn=dns" "BASE" "(MXRecord=4 winzigweich)" "dnstestzone" "MX" $LINENO
 
 	adminwrap $LINENO dns/zone_mx_record remove --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"zoneName=dnstestzone,cn=dns,$ldap_base\"\
-	--arg \"10 univention\" 
+	--arg \"10 univention\"
 
 	cknthere "zoneName=dnstestzone,cn=dns" "BASE" "(MXRecord=*)" "dnstestzone" "MX" $LINENO
 
@@ -1906,9 +1906,9 @@ then
 	# modify dns/forward_zone
 	#####################################################################################
 
-	zrefresh="10" 
-	zzonettl="11" 
-	zretry="12" 
+	zrefresh="10"
+	zzonettl="11"
+	zretry="12"
 	zttl="13"
 	zcontact="root@testzone.univention.de"
 	zexpire="14"
@@ -1923,8 +1923,8 @@ then
 	--set ttl="$zttl" \
 	--set contact="$zcontact" \
 	--set expire="$zexpire" \
-	--set serial="$zserial" 
-	
+	--set serial="$zserial"
+
 	adminwrap $LINENO dns/host_record modify --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"relativeDomainName=$hname,zoneName=dnstestzone,cn=dns,$ldap_base\" \
 	--set zonettl="$hzonettl" \
 	--remove txt=\"$htxt\" \
@@ -1933,7 +1933,7 @@ then
 	--append mx=\"$hmx3\" \
 	--remove a="$ha" \
 	--append a="$ha3"
-	
+
 
 
 	####################################################################################
@@ -2002,8 +2002,8 @@ then
 		iscorrect=""
 		echo "testzone: wrong serial in SOA" >>"${errorlog}"
 	fi
-	
-	adminwrap $LINENO dns/host_record remove --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"relativeDomainName=$hname,zoneName=dnstestzone,cn=dns,$ldap_base\" 
+
+	adminwrap $LINENO dns/host_record remove --superordinate \"zoneName=dnstestzone,cn=dns,$ldap_base\" --dn \"relativeDomainName=$hname,zoneName=dnstestzone,cn=dns,$ldap_base\"
 
 	cknthere "relativeDomainName=$hname,zoneName=$zonename,cn=dns" "BASE" "(objectClass=*)" "$hname" "existence" $LINENO
 
@@ -2014,11 +2014,11 @@ then
 	###################################################################################
 	#####################################################################################
 
-	zrefresh="10" 
-	zzonettl="10" 
-	zretry="10" 
-	znameserver="19.168.1.201" 
-	znameserver2="19.168.1.202" 
+	zrefresh="10"
+	zzonettl="10"
+	zretry="10"
+	znameserver="19.168.1.201"
+	znameserver2="19.168.1.202"
 	zttl="20"
 	zsubnet="19.168.1"
 	zsubnet2="19.168.2"
@@ -2041,7 +2041,7 @@ then
 	--set subnet="$zsubnet" \
 	--set contact="$zcontact" \
 	--set expire="$zexpire" \
-	--set serial="$zserial" 
+	--set serial="$zserial"
 
 	univention-admin dns/reverse_zone create --position "cn=dns,$ldap_base" \
 	--set refresh="$zrefresh" \
@@ -2126,7 +2126,7 @@ then
 
 	adminwrap $LINENO dns/ptr_record create --superordinate \"zoneName=$revzonename,cn=dns,$ldap_base\" \
 	--set address=5 \
-	--set ptr_record="support.univention.de." 
+	--set ptr_record="support.univention.de."
 
 	ckthere "relativeDomainName=5,zoneName=$revzonename,cn=dns" "BASE" "(PTRRecord=support.univention.de.)" "5" "existence" $LINENO
 
@@ -2135,11 +2135,11 @@ then
 	#####################################################################################
 
 	adminwrap $LINENO dns/ptr_record modify --superordinate \"zoneName=$revzonename,cn=dns,$ldap_base\" --dn \"relativeDomainName=5,zoneName=$revzonename,cn=dns,$ldap_base\" \
-	--set ptr_record="support" 
+	--set ptr_record="support"
 
 	ckthere "relativeDomainName=5,zoneName=$revzonename,cn=dns" "BASE" "(PTRRecord=support)" "5" "existence" $LINENO
 
-	adminwrap $LINENO dns/ptr_record remove  --superordinate \"zoneName=$revzonename,cn=dns,$ldap_base\" --dn \"relativeDomainname=5,zoneName=$revzonename,cn=dns,$ldap_base\" 
+	adminwrap $LINENO dns/ptr_record remove  --superordinate \"zoneName=$revzonename,cn=dns,$ldap_base\" --dn \"relativeDomainname=5,zoneName=$revzonename,cn=dns,$ldap_base\"
 
 	cknthere "relativeDomainName=5,zoneName=$revzonename,cn=dns" "BASE" "(objectClass=*)" "5" "existence" $LINENO
 
@@ -2156,10 +2156,10 @@ then
 	# modify dns/reverse_zone
 	#############################easteregg##;-)##########################################
 
-	zrefresh="1" 
-	zzonettl="2" 
-	zretry="3" 
-	znameserver3="192.168.0.25" 
+	zrefresh="1"
+	zzonettl="2"
+	zretry="3"
+	znameserver3="192.168.0.25"
 	zttl="4"
 	zsubnet="19.16.4"
 	zcontact="Administrator@testzone.univention.de"
@@ -2175,7 +2175,7 @@ then
 	--set ttl="$zttl" \
 	--set contact="$zcontact" \
 	--set expire="$zexpire" \
-	--set serial="$zserial" 
+	--set serial="$zserial"
 
 	ckthere "zoneName=$revzonename,cn=dns" "BASE" "(objectClass=dnsZone)" "$revzonename" "object class" $LINENO
 	ckthere "zoneName=$revzonename,cn=dns" "BASE" "(relativeDomainName=@)" "$revzonename" "relative domain name" $LINENO
@@ -2269,7 +2269,7 @@ then
 
 	adminwrap $LINENO computers/trustaccount modify \
 	--set password=$clientpass \
-	--dn \"cn=${clientname},cn=computers,$ldap_base\" 
+	--dn \"cn=${clientname},cn=computers,$ldap_base\"
 
 
 	############################################################################
@@ -2280,7 +2280,7 @@ then
 	lmpass=`echo $passstring|cut -d":" -f 1`
 	ckthere "cn=${clientname},cn=computers" "BASE" "(&(sambaNTPassword=$ntpass)(sambaLMPassword=$lmpass))" "$clientname" "samba password" $LINENO
 
-	adminwrap $LINENO computers/trustaccount remove --dn \"cn=${clientname},cn=computers,$ldap_base\" 
+	adminwrap $LINENO computers/trustaccount remove --dn \"cn=${clientname},cn=computers,$ldap_base\"
 
 	cknthere "cn=${clientname},cn=computers" "BASE" "(objectClass=*)" "$clientname" "existence" $LINENO
 
@@ -2305,7 +2305,7 @@ then
 					--set dnsEntryZoneReverse=\"zoneName=$revzonename,cn=dns,$ldap_base\" \
 					--set netmask="255.255.255.0" \
 					--append ipRange=\"19.168.1.32 19.168.1.254\" \
-					--set network="19.168.1.0" 
+					--set network="19.168.1.0"
 
 					adminwrap $LINENO networks/network create \
 					--set name="$networkname2" \
@@ -2366,7 +2366,7 @@ then
 							continue #does not work without posixopt
 						fi
 					fi
-					
+
 					doprint $LINENO "checking with $usenetwork $remref posixopt=$posixopt kerberosopt=$kerberosopt hosttype=$hosttype"
 
 					extopts=""
@@ -2400,7 +2400,7 @@ then
 					fi
 
 					adminwrap $LINENO computers/$hosttype create $options  --set description="\"$clientdesc\"" --set mac=\"$clientmac\" --set password=$clientpass --set name=\"$clientname\"  --position \"cn=computers,$ldap_base\" $networktouse $posixsettings $extopts
-					
+
 					if [ -n "$doextended" ]
 					then
 						if [ "$hosttype" = "windows" ]
@@ -2454,7 +2454,7 @@ then
 							extopts=" --customattribute testpctyp=banane "
 						fi
 					fi
-					
+
 					if [ -n "$dolocking" ]
 					then
 						checklocks $LINENO
@@ -2464,10 +2464,10 @@ then
 						checklocks $LINENO
 					fi
 
-					
+
 
 					adminwrap $LINENO computers/$hosttype modify $options --set description="\"$clientdesc\"" --set password=$clientpass $networktouse --dn \"cn=$clientname,cn=computers,$ldap_base\" $posixsettings $extopts
-					
+
 					if [ -n "$doextended" ]
 					then
 						if [ "$hosttype" = "windows" ]
@@ -2486,7 +2486,7 @@ then
 						ckthere "cn=$clientname,cn=computers" "BASE" "(loginShell=/bin/pksh)" "$clientname ($options)" "login shell" $LINENO
 					fi
 
-					ckthere "relativeDomainName=$clientname,zoneName=$zonename2,cn=dns" "BASE" "(&(objectClass=dNSZone)(ARecord=$clientip2))" "$clientname ($options)" "dns forward zone entry" $LINENO 
+					ckthere "relativeDomainName=$clientname,zoneName=$zonename2,cn=dns" "BASE" "(&(objectClass=dNSZone)(ARecord=$clientip2))" "$clientname ($options)" "dns forward zone entry" $LINENO
 
 					ckthere "relativeDomainName=$num,zoneName=$revzonename2,cn=dns" "BASE" "(&(objectClass=dNSZone)(PTRRecord=${clientname}.${zonename2}.))" "$clientname ($options)" "dns reverse zone entry" $LINENO
 
@@ -2505,7 +2505,7 @@ then
 						echo -e "\t\tOK"
 						echo -e "\t\tOK" >>"${errorlog}"
 					else
-						if [ "$mode" = 3 ] 
+						if [ "$mode" = 3 ]
 						then
 							if univention-admin computers/ipmanagedclient remove $remref --dn "cn=$clientname,cn=computers,$ldap_base" 2>>"${errorlog}" >>"${errorlog}"
 							then
@@ -2528,13 +2528,13 @@ then
 					if [ -n "$remref" ]
 					then
 
-						cknthere "relativeDomainName=$clientname,zoneName=$zonename,cn=dns" "BASE" "(&(objectClass=dNSZone)(ARecord=$clientip))" "$clientname ($options)" "dns forward zone entry not deleted" $LINENO 
+						cknthere "relativeDomainName=$clientname,zoneName=$zonename,cn=dns" "BASE" "(&(objectClass=dNSZone)(ARecord=$clientip))" "$clientname ($options)" "dns forward zone entry not deleted" $LINENO
 
 						cknthere "relativeDomainName=$num,zoneName=$revzonename,cn=dns" "BASE" "(&(objectClass=dNSZone)(PTRRecord=${clientname}.${zonename}.))" "$clientname ($options)" "dns reverse zone entry not deleted" $LINENO
 
 						cknthere "cn=$clientname,cn=testdhcpservice,cn=dhcp" "BASE" "(&(objectClass=univentionDhcpHost)(cn=$clientname)(univentionDhcpFixedAddress=$clientip)(dhcpHWAddress=ethernet $clientmac))" "$clientname ($options)" "dhcp entry not deleted" $LINENO
 
-						cknthere "relativeDomainName=$clientname,zoneName=$zonename2,cn=dns" "BASE" "(&(objectClass=dNSZone)(ARecord=$clientip2))" "$clientname ($options)" "dns forward zone entry not deleted" $LINENO 
+						cknthere "relativeDomainName=$clientname,zoneName=$zonename2,cn=dns" "BASE" "(&(objectClass=dNSZone)(ARecord=$clientip2))" "$clientname ($options)" "dns forward zone entry not deleted" $LINENO
 
 						cknthere "relativeDomainName=$num,zoneName=$revzonename2,cn=dns" "BASE" "(&(objectClass=dNSZone)(PTRRecord=${clientname}.${zonename2}.))" "$clientname ($options)" "dns reverse zone entry not deleted" $LINENO
 
@@ -2543,12 +2543,12 @@ then
 					fi
 
 					(( num=$num+1 ))
-				done	
+				done
 					############################################################################
 					# remove networks/network
 					############################################################################
 
-					adminwrap $LINENO networks/network remove --dn \"cn=testnetwork,$ldap_base\" 
+					adminwrap $LINENO networks/network remove --dn \"cn=testnetwork,$ldap_base\"
 					adminwrap $LINENO networks/network remove --dn \"cn=testnetwork2,$ldap_base\"
 
 					cknthere "cn=testnetwork" "base" "(objectClass=*)" "testnetwork" "existence" $LINENO
@@ -2568,7 +2568,7 @@ then
 			--set netmask="255.255.255.0" \
 			--append ipRange=\"19.168.1.32 19.168.1.254\" \
 			--append ipRange=\"19.168.1.30 19.168.1.31\" \
-			--set network="19.168.1.0" 
+			--set network="19.168.1.0"
 
 			univention-admin networks/network create \
 			--set name="$networkname2" \
@@ -2665,7 +2665,7 @@ then
 					nfsopts=" --set writeable=$swriteable "
 					options=" --option nfs "
 				fi
-				adminwrap $LINENO shares/share create $options --set path=$spath --set host=$shost --set name=$sname --set writeable=$swriteable --position \"cn=shares,$ldap_base\" $sambaopts $nfsopts 
+				adminwrap $LINENO shares/share create $options --set path=$spath --set host=$shost --set name=$sname --set writeable=$swriteable --position \"cn=shares,$ldap_base\" $sambaopts $nfsopts
 			fi
 			if [ "$whattodo"=2 ];then
 				############################################################################
@@ -2703,7 +2703,7 @@ then
 					module_list shares/share $LINENO silent
 				fi
 
-				adminwrap $LINENO shares/share modify $options --set path=$spath --set host=$shost --set writeable=$swriteable --dn \"cn=$sname,cn=shares,$ldap_base\" $sambaopts $nfsopts 
+				adminwrap $LINENO shares/share modify $options --set path=$spath --set host=$shost --set writeable=$swriteable --dn \"cn=$sname,cn=shares,$ldap_base\" $sambaopts $nfsopts
 			fi
 
 			ckthere "cn=$sname,cn=shares" "BASE" "(objectClass=univentionShare)" "$sname" "object classes" $LINENO
@@ -2756,7 +2756,7 @@ then
 
 
 			if [ "$whattodo"=1 ];then
-				adminwrap $LINENO shares/share remove --dn \"cn=$sname,cn=shares,$ldap_base\" 
+				adminwrap $LINENO shares/share remove --dn \"cn=$sname,cn=shares,$ldap_base\"
 
 
 				cknthere "cn=$sname,cn=shares" "BASE" "(objectClass=*)" "$sname" "existence" $LINENO
@@ -2772,9 +2772,9 @@ get_attribute_names()
 
 policy_get_attribute()
 {
-	get_attribute_names "policies/$1" | { while read i; 
+	get_attribute_names "policies/$1" | { while read i;
 		do
-			case $i in "fixedAttributes"|"emptyAttributes"|"requiredObjectClasses"|"prohibitedObjectClasses")	
+			case $i in "fixedAttributes"|"emptyAttributes"|"requiredObjectClasses"|"prohibitedObjectClasses")
 				continue;;
 			esac
 			echo -n "$i "
@@ -2793,13 +2793,13 @@ policy_append_remove_test()
 			--append fixedAttributes=$attribute2 --append fixedAttributes=$attribute3 --set name=testpolicy$2 \
 			--append requiredObjectClasses=rclass1 --append requiredObjectClasses=rclass2 \
 			--append prohibitedObjectClasses=pclass1 --append prohibitedObjectClasses=pclass2
-		
+
 		ckthere "cn=testpolicy$2" "base" "(emptyAttributes=$attribute1)" "policy/$2" "emptyAttributes" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(emptyAttributes=$attribute2)" "policy/$2" "emptyAttributes" $LINENO
 
 		ckthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute2)" "policy/$2" "fixedAttributes" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute3)" "policy/$2" "fixedAttributes" $LINENO
-		
+
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass1)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass2)" "policy/$2" "requiredObjectClasses" $LINENO
 
@@ -2819,7 +2819,7 @@ policy_append_remove_test()
 		cknthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute3)" "policy/$2" "fixedAttributes" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute2)" "policy/$2" "fixedAttributes" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute1)" "policy/$2" "fixedAttributes" $LINENO
-		
+
 		cknthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass1)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass2)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass3)" "policy/$2" "requiredObjectClasses" $LINENO
@@ -2837,11 +2837,11 @@ policy_append_remove_test()
 			--append fixedAttributes=$attribute2 --set name=testpolicy$2 \
 			--append requiredObjectClasses=rclass1 --append requiredObjectClasses=rclass2 \
 			--append prohibitedObjectClasses=pclass1 --append prohibitedObjectClasses=pclass2
-		
+
 		ckthere "cn=testpolicy$2" "base" "(emptyAttributes=$attribute1)" "policy/$2" "emptyAttributes" $LINENO
 
 		ckthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute2)" "policy/$2" "fixedAttributes" $LINENO
-		
+
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass1)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass2)" "policy/$2" "requiredObjectClasses" $LINENO
 
@@ -2859,7 +2859,7 @@ policy_append_remove_test()
 
 		cknthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute2)" "policy/$2" "fixedAttributes" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute1)" "policy/$2" "fixedAttributes" $LINENO
-		
+
 		cknthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass1)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass2)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass3)" "policy/$2" "requiredObjectClasses" $LINENO
@@ -2877,11 +2877,11 @@ policy_append_remove_test()
 		    --set name=testpolicy$2 \
 			--append requiredObjectClasses=rclass1 --append requiredObjectClasses=rclass2 \
 			--append prohibitedObjectClasses=pclass1 --append prohibitedObjectClasses=pclass2
-		
+
 		ckthere "cn=testpolicy$2" "base" "(emptyAttributes=$attribute1)" "policy/$2" "emptyAttributes" $LINENO
 
 		ckthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute2)" "policy/$2" "fixedAttributes" $LINENO
-		
+
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass1)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass2)" "policy/$2" "requiredObjectClasses" $LINENO
 
@@ -2897,7 +2897,7 @@ policy_append_remove_test()
 		ckthere "cn=testpolicy$2" "base" "(emptyAttributes=$attribute1)" "policy/$2" "emptyAttributes" $LINENO
 
 		cknthere "cn=testpolicy$2" "base" "(fixedAttributes=$attribute1)" "policy/$2" "fixedAttributes" $LINENO
-		
+
 		cknthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass1)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass2)" "policy/$2" "requiredObjectClasses" $LINENO
 		ckthere "cn=testpolicy$2" "base" "(requiredObjectClasses=rclass3)" "policy/$2" "requiredObjectClasses" $LINENO
@@ -2915,7 +2915,7 @@ policy_append_remove_test()
 
 if [ -n "$dopolicies" ]
 then
-	
+
 	############################################################################
 	# policies/admin_container
 	############################################################################
@@ -2923,19 +2923,19 @@ then
 		--set name="testadmincontainerpolicy" \
 		--set listModules="users/passwd"
 	ckthere "cn=testadmincontainerpolicy" "base" "(univentionAdminListModules=users/passwd)" "policy/admin_container" "listModules" $LINENO
-	
+
 	adminwrap $LINENO policies/admin_container modify \
 		--dn \"cn=testadmincontainerpolicy,$ldap_base\" \
 		--set listModules="groups/group"
 	ckthere "cn=testadmincontainerpolicy" "base" "(univentionAdminListModules=groups/group)" "policy/admin_container" "listModules" $LINENO
-	
+
 	adminwrap $LINENO policies/admin_container remove --dn \"cn=testadmincontainerpolicy,$ldap_base\"
 
 	cknthere "cn=testadmincontainerpolicy" "base" "(objectClass=*)" "policy/admin_container" "existence" $LINENO
 
 	policy_append_remove_test $LINENO admin_container
 
-    	
+
 	############################################################################
 	# policies/autostart
 	############################################################################
@@ -2944,24 +2944,24 @@ then
 	--set autostartScript=reboot
 
 	ckthere "cn=testautostartpolicy" "base" "(univentionAutoStartScript=reboot)" "policy/autostart" "autostartScript" $LINENO
-	
+
 	adminwrap $LINENO policies/autostart modify \
 	--dn \"cn=testautostartpolicy,$ldap_base\" \
 	--set autostartScript=nuke
 
 	ckthere "cn=testautostartpolicy" "base" "(univentionAutoStartScript=nuke)" "policy/autostart" "autostartScript" $LINENO
-			
+
 	adminwrap $LINENO policies/autostart remove \
-	--dn \"cn=testautostartpolicy,$ldap_base\" 
+	--dn \"cn=testautostartpolicy,$ldap_base\"
 
 	cknthere "cn=testautostartpolicy" "base" "(objectClass=*)" "policy/autostart" "existence" $LINENO
-	
+
 	policy_append_remove_test $LINENO autostart
 
 	############################################################################
 	# policies/clientdevices
 	############################################################################
-	
+
 	adminwrap $LINENO policies/clientdevices create \
 		--set name=testclientdevicespolicy \
 		--set clientDevicesActivate=0
@@ -2980,7 +2980,7 @@ then
 	cknthere "cn=testclientdevicespolicy" "base" "(objectClass=*)" "policy/clientdevices" "existence" $LINENO
 
 	policy_append_remove_test $LINENO clientdevices
-	
+
 
 	############################################################################
 	# policies/*packages
@@ -2988,14 +2988,14 @@ then
 	for uhost in Master Slave Member Client MobileClient; do
 		mhost=`echo $uhost |tr [:upper:] [:lower:]`
 		if [ "$uhost" = "MobileClient" ]
-		then 
+		then
 			host=client
 		else
 			host=$mhost
 		fi
 		if [ "$mhost" = "client" ]; then
 			mhost="managedclient"
-		fi	
+		fi
 		adminwrap $LINENO policies/${mhost}packages create \
 		--set name=test${mhost}packagespolicy \
 		--set ${host}Packages=this \
@@ -3038,7 +3038,7 @@ then
 	--set language=$planguage  \
 	--set name=$pname  \
 	--set profile=$pprofile \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDesktop))" "$pname" "object classes" $LINENO
 
@@ -3069,7 +3069,7 @@ then
 	--set language=$planguage  \
 	--set name=$pname  \
 	--set profile=$pprofile \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDesktop))" "$pname" "object classes" $LINENO
 
@@ -3083,13 +3083,13 @@ then
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(univentionDesktopProfile=$pprofile)" "$pname" "profile" $LINENO
 
-	adminwrap $LINENO policies/desktop remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/desktop remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "BASE" "(objectClass=*)" "$pname" "existence" $LINENO
 
 	policy_append_remove_test $LINENO desktop
-	
-	
+
+
 	############################################################################
 	############################################################################
 	# policies/dhcp_boot
@@ -3100,28 +3100,28 @@ then
 		--set name=testdhcpbootpolicy \
 		--set boot_server=nohost.nowhere \
 		--set boot_filename=narf
-	
+
 	ckthere "cn=testdhcpbootpolicy" "BASE" "(univentionDhcpBootServer=nohost.nowhere)" "policies/dhcp_boot" "boot_server" $LINENO
 	ckthere "cn=testdhcpbootpolicy" "BASE" "(univentionDhcpBootFilename=narf)" "policies/dhcp_boot" "boot_filename" $LINENO
-	
-	
+
+
 	adminwrap $LINENO policies/dhcp_boot modify \
 		--dn \"cn=testdhcpbootpolicy,$ldap_base\" \
 		--set boot_server=somehost.somewhere \
 		--set boot_filename=blargh
-	
+
 	ckthere "cn=testdhcpbootpolicy" "BASE" "(univentionDhcpBootServer=somehost.somewhere)" "policies/dhcp_boot" "boot_server" $LINENO
 	ckthere "cn=testdhcpbootpolicy" "BASE" "(univentionDhcpBootFilename=blargh)" "policies/dhcp_boot" "boot_filename" $LINENO
-	
-	
+
+
 	adminwrap $LINENO policies/dhcp_boot remove \
-		--dn \"cn=testdhcpbootpolicy,$ldap_base\" 
-	
+		--dn \"cn=testdhcpbootpolicy,$ldap_base\"
+
 	cknthere "cn=testdhcpbootpolicy" "BASE" "(objectClass=*)" "policies/dhcp_boot" "existence" $LINENO
-	
+
 	policy_append_remove_test $LINENO dhcp_boot
-	
-	
+
+
 	############################################################################
 	############################################################################
 	# policies/dhcp_dns
@@ -3148,7 +3148,7 @@ then
 	--append domain_name_servers=$pdomainnameservers1  \
 	--append domain_name_servers=$pdomainnameservers2  \
 	--set name=$pname  \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpDns))" "$pname" "object classes" $LINENO
 
@@ -3181,7 +3181,7 @@ then
 	--set domain_name=$pdomainname  \
 	--append domain_name_servers=$pdomainnameservers3  \
 	--remove domain_name_servers=$pdomainnameservers1  \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpDns))" "$pname" "object classes" $LINENO
 
@@ -3197,7 +3197,7 @@ then
 	cknthere "cn=$pname,cn=policies" "BASE" "(univentionDhcpDomainNameServers=$pdomainnameservers1)" "$pname" "domain name servers" $LINENO
 	ckthere "cn=$pname,cn=policies" "BASE" "(univentionDhcpDomainNameServers=$pdomainnameservers2)" "$pname" "domain name servers" $LINENO
 
-	adminwrap $LINENO policies/dhcp_dns remove --dn "cn=$pname,cn=policies,$ldap_base" 
+	adminwrap $LINENO policies/dhcp_dns remove --dn "cn=$pname,cn=policies,$ldap_base"
 
 	cknthere "cn=$pname,cn=policies" "BASE" "(objectClass=*)" "$pname" "existence" $LINENO
 
@@ -3239,7 +3239,7 @@ then
 	--set ddnsUpdates=$pddnsupdates  \
 	--set ddnsUpdateStyle=$pddnsupdatestyle \
 	--set name=$pname  \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpDnsUpdate))" "$pname" "object classes" $LINENO
 
@@ -3296,7 +3296,7 @@ then
 	--set clientUpdates=$pclientupdates  \
 	--set ddnsUpdates=$pddnsupdates  \
 	--set ddnsUpdateStyle=$pddnsupdatestyle \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpDnsUpdate))" "$pname" "object classes" $LINENO
 
@@ -3322,7 +3322,7 @@ then
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(univentiondhcpclientupdates=$pclientupdates)" "$pname" "dhcp dns client updates" $LINENO
 
-	adminwrap $LINENO policies/dhcp_dnsupdate remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/dhcp_dnsupdate remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "BASE" "(objectClass=*)" "$pname" "existence" $LINENO
 
@@ -3356,7 +3356,7 @@ then
 	--set lease_time_max=$pleasetimemax \
 	--set lease_time_default=$pleasetimedef \
 	--set name=$pname  \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpLeasetime))" "$pname" "object classes" $LINENO
 
@@ -3390,7 +3390,7 @@ then
 	--set lease_time_min=$pleasetimemin \
 	--set lease_time_max=$pleasetimemax \
 	--set lease_time_default=$pleasetimedef \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "BASE" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpLeasetime))" "$pname" "object classes" $LINENO
 
@@ -3407,7 +3407,7 @@ then
 	ckthere "cn=$pname,cn=policies" "BASE" "(univentionDhcpLeaseTimeMax=$pleasetimemax)" "$pname" "max lease time" $LINENO
 
 
-	adminwrap $LINENO policies/dhcp_leasetime remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/dhcp_leasetime remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "BASE" "(objectClass=*)" "$pname" "existence" $LINENO
 
@@ -3441,7 +3441,7 @@ then
 	--set netbios_scope=$pnetbiosscope \
 	--set netbios_node_type=$pnetbiosnodetype \
 	--set name=$pname  \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpNetbios))" "$pname" "object classes" $LINENO
 
@@ -3477,7 +3477,7 @@ then
 	--remove netbios_name_servers=$pnetbiosnameservers \
 	--set netbios_scope=$pnetbiosscope \
 	--set netbios_node_type=$pnetbiosnodetype \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpNetbios))" "$pname" "object classes" $LINENO
 
@@ -3495,7 +3495,7 @@ then
 
 	ckthere "cn=$pname,cn=policies" "base" "(univentionDhcpNetbiosNodeType=$pnetbiosnodetype)" "$pname" $LINENO
 
-	adminwrap $LINENO policies/dhcp_netbios remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/dhcp_netbios remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "base" "(objectClass=*)" "$pname" "existence" $LINENO
 
@@ -3526,7 +3526,7 @@ then
 	--set name=$pname  \
 	--append routers=$prouters \
 	--append routers=$prouters2 \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpRouting))" "$pname" "object classes" $LINENO
 
@@ -3554,7 +3554,7 @@ then
 	--remove fixedAttributes=$pfixedattributes  \
 	--append routers=$prouters3 \
 	--remove routers=$prouters \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpRouting))" "$pname" "object classes" $LINENO
 
@@ -3568,7 +3568,7 @@ then
 	ckthere "cn=$pname,cn=policies" "base" "(univentionDhcpRouters=$prouters2)" "$pname" "dhcp routers" $LINENO
 	ckthere "cn=$pname,cn=policies" "base" "(univentionDhcpRouters=$prouters3)" "$pname" "dhcp routers" $LINENO
 
-	adminwrap $LINENO policies/dhcp_routing remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/dhcp_routing remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "base" "(objectClass=*)" "$pname" "existence" $LINENO
 
@@ -3603,7 +3603,7 @@ then
 	--set duplicates=$pduplicates \
 	--set booting=$pbooting \
 	--set scopeUnknownClients=$punknownclients \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpScope))" "$pname" "object classes" $LINENO
 
@@ -3645,7 +3645,7 @@ then
 	--set duplicates=$pduplicates \
 	--set booting=$pbooting \
 	--set scopeUnknownClients=$punknownclients \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpScope))" "$pname" "object classes" $LINENO
 
@@ -3665,7 +3665,7 @@ then
 
 	ckthere "cn=$pname,cn=policies" "base" "(univentionDhcpDuplicates=$pduplicates)" "$pname" "dhcp duplicates" $LINENO
 
-	adminwrap $LINENO policies/dhcp_scope remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/dhcp_scope remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "base" "(objectClass=*)" "$pname" "existence" $LINENO
 
@@ -3701,7 +3701,7 @@ then
 	--set authoritative=$pauthoritative \
 	--set boot-unknown-clients=$pbootunknownclients \
 	--set serverIdentifier=$pserveridentifier \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpStatements))" "$pname" "object classes" $LINENO
 
@@ -3748,7 +3748,7 @@ then
 	--set authoritative=$pauthoritative \
 	--set boot-unknown-clients=$pbootunknownclients \
 	--set serverIdentifier=$pserveridentifier \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyDhcpStatements))" "$pname" "object classes" $LINENO
 
@@ -3770,10 +3770,10 @@ then
 
 	ckthere "cn=$pname,cn=policies" "base" "(univentionDhcpServerName=$pservername)" "$pname" "dhcp server name" $LINENO
 
-	adminwrap $LINENO policies/dhcp_statements remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/dhcp_statements remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "base" "(objectClass=*)" "$pname" "existence" $LINENO
-	
+
 	policy_append_remove_test $LINENO dhcp_statements
 
 	############################################################################
@@ -3799,7 +3799,7 @@ then
 	--set fixedAttributes=$pfixedattributes  \
 	--set name=$pname  \
 	--set length=$plength \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyPWHistory))" "$pname" "object classes" $LINENO
 
@@ -3824,7 +3824,7 @@ then
 	--set prohibitedObjectClasses=$pprohibitedclasses  \
 	--remove fixedAttributes=$pfixedattributes  \
 	--set length=$plength \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyPWHistory))" "$pname" "object classes" $LINENO
 
@@ -3836,10 +3836,10 @@ then
 
 	ckthere "cn=$pname,cn=policies" "base" "(univentionPWHistoryLen=$plength)" "$pname" "length" $LINENO
 
-	adminwrap $LINENO policies/pwhistory remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/pwhistory remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "base" "(objectClass=*)" "$pname" "existence" $LINENO
-	
+
 	policy_append_remove_test $LINENO pwhistory
 
 	############################################################################
@@ -3851,22 +3851,22 @@ then
 	adminwrap $LINENO policies/ldapserver create \
 		--set name=testldapserverpolicy \
 		--set ldapServer=fake
-    
+
 	ckthere "cn=testldapserverpolicy" "base" "(univentionLDAPServer=fake)" testldapserverpolicy "ldapserver" $LINENO
-	
+
 	adminwrap $LINENO policies/ldapserver modify \
 		--dn \"cn=testldapserverpolicy,$ldap_base\" \
 		--set ldapServer=real
-    
+
 	ckthere "cn=testldapserverpolicy" "base" "(univentionLDAPServer=real)" testldapserverpolicy "ldapserver" $LINENO
-	
+
 	adminwrap $LINENO policies/ldapserver remove \
 		--dn \"cn=testldapserverpolicy,$ldap_base\"
-    
+
 	cknthere "cn=testldapserverpolicy" "base" "(objectClass=*)" testldapserverpolicy "existence" $LINENO
-	
+
 	policy_append_remove_test $LINENO ldapserver
-	
+
 	############################################################################
 	############################################################################
 	# policies/mailquota
@@ -3876,28 +3876,28 @@ then
 	adminwrap $LINENO policies/mailquota create \
 		--set name=testmailquotapolicy \
 		--set MailQuota=4
-    
+
 	ckthere "cn=testmailquotapolicy" "base" "(univentionMailQuotaMB=4)" testmailquotapolicy "mailquota" $LINENO
-	
+
 	adminwrap $LINENO policies/mailquota modify \
 		--dn \"cn=testmailquotapolicy,$ldap_base\" \
 		--set MailQuota=3
-    
+
 	ckthere "cn=testmailquotapolicy" "base" "(univentionMailQuotaMB=3)" testmailquotapolicy "mailquota" $LINENO
-	
+
 	adminwrap $LINENO policies/mailquota remove \
 		--dn \"cn=testmailquotapolicy,$ldap_base\"
-    
+
 	cknthere "cn=testmailquotapolicy" "base" "(objectClass=*)" testmailquotapolicy "existence" $LINENO
-	
+
 	policy_append_remove_test $LINENO mailquota
-	
+
 	############################################################################
 	############################################################################
 	# policies/maintenance
 	############################################################################
 	############################################################################
-	
+
 	adminwrap $LINENO policies/maintenance create \
 		--set name=testmaintenancepolicy \
 		--set startup=1 \
@@ -3913,15 +3913,15 @@ then
 		--append hour=6 \
 		--append hour=7 \
 		--append minute=5 \
-		--append minute=10 
+		--append minute=10
 
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationStartup=1)" testmaintenancepolicy "mailquota" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationReboot=00:45)" testmaintenancepolicy "reboot" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionCronActive=1)" testmaintenancepolicy "cron" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionCron=5,10 6,7 2,5 6,2 2,4)" testmaintenancepolicy "crontab" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationShutdown=1)" testmaintenancepolicy "shutdown" $LINENO
-	
-	
+
+
 	adminwrap $LINENO policies/maintenance modify \
 		--dn \"cn=testmaintenancepolicy,$ldap_base\" \
 		--set startup=0 \
@@ -3937,20 +3937,20 @@ then
 		--remove hour=6 \
 		--append hour=8 \
 		--remove minute=5 \
-		--append minute=15 
+		--append minute=15
 
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationStartup=0)" testmaintenancepolicy "mailquota" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationReboot=00:15)" testmaintenancepolicy "reboot" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionCronActive=0)" testmaintenancepolicy "cron" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionCron=10,15 7,8 5,6 2,3 4,5)" testmaintenancepolicy "crontab" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationShutdown=0)" testmaintenancepolicy "shutdown" $LINENO
-	
-		
+
+
 	adminwrap $LINENO policies/maintenance remove \
 		--dn \"cn=testmaintenancepolicy,$ldap_base\"
 
 	cknthere "cn=testmaintenancepolicy" "base" "(objectClass=*)" testmaintenancepolicy "existence" $LINENO
-	
+
 	policy_append_remove_test $LINENO maintenance
 
 	############################################################################
@@ -3967,7 +3967,7 @@ then
 	ckthere "cn=testprintquotapolicy" "base" "(univentionPrintQuotaGroups=6 7 Administrators)" testprintqotapolicy quotagroups $LINENO
 	ckthere "cn=testprintquotapolicy" "base" "(univentionPrintQuotaGroupsPerUsers=9 10 Administrators)" testprintquotapolicy quotagroupsperusers $LINENO
 
-	
+
 	adminwrap $LINENO policies/print_quota modify \
 	--dn \"cn=testprintquotapolicy,$ldap_base\" \
 	--set quotaUsers=\"50 40 Administrator\" \
@@ -3980,13 +3980,13 @@ then
 	adminwrap $LINENO policies/print_quota remove \
 	    --dn \"cn=testprintquotapolicy,$ldap_base\"
 	cknthere "cn=testprintquotapolicy" "base" "(objectClass=*)" testprintquotapolicy existence $LINENO
-	
+
 	############################################################################
 	############################################################################
 	# policies/printserver
 	############################################################################
 	############################################################################
-	
+
 	adminwrap $LINENO policies/printserver create \
 	--set name=testprintserverpolicy \
 	--set printServer=nohost.local
@@ -4000,10 +4000,10 @@ then
 	ckthere "cn=testprintserverpolicy" "base" "(univentionPrintServer=anyhost.anywhere)" testprintserverpolicy "printServer" $LINENO
 
 	adminwrap $LINENO policies/printserver remove \
-	--dn \"cn=testprintserverpolicy,$ldap_base\" 
+	--dn \"cn=testprintserverpolicy,$ldap_base\"
 
 	cknthere "cn=testprintserverpolicy" "base" "(objectClass=*)" testprintserverpolicy "printServer" $LINENO
-	
+
 	policy_append_remove_test $LINENO printserver
 	############################################################################
 	############################################################################
@@ -4014,7 +4014,7 @@ then
 	--set name=testpwhistorypolicy \
 	--set length=4 \
 	--set expiryInterval=4 \
-	--set pwLength=4 
+	--set pwLength=4
 
 	ckthere "cn=testpwhistorypolicy" "base" "(univentionPWHistoryLen=4)" testpwhistorypolicy univentionPWHistoryLen $LINENO
 	ckthere "cn=testpwhistorypolicy" "base" "(univentionPWExpiryInterval=4)" testpwhistorypolicy univentionPWExpiryInterval $LINENO
@@ -4025,7 +4025,7 @@ then
 	--dn \"cn=testpwhistorypolicy,$ldap_base\" \
 	--set length=5 \
 	--set expiryInterval=5 \
-	--set pwLength=5 
+	--set pwLength=5
 
 	ckthere "cn=testpwhistorypolicy" "base" "(cn=testpwhistorypolicy)" testpwhistorypolicy cn $LINENO
 	ckthere "cn=testpwhistorypolicy" "base" "(univentionPWExpiryInterval=5)" testpwhistorypolicy univentionPWExpiryInterval $LINENO
@@ -4045,14 +4045,14 @@ then
 	############################################################################
 	adminwrap $LINENO policies/release create \
 	--set name=testreleasepolicy \
-	--set releaseVersion=4 
+	--set releaseVersion=4
 
 	ckthere "cn=testreleasepolicy" "base" "(cn=testreleasepolicy)" testreleasepolicy cn $LINENO
 	ckthere "cn=testreleasepolicy" "base" "(univentionUpdateVersion=4)" testreleasepolicy univentionUpdateVersion $LINENO
 
 	adminwrap $LINENO policies/release modify \
 	--dn \"cn=testreleasepolicy,$ldap_base\" \
-	--set releaseVersion=5 
+	--set releaseVersion=5
 
 	ckthere "cn=testreleasepolicy" "base" "(cn=testreleasepolicy)" testreleasepolicy cn $LINENO
 	ckthere "cn=testreleasepolicy" "base" "(univentionUpdateVersion=5)" testreleasepolicy univentionUpdateVersion $LINENO
@@ -4071,7 +4071,7 @@ then
 	############################################################################
 	adminwrap $LINENO policies/repositoryserver create \
 	--set name=testrepositoryserverpolicy \
-	--set repositoryServer=baba 
+	--set repositoryServer=baba
 
 	ckthere "cn=testrepositoryserverpolicy" "base" "(cn=testrepositoryserverpolicy)" testrepositoryserverpolicy cn $LINENO
 	ckthere "cn=testrepositoryserverpolicy" "base" "(univentionRepositoryServer=baba)" testrepositoryserverpolicy univentionRepositoryServer $LINENO
@@ -4086,14 +4086,14 @@ then
 	--dn \"cn=testrepositoryserverpolicy,$ldap_base\"
 
 	cknthere "cn=testrepositoryserverpolicy" "base" "(objectClass=*)" testrepositoryserverpolicy existence $LINENO
-	
+
 	policy_append_remove_test $LINENO repositoryserver
 	############################################################################
 	############################################################################
 	# policies/repositorysync
 	############################################################################
 	############################################################################
-	
+
 	adminwrap $LINENO policies/repositorysync create \
 		--set name=testrepositorysyncpolicy \
 		--append month=June \
@@ -4105,11 +4105,11 @@ then
 		--append hour=6 \
 		--append hour=7 \
 		--append minute=5 \
-		--append minute=10 
+		--append minute=10
 
 	ckthere "cn=testrepositorysyncpolicy" "base" "(univentionRepositoryCron=5,10 6,7 2,5 6,2 2,4)" testrepositorysyncpolicy "crontab" $LINENO
-	
-	
+
+
 	adminwrap $LINENO policies/repositorysync modify \
 		--dn \"cn=testrepositorysyncpolicy,$ldap_base\" \
 		--remove month=June \
@@ -4121,11 +4121,11 @@ then
 		--remove hour=6 \
 		--append hour=8 \
 		--remove minute=5 \
-		--append minute=15 
+		--append minute=15
 
 	ckthere "cn=testrepositorysyncpolicy" "base" "(univentionRepositoryCron=10,15 7,8 5,6 2,3 4,5)" testrepositorysyncpolicy "crontab" $LINENO
-	
-		
+
+
 	adminwrap $LINENO policies/repositorysync remove \
 		--dn \"cn=testrepositorysyncpolicy,$ldap_base\"
 
@@ -4142,7 +4142,7 @@ then
 	--set softLimitSpace=100 \
 	--set hardLimitSpace=200 \
 	--set softLimitInodes=30 \
-	--set hardLimitInodes=40 
+	--set hardLimitInodes=40
 
 	ckthere "cn=testshareuserquotapolicy" "base" "(univentionQuotaHardLimitSpace=200)" testshareuserquotapolicy univentionQuotaHardLimitSpace $LINENO
 	ckthere "cn=testshareuserquotapolicy" "base" "(univentionQuotaSoftLimitInodes=30)" testshareuserquotapolicy univentionQuotaSoftLimitInodes $LINENO
@@ -4155,15 +4155,15 @@ then
 	--set softLimitSpace=200 \
 	--set hardLimitSpace=300 \
 	--set softLimitInodes=40 \
-	--set hardLimitInodes=50 
+	--set hardLimitInodes=50
 
 	ckthere "cn=testshareuserquotapolicy" "base" "(univentionQuotaHardLimitSpace=300)" testshareuserquotapolicy univentionQuotaHardLimitSpace $LINENO
 	ckthere "cn=testshareuserquotapolicy" "base" "(univentionQuotaSoftLimitInodes=40)" testshareuserquotapolicy univentionQuotaSoftLimitInodes $LINENO
 	ckthere "cn=testshareuserquotapolicy" "base" "(univentionQuotaHardLimitInodes=50)" testshareuserquotapolicy univentionQuotaHardLimitInodes $LINENO
 	ckthere "cn=testshareuserquotapolicy" "base" "(univentionQuotaSoftLimitSpace=200)" testshareuserquotapolicy univentionQuotaSoftLimitSpace $LINENO
-	
+
 	adminwrap $LINENO policies/share_userquota remove \
-	--dn \"cn=testshareuserquotapolicy,$ldap_base\" 
+	--dn \"cn=testshareuserquotapolicy,$ldap_base\"
 	cknthere "cn=testshareuserquotapolicy" "base" "(objectClass=*)" testshareuserquotapolicy existence $LINENO
 
 
@@ -4192,7 +4192,7 @@ then
 	--set name=$pname  \
 	--set enable=$penable \
 	--set soundModule=$pmodule \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere  "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicySoundConfiguration))" "$pname" "object classes" $LINENO
 
@@ -4223,7 +4223,7 @@ then
 	--set name=$pname  \
 	--set enable=$penable \
 	--set soundModule=$pmodule \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere  "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicySoundConfiguration))" "$pname" "object classes" $LINENO
 
@@ -4237,7 +4237,7 @@ then
 
 	ckthere "cn=$pname,cn=policies" "base" "(univentionSoundModule=$pmodule)" "$pname" "sound module" $LINENO
 
-	adminwrap $LINENO policies/sound remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/sound remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "base" "(objectclass=*)" "$pname" "existence" $LINENO
 
@@ -4398,7 +4398,7 @@ then
 	--set mouseDevice=$pmousedevice \
 	--set vRefresh=$pvrefresh \
 	--set keyboardLayout=$pkeyboardlayout \
-	--position \"cn=policies,$ldap_base\" 
+	--position \"cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyXConfiguration))" "$pname" "object classes" $LINENO
 
@@ -4457,7 +4457,7 @@ then
 	--set mouseDevice=$pmousedevice \
 	--set vRefresh=$pvrefresh \
 	--set keyboardLayout=$pkeyboardlayout \
-	--dn \"cn=$pname,cn=policies,$ldap_base\" 
+	--dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	ckthere "cn=$pname,cn=policies" "base" "(&(objectClass=univentionPolicy)(objectClass=univentionPolicyXConfiguration))" "$pname" "object classes" $LINENO
 
@@ -4485,10 +4485,10 @@ then
 
 	ckthere "cn=$pname,cn=policies" "base" "(univentionXModule=$pxmodule)" "$pname" "xmodule" $LINENO
 
-	adminwrap $LINENO policies/xfree remove --dn \"cn=$pname,cn=policies,$ldap_base\" 
+	adminwrap $LINENO policies/xfree remove --dn \"cn=$pname,cn=policies,$ldap_base\"
 
 	cknthere "cn=$pname,cn=policies" "base" "(objectClass=*)" "$pname" "existence" $LINENO
-	
+
 	policy_append_remove_test $LINENO xfree
 fi
 
@@ -4518,7 +4518,7 @@ then
 	--set defaultGroup=\"$sdefaultgroup\" \
 	--set defaultComputerGroup=\"$sdefaultcomputergroup\" \
 	--set defaultDomainControllerGroup=\"$sdefaultdomaincontrollergroup\" \
-	--dn \"cn=default,cn=univention,$ldap_base\" 
+	--dn \"cn=default,cn=univention,$ldap_base\"
 
 	ckthere "cn=$sname,cn=univention" "base" "(univentionDefaultKdeProfiles=$sdefaultkdeprofiles)" "$sname" "default kde profiles" $LINENO
 	ckthere "cn=$sname,cn=univention" "base" "(univentionDefaultKdeProfiles=$sdefaultkdeprofiles2)" "$sname" "default kde profiles" $LINENO
@@ -4542,7 +4542,7 @@ then
 	--set defaultGroup=\"cn=Domain Users,cn=groups,$ldap_base\" \
 	--set defaultComputerGroup=\"cn=Windows Hosts,cn=groups,$ldap_base\" \
 	--set defaultDomainControllerGroup=\"cn=DC Slave Hosts,cn=groups,$ldap_base\" \
-	--dn \"cn=default,cn=univention,$ldap_base\" 
+	--dn \"cn=default,cn=univention,$ldap_base\"
 
 	ckthere "cn=$sname,cn=univention" "base" "(&(univentionDefaultKdeProfiles=none)(univentionDefaultKdeProfiles=/usr/share/univention-kde-profiles/kde.lockeddown)(univentionDefaultKdeProfiles=/usr/share/univention-kde-profiles/kde.restricted))" "$sname" "default kde profiles" $LINENO
 
@@ -4600,7 +4600,7 @@ then
 	--set printers=\"$sprinters2\" \
 	--set shares=\"$sshares\" \
 	--set shares=\"$sshares2\" \
-	--dn \"cn=default containers,cn=univention,$ldap_base\" 
+	--dn \"cn=default containers,cn=univention,$ldap_base\"
 
 	ckthere "cn=$sname,cn=univention" "base" "(univentionComputersObject=$scomputers)" "$sname" "computers" $LINENO
 
@@ -4613,11 +4613,11 @@ then
 	ckthere "cn=$sname,cn=univention" "base" "(univentionDnsObject=$sdns)" "$sname" "dns" $LINENO
 
 	ckthere "cn=$sname,cn=univention" "base" "(univentionUsersObject=$susers)" "$sname" "users" $LINENO
-	
+
 	ckthere "cn=$sname,cn=univention" "base" "(univentionSharesObject=$sshares)" "$sname" "users" $LINENO
-	
+
 	ckthere "cn=$sname,cn=univention" "base" "(univentionPrintersObject=$sprinters)" "$sname" "users" $LINENO
-	
+
 	ckthere "cn=$sname,cn=univention" "base" "(univentionComputersObject=$scomputers2)" "$sname" "computers" $LINENO
 
 	ckthere "cn=$sname,cn=univention" "base" "(univentionGroupsObject=$sgroups2)" "$sname" "groups" $LINENO
@@ -4629,9 +4629,9 @@ then
 	ckthere "cn=$sname,cn=univention" "base" "(univentionDnsObject=$sdns2)" "$sname" "dns" $LINENO
 
 	ckthere "cn=$sname,cn=univention" "base" "(univentionUsersObject=$susers2)" "$sname" "users" $LINENO
-	
+
 	ckthere "cn=$sname,cn=univention" "base" "(univentionSharesObject=$sshares2)" "$sname" "users" $LINENO
-	
+
 	ckthere "cn=$sname,cn=univention" "base" "(univentionPrintersObject=$sprinters2)" "$sname" "users" $LINENO
 
 	############################################################################
@@ -4674,7 +4674,7 @@ then
 	--remove users=\"$susers\" \
 	--remove shares=\"$sshares\" \
 	--remove printers=\"$sprinters\" \
-	--dn \"cn=$sname,cn=univention,$ldap_base\" 
+	--dn \"cn=$sname,cn=univention,$ldap_base\"
 
 	ckthere "cn=$sname,cn=univention" "base" "(univentionComputersObject=$scomputers3)" "$sname" "computers" $LINENO
 
@@ -4688,11 +4688,11 @@ then
 	ckthere "cn=$sname,cn=univention" "base" "(univentionDnsObject=$sdns3)" "$sname" "dns" $LINENO
 
 	ckthere "cn=$sname,cn=univention" "base" "(univentionUsersObject=$susers3)" "$sname" "users" $LINENO
-	
+
 	ckthere "cn=$sname,cn=univention" "base" "(univentionSharesObject=$sshares3)" "$sname" "users" $LINENO
-	
+
 	ckthere "cn=$sname,cn=univention" "base" "(univentionPrintersObject=$sprinters3)" "$sname" "users" $LINENO
-	
+
 	cknthere "cn=$sname,cn=univention" "base" "(univentionComputersObject=$scomputers)" "$sname" "computers" $LINENO
 
 	cknthere "cn=$sname,cn=univention" "base" "(univentionGroupsObject=$sgroups)" "$sname" "groups" $LINENO
@@ -4705,11 +4705,11 @@ then
 	cknthere "cn=$sname,cn=univention" "base" "(univentionDnsObject=$sdns)" "$sname" "dns" $LINENO
 
 	cknthere "cn=$sname,cn=univention" "base" "(univentionUsersObject=$susers)" "$sname" "users" $LINENO
-	
+
 	cknthere "cn=$sname,cn=univention" "base" "(univentionSharesObject=$sshares)" "$sname" "users" $LINENO
-	
+
 	cknthere "cn=$sname,cn=univention" "base" "(univentionPrintersObject=$sprinters)" "$sname" "users" $LINENO
-	
+
 	cknthere "cn=$sname,cn=univention" "base" "(univentionComputersObject=$scomputers2)" "$sname" "computers" $LINENO
 
 	cknthere "cn=$sname,cn=univention" "base" "(univentionGroupsObject=$sgroups2)" "$sname" "groups" $LINENO
@@ -4722,9 +4722,9 @@ then
 	cknthere "cn=$sname,cn=univention" "base" "(univentionDnsObject=$sdns2)" "$sname" "dns" $LINENO
 
 	cknthere "cn=$sname,cn=univention" "base" "(univentionUsersObject=$susers2)" "$sname" "users" $LINENO
-	
+
 	cknthere "cn=$sname,cn=univention" "base" "(univentionSharesObject=$sshares2)" "$sname" "users" $LINENO
-	
+
 	cknthere "cn=$sname,cn=univention" "base" "(univentionPrintersObject=$sprinters2)" "$sname" "users" $LINENO
 
 
@@ -4734,7 +4734,7 @@ then
 
 	adminwrap $LINENO settings/printermodel create --superordinate \"cn=univention,$ldap_base\" --set name=testprintermodels\
 	--append printmodel=\"\\\"fooprinter.ppd\\\" \\\"fooprinter 1 cups v2\\\"\"  \
-	--append printmodel=\"\\\"fooprinter2.ppd\\\" \\\"fooprinter 2 cups v2\\\"\"   
+	--append printmodel=\"\\\"fooprinter2.ppd\\\" \\\"fooprinter 2 cups v2\\\"\"
 
 	ckthere "cn=testprintermodels,cn=univention" "base" "(objectClass=univentionPrinterModels)" "testprintermodel" "object classes" $LINENO
 
@@ -4767,15 +4767,15 @@ then
 		--set name=testpackagessetting \
 		--append packageList=vi \
 		--append packageList=emacs
-	
+
 	ckthere "cn=testpackagessetting" "base" '(univentionPackageDefinition=vi)' settings/packages packageList	$LINENO
 	ckthere "cn=testpackagessetting" "base" '(univentionPackageDefinition=emacs)' settings/packages packageList	$LINENO
-	
+
 	adminwrap $LINENO settings/packages modify \
 		--dn \"cn=testpackagessetting,$ldap_base\" \
 		--append packageList=vim \
 		--remove packageList=emacs
-	
+
 	ckthere "cn=testpackagessetting" "base" '(univentionPackageDefinition=vi)' settings/packages packageList	$LINENO
 	ckthere "cn=testpackagessetting" "base" '(univentionPackageDefinition=vim)' settings/packages packageList	$LINENO
 	cknthere "cn=testpackagessetting" "base" '(univentionPackageDefinition=emacs)' settings/packages packageList	$LINENO
@@ -4784,7 +4784,7 @@ then
 		--dn \"cn=testpackagessetting,$ldap_base\"
 
 	cknthere "cn=testpackagessetting" "base" '(objectClass=*)' settings/packages existence	$LINENO
-	
+
 	##################################################################################################################
 	##################################################################################################################
 	# settings/printeruri
@@ -4794,15 +4794,15 @@ then
 		--set name=testprinterurisetting \
 		--append printeruri=/dev/null \
 		--append printeruri=/dev/zero
-	
+
 	ckthere "cn=testprinterurisetting" "base" '(printerURI=/dev/null)' settings/printeruri printeruri	$LINENO
 	ckthere "cn=testprinterurisetting" "base" '(printerURI=/dev/zero)' settings/printeruri printeruri	$LINENO
-	
+
 	adminwrap $LINENO settings/printeruri modify \
 		--dn \"cn=testprinterurisetting,$ldap_base\" \
 		--append printeruri=/dev/bogus \
 		--remove printeruri=/dev/zero
-	
+
 	ckthere "cn=testprinterurisetting" "base" '(printerURI=/dev/null)' settings/printeruri printeruri	$LINENO
 	ckthere "cn=testprinterurisetting" "base" '(printerURI=/dev/bogus)' settings/printeruri printeruri	$LINENO
 	cknthere "cn=testprinterurisetting" "base" '(printerURI=/dev/zero)' settings/printeruri printeruri	$LINENO
@@ -4811,7 +4811,7 @@ then
 		--dn \"cn=testprinterurisetting,$ldap_base\"
 
 	cknthere "cn=testprinterurisetting" "base" '(objectClass=*)' settings/printeruri existence	$LINENO
-	
+
 	##################################################################################################################
 	##################################################################################################################
 	# settings/sambaconfig
@@ -4830,7 +4830,7 @@ then
 	--set logonToChangePW=1 \
 	--set disconnectTime=24 \
 	--set refuseMachinePWChange=0
-	
+
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaBadLockoutAttempts=5)' testsambaconfigsetting univentionSambaBadLockoutAttempts $LINENO
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaPasswordHistory=3)' testsambaconfigsetting univentionSambaPasswordHistory $LINENO
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaRefuseMachinePWChange=0)' testsambaconfigsetting univentionSambaMachinePWChange $LINENO
@@ -4841,7 +4841,7 @@ then
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaMaxPasswordAge=60)' testsambaconfigsetting univentionSambaMaxPasswordAge $LINENO
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaLogonToChangePW=2)' testsambaconfigsetting univentionSambaLogonToChangePW $LINENO
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaDisconnectTime=24)' testsambaconfigsetting univentionDisconnectTime $LINENO
-	
+
 	adminwrap $LINENO settings/sambaconfig modify \
 	--dn \"cn=testsambaconfigsetting,$ldap_base\" \
 	--set passwordLength=10 \
@@ -4854,7 +4854,7 @@ then
 	--set logonToChangePW=0 \
 	--set disconnectTime=25 \
 	--set refuseMachinePWChange=1
-	
+
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaBadLockoutAttempts=6)' testsambaconfigsetting univentionSambaBadLockoutAttempts $LINENO
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaPasswordHistory=4)' testsambaconfigsetting univentionSambaPasswordHistory $LINENO
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaRefuseMachinePWChange=1)' testsambaconfigsetting univentionSambaMachinePWChange $LINENO
@@ -4867,7 +4867,7 @@ then
 	ckthere "cn=testsambaconfigsetting" "base" '(univentionSambaDisconnectTime=25)' testsambaconfigsetting univentionDisconnectTime $LINENO
 
 	adminwrap $LINENO settings/sambaconfig remove \
-	--dn \"cn=testsambaconfigsetting,$ldap_base\" 
+	--dn \"cn=testsambaconfigsetting,$ldap_base\"
 
 	cknthere "cn=testsambaconfigsetting" "base" '(objectClass=*)' testsambaconfigsetting existence $LINENO
 
@@ -4913,21 +4913,21 @@ then
 	# settings/prohibited_username
 	##################################################################################################################
 	##################################################################################################################
-	
+
 	adminwrap $LINENO  settings/prohibited_username create --append usernames="boot" --append usernames="nobody" --set name=testsettingprohibitedusername
 
 	ckthere "cn=testsettingprohibitedusername" "base" "(prohibitedUsername=nobody)" testsettingprohibitedusername "prohibited username" $LINENO
 	ckthere "cn=testsettingprohibitedusername" "base" "(prohibitedUsername=boot)" testsettingprohibitedusername "prohibited username" $LINENO
-	
+
 	adminwrap $LINENO  settings/prohibited_username modify --append usernames="root" --remove usernames="boot" --dn \"cn=testsettingprohibitedusername,$ldap_base\"
 
 	ckthere "cn=testsettingprohibitedusername" "base" "(prohibitedUsername=nobody)" testsettingprohibitedusername "prohibited username" $LINENO
 	cknthere "cn=testsettingprohibitedusername" "base" "(prohibitedUsername=boot)" testsettingprohibitedusername "prohibited username" $LINENO
-	
+
 	ckthere "cn=testsettingprohibitedusername" "base" "(prohibitedUsername=root)" testsettingprohibitedusername "prohibited username" $LINENO
-	
+
 	adminwrap $LINENO  settings/prohibited_username remove --dn \"cn=testsettingprohibitedusername,$ldap_base\"
-	
+
 	cknthere "cn=testsettingprohibitedusername" "base" "(objectClass=*)" testsettingprohibitedusername "existence" $LINENO
 
 	##################################################################################################################
@@ -4955,7 +4955,7 @@ then
 	#	--set baseDN=\"$ldap_base\" \
 	#	--set listWizards=shares/print \
 	#	--set listWebModules=modself \
-	#	--set selfAttributes=homeShare 
+	#	--set selfAttributes=homeShare
 	#ckthere "cn=testusersettings" "base" "(univentionAdminBaseDN=$ldap_base)" "settings/user" "baseDN" $LINENO
 	#ckthere "cn=testusersettings" "base" "(univentionAdminListWizards=shares/print)" "settings/user" "listWizards" $LINENO
 	#ckthere "cn=testusersettings" "base" "(univentionAdminListWebModules=modself)" "settings/user" "listWebModules" $LINENO
@@ -4966,7 +4966,7 @@ then
 	#	--set baseDN=\"cn=users,$ldap_base\" \
 	#	--set listWizards=users/user \
 	#	--set listWebModules=modbrowse \
-	#	--set selfAttributes=description 
+	#	--set selfAttributes=description
 	#ckthere "cn=testusersettings" "base" "(univentionAdminBaseDN=cn=users,$ldap_base)" "settings/user" "baseDN" $LINENO
 	#ckthere "cn=testusersettings" "base" "(univentionAdminListWizards=users/user)" "settings/user" "listWizards" $LINENO
 	#ckthere "cn=testusersettings" "base" "(univentionAdminListWebModules=modbrowse)" "settings/user" "listWebModules" $LINENO
@@ -4980,28 +4980,28 @@ then
 	# settings/usertemplate
 	##################################################################################################################
 	##################################################################################################################
-	
 
-	sshell="/bin/bash"                            
-	sdescription="this is some user"                      
-	ssambahome="/smb/home/<username>"                        
-	stitle="none"                            
-	sorganisation="univention"                     
-	spasswordexpiry="" # FIXME                    
-	semail="<username>@univention.de"                      
-	semail2="<username>@plopp.com"                      
-	suserexpiry="" # FIXME                      
-	sscriptpath="/smb/scripts/<username>"                      
-	sunixhome="/home/<username>"                       
-	sprofilepath="/home/<username>/profile"                   
-	shomedrive="I"                    
-	sname="testsettingsusertemplate"                         
+
+	sshell="/bin/bash"
+	sdescription="this is some user"
+	ssambahome="/smb/home/<username>"
+	stitle="none"
+	sorganisation="univention"
+	spasswordexpiry="" # FIXME
+	semail="<username>@univention.de"
+	semail2="<username>@plopp.com"
+	suserexpiry="" # FIXME
+	sscriptpath="/smb/scripts/<username>"
+	sunixhome="/home/<username>"
+	sprofilepath="/home/<username>/profile"
+	shomedrive="I"
+	sname="testsettingsusertemplate"
 
 	adminwrap $LINENO settings/usertemplate create --set name=$sname --set shell=$sshell --set description=\"$sdescription\" \
 				--set sambahome=\"$ssambahome\" --set title=$stitle --set organisation=$sorganisation --append e-mail=\"$semail\" \
 				--append e-mail=\"$semail2\" --set scriptpath=\"$sscriptpath\" --set unixhome=\"$sunixhome\" \
 				--set profilepath=\"$sprofilepath\" --set homedrive=$shomedrive
-	
+
 	ckthere	"cn=testsettingsusertemplate" "base" "(loginShell=$sshell)" testsettingsusertemplate shell $LINENO
 	ckthere	"cn=testsettingsusertemplate" "base" "(description=$sdescription)" testsettingsusertemplate description $LINENO
 	ckthere	"cn=testsettingsusertemplate" "base" "(sambaHomePath=$ssambahome)" testsettingsusertemplate sambahome $LINENO
@@ -5013,26 +5013,26 @@ then
 	ckthere	"cn=testsettingsusertemplate" "base" "(homeDirectory=$sunixhome)" testsettingsusertemplate unixhome $LINENO
 	ckthere	"cn=testsettingsusertemplate" "base" "(sambaProfilepath=$sprofilepath)" testsettingsusertemplate profilepath $LINENO
 	ckthere	"cn=testsettingsusertemplate" "base" "(sambaHomeDrive=$shomedrive)" testsettingsusertemplate profilepath $LINENO
-							  
-	sshell="/bin/ksh"                            
-	sdescription="this is some awesome user"                      
-	ssambahome="/home/<username>"                        
-	stitle="Master"                            
-	sorganisation="gummikraut"                     
-	spasswordexpiry="" # FIXME                    
-	semail3="master@<username>.plopp.com"                      
-	suserexpiry="" # FIXME                      
-	sscriptpath="/home/smbscripts/<username>"                      
-	sunixhome="/homedrive/home/<username>"                       
-	sprofilepath="/homedrive/home/<username>/profile"                   
-	shomedrive="J"                    
-	sname="testsettingsusertemplate"                         
-	
+
+	sshell="/bin/ksh"
+	sdescription="this is some awesome user"
+	ssambahome="/home/<username>"
+	stitle="Master"
+	sorganisation="gummikraut"
+	spasswordexpiry="" # FIXME
+	semail3="master@<username>.plopp.com"
+	suserexpiry="" # FIXME
+	sscriptpath="/home/smbscripts/<username>"
+	sunixhome="/homedrive/home/<username>"
+	sprofilepath="/homedrive/home/<username>/profile"
+	shomedrive="J"
+	sname="testsettingsusertemplate"
+
 	adminwrap $LINENO settings/usertemplate modify --dn \"cn=$sname,$ldap_base\" --set shell=$sshell --set description=\"$sdescription\" \
 				--set sambahome=\"$ssambahome\" --set title=$stitle --set organisation=$sorganisation --remove e-mail=\"$semail\" \
 				--append e-mail=\"$semail3\" --set scriptpath=\"$sscriptpath\" --set unixhome=\"$sunixhome\" \
 				--set profilepath=\"$sprofilepath\" --set homedrive=$shomedrive
-	
+
 	ckthere	"cn=testsettingsusertemplate" "base" "(loginShell=$sshell)" testsettingsusertemplate shell $LINENO
 	ckthere	"cn=testsettingsusertemplate" "base" "(description=$sdescription)" testsettingsusertemplate description $LINENO
 	ckthere	"cn=testsettingsusertemplate" "base" "(sambaHomePath=$ssambahome)" testsettingsusertemplate sambahome $LINENO
@@ -5057,8 +5057,8 @@ then
 	# the rest of tis test seems to be missing maybe it was accidentally deleted
 	# FIXME
 	#adminwrap $LINENO settings/xconfig_choices create \
-	
-    
+
+
 
 fi
 
@@ -5071,7 +5071,7 @@ then
 	--set dnsEntryZoneReverse=\"zoneName=$revzonename2,cn=dns,$ldap_base\" \
 	--remove ipRange=\"19.168.1.32 19.168.1.254\" \
 	--append ipRange=\"19.168.1.28 19.168.1.29\" \
-	--set network="19.168.1.0" 
+	--set network="19.168.1.0"
 
 	ckthere "cn=testnetwork" "BASE" "(objectClass=univentionNetworkClass)" "testnetwork" "object class" $LINENO
 	ckthere "cn=testnetwork" "BASE" "(univentionNetwork=19.168.1.0)" "testnetwork" "network" $LINENO
@@ -5086,7 +5086,7 @@ then
 	# remove networks/network
 	############################################################################
 
-	adminwrap $LINENO networks/network remove --dn \"cn=testnetwork,$ldap_base\" 
+	adminwrap $LINENO networks/network remove --dn \"cn=testnetwork,$ldap_base\"
 	univention-admin  networks/network remove --dn \"cn=testnetwork2,$ldap_base\" >/dev/null 2>/dev/null
 
 	cknthere "cn=testnetwork" "base" "(objectClass=*)" "testnetwork" "existence" $LINENO
@@ -5095,7 +5095,7 @@ then
 	# remove dhcp/server
 	############################################################################
 
-	adminwrap $LINENO dhcp/server remove  --superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\"	--dn \"cn=testdhcpserver,cn=testdhcpservice,cn=dhcp,$ldap_base\" 
+	adminwrap $LINENO dhcp/server remove  --superordinate \"cn=testdhcpservice,cn=dhcp,$ldap_base\"	--dn \"cn=testdhcpserver,cn=testdhcpservice,cn=dhcp,$ldap_base\"
 
 	cknthere "cn=testdhcpserver,cn=testdhcpservice,cn=dhcp" "base" "(objectclass=*)" "testdhcpserver" "existence" $LINENO
 
@@ -5103,7 +5103,7 @@ then
 	{
 		while read x
 		do
-			if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${x}" 2>/dev/null >/dev/null 
+			if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${x}" 2>/dev/null >/dev/null
 			then
 				echo "removing ${olist[${i}]}" >> "${errorlog}"
 			fi
@@ -5115,7 +5115,7 @@ then
 	# remove dhcp/service
 	############################################################################
 
-	adminwrap $LINENO dhcp/service remove 	--dn \"cn=testdhcpservice,cn=dhcp,$ldap_base\" 
+	adminwrap $LINENO dhcp/service remove 	--dn \"cn=testdhcpservice,cn=dhcp,$ldap_base\"
 
 	cknthere "cn=testdhcpservice,cn=dhcp" "base" "(objectClass=*)" "testdhcpservice" "existence" $LINENO
 
@@ -5124,7 +5124,7 @@ then
 	{
 		while read x
 		do
-			if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${x}" 2>/dev/null >/dev/null 
+			if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${x}" 2>/dev/null >/dev/null
 			then
 				echo "removing ${olist[${i}]}" >> "${errorlog}"
 			fi
@@ -5132,7 +5132,7 @@ then
 	}
 
 
-	adminwrap $LINENO dns/forward_zone remove --dn \"zoneName=$zonename,cn=dns,$ldap_base\" 
+	adminwrap $LINENO dns/forward_zone remove --dn \"zoneName=$zonename,cn=dns,$ldap_base\"
 
 	cknthere "zoneName=$zonename,cn=dns" "base" "(objectclass=*)" "testdnsforwardzone" "existence" $LINENO
 
@@ -5140,14 +5140,14 @@ then
 	{
 		while read x
 		do
-			if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${x}" 2>/dev/null >/dev/null 
+			if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${x}" 2>/dev/null >/dev/null
 			then
 				echo "removing ${olist[${i}]}" >> "${errorlog}"
 			fi
 		done
 	}
 
-	adminwrap $LINENO dns/reverse_zone remove --dn \"zoneName=$revzonename,cn=dns,$ldap_base\" 
+	adminwrap $LINENO dns/reverse_zone remove --dn \"zoneName=$revzonename,cn=dns,$ldap_base\"
 
 	cknthere "zoneName=$revzonename,cn=dns" "base" "(objectclass=*)" "testdnsreversezone" "existence" $LINENO
 fi
@@ -5297,7 +5297,7 @@ checkcomputers_windows()
 createdhcp_service()
 {
 	pos=$1
-	adminwrap $LINENO dhcp/service create 	--position \"$pos,$ldap_base\" --set service="testdhcpservice" 
+	adminwrap $LINENO dhcp/service create 	--position \"$pos,$ldap_base\" --set service="testdhcpservice"
 }
 
 checkdhcp_service()
@@ -5310,7 +5310,7 @@ createdhcp_host()
 {
 	pos=$1
 	createdhcp_service $pos
-	adminwrap $LINENO dhcp/host create 	--superordinate \"cn=testdhcpservice,$pos,$ldap_base\" --set host="testdhcphost" --set hwaddress=\"ethernet 55:44:33:22:11:00\" 
+	adminwrap $LINENO dhcp/host create 	--superordinate \"cn=testdhcpservice,$pos,$ldap_base\" --set host="testdhcphost" --set hwaddress=\"ethernet 55:44:33:22:11:00\"
 }
 
 checkdhcp_host()
@@ -5353,7 +5353,7 @@ createdhcp_server()
 {
 	pos=$1
 	createdhcp_service $pos
-	adminwrap $LINENO dhcp/server create  	--superordinate \"cn=testdhcpservice,$pos,$ldap_base\" --set server="testdhcpserver" 
+	adminwrap $LINENO dhcp/server create  	--superordinate \"cn=testdhcpservice,$pos,$ldap_base\" --set server="testdhcpserver"
 }
 
 checkdhcp_server()
@@ -5385,7 +5385,7 @@ createdhcp_subnet()
 checkdhcp_subnet()
 {
 	pos=$1
-	ckthere "cn=153.212.111.0,cn=testdhcpservice,$pos" "base" "(objectClass=*)" testdhcpsubnet existence $LINENO 
+	ckthere "cn=153.212.111.0,cn=testdhcpservice,$pos" "base" "(objectClass=*)" testdhcpsubnet existence $LINENO
 
 }
 createdhcp_sharedsubnet()
@@ -5401,13 +5401,13 @@ checkdhcp_sharedsubnet()
 	ckthere "cn=135.212.111.50,cn=153.212.111.0,cn=testdhcpservice,$pos" "base" "(objectClass=*)" testdhcpsharedsubnet existence $LINENO
 
 }
-	
+
 createdns_forward_zone()
 {
 	pos=$1
-	zrefresh="10" 
-	zzonettl="10" 
-	zretry="10" 
+	zrefresh="10"
+	zzonettl="10"
+	zretry="10"
 	zttl="20"
 	zonename="dnstestzone"
 	zcontact="root@testzone.univention.de"
@@ -5466,7 +5466,7 @@ createdns_host_record()
 	--append mx=\"$hmx\" \
 	--append mx=\"$hmx2\" \
 	--append a="$ha" \
-	--append a="$ha2"  
+	--append a="$ha2"
 }
 
 checkdns_host_record()
@@ -5481,7 +5481,7 @@ createdns_ptr_record()
 	createdns_reverse_zone $pos
 	adminwrap $LINENO dns/ptr_record create --superordinate \"zoneName=1.168.19.in-addr.arpa,$pos,$ldap_base\" \
 	--set address=5 \
-	--set ptr_record="support.univention.de." 
+	--set ptr_record="support.univention.de."
 }
 
 checkdns_ptr_record()
@@ -5490,14 +5490,14 @@ checkdns_ptr_record()
 	ckthere "relativeDomainName=5,zoneName=dnstestzone,$pos" "base" "(objectClass=*)" dns_ptr_record existence $LINENO
 
 }
-	
+
 createdns_reverse_zone()
 {
 	pos=$1
-	zrefresh="10" 
-	zzonettl="10" 
-	zretry="10" 
-	znameserver="19.168.1.201" 
+	zrefresh="10"
+	zzonettl="10"
+	zretry="10"
+	znameserver="19.168.1.201"
 	zttl="20"
 	zsubnet="19.168.1"
 	zcontact="root@testzone.univention.de"
@@ -5513,7 +5513,7 @@ createdns_reverse_zone()
 	--set subnet="$zsubnet" \
 	--set contact="$zcontact" \
 	--set expire="$zexpire" \
-	--set serial="$zserial" 
+	--set serial="$zserial"
 }
 
 checkdns_reverse_zone()
@@ -5536,7 +5536,7 @@ createdns_srv_record()
 	--set zonettl=\"$szonettl\" \
 	--append location=\"$slocation\" \
 	--append location=\"$slocation2\" \
-	--set name=\"$sname\" 
+	--set name=\"$sname\"
 }
 
 checkdns_srv_record()
@@ -5551,7 +5551,7 @@ createdns_zone_mx_record()
 	createdns_forward_zone $pos
 	adminwrap $LINENO dns/zone_mx_record create --superordinate \"zoneName=dnstestzone,$pos,$ldap_base\" \
 	--set mx=\"4 winzigweich\"
-}	
+}
 
 checkdns_zone_mx_record()
 {
@@ -5563,7 +5563,7 @@ createdns_zone_txt_record()
 	pos=$1
 	createdns_forward_zone $pos
 	adminwrap $LINENO dns/zone_txt_record create --superordinate \"zoneName=dnstestzone,$pos,$ldap_base\" \
-	--set txt="nocheintesttext" 
+	--set txt="nocheintesttext"
 }
 checkdns_zone_txt_record()
 {

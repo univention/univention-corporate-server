@@ -234,7 +234,7 @@ def init(lo, position, module, template_object=None):
 		# add template ext. attr. defaults
 		if hasattr(template_object, 'property_descriptions'):
 			for property_name, property in template_object.property_descriptions.items():
-				if not (property_name == "name" or property_name == "description"): 
+				if not (property_name == "name" or property_name == "description"):
 					default = property.base_default
 					if default and module.property_descriptions.has_key(property_name):
 						if property.multivalue:
@@ -672,7 +672,7 @@ def find_superordinate( dn, co, lo ):
 	# walk up the ldap path and stop if we find an object type that is a superordinate
 	while dn:
 		attr = lo.get( dn )
-		module = identifyOne(dn, attr) 
+		module = identifyOne(dn, attr)
 		if isSuperordinate(module):
 			return get(module)
 		dn = lo.parentDn( dn )

@@ -242,7 +242,7 @@ layout = [
 	] ),
 	Tab( _('Hosts'), _('Assigned hosts'), layout = [
 		Group( _( 'Assigned hosts' ), layout = [
-			"assignedHosts" 
+			"assignedHosts"
 		] ),
 	] ),
 ]

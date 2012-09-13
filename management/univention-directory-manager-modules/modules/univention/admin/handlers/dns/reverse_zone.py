@@ -61,8 +61,8 @@ property_descriptions={
 			identifies=1
 		),
 	'zonettl': univention.admin.property(
-	        short_description=_('Zone time to live'),
-	        long_description='',
+			short_description=_('Zone time to live'),
+			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
@@ -286,7 +286,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.expression('relativeDomainName', '@'),
@@ -307,15 +306,13 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr):
-
 	return 'dNSZone' in attr.get('objectClass', []) and\
 		['@'] == attr.get('relativeDomainName', []) and\
 		(attr['zoneName'][0].endswith(ARPA_IP4) or attr['zoneName'][0].endswith(ARPA_IP6))
 
 def quickDescription(rdn):
-
 	return unmapSubnet(rdn)
 
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+	import doctest
+	doctest.testmod()

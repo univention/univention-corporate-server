@@ -256,7 +256,7 @@ class BaseCase(TestCase):
 			sup = getattr(argument, 'superordinate')
 		if callable(sup):
 			sup = sup()
-		kwargs = { 'base': dn, 'scope': 'base', 'superordinate': sup } 
+		kwargs = { 'base': dn, 'scope': 'base', 'superordinate': sup }
 		res = supmod.lookup(self.__config, self.ldap, '', **kwargs)
 		self.__superordinate = res[0]
 		return self.__superordinate

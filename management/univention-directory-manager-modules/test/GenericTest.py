@@ -280,7 +280,7 @@ class GenericTestCase(BaseCase):
 		'''Check that the object exists.
 
 		"DN", if given, indicates the DN of the object to test.
-		
+
 		Raise "ObjectNotFoundError" if it does not exists.
 		'''
 		dn, attr = self.search(dn = dn)
@@ -359,7 +359,7 @@ class GenericTestCase(BaseCase):
 
 	def modify(self, properties, dn = None, name = None, newName = None):
 		'''Modify an object of the current module.
-		
+
 		"Properties" is a mapping from property names to values;
 		only values that should be changed need to be included.
 		"DN", if given, is the DN of the object to modify.
@@ -378,7 +378,7 @@ class GenericTestCase(BaseCase):
 
 	def remove(self, name = None, dn = None, recursive = False):
 		'''Remove an object of the current module.
-		
+
 		"Name" is the name of the object to remove (defaults to the current objects name).
 		"DN", if given, is the DN of the object to remove.
 		"Recursive" should be True to remove the object recursively.
@@ -391,7 +391,7 @@ class GenericTestCase(BaseCase):
 		if recursive:
 			cmd.recursive()
 		return cmd.run()
-	
+
 	def hookAfterCreated(self, dn):
 		'''Perform additional actions after creating an object.
 
@@ -418,7 +418,7 @@ class GenericTestCase(BaseCase):
 
 	def setUp(self):
 		'''Hook method for setting up the test fixture before exercising it.
-		
+
 		Override this method to set up values for these properties:
 		"name": The name of the object that will be tested.
 			You most definitely want to set this one.

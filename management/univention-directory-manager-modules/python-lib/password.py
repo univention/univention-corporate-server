@@ -71,4 +71,4 @@ def change(username, password):
 	object['password']=unicode(password)
 	dn=object.modify()
 
-	
+

@@ -197,5 +197,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr):
-	
+
 	return 'univentionDhcpSubnet' in attr.get('objectClass', []) and not 'univentionDhcpSharedSubnet' in attr.get('objectClass', [])

@@ -72,7 +72,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0
-		),	
+		),
 	'mac': univention.admin.property(
 			short_description=_('MAC address'),
 			long_description='',
@@ -325,6 +325,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionThinClient' in attr.get('objectClass', [])
 

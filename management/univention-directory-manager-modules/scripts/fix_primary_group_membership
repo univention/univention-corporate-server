@@ -44,33 +44,33 @@ ONLYUSER=""
 ONLYCOMPUTER=""
 while [ -n "$1" ]
 do
-        case "$1" in
-        -h|--help)
-                usage 0
-                ;;
-        -c)
-                ONLYCOMPUTER="1"
-                shift
-                ;;
-        -u)
-                ONLYUSER="1"
-				shift
-                ;;
-        -f)
-                FORCE="1"
-				shift
-                ;;
-        --)
-                shift
-                break
-                ;;
-        -*)
-                usage 2 >&2
-                ;;
-        *)
-                break
-                ;;
-        esac
+	case "$1" in
+		-h|--help)
+		usage 0
+		;;
+		-c)
+		ONLYCOMPUTER="1"
+		shift
+		;;
+		-u)
+		ONLYUSER="1"
+		shift
+		;;
+		-f)
+		FORCE="1"
+		shift
+		;;
+		--)
+		shift
+		break
+		;;
+		-*)
+		usage 2 >&2
+		;;
+		*)
+		break
+		;;
+	esac
 done
 
 

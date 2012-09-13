@@ -71,7 +71,7 @@ class SettingsUserTemplateTestCase(GenericTestCase):
 			'e-mail': {'append': email[2:],
 				   'remove': email[:1]},
 			}
-		
+
 
 
 def suite():

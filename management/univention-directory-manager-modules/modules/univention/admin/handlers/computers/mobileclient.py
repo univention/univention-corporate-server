@@ -241,15 +241,15 @@ property_descriptions={
 			identifies=0
 		),
 	'reinstalloption': univention.admin.property(
-            short_description=_('additional start options'),
-            long_description='',
-            syntax=univention.admin.syntax.string,
-            multivalue=0,
-            options=[],
-            required=0,
-            may_change=1,
-            identifies=0
-        ),
+			short_description=_('additional start options'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 
 	'instprofile': univention.admin.property(
 			short_description=_('Name of installation profile'),
@@ -410,7 +410,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				if res:
 					self['primaryGroup']=res
 
-
 #		self.save()
 
 	def _ldap_pre_create(self):
@@ -451,7 +450,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ocs.extend(['posixAccount','shadowAccount'])
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))
-		
+
 		if self.modifypassword or self['password']:
 			if 'kerberos' in self.options:
 				krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
@@ -525,7 +524,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_ldap_pre_modify()
 		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
 
-
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
 		self.nagios_ldap_modlist(ml)
@@ -558,8 +556,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
 		return ml
-
-
 
 	def cleanup(self):
 		self.open()
@@ -594,8 +590,8 @@ def rewrite(filter, mapping):
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	res=[]
 	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
@@ -617,7 +613,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 			res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
-def identify(dn, attr, canonical=0):
-	
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionMobileClient' in attr.get('objectClass', [])
 
+def identify(dn, attr, canonical=0):
+	return 'univentionHost' in attr.get('objectClass', []) and 'univentionMobileClient' in attr.get('objectClass', [])

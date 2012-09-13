@@ -66,7 +66,7 @@ if len(sys.argv) > 1:
 	else:
 		print_usage()
 		sys.exit()
-	
+
 # What we gonna do:
 # 1. list all objectClass=univentionWindows
 # 2. look if Flag M is set, if yes query

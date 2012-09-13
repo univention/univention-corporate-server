@@ -48,7 +48,7 @@ if baseConfig['interfaces/eth0/netmask'] != "255.255.0.0":
 lo=ldap.open('localhost', 7389)
 bindpw=open('/etc/ldap.secret').read()
 if bindpw[-1] == '\n':
-        bindpw=bindpw[0:-1]
+	bindpw = bindpw[0:-1]
 	lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
 
 computers=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionHost', ['aRecord'])
@@ -63,5 +63,3 @@ for i in range(0,len(computers)):
 			entry.reverse()
 			entry=string.join(entry,'.')
 			lo.modrdn_s(reverse[0][0],'relativeDomainName=%s' % entry)
-
-

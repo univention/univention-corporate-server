@@ -1677,24 +1677,24 @@ class MAC_AddressList( select ):
 		return text
 
 class DNS_ForwardZone( UDM_Objects ):
- 	description=_('DNS forward zone')
+	description=_('DNS forward zone')
 	udm_modules = ( 'dns/forward_zone', )
 	empty_value = True
 	size = 'TwoThirds'
 
 class DNS_ReverseZone( UDM_Objects ):
- 	description=_('DNS reverse zone')
+	description=_('DNS reverse zone')
 	udm_modules = ( 'dns/reverse_zone', )
 	empty_value = True
 	size = 'TwoThirds'
 
 class dnsEntry( complex ):
- 	description=_('DNS Entry')
+	description=_('DNS Entry')
 	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'IP address' ), IP_AddressList ) )
 	min_elements = 1
 
 class dnsEntryReverse( complex ):
- 	description=_('DNS Entry Reverse')
+	description=_('DNS Entry Reverse')
 	subsyntaxes = ( ( _( 'DNS reverse zone' ), DNS_ReverseZone ), ( _( 'IP address' ), IP_AddressList ) )
 	min_elements = 1
 
@@ -2115,7 +2115,7 @@ class language(select):
 		('yi_US', 'Yiddish/USA'),
 		('yi_US.UTF-8', 'Yiddish/USA(UTF-8)'),
 		('zu_ZA', 'Zulu/South Africa'),
-		('zu_ZA.UTF-8', 'Zulu/South Africa(UTF-8)'),	
+		('zu_ZA.UTF-8', 'Zulu/South Africa(UTF-8)'),
 	]
 
 class Month(select):
@@ -2469,7 +2469,7 @@ class LDAP_Search( select ):
 
 		addEmptyValue: If set to True an empty value is add to the list
 		of choices
-	    """
+		"""
 		self.syntax = syntax_name
 		if filter is not None:
 			# programmatically
@@ -2687,7 +2687,7 @@ class PrinterURI( complex ):
 			if p:
 				parsed.append(p)
 		return parsed
-	
+
 
 
 if __name__ == '__main__':

@@ -71,7 +71,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0
-		),	
+		),
 	'password': univention.admin.property(
 			short_description=_('Machine Password'),
 			long_description='',
@@ -149,7 +149,7 @@ class object(univention.admin.handlers.simpleLdap):
 		al.append(('sambaSID', [self.machineSid]))
 		al.append(('sambaAcctFlags', [acctFlags.decode()]))
 		al.append(('sn', self['name']))
-			
+
 		al.insert(0, ('objectClass', ocs))
 
 		return al
@@ -161,7 +161,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if hasattr(self, 'uid') and self.uid:
 			univention.admin.allocators.confirm(self.lo, self.position, 'uid', self.uid)
-			
+
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('password'):
@@ -174,7 +174,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_modlist(self):
 		ml=super(object, self)._ldap_modlist()
-		
+
 		if self.hasChanged('name') and self['name']:
 			error=0
 			requested_uid="%s$" % self['name']
@@ -183,7 +183,7 @@ class object(univention.admin.handlers.simpleLdap):
 				self.uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
 			except Exception, e:
 				error=1
-				
+
 			if not self.uid or error:
 				del(self.info['name'])
 				self.oldinfo={}
@@ -194,14 +194,14 @@ class object(univention.admin.handlers.simpleLdap):
 
 			self.alloc.append(('uid', self.uid))
 			ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
-			
+
 		if self.modifypassword:
 			password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 			ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 		return ml
-	
+
 	def cancel(self):
 		for i,j in self.alloc:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i,j) )
@@ -226,6 +226,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
+
 	return 'sambaSamAccount' in attr.get('objectClass', []) and\
 		'[I          ]' in attr.get('sambaAcctFlags', [])

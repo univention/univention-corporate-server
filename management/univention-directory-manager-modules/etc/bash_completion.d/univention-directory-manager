@@ -3,8 +3,8 @@
 _uniudm () {
 	local cur prev opts
 	COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
 
 	if [ $COMP_CWORD -gt 2 ] ; then
 		COMPREPLY=( )

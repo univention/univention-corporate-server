@@ -888,7 +888,7 @@ layout = [
 			[ 'title', 'firstname', 'lastname'],
 			[ 'username', 'description' ],
 			'password',
- 			[ 'overridePWHistory', 'overridePWLength' ] ,
+			[ 'overridePWHistory', 'overridePWLength' ] ,
 			'mailPrimaryAddress',
 			] ),
 		Group( _( 'Personal information' ), layout = [
@@ -914,7 +914,7 @@ layout = [
 		Group( _( 'Locking and deactivation' ), layout = [
 			[ 'disabled', 'locked'],
 			[ 'userexpiry', 'passwordexpiry' ],
-			'pwdChangeNextLogin', 
+			'pwdChangeNextLogin',
 			] ),
 		Group( _( 'Windows' ), _( 'Windows account settings' ), layout = [
 			[ 'homedrive', 'sambahome' ],
@@ -1029,16 +1029,17 @@ def logonHoursMap(logontimes):
 	# create a hexnumber from each 8-bit-segment
 	ret=""
 	for i in range(0,21):
-	        val=0
-	        exp=7
-	        for j in range((i*8), (i*8)+8):
-	                if not (logontimes[j]=="0"):
-	                        val+=2**exp
-	                exp-=1
+		val = 0
+		exp = 7
+		for j in range((i*8), (i*8)+8):
+			if not (logontimes[j]=="0"):
+				val += 2**exp
+			exp -= 1
 		# we now have: 0<=val<=255
-	        hx=hex(val)[2:4]
-	        if len(hx)==1: hx="0"+hx
-	        ret+=hx
+		hx = hex(val)[2:4]
+		if len(hx) == 1:
+			hx = "0" + hx
+		ret += hx
 
 	return ret
 
@@ -1048,10 +1049,10 @@ def logonHoursUnmap(logontimes):
 	times=logontimes[0][:42]
 	while len(times)<42:
 		times=times
-        ret=""
-        for i in range(0,42,2):
-                val=int(times[i:i+2],16)
-                ret+=intToBinary(val)
+	ret=""
+	for i in range(0,42,2):
+		val=int(times[i:i+2],16)
+		ret+=intToBinary(val)
 
 	# reverse order of the bits in each byte. See above for details
 	newtime = ""
@@ -1064,15 +1065,15 @@ def logonHoursUnmap(logontimes):
 	return filter( lambda i: newtime[ i ] == '1', range( 168 ) )
 
 def intToBinary(val):
-        ret=""
-        while val>0:
-                ret=str(val&1)+ret
-                val=val>>1
-        # pad with leading 0s until length is n*8
-        if ret=="": ret="0"
-        while not (len(ret)%8==0):
-                ret="0"+ret
-        return ret
+	ret=""
+	while val>0:
+		ret=str(val&1)+ret
+		val=val>>1
+	# pad with leading 0s until length is n*8
+	if ret=="": ret="0"
+	while not (len(ret)%8==0):
+		ret="0"+ret
+	return ret
 
 def GMTOffset():
 	# returns the difference in hours between local time and GMT (is -1 for CET and CEST)
@@ -1371,12 +1372,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if self.oldattr.has_key('krb5ValidEnd'):
 				krb5validend=self.oldattr['krb5ValidEnd'][0]
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5validend is: %s' %
-						       krb5validend)
+						krb5validend)
 				self.info['userexpiry']="%s-%s-%s"%(krb5validend[0:4],krb5validend[4:6],krb5validend[6:8])
 		elif 'samba' in self.options:
 			if self.oldattr.has_key('sambaKickoffTime'):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime is: %s' %
-						       self.oldattr['sambaKickoffTime'][0])
+						self.oldattr['sambaKickoffTime'][0])
 				self.info['userexpiry']=time.strftime("%Y-%m-%d",time.gmtime(long(self.oldattr['sambaKickoffTime'][0])+(3600*24)))
 
 		uid=self.oldattr.get('uid',[''])[0]
@@ -1623,11 +1624,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						'1' in shadowExpire
 			elif self['disabled'] == 'posix':
 				return 'D' in acctFlags or \
-				       '254' in krb5Flags or \
+						'254' in krb5Flags or \
 						not '1' in shadowExpire
 			elif self['disabled'] == 'windows_kerberos':
 				return not 'D' in acctFlags or \
-				       '126' in krb5Flags or \
+						'126' in krb5Flags or \
 						'1' in shadowExpire
 			elif self['disabled'] == 'windows_posix':
 				return not 'D' in acctFlags or \
@@ -1639,7 +1640,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						not '1' in shadowExpire
 			else: #enabled
 				return 'D' in acctFlags or \
-				       '254' in krb5Flags or \
+						'254' in krb5Flags or \
 						'1' in shadowExpire
 		elif key == 'locked':
 			password  = self['password']
@@ -1648,16 +1649,16 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				return False
 			if self['locked'] == 'all':
 				return not self.__pwd_is_locked(password) or \
-				       not 'L' in acctFlags
+						not 'L' in acctFlags
 			elif self['locked'] == 'windows':
 				return self.__pwd_is_locked(password) or \
-				       not 'L' in acctFlags
+						not 'L' in acctFlags
 			elif self['locked'] == 'posix':
 				return not self.__pwd_is_locked(password) or \
-				       'L' in acctFlags
+						'L' in acctFlags
 			else:
 				return self.__pwd_is_locked(password) or \
-				       'L' in acctFlags
+						'L' in acctFlags
 
 		return super(object, self).hasChanged(key)
 
@@ -1870,7 +1871,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				ocs.extend(['organizationalPerson','inetOrgPerson'])
 			if 'ldap_pwd' in self.options:
 				ocs.extend(['simpleSecurityObject','uidObject'])
- 			if 'kerberos' in self.options:
+			if 'kerberos' in self.options:
 				domain=univention.admin.uldap.domain(self.lo, self.position)
 				realm=domain.getKerberosRealm()
 				if realm:
@@ -2029,7 +2030,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			pwd_change_next_login=2
 
 		if self.hasChanged('username'):
- 			if 'kerberos' in self.options:
+			if 'kerberos' in self.options:
 				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 
 		if self.modifypassword:
@@ -2069,8 +2070,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						pwdCheck.check(self['password'])
 					except ValueError, e:
 						raise univention.admin.uexceptions.pwQuality, str(e).replace('W?rterbucheintrag','Wörterbucheintrag').replace('enth?lt', 'enthält')
-						
-					
+
+
 			if pwhistoryPolicy != None and pwhistoryPolicy['expiryInterval'] != None and len(pwhistoryPolicy['expiryInterval']) > 0:
 				try:
 					expiryInterval=int(pwhistoryPolicy['expiryInterval'])
@@ -2225,7 +2226,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if self.hasChanged('locked'):
 			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options:
 				# if self.modifypassword is set the password was already locked
-				if not self.modifypassword: 
+				if not self.modifypassword:
 					if self['locked'] in ['all', 'posix']:
 						password_disabled = self.__pwd_locked(self['password'])
 						ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
@@ -2627,7 +2628,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				self.alloc.append(('sid', userSid))
 			except univention.admin.uexceptions.noLock, e:
 				raise univention.admin.uexceptions.sidAlreadyUsed, ': %s' % self['sambaRID']
-		
+
 		else:
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
@@ -2727,7 +2728,6 @@ def rewrite(filter, mapping):
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.conjunction('|', [
 			univention.admin.filter.conjunction('&', [
@@ -2758,20 +2758,19 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-
 	if type(attr.get('uid',[])) == type([]) and len(attr.get('uid',[]))>0 and ('$' in attr.get('uid',[])[0]):
 		return False
 
 	return ((('posixAccount' in attr.get('objectClass', [])
-			  and 'shadowAccount' in attr.get('objectClass', []))
-			 or 'univentionMail' in attr.get('objectClass', [])
-			 or 'sambaSamAccount' in attr.get('objectClass', [])
-			 or 'simpleSecurityObject' in attr.get('objectClass', [])
-			 or
-			 ('person' in attr.get('objectClass', [])
-			  and	'organizationalPerson' in attr.get('objectClass', [])
-			  and 'inetOrgPerson' in attr.get('objectClass', [])))
-			and not '0' in attr.get('uidNumber', [])
-			and not '$' in attr.get('uid',[])
-		        and not 'univentionHost' in attr.get('objectClass', [])
-			)
+		and 'shadowAccount' in attr.get('objectClass', []))
+		or 'univentionMail' in attr.get('objectClass', [])
+		or 'sambaSamAccount' in attr.get('objectClass', [])
+		or 'simpleSecurityObject' in attr.get('objectClass', [])
+		or
+		('person' in attr.get('objectClass', [])
+			and	'organizationalPerson' in attr.get('objectClass', [])
+			and 'inetOrgPerson' in attr.get('objectClass', [])))
+		and not '0' in attr.get('uidNumber', [])
+		and not '$' in attr.get('uid',[])
+		and not 'univentionHost' in attr.get('objectClass', [])
+		)

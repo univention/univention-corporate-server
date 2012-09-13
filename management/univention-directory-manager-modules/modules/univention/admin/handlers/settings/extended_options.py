@@ -230,7 +230,7 @@ class object(univention.admin.handlers.simpleLdap):
 						ml.append( ('univentionUDMOptionTranslation%s;entry-%s' % (transKey, lang), oldlist[lang], newlist[lang]) )
 
 		return ml
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionUDMOption')

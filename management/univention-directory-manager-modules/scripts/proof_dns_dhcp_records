@@ -44,7 +44,7 @@ baseDN=baseConfig['ldap/base']
 lo=ldap.open('localhost', 7389)
 bindpw=open('/etc/ldap.secret').read()
 if bindpw[-1] == '\n':
-        bindpw=bindpw[0:-1]
+	bindpw = bindpw[0:-1]
 	lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
 
 # check for dhcp records without matching computer object
@@ -57,7 +57,7 @@ for comp in computers:
 	mac = comp[1]["dhcpHWAddress"][0]
 	if mac.find(" ")>=0:
 		mac = mac.split(" ")[1]
-	
+
 	match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionHost)(macAddress=%s))'%mac,[])
 
 	if len(match_cmp_rec)==0:
@@ -95,7 +95,7 @@ for comp in computers:
 		parts = comp[1]['pTRRecord'][0].split(".")
 		relative_domain_name = parts[0]
 		zone_name = ".".join(parts[1:-1])
-		
+
 		# check if there is a corresponding valid forward entry for this object
 		if deadEndRecords.has_key(relative_domain_name + "." + zone_name):
 			print "\t%s"%comp[0]

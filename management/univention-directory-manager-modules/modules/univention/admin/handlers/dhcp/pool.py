@@ -196,7 +196,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return [
 			('objectClass', ['top', 'univentionDhcpPool']),
 		]
-	
+
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		if self.hasChanged(['known_clients', 'unknown_clients', 'dynamic_bootp_clients', 'all_clients']):
@@ -207,7 +207,7 @@ class object(univention.admin.handlers.simpleLdap):
 				new.remove(self.oldinfo['known_clients']+' known clients')
 			if self.info.has_key('known_clients') and self.info['known_clients']:
 				new.append(self.info['known_clients']+' known clients')
-				
+
 			if self.oldinfo.has_key('unknown_clients') and self.oldinfo['unknown_clients']:
 				new.remove(self.oldinfo['unknown_clients']+' unknown clients')
 			if self.info.has_key('unknown_clients') and self.info['unknown_clients']:
@@ -217,12 +217,12 @@ class object(univention.admin.handlers.simpleLdap):
 				new.remove(self.oldinfo['dynamic_bootp_clients']+' dynamic bootp clients')
 			if self.info.has_key('dynamic_bootp_clients') and self.info['dynamic_bootp_clients']:
 				new.append(self.info['dynamic_bootp_clients']+' dynamic bootp clients')
-			
+
 			if self.oldinfo.has_key('all_clients') and self.oldinfo['all_clients']:
 				new.remove(self.oldinfo['all_clients']+' all clients')
 			if self.info.has_key('all_clients') and self.info['all_clients']:
 				new.append(self.info['all_clients']+' all clients')
-				
+
 			ml.append(('dhcpPermitList', old, new))
 		if self.info.get('failover_peer', None) and not self.info.get('dynamic_bootp_clients', None) == 'deny':
 			raise univention.admin.uexceptions.bootpXORFailover

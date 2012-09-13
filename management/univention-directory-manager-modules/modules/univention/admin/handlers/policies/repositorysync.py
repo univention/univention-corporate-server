@@ -43,9 +43,9 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 class repositorySyncFixedAttributes(univention.admin.syntax.select):
-	name='repositorySyncFixedAttributes'
-	choices=[
-		('univentionRepositoryCron',_('Repository synchronisation')),
+	name = 'repositorySyncFixedAttributes'
+	choices = [
+			('univentionRepositoryCron',_('Repository synchronisation')),
 		]
 
 module='policies/repositorysync'
@@ -217,13 +217,13 @@ class object(univention.admin.handlers.simplePolicy):
 				for i in range(0, len(cron[key])):
 					if str(cron[key][i]) != '*':
 						univention.admin.handlers.simplePolicy.__getitem__(self,key).append(str(cron[key][i]))
-						
- 	def __getitem__(self, key):
+
+	def __getitem__(self, key):
 		value=univention.admin.handlers.simplePolicy.__getitem__(self,key) # need this first to initialize policy-results
- 		# set cron if we are in resultmode
+		# set cron if we are in resultmode
 		if self.resultmode and hasattr(self,'policy_attrs') and self.policy_attrs.has_key('univentionRepositoryCron') \
 			and (not self.cron_parsed):
- 			self.parse_cron(self.policy_attrs['univentionRepositoryCron']['value'][0])
+			self.parse_cron(self.policy_attrs['univentionRepositoryCron']['value'][0])
 			if not self.cron_parsed:
 				self.save()
 				self.changes=0
@@ -231,7 +231,6 @@ class object(univention.admin.handlers.simplePolicy):
 
 			value=univention.admin.handlers.simplePolicy.__getitem__(self,key) # need to reload
 		return value
-
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
@@ -257,7 +256,7 @@ class object(univention.admin.handlers.simplePolicy):
 			cron=univention.admin.cron.cron_create(list)
 			ml.append(('univentionRepositoryCron', self.oldattr.get('univentionRepositoryCron', []), [cron]))
 		return ml
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [

@@ -129,7 +129,7 @@ Ein Fehler in einem der Testfälle kann z.B. zu folgendem Output führen:
 
 ,----
 | testing module computers/trustaccount ... FAIL
-| 
+|
 | ======================================================================
 | FAIL: testing module computers/trustaccount
 | ----------------------------------------------------------------------
@@ -143,10 +143,10 @@ Ein Fehler in einem der Testfälle kann z.B. zu folgendem Output führen:
 |   File "/root/TestComputerTrustAccount.py", line 61, in __checkPassword
 |     raise PropertyInvalidError(self, dn, prop, nt1, lm2)
 | PropertyInvalidError: Incorrect property password (Machine Password) of object testtrustaccount at DN cn=testtrustaccount,cn=computers,dc=ucs,dc=local (module computers/trustaccount). Expected: "0587176CF315F6A943BC69773103006A" Actual: "51D494924B82637F417EAF50CFAC29C3"
-| 
+|
 | ----------------------------------------------------------------------
 | Ran 1 test in 4.688s
-| 
+|
 | FAILED (failures=1)
 `----
 
@@ -199,7 +199,7 @@ User-Tests:
 | testing module users/user(PERSON) ... FAIL
 | testing module users/user(SAMBA) ... FAIL
 | testing module users/user() ... ok
-| 
+|
 | ======================================================================
 | FAIL: testing module users/user(MAIL)
 | ----------------------------------------------------------------------
@@ -215,8 +215,8 @@ User-Tests:
 | ProcessFailedError: Failed to create object (module users/user)
 | subprocess /usr/sbin/univention-admin failed (3):
 | E: invalid Options: Need one of Posix Account, Samba Account or Personal Information in options to create user.
-| 
-| 
+|
+|
 | ======================================================================
 | FAIL: testing module users/user(PERSON)
 | ----------------------------------------------------------------------
@@ -242,8 +242,8 @@ User-Tests:
 |   File "modules/univention/admin/handlers/users/user.py", line 1624, in hasChanged
 |   File "modules/univention/admin/handlers/users/user.py", line 1327, in __pwd_is_disabled
 | AttributeError: 'NoneType' object has no attribute 'startswith'
-| 
-| 
+|
+|
 | ======================================================================
 | FAIL: testing module users/user(SAMBA)
 | ----------------------------------------------------------------------
@@ -259,11 +259,11 @@ User-Tests:
 | ProcessFailedError: Failed to create object (module users/user)
 | subprocess /usr/sbin/univention-admin failed (3):
 | E: Object exists
-| 
-| 
+|
+|
 | ----------------------------------------------------------------------
 | Ran 10 tests in 101.676s
-| 
+|
 | FAILED (failures=3)
 `----
 
@@ -291,7 +291,7 @@ Als letztes Beispiel hier die Ausgabe einer Suche nach übriggebliebenen Locks:
 
 ,----
 | searching remaining locks ... FAIL
-| 
+|
 | ======================================================================
 | FAIL: searching remaining locks
 | ----------------------------------------------------------------------
@@ -300,10 +300,10 @@ Als letztes Beispiel hier die Ausgabe einer Suche nach übriggebliebenen Locks:
 |     raise LeftoverLocks(dns, self)
 | LeftoverLocks: There were leftover locks in:
 | cn=00:12:25:34:44:32,cn=mac,cn=temporary,cn=univention,dc=ucs,dc=local
-| 
+|
 | ----------------------------------------------------------------------
 | Ran 1 test in 0.002s
-| 
+|
 | FAILED (failures=1)
 `----
 

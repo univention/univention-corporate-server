@@ -49,10 +49,10 @@ class acctFlags:
 			if not letter in string.whitespace:
 				flags[letter]=1
 		self.__flags=flags
-	
+
 	def __setitem__(self, key, value):
 		self.__flags[key]=value
-	
+
 	def __getitem__(self, key):
 		return self.__flags[key]
 

@@ -128,17 +128,17 @@ class object(univention.admin.handlers.simpleLdap):
 			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
-		
-	def _ldap_post_create(self):	
+
+	def _ldap_post_create(self):
 		self._updateZone()
-		
+
 	def _ldap_post_modify(self):
 		if self.hasChanged(self.descriptions.keys()):
 			self._updateZone()
 
 	def _ldap_post_remove(self):
 		self._updateZone()
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [

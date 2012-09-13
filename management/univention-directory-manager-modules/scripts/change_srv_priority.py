@@ -41,9 +41,9 @@ import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.srv_record
 import univention.config_registry
 
-univention.admin.modules.update()                                                                                                                                                                  
-                                                                                                                                                                                                   
-# update choices-lists which are defined in LDAP                                                                                                                                                   
+univention.admin.modules.update()
+
+# update choices-lists which are defined in LDAP
 univention.admin.syntax.update_choices()
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -88,10 +88,7 @@ for forward_zone in forward_zones:
 						l.append(srv_record['location'][i])
 
 				srv_record['location']=l
-				
+
 				# Change the objects
 				print 'Modify: %s' % srv_record.dn
 				srv_record.modify()
-
-
-

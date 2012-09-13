@@ -313,6 +313,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionNetworkClass' in attr.get('objectClass', [])
 

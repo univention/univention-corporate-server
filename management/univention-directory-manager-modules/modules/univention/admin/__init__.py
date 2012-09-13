@@ -53,7 +53,7 @@ def ucr_overwrite_properties( module, lo ):
 	ucr_prefix = ucr_property_prefix % module.module
 	if not module:
 		return
-	
+
 	for var in configRegistry.keys():
 		if not var.startswith( ucr_prefix ):
 			continue

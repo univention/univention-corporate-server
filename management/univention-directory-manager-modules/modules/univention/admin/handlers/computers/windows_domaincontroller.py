@@ -332,7 +332,7 @@ layout = [
 	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
 		'dnsEntryZoneAlias'
 		] ),
- ]
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -437,8 +437,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				if res:
 					self['primaryGroup']=res
 					#self.save()
-
-
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
@@ -637,8 +635,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		return ml
 
-
-
 	def cleanup(self):
 		self.open()
 		self.nagios_cleanup()
@@ -649,14 +645,15 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i,j) )
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
+
 def rewrite(filter, mapping):
 	if filter.variable == 'ip':
 		filter.variable='aRecord'
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	res=[]
 	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
@@ -678,6 +675,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
 			res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionWindows' in attr.get('objectClass', []) and 'windows_domaincontroller' in attr.get('univentionServerRole', [])

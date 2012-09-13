@@ -59,19 +59,19 @@ _type2scope = {	'uidNumber':			'base',
 				'aRecord':				'domain',
 				'mac':					'domain',
 				'groupName':			'domain' }
-	
+
 
 def requestUserSid(lo, position, uid_s):
 	uid=int(uid_s)
 	algorithmical_rid_base=1000
 	rid=str(uid*2+algorithmical_rid_base)
-	
+
 	searchResult=lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 	domainsid=searchResult[0][1]['sambaSID'][0]
 	sid=domainsid+'-'+rid
 
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: request user sid. SID = %s-%s' % (domainsid,rid))
-	
+
 	return request(lo, position, 'sid', sid)
 
 
@@ -83,7 +83,7 @@ def requestGroupSid(lo, position, gid_s):
 	searchResult=lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 	domainsid=searchResult[0][1]['sambaSID'][0]
 	sid=domainsid+'-'+rid
-	
+
 	return request(lo, position, 'sid', sid)
 
 
@@ -156,7 +156,7 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 		if not lo.searchDn(base=searchBase, filter='%s=%s' % (attr, value)):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s'% value)
 			return value
-	
+
 	raise univention.admin.uexceptions.noLock, _(': type was %s')%type
 
 

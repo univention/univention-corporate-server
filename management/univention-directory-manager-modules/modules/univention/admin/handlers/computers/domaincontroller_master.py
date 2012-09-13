@@ -357,7 +357,7 @@ layout = [
 	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
 		'dnsEntryZoneAlias'
 		] ),
- ]
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -430,9 +430,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.newPrimaryGroupDn=0
 		self.oldPrimaryGroupDn=0
 
-
 		if self.dn:
-
 			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
 				primaryGroupNumber=self.oldattr.get('gidNumber',[''])[0]
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'primary group number = %s' % (primaryGroupNumber))
@@ -463,7 +461,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				if res:
 					self['primaryGroup']=res
 					#self.save()
-
 
 
 	def _ldap_pre_create(self):
@@ -593,7 +590,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_ldap_pre_modify()
 		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
 
-
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
 
@@ -664,8 +660,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		return ml
 
-
-
 	def cleanup(self):
 		self.open()
 		self.nagios_cleanup()
@@ -692,14 +686,15 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			return result
 		return None
 
+
 def rewrite(filter, mapping):
 	if filter.variable == 'ip':
 		filter.variable='aRecord'
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	res=[]
 	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
@@ -721,6 +716,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
 			res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionDomainController' in attr.get('objectClass', []) and 'master' in attr.get('univentionServerRole', [])

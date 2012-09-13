@@ -198,7 +198,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.dn:
 			self['name']=ldap.explode_dn(self.dn,1)[0]
 
-			
+
 			self['dnsForwardZone']=''
 			self['dnsReverseZone']=''
 			forward=self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))')
@@ -243,7 +243,7 @@ class object(univention.admin.handlers.simpleLdap):
 		directoryObject['groups'] = 'cn=groups,%s' % self.dn
 		directoryObject['computers'] = 'cn=computers,%s' % self.dn
 		directoryObject.create()
-			
+
 		rootSambaSID=None
 		while rootSambaSID == None:
 			rootSambaSID=univention.admin.allocators.requestUserSid(self.lo, tmpPosition, '0')

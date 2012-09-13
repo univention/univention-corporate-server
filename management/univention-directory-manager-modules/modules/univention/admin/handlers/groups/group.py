@@ -235,7 +235,7 @@ layout = [
 		]),
 		]),
 	Tab( _( 'Mail' ), _( 'Mail settings of this group' ), advanced = True, layout = [
-		'mailAddress', 
+		'mailAddress',
 		'allowedEmailUsers',
 		'allowedEmailGroups',
 		] ),
@@ -659,7 +659,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if uniqueMemberAdd:
 				ml.append( ( 'uniqueMember', '', uniqueMemberAdd ) )
 			if memberUidRemove:
-				oldMemberUids = self.oldattr.get( 'memberUid', () ) 
+				oldMemberUids = self.oldattr.get( 'memberUid', () )
 				memberUidRemove = adaptCase( memberUidRemove, oldMemberUids )
 				ml.append( ( 'memberUid', memberUidRemove, '' ) )
 			if memberUidAdd:

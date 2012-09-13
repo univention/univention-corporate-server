@@ -88,7 +88,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 			return locktime
 		except 'f':
 			pass
-	
+
 	# locking failed
 	raise univention.admin.uexceptions.noLock
 
@@ -110,19 +110,19 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 		return locktime
 	except 'f':
 		pass
-	
+
 	# locking failed
 	raise univention.admin.uexceptions.noLock
 
 def unlock(lo, position, type, value, scope='domain'):
-	
+
 	_d=univention.debug.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))
 	dn=lockDn(lo, position, type, value, scope)
 	try:
 		lo.delete(dn, exceptions=1)
 	except ldap.NO_SUCH_OBJECT:
 		pass
-	
+
 def getLock(lo, position, type, value, scope='domain'):
 	dn=lockDn(lo, position, type, value, scope)
 	try:
