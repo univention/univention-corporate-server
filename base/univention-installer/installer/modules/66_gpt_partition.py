@@ -2370,7 +2370,7 @@ class object(content):
 			self.add_elem('BT_back', button(_('F11-Back'),self.minY+30,self.minX,30)) #7
 			self.add_elem('BT_next', button(_('F12-Next'),self.minY+30,self.minX+(self.width)-37,30)) #8
 
-		def get_col(word, width, align='r'):
+		def get_col(self, word, width, align='r'):
 			# convert utf-8 input to unicode → len works also with umlauts
 			word = word.decode('utf-8')
 			wspace = u' '*width
