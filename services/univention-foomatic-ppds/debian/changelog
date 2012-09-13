@@ -1,0 +1,5 @@
+univention-foomatic-ppds (1.0.0-1) unstable; urgency=low
+
+  * Split from univention-printserver (Bug #28494)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 Sep 2012 14:47:35 +0200

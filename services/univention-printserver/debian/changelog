@@ -1,6 +1,7 @@
 univention-printserver (6.0.8-1) unstable; urgency=low
 
   * Fix CUPS netmask handling (Bug #26058)
+  * Split univention-foomatic-ppds into own source paket (Bug #28494)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 13 Sep 2012 14:47:35 +0200
 

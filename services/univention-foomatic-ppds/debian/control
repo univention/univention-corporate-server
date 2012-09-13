@@ -1,0 +1,21 @@
+Source: univention-foomatic-ppds
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 7),
+ ucslint,
+ foomatic-db-gutenprint,
+ foomatic-db-engine,
+ foomatic-db
+Standards-Version: 3.8.2
+
+Package: univention-foomatic-ppds
+Architecture: all
+Depends: ${misc:Depends}
+Description: UCS - foomatic ppds
+ This packages provides foomatic printer ppds.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
