@@ -352,17 +352,14 @@ define([
 							pool: disk.pool
 						} ).then( lang.hitch( this, function( response ) {
 							this.onUpdateProgress( 1, 1 );
-							this.moduleStore.onChange();
 						} ) );
 					} else {
 						this.onUpdateProgress( 1, 1 );
-						this.moduleStore.onChange();
 					}
 				} ) );
 			} else {
 				// detach the drive from the domain
 				this.moduleStore.remove( ids[ 0 ] );
-				this.moduleStore.onChange();
 				this.onUpdateProgress( 1, 1 );
 			}
 		},

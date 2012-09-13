@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/store/Memory",
+	"dojo/store/Observable",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
@@ -54,7 +55,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
+], function(declare, lang, array, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
 	TextBox, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ TabContainer, StandbyMixin ], {
@@ -308,9 +309,9 @@ define([
 			this._devicesPage.addChild(container);
 
 			// grid for the drives
-			this._driveStore = new Memory({
+			this._driveStore = Observable(new Memory({
 				idProperty: '$id$'
-			});
+			}));
 			this._driveGrid = new DriveGrid({
 				moduleStore: this._driveStore
 			});
@@ -323,9 +324,9 @@ define([
 			container.addChild(titlePane);
 
 			// grid for the network interfaces
-			this._interfaceStore = new Memory({
+			this._interfaceStore = Observable(new Memory({
 				idProperty: '$id$'
-			});
+			}));
 			this._interfaceGrid = new InterfaceGrid({
 				moduleStore: this._interfaceStore
 			});
@@ -554,6 +555,11 @@ define([
 						}
 					} ) );
 					this.selectChild( this._generalPage, true);
+
+					// force a refresh of the grids
+					this._interfaceGrid.filter();
+					this._driveGrid.filter();
+					this._snapshotGrid.filter();
 				}
 				this.standby(false);
 			}), lang.hitch(this, function() {

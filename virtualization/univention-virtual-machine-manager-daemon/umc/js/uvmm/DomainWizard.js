@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/store/Memory",
+	"dojo/store/Observable",
 	"umc/tools",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Wizard",
@@ -40,7 +41,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, tools, TitlePane, Wizard, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, Memory, Observable, tools, TitlePane, Wizard, ContainerWidget, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainWizard", [ Wizard ], {
 		_profile: null,
@@ -51,9 +52,9 @@ define([
 
 		constructor: function() {
 			// grid for the drives
-			this._driveStore = new Memory({
+			this._driveStore = Observable(new Memory({
 				idProperty: '$id$'
-			});
+			}));
 			this._driveGrid = new DriveGrid({
 				moduleStore: this._driveStore
 			});
