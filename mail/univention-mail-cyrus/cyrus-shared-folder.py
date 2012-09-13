@@ -78,11 +78,11 @@ def handler(dn, new, old, command):
 		pass
 
 	# Done as function because it is called quite often
-	def setacl(mailbox, email, policy):
+	def setacl(new, mailbox, email, policy):
 
 
 		# add defaul acls for anyone
-		if email == "anyone":
+		if email == "anyone" and new.has_key("mailPrimaryAddress") and new["mailPrimaryAddress"][0]:
 			if policy == "none":
 				policy = defaultAnyoneACLFlags
 			else:
@@ -148,7 +148,8 @@ def handler(dn, new, old, command):
 					p = os.popen( '/usr/sbin/univention-cyrus-rename-shared %s %s' % (old_dn, name) )
 					p.close()
 
-				anyone_acl_set = False
+				# default policy
+				setacl(new, name, "anyone", "none")
 
 				if new.has_key('univentionMailACL'):
 					for entry in new['univentionMailACL']:
@@ -161,13 +162,7 @@ def handler(dn, new, old, command):
 							univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-shared-folder: Wrong policy entry "%s" for email %s' % (policy, email))
 							continue
 						else:
-							if email == 'anyone':
-								anyone_acl_set = True
-							setacl(name, email, policy)
-
-				# set special anyone acl for mail delivery to shared folders
-				if not anyone_acl_set:
-					setacl(name, "anyone", "none")
+							setacl(new, name, email, policy)
 
 				if new.has_key('univentionMailUserQuota') and new['univentionMailUserQuota'][0]:
 					setquota(name, new['univentionMailUserQuota'][0])
@@ -201,6 +196,9 @@ def handler(dn, new, old, command):
 	if old and new:
 		name = '"%s"' % new['cn'][0]
 
+		# default policy
+		setacl(new, name, "anyone", "none")
+
 		if old.has_key('univentionMailUserQuota') and old['univentionMailUserQuota'][0] and not new.has_key('univentionMailUserQuota'):
 			setquota(name, "none")
 
@@ -210,10 +208,9 @@ def handler(dn, new, old, command):
 		if old.has_key('univentionMailACL') and old['univentionMailACL'] and not new.has_key('univentionMailACL'):
 			for line in old['univentionMailACL']:
 				(email, policy) = split_acl_entry(line)
-				setacl(name, email, 'none')
+				setacl(new, name, email, 'none')
 
 		# convert new acls to dict
-		anyone_acl_set = False
 		curacl={}
 		if new.has_key('univentionMailACL'):
 			for entry in new['univentionMailACL']:
@@ -225,7 +222,7 @@ def handler(dn, new, old, command):
 			for entry in old['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
 				if not curacl.has_key(email):
-					setacl(name, email, 'none')
+					setacl(new, name, email, 'none')
 
 		for key in curacl.keys():
-			setacl(name, key, curacl[key])
+			setacl(new, name, key, curacl[key])

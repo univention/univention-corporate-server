@@ -1,3 +1,9 @@
+univention-mail-cyrus (5.0.3-1) unstable; urgency=low
+
+  * fixed anyone acl for shared folders (Bug #17994) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 13 Sep 2012 13:07:45 +0200
+
 univention-mail-cyrus (5.0.2-1) unstable; urgency=low
 
   * Replace hard coded eth0 by default address (Bug #26058)
