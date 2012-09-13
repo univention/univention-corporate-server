@@ -31,10 +31,11 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/Deferred",
 	"dojo/dom-construct",
 	"dijit/_WidgetBase",
 	"dojox/widget/Standby"
-], function(declare, lang, construct, _WidgetBase, Standby) {
+], function(declare, lang, Deferred, construct, _WidgetBase, Standby) {
 	return declare("umc.widgets.StandbyMixin", _WidgetBase, {
 		// summary:
 		//		Mixin class to make a widget "standby-able"
@@ -45,19 +46,32 @@ define([
 
 		_lastContent: null,
 
+		_standbyStartedDeferred: null,
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+
+			this._standbyStartedDeferred = new Deferred();
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			// create a standby widget targeted at this module
-			this._standbyWidget = new Standby({
+			this._standbyWidget = this.own(new Standby({
 				target: this.domNode,
 				duration: 200,
 				//zIndex: 99999999,
 				opacity: this.standbyOpacity,
 				color: '#FFF'
-			});
+			}))[0];
 			this.domNode.appendChild(this._standbyWidget.domNode);
 			this._standbyWidget.startup();
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+			this._standbyStartedDeferred.resolve();
 		},
 
 		_cleanUp: function() {
@@ -105,17 +119,19 @@ define([
 		},
 
 		standby: function(/*Boolean*/ doStandby, /*mixed?*/ content) {
-			if (doStandby) {
-				// update the content of the standby widget
-				this._updateContent(content);
+			this._standbyStartedDeferred.then(lang.hitch(this, function() {
+				if (doStandby) {
+					// update the content of the standby widget
+					this._updateContent(content);
 
-				// show standby widget
-				this._standbyWidget.show();
-			}
-			else {
-				// hide standby widget
-				this._standbyWidget.hide();
-			}
+					// show standby widget
+					this._standbyWidget.show();
+				}
+				else {
+					// hide standby widget
+					this._standbyWidget.hide();
+				}
+			}));
 		}
 	});
 });

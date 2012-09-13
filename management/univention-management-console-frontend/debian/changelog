@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.53-1) unstable; urgency=low
+
+  * fixed StandbyMixin for IE8, make sure that standby() is executed after
+    startup() has been called; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 20:05:17 +0200
+
 univention-management-console-frontend (2.0.52-1) unstable; urgency=low
 
   * fixed setting of locale for the server; Bug #26857
