@@ -1,6 +1,12 @@
+univention-base-files (2.0.9-1) unstable; urgency=low
+
+  * Fix epilog parameter (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 Sep 2012 12:24:01 +0200
+
 univention-base-files (2.0.8-1) unstable; urgency=low
 
-  * removed ucr description for logrotate/size Bug #27722 
+  * removed ucr description for logrotate/size Bug #27722
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Sep 2012 14:45:05 +0200
 
@@ -33,7 +39,7 @@ univention-base-files (2.0.5-1) unstable; urgency=low
 
 univention-base-files (2.0.4-1) unstable; urgency=low
 
-  * set logrotate size default (Bug #27722) 
+  * set logrotate size default (Bug #27722)
 
  -- Felix Botner <botner@univention.de>  Wed, 29 Aug 2012 10:08:15 +0200
 
@@ -176,19 +182,19 @@ univention-base-files (1.0.42-1) unstable; urgency=low
 
 univention-base-files (1.0.41-1) unstable; urgency=low
 
-  * fixed quoting in conffiles/etc/lsb-release template (Bug #24628) 
+  * fixed quoting in conffiles/etc/lsb-release template (Bug #24628)
 
  -- Felix Botner <botner@univention.de>  Fri, 25 Nov 2011 09:23:06 +0100
 
 univention-base-files (1.0.40-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:15:05 +0100
 
 univention-base-files (1.0.39-1) unstable; urgency=low
 
-  * added template for /etc/lsb-release (Bug #24628) 
+  * added template for /etc/lsb-release (Bug #24628)
 
  -- Felix Botner <botner@univention.de>  Wed, 16 Nov 2011 10:29:34 +0100
 
@@ -298,7 +304,7 @@ univention-base-files (1.0.30-1) unstable; urgency=low
 
 univention-base-files (1.0.29-2) unstable; urgency=low
 
-  * added logrotate/notifempty (Bug #18002) 
+  * added logrotate/notifempty (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 12:45:09 +0200
 
@@ -310,7 +316,7 @@ univention-base-files (1.0.29-1) unstable; urgency=low
 
 univention-base-files (1.0.28-1) unstable; urgency=low
 
-  * added ucr module to trigger udev on changes in /etc/default/layout (Bug #23961) 
+  * added ucr module to trigger udev on changes in /etc/default/layout (Bug #23961)
 
  -- Felix Botner <botner@univention.de>  Thu, 06 Oct 2011 15:21:52 +0200
 
@@ -323,13 +329,13 @@ univention-base-files (1.0.27-1) unstable; urgency=low
 univention-base-files (1.0.26-2) unstable; urgency=low
 
   * Remove /srv. It is properly created by base-files, but the cleanup script of
-    univention-installer used to remove it. (Bug #23965)	
+    univention-installer used to remove it. (Bug #23965)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 06 Oct 2011 13:36:41 +0200
 
 univention-base-files (1.0.26-1) unstable; urgency=low
 
-  * removed kbd, added console-tools (Bug #23858) 
+  * removed kbd, added console-tools (Bug #23858)
 
  -- Felix Botner <botner@univention.de>  Thu, 06 Oct 2011 10:49:20 +0200
 
@@ -360,7 +366,7 @@ univention-base-files (1.0.24-1) unstable; urgency=low
 
 univention-base-files (1.0.23-1) unstable; urgency=low
 
-  * added template etc/default/keyboard 
+  * added template etc/default/keyboard
     (load /etc/console/boottime.kmap.gz in setupcon) (Bug #23647)
 
  -- Felix Botner <botner@univention.de>  Mon, 19 Sep 2011 11:28:58 +0200
@@ -385,14 +391,14 @@ univention-base-files (1.0.20-1) unstable; urgency=low
 
 univention-base-files (1.0.19-1) unstable; urgency=low
 
-  * depends on bash-completion locales, ... (Bug #23434) 
+  * depends on bash-completion locales, ... (Bug #23434)
 
  -- Felix Botner <botner@univention.de>  Wed, 07 Sep 2011 12:38:33 +0200
 
 univention-base-files (1.0.18-1) unstable; urgency=low
 
   * recommend bash-completion, locales, ntpdate, rdate, acl, xfsprogs,
-    lsof, console-data, kbd, console-common, bzip2, psmisc and 
+    lsof, console-data, kbd, console-common, bzip2, psmisc and
     lsb-base (Bug #23434)
 
  -- Felix Botner <botner@univention.de>  Wed, 07 Sep 2011 11:26:26 +0200
@@ -411,8 +417,8 @@ univention-base-files (1.0.16-1) unstable; urgency=low
 
 univention-base-files (1.0.15-1) unstable; urgency=low
 
-  * replaced ucr var auth/user/methods with auth/methods in 
-    ssh_config (Bug #20138) 
+  * replaced ucr var auth/user/methods with auth/methods in
+    ssh_config (Bug #20138)
 
  -- Felix Botner <botner@univention.de>  Mon, 15 Aug 2011 09:29:36 +0200
 
@@ -494,14 +500,14 @@ univention-base-files (1.0.5-2) unstable; urgency=low
 
 univention-base-files (1.0.4-2) unstable; urgency=low
 
-  * reverted last commit Bug #22117 
+  * reverted last commit Bug #22117
 
  -- Felix Botner <botner@univention.de>  Thu, 21 Jul 2011 12:01:32 +0200
 
 univention-base-files (1.0.4-1) unstable; urgency=low
 
   * add console-setup to package dependencies
-    (sets up keymap on startup) Bug #22117 
+    (sets up keymap on startup) Bug #22117
 
  -- Felix Botner <botner@univention.de>  Thu, 21 Jul 2011 11:42:05 +0200
 
@@ -537,7 +543,7 @@ univention-base-files (1.0.1-3) unstable; urgency=low
   * Create a /srv directory. In UCS 2.x it used to be created only
     when installing the univention-lsb package, but in Squeeze packages
     start to depend on it's existence (e.g. when installing atftpd).
-    As such make it available on all installations. (Bug #22576)	  
+    As such make it available on all installations. (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 25 May 2011 15:26:23 +0200
 

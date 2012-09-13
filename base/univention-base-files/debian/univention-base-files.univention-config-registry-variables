@@ -593,13 +593,13 @@ Categories=system-password
 
 [password/quality/credit/lower]
 Description[de]=Dies ist die minimale Anzahl von Kleinbuchstaben, die in dem neuen Passwort vorkommen muss.
-Description[en]=This is the minimum number of lower case letters that must be met for a new password. 
+Description[en]=This is the minimum number of lower case letters that must be met for a new password.
 Type=int
 Categories=system-password
 
 [password/quality/credit/other]
 Description[de]=Dies ist die minimale Anzahl von anderen Zeichen, die in dem neuen Passwort vorkommen muss.
-Description[en]=This is the minimum number of other characters that must be met for a new password. 
+Description[en]=This is the minimum number of other characters that must be met for a new password.
 Type=int
 Categories=system-password
 

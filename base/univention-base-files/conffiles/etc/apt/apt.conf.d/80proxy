@@ -10,7 +10,7 @@ def print_proxy(proxy):
 	print '    }'
 	print '}'
 
-proxy = configRegistry.get('proxy/http', None) 
+proxy = configRegistry.get('proxy/http', None)
 # Bug #18397: this will be removed
 if not proxy: # fallback
 	proxy = configRegistry.get('proxy/address', None)

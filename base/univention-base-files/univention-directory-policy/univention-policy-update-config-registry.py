@@ -71,7 +71,7 @@ def parse_cmdline():
 	"""Parse command line and return options and dn."""
 	usage = '%prog [options] <host_dn>'
 	epilog = '<host_dn> distinguished LDAP name of the host'
-	parser = OptionParser(usage=usage, epilot=epilog)
+	parser = OptionParser(usage=usage, epilog=epilog)
 	parser.add_option('-a', '--setall',
 			dest='setall', action='store_true',
 			help='write all variables set by policy')
