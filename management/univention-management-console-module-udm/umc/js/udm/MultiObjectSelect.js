@@ -62,12 +62,21 @@ define([
 
 
 		// our formatter converts a list of DNs to a list with id-label-dict entries
-		formatter: function(dnList) {
-			var tmp = array.map(dnList, function(idn) {
-				return {
-					id: idn,
-					label: tools.explodeDn(idn, true).shift() || ''
+		formatter: function(entries) {
+			var tmp = array.map(entries, function(ientry) {
+				if (typeof ientry == 'string') {
+					return {
+						id: ientry,
+						label: tools.explodeDn(ientry, true).shift() || ''
+					};
 				};
+				if (ientry.id && !ientry.label) {
+					return {
+						id: ientry.id,
+						label: tools.explodeDn(ientry.id, true).shift() || ''
+					};
+				}
+				return ientry;
 			});
 			return tmp;
 		},
