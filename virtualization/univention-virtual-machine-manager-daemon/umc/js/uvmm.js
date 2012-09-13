@@ -335,7 +335,6 @@ define([
 			var _cleanup = function() {
 				_dialog.hide();
 				_dialog.destroyRecursive();
-				form.destroyRecursive();
 			};
 
 			var _migrate = lang.hitch(this, function(name) {
@@ -421,7 +420,6 @@ define([
 
 			var _cleanup = function() {
 				_dialog.hide();
-				_dialog.destroyRecursive();
 				form.destroyRecursive();
 			};
 
@@ -559,7 +557,6 @@ define([
 
 			var _cleanup = function() {
 				_dialog.hide();
-				_dialog.destroyRecursive();
 				form.destroyRecursive();
 			};
 
@@ -638,7 +635,6 @@ define([
 
 			var _cleanup = function() {
 				_dialog.hide();
-				_dialog.destroyRecursive();
 				form.destroyRecursive();
 			};
 

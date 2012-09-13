@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.5-1) unstable; urgency=low
+
+  * remove obsolete destroyRecursive() calls; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 12:20:49 +0200
+
 univention-virtual-machine-manager-daemon (2.0.4-1) unstable; urgency=low
 
   * fixed refreshing problems with Grids; Bug #26857
