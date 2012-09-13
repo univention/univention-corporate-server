@@ -2221,8 +2221,8 @@ class object(content):
 			col2=13
 			col3=8
 			col4=6
-			col5=14
-			col6=9
+			col5=13
+			col6=10
 
 			head1=self.get_col(_('Device'),col1,'l')
 			head2=self.get_col(_('Region(MiB)'),col2)
@@ -2366,14 +2366,19 @@ class object(content):
 			self.add_elem('BT_back', button(_('F11-Back'),self.minY+30,self.minX,30)) #7
 			self.add_elem('BT_next', button(_('F12-Next'),self.minY+30,self.minX+(self.width)-37,30)) #8
 
-		def get_col(self, word, width, align='r'):
-			wspace=' '*width
+		def get_col(word, width, align='r'):
+			# convert utf-8 input to unicode → len works also with umlauts
+			word = word.decode('utf-8')
+			wspace = u' '*width
 			if align is 'l':
-				return word[:width]+wspace[len(word):]
+				result = word[:width] + wspace[len(word):]
 			elif align is 'm':
-				space=(width-len(word))/2
-				return "%s%s%s" % (wspace[:space],word[:width],wspace[space+len(word):width])
-			return wspace[len(word):]+word[:width]
+				space = (width-len(word))/2
+				result = u"%s%s%s" % (wspace[:space], word[:width], wspace[space+len(word):width])
+			else:
+				result = wspace[len(word):] + word[:width]
+			# encode aligned unicode string back to utf-8
+			return result.encode('utf-8')
 
 		def dev_to_part(self, part, dev, type="part"):
 			#/dev/hdX /dev/sdX /dev/mdX /dev/xdX /dev/adX /dev/edX /dev/pdX /dev/pfX /dev/vdX /dev/dasdX /dev/dptiX /dev/arX
