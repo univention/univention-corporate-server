@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.52-1) unstable; urgency=low
+
+  * fixed setting of locale for the server; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 18:54:22 +0200
+
 univention-management-console-frontend (2.0.51-1) unstable; urgency=low
 
   * fixed cookie problems with IE9

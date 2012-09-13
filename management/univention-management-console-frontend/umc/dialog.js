@@ -43,8 +43,9 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Form",
 	"umc/tools",
+	"umc/i18n/tools",
 	"umc/i18n!umc/app"
-], function(dojo, lang, array, on, json, Deferred, domClass, LoginDialog, Toaster, ConfirmDialog, Text, Button, Form, tools, _) {
+], function(dojo, lang, array, on, json, Deferred, domClass, LoginDialog, Toaster, ConfirmDialog, Text, Button, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 		_loginDialog: null, // internal reference to the login dialog
@@ -115,7 +116,7 @@ define([
 			this._loginDeferred = this._loginDeferred.then(lang.hitch(dialog, function(username) {
 				// set the locale
 				return tools.umcpCommand('set', {
-					locale: dojo.locale.replace('-', '_')
+					locale: i18nTools.defaultLang.replace('-', '_')
 				}, false).then(function() {
 					// remove the reference to the login deferred object
 					dialog._loginDeferred = null;
