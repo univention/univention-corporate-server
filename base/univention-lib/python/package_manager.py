@@ -35,6 +35,7 @@ import sys
 import os
 import time
 import locale
+import subprocess
 from contextlib import contextmanager
 import apt_pkg
 import apt
@@ -46,6 +47,12 @@ apt_pkg.init()
 from univention.lib.locking import get_lock, release_lock
 from univention.lib.i18n import Translation
 _ = Translation('univention-lib').translate
+
+# FIXME: Requires univention-updater (but this requires univention-lib...)
+# FIXME: The path to the script is hardcoded everywhere it is used.
+# TODO: Solution: Put all the logic in univention-lib
+CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
+CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 
 class LockError(Exception):
 	'''Lock error for the package manager.
@@ -239,6 +246,24 @@ class PackageManager(object):
 				self.set_finished()
 			self.unlock()
 
+	def _shell_command(self, command, handle_streams=True):
+		process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		out, err = process.communicate()
+		if handle_streams:
+			if out:
+				self.progress_state.info(out)
+			if err:
+				self.progress_state.error(err)
+		return out, err
+
+	@contextmanager
+	def no_umc_restart(self):
+		self._shell_command(CMD_DISABLE_EXEC)
+		try:
+			yield
+		finally:
+			self._shell_command(CMD_ENABLE_EXEC)
+
 	def __del__(self):
 		# should be done automatically. i am a bit paranoid
 		if self.lock_fd is not None:
@@ -395,7 +420,7 @@ class PackageManager(object):
 			except SystemError:
 				broken.add(pkg.name)
 		for pkg in self.cache.get_changes():
-			if pkg.marked_install:
+			if pkg.marked_install or pkg.marked_upgrade:
 				to_be_installed.add(pkg.name)
 			if pkg.marked_delete:
 				to_be_removed.add(pkg.name)
