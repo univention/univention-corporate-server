@@ -24,9 +24,11 @@
 		<script type="text/javascript" src="../dojo/dojo.js"></script>
 		<script type="text/javascript">
 			var state = "unloaded";
-			require(["dojo/parser", "umc/widgets/SubmitButton", "dojo/domReady!"], function(parser){
-				parser.parse();
-			    state = "loaded";
+			require(["dojo/parser", "dojo/ready", "umc/widgets/SubmitButton"], function(parser, ready){
+				ready(function() {
+					parser.parse();
+					state = "loaded";
+				});
 			});
 		</script>
 	</head>

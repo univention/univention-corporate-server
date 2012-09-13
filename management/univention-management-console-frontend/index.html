@@ -71,22 +71,24 @@
 		</script>
 		<script type="text/javascript" src="js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
 		<script type="text/javascript">
-			require(["dojo/parser", "umc/widgets/ContainerWidget"], function(parser){
-				parser.parse();
-			});
-			require(["umc/app", "umc/tools", "dojo/domReady!"], function(app, tools){
-				// set the version of the UMC frontend
-				tools.status('version', '%VERSION%');
+			require(["dojo/parser", "dojo/ready", "umc/app", "umc/tools", "umc/widgets/ContainerWidget"], function(parser, ready, app, tools){
+				ready(function() {
+					// parse the DOM tree
+					parser.parse();
 
-				// start the application when everything has been loaded
-				app.start({
-					username: getQuery('username'),
-					password: getQuery('password'),
-					module: getQuery('module'),
-					flavor: getQuery('flavor'),
-					overview: getQuery('overview', true),
-					width: getQuery('width'),
-					displayUsername: getQuery('displayUsername', true)
+					// set the version of the UMC frontend
+					tools.status('version', '%VERSION%');
+
+					// start the application when everything has been loaded
+					app.start({
+						username: getQuery('username'),
+						password: getQuery('password'),
+						module: getQuery('module'),
+						flavor: getQuery('flavor'),
+						overview: getQuery('overview', true),
+						width: getQuery('width'),
+						displayUsername: getQuery('displayUsername', true)
+					});
 				});
 			});
 		</script>
