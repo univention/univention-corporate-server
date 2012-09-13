@@ -1,3 +1,9 @@
+univention-directory-listener (7.0.3-6) unstable; urgency=low
+
+  * Fix allocation error in server_select (Bug #27730)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 Sep 2012 14:27:39 +0200
+
 univention-directory-listener (7.0.3-5) unstable; urgency=low
 
   * Fix double free bug (Bug #27730)

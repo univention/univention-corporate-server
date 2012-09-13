@@ -112,15 +112,16 @@ void select_server(univention_ldap_parameters_t *lp)
 			char *str, *saveptr;
 			/* rebuild list and initialize */
 			current_server_list = strdup(ldap_backups);
+			while (server_list_entries > 0)
+				free(server_list[--server_list_entries].server_name);
 			memset(server_list, 0, sizeof(server_list));
-			server_list_entries = 0;
 			for (str = ldap_backups; server_list_entries < ARRAY_SIZE(server_list); str = NULL) {
 				char *name = strtok_r(str, " ", &saveptr);
 				if (!name)
 					break;
 				if (!name[0])
 					continue;
-				server_list[server_list_entries++].server_name = name;
+				server_list[server_list_entries++].server_name = strdup(name);
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Backup found: %s", name);
 			}
 			if (server_list_entries >= ARRAY_SIZE(server_list))
