@@ -65,10 +65,10 @@ Description: UCS - print server addons for pdf pseudo printer
 Package: univention-management-console-module-printers
 Architecture: all
 Depends: ${misc:Depends},
+ ${python:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server
 Recommends: univention-printserver (= ${source:Version})
-XB-Python-Version: ${python:Versions}
 Description: UMC module for printer administration
  This package contains the UMC module for the administration
  of configured printers.

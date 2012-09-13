@@ -31,7 +31,11 @@
 # <http://www.gnu.org/licenses/>.
 
 # set old permissions of cups-pdf backend
-dpkg-statoverride --add --force --update root lp 4754 /usr/lib/cups/backend/cups-pdf
+if dpkg-statoverride --list /usr/lib/cups/backend/cups-pdf >/dev/null
+then
+	dpkg-statoverride --remove --force /usr/lib/cups/backend/cups-pdf
+fi
+chmod 0700 /usr/lib/cups/backend/cups-pdf
 
 #DEBHELPER#
 
