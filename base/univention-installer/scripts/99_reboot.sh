@@ -59,7 +59,7 @@ if [ $? -eq 0 ]; then
 	fs=$(ucr get installer/device/0/fs)
 	if [ -n "$root" -a -b "$root" -a -n "$fs" ]; then
 		if [ "$fs" = "ext2" -o "$fs" = "ext3" -o "$fs" = "ext4" ]; then
-			e2fsck -y "$root"
+			e2fsck -y "$root" > /dev/null 2>&1
 		fi
 	fi
 fi

@@ -1,3 +1,9 @@
+univention-installer (8.0.17-1) unstable; urgency=low
+
+  * redicret e2fsck to null in 99_reboot.sh (Bug #25284) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 13 Sep 2012 11:51:51 +0200
+
 univention-installer (8.0.16-3) unstable; urgency=low
 
   * fixed headline alignment of partition grid (Bug #23990)
