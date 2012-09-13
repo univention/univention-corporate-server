@@ -33,11 +33,12 @@ define([
 	"dojo/_base/lang",
 	"umc/dialog",
 	"umc/modules/packages/store",
+	"umc/tools",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/modules/packages/Form",
 	"umc/i18n!umc/modules/packages"
-], function(declare, lang, dialog, store, Page, StandbyMixin, Form, _) {
+], function(declare, lang, dialog, store, tools, Page, StandbyMixin, Form, _) {
 	return declare("umc.modules.packages.SettingsPage", [ Page, StandbyMixin ], {
 
 		postMixInProperties: function() {
@@ -51,9 +52,12 @@ define([
 				[
 					{
 						name: 'reset',
-						label: _( 'Reset' ),
+						label: _('Reset'),
 						onClick: lang.hitch(this, function() {
 							this._form.load({}); // ID doesn't matter here but must be dict
+							tools.forIn(this._form._widgets, function(iname, iwidget) {
+								iwidget.setValid(true);
+							});
 						})
 					},
 					{

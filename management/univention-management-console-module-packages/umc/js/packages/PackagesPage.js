@@ -52,7 +52,7 @@ define([
 
 			lang.mixin(this, {
 				headerText: _("Package management"),
-				helpText: _("On this page, you see all software packages available on your system, and you can install, deinstall or update them."),
+				helpText: _("On this page, you see all software packages available on your system, and you can install, uninstall or update them."),
 				title: _("Package management")
 			});
 		},
@@ -81,7 +81,7 @@ define([
 						this._show_details(ids);
 					})
 				},
-				// isStandardAction=true for the installer actions (install/deinstall/upgrade)
+				// isStandardAction=true for the installer actions (install/uninstall/upgrade)
 				// doesn't make sense as long as these actions aren't displayed as icons
 				{
 					name: 'install',

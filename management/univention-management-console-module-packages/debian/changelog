@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.7-1) unstable; urgency=low
+
+  * Prevent UMC restart when installing/updating packages/apps (Bug #20180)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 13 Sep 2012 15:48:48 +0200
+
 univention-management-console-module-packages (2.0.6-1) unstable; urgency=low
 
   * Rename module to Sotware management superficially (Bug #26784)

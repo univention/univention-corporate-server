@@ -43,8 +43,9 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/modules/lib/server",
 	"umc/modules/packages/Form",
+	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/packages"
-], function(declare, lang, array, when, dialog, tools, Page, StandbyMixin, ProgressBar, ContainerWidget, CategoryPane, ConfirmDialog, libServer, Form, _) {
+], function(declare, lang, array, when, dialog, tools, Page, StandbyMixin, ProgressBar, ContainerWidget, CategoryPane, ConfirmDialog, libServer, Form, TextBox, _) {
 	return declare("umc.modules.packages.AppCenterPage", [ Page, StandbyMixin ], {
 
 		postMixInProperties: function() {
@@ -64,7 +65,7 @@ define([
 			var widgets =
 			[
 				{
-					type: 'TextBox',
+					type: TextBox,
 					name: 'name',
 					label: _("Name")
 				}
@@ -104,7 +105,6 @@ define([
 			// load apps
 			this.standby(true);
 			when(this.getApplications(), lang.hitch(this, function(applications) {
-				console.log(applications);
 				this.standby(false);
 				this._category_pane = CategoryPane({
 					useCategories: true,

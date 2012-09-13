@@ -245,7 +245,7 @@ msgstr ""
 #: umc/js/packages/PackagesPage.js:55
 msgid ""
 "On this page, you see all software packages available on your system, and "
-"you can install, deinstall or update them."
+"you can install, uninstall or update them."
 msgstr ""
 "Dieses Modul zeigt die auf dem System verfügbaren Softwarepakete an und "
 "ermöglicht es, diese zu installieren, zu deinstallieren oder zu "

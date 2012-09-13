@@ -33,9 +33,11 @@ define([
 	"dojo/_base/lang",
 	"umc/widgets/Page",
 	"umc/modules/packages/Form",
+	"umc/widgets/CheckBox",
+	"umc/widgets/TextBox",
 	"umc/widgets/StandbyMixin",
 	"umc/i18n!umc/modules/packages"
-], function(declare, lang, Page, Form, StandbyMixin, _) {
+], function(declare, lang, Page, Form, CheckBox, TextBox, StandbyMixin, _) {
 	return declare("umc.modules.packages.DetailsPage", [ Page, StandbyMixin ], {
 		moduleStore: null,
 
@@ -79,52 +81,52 @@ define([
 
 			var widgets = [
 				{
-					type: 'CheckBox',
+					type: CheckBox,
 					name: 'enabled',
 					label: _("Enable this component")
 				},
 				{
-					type: 'TextBox',
+					type: TextBox,
 					name: 'name',
 					label: _("Component Name")
 				},
 				{
-					type: 'TextBox',
+					type: TextBox,
 					name: 'description',
 					label: _("Description")
 				},
 				{
-					type: 'TextBox',
+					type: TextBox,
 					name: 'server',
 					label: _("Repository server")
 				},
 				{
-					type: 'TextBox',
+					type: TextBox,
 					name: 'prefix',
 					label: _("Repository prefix")
 				},
 				{
-					type: 'CheckBox',
+					type: CheckBox,
 					name: 'maintained',
 					label: _("Use maintained repositories")
 				},
 				{
-					type: 'CheckBox',
+					type: CheckBox,
 					name: 'unmaintained',
 					label: _("Use unmaintained repositories")
 				},
 				{
-					type: 'TextBox',
+					type: TextBox,
 					name: 'username',
 					label: _("Username")
 				},
 				{
-					type: 'TextBox',
+					type: TextBox,
 					name: 'password',
 					label: _("Password")
 				},
 				{
-					type: 'TextBox',
+					type: TextBox,
 					name: 'version',
 					label: _("Version"),
 					regExp: '^((([0-9]+\\.[0-9]+|current),)*([0-9]+\\.[0-9]+|current))?$'

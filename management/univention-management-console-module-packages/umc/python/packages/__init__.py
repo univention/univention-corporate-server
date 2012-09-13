@@ -196,10 +196,11 @@ class Instance(umcm.Base):
 				if application_found:
 					def _thread(module, application, function):
 						with module.package_manager.locked(set_finished=True):
-							if function == 'install':
-								return application.install(module)
-							else:
-								return application.uninstall(module)
+							with module.package_manager.no_umc_restart():
+								if function == 'install':
+									return application.install(module)
+								else:
+									return application.uninstall(module)
 					def _finished(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
@@ -289,10 +290,11 @@ class Instance(umcm.Base):
 				if not not_found:
 					def _thread(package_manager, function, packages):
 						with package_manager.locked(set_finished=True):
-							if function == 'install':
-								package_manager.install(*packages)
-							else:
-								package_manager.uninstall(*packages)
+							with package_manager.no_umc_restart():
+								if function == 'install':
+									package_manager.install(*packages)
+								else:
+									package_manager.uninstall(*packages)
 					def _finished(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %r' % (function, packages, str(result)))

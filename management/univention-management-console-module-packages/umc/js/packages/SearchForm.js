@@ -32,8 +32,11 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"umc/modules/packages/Form",
+	"umc/widgets/ComboBox",
+	"umc/widgets/CheckBox",
+	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/packages"
-], function(declare, lang, Form, _) {
+], function(declare, lang, Form, ComboBox, CheckBox, TextBox, _) {
 	return declare("umc.modules.packages.SearchForm", [ Form ], {
 
 		postMixInProperties: function() {
@@ -45,7 +48,7 @@ define([
 						{
 							name: 'section',
 							label: _("Package categories"),
-							type: 'ComboBox',
+							type: ComboBox,
 							staticValues: [{ id: 'all', label: _("--- all ---") }],
 							sortStaticValues: false,
 							required: true,
@@ -61,7 +64,7 @@ define([
 						{
 							name: 'installed',
 							label: _("Installed packages only"),
-							type: 'CheckBox'
+							type: CheckBox
 	// doesn't make sense: a Bool on its own is always valid.
 	//						onChange: lang.hitch(this, function() {
 	//							this._check_submit_allow();
@@ -70,7 +73,7 @@ define([
 						{
 							name: 'key',
 							label: _("Search key"),
-							type: 'ComboBox',
+							type: ComboBox,
 							staticValues: [
 						 { id: 'package',		label: _("Package name") },
 						 { id: 'description',	label: _("Package description") }
@@ -83,7 +86,7 @@ define([
 						{
 							name: 'pattern',
 							label: _("Pattern"),
-							type: 'TextBox',
+							type: TextBox,
 							value: '*',
 							required: false,
 							onChange: lang.hitch(this, function() {
