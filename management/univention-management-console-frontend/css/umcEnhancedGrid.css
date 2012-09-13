@@ -320,7 +320,7 @@
 	padding-left:25px;
 }
 .umc .dojoxGridLoading {
-	background-image:url(../../../../../dijit/themes/umc/images/loadingAnimation.gif);
+	background-image:url(../../../dijit/themes/umc/images/loadingAnimation.gif);
 }
 .umc .dojoxGridError {
 	background-image: url(../../../../../dijit/icons/images/commonIconsObjActEnabled.png); 
@@ -356,7 +356,7 @@
 	float:right;
 }
 .umc .dojoxGridArrowButtonNode {
-	background:transparent url(../../../../../dijit/themes/umc/images/spriteArrows.png) no-repeat scroll left center;
+	background:transparent url(../../../dijit/themes/umc/images/spriteArrows.png) no-repeat scroll left center;
 	display:block;
 	float:right;
 	height:1em;
@@ -424,7 +424,7 @@
 	border-right:1px solid #ABD6FF;
 }
 .umc .dojoxGridRowActive .dojoxGridCell {
-	background:url(../../../resources/images/td_button_down.png) #74be4b repeat-x;
+	background:url(../../../dojox/grid/resources/images/td_button_down.png) #74be4b repeat-x;
 }
 .dj_ie6 .umc .dojoxGridRowActive .dojoxGridCell,
 .dj_ie7 .umc .dojoxGridRowActive .dojoxGridCell {

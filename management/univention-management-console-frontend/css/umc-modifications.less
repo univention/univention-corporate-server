@@ -28,6 +28,8 @@
  */
 
 
+@import "variables";
+
 .dijitToggleButton,
 .dijitButton,
 .dijitDropDownButton,
@@ -64,16 +66,17 @@
 	border-width: inherit; /* DEL */
 }
 
-.dijitTooltipContainer {
+.dijitTooltipContainer.dijitTooltipContents {
 	border: 1px solid #fff;
 	background: #414142;
 	color: #fff;
 }
 
-body .dijitAlignTop,
-body .dijitAlignBottom,
-body .dijitAlignLeft,
-body .dijitAlignRight {
+/* 'body' wurde upstream auch  */
+.dijitAlignTop,
+.dijitAlignBottom,
+.dijitAlignLeft,
+.dijitAlignRight {
 	overflow: inherit; /* DEL */
 }
 
@@ -264,6 +267,10 @@ body .dijitAlignRight {
   background: url(../../icons/images/commonIconsObjActEnabled.png) no-repeat left center;
 }
 
+.umc .dojoDndItem {
+	.transition-duration(.0s);
+}
+
 .umc table.dojoDndAvatar {
   border: 1px solid #b5bcc7;
 }
@@ -286,7 +293,7 @@ body .dijitAlignRight {
 
 .umc .dijitTextBox,
 .umc .dijitTextBox .dijitButtonNode {
-  border-color: #d7d8da;
+  border-color: #d7d8da !important;
 }
 
 
@@ -313,9 +320,9 @@ body .dijitAlignRight {
   border-color: #999;
 }
 
-.umc .dijitTextBoxHover {
-  background-image: url(form/images/textBox_back.png);
-}
+/* .umc .dijitTextBoxHover { */
+/*   background-image: url(/form/images/textBox_back.png); */
+/* } */
 
 .umc .dijitTextBoxError .dijitButtonNode {
   border-color: inherit; /* DEL */
@@ -331,7 +338,8 @@ body .dijitAlignRight {
 }
 
 .umc .dijitTextBoxFocused {
-  background-image: url(form/images/textBox_back.png);
+  /* background-image: url(/form/images/textBox_back.png); */
+  outline: auto 5px -webkit-focus-ring-color;
 }
 
 
@@ -439,9 +447,10 @@ ORIGINAL DIFF
 .umc .dijitDropDownButton .dijitButtonNode,
 .umc .dijitComboButton .dijitButtonNode,
 .umc .dijitToggleButton .dijitButtonNode {
+  color: inherit;
   border: inherit; /* DEL */
   padding: inherit; /* DEL */
-  background-image: inherit; /* DEL */
+  background-image: none; /* DEL */
   background-position: inherit; /* DEL */
   background-color: #e0eed5;
   -moz-border-radius: 4px;
@@ -724,7 +733,7 @@ ORIGINAL DIFF
 
 
 .umc .dijitTabContainerTop-tabs .dijitTabContent {
-  background-image: inherit; /* DEL */
+  background-image: none; /* DEL */
 }
 
 
@@ -917,11 +926,15 @@ ORIGINAL DIFF
 }
 
 
+.umc .dijitDialogTitle {
+	color: #fff;
+}
+
 .umc .dijitDialogTitleBar {
   border: inherit; /* DEL */
   border-top: inherit; /* DEL */
   color: #fff;
-  background-image: inherit; /* DEL */
+  background-image: none; /* DEL */
   background-repeat: inherit; /* DEL */
 }
 
@@ -979,12 +992,6 @@ ORIGINAL DIFF
 .umc .dijitAccordionInnerContainerSelectedActive {
   background-color: #74be4b;
 }
-
-
-.umc .dijitContentPane {
-  padding: inherit; /* DEL */
-}
-
 
 
 .umc .dijitCalendar {
@@ -1125,6 +1132,7 @@ ORIGINAL DIFF
 
 
 
+.umc .dijitComboBoxMenu .dijitMenuItemHover,
 .umc .dijitComboBoxMenu .dijitMenuItemSelected {
   color: #000000;
   background-color: #74be4b;
@@ -1373,7 +1381,7 @@ ORIGINAL DIFF
 
 
 .umc .dijitTitlePaneTitle {
-  background-image: inherit; /* DEL */
+  background-image: none; /* DEL */
   background-repeat: inherit; /* DEL */
   border: 2px solid #ededee;
 }
@@ -1383,6 +1391,10 @@ ORIGINAL DIFF
   background-color: #74be4b;
   border-color: #ededee;
   color: #fff;
+}
+
+.umc .dijitTitlePaneTitleHover .dijitTitlePaneTextNode {
+	color: #ffffff;
 }
 
 .umc .dijitTitlePaneTitleActive {
@@ -2474,3 +2486,34 @@ p {
 }
 
 
+.umc .dijitTabContainerTop-tabs .dijitTab {
+	padding-top: 6px;
+}
+.umc .dijitTabContainerTopNone .dijitTabContainerTop-tabs .dijitTab {
+	padding-top: 2px;
+	margin-top: 4px;
+	border-color: #EDEDEE;
+}
+.umc .dijitTabContainerTopNone .dijitTabContainerTop-tabs .dijitTabChecked {
+	padding-top: 6px;
+	margin-top: 0;
+	border-color: #C9CBCC;
+	background-color: #FFFFFF;
+}
+.umc .dijitTabContainerTabListNested .dijitTab .dijitTabHover {
+	border: none;
+}
+.umc .dijitTabContainerTabListNested .dijitTabChecked {
+	background-color: #74BE4B;
+	color: #FFFFFF;
+	border: none;
+}
+.umc .dijitTabContainerTabListNested .dijitTab {
+	border-left: none;
+	border-top: none;
+	border-bottom: none;
+	border-right: solid 1px white;
+}
+.umc .dijitComboBoxMenuPopup .dijitMenuItem {
+	background-image: none;
+}
