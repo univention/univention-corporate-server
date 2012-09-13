@@ -139,12 +139,24 @@ define([
 			});
 		},
 
-		_renewIESession : function() {
+		// update the cookie data
+		_dateRenewIESession : null,
+
+		_markRenewIESession : function() {
+			// summary:
+			//		Mark that the session will be renewed at the next _checkSessionTimer
+			// 		tick. This avoids too many cookie updates at once.
+			if(has('ie') !== undefined) {
+				this._dateRenewIESession = new Date();
+			}
+		},
+
+		_renewIESession : function(/*Date?*/_date) {
 			// summary:
 			//		Reset the Internet Explorer Session. Internet Explorer can not handle max-age cookies.
 			//		This is required for automatically show the login dialogue when the session is expired.
 			if(has('ie') !== undefined) {
-				var date = new Date((new Date()).getTime() + 1000 * this._sessionTimeout);
+				var date = new Date((_date || new Date()).getTime() + 1000 * this._sessionTimeout);
 				cookie('UMCSessionId', cookie('UMCSessionId'), {
 					expires: date.toUTCString(),
 					path: '/'
@@ -170,6 +182,13 @@ define([
 				// create a new timer instance
 				this._checkSessionTimer = new timing.Timer(1000);
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
+					// update cookie for IE if necessary
+					if (this._dateRenewIESession) {
+						this._renewIESession(this._dateRenewIESession);
+						this._dateRenewIESession = null;
+					}
+
+					// check whether cookie is still valid
 					if (typeof cookie('UMCSessionId') != 'string') {
 						this._checkSessionTimer.stop();
 						if (tools.status('loggingIn')) {
@@ -272,7 +291,7 @@ define([
 						timeout: 1000 * this.xhrTimeout
 					}).then(lang.hitch(this, function(data) {
 						// request finished
-						tools._renewIESession();
+						tools._markRenewIESession();
 						this._dialog.hide();
 						this._dialog.destroyRecursive();
 						this.finishedDeferred.resolve(data);
@@ -384,7 +403,7 @@ define([
 				});
 
 				call = call.then(function(data) {
-					tools._renewIESession();
+					tools._markRenewIESession();
 					return data;
 				});
 

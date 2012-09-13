@@ -1,3 +1,11 @@
+univention-management-console-frontend (2.0.51-1) unstable; urgency=low
+
+  * fixed cookie problems with IE9
+  * fixed FF loading problems
+  Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 15:30:03 +0200
+
 univention-management-console-frontend (2.0.50-1) unstable; urgency=low
 
   * adjusted the order of parsing and starting UMC; Bug #26857
