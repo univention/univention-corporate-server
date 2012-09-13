@@ -1,3 +1,9 @@
+univention-join (5.0.9-1) unstable; urgency=low
+
+  * fixed additional comma in join/Form.js; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 16:48:51 +0200
+
 univention-join (5.0.8-1) unstable; urgency=low
 
   * bug fixes due to Dojo update; Bug #26857

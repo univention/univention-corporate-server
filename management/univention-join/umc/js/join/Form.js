@@ -31,7 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"umc/widgets/Form",
-	"umc/widgets/StandbyMixin",
+	"umc/widgets/StandbyMixin"
 ], function(declare, Form, StandbyMixin) {
 
 	return declare("umc.modules.join.Form", [ Form, StandbyMixin ], {
