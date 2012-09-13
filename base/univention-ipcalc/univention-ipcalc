@@ -85,7 +85,7 @@ def parse_options():
             help='Netmask or prefix length')
     parser.add_option('--output', dest='output', default='all',
             choices=('network', 'reverse', 'pointer', 'all'),
-            help='Specify requested output typ')
+            help='Specify requested output type')
     parser.add_option('--calcdns', dest='calcdns',
             action='store_true',
             help='Request to calcuale DNS record entries')
