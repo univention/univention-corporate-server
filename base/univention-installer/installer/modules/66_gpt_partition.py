@@ -419,6 +419,10 @@ class object(content):
 				start = MiB2MB(start)
 			if type(end) == type(0) or type(end)==type(0.0):
 				end = MiB2MB(end)
+			if mpoint == '':
+				mpoint = 'None'
+			if fstype == '':
+				fstype = 'None'
 			self.container['result'][ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s %s" % (entrytype, device, parttype, format, fstype,
 																						  start, end, mpoint, flag)
 			i += 1

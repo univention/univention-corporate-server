@@ -1,3 +1,9 @@
+univention-installer (8.0.16-2) unstable; urgency=low
+
+  * fix for bug 13936 has been ported to new partition module (Bug #23990)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 13 Sep 2012 10:55:35 +0200
+
 univention-installer (8.0.16-1) unstable; urgency=low
 
   * fixed headline alignment of partition grid (Bug #23990)
