@@ -1,4 +1,4 @@
-univention-foomatic-ppds (1.0.0-1) unstable; urgency=low
+univention-foomatic-ppds (6.0.8-1) unstable; urgency=low
 
   * Split from univention-printserver (Bug #28494)
 
