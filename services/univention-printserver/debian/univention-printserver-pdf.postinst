@@ -42,13 +42,6 @@ univention-config-registry set "cups/cups-pdf/anonymous?$anon_dir"
 # run join script
 call_joinscript 79univention-printserver-pdf.inst
 
-# cups backend
-if dpkg-statoverride --list /usr/lib/cups/backend/cups-pdf >/dev/null
-then
-	dpkg-statoverride --remove --force /usr/lib/cups/backend/cups-pdf
-fi
-chmod 0700 /usr/lib/cups/backend/cups-pdf
-
 # reload listener
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener; then
