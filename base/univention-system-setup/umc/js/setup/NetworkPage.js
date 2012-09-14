@@ -223,7 +223,7 @@ define([
 			this.standby(true);
 
 			// make sure we have an interface selected
-			if (!item || !item[0] || !typeof item[0] == "string") {
+			if (!item || !item[0] || typeof item[0] != "string") {
 				dialog.alert(_('Please choose a network device before querying a DHCP address.'));
 				this.standby(false);
 				return;
