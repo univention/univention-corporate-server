@@ -22,21 +22,15 @@ Description[en]=Enable/Disable language button
 Type=bool
 Categories=system-desktop
 
-[gdm/menu/securesystem]
-Description[de]=Erlaube/Verbiete Benutzern das Herrunterfahren des Systems
-Description[en]=Allow/Disallow users to shutdown the system
-Type=bool
-Categories=system-desktop
-
 [gdm/menu/system]
-Description[de]=Aktiviere/Deaktiviere GMD-Menüs
-Description[en]=Enalbe/Disable GDM menus
+Description[de]=Falls auf true gesetzt, werden im GDM Login-Manager Buttons für das Herunterfahren bzw. den Neustart des Rechners angeboten (default: false)
+Description[en]=If set to true, the GDM login manager provides buttons for the shutdown and restart of the computer (default: false)
 Type=bool
 Categories=system-desktop
 
 [gdm/systemmenu]
-Description[de]=Aktiviere/Deaktiviere SystemMenu in der gdm.conf
-Description[en]=Enalbe/Disable SystemMenu in gdm.conf
+Description[de]=Falls auf true gesetzt, ist es möglich den Rechner über den Login-Manager bzw. die Desktop-Umgebung herunterzufahren bzw. neu zu starten (default: true)
+Description[en]=If set to true, the computer can be restartet or turned off via the login manager or the desktop environment (default: true)
 Type=bool
 Categories=system-desktop
 
