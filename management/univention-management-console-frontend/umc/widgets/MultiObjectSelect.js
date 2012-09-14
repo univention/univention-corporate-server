@@ -193,12 +193,12 @@ define([
 		// function(ids) { ... }
 		// may return Deferred
 		formatter: function(ids) {
-			array.forEach(ids, function(id, i) {
+			return array.map(ids, function(id) {
 				if (typeof id == "string") {
-					ids[i] = {label: id, id: id};
+					return {label: id, id: id};
 				}
+				return id;
 			});
-			return ids;
 		},
 
 		// autoSearch: String

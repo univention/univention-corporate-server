@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.57-1) unstable; urgency=low
+
+  * added use of array.map instead of array.forEach in MultiObjectSelect
+  	formatter; Bug #26780
+
+ -- Florian Best <best@univention.de>  Fri, 14 Sep 2012 14:07:01 +0200
+
 univention-management-console-frontend (2.0.56-1) unstable; urgency=low
 
   * fixed error during login; Bug #26857
