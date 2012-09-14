@@ -424,7 +424,7 @@
 	border-right:1px solid #ABD6FF;
 }
 .umc .dojoxGridRowActive .dojoxGridCell {
-	background:url(../../../dojox/grid/resources/images/td_button_down.png) #74be4b repeat-x;
+	background-color: #74be4b;
 }
 .dj_ie6 .umc .dojoxGridRowActive .dojoxGridCell,
 .dj_ie7 .umc .dojoxGridRowActive .dojoxGridCell {

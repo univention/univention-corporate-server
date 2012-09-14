@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.54-1) unstable; urgency=low
+
+  * fixed various CSS bugs (Bug #26826)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 14 Sep 2012 11:20:34 +0200
+
 univention-management-console-frontend (2.0.53-1) unstable; urgency=low
 
   * fixed StandbyMixin for IE8, make sure that standby() is executed after
