@@ -122,7 +122,7 @@ if __name__ == '__main__':
 	os.chmod(fdname, 0644)
 
 	# Move the file
-	shuitl.move(fdname, options.file)
+	shutil.move(fdname, options.file)
 	if options.verbose:
 		print 'The file %s was created.' % options.file
 

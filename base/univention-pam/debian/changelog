@@ -1,3 +1,9 @@
+univention-pam (6.0.7-2) unstable; urgency=low
+
+  * Fixed typo in ldap-group-to-file.py (Bug #28361)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2012 12:35:45 +0200
+
 univention-pam (6.0.7-1) unstable; urgency=low
 
   * Use shuitl.move instead of os.rename to support /tmp and /var on
