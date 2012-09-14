@@ -52,6 +52,6 @@ def postrun():
 		param = ['ldap-group-to-file.py']
 		if ucr.is_true('nss/group/cachefile/check_member', True):
 			param.append('--check_member')
-		listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', ['ldap-group-to-file.py'], uid=0)
+		listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', param, uid=0)
 		listener.unsetuid()
 

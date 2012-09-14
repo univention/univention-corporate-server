@@ -34,6 +34,7 @@
 import univention.uldap
 import optparse
 import ldap
+import shutil
 import string
 import sys
 import os
@@ -120,8 +121,8 @@ if __name__ == '__main__':
 
 	os.chmod(fdname, 0644)
 
-	# Replace the file
-	os.rename(fdname, options.file)
+	# Move the file
+	shuitl.move(fdname, options.file)
 	if options.verbose:
 		print 'The file %s was created.' % options.file
 
