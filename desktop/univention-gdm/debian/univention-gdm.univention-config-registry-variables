@@ -30,7 +30,7 @@ Categories=system-desktop
 
 [gdm/systemmenu]
 Description[de]=Falls auf true gesetzt, ist es möglich den Rechner über den Login-Manager bzw. die Desktop-Umgebung herunterzufahren bzw. neu zu starten (default: true)
-Description[en]=If set to true, the computer can be restartet or turned off via the login manager or the desktop environment (default: true)
+Description[en]=If set to true, the computer can be restarted or turned off via the login manager or the desktop environment (default: true)
 Type=bool
 Categories=system-desktop
 
