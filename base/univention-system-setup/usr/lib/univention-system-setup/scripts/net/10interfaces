@@ -400,10 +400,10 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 					if [ -z "$new_netmask" ]; then
 						new_netmask=`univention-config-registry get interfaces/$device/netmask`
 					fi
-					reverse=`univention-ipcalc --netmask $new_netmask --ip $new_ip --output reverse --calcdns`
+					reverse="$(univention-ipcalc6 --netmask "$new_netmask" --ip "$new_ip" --output reverse --calcdns)"
 					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse $reverse add zone root@$domainname. 1 28800 10800 604800 108001 $hostname.$domainname.
 
-					ptr=`univention-ipcalc --netmask $new_netmask --ip $new_ip --output pointer --calcdns`
+					ptr="$(univention-ipcalc6 --netmask "$new_netmask" --ip "$new_ip" --output pointer --calcdns)"
 					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse $reverse add ptr $ptr $hostname.$domainname.
 
 					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set ip=$new_ip
