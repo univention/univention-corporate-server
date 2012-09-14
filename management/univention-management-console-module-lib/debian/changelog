@@ -1,3 +1,9 @@
+univention-management-console-module-lib (1.0.3-1) unstable; urgency=low
+
+  * added minimal lib.js file to avoid warnings at startup; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Sep 2012 11:57:07 +0200
+
 univention-management-console-module-lib (1.0.2-1) unstable; urgency=low
 
   * Minor syntax tweaks to make js validation tool happy; Bug #26857
