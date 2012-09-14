@@ -57,8 +57,6 @@ define([
 		// the widget's class name as CSS class
 		'class': 'umcMultiInput',
 
-		sizeClass: null,
-
 		depends: null,
 
 		name: '',

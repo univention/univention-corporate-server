@@ -53,6 +53,13 @@ define([
 			this.sizeClass = null;
 		},
 
+		postCreate: function() {
+			// FIXME: this line should not be necessary...
+			this.sizeClass = null;
+
+			this.inherited(arguments);
+		},
+
 		_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){
 			// based on the code from dijit.form.CheckBox
 			this.value = newValue = tools.isTrue( newValue );
