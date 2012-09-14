@@ -1,3 +1,9 @@
+univention-squid (6.0.1-1) unstable; urgency=low
+
+  * cleaned up the squid.conf template (Bug #27815)
+
+ -- Florian Best <best@univention.de>  Fri, 14 Sep 2012 14:34:34 +0200
+
 univention-squid (6.0.0-2) unstable; urgency=low
 
   * Replace hard coded eth0 by ipv4_interfaces (Bug #26058)
