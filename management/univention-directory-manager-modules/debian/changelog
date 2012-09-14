@@ -1,3 +1,11 @@
+univention-directory-manager-modules (8.0.21-2) unstable; urgency=low
+
+  * corrected descriptions of UCR variable
+    "directory/manager/cmd/sockettimeout"
+    (Bug #27736)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 14 Sep 2012 14:13:53 +0200
+
 univention-directory-manager-modules (8.0.21-1) unstable; urgency=low
 
   * Cleanup whitespace (Bug #27907, #27929)
