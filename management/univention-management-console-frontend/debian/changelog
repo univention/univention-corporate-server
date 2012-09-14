@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.56-1) unstable; urgency=low
+
+  * fixed error during login; Bug #26857
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Sep 2012 12:08:25 +0200
+
 univention-management-console-frontend (2.0.55-1) unstable; urgency=low
 
   * fixed size for CheckBox widget; Bug #26857

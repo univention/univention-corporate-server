@@ -116,7 +116,7 @@ define([
 			this._loginDeferred = this._loginDeferred.then(lang.hitch(dialog, function(username) {
 				// set the locale
 				return tools.umcpCommand('set', {
-					locale: i18nTools.defaultLang.replace('-', '_')
+					locale: i18nTools.defaultLang().replace('-', '_')
 				}, false).then(function() {
 					// remove the reference to the login deferred object
 					dialog._loginDeferred = null;
