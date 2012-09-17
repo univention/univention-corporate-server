@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.58-1) unstable; urgency=low
+
+  * adapted umc.dialog.confirmForm; Bug #26791
+
+ -- Florian Best <best@univention.de>  Mon, 17 Sep 2012 09:50:58 +0200
+
 univention-management-console-frontend (2.0.57-1) unstable; urgency=low
 
   * added use of array.map instead of array.forEach in MultiObjectSelect

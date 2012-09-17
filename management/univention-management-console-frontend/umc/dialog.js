@@ -295,7 +295,23 @@ define([
 			return deferred;
 		},
 
-		confirmForm: function(/*Object[]*/widgets, /*Object[]*/buttons, /*Object[]?*/layout, /*Object?*/options) {
+		confirmForm: function(/*Object[]*/widgets, /*Object[]?*/layout, /*Object?*/options) {
+			// summary:
+			// 		Popup a confirmation dialog containing a `umc.widgets.Form' build from the given widgets
+			// widgets:
+			// 		The Form widgets
+			// layout:
+			// 		The Form layout
+			// options:
+			// 		Options to overwrite the following defaults:
+			// 			String title: the confirmation dialog title (default: 'Confirmation')
+			// 			String style: the confirmation dialog css style (default: 'max-width: 550px;')
+			// 			Object[] buttons: overwrite the default submit and cancel button
+			// 			String submit: the label for the submit button (default: 'Submit')
+			// 			String cancel: the label for the cancel button (default: 'Cancel')
+			if (!options) {
+				options = {};
+			}
 			var form = new Form({
 				widgets: widgets,
 				layout: layout
@@ -303,21 +319,26 @@ define([
 
 			// create confirmation dialog
 			var confirmDialog = new ConfirmDialog({
-				title: options && options.title || this._('Confirmation'),
-				style: options && options.style || 'max-width: 550px;',
+				title: options.title || _('Confirmation'),
+				style: options.style || 'max-width: 550px;',
 				message: form,
-				options: buttons
+				options: options.buttons || [{
+					name: 'submit',
+					label: options.submit || _('Submit')
+				}, {
+					name: 'cancel',
+					'default': true,
+					label: options.close || _('Cancel')
+				}]
 			});
 
 			// connect to 'confirm' event to close the dialog in any case
 			var deferred = new Deferred();
 			confirmDialog.on('confirm', function(response) {
+				if ('submit' === response) {
+					deferred.resolve(form.gatherFormValues());
+				}
 				confirmDialog.close();
-				deferred.resolve(response);
-			});
-
-			confirmDialog.on('destroy', function() {
-				form.destroyRecursive();
 			});
 
 			// show the confirmation dialog
