@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.23-1) unstable; urgency=low
+
+  * added syntax: TimeString; Bug #18436 
+
+ -- Florian Best <best@univention.de>  Mon, 17 Sep 2012 16:52:23 +0200
+
 univention-directory-manager-modules (8.0.22-1) unstable; urgency=low
 
   * Adjust uidAlreadyUsed and groupNameAlreadyUsed messages (Bug #26289)

@@ -1135,6 +1135,18 @@ class TimeUnits( select ):
 		( 'days', _( 'days' ) )
 		)
 
+class TimeString( simple ):
+	error_message = _("Not a valid time format")
+	@classmethod
+	def parse(self, text):
+		try:
+			hour, minute = map(int, text.split(':', 1))
+			if not ( hour <= 24 and minute <= 60 ):
+				raise ValueError
+			return text
+		except:
+			raise univention.admin.uexceptions.valueError( self.error_message )
+
 class UNIX_TimeInterval( complex ):
 	min_elements = 1
 	subsyntaxes = ( ( '', integer ), ( '', TimeUnits ) )
