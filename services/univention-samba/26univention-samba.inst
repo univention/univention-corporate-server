@@ -67,6 +67,13 @@ if [ -n "$s4setup" ]; then
 			/etc/init.d/univention-directory-listener restart
 		fi
 	fi
+
+	## set samba/share/home=yes on a memberserver, if it is a join into a samba4 domain and if it is the first join
+	if [ "$JS_LAST_EXECUTED_VERSION" -lt 0 && "$server_role" = "memberserver"]; then
+		univention-config-registry set samba/share/home=yes
+	fi
+
+
 else
 	univention-config-registry set samba/domain/security=domain
 fi

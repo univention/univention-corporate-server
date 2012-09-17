@@ -1,3 +1,9 @@
+univention-samba (7.0.10-1) unstable; urgency=low
+
+  * during the first join, set samba/share/home=yes on a memberserver when joining a samba4-domain (Bug #25339)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 17 Sep 2012 16:39:39 +0200
+
 univention-samba (7.0.9-2) unstable; urgency=low
 
   * removed manual adjustment of the minimal password length in Samba domain
