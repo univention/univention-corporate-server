@@ -312,31 +312,49 @@ define([
 			if (!options) {
 				options = {};
 			}
+
+			// create form
 			var form = new Form({
 				widgets: widgets,
 				layout: layout
 			});
+
+			// define buttons
+			var buttons = options.buttons || [{
+				name: 'submit',
+				label: options.submit || _('Submit')
+			}, {
+				name: 'cancel',
+				'default': true,
+				label: options.close || _('Cancel')
+			}];
 
 			// create confirmation dialog
 			var confirmDialog = new ConfirmDialog({
 				title: options.title || _('Confirmation'),
 				style: options.style || 'max-width: 550px;',
 				message: form,
-				options: options.buttons || [{
-					name: 'submit',
-					label: options.submit || _('Submit')
-				}, {
-					name: 'cancel',
-					'default': true,
-					label: options.close || _('Cancel')
-				}]
+				options: buttons
 			});
+
+			// check if the submit button is the default action
+			if (array.some(buttons, function(button) { return (button.name === 'submit' && button['default']); })) {
+				// confirm the dialog if form was submitet
+				form.on('submit', function() {
+					confirmDialog.onConfirm('submit');
+				});
+			}
 
 			// connect to 'confirm' event to close the dialog in any case
 			var deferred = new Deferred();
 			confirmDialog.on('confirm', function(response) {
 				if ('submit' === response) {
 					deferred.resolve(form.gatherFormValues());
+				} else {
+					deferred.cancel({
+						button: response,
+						values: form.gatherFormValues()
+					});
 				}
 				confirmDialog.close();
 			});
