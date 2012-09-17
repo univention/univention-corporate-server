@@ -295,28 +295,22 @@ define([
 			return deferred;
 		},
 
-		confirmForm: function(/*Object[]*/widgets, /*Object[]?*/layout, /*Object?*/options) {
+		confirmForm: function(/*Object*/options) {
 			// summary:
 			// 		Popup a confirmation dialog containing a `umc.widgets.Form' build from the given widgets
-			// widgets:
-			// 		The Form widgets
-			// layout:
-			// 		The Form layout
 			// options:
-			// 		Options to overwrite the following defaults:
-			// 			String title: the confirmation dialog title (default: 'Confirmation')
-			// 			String style: the confirmation dialog css style (default: 'max-width: 550px;')
-			// 			Object[] buttons: overwrite the default submit and cancel button
-			// 			String submit: the label for the submit button (default: 'Submit')
-			// 			String cancel: the label for the cancel button (default: 'Cancel')
-			if (!options) {
-				options = {};
-			}
+			// 		Object[] widgets: the form widgets
+			// 		Object[] layout: the form layout
+			// 		String title: the confirmation dialog title (default: 'Confirmation')
+			// 		String style: the confirmation dialog css style (default: 'max-width: 550px;')
+			// 		Object[] buttons: overwrite the default submit and cancel button
+			// 		String submit: the label for the submit button (default: 'Submit')
+			// 		String cancel: the label for the cancel button (default: 'Cancel')
 
 			// create form
 			var form = new Form({
-				widgets: widgets,
-				layout: layout
+				widgets: options.widgets,
+				layout: options.layout
 			});
 
 			// define buttons
