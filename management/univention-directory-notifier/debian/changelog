@@ -1,3 +1,12 @@
+univention-directory-notifier (7.0.6-1) unstable; urgency=low
+
+  * Cleanups for univention-replicate-one (Bug #27625):
+    - Print error messages on stderr
+    - Call init script directly instead of using invoke-rc.d
+    - Cleanup messages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2012 07:20:57 +0200
+
 univention-directory-notifier (7.0.5-2) unstable; urgency=low
 
   * Include shell lib before using is_ucr_true (Bug #28361)

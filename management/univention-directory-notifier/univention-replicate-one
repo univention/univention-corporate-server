@@ -38,22 +38,22 @@ usage()
 	echo
 	echo "The given LDAP DN will be replicated as if it has been modified."
 	echo
-	echo "WARNING: This tool will stop the OpenLDAP and the Notifier daemon"
+	echo "Warning: This tool will stop the OpenLDAP and the Notifier daemon"
 	echo
 }
 
 if [ "$server_role" != "domaincontroller_master" ]; then
-	echo "Abort: This tool must be run on the Domaincontroller Master!"
+	echo "Abort: This tool must be run on the Domaincontroller Master!" >&2
 	exit 1
 fi
 
 if [ ! -e /var/lib/univention-ldap/notify/transaction ]; then
-	echo "Abort: /var/lib/univention-ldap/notify/transaction was not found."
+	echo "Abort: /var/lib/univention-ldap/notify/transaction was not found." >&2
 	exit 1
 fi
 
 if [ "$#" != 2 ] || [ "$1" != "--dn" ]; then
-	usage
+	usage >&2
 	exit 1
 fi
 
@@ -63,11 +63,11 @@ RESTART_NOTIFIER=0
 if pidof univention-directory-notifier >/dev/null ; then
 	echo -n "Stopping notifier: "
 	RESTART_NOTIFIER=1
-	invoke-rc.d univention-directory-notifier stop >/dev/null
+	/etc/init.d/univention-directory-notifier stop >/dev/null
 	sleep 1
 	if pidof univention-directory-notifier >/dev/null ; then
 		echo "failed"
-		echo "Abort: Failed to stop the notifier daemon. Please check stop the daemon manually and try again."
+		echo "Abort: Failed to stop the notifier daemon. Please check stop the daemon manually and try again." >&2
 		exit 1
 	fi
 	echo "done"
@@ -77,18 +77,18 @@ RESTART_SLAPD=0
 if pidof slapd >/dev/null ; then
 	echo -n "Stopping slapd: "
 	RESTART_SLAPD=1
-	invoke-rc.d slapd stop >/dev/null
+	/etc/init.d/slapd stop >/dev/null
 	sleep 1
 	if pidof slapd >/dev/null ; then
 		echo "failed"
-		echo "Abort: Failed to stop the OpenLDAP daemon. Please check stop the daemon manually and try again."
+		echo "Abort: Failed to stop the OpenLDAP daemon. Please check stop the daemon manually and try again." >&2
 		exit 1
 	fi
 	echo "done"
 fi
 
 
-echo -n "Write $dn to transaction file: "
+echo -n "Write $dn to listener file: "
 id="$(tail -n 1 /var/lib/univention-ldap/notify/transaction | awk '{print $1}')"
 
 last_line="$(tail -n 1 /var/lib/univention-ldap/listener/listener)"
@@ -108,13 +108,13 @@ echo "done"
 
 if [ "$RESTART_NOTIFIER" = 1 ]; then
 	echo -n "Starting notifier: "
-	invoke-rc.d univention-directory-notifier start >/dev/null
+	/etc/init.d/univention-directory-notifier start >/dev/null
 	echo "done"
 fi
 
 if [ "$RESTART_SLAPD" = 1 ]; then
 	echo -n "Starting slapd: "
-	invoke-rc.d slapd start >/dev/null
+	/etc/init.d/slapd start >/dev/null
 	echo "done"
 fi
 
