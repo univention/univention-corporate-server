@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.59-1) unstable; urgency=low
+
+  * fixed various CSS bugs (Bug #26826)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 17 Sep 2012 11:57:19 +0200
+
 univention-management-console-frontend (2.0.58-1) unstable; urgency=low
 
   * adapted umc.dialog.confirmForm; Bug #26791
