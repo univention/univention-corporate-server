@@ -1,3 +1,9 @@
+univention-updater (8.0.12-1) unstable; urgency=low
+
+  * Use testing.univention.de as repository server (Bug #27966)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2012 14:36:41 +0200
+
 univention-updater (8.0.11-1) unstable; urgency=low
 
   * Fix univention-repository-create (Bug #26239)
