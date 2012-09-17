@@ -1,13 +1,13 @@
-univention-directory-replication (6.0.2-4) unstable; urgency=low
+univention-directory-replication (6.0.3-1) unstable; urgency=low
 
-  * Removed old univention-directory-replication-resync from install
+  * Removed old univention-directory-replicate-one from install
     file (Bug #27625)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2012 08:58:16 +0200
 
 univention-directory-replication (6.0.2-3) unstable; urgency=low
 
-  * Removed unused tool univention-directory-replication-resync. 
+  * Removed unused tool univention-directory-replicate-one. 
     univention-replicate-one from univention-directory-notifier should be
     used (Bug #27625)
 
