@@ -136,34 +136,22 @@ define([
 								//	4 ... any kind of 'repo not found' conditions
 								//	5 ... repo not found, but encountered without commit
 								var txt = _("An unknown error with code %d occured.", result.status);
-								var title = 'Error';
 								switch(result.status) {
 									case 1: txt = _("Please correct the corresponding input fields:");
-											title = _("Invalid data");
 											break;
 									case 2:
 									case 3: txt = _("The data you entered could not be saved correctly:");
-											title = _("Error saving data");
 											break;
 									case 4: txt = _("Using the data you entered, no valid repository could be found.<br/>Since this may be a temporary server problem as well, your data was saved though.<br/>The problem was:");
-											title = _("Updater warning");
 											break;
-									case 5: txt = _("With the current (unchanged) settings, the following problem was encountered:");
-											title = _("Updater warning");
+									case 5: txt = _("With the current (already changed) settings, the following problem was encountered:");
 											break;
 								}
 		
-								var message = lang.replace('<p>{txt}</p><p><b>{msg}</b></p>', {txt : txt, msg : result.message});
+								var message = lang.replace('<p>{txt}</p><p><strong>{msg}</strong></p>', {txt : txt, msg : result.message});
 		
-								// While our module is open, the first created dialog would retain its title over
-								// its whole lifetime... But we want the title to be changed on every invocation,
-								// so there's no chance but to reap a current instance of the dialog.
-		
-								dialog._alertDialog = null;
-								dialog.alert(message, title);
+								dialog.alert(message);
 							}
-							// No, this is done in the Form class itself.
-							// this._form.applyErrorIndicators(result['object']);
 						}
 					}
 				})

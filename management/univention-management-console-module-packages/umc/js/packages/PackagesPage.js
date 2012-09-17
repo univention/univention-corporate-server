@@ -385,21 +385,21 @@ define([
 				var txt = '';
 				var label = '';
 				if (result.install.length) {
-					label = 'The following packages will be installed or upgraded:';
+					label = _('The following packages will be installed or upgraded:');
 					txt += '<p>' + label + '<ul><li>' + result.install.join('</li><li>') + '</li></ul></p>';
 				}
 				if (result.remove.length) {
-					label = 'The following packages will be removed:';
+					label = _('The following packages will be removed:');
 					txt += '<p>' + label + '<ul><li>' + result.remove.join('</li><li>') + '</li></ul></p>';
 				}
 				if (result.broken.length) {
-					label = 'This operation causes problems in the following packages that cannot be resolved:';
+					label = _('This operation causes problems in the following packages that cannot be resolved:');
 					txt += '<p>' + label + '<ul><li>' + result.broken.join('</li><li>') + '</li></ul></p>';
 				}
 				var headline = '';
 				var buttons = [];
 				if (result.broken.length) {
-					headline = 'You cannot continue';
+					headline = _('You cannot continue');
 					buttons = [
 						{
 							name: 'cancel',
@@ -457,6 +457,7 @@ define([
 		},
 
 		_restartOrReload: function() {
+			// TODO: only if necessary! only minority will require a restart!
 			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
 			function() {
 				// if user confirms, he is redirected to the login page

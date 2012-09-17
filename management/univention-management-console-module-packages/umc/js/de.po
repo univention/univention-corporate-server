@@ -16,6 +16,22 @@ msgstr ""
 msgid "--- all ---"
 msgstr "--- alle ---"
 
+#: umc/js/packages/PackagesPage.js:388
+msgid "The following packages will be installed or upgraded:"
+msgstr "Folgende Pakete werden installiert bzw. aktualisiert:"
+
+#: umc/js/packages/PackagesPage.js:392
+msgid "The following packages will be removed:"
+msgstr "Folgende Pakete werden deinstalliert:"
+
+#: umc/js/packages/PackagesPage.js:396
+msgid "This operation causes problems in the following packages that cannot be resolved:"
+msgstr "Die Aktion führt bei folgenden Paketen zu nicht automatisch behebbaren Problemen:"
+
+#: umc/js/packages/PackagesPage.js:402
+msgid "You cannot continue"
+msgstr "Fortfahren nicht möglich"
+
 #: umc/js/packages/PackagesPage.js:211
 #, python-format
 msgid "...<br>[%d more chars]"
@@ -435,10 +451,11 @@ msgstr "Details anzeigen"
 
 #: umc/js/packages/SettingsPage.js:147
 msgid ""
-"With the current (unchanged) settings, the following problem was encountered:"
+"With the current (already changed) settings, the following problem was "
+"encountered:"
 msgstr ""
-"Mit den momentanen (unveränderten) Einstellungen ist das folgende Problem "
-"aufgetreten:"
+"Mit den momentanen (bereits veränderten) Einstellungen ist das folgende "
+"Problem aufgetreten:"
 
 #: umc/js/packages/PackagesPage.js:337 umc/js/packages/PackagesPage.js:421
 msgid "Yes"

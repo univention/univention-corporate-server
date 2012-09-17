@@ -57,14 +57,15 @@ define([
 			deferred = deferred.then(lang.hitch(this, function(data) {
 				/*
 				 * BEGIN CHANGED
-				 * if validation error status (400)
-				 * trigger onValidationError event
+				 * 1. if validation error status (400)
+				 *    trigger onValidationError event
+				 * 2. propagate data to the onSaved event
 				 */
 				if (data && parseInt(data.status, 10) == 400) {
 					this.onValidationError(data.result);
 					return data;
 				} else {
-					this.onSaved(true);
+					this.onSaved(true, data);
 					return data;
 				}
 				/*
@@ -72,7 +73,14 @@ define([
 				 */
 
 			}), lang.hitch(this, function() {
-				this.onSaved(false);
+				/*
+				 * BEGIN CHANGED
+				 * propagate data to the onSaved event
+				 */
+				this.onSaved(false, data);
+				/*
+				 * END CHANGED
+				 */
 			}));
 
 			return deferred;

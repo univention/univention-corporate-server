@@ -53,7 +53,6 @@ from univention.lib.package_manager import PackageManager, LockError
 from univention.management.console.log import MODULE
 
 from univention.updater import UniventionUpdater
-from univention.updater.commands import cmd_update
 from univention.updater.errors import ConfigurationError
 
 _ = umc.Translation('univention-management-console-module-packages').translate
@@ -210,7 +209,7 @@ class Instance(umcm.Base):
 		except LockError:
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
-			raise umcm.UMC_Error(_('Another package operation is in progress'))
+			raise umcm.UMC_CommandError(_('Another package operation is in progress'))
 
 	@simple_response
 	def sections(self):
@@ -304,7 +303,7 @@ class Instance(umcm.Base):
 		except LockError:
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
-			raise umcm.UMC_Error(_('Another package operation is in progress'))
+			raise umcm.UMC_CommandError(_('Another package operation is in progress'))
 
 	@simple_response
 	def progress(self):
@@ -430,11 +429,7 @@ class Instance(umcm.Base):
 		with self.set_save_commit_load() as super_ucr:
 			for data in objects:
 				result.append(self._put_component(data['object'], super_ucr))
-			try:
-				with open('/dev/null') as devnull:
-					subprocess.call(shlex.split(cmd_update), stdout=devnull, stderr=devnull)
-			except OSError as e:
-				MODULE.error('Execution of "%s" failed: %s' % (cmd_update, str(e)))
+			self.package_manager.update()
 
 		return result
 
@@ -591,11 +586,8 @@ class Instance(umcm.Base):
 		except Exception as e:
 			MODULE.warn("   !! Writing UCR failed: %s" % str(e))
 			return {'message' : str(e), 'status' : PUT_WRITE_ERROR}
-		try:
-			with open('/dev/null') as devnull:
-				subprocess.call(shlex.split(cmd_update), stdout=devnull, stderr=devnull)
-		except OSError as e:
-			MODULE.error('Execution of "%s" failed: %s' % (cmd_update, str(e)))
+
+		self.package_manager.update()
 
 		# Bug #24878: emit a warning if repository is not reachable
 		try:

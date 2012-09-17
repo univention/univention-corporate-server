@@ -31,12 +31,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"umc/tools",
 	"umc/modules/packages/Form",
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/packages"
-], function(declare, lang, Form, ComboBox, CheckBox, TextBox, _) {
+], function(declare, lang, tools, Form, ComboBox, CheckBox, TextBox, _) {
 	return declare("umc.modules.packages.SearchForm", [ Form ], {
 
 		postMixInProperties: function() {
@@ -48,10 +49,10 @@ define([
 						{
 							name: 'section',
 							label: _("Package categories"),
+							size: 'TwoThirds',
 							type: ComboBox,
 							staticValues: [{ id: 'all', label: _("--- all ---") }],
 							sortStaticValues: false,
-							required: true,
 							dynamicValues: 'packages/sections',
 							onDynamicValuesLoaded: lang.hitch(this, function() {
 								this.allowSearchButton(true);
@@ -62,21 +63,13 @@ define([
 							})
 						},
 						{
-							name: 'installed',
-							label: _("Installed packages only"),
-							type: CheckBox
-	// doesn't make sense: a Bool on its own is always valid.
-	//						onChange: lang.hitch(this, function() {
-	//							this._check_submit_allow();
-	//						})
-						},
-						{
 							name: 'key',
 							label: _("Search key"),
+							size: 'TwoThirds',
 							type: ComboBox,
 							staticValues: [
-						 { id: 'package',		label: _("Package name") },
-						 { id: 'description',	label: _("Package description") }
+								{ id: 'package',		label: _("Package name") },
+								{ id: 'description',	label: _("Package description") }
 							],
 							sortStaticValues: false,
 							onChange: lang.hitch(this, function() {
@@ -86,6 +79,7 @@ define([
 						{
 							name: 'pattern',
 							label: _("Pattern"),
+							size: 'TwoThirds',
 							type: TextBox,
 							value: '*',
 							required: false,
@@ -103,9 +97,7 @@ define([
 					],
 					layout:
 					[
-						['installed'],
-						['section'],
-						['key', 'pattern', 'submit']
+						['section', 'key', 'pattern', 'submit']
 					]
 				});
 			} catch(error) {
@@ -117,15 +109,11 @@ define([
 		_check_submit_allow: function() {
 
 			var allow = true;
-			for (var w in this._widgets) {
-				if (w != 'installed')	// workaround for ComboBox
-				{
-					if (! this._widgets[w].isValid())
-					{
-						allow = false;
-					}
+			tools.forIn(this._widgets, function(iname, iwidget) {
+				if (! iwidget.isValid()) {
+					allow = false;
 				}
-			}
+			});
 
 			this.allowSearchButton(allow);
 		},

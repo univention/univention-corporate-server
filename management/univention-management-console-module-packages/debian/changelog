@@ -1,3 +1,13 @@
+univention-management-console-module-packages (2.0.8-1) unstable; urgency=low
+
+  * Update package_manager after repository changes (Bug #26784)
+  * Fix NameError (Bug #26784)
+  * Fix translations (Bug #27997)
+  * 1-column Package Search Form (Bug #27997)
+  * Propagate errors correctly (Bug #28010)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 17 Sep 2012 12:31:00 +0200
+
 univention-management-console-module-packages (2.0.7-1) unstable; urgency=low
 
   * Prevent UMC restart when installing/updating packages/apps (Bug #20180)
@@ -6,7 +16,7 @@ univention-management-console-module-packages (2.0.7-1) unstable; urgency=low
 
 univention-management-console-module-packages (2.0.6-1) unstable; urgency=low
 
-  * Rename module to Sotware management superficially (Bug #26784)
+  * Rename module to Software management superficially (Bug #26784)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Sep 2012 10:55:05 +0200
 

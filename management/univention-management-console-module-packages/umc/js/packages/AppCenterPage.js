@@ -238,6 +238,7 @@ define([
 		},
 
 		_detail_field_custom_master_packages: function(values) {
+			// TODO: translate if this does make it into the final app center!
 			var master_packages = values.master_packages;
 			if (master_packages) {
 				if (!values.is_joined) {
@@ -256,6 +257,7 @@ define([
 		},
 
 		_detail_field_custom_email_sending: function(values) {
+			// TODO: translate if this does make it into the final app center!
 			if (values.email_sending) {
 				return 'This application will inform the producer if you (un)install it';
 			} else {
@@ -327,6 +329,7 @@ define([
 		},
 
 		_restartOrReload: function() {
+			// TODO: only if necessary? these apps probably will require a restart
 			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
 			function() {
 				// if user confirms, he is redirected to the login page

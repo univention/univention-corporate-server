@@ -127,7 +127,7 @@ class Application(object):
 			'email_agreed' : email_agreed,
 			'is_joined' : is_joined,
 			'is_master' : is_master,
-			'can_install' : not can_uninstall and (is_joined or not master_packages),
+			'can_install' : not can_uninstall and (is_joined or not self.master_packages),
 			'can_uninstall' : can_uninstall,
 		}
 
