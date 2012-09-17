@@ -1,4 +1,3 @@
 replication.py usr/lib/univention-directory-listener/system/
-univention-directory-replicate-one usr/sbin/
 univention-directory-replication-resync usr/sbin/
 
