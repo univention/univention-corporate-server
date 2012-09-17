@@ -36,14 +36,14 @@ usage()
 {
 	echo "Usage: $0 --dn <ldap dn>"
 	echo
-	echo "The given LDAP DN will be replicated as if it has been modified."
+	echo "The given LDAP DN will be re-replicated by the Univention Directory Notifier to all UCS systems in this UCS domain. This tool must be run on the domain controller master."
 	echo
-	echo "Warning: This tool will stop the OpenLDAP and the Notifier daemon"
+	echo "Warning: This tool will stop the OpenLDAP and the Notifier daemon."
 	echo
 }
 
 if [ "$server_role" != "domaincontroller_master" ]; then
-	echo "Abort: This tool must be run on the Domaincontroller Master!" >&2
+	echo "Abort: This tool must be run on the domain controller Master!" >&2
 	exit 1
 fi
 
@@ -106,16 +106,18 @@ echo "$nextid $dn m" >>/var/lib/univention-ldap/listener/listener
 echo -n "$nextid" >/var/lib/univention-ldap/last_id
 echo "done"
 
+rc=0
+
 if [ "$RESTART_NOTIFIER" = 1 ]; then
 	echo -n "Starting notifier: "
-	/etc/init.d/univention-directory-notifier start >/dev/null
+	/etc/init.d/univention-directory-notifier start >/dev/null || rc=1
 	echo "done"
 fi
 
 if [ "$RESTART_SLAPD" = 1 ]; then
 	echo -n "Starting slapd: "
-	/etc/init.d/slapd start >/dev/null
+	/etc/init.d/slapd start >/dev/null || rc=1
 	echo "done"
 fi
 
-exit 0
+exit $rc
