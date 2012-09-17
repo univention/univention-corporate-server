@@ -165,13 +165,13 @@ class object(content):
 
 		if JOINTEST_RETVAL != 0:
 			if JOINTEST_RETVAL == 1:
-				msg = _("The name/ip of the UCS master can not be resolved! Please check dns settings.")
+				msg = _("The name/ip of the UCS DC master can not be resolved! Please check dns settings.")
 			elif JOINTEST_RETVAL == 2: 
-				msg = _("The UCS master is not reachable! Please check network settings.")
+				msg = _("The UCS DC master is not reachable! Please check network settings.")
 			elif JOINTEST_RETVAL == 3:
-				msg = _("Invalid username or password on UCS master! Please check join settings.")
+				msg = _("The login with the specified join account and password on the UCS DC master failed! Please check join settings.")
 			else:
-				msg = _("Connection to the UCS master failed! Please check network and join settings.") 
+				msg = _("Connection to the UCS DC master failed! Please check network and join settings.") 
 
 			return msg
 

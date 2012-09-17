@@ -2792,22 +2792,22 @@ msgstr "Teste Join-Einstellungen"
 
 #: installer/modules/80_join.py:165
 msgid ""
-"Connection to the UCS master failed! Please check network and join settings."
+"Connection to the UCS DC master failed! Please check network and join settings."
 msgstr ""
-"Verbindung zum UCS Master konnte nicht aufgebaut werden! Bitte prüfen Sie "
+"Verbindung zum UCS DC Master konnte nicht aufgebaut werden! Bitte prüfen Sie "
 "die Netzwerk- und Join-Einstellungen!"
 
 #: installer/modules/80_join.py:165
-msgid "The name/ip of the UCS master can not be resolved! Please check dns settings."
-msgstr "Der Name bzw. die IP-Adresse des UCS Master konnte nicht ermittelt werden! Bitte prüfen Sie die DNS Einstellungen"
+msgid "The name/ip of the UCS DC master can not be resolved! Please check dns settings."
+msgstr "Der Name bzw. die IP-Adresse des UCS DC Master konnte nicht ermittelt werden! Bitte prüfen Sie die DNS Einstellungen"
 
 #: installer/modules/80_join.py:165
-msgid "The UCS master is not reachable! Please check network settings."
-msgstr "Der UCS Master ist nicht erreichbar! Bitte prüfen Sie die Netzwerk-Einstellungen"
+msgid "The UCS DC master is not reachable! Please check network settings."
+msgstr "Der UCS DC Master ist nicht erreichbar! Bitte prüfen Sie die Netzwerk-Einstellungen"
 
 #: installer/modules/80_join.py:165
-msgid "Invalid username or password on UCS master! Please check join settings."
-msgstr "Ungültiges Password bzw. Benutzername auf dem UCS Master! Bitte prüfen Sie die Join-Einstellungen."
+msgid "The login with the specified join account and password on the UCS DC master failed! Please check join settings."
+msgstr "Die Anmeldung mit dem angegebenen Join-Account und dem Passwort auf dem UCS DC Master ist fehlgeschlagen! Bitte prüfen Sie die Join-Einstellungen."
 
 #: installer/modules/80_join.py:171
 msgid ""
