@@ -42,19 +42,25 @@ IFS=$'\n\t '
 
 function default_links() {
 	# set back the default help pages
+	echo "Setting up fallback files..." 1>&2
 	for lang in ${LANGUAGES[@]}; do
 		ln -sf "$DEST_DIR/$lang/$DEFAULT_NAME" "$DEST_DIR/$lang/$DEST_NAME"
 	done
+	exit 1
 }
 
 function error() {
 	echo -e "ERROR: $@" 1>&2
-	echo "Setting up fallback files..." 1>&2
 	default_links
-	exit 1
 }
 
-[ ${#vals[@]} -lt 2 ] && error "The UCR variable $UCR_NAME has an invalid format, should be '<dir>:<filename>'."
+if [ ${#vals[@]} -lt 2 ]; then
+	if [ ${#vals[@]} -eq 0 ]; then
+		echo "The UCR variable $UCR_NAME is unset" 1>&2
+		default_links
+	fi
+	error "The UCR variable $UCR_NAME has an invalid format, should be '<dir>:<filename>'."
+fi
 
 dir="${vals[0]}"
 file="${vals[1]}"

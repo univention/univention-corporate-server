@@ -1,3 +1,12 @@
+univention-system-setup (6.0.30-1) unstable; urgency=low
+
+  * don't display ERROR when UCR variable
+    system/setup/boot/help is unset during installation
+    (Bug #27900)
+  * 
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Sep 2012 10:21:50 +0200
+
 univention-system-setup (6.0.29-1) unstable; urgency=low
 
   * Fix univention-ipcalc usage and /32 network (Bug #28143)
