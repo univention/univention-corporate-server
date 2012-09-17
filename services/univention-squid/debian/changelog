@@ -1,3 +1,9 @@
+univention-squid (6.0.3-1) unstable; urgency=low
+
+  * fixed 20squid template (Bug #26058)
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Sep 2012 11:01:15 +0200
+
 univention-squid (6.0.2-1) unstable; urgency=low
 
   * cleaned up the squid.conf template (Bug #27815)

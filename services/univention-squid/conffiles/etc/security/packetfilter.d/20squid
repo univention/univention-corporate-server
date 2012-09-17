@@ -32,7 +32,7 @@
 
 @!@
 from univention.config_registry.interfaces import Interfaces
-if config_registry.is_true('squid/transparentproxy', False):
+if configRegistry.is_true('squid/transparentproxy', False):
 	squidport = baseConfig.get('squid/httpport', '3128')
 	interfaces = Interfaces(configRegistry)
 	local_addresses = [iface.ipv4_address() for _name, iface in interfaces.ipv4_interfaces]
