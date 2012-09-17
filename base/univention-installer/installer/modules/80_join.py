@@ -41,7 +41,7 @@ from local import _
 
 import subprocess
 
-JOINTEST="/tmp/.join-test-failed"
+JOINTEST_RETVAL = 0
 
 class object(content):
 
@@ -136,6 +136,8 @@ class object(content):
 
 	def incomplete(self):
 
+		global JOINTEST_RETVAL
+
 		if self.elements[7].disabled and self.elements[9].disabled and self.elements[11].disabled and self.elements[13].disabled:
 			return 0
 
@@ -153,16 +155,24 @@ class object(content):
 
 		# test join credentials
 		data = {}
+		JOINTEST_RETVAL = 0
 		data["host"] = self.elements[7].result().strip()
 		data["user"] = self.elements[9].result().strip()
 		data["password"] = self.elements[11].result().strip()
 		data["domain"] = self.all_results.get("domainname")
-		data["nameserver"] = self.all_results.get("nameserver_1")
 		self.joinact = TestJoin(self, _('Testing join settings'), _('Please wait ...'), name='joinact', data=data)
 		self.joinact.draw()
-		if os.path.exists(JOINTEST):
-			os.unlink(JOINTEST)
-			msg = _("Connection to the UCS master failed! Please check network and join settings.")
+
+		if JOINTEST_RETVAL != 0:
+			if JOINTEST_RETVAL == 1:
+				msg = _("The dns name of the UCS master can not be resolved! Please check dns settings.")
+			elif JOINTEST_RETVAL == 2: 
+				msg = _("The UCS master is not reachable! Please check network settings.")
+			elif JOINTEST_RETVAL == 3:
+				msg = _("Invalid username or password on UCS master! Please check join settings.")
+			else:
+				msg = _("Connection to the UCS master failed! Please check network and join settings.") 
+
 			return msg
 
 		return 0
@@ -197,6 +207,8 @@ class TestJoin(act_win):
 
 	def function(self):
 
+		global JOINTEST_RETVAL
+
 		if os.path.exists("/sbin/univention-installer-check-join"):
 			cmd = [
 				"/sbin/univention-installer-check-join",
@@ -204,15 +216,10 @@ class TestJoin(act_win):
 				self.data.get("user", ""),
 				self.data.get("password", ""),
 				self.data.get("domain", ""),
-				self.data.get("nameserver", ""),
 			]
 			process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			(stdoutdata, stderrdata) = process.communicate()
 			self.parent.debug("==> TestJoin stdout): %s" % stdoutdata)
 			self.parent.debug("==> TestJoin stderr): %s" % stderrdata)
-			if os.path.exists(JOINTEST):
-				os.unlink(JOINTEST)
-			if process.returncode != 0:
-				fh = open(JOINTEST, "w+")
-				fh.close()
+			JOINTEST_RETVAL = process.returncode
 

@@ -1,3 +1,9 @@
+univention-installer (8.0.18-1) unstable; urgency=low
+
+  * fixed join test (Bug #7444)
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Sep 2012 12:59:20 +0200
+
 univention-installer (8.0.17-1) unstable; urgency=low
 
   * redicret e2fsck to null in 99_reboot.sh (Bug #25284) 

@@ -34,40 +34,42 @@ server="$1"
 user="$2"
 password="$3"
 domain="$4"
-nameserver="$5"
 
 errorAndExit () {
 
-	local msg="$1"
+	local retval=$1
+	local msg="$2"
 	echo "$msg" >&2
 	echo "$msg" >> /tmp/.$(basename $0).failed
-	exit 1
+	exit $retval
 }
 
-if [ -z "$user" -o -z "$password" -o -z "$domain" -o -z "$nameserver" ]; then
-	errorAndExit "user, password, nameserver or domain empty"
+if [ -z "$user" -o -z "$password" -o -z "$domain" ]; then
+	errorAndExit 255 "user, password or domain empty"
 fi
 
 if [ -z "$server" ]; then
 	srv="_domaincontroller_master._tcp.$domain"
-	server="$(host -t SRV "$srv" "$nameserver" | grep "$srv has SRV record" | awk '{print $NF}'| sed 's/\.$//')"
+	server="$(host -t SRV "$srv" | grep "$srv has SRV record" | awk '{print $NF}'| sed 's/\.$//')"
 	if [ -z "$server" ]; then
-		errorAndExit "could not get ucs master via dns"
+		errorAndExit 1 "could not get ucs master via dns"
 	fi
 fi
 
-serverIp="$(host "$server" "$nameserver" | grep "$server has address" | awk '{print $NF}')"
+serverIp="$(host "$server" | grep "$server has address" | awk '{print $NF}')"
 if [ -z "$serverIp" ]; then
-	errorAndExit "could not get ip of ucs master"
+	errorAndExit 1 "could not get ip of ucs master"
+fi
+
+ping -c 1 -w 5 -W 5 $serverIp
+if [ ! $? -eq 0 ]; then
+	errorAndExit 2 "coud not connect to $serverIp"
 fi
 
 sshOptions="-o StrictHostKeyChecking=no -o ConnectTimeout=15 -o NumberOfPasswordPrompts=1"
 out="$(sshpass -p "$password" ssh $sshOptions "$user"@"$serverIp" "id '$user'")"
 if [ ! $? -eq 0 ]; then
-	errorAndExit "ssh to $serverIp as $user failed"
+	errorAndExit 3 "ssh to $serverIp as $user failed"
 fi
-
-# check output
-# TODO
 
 exit 0
