@@ -41,7 +41,6 @@ import os
 import string
 import sys
 import time
-from xml.sax.saxutils import escape as xml_escape
 
 import notifier
 import notifier.signals as signals
@@ -497,7 +496,7 @@ class Processor( signals.Provider ):
 					raise ValueError('filesize is too large, maximum allowed filesize is %d' % (max_size,))
 
 				# escape html chars
-				filename, name = map(xml_escape, (file_obj.get('filename', ''), file_obj.get('name', '')))
+				filename, name = (file_obj.get('filename', ''), file_obj.get('name', ''))
 				with open( tmpfilename ) as buf:
 					b64buf = base64.b64encode( buf.read() )
 				result.append( { 'filename' : filename, 'name' : name, 'content' : b64buf } )

@@ -207,7 +207,7 @@ class Client( signals.Provider, Translation ):
 						self.signal_emit( 'closed' )
 						return False
 					if e.errno in (errno.ENOTCONN, errno.EAGAIN):
-						# EAGAIN: ?
+						# EAGAIN: Resource temporarily unavailable
 						# ENOTCONN: socket not connected
 						return True
 					raise

@@ -1,3 +1,9 @@
+univention-management-console (5.0.23-1) unstable; urgency=low
+
+  * reverted html encoding of upload filenames; Bug #28140
+
+ -- Florian Best <best@univention.de>  Mon, 17 Sep 2012 17:36:54 +0200
+
 univention-management-console (5.0.22-1) unstable; urgency=low
 
   * change path for icons; Bug #26857
