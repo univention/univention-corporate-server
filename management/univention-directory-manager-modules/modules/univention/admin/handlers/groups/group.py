@@ -563,7 +563,7 @@ class object(univention.admin.handlers.simpleLdap):
 				self.dn=None
 				self._exists=0
 				self.cancel()
-				raise univention.admin.uexceptions.groupNameAlreadyUsed, '%s' % (name)
+				raise univention.admin.uexceptions.groupNameAlreadyUsed, ': %s' % (name)
 				return []
 
 			ocs=['top']

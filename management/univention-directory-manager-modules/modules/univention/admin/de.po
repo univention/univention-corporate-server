@@ -1160,24 +1160,24 @@ msgid "Authentication Failed."
 msgstr "Authentisierung fehlgeschlagen"
 
 #: uexceptions.py:85
-msgid "The username is already in use as username or as groupname."
-msgstr "Der Benutzername wird bereits als Benutzername oder als Gruppenname verwendet."
+msgid "The username is already in use as username or as groupname"
+msgstr "Der Benutzername wird bereits als Benutzername oder als Gruppenname verwendet"
 
 #: uexceptions.py:87
-msgid "The username is already in use."
-msgstr "Der Benutzername wird bereits verwendet."
+msgid "The username is already in use"
+msgstr "Der Benutzername wird bereits verwendet"
 
 #: uexceptions.py:90
 msgid "The relative ID (SAMBA) is already in use."
 msgstr "Die relative ID (SAMBA) wird bereits verwendet."
 
 #: uexceptions.py:94
-msgid "The groupname is already in use as groupname or as username."
-msgstr "Der Gruppenname wird bereits als Gruppenname oder als Benutzername verwendet."
+msgid "The groupname is already in use as groupname or as username"
+msgstr "Der Gruppenname wird bereits als Gruppenname oder als Benutzername verwendet"
 
 #: uexceptions.py:96
-msgid "The groupname is already in use."
-msgstr "Der Gruppenname wird bereits verwendet."
+msgid "The groupname is already in use"
+msgstr "Der Gruppenname wird bereits verwendet"
 
 #: uexceptions.py:99
 msgid "Prohibited username."

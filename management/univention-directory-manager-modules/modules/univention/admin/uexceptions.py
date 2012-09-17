@@ -82,18 +82,18 @@ class authFail(base):
 
 class uidAlreadyUsed(base):
 	if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
-		message=_('The username is already in use as username or as groupname.')
+		message=_('The username is already in use as username or as groupname')
 	else:
-		message=_('The username is already in use.')
+		message=_('The username is already in use')
 
 class sidAlreadyUsed(base):
 	message=_('The relative ID (SAMBA) is already in use.')
 
 class groupNameAlreadyUsed(base):
 	if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
-		message=_('The groupname is already in use as groupname or as username.')
+		message=_('The groupname is already in use as groupname or as username')
 	else:
-		message=_('The groupname is already in use.')
+		message=_('The groupname is already in use')
 
 class prohibitedUsername(base):
 	message=_('Prohibited username.')
