@@ -348,11 +348,11 @@ msgstr "Bezeichner"
 
 #: umc/js/_setup/BasisPage.js:244
 msgid ""
-"If at any time samba should be used on this system, the length of the "
-"hostname may be at most 13 characters."
+"If Samba is used on this system, the length of the hostname may be at most "
+"13 characters."
 msgstr ""
-"Falls zu irgendeinem Zeitpunkt Samba uf diesem System verwendet werden soll, "
-"darf der Hostname maximal 13 Zeichen lang sein."
+"Falls Samba auf diesem System verwendet wird, darf der Hostname maximal "
+"13 Zeichen lang sein."
 
 #: umc/js/_setup/SystemRolePage.js:62
 msgid ""

@@ -1,3 +1,10 @@
+univention-system-setup (6.0.32-1) unstable; urgency=low
+
+  * Fix wording (Bug #27854)
+  * Commit UCR (Bug #28010)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 17 Sep 2012 16:45:18 +0200
+
 univention-system-setup (6.0.31-1) unstable; urgency=low
 
   * fixed return codes of script conffiles/update_sytem_setup_help.sh

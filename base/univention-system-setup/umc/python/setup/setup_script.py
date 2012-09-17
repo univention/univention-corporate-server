@@ -39,9 +39,10 @@ from datetime import datetime
 import locale
 from univention.lib.i18n import Translation
 translation = Translation('univention-system-setup-scripts')
-translation.set_language(locale.getdefaultlocale()[0])
+default_locale = locale.getdefaultlocale()
+translation.set_language(default_locale[0])
 _ = translation.translate
-locale.resetlocale() # needed for external translation (e.g. apt)
+locale.setlocale(locale.LC_ALL, default_locale) # needed for external translation (e.g. apt)
 
 import univention.config_registry
 from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
@@ -52,10 +53,10 @@ class SetupScript(object):
 
 	Script lifecycle:
 	  __init__() -> up()
-	  run() -> inner_run() -> down()
+	  run() -> (inner_run() -> commit_ucr()) -> down()
 
-	up(), inner_run(), and down() and encapsulated by try-blocks,
-	so the script should under no cirucumstances break.
+	up(), (inner_run() -> commit_ucr), and down() and encapsulated by
+	try-blocks, so the script should under no cirucumstances break.
 
 	You should define name and script_name class (or instance) variables
 	where name is localised and will show up at top of the progress and
@@ -103,6 +104,7 @@ class SetupScript(object):
 		# get a fresh ucr in every script
 		ucr.load()
 		self._step = 1
+		self._ucr_changes = {}
 		# remove script path from name
 		if self.script_name:
 			if self.script_name.startswith(PATH_SETUP_SCRIPTS):
@@ -181,9 +183,35 @@ class SetupScript(object):
 
 	def set_ucr_var(self, var_name, value):
 		'''Set the value of var_name of ucr.
-		Saves immediately'''
+		Does not save immediately.
+		commit_ucr() is called at the end
+		of inner_run(). If you need to
+		commit changes immediately, you
+		can call commit_ucr() at any time.'''
+		oldval = self.get_ucr_var(var_name)
+		if oldval == value:
+			# nothing to do
+			return
+		self._ucr_changes[var_name] = (oldval, value)
 		ucr[var_name] = value
+
+	def commit_ucr(self):
+		'''Saves ucr variables previously
+		set by set_ucr_var(). Also commits
+		changes (if done any). Is called
+		automatically *if inner_run() did
+		not raise an exception*. You can
+		call it manually if you need to
+		do it (e.g. in down())'''
 		ucr.save()
+		ucr.load()
+		if self._ucr_changes:
+			handler = univention.config_registry.configHandlers()
+			handler.load()
+			handler(self._ucr_changes.keys(), (ucr, self._ucr_changes))
+		# reset (in case it is called multiple
+		# times in a script
+		self._ucr_changes = {}
 
 	def get_ucr_var(self, var_name):
 		'''Retrieve the value of var_name from ucr'''
@@ -234,6 +262,10 @@ class SetupScript(object):
 				raise self._broken
 			else:
 				success = self.inner_run()
+				# is called only if inner_run
+				# really returned and did not
+				# raise an exception
+				self.commit_ucr()
 		except Exception as e:
 			self.error(str(e))
 			success = False

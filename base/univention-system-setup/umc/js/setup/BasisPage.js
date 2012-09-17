@@ -241,7 +241,7 @@ define([
 			}
 			var warnings = [];
 			if (values.hostname.length > 13) {
-				warnings.push(_('If at any time samba should be used on this system, the length of the hostname may be at most 13 characters.'));
+				warnings.push(_('If Samba is used on this system, the length of the hostname may be at most 13 characters.'));
 			}
 			if (!values.root_password) {
 				var widget = this._form.getWidget('root_password');
