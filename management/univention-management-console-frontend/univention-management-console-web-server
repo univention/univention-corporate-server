@@ -454,6 +454,7 @@ class CPUpload( CPgeneric ):
 				if st.st_size > max_size:
 					self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
 					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'The size of the uploaded file is too large')
+
 				# check if enough free space is available
 				min_size = int( configRegistry.get( 'umc/server/upload/min_free_space', 51200 ) ) # kilobyte
 				s = os.statvfs(tmpfile)
@@ -462,7 +463,12 @@ class CPUpload( CPgeneric ):
 					self._log('error', 'there is not enough free space to upload files')
 					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'There is not enough free space on disk')
 
-				options.append( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
+				filename = store.filename
+				# some security
+				for c in ('<>/'):
+					filename = filename.replace(c, '_')
+
+				options.append( { 'filename' : filename, 'name' : store.name, 'tmpfile' : tmpfile } )
 			elif isinstance(ifield, basestring):
 				# field is a string :)
 				body[iid] = ifield
@@ -519,8 +525,8 @@ class CPAuth(CPgeneric):
 		remote = cherrypy.request.remote
 		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (self.get_ip_address(), remote.port, remote.name))
 
-		content_length = cherrypy.request.headers.get(u"Content-Length")
-		if not content_length:
+		content_length = cherrypy.request.headers.get("Content-Length")
+		if not content_length and content_length != 0:
 			CORE.process('CPRoot/auth: missing Content-Length header')
 			raise cherrypy.HTTPError(httplib.LENGTH_REQUIRED)
 
