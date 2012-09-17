@@ -165,7 +165,7 @@ class object(content):
 
 		if JOINTEST_RETVAL != 0:
 			if JOINTEST_RETVAL == 1:
-				msg = _("The dns name of the UCS master can not be resolved! Please check dns settings.")
+				msg = _("The name/ip of the UCS master can not be resolved! Please check dns settings.")
 			elif JOINTEST_RETVAL == 2: 
 				msg = _("The UCS master is not reachable! Please check network settings.")
 			elif JOINTEST_RETVAL == 3:

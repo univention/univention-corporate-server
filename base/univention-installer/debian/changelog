@@ -1,3 +1,9 @@
+univention-installer (8.0.18-2) unstable; urgency=low
+
+  * fixed translation for join test (Bug #7444)
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Sep 2012 13:40:07 +0200
+
 univention-installer (8.0.18-1) unstable; urgency=low
 
   * fixed join test (Bug #7444)
