@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.6-1) unstable; urgency=low
+
+  * added TimeBox widget in syntax.py; Bug #18436 
+
+ -- Florian Best <best@univention.de>  Mon, 17 Sep 2012 17:06:24 +0200
+
 univention-management-console-module-udm (3.0.5-1) unstable; urgency=low
 
   * fixed formatter of MultiSelect widget; Bug #26857
