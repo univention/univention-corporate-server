@@ -1,3 +1,10 @@
+univention-system-setup (6.0.33-1) unstable; urgency=low
+
+  * Remove univention-directory-manager from packages to uninstall
+    when becoming memberserver (Bug #28010)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Sep 2012 11:54:39 +0200
+
 univention-system-setup (6.0.32-1) unstable; urgency=low
 
   * Fix wording (Bug #27854)
