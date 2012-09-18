@@ -1,3 +1,9 @@
+univention-management-console (5.0.24-1) unstable; urgency=low
+
+  * check file on fileuploads with arguments; Bug #28189
+
+ -- Florian Best <best@univention.de>  Tue, 18 Sep 2012 17:14:29 +0200
+
 univention-management-console (5.0.23-1) unstable; urgency=low
 
   * reverted html encoding of upload filenames; Bug #28140

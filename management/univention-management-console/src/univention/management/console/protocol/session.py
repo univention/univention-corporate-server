@@ -465,48 +465,49 @@ class Processor( signals.Provider ):
 		:param Request msg: UMCP request
 		"""
 		# request.options = ( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
-		response = Response( msg )
-		response.status = SUCCESS
+
 		if not isinstance( msg.options, ( list, tuple ) ):
 			raise InvalidOptionsError
 
-		try:
+		for file_obj in msg.options:
+			# check if required options exists and file_obj is a dict
+			try:
+				tmpfilename, filename, name = file_obj['tmpfile'], file_obj['filename'], file_obj['name']
+			except:
+				raise InvalidOptionsError('required options "tmpfile", "filename" or "name" is missing')
+
+			# limit files to tmpdir
+			if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
+				raise InvalidOptionsError('invalid file: invalid path')
+
+			# check if file exists
+			if not os.path.isfile( tmpfilename ):
+				raise InvalidOptionsError('invalid file: file does not exists')
+
+			# don't accept files bigger than umc/server/upload/max
+			st = os.stat( tmpfilename )
+			max_size = int( ucr.get( 'umc/server/upload/max', 64 ) ) * 1024
+			if st.st_size > max_size:
+				raise InvalidOptionsError('filesize is too large, maximum allowed filesize is %d' % (max_size,))
+
+		if msg.arguments:
+			# The request has arguments, so it will be treaten as COMMAND
+			self.handle_request_command(msg)
+			return
+
+		# The request is an generic UPLOAD command (/upload)
+		result = []
+		for file_obj in msg.options:
 			# read tmpfile and convert to base64
-			result = []
-			for file_obj in msg.options:
-				if not isinstance(file_obj, dict):
-					raise InvalidOptionsError
+			tmpfilename, filename, name = file_obj['tmpfile'], file_obj['filename'], file_obj['name']
+			with open( tmpfilename ) as buf:
+				b64buf = base64.b64encode( buf.read() )
+			result.append( { 'filename' : filename, 'name' : name, 'content' : b64buf } )
 
-				tmpfilename = file_obj.get('tmpfile', '')
-				# limit files to tmpdir
-				if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
-					response.status = BAD_REQUEST
-					raise ValueError('invalid file: invalid path')
+		response = Response( msg )
+		response.result = result
+		response.status = SUCCESS
 
-				# check if file exists
-				if not os.path.isfile( tmpfilename ):
-					response.status = BAD_REQUEST
-					raise ValueError('invalid file: file does not exists')
-
-				# don't accept files bigger than umc/server/upload/max
-				st = os.stat( tmpfilename )
-				max_size = int( ucr.get( 'umc/server/upload/max', 64 ) ) * 1024
-				if st.st_size > max_size:
-					response.status = BAD_REQUEST
-					raise ValueError('filesize is too large, maximum allowed filesize is %d' % (max_size,))
-
-				# escape html chars
-				filename, name = (file_obj.get('filename', ''), file_obj.get('name', ''))
-				with open( tmpfilename ) as buf:
-					b64buf = base64.b64encode( buf.read() )
-				result.append( { 'filename' : filename, 'name' : name, 'content' : b64buf } )
-		except ValueError, e:
-			CORE.info( e[0] )
-			response.message = e[0]
-			response.status = BAD_REQUEST_INVALID_OPTS
-		else:
-			response.result = result
-			response.status = SUCCESS
 		self.signal_emit( 'response', response )
 
 	def handle_request_command( self, msg ):
