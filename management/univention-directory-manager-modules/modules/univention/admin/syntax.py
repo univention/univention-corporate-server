@@ -1137,18 +1137,7 @@ class TimeUnits( select ):
 
 class TimeString( simple ):
 	error_message = _("Not a valid time format")
-	@classmethod
-	def parse(self, text):
-		try:
-			text = text.split(':')
-			if len(text) < 3:
-				text.append(0)
-			hour, minute, seconds = map(int, text)
-			if not ( 0 <= hour <= 24 and 0 <= minute <= 60 and 0 <= second <= 60):
-				raise ValueError
-			return '%d:%d:%d' % (hour, minute, seconds)
-		except:
-			raise univention.admin.uexceptions.valueError( self.error_message )
+	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
 
 class UNIX_TimeInterval( complex ):
 	min_elements = 1

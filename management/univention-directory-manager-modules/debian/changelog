@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.25-1) unstable; urgency=low
+
+  * adapted TimeString syntax; Bug #18436
+
+ -- Florian Best <best@univention.de>  Tue, 18 Sep 2012 09:34:51 +0200
+
 univention-directory-manager-modules (8.0.24-1) unstable; urgency=low
 
   * adapted TimeString syntax; Bug #18436
