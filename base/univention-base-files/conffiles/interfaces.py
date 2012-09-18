@@ -37,9 +37,8 @@ RE_IFACE = re.compile(r'^interfaces/([^/]+)/((?:ipv6/([^/]+)/)?.*)$')
 SKIP = set(('interfaces/restart/auto',))
 PRIMARY = 'interfaces/primary'
 GATEWAYS = set(('gateway', 'ipv6/gateway'))
-OLD, NEW = range(2)
 
-def _common(ucr, changes, index, command):
+def _common(ucr, changes, command):
 	"""Run command on changed interfaces."""
 	if not ucr.is_true('interfaces/restart/auto', True):
 		return
@@ -55,8 +54,6 @@ def _common(ucr, changes, index, command):
 		for key, old_new in changes.items():
 			if key in SKIP:
 				continue
-			if not old_new[index]:
-				continue
 			match = RE_IFACE.match(key)
 			if not match:
 				continue
@@ -68,10 +65,10 @@ def _common(ucr, changes, index, command):
 
 def preinst(ucr, changes):
 	"""Pre run handler to shutdown changed interfaces."""
-	_common(ucr, changes, OLD, 'ifdown')
+	_common(ucr, changes, 'ifdown')
 
 def postinst(ucr, changes):
 	"""Post run handler to start changed interfaces."""
-	_common(ucr, changes, NEW, 'ifup')
+	_common(ucr, changes, 'ifup')
 
 # vim:set sw=4 ts=4 noet:
