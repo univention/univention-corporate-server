@@ -616,5 +616,6 @@ int main(int argc, char* argv[])
 
 	univention_ldap_close(lp);
 	univention_ldap_close(lp_local);
-	return rv;
+
+	exit_handler(0);
 }

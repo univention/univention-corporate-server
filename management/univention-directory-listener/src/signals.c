@@ -106,7 +106,8 @@ void exit_handler(int sig)
 {
 	char **c;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
+	if (sig)
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
 
 	cache_close();
 	unlink(pidfile);
@@ -118,7 +119,12 @@ void exit_handler(int sig)
 	handlers_postrun_all();
 	handlers_free_all();
 
-	exit(0);
+	if (sig) {
+		signal(sig, SIG_DFL);
+		kill(getpid(), sig);
+	} else {
+		exit(0);
+	}
 }
 
 void reload_handler(int sig)

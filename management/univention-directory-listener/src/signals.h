@@ -37,6 +37,6 @@ void	signals_block	(void);
 void	signals_unblock	(void);
 void	signals_init	(void);
 
-void	exit_handler	(int sig);
+extern void	exit_handler	(int sig) __attribute__((noreturn));
 
 #endif /* _SIGNALS_H_ */
