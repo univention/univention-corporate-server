@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.7-1) unstable; urgency=low
+
+  * fixed typo; Bug #18436
+
+ -- Florian Best <best@univention.de>  Tue, 18 Sep 2012 07:45:54 +0200
+
 univention-management-console-module-udm (3.0.6-1) unstable; urgency=low
 
   * added TimeBox widget in syntax.py; Bug #18436 

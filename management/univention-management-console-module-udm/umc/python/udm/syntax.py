@@ -69,7 +69,7 @@ __widgets = (
 	Widget( 'CheckBox', ( udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean ), False ),
 	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
 	Widget( 'DateBox', ( udm_syntax.iso8601Date, udm_syntax.date ), '1970-01-01' ),
-	Widget( 'TimeBox', ( udm_syntax.TimeString ), '00:00',
+	Widget( 'TimeBox', ( udm_syntax.TimeString ), '00:00'),
 	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
