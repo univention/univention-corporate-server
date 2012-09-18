@@ -1,3 +1,11 @@
+univention-kde (7.0.0-2) unstable; urgency=low
+
+  * fixed ucslint error (Bug #28586):
+     E:0004-34: conffiles/etc/dbus-1/system.d/devices.conf: 
+     UCR warning before file type magic "<!DOCTYPE"
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Sep 2012 16:21:53 +0200
+
 univention-kde (7.0.0-1) unstable; urgency=low
 
   * added kde menu entry for umc (Bug #28586) 
