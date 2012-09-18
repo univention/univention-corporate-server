@@ -1,3 +1,14 @@
+ucs-test-tools (2.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * create-32k-users-in-groups
+    - Make number of user configurable (Bug #27992)
+    - Add additional group support (Bug #25861)
+    - Fix potential traceback (Bug #28402)
+    - Add suffix support (Bug #28403)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 17 Sep 2012 12:04:59 +0200
+
 ucs-test-tools (1.0.4-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
