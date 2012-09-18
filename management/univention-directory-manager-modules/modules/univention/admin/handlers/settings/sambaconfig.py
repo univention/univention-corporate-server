@@ -45,20 +45,18 @@ def logonToChangePWMap(val):
 	'User must logon to change PW' behaves like an integer (at least
 	to us), but must be stored as either 0 (allow) or 2 (disallow)
 	"""
-
+	
 	if (val=="1"):
 		return "2"
 	else:
 		return "0"
 
-
 def logonToChangePWUnmap(val):
-
+	
 	if (val[0]=="2"):
 		return "1"
 	else:
 		return "2"
-
 
 module='settings/sambaconfig'
 childs=0
@@ -69,7 +67,7 @@ long_description=''
 options={}
 property_descriptions={
 	'name': univention.admin.property(
-			short_description=_('Configuration Name'),
+	        short_description=_('Configuration Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -207,7 +205,6 @@ mapping.register('resetCountMinutes', 'univentionSambaResetCountMinutes', None, 
 mapping.register('disconnectTime', 'univentionSambaDisconnectTime', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('refuseMachinePWChange', 'univentionSambaRefuseMachinePWChange', None, univention.admin.mapping.ListToString)
 
-
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
@@ -217,7 +214,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.mapping=mapping
 		self.descriptions=property_descriptions
-		self.options=[]
+ 		self.options=[]
 
 		self.alloc=[]
 
@@ -226,17 +223,21 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-	def _ldap_pre_create(self):
+	def _ldap_pre_create(self):		
 		self.dn='cn=%s,%s' % ( mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		ocs=['top', 'univentionSambaConfig']
+		ocs=['top', 'univentionSambaConfig']		
+
+		
 		return [
 			('objectClass', ocs),
 		]
 
 
+	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionSambaConfig'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDomain')]),
@@ -252,6 +253,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
-
 def identify(dn, attr, canonical=0):
+	
 	return 'univentionSambaConfig' in attr.get('objectClass', [])

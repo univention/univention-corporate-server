@@ -271,7 +271,7 @@ layout = [
 	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
 		'dnsEntryZoneAlias'
 		] ),
-]
+ ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -397,7 +397,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ocs.extend(['posixAccount','shadowAccount'])
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))
-
+		
 		if self.modifypassword or self['password']:
 			if 'kerberos' in self.options:
 				krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
@@ -469,6 +469,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_ldap_pre_modify()
 		univention.admin.handlers.simpleComputer._ldap_pre_modify(self)
 
+
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist(self)
 		self.nagios_ldap_modlist(ml)
@@ -482,7 +483,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-
+																																			
 		if self.hasChanged('name'):
 			# ml.append(('sn', self.oldattr.get('sn', [None])[0], self['name']))
 			if 'posix' in self.options:
@@ -501,6 +502,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		return ml
 
+
+
 	def cleanup(self):
 		self.open()
 		self.nagios_cleanup()
@@ -510,7 +513,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		for i,j in self.alloc:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i,j) )
 			univention.admin.allocators.release(self.lo, self.position, i, j)
-
+			
 
 def rewrite(filter, mapping):
 	if filter.variable == 'ip':
@@ -518,8 +521,8 @@ def rewrite(filter, mapping):
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
-
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+
 	res=[]
 	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
@@ -548,6 +551,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 			res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
 
-
 def identify(dn, attr, canonical=0):
+		
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionMacOSClient' in attr.get('objectClass', [])
+

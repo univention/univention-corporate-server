@@ -44,16 +44,17 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 class adminFixedAttributes(univention.admin.syntax.select):
-	name = 'adminFixedAttributes'
-	choices = [
-		('univentionAdminListModules',_('List of Univention Directory Manager modules')),
+        name='adminFixedAttributes'
+	choices=[
+	('univentionAdminListModules',_('List of Univention Directory Manager modules')),
 	]
+
 
 module='policies/admin_container'
 operations=['add','edit','remove','search']
 
 policy_oc='univentionPolicyAdminContainerSettings'
-policy_apply_to=[]
+policy_apply_to=[] 
 policy_position_dn_prefix="cn=container,cn=admin"
 
 usewizard=1
@@ -164,8 +165,9 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyAdminContainerSettings']) ]
-
+	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyAdminContainerSettings')
 		])
