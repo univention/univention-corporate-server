@@ -31,28 +31,28 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.config_registry.backend import \
-        StrictModeException, SCOPE, ConfigRegistry
+		StrictModeException, SCOPE, ConfigRegistry
 from univention.config_registry.handler import \
-        run_filter as filter, ConfigHandlers as configHandlers
+		run_filter as filter, ConfigHandlers as configHandlers
 from univention.config_registry.misc import \
-        key_shell_escape, validate_key, INVALID_KEY_CHARS as invalid_key_chars
+		key_shell_escape, validate_key, INVALID_KEY_CHARS as invalid_key_chars
 from univention.config_registry.filters import \
-        Output, filter_shell, filter_keys_only, filter_sort
+		Output, filter_shell, filter_keys_only, filter_sort
 from univention.config_registry.frontend import \
-        REPLOG_FILE, UnknownKeyException, main, \
-        handler_set, handler_unset, handler_commit, handler_filter, \
-        handler_get, handler_dump, handler_search, \
-        handler_register, handler_unregister, handler_update
+		REPLOG_FILE, UnknownKeyException, main, \
+		handler_set, handler_unset, handler_commit, handler_filter, \
+		handler_get, handler_dump, handler_search, \
+		handler_register, handler_unregister, handler_update
 from univention.debhelper import parseRfc822  # pylint: disable-msg=W0403
 
 if __name__ == '__main__':
-    import sys
-    try:
-        main(sys.argv[1:])
-    except StrictModeException, ex2:
-        print >> sys.stderr, ('E: UCR is running in strict mode ' +
-            'and thus cannot accept the given input:')
-        print >> sys.stderr, ex2
-        sys.exit(1)
+	import sys
+	try:
+		main(sys.argv[1:])
+	except StrictModeException, ex2:
+		print >> sys.stderr, ('E: UCR is running in strict mode ' +
+			'and thus cannot accept the given input:')
+		print >> sys.stderr, ex2
+		sys.exit(1)
 
-# vim:set sw=4 ts=4 et:
+# vim:set sw=4 ts=4 noet:

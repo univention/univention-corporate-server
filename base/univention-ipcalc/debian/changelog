@@ -1,3 +1,9 @@
+univention-ipcalc (4.0.0-3) unstable; urgency=low
+
+  * Convert spaces to tab (Bug #28143, Bug #25626)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 17 Sep 2012 15:38:28 +0200
+
 univention-ipcalc (4.0.0-2) unstable; urgency=low
 
   * Fix spelling type (Bug #28143, Bug #25626)

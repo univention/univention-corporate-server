@@ -1,3 +1,9 @@
+univention-config-registry (8.0.4-7) unstable; urgency=low
+
+  * Convert spaces to tabs (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 17 Sep 2012 15:50:33 +0200
+
 univention-config-registry (8.0.4-6) unstable; urgency=low
 
   * Handle ImportError in cache load (Bug #26058, Bug #28481)

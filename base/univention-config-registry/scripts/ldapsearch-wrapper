@@ -34,19 +34,19 @@
 import sys
 
 def main():
-    """Unwrap LDIF."""
-    try:
-        line = sys.stdin.readline()
-        while line != '':
-            line2 = sys.stdin.readline()
-            if line2[:1] in (' ', '\t'):
-                sys.stdout.write(line[:-1])
-                line = line2[1:]
-            else:
-                sys.stdout.write(line)
-                line = line2
-    finally:
-        sys.stdout.flush()
+	"""Unwrap LDIF."""
+	try:
+		line = sys.stdin.readline()
+		while line != '':
+			line2 = sys.stdin.readline()
+			if line2[:1] in (' ', '\t'):
+				sys.stdout.write(line[:-1])
+				line = line2[1:]
+			else:
+				sys.stdout.write(line)
+				line = line2
+	finally:
+		sys.stdout.flush()
 
 if __name__ == '__main__':
-    main()
+	main()

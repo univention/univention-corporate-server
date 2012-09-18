@@ -6,7 +6,7 @@
 cd "${0%/*}" || exit 2
 if which gcc >/dev/null
 then
-    [ -x unwrap ] && [ unwrap -nt unwrap.c ] || gcc -Wall -Werror -o unwrap unwrap.c
+	[ -x unwrap ] && [ unwrap -nt unwrap.c ] || gcc -Wall -Werror -o unwrap unwrap.c
 fi
 errors=0
 run () {

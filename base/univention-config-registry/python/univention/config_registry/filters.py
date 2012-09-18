@@ -37,46 +37,46 @@ __all__ = ['Output', 'filter_shell', 'filter_keys_only', 'filter_sort']
 
 
 class Output:
-    """Output buffer for applying filter."""
-    def __init__(self):
-        self.text = []
+	"""Output buffer for applying filter."""
+	def __init__(self):
+		self.text = []
 
-    def write(self, line):
-        """Append singe line."""
-        if line and line.strip():
-            self.text.append(line)
+	def write(self, line):
+		"""Append singe line."""
+		if line and line.strip():
+			self.text.append(line)
 
-    def writelines(self, lines):
-        """Append multiple lines."""
-        for line in lines:
-            self.text.append(line)
+	def writelines(self, lines):
+		"""Append multiple lines."""
+		for line in lines:
+			self.text.append(line)
 
 
 def filter_shell(args, text):  # pylint: disable-msg=W0613
-    """Filter output for shell: escape keys."""
-    out = []
-    for line in text:
-        try:
-            var, value = line.split(': ', 1)
-        except ValueError:
-            var = line
-            value = ''
-        out.append('%s=%s' % (key_shell_escape(var), escape_value(value)))
-    return out
+	"""Filter output for shell: escape keys."""
+	out = []
+	for line in text:
+		try:
+			var, value = line.split(': ', 1)
+		except ValueError:
+			var = line
+			value = ''
+		out.append('%s=%s' % (key_shell_escape(var), escape_value(value)))
+	return out
 
 
 def filter_keys_only(args, text):  # pylint: disable-msg=W0613
-    """Filter output: strip values."""
-    out = []
-    for line in text:
-        out.append(line.split(': ', 1)[0])
-    return out
+	"""Filter output: strip values."""
+	out = []
+	for line in text:
+		out.append(line.split(': ', 1)[0])
+	return out
 
 
 def filter_sort(args, text):  # pylint: disable-msg=W0613
-    """Filter output: sort by key."""
-    text.sort()
-    return text
+	"""Filter output: sort by key."""
+	text.sort()
+	return text
 
 
-# vim:set sw=4 ts=4 et:
+# vim:set sw=4 ts=4 noet:
