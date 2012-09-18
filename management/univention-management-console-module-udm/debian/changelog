@@ -1,3 +1,10 @@
+univention-management-console-module-udm (3.0.8-1) unstable; urgency=low
+
+  * code revert of upload path validation because it is done in
+  	umc-server now; Bug #28189
+
+ -- Florian Best <best@univention.de>  Tue, 18 Sep 2012 17:16:59 +0200
+
 univention-management-console-module-udm (3.0.7-1) unstable; urgency=low
 
   * fixed typo; Bug #18436
