@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.62-1) unstable; urgency=low
+
+  * don't use COMMAND for uploads anymore; Bug #28189
+
+ -- Florian Best <best@univention.de>  Tue, 18 Sep 2012 17:13:03 +0200
+
 univention-management-console-frontend (2.0.61-1) unstable; urgency=low
 
   * replace special chars in upload filenames; Bug #28140

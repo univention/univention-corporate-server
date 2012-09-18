@@ -434,11 +434,7 @@ class CPUpload( CPgeneric ):
 	def get_request(self, path, args ):
 		self._log( 'info', 'Handle upload command' )
 		global _upload_manager
-		if path:
-			self._log( 'info', 'Send upload to module function' )
-			req = umcp.Request( 'COMMAND', arguments = [ path ] )
-		else:
-			req = umcp.Request( 'UPLOAD' )
+		req = umcp.Request( 'UPLOAD', arguments = [ path ] )
 
 		options = []
 		body = {}
