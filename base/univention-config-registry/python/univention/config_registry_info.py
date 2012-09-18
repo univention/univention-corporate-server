@@ -178,6 +178,9 @@ class ConfigRegistryInfo( object ):
 				key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
 			regex = re.compile(pattern)
 			match = regex.search(term)
+			if not match:
+				regex = re.compile(term)
+				match = regex.search(pattern)
 			if match:
 				var = Variable()
 				# var.update() does not use __setitem__()

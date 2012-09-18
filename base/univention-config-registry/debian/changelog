@@ -1,3 +1,9 @@
+univention-config-registry (8.0.4-8) unstable; urgency=low
+
+  * Add support for search patterns (Bug #18254, Bug #28563)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 18 Sep 2012 10:41:36 +0200
+
 univention-config-registry (8.0.4-7) unstable; urgency=low
 
   * Convert spaces to tabs (Bug #26058)
