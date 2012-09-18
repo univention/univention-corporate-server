@@ -4,11 +4,14 @@
 @!@
 import os.path
 
-defFavorites=("/usr/share/applications/kde/Kontact.desktop", \
-"/usr/share/applications/kde4/Kontact.desktop", \
-"/usr/share/applications/firefox.desktop", \
-"/usr/share/applications/openoffice.org-startcenter.desktop", \
-"/usr/share/applications/kde4/dolphin.desktop")
+defFavorites = (
+	"/usr/share/applications/kde/Kontact.desktop",
+	"/usr/share/applications/kde4/Kontact.desktop",
+	"/usr/share/applications/firefox.desktop",
+	"/usr/share/applications/openoffice.org-startcenter.desktop",
+	"/usr/share/applications/kde4/dolphin.desktop",
+	"/usr/share/applications/univention-management-console.desktop",
+)
 
 favorites=""
 
