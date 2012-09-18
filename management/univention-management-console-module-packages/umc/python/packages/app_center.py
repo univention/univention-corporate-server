@@ -33,17 +33,22 @@
 import urllib2
 import os.path
 
-from univention.lib.package_manager import PackageManager
 from univention.management.console.log import MODULE
+
+import univention.config_registry
+ucr = univention.config_registry.ConfigRegistry()
 
 class Licence(object):
 	uuid = 'fc452bc8-ae06-11e1-abab-00216a6f69f2'
-	email_permission = True
+	email_permission = False # actually: uuid is not None
+
+	def allows_using(self, app):
+		return self.email_permission or not app.requires_email_permission
 
 LICENCE = Licence()
 
 class Application(object):
-	def __init__(self, id, icon, name, categories, description, email_sending, package_name=None, master_packages=None):
+	def __init__(self, id, icon, name, categories, description, email_sending, package_name=None, master_packages=None, requires_email_permission=True):
 		self.id = id
 		self.icon = icon
 		self.name = name
@@ -54,10 +59,12 @@ class Application(object):
 			package_name = self.id
 		self.package_name = package_name
 		self.master_packages = master_packages
+		self.requires_email_permission = requires_email_permission
 
 	@classmethod
 	def all(cls):
-		return [
+		ucr.load()
+		all_applications = [
 			cls('agorum',
 				'agorum',
 				'agorum© core',
@@ -79,6 +86,7 @@ class Application(object):
 				'Component does not exist but you should be able to install it',
 				False,
 				master_packages=['ack-grep'],
+				requires_email_permission=False,
 				),
 			cls('zarafa',
 				'zarafa',
@@ -98,25 +106,52 @@ class Application(object):
 				),
 		]
 
-	def sends_email(self):
-		return self.email_sending and LICENCE.email_permission
+		def _included(the_list, app):
+			if the_list == '*':
+				return True
+			the_list = map(str.lower, the_list.split(':'))
+			if app.name.lower() in the_list:
+				return True
+			for category in app.categories:
+				if category.lower() in the_list:
+					return True
+			return False
+
+		# filter blacklisted apps (by name and by category)
+		blacklist = ucr.get('repository/app_center/blacklist')
+		if blacklist:
+			filtered_applications = [app for app in all_applications if not _included(blacklist, app)]
+		else:
+			filtered_applications = all_applications
+
+		# filter whitelisted apps (by name and by category)
+		whitelist = ucr.get('repository/app_center/whitelist')
+		if whitelist:
+			filtered_applications = [app for app in all_applications if _included(whitelist, app) or app in filtered_applications]
+
+		return filtered_applications
 
 	def to_dict_overwiew(self):
+		allows_using = LICENCE.allows_using(self)
 		return {
 			'id' : self.id,
 			'icon' : self.icon,
 			'name' : self.name,
 			'categories' : self.categories,
+			'allows_using' : allows_using,
 			'description' : self.description,
 		}
 
 	def to_dict_detail(self, module_instance):
+		ucr.load()
 		can_uninstall = module_instance.package_manager.is_installed(self.package_name)
-		email_agreed = LICENCE.email_permission
+		allows_using = LICENCE.allows_using(self)
 		is_joined = os.path.exists('/var/univention-join/joined')
 		is_master = module_instance.ucr.get('server/role') == 'domaincontroller_master'
+		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		return {
 			'id' : self.id,
+			'server' : server,
 			'icon' : self.icon,
 			'name' : self.name,
 			'categories' : self.categories,
@@ -124,7 +159,7 @@ class Application(object):
 			'description' : self.description,
 			'master_packages' : self.master_packages,
 			'email_sending' : self.email_sending,
-			'email_agreed' : email_agreed,
+			'allows_using' : allows_using,
 			'is_joined' : is_joined,
 			'is_master' : is_master,
 			'can_install' : not can_uninstall and (is_joined or not self.master_packages),
@@ -152,7 +187,9 @@ class Application(object):
 
 	def install(self, module_instance):
 		try:
-			is_master = module_instance.ucr.get('server/role') == 'domaincontroller_master'
+			ucr.load()
+			is_master = ucr.get('server/role') == 'domaincontroller_master'
+			server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 			to_install = [self.package_name]
 			if is_master and self.master_packages:
 				to_install.extend(self.master_packages)
@@ -160,7 +197,7 @@ class Application(object):
 			MODULE.warn(str(max_steps))
 			module_instance.package_manager.set_max_steps(max_steps)
 			data = {
-				'server' : 'appcenter.software-univention.de',
+				'server' : server,
 				'prefix' : '',
 				'maintained' : True,
 				'unmaintained' : False,
@@ -185,10 +222,12 @@ class Application(object):
 		return self._send_information('install', status)
 
 	def _send_information(self, action, status):
+		ucr.load()
+		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		try:
-			url = 'https://appcenter.software-univention.de/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s'
+			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s'
 			url = 'http://www.univention.de/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s'
-			url = url % {'uuid' : LICENCE.uuid, 'app' : self.id, 'action' : action, 'status' : status}
+			url = url % {'server' : server, 'uuid' : LICENCE.uuid, 'app' : self.id, 'action' : action, 'status' : status}
 			request = urllib2.Request(url, headers={'User-agent' : 'UMC/AppCenter'})
 			#urllib2.urlopen(request)
 			return url

@@ -124,9 +124,6 @@ define([
 
 			tools.umcpCommand('packages/app_center/get', {'application': app.id}).then(
 				lang.hitch(this, function(data) {
-					// TODO:
-					// email_sending AND NOT email_agreed
-
 					this.standby(false);
 
 					var head_style	= 'font-size:120%;font-weight:bold;margin:.5em;text-decoration:underline;';
@@ -157,7 +154,7 @@ define([
 					}));
 					txt += "</table>\n";
 					var buttons = [];
-					if (data.result.can_install) {
+					if (data.result.allows_using && data.result.can_install) {
 						buttons.push({
 							name: 'install',
 							label: _("Install"),
@@ -166,7 +163,7 @@ define([
 							})
 						});
 					}
-					if (data.result.can_uninstall) {
+					if (data.result.allows_using && data.result.can_uninstall) {
 						buttons.push({
 							name: 'uninstall',
 							label: _("Uninstall"),
@@ -184,7 +181,7 @@ define([
 
 					var confirmDialog = new ConfirmDialog({
 						title: _('Application details'),
-						style: lang.replace('min-width:500px;max-width: {width}px;', {width: width}), 		// dialog.confirm doesn't exceed 550px
+						style: lang.replace('min-width:500px;max-width:{width}px;overflow:auto;', {width: width}), 		// dialog.confirm doesn't exceed 550px
 						message: txt,
 						options: buttons
 					});
@@ -237,17 +234,31 @@ define([
 			);
 		},
 
-		_detail_field_custom_master_packages: function(values) {
+		_detail_field_custom_allows_using: function(values) {
 			// TODO: translate if this does make it into the final app center!
+			var allows_using = values.allows_using;
+			if (!allows_using) {
+				return 'Your licence currently forbids to use this application'
+			}
+		},
+
+		_detail_field_custom_master_packages: function(values) {
 			var master_packages = values.master_packages;
 			if (master_packages) {
 				if (!values.is_joined) {
-					return '<strong>ATTENTION!</strong> You did not join a domain, but the application requires installation of domain wide packages. Join a domain before you install this application!';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Join a domain before you install this application!');
 				}
+				var commands = [
+					lang.replace('ucr set repository/online/component/{id}=enabled \\', values),
+					lang.replace('        repository/online/component/{id}/parts=maintained \\', values),
+					lang.replace('        repository/online/component/{id}/version=current \\', values),
+					lang.replace('        repository/online/component/{id}/server={server}', values),
+					lang.replace('univention-install {packages}', {packages: master_packages.join(' ')})
+				].join('\n');
 				if (values.is_master) {
-					return '<strong>ATTENTION!</strong> The following packages will be installed that change your LDAP schemas and should also be installed on your backup(s): "' + master_packages.join('", "') + '"';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers.') + '<pre>' + commands + '</pre>';
 				} else {
-					return '<strong>ATTENTION!</strong> <em>Prior</em> to installing this application, you need to install the following packages on your DC master and backup(s): "' + master_packages.join('", "') + '"';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on your DC master and all of your backup servers <em>prior</em> to installing the application here.') + '<pre>' + commands + '</pre>';
 				}
 			}
 		},
@@ -271,6 +282,7 @@ define([
 				 'commercial_support',
 				 'description',
 				 'master_packages',
+				 'allows_using',
 				 'email_sending'
 				 ]);
 		},
@@ -282,6 +294,7 @@ define([
 				'commercial_support': _("Commercial support"),
 				'description': _("Description"),
 				'email_sending': _("Email notification"),
+				'allows_using': _("Licence restrictions"),
 				'master_packages': _("Packages for master system")
 			};
 			return labels[key];

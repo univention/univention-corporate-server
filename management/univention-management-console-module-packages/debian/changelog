@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.9-1) unstable; urgency=low
+
+  * Better popup if Apps require master_packages (Bug #28000)
+  * Whitelisting, blacklisting of Apps (Bug #27999)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Sep 2012 19:40:29 +0200
+
 univention-management-console-module-packages (2.0.8-1) unstable; urgency=low
 
   * Update package_manager after repository changes (Bug #26784)
