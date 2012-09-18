@@ -1,3 +1,9 @@
+ucs-test (3.0.0-8) unstable; urgency=low
+
+  * Convert spaces to tabs (Bug #23527)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 18 Sep 2012 06:41:14 +0200
+
 ucs-test (3.0.0-7) unstable; urgency=low
 
   *  Added ucs-test/51_samba4 and debian/ucs-test-samba4.install (Bug #28262)
@@ -18,7 +24,7 @@ ucs-test (3.0.0-6) unstable; urgency=low
 
 ucs-test (3.0.0-5) unstable; urgency=low
 
-  *	Improved the code in 50_samba/35smbclient_auth (Bug #26807)
+  * Improved the code in 50_samba/35smbclient_auth (Bug #26807)
 
  -- Tobias Peters <peters@univention.de>  Tue, 04 Sep 2012 14:57:05 +0200
 
@@ -1046,7 +1052,7 @@ ucs-test (1.3.196-1) unstable; urgency=low
 ucs-test (1.3.195-1) unstable; urgency=low
 
   * improved 63univention-admingrp-user-passwordreset (Bug #16865)
-  	(also test with pwhistory policy)
+    (also test with pwhistory policy)
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 23 Jun 2010 16:17:53 +0200
 

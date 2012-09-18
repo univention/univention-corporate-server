@@ -11,42 +11,42 @@ import univention.testing.format
 
 
 def main():
-    """Run single UCS test."""
-    usage = "Usage: %prog [options] <lang> <file>"
-    parser = OptionParser(usage=usage)
-    parser.add_option("-v", "--verbose",
-            dest="verbose", action="count",
-            help="Increase verbosity")
-    parser.add_option("-f", "--force",
-            dest="force", action="store_true",
-            help="Disable pre-condition check")
-    parser.add_option("-F", "--format",
-            dest="format", action="store",
-            choices=univention.testing.format.FORMATS,
-            default='text', help="Select output format [%default]")
-    (options, args) = parser.parse_args()
-    setup_environment()
-    setup_debug(options.verbose)
+	"""Run single UCS test."""
+	usage = "Usage: %prog [options] <lang> <file>"
+	parser = OptionParser(usage=usage)
+	parser.add_option("-v", "--verbose",
+			dest="verbose", action="count",
+			help="Increase verbosity")
+	parser.add_option("-f", "--force",
+			dest="force", action="store_true",
+			help="Disable pre-condition check")
+	parser.add_option("-F", "--format",
+			dest="format", action="store",
+			choices=univention.testing.format.FORMATS,
+			default='text', help="Select output format [%default]")
+	(options, args) = parser.parse_args()
+	setup_environment()
+	setup_debug(options.verbose)
 
-    try:
-        lang, filename = args[0:2]  # pylint: disable-msg=W0612
-        del sys.argv[0:2]
-    except ValueError:
-        parser.print_usage(sys.stderr)
-        sys.exit(2)
+	try:
+		lang, filename = args[0:2]  # pylint: disable-msg=W0612
+		del sys.argv[0:2]
+	except ValueError:
+		parser.print_usage(sys.stderr)
+		sys.exit(2)
 
-    formatter = getattr(univention.testing.format, 'format_%s' % \
-            (options.format,))
-    format = formatter()
-    test_env = TestEnvironment(interactive=True)
-    if options.force:
-        test_env.set_exposure('dangerous')
-    test_case = TestCase().load(filename)
-    test_result = TestResult(test_case, test_env).run()
-    format.format(test_result)
+	formatter = getattr(univention.testing.format, 'format_%s' % \
+			(options.format,))
+	format = formatter()
+	test_env = TestEnvironment(interactive=True)
+	if options.force:
+		test_env.set_exposure('dangerous')
+	test_case = TestCase().load(filename)
+	test_result = TestResult(test_case, test_env).run()
+	format.format(test_result)
 
 if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        sys.exit(1)
+	try:
+		main()
+	except KeyboardInterrupt:
+		sys.exit(1)
