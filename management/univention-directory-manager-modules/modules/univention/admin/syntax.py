@@ -1140,10 +1140,13 @@ class TimeString( simple ):
 	@classmethod
 	def parse(self, text):
 		try:
-			hour, minute = map(int, text.split(':', 1))
-			if not ( hour <= 24 and minute <= 60 ):
+			text = text.split(':')
+			if len(text) < 3:
+				text.append(0)
+			hour, minute, seconds = map(int, text)
+			if not ( 0 <= hour <= 24 and 0 <= minute <= 60 and 0 <= second <= 60):
 				raise ValueError
-			return text
+			return '%d:%d:%d' % (hour, minute, seconds)
 		except:
 			raise univention.admin.uexceptions.valueError( self.error_message )
 
