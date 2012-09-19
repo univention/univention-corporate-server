@@ -565,9 +565,13 @@ msgstr "Einstellungen: Paketliste"
 msgid "List of Packages for UCS Systems"
 msgstr "Paketliste für UCS-Systeme"
 
-#: packages.py:65 packages.py:66 packages.py:78 umc_operationset.py:101
+#: packages.py:65 packages.py:66 packages.py:78
 msgid "Package List"
 msgstr "Paketliste"
+
+#: umc_operationset.py:101
+msgid "UMC Operation Set"
+msgstr "UMC-Befehlssatz"
 
 #: printermodel.py:51
 msgid "Settings: Printer Driver List"

@@ -98,7 +98,7 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('Package List'), layout = [
+	Tab(_('General'),_('UMC Operation Set'), layout = [
 		Group( _( 'General' ), layout = [
 			[ 'name', 'description' ],
 			'operation',
