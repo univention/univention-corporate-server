@@ -44,8 +44,8 @@ _=translation.translate
 class memberPackagesFixedAttributes(univention.admin.syntax.select):
 	name='memberPackagesFixedAttributes'
 	choices=[
-		('univentionMemberPackages', _('Member package installation list')),
-		('univentionMemberPackagesRemove', _('Member package removal list')),
+		('univentionMemberPackages', _('Package installation list')),
+		('univentionMemberPackagesRemove', _('Package removal list')),
 		]
 
 module='policies/memberpackages'
@@ -56,8 +56,8 @@ policy_apply_to=["computers/memberserver"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages member server')
-policy_short_description=_('Packages member server')
+short_description=_('Policy: Packages Member Server')
+policy_short_description=_('Packages Member Server')
 long_description=''
 options={
 }
@@ -135,7 +135,7 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('Member server packages'), layout = [
+	Tab(_('General'),_('Member Server packages'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'memberPackages',

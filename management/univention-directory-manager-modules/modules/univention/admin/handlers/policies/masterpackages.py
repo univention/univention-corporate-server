@@ -135,7 +135,7 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('DC Master packages'), layout = [
+	Tab(_('General'),_('Master packages'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'masterPackages',

@@ -44,8 +44,8 @@ _=translation.translate
 class clientPackagesFixedAttributes(univention.admin.syntax.select):
 	name='clientPackagesFixedAttributes'
 	choices=[
-		('univentionClientPackages', _('Managed client package installation list')),
-		('univentionClientPackagesRemove', _('Managed client package removal list')),
+		('univentionClientPackages', _('Package installation list')),
+		('univentionClientPackagesRemove', _('Package removal list')),
 		]
 
 module='policies/managedclientpackages'
@@ -56,8 +56,8 @@ policy_apply_to=["computers/managedclient"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages managed client')
-policy_short_description=_('Packages managed client')
+short_description=_('Policy: Packages Managed Client')
+policy_short_description=_('Packages Managed Client')
 long_description=''
 options={
 }
@@ -73,7 +73,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'clientPackages': univention.admin.property(
-			short_description=_('Managed client package installation list'),
+			short_description=_('Package installation list'),
 			long_description='',
 			syntax=univention.admin.syntax.Packages,
 			multivalue=1,
@@ -83,7 +83,7 @@ property_descriptions={
 			identifies=0
 		),
 	'clientPackagesRemove': univention.admin.property(
-			short_description=_('Managed client package removal list'),
+			short_description=_('Package removal list'),
 			long_description='',
 			syntax=univention.admin.syntax.Packages,
 			multivalue=1,
@@ -135,7 +135,7 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('Client packages'), layout = [
+	Tab(_('General'),_('Managed Client packages'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'clientPackages',

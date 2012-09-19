@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-29 22:18+0200\n"
+"POT-Creation-Date: 2012-09-18 16:43+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -144,11 +144,11 @@ msgstr "Univention Directory Manager Konfiguration"
 
 #: admin_container.py:137 autostart.py:133 clientdevices.py:133 desktop.py:165
 #: dhcp_boot.py:144 dhcp_dns.py:143 dhcp_dnsupdate.py:212
-#: dhcp_leasetime.py:154 dhcp_netbios.py:154 dhcp_routing.py:132
+#: dhcp_leasetime.py:156 dhcp_netbios.py:155 dhcp_routing.py:132
 #: dhcp_scope.py:178 dhcp_statements.py:189 ldapserver.py:133 mailquota.py:133
 #: maintenance.py:218 managedclientpackages.py:145 masterpackages.py:145
 #: memberpackages.py:145 mobileclientpackages.py:145 nfsmounts.py:133
-#: print_quota.py:158 printserver.py:132 pwhistory.py:166 registry.py:134
+#: print_quota.py:158 printserver.py:132 pwhistory.py:168 registry.py:134
 #: release.py:143 repositoryserver.py:133 repositorysync.py:176
 #: share_userquota.py:167 slavepackages.py:145 sound.py:145 thinclient.py:180
 #: umc.py:134 xfree.py:411
@@ -340,8 +340,8 @@ msgstr ""
 
 #: dhcp_dnsupdate.py:142
 msgid ""
-"Do DNS updates for clients even if their IP addresses are assigned using fixed "
-"addresses"
+"Do DNS updates for clients even if their IP addresses are assigned using "
+"fixed addresses"
 msgstr ""
 "Führe DNS-Aktualisierung auch bei Clients durch, die eine statische IP-"
 "Addresse bekommen"
@@ -696,36 +696,30 @@ msgid "Maintenance settings"
 msgstr "Paketpflege Einstellungen"
 
 #: managedclientpackages.py:47 managedclientpackages.py:76
-msgid "Managed client package installation list"
-msgstr "Managed Client Paket Installationsliste"
+#: masterpackages.py:47 masterpackages.py:76 memberpackages.py:47
+#: memberpackages.py:76 mobileclientpackages.py:47 mobileclientpackages.py:76
+#: slavepackages.py:47 slavepackages.py:76
+msgid "Package installation list"
+msgstr "Paket Installationsliste"
 
 #: managedclientpackages.py:48 managedclientpackages.py:86
-msgid "Managed client package removal list"
-msgstr "Managed Client Paket Deinstallationsliste"
+#: masterpackages.py:48 masterpackages.py:86 memberpackages.py:48
+#: memberpackages.py:86 mobileclientpackages.py:48 mobileclientpackages.py:86
+#: slavepackages.py:48 slavepackages.py:86
+msgid "Package removal list"
+msgstr "Paket Deinstallationsliste"
 
 #: managedclientpackages.py:59
-msgid "Policy: Packages managed client"
+msgid "Policy: Packages Managed Client"
 msgstr "Richtlinie: Pakete Managed Client"
 
 #: managedclientpackages.py:60
-msgid "Packages managed client"
+msgid "Packages Managed Client"
 msgstr "Pakete Managed Client"
 
 #: managedclientpackages.py:138
-msgid "Client packages"
-msgstr "Client Pakete"
-
-#: masterpackages.py:47 masterpackages.py:76 memberpackages.py:76
-#: mobileclientpackages.py:47 mobileclientpackages.py:76 slavepackages.py:47
-#: slavepackages.py:76
-msgid "Package installation list"
-msgstr "Master Pakete Installationsliste"
-
-#: masterpackages.py:48 masterpackages.py:86 memberpackages.py:86
-#: mobileclientpackages.py:48 mobileclientpackages.py:86 slavepackages.py:48
-#: slavepackages.py:86
-msgid "Package removal list"
-msgstr "Member Pakete Deinstallationsliste"
+msgid "Managed Client packages"
+msgstr "Managed Client Pakete"
 
 #: masterpackages.py:59
 msgid "Policy: Packages Master"
@@ -736,28 +730,20 @@ msgid "Packages Master"
 msgstr "Pakete Master"
 
 #: masterpackages.py:138
-msgid "DC Master packages"
+msgid "Master packages"
 msgstr "Master Pakete"
 
-#: memberpackages.py:47
-msgid "Member package installation list"
-msgstr "Master Pakete Installationsliste"
-
-#: memberpackages.py:48
-msgid "Member package removal list"
-msgstr "Member Pakete Deinstallationsliste"
-
 #: memberpackages.py:59
-msgid "Policy: Packages member server"
-msgstr "Richtlinie: Pakete Member"
+msgid "Policy: Packages Member Server"
+msgstr "Richtlinie: Pakete Memberserver"
 
 #: memberpackages.py:60
-msgid "Packages member server"
-msgstr "Pakete Member"
+msgid "Packages Member Server"
+msgstr "Pakete Memberserver"
 
 #: memberpackages.py:138
-msgid "Member server packages"
-msgstr "Member Pakete"
+msgid "Member Server packages"
+msgstr "Memberserver Pakete"
 
 #: mobileclientpackages.py:59
 msgid "Policy: Packages Mobile Client"
@@ -768,8 +754,8 @@ msgid "Packages Mobile Client"
 msgstr "Pakete Mobile Client"
 
 #: mobileclientpackages.py:138
-msgid "Mobile client packages"
-msgstr "Client Pakete"
+msgid "Mobile Client packages"
+msgstr "Mobileclient Pakete"
 
 #: nfsmounts.py:47
 msgid "Mount NFS shares"
@@ -1271,6 +1257,18 @@ msgstr "Erweiterte Einstellungen des primären Monitors"
 #: xfree.py:406
 msgid "Advanced settings of secondary display"
 msgstr "Erweiterte Einstellungen des sekundären Monitors"
+
+#~ msgid "Managed client package installation list"
+#~ msgstr "Managed Client Paket Installationsliste"
+
+#~ msgid "Managed client package removal list"
+#~ msgstr "Managed Client Paket Deinstallationsliste"
+
+#~ msgid "Member package installation list"
+#~ msgstr "Master Pakete Installationsliste"
+
+#~ msgid "Member package removal list"
+#~ msgstr "Member Pakete Deinstallationsliste"
 
 #~ msgid "UMC access"
 #~ msgstr "UMC Zugriff"

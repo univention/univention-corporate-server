@@ -135,7 +135,7 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('Mobile client packages'), layout = [
+	Tab(_('General'),_('Mobile Client packages'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'clientPackages',
