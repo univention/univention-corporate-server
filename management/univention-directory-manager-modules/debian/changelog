@@ -1,4 +1,4 @@
-univention-directory-manager-modules (8.0.26-1) unstable; urgency=low
+univention-directory-manager-modules (8.0.29-1) unstable; urgency=low
 
   * added module "computers/linux" (Bug #27587)
 
