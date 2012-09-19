@@ -1,3 +1,12 @@
+univention-management-console-module-udm (3.0.6-1) unstable; urgency=low
+
+  * let "Computers" be the default group for objects of module
+    "computers/linux"
+  * Added icon for "computers/linux" module  
+  (Bug #27587)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Sep 2012 14:51:09 +0200
+
 univention-management-console-module-udm (3.0.8-1) unstable; urgency=low
 
   * code revert of upload path validation because it is done in

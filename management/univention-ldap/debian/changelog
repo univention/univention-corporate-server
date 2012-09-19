@@ -1,3 +1,10 @@
+univention-ldap (9.0.5-1) unstable; urgency=low
+
+  * added objectClass "univentionLinuxClient" to
+    ldap schema (Bug #27587)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Sep 2012 16:26:44 +0200
+
 univention-ldap (9.0.4-1) unstable; urgency=low
 
   * added 'sambaMinPwdLength: 8' to base.ldif (Bug #21262)

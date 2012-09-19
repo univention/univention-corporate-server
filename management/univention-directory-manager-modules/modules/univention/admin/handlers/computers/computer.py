@@ -51,6 +51,7 @@ import univention.admin.handlers.computers.domaincontroller_slave
 import univention.admin.handlers.computers.memberserver
 import univention.admin.handlers.computers.trustaccount
 import univention.admin.handlers.computers.ubuntu
+import univention.admin.handlers.computers.linux
 
 module='computers/computer'
 usewizard=1
@@ -70,7 +71,8 @@ childmodules=[	"computers/managedclient",
 				"computers/mobileclient",
 				"computers/trustaccount",
 				"computers/ipmanagedclient",
-				"computers/ubuntu"]
+				"computers/ubuntu",
+				"computers/linux"]
 
 childs=0
 short_description=_('Computer')
@@ -185,6 +187,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		return univention.admin.handlers.computers.macos.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.thinclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.ubuntu.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
+				univention.admin.handlers.computers.linux.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.managedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.mobileclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\
 				univention.admin.handlers.computers.windows.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) +\

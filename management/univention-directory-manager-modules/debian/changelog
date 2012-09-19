@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.26-1) unstable; urgency=low
+
+  * added module "computers/linux" (Bug #27587)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Sep 2012 14:53:20 +0200
+
 univention-directory-manager-modules (8.0.28-1) unstable; urgency=low
 
   * corrected package policies attributes descriptions (Bug #18200)
