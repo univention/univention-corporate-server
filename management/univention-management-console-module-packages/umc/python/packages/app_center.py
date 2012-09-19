@@ -38,14 +38,33 @@ from univention.management.console.log import MODULE
 import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
 
-class Licence(object):
-	uuid = 'fc452bc8-ae06-11e1-abab-00216a6f69f2'
-	email_permission = False # actually: uuid is not None
+try:
+	import univention.admin.license as udm_license
+except ImportError:
+	# uh uh, no udm with all its licensing stuff...
+	udm_license = None
+
+class License(object):
+	def __init__(self, udm_license):
+		self.license = udm_license # may be None
+
+	@property
+	def uuid(self):
+		return None
+		return 'fc452bc8-ae06-11e1-abab-00216a6f69f2'
+		raise NotImplentedError
+		if self.license is None:
+			return None
+		return self.license._license.uuid
+
+	def email_known(self):
+		# at least somewhere at univention
+		return self.uuid is not None
 
 	def allows_using(self, app):
-		return self.email_permission or not app.requires_email_permission
+		return self.email_known() or not app.requires_email_permission
 
-LICENCE = Licence()
+LICENSE = License(udm_license)
 
 class Application(object):
 	def __init__(self, id, icon, name, categories, description, email_sending, package_name=None, master_packages=None, requires_email_permission=True):
@@ -132,7 +151,7 @@ class Application(object):
 		return filtered_applications
 
 	def to_dict_overwiew(self):
-		allows_using = LICENCE.allows_using(self)
+		allows_using = LICENSE.allows_using(self)
 		return {
 			'id' : self.id,
 			'icon' : self.icon,
@@ -145,7 +164,7 @@ class Application(object):
 	def to_dict_detail(self, module_instance):
 		ucr.load()
 		can_uninstall = module_instance.package_manager.is_installed(self.package_name)
-		allows_using = LICENCE.allows_using(self)
+		allows_using = LICENSE.allows_using(self)
 		is_joined = os.path.exists('/var/univention-join/joined')
 		is_master = module_instance.ucr.get('server/role') == 'domaincontroller_master'
 		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
@@ -227,7 +246,7 @@ class Application(object):
 		try:
 			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s'
 			url = 'http://www.univention.de/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s'
-			url = url % {'server' : server, 'uuid' : LICENCE.uuid, 'app' : self.id, 'action' : action, 'status' : status}
+			url = url % {'server' : server, 'uuid' : LICENSE.uuid, 'app' : self.id, 'action' : action, 'status' : status}
 			request = urllib2.Request(url, headers={'User-agent' : 'UMC/AppCenter'})
 			#urllib2.urlopen(request)
 			return url

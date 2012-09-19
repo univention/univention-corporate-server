@@ -44,7 +44,7 @@ import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.modules.decorators import simple_response, sanitize, log, sanitize_list, multi_response
-from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer
+from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer
 from sanitizers import basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
 from app_center import Application
 
@@ -165,13 +165,18 @@ class Instance(umcm.Base):
 			changes.commit()
 
 
+	@sanitize(email=EmailSanitizer(required=True))
+	@simple_response
+	def app_center_request_new_license(self, email):
+		return True
+
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
 	def app_center_query(self, pattern):
 		applications = Application.all()
 		result = []
 		for application in applications:
-			if pattern.match(application.name):
+			if pattern.search(application.name):
 				result.append(application.to_dict_overwiew())
 		return result
 

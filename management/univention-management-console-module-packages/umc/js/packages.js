@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define require console*/
 
 define([
 	"dojo/_base/declare",
@@ -46,13 +46,29 @@ define([
 	return declare("umc.modules.packages", [ TabbedModule ], {
 
 		idProperty: 'package',
+		_udm_accessible: false,
 
 		buildRendering: function() {
 
 			this.inherited(arguments);
+
+			// FIXME: this is a synchronous call and can
+			// potentially fail although the module would
+			// be loaded later on. this may not be of any
+			// importance but it would be much cleaner
+			// to extract the moduleInstalled('udm')
+			// functionality from App to tools or
+			// a dedicated module
+			try {
+				require('umc/modules/udm');
+				this._udm_accessible = true;
+			} catch(e) {
+				this._udm_accessible = false;
+			}
+
 			this._componentsStore = store('name', 'packages/components');
 
-			this._app_center = new AppCenterPage({});
+			this._app_center = new AppCenterPage({_udm_accessible: this._udm_accessible});
 			this._packages = new PackagesPage({moduleStore: this.moduleStore});
 			this._components = new ComponentsPage({moduleStore: this._componentsStore});
 			this._details = new DetailsPage({moduleStore: this._componentsStore});

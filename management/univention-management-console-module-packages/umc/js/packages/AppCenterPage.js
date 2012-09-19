@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define require*/
 
 define([
 	"dojo/_base/declare",
@@ -48,6 +48,8 @@ define([
 	"umc/i18n!umc/modules/packages"
 ], function(declare, lang, array, when, dialog, tools, Page, StandbyMixin, ProgressBar, ContainerWidget, CategoryPane, ConfirmDialog, Text, libServer, Form, TextBox, _) {
 	return declare("umc.modules.packages.AppCenterPage", [ Page, StandbyMixin ], {
+
+		_udm_accessible: false, // license depends on udm
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -88,6 +90,7 @@ define([
 				layout: layout,
 				scrollable: true
 			});
+
 			try {
 				// hide form
 				this._form._container.getChildren()[0].toggle();
@@ -136,12 +139,18 @@ define([
 						"</p>";
 					txt += "<table>\n";
 					var width = 550;	// mimic the default of dialog.confirm
-					array.forEach(this._detail_field_order(), lang.hitch(this, function(key) {
+					var fields;
+					if (data.result.allows_using) {
+						fields = this._detail_field_order();
+					} else {
+						fields = ['allows_using'];
+					}
+					array.forEach(fields, lang.hitch(this, function(key) {
 						var label = this._detail_field_label(key);
 						var value = data.result[key];
 						var detail_func = this['_detail_field_custom_' + key];
 						if (undefined !== detail_func) {
-							value = detail_func(data.result);
+							value = lang.hitch(this, detail_func)(data.result);
 							if (undefined === value) {
 								return; // continue
 							}
@@ -155,6 +164,15 @@ define([
 					}));
 					txt += "</table>\n";
 					var buttons = [];
+					if (!data.result.allows_using && this._udm_accessible) {
+						buttons.push({
+							name: 'request',
+							label: _("Request"),
+							callback: lang.hitch(this, function() {
+								this._show_license_request();
+							})
+						});
+					}
 					if (data.result.allows_using && data.result.can_install) {
 						buttons.push({
 							name: 'install',
@@ -241,10 +259,13 @@ define([
 		},
 
 		_detail_field_custom_allows_using: function(values) {
-			// TODO: translate if this does make it into the final app center!
 			var allows_using = values.allows_using;
 			if (!allows_using) {
-				return 'Your licence currently forbids to use this application';
+				if (this._udm_accessible) {
+					return _('Your current license forbids to use this application.') + ' ' + _('You can request an extended license from Univention for free.');
+				} else {
+					return _('Your current license forbids to use this application.') + ' ' + _('You need to have access to the Univention Directory Manager (UDM) module to fully use the App Center.');
+				}
 			}
 		},
 
@@ -300,7 +321,7 @@ define([
 				'commercial_support': _("Commercial support"),
 				'description': _("Description"),
 				'email_sending': _("Email notification"),
-				'allows_using': _("Licence restrictions"),
+				'allows_using': _("License restrictions"),
 				'master_packages': _("Packages for master system")
 			};
 			return labels[key];
@@ -336,6 +357,40 @@ define([
 				}
 				app.set('style', visible ? 'display:inline-block;' : 'display:none;');
 			});
+		},
+
+		_show_license_request: function() {
+			if (this._udm_accessible) {
+				dialog.confirmForm({
+					title: _('Request a new License'),
+					widgets: [
+						{
+							type: Text,
+							name: 'help_text',
+							content: '<p>' + _('Some applications require an advanced license.') + ' ' + _('Please complete the form below and you will be sent a new license to your mail address. Right after this form, you will see another dialog where you can upload your new license.') + '</p>'
+						},
+						{
+							type: TextBox,
+							name: 'email',
+							required: true,
+							regExp: '.+@.+',
+							label: _("Email address")
+						}
+					],
+					autoValidate: true
+				}).then(function(values) {
+					tools.umcpCommand('packages/app_center/request_new_license', values).then(function(data) {
+						// cannot require in the beginning as
+						// udm might be not installed
+						require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
+							if (data.result) {
+								var dlg = new LicenseDialog();
+								dlg.show();
+							}
+						});
+					});
+				});
+			}
 		},
 
 		_switch_to_progress_bar: function(msg) {
