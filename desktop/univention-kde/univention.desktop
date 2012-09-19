@@ -7,3 +7,4 @@ Categories=System;
 GenericName=Server Administration
 Terminal=false
 Encoding=UTF-8
+StartupNotify=false

@@ -1,3 +1,9 @@
+univention-kde (7.0.0-4) unstable; urgency=low
+
+  * added StartupNotify=false to univention.desktop (Bug #28586) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Sep 2012 17:31:50 +0200
+
 univention-kde (7.0.0-3) unstable; urgency=low
 
   * changed univention.desktop file (Bug #28586) 
