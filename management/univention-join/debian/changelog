@@ -1,3 +1,9 @@
+univention-join (5.0.10-1) unstable; urgency=low
+
+  * fixed typo in German localization (Bug #28397)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Sep 2012 16:14:36 +0200
+
 univention-join (5.0.9-1) unstable; urgency=low
 
   * fixed additional comma in join/Form.js; Bug #26857

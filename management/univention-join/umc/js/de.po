@@ -76,7 +76,7 @@ msgstr "Aktueller Status: Das System noch keiner Domäne beigetreten."
 
 #: umc/js/join.js:138
 msgid "Current status: System joined on %s"
-msgstr "Aktueller Stauts: Das System ist der Domäne am %s beigetreten."
+msgstr "Aktueller Status: Das System ist der Domäne am %s beigetreten."
 
 #: umc/js/join.js:576
 msgid "Current<br/>version"
