@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=UMC
-Exec=firefox $(hostname -f)
-Icon=/usr/share/icons/hicolor/scalable/apps/univention-management-console.svg
-Type=Application
-Categories=System;
-GenericName=Univention Management Console
-Terminal=false
-Encoding=UTF-8

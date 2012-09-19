@@ -10,7 +10,7 @@ defFavorites = (
 	"/usr/share/applications/firefox.desktop",
 	"/usr/share/applications/openoffice.org-startcenter.desktop",
 	"/usr/share/applications/kde4/dolphin.desktop",
-	"/usr/share/applications/univention-management-console.desktop",
+	"/usr/share/applications/univention.desktop",
 )
 
 favorites=""
