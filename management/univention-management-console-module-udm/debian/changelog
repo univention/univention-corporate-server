@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.6-2) unstable; urgency=low
+
+  * reimplemented last changes in licence import; Bug #28189
+
+ -- Florian Best <best@univention.de>  Wed, 19 Sep 2012 13:23:04 +0200
+
 univention-management-console-module-udm (3.0.6-1) unstable; urgency=low
 
   * let "Computers" be the default group for objects of module

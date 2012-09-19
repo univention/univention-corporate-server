@@ -46,6 +46,7 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing
 from univention.management.console.modules.decorators import simple_response
 from univention.management.console.log import MODULE
+from univention.management.console.protocol.session import TEMPUPLOADDIR
 
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
@@ -189,6 +190,8 @@ class Instance( Base ):
 		if isinstance( request.options, ( list, tuple ) ):
 			# file upload
 			filename = request.options[ 0 ][ 'tmpfile' ]
+			if not os.path.realpath(filename).startswith(TEMPUPLOADDIR):
+				self.finished(request.id, [{'success': False, 'message': 'invalid file path'}])
 		else:
 			self.required_options( request, 'license' )
 			lic = request.options[ 'license' ]
