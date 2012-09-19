@@ -490,7 +490,7 @@ class Processor( signals.Provider ):
 			if st.st_size > max_size:
 				raise InvalidOptionsError('filesize is too large, maximum allowed filesize is %d' % (max_size,))
 
-		if msg.arguments:
+		if msg.arguments and msg.arguments[0]:
 			# The request has arguments, so it will be treaten as COMMAND
 			self.handle_request_command(msg)
 			return

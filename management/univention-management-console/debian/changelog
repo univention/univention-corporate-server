@@ -1,3 +1,9 @@
+univention-management-console (5.0.25-1) unstable; urgency=low
+
+  * corrected path checking; Bug #28189
+
+ -- Florian Best <best@univention.de>  Wed, 19 Sep 2012 08:05:59 +0200
+
 univention-management-console (5.0.24-1) unstable; urgency=low
 
   * check file on fileuploads with arguments; Bug #28189
