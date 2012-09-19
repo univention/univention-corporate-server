@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.10-1) unstable; urgency=low
+
+  * Better styling of master_packages popup and translations (Bug #28000)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 19 Sep 2012 09:44:26 +0200
+
 univention-management-console-module-packages (2.0.9-1) unstable; urgency=low
 
   * Better popup if Apps require master_packages (Bug #28000)

@@ -41,11 +41,12 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/CategoryPane",
 	"umc/widgets/ConfirmDialog",
+	"umc/widgets/Text",
 	"umc/modules/lib/server",
 	"umc/modules/packages/Form",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/packages"
-], function(declare, lang, array, when, dialog, tools, Page, StandbyMixin, ProgressBar, ContainerWidget, CategoryPane, ConfirmDialog, libServer, Form, TextBox, _) {
+], function(declare, lang, array, when, dialog, tools, Page, StandbyMixin, ProgressBar, ContainerWidget, CategoryPane, ConfirmDialog, Text, libServer, Form, TextBox, _) {
 	return declare("umc.modules.packages.AppCenterPage", [ Page, StandbyMixin ], {
 
 		postMixInProperties: function() {
@@ -179,10 +180,15 @@ define([
 						label: _("Close")
 					});
 
+					var dialogText = new Text({
+						'class': 'umcConfirmDialogText',
+						style: 'overflow:auto', // commands can be long...
+						content: txt
+					});
 					var confirmDialog = new ConfirmDialog({
 						title: _('Application details'),
-						style: lang.replace('min-width:500px;max-width:{width}px;overflow:auto;', {width: width}), 		// dialog.confirm doesn't exceed 550px
-						message: txt,
+						style: lang.replace('min-width:500px;max-width:{width}px;', {width: width}), // dialog.confirm doesn't exceed 550px
+						message: dialogText,
 						options: buttons
 					});
 
@@ -238,7 +244,7 @@ define([
 			// TODO: translate if this does make it into the final app center!
 			var allows_using = values.allows_using;
 			if (!allows_using) {
-				return 'Your licence currently forbids to use this application'
+				return 'Your licence currently forbids to use this application';
 			}
 		},
 
@@ -258,7 +264,7 @@ define([
 				if (values.is_master) {
 					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers.') + '<pre>' + commands + '</pre>';
 				} else {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on your DC master and all of your backup servers <em>prior</em> to installing the application here.') + '<pre>' + commands + '</pre>';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on your DC master and all of your backup servers <em>prior</em> to installing the application on this system.') + '<pre>' + commands + '</pre>';
 				}
 			}
 		},
