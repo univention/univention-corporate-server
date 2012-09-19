@@ -1,3 +1,9 @@
+ucs-test (3.0.0-9) unstable; urgency=low
+
+  * debian/control: Build-Depends: remove python-all (Bug #28356)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Sep 2012 16:28:58 +0200
+
 ucs-test (3.0.0-8) unstable; urgency=low
 
   * Convert spaces to tabs (Bug #23527)
