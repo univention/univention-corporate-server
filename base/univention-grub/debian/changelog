@@ -1,3 +1,10 @@
+univention-grub (6.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 3.1 
+  * do not use splash in recovery mode (Bug #28287)
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Sep 2012 10:30:11 +0200
+
 univention-grub (5.0.9-10) unstable; urgency=low
 
   * Only fall back to parsing grub.cfg if grub/grub1root is not set (Bug #26559)
