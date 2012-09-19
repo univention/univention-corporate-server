@@ -53,7 +53,7 @@ class Instance( Base ):
 		self.finished( request.id, {
 			'sender' : self._username + '@example.com',
 			'subject' : 'Test mail from PACKAGENAME',
-			'recipient' : 'test@exaple.com' } )
+			'recipient' : 'test@example.com' } )
 
 
 	def send( self, request ):

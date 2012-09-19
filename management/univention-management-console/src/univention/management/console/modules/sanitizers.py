@@ -128,7 +128,7 @@ class Sanitizer(object):
 	  passed along with the actual argument in order to return something
 	  reasonable. Default: *None*
 	:param bool required: if the argument is required. Default: *False*
-	:param object default: if not given and not
+	:param object default: if argument is not given and not
 	  :attr:`~Sanitizer.required` but :attr:`~Sanitizer.may_change_value`
 	  default is returned. Note that this value is not passing the
 	  sanitizing procedure, so make sure to be able to handle it.
@@ -405,16 +405,11 @@ class PatternSanitizer(Sanitizer):
 			self.add_asterisks,
 			self.ignore_case,
 			self.max_number_of_asterisks,
-			further_arguments=copy.copy(self.further_arguments),
+			further_arguments=copy.copy(self.further_arguments), # string...
 			required=self.required,
-			default=None,
+			default=self.default, # None or non-copyable pattern
 			may_change_value=self.may_change_value,
 		)
-		try:
-			new.default = re.compile(default.pattern, default.flags)
-		except:
-			# None?
-			pass
 		return new
 
 	def _sanitize(self, value, name, further_fields):
@@ -454,27 +449,22 @@ class StringSanitizer(Sanitizer):
 	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, **kwargs):
 		super(StringSanitizer, self).__init__(**kwargs)
 		if isinstance(regex_pattern, basestring):
-			regex_pattern = re.compile(regex_pattern, flags = re_flags)
+			regex_pattern = re.compile(regex_pattern, flags=re_flags)
 		self.minimum = minimum
 		self.maximum = maximum
 		self.regex_pattern = regex_pattern
 
 	def __deepcopy__(self, memo):
 		new = StringSanitizer(
-			None,
+			self.regex_pattern, # None or non-copyable pattern
 			0,
 			self.minimum,
 			self.maximum,
-			further_arguments=copy.copy(self.further_arguments),
+			further_arguments=copy.copy(self.further_arguments), # strings
 			required=self.required,
 			default=self.default,
 			may_change_value=self.may_change_value,
 		)
-		try:
-			new.regex_pattern = re.compile(regex_pattern.pattern, regex_pattern.flags)
-		except:
-			# None?
-			pass
 		return new
 
 	def _sanitize(self, value, name, further_args):
@@ -487,10 +477,17 @@ class StringSanitizer(Sanitizer):
 		if self.maximum and len(value) > self.maximum:
 			self.raise_validation_error(_('Value is too long, it has to be at most of length %(maximum)d'))
 
-		if self.regex_pattern and not self.regex_pattern.match(value):
+		if self.regex_pattern and not self.regex_pattern.search(value):
 			self.raise_validation_error(_('Value is invalid'))
 
 		return value
+
+class EmailSanitizer(StringSanitizer):
+	''' EmailSanitizer is a very simple sanitizer that checks
+	the very basics of an email address: At least 3 characters and
+	somewhere in the middle has to be an @-sign '''
+	def __init__(self, **kwargs):
+		super(EmailSanitizer, self).__init__(r'.@.', **kwargs)
 
 class MappingSanitizer(Sanitizer):
 	''' MappingSanitizer makes sure that the input is in a key in a

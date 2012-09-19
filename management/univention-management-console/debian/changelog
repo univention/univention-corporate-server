@@ -1,3 +1,9 @@
+univention-management-console (5.0.26-1) unstable; urgency=low
+
+  * Add EmailSanitizer, improve deepcopy (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 19 Sep 2012 16:55:38 +0200
+
 univention-management-console (5.0.25-1) unstable; urgency=low
 
   * corrected path checking; Bug #28189

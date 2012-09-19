@@ -58,8 +58,7 @@ import copy
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
-from ..protocol.definitions import BAD_REQUEST_INVALID_OPTS
-from ..modules import UMC_Error, UMC_OptionTypeError
+from ..modules import UMC_OptionTypeError
 from ..log import MODULE
 
 from sanitizers import MultiValidationError, ValidationError, DictSanitizer, ListSanitizer
