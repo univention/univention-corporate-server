@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.63-1) unstable; urgency=low
+
+  * fixed double queries in Grids; Bug #25476
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Sep 2012 09:07:15 +0200
+
 univention-management-console-frontend (2.0.62-1) unstable; urgency=low
 
   * don't use COMMAND for uploads anymore; Bug #28189

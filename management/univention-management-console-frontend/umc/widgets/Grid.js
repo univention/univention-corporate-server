@@ -61,6 +61,17 @@ define([
 		style, on, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
+
+	// disable Grid search with different starting points, as the results are loaded
+	// only once entirely (see Bug #25476)
+	var _Grid = declare([EnhancedGrid], {
+		_fetch: function(start, isRender) {
+			// force start=0
+			arguments[0] = 0;
+			this.inherited(arguments);
+		}
+	});
+
 	return declare("umc.widgets.Grid", [ BorderContainer, StandbyMixin ], {
 		// summary:
 		//		Encapsulates a complex grid with store, UMCP commands and action buttons;
@@ -504,7 +515,7 @@ define([
 			this._contextMenu = new Menu({});
 
 			// create the grid
-			this._grid = new EnhancedGrid({
+			this._grid = new _Grid({
 				//id: 'ucrVariables',
 				store: this._dataStore,
 				region: 'center',
