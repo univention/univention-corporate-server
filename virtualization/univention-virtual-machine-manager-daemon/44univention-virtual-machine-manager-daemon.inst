@@ -224,6 +224,14 @@ create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "xen" "x86_64" "204
 create_hvm_profile "Microsoft Windows 7" "win7-" "kvm" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
 create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 
+# http://blogs.msdn.com/b/b8/archive/2012/02/29/running-the-consumer-preview-system-recommendations.aspx
+#   1 GB RAM (32-bit) or 2 GB RAM (64-bit) 
+#   16 GB available hard disk space (32-bit) or 20 GB (64-bit) 
+create_hvm_profile "Microsoft Windows 8" "win8-" "xen" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
+create_hvm_profile "Microsoft Windows 8 (64 Bit)" "win8-64-" "xen" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
+create_hvm_profile "Microsoft Windows 8" "win8-" "kvm" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
+create_hvm_profile "Microsoft Windows 8 (64 Bit)" "win8-64-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
+
 # http://technet.microsoft.com/de-de/windowsserver/bb430827.aspx
 #   Speicher
 #        mindestens 128 MB Arbeitsspeicher erforderlich; Maximum: 32 GB für x86-basierte PCs mit der 32-Bit-Version und 64 GB für Itanium-basierte PCs mit der 64-Bit-Version
@@ -263,6 +271,15 @@ create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "automatic" "2048MB" "
 #     Note: Computers with more than 16 GB of RAM will require more disk space for paging, hibernation, and dump files 
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
+
+# http://technet.microsoft.com/en-us/library/jj200132.aspx
+#   Memory
+#  	  Minimum: 2 GB RAM 
+#     Recommended: 8 GB
+#   Disc Space
+#     Minimum: 32 GB or greater
+create_hvm_profile "Microsoft Windows 2012 (64 Bit)" "w2012-" "xen" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
+create_hvm_profile "Microsoft Windows 2012 (64 Bit)" "w2012-" "kvm" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
 
 create_xen_profile "UCS 2.4" "ucs24-" "automatic" "1024MB" "20GB" "utc"
 create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "1024MB" "20GB" "utc"

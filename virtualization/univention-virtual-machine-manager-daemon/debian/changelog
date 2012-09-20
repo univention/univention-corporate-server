@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.6-1) unstable; urgency=low
+
+  * Added profiles for Windows 8 and Windows 2012 (Bug #28420)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Sep 2012 20:41:15 +0200
+
 univention-virtual-machine-manager-daemon (2.0.5-1) unstable; urgency=low
 
   * remove obsolete destroyRecursive() calls; Bug #26857
