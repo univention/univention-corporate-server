@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.64-1) unstable; urgency=low
+
+  * improved umc.dialog.confirmForm for Bug #27998
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Sep 2012 15:23:55 +0200
+
 univention-management-console-frontend (2.0.63-1) unstable; urgency=low
 
   * fixed double queries in Grids; Bug #25476

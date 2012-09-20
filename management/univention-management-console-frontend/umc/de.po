@@ -93,6 +93,9 @@ msgstr "Zurück"
 msgid "Cancel"
 msgstr "Abbrechen"
 
+msgid "Submit"
+msgstr "Absenden"
+
 #: umc/widgets/Uploader.js:103
 msgid "Clear data"
 msgstr "Daten leeren"

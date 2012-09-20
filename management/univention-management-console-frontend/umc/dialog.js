@@ -26,26 +26,23 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console */
+/*global define require*/
 
 define([
-	"dojo/_base/kernel",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
-	"dojo/json",
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"umc/widgets/LoginDialog",
 	"umc/widgets/Toaster",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
-	"umc/widgets/Button",
 	"umc/widgets/Form",
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!umc/app"
-], function(dojo, lang, array, on, json, Deferred, domClass, LoginDialog, Toaster, ConfirmDialog, Text, Button, Form, tools, i18nTools, _) {
+], function(lang, array, on, Deferred, domClass, LoginDialog, Toaster, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 		_loginDialog: null, // internal reference to the login dialog
@@ -257,8 +254,8 @@ define([
 
 			// if the user has switched off confirmations, try to find a default option
 			if (tools.preferences('confirm') === false) {
-				var cb = undefined;
-				var response = undefined;
+				var cb;
+				var response;
 				array.forEach(options, function(i, idx) {
 					// check for default option
 					if (true === i.auto) {
@@ -304,8 +301,9 @@ define([
 			// 		String title: the confirmation dialog title (default: 'Confirmation')
 			// 		String style: the confirmation dialog css style (default: 'max-width: 550px;')
 			// 		Object[] buttons: overwrite the default submit and cancel button
-			// 		String submit: the label for the submit button (default: 'Submit')
-			// 		String cancel: the label for the cancel button (default: 'Cancel')
+			// 		String submit: the label for the default submit button (default: 'Submit')
+			// 		String cancel: the label for the default cancel button (default: 'Cancel')
+			// 		"submit"|"cancel" defaultAction: which default button should be the default? (default: 'submit')
 
 			// create form
 			var form = new Form({
@@ -315,12 +313,13 @@ define([
 
 			// define buttons
 			var buttons = options.buttons || [{
-				name: 'submit',
-				label: options.submit || _('Submit')
-			}, {
 				name: 'cancel',
-				'default': true,
+				'default': options.defaultAction == 'cancel',
 				label: options.close || _('Cancel')
+			}, {
+				name: 'submit',
+				'default': options.defaultAction != 'cancel',
+				label: options.submit || _('Submit')
 			}];
 
 			// create confirmation dialog
@@ -339,18 +338,20 @@ define([
 				});
 			}
 
-			// connect to 'confirm' event to close the dialog in any case
 			var deferred = new Deferred();
 			confirmDialog.on('confirm', function(response) {
 				if ('submit' === response) {
-					deferred.resolve(form.gatherFormValues());
+					if (form.validate()) {
+						deferred.resolve(form.gatherFormValues());
+						confirmDialog.close();
+					}
 				} else {
 					deferred.cancel({
 						button: response,
 						values: form.gatherFormValues()
 					});
+					confirmDialog.close();
 				}
-				confirmDialog.close();
 			});
 
 			// show the confirmation dialog
