@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.13-1) unstable; urgency=low
+
+  * adjust application backend and frontend to server info (Bug #27458)
+  * handle conflicts (Bug #28619)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 20 Sep 2012 19:25:05 +0200
+
 univention-management-console-module-packages (2.0.12-1) unstable; urgency=low
 
   * read meta data from the app center repository server; Bug #27458

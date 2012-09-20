@@ -177,7 +177,7 @@ class Instance(umcm.Base):
 		result = []
 		for application in applications:
 			if pattern.search(application.name):
-				result.append(application.to_dict_overwiew())
+				result.append(application.to_dict_overwiew(self))
 		return result
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
@@ -194,23 +194,22 @@ class Instance(umcm.Base):
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
 		try:
-			with self.package_manager.locked(reset_status=True):
-				application_found = application is not None
-				self.finished(request.id, application_found)
-				if application_found:
-					def _thread(module, application, function):
-						with module.package_manager.locked(set_finished=True):
-							with module.package_manager.no_umc_restart():
-								if function == 'install':
-									return application.install(module)
-								else:
-									return application.uninstall(module)
-					def _finished(thread, result):
-						if isinstance(result, BaseException):
-							MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-					thread = notifier.threads.Simple('app_center_invoke', 
-						notifier.Callback(_thread, self, application, function), _finished)
-					thread.run()
+			can_continue = application is not None and (function != 'install' or application.can_be_installed(self))
+			self.finished(request.id, can_continue)
+			if can_continue:
+				def _thread(module, application, function):
+					with module.package_manager.locked(reset_status=True, set_finished=True):
+						with module.package_manager.no_umc_restart():
+							if function == 'install':
+								return application.install(module)
+							else:
+								return application.uninstall(module)
+				def _finished(thread, result):
+					if isinstance(result, BaseException):
+						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
+				thread = notifier.threads.Simple('app_center_invoke', 
+					notifier.Callback(_thread, self, application, function), _finished)
+				thread.run()
 		except LockError:
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager

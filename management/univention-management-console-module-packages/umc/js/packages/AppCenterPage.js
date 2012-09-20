@@ -178,7 +178,7 @@ define([
 							name: 'install',
 							label: _("Install"),
 							callback: lang.hitch(this, function() {
-								this._call_installer('install', data.result.id);
+								this._call_installer('install', data.result.id, data.result.name);
 							})
 						});
 					}
@@ -187,7 +187,7 @@ define([
 							name: 'uninstall',
 							label: _("Uninstall"),
 							callback: lang.hitch(this, function() {
-								this._call_installer('uninstall', data.result.id);
+								this._call_installer('uninstall', data.result.id, data.result.name);
 							})
 						});
 					}
@@ -226,7 +226,7 @@ define([
 			);
 		},
 
-		_call_installer: function(func, id) {
+		_call_installer: function(func, id, name) {
 			this.standby(true);
 			var verb = '';
 			switch(func) {
@@ -240,7 +240,7 @@ define([
 					verb = _("upgrade");
 					break;
 			}
-			var msg = lang.replace(_("Going to {verb} Application '{id}'"), {verb: verb, id: id});
+			var msg = lang.replace(_("Going to {verb} Application '{name}'"), {verb: verb, id: name});
 			// TODO: confirm
 			tools.umcpCommand('packages/app_center/invoke', {'function': func, 'application': id}).then(
 				lang.hitch(this, function(data) {
@@ -258,6 +258,23 @@ define([
 			);
 		},
 
+		_detail_field_custom_manufacturer: function(values) {
+			var manufacturer = values.manufacturer;
+			var website = values.website;
+			if (manufacturer && website) {
+				return '<a href="' + website + '" target="_blank">' + manufacturer + '</a>';
+			} else if (manufacturer) {
+				return manufacturer;
+			}
+		},
+
+		_detail_field_custom_contact: function(values) {
+			var contact = values.contact;
+			if (contact) {
+				return '<a href="mailto:' + contact + '">' + contact + '</a>';
+			}
+		},
+
 		_detail_field_custom_allows_using: function(values) {
 			var allows_using = values.allows_using;
 			if (!allows_using) {
@@ -269,9 +286,10 @@ define([
 			}
 		},
 
-		_detail_field_custom_master_packages: function(values) {
-			var master_packages = values.master_packages;
-			if (master_packages) {
+		_detail_field_custom_defaultpackagesmaster: function(values) {
+			var master_packages = values.defaultpackagesmaster;
+			var can_install = values.can_install;
+			if (can_install && master_packages && master_packages.length) {
 				if (!values.is_joined) {
 					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Join a domain before you install this application!');
 				}
@@ -290,39 +308,57 @@ define([
 			}
 		},
 
-		_detail_field_custom_categories: function(values) {
-			return values.categories.join(' and ');
+		_detail_field_custom_cannot_install_reason: function(values) {
+			var cannot_install_reason = values.cannot_install_reason;
+			var cannot_install_reason_detail = values.cannot_install_reason_detail;
+			if (cannot_install_reason == 'conflict') {
+				var txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
+				txt += '<ul><li>' + cannot_install_reason_detail.join('</li><li>') + '</li></ul>';
+				return txt;
+			}
 		},
 
-		_detail_field_custom_email_sending: function(values) {
-			// TODO: translate if this does make it into the final app center!
-			if (values.email_sending) {
-				return 'This application will inform the producer if you (un)install it';
+		_detail_field_custom_categories: function(values) {
+			if (values.categories) {
+				return values.categories.join(', ');
+			}
+		},
+
+		_detail_field_custom_emailrequired: function(values) {
+			if (values.emailrequired) {
+				return _('This application will inform the manufacturer if you (un)install it.');
 			} else {
-				return 'This application will not inform the producer if you (un)install it';
+				return _('This application will not inform the manufacturer if you (un)install it.');
 			}
 		},
 
 		_detail_field_order: function() {
-			return (['name',
-				 'categories',
-				 'commercial_support',
-				 'description',
-				 'master_packages',
-				 'allows_using',
-				 'email_sending'
-				 ]);
+			return ['name',
+				'version',
+				'manufacturer',
+				'contact',
+				'categories',
+				'longdescription',
+				'emailrequired',
+				'allows_using',
+				'defaultpackagesmaster',
+				'cannot_install_reason'
+			];
 		},
 
 		_detail_field_label: function(key) {
 			var labels = {
 				'name': _("Name"),
+				'manufacturer': _("Manufacturer"),
+				'website': _('Website'),
+				'contact': _("Contact"),
 				'categories': _("Section"),
-				'commercial_support': _("Commercial support"),
-				'description': _("Description"),
-				'email_sending': _("Email notification"),
+				'version': _('Version'),
+				'longdescription': _("Description"),
+				'emailrequired': _("Email notification"),
 				'allows_using': _("License restrictions"),
-				'master_packages': _("Packages for master system")
+				'defaultpackagesmaster': _("Packages for master system"),
+				'cannot_install_reason': _("Conflicts")
 			};
 			return labels[key];
 		},

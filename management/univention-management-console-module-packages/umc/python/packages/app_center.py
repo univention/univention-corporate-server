@@ -57,9 +57,9 @@ class License(object):
 
 	@property
 	def uuid(self):
-		return None
-		return 'fc452bc8-ae06-11e1-abab-00216a6f69f2'
-		raise NotImplentedError
+		# ucr set repository/app_center/debug/licence="fc452bc8-ae06-11e1-abab-00216a6f69f2"
+		# ucr unset repository/app_center/debug/licence
+		return ucr.get('repository/app_center/debug/licence', None)
 		if self.license is None:
 			return None
 		return self.license._license.uuid
@@ -75,8 +75,10 @@ LICENSE = License(udm_license)
 
 class Application(object):
 	_regComma = re.compile('\s*,\s*')
+	_all_applications = None
+
 	def __init__(self, url):
-		self._options = dict()
+		self._options = {}
 		try:
 			# load config file
 			fp = urllib2.urlopen(url)
@@ -125,7 +127,7 @@ class Application(object):
 		file. If element is not given, returns (for string elements) an empty string.
 		'''
 		v = self._options.get(key.lower())
-		if v == None:
+		if v is None:
 			return ''
 		return v
 
@@ -139,27 +141,33 @@ class Application(object):
 	_regDirListing = re.compile(""".*<td.*<a href="(?P<name>[^"/]+\.ini)">[^<]+</a>.*</td>.*""")
 
 	@classmethod
-	def all(cls):
-		ucr.load()
+	def find(cls, id):
+		for application in cls.all():
+			if application.id == id:
+				return application
 
-		# query all applications from the server
-		all_applications = []
-		url = cls.get_server() % ucr
-		try:
-			print 'open %s' % url
-			for iline in urllib2.urlopen(url):
-				# parse the server's directory listing
-				m = cls._regDirListing.match(iline)
-				if m:
-					# try to load and parse application's .ini file
-					ifilename = m.group('name')
-					iurl = url + '/' + ifilename
-					try:
-						all_applications.append(Application(iurl))
-					except ValueError as e:
-						MODULE.warn('Could not open application file: %s\n%s' % (iurl, e))
-		except urllib2.HTTPError as e:
-			MODULE.warn('Could not query App Center host at:%s\n%s' % (url, e))
+	@classmethod
+	def all(cls):
+		if cls._all_applications is None:
+			cls._all_applications = []
+
+			# query all applications from the server
+			ucr.load()
+			url = cls.get_server()
+			try:
+				for iline in urllib2.urlopen(url):
+					# parse the server's directory listing
+					m = cls._regDirListing.match(iline)
+					if m:
+						# try to load and parse application's .ini file
+						ifilename = m.group('name')
+						iurl = url + '/' + ifilename
+						try:
+							cls._all_applications.append(Application(iurl))
+						except ValueError as e:
+							MODULE.warn('Could not open application file: %s\n%s' % (iurl, e))
+			except urllib2.HTTPError as e:
+				MODULE.warn('Could not query App Center host at:%s\n%s' % (url, e))
 
 		# filter function
 		def _included(the_list, app):
@@ -168,7 +176,7 @@ class Application(object):
 			the_list = map(str.lower, the_list.split(':'))
 			if app.name in the_list:
 				return True
-			for category in app.categories:
+			for category in app.get('categories'):
 				if category in the_list:
 					return True
 			return False
@@ -176,45 +184,70 @@ class Application(object):
 		# filter blacklisted apps (by name and by category)
 		blacklist = ucr.get('repository/app_center/blacklist')
 		if blacklist:
-			filtered_applications = [app for app in all_applications if not _included(blacklist, app)]
+			filtered_applications = [app for app in cls._all_applications if not _included(blacklist, app)]
 		else:
-			filtered_applications = all_applications
+			filtered_applications = cls._all_applications
 
 		# filter whitelisted apps (by name and by category)
 		whitelist = ucr.get('repository/app_center/whitelist')
 		if whitelist:
-			filtered_applications = [app for app in all_applications if _included(whitelist, app) or app in filtered_applications]
+			filtered_applications = [app for app in cls._all_applications if _included(whitelist, app) or app in filtered_applications]
 
 		return filtered_applications
 
-	def to_dict_overwiew(self):
+	def to_dict_overwiew(self, module_instance):
 		res = copy.copy(self._options)
 		res['allows_using'] = LICENSE.allows_using(self)
+		res['can_be_installed'] = self.can_be_installed(module_instance)
 		return res
 
-	def to_dict_detail(self, module_instance):
-		res = copy.copy(self._options)
+	def cannot_install_reason(self, module_instance):
+		is_joined = os.path.exists('/var/univention-join/joined')
+		if all(module_instance.package_manager.is_installed(package) for package in self.get('defaultpackages')):
+			return 'installed', None
+		elif self.get('defaultpackagesmaster') and not is_joined:
+			return 'not_joined', None
+		else:
+			conflict_packages = []
+			for package in self.get('conflictedsystempackages'):
+				if module_instance.package_manager.is_installed(package):
+					conflict_packages.append(package)
+			for app in self.get('conflictedapps'):
+				app = Application.find(app)
+				if app:
+					if any(module_instance.package_manager.is_installed(package) for package in app.get('defaultpackages')):
+						if app.name not in conflict_packages:
+							# can conflict multiple times: conflicts with 
+							# APP-1.1 and APP-1.2, both named APP
+							conflict_packages.append(app.name)
+			if conflict_packages:
+				return 'conflict', conflict_packages
+		return None, None
 
-		#TODO: adapt conditions
-		can_uninstall = res['can_uninstall'] = False #module_instance.package_manager.is_installed(self.package_name)
-		res['can_install'] = True #not can_uninstall and (is_joined or not self.master_packages)
+	def can_be_installed(self, module_instance):
+		return not bool(self.cannot_install_reason(module_instance)[0])
+
+	def to_dict_detail(self, module_instance):
+		ucr.load()
+		res = copy.copy(self._options)
+		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(module_instance)
+		cannot_install_reason = res['cannot_install_reason']
+		res['can_install'] = cannot_install_reason is None
+		res['can_uninstall'] = cannot_install_reason == 'installed'
 		res['allows_using'] = LICENSE.allows_using(self)
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
 		res['server'] = self.get_server()
 		return res
 
-	@classmethod
-	def find(cls, id):
-		for application in cls.all():
-			if application.id == id:
-				return application
-
 	def uninstall(self, module_instance):
 		try:
-			module_instance.package_manager.set_max_steps(200)
-			module_instance.package_manager.uninstall(self.package_name)
-			module_instance.package_manager.add_hundred_percent()
+			to_uninstall = self.get('defaultpackages')
+			max_steps = 100 + len(to_uninstall) * 100
+			module_instance.package_manager.set_max_steps(max_steps)
+			for package in to_uninstall:
+				module_instance.package_manager.uninstall(package)
+				module_instance.package_manager.add_hundred_percent()
 			module_instance._del_component(self.id)
 			module_instance.package_manager.update()
 			module_instance.package_manager.add_hundred_percent()
@@ -228,11 +261,10 @@ class Application(object):
 			ucr.load()
 			is_master = ucr.get('server/role') == 'domaincontroller_master'
 			server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
-			to_install = [self.package_name]
-			if is_master and self.master_packages:
-				to_install.extend(self.master_packages)
+			to_install = self.get('defaultpackages')
+			if is_master and self.get('defaultpackagesmaster'):
+				to_install.extend(self.get('defaultpackagesmaster'))
 			max_steps = 100 + len(to_install) * 100
-			MODULE.warn(str(max_steps))
 			module_instance.package_manager.set_max_steps(max_steps)
 			data = {
 				'server' : server,
@@ -241,7 +273,7 @@ class Application(object):
 				'unmaintained' : False,
 				'enabled' : True,
 				'name' : self.id,
-				'description' : self.description,
+				'description' : self.get('description'),
 				'username' : '',
 				'password' : '',
 				'version' : 'current',
