@@ -32,7 +32,6 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
 	"dojo/mouse",
 	"dojo/dom-class",
 	"dijit/layout/ContentPane",
@@ -41,7 +40,7 @@ define([
 	"dijit/TitlePane",
 	"umc/tools",
 	"umc/widgets/Tooltip"
-], function(declare, lang, array, on, mouse, domClass, ContentPane, _Container, _Contained, TitlePane, tools, Tooltip) {
+], function(declare, lang, array, mouse, domClass, ContentPane, _Container, _Contained, TitlePane, tools, Tooltip) {
 	//TODO: don't use float, use display:inline-block; we need a hack for IE7 here, see:
 	//      http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/a
 	var _CategoryItem = declare("umc.widgets._CategoryItem", [ContentPane, _Contained], {
@@ -57,7 +56,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			var content = '<div>' + this.label + '</div>'
+			var content = '<div>' + this.label + '</div>';
 			if (this.categories && this.categories.length) {
 				content += '<div style="color: grey; margin-top: 0;">' + this.categories.join(', ') + '</div>';
 			}
@@ -138,9 +137,9 @@ define([
 				var modWidget = new _CategoryItem(obj);
 
 				// hook to the onClick event of the module
-				this.own(on(modWidget, 'click', lang.hitch(this, function() {
+				modWidget.on('click', lang.hitch(this, function() {
 					this.onOpenModule(imod);
-				})));
+				}));
 
 				// add module widget to the container
 				this.addChild(modWidget);

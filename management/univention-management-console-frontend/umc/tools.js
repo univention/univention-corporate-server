@@ -813,17 +813,27 @@ define([
 			size = size || 16;
 			var values = {
 				s: size,
-				icon: iconName,
-				url: require.toUrl('dijit/themes')
+				icon: iconName
 			};
-			var iconClass = lang.replace('icon{s}-{icon}', values);
+			var iconClass;
+			if (iconName.substr(0, 4) == ('http')) {
+				// absolute path. use!
+				// iconClass must be modified to the icon file name
+				values.url = iconName;
+				iconClass = lang.replace('abs{s}-{icon}', {s: size, icon: iconName.replace(/\.png$/, '').replace(/.*\//, '')});
+			} else {
+				// search in local icons directory
+				values.url = require.toUrl('dijit/themes');
+				values.url = lang.replace("{url}/umc/icons/{s}x{s}/{icon}.png", values);
+				iconClass = lang.replace('icon{s}-{icon}', values);
+			};
 			if (!(iconClass in this._existingIconClasses)) {
 				try {
 					// add dynamic style sheet information for the given icon
 					var css = lang.replace(
 						'background: no-repeat;' +
 						'width: {s}px; height: {s}px;' +
-						'background-image: url("{url}/umc/icons/{s}x{s}/{icon}.png");',
+						'background-image: url("{url}");',
 						values);
 					styles.insertCssRule('.' + iconClass, css);
 
