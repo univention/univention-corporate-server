@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.12-1) unstable; urgency=low
+
+  * read meta data from the app center repository server; Bug #27458
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 20 Sep 2012 16:17:55 +0200
+
 univention-management-console-module-packages (2.0.11-1) unstable; urgency=low
 
   * Add licensing dialog for App Center (Bug #27998)

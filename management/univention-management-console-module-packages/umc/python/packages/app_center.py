@@ -37,6 +37,13 @@ from univention.management.console.log import MODULE
 
 import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+import re
+import ConfigParser
+import locale
+import json
+import copy
 
 try:
 	import univention.admin.license as udm_license
@@ -62,77 +69,107 @@ class License(object):
 		return self.uuid is not None
 
 	def allows_using(self, app):
-		return self.email_known() or not app.requires_email_permission
+		return self.email_known() or not app.get('emailRequired')
 
 LICENSE = License(udm_license)
 
 class Application(object):
-	def __init__(self, id, icon, name, categories, description, email_sending, package_name=None, master_packages=None, requires_email_permission=True):
-		self.id = id
-		self.icon = icon
-		self.name = name
-		self.categories = categories
-		self.description = description
-		self.email_sending = email_sending
-		if package_name is None:
-			package_name = self.id
-		self.package_name = package_name
-		self.master_packages = master_packages
-		self.requires_email_permission = requires_email_permission
+	_regComma = re.compile('\s*,\s*')
+	def __init__(self, url):
+		self._options = dict()
+		try:
+			# load config file
+			fp = urllib2.urlopen(url)
+			config = ConfigParser.ConfigParser()
+			config.readfp(fp)
+
+			# copy values from config file
+			for k, v in config.items('Application'):
+				self._options[k] = v
+
+			# overwrite english values with localized translations
+			loc = locale.getdefaultlocale()[0]
+			if isinstance(loc, basestring):
+				if not config.has_section(loc):
+					loc = loc.split('_')[0]
+				if config.has_section(loc):
+					for k, v in config.items(loc):
+						self._options[k] = v
+
+			# parse boolean values
+			for ikey in ('emailrequired',):
+				if ikey in self._options:
+					self._options[ikey] = config.getboolean('Application', ikey)
+				else:
+					self._options[ikey] = False
+
+			# parse list values
+			for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps'):
+				ival = self.get(ikey)
+				if ival:
+					self._options[ikey] = self._regComma.split(ival)
+				else:
+					self._options[ikey] = []
+
+		except ConfigParser.Error as err:
+			# reraise as ValueError
+			raise ValueError(err.message)
+
+		# save the url
+		self.id = self._options['id'] = self._options['id'].lower()
+		self.name = self._options['name']
+		self.icon = self._options['icon'] = '%s.png' % url[:-4]
+
+	def get(self, key):
+		'''Helper function to access configuration elements of the application's .ini
+		file. If element is not given, returns (for string elements) an empty string.
+		'''
+		v = self._options.get(key.lower())
+		if v == None:
+			return ''
+		return v
+
+	@classmethod
+	def get_server(cls):
+		return 'http://%s/meta-inf/%s' % (
+			ucr.get('repository/app_center/server', 'appcenter.software-univention.de'),
+			ucr.get('version/version', ''),
+		)
+
+	_regDirListing = re.compile(""".*<td.*<a href="(?P<name>[^"/]+\.ini)">[^<]+</a>.*</td>.*""")
 
 	@classmethod
 	def all(cls):
 		ucr.load()
-		all_applications = [
-			cls('agorum',
-				'agorum',
-				'agorum© core',
-				['CMS', 'DMS'],
-				'Dokumentenmangement / Enterprise Content Management',
-				True,
-				),
-			cls('ox',
-				'ox',
-				'Open-Xchange',
-				['Groupware'],
-				'Email and collaboration suite',
-				True,
-				),
-			cls('curl',
-				'curl',
-				'Curl',
-				['System'],
-				'Component does not exist but you should be able to install it',
-				False,
-				master_packages=['ack-grep'],
-				requires_email_permission=False,
-				),
-			cls('zarafa',
-				'zarafa',
-				'Zarafa',
-				['Groupware'],
-				'The number one MS Exchange replacement',
-				True,
-				package_name='zarafa4ucs',
-				master_packages=['zarafa-udm', 'zarafa-master'],
-				),
-			cls('owncloud',
-				'owncloud',
-				'Own Cloud',
-				['Cloud software'],
-				'Your Cloud, Your Data, Your Way!',
-				False,
-				),
-		]
 
+		# query all applications from the server
+		all_applications = []
+		url = cls.get_server() % ucr
+		try:
+			print 'open %s' % url
+			for iline in urllib2.urlopen(url):
+				# parse the server's directory listing
+				m = cls._regDirListing.match(iline)
+				if m:
+					# try to load and parse application's .ini file
+					ifilename = m.group('name')
+					iurl = url + '/' + ifilename
+					try:
+						all_applications.append(Application(iurl))
+					except ValueError as e:
+						MODULE.warn('Could not open application file: %s\n%s' % (iurl, e))
+		except urllib2.HTTPError as e:
+			MODULE.warn('Could not query App Center host at:%s\n%s' % (url, e))
+
+		# filter function
 		def _included(the_list, app):
 			if the_list == '*':
 				return True
 			the_list = map(str.lower, the_list.split(':'))
-			if app.name.lower() in the_list:
+			if app.name in the_list:
 				return True
 			for category in app.categories:
-				if category.lower() in the_list:
+				if category in the_list:
 					return True
 			return False
 
@@ -151,39 +188,21 @@ class Application(object):
 		return filtered_applications
 
 	def to_dict_overwiew(self):
-		allows_using = LICENSE.allows_using(self)
-		return {
-			'id' : self.id,
-			'icon' : self.icon,
-			'name' : self.name,
-			'categories' : self.categories,
-			'allows_using' : allows_using,
-			'description' : self.description,
-		}
+		res = copy.copy(self._options)
+		res['allows_using'] = LICENSE.allows_using(self)
+		return res
 
 	def to_dict_detail(self, module_instance):
-		ucr.load()
-		can_uninstall = module_instance.package_manager.is_installed(self.package_name)
-		allows_using = LICENSE.allows_using(self)
-		is_joined = os.path.exists('/var/univention-join/joined')
-		is_master = module_instance.ucr.get('server/role') == 'domaincontroller_master'
-		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
-		return {
-			'id' : self.id,
-			'server' : server,
-			'icon' : self.icon,
-			'name' : self.name,
-			'categories' : self.categories,
-			'commercial_support' : 'Available at: <a target="_blank" href="http://www.%(id)s.com">www.%(id)s.com</a>' % {'id' : self.id},
-			'description' : self.description,
-			'master_packages' : self.master_packages,
-			'email_sending' : self.email_sending,
-			'allows_using' : allows_using,
-			'is_joined' : is_joined,
-			'is_master' : is_master,
-			'can_install' : not can_uninstall and (is_joined or not self.master_packages),
-			'can_uninstall' : can_uninstall,
-		}
+		res = copy.copy(self._options)
+
+		#TODO: adapt conditions
+		can_uninstall = res['can_uninstall'] = False #module_instance.package_manager.is_installed(self.package_name)
+		res['can_install'] = True #not can_uninstall and (is_joined or not self.master_packages)
+		res['allows_using'] = LICENSE.allows_using(self)
+		res['is_joined'] = os.path.exists('/var/univention-join/joined')
+		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
+		res['server'] = self.get_server()
+		return res
 
 	@classmethod
 	def find(cls, id):
