@@ -1,3 +1,10 @@
+univention-dojo (6.0.3-1) unstable; urgency=low
+
+  * removed fix_dojo_style.patch and fix_dojo_position.patch; Bug #26857
+  * added fix_notify_typo patch to Makefile; Bug #28018
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 21 Sep 2012 11:52:13 +0200
+
 univention-dojo (6.0.2-1) unstable; urgency=low
 
   * added fix_notify_typo patch; Bug #28018
