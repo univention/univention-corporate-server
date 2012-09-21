@@ -139,17 +139,6 @@ build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)
 		cp $$i "$(tmpDir)/umc/i18n/$$lang/app.json"; \
 	done
 
-api-doc: umc.xml
-
-umc.xml:
-	touch umc.xml
-#	@# generate umc.xml for univention-dojo-api-viewer
-#	cp -r /usr/share/univention-dojo/ '$(dojo_tmp_dir)'
-#	echo 'location = $(rel_root_path)$(CURDIR)/umc/' > '$(dojo_tmp_dir)/util/docscripts/modules/umc.module.properties'
-#	cd '$(dojo_tmp_dir)/util/docscripts/'; \
-#	php generate.php umc dojo dijit dojox --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
-#	rm -rf $(dojo_tmp_dir)
-
 install: build
 	@# move umc.xml
 	mkdir -p '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
