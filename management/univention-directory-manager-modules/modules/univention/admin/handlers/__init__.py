@@ -1998,6 +1998,8 @@ class simpleComputer( simpleLdap ):
 
 		if self.hasChanged( 'ip' ):
 			for ipAddress in self[ 'ip' ]:
+				if not ipAddress:
+					continue
 				if self.oldinfo.has_key( 'ip' ) and ipAddress in self.oldinfo[ 'ip' ]:
 					continue
 				if not self.ip_alredy_requested:
