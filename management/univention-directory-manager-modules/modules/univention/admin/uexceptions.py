@@ -257,3 +257,6 @@ class circularGroupDependency(base):
 
 class invalidChild(base):
 	pass
+
+class primaryGroupWithoutSamba(base):
+	message=_('Need a primary group with samba option to create a user with samba option')

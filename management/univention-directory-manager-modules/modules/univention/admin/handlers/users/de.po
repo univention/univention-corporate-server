@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-21 12:45+0100\n"
+"POT-Creation-Date: 2012-09-21 13:32+0200\n"
 "PO-Revision-Date: 2011-11-21 12:46+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr "Passwort"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: self.py:52 user.py:886 user.py:952
+#: self.py:52 user.py:886 user.py:954
 msgid "General"
 msgstr "Allgemein"
 
@@ -167,7 +167,7 @@ msgstr "Samba Privilegien verwalten"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: user.py:234 user.py:901
+#: user.py:234 user.py:900
 msgid "Organisation"
 msgstr "Organisation"
 
@@ -287,11 +287,11 @@ msgstr "Laufwerk für das Windows-Heimatverzeichnis"
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: user.py:536 user.py:906
+#: user.py:536 user.py:905
 msgid "Groups"
 msgstr "Gruppen"
 
-#: user.py:547
+#: user.py:547 user.py:906
 msgid "Primary group"
 msgstr "Primäre Gruppe"
 
@@ -499,99 +499,98 @@ msgstr "Grundeinstellungen"
 msgid "User account"
 msgstr "Benutzer-Konto"
 
-#: user.py:907
+#: user.py:909
 msgid "Additional groups"
 msgstr "Weitere Gruppen"
 
-#: user.py:911
+#: user.py:913
 msgid "Account"
 msgstr "Konto"
 
-#: user.py:911
+#: user.py:913
 msgid "Account settings"
 msgstr "Konto-Einstellungen"
 
-#: user.py:912
+#: user.py:914
 msgid "Locking and deactivation"
 msgstr "Konto-Deaktivierung"
 
-#: user.py:917
+#: user.py:919
 msgid "Windows"
 msgstr "Windows"
 
-#: user.py:917
+#: user.py:919
 msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: user.py:925
+#: user.py:927
 msgid "POSIX (Linux/UNIX)"
 msgstr "POSIX (Linux/UNIX)"
 
-#: user.py:925
+#: user.py:927
 msgid "POSIX (Linux/UNIX) account settings"
 msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
 
-#: user.py:931
+#: user.py:933
 msgid "Contact"
 msgstr "Kontakt"
 
-#: user.py:931
+#: user.py:933
 msgid "Contact information"
 msgstr "Kontaktinformationen"
 
-#: user.py:932
+#: user.py:934
 msgid "Business"
 msgstr "Geschäftlich"
 
-#: user.py:938
+#: user.py:940
 msgid "Privat"
 msgstr "Privat"
 
-#: user.py:945
+#: user.py:947
 msgid "Mail"
 msgstr "Mail"
 
-#: user.py:945
+#: user.py:947
 msgid "Mail preferences"
 msgstr "Maileinstellungen"
 
-#: user.py:946
+#: user.py:948
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: user.py:951
+#: user.py:953
 msgid "Certificate"
 msgstr "Zertifikat"
 
-#: user.py:962
+#: user.py:964
 msgid "Issuer"
 msgstr "Aussteller"
 
-#: user.py:971
+#: user.py:973
 msgid "Dates"
 msgstr "Datumsangaben"
 
-#: user.py:975
+#: user.py:977
 msgid "Misc"
 msgstr "Verschiedenes"
 
-#: user.py:1777
-#, python-format
+#: user.py:1790
 msgid "Need one of %s, %s, %s or %s in options to create user."
 msgstr ""
 "Mindestens eine Option aus %s, %s, %s oder %s muss aktiv sein, um einen "
 "neuen Benutzer zu erstellen."
 
-#: user.py:2070 user.py:2076
+#: user.py:2060 user.py:2066
 #, python-format
 msgid "The password is too short, at least %d characters needed!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2441
+#: user.py:2398
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
-#: user.py:2457
+#: user.py:2414
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
 

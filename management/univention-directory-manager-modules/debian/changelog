@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.31-1) unstable; urgency=low
+
+  * permit creating users with samba option if their chosen
+    primary group does not have samba option too (Bug #26817)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 21 Sep 2012 13:41:18 +0200
+
 univention-directory-manager-modules (8.0.30-1) unstable; urgency=low
 
   * Ignore empty ip addresses for locking (Bug #28622)

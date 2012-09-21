@@ -1793,6 +1793,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					'person',
 					'ldap_pwd')
 
+			if 'samba' in self.options and not self.lo.search(base=self['primaryGroup'], attr=['sambaSID'])[0][1]:
+				raise univention.admin.uexceptions.primaryGroupWithoutSamba
+
 			if 'posix' in self.options or 'samba' in self.options:
 				if self['primaryGroup']:
 					searchResult=self.lo.search(base=self['primaryGroup'], attr=['gidNumber'])
