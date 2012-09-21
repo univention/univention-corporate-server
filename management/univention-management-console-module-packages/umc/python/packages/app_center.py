@@ -80,7 +80,7 @@ class Application(object):
 				self._options[k] = v
 
 			# overwrite english values with localized translations
-			loc = locale.getdefaultlocale()[0]
+			loc = locale.getlocale()[0]
 			if isinstance(loc, basestring):
 				if not config.has_section(loc):
 					loc = loc.split('_')[0]
@@ -96,7 +96,7 @@ class Application(object):
 					self._options[ikey] = False
 
 			# parse list values
-			for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps'):
+			for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'serverrole'):
 				ival = self.get(ikey)
 				if ival:
 					self._options[ikey] = self._regComma.split(ival)
@@ -159,6 +159,10 @@ class Application(object):
 			except urllib2.HTTPError as e:
 				MODULE.warn('Could not query App Center host at:%s\n%s' % (url, e))
 
+		# filter out packages that cannot be installed for this server role
+		serverRole = ucr.get('server/role')
+		filtered_applications = [ app for app in cls._all_applications if not app.get('serverrole') or serverRole in app.get('serverrole') ]
+
 		# filter function
 		def _included(the_list, app):
 			if the_list == '*':
@@ -174,14 +178,14 @@ class Application(object):
 		# filter blacklisted apps (by name and by category)
 		blacklist = ucr.get('repository/app_center/blacklist')
 		if blacklist:
-			filtered_applications = [app for app in cls._all_applications if not _included(blacklist, app)]
+			filtered_applications = [app for app in filtered_applications if not _included(blacklist, app)]
 		else:
-			filtered_applications = cls._all_applications
+			filtered_applications = filtered_applications
 
 		# filter whitelisted apps (by name and by category)
 		whitelist = ucr.get('repository/app_center/whitelist')
 		if whitelist:
-			filtered_applications = [app for app in cls._all_applications if _included(whitelist, app) or app in filtered_applications]
+			filtered_applications = [app for app in filtered_applications if _included(whitelist, app) or app in filtered_applications]
 
 		return filtered_applications
 

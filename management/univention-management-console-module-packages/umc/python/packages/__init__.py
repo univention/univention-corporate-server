@@ -37,6 +37,7 @@ import notifier.threads
 from contextlib import contextmanager
 import urllib2
 import urllib
+import locale
 
 import apt
 
@@ -62,7 +63,6 @@ from univention.management.console.log import MODULE
 
 from univention.updater import UniventionUpdater
 from univention.updater.errors import ConfigurationError
-
 _ = umc.Translation('univention-management-console-module-packages').translate
 
 from constants import *
@@ -165,6 +165,9 @@ class Instance(umcm.Base):
 		if udm_license is not None:
 			# LDAP (license)
 			set_credentials(self._user_dn, self._password)
+
+		# in order to set the correct locale for Application
+		locale.setlocale(locale.LC_ALL, str(self.locale))
 
 	@contextmanager
 	def set_save_commit_load(self):
