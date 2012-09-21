@@ -166,11 +166,12 @@ define([
 
 		setValues: function(_vals) {
 			var vals = lang.mixin({}, _vals);
+			var default_locale_default;
 			if (this.wizard_mode && this._firstSetValues) {
 				var used_locale = i18nTools.defaultLang();
 				var parts = used_locale.split('-');
 				var countrycode = parts[1].toLowerCase();
-				var default_locale_default = parts[0] + '_' + parts[1] + '.UTF-8:UTF-8';
+				default_locale_default = parts[0] + '_' + parts[1] + '.UTF-8:UTF-8';
 				vals['locale/default'] = default_locale_default;
 				this.umcpCommand('setup/lang/default_keymap', {
 					'countrycode': countrycode

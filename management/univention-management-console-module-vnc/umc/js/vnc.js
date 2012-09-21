@@ -27,7 +27,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-/*global define*/
+/*global define window*/
 
 define([
 	"dojo/_base/declare",

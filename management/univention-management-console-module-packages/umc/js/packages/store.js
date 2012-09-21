@@ -70,7 +70,7 @@ define([
 							return {
 								'status': 400,
 								'result': results['0']['object']
-							}		
+							};
 						}
 						/*
 						 * END CHANGED
@@ -239,7 +239,7 @@ define([
 
 		var key = storePath + '@' + (moduleFlavor || 'default');
 		if (!_moduleStores[key]) {
-			_moduleStores[key] = Observable(new _UmcpModuleStore({
+			_moduleStores[key] = new Observable(new _UmcpModuleStore({
 				idProperty: idProperty,
 				storePath: storePath,
 				umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {

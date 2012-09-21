@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console location*/
 
 define([
 	"dojo/_base/declare",
@@ -309,7 +309,7 @@ define([
 			this._devicesPage.addChild(container);
 
 			// grid for the drives
-			this._driveStore = Observable(new Memory({
+			this._driveStore = new Observable(new Memory({
 				idProperty: '$id$'
 			}));
 			this._driveGrid = new DriveGrid({
@@ -324,7 +324,7 @@ define([
 			container.addChild(titlePane);
 
 			// grid for the network interfaces
-			this._interfaceStore = Observable(new Memory({
+			this._interfaceStore = new Observable(new Memory({
 				idProperty: '$id$'
 			}));
 			this._interfaceGrid = new InterfaceGrid({

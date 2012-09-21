@@ -69,7 +69,7 @@ define([
 						id: ientry,
 						label: tools.explodeDn(ientry, true).shift() || ''
 					};
-				};
+				}
 				if (ientry.id && !ientry.label) {
 					return {
 						id: ientry.id,

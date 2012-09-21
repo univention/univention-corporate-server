@@ -174,13 +174,14 @@ define([
 			// for 'add quota entry': set a list of users, excluding those
 			// that already have a quota entry
 			var userlist = [];
+			var entry;
 
 			if (values['users'])
 			{
 				for (var u in values['users'])
 				{
 					var un = values['users'][u];
-					var entry = { id: un, label: un };
+					entry = { id: un, label: un };
 					userlist.push(entry);
 				}
 			}
@@ -193,7 +194,7 @@ define([
 			if (values['user'])
 			{
 				this._work_mode = 'edit';
-				var entry = { id: values['user'], label: values['users'] };
+				entry = { id: values['user'], label: values['users'] };
 				userlist.push(entry);
 				disabled = true;
 			}

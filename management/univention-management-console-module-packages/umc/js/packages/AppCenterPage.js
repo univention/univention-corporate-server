@@ -110,7 +110,7 @@ define([
 			this.standby(true);
 			when(this.getApplications(), lang.hitch(this, function(applications) {
 				this.standby(false);
-				this._category_pane = CategoryPane({
+				this._category_pane = new CategoryPane({
 					useCategories: true,
 					modules: applications,
 					title: _('Applications'),

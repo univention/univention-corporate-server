@@ -72,7 +72,7 @@ define([
 				 * END CHANGED
 				 */
 
-			}), lang.hitch(this, function() {
+			}), lang.hitch(this, function(data) {
 				/*
 				 * BEGIN CHANGED
 				 * propagate data to the onSaved event

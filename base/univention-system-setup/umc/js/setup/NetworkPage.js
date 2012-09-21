@@ -255,7 +255,7 @@ define([
 					val[idx][2] = result.netmask;
 				}
 				// set "Dynamic (DHCP)" to be false if it was not set
-				if ( val[idx][3] == '') {
+				if ( val[idx][3] === '') {
 					val[idx][3] = 'false';
 				}
 

@@ -52,7 +52,7 @@ define([
 
 		constructor: function() {
 			// grid for the drives
-			this._driveStore = Observable(new Memory({
+			this._driveStore = new Observable(new Memory({
 				idProperty: '$id$'
 			}));
 			this._driveGrid = new DriveGrid({

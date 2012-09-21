@@ -826,7 +826,7 @@ define([
 				values.url = require.toUrl('dijit/themes');
 				values.url = lang.replace("{url}/umc/icons/{s}x{s}/{icon}.png", values);
 				iconClass = lang.replace('icon{s}-{icon}', values);
-			};
+			}
 			if (!(iconClass in this._existingIconClasses)) {
 				try {
 					// add dynamic style sheet information for the given icon

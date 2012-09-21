@@ -655,7 +655,7 @@ define([
 				});
 
 				// add a context menu to edit/delete items
-				var menu = Menu({});
+				var menu = new Menu({});
 				menu.addChild(new MenuItem({
 					label: _( 'Edit' ),
 					iconClass: 'umcIconEdit',

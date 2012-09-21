@@ -329,7 +329,7 @@ define([
 
 		_addElements: function( ids ) {
 			// only add elements that do not exist already
-			var dialog_store = DataStore( { store: this._detailDialog._multiSelect.store } );
+			var dialog_store = new DataStore( { store: this._detailDialog._multiSelect.store } );
 			var elements = [];
 			array.forEach( ids.concat(this.get('value')) , lang.hitch( this, function( id ) {
 				var item;
