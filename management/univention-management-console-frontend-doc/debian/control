@@ -1,0 +1,21 @@
+Source: univention-management-console-frontend-doc
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~),
+ univention-dojo-dev,
+ univention-management-console-dev,
+ univention-management-console-frontend-src,
+ php5-cli
+
+Package: univention-management-console-frontend-doc
+Architecture: all
+Depends: ${misc:Depends},
+ univention-dojo-api-viewer
+Description: Univention Management Console - Documentation
+ This package contains the api.xml file which is needet by univention-dojo-api-viewer
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

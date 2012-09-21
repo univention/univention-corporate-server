@@ -2,10 +2,12 @@
 #
 # script to script UMCP-requests via HTTP
 #
-username=Administrator
-password=password
-host=www.example.com
-key=""
+username=${1:-"Administrator"}
+password=${2:-"univention"}
+host=${3:-"www.example.com"}
+port=${4:-80}
+key=$5
+prefix=${6-"umcp/"}
 
 # prints a HTTP POST command
 # parameters:
@@ -18,13 +20,13 @@ if [ -z "$2" ]; then
 else
         json='{"options":'"$2"'}'
 fi
-echo "POST http://${host}/umcp/$url HTTP/1.1
+echo "POST http://${host}/${prefix}${url} HTTP/1.1
 Host: ${host}
 User-Agent: Mozilla/5.0 (X11; Linux i686; rv:6.0.2) Gecko/20100101 Firefox/6.0.2
 Content-Type: application/json
 X-Requested-With:XMLHttpRequest
 Content-Length: ${#json}
-Cookie: UMCLang=de-DE; UMCUsername=$username
+Cookie: UMCLang=de-DE; UMCUsername=$username; UMCSessionId=$key
 X-UMC-Session-Id: $key
 
 $json"
@@ -32,7 +34,7 @@ $json"
 
 # sends data from STDIN to the host
 function send {
-        nc -q 1 ${host} 80
+        nc -q 1 ${host} ${port}
 }
 
 # pretty prints JSON data in HTTP reponses
