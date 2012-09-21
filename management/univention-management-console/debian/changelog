@@ -1,3 +1,10 @@
+univention-management-console (5.0.27-1) unstable; urgency=low
+
+  * added upload_decorator (undocumented) (Bug #27716)
+  * make simple_response work together with LDAP_Connection (Bug #27716)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 21 Sep 2012 15:33:49 +0200
+
 univention-management-console (5.0.26-1) unstable; urgency=low
 
   * Add EmailSanitizer, improve deepcopy (Bug #27720)

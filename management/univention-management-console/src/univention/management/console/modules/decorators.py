@@ -330,7 +330,9 @@ def simple_response(function=None, with_flavor=None):
 	     raise UMC_CommandError('Something went wrong')
 
 	'''
-	def _response(self, request):
+	def _response(self, request, *args, **kwargs):
+		# other arguments than request wont be propagated
+		# needed for @LDAP_Connection
 		self.finished(request.id, _simple_response(function, with_flavor)(self, request))
 	if function is None:
 		return lambda f: simple_response(f, with_flavor)
@@ -456,5 +458,13 @@ def log_request_options(function=None, sensitive=[]):
 		return log(function)
 	return log
 
-__all__ = ['simple_response', 'multi_response', 'log_request_options', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict']
+def file_upload(function):
+	def _response(self, request):
+		if request.command != 'UPLOAD':
+			raise UMC_CommandError(_('%s can only be used as UPLOAD') % (function.__name__))
+		return function(self, request)
+	copy_function_meta_data(function, _response)
+	return _response
+
+__all__ = ['simple_response', 'multi_response', 'log_request_options', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict', 'file_upload']
 
