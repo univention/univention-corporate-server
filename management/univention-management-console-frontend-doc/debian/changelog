@@ -1,5 +1,6 @@
-univention-management-console-frontend-doc (0.0.0-1) unstable; urgency=low
+univention-management-console-frontend-doc (2.0.66-1) unstable; urgency=low
 
   * Moved univention-manangement-console-frontend-doc into an own package (Bug #28018)
 
- -- Florian Best <best@univention.de> Thu, 16 Aug 2012 11:06:19 +0200
+ -- Florian Best <best@univention.de>  Fri, 21 Sep 2012 09:58:57 +0200
+

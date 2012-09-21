@@ -6,6 +6,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-dojo-dev,
  univention-management-console-dev,
  univention-management-console-frontend-src,
+ wget,
  php5-cli
 
 Package: univention-management-console-frontend-doc

@@ -32,18 +32,23 @@
 
 #DEBHELPER#
 
-if [ -r '/var/www/univention-management-console-doc/umc.xml' ]; then
-	chmod o+w /usr/share/univention-dojo-api-viewer/data || true
-	ln -s /usr/share/univention-dojo-api-viewer/umc.xml /var/www/umc.xml || true
+api_path="/usr/share/univention-dojo-api-viewer"
+var_www="/var/www" # FIXME: the APACHE_DOCUMENT_ROOT may be changed
+host='127.0.0.1'  # FIXME: host and port could be differ to 127.0.0.1:80
+apache_run_user='www-data' # FIXME: APACHE_RUN_USER could be changed
+
+if [ -r "$api_path/umc.xml" ]; then
+	chmod o+w "$api_path/data" || true
+	ln -s "$api_path/umc.xml" "$var_www/umc.xml" || true
 
 	# We dont use --post-file here because of max_filesize in php.ini
-	wget -q -O - 'http://127.0.0.1/univention-management-console-doc/lib/upload.php' --post-data 'dir=UMC&api=http://127.0.0.1/umc.xml' > /dev/null || true
+	wget -q -O - "http://$host/univention-management-console-doc/lib/upload.php" --post-data "dir=UMC&api=http://$host/umc.xml" > /dev/null || true
 
-	unlink /var/www/umc.xml || true
-	chmod o-w /usr/share/univention-dojo-api-viewer/data || true
+	unlink "$var_www/umc.xml" || true
+	chmod o-w $api_path/data || true
 
 	# allow caching
-	chown www-data /usr/share/univention-dojo-api-viewer/data/UMC/cache/ || true
+	chown "$apache_run_user" "$api_path/data/UMC/cache/" || true
 fi
 
 exit 0
