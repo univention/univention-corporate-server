@@ -258,13 +258,13 @@ define([
 			);
 		},
 
-		_detail_field_custom_manufacturer: function(values) {
-			var manufacturer = values.manufacturer;
+		_detail_field_custom_vendor: function(values) {
+			var vendor = values.vendor;
 			var website = values.website;
-			if (manufacturer && website) {
-				return '<a href="' + website + '" target="_blank">' + manufacturer + '</a>';
-			} else if (manufacturer) {
-				return manufacturer;
+			if (vendor && website) {
+				return '<a href="' + website + '" target="_blank">' + vendor + '</a>';
+			} else if (vendor) {
+				return vendor;
 			}
 		},
 
@@ -326,16 +326,16 @@ define([
 
 		_detail_field_custom_emailrequired: function(values) {
 			if (values.emailrequired) {
-				return _('This application will inform the manufacturer if you (un)install it.');
+				return _('This application will inform the vendor if you (un)install it.');
 			} else {
-				return _('This application will not inform the manufacturer if you (un)install it.');
+				return _('This application will not inform the vendor if you (un)install it.');
 			}
 		},
 
 		_detail_field_order: function() {
 			return ['name',
 				'version',
-				'manufacturer',
+				'vendor',
 				'contact',
 				'categories',
 				'longdescription',
@@ -349,7 +349,7 @@ define([
 		_detail_field_label: function(key) {
 			var labels = {
 				'name': _("Name"),
-				'manufacturer': _("Manufacturer"),
+				'vendor': _("Vendor"),
 				'website': _('Website'),
 				'contact': _("Contact"),
 				'categories': _("Section"),

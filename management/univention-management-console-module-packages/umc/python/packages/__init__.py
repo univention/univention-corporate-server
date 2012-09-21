@@ -35,8 +35,8 @@ import re
 import notifier
 import notifier.threads
 from contextlib import contextmanager
-import subprocess
-import shlex
+import urllib2
+import urllib
 
 import apt
 
@@ -47,6 +47,14 @@ from univention.management.console.modules.decorators import simple_response, sa
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer
 from sanitizers import basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
 from app_center import Application
+
+try:
+	import univention.admin.license as udm_license
+	from univention.management.console.modules.udm.udm_ldap import LDAP_Connection, set_credentials
+except ImportError:
+	# uh-oh, no udm with all its licensing stuff...
+	udm_license = None
+	LDAP_Connection = lambda func: func
 
 from univention.lib.package_manager import PackageManager, LockError
 
@@ -154,6 +162,9 @@ class Instance(umcm.Base):
 		self.uu = UniventionUpdater(False)
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
+		if udm_license is not None:
+			# LDAP (license)
+			set_credentials(self._user_dn, self._password)
 
 	@contextmanager
 	def set_save_commit_load(self):
@@ -164,32 +175,44 @@ class Instance(umcm.Base):
 		if changes.changed():
 			changes.commit()
 
-
 	@sanitize(email=EmailSanitizer(required=True))
+	@LDAP_Connection
 	@simple_response
 	def app_center_request_new_license(self, email):
+		if udm_license is None:
+			return False
+		server = self.ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+		url = 'https://%(server)s/new_license.py' % {'server' : server}
+		baseDN = udm_license._license.licenseBase
+		data = urllib.urlencode({'email' : email, 'baseDN' : baseDN})
+		request = urllib2.Request(url, data=data, headers={'User-agent' : 'UMC/AppCenter'})
+		return [url, data]
+		urllib2.urlopen(request)
 		return True
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
+	@LDAP_Connection
 	@simple_response
 	def app_center_query(self, pattern):
 		applications = Application.all()
 		result = []
 		for application in applications:
 			if pattern.search(application.name):
-				result.append(application.to_dict_overwiew(self))
+				result.append(application.to_dict_overwiew(self, udm_license))
 		return result
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
+	@LDAP_Connection
 	@simple_response
 	def app_center_get(self, application):
 		application = Application.find(application)
-		return application.to_dict_detail(self)
+		return application.to_dict_detail(self, udm_license)
 
 	@sanitize(function=ChoicesSanitizer(['install', 'uninstall'], required=True),
 		application=StringSanitizer(minimum=1, required=True)
 		)
-	def app_center_invoke(self, request):
+	@LDAP_Connection
+	def app_center_invoke(self, request, ldap_connection=None, ldap_position=None):
 		function = request.options.get('function')
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
@@ -201,9 +224,9 @@ class Instance(umcm.Base):
 					with module.package_manager.locked(reset_status=True, set_finished=True):
 						with module.package_manager.no_umc_restart():
 							if function == 'install':
-								return application.install(module)
+								return application.install(module, udm_license)
 							else:
-								return application.uninstall(module)
+								return application.uninstall(module, udm_license)
 				def _finished(thread, result):
 					if isinstance(result, BaseException):
 						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))

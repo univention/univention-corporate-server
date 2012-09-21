@@ -45,18 +45,8 @@ import locale
 import json
 import copy
 
-try:
-	import univention.admin.license as udm_license
-except ImportError:
-	# uh uh, no udm with all its licensing stuff...
-	udm_license = None
-
 class License(object):
-	def __init__(self, udm_license):
-		self.license = udm_license # may be None
-
-	@property
-	def uuid(self):
+	def uuid(self, license):
 		# ucr set repository/app_center/debug/licence="fc452bc8-ae06-11e1-abab-00216a6f69f2"
 		# ucr unset repository/app_center/debug/licence
 		return ucr.get('repository/app_center/debug/licence', None)
@@ -64,14 +54,14 @@ class License(object):
 			return None
 		return self.license._license.uuid
 
-	def email_known(self):
+	def email_known(self, license):
 		# at least somewhere at univention
-		return self.uuid is not None
+		return self.uuid(license) is not None
 
-	def allows_using(self, app):
-		return self.email_known() or not app.get('emailRequired')
+	def allows_using(self, app, license):
+		return self.email_known(license) or not app.get('emailrequired')
 
-LICENSE = License(udm_license)
+LICENSE = License()
 
 class Application(object):
 	_regComma = re.compile('\s*,\s*')
@@ -173,7 +163,7 @@ class Application(object):
 		def _included(the_list, app):
 			if the_list == '*':
 				return True
-			the_list = map(str.lower, the_list.split(':'))
+			the_list = map(str.lower, cls._regComma.split(the_list))
 			if app.name in the_list:
 				return True
 			for category in app.get('categories'):
@@ -195,9 +185,9 @@ class Application(object):
 
 		return filtered_applications
 
-	def to_dict_overwiew(self, module_instance):
+	def to_dict_overwiew(self, module_instance, license):
 		res = copy.copy(self._options)
-		res['allows_using'] = LICENSE.allows_using(self)
+		res['allows_using'] = LICENSE.allows_using(self, license)
 		res['can_be_installed'] = self.can_be_installed(module_instance)
 		return res
 
@@ -212,9 +202,8 @@ class Application(object):
 			for package in self.get('conflictedsystempackages'):
 				if module_instance.package_manager.is_installed(package):
 					conflict_packages.append(package)
-			for app in self.get('conflictedapps'):
-				app = Application.find(app)
-				if app:
+			for app in self.all():
+				if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
 					if any(module_instance.package_manager.is_installed(package) for package in app.get('defaultpackages')):
 						if app.name not in conflict_packages:
 							# can conflict multiple times: conflicts with 
@@ -227,20 +216,20 @@ class Application(object):
 	def can_be_installed(self, module_instance):
 		return not bool(self.cannot_install_reason(module_instance)[0])
 
-	def to_dict_detail(self, module_instance):
+	def to_dict_detail(self, module_instance, license):
 		ucr.load()
 		res = copy.copy(self._options)
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(module_instance)
 		cannot_install_reason = res['cannot_install_reason']
 		res['can_install'] = cannot_install_reason is None
 		res['can_uninstall'] = cannot_install_reason == 'installed'
-		res['allows_using'] = LICENSE.allows_using(self)
+		res['allows_using'] = LICENSE.allows_using(self, license)
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
 		res['server'] = self.get_server()
 		return res
 
-	def uninstall(self, module_instance):
+	def uninstall(self, module_instance, license):
 		try:
 			to_uninstall = self.get('defaultpackages')
 			max_steps = 100 + len(to_uninstall) * 100
@@ -254,9 +243,9 @@ class Application(object):
 			status = 200
 		except:
 			status = 500
-		return self._send_information('uninstall', status)
+		return self._send_information('uninstall', status, license)
 
-	def install(self, module_instance):
+	def install(self, module_instance, license):
 		try:
 			ucr.load()
 			is_master = ucr.get('server/role') == 'domaincontroller_master'
@@ -289,15 +278,16 @@ class Application(object):
 		except Exception as e:
 			MODULE.warn(str(e))
 			status = 500
-		return self._send_information('install', status)
+		return self._send_information('install', status, license)
 
-	def _send_information(self, action, status):
+	def _send_information(self, action, status, license):
+		if not self.get('emailrequired'):
+			return
 		ucr.load()
 		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		try:
 			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s'
-			url = 'http://www.univention.de/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s'
-			url = url % {'server' : server, 'uuid' : LICENSE.uuid, 'app' : self.id, 'action' : action, 'status' : status}
+			url = url % {'server' : server, 'uuid' : LICENSE.uuid(license), 'app' : self.id, 'action' : action, 'status' : status}
 			request = urllib2.Request(url, headers={'User-agent' : 'UMC/AppCenter'})
 			#urllib2.urlopen(request)
 			return url
