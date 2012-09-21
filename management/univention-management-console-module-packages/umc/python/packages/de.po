@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-packages\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-09-10 13:27+0200\n"
+"POT-Creation-Date: 2012-09-21 18:47+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/packages/__init__.py:212 umc/python/packages/__init__.py:305
+#: umc/python/packages/__init__.py:242 umc/python/packages/__init__.py:336
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -25,7 +25,7 @@ msgstr "Ein Wert aus %r muss gegeben sein"
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/packages/__init__.py:607
+#: umc/python/packages/__init__.py:631
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -33,15 +33,14 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/packages/__init__.py:335
+#: umc/python/packages/__init__.py:366
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/packages/__init__.py:337
+#: umc/python/packages/__init__.py:368
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/packages/__init__.py:333
+#: umc/python/packages/__init__.py:364
 msgid "upgradable"
 msgstr "aktualisierbar"
-

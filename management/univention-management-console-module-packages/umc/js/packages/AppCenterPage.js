@@ -55,7 +55,7 @@ define([
 			this.inherited(arguments);
 
 			lang.mixin(this, {
-				title: _("App Center"),
+				title: _("App Management"),
 				headerText: _("Manage Applications for UCS"),
 				helpText: _("This page lets you install and remove applications that enhance your UCS installation.")
 			});

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-packages\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Wed, 26 Oct 2011 16:25:01 +0200\n"
+"POT-Creation-Date: Fri, 21 Sep 2012 18:47:26 +0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,9 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "App Center"
+msgstr ""
+
 msgid "Manage (install/uninstall) software packages on your machine"
 msgstr "Verwaltung der Software-Pakete auf diesem System"
 
-msgid "Software management"
-msgstr "Software-Verwaltung"
-
+#~ msgid "Software management"
+#~ msgstr "Software-Verwaltung"

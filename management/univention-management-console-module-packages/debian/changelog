@@ -1,5 +1,6 @@
 univention-management-console-module-packages (2.0.15-1) unstable; urgency=low
 
+  * merged SettingsPage and ComponentsPage; Bug #27458
   * added check for server role, fixed locale handling; Bug #27458
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 21 Sep 2012 18:42:36 +0200

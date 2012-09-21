@@ -40,9 +40,8 @@ define([
 	"umc/modules/packages/PackagesPage",
 	"umc/modules/packages/ComponentsPage",
 	"umc/modules/packages/DetailsPage",
-	"umc/modules/packages/SettingsPage",
 	"umc/i18n!umc/modules/packages" // not needed atm
-], function(declare, lang, array, when, Deferred, store, TabbedModule, AppCenterPage, PackagesPage, ComponentsPage, DetailsPage, SettingsPage, _) {
+], function(declare, lang, array, when, Deferred, store, TabbedModule, AppCenterPage, PackagesPage, ComponentsPage, DetailsPage, _) {
 	return declare("umc.modules.packages", [ TabbedModule ], {
 
 		idProperty: 'package',
@@ -72,13 +71,11 @@ define([
 			this._packages = new PackagesPage({moduleStore: this.moduleStore});
 			this._components = new ComponentsPage({moduleStore: this._componentsStore});
 			this._details = new DetailsPage({moduleStore: this._componentsStore});
-			this._settings = new SettingsPage({});
 
 			this.addChild(this._app_center);
 			this.addChild(this._packages);
 			this.addChild(this._components);
 			this.addChild(this._details);
-			this.addChild(this._settings);
 
 			// install default component
 			this._components.on('installcomponent', lang.hitch(this, function(ids) {

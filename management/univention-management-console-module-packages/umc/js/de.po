@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-packages\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-09-20 18:22+0200\n"
+"POT-Creation-Date: 2012-09-21 19:35+0200\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr "--- alle ---"
 msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
-#: umc/js/packages/PackagesPage.js:461 umc/js/packages/AppCenterPage.js:443
+#: umc/js/packages/AppCenterPage.js:443 umc/js/packages/PackagesPage.js:461
 msgid ""
 "A restart of the UMC server components may be necessary for the software "
 "changes to take effect."
@@ -29,7 +29,7 @@ msgstr ""
 "Ein Neustart der UMC-Server-Komponenten kann notwendig sein, damit die "
 "Softwareänderungen wirksam werden."
 
-#: umc/js/packages/ComponentsPage.js:65
+#: umc/js/packages/ComponentsPage.js:131
 msgid "Add"
 msgstr "Neu"
 
@@ -37,26 +37,22 @@ msgstr "Neu"
 msgid "Add a new component"
 msgstr "Neue Komponente hinzufügen"
 
-#: umc/js/packages/ComponentsPage.js:66
+#: umc/js/packages/ComponentsPage.js:132
 msgid "Add a new component definition"
 msgstr "Neue Komponentendefinition hinzufügen"
-
-#: umc/js/packages/ComponentsPage.js:52
-msgid "Additional components"
-msgstr "Zusätzliche Komponenten"
 
 #: umc/js/packages/DetailsPage.js:148
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
-#: umc/js/packages/SettingsPage.js:138
+#: umc/js/packages/ComponentsPage.js:396
 #, python-format
 msgid "An unknown error with code %d occured."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
 #: umc/js/packages/AppCenterPage.js:58
-msgid "App Center"
-msgstr "App Center"
+msgid "App Management"
+msgstr "App-Verwaltung"
 
 #: umc/js/packages/AppCenterPage.js:207
 msgid "Application details"
@@ -70,11 +66,11 @@ msgstr "Applikation nicht gefunden: "
 msgid "Applications"
 msgstr "Applikationen"
 
-#: umc/js/packages/DetailsPage.js:69 umc/js/packages/SettingsPage.js:66
+#: umc/js/packages/DetailsPage.js:69 umc/js/packages/ComponentsPage.js:101
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
-#: umc/js/packages/ComponentsPage.js:277
+#: umc/js/packages/ComponentsPage.js:347
 msgid "Are you sure you want to delete the following components: [{ids}]"
 msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 
@@ -83,7 +79,7 @@ msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 msgid "Attention!"
 msgstr "Achtung!"
 
-#: umc/js/packages/ComponentsPage.js:195
+#: umc/js/packages/ComponentsPage.js:261
 msgid "Available"
 msgstr "Verfügbar"
 
@@ -108,7 +104,7 @@ msgstr ""
 "all Ihren Backup-Servern aus <em>bevor</em> Sie die Applikation auf diesem "
 "System installieren."
 
-#: umc/js/packages/PackagesPage.js:407 umc/js/packages/ComponentsPage.js:283
+#: umc/js/packages/ComponentsPage.js:353 umc/js/packages/PackagesPage.js:407
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -116,15 +112,15 @@ msgstr "Abbrechen"
 msgid "Candidate version"
 msgstr "Anwärterversion"
 
-#: umc/js/packages/PackagesPage.js:256 umc/js/packages/AppCenterPage.js:198
+#: umc/js/packages/AppCenterPage.js:198 umc/js/packages/PackagesPage.js:256
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/js/packages/DetailsPage.js:91 umc/js/packages/ComponentsPage.js:164
+#: umc/js/packages/DetailsPage.js:91 umc/js/packages/ComponentsPage.js:230
 msgid "Component Name"
 msgstr "Name der Komponente"
 
-#: umc/js/packages/DetailsPage.js:48 umc/js/packages/ComponentsPage.js:51
+#: umc/js/packages/DetailsPage.js:48
 msgid "Components"
 msgstr "Komponenten"
 
@@ -136,16 +132,16 @@ msgstr "Konflikte"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: umc/js/packages/ComponentsPage.js:148 umc/js/packages/ComponentsPage.js:286
+#: umc/js/packages/ComponentsPage.js:214 umc/js/packages/ComponentsPage.js:356
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/packages/ComponentsPage.js:149
+#: umc/js/packages/ComponentsPage.js:215
 msgid "Delete the selected component definition"
 msgstr "Diese Komponente löschen"
 
-#: umc/js/packages/PackagesPage.js:310 umc/js/packages/DetailsPage.js:96
-#: umc/js/packages/AppCenterPage.js:357
+#: umc/js/packages/DetailsPage.js:96 umc/js/packages/AppCenterPage.js:357
+#: umc/js/packages/PackagesPage.js:310
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -157,11 +153,11 @@ msgstr "Details für Applikation '{name}'"
 msgid "Details for package '{package}'"
 msgstr "Details für Paket '{package}'"
 
-#: umc/js/packages/ComponentsPage.js:92
+#: umc/js/packages/ComponentsPage.js:158
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: umc/js/packages/ComponentsPage.js:194
+#: umc/js/packages/ComponentsPage.js:260
 msgid "Disabled"
 msgstr "Deaktiviert"
 
@@ -169,7 +165,7 @@ msgstr "Deaktiviert"
 msgid "Do you really want to {verb} {ids}?"
 msgstr "Möchten Sie {ids} wirklich {verb}?"
 
-#: umc/js/packages/ComponentsPage.js:137
+#: umc/js/packages/ComponentsPage.js:203
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -177,7 +173,7 @@ msgstr "Bearbeiten"
 msgid "Edit component details [{component}]"
 msgstr "Komponenten-Details [{component}] bearbeiten"
 
-#: umc/js/packages/ComponentsPage.js:138
+#: umc/js/packages/ComponentsPage.js:204
 msgid "Edit the detail information about this component"
 msgstr "Detailinformation über diese Komponente bearbeiten"
 
@@ -189,7 +185,7 @@ msgstr "E-Mail Adresse"
 msgid "Email notification"
 msgstr "E-Mail Benachrichtigung"
 
-#: umc/js/packages/ComponentsPage.js:92
+#: umc/js/packages/ComponentsPage.js:158
 msgid "Enable"
 msgstr "Aktivieren"
 
@@ -197,21 +193,28 @@ msgstr "Aktivieren"
 msgid "Enable this component"
 msgstr "Diese Komponente aktivieren"
 
-#: umc/js/packages/ComponentsPage.js:87
+#: umc/js/packages/ComponentsPage.js:153
 msgid "Enable/disable this component"
 msgstr "Diese Komponente aktivieren"
 
+#: umc/js/packages/PackagesPage.js:56
+msgid "Extended software management"
+msgstr "Erweiterte Software-Verwaltung"
+
+#: umc/js/packages/ComponentsPage.js:119
+msgid "General repository settings"
+msgstr "Allgemeine Repository-Einstellungen"
+
 #: umc/js/packages/AppCenterPage.js:243
-#, fuzzy
 msgid "Going to {verb} Application '{name}'"
 msgstr "Im Begriff, die Applikation '{id}' zu {verb}"
 
+#: umc/js/packages/ComponentsPage.js:187 umc/js/packages/AppCenterPage.js:179
 #: umc/js/packages/PackagesPage.js:88 umc/js/packages/PackagesPage.js:228
-#: umc/js/packages/ComponentsPage.js:121 umc/js/packages/AppCenterPage.js:179
 msgid "Install"
 msgstr "Installieren"
 
-#: umc/js/packages/ComponentsPage.js:122
+#: umc/js/packages/ComponentsPage.js:188
 msgid "Install the component's default package(s)"
 msgstr "Die Standardpakete dieser Komponente installieren"
 
@@ -219,7 +222,7 @@ msgstr "Die Standardpakete dieser Komponente installieren"
 msgid "Installation status"
 msgstr "Paketstatus"
 
-#: umc/js/packages/ComponentsPage.js:199
+#: umc/js/packages/ComponentsPage.js:265
 msgid "Installed"
 msgstr "Installiert"
 
@@ -247,10 +250,6 @@ msgstr "Lizenzbeschränkung"
 msgid "Manage Applications for UCS"
 msgstr "Applikationen für UCS verwalten"
 
-#: umc/js/packages/AppCenterPage.js:352
-msgid "Vendor"
-msgstr "Hersteller"
-
 #: umc/js/packages/AppCenterPage.js:73 umc/js/packages/AppCenterPage.js:351
 msgid "Name"
 msgstr "Name"
@@ -259,11 +258,11 @@ msgstr "Name"
 msgid "No"
 msgstr "Nein"
 
-#: umc/js/packages/ComponentsPage.js:196
+#: umc/js/packages/ComponentsPage.js:262
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: umc/js/packages/ComponentsPage.js:53
+#: umc/js/packages/ComponentsPage.js:57
 msgid ""
 "On this page, you find all additional components defined for this system. "
 "You can enable/disable/edit/delete them, and you can add new ones here."
@@ -282,7 +281,7 @@ msgstr ""
 "ermöglicht es, diese zu installieren, zu deinstallieren oder zu "
 "aktualisieren."
 
-#: umc/js/packages/ComponentsPage.js:90
+#: umc/js/packages/ComponentsPage.js:156
 msgid "On/Off"
 msgstr "An/Aus"
 
@@ -298,7 +297,7 @@ msgstr "Paketbeschreibung"
 msgid "Package details"
 msgstr "Paketdetails"
 
-#: umc/js/packages/PackagesPage.js:54 umc/js/packages/PackagesPage.js:56
+#: umc/js/packages/PackagesPage.js:54
 msgid "Package management"
 msgstr "Paketverwaltung"
 
@@ -327,7 +326,7 @@ msgstr "Passwort"
 msgid "Pattern"
 msgstr "Suchbegriff"
 
-#: umc/js/packages/ComponentsPage.js:197
+#: umc/js/packages/ComponentsPage.js:263
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
@@ -341,7 +340,7 @@ msgstr ""
 "E-Mail Adresse gesendet. Direkt nach diesem Formular wird ein weiterer "
 "Dialog angezeigt werden, in dem sie die neue Lizenz hochladen können."
 
-#: umc/js/packages/SettingsPage.js:140
+#: umc/js/packages/ComponentsPage.js:398
 msgid "Please correct the corresponding input fields:"
 msgstr "Bitte korrigieren Sie die betreffenden Eingabefelder."
 
@@ -353,21 +352,29 @@ msgstr "Bitte geben Sie die Details für die neue Komponente ein."
 msgid "Priority"
 msgstr "Priorität"
 
-#: umc/js/packages/ComponentsPage.js:76
+#: umc/js/packages/ComponentsPage.js:142
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: umc/js/packages/ComponentsPage.js:77
+#: umc/js/packages/ComponentsPage.js:143
 msgid "Refresh display to see current values"
 msgstr "Anzeige aktualisieren"
 
-#: umc/js/packages/DetailsPage.js:106 umc/js/packages/SettingsPage.js:90
+#: umc/js/packages/ComponentsPage.js:281
+msgid "Repository components"
+msgstr "Repository-Komponenten"
+
+#: umc/js/packages/DetailsPage.js:106 umc/js/packages/ComponentsPage.js:73
 msgid "Repository prefix"
 msgstr "Repository Prefix"
 
-#: umc/js/packages/DetailsPage.js:101 umc/js/packages/SettingsPage.js:85
+#: umc/js/packages/DetailsPage.js:101 umc/js/packages/ComponentsPage.js:69
 msgid "Repository server"
 msgstr "Repository Server"
+
+#: umc/js/packages/ComponentsPage.js:56
+msgid "Repository settings"
+msgstr "Repository-Einstellungen"
 
 #: umc/js/packages/AppCenterPage.js:170
 msgid "Request"
@@ -377,7 +384,7 @@ msgstr "Anfordern"
 msgid "Request a new License"
 msgstr "Neue Lizenz anfordern"
 
-#: umc/js/packages/SettingsPage.js:55
+#: umc/js/packages/ComponentsPage.js:91
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -389,24 +396,20 @@ msgstr "Suchen"
 msgid "Search key"
 msgstr "Suche nach"
 
-#: umc/js/packages/PackagesPage.js:135 umc/js/packages/PackagesPage.js:308
-#: umc/js/packages/AppCenterPage.js:355
+#: umc/js/packages/AppCenterPage.js:355 umc/js/packages/PackagesPage.js:135
+#: umc/js/packages/PackagesPage.js:308
 msgid "Section"
 msgstr "Kategorie"
 
-#: umc/js/packages/SettingsPage.js:48
+#: umc/js/packages/ComponentsPage.js:55
 msgid "Settings"
 msgstr "Einstellungen"
-
-#: umc/js/packages/SettingsPage.js:49
-msgid "Settings for online updates"
-msgstr "Einstellungen für Online-Aktualisierung"
 
 #: umc/js/packages/AppCenterPage.js:406
 msgid "Some applications require an advanced license."
 msgstr "Einige Applikationen erfordern eine erweiterte Lizenz."
 
-#: umc/js/packages/ComponentsPage.js:186
+#: umc/js/packages/ComponentsPage.js:252
 msgid "Status"
 msgstr "Status"
 
@@ -414,7 +417,7 @@ msgstr "Status"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: umc/js/packages/SettingsPage.js:143
+#: umc/js/packages/ComponentsPage.js:401
 msgid "The data you entered could not be saved correctly:"
 msgstr ""
 "Die von Ihnen eingegebenen Daten konnten nicht korrekt gespeichert werden."
@@ -447,8 +450,7 @@ msgstr ""
 "Kenntnis."
 
 #: umc/js/packages/AppCenterPage.js:331
-msgid ""
-"This application will not inform the vendor if you (un)install it."
+msgid "This application will not inform the vendor if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Hersteller nicht über eine (De)Installation in "
 "Kenntnis."
@@ -469,36 +471,24 @@ msgstr ""
 "Diese Seite dient dazu, Ihrer UCS-Installation weitere Applikationen "
 "hinzuzufügen oder diese zu entfernen."
 
-#: umc/js/packages/SettingsPage.js:50
-msgid ""
-"This page lets you modify essential settings that affect where your system "
-"looks for updates, and which of them it will consider."
-msgstr ""
-"Auf dieser Seite kann eingestellt werden, von wo das System Aktualisierungen "
-"bezieht und welche davon eingebunden werden."
-
-#: umc/js/packages/PackagesPage.js:101 umc/js/packages/PackagesPage.js:237
-#: umc/js/packages/AppCenterPage.js:188
+#: umc/js/packages/AppCenterPage.js:188 umc/js/packages/PackagesPage.js:101
+#: umc/js/packages/PackagesPage.js:237
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: umc/js/packages/ComponentsPage.js:198
+#: umc/js/packages/ComponentsPage.js:264
 msgid "Unknown"
 msgstr "Unbekannt"
-
-#: umc/js/packages/SettingsPage.js:107
-msgid "Update-related settings"
-msgstr "Allgemeine Einstellungen"
 
 #: umc/js/packages/PackagesPage.js:114 umc/js/packages/PackagesPage.js:246
 msgid "Upgrade"
 msgstr "Aktualisieren"
 
-#: umc/js/packages/DetailsPage.js:111 umc/js/packages/SettingsPage.js:95
+#: umc/js/packages/DetailsPage.js:111 umc/js/packages/ComponentsPage.js:77
 msgid "Use maintained repositories"
 msgstr "'Maintained' Repositories benutzen"
 
-#: umc/js/packages/DetailsPage.js:116 umc/js/packages/SettingsPage.js:100
+#: umc/js/packages/DetailsPage.js:116 umc/js/packages/ComponentsPage.js:81
 msgid "Use unmaintained repositories"
 msgstr "'Unmaintained' Repositories benutzen"
 
@@ -506,7 +496,7 @@ msgstr "'Unmaintained' Repositories benutzen"
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/packages/SettingsPage.js:145
+#: umc/js/packages/ComponentsPage.js:403
 msgid ""
 "Using the data you entered, no valid repository could be found.<br/>Since "
 "this may be a temporary server problem as well, your data was saved though."
@@ -515,6 +505,10 @@ msgstr ""
 "Auf dem angegebenen Server konnte kein gültiges Repository gefunden "
 "werden<br/>Da es auch ein temporäres Problem des betreffenden Servers sein "
 "kann, wurden Ihre Eingaben trotzdem gespeichert.<br/>Das Problem ist:"
+
+#: umc/js/packages/AppCenterPage.js:352
+msgid "Vendor"
+msgstr "Hersteller"
 
 #: umc/js/packages/DetailsPage.js:131 umc/js/packages/AppCenterPage.js:356
 msgid "Version"
@@ -528,7 +522,7 @@ msgstr "Details anzeigen"
 msgid "Website"
 msgstr "Webseite"
 
-#: umc/js/packages/SettingsPage.js:147
+#: umc/js/packages/ComponentsPage.js:405
 msgid ""
 "With the current (already changed) settings, the following problem was "
 "encountered:"
@@ -572,7 +566,7 @@ msgstr "Ihre momentane Lizenz verbietet das Verwenden dieser Applikation."
 msgid "back to overview"
 msgstr "zurück zur Übersicht"
 
-#: umc/js/packages/PackagesPage.js:368 umc/js/packages/AppCenterPage.js:234
+#: umc/js/packages/AppCenterPage.js:234 umc/js/packages/PackagesPage.js:368
 msgid "install"
 msgstr "installieren"
 
@@ -580,7 +574,7 @@ msgstr "installieren"
 msgid "installing"
 msgstr "installiert"
 
-#: umc/js/packages/PackagesPage.js:372 umc/js/packages/AppCenterPage.js:237
+#: umc/js/packages/AppCenterPage.js:237 umc/js/packages/PackagesPage.js:372
 msgid "uninstall"
 msgstr "deinstallieren"
 
@@ -588,7 +582,7 @@ msgstr "deinstallieren"
 msgid "uninstalling"
 msgstr "deinstalliert"
 
-#: umc/js/packages/PackagesPage.js:376 umc/js/packages/AppCenterPage.js:240
+#: umc/js/packages/AppCenterPage.js:240 umc/js/packages/PackagesPage.js:376
 msgid "upgrade"
 msgstr "aktualisieren"
 
@@ -596,5 +590,24 @@ msgstr "aktualisieren"
 msgid "upgrading"
 msgstr "aktualisiert"
 
+#~ msgid "Additional components"
+#~ msgstr "Zusätzliche Komponenten"
+
+#~ msgid "App Center"
+#~ msgstr "App Center"
+
 #~ msgid "Commercial support"
 #~ msgstr "Kommerzieller Support"
+
+#~ msgid "Settings for online updates"
+#~ msgstr "Einstellungen für Online-Aktualisierung"
+
+#~ msgid ""
+#~ "This page lets you modify essential settings that affect where your "
+#~ "system looks for updates, and which of them it will consider."
+#~ msgstr ""
+#~ "Auf dieser Seite kann eingestellt werden, von wo das System "
+#~ "Aktualisierungen bezieht und welche davon eingebunden werden."
+
+#~ msgid "Update-related settings"
+#~ msgstr "Allgemeine Einstellungen"

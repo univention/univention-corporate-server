@@ -53,7 +53,7 @@ define([
 			lang.mixin(this, {
 				headerText: _("Package management"),
 				helpText: _("On this page, you see all software packages available on your system, and you can install, uninstall or update them."),
-				title: _("Package management")
+				title: _("Extended software management")
 			});
 		},
 

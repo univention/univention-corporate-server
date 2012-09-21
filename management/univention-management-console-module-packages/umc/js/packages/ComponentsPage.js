@@ -37,8 +37,12 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Grid",
+	"umc/widgets/TitlePane",
+	"umc/widgets/ExpandingTitlePane",
+	"umc/modules/packages/Form",
+	"umc/modules/packages/store",
 	"umc/i18n!umc/modules/packages"
-], function(declare, lang, array, dialog, tools, Page, StandbyMixin, Grid, _) {
+], function(declare, lang, array, dialog, tools, Page, StandbyMixin, Grid, TitlePane, ExpandingTitlePane, Form, store, _) {
 	return declare("umc.modules.packages.ComponentsPage", [ Page, StandbyMixin ], {
 
 		moduleStore: null,
@@ -48,15 +52,77 @@ define([
 			this.inherited(arguments);
 
 			lang.mixin(this, {
-				title: _("Components"),
-				headerText: _("Additional components"),
-				helpText: _("On this page, you find all additional components defined for this system. You can enable/disable/edit/delete them, and you can add new ones here.")
+				title: _("Settings"),
+				headerText: _("Repository settings")
+				//helpText: _("On this page, you find all additional components defined for this system. You can enable/disable/edit/delete them, and you can add new ones here.")
 			});
 		},
 
 		buildRendering: function() {
 
 			this.inherited(arguments);
+
+
+			var formWidgets = [{
+				type: 'TextBox',
+				name: 'server',
+				label: _("Repository server")
+			}, {
+				type: 'TextBox',
+				name: 'prefix',
+				label: _("Repository prefix")
+			}, {
+				type: 'CheckBox',
+				name: 'maintained',
+				label: _("Use maintained repositories")
+			}, {
+				type: 'CheckBox',
+				name: 'unmaintained',
+				label: _("Use unmaintained repositories")
+			}];
+
+			var formLayout = [
+				['server', 'prefix', 'submit', 'reset'],
+				['maintained', 'unmaintained']
+			];
+
+			var formButtons = [{
+				name: 'reset',
+				label: _('Reset'),
+				callback: lang.hitch(this, function() {
+					this._form.load({}); // ID doesn't matter here but must be dict
+					tools.forIn(this._form._widgets, function(iname, iwidget) {
+						iwidget.setValid(true);
+					});
+				})
+			}, {
+				name: 'submit',
+				'default': true,
+				label: _("Apply changes"),
+				callback: lang.hitch(this, function() {
+					this.standby(true);
+					this._form.save();
+				})
+			}];
+
+			this._form = new Form({
+				widgets: formWidgets,
+				layout: formLayout,
+				buttons: formButtons,
+				moduleStore: store('server', 'packages/settings'),
+				scrollable: true,
+				onSaved: lang.hitch(this, '_onSavedRepositorySettings')
+			});
+			this._form.load({}); // ID doesn't matter here but must be dict
+
+			var titlePaneForm = new TitlePane({
+				title: _("General repository settings"),
+				region: 'top',
+				toggleable: false
+			});
+
+			titlePaneForm.addChild(this._form);
+			this.addChild(titlePaneForm);
 
 			var actions =
 			[
@@ -204,14 +270,18 @@ define([
 			];
 
 			this._grid = new Grid({
-				region: 'center',
 				query: this._query,
 				moduleStore: this.moduleStore,
 				actions: actions,
 				columns: columns
 			});
 
-			this.addChild(this._grid);
+			var titlePane = new ExpandingTitlePane({
+				region: 'center',
+				title: _('Repository components')
+			});
+			titlePane.addChild(this._grid);
+			this.addChild(titlePane);
 		},
 
 		// switch over to the detail edit form, along with this id (empty if 'add')
@@ -301,10 +371,49 @@ define([
 			]);
 		},
 
-		onShow: function() {
+		_onSavedRepositorySettings: function(success, data) {
+			this.standby(false);
+			if (!success) {
+				return;
+			}
 
+			// this is only Python module result, not data validation result!
+			var result = data;
+			if (data instanceof Array) {
+				result = data[0];
+			}
+
+			if (!(result.status && result.message)) {
+				return;
+			}
+
+			// result['status'] is kind of error code:
+			//	1 ... invalid field input
+			//	2 ... error setting registry variable
+			//	3 ... error commiting UCR
+			//	4 ... any kind of 'repo not found' conditions
+			//	5 ... repo not found, but encountered without commit
+			var txt = _("An unknown error with code %d occured.", result.status);
+			switch(result.status) {
+				case 1: txt = _("Please correct the corresponding input fields:");
+						break;
+				case 2:
+				case 3: txt = _("The data you entered could not be saved correctly:");
+						break;
+				case 4: txt = _("Using the data you entered, no valid repository could be found.<br/>Since this may be a temporary server problem as well, your data was saved though.<br/>The problem was:");
+						break;
+				case 5: txt = _("With the current (already changed) settings, the following problem was encountered:");
+						break;
+			}
+
+			var message = lang.replace('<p>{txt}</p><p><strong>{msg}</strong></p>', {txt : txt, msg : result.message});
+			dialog.alert(message);
+		},
+
+		onShow: function() {
 			this.inherited(arguments);
 			this.refresh();
+			this._form.load({});
 		},
 
 		// Will be used from the main page
