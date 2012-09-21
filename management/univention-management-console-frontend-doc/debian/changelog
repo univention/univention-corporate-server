@@ -1,3 +1,9 @@
+univention-management-console-frontend-doc (2.0.66-2) unstable; urgency=low
+
+  * added debian/compat + Makefile cleanup; Bug #28018
+
+ -- Florian Best <best@univention.de>  Fri, 21 Sep 2012 12:06:39 +0200
+
 univention-management-console-frontend-doc (2.0.66-1) unstable; urgency=low
 
   * Moved univention-manangement-console-frontend-doc into an own package (Bug #28018)

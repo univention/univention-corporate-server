@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Common Python and Shell Library
+# Univention Management Console API documentation
 #  rules file for the debian package
 #
 # Copyright 2012 Univention GmbH

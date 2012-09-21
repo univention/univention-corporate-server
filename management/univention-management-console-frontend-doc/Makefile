@@ -35,19 +35,22 @@ rel_root_path:=$(shell echo '$(dojo_tmp_dir)/util/docscripts' | sed -e 's,/[^/]*
 
 build: umc.xml
 
-umc.xml:
+umc.xml: univention-dojo umc
 	@# generate umc.xml for univention-dojo-api-viewer
-	cp -r /usr/share/univention-dojo/ '$(dojo_tmp_dir)'
-	cp -r /usr/share/univention-management-console-frontend-src/umc/ '$(CURDIR)'
 	echo 'location = $(rel_root_path)$(CURDIR)/umc/' > '$(dojo_tmp_dir)/util/docscripts/modules/umc.module.properties'
-	cd '$(dojo_tmp_dir)/util/docscripts/'; \
-	php generate.php umc dojo dijit dojox --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
-	rm -rf $(dojo_tmp_dir)
+	cd '$(dojo_tmp_dir)/util/docscripts/' && \
+		php generate.php umc dojo dijit dojox --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
+
+univention-dojo: /usr/share/univention-dojo
+	cp -r $< $@
+umc: /usr/share/univention-management-console-frontend-src/umc
+	cp -r $< $@
 
 install: build
-	@# move umc.xml
-	mkdir -p '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
-	cp umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
+	install -d '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
+	install -m644 umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
 
 clean:
-	rm -f umc.xml
+	$(RM) umc.xml
+	$(RM) -r univention-dojo
+	$(RM) -r umc
