@@ -54,12 +54,12 @@ define([
 				array.forEach(ipage.getChildren(), function(iwidget) {
 					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 						// hook to changes for 'open'
-						this.watch('open', function(attr, oldVal, newVal) {
+						this.own(this.watch('open', function(attr, oldVal, newVal) {
 							if (newVal) {
 								// recall startup when the TitelPane gets shown
 								iwidget.startup();
 							}
-						});
+						}));
 					}
 				}, this);
 			}, this);

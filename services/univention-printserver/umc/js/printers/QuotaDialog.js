@@ -120,9 +120,9 @@ define([
 
 			// check 'submit' allowance on every field change
 			tools.forIn(this._form._widgets, function(wname, wobj) {
-				wobj.watch('value', lang.hitch(this, function() {
+				this.own(wobj.watch('value', lang.hitch(this, function() {
 					this._check_valid(wname);
-				}));
+				})));
 			}, this);
 
 		},

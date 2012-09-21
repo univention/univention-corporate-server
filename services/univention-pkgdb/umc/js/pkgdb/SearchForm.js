@@ -138,29 +138,29 @@ define([
 			this.showWidget('operator',false);
 
 			// whenever one of our 'pending' vars is changed...
-			this.watch('_keys_pending',lang.hitch(this,function(name,oldval,value) {
+			this.own(this.watch('_keys_pending',lang.hitch(this,function(name,oldval,value) {
 				this._handle_query_changes(name,value);
-			}));
-			this.watch('_operators_pending',lang.hitch(this,function(name,oldval,value) {
+			})));
+			this.own(this.watch('_operators_pending',lang.hitch(this,function(name,oldval,value) {
 				this._handle_query_changes(name,value);
-			}));
-			this.watch('_proposals_pending',lang.hitch(this,function(name,oldval,value) {
+			})));
+			this.own(this.watch('_proposals_pending',lang.hitch(this,function(name,oldval,value) {
 				this._handle_query_changes(name,value);
-			}));
+			})));
 
 			// whenever one of the dialog values is being changed...
-			this.getWidget('key').watch('value', lang.hitch(this, function(name,oldval,value) {
+			this.own(this.getWidget('key').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('key',value);
-			}));
-			this.getWidget('operator').watch('value', lang.hitch(this, function(name,oldval,value) {
+			})));
+			this.own(this.getWidget('operator').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('operator',value);
-			}));
-			this.getWidget('pattern_text').watch('value', lang.hitch(this, function(name,oldval,value) {
+			})));
+			this.own(this.getWidget('pattern_text').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('pattern_text',value);
-			}));
-			this.getWidget('pattern_list').watch('value', lang.hitch(this, function(name,oldval,value) {
+			})));
+			this.own(this.getWidget('pattern_list').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('pattern_list',value);
-			}));
+			})));
 		},
 
 		// ---------------------------------------------------------------------

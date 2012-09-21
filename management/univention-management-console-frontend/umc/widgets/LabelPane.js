@@ -105,7 +105,7 @@ define([
 						this.set('label', this.content.get('label') || '');
 					})));
 				}
-				(this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
+				this.own(this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
 					domClass.toggle(this.domNode, 'dijitHidden', !newVal);
 				})));
 			}

@@ -40,7 +40,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/TextBox",
 	"umc/modules/uvmm/types",
-	"umc/i18n!umc/modules/"
+	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, Deferred, Dialog, tools, dialog, Grid, Form, TextBox, types, _) {
 	return declare("umc.modules.uvmm.SnapshotGrid", [ Grid ], {
 

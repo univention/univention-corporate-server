@@ -47,7 +47,7 @@ define([
 			this.inherited(arguments);
 
 			// helpText and headerText changeable
-			this.watch('headerText', lang.hitch(this, function(name, oldval, newval) {
+			this.own(this.watch('headerText', lang.hitch(this, function(name, oldval, newval) {
 				var children = this.getChildren();
 				// the header text element is (currently) not a member variable,
 				// so I have to search for the one element that has region='top'
@@ -57,10 +57,10 @@ define([
 						return;
 					}
 				});
-			}));
-			this.watch('helpText', lang.hitch(this, function(name, oldval, newval) {
+			})));
+			this.own(this.watch('helpText', lang.hitch(this, function(name, oldval, newval) {
 				this._helpTextPane.set('content', newval);
-			}));
+			})));
 		},
 
 		// should be overloaded by subclasses that need an entry point

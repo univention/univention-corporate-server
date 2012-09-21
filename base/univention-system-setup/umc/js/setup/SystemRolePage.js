@@ -122,7 +122,7 @@ define([
 
 			this._oldRole = this._form.getWidget('server/role').get('value');
 
-			this._form.getWidget('server/role').watch('value', function(name, old, val) {
+			this.own(this._form.getWidget('server/role').watch('value', function(name, old, val) {
 				// notify setup.js if value of ComboBox changed 
 				// only notify if value really changed (see Bug #27240)
 				if (this._oldRole != val) {
@@ -130,7 +130,7 @@ define([
 					this.switchDescription();
 					this.onValuesChanged( {'server/role': val } );
 				}
-			});
+			}));
  		
 			// update visibility of description text before adding form otherwise all descriptions will be visible
 			// for a short amount of time.

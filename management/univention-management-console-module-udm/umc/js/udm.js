@@ -626,7 +626,7 @@ define([
 						this._tree.set('path', [ this._tree.model.root ]);
 					}
 				}));
-				this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
+				this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
 					// register for changes of the selected item (= path)
 					// only take them into account in case the tree is not reloading
 					if (!this._reloadingPath) {
@@ -642,7 +642,7 @@ define([
 						this._grid._toolbar.removeChild( this._navUpButton );
 					}
 					this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
-				}));
+				})));
 				// in the case of changes, reload the navigation, as well (could have
 				// changes referring to container objects)
 				// TODO: this functionality should be done again
@@ -735,6 +735,7 @@ define([
 				propertyValueHandle.remove();
 				this._finishedDeferred.then(lang.hitch(this, '_selectInputText'));
 			}));
+			this.own(propertyValueHandle);
 
 			// show/hide object property filter for the navigation
 			if ('navigation' == this.moduleFlavor) {

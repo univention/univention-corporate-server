@@ -272,7 +272,7 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
-			this._tree.watch('path', lang.hitch(this, function() {
+			this.own(this._tree.watch('path', lang.hitch(this, function() {
 				var searchType = this._searchForm.getWidget('type').get('value');
 				if (searchType == 'domain') {
 					this._finishedDeferred.then(lang.hitch(this, function(ucr) {
@@ -281,7 +281,7 @@ define([
 						}
 					}));
 				}
-			}));
+			})));
 		},
 
 		_selectInputText: function() {

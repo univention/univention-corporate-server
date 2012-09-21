@@ -109,7 +109,7 @@ define([
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
-			this._form.getWidget('fqdn').watch('value', lang.hitch(this, 'onValuesChanged'));
+			this.own(this._form.getWidget('fqdn').watch('value', lang.hitch(this, 'onValuesChanged')));
 			var fc = this._form.getWidget('fqdn').watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				function count(s) { 
 					var n = 0;
@@ -126,6 +126,7 @@ define([
 				}
 				fc.remove();
 			}));
+			this.own(fc);
 
 			this.addChild(this._form);
 		},

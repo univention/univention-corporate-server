@@ -104,9 +104,9 @@ define([
 			this._languageLabel.startup();
 			this._languageLabel.placeAt('umc_LoginDialog_FormContainer');
 			// register onchange event
-			this._languageBox.watch('value', function(name, oldLang, newLang) {
+			this.own(this._languageBox.watch('value', function(name, oldLang, newLang) {
 				i18nTools.setLanguage(newLang);
-			});
+			}));
 
 			// automatically resize the DialogUnderlay container
 			this.own(on(win.global, 'resize', lang.hitch(this, function() {

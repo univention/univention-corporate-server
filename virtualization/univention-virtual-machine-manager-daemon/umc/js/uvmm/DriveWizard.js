@@ -37,7 +37,7 @@ define([
 	"umc/dialog",
 	"umc/widgets/Wizard",
 	"umc/modules/uvmm/types",
-	"umc/i18n!umc/modules/"
+	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, when, tools, dialog, Wizard, types, _) {
 
 	return declare("umc.modules.uvmm.DriveWizard", [ Wizard ], {

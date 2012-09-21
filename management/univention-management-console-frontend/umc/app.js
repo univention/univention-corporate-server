@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window*/
+/*global define require console window getQuery*/
 
 define([
 	"dojo/_base/declare",
@@ -202,7 +202,7 @@ define([
 		onModulesLoaded: function() {
 			this.setupGui();
 			// if only one module exists open it
-			if (this._modules.length === 1) {
+			if (this._modules.length === 1 && !getQuery('module')) {
 				this.openModule(this._modules[0].id, this._modules[0].flavor);
 			}
 		},
@@ -395,15 +395,15 @@ define([
 					var rootCert = parseInt( data.result[ 'ssl/validity/root' ], 10 );
 					var warning = parseInt( data.result[ 'ssl/validity/warning' ], 10 );
 					var certExp = rootCert;
-					var certType = this._('SSL root certificate');
+					var certType = _('SSL root certificate');
 					if (rootCert >= hostCert) {
 						certExp = hostCert;
-						certType = this._('SSL host certificate');
+						certType = _('SSL host certificate');
 					}
 					var today = new Date().getTime() / 1000 / 60 / 60 / 24; // now in days
 					var days = certExp - today;
 					if ( days <= warning ) {
-						overviewPage.addNote( this._( 'The %s will expire in %d days and should be renewed!', certType, days ) );
+						overviewPage.addNote( _( 'The %s will expire in %d days and should be renewed!', certType, days ) );
 					}
 
 					// check if updates are available
@@ -420,7 +420,7 @@ define([
 				}));
 
 				// add a CategoryPane for each category
-				var categories = ContainerWidget({
+				var categories = new ContainerWidget({
 					scrollable: true
 				});
 				array.forEach(this.getCategories(), lang.hitch(this, function(icat) {

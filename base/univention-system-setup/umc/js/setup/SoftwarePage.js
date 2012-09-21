@@ -97,22 +97,19 @@ define([
 			this.addChild(this._form);
 
 			// show notes when samba 3/4 is selected
-			this._form.getWidget('components').watch('value', lang.hitch(this, function(name, oldVal, newVal) {
+			this.own(this._form.getWidget('components').watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				array.forEach(['samba', 'samba4'], function(ikey) {
 					var r = new RegExp('univention-' + ikey + '\\b');
-					array.forEach(this._getInstalledComponents(), function(icomponent) {
-						if (r.test(icomponent)) {
-							this._showNote(ikey);
-							return false; // break foreach loop
-						}
-					}, this);
+					if (array.some(this._getInstalledComponents(), function(icomponent) { return  (r.test(icomponent)); }, this)) {
+						this._showNote(ikey);
+					}
 				}, this);
-			}));
+			})));
 
 			// show notes for changes in the software settings
-			this._form.getWidget('components').watch('value', lang.hitch(this, function() {
+			this.own(this._form.getWidget('components').watch('value', lang.hitch(this, function() {
 				this._showNote('software');
-			}));
+			})));
 
 			// remember which notes have already been shown
 			this._noteShowed = { };

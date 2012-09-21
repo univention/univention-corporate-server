@@ -80,6 +80,14 @@ define([
 			this._secondWidget.set('value', newVal);
 		},
 
+		_setDisabledAttr: function(newVal) {
+			this.disabled = newVal;
+			if (this._firstWidget && this._secondWidget) {
+				this._firstWidget.set('disabled', newVal);
+				this._secondWidget.set('disabled', newVal);
+			}
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 

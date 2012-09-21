@@ -312,13 +312,13 @@ define([
 					ipage.on('onValuesChanged', lang.hitch(this, 'updateAllValues'));
 
 					// hide tab if page is not visible
-					ipage.watch('visible', function(name, oldval, newval) {
+					this.own(ipage.watch('visible', function(name, oldval, newval) {
 						if ((newval === true) || (newval === undefined)) {
 							tabContainer.showChild(ipage);
 						} else {
 							tabContainer.hideChild(ipage);
 						}
-					});
+					}));
 				}, this);
 
 				this.addChild(tabContainer);

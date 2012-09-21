@@ -132,11 +132,11 @@ define([
 						this._showNote();
 					}
 				}));
-				iwidget.watch('value', lang.hitch(this, function() {
+				this.own(iwidget.watch('value', lang.hitch(this, function() {
 					if (iwidget.focused) {
 						this._showNote();
 					}
-				}));
+				})));
 			}, this);
 
 			this.addChild(this._form);

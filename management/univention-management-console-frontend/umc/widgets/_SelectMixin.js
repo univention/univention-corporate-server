@@ -133,12 +133,12 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
-			this.watch('value', function(attr, oldVal, newVal) {
+			this.own(this.watch('value', function(attr, oldVal, newVal) {
 				if (this.focused) {
 					// the user has entered a value, use this value as initial value
 					this._saveInitialValue();
 				}
-			});
+			}));
 
 			// if the value is not set (undefined/null), automatically choose the first element in the list
 			this.on('valuesLoaded', lang.hitch(this, function() {

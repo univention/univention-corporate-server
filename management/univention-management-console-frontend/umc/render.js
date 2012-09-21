@@ -124,10 +124,10 @@ define([
 
 			// register event handler
 			if (onChangeCallback) {
-				widget.watch('value', function(attr, oldVal, newVal) {
+				widget.own(widget.watch('value', function(attr, oldVal, newVal) {
 					// hand over the changed value plus the dict of all widgets
 					onChangeCallback(newVal, widgets);
-				});
+				}));
 			}
 
 			// create a tooltip if there is a description
