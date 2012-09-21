@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.66-1) unstable; urgency=low
+
+  * moved univention-management-console-frontend-doc into own package;
+  	Bug #28018
+
+ -- Florian Best <best@univention.de>  Fri, 21 Sep 2012 08:42:53 +0200
+
 univention-management-console-frontend (2.0.65-1) unstable; urgency=low
 
   * getIconClass can handle external images (Bug #28619)

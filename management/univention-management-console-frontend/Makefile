@@ -35,15 +35,13 @@ timestamp:=$$$(shell date +'%Y%d%m%H%M%S')$$
 dojoDir:=/usr/share/univention-dojo
 version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir:=$(CURDIR)/build
-dojo_tmp_dir:=$(buildDir)/univention-dojo
-rel_root_path:=$(shell echo '$(dojo_tmp_dir)/util/docscripts' | sed -e 's,/[^/]*,../,g')
 tmpDir:=$(CURDIR)/tmp
 themesDir:=$(tmpDir)/dijit/themes
 jsFiles:=$(shell find umc -name "*.js")
 
-.PHONY: build build-dev build-common api-doc install clean jslint i18n umc/package.json $(tmpDir)/umc/login.html $(buildDir)/index.html $(buildDir)/debug.html
+.PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(tmpDir)/umc/login.html $(buildDir)/index.html $(buildDir)/debug.html
 
-build: build-common api-doc $(tmpDir) $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
+build: build-common $(tmpDir) $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
 
 # the automatically generated module umc/widgets contains a require to all umc widgets
 umc/widgets.js:
@@ -140,9 +138,6 @@ build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)
 	done
 
 install: build
-	@# move umc.xml
-	mkdir -p '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
-	cp umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
 	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
 	rsync -rpl --exclude ".svn" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
