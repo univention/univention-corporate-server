@@ -276,7 +276,7 @@ define([
 
 		_removeNewButton: function() {
 			if (this._newButton) {
-				this._newButton.destroy()
+				this._newButton.destroy();
 				this._newButton = null;
 			}
 		},

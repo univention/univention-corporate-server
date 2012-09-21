@@ -102,7 +102,7 @@ define([
 			var WidgetClass;
 			if (widgetConf.type && typeof widgetConf.type != 'string') {
 				// assume that we got the class directly
-				WidgetClass = widgetConf.type
+				WidgetClass = widgetConf.type;
 			}
 			else if (typeof widgetConf.type == 'string') {
 				try {
