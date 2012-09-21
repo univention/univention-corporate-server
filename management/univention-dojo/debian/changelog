@@ -1,3 +1,9 @@
+univention-dojo (6.0.2-1) unstable; urgency=low
+
+  * added fix_notify_typo patch; Bug #28018
+
+ -- Florian Best <best@univention.de>  Fri, 21 Sep 2012 11:15:36 +0200
+
 univention-dojo (6.0.1-1) unstable; urgency=low
 
   * fixed ucslint errors; Bug #26857
