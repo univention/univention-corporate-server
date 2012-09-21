@@ -41,7 +41,7 @@ umc.xml:
 	cp -r /usr/share/univention-management-console-frontend-src/umc/ '$(CURDIR)'
 	echo 'location = $(rel_root_path)$(CURDIR)/umc/' > '$(dojo_tmp_dir)/util/docscripts/modules/umc.module.properties'
 	cd '$(dojo_tmp_dir)/util/docscripts/'; \
-	php generate.php umc --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
+	php generate.php umc dojo dijit dojox --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
 	rm -rf $(dojo_tmp_dir)
 
 install: build
