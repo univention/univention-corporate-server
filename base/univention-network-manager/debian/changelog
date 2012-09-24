@@ -1,3 +1,10 @@
+univention-network-manager (4.0.7-1) unstable; urgency=low
+
+  * Don't use 169.254.0.x for the link local address (Bug #28468)
+  * Configure the link local address as class b network
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Sep 2012 14:33:55 +0200
+
 univention-network-manager (4.0.6-1) unstable; urgency=low
 
   * Change the behaviour of last commit, the UCR nameservers are the
