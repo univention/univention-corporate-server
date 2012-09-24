@@ -26,33 +26,30 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define */
+/*global define console*/
 
 define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
+	"dojo/cache",
+	"dojo/json",
+	"dojox/string/sprintf",
 	"umc/dialog",
 	"umc/i18n!umc/app"
-], function(lang, dojo, dialog, _) {
+], function(lang, dojo, cache, json, sprintf, dialog, _) {
 	return function() {
-		var introduction = _( 'Univention Management Console (UMC) is the central web-application for comfortable domain and computer administration in Univention Corporate Server (UCS). UMC allows to manage users, groups or computers, to control services, and to check or adjust system settings. The web-based interface of UMC is described in detail in the current manual of Univention Corporate Server (UCS). You can find the manual and further important information at the given links below. ' );
+		var path = sprintf('%s/help.json', dojo.locale.slice( 0, 2 ).toLowerCase());
+		var keys = {};
+		try {
+			keys = json.parse(cache('umc', path));
+		} catch(e) {
+			try {
+				keys = json.parse(cache('umc', 'en/help.json'));
+			} catch(e) {
+				console.error("HelpPage: en/help.json is missing or malformed");
+			}
+		}
 
-		var lang = dojo.locale.slice( 0, 2 ).toLowerCase();
-		var keys = {
-			introduction : introduction,
-			manual : _( 'Current manual (PDF)' ),
-			manualURL : _( 'http://www.univention.de/fileadmin/download/documentation_english/ucs-3.0-manual_en.pdf' ),
-			add_doc : _( 'Additional documentation for UCS' ),
-			addDocURL : _( 'http://www.univention.de/en/download/documentation/documentation/' ),
-			sdb : _( 'Univention support data base (SDB)' ),
-			wiki : _( 'Univention Wiki' ),
-			forum : _( 'Univention forum' ),
-			support : _( 'Univention support' ),
-			supportURL : lang == 'de' ? 'http://www.univention.de/univention/kontakt/kontaktformular/' : 'http://www.univention.de/en/about-univention/contact/',
-			titleDoc : _( 'Manual and documentation' ),
-			titleSup : _( 'Supplementary information' ),
-			titleAss : _( 'Support and assistance' )
-		};
 		dialog.templateDialog( "umc", "help.html", keys, _( 'Help' ), _( 'Close' ) );
 	};
 });
