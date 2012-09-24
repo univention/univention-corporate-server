@@ -329,7 +329,7 @@ define([
 			this.standby(false);
 		},
 
-		updateAllValues: function(name, old, values) { // FIXME: variable signature right?
+		updateAllValues: function(name, old, values) {
 			var vals = lang.clone(this._orgValues);
 			lang.mixin(vals, this.getValues());
 			array.forEach(this._pages, function(ipage) {

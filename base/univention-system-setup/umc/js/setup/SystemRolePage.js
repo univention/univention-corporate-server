@@ -130,7 +130,7 @@ define([
 					this.switchDescription();
 					this.onValuesChanged( {'server/role': val } );
 				}
-			}));
+			}, this));
  		
 			// update visibility of description text before adding form otherwise all descriptions will be visible
 			// for a short amount of time.
