@@ -49,7 +49,9 @@ configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 class License( object ):
-	( CLIENT, ACCOUNT, DESKTOP, GROUPWARE ) = range( 4 )
+	( ACCOUNT, CLIENT, DESKTOP, GROUPWARE ) = range( 4 )
+	( USERS, SERVERS, MANAGEDCLIENTS, CORPORATECLIENTS, VIRTUALDESKTOPUSERS, VIRTUALDESKTOPCLIENTS ) = range(6)
+
 	SYSACCOUNTS = 5
 	def __init__( self ):
 		if _license:
@@ -58,35 +60,86 @@ class License( object ):
 		self.disable_add = 0
 		self._expired = False
 		self.endDate = None
-		self.licenseTypes = []
 		self.oemProductTypes = []
 		self.licenseBase = None
 		self.types= []
+		self.version = '1'
 		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam', 'oxadmin', 'krbtgt', 'Guest', 'dns-%s' % configRegistry.get('ldap/master').split('.')[0], 'dns-%s' % configRegistry.get('hostname') )
 		self.sysAccountsFound = 0
 		self.licenses = {
-				License.CLIENT : None, License.ACCOUNT : None,
-				License.DESKTOP : None, License.GROUPWARE : None,
+				'1': {
+					# Version 1 till UCS 3.1
+					License.ACCOUNT : None, License.CLIENT : None,
+					License.DESKTOP : None, License.GROUPWARE : None,
+				},
+				'2': {
+					# Version 2 since UCS 3.1
+					License.USERS: None, License.SERVERS: None,
+					License.MANAGEDCLIENTS: None, License.CORPORATECLIENTS: None,
+					License.VIRTUALDESKTOPUSERS: None, License.VIRTUALDESKTOPCLIENTS: None,
+				},
 			}
 		self.real = {
-			License.CLIENT : 0,	License.ACCOUNT : 0,
-			License.DESKTOP : 0, License.GROUPWARE : 0,
+				'1': {
+					# Version 1 till UCS 3.1
+					License.ACCOUNT : 0, License.CLIENT : 0,
+					License.DESKTOP : 0, License.GROUPWARE : 0,
+				},
+				'2': {
+					# Version 2 since UCS 3.1
+					License.USERS: 0, License.SERVERS: 0,
+					License.VIRTUALDESKTOPUSERS: 0, License.VIRTUALDESKTOPCLIENTS: 0,
+					License.MANAGEDCLIENTS: 0, License.CORPORATECLIENTS: 0,
+				},
 			}
 		self.names = {
-			License.CLIENT : 'Clients',	License.ACCOUNT : 'Accounts',
-			License.DESKTOP : 'Desktops', License.GROUPWARE : 'Groupware Accounts',
+				'1': {
+					# Version 1 till UCS 3.1
+					License.ACCOUNT : 'Accounts', License.CLIENT : 'Clients',
+					License.DESKTOP : 'Desktops', License.GROUPWARE : 'Groupware Accounts',
+				},
+				'2': {
+					# Version 2 since UCS 3.1
+					License.USERS: 'Users', License.SERVERS: 'Servers',
+					License.MANAGEDCLIENTS: 'Managed Clients', License.CORPORATECLIENTS: 'Corporate Clients',
+					License.VIRTUALDESKTOPUSERS: 'DVS Users', License.VIRTUALDESKTOPCLIENTS: 'DVS Clients',
+				},
 			}
 		self.keys = {
-			License.ACCOUNT:   'univentionLicenseAccounts',
-			License.CLIENT:    'univentionLicenseClients',
-			License.DESKTOP:   'univentionLicenseuniventionDesktops',
-			License.GROUPWARE: 'univentionLicenseGroupwareAccounts'
+				'1': {
+					# Version 1 till UCS 3.1
+					License.ACCOUNT:   'univentionLicenseAccounts',
+					License.CLIENT:    'univentionLicenseClients',
+					License.DESKTOP:   'univentionLicenseuniventionDesktops',
+					License.GROUPWARE: 'univentionLicenseGroupwareAccounts'
+				},
+				'2': {
+					# Version 1 till UCS 3.1
+					License.USERS: 'univentionLicenseUsers',
+					License.SERVERS: 'univentionLicenseServers',
+					License.MANAGEDCLIENTS: 'univentionLicenseManagedClients',
+					License.CORPORATECLIENTS: 'univentionLicenseCorporateClients',
+					License.VIRTUALDESKTOPUSERS: 'univentionLicenseVirtualDesktopUsers',
+					License.VIRTUALDESKTOPCLIENTS: 'univentionLicenseVirtualDesktopClients',
+				},
 			}
 		self.filters = {
-			License.CLIENT : '(|(objectClass=univentionThinClient)(objectClass=univentionClient)(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectClass=univentionMacOSClient))',
-			License.ACCOUNT : '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
-			License.DESKTOP :'(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient))',
-			License.GROUPWARE : '(&(objectclass=kolabInetOrgPerson)(kolabHomeServer=*)(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+				'1': {
+					# Version 1 till UCS 3.1
+					License.ACCOUNT : '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+					License.CLIENT : '(|(objectClass=univentionThinClient)(objectClass=univentionClient)(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectClass=univentionMacOSClient))',
+					License.DESKTOP :'(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient))',
+					License.GROUPWARE : '(&(objectclass=kolabInetOrgPerson)(kolabHomeServer=*)(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+				},
+				'2': {
+					# Version 2 since UCS 3.1
+					License.USERS : '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+					License.SERVERS : '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))',
+					License.MANAGEDCLIENTS :'(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient))',
+					License.CORPORATECLIENTS : '(&(objectclass=univentionCorporateClient))',
+					License.VIRTUALDESKTOPUSERS : '(&(objectClass=univentionDVS)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+					License.VIRTUALDESKTOPCLIENTS : '(&(objectclass=univentionDVSComputers))',
+				},
 		}
 		self.__selected = False
 
@@ -182,18 +235,39 @@ class License( object ):
 		self.__countSysAccounts( lo )
 
 		if self.new_license:
-			self.__countObject( License.ACCOUNT, lo )
-			self.__countObject( License.CLIENT, lo )
-			self.__countObject( License.DESKTOP, lo )
-			self.__countObject( License.GROUPWARE, lo )
-			lic = ( self.licenses[License.CLIENT],
-				self.licenses[License.ACCOUNT],
-				self.licenses[License.DESKTOP],
-				self.licenses[License.GROUPWARE] )
-			real= ( self.real[License.CLIENT],
-				self.real[License.ACCOUNT],
-				self.real[License.DESKTOP],
-				self.real[License.GROUPWARE] )
+			if self.version == '1':
+				self.__countObject( License.ACCOUNT, lo )
+				self.__countObject( License.CLIENT, lo )
+				self.__countObject( License.DESKTOP, lo )
+				self.__countObject( License.GROUPWARE, lo )
+				lic = ( self.licenses[self.version][License.CLIENT],
+					self.licenses[self.version][License.ACCOUNT],
+					self.licenses[self.version][License.DESKTOP],
+					self.licenses[self.version][License.GROUPWARE] )
+				real= ( self.real[self.version][License.CLIENT],
+					self.real[self.version][License.ACCOUNT],
+					self.real[self.version][License.DESKTOP],
+					self.real[self.version][License.GROUPWARE] )
+			elif self.version == '2':
+				self.__countObject( License.SERVERS, lo)
+				self.__countObject( License.USERS, lo)
+				self.__countObject( License.MANAGEDCLIENTS, lo)
+				self.__countObject( License.CORPORATECLIENTS, lo)
+				self.__countObject( License.VIRTUALDESKTOPUSERS, lo)
+				self.__countObject( License.VIRTUALDESKTOPCLIENTS, lo)
+
+				lic = ( self.licenses[self.version][License.SERVERS],
+					self.licenses[self.version][License.USERS],
+					self.licenses[self.version][License.MANAGEDCLIENTS],
+					self.licenses[self.version][License.CORPORATECLIENTS],
+					self.licenses[self.version][License.VIRTUALDESKTOPUSERS],
+					self.licenses[self.version][License.VIRTUALDESKTOPCLIENTS] )
+				real= ( self.real[self.version][License.SERVERS],
+					self.real[self.version][License.USERS],
+					self.real[self.version][License.MANAGEDCLIENTS],
+					self.real[self.version][License.CORPORATECLIENTS],
+					self.real[self.version][License.VIRTUALDESKTOPUSERS ],
+					self.real[self.version][License.VIRTUALDESKTOPCLIENTS] )
 			disable_add = self.checkObjectCounts(lic, real)
 			self.licenseBase = univention.license.getValue ( 'univentionLicenseBaseDN' )
 			if disable_add:
@@ -208,38 +282,54 @@ class License( object ):
 
 	def checkObjectCounts(self, lic, real):
 		disable_add = 0
-		lic_client, lic_account, lic_desktop, lic_groupware = lic
-		real_client, real_account, real_desktop, real_groupware = real
-		if lic_client and lic_account:
-			if self.__cmp_gt( lic_account, lic_client ) and self.__cmp_gt( real_client, lic_client ):
-				disable_add = 1
-			elif self.__cmp_gt( lic_client, lic_account ) and self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS, lic_account ):
-				disable_add = 2
-			elif self.__cmp_eq(lic_client, lic_account):
-				if self.__cmp_gt( real_client, lic_client ):
+		if self.version == '1':
+			lic_client, lic_account, lic_desktop, lic_groupware = lic
+			real_client, real_account, real_desktop, real_groupware = real
+			if lic_client and lic_account:
+				if self.__cmp_gt( lic_account, lic_client ) and self.__cmp_gt( real_client, lic_client ):
 					disable_add = 1
-				elif self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS, lic_account ):
+				elif self.__cmp_gt( lic_client, lic_account ) and self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS, lic_account ):
 					disable_add = 2
-		else:
-			if lic_client and self.__cmp_gt( real_client, lic_client ):
-				disable_add = 1
-			if lic_account and self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS ,lic_account ):
-				disable_add = 2
-		if lic_desktop:
-			if real_desktop and self.__cmp_gt( real_desktop, lic_desktop ):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 3')
-				disable_add = 3
-		if lic_groupware:
-			if real_groupware and self.__cmp_gt( real_groupware, lic_groupware ):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 4')
-				disable_add = 4
+				elif self.__cmp_eq(lic_client, lic_account):
+					if self.__cmp_gt( real_client, lic_client ):
+						disable_add = 1
+					elif self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS, lic_account ):
+						disable_add = 2
+			else:
+				if lic_client and self.__cmp_gt( real_client, lic_client ):
+					disable_add = 1
+				if lic_account and self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS ,lic_account ):
+					disable_add = 2
+			if lic_desktop:
+				if real_desktop and self.__cmp_gt( real_desktop, lic_desktop ):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 3')
+					disable_add = 3
+			if lic_groupware:
+				if real_groupware and self.__cmp_gt( real_groupware, lic_groupware ):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 4')
+					disable_add = 4
+		elif self.version == '2':
+			lic_servers, lic_users, lic_managedclients, lic_corporateclients, lic_virtualdesktopusers, lic_virtualdesktopclients = lic
+			real_servers, real_users, real_managedclients, real_corporateclients, real_virtualdesktopusers, real_virtualdesktopclients = real
+			if lic_servers and self.__cmp_gt( real_servers, lic_servers ):
+				disable_add = 6
+			if lic_users and self.__cmp_gt( int( real_users ) - License.SYSACCOUNTS ,lic_users ):
+				disable_add = 7
+			if lic_managedclients and self.__cmp_gt( real_managedclients, lic_managedclients ):
+				disable_add = 8
+			if lic_corporateclients and self.__cmp_gt( real_corporateclients, lic_corporateclients ):
+				disable_add = 9
+			if lic_virtualdesktopusers and self.__cmp_gt( real_virtualdesktopusers, lic_virtualdesktopusers ):
+				disable_add = 10
+			if lic_virtualdesktopclients and self.__cmp_gt( real_virtualdesktopclients, lic_virtualdesktopclients ):
+				disable_add = 11
 		return disable_add
 
 	def __countSysAccounts( self, lo ):
 		userfilter = [ univention.admin.filter.expression('uid', account) for account in self.sysAccountNames ]
                 filter=univention.admin.filter.conjunction('&', [
                          univention.admin.filter.conjunction('|', userfilter),
-                         self.filters[License.ACCOUNT] ])
+                         self.filters[self.version][License.USERS] ])
 		try:
 			searchResult = lo.searchDn(filter=str(filter))
 			self.sysAccountsFound = len(searchResult)
@@ -249,16 +339,16 @@ class License( object ):
 				'LICENSE: Univention sysAccountsFound: %d' % self.sysAccountsFound )
 
 	def __countObject( self, obj, lo ):
-		if self.licenses[ obj ] and not self.licenses[ obj ] == 'unlimited':
-			result = lo.searchDn( filter = self.filters[ obj ] )
+		if self.licenses[self.version][ obj ] and not self.licenses[self.version][ obj ] == 'unlimited':
+			result = lo.searchDn( filter = self.filters[self.version][ obj ] )
 			if result == None:
-				self.real[ obj ] = 0
+				self.real[self.version][ obj ] = 0
 			else:
-				self.real[ obj ] = len( result )
+				self.real[self.version][ obj ] = len( result )
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-					'LICENSE: Univention %s real %d' % ( self.names[ obj ], self.real[ obj ] ) )
+					'LICENSE: Univention %s real %d' % ( self.names[self.version][ obj ], self.real[self.version][ obj ] ) )
 		else:
-			self.real[ obj ] = 0
+			self.real[self.version][ obj ] = 0
 
 
 	def __raiseException( self ):
@@ -287,29 +377,48 @@ class License( object ):
 		return value
 
 	def __readLicense( self ):
-		self.licenses[ License.ACCOUNT ] = self.__getValue( self.keys[License.ACCOUNT], None,
-				'Accounts', 'Univention Accounts not found' )
-		self.licenses[ License.CLIENT ] = self.__getValue( self.keys[License.CLIENT], None,
-				'Clients', 'Univention Clients not found' )
-		self.licenses[ License.DESKTOP ] = self.__getValue( self.keys[License.DESKTOP], 2,
-				'Desktops', 'Univention Desktops not found' )
-		self.licenses[ License.GROUPWARE ] = self.__getValue( self.keys[License.GROUPWARE], 2,
-				'Groupware Accounts', 'Groupware not found' )
-		# if no type field is found it must be an old UCS license (<=1.3-0)
-		self.types = self.__getValue( 'univentionLicenseType', [ 'UCS' ],
-				'License Type', 'Type attribute not found' )
-		if not isinstance( self.types, ( list, tuple ) ):
-			self.types = [ self.types ]
-		self.types = list(self.types)
-		# handle license type "OXAE" the same way as license type "UCS"
-		if 'OXAE' in self.types and 'UCS' not in self.types:
-			self.types.append('UCS')
+		self.version = self.__getValue( 'univentionLicenseVersion', '1', 'Version', None)
+		if self.version == '1':
+			self.licenses[self.version][ License.ACCOUNT ] = self.__getValue( self.keys[self.version][License.ACCOUNT], None,
+					'Accounts', 'Univention Accounts not found' )
+			self.licenses[self.version][ License.CLIENT ] = self.__getValue( self.keys[self.version][License.CLIENT], None,
+					'Clients', 'Univention Clients not found' )
+			self.licenses[self.version][ License.DESKTOP ] = self.__getValue( self.keys[self.version][License.DESKTOP], 2,
+					'Desktops', 'Univention Desktops not found' )
+			self.licenses[self.version][ License.GROUPWARE ] = self.__getValue( self.keys[self.version][License.GROUPWARE], 2,
+					'Groupware Accounts', 'Groupware not found' )
+			# if no type field is found it must be an old UCS license (<=1.3-0)
+			self.types = self.__getValue( 'univentionLicenseType', [ 'UCS' ],
+					'License Type', 'Type attribute not found' )
+			if not isinstance( self.types, ( list, tuple ) ):
+				self.types = [ self.types ]
+			self.types = list(self.types)
+			# handle license type "OXAE" the same way as license type "UCS"
+			if 'OXAE' in self.types and 'UCS' not in self.types:
+				self.types.append('UCS')
+		elif self.version == '2':
+			self.licenses[self.version][ License.SERVERS ] = self.__getValue( self.keys[self.version][License.SERVERS], None, 
+					'Servers', 'Servers not found' )
+			self.licenses[self.version][ License.USERS ] = self.__getValue( self.keys[self.version][License.USERS], None, 
+					'Users', 'Users not found' )
+			self.licenses[self.version][ License.MANAGEDCLIENTS ] = self.__getValue( self.keys[self.version][License.MANAGEDCLIENTS], None, 
+					'Managed Clients', 'Managed Clients not found' )
+			self.licenses[self.version][ License.CORPORATECLIENTS ] = self.__getValue( self.keys[self.version][License.CORPORATECLIENTS], None, 
+					'Corporate Clients', 'Corporate Clients not found' )
+			self.licenses[self.version][ License.VIRTUALDESKTOPUSERS ] = self.__getValue( self.keys[self.version][License.VIRTUALDESKTOPUSERS], None, 
+					'DVS Users', 'DVS Users not found' )
+			self.licenses[self.version][ License.VIRTUALDESKTOPCLIENTS ] = self.__getValue( self.keys[self.version][License.VIRTUALDESKTOPCLIENTS], None, 
+					'DVS Clients', 'DVS Clients not found' )
+			self.types = self.__getValue( 'univentionLicenseProduct', [ 'Univention Corporate Server' ],
+					'License Product', 'Product attribute not found' )
+			if not isinstance( self.types, ( list, tuple ) ):
+				self.types = [ self.types ]
+			self.types = list(self.types)
 
 		self.oemProductTypes = self.__getValue( 'univentionLicenseOEMProduct', [ ],
 				'License Type', 'univentionLicenseOEMProduct attribute not found' )
 		if not isinstance( self.oemProductTypes, ( list, tuple ) ):
 			self.oemProductTypes = [ self.oemProductTypes ]
-		self.licenseTypes = self.types
 		self.types.extend(self.oemProductTypes)
 		self.endDate = self.__getValue( 'univentionLicenseEndDate', None, 'License end date', 'univentionLicenseEndDate attribute not found' )
 

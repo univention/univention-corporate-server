@@ -124,14 +124,15 @@ def check_license(lo, dn, list_dns, expired):
 			if xs is None:
 				return 0
 			return len(xs)
-		types = (License.CLIENT, License.ACCOUNT, License.DESKTOP, License.GROUPWARE)
+		v = _license.version
+		types = _license.licenses[v]
 		if dn is None:
-			max = [ _license.licenses[type]
+			max = [ _license.licenses[v][type]
 				for type in types ]
 		else:
-			max = [ lo.get(dn)[_license.keys[type]][0]
+			max = [ lo.get(dn)[_license.keys[v][type]][0]
 				for type in types ]
-		objs = [ lo.searchDn(filter=_license.filters[type])
+		objs = [ lo.searchDn(filter=_license.filters[v][type])
 		       	for type in types ]
 		num = [ mylen (obj)
 			for obj in objs]
@@ -141,20 +142,19 @@ def check_license(lo, dn, list_dns, expired):
 			m = max[i]
 			n = num[i]
 			odn = objs[i]
-			if t == License.ACCOUNT:
+			if t == License.USERS:
 				n -= _license.sysAccountsFound
 				if n < 0: n=0
 			e = i+1
-			l = _license.names[t]
+			l = _license.names[v][i]
 			if m:
-
-                                if list_dns:
+				if list_dns:
 					out.append("")
 				out.append(format(l, n, m, e == expired, _license.compare))
 				if list_dns and not max == 'unlimited':
 					for dnout in odn:
-	                                	out.extend( [ "  %s" % dnout, ] )
-				if list_dns and t == License.ACCOUNT:
+						out.extend( [ "  %s" % dnout, ] )
+				if list_dns and t == License.USERS:
 					out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 	def check_time():
 		now = datetime.date.today()

@@ -187,6 +187,18 @@ class licenseDesktops(base):
 	message=_('Too many desktop accounts')
 class licenseGroupware(base):
 	message=_('Too many groupware accounts')
+class licenseUsers(base):
+	message=_('Too many users')
+class licenseServers(base):
+	message=_('Too many servers')
+class licenseManagedClients(base):
+	message=_('Too many managed clients')
+class licenseCorporateClients(base):
+	message=_('Too many corporate clients')
+class licenseDVSUsers(base):
+	message=_('Too many DVS users')
+class licenseDVSClients(base):
+	message=_('Too many DVS clients')
 class licenseDisableModify(base):
 	message=_('During this session add and modify are disabled')
 

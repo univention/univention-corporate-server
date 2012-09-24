@@ -29,14 +29,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-21 13:33+0200\n"
+"POT-Creation-Date: 2012-09-24 12:17+0200\n"
 "PO-Revision-Date: 2012-07-11 17:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-"Language: de\n"
 "Generated-By: pygettext.py 1.3\n"
 
 #: allocators.py:129 allocators.py:160 locking.py:73
@@ -484,8 +484,8 @@ msgid ""
 "Invalid DNS zone name! (Must not end with a \".\", only \"0\"-\"9\", \"A\"-"
 "\"Z\", \"a\"-\"z\", and \"-\" allowed)"
 msgstr ""
-"Ungültiger DNS-Zonen-Name! (darf nicht auf \".\" enden; nur die Zeichen \"0"
-"\"-\"9\", \"A\"-\"Z\", \"a\"-\"z\" und \"-\" sind erlaubt)"
+"Ungültiger DNS-Zonen-Name! (darf nicht auf \".\" enden; nur die Zeichen "
+"\"0\"-\"9\", \"A\"-\"Z\", \"a\"-\"z\" und \"-\" sind erlaubt)"
 
 #: syntax.py:1071 syntax.py:1084
 msgid "Missing value!"
@@ -653,8 +653,8 @@ msgstr "Gruppe"
 
 #: syntax.py:1285
 msgid ""
-"Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768"
-"\")"
+"Value consists of two integer numbers separated by an \"x\" (e.g. "
+"\"1024x768\")"
 msgstr ""
 "Der Wert muss zwei ganzzahlige Werte mit einem \"x\" dazwischen beinhalten "
 "(z.B. \"1024x768\")"
@@ -1316,92 +1316,116 @@ msgid "Too many groupware accounts"
 msgstr "Zu viele Groupware Konten"
 
 #: uexceptions.py:191
+msgid "Too many users"
+msgstr "Zu viele Benutzerkonten"
+
+#: uexceptions.py:193
+msgid "Too many servers"
+msgstr "Zu viele Serverkonten"
+
+#: uexceptions.py:195
+msgid "Too many managed clients"
+msgstr "Zu viele Managed Client Konten"
+
+#: uexceptions.py:197
+msgid "Too many corporate clients"
+msgstr "Zu viele Corporate Client Konten"
+
+#: uexceptions.py:199
+msgid "Too many DVS users"
+msgstr "Zu viele DVS-Benutzerkonten"
+
+#: uexceptions.py:201
+msgid "Too many DVS clients"
+msgstr "Zu viele DVS-Client Konten"
+
+#: uexceptions.py:203
 msgid "During this session add and modify are disabled"
 msgstr "Während dieser Sitzung sind Hinzufügen und Bearbeiten nicht verfügbar."
 
-#: uexceptions.py:194
+#: uexceptions.py:206
 msgid "Password has been used before. Please choose a different one."
 msgstr "Das Passwort wurde bereits verwendet. Bitte wählen Sie ein anderes."
 
-#: uexceptions.py:197
+#: uexceptions.py:209
 msgid "The password is to short, at least 8 character!"
 msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
 
-#: uexceptions.py:200
+#: uexceptions.py:212
 msgid "Network and IP range are incompatible."
 msgstr "Netzwerk und IP-Adressbereich passen nicht zusammen."
 
-#: uexceptions.py:203
+#: uexceptions.py:215
 msgid "The IP range contains its network address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet seine Netzwerk Adresse. Das ist nicht "
 "zulässig!"
 
-#: uexceptions.py:206
+#: uexceptions.py:218
 msgid "The IP range contains its broadcast address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet die Broadcast-Adresse. Das ist nicht "
 "zulässig!"
 
-#: uexceptions.py:209
+#: uexceptions.py:221
 msgid "Overlapping IP ranges"
 msgstr "Überschneidung in den IP-Adressbereichen"
 
-#: uexceptions.py:212
+#: uexceptions.py:224
 msgid "Invalid combination of options."
 msgstr "Unzulässige Zusammenstellung von Optionen."
 
-#: uexceptions.py:215 uexceptions.py:218
+#: uexceptions.py:227 uexceptions.py:230
 msgid "Password policy error: "
 msgstr "Fehler in der Passwort-Richtlinie: "
 
-#: uexceptions.py:221
+#: uexceptions.py:233
 msgid "This operation is not allowed on this object."
 msgstr "Die Operation ist für dieses Objekt nicht erlaubt."
 
-#: uexceptions.py:224
+#: uexceptions.py:236
 msgid "Empty printer groups are not possible."
 msgstr "Leere Druckergruppen sind nicht möglich."
 
-#: uexceptions.py:227
+#: uexceptions.py:239
 msgid ""
 "Printer groups with quota support can only have members with quota support."
 msgstr ""
 "Einer Druckergruppen mitUnterstützung für Quota können als Mitglieder nur "
 "Drucker mit Quota haben."
 
-#: uexceptions.py:230
+#: uexceptions.py:242
 msgid "Only printer objects can be members of a printer group."
 msgstr "Nur Drucker-Objekte können Mitglied in einer Druckergruppe sein."
 
-#: uexceptions.py:233
+#: uexceptions.py:245
 msgid "Only existing groups are allowed."
 msgstr "Nur existierende Gruppen sind erlaubt."
 
-#: uexceptions.py:236
+#: uexceptions.py:248
 msgid "Only existing users are allowed."
 msgstr "Nur existierende Benutzer sind erlaubt."
 
-#: uexceptions.py:239
+#: uexceptions.py:251
 #, python-format
 msgid "Invalid syntax in default value. Check these templates: %s."
 msgstr "Falsche Syntax bei Standardwert. Zu prüfende Vorlagen: %s."
 
-#: uexceptions.py:244
+#: uexceptions.py:256
 msgid "Timeperiod Object still in use!"
 msgstr "Nagios-Zeitraum-Objekt wird noch genutzt!"
 
-#: uexceptions.py:247
+#: uexceptions.py:259
 msgid "IP address entry required to assign nagios services!"
 msgstr "Zum Zuweisen von Nagios-Diensten wird eine IP-Adresse benötigt!"
 
-#: uexceptions.py:250
+#: uexceptions.py:262
 msgid "DNS Forward Zone entry required to assign nagios services!"
 msgstr ""
 "Zum Zuweisen von Nagios-Diensten wird ein Eintrag in der DNS Forward Zone "
 "benötigt!"
 
-#: uexceptions.py:253
+#: uexceptions.py:265
 msgid ""
 "The DNS forward entry could not be created. Please remove existing alias "
 "records or comparable DNS objects with the same name as this host from the "
@@ -1411,11 +1435,11 @@ msgstr ""
 "DNS-Alias Records oder vergleichbare DNS-Objekte mit dem Namen dieses "
 "Rechners aus der DNS-Forward-Zone entfernt werden."
 
-#: uexceptions.py:256
+#: uexceptions.py:268
 msgid "Circular group dependency detected: "
 msgstr "Zyklische Gruppen-Abhängigkeit festgestellt: "
 
-#: uexceptions.py:262
+#: uexceptions.py:274
 msgid ""
 "Need a primary group with samba option to create a user with samba option"
 msgstr ""
@@ -1435,7 +1459,7 @@ msgstr "DN nicht gefunden: %s."
 msgid "Authentication failed"
 msgstr "Authentisierung fehlgeschlagen"
 
-#: uldap.py:389
+#: uldap.py:408
 msgid "Moving childs is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
 

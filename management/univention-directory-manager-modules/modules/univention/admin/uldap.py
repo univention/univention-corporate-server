@@ -300,6 +300,25 @@ class access:
 			elif res == 5:
 				# Free for personal use edition
 				raise univention.admin.uexceptions.freeForPersonalUse
+			# License Version 2:
+			elif res == 6:
+				self.allow_modify=0
+				raise univention.admin.uexceptions.licenseUsers
+			elif res == 7:
+				self.allow_modify=0
+				raise univention.admin.uexceptions.licenseServers
+			elif res == 8:
+				self.allow_modify=0
+				raise univention.admin.uexceptions.licenseManagedClients
+			elif res == 9:
+				self.allow_modify=0
+				raise univention.admin.uexceptions.licenseCorporateClients
+			elif res == 10:
+				self.allow_modify=0
+				raise univention.admin.uexceptions.licenseDVSUsers
+			elif res == 11:
+				self.allow_modify=0
+				raise univention.admin.uexceptions.licenseDVSClients
 
 	def requireLicense(self, require=1):
 		self.require_license=require
