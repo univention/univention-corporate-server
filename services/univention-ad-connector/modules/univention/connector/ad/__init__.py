@@ -639,7 +639,7 @@ class ad(univention.connector.ucs):
 	def open_ad(self):
 		tls_mode = 2
 		if self.baseConfig.has_key('%s/ad/ldap/ssl' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/ldap/ssl' % self.CONFIGBASENAME] == "no":
-			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to AD switched of by UCR.")
+			ud.debug(ud.LDAP, ud.INFO,"__init__: The LDAP connection to AD does not use SSL (switched off by UCR \"%s/ad/ldap/ssl\")." % self.CONFIGBASENAME)
 			tls_mode = 0
 
 		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False) # tls or ssl
