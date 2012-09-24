@@ -283,8 +283,8 @@ class License( object ):
 	def checkObjectCounts(self, lic, real):
 		disable_add = 0
 		if self.version == '1':
-			lic_client, lic_account, lic_desktop, lic_groupware = lic
-			real_client, real_account, real_desktop, real_groupware = real
+			lic_account, lic_client, lic_desktop, lic_groupware = lic
+			real_account, real_client, real_desktop, real_groupware = real
 			if lic_client and lic_account:
 				if self.__cmp_gt( lic_account, lic_client ) and self.__cmp_gt( real_client, lic_client ):
 					disable_add = 1
@@ -309,8 +309,8 @@ class License( object ):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 4')
 					disable_add = 4
 		elif self.version == '2':
-			lic_servers, lic_users, lic_managedclients, lic_corporateclients, lic_virtualdesktopusers, lic_virtualdesktopclients = lic
-			real_servers, real_users, real_managedclients, real_corporateclients, real_virtualdesktopusers, real_virtualdesktopclients = real
+			lic_users, lic_servers, lic_managedclients, lic_corporateclients, lic_virtualdesktopusers, lic_virtualdesktopclients = lic
+			real_users, real_servers, real_managedclients, real_corporateclients, real_virtualdesktopusers, real_virtualdesktopclients = real
 			if lic_servers and self.__cmp_gt( real_servers, lic_servers ):
 				disable_add = 6
 			if lic_users and self.__cmp_gt( int( real_users ) - License.SYSACCOUNTS ,lic_users ):
