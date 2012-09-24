@@ -45,7 +45,7 @@ define([
 		} catch(e) {
 			try {
 				keys = json.parse(cache('umc', 'en/help.json'));
-			} catch(e) {
+			} catch(e2) {
 				console.error("HelpPage: en/help.json is missing or malformed");
 			}
 		}

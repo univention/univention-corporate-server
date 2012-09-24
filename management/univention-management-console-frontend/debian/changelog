@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.68-1) unstable; urgency=low
+
+  * corrected json encoding of errors; Bug #28551
+
+ -- Florian Best <best@univention.de>  Mon, 24 Sep 2012 11:10:12 +0200
+
 univention-management-console-frontend (2.0.67-1) unstable; urgency=low
 
   * the help page can be localised through json files; Bug #27627

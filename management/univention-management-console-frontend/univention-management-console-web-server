@@ -571,12 +571,12 @@ class CPRoot(object):
 		"""
 		raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
-def default_error_page(**kwargs):
+def default_error_page(status, message, traceback, version):
 	cherrypy.response.headers['Content-type'] = umcp.MIMETYPE_JSON
-	# escape json and html
-	for key, value in kwargs.items():
-		kwargs[key] = cherrypy._cperror._escape(str(value), True)
-	return cherrypy._cperror._HTTPErrorTemplate % kwargs
+	return simplejson.dumps({
+		'status': status,
+		'message': cherrypy._cperror._escape(str(message), True) # html escaped
+	})
 
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
@@ -593,9 +593,6 @@ def run_cherrypy():
 		'error_page.default': default_error_page
 	} )
 	cherrypy.tools.proxy(base=None, local='X-Forwarded-Host', remote='X-Forwarded-For', scheme='X-Forwarded-Proto')
-
-	# modify the template for HTTP errors to return errors in JSON format
-	cherrypy._cperror._HTTPErrorTemplate = '{ "status": "%(status)s", "message": "%(message)s" }'
 
 	root = CPRoot()
 	root.command = CPCommand()
