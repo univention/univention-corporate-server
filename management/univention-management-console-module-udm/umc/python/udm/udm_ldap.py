@@ -125,7 +125,7 @@ def LDAP_Connection( func ):
 				# license check (see also univention.admin.uldap.access.bind())
 				if not GPLversion:
 					_licenseCheck = univention.admin.license.init_select(lo, 'admin')
-					if _licenseCheck in range(1, 5):
+					if _licenseCheck in range(1, 5) or _licenseCheck in range(6,12):
 						lo.allow_modify = 0
 					if _licenseCheck is not None:
 						lo.requireLicense()
@@ -832,6 +832,19 @@ def check_license(ldap_connection = None, ldap_position = None ):
 	#elif _licenseCheck == 5:
 	#	# Free for personal use edition
 	#	raise udm_errors.freeForPersonalUse
+	elif _licenseCheck == 6:
+		raise udm_errors.licenseUsers
+	elif _licenseCheck == 7:
+		raise udm_errors.licenseServers
+	elif _licenseCheck == 8:
+		raise udm_errors.licenseManagedClients
+	elif _licenseCheck == 9:
+		raise udm_errors.licenseCorporateClients
+	elif _licenseCheck == 10:
+		raise udm_errors.licenseDVSUsers
+	elif _licenseCheck == 11:
+		raise udm_errors.licenseDVSClients
+
 
 def container_modules():
 	containers = []

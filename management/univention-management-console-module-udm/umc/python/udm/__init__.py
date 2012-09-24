@@ -137,14 +137,26 @@ class Instance( Base ):
 			check_license(ldap_connection)
 		except udm_errors.licenseNotFound:
 			message = _('License not found. During this session add and modify are disabled.')
-		except udm_errors.licenseAccounts:
+		except udm_errors.licenseAccounts: #UCS license v1
 			message = _('You have too many user accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseClients:
+		except udm_errors.licenseUsers: #UCS license v2
+			message = _('You have too many user accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseClients: # UCS license v1
 			message = _('You have too many client accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseDesktops:
+		except udm_errors.licenseServers: # UCS license v2
+			message = _('You have too many server accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseManagedClients: # UCS license v2
+			message = _('You have too many managed client accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseCorporateClients: # UCS license v2
+			message = _('You have too many corporate client accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseDesktops: # UCS license v1
 			message = _('You have too many desktop accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseGroupware:
+		except udm_errors.licenseGroupware: # UCS license v1
 			message = _('You have too many groupware accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseDVSUsers: # UCS license v2
+			message = _('You have too many DVS user accounts for your license. During this session add and modify are disabled.')
+		except udm_errors.licenseDVSClients: # UCS license v2
+			message = _('You have too many DVS client accounts for your license. During this session add and modify are disabled.')
 		except udm_errors.licenseExpired:
 			message = _('Your license is expired. During this session add and modify are disabled.')
 		except udm_errors.licenseWrongBaseDn:
