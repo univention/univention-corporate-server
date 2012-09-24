@@ -753,7 +753,7 @@ class s4(univention.s4connector.ucs):
 	def open_s4(self):
 		tls_mode = 2
 		if self.baseConfig.has_key('%s/s4/ldap/ssl' % self.CONFIGBASENAME) and self.baseConfig['%s/s4/ldap/ssl' % self.CONFIGBASENAME] == "no":
-			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to S4 switched of by UCR.")
+			ud.debug(ud.LDAP, ud.INFO,"__init__: The LDAP connection to S4 does not use SSL (switched off by UCR \"%s/s4/ldap/ssl\")." % self.CONFIGBASENAME)
 			tls_mode = 0
 
 		protocol = self.baseConfig.get('%s/s4/ldap/protocol' % self.CONFIGBASENAME, 'ldap').lower()

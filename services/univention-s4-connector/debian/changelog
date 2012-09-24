@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.7-1) unstable; urgency=low
+
+  * Use a proper debug message if SSL is disabled (Bug #25835)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Sep 2012 13:35:02 +0200
+
 univention-s4-connector (7.0.6-1) unstable; urgency=low
 
   * Removed debug line from write_password_settings.py (Bug #24237)
