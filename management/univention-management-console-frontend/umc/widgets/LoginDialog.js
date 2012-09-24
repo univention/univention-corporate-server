@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/aspect",
-	"dojo/on",
 	"dojo/mouse",
 	"dojo/dom",
 	"dojo/query",
@@ -109,11 +108,11 @@ define([
 			}));
 
 			// automatically resize the DialogUnderlay container
-			this.own(on(win.global, 'resize', lang.hitch(this, function() {
+			win.global.on('resize', lang.hitch(this, function() {
 				if (Dialog._DialogLevelManager.isTop(this)) {
 					this.show();
 				}
-			})));
+			}));
 		},
 
 		_initForm: function() {

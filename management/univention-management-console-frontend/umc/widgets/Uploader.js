@@ -34,7 +34,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/when",
-	"dojo/on",
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojox/form/Uploader",
@@ -45,7 +44,7 @@ define([
 	"umc/widgets/_FormWidgetMixin",
 	"umc/i18n!umc/app",
 	"dojox/form/uploader/plugins/IFrame"
-], function(declare, lang, array, when, on, domClass, style, Uploader, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
+], function(declare, lang, array, when, domClass, style, Uploader, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
 	return declare("umc.widgets.Uploader", [ ContainerWidget, _FormWidgetMixin ], {
 		'class': 'umcUploader',
 
@@ -151,11 +150,9 @@ define([
 			this.inherited(arguments);
 
 			// as soon as the user has selected a file, start the upload
-			this.own(this._uploader.watch('value', lang.hitch(this, function(data) {
-				var allOk = true;
-				array.forEach(data, function(ifile) {
-					allOk = allOk && ifile.size <= this.maxSize;
-					return allOk;
+			this._uploader.on('changed', lang.hitch(this, function(data) {
+				var allOk = array.some(data, function(ifile) {
+					return ifile.size <= this.maxSize;
 				}, this);
 				if (!allOk) {
 					dialog.alert(_('File cannot be uploaded, its maximum size may be %.1f MB.', this.maxSize / 1048576.0));
@@ -188,13 +185,13 @@ define([
 						this.onUploadStarted(data[0]);
 					}));
 				}
-			})));
+			}));
 
 			// hook for showing the progress
-			this.own(on(this._uploader, 'progress', lang.hitch(this, 'onProgress')));
+			this._uploader.on('progress', lang.hitch(this, 'onProgress'));
 
 			// notification as soon as the file has been uploaded
-			this.own(on(this._uploader, 'complete', lang.hitch(this, function(data) {
+			this._uploader.on('complete', lang.hitch(this, function(data) {
 				if (data && data.result instanceof Array) {
 					this.set('data', data.result[0]);
 					this.onUploaded(this.data);
@@ -212,12 +209,12 @@ define([
 					}
 				}
 				this._resetLabel();
-			})));
+			}));
 
 			// setup events
-			this.own(on(this._uploader, 'cancel', lang.hitch(this, '_resetLabel')));
-			this.own(on(this._uploader, 'abort', lang.hitch(this, '_resetLabel')));
-			this.own(on(this._uploader, 'error', lang.hitch(this, '_resetLabel')));
+			this._uploader.on('cancel', lang.hitch(this, '_resetLabel'));
+			this._uploader.on('abort', lang.hitch(this, '_resetLabel'));
+			this._uploader.on('error', lang.hitch(this, '_resetLabel'));
 
 			// update the view
 			this.set('value', this.value);

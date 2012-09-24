@@ -539,7 +539,7 @@ define([
 					return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
 				})
 			});
-			this.own(on(this._grid, 'rowClick', lang.hitch(this, '_onRowClick')));
+			this._grid.on('rowClick', lang.hitch(this, '_onRowClick'));
 
 			// add the toolbar to the bottom of the widget which contains all multi-actions
 			this._toolbar = new ContainerWidget({
@@ -572,9 +572,9 @@ define([
 			// in case of any changes in the module store, refresh the grid
 			// FIXME: should not be needed anymore with Dojo 1.8
 			if (this.moduleStore.on && this.moduleStore.onChange) {
-				this.own(on(this.moduleStore, 'Change', lang.hitch(this, function() {
+				this.moduleStore.on('change', lang.hitch(this, function() {
 					this.filter(this.query);
-				})));
+				}));
 			}
 
 			// standby animation when loading data
@@ -607,11 +607,11 @@ define([
 
 			// when a cell gets modified, save the changes directly back to the server
 			// FIXME: not supported anymore
-			//this.own(on(this._grid, 'applyCellEdit', lang.hitch(this._dataStore, 'save')));
+			//this._grid.on('applyCellEdit', lang.hitch(this._dataStore, 'save'));
 
 			// disable edit menu in case there is more than one item selected
-			this.own(on(this._grid, 'selectionChanged', lang.hitch(this, '_updateFooterContent')));
-			this.own(on(this._grid, 'selectionChanged', lang.hitch(this, '_updateFooterCells')));
+			this._grid.on('selectionChanged', lang.hitch(this, '_updateFooterContent'));
+			this._grid.on('selectionChanged', lang.hitch(this, '_updateFooterCells'));
 
 			/*// disable edit menu in case there is more than one item selected
 			this.own(this.on(this._grid, 'onSelectionChanged', function() {
@@ -622,7 +622,7 @@ define([
 			// save internally for which row the cell context menu was opened and when
 			// -> handle context menus when clicked in the last column
 			// -> call custom handler when clicked on any other cell
-			this.own(on(this._grid, 'cellContextMenu', lang.hitch(this, '_updateContextItem')));
+			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
 		},
 
 		_onRowClick: function( ev ) {

@@ -32,7 +32,6 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
 	"dojo/aspect",
 	"dojo/when",
 	"dojo/store/DataStore",
@@ -43,7 +42,7 @@ define([
 	"umc/widgets/MultiSelect",
 	"umc/widgets/LabelPane",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, on, aspect, when, DataStore, tools, ContainerWidget, _FormWidgetMixin, Button, MultiSelect, LabelPane, _) {
+], function(declare, lang, array, aspect, when, DataStore, tools, ContainerWidget, _FormWidgetMixin, Button, MultiSelect, LabelPane, _) {
 
 	// lazy defining of the dialog in order to avoid circular dependencies with umc/render
 	var DetailDialog = declare(null, {});
@@ -278,7 +277,7 @@ define([
 						});
 
 						// register the event handler
-						this.own(on(this._detailDialog, 'add', lang.hitch(this, '_addElements')));
+						this._detailDialog.on('add', lang.hitch(this, '_addElements'));
 						this.onCreateDialog( this._detailDialog );
 					}
 					this.onShowDialog( this._detailDialog );

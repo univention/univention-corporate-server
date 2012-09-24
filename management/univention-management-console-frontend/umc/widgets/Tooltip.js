@@ -31,11 +31,10 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/on",
 	"dojo/aspect",
 	"dijit/Tooltip",
 	"umc/tools"
-], function(declare, lang, on, aspect, Tooltip, tools) {
+], function(declare, lang, aspect, Tooltip, tools) {
 	/*dojo.extend(dijit._MasterTooltip, {
 		buildRendering: function() {
 			if(!this.domNode){
@@ -44,14 +43,14 @@ define([
 			}
 
 			// hide the tooltip
-			this.own(on(this.domNode, 'click', lang.hitch(this, 'hide')));
+			this.domNode.on('click', lang.hitch(this, 'hide'));
 		}
 	});*/
 
 	// connect to the master tooltip's domNode onlick event in order to
 	// trigger the fade out animation.
 	var hdl = aspect.after(Tooltip, 'show', function() {
-		on(Tooltip._masterTT.domNode, 'click', lang.hitch(Tooltip._masterTT.fadeOut, 'play'));
+		Tooltip._masterTT.domNode.on('click', lang.hitch(Tooltip._masterTT.fadeOut, 'play'));
 
 		// disconnect from 'Tooltip.show', we only need to register the handler once
 		hdl.remove();

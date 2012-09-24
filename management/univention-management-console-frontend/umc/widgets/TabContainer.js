@@ -71,9 +71,9 @@ define([
 				array.forEach(ipage.getDescendants(), function(iwidget) {
 					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 						// hook to onShow event
-						this.own(on(ipage, 'show', function() {
+						ipage.on('show', function() {
 							iwidget.startup();
-						}));
+						});
 					}
 				}, this);
 			}, this);
