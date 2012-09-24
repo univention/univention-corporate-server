@@ -159,10 +159,6 @@ class Application(object):
 			except urllib2.HTTPError as e:
 				MODULE.warn('Could not query App Center host at:%s\n%s' % (url, e))
 
-		# filter out packages that cannot be installed for this server role
-		serverRole = ucr.get('server/role')
-		filtered_applications = [ app for app in cls._all_applications if not app.get('serverrole') or serverRole in app.get('serverrole') ]
-
 		# filter function
 		def _included(the_list, app):
 			if the_list == '*':
@@ -176,6 +172,7 @@ class Application(object):
 			return False
 
 		# filter blacklisted apps (by name and by category)
+		filtered_applications = cls._all_applications
 		blacklist = ucr.get('repository/app_center/blacklist')
 		if blacklist:
 			filtered_applications = [app for app in filtered_applications if not _included(blacklist, app)]
@@ -197,10 +194,13 @@ class Application(object):
 
 	def cannot_install_reason(self, module_instance):
 		is_joined = os.path.exists('/var/univention-join/joined')
+		server_role = ucr.get('server/role')
 		if all(module_instance.package_manager.is_installed(package) for package in self.get('defaultpackages')):
 			return 'installed', None
 		elif self.get('defaultpackagesmaster') and not is_joined:
 			return 'not_joined', None
+		elif self.get('serverrole') and server_role not in self.get('serverrole'):
+			return 'wrong_serverrole', server_role
 		else:
 			conflict_packages = []
 			for package in self.get('conflictedsystempackages'):

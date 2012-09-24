@@ -155,7 +155,7 @@ define([
 								return; // continue
 							}
 						}
-						if (label) {
+						if (label && value) {
 							txt += "<tr>\n";
 							txt += "<td style='" + label_style + "'>" + label + "</td>\n";
 							txt += "<td style='" + data_style + "'>" + value + "</td>\n";
@@ -311,11 +311,15 @@ define([
 		_detail_field_custom_cannot_install_reason: function(values) {
 			var cannot_install_reason = values.cannot_install_reason;
 			var cannot_install_reason_detail = values.cannot_install_reason_detail;
+			var txt = '';
 			if (cannot_install_reason == 'conflict') {
-				var txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
+				txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
 				txt += '<ul><li>' + cannot_install_reason_detail.join('</li><li>') + '</li></ul>';
-				return txt;
 			}
+			if (cannot_install_reason == 'wrong_serverrole') {
+				txt = _('<p>This application cannot be installed on the current server role (%s). In order to install the application, one of the following roles is necessary: %s</p>', cannot_install_reason_detail, values.serverrole.join(', '));
+			}
+			return txt;
 		},
 
 		_detail_field_custom_categories: function(values) {
