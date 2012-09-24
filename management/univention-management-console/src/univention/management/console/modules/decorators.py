@@ -58,7 +58,7 @@ import copy
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
-from ..modules import UMC_OptionTypeError
+from ..modules import UMC_OptionTypeError, UMC_OptionMissing
 from ..log import MODULE
 
 from sanitizers import MultiValidationError, ValidationError, DictSanitizer, ListSanitizer
@@ -183,75 +183,6 @@ def _sanitize(function, sanitizer):
 	copy_function_meta_data(function, _response)
 	return _response
 
-def _error_handler(options, exception):
-	raise exception
-
-def _simple_response(function, with_flavor):
-	# name of flavor argument. default: 'flavor' (if given, of course)
-	if with_flavor is True:
-		with_flavor = 'flavor'
-	arguments, defaults = arginspect(function)
-	# argument names of the function, including 'self'
-	# remove self
-	arguments = arguments[1:]
-	# use defaults as dict
-	if defaults:
-		defaults = dict(zip(arguments[-len(defaults):], defaults))
-	else:
-		defaults = {}
-	# remove flavor argument, if given
-	# do it here to have a chance to add it in defaults
-	if with_flavor:
-		arguments.remove(with_flavor)
-	def _response(self, request):
-		if not isinstance(request.options, dict):
-			try:
-				# might be a list, although this is not supported
-				# but JS moduleStore does it like this...
-				args = list(request.options)
-				# min_length = min(len(arguments), len(request.options))
-				# request.options = dict(zip(arguments[:min_length], request.options[:min_length]))
-			except:
-				raise UMC_OptionTypeError(_('Not a "dict"'))
-			return function(self, *args)
-
-		# check for required arguments (those without default)
-		self.required_options(request, *[arg for arg in arguments if arg not in defaults])
-
-		# extract arguments from request or take from default
-		# pass arguments as **kwargs, not *args to be more flexible with defaults
-		kwargs = {}
-		# safely iterate over arguments, dont merge the whole request.options at once
-		# who knows what else the user sent?
-		for arg in arguments:
-			# as we checked before, it is either in request.options or defaults
-			kwargs[arg] = request.options.get(arg, defaults.get(arg))
-		if with_flavor:
-			kwargs[with_flavor] = request.flavor or defaults.get(with_flavor)
-		return function(self, **kwargs)
-	copy_function_meta_data(function, _response)
-	return _response
-
-def _multi_response(function, with_flavor, error_handler):
-	def _response(self, request):
-		if not isinstance(request.options, (list,tuple)):
-			raise UMC_OptionTypeError(_('Not a "list"'))
-
-		simple = _simple_response(function, with_flavor)
-
-		response = []
-		for option in request.options:
-			try:
-				req = type('request', (object,), {'options' : option, 'flavor': request.flavor})
-				res = simple(self, req)
-			except Exception, e:
-				res = error_handler(option, e)
-			response.append(res)
-
-		self.finished(request.id, response)
-	copy_function_meta_data(function, _response)
-	return _response
-
 def simple_response(function=None, with_flavor=None):
 	'''If your function is as simple as: "Just return some variables"
 	this decorator is for you.
@@ -330,29 +261,165 @@ def simple_response(function=None, with_flavor=None):
 	     raise UMC_CommandError('Something went wrong')
 
 	'''
+	if function is None:
+		return lambda f: simple_response(f, with_flavor)
+
+	# fake a generator function that yields whatever the original
+	# function returned
+	def _fake_func(self, iterator, *args):
+		for args in iterator:
+			break
+		yield function(self, *args)
+	copy_function_meta_data(function, _fake_func, copy_arg_inspect=True)
+	# fake another variable name
+	# the name is not important as it is removed from the list while
+	# being processed. Even a variable named 'iterator' in the original
+	# function does not break anything
+	_fake_func._original_argument_names = ['self', 'iterator'] + _fake_func._original_argument_names[1:]
+
+	_multi_response = _eval_simple_decorated_function(_fake_func, with_flavor)
+
 	def _response(self, request, *args, **kwargs):
 		# other arguments than request wont be propagated
 		# needed for @LDAP_Connection
-		self.finished(request.id, _simple_response(function, with_flavor)(self, request))
-	if function is None:
-		return lambda f: simple_response(f, with_flavor)
+
+		# fake a multi_request
+		request.options = [request.options]
+		result = _multi_response(self, request)
+		self.finished(request.id, result[0])
+
 	copy_function_meta_data(function, _response)
 	return _response
 
-def multi_response(function=None, with_flavor=None, error_handler=_error_handler):
-	if function is None:
-		return lambda f: _multi_response(f, with_flavor, error_handler)
-	return _multi_response(function, with_flavor, error_handler)
+def multi_response(function=None, with_flavor=None, single_values=False):
+	''' This decorator acts similar to :func:`simple_response` but
+	can handle a list of dicts instead of a single dict.
 
-def _replace_sensitive_data(data, sensitives):
-	""" recursive replace sensitive data with ****** from containing dicts """
-	if isinstance(data, (list, tuple)):
-		data = [_replace_sensitive_data(d, sensitives) for d in data]
-	elif isinstance(data, dict):
-		for sensitive in sensitives:
-			if sensitive in data:
-				data[sensitive] = '******'
-	return data
+	Technically another object is passed to the function that you can
+	name as you like. You can iterate over this object and get the values
+	from each dictionary in *request.options*.
+
+	Default values and flavors are supported.
+
+	You do not return a value, you yield them (and you are supposed to
+	yield!)::
+
+	 @multi_response
+	 def my_multi_func(self, iterator, variable1, variable2=''):
+	   # here, variable1 and variable2 are yet to be initialised
+	   # i.e. variable1 and variable2 will be None!
+	   do_some_initial_stuff()
+	   try:
+	     for variable1, variable2 in iterator:
+	       # now they are set
+	       yield '%s_%s' % (self._saved_dict[variable1], variable2)
+	   except KeyError:
+	     raise UMC_CommandError('Something went wrong')
+	   else:
+	     # only when everything went right...
+	     do_some_cleanup_stuff()
+
+	The above code will send a list of answers to the client as soon as
+	the function is finished (i.e. after *do_some_cleanup_stuff()*)
+	filled with values yielded.
+
+	If you have just one variable in your dictionary, do not forget to
+	add a comma, otherwise Python will assign the first value a list
+	of one element::
+
+	 for var, in iterator:
+	   # now var is set correctly
+	   pass
+	'''
+	if function is None:
+		return lambda f: multi_response(f, with_flavor, single_values)
+	response_func = _eval_simple_decorated_function(function, with_flavor, single_values)
+	def _response(self, request):
+		result = response_func(self, request)
+		self.finished(request.id, result)
+	copy_function_meta_data(function, _response)
+	return _response
+
+def _eval_simple_decorated_function(function, with_flavor, single_values=False):
+	# name of flavor argument. default: 'flavor' (if given, of course)
+	if with_flavor is True:
+		with_flavor = 'flavor'
+
+	def _response(self, request):
+		if not isinstance(request.options, (list, tuple)):
+			raise UMC_OptionTypeError(_('Not a "list"'))
+
+		# argument names of the function, including 'self'
+		arguments, defaults = arginspect(function)
+		# remove self, remove iterator
+		arguments = arguments[2:]
+		# use defaults as dict
+		if defaults:
+			defaults = dict(zip(arguments[-len(defaults):], defaults))
+		else:
+			defaults = {}
+		# remove flavor argument, if given
+		# do it here to have a chance to add it in defaults
+		if with_flavor:
+			arguments.remove(with_flavor)
+
+		# single_values: request.options is, e.g., ["id1", "id2", "id3"], no need for complicated dicts
+		if not single_values:
+			# normalize the whole request.options
+			for element in request.options:
+				if not isinstance(element, dict):
+					raise UMC_OptionTypeError(_('Not a "dict"'))
+
+				# safely iterate over arguments, dont merge the whole request.options at once
+				# who knows what else the user sent?
+				for arg in arguments:
+					# extract arguments from request or take from default
+					if arg not in element:
+						try:
+							element[arg] = defaults[arg]
+						except KeyError:
+							# check for required arguments (those without default)
+							raise UMC_OptionMissing(arg)
+
+			if with_flavor:
+				element[with_flavor] = request.flavor or defaults.get(with_flavor)
+		
+		# checked for required arguments, set default... now run!
+		result = []
+
+		iterator = Iterator(request.options, arguments, single_values)
+		nones = [None] * len(arguments)
+		for res in function(self, iterator, *nones):
+			result.append(res)
+
+		return result
+	return _response
+
+class Iterator(object):
+	def __init__(self, everything, names, single_values):
+		self.everything = everything
+		self.names = names
+		self.single_values = single_values
+		self.max = len(self.everything)
+		self.current= 0
+
+	def __nonzero__(self):
+		return self.current < self.max
+
+	def __iter__(self):
+		self.current = 0
+		return self
+
+	def next(self):
+		if self:
+			values = self.everything[self.current]
+			self.current += 1
+			if self.single_values:
+				return values
+			else:
+				return [values[name] for name in self.names]
+		else:
+			raise StopIteration
 
 def arginspect(function):
 	argspec = inspect.getargspec(function)
@@ -380,7 +447,7 @@ def copy_function_meta_data(original_function, new_function, copy_arg_inspect=Fa
 	# copy __module__, otherwise it would be "univention.management.console.modules.decorators"
 	new_function.__module__ = original_function.__module__
 
-def log(function=None, sensitives=()):
+def log(function=None, sensitives=None, customs=None, single_values=False):
 	'''Log decorator to be used with
 	:func:`simple_response`::
 
@@ -396,21 +463,26 @@ def log(function=None, sensitives=()):
 	 <date>  MODULE      ( INFO    ) : my_func got: var1='value1', var2='value2'
 	 <date>  MODULE      ( INFO    ) : my_func returned: 'value1__value2'
 
-	The variable names are ordered by name and hold the values that
+	The variable names are ordered by appearance and hold the values that
 	are actually going to be passed to the function (i.e. after they were
 	:func:`sanitize` 'd or set to their default value).
 	You may specify the names of sensitive arguments that should not
-	show up in log files::
+	show up in log files and custom functions that can alter the
+	representation of a certain variable's values (useful for non-standard
+	datatypes like regular expressions - you may have used a
+	:class:`~univention.management.console.modules.sanitizers.PatternSanitizer`
+	)::
 
+	 @sanitize(pattern=PatternSanitizer())
 	 @simple_reponse
-	 @log(sensitives=['password'])
-	 def login(self, username, password):
-	     return self._login_user(username, password)
+	 @log(sensitives=['password'], customs={'pattern':lambda x: x.pattern)})
+	 def count_ucr(self, username, password, pattern):
+	     return self._ucr_count(username, password, pattern)
 
 	This results in::
 
-	 <date>  MODULE      ( INFO    ) : login got: password='********', username='Administrator'
-	 <date>  MODULE      ( INFO    ) : login returned: True
+	 <date>  MODULE      ( INFO    ) : count_ucr got: password='********', username='Administrator', pattern='.*'
+	 <date>  MODULE      ( INFO    ) : count_ucr returned: 650
 
 	The decorator also works with :func:`multi_response`::
 
@@ -419,46 +491,59 @@ def log(function=None, sensitives=()):
 	 def multi_my_func(self, var1, var2):
 	     return "%s__%s" % (var1, var2)
 
-	This will give two lines in the logfile for each element in the
-	list of *request.options*::
-
-	 <date>  MODULE      ( INFO    ) : multi_my_func got: var1='value1', var2='value2'
-	 <date>  MODULE      ( INFO    ) : multi_my_func returned: 'value1__value2'
-	 <date>  MODULE      ( INFO    ) : multi_my_func got: var1='value3', var2='value4'
-	 <date>  MODULE      ( INFO    ) : multi_my_func returned: 'value3__value4'
-
+	 <date>  MODULE      ( INFO    ) : multi_my_func got: [var1='value1', var2='value2'], [var1='value3', var2='value4']
+	 <date>  MODULE      ( INFO    ) : multi_my_func returned: ['value1__value2', 'value3__value4']
 	'''
 	if function is None:
-		return lambda f: log(f, sensitives)
-	sensitives = dict([(key, '********') for key in sensitives])
-	def _response(self, **kwargs):
-		name = function.__name__ # perhaps something like self.__class__.__module__?
-		argument_representation = ['%s=%r' % (key, sensitives.get(key, kwargs[key])) for key in sorted(kwargs.keys())]
-		if argument_representation:
-			MODULE.info('%s got: %s' % (name, ', '.join(argument_representation)))
-		ret = function(self, **kwargs)
-		MODULE.info('%s returned: %r' % (name, ret))
-		return ret
+		return lambda f: log(f, sensitives, customs, single_values)
+	if customs is None:
+		customs = {}
+	if sensitives is None:
+		sensitives = []
+	for sensitive in sensitives:
+		customs[sensitive] = lambda x: '********'
+
+	def _log(names, args):
+		if single_values:
+			args = [args]
+		return ['%s=%r' % (name, customs.get(name, lambda x: x)(arg)) for name, arg in zip(names, args)]
+
+	# including self
+	names, _ = arginspect(function)
+	name = function.__name__
+	# multi_response yields i.e. is generator function
+	if inspect.isgeneratorfunction(function):
+		# remove self, iterator
+		names = names[2:]
+		def _response(self, iterator, *args):
+			arg_reprs = []
+			for element in iterator:
+				arg_repr = _log(names, element)
+				if arg_repr:
+					arg_reprs.append(arg_repr)
+			if arg_reprs:
+				MODULE.info('%s got: [%s]' % (name, '], ['.join(', '.join(arg_repr) for arg_repr in arg_reprs)))
+			result = []
+			for res in function(self, iterator, *args):
+				result.append(res)
+				yield res
+			MODULE.info('%s returned: %r' % (name, result))
+	else:
+		# remove self
+		names = names[1:]
+		def _response(self, *args):
+			arg_repr = _log(names, args)
+			if arg_repr:
+				MODULE.info('%s got: %s' % (name, ', '.join(arg_repr)))
+			result = function(self, *args)
+			MODULE.info('%s returned: %r' % (name, result))
+			return result
 	copy_function_meta_data(function, _response, copy_arg_inspect=True)
 	return _response
 
-def log_request_options(function=None, sensitive=[]):
-	""" log request options, strip sensitive data """
-	def log(function):
-		def _response(self, request):
-			options = request.options
-			if sensitive:
-				from copy import deepcopy
-				options = deepcopy(options)
-				_replace_sensitive_data(options, sensitive)
-			MODULE.info( '%s.%s: options: %s' % (self.__class__.__name__, function.func_name, options) )
-			return function(self, request)
-		return _response
-	if function is not None:
-		return log(function)
-	return log
-
 def file_upload(function):
+	''' This decorator restricts requests to be
+	UPLOAD-commands. Simple, yet effective '''
 	def _response(self, request):
 		if request.command != 'UPLOAD':
 			raise UMC_CommandError(_('%s can only be used as UPLOAD') % (function.__name__))
@@ -466,5 +551,5 @@ def file_upload(function):
 	copy_function_meta_data(function, _response)
 	return _response
 
-__all__ = ['simple_response', 'multi_response', 'log_request_options', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict', 'file_upload']
+__all__ = ['simple_response', 'multi_response', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict', 'file_upload']
 
