@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.35-1) unstable; urgency=low
+
+  * allow "_" character in policy names (Bug #28098)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 24 Sep 2012 14:30:50 +0200
+
 univention-directory-manager-modules (8.0.34-1) unstable; urgency=low
 
   * Fixed license_check (Bug #28186)
