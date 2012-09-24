@@ -34,6 +34,7 @@
 import ldap
 import ldap.modlist
 import ldif
+import binascii
 
 from univention.lib.i18n import Translation
 
@@ -52,7 +53,10 @@ class LicenseImport( ldif.LDIFParser ):
 
 	def check( self, base ):
 		# call parse from ldif.LDIFParser
-		self.parse()
+		try:
+			self.parse()
+		except binascii.Error:
+			raise LicenseError( _( "No license has been found." ) )
 
 		# there should exactly one object in the the ldif file
 		if self.dncount == 0:

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.7-2) unstable; urgency=low
+
+  * fixed traceback for invalid license imports; Bug #27471 
+
+ -- Florian Best <best@univention.de>  Mon, 24 Sep 2012 14:09:49 +0200
+
 univention-management-console-module-udm (3.0.7-1) unstable; urgency=low
 
   * Added license v2 (Bug #28186)
