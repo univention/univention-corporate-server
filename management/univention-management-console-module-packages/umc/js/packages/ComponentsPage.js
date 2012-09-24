@@ -43,7 +43,7 @@ define([
 	"umc/modules/packages/store",
 	"umc/i18n!umc/modules/packages"
 ], function(declare, lang, array, dialog, tools, Page, StandbyMixin, Grid, TitlePane, ExpandingTitlePane, Form, store, _) {
-	return declare("umc.modules.packages.ComponentsPage", [ Page, StandbyMixin ], {
+	return declare("umc.modules.packages.SettingsPage", [ Page, StandbyMixin ], {
 
 		moduleStore: null,
 		_query: { table: 'components' },
@@ -52,7 +52,7 @@ define([
 			this.inherited(arguments);
 
 			lang.mixin(this, {
-				title: _("Settings"),
+				title: _("Repository Settings"),
 				headerText: _("Repository settings")
 				//helpText: _("On this page, you find all additional components defined for this system. You can enable/disable/edit/delete them, and you can add new ones here.")
 			});
@@ -87,7 +87,7 @@ define([
 			];
 
 			var formButtons = [{
-				name: 'reset',
+			/*	name: 'reset',
 				label: _('Reset'),
 				callback: lang.hitch(this, function() {
 					this._form.load({}); // ID doesn't matter here but must be dict
@@ -95,7 +95,7 @@ define([
 						iwidget.setValid(true);
 					});
 				})
-			}, {
+			}, {*/
 				name: 'submit',
 				'default': true,
 				label: _("Apply changes"),
@@ -109,6 +109,7 @@ define([
 				widgets: formWidgets,
 				layout: formLayout,
 				buttons: formButtons,
+				style: 'margin-bottom:0;',
 				moduleStore: store('server', 'packages/settings'),
 				scrollable: true,
 				onSaved: lang.hitch(this, '_onSavedRepositorySettings')

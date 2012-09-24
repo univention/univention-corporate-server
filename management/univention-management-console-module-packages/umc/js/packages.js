@@ -38,10 +38,10 @@ define([
 	"umc/widgets/TabbedModule",
 	"umc/modules/packages/AppCenterPage",
 	"umc/modules/packages/PackagesPage",
-	"umc/modules/packages/ComponentsPage",
+	"umc/modules/packages/SettingsPage",
 	"umc/modules/packages/DetailsPage",
 	"umc/i18n!umc/modules/packages" // not needed atm
-], function(declare, lang, array, when, Deferred, store, TabbedModule, AppCenterPage, PackagesPage, ComponentsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, store, TabbedModule, AppCenterPage, PackagesPage, SettingsPage, DetailsPage, _) {
 	return declare("umc.modules.packages", [ TabbedModule ], {
 
 		idProperty: 'package',
@@ -69,7 +69,7 @@ define([
 
 			this._app_center = new AppCenterPage({_udm_accessible: this._udm_accessible});
 			this._packages = new PackagesPage({moduleStore: this.moduleStore});
-			this._components = new ComponentsPage({moduleStore: this._componentsStore});
+			this._components = new SettingsPage({moduleStore: this._componentsStore});
 			this._details = new DetailsPage({moduleStore: this._componentsStore});
 
 			this.addChild(this._app_center);

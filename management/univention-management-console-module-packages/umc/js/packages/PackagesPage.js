@@ -51,7 +51,7 @@ define([
 			this.inherited(arguments);
 
 			lang.mixin(this, {
-				headerText: _("Package management"),
+				headerText: _("Extended software management"),
 				helpText: _("On this page, you see all software packages available on your system, and you can install, uninstall or update them."),
 				title: _("Extended software management")
 			});
