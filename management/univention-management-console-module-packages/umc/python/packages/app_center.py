@@ -66,46 +66,50 @@ LICENSE = License()
 class Application(object):
 	_regComma = re.compile('\s*,\s*')
 	_all_applications = None
+	_category_translations = {}
 
 	def __init__(self, url):
+		# load config file
 		self._options = {}
-		try:
-			# load config file
-			fp = urllib2.urlopen(url)
-			config = ConfigParser.ConfigParser()
-			config.readfp(fp)
+		fp = urllib2.urlopen(url)
+		config = ConfigParser.ConfigParser()
+		config.readfp(fp)
 
-			# copy values from config file
-			for k, v in config.items('Application'):
-				self._options[k] = v
+		# copy values from config file
+		for k, v in config.items('Application'):
+			self._options[k] = v
 
-			# overwrite english values with localized translations
-			loc = locale.getlocale()[0]
-			if isinstance(loc, basestring):
-				if not config.has_section(loc):
-					loc = loc.split('_')[0]
-				if config.has_section(loc):
-					for k, v in config.items(loc):
-						self._options[k] = v
+		# overwrite english values with localized translations
+		loc = locale.getlocale()[0]
+		if isinstance(loc, basestring):
+			if not config.has_section(loc):
+				loc = loc.split('_')[0]
+			if config.has_section(loc):
+				for k, v in config.items(loc):
+					self._options[k] = v
 
-			# parse boolean values
-			for ikey in ('emailrequired',):
-				if ikey in self._options:
-					self._options[ikey] = config.getboolean('Application', ikey)
-				else:
-					self._options[ikey] = False
+		# parse boolean values
+		for ikey in ('emailrequired',):
+			if ikey in self._options:
+				self._options[ikey] = config.getboolean('Application', ikey)
+			else:
+				self._options[ikey] = False
 
-			# parse list values
-			for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'serverrole'):
-				ival = self.get(ikey)
-				if ival:
-					self._options[ikey] = self._regComma.split(ival)
-				else:
-					self._options[ikey] = []
+		# parse list values
+		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'serverrole'):
+			ival = self.get(ikey)
+			if ival:
+				self._options[ikey] = self._regComma.split(ival)
+			else:
+				self._options[ikey] = []
 
-		except ConfigParser.Error as err:
-			# reraise as ValueError
-			raise ValueError(err.message)
+		# localize the category names
+		category_translations = self._get_category_translations()
+		self._options['categories'] = [ category_translations.get(icat.lower()) or icat for icat in self.get('categories') ]
+
+		# return a proper URL for a given screenshot (if it exists)
+		if self.get('screenshot'):
+			self._options['screenshot'] = urllib2.urlparse.urljoin('%s/' % self.get_server(), self.get('screenshot'))
 
 		# save the url
 		self.id = self._options['id'] = self._options['id'].lower()
@@ -128,6 +132,7 @@ class Application(object):
 			ucr.get('version/version', ''),
 		)
 
+	# regular expression to parse the apache HTML directory listing
 	_regDirListing = re.compile(""".*<td.*<a href="(?P<name>[^"/]+\.ini)">[^<]+</a>.*</td>.*""")
 
 	@classmethod
@@ -135,6 +140,30 @@ class Application(object):
 		for application in cls.all():
 			if application.id == id:
 				return application
+
+	@classmethod
+	def _get_category_translations(cls):
+		if not cls._category_translations:
+			url = '%s/../categories.ini' % cls.get_server()
+			try:
+				# open .ini file
+				MODULE.info('opening category translation file: %s' % url)
+				fp = urllib2.urlopen(url)
+				config = ConfigParser.ConfigParser()
+				config.readfp(fp)
+
+				# get the translations for the current language
+				loc = locale.getlocale()[0]
+				if isinstance(loc, basestring):
+					if not config.has_section(loc):
+						loc = loc.split('_')[0]
+					if config.has_section(loc):
+						for k, v in config.items(loc):
+							cls._category_translations[k] = v
+			except (ConfigParser.Error, urllib2.HTTPError) as e:
+				MODULE.warn('Could not load category translations from: %s\n%s' % (url, e))
+			MODULE.info('loaded category translations: %s' % cls._category_translations)
+		return cls._category_translations
 
 	@classmethod
 	def all(cls):
@@ -154,10 +183,10 @@ class Application(object):
 						iurl = url + '/' + ifilename
 						try:
 							cls._all_applications.append(Application(iurl))
-						except ValueError as e:
+						except (ConfigParser.Error, urllib2.HTTPError) as e:
 							MODULE.warn('Could not open application file: %s\n%s' % (iurl, e))
 			except urllib2.HTTPError as e:
-				MODULE.warn('Could not query App Center host at:%s\n%s' % (url, e))
+				MODULE.warn('Could not query App Center host at: %s\n%s' % (url, e))
 
 		# filter function
 		def _included(the_list, app):

@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.18-1) unstable; urgency=low
+
+  * added screenshots and translations for categories; Bug #27458
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Sep 2012 17:26:49 +0200
+
 univention-management-console-module-packages (2.0.17-1) unstable; urgency=low
 
   * evaluate server role for flag cannot_install; Bug #27458

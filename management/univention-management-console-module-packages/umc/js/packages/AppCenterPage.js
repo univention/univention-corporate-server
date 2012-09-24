@@ -45,8 +45,10 @@ define([
 	"umc/modules/lib/server",
 	"umc/modules/packages/Form",
 	"umc/widgets/TextBox",
+	"dojo/query",
+	"dojox/image/LightboxNano",
 	"umc/i18n!umc/modules/packages"
-], function(declare, lang, array, when, dialog, tools, Page, StandbyMixin, ProgressBar, ContainerWidget, CategoryPane, ConfirmDialog, Text, libServer, Form, TextBox, _) {
+], function(declare, lang, array, when, dialog, tools, Page, StandbyMixin, ProgressBar, ContainerWidget, CategoryPane, ConfirmDialog, Text, libServer, Form, TextBox, query, Lightbox, _) {
 	return declare("umc.modules.packages.AppCenterPage", [ Page, StandbyMixin ], {
 
 		_udm_accessible: false, // license depends on udm
@@ -65,26 +67,21 @@ define([
 
 			this.inherited(arguments);
 
-			var widgets =
-			[
-				{
-					type: TextBox,
-					name: 'name',
-					label: _("Name")
-				}
-			];
+			// create a progress bar
+			this._progressBar = new ProgressBar();
 
-			var layout =
-			[
-				{
-					label: _("Search"),
-					layout:
-					[
-						['name']
-					]
-				}
-			];
-		
+			// create form
+			var widgets = [{
+				type: TextBox,
+				name: 'name',
+				label: _("Name")
+			}];
+
+			var layout = [{
+				label: _("Search"),
+				layout: [ ['name'] ]
+			}];
+
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
@@ -94,17 +91,18 @@ define([
 			try {
 				// hide form
 				this._form._container.getChildren()[0].toggle();
-			} catch(e) {
-			}
+			} catch(e) { }
+
+			// register event handlers
 			var widget = this._form.getWidget('name');
 			widget.on('keyup', lang.hitch(this, 'filterApplications'));
+
+			// add form to container widget
 			this.container = new ContainerWidget({
 				scrollable: true
 			});
-			this.addChild(this.container);
 			this.container.addChild(this._form);
-
-			this._progressBar = new ProgressBar();
+			this.addChild(this.container);
 
 			// load apps
 			this.standby(true);
@@ -120,6 +118,10 @@ define([
 				this.container.addChild(this._category_pane);
 			}));
 			//this._form.load({}); // ID doesn't matter here but must be dict
+		},
+
+		startup: function() {
+			this.inherited(arguments);
 		},
 
 		// inspired by PackagesPage._show_details
@@ -149,13 +151,13 @@ define([
 						var label = this._detail_field_label(key);
 						var value = data.result[key];
 						var detail_func = this['_detail_field_custom_' + key];
-						if (undefined !== detail_func) {
+						if (detail_func) {
 							value = lang.hitch(this, detail_func)(data.result);
-							if (undefined === value) {
+							if (!value) {
 								return; // continue
 							}
 						}
-						if (label && value) {
+						if (label) {
 							txt += "<tr>\n";
 							txt += "<td style='" + label_style + "'>" + label + "</td>\n";
 							txt += "<td style='" + data_style + "'>" + value + "</td>\n";
@@ -208,6 +210,11 @@ define([
 						style: lang.replace('min-width:500px;max-width:{width}px;', {width: width}), // dialog.confirm doesn't exceed 550px
 						message: dialogText,
 						options: buttons
+					});
+
+					// decorate screenshot images with a Lightbox
+					query('.umcScreenshot', confirmDialog.domNode).forEach(function(imgNode) {
+						new Lightbox({ href: imgNode.src }, imgNode);
 					});
 
 					// connect to 'onConfirm' event to close the dialog in any case
@@ -336,6 +343,15 @@ define([
 			}
 		},
 
+		_detail_field_custom_screenshot: function(values) {
+			if (values.screenshot) {
+				return lang.replace('<img src="{url}" style="max-width: 90%; height:200px;" class="umcScreenshot" />', {
+					url: values.screenshot,
+					id: this.id
+				});
+			}
+		},
+
 		_detail_field_order: function() {
 			return ['name',
 				'version',
@@ -346,7 +362,8 @@ define([
 				'emailrequired',
 				'allows_using',
 				'defaultpackagesmaster',
-				'cannot_install_reason'
+				'cannot_install_reason',
+				'screenshot'
 			];
 		},
 
@@ -362,7 +379,8 @@ define([
 				'emailrequired': _("Email notification"),
 				'allows_using': _("License restrictions"),
 				'defaultpackagesmaster': _("Packages for master system"),
-				'cannot_install_reason': _("Conflicts")
+				'cannot_install_reason': _("Conflicts"),
+				'screenshot': _("Screenshot")
 			};
 			return labels[key];
 		},
