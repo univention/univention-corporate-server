@@ -422,7 +422,7 @@ define([
 						return data; // Object
 					}, function(error) {
 						// handle errors
-						tools.handleErrorStatus(error);
+						tools.handleErrorStatus(error.response);
 
 						// propagate the error
 						throw error; // Error
@@ -497,21 +497,9 @@ define([
 		},
 
 		parseError: function(error) {
-			var status = lang.getObject('status', false, error);
-			var message = '';
-			try {
-				var jsonResponse = lang.getObject('responseText', false, error) || '{}';
-				// replace all newlines with '<br>' because strings in json must not have line breaks
-				jsonResponse = jsonResponse.replace(/\n/g, '<br>');
-				var response = json.parse(jsonResponse);
-				status = parseInt(lang.getObject('status', false, response) || error.status, 10) || status;
-				message = lang.getObject('message', false, response) || error.message || '';
-			}
-			catch (_err) { }
-
 			return {
-				status: status,
-				message: message
+				status: parseInt(error.data.status, 10) || error.status,
+				message: error.data.message || ''
 			};
 		},
 

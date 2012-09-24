@@ -38,18 +38,18 @@ define([
 	"umc/i18n!umc/app"
 ], function(lang, dojo, cache, json, sprintf, dialog, _) {
 	return function() {
-		var path = sprintf('%s/help.json', dojo.locale.slice( 0, 2 ).toLowerCase());
+		var path = sprintf('help/%s.json', dojo.locale.slice( 0, 2 ).toLowerCase());
 		var keys = {};
 		try {
 			keys = json.parse(cache('umc', path));
 		} catch(e) {
 			try {
-				keys = json.parse(cache('umc', 'en/help.json'));
+				keys = json.parse(cache('umc', 'help/en.json'));
 			} catch(e2) {
-				console.error("HelpPage: en/help.json is missing or malformed");
+				console.error("HelpPage: help/en.json is missing or malformed");
 			}
 		}
 
-		dialog.templateDialog( "umc", "help.html", keys, _( 'Help' ), _( 'Close' ) );
+		dialog.templateDialog( "umc", "help/template.html", keys, _( 'Help' ), _( 'Close' ) );
 	};
 });
