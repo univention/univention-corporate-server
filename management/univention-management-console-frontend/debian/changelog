@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.71-1) unstable; urgency=low
+
+  * reverted last commit; Bug #27458
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Sep 2012 17:06:00 +0200
+
 univention-management-console-frontend (2.0.70-1) unstable; urgency=low
 
   * added reference to dojox/image/Lightbox .css file; Bug #27458
