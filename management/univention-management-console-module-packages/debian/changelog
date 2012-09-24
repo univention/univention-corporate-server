@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.19-1) unstable; urgency=low
+
+  * Adjust to new multi_response (Bug #27716)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 24 Sep 2012 18:47:24 +0200
+
 univention-management-console-module-packages (2.0.18-1) unstable; urgency=low
 
   * added screenshots and translations for categories; Bug #27458

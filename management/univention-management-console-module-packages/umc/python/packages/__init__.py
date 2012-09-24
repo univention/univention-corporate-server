@@ -253,22 +253,20 @@ class Instance(umcm.Base):
 
 	@sanitize(pattern=PatternSanitizer(required=True))
 	@simple_response
-	def query(self, pattern, installed=False, section='all', key='package'):
-		""" Query to fill the grid. Structure is fixed here.
-		"""
+	def query(self, pattern, section='all', key='package'):
+		""" Query to fill the grid. Structure is fixed here. """
 		result = []
 		for package in self.package_manager.packages():
-			if (not installed) or package.is_installed:
-				if section == 'all' or package.section == section:
-					toshow = False
-					if pattern.pattern == '.*':
-						toshow = True
-					elif key == 'package' and pattern.search(package.name):
-						toshow = True
-					elif key == 'description' and pattern.search(package.candidate.raw_description):
-						toshow = True
-					if toshow:
-						result.append(self._package_to_dict(package, full=False))
+			if section == 'all' or package.section == section:
+				toshow = False
+				if pattern.pattern == '.*':
+					toshow = True
+				elif key == 'package' and pattern.search(package.name):
+					toshow = True
+				elif key == 'description' and pattern.search(package.candidate.raw_description):
+					toshow = True
+				if toshow:
+					result.append(self._package_to_dict(package, full=False))
 		return result
 
 	@simple_response
@@ -415,19 +413,17 @@ class Instance(umcm.Base):
 		return result
 
 	@sanitize_list(StringSanitizer())
-	@simple_response
-	def get_components(self, *component_ids):
+	@multi_response(single_values=True)
+	def get_components(self, iterator, component_id):
 		# be as current as possible.
 		self.uu.ucr_reinit()
 		self.ucr.load()
-		result = []
-		for component_id in component_ids:
-			result.append(self._component(component_id))
-		return result
+		for component_id in iterator:
+			yield self._component(component_id)
 
 	@sanitize_list(DictSanitizer({'object' : advanced_components_sanitizer}))
-	@simple_response
-	def put_components(self, *objects):
+	@multi_response
+	def put_components(self, iterator, object):
 		"""Writes back one or more component definitions.
 		"""
 		# umc.widgets.Form wraps the real data into an array:
@@ -454,14 +450,10 @@ class Instance(umcm.Base):
 		#		},
 		#		... more such entries ...
 		#	]
-
-		result = []
 		with self.set_save_commit_load() as super_ucr:
-			for data in objects:
-				result.append(self._put_component(data['object'], super_ucr))
-			self.package_manager.update()
-
-		return result
+			for object, in iterator:
+				yield self._put_component(object, super_ucr)
+		self.package_manager.update()
 
 	# do the same as put_components (update)
 	# but dont allow adding an already existing entry
@@ -469,12 +461,11 @@ class Instance(umcm.Base):
 	add_components.__name__ = 'add_components'
 
 	@sanitize_list(StringSanitizer())
-	@simple_response
-	def del_components(self, *component_ids):
-		result = []
-		for component_id in component_ids:
-			result.append(self._del_component(component_id))
-		return result
+	@multi_response(single_values=True)
+	def del_components(self, iterator, component_id):
+		for component_id in iterator:
+			yield self._del_component(component_id)
+		self.package_manager.update()
 
 	def _component(self, component_id):
 		"""Returns a dict of properties for the component with this id.
@@ -582,40 +573,38 @@ class Instance(umcm.Base):
 		return result
 
 	@multi_response
-	def get_settings(self):
+	def get_settings(self, iterator):
 		# *** IMPORTANT *** Our UCR copy must always be current. This is not only
 		#	to catch up changes made via other channels (ucr command line etc),
 		#	but also to reflect the changes we have made ourselves!
 		self.ucr.load()
 
-		return {
-			'maintained' : self.ucr.is_true('repository/online/maintained', False),
-			'unmaintained' : self.ucr.is_true('repository/online/unmaintained', False),
-			'server' : self.ucr.get('repository/online/server', ''),
-			'prefix' : self.ucr.get('repository/online/prefix', ''),
-		}
+		for _ in iterator:
+			yield {
+				'maintained' : self.ucr.is_true('repository/online/maintained', False),
+				'unmaintained' : self.ucr.is_true('repository/online/unmaintained', False),
+				'server' : self.ucr.get('repository/online/server', ''),
+				'prefix' : self.ucr.get('repository/online/prefix', ''),
+			}
 
 	@sanitize_list(DictSanitizer({'object' : basic_components_sanitizer}),
 		min_elements=1, max_elements=1 # moduleStore with one element...
 	)
 	@multi_response
-	def put_settings(self, object):
+	def put_settings(self, iterator, object):
+		# FIXME: returns values although it should yield (multi_response)
 		changed = False
-		#		errors['server'] = _("Empty server name not allowed")
-		#		estr = _("At least one out of %s must be selected.") % '(maintained, unmaintained)'
-		#		errors['maintained'] = estr
-		#		errors['unmaintained'] = estr
-
 		# Set values into our UCR copy.
 		try:
 			with self.set_save_commit_load() as super_ucr:
-				for key, value in object.iteritems():
-					MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
-					super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
+				for object, in iterator:
+					for key, value in object.iteritems():
+						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
+						super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
 				changed = super_ucr.changed()
 		except Exception as e:
 			MODULE.warn("   !! Writing UCR failed: %s" % str(e))
-			return {'message' : str(e), 'status' : PUT_WRITE_ERROR}
+			return [{'message' : str(e), 'status' : PUT_WRITE_ERROR}]
 
 		self.package_manager.update()
 
@@ -635,11 +624,11 @@ class Instance(umcm.Base):
 			# just to appropriately inform the user
 			if changed:
 				response['status'] = PUT_UPDATER_NOREPOS
-			return response
+			return [response]
 		except:
 			info = sys.exc_info()
 			emsg = '%s: %s' % info[:2]
 			MODULE.warn("   !! Updater error [%s]: %s" % (emsg))
-			return {'message' : str(info[1]), 'status' : PUT_UPDATER_ERROR}
-		return {'status' : PUT_SUCCESS}
+			return [{'message' : str(info[1]), 'status' : PUT_UPDATER_ERROR}]
+		return [{'status' : PUT_SUCCESS}]
 
