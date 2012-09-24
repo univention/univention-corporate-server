@@ -65,7 +65,7 @@ property_descriptions = {
 	'name': univention.admin.property(
 			short_description = _( 'Name' ),
 			long_description = '',
-			syntax = udm_syntax.string,
+			syntax = udm_syntax.policyName,
 			multivalue = False,
 			options=[],
 			required = True,

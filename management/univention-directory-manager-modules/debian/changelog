@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.33-1) unstable; urgency=low
+
+  * added syntax for policy names to limit set of allowed
+    characters (Bug #28098)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 24 Sep 2012 14:03:04 +0200
+
 univention-directory-manager-modules (8.0.32-1) unstable; urgency=low
 
   * Added license v2 (Bug #28186)
