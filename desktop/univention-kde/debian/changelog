@@ -1,3 +1,9 @@
+univention-kde (7.0.0-5) unstable; urgency=low
+
+  * fixed desktop file (Bug #28586) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Sep 2012 17:16:20 +0200
+
 univention-kde (7.0.0-4) unstable; urgency=low
 
   * added StartupNotify=false to univention.desktop (Bug #28586) 
