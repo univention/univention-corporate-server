@@ -353,7 +353,7 @@ if ignore_filter:
 
 @!@
 ignore_filter = ''
-for ou in configRegistry.get('connector/s4/mapping/ou/ignorelist', '').split(','):
+for ou in configRegistry.get('connector/ad/mapping/ou/ignorelist', '').split(','):
 	if ou:
 		ignore_filter += '(ou=%s)' % (ou)
 if ignore_filter:

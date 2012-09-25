@@ -1,3 +1,9 @@
+univention-ad-connector (7.0.3-2) unstable; urgency=low
+
+  * Fixed typo in last commit (Bug #20517)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Sep 2012 09:32:48 +0200
+
 univention-ad-connector (7.0.3-1) unstable; urgency=low
 
   * Added UCR variables for ignrelists (users, groups, cn, ou)
