@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.22-1) unstable; urgency=low
+
+  * fixed typo; Bug #27458
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Sep 2012 16:56:10 +0200
+
 univention-management-console-module-packages (2.0.21-1) unstable; urgency=low
 
   * simplified command for installing schema packages; Bug #27458

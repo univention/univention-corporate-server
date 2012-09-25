@@ -303,7 +303,7 @@ define([
 
 				// prepare a command with max 50 characters length per line
 				var MAXCHARS = 50;
-				var cmdLine = 'univention-add-app ' + values.id;
+				var cmdLine = lang.replace('univention-add-app {id} ', values);
 				var cmdLines = []
 				array.forEach(master_packages, function(icmd) {
 					if (icmd.length + cmdLine.length > MAXCHARS) {
