@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ADCONNECTORPID=/var/run/univention-s4-connector
+S4CONNECTORPID=/var/run/univention-s4-connector
 
 test -x /usr/sbin/univention-s4-connector || exit 0
 
@@ -44,13 +44,19 @@ case "$1" in
 			check_autostart s4-connector connector/s4/autostart
 		fi	
 		log_action_msg "Starting univention-s4-connector daemon"
-		start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-s4-connector
-		log_action_end_msg 0
+		if start-stop-daemon --start --quiet --pidfile "$S4CONNECTORPID" -a /usr/sbin/univention-s4-connector; then
+			log_action_end_msg 0
+		else
+			log_action_end_msg 1
+		fi
 		;;
 	stop)
 		log_action_msg "Stopping univention-s4-connector daemon"
-		start-stop-daemon --stop --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-s4-connector
-		log_action_end_msg 0
+		if start-stop-daemon --stop --retry 30 --quiet --pidfile "$S4CONNECTORPID" -a /usr/sbin/univention-s4-connector; then
+			log_action_end_msg 0
+		else
+			log_action_end_msg 1
+		fi
 		;;
 	restart|force-reload)
 		$0 stop
@@ -58,9 +64,9 @@ case "$1" in
 		$0 start
 		;;
 	crestart)
-		ADCONNECTOR=`cat $ADCONNECTORPID 2>/dev/null`
-		if [ -n "$ADCONNECTOR" ]; then
-		    ps xaw | grep connector | grep -q "$ADCONNECTOR" && $0 restart
+		S4CONNECTOR=`cat $S4CONNECTORPID 2>/dev/null`
+		if [ -n "$S4CONNECTOR" ]; then
+		    ps xaw | grep connector | grep -q "$S4CONNECTOR" && $0 restart
 		fi
 		;;
 	*)
