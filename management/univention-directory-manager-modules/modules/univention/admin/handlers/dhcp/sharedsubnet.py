@@ -55,6 +55,7 @@ property_descriptions={
 			long_description='',
 			syntax=univention.admin.syntax.ipv4Address,
 			multivalue=0,
+			include_in_default_search=1,
 			options=[],
 			required=1,
 			may_change=0,

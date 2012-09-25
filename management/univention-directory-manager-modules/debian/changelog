@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.38-1) unstable; urgency=low
+
+  * Add attributes to be searched in by default (Bug #24341)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 25 Sep 2012 19:17:13 +0200
+
 univention-directory-manager-modules (8.0.37-1) unstable; urgency=low
 
   * added "nouveau" driver to list of available x modules

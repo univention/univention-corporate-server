@@ -55,6 +55,7 @@ property_descriptions={
 			long_description = '',
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
+			include_in_default_search=1,
 			options = [],
 			required = True,
 			may_change = True,
