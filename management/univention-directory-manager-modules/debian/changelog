@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.37-1) unstable; urgency=low
+
+  * added "nouveau" driver to list of available x modules
+    in XModule syntax (Bug #23124)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 25 Sep 2012 11:39:20 +0200
+
 univention-directory-manager-modules (8.0.36-1) unstable; urgency=low
 
   * scripts/convert-user-base64-photos: replaced traceback when

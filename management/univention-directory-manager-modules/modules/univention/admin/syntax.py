@@ -1315,6 +1315,7 @@ class XModule(select):
 		('mga', 'MGA'),
 		('neomagic', 'Neomagic'),
 		('newport', 'Newport'),
+		('nouveau', 'nouveau - new Nvidia OSS driver'),
 		('nsc', 'NSC'),
 		('nv', 'NV'),
 		('nvidia', 'NVidia (closed source)'),
