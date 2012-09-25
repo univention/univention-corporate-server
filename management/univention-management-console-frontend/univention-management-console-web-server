@@ -323,7 +323,7 @@ class UMC_HTTPError(cherrypy.HTTPError):
 		cherrypy._cperror.clean_headers(self.status)
 
 		cherrypy.response.status = self.status
-		cherrypy.response.body = default_error_page(self.status, self.message, None, None, self.body)
+		cherrypy.response.body = default_error_page(self.status, self._message, None, None, self.body)
 
 		cherrypy.response.headers['Content-Length'] = len(cherrypy.response.body)
 
@@ -437,7 +437,8 @@ class CPgeneric(object):
 		# something bad happened
 		self._log('error', 'response status code: %s' % response.status)
 		self._log('error', 'response message: %s' % response.message)
-		raise UMC_HTTPError(response.status, response.message, response.body)
+		self._log('error', 'response result: %s' % response.result)
+		raise UMC_HTTPError(response.status, response.message, response.result)
 
 
 class CPGet(CPgeneric):
