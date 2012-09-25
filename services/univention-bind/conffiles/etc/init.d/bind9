@@ -56,7 +56,7 @@ case "$1" in
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart univention-bind-proxy bind/autostart
+			check_autostart univention-bind bind/autostart
 		fi
 		log_action_msg "Starting bind9 daemon:"
 		if [ "$dns_backend" = "samba4" ]; then
@@ -78,7 +78,7 @@ case "$1" in
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart univention-bind-proxy bind/autostart
+			check_autostart univention-bind bind/autostart
 		fi
 
 		log_action_msg "Restarting bind9 daemon: "
@@ -97,7 +97,7 @@ case "$1" in
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart univention-bind-proxy bind/autostart
+			check_autostart univention-bind bind/autostart
 		fi
 		if [ "$dns_backend" = "samba4" ]; then
 			if sv_running univention-bind-samba4

@@ -1,3 +1,9 @@
+univention-bind (7.0.2-1) unstable; urgency=low
+
+  * fixed check_autostart calls in bind initscript (Bug #23811)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 25 Sep 2012 13:21:28 +0200
+
 univention-bind (7.0.1-1) unstable; urgency=low
 
   * adjust named.conf.samba4 to new path of dlz_bind9 (for Bug #27457)
