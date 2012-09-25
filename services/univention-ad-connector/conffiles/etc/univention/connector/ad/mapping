@@ -151,6 +151,7 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 						ucs_attribute='mailPrimaryAddress',
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='mail',
+						reverse_attribute_check = True,
 					),
 					"""
 @!@
@@ -276,6 +277,7 @@ if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['
 						ucs_attribute='mailAddress',
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='mail',
+						reverse_attribute_check = True,
 					),
 					"""
 if baseConfig.has_key('connector/ad/mapping/group/exchange') and baseConfig['connector/ad/mapping/group/exchange'] in ['yes','true']:

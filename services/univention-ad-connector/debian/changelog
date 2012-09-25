@@ -1,3 +1,11 @@
+univention-ad-connector (7.0.5-1) unstable; urgency=low
+
+  * Added a reverse attribute check for the mail attribute. This means
+    mail from AD will be synced to mailPrimaryAddress in UCS. The UCS
+    attribute mail will not be synced (Bug #28240)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Sep 2012 13:45:24 +0200
+
 univention-ad-connector (7.0.4-1) unstable; urgency=low
 
   * Adjust the AD connector init script with the S4 connector init
