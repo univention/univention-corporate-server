@@ -305,6 +305,30 @@ def update_session(response, sessionid):
 	response.headers['X-UMC-Session-Id'] = sessionid
 	response.headers['X-UMC-Session-Timeout'] = _session_timeout
 
+def default_error_page(status, message, traceback, version, result = None):
+	cherrypy.response.headers['Content-type'] = umcp.MIMETYPE_JSON
+	response = {
+		'status': status,
+		'message': cherrypy._cperror._escape(str(message), True) # html escaped
+	}
+	if result:
+		response['result'] = result
+	return simplejson.dumps(response)
+
+class UMC_HTTPError(cherrypy.HTTPError):
+	def __init__(self, status=500, message=None, body=None):
+		cherrypy.HTTPError.__init__(self, status, message)
+		self.body = body
+	def set_response(self):
+		cherrypy._cperror.clean_headers(self.status)
+
+		cherrypy.response.status = self.status
+		cherrypy.response.body = default_error_page(self.status, self.message, None, None, self.body)
+
+		cherrypy.response.headers['Content-Length'] = len(cherrypy.response.body)
+
+		cherrypy._cperror._be_ie_unfriendly(self.status)
+
 class CPgeneric(object):
 
 	# NOTE: only use CORE.process, _not_ CORE.error; since CORE.error writes as
@@ -413,7 +437,7 @@ class CPgeneric(object):
 		# something bad happened
 		self._log('error', 'response status code: %s' % response.status)
 		self._log('error', 'response message: %s' % response.message)
-		raise cherrypy.HTTPError(response.status, response.message)
+		raise UMC_HTTPError(response.status, response.message, response.body)
 
 
 class CPGet(CPgeneric):
@@ -570,13 +594,6 @@ class CPRoot(object):
 		http://localhost:<ucr:umc/http/port>/
 		"""
 		raise cherrypy.HTTPError(httplib.NOT_FOUND)
-
-def default_error_page(status, message, traceback, version):
-	cherrypy.response.headers['Content-type'] = umcp.MIMETYPE_JSON
-	return simplejson.dumps({
-		'status': status,
-		'message': cherrypy._cperror._escape(str(message), True) # html escaped
-	})
 
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)

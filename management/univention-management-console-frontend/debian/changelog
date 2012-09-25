@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.74-1) unstable; urgency=low
+
+  * adapted cherrypy errors to contain a body from umcp response; Bug #27716
+
+ -- Florian Best <best@univention.de>  Tue, 25 Sep 2012 15:48:53 +0200
+
 univention-management-console-frontend (2.0.73-2) unstable; urgency=low
 
   * fixed typo; Bug #28551
