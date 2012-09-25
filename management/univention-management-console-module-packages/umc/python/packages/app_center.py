@@ -109,7 +109,7 @@ class Application(object):
 
 		# return a proper URL for a given screenshot (if it exists)
 		if self.get('screenshot'):
-			self._options['screenshot'] = urllib2.urlparse.urljoin('%s/' % self.get_server(), self.get('screenshot'))
+			self._options['screenshot'] = urllib2.urlparse.urljoin('%s/' % self.get_repository_url(), self.get('screenshot'))
 
 		# save the url
 		self.id = self._options['id'] = self._options['id'].lower()
@@ -127,8 +127,12 @@ class Application(object):
 
 	@classmethod
 	def get_server(cls):
+		return ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+
+	@classmethod
+	def get_repository_url(cls):
 		return 'http://%s/meta-inf/%s' % (
-			ucr.get('repository/app_center/server', 'appcenter.software-univention.de'),
+			cls.get_server(),
 			ucr.get('version/version', ''),
 		)
 
@@ -144,7 +148,7 @@ class Application(object):
 	@classmethod
 	def _get_category_translations(cls):
 		if not cls._category_translations:
-			url = '%s/../categories.ini' % cls.get_server()
+			url = '%s/../categories.ini' % cls.get_repository_url()
 			try:
 				# open .ini file
 				MODULE.info('opening category translation file: %s' % url)
@@ -172,7 +176,7 @@ class Application(object):
 
 			# query all applications from the server
 			ucr.load()
-			url = cls.get_server()
+			url = cls.get_repository_url()
 			try:
 				for iline in urllib2.urlopen(url):
 					# parse the server's directory listing

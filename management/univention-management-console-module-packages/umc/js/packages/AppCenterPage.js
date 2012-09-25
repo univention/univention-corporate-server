@@ -301,16 +301,17 @@ define([
 					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Join a domain before you install this application!');
 				}
 				var commands = [
-					lang.replace('ucr set repository/online/component/{id}=enabled \\', values),
-					lang.replace('        repository/online/component/{id}/parts=maintained \\', values),
-					lang.replace('        repository/online/component/{id}/version=current \\', values),
-					lang.replace('        repository/online/component/{id}/server={server}', values),
-					lang.replace('univention-install {packages}', {packages: master_packages.join(' ')})
+					lang.replace('COMP=repository/online/component/{id}', values),
+					'ucr set ${COMP}=enabled \\',
+					'  ${COMP}/parts=maintained \\',
+					'  ${COMP}/version=current \\',
+					'  ${COMP}/server=' + values.server,
+					'univention-install ' + master_packages.join(' ')
 				].join('\n');
 				if (values.is_master) {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers.') + '<pre>' + commands + '</pre>';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers.') + '</td></tr><tr><td colspan="2"><pre>' + commands + '</pre>';
 				} else {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on your DC master and all of your backup servers <em>prior</em> to installing the application on this system.') + '<pre>' + commands + '</pre>';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on your DC master and all of your backup servers <em>prior</em> to installing the application on this system.') + '</td></tr><tr><td colspan="2"><pre>' + commands + '</pre>';
 				}
 			}
 		},
