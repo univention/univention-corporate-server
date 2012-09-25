@@ -52,7 +52,7 @@ msgstr "Kategorie"
 
 #: umc/js/ucr.js:133
 msgid "Category the UCR variable should be associated with"
-msgstr "Kategorie die der UCR-Variable zugeordnet sein soll"
+msgstr "Kategorie, die der UCR-Variable zugeordnet sein soll"
 
 #: umc/js/ucr.js:77 umc/js/ucr.js:84
 msgid "Delete"
@@ -92,7 +92,7 @@ msgstr "Schlüsselwort"
 
 #: umc/js/ucr.js:155
 msgid "Keyword that should be searched for in the selected attribute"
-msgstr "Schlüsselwort nach dem in dem ausgewählten Attribute gesucht werden soll"
+msgstr "Schlüsselwort, nach dem in dem ausgewählten Attribut gesucht werden soll"
 
 #: umc/js/ucr.js:209
 msgid "Name of UCR variable"
@@ -125,7 +125,7 @@ msgid ""
 "Caution: Changing UCR variables directly results in the change of the system "
 "configuration. Misconfiguration may cause an usable system!"
 msgstr ""
-"Univention Configuration Registry (UCR) ist die lokale Datenbank zur Konfiguration"
+"Univention Configuration Registry (UCR) ist die lokale Datenbank zur Konfiguration "
 "von UCS-Systemen. Mit diesem Modul lassen sich UCR-Variablen anlegen, "
 "löschen und verändern. Achtung: Das Verändern von UCR-Variablen führt direkt zur "
 "Veränderung der Systemkonfiguration. Falsche Werte können das System "

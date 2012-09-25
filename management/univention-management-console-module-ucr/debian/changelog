@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (2.0.1-1) unstable; urgency=low
+
+  * Added PatternSanitizer (Bug #24341)
+  * ported module to Dojo 1.8; Bug #26857
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 25 Sep 2012 12:46:05 +0200
+
 univention-management-console-module-ucr (2.0.0-2) unstable; urgency=low
 
   * Build only for Python 2.6 (Bug #26852)

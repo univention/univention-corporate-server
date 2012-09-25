@@ -33,7 +33,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
-	"dojo/on",
 	"dijit/Dialog",
 	"dijit/form/_TextBoxMixin",
 	"umc/tools",
@@ -50,7 +49,7 @@ define([
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/ucr"
-], function(declare, lang, kernel, array, on, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, ExpandingTitlePane, TextBox, Text, HiddenInput, ComboBox, _) {
+], function(declare, lang, kernel, array, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, ExpandingTitlePane, TextBox, Text, HiddenInput, ComboBox, _) {
 	var _DetailDialog = declare([ Dialog, StandbyMixin ], {
 		_form: null,
 
@@ -127,7 +126,7 @@ define([
 			this._form.placeAt(this.containerNode);
 
 			// simple handler to disable standby mode
-			this.own(on(this._form, 'loaded', lang.hitch(this, function() {
+			this._form.on('loaded', lang.hitch(this, function() {
 				// display the description text
 				var descWidget = this._form.getWidget('description');
 				var text = this._form.getWidget('description[' + kernel.locale + ']').get('value');
@@ -145,11 +144,11 @@ define([
 				// disable the loading animation
 				this._position();
 				this.standby(false);
-			})));
-			this.own(on(this._form, 'saved', lang.hitch(this, function() {
+			}));
+			this._form.on('saved', lang.hitch(this, function() {
 				this._position();
 				this.standby(false);
-			})));
+			}));
 		},
 
 		clearForm: function() {
@@ -295,7 +294,7 @@ define([
 				query: {
 					category: "all",
 					key: "all",
-					filter:"*"
+					pattern: "*"
 				}
 			});
 			titlePane.addChild(this._grid);
@@ -331,7 +330,7 @@ define([
 				size: 'TwoThirds'
 			}, {
 				type: TextBox,
-				name: 'filter',
+				name: 'pattern',
 				value: '*',
 				description: _( 'Keyword that should be searched for in the selected attribute' ),
 				label: _( 'Keyword' ),
@@ -342,16 +341,16 @@ define([
 			this._searchForm = new SearchForm({
 				region: 'top',
 				widgets: widgets,
-				layout: [[ 'category', 'key', 'filter', 'submit' ]]
+				layout: [[ 'category', 'key', 'pattern', 'submit' ]]
 			});
 			titlePane.addChild(this._searchForm);
-			this.own(on(this._searchForm, 'search', lang.hitch(this._grid, 'filter')));
+			this._searchForm.on('search', lang.hitch(this._grid, 'filter'));
 
 			this._page.startup();
 
 			// make sure that the input field is focused
-			this.own(on(this._page, 'show', lang.hitch(this, '_selectInputText')));
-			this.own(on(this._grid, 'filterDone', lang.hitch(this, '_selectInputText')));
+			this._page.on('show', lang.hitch(this, '_selectInputText'));
+			this._grid.on('filterDone', lang.hitch(this, '_selectInputText'));
 
 			//
 			// create dialog for UCR variable details
@@ -365,7 +364,7 @@ define([
 
 		_selectInputText: function() {
 			// focus on input widget
-			var widget = this._searchForm.getWidget('filter');
+			var widget = this._searchForm.getWidget('pattern');
 			widget.focus();
 
 			// select the text

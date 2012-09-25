@@ -31,12 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from fnmatch import fnmatch
-
 from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError, Base
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
+
+from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer
 
 import univention.config_registry as ucr
 from univention.config_registry_info import ConfigRegistryInfo, Variable
@@ -167,7 +168,9 @@ class Instance( Base ):
 			})
 		self.finished( request.id, categories )
 
-	def query( self, request ):
+	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(['all', 'key', 'value', 'description'], default='variable'))
+	@simple_response
+	def query(self, pattern, key, category=None):
 		'''Returns a dictionary of configuration registry variables
 		found by searching for the (wildcard) expression defined by the
 		UMCP request. Additionally a list of configuration registry
@@ -176,39 +179,30 @@ class Instance( Base ):
 		The dictionary returned is compatible with the Dojo data store
 		format.'''
 		variables = []
-		MODULE.info( 'UCR.query: options: %s' % str( request.options ) )
-		category = request.options.get( 'category', None )
 		if category == 'all':
 			# load _all_ config registry variables
-			baseInfo = ConfigRegistryInfo( registered_only = False )
+			base_info = ConfigRegistryInfo(registered_only=False)
 		else:
 			# load _all registered_ config registry variables
-			baseInfo = ConfigRegistryInfo()
+			base_info = ConfigRegistryInfo()
 
-		pattern = request.options.get( 'filter', '*' )
-		if pattern == None:
-			pattern = ''
-		key = request.options.get( 'key', 'variable' )
-		if category in ( 'all', 'all-registered' ):
-			cat = None
-		else:
-			cat = category
+		if category in ('all', 'all-registered'):
+			category = None
 
-		def _match_value( name, var ):
-			return var.value and fnmatch( var.value, pattern )
-		def _match_key( name, var ):
-			return fnmatch( name, pattern )
-		def _match_description( name, var ):
-			descr = var.get( 'description', '' )
-			return descr and fnmatch( descr, pattern )
-		def _match_all( name, var ):
-			return _match_value( name, var ) or _match_description( name, var ) or _match_key( name, var )
+		def _match_value(name, var):
+			return var.value and pattern.match(var.value)
+		def _match_key(name, var):
+			return pattern.match(name)
+		def _match_description(name, var):
+			descr = var.get('description')
+			return descr and pattern.match(descr)
+		def _match_all(name, var):
+			return _match_value(name, var) or _match_description(name, var) or _match_key(name, var)
 
-		if key in ( 'all', 'key', 'value', 'description' ):
-			func = eval( '_match_%s' % key )
-			variables = filter( lambda x: func( *x ), baseInfo.get_variables( cat ).items() )
-			variables = map( lambda x: { 'key' : x[ 0 ], 'value' : x[ 1 ].value }, variables )
-		else:
-			raise UMC_OptionTypeError( 'Unknown search key' )
+		func = eval('_match_%s' % key)
+		for name, var in base_info.get_variables(category).iteritems():
+			if func(name, var):
+				variables.append({'key' : name, 'value' : var.value})
 
-		self.finished( request.id, variables )
+		return variables
+
