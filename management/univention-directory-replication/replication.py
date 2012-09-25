@@ -51,7 +51,6 @@ name='replication'
 description='LDAP slave replication'
 filter='(objectClass=*)' # default filter - may be overwritten later
 attributes=[]
-modrdn='1'
 
 slave=0
 if listener.baseConfig['ldap/server/type'] == 'slave':
@@ -105,8 +104,7 @@ if listener.baseConfig.get('ldap/replication/flatmode','no') in ['yes','1','true
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: cannot find UCR variable %s' % key_cn)
 univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode activated: %s' % flatmode)
 
-STATE_DIR = '/var/lib/univention-directory-replication'
-LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')
+LDIF_FILE = '/var/lib/univention-directory-replication/failed.ldif'
 
 EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates', 'entryDN']
 
@@ -784,7 +782,7 @@ def flatmode_reconnect():
 			if flatmode_ldap['lo'] == None:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: ldap reconnect failed')
 
-def handler(dn, new, listener_old, operation):
+def handler(dn, new, listener_old):
 	global reconnect
 	global slave
 	global flatmode
@@ -896,51 +894,14 @@ def handler(dn, new, listener_old, operation):
 
 		# add
 		if new and not old:
-
-			modrdn_cache = os.path.join(STATE_DIR, new['entryUUID'][0])
-			if os.path.exists(modrdn_cache):	## check if a modrdn is pending
-				listener.setuid(0)
-				try:
-					with open(modrdn_cache,'r') as f:
-						old_dn = f.read()
-				except Exception, e:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (modrdn_cache, str(e)))
-				try:
-					os.remove(modrdn_cache)
-				except Exception, e:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, str(e)))
-
-				listener.unsetuid()
-				(new_rdn, new_parent) = dn.split(',',1)
-				l.rename_s(old_dn, new_rdn, new_parent)
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modrdn from %s to %s,%s' % (old_dn, dn))
-
-			else:
-				al=addlist(new)
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'add: %s' % dn)
-				try:
-					l.add_s(dn, al)
-				except ldap.OBJECT_CLASS_VIOLATION, msg:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % dn)
-
+			al=addlist(new)
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'add: %s' % dn)
+			try:
+				l.add_s(dn, al)
+			except ldap.OBJECT_CLASS_VIOLATION, msg:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % dn)
 		# delete
 		elif old and not new:
-			if operation == 'r':	## check for modrdn phase 1
-				modrdn_cache = os.path.join(STATE_DIR, old['entryUUID'][0])
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'rename: %s' % dn)
-				listener.setuid(0)
-				try:
-					with open(modrdn_cache, 'w') as f:
-						os.chmod(modrdn_cache, 0600)
-						f.write(dn)
-					listener.unsetuid()
-					## that's it for now for command 'r' ==> modrdn will follow in the next step
-					return
-				except Exception, e:
-					## d'oh! output some message and continue doing a delete+add instead
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, str(e)))
-				listener.unsetuid()
-
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'delete: %s' % dn)
 			try:
 				l.delete_s(dn)
@@ -965,7 +926,7 @@ def handler(dn, new, listener_old, operation):
 		if 'matched' in msg[0]:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % msg[0]['matched'])
 		reconnect=1
-		handler(dn, new, old, operation)
+		handler(dn, new, old)
 	except ldap.ALREADY_EXISTS, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s; trying to apply changes' % (msg[0]['desc'], dn))
 		if 'info' in msg[0]:
@@ -982,8 +943,8 @@ def handler(dn, new, listener_old, operation):
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 			reconnect=1
 			connect(ldif=1)
-			handler(dn, new, old, operation)
-		handler(dn, new, cur, operation)
+			handler(dn, new, old)
+		handler(dn, new, cur)
 
 	except ldap.CONSTRAINT_VIOLATION, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Constraint violation: dn=%s: %s' % (dn,msg[0]['desc']))
@@ -999,7 +960,7 @@ def handler(dn, new, listener_old, operation):
 		else:
 			reconnect=1
 			connect(ldif=1)
-			handler(dn, new, old, operation)
+			handler(dn, new, old)
 
 def clean():
 	global slave
