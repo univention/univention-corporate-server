@@ -572,7 +572,7 @@ define([
 			// in case of any changes in the module store, refresh the grid
 			// FIXME: should not be needed anymore with Dojo 1.8
 			if (this.moduleStore.on && this.moduleStore.onChange) {
-				this.moduleStore.on('Change', lang.hitch(this, function()
+				this.moduleStore.on('Change', lang.hitch(this, function() {
 					this.filter(this.query);
 				}));
 			}

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.73-2) unstable; urgency=low
+
+  * fixed typo; Bug #28551
+
+ -- Florian Best <best@univention.de>  Tue, 25 Sep 2012 10:58:41 +0200
+
 univention-management-console-frontend (2.0.73-1) unstable; urgency=low
 
   * fixed Page.js; Bug #28551
