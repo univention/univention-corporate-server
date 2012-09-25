@@ -1,3 +1,9 @@
+univention-management-console-module-top (2.0.1-1) unstable; urgency=low
+
+  * Added PatternSanitizer (Bug #24341)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 25 Sep 2012 13:05:32 +0200
+
 univention-management-console-module-top (2.0.0-2) unstable; urgency=low
 
   * Build only for Python 2.6 (Bug #26852)

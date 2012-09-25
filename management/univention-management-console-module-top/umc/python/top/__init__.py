@@ -33,7 +33,6 @@
 
 import time
 import psutil
-from fnmatch import fnmatch
 
 import univention.info_tools as uit
 import univention.management.console as umc
@@ -41,15 +40,16 @@ import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import PatternSanitizer
+
 _ = umc.Translation('univention-management-console-module-top').translate
 
 class Instance(umcm.Base):
-	def __init__(self):
-		umcm.Base.__init__(self)
-
+	@sanitize(pattern=PatternSanitizer(default='.*'))
 	def query(self, request):
 		category = request.options.get('category', 'all')
-		filter = request.options.get('filter', '*')
+		pattern = request.options.get('pattern')
 		processes = []
 		for process in psutil.process_iter():
 			listEntry = {}
@@ -69,11 +69,11 @@ class Instance(umcm.Base):
 				listEntry['command'] = process.name
 			if category == 'all':
 				for value in listEntry.itervalues():
-					if fnmatch(str(value), filter):
+					if pattern.match(str(value)):
 						processes.append(listEntry)
 						break
 			else:
-				if fnmatch(str(listEntry[category]), filter):
+				if pattern.match(str(listEntry[category])):
 					processes.append(listEntry)
 
 		# Calculate correct cpu percentage

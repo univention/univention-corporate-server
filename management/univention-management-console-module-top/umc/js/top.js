@@ -140,7 +140,7 @@ define([
 				sortIndex: '-3',
 				query: {
 					category: 'all',
-					filter: '*'
+					pattern: '*'
 				}
 			});
 			titlePane.addChild(this._grid);
@@ -158,7 +158,7 @@ define([
 				]
 			}, {
 				type: TextBox,
-				name: 'filter',
+				name: 'pattern',
 				value: '*',
 				label: _('Keyword')
 			}];
@@ -166,7 +166,7 @@ define([
 			this._searchWidget = new SearchForm({
 				region: 'top',
 				widgets: widgets,
-				layout: [[ 'category', 'filter', 'submit', 'reset' ]],
+				layout: [[ 'category', 'pattern', 'submit', 'reset' ]],
 				onSearch: lang.hitch(this._grid, 'filter')
 			});
 
