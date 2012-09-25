@@ -186,6 +186,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='mailPrimaryAddress',
 							ldap_attribute='mailPrimaryAddress',
 							con_attribute='mail',
+							reverse_attribute_check = True,
 						),
 					'street': univention.s4connector.attribute (
 							ucs_attribute='street',
@@ -326,6 +327,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='mailAddress',
 							ldap_attribute='mailPrimaryAddress',
 							con_attribute='mail',
+							reverse_attribute_check = True,
 					),
 					@!@
 import univention.s4connector.s4.sid_mapping
