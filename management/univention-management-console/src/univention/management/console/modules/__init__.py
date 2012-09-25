@@ -142,8 +142,10 @@ class UMC_Error( Exception ):
 class UMC_OptionTypeError( UMC_Error ):
 	pass
 
-class UMC_OptionValueError( UMC_Error ):
-	pass
+class UMC_OptionSanitizeError( UMC_OptionTypeError ):
+	def __init__(self, message = None, body = None):
+		self.message = message
+		self.body = body
 
 class UMC_OptionMissing( UMC_Error ):
 	pass
@@ -196,10 +198,17 @@ class Base( signals.Provider, Translation ):
 
 		MODULE.info( 'Executing %s' % str( request.arguments ) )
 		message = ''
+		result = None
 		try:
 			func = getattr( self, method )
 			func( request )
 			return
+		except UMC_OptionSanitizeError, e:
+			status = BAD_REQUEST
+			message = _(  'An option passed to %s has the wrong type: %s' ) % ( method, str( e ) )
+			if e.message:
+				message = e.message
+			result = e.body
 		except UMC_OptionTypeError, e:
 			status = BAD_REQUEST
 			message = _(  'An option passed to %s has the wrong type: %s' ) % ( method, str( e ) )
@@ -218,6 +227,7 @@ class Base( signals.Provider, Translation ):
 		res.message = message
 		MODULE.process( str( res.message ) )
 		res.status = status
+		res.result = result
 		self.signal_emit( 'failure', res )
 		if request.id in self.__requests:
 			del self.__requests[ request.id ]
