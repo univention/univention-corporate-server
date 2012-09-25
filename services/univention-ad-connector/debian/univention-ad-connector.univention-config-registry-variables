@@ -118,6 +118,31 @@ Description[en]=Controls the Active Directory attribute to which the UCS attribu
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/user/ignorelist]
+Description[de]=Definiert durch Komma separierte Benutzer, welche durch den Connector nicht synchronisert werden (Default ist Administrator,krbtgt,root,pcpatch)
+Description[en]=Defines a comma separated list of users whom will be ignored by the connector (default is Administrator,krbtgt,root,pcpatch)
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/group/ignorelist]
+Description[de]=Definiert durch Komma separierte Gruppen, welche durch den Connector nicht synchronisert werden (Default ist Windows Hosts,DC Slave Hosts,DC Backup Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Computers)
+Description[en]=Defines a comma separated list of groups whom will be ignored by the connector (default is Windows Hosts,DC Slave Hosts,DC Backup Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Computers)
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/container/ignorelist]
+Description[de]=Definiert durch Komma separierte Container, welche durch den Connector nicht synchronisert werden (Default ist mail,kerberos)
+Description[en]=Defines a comma separated list of containers which will be ignored by the connector (default is mail,kerberos)
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/ou/ignorelist]
+Description[de]=Definiert durch Komma separierte OU's, welche durch den Connector nicht synchronisert werden
+Description[en]=Defines a comma separated list of OU's which will be ignored by the connector
+Type=str
+Categories=service-adcon
+
+
 [con.*/ad/password/timestamp/check]
 Description[de]=Die Variable gibt an, ob die Passwortsynchronisation nur erfolgt, wenn das zu synchronisierende Passwort neuer ist. Bitte beachten Sie, dass das Zurücksetzen der Passwörter dann nicht mehr eindeutig erkennt werden kann, das Verhalten kann über con.*/ad/password/timestamp/ignorreset/.* gesteuert werden (default: false)
 Description[en]=The variable specifies that the password synchronisation only performs if the sync password newer is. Please note the password reset won't discovered in all cases, the programm behavior can configured by con.*/ad/password/timestamp/ignorreset/.* (default: false)

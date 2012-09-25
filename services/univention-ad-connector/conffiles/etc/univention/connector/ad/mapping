@@ -64,7 +64,14 @@ ad_mapping = {
 
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
 			match_filter='(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))',
-			ignore_filter='(|(uid=root)(uid=Administrator)(cn=Administrator)(CN=Administrator)(userAccountControl=2080)(uid=pcpatch)(cn=pcpatch)(CN=pcpatch)(uid=krbtgt)(cn=krbtgt))',
+@!@
+ignore_filter = '(userAccountControl=2080)'
+for user in configRegistry.get('connector/ad/mapping/user/ignorelist', '').split(','):
+	if user:
+		ignore_filter += '(uid=%s)(CN=%s)' % (user, user)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -229,7 +236,13 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 			sync_mode='@%@connector/ad/mapping/syncmode@%@',
 			scope='sub',
 
-			ignore_filter='(|(sambaGroupType=5)(groupType=5)(cn=Windows Hosts)(cn=DC Slave Hosts)(cn=DC Backup Hosts)(cn=Authenticated Users)(cn=World Authority)(cn=Everyone)(cn=Null Authority)(cn=Nobody)(cn=Computers))',
+@!@
+ignore_filter = ''
+for group in configRegistry.get('connector/ad/mapping/group/ignorelist', '').split(','):
+	if group:
+		ignore_filter += '(cn=%s)' % (group)
+print "			ignore_filter='(|(sambaGroupType=5)(groupType=5)%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -299,7 +312,14 @@ if baseConfig.has_key('connector/ad/mapping/group/language') and baseConfig['con
 
 			con_search_filter='(|(objectClass=container)(objectClass=builtinDomain))', # builtinDomain is cn=builtin (with group cn=Administrators)
 
-			ignore_filter='(|(cn=mail)(cn=kerberos))',
+@!@
+ignore_filter = ''
+for cn in configRegistry.get('connector/ad/mapping/container/ignorelist', 'mail,kerberos').split(','):
+	if cn:
+		ignore_filter += '(cn=%s)' % (cn)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -331,7 +351,14 @@ if baseConfig.has_key('connector/ad/mapping/group/language') and baseConfig['con
 
 			con_search_filter='objectClass=organizationalUnit',
 
-			ignore_filter='',
+@!@
+ignore_filter = ''
+for ou in configRegistry.get('connector/s4/mapping/ou/ignorelist', '').split(','):
+	if ou:
+		ignore_filter += '(ou=%s)' % (ou)
+if ignore_filter:
+	print "			ignore_filter='(|%s)'," % ignore_filter
+@!@
 
 			ignore_subtree = global_ignore_subtree,
 

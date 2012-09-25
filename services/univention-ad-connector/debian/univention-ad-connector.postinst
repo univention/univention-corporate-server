@@ -47,6 +47,9 @@ univention-config-registry set connector/ad/listener/dir?/var/lib/univention-con
 			connector/ad/mapping/user/primarymail?false \
 			connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/language?de \
 			connector/ad/mapping/syncmode?sync \
+			connector/ad/mapping/user/ignorelist?"Administrator,krbtgt,root,pcpatch" \
+			connector/ad/mapping/group/ignorelist?"Windows Hosts,DC Slave Hosts,DC Backup Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Computers" \
+			connector/ad/mapping/container/ignorelist?"mail,kerberos" \
 			connector/ad/autostart?yes \
 			directory/manager/web/modules/users/user/properties/username/syntax?"uid_umlauts"
 
