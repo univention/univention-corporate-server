@@ -1,3 +1,10 @@
+univention-samba4 (2.0.12-1) unstable; urgency=low
+
+  * 96univention-samba4.inst prints an error message if a join against
+    ldap/master failed (Bug #27469)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 25 Sep 2012 14:29:13 +0200
+
 univention-samba4 (2.0.11-1) unstable; urgency=low
 
   * fix traceback in scripts/univention-samba4-site-tool.py (Bug #27153)

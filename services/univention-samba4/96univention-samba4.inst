@@ -428,6 +428,7 @@ rIDNextRID: 2101
 											--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
 											--keep-existing
 						if [ $? != 0 ]; then
+							echo "Failed to join the domain using $ldap_master".
 							exit 1
 						fi
 					fi
