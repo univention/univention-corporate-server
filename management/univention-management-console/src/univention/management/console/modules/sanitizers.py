@@ -358,59 +358,35 @@ class IntegerSanitizer(Sanitizer):
 						self.raise_validation_error(_('Should stay %s') % '<= %(maximum)d')
 			return value
 
-class PatternSanitizer(Sanitizer):
-	'''PatternSanitizer converts the input into a regular expression.
-	It can handle anything (through the inputs __str__ method), but
-	only strings seem to make sense.
+class SearchSanitizer(Sanitizer):
+	''' Baseclass for other Sanitizers that are used for a simple search.
+	That means that everything is escaped except for asterisks that are
+	considered as wildcards for any number of characters.
 
-	The input should be a string with asterisks (*) if needed. An
-	askterisk stands for anything at any length (regular expression: .*).
+	Handles adding of asterisks and and some simple sanity checks.
+	Real logic is done in a to-be-overridden method named
+	:meth:`~SearchSanitizer._escape_and_return`.
 
-	The sanitizer escapes the input, replaces * with .* and applies
-	the params.
-
-	You can give the same parameters as the base class.
-
-	If you specify a string as :attr:`~Sanitizer.default`, it will be
-	compiled to a regular expression. Hints:
-	default='.*' -> matches everything
-	default='(?!)' -> matches nothing
-
-	Plus:
+	Currently used for :class:`~LDAPSearchSanitizer` and
+	:class:`~PatternSanitizer`.
 
 	:param bool add_asterisks: add asterisks at the beginning and the end
 	  of the value if needed.
 	  "string" -> "\*string*", "" -> "*", "string*" -> "string*"
-	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
-	  to search case insensitive.
 	:param int max_number_of_asterisks: An error will be raised if
-	  the number of * in the pattern exceeds this limit. Useful because
-	  searching with too many of these patterns in a regular expression
+	  the number of * in the string exceeds this limit. Useful because
+	  searching with too many of these patterns in a search query
 	  can be very expensive. Note that * from
-	  :attr:`~PatternSanitizer.add_asterisks` do count. *None* means an
+	  :attr:`~SearchSanitizer.add_asterisks` do count. *None* means an
 	  arbitrary number is allowed.
 	'''
-	def __init__(self, add_asterisks=True, ignore_case=True, max_number_of_asterisks=5, **kwargs):
-		default = kwargs.get('default')
-		if isinstance(default, basestring):
-			default = re.compile(default)
-		kwargs['default'] = default
-		super(PatternSanitizer, self).__init__(**kwargs)
+	def __init__(self, add_asterisks=True, max_number_of_asterisks=5, **kwargs):
+		super(SearchSanitizer, self).__init__(**kwargs)
 		self.add_asterisks = add_asterisks
-		self.ignore_case = ignore_case
 		self.max_number_of_asterisks = max_number_of_asterisks
 
-	def __deepcopy__(self, memo):
-		new = PatternSanitizer(
-			self.add_asterisks,
-			self.ignore_case,
-			self.max_number_of_asterisks,
-			further_arguments=copy.copy(self.further_arguments), # string...
-			required=self.required,
-			default=self.default, # None or non-copyable pattern
-			may_change_value=self.may_change_value,
-		)
-		return new
+	def _escape_and_return(self, value):
+		return value
 
 	def _sanitize(self, value, name, further_fields):
 		if value is None:
@@ -426,6 +402,61 @@ class PatternSanitizer(Sanitizer):
 			if value.count('*') > self.max_number_of_asterisks:
 				# show the possibly changed value
 				self.raise_formatted_validation_error(_('The maximum number of asterisks (*) in the search string is %(max_number_of_asterisks)d'), name, value)
+		return self._escape_and_return(value)
+
+class LDAPSearchSanitizer(SearchSanitizer):
+	'''Sanitizer for LDAP-Searches. Everything that
+	could possibly confuse an LDAP-Search is escaped
+	except for *.
+	'''
+	def _escape_and_replace_asterisks(self, value):
+		value = ldap.filter.escape_filter_chars(value)
+		return value.replace(r'\2a', '*')
+
+class PatternSanitizer(SearchSanitizer):
+	'''PatternSanitizer converts the input into a regular expression.
+	It can handle anything (through the inputs __str__ method), but
+	only strings seem to make sense.
+
+	The input should be a string with asterisks (*) if needed. An
+	askterisk stands for anything at any length (regular expression: .*).
+
+	The sanitizer escapes the input, replaces * with .* and applies
+	the params.
+
+	You can give the same parameters as the base class.
+
+	If you specify a string as :attr:`~Sanitizer.default`, it will be
+	compiled to a regular expression. Hints:
+	default='.*' -> matches everything;
+	default='(?!)' -> matches nothing
+
+	Plus:
+
+	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
+	  to search case insensitive.
+	'''
+	def __init__(self, add_asterisks=True, max_number_of_asterisks=5, ignore_case=True, **kwargs):
+		default = kwargs.get('default')
+		if isinstance(default, basestring):
+			default = re.compile(default)
+		kwargs['default'] = default
+		super(PatternSanitizer, self).__init__(**kwargs)
+		self.ignore_case = ignore_case
+
+	def __deepcopy__(self, memo):
+		new = PatternSanitizer(
+			self.add_asterisks,
+			self.ignore_case,
+			self.max_number_of_asterisks,
+			further_arguments=copy.copy(self.further_arguments), # string...
+			required=self.required,
+			default=self.default, # None or non-copyable pattern
+			may_change_value=self.may_change_value,
+		)
+		return new
+
+	def _escape_and_return(self, value):
 		value = re.escape(value)
 		value = value.replace(r'\*', '.*')
 		flags = 0

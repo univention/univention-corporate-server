@@ -1,3 +1,9 @@
+univention-management-console (5.0.30-1) unstable; urgency=low
+
+  * Add LDAPSearch Sanitizer (Bug #24341)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 25 Sep 2012 16:06:13 +0200
+
 univention-management-console (5.0.29-1) unstable; urgency=low
 
   * Fix missing import (Bug #27716)

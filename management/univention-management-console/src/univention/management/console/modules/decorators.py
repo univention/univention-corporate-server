@@ -358,10 +358,6 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False):
 			defaults = dict(zip(arguments[-len(defaults):], defaults))
 		else:
 			defaults = {}
-		# remove flavor argument, if given
-		# do it here to have a chance to add it in defaults
-		if with_flavor:
-			arguments.remove(with_flavor)
 
 		# single_values: request.options is, e.g., ["id1", "id2", "id3"], no need for complicated dicts
 		if not single_values:
@@ -369,6 +365,10 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False):
 			for element in request.options:
 				if not isinstance(element, dict):
 					raise UMC_OptionTypeError(_('Not a "dict"'))
+
+				# add flavor before default checking
+				if with_flavor:
+					element[with_flavor] = request.flavor or defaults.get(with_flavor)
 
 				# safely iterate over arguments, dont merge the whole request.options at once
 				# who knows what else the user sent?
@@ -381,8 +381,6 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False):
 							# check for required arguments (those without default)
 							raise UMC_OptionMissing(arg)
 
-			if with_flavor:
-				element[with_flavor] = request.flavor or defaults.get(with_flavor)
 		
 		# checked for required arguments, set default... now run!
 		result = []
