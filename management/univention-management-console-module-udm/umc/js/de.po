@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-12-29 23:34+0100\n"
+"POT-Creation-Date: 2012-09-25 15:25+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,57 +12,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_udm/DetailPage.js:1128
+#: umc/js/udm/DetailPage.js:1147
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr "%(attribute)s: %(message)s\n"
 
-#: umc/js/udm.js:469
+#: umc/js/udm.js:411
 #, python-format
 msgid "%(nSelected)d %(objPlural)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d sind ausgewählt"
 
-#: umc/js/udm.js:466
+#: umc/js/udm.js:408
 #, python-format
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
 
-#: umc/js/_udm/LicenseDialog.js:154
+#: umc/js/udm/LicenseDialog.js:152
 #, python-format
 msgid "%s (used: %s)"
 msgstr "%s (genutzt: %s)"
 
-#: umc/js/_udm/NewObjectDialog.js:191 umc/js/_udm/NewObjectDialog.js:214
+#: umc/js/udm/NewObjectDialog.js:192 umc/js/udm/NewObjectDialog.js:215
 #, python-format
 msgid "%s template"
 msgstr "%s-Vorlage"
 
-#: umc/js/udm.js:562 umc/js/_udm/NewObjectDialog.js:160
-#: umc/js/_udm/NewObjectDialog.js:177 umc/js/_udm/NewObjectDialog.js:208
+#: umc/js/udm.js:504 umc/js/udm/NewObjectDialog.js:161
+#: umc/js/udm/NewObjectDialog.js:178 umc/js/udm/NewObjectDialog.js:209
 #, python-format
 msgid "%s type"
 msgstr "%styp"
 
-#: umc/js/udm.js:929
+#: umc/js/udm.js:863
 msgid "(Advanced options)"
 msgstr "(Erweiterte Optionen)"
 
-#: umc/js/udm.js:917
+#: umc/js/udm.js:851
 msgid "(Simplified options)"
 msgstr "(Vereinfachte Optionen)"
 
-#: umc/js/_udm/DetailPage.js:362
+#: umc/js/udm/DetailPage.js:375
 msgid "(multi-edit)"
 msgstr "(Mehrfachbearbeitung)"
 
-#: umc/js/_udm/CreateReportDialog.js:136
+#: umc/js/udm/CreateReportDialog.js:134
 #, python-format
 msgid "<p>Generating %s report for %d objects.</p><p>This may take a while</p>"
 msgstr ""
 "Erzeuge den %s Report für %d Objekte.</p><p>The Aktion kann einen Moment "
 "dauern</p>"
 
-#: umc/js/_udm/LicenseDialog.js:182
+#: umc/js/udm/LicenseDialog.js:180
 msgid ""
 "<p>The \"free for personal use\" edition of Univention Corporate Server is a "
 "special software license which allows users free use of the Univention "
@@ -101,7 +101,7 @@ msgstr ""
 "Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren "
 "kommerziellen Softwareverträgen ergeben, nicht gelten.</p>"
 
-#: umc/js/_udm/NewObjectDialog.js:258
+#: umc/js/udm/NewObjectDialog.js:259
 #, python-format
 msgid ""
 "<p>The UDM object will be created in the the container:</p><p><i>%s</i></p>"
@@ -109,185 +109,190 @@ msgstr ""
 "<p>Das UDM-Objekt wird in dem folgenden Container angelegt:</p><p><i>%s</i></"
 "p>"
 
-#: umc/js/_udm/NewObjectDialog.js:192 umc/js/_udm/NewObjectDialog.js:215
+#: umc/js/udm/NewObjectDialog.js:193 umc/js/udm/NewObjectDialog.js:216
 msgid "A template defines rules for default object properties."
 msgstr "Eine Vorlage definiert Regeln für Vorgabewerte eines neuen Objektes."
 
-#: umc/js/_udm/NewObjectDialog.js:227
+#: umc/js/udm/NewObjectDialog.js:228
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm.js:362
+#: umc/js/udm.js:308
 #, python-format
 msgid "Add %s"
 msgstr "%s hinzufügen"
 
-#: umc/js/udm.js:363
+#: umc/js/udm.js:309
 #, python-format
 msgid "Add a new %s."
 msgstr "%s neu hinzufügen."
 
-#: umc/js/_udm/DetailPage.js:281
+#: umc/js/udm/DetailPage.js:292
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/js/udm.js:521 umc/js/udm.js:542
+#: umc/js/udm.js:463 umc/js/udm.js:484
 msgid "All containers"
 msgstr "Alle Container"
 
-#: umc/js/udm.js:522 umc/js/udm.js:538 umc/js/udm.js:554
+#: umc/js/udm.js:464 umc/js/udm.js:480 umc/js/udm.js:496
 msgid "All properties"
 msgstr "Alle Eigenschaften"
 
-#: umc/js/udm.js:520 umc/js/udm.js:537 umc/js/udm.js:553
+#: umc/js/udm.js:462 umc/js/udm.js:479 umc/js/udm.js:495
 msgid "All types"
 msgstr "Alle Objekttypen"
 
-#: umc/js/_udm/DetailPage.js:589
+#: umc/js/udm/DetailPage.js:600
 msgid "Back to navigation"
 msgstr "Zurück zur Navigation"
 
-#: umc/js/_udm/DetailPage.js:587
+#: umc/js/udm/DetailPage.js:598
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
-#: umc/js/udm.js:1023 umc/js/udm.js:1284 umc/js/_udm/DetailPage.js:592
-#: umc/js/_udm/CreateReportDialog.js:114
+#: umc/js/udm.js:957 umc/js/udm.js:1219 umc/js/udm/CreateReportDialog.js:112
+#: umc/js/udm/DetailPage.js:603
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/_udm/DetailPage.js:769 umc/js/_udm/DetailPage.js:795
+#: umc/js/udm/DetailPage.js:789 umc/js/udm/DetailPage.js:815
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/_udm/LicenseDialog.js:195
+#: umc/js/udm/LicenseDialog.js:193
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/_udm/CreateReportDialog.js:161 umc/js/_udm/LicenseDialog.js:71
-#: umc/js/_udm/NewObjectDialog.js:236
+#: umc/js/udm/CreateReportDialog.js:159 umc/js/udm/NewObjectDialog.js:237
+#: umc/js/udm/LicenseDialog.js:69
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/js/_udm/NewObjectDialog.js:142
+#: umc/js/udm/NewObjectDialog.js:143
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/_udm/CreateReportDialog.js:107
+#: umc/js/udm/CreateReportDialog.js:105
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/_udm/DetailPage.js:553
+#: umc/js/udm/DetailPage.js:608
+#, python-format
+msgid "Create %s"
+msgstr "%s anlegen"
+
+#: umc/js/udm/DetailPage.js:564
 msgid "Create new policy"
 msgstr "Neue Richtlinie"
 
-#: umc/js/udm.js:963
+#: umc/js/udm.js:897
 msgid "Create report"
 msgstr "Report erstellen"
 
-#: umc/js/_udm/CreateReportDialog.js:139
+#: umc/js/udm/CreateReportDialog.js:137
 msgid "Creating the report ..."
 msgstr "Erstelle den Report ..."
 
-#: umc/js/_udm/LicenseDialog.js:190
+#: umc/js/udm/LicenseDialog.js:188
 msgid "Current license"
 msgstr "Aktuelle Lizenz"
 
-#: umc/js/udm.js:223
+#: umc/js/udm.js:171
 msgid "DHCP object"
 msgstr "DHCP-Objekt"
 
-#: umc/js/udm.js:223
+#: umc/js/udm.js:171
 msgid "DHCP objects"
 msgstr "DHCP-Objekte"
 
-#: umc/js/udm.js:222
+#: umc/js/udm.js:170
 msgid "DNS object"
 msgstr "DNS-Objekt"
 
-#: umc/js/udm.js:222
+#: umc/js/udm.js:170
 msgid "DNS objects"
 msgstr "DNS-Objekte"
 
-#: umc/js/udm.js:417 umc/js/udm.js:726 umc/js/udm.js:1288
+#: umc/js/udm.js:363 umc/js/udm.js:667 umc/js/udm.js:1223
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/udm.js:1296
+#: umc/js/udm.js:1231
 msgid "Delete objects"
 msgstr "Objekte löschen"
 
-#: umc/js/udm.js:1277
+#: umc/js/udm.js:1212
 msgid "Delete referring objects."
 msgstr "Zugehörige Objekte löschen."
 
-#: umc/js/udm.js:418
+#: umc/js/udm.js:364
 #, python-format
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/_udm/LicenseDialog.js:197
+#: umc/js/udm/LicenseDialog.js:195
 msgid "Desktops"
 msgstr "Desktops"
 
-#: umc/js/udm.js:370 umc/js/udm.js:719
+#: umc/js/udm.js:316 umc/js/udm.js:660
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/udm.js:397
+#: umc/js/udm.js:343
 msgid "Edit in new tab"
 msgstr "Bearbeiten in neuem Reiter"
 
-#: umc/js/udm.js:371
+#: umc/js/udm.js:317
 #, python-format
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
 
-#: umc/js/_udm/DetailPage.js:1130
+#: umc/js/udm/DetailPage.js:1149
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/_udm/LicenseDialog.js:199
+#: umc/js/udm/LicenseDialog.js:197
 msgid "Expiry date"
 msgstr "Ablaufdatum"
 
-#: umc/js/_udm/LicenseDialog.js:100
+#: umc/js/udm/LicenseDialog.js:98
 msgid "Failed to import license"
 msgstr "Dier Lizenzimport ist fehlgeschlagen"
 
-#: umc/js/udm.js:1064
+#: umc/js/udm.js:998
 msgid "Failed to move the following objects:"
 msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
 
-#: umc/js/_udm/CertificateUploader.js:73
+#: umc/js/udm/CertificateUploader.js:72
 msgid "Failed to upload certificate"
 msgstr "Fehler beim Hochladen des Zertifikates"
 
-#: umc/js/_udm/DetailPage.js:543
+#: umc/js/udm/DetailPage.js:554
 msgid "Inherited"
 msgstr "Ererbt"
 
-#: umc/js/_udm/LicenseDialog.js:191
+#: umc/js/udm/LicenseDialog.js:189
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
-#: umc/js/_udm/LicenseDialog.js:111
+#: umc/js/udm/LicenseDialog.js:109
 msgid "License import"
 msgstr "Lizenzimport"
 
-#: umc/js/_udm/LicenseDialog.js:87
+#: umc/js/udm/LicenseDialog.js:85
 msgid "License text"
 msgstr "Lizenztext"
 
-#: umc/js/_udm/LicenseDialog.js:91
+#: umc/js/udm/LicenseDialog.js:89
 msgid "License upload"
 msgstr "Lizenz hochladen"
 
-#: umc/js/_udm/LicenseDialog.js:98
+#: umc/js/udm/LicenseDialog.js:96
 msgid "License was imported successfully"
 msgstr "Die Lizenz wurde erfolgreich importiert"
 
-#: umc/js/_udm/DetailPage.js:445
+#: umc/js/udm/DetailPage.js:458
 msgid ""
 "List of all object properties that are inherited by policies. The values "
 "cannot be edited directly. In order to edit a policy, click on the \"edit\" "
@@ -299,111 +304,111 @@ msgstr ""
 "\"bearbeiten\" wird ein neuer Reiter mit der entsprechenden Richtlinie "
 "geöffnet."
 
-#: umc/js/udm.js:1026
+#: umc/js/udm.js:960
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: umc/js/udm.js:430
+#: umc/js/udm.js:376
 msgid "Move objects to a different LDAP position."
 msgstr "Objekte an eine andere LDAP-Position verschieben."
 
-#: umc/js/udm.js:429 umc/js/udm.js:733
+#: umc/js/udm.js:375 umc/js/udm.js:674
 msgid "Move to..."
 msgstr "Verschieben nach..."
 
-#: umc/js/udm.js:227
+#: umc/js/udm.js:175
 msgid "Nagios object"
 msgstr "Nagios-Objekt"
 
-#: umc/js/udm.js:227
+#: umc/js/udm.js:175
 msgid "Nagios objects"
 msgstr "Nagios-Objekte"
 
-#: umc/js/udm.js:195
+#: umc/js/udm.js:143
 msgid "Name"
 msgstr "Name"
 
-#: umc/js/udm.js:196
+#: umc/js/udm.js:144
 msgid "Name of the UDM object."
 msgstr "Name des UDM-Objektes"
 
-#: umc/js/_udm/NewObjectDialog.js:87
+#: umc/js/udm/NewObjectDialog.js:88
 #, python-format
 msgid "New %s"
 msgstr "%s anlegen"
 
-#: umc/js/udm.js:463
+#: umc/js/udm.js:405
 #, python-format
 msgid "No %(objPlural)s could be found"
 msgstr "Es wurden keine %(objPlural)s gefunden"
 
-#: umc/js/udm.js:1036
+#: umc/js/udm.js:970
 msgid "No LDAP position has been selected."
 msgstr "Kein LDAP-Position wurde ausgewählt."
 
-#: umc/js/_udm/DetailPage.js:1058
+#: umc/js/udm/DetailPage.js:1077
 msgid "No changes have been made."
 msgstr "Keine Änderungen wurden vorgenommen."
 
-#: umc/js/_udm/NewObjectDialog.js:186 umc/js/_udm/NewObjectDialog.js:219
+#: umc/js/udm/NewObjectDialog.js:187 umc/js/udm/NewObjectDialog.js:220
 msgid "None"
 msgstr "Kein"
 
-#: umc/js/udm.js:1009
+#: umc/js/udm.js:943
 msgid "Note that moving a container can take some time."
 msgstr "Das Verschieben von Containern kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/_udm/MultiObjectSelect.js:100
+#: umc/js/udm/MultiObjectSelect.js:107
 msgid "Object property"
 msgstr "Objekteigenschaft"
 
-#: umc/js/udm.js:387
+#: umc/js/udm.js:333
 msgid "Only objects of the same type can be edited together"
 msgstr "Nur Objekte des gleichen Typs können zusammen bearbeitet werden"
 
-#: umc/js/udm.js:398
+#: umc/js/udm.js:344
 msgid "Open a new tab in order to edit the UDM-object"
 msgstr ""
 "Öffnet einen neuen Reiter, in dem das UDM-Objekt bearbeitet werden kann."
 
-#: umc/js/_udm/DetailPage.js:313
+#: umc/js/udm/DetailPage.js:324
 msgid "Options describing the basic features of the UDM object"
 msgstr "Optionen für grundlegenden UDM-Objekt-Eigenschaften"
 
-#: umc/js/_udm/OverwriteLabel.js:49
+#: umc/js/udm/OverwriteLabel.js:46
 msgid "Overwrite"
 msgstr "Überschreiben"
 
-#: umc/js/udm.js:652
+#: umc/js/udm.js:594
 msgid "Parent container"
 msgstr "Übergeordneter Container"
 
-#: umc/js/udm.js:204
+#: umc/js/udm.js:152
 msgid "Path"
 msgstr "Pfad"
 
-#: umc/js/udm.js:205
+#: umc/js/udm.js:153
 msgid "Path of the UDM object."
 msgstr "Pfad des UDM-Objektes"
 
-#: umc/js/udm.js:1204
+#: umc/js/udm.js:1139
 #, python-format
 msgid "Please confirm the removal of the %d selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 
-#: umc/js/udm.js:1206
+#: umc/js/udm.js:1141
 #, python-format
 msgid "Please confirm the removal of the selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen des/der ausgewählten %s!"
 
-#: umc/js/udm.js:988
+#: umc/js/udm.js:922
 #, python-format
 msgid "Please select a LDAP position to move %d selected %s to:"
 msgstr ""
 "Bitte wählen sie eine LDAP-Position aus, an die %d %s verschoben werden:"
 
-#: umc/js/udm.js:1315
+#: umc/js/udm.js:1250
 msgid ""
 "Please select a container in the navigation bar. The new object will be "
 "placed at this location."
@@ -411,94 +416,94 @@ msgstr ""
 "Bitte wählen Sie einen Container in der Navigations-Leiste aus. Das neue "
 "Objekte wird an dieser Stelle erzeugt."
 
-#: umc/js/_udm/DetailPage.js:677
+#: umc/js/udm/DetailPage.js:696
 #, python-format
 msgid "Position: <i>%(path)s</i>"
 msgstr "Position: <i>%(path)s</i>"
 
-#: umc/js/_udm/DetailPage.js:444
+#: umc/js/udm/DetailPage.js:457
 msgid "Properties inherited from policies"
 msgstr "Durch Richtlinien ererbte Eigenschaften"
 
-#: umc/js/udm.js:580
+#: umc/js/udm.js:522
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm.js:590 umc/js/udm.js:606 umc/js/_udm/MultiObjectSelect.js:108
-#: umc/js/_udm/MultiObjectSelect.js:124
+#: umc/js/udm.js:532 umc/js/udm.js:548 umc/js/udm/MultiObjectSelect.js:115
+#: umc/js/udm/MultiObjectSelect.js:131
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
-#: umc/js/udm.js:739
+#: umc/js/udm.js:680
 msgid "Reload"
 msgstr "Neu laden"
 
-#: umc/js/_udm/CertificateUploader.js:47
+#: umc/js/udm/CertificateUploader.js:46
 msgid "Remove certificate"
 msgstr "Zertifikat entfernen"
 
-#: umc/js/_udm/CreateReportDialog.js:97
+#: umc/js/udm/CreateReportDialog.js:95
 msgid "Report"
 msgstr "Report"
 
-#: umc/js/_udm/CreateReportDialog.js:150
+#: umc/js/udm/CreateReportDialog.js:148
 msgid "Report creation has failed"
 msgstr "Erstellen des Reports ist fehlgeschlagen"
 
-#: umc/js/_udm/CreateReportDialog.js:84
+#: umc/js/udm/CreateReportDialog.js:82
 #, python-format
 msgid "Report for %s"
 msgstr "Report für %s"
 
-#: umc/js/_udm/CreateReportDialog.js:148
+#: umc/js/udm/CreateReportDialog.js:146
 msgid "Report has been created"
 msgstr "Report wurde erstellt"
 
-#: umc/js/_udm/DetailPage.js:598
+#: umc/js/udm/DetailPage.js:611
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
-#: umc/js/udm.js:617
+#: umc/js/udm.js:559
 msgid "Search"
 msgstr "Suche"
 
-#: umc/js/udm.js:337
+#: umc/js/udm.js:283
 #, python-format
 msgid "Search for %s"
 msgstr "%s suchen"
 
-#: umc/js/udm.js:547
+#: umc/js/udm.js:489
 msgid "Search in:"
 msgstr "Suche in:"
 
-#: umc/js/_udm/DetailPage.js:546
+#: umc/js/udm/DetailPage.js:557
 msgid ""
 "Select a policy that should be directly linked to the current UDM object"
 msgstr ""
 "Wählen Sie eine Richtlinie, die direkt mit dem aktuellen UDM-Objekt "
 "verknüpft werden soll"
 
-#: umc/js/_udm/DetailPage.js:545
+#: umc/js/udm/DetailPage.js:556
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
-#: umc/js/udm.js:824
+#: umc/js/udm.js:762
 msgid "Show all DHCP services"
 msgstr "Alle DHCP-Dienste zeigen"
 
-#: umc/js/udm.js:827
+#: umc/js/udm.js:765
 msgid "Show all DNS zones"
 msgstr "Alle DNS-Zonen zeigen"
 
-#: umc/js/udm.js:822
+#: umc/js/udm.js:760
 msgid "Show all superordinates"
 msgstr "Alle übergeordnete Objekte zeigen"
 
-#: umc/js/udm.js:530 umc/js/_udm/NewObjectDialog.js:153
+#: umc/js/udm.js:472 umc/js/udm/NewObjectDialog.js:154
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
-#: umc/js/_udm/CreateReportDialog.js:147
+#: umc/js/udm/CreateReportDialog.js:145
 #, python-format
 msgid ""
 "The %s can be downloaded at<br><br><a target=\"_blank\" href=\"%s\">%s "
@@ -507,62 +512,62 @@ msgstr ""
 "Das %s kann unter der folgenden Adresse heruntergeladen werden<br><br><a "
 "target=\"_blank\" href=\"%s\">%s Report</a>"
 
-#: umc/js/_udm/DetailPage.js:1200
+#: umc/js/udm/DetailPage.js:1219
 #, python-format
 msgid "The UDM object could not be saved: %(details)s"
 msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
 
-#: umc/js/_udm/NewObjectDialog.js:143
+#: umc/js/udm/NewObjectDialog.js:144
 msgid "The container in which the UDM object shall be created."
 msgstr "Der Container, in dem das UDM-Objekt erzeugt wird."
 
-#: umc/js/udm.js:546
+#: umc/js/udm.js:488
 msgid "The container in which the query is executed."
 msgstr "Der Container, in dem die Suche ausgeführt wird."
 
-#: umc/js/_udm/NewObjectDialog.js:154
+#: umc/js/udm/NewObjectDialog.js:155
 msgid "The corresponding superordinate for the UDM object."
 msgstr "Das dem neuen UDM-Objekt zugewiesene übergeordnete Objekt."
 
-#: umc/js/_udm/NewObjectDialog.js:162 umc/js/_udm/NewObjectDialog.js:178
+#: umc/js/udm/NewObjectDialog.js:163 umc/js/udm/NewObjectDialog.js:179
 #, python-format
 msgid "The exact %s type."
 msgstr "Der genaue %styp"
 
-#: umc/js/_udm/NewObjectDialog.js:209
+#: umc/js/udm/NewObjectDialog.js:210
 msgid "The exact object type of the new UDM object."
 msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
 
-#: umc/js/_udm/DetailPage.js:1188
+#: umc/js/udm/DetailPage.js:1207
 msgid "The following UDM objects could not be saved:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 
-#: umc/js/udm.js:1246
+#: umc/js/udm.js:1181
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
-#: umc/js/_udm/DetailPage.js:1101
+#: umc/js/udm/DetailPage.js:1120
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/_udm/DetailPage.js:1015
+#: umc/js/udm/DetailPage.js:1034
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
 
-#: umc/js/_udm/LicenseDialog.js:123
+#: umc/js/udm/LicenseDialog.js:121
 msgid "The import of the license has failed: "
 msgstr "Der Import der Lizenz ist fehlgeschlagen: "
 
-#: umc/js/_udm/LicenseDialog.js:125
+#: umc/js/udm/LicenseDialog.js:123
 msgid "The license has been imported succussfully"
 msgstr "Die Lizenz wurde erfolgreich importiert"
 
-#: umc/js/udm.js:579 umc/js/_udm/MultiObjectSelect.js:99
+#: umc/js/udm.js:521 umc/js/udm/MultiObjectSelect.js:106
 msgid "The object property on which the query is filtered."
 msgstr "Die Objekteigenschaft, nach der gesucht wird."
 
-#: umc/js/_udm/CreateReportDialog.js:151
+#: umc/js/udm/CreateReportDialog.js:149
 msgid ""
 "The report could not be created. Details for the problems can be found in "
 "the log files."
@@ -570,65 +575,65 @@ msgstr ""
 "Der Report konnte nicht erstellt werden. Weitere Informationen sind in den "
 "Logdateien zu finden."
 
-#: umc/js/_udm/CreateReportDialog.js:98
+#: umc/js/udm/CreateReportDialog.js:96
 msgid "The report template that should be used for the report."
 msgstr "Die zuverwendende Reportvorlage"
 
-#: umc/js/udm.js:529
+#: umc/js/udm.js:471
 msgid "The superordinate in which the search is carried out."
 msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 
-#: umc/js/udm.js:561
+#: umc/js/udm.js:503
 msgid "The type of the UDM object."
 msgstr "Der Type des UDM-Objektes."
 
-#: umc/js/udm.js:605 umc/js/_udm/MultiObjectSelect.js:123
+#: umc/js/udm.js:547 umc/js/udm/MultiObjectSelect.js:130
 msgid ""
 "The value for the specified object property on which the query is filtered."
 msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
 
-#: umc/js/udm.js:1156 umc/js/udm.js:1169
+#: umc/js/udm.js:1091 umc/js/udm.js:1104
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/_udm/DetailPage.js:676
+#: umc/js/udm/DetailPage.js:695
 #, python-format
 msgid "Type: <i>%(type)s</i>"
 msgstr "Typ: <i>%(type)s</i>"
 
-#: umc/js/_udm/LicenseDialog.js:148
+#: umc/js/udm/LicenseDialog.js:146
 msgid "UCS license"
 msgstr "UCS Lizenz"
 
-#: umc/js/udm.js:229
+#: umc/js/udm.js:177
 msgid "UDM object"
 msgstr "UDM-Objekt"
 
-#: umc/js/udm.js:229
+#: umc/js/udm.js:177
 msgid "UDM objects"
 msgstr "UDM-Objekte"
 
-#: umc/js/_udm/LicenseDialog.js:165
+#: umc/js/udm/LicenseDialog.js:163
 msgid "Updating the license information has failed"
 msgstr "Die Aktualisierung der Lizenzinformationen ist fehlgeschlagen"
 
-#: umc/js/_udm/LicenseDialog.js:116
+#: umc/js/udm/LicenseDialog.js:114
 msgid "Upload"
 msgstr "Hochladen"
 
-#: umc/js/_udm/CertificateUploader.js:46
+#: umc/js/udm/CertificateUploader.js:45
 msgid "Upload certificate"
 msgstr "Zertifikat hochladen"
 
-#: umc/js/_udm/LicenseDialog.js:193
+#: umc/js/udm/LicenseDialog.js:191
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
-#: umc/js/_udm/LicenseDialog.js:201
+#: umc/js/udm/LicenseDialog.js:199
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
-#: umc/js/_udm/DetailPage.js:879
+#: umc/js/udm/DetailPage.js:898
 msgid ""
 "You are currently editing a policy. Changing its properties affects all "
 "referenced objects and may affect your system globally."
@@ -637,105 +642,104 @@ msgstr ""
 "alle referenzierende Objekte aus und kann ggf. das System global "
 "beeinflussen."
 
-#: umc/js/_udm/DetailPage.js:280
+#: umc/js/udm/DetailPage.js:291
 msgid "[Advanced settings]"
 msgstr "[Erweiterte Einstellungen]"
 
-#: umc/js/_udm/DetailPage.js:312
+#: umc/js/udm/DetailPage.js:323
 msgid "[Options]"
 msgstr "[Optionen]"
 
-#: umc/js/_udm/DetailPage.js:442
+#: umc/js/udm/DetailPage.js:455
 msgid "[Policies]"
 msgstr "[Richtlinien]"
 
-#: umc/js/udm.js:220
+#: umc/js/udm.js:168
 msgid "computer"
 msgstr "Rechner"
 
-#: umc/js/udm.js:220
+#: umc/js/udm.js:168
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/_udm/DetailPage.js:770 umc/js/_udm/DetailPage.js:796
+#: umc/js/udm/DetailPage.js:790 umc/js/udm/DetailPage.js:816
 msgid "edit"
 msgstr "bearbeiten"
 
-#: umc/js/udm.js:219
+#: umc/js/udm.js:167
 msgid "group"
 msgstr "Gruppe"
 
-#: umc/js/udm.js:219
+#: umc/js/udm.js:167
 msgid "groups"
 msgstr "Gruppen"
 
-#: umc/js/udm.js:226
+#: umc/js/udm.js:174
 msgid "mail object"
 msgstr "Mail-Objekt"
 
-#: umc/js/udm.js:226
+#: umc/js/udm.js:174
 msgid "mail objects"
 msgstr "Mail-Objekte"
 
-#: umc/js/udm.js:221
+#: umc/js/udm.js:169
 msgid "network object"
 msgstr "Netz-Objekt"
 
-#: umc/js/udm.js:221
+#: umc/js/udm.js:169
 msgid "network objects"
 msgstr "Netz-Objekte"
 
-#: umc/js/_udm/DetailPage.js:750
+#: umc/js/udm/DetailPage.js:770
 msgid "not defined"
 msgstr "nicht gesetzt"
 
-#: umc/js/udm.js:228
+#: umc/js/udm.js:176
 msgid "policies"
 msgstr "Richtlinien"
 
-#: umc/js/udm.js:228
+#: umc/js/udm.js:176
 msgid "policy"
 msgstr "Richtlinie"
 
-#: umc/js/udm.js:225
+#: umc/js/udm.js:173
 msgid "printer"
 msgstr "Drucker"
 
-#: umc/js/udm.js:225
+#: umc/js/udm.js:173
 msgid "printers"
 msgstr "Drucker"
 
-#: umc/js/udm.js:224
+#: umc/js/udm.js:172
 msgid "share"
 msgstr "Freigabe"
 
-#: umc/js/udm.js:224
+#: umc/js/udm.js:172
 msgid "shares"
 msgstr "Freigaben"
 
-#: umc/js/_udm/LicenseDialog.js:154
+#: umc/js/udm/LicenseDialog.js:152
 msgid "unlimited"
 msgstr "unbegrenzt"
 
-#: umc/js/udm.js:218
+#: umc/js/udm.js:166
 msgid "user"
 msgstr "Benutzer"
 
-#: umc/js/udm.js:218
+#: umc/js/udm.js:166
 msgid "users"
 msgstr "Benutzer"
+
+#~ msgid "Continue editing"
+#~ msgstr "Bearbeiten fortführen"
+
+#~ msgid "Discard changes"
+#~ msgstr "Änderungen verwerfen"
 
 #~ msgid "License"
 #~ msgstr "Lizenz"
 
-msgid "There are unsaved changes. Are you sure to cancel nevertheless?"
-msgstr "Einige Änderungen sind noch nicht gespeichert. Möchten Sie trotzdem abbrechen?"
-
-msgid "Continue editing"
-msgstr "Bearbeiten fortführen"
-
-msgid "Discard changes"
-msgstr "Änderungen verwerfen"
-
-msgid "Create %s"
-msgstr "%s anlegen"
+#~ msgid "There are unsaved changes. Are you sure to cancel nevertheless?"
+#~ msgstr ""
+#~ "Einige Änderungen sind noch nicht gespeichert. Möchten Sie trotzdem "
+#~ "abbrechen?"

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.11-1) unstable; urgency=low
+
+  * fixed missing translations; Bug #28189
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Sep 2012 15:41:01 +0200
+
 univention-management-console-module-udm (3.0.10-2) unstable; urgency=low
 
   * fixed traceback for invalid license imports; Bug #27471
