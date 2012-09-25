@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/aspect",
+	"dojo/on",
 	"dojo/mouse",
 	"dojo/dom",
 	"dojo/query",
