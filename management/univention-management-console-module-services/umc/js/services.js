@@ -185,14 +185,14 @@ define([
 				columns: columns,
 				moduleStore: this.moduleStore,
 				query: {
-                	filter: '*'
-            	}
+					pattern: '*'
+				}
 			});
 			titlePane.addChild(this._grid);
 
 			var widgets = [{
 				type: TextBox,
-				name: 'filter',
+				name: 'pattern',
 				value: '*',
 				label: _('Keyword')
 			}];
@@ -200,7 +200,7 @@ define([
 			this._searchWidget = new SearchForm({
 				region: 'top',
 				widgets: widgets,
-				layout: [[ 'filter', 'submit', 'reset' ]],
+				layout: [[ 'pattern', 'submit', 'reset' ]],
 				onSearch: lang.hitch(this._grid, 'filter')
 			});
 

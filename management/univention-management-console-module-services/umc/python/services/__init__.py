@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import subprocess
-from fnmatch import fnmatch
 import notifier
 import notifier.threads
 
@@ -40,7 +39,8 @@ import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response
+from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.sanitizers import PatternSanitizer
 from univention.management.console.protocol.definitions import *
 
 import univention.service_info as usi
@@ -56,8 +56,9 @@ class Instance(umcm.Base):
 				failed.append(srv)
 		return failed
 
+	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
-	def query(self, filter='*'):
+	def query(self, pattern):
 		srvs = usi.ServiceInfo()
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
@@ -94,7 +95,7 @@ class Instance(umcm.Base):
 			else:
 				entry['isRunning'] = False
 			for value in entry.values():
-				if fnmatch(str(value), filter):
+				if pattern.match(str(value)):
 					result.append(entry)
 					break
 
