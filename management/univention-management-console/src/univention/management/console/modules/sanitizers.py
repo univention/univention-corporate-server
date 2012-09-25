@@ -48,6 +48,8 @@ very helpful when one needs to just validate input.
 import re
 import copy
 
+import ldap.filter
+
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
@@ -407,11 +409,12 @@ class SearchSanitizer(Sanitizer):
 class LDAPSearchSanitizer(SearchSanitizer):
 	'''Sanitizer for LDAP-Searches. Everything that
 	could possibly confuse an LDAP-Search is escaped
-	except for *.
+	except for \*.
 	'''
-	def _escape_and_replace_asterisks(self, value):
+	def _escape_and_return(self, value):
 		value = ldap.filter.escape_filter_chars(value)
-		return value.replace(r'\2a', '*')
+		value = value.replace(r'\2a', '*')
+		return value
 
 class PatternSanitizer(SearchSanitizer):
 	'''PatternSanitizer converts the input into a regular expression.
