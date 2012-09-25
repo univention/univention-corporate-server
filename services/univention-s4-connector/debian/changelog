@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.9-1) unstable; urgency=low
+
+  * Use TERM/300/KILL for --retry (Bug #27175)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Sep 2012 10:57:51 +0200
+
 univention-s4-connector (7.0.8-1) unstable; urgency=low
 
   * Use --retry for start-stop-daemon while trying to stop the S4
