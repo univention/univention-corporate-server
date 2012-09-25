@@ -389,7 +389,7 @@ class Manager( dict ):
 				else:
 					mod = nextmod
 
-			if ucr.is_true('umc/modules/%s/disabled' % (module_id)):
+			if ucr.is_true('umc/module/%s/disabled' % (module_id)):
 				RESOURCES.info('module %s is deactivated by UCR' % (module_id))
 				continue
 
@@ -400,7 +400,7 @@ class Manager( dict ):
 
 			deactivated_flavors = set()
 			for flavor in flavors:
-				if ucr.is_true('umc/modules/%s/%s/disabled' % (module_id, flavor.id)):
+				if ucr.is_true('umc/module/%s/%s/disabled' % (module_id, flavor.id)):
 					RESOURCES.info('flavor %s (module=%s) is deactivated by UCR' % (flavor.id, module_id))
 					# flavor is deactivated by UCR variable
 					flavor.deactivated = True

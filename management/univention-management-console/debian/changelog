@@ -1,3 +1,9 @@
+univention-management-console (5.0.34-1) unstable; urgency=low
+
+  * fixed typo; Bug #26721
+
+ -- Florian Best <best@univention.de>  Tue, 25 Sep 2012 18:08:50 +0200
+
 univention-management-console (5.0.33-1) unstable; urgency=low
 
   * added possibility to deactive flavors and modules through ucr variables;
