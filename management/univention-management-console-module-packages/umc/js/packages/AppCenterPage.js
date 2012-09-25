@@ -300,18 +300,28 @@ define([
 				if (!values.is_joined) {
 					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Join a domain before you install this application!');
 				}
-				var commands = [
-					lang.replace('COMP=repository/online/component/{id}', values),
-					'ucr set ${COMP}=enabled \\',
-					'  ${COMP}/parts=maintained \\',
-					'  ${COMP}/version=current \\',
-					'  ${COMP}/server=' + values.server,
-					'univention-install ' + master_packages.join(' ')
-				].join('\n');
+
+				// prepare a command with max 50 characters length per line
+				var MAXCHARS = 50;
+				var cmdLine = 'univention-add-app ' + values.id;
+				var cmdLines = []
+				array.forEach(master_packages, function(icmd) {
+					if (icmd.length + cmdLine.length > MAXCHARS) {
+						cmdLines.push(cmdLine);
+						cmdLine = '    ';
+					}
+					cmdLine += icmd + ' ';
+				});
+				if (cmdLine) {
+					cmdLines.push(cmdLine);
+				}
+				var commandStr = cmdLines.join('\\\n');
+
+				// print out note for master and backup servers
 				if (values.is_master) {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers.') + '</td></tr><tr><td colspan="2"><pre>' + commands + '</pre>';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
 				} else {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on your DC master and all of your backup servers <em>prior</em> to installing the application on this system.') + '</td></tr><tr><td colspan="2"><pre>' + commands + '</pre>';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on your DC master and all of your backup servers <em>prior</em> to installing the application on this system.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
 				}
 			}
 		},

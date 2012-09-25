@@ -264,6 +264,7 @@ class Application(object):
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
 		res['server'] = self.get_server()
+		res['server_version'] = ucr.get('version/version')
 		return res
 
 	def uninstall(self, module_instance, license):
