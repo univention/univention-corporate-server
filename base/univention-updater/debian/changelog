@@ -1,3 +1,9 @@
+univention-updater (8.0.13-1) unstable; urgency=low
+
+  * added script univention-add-app; Bug #27458
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 25 Sep 2012 16:50:34 +0200
+
 univention-updater (8.0.12-1) unstable; urgency=low
 
   * Use testing.univention.de as repository server (Bug #27966)

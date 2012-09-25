@@ -26,6 +26,7 @@ script/univention-updater-umc-dist-upgrade usr/share/univention-updater/
 script/univention-updater-umc-univention-install usr/share/univention-updater/
 script/univention-removed usr/share/univention-updater/
 script/apt-secure usr/share/univention-updater/
+script/univention-add-app usr/sbin/
 
 script/preup.sh usr/share/univention-updater/
 script/postup.sh usr/share/univention-updater/
