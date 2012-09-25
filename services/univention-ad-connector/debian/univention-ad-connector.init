@@ -32,6 +32,8 @@
 
 ADCONNECTORPID=/var/run/univention-ad-connector
 
+test -x /usr/sbin/univention-ad-connector || exit 0
+
 . /lib/lsb/init-functions
 
 case "$1" in
@@ -42,16 +44,23 @@ case "$1" in
 			check_autostart ad-connector connector/ad/autostart
 		fi	
 		log_action_msg "Starting univention-ad-connector daemon"
-		start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector
-		log_action_end_msg 0
+		if start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector; then
+			log_action_end_msg 0
+		else
+			log_action_end_msg 1
+		fi
 		;;
 	stop)
 		log_action_msg "Stopping univention-ad-connector daemon"
-		start-stop-daemon --stop --retry TERM/300/KILL --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector
-		log_action_end_msg 0
+		if start-stop-daemon --stop --retry TERM/300/KILL --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector; then
+			log_action_end_msg 0
+		else
+			log_action_end_msg 1
+		fi
 		;;
 	restart|force-reload)
 		$0 stop
+		sleep 2 # give it some time to die
 		$0 start
 		;;
 	crestart)

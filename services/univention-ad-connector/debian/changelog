@@ -1,3 +1,10 @@
+univention-ad-connector (7.0.4-1) unstable; urgency=low
+
+  * Adjust the AD connector init script with the S4 connector init
+    script (Bug #27175)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Sep 2012 10:59:38 +0200
+
 univention-ad-connector (7.0.3-2) unstable; urgency=low
 
   * Fixed typo in last commit (Bug #20517)
