@@ -58,7 +58,7 @@ import copy
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
-from ..modules import UMC_OptionTypeError, UMC_OptionMissing
+from ..modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from ..log import MODULE
 
 from sanitizers import MultiValidationError, ValidationError, DictSanitizer, ListSanitizer
@@ -387,7 +387,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False):
 		# checked for required arguments, set default... now run!
 		result = []
 
-		iterator = Iterator(request.options, arguments, single_values)
+		iterator = RequestOptionsIterator(request.options, arguments, single_values)
 		nones = [None] * len(arguments)
 		for res in function(self, iterator, *nones):
 			result.append(res)
@@ -395,7 +395,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False):
 		return result
 	return _response
 
-class Iterator(object):
+class RequestOptionsIterator(object):
 	def __init__(self, everything, names, single_values):
 		self.everything = everything
 		self.names = names
