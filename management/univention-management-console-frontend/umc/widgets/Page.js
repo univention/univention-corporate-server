@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/fx",
+	"dojo/on",
 	"dojo/mouse",
 	"dojo/query",
 	"dojo/dom-style",
@@ -44,7 +45,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, baseFX, mouse, query, style, domClass, topic, BorderContainer, tools, render, Text, ContainerWidget, _) {
+], function(declare, lang, array, baseFX, on, mouse, query, style, domClass, topic, BorderContainer, tools, render, Text, ContainerWidget, _) {
 	return declare("umc.widgets.Page", BorderContainer, {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
@@ -264,19 +265,19 @@ define([
 				'class': 'umcPageNote'
 			});
 			query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
-				inode.on('mousedown', function() {
+				this.own(on(inode, 'mousedown', function() {
 					domClass.add(inode, 'dijitTabCloseButtonActive');
-				});
-				inode.on('mouseup', function() {
+				}));
+				this.own(on(inode, 'mouseup', function() {
 					domClass.remove(inode, 'dijitTabCloseButtonActive');
-				});
-				inode.on(mouse.enter, function() {
+				}));
+				this.own(on(inode, mouse.enter, function() {
 					domClass.add(inode, 'dijitTabCloseButtonHover');
-				});
-				inode.on(mouse.leave, function() {
+				}));
+				this.own(on(inode, mouse.leave, function() {
 					domClass.remove(inode, 'dijitTabCloseButtonHover');
-				});
-				inode.on('click', lang.hitch(this, function() {
+				}));
+				this.own(on(inode, 'click', lang.hitch(this, function() {
 					baseFX.fadeOut({
 						node: note.domNode,
 						duration: 500,
@@ -288,7 +289,7 @@ define([
 							} );
 						})
 					}).play();
-				}));
+				})));
 			}, this);
 			this.addChild(note);
 			this._notes.push(note);

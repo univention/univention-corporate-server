@@ -151,7 +151,7 @@ define([
 
 			// as soon as the user has selected a file, start the upload
 			this._uploader.on('changed', lang.hitch(this, function(data) {
-				var allOk = array.some(data, function(ifile) {
+				var allOk = array.all(data, function(ifile) {
 					return ifile.size <= this.maxSize;
 				}, this);
 				if (!allOk) {

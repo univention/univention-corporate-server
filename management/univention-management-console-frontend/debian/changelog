@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.73-1) unstable; urgency=low
+
+  * fixed Page.js; Bug #28551
+
+ -- Florian Best <best@univention.de>  Tue, 25 Sep 2012 10:46:57 +0200
+
 univention-management-console-frontend (2.0.72-1) unstable; urgency=low
 
   * fixed LoginDialog and Tooltip widget; Bug #28551
