@@ -1,3 +1,10 @@
+univention-management-console-module-udm (3.0.12-1) unstable; urgency=low
+
+  * Sanitize LDAP-Search String (Bug #16387)
+  * Add attributes to be searched in by default (Bug #24341)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 25 Sep 2012 19:03:15 +0200
+
 univention-management-console-module-udm (3.0.11-1) unstable; urgency=low
 
   * fixed missing translations; Bug #28189

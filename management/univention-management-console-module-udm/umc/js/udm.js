@@ -530,10 +530,10 @@ define([
 					// get the current label of objectPropertyValue
 					var widget = this._searchForm.getWidget('objectProperty');
 					var label = _( 'Property value' );
-					array.forEach(widget.getAllItems(), function(iitem) {
+					array.some(widget.getAllItems(), function(iitem) {
 						if (newVal == iitem.id) {
 							label = iitem.label;
-							return false;
+							return true;
 						}
 					});
 
@@ -707,9 +707,6 @@ define([
 			var objTypeWidget = this._searchForm._widgets.objectType;
 			objTypeWidget.on('valuesLoaded', lang.hitch(this,  '_updateSearch'));
 
-			// hide the 'objectPropertyValue' combo box in case 'all properties' are shown
-			this.own(this._searchForm._widgets.objectProperty.watch('value', lang.hitch(this, '_updateObjectPropertyValue')));
-
 			// reload the superordinates in case an object has been added, it might be a new superordinate
 			if (superordinates && superordinates.length) {
 				//TODO: enable this behaviour
@@ -810,30 +807,6 @@ define([
 			}
 		},
 
-		_updateObjectPropertyValue: function() {
-			var objPropWidget = this._searchForm._widgets.objectProperty;
-			var objPropValWidget = this._searchForm._widgets.objectPropertyValue;
-			var labelWidget = objPropValWidget.$refLabel$;
-			//var newVal = _newVal === undefined ? objPropWidget.get('value') : _newVal;
-			var newVal = objPropWidget.get('value');
-			if ('None' == newVal) {
-				//if (this._isAdvancedSearch) {
-				//	// we can hide the widget
-				//	objPropValWidget.set('visible', false);
-				//}
-				//else {
-					// we need to set the height to 0 in order not to affect the position
-					// of the buttons... $refLabel$ is the reference to the Label widget
-					domClass.add(labelWidget.domNode, 'umcZeroHeight');
-				//}
-			}
-			else {
-				// restore the height and show widget
-				//objPropValWidget.set('visible', true);
-				domClass.remove(labelWidget.domNode, 'umcZeroHeight');
-			}
-		},
-
 		_updateSearch: function() {
 			if ('navigation' != this.moduleFlavor) {
 				var widgets = this._searchForm._widgets;
@@ -862,7 +835,6 @@ define([
 					//domClass.remove(widgets.objectPropertyValue.$refLabel$.domNode, 'umcZeroHeight');
 					toggleButton.set('label', _('(Advanced options)'));
 				}
-				this._updateObjectPropertyValue();
 				this.layout();
 			}
 

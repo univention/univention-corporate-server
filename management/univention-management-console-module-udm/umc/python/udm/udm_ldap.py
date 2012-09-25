@@ -397,7 +397,11 @@ class UDM_Module( object ):
 			if filter:
 				filter_s = str( filter )
 			else:
-				filter_s = ''
+				default_search_attrs = self.default_search_attrs
+				if default_search_attrs and value != '*':
+					filter_s = '(|%s)' % ''.join( '(%s=%s)' % ( attr, value ) for attr in default_search_attrs )
+				else:
+					filter_s = ''
 		else:
 			filter_s = '%s=%s' % ( attribute, value )
 
@@ -489,6 +493,14 @@ class UDM_Module( object ):
 			MODULE.info( 'Found module %s' % str( mod ) )
 			modules.append( { 'id' : child, 'label' : getattr( mod, 'short_description', child ) } )
 		return modules
+
+	@property
+	def default_search_attrs( self ):
+		ret = []
+		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
+			if prop.include_in_default_search:
+				ret.append( key )
+		return ret
 
 	def is_policy_module( self ):
 		return self.name.startswith('policies/') and self.name != 'policies/policy'
@@ -857,11 +869,10 @@ def container_modules():
 def split_module_name( module_name ):
 	"""Splits a module name into category and internal name"""
 
-	if module_name.find( '/' ) < 0:
-		return []
-	parts = module_name.split( '/', 1 )
-	if len( parts ) == 2:
-		return parts
+	if '/' in module_name:
+		parts = module_name.split( '/', 1 )
+		if len( parts ) == 2:
+			return parts
 
 	return ( None, None )
 

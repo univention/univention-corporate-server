@@ -44,7 +44,8 @@ import traceback
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing
-from univention.management.console.modules.decorators import simple_response
+from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.sanitizers import LDAPSearchSanitizer
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.session import TEMPUPLOADDIR
 
@@ -408,6 +409,7 @@ class Instance( Base ):
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
+	@sanitize(objectPropertyValue=LDAPSearchSanitizer())
 	def query( self, request ):
 		"""Searches for LDAP objects and returns a few properties of the found objects
 
