@@ -33,3 +33,9 @@ Description[de]=Definiert die Verfügbarkeit einer Sprachversion und legt deren 
 Description[en]=Defines the availability of a language version and defines the associated name
 Type=str
 Categories=Management
+
+[umc/module/.*/disabled]
+Description[de]=Deaktiviert ein angegebenes UMC-Modul, einzelne Flavor können deaktiviert werden durch modulename/flavorname
+Description[de]=deactivates a specific UMC module, individual flavors can be deactivated through modulename/flavorname
+Type=bool
+Categories=Management

@@ -136,6 +136,7 @@ import xml.etree.ElementTree as ET
 
 from .tools import JSON_Object, JSON_List, JSON_Dict
 from .log import RESOURCES
+from .config import ucr
 
 class Attribute( JSON_Object ):
 	'''Represents a command attribute'''
@@ -285,6 +286,10 @@ class XML_Definition( ET.ElementTree ):
 		return self.find( 'module' ).get( 'icon' )
 
 	@property
+	def deactivated(self):
+		return self.find('module').get('deactivated', 'no').lower() in ('yes','true','1')
+
+	@property
 	def flavors( self ):
 		'''Retrieve list of flavor objects'''
 		for elem in self.findall( 'module/flavor' ):
@@ -356,6 +361,9 @@ class Manager( dict ):
 				continue
 			try:
 				mod = XML_Definition( filename = os.path.join( Manager.DIRECTORY, filename ) )
+				if mod.deactivated:
+					RESOURCES.info( 'Module is deactivated: %s' % filename )
+					continue
 				RESOURCES.info( 'Loaded module %s' % filename )
 			except xml.parsers.expat.ExpatError, e:
 				RESOURCES.warn( 'Failed to load module %s: %s' % ( filename, str( e ) ) )
@@ -381,6 +389,10 @@ class Manager( dict ):
 				else:
 					mod = nextmod
 
+			if ucr.is_true('umc/modules/%s/disabled' % (module_id)):
+				RESOURCES.info('module %s is deactivated by UCR' % (module_id))
+				continue
+
 			if not mod.flavors:
 				flavors = [ Flavor( id = None ) ]
 			else:
@@ -388,6 +400,10 @@ class Manager( dict ):
 
 			deactivated_flavors = set()
 			for flavor in flavors:
+				if ucr.is_true('umc/modules/%s/%s/disabled' % (module_id, flavor.id)):
+					RESOURCES.info('flavor %s (module=%s) is deactivated by UCR' % (flavor.id, module_id))
+					# flavor is deactivated by UCR variable
+					flavor.deactivated = True
 
 				RESOURCES.info('mod=%s  flavor=%s  deactivated=%s' % (module_id, flavor.id, flavor.deactivated))
 				if flavor.deactivated:

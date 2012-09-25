@@ -204,7 +204,7 @@ class Base( signals.Provider, Translation ):
 			func( request )
 			return
 		except UMC_OptionSanitizeError, e:
-			status = BAD_REQUEST
+			status = 409 # Conflict
 			message = _(  'An option passed to %s has the wrong type: %s' ) % ( method, str( e ) )
 			if e.message:
 				message = e.message
