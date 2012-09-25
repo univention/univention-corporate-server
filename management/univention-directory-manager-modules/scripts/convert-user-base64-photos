@@ -114,5 +114,8 @@ if __name__ == '__main__':
 		sys.exit( 3 )
 
 	# action!
-	run(args[0], verbose = options.verbose)
-
+	try:
+		run(args[0], verbose = options.verbose)
+	except ldap.SERVER_DOWN as e:
+		print >>sys.stderr, 'ERROR: could not contact LDAP server: %s' % e
+		sys.exit(1)

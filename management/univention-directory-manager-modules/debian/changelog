@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.36-1) unstable; urgency=low
+
+  * scripts/convert-user-base64-photos: replaced traceback when
+    LDAP server is unreacheable by error message (Bug #27961)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 25 Sep 2012 11:21:01 +0200
+
 univention-directory-manager-modules (8.0.35-1) unstable; urgency=low
 
   * allow "_" character in policy names (Bug #28098)
