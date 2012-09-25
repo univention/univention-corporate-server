@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.11-1) unstable; urgency=low
+
+  * Fixed a traceback which occurs if the LDAP and Samba 4 base DNs are
+    not equal (Bug #28573)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Sep 2012 15:00:54 +0200
+
 univention-s4-connector (7.0.10-1) unstable; urgency=low
 
   * Added a reverse attribute check for the mail attribute. This means

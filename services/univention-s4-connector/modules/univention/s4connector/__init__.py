@@ -1272,9 +1272,13 @@ class ucs:
 		position=univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
 		if object['dn'].lower() != self.baseConfig['ldap/base'].lower():
-			ud.debug(ud.LDAP, ud.INFO,
-						   'sync_to_ucs: set position to %s' % string.join( ldap.explode_dn( object['dn'] )[1:], "," ) )
-			position.setDn( string.join( ldap.explode_dn( object['dn'] )[1:], "," ) ) 
+			try:
+				position.setDn( string.join( ldap.explode_dn( object['dn'] )[1:], "," ) ) 
+				ud.debug(ud.LDAP, ud.INFO,
+							   'sync_to_ucs: set position to %s' % string.join( ldap.explode_dn( object['dn'] )[1:], "," ) )
+			except univention.admin.uexceptions.noObject:
+				# In this case we use the base DN
+				pass
 
 		try:
 			result = False
