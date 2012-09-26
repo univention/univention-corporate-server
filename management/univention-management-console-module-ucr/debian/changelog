@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (2.0.2-1) unstable; urgency=low
+
+  * Make key in ucr/query required (Bug #24341)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Sep 2012 09:28:50 +0200
+
 univention-management-console-module-ucr (2.0.1-1) unstable; urgency=low
 
   * Added PatternSanitizer (Bug #24341)

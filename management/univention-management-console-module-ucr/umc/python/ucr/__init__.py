@@ -168,7 +168,7 @@ class Instance( Base ):
 			})
 		self.finished( request.id, categories )
 
-	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(['all', 'key', 'value', 'description'], default='variable'))
+	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(['all', 'key', 'value', 'description'], required=True))
 	@simple_response
 	def query(self, pattern, key, category=None):
 		'''Returns a dictionary of configuration registry variables
