@@ -118,6 +118,9 @@ define([
 		},
 
 		onLogin: function(username) {
+			// check if a reload is required
+			tools.checkReloadRequired();
+
 			// save the username internally and as cookie
 			cookie('UMCUsername', username, { expires: 100, path: '/' });
 			tools.status('username', username);
@@ -182,6 +185,7 @@ define([
 				tab.startup();
 			} catch (err) {
 				console.log('Error initializing module ' + module.id + ':', err);
+				tools.checkReloadRequired();
 			}
 		},
 

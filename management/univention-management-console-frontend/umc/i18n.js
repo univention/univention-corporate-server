@@ -57,6 +57,8 @@ define([
 	// territory (which is ignored at the moment).
 	var _i18nLocalRegExp = /^([a-z]{2,3})(_([a-z]{2,3}))?/i;
 
+	var cachedData = {};
+
 	return {
 		// summary:
 		//		Plugin for internationalization, implements the _() function.
@@ -136,11 +138,14 @@ define([
 			var deferred = new Deferred();
 			var ndone = 0;
 			var results = [];
-			var requests = array.forEach(scopes, function(iscope, i) {
+			array.forEach(scopes, function(iscope, i) {
 				var path = lang.replace('{1}/i18n/{0}/{2}.json', [ language, iscope[0], iscope[1] ]);
+				if (cachedData[path] !== undefined) {
+					return cachedData[path];
+				}
 				request(require.toUrl(path)).then(function(idata) {
 					// parse JSON data and store results
-					results[i] = idata ? json.parse(idata) : null;
+					cachedData[path] = (results[i] = idata ? json.parse(idata) : null);
 
 					// check whether all requests are finished
 					++ndone;

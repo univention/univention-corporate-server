@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.75-1) unstable; urgency=low
+
+  * show a notification when umc needs a browser reload; Bug #24947
+
+ -- Florian Best <best@univention.de>  Wed, 26 Sep 2012 14:55:40 +0200
+
 univention-management-console-frontend (2.0.74-1) unstable; urgency=low
 
   * adapted cherrypy errors to contain a body from umcp response; Bug #27716

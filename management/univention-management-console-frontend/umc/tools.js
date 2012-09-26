@@ -34,6 +34,7 @@ define([
 	"dojo/_base/window",
 	"dojo/query",
 	"dojo/request/xhr",
+	"dojo/_base/xhr",
 	"dojo/Deferred",
 	"dojo/json",
 	"dojo/topic",
@@ -46,7 +47,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, window, query, xhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
+], function(lang, array, _window, query, xhr, basexhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -210,6 +211,24 @@ define([
 			if (!this._checkSessionTimer.isRunning) {
 				this._checkSessionTimer.start();
 			}
+		},
+
+		checkReloadRequired: function() {
+			// check if UMC needs a browser reload and prompt the user to reload
+			basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, function(e) {
+				if (e.response.status === 404) {
+					// The URL does not exists, so the symlink is deleted
+					dialog.confirm(_("A reload of the univention-management-console is required to use new modules. Currently open modules could not work properly. Do you want to reload the page?"), [{
+						label: _('Cancel'),
+						'default': true
+					}, {
+						label: _('Reload'),
+						callback: function() {
+							window.location.reload();
+						}
+					}]);
+				}
+			});
 		},
 
 		// handler class for long polling scenario
@@ -600,7 +619,7 @@ define([
 			//		This method is similar to dojox/lang/functional/forIn where no hasOwnProperty()
 			//		check is carried out.
 
-			scope = scope || window.global;
+			scope = scope || _window.global;
 			for (var i in obj) {
 				if (obj.hasOwnProperty(i) || inheritedProperties) {
 					if ( false === callback.call(scope, i, obj[i], obj ) ) {
@@ -621,7 +640,7 @@ define([
 			}
 
 			// clone array and walk through it
-			scope = scope || window.global;
+			scope = scope || _window.global;
 			var res = lang.clone(anArray);
 			var stack = [ res ];
 			while (stack.length) {
