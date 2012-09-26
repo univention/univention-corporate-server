@@ -49,89 +49,105 @@ ucr unset directory/manager/web/modules/users/user/properties/homePostalAddress/
 # autosearch
 univention-config-registry set directory/manager/web/modules/autosearch?1
 
-# default search
-univention-config-registry set directory/manager/web/modules/users/user/search/default?username \
-	directory/manager/web/modules/dhcp/service/search/default?service
-
 # directory reports
 univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *" \
 	directory/reports/cleanup/age?43200
 
 VARIABLES=
-for i in \
-	computers/computer \
-	computers/domaincontroller_backup \
-	computers/domaincontroller_master \
-	computers/domaincontroller_slave \
-	computers/ipmanagedclient \
-	computers/macos \
-	computers/managedclient \
-	computers/memberserver \
-	computers/mobileclient \
-	computers/thinclient \
-	computers/trustaccount \
-	computers/windows \
-	computers/windows_domaincontroller \
-	dhcp/dhcp \
-	groups/group \
-	mail/domain \
-	mail/folder \
-	mail/lists \
-	mail/mail \
-	nagios/service \
-	networks/network \
-	policies/admin_container \
-	policies/autostart \
-	policies/clientdevices \
-	policies/console_access \
-	policies/desktop \
-	policies/dhcp_boot \
-	policies/dhcp_dns \
-	policies/dhcp_dnsupdate \
-	policies/dhcp_leasetime \
-	policies/dhcp_netbios \
-	policies/dhcp_routing \
-	policies/dhcp_scope \
-	policies/dhcp_statements \
-	policies/ldapserver \
-	policies/mailquota \
-	policies/maintenance \
-	policies/managedclientpackages \
-	policies/masterpackages \
-	policies/memberpackages \
-	policies/mobileclientpackages \
-	policies/nfsmounts \
-	policies/policy \
-	policies/print_quota \
-	policies/printserver \
-	policies/pwhistory \
-	policies/registry \
-	policies/release \
-	policies/repositoryserver \
-	policies/repositorysync \
-	policies/share_userquota \
-	policies/slavepackages \
-	policies/sound \
-	policies/thinclient \
-	policies/windowsinstallation \
-	policies/xfree \
-	shares/print \
-	shares/printer \
-	shares/printergroup \
-	shares/share \
-	users/user
-do
-	 VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default?name"
-done
-if [ -n "${VARIABLES}" ]; then
-	univention-config-registry set ${VARIABLES} \
-			directory/manager/web/modules/computers/computer/add/default?"computers/windows"
+# remove default search
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 3.0.12-1; then
+	# do something on update from VERSION <= 3.0-9-1 to current Version
+	# but NOT on initial installation ==> -n "$2"
+
+	i=users/user
+	searchdefault=$(univention-config-registry get directory/manager/web/modules/${i}/search/default)
+	if [ -n "$searchdefault" ] && [ "$searchdefault" = "username" ]; then
+		VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default"
+	fi
+
+	i=dhcp/service
+	searchdefault=$(univention-config-registry get directory/manager/web/modules/${i}/search/default)
+	if [ -n "$searchdefault" ] && [ "$searchdefault" = "service" ]; then
+		VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default"
+	fi
+	for i in \
+		computers/computer \
+		computers/domaincontroller_backup \
+		computers/domaincontroller_master \
+		computers/domaincontroller_slave \
+		computers/ipmanagedclient \
+		computers/macos \
+		computers/managedclient \
+		computers/memberserver \
+		computers/mobileclient \
+		computers/thinclient \
+		computers/trustaccount \
+		computers/windows \
+		computers/windows_domaincontroller \
+		dhcp/dhcp \
+		groups/group \
+		mail/domain \
+		mail/folder \
+		mail/lists \
+		mail/mail \
+		nagios/service \
+		networks/network \
+		policies/admin_container \
+		policies/autostart \
+		policies/clientdevices \
+		policies/console_access \
+		policies/desktop \
+		policies/dhcp_boot \
+		policies/dhcp_dns \
+		policies/dhcp_dnsupdate \
+		policies/dhcp_leasetime \
+		policies/dhcp_netbios \
+		policies/dhcp_routing \
+		policies/dhcp_scope \
+		policies/dhcp_statements \
+		policies/ldapserver \
+		policies/mailquota \
+		policies/maintenance \
+		policies/managedclientpackages \
+		policies/masterpackages \
+		policies/memberpackages \
+		policies/mobileclientpackages \
+		policies/nfsmounts \
+		policies/policy \
+		policies/print_quota \
+		policies/printserver \
+		policies/pwhistory \
+		policies/registry \
+		policies/release \
+		policies/repositoryserver \
+		policies/repositorysync \
+		policies/share_userquota \
+		policies/slavepackages \
+		policies/sound \
+		policies/thinclient \
+		policies/windowsinstallation \
+		policies/xfree \
+		shares/print \
+		shares/printer \
+		shares/printergroup \
+		shares/share
+	do
+		searchdefault=$(univention-config-registry get directory/manager/web/modules/${i}/search/default)
+		if [ -n "$searchdefault" ] && [ "$searchdefault" = "name" ]; then
+			VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default"
+		fi
+	done
+	if [ -n "${VARIABLES}" ]; then
+		univention-config-registry unset ${VARIABLES}
+	fi
 fi
+
+univention-config-registry set directory/manager/web/modules/computers/computer/add/default?"computers/windows"
 
 univention-config-registry set directory/manager/web/modules/groups/group/checks/circular_dependency?"yes"
 
 # activate new sites
-a2ensite univention-directory-manager
-invoke-rc.d apache2 restart
+#a2ensite univention-directory-manager
+#invoke-rc.d apache2 restart
 
 exit 0

@@ -398,7 +398,7 @@ class UDM_Module( object ):
 				filter_s = str( filter )
 			else:
 				default_search_attrs = self.default_search_attrs
-				if default_search_attrs and value != '*':
+				if default_search_attrs and value not in [None, '*']:
 					filter_s = '(|%s)' % ''.join( '(%s=%s)' % ( attr, value ) for attr in default_search_attrs )
 				else:
 					filter_s = ''

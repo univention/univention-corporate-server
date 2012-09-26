@@ -1,3 +1,11 @@
+univention-management-console-module-udm (3.0.13-1) unstable; urgency=low
+
+  * Remove default search attribute in UCR (Bug #24341)
+  * Remove objectProperty widget in simple search mode (Bug #24341)
+  * Fix query regression from 3.0.12-1 (Bug #24341)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Sep 2012 17:53:52 +0200
+
 univention-management-console-module-udm (3.0.12-1) unstable; urgency=low
 
   * Sanitize LDAP-Search String (Bug #16387)

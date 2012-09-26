@@ -461,7 +461,7 @@ define([
 				// add the types 'None'  and '$containers$' to objTypes
 				objTypes.push( { id: 'None', label: _( 'All types' ) } );
 				objTypes.push( { id: '$containers$', label: _( 'All containers' ) } );
-				objProperties.push({ id: 'None', label: _( 'All properties' ) });
+				objProperties.push({ id: 'None', label: _( 'Default properties' ) });
 			}
 			else if (superordinates && superordinates.length) {
 				// superordinates...
@@ -477,7 +477,7 @@ define([
 				layout[0].push('superordinate');
 				objTypeDependencies.push('superordinate');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
-				objProperties.push({ id: 'None', label: _( 'All properties' ) });
+				objProperties.push({ id: 'None', label: _( 'Default properties' ) });
 			}
 			else if (containers && containers.length) {
 				// containers...
@@ -493,7 +493,7 @@ define([
 				});
 				layout[0].push('container');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
-				objProperties.push({ id: 'None', label: _( 'All properties' ) });
+				objProperties.push({ id: 'None', label: _( 'Default properties' ) });
 			}
 
 			// add remaining elements of the search form
@@ -819,7 +819,7 @@ define([
 					if ('container' in widgets) {
 						widgets.container.set('visible', true);
 					}
-					//widgets.objectProperty.set('visible', true);
+					widgets.objectProperty.set('visible', true);
 					//widgets.objectPropertyValue.set('visible', true);
 					toggleButton.set('label', _('(Simplified options)'));
 				}
@@ -831,7 +831,7 @@ define([
 					if ('container' in widgets) {
 						widgets.container.set('visible', false);
 					}
-					//widgets.objectProperty.set('visible', false);
+					widgets.objectProperty.set('visible', false);
 					//domClass.remove(widgets.objectPropertyValue.$refLabel$.domNode, 'umcZeroHeight');
 					toggleButton.set('label', _('(Advanced options)'));
 				}

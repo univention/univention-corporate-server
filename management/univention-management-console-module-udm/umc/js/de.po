@@ -136,8 +136,8 @@ msgid "All containers"
 msgstr "Alle Container"
 
 #: umc/js/udm.js:464 umc/js/udm.js:480 umc/js/udm.js:496
-msgid "All properties"
-msgstr "Alle Eigenschaften"
+msgid "Default properties"
+msgstr "Standardeigenschaften"
 
 #: umc/js/udm.js:462 umc/js/udm.js:479 umc/js/udm.js:495
 msgid "All types"
