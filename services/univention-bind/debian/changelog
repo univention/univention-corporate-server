@@ -1,3 +1,14 @@
+univention-bind (7.0.3-1) unstable; urgency=low
+
+  * added UCR variable 'dns/allow/transfer'
+  * use UCR variable dns/allow/transfer in templates for
+    named.conf.proxy and named.conf.samba4
+  * set dns/allow/query and dns/allow/transfer in postinst
+    (default: any)
+  (Bug #10365)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 26 Sep 2012 12:30:08 +0200
+
 univention-bind (7.0.2-1) unstable; urgency=low
 
   * fixed check_autostart calls in bind initscript (Bug #23811)
