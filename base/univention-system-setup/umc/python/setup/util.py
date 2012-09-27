@@ -579,7 +579,6 @@ def dhclient(interface, timeout=None):
 	dhcp_dict={}
 	with open(tempfilename) as file:
 		for line in file.readlines():
-			MODULE.error('**** %r' % line)
 			key, value = line.strip().split('=', 1)
 			dhcp_dict[key]=value[1:-1]
 	os.unlink(tempfilename)
