@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.75-2) unstable; urgency=low
+
+  * fixed fuzzy; Bug #24947
+
+ -- Florian Best <best@univention.de>  Thu, 27 Sep 2012 09:03:07 +0200
+
 univention-management-console-frontend (2.0.75-1) unstable; urgency=low
 
   * show a notification when umc needs a browser reload; Bug #24947
