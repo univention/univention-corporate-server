@@ -27,7 +27,9 @@ msgid ""
 "<p>This application cannot be installed on the current server role (%s). In "
 "order to install the application, one of the following roles is necessary: "
 "%s</p>"
-msgstr "<p>Diese Applikation kann nicht für die aktuelle Serverrolle (%s) installiert werden. Um die Applikation ist eine der folgenden Serverrollen notwendig: %s"
+msgstr "<p>Diese Applikation kann nicht für die aktuelle Serverrolle (%s) "
+"installiert werden. Um die Applikation zu installieren, ist eine der "
+"folgenden Serverrollen notwendig: %s"
 
 #: umc/js/packages/AppCenterPage.js:447 umc/js/packages/PackagesPage.js:461
 msgid ""

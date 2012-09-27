@@ -43,7 +43,7 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/modules/lib/server",
-	"umc/modules/packages/Form",
+	"umc/widgets/Form",
 	"umc/widgets/TextBox",
 	"dojo/query",
 	"dojox/image/LightboxNano",

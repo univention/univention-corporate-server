@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.23-1) unstable; urgency=low
+
+  * Use new validation handling (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 27 Sep 2012 11:46:46 +0200
+
 univention-management-console-module-packages (2.0.22-1) unstable; urgency=low
 
   * fixed typo; Bug #27458

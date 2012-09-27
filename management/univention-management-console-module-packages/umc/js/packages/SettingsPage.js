@@ -39,8 +39,8 @@ define([
 	"umc/widgets/Grid",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ExpandingTitlePane",
-	"umc/modules/packages/Form",
-	"umc/modules/packages/store",
+	"umc/widgets/Form",
+	"umc/store",
 	"umc/i18n!umc/modules/packages"
 ], function(declare, lang, array, dialog, tools, Page, StandbyMixin, Grid, TitlePane, ExpandingTitlePane, Form, store, _) {
 	return declare("umc.modules.packages.SettingsPage", [ Page, StandbyMixin ], {

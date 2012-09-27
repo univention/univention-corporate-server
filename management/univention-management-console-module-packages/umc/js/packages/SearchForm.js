@@ -32,7 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"umc/tools",
-	"umc/modules/packages/Form",
+	"umc/widgets/Form",
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/TextBox",

@@ -34,7 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/Deferred",
-	"umc/modules/packages/store",
+	"umc/store",
 	"umc/widgets/TabbedModule",
 	"umc/modules/packages/AppCenterPage",
 	"umc/modules/packages/PackagesPage",
