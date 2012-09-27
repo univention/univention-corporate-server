@@ -476,7 +476,6 @@ define([
 			// summary:
 			//		This event is triggered when a query is set to load the dynamic values (and
 			//		only the dynamic values).
-			//console.log('###', this.name, ' onLoadDynamicValues()');
 		},
 
 		onDynamicValuesLoaded: function(values) {
@@ -485,7 +484,6 @@ define([
 			//		have been loaded.
 			// values:
 			//		Array containing all dynamic values.
-			//console.log('###', this.name, ' onDynamicValuesLoaded()');
 		},
 
 		onValuesLoaded: function(values) {
@@ -498,7 +496,6 @@ define([
 			//if (typeof this._refresh == "function") {
 			//	this._refresh();
 			//}
-			//console.log('###', this.name, ' onValuesLoaded()');
 		},
 
 		// setter for staticValues

@@ -323,9 +323,10 @@ class UMC_HTTPError(cherrypy.HTTPError):
 		cherrypy._cperror.clean_headers(self.status)
 
 		cherrypy.response.status = self.status
-		cherrypy.response.body = default_error_page(self.status, self._message, None, None, self.body)
+		content = default_error_page(self.status, self._message, None, None, self.body)
+		cherrypy.response.body = content
 
-		cherrypy.response.headers['Content-Length'] = len(cherrypy.response.body)
+		cherrypy.response.headers['Content-Length'] = len(content)
 
 		cherrypy._cperror._be_ie_unfriendly(self.status)
 

@@ -65,6 +65,7 @@ define([
 			// object: Object
 			//		The object to get the identity from
 			//	returns: String
+
 			//console.log('getIdentity: ' + json.stringify(arguments));
 			return object[this.idProperty];
 		},
