@@ -30,27 +30,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-dojo_tmp_dir:=$(CURDIR)/univention-dojo
-rel_root_path:=$(shell echo '$(dojo_tmp_dir)/util/docscripts' | sed -e 's,/[^/]*,../,g')
+build: tree.json
 
-build: umc.xml
+# FIXME: Remove?
+js-doc-parse:
+	git clone --recursive https://github.com/wkeese/js-doc-parse.git
 
-umc.xml: univention-dojo umc
-	@# generate umc.xml for univention-dojo-api-viewer
-	echo 'location = $(rel_root_path)$(CURDIR)/umc/' > '$(dojo_tmp_dir)/util/docscripts/modules/umc.module.properties'
-	cd '$(dojo_tmp_dir)/util/docscripts/' && \
-		php generate.php umc dojo dijit dojox --serialize=xml --clean --outfile=$(rel_root_path)..$(CURDIR)/umc
+tree.json: js-doc-parse univention-dojo univention-dojo/umc
+	cd $<; \
+		git apply < ../api_generator.patch; \
+		./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
 
 univention-dojo: /usr/share/univention-dojo
 	cp -r $< $@
-umc: /usr/share/univention-management-console-frontend-src/umc
+univention-dojo/umc: /usr/share/univention-management-console-frontend-src/umc
 	cp -r $< $@
 
 install: build
 	install -d '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
-	install -m644 umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
+	install -m644 tree.json '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
+	install -m644 details.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
 
 clean:
-	$(RM) umc.xml
+	$(RM) tree.json
+	$(RM) details.xml
 	$(RM) -r univention-dojo
 	$(RM) -r umc
+	$(RM) -r js-doc-parse

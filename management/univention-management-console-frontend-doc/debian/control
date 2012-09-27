@@ -7,7 +7,9 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-management-console-dev,
  univention-management-console-frontend-src,
  wget,
- php5-cli
+ php5-cli,
+ git,
+ rhino
 
 Package: univention-management-console-frontend-doc
 Architecture: all
