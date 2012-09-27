@@ -138,30 +138,31 @@ define([
 			var deferred = new Deferred();
 			var ndone = 0;
 			var results = [];
+			var resolved = function() {
+					// call the resolve function of the deferred if all requests are finished
+					++ndone;
+					if (ndone >= scopes.length) {
+						deferred.resolve(results);
+					}
+			}
+
 			array.forEach(scopes, function(iscope, i) {
 				var path = lang.replace('{1}/i18n/{0}/{2}.json', [ language, iscope[0], iscope[1] ]);
 				if (cachedData[path] !== undefined) {
-					return cachedData[path];
+					resolved();
+					return;
 				}
 				request(require.toUrl(path)).then(function(idata) {
 					// parse JSON data and store results
 					cachedData[path] = (results[i] = idata ? json.parse(idata) : null);
 
-					// check whether all requests are finished
-					++ndone;
-					if (ndone == scopes.length) {
-						deferred.resolve(results);
-					}
+					resolved();
 				}, function(error) {
 					// i18n data could not be loaded, ignore them in the future
 					_ignore(language, scopes[i][0], scopes[i][1]);
 					console.log(lang.replace('INFO: Localization files for scope "{0}/{1}" in language "{2}" not available!', [scopes[i][0], scopes[i][1], language]));
 
-					// check whether all requests are finished
-					++ndone;
-					if (ndone == scopes.length) {
-						deferred.resolve(results);
-					}
+					resolved();
 				});
 			});
 

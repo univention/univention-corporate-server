@@ -36,7 +36,8 @@ msgid ""
 "A reload of the univention-management-console is required to use new "
 "modules. Currently open modules could not work properly. Do you want to "
 "reload the page?"
-msgstr ""
+msgstr "Ein Neuladen der univention-management-console wird benötigt um neue Module benutzen zu können"
+"Momentan geöffnete Module funktionen möglicherweise nicht mehr korrekt. Soll die Seite neugeladen werden?"
 
 #: umc/app.js:488 umc/about.js:52
 msgid "About UMC"

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.76-1) unstable; urgency=low
+
+  * fixed login; Bug #28551
+
+ -- Florian Best <best@univention.de>  Thu, 27 Sep 2012 09:44:08 +0200
+
 univention-management-console-frontend (2.0.75-2) unstable; urgency=low
 
   * fixed fuzzy; Bug #24947
