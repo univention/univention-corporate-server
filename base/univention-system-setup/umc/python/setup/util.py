@@ -557,8 +557,7 @@ def dhclient(interface, timeout=None):
 		stringbufferlist.append(fh.read())
 
 	stderr = []
-	stderr_thread = threading.Thread(target=_readerthread,
-									args=(p.stderr, stderr))
+	stderr_thread = threading.Thread(target=_readerthread, args=(p.stderr, stderr))
 	stderr_thread.setDaemon(True)
 	stderr_thread.start()
 	stderr_thread.join(timeout)
@@ -577,12 +576,12 @@ def dhclient(interface, timeout=None):
 	except:
 		pass
 
-	file = open(tempfilename)
 	dhcp_dict={}
-	for line in file.readlines():
-		key, value = line.strip().split(':', 1)
-		dhcp_dict[key]=value.lstrip()
-	file.close()
+	with open(tempfilename) as file:
+		for line in file.readlines():
+			MODULE.error('**** %r' % line)
+			key, value = line.strip().split('=', 1)
+			dhcp_dict[key]=value[1:-1]
 	os.unlink(tempfilename)
 	return dhcp_dict
 

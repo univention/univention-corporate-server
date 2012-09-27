@@ -240,7 +240,9 @@ define([
 				this.standby(false);
 
 				var result = data.result;
-				if (!result.address && !result.netmask) {
+				var netmask = result[item[0] + '_netmask'];
+				var address = result[item[0] + '_ip'];
+				if (!address && !netmask) {
 					dialog.alert(_('DHCP query failed.'));
 					return;
 				}
@@ -248,11 +250,11 @@ define([
 				// set the queried IP and netmask
 				var devicesWidget = this._form.getWidget('interfaces_ipv4');
 				var val = devicesWidget.get('value');
-				if (result.address) {
-					val[idx][1] = result.address;
+				if (address) {
+					val[idx][1] = address;
 				}
-				if (result.netmask) {
-					val[idx][2] = result.netmask;
+				if (netmask) {
+					val[idx][2] = netmask;
 				}
 				// set "Dynamic (DHCP)" to be false if it was not set
 				if ( val[idx][3] === '') {
