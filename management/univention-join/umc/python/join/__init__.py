@@ -548,9 +548,12 @@ class Instance(umcm.Base):
 					for line in file:
 						match = re.search('^VERSION\=(\d+)',line)
 						if match:
-							entry['current'] = match.group(1)
-							MODULE.info("   Script '%s' has version '%s'" % (fname,match.group(1)))
-							break	# should stop reading from this file
+							try:
+								entry['current'] = int(match.group(1))
+								MODULE.info("   Script '%s' has version '%s'" % (fname,match.group(1)))
+								break	# should stop reading from this file
+							except ValueError, e:
+								MODULE.warn("   Failed to parse version number for Script '%s': VERSION=%s" % (fname, match.group(1)))
 				finally:
 					if file != None:
 						file.close()
@@ -589,20 +592,24 @@ class Instance(umcm.Base):
 					lcount = lcount + 1
 					temp = line.split()
 					if len(temp) != 3:
-						next
+						continue
 					if temp[2] != 'successful':
-						next
+						continue
 					fcount = fcount + 1
 					(fname,version,status) = temp
-					version = version.replace('v','')
+					try:
+						version = int(version.replace('v',''))
+					except ValueError, e:
+						version = 0
+						MODULE.warn("   Failed to parse executed version number for Script '%s': %s" % (fname, version))
 					if fname in files:
 						# Some join scripts fail to remove older entries from the status
 						# file, so we have to check that we've catched the highest version!
-						if 'last' in files[fname]:					# we have already registered an instance of this script, and...
-							if version < files[fname]['last']:		# ... it has a higher version than the one we're processing, so...
-								next								# ... ignore this entry
+						if version < files[fname].get('last', 0):
+							# ignore smaller version
+							continue
 						files[fname]['last'] = version
-						if files[fname]['last'] < files[fname]['current']:
+						if files[fname].get('last', 0) < files[fname].get('current', 0):
 							files[fname]['action'] = _('run')
 							files[fname]['status'] = _('due')
 						else:
@@ -617,8 +624,8 @@ class Instance(umcm.Base):
 						files[fname] = e
 			finally:
 				file.close()
-		except Exception,ex:
-			MODULE.warn("ERROR: %s" % str(ex))
+		except (IOError, OSError), e:
+			MODULE.warn("ERROR opening the status file: %s" % e)
 		MODULE.info("   .. Read %d lines, extracted %d success entries" % (lcount,fcount))
 		# Say it perlish: @result = values %files;
 		result = []

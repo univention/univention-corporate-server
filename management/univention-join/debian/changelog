@@ -1,3 +1,11 @@
+univention-join (5.0.11-1) unstable; urgency=low
+
+  * display grid when system is already joined
+  * show correct status of join scripts
+  (Bug #28067)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 27 Sep 2012 17:04:24 +0200
+
 univention-join (5.0.10-1) unstable; urgency=low
 
   * fixed typo in German localization (Bug #28397)

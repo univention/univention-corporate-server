@@ -846,8 +846,8 @@ define([
 				this.umcpCommand('join/running')
 			])).then(lang.hitch(this, function(results) {
 				// result[i]: [ 0 ] -> success/failure, [ 1 ] -> data
-				this._joined = results[0][0] ? results[0][1].result : false;
-				this._job_running = results[1][0] ? results[1][1].result : false;
+				this._joined = results[0].result
+				this._job_running = results[1].result
 				this.standby(false);
 				this.standbyOpacity = 0.75;  // set it back to semi transparent
 				this._setTitle(this._joined);  // update TitlePane title
