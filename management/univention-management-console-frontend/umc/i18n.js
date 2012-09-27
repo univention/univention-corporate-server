@@ -57,6 +57,7 @@ define([
 	// territory (which is ignored at the moment).
 	var _i18nLocalRegExp = /^([a-z]{2,3})(_([a-z]{2,3}))?/i;
 
+	// object which stores translation dict by path
 	var cachedData = {};
 
 	return {
@@ -150,6 +151,7 @@ define([
 				var path = lang.replace('{1}/i18n/{0}/{2}.json', [ language, iscope[0], iscope[1] ]);
 				if (cachedData[path] !== undefined) {
 					resolved();
+					results[i] = cachedData[path];
 					return;
 				}
 				request(require.toUrl(path)).then(function(idata) {
