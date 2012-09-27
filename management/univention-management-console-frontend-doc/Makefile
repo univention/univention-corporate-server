@@ -36,7 +36,7 @@ build: umc.xml
 js-doc-parse:
 	git clone --recursive https://github.com/wkeese/js-doc-parse.git
 
-umc.xml: js-doc-parse univention-dojo univention-dojo/umc
+umc.xml: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
 	cd $<; \
 		git apply < ../api_generator.patch && \
 		./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
@@ -45,6 +45,11 @@ univention-dojo: /usr/share/univention-dojo
 	cp -r $< $@
 univention-dojo/umc: /usr/share/univention-management-console-frontend-src/umc
 	cp -r $< $@
+
+# this is a workaround: umc.app require()s this file
+univention-dojo/umc/modules/udm/LicenseDialog.js:
+	mkdir -p univention-dojo/umc/modules/udm
+	echo 'define([],function(){});' > $@
 
 install: build
 	install -d '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
