@@ -1,3 +1,9 @@
+univention-ssl (7.0.4-2) unstable; urgency=low
+
+  * Support generating SSL certificates for UCC clients (Bug #28571)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 27 Sep 2012 14:53:04 +0200
+
 univention-ssl (7.0.4-1) unstable; urgency=low
 
   * remove ssl/validity/days and create

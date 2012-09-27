@@ -46,6 +46,7 @@ filter = '(|' + \
 		'(objectClass=univentionDomainController)' + \
 		'(objectClass=univentionClient)' + \
 		'(objectClass=univentionMobileClient)' + \
+		'(objectClass=univentionCorporateClient)' + \
 		'(objectClass=univentionMemberServer))'
 attributes = []
 
