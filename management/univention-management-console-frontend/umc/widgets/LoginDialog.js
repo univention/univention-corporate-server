@@ -41,6 +41,7 @@ define([
 	"dojo/dom-attr",
 	"dojo/dom-class",
 	"dijit/Dialog",
+	"dijit/DialogUnderlay",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/LabelPane",
@@ -49,7 +50,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/app",
 	"dojo/domReady!"
-], function(declare, lang, array, win, aspect, on, mouse, dom, query, attr, domClass, Dialog, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
+], function(declare, lang, array, win, aspect, on, mouse, dom, query, attr, domClass, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
 	return declare("umc.widgets.LoginDialog", StandbyMixin, {
 		// our own variables
 		_connections: null,
@@ -111,7 +112,7 @@ define([
 			// automatically resize the DialogUnderlay container
 			this.own(on(win.global, 'resize', lang.hitch(this, function() {
 				if (Dialog._DialogLevelManager.isTop(this)) {
-					this.show();
+					DialogUnderlay._singleton.layout();
 				}
 			})));
 		},

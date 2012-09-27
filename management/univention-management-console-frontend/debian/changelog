@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.79-1) unstable; urgency=low
+
+  * resize LoginDialog underlay when the window size changes; Bug #28514
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 27 Sep 2012 16:59:25 +0200
+
 univention-management-console-frontend (2.0.78-1) unstable; urgency=low
 
   * fixes for the doc parser; Bug #28018
