@@ -218,7 +218,7 @@ define([
 			basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, function(e) {
 				if (e.response.status === 404) {
 					// The URL does not exists, so the symlink is deleted
-					dialog.confirm(_("A reload of the univention-management-console is required to use new modules. Currently open modules could not work properly. Do you want to reload the page?"), [{
+					dialog.confirm(_("A reload of the Univention Management Console is required to use new modules. Currently opened modules may not work properly. Do you want to reload the page?"), [{
 						label: _('Cancel'),
 						'default': true
 					}, {
@@ -441,10 +441,9 @@ define([
 						return data; // Object
 					}, function(error) {
 						// handle errors
-						tools.handleErrorStatus(error.response);
-
+						tools.handleErrorStatus(error.response, handleErrors);
 						// propagate the error
-						throw error; // Error
+						throw error;
 					});
 				}
 
@@ -496,6 +495,7 @@ define([
 			404: _( 'Webfrontend error: The specified request is unknown.' ),
 			406: _( 'Webfrontend error: The specified UMCP command arguments of the request are invalid.' ),
 			407: _( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'),
+			409: _( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'), // hack: umcp defined a validation error as 407, but this is not a good html error code
 
 			411: _( 'Authentication failed, please login again.' ),
 			412: _( 'The account is expired and can not be used anymore.' ),
@@ -518,15 +518,17 @@ define([
 		parseError: function(error) {
 			return {
 				status: parseInt(error.data.status, 10) || error.status,
-				message: error.data.message || ''
+				message: error.data.message || '',
+				result: error.data.result
 			};
 		},
 
-		handleErrorStatus: function(error) {
+		handleErrorStatus: function(error, handleErrors) {
 			// parse the error
-			var result = this.parseError(error);
-			var status = result.status;
-			var message = result.message;
+			var info = this.parseError(error);
+			var status = info.status;
+			var message = info.message;
+			var result = info.result;
 
 			// handle the different status codes
 			if (undefined !== status && status in this._statusMessages) {
@@ -540,6 +542,9 @@ define([
 					// session has expired
 					dialog.login();
 					dialog.notify(this._statusMessages[status]);
+				} else if (409 == status && handleErrors && handleErrors.onValidationError) {
+					// validation error
+					handleErrors.onValidationError(message, result);
 				}
 				/*else if (591 == status) {
 					// the command could not be executed, e.g., since the user data was not correct

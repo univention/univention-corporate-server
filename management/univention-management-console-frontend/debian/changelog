@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.77-1) unstable; urgency=low
+
+  * Handle validation errors (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 27 Sep 2012 11:43:55 +0200
+
 univention-management-console-frontend (2.0.76-1) unstable; urgency=low
 
   * fixed login; Bug #28551

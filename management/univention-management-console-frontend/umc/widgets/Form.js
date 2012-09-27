@@ -40,6 +40,17 @@ define([
 	"umc/render"
 ], function(declare, lang, array, Deferred, on, style, Form, tools, render) {
 
+	// in order to break circular dependencies (umc.dialog needs a Form and
+	// Form needs umc/dialog), we define umc/dialog as an empty object and
+	// require it explicitely
+	var dialog = {
+		notify: function() {}
+	};
+	require(['umc/dialog'], function(_dialog) {
+		// register the real umc/dialog module in the local scope
+		dialog = _dialog;
+	});
+
 	return declare("umc.widgets.Form", [
 			Form
 	/*		dojox.form.manager._Mixin,
@@ -450,7 +461,7 @@ define([
 			var values = this.gatherFormValues();
 			var deferred = null;
 			if (this._loadedID === null || this._loadedID === undefined || this._loadedID === '') {
-				deferred = this.moduleStore.add(values);
+				deferred = this.moduleStore.add(values, undefined, this);
 			}
 			else {
 				// prepare an options dict containing the original id of the object
@@ -460,7 +471,7 @@ define([
 				if (idProperty) {
 					options[idProperty] = this._loadedID;
 				}
-				deferred = this.moduleStore.put(values, options);
+				deferred = this.moduleStore.put(values, options, this);
 			}
 			deferred = deferred.then(lang.hitch(this, function(data) {
 				// fire event
@@ -510,7 +521,40 @@ define([
 		onSubmit: function() {
 			// prevent page reload
 			return false;
+		},
+
+		onValidationError: function(/*String*/message, /*Object*/ data) {
+			// naive implementation
+			var focus_set = false;
+			tools.forIn(data, lang.hitch(this, function(iwidget, error_msg) {
+				var worked = false;
+				try {
+					// TODO: return true in setValid
+					// except for our checkBox
+					// or (better) implement setValid for checkBox
+					var widget = this.getWidget(iwidget);
+					if (widget && widget['class'] != 'umcCheckBox') {
+						widget.setValid(false, error_msg);
+						//if (!focus_set) {
+						//	widget.focus();
+						//	focus_set = true;
+						//}
+						//on.once('keyup', function() {
+						//	widget.setValid(true);
+						//});
+						worked = true;
+					}
+				} catch(e) {
+					console.log(iwidget, e);
+				}
+				if (!worked) {
+					// notify is buggy (adding messages
+					// during animation). maybe use <ul> in alert?
+					dialog.notify(error_msg);
+				}
+			}));
 		}
+
 	});
 });
 

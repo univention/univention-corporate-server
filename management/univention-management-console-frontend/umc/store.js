@@ -69,13 +69,21 @@ define([
 			return object[this.idProperty];
 		},
 
-		_genericCmd: function(type, param) {
+		_genericCmd: function(type, param, handleErrors) {
 			//console.log('_genericCmd: ' + json.stringify(arguments));
 			if (this._doingTransaction) {
 				this._addTransactions(type, [param]);
 			}
 			else {
-				return this._genericMultiCmd(type, [param]).
+				var singleHandleErrors;
+				if (handleErrors) {
+					singleHandleErrors = new Object();
+					singleHandleErrors.onValidationError = function(message, data) {
+						data = data[0].object;
+						return handleErrors.onValidationError(message, data);
+					};
+				}
+				return this._genericMultiCmd(type, [param], singleHandleErrors).
 					then(function(results) {
 						if (results && results instanceof Array) {
 							return results[0];
@@ -84,14 +92,14 @@ define([
 			}
 		},
 
-		_genericMultiCmd: function(type, params) {
+		_genericMultiCmd: function(type, params, handleErrors) {
 			//console.log('_genericMultiCmd: ' + json.stringify(arguments));
 			if (this._doingTransaction) {
 				this._addTransactions(type, params);
 			}
 			else {
 				// send the UMCP command
-				return this.umcpCommand(this.storePath + '/' + type, params).
+				return this.umcpCommand(this.storePath + '/' + type, params, handleErrors).
 					then(lang.hitch(this, function(data) {
 						// make sure that we get an non-empty array
 						//console.log('# _genericMultiCmd - deferred: data=' + String(data));
@@ -109,7 +117,7 @@ define([
 			}
 		},
 
-		get: function(id) {
+		get: function(id, handleErrors) {
 			//console.log('get: ' + json.stringify(arguments));
 			//	summary:
 			//		Retrieves an object by its identity. This will trigger an UMCP request
@@ -118,10 +126,10 @@ define([
 			//		The identity to use to lookup the object
 			//	returns: dojo/Deferred
 			//		The object in the store that matches the given id.
-			return this._genericCmd('get', id);
+			return this._genericCmd('get', id, handleErrors);
 		},
 
-		put: function(object, options) {
+		put: function(object, options, handleErrors) {
 			//console.log('put: ' + json.stringify(arguments));
 			// summary:
 			//		Stores an object. This will trigger an UMCP request calling the module
@@ -134,10 +142,10 @@ define([
 			return this._genericCmd('put', {
 				object: object,
 				options: options || null
-			});
+			}, handleErrors);
 		},
 
-		add: function(object, options) {
+		add: function(object, options, handleErrors) {
 			//console.log('add: ' + json.stringify(arguments));
 			// summary:
 			//		Stores an object. This will trigger an UMCP request calling the module
@@ -149,10 +157,10 @@ define([
 			return this._genericCmd('add', {
 				object: object,
 				options: options || null
-			});
+			}, handleErrors);
 		},
 
-		remove: function( object, options ) {
+		remove: function( object, options, handleErrors ) {
 			//console.log('remove: ' + json.stringify(arguments));
 			// summary:
 			//		Deletes an object by its identity. This will trigger an UCMP request
@@ -164,7 +172,7 @@ define([
 			return this._genericCmd('remove', {
 				object: object,
 				options: options || null
-			} );
+			}, handleErrors );
 		},
 
 		query: function(_query, options) {
