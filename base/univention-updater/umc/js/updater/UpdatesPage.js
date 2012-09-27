@@ -526,7 +526,7 @@ define([
 					else
 					{
 						tmp1 = _("There are no errata updates available for this system.");
-						this._form.getWidget('errata_update_text2').set('content', null);
+						this._form.getWidget('errata_update_text2').set('content', '');
 						domClass.toggle(but.domNode, 'dijitHidden', true);
 					}
 					this._form.getWidget('errata_update_text1').set('content', tmp1);
