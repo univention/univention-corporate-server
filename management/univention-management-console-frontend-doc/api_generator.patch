@@ -1,26 +1,21 @@
 diff --git a/config.js b/config.js
-index 62e9ee3..c0b67fc 100755
+index e43efe5..b61612f 100755
 --- a/config.js
 +++ b/config.js
-@@ -28,11 +28,11 @@ define({
+@@ -27,7 +27,7 @@ define({
+ 	// of a string, with the following properties:
  	//    - id: The module ID of the exporter.
  	//    - config: Arbitrary exporter configuration object, passed as an argument to the exporter function.
- 	exporters: [
--		{ id: 'dojov1', config: { details: 'details.xml', tree: 'tree.json' } }
-+		{ id: 'dojov1', config: { details: '../details.xml', tree: '../tree.json' } }
- 	],
+-	exporters: [ { id: 'dojov1', config: { file: 'details.xml' } } ],
++	exporters: [ { id: 'dojov1', config: { file: '../umc.xml' } } ],
  
  	show: {
--		warn:   false,
-+		warn:   true,
- 		info:   false,
- 		debug:  false,
- 		memory: true
-@@ -41,8 +41,9 @@ define({
+ 		warn:   false,
+@@ -39,8 +39,9 @@ define({
  	// Configuration data for module ID resolution and path remapping within the parser.
  	// TODO: Document
  	environmentConfig: {
--		basePath: '../trunk',
+-		basePath: '',
 +		basePath: '../univention-dojo',
  		packages: {
 +			umc: 'umc',
