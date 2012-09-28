@@ -32,13 +32,17 @@
 
 build: umc.xml
 
-# FIXME: Remove?
 js-doc-parse:
 	git clone --recursive https://github.com/wkeese/js-doc-parse.git
 
+api-viewer:
+	git clone https://github.com/wkeese/api-viewer.git
+
 umc.xml: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
 	cd $<; \
-		git apply < ../api_generator.patch && \
+		git apply < ../$<.patch || \
+			cd ..; rm -fr $<; ln -s $<.static $<;
+	cd $<; \
 		./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
 
 univention-dojo: /usr/share/univention-dojo
@@ -51,6 +55,14 @@ univention-dojo/umc/modules/udm/LicenseDialog.js:
 	mkdir -p univention-dojo/umc/modules/udm
 	echo 'define([],function(){});' > $@
 
+$(DESTDIR)/usr/share/univention-dojo-api-viewer: api-viewer
+	cd $< && \
+		git apply < ../$<.patch; || \
+			cd ..; rm -fr $<; ln -s $<.static $<;
+	#@ remove unneeded things: security
+	rm -rf api-viewer/data api-viewer/install api-viewer/tests || true
+	cp -r $< $@
+
 install: build
 	install -d '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
 	install -m644 umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
@@ -59,3 +71,4 @@ clean:
 	$(RM) umc.xml
 	$(RM) -r univention-dojo
 	$(RM) -r js-doc-parse
+	$(RM) -r api-viewer

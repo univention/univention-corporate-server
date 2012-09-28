@@ -22,3 +22,15 @@ Description: Univention Management Console - Documentation
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-dojo-api-viewer
+Architecture: all
+Depends: ${misc:Depends},
+ php5-curl,
+ php5-xsl,
+ univention-dojo,
+ univention-doc,
+ univention-management-console-frontend
+Description: The Dojo Documentation API Viewer
+ This package contains a patched version of the Dojo Documentation
+ API Viewer from https://svn.dojotoolkit.org/website/trunk/api

@@ -40,10 +40,9 @@ INSTDIR=/usr/share/${PKGNAME}
 DOJO_VERSION=$(shell find . -maxdepth 1 -name "dojo-release*-src.tar.gz" | sort -r | sed -n '1 s/^.*dojo-release-\(.*\)-src.tar.gz$$/\1/ p')
 DOJO_DIR=dojo-release-$(DOJO_VERSION)-src
 
-API_VERSION=$(shell find . -maxdepth 1 -name "univention-dojo-api-viewer-r*.tar.gz" | sort -r | sed -n '1 s/^.*univention-dojo-api-viewer-r\(.*\).tar.gz$$/\1/ p')
 .PHONY: clean all install
 
-build: $(DOJO_DIR) apiviewer
+build: $(DOJO_DIR)
 
 $(DOJO_DIR):
 	tar xzf $@.tar.gz
@@ -53,10 +52,6 @@ $(DOJO_DIR):
 	patch -p1 < ../fix_standbyOpacity.patch; \
 	patch -p1 < ../fix_dojo_iframe_textarea.patch; \
 	patch -p1 < ../fix_notify_typo.patch
-
-apiviewer:
-	tar -xzf "univention-dojo-api-viewer-r$(API_VERSION).tar.gz" --exclude='tests' --exclude='install' --exclude='data/*'
-	patch -p0 < dojo_api.patch
 
 all: install
 
@@ -77,5 +72,3 @@ install: build
 		[ "$${i%.sh}" != "$$i" ] && mod=0755; \
 		install -m $$mod "$(DOJO_DIR)/$$i" "$(DESTDIR)$(INSTDIR)/$$i"; \
 	done
-	@# install api-viewer
-	cp -r univention-dojo-api-viewer "$(DESTDIR)/usr/share/univention-dojo-api-viewer"
