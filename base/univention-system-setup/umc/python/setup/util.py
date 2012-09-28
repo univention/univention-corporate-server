@@ -105,9 +105,22 @@ def load_values():
 	values = dict([ (ikey, ucr[ikey]) for ikey in UCR_VARIABLES ])
 
 	# net
+	net_values = {}
+	link_locals = []
 	for k, v in ucr.items():
-		if RE_IFACE.match(k):
-			values[k] = v
+		match = RE_IFACE.match(k)
+		if match:
+			iface, attr, ipv6 = match.groups()
+			if attr == 'address' and v.startswith('169.254.'):
+				link_locals.append(iface)
+			net_values[k] = v
+	for k, v in net_values.items():
+		if 'ipv6' not in k:
+			if any(link_local in k for link_local in link_locals):
+				net_values.pop(k)
+	for link_local in link_locals:
+		net_values['interfaces/%s/type' % link_local] = 'dhcp'
+	values.update(net_values)
 
 	# see whether the system has been joined or not
 	values['joined'] = os.path.exists('/var/univention-join/joined')

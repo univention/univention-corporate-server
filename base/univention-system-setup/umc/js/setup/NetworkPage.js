@@ -526,12 +526,20 @@ define([
 			var vals = this._form.gatherFormValues();
 			var ipv4Str = '<ul>';
 			array.forEach(vals.interfaces_ipv4, function(idev) {
-				ipv4Str += '<li>' +
-						idev[1] + '/' + idev[2] +
-						' (' +
-							allInterfaces[idev[0]] +
-							(idev[3] == 'true' ? ', DHCP' : '') +
-						')</li>';
+				if (idev[1]) {
+					// address is given
+					ipv4Str += '<li>' +
+							idev[1] + '/' + idev[2] +
+							' (' +
+								allInterfaces[idev[0]] +
+								(idev[3] == 'true' ? ', DHCP' : '') +
+							')</li>';
+				} else {
+					// address is not given: must be DHCP
+					ipv4Str += '<li>' +
+							allInterfaces[idev[0]] + ': DHCP' +
+							'</li>';
+				}
 			});
 			ipv4Str += '</ul>';
 

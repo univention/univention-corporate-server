@@ -1,3 +1,10 @@
+univention-system-setup (6.0.37-1) unstable; urgency=low
+
+  * Remove validations preventing using IPv4 without DHCP (Bug #26608)
+  * Link local addresses should use DHCP (Bug #26608)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 28 Sep 2012 16:50:34 +0200
+
 univention-system-setup (6.0.36-1) unstable; urgency=low
 
   * fixed call to this.switchDescription(); Bug #28551

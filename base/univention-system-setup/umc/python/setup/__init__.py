@@ -513,10 +513,8 @@ class Instance(umcm.Base):
 			hasIpv6DefaultDevices &= iset
 
 		# global checks
-		if not isSetIpv4 and not isSetIpv6:
+		if not (isSetIpv4 or ipv4HasDynamic) and not (isSetIpv6 or ipv6HasDynamic):
 			_append('interfaces/eth0/address', _('At least one network device (either IPv4 or IPv6) needs to be configured.'))
-		if ipv6HasDynamic and not ipv6HasAddress:
-			_append('interfaces/eth0/ipv6/default/address', _('At least one IPv6 address needs to be specified.'))
 		if isSetIpv6 and not hasIpv6DefaultDevices:
 			_append('interfaces/eth0/ipv6/default/address', _('A default entry with the identifier "default" needs to be specified for each network device.'))
 		if newrole in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'] and isSetIpv4 and not ipv4HasAddress:
