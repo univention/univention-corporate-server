@@ -215,7 +215,7 @@ define([
 
 		checkReloadRequired: function() {
 			// check if UMC needs a browser reload and prompt the user to reload
-			basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, function(e) {
+			return basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, function(e) {
 				if (e.response.status === 404) {
 					// The URL does not exists, so the symlink is deleted
 					dialog.confirm(_("A reload of the Univention Management Console is required to use new modules. Currently opened modules may not work properly. Do you want to reload the page?"), [{

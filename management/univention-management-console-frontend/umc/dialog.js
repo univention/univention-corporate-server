@@ -61,6 +61,9 @@ define([
 				return this._loginDeferred;
 			}
 
+			// check if a page reload is required
+			tools.checkReloadRequired();
+
 			// if username and password are specified via the query string, try to authenticate directly
 			this._loginDeferred = null;
 			var username = tools.status('username');

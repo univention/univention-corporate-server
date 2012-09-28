@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.80-1) unstable; urgency=low
+
+  * show a notification when umc needs a browser reload; Bug #24947
+
+ -- Florian Best <best@univention.de>  Fri, 28 Sep 2012 11:26:02 +0200
+
 univention-management-console-frontend (2.0.79-1) unstable; urgency=low
 
   * resize LoginDialog underlay when the window size changes; Bug #28514
