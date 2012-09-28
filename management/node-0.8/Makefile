@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
 #
-# node-0.8
-#  Makefile for building node-0.8
+# nodejs-0.8
+#  Debian package for nodejs-0.8
 #
-# Copyright 2008-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,17 +33,17 @@
 build: node-v0.8.10/out/Release/node
 
 node-v0.8.10/out/Release/node: node-v0.8.10
-	cd node-v0.8.10 && \
-		make
+	cd node-v0.8.10 && make
 
 node-v0.8.10:
 	tar xvzf node-v0.8.10.tar.gz
 
 install: build
 	@# main directory
-	install -m0755 -d "$(DESTDIR)/bin"
-	install -m0755 node-v0.8.10/out/Release/node "$(DESTDIR)/bin"
-	install -m0755 node-v0.8.10/out/Release/mksnapshot "$(DESTDIR)/bin"
+	install -m0755 -d "$(DESTDIR)/usr/bin"
+	install -m0755 node-v0.8.10/out/Release/node "$(DESTDIR)/usr/bin"
+	install -m0755 node-v0.8.10/out/Release/mksnapshot "$(DESTDIR)/usr/bin"
+	ln -s node "$(DESTDIR)/usr/bin/nodejs"
 
 clean:
 	$(RM) -r node-v0.8.10

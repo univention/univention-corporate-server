@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 #
-# node-0.8
-#  rules file for node-0.8 package
+# nodejs-0.8
+#  rules file for nodejs-0.8 package
 #
 # Copyright 2012 Univention GmbH
 #
