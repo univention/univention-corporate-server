@@ -32,18 +32,24 @@
 
 build: umc.xml univention-dojo-api-viewer
 
-js-doc-parse:
+download_js-doc-parse:
 	git clone --recursive https://github.com/wkeese/js-doc-parse.git
+	tar cvzf js-doc-parse.tar.gz js-doc-parse
+
+download_api-viewer:
+	git clone https://github.com/wkeese/api-viewer.git
+	tar cvzf api-viewer.tar.gz api-viewer
+
+js-doc-parse:
+	tar xvzf js-doc-parse.tar.gz
 
 api-viewer:
-	git clone https://github.com/wkeese/api-viewer.git
+	tar xvzf api-viewer.tar.gz
 
 umc.xml: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
-	cd $<; \
-		git apply < ../$<.patch || \
-			cd ..; rm -fr $<; ln -s $<.static $<;
-	cd $<; \
-		./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
+	cd $< && \
+		git apply < ../$<.patch && \
+			./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
 
 univention-dojo: /usr/share/univention-dojo
 	cp -r $< $@
@@ -58,8 +64,7 @@ univention-dojo/umc/modules/udm/LicenseDialog.js:
 univention-dojo-api-viewer: api-viewer
 	cp -r $< $@
 	cd $@ && \
-		git apply < ../$<.patch; || \
-			cd ..; rm -fr $<; ln -s $<.static $@;
+		git apply < ../$<.patch;
 	#@ remove unneeded things: security
 	rm -rf $@/data $@/install $@/tests || true
 
@@ -68,9 +73,9 @@ install: build
 	# univention-dojo-api-viewer
 	install -m0755 -d '$(DESTDIR)/usr/share/univention-doc/src'
 	install -m0755 -d '$(DESTDIR)/var/www/ucs-overview/images/icon'
-	install -m0755 univention-management-console-doc '$(DESTDIR)/usr/share/univention-doc/src/'
-	install -m0755 univention-dojo-api-viewer '$(DESTDIR)/usr/share/'
-	install -m0755 icon/dojo-api.png '$(DESTDIR)/var/www/ucs-overview/images/icon/'
+	rsync -rpl --exclude ".git" univention-management-console-doc '$(DESTDIR)/usr/share/univention-doc/src/'
+	rsync -rpl --exclude ".git" univention-dojo-api-viewer '$(DESTDIR)/usr/share/'
+	install -m0644 icon/dojo-api.png '$(DESTDIR)/var/www/ucs-overview/images/icon/'
 	# univention-management-console-frontend-doc
 	install -m644 umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
 
