@@ -1,0 +1,5 @@
+nodejs-0.8 (0.8.10-1) unstable; urgency=low
+
+  * initial release; Bug #28018
+
+ -- Florian Best <best@univention.de>  Fri, 28 Sep 2012 11:53:21 +0200
