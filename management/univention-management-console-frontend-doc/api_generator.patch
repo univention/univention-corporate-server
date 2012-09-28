@@ -22,11 +22,3 @@ index e43efe5..b61612f 100755
  			dojo: 'dojo',
  			dijit: 'dijit',
  			dojox: 'dojox',
-diff --git a/parse.sh b/parse.sh
-index fca624e..652c86e 100755
---- a/parse.sh
-+++ b/parse.sh
-@@ -1,2 +1,2 @@
- #!/bin/bash
--node dojo/dojo.js load=parse $@
-+rhino dojo/dojo.js load=parse $@
