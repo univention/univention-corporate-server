@@ -30,5 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+override_dh_install:
+	dh_install --sourcedir=debian/tmp
+
 %:
 	dh $@

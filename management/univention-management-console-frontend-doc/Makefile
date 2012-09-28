@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-build: umc.xml
+build: umc.xml univention-dojo-api-viewer
 
 js-doc-parse:
 	git clone --recursive https://github.com/wkeese/js-doc-parse.git
@@ -55,16 +55,23 @@ univention-dojo/umc/modules/udm/LicenseDialog.js:
 	mkdir -p univention-dojo/umc/modules/udm
 	echo 'define([],function(){});' > $@
 
-$(DESTDIR)/usr/share/univention-dojo-api-viewer: api-viewer
-	cd $< && \
-		git apply < ../$<.patch; || \
-			cd ..; rm -fr $<; ln -s $<.static $<;
-	#@ remove unneeded things: security
-	rm -rf api-viewer/data api-viewer/install api-viewer/tests || true
+univention-dojo-api-viewer: api-viewer
 	cp -r $< $@
+	cd $@ && \
+		git apply < ../$<.patch; || \
+			cd ..; rm -fr $<; ln -s $<.static $@;
+	#@ remove unneeded things: security
+	rm -rf $@/data $@/install $@/tests || true
 
 install: build
-	install -d '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
+	install -m0755 -d '$(DESTDIR)/usr/share'
+	# univention-dojo-api-viewer
+	install -m0755 -d '$(DESTDIR)/usr/share/univention-doc/src'
+	install -m0755 -d '$(DESTDIR)/var/www/ucs-overview/images/icon'
+	install -m0755 univention-management-console-doc '$(DESTDIR)/usr/share/univention-doc/src/'
+	install -m0755 univention-dojo-api-viewer '$(DESTDIR)/usr/share/'
+	install -m0755 icon/dojo-api.png '$(DESTDIR)/var/www/ucs-overview/images/icon/'
+	# univention-management-console-frontend-doc
 	install -m644 umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
 
 clean:
