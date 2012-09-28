@@ -82,7 +82,7 @@ define([
 			}];
 
 			var formLayout = [
-				['server', 'prefix', 'submit', 'reset'],
+				['server', 'prefix', 'submit' ],
 				['maintained', 'unmaintained']
 			];
 

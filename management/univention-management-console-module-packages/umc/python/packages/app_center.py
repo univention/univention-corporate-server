@@ -39,11 +39,14 @@ import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
+import util
+
 import re
 import ConfigParser
 import locale
 import json
 import copy
+import traceback
 
 class License(object):
 	def uuid(self, license):
@@ -219,16 +222,16 @@ class Application(object):
 
 		return filtered_applications
 
-	def to_dict_overwiew(self, module_instance, license):
+	def to_dict_overwiew(self, package_manager, license):
 		res = copy.copy(self._options)
 		res['allows_using'] = LICENSE.allows_using(self, license)
-		res['can_be_installed'] = self.can_be_installed(module_instance)
+		res['can_be_installed'] = self.can_be_installed(package_manager)
 		return res
 
-	def cannot_install_reason(self, module_instance):
+	def cannot_install_reason(self, package_manager):
 		is_joined = os.path.exists('/var/univention-join/joined')
 		server_role = ucr.get('server/role')
-		if all(module_instance.package_manager.is_installed(package) for package in self.get('defaultpackages')):
+		if all(package_manager.is_installed(package) for package in self.get('defaultpackages')):
 			return 'installed', None
 		elif self.get('defaultpackagesmaster') and not is_joined:
 			return 'not_joined', None
@@ -237,11 +240,11 @@ class Application(object):
 		else:
 			conflict_packages = []
 			for package in self.get('conflictedsystempackages'):
-				if module_instance.package_manager.is_installed(package):
+				if package_manager.is_installed(package):
 					conflict_packages.append(package)
 			for app in self.all():
 				if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
-					if any(module_instance.package_manager.is_installed(package) for package in app.get('defaultpackages')):
+					if any(package_manager.is_installed(package) for package in app.get('defaultpackages')):
 						if app.name not in conflict_packages:
 							# can conflict multiple times: conflicts with 
 							# APP-1.1 and APP-1.2, both named APP
@@ -250,13 +253,13 @@ class Application(object):
 				return 'conflict', conflict_packages
 		return None, None
 
-	def can_be_installed(self, module_instance):
-		return not bool(self.cannot_install_reason(module_instance)[0])
+	def can_be_installed(self, package_manager):
+		return not bool(self.cannot_install_reason(package_manager)[0])
 
-	def to_dict_detail(self, module_instance, license):
+	def to_dict_detail(self, package_manager, license):
 		ucr.load()
 		res = copy.copy(self._options)
-		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(module_instance)
+		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
 		res['can_install'] = cannot_install_reason is None
 		res['can_uninstall'] = cannot_install_reason == 'installed'
@@ -267,23 +270,23 @@ class Application(object):
 		res['server_version'] = ucr.get('version/version')
 		return res
 
-	def uninstall(self, module_instance, license):
+	def uninstall(self, package_manager, component_manager, license):
 		try:
 			to_uninstall = self.get('defaultpackages')
 			max_steps = 100 + len(to_uninstall) * 100
-			module_instance.package_manager.set_max_steps(max_steps)
+			package_manager.set_max_steps(max_steps)
 			for package in to_uninstall:
-				module_instance.package_manager.uninstall(package)
-				module_instance.package_manager.add_hundred_percent()
-			module_instance._del_component(self.id)
-			module_instance.package_manager.update()
-			module_instance.package_manager.add_hundred_percent()
+				package_manager.uninstall(package)
+				package_manager.add_hundred_percent()
+			component_manager.remove(self.id)
+			package_manager.update()
+			package_manager.add_hundred_percent()
 			status = 200
 		except:
 			status = 500
 		return self._send_information('uninstall', status, license)
 
-	def install(self, module_instance, license):
+	def install(self, package_manager, component_manager, license):
 		try:
 			ucr.load()
 			is_master = ucr.get('server/role') == 'domaincontroller_master'
@@ -292,7 +295,7 @@ class Application(object):
 			if is_master and self.get('defaultpackagesmaster'):
 				to_install.extend(self.get('defaultpackagesmaster'))
 			max_steps = 100 + len(to_install) * 100
-			module_instance.package_manager.set_max_steps(max_steps)
+			package_manager.set_max_steps(max_steps)
 			data = {
 				'server' : server,
 				'prefix' : '',
@@ -305,16 +308,16 @@ class Application(object):
 				'password' : '',
 				'version' : 'current',
 				}
-			with module_instance.set_save_commit_load() as super_ucr:
-				module_instance._put_component(data, super_ucr)
-			module_instance.package_manager.update()
-			module_instance.package_manager.add_hundred_percent()
+			with util.set_save_commit_load(ucr) as super_ucr:
+				component_manager.put(data, super_ucr)
+			package_manager.update()
+			package_manager.add_hundred_percent()
 			for package in to_install:
-				module_instance.package_manager.install(package)
-				module_instance.package_manager.add_hundred_percent()
+				package_manager.install(package)
+				package_manager.add_hundred_percent()
 			status = 200
 		except Exception as e:
-			MODULE.warn(str(e))
+			MODULE.warn(traceback.format_exc())
 			status = 500
 		return self._send_information('install', status, license)
 
@@ -330,6 +333,6 @@ class Application(object):
 			#urllib2.urlopen(request)
 			return url
 		except Exception as e:
-			MODULE.warn(str(e))
+			MODULE.warn(traceback.format_exc())
 			raise
 

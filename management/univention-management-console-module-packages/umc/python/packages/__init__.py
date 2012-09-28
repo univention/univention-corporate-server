@@ -31,15 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re
 import notifier
 import notifier.threads
-from contextlib import contextmanager
 import urllib2
 import urllib
 import locale
 
-import apt
+import util
 
 import univention.config_registry
 import univention.management.console as umc
@@ -67,91 +65,11 @@ _ = umc.Translation('univention-management-console-module-packages').translate
 
 from constants import *
 
-class Changes(object):
-	def __init__(self, ucr):
-		self.ucr = ucr
-		self._changes = {}
-
-	def changed(self):
-		return bool(self._changes)
-
-	def _bool_string(self, variable, value):
-		"""Returns a boolean string representation for a boolean UCR variable. We need
-			this as long as we don't really know that all consumers of our variables
-			transparently use the ucr.is_true() method to process the values. So we
-			write the strings that we think are most suitable for the given variable.
-
-			*** NOTE *** I would like to see such function in the UCR base class
-				so we could call
-
-								ucr.set_bool(variable, boolvalue)
-
-				and the ucr itself would know which string representation to write.
-		"""
-		yesno		= ['no', 'yes']
-		truefalse	= ['False', 'True']
-		enabled		= ['disabled', 'enabled']
-		enable		= ['disable', 'enable']
-		onoff		= ['off', 'on']
-		onezero		= ['0', '1']		# strings here! UCR doesn't know about integers
-
-		# array of strings to match against the variable name, associated with the
-		# corresponding bool representation to use. The first match is used.
-		# 'yesno' is default if nothing matches.
-		#
-		# *** NOTE *** Currently these strings are matched as substrings, not regexp.
-
-		setup = [
-			['repository/online/component', enabled],
-			['repository/online', onoff]
-		]
-
-		intval = int(bool(value))			# speak C:  intval = value ? 1 : 0;
-
-		for s in setup:
-			if s[0] in variable:
-				return s[1][intval]
-		return yesno[intval]
-
-	def set_registry_var(self, name, value):
-		""" Sets a registry variable and tracks changedness in a private variable.
-			This enables the set_save_commit_load() method to commit the files being affected
-			by the changes we have made.
-
-			Function handles boolean values properly.
-		"""
-		try:
-			oldval = self.ucr.get(name, '')
-			if isinstance(value, bool):
-				value = self._bool_string(name, value)
-
-			# Don't do anything if the value being set is the same as
-			# the value already found.
-			if value == oldval:
-				return
-
-			# Possibly useful: if the value is the empty string -> try to unset this variable.
-			# FIXME Someone please confirm that there are no UCR variables that need
-			#		to be set to an empty string!
-			if value == '':
-				if name in self.ucr:
-					MODULE.info("Deleting registry variable '%s'" % name)
-					del self.ucr[name]
-			else:
-				MODULE.info("Setting registry variable '%s' = '%s'" % (name, value))
-				self.ucr[name] = value
-			if value != '' or oldval != '':
-				self._changes[name] = (oldval, value)
-		except Exception as e:
-			MODULE.warn("set_registry_var('%s', '%s') ERROR %s" % (name, value, str(e)))
-
-	def commit(self):
-		handler = univention.config_registry.configHandlers()
-		handler.load()
-		handler(self._changes.keys(), (self.ucr, self._changes))
 
 class Instance(umcm.Base):
 	def init(self):
+		self.ucr = univention.config_registry.ConfigRegistry()
+		self.ucr.load()
 		self.package_manager = PackageManager(
 			info_handler=MODULE.process,
 			step_handler=None,
@@ -160,23 +78,13 @@ class Instance(umcm.Base):
 			always_noninteractive=True,
 		)
 		self.uu = UniventionUpdater(False)
-		self.ucr = univention.config_registry.ConfigRegistry()
-		self.ucr.load()
+		self.component_manager = util.ComponentManager(self.ucr, self.uu)
 		if udm_license is not None:
 			# LDAP (license)
 			set_credentials(self._user_dn, self._password)
 
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
-
-	@contextmanager
-	def set_save_commit_load(self):
-		changes = Changes(self.ucr)
-		yield changes
-		self.ucr.save()
-		self.ucr.load()
-		if changes.changed():
-			changes.commit()
 
 	@sanitize(email=EmailSanitizer(required=True))
 	@LDAP_Connection
@@ -201,7 +109,7 @@ class Instance(umcm.Base):
 		result = []
 		for application in applications:
 			if pattern.search(application.name):
-				result.append(application.to_dict_overwiew(self, udm_license))
+				result.append(application.to_dict_overwiew(self.package_manager, udm_license))
 		return result
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
@@ -209,7 +117,7 @@ class Instance(umcm.Base):
 	@simple_response
 	def app_center_get(self, application):
 		application = Application.find(application)
-		return application.to_dict_detail(self, udm_license)
+		return application.to_dict_detail(self.package_manager, udm_license)
 
 	@sanitize(function=ChoicesSanitizer(['install', 'uninstall'], required=True),
 		application=StringSanitizer(minimum=1, required=True)
@@ -220,16 +128,16 @@ class Instance(umcm.Base):
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
 		try:
-			can_continue = application is not None and (function != 'install' or application.can_be_installed(self))
+			can_continue = application is not None and (function != 'install' or application.can_be_installed(self.package_manager))
 			self.finished(request.id, can_continue)
 			if can_continue:
 				def _thread(module, application, function):
 					with module.package_manager.locked(reset_status=True, set_finished=True):
 						with module.package_manager.no_umc_restart():
 							if function == 'install':
-								return application.install(module, udm_license)
+								return application.install(module.package_manager, module.component_manager, udm_license)
 							else:
-								return application.uninstall(module, udm_license)
+								return application.uninstall(module.package_manager, module.component_manager, udm_license)
 				def _finished(thread, result):
 					if isinstance(result, BaseException):
 						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
@@ -353,7 +261,7 @@ class Instance(umcm.Base):
 			'upgradable': package.is_upgradable,
 			'summary': candidate.summary,
 		}
-		
+
 		# add (and translate) a combined status field
 		# *** NOTE *** we translate it here: if we would use the Custom Formatter
 		#		of the grid then clicking on the sort header would not work.
@@ -409,7 +317,7 @@ class Instance(umcm.Base):
 
 		result = []
 		for comp in self.uu.get_all_components():
-			result.append(self._component(comp))
+			result.append(self.component_manager.component(comp))
 		return result
 
 	@sanitize_list(StringSanitizer())
@@ -419,7 +327,7 @@ class Instance(umcm.Base):
 		self.uu.ucr_reinit()
 		self.ucr.load()
 		for component_id in iterator:
-			yield self._component(component_id)
+			yield self.component_manager.component(component_id)
 
 	@sanitize_list(DictSanitizer({'object' : advanced_components_sanitizer}))
 	@multi_response
@@ -450,9 +358,9 @@ class Instance(umcm.Base):
 		#		},
 		#		... more such entries ...
 		#	]
-		with self.set_save_commit_load() as super_ucr:
+		with util.set_save_commit_load() as super_ucr:
 			for object, in iterator:
-				yield self._put_component(object, super_ucr)
+				yield self.component_manager.put(object, super_ucr)
 		self.package_manager.update()
 
 	# do the same as put_components (update)
@@ -464,113 +372,8 @@ class Instance(umcm.Base):
 	@multi_response(single_values=True)
 	def del_components(self, iterator, component_id):
 		for component_id in iterator:
-			yield self._del_component(component_id)
+			yield self.component_manager.remove(component_id)
 		self.package_manager.update()
-
-	def _component(self, component_id):
-		"""Returns a dict of properties for the component with this id.
-		"""
-		entry = {}
-		entry['name'] = component_id
-		for part in COMP_PARTS:
-			entry[part] = False
-		# ensure a proper bool
-		entry['enabled'] = self.ucr.is_true('%s/%s' % (COMPONENT_BASE, component_id), False)
-		# Most values that can be fetched unchanged
-		for attr in COMP_PARAMS:
-			regstr = '%s/%s/%s' % (COMPONENT_BASE, component_id, attr)
-			entry[attr] = self.ucr.get(regstr, '')
-		# Get default packages (can be named either defaultpackage or defaultpackages)
-		entry['defaultpackages'] = list(self.uu.get_component_defaultpackage(component_id))  # method returns a set
-		# Parts value (if present) must be splitted into words and added as bools.
-		# For parts not contained here we have set 'False' default values.
-		parts = self.ucr.get('%s/%s/parts' % (COMPONENT_BASE, component_id), '').split(',')
-		for part in parts:
-			p = part.strip()
-			if len(p):
-				entry[p] = True
-		# Component status as a symbolic string
-		entry['status'] = self.uu.get_current_component_status(component_id)
-		entry['installed'] = self.uu.is_component_defaultpackage_installed(component_id)
-
-		# correct the status to 'installed' if (1) status is 'available' and (2) installed is true
-		if entry['status'] == 'available' and entry['installed']:
-			entry['status'] = 'installed'
-
-		# Possibly this makes sense? add an 'icon' column so the 'status' column can decorated...
-		entry['icon'] = STATUS_ICONS.get(entry['status'], DEFAULT_ICON)
-
-		# Allowance for an 'install' button: if a package is available, not installed, and there's a default package specified
-		entry['installable'] = entry['status'] == 'available' and bool(entry['defaultpackages']) and not entry['installed']
-
-		return entry
-
-	def _put_component(self, data, super_ucr):
-		"""	Does the real work of writing one component definition back.
-			Will be called for each element in the request array of
-			a 'put' call, returns one element that has to go into
-			the result of the 'put' call.
-			Function does not throw exceptions or print log messages.
-		"""
-		result = {
-			'status': PUT_SUCCESS,
-			'message': '',
-			'object': {},
-		}
-		try:
-			parts = set()
-			name = data.pop('name')
-			named_component_base = '%s/%s' % (COMPONENT_BASE, name)
-			old_parts = self.ucr.get('%s/parts' % named_component_base, '')
-			if old_parts:
-				for part in old_parts.split(','):
-					parts.add(part)
-			for key, val in data.iteritems():
-				if val is None:
-					# was not given, so dont update
-					continue
-				if key in COMP_PARAMS:
-					super_ucr.set_registry_var('%s/%s' % (named_component_base, key), val)
-				elif key == 'enabled':
-					super_ucr.set_registry_var(named_component_base, val)
-				elif key in COMP_PARTS:
-					if val:
-						parts.add(key)
-					else:
-						parts.discard(key)
-			super_ucr.set_registry_var('%s/parts' % named_component_base, ','.join(sorted(parts)))
-		except Exception as e:
-			result['status'] = PUT_PROCESSING_ERROR
-			result['message'] = "Parameter error: %s" % str(e)
-
-		# Saving the registry and invoking all commit handlers is deferred until
-		# the end of the loop over all request elements.
-
-		return result
-
-	def _del_component(self, component_id):
-		""" Removes one component. Note that this does not remove
-			entries below repository/online/component/<id> that
-			are not part of a regular component definition.
-		"""
-		result = {}
-		result['status'] = PUT_SUCCESS
-
-		try:
-			with self.set_save_commit_load() as super_ucr:
-				named_component_base = '%s/%s' % (COMPONENT_BASE, component_id)
-				for var in COMP_PARAMS + ['parts']:
-					# COMP_PARTS (maintained,unmaintained) are special
-					# '' deletes this variable
-					super_ucr.set_registry_var('%s/%s' % (named_component_base, var), '')
-
-				super_ucr.set_registry_var(named_component_base, '')
-
-		except Exception as e:
-			result['status'] = PUT_PROCESSING_ERROR
-			result['message'] = "Parameter error: %s" % str(e)
-
-		return result
 
 	@multi_response
 	def get_settings(self, iterator):
@@ -596,7 +399,7 @@ class Instance(umcm.Base):
 		changed = False
 		# Set values into our UCR copy.
 		try:
-			with self.set_save_commit_load() as super_ucr:
+			with util.set_save_commit_load() as super_ucr:
 				for object, in iterator:
 					for key, value in object.iteritems():
 						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
@@ -610,7 +413,7 @@ class Instance(umcm.Base):
 
 		# Bug #24878: emit a warning if repository is not reachable
 		try:
-			updater = UniventionUpdater()
+			updater = self.uu
 			for line in updater.print_version_repositories().split('\n'):
 				if line.strip():
 					break
