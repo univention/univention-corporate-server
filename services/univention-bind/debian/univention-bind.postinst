@@ -72,6 +72,9 @@ fi
 if [ ! -e /etc/bind/local.conf.samba4 ]; then
 	echo "# add local zones here" >> /etc/bind/local.conf.samba4
 fi
+if [ ! -e /etc/bind/local2.conf.samba4 ]; then
+	echo "# add local zones here" >> /etc/bind/local2.conf.samba4
+fi
 
 if [ "$1" = "configure" ]; then
 	if [ -n "$2" ]; then

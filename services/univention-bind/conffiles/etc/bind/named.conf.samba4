@@ -50,7 +50,11 @@ else:
 	print '\ttype hint;'
 	print '\tfile "/etc/bind/db.root";'
 	print '};'
+@!@
 
+include "/etc/bind/local2.conf.samba4";
+
+@!@
 print '''dlz "samba4.zone" {
 	database "dlopen /usr/lib/samba/bind9/dlz_bind9.so {
 			/*

@@ -1,3 +1,10 @@
+univention-bind (7.0.4-1) unstable; urgency=low
+
+  * include a seccond local.conf file in named.conf.samba4
+    (before samba4 dlz zone declaration) (Bug #26302)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 28 Sep 2012 10:40:33 +0200
+
 univention-bind (7.0.3-1) unstable; urgency=low
 
   * added UCR variable 'dns/allow/transfer'
