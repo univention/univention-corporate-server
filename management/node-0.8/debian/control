@@ -1,0 +1,12 @@
+Source: node-0.8
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+ tar
+Standards-Version: 3.7.2
+
+Package: node-0.8
+Architecture: all
+Depends: ${misc:Depends},
+Description: NodeJS in version 0.8-10
