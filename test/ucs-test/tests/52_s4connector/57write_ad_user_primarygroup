@@ -1,0 +1,109 @@
+#!/bin/bash
+
+source "$TESTLIBPATH/base.lib"
+source "$TESTLIBPATH/udm.lib"
+source "$TESTLIBPATH/s4connector.lib"
+
+if [ -z "$connector_s4_ldap_host" ]; then
+	warning "connector/s4/ldap/host is empty."
+	warning "Assuming that the Ad-Connector isn't configured."
+	warning "Skipping test."
+	exit 137
+fi
+
+TEST_BASIC=false
+INFO_LINE="Verify user primarygroup synchronisation after changes from ad-side in write mode"
+TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
+TEST_PACKAGES="univention-config univention-s4-connector"
+
+UDM_users_user_username="$(randomchars)"
+AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "write"
+
+section "Create a user and two groups"
+
+GROUP1="$(randomchars)"
+GROUP2="$(randomchars)"
+
+ad_creategroup "$GROUP1" || fail_test 110
+ad_creategroup "$GROUP2" || fail_test 110
+
+section "Add user to both groups"
+
+ad_createuser "$UDM_users_user_username" || fail_test 110
+ad_append_to_attribute "CN=$GROUP1,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN" || fail_test 110
+ad_append_to_attribute "CN=$GROUP2,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_exists "CN=$GROUP1,CN=groups,$(ad_get_base)"; check_bool 0 110
+ad_exists "CN=$GROUP2,CN=groups,$(ad_get_base)"; check_bool 0 110
+UDM_groups_group_name="$GROUP1"
+udm_exists "groups/group"; check_bool 1 110
+UDM_groups_group_name="$GROUP2"
+udm_exists "groups/group"; check_bool 1 110
+
+ad_exists "$AD_USER_DN"; check_bool 0 110
+udm_exists "users/user"; check_bool 1 110
+
+ad_verify_multi_value_attribute_contains "CN=$GROUP1,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP1,CN=groups,$(ad_get_base)"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "CN=$GROUP2,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP2,CN=groups,$(ad_get_base)"; check_bool 0 110
+
+section "Set primary group of user to GROUP1"
+
+ad_set_primary_group "$AD_USER_DN" "CN=$GROUP1,CN=groups,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_verify_user_primary_group_attribute "CN=$GROUP1,CN=groups,$(ad_get_base)" "$AD_USER_DN"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "CN=$GROUP1,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN"; check_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP1,CN=groups,$(ad_get_base)"; check_bool 1 110
+ad_verify_multi_value_attribute_contains "CN=$GROUP2,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP2,CN=groups,$(ad_get_base)"; check_bool 0 110
+
+UDM_groups_group_name="$GROUP1"
+udm_exists "groups/group"; check_bool 1 110
+UDM_groups_group_name="$GROUP2"
+udm_exists "groups/group"; check_bool 1 110
+udm_exists "users/user"; check_bool 1 110
+
+section "Set primary group of user to GROUP2"
+
+ad_set_primary_group "$AD_USER_DN" "CN=$GROUP2,CN=groups,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_verify_user_primary_group_attribute "CN=$GROUP2,CN=groups,$(ad_get_base)" "$AD_USER_DN"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "CN=$GROUP1,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP1,CN=groups,$(ad_get_base)"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "CN=$GROUP2,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN"; check_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP2,CN=groups,$(ad_get_base)"; check_bool 1 110
+
+UDM_groups_group_name="$GROUP1"
+udm_exists "groups/group"; check_bool 1 110
+UDM_groups_group_name="$GROUP2"
+udm_exists "groups/group"; check_bool 1 110
+udm_exists "users/user"; check_bool 1 110
+
+section "Clean up"
+
+ad_delete "$AD_USER_DN" || fail_test 110
+ad_delete "CN=$GROUP1,CN=groups,$(ad_get_base)" || fail_test 110
+ad_delete "CN=$GROUP2,CN=groups,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_exists "$AD_USER_DN"; check_bool 1 110
+udm_exists "users/user"; check_bool 1 110
+
+ad_exists "CN=$GROUP1,CN=groups,$(ad_get_base)"; check_bool 1 110
+ad_exists "CN=$GROUP2,CN=groups,$(ad_get_base)"; check_bool 1 110
+UDM_groups_group_name="$GROUP1"
+udm_exists "groups/group"; check_bool 1 110
+UDM_groups_group_name="$GROUP2"
+udm_exists "groups/group"; check_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

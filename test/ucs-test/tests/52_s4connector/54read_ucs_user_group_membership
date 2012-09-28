@@ -1,0 +1,102 @@
+#!/bin/bash
+
+source "$TESTLIBPATH/base.lib"
+source "$TESTLIBPATH/udm.lib"
+source "$TESTLIBPATH/s4connector.lib"
+
+if [ -z "$connector_s4_ldap_host" ]; then
+	warning "connector/s4/ldap/host is empty."
+	warning "Assuming that the Ad-Connector isn't configured."
+	warning "Skipping test."
+	exit 137
+fi
+
+TEST_BASIC=false
+INFO_LINE="Verify user-group-membership synchronisation after changes from ucs-side in read mode"
+TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
+TEST_PACKAGES="univention-config univention-s4-connector"
+
+UDM_groups_group_name="$(randomchars)"
+UDM_users_user_username="$(randomchars)"
+UDM_users_user_lastname="$(randomchars)"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(randomchars)123"
+AD_GROUP_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+UDM_GROUP_DN="cn=$UDM_groups_group_name,cn=groups,$ldap_base"
+AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "read"
+
+section "Create user and group"
+
+udm_create "groups/group" || fail_test 110
+udm_create "users/user" || fail_test 110
+
+section "Add user to group"
+
+udm_modify "users/user" "" "" "" "" \
+	--append groups="$UDM_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_exists "$AD_GROUP_DN"; check_bool 1 110
+udm_exists "groups/group"; check_bool 0 110
+ad_exists "$AD_USER_DN"; check_bool 1 110
+udm_exists "users/user"; check_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; check_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; check_bool 0 110
+
+section "Remove user from group"
+
+udm_modify "users/user" "" "" "" "" \
+	--remove groups="$UDM_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; check_bool 1 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; check_bool 1 110
+ad_exists "$AD_GROUP_DN"; check_bool 1 110
+ad_exists "$AD_USER_DN"; check_bool 1 110
+
+section "Re-Add user to group"
+
+udm_modify "users/user" "" "" "" "" \
+	--append groups="$UDM_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; check_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; check_bool 0 110
+ad_exists "$AD_GROUP_DN"; check_bool 1 110
+ad_exists "$AD_USER_DN"; check_bool 1 110
+
+section "Remove user"
+
+udm_remove "users/user" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; check_bool 1 110
+ad_exists "$AD_GROUP_DN"; check_bool 1 110
+ad_exists "$AD_USER_DN"; check_bool 1 110
+
+section "Clean up"
+
+udm_remove "groups/group" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_exists "$AD_USER_DN"; check_bool 1 110
+udm_exists "users/user"; check_bool 1 110
+ad_exists "$AD_GROUP_DN"; check_bool 1 110
+udm_exists "groups/group"; check_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

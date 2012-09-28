@@ -1,0 +1,51 @@
+#!/bin/bash
+
+source "$TESTLIBPATH/base.lib"
+source "$TESTLIBPATH/udm.lib"
+source "$TESTLIBPATH/s4connector.lib"
+
+if [ -z "$connector_s4_ldap_host" ]; then
+	warning "connector/s4/ldap/host is empty."
+	warning "Assuming that the Ad-Connector isn't configured."
+	warning "Skipping test."
+	exit 137
+fi
+
+TEST_BASIC=false
+INFO_LINE="Create and modify AD-Group and verify attributes in sync-mode"
+TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
+TEST_PACKAGES="univention-config univention-s4-connector"
+
+UDM_groups_group_name="$(randomchars)"
+UDM_groups_group_description="$(randomchars)"
+AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+ad_creategroup "$UDM_groups_group_name" || fail_test 110
+
+UDM_groups_group_description="$(randomchars)"
+
+ad_set_attribute "$AD_DN" "description" "$UDM_groups_group_description" || fail_test 110
+
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_verify_attribute "$AD_DN" "description" "$UDM_groups_group_description"; check_bool 0 110
+
+if [ "$connector_s4_windows_version" != "win2000" \
+	-o "$connector_s4_mapping_group_win2000_description" != "false" ]
+then
+	udm_verify_udm_attribute "description" "$UDM_groups_group_description" "groups/group"; check_bool 0 110
+fi
+
+udm_remove "groups/group" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_exists "groups/group"; check_bool 1 110
+ad_exists "$AD_DN"; check_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

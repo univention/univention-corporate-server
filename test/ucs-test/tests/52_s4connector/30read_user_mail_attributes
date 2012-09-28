@@ -1,0 +1,83 @@
+#!/bin/bash
+
+source "$TESTLIBPATH/base.lib"
+source "$TESTLIBPATH/udm.lib"
+source "$TESTLIBPATH/s4connector.lib"
+
+if [ -z "$connector_s4_ldap_host" ]; then
+	warning "connector/s4/ldap/host is empty."
+	warning "Assuming that the Ad-Connector isn't configured."
+	warning "Skipping test."
+	exit 137
+fi
+
+TEST_BASIC=false
+INFO_LINE="Check User-Mail-Attributes in read-mode (Exchange attribute-checks disabled)"
+TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
+TEST_PACKAGES="univention-config univention-s4-connector"
+
+UDM_users_user_username="$(randomchars)"
+UDM_users_user_lastname="$(randomchars)"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(randomchars)123"
+UDM_users_user_firstname="$(randomchars)"
+UDM_users_user_description="$(randomchars)"
+UDM_users_user_street="$(randomchars)"
+UDM_users_user_mailPrimaryAddress="$(randomchars)@$(randomchars)"
+#UDM_users_user_Exchange_Homeserver="$(randomchars)"
+#UDM_users_user_Exchange_homeMDB="$(randomchars)"
+#UDM_users_user_Exchange_Nickname="$(randomchars)"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+SYNCPRIMARYMAIL="$(ucr get connector/s4/mapping/user/primarymail)"
+#SYNCEXCHANGE="$(ucr get connector/s4/mapping/user/exchange)"
+
+invoke-rc.d univention-s4-connector stop
+ucr set connector/s4/mapping/user/primarymail=true
+#ucr set connector/s4/mapping/user/exchange=true
+ad_set_sync_mode "read"
+invoke-rc.d univention-s4-connector start
+
+udm_create "users/user" "" "" "" "" \
+	--option=person --option=mail --option=posix --option=samba --option=pki --option=kerberos || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_exists "users/user"; check_bool 0 110
+ad_exists "$AD_DN"; check_bool 1 110
+
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; check_bool 0 110
+#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; check_bool 0 110
+#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; check_bool 0 110
+#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; check_bool 0 110
+
+#UDM_users_user_Exchange_Homeserver="$(randomchars)"
+#UDM_users_user_Exchange_homeMDB="$(randomchars)"
+#UDM_users_user_Exchange_Nickname="$(randomchars)"
+UDM_users_user_mailPrimaryAddress="$(randomchars)@$(randomchars)"
+udm_modify "users/user" "" "" "" "" \
+		   --set mailPrimaryAddress="$UDM_users_user_mailPrimaryAddress" || fail_test 110
+#		   --set Exchange-Homeserver="$UDM_users_user_Exchange_Homeserver" \
+#		   --set Exchange-homeMDB="$UDM_users_user_Exchange_homeMDB" \
+#		   --set Exchange-Nickname="$UDM_users_user_Exchange_Nickname" \
+ad_wait_for_synchronization; check_bool 0 110
+ad_exists "$AD_DN"; check_bool 1 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; check_bool 0 110
+#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; check_bool 0 110
+#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; check_bool 0 110
+#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; check_bool 0 110
+
+udm_remove "users/user" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_exists "users/user"; check_bool 1 110
+ad_exists "$AD_DN"; check_bool 1 110
+
+invoke-rc.d univention-s4-connector stop
+ucr set connector/s4/mapping/user/primarymail="$SYNCPRIMARYMAIL"
+#ucr set connector/s4/mapping/user/exchange="$SYNCEXCHANGE"
+ad_set_sync_mode "$SYNCMODE"
+invoke-rc.d univention-s4-connector start
+
+exit "$RETVAL"

@@ -1,0 +1,86 @@
+#!/bin/bash
+
+source "$TESTLIBPATH/base.lib"
+source "$TESTLIBPATH/udm.lib"
+source "$TESTLIBPATH/s4connector.lib"
+
+if [ -z "$connector_s4_ldap_host" ]; then
+	warning "connector/s4/ldap/host is empty."
+	warning "Assuming that the Ad-Connector isn't configured."
+	warning "Skipping test."
+	exit 137
+fi
+
+TEST_BASIC=false
+INFO_LINE="Create and modify AD-User and verify attributes in sync-mode"
+TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
+TEST_PACKAGES="univention-config univention-s4-connector"
+
+UDM_users_user_username="$(randomchars)"
+UDM_users_user_lastname="$(randomchars)"
+UDM_users_user_firstname="$(randomchars)"
+UDM_users_user_description="$(randomchars)"
+UDM_users_user_street="$(randomchars)"
+UDM_users_user_city="$(randomchars)"
+UDM_users_user_postcode="$(randomchars)"
+UDM_users_user_profilepath="$(randomchars)"
+UDM_users_user_scriptpath="$(randomchars)"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+#We have to wait between all the AD-Commands: See #18501
+ad_createuser "$UDM_users_user_username" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+ad_set_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+ad_set_attribute "$AD_DN" "sn" "$UDM_users_user_lastname" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+ad_set_attribute "$AD_DN" "description" "$UDM_users_user_description" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+ad_set_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+ad_set_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+ad_set_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+ad_set_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+ad_set_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+if [ "$connector_s4_windows_version" != "win2000" \
+	-o "$connector_s4_mapping_user_win2000_description" != "false" ]
+then
+	udm_verify_udm_attribute "description" "$UDM_users_user_description" "users/user"; check_bool 0 121 "See #18501"
+fi
+udm_verify_udm_attribute "username" "$UDM_users_user_username" "users/user"; check_bool 0 121 "See #18501"
+udm_verify_udm_attribute "firstname" "$UDM_users_user_firstname" "users/user"; check_bool 0 121 "See #18501"
+udm_verify_udm_attribute "lastname" "$UDM_users_user_lastname" "users/user"; check_bool 0 121 "See #18501"
+udm_verify_udm_attribute "street" "$UDM_users_user_street" "users/user"; check_bool 0 121 "See #18501"
+udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user"; check_bool 0 121 "See #18501"
+udm_verify_udm_attribute "postcode" "$UDM_users_user_postcode" "users/user"; check_bool 0 121 "See #18501"
+udm_verify_udm_attribute "profilepath" "$UDM_users_user_profilepath" "users/user"; check_bool 0 121 "See #18501"
+udm_verify_udm_attribute "scriptpath" "$UDM_users_user_scriptpath" "users/user"; check_bool 0 121 "See #18501"
+
+ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description"; check_bool 0 110
+ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username"; check_bool 0 110
+ad_verify_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname"; check_bool 0 110
+ad_verify_attribute "$AD_DN" "sn" "$UDM_users_user_lastname"; check_bool 0 110
+ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; check_bool 0 110
+ad_verify_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode"; check_bool 0 110
+ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; check_bool 0 110
+ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; check_bool 0 110
+ad_verify_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street"; check_bool 0 110
+
+ad_delete "$AD_DN" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_exists "users/user"; check_bool 1 110
+ad_exists "$AD_DN"; check_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

@@ -1,0 +1,77 @@
+#!/bin/bash
+
+source "$TESTLIBPATH/base.lib"
+source "$TESTLIBPATH/udm.lib"
+source "$TESTLIBPATH/s4connector.lib"
+
+if [ -z "$connector_s4_ldap_host" ]; then
+	warning "connector/s4/ldap/host is empty."
+	warning "Assuming that the Ad-Connector isn't configured."
+	warning "Skipping test."
+	exit 137
+fi
+
+TEST_BASIC=false
+INFO_LINE="Check whether the Container-Ignore-Subtree is respected on ucs-side in read-mode"
+TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
+TEST_PACKAGES="univention-config univention-s4-connector"
+
+CONTAINER1="$(randomchars)"
+CONTAINER2="$(randomchars)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+UDM_container_cn_name="$CONTAINER1"
+AD_CONTAINER_DN="CN=$UDM_container_cn_name,$(ad_get_base)"
+udm_create "container/cn" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_exists "container/cn"; check_bool 0 110
+ad_exists "$AD_CONTAINER_DN"; check_bool 0 110
+
+section "Modify Container-Ignore-Subtree"
+
+invoke-rc.d univention-s4-connector stop
+
+MAIN_FILE="/usr/share/pyshared/univention/s4connector/s4/main.py"
+cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+sed -i "s/import mapping/import mapping\nmapping.s4_mapping ['container'].ignore_subtree = mapping.s4_mapping ['container'].ignore_subtree + ['cn=$CONTAINER1,$ldap_base']/" "$MAIN_FILE"
+
+ad_set_sync_mode "read"
+invoke-rc.d univention-s4-connector start
+
+section "Create container"
+UDM_container_cn_name="$CONTAINER2"
+AD_CONTAINER_DN="CN=$UDM_container_cn_name,CN=$CONTAINER1,$(ad_get_base)"
+
+udm_create "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; check_bool 0 110
+ad_exists "$AD_CONTAINER_DN"; check_bool 1 110
+
+section "Clean up"
+
+udm_remove "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_exists "$AD_CONTAINER_DN"; check_bool 1 110
+udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; check_bool 1 110
+
+invoke-rc.d univention-s4-connector stop
+mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+ad_set_sync_mode "sync"
+invoke-rc.d univention-s4-connector start
+
+UDM_container_cn_name="$CONTAINER1"
+AD_CONTAINER_DN="CN=$UDM_container_cn_name,$(ad_get_base)"
+udm_remove "container/cn" || fail_test 110
+ad_wait_for_synchronization; check_bool 0 110
+
+ad_exists "$AD_CONTAINER_DN"; check_bool 1 110
+udm_exists  "container/cn"; check_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

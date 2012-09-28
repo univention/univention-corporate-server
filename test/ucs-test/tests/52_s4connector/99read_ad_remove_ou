@@ -1,0 +1,68 @@
+#!/bin/bash
+
+source "$TESTLIBPATH/base.lib"
+source "$TESTLIBPATH/udm.lib"
+source "$TESTLIBPATH/s4connector.lib"
+
+if [ -z "$connector_s4_ldap_host" ]; then
+	warning "connector/s4/ldap/host is empty."
+	warning "Assuming that the Ad-Connector isn't configured."
+	warning "Skipping test."
+	exit 137
+fi
+
+TEST_BASIC=false
+INFO_LINE="Check whether ou can be recursively removed on ad-side in read-mode"
+TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
+TEST_PACKAGES="univention-config univention-s4-connector"
+
+#                 Ou3
+#                /
+#      Ou1--User
+#     /
+# Base
+
+# shall become
+
+# Base
+
+OU1="$(randomchars)1"
+OU3="$(randomchars)3"
+UDM_users_user_username="$(randomchars)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+section "Create initial Tree structure"
+
+ad_createou "$OU1" || fail_test 110
+ad_createou "$OU3" "" "OU=$OU1,$(ad_get_base)" || fail_test 110
+ad_createuser "$UDM_users_user_username" "" "OU=$OU1,$(ad_get_base)" || fail_test 110
+
+ad_wait_for_synchronization; check_bool 0 110
+
+UDM_container_ou_name="$OU1"
+udm_exists "container/ou"; check_bool 0 110
+UDM_container_ou_name="$OU3"
+udm_exists "container/ou" "" "" "ou=$OU1,$ldap_base"; check_bool 0 110
+udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; check_bool 0 110
+
+ad_exists "OU=$OU1,$(ad_get_base)"; check_bool 0 110
+ad_exists "OU=$OU3,OU=$OU1,$(ad_get_base)"; check_bool 0 110
+ad_exists "CN=$UDM_users_user_username,OU=$OU1,$(ad_get_base)"; check_bool 0 110
+
+section "Recursively remove $OU1"
+
+ad_set_sync_mode "read"
+
+ad_delete "OU=$OU1,$(ad_get_base)" || fail_test 110
+
+ad_wait_for_synchronization; check_bool 0 110
+
+UDM_container_ou_name="$OU1"
+udm_exists "container/ou"; check_bool 1 110
+ad_exists "OU=$OU1,$(ad_get_base)"; check_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
