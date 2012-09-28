@@ -1,3 +1,9 @@
+univention-kernel-image (6.0.0-9) unstable; urgency=low
+
+  * Update kernel to 3.2.30 (Bug #28157)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Fri, 28 Sep 2012 08:36:37 +0200
+
 univention-kernel-image (6.0.0-8) unstable; urgency=low
 
   * Simplify/fix transition packages (Bug #27456) 
