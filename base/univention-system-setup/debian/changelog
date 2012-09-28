@@ -1,3 +1,9 @@
+univention-system-setup (6.0.36-1) unstable; urgency=low
+
+  * fixed call to this.switchDescription(); Bug #28551
+
+ -- Florian Best <best@univention.de>  Fri, 28 Sep 2012 10:17:23 +0200
+
 univention-system-setup (6.0.35-1) unstable; urgency=low
 
   * Adjust dhcp query for Bug #28498
