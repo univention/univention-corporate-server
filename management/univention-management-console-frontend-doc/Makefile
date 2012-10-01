@@ -30,26 +30,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-build: umc.xml univention-dojo-api-viewer
+build: univention-management-console-frontend-doc univention-dojo-api-viewer
 
-download_js-doc-parse:
-	git clone --recursive https://github.com/wkeese/js-doc-parse.git
+js-doc-parse.tar.gz:
+	git clone https://github.com/wkeese/js-doc-parse.git
 	tar cvzf js-doc-parse.tar.gz js-doc-parse
+#	cd js-doc-parse && git archive --format=tar js-doc-parse | gzip > js-doc-parse.tar.gz
 
-download_api-viewer:
+api-viewer.tar.gz:
 	git clone https://github.com/wkeese/api-viewer.git
 	tar cvzf api-viewer.tar.gz api-viewer
+#	cd api-viewer && git archive --format=tar api-viewer | gzip > api-viewer.tar.gz
 
 js-doc-parse:
 	tar xvzf js-doc-parse.tar.gz
 
 api-viewer:
 	tar xvzf api-viewer.tar.gz
-
-umc.xml: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
-	cd $< && \
-		git apply < ../$<.patch && \
-			./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
 
 univention-dojo: /usr/share/univention-dojo
 	cp -r $< $@
@@ -61,8 +58,15 @@ univention-dojo/umc/modules/udm/LicenseDialog.js:
 	mkdir -p univention-dojo/umc/modules/udm
 	echo 'define([],function(){});' > $@
 
+univention-management-console-frontend-doc: umc.xml
+
+umc.xml: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
+	cd $< && \
+		git apply < ../$<.patch && \
+			./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
+
 univention-dojo-api-viewer: api-viewer
-	cp -r $< $@
+	rsync -rpl --exclude '.svn' $< $@
 	cd $@ && \
 		git apply < ../$<.patch;
 	#@ remove unneeded things: security
@@ -81,6 +85,5 @@ install: build
 
 clean:
 	$(RM) umc.xml
-	$(RM) -r univention-dojo
-	$(RM) -r js-doc-parse
-	$(RM) -r api-viewer
+	$(RM) -r univention-dojo univention-dojo-api-viewer
+	$(RM) -r js-doc-parse api-viewer
