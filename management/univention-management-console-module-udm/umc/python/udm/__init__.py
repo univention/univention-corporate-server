@@ -773,13 +773,14 @@ class Instance( Base ):
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
+	@sanitize(objectPropertyValue=LDAPSearchSanitizer())
 	def syntax_choices( self, request ):
 		"""Dynamically determine valid values for a given syntax class
 
 		requests.options = {}
 		  'syntax' -- The UDM syntax class
 
-		return: [ { 'id' : <name>, 'label' : <text }, ... ]
+		return: [ { 'id' : <name>, 'label' : <text> }, ... ]
 		"""
 
 		if not 'syntax' in request.options:
@@ -795,7 +796,7 @@ class Instance( Base ):
 	def nav_container_query( self, request ):
 		"""Returns a list of LDAP containers located under the given
 		LDAP base (option 'container'). If no base container is
-		spiecified the LDAP base object is returned."""
+		specified the LDAP base object is returned."""
 
 		if not request.options.get( 'container' ):
 			ldap_base = ucr.get( 'ldap/base' )

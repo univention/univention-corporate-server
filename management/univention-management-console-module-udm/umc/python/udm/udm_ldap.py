@@ -393,17 +393,9 @@ class UDM_Module( object ):
 			container = ldap_position.getBase()
 		elif container is None:
 			container = ''
-		if attribute is None or attribute == 'None':
-			if filter:
-				filter_s = str( filter )
-			else:
-				default_search_attrs = self.default_search_attrs
-				if default_search_attrs and value not in [None, '*']:
-					filter_s = '(|%s)' % ''.join( '(%s=%s)' % ( attr, value ) for attr in default_search_attrs )
-				else:
-					filter_s = ''
-		else:
-			filter_s = '%s=%s' % ( attribute, value )
+		filter_s = _object_property_filter( self, attribute, value )
+		if attribute is None or attribute == 'None' and filter:
+			filter_s = str( filter )
 
 		MODULE.info( 'Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % ( container, filter_s, superordinate ) )
 		try:
@@ -962,7 +954,17 @@ def split_module_attr( value ):
 		return value.split( ': ', 1 )
 	return ( None, value )
 
-def _create_ldap_filter( syn, options ):
+def _object_property_filter( module, object_property, object_property_value ):
+	if object_property in [None, 'None'] and module is not None:
+		default_search_attrs = module.default_search_attrs
+		if default_search_attrs and object_property_value not in [None, '*']:
+			return '(|%s)' % ''.join( '(%s=%s)' % ( attr, object_property_value ) for attr in default_search_attrs )
+		else:
+			return ''
+	else:
+		return '%s=%s' % (object_property, object_property_value)
+
+def _create_ldap_filter( syn, options, module=None ):
 	if syn.depends and not syn.depends in options:
 		return None
 	if callable( syn.udm_filter ):
@@ -973,7 +975,13 @@ def _create_ldap_filter( syn, options ):
 		if filter_s and not filter_s.startswith('('):
 			# make sure that the LDAP filter is wrapped in brackets
 			filter_s = '(%s)' % filter_s
-		filter_s = '(&(%s=%s)%s)' % (options.get('objectProperty'), options.get('objectPropertyValue'), filter_s)
+		object_property = options.get('objectProperty')
+		object_property_value = options.get('objectPropertyValue')
+		property_filter_s = _object_property_filter(module, object_property, object_property_value)
+		if property_filter_s and not property_filter_s.startswith('('):
+			# make sure that the LDAP filter is wrapped in brackets
+			property_filter_s = '(%s)' % property_filter_s
+		filter_s = '(&%s%s)' % (property_filter_s, filter_s)
 	return filter_s
 
 @LDAP_Connection
@@ -1018,7 +1026,7 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 			module = UDM_Module( udm_module )
 			if module is None:
 				continue
-			filter_s = _create_ldap_filter( syn, options )
+			filter_s = _create_ldap_filter( syn, options, module )
 			if filter_s is None:
 				syn.choices = []
 			else:

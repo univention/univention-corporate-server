@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.14-1) unstable; urgency=low
+
+  * Search for default properties in udm's MultiObjectSelect (Bug #24341)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 01 Oct 2012 12:10:33 +0200
+
 univention-management-console-module-udm (3.0.13-1) unstable; urgency=low
 
   * Remove default search attribute in UCR (Bug #24341)

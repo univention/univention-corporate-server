@@ -181,8 +181,7 @@ define([
 			if (!this._multiEdit) {
 				// query policies for normal edit
 				commands.policies = this.umcpCommand('udm/policies', params);
-			}
-			else {
+			} else {
 				// for multi-edit, mimic an empty list of policies
 				commands.policies = new Deferred();
 				commands.policies.resolve();
@@ -209,7 +208,6 @@ define([
 					this.standby(false);
 				}));
 			}), lang.hitch(this, function() {
-				this.standby(false);
 				this.standby(false);
 			}), lang.hitch(this, function() {
 				this.standby(false);
@@ -298,8 +296,7 @@ define([
 					// advanced groups of settings should go into one single sub tab
 					var jlayout = lang.mixin({ open: false }, ilayout);
 					advancedGroup.layout.push(jlayout);
-				}
-				else {
+				} else {
 					layout.push(ilayout);
 				}
 			});
@@ -373,8 +370,7 @@ define([
 
 			if (this._multiEdit) {
 				this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ' ' + _('(multi-edit)'));
-			}
-			else {
+			} else {
 				// find property identifying the object
 				tools.forIn( widgets, function( name, widget ) {
 					if ( widget.identifies ) {
@@ -420,11 +416,9 @@ define([
 					var ielement = layoutStack.pop();
 					if (ielement instanceof Array) {
 						layoutStack = layoutStack.concat(ielement);
-					}
-					else if (typeof ielement == "string") {
+					} else if (typeof ielement == "string") {
 						this._propertySubTabMap[ielement] = subTab;
-					}
-					else if (ielement.layout) {
+					} else if (ielement.layout) {
 						layoutStack.push(ielement.layout);
 					}
 				}
@@ -578,8 +572,7 @@ define([
 						}));
 					}
 				}));
-			}
-			else {
+			} else {
 				// in case there are no policies, we use a dummy Deferred object
 				this._policyDeferred = new Deferred();
 				this._policyDeferred.resolve();
@@ -604,10 +597,9 @@ define([
 			}
 
 			var createLabel = '';
-			if(this.newObjectOptions) {
+			if (this.newObjectOptions) {
 				createLabel = _( 'Create %s', this.objectNameSingular );
-			}
-			else {
+			} else {
 				createLabel = _( 'Save changes' );
 			}
 
@@ -699,8 +691,7 @@ define([
 					this._receivedObjFormData = this.getValues();
 					this._receivedObjFormData.$policies$ = this._receivedObjOrigData.$policies$;
 				}));
-			}
-			else {
+			} else {
 				// hide the type info and ldap path in case of a new object
 				this._form.getWidget( '$objecttype$' ).set( 'visible', false);
 				this._form.getWidget( '$location$' ).set( 'visible', false);
@@ -775,8 +766,7 @@ define([
 						} else {
 							iwidget.set('value', []);
 						}
-					}
-					else if (!(iinfo instanceof Array)) {
+					} else if (!(iinfo instanceof Array)) {
 						// standard policy
 						iwidget.set('value', iinfo.value);
 						label = lang.replace('{label} (<a href="javascript:void(0)" ' +
@@ -790,8 +780,7 @@ define([
 							edit: _('edit')
 						});
 						iwidget.set('label', label);
-					}
-					else if (iinfo instanceof Array && tools.inheritsFrom(iwidget, 'umc.widgets.MultiInput')) {
+					} else if (iinfo instanceof Array && tools.inheritsFrom(iwidget, 'umc.widgets.MultiInput')) {
 						// we got probably a UCR-Policy, this is a special case:
 						// -> a list of values where each value might have been inherited
 						//    by different policies
@@ -828,8 +817,7 @@ define([
 
 								// get the correct row container
 								container.addChild(container.$linkWidget$);
-							}
-							else {
+							} else {
 								// link widget already exists, update its content
 								container.$linkWidget$.set('content', label);
 							}
@@ -842,8 +830,7 @@ define([
 							lastContainer.$linkWidget$.destroyRecursive();
 							lastContainer.$linkWidget$ = null;
 						}
-					}
-					else {
+					} else {
 						// fallback
 						var value = array.map( iinfo, function( item ) {
 							return item.value;
@@ -897,8 +884,7 @@ define([
 					objectDN: policyDN,
 					note: _('You are currently editing a policy. Changing its properties affects all referenced objects and may affect your system globally.')
 				};
-			}
-			else {
+			} else {
 				// if no DN is given, we are creating a new oject
 				props.newObject = {
 					objectType: policyType
@@ -1102,8 +1088,7 @@ define([
 				// if all elements are valid, save element
 				if (this._parseValidation(data.result)) {
 					this.saveChanges(vals);
-				}
-				else {
+				} else {
 					this.standby(false);
 				}
 			}), lang.hitch(this, function() {
@@ -1191,11 +1176,9 @@ define([
 					this.moduleStore.put(ivals);
 				}, this);
 				deferred = transaction.commit();
-			}
-			else if (this.newObjectOptions) {
+			} else if (this.newObjectOptions) {
 				deferred = this.moduleStore.add(vals, this.newObjectOptions);
-			}
-			else {
+			} else {
 				deferred = this.moduleStore.put(vals);
 			}
 			deferred.then(lang.hitch(this, function(result) {
@@ -1212,8 +1195,7 @@ define([
 						}
 					}, this);
 					msg += '</ul>';
-				}
-				else {
+				} else {
 					success = result.success;
 					if (!result.success) {
 						msg = _('The UDM object could not be saved: %(details)s', result);
@@ -1224,8 +1206,7 @@ define([
 					// everything ok, close page
 					this.onCloseTab();
 					this.onSave(result.$dn$, this.objectType);
-				}
-				else {
+				} else {
 					// print error message to user
 					dialog.alert(msg);
 				}
@@ -1248,16 +1229,14 @@ define([
 						newVals[iname] = iwidget.get('value');
 					}
 				}));
-			}
-			else if (this.newObjectOptions) {
+			} else if (this.newObjectOptions) {
 				// get only non-empty values or values of type 'boolean'
 				tools.forIn(vals, lang.hitch(this, function(iname, ival) {
 					if (typeof(ival) == 'boolean' || (!(ival instanceof Array && !ival.length) && ival)) {
 						newVals[iname] = ival;
 					}
 				}));
-			}
-			else {
+			} else {
 				// existing object .. get only the values that changed
 				tools.forIn(vals, function(iname, ival) {
 					var oldVal = this._receivedObjFormData[iname];

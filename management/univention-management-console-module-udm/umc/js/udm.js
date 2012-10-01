@@ -462,8 +462,7 @@ define([
 				objTypes.push( { id: 'None', label: _( 'All types' ) } );
 				objTypes.push( { id: '$containers$', label: _( 'All containers' ) } );
 				objProperties.push({ id: 'None', label: _( 'Default properties' ) });
-			}
-			else if (superordinates && superordinates.length) {
+			} else if (superordinates && superordinates.length) {
 				// superordinates...
 				widgets.push({
 					type: 'ComboBox',

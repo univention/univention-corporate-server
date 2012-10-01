@@ -105,6 +105,7 @@ define([
 				name: 'objectProperty',
 				description: _( 'The object property on which the query is filtered.' ),
 				label: _( 'Object property' ),
+				staticValues: [{id: 'None', label: _('Default properties')}],
 				dynamicValues: 'udm/properties',
 				dynamicOptions: { searchable: true, objectType : this.objectType },
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
