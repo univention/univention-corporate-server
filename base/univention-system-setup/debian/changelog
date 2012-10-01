@@ -1,3 +1,9 @@
+univention-system-setup (6.0.38-1) unstable; urgency=low
+
+  * Fix ifname reference (Bug #28673)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Oct 2012 09:19:53 +0200
+
 univention-system-setup (6.0.37-1) unstable; urgency=low
 
   * Remove validations preventing using IPv4 without DHCP (Bug #26608)
