@@ -516,6 +516,15 @@ define([
 		},
 
 		parseError: function(error) {
+			if (!error.data) {
+				// no JSON was returned, propably proxy error
+				var r = /<title>(.*)<\/title>/;
+				return {
+					status: error.status,
+					message: r.test(error.text) ? r.exec(error.text)[1] : 'Internal Server Error',
+					result: null
+				};
+			}
 			return {
 				status: parseInt(error.data.status, 10) || error.status,
 				message: error.data.message || '',

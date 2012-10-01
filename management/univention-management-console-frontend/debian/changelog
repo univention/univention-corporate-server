@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.81-1) unstable; urgency=low
+
+  * fixed parseError when no json was returned; Bug #28551
+
+ -- Florian Best <best@univention.de>  Mon, 01 Oct 2012 17:55:31 +0200
+
 univention-management-console-frontend (2.0.80-1) unstable; urgency=low
 
   * show a notification when umc needs a browser reload; Bug #24947
