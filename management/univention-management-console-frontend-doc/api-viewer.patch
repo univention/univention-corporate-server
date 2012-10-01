@@ -33,7 +33,7 @@ index 26ae0bf..542fa39 100644
  
  # Location of dojo, without trailing slash
 -$dojoroot = "//ajax.googleapis.com/ajax/libs/dojo/1.8.0";
-+$dojoroot = "/univention-dojo/dojo/dojo.js";
++$dojoroot = "/univention-dojo";
  # $dojoroot = "/trunk";	// local build
  
 -$_site_name = "The Dojo Toolkit";

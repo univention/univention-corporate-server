@@ -33,7 +33,7 @@
 build: univention-management-console-frontend-doc univention-dojo-api-viewer
 
 js-doc-parse.tar.gz:
-	git clone https://github.com/wkeese/js-doc-parse.git
+	git clone --recursive https://github.com/wkeese/js-doc-parse.git
 	tar cvzf js-doc-parse.tar.gz js-doc-parse
 #	cd js-doc-parse && git archive --format=tar js-doc-parse | gzip > js-doc-parse.tar.gz
 
@@ -66,19 +66,19 @@ umc.xml: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/mo
 			./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
 
 univention-dojo-api-viewer: api-viewer
-	rsync -rpl --exclude '.svn' $< $@
+	cp -r $< $@
 	cd $@ && \
 		git apply < ../$<.patch;
 	#@ remove unneeded things: security
-	rm -rf $@/data $@/install $@/tests || true
+	rm -rf $@/install $@/tests || true
 
 install: build
 	install -m0755 -d '$(DESTDIR)/usr/share'
 	# univention-dojo-api-viewer
 	install -m0755 -d '$(DESTDIR)/usr/share/univention-doc/src'
 	install -m0755 -d '$(DESTDIR)/var/www/ucs-overview/images/icon'
-	rsync -rpl --exclude ".git" univention-management-console-doc '$(DESTDIR)/usr/share/univention-doc/src/'
-	rsync -rpl --exclude ".git" univention-dojo-api-viewer '$(DESTDIR)/usr/share/'
+	rsync -rpl --exclude '.svn' --exclude '.git' univention-management-console-doc '$(DESTDIR)/usr/share/univention-doc/src/'
+	rsync -rpl --exclude 'umc.xml' --exclude '.svn' --exclude '.git' univention-dojo-api-viewer '$(DESTDIR)/usr/share/'
 	install -m0644 icon/dojo-api.png '$(DESTDIR)/var/www/ucs-overview/images/icon/'
 	# univention-management-console-frontend-doc
 	install -m644 umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'

@@ -16,7 +16,7 @@ Depends: ${misc:Depends},
  wget,
  univention-dojo-api-viewer
 Description: Univention Management Console - Documentation
- This package contains the api.xml file which is needet by univention-dojo-api-viewer
+ This package contains the umc.xml file which is needet by univention-dojo-api-viewer
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
@@ -27,7 +27,6 @@ Package: univention-dojo-api-viewer
 Architecture: all
 Depends: ${misc:Depends},
  php5-curl,
- php5-xsl,
  univention-dojo,
  univention-doc,
  univention-management-console-frontend

@@ -46,9 +46,6 @@ if [ -r "$api_path/umc.xml" ]; then
 
 	unlink "$var_www/umc.xml" || true
 	chmod o-w $api_path/data || true
-
-	# allow caching
-	chown "$apache_run_user" "$api_path/data/UMC/cache/" || true
 fi
 
 exit 0
