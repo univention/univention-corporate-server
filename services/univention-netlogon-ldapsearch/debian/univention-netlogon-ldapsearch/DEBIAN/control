@@ -1,0 +1,12 @@
+Package: univention-netlogon-ldapsearch
+Version: 2.0.0-1
+Architecture: all
+Maintainer: Univention GmbH <packages@univention.de>
+Installed-Size: 1616
+Conflicts: univention-printer-assignment (<< 2.0.1-1)
+Section: master
+Priority: optional
+Description: ldapsearch for Win32
+ This package provides binary files from OpenLDAP for Win32.
+ They are intended to be used from Windows systems
+ via their Netlogon scripts.

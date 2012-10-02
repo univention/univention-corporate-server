@@ -1,0 +1,7 @@
+c0d0867cff87db2ce53cfd47c8fc39bd  usr/share/doc/univention-netlogon-ldapsearch/changelog.Debian.gz
+a12c09d31c0495e805308fa24d531005  var/lib/samba/netlogon/README.txt
+99a788aed33a5083fcb1ae584c01cbcb  var/lib/samba/netlogon/libcrypto.dll
+9407f8df031c5afca15903b01ee20b3d  var/lib/samba/netlogon/liblber.dll
+51c5dc48c6ccdb8574d2d8a74e9d4a1a  var/lib/samba/netlogon/libssl.dll
+288c23b9bb6df8f7a28d2e8fc9d6a7c4  var/lib/samba/netlogon/libldap.dll
+812c9ce541baae91abf0e2d0344fcadd  var/lib/samba/netlogon/ldapsearch.exe
