@@ -1,5 +1,0 @@
-
-XPI laden
-
-wget http://releases.mozilla.org/pub/mozilla.org/firefox/releases/FIREFOX_VERSION/linux-i686/xpi/de.xpi
-wget ...
