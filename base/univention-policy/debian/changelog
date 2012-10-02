@@ -1,3 +1,9 @@
+univention-policy (5.0.8-5) unstable; urgency=low
+
+  * Add linking exception for Cyrus SASL and OpenSSL (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Tue, 02 Oct 2012 14:09:00 +0200
+
 univention-policy (5.0.8-4) unstable; urgency=low
 
   * univention_policy_result.c: One error-report redirected

@@ -23,6 +23,26 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.
 
+"In addition, as a special exception, Univention GmbH
+gives permission to link the code of its release of Univention Policy with the
+OpenSSL project's "OpenSSL" library (or with modified versions of it
+that use the same license as the "OpenSSL" library), and distribute
+the linked executables.  You must obey the GNU General Public License
+in all respects for all of the code used other than "OpenSSL".  If you
+modify this file, you may extend this exception to your version of the
+file, but you are not obligated to do so.  If you do not wish to do
+so, delete this exception statement from your version."
+
+"In addition, as a special exception, Univention GmbH
+gives permission to link the code of its release of Univention Policy with the
+Carnegie Mellon University's "Cyrus SASL" library (or with modified versions of it
+that use the same license as the "Cyrus SASL" library), and distribute
+the linked executables.  You must obey the GNU General Public License
+in all respects for all of the code used other than "Cyrus SASL".  If you
+modify this file, you may extend this exception to your version of the
+file, but you are not obligated to do so.  If you do not wish to do
+so, delete this exception statement from your version."
+
 You should have received a copy of the GNU Affero General Public
 License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
