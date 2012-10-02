@@ -1,3 +1,9 @@
+univention-directory-listener (7.0.3-8) unstable; urgency=low
+
+  * Add linking exception for OpenSSL (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Tue, 02 Oct 2012 13:54:03 +0200
+
 univention-directory-listener (7.0.3-7) unstable; urgency=low
 
   * Call exit_handler() on regular exit (Bug #27330)
