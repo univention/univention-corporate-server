@@ -1,3 +1,9 @@
+univention-directory-notifier (7.0.6-3) unstable; urgency=low
+
+  * Add linking exception for OpenSSL (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Tue, 02 Oct 2012 13:57:32 +0200
+
 univention-directory-notifier (7.0.6-2) unstable; urgency=low
 
   * univention-replicate-one: more minor fixes (Bug #27625)
