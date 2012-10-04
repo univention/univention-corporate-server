@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.39-1) unstable; urgency=low
+
+  * update pTRRecords when DNS Forward Zone entries 
+    of computer objects are modified (Bug #26307)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 04 Oct 2012 16:08:10 +0200
+
 univention-directory-manager-modules (8.0.38-1) unstable; urgency=low
 
   * Add attributes to be searched in by default (Bug #24341)

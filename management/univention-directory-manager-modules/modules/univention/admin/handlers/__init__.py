@@ -1614,6 +1614,28 @@ class simpleComputer( simpleLdap ):
 						zone.open( )
 						zone.modify( )
 
+	def __add_related_ptrrecords(self, zoneDN, ip):
+		ptrrecord = '%s.%s.' % (self.info['name'], zoneDN.split('=')[1].split(',')[0])
+		ip_split = ip.split('.')
+		ip_split.reverse()
+		search_filter = '(|(relativeDomainName=%s)(relativeDomainName=%s)(relativeDomainName=%s))' % (ip_split[0], '.'.join(ip_split[:1]), '.'.join(ip_split[:2]))
+
+		for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=search_filter):
+			self.lo.modify(dn, [('pTRRecord', '', ptrrecord)])
+
+
+
+	def __remove_related_ptrrecords(self, zoneDN, ip):
+		ptrrecord = '%s.%s.' % (self.info['name'], zoneDN.split('=')[1].split(',')[0])
+		ip_split = ip.split('.')
+		ip_split.reverse()
+		search_filter = '(|(relativeDomainName=%s)(relativeDomainName=%s)(relativeDomainName=%s))' % (ip_split[0], '.'.join(ip_split[:1]), '.'.join(ip_split[:2]))
+
+		for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=search_filter):
+			if ptrrecord in attributes['pTRRecord']:
+				self.lo.modify(dn, [('pTRRecord', ptrrecord, '')])
+		
+
 	def check_common_name_length(self):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward'], ))
 		if len(self['ip']) > 0 and len(self['dnsEntryZoneForward']) > 0:
@@ -1826,8 +1848,10 @@ class simpleComputer( simpleLdap ):
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:
 				self.__remove_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+				self.__remove_related_ptrrecords(dn, self['ip'][0])
 			else:
 				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__remove_related_ptrrecords(dn, ip)
 
 		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'add' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object "%s"' % entry )
@@ -1836,8 +1860,10 @@ class simpleComputer( simpleLdap ):
 			if not ip and not self.__multiip:
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
 				self.__add_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+				self.__add_related_ptrrecords(dn, self['ip'][0])
 			else:
 				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__add_related_ptrrecords(dn, ip)
 
 		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ]:
 			dn, ip = self.__split_dns_line( entry )
