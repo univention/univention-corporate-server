@@ -1,3 +1,10 @@
+univention-newsid (5.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.1
+  * Extend copyright file (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 04 Oct 2012 11:47:43 +0200
+
 univention-newsid (4.0.1-4) unstable; urgency=low
 
   * fixed space/tab mix (Bug #25627)
