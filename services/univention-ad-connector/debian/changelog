@@ -1,3 +1,9 @@
+univention-ad-connector (7.0.5-2) unstable; urgency=low
+
+  * Add linking exception for OpenSSL (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 04 Oct 2012 11:42:05 +0200
+
 univention-ad-connector (7.0.5-1) unstable; urgency=low
 
   * Added a reverse attribute check for the mail attribute. This means
