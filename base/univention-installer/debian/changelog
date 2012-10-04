@@ -1,3 +1,10 @@
+univention-installer (8.0.19-1) unstable; urgency=low
+
+  * copy custom scripts before getting list of scripts in
+    installer/progress.py (Bug #28394)
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 10:13:24 +0200
+
 univention-installer (8.0.18-3) unstable; urgency=low
 
   * fixed translation for join test (Bug #7444) 

@@ -602,6 +602,10 @@ Please visit the following websites to learn more about %(name)s:
 		fd.write('export TEXTDOMAINDIR="/lib/univention-installer/locale"\n')
 		fd.close()
 
+		# send message to main loop and run 00_scripts.sh
+		os.write(self.fd_write, '__MSG__:%s\n' % _('Preparing installation'))
+		self.call_cmd(['/lib/univention-installer-scripts.d/00_scripts.sh'])
+
 		# get list of scripts to be called
 		scripts = [ os.path.join('/lib/univention-installer-scripts.d/', x) for x in os.listdir('/lib/univention-installer-scripts.d/') if x not in IGNORE_LIST ]
 		scripts.sort()
@@ -627,10 +631,6 @@ Please visit the following websites to learn more about %(name)s:
 			main_script.percentage = 100.0 - cumulative_progress
 			main_script.remaining_percentage = main_script.percentage
 			self.log('main_script ==> %s%%' % main_script.percentage)
-
-		# send message to main loop
-		os.write(self.fd_write, '__MSG__:%s\n' % _('Preparing installation'))
-		self.call_cmd(['/lib/univention-installer-scripts.d/00_scripts.sh'])
 
 		for script in scripts:
 			self.log('script %s' % script)
