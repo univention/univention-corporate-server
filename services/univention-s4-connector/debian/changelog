@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.12-1) unstable; urgency=low
+
+  * Update group cache handling. This fixes an error if the Samba 4 ldap
+    base dn is different from the OpenLDAP base dn (Bug #28689)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Oct 2012 20:23:35 +0200
+
 univention-s4-connector (7.0.11-1) unstable; urgency=low
 
   * Fixed a traceback which occurs if the LDAP and Samba 4 base DNs are
