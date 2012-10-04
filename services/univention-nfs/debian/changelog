@@ -1,3 +1,9 @@
+univention-nfs (5.0.3-3) unstable; urgency=low
+
+  * fixed preinst (Bug #27959) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 13:25:35 +0200
+
 univention-nfs (5.0.3-2) unstable; urgency=low
 
   * remove old nfs-kernel-lockd (Bug #27959) 
