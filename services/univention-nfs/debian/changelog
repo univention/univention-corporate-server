@@ -1,3 +1,10 @@
+univention-nfs (5.0.3-1) unstable; urgency=low
+
+  * renamed etc/modprobe.d/nfs-kernel-lockd to
+    etc/modprobe.d/nfs-kernel-lockd.conf (Bug #27959)
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 12:46:40 +0200
+
 univention-nfs (5.0.2-1) unstable; urgency=low
 
   * Replace hard coded eth0 by get_default (Bug #26058)
