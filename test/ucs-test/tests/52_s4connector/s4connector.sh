@@ -2,45 +2,28 @@
 #
 # Hints for the S4 connector tests:
 #
-# Most of the AD tests require an
-# active-directory server
-# to be configured prior
-# to execution.
+# Most of the AD tests require an active-directory server
+# to be configured prior to execution.
 #
-# It should be sufficient to use
-# the qa-test-vms, for example
-# Windows.2008.Server.UCS2-3-0
-# Win2k3 should also work, but
-# Win2k probably won't work with
-# this test.
+# It should be sufficient to use the qa-test-vms, for example
+# Windows.2008.Server.UCS2-3-0 Win2k3 should also work, but
+# Win2k probably won't work with this test.
 #
-# The Test uses 'connector' as
-# configuration name, so you can
-# use UMC for configuration which
-# is probably easiest.
+# The Test uses 'connector' as configuration name, so you can
+# use UMC for configuration which is probably easiest.
 #
-# In case the test fails, however,
-# you should check, whether the
-# server is reachable via
-# connector/ad/ldap/host and
-# connector/ad/ldap/port
-# whether the server certificate is
-# correctly installed in the path
-# specified in
-# connector/ad/ldap/certificate
-# whether the correct ad-password
-# is in the file specified in
-# connector/ad/ldap/bindpw
-# and whether the values
-# in connector/ad/ldap/base and
+# In case the test fails, however, you should check, whether the
+# server is reachable via connector/ad/ldap/host and
+# connector/ad/ldap/port whether the server certificate is
+# correctly installed in the path specified in
+# connector/ad/ldap/certificate whether the correct ad-password
+# is in the file specified in connector/ad/ldap/bindpw
+# and whether the values in connector/ad/ldap/base and
 # connector/ad/ldap/binddn are sane.
 #
-# Also note, that most of the tests
-# assume the default mapping, so
-# in case of changes in the mapping
-# configuration they might fail
-# although there's no error in the
-# connector.
+# Also note, that most of the tests assume the default mapping, so
+# in case of changes in the mapping configuration they might fail
+# although there's no error in the connector.
 #
 ########################################################
 
