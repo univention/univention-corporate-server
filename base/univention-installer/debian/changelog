@@ -1,3 +1,10 @@
+univention-installer (8.0.20-1) unstable; urgency=low
+
+  * fixed Zeroconf/APIPA-IP in sbin/univention-installer-network-startup 
+    (Bug #28467)
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 15:37:06 +0200
+
 univention-installer (8.0.19-1) unstable; urgency=low
 
   * copy custom scripts before getting list of scripts in

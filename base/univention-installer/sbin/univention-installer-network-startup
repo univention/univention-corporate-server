@@ -79,11 +79,17 @@ interfaces="$(set | egrep "${ifaceregex}" | awk -F _ '{print $1}' | sort -u)"
 # setup interface
 for interface in $interfaces; do
 
-	address="$(eval echo \$$interface\_ip)"
-	netmask="$(eval echo \$$interface\_netmask)"
-	broadcast="$(eval echo \$$interface\_broadcast)"
-	network="$(eval echo \$$interface\_network)"
-	dynamic="$(eval echo \$$interface\_type)"
+	addressVar="${interface}_ip"
+	netmaskVar="${interface}_netmask"
+	broadcastVar="${interface}_broadcast"
+	networkVar="${interface}_network"
+	dynamicVar="${interface}_type"
+
+	address="${!addressVar}"
+	netmask="${!netmaskVar}"
+	broadcast="${!broadcastVar}"
+	network="${!networkVar}"
+	dynamic="${!dynamicVar}"
 	
 	# dhcp request
 	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
@@ -106,24 +112,20 @@ for interface in $interfaces; do
 		fi
 	
 		# test dhcp
-		address="$(eval echo \$$interface\_ip)"
-		netmask="$(eval echo \$$interface\_netmask)"
+		address="${!addressVar}"
+		network="${!networkVar}"
 		if [ -z "$address" -o -z "$netmask" ]; then
-			r1=$((RANDOM % 255))
+			r1=$((RANDOM % 254 + 1))
 			r2=$((RANDOM % 255))
-			eval $interface\_ip="169.254.$r1.$r2"
-			eval $interface\_netmask="255.255.255.0"
-			eval $interface\_broadcast="169.254.$r1.255"
-			eval $interface\_network="169.254.$r1.0"
+			address="169.254.$r1.$r2"
+			netmask="255.255.255.0"
+			broadcast="169.254.$r1.255"
+			network="169.254.$r1.0"
 		fi
 	
-		# do it
-		address="$(eval echo \$$interface\_ip)"
-		netmask="$(eval echo \$$interface\_netmask)"
-		broadcast="$(eval echo \$$interface\_broadcast)"
-		network="$(eval echo \$$interface\_network)"
 	fi
 	
+	# do it
 	startNetworkInterface "$address" "$netmask" "$broadcast" "$network" "$interface"
 
 done
