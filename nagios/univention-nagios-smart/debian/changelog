@@ -1,3 +1,10 @@
+univention-nagios-smart (3.0.0-1) unstable; urgency=low
+
+  * Update version for UCS 3.1
+  * Update copyright file (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 04 Oct 2012 10:56:14 +0200
+
 univention-nagios-smart (2.0.2-1) unstable; urgency=low
 
   * run the join script at an earlier stage (Bug #24252) 

@@ -1,3 +1,10 @@
+univention-passwd-store (6.0.0-1) unstable; urgency=low
+
+  * Update version number for UCS 3.1	
+  * Update copyright file (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 04 Oct 2012 10:54:47 +0200
+
 univention-passwd-store (5.0.0-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

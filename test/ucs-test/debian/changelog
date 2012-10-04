@@ -1,3 +1,9 @@
+ucs-test (3.0.0-10) unstable; urgency=low
+
+  * Update copyright file (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 04 Oct 2012 10:53:56 +0200
+
 ucs-test (3.0.0-9) unstable; urgency=low
 
   * debian/control: Build-Depends: remove python-all (Bug #28356)

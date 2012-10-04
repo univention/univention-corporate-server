@@ -1,3 +1,9 @@
+univention-licence (5.0.1-3) unstable; urgency=low
+
+  * Update copyright file (Bug #26440)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 04 Oct 2012 10:55:05 +0200
+
 univention-licence (5.0.1-2) unstable; urgency=low
 
   * Add linking exception for OpenSSL (Bug #26440)
