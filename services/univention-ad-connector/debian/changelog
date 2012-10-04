@@ -1,3 +1,10 @@
+univention-ad-connector (7.0.6-1) unstable; urgency=low
+
+  * Fixed a traceback which occurs if the LDAP and AD base DNs are not
+    equal (Bug #28573)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Oct 2012 20:35:46 +0200
+
 univention-ad-connector (7.0.5-2) unstable; urgency=low
 
   * Add linking exception for OpenSSL (Bug #26440)

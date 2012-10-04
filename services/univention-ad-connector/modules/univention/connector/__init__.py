@@ -1091,6 +1091,7 @@ class ucs:
 		ucs_object=module.object(None, self.lo, position=position)
 		if property_type == 'group':
 			ucs_object.open()
+			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: remove %s from ucs group cache" % object['dn'])
 			self.group_members_cache_ucs[object['dn'].lower()] = []
 		else:
 			ucs_object.open()
@@ -1204,7 +1205,6 @@ class ucs:
 			object['modtype'] = 'add'
 
 		if self.group_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
-			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: remove %s from group cache" % object['dn'])
 			self.group_mapping_cache_ucs[object['dn'].lower()] = None
 
 		try:
