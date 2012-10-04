@@ -415,7 +415,11 @@ msgid "Username"
 msgstr ""
 
 #: umc/about.js:45
-msgid "Validity date of the SSL certificate"
+msgid "Validity date of the SSL root certificate"
+msgstr ""
+
+#: umc/about.js:45
+msgid "Validity date of the SSL host certificate"
 msgstr ""
 
 #: umc/tools.js:378

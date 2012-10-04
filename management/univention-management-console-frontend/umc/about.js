@@ -42,8 +42,14 @@ define([
 			UCS_Version : info.ucs_version,
 			labelUMC_Version : _( 'UMC version' ),
 			UMC_Version : info.umc_version,
-			labelSSL_ValidityDate : _( 'Validity date of the SSL certificate' ),
-			SSL_ValidityDate : locale.format(new Date(info.ssl_validity_date), {
+			labelSSL_ValidityRoot : _( 'Validity date of the SSL root certificate' ),
+			SSL_ValidityRoot : locale.format(new Date(info.ssl_validity_root), {
+				fullYear: true,
+				timePattern: " ",
+				formatLength: "long"
+			}),
+			labelSSL_ValidityHost : _( 'Validity date of the SSL host certificate' ),
+			SSL_ValidityHost : locale.format(new Date(info.ssl_validity_host), {
 				fullYear: true,
 				timePattern: " ",
 				formatLength: "long"

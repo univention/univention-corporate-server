@@ -449,8 +449,12 @@ msgid "Username"
 msgstr "Benutzername"
 
 #: umc/about.js:45
-msgid "Validity date of the SSL certificate"
-msgstr "Gültigkeitsdatum des SSL-Zertifikats"
+msgid "Validity date of the SSL root certificate"
+msgstr "Gültigkeitsdatum des SSL-Wurzel-Zertifikats"
+
+#: umc/about.js:45
+msgid "Validity date of the SSL host certificate"
+msgstr "Gültigkeitsdatum des SSL-Rechner-Zertifikats"
 
 #: umc/tools.js:378
 #, python-format
