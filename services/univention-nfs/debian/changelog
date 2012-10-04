@@ -1,3 +1,9 @@
+univention-nfs (5.0.3-2) unstable; urgency=low
+
+  * remove old nfs-kernel-lockd (Bug #27959) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 13:20:07 +0200
+
 univention-nfs (5.0.3-1) unstable; urgency=low
 
   * renamed etc/modprobe.d/nfs-kernel-lockd to
