@@ -131,6 +131,7 @@ define([
 			tools.umcpCommand('packages/app_center/get', {'application': app.id}).then(
 				lang.hitch(this, function(data) {
 					this.standby(false);
+					var width = 550;	// mimic the default of dialog.confirm
 
 					var head_style	= 'font-size:120%;font-weight:bold;margin:.5em;text-decoration:underline;';
 					var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
@@ -139,8 +140,7 @@ define([
 					var txt = "<p style='" + head_style + "'>" +
 						lang.replace(_("Details for Application '{name}'"), data.result) +
 						"</p>";
-					txt += "<table>\n";
-					var width = 550;	// mimic the default of dialog.confirm
+					txt += lang.replace("<table style=\"width: {0}px;\">\n", [ width ]);
 					var fields;
 					if (data.result.allows_using) {
 						fields = this._detail_field_order();
@@ -184,6 +184,15 @@ define([
 							})
 						});
 					}
+					if (data.result.allows_using && data.result.can_update) {
+						buttons.push({
+							name: 'update',
+							label: _("Update"),
+							callback: lang.hitch(this, function() {
+								this._call_installer('update', data.result.id, data.result.name);
+							})
+						});
+					}
 					if (data.result.allows_using && data.result.can_uninstall) {
 						buttons.push({
 							name: 'uninstall',
@@ -202,12 +211,12 @@ define([
 
 					var dialogText = new Text({
 						'class': 'umcConfirmDialogText',
-						style: 'overflow:auto', // commands can be long...
+						//style: 'width:500; overflow:auto', // commands can be long...
 						content: txt
 					});
 					var confirmDialog = new ConfirmDialog({
 						title: _('Application details'),
-						style: lang.replace('min-width:500px;max-width:{width}px;', {width: width}), // dialog.confirm doesn't exceed 550px
+						//style: lang.replace('width:{width}px;', {width: width}), // dialog.confirm doesn't exceed 550px
 						message: dialogText,
 						options: buttons
 					});
@@ -247,7 +256,7 @@ define([
 					verb = _("upgrade");
 					break;
 			}
-			var msg = lang.replace(_("Going to {verb} Application '{name}'"), {verb: verb, id: name});
+			var msg = lang.replace(_("Going to {verb} Application '{name}'"), {verb: verb, name: name});
 			// TODO: confirm
 			tools.umcpCommand('packages/app_center/invoke', {'function': func, 'application': id}).then(
 				lang.hitch(this, function(data) {
@@ -399,7 +408,15 @@ define([
 		getApplications: function() {
 			if (this._applications === undefined) {
 				return tools.umcpCommand('packages/app_center/query', {}).then(lang.hitch(function(data) {
+					// sort by name
 					this._applications = data.result;
+					this._applications.sort(tools.cmpObjects({
+						attribute: 'name',
+						ignoreCase: true
+					}));
+					array.forEach(this._applications, function(iapp) {
+						console.log(iapp.id, ': update=', iapp.can_update);
+					});
 					return this._applications;
 				}));
 			}

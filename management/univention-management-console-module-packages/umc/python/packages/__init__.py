@@ -47,14 +47,6 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, M
 from sanitizers import basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
 from app_center import Application
 
-try:
-	import univention.admin.license as udm_license
-	from univention.management.console.modules.udm.udm_ldap import LDAP_Connection, set_credentials
-except ImportError:
-	# uh-oh, no udm with all its licensing stuff...
-	udm_license = None
-	LDAP_Connection = lambda func: func
-
 from univention.lib.package_manager import PackageManager, LockError
 
 from univention.management.console.log import MODULE
@@ -65,6 +57,11 @@ _ = umc.Translation('univention-management-console-module-packages').translate
 
 from constants import *
 
+try:
+	import univention.admin.license as udm_license
+	GPLversion = False
+except ImportError as err:
+	GPLversion = True
 
 class Instance(umcm.Base):
 	def init(self):
@@ -79,22 +76,18 @@ class Instance(umcm.Base):
 		)
 		self.uu = UniventionUpdater(False)
 		self.component_manager = util.ComponentManager(self.ucr, self.uu)
-		if udm_license is not None:
-			# LDAP (license)
-			set_credentials(self._user_dn, self._password)
 
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
 	@sanitize(email=EmailSanitizer(required=True))
-	@LDAP_Connection
 	@simple_response
 	def app_center_request_new_license(self, email):
-		if udm_license is None:
+		if GPLversion:
 			return False
 		server = self.ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		url = 'https://%(server)s/new_license.py' % {'server' : server}
-		baseDN = udm_license._license.licenseBase
+		baseDN = ucr['ldap/base']
 		data = urllib.urlencode({'email' : email, 'baseDN' : baseDN})
 		request = urllib2.Request(url, data=data, headers={'User-agent' : 'UMC/AppCenter'})
 		return [url, data]
@@ -102,46 +95,43 @@ class Instance(umcm.Base):
 		return True
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
-	@LDAP_Connection
 	@simple_response
 	def app_center_query(self, pattern):
 		applications = Application.all()
 		result = []
 		for application in applications:
 			if pattern.search(application.name):
-				result.append(application.to_dict_overwiew(self.package_manager, udm_license))
+				result.append(application.to_dict_overwiew(self.package_manager))
 		return result
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
-	@LDAP_Connection
 	@simple_response
 	def app_center_get(self, application):
 		application = Application.find(application)
-		return application.to_dict_detail(self.package_manager, udm_license)
+		return application.to_dict_detail(self.package_manager)
 
-	@sanitize(function=ChoicesSanitizer(['install', 'uninstall'], required=True),
+	@sanitize(function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
 		application=StringSanitizer(minimum=1, required=True)
 		)
-	@LDAP_Connection
 	def app_center_invoke(self, request, ldap_connection=None, ldap_position=None):
 		function = request.options.get('function')
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
 		try:
-			can_continue = application is not None and (function != 'install' or application.can_be_installed(self.package_manager))
+			can_continue = application is not None and not (function == 'install' and not application.can_be_installed(self.package_manager)) and not (function == 'update' and not application.can_be_updated())
 			self.finished(request.id, can_continue)
 			if can_continue:
 				def _thread(module, application, function):
 					with module.package_manager.locked(reset_status=True, set_finished=True):
 						with module.package_manager.no_umc_restart():
-							if function == 'install':
-								return application.install(module.package_manager, module.component_manager, udm_license)
+							if function in ('install', 'update'):
+								return application.install(module.package_manager, module.component_manager)
 							else:
-								return application.uninstall(module.package_manager, module.component_manager, udm_license)
+								return application.uninstall(module.package_manager, module.component_manager)
 				def _finished(thread, result):
 					if isinstance(result, BaseException):
 						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-				thread = notifier.threads.Simple('app_center_invoke', 
+				thread = notifier.threads.Simple('app_center_invoke',
 					notifier.Callback(_thread, self, application, function), _finished)
 				thread.run()
 		except LockError:

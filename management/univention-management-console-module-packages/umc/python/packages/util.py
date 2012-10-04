@@ -174,6 +174,9 @@ class ComponentManager(object):
 
 		return entry
 
+	def is_registered(self, component_id):
+		return '%s/%s' % (COMPONENT_BASE, component_id) in self.ucr
+
 	def put(self, data, super_ucr):
 		"""	Does the real work of writing one component definition back.
 			Will be called for each element in the request array of

@@ -1,3 +1,11 @@
+univention-management-console-module-packages (2.0.25-1) unstable; urgency=low
+
+  * integrated app versioning; Bug #28599
+  * cleaned up license and LDAP references; Bug #28599
+  * fixed display issues; Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 Oct 2012 19:37:39 +0200
+
 univention-management-console-module-packages (2.0.24-1) unstable; urgency=low
 
   * refactored code into differen classes for clarity; Bug #28599

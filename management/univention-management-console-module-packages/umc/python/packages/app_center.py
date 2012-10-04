@@ -33,13 +33,20 @@
 import urllib2
 import os.path
 
+# for version comparison
+from distutils.version import LooseVersion
+
 from univention.management.console.log import MODULE
+
+from univention.updater import UniventionUpdater
+uu = UniventionUpdater(False)
 
 import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 import util
+from constants import *
 
 import re
 import ConfigParser
@@ -48,26 +55,48 @@ import json
 import copy
 import traceback
 
+import univention.admin.uexceptions as udm_errors
+from ldap import LDAPError
+
 class License(object):
+	def __init__(self, udmLicense = None):
+		self.license = udmLicense
+
 	def uuid(self, license):
+		# TODO: this does not work yet
 		# ucr set repository/app_center/debug/licence="fc452bc8-ae06-11e1-abab-00216a6f69f2"
 		# ucr unset repository/app_center/debug/licence
 		return ucr.get('repository/app_center/debug/licence', None)
-		if self.license is None:
+		if self.license:
 			return None
-		return self.license._license.uuid
+		return self.license.uuid
 
-	def email_known(self, license):
+	def email_known(self):
 		# at least somewhere at univention
 		return self.uuid(license) is not None
 
-	def allows_using(self, app, license):
-		return self.email_known(license) or not app.get('emailrequired')
+	def allows_using(self, emailRequired):
+		return self.email_known() or not emailRequired
 
-LICENSE = License()
+try:
+	import univention.admin.filter as udm_filter  # needed for udm_license
+	import univention.admin.license as udm_license
+	import univention.uldap as uldap
+
+	_lo = uldap.getMachineConnection()
+	udm_license.init_select(_lo, 'admin')
+	del _lo
+	LICENSE = License(udm_license._license)
+
+except (ImportError, LDAPError, udm_errors.base) as err:
+	# no licensing available
+	MODULE.warn('Failed to load license information: %s' % err)
+	LICENSE = License()
+
 
 class Application(object):
 	_regComma = re.compile('\s*,\s*')
+	_regComponentID = re.compile(r'.*/(?P<id>[^/]+)(\.ini)?')
 	_all_applications = None
 	_category_translations = {}
 
@@ -114,10 +143,17 @@ class Application(object):
 		if self.get('screenshot'):
 			self._options['screenshot'] = urllib2.urlparse.urljoin('%s/' % self.get_repository_url(), self.get('screenshot'))
 
-		# save the url
+		# get the name of the component
+		m = self._regComponentID.match(url)
+		self.component_id = 'unknown'
+		if m:
+			self.component_id = m.groupdict()['id']
+
+		# save important meta data
 		self.id = self._options['id'] = self._options['id'].lower()
 		self.name = self._options['name']
 		self.icon = self._options['icon'] = '%s.png' % url[:-4]
+		self.version = self._options['version']
 
 	def get(self, key):
 		'''Helper function to access configuration elements of the application's .ini
@@ -174,6 +210,9 @@ class Application(object):
 
 	@classmethod
 	def all(cls):
+		# reload ucr variables
+		ucr.load()
+
 		if cls._all_applications is None:
 			cls._all_applications = []
 
@@ -190,7 +229,7 @@ class Application(object):
 						iurl = url + '/' + ifilename
 						try:
 							cls._all_applications.append(Application(iurl))
-						except (ConfigParser.Error, urllib2.HTTPError) as e:
+						except (ConfigParser.Error, urllib2.HTTPError, ValueError, KeyError) as e:
 							MODULE.warn('Could not open application file: %s\n%s' % (iurl, e))
 			except urllib2.HTTPError as e:
 				MODULE.warn('Could not query App Center host at: %s\n%s' % (url, e))
@@ -220,13 +259,50 @@ class Application(object):
 		if whitelist:
 			filtered_applications = [app for app in filtered_applications if _included(whitelist, app) or app in filtered_applications]
 
-		return filtered_applications
+		# group app entries by their ID
+		appMap = {}
+		for iapp in filtered_applications:
+			if iapp.id not in appMap:
+				appMap[iapp.id] = []
+			appMap[iapp.id].append(iapp)
 
-	def to_dict_overwiew(self, package_manager, license):
+		# version string comparison
+		def _versionCmp(iapp, japp):
+			iver = LooseVersion(iapp.version)
+			jver = LooseVersion(japp.version)
+			if iver == jver:
+				return 0
+			if iver > jver:
+				return 1
+			return -1
+
+		# pick the latest version of each app
+		final_applications = []
+		for iid, iapps in appMap.iteritems():
+			# sort apps after their version (latest first)
+			iapps.sort(cmp=_versionCmp, reverse=True)
+
+			# store all versions
+			iapps[0].versions = iapps
+			final_applications.append(iapps[0])
+
+		return final_applications
+
+	def to_dict_overwiew(self, package_manager):
 		res = copy.copy(self._options)
-		res['allows_using'] = LICENSE.allows_using(self, license)
+		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
 		res['can_be_installed'] = self.can_be_installed(package_manager)
+
+		# check whether an older app version has been registered as component
+		# in that case we can indicate an update for the app
+		res['can_update'] = self.can_be_updated()
 		return res
+
+	def can_be_updated(self):
+		oldAppRegistered = False
+		if len(self.versions) > 1:
+			oldAppRegistered = any(['%s/%s' % (COMPONENT_BASE, iapp.component_id) in ucr for iapp in self.versions[1:]])
+		return oldAppRegistered
 
 	def cannot_install_reason(self, package_manager):
 		is_joined = os.path.exists('/var/univention-join/joined')
@@ -256,21 +332,25 @@ class Application(object):
 	def can_be_installed(self, package_manager):
 		return not bool(self.cannot_install_reason(package_manager)[0])
 
-	def to_dict_detail(self, package_manager, license):
+	def to_dict_detail(self, package_manager):
 		ucr.load()
 		res = copy.copy(self._options)
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
+		can_be_updated = res['can_update'] = self.can_be_updated() and cannot_install_reason in ('installed', None)
 		res['can_install'] = cannot_install_reason is None
 		res['can_uninstall'] = cannot_install_reason == 'installed'
-		res['allows_using'] = LICENSE.allows_using(self, license)
+		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
 		res['server'] = self.get_server()
 		res['server_version'] = ucr.get('version/version')
 		return res
 
-	def uninstall(self, package_manager, component_manager, license):
+	def uninstall(self, package_manager, component_manager):
+		# reload ucr variables
+		ucr.load()
+
 		try:
 			to_uninstall = self.get('defaultpackages')
 			max_steps = 100 + len(to_uninstall) * 100
@@ -278,16 +358,24 @@ class Application(object):
 			for package in to_uninstall:
 				package_manager.uninstall(package)
 				package_manager.add_hundred_percent()
-			component_manager.remove(self.id)
+
+			# remove all existing component versions
+			for iapp in self.versions:
+				component_manager.remove(iapp.component_id)
+
 			package_manager.update()
 			package_manager.add_hundred_percent()
 			status = 200
 		except:
 			status = 500
-		return self._send_information('uninstall', status, license)
+		return self._send_information('uninstall', status)
 
-	def install(self, package_manager, component_manager, license):
+	def install(self, package_manager, component_manager):
 		try:
+			# remove all existing component versions
+			for iapp in self.versions:
+				component_manager.remove(iapp.component_id)
+
 			ucr.load()
 			is_master = ucr.get('server/role') == 'domaincontroller_master'
 			server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
@@ -302,7 +390,7 @@ class Application(object):
 				'maintained' : True,
 				'unmaintained' : False,
 				'enabled' : True,
-				'name' : self.id,
+				'name' : self.component_id,
 				'description' : self.get('description'),
 				'username' : '',
 				'password' : '',
@@ -319,16 +407,23 @@ class Application(object):
 		except Exception as e:
 			MODULE.warn(traceback.format_exc())
 			status = 500
-		return self._send_information('install', status, license)
+		return self._send_information('install', status)
 
-	def _send_information(self, action, status, license):
+	def _send_information(self, action, status):
 		if not self.get('emailrequired'):
 			return
 		ucr.load()
 		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		try:
-			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s'
-			url = url % {'server' : server, 'uuid' : LICENSE.uuid(license), 'app' : self.id, 'action' : action, 'status' : status}
+			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s&version=%(version)s'
+			url = url % {
+				'server' : server,
+				'uuid' : LICENSE.uuid(),
+				'app' : self.id,
+				'version' : self.version,
+				'action' : action,
+				'status' : status,
+			}
 			request = urllib2.Request(url, headers={'User-agent' : 'UMC/AppCenter'})
 			#urllib2.urlopen(request)
 			return url
