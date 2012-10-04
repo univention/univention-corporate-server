@@ -1,30 +1,27 @@
-#!/bin/bash
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create and modify AD-User and verify attributes in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
 
-source "$TESTLIBPATH/base.lib"
-source "$TESTLIBPATH/udm.lib"
-source "$TESTLIBPATH/s4connector.lib"
 
-if [ -z "$connector_s4_ldap_host" ]; then
-	warning "connector/s4/ldap/host is empty."
-	warning "Assuming that the Ad-Connector isn't configured."
-	warning "Skipping test."
-	exit 137
-fi
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
 
-TEST_BASIC=false
-INFO_LINE="Create and modify AD-User and verify attributes in write-mode"
-TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
-TEST_PACKAGES="univention-config univention-s4-connector"
 
-UDM_users_user_username="$(randomchars)"
-UDM_users_user_lastname="$(randomchars)"
-UDM_users_user_firstname="$(randomchars)"
-UDM_users_user_description="$(randomchars)"
-UDM_users_user_street="$(randomchars)"
-UDM_users_user_city="$(randomchars)"
-UDM_users_user_postcode="$(randomchars)"
-UDM_users_user_profilepath="$(randomchars)"
-UDM_users_user_scriptpath="$(randomchars)"
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_firstname="$(random_chars)"
+UDM_users_user_description="$(random_chars)"
+UDM_users_user_street="$(random_chars)"
+UDM_users_user_city="$(random_chars)"
+UDM_users_user_postcode="$(random_chars)"
+UDM_users_user_profilepath="$(random_chars)"
+UDM_users_user_scriptpath="$(random_chars)"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 
 SYNCMODE="$(ad_get_sync_mode)"
@@ -40,25 +37,25 @@ ad_set_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
 ad_set_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode" || fail_test 110
 ad_set_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath" || fail_test 110
 ad_set_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-udm_exists "users/user"; check_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
 
-ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description"; check_bool 0 110
-ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username"; check_bool 0 110
-ad_verify_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname"; check_bool 0 110
-ad_verify_attribute "$AD_DN" "sn" "$UDM_users_user_lastname"; check_bool 0 110
-ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; check_bool 0 110
-ad_verify_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode"; check_bool 0 110
-ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; check_bool 0 110
-ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; check_bool 0 110
-ad_verify_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street"; check_bool 0 110
+ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description"; fail_bool 0 110
+ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "sn" "$UDM_users_user_lastname"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street"; fail_bool 0 110
 
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-udm_exists "users/user"; check_bool 1 110
-ad_exists "$AD_DN"; check_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_DN"; fail_bool 1 110
 
 ad_set_sync_mode "$SYNCMODE"
 

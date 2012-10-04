@@ -1,26 +1,29 @@
-#!/bin/bash
+#!/usr/share/ucs-test/runner bash 
+## desc: "Move an UCS-user into the User-Ignore-Subtree in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## versions:
+##  3.0-0: skip
+## bugs:
+##  - 18504
 
-source "$TESTLIBPATH/base.lib"
-source "$TESTLIBPATH/udm.lib"
-source "$TESTLIBPATH/s4connector.lib"
+# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=28696
+exit 131
 
-if [ -z "$connector_s4_ldap_host" ]; then
-	warning "connector/s4/ldap/host is empty."
-	warning "Assuming that the Ad-Connector isn't configured."
-	warning "Skipping test."
-	exit 137
-fi
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
 
-TEST_BASIC=false
-INFO_LINE="Move an UCS-user into the User-Ignore-Subtree in write-mode"
-TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
-TEST_PACKAGES="univention-config univention-s4-connector"
 
-UDM_users_user_username="$(randomchars)"
-UDM_users_user_lastname="$(randomchars)"
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
 # If the password doesn't adhere the configured Windows-Password-Guidelines
 # weird things might happen when the user is synced to AD.
-UDM_users_user_password="U$(randomchars)123"
+UDM_users_user_password="U$(random_chars)123"
 AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
 
 SYNCMODE="$(ad_get_sync_mode)"
@@ -29,9 +32,9 @@ ad_set_sync_mode "write"
 
 section "Create new container"
 
-CONTAINER_NAME="$(randomchars)"
+CONTAINER_NAME="$(random_chars)"
 udm container/cn create --set name="$CONTAINER_NAME" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 section "Modify User-Ignore-Subtree"
 
@@ -47,29 +50,29 @@ invoke-rc.d univention-s4-connector start
 section "Create user"
 
 udm_create "users/user" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-udm_exists "users/user"; check_bool 0 110
-ad_exists "$AD_USER_DN"; check_bool 0 110
+udm_exists "users/user"; fail_bool 0 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
 
 section "Move user to ignored subtree"
 
 udm users/user move --dn "uid=$UDM_users_user_username,cn=users,$ldap_base" \
 	--position "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-udm_exists "users/user"; check_bool 1 110
-udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; check_bool 0 110
-ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER_NAME,$(ad_get_base)"; check_bool 1 110
-ad_exists "$AD_USER_DN"; check_bool 1 121 "See #18504"
+udm_exists "users/user"; fail_bool 1 110
+udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 0 110
+ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER_NAME,$(ad_get_base)"; fail_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 1 121 "See #18504"
 
 section "Clean up"
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-ad_exists "$AD_USER_DN"; check_bool 1 110
-udm_exists "users/user"; check_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
 
 udm container/cn remove --dn "cn=$CONTAINER_NAME,$ldap_base"
 

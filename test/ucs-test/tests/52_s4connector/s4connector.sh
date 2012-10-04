@@ -93,10 +93,24 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 # possible ping-pong synchronisation scenarios or other problems you might miss
 # with the normal checks in your testcase.
 #
+
+function ad_is_connector_running () {
+	if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.6/univention/s4connector/s4/main.py"
+	then
+		return 0
+	else
+		return 1		
+	fi
+}
+
 function ad_wait_for_synchronization () {
 	let local min_wait_time="${1:-1}"
 	local configbase="${2:-connector}"
 
+	if ! ad_is_connector_running; then
+		/etc/init.d/univention-s4-connector start
+	fi
+		
 	#maybe there are ways be more sure whether synchronisation is
 	#already complete:
 	#See /var/log/univention/${configbase}-status.log
@@ -147,15 +161,6 @@ function scriptlet_error () {
 
 	error "Python scriptlet in function $function terminated unexpectedly"
 	info "Probably there was an uncaught exception, that should be visible above"
-}
-
-function ad_is_connector_running () {
-	if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.6/univention/s4connector/s4/main.py"
-	then
-		return 0
-	else
-		return 1		
-	fi
 }
 
 function ad_get_base () {
@@ -371,7 +376,7 @@ sys.exit (42)
 	fi
 }
 
-function ad_creategroup () {
+function ad_group_create () {
 	local groupname="$1"
 	local description="$2"
 	local position="$3"
@@ -382,7 +387,7 @@ import sys
 sys.path.append('$TESTLIBPATH')
 import s4connector
 adconnection = s4connector.S4Connection ('$configbase')
-adconnection.creategroup ('$groupname', description='$description', position='$position')
+adconnection.group_create ('$groupname', description='$description', position='$position')
 sys.exit (42)
 "
 	local retval="$?"
@@ -390,12 +395,12 @@ sys.exit (42)
 		info "Group $groupname created"
 		return 0
 	else
-		scriptlet_error "ad_creategroup"
+		scriptlet_error "ad_group_create"
 		return 2
 	fi
 }
 
-function ad_createcontainer () {
+function ad_container_create () {
 	local containername="$1"
 	local description="$2"
 	local position="$3"
@@ -406,7 +411,7 @@ import sys
 sys.path.append('$TESTLIBPATH')
 import s4connector
 adconnection = s4connector.S4Connection ('$configbase')
-adconnection.createcontainer ('$containername', description='$description', position='$position')
+adconnection.container_create ('$containername', description='$description', position='$position')
 sys.exit (42)
 "
 	local retval="$?"
@@ -414,7 +419,7 @@ sys.exit (42)
 		info "Container $containername created"
 		return 0
 	else
-		scriptlet_error "ad_createcontainer"
+		scriptlet_error "ad_container_create"
 		return 2
 	fi
 }
@@ -513,7 +518,7 @@ function ad_verify_multi_value_attribute_contains () {
 }
 
 function ad_get_primary_group () {
-	local userdn="$1"
+	local user_dn="$1"
 	local configbase="${2:-connector}"
 
 python2.6 -c "
@@ -521,7 +526,7 @@ import sys
 sys.path.append('$TESTLIBPATH')
 import s4connector
 adconnection = s4connector.S4Connection ('$configbase')
-group = adconnection.getprimarygroup ('$userdn')
+group = adconnection.getprimarygroup ('$user_dn')
 if group:
 	print group
 sys.exit (42)
@@ -536,8 +541,8 @@ sys.exit (42)
 }
 
 function ad_set_primary_group () {
-	local userdn="$1"
-	local groupdn="$2"
+	local user_dn="$1"
+	local group_dn="$2"
 	local configbase="${3:-connector}"
 
 python2.6 -c "
@@ -545,7 +550,7 @@ import sys
 sys.path.append('$TESTLIBPATH')
 import s4connector
 adconnection = s4connector.S4Connection ('$configbase')
-adconnection.setprimarygroup ('$userdn', '$groupdn')
+adconnection.setprimarygroup ('$user_dn', '$group_dn')
 sys.exit (42)
 "
 	local retval="$?"
@@ -558,14 +563,14 @@ sys.exit (42)
 }
 
 function ad_verify_user_primary_group_attribute () {
-	local primarygroupdn="$1"
-	local userdn="$2"
+	local primarygroup_dn="$1"
+	local user_dn="$2"
 	local configbase="${3:-connector}"
 
-	info "is $primarygroupdn the primary group of $userdn ?"
+	info "is $primarygroup_dn the primary group of $user_dn ?"
 
-	local actual_primarygroupdn
-	actual_primarygroupdn="$(ad_get_primary_group "$userdn" "$configbase")"
+	local actual_primarygroup_dn
+	actual_primarygroup_dn="$(ad_get_primary_group "$user_dn" "$configbase")"
 	local retval="$?"
 	if [ "$retval" != 0 ]; then
 		info "Unexpected return value ($retval) of ad_get_primary_group \
@@ -573,13 +578,28 @@ in ad_verify_user_primary_group_attribute"
 		return 2
 	fi
 
-	if [ "${actual_primarygroupdn,,}" = "${primarygroupdn,,}" ]; then
+	if [ "${actual_primarygroup_dn,,}" = "${primarygroup_dn,,}" ]; then
 		info "Yes."
 		return 0
 	else
-		info "No. \"$actual_primarygroupdn\" is."
+		info "No. \"$actual_primarygroup_dn\" is."
 		return 1
 	fi	
+}
+
+function ad_set_retry_rejected ()
+{
+	local retry=$1
+	local retry_old="$(ucr get connector/s4/retryrejected)"
+	if [ "$retry" != "$retry_old" ]; then
+		ucr set connector/s4/retryrejected="$retry"
+		invoke-rc.d univention-s4-connector restart
+		if ! ad_is_connector_running; then
+			# try again
+			sleep 3
+			invoke-rc.d univention-s4-connector restart
+		fi
+	fi
 }
 
 # vim:syntax=sh

@@ -50,7 +50,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 
 		self.create(newdn, attrs)
 
-	def creategroup(self, groupname, position=None, description=None):
+	def group_create(self, groupname, position=None, description=None):
 		if not position:
 			position = 'cn=groups,%s' % self.adldapbase
 
@@ -62,9 +62,9 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 
 		self.create('cn=%s,%s' % (groupname, position), attrs)
 
-	def getprimarygroup(self, userdn):
+	def getprimarygroup(self, user_dn):
 		try:
-			res = self.lo.search_ext_s(userdn, ldap.SCOPE_BASE, timeout=10)
+			res = self.lo.search_ext_s(user_dn, ldap.SCOPE_BASE, timeout=10)
 		except:
 			return None
 		primaryGroupID = res[0][1]['primaryGroupID'][0]
@@ -81,13 +81,13 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 			if re.search (regex, s4.decode_sid(r[1]['objectSid'][0])):
 				return r[0]
 
-	def setprimarygroup(self, userdn, groupdn):
-		res = self.lo.search_ext_s(groupdn, ldap.SCOPE_BASE, timeout=10)
+	def setprimarygroup(self, user_dn, group_dn):
+		res = self.lo.search_ext_s(group_dn, ldap.SCOPE_BASE, timeout=10)
 		import re
 		groupid = (re.search ('^(.*)-(.*?)$', s4.decode_sid (res[0][1]['objectSid'][0]))).group (2)
-		self.set_attribute (userdn, 'primaryGroupID', groupid)
+		self.set_attribute (user_dn, 'primaryGroupID', groupid)
 
-	def createcontainer(self, name, position=None, description=None):
+	def container_create(self, name, position=None, description=None):
 
 		if not position:
 			position = self.adldapbase

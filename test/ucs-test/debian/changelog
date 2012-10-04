@@ -1,3 +1,9 @@
+ucs-test (3.0.1-1) unstable; urgency=low
+
+  * Added S4 connector tests (Bug #25818)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Oct 2012 18:24:37 +0200
+
 ucs-test (3.0.0-10) unstable; urgency=low
 
   * Update copyright file (Bug #26440)

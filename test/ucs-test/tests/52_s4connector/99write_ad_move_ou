@@ -1,20 +1,20 @@
-#!/bin/bash
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check whether ou can be recursively moved on ad-side in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
 
-source "$TESTLIBPATH/base.lib"
-source "$TESTLIBPATH/udm.lib"
-source "$TESTLIBPATH/s4connector.lib"
+# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=28696
+exit 131
 
-if [ -z "$connector_s4_ldap_host" ]; then
-	warning "connector/s4/ldap/host is empty."
-	warning "Assuming that the Ad-Connector isn't configured."
-	warning "Skipping test."
-	exit 137
-fi
 
-TEST_BASIC=false
-INFO_LINE="Check whether ou can be recursively moved on ad-side in read-mode"
-TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
-TEST_PACKAGES="univention-config univention-s4-connector"
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
 
 #                 Ou3
 #                /
@@ -30,10 +30,13 @@ TEST_PACKAGES="univention-config univention-s4-connector"
 #                             \
 #                              Ou3
 
-OU1="$(randomchars)1"
-OU2="$(randomchars)2"
-OU3="$(randomchars)3"
-UDM_users_user_username="$(randomchars)"
+RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+ad_set_retry_rejected 2
+
+OU1="$(random_chars)1"
+OU2="$(random_chars)2"
+OU3="$(random_chars)3"
+UDM_users_user_username="$(random_chars)"
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
@@ -44,71 +47,66 @@ ad_createou "$OU1" || fail_test 110
 ad_createou "$OU2" || fail_test 110
 ad_createou "$OU3" "" "OU=$OU1,$(ad_get_base)" || fail_test 110
 ad_createuser "$UDM_users_user_username" "" "OU=$OU1,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 UDM_container_ou_name="$OU1"
-udm_exists "container/ou"; check_bool 0 110
-ad_exists "OU=$OU1,$(ad_get_base)"; check_bool 0 110
+udm_exists "container/ou"; fail_bool 0 110
+ad_exists "OU=$OU1,$(ad_get_base)"; fail_bool 0 110
 UDM_container_ou_name="$OU2"
-udm_exists "container/ou"; check_bool 0 110
-ad_exists "OU=$OU2,$(ad_get_base)"; check_bool 0 110
+udm_exists "container/ou"; fail_bool 0 110
+ad_exists "OU=$OU2,$(ad_get_base)"; fail_bool 0 110
 UDM_container_ou_name="$OU3"
-udm_exists "container/ou" "" "" "ou=$OU1,$ldap_base"; check_bool 0 110
-ad_exists "OU=$OU3,OU=$OU1,$(ad_get_base)"; check_bool 0 110
-udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; check_bool 0 110
+udm_exists "container/ou" "" "" "ou=$OU1,$ldap_base"; fail_bool 0 110
+ad_exists "OU=$OU3,OU=$OU1,$(ad_get_base)"; fail_bool 0 110
+udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; fail_bool 0 110
 
 section "Move $OU1 into $OU2"
 
 ad_set_sync_mode "write"
 
 ad_move "OU=$OU1,$(ad_get_base)" "OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 UDM_container_ou_name="$OU1"
-udm_exists "container/ou"; check_bool 0 110
+udm_exists "container/ou"; fail_bool 0 110
 UDM_container_ou_name="$OU2"
-udm_exists "container/ou"; check_bool 0 110
+udm_exists "container/ou"; fail_bool 0 110
 UDM_container_ou_name="$OU3"
-udm_exists "container/ou" "" "" "ou=$OU1,$ldap_base"; check_bool 0 110
-udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; check_bool 0 110
+udm_exists "container/ou" "" "" "ou=$OU1,$ldap_base"; fail_bool 0 110
+udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; fail_bool 0 110
 
-ad_exists "OU=$OU1,$(ad_get_base)"; check_bool 1 110
+ad_exists "OU=$OU1,$(ad_get_base)"; fail_bool 1 110
 
-ad_exists "OU=$OU2,$(ad_get_base)"; check_bool 0 110
-ad_exists "OU=$OU1,OU=$OU2,$(ad_get_base)"; check_bool 0 110
-ad_exists "OU=$OU3,OU=$OU1,OU=$OU2,$(ad_get_base)"; check_bool 0 110
-ad_exists "CN=$UDM_users_user_username,OU=$OU1,OU=$OU2,$(ad_get_base)"; check_bool 0 110
+ad_exists "OU=$OU2,$(ad_get_base)"; fail_bool 0 110
+ad_exists "OU=$OU1,OU=$OU2,$(ad_get_base)"; fail_bool 0 110
+ad_exists "OU=$OU3,OU=$OU1,OU=$OU2,$(ad_get_base)"; fail_bool 0 110
+ad_exists "CN=$UDM_users_user_username,OU=$OU1,OU=$OU2,$(ad_get_base)"; fail_bool 0 110
 
 section "Clean up"
 
 ad_delete "CN=$UDM_users_user_username,OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 ad_delete "OU=$OU3,OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 ad_delete "OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 ad_delete "OU=$OU2,$(ad_get_base)" || fail_test 110
-
-udm_remove "users/user" "" "" "ou=$OU1,$ldap_base" || fail_test 110
-UDM_container_ou_name="$OU3"
-udm_remove "container/ou" "" "" "ou=$OU1,$ldap_base" || fail_test 110
-UDM_container_ou_name="$OU1"
-udm_remove "container/ou" || fail_test 110
-UDM_container_ou_name="$OU2"
-udm_remove "container/ou" || fail_test 110
-
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 UDM_container_ou_name="$OU1"
-udm_exists "container/ou"; check_bool 1 110
+udm_exists "container/ou"; fail_bool 1 110
 UDM_container_ou_name="$OU2"
-udm_exists "container/ou"; check_bool 1 110
+udm_exists "container/ou"; fail_bool 1 110
 UDM_container_ou_name="$OU3"
-udm_exists "container/ou" "" "" "ou=$OU1,$ldap_base"; check_bool 1 110
-udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; check_bool 1 110
+udm_exists "container/ou" "" "" "ou=$OU1,$ldap_base"; fail_bool 1 110
+udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; fail_bool 1 110
 
-ad_exists "OU=$OU2,$(ad_get_base)"; check_bool 1 110
-ad_exists "OU=$OU1,OU=$OU2,$(ad_get_base)"; check_bool 1 110
-ad_exists "OU=$OU3,OU=$OU1,OU=$OU2,$(ad_get_base)"; check_bool 1 110
-ad_exists "CN=$UDM_users_user_username,OU=$OU1,OU=$OU2,$(ad_get_base)"; check_bool 1 110
+ad_exists "OU=$OU2,$(ad_get_base)"; fail_bool 1 110
+ad_exists "OU=$OU1,OU=$OU2,$(ad_get_base)"; fail_bool 1 110
+ad_exists "OU=$OU3,OU=$OU1,OU=$OU2,$(ad_get_base)"; fail_bool 1 110
+ad_exists "CN=$UDM_users_user_username,OU=$OU1,OU=$OU2,$(ad_get_base)"; fail_bool 1 110
 
+ad_set_retry_rejected "$RETRYREJECTED"
 ad_set_sync_mode "$SYNCMODE"
 
 exit "$RETVAL"

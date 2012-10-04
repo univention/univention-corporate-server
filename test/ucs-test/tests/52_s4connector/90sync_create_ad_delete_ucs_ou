@@ -1,23 +1,20 @@
-#!/bin/bash
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create an AD-Ou and remove the corresponding UCS-Ou in sync mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
 
-source "$TESTLIBPATH/base.lib"
-source "$TESTLIBPATH/udm.lib"
-source "$TESTLIBPATH/s4connector.lib"
 
-if [ -z "$connector_s4_ldap_host" ]; then
-	warning "connector/s4/ldap/host is empty."
-	warning "Assuming that the Ad-Connector isn't configured."
-	warning "Skipping test."
-	exit 137
-fi
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
 
-TEST_BASIC=false
-INFO_LINE="Create an AD-Ou and remove the corresponding UCS-Ou in sync mode"
-TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
-TEST_PACKAGES="univention-config univention-s4-connector"
 
-UDM_container_ou_name="$(randomchars)"
-UDM_container_ou_description="$(randomchars)"
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+
+UDM_container_ou_name="$(random_chars)"
+UDM_container_ou_description="$(random_chars)"
 AD_CONTAINER_DN="OU=$UDM_container_ou_name,$(ad_get_base)"
 
 SYNCMODE="$(ad_get_sync_mode)"
@@ -25,16 +22,16 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 ad_createou "$UDM_container_ou_name" "$UDM_container_ou_description" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-ad_exists "$AD_CONTAINER_DN"; check_bool 0 110
-udm_exists "container/ou"; check_bool 0 110
+ad_exists "$AD_CONTAINER_DN"; fail_bool 0 110
+udm_exists "container/ou"; fail_bool 0 110
 
 udm_remove "container/ou" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-udm_exists "container/ou"; check_bool 1 110
-ad_exists "$AD_CONTAINER_DN"; check_bool 1 110
+udm_exists "container/ou"; fail_bool 1 110
+ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
 
 ad_set_sync_mode "$SYNCMODE"
 

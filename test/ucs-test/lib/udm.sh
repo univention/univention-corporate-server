@@ -1,6 +1,7 @@
 #!/bin/bash
-source "$TESTLIBPATH/base.lib" || exit 140
-source "$TESTLIBPATH/ldap.lib" || exit 140
+
+. "$TESTLIBPATH/base.sh" || exit 140
+. "$TESTLIBPATH/ldap.sh" || exit 140
 
 UDM_ALL_COMPUTER_ROLES="computers/domaincontroller_backup
 computers/domaincontroller_master
@@ -11,9 +12,11 @@ computers/managedclient
 computers/memberserver
 computers/mobileclient
 computers/thinclient
+computers/linux
+computers/ubuntu
 computers/windows"
 
-function udm_get_identifier_attribute () {
+udm_get_identifier_attribute () {
 	local module="$1"
 
 	case "$module" in
@@ -44,7 +47,7 @@ function udm_get_identifier_attribute () {
 	esac
 }
 
-function udm_get_ldap_identifier_qualifier () {
+udm_get_ldap_identifier_qualifier () {
 	local module="$1"
 
 	case "$module" in #This is probably not complete
@@ -69,7 +72,7 @@ function udm_get_ldap_identifier_qualifier () {
 	esac
 }
 
-function udm_get_udm_filter_qualifier () {
+udm_get_udm_filter_qualifier () {
 	local module="$1"
 
 	case "$module" in #This is probably not complete
@@ -79,7 +82,7 @@ function udm_get_udm_filter_qualifier () {
 	esac
 }
 
-function udm_get_ldap_prefix () {
+udm_get_ldap_prefix () {
 	local module="$1"
 
 	case "$module" in #This is probably not complete
@@ -116,7 +119,7 @@ function udm_get_ldap_prefix () {
 	esac
 }
 
-function udm_get_module_variable_prefix () {
+udm_get_module_variable_prefix () {
 	local module="$1"
 
 	module="${module//\//_}"
@@ -125,7 +128,7 @@ function udm_get_module_variable_prefix () {
 	echo "UDM_${module}_"
 }
 
-function udm_get_identifier_value () {
+udm_get_identifier_value () {
 	local module="$1"
 	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
 
@@ -136,7 +139,7 @@ function udm_get_identifier_value () {
 	echo "$a"
 }
 
-function udm_get_attribute_list () {
+udm_get_attribute_list () {
 	local module="$1"
 
 	local attributelist=
@@ -149,7 +152,7 @@ function udm_get_attribute_list () {
 	echo "$attributelist"
 }
 
-function udm_get_required_attribute_list () {
+udm_get_required_attribute_list () {
 	local module="$1"
 
 	local attributelist=
@@ -162,7 +165,7 @@ function udm_get_required_attribute_list () {
 	echo "$attributelist"
 }
 
-function udm_reset_params () {
+udm_reset_params () {
 	local module="$1"
 	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
 
@@ -171,7 +174,12 @@ function udm_reset_params () {
 	done
 }
 
-function udm_exists () {
+log_and_eval_execute () {
+	info "EXECUTING: $*"
+	eval "$@"
+}
+
+udm_exists () {
 	local module="$1"
 	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
 	local superordinate="$3"
@@ -189,7 +197,7 @@ function udm_exists () {
 		cmd+=" | egrep '^DN: $(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base$'"
 	fi
 
-	if log_and_execute $cmd; then
+	if log_and_eval_execute $cmd; then
 		info "$module object $objectname exists"
 		return 0
 	else
@@ -198,7 +206,7 @@ function udm_exists () {
 	fi
 }
 
-function udm_create () {
+udm_create () {
 	local module="$1"
 	shift
 	local variableprefix="${1:-$(udm_get_module_variable_prefix "$module")}"
@@ -229,7 +237,7 @@ function udm_create () {
 		fi
 	done
 
-	if log_and_execute $cmd $params $@; then
+	if log_and_eval_execute $cmd $params $@; then
 		info "created $module object $objectname"
 		return 0
 	else
@@ -238,7 +246,7 @@ function udm_create () {
 	fi
 }
 
-function udm_modify () {
+udm_modify () {
 	local module="$1"
 	shift
 	local variableprefix="${1:-$(udm_get_module_variable_prefix "$module")}"
@@ -260,7 +268,7 @@ function udm_modify () {
 		cmd+=" --dn \"$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base\""
 	fi
 
-	if log_and_execute $cmd $@; then
+	if log_and_eval_execute $cmd $@; then
 		info "$module object $objectname modified"
 		return 0
 	else
@@ -269,7 +277,7 @@ function udm_modify () {
 	fi
 }
 
-function udm_remove () {
+udm_remove () {
 	local module="$1"
 	shift
 	local variableprefix="${1:-$(udm_get_module_variable_prefix "$module")}"
@@ -291,7 +299,7 @@ function udm_remove () {
 		cmd+=" --dn \"$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base\""
 	fi
 
-	if log_and_execute $cmd $@; then
+	if log_and_eval_execute $cmd $@; then
 		info "removed $module object $objectname"
 		return 0
 	else
@@ -300,7 +308,7 @@ function udm_remove () {
 	fi
 }
 
-function udm_ldap_remove () {
+udm_ldap_remove () {
 	local module="$1"
 	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
 	local superordinate="$3"
@@ -314,7 +322,7 @@ function udm_ldap_remove () {
 	fi
 }
 
-function udm_purge () {
+udm_purge () {
 	local module="$1"
 	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
 	local superordinate="$3"
@@ -331,7 +339,7 @@ function udm_purge () {
 	fi
 }
 
-function udm_get_required_module_attributes () {
+udm_get_required_module_attributes () {
 	local module="$1"
 
 	let local linecount="$(univention-directory-manager "$module" | wc -l)"
@@ -355,7 +363,7 @@ function udm_get_required_module_attributes () {
 		| sed "s/ .*$//"
 }
 
-function udm_get_plain_module_attributes () {
+udm_get_plain_module_attributes () {
 	local module="$1"
 
 	let local linecount="$(univention-directory-manager "$module" | wc -l)"                                                             
@@ -379,7 +387,7 @@ function udm_get_plain_module_attributes () {
 
 }
 
-function udm_get_tab_entries () {
+udm_get_tab_entries () {
 	local module="$1"
 	local tabname="$2"
 
@@ -400,7 +408,7 @@ function udm_get_tab_entries () {
 		| sed "s/^ *//"
 }
 
-function udm_get_ldap_attribute () {
+udm_get_ldap_attribute () {
 	local attributename="$1"
 	local module="$2"
 	local variableprefix="${3:-$(udm_get_module_variable_prefix "$module")}"
@@ -414,14 +422,14 @@ function udm_get_ldap_attribute () {
 		local branch="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,$(udm_get_ldap_prefix "$module")$ldap_base"
 	fi
 
-	log_and_execute "ldapsearch -xLLL -D 'cn=admin,$ldap_base' -w '`cat /etc/ldap.secret`' -b '$branch' \
+	log_and_eval_execute "ldapsearch -xLLL -D 'cn=admin,$ldap_base' -w '`cat /etc/ldap.secret`' -b '$branch' \
 		'$attributename' \
 		| grep '^$attributename' \
 		| sed 's/^${attributename}\;//' \
 		| sed 's/^${attributename}\: //'"
 }
 
-function udm_has_object_class () {
+udm_has_object_class () {
 	local objectclass="$1"
 	local module="$2"
 	local variableprefix="${3:-$(udm_get_module_variable_prefix "$module")}"
@@ -444,7 +452,7 @@ function udm_has_object_class () {
 	return 1
 }
 
-function udm_verify_ldap_attribute () {
+udm_verify_ldap_attribute () {
 	local attribute="$1"
 	local expected_value="$2"
 	local module="$3"
@@ -457,7 +465,7 @@ function udm_verify_ldap_attribute () {
 	verify_value "$attribute" "$value" "$expected_value"
 }
 
-function udm_verify_ldap_attributes () {
+udm_verify_ldap_attributes () {
 	local module="$1"
 	shift
 	local variableprefix="${1:-$(udm_get_module_variable_prefix "$module")}"
@@ -486,7 +494,7 @@ function udm_verify_ldap_attributes () {
 	return 0
 }
 
-function udm_get_udm_attribute () {
+udm_get_udm_attribute () {
 	local attribute="$1"
 	local module="$2"
 	local variableprefix="${3:-$(udm_get_module_variable_prefix "$module")}"
@@ -500,10 +508,10 @@ function udm_get_udm_attribute () {
 	fi
 	cmd+=" --filter \"$(udm_get_udm_filter_qualifier "$module")=$objectname\" | egrep '^ *${attribute}: ' | sed 's/^ *${attribute}: //'"
 
-	log_and_execute $cmd
+	log_and_eval_execute $cmd
 }
 
-function udm_verify_udm_attribute () {
+udm_verify_udm_attribute () {
 	local attribute="$1"
 	local expected_value="$2"
 	local module="$3"
@@ -517,7 +525,7 @@ function udm_verify_udm_attribute () {
 	verify_value "$attribute" "$value" "$expected_value"
 }
 
-function udm_verify_multi_value_udm_attribute_contains () {
+udm_verify_multi_value_udm_attribute_contains () {
 	local attribute="$1"
 	local expected_value="$2"
 	local module="$3"
@@ -531,7 +539,7 @@ function udm_verify_multi_value_udm_attribute_contains () {
 	verify_value_contains_line "$attribute" "$value" "$expected_value"
 }
 
-function udm_verify_udm_attributes () {
+udm_verify_udm_attributes () {
 	local module="$1"
 	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
 	local superordinate="$3"
@@ -551,7 +559,7 @@ function udm_verify_udm_attributes () {
 	return 0
 }
 
-function udm_check_required_singlevalue_attribute () {
+udm_check_required_singlevalue_attribute () {
 	local attribute="$1"
 	local value1="$2"
 	local value2="$3"
@@ -594,7 +602,7 @@ function udm_check_required_singlevalue_attribute () {
 	return 0
 }
 
-function udm_check_singlevalue_attribute () {
+udm_check_singlevalue_attribute () {
 	local attribute="$1"
 	local value1="$2"
 	local value2="$3"
@@ -623,7 +631,7 @@ function udm_check_singlevalue_attribute () {
 	return 0
 }
 
-function udm_check_multivalue_attribute () {
+udm_check_multivalue_attribute () {
 	local attribute="$1"
 	local value1="$2"
 	local value2="$3"
@@ -680,7 +688,7 @@ $value3"
 	return 0
 }
 
-function udm_check_flag_attribute () {
+udm_check_flag_attribute () {
 	local attribute="$1"
 	local module="$2"
 	local variableprefix="$3"
@@ -693,7 +701,7 @@ function udm_check_flag_attribute () {
 	return $?
 }
 
-function udm_check_syntax_for_attribute () {
+udm_check_syntax_for_attribute () {
 	local attribute="$1"
 	local valid1="$2"
 	local valid2="$3"
@@ -756,7 +764,7 @@ function udm_check_syntax_for_attribute () {
 	return 0
 }
 
-function udm_kill_univention_cli_server () {
+udm_kill_univention_cli_server () {
 	local pids="$(ps ax | grep "univention-cli-server" | grep "python" | sed "s/ *//" | sed "s/ .*//")"
 	for pid in $pids; do
 		info "Killing univention-cli-server with pid $pid"
@@ -766,7 +774,7 @@ function udm_kill_univention_cli_server () {
 
 _UDM_HOOK_FOLDER="/usr/lib/python2.6/site-packages/univention/admin/hooks.d"
 _UDM_HOOK_NAME="ucs_test_hook.py"
-function udm_extended_attribute_install_hook () {
+udm_extended_attribute_install_hook () {
 	local hook="$1"
 	local hookname="${2:-$_UDM_HOOK_NAME}"
 	local hookfolder="${3:-$_UDM_HOOK_FOLDER}"
@@ -777,7 +785,7 @@ function udm_extended_attribute_install_hook () {
 	udm_kill_univention_cli_server
 }
 
-function udm_extended_attribute_uninstall_hook () {
+udm_extended_attribute_uninstall_hook () {
 	local hookname="${1:-$_UDM_HOOK_NAME}"
 	local hookfolder="${2:-$_UDM_HOOK_FOLDER}"
 

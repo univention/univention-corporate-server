@@ -1,34 +1,31 @@
-#!/bin/bash
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check whether the Container-Ignore-Subtree is respected on ad-side in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
 
-source "$TESTLIBPATH/base.lib"
-source "$TESTLIBPATH/udm.lib"
-source "$TESTLIBPATH/s4connector.lib"
 
-if [ -z "$connector_s4_ldap_host" ]; then
-	warning "connector/s4/ldap/host is empty."
-	warning "Assuming that the Ad-Connector isn't configured."
-	warning "Skipping test."
-	exit 137
-fi
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
 
-TEST_BASIC=false
-INFO_LINE="Check whether the Container-Ignore-Subtree is respected on ad-side in write-mode"
-TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
-TEST_PACKAGES="univention-config univention-s4-connector"
 
-CONTAINER1="$(randomchars)"
-CONTAINER2="$(randomchars)"
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+
+CONTAINER1="$(random_chars)"
+CONTAINER2="$(random_chars)"
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 UDM_container_cn_name="$CONTAINER1"
 AD_CONTAINER_DN="CN=$UDM_container_cn_name,$(ad_get_base)"
-ad_createcontainer "$CONTAINER1" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_container_create "$CONTAINER1" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-udm_exists "container/cn"; check_bool 0 110
-ad_exists "$AD_CONTAINER_DN"; check_bool 0 110
+udm_exists "container/cn"; fail_bool 0 110
+ad_exists "$AD_CONTAINER_DN"; fail_bool 0 110
 
 section "Modify Container-Ignore-Subtree"
 
@@ -45,19 +42,19 @@ section "Create container"
 UDM_container_cn_name="$CONTAINER2"
 AD_CONTAINER_DN="CN=$UDM_container_cn_name,CN=$CONTAINER1,$(ad_get_base)"
 
-ad_createcontainer "$CONTAINER2" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_container_create "$CONTAINER2" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-ad_exists "$AD_CONTAINER_DN"; check_bool 0 110
-udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; check_bool 1 110
+ad_exists "$AD_CONTAINER_DN"; fail_bool 0 110
+udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 1 110
 
 section "Clean up"
 
 ad_delete "$AD_CONTAINER_DN" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-ad_exists "$AD_CONTAINER_DN"; check_bool 1 110
-udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; check_bool 1 110
+ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
+udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 1 110
 
 invoke-rc.d univention-s4-connector stop
 mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
@@ -67,9 +64,9 @@ invoke-rc.d univention-s4-connector start
 UDM_container_cn_name="$CONTAINER1"
 AD_CONTAINER_DN="CN=$UDM_container_cn_name,$(ad_get_base)"
 ad_delete "$AD_CONTAINER_DN" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-ad_exists "$AD_CONTAINER_DN"; check_bool 1 110
-udm_exists  "container/cn"; check_bool 1 110
+ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
+udm_exists  "container/cn"; fail_bool 1 110
 
 exit "$RETVAL"

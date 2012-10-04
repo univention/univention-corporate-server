@@ -1,20 +1,23 @@
-#!/bin/bash
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check whether container can be recursively removed on ad-side in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 28698
+## versions:
+##  3.0-0: skip
 
-source "$TESTLIBPATH/base.lib"
-source "$TESTLIBPATH/udm.lib"
-source "$TESTLIBPATH/s4connector.lib"
+# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=28696
+exit 131
 
-if [ -z "$connector_s4_ldap_host" ]; then
-	warning "connector/s4/ldap/host is empty."
-	warning "Assuming that the Ad-Connector isn't configured."
-	warning "Skipping test."
-	exit 137
-fi
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
 
-TEST_BASIC=false
-INFO_LINE="Check whether container can be recursively removed on ad-side in sync-mode"
-TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
-TEST_PACKAGES="univention-config univention-s4-connector"
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
 
 #                 Container3
 #                /
@@ -26,41 +29,45 @@ TEST_PACKAGES="univention-config univention-s4-connector"
 
 # Base
 
-CONTAINER1="$(randomchars)1"
-CONTAINER3="$(randomchars)3"
-UDM_users_user_username="$(randomchars)"
+RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+ad_set_retry_rejected 2
+
+CONTAINER1="$(random_chars)1"
+CONTAINER3="$(random_chars)3"
+UDM_users_user_username="$(random_chars)"
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 section "Create initial Tree structure"
 
-ad_createcontainer "$CONTAINER1" || fail_test 110
-ad_createcontainer "$CONTAINER3" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
+ad_container_create "$CONTAINER1" || fail_test 110
+ad_container_create "$CONTAINER3" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
 ad_createuser "$UDM_users_user_username" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
 
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 UDM_container_cn_name="$CONTAINER1"
-udm_exists "container/cn"; check_bool 0 110
+udm_exists "container/cn"; fail_bool 0 110
 UDM_container_cn_name="$CONTAINER3"
-udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; check_bool 0 110
-udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base"; check_bool 0 110
+udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
+udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
 
-ad_exists "CN=$CONTAINER1,$(ad_get_base)"; check_bool 0 110
-ad_exists "CN=$CONTAINER3,CN=$CONTAINER1,$(ad_get_base)"; check_bool 0 110
-ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER1,$(ad_get_base)"; check_bool 0 110
+ad_exists "CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
+ad_exists "CN=$CONTAINER3,CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
+ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
 
 section "Recursively remove $CONTAINER1"
 
 ad_delete "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
 
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 UDM_container_cn_name="$CONTAINER1"
-udm_exists "container/cn"; check_bool 1 110
-ad_exists "CN=$CONTAINER1,$(ad_get_base)"; check_bool 1 110
+udm_exists "container/cn"; fail_bool 1 110
+ad_exists "CN=$CONTAINER1,$(ad_get_base)"; fail_bool 1 110
 
+ad_set_retry_rejected "$RETRYREJECTED"
 ad_set_sync_mode "$SYNCMODE"
 
 exit "$RETVAL"

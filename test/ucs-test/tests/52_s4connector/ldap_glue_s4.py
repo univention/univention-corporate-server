@@ -42,11 +42,12 @@ class LDAPConnection:
 		if no_starttls:
 			use_starttls = 0
 
-		fp = open(self.pw_file,'r')
-		login_pw = fp.readline()
-		if login_pw[-1] == '\n':
-			login_pw = login_pw[:-1]
-		fp.close()
+		if self.pw_file:
+			fp = open(self.pw_file,'r')
+			login_pw = fp.readline()
+			if login_pw[-1] == '\n':
+				login_pw = login_pw[:-1]
+			fp.close()
 
 		try:
 			tls_mode = 2

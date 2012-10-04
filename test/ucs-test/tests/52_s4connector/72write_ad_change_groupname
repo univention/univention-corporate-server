@@ -1,23 +1,20 @@
-#!/bin/bash
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create an AD-Group and change its name in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
 
-source "$TESTLIBPATH/base.lib"
-source "$TESTLIBPATH/udm.lib"
-source "$TESTLIBPATH/s4connector.lib"
 
-if [ -z "$connector_s4_ldap_host" ]; then
-	warning "connector/s4/ldap/host is empty."
-	warning "Assuming that the Ad-Connector isn't configured."
-	warning "Skipping test."
-	exit 137
-fi
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
 
-TEST_BASIC=false
-INFO_LINE="Create an AD-Group and change its name in write-mode"
-TEST_SERVER_ROLE="domaincontroller_master domaincontroller_backup"
-TEST_PACKAGES="univention-config univention-s4-connector"
 
-UDM_users_user_username="$(randomchars)"
-UDM_groups_group_name="$(randomchars)"
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+
+UDM_users_user_username="$(random_chars)"
+UDM_groups_group_name="$(random_chars)"
 AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
 AD_GROUP_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
 
@@ -25,43 +22,43 @@ SYNCMODE="$(ad_get_sync_mode)"
 
 ad_set_sync_mode "write"
 
-ad_creategroup "$UDM_groups_group_name" || fail_test 110
+ad_group_create "$UDM_groups_group_name" || fail_test 110
 ad_createuser "$UDM_users_user_username" || fail_test 110
 ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-ad_exists "$AD_GROUP_DN"; check_bool 0 110
-udm_exists "groups/group"; check_bool 1 110
-ad_exists "$AD_USER_DN"; check_bool 0 110
-udm_exists "users/user"; check_bool 1 110
+ad_exists "$AD_GROUP_DN"; fail_bool 0 110
+udm_exists "groups/group"; fail_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+udm_exists "users/user"; fail_bool 1 110
 
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; check_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
 
 section "Rename group"
 
-OTHER_GROUP_NAME="$(randomchars)other"
+OTHER_GROUP_NAME="$(random_chars)other"
 ad_set_attribute "$AD_GROUP_DN" "sAMAccountName" "$OTHER_GROUP_NAME" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-udm_exists "groups/group"; check_bool 1 110
+udm_exists "groups/group"; fail_bool 1 110
 UDM_groups_group_name="$OTHER_GROUP_NAME"
-udm_exists "groups/group"; check_bool 1 110
-udm_exists "users/user"; check_bool 1 110
+udm_exists "groups/group"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
 
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; check_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; check_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
 
 section "Clean up"
 
 ad_delete "$AD_USER_DN" || fail_test 110
 ad_delete "$AD_GROUP_DN" || fail_test 110
-ad_wait_for_synchronization; check_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
-udm_exists "groups/group"; check_bool 1 110
-ad_exists "$AD_GROUP_DN"; check_bool 1 110
-udm_exists "users/user"; check_bool 1 110
-ad_exists "$AD_USER_DN"; check_bool 1 110
+udm_exists "groups/group"; fail_bool 1 110
+ad_exists "$AD_GROUP_DN"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 1 110
 
 ad_set_sync_mode "$SYNCMODE"
 
