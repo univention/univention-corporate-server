@@ -414,9 +414,6 @@ define([
 						attribute: 'name',
 						ignoreCase: true
 					}));
-					array.forEach(this._applications, function(iapp) {
-						console.log(iapp.id, ': update=', iapp.can_update);
-					});
 					return this._applications;
 				}));
 			}

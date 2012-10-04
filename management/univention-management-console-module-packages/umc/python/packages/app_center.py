@@ -291,11 +291,9 @@ class Application(object):
 	def to_dict_overwiew(self, package_manager):
 		res = copy.copy(self._options)
 		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
-		res['can_be_installed'] = self.can_be_installed(package_manager)
-
-		# check whether an older app version has been registered as component
-		# in that case we can indicate an update for the app
-		res['can_update'] = self.can_be_updated()
+		cannot_install_reason, cannot_install_reason_detail = self.cannot_install_reason(package_manager)
+		res['can_update'] = self.can_be_updated() and cannot_install_reason in ('installed', None)
+		res['can_install'] = cannot_install_reason is None
 		return res
 
 	def can_be_updated(self):
@@ -337,7 +335,7 @@ class Application(object):
 		res = copy.copy(self._options)
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
-		can_be_updated = res['can_update'] = self.can_be_updated() and cannot_install_reason in ('installed', None)
+		res['can_update'] = self.can_be_updated() and cannot_install_reason in ('installed', None)
 		res['can_install'] = cannot_install_reason is None
 		res['can_uninstall'] = cannot_install_reason == 'installed'
 		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
