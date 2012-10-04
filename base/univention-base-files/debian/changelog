@@ -1,3 +1,9 @@
+univention-base-files (2.0.10-1) unstable; urgency=low
+
+  * try/except ldapsearch in nfsmounts (Bug #28194) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 14:13:30 +0200
+
 univention-base-files (2.0.9-2) unstable; urgency=low
 
   * Restart interfaces on all changes (Bug #26058)

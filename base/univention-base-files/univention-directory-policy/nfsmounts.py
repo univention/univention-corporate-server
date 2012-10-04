@@ -167,7 +167,15 @@ def main():
 			debug('no dn, skipping\n')
 			continue
 
-		result = lo.lo.search_s(dn, ldap.SCOPE_SUBTREE, 'objectclass=*', attrlist=['univentionShareHost', 'univentionSharePath'])
+		try:
+			result = lo.lo.search_s(
+				dn,
+				ldap.SCOPE_SUBTREE,
+				'objectclass=*',
+				attrlist=['univentionShareHost', 'univentionSharePath'])
+		except ldap.NO_SUCH_OBJECT:
+			continue
+
 		try:
 			attributes = result[0][1]
 			share_host = attributes['univentionShareHost'][0]
