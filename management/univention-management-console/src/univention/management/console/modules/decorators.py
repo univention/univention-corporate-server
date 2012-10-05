@@ -58,7 +58,7 @@ import copy
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 
-from ..modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+from ..modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_OptionSanitizeError
 from ..log import MODULE
 
 from sanitizers import MultiValidationError, ValidationError, DictSanitizer, ListSanitizer
@@ -173,12 +173,7 @@ def _sanitize(function, sanitizer):
 				multi_error.add_error(e, options_name)
 				raise multi_error
 		except MultiValidationError as e:
-			# raise UMC_OptionTypeError(str(e))
-			# self.finished(request.id, {'name' : e.name, 'value' : e.value}, message=str(e), success=False, status=BAD_REQUEST)
-			# FIXME dont use 201 for that, but cherrypy accepts result only
-			# for status 200 - 299. I'd like to have 400 Bad Request
-			self.finished(request.id, e.result(), message=str(e), status=201)
-			return
+			raise UMC_OptionSanitizeError(str(e), e.result())
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response

@@ -143,7 +143,7 @@ class UMC_OptionTypeError( UMC_Error ):
 	pass
 
 class UMC_OptionSanitizeError( UMC_OptionTypeError ):
-	def __init__(self, message = None, body = None):
+	def __init__( self, message, body = None ):
 		self.message = message
 		self.body = body
 
@@ -205,9 +205,7 @@ class Base( signals.Provider, Translation ):
 			return
 		except UMC_OptionSanitizeError, e:
 			status = 409 # Conflict
-			message = _(  'An option passed to %s has the wrong type: %s' ) % ( method, str( e ) )
-			if e.message:
-				message = e.message
+			message = e.message
 			result = e.body
 		except UMC_OptionTypeError, e:
 			status = BAD_REQUEST

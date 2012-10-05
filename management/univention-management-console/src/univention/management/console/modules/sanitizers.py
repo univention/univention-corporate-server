@@ -363,7 +363,8 @@ class IntegerSanitizer(Sanitizer):
 class SearchSanitizer(Sanitizer):
 	''' Baseclass for other Sanitizers that are used for a simple search.
 	That means that everything is escaped except for asterisks that are
-	considered as wildcards for any number of characters.
+	considered as wildcards for any number of characters. (If
+	:attr:`~SearchSanitizer.use_asterisks` is True, which is default)
 
 	Handles adding of asterisks and and some simple sanity checks.
 	Real logic is done in a to-be-overridden method named
@@ -372,20 +373,42 @@ class SearchSanitizer(Sanitizer):
 	Currently used for :class:`~LDAPSearchSanitizer` and
 	:class:`~PatternSanitizer`.
 
+	Like the Baseclass of all Sanitizers, it accepts only keyword-arguments
+	(derived classes may vary). You may specify the same as in the Baseclass
+	plus:
+
 	:param bool add_asterisks: add asterisks at the beginning and the end
-	  of the value if needed.
-	  "string" -> "\*string*", "" -> "*", "string*" -> "string*"
+	  of the value if needed. Examples:
+	  
+	    * "string" -> "\*string*"
+	    * "" -> "*"
+	    * "string*" -> "string*"
+
+	  Default: True
 	:param int max_number_of_asterisks: An error will be raised if
 	  the number of * in the string exceeds this limit. Useful because
 	  searching with too many of these patterns in a search query
 	  can be very expensive. Note that * from
 	  :attr:`~SearchSanitizer.add_asterisks` do count. *None* means an
-	  arbitrary number is allowed.
+	  arbitrary number is allowed. Default: 5
+	:param bool use_asterisks: treat asterisks special, i.e. as a
+	  substring of arbitrary length. If *False*, it will be escaped as
+	  any other character. If *False* the defaults change:
+
+	    * :attr:`~SearchSanitizer.add_asterisks` to *False*
+	    * :attr:`~SearchSanitizer.max_number_of_asterisks` to *None*.
+	  
+	  Default: True
 	'''
-	def __init__(self, add_asterisks=True, max_number_of_asterisks=5, **kwargs):
+	def __init__(self, **kwargs):
+		self.use_asterisks = kwargs.get('use_asterisks', True)
+		if self.use_asterisks:
+			self.add_asterisks = kwargs.get('add_asterisks', True)
+			self.max_number_of_asterisks = kwargs.get('max_number_of_asterisks', 5)
+		else:
+			self.add_asterisks = kwargs.get('add_asterisks', False)
+			self.max_number_of_asterisks = kwargs.get('max_number_of_asterisks', None)
 		super(SearchSanitizer, self).__init__(**kwargs)
-		self.add_asterisks = add_asterisks
-		self.max_number_of_asterisks = max_number_of_asterisks
 
 	def _escape_and_return(self, value):
 		return value
@@ -394,7 +417,8 @@ class SearchSanitizer(Sanitizer):
 		if value is None:
 			value = ''
 		value = str(value)
-		value = re.sub(r'\*+', '*', value)
+		if self.use_asterisks:
+			value = re.sub(r'\*+', '*', value)
 		if self.add_asterisks and '*' not in value:
 			if not value.startswith('*'):
 				value = '*%s' % value
@@ -413,7 +437,8 @@ class LDAPSearchSanitizer(SearchSanitizer):
 	'''
 	def _escape_and_return(self, value):
 		value = ldap.filter.escape_filter_chars(value)
-		value = value.replace(r'\2a', '*')
+		if self.use_asterisks:
+			value = value.replace(r'\2a', '*')
 		return value
 
 class PatternSanitizer(SearchSanitizer):
@@ -439,7 +464,7 @@ class PatternSanitizer(SearchSanitizer):
 	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
 	  to search case insensitive.
 	'''
-	def __init__(self, add_asterisks=True, max_number_of_asterisks=5, ignore_case=True, **kwargs):
+	def __init__(self, ignore_case=True, **kwargs):
 		default = kwargs.get('default')
 		if isinstance(default, basestring):
 			default = re.compile(default)
@@ -461,7 +486,8 @@ class PatternSanitizer(SearchSanitizer):
 
 	def _escape_and_return(self, value):
 		value = re.escape(value)
-		value = value.replace(r'\*', '.*')
+		if self.use_asterisks:
+			value = value.replace(r'\*', '.*')
 		flags = 0
 		if self.ignore_case:
 			flags = flags | re.IGNORECASE
