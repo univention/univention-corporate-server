@@ -59,7 +59,7 @@ import univention.directory.reports as udr
 
 from univention.management.console.protocol.definitions import *
 
-from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials, container_modules
+from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
 from .tools import LicenseError, LicenseImport
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
@@ -772,6 +772,15 @@ class Instance( Base ):
 		thread = notifier.threads.Simple( 'Validate', notifier.Callback( _thread, request ),
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
+
+	@sanitize(key=LDAPSearchSanitizer(use_asterisks=False))
+	@simple_response
+	def syntax_choices_key(self, syntax, key):
+		return search_syntax_choices_by_key(syntax, key)
+
+	@simple_response
+	def syntax_choices_info(self, syntax):
+		return info_syntax_choices(syntax)
 
 	@sanitize(objectPropertyValue=LDAPSearchSanitizer())
 	def syntax_choices( self, request ):

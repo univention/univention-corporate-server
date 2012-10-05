@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
+import re
 import operator
 import threading
 
@@ -394,7 +395,7 @@ class UDM_Module( object ):
 		elif container is None:
 			container = ''
 		filter_s = _object_property_filter( self, attribute, value )
-		if attribute is None or attribute == 'None' and filter:
+		if attribute in [None, 'None'] and filter:
 			filter_s = str( filter )
 
 		MODULE.info( 'Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % ( container, filter_s, superordinate ) )
@@ -984,12 +985,61 @@ def _create_ldap_filter( syn, options, module=None ):
 		filter_s = '(&%s%s)' % (property_filter_s, filter_s)
 	return filter_s
 
-@LDAP_Connection
-def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap_position = None ):
+LDAP_ATTR_RE = re.compile(r'^%\(([^(]*)\)s$') # '%(username)s' -> 'username'
+def _get_syntax( syntax_name ):
 	if syntax_name not in udm_syntax.__dict__:
 		return None
+	return udm_syntax.__dict__[ syntax_name ]()
 
-	syn = udm_syntax.__dict__[ syntax_name ]()
+def search_syntax_choices_by_key( syntax_name, key ):
+	syn = _get_syntax( syntax_name )
+	if syn is None:
+		return None
+
+	if issubclass( syn.__class__, udm_syntax.UDM_Objects ):
+		if syn.key == 'dn':
+			module_search_options = {'scope' : 'base', 'container' : key}
+			try:
+				return read_syntax_choices( syntax_name, {}, module_search_options )
+			except LDAP_ConnectionError:
+				# invalid DN
+				return []
+		if syn.key is not None:
+			match = LDAP_ATTR_RE.match(syn.key)
+			if match:
+				attr = match.groups()[0]
+				options = {'objectProperty' : attr, 'objectPropertyValue' : key}
+				return read_syntax_choices( syntax_name, options )
+
+	MODULE.warn('Syntax "%s": No fast search function' % syntax_name)
+	# return them all, as there is no reason to filter after everything has loaded
+	# frontend will cache it.
+	return read_syntax_choices( syntax_name )
+
+def info_syntax_choices( syntax_name, options = {} ):
+	syn = _get_syntax( syntax_name )
+	if syn is None:
+		return None
+
+	if issubclass( syn.__class__, udm_syntax.UDM_Objects ):
+		size = 0
+		if syn.static_values is not None:
+			size += len(syn.static_values)
+		for udm_module in syn.udm_modules:
+			module = UDM_Module( udm_module )
+			if module is None:
+				continue
+			filter_s = _create_ldap_filter( syn, options, module )
+			if filter_s is not None:
+				size += len( module.search( filter = filter_s ) )
+		return {'size' : size, 'performs_well' : True}
+	return {'size' : 0, 'performs_well' : False}
+
+@LDAP_Connection
+def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, ldap_connection = None, ldap_position = None ):
+	syn = _get_syntax(syntax_name)
+	if syn is None:
+		return None
 
 	if issubclass( syn.__class__, udm_syntax.UDM_Objects ):
 		syn.choices = []
@@ -1030,7 +1080,9 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 			if filter_s is None:
 				syn.choices = []
 			else:
-				syn.choices.extend( map_choice( module.search( filter = filter_s ) ) )
+				search_options = {'filter' : filter_s}
+				search_options.update(module_search_options)
+				syn.choices.extend( map_choice( module.search( **search_options ) ) )
 		if isinstance( syn.static_values, ( tuple, list ) ):
 			for value in syn.static_values:
 				syn.choices.insert( 0, value )
@@ -1153,3 +1205,4 @@ def read_syntax_choices( syntax_name, options = {}, ldap_connection = None, ldap
 		return syntax.choices
 
 	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )
+

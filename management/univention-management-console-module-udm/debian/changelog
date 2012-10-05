@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.15-1) unstable; urgency=low
+
+  * Extend UDM-ComboBox to handle huge amount of UDM_Objects (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Oct 2012 15:18:31 +0200
+
 univention-management-console-module-udm (3.0.14-1) unstable; urgency=low
 
   * Search for default properties in udm's MultiObjectSelect (Bug #24341)

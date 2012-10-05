@@ -73,7 +73,7 @@ __widgets = (
 	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.select, [] ),
 	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
-	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and syn.simple == False and 'umc/modules/udm/MultiObjectSelect' or 'ComboBox' ),
+	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and syn.simple == False and 'umc/modules/udm/MultiObjectSelect' or 'umc/modules/udm/ComboBox' ),
 	Widget( 'ComboBox', udm_syntax.UDM_Attribute, '' ),
 	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc/modules/udm/MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'UnixAccessRights', udm_syntax.UNIX_AccessRight, '000' ),

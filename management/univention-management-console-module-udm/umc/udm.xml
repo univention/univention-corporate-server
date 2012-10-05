@@ -106,6 +106,13 @@
 	</command>
 	<command name="udm/validate" function="validate">
 	</command>
+	<command name="udm/syntax/choices/key" function="syntax_choices_key">
+	  <attribute name="syntax" syntax="String" required="True"/>
+	  <attribute name="key" syntax="String" required="True"/>
+	</command>
+	<command name="udm/syntax/choices/info" function="syntax_choices_info">
+	  <attribute name="syntax" syntax="String" required="True"/>
+	</command>
 	<command name="udm/syntax/choices" function="syntax_choices">
 	  <attribute name="syntax" syntax="String" required="True"/>
 	</command>

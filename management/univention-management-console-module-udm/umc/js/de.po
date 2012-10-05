@@ -127,6 +127,10 @@ msgstr "%s hinzufügen"
 msgid "Add a new %s."
 msgstr "%s neu hinzufügen."
 
+#: umc/js/udm/ComboBox.js:66
+msgid "Advanced Search"
+msgstr "Erweiterte Suche"
+
 #: umc/js/udm/DetailPage.js:292
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"

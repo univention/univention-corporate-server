@@ -64,6 +64,7 @@ define([
 	"umc/modules/udm/DetailPage",
 	"umc/i18n!umc/modules/udm",
 	"umc/modules/udm/MultiObjectSelect",
+	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
 ], function(declare, lang, array, Deferred, all, on, topic, aspect, json, domClass, registry, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
