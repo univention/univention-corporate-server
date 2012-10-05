@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.86-1) unstable; urgency=low
+
+  * added CSS styling for h1 tags in Dialogs; Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 05 Oct 2012 16:24:12 +0200
+
 univention-management-console-frontend (2.0.85-1) unstable; urgency=low
 
   * added optional title to umc/dialog::confirm(); Bug #28599
