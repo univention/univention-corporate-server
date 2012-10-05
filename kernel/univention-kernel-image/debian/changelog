@@ -1,3 +1,9 @@
+univention-kernel-image (6.0.0-10) unstable; urgency=low
+
+  * Update kernel with enabled blktap patch (Bug #281176)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Fri, 05 Oct 2012 09:41:04 +0200
+
 univention-kernel-image (6.0.0-9) unstable; urgency=low
 
   * Update kernel to 3.2.30 (Bug #28157)
