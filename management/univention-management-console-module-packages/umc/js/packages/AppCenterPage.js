@@ -133,13 +133,10 @@ define([
 					this.standby(false);
 					var width = 550;	// mimic the default of dialog.confirm
 
-					var head_style	= 'font-size:120%;font-weight:bold;margin:.5em;text-decoration:underline;';
 					var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
-					var txt = "<p style='" + head_style + "'>" +
-						lang.replace(_("Details for Application '{name}'"), data.result) +
-						"</p>";
+					var txt = "<h1>" + lang.replace(_("Details for Application '{name}'"), data.result) + "</h1>";
 					txt += lang.replace("<table style=\"width: {0}px;\">\n", [ width ]);
 					var fields;
 					if (data.result.allows_using) {
@@ -180,7 +177,30 @@ define([
 							name: 'install',
 							label: _("Install"),
 							callback: lang.hitch(this, function() {
-								this._call_installer('install', data.result.id, data.result.name);
+								if (data.result.licensefile) {
+									// before installing, user must agree on license terms
+									tools.umcpCommand('packages/app_center/app_license', {
+										'application': data.result.id
+									}).then(lang.hitch(this, function(result) {
+										var content = '<h1>' + _('License agreement') + '</h1>';
+										content += '<div style="max-height:250px; overflow:auto;">' + result.result + '</div>';
+										dialog.confirm(content, [{
+											name: 'decline',
+											label: _('Cancel'),
+											'default': true
+										}, {
+											name: 'accept',
+											label: _('Accept license')
+										}], _('License agreement')).then(lang.hitch(this, function(response) {
+											if (response == 'accept') {
+												this._call_installer('install', data.result.id, data.result.name);
+											}
+										}));
+									}));
+								}
+								else {
+									this._call_installer('install', data.result.id, data.result.name);
+								}
 							})
 						});
 					}
@@ -211,12 +231,10 @@ define([
 
 					var dialogText = new Text({
 						'class': 'umcConfirmDialogText',
-						//style: 'width:500; overflow:auto', // commands can be long...
 						content: txt
 					});
 					var confirmDialog = new ConfirmDialog({
 						title: _('Application details'),
-						//style: lang.replace('width:{width}px;', {width: width}), // dialog.confirm doesn't exceed 550px
 						message: dialogText,
 						options: buttons
 					});
@@ -313,7 +331,7 @@ define([
 				// prepare a command with max 50 characters length per line
 				var MAXCHARS = 50;
 				var cmdLine = lang.replace('univention-add-app {id} ', values);
-				var cmdLines = []
+				var cmdLines = [];
 				array.forEach(master_packages, function(icmd) {
 					if (icmd.length + cmdLine.length > MAXCHARS) {
 						cmdLines.push(cmdLine);

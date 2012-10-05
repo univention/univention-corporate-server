@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.27-1) unstable; urgency=low
+
+  * added dialog for license agreement; Bug #27458
+  * fixed status information; Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 05 Oct 2012 13:36:13 +0200
+
 univention-management-console-module-packages (2.0.26-1) unstable; urgency=low
 
   * fixed can_update and can_install fields in query; Bug #28599

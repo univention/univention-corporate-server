@@ -139,9 +139,10 @@ class Application(object):
 		category_translations = self._get_category_translations()
 		self._options['categories'] = [ category_translations.get(icat.lower()) or icat for icat in self.get('categories') ]
 
-		# return a proper URL for a given screenshot (if it exists)
-		if self.get('screenshot'):
-			self._options['screenshot'] = urllib2.urlparse.urljoin('%s/' % self.get_repository_url(), self.get('screenshot'))
+		# return a proper URL for local files
+		for ikey in ('screenshot', 'licensefile'):
+			if self.get(ikey):
+				self._options[ikey] = urllib2.urlparse.urljoin('%s/' % self.get_repository_url(), self.get(ikey))
 
 		# get the name of the component
 		m = self._regComponentID.match(url)
@@ -292,8 +293,9 @@ class Application(object):
 		res = copy.copy(self._options)
 		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
 		cannot_install_reason, cannot_install_reason_detail = self.cannot_install_reason(package_manager)
-		res['can_update'] = self.can_be_updated() and cannot_install_reason in ('installed', None)
+		res['can_update'] = self.can_be_updated() and cannot_install_reason == 'installed'
 		res['can_install'] = cannot_install_reason is None
+		res['is_installed'] = cannot_install_reason == 'installed'
 		return res
 
 	def can_be_updated(self):
@@ -335,7 +337,7 @@ class Application(object):
 		res = copy.copy(self._options)
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
-		res['can_update'] = self.can_be_updated() and cannot_install_reason in ('installed', None)
+		res['can_update'] = self.can_be_updated() and cannot_install_reason == 'installed'
 		res['can_install'] = cannot_install_reason is None
 		res['can_uninstall'] = cannot_install_reason == 'installed'
 		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
