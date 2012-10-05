@@ -34,6 +34,7 @@ define([
 	"dojo/on",
 	"dojo/Deferred",
 	"dojo/dom-class",
+	"dojo/dom-style",
 	"umc/widgets/LoginDialog",
 	"umc/widgets/Toaster",
 	"umc/widgets/ConfirmDialog",
@@ -42,7 +43,7 @@ define([
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!umc/app"
-], function(lang, array, on, Deferred, domClass, LoginDialog, Toaster, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, on, Deferred, domClass, domStyle, LoginDialog, Toaster, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 		_loginDialog: null, // internal reference to the login dialog
@@ -277,10 +278,10 @@ define([
 			// create confirmation dialog
 			var confirmDialog = new ConfirmDialog({
 				title: _('Confirmation'),
-				style: 'max-width: 550px;',
 				message: message,
 				options: options
 			});
+			domStyle.set(confirmDialog.containerNode, 'max-width', '550px');
 
 			// connect to 'confirm' event to close the dialog in any case
 			var deferred = new Deferred();

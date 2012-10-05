@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.84-1) unstable; urgency=low
+
+  * fixed max-width property for confirm dialog; Bug #28551
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 05 Oct 2012 15:43:35 +0200
+
 univention-management-console-frontend (2.0.83-1) unstable; urgency=low
 
   * Add images for UDM-ComboBox (Bug #26556)
@@ -6,7 +12,7 @@ univention-management-console-frontend (2.0.83-1) unstable; urgency=low
 
 univention-management-console-frontend (2.0.82-1) unstable; urgency=low
 
-  * added root certificate to about.html Bug #27002 
+  * added root certificate to about.html Bug #27002
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 11:06:56 +0200
 
