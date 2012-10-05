@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.85-1) unstable; urgency=low
+
+  * added optional title to umc/dialog::confirm(); Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 05 Oct 2012 16:08:22 +0200
+
 univention-management-console-frontend (2.0.84-1) unstable; urgency=low
 
   * fixed max-width property for confirm dialog; Bug #28551

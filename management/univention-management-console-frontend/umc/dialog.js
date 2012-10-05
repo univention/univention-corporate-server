@@ -201,7 +201,7 @@ define([
 			this._alertDialog._position();
 		},
 
-		confirm: function(/*String|_Widget*/ message, /*Object[]*/ options) {
+		confirm: function(/*String|_Widget*/ message, /*Object[]*/ options, /*String?*/ title) {
 			// summary:
 			//		Popup a confirmation dialog with a given message string and a
 			//		list of options to choose from.
@@ -224,6 +224,8 @@ define([
 			//		If one single (!) item is specified with the property 'auto=true' and
 			//		confirmations are switched off in the user preferences, the dialog is not shown
 			//		and the callback function for this default option is executed directly.
+			// title:
+			//		Optional title for the dialog.
 			//
 			// example:
 			//		A simple example that uses the 'default' property.
@@ -277,7 +279,7 @@ define([
 
 			// create confirmation dialog
 			var confirmDialog = new ConfirmDialog({
-				title: _('Confirmation'),
+				title: title || _('Confirmation'),
 				message: message,
 				options: options
 			});
