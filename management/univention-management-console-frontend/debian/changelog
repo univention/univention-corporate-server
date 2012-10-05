@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.83-1) unstable; urgency=low
+
+  * Add images for UDM-ComboBox (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Oct 2012 15:14:28 +0200
+
 univention-management-console-frontend (2.0.82-1) unstable; urgency=low
 
   * added root certificate to about.html Bug #27002 
