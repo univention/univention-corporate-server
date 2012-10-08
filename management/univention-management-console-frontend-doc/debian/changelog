@@ -1,3 +1,10 @@
+univention-management-console-frontend-doc (6.0.5-1) unstable; urgency=low
+
+  * updated api-viewer.tar.gz which fixes more XSS and LFI vulnerabilities;
+  	Bug #28018
+
+ -- Florian Best <best@univention.de>  Mon, 08 Oct 2012 14:26:55 +0200
+
 univention-management-console-frontend-doc (6.0.4-4) unstable; urgency=low
 
   * fixed typo in Makefile; Bug #28018
