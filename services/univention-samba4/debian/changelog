@@ -1,3 +1,9 @@
+univention-samba4 (2.0.13-3) unstable; urgency=low
+
+  * allow nmbd to start on samba 4 DCs (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Oct 2012 23:50:02 +0200
+
 univention-samba4 (2.0.13-2) unstable; urgency=low
 
   * disable internal DNS server (Bug #27457)
