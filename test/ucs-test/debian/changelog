@@ -1,3 +1,12 @@
+ucs-test (3.0.2-1) unstable; urgency=low
+
+  * 52_s4connector/00create_remove_object: make it to a real default
+    test, creat user in S4 check if the user will be synced and remove
+    the user after that (Bug #25751)
+  * Skip some more ignore_subtree tests, see Bug #28700 (Bug #25818)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Oct 2012 07:41:04 +0200
+
 ucs-test (3.0.1-2) unstable; urgency=low
 
   * Install missing s4 connector tests (Bug #25818)
