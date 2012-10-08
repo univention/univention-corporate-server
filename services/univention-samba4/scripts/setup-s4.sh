@@ -183,12 +183,12 @@ if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ]; then
 	fi
 
 	if [ -z "$sitename" ]; then
-		/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
+		samba-tool domain provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
 							--function-level="$samba4_function_level" \
 							--adminpass="$adminpw" --server-role='domain controller'	\
 							--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
 	else
-		/usr/share/samba/setup/provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
+		samba-tool domain provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
 							--function-level="$samba4_function_level" \
 							--adminpass="$adminpw" --server-role='domain controller'	\
 							--sitename="$sitename" \

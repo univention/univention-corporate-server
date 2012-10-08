@@ -1,3 +1,9 @@
+univention-samba4 (2.0.13-1) unstable; urgency=low
+
+  * Script name adjustment for samba4 rc2 (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Oct 2012 18:55:50 +0200
+
 univention-samba4 (2.0.12-1) unstable; urgency=low
 
   * 96univention-samba4.inst prints an error message if a join against
