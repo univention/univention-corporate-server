@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-management-console-frontend-src,
  php5-cli,
  git,
- node-0.8
+ nodejs-0.8
 
 Package: univention-management-console-frontend-doc
 Architecture: all
