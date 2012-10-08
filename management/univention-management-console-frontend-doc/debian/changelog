@@ -1,3 +1,11 @@
+univention-management-console-frontend-doc (6.0.4-2) unstable; urgency=low
+
+  * fixed XSS vulnerability in api-viewer; Bug #28018
+  * renamed umc.xml to details.xml, this is required to correctly show the
+  	items; Bug #28018
+
+ -- Florian Best <best@univention.de>  Mon, 08 Oct 2012 12:18:24 +0200
+
 univention-management-console-frontend-doc (6.0.4-1) unstable; urgency=low
 
   * bump version to latest univention-dojo; Bug #28018

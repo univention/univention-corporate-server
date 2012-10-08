@@ -7,7 +7,7 @@ index 62e9ee3..9cfe484 100755
  	//    - config: Arbitrary exporter configuration object, passed as an argument to the exporter function.
  	exporters: [
 -		{ id: 'dojov1', config: { details: 'details.xml', tree: 'tree.json' } }
-+		{ id: 'dojov1', config: { details: '../data/1.8/umc.xml', tree: '../data/1.8/tree.json' } }
++		{ id: 'dojov1', config: { details: '../data/1.8/details.xml', tree: '../data/1.8/tree.json' } }
  	],
  
  	show: {

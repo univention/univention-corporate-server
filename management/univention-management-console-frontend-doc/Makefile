@@ -62,7 +62,7 @@ univention-dojo/umc/modules/udm/LicenseDialog.js:
 univention-management-console-frontend-doc: data
 
 data: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
-	#creating umc.xml and tree.json
+	#creating details.xml and tree.json
 	install -m755 -d 'data/1.8'
 	cd $< && \
 		git apply < ../$<.patch && \

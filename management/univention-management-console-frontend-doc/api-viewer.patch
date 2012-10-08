@@ -18,7 +18,7 @@ index 7beced1..b83f939 100644
  # convert static/rest-like requests
  RewriteRule ^html/([0-9.]+)/(.*)\.html$ lib/item.php?v=$1&p=$2 [L,QSA]
 diff --git a/config.php b/config.php
-index 26ae0bf..542fa39 100644
+index 26ae0bf..7c3729f 100644
 --- a/config.php
 +++ b/config.php
 @@ -3,36 +3,36 @@
@@ -66,3 +66,10 @@ index 26ae0bf..542fa39 100644
  );
  
  $defPage = "";
+@@ -42,5 +42,5 @@ $filter_privates = true;
+ 
+ # Set to false to regenerate the page for a module every time you view it.
+ # Useful while working on documentation, or the doc parser and api viewers themselves.
+-$use_cache = false;
++$use_cache = true;
+ 
