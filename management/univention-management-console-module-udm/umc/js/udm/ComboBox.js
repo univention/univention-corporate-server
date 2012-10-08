@@ -36,18 +36,15 @@ define([
 	"dojo/on",
 	"dojo/keys",
 	"dojo/dom-construct",
-	"dojo/on",
 	"dojo/Deferred",
 	"umc/tools",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, when, on, keys, domConstruct, on, Deferred, tools, ComboBox, _) {
+], function(declare, lang, array, when, on, keys, domConstruct, Deferred, tools, ComboBox, _) {
 	return declare("umc.modules.udm.ComboBox", [ ComboBox ], {
 		// summary:
 		//		This class extends the normal ComboBox in order to encapsulate
 		//		some UDM specific behaviour.
-
-		moduleFlavor: this.moduleFlavor,
 
 		advancedSearchItem: null,
 
@@ -65,7 +62,7 @@ define([
 
 		_searchNode: null,
 
-		_spinnerNode: null,
+		_searchingNode: null,
 
 		_tooManyDeferred: null,
 
@@ -76,7 +73,6 @@ define([
 		},
 
 		postMixInProperties: function() {
-			console.log(this.name)
 			this.inherited(arguments);
 			this._tooManyDeferred = new Deferred();
 		},
@@ -95,10 +91,8 @@ define([
 				// * no value is selected (user entered something in the combobox)
 				// * item is already in list
 				if (too_many && this._state != 'normal' && newVal !== '' && !this.store._getItemByIdentity(newVal)) {
-					var options = lang.clone(this.dynamicOptions);
-					options.key = newVal;
 					this._changeState('searching');
-					this.umcpCommand('udm/syntax/choices/key', options, undefined, this.moduleFlavor).then(lang.hitch(this, function(data) {
+					this.umcpCommand('udm/syntax/choices/key', this.getParams({key: newVal})).then(lang.hitch(this, function(data) {
 						this._emptyStore();
 						array.forEach(data.result, lang.hitch(this, function(item) {
 							this.store.newItem(item);
@@ -128,38 +122,16 @@ define([
 			// new nodes (replacing the original arrow)
 			// if needed
 			this._currentNode = this._buttonNode;
-			var cssClasses = this._buttonNode.classList;
-			var style = {
-				backgroundRepeat: 'no-repeat',
-				backgroundPosition: 'center',
-				height: '26px', // domStyle.getComputedStyle does not work
-				width: '23px'
-			};
 			var url = require.toUrl('dijit/themes/umc/form/images/');
-			style.backgroundImage = 'url("' + url + 'find.png")';
-			this._searchNode = domConstruct.create(
-				'div',
-				{
-					id: this.id + '_searchNode',
-					'class': cssClasses,
-					style: style,
-					innerHTML: '&nbsp;'
-				}
-			);
+			this._searchNode = lang.clone(this._buttonNode);
+			this._searchNode.childNodes[0].style.backgroundImage = 'url("' + url + 'find.png")';
+			this._searchNode.childNodes[0].style.backgroundPosition = 'center';
 			this.own(on(this._searchNode, 'click', lang.hitch(this, '_searchDisplayedValueOnServer')));
-			style.backgroundImage = 'url("' + url + 'loading.gif")';
-			this._spinnerNode = domConstruct.create(
-				'div',
-				{
-					id: this.id + '_searchNode',
-					'class': cssClasses,
-					style: style,
-					innerHTML: '&nbsp;'
-				}
-			);
+			this._searchingNode = lang.clone(this._searchNode);
+			this._searchingNode.childNodes[0].style.backgroundImage = 'url("' + url + 'loading.gif")';
 
-			if (this.dynamicValues == 'udm/syntax/choices') {
-				this.umcpCommand('udm/syntax/choices/info', this.dynamicOptions, undefined, this.moduleFlavor).then(lang.hitch(this, function(data) {
+			if (!this.depends) {
+				this.umcpCommand('udm/syntax/choices/info', this.getParams()).then(lang.hitch(this, function(data) {
 					this._totalSize = data.result.size;
 					if (this._totalSize > this.threshold) {
 						this._addAdvancedSearchItemAndSaveStore();
@@ -167,7 +139,7 @@ define([
 						// ENTER: search on server
 						// KEY_UP: show search icon
 						// BLUR (lose focus): search on server
-						// select ADVANCED_SEARCH: show search icon
+						// ADVANCED_SEARCH selected: show search icon
 						//
 						// These handles are removed as soon as _state changes
 						// to normal. Then, everything works as if it was a normal ComboBox.
@@ -248,8 +220,8 @@ define([
 				domConstruct.place(this._searchNode, this._currentNode, 'replace');
 				this._currentNode = this._searchNode;
 			} else if (new_state == 'searching') {
-				domConstruct.place(this._spinnerNode, this._currentNode, 'replace');
-				this._currentNode = this._spinnerNode;
+				domConstruct.place(this._searchingNode, this._currentNode, 'replace');
+				this._currentNode = this._searchingNode;
 			} else {
 				console.warn(new_state + ' is not defined as a state');
 			}
@@ -271,20 +243,22 @@ define([
 			}
 			if (this._state == 'ready_to_search' || this._state == 'waiting') {
 				var deferred = new Deferred();
-				var options = lang.clone(this.dynamicOptions);
-				options.objectPropertyValue = search_value;
-				options.objectProperty = 'None';
+				var func = tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
+				var params = this.getParams({
+					objectPropertyValue: search_value,
+					objectProperty: 'None'
+				});
 				this.closeDropDown();
 				this._changeState('searching');
-				this.umcpCommand(this.dynamicValues, options, undefined, this.moduleFlavor).then(lang.hitch(this, function(data) {
+				func(params).then(lang.hitch(this, function(result) {
 					this._emptyStore();
-					data.result.sort(tools.cmpObjects({
+					result.sort(tools.cmpObjects({
 						attribute: 'label',
 						ignoreCase: true
 					}));
 					var value = this.get('displayedValue');
 					var value_selected;
-					array.forEach(data.result, lang.hitch(this, function(item) {
+					array.forEach(result, lang.hitch(this, function(item) {
 						if (item.label === value) {
 							value_selected = item.id;
 						}
@@ -293,7 +267,7 @@ define([
 					if (value_selected !== undefined) {
 						this.set('value', value_selected);
 					}
-					if (data.result.length == this._totalSize) {
+					if (result.length == this._totalSize) {
 						// everything is loaded now, no need to reload anymore
 						this._changeState('normal');
 					} else {
@@ -326,6 +300,19 @@ define([
 				this._tooManyDeferred.resolve(false);
 			}));
 			this._loadValues();
+		},
+
+		getParams: function(params) {
+			params = params || {};
+			if (this.dynamicOptions) {
+				if (typeof this.dynamicOptions == "function") {
+					lang.mixin(params, this.dynamicOptions(params));
+				}
+				else if (typeof this.dynamicOptions == "object") {
+					lang.mixin(params, this.dynamicOptions);
+				}
+			}
+			return params;
 		}
 
 	});
