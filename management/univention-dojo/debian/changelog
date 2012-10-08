@@ -1,3 +1,9 @@
+univention-dojo (6.0.4-1) unstable; urgency=low
+
+  * added fix_postcreate.patch; Bug #28551
+
+ -- Florian Best <best@univention.de>  Mon, 08 Oct 2012 16:29:49 +0200
+
 univention-dojo (6.0.3-1) unstable; urgency=low
 
   * removed fix_dojo_style.patch and fix_dojo_position.patch; Bug #26857

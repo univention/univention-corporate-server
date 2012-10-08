@@ -51,6 +51,7 @@ $(DOJO_DIR):
 	patch -p1 < ../fix_grid_focus.patch; \
 	patch -p1 < ../fix_standbyOpacity.patch; \
 	patch -p1 < ../fix_dojo_iframe_textarea.patch; \
+	patch -p1 < ../fix_postcreate.patch; \
 	patch -p1 < ../fix_notify_typo.patch
 
 all: install
