@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.40-1) unstable; urgency=low
+
+  * ignore http-proxy-hostname, http-hostname and zarafa-hostname
+    in admin/license.py (Bug #28705)
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Oct 2012 11:27:45 +0200
+
 univention-directory-manager-modules (8.0.39-1) unstable; urgency=low
 
   * update pTRRecords when DNS Forward Zone entries 

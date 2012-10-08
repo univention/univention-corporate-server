@@ -64,7 +64,20 @@ class License( object ):
 		self.licenseBase = None
 		self.types= []
 		self.version = '1'
-		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam', 'oxadmin', 'krbtgt', 'Guest', 'dns-%s' % configRegistry.get('ldap/master').split('.')[0], 'dns-%s' % configRegistry.get('hostname') )
+		self.sysAccountNames = (
+			'Administrator',
+			'join-backup',
+			'join-slave',
+			'spam',
+			'oxadmin',
+			'krbtgt',
+			'Guest',
+			'dns-%s' % configRegistry.get('ldap/master').split('.')[0],
+			'dns-%s' % configRegistry.get('hostname'),
+			'http-%s' % configRegistry.get('hostname'),
+			'http-proxy-%s' % configRegistry.get('hostname'),
+			'zarafa-%s' % configRegistry.get('hostname'),
+		)
 		self.sysAccountsFound = 0
 		self.licenses = {
 				'1': {
