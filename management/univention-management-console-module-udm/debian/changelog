@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.16-1) unstable; urgency=low
+
+  * Make UDM-ComboBox threshold configurable (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Oct 2012 11:48:36 +0200
+
 univention-management-console-module-udm (3.0.15-1) unstable; urgency=low
 
   * Extend UDM-ComboBox to handle huge amount of UDM_Objects (Bug #26556)

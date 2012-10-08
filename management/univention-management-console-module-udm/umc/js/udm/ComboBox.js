@@ -32,6 +32,8 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/when",
+	"dojo/on",
 	"dojo/keys",
 	"dojo/dom-construct",
 	"dojo/on",
@@ -39,7 +41,7 @@ define([
 	"umc/tools",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, keys, domConstruct, on, Deferred, tools, ComboBox, _) {
+], function(declare, lang, array, when, on, keys, domConstruct, on, Deferred, tools, ComboBox, _) {
 	return declare("umc.modules.udm.ComboBox", [ ComboBox ], {
 		// summary:
 		//		This class extends the normal ComboBox in order to encapsulate
@@ -55,7 +57,7 @@ define([
 
 		_totalSize: null,
 
-		_maxSize: 100,
+		threshold: undefined, // set by udm description properties
 
 		_state: 'waiting',
 
@@ -73,39 +75,10 @@ define([
 			}
 		},
 
-		startup: function() {
+		postMixInProperties: function() {
+			console.log(this.name)
 			this.inherited(arguments);
-			this._currentNode = this._buttonNode;
-			var cssClasses = this._buttonNode.classList;
-			var style = {
-				backgroundRepeat: 'no-repeat',
-				backgroundPosition: 'center',
-				height: '26px', // domStyle.getComputedStyle does not work
-				width: '23px'
-			};
-			var url = require.toUrl('dijit/themes/umc/form/images/');
-			style.backgroundImage = 'url("' + url + 'find.png")';
-			this._searchNode = domConstruct.create(
-				'div',
-				{
-					id: this.id + '_searchNode',
-					'class': cssClasses,
-					style: style,
-					innerHTML: '&nbsp;'
-				}
-			);
-			this.own(on(this._searchNode, 'click', lang.hitch(this, '_searchDisplayedValueOnServer')));
-
-			style.backgroundImage = 'url("' + url + 'loading.gif")';
-			this._spinnerNode = domConstruct.create(
-				'div',
-				{
-					id: this.id + '_searchNode',
-					'class': cssClasses,
-					style: style,
-					innerHTML: '&nbsp;'
-				}
-			);
+			this._tooManyDeferred = new Deferred();
 		},
 
 		_emptyStore: function() {
@@ -116,12 +89,12 @@ define([
 		_setValueAttr: function(newVal) {
 			// save arguments, otherwise those of function(too_many) are used
 			var original_arguments = arguments;
-			this._tooManyDeferred.then(lang.hitch(this, function() {
+			this._tooManyDeferred.then(lang.hitch(this, function(too_many) {
 				// behave normally if:
 				// * all values are loaded (should be included in the third *, but i test it nonetheless
 				// * no value is selected (user entered something in the combobox)
 				// * item is already in list
-				if (this._state != 'normal' && newVal !== '' && !this.store._getItemByIdentity(newVal)) {
+				if (too_many && this._state != 'normal' && newVal !== '' && !this.store._getItemByIdentity(newVal)) {
 					var options = lang.clone(this.dynamicOptions);
 					options.key = newVal;
 					this._changeState('searching');
@@ -150,21 +123,58 @@ define([
 		},
 
 		postCreate: function() {
-			this._tooManyDeferred = new Deferred();
 			this.inherited(arguments);
+
+			// new nodes (replacing the original arrow)
+			// if needed
+			this._currentNode = this._buttonNode;
+			var cssClasses = this._buttonNode.classList;
+			var style = {
+				backgroundRepeat: 'no-repeat',
+				backgroundPosition: 'center',
+				height: '26px', // domStyle.getComputedStyle does not work
+				width: '23px'
+			};
+			var url = require.toUrl('dijit/themes/umc/form/images/');
+			style.backgroundImage = 'url("' + url + 'find.png")';
+			this._searchNode = domConstruct.create(
+				'div',
+				{
+					id: this.id + '_searchNode',
+					'class': cssClasses,
+					style: style,
+					innerHTML: '&nbsp;'
+				}
+			);
+			this.own(on(this._searchNode, 'click', lang.hitch(this, '_searchDisplayedValueOnServer')));
+			style.backgroundImage = 'url("' + url + 'loading.gif")';
+			this._spinnerNode = domConstruct.create(
+				'div',
+				{
+					id: this.id + '_searchNode',
+					'class': cssClasses,
+					style: style,
+					innerHTML: '&nbsp;'
+				}
+			);
+
 			if (this.dynamicValues == 'udm/syntax/choices') {
 				this.umcpCommand('udm/syntax/choices/info', this.dynamicOptions, undefined, this.moduleFlavor).then(lang.hitch(this, function(data) {
 					this._totalSize = data.result.size;
-					// TODO: ucr
-					if (this._totalSize <= this._maxSize) {
-						this._behaveNormally();
-						this._tooManyDeferred.resolve(false);
-					} else {
+					if (this._totalSize > this.threshold) {
 						this._addAdvancedSearchItemAndSaveStore();
-						this.on('keypress', lang.hitch(this, '_handleEnter'));
-						this.on('keyup', lang.hitch(this, '_keyPressed'));
-						this.on('blur', lang.hitch(this, '_validOption'));
-						this.on('change', lang.hitch(this, function(newVal) {
+						// handles especially for this widget:
+						// ENTER: search on server
+						// KEY_UP: show search icon
+						// BLUR (lose focus): search on server
+						// select ADVANCED_SEARCH: show search icon
+						//
+						// These handles are removed as soon as _state changes
+						// to normal. Then, everything works as if it was a normal ComboBox.
+						this._keyPressHandle = this.on('keypress', lang.hitch(this, '_keyPress'));
+						this._keyUpHandle = this.on('keyup', lang.hitch(this, '_keyUp'));
+						this._validOptionHandle = this.on('blur', lang.hitch(this, '_validOption'));
+						this._changeHandle = this.on('change', lang.hitch(this, function(newVal) {
 							if (newVal == this.advancedSearchString) {
 								if (this._state == 'waiting') {
 									this._changeState('ready_to_search');
@@ -173,11 +183,12 @@ define([
 							}
 						}));
 						this._tooManyDeferred.resolve(true);
+					} else {
+						this._behaveNormally();
 					}
 				}));
 			} else {
 				this._behaveNormally();
-				this._tooManyDeferred.resolve(false);
 			}
 		},
 
@@ -189,18 +200,19 @@ define([
 			return ret;
 		},
 
-		_handleEnter: function(evt) {
-			if (this._state != 'normal') {
-				if (evt.keyCode == keys.ENTER) {
-					this._searchDisplayedValueOnServer();
-					// dont submit form
-					evt.preventDefault();
-				}
+		_keyPress: function(evt) {
+			if (evt.keyCode == keys.ENTER) {
+				this._searchDisplayedValueOnServer().then(lang.hitch(this, function() {
+					// does not work reliably
+					//this.openDropDown();
+				}));
+				// dont submit form
+				evt.preventDefault();
 			}
 		},
 
-		_keyPressed: function(evt) {
-			if (this._state != 'normal' && evt.keyCode != keys.ENTER) {
+		_keyUp: function(evt) {
+			if (evt.keyCode != keys.ENTER) {
 				var displayedValue = this.get('displayedValue');
 				if (displayedValue === this._lastSearch) {
 					this._changeState('waiting');
@@ -211,17 +223,22 @@ define([
 		},
 
 		_validOption: function() {
-			if (this._state != 'normal') {
-				// if widget has a value, it should be okay
-				if (!this.get('value') || this.get('value') !== this.advancedSearchString) {
-					this._searchDisplayedValueOnServer();
-				}
+			// if widget has a value, it should be okay
+			if (!this.get('value') || this.get('value') !== this.advancedSearchString) {
+				this._searchDisplayedValueOnServer();
 			}
 		},
 
 		_changeState: function(new_state) {
 			if (this._state == new_state) {
 				return;
+			}
+			if (new_state == 'normal' && this._keyPressHandle) {
+				// remove special handles, now it should behave like a normal combobox
+				this._keyPressHandle.remove();
+				this._keyUpHandle.remove();
+				this._validOptionHandle.remove();
+				this._changeHandle.remove();
 			}
 			if (new_state == 'normal' || new_state == 'waiting') {
 				// works even if new_node == old_node
@@ -240,7 +257,11 @@ define([
 		},
 
 		_searchDisplayedValueOnServer: function() {
-			this._searchOnServer(this.get('displayedValue'));
+			var deferred = new Deferred();
+			when(this._searchOnServer(this.get('displayedValue')), function() {
+				deferred.resolve();
+			});
+			return deferred;
 		},
 
 		_searchOnServer: function(search_value) {
@@ -249,6 +270,7 @@ define([
 				return null;
 			}
 			if (this._state == 'ready_to_search' || this._state == 'waiting') {
+				var deferred = new Deferred();
 				var options = lang.clone(this.dynamicOptions);
 				options.objectPropertyValue = search_value;
 				options.objectProperty = 'None';
@@ -279,10 +301,13 @@ define([
 						this._changeState('waiting');
 					}
 					this._lastSearch = search_value;
+					deferred.resolve();
 				}),
 				lang.hitch(this, function() {
 					this._changeState('waiting');
+					deferred.resolve();
 				}));
+				return deferred;
 			}
 		},
 
@@ -297,6 +322,9 @@ define([
 
 		_behaveNormally: function() {
 			this._changeState('normal');
+			on.once(this, 'valuesloaded', lang.hitch(this, function() {
+				this._tooManyDeferred.resolve(false);
+			}));
 			this._loadValues();
 		}
 
