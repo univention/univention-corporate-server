@@ -88,6 +88,9 @@ ad_exists "CN=$UDM_users_user_username,OU=$OU1,OU=$OU2,$(ad_get_base)"; fail_boo
 
 section "Clean up"
 
+ad_set_sync_mode "sync"
+ad_wait_for_synchronization; fail_bool 0 110
+
 ad_delete "CN=$UDM_users_user_username,OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 ad_delete "OU=$OU3,OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110

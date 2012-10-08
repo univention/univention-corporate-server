@@ -78,7 +78,8 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 #
 
 function ad_is_connector_running () {
-	if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.6/univention/connector/ad/main.py"
+	# if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.6/univention/connector/ad/main.py"
+	if ps ax | grep -v "grep" | grep -qs "/usr/share/pyshared/univention/connector/ad/main.py"
 	then
 		return 0
 	else

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: "Check whether ou can be recursively moved on ad-side in read-mode"
+## desc: "Check whether ou can be recursively moved on ad-side in write-mode"
 ## exposure: dangerous
 ## packages:
 ## - univention-ad-connector
@@ -88,6 +88,16 @@ ad_delete "OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 ad_delete "OU=$OU2,$(ad_get_base)" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
+
+udm_remove "users/user" "" "" "ou=$OU1,$ldap_base" || fail_test 110
+UDM_container_ou_name="$OU3"
+udm_remove "container/ou" "" "" "ou=$OU1,$ldap_base" || fail_test 110
+UDM_container_ou_name="$OU1"
+udm_remove "container/ou" || fail_test 110
+UDM_container_ou_name="$OU2"
+udm_remove "container/ou" || fail_test 110
+
+ad_wait_for_synchronization; check_bool 0 110
 
 UDM_container_ou_name="$OU1"
 udm_exists "container/ou"; fail_bool 1 110

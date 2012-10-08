@@ -17,6 +17,7 @@ DESCRIPTION="$(random_chars)"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 
 SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
 
 ad_createuser "$UDM_users_user_username" "$DESCRIPTION" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
