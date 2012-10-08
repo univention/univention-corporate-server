@@ -34,6 +34,7 @@ build: univention-management-console-frontend-doc univention-dojo-api-viewer
 
 js-doc-parse.tar.gz:
 	git clone --recursive https://github.com/wkeese/js-doc-parse.git
+	cd js-doc-parse && git checkout all-my-changes
 	tar cvzf js-doc-parse.tar.gz js-doc-parse
 #	cd js-doc-parse && git archive --format=tar js-doc-parse | gzip > js-doc-parse.tar.gz
 
@@ -58,9 +59,11 @@ univention-dojo/umc/modules/udm/LicenseDialog.js:
 	mkdir -p univention-dojo/umc/modules/udm
 	echo 'define([],function(){});' > $@
 
-univention-management-console-frontend-doc: umc.xml
+univention-management-console-frontend-doc: data
 
-umc.xml: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
+data: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
+	#creating umc.xml and tree.json
+	install -m755 -d 'data/1.8'
 	cd $< && \
 		git apply < ../$<.patch && \
 			./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
@@ -78,12 +81,12 @@ install: build
 	install -m0755 -d '$(DESTDIR)/usr/share/univention-doc/src'
 	install -m0755 -d '$(DESTDIR)/var/www/ucs-overview/images/icon'
 	rsync -rpl --exclude '.svn' --exclude '.git' univention-management-console-doc '$(DESTDIR)/usr/share/univention-doc/src/'
-	rsync -rpl --exclude 'umc.xml' --exclude '.svn' --exclude '.git' univention-dojo-api-viewer '$(DESTDIR)/usr/share/'
+	rsync -rpl --exclude 'data' --exclude 'umc.xml' --exclude 'lib.old'--exclude '.svn' --exclude '.git' univention-dojo-api-viewer '$(DESTDIR)/usr/share/'
 	install -m0644 icon/dojo-api.png '$(DESTDIR)/var/www/ucs-overview/images/icon/'
 	# univention-management-console-frontend-doc
-	install -m644 umc.xml '$(DESTDIR)/usr/share/univention-dojo-api-viewer'
+	rsync -rpl data '$(DESTDIR)/'
 
 clean:
-	$(RM) umc.xml
+	$(RM) -r data
 	$(RM) -r univention-dojo univention-dojo-api-viewer
 	$(RM) -r js-doc-parse api-viewer
