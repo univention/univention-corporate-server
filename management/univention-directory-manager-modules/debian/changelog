@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.41-1) unstable; urgency=low
+
+  * Add threshold for handler-properties (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Oct 2012 14:48:00 +0200
+
 univention-directory-manager-modules (8.0.40-1) unstable; urgency=low
 
   * ignore http-proxy-hostname, http-hostname and zarafa-hostname
