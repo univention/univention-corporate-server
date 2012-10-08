@@ -1,3 +1,10 @@
+univention-management-console-frontend-doc (6.0.4-1) unstable; urgency=low
+
+  * bump version to latest univention-dojo; Bug #28018
+  * removed a LFI vulnerability in the api-viewer; Bug #28018
+
+ -- Florian Best <best@univention.de>  Mon, 08 Oct 2012 11:50:21 +0200
+
 univention-management-console-frontend-doc (2.0.66-2) unstable; urgency=low
 
   * added debian/compat + Makefile cleanup; Bug #28018
