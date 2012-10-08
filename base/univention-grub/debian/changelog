@@ -1,3 +1,9 @@
+univention-grub (6.0.0-2) unstable; urgency=low
+
+  * Remove obsolete dependency on diff (Bug #27010)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Mon, 08 Oct 2012 14:02:30 +0200
+
 univention-grub (6.0.0-1) unstable; urgency=low
 
   * bumped version for UCS 3.1 
