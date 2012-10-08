@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (2.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.1
+  * Rename /etc/modprobe.d/loop to /etc/modprobe.d/loop.conf (Bug #14824)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Mon, 08 Oct 2012 14:14:13 +0200
+
 univention-virtual-machine-manager-node (1.0.3-1) unstable; urgency=low
 
   * Fix README.restore symlink (Bug #25826)

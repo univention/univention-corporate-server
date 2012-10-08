@@ -42,6 +42,8 @@ case "$1" in
     ;;
 esac
 
+dpkg-maintscript-helper mv_conffile /etc/modprobe.d/loop /etc/modprobe.d/loop.conf 1.0.4~ -- "$@"
+
 #DEBHELPER#
 
 exit 0
