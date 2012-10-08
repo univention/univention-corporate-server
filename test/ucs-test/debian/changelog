@@ -1,3 +1,10 @@
+ucs-test (3.0.5-1) unstable; urgency=low
+
+  * Skip move to ignore subtree tests for the AD connector. Bug #28702
+    needs to be fixed first (Bug #27650)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Oct 2012 20:33:52 +0200
+
 ucs-test (3.0.4-1) unstable; urgency=low
 
   * Some more AD Connector test updates (Bug #27650)
