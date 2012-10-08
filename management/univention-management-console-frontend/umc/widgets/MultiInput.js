@@ -328,6 +328,7 @@ define([
 					var iname = '__' + this.name + '-' + irow + '-' + i;
 					var iconf = lang.mixin({}, iwidget, {
 						disabled: this.disabled,
+						threshold: this.threshold, // for UDM-threshold
 						name: iname,
 						value: '',
 						dynamicValues: lang.partial(iwidget.dynamicValues, iname)

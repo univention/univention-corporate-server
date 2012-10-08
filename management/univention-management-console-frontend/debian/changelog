@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.87-1) unstable; urgency=low
+
+  * Propagate UDM-specific threshold attribute in MultiInput and ComplexInput
+    for Bug #26556
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Oct 2012 14:58:45 +0200
+
 univention-management-console-frontend (2.0.86-1) unstable; urgency=low
 
   * added CSS styling for h1 tags in Dialogs; Bug #28599

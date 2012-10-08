@@ -68,6 +68,7 @@ define([
 				var iname = '__' + this.name + '-' + i;
 				widgetConfs.push( lang.mixin( {}, widget, {
 					disabled: this.disabled,
+					threshold: this.threshold, // for UDM-threshold
 					name: iname,
 					dynamicValues: widget.dynamicValues,
 					umcpCommand: this.umcpCommand
