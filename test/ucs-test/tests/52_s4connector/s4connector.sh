@@ -93,7 +93,7 @@ function ad_wait_for_synchronization () {
 	if ! ad_is_connector_running; then
 		/etc/init.d/univention-s4-connector start
 	fi
-		
+
 	#maybe there are ways be more sure whether synchronisation is
 	#already complete:
 	#See /var/log/univention/${configbase}-status.log

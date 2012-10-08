@@ -1,0 +1,84 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Move an AD-user into the User-Ignore-Subtree in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## versions:
+##  3.0-0: skip
+## bugs:
+##  - 18504
+
+# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=28696
+exit 131
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+
+UDM_users_user_username="$(random_chars)"
+AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+section "Create new container"
+
+UDM_container_cn_name="$(random_chars)"
+ad_container_create "$UDM_container_cn_name" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "CN=$UDM_container_cn_name,$(ad_get_base)"; fail_bool 0 110
+udm_exists "container/cn"; fail_bool 0 110
+
+section "Modify User-Ignore-Subtree"
+
+invoke-rc.d univention-ad-connector stop
+
+MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
+cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+sed -i "s/import mapping/import mapping\nmapping.ad_mapping ['user'].ignore_subtree = mapping.ad_mapping ['user'].ignore_subtree + ['CN=$UDM_container_cn_name,$ldap_base']/" "$MAIN_FILE"
+
+ad_set_sync_mode "sync"
+invoke-rc.d univention-ad-connector start
+
+section "Create user"
+
+ad_createuser "$UDM_users_user_username" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 0 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+
+section "Move user to ignored subtree"
+
+ad_move "$AD_USER_DN" "CN=$UDM_users_user_username,CN=$UDM_container_cn_name,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 121 "See #18504"
+udm_exists "users/user" "" "" "cn=$UDM_container_cn_name,$ldap_base"; fail_bool 1 110
+ad_exists "CN=$UDM_users_user_username,CN=$UDM_container_cn_name,$(ad_get_base)"; fail_bool 0 110
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+
+section "Clean up"
+
+ad_delete "CN=$UDM_users_user_username,CN=$UDM_container_cn_name,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+ad_exists "CN=$UDM_users_user_username,CN=$UDM_container_cn_name,$(ad_get_base)"; fail_bool 1 110
+udm_exists "users/user" "" "" "cn=$UDM_container_cn_name,$ldap_base"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
+
+ad_delete "CN=$UDM_container_cn_name,$(ad_get_base)"
+
+invoke-rc.d univention-ad-connector stop
+mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+ad_set_sync_mode "$SYNCMODE"
+invoke-rc.d univention-ad-connector start
+
+exit "$RETVAL"

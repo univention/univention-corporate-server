@@ -328,14 +328,14 @@ Description: Test scripts for the updater.
 #Description: Test scripts for univention-system-setup.
 # This package includes the test-cases for unvention-system-setup.
 
-#Package: ucs-test-ad-connector
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for univention-ad-connector.
-# This package includes the test-cases for unvention-ad-connector.
+Package: ucs-test-adconnector
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for univention-ad-connector.
+ This package includes the test-cases for unvention-ad-connector.
 
 #Package: ucs-test-ucsschool
 #Architecture: all
@@ -357,6 +357,8 @@ Depends:
 # ucs-test-kolab,
 # ucs-test-iptables,
  ucs-test-samba,
+ ucs-test-samba4,
+ ucs-test-s4connector,
 # ucs-test-pkgdb,
 # ucs-test-udm-dns,
 # ucs-test-udm-computers,
@@ -375,7 +377,7 @@ Depends:
 # ucs-test-system-setup,
 # ucs-test-udm-net,
  ucs-test-ucr,
-# ucs-test-ad-connector,
+ ucs-test-adconnector,
 # ucs-test-ucsschool,
 # ucs-test-login
 Description: UCS test environment meta package

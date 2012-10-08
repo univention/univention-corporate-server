@@ -1,0 +1,73 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check whether the OU-Ignore-Subtree is respected on ad-side in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+
+OU1="$(random_chars)"
+OU2="$(random_chars)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+UDM_container_ou_name="$OU1"
+AD_OU_DN="OU=$UDM_container_ou_name,$(ad_get_base)"
+ad_createou "$OU1" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "container/ou"; fail_bool 0 110
+ad_exists "$AD_OU_DN"; fail_bool 0 110
+
+section "Modify Container-Ignore-Subtree"
+
+invoke-rc.d univention-ad-connector stop
+
+MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
+cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+sed -i "s/import mapping/import mapping\nmapping.ad_mapping ['ou'].ignore_subtree = mapping.ad_mapping ['ou'].ignore_subtree + ['ou=$OU1,$ldap_base']/" "$MAIN_FILE"
+
+ad_set_sync_mode "write"
+invoke-rc.d univention-ad-connector start
+
+section "Create ou"
+UDM_container_ou_name="$OU2"
+AD_OU_DN="OU=$UDM_container_ou_name,OU=$OU1,$(ad_get_base)"
+
+ad_createou "$OU2" "" "OU=$OU1,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_OU_DN"; fail_bool 0 110
+udm_exists  "container/ou" "" "" "ou=$OU1,$ldap_base"; fail_bool 1 110
+
+section "Clean up"
+
+ad_delete "$AD_OU_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_OU_DN"; fail_bool 1 110
+udm_exists  "container/ou" "" "" "ou=$OU1,$ldap_base"; fail_bool 1 110
+
+invoke-rc.d univention-ad-connector stop
+mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+ad_set_sync_mode "sync"
+invoke-rc.d univention-ad-connector start
+
+UDM_container_ou_name="$OU1"
+AD_OU_DN="OU=$UDM_container_ou_name,$(ad_get_base)"
+ad_delete "$AD_OU_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_OU_DN"; fail_bool 1 110
+udm_exists  "container/ou"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

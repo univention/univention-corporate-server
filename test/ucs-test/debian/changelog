@@ -1,3 +1,9 @@
+ucs-test (3.0.3-1) unstable; urgency=low
+
+  * Copy AD Connector tests from ucs-3.0/internal/ucs-test/ (Bug #27650)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Oct 2012 07:50:44 +0200
+
 ucs-test (3.0.2-1) unstable; urgency=low
 
   * 52_s4connector/00create_remove_object: make it to a real default

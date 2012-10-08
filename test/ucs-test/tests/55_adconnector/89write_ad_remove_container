@@ -1,0 +1,80 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check whether container can be recursively removed on ad-side in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+
+#                 Container3
+#                /
+#      Container1--User
+#     /
+# Base
+
+# shall become
+
+# Base
+
+RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+ad_set_retry_rejected 2
+
+CONTAINER1="$(random_chars)1"
+CONTAINER3="$(random_chars)3"
+UDM_users_user_username="$(random_chars)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+section "Create initial Tree structure"
+
+ad_container_create "$CONTAINER1" || fail_test 110
+ad_container_create "$CONTAINER3" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
+ad_createuser "$UDM_users_user_username" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_container_cn_name="$CONTAINER1"
+udm_exists "container/cn"; fail_bool 0 110
+UDM_container_cn_name="$CONTAINER3"
+udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
+udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
+
+ad_exists "CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
+ad_exists "CN=$CONTAINER3,CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
+ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
+
+section "Recursively remove $CONTAINER1"
+
+ad_set_sync_mode "write"
+
+ad_delete "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "CN=$CONTAINER1,$(ad_get_base)"; fail_bool 1 110
+
+UDM_container_cn_name="$CONTAINER1"
+udm_exists "container/cn"; fail_bool 0 110
+UDM_container_cn_name="$CONTAINER3"
+udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
+udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
+
+section "Clean up"
+
+UDM_container_cn_name="$CONTAINER3"
+udm_remove "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
+udm_remove "users/user" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
+UDM_container_cn_name="$CONTAINER1"
+udm_remove "container/cn" || fail_test 110
+
+ad_set_retry_rejected "$RETRYREJECTED"
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
