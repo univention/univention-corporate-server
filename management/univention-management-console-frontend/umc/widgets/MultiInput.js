@@ -142,13 +142,6 @@ define([
 			this._appendElements(1);
 		},
 
-		postCreate: function() {
-			// FIXME: this line should not be necessary...
-			this.sizeClass = null;
-
-			this.inherited(arguments);
-		},
-
 		_loadValues: function(depends) {
 			// delegate the call to _loadValues to all widgets
 			this._lastDepends = depends;

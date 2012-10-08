@@ -56,7 +56,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._timeBox = this.adopt(TimeTextBox, {
+			this._timeBox = this.own(TimeTextBox, {
 				name: this.name,
 				disabled: this.disabled
 			});

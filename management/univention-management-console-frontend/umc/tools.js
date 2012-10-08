@@ -516,19 +516,27 @@ define([
 		},
 
 		parseError: function(error) {
-			if (!error.data) {
+			if (error.data) {
+				// the response contained a valid JSON object
+				return {
+					status: parseInt(error.data.status, 10) || error.status,
+					message: error.data.message || '',
+					result: error.data.result
+				};
+			}
+			if (error.response) {
 				// no JSON was returned, propably proxy error
 				var r = /<title>(.*)<\/title>/;
 				return {
 					status: error.status,
-					message: r.test(error.text) ? r.exec(error.text)[1] : 'Internal Server Error',
+					message: r.test(error.text) ? r.exec(error.text)[1] : this._statusMessages[500],
 					result: null
 				};
 			}
 			return {
-				status: parseInt(error.data.status, 10) || error.status,
-				message: error.data.message || '',
-				result: error.data.result
+				status: 500,
+				message: this._statusMessages[500],
+				result: null
 			};
 		},
 
@@ -562,7 +570,7 @@ define([
 					dialog.alert('<p>' + this._statusMessages[status] + (message ? ': ' + message : '.') + '</p>');
 				}*/
 				// handle Tracebacks
-				else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
+				else if(message.match(/Traceback.*File.*line/)) {
 
 					var feedbackLink = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\nunivention-management-console-frontend {5}", [
 						_('Please take a second to provide the following information:'),
@@ -599,8 +607,9 @@ define([
 					}));
 					container.addChild(titlePane);
 
-					container.connect(titlePane._wipeIn, 'end', function() { dialog.centerAlertDialog(); } );
-					container.connect(titlePane._wipeOut, 'end', function() { dialog.centerAlertDialog(); } );
+					// center the alert dialog when folding the title pane
+					titlePane._wipeIn.on('end', function() { dialog.centerAlertDialog(); } );
+					titlePane._wipeOut.on('end', function() { dialog.centerAlertDialog(); } );
 
 					dialog.alert( container );
 				}
