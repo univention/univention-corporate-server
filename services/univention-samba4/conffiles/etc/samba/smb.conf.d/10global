@@ -21,7 +21,7 @@ samba_serverstring = configRegistry.get('samba/serverstring', 'Univention Corpor
 print '\tserver string\t=', samba_serverstring
 
 ## build up and set server services option list if non-empty
-server_services=[]
+server_services = ['-dns']
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	server_services.append('-smb')
 elif configRegistry.get('samba4/service/smb', 's3fs'):
