@@ -520,7 +520,7 @@ define([
 				// the response contained a valid JSON object
 				return {
 					status: parseInt(error.data.status, 10) || error.status,
-					message: error.data.message || '',
+					message: error.data.message.replace(/\n/g, '<br>') || '',
 					result: error.data.result
 				};
 			}
