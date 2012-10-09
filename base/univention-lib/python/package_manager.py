@@ -352,8 +352,8 @@ class PackageManager(object):
 					self.cache.update(self.fetch_progress)
 			else:
 				self.cache.update(self.fetch_progress)
-		except FetchFailedException:
-			self.progress_state.error(_('Fetch failed'))
+		except FetchFailedException as e:
+			self.progress_state.error(_('Fetch failed (%s)') % e)
 			return False
 		except LockFailedException:
 			self.progress_state.error(_('Failed to lock'))
@@ -492,6 +492,9 @@ class PackageManager(object):
 				result = self.cache.commit(**kwargs)
 			if not result:
 				raise SystemError()
+		except FetchFailedException as e:
+			self.progress_state.error(_('Fetch failed (%s)') % e)
+			return False
 		except SystemError:
 			if msg_if_failed:
 				self.progress_state.error(msg_if_failed)
