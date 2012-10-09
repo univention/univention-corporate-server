@@ -1,3 +1,9 @@
+ucs-test (3.0.7-1) unstable; urgency=low
+
+  * Update license tests (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 21:05:40 +0200
+
 ucs-test (3.0.6-1) unstable; urgency=low
 
   * Added a short test script for the license count with the new license

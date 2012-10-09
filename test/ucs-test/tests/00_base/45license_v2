@@ -20,7 +20,7 @@ fi
 
 getManagedClient ()
 {
-	univention-license-check  | sed -ne 's|Managed Clients: *||p' | sed  -e 's| .*||'
+	univention-license-check  | sed -ne 's|^Managed Clients: *||p' | sed  -e 's| .*||'
 }
 getUsers ()
 {
@@ -29,6 +29,18 @@ getUsers ()
 getServers ()
 {
 	univention-license-check  | sed -ne 's|^Servers: *||p' | sed  -e 's| .*||'
+}
+getUCC ()
+{
+	univention-license-check  | sed -ne 's|^Corporate Clients: *||p' | sed  -e 's| .*||'
+}
+getDVSUsers ()
+{
+	univention-license-check  | sed -ne 's|^DVS Users: *||p' | sed  -e 's| .*||'
+}
+getDVSClients ()
+{
+	univention-license-check  | sed -ne 's|^DVS Clients: *||p' | sed  -e 's| .*||'
 }
 
 createObject ()
@@ -61,16 +73,25 @@ for m in "computers/linux" "computers/macos" "computers/managedclient" \
 	oldValueManaged="$(getManagedClient)"
 	oldValueUsers="$(getUsers)"
 	oldValueServers="$(getServers)"
+	oldValueUCC="$(getUCC)"
+	oldValueDVSUsers="$(getDVSUsers)"
+	oldValueDVSClients="$(getDVSClients)"
 
 	createObject "$m" "$name"
 
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"
 	newValueServers="$(getServers)"
+	newValueUCC="$(getUCC)"
+	newValueDVSUsers="$(getDVSUsers)"
+	newValueDVSClients="$(getDVSClients)"
 
 	echo "Test managed client count"; test "$((oldValueManaged+1))" = "$newValueManaged"; fail_bool 0 110
-	echo "Test users count"; test "$((oldValueUsers))" = "$newValueUsers"; fail_bool 0 110
-	echo "Test server count"; test "$((oldValueServers))" = "$newValueServers"; fail_bool 0 110
+	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
+	echo "Test server count"; test "$oldValueServers" = "$newValueServers"; fail_bool 0 110
+	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
+	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
+	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
 
 	removeObject "$m" "$name"
 done
@@ -80,16 +101,25 @@ for m in "computers/ipmanagedclient"; do
 	oldValueManaged="$(getManagedClient)"
 	oldValueUsers="$(getUsers)"
 	oldValueServers="$(getServers)"
+	oldValueUCC="$(getUCC)"
+	oldValueDVSUsers="$(getDVSUsers)"
+	oldValueDVSClients="$(getDVSClients)"
 
 	createObject "$m" "$name"
 
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"
 	newValueServers="$(getServers)"
+	newValueUCC="$(getUCC)"
+	newValueDVSUsers="$(getDVSUsers)"
+	newValueDVSClients="$(getDVSClients)"
 
-	echo "Test managed client count"; test "$((oldValueManaged))" = "$newValueManaged"; fail_bool 0 110
-	echo "Test users count"; test "$((oldValueUsers))" = "$newValueUsers"; fail_bool 0 110
-	echo "Test server count"; test "$((oldValueServers))" = "$newValueServers"; fail_bool 0 110
+	echo "Test managed client count"; test "$oldValueManaged" = "$newValueManaged"; fail_bool 0 110
+	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
+	echo "Test server count"; test "$oldValueServers" = "$newValueServers"; fail_bool 0 110
+	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
+	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
+	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
 
 	removeObject "$m" "$name"
 done
@@ -100,16 +130,25 @@ for m in "computers/memberserver" "computers/domaincontroller_slave" \
 	oldValueManaged="$(getManagedClient)"
 	oldValueUsers="$(getUsers)"
 	oldValueServers="$(getServers)"
+	oldValueUCC="$(getUCC)"
+	oldValueDVSUsers="$(getDVSUsers)"
+	oldValueDVSClients="$(getDVSClients)"
 
 	createObject "$m" "$name"
 
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"
 	newValueServers="$(getServers)"
+	newValueUCC="$(getUCC)"
+	newValueDVSUsers="$(getDVSUsers)"
+	newValueDVSClients="$(getDVSClients)"
 
-	echo "Test managed client count"; test "$((oldValueManaged))" = "$newValueManaged"; fail_bool 0 110
-	echo "Test users count"; test "$((oldValueUsers))" = "$newValueUsers"; fail_bool 0 110
+	echo "Test managed client count"; test "$oldValueManaged" = "$newValueManaged"; fail_bool 0 110
+	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
 	echo "Test server count"; test "$((oldValueServers+1))" = "$newValueServers"; fail_bool 0 110
+	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
+	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
+	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
 
 	removeObject "$m" "$name"
 done
