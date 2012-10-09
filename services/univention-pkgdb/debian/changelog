@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.6-2) unstable; urgency=low
+
+  * add missing UCRV description (Bug #22578)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 09 Oct 2012 16:57:52 +0200
+
 univention-pkgdb (6.0.6-1) unstable; urgency=low
 
   * support multiple networks (Bug #27873)

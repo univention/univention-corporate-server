@@ -1,0 +1,5 @@
+[pkgdb/scan]
+Description[de]=Konfiguriert die Aktualisierung der Software-Monitor-Datenbank (Diese Variable wird automatisch gesetzt)
+Description[en]=Configure update of the software monitor database (This variable is set automatically)
+Type=str
+Categories=system-swmon
