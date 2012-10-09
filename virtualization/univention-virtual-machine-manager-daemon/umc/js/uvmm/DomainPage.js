@@ -245,7 +245,7 @@ define([
 					type: CheckBox,
 					label: _('Globally available')
 				}, {
-					name: 'vncPort',
+					name: 'vnc_port',
 					type: TextBox,
 					disabled: true,
 					visible: false,
@@ -274,8 +274,8 @@ define([
 				}, {
 					label: _('Remote access'),
 					layout: [
-					 	 [ 'vnc', 'vnc_remote' ],
-					 	 'vncPort',
+						['vnc', 'vnc_remote'],
+						'vnc_port',
 						'vnc_password',
 						'kblayout'
 					]
@@ -516,7 +516,7 @@ define([
 					}
 
 					// set visibility of the VNC-Port
-					this._advancedForm._widgets.vncPort.set('visible', Boolean(this._advancedForm._widgets.vncPort.get('value')));
+					this._advancedForm._widgets.vnc_port.set('visible', Boolean(this._advancedForm._widgets.vnc_port.get('value')));
 
 					// deactivate most input field when domain is running
 					var disabled = false;

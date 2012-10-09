@@ -301,11 +301,11 @@ define([
 		vncLink: function( ids, items ) {
 			tools.umcpCommand( 'uvmm/domain/get', { domainURI : ids[ 0 ] } ).then( lang.hitch( this, function( response ) {
 				var w = window.open();
-				var html = lang.replace( "<html><head><title>{domainName} on {nodeName}</title></head><body><applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'><param name='host' value='{vncHost}' /><param name='port' value='{vncPort}' /><param name='offer relogin' value='no' />VNC-Java-Applet does not work; try external VNC viewer <a href='vnc://{vncHost}:{vncPort}'>vnc://{vncHost}:{vncPort}</a>.</applet></body></html>", {
+				var html = lang.replace( "<html><head><title>{domainName} on {nodeName}</title></head><body><applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'><param name='host' value='{vnc_host}' /><param name='port' value='{vnc_port}' /><param name='offer relogin' value='no' />VNC-Java-Applet does not work; try external VNC viewer <a href='vnc://{vnc_host}:{vnc_port}'>vnc://{vnc_host}:{vnc_port}</a>.</applet></body></html>", {
 					domainName: entities.encode(items[ 0 ].label),
 					nodeName: entities.encode(items[ 0 ].nodeName),
-					vncHost: entities.encode(response.result.vncHost),
-					vncPort: response.result.vncPort
+					vnc_host: entities.encode(response.result.vnc_host),
+					vnc_port: response.result.vnc_port
 				} );
 				w.document.write( html );
 				w.document.close();
@@ -828,7 +828,7 @@ define([
 				} ),
 				callback: lang.hitch(this, 'vncLink' ),
 				canExecute: function(item) {
-					return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.port && item.node_available;
+					return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc_port && item.node_available;
 				}
 			}, {
 				name: 'migrate',
@@ -937,10 +937,10 @@ define([
 
 			if ( undefined !== item.state ) {
 				var tooltip = new Tooltip( {
-					label: lang.replace( _( 'State: {state}<br>Server: {node}<br>{port}' ), {
+					label: lang.replace( _( 'State: {state}<br>Server: {node}<br>{vnc_port}' ), {
 						state: types.getDomainStateDescription( item ),
 						node: item.nodeName,
-						port: item.vnc_port == -1 ? '' : _( 'VNC-Port: %s', item.vnc_port)
+						vnc_port: item.vnc_port == -1 ? '' : _( 'VNC-Port: %s', item.vnc_port)
 					} ),
 					connectId: [ widget.domNode ],
 					position: [ 'below' ]

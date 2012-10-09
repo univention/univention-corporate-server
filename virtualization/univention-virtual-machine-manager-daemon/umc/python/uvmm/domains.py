@@ -165,8 +165,8 @@ class Domains( object ):
 				try:
 					gfx = json[ 'graphics' ][ 0 ]
 					json[ 'vnc' ] = True
-					json[ 'vncHost' ] = None
-					json[ 'vncPort' ] = None
+					json[ 'vnc_host' ] = None
+					json[ 'vnc_port' ] = None
 					json[ 'kblayout' ] = gfx[ 'keymap' ]
 					json[ 'vnc_remote' ] = gfx[ 'listen' ] == '0.0.0.0'
 					json[ 'vnc_password' ] = gfx[ 'passwd' ]
@@ -196,8 +196,8 @@ class Domains( object ):
 								host = host.replace(old, new)
 					elif vnc_link_format:  # overwrite all hosts with fixed host
 						host = vnc_link_format
-					json[ 'vncHost' ] = host
-					json[ 'vncPort' ] = port
+					json[ 'vnc_host' ] = host
+					json[ 'vnc_port' ] = port
 				except re.error, ex: # port is not valid
 					MODULE.warn('Invalid VNC regex: %s' % (ex,))
 				except socket.gaierror, ex:
