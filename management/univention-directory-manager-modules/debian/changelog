@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.42-1) unstable; urgency=low
+
+  * Use keyID instead of customerID (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 06:49:34 +0200
+
 univention-directory-manager-modules (8.0.41-1) unstable; urgency=low
 
   * Add threshold for handler-properties (Bug #26556)

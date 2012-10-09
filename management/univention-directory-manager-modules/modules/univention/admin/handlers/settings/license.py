@@ -184,9 +184,9 @@ property_descriptions={
 			may_change=0,
 			identifies=0,
 		),
-	'customerID': univention.admin.property(
-			short_description = _('Customer ID'),
-			long_description = _('Customer ID of this license.'),
+	'keyID': univention.admin.property(
+			short_description = _('Key ID'),
+			long_description = _('Key ID of this license.'),
 			syntax = univention.admin.syntax.string,
 			multivalue = 0,
 			options = ['Version 2'],
@@ -303,7 +303,7 @@ layout = [
 			['clients', 'desktops'],
 		] ),
 		Group( _( 'Version 2 license informations' ), layout = [
-			'customerID',
+			'keyID',
 			['users', 'servers'],
 			['corporateclients', 'managedclients'],
 			['virtualdesktopusers', 'virtualdesktopclients'],
@@ -326,7 +326,7 @@ mapping.register('desktops', 'univentionLicenseuniventionDesktops', None, univen
 mapping.register('productTypes', 'univentionLicenseType')
 mapping.register('oemProductTypes', 'univentionLicenseOEMProduct')
 mapping.register('product', 'univentionLicenseProduct', None, univention.admin.mapping.ListToString)
-mapping.register('customerID', 'univentionLicenseCustomerID', None, univention.admin.mapping.ListToString)
+mapping.register('keyID', 'univentionLicenseKeyID', None, univention.admin.mapping.ListToString)
 mapping.register('servers', 'univentionLicenseServers', None, univention.admin.mapping.ListToString)
 mapping.register('support', 'univentionLicenseSupport', None, univention.admin.mapping.ListToString)
 mapping.register('premiumsupport', 'univentionLicensePremiumSupport', None, univention.admin.mapping.ListToString)
