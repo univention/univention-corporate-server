@@ -77,12 +77,14 @@ def default_pw():
 		secret.close()
 		return passwd
 
-def format(label, num, max, expired, cmp):
+def format(label, num, max, expired, cmp, ignored=False):
 	args = [(label + ':').ljust(20), str(num).rjust(9), str(max).rjust(9), 'OK']
 	if expired:
 		args[-1] = 'EXPIRED'
 	elif cmp(num, max) > 0:
 		args[-1] = 'FAILED'
+	if ignored and args[-1] in ['FAILED', 'EXPIRED']:
+		args[-1] = 'IGNORED'
 	return '%s %s of %s... %s' % tuple(args)
 
 def find_licenses(lo, baseDN, module='*'):
@@ -150,7 +152,12 @@ def check_license(lo, dn, list_dns, expired):
 			if m:
 				if list_dns:
 					out.append("")
-				out.append(format(l, n, m, e == expired, _license.compare))
+				
+				ignored = False
+				if v == '2' and i == License.SERVERS:
+					# Ignore the server count
+					ignored = True
+				out.append(format(l, n, m, e == expired, _license.compare, ignored))
 				if list_dns and not max == 'unlimited':
 					for dnout in odn:
 						out.extend( [ "  %s" % dnout, ] )

@@ -327,8 +327,9 @@ class License( object ):
 		elif self.version == '2':
 			lic_users, lic_servers, lic_managedclients, lic_corporateclients, lic_virtualdesktopusers, lic_virtualdesktopclients = lic
 			real_users, real_servers, real_managedclients, real_corporateclients, real_virtualdesktopusers, real_virtualdesktopclients = real
-			if lic_servers and self.__cmp_gt( real_servers, lic_servers ):
-				disable_add = 6
+			# The license should be valid even if we have more servers than the license allowed
+			#if lic_servers and self.__cmp_gt( real_servers, lic_servers ):
+			#	disable_add = 6
 			if lic_users and self.__cmp_gt( int( real_users ) - License.SYSACCOUNTS ,lic_users ):
 				disable_add = 7
 			if lic_managedclients and self.__cmp_gt( real_managedclients, lic_managedclients ):

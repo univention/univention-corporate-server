@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.46-1) unstable; urgency=low
+
+  * The license should be valid even if we have more servers than the
+    license allowed (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 13:37:31 +0200
+
 univention-directory-manager-modules (8.0.45-1) unstable; urgency=low
 
   * Use default values for keyID and support values (Bug #28186)
