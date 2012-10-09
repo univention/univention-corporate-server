@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.45-1) unstable; urgency=low
+
+  * Use default values for keyID and support values (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 11:05:57 +0200
+
 univention-directory-manager-modules (8.0.44-1) unstable; urgency=low
 
   * Added keyID and support values to the license object (Bug #28186)
