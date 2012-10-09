@@ -1,3 +1,9 @@
+univention-licence (5.0.3-1) unstable; urgency=low
+
+  * Added univentionObject to license object (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 15:25:40 +0200
+
 univention-licence (5.0.2-1) unstable; urgency=low
 
   * Use keyID instead of customerID (Bug #28186)

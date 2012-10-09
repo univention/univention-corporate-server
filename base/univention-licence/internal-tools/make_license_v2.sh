@@ -291,6 +291,8 @@ cd "$MASTERKEYDIR" || help_and_exit "Can't change to directory $MASTERKEYDIR"
 	echo dn: cn="$CUSTOMER","$LDAPTMP";
 	echo objectClass: top;
 	echo objectClass: univentionLicense;
+	echo objectClass: univentionObject;
+	echo univentionObjectType: settings/license;
 	echo univentionLicenseEndDate: "$EXPDATE";
 	echo univentionLicenseModule: admin;
 	echo univentionLicenseSignature: empty;
