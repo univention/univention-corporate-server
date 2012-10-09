@@ -3,10 +3,10 @@
 # Number of servers to start up and options for rpc.nfsd
 @!@
 nfsdopt="8"
-if baseConfig.is_false("nfs/nfs4"):
+if baseConfig.is_false("nfs/nfsd/nfs4"):
 	nfsdopt += " --no-nfs-version 4"
 
-print "RPCNFSDCOUNT=%s" % nfsdopt
+print 'RPCNFSDCOUNT="%s"' % nfsdopt
 @!@
 # Runtime priority of server (see nice(1))
 RPCNFSDPRIORITY=0

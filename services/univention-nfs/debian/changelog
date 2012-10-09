@@ -1,3 +1,9 @@
+univention-nfs (5.0.4-2) unstable; urgency=low
+
+  * deactivate nfs4 for rpc.nfsd by default (Bug #28500) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Oct 2012 11:14:09 +0200
+
 univention-nfs (5.0.4-1) unstable; urgency=low
 
   * deactivate nfs4 for rpc.nfsd by default (Bug #28500) 

@@ -1,7 +1,7 @@
 Type: file
 File: etc/default/nfs-kernel-server
 Variables: nfs/ports
-Variables: nfs/nfs4
+Variables: nfs/nfsd/nfs4
 
 Type: file
 File: etc/default/nfs-common

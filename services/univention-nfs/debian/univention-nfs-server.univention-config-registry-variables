@@ -10,7 +10,7 @@ Description[en]=With 'static' fixed IP port numbers are assigned to NFS services
 Type=str
 Categories=nfs
 
-[nfs/nfs4]
+[nfs/nfsd/nfs4]
 Description[de]=Nfs V4 im rpc.nfsd Server Prozess aktivieren/deaktivieren (default: false)
 Description[en]=Enable/disable nfs v4 for the rpc.nfsd server process (default: false)
 Type=str
