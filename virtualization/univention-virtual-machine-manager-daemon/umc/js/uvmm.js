@@ -925,11 +925,12 @@ define([
 
 			// create an HTML image that contains the icon (if we have a valid iconName)
 			var item = this._grid._grid.getItem(rowIndex);
-			var html = string.substitute('<img src="images/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${label}', {
+			var html = string.substitute('<img src="${themeUrl}/icons/16x16/${icon}.png" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${label}', {
 				icon: this._iconClass(item),
 				height: '16px',
 				width: '16px',
-				label: label
+				label: label,
+				themeUrl: require.toUrl('dijit/themes/umc')
 			});
 			// set content after creating the object because of HTTP404: Bug #25635
 			var widget = new Text({});

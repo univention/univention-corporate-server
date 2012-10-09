@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.8-1) unstable; urgency=low
+
+  * fixed icon path in grid; Bug #28551
+
+ -- Florian Best <best@univention.de>  Tue, 09 Oct 2012 16:19:47 +0200
+
 univention-virtual-machine-manager-daemon (2.0.7-2) unstable; urgency=low
 
   * Update de.po (Bug #28104)
