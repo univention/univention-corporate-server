@@ -51,7 +51,7 @@ define([
 	"umc/i18n!umc/app",
 	"dojo/domReady!"
 ], function(declare, lang, array, win, aspect, on, mouse, dom, query, attr, domClass, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
-	return declare("umc.widgets.LoginDialog", StandbyMixin, {
+	return declare("umc.widgets.LoginDialog", [Dialog, StandbyMixin], {
 		// our own variables
 		_connections: null,
 		_iframe: null,
