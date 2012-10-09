@@ -51,6 +51,7 @@ univention-config-registry set \
 	"${COMP}=enabled" \
 	"${COMP}/parts=maintained" \
 	"${COMP}/version=current" \
+	"${COMP}/localmirror=false" \
 	"${COMP}/server=${repository_app_center_server:-appcenter.software-univention.de}"
 
 univention-install "$@"
