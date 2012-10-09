@@ -32,7 +32,7 @@
 
 __package__='' 	# workaround for PEP 366
 import listener
-import os,string
+import subprocess
 import univention.debug
 
 name='pkgdb'
@@ -52,8 +52,9 @@ def exec_pkgdb(args):
 
 	listener.setuid(0)
 	try:
-		cmd = '/usr/share/pyshared/univention/pkgdb.py --db-server=%s.%s %s' % ( hostname, domainname, string.join( args, ' ' ))
-		retcode = os.system( cmd )
+		cmd = ['univention-pkgdb-scan', '--db-server=%s.%s' % (hostname, domainname, ), ]
+		cmd += args
+		retcode = subprocess.call(cmd)
 	finally:
 		listener.unsetuid()
 
@@ -77,6 +78,7 @@ def del_system( sysname ):
 	return retcode
 
 def initialize():
+	# TODO: call add_system for every system in the directory already
 	pass
 
 def handler(dn, new, old):

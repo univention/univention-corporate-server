@@ -1,3 +1,12 @@
+univention-pkgdb (6.0.7-1) unstable; urgency=low
+
+  * update database schema (Bug #21873, Bug #11364)
+  * fix install/remove/purge (Bug #24096)
+  * general cleanup (Bug #21873, Bug #13538)
+  * support removal of systems from database (Bug #14929)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 09 Oct 2012 17:38:25 +0200
+
 univention-pkgdb (6.0.6-2) unstable; urgency=low
 
   * add missing UCRV description (Bug #22578)

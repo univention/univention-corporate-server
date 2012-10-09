@@ -53,14 +53,12 @@ override_dh_auto_build:
 override_dh_auto_install:
 	dh-umc-module-install
 	dh_auto_install
-
-#	 Set package_version
-	install -d debian/python-univention-pkgdb/usr/share/pyshared/univention/
-	cat univention_pkgdb.py| sed -e "s/@%@package_version@%@/${version}/" > debian/python-univention-pkgdb/usr/share/pyshared/univention/pkgdb.py
-	chmod 755 debian/python-univention-pkgdb/usr/share/pyshared/univention/pkgdb.py
-
 	univention-install-config-registry
 	univention-install-config-registry-info
+
+override_dh_install:
+	dh_install
+	sed -e "s/@%@package_version@%@/${version}/" -i debian/python-univention-pkgdb/usr/share/pyshared/univention/pkgdb.py
 
 override_dh_auto_test:
 	dh_auto_test
@@ -68,7 +66,6 @@ override_dh_auto_test:
 
 override_dh_fixperms:
 	dh_fixperms
-	chmod +x debian/univention-pkgdb/var/lib/postgres/pkgdb.bash
 	chmod +x debian/univention-pkgdb/usr/lib/univention-directory-listener/system/pkgdb.py
 
 %:

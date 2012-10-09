@@ -32,26 +32,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ ! -e /etc/postgresql/pkgdb.secret ] ;then
-  # no chance to do anything
-  echo "missing /etc/postgresql/pkgdb.secret"
-  exit 1
+if [ ! -e /etc/postgresql/pkgdb.secret ]
+then
+	# no chance to do anything
+	echo "missing /etc/postgresql/pkgdb.secret"
+	exit 1
 fi
 
-
-/usr/share/pyshared/univention/pkgdb.py --test-superuser
-if [ $? -ne 0 ] ;then
-  # or service record not found
-  echo "check the postgres installation, the command '/usr/share/pyshared/univention/pkgdb.py --test-superuser' failed"
-  exit 1
+if ! univention-pkgdb-scan --test-superuser
+then
+	# or service record not found
+	echo "check the postgres installation, the command 'univention-pkgdb-scan --test-superuser' failed"
+	exit 1
 fi
 
 find /var/lib/univention-pkgdb/add/ -type f | while read file; do
 	host=`basename $file`
-	/usr/share/pyshared/univention/pkgdb.py --add-system "$host"
-	ret=$?
-	if [ $ret = 0 ]; then
-		rm $file
+	if univention-pkgdb-scan --add-system "$host"
+	then
+		rm "$file"
 	else
 		echo "pkgdb: failed to remove $host"
 	fi
@@ -59,10 +58,9 @@ done
 
 find /var/lib/univention-pkgdb/delete/ -type f | while read file; do
 	host=`basename $file`
-	/usr/share/pyshared/univention/pkgdb.py --del-system "$host"
-	ret=$?
-	if [ $ret = 0 ]; then
-		rm $file
+	if univention-pkgdb-scan --del-system "$host"
+	then
+		rm "$file"
 	else
 		echo "pkgdb: failed to add $host"
 	fi

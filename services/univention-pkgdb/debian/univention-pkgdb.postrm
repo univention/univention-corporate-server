@@ -1,8 +1,7 @@
-#!/usr/bin/python2.6
-# -*- coding: utf-8 -*-
+#!/bin/sh
 #
 # Univention Package Database
-#  login to psql and executes a command
+#  prerm script for the debian package
 #
 # Copyright 2004-2012 Univention GmbH
 #
@@ -31,23 +30,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, string
-import univention.pkgdb
-from pexpect import *
+set -e
 
-args=sys.argv[1:]
-timeout=10
-connectstring,pwstring=univention_pkgdb.sql_create_psql_connectstring()
-if args:
-	command='psql '+connectstring + ' -c \"' + string.join(args, ' ') + '\"'
-else:
-	command='psql '+connectstring
+if [ "$1" = "purge" ]
+then
+	if [ -e /etc/postgresql/pkgdb.secret ] ;then
+		rm /etc/postgresql/pkgdb.secret
+	fi
+	su - postgres -c 'psql -v ON_ERROR_STOP= -q' <<EOF
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET client_min_messages = warning;
+DROP DATABASE IF EXISTS pkgdb;
+DROP ROLE IF EXISTS pkgdbu;
+DROP ROLE IF EXISTS pkgdbg;
+EOF
+fi
 
-print 'command=%s' %(command)
+#DEBHELPER#
 
-child=spawn(command)
-code=0
-while not code == 1:
-	code=child.expect(['Password:', EOF], timeout=timeout)
-	if code == 0:
-		child.sendline(pwstring)
+exit 0

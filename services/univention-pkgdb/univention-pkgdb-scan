@@ -31,8 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys
 import univention.pkgdb
 
-if __name__=='__main__':
-	univention.pkgdb.main(sys.argv[1:])
+if __name__ == '__main__':
+	univention.pkgdb.main()

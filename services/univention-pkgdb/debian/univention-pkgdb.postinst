@@ -34,41 +34,70 @@
 
 . /usr/share/univention-lib/all.sh
 
-if [ "$1" = "configure" ]
-then
-	univention-config-registry set \
-		pgsql/pkgdb/networks?"0.0.0.0/0 ::/0" \
-		pkgdb/scan?yes
+case "$1" in
+	configure)
+		univention-config-registry set \
+			pgsql/pkgdb/networks?"0.0.0.0/0 ::/0" \
+			pkgdb/scan?yes
 
-	if [ -f /var/lib/postgres/pkgdb.bash ] ;then
-		chmod 500 /var/lib/postgres/pkgdb.bash
-		/var/lib/postgres/pkgdb.bash
-	fi
+		# Create the local DB-Superuser pkgdbu for pkgdb with password in /etc/postgresql/pkgdb.secret
+		pkgdbu=`su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}'`
+		if [ ! "$pkgdbu" ] ;then
+			# only, if pkgdbu not exists
+			su - postgres -c "createuser --adduser --no-createdb pkgdbu"
+		fi
+		newPwdFile=$(mktemp /etc/postgresql/pkgdb.secret.XXXXXX)
+		makepasswd --char 16 | tr -d '\n' > "$newPwdFile"
+		chmod ug=r,o= "$newPwdFile"
+		chown postgres:www-data "$newPwdFile"
+		if su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '$(cat "$newPwdFile")';\" template1"
+		then
+			mv "$newPwdFile" /etc/postgresql/pkgdb.secret
+		else
+			rm "$newPwdFile"
+		fi
 
-	invoke-rc.d postgresql restart
+		if [ -z "$2" ]
+		then # installation
+			su - postgres -c 'psql -v ON_ERROR_STOP= -qf /usr/share/univention-pkgdb/sql/create-database.sql'
+		else # upgrade
+			for version in 6.0.7-1
+			do
+				if dpkg --compare-versions "$2" lt "$version"
+				then
+					su - postgres -c "psql -v ON_ERROR_STOP= -qf /usr/share/univention-pkgdb/sql/convert_to_${version}.sql"
+				fi
+			done
+		fi
 
-	if [ -z "$2" ]; then
-		su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-0.13"
-		su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-2.0.2"
-	fi
+		invoke-rc.d postgresql restart # TODO why?
 
-	# fix permissions (after postgresql sledgehammer-postinst )
-	if [ -e /etc/postgresql/pkgdb.secret ] ;then
-		chmod ug=r,o= /etc/postgresql/pkgdb.secret
-		chown postgres:www-data /etc/postgresql/pkgdb.secret
-	fi
+		# fix permissions (after postgresql sledgehammer-postinst )
+		if [ -e /etc/postgresql/pkgdb.secret ] ;then
+			chmod ug=r,o= /etc/postgresql/pkgdb.secret
+			chown postgres:www-data /etc/postgresql/pkgdb.secret
+		fi
 
-	call_joinscript 50univention-pkgdb.inst || true
+		call_joinscript 50univention-pkgdb.inst || true
 
-	if [ -x "/etc/init.d/univention-directory-listener" ]; then
-		/etc/init.d/univention-directory-listener crestart
-	fi
+		if [ -x "/etc/init.d/univention-directory-listener" ]; then
+			/etc/init.d/univention-directory-listener crestart
+		fi
 
-	create_logfile_if_missing /var/log/univention/pkgdb.log "root:adm" 640
+		create_logfile_if_missing /var/log/univention/pkgdb.log "root:adm" 640
 
-	if [ -x "/etc/init.d/univention-management-console-server" ] ; then
-		/etc/init.d/univention-management-console-server crestart || true
-	fi
-fi
+		if [ -x "/etc/init.d/univention-management-console-server" ] ; then
+			/etc/init.d/univention-management-console-server crestart
+		fi
+		;;
+
+	abort-upgrade|abort-remove|abort-deconfigure)
+		;;
+
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+		;;
+esac
 
 exit 0

@@ -42,10 +42,8 @@ if [ -z "$(univention-ldapsearch -xLLL relativeDomainName=_pkgdb._tcp relativeDo
 	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv pkgdb tcp 0 0 5432 "$hostname.$domainname."
 fi
 
-if [ -x /usr/sbin/univention-pkgdb-check ] && [ -e /usr/share/pyshared/univention/pkgdb.py ]; then
-	/usr/share/pyshared/univention/pkgdb.py --db-server "$hostname.$domainname" --add "$hostname$" || exit 1
-	univention-pkgdb-scan --db-server "$hostname.$domainname"
-fi
+univention-pkgdb-scan --db-server "$hostname.$domainname" --add "$hostname$" || exit 1
+univention-pkgdb-scan --db-server "$hostname.$domainname"
 
 # add service entry
 univention-directory-manager container/cn create --ignore_exists "$@" --position "cn=univention,$ldap_base" --set name=services
