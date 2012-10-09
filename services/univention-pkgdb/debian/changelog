@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.7-2) unstable; urgency=low
+
+  * fix listener restart (Bug #19467)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 09 Oct 2012 18:58:54 +0200
+
 univention-pkgdb (6.0.7-1) unstable; urgency=low
 
   * update database schema (Bug #21873, Bug #11364)

@@ -32,7 +32,7 @@
 
 . /usr/share/univention-lib/all.sh
 
-invoke-rc.d --quiet univention-directory-listener || true
+invoke-rc.d univention-directory-listener crestart || true
 
 #DEBHELPER#
 
