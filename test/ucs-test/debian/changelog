@@ -1,3 +1,10 @@
+ucs-test (3.0.6-1) unstable; urgency=low
+
+  * Added a short test script for the license count with the new license
+    format (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 16:47:13 +0200
+
 ucs-test (3.0.5-1) unstable; urgency=low
 
   * Skip move to ignore subtree tests for the AD connector. Bug #28702

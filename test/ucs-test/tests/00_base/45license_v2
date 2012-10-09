@@ -1,0 +1,117 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check license v2 count for clients, servers and users"
+## exposure: dangerous
+## packages:
+## - univention-directory-manager-tools
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+## versions:
+##  3.1-0: fixed
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+licenseVersion="$(univention-ldapsearch '(&(cn=admin)(objectClass=univentionLicense))' -LLL univentionLicenseVersion | sed -ne 's|univentionLicenseVersion: ||p')"
+
+if [ "$licenseVersion" != 2 ]; then
+	exit 137
+fi
+
+getManagedClient ()
+{
+	univention-license-check  | sed -ne 's|Managed Clients: *||p' | sed  -e 's| .*||'
+}
+getUsers ()
+{
+	univention-license-check  | sed -ne 's|^Users: *||p' | sed  -e 's| .*||'
+}
+getServers ()
+{
+	univention-license-check  | sed -ne 's|^Servers: *||p' | sed  -e 's| .*||'
+}
+
+createObject ()
+{
+	module="$1"
+	name="$2"
+
+	echo "Create UDM object of type $module"
+
+	if [ "$module" = "computers/thinclient" ]; then
+		udm $module create --set name="$name" --position "cn=computers,$ldap_base" --set ip=1.3.4.5 --set mac=00:01:20:03:04:05
+	else
+		udm $module create --set name="$name" --position "cn=computers,$ldap_base" $param
+	fi
+}
+removeObject ()
+{
+	module="$1"
+	name="$2"
+	udm $module remove --dn "cn=$name,cn=computers,$ldap_base" || fail_test 110
+}
+
+# These objects should be counted as managed clients
+for m in "computers/linux" "computers/macos" "computers/managedclient" \
+			"computers/mobileclient" \
+			"computers/ubuntu" "computers/windows" \
+			"computers/windows_domaincontroller"; do
+	name="$(random_chars)"
+
+	oldValueManaged="$(getManagedClient)"
+	oldValueUsers="$(getUsers)"
+	oldValueServers="$(getServers)"
+
+	createObject "$m" "$name"
+
+	newValueManaged="$(getManagedClient)"
+	newValueUsers="$(getUsers)"
+	newValueServers="$(getServers)"
+
+	echo "Test managed client count"; test "$((oldValueManaged+1))" = "$newValueManaged"; fail_bool 0 110
+	echo "Test users count"; test "$((oldValueUsers))" = "$newValueUsers"; fail_bool 0 110
+	echo "Test server count"; test "$((oldValueServers))" = "$newValueServers"; fail_bool 0 110
+
+	removeObject "$m" "$name"
+done
+
+### # These objects shouldn't be counted
+for m in "computers/ipmanagedclient"; do
+	oldValueManaged="$(getManagedClient)"
+	oldValueUsers="$(getUsers)"
+	oldValueServers="$(getServers)"
+
+	createObject "$m" "$name"
+
+	newValueManaged="$(getManagedClient)"
+	newValueUsers="$(getUsers)"
+	newValueServers="$(getServers)"
+
+	echo "Test managed client count"; test "$((oldValueManaged))" = "$newValueManaged"; fail_bool 0 110
+	echo "Test users count"; test "$((oldValueUsers))" = "$newValueUsers"; fail_bool 0 110
+	echo "Test server count"; test "$((oldValueServers))" = "$newValueServers"; fail_bool 0 110
+
+	removeObject "$m" "$name"
+done
+
+### These objects should be counted as servers
+for m in "computers/memberserver" "computers/domaincontroller_slave" \
+			"computers/domaincontroller_backup" "computers/domaincontroller_master"; do
+	oldValueManaged="$(getManagedClient)"
+	oldValueUsers="$(getUsers)"
+	oldValueServers="$(getServers)"
+
+	createObject "$m" "$name"
+
+	newValueManaged="$(getManagedClient)"
+	newValueUsers="$(getUsers)"
+	newValueServers="$(getServers)"
+
+	echo "Test managed client count"; test "$((oldValueManaged))" = "$newValueManaged"; fail_bool 0 110
+	echo "Test users count"; test "$((oldValueUsers))" = "$newValueUsers"; fail_bool 0 110
+	echo "Test server count"; test "$((oldValueServers+1))" = "$newValueServers"; fail_bool 0 110
+
+	removeObject "$m" "$name"
+done
+
+exit "$RETVAL"
