@@ -32,8 +32,8 @@
 
 test -f "/etc/univention/templates/cache" && rm -f "/etc/univention/templates/cache"
 
-dpkg-statoverride --add root adm 0750 /var/log
-dpkg-statoverride --add root adm 0750 /var/log/univention
+dpkg-statoverride --add --update --force root adm 0750 /var/log
+dpkg-statoverride --add --update --force root adm 0750 /var/log/univention
 
 # update to UCS 3.0
 # remove log/rotate/weeks and log/rotate/univention/compress and save
