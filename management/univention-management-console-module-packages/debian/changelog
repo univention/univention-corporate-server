@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.30-1) unstable; urgency=low
+
+  * Send the whole license to the license server when requesting a new one
+    (Bug #27998)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Oct 2012 17:24:38 +0200
+
 univention-management-console-module-packages (2.0.29-1) unstable; urgency=low
 
   * minor fixes; Bug #28599

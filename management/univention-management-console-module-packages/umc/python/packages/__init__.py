@@ -45,7 +45,7 @@ import univention.management.console.modules as umcm
 from univention.management.console.modules.decorators import simple_response, sanitize, log, sanitize_list, multi_response
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer
 from sanitizers import basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
-from app_center import Application
+from app_center import Application, LICENSE
 
 from univention.lib.package_manager import PackageManager, LockError
 
@@ -56,12 +56,6 @@ from univention.updater.errors import ConfigurationError
 _ = umc.Translation('univention-management-console-module-packages').translate
 
 from constants import *
-
-try:
-	import univention.admin.license as udm_license
-	GPLversion = False
-except ImportError as err:
-	GPLversion = True
 
 class Instance(umcm.Base):
 	def init(self):
@@ -83,12 +77,12 @@ class Instance(umcm.Base):
 	@sanitize(email=EmailSanitizer(required=True))
 	@simple_response
 	def app_center_request_new_license(self, email):
-		if GPLversion:
+		license = LICENSE.dump_data()
+		if license is None:
 			return False
+		data = urllib.urlencode({'email' : email, 'license' : license})
 		server = self.ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		url = 'https://%(server)s/new_license.py' % {'server' : server}
-		baseDN = ucr['ldap/base']
-		data = urllib.urlencode({'email' : email, 'baseDN' : baseDN})
 		request = urllib2.Request(url, data=data, headers={'User-agent' : 'UMC/AppCenter'})
 		return [url, data]
 		urllib2.urlopen(request)
@@ -97,7 +91,10 @@ class Instance(umcm.Base):
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
 	def app_center_query(self, pattern):
-		applications = Application.all()
+		try:
+			applications = Application.all(force_reread=True)
+		except (urllib2.HTTPError, urllib2.URLError) as e:
+			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
 		result = []
 		for application in applications:
 			if pattern.search(application.name):

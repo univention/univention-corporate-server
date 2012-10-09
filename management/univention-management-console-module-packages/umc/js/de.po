@@ -344,7 +344,7 @@ msgid ""
 msgstr ""
 "Bitte füllen Sie das Formular aus und es wird Ihnen eine neue Lizenz an Ihre "
 "E-Mail Adresse gesendet. Direkt nach diesem Formular wird ein weiterer "
-"Dialog angezeigt werden, in dem sie die neue Lizenz hochladen können."
+"Dialog angezeigt werden, in welchem Sie die neue Lizenz hochladen können."
 
 #: umc/js/packages/SettingsPage.js:399
 msgid "Please correct the corresponding input fields:"

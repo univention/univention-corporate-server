@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 import urllib2
 import os.path
+import subprocess
 
 # for version comparison
 from distutils.version import LooseVersion
@@ -59,24 +60,43 @@ import univention.admin.uexceptions as udm_errors
 from ldap import LDAPError
 
 class License(object):
-	def __init__(self, udmLicense = None):
-		self.license = udmLicense
+	def __init__(self, license=None):
+		self.license = license
 
-	def uuid(self, license):
-		# TODO: this does not work yet
-		# ucr set repository/app_center/debug/licence="fc452bc8-ae06-11e1-abab-00216a6f69f2"
-		# ucr unset repository/app_center/debug/licence
-		return ucr.get('repository/app_center/debug/licence', None)
-		if self.license:
+	def dump_data(self):
+		if self.license is None:
+			# no udm, no ldap, gpl, whatever
 			return None
-		return self.license.uuid
+		# dont be too clever here. just dump
+		# everything we have in LDAP. the license
+		# server will parse it.
+		# maybe, at some point in time, we can
+		# really return a meaningful dict
+		try:
+			process = subprocess.Popen(['univention-ldapsearch', '-LLL', 'objectClass=univentionLicense'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			stdout, stderr = process.communicate()
+		except Exception as e:
+			MODULE.error('using subprocess failed: %s' % e)
+			return None
+		else:
+			if process.returncode != 0:
+				MODULE.error('getting License from LDAP failed: %s' % stderr)
+				return None
+			return stdout
+
+	@property
+	def uuid(self):
+		try:
+			return self.license.licenseKeyID
+		except AttributeError:
+			return None
 
 	def email_known(self):
 		# at least somewhere at univention
-		return self.uuid(license) is not None
+		return self.uuid is not None
 
-	def allows_using(self, emailRequired):
-		return self.email_known() or not emailRequired
+	def allows_using(self, email_required):
+		return self.email_known() or not email_required
 
 try:
 	import univention.admin.filter as udm_filter  # needed for udm_license
@@ -210,17 +230,20 @@ class Application(object):
 		return cls._category_translations
 
 	@classmethod
-	def all(cls):
+	def all(cls, force_reread=False):
 		# reload ucr variables
 		ucr.load()
 
-		if cls._all_applications is None:
-			cls._all_applications = []
+		if force_reread:
+			cls._all_applications = None
 
+		if cls._all_applications is None:
 			# query all applications from the server
 			ucr.load()
 			url = cls.get_repository_url()
 			try:
+				cls._all_applications = []
+
 				for iline in urllib2.urlopen(url):
 					# parse the server's directory listing
 					m = cls._regDirListing.match(iline)
@@ -232,8 +255,9 @@ class Application(object):
 							cls._all_applications.append(Application(iurl))
 						except (ConfigParser.Error, urllib2.HTTPError, ValueError, KeyError) as e:
 							MODULE.warn('Could not open application file: %s\n%s' % (iurl, e))
-			except urllib2.HTTPError as e:
+			except (urllib2.HTTPError, urllib2.URLError) as e:
 				MODULE.warn('Could not query App Center host at: %s\n%s' % (url, e))
+				raise
 
 		# filter function
 		def _included(the_list, app):
@@ -419,7 +443,7 @@ class Application(object):
 			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s&version=%(version)s&role=%(role)s'
 			url = url % {
 				'server' : server,
-				'uuid' : LICENSE.uuid(),
+				'uuid' : LICENSE.uuid,
 				'app' : self.id,
 				'version' : self.version,
 				'action' : action,
