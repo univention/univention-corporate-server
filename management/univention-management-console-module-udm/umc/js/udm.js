@@ -241,7 +241,6 @@ define([
 					reports: this.umcpCommand('udm/reports/query'),
 					ucr: tools.ucr( [ 'directory/manager/web*', 'ldap/base' ] )
 				}).then(lang.hitch(this, function(results) {
-					// result: [ 0 ] -> success/failure, [ 1 ] -> data
 					this._reports = results.reports.result;
 					this._ucr = lang.setObject('umc.modules.udm.ucr', results.ucr);
 					this.renderSearchPage(results.containers.result, results.superordinates.result);
@@ -687,9 +686,10 @@ define([
 
 				// remember on which item the context menu has been opened
 				this.own(aspect.after(menu, '_openMyself', lang.hitch(this, function(e) {
-					var el = registry.getEnclosingWidget(e.target);
-					if (el) {
-						this._navContextItem = el.item;
+					if (this._tree.selectedNode) {
+						this._navContextItem = this._tree.selectedNode.item;
+					} else {
+						console.warn('this._tree.selectedNode is null');
 					}
 				})));
 

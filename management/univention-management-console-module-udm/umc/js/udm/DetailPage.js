@@ -52,13 +52,15 @@ define([
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TabContainer",
 	"umc/widgets/Text",
+	"umc/widgets/Button",
+	"umc/widgets/ComboBox",
 	"umc/widgets/LabelPane",
 	"umc/modules/udm/Template",
 	"umc/modules/udm/OverwriteLabel",
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, LabelPane, Template, OverwriteLabel, _) {
+], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, _ ) {
 	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -543,7 +545,7 @@ define([
 						// for the policy group, we need a ComboBox that allows to link an object
 						// to a particular policy
 						newProperties.push({
-							type: 'ComboBox',
+							type: ComboBox,
 							name: '$policy$',
 							staticValues: [{ id: 'None', label: _('Inherited') }],
 							dynamicValues: lang.hitch(this, '_queryPolicies', ipolicyType),
@@ -552,7 +554,7 @@ define([
 							onChange: lang.hitch(this, '_updatePolicy', ipolicyType)
 						});
 						var buttonsConf = [{
-							type: 'Button',
+							type: Button,
 							name: '$addPolicy$',
 							iconClass: 'umcIconAdd',
 							label: _('Create new policy'),
