@@ -414,6 +414,7 @@ define([
 			{
 				this.onExecuteQuery(this.getQuery());
 			}
+			return this.inherited(arguments);
 		},
 
 		// an internal callback for everything that changes a query, operator or pattern.

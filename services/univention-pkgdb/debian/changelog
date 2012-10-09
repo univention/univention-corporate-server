@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.5-1) unstable; urgency=low
+
+  * fixed missing this.inherited(arguments); Bug #28551
+
+ -- Florian Best <best@univention.de>  Tue, 09 Oct 2012 15:27:19 +0200
+
 univention-pkgdb (6.0.4-1) unstable; urgency=low
 
   * version bump; Bug #26857
