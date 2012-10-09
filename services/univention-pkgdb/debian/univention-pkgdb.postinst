@@ -37,8 +37,7 @@
 if [ "$1" = "configure" ]
 then
 	univention-config-registry set \
-		pgsql/pkgdb/network?"$(get_default_network)" \
-		pgsql/pkgdb/netmask?"$(get_default_netmask)" \
+		pgsql/pkgdb/networks?"0.0.0.0/0 ::/0" \
 		pkgdb/scan?yes
 
 	if [ -f /var/lib/postgres/pkgdb.bash ] ;then

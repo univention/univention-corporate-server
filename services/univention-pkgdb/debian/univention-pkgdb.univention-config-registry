@@ -4,8 +4,7 @@ Multifile: etc/postgresql/7.4/main/pg_hba.conf
 Type: subfile
 Multifile: etc/postgresql/7.4/main/pg_hba.conf
 Subfile: etc/postgresql/7.4/main/pg_hba.conf.d/10-pg_hba.conf
-Variables: pgsql/pkgdb/network
-Variables: pgsql/pkgdb/netmask
+Variables: pgsql/pkgdb/networks
 
 Type: multifile
 Multifile: etc/postgresql/8.3/main/pg_hba.conf
@@ -13,8 +12,7 @@ Multifile: etc/postgresql/8.3/main/pg_hba.conf
 Type: subfile
 Multifile: etc/postgresql/8.3/main/pg_hba.conf
 Subfile: etc/postgresql/8.3/main/pg_hba.conf.d/10-pg_hba.conf
-Variables: pgsql/pkgdb/network
-Variables: pgsql/pkgdb/netmask
+Variables: pgsql/pkgdb/networks
 
 Type: file
 File: etc/apt/apt.conf.d/60invoke
@@ -27,8 +25,7 @@ Multifile: etc/postgresql/8.4/main/pg_hba.conf
 Type: subfile
 Multifile: etc/postgresql/8.4/main/pg_hba.conf
 Subfile: etc/postgresql/8.4/main/pg_hba.conf.d/10-pg_hba.conf
-Variables: pgsql/pkgdb/network
-Variables: pgsql/pkgdb/netmask
+Variables: pgsql/pkgdb/networks
 
 Type: file
 File: etc/logrotate.d/univention-pkgdb

@@ -1,12 +1,6 @@
-[pgsql/pkgdb/network]
-Description[de]=Netwerk aus dem Systme ihre Konfiguration in der pkgdb speichern können
-Description[en]=Network from which systems may store their configurations in pkgdb
-Type=str
-Categories=service-pkgdb
-
-[pgsql/pkgdb/netmask]
-Description[de]=Netmaske für den Zurgiff auf die pkgdb
-Description[en]=Netmask for access to the pkgdb
+[pgsql/pkgdb/networks]
+Description[de]=Liste von Netwerken aus dem Systme ihre Konfiguration in der pkgdb speichern können
+Description[en]=List of networks from which systems may store their configurations in pkgdb
 Type=str
 Categories=service-pkgdb
 
