@@ -376,19 +376,28 @@ class Application(object):
 		ucr.load()
 
 		try:
-			to_uninstall = self.get('defaultpackages')
-			max_steps = 100 + len(to_uninstall) * 100
-			package_manager.set_max_steps(max_steps)
-			for package in to_uninstall:
-				package_manager.uninstall(package)
-				package_manager.add_hundred_percent()
+			# make sure that packages in 'defaultpackagesmaster' are never uninstalled
+			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')
+			to_keep = []
+			if is_master and self.get('defaultpackagesmaster'):
+				to_keep.extend(self.get('defaultpackagesmaster'))
+
+			# remove all packages of the component
+			package_manager.set_max_steps(200)
+			package_manager.commit(remove=self.get('defaultpackages'), install=to_keep)
+			package_manager.add_hundred_percent()
+
+			# remove all dependencies
+			package_manager.autoremove()
+			package_manager.add_hundred_percent()
 
 			# remove all existing component versions
 			for iapp in self.versions:
 				component_manager.remove(iapp.component_id)
 
+			# update package information
 			package_manager.update()
-			package_manager.add_hundred_percent()
+
 			status = 200
 		except:
 			status = 500
@@ -400,14 +409,13 @@ class Application(object):
 			for iapp in self.versions:
 				component_manager.remove(iapp.component_id)
 
+			# add the new repository component for the app
 			ucr.load()
-			is_master = ucr.get('server/role') == 'domaincontroller_master'
+			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')  # packages need to be installed on backup AND master systems
 			server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 			to_install = self.get('defaultpackages')
 			if is_master and self.get('defaultpackagesmaster'):
 				to_install.extend(self.get('defaultpackagesmaster'))
-			max_steps = 100 + len(to_install) * 100
-			package_manager.set_max_steps(max_steps)
 			data = {
 				'server' : server,
 				'prefix' : '',
@@ -420,14 +428,15 @@ class Application(object):
 				'password' : '',
 				'version' : 'current',
 				'localmirror' : 'false',
-				}
+			}
 			with util.set_save_commit_load(ucr) as super_ucr:
 				component_manager.put(data, super_ucr)
+
+			# update and install + dist_upgrade
 			package_manager.update()
-			package_manager.add_hundred_percent()
-			for package in to_install:
-				package_manager.install(package)
-				package_manager.add_hundred_percent()
+			package_manager.commit(install=to_install, dist_upgrade=True)
+
+			# successful installation
 			status = 200
 		except Exception as e:
 			MODULE.warn(traceback.format_exc())
