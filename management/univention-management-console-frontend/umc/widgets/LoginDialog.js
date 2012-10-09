@@ -51,7 +51,7 @@ define([
 	"umc/i18n!umc/app",
 	"dojo/domReady!"
 ], function(declare, lang, array, win, aspect, on, mouse, dom, query, attr, domClass, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
-	return declare("umc.widgets.LoginDialog", [Dialog, StandbyMixin], {
+	return declare("umc.widgets.LoginDialog", [StandbyMixin], {
 		// our own variables
 		_connections: null,
 		_iframe: null,
@@ -221,6 +221,10 @@ define([
 					this._setFocus('umc_UsernameContainer', true);
 				}
 			}));
+		},
+
+		_getFocusItems: function(domNode) {
+			this._setInitialFocus();
 		},
 
 		_setFocus: function(obj, enable) {

@@ -83,6 +83,7 @@ $(buildDir)/debug.html: $(buildDir) index.html
 $(tmpDir)/umc/login.html: login.html
 	mkdir -p $(dir $@)
 	sed 's/%HASH%/_$(timestamp)/;' login.html > $@
+	cp $@ $(dir $@)/blank.html
 
 # copy css and image data into umc themes directory
 $(themesDir)/umc: $(tmpDir)
@@ -136,6 +137,8 @@ build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)
 		mkdir -p "$(tmpDir)/umc/i18n/$$lang"; \
 		cp $$i "$(tmpDir)/umc/i18n/$$lang/app.json"; \
 	done
+	@# create empty branding localisation files to not cause 404 errors
+	touch "$(tmpDir)/umc/i18n/en/branding.json" "$(tmpDir)/umc/i18n/de/branding.json"
 
 install: build
 	@# copy all files from the build directory .. exclude file of the tmp directory

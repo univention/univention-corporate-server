@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define dojox*/
 
 
 define([
@@ -121,7 +121,8 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._uploader = new Uploader({
+			// until Dojo2.0 "dojox.form.Uploader" must be used!
+			this._uploader = new dojox.form.Uploader({
 				url: '/umcp/upload' + (this.command ? '/' + this.command : ''),
 				label: this.buttonLabel,
 				getForm: function() {
@@ -150,8 +151,8 @@ define([
 			this.inherited(arguments);
 
 			// as soon as the user has selected a file, start the upload
-			this._uploader.on('changed', lang.hitch(this, function(data) {
-				var allOk = array.all(data, function(ifile) {
+			this._uploader.on('change', lang.hitch(this, function(data) {
+				var allOk = array.every(data, function(ifile) {
 					return ifile.size <= this.maxSize;
 				}, this);
 				if (!allOk) {

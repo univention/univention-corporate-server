@@ -35,6 +35,7 @@ define([
 	"dojo/query",
 	"dojo/request/xhr",
 	"dojo/_base/xhr",
+	"dojo/_base/connect",
 	"dojo/Deferred",
 	"dojo/json",
 	"dojo/topic",
@@ -47,7 +48,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, _window, query, xhr, basexhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
+], function(lang, array, _window, query, xhr, basexhr, connect, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -608,8 +609,8 @@ define([
 					container.addChild(titlePane);
 
 					// center the alert dialog when folding the title pane
-					titlePane._wipeIn.on('end', function() { dialog.centerAlertDialog(); } );
-					titlePane._wipeOut.on('end', function() { dialog.centerAlertDialog(); } );
+					connect.connect(titlePane._wipeIn, 'onEnd', function() { dialog.centerAlertDialog(); } );
+					connect.connect(titlePane._wipeOut, 'onEnd', function() { dialog.centerAlertDialog(); } );
 
 					dialog.alert( container );
 				}
