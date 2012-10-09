@@ -1,3 +1,9 @@
+univention-ldap (9.0.8-1) unstable; urgency=low
+
+  * Use keyID instead of customerID (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 06:51:05 +0200
+
 univention-ldap (9.0.7-1) unstable; urgency=low
 
   * added mailAlternativeAddress attribute to univentionGroup oc 

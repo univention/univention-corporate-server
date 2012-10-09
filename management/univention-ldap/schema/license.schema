@@ -103,8 +103,8 @@ attributetype ( 1.3.6.1.4.1.10176.1712.1.6 NAME ( 'univentionLicenseProduct' )
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
-attributetype ( 1.3.6.1.4.1.10176.1712.1.7 NAME ( 'univentionLicenseCustomerID' )
-	DESC 'CustomerID of the license'
+attributetype ( 1.3.6.1.4.1.10176.1712.1.7 NAME ( 'univentionLicenseKeyID' )
+	DESC 'KeyID of the license'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
@@ -160,7 +160,7 @@ objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
 		univentionLicenseEndDate $
 		univentionLicenseBaseDN $ univentionLicenseSignature )
 	MAY (
-		univentionLicenseProduct $ univentionLicenseCustomerID $
+		univentionLicenseProduct $ univentionLicenseKeyID $
 		univentionLicenseOEMProduct $ univentionLicenseServers $
 		univentionLicenseSupport $ univentionLicensePremiumSupport $
 		univentionLicenseManagedClients $ univentionLicenseUsers $
