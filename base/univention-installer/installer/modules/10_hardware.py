@@ -42,8 +42,6 @@ import re
 from objects import *
 from local import _
 
-WAIT_FOR_DRIVERS = 3
-
 class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
 		self.cdrom_test=1
@@ -346,7 +344,6 @@ class object(content):
 				cdrom_devices = set()
 
 				# waiting for drivers
-				time.sleep(WAIT_FOR_DRIVERS)
 				os.system("udevadm settle || true")
 
 

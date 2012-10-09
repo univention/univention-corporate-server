@@ -1,3 +1,9 @@
+univention-installer (8.0.21-1) unstable; urgency=low
+
+  * removed sleep in hardware.py (Bug #20797) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Oct 2012 09:25:59 +0200
+
 univention-installer (8.0.20-1) unstable; urgency=low
 
   * fixed Zeroconf/APIPA-IP in sbin/univention-installer-network-startup 
