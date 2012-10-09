@@ -51,6 +51,15 @@ var profile = (function() {
 		}, {
 			name: "umc",
 			location: "tmp/umc"
+		}, {
+			name: "dgrid",
+			location: "tmp/dgrid"
+		}, {
+			name: "put-selector",
+			location: "tmp/put-selector"
+		}, {
+			name: "xstyle",
+			location: "tmp/xstyle"
 		}],
 
 		optimize : "shrinksafe.keepLines",
@@ -60,7 +69,7 @@ var profile = (function() {
 
 		layers: {
 			"dojo/dojo": {
-				include: [ "dojo/dojo", "umc/app", "umc/widgets" ],
+				include: [ "dojo/dojo", "umc/app", "umc/widgets", "libs/dgrid" ],
 				customBase: true,
 				boot: true
 			}

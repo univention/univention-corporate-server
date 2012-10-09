@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.91-1) unstable; urgency=low
+
+  * Fix build_profile.js (Bug #28002)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 09 Oct 2012 19:42:03 +0200
+
 univention-management-console-frontend (2.0.90-1) unstable; urgency=low
 
   * Added dgrid with its dependencies
