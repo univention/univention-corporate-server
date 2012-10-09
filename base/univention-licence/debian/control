@@ -62,7 +62,8 @@ Description: UCS - license validation library (Python interface)
 
 Package: univention-license-tools
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
+Depends: uuid,
+ ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Recommends: python-tk
 Description: UCS - tools to create and sign licenses
  This package contains tools to create and sign licenses

@@ -189,7 +189,7 @@ do
 			shift 2 || help_and_exit '-s expects number of servers with premium support'
 			;;
 		"-U")
-			CUSTOMERID="$2";
+			KEYID="$2";
 			shift 2 || help_and_exit '-U expects a UUID or the keyword generate'
 			;;
 		"-p")
@@ -276,10 +276,10 @@ if [ -z "$MAXPREMIUMSUPPORT" ]; then
 	MAXPREMIUMSUPPORT="0";
 fi;
 
-if [ "$CUSTOMERID" = "generate" ]; then
+if [ "$KEYID" = "generate" ]; then
 	UUID=$(uuid)
-elif [ -n "$CUSTOMERID" ]; then
-	UUID="$CUSTOMERID"
+elif [ -n "$KEYID" ]; then
+	UUID="$KEYID"
 fi
 
 # parameter checking done
@@ -306,7 +306,7 @@ cd "$MASTERKEYDIR" || help_and_exit "Can't change to directory $MASTERKEYDIR"
 	echo univentionLicensePremiumSupport: "$MAXPREMIUMSUPPORT";
 	echo univentionLicenseVersion: 2;
 	if [ -n "$UUID" ]; then
-		echo univentionLicenseCustomerID: "$UUID";
+		echo univentionLicenseKeyID: "$UUID";
 	fi
 	for product in `echo "$PRODUCTS"|sed -e 's|,| |'`; do
 		echo univentionLicenseType: "$product"
@@ -367,7 +367,7 @@ LICENSEKEY=$(
 	echo "# Servers with premium support: $MAXPREMIUMSUPPORT";
 	echo "# Version:  2";
 	if [ -n "$UUID" ]; then
-		echo "# CustomerID: $UUID";
+		echo "# KeyID: $UUID";
 	fi;
 	echo "# UCS BASEDN: $BASEDN"
 	echo "#"
