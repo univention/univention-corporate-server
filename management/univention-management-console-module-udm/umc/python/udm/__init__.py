@@ -190,7 +190,7 @@ class Instance( Base ):
 					license_data[ item ][ lic_type.lower() ] = count
 
 			if 'UGS' in udm_license._license.types:
-				udm_license._license.licenseTypes = filter( lambda x: x != 'UGS', udm_license._license.types )
+				udm_license._license.types = filter( lambda x: x != 'UGS', udm_license._license.types )
 		elif udm_license._license.version == '2':
 			for item in ( 'licenses', 'real' ):
 				license_data[ item ] = {}

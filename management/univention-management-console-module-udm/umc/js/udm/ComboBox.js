@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2012 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -78,7 +78,7 @@ define([
 		},
 
 		_emptyStore: function() {
-			//this.store.destroy();
+			delete this.store;
 			this.set('store', this._createStore());
 		},
 
