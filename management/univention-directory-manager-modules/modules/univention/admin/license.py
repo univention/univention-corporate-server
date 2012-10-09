@@ -281,6 +281,9 @@ class License( object ):
 					self.real[self.version][License.CORPORATECLIENTS],
 					self.real[self.version][License.VIRTUALDESKTOPUSERS ],
 					self.real[self.version][License.VIRTUALDESKTOPCLIENTS] )
+				self.licenseKeyID = univention.license.getValue ( 'univentionLicenseKeyID' )
+				self.licenseSupport = univention.license.getValue ( 'univentionLicenseSupport' )
+				self.licensePremiumSupport = univention.license.getValue ( 'univentionLicensePremiumSupport' )
 			disable_add = self.checkObjectCounts(lic, real)
 			self.licenseBase = univention.license.getValue ( 'univentionLicenseBaseDN' )
 			if disable_add:
