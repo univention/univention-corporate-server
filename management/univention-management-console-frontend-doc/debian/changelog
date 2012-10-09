@@ -1,3 +1,9 @@
+univention-management-console-frontend-doc (6.0.5-2) unstable; urgency=low
+
+  * version bump to use univention-dojo 6.0.5 (dojo 1.8.1rc3); Bug #28710
+
+ -- Florian Best <best@univention.de>  Tue, 09 Oct 2012 08:52:03 +0200
+
 univention-management-console-frontend-doc (6.0.5-1) unstable; urgency=low
 
   * updated api-viewer.tar.gz which fixes more XSS and LFI vulnerabilities;
