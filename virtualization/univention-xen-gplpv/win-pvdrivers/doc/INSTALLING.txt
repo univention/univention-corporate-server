@@ -1,2 +1,0 @@
-see http://wiki.xensource.com/xenwiki/XenWindowsGplPv/Installing for details
-(unfortunately that's probably out of date)

@@ -1,7 +1,0 @@
-LIBRARY  NEOCOINST
-
-EXPORTS   
-   CoRequireReboot
-   
-
-
