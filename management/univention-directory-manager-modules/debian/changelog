@@ -1,3 +1,11 @@
+univention-directory-manager-modules (8.0.47-1) unstable; urgency=low
+
+  * Count Thin Clients, Managed Clients, Mobile Clients, Windows
+    Clients, Ubuntu Clients, Linux Clients, UCC Clients and MaxOS X
+    Clients as ManagedClients (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 15:26:40 +0200
+
 univention-directory-manager-modules (8.0.46-1) unstable; urgency=low
 
   * The license should be valid even if we have more servers than the
