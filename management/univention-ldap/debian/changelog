@@ -1,3 +1,9 @@
+univention-ldap (9.0.9-1) unstable; urgency=low
+
+  * Added FFPU license in version 2 (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 15:23:36 +0200
+
 univention-ldap (9.0.8-1) unstable; urgency=low
 
   * Use keyID instead of customerID (Bug #28186)

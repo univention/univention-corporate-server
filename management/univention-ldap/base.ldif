@@ -282,19 +282,23 @@ objectClass: univentionObject
 univentionObjectType: settings/license
 univentionLicenseEndDate: unlimited
 univentionLicenseModule: admin
-univentionLicenseBaseDN: Free for personal use edition
 cn: admin
-univentionLicenseAccounts: 5
-univentionLicenseClients: 5
-univentionLicenseGroupwareAccounts: 5
-univentionLicenseuniventionDesktops: 5
-univentionLicenseType: UGS
+univentionLicenseBaseDN: Free for personal use edition
+univentionLicenseUsers: 5
+univentionLicenseServers: unlimited
+univentionLicenseManagedClients: 5
+univentionLicenseCorporateClients: unlimited
+univentionLicenseVirtualDesktopUsers: unlimited
+univentionLicenseVirtualDesktopClients: unlimited
+univentionLicenseSupport: 0
+univentionLicensePremiumSupport: 0
+univentionLicenseVersion: 2
 univentionLicenseType: UCS
-univentionLicenseSignature: HT+tjuXz74IZFKU4pVphvxY3sCPX5ILvdywFefgF5xIetI7Xcw
- 5op/M3DHZRKw0GYL1qLu7YPlnKoGQv9HHty0u5nXOlvgcRXCGXCYDeQNC22cppLV2hMz80NFaGabD
- 9i0B5qk2ICaWM50fjyjZ6qzoqr3zHga34Tcf7CmHt4LMr0OKl9LZVM634WFnv++VlQS6NV8A+PuQs
- HjlK9GddNFpr2ubggGCYbxwRblZd+KQIk2cxZ/dDU1zupuHDPq3gbQWmrNjF3GIlYG2nQW1wdx2V0
- L5LPYiHM81kblB32b46fwm81o55/2XRUsoDa5TifSk/uHcVJNFrCXGW4tqHKQ==
+univentionLicenseSignature: pOb0FqnaXildZ8j5URqnlc9n0LnQrGJBDEc8Mx3qGO69L5V1th
+ EWmv89ykyBV6k/H7EjEPXitsgcFWiN6aLlFu8ssJoU6Km2B6pE1kHhwQFXzbMg6WWVyCLvSzIeP6k
+ d/uU0ZpvGSUANAdiL6FqTrMMugNLTJOXp36bn8RBYRtTLxEOWaIZtRjf5HsDfKPRrw00ogXhpBuoF
+ p/eBy3IP+dfY2DZPW6Mbky8TGd4ZE5wOwrQGseGjU/sbvJ+ME+8oVTgTfTCeU0wOFTzWyk+NzegeP
+ +DHw2l2WTvRCDnu1laJiWwraWSFZOc+yZQwiivwXPchzZqDHaIbGGUrpje2kg==
 
 dn: cn=idmap,cn=univention,@%@ldap/base@%@
 objectClass: top
