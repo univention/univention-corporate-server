@@ -373,6 +373,9 @@ class PackageManager(object):
 		'''Get Package-object for package_name
 		Otherwise write an error
 		'''
+		if isinstance(pkg_name, apt.package.Package):
+			# we already have a Package instance :)
+			return pkg_name
 		try:
 			return self.cache[pkg_name]
 		except KeyError:
@@ -443,23 +446,44 @@ class PackageManager(object):
 			self.reopen_cache()
 		return sorted(to_be_installed), sorted(to_be_removed), sorted(broken)
 
-	def commit(self, install=None, remove=None, msg_if_failed=''):
+	def commit(self, install=None, remove=None, upgrade=False, dist_upgrade=False, msg_if_failed=''):
 		'''Really commit changes (mark_install or mark_delete)
 		or pass Package-objects that shall be commited.
 		Never forgets to pass progress objects, may print error
 		messages, always reopens cache.
 		'''
-		result = False
+		# translate package names to apt.package.Package instances
+		install = self.get_packages(install or [])
+		remove = self.get_packages(remove or [])
+
+		# perform an upgarde/dist_upgrade
+		if dist_upgrade:
+			self.cache.upgrade(dist_upgrade=True)
+		elif upgrade:
+			self.cache.upgrade(dist_upgrade=False)
+
+		# only if commit does something. if it is just called
+		# to really commit changes made manually, dont dry_run
+		# as it reopens the cache
 		broken = []
 		if install or remove:
-			# only if commit does something. if it is just called
-			# to really commit changes made manually, dont dry_run
-			# as it reopens the cache
 			_, _, broken = self.mark(install, remove, dry_run=True)
+
+		result = False
 		try:
 			if broken:
 				raise SystemError()
+
+			# perform an upgarde/dist_upgrade -> marks packages to upgrade/install
+			if dist_upgrade:
+				self.cache.upgrade(dist_upgrade=True)
+			elif upgrade:
+				self.cache.upgrade(dist_upgrade=False)
+
+			# mark packages to install/remove
 			self.mark(install, remove, dry_run=False)
+
+			# commit marked packages
 			kwargs = {'fetch_progress' : self.fetch_progress, 'install_progress' : self.dpkg_progress}
 			if self.always_noninteractive:
 				with self.noninteractive():
@@ -471,8 +495,21 @@ class PackageManager(object):
 		except SystemError:
 			if msg_if_failed:
 				self.progress_state.error(msg_if_failed)
+
 		# better do a:
 		self.reopen_cache()
+
+		# check whether all packages have been installed
+		for pkg in install:
+			pkg = self.cache[pkg.name] # fresh from cache
+			if not pkg.is_installed:
+				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to install')))
+
+		# check whether all packages have been removed
+		for pkg in remove:
+			pkg = self.cache[pkg.name] # fresh from cache
+			if pkg.is_installed:
+				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to uninstall')))
 
 		return result
 
@@ -506,24 +543,20 @@ class PackageManager(object):
 			if self.cache.get_changes():
 				self.commit(msg_if_failed=failed_msg)
 
+	def upgrade(self):
+		'''Instantly performs an 'apt-get upgrade'.'''
+		return self.commit(upgrade=True)
+
+	def dist_upgrade(self):
+		'''Instantly performs an 'apt-get dist-upgrade'.'''
+		return self.commit(dist_upgrade=True)
+
 	def install(self, *pkg_names):
 		'''Instantly installs packages when found.
 		works like apt-get install and apt-get upgrade'''
-		pkgs = self.get_packages(pkg_names)
-		result = self.commit(install=pkgs)
-		for pkg in pkgs:
-			pkg = self.cache[pkg.name] # fresh from cache
-			if not pkg.is_installed:
-				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to install')))
-		return result
+		return self.commit(install=pkg_names)
 
 	def uninstall(self, *pkg_names):
 		'''Instantly deletes packages when found'''
-		pkgs = self.get_packages(pkg_names)
-		result = self.commit(install=self._always_install, remove=pkgs)
-		for pkg in pkgs:
-			pkg = self.cache[pkg.name] # fresh from cache
-			if pkg.is_installed:
-				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to uninstall')))
-		return result
+		return self.commit(install=self._always_install, remove=pkg_names)
 

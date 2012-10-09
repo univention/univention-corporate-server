@@ -1,3 +1,10 @@
+univention-lib (2.0.9-1) unstable; urgency=low
+
+  * added dist_upgrade() / upgrade(), move error handling into commit();
+    Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 09 Oct 2012 16:26:46 +0200
+
 univention-lib (2.0.8-1) unstable; urgency=low
 
   * Add possibility to prevent umc restarts (Bug #20180)
