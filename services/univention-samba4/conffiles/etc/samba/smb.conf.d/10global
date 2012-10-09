@@ -33,7 +33,7 @@ if configRegistry.is_false('samba4/service/drepl'):
 if server_services:
 	print '\tserver services\t=', ' '.join(server_services)
 if configRegistry.get('samba4/service/nmb', 'nmbd') == 'nmbd':
-	print 'server role check:inhibit = yes'
+	print '\tserver role check:inhibit = yes'
 
 print '\tworkgroup\t= %s' % configRegistry['windows/domain']
 print '\trealm\t\t= %s' % configRegistry['kerberos/realm']
