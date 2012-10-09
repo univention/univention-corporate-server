@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.92-1) unstable; urgency=low
+
+  * Fix typo in last commit (Bug #28002)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 09 Oct 2012 20:04:50 +0200
+
 univention-management-console-frontend (2.0.91-1) unstable; urgency=low
 
   * Fix build_profile.js (Bug #28002)

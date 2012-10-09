@@ -69,7 +69,7 @@ var profile = (function() {
 
 		layers: {
 			"dojo/dojo": {
-				include: [ "dojo/dojo", "umc/app", "umc/widgets", "libs/dgrid" ],
+				include: [ "dojo/dojo", "umc/app", "umc/widgets", "dgrid" ],
 				customBase: true,
 				boot: true
 			}
