@@ -151,7 +151,7 @@ class License( object ):
 					# Thin Clients, Managed Clients, Mobile Clients, Windows Clients, Ubuntu Clients, Linux Clients, UCC Clients, MaxOS X Clients
 					License.MANAGEDCLIENTS :'(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectclass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionCorporateClient)(objectClass=univentionMacOSClient))',
 					License.CORPORATECLIENTS : '(&(objectclass=univentionCorporateClient))',
-					License.VIRTUALDESKTOPUSERS : '(&(objectClass=univentionDVS)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+					License.VIRTUALDESKTOPUSERS : '(&(objectClass=univentionDVSUsers)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
 					License.VIRTUALDESKTOPCLIENTS : '(&(objectclass=univentionDVSComputers))',
 				},
 		}

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.48-1) unstable; urgency=low
+
+  * Search for objectClass univentionDVSUsers for DVS users	
+    (Bug #28723 and Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 20:44:07 +0200
+
 univention-directory-manager-modules (8.0.47-1) unstable; urgency=low
 
   * Count Thin Clients, Managed Clients, Mobile Clients, Windows
