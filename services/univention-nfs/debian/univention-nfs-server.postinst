@@ -36,7 +36,11 @@
 
 case "$1" in
 	configure)
-		univention-config-registry set 'nfs/ports?static'
+
+		univention-config-registry set \
+			nfs/ports?static \
+			nfs/nfs4?false
+
 		# configure firewall
 		ucr set security/packetfilter/package/univention-nfs/tcp/111/all="ACCEPT" \
 			security/packetfilter/package/univention-nfs/tcp/111/all/en="portmap" \
