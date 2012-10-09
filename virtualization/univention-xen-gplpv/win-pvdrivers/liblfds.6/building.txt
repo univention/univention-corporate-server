@@ -1,0 +1,38 @@
+building liblfds
+================
+
+Windows (user-mode)
+===================
+1. Use Microsoft Visual Studio 2008 or Visual C++ 2008 Express Edition
+   to load "liblfds.sln".
+
+2. Use Microsoft Windows SDK and GNUmake to run makefile.windows (obviously
+   you'll need to have run the appropriate vcvars*.bat first; you can build
+   for both IA64, 64-bit and 32-bit - just run the correct vcvars batch file).
+
+   Targets are "librel", "libdbg", "dllrel", "dlldbg" and "clean".  You need
+   to clean between switching targets.
+
+Windows (kernel)
+================
+Use the Windows Driver Kit "build" command.  Prior to running "build",
+if you wish to build a static library, run the batch file
+"runme_before_win_kernel_static_lib_build.bat"; if you wish to
+build a dynamic library, instead run "runme_before_win_kernel_dynamic_lib_build.bat".
+
+The Windows kernel build system is rather limited and rather than
+really rather messing up the directory/file structure just for the
+Windows kernel platform, I've instead arranged it that these batch
+files do the necessary work so that "build" will work.
+
+The batch files are idempotent; you can run them as often as you
+like, in any order, at any time (before or after builds), and they'll
+do the right thing.
+
+Linux
+=====
+Use GNUmake to run "makefile.linux".  Targets are "arrel", "ardbg",
+"sorel", "sodbg" and "clean".  You need to clean between switching
+targets.
+
+

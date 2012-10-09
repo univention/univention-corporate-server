@@ -1,42 +1,24 @@
-diff -r e16e389a3cb5 installer.wxs
---- a/installer.wxs	Sun Jul 10 15:11:23 2011 +1000
-+++ b/installer.wxs	Thu Sep 08 08:42:56 2011 +0200
-@@ -43,11 +43,13 @@
+diff -r 58899e6ed48f installer.wxs
+--- a/installer.wxs	Fri Sep 21 23:25:49 2012 +1000
++++ b/installer.wxs	Mon Oct 08 15:34:30 2012 +0200
+@@ -43,14 +43,6 @@
  		    Type="raw" />
      </Property>
  
-+    <!--
-     <?if $(env._BUILDARCH) = AMD64 ?>
-       <Condition Message="Testsigning must be on for x64 when installing on Vista or newer.">
-         <![CDATA[(VersionNT < 600) OR (SYSTEMSTARTOPTIONS >< "TESTSIGNING")]]>
-       </Condition>
-     <?endif ?>
-+    -->
- 
+-    <?ifdef env.CERT_PUBLIC_FILENAME?>
+-    <?if $(env._BUILDARCH) = AMD64?>
+-      <Condition Message="Testsigning must be on for x64 when installing on Vista or newer.">
+-        <![CDATA[(VersionNT < 600) OR (SYSTEMSTARTOPTIONS >< "TESTSIGNING")]]>
+-      </Condition>
+-    <?endif ?>
+-    <?endif ?>
+-
      <Directory Id='TARGETDIR' Name='SourceDir'>
        <Directory Id='ProgramFilesFolder' Name='PFiles'>
-@@ -118,14 +120,14 @@
-           </Directory>
-         </Directory>
-         <Component Id='Cert' Guid='11112EC8-8635-45fb-9AE8-C22310F1E82D'>
--          <File Id='gplpv.cer' Name='gplpv.cer' DiskId='1' Source='gplpv.cer' />
--          <iis:Certificate Id='gplpv.cer_root' Name='gplpv.cer' Request='no' BinaryKey='gplpv.cer' StoreLocation='localMachine' StoreName='root' Overwrite='no' />
--          <iis:Certificate Id='gplpv.cer_trustedPublisher' Name='gplpv.cer' Request='no' BinaryKey='gplpv.cer' StoreLocation='localMachine' StoreName='trustedPublisher' Overwrite='no' />
-+          <File Id='Univention_CodeSigning_Certificate.cer' Name='Univention_CodeSigning_Certificate.cer' DiskId='1' Source='Univention_CodeSigning_Certificate.cer' />
-+          <iis:Certificate Id='Univention_CodeSigning_Certificate.cer_root' Name='Univention_CodeSigning_Certificate.cer' Request='no' BinaryKey='Univention_CodeSigning_Certificate.cer' StoreLocation='localMachine' StoreName='root' Overwrite='no' />
-+          <iis:Certificate Id='Univention_CodeSigning_Certificate.cer_trustedPublisher' Name='Univention_CodeSigning_Certificate.cer' Request='no' BinaryKey='Univention_CodeSigning_Certificate.cer' StoreLocation='localMachine' StoreName='trustedPublisher' Overwrite='no' />
-         </Component>
-       </Directory>
-     </Directory>
- 
--    <Binary Id='gplpv.cer' SourceFile='gplpv.cer' />    
-+    <Binary Id='Univention_CodeSigning_Certificate.cer' SourceFile='Univention_CodeSigning_Certificate.cer' />    
- 
-     <Feature Id='Cert' Title='Install Certificate' Level='1' AllowAdvertise='no' InstallDefault='local' Absent='allow'>
-       <ComponentRef Id='Cert' />
-diff -r e16e389a3cb5 makedist.bat
---- a/makedist.bat	Sun Jul 10 15:11:23 2011 +1000
-+++ b/makedist.bat	Thu Sep 08 08:42:56 2011 +0200
+         <Directory Id='XenProgramFilesDir' Name='Xen PV Drivers'>
+diff -r 58899e6ed48f makedist.bat
+--- a/makedist.bat	Fri Sep 21 23:25:49 2012 +1000
++++ b/makedist.bat	Mon Oct 08 15:34:30 2012 +0200
 @@ -1,15 +1,15 @@
  @echo off
 -IF NOT EXIST set_ddk_path.bat ECHO >set_ddk_path.bat SET DDK_PATH=C:\WinDDK\7600.16385.0
@@ -46,7 +28,7 @@ diff -r e16e389a3cb5 makedist.bat
  SET VERSION=0.11.0
 -SET BUILD_NUMBER=0
 -IF EXIST build_number.bat CALL build_number.bat
-+SET BUILD_NUMBER=308
++SET BUILD_NUMBER=369
 +rem IF EXIST build_number.bat CALL build_number.bat
  
  SET GPLPV_VERSION=%VERSION%.%BUILD_NUMBER%
@@ -58,22 +40,32 @@ diff -r e16e389a3cb5 makedist.bat
  
  ECHO BUILDING %GPLPV_VERSION%
  
-@@ -20,12 +20,12 @@
- 
+@@ -21,20 +21,10 @@
  SET SIGNTOOL=%DDK_PATH%\bin\x86\signtool.exe
  IF NOT EXIST %SIGNTOOL% SET SIGNTOOL=%DDK_PATH%\bin\selfsign\signtool.exe
--SET CERT_NAME=GPLPV_Test_Cert
+ 
+-SET CERT_FILENAME=
+-SET CERT_PASSWORD=
+-SET CERT_CROSS_CERT_FILENAME=
+-SET CERT_PUBLIC_FILENAME=
+-IF NOT EXIST SIGN_CONFIG.BAT GOTO DONT_SIGN
+-CALL SIGN_CONFIG.BAT
+-SET CERT_CROSS_CERT_FLAG=
+-SET CERT_PASSWORD_FLAG=
+-IF DEFINED CERT_CROSS_CERT_FILENAME SET CERT_CROSS_CERT_FLAG=/ac %CERT_CROSS_CERT_FILENAME%
+-IF DEFINED CERT_PASSWORD SET CERT_PASSWORD_FLAG=-p %CERT_PASSWORD%
+-IF EXIST %CERT_FILENAME% GOTO :DONT_SIGN
+-"%DDK_PATH%"\bin\x86\makecert -r -pe -ss PrivateCertStore -n "CN=GPLPV Test Cert" %CERT_PUBLIC_FILENAME%
+-certutil -exportpfx -user -privatekey %CERT_PASSWORD_FLAG% PrivateCertStore "GPLPV Test Cert" "%CERT_FILENAME%
+-:DONT_SIGN
 +SET CERT_NAME="Univention GmbH"
- 
- REM IF NOT EXIST SIGN_CONFIG.BAT GOTO DONT_SIGN
- REM CALL SIGN_CONFIG.BAT
- 
--IF NOT EXIST gplpv.cer "%DDK_PATH%"\bin\selfsign\x86\makecert -r -pe -ss PrivateCertStore -n "CN=GPLPV_Test_Cert" gplpv.cer
-+rem IF NOT EXIST gplpv.cer "%DDK_PATH%"\bin\selfsign\x86\makecert -r -pe -ss PrivateCertStore -n "CN=GPLPV_Test_Cert" gplpv.cer
++SET CERT_PUBLIC_FILENAME=Univention_CodeSigning_Certificate.cer
++SET CERT_CROSS_CERT_FILENAME=MSCV-GlobalSign.cer
++SET CERT_CROSS_CERT_FLAG=/s MY /n %CERT_NAME% /ac %CERT_CROSS_CERT_FILENAME%
  
  mkdir symbols\%GPLPV_VERSION%
  
-@@ -57,6 +57,6 @@
+@@ -66,6 +56,6 @@
  IF EXIST BUILD*.WRN GOTO DONT_TAG
  IF EXIST BUILD*.ERR GOTO DONT_TAG
  
@@ -82,57 +74,57 @@ diff -r e16e389a3cb5 makedist.bat
  
  :DONT_TAG
 \ No newline at end of file
-diff -r e16e389a3cb5 sign.bat
---- a/sign.bat	Sun Jul 10 15:11:23 2011 +1000
-+++ b/sign.bat	Thu Sep 08 08:42:56 2011 +0200
-@@ -16,26 +16,26 @@
+diff -r 58899e6ed48f sign.bat
+--- a/sign.bat	Fri Sep 21 23:25:49 2012 +1000
++++ b/sign.bat	Mon Oct 08 15:34:30 2012 +0200
+@@ -1,7 +1,5 @@
+ @ECHO OFF
+ 
+-IF NOT EXIST SIGN_CONFIG.BAT GOTO DONT_SIGN
+-
+ IF %_BUILDARCH%==x86 (SET BUILDDIR=obj%BUILD_ALT_DIR%\i386) ELSE (SET BUILDDIR=obj%BUILD_ALT_DIR%\amd64)
+ IF %DDK_TARGET_OS%==Win2K SET SIGN_OS=2000
+ IF %DDK_TARGET_OS%==WinXP SET SIGN_OS=XP_X86
+@@ -19,26 +17,26 @@
  xcopy /D %BASEDIR%\redist\wdf\%_BUILDARCH%\%WDFFILENAME% xenpci\%BUILDDIR%
  xcopy /D %BASEDIR%\redist\wdf\%_BUILDARCH%\%WDFFILENAME% xenusb\%BUILDDIR%
  
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xenpci\%BUILDDIR%\xenpci.sys
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xenpci\%BUILDDIR%\xenpci.sys
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenpci\%BUILDDIR%\xenpci.sys
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenpci\%BUILDDIR%\xenpci.sys
  %DDK_PATH%\bin\selfsign\inf2cat /driver:xenpci\%BUILDDIR% /os:%SIGN_OS%
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xenpci\%BUILDDIR%\xenpci.cat
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xenpci\%BUILDDIR%\xenpci.cat
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenpci\%BUILDDIR%\xenpci.cat
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenpci\%BUILDDIR%\xenpci.cat
  
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xenvbd\%BUILDDIR%\xenvbd.sys
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xenvbd\%BUILDDIR%\xenvbd.sys
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenvbd\%BUILDDIR%\xenvbd.sys
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenvbd\%BUILDDIR%\xenvbd.sys
  %DDK_PATH%\bin\selfsign\inf2cat /driver:xenvbd\%BUILDDIR% /os:%SIGN_OS%
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xenvbd\%BUILDDIR%\xenvbd.cat
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xenvbd\%BUILDDIR%\xenvbd.cat
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenvbd\%BUILDDIR%\xenvbd.cat
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenvbd\%BUILDDIR%\xenvbd.cat
  
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xennet\%BUILDDIR%\xennet.sys
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xennet\%BUILDDIR%\xennet.sys
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xennet\%BUILDDIR%\xennet.sys
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xennet\%BUILDDIR%\xennet.sys
  %DDK_PATH%\bin\selfsign\inf2cat /driver:xennet\%BUILDDIR% /os:%SIGN_OS%
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xennet\%BUILDDIR%\xennet.cat
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xennet\%BUILDDIR%\xennet.cat
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xennet\%BUILDDIR%\xennet.cat
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xennet\%BUILDDIR%\xennet.cat
  
  IF %DDK_TARGET_OS%==Win2K GOTO DONT_SIGN
  
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xenscsi\%BUILDDIR%\xenscsi.sys
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xenscsi\%BUILDDIR%\xenscsi.sys
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenscsi\%BUILDDIR%\xenscsi.sys
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenscsi\%BUILDDIR%\xenscsi.sys
  %DDK_PATH%\bin\selfsign\inf2cat /driver:xenscsi\%BUILDDIR% /os:%SIGN_OS%
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xenscsi\%BUILDDIR%\xenscsi.cat
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xenscsi\%BUILDDIR%\xenscsi.cat
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenscsi\%BUILDDIR%\xenscsi.cat
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenscsi\%BUILDDIR%\xenscsi.cat
  
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xenusb\%BUILDDIR%\xenusb.sys
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xenusb\%BUILDDIR%\xenusb.sys
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenusb\%BUILDDIR%\xenusb.sys
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenusb\%BUILDDIR%\xenusb.sys
  %DDK_PATH%\bin\selfsign\inf2cat /driver:xenusb\%BUILDDIR% /os:%SIGN_OS%
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll xenusb\%BUILDDIR%\xenusb.cat
-+%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll /ac MSCV-GlobalSign.cer xenusb\%BUILDDIR%\xenusb.cat
+-%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenusb\%BUILDDIR%\xenusb.cat
++%SIGNTOOL% sign /v %CERT_CROSS_CERT_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll xenusb\%BUILDDIR%\xenusb.cat
  
  :DONT_SIGN
-diff -r e16e389a3cb5 wix.bat
---- a/wix.bat	Sun Jul 10 15:11:23 2011 +1000
-+++ b/wix.bat	Thu Sep 08 08:42:56 2011 +0200
-@@ -1,6 +1,6 @@
- @ECHO OFF
- 
--IF "%_BUILDARCH%"=="x86" (SET DIFXLIB=%WIX%bin\difxapp_x86.wixlib) ELSE (SET DIFXLIB=%WIX%bin\difxapp_x64.wixlib)
-+IF "%_BUILDARCH%"=="x86" (SET DIFXLIB="%WIX%bin\difxapp_x86.wixlib") ELSE (SET DIFXLIB="%WIX%bin\difxapp_x64.wixlib")
- 
- IF "%_BUILDARCH%"=="x86" (SET MSIARCH=x32) ELSE (SET MSIARCH=x64)
- 
+diff -r 58899e6ed48f wix.bat
+--- a/wix.bat	Fri Sep 21 23:25:49 2012 +1000
++++ b/wix.bat	Mon Oct 08 15:34:30 2012 +0200
 @@ -14,11 +14,11 @@
  IF "%DDK_TARGET_OS%"=="WinNET" (SET MSIOS=2003)
  IF "%DDK_TARGET_OS%"=="WinLH" (SET MSIOS=Vista2008)
@@ -143,8 +135,7 @@ diff -r e16e389a3cb5 wix.bat
  for /F %%x in ('DIR /B %BASEDIR%\redist\wdf\%_BUILDARCH%\WdfCoInstaller?????.dll') do set WDFFILENAME=%%x
  
  "%WIX%\bin\candle" installer.wxs -ext "%WIX%\bin\WixUIExtension.dll" -ext "%WIX%\bin\WixDifxAppExtension.dll" -ext "%WIX%\bin\WixIIsExtension.dll"
--"%WIX%\bin\light.exe" -o %MSINAME% installer.wixobj "%DIFXLIB%" -ext "%WIX%\bin\WixUIExtension.dll" -ext "%WIX%\bin\WixDifxAppExtension.dll" -ext "%WIX%\bin\WixIIsExtension.dll"
-+"%WIX%\bin\light.exe" -o %MSINAME% installer.wixobj %DIFXLIB% -ext "%WIX%\bin\WixUIExtension.dll" -ext "%WIX%\bin\WixDifxAppExtension.dll" -ext "%WIX%\bin\WixIIsExtension.dll"
+ "%WIX%\bin\light.exe" -o %MSINAME% installer.wixobj %DIFXLIB% -ext "%WIX%\bin\WixUIExtension.dll" -ext "%WIX%\bin\WixDifxAppExtension.dll" -ext "%WIX%\bin\WixIIsExtension.dll"
  
--%SIGNTOOL% sign /v /s PrivateCertStore /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll %MSINAME%
+-%SIGNTOOL% sign /v /f %CERT_FILENAME% %CERT_PASSWORD_FLAG% /t http://timestamp.verisign.com/scripts/timestamp.dll %MSINAME%
 +%SIGNTOOL% sign /v /s MY /n %CERT_NAME% /t http://timestamp.verisign.com/scripts/timestamp.dll %MSINAME%

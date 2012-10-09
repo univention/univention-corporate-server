@@ -1,0 +1,94 @@
+##### paths #####
+BINDIR  = bin
+INCDIR  = inc
+OBJDIR  = obj
+SRCDIR  = src
+
+##### misc #####
+QUIETLY = 1>nul 2>nul
+
+##### sources, objects and libraries #####
+BINNAME = liblfds
+LIB_BINARY = $(BINDIR)\$(BINNAME).lib
+DLL_BINARY = $(BINDIR)\$(BINNAME).dll
+SRCDIRS = abstraction freelist queue ringbuffer slist stack
+SOURCES = abstraction_aligned_free.c abstraction_aligned_malloc.c abstraction_cas.c abstraction_dcas.c abstraction_increment.c \
+          freelist_delete.c freelist_get_and_set.c freelist_new.c freelist_query.c freelist_pop_push.c \
+          queue_delete.c queue_new.c queue_query.c queue_queue.c \
+          ringbuffer_delete.c ringbuffer_get_and_put.c ringbuffer_new.c ringbuffer_query.c \
+          slist_delete.c slist_get_and_set.c slist_link.c slist_new.c \
+          stack_delete.c stack_new.c stack_push_pop.c stack_query.c
+OBJECTS = $(patsubst %.c,$(OBJDIR)/%.obj,$(notdir $(SOURCES)))
+
+##### tools #####
+MAKE    = make
+MFLAGS  = 
+
+CC      = cl
+CBASE   = /nologo /W4 /WX /c "-I$(SRCDIR)" "-I$(INCDIR)" "/Fd$(BINDIR)\$(BINNAME).pdb" /DUNICODE /D_UNICODE /DWIN32_LEAN_AND_MEAN
+CFREL   = /Ox /DNDEBUG
+CFDBG   = /Od /Gm /Zi /D_DEBUG
+
+AR      = lib
+AFLAGS  = /nologo /subsystem:console /wx /verbose
+
+LD      = link
+LFBASE  = /dll /def:$(BINNAME).def /nologo /subsystem:console /wx /nodefaultlib /nxcompat
+LFREL   = /incremental:no
+LFDBG   = /debug "/pdb:$(BINDIR)\$(BINNAME).pdb"
+
+##### variants #####
+CFLAGS  = $(CBASE) $(CFDBG) /MTd
+LFLAGS  = $(LFBASE) $(LFDBG)
+CLIB    = libcmtd.lib
+
+ifeq ($(MAKECMDGOALS),librel)
+  CFLAGS  = $(CBASE) $(CFREL) /MT
+  LFLAGS  = $(LFBASE) $(LFREL)
+  CLIB    = libcmt.lib
+endif
+
+ifeq ($(MAKECMDGOALS),libdbg)
+  CFLAGS  = $(CBASE) $(CFDBG) /MTd
+  LFLAGS  = $(LFBASE) $(LFDBG)
+  CLIB    = libcmtd.lib
+endif
+
+ifeq ($(MAKECMDGOALS),dllrel)
+  CFLAGS  = $(CBASE) $(CFREL) /MD
+  LFLAGS  = $(LFBASE) $(LFREL)
+  CLIB    = msvcrt.lib
+endif
+
+ifeq ($(MAKECMDGOALS),dlldbg)
+  CFLAGS  = $(CBASE) $(CFDBG) /MDd
+  LFLAGS  = $(LFBASE) $(LFDBG)
+  CLIB    = msvcrtd.lib
+endif
+
+##### search paths #####
+vpath %.c $(patsubst %,$(SRCDIR)/%;,$(SRCDIRS))
+
+##### implicit rules #####
+$(OBJDIR)/%.obj : %.c
+	$(CC) $(CFLAGS) "/Fo$@" $<
+
+##### explicit rules #####
+$(LIB_BINARY) : $(OBJECTS)
+	$(AR) $(AFLAGS) $(OBJECTS) /out:$(LIB_BINARY)
+
+$(DLL_BINARY) : $(OBJECTS)
+	$(LD) $(LFLAGS) $(CLIB) $(OBJECTS) /out:$(DLL_BINARY)
+
+##### phony #####
+.PHONY : clean librel libdbg dllrel dlldbg
+
+clean : 
+	@erase /Q $(BINDIR)\$(BINNAME).* $(OBJDIR)\*.obj $(QUIETLY)
+
+librel : $(LIB_BINARY)
+libdbg : $(LIB_BINARY)
+
+dllrel : $(DLL_BINARY)
+dlldbg : $(DLL_BINARY)
+

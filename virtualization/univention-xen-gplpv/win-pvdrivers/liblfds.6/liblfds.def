@@ -1,0 +1,46 @@
+EXPORTS
+
+freelist_delete = freelist_delete @1
+freelist_get_user_data_from_element = freelist_get_user_data_from_element @2
+freelist_guaranteed_pop = freelist_guaranteed_pop @3
+freelist_new = freelist_new @4
+freelist_new_elements = freelist_new_elements @5
+freelist_pop = freelist_pop @6
+freelist_push = freelist_push @7
+freelist_query = freelist_query @8
+freelist_set_user_data_in_element = freelist_set_user_data_in_element @9
+
+queue_delete = queue_delete @10
+queue_dequeue = queue_dequeue @11
+queue_enqueue = queue_enqueue @12
+queue_guaranteed_enqueue = queue_guaranteed_enqueue @13
+queue_new = queue_new @14
+queue_query = queue_query @15
+
+ringbuffer_delete = ringbuffer_delete @16
+ringbuffer_get_read_element = ringbuffer_get_read_element @17
+ringbuffer_get_write_element = ringbuffer_get_write_element @18
+ringbuffer_new = ringbuffer_new @19
+ringbuffer_put_read_element = ringbuffer_put_read_element @20
+ringbuffer_put_write_element = ringbuffer_put_write_element @21
+
+slist_delete = slist_delete @ 22
+slist_delete_all_elements = slist_delete_all_elements @ 23
+slist_delete_element = slist_delete_element @ 24
+slist_get_head = slist_get_head @ 25
+slist_get_head_and_then_next = slist_get_head_and_then_next @ 26
+slist_get_next = slist_get_next @ 27
+slist_get_user_data_from_element = slist_get_user_data_from_element @ 28
+slist_new = slist_new @ 29
+slist_new_head = slist_new_head @ 30
+slist_new_next = slist_new_next @ 31
+slist_set_user_data_in_element = slist_set_user_data_in_element @ 32
+
+stack_clear = stack_clear @33
+stack_delete = stack_delete @34
+stack_guaranteed_push = stack_guaranteed_push @35
+stack_new = stack_new @36
+stack_pop = stack_pop @37
+stack_push = stack_push @38
+stack_query = stack_query @39
+

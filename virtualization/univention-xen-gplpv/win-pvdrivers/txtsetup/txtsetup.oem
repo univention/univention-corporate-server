@@ -1,0 +1,62 @@
+[Disks]
+WDFLDR = "WDF #1. Required for Windows 2003 or earlier", \wdfldr.tag, \
+WDF01000 = "WDF #2. Required for Windows 2003 or earlier", \wdf01000.tag, \
+XENPCI = "Xen PCI Device Driver", \xenpci.tag, \
+XENVBD = "Xen Block Device Driver", \xenvbd.tag, \
+XENSCSI = "Xen SCSI Device Driver", \xenscsi.tag, \
+
+[Defaults]
+scsi = XENPCI
+
+[scsi]
+WDFLDR = "WDF #1. Required for Windows 2003 or earlier"
+WDF01000 = "WDF #2. Required for Windows 2003 or earlier"
+XENPCI = "Xen PCI Device Driver"
+XENVBD = "Xen Block Device Driver"
+XENSCSI = "Xen SCSI Device Driver"
+
+[Files.scsi.WDFLDR]
+driver = WDFLDR, wdfldr.sys, wdfldr
+
+[Config.WDFLDR]
+value = "", Group, REG_SZ, "Boot Bus Extender"
+value = "", Tag, REG_DWORD, 0
+
+[Files.scsi.WDF01000]
+driver = WDF01000, wdf01000.sys, wdf01000
+
+[Config.WDF01000]
+value = "", Group, REG_SZ, "Boot Bus Extender"
+value = "", Tag, REG_DWORD, 0
+
+[Files.scsi.XENPCI]
+driver = XENPCI, xenpci.sys, xenpci
+inf = XENPCI, xenpci.inf, xenpci
+
+[Config.XENPCI]
+value = "", Group, REG_SZ, "Boot Bus Extender"
+value = "", Tag, REG_DWORD, 0
+
+[HardwareIds.scsi.XENPCI]
+id = "PCI\VEN_5853&DEV_0001", "XENPCI"
+
+[Files.scsi.XENVBD]
+driver = XENVBD, xenvbd.sys, xenvbd
+inf = XENVBD, xenvbd.inf, xenvbd
+
+[Config.XENVBD]
+value = Parameters\PnpInterface, 15, REG_DWORD, 1
+
+[HardwareIds.scsi.XENVBD]
+id = "XEN\VBD", "XENVBD"
+
+[Files.scsi.XENSCSI]
+driver = XENSCSI, xenscsi.sys, xenscsi
+inf = XENSCSI, xenscsi.inf, xenscsi
+
+[Config.XENSCSI]
+value = Parameters\PnpInterface, 15, REG_DWORD, 1
+
+[HardwareIds.scsi.XENSCSI]
+id = "XEN\VSCSI", "XENSCSI"
+

@@ -1,0 +1,4 @@
+!include "..\common.inc"
+TARGETNAME=xenaddresource
+TARGETTYPE=DRIVER
+SOURCES=xenaddresource.c

@@ -1,0 +1,60 @@
+[Version]
+Signature="$WINDOWS NT$"
+Class=System
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%XenGplPv%
+CatalogFile="XenGPLPV.cat"
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+[Manufacturer]
+%XenGplPv%=XenGplPv,NT$ARCH$
+%XenGplPv%=XenGplPv,NT$ARCH$
+
+[XenGplPv.NT$ARCH$]
+%XenStub.DRVDESC.CONSOLE%=XenStub_Inst, XEN\CONSOLE
+%XenStub.DRVDESC.VFB%=XenStub_Inst, XEN\VFB
+%XenStub.DRVDESC.VKBD%=XenStub_Inst, XEN\VKBD
+
+[XenStub_Inst.NT]
+CopyFiles=XenStub.CopyFiles
+
+[XenStub.CopyFiles]
+xenstub.sys
+
+[SourceDisksFiles]
+xenstub.sys=1
+
+[SourceDisksNames]
+1 = %DISK_NAME%
+
+[XenStub_Inst.Services]
+AddService=XenStub,2,XenStub_Service 
+
+[XenStub_Inst.NT.Services]
+AddService=XenStub,2,XenStub_Service 
+
+[XenStub_Service]
+DisplayName    = %XenStub.SVCDESC%                            
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+LoadOrderGroup = System Bus Extender
+ServiceBinary  = %12%\xenstub.sys                            
+AddReg = XenStub_Service_AddReg
+
+[XenStub_Service_AddReg]
+HKR,"Parameters\PnpInterface", "0", 0x00010001, 0x00000001
+
+[Strings]
+XenGplPv = "Xen GPL PV Driver Developers"
+XenStub.SVCDESC = "Xen Stub Device Driver"
+XenStub.DRVDESC = "Xen Stub Device Driver"
+XenStub.DRVDESC.CONSOLE = "Xen Stub Device Driver (Console)"
+XenStub.DRVDESC.VFB = "Xen Stub Device Driver (Virtual Frame Buffer)"
+XenStub.DRVDESC.VKBD = "Xen Stub Device Driver (Virtual Keyboard)
+DISK_NAME = "Xen Stub Device Driver Install Disk"
