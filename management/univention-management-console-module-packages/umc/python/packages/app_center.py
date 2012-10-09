@@ -395,6 +395,7 @@ class Application(object):
 				'username' : '',
 				'password' : '',
 				'version' : 'current',
+				'localmirror' : 'false',
 				}
 			with util.set_save_commit_load(ucr) as super_ucr:
 				component_manager.put(data, super_ucr)
