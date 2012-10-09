@@ -1,3 +1,11 @@
+univention-management-console-frontend (2.0.90-1) unstable; urgency=low
+
+  * Added dgrid with its dependencies
+  * Adapted CSS for the AppCenter and GalleryPane
+    (Bug #28002)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 09 Oct 2012 18:35:24 +0200
+
 univention-management-console-frontend (2.0.89-1) unstable; urgency=low
 
   * dojo 1.8 migration fixes; Bug #28551

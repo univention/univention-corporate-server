@@ -26,32 +26,148 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require*/
+/*global define require console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
 	"dojo/when",
+	"dojo/query",
+	"dojo/dom-class",
+	"dojo/store/Memory",
+	"dojox/image/LightboxNano",
 	"umc/dialog",
 	"umc/tools",
+	"umc/i18n!umc/modules/packages",
+	"umc/modules/lib/server",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/ProgressBar",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/CategoryPane",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
-	"umc/modules/lib/server",
-	"umc/widgets/Form",
+	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/TextBox",
-	"dojo/query",
-	"dojox/image/LightboxNano",
-	"umc/i18n!umc/modules/packages"
-], function(declare, lang, array, when, dialog, tools, Page, StandbyMixin, ProgressBar, ContainerWidget, CategoryPane, ConfirmDialog, Text, libServer, Form, TextBox, query, Lightbox, _) {
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/LabelPane",
+	"umc/widgets/Button",
+	"dgrid/List",
+	"dgrid/OnDemandList",
+	"dgrid/Selection",
+	"put-selector/put"
+
+], function(declare, lang, array, on, when, query, domClass, Memory, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, List, Grid, Selection, put) {
+	var _GalleryPane = declare("umc.modules.packages._GalleryPane", [Grid, Selection], {
+
+		postCreate: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcGalleryPane');
+		},
+
+		renderRow: function(obj, options) {
+			var div = put("div");
+			div.innerHTML =
+				'<div class="umcItem" style="background-image: url(' + obj.icon + ');">' + 
+				'<div>' + obj.name + '</div>' +
+				'<div class="umcDescription">' + obj.categories + '</div></div>';
+			return div;
+		}
+	});
+
+	var _SearchWidget = declare("umc.modules.packages._SearchWidget", [ContainerWidget], {
+
+		category: null,
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			var widthContainer = new ContainerWidget();
+			this._searchTextBox = new TextBox({
+				label: _("Search term"),
+				style: 'width: 170px;'
+			});
+			var searchLabel = new LabelPane({
+				content: this._searchTextBox
+			});
+			widthContainer.addChild(searchLabel);
+			this.addChild(widthContainer);
+
+			this._categoryContainer = new ContainerWidget({
+				label: _("Categories")
+			});
+			var categoryLabel = new LabelPane({
+				content: this._categoryContainer
+			});
+			this.addChild(categoryLabel);
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			this._searchTextBox.on('keyup', lang.hitch(this, 'onSearch'));
+		},
+
+		_getValueAttr: function() {
+			return this._searchTextBox.get('value');
+		},
+
+		_getCategoryAttr: function() {
+			return this.category;
+		},
+
+		_setCategoriesAttr: function(categories) {
+			// remove all existing categories
+			array.forEach(this._categoryContainer.getChildren(), lang.hitch(this, function(category) {
+				this._categoryContainer.removeChild(category);
+				category.destroyRecursive();
+			}));
+
+			// add new categories
+			this._categoryContainer.addChild(new Button({
+				label: _('All'),
+				callback: lang.hitch(this, function() {
+					this.category = null;
+					this._updateCss();
+					this.onSearch();
+				})
+			}));
+			array.forEach(categories, lang.hitch(this, function(category) {
+				this._categoryContainer.addChild(new Button({
+					label: category,
+					callback: lang.hitch(this, function() {
+						this.category = category;
+						this._updateCss();
+						this.onSearch();
+					})
+				}));
+			}));
+
+			this._updateCss();
+		},
+
+		_updateCss: function() {
+			var categories = this._categoryContainer.getChildren();
+			var label;
+			array.forEach(categories, lang.hitch(this, function(category) {
+				label = category.get('label');
+				if (this.category == label || (! this.category && label == _('All'))) {
+					domClass.add(category.domNode, 'umcCategorySelected');
+				} else {
+					domClass.remove(category.domNode, 'umcCategorySelected');
+				}
+			}));
+		},
+
+		onSearch: function() {
+		}
+	});
+
 	return declare("umc.modules.packages.AppCenterPage", [ Page, StandbyMixin ], {
 
 		_udm_accessible: false, // license depends on udm
+
+		// the widget's class name as CSS class
+		'class': 'umcAppCenter',
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -64,60 +180,51 @@ define([
 		},
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
 
-			// create a progress bar
 			this._progressBar = new ProgressBar();
 
-			// create form
-			var widgets = [{
-				type: TextBox,
-				name: 'name',
-				label: _("Name")
-			}];
+			this._searchWidget = new _SearchWidget({
+				region: 'left'
+			});
+			this.addChild(this._searchWidget);
 
-			var layout = [{
-				label: _("Search"),
-				layout: [ ['name'] ]
-			}];
-
-			this._form = new Form({
-				widgets: widgets,
-				layout: layout,
-				scrollable: true
+			var titlePane = new ExpandingTitlePane({
+				title: _('Applications')
 			});
 
-			try {
-				// hide form
-				this._form._container.getChildren()[0].toggle();
-			} catch(e) { }
+			this._grid = new _GalleryPane();
 
-			// register event handlers
-			var widget = this._form.getWidget('name');
-			widget.on('keyup', lang.hitch(this, 'filterApplications'));
-
-			// add form to container widget
-			this.container = new ContainerWidget({
-				scrollable: true
-			});
-			this.container.addChild(this._form);
-			this.addChild(this.container);
+			titlePane.addChild(this._grid);
+			this.addChild(titlePane);
 
 			// load apps
 			this.standby(true);
 			when(this.getApplications(), lang.hitch(this, function(applications) {
 				this.standby(false);
-				this._category_pane = new CategoryPane({
-					useCategories: true,
-					modules: applications,
-					title: _('Applications'),
-					open: true
+				this._grid.set('store', new Memory({data: applications}));
+
+				var categories = [];
+				array.forEach(applications, function(application) {
+					array.forEach(application.categories, function(category) {
+						if (array.indexOf(categories, category) < 0) {
+						     categories.push(category);
+						}
+					});
 				});
-				this._category_pane.on('openmodule', lang.hitch(this, '_show_details'));
-				this.container.addChild(this._category_pane);
+				this._searchWidget.set('categories', categories.sort());
 			}));
-			//this._form.load({}); // ID doesn't matter here but must be dict
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			// register event handlers
+			this._searchWidget.on('search', lang.hitch(this, 'filterApplications'));
+
+			this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
+				this._show_details(this._grid.row(evt));
+			}));
 		},
 
 		startup: function() {
@@ -439,25 +546,27 @@ define([
 		},
 
 		filterApplications: function() {
-			var search_string = this._form.getWidget('name').get('value').toLowerCase();
-			array.forEach(this._category_pane.getChildren(), function(app) {
-				var visible = false;
-				if (!search_string) {
-					visible = true;
-				} else {
-					if (app.label.toLowerCase().search(search_string) > -1) {
-						visible = true;
-					} else {
-						array.forEach(app.categories, function(category) {
-							if (category.toLowerCase().search(search_string) > -1) {
-								visible = true;
-								return false; // break
-							}
-						});
+			// search string
+			var string = this._searchWidget.get('value');
+			this._grid.query.name = new RegExp(string, 'i');
+
+			// category
+			var category = this._searchWidget.get('category');
+			if (! category) {
+				delete this._grid.query.categories;
+			} else {
+				this._grid.query.categories = {
+					test: function(categories) {
+						if (array.indexOf(categories, category) >= 0) {
+							return true;
+						} else {
+							return false
+						}
 					}
-				}
-				app.set('style', visible ? 'display:inline-block;' : 'display:none;');
-			});
+				};
+			}
+
+			this._grid.refresh();
 		},
 
 		_show_license_request: function() {
