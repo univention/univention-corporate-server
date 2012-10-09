@@ -118,6 +118,7 @@ class Instance(umcm.Base):
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
 		try:
+			# make sure that the application cane be installed/updated
 			can_continue = application is not None and not (function == 'install' and not application.can_be_installed(self.package_manager)) and not (function == 'update' and not application.can_be_updated())
 			self.finished(request.id, can_continue)
 			if can_continue:
@@ -361,7 +362,7 @@ class Instance(umcm.Base):
 		#		},
 		#		... more such entries ...
 		#	]
-		with util.set_save_commit_load() as super_ucr:
+		with util.set_save_commit_load(self.ucr) as super_ucr:
 			for object, in iterator:
 				yield self.component_manager.put(object, super_ucr)
 		self.package_manager.update()
@@ -402,7 +403,7 @@ class Instance(umcm.Base):
 		changed = False
 		# Set values into our UCR copy.
 		try:
-			with util.set_save_commit_load() as super_ucr:
+			with util.set_save_commit_load(self.ucr) as super_ucr:
 				for object, in iterator:
 					for key, value in object.iteritems():
 						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))

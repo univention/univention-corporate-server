@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.29-1) unstable; urgency=low
+
+  * minor fixes; Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 09 Oct 2012 16:34:24 +0200
+
 univention-management-console-module-packages (2.0.28-1) unstable; urgency=low
 
   * Set localmirror to false, otherwise it will not work on a repository

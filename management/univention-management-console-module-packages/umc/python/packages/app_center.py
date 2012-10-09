@@ -96,7 +96,7 @@ except (ImportError, LDAPError, udm_errors.base) as err:
 
 class Application(object):
 	_regComma = re.compile('\s*,\s*')
-	_regComponentID = re.compile(r'.*/(?P<id>[^/]+)(\.ini)?')
+	_regComponentID = re.compile(r'.*/(?P<id>[^/]+)\.ini')
 	_all_applications = None
 	_category_translations = {}
 
@@ -416,7 +416,7 @@ class Application(object):
 		ucr.load()
 		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		try:
-			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s&version=%(version)s'
+			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s&version=%(version)s&role=%(role)s'
 			url = url % {
 				'server' : server,
 				'uuid' : LICENSE.uuid(),
@@ -424,6 +424,7 @@ class Application(object):
 				'version' : self.version,
 				'action' : action,
 				'status' : status,
+				'role': ucr.get('server/role'),
 			}
 			request = urllib2.Request(url, headers={'User-agent' : 'UMC/AppCenter'})
 			#urllib2.urlopen(request)
