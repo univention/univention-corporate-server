@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.22-1) unstable; urgency=low
+
+  * openDropDown after searching in a UDM-ComboBox (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Oct 2012 18:57:56 +0200
+
 univention-management-console-module-udm (3.0.21-1) unstable; urgency=low
 
   * Change the order in the license overview (Bug #28186)

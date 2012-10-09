@@ -126,7 +126,7 @@ define([
 			this._searchNode = lang.clone(this._buttonNode);
 			this._searchNode.childNodes[0].style.backgroundImage = 'url("' + url + 'find.png")';
 			this._searchNode.childNodes[0].style.backgroundPosition = 'center';
-			this.own(on(this._searchNode, 'click', lang.hitch(this, '_searchDisplayedValueOnServer')));
+			this.own(on(this._searchNode, 'click', lang.hitch(this, '_searchDisplayedValueOnServerAndOpen')));
 			this._searchingNode = lang.clone(this._searchNode);
 			this._searchingNode.childNodes[0].style.backgroundImage = 'url("' + url + 'loading.gif")';
 
@@ -174,10 +174,7 @@ define([
 
 		_keyPress: function(evt) {
 			if (evt.keyCode == keys.ENTER) {
-				this._searchDisplayedValueOnServer().then(lang.hitch(this, function() {
-					// does not work reliably
-					//this.openDropDown();
-				}));
+				this._searchDisplayedValueOnServerAndOpen();
 				// dont submit form
 				evt.preventDefault();
 			}
@@ -228,11 +225,18 @@ define([
 			this._state = new_state;
 		},
 
-		_searchDisplayedValueOnServer: function() {
+		_searchDisplayedValueOnServerAndOpen: function() {
+			return this._searchDisplayedValueOnServer(true);
+		},
+
+		_searchDisplayedValueOnServer: function(open) {
 			var deferred = new Deferred();
-			when(this._searchOnServer(this.get('displayedValue')), function() {
+			when(this._searchOnServer(this.get('displayedValue')), lang.hitch(this, function() {
+				if (open) {
+					this.loadAndOpenDropDown();
+				}
 				deferred.resolve();
-			});
+			}));
 			return deferred;
 		},
 
