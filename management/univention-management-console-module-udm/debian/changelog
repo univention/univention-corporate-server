@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.21-1) unstable; urgency=low
+
+  * Change the order in the license overview (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 14:03:16 +0200
+
 univention-management-console-module-udm (3.0.20-1) unstable; urgency=low
 
   *  Dojo 1.8 migration fixes; Bug #28551 
