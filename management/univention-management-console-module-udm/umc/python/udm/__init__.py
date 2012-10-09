@@ -176,20 +176,37 @@ class Instance( Base ):
 	@LDAP_Connection
 	def license_info( self, request, ldap_connection = None, ldap_position = None ):
 		license_data = {}
-		for item in ( 'licenses', 'real' ):
-			license_data[ item ] = {}
-			for lic_type in ( 'CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE' ):
-				count = getattr( udm_license._license, item )[ eval( 'udm_license.License.%s' % lic_type ) ]
-				if isinstance( count, basestring ):
-					try:
-						count = int( count )
-					except:
-						count = None
-				license_data[ item ][ lic_type.lower() ] = count
+		license_data[ 'licenseVersion' ] = udm_license._license.version
+		if udm_license._license.version == '1':
+			for item in ( 'licenses', 'real' ):
+				license_data[ item ] = {}
+				for lic_type in ( 'CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE' ):
+					count = getattr( udm_license._license, item )[udm_license._license.version][ eval( 'udm_license.License.%s' % lic_type ) ]
+					if isinstance( count, basestring ):
+						try:
+							count = int( count )
+						except:
+							count = None
+					license_data[ item ][ lic_type.lower() ] = count
 
-		if 'UGS' in udm_license._license.licenseTypes:
-			udm_license._license.licenseTypes = filter( lambda x: x != 'UGS', udm_license._license.licenseTypes )
-		license_data[ 'licenseTypes' ] = udm_license._license.licenseTypes
+			if 'UGS' in udm_license._license.types:
+				udm_license._license.licenseTypes = filter( lambda x: x != 'UGS', udm_license._license.types )
+		elif udm_license._license.version == '2':
+			for item in ( 'licenses', 'real' ):
+				license_data[ item ] = {}
+				for lic_type in ( 'SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS', 'VIRTUALDESKTOPUSERS', 'VIRTUALDESKTOPCLIENTS' ):
+					count = getattr( udm_license._license, item )[udm_license._license.version][ eval( 'udm_license.License.%s' % lic_type ) ]
+					if isinstance( count, basestring ):
+						try:
+							count = int( count )
+						except:
+							count = None
+					license_data[ item ][ lic_type.lower() ] = count
+			license_data[ 'keyID' ] = udm_license._license.licenseKeyID
+			license_data[ 'support' ] = udm_license._license.licenseSupport
+			license_data[ 'premiumSupport' ] = udm_license._license.licensePremiumSupport
+
+		license_data[ 'licenseTypes' ] = udm_license._license.types
 		license_data[ 'oemProductTypes' ] = udm_license._license.oemProductTypes
 		license_data[ 'endDate' ] = udm_license._license.endDate
 		license_data[ 'baseDN' ] = udm_license._license.licenseBase
