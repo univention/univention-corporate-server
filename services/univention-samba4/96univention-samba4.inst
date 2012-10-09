@@ -67,6 +67,7 @@ if [ -n "$s3setup" ] && is_domain_controller; then
 fi
 
 NAME="Samba 4"
+SYSVOL_PATH='/var/lib/samba/sysvol'
 
 ### --- BEGIN helper functions ---
 
@@ -180,26 +181,32 @@ stop_conflicting_services() {
 		if [ -n "$(pgrep -f '/usr/sbin/(smbd|nmbd)')" ]; then
 			/etc/init.d/samba stop
 		fi
-		if [ "$samba_autostart" != "no" ]; then
-			univention-config-registry set samba/autostart=no
-		fi
 	fi
 	if [ -x /etc/init.d/winbind ]; then
 		if [ -n "$(pgrep -xf /usr/sbin/winbindd)" ]; then
 			/etc/init.d/winbind stop
-		fi
-		if [ "$winbind_autostart" != "no" ]; then
-			univention-config-registry set winbind/autostart=no
 		fi
 	fi
 	if [ -x /etc/init.d/heimdal-kdc ]; then
 		if [ -n "$(pgrep -f '/usr/lib/heimdal-servers/(kdc|kpasswdd)')" ]; then
 			/etc/init.d/heimdal-kdc stop
 		fi
-		if [ "$kerberos_autostart" != "no" ]; then
-			univention-config-registry set kerberos/autostart=no
-		fi
 	fi
+
+	tmp_ucr_key_value_list=()
+	if [ "$samba_autostart" != "no" ]; then
+			tmp_ucr_key_value_list[0]="samba/autostart=no"
+	fi
+	if [ "$winbind_autostart" != "no" ]; then
+			tmp_ucr_key_value_list[${#tmp_ucr_key_value_list[@]}]="winbind/autostart=no"
+	fi
+	if [ "$kerberos_autostart" != "no" ]; then
+			tmp_ucr_key_value_list[${#tmp_ucr_key_value_list[@]}]="kerberos/autostart=no"
+	fi
+	if [ -n "$tmp_ucr_key_value_list" ]; then
+		univention-config-registry set "${tmp_ucr_key_value_list[@]}"
+	fi
+	unset tmp_ucr_key_value_list
 }
 
 set_samba_role() {
@@ -217,11 +224,11 @@ set_samba_role() {
 	univention-config-registry set samba4/role="$samba4_role"
 }
 
-set_samba_ldap_base() {
+set_samba4_ldap_base() {
 	default_samba4_ldap_base="DC=$(echo "$kerberos_realm" | sed 's/\./,DC=/g')"
-	if [ "$samba_ldap_base" != "$default_samba_ldap_base" ]; then
+	if [ "$samba4_ldap_base" != "$default_samba4_ldap_base" ]; then
 		univention-config-registry set samba4/ldap/base="$default_samba4_ldap_base"
-		samba_ldap_base="$default_samba4_ldap_base"
+		samba4_ldap_base="$default_samba4_ldap_base"
 	fi
 }
 
@@ -375,15 +382,13 @@ if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then
 
 	stop_conflicting_services
 
-	# during installation samba4/autostart was set to no to prevent
-	# a half configured samba server. Set autostart to yes during first join
-    univention-config-registry set samba4/autostart=yes
-
 fi
 
-univention-config-registry set samba4/autostart?yes
+# during installation samba4/autostart was set to no to prevent a half configured samba server.
+if [ "$samba4_autostart" != "yes" ]; then
+	univention-config-registry set samba4/autostart=yes
+fi
 
-SYSVOL_PATH='/var/lib/samba/sysvol'
 /usr/share/univention-samba4/scripts/mount_extfs_with_user_xattr.py
 
 if [ -z "$samba4_role" ]; then
@@ -391,7 +396,7 @@ if [ -z "$samba4_role" ]; then
 fi
 
 ## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
-set_samba_ldap_base
+set_samba4_ldap_base
 
 if [ -n "$samba4_join_site" ]; then
 	if [ "$samba4_role" = 'DC' ] ||  [ "$samba4_role" = 'RODC' ]; then

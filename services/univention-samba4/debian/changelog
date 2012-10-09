@@ -1,3 +1,9 @@
+univention-samba4 (2.0.13-5) unstable; urgency=low
+
+  * improve error handling and performance of setup-s4.sh (Bug #26731)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Oct 2012 15:16:09 +0200
+
 univention-samba4 (2.0.13-4) unstable; urgency=low
 
   * make univention-samba4 a little more modular (Bug #26731)

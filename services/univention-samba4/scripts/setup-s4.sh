@@ -33,13 +33,16 @@ LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary 
 
 eval "$(univention-config-registry shell)"
 
-usage(){ echo "$0 [-h|--help] [-w <samba4-admin password file>] [-W]"; exit 1; }
-
+samba_private_dir="/var/lib/samba/private"
+samba_sam="$samba_private_dir/sam.ldb"
+samba_secrets="$samba_private_dir/secrets.ldb"
 SCRIPTDIR=/usr/share/univention-samba4/scripts
 LOGFILE="/var/log/univention/samba4-provision.log"
 
 touch $LOGFILE
 chmod 600 $LOGFILE
+
+usage(){ echo "$0 [-h|--help] [-w <samba4-admin password file>] [-W]"; exit 1; }
 
 adminpw="$(pwgen -1 -s -c -n 16)"
 adminpw2="$adminpw"
@@ -85,12 +88,46 @@ done
 DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 
 ## helper function
+stop_conflicting_services() {
+	## stop samba3 services and heimdal-kdc if present
+	if [ -x /etc/init.d/samba ]; then
+		if [ -n "$(pgrep -f '/usr/sbin/(smbd|nmbd)')" ]; then
+			/etc/init.d/samba stop 2>&1 | tee -a "$LOGFILE"
+		fi
+	fi
+	if [ -x /etc/init.d/winbind ]; then
+		if [ -n "$(pgrep -xf /usr/sbin/winbindd)" ]; then
+			/etc/init.d/winbind stop 2>&1 | tee -a "$LOGFILE"
+		fi
+	fi
+	if [ -x /etc/init.d/heimdal-kdc ]; then
+		if [ -n "$(pgrep -f '/usr/lib/heimdal-servers/(kdc|kpasswdd)')" ]; then
+			/etc/init.d/heimdal-kdc stop 2>&1 | tee -a "$LOGFILE"
+		fi
+	fi
+
+	tmp_ucr_key_value_list=()
+	if [ "$samba_autostart" != "no" ]; then
+			tmp_ucr_key_value_list[0]="samba/autostart=no"
+	fi
+	if [ "$winbind_autostart" != "no" ]; then
+			tmp_ucr_key_value_list[${#tmp_ucr_key_value_list[@]}]="winbind/autostart=no"
+	fi
+	if [ "$kerberos_autostart" != "no" ]; then
+			tmp_ucr_key_value_list[${#tmp_ucr_key_value_list[@]}]="kerberos/autostart=no"
+	fi
+	if [ -n "$tmp_ucr_key_value_list" ]; then
+		univention-config-registry set "${tmp_ucr_key_value_list[@]}" 2>&1 | tee -a "$LOGFILE"
+	fi
+	unset tmp_ucr_key_value_list
+}
+
 set_machine_secret() {
 	## 1. store password locally in secrets.ldb
-	old_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
+	old_kvno=$(ldbsearch -H "$samba_sam" samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
 	new_kvno=$(($old_kvno + 1))
 
-	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
+	ldbmodify -H "$samba_secrets" <<-%EOF
 	dn: flatname=${windows_domain},cn=Primary Domains
 	changetype: modify
 	replace: secret
@@ -151,18 +188,7 @@ while [ "$adminpw" != "$adminpw2" ]; do
 done
 
 ## Provision Samba4
-eval "$(univention-config-registry shell)"	## eval again
-
-if [ -x /etc/init.d/samba ]; then
-	/etc/init.d/samba stop 2>&1 | tee -a "$LOGFILE"
-fi
-if [ -x /etc/init.d/winbind ]; then
-	/etc/init.d/winbind stop 2>&1 | tee -a "$LOGFILE"
-fi
-univention-config-registry set samba/autostart=no winbind/autostart=no 2>&1 | tee -a "$LOGFILE"
-
-/etc/init.d/heimdal-kdc stop 2>&1 | tee -a "$LOGFILE"
-univention-config-registry set kerberos/autostart=no 2>&1 | tee -a "$LOGFILE"
+stop_conflicting_services
 
 if [ ! -e /usr/modules ]; then
 	ln -s /usr/lib /usr/modules		# somehow MODULESDIR is set to /usr/modules in samba4 source despite --enable-fhs
@@ -174,7 +200,6 @@ if [ -z "$samba4_function_level" ]; then
 fi
 
 
-DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
 if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ]; then
 
 	if [ -z "$DOMAIN_SID" ]; then
@@ -193,6 +218,11 @@ if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ]; then
 							--adminpass="$adminpw" --server-role='domain controller'	\
 							--sitename="$sitename" \
 							--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+	fi
+
+	if ! ldbsearch -H "$samba_sam" -b "$samba4_ldap_base" -s base dn 2>/dev/null| grep -qi ^"dn: $samba4_ldap_base"; then
+		echo "Samba4 provision failed, exiting $0"
+		exit 1
 	fi
 
 else
@@ -317,7 +347,7 @@ if [ ! -d /etc/phpldapadmin ]; then
 	mkdir /etc/phpldapadmin
 fi
 if [ ! -e /etc/phpldapadmin/config.php ]; then
-	cp /var/lib/samba/private/phpldapadmin-config.php /etc/phpldapadmin/config.php
+	cp "$samba_private_dir/phpldapadmin-config.php" /etc/phpldapadmin/config.php
 fi
 
 ### Next adjust OpenLDAP ports before starting Samba4
