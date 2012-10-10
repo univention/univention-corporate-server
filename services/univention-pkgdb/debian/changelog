@@ -1,4 +1,4 @@
-univention-pkgdb (6.0.7-2) unstable; urgency=low
+univention-pkgdb (6.0.7-3) unstable; urgency=low
 
   * fix listener restart (Bug #19467)
 
