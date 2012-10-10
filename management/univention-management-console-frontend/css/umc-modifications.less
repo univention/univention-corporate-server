@@ -2541,70 +2541,71 @@ p {
 /* AppCenter */
 .umcAppCenter .umcButton {
 	display: block;
-	text-shadow: none;
-}
-.umcAppCenter .umcButton span.dijitButtonText {
-	text-decoration: none;
-}
-.umcAppCenter .umcButton.umcCategorySelected span.dijitButtonText {
-	font-weight: bold;
 }
 .umcAppCenter .umcButton .dijitButtonContents {
 	outline: none;
+}
+.umcAppCenter .umcButton .dijitButtonText {
+	text-decoration: none;
+}
+.umcAppCenter .umcButton.umcCategorySelected .dijitButtonText {
+	font-weight: bold;
+}
+.umcAppCenter .umcButton .dijitButtonNode {
+	width: 100px;
+	text-align: left;
+}
+.umcAppCenter .dijitButtonHover .dijitButtonNode {
+	text-shadow: none;
 }
 .umcAppCenter .dijitButtonHover,
 .umcAppCenter .dijitButtonActive {
 	background-color: #ededee;
 	border-radius: 5px;
-	cursor: pointer;
 }
-.umcAppCenter .dijitButtonHover .dijitButtonNode {
-	text-shadow: none;
-}
-
 
 /* GalleryPane */
-.umcGalleryPane .umcItem {
-	position: relative;
-	height: 105px;
-	width: 85px;
-	padding: 15px;
-	margin: 0 27px 5px 0;
-	background-position: center 10px;
-	background-repeat: no-repeat !important;
-	display: inline-block;
-	zoom: 1;
-}
-.umcGalleryPane .umcItem div {
-	margin-top: 60px;
-	text-align: center;
-}
-.umcGalleryPane .umcItem .umcDescription {
-	color: grey;
-	margin-top: 0;
-}
 .umcGalleryPane.dgrid {
 	overflow: auto;
 	height: 100%;
 	border: none;
 }
-.umcGalleryPane .dgrid-row {
+.umcGalleryPane .umcGalleryItem {
+	position: relative;
+	height: 105px;
+	width: 85px;
+	padding: 15px;
+	margin: 0 27px 5px 0;
 	float: left;
-	text-align: center;
-	padding: 0;
 }
-.umcGalleryPane .dgrid-row:hover div {
+.umcGalleryPane .umcGalleryItem:hover {
 	background-color: #ededee;
 	border-radius: 5px;
 	cursor: pointer;
+}
+.umcGalleryPane .umcGalleryItem .umcGalleryIcon {
+	margin: auto;
+	padding-bottom: 10px;
+}
+.umcGalleryPane .umcGalleryItem .umcGalleryStatusIcon {
+	position: absolute;
+	top: 5px;
+	right: 15px;
+}
+.umcGalleryPane .umcGalleryItem .umcGalleryName,
+.umcGalleryPane .umcGalleryItem .umcGalleryDescription {
+	text-align: center;
+}
+.umcGalleryPane .umcGalleryItem .umcGalleryDescription {
+	color: grey;
+}
+.umcGalleryPane .dgrid-content {
+	padding: 10px;
 }
 .umcGalleryPane .dgrid-scroller {
 	margin-top: 0;
 	outline: none;
 }
 .umcGalleryPane .dgrid-selected {
-	background-color: inherit !important;
-}
-.umcGalleryPane .dgrid-content {
-	padding: 10px;
+	background-color: inherit;
 }

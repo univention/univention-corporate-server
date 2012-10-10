@@ -1,3 +1,11 @@
+univention-management-console-frontend (2.0.97-1) unstable; urgency=low
+
+  * Adapted tools.getIconClass to handle a prefix for the icon class
+  * Adapted CSS styling
+    (Bug #28002)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 10 Oct 2012 13:28:45 +0200
+
 univention-management-console-frontend (2.0.96-1) unstable; urgency=low
 
   * dojo 1.8 migration fixes; Bug #28551

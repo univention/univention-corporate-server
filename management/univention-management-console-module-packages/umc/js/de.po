@@ -58,7 +58,7 @@ msgstr "Weitere Einstellungen"
 
 #: umc/js/packages/AppCenterPage.js:127 umc/js/packages/AppCenterPage.js:153
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: umc/js/packages/SettingsPage.js:397
 #, python-format

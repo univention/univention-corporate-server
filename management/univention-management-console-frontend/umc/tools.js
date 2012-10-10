@@ -853,7 +853,7 @@ define([
 
 		_existingIconClasses: {},
 
-		getIconClass: function(iconName, size) {
+		getIconClass: function(iconName, size, prefix) {
 			// check whether the css rule for the given icon has already been added
 			size = size || 16;
 			var values = {
@@ -871,6 +871,12 @@ define([
 				values.url = require.toUrl('dijit/themes');
 				values.url = lang.replace("{url}/umc/icons/{s}x{s}/{icon}.png", values);
 				iconClass = lang.replace('icon{s}-{icon}', values);
+			}
+			if (prefix !== undefined) {
+				iconClass = lang.replace('{prefix}-{class}', {
+					prefix: prefix,
+					class: iconClass
+				})
 			}
 			if (!(iconClass in this._existingIconClasses)) {
 				try {

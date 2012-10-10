@@ -65,13 +65,35 @@ define([
 			domClass.add(this.domNode, 'umcGalleryPane');
 		},
 
-		renderRow: function(obj, options) {
+		renderRow: function(item, options) {
 			var div = put("div");
-			div.innerHTML =
-				'<div class="umcItem" style="background-image: url(' + obj.icon + ');">' + 
-				'<div>' + obj.name + '</div>' +
-				'<div class="umcDescription">' + obj.categories + '</div></div>';
+			div.innerHTML = lang.replace(
+				'<div class="umcGalleryIcon {icon}"></div>' +
+				'<div class="umcGalleryStatusIcon {status}"></div>' +
+				'<div class="umcGalleryName">{name}</div>' +
+				'<div class="umcGalleryDescription">{categories}</div>', {
+					icon: this.getIconClass(item),
+					status: this.getStatusIconClass(item),
+					name: item.name,
+					categories: item.categories.join(', ')
+				}
+			);
+			domClass.add(div, 'umcGalleryItem');
 			return div;
+		},
+
+		getIconClass: function(item) {
+			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
+		},
+
+		getStatusIconClass: function(item) {
+			var iconClass = '';
+			if (item.can_update) {
+				iconClass = tools.getIconClass('packages-can_update', 24, 'umcAppCenter');
+			} else if (item.is_installed) {
+				iconClass = tools.getIconClass('packages-is_installed', 24, 'umcAppCenter');
+			}
+			return iconClass;
 		}
 	});
 
@@ -94,7 +116,7 @@ define([
 			this.addChild(widthContainer);
 
 			this._categoryContainer = new ContainerWidget({
-				label: _("Categories")
+				label: _("Categories"),
 			});
 			var categoryLabel = new LabelPane({
 				content: this._categoryContainer
@@ -546,22 +568,28 @@ define([
 		},
 
 		filterApplications: function() {
-			// search string
-			var string = this._searchWidget.get('value');
-			this._grid.query.name = new RegExp(string, 'i');
-
-			// category
+			var regex  = new RegExp(this._searchWidget.get('value'), 'i');
 			var category = this._searchWidget.get('category');
+
+			var query = {
+				test: function(value, obj) {
+					var string = lang.replace(
+						'{name} {description} {categories}', {
+							name: obj.name,
+							description: obj.description,
+							categories: category ? '' : obj.categories.join(' ')
+						});
+					return regex.test(string);
+				}
+			}
+			this._grid.query.name = query;
+
 			if (! category) {
 				delete this._grid.query.categories;
 			} else {
 				this._grid.query.categories = {
 					test: function(categories) {
-						if (array.indexOf(categories, category) >= 0) {
-							return true;
-						} else {
-							return false;
-						}
+						return (array.indexOf(categories, category) >= 0);
 					}
 				};
 			}
