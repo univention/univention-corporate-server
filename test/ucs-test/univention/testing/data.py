@@ -250,10 +250,11 @@ class CheckVersion(Check):
 			versions.append((ucs_version, state))
 		versions.sort()
 		for (ucs_version, state) in versions:
+			logging.error('COMP: %r %s  %r', ucs_version, state, environment.ucs_version)
 			if ucs_version <= environment.ucs_version:
 				self.state = state
 		if self.state == 'skip':
-			yield Verdict(Verdict.INFO, 'Skipped for version %s' % \
+			yield Verdict(Verdict.ERROR, 'Skipped for version %s' % \
 					(environment.ucs_version,),
 					TestCodes.REASON_VERSION_MISMATCH)
 

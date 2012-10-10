@@ -1,3 +1,9 @@
+ucs-test (3.0.8-1) unstable; urgency=low
+
+  * Fix skipping by version (Bug #28696)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Oct 2012 09:25:26 +0200
+
 ucs-test (3.0.7-1) unstable; urgency=low
 
   * Update license tests (Bug #28186)

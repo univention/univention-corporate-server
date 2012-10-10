@@ -183,8 +183,8 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		>>> UCSVersion('>1.2-3-5').match(UCSVersion('1.2-3-4'))
 		False
 		"""
-		parts = [(other_ver, self_ver) for self_ver, other_ver in \
-				zip(self.ver, other.ver) \
+		parts = [(other_ver, self_ver)
+				for self_ver, other_ver in zip(self.ver, other.ver)
 				if self_ver is not None and other_ver is not None]
 		return self.rel(*zip(*parts))  # pylint: disable-msg=W0142
 
