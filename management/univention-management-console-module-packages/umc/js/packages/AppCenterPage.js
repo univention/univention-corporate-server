@@ -459,6 +459,10 @@ define([
 		_detail_field_custom_cannot_install_reason: function(values) {
 			var cannot_install_reason = values.cannot_install_reason;
 			var cannot_install_reason_detail = values.cannot_install_reason_detail;
+			if (!values.allows_using) {
+				return '';
+			}
+
 			var txt = '';
 			if (cannot_install_reason == 'conflict') {
 				txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
