@@ -217,30 +217,33 @@ define([
 
 		_reloadDialog: null,
 		checkReloadRequired: function() {
-			// check if UMC needs a browser reload and prompt the user to reload
-			return basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, lang.hitch(this, function(e) {
-				if (e.response.status === 404) {
-					if (!this._reloadDialog) {
-						// The URL does not exists, so the symlink is deleted
-						this._reloadDialog = new ConfirmDialog({
-							title: _("A reload of the Univention Management Console is required to use new modules. Currently opened modules may not work properly. Do you want to reload the page?"),
-							options: [{
-								label: _('Cancel'),
-								callback: lang.hitch(this, function() {
-									this._reloadDialog.hide();
-								}),
-								'default': true
-							}, {
-								label: _('Reload'),
-								callback: function() {
-									window.location.reload();
-								}
-							}]
-						});
+			if (!this._reloadDialog) {
+				// The URL does not exists, so the symlink is deleted
+				this._reloadDialog = new ConfirmDialog({
+					title: _("UMC reload required"),
+					message: _("A reload of the Univention Management Console is required to use new modules.<br>Currently opened modules may not work properly.<br>Do you want to reload the page?"),
+					options: [{
+						label: _('Cancel'),
+						callback: lang.hitch(this, function() {
+							this._reloadDialog.hide();
+						}),
+						'default': true
+					}, {
+						label: _('Reload'),
+						callback: function() {
+							window.location.reload();
+						}
+					}]
+				});
+			}
+			if (!this._reloadDialog.open) {
+				// check if UMC needs a browser reload and prompt the user to reload
+				return basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, lang.hitch(this, function(e) {
+					if (e.response.status === 404) {
+						this._reloadDialog.show();
 					}
-					this._reloadDialog.show();
-				}
-			}));
+				}));
+			}
 		},
 
 		// handler class for long polling scenario
