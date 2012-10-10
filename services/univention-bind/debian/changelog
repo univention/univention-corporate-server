@@ -1,3 +1,9 @@
+univention-bind (7.0.5-2) unstable; urgency=low
+
+  * Fixed last commit, use  in join script (Bug #8036)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Oct 2012 08:06:07 +0200
+
 univention-bind (7.0.5-1) unstable; urgency=low
 
   * Append the DNS server to the list of the nameservers at the DNS
