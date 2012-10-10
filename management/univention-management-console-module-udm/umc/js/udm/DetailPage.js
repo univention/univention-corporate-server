@@ -437,11 +437,6 @@ define([
 				}, this);
 			}
 
-			if ( '$options$' in widgets && !this._multiEdit) {
-				// required when creating a new object
-				this._optionsWidget.set( 'value', option_values );
-			}
-
 			// #### Policies
 			// in case we have policies that apply to the current object, we need an extra
 			// sub tab that groups all policies together
@@ -635,6 +630,12 @@ define([
 				onSubmit: lang.hitch(this, 'validateChanges')
 			}))[0];
 			this.set('content', this._form);
+
+			// set options
+			if ( '$options$' in widgets && !this._multiEdit) {
+				// required when creating a new object
+				this._optionsWidget.set( 'value', option_values );
+			}
 
 			// initiate the template mechanism (only for new objects)
 			if (!this.ldapName && !this._multiEdit) {
