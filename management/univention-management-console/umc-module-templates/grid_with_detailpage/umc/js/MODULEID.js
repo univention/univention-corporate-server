@@ -26,22 +26,24 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules.MODULEID");
-
-dojo.require("umc.dialog");
-dojo.require("umc.i18n");
-dojo.require("umc.tools");
-dojo.require("umc.widgets.ExpandingTitlePane");
-dojo.require("umc.widgets.Grid");
-dojo.require("umc.widgets.Module");
-dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.SearchForm");
-
-dojo.require("umc.modules._MODULEID.DetailPage");
-
-dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/on",
+	"umc/dialog",
+	"umc/widgets/Grid",
+	"umc/widgets/Page",
+	"umc/widgets/SearchForm",
+	"umc/widgets/ExpandingTitlePane",
+	"umc/widgets/Module",
+	"umc/widgets/TextBox",
+	"umc/widgets/ComboBox",
+	"umc/modules/MODULEID/DetailPage",
+	"umc/i18n!/umc/modules/MODULEID"
+], function(declare, lang, on, dialog, Grid, Page, SearchForm, ExpandingTitlePane, Module, TextBox, ComboBox, DetailPage, _) {
+return declare("umc.modules.MODULEID", [ Module ], {
 	// summary:
 	//		Template module to ease the UMC module development.
 	// description:
@@ -93,7 +95,7 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// setup search page and its main widgets
 		// for the styling, we need a title pane surrounding search form and grid
-		this._searchPage = new umc.widgets.Page({
+		this._searchPage = new Page({
 			headerText: this.description,
 			helpText: ''
 		});
@@ -103,8 +105,8 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this.addChild(this._searchPage);
 
 		// umc.widgets.ExpandingTitlePane is an extension of dijit.layout.BorderContainer
-		var titlePane = new umc.widgets.ExpandingTitlePane({
-			title: this._('Search results')
+		var titlePane = new ExpandingTitlePane({
+			title: _('Search results')
 		});
 		this._searchPage.addChild(titlePane);
 
@@ -116,43 +118,43 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		// define grid actions
 		var actions = [{
 			name: 'add',
-			label: this._('Add object'),
-			description: this._('Create a new object'),
+			label: _('Add object'),
+			description: _('Create a new object'),
 			iconClass: 'umcIconAdd',
 			isContextAction: false,
 			isStandardAction: true,
-			callback: dojo.hitch(this, '_addObject')
+			callback: lang.hitch(this, '_addObject')
 		}, {
 			name: 'edit',
-			label: this._('Edit'),
-			description: this._('Edit the selected object'),
+			label: _('Edit'),
+			description: _('Edit the selected object'),
 			iconClass: 'umcIconEdit',
 			isStandardAction: true,
 			isMultiAction: false,
-			callback: dojo.hitch(this, '_editObject')
+			callback: lang.hitch(this, '_editObject')
 		}, {
 			name: 'delete',
-			label: this._('Delete'),
-			description: this._('Deleting the selected objects.'),
+			label: _('Delete'),
+			description: _('Deleting the selected objects.'),
 			isStandardAction: true,
 			isMultiAction: true,
 			iconClass: 'umcIconDelete',
-			callback: dojo.hitch(this, '_deleteObjects')
+			callback: lang.hitch(this, '_deleteObjects')
 		}];
 
 		// define the grid columns
 		var columns = [{
 			name: 'name',
-			label: this._('Name'),
+			label: _('Name'),
 			width: '60%'
 		}, {
 			name: 'color',
-			label: this._('Favorite color'),
+			label: _('Favorite color'),
 			width: '40%'
 		}];
 
 		// generate the data grid
-		this._grid = new umc.widgets.Grid({
+		this._grid = new Grid({
 			// property that defines the widget's position in a dijit.layout.BorderContainer,
 			// 'center' is its default value, so no need to specify it here explicitely
 			// region: 'center',
@@ -160,7 +162,7 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 			// defines which data fields are displayed in the grids columns
 			columns: columns,
 			// a generic UMCP module store object is automatically provided
-			// as this.moduleStore (see also umc.store.getModuleStore())
+			// as this.moduleStore (see also store.getModuleStore())
 			moduleStore: this.moduleStore,
 			// initial query
 			query: { colors: 'None', name: '' }
@@ -176,19 +178,19 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 
 		// add remaining elements of the search form
 		var widgets = [{
-			type: 'ComboBox',
+			type: ComboBox,
 			name: 'color',
-			description: this._('Defines the .'),
-			label: this._('Category'),
+			description: _('Defines the .'),
+			label: _('Category'),
 			// Values are dynamically loaded from the server via a UMCP request.
 			// Use the property dynamicOptions to pass additional values to the server.
 			// Use staticValues to pass an array directly (see umc.widgets._SelectMixin).
 			dynamicValues: 'MODULEID/colors'
 		}, {
-			type: 'TextBox',
+			type: TextBox,
 			name: 'name',
-			description: this._('Specifies the substring pattern which is searched for in the displayed name'),
-			label: this._('Search pattern')
+			description: _('Specifies the substring pattern which is searched for in the displayed name'),
+			label: _('Search pattern')
 		}];
 
 		// the layout is an 2D array that defines the organization of the form elements...
@@ -198,20 +200,20 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		];
 
 		// generate the search form
-		this._searchForm = new umc.widgets.SearchForm({
+		this._searchForm = new SearchForm({
 			// property that defines the widget's position in a dijit.layout.BorderContainer
 			region: 'top',
 			widgets: widgets,
 			layout: layout,
-			onSearch: dojo.hitch(this, function(values) {
+			onSearch: lang.hitch(this, function(values) {
 				// call the grid's filter function
-				// (could be also done via dojo.connect() and dojo.disconnect() )
+				// (could be also done via on() and dojo.disconnect() )
 				this._grid.filter(values);
 			})
 		});
 
 		// turn off the standby animation as soon as all form values have been loaded
-		this.connect(this._searchForm, 'onValuesInitialized', function() {
+		on.once(this._searchForm, 'valuesInitialized', function() {
 			this.standby(false);
 		});
 
@@ -227,22 +229,22 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 		this._searchPage.startup();
 
 		// create a DetailPage instance
-		this._detailPage = new umc.modules._MODULEID.DetailPage({
+		this._detailPage = new DetailPage({
 			moduleStore: this.moduleStore
 		});
 		this.addChild(this._detailPage);
 
 		// connect to the onClose event of the detail page... we need to manage
 		// visibility of sub pages here
-		// ... this.connect() will destroy signal handlers upon widget
+		// ... widget.on() will destroy signal handlers upon widget
 		// destruction automatically
-		this.connect(this._detailPage, 'onClose', function() {
+		this._detailPage.on('close', function() {
 			this.selectChild(this._searchPage);
 		});
 	},
 
 	_addObject: function() {
-		umc.dialog.alert(this._('Feature not yet implemented'));
+		dialog.alert(_('Feature not yet implemented'));
 	},
 
 	_editObject: function(ids, items) {
@@ -256,6 +258,7 @@ dojo.declare("umc.modules.MODULEID", [ umc.widgets.Module, umc.i18n.Mixin ], {
 	},
 
 	_deleteObjects: function(ids, items) {
-		umc.dialog.alert(this._('Feature not yet implemented'));
+		dialog.alert(_('Feature not yet implemented'));
 	}
+});
 });

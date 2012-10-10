@@ -26,26 +26,26 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global console MyError dojo dojox dijit umc */
+/*global define*/
 
-dojo.provide("umc.modules._MODULEID.DetailPage");
-
-dojo.require("umc.dialog");
-dojo.require("umc.i18n");
-dojo.require("umc.tools");
-dojo.require("umc.widgets.Form");
-dojo.require("umc.widgets.Page");
-dojo.require("umc.widgets.StandbyMixin");
-
-dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets.StandbyMixin, umc.i18n.Mixin ], {
+define([
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"umc/dialog",
+	"umc/widgets/Form",
+	"umc/widgets/Page",
+	"umc/widgets/TextBox",
+	"umc/widgets/ComboBox",
+	"umc/widgets/StandbyMixin",
+	"umc/modules/MODULEID/DetailPage",
+	"umc/i18n!/umc/modules/MODULEID"
+], function(declare, lang, dialog, Form, Page, TextBox, ComboBox, StandbyMixin, _) {
+return declare("umc.modules.MODULEID.DetailPage", [ Page, StandbyMixin ], {
 	// summary:
 	//		This class represents the detail view of our dummy module.
 
 	// reference to the module's store object
 	moduleStore: null,
-
-	// use i18n information from umc.modules.MODULEID
-	i18nClass: 'umc.modules.MODULEID',
 
 	// internal reference to the formular containing all form widgets of an UDM object
 	_form: null,
@@ -63,20 +63,20 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 		this.standbyOpacity = 1;
 
 		// set the page header
-		this.headerText = this._('Object properties');
-		this.helpText = this._('This page demonstrates how object properties can be viewed for editing.');
+		this.headerText = _('Object properties');
+		this.helpText = _('This page demonstrates how object properties can be viewed for editing.');
 
 		// configure buttons for the footer of the detail page
 		this.footerButtons = [{
 			name: 'submit',
-			label: this._('Save'),
-			callback: dojo.hitch(this, function() {
+			label: _('Save'),
+			callback: lang.hitch(this, function() {
 				this._save(this._form.gatherFormValues());
 			})
 		}, {
 			name: 'back',
-			label: this._('Back to overview'),
-			callback: dojo.hitch(this, 'onClose')
+			label: _('Back to overview'),
+			callback: lang.hitch(this, 'onClose')
 		}];
 	},
 
@@ -95,35 +95,35 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 
 		// specify all widgets
 		var widgets = [{
-			type: 'TextBox',
+			type: TextBox,
 			name: 'id',
-			label: this._('Identifier'),
+			label: _('Identifier'),
 			disabled: true
 		}, {
-			type: 'TextBox',
+			type: TextBox,
 			name: 'name',
-			label: this._('Displayed name'),
-			description: this._('Name that is displayed')
+			label: _('Displayed name'),
+			description: _('Name that is displayed')
 		}, {
-			type: 'ComboBox',
+			type: ComboBox,
 			name: 'color',
-			label: this._('Favorite color'),
-			description: this._('Favorite color associated with the current entry'),
+			label: _('Favorite color'),
+			description: _('Favorite color associated with the current entry'),
 			dynamicValues: 'MODULEID/colors'
 		}];
 
 		// specify the layout... additional dicts are used to group form elements
 		// together into title panes
 		var layout = [{
-			label: this._('Read-only properties'),
+			label: _('Read-only properties'),
 			layout: [ 'id' ]
 		}, {
-			label: this._('Editable properties'),
+			label: _('Editable properties'),
 			layout: [ 'name', 'color' ]
 		}];
 
 		// create the form
-		this._form = new umc.widgets.Form({
+		this._form = new Form({
 			widgets: widgets,
 			layout: layout,
 			moduleStore: this.moduleStore,
@@ -136,11 +136,11 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 		this.addChild(this._form);
 
 		// hook to onSubmit event of the form
-		this.connect(this._form, 'onSubmit', '_save');
+		this._form.on('submit', lang.hitch(this, '_save'));
 	},
 
 	_save: function(values) {
-		umc.dialog.alert(this._('Feature not implemented yet!'));
+		dialog.alert(_('Feature not implemented yet!'));
 	},
 
 	load: function(id) {
@@ -148,11 +148,11 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 		this.standby(true);
 
 		// load the object into the form... the load method returns a
-		// dojo.Deferred object in order to handel asynchronity
-		this._form.load(id).then(dojo.hitch(this, function() {
+		// Deferred object in order to handel asynchronity
+		this._form.load(id).then(lang.hitch(this, function() {
 			// done, switch of the standby animation
 			this.standby(false);
-		}), dojo.hitch(this, function() {
+		}), lang.hitch(this, function() {
 			// error handler: switch of the standby animation
 			// error messages will be displayed automatically
 			this.standby(false);
@@ -162,4 +162,5 @@ dojo.declare("umc.modules._MODULEID.DetailPage", [ umc.widgets.Page, umc.widgets
 	onClose: function() {
 		// event stub
 	}
+});
 });

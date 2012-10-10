@@ -1,3 +1,9 @@
+univention-management-console (5.0.37-1) unstable; urgency=low
+
+  * migrated example umc modules to dojo 1.8; Bug #28428
+
+ -- Florian Best <best@univention.de>  Wed, 10 Oct 2012 10:04:10 +0200
+
 univention-management-console (5.0.36-1) unstable; urgency=low
 
   * Add option to SearchSanitizer to not treat "*" special (for Bug #26556)
