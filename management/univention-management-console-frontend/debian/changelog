@@ -1,4 +1,4 @@
-univention-management-console-frontend (2.0.97-1) unstable; urgency=low
+univention-management-console-frontend (2.0.97-2) unstable; urgency=low
 
   * Adapted tools.getIconClass to handle a prefix for the icon class
   * Adapted CSS styling

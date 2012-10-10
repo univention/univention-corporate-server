@@ -875,7 +875,7 @@ define([
 			if (prefix !== undefined) {
 				iconClass = lang.replace('{prefix}-{class}', {
 					prefix: prefix,
-					class: iconClass
+					'class': iconClass
 				})
 			}
 			if (!(iconClass in this._existingIconClasses)) {
