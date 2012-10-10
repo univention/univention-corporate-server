@@ -1,6 +1,12 @@
+univention-management-console-module-packages (2.0.33-1) unstable; urgency=low
+
+  * fixed width for search form in AppCenterPage; Bug #28002
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Oct 2012 11:34:00 +0200
+
 univention-management-console-module-packages (2.0.32-1) unstable; urgency=low
 
-  * Adapted AppCenterPage to use the new dgrid (Bug #28002):
+  * Adapted AppCenterPage to use the new dgrid (Bug #28002)
 
  -- Jascha Geerds <geerds@univention.de>  Tue, 09 Oct 2012 18:04:24 +0200
 

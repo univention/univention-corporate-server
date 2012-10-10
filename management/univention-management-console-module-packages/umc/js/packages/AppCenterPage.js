@@ -85,7 +85,7 @@ define([
 			var widthContainer = new ContainerWidget();
 			this._searchTextBox = new TextBox({
 				label: _("Search term"),
-				style: 'width: 170px;'
+				style: 'width: 135px;'
 			});
 			var searchLabel = new LabelPane({
 				content: this._searchTextBox
