@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-08-14 12:23+0200\n"
+"POT-Creation-Date: 2012-10-10 10:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,31 +12,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: python/package_manager.py:342
+#: python/package_manager.py:541
 msgid "Autoremove failed"
 msgstr "Deinstallation unbenutzter Pakete fehlgeschlagen"
 
-#: python/package_manager.py:339
+#: python/package_manager.py:535
 #, python-format
 msgid "Deleting unneeded %s"
 msgstr "Deinstalliere unbenutztes Paket %s"
 
-#: python/package_manager.py:356
+#: python/package_manager.py:509
 msgid "Failed to install"
 msgstr "Installation fehlgeschlagen"
 
-#: python/package_manager.py:196 python/package_manager.py:283
+#: python/package_manager.py:227 python/package_manager.py:359
 msgid "Failed to lock"
 msgstr "Sperren des Systems fehlgeschlagen"
 
-#: python/package_manager.py:369
+#: python/package_manager.py:515
 msgid "Failed to uninstall"
 msgstr "Deinstallation fehlgeschlagen"
 
-#: python/package_manager.py:280
-msgid "Fetch failed"
-msgstr "Herunterladen fehlgeschlagen"
+#: python/package_manager.py:356 python/package_manager.py:496
+msgid "Fetch failed (%s)"
+msgstr "Herunterladen fehlgeschlagen (%s)"
 
-#: python/package_manager.py:295
+#: python/package_manager.py:382
 msgid "No such package"
 msgstr "Paket existiert nicht"
