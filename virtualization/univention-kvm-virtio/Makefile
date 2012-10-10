@@ -1,7 +1,6 @@
-#!/bin/sh
+#!/usr/bin/make -f
 #
-# Univention virtio
-#  postinst script for the debian package
+# Univention Xen VirtIO rules file
 #
 # Copyright 2011-2012 Univention GmbH
 #
@@ -30,20 +29,41 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+SOURCE := virtio-win-0.1-30.iso
+TARGET := KVM_Windows_drivers_(virtio_0.1-30).iso
 
-iso="KVM Windows drivers (virtio 0.1-30).iso"
+empty :=
+space := $(empty) $(empty)
+INSTALL ?= install
 
-pool="$(ucr get uvmm/pool/default/path)"
-if [ -z "$pool" ]; then
-	pool="/var/lib/libvirt/images"
-fi
-if [ ! -d "$pool" ]; then
-	mkdir -p "$pool"
-fi
+.PHONY: patch
+patch: $(TARGET)
+$(TARGET): $(SOURCE)
+	-$(RM) "$@"
+	xorriso -no_rc \
+		-indev "$<" \
+		-outdev "$@" \
+		-compliance omit_version:lowercase:full_ascii \
+		-mv /WXP/X86/\* /XP/X86/ -- \
+		-rmdir /WXP/\* -- \
+		-rmdir /WXP -- \
+		-mv /WLH/X86/\*   /VISTA/X86/   -- \
+		-mv /WLH/AMD64/\* /VISTA/AMD64/ -- \
+		-rmdir /WLH/\* -- \
+		-rmdir /WLH -- \
+		-commit \
+		-eject all || { rc=$$? ; $(RM) "$@" ; exit $$rc ; }
 
-if [ ! -L "$pool/$iso" -a ! -e "$pool/$iso" ]; then
-	cp /usr/share/univention-kvm-virtio/*.iso "$pool/$iso"
-fi
+.PHONY: install
+install: $(TARGET)
+	$(INSTALL) -m755 -d $(DESTDIR)/usr/share/univention-kvm-virtio
+	$(INSTALL) -m644 "$(TARGET)" "$(DESTDIR)/usr/share/univention-kvm-virtio/$(subst _,$(space),$(TARGET))"
 
-exit 0
+.PHONY: get-orig-source
+get-orig-source: $(SOURCE)
+virtio-win-%.iso:
+	wget -O "$@" "http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/$@"
+
+.PHONY: clean
+clean:
+	$(RM) "$(TARGET)"

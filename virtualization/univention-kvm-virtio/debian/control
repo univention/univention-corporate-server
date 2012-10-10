@@ -2,7 +2,8 @@ Source: univention-kvm-virtio
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper,
+ xorriso
 Standards-Version: 3.8.2
 
 Package: univention-kvm-virtio

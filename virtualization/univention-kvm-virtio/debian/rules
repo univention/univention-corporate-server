@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Xen gplpv rules file
+# Univention Xen VirtIO rules file
 #
 # Copyright 2011-2012 Univention GmbH
 #
@@ -31,3 +31,6 @@
 
 %:
 	dh $@
+
+get-orig-source:
+	$(MAKE) $@
