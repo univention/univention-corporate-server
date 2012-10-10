@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.36-1) unstable; urgency=low
+
+  * With a version 2 license the keyID might be None or an empty string
+    (Bug #27998)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Oct 2012 14:18:11 +0200
+
 univention-management-console-module-packages (2.0.35-1) unstable; urgency=low
 
   * Send the license as dictionary (Bug #27998)

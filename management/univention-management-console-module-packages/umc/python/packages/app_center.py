@@ -85,9 +85,12 @@ class License(object):
 	@property
 	def uuid(self):
 		try:
-			return self.license.licenseKeyID
+			if self.license.licenseKeyID:
+				return self.license.licenseKeyID
 		except AttributeError:
 			return None
+
+		return None
 
 	def email_known(self):
 		# at least somewhere at univention
