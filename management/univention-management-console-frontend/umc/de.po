@@ -34,11 +34,14 @@ msgstr "1 Eintrag von %d ausgewählt"
 #: umc/tools.js:220
 msgid ""
 "A reload of the Univention Management Console is required to use new "
-"modules. Currently opened modules may not work properly. Do you want to "
+"modules.<br>Currently opened modules may not work properly.<br>Do you want to "
 "reload the page?"
 msgstr "Es ist notwendig, die Univention Management Console neu zu laden, "
-"um neue Module benutzen zu können. Momentan geöffnete Module funktionieren "
-"möglicherweise nicht mehr korrekt. Soll die Seite neu geladen werden?"
+"um neue Module benutzen zu können.<br>Momentan geöffnete Module funktionieren "
+"möglicherweise nicht mehr korrekt.<br>Soll die Seite neu geladen werden?"
+
+msgid "UMC reload required"
+msgstr "UMC neuladen notwendig"
 
 #: umc/app.js:488 umc/about.js:52
 msgid "About UMC"
