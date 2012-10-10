@@ -252,9 +252,9 @@ class access:
 				port = int(configRegistry.get('ldap/server/port', 7389))
 			try:
 				self.lo=univention.uldap.access(host, port, base, binddn, bindpw, start_tls, follow_referral=follow_referral)
-			except ldap.INVALID_CREDENTIALS,ex:
+			except ldap.INVALID_CREDENTIALS:
 				raise univention.admin.uexceptions.authFail, _( "Authentication failed" )
-			except ldap.UNWILLING_TO_PERFORM,ex:
+			except ldap.UNWILLING_TO_PERFORM:
 				raise univention.admin.uexceptions.authFail, _( "Authentication failed" )
 		self.host=self.lo.host
 		self.port=self.lo.port

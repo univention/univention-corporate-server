@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import operator
-import types
 import univention.license
 import univention.debug
 import univention.admin.modules

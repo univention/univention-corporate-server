@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, string, math, time, operator
+import re, string, operator
 import ipaddr
 import inspect
 import univention.debug
@@ -216,7 +216,6 @@ class complex( ISyntax ):
 
 	@classmethod
 	def tostring(self, texts):
-		import string
 		newTexts=[]
 		if len(self.subsyntaxes) != len(texts):
 			return ''
@@ -359,10 +358,11 @@ class Base64Upload( Upload ):
 	@classmethod
 	def parse( self, value ):
 		try:
-			dummy = base64.decodestring( value )
+			base64.decodestring( value )
 		except:
 			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( value ) )
-		return value
+		else:
+			return value
 
 class jpegPhoto( Upload ):
 	@classmethod
@@ -878,12 +878,12 @@ class v4netmask(simple):
 		try:
 			_ip.parse(text)
 			return "%d" % self.netmaskBits(text)
-		except Exception, e:
+		except Exception:
 			try:
 				_int.parse(text)
 				if int(text) > 0 and int(text) < 32:
 					return text
-			except Exception, e:
+			except Exception:
 				errors=1
 		if errors:
 			raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
@@ -2540,8 +2540,17 @@ class LDAP_Search( select ):
 			else:
 				self.values.append( ( dn, self.attributes ) )
 
+class nfsShare(UDM_Objects):
+	udm_modules = ( 'shares/share', )
+	key = 'dn'
+	label = '%(printablename)s'
+
+	@classmethod
+	def udm_filter( self, options ):
+		return 'objectClass=univentionShareNFS'
+
 class nfsMounts(complex):
-	subsyntaxes=[(_('NFS share'), LDAP_Search( filter = 'objectClass=univentionShareNFS', attribute = [ 'shares/share: printablename' ], value = 'shares/share: dn' )), ('Mount point', string)]
+	subsyntaxes=[(_('NFS share'), nfsShare), ('Mount point', string)]
 	all_required=1
 
 class languageCode(string):
