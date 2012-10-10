@@ -1,3 +1,9 @@
+univention-samba4 (2.0.15-1) unstable; urgency=low
+
+  * adjust to samba3upgrade interface change (Bug #27457)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Oct 2012 15:55:52 +0200
+
 univention-samba4 (2.0.14-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

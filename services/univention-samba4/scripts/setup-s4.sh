@@ -328,7 +328,7 @@ else
 	## move  univention-samba4 default smb.conf out of the way
 	mv /etc/samba/smb.conf /var/tmp/univention-samba4_smb.conf
 	### run samba-tool domain samba3upgrade
-	samba-tool domain samba3upgrade /var/lib/samba3/etc/samba/smb.conf  --libdir /var/lib/samba3 | tee -a "$LOGFILE"
+	samba-tool domain classicupgrade /var/lib/samba3/etc/samba/smb.conf --dbdir /var/lib/samba3 | tee -a "$LOGFILE"
 	## move univention-samba4 config back again, overwriting minimal smb.conf created by samba3upgrade
 	mv /var/tmp/univention-samba4_smb.conf /etc/samba/smb.conf
 
