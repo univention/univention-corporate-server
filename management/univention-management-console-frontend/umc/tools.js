@@ -46,9 +46,10 @@ define([
 	"dojox/timing/_base",
 	"dojox/html/styles",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, _window, query, xhr, basexhr, connect, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, Text, _) {
+], function(lang, array, _window, query, xhr, basexhr, connect, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, ConfirmDialog, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -214,22 +215,32 @@ define([
 			}
 		},
 
+		_reloadDialog: null,
 		checkReloadRequired: function() {
 			// check if UMC needs a browser reload and prompt the user to reload
-			return basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, function(e) {
+			return basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, lang.hitch(this, function(e) {
 				if (e.response.status === 404) {
-					// The URL does not exists, so the symlink is deleted
-					dialog.confirm(_("A reload of the Univention Management Console is required to use new modules. Currently opened modules may not work properly. Do you want to reload the page?"), [{
-						label: _('Cancel'),
-						'default': true
-					}, {
-						label: _('Reload'),
-						callback: function() {
-							window.location.reload();
-						}
-					}]);
+					if (!this._reloadDialog) {
+						// The URL does not exists, so the symlink is deleted
+						this._reloadDialog = new ConfirmDialog({
+							title: _("A reload of the Univention Management Console is required to use new modules. Currently opened modules may not work properly. Do you want to reload the page?"),
+							options: [{
+								label: _('Cancel'),
+								callback: lang.hitch(this, function() {
+									this._reloadDialog.hide();
+								}),
+								'default': true
+							}, {
+								label: _('Reload'),
+								callback: function() {
+									window.location.reload();
+								}
+							}]
+						});
+					}
+					this._reloadDialog.show();
 				}
-			});
+			}));
 		},
 
 		// handler class for long polling scenario

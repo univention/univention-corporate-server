@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.93-1) unstable; urgency=low
+
+  * display reload require dialog only once; Bug #24947 
+
+ -- Florian Best <best@univention.de>  Wed, 10 Oct 2012 08:34:48 +0200
+
 univention-management-console-frontend (2.0.92-1) unstable; urgency=low
 
   * Fix typo in last commit (Bug #28002)
