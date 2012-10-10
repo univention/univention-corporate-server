@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.96-1) unstable; urgency=low
+
+  * dojo 1.8 migration fixes; Bug #28551
+
+ -- Florian Best <best@univention.de>  Wed, 10 Oct 2012 17:23:37 +0200
+
 univention-management-console-frontend (2.0.95-1) unstable; urgency=low
 
   * dojo 1.8 migration fixes; Bug #28551

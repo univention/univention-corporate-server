@@ -368,10 +368,9 @@ define([
 					}
 					rowContainer.addChild(new LabelPane({
 						disabled: this.disabled,
-						content: iwidget
+						content: iwidget,
+						label: label
 					}));
-
-					iwidget.set('label', label);
 
 					// register to value changes
 					this.own(iwidget.watch('value', lang.hitch(this, function() {
