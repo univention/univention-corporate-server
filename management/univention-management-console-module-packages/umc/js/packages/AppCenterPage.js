@@ -116,7 +116,7 @@ define([
 			this.addChild(widthContainer);
 
 			this._categoryContainer = new ContainerWidget({
-				label: _("Categories"),
+				label: _("Categories")
 			});
 			var categoryLabel = new LabelPane({
 				content: this._categoryContainer
