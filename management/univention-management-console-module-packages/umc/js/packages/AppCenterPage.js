@@ -245,12 +245,7 @@ define([
 
 					var txt = "<h1>" + lang.replace(_("Details for Application '{name}'"), data.result) + "</h1>";
 					txt += lang.replace("<table style=\"width: {0}px;\">\n", [ width ]);
-					var fields;
-					if (data.result.allows_using) {
-						fields = this._detail_field_order();
-					} else {
-						fields = ['allows_using'];
-					}
+					var fields = this._detail_field_order();
 					array.forEach(fields, lang.hitch(this, function(key) {
 						var label = this._detail_field_label(key);
 						var value = data.result[key];
@@ -430,7 +425,8 @@ define([
 		_detail_field_custom_defaultpackagesmaster: function(values) {
 			var master_packages = values.defaultpackagesmaster;
 			var can_install = values.can_install;
-			if (can_install && master_packages && master_packages.length) {
+			var allows_using = values.allows_using;
+			if (allows_using && can_install && master_packages && master_packages.length) {
 				if (!values.is_joined) {
 					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Join a domain before you install this application!');
 				}
@@ -504,11 +500,11 @@ define([
 				'contact',
 				'categories',
 				'longdescription',
-				'emailrequired',
-				'allows_using',
+				'screenshot',
 				'defaultpackagesmaster',
 				'cannot_install_reason',
-				'screenshot'
+				'emailrequired',
+				'allows_using'
 			];
 		},
 
@@ -560,7 +556,7 @@ define([
 						if (array.indexOf(categories, category) >= 0) {
 							return true;
 						} else {
-							return false
+							return false;
 						}
 					}
 				};

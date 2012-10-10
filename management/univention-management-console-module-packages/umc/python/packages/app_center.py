@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 import urllib2
 import os.path
-import subprocess
 
 # for version comparison
 from distutils.version import LooseVersion
@@ -47,12 +46,11 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 import util
-from constants import *
+from constants import COMPONENT_BASE
 
 import re
 import ConfigParser
 import locale
-import json
 import copy
 import traceback
 
@@ -64,25 +62,25 @@ class License(object):
 		self.license = license
 
 	def dump_data(self):
-		if self.license is None:
-			# no udm, no ldap, gpl, whatever
-			return None
-		# dont be too clever here. just dump
-		# everything we have in LDAP. the license
-		# server will parse it.
-		# maybe, at some point in time, we can
-		# really return a meaningful dict
+		# we could return infos we have in this object itself.
+		# but dont be too clever here. just dump
+		# everything we have in LDAP.
 		try:
-			process = subprocess.Popen(['univention-ldapsearch', '-LLL', 'objectClass=univentionLicense'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			stdout, stderr = process.communicate()
+			ret = {}
+			import univention.uldap as uldap
+			_lo = uldap.getMachineConnection()
+			data = _lo.search('objectClass=univentionLicense')
+			del _lo
+			# just one license (should be always the case)
+			# return the dictionary without the dn
+			data = data[0][1]
+			# make sure data is dictionary
+			ret.update(data)
+			return ret
 		except Exception as e:
-			MODULE.error('using subprocess failed: %s' % e)
+			# no udm, no ldap, malformed return value, whatever
+			MODULE.error('getting License from LDAP failed: %s' % e)
 			return None
-		else:
-			if process.returncode != 0:
-				MODULE.error('getting License from LDAP failed: %s' % stderr)
-				return None
-			return stdout
 
 	@property
 	def uuid(self):
@@ -438,7 +436,7 @@ class Application(object):
 
 			# successful installation
 			status = 200
-		except Exception as e:
+		except:
 			MODULE.warn(traceback.format_exc())
 			status = 500
 		return self._send_information('install', status)
@@ -459,10 +457,10 @@ class Application(object):
 				'status' : status,
 				'role': ucr.get('server/role'),
 			}
-			request = urllib2.Request(url, headers={'User-agent' : 'UMC/AppCenter'})
+			#request = urllib2.Request(url, headers={'User-agent' : 'UMC/AppCenter'})
 			#urllib2.urlopen(request)
 			return url
-		except Exception as e:
+		except:
 			MODULE.warn(traceback.format_exc())
 			raise
 

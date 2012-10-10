@@ -36,13 +36,14 @@ import notifier.threads
 import urllib2
 import urllib
 import locale
+import sys
 
 import util
 
 import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.management.console.modules.decorators import simple_response, sanitize, log, sanitize_list, multi_response
+from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer
 from sanitizers import basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
 from app_center import Application, LICENSE
@@ -55,7 +56,7 @@ from univention.updater import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 _ = umc.Translation('univention-management-console-module-packages').translate
 
-from constants import *
+import constants
 
 class Instance(umcm.Base):
 	def init(self):
@@ -80,7 +81,10 @@ class Instance(umcm.Base):
 		license = LICENSE.dump_data()
 		if license is None:
 			return False
-		data = urllib.urlencode({'email' : email, 'license' : license})
+		data = {}
+		data.update(license)
+		data['email'] = email
+		data = urllib.urlencode(data)
 		server = self.ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		url = 'https://%(server)s/new_license.py' % {'server' : server}
 		request = urllib2.Request(url, data=data, headers={'User-agent' : 'UMC/AppCenter'})
@@ -141,7 +145,7 @@ class Instance(umcm.Base):
 	def app_center_app_license(self, application):
 		application = Application.find(application)
 		if not application or not application.get('licensefile'):
-			raise UMC_CommandError(_('No license file available for application: %s') % (application.id))
+			raise umcm.UMC_CommandError(_('No license file available for application: %s') % (application.id))
 
 		# open the license file and replace line breaks with BR-tags
 		fp = urllib2.urlopen(application.get('licensefile'))
@@ -404,11 +408,11 @@ class Instance(umcm.Base):
 				for object, in iterator:
 					for key, value in object.iteritems():
 						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
-						super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
+						super_ucr.set_registry_var('%s/%s' % (constants.ONLINE_BASE, key), value)
 				changed = super_ucr.changed()
 		except Exception as e:
 			MODULE.warn("   !! Writing UCR failed: %s" % str(e))
-			return [{'message' : str(e), 'status' : PUT_WRITE_ERROR}]
+			return [{'message' : str(e), 'status' : constants.PUT_WRITE_ERROR}]
 
 		self.package_manager.update()
 
@@ -423,16 +427,16 @@ class Instance(umcm.Base):
 		except ConfigurationError:
 			msg = _("There is no repository at this server (or at least none for the current UCS version)")
 			MODULE.warn("   !! Updater error: %s" % msg)
-			response = {'message' : msg, 'status' : PUT_UPDATER_ERROR}
+			response = {'message' : msg, 'status' : constants.PUT_UPDATER_ERROR}
 			# if nothing was committed, we want a different type of error code,
 			# just to appropriately inform the user
 			if changed:
-				response['status'] = PUT_UPDATER_NOREPOS
+				response['status'] = constants.PUT_UPDATER_NOREPOS
 			return [response]
 		except:
 			info = sys.exc_info()
 			emsg = '%s: %s' % info[:2]
 			MODULE.warn("   !! Updater error [%s]: %s" % (emsg))
-			return [{'message' : str(info[1]), 'status' : PUT_UPDATER_ERROR}]
-		return [{'status' : PUT_SUCCESS}]
+			return [{'message' : str(info[1]), 'status' : constants.PUT_UPDATER_ERROR}]
+		return [{'status' : constants.PUT_SUCCESS}]
 
