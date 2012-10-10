@@ -67,21 +67,21 @@ define([
 			// register for value changes
 			tools.forIn( this._widgets, function( iname, iwidget ) {
 				this.own(iwidget.watch('value', lang.hitch( this, function( name, oldValue, newValue ) {
-					this._set('value', this.get('value'));
+					this._updateValue();
 				} ) ) );
 			}, this );
 			// start processing the layout information
 			this._container.placeAt(this.containerNode);
 			this._container.startup();
+			this._updateValue();
 		},
 
-		_getValueAttr: function() {
+		_updateValue: function() {
 			var vals = {};
 			tools.forIn( this._widgets, function( iname, iwidget ) {
 				vals[ iname ] = iwidget.get( 'value' );
 			}, this );
-
-			return vals;
+			this._set('value', vals);
 		},
 
 		_setValueAttr: function( value ) {
@@ -90,6 +90,7 @@ define([
 					iwidget.set( 'value', value[ iname ] );
 				}
 			}, this );
+			this._set('value', value);
 		}
 	});
 });

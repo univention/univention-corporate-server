@@ -30,10 +30,11 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"dijit/form/CheckBox",
 	"umc/tools",
 	"umc/widgets/_FormWidgetMixin"
-], function(declare, CheckBox, tools, _FormWidgetMixin) {
+], function(declare, lang, CheckBox, tools, _FormWidgetMixin) {
 	return declare("umc.widgets.CheckBox", [ CheckBox, _FormWidgetMixin ], {
 		// by default, the checkbox is turned off
 		value: false,
@@ -53,14 +54,22 @@ define([
 			this.sizeClass = null;
 		},
 
+		postCreate: function() {
+			this.inherited(arguments);
+			this.watch("checked", lang.hitch(this, function(attr, oldVal, newVal) {
+				this.set("value", newVal);
+			}));
+		},
+
 		_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){
 			// based on the code from dijit.form.CheckBox
-			this.value = newValue = tools.isTrue( newValue );
+			newValue = tools.isTrue( newValue );
 
 			// this is important, otherwise the inital state is displayed wrong
 			if(this._created){
 				this.set('checked', newValue, priorityChange);
 			}
+			this._set("value", newValue);
 		},
 
 		_getValueAttr: function() {
