@@ -348,7 +348,7 @@ define([
 					if (app.allows_using && app.can_update) {
 						buttons.push({
 							name: 'update',
-							label: _("Update"),
+							label: _("Upgrade"),
 							callback: lang.hitch(this, function() {
 								if (app.readmeupdate) {
 									// before updating, show update README file
@@ -473,7 +473,7 @@ define([
 			var allows_using = values.allows_using;
 			if (!allows_using) {
 				if (this._udm_accessible) {
-					return _('Your current license forbids to use this application.') + ' ' + _('You can request an extended license from Univention for free.');
+					return _('Your current license key does not allow to install application.') + ' ' + _('You can request an extended key from Univention for free.');
 				} else {
 					return _('Your current license forbids to use this application.') + ' ' + _('You need to have access to the Univention Directory Manager (UDM) module to fully use the App Center.');
 				}
@@ -580,7 +580,7 @@ define([
 				'version': _('Version'),
 				'longdescription': _("Description"),
 				'emailrequired': _("Email notification"),
-				'allows_using': _("License restrictions"),
+				'allows_using': _("License key restrictions"),
 				'defaultpackagesmaster': _("Packages for master system"),
 				'cannot_install_reason': _("Conflicts"),
 				'screenshot': _("Screenshot")
@@ -636,15 +636,13 @@ define([
 		_show_license_request: function() {
 			if (this._udm_accessible) {
 				dialog.confirmForm({
-					title: _('Request a new License'),
+					title: _('Request updated license key with identification'),
 					widgets: [
 						{
 							type: Text,
 							name: 'help_text',
-							content: '<p>' + _('Some applications require an advanced license.')
-								+ ' '
-								+ _('Please complete the form below and you will be sent a new license to your mail address. Right after this form, you will see another dialog where you can upload your new license.')
-								+ '</p>'
+							content: '<p>' + _('The installation of applications with Univention App Center requires an individually issued license key with a unique key identification. You are currently using a license key without identification. Please fill in the form and provide a valid email address. Afterwards an updated license will be sent to you in a couple of minutes that can be applied and updated directly in the license dialog.') + '</p>' +
+							'<p>' + _('The UCS system sends your current license key to Univention. The key will be extended by the identification and will be sent back to the provided email address. The license scope remains unchanged.') + '</p>'
 						},
 						{
 							type: TextBox,
