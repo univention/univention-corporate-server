@@ -39,8 +39,8 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 if [ $JS_LAST_EXECUTED_VERSION = 1 ]; then
-	univention-directory-manager settings/extended_attribute remove "$@" --dn  "cn=samba4wins-netbiosNam,ecn=custom attributes,cn=univention,$ldap_base"
-	univention-directory-manager settings/extended_attribute remove "$@" --dn  "cn=samba4wins-secondaryIp,ecn=custom attributes,cn=univention,$ldap_base"
+	univention-directory-manager settings/extended_attribute remove "$@" --dn  "cn=samba4wins-netbiosNam,ecn=custom attributes,cn=univention,$ldap_base" || die
+	univention-directory-manager settings/extended_attribute remove "$@" --dn  "cn=samba4wins-secondaryIp,ecn=custom attributes,cn=univention,$ldap_base" || die
 fi
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
@@ -58,8 +58,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabAdvanced=1 \
 	--set ldapMapping=univentionSamba4WinsNetbiosName \
 	--set shortDescription="Samba4WINS netbios name" \
-	--set 'translationShortDescription="de_DE" "Samba4WINS Netbios Name"'
-if [ $? != 0 ]; then exit 1; fi
+	--set 'translationShortDescription="de_DE" "Samba4WINS Netbios Name"' || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=samba4wins-secondaryIp \
@@ -77,8 +76,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabAdvanced=1 \
 	--set ldapMapping=univentionSamba4WinsSecondaryIp \
 	--set shortDescription="Samba4WINS secondary IP address" \
-	--set 'translationShortDescription="de_DE" "Samba4WINS Zweite IP Adresse"' 
-if [ $? != 0 ]; then exit 1; fi
+	--set 'translationShortDescription="de_DE" "Samba4WINS Zweite IP Adresse"' || die
 
 joinscript_save_current_version
 

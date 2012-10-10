@@ -69,91 +69,91 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 			--set syntax=string \
 			--set mayChange=1 \
 			--set disableUDMWeb=1 \
-			--set ldapMapping=msGPOLink
+			--set ldapMapping=msGPOLink || die
 
 # Be sure theses containers exists
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 udm container/cn create "$@" --ignore_exists \
-			--set name=System
+			--set name=System || die
 
 udm container/cn create "$@" --ignore_exists \
 			--position "cn=System,$ldap_base" \
-			--set name=Policies
+			--set name=Policies || die
 
 udm container/ou create "$@" --ignore_exists \
 			--set name="Domain Controllers" \
-			--set description="Default container for domain controllers"
+			--set description="Default container for domain controllers" || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Domain Controllers" \
-				--set description="All domain controllers in the domain"
+				--set description="All domain controllers in the domain" || die
 if [ "$samba4_role" = "DC" ]; then
 	udm groups/group modify "$@" --ignore_exists \
 					--dn "cn=Domain Controllers,cn=groups,$ldap_base" \
-					--append hosts="$ldap_hostdn" >/dev/null 2>&1
+					--append hosts="$ldap_hostdn" >/dev/null 2>&1 || die
 fi
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Read-only Domain Controllers" \
-				--set description="Members of this group are Read-Only Domain Controllers in the domain"
+				--set description="Members of this group are Read-Only Domain Controllers in the domain" || die
 if [ "$samba4_role" = "RODC" ]; then
 	udm groups/group modify "$@" --ignore_exists \
 					--dn "cn=Read-only Domain Controllers,cn=groups,$ldap_base" \
-					--append hosts="$ldap_hostdn" >/dev/null 2>&1
+					--append hosts="$ldap_hostdn" >/dev/null 2>&1 || die
 fi
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="RAS and IAS Servers" \
-				--set description="Servers in this group can access remote access properties of users"
+				--set description="Servers in this group can access remote access properties of users" || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Domain Computers" \
-				--set description="All workstations and servers joined to the domain"
+				--set description="All workstations and servers joined to the domain" || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Cert Publishers" \
-				--set description="Members of this group are permitted to publish certificates to the directory"
+				--set description="Members of this group are permitted to publish certificates to the directory" || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="DnsAdmins" \
-				--set description="DNS Administrators Group"
+				--set description="DNS Administrators Group" || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="DnsUpdateProxy" \
-				--set description="DNS clients who are permitted to perform dynamic updates on behalf of some other clients (such as DHCP servers)."
+				--set description="DNS clients who are permitted to perform dynamic updates on behalf of some other clients (such as DHCP servers)." || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Enterprise Read-only Domain Controllers" \
-				--set description="Members of this group are Read-Only Domain Controllers in the enterprise"
+				--set description="Members of this group are Read-Only Domain Controllers in the enterprise" || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Group Policy Creator Owners" \
-				--set description="Members in this group can modify group policy for the domain"
+				--set description="Members in this group can modify group policy for the domain" || die
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Group Policy Creator Owners,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1 || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Schema Admins" \
-				--set description="Designated administrators of the schema"
+				--set description="Designated administrators of the schema" || die
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Schema Admins,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1 || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Denied RODC Password Replication Group" \
-				--set description="Members in this group cannot have their passwords replicated to any read-only domain controllers in the domain"
+				--set description="Members in this group cannot have their passwords replicated to any read-only domain controllers in the domain" || die
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Denied RODC Password Replication Group,cn=groups,$ldap_base" \
 				--append nestedGroup="CN=Read-only Domain Controllers,CN=Groups,$ldap_base" \
@@ -162,19 +162,19 @@ udm groups/group modify "$@" --ignore_exists \
 				--append nestedGroup="CN=Cert Publishers,CN=Groups,$ldap_base" \
 				--append nestedGroup="CN=Enterprise Admins,CN=Groups,$ldap_base" \
 				--append nestedGroup="CN=Schema Admins,CN=Groups,$ldap_base" \
-				--append nestedGroup="CN=Domain Controllers,CN=Groups,$ldap_base" >/dev/null 2>&1
+				--append nestedGroup="CN=Domain Controllers,CN=Groups,$ldap_base" >/dev/null 2>&1 || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
-				--set name="Enterprise Admins"
+				--set name="Enterprise Admins" || die
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Enterprise Admins,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1 || die
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Allowed RODC Password Replication Group" \
-				--set description="Members in this group can have their passwords replicated to all read-only domain controllers in the domain"
+				--set description="Members in this group can have their passwords replicated to all read-only domain controllers in the domain" || die
 
 
 fi

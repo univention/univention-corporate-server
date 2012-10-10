@@ -54,8 +54,8 @@ if ! udm mail/domain list "$@" | grep -q "^DN:" ; then
 	fi
 
 	# create required containers
-	udm container/cn create "$@" --ignore_exists --position "$ldap_base" --set name="mail"
-	udm container/cn create "$@" --ignore_exists --position "cn=mail,$ldap_base" --set name="domain"
+	udm container/cn create "$@" --ignore_exists --position "$ldap_base" --set name="mail" || die
+	udm container/cn create "$@" --ignore_exists --position "cn=mail,$ldap_base" --set name="domain" || die
 
 	# create new object
 	for domain in $domain_list ; do

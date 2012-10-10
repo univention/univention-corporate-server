@@ -74,12 +74,12 @@ wait_named () {
 if ! local_is_ucr_false dns/register/srv_records/ldap; then
 	wait_named
 	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists \
-		"$domainname" add srv ldap tcp 0 100 7389 "$hostname.$domainname." || exit 1
+		"$domainname" add srv ldap tcp 0 100 7389 "$hostname.$domainname." || die
 fi
 
 wait_named
 /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists \
-	--reverse "$reverse" add zone "root@$domainname." 1 28800 10800 604800 108001 "$hostname.$domainname." || exit 1
+	--reverse "$reverse" add zone "root@$domainname." 1 28800 10800 604800 108001 "$hostname.$domainname." || die
 wait_named
 
 if [ "$server_role" = "domaincontroller_master" ]; then
@@ -106,7 +106,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 				--set password="$computerPassword" \
 				--set unixhome=/dev/null \
 				--set shell=/bin/sh \
-				--set primaryGroup="cn=DC Backup Hosts,cn=groups,$ldap_base"
+				--set primaryGroup="cn=DC Backup Hosts,cn=groups,$ldap_base" || die
 			#if [ $? != 0 ]; then exit 1; fi
 
 			univention-config-registry set ldap/hostdn="cn=$hostname,cn=dc,cn=computers,$ldap_base"
@@ -122,7 +122,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		fi
 		wait_named
 		/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists \
-			"$domainname" add srv domaincontroller_master tcp 0 0 0 "$hostname.$domainname."
+			"$domainname" add srv domaincontroller_master tcp 0 0 0 "$hostname.$domainname." || die
 		wait_named
 
 		univention-directory-manager settings/packages create "$@" \
@@ -150,7 +150,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=univention-thin-client  \
 			--append packageList=univention-samba  \
 			--append packageList=univention-slave-pdc  \
-			--append packageList=univention-management-console
+			--append packageList=univention-management-console || die
 
 		univention-directory-manager settings/packages create "$@" \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
@@ -162,7 +162,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=rdesktop  \
 			--append packageList=krdc  \
 			--append packageList=krfb  \
-			--append packageList=nxclient 
+			--append packageList=nxclient || die
 
 		univention-directory-manager settings/packages create "$@" \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
@@ -183,7 +183,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=lsof  \
 			--append packageList=file  \
 			--append packageList=memtester  \
-			--append packageList=traceroute
+			--append packageList=traceroute || die
 
 		univention-directory-manager settings/packages create "$@" \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
@@ -194,7 +194,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=k3b-i18n  \
 			--append packageList=gimp  \
 			--append packageList=amarok  \
-			--append packageList=kaffeine
+			--append packageList=kaffeine || die
 
 		univention-directory-manager settings/packages create "$@" \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
@@ -211,7 +211,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=gdb  \
 			--append packageList=strace  \
 			--append packageList=valgrind  \
-			--append packageList=dpatch
+			--append packageList=dpatch || die
 	fi	## if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]
 
 	if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
@@ -219,19 +219,19 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
 		# mailPrimaryAddress is required on ox systems
 		if [ -n "$ox_primary_maildomain" ] ; then
-			univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set mailPrimaryAddress="administrator@$ox_primary_maildomain" --set firstname="Admin" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base"
+			univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set mailPrimaryAddress="administrator@$ox_primary_maildomain" --set firstname="Admin" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base" || die
 		else	
-			univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base"
+			univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base" || die
 		fi
-		univention-directory-manager groups/group modify "$@" --dn "cn=DC Backup Hosts,cn=groups,$ldap_base" --append users="uid=Administrator,cn=users,$ldap_base"
-		univention-directory-manager groups/group modify "$@" --dn "cn=Domain Users,cn=groups,$ldap_base" --append users="uid=Administrator,cn=users,$ldap_base"
+		univention-directory-manager groups/group modify "$@" --dn "cn=DC Backup Hosts,cn=groups,$ldap_base" --append users="uid=Administrator,cn=users,$ldap_base" || die
+		univention-directory-manager groups/group modify "$@" --dn "cn=Domain Users,cn=groups,$ldap_base" --append users="uid=Administrator,cn=users,$ldap_base" || die
 
 		#create default network
 		forwardZone=$(univention-directory-manager dns/forward_zone list "$@" --filter zone="$domainname" | sed -ne 's/DN: //p;T;q')
 		reverseZone=$(univention-directory-manager dns/reverse_zone list "$@" --filter subnet="$reverse" | sed -ne 's/DN: //p;T;q')
 		dhcpService=$(univention-directory-manager dhcp/service list "$@" | sed -ne 's/DN: //p;T;q')
 
-		univention-directory-manager networks/network create "$@" --position "cn=networks,$ldap_base" --set name=default --set netmask="$NETMASK" --set network="$NETWORK" --set dnsEntryZoneForward="$forwardZone" --set dnsEntryZoneReverse="$reverseZone" --set dhcpEntryZone="$dhcpService"
+		univention-directory-manager networks/network create "$@" --position "cn=networks,$ldap_base" --set name=default --set netmask="$NETMASK" --set network="$NETWORK" --set dnsEntryZoneForward="$forwardZone" --set dnsEntryZoneReverse="$reverseZone" --set dhcpEntryZone="$dhcpService" || die
 	fi
 fi
 

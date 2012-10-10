@@ -1,3 +1,9 @@
+univention-system-setup (6.0.39-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 13:09:04 +0200
+
 univention-system-setup (6.0.38-1) unstable; urgency=low
 
   * Fix ifname reference (Bug #28673)

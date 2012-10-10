@@ -44,7 +44,7 @@ eval "$(ucr shell ldap/base)"
 
 if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
 	# remove previous operation sets as packages-all needs to grant access to lib/server/*
-	udm settings/umc_operationset remove "$@" --dn "cn=packages-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+	udm settings/umc_operationset remove "$@" --dn "cn=packages-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
 fi
 
 umc_operation_create "packages-all" "Manage Software packages" "" "packages/*" "lib/server/*"

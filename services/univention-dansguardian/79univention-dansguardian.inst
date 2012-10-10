@@ -46,7 +46,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		if [ "$(univention-ldapsearch -xLLL -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
 			univention-directory-manager nagios/service modify "$@" \
 				--dn "cn=UNIVENTION_DANSGUARDIAN,cn=nagios,$ldap_base" \
-				--append assignedHosts="${ldap_hostdn}"
+				--append assignedHosts="${ldap_hostdn}" || die
 		else
 			echo "univentionNagiosEnabled is not set for $ldap_hostdn"
 		fi

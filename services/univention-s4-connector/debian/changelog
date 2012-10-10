@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.13-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 12:57:11 +0200
+
 univention-s4-connector (7.0.12-1) unstable; urgency=low
 
   * Update group cache handling. This fixes an error if the Samba 4 ldap
@@ -2410,7 +2416,7 @@ univention-ad-connector (0.3-2) unstable; urgency=low
 
   * add optional mail-attribute mappings
   * fixed sync of custom attributes
-	
+
  -- Ingo Steuwer <steuwer@univention.de>  Wed, 12 Apr 2006 14:27:35 +0200
 
 univention-ad-connector (0.3-1) unstable; urgency=low

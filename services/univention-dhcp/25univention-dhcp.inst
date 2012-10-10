@@ -55,15 +55,15 @@ if [ -z "$old" -a -n "$gateway" ]; then
 	univention-directory-manager policies/dhcp_routing modify "$@" --ignore_exists \
 		--dn "cn=default-settings,cn=routing,cn=dhcp,cn=policies,$ldap_base" \
 		--set name=default-settings \
-		--set routers="$gateway"
+		--set routers="$gateway" || die
 fi
 
 univention-directory-manager dhcp/service create "$@" --ignore_exists \
 	--position "cn=dhcp,$ldap_base" \
-	--set service="$domainname" || exit 1
+	--set service="$domainname" || die
 univention-directory-manager dhcp/server create "$@" --ignore_exists \
 	--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
-	--set server="$hostname" || exit 1
+	--set server="$hostname" || die
 
 for var in ${!interfaces_*} # no quotes!
 do
@@ -79,7 +79,7 @@ do
 		univention-directory-manager dhcp/subnet create "$@" --ignore_exists \
 			--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
 			--set subnet=$network \
-			--set subnetmask="$netmask" || exit 1
+			--set subnetmask="$netmask" || die
 	fi
 done
 

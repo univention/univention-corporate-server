@@ -41,7 +41,7 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager container/cn "$@" create --ignore_exists \
 		--position="cn=custom attributes,cn=univention,$ldap_base" \
 		--set name="MS Exchange" \
-		--set description="Attributes for MS Exchange configuration (synced with UCS AD Connector)"
+		--set description="Attributes for MS Exchange configuration (synced with UCS AD Connector)" || die
 
 CAPOSITION="cn=MS Exchange,cn=custom attributes,cn=univention,$ldap_base"
 
@@ -56,7 +56,7 @@ univention-directory-manager settings/extended_attribute "$@" create --ignore_ex
 		--set longDescription="Exchange-Homeserver" \
 		--set shortDescription="Exchange-Homeserver" \
 		--set mayChange="1" \
-		--set module="users/user"
+		--set module="users/user" || die
 
 univention-directory-manager settings/extended_attribute "$@" create --ignore_exists \
 		--position="$CAPOSITION" \
@@ -69,7 +69,7 @@ univention-directory-manager settings/extended_attribute "$@" create --ignore_ex
 		--set longDescription="Exchange-homeMDB" \
 		--set shortDescription="Exchange-homeMDB" \
 		--set mayChange="1" \
-		--set module="users/user"
+		--set module="users/user" || die
 
 univention-directory-manager settings/extended_attribute "$@" create --ignore_exists \
 		--position="$CAPOSITION" \
@@ -83,7 +83,9 @@ univention-directory-manager settings/extended_attribute "$@" create --ignore_ex
 		--set shortDescription="Exchange-Nickname" \
 		--set mayChange="1" \
 		--append module="users/user" \
-		--append module="groups/group"
+		--append module="groups/group" || die
+
+
 joinscript_save_current_version
 
 exit 0

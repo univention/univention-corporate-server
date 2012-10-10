@@ -1,3 +1,9 @@
+univention-samba4 (2.0.14-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 12:50:24 +0200
+
 univention-samba4 (2.0.13-5) unstable; urgency=low
 
   * improve error handling and performance of setup-s4.sh (Bug #26731)

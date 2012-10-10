@@ -44,34 +44,34 @@ NAME="Virtual Machine Manager"
 # add service
 univention-directory-manager container/cn      create "$@" --ignore_exists \
 	--set name=services \
-	--position             "cn=univention,$ldap_base"
+	--position             "cn=univention,$ldap_base" || die
 univention-directory-manager  settings/service create "$@" --ignore_exists \
 	--set name="$NAME" \
-	--position "cn=services,cn=univention,$ldap_base"
+	--position "cn=services,cn=univention,$ldap_base" || die
 univention-directory-manager "computers/$server_role" modify "$@" \
 	--dn "$ldap_hostdn" \
-	--append service="$NAME"
+	--append service="$NAME" || die
 
 # create containers for additional UVMM objects
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="$ldap_base" \
-	--set name="Virtual Machine Manager"
+	--set name="Virtual Machine Manager" || die
 
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=Virtual Machine Manager,$ldap_base" \
-	--set name=Profiles
+	--set name=Profiles || die
 
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name=xen
+	--set name=xen || die
 
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name=kvm
+	--set name=kvm || die
 
 # create machine profiles
 
@@ -129,7 +129,7 @@ create_hvm_profile() {
 		--set kblayout="${locale_keymap}" \
 		--set pvdisk="$pvdisk" \
 		--set pvcdrom="$pvcdrom" \
-		--set pvinterface="$pvif"
+		--set pvinterface="$pvif" || die
 	if [ "$JS_LAST_EXECUTED_VERSION" -lt "$VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 		if [ "$uvmm_profile_autoupdate" != "false" ]; then
 			# update profile settings if uvmm/profile/autoupdate is not set to false
@@ -142,7 +142,7 @@ create_hvm_profile() {
 				--set rtcoffset="$rtcoffset" \
 				--set pvdisk="$pvdisk" \
 				--set pvcdrom="$pvcdrom" \
-				--set pvinterface="$pvif"
+				--set pvinterface="$pvif" || die
 		else
 			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
 				--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
@@ -151,7 +151,7 @@ create_hvm_profile() {
 				--set rtcoffset="$rtcoffset" \
 				--set pvdisk="$pvdisk" \
 				--set pvcdrom="$pvcdrom" \
-				--set pvinterface="$pvif"
+				--set pvinterface="$pvif" || die
 		fi
 	fi
 }
@@ -182,7 +182,7 @@ create_xen_profile() {
 		--set rtcoffset="$rtcoffset" \
 		--set pvdisk=1 \
 		--set pvcdrom=1 \
-		--set pvinterface=1
+		--set pvinterface=1 || die
 	if [ "$JS_LAST_EXECUTED_VERSION" -lt "$VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 		if [ "$uvmm_profile_autoupdate" != "false" ]; then
 			# update profile settings if uvmm/profile/autoupdate is not set to false
@@ -195,7 +195,7 @@ create_xen_profile() {
 				--set rtcoffset="$rtcoffset" \
 				--set pvdisk=1 \
 				--set pvcdrom=1 \
-				--set pvinterface=1
+				--set pvinterface=1 || die
 		else
 			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
 				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
@@ -204,7 +204,7 @@ create_xen_profile() {
 				--set rtcoffset="$rtcoffset" \
 				--set pvdisk=1 \
 				--set pvcdrom=1 \
-				--set pvinterface=1
+				--set pvinterface=1 || die
 		fi
 	fi
 }

@@ -57,7 +57,7 @@ else
 	 	 	--set notificationOptionUnreachable=1 \
 	 	 	--set checkArgs='' \
 	 	 	--set useNRPE=1 \
-	 	 	--set notificationOptionCritical=1
+	 	 	--set notificationOptionCritical=1 || die
 fi
 
 joinscript_save_current_version

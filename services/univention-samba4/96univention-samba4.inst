@@ -618,15 +618,15 @@ for X in COLOR IA64 W32ALPHA W32MIPS W32PPC W32X86 WIN40 x64; do
 done
 
 # do create and modify in two steps, maybe the share already exists
-univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname
-univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1
+univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname || die
+univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1 || die
 
 
 if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 	univention-directory-manager shares/share create "$@" \
 			--position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists \
 			--set name=homes --set path=/home --set sambaName=homes \
-			--set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1
+			--set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1 || die
 	univention-config-registry unset create/home/share
 fi
 

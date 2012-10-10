@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-schema (3.0.0-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+  * version bump for UCS 3.1 (Bug #27966)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 13:04:02 +0200
+
 univention-virtual-machine-manager-schema (2.0.5-2) unstable; urgency=low
 
   * s/univention-lib/shell-&/ (Bug #24517)

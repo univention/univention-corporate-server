@@ -1,3 +1,9 @@
+univention-ad-connector (7.0.7-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 12:56:01 +0200
+
 univention-ad-connector (7.0.6-1) unstable; urgency=low
 
   * Fixed a traceback which occurs if the LDAP and AD base DNs are not

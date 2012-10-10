@@ -39,16 +39,16 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-univention-directory-manager policies/thinclient modify "$@" --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --set name=default-settings --append fileServer=$hostname.$domainname
+univention-directory-manager policies/thinclient modify "$@" --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --set name=default-settings --append fileServer=$hostname.$domainname || die
 
 # make existing host share container a standard share container
 if ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "cn=$hostname.$domainname,cn=shares,$ldap_base" > /dev/null; then
-	univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1
+	univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1 || die
 fi
 
 if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
-	univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname --set sharePath=1
-	univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1
+	univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname --set sharePath=1 || die
+	univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1 || die
 	univention-config-registry unset create/home/share
 fi
 

@@ -43,12 +43,12 @@ univention-directory-manager groups/group create "$@" \
 	--ignore_exists \
 	--position="cn=groups,$ldap_base" \
 	--set name="UVMM Nodes" \
-	--set UVMMGroup=1
+	--set UVMMGroup=1 || die
 
 univention-directory-manager groups/group modify "$@" \
 	--dn "cn=UVMM Nodes,cn=groups,$ldap_base" \
 	--ignore_exists \
-	--append hosts="$ldap_hostdn"
+	--append hosts="$ldap_hostdn" || die
 
 joinscript_save_current_version
 

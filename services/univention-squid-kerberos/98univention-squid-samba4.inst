@@ -75,7 +75,7 @@ univention-directory-manager users/user create "$@" \
 	--set username="$service_accountname" \
 	--set lastname="Service" \
 	--set password="$password" \
-	--set description="$servicedescription"
+	--set description="$servicedescription" || die
 
 ## Next for keytab creation check if this host is a Samba4 DC
 cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')

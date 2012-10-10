@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-join/joinscripthelper.lib
+
 eval "$(ucr shell ldap/base)"
 
 BIND_ARGS="$@"
@@ -55,17 +57,17 @@ umc_frontend_new_hash () {
 
 umc_init () {
 	# containers
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=univention,$ldap_base --set name=UMC
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=policies,$ldap_base --set name=UMC --set policyPath=1
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=UMC,cn=univention,$ldap_base --set name=operations
+	udm container/cn create $BIND_ARGS --ignore_exists --position cn=univention,$ldap_base --set name=UMC || die
+	udm container/cn create $BIND_ARGS --ignore_exists --position cn=policies,$ldap_base --set name=UMC --set policyPath=1 || die
+	udm container/cn create $BIND_ARGS --ignore_exists --position cn=UMC,cn=univention,$ldap_base --set name=operations || die
 
 	# default policies
 	udm policies/umc create $BIND_ARGS --ignore_exists --set name=default-umc-all \
-		--position cn=UMC,cn=policies,$ldap_base
+		--position cn=UMC,cn=policies,$ldap_base || die
 
 	# link default admin policy to the domain admins
 	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=Domain Admins,cn=groups,$ldap_base" \
-		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base"
+		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || die
 }
 
 _umc_remove_old () {
@@ -90,7 +92,7 @@ umc_operation_create () {
 		--position cn=operations,cn=UMC,cn=univention,$ldap_base \
 		--set name="$name" \
 		--set description="$description" \
-		--set flavor="$flavor" $operations
+		--set flavor="$flavor" $operations || die
 }
 
 umc_policy_append () {
@@ -103,5 +105,5 @@ umc_policy_append () {
 	done
 
 	udm policies/umc modify $BIND_ARGS --ignore_exists \
-		--dn "cn=$policy,cn=UMC,cn=policies,$ldap_base" $ops
+		--dn "cn=$policy,cn=UMC,cn=policies,$ldap_base" $ops || die
 }

@@ -43,7 +43,7 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=custom attributes,cn=univention,$ldap_base" \
-	--set name=UVMM
+	--set name=UVMM || die
 
 univention-directory-manager settings/syntax create "$@" --ignore_exists \
 	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
@@ -51,7 +51,7 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
 	--set attribute="computers/computer: fqdn" \
 	--set value="computers/computer: fqdn" \
 	--set filter="univentionService=Virtual Machine Manager" \
-	--set viewonly=FALSE
+	--set viewonly=FALSE || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
@@ -80,7 +80,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set mayChange="1" \
 	--set multivalue="1" \
 	--set deleteObjectClass="0" \
-	--set tabPosition="1"
+	--set tabPosition="1" || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
@@ -105,16 +105,15 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set mayChange="1" \
 	--set multivalue="0" \
 	--set deleteObjectClass="0" \
-	--set tabPosition="1"
-if [ $? != 0 ]; then exit 1; fi
+	--set tabPosition="1" || die
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "$ldap_base" \
-	--set name="Virtual Machine Manager"
+	--set name="Virtual Machine Manager" || die
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=Virtual Machine Manager,$ldap_base" \
-	--set name="Information"
+	--set name="Information" || die
 
 . /usr/share/univention-lib/base.sh || exit 1
 stop_udm_cli_server

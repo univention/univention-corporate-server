@@ -1,3 +1,9 @@
+univention-heimdal (6.0.7-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 13:07:48 +0200
+
 univention-heimdal (6.0.9-1) unstable; urgency=low
 
   * Restart heimdal-kdc in join script (Bug #25103)

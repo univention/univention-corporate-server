@@ -40,7 +40,7 @@ eval "$(univention-config-registry shell)"
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 		--position "cn=custom attributes,cn=univention,$ldap_base" \
-		--set name=canonical-maps
+		--set name=canonical-maps || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
@@ -68,7 +68,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set hook='None' \
 	--set groupName='Canonical maps' \
 	--set translationGroupName='"de_DE" "Canonical Maps"' \
-	--set groupPosition=2
+	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
@@ -96,7 +96,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set hook='None' \
 	--set groupName='Canonical maps' \
 	--set translationGroupName='"de_DE" "Canonical Maps"' \
-	--set groupPosition=2
+	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
@@ -124,7 +124,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set hook='None' \
 	--set groupName='Canonical maps' \
 	--set translationGroupName='"de_DE" "Canonical Maps"' \
-	--set groupPosition=2
+	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
@@ -152,7 +152,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set hook='None' \
 	--set groupName='Canonical maps' \
 	--set translationGroupName='"de_DE" "Canonical Maps"' \
-	--set groupPosition=2
+	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
@@ -180,7 +180,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set hook='None' \
 	--set groupName='Canonical maps' \
 	--set translationGroupName='"de_DE" "Canonical Maps"' \
-	--set groupPosition=2
+	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
@@ -208,7 +208,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set hook='None' \
 	--set groupName='Canonical maps' \
 	--set translationGroupName='"de_DE" "Canonical Maps"' \
-	--set groupPosition=2
+	--set groupPosition=2 || die
 
 
 

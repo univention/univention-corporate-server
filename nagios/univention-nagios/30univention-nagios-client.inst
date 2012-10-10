@@ -53,9 +53,9 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
     # Enable Nagios for this host
     # Managed clients are still called "fatclient" in Config Registry
     if [ "$server_role" = "fatclient" ] ; then
-        univention-directory-manager computers/managedclient modify "$@" --dn ${ldap_hostdn} --append-option="nagios"
+        univention-directory-manager computers/managedclient modify "$@" --dn ${ldap_hostdn} --append-option="nagios" || die
     else
-        univention-directory-manager computers/${server_role} modify "$@" --dn ${ldap_hostdn} --append-option="nagios"
+        univention-directory-manager computers/${server_role} modify "$@" --dn ${ldap_hostdn} --append-option="nagios" || die
     fi
 
 	# remove obsolete services from host
@@ -64,7 +64,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		dn="cn=$i,cn=nagios,$ldap_base"
 		if udm nagios/service list "$@" --filter name="$i" | grep -q "^DN: cn=$i"; then
 			univention-directory-manager nagios/service modify "$@" --dn "$dn" \
-			--remove assignedHosts="${ldap_hostdn}"
+			--remove assignedHosts="${ldap_hostdn}" || die
 		fi
 	done
 
@@ -79,7 +79,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
               "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base" ; do
 		rdn="$(echo $dn | sed -e 's|,.*||')"
 		if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
-			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn" || die
 		else
 			echo "Skipping $dn (code $?)"
 		fi
@@ -91,7 +91,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		for dn in "cn=UNIVENTION_SSL,cn=nagios,$ldap_base"; do
 			rdn="$(echo $dn | sed -e 's|,.*||')"
 			if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
-				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn" || die
 			else
 				echo "Skipping $dn (code $?)"
 			fi
@@ -106,7 +106,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
                   "cn=UNIVENTION_NTP,cn=nagios,$ldap_base"; do
 			rdn="$(echo $dn | sed -e 's|,.*||')"
 			if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
-				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn" || die
 			else
 				echo "Skipping $dn (code $?)"
 			fi
@@ -122,7 +122,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		dn="cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base"
 		rdn="$(echo $dn | sed -e 's|,.*||')"
 		if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
-			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn" || die
 		else
 			echo "Skipping $dn (code $?)"
 		fi

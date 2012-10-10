@@ -44,7 +44,7 @@ eval "$(ucr shell ldap/base)"
 
 if [ $JS_LAST_EXECUTED_VERSION -le 2 -a $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
 	# remove previous operation sets as updater-all needs to grant access to lib/server/*
-	udm settings/umc_operationset remove "$@" --dn "cn=updater-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+	udm settings/umc_operationset remove "$@" --dn "cn=updater-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
 fi
 
 umc_operation_create "updater-all" "Online Update" "" "updater/*" "lib/server/*"

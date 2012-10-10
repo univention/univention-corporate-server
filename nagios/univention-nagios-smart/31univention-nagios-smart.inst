@@ -60,7 +60,7 @@ for device in sda sdb sdc sdd; do
 		--set useNRPE=1 \
 		--set notificationOptionCritical=1 \
 		--set checkArgs="/dev/$device!ata" \
-		--set description="check smart values (option ca be ata or scsi)"
+		--set description="check smart values (option ca be ata or scsi)" || die
 done
 
 joinscript_save_current_version

@@ -60,13 +60,13 @@ univention-directory-manager nagios/service create "$@" --ignore_exists \
 	--set useNRPE=1 \
 	--set notificationOptionCritical=1 \
 	--set checkArgs="10" \
-	--set description="check libvirtd status (option is the timeout)"
+	--set description="check libvirtd status (option is the timeout)" || die
 
 # add host to service
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 	univention-directory-manager nagios/service modify "$@" \
 		--dn "cn=UNIVENTION_LIBVIRTD_XEN,cn=nagios,$ldap_base" \
-		--append assignedHosts="${ldap_hostdn}"
+		--append assignedHosts="${ldap_hostdn}" || die
 fi
 
 joinscript_save_current_version

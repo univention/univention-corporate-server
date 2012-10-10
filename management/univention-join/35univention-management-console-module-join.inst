@@ -44,12 +44,12 @@ eval "$(ucr shell ldap/base)"
 
 if [ $JS_LAST_EXECUTED_VERSION -le 2 -a $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
 	# remove previous operation sets as join-all needs to grant access to lib/server/*
-	udm settings/umc_operationset remove "$@" --dn "cn=join-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+	udm settings/umc_operationset remove "$@" --dn "cn=join-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
 fi
 
-umc_operation_create "join-all" "Join UCS systems" "" "join/*" "lib/server/*"
+umc_operation_create "join-all" "Join UCS systems" "" "join/*" "lib/server/*" || die
 
-umc_policy_append "default-umc-all" "join-all"
+umc_policy_append "default-umc-all" "join-all" || die
 
 joinscript_save_current_version
 

@@ -39,14 +39,14 @@ eval "$(univention-config-registry shell)"
 # install new printer protocoll
 univention-directory-manager settings/printeruri modify "$@" \
 	--dn="cn=printeruris,cn=cups,cn=univention,$ldap_base" \
-	--append printeruri="cups-pdf:/"
+	--append printeruri="cups-pdf:/" || die
 
 if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
 	if [ "$cups_keep_ppds" != "true" ]; then
 		if univention-ldapsearch "(&(objectclass=univentionPrinterModels)(cn=PDF))" dn | grep -q ^dn:
 		then
 			univention-directory-manager settings/printermodel remove "$@" \
-				--dn "cn=PDF,cn=cups,cn=univention,$ldap_base"
+				--dn "cn=PDF,cn=cups,cn=univention,$ldap_base" || die
 		fi
 	fi
 fi
@@ -54,7 +54,7 @@ fi
 # install the new PDF manufacturer
 univention-directory-manager settings/printermodel create "$@" --ignore_exists \
 	--position "cn=cups,cn=univention,$ldap_base" --set name=PDF \
-	--append printmodel="\"cups-pdf/CUPS-PDF.ppd\" \"Generic CUPS-PDF Printer\""
+	--append printmodel="\"cups-pdf/CUPS-PDF.ppd\" \"Generic CUPS-PDF Printer\"" || die
 
 # create cups pdf samba share
 univention-directory-manager shares/share create "$@" --ignore_exist \
@@ -63,7 +63,7 @@ univention-directory-manager shares/share create "$@" --ignore_exist \
 	--set "host=${hostname}.${domainname}" \
 	--set "path=${cups_cups_pdf_directory:-/var/spool/cups-pdf/%U}" \
 	--set "webaccessName=pdfPrinterShare" \
-	--set "name=pdfPrinterShare"
+	--set "name=pdfPrinterShare" || die
 
 joinscript_save_current_version
 

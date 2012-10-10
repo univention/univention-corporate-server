@@ -1,3 +1,10 @@
+univention-nagios-servicechecks (3.0.0-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+  * version bump for UCS 3.1 (Bug #27966)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 12:25:09 +0200
+
 univention-nagios-servicechecks (2.0.4-1) unstable; urgency=low
 
   * fixed check_univention_squid (Bug #25283) 

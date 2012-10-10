@@ -39,18 +39,18 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 if [ -z "$(univention-ldapsearch -xLLL relativeDomainName=_pkgdb._tcp relativeDomainName)" ]; then
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv pkgdb tcp 0 0 5432 "$hostname.$domainname."
+	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv pkgdb tcp 0 0 5432 "$hostname.$domainname." || die
 fi
 
 univention-pkgdb-scan --db-server "$hostname.$domainname" --add "$hostname$" || exit 1
 univention-pkgdb-scan --db-server "$hostname.$domainname"
 
 # add service entry
-univention-directory-manager container/cn create --ignore_exists "$@" --position "cn=univention,$ldap_base" --set name=services
-univention-directory-manager settings/service create "$@" --ignore_exists --position "cn=services,cn=univention,$ldap_base" --set name="Software Monitor"
+univention-directory-manager container/cn create --ignore_exists "$@" --position "cn=univention,$ldap_base" --set name=services || die
+univention-directory-manager settings/service create "$@" --ignore_exists --position "cn=services,cn=univention,$ldap_base" --set name="Software Monitor" || die
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
-    univention-directory-manager computers/$server_role modify "$@" --ignore_exists --dn "$ldap_hostdn" --append service="Software Monitor"
+    univention-directory-manager computers/$server_role modify "$@" --ignore_exists --dn "$ldap_hostdn" --append service="Software Monitor" || die
 fi
 
 joinscript_save_current_version

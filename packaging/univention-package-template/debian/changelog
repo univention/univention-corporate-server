@@ -1,3 +1,10 @@
+univention-package-template (2.0.0-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+  * version bump for UCS 3.1 (Bug #27966)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 13:01:15 +0200
+
 univention-package-template (1.0.3-1) unstable; urgency=low
 
   * fixed bashisms (Bug #23005)

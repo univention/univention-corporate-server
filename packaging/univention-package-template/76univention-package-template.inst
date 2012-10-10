@@ -38,8 +38,7 @@ joinscript_init
 univention-directory-manager container/cn create "$@" \
     --ignore_exists \
     --position="$ldap_base" \
-    --set name="Package Template"
-if [ $? != 0 ]; then exit 1; fi
+    --set name="Package Template" || die
 
 
 joinscript_save_current_version

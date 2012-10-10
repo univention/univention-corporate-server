@@ -59,7 +59,7 @@ else
 			--set notificationOptionCritical=1 \
 			--set checkArgs='' \
 			--set useNRPE=0 \
-			--set assignedHosts="$ldap_hostdn"
+			--set assignedHosts="$ldap_hostdn" || die
 	fi
 fi
 

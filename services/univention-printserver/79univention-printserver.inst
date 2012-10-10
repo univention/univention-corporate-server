@@ -67,13 +67,13 @@ if [ $JS_LAST_EXECUTED_VERSION -le 7 ]; then
 	fi
 fi
 
-univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=univention,$ldap_base" --set name=cups
+univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=univention,$ldap_base" --set name=cups || die
 
 univention-directory-manager settings/printermodel create "$@" --ignore_exists \
 	--position "cn=cups,cn=univention,$ldap_base" \
 	--set name=misc  \
 	--append printmodel="\"None\" \"None\"" \
-	--append printmodel="\"smb\" \"smb\""
+	--append printmodel="\"smb\" \"smb\"" || die
 
 # adding all ppd in /usr/share/ppd
 
@@ -88,7 +88,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Alps-MD-1300-md2k.ppd\" \"Alps MD-1300 Foomatic/md2k\"" \
 	--append printmodel="\"foomatic-rip/Alps-MD-1300-md1xMono.ppd\" \"Alps MD-1300 Foomatic/md1xMono\"" \
 	--append printmodel="\"foomatic-rip/Alps-MD-1000-md2k.ppd\" \"Alps MD-1000 Foomatic/md2k\"" \
-	--append printmodel="\"foomatic-rip/Alps-MD-5000-md50Mono.ppd\" \"Alps MD-5000 Foomatic/md50Mono\""
+	--append printmodel="\"foomatic-rip/Alps-MD-5000-md50Mono.ppd\" \"Alps MD-5000 Foomatic/md50Mono\"" || die
 
 # Manufacturer: Toshiba Printers: 55
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Toshiba \
@@ -152,7 +152,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"postscript/Toshiba/TOSHIBA_EST4511_451c_CUPS.ppd.gz\" \"TOSHIBA e-ST4511/451c Series PS\"" \
 	--append printmodel="\"postscript/Toshiba/TOSHIBA_EST3510c_CUPS.ppd.gz\" \"TOSHIBA e-STUDIO3510c Series PS\"" \
 	--append printmodel="\"postscript/Toshiba/TOSHIBA_EST205_CUPS.ppd.gz\" \"TOSHIBA e-STUDIO205 Series PS\"" \
-	--append printmodel="\"postscript/Toshiba/TOSHIBA_EST450_452_CUPS.ppd.gz\" \"TOSHIBA e-ST450/452 Series PS\""
+	--append printmodel="\"postscript/Toshiba/TOSHIBA_EST450_452_CUPS.ppd.gz\" \"TOSHIBA e-ST450/452 Series PS\"" || die
 
 
 # Manufacturer: Tally Printers: 5
@@ -161,7 +161,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Tally-LN45-Postscript.ppd\" \"Tally LN45 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Tally-MT908-gutenprint-ijs.5.2.ppd\" \"Tally MT908 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Tally-MT908-gutenprint-ijs-simplified.5.2.ppd\" \"Tally MT908 Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/Tally-ML450-Postscript.ppd\" \"Tally ML450 Foomatic/Postscript (recommended)\""
+	--append printmodel="\"foomatic-rip/Tally-ML450-Postscript.ppd\" \"Tally ML450 Foomatic/Postscript (recommended)\"" || die
 
 # Manufacturer: Lanier Printers: 340
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Lanier \
@@ -504,19 +504,19 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Lanier-LD090-gutenprint-ijs-simplified.5.2.ppd\" \"Lanier LD090 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Lanier-LD230-gutenprint-ijs-simplified.5.2.ppd\" \"Lanier LD230 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Lanier-LD145-gutenprint-ijs.5.2.ppd\" \"Lanier LD145 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Lanier-MP_9000_LD190-gutenprint-ijs.5.2.ppd\" \"Lanier MP 9000/LD190 Foomatic/gutenprint-ijs.5.2\""
+	--append printmodel="\"foomatic-rip/Lanier-MP_9000_LD190-gutenprint-ijs.5.2.ppd\" \"Lanier MP 9000/LD190 Foomatic/gutenprint-ijs.5.2\"" || die
 
 # Manufacturer: PCPI Printers: 3
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=PCPI \
 	--append printmodel="\"foomatic-rip/PCPI-1030-laserjet.ppd\" \"PCPI 1030 Foomatic/laserjet (recommended)\"" \
 	--append printmodel="\"foomatic-rip/PCPI-1030-gutenprint-ijs.5.2.ppd\" \"PCPI 1030 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/PCPI-1030-gutenprint-ijs-simplified.5.2.ppd\" \"PCPI 1030 Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/PCPI-1030-gutenprint-ijs-simplified.5.2.ppd\" \"PCPI 1030 Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: Xante Printers: 3
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Xante \
 	--append printmodel="\"foomatic-rip/Xante-PlateMaker_4-Postscript.ppd\" \"Xante PlateMaker 4 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Xante-FilmMaker_4-Postscript.ppd\" \"Xante FilmMaker 4 Foomatic/Postscript (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Xante-Accel-a-Writer_4G-Postscript.ppd\" \"Xante Accel-a-Writer 4G Foomatic/Postscript (recommended)\""
+	--append printmodel="\"foomatic-rip/Xante-Accel-a-Writer_4G-Postscript.ppd\" \"Xante Accel-a-Writer 4G Foomatic/Postscript (recommended)\"" || die
 
 # Manufacturer: Generic Printers: 54
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Generic \
@@ -573,7 +573,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Generic-PCL_5c_LF_Printer-gutenprint-ijs.5.2.ppd\" \"Generic PCL 5c LF Printer Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Generic-PCL_5_Printer-gutenprint-ijs-simplified.5.2.ppd\" \"Generic PCL 5 Printer Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"cups-included/postscript.ppd\" \"Generic PostScript Printer\"" \
-	--append printmodel="\"cups-included/textonly.ppd\" \"Generic text-only printer\""
+	--append printmodel="\"cups-included/textonly.ppd\" \"Generic text-only printer\"" || die
 
 # Manufacturer: Canon Printers: 458
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Canon \
@@ -1034,7 +1034,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Canon-MULTIPASS-MP220-gutenprint-ijs-simplified.5.2.ppd\" \"Canon MULTIPASS-MP220 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Canon-i560-gutenprint-ijs.5.2.ppd\" \"Canon i560 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Canon-imageRunner_6570-Postscript.ppd\" \"Canon imageRunner 6570 Foomatic/Postscript (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Canon-imageRunner_C3170i-hpijs-pcl5c.ppd\" \"Canon imageRunner C3170i Foomatic/hpijs-pcl5c\""
+	--append printmodel="\"foomatic-rip/Canon-imageRunner_C3170i-hpijs-pcl5c.ppd\" \"Canon imageRunner C3170i Foomatic/hpijs-pcl5c\"" || die
 
 # Manufacturer: HP Printers: 1646
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=HP \
@@ -2683,14 +2683,14 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"hp-ppd/HP/HP_DeskJet_600C_Series.ppd\" \"HP DeskJet 600C Series, Foomatic + DJ6xx\"" \
 	--append printmodel="\"hp-ppd/HP/HP_DeskJet_350C.ppd\" \"HP DeskJet 350C\"" \
 	--append printmodel="\"hp-ppd/HP/HP_LaserJet_5000_Series.ppd\" \"HP LaserJet 5000 Series PS\"" \
-	--append printmodel="\"hp-ppd/HP/HP_DeskJet_630C.ppd\" \"HP DeskJet 630/632C, Foomatic + DJ630\""
+	--append printmodel="\"hp-ppd/HP/HP_DeskJet_630C.ppd\" \"HP DeskJet 630/632C, Foomatic + DJ630\"" || die
 
 # Manufacturer: Citizen Printers: 4
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Citizen \
 	--append printmodel="\"foomatic-rip/Citizen-ProJet_II-gutenprint-ijs-simplified.5.2.ppd\" \"Citizen ProJet II Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Citizen-ProJet_II-gutenprint-ijs.5.2.ppd\" \"Citizen ProJet II Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Citizen-ProJet_II-laserjet.ppd\" \"Citizen ProJet II Foomatic/laserjet (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Citizen-ProJet_IIc-cdj500.ppd\" \"Citizen ProJet IIc Foomatic/cdj500 (recommended)\""
+	--append printmodel="\"foomatic-rip/Citizen-ProJet_IIc-cdj500.ppd\" \"Citizen ProJet IIc Foomatic/cdj500 (recommended)\"" || die
 
 # Manufacturer: Gestetner Printers: 336
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Gestetner \
@@ -3029,7 +3029,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Gestetner-DSm745_745G-gutenprint-ijs.5.2.ppd\" \"Gestetner DSm745/745G Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Gestetner-MP_4000-gutenprint-ijs-simplified.5.2.ppd\" \"Gestetner MP 4000 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Gestetner-DSm651-gutenprint-ijs.5.2.ppd\" \"Gestetner DSm651 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Gestetner-6002-gutenprint-ijs-simplified.5.2.ppd\" \"Gestetner 6002 Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/Gestetner-6002-gutenprint-ijs-simplified.5.2.ppd\" \"Gestetner 6002 Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: NEC Printers: 49
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=NEC \
@@ -3081,7 +3081,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/NEC-SuperScript_1260-ljet2p.ppd\" \"NEC SuperScript 1260 Foomatic/ljet2p (recommended)\"" \
 	--append printmodel="\"foomatic-rip/NEC-Silentwriter2_model_290-Postscript.ppd\" \"NEC Silentwriter2 model 290 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/NEC-SuperScript_4600N-Postscript.ppd\" \"NEC SuperScript 4600N Foomatic/Postscript (recommended)\"" \
-	--append printmodel="\"foomatic-rip/NEC-SuperScript_100C-pcl3.ppd\" \"NEC SuperScript 100C Foomatic/pcl3 (recommended)\""
+	--append printmodel="\"foomatic-rip/NEC-SuperScript_100C-pcl3.ppd\" \"NEC SuperScript 100C Foomatic/pcl3 (recommended)\"" || die
 
 # Manufacturer: Fujifilm Printers: 6
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Fujifilm \
@@ -3090,7 +3090,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Fujifilm-Printpix-CX-550-gutenprint-ijs-simplified.5.2.ppd\" \"Fujifilm Printpix-CX-550 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Fujifilm-Printpix-CX-400-gutenprint-ijs-simplified.5.2.ppd\" \"Fujifilm Printpix-CX-400 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Fujifilm-Printpix-CX-400-gutenprint-ijs.5.2.ppd\" \"Fujifilm Printpix-CX-400 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Fujifilm-FinePix-NX-500-gutenprint-ijs-simplified.5.2.ppd\" \"Fujifilm FinePix-NX-500 Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/Fujifilm-FinePix-NX-500-gutenprint-ijs-simplified.5.2.ppd\" \"Fujifilm FinePix-NX-500 Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: Dell Printers: 5
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Dell \
@@ -3098,7 +3098,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Dell-M5200-Postscript.ppd\" \"Dell M5200 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Dell-3100cn-pxlcolor.ppd\" \"Dell 3100cn Foomatic/pxlcolor (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Dell-3010cn-pxldpl.ppd\" \"Dell 3010cn Foomatic/pxldpl (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Dell-1110-gdi.ppd\" \"Dell 1110 Foomatic/gdi\""
+	--append printmodel="\"foomatic-rip/Dell-1110-gdi.ppd\" \"Dell 1110 Foomatic/gdi\"" || die
 
 # Manufacturer: Savin Printers: 337
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Savin \
@@ -3438,7 +3438,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Savin-9040-gutenprint-ijs.5.2.ppd\" \"Savin 9040 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Savin-2535_2235-gutenprint-ijs.5.2.ppd\" \"Savin 2535/2235 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Savin-2527-gutenprint-ijs-simplified.5.2.ppd\" \"Savin 2527 Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/Savin-8055-gutenprint-ijs-simplified.5.2.ppd\" \"Savin 8055 Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/Savin-8055-gutenprint-ijs-simplified.5.2.ppd\" \"Savin 8055 Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: Olivetti Printers: 9
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Olivetti \
@@ -3450,7 +3450,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Olivetti-JP450-djet500.ppd\" \"Olivetti JP450 Foomatic/djet500 (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Olivetti-PG_306-gutenprint-ijs.5.2.ppd\" \"Olivetti PG 306 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Olivetti-JP350S-gutenprint-ijs-simplified.5.2.ppd\" \"Olivetti JP350S Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/Olivetti-JP350S-gutenprint-ijs.5.2.ppd\" \"Olivetti JP350S Foomatic/gutenprint-ijs.5.2\""
+	--append printmodel="\"foomatic-rip/Olivetti-JP350S-gutenprint-ijs.5.2.ppd\" \"Olivetti JP350S Foomatic/gutenprint-ijs.5.2\"" || die
 
 # Manufacturer: Minolta Printers: 36
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Minolta \
@@ -3489,21 +3489,21 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Minolta-PagePro_6e-lj4dith.ppd\" \"Minolta PagePro 6e Foomatic/lj4dith\"" \
 	--append printmodel="\"foomatic-rip/Minolta-PagePro_6e-gutenprint-ijs.5.2.ppd\" \"Minolta PagePro 6e Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Minolta-PagePro_6-hpijs-pcl5e.ppd\" \"Minolta PagePro 6 Foomatic/hpijs-pcl5e (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Minolta-PagePro_8-hpijs-pcl5e.ppd\" \"Minolta PagePro 8 Foomatic/hpijs-pcl5e (recommended)\""
+	--append printmodel="\"foomatic-rip/Minolta-PagePro_8-hpijs-pcl5e.ppd\" \"Minolta PagePro 8 Foomatic/hpijs-pcl5e (recommended)\"" || die
 
 # Manufacturer: Imagistics Printers: 2
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Imagistics \
 	--append printmodel="\"postscript/Oce/Others/IM8530_1.ppd.gz\" \"Imagistics im8530 Series PS\"" \
-	--append printmodel="\"foomatic-rip/Imagistics-im8530-Postscript.ppd\" \"Imagistics im8530 Foomatic/Postscript\""
+	--append printmodel="\"foomatic-rip/Imagistics-im8530-Postscript.ppd\" \"Imagistics im8530 Foomatic/Postscript\"" || die
 
 # Manufacturer: Heidelberg Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Heidelberg \
-	--append printmodel="\"foomatic-rip/Heidelberg-Digimaster_9110-Postscript.ppd\" \"Heidelberg Digimaster 9110 Foomatic/Postscript (recommended)\""
+	--append printmodel="\"foomatic-rip/Heidelberg-Digimaster_9110-Postscript.ppd\" \"Heidelberg Digimaster 9110 Foomatic/Postscript (recommended)\"" || die
 
 # Manufacturer: TOSHIBA TEC Corp. Printers: 2
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name="TOSHIBA TEC Corp." \
 	--append printmodel="\"postscript/Toshiba/Toshiba_GL1020_CUPS.ppd.gz\" \"TOSHIBA GL-1020\"" \
-	--append printmodel="\"postscript/Toshiba/Toshiba_GL1010_CUPS.ppd.gz\" \"TOSHIBA GL-1010\""
+	--append printmodel="\"postscript/Toshiba/Toshiba_GL1010_CUPS.ppd.gz\" \"TOSHIBA GL-1010\"" || die
 
 # Manufacturer: DEC Printers: 19
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=DEC \
@@ -3525,7 +3525,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/DEC-DECWriter_500i-djet500.ppd\" \"DEC DECWriter 500i Foomatic/djet500 (recommended)\"" \
 	--append printmodel="\"foomatic-rip/DEC-1800-gutenprint-ijs.5.2.ppd\" \"DEC 1800 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/DEC-LA75-la75.ppd\" \"DEC LA75 Foomatic/la75 (recommended)\"" \
-	--append printmodel="\"foomatic-rip/DEC-LJ250-lj250.ppd\" \"DEC LJ250 Foomatic/lj250\""
+	--append printmodel="\"foomatic-rip/DEC-LJ250-lj250.ppd\" \"DEC LJ250 Foomatic/lj250\"" || die
 
 # Manufacturer: Epson Printers: 1280
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Epson \
@@ -4808,11 +4808,11 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Epson-PM_G700-gutenprint-ijs-simplified.5.2.ppd\" \"Epson PM G700 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Epson-PM_980C-gutenprint-ijs-simplified.5.2.ppd\" \"Epson PM 980C Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Epson-Stylus_NX400-gutenprint-ijs.5.2.ppd\" \"Epson Stylus NX400 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Epson-Stylus_CX4800-gutenprint-ijs-simplified.5.2.ppd\" \"Epson Stylus CX4800 Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/Epson-Stylus_CX4800-gutenprint-ijs-simplified.5.2.ppd\" \"Epson Stylus CX4800 Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: SiPix Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=SiPix \
-	--append printmodel="\"foomatic-rip/SiPix-Pocket_Printer_A6-sipixa6.upp.ppd\" \"SiPix Pocket Printer A6 Foomatic/sipixa6.upp (recommended)\""
+	--append printmodel="\"foomatic-rip/SiPix-Pocket_Printer_A6-sipixa6.upp.ppd\" \"SiPix Pocket Printer A6 Foomatic/sipixa6.upp (recommended)\"" || die
 
 # Manufacturer: IBM Printers: 37
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=IBM \
@@ -4852,14 +4852,14 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/IBM-4029_030_LaserPrinter_10-gutenprint-ijs-simplified.5.2.ppd\" \"IBM 4029 030 LaserPrinter 10 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/IBM-4019-laserjet.ppd\" \"IBM 4019 Foomatic/laserjet (recommended)\"" \
 	--append printmodel="\"foomatic-rip/IBM-Page_Printer_3112-ljet4.ppd\" \"IBM Page Printer 3112 Foomatic/ljet4\"" \
-	--append printmodel="\"foomatic-rip/IBM-4312-gutenprint-ijs-simplified.5.2.ppd\" \"IBM 4312 Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/IBM-4312-gutenprint-ijs-simplified.5.2.ppd\" \"IBM 4312 Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: QMS Printers: 4
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=QMS \
 	--append printmodel="\"foomatic-rip/QMS-2425_Turbo_EX-Postscript.ppd\" \"QMS 2425 Turbo EX Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/QMS-ps-810-Postscript.ppd\" \"QMS ps-810 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/QMS-magicolor_2plus-Postscript.ppd\" \"QMS magicolor 2+ Foomatic/Postscript (recommended)\"" \
-	--append printmodel="\"foomatic-rip/QMS-LPK-100-eps9mid.ppd\" \"QMS LPK-100 Foomatic/eps9mid (recommended)\""
+	--append printmodel="\"foomatic-rip/QMS-LPK-100-eps9mid.ppd\" \"QMS LPK-100 Foomatic/eps9mid (recommended)\"" || die
 
 # Manufacturer: Lexmark Printers: 245
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Lexmark \
@@ -5107,7 +5107,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Lexmark-Optra_T612-Postscript.ppd\" \"Lexmark Optra T612 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Lexmark-C920n-Postscript.ppd\" \"Lexmark C920n Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Lexmark-3000-cdj550.ppd\" \"Lexmark 3000 Foomatic/cdj550\"" \
-	--append printmodel="\"foomatic-rip/Lexmark-Optra_K_1220-Postscript.ppd\" \"Lexmark Optra K 1220 Foomatic/Postscript (recommended)\""
+	--append printmodel="\"foomatic-rip/Lexmark-Optra_K_1220-Postscript.ppd\" \"Lexmark Optra K 1220 Foomatic/Postscript (recommended)\"" || die
 
 # Manufacturer: Xerox Printers: 611
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Xerox \
@@ -5721,7 +5721,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Xerox-Phaser_6360DX-ljet4.ppd\" \"Xerox Phaser 6360DX Foomatic/ljet4\"" \
 	--append printmodel="\"foomatic-rip/Xerox-Phaser_8550DP-ljet4d.ppd\" \"Xerox Phaser 8550DP Foomatic/ljet4d\"" \
 	--append printmodel="\"foomatic-rip/Xerox-Phaser_8550DX-ljet4d.ppd\" \"Xerox Phaser 8550DX Foomatic/ljet4d\"" \
-	--append printmodel="\"foomatic-rip/Xerox-Phaser_6200N-hpijs-pcl5e.ppd\" \"Xerox Phaser 6200N Foomatic/hpijs-pcl5e\""
+	--append printmodel="\"foomatic-rip/Xerox-Phaser_6200N-hpijs-pcl5e.ppd\" \"Xerox Phaser 6200N Foomatic/hpijs-pcl5e\"" || die
 
 # Manufacturer: Olympus Printers: 22
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Olympus \
@@ -5746,21 +5746,21 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Olympus-P-330NE-gutenprint-ijs-simplified.5.2.ppd\" \"Olympus P-330NE Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Olympus-P-440-gutenprint-ijs-simplified.5.2.ppd\" \"Olympus P-440 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Olympus-P-300U-gutenprint-ijs-simplified.5.2.ppd\" \"Olympus P-300U Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/Olympus-P-10-gutenprint-ijs.5.2.ppd\" \"Olympus P-10 Foomatic/gutenprint-ijs.5.2\""
+	--append printmodel="\"foomatic-rip/Olympus-P-10-gutenprint-ijs.5.2.ppd\" \"Olympus P-10 Foomatic/gutenprint-ijs.5.2\"" || die
 
 # Manufacturer: DNP Printers: 4
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=DNP \
 	--append printmodel="\"foomatic-rip/DNP-DS80-gutenprint-ijs-simplified.5.2.ppd\" \"DNP DS80 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/DNP-DS80-gutenprint-ijs.5.2.ppd\" \"DNP DS80 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/DNP-DS40-gutenprint-ijs-simplified.5.2.ppd\" \"DNP DS40 Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/DNP-DS40-gutenprint-ijs.5.2.ppd\" \"DNP DS40 Foomatic/gutenprint-ijs.5.2\""
+	--append printmodel="\"foomatic-rip/DNP-DS40-gutenprint-ijs.5.2.ppd\" \"DNP DS40 Foomatic/gutenprint-ijs.5.2\"" || die
 
 # Manufacturer: Genicom Printers: 4
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Genicom \
 	--append printmodel="\"foomatic-rip/Genicom-ML450-Postscript.ppd\" \"Genicom ML450 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Genicom-LN45-Postscript.ppd\" \"Genicom LN45 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Genicom-microLaser_12-Postscript.ppd\" \"Genicom microLaser 12 Foomatic/Postscript (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Genicom-microLaser_210-Postscript.ppd\" \"Genicom microLaser 210 Foomatic/Postscript\""
+	--append printmodel="\"foomatic-rip/Genicom-microLaser_210-Postscript.ppd\" \"Genicom microLaser 210 Foomatic/Postscript\"" || die
 
 # Manufacturer: Oki Printers: 186
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Oki \
@@ -5949,7 +5949,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Oki-OL610e_S-gutenprint-ijs-simplified.5.2.ppd\" \"Oki OL610e/S Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Oki-OL600e-gutenprint-ijs-simplified.5.2.ppd\" \"Oki OL600e Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Oki-Okipage_6ex-hpijs-pcl5e.ppd\" \"Oki Okipage 6ex Foomatic/hpijs-pcl5e (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Oki-Okipage_6e-gutenprint-ijs-simplified.5.2.ppd\" \"Oki Okipage 6e Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/Oki-Okipage_6e-gutenprint-ijs-simplified.5.2.ppd\" \"Oki Okipage 6e Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: Sony Printers: 11
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Sony \
@@ -5963,7 +5963,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Sony-UP-DR100-gutenprint-ijs-simplified.5.2.ppd\" \"Sony UP-DR100 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Sony-IJP-V100-gutenprint-ijs.5.2.ppd\" \"Sony IJP-V100 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Sony-UP-DR150-gutenprint-ijs.5.2.ppd\" \"Sony UP-DR150 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Sony-DPP-EX5-gutenprint-ijs-simplified.5.2.ppd\" \"Sony DPP-EX5 Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/Sony-DPP-EX5-gutenprint-ijs-simplified.5.2.ppd\" \"Sony DPP-EX5 Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: Kyocera Mita Printers: 301
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name="Kyocera Mita" \
@@ -6267,7 +6267,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"postscript/Kyocera/de/Kyocera_Mita_FS-1900_de.ppd.gz\" \"Kyocera Mita FS-1900\"" \
 	--append printmodel="\"postscript/Kyocera/de/Kyocera_Mita_FS-1018MFP_de.ppd.gz\" \"Kyocera Mita FS-1018MFP\"" \
 	--append printmodel="\"postscript/Kyocera/de/Kyocera_Mita_FS-9500DN_de.ppd.gz\" \"Kyocera Mita FS-9500DN\"" \
-	--append printmodel="\"postscript/Kyocera/de/Kyocera_Mita_KM-1810_de.ppd.gz\" \"Kyocera Mita KM-1810\""
+	--append printmodel="\"postscript/Kyocera/de/Kyocera_Mita_KM-1810_de.ppd.gz\" \"Kyocera Mita KM-1810\"" || die
 
 # Manufacturer: InfoPrint Printers: 6
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=InfoPrint \
@@ -6276,7 +6276,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"postscript/InfoPrint/PXL/InfoPrint-Pro_1107EX_PXL.ppd.gz\" \"InfoPrint Pro 1107EX PXL\"" \
 	--append printmodel="\"postscript/InfoPrint/PS/InfoPrint-Pro_1107EX_PS.ppd.gz\" \"InfoPrint Pro 1107EX PS\"" \
 	--append printmodel="\"postscript/InfoPrint/PS/InfoPrint-Pro_1357EX_PS.ppd.gz\" \"InfoPrint Pro 1357EX PS\"" \
-	--append printmodel="\"postscript/InfoPrint/PS/InfoPrint-Pro_907EX_PS.ppd.gz\" \"InfoPrint Pro 907EX PS\""
+	--append printmodel="\"postscript/InfoPrint/PS/InfoPrint-Pro_907EX_PS.ppd.gz\" \"InfoPrint Pro 907EX PS\"" || die
 
 # Manufacturer: Infotec Printers: 308
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Infotec \
@@ -6587,7 +6587,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Infotec-IS_2215-gutenprint-ijs.5.2.ppd\" \"Infotec IS 2215 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Infotec-IS2027-gutenprint-ijs-simplified.5.2.ppd\" \"Infotec IS2027 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Infotec-IS_3090-gutenprint-ijs-simplified.5.2.ppd\" \"Infotec IS 3090 Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/Infotec-IS_2220D-gutenprint-ijs-simplified.5.2.ppd\" \"Infotec IS 2220D Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/Infotec-IS_2220D-gutenprint-ijs-simplified.5.2.ppd\" \"Infotec IS 2220D Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: Compaq Printers: 5
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Compaq \
@@ -6595,7 +6595,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Compaq-IJ900-lxm5700m.ppd\" \"Compaq IJ900 Foomatic/lxm5700m\"" \
 	--append printmodel="\"foomatic-rip/Compaq-IJ750-lxm3200-tweaked.ppd\" \"Compaq IJ750 Foomatic/lxm3200-tweaked (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Compaq-IJ1200-gutenprint-ijs.5.2.ppd\" \"Compaq IJ1200 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Compaq-IJ900-lex5700.ppd\" \"Compaq IJ900 Foomatic/lex5700 (recommended)\""
+	--append printmodel="\"foomatic-rip/Compaq-IJ900-lex5700.ppd\" \"Compaq IJ900 Foomatic/lex5700 (recommended)\"" || die
 
 # Manufacturer: Samsung Printers: 267
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Samsung \
@@ -6865,12 +6865,12 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Samsung-ML-4550-Postscript.ppd\" \"Samsung ML-4550 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Samsung-ML-7000P-gutenprint-ijs.5.2.ppd\" \"Samsung ML-7000P Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Samsung-ML-7300N-pxlmono.ppd\" \"Samsung ML-7300N Foomatic/pxlmono\"" \
-	--append printmodel="\"foomatic-rip/Samsung-ML-3051ND-pxlmono.ppd\" \"Samsung ML-3051ND Foomatic/pxlmono\""
+	--append printmodel="\"foomatic-rip/Samsung-ML-3051ND-pxlmono.ppd\" \"Samsung ML-3051ND Foomatic/pxlmono\"" || die
 
 # Manufacturer: Shinko Printers: 2
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Shinko \
 	--append printmodel="\"foomatic-rip/Shinko-CHC-S9045-gutenprint-ijs-simplified.5.2.ppd\" \"Shinko CHC-S9045 Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/Shinko-CHC-S9045-gutenprint-ijs.5.2.ppd\" \"Shinko CHC-S9045 Foomatic/gutenprint-ijs.5.2\""
+	--append printmodel="\"foomatic-rip/Shinko-CHC-S9045-gutenprint-ijs.5.2.ppd\" \"Shinko CHC-S9045 Foomatic/gutenprint-ijs.5.2\"" || die
 
 # Manufacturer: Oce Printers: 100
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Oce \
@@ -6973,7 +6973,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Oce-VarioPrint_2100PS-Postscript.ppd\" \"Oce VarioPrint 2100 Foomatic/Postscript\"" \
 	--append printmodel="\"foomatic-rip/Oce-im6020-Postscript.ppd\" \"Oce im6020 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Oce-VarioPrint_2105PS-Postscript.ppd\" \"Oce VarioPrint 2105 Foomatic/Postscript\"" \
-	--append printmodel="\"foomatic-rip/Oce-im5530-Postscript.ppd\" \"Oce im5530 Foomatic/Postscript\""
+	--append printmodel="\"foomatic-rip/Oce-im5530-Postscript.ppd\" \"Oce im5530 Foomatic/Postscript\"" || die
 
 # Manufacturer: Texas Instruments Printers: 8
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name="Texas Instruments" \
@@ -6984,7 +6984,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Texas_Instruments-microLaser_Pro_8-Postscript.ppd\" \"Texas Instruments microLaser Pro 8 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Texas_Instruments-microLaser_XL_PS35-Postscript.ppd\" \"Texas Instruments microLaser XL PS35 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Texas_Instruments-microLaser_PowerPro_12-Postscript.ppd\" \"Texas Instruments microLaser PowerPro 12 Foomatic/Postscript (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Texas_Instruments-microLaser_XL_Basic-Postscript.ppd\" \"Texas Instruments microLaser XL Basic Foomatic/Postscript (recommended)\""
+	--append printmodel="\"foomatic-rip/Texas_Instruments-microLaser_XL_Basic-Postscript.ppd\" \"Texas Instruments microLaser XL Basic Foomatic/Postscript (recommended)\"" || die
 
 # Manufacturer: Brother Printers: 409
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Brother \
@@ -7396,24 +7396,24 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Brother-HL-1260-hpijs-pcl5e.ppd\" \"Brother HL-1260 Foomatic/hpijs-pcl5e\"" \
 	--append printmodel="\"foomatic-rip/Brother-HL-2140-hl1250.ppd\" \"Brother HL-2140 Foomatic/hl1250\"" \
 	--append printmodel="\"foomatic-rip/Brother-HL-2035-hpijs-pcl5e.ppd\" \"Brother HL-2035 Foomatic/hpijs-pcl5e\"" \
-	--append printmodel="\"foomatic-rip/Brother-HL-960-lj4dith.ppd\" \"Brother HL-960 Foomatic/lj4dith\""
+	--append printmodel="\"foomatic-rip/Brother-HL-960-lj4dith.ppd\" \"Brother HL-960 Foomatic/lj4dith\"" || die
 
 # Manufacturer: Kodak Printers: 4
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Kodak \
 	--append printmodel="\"foomatic-rip/Kodak-DigiSource_9110-Postscript.ppd\" \"Kodak DigiSource 9110 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Kodak-Easyshare-Printer-Dock-gutenprint-ijs-simplified.5.2.ppd\" \"Kodak Easyshare-Printer-Dock Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Kodak-IS_70_CPII-Postscript.ppd\" \"Kodak IS 70 CPII Foomatic/Postscript (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Kodak-Easyshare-Printer-Dock-gutenprint-ijs.5.2.ppd\" \"Kodak Easyshare-Printer-Dock Foomatic/gutenprint-ijs.5.2\""
+	--append printmodel="\"foomatic-rip/Kodak-Easyshare-Printer-Dock-gutenprint-ijs.5.2.ppd\" \"Kodak Easyshare-Printer-Dock Foomatic/gutenprint-ijs.5.2\"" || die
 
 # Manufacturer: None Printers: 3
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=None \
 	--append printmodel="\"hp-ppd/HP/HP_LaserJet_5.ppd\" \"HP LaserJet 5/5M PostScript\"" \
 	--append printmodel="\"hp-ppd/HP/HP_ColorLaserJet_5-5M.ppd\" \"HP ColorLaserJet 5/5M PS\"" \
-	--append printmodel="\"hp-ppd/HP/HP_LaserJet_5P.ppd\" \"HP LaserJet 5P/5MP PostScript\""
+	--append printmodel="\"hp-ppd/HP/HP_LaserJet_5P.ppd\" \"HP LaserJet 5P/5MP PostScript\"" || die
 
 # Manufacturer: Minolta QMS Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name="Minolta QMS" \
-	--append printmodel="\"foomatic-rip/Minolta_QMS-PagePro_9100N-Postscript.ppd\" \"Minolta QMS PagePro 9100N Foomatic/Postscript (recommended)\""
+	--append printmodel="\"foomatic-rip/Minolta_QMS-PagePro_9100N-Postscript.ppd\" \"Minolta QMS PagePro 9100N Foomatic/Postscript (recommended)\"" || die
 
 # Manufacturer: Fujitsu Printers: 26
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Fujitsu \
@@ -7442,17 +7442,17 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Fujitsu-3400-epsonc.ppd\" \"Fujitsu 3400 Foomatic/epsonc (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Fujitsu-PrintPartner_16DV-gutenprint-ijs.5.2.ppd\" \"Fujitsu PrintPartner 16DV Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Fujitsu-PrintPartner_8000-ljet3.ppd\" \"Fujitsu PrintPartner 8000 Foomatic/ljet3 (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Fujitsu-PrintPartner_10V-laserjet.ppd\" \"Fujitsu PrintPartner 10V Foomatic/laserjet\""
+	--append printmodel="\"foomatic-rip/Fujitsu-PrintPartner_10V-laserjet.ppd\" \"Fujitsu PrintPartner 10V Foomatic/laserjet\"" || die
 
 # Manufacturer: Mitsubishi Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Mitsubishi \
-	--append printmodel="\"foomatic-rip/Mitsubishi-CP50_Color_Printer-cp50.ppd\" \"Mitsubishi CP50 Color Printer Foomatic/cp50 (recommended)\""
+	--append printmodel="\"foomatic-rip/Mitsubishi-CP50_Color_Printer-cp50.ppd\" \"Mitsubishi CP50 Color Printer Foomatic/cp50 (recommended)\"" || die
 
 # Manufacturer: Raven Printers: 3
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Raven \
 	--append printmodel="\"foomatic-rip/Raven-LP-410-gutenprint-ijs.5.2.ppd\" \"Raven LP-410 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Raven-LP-410-gutenprint-ijs-simplified.5.2.ppd\" \"Raven LP-410 Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/Raven-LP-410-ljet2p.ppd\" \"Raven LP-410 Foomatic/ljet2p (recommended)\""
+	--append printmodel="\"foomatic-rip/Raven-LP-410-ljet2p.ppd\" \"Raven LP-410 Foomatic/ljet2p (recommended)\"" || die
 
 # Manufacturer: Star Printers: 15
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Star \
@@ -7470,11 +7470,11 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Star-LC24-200-epsonc.ppd\" \"Star LC24-200 Foomatic/epsonc (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Star-StarJet_48-sj48.ppd\" \"Star StarJet 48 Foomatic/sj48 (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Star-LS-04-gutenprint-ijs.5.2.ppd\" \"Star LS-04 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Star-LC24-100-necp6.ppd\" \"Star LC24-100 Foomatic/necp6 (recommended)\""
+	--append printmodel="\"foomatic-rip/Star-LC24-100-necp6.ppd\" \"Star LC24-100 Foomatic/necp6 (recommended)\"" || die
 
 # Manufacturer: Imagen Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Imagen \
-	--append printmodel="\"foomatic-rip/Imagen-ImPress-imagen.ppd\" \"Imagen ImPress Foomatic/imagen (recommended)\""
+	--append printmodel="\"foomatic-rip/Imagen-ImPress-imagen.ppd\" \"Imagen ImPress Foomatic/imagen (recommended)\"" || die
 
 # Manufacturer: Apollo Printers: 29
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Apollo \
@@ -7506,7 +7506,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Apollo-P-2200-hpijs-pcl3.ppd\" \"Apollo P-2200 Foomatic/hpijs-pcl3 (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Apollo-P-1200-pcl3.ppd\" \"Apollo P-1200 Foomatic/pcl3 (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Apollo-P-2600-gutenprint-ijs.5.2.ppd\" \"Apollo P-2600 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Apollo-P-2150-gutenprint-ijs.5.2.ppd\" \"Apollo P-2150 Foomatic/gutenprint-ijs.5.2\""
+	--append printmodel="\"foomatic-rip/Apollo-P-2150-gutenprint-ijs.5.2.ppd\" \"Apollo P-2150 Foomatic/gutenprint-ijs.5.2\"" || die
 
 # Manufacturer: Apple Printers: 21
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Apple \
@@ -7530,7 +7530,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Apple-LaserWriter_Pro_630-Postscript.ppd\" \"Apple LaserWriter Pro 630 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Apple-LaserWriter_NT-Postscript1.ppd\" \"Apple LaserWriter NT Foomatic/Postscript1\"" \
 	--append printmodel="\"foomatic-rip/Apple-LaserWriter_IINTX-Postscript1.ppd\" \"Apple LaserWriter IINTX Foomatic/Postscript1\"" \
-	--append printmodel="\"foomatic-rip/Apple-Dot_Matrix-appledmp.ppd\" \"Apple Dot Matrix Foomatic/appledmp (recommended)\""
+	--append printmodel="\"foomatic-rip/Apple-Dot_Matrix-appledmp.ppd\" \"Apple Dot Matrix Foomatic/appledmp (recommended)\"" || die
 
 # Manufacturer: NRG Printers: 338
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=NRG \
@@ -7871,7 +7871,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/NRG-MP_9000-gutenprint-ijs-simplified.5.2.ppd\" \"NRG MP 9000 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/NRG-MP_2550B-gutenprint-ijs.5.2.ppd\" \"NRG MP 2550B Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/NRG-MP_5000B-gutenprint-ijs-simplified.5.2.ppd\" \"NRG MP 5000B Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/NRG-MP_2000-gutenprint-ijs.5.2.ppd\" \"NRG MP 2000 Foomatic/gutenprint-ijs.5.2\""
+	--append printmodel="\"foomatic-rip/NRG-MP_2000-gutenprint-ijs.5.2.ppd\" \"NRG MP 2000 Foomatic/gutenprint-ijs.5.2\"" || die
 
 # Manufacturer: Ricoh Printers: 378
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Ricoh \
@@ -8252,11 +8252,11 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Ricoh-Aficio_MP_9000-gutenprint-ijs.5.2.ppd\" \"Ricoh Aficio MP 9000 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Ricoh-Aficio_MP_3500-gutenprint-ijs.5.2.ppd\" \"Ricoh Aficio MP 3500 Foomatic/gutenprint-ijs.5.2\"" \
 	--append printmodel="\"foomatic-rip/Ricoh-Aficio_2016-gutenprint-ijs.5.2.ppd\" \"Ricoh Aficio 2016 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Ricoh-Aficio_2020D-gutenprint-ijs-simplified.5.2.ppd\" \"Ricoh Aficio 2020D Foomatic/gutenprint-ijs-simplified.5.2\""
+	--append printmodel="\"foomatic-rip/Ricoh-Aficio_2020D-gutenprint-ijs-simplified.5.2.ppd\" \"Ricoh Aficio 2020D Foomatic/gutenprint-ijs-simplified.5.2\"" || die
 
 # Manufacturer: Anitech Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Anitech \
-	--append printmodel="\"foomatic-rip/Anitech-M24-epson.ppd\" \"Anitech M24 Foomatic/epson (recommended)\""
+	--append printmodel="\"foomatic-rip/Anitech-M24-epson.ppd\" \"Anitech M24 Foomatic/epson (recommended)\"" || die
 
 # Manufacturer: KONICA MINOLTA Printers: 18
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name="KONICA MINOLTA" \
@@ -8277,11 +8277,11 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"postscript/KONICA_MINOLTA/KOC451JX.ppd.gz\" \"KONICA MINOLTA C451 PS(P)\"" \
 	--append printmodel="\"postscript/KONICA_MINOLTA/KO1050UX.ppd.gz\" \"KONICA MINOLTA 1050 PS(P)\"" \
 	--append printmodel="\"postscript/KONICA_MINOLTA/KOC451KX.ppd.gz\" \"KONICA MINOLTA C451 PS(P)\"" \
-	--append printmodel="\"postscript/KONICA_MINOLTA/KO750UX.ppd.gz\" \"KONICA MINOLTA 750/600 PS(P)\""
+	--append printmodel="\"postscript/KONICA_MINOLTA/KO750UX.ppd.gz\" \"KONICA MINOLTA 750/600 PS(P)\"" || die
 
 # Manufacturer: Hitachi Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Hitachi \
-	--append printmodel="\"foomatic-rip/Hitachi-DDP_70_with_MicroPress-Postscript.ppd\" \"Hitachi DDP 70 (with MicroPress) Foomatic/Postscript (recommended)\""
+	--append printmodel="\"foomatic-rip/Hitachi-DDP_70_with_MicroPress-Postscript.ppd\" \"Hitachi DDP 70 (with MicroPress) Foomatic/Postscript (recommended)\"" || die
 
 # Manufacturer: Kyocera Printers: 1176
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Kyocera \
@@ -9460,11 +9460,11 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Kyocera-FS-1000-pxlmono.ppd\" \"Kyocera FS-1000 Foomatic/pxlmono (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Kyocera-FS-9000-ljet4d.ppd\" \"Kyocera FS-9000 Foomatic/ljet4d\"" \
 	--append printmodel="\"foomatic-rip/Kyocera-KM-2030-gutenprint-ijs-simplified.5.2.ppd\" \"Kyocera KM-2030 Foomatic/gutenprint-ijs-simplified.5.2\"" \
-	--append printmodel="\"foomatic-rip/Kyocera-KM-8030-ljet4d.ppd\" \"Kyocera KM-8030 Foomatic/ljet4d\""
+	--append printmodel="\"foomatic-rip/Kyocera-KM-8030-ljet4d.ppd\" \"Kyocera KM-8030 Foomatic/ljet4d\"" || die
 
 # Manufacturer: CItoh Printers: 1
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=CItoh \
-	--append printmodel="\"foomatic-rip/CItoh-M8510-m8510.ppd\" \"CItoh M8510 Foomatic/m8510 (recommended)\""
+	--append printmodel="\"foomatic-rip/CItoh-M8510-m8510.ppd\" \"CItoh M8510 Foomatic/m8510 (recommended)\"" || die
 
 # Manufacturer: Tektronix Printers: 40
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Tektronix \
@@ -9507,7 +9507,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Tektronix-Phaser_750DP-ljet4.ppd\" \"Tektronix Phaser 750DP Foomatic/ljet4\"" \
 	--append printmodel="\"foomatic-rip/Tektronix-Phaser_750DP-ljet4d.ppd\" \"Tektronix Phaser 750DP Foomatic/ljet4d\"" \
 	--append printmodel="\"foomatic-rip/Tektronix-Phaser_750N-lj4dith.ppd\" \"Tektronix Phaser 750N Foomatic/lj4dith\"" \
-	--append printmodel="\"foomatic-rip/Tektronix-Phaser_750N-ljet4d.ppd\" \"Tektronix Phaser 750N Foomatic/ljet4d\""
+	--append printmodel="\"foomatic-rip/Tektronix-Phaser_750N-ljet4d.ppd\" \"Tektronix Phaser 750N Foomatic/ljet4d\"" || die
 
 # Manufacturer: Sharp Printers: 249
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Sharp \
@@ -9759,13 +9759,13 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Sharp-MX-2300G-pxlcolor.ppd\" \"Sharp MX-2300G Foomatic/pxlcolor (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Sharp-MX-2300FG-pxlcolor.ppd\" \"Sharp MX-2300FG Foomatic/pxlcolor (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Sharp-MX-2700G-pxlcolor.ppd\" \"Sharp MX-2700G Foomatic/pxlcolor (recommended)\"" \
-	--append printmodel="\"foomatic-rip/Sharp-AR-C261F-Postscript.ppd\" \"Sharp AR-C261F Foomatic/Postscript\""
+	--append printmodel="\"foomatic-rip/Sharp-AR-C261F-Postscript.ppd\" \"Sharp AR-C261F Foomatic/Postscript\"" || die
 
 # Manufacturer: Seiko Printers: 3
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Seiko \
 	--append printmodel="\"foomatic-rip/Seiko-SpeedJET_200-gutenprint-ijs-simplified.5.2.ppd\" \"Seiko SpeedJET 200 Foomatic/gutenprint-ijs-simplified.5.2\"" \
 	--append printmodel="\"foomatic-rip/Seiko-SpeedJET_200-gutenprint-ijs.5.2.ppd\" \"Seiko SpeedJET 200 Foomatic/gutenprint-ijs.5.2\"" \
-	--append printmodel="\"foomatic-rip/Seiko-SpeedJET_200-laserjet.ppd\" \"Seiko SpeedJET 200 Foomatic/laserjet (recommended)\""
+	--append printmodel="\"foomatic-rip/Seiko-SpeedJET_200-laserjet.ppd\" \"Seiko SpeedJET 200 Foomatic/laserjet (recommended)\"" || die
 
 # Manufacturer: Panasonic Printers: 39
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Panasonic \

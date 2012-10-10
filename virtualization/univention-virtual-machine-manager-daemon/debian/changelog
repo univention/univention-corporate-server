@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.9-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 13:05:13 +0200
+
 univention-virtual-machine-manager-daemon (2.0.8-1) unstable; urgency=low
 
   * fixed icon path in grid; Bug #28551
