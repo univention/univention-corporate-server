@@ -101,6 +101,8 @@ define([
 
 		category: null,
 
+		style: 'overflow: auto;',
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -183,6 +185,22 @@ define([
 		onSearch: function() {
 		}
 	});
+
+	var formatTxt = function(txt) {
+		// don't allow HTML
+		txt = txt.replace(/</g, '&lt;');
+		txt = txt.replace(/>/g, '&gt;');
+
+		// insert links
+		// TODO: does not work yet
+		txt = txt.replace(/(http:\/\/\S*)\>/g, '<a href="\1">\1</a>');
+
+		// format line breakes
+		txt = txt.replace(/\n\n\n/g, '\n<br>\n<br>\n<br>\n');
+		txt = txt.replace(/\n\n/g, '\n<br>\n<br>\n');
+
+		return txt;
+	};
 
 	return declare("umc.modules.packages.AppCenterPage", [ Page, StandbyMixin ], {
 
@@ -287,7 +305,8 @@ define([
 					}));
 					txt += "</table>\n";
 					var buttons = [];
-					if (!data.result.allows_using && this._udm_accessible) {
+					var app = data.result;
+					if (!app.allows_using && this._udm_accessible) {
 						buttons.push({
 							name: 'request',
 							label: _("Request"),
@@ -296,53 +315,72 @@ define([
 							})
 						});
 					}
-					if (data.result.allows_using && data.result.can_install) {
+					if (app.allows_using && app.can_install) {
 						buttons.push({
 							name: 'install',
 							label: _("Install"),
 							callback: lang.hitch(this, function() {
-								if (data.result.licensefile) {
+								if (app.licenseagreement) {
 									// before installing, user must agree on license terms
-									tools.umcpCommand('packages/app_center/app_license', {
-										'application': data.result.id
-									}).then(lang.hitch(this, function(result) {
-										var content = '<h1>' + _('License agreement') + '</h1>';
-										content += '<div style="max-height:250px; overflow:auto;">' + result.result + '</div>';
-										dialog.confirm(content, [{
-											name: 'decline',
-											label: _('Cancel'),
-											'default': true
-										}, {
-											name: 'accept',
-											label: _('Accept license')
-										}], _('License agreement')).then(lang.hitch(this, function(response) {
-											if (response == 'accept') {
-												this._call_installer('install', data.result.id, data.result.name);
-											}
-										}));
+									var content = '<h1>' + _('License agreement') + '</h1>';
+									content += '<div style="max-height:250px; overflow:auto;">'
+										+ formatTxt(app.licenseagreement)
+										+ '</div>';
+									dialog.confirm(content, [{
+										name: 'decline',
+										label: _('Cancel'),
+										'default': true
+									}, {
+										name: 'accept',
+										label: _('Accept license')
+									}], _('License agreement')).then(lang.hitch(this, function(response) {
+										if (response == 'accept') {
+											this._call_installer('install', app.id, app.name);
+										}
 									}));
 								}
 								else {
-									this._call_installer('install', data.result.id, data.result.name);
+									this._call_installer('install', app.id, app.name);
 								}
 							})
 						});
 					}
-					if (data.result.allows_using && data.result.can_update) {
+					if (app.allows_using && app.can_update) {
 						buttons.push({
 							name: 'update',
 							label: _("Update"),
 							callback: lang.hitch(this, function() {
-								this._call_installer('update', data.result.id, data.result.name);
+								if (app.readmeupdate) {
+									// before updating, show update README file
+									var content = '<h1>' + _('Update information') + '</h1>';
+									content += '<div style="max-height:250px; overflow:auto;">'
+										+ formatTxt(app.readmeupdate)
+										+ '</div>';
+									dialog.confirm(content, [{
+										name: 'decline',
+										label: _('Cancel'),
+										'default': true
+									}, {
+										name: 'update',
+										label: _('Update')
+									}], _('Update information')).then(lang.hitch(this, function(response) {
+										if (response == 'update') {
+											this._call_installer('update', app.id, app.name);
+										}
+									}));
+								}
+								else {
+									this._call_installer('update', app.id, app.name);
+								}
 							})
 						});
 					}
-					if (data.result.allows_using && data.result.can_uninstall) {
+					if (app.allows_using && app.can_uninstall) {
 						buttons.push({
 							name: 'uninstall',
 							label: _("Uninstall"),
 							callback: lang.hitch(this, function() {
-								this._call_installer('uninstall', data.result.id, data.result.name);
+								this._call_installer('uninstall', app.id, app.name);
 							})
 						});
 					}
@@ -379,7 +417,6 @@ define([
 				}),
 				lang.hitch(this, function(data) {
 					this.standby(false);
-					dialog.alert(data.message);
 				})
 			);
 		},
@@ -394,8 +431,8 @@ define([
 				case 'uninstall':
 					verb = _("uninstall");
 					break;
-				case 'upgrade':
-					verb = _("upgrade");
+				case 'update':
+					verb = _("update");
 					break;
 			}
 			var msg = lang.replace(_("Going to {verb} Application '{name}'"), {verb: verb, name: name});
@@ -411,7 +448,6 @@ define([
 				}),
 				lang.hitch(this, function(data) {
 					this.standby(false);
-					dialog.alert(data.message);
 				})
 			);
 		},
@@ -605,7 +641,10 @@ define([
 						{
 							type: Text,
 							name: 'help_text',
-							content: '<p>' + _('Some applications require an advanced license.') + ' ' + _('Please complete the form below and you will be sent a new license to your mail address. Right after this form, you will see another dialog where you can upload your new license.') + '</p>'
+							content: '<p>' + _('Some applications require an advanced license.')
+								+ ' '
+								+ _('Please complete the form below and you will be sent a new license to your mail address. Right after this form, you will see another dialog where you can upload your new license.')
+								+ '</p>'
 						},
 						{
 							type: TextBox,

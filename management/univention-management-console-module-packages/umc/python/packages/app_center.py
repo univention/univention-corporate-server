@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 import urllib2
 import os.path
+import threading
 
 # for version comparison
 from distutils.version import LooseVersion
@@ -119,7 +120,7 @@ class Application(object):
 	_regComma = re.compile('\s*,\s*')
 	_regComponentID = re.compile(r'.*/(?P<id>[^/]+)\.ini')
 	_all_applications = None
-	_category_translations = {}
+	_category_translations = None
 
 	def __init__(self, url):
 		# load config file
@@ -161,9 +162,15 @@ class Application(object):
 		self._options['categories'] = [ category_translations.get(icat.lower()) or icat for icat in self.get('categories') ]
 
 		# return a proper URL for local files
-		for ikey in ('screenshot', 'licensefile'):
+		for ikey in ('screenshot',):
 			if self.get(ikey):
-				self._options[ikey] = urllib2.urlparse.urljoin('%s/' % self.get_repository_url(), self.get(ikey))
+				self._options[ikey] = urllib2.urlparse.urljoin('%s/' % self.get_metainf_url(), self.get(ikey))
+
+		# save important meta data
+		self.id = self._options['id'] = self._options['id'].lower()
+		self.name = self._options['name']
+		self.icon = self._options['icon'] = '%s.png' % url[:-4]
+		self.version = self._options['version']
 
 		# get the name of the component
 		m = self._regComponentID.match(url)
@@ -171,11 +178,15 @@ class Application(object):
 		if m:
 			self.component_id = m.groupdict()['id']
 
-		# save important meta data
-		self.id = self._options['id'] = self._options['id'].lower()
-		self.name = self._options['name']
-		self.icon = self._options['icon'] = '%s.png' % url[:-4]
-		self.version = self._options['version']
+		# fetch files via threads
+		threads = [
+			threading.Thread(target=self._fetch_file, args=('licenseagreement', self.get_repository_url() + '/LICENSE_AGREEMENT')),
+			threading.Thread(target=self._fetch_file, args=('readmeupdate', self.get_repository_url() + '/README_UPDATE')),
+		]
+		for ithread in threads:
+			ithread.start()
+		for ithread in threads:
+			ithread.join()
 
 	def get(self, key):
 		'''Helper function to access configuration elements of the application's .ini
@@ -186,12 +197,28 @@ class Application(object):
 			return ''
 		return v
 
+	def _fetch_file(self, key, url):
+		try:
+			# open the license file 
+			fp = urllib2.urlopen(url)
+			self._options[key] = ''.join(fp.readlines()).strip()
+		except (urllib2.HTTPError, urllib2.URLError) as e:
+			MODULE.warn('No information for %s available (%s): %s' % (key, e, url))
+
 	@classmethod
 	def get_server(cls):
 		return ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 
+	def get_repository_url(self):
+		# univention-repository/3.1/maintained/component/owncloud/all/
+		return 'http://%s/univention-repository/%s/maintained/component/%s' % (
+			self.get_server(),
+			ucr.get('version/version', ''),
+			self.component_id,
+		)
+
 	@classmethod
-	def get_repository_url(cls):
+	def get_metainf_url(cls):
 		return 'http://%s/meta-inf/%s' % (
 			cls.get_server(),
 			ucr.get('version/version', ''),
@@ -208,8 +235,9 @@ class Application(object):
 
 	@classmethod
 	def _get_category_translations(cls):
-		if not cls._category_translations:
-			url = '%s/../categories.ini' % cls.get_repository_url()
+		if cls._category_translations == None:
+			cls._category_translations = {}
+			url = '%s/../categories.ini' % cls.get_metainf_url()
 			try:
 				# open .ini file
 				MODULE.info('opening category translation file: %s' % url)
@@ -235,16 +263,20 @@ class Application(object):
 		# reload ucr variables
 		ucr.load()
 
+		# load the first time the category translations
+		cls._get_category_translations()
+
 		if force_reread:
 			cls._all_applications = None
 
 		if cls._all_applications is None:
 			# query all applications from the server
 			ucr.load()
-			url = cls.get_repository_url()
+			url = cls.get_metainf_url()
 			try:
 				cls._all_applications = []
 
+				threads = []
 				for iline in urllib2.urlopen(url):
 					# parse the server's directory listing
 					m = cls._regDirListing.match(iline)
@@ -252,10 +284,23 @@ class Application(object):
 						# try to load and parse application's .ini file
 						ifilename = m.group('name')
 						iurl = url + '/' + ifilename
-						try:
-							cls._all_applications.append(Application(iurl))
-						except (ConfigParser.Error, urllib2.HTTPError, ValueError, KeyError) as e:
-							MODULE.warn('Could not open application file: %s\n%s' % (iurl, e))
+
+						# thread function
+						def _appendApp(myurl):
+							try:
+								cls._all_applications.append(Application(myurl))
+							except (ConfigParser.Error, urllib2.HTTPError, urllib2.URLError, ValueError, KeyError) as e:
+								MODULE.warn('Could not open application file: %s\n%s' % (myurl, e))
+
+						# start a new thread for fetching the application information
+						thread = threading.Thread(target=_appendApp, args=(iurl,))
+						thread.start()
+						threads.append(thread)
+
+				# wait until all threads are finished
+				for ithread in threads:
+					ithread.join()
+
 			except (urllib2.HTTPError, urllib2.URLError) as e:
 				MODULE.warn('Could not query App Center host at: %s\n%s' % (url, e))
 				raise
@@ -314,13 +359,22 @@ class Application(object):
 
 		return final_applications
 
-	def to_dict_overwiew(self, package_manager):
+	def to_dict(self, package_manager):
+		ucr.load()
 		res = copy.copy(self._options)
+		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
+		cannot_install_reason = res['cannot_install_reason']
+
 		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
-		cannot_install_reason, cannot_install_reason_detail = self.cannot_install_reason(package_manager)
+
 		res['can_update'] = self.can_be_updated() and cannot_install_reason == 'installed'
 		res['can_install'] = cannot_install_reason is None
-		res['is_installed'] = cannot_install_reason == 'installed'
+		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
+		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
+		res['is_joined'] = os.path.exists('/var/univention-join/joined')
+		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
+		res['server'] = self.get_server()
+		res['server_version'] = ucr.get('version/version')
 		return res
 
 	def can_be_updated(self):
@@ -357,21 +411,6 @@ class Application(object):
 	def can_be_installed(self, package_manager):
 		return not bool(self.cannot_install_reason(package_manager)[0])
 
-	def to_dict_detail(self, package_manager):
-		ucr.load()
-		res = copy.copy(self._options)
-		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
-		cannot_install_reason = res['cannot_install_reason']
-		res['can_update'] = self.can_be_updated() and cannot_install_reason == 'installed'
-		res['can_install'] = cannot_install_reason is None
-		res['can_uninstall'] = cannot_install_reason == 'installed'
-		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
-		res['is_joined'] = os.path.exists('/var/univention-join/joined')
-		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
-		res['server'] = self.get_server()
-		res['server_version'] = ucr.get('version/version')
-		return res
-
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables
 		ucr.load()
@@ -402,7 +441,8 @@ class Application(object):
 			status = 200
 		except:
 			status = 500
-		return self._send_information('uninstall', status)
+		self._send_information('uninstall', status)
+		return status == 200
 
 	def install(self, package_manager, component_manager):
 		try:
@@ -442,7 +482,8 @@ class Application(object):
 		except:
 			MODULE.warn(traceback.format_exc())
 			status = 500
-		return self._send_information('install', status)
+		self._send_information('install', status)
+		return status == 200
 
 	def _send_information(self, action, status):
 		if not self.get('emailrequired'):

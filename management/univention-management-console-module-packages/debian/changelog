@@ -1,6 +1,12 @@
+univention-management-console-module-packages (2.0.38-1) unstable; urgency=low
+
+  * added support for update README files; Bug #28599
+  * optimized code for parallel HTTP requests; Bug #28713
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Oct 2012 19:24:08 +0200
+
 univention-management-console-module-packages (2.0.37-1) unstable; urgency=low
 
-  [ AppCenter ]
   * Add missing translation
   * Add status icons
   * Adapt search engine to search in description and category too

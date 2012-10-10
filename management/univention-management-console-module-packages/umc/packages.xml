@@ -22,7 +22,6 @@
 	</command>
 	<!-- ATTENTION: same progress function as in packages -->
 	<command name="packages/app_center/progress" function="progress"/>
-	<command name="packages/app_center/app_license" function="app_center_app_license"></command>
 
 	<!-- Query: all args are filter args. -->
 	<command name="packages/query" function="query">

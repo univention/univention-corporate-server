@@ -102,14 +102,22 @@ class Instance(umcm.Base):
 		result = []
 		for application in applications:
 			if pattern.search(application.name):
-				result.append(application.to_dict_overwiew(self.package_manager))
+				props = application.to_dict(self.package_manager)
+
+				# delete larger entries
+				for ikey in ('readmeupdate', 'licenseagreement'):
+					if ikey in props:
+						del props[ikey]
+
+				result.append(props)
 		return result
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def app_center_get(self, application):
 		application = Application.find(application)
-		return application.to_dict_detail(self.package_manager)
+		return application.to_dict(self.package_manager)
+		return props
 
 	@sanitize(function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
 		application=StringSanitizer(minimum=1, required=True)
