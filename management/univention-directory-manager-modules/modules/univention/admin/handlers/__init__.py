@@ -1082,6 +1082,15 @@ class simpleComputer( simpleLdap ):
 			identifies = 0
 		)
 		self[ 'dnsAlias' ] = [ ]	# defined here to avoid pseudo non-None value of [''] in modwizard search
+		self.oldinfo['ip'] = []
+		self.info['ip'] = []
+		if self.dn:
+			if 'aRecord' in self.oldattr:
+				self.oldinfo['ip'].extend(self.oldattr['aRecord'])
+				self.info['ip'].extend(   self.oldattr['aRecord'])
+			if 'aAAARecord' in self.oldattr:
+				self.oldinfo['ip'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+				self.info['ip'].extend(   map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 	def getMachineSid(self, lo, position, uidNum, rid=None):
 		if rid:
@@ -1136,14 +1145,6 @@ class simpleComputer( simpleLdap ):
 
 	def open( self ):
 		simpleLdap.open( self )
-		self.oldinfo['ip'] = []
-		self.info['ip'] = []
-		if 'aRecord' in self.oldattr:
-			self.oldinfo['ip'].extend(self.oldattr['aRecord'])
-			self.info['ip'].extend(   self.oldattr['aRecord'])
-		if 'aAAARecord' in self.oldattr:
-			self.oldinfo['ip'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-			self.info['ip'].extend(   map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 		self.ip_alredy_requested = 0
 		self.ip_freshly_set = False

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.49-1) unstable; urgency=low
+
+  * Move the IP mapping from simpleComputer.open() to
+    simpleComputer.__init__() (Bug #25242)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Oct 2012 09:47:32 +0200
+
 univention-directory-manager-modules (8.0.48-1) unstable; urgency=low
 
   * Search for objectClass univentionDVSUsers for DVS users	
