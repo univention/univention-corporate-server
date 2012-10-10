@@ -40,127 +40,127 @@ define([
 	"umc/modules/MODULEID/DetailPage",
 	"umc/i18n!/umc/modules/MODULEID"
 ], function(declare, lang, dialog, Form, Page, TextBox, ComboBox, StandbyMixin, _) {
-return declare("umc.modules.MODULEID.DetailPage", [ Page, StandbyMixin ], {
-	// summary:
-	//		This class represents the detail view of our dummy module.
+	return declare("umc.modules.MODULEID.DetailPage", [ Page, StandbyMixin ], {
+		// summary:
+		//		This class represents the detail view of our dummy module.
 
-	// reference to the module's store object
-	moduleStore: null,
+		// reference to the module's store object
+		moduleStore: null,
 
-	// internal reference to the formular containing all form widgets of an UDM object
-	_form: null,
+		// internal reference to the formular containing all form widgets of an UDM object
+		_form: null,
 
-	postMixInProperties: function() {
-		// is called after all inherited properties/methods have been mixed
-		// into the object (originates from dijit._Widget)
+		postMixInProperties: function() {
+			// is called after all inherited properties/methods have been mixed
+			// into the object (originates from dijit._Widget)
 
-		// it is important to call the parent's postMixInProperties() method
-		this.inherited(arguments);
+			// it is important to call the parent's postMixInProperties() method
+			this.inherited(arguments);
 
-		// Set the opacity for the standby animation to 100% in order to mask
-		// GUI changes when the module is opened. Call this.standby(true|false)
-		// to enable/disable the animation.
-		this.standbyOpacity = 1;
+			// Set the opacity for the standby animation to 100% in order to mask
+			// GUI changes when the module is opened. Call this.standby(true|false)
+			// to enable/disable the animation.
+			this.standbyOpacity = 1;
 
-		// set the page header
-		this.headerText = _('Object properties');
-		this.helpText = _('This page demonstrates how object properties can be viewed for editing.');
+			// set the page header
+			this.headerText = _('Object properties');
+			this.helpText = _('This page demonstrates how object properties can be viewed for editing.');
 
-		// configure buttons for the footer of the detail page
-		this.footerButtons = [{
-			name: 'submit',
-			label: _('Save'),
-			callback: lang.hitch(this, function() {
-				this._save(this._form.gatherFormValues());
-			})
-		}, {
-			name: 'back',
-			label: _('Back to overview'),
-			callback: lang.hitch(this, 'onClose')
-		}];
-	},
+			// configure buttons for the footer of the detail page
+			this.footerButtons = [{
+				name: 'submit',
+				label: _('Save'),
+				callback: lang.hitch(this, function() {
+					this._save(this._form.gatherFormValues());
+				})
+			}, {
+				name: 'back',
+				label: _('Back to overview'),
+				callback: lang.hitch(this, 'onClose')
+			}];
+		},
 
-	buildRendering: function() {
-		// is called after all DOM nodes have been setup
-		// (originates from dijit._Widget)
+		buildRendering: function() {
+			// is called after all DOM nodes have been setup
+			// (originates from dijit._Widget)
 
-		// it is important to call the parent's postMixInProperties() method
-		this.inherited(arguments);
+			// it is important to call the parent's postMixInProperties() method
+			this.inherited(arguments);
 
-		this.renderDetailPage();
-	},
+			this.renderDetailPage();
+		},
 
-	renderDetailPage: function() {
-		// render the form containing all detail information that may be edited
+		renderDetailPage: function() {
+			// render the form containing all detail information that may be edited
 
-		// specify all widgets
-		var widgets = [{
-			type: TextBox,
-			name: 'id',
-			label: _('Identifier'),
-			disabled: true
-		}, {
-			type: TextBox,
-			name: 'name',
-			label: _('Displayed name'),
-			description: _('Name that is displayed')
-		}, {
-			type: ComboBox,
-			name: 'color',
-			label: _('Favorite color'),
-			description: _('Favorite color associated with the current entry'),
-			dynamicValues: 'MODULEID/colors'
-		}];
+			// specify all widgets
+			var widgets = [{
+				type: TextBox,
+				name: 'id',
+				label: _('Identifier'),
+				disabled: true
+			}, {
+				type: TextBox,
+				name: 'name',
+				label: _('Displayed name'),
+				description: _('Name that is displayed')
+			}, {
+				type: ComboBox,
+				name: 'color',
+				label: _('Favorite color'),
+				description: _('Favorite color associated with the current entry'),
+				dynamicValues: 'MODULEID/colors'
+			}];
 
-		// specify the layout... additional dicts are used to group form elements
-		// together into title panes
-		var layout = [{
-			label: _('Read-only properties'),
-			layout: [ 'id' ]
-		}, {
-			label: _('Editable properties'),
-			layout: [ 'name', 'color' ]
-		}];
+			// specify the layout... additional dicts are used to group form elements
+			// together into title panes
+			var layout = [{
+				label: _('Read-only properties'),
+				layout: [ 'id' ]
+			}, {
+				label: _('Editable properties'),
+				layout: [ 'name', 'color' ]
+			}];
 
-		// create the form
-		this._form = new Form({
-			widgets: widgets,
-			layout: layout,
-			moduleStore: this.moduleStore,
-			// alows the form to be scrollable when the window size is not large enough
-			scrollable: true
-		});
+			// create the form
+			this._form = new Form({
+				widgets: widgets,
+				layout: layout,
+				moduleStore: this.moduleStore,
+				// alows the form to be scrollable when the window size is not large enough
+				scrollable: true
+			});
 
-		// add form to page... the page extends a BorderContainer, by default
-		// an element gets added to the center region
-		this.addChild(this._form);
+			// add form to page... the page extends a BorderContainer, by default
+			// an element gets added to the center region
+			this.addChild(this._form);
 
-		// hook to onSubmit event of the form
-		this._form.on('submit', lang.hitch(this, '_save'));
-	},
+			// hook to onSubmit event of the form
+			this._form.on('submit', lang.hitch(this, '_save'));
+		},
 
-	_save: function(values) {
-		dialog.alert(_('Feature not implemented yet!'));
-	},
+		_save: function(values) {
+			dialog.alert(_('Feature not implemented yet!'));
+		},
 
-	load: function(id) {
-		// during loading show the standby animation
-		this.standby(true);
+		load: function(id) {
+			// during loading show the standby animation
+			this.standby(true);
 
-		// load the object into the form... the load method returns a
-		// Deferred object in order to handel asynchronity
-		this._form.load(id).then(lang.hitch(this, function() {
-			// done, switch of the standby animation
-			this.standby(false);
-		}), lang.hitch(this, function() {
-			// error handler: switch of the standby animation
-			// error messages will be displayed automatically
-			this.standby(false);
-		}));
-	},
+			// load the object into the form... the load method returns a
+			// Deferred object in order to handel asynchronity
+			this._form.load(id).then(lang.hitch(this, function() {
+				// done, switch of the standby animation
+				this.standby(false);
+			}), lang.hitch(this, function() {
+				// error handler: switch of the standby animation
+				// error messages will be displayed automatically
+				this.standby(false);
+			}));
+		},
 
-	onClose: function() {
-		// event stub
-	}
-});
+		onClose: function() {
+			// event stub
+		}
+	});
 });
