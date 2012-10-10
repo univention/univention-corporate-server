@@ -1,3 +1,9 @@
+univention-base-files (2.0.10-3) unstable; urgency=low
+
+  * revert changes for Bug #11431
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 12:19:06 +0200
+
 univention-base-files (2.0.10-2) unstable; urgency=low
 
   * immediately adopt statoverrides on /var/log and 
