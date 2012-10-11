@@ -52,12 +52,13 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
+	"umc/widgets/Tooltip",
 	"dgrid/List",
 	"dgrid/OnDemandList",
 	"dgrid/Selection",
 	"put-selector/put"
 
-], function(declare, lang, array, on, when, query, domClass, Memory, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, List, Grid, Selection, put) {
+], function(declare, lang, array, on, when, query, domClass, Memory, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, Tooltip, List, Grid, Selection, put) {
 	var _GalleryPane = declare("umc.modules.packages._GalleryPane", [Grid, Selection], {
 
 		postCreate: function() {
@@ -94,6 +95,21 @@ define([
 				iconClass = tools.getIconClass('packages-is_installed', 24, 'umcAppCenter');
 			}
 			return iconClass;
+		},
+
+		_setStore: function(store, query, queryOptions) {
+			this.inherited(arguments);
+			this._addTooltips();
+		},
+
+		_addTooltips: function() {
+			var tooltip;
+			array.forEach(this.store.query(), lang.hitch(this, function(obj) {
+				tooltip = new Tooltip({
+					label: obj.description,
+					connectId: [ this.row(obj).element ]
+				})
+			}));
 		}
 	});
 
