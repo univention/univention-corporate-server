@@ -100,6 +100,7 @@ class Instance(umcm.Base):
 		except (urllib2.HTTPError, urllib2.URLError) as e:
 			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
 		result = []
+		self.package_manager.reopen_cache()
 		for application in applications:
 			if pattern.search(application.name):
 				props = application.to_dict(self.package_manager)
@@ -116,6 +117,7 @@ class Instance(umcm.Base):
 	@simple_response
 	def app_center_get(self, application):
 		application = Application.find(application)
+		self.package_manager.reopen_cache()
 		return application.to_dict(self.package_manager)
 		return props
 

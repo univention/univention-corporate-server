@@ -208,8 +208,7 @@ define([
 		txt = txt.replace(/>/g, '&gt;');
 
 		// insert links
-		// TODO: does not work yet
-		txt = txt.replace(/(http:\/\/\S*)\>/g, '<a href="\1">\1</a>');
+		txt = txt.replace(/(http:\/\/\S*)\>/g, '<a href="$1">$1</a>');
 
 		// format line breakes
 		txt = txt.replace(/\n\n\n/g, '\n<br>\n<br>\n<br>\n');

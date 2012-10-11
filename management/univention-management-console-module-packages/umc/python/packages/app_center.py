@@ -386,7 +386,7 @@ class Application(object):
 	def cannot_install_reason(self, package_manager):
 		is_joined = os.path.exists('/var/univention-join/joined')
 		server_role = ucr.get('server/role')
-		if all(package_manager.is_installed(package) for package in self.get('defaultpackages')):
+		if all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages')):
 			return 'installed', None
 		elif self.get('defaultpackagesmaster') and not is_joined:
 			return 'not_joined', None

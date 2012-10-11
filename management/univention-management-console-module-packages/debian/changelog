@@ -1,6 +1,12 @@
+univention-management-console-module-packages (2.0.40-1) unstable; urgency=low
+
+  * disable reopen apt cache for each App during query; Bug #28599
+  * replace URLs in text files with A-tags; Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 11:56:43 +0200
+
 univention-management-console-module-packages (2.0.39-1) unstable; urgency=low
 
-  [ AppCenter ]
   * Add tooltips (Bug #28002)
 
  -- Jascha Geerds <geerds@univention.de>  Thu, 11 Oct 2012 10:24:39 +0200
