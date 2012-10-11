@@ -1,6 +1,6 @@
 univention-ldap (9.0.13-1) unstable; urgency=low
 
-  * added attribute univentionKeyValuePair to univentionPerson; Bug #28074
+  * added attribute univentionUMCProperty to univentionPerson; Bug #28074
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 16:17:37 +0200
 
