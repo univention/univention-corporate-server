@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="sanitize" icon="sanitize" version="1.0">
+	<name>sanitizer</name>
+	<description>This is a dummy module</description>
+	<categories>
+		<category name="system"/>
+	</categories>
+	<command name="sanitize/bool" function="bool"></command>
+	<command name="sanitize/choices" function="choices"></command>
+	<command name="sanitize/dict" function="dict"></command>
+	<command name="sanitize/email" function="email"></command>
+	<command name="sanitize/int" function="int"></command>
+	<command name="sanitize/ldapsearch" function="ldapsearch"></command>
+	<command name="sanitize/list" function="list"></command>
+	<command name="sanitize/mapping" function="mapping"></command>
+	<command name="sanitize/pattern" function="pattern"></command>
+	<command name="sanitize/search" function="search"></command>
+	<command name="sanitize/string" function="string"></command>
+<!--	<command name="sanitize/" function=""></command>
+	<command name="sanitize/" function=""></command>
+	<command name="sanitize/" function=""></command>
+	<command name="sanitize/" function=""></command>
+	<command name="sanitize/" function=""></command>
+	<command name="sanitize/" function=""></command>
+	<command name="sanitize/" function=""></command>
+-->	</module>
+</umc>
