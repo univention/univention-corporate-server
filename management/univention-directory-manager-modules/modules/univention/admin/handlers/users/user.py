@@ -880,6 +880,16 @@ property_descriptions={
 			options=['pki'],
 			identifies=0
 		),
+	'umcProperty' : univention.admin.property(
+			short_description=_('UMC user preferences'),
+			long_description=_('Key value pairs storing user preferences for UMC'),
+			syntax=univention.admin.syntax.keyAndValue,
+			dontsearch=1,
+			multivalue=1,
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 # append CTX properties
@@ -954,6 +964,11 @@ layout = [
 		Group( _( 'Advanced settings' ), layout = [
 			'mailAlternativeAddress',
 			'mailHomeServer',
+			], ),
+		] ),
+	Tab(_( 'UMC preferences' ), _( 'UMC user preferences' ), advanced = True, layout = [
+		Group( _( 'User preferences' ), layout = [
+			'umcProperty',
 			], ),
 		] ),
 	Tab( _( 'Certificate' ), _( 'Certificate' ), advanced = True, layout = [
@@ -1234,6 +1249,18 @@ mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
 mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
 
+def mapKeyAndValue(old):
+	lst = []
+	for entry in old:
+		lst.append( '%s=%s' % (entry[0], entry[1]) )
+	return lst
+
+def unmapKeyAndValue(old):
+	lst = []
+	for entry in old:
+		lst.append( entry.split('=', 1) )
+	return lst
+
 def unmapBase64( value ):
 	try:
 		return base64.encodestring( value[ 0 ] )
@@ -1253,6 +1280,7 @@ def mapBase64( value ):
 
 mapping.register('userCertificate', 'userCertificate;binary', mapBase64, unmapBase64 )
 mapping.register('jpegPhoto', 'jpegPhoto', mapBase64, unmapBase64)
+mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
 
 class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	module=module
@@ -2390,10 +2418,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		if self.hasChanged('birthday'):
-			if self['birthday']:
-				if not 'univentionPerson' in self.oldattr.get('objectClass', []):
-					ml.insert(0, ('objectClass', self.oldattr.get('objectClass', []), self.oldattr.get('objectClass', []) + ['univentionPerson']))
+		# make sure that univentionPerson is set as objectClass when needed
+		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')) and not 'univentionPerson' in self.oldattr.get('objectClass', []):
+			ml.insert(0, ('objectClass', self.oldattr.get('objectClass', []), self.oldattr.get('objectClass', []) + ['univentionPerson']))
+
 		if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
 			if self['homeShare']:
 				share_mod = univention.admin.modules.get('shares/share')

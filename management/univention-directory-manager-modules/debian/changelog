@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.53-1) unstable; urgency=low
+
+  * extended users/user with property umcProperty; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 17:47:38 +0200
+
 univention-directory-manager-modules (8.0.52-1) unstable; urgency=low
 
   * allow blank charakters in policy names (Bug #28098)
