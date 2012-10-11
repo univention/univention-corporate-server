@@ -97,7 +97,7 @@ define([
 			return iconClass;
 		},
 
-		_setStore: function(store, query, queryOptions) {
+		refresh: function() {
 			this.inherited(arguments);
 			this._addTooltips();
 		},
@@ -108,7 +108,7 @@ define([
 				tooltip = new Tooltip({
 					label: obj.description,
 					connectId: [ this.row(obj).element ]
-				})
+				});
 			}));
 		}
 	});
