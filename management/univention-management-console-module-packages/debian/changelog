@@ -1,6 +1,11 @@
+univention-management-console-module-packages (2.0.43-1) unstable; urgency=low
+
+  * added missing translations, fixed type; Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 13:48:44 +0200
+
 univention-management-console-module-packages (2.0.42-1) unstable; urgency=low
 
-  [ AppCenter ]
   * Fix tooltip issue (Bug #28002)
 
  -- Jascha Geerds <geerds@univention.de>  Thu, 11 Oct 2012 13:14:54 +0200
