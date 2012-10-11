@@ -50,8 +50,6 @@ define([
 		// the widget's class name as CSS class
 		'class': 'umcPopup',
 
-		style: 'width: 600px;',
-
 		_widgets: null,
 
 		_container: null,
@@ -115,8 +113,9 @@ define([
 				label : _( 'Upload' ),
 				callback: lang.hitch( this, function() {
 					this.standby( true );
-					var defered = tools.umcpCommand( 'udm/license/import', { 'license' : this._widgets.licenseText.get( 'value' ) } );
-					defered.then( lang.hitch( this, function( response ) {
+					tools.umcpCommand( 'udm/license/import', {
+						'license': this._widgets.licenseText.get( 'value' )
+					} ).then( lang.hitch( this, function( response ) {
 						this.standby( false );
 						if ( ! response.result  instanceof Array || false === response.result[ 0 ].success ) {
 							dialog.alert( _( 'The import of the license has failed: ' ) + response.result[ 0 ].message );
@@ -131,13 +130,13 @@ define([
 			var _buttons = render.buttons( buttons );
 			var _container = render.layout( [ 'message', 'titleImport', 'licenseUpload', [ 'licenseText', 'btnLicenseText' ], 'ffpu' ], this._widgets, _buttons );
 
-			var _content = new ContainerWidget( {
-				scrollable: true,
-				style: 'max-height: 500px'
-			} );
+			var _content = new ContainerWidget({});
 			_content.addChild( _container );
+
 			// put the layout together
-			this._container = new ContainerWidget();
+			this._container = new ContainerWidget({
+				style: 'width: 600px'
+			});
 			this._container.addChild( _content );
 			this._container.addChild( _buttonContainer );
 			this._container.startup();
@@ -203,7 +202,7 @@ define([
 					labelProduct : _( 'Valid product types' ),
 					product: product
 				};
-	
+
 				var message = licenseHtml;
 
 			} else {
@@ -246,6 +245,9 @@ define([
 
 			this._widgets.message.set( 'content', lang.replace( message, keys ) );
 			this._widgets.ffpu.set( 'content', this.licenseInfo.baseDN == 'Free for personal use edition' ? free_license_info : '' );
+
+			// recenter dialog
+			this._position();
 		},
 
 		close: function() {

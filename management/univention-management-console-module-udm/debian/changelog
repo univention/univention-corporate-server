@@ -1,6 +1,12 @@
+univention-management-console-module-udm (3.0.25-1) unstable; urgency=low
+
+  * fixed centering and scrollbars of license dialog; Bug #28186
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 12:47:20 +0200
+
 univention-management-console-module-udm (3.0.24-1) unstable; urgency=low
 
-  *  Dojo 1.8 migration fixes; Bug #28551 
+  * Dojo 1.8 migration fixes; Bug #28551
 
  -- Florian Best <best@univention.de>  Wed, 10 Oct 2012 15:33:17 +0200
 
@@ -24,7 +30,7 @@ univention-management-console-module-udm (3.0.21-1) unstable; urgency=low
 
 univention-management-console-module-udm (3.0.20-1) unstable; urgency=low
 
-  *  Dojo 1.8 migration fixes; Bug #28551 
+  * Dojo 1.8 migration fixes; Bug #28551
 
  -- Florian Best <best@univention.de>  Tue, 09 Oct 2012 10:57:41 +0200
 
