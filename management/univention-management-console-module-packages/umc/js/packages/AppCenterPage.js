@@ -324,7 +324,7 @@ define([
 					if (!app.allows_using && this._udm_accessible) {
 						buttons.push({
 							name: 'request',
-							label: _("Request"),
+							label: _("Install"), // call it Install, although it is request
 							callback: lang.hitch(this, function() {
 								this._show_license_request();
 							})
@@ -338,9 +338,9 @@ define([
 								if (app.licenseagreement) {
 									// before installing, user must agree on license terms
 									var content = '<h1>' + _('License agreement') + '</h1>';
-									content += '<div style="max-height:250px; overflow:auto;">'
-										+ formatTxt(app.licenseagreement)
-										+ '</div>';
+									content += '<div style="max-height:250px; overflow:auto;">' +
+										formatTxt(app.licenseagreement) +
+										'</div>';
 									dialog.confirm(content, [{
 										name: 'decline',
 										label: _('Cancel'),
@@ -367,18 +367,18 @@ define([
 							callback: lang.hitch(this, function() {
 								if (app.readmeupdate) {
 									// before updating, show update README file
-									var content = '<h1>' + _('Update information') + '</h1>';
-									content += '<div style="max-height:250px; overflow:auto;">'
-										+ formatTxt(app.readmeupdate)
-										+ '</div>';
+									var content = '<h1>' + _('Upgrade information') + '</h1>';
+									content += '<div style="max-height:250px; overflow:auto;">' +
+										formatTxt(app.readmeupdate) +
+										'</div>';
 									dialog.confirm(content, [{
 										name: 'decline',
 										label: _('Cancel'),
 										'default': true
 									}, {
 										name: 'update',
-										label: _('Update')
-									}], _('Update information')).then(lang.hitch(this, function(response) {
+										label: _('Upgrade')
+									}], _('Upgrade information')).then(lang.hitch(this, function(response) {
 										if (response == 'update') {
 											this._call_installer('update', app.id, app.name);
 										}
@@ -447,7 +447,7 @@ define([
 					verb = _("uninstall");
 					break;
 				case 'update':
-					verb = _("update");
+					verb = _("upgrade");
 					break;
 			}
 			var msg = lang.replace(_("Going to {verb} Application '{name}'"), {verb: verb, name: name});
@@ -487,11 +487,11 @@ define([
 		_detail_field_custom_allows_using: function(values) {
 			var allows_using = values.allows_using;
 			if (!allows_using) {
-				if (this._udm_accessible) {
-					return _('Your current license key does not allow to install application.') + ' ' + _('You can request an extended key from Univention for free.');
-				} else {
-					return _('Your current license forbids to use this application.') + ' ' + _('You need to have access to the Univention Directory Manager (UDM) module to fully use the App Center.');
+				var txt = _('For the installation of applications an updated UCS license key with a so-called key identification (Key ID) is required.');
+				if (!this._udm_accessible) {
+					txt += ' ' + _('You need to have access to the Univention Directory Manager (UDM) module to fully use the App Center.');
 				}
+				return txt;
 			}
 		},
 
@@ -595,7 +595,7 @@ define([
 				'version': _('Version'),
 				'longdescription': _("Description"),
 				'emailrequired': _("Email notification"),
-				'allows_using': _("License key restrictions"),
+				'allows_using': _("UCS License Key"),
 				'defaultpackagesmaster': _("Packages for master system"),
 				'cannot_install_reason': _("Conflicts"),
 				'screenshot': _("Screenshot")
@@ -632,7 +632,7 @@ define([
 						});
 					return regex.test(string);
 				}
-			}
+			};
 			this._grid.query.name = query;
 
 			if (! category) {
@@ -657,7 +657,9 @@ define([
 							type: Text,
 							name: 'help_text',
 							content: '<p>' + _('The installation of applications with Univention App Center requires an individually issued license key with a unique key identification. You are currently using a license key without identification. Please fill in the form and provide a valid email address. Afterwards an updated license will be sent to you in a couple of minutes that can be applied and updated directly in the license dialog.') + '</p>' +
-							'<p>' + _('The UCS system sends your current license key to Univention. The key will be extended by the identification and will be sent back to the provided email address. The license scope remains unchanged.') + '</p>'
+							'<p>' + _('The UCS system sends your current license key to Univention. The key will be extended by the identification and will be sent back to the provided email address. The license scope remains unchanged.') + '</p>' +
+							'<p>' + _('Right after this form, you will see another dialog where you can upload your new license.') + '</p>' +
+							'<p><strong>' + _('Currently, the automatic license generation system is offline. This will be fixed by the time the Release Candidate of UCS 3.1 is out.') + '</strong></p>' // TODO: remove
 						},
 						{
 							type: TextBox,
@@ -667,6 +669,17 @@ define([
 							label: _("Email address")
 						}
 					],
+					// TODO: remove buttons, use default ones!
+					buttons: [{
+						name: 'cancel',
+						'default': false,
+						label: _('Cancel')
+					}, {
+						name: 'submit',
+						'default': true,
+						label: _('Submit'),
+						disabled: true
+					}],
 					autoValidate: true
 				}).then(function(values) {
 					tools.umcpCommand('packages/app_center/request_new_license', values).then(function(data) {

@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.41-1) unstable; urgency=low
+
+  * Adapted hints for license key problems. Disable request button until
+    license generation system is online. Bug #27998
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Oct 2012 12:37:48 +0200
+
 univention-management-console-module-packages (2.0.40-1) unstable; urgency=low
 
   * disable reopen apt cache for each App during query; Bug #28599
