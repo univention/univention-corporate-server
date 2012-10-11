@@ -1,3 +1,9 @@
+univention-ldap (9.0.13-1) unstable; urgency=low
+
+  * added attribute univentionKeyValuePair to univentionPerson; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 16:17:37 +0200
+
 univention-ldap (9.0.12-1) unstable; urgency=low
 
   * 10univention-ldap-server.inst: ignore existing default
@@ -37,8 +43,8 @@ univention-ldap (9.0.8-1) unstable; urgency=low
 
 univention-ldap (9.0.7-1) unstable; urgency=low
 
-  * added mailAlternativeAddress attribute to univentionGroup oc 
-    (Bug #27871) 
+  * added mailAlternativeAddress attribute to univentionGroup oc
+    (Bug #27871)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 11:40:00 +0200
 
