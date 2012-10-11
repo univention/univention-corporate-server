@@ -436,13 +436,6 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	else	## otherwise we will simply join the new DC
 
-		if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
-			echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
-			printf "\tunivention-run-join-scripts --ask-pass\n"
-			echo "to complete the domain join."
-			exit 1
-		fi
-
 		if [ $JS_LAST_EXECUTED_VERSION -lt 2 ]; then
 			## remove slapd from port 389 on upgrade
 			disable_slapd_on_standard_port
@@ -469,15 +462,24 @@ if [ "$samba4_role" = 'DC' ]; then
 		else
 			## regular join
 
-			## backup old keytab if samba4 generated it
-			backup_samba4_keytab
-
 			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-				samba_domain_join
-			fi
 
-			## if the key version number increased, merge the old keys into the new keytab
-			merge_backup_samba4_keytab
+				if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
+					echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
+					printf "\tunivention-run-join-scripts --ask-pass\n"
+					echo "to complete the domain join."
+					exit 1
+				fi
+
+				## backup old keytab if samba4 generated it
+				backup_samba4_keytab
+
+				samba_domain_join
+
+				## if the key version number increased, merge the old keys into the new keytab
+				merge_backup_samba4_keytab
+
+			fi
 
 			## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
