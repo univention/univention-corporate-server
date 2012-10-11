@@ -1,3 +1,9 @@
+ucs-test (3.0.9-1) unstable; urgency=low
+
+  * fixed a quoting bug in 50_samba/35smbclient_auth (Bug #27654)
+
+ -- Tobias Peters <peters@univention.de>  Thu, 11 Oct 2012 14:10:21 +0200
+
 ucs-test (3.0.8-2) unstable; urgency=low
 
   * Remove debugging output (Bug #28696)

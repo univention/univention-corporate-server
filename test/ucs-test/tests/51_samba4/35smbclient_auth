@@ -165,7 +165,7 @@ share_remove "$share_name"
 #Beginning
 
 user_create "$username"
-share_create $share_name /var/$share_name
+share_create "$share_name" "/var/$share_name"
 sleep 20
 
 if [ -z `univention-s4search "sAMAccountName=$username" objectsid 2>/dev/null | sed -n 's/^objectSid: \(.*\)/\1/p' | cut -c1,2 | grep "S-"` ]; then

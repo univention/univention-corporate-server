@@ -75,7 +75,7 @@ username=`user_randomname`
 password=univention
 user_create "$username"
 share_name=`random_share`
-share_create $share_name /$share_name
+share_create "$share_name" /"$share_name"
 share_dn=`univention-directory-manager shares/share list --filter sambaName="$share_name" | sed -ne 's/^DN: //p'`
 udm shares/share modify --dn=$share_dn --set sambaPublic=1
 sleep 20
