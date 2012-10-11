@@ -1,3 +1,9 @@
+univention-samba4 (2.0.16-2) unstable; urgency=low
+
+  * Revert last checkin (Bug #28065)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Oct 2012 21:43:19 +0200
+
 univention-samba4 (2.0.16-1) unstable; urgency=low
 
   * deactivated the dns and gc registration on a DC slave in an ucs@school environment (Bug #28065)
