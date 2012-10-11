@@ -33,6 +33,9 @@
 . /usr/share/univention-lib/all.sh
 eval "$(univention-config-registry shell)"
 
+create_logfile /var/log/univention/printserver-start.log "root:adm" 640
+
+
 univention-config-registry set cups/server?"$hostname.$domainname" \
 	cups/admin?"root@"$domainname \
 	cups/systemgroup?"Printer-Admins,lp" \

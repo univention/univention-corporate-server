@@ -1,3 +1,10 @@
+univention-mail-postfix (7.0.3-1) unstable; urgency=low
+
+  * changed permissions of mail.warn and mail.err to 640
+    (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Oct 2012 16:19:07 +0200
+
 univention-mail-postfix (7.0.2-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

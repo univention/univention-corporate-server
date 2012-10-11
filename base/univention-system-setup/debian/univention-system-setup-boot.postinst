@@ -32,8 +32,12 @@
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/all.sh
+
 univention-config-registry set 'system/setup/boot/start?true' \
 							   'system/setup/boot/select/role?true'
+
+create_logfile /var/log/univention/system-setup-boot.log "root:adm" 640
 
 # Show login message on an unjoined system
 if [ ! -e /var/univention-join/joined ] && [ "$server_role" = "domaincontroller_master" ]; then

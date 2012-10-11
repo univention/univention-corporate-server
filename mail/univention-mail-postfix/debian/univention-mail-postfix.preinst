@@ -38,9 +38,9 @@ createLogfile () {
 
 #DEBHELPER#
 
-createLogfile /var/log/mail.err root:root 644
+createLogfile /var/log/mail.err root:root 640
 createLogfile /var/log/mail.info root:adm 640
 createLogfile /var/log/mail.log root:adm 640
-createLogfile /var/log/mail.warn root:root 644
+createLogfile /var/log/mail.warn root:root 640
 
 exit 0

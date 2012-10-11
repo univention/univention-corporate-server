@@ -1,3 +1,10 @@
+univention-pkgdb (6.0.9-1) unstable; urgency=low
+
+  * create pkgdgb.log/update it's permissions to 640
+    in univention-pkgdb.postinst (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Oct 2012 14:40:45 +0200
+
 univention-pkgdb (6.0.8-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

@@ -1,3 +1,11 @@
+univention-printserver (6.0.10-1) unstable; urgency=low
+
+  * create printserver-start.log/set it's permissions
+    to 640 in univention-printerserver.postinst
+    (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Oct 2012 17:14:42 +0200
+
 univention-printserver (6.0.9-4) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
