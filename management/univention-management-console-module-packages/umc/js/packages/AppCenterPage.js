@@ -254,21 +254,7 @@ define([
 			this.addChild(titlePane);
 
 			// load apps
-			this.standby(true);
-			when(this.getApplications(), lang.hitch(this, function(applications) {
-				this.standby(false);
-				this._grid.set('store', new Memory({data: applications}));
-
-				var categories = [];
-				array.forEach(applications, function(application) {
-					array.forEach(application.categories, function(category) {
-						if (array.indexOf(categories, category) < 0) {
-						     categories.push(category);
-						}
-					});
-				});
-				this._searchWidget.set('categories', categories.sort());
-			}));
+			this.updateApplications();
 		},
 
 		postCreate: function() {
@@ -321,7 +307,7 @@ define([
 					txt += "</table>\n";
 					var buttons = [];
 					var app = data.result;
-					if (!app.allows_using && this._udm_accessible) {
+					if (!app.allows_using && this._udm_accessible && !app.can_uninstall) {
 						buttons.push({
 							name: 'request',
 							label: _("Install"), // call it Install, although it is request
@@ -350,12 +336,12 @@ define([
 										label: _('Accept license')
 									}], _('License agreement')).then(lang.hitch(this, function(response) {
 										if (response == 'accept') {
-											this._call_installer('install', app.id, app.name);
+											this._call_installer('install', app);
 										}
 									}));
 								}
 								else {
-									this._call_installer('install', app.id, app.name);
+									this._call_installer('install', app);
 								}
 							})
 						});
@@ -380,22 +366,22 @@ define([
 										label: _('Upgrade')
 									}], _('Upgrade information')).then(lang.hitch(this, function(response) {
 										if (response == 'update') {
-											this._call_installer('update', app.id, app.name);
+											this._call_installer('update', app);
 										}
 									}));
 								}
 								else {
-									this._call_installer('update', app.id, app.name);
+									this._call_installer('update', app);
 								}
 							})
 						});
 					}
-					if (app.allows_using && app.can_uninstall) {
+					if (app.can_uninstall) {
 						buttons.push({
 							name: 'uninstall',
 							label: _("Uninstall"),
 							callback: lang.hitch(this, function() {
-								this._call_installer('uninstall', app.id, app.name);
+								this._call_installer('uninstall', app);
 							})
 						});
 					}
@@ -436,7 +422,7 @@ define([
 			);
 		},
 
-		_call_installer: function(func, id, name) {
+		_call_installer: function(func, app) {
 			this.standby(true);
 			var verb = '';
 			switch(func) {
@@ -450,15 +436,15 @@ define([
 					verb = _("upgrade");
 					break;
 			}
-			var msg = lang.replace(_("Going to {verb} Application '{name}'"), {verb: verb, name: name});
+			var msg = lang.replace(_("Going to {verb} Application '{name}'"), {verb: verb, name: app.name});
 			// TODO: confirm
-			tools.umcpCommand('packages/app_center/invoke', {'function': func, 'application': id}).then(
+			tools.umcpCommand('packages/app_center/invoke', {'function': func, 'application': app.id}).then(
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					if (data.result) {
 						this._switch_to_progress_bar(msg);
 					} else {
-						dialog.alert(_('Application not found: ') + id);
+						dialog.alert(_('Application not found: ') + app.id);
 					}
 				}),
 				lang.hitch(this, function(data) {
@@ -604,7 +590,7 @@ define([
 		},
 
 		getApplications: function() {
-			if (this._applications === undefined) {
+			if (!this._applications) {
 				return tools.umcpCommand('packages/app_center/query', {}).then(lang.hitch(function(data) {
 					// sort by name
 					this._applications = data.result;
@@ -616,6 +602,26 @@ define([
 				}));
 			}
 			return this._applications;
+		},
+
+		updateApplications: function() {
+			// query all applications
+			this._applications = null;
+			this.standby(true);
+			when(this.getApplications(), lang.hitch(this, function(applications) {
+				this.standby(false);
+				this._grid.set('store', new Memory({data: applications}));
+
+				var categories = [];
+				array.forEach(applications, function(application) {
+					array.forEach(application.categories, function(category) {
+						if (array.indexOf(categories, category) < 0) {
+						     categories.push(category);
+						}
+					});
+				});
+				this._searchWidget.set('categories', categories.sort());
+			}));
 		},
 
 		filterApplications: function() {
@@ -706,6 +712,9 @@ define([
 		},
 
 		_restartOrReload: function() {
+			// update the list of apps
+			this.updateApplications();
+
 			// TODO: only if necessary? these apps probably will require a restart
 			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
 			function() {
@@ -714,7 +723,7 @@ define([
 			},
 			lang.hitch(this, function() {
 				// user canceled -> switch back to initial view
-				this.standby(false);
+				//this.standby(false);
 			}));
 		}
 

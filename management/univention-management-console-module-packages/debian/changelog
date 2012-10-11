@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.44-1) unstable; urgency=low
+
+  * added query update after installation; Bug #28599
+  * removed install button when app can be uninstalled; Bug #28599
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 14:10:24 +0200
+
 univention-management-console-module-packages (2.0.43-1) unstable; urgency=low
 
   * added missing translations, fixed type; Bug #28599
