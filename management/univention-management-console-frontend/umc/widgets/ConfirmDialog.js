@@ -138,8 +138,7 @@ define([
 			});
 			var defaultButton = null;
 			array.forEach(this.options, lang.hitch(this, function(ichoice, idx) {
-				var button = new Button({
-					label: ichoice.label,
+				var props = lang.mixin({}, ichoice, {
 					defaultButton: true === ichoice['default'],
 					onClick: lang.hitch(this, function(values) {
 						// the response is either a custom response or the choice (button) index
@@ -154,6 +153,10 @@ define([
 						}
 					})
 				});
+				delete props.callback;
+				delete props['default'];
+
+				var button = new Button(props);
 				buttons.addChild(button);
 
 				// remember default button

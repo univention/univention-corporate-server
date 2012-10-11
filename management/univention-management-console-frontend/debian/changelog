@@ -1,3 +1,11 @@
+univention-management-console-frontend (2.0.100-1) unstable; urgency=low
+
+  * ConfirmDialog now creates a standard button passing all options,
+    not just special arguments for ConfirmDialog itself (needed in
+    Bug #27998)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Oct 2012 12:34:46 +0200
+
 univention-management-console-frontend (2.0.99-1) unstable; urgency=low
 
   * don't use dojo.connect; Bug #28551
