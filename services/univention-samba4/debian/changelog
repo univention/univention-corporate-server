@@ -1,3 +1,9 @@
+univention-samba4 (2.0.16-1) unstable; urgency=low
+
+  * deactivated the dns and gc registration on a DC slave in an ucs@school environment (Bug #28065)
+
+ -- Tobias Peters <peters@univention.de>  Thu, 11 Oct 2012 11:16:48 +0200
+
 univention-samba4 (2.0.15-1) unstable; urgency=low
 
   * adjust to samba3upgrade interface change (Bug #27457)

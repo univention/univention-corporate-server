@@ -108,9 +108,13 @@ if [ $JS_LAST_EXECUTED_VERSION -le 1 ]; then
 	if [ "$samba4_role" = 'DC' ]; then
 
 		if [ "$s4connectorservicedcs" = "$hostname" ]; then
-
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "$site"
-
+			##Don't create gc records on a DC Slave in a UCS@school environment (Bug #28065)		    
+		    if [ "$(univention-config-registry get repository/online/component/ucsschool)" == "enabled" ] && [ "$server_role" == "domaincontroller_slave" ]; then	
+		   		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --pdc "$site"
+			else
+				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "$site"
+			fi
+			    
 		else
 
 			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "$site"
