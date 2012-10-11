@@ -487,7 +487,7 @@ define([
 		_detail_field_custom_allows_using: function(values) {
 			var allows_using = values.allows_using;
 			if (!allows_using) {
-				var txt = _('For the installation of applications an updated UCS license key with a so-called key identification (Key ID) is required.');
+				var txt = _('For the installation of this application an updated UCS license key with a so-called key identification (Key ID) is required.');
 				if (!this._udm_accessible) {
 					txt += ' ' + _('You need to have access to the Univention Directory Manager (UDM) module to fully use the App Center.');
 				}
