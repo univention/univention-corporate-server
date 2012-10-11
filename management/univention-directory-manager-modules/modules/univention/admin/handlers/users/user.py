@@ -966,8 +966,8 @@ layout = [
 			'mailHomeServer',
 			], ),
 		] ),
-	Tab(_( 'UMC preferences' ), _( 'UMC user preferences' ), advanced = True, layout = [
-		Group( _( 'User preferences' ), layout = [
+	Tab(_( 'UMC preferences' ), _( 'UMC preferences' ), advanced = True, layout = [
+		Group( _( 'UMC preferences' ), layout = [
 			'umcProperty',
 			], ),
 		] ),
