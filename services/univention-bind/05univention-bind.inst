@@ -72,7 +72,10 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	fi
 
 	wait_for_dns
-	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a "$hostname" "$IP" || die
+	#Don't create A Record on a DC Slave in a UCS@school environment (Bug #28065)
+	if [ "$(univention-config-registry get repository/online/component/ucsschool)" != "enabled" ] || [ "$server_role" != "domaincontroller_slave" ]; then	
+	    /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a "$hostname" "$IP" || die
+	fi
 
 	reversezone=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
 	if [ -z "$reversezone" ]; then exit 1; fi

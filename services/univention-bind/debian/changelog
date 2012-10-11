@@ -1,3 +1,9 @@
+univention-bind (7.0.7-1) unstable; urgency=low
+
+  * deactivated the dns and gc registration on a DC slave in an ucs@school environment (Bug #28065) 
+
+ -- Tobias Peters <peters@univention.de>  Thu, 11 Oct 2012 11:23:22 +0200
+
 univention-bind (7.0.6-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
