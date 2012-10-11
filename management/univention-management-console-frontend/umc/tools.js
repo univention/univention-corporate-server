@@ -35,7 +35,6 @@ define([
 	"dojo/query",
 	"dojo/request/xhr",
 	"dojo/_base/xhr",
-	"dojo/_base/connect",
 	"dojo/Deferred",
 	"dojo/json",
 	"dojo/topic",
@@ -49,7 +48,7 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, _window, query, xhr, basexhr, connect, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, ConfirmDialog, Text, _) {
+], function(lang, array, _window, query, xhr, basexhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, ConfirmDialog, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -623,8 +622,8 @@ define([
 					container.addChild(titlePane);
 
 					// center the alert dialog when folding the title pane
-					connect.connect(titlePane._wipeIn, 'onEnd', function() { dialog.centerAlertDialog(); } );
-					connect.connect(titlePane._wipeOut, 'onEnd', function() { dialog.centerAlertDialog(); } );
+					titlePane._wipeIn.on('End', function() { dialog.centerAlertDialog(); } );
+					titlePane._wipeOut.on('End', function() { dialog.centerAlertDialog(); } );
 
 					dialog.alert( container );
 				}
@@ -876,7 +875,7 @@ define([
 				iconClass = lang.replace('{prefix}-{class}', {
 					prefix: prefix,
 					'class': iconClass
-				})
+				});
 			}
 			if (!(iconClass in this._existingIconClasses)) {
 				try {

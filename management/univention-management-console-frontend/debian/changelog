@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.99-1) unstable; urgency=low
+
+  * don't use dojo.connect; Bug #28551
+
+ -- Florian Best <best@univention.de>  Thu, 11 Oct 2012 11:53:28 +0200
+
 univention-management-console-frontend (2.0.98-1) unstable; urgency=low
 
   * Adapted CSS styling (Bug #28002)
