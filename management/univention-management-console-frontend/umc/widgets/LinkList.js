@@ -34,7 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/topic",
-	"dijit/form/Button",
+	"umc/widgets/Button",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_SelectMixin"
@@ -52,43 +52,47 @@ define([
 		// the widget's class name as CSS class
 		'class': 'umcLinkList',
 
-		onDynamicValuesLoaded: function() {
-			this.store.fetch( {
-				onComplete: lang.hitch( this, function ( items ) {
-					array.forEach( items, lang.hitch( this, function( item ) {
-						var btn = new Button( {
-							name : 'close',
-							label : item.label,
-							iconClass: tools.getIconClass( item.icon, 16 )
-						} );
-						if ( ! this.store.hasAttribute( item, 'module' ) ) {
+		postCreate: function() {
+			this.inherited(arguments);
+
+			this.on('dynamicValuesLoaded', lang.hitch(this, function(items) {
+				array.forEach( items, lang.hitch( this, function( item ) {
+					//  make sure that the item has all necessary properties
+					if (!array.every(['module', 'id', 'objectType'], function(ikey) {
+						if (!(ikey in item)) {
 							console.log( 'LinkList: attribute module is missing');
-							return;
+							return false
 						}
-						if ( ! this.store.hasAttribute( item, 'id' ) ) {
-							console.log( 'LinkList: attribute objectDN is missing');
-							return;
+						return true;
+					})) {
+						// item has not all necessary properties -> stop here
+						return false;
+					}
+
+					// perpare information to open the referenced UDM object
+					var moduleProps = {
+						flavor : item.flavor,
+						module : item.module,
+						openObject: {
+							objectDN : item.id,
+							objectType : item.objectType
 						}
-						if ( ! this.store.hasAttribute( item, 'objectType' ) ) {
-							console.log( 'LinkList: attribute objectType is missing');
-							return;
-						}
-						var moduleProps = {
-							flavor : this.store.getValue( item, 'flavor', null ),
-							module : this.store.getValue( item, 'module', null ),
-							openObject: {
-								objectDN : this.store.getValue( item, 'id', null ),
-								objectType : this.store.getValue( item, 'objectType', null )
-							}
-						};
-						this.store.getValue( item, 'objectType', null );
-						on( btn, "click", moduleProps, function () {
+					};
+
+					// create new button
+					var btn = new Button( {
+						name : 'close',
+						label : item.label,
+						iconClass: tools.getIconClass( item.icon, 16 ),
+						callback: function() {
+							// open referenced UDM object
 							topic.publish( "/umc/modules/open", moduleProps.module, moduleProps.flavor, moduleProps );
-						} );
-						this.addChild( btn );
-					} ) );
-				} )
-			} );
+						}
+					} );
+
+					this.addChild( btn );
+				}));
+			}));
 		},
 
 		isValid: function() {

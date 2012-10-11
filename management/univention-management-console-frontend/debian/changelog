@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.101-1) unstable; urgency=low
+
+  * fixed and refactored LinkList; Bug #28551
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 18:37:07 +0200
+
 univention-management-console-frontend (2.0.100-1) unstable; urgency=low
 
   * ConfirmDialog now creates a standard button passing all options,
