@@ -1,3 +1,14 @@
+univention-ldap (9.0.12-1) unstable; urgency=low
+
+  * 10univention-ldap-server.inst: ignore existing default
+    network
+  * 10univention-ldap-server.inst: only perform udm commands
+    which need /var/lib/univention-ldap/root.secret if the
+    file exists
+  (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Oct 2012 11:06:49 +0200
+
 univention-ldap (9.0.11-1) unstable; urgency=low
 
   * ignore existing settings/packages objects in
