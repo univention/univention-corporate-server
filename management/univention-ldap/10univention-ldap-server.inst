@@ -125,7 +125,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			"$domainname" add srv domaincontroller_master tcp 0 0 0 "$hostname.$domainname." || die
 		wait_named
 
-		univention-directory-manager settings/packages create "$@" \
+		univention-directory-manager settings/packages create "$@" --ignore_exists \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
 			--set name=Univention \
 			--append packageList=univention-5250 \
@@ -152,7 +152,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=univention-slave-pdc  \
 			--append packageList=univention-management-console || die
 
-		univention-directory-manager settings/packages create "$@" \
+		univention-directory-manager settings/packages create "$@" --ignore_exists \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
 			--set name=Fernwartung \
 			--append packageList=openssh-client  \
@@ -164,7 +164,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=krfb  \
 			--append packageList=nxclient || die
 
-		univention-directory-manager settings/packages create "$@" \
+		univention-directory-manager settings/packages create "$@" --ignore_exists \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
 			--set name=Tools \
 			--append packageList=wget  \
@@ -185,7 +185,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=memtester  \
 			--append packageList=traceroute || die
 
-		univention-directory-manager settings/packages create "$@" \
+		univention-directory-manager settings/packages create "$@" --ignore_exists \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
 			--set name=Multimedia \
 			--append packageList=mplayer  \
@@ -196,7 +196,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=amarok  \
 			--append packageList=kaffeine || die
 
-		univention-directory-manager settings/packages create "$@" \
+		univention-directory-manager settings/packages create "$@" --ignore_exists \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
 			--set name=Entwicklung \
 			--append packageList=debhelper  \

@@ -1,3 +1,11 @@
+univention-ldap (9.0.11-1) unstable; urgency=low
+
+  * ignore existing settings/packages objects in
+    join script 10univention-ldap-server.inst
+    (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Oct 2012 10:25:11 +0200
+
 univention-ldap (9.0.10-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

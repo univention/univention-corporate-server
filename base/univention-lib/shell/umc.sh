@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-join/joinscripthelper.lib
 
 eval "$(ucr shell ldap/base)"
 
@@ -57,17 +56,17 @@ umc_frontend_new_hash () {
 
 umc_init () {
 	# containers
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=univention,$ldap_base --set name=UMC || die
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=policies,$ldap_base --set name=UMC --set policyPath=1 || die
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=UMC,cn=univention,$ldap_base --set name=operations || die
+	udm container/cn create $BIND_ARGS --ignore_exists --position cn=univention,$ldap_base --set name=UMC || exit $?
+	udm container/cn create $BIND_ARGS --ignore_exists --position cn=policies,$ldap_base --set name=UMC --set policyPath=1 || exit $?
+	udm container/cn create $BIND_ARGS --ignore_exists --position cn=UMC,cn=univention,$ldap_base --set name=operations || exit $?
 
 	# default policies
 	udm policies/umc create $BIND_ARGS --ignore_exists --set name=default-umc-all \
-		--position cn=UMC,cn=policies,$ldap_base || die
+		--position cn=UMC,cn=policies,$ldap_base || exit $?
 
 	# link default admin policy to the domain admins
 	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=Domain Admins,cn=groups,$ldap_base" \
-		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || die
+		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || exit $?
 }
 
 _umc_remove_old () {
@@ -92,7 +91,7 @@ umc_operation_create () {
 		--position cn=operations,cn=UMC,cn=univention,$ldap_base \
 		--set name="$name" \
 		--set description="$description" \
-		--set flavor="$flavor" $operations || die
+		--set flavor="$flavor" $operations || exit $?
 }
 
 umc_policy_append () {
@@ -105,5 +104,5 @@ umc_policy_append () {
 	done
 
 	udm policies/umc modify $BIND_ARGS --ignore_exists \
-		--dn "cn=$policy,cn=UMC,cn=policies,$ldap_base" $ops || die
+		--dn "cn=$policy,cn=UMC,cn=policies,$ldap_base" $ops || exit $?
 }
