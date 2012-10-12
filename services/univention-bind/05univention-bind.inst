@@ -52,6 +52,16 @@ wait_for_dns () {
     fi
 }
 
+local_is_ucr_false () { # test if UCS variable is "true" or "false"
+    local value
+    value="$(univention-config-registry get "$1")"
+    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+        1|yes|on|true|enable|enabled) return 1 ;;
+        0|no|off|false|disable|disabled) return 0 ;;
+        *) return 2 ;;
+    esac
+}
+
 if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 	exit 1
 fi
@@ -72,8 +82,8 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	fi
 
 	wait_for_dns
-	#Don't create A Record on a DC Slave in a UCS@school environment (Bug #28065)
-	if [ "$(univention-config-registry get repository/online/component/ucsschool)" != "enabled" ] || [ "$server_role" != "domaincontroller_slave" ]; then	
+
+	if ! local_is_ucr_false dns/register/a_record/domain; then
 	    /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a "$hostname" "$IP" || die
 	fi
 

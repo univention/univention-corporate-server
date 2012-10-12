@@ -69,3 +69,10 @@ Description[de]=Definiert, ob Bind auch über IPv6-Sockets ansprechbar ist (Stan
 Description[en]=Defines if the bind service should listen on IPv6 sockets (Default: yes)
 Type=str
 Categories=service-bind
+
+[dns/register/a_record/domain]
+Description[de]=Aktiviert/deaktiviert ob die A Records beim joinen registriert werden.
+Description[en]=Enables/disables wether the A records are registered when performing a domain join. 
+Type=str
+Categories=service-bind
+

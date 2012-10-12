@@ -1,3 +1,9 @@
+univention-bind (7.0.7-2) unstable; urgency=low
+
+  * the A record registration is now controlled by the ucr variable dns/register/a_record/domain (Bug #28065)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 12 Oct 2012 16:54:34 +0200
+
 univention-bind (7.0.7-1) unstable; urgency=low
 
   * deactivated the dns and gc registration on a DC slave in an ucs@school environment (Bug #28065) 
