@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.54-1) unstable; urgency=low
+
+  * Policy name: forbid "*", special characters at the beginning
+    and space and the end (Bug #28098)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 12 Oct 2012 10:09:12 +0200
+
 univention-directory-manager-modules (8.0.53-2) unstable; urgency=low
 
   * version bump; Bug #28074

@@ -2703,13 +2703,13 @@ class PrinterURI( complex ):
 		return parsed
 
 class policyName(string):
-	_re = re.compile('^[a-zA-Z0-9#!$%&/\|\^.\*~_\s-]+$')
+	_re = re.compile('^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
 	
 	@classmethod
 	def parse(self, text):
 		if self._re.match(text):
 			return text
-		raise univention.admin.uexceptions.valueError(_('May only contain the letters, digits and "#", "!", "$", "%", "&", "/", "|", ".", "*", "~", "_", " ", "-".'))
+		raise univention.admin.uexceptions.valueError(_('May only contain letters, digits, space as well as "#", "!", "$", "%", "&" "|", "^", ".", "~", "_", "-". Has to begin with a letter or digit and must not and with space.'))
 
 
 if __name__ == '__main__':
