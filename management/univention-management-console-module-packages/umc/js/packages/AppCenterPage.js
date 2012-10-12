@@ -52,66 +52,8 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
-	"umc/widgets/Tooltip",
-	"dgrid/List",
-	"dgrid/OnDemandList",
-	"dgrid/Selection",
-	"put-selector/put"
-
-], function(declare, lang, array, on, when, query, domClass, Memory, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, Tooltip, List, Grid, Selection, put) {
-	var _GalleryPane = declare("umc.modules.packages._GalleryPane", [Grid, Selection], {
-
-		postCreate: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'umcGalleryPane');
-		},
-
-		renderRow: function(item, options) {
-			var div = put("div");
-			div.innerHTML = lang.replace(
-				'<div class="umcGalleryIcon {icon}"></div>' +
-				'<div class="umcGalleryStatusIcon {status}"></div>' +
-				'<div class="umcGalleryName">{name}</div>' +
-				'<div class="umcGalleryDescription">{categories}</div>', {
-					icon: this.getIconClass(item),
-					status: this.getStatusIconClass(item),
-					name: item.name,
-					categories: item.categories.join(', ')
-				}
-			);
-			domClass.add(div, 'umcGalleryItem');
-			return div;
-		},
-
-		getIconClass: function(item) {
-			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
-		},
-
-		getStatusIconClass: function(item) {
-			var iconClass = '';
-			if (item.can_update) {
-				iconClass = tools.getIconClass('packages-can_update', 24, 'umcAppCenter');
-			} else if (item.is_installed) {
-				iconClass = tools.getIconClass('packages-is_installed', 24, 'umcAppCenter');
-			}
-			return iconClass;
-		},
-
-		refresh: function() {
-			this.inherited(arguments);
-			this._addTooltips();
-		},
-
-		_addTooltips: function() {
-			var tooltip;
-			array.forEach(this.store.query(), lang.hitch(this, function(obj) {
-				tooltip = new Tooltip({
-					label: obj.description,
-					connectId: [ this.row(obj).element ]
-				});
-			}));
-		}
-	});
+	"umc/widgets/GalleryPane"
+], function(declare, lang, array, on, when, query, domClass, Memory, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, GalleryPane) {
 
 	var _SearchWidget = declare("umc.modules.packages._SearchWidget", [ContainerWidget], {
 
@@ -248,7 +190,25 @@ define([
 				title: _('Applications')
 			});
 
-			this._grid = new _GalleryPane();
+			this._grid = new GalleryPane({
+				baseClass: "umcAppCenter",
+
+				style: 'height: 100%; width: 100%;',
+
+				getIconClass: function(item) {
+					return tools.getIconClass(item.icon, 50, 'umcAppCenter');
+				},
+
+				getStatusIconClass: function(item) {
+					var iconClass = '';
+					if (item.can_update) {
+						iconClass = tools.getIconClass('packages-can_update', 24, 'umcAppCenter');
+					} else if (item.is_installed) {
+						iconClass = tools.getIconClass('packages-is_installed', 24, 'umcAppCenter');
+					}
+					return iconClass;
+				}
+			});
 
 			titlePane.addChild(this._grid);
 			this.addChild(titlePane);
@@ -263,9 +223,9 @@ define([
 			// register event handlers
 			this._searchWidget.on('search', lang.hitch(this, 'filterApplications'));
 
-			this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
+			this.own(this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
 				this._show_details(this._grid.row(evt));
-			}));
+			})));
 		},
 
 		startup: function() {

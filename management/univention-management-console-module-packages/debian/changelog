@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.45-1) unstable; urgency=low
+
+  * merged GalleryPane into UMC framework; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 12 Oct 2012 18:57:16 +0200
+
 univention-management-console-module-packages (2.0.44-1) unstable; urgency=low
 
   * added query update after installation; Bug #28599
