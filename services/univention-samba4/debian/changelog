@@ -1,3 +1,11 @@
+univention-samba4 (2.0.17-2) unstable; urgency=low
+ 
+  * GC record registration is now controlled by the ucr variable
+    dns/register/srv_record/gc and the pdc record registration by
+    the ucr variable dns/register/srv_record/pdc (Bug #28065)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 12 Oct 2012 17:04:05 +0200
+
 univention-samba4 (2.0.17-1) unstable; urgency=low
 
   * Ask for join credentials only when actually needed (Bug #27457)

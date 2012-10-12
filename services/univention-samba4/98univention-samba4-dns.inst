@@ -36,6 +36,16 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
+local_is_ucr_false () { # test if UCS variable is "true" or "false"
+    local value
+    value="$(univention-config-registry get "$1")"
+    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+        1|yes|on|true|enable|enabled) return 1 ;;
+        0|no|off|false|disable|disabled) return 0 ;;
+        *) return 2 ;;
+    esac
+}
+
 eval "$(univention-config-registry shell)"
 
 # samba4 allowd on this system?
@@ -109,7 +119,16 @@ if [ $JS_LAST_EXECUTED_VERSION -le 1 ]; then
 
 		if [ "$s4connectorservicedcs" = "$hostname" ]; then
 
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "$site"
+			srv_record_opt_array=()
+			if ! local_is_ucr_false dns/register/srv_record/pdc; then
+				srv_record_opt_array[0]="--pdc"
+			fi
+
+			if ! local_is_ucr_false dns/register/srv_record/gc; then
+				srv_record_opt_array[${#srv_record_opt_array[@]}]="--gc"
+			fi
+
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${srv_record_opt_array[@]}" "$site"
 
 		else
 
