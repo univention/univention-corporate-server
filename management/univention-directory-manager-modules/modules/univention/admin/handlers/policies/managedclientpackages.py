@@ -56,8 +56,8 @@ policy_apply_to=["computers/managedclient"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages Managed Client')
-policy_short_description=_('Packages Managed Client')
+short_description=_('Policy: Managed Client packages')
+policy_short_description=_('Managed Client packages')
 long_description=''
 options={
 }

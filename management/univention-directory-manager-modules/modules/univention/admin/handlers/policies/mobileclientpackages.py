@@ -56,8 +56,8 @@ policy_apply_to=["computers/mobileclient"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages Mobile Client')
-policy_short_description=_('Packages Mobile Client')
+short_description=_('Policy: Mobile Client packages')
+policy_short_description=_('Mobile Client packages')
 long_description=''
 options={
 }

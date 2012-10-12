@@ -56,8 +56,8 @@ policy_apply_to=["computers/domaincontroller_slave"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages Slave')
-policy_short_description=_('Packages Slave')
+short_description=_('Policy: Slave packages')
+policy_short_description=_('Slave packages')
 long_description=''
 options={
 }

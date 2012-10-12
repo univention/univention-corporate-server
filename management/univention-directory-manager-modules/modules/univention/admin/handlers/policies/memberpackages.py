@@ -56,8 +56,8 @@ policy_apply_to=["computers/memberserver"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages Member Server')
-policy_short_description=_('Packages Member Server')
+short_description=_('Policy: Member Server packages')
+policy_short_description=_('Member Server packages')
 long_description=''
 options={
 }

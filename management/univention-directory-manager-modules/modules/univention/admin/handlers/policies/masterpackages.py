@@ -56,8 +56,8 @@ policy_apply_to=["computers/domaincontroller_master", "computers/domaincontrolle
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages Master')
-policy_short_description=_('Packages Master')
+short_description=_('Policy: Master packages')
+policy_short_description=_('Master packages')
 long_description=''
 options={
 }
