@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.105-1) unstable; urgency=low
+
+  * Let MultiInput handle UDM-ComboBox correctly (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 12 Oct 2012 16:09:21 +0200
+
 univention-management-console-frontend (2.0.104-1) unstable; urgency=low
 
   * CSS: Fix ExpandingTitlePane padding (Bug #28516)
