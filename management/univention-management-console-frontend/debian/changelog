@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.104-1) unstable; urgency=low
+
+  * CSS: Fix ExpandingTitlePane padding (Bug #28516)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 12 Oct 2012 15:57:43 +0200
+
 univention-management-console-frontend (2.0.103-1) unstable; urgency=low
 
   * check every time when a module is loaded if a browser reload is required;

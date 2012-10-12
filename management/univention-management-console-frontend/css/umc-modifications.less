@@ -41,10 +41,6 @@
 	display: inline-block;		
 }
 
-.dijitContentPane {
-	padding: 0!important; /* remove upstream padding which was new in dojo 1.8 */
-}
-
 
 .dijitButtonNode {
  	
@@ -260,6 +256,10 @@
 .dijitDisabled .dijitIconFolderOpen,
 .dijitDisabled .dijitIconError {
 	background-image: url(../../icons/images/commonIconsObjActDisabled.png); 
+}
+
+.umc .dijitContentPane {
+	padding: 0; /* remove upstream padding which was new in dojo 1.8 */
 }
 
 .umc .dijitContentPaneLoading {
@@ -1408,6 +1408,7 @@ ORIGINAL DIFF
   background-image: none; /* DEL */
   background-repeat: inherit; /* DEL */
   border: 2px solid #ededee;
+  padding: 0 7px 3px 7px !important;
 }
 
 
