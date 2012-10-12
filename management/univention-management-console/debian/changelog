@@ -1,3 +1,9 @@
+univention-management-console (5.0.39-1) unstable; urgency=low
+
+  * added support for setting/getting user/preferences; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 12 Oct 2012 13:13:51 +0200
+
 univention-management-console (5.0.38-1) unstable; urgency=low
 
   * Allow plain ListSanitizer (Bug #27720)

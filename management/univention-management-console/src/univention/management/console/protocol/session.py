@@ -41,6 +41,7 @@ import os
 import string
 import sys
 import time
+import json
 
 import notifier
 import notifier.signals as signals
@@ -48,7 +49,14 @@ import notifier.popen as popen
 
 from OpenSSL import *
 
-import univention.uldap
+import univention.admin.uldap as udm_uldap
+import univention.admin.objects as udm_objects
+import univention.admin.modules as udm_modules
+import univention.admin.uexceptions as udm_errors
+
+users_module = None
+
+
 from univention.lib.i18n import Translation, I18N_Error
 
 from .message import Response, Request, MIMETYPE_JSON, InvalidOptionsError
@@ -177,6 +185,7 @@ class Processor( signals.Provider ):
 	"""
 
 	def __init__( self, username, password ):
+		global users_module
 		self.__username = username
 		self.__password = password
 		self.__user_dn = None
@@ -193,15 +202,30 @@ class Processor( signals.Provider ):
 		lo = ldap.open( ucr[ 'ldap/server/name' ], int( ucr.get( 'ldap/server/port', 7389 ) ) )
 
 		try:
-			self.lo = univention.uldap.getMachineConnection( ldap_master = False )
+			# get LDAP connection with machine account
+			self.lo, self.po = udm_uldap.getMachineConnection( ldap_master = False )
+
+			# get the LDAP DN of the authorized user
 			ldap_dn = self.lo.searchDn( '(&(uid=%s)(objectClass=posixAccount))' % self.__username )
 			if ldap_dn:
 				self.__user_dn = ldap_dn[ 0 ]
 				CORE.info( 'The LDAP DN for user %s is %s' % ( self.__username, self.__user_dn ) )
 			else:
 				CORE.info( 'The LDAP DN for user %s could not be found' % self.__username )
-		except ( ldap.LDAPError, IOError ): # problems connection to LDAP server or the server is not joined (machine.secret is missing)
+
+			# initiate the users/user UDM module
+			udm_modules.update()
+			users_module = udm_modules.get('users/user')
+			udm_modules.init(self.lo, self.po, users_module)
+		except ( ldap.LDAPError, IOError ) as e:
+			# problems connection to LDAP server or the server is not joined (machine.secret is missing)
+			CORE.warn('An error occurred connecting to the LDAP server: %s' % e)
 			self.lo = None
+			users_module = None
+		except udm_errors.base as e:
+			# UDM error, user module coule not be initiated
+			CORE.warn('An error occurred intializing the UDM users/user module: %s' % e)
+			users_module = None
 
 		# read the ACLs
 		self.acls = LDAP_ACLs( self.lo, self.__username, ucr[ 'ldap/base' ] )
@@ -298,6 +322,27 @@ class Processor( signals.Provider ):
 
 		self.signal_emit( 'response', res )
 
+	def _get_user_obj(self):
+		try:
+			# make sure that the UDM users/user module could be initiated
+			if not users_module:
+				raise udm_errors.base('UDM module users/user could not be initiated')
+
+			# open an LDAP connection with the user password and credentials
+			lo = udm_uldap.access( host = ucr.get( 'ldap/master' ), base = ucr.get( 'ldap/base' ), binddn = self.__user_dn, bindpw = self.__password )
+
+			# try to open the user object
+			userObj = udm_objects.get(users_module, None, lo, self.po, self.__user_dn)
+			if not userObj:
+				raise udm_errors.noObject()
+			userObj.open()
+			return userObj
+		except udm_errors.noObject as e:
+			CORE.warn('Failed to open UDM user object for user %s' % (self.__username))
+		except (udm_errors.base, ldap.LDAPError) as e:
+			CORE.warn('Failed to open UDM user object %s: %s' % (self.__user_dn, e))
+		return None
+
 	def handle_request_get( self, msg ):
 		"""Handles a GET request. The following possible variants are supported:
 
@@ -307,11 +352,13 @@ class Processor( signals.Provider ):
 		categories/list
 			Returns a list of all known categories
 
-
 		syntax/verification
 			Checks the correctness of a value according to a syntax
 			class. Both the *syntax* and the *value* are passed to the
 			command via the request option.
+
+		user/preferences
+			Returns the user preferences as a dict.
 
 		:param Request msg: UMCP request
 		"""
@@ -360,6 +407,17 @@ class Processor( signals.Provider ):
 				except SyntaxVerificationError, e:
 					res.result = False
 					res.message = str( e )
+		elif 'user/preferences' in msg.arguments:
+			# fallback is an empty dict
+			res.body['preferences'] = {}
+
+			# query user's UMC properties
+			userObj = self._get_user_obj()
+			if userObj:
+				res.body['preferences'] = dict(userObj.info.get('umcProperty', []))
+				res.status = SUCCESS
+			else:
+				res.status = BAD_REQUEST_INVALID_OPTS
 		else:
 			res.status = BAD_REQUEST_INVALID_ARGS
 
@@ -398,6 +456,44 @@ class Processor( signals.Provider ):
 					CORE.warn( 'Falling back to C' )
 					self.core_i18n.set_language( 'C' )
 					self.i18n.set_locale( 'C' )
+					break
+			elif key == 'user' and isinstance(value, dict) and 'preferences' in value:
+				# try to open the user object
+				userObj = self._get_user_obj()
+				if not userObj:
+					res.status = BAD_REQUEST_INVALID_OPTS
+					res.message = status_description( res.status )
+					break
+				try:
+					# make sure we got a dict
+					prefs = value['preferences']
+					if not isinstance(prefs, dict):
+						raise ValueError('user preferences are not a dict: %s' % prefs)
+
+					# iterate over all given user preferences
+					newPrefs = []
+					for prefKey, prefValue in prefs.iteritems():
+						if not isinstance(prefKey, basestring):
+							raise ValueError('user preferences keys needs to be strings: %s' % prefKey)
+
+						# we can put strings directly into the dict
+						if isinstance(prefValue, basestring):
+							newPrefs.append((prefKey, prefValue))
+						else:
+							newPrefs.append((prefKey, json.dumps(prefValue)))
+
+					if newPrefs:
+						# eliminate double entries
+						newPrefs = dict(userObj.info.get('umcProperty', []) + newPrefs)
+
+						# apply changes
+						userObj.info['umcProperty'] = newPrefs.items()
+						userObj.modify()
+
+				except ValueError as e:
+					CORE.warn('Could not set given option: %s' % e)
+					res.status = BAD_REQUEST_INVALID_OPTS
+					res.message = status_description( res.status )
 					break
 			else:
 				res.status = BAD_REQUEST_INVALID_OPTS
