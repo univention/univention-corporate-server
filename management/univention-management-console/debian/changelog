@@ -1,3 +1,11 @@
+univention-management-console (5.0.38-1) unstable; urgency=low
+
+  * Allow plain ListSanitizer (Bug #27720)
+  * Allow unhashable types in ChoicesSanitizer (Bug #27720)
+  * Handle unhashable types in MappingSanitizer gracefully (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 12 Oct 2012 11:55:36 +0200
+
 univention-management-console (5.0.37-1) unstable; urgency=low
 
   * migrated example umc modules to dojo 1.8; Bug #28428

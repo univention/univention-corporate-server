@@ -271,12 +271,13 @@ class ListSanitizer(Sanitizer):
 	You can give the same parameters as the base class.
 	Plus:
 
-	:param sanitizer: sanitizes each of the sanitized list's elements
+	:param sanitizer: sanitizes each of the sanitized list's elements.
+	  If *None*, no sanitizing of elements takes place.
 	:param int min_elements: must have at least this number of elements
 	:param int max_elements: must have at most this number of elements
 	:type sanitizer: :class:`~Sanitizer`
 	'''
-	def __init__(self, sanitizer, min_elements=None, max_elements=None, **kwargs):
+	def __init__(self, sanitizer=None, min_elements=None, max_elements=None, **kwargs):
 		super(ListSanitizer, self).__init__(**kwargs)
 		self.sanitizer = sanitizer
 		self.min_elements = min_elements
@@ -287,9 +288,14 @@ class ListSanitizer(Sanitizer):
 			self.raise_formatted_validation_error(_('Not a "list"'), name, type(value).__name__)
 
 		if self.min_elements is not None and len(value) < self.min_elements:
-			self.raise_validation_error(_('Must have at least %(min_elements)d elements'))
+			self.raise_validation_error(_('Must have at least %(min_elements)d element(s)'))
 		if self.max_elements is not None and len(value) > self.max_elements:
-			self.raise_validation_error(_('Must have at most %(max_elements)d elements'))
+			self.raise_validation_error(_('May have at most %(max_elements)d element(s)'))
+
+		if self.sanitizer is None:
+			# no sanitizer given: we can only
+			# check instance and min/max elements
+			return value
 
 		multi_error = MultiValidationError()
 		altered_value = []
@@ -549,7 +555,23 @@ class EmailSanitizer(StringSanitizer):
 	def __init__(self, **kwargs):
 		super(EmailSanitizer, self).__init__(r'.@.', **kwargs)
 
-class MappingSanitizer(Sanitizer):
+class ChoicesSanitizer(Sanitizer):
+	''' ChoicesSanitizer makes sure that the input is in a given set of
+	choices.
+	
+	:param [object] choices: the allowed choices used.
+	'''
+	def __init__(self, choices, **kwargs):
+		super(ChoicesSanitizer, self).__init__(**kwargs)
+		self.choices = choices
+
+	def _sanitize(self, value, name, further_args):
+		if value in self.choices:
+			return value
+		else:
+			self.raise_validation_error(_('Value has to be in %(choices)r'))
+
+class MappingSanitizer(ChoicesSanitizer):
 	''' MappingSanitizer makes sure that the input is in a key in a
 	dictionary and returns the corresponding value.
 	
@@ -557,28 +579,19 @@ class MappingSanitizer(Sanitizer):
 	:type mapping: {object : object}
 	'''
 	def __init__(self, mapping, **kwargs):
-		super(MappingSanitizer, self).__init__(**kwargs)
 		try:
+			# sort allowed values to have reproducable error messages
 			# sorted works with every base data type, even inter-data type!
-			self.sorted_keys = sorted(mapping.keys())
+			choices = sorted(mapping.keys())
 		except:
 			# but who knows...
-			self.sorted_keys = mapping.keys()
+			choices = mapping.keys()
+		super(MappingSanitizer, self).__init__(choices, **kwargs)
 		self.mapping = mapping
 
 	def _sanitize(self, value, name, further_args):
-		try:
-			return self.mapping[value]
-		except KeyError:
-			self.raise_validation_error(_('Value has to be in %(sorted_keys)r'))
+		value = super(MappingSanitizer, self)._sanitize(value, name, further_args)
+		return self.mapping[value]
 
-class ChoicesSanitizer(MappingSanitizer):
-	''' MappingSanitizer makes sure that the input is in a given set of
-	choices.
-	
-	:param [object] choices: the allowed choices used.
-	'''
-	def __init__(self, choices, **kwargs):
-		mapping = dict([(choice, choice) for choice in choices])
-		super(ChoicesSanitizer, self).__init__(mapping, **kwargs)
+__all__ = ['UnformattedValidationError', 'ValidationError', 'MultiValidationError', 'Sanitizer', 'DictSanitizer', 'ListSanitizer', 'BooleanSanitizer', 'IntegerSanitizer', 'SearchSanitizer', 'LDAPSearchSanitizer', 'PatternSanitizer', 'StringSanitizer', 'EmailSanitizer', 'ChoicesSanitizer', 'MappingSanitizer']
 

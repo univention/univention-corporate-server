@@ -53,7 +53,6 @@ flexibility.
 """
 
 import inspect
-import copy
 
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
@@ -468,11 +467,11 @@ def log(function=None, sensitives=None, customs=None, single_values=False):
 
 	 @sanitize(pattern=PatternSanitizer())
 	 @simple_reponse
-	 @log(sensitives=['password'], customs={'pattern':lambda x: x.pattern)})
+	 @log(sensitives=['password'], customs={'pattern':lambda x: x.pattern})
 	 def count_ucr(self, username, password, pattern):
 	     return self._ucr_count(username, password, pattern)
 
-	This results in::
+	This results in something like::
 
 	 <date>  MODULE      ( INFO    ) : count_ucr got: password='********', username='Administrator', pattern='.*'
 	 <date>  MODULE      ( INFO    ) : count_ucr returned: 650
@@ -483,6 +482,8 @@ def log(function=None, sensitives=None, customs=None, single_values=False):
 	 @log
 	 def multi_my_func(self, var1, var2):
 	     return "%s__%s" % (var1, var2)
+
+	This results in something like::
 
 	 <date>  MODULE      ( INFO    ) : multi_my_func got: [var1='value1', var2='value2'], [var1='value3', var2='value4']
 	 <date>  MODULE      ( INFO    ) : multi_my_func returned: ['value1__value2', 'value3__value4']
