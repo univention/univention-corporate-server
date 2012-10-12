@@ -583,8 +583,8 @@ define([
 					// a user error
 					dialog.alert('<p>' + this._statusMessages[status] + (message ? ': ' + message : '.') + '</p>');
 				}*/
-				// handle Tracebacks
-				else if(message.match(/Traceback.*File.*line/)) {
+				// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
+				else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 
 					var feedbackLink = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\nunivention-management-console-frontend {5}", [
 						_('Please take a second to provide the following information:'),

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.102-1) unstable; urgency=low
+
+  * CSS fixes; Bug #28516 
+
+ -- Florian Best <best@univention.de>  Fri, 12 Oct 2012 10:31:10 +0200
+
 univention-management-console-frontend (2.0.101-1) unstable; urgency=low
 
   * fixed and refactored LinkList; Bug #28551
