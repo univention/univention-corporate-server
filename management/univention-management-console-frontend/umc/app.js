@@ -38,6 +38,8 @@ define([
 	"dojo/Deferred",
 	"dojo/cookie",
 	"dojo/topic",
+	"dojo/store/Memory",
+	"dojo/store/Observable",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/CheckedMenuItem",
@@ -49,13 +51,14 @@ define([
 	"umc/dialog",
 	"umc/help",
 	"umc/about",
-	"umc/widgets/CategoryPane",
+	"umc/widgets/GalleryPane",
+	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app"
-], function(declare, lang, array, win, on, Evented, Deferred, cookie, topic, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, CategoryPane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, array, win, on, Evented, Deferred, cookie, topic, Memory, Observable, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
 	var _App = declare([ Evented ], {
 		start: function(/*Object*/ props) {
 			// summary:
@@ -85,7 +88,7 @@ define([
 					this.openModule(props.module, props.flavor);
 					this._tabContainer.layout();
 
-					// put focus into the CategoryPane for scrolling
+					// put focus into the GalleryPane for scrolling
 					/*dijit.focus(this._categoryPane.domNode);
 					this.on(_categoryPane, 'show', function() {
 						dijit.focus(this._categoryPane.domNode);
@@ -354,7 +357,6 @@ define([
 			return this._categories; // Object[]
 		},
 
-		_categoryPane: null,
 		setupGui: function() {
 			// make sure that we have not build the GUI before
 			if (tools.status('setupGui')) {
@@ -388,7 +390,6 @@ define([
 					iconClass: tools.getIconClass('univention'),
 					helpText: _('umcOverviewHelpText')
 				});
-				this._tabContainer.addChild(overviewPage);
 
 				// get needed UCR variables
 				tools.umcpCommand( 'get/ucr', [ 'ssl/validity/host', 'ssl/validity/root', 'ssl/validity/warning', 'update/available', 'update/reboot/required' ] ).then( lang.hitch( this, function( data ) {
@@ -421,7 +422,7 @@ define([
 					}
 				}));
 
-				// add a CategoryPane for each category
+				// add a GalleryPane for each category
 				var categories = new ContainerWidget({
 					scrollable: true
 				});
@@ -432,21 +433,35 @@ define([
 						return;
 					}
 
-					// create a new category pane for all modules in the given category
-					this._categoryPane = new CategoryPane({
-						modules: modules,
+					// create a store for the module items
+					var data = array.map(modules, function(item) {
+						return lang.mixin({ id2: item.id + ':' + item.flavor }, item);
+					});
+					var store = Observable(new Memory({ data: data, idProperty: 'id2' }))
+
+					// create a new category for all modules in the given category
+					var titlepane = new TitlePane({
 						title: icat.name,
 						open: true //('favorites' == icat.id)
 					});
+					var gallery = new GalleryPane({
+						store: store,
+						categoriesDisplayed: false
+					});
+					titlepane.addChild(gallery);
 
 					// register to requests for opening a module
-					on(this._categoryPane, 'openModule', lang.hitch(this, 'openModule'));
+					//on(this._categoryPane, 'openModule', lang.hitch(this, 'openModule'));
+					gallery.on('.dgrid-row:click', lang.hitch(this, function(evt) {
+						this.openModule(gallery.row(evt).data);
+					}));
 
-					// add category pane to overview page
-					categories.addChild(this._categoryPane);
+					// add category to overview page
+					categories.addChild(titlepane);
 				}));
 				overviewPage.addChild(categories);
 			}
+			this._tabContainer.addChild(overviewPage);
 
 			// the header
 			var header = new ContainerWidget({

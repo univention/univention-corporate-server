@@ -2365,6 +2365,13 @@ form {
 	margin: 0 0 15px 0;
 }
 
+/* removes padding in ExpandingTitlePane as this causes troubles with
+ * computation of the position in the BorderContainer
+ */
+.umc .umcExpandingTitlePane .dijitTitlePaneContentInner {
+	padding: 0 !important;
+}
+
 .umc .dijitButton .dijitButtonNode {
   height: 20px;
   padding: 0 2px;
@@ -2578,16 +2585,17 @@ p {
 /* GalleryPane */
 .umcGalleryPane.dgrid {
 	overflow: auto;
-	height: 100%;
+	height: auto;
 	border: none;
 }
 .umcGalleryPane .umcGalleryItem {
 	position: relative;
 	height: 105px;
-	width: 85px;
+	width: 90px;
 	padding: 15px;
-	margin: 10px 10px 0 10px;
+	margin: 0 20px 5px 0;
 	float: left;
+	outline: none;
 }
 .umcGalleryPane .umcGalleryItem:hover {
 	background-color: #ededee;
@@ -2610,10 +2618,31 @@ p {
 .umcGalleryPane .umcGalleryItem .umcGalleryDescription {
 	color: grey;
 }
-.umcGalleryPane .dgrid-scroller {
-	margin-top: 0;
+.umcGalleryPane.dgrid .dgrid-scroller {
+	position: relative;
+	overflow: visible;
 	outline: none;
+	//margin: 0;
 }
 .umcGalleryPane .dgrid-selected {
 	background-color: inherit;
 }
+
+
+/* App Center */
+.dgrid.umcAppCenter {
+	height: 100%;
+}
+
+.dgrid.umcAppCenter .umcGalleryItem {
+	margin: 10px 10px 0 10px;
+}
+
+.dgrid.umcAppCenter .dgrid-scroller {
+	/* fix scroll bars */
+	position: absolute;
+	overflow-x: auto;
+	overflow-y: scroll;
+}
+
+

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.106-1) unstable; urgency=low
+
+  * integrated GalleryPane; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 12 Oct 2012 20:53:05 +0200
+
 univention-management-console-frontend (2.0.105-1) unstable; urgency=low
 
   * Let MultiInput handle UDM-ComboBox correctly (Bug #26556)
@@ -19,7 +25,7 @@ univention-management-console-frontend (2.0.103-1) unstable; urgency=low
 
 univention-management-console-frontend (2.0.102-1) unstable; urgency=low
 
-  * CSS fixes; Bug #28516 
+  * CSS fixes; Bug #28516
 
  -- Florian Best <best@univention.de>  Fri, 12 Oct 2012 10:31:10 +0200
 

@@ -45,23 +45,32 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 
+			array.forEach(this.getChildren(), function(ichild) {
+				if (ichild.startup && !ichild._started) {
+					ichild.startup();
+				}
+			});
+
+
 			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
 			//        in a closed TitlePane
 
 			// iterate over all tabs
 			array.forEach(this.getChildren(), function(ipage) {
 				// find all widgets that inherit from dojox.grid._Grid on the tab
-				array.forEach(ipage.getChildren(), function(iwidget) {
-					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
-						// hook to changes for 'open'
-						this.own(this.watch('open', function(attr, oldVal, newVal) {
-							if (newVal) {
-								// recall startup when the TitelPane gets shown
-								iwidget.startup();
-							}
-						}));
-					}
-				}, this);
+				if (ipage.getChildren) {
+					array.forEach(ipage.getChildren(), function(iwidget) {
+						if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+							// hook to changes for 'open'
+							this.own(this.watch('open', function(attr, oldVal, newVal) {
+								if (newVal) {
+									// recall startup when the TitelPane gets shown
+									iwidget.startup();
+								}
+							}));
+						}
+					}, this);
+				}
 			}, this);
 		}
 	});
