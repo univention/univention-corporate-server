@@ -1,3 +1,10 @@
+univention-join (5.0.13-1) unstable; urgency=low
+
+  * Create kerberos principal for ldap in 10univention-ldap-server.inst
+    (Bug #28379)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Oct 2012 13:52:11 +0200
+
 univention-join (5.0.12-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

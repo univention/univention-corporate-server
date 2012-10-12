@@ -343,20 +343,17 @@ domaincontroller_master)
 	create_entry "DC Master" "computers/domaincontroller_master" \
 		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
 		"cn=DC Backup Hosts,cn=groups,$ldap_base"
-	kadmin -l add --random-key --use-defaults "ldap/$NEWHOSTNAME.$DOMAINNAME"
 	;;
 domaincontroller_backup)
 	create_entry "DC Backup" "computers/domaincontroller_backup" \
 		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
 		"cn=DC Backup Hosts,cn=groups,$ldap_base" \
 		"cn=DC Slave Hosts,cn=groups,$ldap_base"
-	kadmin -l add --random-key --use-defaults "ldap/$NEWHOSTNAME.$DOMAINNAME"
 	;;
 domaincontroller_slave)
 	create_entry "DC Slave" "computers/domaincontroller_slave" \
 		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
 		"cn=DC Slave Hosts,cn=groups,$ldap_base"
-	kadmin -l add --random-key --use-defaults "ldap/$NEWHOSTNAME.$DOMAINNAME"
 	;;
 memberserver)
 	create_entry "Member Server" "computers/memberserver" \
