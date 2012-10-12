@@ -180,6 +180,7 @@ define([
 				this._tabContainer.addChild(tab);
 				this._tabContainer.selectChild(tab, true);
 				tab.startup();
+				tools.checkReloadRequired();
 			} catch (err) {
 				console.log('Error initializing module ' + module.id + ':', err);
 				tools.checkReloadRequired();

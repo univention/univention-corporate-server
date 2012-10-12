@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.103-1) unstable; urgency=low
+
+  * check every time when a module is loaded if a browser reload is required;
+  Bug #24947
+
+ -- Florian Best <best@univention.de>  Fri, 12 Oct 2012 11:49:30 +0200
+
 univention-management-console-frontend (2.0.102-1) unstable; urgency=low
 
   * CSS fixes; Bug #28516 
