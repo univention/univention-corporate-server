@@ -95,7 +95,7 @@ def choices( syntax, udm_property ):
 		if issubclass( syntax, udm_syntax.UDM_Objects ) and udm_property[ 'multivalue' ] and len( syntax.udm_modules ) == 1 and syntax.simple == False:
 			opts = { 'objectType' : syntax.udm_modules[ 0 ] }
 		else:
-			opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ } }
+			opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__name__ }, 'dynamicValuesInfo' : 'udm/syntax/choices/info' }
 		if issubclass( syntax, udm_syntax.network ):
 			opts['onChange'] = 'javascript:umc/modules/udm/callbacks:setNetwork'
 	elif isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ) or inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):

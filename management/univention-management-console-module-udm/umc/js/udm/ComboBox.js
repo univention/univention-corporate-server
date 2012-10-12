@@ -56,6 +56,8 @@ define([
 
 		threshold: undefined, // set by udm description properties
 
+		dynamicValuesInfo: 'udm/syntax/choices/info',
+
 		_state: 'waiting',
 
 		_currentNode: null,
@@ -116,6 +118,13 @@ define([
 			}));
 		},
 
+		_checkThreshold: function() {
+			var func = tools.stringOrFunction(this.dynamicValuesInfo, this.umcpCommand);
+			return func(this.getParams()).then(function(result) {
+				return result.size;
+			});
+		},
+
 		postCreate: function() {
 			this.inherited(arguments);
 
@@ -131,8 +140,8 @@ define([
 			this._searchingNode.childNodes[0].style.backgroundImage = 'url("' + url + 'loading.gif")';
 
 			if (!this.depends) {
-				this.umcpCommand('udm/syntax/choices/info', this.getParams()).then(lang.hitch(this, function(data) {
-					this._totalSize = data.result.size;
+				this._checkThreshold().then(lang.hitch(this, function(size) {
+					this._totalSize = size;
 					if (this._totalSize > this.threshold) {
 						this._addAdvancedSearchItemAndSaveStore();
 						// handles especially for this widget:

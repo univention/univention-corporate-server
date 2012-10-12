@@ -53,13 +53,10 @@ import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.license as udm_license
 import univention.admin.uexceptions as udm_errors
-import univention.admin.uexceptions as uexceptions
 
 import univention.directory.reports as udr
 
-from univention.management.console.protocol.definitions import *
-
-from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, LDAP_ConnectionError, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
+from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
 from .tools import LicenseError, LicenseImport
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
@@ -273,7 +270,7 @@ class Instance( Base ):
 					continue
 
 				try:
-					new_dn = module.move( ldap_dn, options[ 'container' ] )
+					module.move( ldap_dn, options[ 'container' ] )
 					result.append( { '$dn$' : ldap_dn, 'success' : True } )
 				except UDM_Error, e:
 					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
@@ -509,7 +506,6 @@ class Instance( Base ):
 			udr.admin.connect( access = ldap_connection )
 			udr.admin.clear_cache()
 			cfg = udr.Config()
-			module = self._get_module_by_request( request )
 			template = cfg.get_report( request.flavor, request.options[ 'report' ] )
 			doc = udr.Document( template, header = cfg.get_header( request.flavor, request.options[ 'report' ] ), footer = cfg.get_footer( request.flavor, request.options[ 'report' ] ) )
 			tmpfile = doc.create_source( request.options[ 'objects' ] )
@@ -536,7 +532,7 @@ class Instance( Base ):
 				os.chown( filename, www_data_user.pw_uid, www_data_grp.gr_gid )
 				os.chmod( filename, 0644 )
 				url = '/univention-directory-reports/%s' % os.path.basename( pdffile )
-				link = '<a target="_blank" href="%s">%s (%s)</a>' % ( url, module.name, request.options[ 'report' ] )
+				# link = '<a target="_blank" href="%s">%s (%s)</a>' % ( url, module.name, request.options[ 'report' ] )
 
 				return { 'success': True, 'count' : len( request.options[ 'objects' ] ), 'URL': url, 'docType' : doc_type }
 			else:

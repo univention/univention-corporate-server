@@ -260,6 +260,7 @@ define([
 					iprop.subtypes = [{
 						type: iprop.type,
 						dynamicValues: iprop.dynamicValues,
+						dynamicValuesInfo: iprop.dynamicValuesInfo,
 						dynamicOptions: iprop.dynamicOptions,
 						staticValues: iprop.staticValues,
 						size: iprop.size,
@@ -519,6 +520,7 @@ define([
 									jprop.subtypes = [{
 										type: jprop.type,
 										dynamicValues: jprop.dynamicValues,
+										dynamicValuesInfo: jprop.dynamicValuesInfo,
 										dynamicOptions: jprop.dynamicOptions,
 										staticValues: jprop.staticValues,
 										size: jprop.size,
