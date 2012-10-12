@@ -6,7 +6,8 @@ Variables: ssl/.*
 Variables: uvmm/managers
 
 Type: file
-File: etc/default/libvirt-bin
+File: etc/init.d/libvirt-bin
+Mode: 755
 
 Type: module
 Module: uvmm_restore.py

@@ -83,4 +83,4 @@ commands:
 	# virsh -c xen:/// list
 	# virsh -c xen+unix:/// list
 	If they differ, restart libvirtd:
-	# /etc/init.d/univention-virtual-machine-manager-node-common restart
+	# /etc/init.d/libvirt-bin restart

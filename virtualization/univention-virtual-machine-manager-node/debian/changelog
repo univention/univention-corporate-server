@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (2.0.2-1) unstable; urgency=low
+
+  * Rename init script back to libvirt (Bug #19145)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Oct 2012 13:33:30 +0200
+
 univention-virtual-machine-manager-node (2.0.1-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

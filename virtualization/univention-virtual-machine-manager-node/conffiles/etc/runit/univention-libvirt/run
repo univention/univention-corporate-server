@@ -1,10 +1,10 @@
 #!/bin/bash
 #
-# UCS Virtual Machine Manager Node
+# UCS libvirt
 #
 # Copyright 2011-2012 Univention GmbH
 #
-# http://www.univention.de/
+# <http://www.univention.de/>
 #
 # All rights reserved.
 #
@@ -33,10 +33,11 @@ set -e
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-source /etc/default/libvirt-bin
+. /etc/default/libvirt-bin
 
-if [ -f /var/run/libvirtd.pid ]; then
-	read pid </var/run/libvirtd.pid || pid=
+PID=/var/run/libvirtd.pid
+if [ -f "$PID" ]; then
+	read pid <"$PID" || pid=
 	if [ -d "/proc/$pid" ]; then
 		exe=$(readlink /proc/$pid/exe)
 		if [ /usr/sbin/libvirtd = "$exe" ]; then
@@ -44,8 +45,7 @@ if [ -f /var/run/libvirtd.pid ]; then
 			exit 1
 		fi
 	fi
-	rm -f /var/run/libvirtd.pid
+	rm -f "$PID"
 fi
-
 
 exec /usr/sbin/libvirtd ${libvirtd_opts/-d/}

@@ -34,27 +34,27 @@
 eval "$(univention-config-registry shell hostname domainname server/role)"
 
 univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" \
-			"uvmm/umc/vnc?internal" \
-			"uvmm/umc/show/pause?xen" \
-			"uvmm/umc/autosearch?true" \
-            "uvmm/check/interval?2" \
-            "uvmm/check/timeout?10" \
-            "uvmm/debug?DEBUG" \
-            "uvmm/debug/command?INFO" \
-            "uvmm/debug/ldap?WARNING" \
-            "uvmm/debug/node?INFO" \
-            "uvmm/debug/unix?WARNING" \
-            "auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf"
+	"uvmm/umc/vnc?internal" \
+	"uvmm/umc/show/pause?xen" \
+	"uvmm/umc/autosearch?true" \
+	"uvmm/check/interval?2" \
+	"uvmm/check/timeout?10" \
+	"uvmm/debug?DEBUG" \
+	"uvmm/debug/command?INFO" \
+	"uvmm/debug/ldap?WARNING" \
+	"uvmm/debug/node?INFO" \
+	"uvmm/debug/unix?WARNING" \
+	"auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf"
 
 case "$1" in
-    configure)
-    rm -rf /etc/pki/libvirt/clientcert.pem
-    ln -sf /etc/univention/ssl/$hostname.$domainname/cert.pem /etc/pki/libvirt/clientcert.pem
-    rm -rf /etc/pki/libvirt/private/clientkey.pem
-    ln -sf /etc/univention/ssl/$hostname.$domainname/private.key /etc/pki/libvirt/private/clientkey.pem
-    rm -rf /etc/pki/CA/cacert.pem
-    ln -sf /etc/univention/ssl/ucsCA/CAcert.pem /etc/pki/CA/cacert.pem
-    invoke-rc.d univention-directory-listener stop
+	configure)
+	rm -rf /etc/pki/libvirt/clientcert.pem
+	ln -sf /etc/univention/ssl/$hostname.$domainname/cert.pem /etc/pki/libvirt/clientcert.pem
+	rm -rf /etc/pki/libvirt/private/clientkey.pem
+	ln -sf /etc/univention/ssl/$hostname.$domainname/private.key /etc/pki/libvirt/private/clientkey.pem
+	rm -rf /etc/pki/CA/cacert.pem
+	ln -sf /etc/univention/ssl/ucsCA/CAcert.pem /etc/pki/CA/cacert.pem
+	invoke-rc.d univention-directory-listener stop
 	# Rename listener from "uvmm" to "uvmmd-nodes"
 	if dpkg --compare-versions "$2" lt-nl 0.9.138
 	then
@@ -72,21 +72,33 @@ case "$1" in
 	fi
 
 	if dpkg --compare-versions "$2" lt-nl 0.9.147; then
-        if [ -f "/usr/share/univention-join/.joined" ] && [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
-            ln -s ../univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
-        fi
-    fi
+		if [ -f "/usr/share/univention-join/.joined" ] && [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
+			ln -s ../univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
+		fi
+	fi
 
-    invoke-rc.d univention-directory-listener restart
-    ;;
+	if dpkg --compare-versions "$2" lt '2.0.10~' &&
+		[ -L /etc/rc0.d/K20univention-virtual-machine-manager-daemon ] &&
+		[ -L /etc/rc1.d/K20univention-virtual-machine-manager-daemon ] &&
+		[ -L /etc/rc2.d/S20univention-virtual-machine-manager-daemon ] &&
+		[ -L /etc/rc3.d/S20univention-virtual-machine-manager-daemon ] &&
+		[ -L /etc/rc4.d/S20univention-virtual-machine-manager-daemon ] &&
+		[ -L /etc/rc5.d/S20univention-virtual-machine-manager-daemon ] &&
+		[ -L /etc/rc6.d/K20univention-virtual-machine-manager-daemon ]
+	then
+		update-rc.d -f univention-virtual-machine-manager-daemon remove >/dev/null
+	fi
 
-    abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
+	invoke-rc.d univention-directory-listener restart
+	;;
 
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
+	abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+
+	*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 1
+	;;
 esac
 
 . /usr/share/univention-lib/base.sh

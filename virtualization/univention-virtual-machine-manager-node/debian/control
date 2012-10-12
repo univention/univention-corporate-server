@@ -1,6 +1,6 @@
 Source: univention-virtual-machine-manager-node
 Section: univention
-Priority: extra
+Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Uploaders: Philipp Hahn <hahn@univention.de>,
  Andreas Büsching <buesching@univention.de>,
@@ -12,8 +12,10 @@ Homepage: http://www.univention.de/
 
 Package: univention-virtual-machine-manager-node-common
 Architecture: all
+Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
+ univention-base-files,
  libvirt-bin,
  dnsmasq-base,
  univention-runit,
@@ -41,6 +43,7 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  libvirt-bin (>= 0.8.7),
  univention-virtual-machine-manager-node-common,
+ univention-base-files,
  qemu-kvm,
  bridge-utils,
  iproute,

@@ -45,5 +45,8 @@ override_dh_auto_install:
 override_dh_auto_test:
 	ucslint
 
+override_dh_installinit:
+	dh_installinit -- defaults 30 70
+
 override_dh_perms:
 	chmod 0700 debian/tmp/var/cache/univention-virtual-machine-manager-daemon

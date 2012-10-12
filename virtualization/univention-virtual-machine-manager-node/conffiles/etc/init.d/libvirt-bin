@@ -1,11 +1,11 @@
 #!/bin/sh
 #
 # Univention libvirt
-#  init script for libvirtd
+#  init script for libvirt-bin using runit
 #
 # Copyright 2010-2012 Univention GmbH
 #
-# http://www.univention.de/
+# <http://www.univention.de/>
 #
 # All rights reserved.
 #
@@ -29,13 +29,37 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+### BEGIN INIT INFO
+# Provides:          libvirt-bin libvirtd
+# Required-Start:    $network $local_fs $remote_fs $syslog
+# Required-Stop:     $local_fs $remote_fs $syslog
+# Should-Start:      hal avahi cgconfig
+# Should-Stop:       hal avahi cgconfig
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: libvirt management daemon
+### END INIT INFO
 
-if [ ! -e /etc/runit/univention/univention-libvirt ]
+DAEMON=univention-libvirt
+NAME=libvirtd
+DESC="UCS libvirt daemon"
+
+if [ ! -e "/etc/runit/univention/$DAEMON" ]
 then
 	exit 0
 fi
 
 . /lib/lsb/init-functions
+
+case "${0##*/}" in
+*univention-virtual-machine-manager-node-common*)
+	log_warning_msg "'univention-virtual-machine-manager-node-common' is deprecated in favour of 'libvirt-bin'."
+	;;
+esac
+
+running () { # Check is daemon is running
+	sv status "$DAEMON" | grep -q -s '^run:'
+}
 
 case "$1" in
 	start)
@@ -43,44 +67,55 @@ case "$1" in
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]
 		then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart univention-libvirt libvirt/autostart
+			check_autostart "$DAEMON" libvirt/autostart
 		fi
-		log_action_msg "Starting univention-libvirt daemon:"
-		sv up univention-libvirt
-		log_action_end_msg 0
+		log_daemon_msg "Starting $DESC" "$NAME"
+		sv up "$DAEMON"
+		log_end_msg 0
 		;;
 	stop)
-		log_action_msg "Stopping univention-libvirt daemon: "
-		sv down univention-libvirt
-		log_action_end_msg 0
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		sv down "$DAEMON"
+		log_end_msg 0
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]
 		then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart univention-libvirt libvirt/autostart
+			check_autostart "$DAEMON" libvirt/autostart
 		fi
-		log_action_msg "Restarting univention-libvirt daemon: "
-		sv restart univention-libvirt
-		log_action_end_msg 0
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		sv restart "$DAEMON"
+		log_end_msg 0
 		;;
 	crestart)
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]
 		then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart univention-libvirt libvirt/autostart
+			check_autostart "$DAEMON" libvirt/autostart
 		fi
-		if sv status univention-libvirt | grep -q -s ^run:
+		if running
 		then
 			"$0" restart
 		else
-			log_action_msg "sv status return no running libvirt, don't need to restart."
+			log_action_msg "Not restarting $DESC: $NAME is not running"
+		fi
+		;;
+	status)
+		log_daemon_msg "Checking status of $DESC" "$NAME"
+		if running
+		then
+			log_progress_msg "running"
+			log_end_msg 0
+		else
+			log_progress_msg "not running"
+			log_end_msg 1
 		fi
 		;;
 	*)
-		log_action_msg "Usage: $0 {start|stop|restart|crestart|force-reload}"
+		log_action_msg "Usage: $0 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac

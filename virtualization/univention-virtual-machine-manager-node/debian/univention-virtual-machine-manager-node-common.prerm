@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # UCS Virtual Machine Manager Node
-#  postrm script
+#  prerm script
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # <http://www.univention.de/>
 #
@@ -32,23 +32,14 @@
 
 #DEBHELPER#
 
-case "$1" in
-purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
-	invoke-rc.d univention-directory-listener restart
-	;;
-*)
-	echo "postrm called with unknown argument \`$1'" >&2
-	exit 1
-	;;
-esac
+# Remove symlink before downgrade
+if [ "$1" = upgrade ] && dpkg --compare-versions "$2" lt '2.0.2~'
+then
+	rm -f /etc/init.d/univention-virtual-machine-manager-node-common
+fi
 
 dpkg-maintscript-helper mv_conffile /etc/modprobe.d/loop /etc/modprobe.d/loop.conf 2.0.0~ -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/init.d/univention-virtual-machine-manager-node-common 2.0.2~ -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/default/libvirt-bin 2.0.2~ -- "$@"
-case "$1" in
-purge|remove)
-	rm -f /etc/init.d/univention-virtual-machine-manager-node-common
-	;;
-esac
 
 exit 0

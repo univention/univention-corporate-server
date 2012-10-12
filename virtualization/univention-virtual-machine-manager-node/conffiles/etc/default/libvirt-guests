@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 
 # URIs to check for running guests
 # example: URIS='default xen:/// vbox+tcp://host/system lxc:///'
