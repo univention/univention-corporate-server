@@ -1008,14 +1008,14 @@ ORIGINAL DIFF
 
 .umc .dijitCalendar {
   border: solid 1px #b5bcc7;
-  background-image: url(images/calendarContainerImages.png);
 }
 
 
 
-.umc .dijitCalendarHover,
+.umc .dijitCalendarHover, .umc .dijitCalendar:hover,
 .umc .dijitCalendarActive {
   background-color: #74be4b;
+  border: solid 1px #74be4b;
 }
 
 
@@ -1051,13 +1051,19 @@ ORIGINAL DIFF
   color: #74be4b;
 }
 
+.umc .dijitCalendarYearLabel {
+	padding: 2px 0 0 0;
+	margin: 0;
+	font-size: 1em;
+	font-weight: bold;
+}
 
 .umc .dijitCalendarSelectedYear {
   color: #000000;
 }
 
-
-.umc .dijitCalendarHoveredDate .dijitCalendarDateLabel {
+.umc .dijitCalendarHoveredDate .dijitCalendarDateLabel,
+.umc .dijitCalendarEnabledDate:hover .dijitCalendarDateLabel {
   background-color: #74be4b;
 }
 
