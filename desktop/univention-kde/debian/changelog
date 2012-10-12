@@ -1,3 +1,9 @@
+univention-kde (7.0.2-2) unstable; urgency=low
+
+  * link to localhost (Bug #28586) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 12 Oct 2012 11:31:14 +0200
+
 univention-kde (7.0.2-1) unstable; urgency=low
 
   * removed link to https in univention.desktop (Bug #28586) 
