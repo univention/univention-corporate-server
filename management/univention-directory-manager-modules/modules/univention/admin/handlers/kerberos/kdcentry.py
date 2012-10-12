@@ -179,6 +179,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.save()
 
+	def description( self ):
+		# Use the name by default, otherwise the rdn will be used
+		return self['name']
+
 	def _set_principal(self):
 		if self.hasChanged('name') or not hasattr(self, 'krb5PrincipalName'):
 			domain=univention.admin.uldap.domain(self.lo, self.position)
