@@ -566,8 +566,11 @@ class ChoicesSanitizer(Sanitizer):
 		self.choices = choices
 
 	def _sanitize(self, value, name, further_args):
-		if value in self.choices:
-			return value
+		for choice in self.choices:
+			if choice == value:
+				# return element from choices
+				# not value itself: 1 == True
+				return choice
 		else:
 			self.raise_validation_error(_('Value has to be in %(choices)r'))
 
