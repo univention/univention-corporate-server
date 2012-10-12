@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.26-1) unstable; urgency=low
+
+  * Added icons for kerberos/kdcentry (Bug #28379)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Oct 2012 13:44:10 +0200
+
 univention-management-console-module-udm (3.0.25-1) unstable; urgency=low
 
   * fixed centering and scrollbars of license dialog; Bug #28186
