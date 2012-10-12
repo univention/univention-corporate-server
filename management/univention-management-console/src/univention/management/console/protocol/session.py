@@ -490,7 +490,7 @@ class Processor( signals.Provider ):
 						userObj.info['umcProperty'] = newPrefs.items()
 						userObj.modify()
 
-				except ValueError as e:
+				except (ValueError, udm_errors.base) as e:
 					CORE.warn('Could not set given option: %s' % e)
 					res.status = BAD_REQUEST_INVALID_OPTS
 					res.message = status_description( res.status )
