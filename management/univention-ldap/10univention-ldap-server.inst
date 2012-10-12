@@ -237,6 +237,9 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	fi
 fi
 
+# Create kerberos principal for ldap/hostname.domainname
+udm kerberos/kdcentry create "$@" --ignore_exists --position "cn=kerberos,$ldap_base" --set name="ldap/${hostname}.${domainname}" --set generateRandomPassword=1 || die
+
 ucs_addServiceToLocalhost 'LDAP' "$@"
 
 joinscript_save_current_version
