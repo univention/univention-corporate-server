@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-12 10:29+0200\n"
+"POT-Creation-Date: 2012-10-12 11:09+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -713,7 +713,7 @@ msgstr "Paket Deinstallationsliste"
 msgid "Policy: Managed Client packages"
 msgstr "Richtlinie: Managed Client Pakete"
 
-#: managedclientpackages.py:60 managedclientpackages.py:139
+#: managedclientpackages.py:60
 msgid "Managed Client packages"
 msgstr "Managed Client Pakete"
 
@@ -721,7 +721,7 @@ msgstr "Managed Client Pakete"
 msgid "Policy: Master packages"
 msgstr "Richtlinie: Master Pakete"
 
-#: masterpackages.py:60 masterpackages.py:139
+#: masterpackages.py:60
 msgid "Master packages"
 msgstr "Master Pakete"
 
@@ -729,7 +729,7 @@ msgstr "Master Pakete"
 msgid "Policy: Member Server packages"
 msgstr "Richtlinie: Memberserver Pakete"
 
-#: memberpackages.py:60 memberpackages.py:139
+#: memberpackages.py:60
 msgid "Member Server packages"
 msgstr "Memberserver Pakete"
 
@@ -737,7 +737,7 @@ msgstr "Memberserver Pakete"
 msgid "Policy: Mobile Client packages"
 msgstr "Richtlinie: Mobile Client Pakete"
 
-#: mobileclientpackages.py:60 mobileclientpackages.py:139
+#: mobileclientpackages.py:60
 msgid "Mobile Client packages"
 msgstr "Mobile Client Pakete"
 
@@ -1010,7 +1010,7 @@ msgstr "Speicherplatzbegrenzung für Benutzer"
 msgid "Policy: Slave packages"
 msgstr "Richtlinie: Slave Pakete"
 
-#: slavepackages.py:60 slavepackages.py:139
+#: slavepackages.py:60
 msgid "Slave packages"
 msgstr "Slave Pakete"
 

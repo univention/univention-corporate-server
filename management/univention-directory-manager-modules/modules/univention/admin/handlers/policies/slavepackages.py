@@ -136,7 +136,7 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('Slave packages'), layout = [
+	Tab(_('General'), policy_short_description, layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'slavePackages',
