@@ -1,3 +1,9 @@
+univention-ldap (9.0.15-1) unstable; urgency=low
+
+  * grant write access to users' UMC property attributes; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 12 Oct 2012 14:21:28 +0200
+
 univention-ldap (9.0.14-1) unstable; urgency=low
 
   * Create kerberos principal for ldap in 10univention-ldap-server.inst
