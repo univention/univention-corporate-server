@@ -130,7 +130,7 @@ define([
 				tools._sessionTimeout = parseInt( res['umc/http/session/timeout'] , 10 );
 
 				tools.status('feedbackAddress', res['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
-				tools.status('feedbackSubject', encodeURIComponent(res['umc/web/feedback/description']) || tools.status('feedbackSubject'));
+				tools.status('feedbackSubject', res['umc/web/feedback/description'] || tools.status('feedbackSubject'));
 			} );
 
 			// start the timer for session checking
@@ -437,7 +437,7 @@ define([
 					var data = array.map(modules, function(item) {
 						return lang.mixin({ id2: item.id + ':' + item.flavor }, item);
 					});
-					var store = Observable(new Memory({ data: data, idProperty: 'id2' }))
+					var store = Observable(new Memory({ data: data, idProperty: 'id2' }));
 
 					// create a new category for all modules in the given category
 					var titlepane = new TitlePane({
