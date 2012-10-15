@@ -596,9 +596,9 @@ define([
 					]);
 
 					feedbackLink = lang.replace('<a href="mailto:{email}?body={body}&amp;subject={subject}">{title}</a>', {
-						email: this.status('feedbackAddress'),
+						email: encodeURIComponent(this.status('feedbackAddress')),
 						body: encodeURIComponent(feedbackLink),
-						subject: this.status('feedbackSubject'),
+						subject: encodeURIComponent(this.status('feedbackSubject')),
 						title: _('Send feedback mail to Univention')
 					});
 
