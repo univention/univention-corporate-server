@@ -299,7 +299,7 @@ msgstr "Lesen"
 
 #: umc/tools.js:224
 msgid "Reload"
-msgstr "Neuladen"
+msgstr "Neu laden"
 
 #: umc/widgets/MultiObjectSelect.js:288 umc/widgets/MultiUploader.js:122
 msgid "Remove"
