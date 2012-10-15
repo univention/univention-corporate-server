@@ -41,7 +41,7 @@ msgstr "Es ist notwendig, die Univention Management Console neu zu laden, "
 "möglicherweise nicht mehr korrekt.<br>Soll die Seite neu geladen werden?"
 
 msgid "UMC reload required"
-msgstr "UMC neuladen notwendig"
+msgstr "Erneutes laden der UMC notwendig"
 
 #: umc/app.js:488 umc/about.js:52
 msgid "About UMC"
@@ -322,8 +322,8 @@ msgid "Search results:"
 msgstr "Suchergebnisse:"
 
 #: umc/tools.js:565
-msgid "Send feedback mail to Univention"
-msgstr "Feedback-E-Mail an Univention senden"
+msgid "Send feedback mail"
+msgstr "Feedback-E-Mail senden"
 
 #: umc/about.js:39
 msgid "Server"

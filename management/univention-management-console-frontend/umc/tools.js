@@ -599,7 +599,7 @@ define([
 						email: encodeURIComponent(this.status('feedbackAddress')),
 						body: encodeURIComponent(feedbackLink),
 						subject: encodeURIComponent(this.status('feedbackSubject')),
-						title: _('Send feedback mail to Univention')
+						title: _('Send feedback mail')
 					});
 
 					var content = '<pre>' + message + '</pre><br>' + feedbackLink;
