@@ -9,10 +9,12 @@
 	<command name="sanitize/bool" function="bool"></command>
 	<command name="sanitize/choices" function="choices"></command>
 	<command name="sanitize/dict" function="dict"></command>
+	<command name="sanitize/dict2" function="dict2"></command>
 	<command name="sanitize/email" function="email"></command>
 	<command name="sanitize/int" function="int"></command>
 	<command name="sanitize/ldapsearch" function="ldapsearch"></command>
 	<command name="sanitize/list" function="list"></command>
+	<command name="sanitize/list2" function="list2"></command>
 	<command name="sanitize/mapping" function="mapping"></command>
 	<command name="sanitize/pattern" function="pattern"></command>
 	<command name="sanitize/search" function="search"></command>

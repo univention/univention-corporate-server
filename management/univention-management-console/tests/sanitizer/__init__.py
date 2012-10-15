@@ -48,7 +48,7 @@ class Instance( Base ):
 		assert repr(value) in ('True', 'False'), 'Value is not a bool'
 		return '%r' % (value,)
 
-	_choices = ('Ja', 2, True, (2,)) # [], {}
+	_choices = ('Ja', 2, True, (2,), [], {})
 	@sanitize(value=s.ChoicesSanitizer(choices = _choices, required=True))
 	@simple_response
 	def choices(self, value):
@@ -56,12 +56,17 @@ class Instance( Base ):
 		assert isinstance(value, type(self._choices[self._choices.index(value)])), 'A choice has the wrong type' # makes sense !;)
 		return '%r' % (value,)
 
-	@sanitize(value=s.DictSanitizer({}, required=True), keys=s.DictSanitizer({'foo':s.Sanitizer(), 'bar':s.Sanitizer()}, required=True, allow_other_keys=False))
+	@sanitize(value=s.DictSanitizer({}, required=True))
 	@simple_response
-	def dict(self, value, keys):
+	def dict(self, value):
 		assert isinstance(value, dict), 'Value is not a dict: %r' % (value)
-		assert set(keys) == set(['foo', 'bar']), 'There are invalid keys: %r' % (list(keys))
-		return '%r %r' % (value, keys)
+		return '%r' % (value,)
+
+	@sanitize(value=s.DictSanitizer({'foo': s.Sanitizer(), 'bar': s.Sanitizer()}, required=True, allow_other_keys=False))
+	@simple_response
+	def dict_2(self, value):
+		assert set(value) == set(['foo', 'bar']), 'There are invalid keys: %r' % (list(values))
+		return '%r' % (value,)
 
 	@sanitize(value=s.EmailSanitizer(required=True))
 	@simple_response
@@ -81,13 +86,17 @@ class Instance( Base ):
 		# TODO
 		return '%r' % (value,)
 
-	@sanitize(value=s.ListSanitizer(s.Sanitizer(), required=True),
-		min_max=s.ListSanitizer({}, min_elements=3, max_elements=6, required=True))
+	@sanitize(value=s.ListSanitizer(s.Sanitizer(), required=True)),
 	@simple_response
-	def list(self, value, min_max):
+	def list(self, value):
 		assert isinstance(value, (list, tuple)), 'No List given'
-		assert 3 <= len(min_max) <= 6, 'List length is wrong: %d' % len(min_max)
-		return '%r %r' % (value, min_max)
+		return '%r' % (value,)
+
+	@sanitize(value=s.ListSanitizer({}, min_elements=3, max_elements=6, required=True))
+	@simple_response
+	def list2(self, value):
+		assert 3 <= len(value) <= 6, 'List length is wrong: %d' % len(value)
+		return '%r' % (value,)
 
 	_mapping = {
 		u'foo': 'bar',
@@ -97,6 +106,7 @@ class Instance( Base ):
 	@sanitize(value=s.MappingSanitizer(_mapping, required=True))
 	@simple_response
 	def mapping(self, value):
+		assert value in _mapping.values(), 'Mapping failed: %r' % (value,) # TODO: more?
 		return '%r' % (value,)
 
 	@sanitize(value=s.PatternSanitizer(required=True))
@@ -104,12 +114,7 @@ class Instance( Base ):
 	def pattern(self, value):
 		import re
 		assert isinstance(value, re._pattern_type)
-		return '%r' % (value,)
-
-	@sanitize(value=s.SearchSanitizer(required=True))
-	@simple_response
-	def search(self, value):
-		# TODO
+		# TODO: check *
 		return '%r' % (value,)
 
 	@sanitize(value=s.StringSanitizer(required=True))

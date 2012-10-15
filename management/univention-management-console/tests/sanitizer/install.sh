@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #
 # Univention
 #  testscript for the UMC sanitizer

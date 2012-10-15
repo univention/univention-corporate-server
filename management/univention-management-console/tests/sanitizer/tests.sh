@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #
 # Univention
 #  testscript for UMC sanitizer
@@ -33,31 +33,82 @@
 username=${1:-"Administrator"}
 password=${2:-"univention"}
 
-alias cmd="umc-command -U $username -P $password"
-
-for c in ('bool', 'choices', 'dict', 'email', 'int', 'ldapsearch', 'list', 'mapping', 'pattern', 'search', 'string'); do
-	echo 'check if required attribute works'
-	cmd "sanitize/$c"
-	echo 'end required'
+cmd() {
+	umc-command -r -U "$username" -P "$password" "$1" -e -o "$2"  2>/dev/null | sed '1,/MIMETYPE/d;'
+}
 
 echo boolean
-for i in ('True', 'False', '1', '-2', '"string"', '0'); do
-	cmd sanitize/bool -e -o '{"value": '$i'}'
+for i in 'True' 'False' '1' '-2' '"string"' '0'; do
+	echo $i
+	cmd sanitize/bool "$i"
+done
+
+echo -en '\n\n\n'
 
 echo choices
 # success:
-for i in ('"Ja"', '1', '2', 'True', '(2,)' ); do
-	cmd sanitize/choices -e -o '{"value": '$i'}'
+for i in '"Ja"' '1' '2' 'True' '(2,)'; do
+	echo $i
+	cmd sanitize/choices "$i"
+done
 
 # failure:
-for i in ('"Nein"', '0', 'False', '()' ); do
-	cmd sanitize/choices -e -o '{"value": '$i'}'
+for i in '"Nein"' '0' 'False' '()'; do
+	echo $i
+	cmd sanitize/choices "$i"
+done
+
+echo -en '\n\n\n'
 
 echo int
-for i in ('1', '"1"', '-50', '"-24"', 'True', 'False', '"11111111111111111111111"'); do # Long
-	cmd sanitize/int -e -o '{"value": '$i'}'
+for i in '1' '"1"' '-50' '"-24"' 'True' 'False' '"11111111111111111111111"'; do # Long
+	echo $i
+	cmd sanitize/int "$i"
+done
+
+echo -en '\n\n\n'
 
 echo dict
-cmd sanitize/dict '{"value": (), "keys": {"foo":1, "bar":"2", "baz":3}}'
-cmd sanitize/dict '{"value": dict(), "keys": {"foo":1, "bar":"1"}}'
-cmd sanitize/dict '{"value": {}, "keys": {"foo":1}}'
+for i in '()' 'dict()' '{}' '1', 'True' '("foo", "bar")'; do
+	echo $i
+	cmd sanitize/dict "$i"
+done
+
+echo dict2
+for i in '{"foo":1, "bar":"2", "baz":3}' '{"foo":1, "bar":"1"}' '{"foo":1}'; do
+	echo $i
+	cmd sanitize/dict2 "$i"
+done
+
+echo -en '\n\n\n'
+
+echo list
+for i in '()' '[]' '{}' '1', 'True' '("foo", "bar")'; do
+	echo $i
+	cmd sanitize/list "$i"
+done
+
+echo list2
+for i in '(1,2,3)' '[1,2,3]' '[1]' '[1,2,3,4]', '[1,2,3,4,5]' '[1,2,3,4,5,6]' '[1,2,3,4,5,6,7]', 'range(100)'; do
+	echo $i
+	cmd sanitize/list2 "$i"
+done
+
+echo -en '\n\n\n'
+
+echo mapping
+for i in '"foo"' '"bar"' '"baz"' '"notexisting"'; do 
+	echo $i
+	cmd sanitize/mapping "$i"
+done
+
+echo -en '\n\n\n'
+
+echo "manually check if required attributes works (a message have to be displayed): "
+for c in 'bool' 'choices' 'dict' 'email' 'int' 'ldapsearch' 'list' 'mapping' 'pattern' 'search' 'string'; do
+	echo $c
+	cmd "sanitize/$c" '{}'
+	cmd "sanitize/$c" 'None'
+done
+echo 'end required'
+
