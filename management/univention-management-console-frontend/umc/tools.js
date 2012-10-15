@@ -82,7 +82,7 @@ define([
 			width: null,
 			setupGui: false,
 			loggingIn: false,
-			feedbackSubject: '[UMC-Feedback]%20Traceback',
+			feedbackSubject: '[UMC-Feedback] Traceback',
 			feedbackAddress: 'feedback@univention.de'
 		},
 
