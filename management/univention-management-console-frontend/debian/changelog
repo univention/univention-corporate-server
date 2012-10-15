@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.111-1) unstable; urgency=low
+
+  * fixed jslint error; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Oct 2012 11:25:09 +0200
+
 univention-management-console-frontend (2.0.110-1) unstable; urgency=low
 
   * don't encode feedback subject in umc/app; Bug #27702
@@ -18,7 +24,7 @@ univention-management-console-frontend (2.0.108-1) unstable; urgency=low
 
 univention-management-console-frontend (2.0.107-1) unstable; urgency=low
 
-  * fixed background color of active tabs; Bug #28516 
+  * fixed background color of active tabs; Bug #28516
 
  -- Florian Best <best@univention.de>  Mon, 15 Oct 2012 09:07:55 +0200
 

@@ -460,8 +460,8 @@ define([
 					categories.addChild(titlepane);
 				}));
 				overviewPage.addChild(categories);
+				this._tabContainer.addChild(overviewPage);
 			}
-			this._tabContainer.addChild(overviewPage);
 
 			// the header
 			var header = new ContainerWidget({
