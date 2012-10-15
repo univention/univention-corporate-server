@@ -131,10 +131,10 @@ class Sanitizer(object):
 	  reasonable. Default: *None*
 	:param bool required: if the argument is required. Default: *False*
 	:param object default: if argument is not given and not
-	  :attr:`~Sanitizer.required` but :attr:`~Sanitizer.may_change_value`
-	  default is returned. Note that this value is not passing the
-	  sanitizing procedure, so make sure to be able to handle it.
-	  Default: *None*
+	  :attr:`~Sanitizer.required`, default is returned - even when not
+	  :attr:`~Sanitizer.may_change_value`. Note that this value is not
+	  passing the sanitizing procedure, so make sure to be able to handle
+	  it. Default: *None*
 	:param bool may_change_value: if the process of sanitizing is allowed
 	  to alter *request.options*. If not, the sanitizer can still be used
 	  for validation. Default: *True*
@@ -159,10 +159,7 @@ class Sanitizer(object):
 			if self.required:
 				self.raise_formatted_validation_error(_('Argument required'), name, None)
 			else:
-				if self.may_change_value:
-					return self.default
-				else:
-					return None
+				return self.default
 		value = options[name]
 		if self.further_arguments:
 			further_arguments = dict([(field, options.get(field)) for field in self.further_arguments])
@@ -563,7 +560,9 @@ class ChoicesSanitizer(Sanitizer):
 	'''
 	def __init__(self, choices, **kwargs):
 		super(ChoicesSanitizer, self).__init__(**kwargs)
-		self.choices = choices
+		# makes sure to have an iterable and unifies errors msg
+		# because list has a different representation than tuple
+		self.choices = list(choices)
 
 	def _sanitize(self, value, name, further_args):
 		for choice in self.choices:
@@ -572,7 +571,7 @@ class ChoicesSanitizer(Sanitizer):
 				# not value itself: 1 == True
 				return choice
 		else:
-			self.raise_validation_error(_('Value has to be in %(choices)r'))
+			self.raise_validation_error(_('Value has to be one of %(choices)r'))
 
 class MappingSanitizer(ChoicesSanitizer):
 	''' MappingSanitizer makes sure that the input is in a key in a

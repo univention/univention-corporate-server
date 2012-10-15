@@ -138,8 +138,8 @@ msgstr "Wert ist ungültig"
 
 #: src/univention/management/console/modules/sanitizers.py:571
 #, python-format
-msgid "Value has to be in %(choices)r"
-msgstr "Wert muss aus %(choices)r kommen"
+msgid "Value has to be one of %(choices)r"
+msgstr "Wert muss aus %(choices)r stammen"
 
 #: src/univention/management/console/modules/decorators.py:543
 #, python-format

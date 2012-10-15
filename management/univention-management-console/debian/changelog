@@ -1,3 +1,10 @@
+univention-management-console (5.0.41-1) unstable; urgency=low
+
+  * Sanitizer: Return default even if value should not be changed (Bug #27720)
+  * ChoicesSanitizer: Make sure choices is a list (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 15 Oct 2012 14:37:14 +0200
+
 univention-management-console (5.0.40-1) unstable; urgency=low
 
   * catch UDM errors for user/preferences; Bug #28074
