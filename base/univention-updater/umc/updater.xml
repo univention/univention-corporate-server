@@ -30,23 +30,15 @@
 		 - to watch the log file
 	 -->
 	<!-- EXECUTE: start any installer/updater action -->
-	<command name="updater/installer/execute" function="run_installer">
-		<attribute name="job" syntax="Online-Install-Job"/>
-		<attribute name="detail" syntax="String"/>
-	</command>
+	<command name="updater/installer/execute" function="run_installer" />
 	<!-- REBOOT: does what it says. -->
 	<command name="updater/installer/reboot" function="reboot"/>
 	<!-- RUNNING: return job key while an installer job is running -->
 	<command name="updater/installer/running" function="running"/>
 	<!-- LOGFILE: read <count> log lines (count=0 -> all, count=-1 -> log timestamp) -->
-	<command name="updater/installer/logfile" function="updater_log_file">
-		<attribute name="job" syntax="Online-Install-Job"/>
-		<attribute name="count" syntax="Integer"/>
-	</command>
+	<command name="updater/installer/logfile" function="updater_log_file" />
 	<!-- STATUS: get job status, even if job has finished -->
-	<command name="updater/installer/status" function="updater_job_status">
-		<attribute name="job" syntax="Online-Install-Job"/>
-	</command>
+	<command name="updater/installer/status" function="updater_job_status" />
 	<command name="updater/hooks/call" function="call_hooks"/>
   </module>
 </umc>
