@@ -33,15 +33,18 @@
 
 import subprocess
 
-import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
+from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
+
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer, ChoicesSanitizer
 
 _ = umc.Translation('univention-management-console-module-reboot').translate
 
 class Instance(umcm.Base):
+	@sanitize(action=ChoicesSanitizer(['reboot', 'halt'], required=True),
+		message=StringSanitizer(required=True))
 	def reboot(self, request):
 		message = None
 		if request.options['action'] == 'halt':
@@ -66,3 +69,4 @@ class Instance(umcm.Base):
 			request.status = SUCCESS
 
 		self.finished(request.id, None, message)
+
