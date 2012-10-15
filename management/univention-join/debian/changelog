@@ -1,3 +1,9 @@
+univention-join (5.0.14-1) unstable; urgency=low
+
+  * Remove old syntax definitions (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 15 Oct 2012 19:43:57 +0200
+
 univention-join (5.0.13-1) unstable; urgency=low
 
   * Create kerberos principal for ldap in 10univention-ldap-server.inst

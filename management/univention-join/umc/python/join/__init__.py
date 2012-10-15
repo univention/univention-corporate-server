@@ -58,6 +58,9 @@ import univention.admin.modules
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer, DictSanitizer, ListSanitizer
+
 _ = umc.Translation('univention-management-console-module-join').translate
 
 class JoinExceptionUnknownHost(Exception):
@@ -92,6 +95,7 @@ class Instance(umcm.Base):
 		# Can be queried with the 'join/running' query.
 		self._process		= None
 
+	@sanitize(script=StringSanitizer())
 	def query(self,request):
 		""" Query to fill the scripts grid. """
 		# ----------- DEBUG -----------------
@@ -166,6 +170,7 @@ class Instance(umcm.Base):
 
 		self.finished(request.id,result)
 
+	@sanitize(count=IntegerSanitizer())
 	def logview(self,request):
 		""" Frontend to the _logview() function: returns
 			either the timestamp of the log file or
@@ -302,6 +307,10 @@ class Instance(umcm.Base):
 			os.remove(pwdfilename)
 
 
+	@sanitize(DictSanitizer({
+		'host' : StringSanitizer(),
+		'user' : StringSanitizer(),
+		'pass' : StringSanitizer()}))
 	def join(self,request):
 		"""runs the 'univention-join' script for a unjoined system with
 		the given arguments."""
@@ -376,6 +385,7 @@ class Instance(umcm.Base):
 		localthread.run()
 
 
+	@sanitize(scripts=ListSanitizer())
 	def run(self,request):
 		"""runs the given join scripts (args is an array) Note that we
 		don't rely on sortedness or even existance of the script names
@@ -390,7 +400,7 @@ class Instance(umcm.Base):
 
 		ucr.load()
 		baseDn = ucr.get('ldap/base')
-
+<
 		# If username and password are set then check credentials against master
 		# before calling join script.
 		MODULE.info('username = %s' % username)
