@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.107-1) unstable; urgency=low
+
+  * fixed background color of active tabs; Bug #28516 
+
+ -- Florian Best <best@univention.de>  Mon, 15 Oct 2012 09:07:55 +0200
+
 univention-management-console-frontend (2.0.106-1) unstable; urgency=low
 
   * integrated GalleryPane; Bug #28074
