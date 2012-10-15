@@ -1,3 +1,9 @@
+univention-management-console (5.0.42-1) unstable; urgency=low
+
+  * refer the LDAP connection to the master for writing; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Oct 2012 16:50:36 +0200
+
 univention-management-console (5.0.41-1) unstable; urgency=low
 
   * Sanitizer: Return default even if value should not be changed (Bug #27720)
@@ -40,7 +46,7 @@ univention-management-console (5.0.36-1) unstable; urgency=low
 
 univention-management-console (5.0.35-1) unstable; urgency=low
 
-  * return ssl/validity/root and ssl/validity/host in _handle:info  
+  * return ssl/validity/root and ssl/validity/host in _handle:info
     in protocol/server.py (Bug #27002)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 10:50:14 +0200
