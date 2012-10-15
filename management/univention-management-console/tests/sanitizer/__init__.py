@@ -72,7 +72,7 @@ class Instance( Base ):
 	@sanitize(value=s.DictSanitizer({'foo': s.Sanitizer(), 'bar': s.Sanitizer()}, required=True, allow_other_keys=False))
 	@simple_response
 	@log
-	def dict_2(self, value):
+	def dict_a(self, value):
 		assert set(value) == set(['foo', 'bar']), 'There are invalid keys: %r' % (list(values))
 		return '%r' % (value,)
 
@@ -104,10 +104,10 @@ class Instance( Base ):
 		assert isinstance(value, (list, tuple)), 'No List given'
 		return '%r' % (value,)
 
-	@sanitize(value=s.ListSanitizer({}, min_elements=3, max_elements=6, required=True))
+	@sanitize(value=s.ListSanitizer(min_elements=3, max_elements=6, required=True))
 	@simple_response
 	@log
-	def list2(self, value):
+	def list_a(self, value):
 		assert 3 <= len(value) <= 6, 'wrong list length: %d' % len(value)
 		return '%r' % (value,)
 
@@ -129,7 +129,7 @@ class Instance( Base ):
 	def pattern(self, value):
 		import re
 		assert isinstance(value, re._pattern_type)
-		# TODO: check *
+		assert value.pattern.count('.*') < 6, 'pattern contains more than 5 stars'
 		return '%r' % (value,)
 
 	@sanitize(value=s.StringSanitizer(required=True))

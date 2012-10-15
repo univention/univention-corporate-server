@@ -42,11 +42,13 @@ cmd() {
 }
 
 result() {
-	echo "$@"
+#	echo "$@"
 	echo -n 'Out: '
 	cmd "$@" | sed '1,/MESSAGE/d; s/\s*RESULT\s*:\s*\(.*\)/\1/'
 	echo -e '\n###\n'
 }
+
+echo -en 'If no assertation tracebacks occur everything should be fine!\n\n'
 
 echo boolean
 for i in 'True' 'False' '1' '-2' '"string"' '0'; do
@@ -111,6 +113,22 @@ echo mapping
 for i in '"foo"' '"bar"' '"baz"' '"notexisting"'; do 
 	echo "In: $i"
 	result sanitize/mapping "$i"
+done
+
+echo -en '\n\n\n'
+
+echo string
+for i in '"foo"' '1' 'True' '"UTF-8 ;) → O.o"'; do
+	echo "In: $i"
+	result sanitize/string "$i"
+done
+
+echo -en '\n\n\n'
+
+echo pattern
+for i in '"* * * * * * * * ** ** "' '"*foo*"' '"*foo"' '"foo*"' '"foo"'; do
+	echo "In: $i"
+	result sanitize/pattern "$i"
 done
 
 echo -en '\n\n\n'
