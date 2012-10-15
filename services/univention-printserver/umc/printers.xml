@@ -13,41 +13,23 @@
 		<attribute name="printer" syntax="String"/>
 	</command>
 
-	<command name="printers/enable" function="enable_printer">
-		<attribute name="printer" syntax="String"/>
-		<attribute name="on" syntax="Bool"/>
-	</command>
+	<command name="printers/enable" function="enable_printer" />
 
-	<command name="printers/jobs/query" function="list_jobs">
-		<attribute name="printer" syntax="String"/>
-	</command>
+	<command name="printers/jobs/query" function="list_jobs" />
 
-	<command name="printers/jobs/cancel" function="cancel_jobs">
-		<attribute name="printer" syntax="String"/>
-		<attribute name="jobs" syntax="String"/>
-	</command>
+	<command name="printers/jobs/cancel" function="cancel_jobs" />
 
-	<command name="printers/quota/query" function="list_quota">
-		<attribute name="printer" syntax="String"/>
-	</command>
+	<command name="printers/quota/query" function="list_quota" />
 
 	<command name="printers/users/query" function="list_users"/>
 
 	<!-- equally used to add or to edit an entry -->
-	<command name="printers/quota/set" function="set_quota">
-		<attribute name="printer" syntax="String"/>
-		<attribute name="user" syntax="String"/>
-		<attribute name="soft" syntax="Integer"/>
-		<attribute name="hard" syntax="Integer"/>
-	</command>
+	<command name="printers/quota/set" function="set_quota" />
 
 	<!-- how about deleting an entry? -->
 
 	<!-- seperate call: reset 'used' counter -->
-	<command name="printers/quota/reset" function="reset_quota">
-		<attribute name="printer" syntax="String"/>
-		<attribute name="users" syntax="Array"/>
-	</command>
+	<command name="printers/quota/reset" function="reset_quota" />
 
   </module>
 </umc>
