@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.14-1) unstable; urgency=low
+
+  * Don't abort the join script if the modification of the group members
+    failed because the ignore_exsists parameter is ignored, see Bug
+    #28756 (Bug #27753)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Oct 2012 07:58:50 +0200
+
 univention-s4-connector (7.0.13-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

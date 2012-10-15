@@ -89,9 +89,10 @@ udm groups/group create "$@" --ignore_exists \
 				--set name="Domain Controllers" \
 				--set description="All domain controllers in the domain" || die
 if [ "$samba4_role" = "DC" ]; then
+	# While Bug #28756 is not fixed, do not die
 	udm groups/group modify "$@" --ignore_exists \
 					--dn "cn=Domain Controllers,cn=groups,$ldap_base" \
-					--append hosts="$ldap_hostdn" >/dev/null 2>&1 || die
+					--append hosts="$ldap_hostdn" >/dev/null 2>&1
 fi
 
 udm groups/group create "$@" --ignore_exists \
@@ -99,9 +100,10 @@ udm groups/group create "$@" --ignore_exists \
 				--set name="Read-only Domain Controllers" \
 				--set description="Members of this group are Read-Only Domain Controllers in the domain" || die
 if [ "$samba4_role" = "RODC" ]; then
+	# While Bug #28756 is not fixed, do not die
 	udm groups/group modify "$@" --ignore_exists \
 					--dn "cn=Read-only Domain Controllers,cn=groups,$ldap_base" \
-					--append hosts="$ldap_hostdn" >/dev/null 2>&1 || die
+					--append hosts="$ldap_hostdn" >/dev/null 2>&1
 fi
 
 udm groups/group create "$@" --ignore_exists \
@@ -138,22 +140,25 @@ udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Group Policy Creator Owners" \
 				--set description="Members in this group can modify group policy for the domain" || die
+# While Bug #28756 is not fixed, do not die
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Group Policy Creator Owners,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1 || die
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Schema Admins" \
 				--set description="Designated administrators of the schema" || die
+# While Bug #28756 is not fixed, do not die
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Schema Admins,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1 || die
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Denied RODC Password Replication Group" \
 				--set description="Members in this group cannot have their passwords replicated to any read-only domain controllers in the domain" || die
+# While Bug #28756 is not fixed, do not die
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Denied RODC Password Replication Group,cn=groups,$ldap_base" \
 				--append nestedGroup="CN=Read-only Domain Controllers,CN=Groups,$ldap_base" \
@@ -162,14 +167,15 @@ udm groups/group modify "$@" --ignore_exists \
 				--append nestedGroup="CN=Cert Publishers,CN=Groups,$ldap_base" \
 				--append nestedGroup="CN=Enterprise Admins,CN=Groups,$ldap_base" \
 				--append nestedGroup="CN=Schema Admins,CN=Groups,$ldap_base" \
-				--append nestedGroup="CN=Domain Controllers,CN=Groups,$ldap_base" >/dev/null 2>&1 || die
+				--append nestedGroup="CN=Domain Controllers,CN=Groups,$ldap_base" >/dev/null 2>&1
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
 				--set name="Enterprise Admins" || die
+# While Bug #28756 is not fixed, do not die
 udm groups/group modify "$@" --ignore_exists \
 				--dn "cn=Enterprise Admins,cn=groups,$ldap_base" \
-				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1 || die
+				--append users="uid=Administrator,CN=Users,$ldap_base" >/dev/null 2>&1
 
 udm groups/group create "$@" --ignore_exists \
 				--position "cn=groups,$ldap_base" \
