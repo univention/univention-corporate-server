@@ -50,6 +50,9 @@ import notifier.threads
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer
+
 from univention.updater import UniventionUpdater
 
 _ = umc.Translation('univention-management-console-module-updater').translate
