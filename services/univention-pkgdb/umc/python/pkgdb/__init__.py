@@ -37,9 +37,11 @@ import univention.management.console.modules as umcm
 import univention.config_registry
 import univention.pkgdb as updb
 
-import re
-
 from univention.management.console.log import MODULE
+
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer
+
 from univention.management.console.protocol.definitions import *
 
 _ = umc.Translation('univention-management-console-module-pkgdb').translate
@@ -299,6 +301,7 @@ class Instance(umcm.Base):
 		except Exception, ex:
 			MODULE.warn("[check_variable_lists] while %s: %s" % (what, ex, ))
 
+	@sanitize(page=StringSanitizer())
 	def query(self, request):
 		""" Query to fill the grid. The structure of the corresponding grid
 			has already been fetched by the 'pkgdb/columns' command.
@@ -416,6 +419,7 @@ class Instance(umcm.Base):
 	#		there are the page keys to start with.
 	#
 
+	@sanitize(page=StringSanitizer())
 	def keys(self, request):
 		""" returns the set of search criteria suitable for the
 			given page.
@@ -443,6 +447,7 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, result)
 
+	@sanitize(page=StringSanitizer(), key=StringSanitizer())
 	def operators(self, request):
 		"""	returns the query operators that are suitable for
 			the given page+key combination. The selection is
@@ -486,6 +491,7 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, result)
 
+	@sanitize(page=StringSanitizer(), key=StringSanitizer())
 	def proposals(self, request):
 		"""	returns proposals for the query pattern that can be
 			presented in the frontend. This can be a single pattern
@@ -539,6 +545,7 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 
+	@sanitize(page=StringSanitizer(), key=StringSanitizer())
 	def columns(self, request):
 		"""	returns the structure of the results grid for a given
 			page+key combination. Note that design properties (width etc)

@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.10-1) unstable; urgency=low
+
+  * Remove old syntax definitions (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 15 Oct 2012 18:48:40 +0200
+
 univention-pkgdb (6.0.9-1) unstable; urgency=low
 
   * create pkgdgb.log/update it's permissions to 640
