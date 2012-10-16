@@ -40,6 +40,7 @@ umc_frontend_new_hash
 univention-config-registry set "umc/server/languages/en_US?English" \
 	"umc/server/languages/de_DE?Deutsch" \
 	"umc/web/feedback/mail?feedback@univention.de" \
-	"umc/web/feedback/description?[UMC-Feedback] Traceback"
+	"umc/web/feedback/description?[UMC-Feedback] Traceback" \
+	"umc/web/favorites/default?udm:users/user,udm:groups/group,udm:computers/computer,packages,updater"
 
 exit 0

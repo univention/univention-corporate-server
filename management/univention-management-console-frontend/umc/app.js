@@ -36,10 +36,12 @@ define([
 	"dojo/on",
 	"dojo/Evented",
 	"dojo/Deferred",
+	"dojo/promise/all",
 	"dojo/cookie",
 	"dojo/topic",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
+	"dijit/Dialog",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/CheckedMenuItem",
@@ -51,6 +53,7 @@ define([
 	"umc/dialog",
 	"umc/help",
 	"umc/about",
+	"umc/widgets/ProgressInfo",
 	"umc/widgets/GalleryPane",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
@@ -58,7 +61,11 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app"
-], function(declare, lang, array, win, on, Evented, Deferred, cookie, topic, Memory, Observable, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, array, win, on, Evented, Deferred, all, cookie, topic, Memory, Observable, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
+	// cache UCR variables
+	var _ucr = {};
+	var _userPreferences = {};
+
 	var _App = declare([ Evented ], {
 		start: function(/*Object*/ props) {
 			// summary:
@@ -126,23 +133,27 @@ define([
 			tools.status('username', username);
 
 			// load required ucr variables
-			tools.ucr(['umc/web/feedback/mail', 'umc/web/feedback/description', 'umc/http/session/timeout']).then( function(res) {
-				tools._sessionTimeout = parseInt( res['umc/http/session/timeout'] , 10 );
+			tools._sessionTimeout = parseInt( _ucr['umc/http/session/timeout'] , 10 );
 
-				tools.status('feedbackAddress', res['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
-				tools.status('feedbackSubject', res['umc/web/feedback/description'] || tools.status('feedbackSubject'));
-			} );
+			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
+			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
 
 			// start the timer for session checking
 			tools.checkSession(true);
+
+			// setup static GUI part
+			this.setupStaticGui();
 
 			// load the modules
 			this.loadModules();
 		},
 
-		// _tabContainer:
-		//		Internal reference to the TabContainer object
 		_tabContainer: null,
+		_overviewPage: null,
+		_univentionMenu: null,
+		_hostInfo: null,
+		_categoriesContainer: null,
+		_favoritesEnabled: true,
 
 		openModule: function(/*String|Object*/ module, /*String?*/ flavor, /*Object?*/ props) {
 			// summary:
@@ -207,13 +218,19 @@ define([
 		onModulesLoaded: function() {
 			this.setupGui();
 			// if only one module exists open it
-			if (this._modules.length === 1 && !getQuery('module')) {
-				this.openModule(this._modules[0].id, this._modules[0].flavor);
+			var modules = this._moduleStore.query();
+			if (modules.length === 1 && !getQuery('module')) {
+				this.openModule(modules[0].id, modules[0].flavor);
 			}
 		},
 
-		_modules: [],
-		_categories: [],
+		_moduleStore: null,
+		_categories: [{
+			// default category for favorites
+			id: '$favorites$',
+			name: _('Favorites'),
+			priority: 100
+		}],
 		_modulesLoaded: false,
 		loadModules: function() {
 			// make sure that we don't load the modules twice
@@ -222,14 +239,56 @@ define([
 				return;
 			}
 
-			tools.umcpCommand('get/modules/list', null, false).then(lang.hitch(this, function(data) {
-				// helper function for sorting, sort indeces with priority < 0 to be at the end
-				var _cmp = function(x, y) {
-					if (y.priority == x.priority) {
-						return x._orgIndex - y._orgIndex;
-					}
-					return y.priority - x.priority;
-				};
+			// load some important UCR variables
+			var ucrDeferred = tools.ucr([
+				'domainname',
+				'hostname',
+				'umc/web/feedback/mail',
+				'umc/web/feedback/description',
+				'umc/web/favorites/default',
+				'umc/http/session/timeout',
+				'ssl/validity/host',
+				'ssl/validity/root',
+				'ssl/validity/warning',
+				'update/available',
+				'update/reboot/required'
+			]).then(lang.hitch(this, function(res) {
+				// save the ucr variables in an local variable
+				lang.mixin(_ucr, res);
+			}));
+
+			// load user settings
+			var userPreferencesDefered = tools.umcpCommand('get/user/preferences', null, false).then(function(res) {
+				lang.mixin(_userPreferences, res.preferences);
+			}, lang.hitch(this, function() {
+				// user preferences disabled
+				this._favoritesEnabled = false;
+			}));
+
+			// helper function for sorting, sort indeces with priority < 0 to be at the end
+			var _cmp = function(x, y) {
+				if (y.priority == x.priority) {
+					return x._orgIndex - y._orgIndex;
+				}
+				return y.priority - x.priority;
+			};
+
+			// prompt a dialog showing the progress of loading modules
+			var progressInfo = new ProgressInfo({});
+			var progressDialog = new Dialog({
+				content: progressInfo
+			});
+			progressInfo.updateTitle(_('Loading modules'));
+			progressInfo.updateInfo(_('&nbsp;'));
+			progressDialog.show();
+
+			// load the modules dynamically
+			var modules = []
+			var modulesDeferred = tools.umcpCommand('get/modules/list', null, false).then(lang.hitch(this, function(data) {
+				// update progress
+				var _modules = lang.getObject('modules', false, data) || [];
+				progressInfo.maximum = _modules.length;
+				progressInfo.update(0);
 
 				// get all categories
 				array.forEach(lang.getObject('categories', false, data), lang.hitch(this, function(icat, i) {
@@ -239,15 +298,18 @@ define([
 				this._categories.sort(_cmp);
 
 				// register error handler
-				var modules = lang.getObject('modules', false, data) || [];
 				var ndeps = 0;
 				var modulesLoaded = new Deferred();
-				var incDeps = function() {
+				var incDeps = function(moduleName) {
 					// helper function
 					++ndeps;
-					if (ndeps == modules.length) {
+					progressInfo.update(ndeps, moduleName ? _('Loaded module %s', moduleName) : '&nbsp;');
+					if (ndeps == _modules.length) {
 						// all modules have been loaded
 						modulesLoaded.resolve();
+						progressDialog.hide().then(function() {
+							progressInfo.destroyRecursive();
+						});
 					}
 				};
 				var errHandle = require.on('error', function(err) {
@@ -259,41 +321,51 @@ define([
 				});
 
 				// get all modules
-				array.forEach(modules, lang.hitch(this, function(module, i) {
+				array.forEach(_modules, lang.hitch(this, function(module, i) {
 					// try to load the module
 					try {
 						require(['umc/modules/' + module.id], lang.hitch(this, function(baseClass) {
 							if (typeof baseClass == "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
 								// add module config class to internal list of available modules
-								this._modules.push(lang.mixin({
+								modules.push(lang.mixin({
 									BaseClass: baseClass,
 									_orgIndex: i  // save the element's original index
 								}, module));
 							}
-							incDeps();
+							incDeps(module.name);
 						}));
 					} catch (err) {
 						console.log('Error loading module ' + module.id + ':', err);
 					}
 
+					// return deferred that fires when all dependencies are loaded
 				}));
-
-				modulesLoaded.then(lang.hitch(this, function() {
-					// all modules have been loaded ... unregister error handelr
-					errHandle.remove();
-
-					// sort the internal list of modules
-					this._modules.sort(_cmp);
-
-					// disable overview if only one module exists
-					tools.status('overview', (this._modules.length !== 1) && tools.status('overview'));
-
-					// loading is done
-					this.onModulesLoaded();
-					this._modulesLoaded = true;
-				}));
-			}), lang.hitch(this, function() {
+				return modulesLoaded;
+			}), lang.hitch(this, lang.hitch(this, function() {
 				dialog.login().then(lang.hitch(this, 'onLogin'));
+			}))).then(lang.hitch(this, function() {
+				// sort the internal list of modules
+				modules.sort(_cmp);
+
+				// create a store for the module items
+				array.forEach(modules, function(item) {
+					// we need a uniqe ID for the store
+					item.$id$ = item.id + ':' + item.flavor;
+				});
+				this._moduleStore = Observable(new Memory({
+					data: modules,
+					idProperty: '$id$'
+				}));
+
+				// disable overview if only one module exists
+				tools.status('overview', (modules.length !== 1) && tools.status('overview'));
+			}));
+
+			// wait for modules, the UCR variables, and user preferences to load
+			all([modulesDeferred, ucrDeferred, userPreferencesDefered]).then(lang.hitch(this, function() {
+				// loading is done
+				this.onModulesLoaded();
+				this._modulesLoaded = true;
 			}));
 		},
 
@@ -304,29 +376,18 @@ define([
 			//		{ BaseClass, id, title, description, categories }.
 			// categoryID:
 			//		Optional category name.
-
-			var modules = this._modules;
-			if (undefined !== category) {
-				// find all modules with the given category
-				modules = [];
-				for (var imod = 0; imod < this._modules.length; ++imod) {
-					// iterate over all categories for the module
-					var categories = this._modules[imod].categories;
-					for (var icat = 0; icat < categories.length; ++icat) {
-						// check whether the category matches the query
-						if (category == categories[icat]) {
-							modules.push(this._modules[imod]);
-							break;
-						}
+			var query = {};
+			if (category) {
+				query.categories = {
+					test: function(categories) {
+						return array.indexOf(categories, category) >= 0;
 					}
-				}
+				};
 			}
-
-			// return all modules
-			return modules; // Object[]
+			return this._moduleStore.query(query);
 		},
 
-		getModule: function(/*String*/ id, /*String?*/ flavor) {
+		getModule: function(/*String?*/ id, /*String?*/ flavor, /*String?*/ category) {
 			// summary:
 			//		Get the module object for a given module ID.
 			//		The returned object has the following properties:
@@ -335,19 +396,25 @@ define([
 			//		Module ID as string.
 			// flavor:
 			//		The module flavor as string.
+			// category:
+			//		Restricts the search only to the given category.
 
-			var i;
-			for (i = 0; i < this._modules.length; ++i) {
-				if (!flavor && this._modules[i].id == id) {
-					// flavor is not given, we matched only the module ID
-					return this._modules[i]; // Object
-				}
-				else if (flavor && this._modules[i].id == id && this._modules[i].flavor == flavor) {
-					// flavor is given, module ID as well as flavor matched
-					return this._modules[i]; // Object
-				}
+			var query = {
+				id: id,
+				flavor: flavor || /.*/
+			};
+			if (category) {
+				query.categories = {
+					test: function(categories) {
+						return array.indexOf(categories, category) >= 0;
+					}
+				};
 			}
-			return undefined; // undefined
+			var res = this._moduleStore.query(query);
+			if (res.length) {
+				return res[0];
+			}
+			return undefined;
 		},
 
 		getCategories: function() {
@@ -357,7 +424,224 @@ define([
 			return this._categories; // Object[]
 		},
 
+		getCategory: function(/*String*/ id) {
+			// summary:
+			//		Get all categories as an array. Each entry has the following properties:
+			//		{ id, description }.
+			var res = array.filter(this._categories, function(icat) {
+				return icat.id == id;
+			});
+			if (res.length <= 0) {
+				return undefined; // undefined
+			}
+			return res[0];
+		},
+
+		_saveFavorites: function() {
+			if (!tools.status('setupGui')) {
+				return;
+			}
+
+			// get all favorite modules
+			var modules = this._moduleStore.query({
+				categories: {
+					test: function(categories) {
+						return array.indexOf(categories, '$favorites$') >= 0;
+					}
+				}
+			});
+
+			// save favorites as a comma separated list
+			var favoritesStr = array.map(modules, function(imod) {
+				return imod.flavor ? imod.id + ':' + imod.flavor : imod.id;
+			}).join(',');
+
+			// store updated favorites
+			tools.umcpCommand('set', {
+				user: {
+					preferences: {
+						favorites: favoritesStr
+					}
+				}
+			}, false);
+		},
+
+		addFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
+			if (this.getModule(id, flavor, '$favorites$')) {
+				// module has already been added to the favorites
+				return;
+			}
+			var mod = this.getModule(id, flavor);
+			if (!mod) {
+				// module does not exist
+				return;
+			}
+
+			// add a module clone for favorite category
+			mod.categories.push('$favorites$');
+			this._moduleStore.put(mod);
+
+			// save settings
+			this._saveFavorites();
+		},
+
+		removeFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
+			var mod = this.getModule(id, flavor, '$favorites$');
+			if (!mod) {
+				// module is not part of the favorites
+				return;
+			}
+
+			// remove favorites category
+			var idx = array.indexOf(mod.categories, '$favorites$');
+			if (idx >= 0) {
+				mod.categories.splice(idx, 1);
+			}
+			this._moduleStore.put(mod);
+
+			// save settings
+			this._saveFavorites();
+		},
+
 		setupGui: function() {
+			// make sure that we have not build the GUI before
+			if (tools.status('setupGui')) {
+				return;
+			}
+
+			// try to insert license dialog
+			if ( this.getModule( 'udm' ) ) {
+				require(['umc/modules/udm/LicenseDialog'], lang.hitch(this, function(LicenseDialog) {
+					this._univentionMenu.addChild(new MenuItem({
+						label: _('License'),
+						onClick : function() {
+							var dlg = new LicenseDialog();
+							dlg.show();
+						}
+					}), 2);
+				}));
+			}
+
+			// update the host information in the header
+			this._hostInfo.set('content', _('umcHostInfo', {
+				domain: _ucr.domainname,
+				host: _ucr.hostname
+			}));
+
+			// save hostname and domainname as status information
+			tools.status('domainname', _ucr.domainname);
+			tools.status('hostname', _ucr.hostname);
+
+			if (tools.status('overview')) {
+				// check validity of SSL certificates
+				var hostCert = parseInt( _ucr[ 'ssl/validity/host' ], 10 );
+				var rootCert = parseInt( _ucr[ 'ssl/validity/root' ], 10 );
+				var warning = parseInt( _ucr[ 'ssl/validity/warning' ], 10 );
+				var certExp = rootCert;
+				var certType = _('SSL root certificate');
+				if (rootCert >= hostCert) {
+					certExp = hostCert;
+					certType = _('SSL host certificate');
+				}
+				var today = new Date().getTime() / 1000 / 60 / 60 / 24; // now in days
+				var days = certExp - today;
+				if ( days <= warning ) {
+					this._overviewPage.addNote( _( 'The %s will expire in %d days and should be renewed!', certType, days ) );
+				}
+
+				// check if updates are available
+				if ( this.getModule('updater') && tools.isTrue(_ucr['update/available']) ) {
+					var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'updater\')"';
+					this._overviewPage.addNote( _( 'An update for UCS is available. Please visit <a %s>Online Update Module</a> to install the updates.', link ) );
+				}
+
+				// check if system reboot is required
+				if ( this.getModule('reboot') && tools.isTrue(_ucr['update/reboot/required']) ) {
+					var link_reboot = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'reboot\')"';
+					this._overviewPage.addNote( _( 'This system has been updated recently. Please visit the <a %s>Reboot Module</a> and reboot this system to finish the update.', link_reboot ) );
+				}
+
+				// helper function for rendering a category
+				var _renderCategory = function(icat) {
+					// ignore empty categories
+					var modules = this.getModules(icat.id);
+					if (0 === modules.length) {
+						return;
+					}
+
+					// create a new category for all modules in the given category
+					var titlepane = new TitlePane({
+						title: icat.name,
+						open: true //('favorites' == icat.id)
+					});
+					var gallery = new GalleryPane({
+						baseClass: !this._favoritesEnabled ? null : (icat.id == '$favorites$') ? 'umcOverviewFavorites' : 'umcOverviewCategory',
+						store: this._moduleStore,
+						categoriesDisplayed: false,
+						getStatusIconClass: function(item) {
+							if (icat.id != '$favorites$' && array.indexOf(item.categories, '$favorites$') >= 0) {
+								return tools.getIconClass('star', 24);
+							}
+							return '';
+						},
+						query: {
+							categories: {
+								test: function(categories) {
+									return array.indexOf(categories, icat.id) >= 0;
+								}
+							}
+						}
+					});
+					titlepane.addChild(gallery);
+
+					if (this._favoritesEnabled) {
+						// register to requests for adding a module to the favorites
+						gallery.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
+							// prevent event bubbling
+							evt.stopImmediatePropagation();
+
+							var item = gallery.row(evt).data;
+							if (icat.id == '$favorites$') {
+								// for the favorite category, remove the moduel from the favorites
+								this.removeFavoriteModule(item.id, item.flavor);
+							}
+							else {
+								// for any other category, add the module to the favorites
+								this.addFavoriteModule(item.id, item.flavor);
+							}
+						}));
+					}
+
+					// register to requests for opening a module
+					gallery.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
+						var item = gallery.row(evt).data;
+						console.log('open module: ', item.id, evt);
+						this.openModule(gallery.row(evt).data);
+					}));
+
+					// add category to overview page
+					this._categoriesContainer.addChild(titlepane);
+				};
+
+				// handle favorites category... query user preferences and
+				// use as fallback the corresponding UCR variable...
+				var favoritesStr = _userPreferences.favorites || _ucr['umc/web/favorites/default'] || '';
+				array.forEach(lang.trim(favoritesStr).split(/\s*,\s*/), function(ientry) {
+					this.addFavoriteModule.apply(this, ientry.split(':'));
+				}, this);
+
+				// render all standard categories
+				array.forEach(this.getCategories(), lang.hitch(this, _renderCategory));
+			}
+
+			// set a flag that GUI has been build up
+			tools.status('setupGui', true);
+			this.onGuiDone();
+		},
+
+		setupStaticGui: function() {
+			// setup everythin that can be set up statically
+
 			// make sure that we have not build the GUI before
 			if (tools.status('setupGui')) {
 				return;
@@ -384,83 +668,20 @@ define([
 				//	   will not be computed correctly and future tabs will habe display
 				//	   problems.
 				//     -> This could probably be fixed by calling layout() after adding a new tab!
-				var overviewPage = new Page({
+				this._overviewPage = new Page({
 					title: _('umcOverviewTabTitle'),
 					headerText: _('umcOverviewHeader'),
 					iconClass: tools.getIconClass('univention'),
 					helpText: _('umcOverviewHelpText')
 				});
 
-				// get needed UCR variables
-				tools.umcpCommand( 'get/ucr', [ 'ssl/validity/host', 'ssl/validity/root', 'ssl/validity/warning', 'update/available', 'update/reboot/required' ] ).then( lang.hitch( this, function( data ) {
-					// check validity of SSL certificates
-					var hostCert = parseInt( data.result[ 'ssl/validity/host' ], 10 );
-					var rootCert = parseInt( data.result[ 'ssl/validity/root' ], 10 );
-					var warning = parseInt( data.result[ 'ssl/validity/warning' ], 10 );
-					var certExp = rootCert;
-					var certType = _('SSL root certificate');
-					if (rootCert >= hostCert) {
-						certExp = hostCert;
-						certType = _('SSL host certificate');
-					}
-					var today = new Date().getTime() / 1000 / 60 / 60 / 24; // now in days
-					var days = certExp - today;
-					if ( days <= warning ) {
-						overviewPage.addNote( _( 'The %s will expire in %d days and should be renewed!', certType, days ) );
-					}
-
-					// check if updates are available
-					if ( this.getModule('updater') && tools.isTrue(data.result['update/available']) ) {
-						var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'updater\')"';
-						overviewPage.addNote( _( 'An update for UCS is available. Please visit <a %s>Online Update Module</a> to install the updates.', link ) );
-					}
-
-					// check if system reboot is required
-					if ( this.getModule('reboot') && tools.isTrue(data.result['update/reboot/required']) ) {
-						var link_reboot = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'reboot\')"';
-						overviewPage.addNote( _( 'This system has been updated recently. Please visit the <a %s>Reboot Module</a> and reboot this system to finish the update.', link_reboot ) );
-					}
-				}));
-
-				// add a GalleryPane for each category
-				var categories = new ContainerWidget({
+				// prepare the widget displaying all categories
+				this._categoriesContainer = new ContainerWidget({
 					scrollable: true
 				});
-				array.forEach(this.getCategories(), lang.hitch(this, function(icat) {
-					// ignore empty categories
-					var modules = this.getModules(icat.id);
-					if (0 === modules.length) {
-						return;
-					}
+				this._overviewPage.addChild(this._categoriesContainer);
+				this._tabContainer.addChild(this._overviewPage);
 
-					// create a store for the module items
-					var data = array.map(modules, function(item) {
-						return lang.mixin({ id2: item.id + ':' + item.flavor }, item);
-					});
-					var store = Observable(new Memory({ data: data, idProperty: 'id2' }));
-
-					// create a new category for all modules in the given category
-					var titlepane = new TitlePane({
-						title: icat.name,
-						open: true //('favorites' == icat.id)
-					});
-					var gallery = new GalleryPane({
-						store: store,
-						categoriesDisplayed: false
-					});
-					titlepane.addChild(gallery);
-
-					// register to requests for opening a module
-					//on(this._categoryPane, 'openModule', lang.hitch(this, 'openModule'));
-					gallery.on('.dgrid-row:click', lang.hitch(this, function(evt) {
-						this.openModule(gallery.row(evt).data);
-					}));
-
-					// add category to overview page
-					categories.addChild(titlepane);
-				}));
-				overviewPage.addChild(categories);
-				this._tabContainer.addChild(overviewPage);
 			}
 
 			// the header
@@ -481,23 +702,12 @@ define([
 			header.addChild(headerRight);
 
 			// the univention context menu
-			var univentionMenu = new Menu({});
-			univentionMenu.addChild(new MenuItem({
+			this._univentionMenu = new Menu({});
+			this._univentionMenu.addChild(new MenuItem({
 				label: _('Help'),
 				onClick : help
 			}));
-			if ( this.getModule( 'udm' ) ) {
-				require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
-					univentionMenu.addChild(new MenuItem({
-						label: _('License'),
-						onClick : function() {
-							var dlg = new LicenseDialog();
-							dlg.show();
-						}
-					}), 2);
-				});
-			}
-			univentionMenu.addChild(new MenuItem({
+			this._univentionMenu.addChild(new MenuItem({
 				label: _('About UMC'),
 				onClick : function() {
 					tools.umcpCommand( 'get/info' ).then( function( data ) {
@@ -505,8 +715,8 @@ define([
 					} );
 				}
 			}));
-			univentionMenu.addChild(new MenuSeparator({}));
-			univentionMenu.addChild(new MenuItem({
+			this._univentionMenu.addChild(new MenuSeparator({}));
+			this._univentionMenu.addChild(new MenuItem({
 				label: _('Univention Website'),
 				onClick: function() {
 					var w = window.open( 'http://www.univention.de/', 'UMC' );
@@ -516,29 +726,16 @@ define([
 			headerLeft.addChild(new DropDownButton({
 				'class': 'umcHeaderButton univentionButton',
 				iconClass: 'univentionLogo',
-				dropDown: univentionMenu
+				dropDown: this._univentionMenu
 			}));
 
 			// query domainname and hostname and add this information to the header
-			var hostInfo = new Text( {
+			this._hostInfo = new Text( {
 				templateString: '<span dojoAttachPoint="contentNode">${content}</span>',
 				content: '...',
 				'class': 'umcHeaderText'
 			} );
-			headerRight.addChild(hostInfo);
-			tools.umcpCommand('get/ucr', [ 'domainname', 'hostname' ]).
-				then(lang.hitch(this, function(data) {
-					var domainname = data.result.domainname;
-					var hostname = data.result.hostname;
-					hostInfo.set('content', _('umcHostInfo', {
-						domain: domainname,
-						host: hostname
-					}));
-
-					// save hostname and domainname as status information
-					tools.status('domainname', domainname);
-					tools.status('hostname', hostname);
-				}));
+			headerRight.addChild(this._hostInfo);
 
 			// the user context menu
 			var userMenu = new Menu({});
@@ -600,10 +797,6 @@ define([
 			topic.subscribe('/umc/modules/open', lang.hitch(this, 'openModule'));
 			topic.subscribe('/umc/tabs/close', lang.hitch(this, 'closeTab'));
 			topic.subscribe('/umc/tabs/focus', lang.hitch(this, 'focusTab'));
-
-			// set a flag that GUI has been build up
-			tools.status('setupGui', true);
-			this.onGuiDone();
 		},
 
 		onGuiDone: function() {

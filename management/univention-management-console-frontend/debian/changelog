@@ -1,3 +1,11 @@
+univention-management-console-frontend (2.0.114-1) unstable; urgency=low
+
+  * added favorites category and refactored umc/app; Bug #28074
+  * loading of modules is now displayed with a progress bar, the static part
+    of the initial page is now rendered immediately
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 16 Oct 2012 12:00:27 +0200
+
 univention-management-console-frontend (2.0.113-1) unstable; urgency=low
 
   * adapted translation; Bug #27702

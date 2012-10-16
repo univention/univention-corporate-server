@@ -112,7 +112,7 @@ $(themesDir)/umc: $(tmpDir)
 
 $(themesDir)/umc/icons: $(themesDir)/umc
 	@# scale all icons
-	for s in 16x16 50x50; do \
+	for s in 16x16 24x24 50x50; do \
 		mkdir -p "$@/$$s"; \
 		for i in icons/*.png; do \
 			dest="$@/$$s/$${i##*/}"; \

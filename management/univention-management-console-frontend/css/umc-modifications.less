@@ -2368,8 +2368,8 @@ form {
 /* removes padding in ExpandingTitlePane as this causes troubles with
  * computation of the position in the BorderContainer
  */
-.umc .umcExpandingTitlePane .dijitTitlePaneContentInner {
-	padding: 0 !important;
+.umc .umcExpandingTitlePane .dijitTitlePaneContentInner .dgrid {
+	margin: -10px;
 }
 
 .umc .dijitButton .dijitButtonNode {
@@ -2610,6 +2610,8 @@ p {
 	position: absolute;
 	top: 5px;
 	right: 15px;
+	width: 24px;
+	height: 24px;
 }
 .umcGalleryPane .umcGalleryItem .umcGalleryName,
 .umcGalleryPane .umcGalleryItem .umcGalleryDescription {
@@ -2628,7 +2630,6 @@ p {
 	background-color: inherit;
 }
 
-
 /* App Center */
 .dgrid.umcAppCenter {
 	height: 100%;
@@ -2643,6 +2644,30 @@ p {
 	position: absolute;
 	overflow-x: auto;
 	overflow-y: scroll;
+}
+
+
+/* UMC overview page */
+
+/* add a 'X' (for removing) when hovering favorite items */
+.dgrid.umcOverviewFavorites .umcGalleryItem:hover .umcGalleryStatusIcon {
+	.opacity(40);
+	background-image: url(icons/24x24/delete.png);
+}
+
+.dgrid.umcOverviewFavorites .umcGalleryItem:hover .umcGalleryStatusIcon:active {
+	.opacity(100);
+}
+
+/* add nice star when hovering */
+.dgrid.umcOverviewCategory .umcGalleryItem:hover .umcGalleryStatusIcon {
+	.opacity(40);
+	background-image: url(icons/24x24/star.png);
+}
+
+/* if the status icon is already marked with a star, do not use opacity */
+.dgrid.umcOverviewCategory .umcGalleryItem:hover .umcGalleryStatusIcon.icon24-star {
+	.opacity(100);
 }
 
 

@@ -95,6 +95,7 @@ define([
 		},
 
 		renderRow: function(item, options) {
+			// create gallery item
 			var div = put("div");
 			div.innerHTML = lang.replace(
 				'<div class="umcGalleryIcon {icon}"></div>' +
@@ -108,6 +109,13 @@ define([
 				}
 			);
 			domClass.add(div, 'umcGalleryItem');
+
+			// Tooltip
+			var tooltip = new Tooltip({
+				label: item.description,
+				connectId: [ div ]
+			});
+
 			return div;
 		},
 
@@ -117,23 +125,6 @@ define([
 
 		getStatusIconClass: function(item) {
 			return '';
-		},
-
-		refresh: function() {
-			this.inherited(arguments);
-			this._addTooltips();
-		},
-
-		_addTooltips: function() {
-			if (!this.store) {
-				return;
-			}
-			array.forEach(this.store.query(), function(item) {
-				var tooltip = new Tooltip({
-					label: item.description,
-					connectId: [ this.row(item).element ]
-				});
-			}, this);
 		}
 	});
 });
