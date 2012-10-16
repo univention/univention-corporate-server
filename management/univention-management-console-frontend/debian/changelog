@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.116-1) unstable; urgency=low
+
+  * fixed background of disabled buttons; Bug #28796
+
+ -- Florian Best <best@univention.de>  Tue, 16 Oct 2012 16:26:38 +0200
+
 univention-management-console-frontend (2.0.115-1) unstable; urgency=low
 
   * added translations, fixed startup problems for old session IDs; Bug #28074

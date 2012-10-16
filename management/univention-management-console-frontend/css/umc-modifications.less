@@ -506,36 +506,6 @@ ORIGINAL DIFF
   text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
 }
 
-/*====================================================================
-ORIGINAL DIFF
-
--.umc .dijitButtonActive .dijitButtonNode,
-+/*.umc .dijitButtonActive .dijitButtonNode,
- .umc .dijitDropDownButtonActive .dijitButtonNode,
- .umc .dijitComboButtonActive .dijitButtonNode,
- .umc .dijitToggleButtonActive .dijitButtonNode {
--  background-color: #abd6ff;
-+  background-color: #74be4b;
-   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-   -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-   -webkit-transition-duration: 0.1s;
-   -moz-transition-duration: 0.1s;
-   transition-duration: 0.1s;
- }
--.umc .dijitButtonDisabled,
-+/*.umc .dijitButtonDisabled,
- .umc .dijitDropDownButtonDisabled,
- .umc .dijitComboButtonDisabled,
- .umc .dijitToggleButtonDisabled {
--  background-image: none;
-+  background: none;
-   outline: none;
- }
- .umc .dijitButtonDisabled .dijitButtonNode,
- .umc .dijitDropDownButtonDisabled .dijitButtonNode,
-*/
-
 .umc .dijitButtonActive .dijitButtonNode,
 .umc .dijitDropDownButtonActive .dijitButtonNode,
 .umc .dijitComboButtonActive .dijitButtonNode,
@@ -556,8 +526,25 @@ ORIGINAL DIFF
 .umc .dijitToggleButtonDisabled {
   background: none;
 }
-/*========================================================================*/
 
+/* disabled buttons should have grey background with dark grey font color */
+.umc .dijitButtonDisabled .dijitButtonNode,
+.umc .dijitDropDownButtonDisabled .dijitButtonNode,
+.umc .dijitComboButtonDisabled .dijitButtonNode,
+.umc .dijitToggleButtonDisabled .dijitButtonNode {
+  background-color: #ededee!important;
+  border: solid 1px #d3d3d3!important;
+  color: #818181!important;
+  -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  background-image: url("form/images/buttonDisabled.png");
+  background-image: -moz-linear-gradient(#ffffff 0%, rgba(255, 255, 255, 0) 40%);
+  background-image: -webkit-linear-gradient(#ffffff 0%, rgba(255, 255, 255, 0) 40%);
+  background-image: -o-linear-gradient(#ffffff 0%, rgba(255, 255, 255, 0) 40%);
+  background-image: -ms-linear-gradient(#ffffff 0%, rgba(255, 255, 255, 0) 40%);
+  _background-image: none;
+}
 
 /* make normal buttons transparent */
 .umc .dijitButton .dijitButtonNode,
