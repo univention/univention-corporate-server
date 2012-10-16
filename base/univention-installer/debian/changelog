@@ -1,6 +1,12 @@
+univention-installer (8.0.23-1) unstable; urgency=low
+
+  * fixed creation of Zeroconf/APIPA-IP-Address (Bug #28467)
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Oct 2012 11:06:38 +0200
+
 univention-installer (8.0.22-1) unstable; urgency=low
 
-  * fixed network script  (Bug #20797) 
+  * fixed network script (Bug #20797) 
 
  -- Felix Botner <botner@univention.de>  Mon, 15 Oct 2012 12:37:57 +0200
 

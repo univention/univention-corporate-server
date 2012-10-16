@@ -727,7 +727,7 @@ class object(content):
 				self.draw()
 				self.sub = warning(_('No DHCP answer, please check DHCP server and network connectivity.'), self.pos_y+39, self.pos_x+93)
 				self.sub.draw()
-				r1 = random.randrange(0, 255)
+				r1 = random.randrange(1, 255)
 				r2 = random.randrange(0, 255)
 				ip_input = self.get_elem('INP_IPv4ADDR')
 				ip_input.text = "169.254.%s.%s" % (r1, r2)
