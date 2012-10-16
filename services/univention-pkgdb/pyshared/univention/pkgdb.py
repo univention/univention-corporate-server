@@ -427,19 +427,34 @@ PRIVILEGED_OPERATIONS = frozenset(('add-system',
                                    ))
 
 def open_database_connection(config_registry, pkgdbu=False, db_server=None):
+	connection_info = { # see <http://www.postgresql.org/docs/8.4/static/libpq-connect.html>
+		'dbname': 'pkgdb',
+		}
+	if config_registry.is_true('pkgdb/requiressl'):
+		connection_info['sslmode'] = 'require'
 	if pkgdbu:
-		db_server = '' # == localhost over Unix-domain socket (connection type "local")
-		user = 'pkgdbu'
+		# 'host' not specified -> localhost over Unix-domain socket (connection type "local")
+		connection_info['user'] = 'pkgdbu'
 		password_file = '/etc/postgresql/pkgdb.secret'
 	else:
 		if db_server is None:
 			db_server = get_dbservername(config_registry['domainname'])
 			if db_server is None:
 				return None
-		user = config_registry.get('pkgdb/user', '%s$' % (config_registry['hostname'], ))
+		connection_info['host'] = db_server
+		connection_info['user'] = config_registry.get('pkgdb/user', '%s$' % (config_registry['hostname'], ))
 		password_file = config_registry.get('pkgdb/pwdfile', '/etc/machine.secret')
-	password = open(password_file, 'rb').read().rstrip('\n')
-	connection = pgdb.connect(host=db_server, database='pkgdb', user=user, password=password)
+	connection_info['password'] = open(password_file, 'rb').read().rstrip('\n')
+	connectstring = ' '.join(
+		[
+			"%s='%s'" % (key,
+			             value.replace('\\', '\\\\').replace("'", "\\'"),
+			             )
+			for (key, value, )
+			in connection_info.items()
+			]
+		)
+	connection = pgdb.connect(database=connectstring)
 	return connection
 
 def main():

@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.14-1) unstable; urgency=low
+
+  * make ssl configurable (Bug #27873)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 16 Oct 2012 18:38:43 +0200
+
 univention-pkgdb (6.0.13-1) unstable; urgency=low
 
   * revert cleanup of "inststatus" (Bug #11364)

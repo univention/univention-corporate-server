@@ -3,3 +3,9 @@ Description[de]=Konfiguriert die Aktualisierung der Software-Monitor-Datenbank (
 Description[en]=Configure update of the software monitor database (This variable is set automatically)
 Type=str
 Categories=system-swmon
+
+[pkgdb/requiressl]
+Description[de]=SSL gesicherte Verbindungen zum PostgreSQL-Server benutzen
+Description[en]=Use SSL secured connections to PostgreSQL server
+Type=str
+Categories=system-swmon

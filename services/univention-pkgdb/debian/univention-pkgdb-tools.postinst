@@ -34,6 +34,8 @@
 
 invoke-rc.d univention-directory-listener crestart || true
 
+univention-config-registry set 'pkgdb/requiressl?true'
+
 #DEBHELPER#
 
 call_joinscript 98univention-pkgdb-tools.inst || true
