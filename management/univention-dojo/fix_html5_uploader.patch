@@ -1,0 +1,15 @@
+--- dojo-release-1.8.1rc3-src/dojox/form/uploader/plugins/HTML5.js.orig	2012-10-16 15:25:03.319629910 +0200
++++ dojo-release-1.8.1rc3-src/dojox/form/uploader/plugins/HTML5.js	2012-10-16 15:25:15.771680281 +0200
+@@ -165,7 +165,11 @@
+ 			if(xhr.readyState === 4){
+ //				console.info("COMPLETE")
+ 				clearInterval(timer);
+-				this.onComplete(JSON.parse(xhr.responseText.replace(/^\{\}&&/,'')));
++				try{
++					this.onComplete(JSON.parse(xhr.responseText.replace(/^\{\}&&/,'')));
++				} catch(e) {
++					this.onComplete(xhr.responseText);
++				}
+ 			}
+ 		});
+ 		xhr.open("POST", this.getUrl());
