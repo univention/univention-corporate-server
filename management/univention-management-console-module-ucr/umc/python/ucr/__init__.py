@@ -32,8 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import UMC_OptionTypeError, Base
-from univention.management.console.log import MODULE
+from univention.management.console.modules import Base
 from univention.management.console.protocol.definitions import *
 
 from univention.management.console.modules.decorators import simple_response, sanitize
