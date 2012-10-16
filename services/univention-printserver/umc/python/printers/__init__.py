@@ -44,9 +44,6 @@ import re
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
-from univention.management.console.modules.decorators import sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer, BooleanSanitizer, IntegerSanitizer, ListSanitizer
-
 _ = umc.Translation('univention-management-console-module-printers').translate
 
 class Instance(umcm.Base):
@@ -136,7 +133,6 @@ class Instance(umcm.Base):
 
 		self.finished(request.id,result)
 
-	@sanitize(printer=StringSanitizer())
 	def list_jobs(self,request):
 		""" returns list of jobs for one printer. """
 
@@ -167,7 +163,6 @@ class Instance(umcm.Base):
 
 		self.finished(request.id,result)
 
-	@sanitize(printer=StringSanitizer())
 	def list_quota(self,request):
 		""" lists all quota entries related to this printer. """
 
@@ -269,7 +264,6 @@ class Instance(umcm.Base):
 
 		self.finished(request.id,result)
 
-	@sanitize(printer=StringSanitizer(), on=BooleanSanitizer())
 	def enable_printer(self,request):
 		""" can enable or disable a printer, depending on args.
 			returns empty string on success, else error message.
@@ -298,7 +292,6 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, result)
 
-	@sanitize(printer=StringSanitizer(), jobs=StringSanitizer())
 	def cancel_jobs(self,request):
 		""" cancels one or more print jobs. Job IDs are passed
 			as an array that can be directly passed on to the
@@ -328,7 +321,6 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 
-	@sanitize(printer=StringSanitizer(), user=StringSanitizer(), soft=IntegerSanitizer(), hard=IntegerSanitizer())
 	def set_quota(self,request):
 		""" sets quota limits for a (printer,user) combination.
 			optionally tries to create the corresponding user entry.
@@ -363,7 +355,6 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 
-	@sanitize(printer=StringSanitizer(), users=ListSanitizer())
 	def reset_quota(self,request):
 		""" resets quota for a (printer,user) combination.
 		"""
