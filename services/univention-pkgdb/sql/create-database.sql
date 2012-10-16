@@ -33,7 +33,7 @@ SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
 SET client_min_messages = warning;
 
-CREATE DATABASE pkgdb WITH ENCODING = 'UTF8';
+CREATE DATABASE pkgdb WITH ENCODING = 'UTF8' TEMPLATE = template0;
 CREATE GROUP pkgdbg;
 
 \connect pkgdb
