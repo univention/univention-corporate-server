@@ -1,3 +1,10 @@
+univention-dojo (6.0.6-1) unstable; urgency=low
+
+  * removed univention-management-console-doc which belongs to
+  	univention-dojo-api-viewer; Bug #28018
+
+ -- Florian Best <best@univention.de>  Tue, 16 Oct 2012 11:47:24 +0200
+
 univention-dojo (6.0.5-1) unstable; urgency=low
 
   * added Dojo 1.8.1rc3 version; Bug #28710
