@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.47-1) unstable; urgency=low
+
+  * Fix whitelist for apps (Bug #27999)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 14:06:26 +0200
+
 univention-management-console-module-packages (2.0.46-1) unstable; urgency=low
 
   * Remove old syntax definitions (Bug #27720)

@@ -117,8 +117,8 @@ except (ImportError, LDAPError, udm_errors.base) as err:
 
 
 class Application(object):
-	_regComma = re.compile('\s*,\s*')
-	_regComponentID = re.compile(r'.*/(?P<id>[^/]+)\.ini')
+	_reg_comma = re.compile('\s*,\s*')
+	_reg_component_id = re.compile(r'.*/(?P<id>[^/]+)\.ini')
 	_all_applications = None
 	_category_translations = None
 
@@ -153,7 +153,7 @@ class Application(object):
 		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'serverrole'):
 			ival = self.get(ikey)
 			if ival:
-				self._options[ikey] = self._regComma.split(ival)
+				self._options[ikey] = self._reg_comma.split(ival)
 			else:
 				self._options[ikey] = []
 
@@ -173,7 +173,7 @@ class Application(object):
 		self.version = self._options['version']
 
 		# get the name of the component
-		m = self._regComponentID.match(url)
+		m = self._reg_component_id.match(url)
 		self.component_id = 'unknown'
 		if m:
 			self.component_id = m.groupdict()['id']
@@ -225,7 +225,7 @@ class Application(object):
 		)
 
 	# regular expression to parse the apache HTML directory listing
-	_regDirListing = re.compile(""".*<td.*<a href="(?P<name>[^"/]+\.ini)">[^<]+</a>.*</td>.*""")
+	_reg_dir_listing = re.compile(""".*<td.*<a href="(?P<name>[^"/]+\.ini)">[^<]+</a>.*</td>.*""")
 
 	@classmethod
 	def find(cls, id):
@@ -279,21 +279,21 @@ class Application(object):
 				threads = []
 				for iline in urllib2.urlopen(url):
 					# parse the server's directory listing
-					m = cls._regDirListing.match(iline)
+					m = cls._reg_dir_listing.match(iline)
 					if m:
 						# try to load and parse application's .ini file
 						ifilename = m.group('name')
 						iurl = url + '/' + ifilename
 
 						# thread function
-						def _appendApp(myurl):
+						def _append_app(myurl):
 							try:
 								cls._all_applications.append(Application(myurl))
 							except (ConfigParser.Error, urllib2.HTTPError, urllib2.URLError, ValueError, KeyError) as e:
 								MODULE.warn('Could not open application file: %s\n%s' % (myurl, e))
 
 						# start a new thread for fetching the application information
-						thread = threading.Thread(target=_appendApp, args=(iurl,))
+						thread = threading.Thread(target=_append_app, args=(iurl,))
 						thread.start()
 						threads.append(thread)
 
@@ -309,7 +309,7 @@ class Application(object):
 		def _included(the_list, app):
 			if the_list == '*':
 				return True
-			the_list = map(str.lower, cls._regComma.split(the_list))
+			the_list = map(str.lower, cls._reg_comma.split(the_list))
 			if app.name.lower() in the_list:
 				return True
 			for category in app.get('categories'):
@@ -330,27 +330,23 @@ class Application(object):
 			filtered_applications = [app for app in cls._all_applications if _included(whitelist, app) or app in filtered_applications]
 
 		# group app entries by their ID
-		appMap = {}
+		app_map = {}
 		for iapp in filtered_applications:
-			if iapp.id not in appMap:
-				appMap[iapp.id] = []
-			appMap[iapp.id].append(iapp)
+			if iapp.id not in app_map:
+				app_map[iapp.id] = []
+			app_map[iapp.id].append(iapp)
 
 		# version string comparison
-		def _versionCmp(iapp, japp):
+		def _version_cmp(iapp, japp):
 			iver = LooseVersion(iapp.version)
 			jver = LooseVersion(japp.version)
-			if iver == jver:
-				return 0
-			if iver > jver:
-				return 1
-			return -1
+			return cmp(iver, jver)
 
 		# pick the latest version of each app
 		final_applications = []
-		for iid, iapps in appMap.iteritems():
+		for iid, iapps in app_map.iteritems():
 			# sort apps after their version (latest first)
-			iapps.sort(cmp=_versionCmp, reverse=True)
+			iapps.sort(cmp=_version_cmp, reverse=True)
 
 			# store all versions
 			iapps[0].versions = iapps
@@ -377,10 +373,10 @@ class Application(object):
 		return res
 
 	def can_be_updated(self):
-		oldAppRegistered = False
+		old_app_registered = False
 		if len(self.versions) > 1:
-			oldAppRegistered = any(['%s/%s' % (COMPONENT_BASE, iapp.component_id) in ucr for iapp in self.versions[1:]])
-		return oldAppRegistered
+			old_app_registered = any(['%s/%s' % (COMPONENT_BASE, iapp.component_id) in ucr for iapp in self.versions[1:]])
+		return old_app_registered
 
 	def cannot_install_reason(self, package_manager):
 		is_joined = os.path.exists('/var/univention-join/joined')
