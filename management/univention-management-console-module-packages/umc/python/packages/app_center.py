@@ -310,10 +310,10 @@ class Application(object):
 			if the_list == '*':
 				return True
 			the_list = map(str.lower, cls._regComma.split(the_list))
-			if app.name in the_list:
+			if app.name.lower() in the_list:
 				return True
 			for category in app.get('categories'):
-				if category in the_list:
+				if category.lower() in the_list:
 					return True
 			return False
 
