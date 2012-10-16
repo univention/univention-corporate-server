@@ -1,3 +1,9 @@
+univention-management-console-module-top (2.0.2-1) unstable; urgency=low
+
+  * Remove old syntax definitions (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 12:16:02 +0200
+
 univention-management-console-module-top (2.0.1-1) unstable; urgency=low
 
   * Added PatternSanitizer (Bug #24341)

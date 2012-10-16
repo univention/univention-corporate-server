@@ -7,12 +7,8 @@
 		<category name="system"/>
 	</categories>
 	<command name="top/query" function="query">
-		<attribute name="category" syntax="Top-Category"/>
-		<attribute name="filter" syntax="Top-Filter"/>
 		<return syntax="Dictionary"/>
 	</command>
-	<command name="top/kill" function="kill">
-		<attribute name="success" syntax="Bool"/>
-	</command>
+	<command name="top/kill" function="kill" />
 	</module>
 </umc>
