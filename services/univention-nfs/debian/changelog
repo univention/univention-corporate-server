@@ -1,3 +1,11 @@
+univention-nfs (5.0.6-1) unstable; urgency=low
+
+  * don't modify thinclient policies in joinscript
+    if the related UDM module does not exist
+    (Bug #27617)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 16 Oct 2012 15:26:52 +0200
+
 univention-nfs (5.0.5-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
