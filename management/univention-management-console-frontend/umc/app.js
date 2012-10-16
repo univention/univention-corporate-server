@@ -341,9 +341,7 @@ define([
 					// return deferred that fires when all dependencies are loaded
 				}));
 				return modulesLoaded;
-			}), lang.hitch(this, lang.hitch(this, function() {
-				dialog.login().then(lang.hitch(this, 'onLogin'));
-			}))).then(lang.hitch(this, function() {
+			})).then(lang.hitch(this, function() {
 				// sort the internal list of modules
 				modules.sort(_cmp);
 
@@ -366,6 +364,12 @@ define([
 				// loading is done
 				this.onModulesLoaded();
 				this._modulesLoaded = true;
+			}), lang.hitch(this, function() {
+				// something went wrong... try to login again
+				progressDialog.hide().then(function() {
+					progressInfo.destroyRecursive();
+				});
+				dialog.login().then(lang.hitch(this, 'onLogin'));
 			}));
 		},
 
@@ -639,11 +643,13 @@ define([
 			this.onGuiDone();
 		},
 
+		_setupStaticGui: false,
+
 		setupStaticGui: function() {
 			// setup everythin that can be set up statically
 
 			// make sure that we have not build the GUI before
-			if (tools.status('setupGui')) {
+			if (this._setupStaticGui) {
 				return;
 			}
 
@@ -797,6 +803,8 @@ define([
 			topic.subscribe('/umc/modules/open', lang.hitch(this, 'openModule'));
 			topic.subscribe('/umc/tabs/close', lang.hitch(this, 'closeTab'));
 			topic.subscribe('/umc/tabs/focus', lang.hitch(this, 'focusTab'));
+
+			this._setupStaticGui = true;
 		},
 
 		onGuiDone: function() {

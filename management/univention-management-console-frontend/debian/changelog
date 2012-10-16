@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.115-1) unstable; urgency=low
+
+  * added translations, fixed startup problems for old session IDs; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 16 Oct 2012 12:50:17 +0200
+
 univention-management-console-frontend (2.0.114-1) unstable; urgency=low
 
   * added favorites category and refactored umc/app; Bug #28074
