@@ -83,7 +83,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 
 	wait_for_dns
 
-	if ! local_is_ucr_false dns/register/a_record/domain; then
+	if ! local_is_ucr_false dns/register/domain/a_record; then
 	    /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a "$hostname" "$IP" || die
 	fi
 

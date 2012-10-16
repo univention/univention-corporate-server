@@ -1,3 +1,10 @@
+univention-bind (7.0.7-3) unstable; urgency=low
+
+  * renamed the variable dns/register/a_record/domain to dns/register/domain/a_record
+    and changed its description (Bug #28065)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 16 Oct 2012 16:49:15 +0200
+
 univention-bind (7.0.7-2) unstable; urgency=low
 
   * the A record registration is now controlled by the ucr variable dns/register/a_record/domain (Bug #28065)

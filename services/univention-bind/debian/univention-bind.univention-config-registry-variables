@@ -70,9 +70,9 @@ Description[en]=Defines if the bind service should listen on IPv6 sockets (Defau
 Type=str
 Categories=service-bind
 
-[dns/register/a_record/domain]
-Description[de]=Aktiviert/deaktiviert ob die A Records beim joinen registriert werden.
-Description[en]=Enables/disables wether the A records are registered when performing a domain join. 
+[dns/register/domain/a_record]
+Description[de]=Aktiviert/deaktiviert ob die IP-Adresse beim Joinen an der DNS Forward Zone registriert wird.
+Description[en]=Enables/disables wether the IP address is registered at the DNS Forward Zone when joining.
 Type=str
 Categories=service-bind
 
