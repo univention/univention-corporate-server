@@ -1,6 +1,5 @@
 Module: services
 Python: umc/python
 Definition: umc/services.xml
-Syntax: umc/syntax/services.xml
 Javascript: umc/js
 Icons: umc/icons
