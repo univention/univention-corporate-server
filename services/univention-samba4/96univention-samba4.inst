@@ -520,9 +520,9 @@ if [ "$samba4_role" = 'DC' ]; then
 		## set the predefined NTACL which the provision uses on sysvol
 		/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH" 2>/dev/null
 
-		/usr/share/univention-samba4/scripts/create_dns-host_spn.py
-
 	fi
+
+	/usr/share/univention-samba4/scripts/create_dns-host_spn.py
 
 	## set default ACLs so sysvol-sync can read files and directories
 	set_default_fACL /var/lib/samba/sysvol
