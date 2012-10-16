@@ -66,34 +66,19 @@
 	</command>
 	<command name="udm/query" function="query">
 	</command>
-	<command name="udm/containers" function="containers">
-	  <attribute name="superordinate" syntax="String" required="False"/>
-	</command>
+	<command name="udm/containers" function="containers" />
 	<command name="udm/superordinates" function="superordinates">
 	</command>
 	<command name="udm/types" function="types">
 	</command>
 	<command name="udm/network" function="network">
 	</command>
-	<command name="udm/properties" function="properties">
-	  <attribute name="objectType" syntax="String"/>
-	</command>
-	<command name="udm/options" function="options">
-	  <attribute name="objectType" syntax="String"/>
-	</command>
-	<command name="udm/layout" function="layout">
-	  <attribute name="objectType" syntax="String"/>
-	</command>
-	<command name="udm/values" function="values">
-	  <attribute name="objectType" syntax="String"/>
-	  <attribute name="objectProperty" syntax="String" required="True"/>
-	</command>
-	<command name="udm/templates" function="templates">
-	  <attribute name="objectType" syntax="String" required="False"/>
-	</command>
-	<command name="udm/policies" function="policies">
-	  <attribute name="objectType" syntax="String" required="True"/>
-	</command>
+	<command name="udm/properties" function="properties" />
+	<command name="udm/options" function="options" />
+	<command name="udm/layout" function="layout" />
+	<command name="udm/values" function="values" />
+	<command name="udm/templates" function="templates" />
+	<command name="udm/policies" function="policies" />
 	<command name="udm/put" function="put">
 	</command>
 	<command name="udm/add" function="add">
@@ -106,29 +91,15 @@
 	</command>
 	<command name="udm/validate" function="validate">
 	</command>
-	<command name="udm/syntax/choices/key" function="syntax_choices_key">
-	  <attribute name="syntax" syntax="String" required="True"/>
-	  <attribute name="key" syntax="String" required="True"/>
-	</command>
-	<command name="udm/syntax/choices/info" function="syntax_choices_info">
-	  <attribute name="syntax" syntax="String" required="True"/>
-	</command>
-	<command name="udm/syntax/choices" function="syntax_choices">
-	  <attribute name="syntax" syntax="String" required="True"/>
-	</command>
+	<command name="udm/syntax/choices/key" function="syntax_choices_key" />
+	<command name="udm/syntax/choices/info" function="syntax_choices_info" />
+	<command name="udm/syntax/choices" function="syntax_choices" />
 	<command name="udm/nav/container/query" function="nav_container_query">
 	</command>
 	<command name="udm/nav/object/query" function="nav_object_query">
 	</command>
-	<command name="udm/object/policies" function="object_policies">
-	  <attribute name="objectType" syntax="String" required="True"/>
-	  <attribute name="objectDN" syntax="String" required="True"/>
-	  <attribute name="policyType" syntax="String" required="True"/>
-	</command>
-	<command name="udm/object/options" function="object_options">
-	  <attribute name="objectType" syntax="String" required="True"/>
-	  <attribute name="objectDN" syntax="String" required="False"/>
-	</command>
+	<command name="udm/object/policies" function="object_policies" />
+	<command name="udm/object/options" function="object_options" />
 	<command name="udm/reports/query" function="reports_query">
 	</command>
 	<command name="udm/reports/create" function="reports_create">
