@@ -16,11 +16,6 @@ Ressources
 	:undoc-members:
 	:show-inheritance:
 
-.. automodule:: univention.management.console.syntax
-	:members:
-	:undoc-members:
-	:show-inheritance:
-
 .. automodule:: univention.management.console.locales
 	:members:
 	:undoc-members:
@@ -67,15 +62,4 @@ Statistics
 	:members:
 	:undoc-members:
 	:show-inheritance:
-
-----------
-Extensions
-----------
-
-.. automodule:: univention.management.console.verify
-	:members:
-	:undoc-members:
-	:show-inheritance:
-
-
 

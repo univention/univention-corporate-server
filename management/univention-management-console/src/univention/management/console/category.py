@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  UMC syntax definitions
+#  UMC category definitions
 #
 # Copyright 2006-2012 Univention GmbH
 #
@@ -64,7 +64,6 @@ must be given in curly braces {VARIABLE}.
 """
 
 import os
-import re
 import sys
 import xml.parsers.expat
 import xml.etree.ElementTree as ET

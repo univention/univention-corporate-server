@@ -2,6 +2,6 @@
 <!ELEMENT umc (module)>
 <!ELEMENT module (name, description, command)*
 <!ELEMENT name (#PCDATA)>
-<!ELEMENT command (description*, attribute*)>
-<!ELEMENT command (description*, attribute*)>
+<!ELEMENT command (description*)>
+<!ELEMENT command (description*)>
 

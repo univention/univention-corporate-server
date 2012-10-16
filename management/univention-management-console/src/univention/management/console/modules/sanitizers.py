@@ -307,7 +307,7 @@ class ListSanitizer(Sanitizer):
 		return altered_value
 
 class BooleanSanitizer(Sanitizer):
-	'''IntegerSanitizer makes sure that the value is a bool.
+	'''BooleanSanitizer makes sure that the value is a bool.
 	It converts other data types if possible.
 	'''
 	def _sanitize(self, value, name, further_arguments):

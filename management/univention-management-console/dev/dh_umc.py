@@ -45,7 +45,6 @@ MODULE = 'Module'
 PYTHON = 'Python'
 DEFINITION = 'Definition'
 JAVASCRIPT = 'Javascript'
-SYNTAX = 'Syntax'
 CATEGORY = 'Category'
 ICONS = 'Icons'
 
@@ -70,20 +69,18 @@ PO_METADATA = {
  Module: The internal name of the module
  Python: A directory containing the python module. There must be a subdirectory named like the internal name of the module.
  Definition: The XML definition of the module
- Syntax: The XML definition of new syntax classes
  Javascript: The directory of the javascript code. In this directory must be a a file called <Module>.js
  Category: The XML definition of additional categories
  Icons: A directory containing the icons used by the module. The
    directory structure must follow the following pattern
    <weight>x<height>/<icon>.(png|gif)
 
-The entries Syntax and Category are optional.
+The entry Category is optional.
 
 Example:
  Module: ucr
  Python: umc/module
  Definition: umc/ucr.xml
- Syntax: umc/syntax/ucr.xml
  Javascript: umc/js
  Category: umc/categories/ucr.xml
  Icons: umc/icons
@@ -92,7 +89,7 @@ Example:
 class UMC_Module( dict ):
 	def __init__( self, *args ):
 		dict.__init__( self, *args )
-		for key in ( MODULE, PYTHON, JAVASCRIPT, DEFINITION, CATEGORY, SYNTAX, ICONS ):
+		for key in ( MODULE, PYTHON, JAVASCRIPT, DEFINITION, CATEGORY, ICONS ):
 			if key in self and self[ key ]:
 				self[ key ] = self[ key ][ 0 ]
 
@@ -153,11 +150,6 @@ class UMC_Module( dict ):
 	@property
 	def xml_definition( self ):
 		return self.get( DEFINITION )
-
-	@property
-	def xml_syntax( self ):
-		if SYNTAX in self:
-			return self.get( SYNTAX, '' )
 
 	@property
 	def xml_categories( self ):

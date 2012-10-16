@@ -36,14 +36,12 @@ Defines the basic class for an UMC server.
 """
 
 # python packages
-import datetime
 import fcntl
 import gzip
 import os
 import pwd
 import re
 import socket
-import sys
 
 # external packages
 import notifier
@@ -60,7 +58,7 @@ from .message import Message, Response, IncompleteMessageError, ParseError, Unkn
 from .session import State, Processor
 from .definitions import *
 
-from ..resources import moduleManager, syntaxManager, categoryManager
+from ..resources import moduleManager, categoryManager
 from ..log import CORE, CRYPT, RESOURCES
 from ..config import ucr, SERVER_MAX_CONNECTIONS
 from ..statistics import statistics
@@ -364,7 +362,7 @@ class Server( signals.Provider ):
 	:param str unix: if given it must be the filename of the UNIX socket to use
 	:param bool magic: if an external session handler should be used
 	:param class magicClass: a reference to the class for the external session handler
-	:param bool load_ressources: if the modules, categories and syntax definitions should be loaded
+	:param bool load_ressources: if the modules and categories definitions should be loaded
 	"""
 
 	def __init__( self, port = 6670, ssl = True, unix = None, magic = True, magicClass = MagicBucket, load_ressources = True ):
@@ -526,10 +524,9 @@ class Server( signals.Provider ):
 			self.__bucket.exit()
 
 	def reload( self ):
-		"""Reloads resources like module, syntax and category definitions"""
-		CORE.info( 'Reloading resources: modules, syntax definitions, categories' )
+		"""Reloads resources like module and category definitions"""
+		CORE.info( 'Reloading resources: modules, categories' )
 		moduleManager.load()
-		syntaxManager.load()
 		categoryManager.load()
 		RESOURCES.info( 'Reloading UCR variables' )
 		ucr.load()

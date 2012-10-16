@@ -8,27 +8,9 @@
 	<command name="ucr/set" function="set">
 	  <description>Set UCR variables</description>
 	  <description lang="de_DE">Setzen von UCR-Variablen</description>
-	  <attribute name="variables">
-		<description>Dictionary of variable, value pairs</description>
-		<description lang="de_DE">Dictionary of variable, value pairs</description>
-		<syntax type="UCR-Variables"/>
-		<required/>
-	  </attribute>
 	  <return>
 		<syntax type="umc-boolean"/>
 	  </return>
 	</command>
   </module>
-  <definitions>
-	<syntax base="String" name="UCR-Variable">
-	  <regex-invalid>[\r\n!"§$%&amp;()[]{}=?`+#',;&lt;&gt;\]"</regex-invalid>
-	</syntax>
-	<syntax base="umc-string" name="UCR-Value">
-	  <regex-invalid>\r\n</regex-invalid>
-	</syntax>
-	<syntax base="Dictionary" name="UCR-Variables">
-	  <key syntax="UCR-Variable"/>
-	  <value syntax="UCR-Value"/>
-	</syntax>
-  </definitions>
 </umc>

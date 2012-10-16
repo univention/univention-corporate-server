@@ -32,9 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from .module import Manager as ModuleManager
-from .syntax import Manager as SyntaxManager
 from .category import Manager as CategoryManager
 
 moduleManager = ModuleManager()
-syntaxManager = SyntaxManager()
 categoryManager = CategoryManager()

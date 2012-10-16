@@ -66,10 +66,6 @@ def do_package( package, core ):
 				dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/locale/%(lang)s/LC_MESSAGES' % module )
 				dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s' % module )
 
-		if module.xml_syntax:
-			dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/univention-management-console/syntax' % module )
-		else:
-			print >>sys.stderr, 'info: no syntax definition file'
 		if module.xml_categories:
 			dh_ucs.doIt( 'install', '-d', 'debian/%(package)s/usr/share/univention-management-console/categories' % module )
 		else:
@@ -115,8 +111,6 @@ def do_package( package, core ):
 			# copy XML definitions
 			dh_ucs.doIt( 'install', module.xml_definition, 'debian/%(package)s/usr/share/univention-management-console/modules' % module )
 
-		if module.xml_syntax:
-			dh_ucs.doIt( 'install', module.xml_syntax, 'debian/%(package)s/usr/share/univention-management-console/syntax' % module )
 		if module.xml_categories:
 			dh_ucs.doIt( 'install', module.xml_categories, 'debian/%(package)s/usr/share/univention-management-console/categories' % module )
 

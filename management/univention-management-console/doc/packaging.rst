@@ -31,7 +31,6 @@ contains information about the locations of the UMC module source files: ::
 		Module: ucr
 		Python: umc/python
 		Definition: umc/ucr.xml
-		Syntax: umc/syntax/ucr.xml
 		Javascript: umc/js
 		Icons: umc/icons
 
@@ -47,8 +46,6 @@ Javascript
 	A directory containing the javascript source code
 Icons
 	A directory containing the icons required by the modules web frontend
-Syntax (optional)
-	The filename of the XML file with the syntax definitions
 Category (optional)
 	The filename of the XML file with the category definitions
 
@@ -56,8 +53,6 @@ The directory structure a UMC module complying with this example file
 would look like this: ::
 
 		univention-management-console-module-ucr/umc
-		univention-management-console-module-ucr/umc/syntax
-		univention-management-console-module-ucr/umc/syntax/ucr.xml
 		univention-management-console-module-ucr/umc/js
 		univention-management-console-module-ucr/umc/js/ucr.js
 		univention-management-console-module-ucr/umc/js/de.po

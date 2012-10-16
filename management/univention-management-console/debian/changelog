@@ -1,3 +1,9 @@
+univention-management-console (5.0.44-1) unstable; urgency=low
+
+  * Remove ununsed syntax verification (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 13:22:29 +0200
+
 univention-management-console (5.0.43-1) unstable; urgency=low
 
   * fixed typo; Bug #28074

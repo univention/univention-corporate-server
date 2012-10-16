@@ -36,10 +36,7 @@ and the communication with the module processes"""
 
 import base64
 import ldap
-import locale
 import os
-import string
-import sys
 import time
 import json
 
@@ -60,12 +57,11 @@ users_module = None
 from univention.lib.i18n import Translation, I18N_Error
 
 from .message import Response, Request, MIMETYPE_JSON, InvalidOptionsError
-from .client import Client, NoSocketError, ConnectionError
+from .client import Client, NoSocketError
 from .version import VERSION
 from .definitions import *
 
-from ..resources import moduleManager, syntaxManager, categoryManager
-from ..verify import SyntaxVerificationError
+from ..resources import moduleManager, categoryManager
 from ..auth import AuthHandler
 from ..acl import LDAP_ACLs
 from ..log import CORE
@@ -352,11 +348,6 @@ class Processor( signals.Provider ):
 		categories/list
 			Returns a list of all known categories
 
-		syntax/verification
-			Checks the correctness of a value according to a syntax
-			class. Both the *syntax* and the *value* are passed to the
-			command via the request option.
-
 		user/preferences
 			Returns the user preferences as a dict.
 
@@ -392,21 +383,6 @@ class Processor( signals.Provider ):
 		elif 'categories/list' in msg.arguments:
 			res.body[ 'categories' ] = categoryManager.all()
 			res.status = SUCCESS # Ok
-		elif 'syntax/verification' in msg.arguments:
-			if not isinstance(msg.options, dict):
-				raise InvalidOptionsError
-			syntax_name = msg.options.get( 'syntax' )
-			value = msg.options.get( 'value' )
-			if not value or not syntax_name:
-				res.status = BAD_REQUEST_INVALID_OPTS
-			else:
-				res.status = SUCCESS
-				try:
-					syntaxManager.verify( syntax_name, value )
-					res.result = True
-				except SyntaxVerificationError, e:
-					res.result = False
-					res.message = str( e )
 		elif 'user/preferences' in msg.arguments:
 			# fallback is an empty dict
 			res.body['preferences'] = {}

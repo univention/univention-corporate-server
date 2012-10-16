@@ -1,4 +1,3 @@
 Module: umc-core
-Syntax: data/syntax/global.xml
 Category: data/categories/default.xml
 Definition: data/core.xml
