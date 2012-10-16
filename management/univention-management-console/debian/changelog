@@ -1,3 +1,9 @@
+univention-management-console (5.0.43-1) unstable; urgency=low
+
+  * fixed typo; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 16 Oct 2012 12:36:38 +0200
+
 univention-management-console (5.0.42-1) unstable; urgency=low
 
   * refer the LDAP connection to the master for writing; Bug #28074

@@ -329,7 +329,7 @@ class Processor( signals.Provider ):
 				raise udm_errors.base('UDM module users/user could not be initiated')
 
 			# open an LDAP connection with the user password and credentials
-			lo = udm_uldap.access(host = ucr.get('ldap/server/name'), base = ucr.get('ldap/base'), port = ucr.get('ldap/server/port', '7389'), binddn = self.__user_dn, bindpw = self.__password)
+			lo = udm_uldap.access(host = ucr.get('ldap/server/name'), base = ucr.get('ldap/base'), port = int(ucr.get('ldap/server/port', '7389')), binddn = self.__user_dn, bindpw = self.__password)
 
 			# try to open the user object
 			userObj = udm_objects.get(users_module, None, lo, self.po, self.__user_dn)
