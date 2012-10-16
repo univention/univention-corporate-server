@@ -50,9 +50,6 @@ import notifier.threads
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 
-from univention.management.console.modules.decorators import sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer
-
 from univention.updater import UniventionUpdater
 
 _ = umc.Translation('univention-management-console-module-updater').translate
@@ -637,7 +634,6 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, result)
 
-	@sanitize(job=StringSanitizer(), count=IntegerSanitizer())
 	def updater_log_file(self,request):
 		""" returns the content of the log file associated with
 			the job.
@@ -705,7 +701,6 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 
-	@sanitize(job=StringSanitizer())
 	def updater_job_status(self,request):
 		"""	Returns the content of the corresponding status file
 			for a given job. Note that this is made a seperate function
@@ -804,9 +799,6 @@ class Instance(umcm.Base):
 
 		self.finished(request.id,result)
 
-	# TODO: job=JobSanitizer (ChoicesSanitizer)
-	# TODO: holds for every job argument here
-	@sanitize(job=StringSanitizer(), detail=StringSanitizer())
 	def run_installer(self,request):
 		"""	This is the function that invokes any kind of installer. Arguments accepted:
 			job ..... the main thing to do. can be one of:
