@@ -322,13 +322,12 @@ class Application(object):
 		blacklist = ucr.get('repository/app_center/blacklist')
 		if blacklist:
 			filtered_applications = [app for app in filtered_applications if not _included(blacklist, app)]
-		else:
-			filtered_applications = filtered_applications
 
 		# filter whitelisted apps (by name and by category)
 		whitelist = ucr.get('repository/app_center/whitelist')
 		if whitelist:
-			filtered_applications = [app for app in filtered_applications if _included(whitelist, app) or app in filtered_applications]
+			# whitelist is stronger than blacklist: iterate over all_applications
+			filtered_applications = [app for app in cls._all_applications if _included(whitelist, app) or app in filtered_applications]
 
 		# group app entries by their ID
 		appMap = {}

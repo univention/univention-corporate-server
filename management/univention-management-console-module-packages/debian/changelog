@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.46-1) unstable; urgency=low
+
+  * Remove old syntax definitions (Bug #27720)
+  * Fix whitelist for apps (Bug #27999)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 10:52:26 +0200
+
 univention-management-console-module-packages (2.0.45-1) unstable; urgency=low
 
   * merged GalleryPane into UMC framework; Bug #28074
