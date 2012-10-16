@@ -72,7 +72,6 @@ ALTER TABLE packages_on_systems
       ALTER vername    TYPE text,
       ALTER vername    DROP NOT NULL,
       ALTER scandate   TYPE timestamp with time zone,
-      ALTER inststatus TYPE boolean USING inststatus = 'i',
       ADD CONSTRAINT packages_on_systems_sysname_fkey
           FOREIGN KEY (sysname)
           REFERENCES systems(sysname)

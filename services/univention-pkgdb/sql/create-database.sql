@@ -58,7 +58,7 @@ CREATE TABLE packages_on_systems (
     pkgname        text                      NOT NULL,
     vername        text,
     scandate       timestamp with time zone  NOT NULL,
-    inststatus     boolean                   NOT NULL,
+    inststatus     character(1)              NOT NULL,
     selectedstate  smallint                  NOT NULL,
     inststate      smallint                  NOT NULL,
     currentstate   smallint                  NOT NULL,

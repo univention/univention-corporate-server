@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.13-1) unstable; urgency=low
+
+  * revert cleanup of "inststatus" (Bug #11364)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 16 Oct 2012 17:18:21 +0200
+
 univention-pkgdb (6.0.12-1) unstable; urgency=low
 
   * Dont use sanitizers yet (Bug #27720)

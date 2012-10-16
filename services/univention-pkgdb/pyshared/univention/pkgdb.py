@@ -370,13 +370,13 @@ def scan_and_store_packages(cursor, sysname):
 		parameters = {'sysname':       sysname,
 		              'currentstate':  package.current_state,
 		              'inststate':     package.inst_state,
-		              'inststatus':    False,
+		              'inststatus':    'n',
 		              'pkgname':       package.name,
 		              'selectedstate': package.selected_state,
 		              'vername':       None,
 		              }
 		if package.current_ver:
-			parameters['inststatus'] = True
+			parameters['inststatus'] = 'i'
 			parameters['vername'] = package.current_ver.ver_str
 		insert_values.append(cursor._quoteparams(insert_value, parameters))
 	if insert_values:
