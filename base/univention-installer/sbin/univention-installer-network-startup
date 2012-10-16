@@ -118,7 +118,7 @@ for interface in $interfaces; do
 			r1=$((RANDOM % 254 + 1))
 			r2=$((RANDOM % 255))
 			address="169.254.$r1.$r2"
-			netmask="255.255.255.0"
+			netmask="255.255.0.0"
 			broadcast="169.254.$r1.255"
 			network="169.254.$r1.0"
 		fi

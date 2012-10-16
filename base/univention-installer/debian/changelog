@@ -1,3 +1,9 @@
+univention-installer (8.0.23-2) unstable; urgency=low
+
+  * use */16 netmask for Zeroconf/APIPA-IP-Address (Bug #28467) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Oct 2012 13:53:45 +0200
+
 univention-installer (8.0.23-1) unstable; urgency=low
 
   * fixed creation of Zeroconf/APIPA-IP-Address (Bug #28467)

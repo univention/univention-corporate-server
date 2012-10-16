@@ -735,7 +735,7 @@ class object(content):
 				ip_input.paste_text()
 				ip_input.draw()
 				netmask_input = self.get_elem('INP_IPv4NETMASK')
-				netmask_input.text = "255.255.255.0"
+				netmask_input.text = "255.255.0.0"
 				netmask_input.set_cursor(len(netmask_input.text))
 				netmask_input.paste_text()
 				netmask_input.draw()
