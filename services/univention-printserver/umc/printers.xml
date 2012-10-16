@@ -9,9 +9,7 @@
 
 	<command name="printers/query" function="list_printers"/>
 
-	<command name="printers/get" function="get_printer">
-		<attribute name="printer" syntax="String"/>
-	</command>
+	<command name="printers/get" function="get_printer" />
 
 	<command name="printers/enable" function="enable_printer" />
 
