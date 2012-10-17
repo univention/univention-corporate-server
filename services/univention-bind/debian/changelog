@@ -1,3 +1,9 @@
+univention-bind (7.0.7-4) unstable; urgency=low
+
+  * Fixed typo in UCR variables description (Bug #28065)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2012 07:37:37 +0200
+
 univention-bind (7.0.7-3) unstable; urgency=low
 
   * renamed the variable dns/register/a_record/domain to dns/register/domain/a_record
