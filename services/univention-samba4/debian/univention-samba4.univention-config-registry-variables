@@ -348,13 +348,13 @@ Categories=service-samba
 
 [samba/usershare/allow_guests]
 Description[de]=Definiert ob es möglich ist, Gästen den Zugriff auf Freigaben zu erlauben.
-Description[en]=Defines wether it is possible to allow guests to access shares.
+Description[en]=Defines whether it is possible to allow guests to access shares.
 Type=str
 Categories=service-samba
 
 [samba/usershare/owner_only]
 Description[de]=Aktiviert/deaktiviert ob Nutzer nur Ordner freigeben können, deren Besitzer sie sind.
-Description[en]=Enables/disables wether only directories owned by the sharing user can be shared.
+Description[en]=Enables/disables whether only directories owned by the sharing user can be shared.
 Type=str
 Categories=service-samba
 
@@ -390,12 +390,12 @@ Categories=service-samba
 
 [dns/register/srv_record/pdc]
 Description[de]=Aktiviert/deaktiviert ob die PDC Records beim joinen registriert werden.
-Description[en]=Enables/disables wether the PDC records are registered when performing a domain join. 
+Description[en]=Enables/disables whether the PDC records are registered when performing a domain join. 
 Type=str
 Categories=service-samba
 
 [dns/register/srv_record/gc]
 Description[de]=Aktiviert/deaktiviert ob die GC Records beim joinen registriert werden.
-Description[en]=Enables/disables wether the GC records are registered when performing a domain join. 
+Description[en]=Enables/disables whether the GC records are registered when performing a domain join. 
 Type=str
 Categories=service-samba

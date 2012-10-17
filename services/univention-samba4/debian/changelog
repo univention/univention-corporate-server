@@ -1,3 +1,9 @@
+univention-samba4 (2.0.18-2) unstable; urgency=low
+
+  * Fixed typo in UCR variables description (Bug #28065)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2012 07:37:31 +0200
+
 univention-samba4 (2.0.18-1) unstable; urgency=low
 
   * create account for dns-$hostname manually also on provisioned DC
