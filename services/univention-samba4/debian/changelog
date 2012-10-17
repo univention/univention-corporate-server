@@ -1,3 +1,10 @@
+univention-samba4 (2.0.18-3) unstable; urgency=low
+
+  * univention-samba4.postinst: added  dpkg-statoverride on
+    /var/log/samba to confine it's accessibility (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 17 Oct 2012 10:28:04 +0200
+
 univention-samba4 (2.0.18-2) unstable; urgency=low
 
   * Fixed typo in UCR variables description (Bug #28065)

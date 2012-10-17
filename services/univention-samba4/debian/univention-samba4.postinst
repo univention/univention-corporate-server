@@ -44,6 +44,9 @@ fi
 
 eval "$(univention-config-registry shell)"
 
+dpkg-statoverride --update --add root root 0750 /var/log/samba || true
+
+
 if [ -z "$2" ]; then
 	mkdir -p /home/groups
 
