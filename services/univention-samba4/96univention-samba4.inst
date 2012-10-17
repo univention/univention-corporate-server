@@ -433,7 +433,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	if [ $? -eq 0 ] || [ -z "$samba4servicedcs" ]; then	## we are the first domainctontroller to provide this service
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-			run_samba_provision
+			run_samba_provision "$@"
 		fi
 
 		## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
@@ -467,7 +467,7 @@ if [ "$samba4_role" = 'DC' ]; then
 			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 				## special case: provision another instance of Samba 4
 				## this is similar to univention-samba-slave-pdc
-				run_samba_provision
+				run_samba_provision "$@"
 
 				## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
@@ -534,7 +534,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	# Register the local ips for the forward zone, skip with 'ucr set samba4/dns/domain/register=false'
 	is_ucr_true samba4/dns/domain/register
 	if [ $? != 1 ]; then
-		register_server_ips_with_domain
+		register_server_ips_with_domain "$@"
 	fi
 
 	## Kerberos keytab adjustments for Samba 4
@@ -590,7 +590,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 	# Register the local ips for the forward zone, skip with 'ucr set samba4/dns/domain/register=false'
 	is_ucr_true samba4/dns/domain/register
 	if [ $? != 1 ]; then
-		register_server_ips_with_domain
+		register_server_ips_with_domain "$@"
 	fi
 
 	## Kerberos keytab adjustments for Samba 4
