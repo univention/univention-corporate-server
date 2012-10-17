@@ -1,3 +1,10 @@
+univention-base-files (2.0.10-5) unstable; urgency=low
+
+  * univention-base-files.postinst: 
+    change logfile permissions from 750 to 640 (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 17 Oct 2012 11:20:49 +0200
+
 univention-base-files (2.0.10-4) unstable; urgency=low
 
   * univention-base-files.postinst: added dpkg-statoverrides
