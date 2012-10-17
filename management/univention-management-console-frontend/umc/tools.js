@@ -69,10 +69,6 @@ define([
 	// define umc/tools
 	var tools = {};
 	lang.mixin(tools, {
-		// default value for the session timeout
-		// it will be replaced by the ucr variable 'umc/http/session/timeout' onLogin
-		_sessionTimeout: 300,
-
 		_status: {
 			username: null,
 			hostname: '',
@@ -83,7 +79,10 @@ define([
 			setupGui: false,
 			loggingIn: false,
 			feedbackSubject: '[UMC-Feedback] Traceback',
-			feedbackAddress: 'feedback@univention.de'
+			feedbackAddress: 'feedback@univention.de',
+			// default value for the session timeout
+			// it will be replaced by the ucr variable 'umc/http/session/timeout' onLogin
+			sessionTimeout: 300
 		},
 
 		status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -158,7 +157,7 @@ define([
 			//		Reset the Internet Explorer Session. Internet Explorer can not handle max-age cookies.
 			//		This is required for automatically show the login dialogue when the session is expired.
 			if(has('ie') !== undefined) {
-				var date = new Date((_date || new Date()).getTime() + 1000 * this._sessionTimeout);
+				var date = new Date((_date || new Date()).getTime() + 1000 * this.status('sessionTimeout'));
 				cookie('UMCSessionId', cookie('UMCSessionId'), {
 					expires: date.toUTCString(),
 					path: '/'

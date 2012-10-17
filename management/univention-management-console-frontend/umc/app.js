@@ -132,12 +132,6 @@ define([
 			cookie('UMCUsername', username, { expires: 100, path: '/' });
 			tools.status('username', username);
 
-			// load required ucr variables
-			tools._sessionTimeout = parseInt( _ucr['umc/http/session/timeout'] , 10 );
-
-			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
-			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
-
 			// start the timer for session checking
 			tools.checkSession(true);
 
@@ -216,7 +210,14 @@ define([
 		},
 
 		onModulesLoaded: function() {
+			// load required ucr variables
+			tools.status('sessionTimeout', parseInt( _ucr['umc/http/session/timeout'] , 10 ) || tools.status('sessionTimeout'));
+			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
+			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
+
+			// setup the dynamic part of the GUI
 			this.setupGui();
+
 			// if only one module exists open it
 			var modules = this._moduleStore.query();
 			if (modules.length === 1 && !getQuery('module')) {
