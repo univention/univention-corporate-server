@@ -35,7 +35,9 @@ Depends: ${misc:Depends},
  php-net-ldap,
  php-net-smtp,
  php-cache,
- php-auth-sasl
+ php-auth-sasl,
+ php5-suhosin,
+ php5-xsl
 Description: UCS - horde4 webclient
  This package installs and configures the horde4
  webclient.

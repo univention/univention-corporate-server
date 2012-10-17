@@ -1,3 +1,10 @@
+univention-horde4 (2.0.1-1) unstable; urgency=low
+
+  * added packages dependencies to php5-suhosin
+    and php5-xsl (Bug #25792)
+
+ -- Felix Botner <botner@univention.de>  Wed, 17 Oct 2012 13:53:11 +0200
+
 univention-horde4 (2.0.0-1) unstable; urgency=low
 
   * update to php-horde-webmail 4.0.8 (Bug #25792) 
