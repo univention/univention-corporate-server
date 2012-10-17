@@ -59,14 +59,14 @@ Type=bool
 Categories=system-ssl
 
 [ssl/validity/host]
-Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Rechner-Zertifikat.
-Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the host certificate.
+Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Rechner-Zertifikat (wird automatisch vom System gesetzt).
+Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the host certificate (automatically set by the system).
 Type=int
 Categories=system-ssl
 
 [ssl/validity/root]
-Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Root-Zertifikat.
-Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the root certificate.
+Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Root-Zertifikat (wird automatisch vom System gesetzt).
+Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the root certificate automatically set by the system.
 Type=int
 Categories=system-ssl
 
