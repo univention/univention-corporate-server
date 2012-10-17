@@ -257,15 +257,8 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 		copy_cache_entry(&cache_entry, &updated_cache_entry);
 		handlers_update(dn, &cache_entry, &old_cache_entry, command, &updated_cache_entry);
 		//compare_cache_entries(&cache_entry, &updated_cache_entry);
-		if ( command == 'r' ) {
-			/* Delete the entry from cache, if the entry has been renamed, Bug #26069 */
-			if ((rv=cache_delete_entry(id, dn)) != 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
-			}
-		} else {
-			if ((rv=cache_update_entry_lower(id, dn, &updated_cache_entry)) != 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
-			}
+		if ((rv=cache_update_entry_lower(id, dn, &updated_cache_entry)) != 0) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
 		}
 		rv=0;
 		signals_unblock();
@@ -483,21 +476,26 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 	timeout.tv_sec = 300;
 	timeout.tv_usec = 0;
 
-	if ((rv=ldap_search_ext_s(lp->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res)) == LDAP_NO_SUCH_OBJECT) {
+	if ( command == 'r' ) {
+		/* if the entry has been renamed, run handlers_delete and remove the entry from cache, Bug #26069, updated for Bug #20605*/
 		rv = change_delete_dn(id, dn, command);
-	} else if (rv == LDAP_SUCCESS) {
-		if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
-			/* entry exists (since we didn't get NO_SUCH_OBJECT),
-			 * but was probably excluded thru ACLs which makes it
-			 * non-existent for us */
+	} else {
+		if ((rv=ldap_search_ext_s(lp->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res)) == LDAP_NO_SUCH_OBJECT) {
 			rv = change_delete_dn(id, dn, command);
-		} else {
-			/* entry exists, so make sure the schema is up-to-date and
-			 * then update it */
-			if ((rv = change_update_schema(lp)) == LDAP_SUCCESS) {
-				if (lp_local->host != NULL)     // we are a replicating system
-					rv = check_parent_dn(lp, id, dn, lp_local);
-				rv = change_update_entry(lp, id, cur, command);
+		} else if (rv == LDAP_SUCCESS) {
+			if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
+				/* entry exists (since we didn't get NO_SUCH_OBJECT),
+				* but was probably excluded thru ACLs which makes it
+				* non-existent for us */
+				rv = change_delete_dn(id, dn, command);
+			} else {
+				/* entry exists, so make sure the schema is up-to-date and
+				* then update it */
+				if ((rv = change_update_schema(lp)) == LDAP_SUCCESS) {
+					if (lp_local->host != NULL)     // we are a replicating system
+						rv = check_parent_dn(lp, id, dn, lp_local);
+					rv = change_update_entry(lp, id, cur, command);
+				}
 			}
 		}
 	}
