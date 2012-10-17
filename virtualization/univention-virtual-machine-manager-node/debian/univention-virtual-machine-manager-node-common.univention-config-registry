@@ -6,6 +6,9 @@ Variables: ssl/.*
 Variables: uvmm/managers
 
 Type: file
+File: etc/default/libvirt-bin
+
+Type: file
 File: etc/init.d/libvirt-bin
 Mode: 755
 
