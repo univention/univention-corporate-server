@@ -1,3 +1,9 @@
+univention-bind (7.0.9-1) unstable; urgency=low
+.
+  * removed the variable dns/register/domain/a_record and its function (Bug #28065)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 17 Oct 2012 16:11:39 +0200
+
 univention-bind (7.0.8-1) unstable; urgency=low
 
   * Fixed UCR variable descriptions (Bug #3129)

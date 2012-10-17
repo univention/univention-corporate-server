@@ -69,10 +69,3 @@ Description[de]=Definiert, ob Bind auch über IPv6-Sockets ansprechbar ist (Stan
 Description[en]=Defines if the bind service should listen on IPv6 sockets (Default: yes)
 Type=bool
 Categories=service-bind
-
-[dns/register/domain/a_record]
-Description[de]=Aktiviert/deaktiviert ob die IP-Adresse beim Joinen an der DNS Forward Zone registriert wird.
-Description[en]=Enables/disables whether the IP address is registered at the DNS Forward Zone when joining.
-Type=bool
-Categories=service-bind
-

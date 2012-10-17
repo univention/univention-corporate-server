@@ -52,16 +52,6 @@ wait_for_dns () {
     fi
 }
 
-local_is_ucr_false () { # test if UCS variable is "true" or "false"
-    local value
-    value="$(univention-config-registry get "$1")"
-    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
-        1|yes|on|true|enable|enabled) return 1 ;;
-        0|no|off|false|disable|disabled) return 0 ;;
-        *) return 2 ;;
-    esac
-}
-
 if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 	exit 1
 fi
@@ -82,10 +72,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	fi
 
 	wait_for_dns
-
-	if ! local_is_ucr_false dns/register/domain/a_record; then
-	    /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a "$hostname" "$IP" || die
-	fi
+	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a "$hostname" "$IP" || die
 
 	reversezone=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
 	if [ -z "$reversezone" ]; then exit 1; fi
