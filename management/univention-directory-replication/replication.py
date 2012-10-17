@@ -905,8 +905,10 @@ def handler(dn, new, listener_old, operation):
 		# add
 		if new and not old:
 
-			modrdn_cache = os.path.join(STATE_DIR, new['entryUUID'][0])
+			new_entryUUID = new['entryUUID'][0]
+			modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
 			if os.path.exists(modrdn_cache):	## check if a modrdn is pending
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
 				listener.setuid(0)
 				try:
 					with open(modrdn_cache,'r') as f:
@@ -921,11 +923,11 @@ def handler(dn, new, listener_old, operation):
 				listener.unsetuid()
 				(new_rdn, new_parent) = dn.split(',',1)
 				l.rename_s(old_dn, new_rdn, new_parent)
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modrdn from %s to %s,%s' % (old_dn, dn))
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modrdn from %s to %s,%s' % (old_dn, new_rdn, new_parent))
 
 			else:
 				al=addlist(new)
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'add: %s' % dn)
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: add: %s' % dn)
 				try:
 					l.add_s(dn, al)
 				except ldap.OBJECT_CLASS_VIOLATION, msg:
@@ -934,8 +936,9 @@ def handler(dn, new, listener_old, operation):
 		# delete
 		elif old and not new:
 			if operation == 'r':	## check for modrdn phase 1
-				modrdn_cache = os.path.join(STATE_DIR, old['entryUUID'][0])
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'rename: %s' % dn)
+				old_entryUUID = old['entryUUID'][0]
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
+				modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
 				listener.setuid(0)
 				try:
 					with open(modrdn_cache, 'w') as f:
@@ -949,7 +952,7 @@ def handler(dn, new, listener_old, operation):
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, str(e)))
 				listener.unsetuid()
 
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'delete: %s' % dn)
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: delete: %s' % dn)
 			try:
 				l.delete_s(dn)
 			except ldap.NOT_ALLOWED_ON_NONLEAF, msg:
@@ -964,7 +967,7 @@ def handler(dn, new, listener_old, operation):
 		else:
 			ml=modlist(old, new)
 			if ml:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'modify: %s' % dn)
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modify: %s' % dn)
 				l.modify_s(dn, ml)
 	except ldap.SERVER_DOWN, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: retrying' % msg[0]['desc'])
