@@ -42,6 +42,16 @@ if [ -z "$(univention-ldapsearch -xLLL relativeDomainName=_pkgdb._tcp relativeDo
 	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv pkgdb tcp 0 0 5432 "$hostname.$domainname." || die
 fi
 
+# wait for replication of service record (up to 1 minute)
+for i in $(seq 20)
+do
+	if host -t SRV "_pkgdb._tcp.$domainname"
+	then # service record available
+		break
+	fi
+	sleep 3s
+done
+
 univention-pkgdb-scan --db-server "$hostname.$domainname" --add "$hostname$" || exit 1
 univention-pkgdb-scan --db-server "$hostname.$domainname"
 
