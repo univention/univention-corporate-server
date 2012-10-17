@@ -202,4 +202,13 @@ univention-config-registry set security/packetfilter/package/univention-base-fil
 # Bug #25715: Restart ntp for fixed ntp.conf on 3.0-0-errataX
 [ "$1" = configure ] && [ -x "/etc/init.d/ntp" ] && dpkg --compare-versions "$2" le 1.0.42-1.64.201112011038 && invoke-rc.d ntp restart || true
 
+
+# protect these logfiles against arbitary access
+dpkg-statoverride --update --add root root 0750 /var/log/dpkg.log || true
+dpkg-statoverride --update --add root root 0750 /var/log/bootstrap.log || true
+dpkg-statoverride --update --add root root 0750 /var/log/lastlog || true
+dpkg-statoverride --update --add root root 0750 /var/log/faillog || true
+
+
+
 exit 0

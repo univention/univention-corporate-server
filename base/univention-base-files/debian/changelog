@@ -1,3 +1,11 @@
+univention-base-files (2.0.10-4) unstable; urgency=low
+
+  * univention-base-files.postinst: added dpkg-statoverrides
+    for certain logfiles to confine their accessibility
+    (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 17 Oct 2012 10:58:45 +0200
+
 univention-base-files (2.0.10-3) unstable; urgency=low
 
   * revert changes for Bug #11431
