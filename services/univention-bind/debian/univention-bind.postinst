@@ -72,8 +72,8 @@ fi
 if [ ! -e /etc/bind/local.conf.samba4 ]; then
 	echo "# add local zones here" >> /etc/bind/local.conf.samba4
 fi
-if [ ! -e /etc/bind/local2.conf.samba4 ]; then
-	echo "# add local zones here" >> /etc/bind/local2.conf.samba4
+if [ ! -e /etc/bind/local-predlz.conf.samba4 ]; then
+	echo "# add local zones, which have to be declared before the Samba 4 DLZ, here" >> /etc/bind/local-predlz.conf.samba4
 fi
 
 if [ "$1" = "configure" ]; then

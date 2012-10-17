@@ -52,7 +52,7 @@ else:
 	print '};'
 @!@
 
-include "/etc/bind/local2.conf.samba4";
+include "/etc/bind/local-predlz.conf.samba4";
 
 @!@
 print '''dlz "samba4.zone" {

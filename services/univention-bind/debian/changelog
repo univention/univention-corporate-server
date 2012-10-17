@@ -1,3 +1,9 @@
+univention-bind (7.0.7-4.1) unstable; urgency=low
+
+  * local2.conf.samba4 is now called local-predlz.conf.samba4 (Bug #26302)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 17 Oct 2012 12:26:19 +0200
+
 univention-bind (7.0.7-4) unstable; urgency=low
 
   * Fixed typo in UCR variables description (Bug #28065)
