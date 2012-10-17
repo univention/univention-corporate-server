@@ -168,7 +168,6 @@ define([
 						}
 
 						// perform the upload
-						this._updateLabel();
 						var params = {};
 						if (this.dynamicOptions) {
 							if (typeof this.dynamicOptions == "function") {
@@ -183,6 +182,7 @@ define([
 							iframe: (this._uploader.uploadType === 'iframe') ? true : false
 						});
 						this._uploader.upload(params);
+						this._updateLabel();
 						this.onUploadStarted(data[0]);
 					}));
 				}

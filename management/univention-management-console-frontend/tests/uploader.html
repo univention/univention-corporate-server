@@ -4,14 +4,14 @@
 <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style type="text/css">
+			@import url("/univention-management-console/js/dojo/resources/dojo.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/umc.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/country-flags.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/umcGrid.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/EnhancedGrid.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/umcEnhancedGrid.css");
+			@import url("/univention-management-console/js/dijit/themes/umc/Toaster.css");
             @import url("/univention-management-console/js/dojo/resources/dojo.css");
-            @import url("/univention-management-console/css/dijit/themes/umc/umc.css");
-            @import url("/univention-management-console/css/dojox/grid/resources/Grid.css");
-            @import url("/univention-management-console/css/dojox/grid/resources/umcGrid.css");
-            @import url("/univention-management-console/css/dojox/grid/enhanced/resources/EnhancedGrid.css");
-            @import url("/univention-management-console/css/dojox/grid/enhanced/resources/umc/EnhancedGrid.css");
-            @import url("/univention-management-console/css/dojox/form/resources/CheckedMultiSelect.css");
-            @import url("/univention-management-console/css/dojox/widget/Dialog/Dialog.css");
             h1 {
                 margin-bottom: 5px;
                 margin-top: 10px;
@@ -31,15 +31,19 @@
 			var djConfig = {
 				modulePaths : {"umc" : "/univention-management-console/js/umc"}
 			};
-		</script>    
-        <script type="text/javascript" src="/univention-dojo/dojo/dojo.js"></script>
+		</script>
+        <script type="text/javascript" src="/univention-management-console/js/dojo/dojo.js.uncompressed.js"></script>
         <script type="text/javascript">
-            dojo.require("umc.widgets.Uploader");
-            dojo.require("umc.widgets.ImageUploader");
-        </script>
-        <script type="text/javascript">
-			dojo.addOnLoad(function() {
-				umc.tools.umcpCommand( 'auth', { username : 'Administrator', password : 'univention' } );
+			require([
+				"dojo/_base/lang",
+				"dojo/dom-construct",
+				"dojo/_base/window",
+				"umc/tools",
+				"umc/widgets/Uploader",
+				"umc/widgets/ImageUploader",
+				"dojo/domReady!"
+			], function(lang, domConstruct, win, tools, Uploader, ImageUploader) {
+				tools.umcpCommand( 'auth', { username : 'Administrator', password : 'univention' } );
 
 				/*uploader = new umc.widgets.Uploader({});
 				dojo.place(uploader.domNode, dojo.body());
@@ -51,8 +55,9 @@
 				image = new umc.widgets.Image({});
 				dojo.place(image.domNode, dojo.body());*/
 
-				imageUploader = new umc.widgets.ImageUploader({});
-				dojo.place(imageUploader.domNode, dojo.body());
+				imageUploader = new ImageUploader({});
+				domConstruct.place(imageUploader.domNode, win.body());
+				imageUploader.startup();
 			});
 		</script>
 </head>
