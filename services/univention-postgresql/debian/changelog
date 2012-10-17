@@ -1,3 +1,9 @@
+univention-postgresql (5.0.1-1) unstable; urgency=low
+
+  * commit postgresql/pam_ldap.conf in join script (Bug #28795)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 17 Oct 2012 12:46:24 +0200
+
 univention-postgresql (5.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.

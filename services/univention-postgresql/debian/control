@@ -10,6 +10,7 @@ Package: univention-postgresql
 Architecture: all
 Pre-Depends: postgresql-8.4 | postgresql-8.3 | postgresql-7.4
 Depends: ${misc:Depends},
+ shell-univention-lib,
  univention-config-registry
 Description: UCS - postgresql configuration
  This package contains the configuration for the
