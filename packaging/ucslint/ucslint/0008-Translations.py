@@ -45,19 +45,24 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def check_py(self, py_files):
 		"""Check Python files."""
-		regEx1 = re.compile("""^(?:[^'"#\n]| # non string, non comment prefix
-				(?: # matched strings
-					('''|""\").*?(?<!\\\\)\\\1
-					|'(?:[^'\n]|\\\\')*?'
-					|"(?:[^"\n]|\\\\")*?"
-				))*
-				[([{\s,:](_\\(\s* # translation
-				(?: # matched strings
-					('''|""\").*?(?<!\\\\)\\3
-					|'(?:[^'\n]|\\\\')*?'
-					|"(?:[^"\n]|\\\\")*?"
-				)\s*%\s*    # substitution
-				(?:[^)]+\\))?)""", re.DOTALL | re.MULTILINE | re.VERBOSE)
+		def _or(*disjunct):
+			return r'(?:%s)' % ('|'.join(disjunct))
+
+		matched_string = '%s?%s' % (
+				_or('[Rr]', '[Uu]', '[Uu][Rr]'),
+				_or(
+					r"'''(?:[^'\\]|\\.|'[^']|''[^'])*?'''",
+					r'"""(?:[^"\\]|\\.|"[^"]|""[^"])*?"""',
+					r"'(?:[^'\\\n]|\\.)*?'",
+					r'"(?:[^"\\\n]|\\.)*?"',
+					)
+				)
+		non_string = r"""[^'"#\n]"""
+		context = _or(non_string, matched_string)
+		separator = r"[([{\s,:]"
+		translation = r"(_\(\s*" + matched_string + r"\s*%\s*(?:[^\n]+\))?)"
+		regEx1 = re.compile(context + separator + translation,
+				re.DOTALL | re.MULTILINE | re.VERBOSE)
 
 		for fn in py_files:
 			try:
@@ -75,7 +80,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					else:
 						line = content.count('\n', 0, match.start()) + 1
 						pos = match.end()
-						self.addmsg( '0008-1', 'substitutes before translation: %s' % match.group(2), fn, line )
+						self.addmsg( '0008-1', 'substitutes before translation: %s' % match.group(1), fn, line )
 
 	def check_po(self, po_files):
 		"""Check Portable Object files."""

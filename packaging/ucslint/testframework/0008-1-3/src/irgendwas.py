@@ -16,5 +16,12 @@ def main():
 	print _("""foo %s bar""" % x)
 	print _('''foo %s \'''bar''' % x)
 	print _("""foo %s \"""bar""" % x)
+	print _('''foo %s bar''')
+	print _(r"foo %s bar" % x)
+	print _(u'foo %s bar' % x)
+	print _(ur'foo %s bar' % x)
+	print _('foo %s bar'
+			%
+			x)
 
 main()
