@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.118-1) unstable; urgency=low
+
+  * fixed background of disabled buttons; Bug #28796
+
+ -- Florian Best <best@univention.de>  Wed, 17 Oct 2012 14:26:58 +0200
+
 univention-management-console-frontend (2.0.117-1) unstable; urgency=low
 
   * Uploader: disable button after performing the update; Bug #27397
