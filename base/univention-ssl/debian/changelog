@@ -1,3 +1,10 @@
+univention-ssl (7.0.5-2) unstable; urgency=low
+
+  * fixed ucr var description of ssl/validity/host and
+    ssl/validity/root (Bug #25788) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 17 Oct 2012 10:17:52 +0200
+
 univention-ssl (7.0.5-1) unstable; urgency=low
 
   * fixed ucr var description of ssl/validity/host and
