@@ -262,21 +262,21 @@ class License( object ):
 					self.real[self.version][License.DESKTOP],
 					self.real[self.version][License.GROUPWARE] )
 			elif self.version == '2':
-				self.__countObject( License.SERVERS, lo)
 				self.__countObject( License.USERS, lo)
+				self.__countObject( License.SERVERS, lo)
 				self.__countObject( License.MANAGEDCLIENTS, lo)
 				self.__countObject( License.CORPORATECLIENTS, lo)
 				self.__countObject( License.VIRTUALDESKTOPUSERS, lo)
 				self.__countObject( License.VIRTUALDESKTOPCLIENTS, lo)
 
-				lic = ( self.licenses[self.version][License.SERVERS],
-					self.licenses[self.version][License.USERS],
+				lic = ( self.licenses[self.version][License.USERS],
+					self.licenses[self.version][License.SERVERS],
 					self.licenses[self.version][License.MANAGEDCLIENTS],
 					self.licenses[self.version][License.CORPORATECLIENTS],
 					self.licenses[self.version][License.VIRTUALDESKTOPUSERS],
 					self.licenses[self.version][License.VIRTUALDESKTOPCLIENTS] )
-				real= ( self.real[self.version][License.SERVERS],
-					self.real[self.version][License.USERS],
+				real= ( self.real[self.version][License.USERS],
+					self.real[self.version][License.SERVERS],
 					self.real[self.version][License.MANAGEDCLIENTS],
 					self.real[self.version][License.CORPORATECLIENTS],
 					self.real[self.version][License.VIRTUALDESKTOPUSERS ],
@@ -327,11 +327,11 @@ class License( object ):
 		elif self.version == '2':
 			lic_users, lic_servers, lic_managedclients, lic_corporateclients, lic_virtualdesktopusers, lic_virtualdesktopclients = lic
 			real_users, real_servers, real_managedclients, real_corporateclients, real_virtualdesktopusers, real_virtualdesktopclients = real
+			if lic_users and self.__cmp_gt( int( real_users ) - self.sysAccountsFound ,lic_users ):
+				disable_add = 6
 			# The license should be valid even if we have more servers than the license allowed
 			#if lic_servers and self.__cmp_gt( real_servers, lic_servers ):
-			#	disable_add = 6
-			if lic_users and self.__cmp_gt( int( real_users ) - License.SYSACCOUNTS ,lic_users ):
-				disable_add = 7
+			#	disable_add = 7
 			if lic_managedclients and self.__cmp_gt( real_managedclients, lic_managedclients ):
 				disable_add = 8
 			if lic_corporateclients and self.__cmp_gt( real_corporateclients, lic_corporateclients ):
@@ -414,10 +414,10 @@ class License( object ):
 			if 'OXAE' in self.types and 'UCS' not in self.types:
 				self.types.append('UCS')
 		elif self.version == '2':
-			self.licenses[self.version][ License.SERVERS ] = self.__getValue( self.keys[self.version][License.SERVERS], None, 
-					'Servers', 'Servers not found' )
 			self.licenses[self.version][ License.USERS ] = self.__getValue( self.keys[self.version][License.USERS], None, 
 					'Users', 'Users not found' )
+			self.licenses[self.version][ License.SERVERS ] = self.__getValue( self.keys[self.version][License.SERVERS], None, 
+					'Servers', 'Servers not found' )
 			self.licenses[self.version][ License.MANAGEDCLIENTS ] = self.__getValue( self.keys[self.version][License.MANAGEDCLIENTS], None, 
 					'Managed Clients', 'Managed Clients not found' )
 			self.licenses[self.version][ License.CORPORATECLIENTS ] = self.__getValue( self.keys[self.version][License.CORPORATECLIENTS], None, 
