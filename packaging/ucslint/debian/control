@@ -11,7 +11,7 @@ Package: ucslint
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}, devscripts, python-libtre
 Conflicts: ucs-tools (<< 1.2.5)
-Description: heck Univention packaging
+Description: Check Univention packaging
  This package contains the Univention tool ucslint that
  is able to check debian source packages against common
  packaging mistakes.
