@@ -23,13 +23,11 @@ W:0004-43: debian/test2.univention-config-registry: UCR .info-file contains entr
 W:0004-44: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: file" with multiple "User: " line
 W:0004-45: debian/test2.univention-config-registry: UCR .info-file contains entry of "Type: file" with invalid "Group: " line
 W:0004-46: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: file" with multiple "Group: " line
-W:0004-47: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: file" with invalid "Mode: " line
 W:0004-47: debian/test2.univention-config-registry: UCR .info-file contains entry of "Type: file" with invalid "Mode: " line
 W:0004-48: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: file" with multiple "Mode: " line
 W:0004-49: debian/test2.univention-config-registry: UCR .info-file contains entry of "Type: multifile" with invalid "User: " line
 W:0004-50: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: multifile" with multiple "User: " line
 W:0004-51: debian/test2.univention-config-registry: UCR .info-file contains entry of "Type: multifile" with invalid "Group: " line
 W:0004-52: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line
-W:0004-53: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line
 W:0004-53: debian/test2.univention-config-registry: UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line
 W:0004-54: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line

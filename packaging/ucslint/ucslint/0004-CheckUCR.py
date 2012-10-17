@@ -334,28 +334,28 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									multifiles[mfile[0]] = entry
 
 								user = entry.get('User', [])
-								if len(user) == 1:
+								if len(user) > 1:
+									self.addmsg('0004-44', 'UCR .info-file contains entry of "Type: file" with multiple "User: " line', fn)
+								elif len(user) == 1:
 									if user[0].isdigit():  # must be an symbolic name
 										self.addmsg('0004-43', 'UCR .info-file contains entry of "Type: file" with invalid "User: " line', fn)
-								elif len(user) > 1:
-									self.addmsg('0004-44', 'UCR .info-file contains entry of "Type: file" with multiple "User: " line', fn)
 
 								group = entry.get('Group', [])
-								if len(group) == 1:
+								if len(group) > 1:
+									self.addmsg('0004-46', 'UCR .info-file contains entry of "Type: file" with multiple "Group: " line', fn)
+								elif len(group) == 1:
 									if group[0].isdigit():  # must be an symbolic name
 										self.addmsg('0004-45', 'UCR .info-file contains entry of "Type: file" with invalid "Group: " line', fn)
-								elif len(group) > 1:
-									self.addmsg('0004-46', 'UCR .info-file contains entry of "Type: file" with multiple "Group: " line', fn)
 
 								mode = entry.get('Mode', [])
-								for m in mode:
+								if len(mode) > 1:
+									self.addmsg('0004-48', 'UCR .info-file contains entry of "Type: file" with multiple "Mode: " line', fn)
+								elif len(mode) == 1:
 									try:
-										if not 0 <= int(m, 8) <= 07777:
+										if not 0 <= int(mode[0], 8) <= 07777:
 											self.addmsg('0004-47', 'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line', fn)
 									except (TypeError, ValueError):
 										self.addmsg('0004-47', 'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line', fn)
-								if len(mode) > 1:
-									self.addmsg('0004-48', 'UCR .info-file contains entry of "Type: file" with multiple "Mode: " line', fn)
 
 								pre = entry.get('Preinst', [])
 								if len(pre) > 1:
@@ -413,28 +413,28 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								files.append( entry )
 
 								user = entry.get('User', [])
-								if len(user) == 1:
+								if len(user) > 1:
+									self.addmsg('0004-50', 'UCR .info-file contains entry of "Type: multifile" with multiple "User: " line', fn)
+								elif len(user) == 1:
 									if user[0].isdigit():  # must be an symbolic name
 										self.addmsg('0004-49', 'UCR .info-file contains entry of "Type: multifile" with invalid "User: " line', fn)
-								elif len(user) > 1:
-									self.addmsg('0004-50', 'UCR .info-file contains entry of "Type: multifile" with multiple "User: " line', fn)
 
 								group = entry.get('Group', [])
-								if len(group) == 1:
+								if len(group) > 1:
+									self.addmsg('0004-52', 'UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line', fn)
+								elif len(group) == 1:
 									if group[0].isdigit():  # must be an symbolic name
 										self.addmsg('0004-51', 'UCR .info-file contains entry of "Type: multifile" with invalid "Group: " line', fn)
-								elif len(group) > 1:
-									self.addmsg('0004-52', 'UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line', fn)
 
 								mode = entry.get('Mode', [])
-								for m in mode:
+								if len(mode) > 1:
+									self.addmsg('0004-54', 'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line', fn)
+								elif len(mode) == 1:
 									try:
-										if not 0 <= int(m, 8) <= 07777:
+										if not 0 <= int(mode[0], 8) <= 07777:
 											self.addmsg('0004-53', 'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line', fn)
 									except (TypeError, ValueError):
 										self.addmsg('0004-53', 'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line', fn)
-								if len(mode) > 1:
-									self.addmsg('0004-54', 'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line', fn)
 
 								pre = entry.get('Preinst', [])
 								if len(pre) > 1:

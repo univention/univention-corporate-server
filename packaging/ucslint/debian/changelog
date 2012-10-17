@@ -1,6 +1,7 @@
 ucslint (3.0.4-3) unstable; urgency=low
 
   * debian/control: Fix description (Bug #22484)
+  * Fix multiple User, Group, Mode entries (Bug #14070)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 16 Oct 2012 08:37:07 +0200
 
