@@ -198,9 +198,6 @@ check_space(){
 	fi
 }
 
-# install UDM legacy package containing old policy UDM modules
-univention-install python-univention-directory-manager-legacy
-
 
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/

@@ -1,3 +1,11 @@
+univention-updater (8.0.20-1) unstable; urgency=low
+
+  * moved installation of
+  python-univention-directory-manager-legacy from
+  preup to postup (Bug #27616)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 17 Oct 2012 09:50:36 +0200
+
 univention-updater (8.0.19-1) unstable; urgency=low
 
   * install python-univention-directory-manager-legacy
