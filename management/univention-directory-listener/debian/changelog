@@ -1,3 +1,9 @@
+univention-directory-listener (7.0.4-2) unstable; urgency=low
+
+  * fix double free (Bug #20605)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Oct 2012 17:54:33 +0200
+
 univention-directory-listener (7.0.4-1) unstable; urgency=low
 
   * patch for Bug #26069 improved to run handlers in delete mode during

@@ -498,8 +498,8 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 				}
 			}
 		}
+		ldap_msgfree(res);
 	}
 
-	ldap_msgfree(res);
 	return rv;
 }
