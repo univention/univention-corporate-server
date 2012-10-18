@@ -399,3 +399,9 @@ Description[de]=Aktiviert/deaktiviert ob die GC Records beim joinen registriert 
 Description[en]=Enables/disables whether the GC records are registered when performing a domain join. 
 Type=str
 Categories=service-samba
+
+[samba4/dcerpc/endpoint/drsuapi]
+Description[de]=Aktiviert/deaktiviert den DRSUAPI Server als DCERPC Endpoint
+Description[en]=Enables/disables the DRSUAPI server as DCERPC endpoint
+Type=str
+Categories=service-samba
