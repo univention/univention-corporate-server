@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.62-1) unstable; urgency=low
+
+  * instead of importing every single computer child module in
+    computer.py, import every module in the module dir  (Bug #27617)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 18 Oct 2012 17:07:10 +0200
+
 univention-directory-manager-modules (8.0.61-1) unstable; urgency=low
 
   * package "python-univention-directory-manager-legacy" is now
