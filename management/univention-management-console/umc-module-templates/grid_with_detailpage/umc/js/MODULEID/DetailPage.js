@@ -37,7 +37,6 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/StandbyMixin",
-	"umc/modules/MODULEID/DetailPage",
 	"umc/i18n!/umc/modules/MODULEID"
 ], function(declare, lang, dialog, Form, Page, TextBox, ComboBox, StandbyMixin, _) {
 	return declare("umc.modules.MODULEID.DetailPage", [ Page, StandbyMixin ], {

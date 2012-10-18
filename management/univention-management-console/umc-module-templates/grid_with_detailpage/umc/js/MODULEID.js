@@ -213,9 +213,9 @@ define([
 			});
 
 			// turn off the standby animation as soon as all form values have been loaded
-			on.once(this._searchForm, 'valuesInitialized', function() {
+			on.once(this._searchForm, 'valuesInitialized', lang.hitch(this, function() {
 				this.standby(false);
-			});
+			}));
 
 			// add search form to the title pane
 			titlePane.addChild(this._searchForm);
