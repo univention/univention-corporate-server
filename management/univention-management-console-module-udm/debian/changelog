@@ -1,3 +1,11 @@
+univention-management-console-module-udm (3.0.30-1) unstable; urgency=low
+
+  * LicenseDialog: Do not show the count for unlimited attributes
+    because they will not be counted (Bug #28186)
+  * Show a message if the license is not valid (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Oct 2012 18:10:16 +0200
+
 univention-management-console-module-udm (3.0.29-1) unstable; urgency=low
 
   * fixed traceback for invalid license imports; Bug #27471

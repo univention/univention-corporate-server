@@ -125,10 +125,14 @@ def LDAP_Connection( func ):
 
 				# license check (see also univention.admin.uldap.access.bind())
 				if not GPLversion:
-					_licenseCheck = univention.admin.license.init_select(lo, 'admin')
-					if _licenseCheck in range(1, 5) or _licenseCheck in range(6,12):
+					try:
+						_licenseCheck = univention.admin.license.init_select(lo, 'admin')
+						if _licenseCheck in range(1, 5) or _licenseCheck in range(6,12):
+							lo.allow_modify = 0
+						if _licenseCheck is not None:
+							lo.requireLicense()
+					except univention.admin.uexceptions.licenseInvalid:
 						lo.allow_modify = 0
-					if _licenseCheck is not None:
 						lo.requireLicense()
 
 				po = udm_uldap.position( lo.base )
@@ -827,6 +831,7 @@ def check_license(ldap_connection = None, ldap_position = None ):
 	if GPLversion:
 		raise udm_errors.licenseGPLversion
 	ldap_connection._validateLicense()  # throws more exceptions in case the license could not be found
+	MODULE.info('_validateLicense result=%s' % _licenseCheck)
 	if _licenseCheck == 1:
 		raise udm_errors.licenseClients
 	elif _licenseCheck == 2:

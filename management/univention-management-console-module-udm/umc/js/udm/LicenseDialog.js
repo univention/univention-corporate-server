@@ -149,7 +149,11 @@ define([
 		},
 
 		_limitInfo: function( limit ) {
-			return _( '%s (used: %s)', this.licenseInfo.licenses[ limit ] === null ? _( 'unlimited' ) : this.licenseInfo.licenses[ limit ], this.licenseInfo.real[ limit] );
+			if ( this.licenseInfo.licenses[ limit ] === null ) {
+				return  _( 'unlimited' );
+			} else {
+				return _( '%s (used: %s)', this.licenseInfo.licenses[ limit ], this.licenseInfo.real[ limit] );
+			}
 		},
 
 		updateLicense: function() {
