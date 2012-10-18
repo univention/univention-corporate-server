@@ -40,8 +40,6 @@ case "$1" in
 			pgsql/pkgdb/networks?"0.0.0.0/0 ::/0" \
 			pkgdb/scan?yes
 
-		create_logfile /var/log/univention/pkgdb.log "root:adm" 640
-
 		# Create the local DB-Superuser pkgdbu for pkgdb with password in /etc/postgresql/pkgdb.secret
 		pkgdbu=`su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}'`
 		if [ ! "$pkgdbu" ] ;then
@@ -85,8 +83,6 @@ case "$1" in
 		if [ -x "/etc/init.d/univention-directory-listener" ]; then
 			/etc/init.d/univention-directory-listener crestart
 		fi
-
-		create_logfile_if_missing /var/log/univention/pkgdb.log "root:adm" 640
 
 		if [ -x "/etc/init.d/univention-management-console-server" ] ; then
 			/etc/init.d/univention-management-console-server crestart

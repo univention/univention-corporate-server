@@ -1,3 +1,10 @@
+univention-pkgdb (6.0.15-2) unstable; urgency=low
+
+  * moved creation of pkgdb.log from univention-pkgdb.postinst
+    to python-univention-pkgdb.postinst (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 18 Oct 2012 15:44:04 +0200
+
 univention-pkgdb (6.0.15-1) unstable; urgency=low
 
   * wait for service record in 50univention-pkgdb.inst (Bug #13890)
