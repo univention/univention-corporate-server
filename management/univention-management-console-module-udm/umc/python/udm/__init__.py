@@ -214,7 +214,7 @@ class Instance( Base ):
 	@LDAP_Connection
 	def license_import( self, request, ldap_connection = None, ldap_position = None ):
 		filename = None
-		if isinstance( request.options, ( list, tuple ) ):
+		if isinstance(request.options, (list, tuple)) and request.options:
 			# file upload
 			filename = request.options[ 0 ][ 'tmpfile' ]
 			if not os.path.realpath(filename).startswith(TEMPUPLOADDIR):
