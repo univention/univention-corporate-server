@@ -1,0 +1,2 @@
+modules/univention/admin/handlers/legacy/policies/*.py usr/share/pyshared/univention/admin/handlers/policies
+modules/univention/admin/handlers/legacy/computers/*.py usr/share/pyshared/univention/admin/handlers/computers/

@@ -60,7 +60,7 @@ Description: UCS - Command-line based administration tools
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: python-univention-directory-manager-legacy
+Package: python-univention-directory-manager-legacy-ucd-tcs
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention-directory-manager (= ${binary:Version})
