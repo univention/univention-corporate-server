@@ -1,4 +1,4 @@
-univention-flashplugin (5.0.9-2) unstable; urgency=low
+univention-flashplugin (5.0.9-3) unstable; urgency=low
 
   * update to new Flash download URL (Bug #28731)
 
