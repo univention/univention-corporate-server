@@ -47,14 +47,14 @@ Type=bool
 Categories=service-bind,system-services
 
 [dns/allow/query]
-Description[de]=ACL ID der Systeme oder Netzwerke, die als Option allow-query eingetragen werden soll. Zusätzlich zu dem Wert 'any' ist die Angabe definierter ACLs, die mehrere Semikolon separierte Einträge enthalten, möglich (wirkt sich nur auf das LDAP-Backend aus).
-Description[en]=ACL ID of the systems or networks, that are set for the option allow-query. Additionally to the value 'any' the use of defined ACLs, containing multiple semicolon separated entries, is possible (only effects on LDAP backend).
+Description[de]=ACL ID der Systeme oder Netzwerke, die als Option allow-query eingetragen werden soll. Zusätzlich zu dem Wert 'any' ist die Angabe definierter ACLs, die mehrere Semikolon separierte Einträge enthalten, möglich.
+Description[en]=ACL ID of the systems or networks, that are set for the option allow-query. Additionally to the value 'any' the use of defined ACLs, containing multiple semicolon separated entries, is possible.
 Type=str
 Categories=Network
 
 [dns/allow/transfer]
-Description[de]=ACL ID der Systeme oder Netzwerke, die als Option allow-transfer eingetragen werden soll. Zusätzlich zu dem Wert 'any' ist die Angabe definierter ACLs, die mehrere Semikolon separierte Einträge enthalten, möglich (wirkt sich nur auf das LDAP-Backend aus).
-Description[en]=ACL ID of the systems or networks, that are set for the option allow-transfer. Additionally to the value 'any' the use of defined ACLs, containing multiple semicolon separated entries, is possible (only effects on LDAP backend).
+Description[de]=ACL ID der Systeme oder Netzwerke, die als Option allow-transfer eingetragen werden soll. Zusätzlich zu dem Wert 'any' ist die Angabe definierter ACLs, die mehrere Semikolon separierte Einträge enthalten, möglich (wird nur vom LDAP-Backend unterstützt).
+Description[en]=ACL ID of the systems or networks, that are set for the option allow-transfer. Additionally to the value 'any' the use of defined ACLs, containing multiple semicolon separated entries, is possible (only supported by the LDAP backend).
 Type=str
 Categories=Network
 

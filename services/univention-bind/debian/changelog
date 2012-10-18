@@ -1,3 +1,11 @@
+univention-bind (7.0.9-4) unstable; urgency=low
+
+  * modified descriptions of UCR variables:
+    dns/allow/transfer and dns/allow/query
+    (Bug #10365)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 18 Oct 2012 14:17:06 +0200
+
 univention-bind (7.0.9-3) unstable; urgency=low
 
   * modified descriptions of UCR variables:
