@@ -138,7 +138,7 @@ ERRATA=93 # Last errata included with UCS-3.0-2
 univention-config-registry set repository/online/errata/start=$((1 + $ERRATA)) $UPDATE >>"$UPDATER_LOG" 2>&1
 
 # install UDM legacy package containing old policy UDM modules
-install python-univention-directory-manager-legacy
+install python-univention-directory-manager-legacy-ucd-tcs
 
 echo "done."
 date >>"$UPDATER_LOG"
