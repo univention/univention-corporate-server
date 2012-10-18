@@ -793,7 +793,7 @@ def run_phaseI(opts, args):
 	time.sleep(2)
 
 	## Disable replication from Samba4 to AD
-	config_registry.handler_set(["samba4/service/drsuapi=false"])
+	config_registry.handler_set(["samba4/dcerpc/endpoint/drsuapi=false"])
 	## Temporary workaround, until univention-samba4 smb.conf template supports samba4/service/drsuapi
 	p = subprocess.Popen(["sed", "-i", '/-drsuapi/!s/\(\s*dcerpc endpoint servers\s*=\s*.*\)$/\\1 -drsuapi/', "/etc/samba/smb.conf"])
 	p.wait()
@@ -1314,7 +1314,7 @@ def run_phaseIII(opts, args):
 	config_registry.handler_set(["dns/backend=samba4"])
 
 	## Re-enable replication from Samba4
-	config_registry.handler_unset(["samba4/service/drsuapi"])
+	config_registry.handler_unset(["samba4/dcerpc/endpoint/drsuapi"])
 
 	## Claim FSMO roles
 	print "Claiming FSMO roles"
