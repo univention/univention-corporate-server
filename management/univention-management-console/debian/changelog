@@ -1,3 +1,9 @@
+univention-management-console (5.0.46-1) unstable; urgency=low
+
+  * ignore mobile- and managedclient in acls (Bug #27617)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 18 Oct 2012 17:11:54 +0200
+
 univention-management-console (5.0.45-1) unstable; urgency=low
 
   * fixed two typos in umc-create-module templates; Bug #28428

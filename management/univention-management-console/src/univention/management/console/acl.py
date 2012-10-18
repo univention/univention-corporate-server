@@ -71,8 +71,6 @@ import univention.admin.handlers.computers.domaincontroller_master as dc_master
 import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
 import univention.admin.handlers.computers.domaincontroller_slave as dc_slave
 import univention.admin.handlers.computers.memberserver as memberserver
-import univention.admin.handlers.computers.managedclient as managedclient
-import univention.admin.handlers.computers.mobileclient as mobileclient
 
 class Rule( dict ):
 	"""A simple class representing one ACL rule in a form that can be
@@ -119,7 +117,7 @@ class ACLs( object ):
 	CACHE_DIR = '/var/cache/univention-management-console/acls'
 
 	#: list of all supported computer types for ACL rules
-	_systemroles = ( dc_master, dc_backup, dc_slave, memberserver, managedclient, mobileclient )
+	_systemroles = ( dc_master, dc_backup, dc_slave, memberserver )
 
 	def __init__( self, ldap_base = None, acls = None ):
 		self.__ldap_base = ldap_base
@@ -149,10 +147,6 @@ class ACLs( object ):
 					servers = dc_slave.lookup( None, self.lo, None, base=self.__ldap_base )
 				elif host == 'memberserver':
 					servers = memberserver.lookup( None, self.lo, None, base=self.__ldap_base )
-				elif host == 'mobileclient':
-					servers = mobileclient.lookup( None, self.lo, None, base=self.__ldap_base )
-				elif host == 'managedclient':
-					servers = managedclient.lookup( None, self.lo, None, base=self.__ldap_base )
 
 				hosts.extend( filter( lambda server: 'name' in server, servers ) )
 
