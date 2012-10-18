@@ -7,42 +7,45 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-# /var/log/mrtg should only be accessible by root:adm . If not, the world-readable
-# logfiles within the directory are exposed to arbitrary users:
-check_perm -d /var/log/mrtg 0750 root adm || RETVAL=110
+dpkg -l univention-samba &> /dev/null
+SAMBA=$?
+dpkg -l univention-samba4 &> /dev/null
+SAMBA4=$?
+dpkg -l univention-nagios-server &> /dev/null
+NAGIOS=$?
 
-# /var/log/samba should only be accessible by root:adm . If not, the world-readable
-# logfiles within the directory are exposed to arbitrary users:
-check_perm -d /var/log/samba 0750 root adm || RETVAL=121 # Bug #25164
-
-# /var/log/nagios2 should only be accessible by root:adm . If not, the world-readable
-# logfiles within the directory are exposed to arbitrary users:
-check_perm -d /var/log/nagios2 02751 nagios adm || RETVAL=110
-
+if [ $SAMBA -eq "0" ] || [ $SAMBA4 -eq "0" ] ; then
+	# /var/log/samba should only be accessible by root:adm . If not, the world-readable
+	# logfiles within the directory are exposed to arbitrary users:
+	check_perm -d /var/log/samba 0750 root adm || RETVAL=121 # Bug #25164
+fi
+if [ $NAGIOS -eq "0" ] ; then
+	# /var/log/nagios2 should only be accessible by root:adm . If not, the world-readable
+	# logfiles within the directory are exposed to arbitrary users:
+	check_perm -d /var/log/nagios3 02751 nagios adm || RETVAL=110
+fi
 # /var/log/xen should only be accessible by root:adm . If not, the world-readable
 # logfiles within the directory are exposed to arbitrary users:
 check_perm -d /var/log/xen 02750 root adm || RETVAL=110
+
+# /var/log/mrtg should only be accessible by root:adm . If not, the world-readable
+# logfiles within the directory are exposed to arbitrary users:
+check_perm -d /var/log/mrtg 0750 root adm || RETVAL=110
 
 tmpfile=$(mktemp)
 
 echo "***Searching for world-readable logfiles:"
 find /var/log \
 	-type l -prune \
-	-o -path "/var/log/apt" -prune \
 	-o -path "/var/log/univention" -prune \
-	-o -path "/var/log/nagios2" -prune \
-	-o -path "/var/log/ntpstats" -prune \
-	-o -path "/var/log/ksymoops" -prune \
-	-o -path "/var/log/mrtg" -prune \
-	-o -path "/var/log/news" -prune \
-	-o -path "/var/log/xen" -prune \
+	-o -path "/var/log/samba" -prune \
+	-o -path "/var/log/nagios3" -prune \
 	-o -not -type d -perm /o+r ! \( \
 		-path "/var/log" \
-		-o -path "/var/log/apache2" \
 		-o -path "/var/log/aptitude*" \
+		-o -path "/var/log/apt/history.log" \
 		-o -path "/var/log/autoupdate.log" \
 		-o -path "/var/log/alternatives.log*" \
-		-o -path "/var/log/bootstrap.log" \
 		-o -path "/var/log/btmp" \
 		-o -path "/var/log/clamav" \
 		-o -path "/var/log/cups/access_log*" \
@@ -50,33 +53,26 @@ find /var/log \
 		-o -path "/var/log/dbconfig-common" \
 		-o -path "/var/log/debug" \
 		-o -path "/var/log/dirmngr*" \
-		-o -path "/var/log/dpkg.log*" \
-		-o -path "/var/log/faillog" \
 		-o -path "/var/log/fontconfig.log" \
 		-o -path "/var/log/gdm/*log*" \
 		-o -path "/var/log/horde" \
 		-o -path "/var/log/hylafax" \
 		-o -path "/var/log/kern.log" \
-		-o -path "/var/log/lastlog" \
 		-o -path "/var/log/lpr.log" \
 		-o -path "/var/log/ltsp-mounts.log" \
 		-o -path "/var/log/mgetty" \
 		-o -path "/var/log/mrtg/*" \
-		-o -path "/var/log/nagios2/*" \
-		-o -path "/var/log/nagios2/archives" \
 		-o -path "/var/log/php_error.log" \
 		-o -path "/var/log/postgresql" \
 		-o -path "/var/log/printserver-start.log" \
 		-o -path "/var/log/pycentral.log" \
 		-o -path "/var/log/python-notifier.log" \
-		-o -path "/var/log/samba/log.nmbd*" \
-		-o -path "/var/log/samba/log.smbd*" \
-		-o -path "/var/log/samba/log.wb-*" \
-		-o -path "/var/log/samba/log.winbindd*" \
+		-o -path "/var/log/apache2/other_vhosts_access.log" \
 		-o -path "/var/log/user.log" \
 		-o -path "/var/log/uucp.log" \
 		-o -path "/var/log/wtmp" \
 		-o -path "/var/log/Xorg*log*" \
+		-o -path "/var/log/ntpstats/*" \
 	\) -print0 >"$tmpfile"
 if [ -s "$tmpfile" ]
 then

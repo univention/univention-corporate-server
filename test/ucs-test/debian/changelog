@@ -1,3 +1,9 @@
+ucs-test (3.0.10-1) unstable; urgency=low
+
+  * updated 26_check_logfiles_general (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 18 Oct 2012 12:36:22 +0200
+
 ucs-test (3.0.9-1) unstable; urgency=low
 
   * fixed a quoting bug in 50_samba/35smbclient_auth (Bug #27654)
