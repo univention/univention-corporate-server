@@ -156,9 +156,15 @@ class License( object ):
 		}
 		self.__selected = False
 
-	def select( self, module ):
+	def select( self, module, lo=None ):
 		if not self.__selected:
 			self.error = univention.license.select( module )
+			if self.error != 0 and lo:
+				# Try to set the version even if the license load was not successful
+				searchResult = lo.search( filter='(&(objectClass=univentionLicense)(univentionLicenseModule=%s))' % module, attr=['univentionLicenseVersion'])
+				if searchResult:
+					self.version = searchResult[0][1].get('univentionLicenseVersion', ['1'])[0]
+				
 			self.__raiseException()
 			self.__selected = True
 
@@ -242,7 +248,7 @@ class License( object ):
 		return cmp(int(val1), int(val2))
 
 	def init_select( self, lo, module ):
-		self.select( module )
+		self.select( module, lo )
 		self.__readLicense()
 		disable_add = 0
 		self.__countSysAccounts( lo )

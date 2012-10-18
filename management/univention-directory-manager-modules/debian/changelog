@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.63-1) unstable; urgency=low
+
+  * The license version must be set even if the license is not valid
+    (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Oct 2012 20:47:19 +0200
+
 univention-directory-manager-modules (8.0.62-1) unstable; urgency=low
 
   * instead of importing every single computer child module in
