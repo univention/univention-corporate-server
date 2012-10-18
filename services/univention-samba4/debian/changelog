@@ -1,3 +1,10 @@
+univention-samba4 (2.0.20-2) unstable; urgency=low
+
+  * create sysvol-sync.log in univention-samba4-sysvol-sync.postinst
+    (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 18 Oct 2012 15:30:05 +0200
+
 univention-samba4 (2.0.20-1) unstable; urgency=low
 
   * renamed dns/register/srv_record/gc to dns/register/srv_records/gc and dns/register/srv_record/pdc to dns/register/srv_records/pdc
