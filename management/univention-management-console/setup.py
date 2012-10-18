@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from distutils.core import setup
-from distutils.command.install_data import install_data
 from distutils.command.build import build
 from distutils import cmd
 
@@ -89,8 +88,7 @@ setup( name = 'univention-management-console',
 	   package_dir = { '' : 'src' },
 	   packages = [ 'univention', 'univention.management', 'univention.management.console',	'univention.management.console.protocol', 'univention.management.console.modules' ],
 	   scripts = [ 'scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls' ],
-	   data_files = [ ( 'share/univention-management-console/syntax', all_xml_files_in( 'data/syntax' ) ),
-					  ( 'share/univention-management-console/categories', all_xml_files_in( 'data/categories' ) ), ],
+	   data_files = [ ( 'share/univention-management-console/categories', all_xml_files_in( 'data/categories' ) ), ],
 	   cmdclass = { 'build' : Build,
 	   				'build_i18n' : BuildI18N }
       )

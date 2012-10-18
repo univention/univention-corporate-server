@@ -1,3 +1,9 @@
+univention-management-console (5.0.47-1) unstable; urgency=low
+
+  * Remove ununsed syntax verification (Bug #27720)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Oct 2012 17:32:47 +0200
+
 univention-management-console (5.0.46-1) unstable; urgency=low
 
   * ignore mobile- and managedclient in acls (Bug #27617)
