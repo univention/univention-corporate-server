@@ -129,6 +129,14 @@ fi
 
 IP=$(get_default_ip_address)
 
+if local_is_ucr_false dns/register/srv_records/gc; then 
+    unset gc
+fi;
+
+if local_is_ucr_false dns/register/srv_records/pdc; then 
+    unset pdc
+fi;
+
 if [ -n "$dc" ]; then
 	####### <Non-RODC server> #######
 	## 1b9c8108-ab68-42b3-bc1a-f4269559df7e._msdcs     IN CNAME        qamaster

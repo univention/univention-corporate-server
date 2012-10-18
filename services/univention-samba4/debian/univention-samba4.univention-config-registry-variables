@@ -388,13 +388,13 @@ Description[en]=If enabled before the initial join of univention-samba4, seconda
 Type=str
 Categories=service-samba
 
-[dns/register/srv_record/pdc]
+[dns/register/srv_records/pdc]
 Description[de]=Aktiviert/deaktiviert ob die PDC Records beim joinen registriert werden.
 Description[en]=Enables/disables whether the PDC records are registered when performing a domain join. 
 Type=str
 Categories=service-samba
 
-[dns/register/srv_record/gc]
+[dns/register/srv_records/gc]
 Description[de]=Aktiviert/deaktiviert ob die GC Records beim joinen registriert werden.
 Description[en]=Enables/disables whether the GC records are registered when performing a domain join. 
 Type=str
