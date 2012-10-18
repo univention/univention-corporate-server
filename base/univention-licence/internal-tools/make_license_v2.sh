@@ -310,9 +310,14 @@ cd "$MASTERKEYDIR" || help_and_exit "Can't change to directory $MASTERKEYDIR"
 	if [ -n "$UUID" ]; then
 		echo univentionLicenseKeyID: "$UUID";
 	fi
-	for product in `echo "$PRODUCTS"|sed -e 's|,| |'`; do
-		echo univentionLicenseType: "$product"
-	done
+	if [ -n "$PRODUCTS" ]; then
+		IFS=$','
+		for product in $PRODUCTS
+		do
+			echo univentionLicenseType: "$product"
+		done
+		unset IFS
+	fi
 	if [ -n "$OEMPRODUCTS" ]; then
 		IFS=$','
 		for oemproduct in $OEMPRODUCTS

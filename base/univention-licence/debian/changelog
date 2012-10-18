@@ -1,3 +1,9 @@
+univention-licence (5.0.4-1) unstable; urgency=low
+
+  * make_license_v2.sh: Fixed product handling (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Oct 2012 21:00:55 +0200
+
 univention-licence (5.0.3-1) unstable; urgency=low
 
   * Added univentionObject to license object (Bug #28186)
