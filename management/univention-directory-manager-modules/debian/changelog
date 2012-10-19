@@ -1,3 +1,11 @@
+univention-directory-manager-modules (8.0.67-1) unstable; urgency=low
+
+  * modified description of udm legacy package
+  * modified error message of PolicyName syntax (Bug #28098)
+  * updated translations of legacy policy modules
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 16:04:31 +0200
+
 univention-directory-manager-modules (8.0.66-1) unstable; urgency=low
 
   * modified layout of samba domainpage (Bug #27267)

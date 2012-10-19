@@ -36,7 +36,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
+translation=univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
 _=translation.translate
 
 class xfreeFixedAttributes(univention.admin.syntax.select):

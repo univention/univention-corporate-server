@@ -41,7 +41,7 @@ import univention.admin.handlers.dns.host_record
 import univention.admin.uldap
 import univention.admin.handlers.networks.network
 
-translation=univention.admin.localization.translation('univention.admin.handlers.computers')
+translation=univention.admin.localization.translation('univention.admin.handlers.legacy.computers')
 _=translation.translate
 
 module='computers/thinclient'

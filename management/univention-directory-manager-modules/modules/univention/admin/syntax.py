@@ -2709,7 +2709,7 @@ class policyName(string):
 	def parse(self, text):
 		if self._re.match(text):
 			return text
-		raise univention.admin.uexceptions.valueError(_('May only contain letters, digits, space as well as "#", "!", "$", "%", "&" "|", "^", ".", "~", "_", "-". Has to begin with a letter or digit and must not and with space.'))
+		raise univention.admin.uexceptions.valueError(_('May only contain letters (except umlauts and "ß"), digits, space as well as "#", "!", "$", "%", "&" "|", "^", ".", "~", "_", "-". Has to begin with a letter or digit and must not and with space.'))
 
 
 if __name__ == '__main__':

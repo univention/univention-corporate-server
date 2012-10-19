@@ -38,7 +38,7 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
+translation=univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
 _=translation.translate
 
 class clientDevicesFixedAttributes(univention.admin.syntax.select):

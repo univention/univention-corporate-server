@@ -43,7 +43,7 @@ import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.groups.group
 import univention.admin.handlers.networks.network
 
-translation=univention.admin.localization.translation('univention.admin.handlers.computers')
+translation=univention.admin.localization.translation('univention.admin.handlers.legacy.computers')
 _=translation.translate
 
 module='computers/managedclient'
