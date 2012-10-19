@@ -1,3 +1,9 @@
+univention-kde (7.0.4-1) unstable; urgency=low
+
+  * revert changes from version 7.0.3-1 (Bug #27617)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 11:10:46 +0200
+
 univention-kde (7.0.3-1) unstable; urgency=low
 
   * only create desktop policies in joinscript if

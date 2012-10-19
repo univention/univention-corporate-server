@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-12 11:09+0200\n"
+"POT-Creation-Date: 2012-10-19 11:08+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,15 +50,13 @@ msgstr "Richtlinie: Univention Directory Manager Container Konfiguration"
 msgid "Univention Directory Manager container settings"
 msgstr "Univention Directory Manager Container Konfiguration"
 
-#: admin_container.py:69 autostart.py:65 clientdevices.py:65 desktop.py:65
-#: dhcp_boot.py:65 dhcp_dns.py:65 dhcp_dnsupdate.py:71 dhcp_leasetime.py:66
-#: dhcp_netbios.py:66 dhcp_routing.py:64 dhcp_scope.py:68
-#: dhcp_statements.py:69 ldapserver.py:65 mailquota.py:65 maintenance.py:66
-#: managedclientpackages.py:66 masterpackages.py:66 memberpackages.py:66
-#: mobileclientpackages.py:66 nfsmounts.py:65 policy.py:65 print_quota.py:69
-#: printserver.py:64 pwhistory.py:67 registry.py:66 release.py:65
-#: repositoryserver.py:65 repositorysync.py:66 share_userquota.py:68
-#: slavepackages.py:66 sound.py:66 thinclient.py:70 umc.py:66 xfree.py:85
+#: admin_container.py:69 autostart.py:65 desktop.py:65 dhcp_boot.py:65
+#: dhcp_dns.py:65 dhcp_dnsupdate.py:71 dhcp_leasetime.py:66 dhcp_netbios.py:66
+#: dhcp_routing.py:64 dhcp_scope.py:68 dhcp_statements.py:69 ldapserver.py:65
+#: mailquota.py:65 maintenance.py:66 masterpackages.py:66 memberpackages.py:66
+#: nfsmounts.py:65 policy.py:65 print_quota.py:69 printserver.py:64
+#: pwhistory.py:67 registry.py:66 release.py:65 repositoryserver.py:65
+#: repositorysync.py:66 share_userquota.py:68 slavepackages.py:66 umc.py:66
 msgid "Name"
 msgstr "Name"
 
@@ -66,75 +64,66 @@ msgstr "Name"
 msgid "Available Univention Directory Manager modules"
 msgstr "Verfügbare Univention Directory Manager Module"
 
-#: admin_container.py:90 autostart.py:86 clientdevices.py:86 desktop.py:117
-#: dhcp_boot.py:97 dhcp_dns.py:97 dhcp_dnsupdate.py:163 dhcp_leasetime.py:107
+#: admin_container.py:90 autostart.py:86 desktop.py:117 dhcp_boot.py:97
+#: dhcp_dns.py:97 dhcp_dnsupdate.py:163 dhcp_leasetime.py:107
 #: dhcp_netbios.py:107 dhcp_routing.py:85 dhcp_scope.py:129
 #: dhcp_statements.py:140 ldapserver.py:86 mailquota.py:86 maintenance.py:167
-#: managedclientpackages.py:97 masterpackages.py:97 memberpackages.py:97
-#: mobileclientpackages.py:97 nfsmounts.py:86 print_quota.py:110
-#: printserver.py:86 pwhistory.py:118 registry.py:87 release.py:96
-#: repositoryserver.py:87 repositorysync.py:127 share_userquota.py:119
-#: slavepackages.py:97 sound.py:98 thinclient.py:131 umc.py:87 xfree.py:240
+#: masterpackages.py:97 memberpackages.py:97 nfsmounts.py:86
+#: print_quota.py:110 printserver.py:86 pwhistory.py:118 registry.py:87
+#: release.py:96 repositoryserver.py:87 repositorysync.py:127
+#: share_userquota.py:119 slavepackages.py:97 umc.py:87
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
-#: admin_container.py:100 autostart.py:96 clientdevices.py:96 desktop.py:127
-#: dhcp_boot.py:107 dhcp_dns.py:107 dhcp_dnsupdate.py:173
-#: dhcp_leasetime.py:117 dhcp_netbios.py:117 dhcp_routing.py:95
-#: dhcp_scope.py:139 dhcp_statements.py:150 ldapserver.py:96 mailquota.py:96
-#: maintenance.py:177 managedclientpackages.py:107 masterpackages.py:107
-#: memberpackages.py:107 mobileclientpackages.py:107 nfsmounts.py:96
+#: admin_container.py:100 autostart.py:96 desktop.py:127 dhcp_boot.py:107
+#: dhcp_dns.py:107 dhcp_dnsupdate.py:173 dhcp_leasetime.py:117
+#: dhcp_netbios.py:117 dhcp_routing.py:95 dhcp_scope.py:139
+#: dhcp_statements.py:150 ldapserver.py:96 mailquota.py:96 maintenance.py:177
+#: masterpackages.py:107 memberpackages.py:107 nfsmounts.py:96
 #: print_quota.py:120 printserver.py:96 pwhistory.py:128 registry.py:97
 #: release.py:106 repositoryserver.py:97 repositorysync.py:137
-#: share_userquota.py:129 slavepackages.py:107 sound.py:108 thinclient.py:141
-#: umc.py:97 xfree.py:250
+#: share_userquota.py:129 slavepackages.py:107 umc.py:97
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
-#: admin_container.py:110 autostart.py:106 clientdevices.py:106 desktop.py:137
-#: dhcp_boot.py:117 dhcp_dns.py:117 dhcp_dnsupdate.py:183
-#: dhcp_leasetime.py:127 dhcp_netbios.py:127 dhcp_routing.py:105
-#: dhcp_scope.py:149 dhcp_statements.py:160 ldapserver.py:106 mailquota.py:106
-#: maintenance.py:187 managedclientpackages.py:117 masterpackages.py:117
-#: memberpackages.py:117 mobileclientpackages.py:117 nfsmounts.py:106
-#: print_quota.py:130 printserver.py:106 pwhistory.py:138 registry.py:107
-#: release.py:116 repositoryserver.py:107 repositorysync.py:147
-#: share_userquota.py:139 slavepackages.py:117 sound.py:118 thinclient.py:151
-#: umc.py:107 xfree.py:260
+#: admin_container.py:110 autostart.py:106 desktop.py:137 dhcp_boot.py:117
+#: dhcp_dns.py:117 dhcp_dnsupdate.py:183 dhcp_leasetime.py:127
+#: dhcp_netbios.py:127 dhcp_routing.py:105 dhcp_scope.py:149
+#: dhcp_statements.py:160 ldapserver.py:106 mailquota.py:106
+#: maintenance.py:187 masterpackages.py:117 memberpackages.py:117
+#: nfsmounts.py:106 print_quota.py:130 printserver.py:106 pwhistory.py:138
+#: registry.py:107 release.py:116 repositoryserver.py:107
+#: repositorysync.py:147 share_userquota.py:139 slavepackages.py:117
+#: umc.py:107
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
-#: admin_container.py:120 autostart.py:116 clientdevices.py:116 desktop.py:147
-#: dhcp_boot.py:127 dhcp_dns.py:127 dhcp_dnsupdate.py:193
-#: dhcp_leasetime.py:137 dhcp_netbios.py:137 dhcp_routing.py:115
-#: dhcp_scope.py:159 dhcp_statements.py:170 ldapserver.py:116 mailquota.py:116
-#: maintenance.py:197 managedclientpackages.py:127 masterpackages.py:127
-#: memberpackages.py:127 mobileclientpackages.py:127 nfsmounts.py:116
-#: print_quota.py:140 printserver.py:116 pwhistory.py:148 registry.py:117
-#: release.py:126 repositoryserver.py:117 repositorysync.py:157
-#: share_userquota.py:149 slavepackages.py:127 sound.py:128 thinclient.py:161
+#: admin_container.py:120 autostart.py:116 desktop.py:147 dhcp_boot.py:127
+#: dhcp_dns.py:127 dhcp_dnsupdate.py:193 dhcp_leasetime.py:137
+#: dhcp_netbios.py:137 dhcp_routing.py:115 dhcp_scope.py:159
+#: dhcp_statements.py:170 ldapserver.py:116 mailquota.py:116
+#: maintenance.py:197 masterpackages.py:127 memberpackages.py:127
+#: nfsmounts.py:116 print_quota.py:140 printserver.py:116 pwhistory.py:148
+#: registry.py:117 release.py:126 repositoryserver.py:117
+#: repositorysync.py:157 share_userquota.py:149 slavepackages.py:127
 #: umc.py:117
 msgid "Empty attributes"
 msgstr "Leere Attribute"
 
 #: admin_container.py:132 admin_container.py:133 autostart.py:128
-#: autostart.py:129 clientdevices.py:128 clientdevices.py:129 desktop.py:159
-#: desktop.py:160 dhcp_boot.py:140 dhcp_dns.py:139 dhcp_dns.py:140
-#: dhcp_dnsupdate.py:206 dhcp_leasetime.py:150 dhcp_netbios.py:150
-#: dhcp_routing.py:127 dhcp_routing.py:128 dhcp_scope.py:172
-#: dhcp_statements.py:183 ldapserver.py:128 ldapserver.py:129 mailquota.py:128
-#: mailquota.py:129 maintenance.py:209 maintenance.py:210
-#: managedclientpackages.py:139 managedclientpackages.py:140
-#: masterpackages.py:139 masterpackages.py:140 memberpackages.py:139
-#: memberpackages.py:140 mobileclientpackages.py:139
-#: mobileclientpackages.py:140 nfsmounts.py:128 nfsmounts.py:129 policy.py:76
-#: print_quota.py:152 print_quota.py:153 printserver.py:128 printserver.py:129
-#: pwhistory.py:160 pwhistory.py:161 registry.py:129 registry.py:130
-#: release.py:138 release.py:139 repositoryserver.py:129
-#: repositoryserver.py:130 repositorysync.py:169 repositorysync.py:170
-#: share_userquota.py:161 share_userquota.py:162 slavepackages.py:139
-#: slavepackages.py:140 sound.py:140 sound.py:141 thinclient.py:173
-#: thinclient.py:174 umc.py:129 umc.py:130 xfree.py:393 xfree.py:394
+#: autostart.py:129 desktop.py:159 desktop.py:160 dhcp_boot.py:140
+#: dhcp_dns.py:139 dhcp_dns.py:140 dhcp_dnsupdate.py:206 dhcp_leasetime.py:150
+#: dhcp_netbios.py:150 dhcp_routing.py:127 dhcp_routing.py:128
+#: dhcp_scope.py:172 dhcp_statements.py:183 ldapserver.py:128
+#: ldapserver.py:129 mailquota.py:128 mailquota.py:129 maintenance.py:209
+#: maintenance.py:210 masterpackages.py:139 masterpackages.py:140
+#: memberpackages.py:139 memberpackages.py:140 nfsmounts.py:128
+#: nfsmounts.py:129 policy.py:76 print_quota.py:152 print_quota.py:153
+#: printserver.py:128 printserver.py:129 pwhistory.py:160 pwhistory.py:161
+#: registry.py:129 registry.py:130 release.py:138 release.py:139
+#: repositoryserver.py:129 repositoryserver.py:130 repositorysync.py:169
+#: repositorysync.py:170 share_userquota.py:161 share_userquota.py:162
+#: slavepackages.py:139 slavepackages.py:140 umc.py:129 umc.py:130
 msgid "General"
 msgstr "Allgemein"
 
@@ -142,16 +131,15 @@ msgstr "Allgemein"
 msgid "Univention Directory Manager settings"
 msgstr "Univention Directory Manager Konfiguration"
 
-#: admin_container.py:138 autostart.py:134 clientdevices.py:134 desktop.py:167
-#: dhcp_boot.py:145 dhcp_dns.py:145 dhcp_dnsupdate.py:214
-#: dhcp_leasetime.py:157 dhcp_netbios.py:156 dhcp_routing.py:133
-#: dhcp_scope.py:179 dhcp_statements.py:190 ldapserver.py:134 mailquota.py:134
-#: maintenance.py:219 managedclientpackages.py:146 masterpackages.py:146
-#: memberpackages.py:146 mobileclientpackages.py:146 nfsmounts.py:134
-#: print_quota.py:159 printserver.py:134 pwhistory.py:169 registry.py:135
-#: release.py:144 repositoryserver.py:135 repositorysync.py:177
-#: share_userquota.py:168 slavepackages.py:146 sound.py:147 thinclient.py:181
-#: umc.py:135 xfree.py:414
+#: admin_container.py:138 autostart.py:134 desktop.py:167 dhcp_boot.py:145
+#: dhcp_dns.py:145 dhcp_dnsupdate.py:214 dhcp_leasetime.py:157
+#: dhcp_netbios.py:156 dhcp_routing.py:133 dhcp_scope.py:179
+#: dhcp_statements.py:190 ldapserver.py:134 mailquota.py:134
+#: maintenance.py:219 masterpackages.py:146 memberpackages.py:146
+#: nfsmounts.py:134 print_quota.py:159 printserver.py:134 pwhistory.py:169
+#: registry.py:135 release.py:144 repositoryserver.py:135
+#: repositorysync.py:177 share_userquota.py:168 slavepackages.py:146
+#: umc.py:135
 msgid "Object"
 msgstr "Objekt"
 
@@ -170,18 +158,6 @@ msgstr "Autostart"
 #: autostart.py:77
 msgid "Session script to be launched by autostart"
 msgstr "Sitzungsskript, das von Autostart ausgeführt werden soll"
-
-#: clientdevices.py:47 clientdevices.py:59 clientdevices.py:128
-msgid "Client devices"
-msgstr "Client-Peripherie"
-
-#: clientdevices.py:58
-msgid "Policy: Client devices"
-msgstr "Richtlinie: Client-Peripherie"
-
-#: clientdevices.py:76
-msgid "Activate access to client devices"
-msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"
 
 #: desktop.py:46 desktop.py:76
 msgid "Desktop language"
@@ -695,27 +671,15 @@ msgstr "Minute"
 msgid "Maintenance settings"
 msgstr "Paketpflege Einstellungen"
 
-#: managedclientpackages.py:47 managedclientpackages.py:77
 #: masterpackages.py:47 masterpackages.py:77 memberpackages.py:47
-#: memberpackages.py:77 mobileclientpackages.py:47 mobileclientpackages.py:77
-#: slavepackages.py:47 slavepackages.py:77
+#: memberpackages.py:77 slavepackages.py:47 slavepackages.py:77
 msgid "Package installation list"
 msgstr "Paket Installationsliste"
 
-#: managedclientpackages.py:48 managedclientpackages.py:87
 #: masterpackages.py:48 masterpackages.py:87 memberpackages.py:48
-#: memberpackages.py:87 mobileclientpackages.py:48 mobileclientpackages.py:87
-#: slavepackages.py:48 slavepackages.py:87
+#: memberpackages.py:87 slavepackages.py:48 slavepackages.py:87
 msgid "Package removal list"
 msgstr "Paket Deinstallationsliste"
-
-#: managedclientpackages.py:59
-msgid "Policy: Managed Client packages"
-msgstr "Richtlinie: Managed Client Pakete"
-
-#: managedclientpackages.py:60
-msgid "Managed Client packages"
-msgstr "Managed Client Pakete"
 
 #: masterpackages.py:59
 msgid "Policy: Master packages"
@@ -732,14 +696,6 @@ msgstr "Richtlinie: Memberserver Pakete"
 #: memberpackages.py:60
 msgid "Member Server packages"
 msgstr "Memberserver Pakete"
-
-#: mobileclientpackages.py:59
-msgid "Policy: Mobile Client packages"
-msgstr "Richtlinie: Mobile Client Pakete"
-
-#: mobileclientpackages.py:60
-msgid "Mobile Client packages"
-msgstr "Mobile Client Pakete"
 
 #: nfsmounts.py:47
 msgid "Mount NFS shares"
@@ -1014,74 +970,6 @@ msgstr "Richtlinie: Slave Pakete"
 msgid "Slave packages"
 msgstr "Slave Pakete"
 
-#: sound.py:47 sound.py:77
-msgid "Sound enabled"
-msgstr "Sound aktivieren"
-
-#: sound.py:48 sound.py:87
-msgid "Sound module"
-msgstr "Soundkarten-Treiber"
-
-#: sound.py:59
-msgid "Policy: Sound"
-msgstr "Richtlinie: Sound"
-
-#: sound.py:60 sound.py:140
-msgid "Sound settings"
-msgstr "Sound-Einstellungen"
-
-#: thinclient.py:47 thinclient.py:91
-msgid "File servers"
-msgstr "File-Server"
-
-#: thinclient.py:48 thinclient.py:81
-msgid "Linux terminal servers"
-msgstr "Linux-Terminal-Server"
-
-#: thinclient.py:49 thinclient.py:111
-msgid "Windows terminal servers"
-msgstr "Windows-Terminal-Server"
-
-#: thinclient.py:50 thinclient.py:121
-msgid "Windows domain"
-msgstr "Windows-Domäne"
-
-#: thinclient.py:51 thinclient.py:101
-msgid "Authentication servers"
-msgstr "Authentisierungsserver"
-
-#: thinclient.py:63
-msgid "Policy: Thin client"
-msgstr "Richtlinie: Thin Client"
-
-#: thinclient.py:64
-msgid "Thin client configuration"
-msgstr "Thin-Client-Konfiguration"
-
-#: thinclient.py:82
-msgid "Linux terminal servers of the Thin Client"
-msgstr "Linux-Terminal-Server des Thin Clients"
-
-#: thinclient.py:92
-msgid "File servers of the Thin Client"
-msgstr "File-Server des Thin Clients"
-
-#: thinclient.py:102
-msgid "Authentication servers of the Thin Client"
-msgstr "Authentisierungsserver des Thin Client"
-
-#: thinclient.py:112
-msgid "Windows terminal servers for Windows Login"
-msgstr "Windows-Terminal-Server für die Windows Anmeldung"
-
-#: thinclient.py:122
-msgid "Windows domain for Windows Login"
-msgstr "Windows-Domäne für die Windows Anmeldung"
-
-#: thinclient.py:173
-msgid "Servers to use"
-msgstr "Zu nutzende Server"
-
 #: umc.py:47
 msgid "Allowed UMC operation sets"
 msgstr "Erlaubte UMC Operationen"
@@ -1098,145 +986,182 @@ msgstr "Definiert eine Liste von erlaubten UMC Operationen"
 msgid "List of allowed UMC operation sets"
 msgstr "Liste der erlaubten UMC Operationen"
 
-#: xfree.py:45 xfree.py:382
-msgid "Automatic detection"
-msgstr "Automatische Erkennung"
+#~ msgid "Client devices"
+#~ msgstr "Client-Peripherie"
 
-#: xfree.py:46 xfree.py:96
-msgid "Resolution of primary display"
-msgstr "Auflösung des primären Monitors"
+#~ msgid "Policy: Client devices"
+#~ msgstr "Richtlinie: Client-Peripherie"
 
-#: xfree.py:47 xfree.py:108
-msgid "Resolution of secondary display"
-msgstr "Auflösung des sekundären Monitors"
+#~ msgid "Activate access to client devices"
+#~ msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"
 
-#: xfree.py:48 xfree.py:120
-msgid "Color depth"
-msgstr "Farbtiefe"
+#~ msgid "Policy: Managed Client packages"
+#~ msgstr "Richtlinie: Managed Client Pakete"
 
-#: xfree.py:49 xfree.py:132
-msgid "Mouse protocol"
-msgstr "Maus Protokoll"
+#~ msgid "Managed Client packages"
+#~ msgstr "Managed Client Pakete"
 
-#: xfree.py:50 xfree.py:144
-msgid "Mouse device"
-msgstr "Mausanschluss"
+#~ msgid "Policy: Mobile Client packages"
+#~ msgstr "Richtlinie: Mobile Client Pakete"
 
-#: xfree.py:51 xfree.py:53 xfree.py:156
-msgid "Keyboard layout"
-msgstr "Tastaturbelegung"
+#~ msgid "Mobile Client packages"
+#~ msgstr "Mobile Client Pakete"
 
-#: xfree.py:52 xfree.py:168
-msgid "Keyboard variant"
-msgstr "Variante der Tastaturbelegung"
+#~ msgid "Sound enabled"
+#~ msgstr "Sound aktivieren"
 
-#: xfree.py:54 xfree.py:180
-msgid "Horizontal sync of primary display"
-msgstr "Horizontale Synchronisation des primären Monitors"
+#~ msgid "Sound module"
+#~ msgstr "Soundkarten-Treiber"
 
-#: xfree.py:55 xfree.py:192
-msgid "Horizontal sync of secondary display"
-msgstr "Horizontale Synchronisation des sekundären Monitors"
+#~ msgid "Policy: Sound"
+#~ msgstr "Richtlinie: Sound"
 
-#: xfree.py:56 xfree.py:204
-msgid "Vertical refresh of primary display"
-msgstr "Vertikale Wiederholfrequenz des primären Monitor"
+#~ msgid "Sound settings"
+#~ msgstr "Sound-Einstellungen"
 
-#: xfree.py:57 xfree.py:216
-msgid "Vertical refresh of secondary display"
-msgstr "Vertikale Wiederholfrequenz des sekundären Monitors"
+#~ msgid "File servers"
+#~ msgstr "File-Server"
 
-#: xfree.py:58 xfree.py:228
-msgid "Graphics adapter driver"
-msgstr "Graphikkarten-Treiber"
+#~ msgid "Linux terminal servers"
+#~ msgstr "Linux-Terminal-Server"
 
-#: xfree.py:59
-msgid "Display size of primary display"
-msgstr "Display-Grösse des primären Monitor"
+#~ msgid "Windows terminal servers"
+#~ msgstr "Windows-Terminal-Server"
 
-#: xfree.py:60
-msgid "Display size of secondary display"
-msgstr "Display-Grösse des sekundären Monitors"
+#~ msgid "Windows domain"
+#~ msgstr "Windows-Domäne"
 
-#: xfree.py:61 xfree.py:304
-msgid "Enable VNC export"
-msgstr "Erlaube VNC Display-Freigabe"
+#~ msgid "Authentication servers"
+#~ msgstr "Authentisierungsserver"
 
-#: xfree.py:62 xfree.py:315
-msgid "Viewonly VNC export"
-msgstr "VNC Display-Freigabe nur anzeigen"
+#~ msgid "Policy: Thin client"
+#~ msgstr "Richtlinie: Thin Client"
 
-#: xfree.py:63
-msgid "Amount of RAM on the graphics adapter"
-msgstr "Die Größe des RAM auf der Grafikkarte"
+#~ msgid "Thin client configuration"
+#~ msgstr "Thin-Client-Konfiguration"
 
-#: xfree.py:64
-msgid "Primary display"
-msgstr "Primärer Monitor"
+#~ msgid "Linux terminal servers of the Thin Client"
+#~ msgstr "Linux-Terminal-Server des Thin Clients"
 
-#: xfree.py:65
-msgid "Secondary display"
-msgstr "Sekundärer Monitor"
+#~ msgid "File servers of the Thin Client"
+#~ msgstr "File-Server des Thin Clients"
 
-#: xfree.py:66
-msgid "Relative position of secondary display"
-msgstr "Relative Position des zweiten Monitors"
+#~ msgid "Authentication servers of the Thin Client"
+#~ msgstr "Authentisierungsserver des Thin Client"
 
-#: xfree.py:67 xfree.py:326
-msgid "Virtual size of dual monitor desktop"
-msgstr "Größe des virtuellen Desktops im Zwei-Monitor-Betrieb"
+#~ msgid "Windows terminal servers for Windows Login"
+#~ msgstr "Windows-Terminal-Server für die Windows Anmeldung"
 
-#: xfree.py:78
-msgid "Policy: Display"
-msgstr "Richtlinie: Display"
+#~ msgid "Windows domain for Windows Login"
+#~ msgstr "Windows-Domäne für die Windows Anmeldung"
 
-#: xfree.py:79 xfree.py:393
-msgid "Display settings"
-msgstr "Display-Einstellungen"
+#~ msgid "Servers to use"
+#~ msgstr "Zu nutzende Server"
 
-#: xfree.py:270
-msgid "Empty Attributes"
-msgstr "Leere Attribute"
+#~ msgid "Automatic detection"
+#~ msgstr "Automatische Erkennung"
 
-#: xfree.py:280
-msgid "Display size (mm) of primary display"
-msgstr "Display-Grösse (mm) des primären Monitor"
+#~ msgid "Resolution of primary display"
+#~ msgstr "Auflösung des primären Monitors"
 
-#: xfree.py:292
-msgid "Display size (mm) of secondary display"
-msgstr "Display-Grösse (mm) des sekundären Monitors"
+#~ msgid "Resolution of secondary display"
+#~ msgstr "Auflösung des sekundären Monitors"
 
-#: xfree.py:337
-msgid "Position of secondary display"
-msgstr "Position des sekundären Monitors"
+#~ msgid "Color depth"
+#~ msgstr "Farbtiefe"
 
-#: xfree.py:348
-msgid "Name of primary display"
-msgstr "Name des primären Monitor"
+#~ msgid "Mouse protocol"
+#~ msgstr "Maus Protokoll"
 
-#: xfree.py:360
-msgid "Name of secondary display"
-msgstr "Name des sekundären Monitors"
+#~ msgid "Mouse device"
+#~ msgstr "Mausanschluss"
 
-#: xfree.py:372
-msgid "RAM on the graphics adapter in kB"
-msgstr "RAM auf der Grafikkarte in kB"
+#~ msgid "Keyboard layout"
+#~ msgstr "Tastaturbelegung"
 
-#: xfree.py:400
-msgid "Input devices"
-msgstr "Eingabegeräte"
+#~ msgid "Keyboard variant"
+#~ msgstr "Variante der Tastaturbelegung"
 
-#: xfree.py:403
-msgid "Advanced settings"
-msgstr "Erweiterte Einstellungen"
+#~ msgid "Horizontal sync of primary display"
+#~ msgstr "Horizontale Synchronisation des primären Monitors"
 
-#: xfree.py:406
-msgid "Advanced settings of primary display"
-msgstr "Erweiterte Einstellungen des primären Monitors"
+#~ msgid "Horizontal sync of secondary display"
+#~ msgstr "Horizontale Synchronisation des sekundären Monitors"
 
-#: xfree.py:409
-msgid "Advanced settings of secondary display"
-msgstr "Erweiterte Einstellungen des sekundären Monitors"
+#~ msgid "Vertical refresh of primary display"
+#~ msgstr "Vertikale Wiederholfrequenz des primären Monitor"
+
+#~ msgid "Vertical refresh of secondary display"
+#~ msgstr "Vertikale Wiederholfrequenz des sekundären Monitors"
+
+#~ msgid "Graphics adapter driver"
+#~ msgstr "Graphikkarten-Treiber"
+
+#~ msgid "Display size of primary display"
+#~ msgstr "Display-Grösse des primären Monitor"
+
+#~ msgid "Display size of secondary display"
+#~ msgstr "Display-Grösse des sekundären Monitors"
+
+#~ msgid "Enable VNC export"
+#~ msgstr "Erlaube VNC Display-Freigabe"
+
+#~ msgid "Viewonly VNC export"
+#~ msgstr "VNC Display-Freigabe nur anzeigen"
+
+#~ msgid "Amount of RAM on the graphics adapter"
+#~ msgstr "Die Größe des RAM auf der Grafikkarte"
+
+#~ msgid "Primary display"
+#~ msgstr "Primärer Monitor"
+
+#~ msgid "Secondary display"
+#~ msgstr "Sekundärer Monitor"
+
+#~ msgid "Relative position of secondary display"
+#~ msgstr "Relative Position des zweiten Monitors"
+
+#~ msgid "Virtual size of dual monitor desktop"
+#~ msgstr "Größe des virtuellen Desktops im Zwei-Monitor-Betrieb"
+
+#~ msgid "Policy: Display"
+#~ msgstr "Richtlinie: Display"
+
+#~ msgid "Display settings"
+#~ msgstr "Display-Einstellungen"
+
+#~ msgid "Empty Attributes"
+#~ msgstr "Leere Attribute"
+
+#~ msgid "Display size (mm) of primary display"
+#~ msgstr "Display-Grösse (mm) des primären Monitor"
+
+#~ msgid "Display size (mm) of secondary display"
+#~ msgstr "Display-Grösse (mm) des sekundären Monitors"
+
+#~ msgid "Position of secondary display"
+#~ msgstr "Position des sekundären Monitors"
+
+#~ msgid "Name of primary display"
+#~ msgstr "Name des primären Monitor"
+
+#~ msgid "Name of secondary display"
+#~ msgstr "Name des sekundären Monitors"
+
+#~ msgid "RAM on the graphics adapter in kB"
+#~ msgstr "RAM auf der Grafikkarte in kB"
+
+#~ msgid "Input devices"
+#~ msgstr "Eingabegeräte"
+
+#~ msgid "Advanced settings"
+#~ msgstr "Erweiterte Einstellungen"
+
+#~ msgid "Advanced settings of primary display"
+#~ msgstr "Erweiterte Einstellungen des primären Monitors"
+
+#~ msgid "Advanced settings of secondary display"
+#~ msgstr "Erweiterte Einstellungen des sekundären Monitors"
 
 #~ msgid "Policy: Packages Managed Client"
 #~ msgstr "Richtlinie: Pakete Managed Client"

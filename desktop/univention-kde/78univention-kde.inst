@@ -45,15 +45,12 @@ univention-directory-manager settings/default modify "$@" --dn "cn=default,cn=un
 	--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-3.0" \ || die
 
 
-dpkg -l python-univention-directory-manager-legacy-ucd-tcs &> /dev/null
-if [ $? -eq "0" ] ; then
-	# register as new desktop policy
-	univention-directory-manager policies/desktop  create "$@" --ignore_exists \
-		--position cn=desktop,cn=policies,$ldap_base\
-		--set name="UCS 3.0" \
-		--append profile="/usr/share/univention-kde-profiles/kde4-menu" \
-		--append profile="/usr/share/univention-kde-profiles/ucs-3.0" || die
-fi
+# register as new desktop policy
+univention-directory-manager policies/desktop  create "$@" --ignore_exists \
+	--position cn=desktop,cn=policies,$ldap_base\
+	--set name="UCS 3.0" \
+	--append profile="/usr/share/univention-kde-profiles/kde4-menu" \
+	--append profile="/usr/share/univention-kde-profiles/ucs-3.0" || die
 
 res=$(univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$ldap_base" | grep univentionDesktopProfile)
 if [ -z "$res" ]; then

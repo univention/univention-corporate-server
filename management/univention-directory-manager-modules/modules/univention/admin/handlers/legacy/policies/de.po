@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 14:20+0200\n"
+"POT-Creation-Date: 2012-10-19 11:07+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,8 +46,8 @@ msgstr "Client-Peripherie"
 msgid "Policy: Client devices"
 msgstr "Richtlinie: Client-Peripherie"
 
-#: clientdevices.py:65 desktop.py:65 managedclientpackages.py:66
-#: mobileclientpackages.py:66 sound.py:66 thinclient.py:70 xfree.py:85
+#: clientdevices.py:65 managedclientpackages.py:66 mobileclientpackages.py:66
+#: sound.py:66 thinclient.py:70 xfree.py:85
 msgid "Name"
 msgstr "Name"
 
@@ -55,61 +55,37 @@ msgstr "Name"
 msgid "Activate access to client devices"
 msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"
 
-#: clientdevices.py:86 desktop.py:117 managedclientpackages.py:97
-#: mobileclientpackages.py:97 sound.py:98 thinclient.py:131 xfree.py:240
+#: clientdevices.py:86 managedclientpackages.py:97 mobileclientpackages.py:97
+#: sound.py:98 thinclient.py:131 xfree.py:240
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
-#: clientdevices.py:96 desktop.py:127 managedclientpackages.py:107
+#: clientdevices.py:96 managedclientpackages.py:107
 #: mobileclientpackages.py:107 sound.py:108 thinclient.py:141 xfree.py:250
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
-#: clientdevices.py:106 desktop.py:137 managedclientpackages.py:117
+#: clientdevices.py:106 managedclientpackages.py:117
 #: mobileclientpackages.py:117 sound.py:118 thinclient.py:151 xfree.py:260
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
-#: clientdevices.py:116 desktop.py:147 managedclientpackages.py:127
+#: clientdevices.py:116 managedclientpackages.py:127
 #: mobileclientpackages.py:127 sound.py:128 thinclient.py:161
 msgid "Empty attributes"
 msgstr "Leere Attribute"
 
-#: clientdevices.py:128 clientdevices.py:129 desktop.py:159 desktop.py:160
-#: managedclientpackages.py:139 managedclientpackages.py:140
-#: mobileclientpackages.py:139 mobileclientpackages.py:140 sound.py:140
-#: sound.py:141 thinclient.py:173 thinclient.py:174 xfree.py:393 xfree.py:394
+#: clientdevices.py:128 clientdevices.py:129 managedclientpackages.py:139
+#: managedclientpackages.py:140 mobileclientpackages.py:139
+#: mobileclientpackages.py:140 sound.py:140 sound.py:141 thinclient.py:173
+#: thinclient.py:174 xfree.py:393 xfree.py:394
 msgid "General"
 msgstr "Allgemein"
 
-#: clientdevices.py:134 desktop.py:167 managedclientpackages.py:146
+#: clientdevices.py:134 managedclientpackages.py:146
 #: mobileclientpackages.py:146 sound.py:147 thinclient.py:181 xfree.py:414
 msgid "Object"
 msgstr "Objekt"
-
-#: desktop.py:46 desktop.py:76
-msgid "Desktop language"
-msgstr "Desktop-Sprache"
-
-#: desktop.py:47 desktop.py:86
-msgid "Desktop profile"
-msgstr "Desktop-Profil"
-
-#: desktop.py:58
-msgid "Policy: Desktop"
-msgstr "Richtlinie: Desktop"
-
-#: desktop.py:59 desktop.py:159
-msgid "Desktop settings"
-msgstr "Desktop-Einstellungen"
-
-#: desktop.py:97
-msgid "Logon scripts"
-msgstr "Login-Skripte"
-
-#: desktop.py:107
-msgid "Logout scripts"
-msgstr "Logout-Skripte"
 
 #: managedclientpackages.py:47 managedclientpackages.py:77
 #: mobileclientpackages.py:47 mobileclientpackages.py:77

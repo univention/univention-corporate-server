@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.64-1) unstable; urgency=low
+
+  * moved policies/desktop from legacy package to
+    python-univention-directory-manager-modules againt (Bug #27617)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 11:09:15 +0200
+
 univention-directory-manager-modules (8.0.63-1) unstable; urgency=low
 
   * The license version must be set even if the license is not valid
