@@ -1,3 +1,9 @@
+ucs-test (3.0.12-1) unstable; urgency=low
+
+  * Allow root.adm or root.root for /var/log/samba (Bug #11431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Oct 2012 06:54:01 +0200
+
 ucs-test (3.0.11-1) unstable; urgency=low
 
   * Skip connector test 63sync_ad_remove_capital_user_from_group,
