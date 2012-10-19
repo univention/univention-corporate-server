@@ -230,13 +230,12 @@ layout = [
 	Tab(_('General'),_('Basic Values'), layout = [
 		Group( _( 'General' ), layout = [
 			["name", "SID"],
-			["NextRid"],
-			["NextUserRid"],
-			["NextGroupRid"],
+			["NextRid", "NextUserRid", "NextGroupRid"],
 		] ),
 		Group(_( 'Password' ), layout = [
 			["passwordLength", "passwordHistory"],
-			["minPasswordAge", "maxPasswordAge"],
+			["minPasswordAge"],
+			["maxPasswordAge"],
 			["logonToChangePW", "refuseMachinePWChange"],
 		] ),
 		Group( _('Connection'), layout = [
