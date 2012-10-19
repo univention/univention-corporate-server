@@ -1617,7 +1617,13 @@ def domain_snapshot_revert(uri, domain, snapshot):
 			dom.managedSaveRemove(0)
 		old_state = dom_stat.key()
 		snap = dom.snapshotLookupByName(snapshot, 0)
-		r = dom.revertToSnapshot(snap, 0)
+		try:
+			# Try unforced revert for backward-compatibility with previous versions first
+			r = dom.revertToSnapshot(snap, 0)
+		except libvirt.libvirtError, ex:
+			if ex.get_error_code() != libvirt.VIR_ERR_SNAPSHOT_REVERT_RISKY:
+				raise
+			r = dom.revertToSnapshot(snap, libvirt.VIR_DOMAIN_SNAPSHOT_REVERT_FORCE)
 		if r != 0:
 			raise NodeError(_('Error reverting "%(domain)s" to snapshot: %(error)s'), domain=domain, error=e.get_error_message())
 

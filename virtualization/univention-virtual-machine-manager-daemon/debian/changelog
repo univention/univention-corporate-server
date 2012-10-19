@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.11-1) unstable; urgency=low
+
+  * Force risky revert on failure (Bug #24702)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Oct 2012 22:27:15 +0200
+
 univention-virtual-machine-manager-daemon (2.0.10-2) unstable; urgency=low
 
   * create logfiles in postinst (Bug #11431)
