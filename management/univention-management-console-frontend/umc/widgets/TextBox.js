@@ -75,6 +75,18 @@ define([
 					this.set('value', res);
 				}));
 			}
+		},
+
+		// this seems to be necessary for IE8:
+		// https://forge.univention.org/bugzilla/show_bug.cgi?id=28498
+		_getValueAttr: function() {
+			var val = this.inherited(arguments);
+			if (val === '') {
+				// seriously! at least it should not break anything...
+				// although val === '', json.stringify returns ""null"" in IE8
+				val = '';
+			}
+			return val;
 		}
 	});
 });

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.120-1) unstable; urgency=low
+
+  * IE8-fix for TextBox (Bug #28498)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 19 Oct 2012 12:32:50 +0200
+
 univention-management-console-frontend (2.0.119-1) unstable; urgency=low
 
   * read UCR variable values after module loading; Bug #28811
