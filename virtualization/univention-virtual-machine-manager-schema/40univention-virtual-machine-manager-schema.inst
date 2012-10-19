@@ -53,34 +53,67 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
 	--set filter="univentionService=Virtual Machine Manager" \
 	--set viewonly=FALSE || die
 
-univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
-	--set name=ManageableBy \
-	--set objectClass="univentionVirtualMachineHostOC" \
-	--set ldapMapping="univentionVirtualMachineManageableBy" \
-	--append module="computers/domaincontroller_master" \
-	--append module="computers/domaincontroller_backup" \
-	--append module="computers/domaincontroller_slave" \
-	--append module="computers/memberserver" \
-	--append module="computers/managedclient" \
-	--append module="computers/mobileclient" \
-	--set overwritePosition="0" \
-	--set overwriteTab="0" \
-	--set version="2" \
-	--set valueRequired="0" \
-	--set CLIName="ManageableBy" \
-	--set shortDescription="Manageable by" \
-	--set longDescription="Server ist manageable by the following Systems" \
-	--set 'translationShortDescription="de_DE" "Verwaltbar durch"' \
-	--set 'translationLongDescription="de_DE" "Server ist verwaltbar durch die folgenden Systeme"' \
-	--set doNotSearch="0" \
-	--set tabName="UVMM" \
-	--set syntax="ManagementServer" \
-	--set tabAdvanced="1" \
-	--set mayChange="1" \
-	--set multivalue="1" \
-	--set deleteObjectClass="0" \
-	--set tabPosition="1" || die
+
+
+dpkg -l python-univention-directory-manager-legacy-ucd-tcs &> /dev/null
+if [ $? -eq "0" ] ; then
+	univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+		--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
+		--set name=ManageableBy \
+		--set objectClass="univentionVirtualMachineHostOC" \
+		--set ldapMapping="univentionVirtualMachineManageableBy" \
+		--append module="computers/domaincontroller_master" \
+		--append module="computers/domaincontroller_backup" \
+		--append module="computers/domaincontroller_slave" \
+		--append module="computers/memberserver" \
+		--append module="computers/mobileclient" \
+		--append module="computers/managedclient" \
+		--set overwritePosition="0" \
+		--set overwriteTab="0" \
+		--set version="2" \
+		--set valueRequired="0" \
+		--set CLIName="ManageableBy" \
+		--set shortDescription="Manageable by" \
+		--set longDescription="Server ist manageable by the following Systems" \
+		--set 'translationShortDescription="de_DE" "Verwaltbar durch"' \
+		--set 'translationLongDescription="de_DE" "Server ist verwaltbar durch die folgenden Systeme"' \
+		--set doNotSearch="0" \
+		--set tabName="UVMM" \
+		--set syntax="ManagementServer" \
+		--set tabAdvanced="1" \
+		--set mayChange="1" \
+		--set multivalue="1" \
+		--set deleteObjectClass="0" \
+		--set tabPosition="1" || die
+else
+	univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+		--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
+		--set name=ManageableBy \
+		--set objectClass="univentionVirtualMachineHostOC" \
+		--set ldapMapping="univentionVirtualMachineManageableBy" \
+		--append module="computers/domaincontroller_master" \
+		--append module="computers/domaincontroller_backup" \
+		--append module="computers/domaincontroller_slave" \
+		--append module="computers/memberserver" \
+		--set overwritePosition="0" \
+		--set overwriteTab="0" \
+		--set version="2" \
+		--set valueRequired="0" \
+		--set CLIName="ManageableBy" \
+		--set shortDescription="Manageable by" \
+		--set longDescription="Server ist manageable by the following Systems" \
+		--set 'translationShortDescription="de_DE" "Verwaltbar durch"' \
+		--set 'translationLongDescription="de_DE" "Server ist verwaltbar durch die folgenden Systeme"' \
+		--set doNotSearch="0" \
+		--set tabName="UVMM" \
+		--set syntax="ManagementServer" \
+		--set tabAdvanced="1" \
+		--set mayChange="1" \
+		--set multivalue="1" \
+		--set deleteObjectClass="0" \
+		--set tabPosition="1" || die
+fi
+
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \

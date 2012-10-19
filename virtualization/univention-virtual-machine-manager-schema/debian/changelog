@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-schema (3.0.1-1) unstable; urgency=low
+
+  * only add mobileclient/managedclient to ManageableBy extended attribute
+    if "python-univention-directory-manager-modules-legacy-ucd-tcs" is
+    installed (Bug #27617)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 10:09:27 +0200
+
 univention-virtual-machine-manager-schema (3.0.0-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

@@ -1,3 +1,11 @@
+univention-kde (7.0.3-1) unstable; urgency=low
+
+  * only create desktop policies in joinscript if
+    python-univention-directory-manager-modules-legacy-ucd-tcs
+    is installed (Bug #27617)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 10:17:03 +0200
+
 univention-kde (7.0.2-2) unstable; urgency=low
 
   * link to localhost (Bug #28586) 
