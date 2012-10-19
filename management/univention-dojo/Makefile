@@ -34,41 +34,35 @@
 #copyrightyear := $(shell date +%Y)
 PKGNAME=univention-dojo
 INSTDIR=/usr/share/${PKGNAME}
+LIBDIR:=$(CURDIR)/libs
 
-# get the most recent dojo version of all src-packages that can be found in the
-# current directory 
-DOJO_VERSION=$(shell find . -maxdepth 1 -name "dojo-release*-src.tar.gz" | sort -r | sed -n '1 s/^.*dojo-release-\(.*\)-src.tar.gz$$/\1/ p')
-DOJO_DIR=dojo-release-$(DOJO_VERSION)-src
+# all JS packages
+LIBS=dojo libs/dgrid libs/put-selector libs/xstyle
 
 .PHONY: clean all install
 
-build: $(DOJO_DIR)
+build: $(LIBS)
 
-$(DOJO_DIR):
-	tar xzf $@.tar.gz
-	cd $(DOJO_DIR); \
+all: install
+
+clean:
+	rm -rf dojo $(LIBDIR)
+	rm -rf univention-dojo-api-viewer
+
+# treat dojo JS package different
+dojo: dojo-*.tar.gz
+	tar -xzf $<
+	[ ! -d $@ ] && mv $@*/ $@ || true
+	cd dojo; \
 	patch -p1 < ../fix_bashism.patch; \
 	patch -p1 < ../fix_grid_focus.patch; \
 	patch -p1 < ../fix_standbyOpacity.patch; \
 	patch -p1 < ../fix_dojo_iframe_textarea.patch; \
 	patch -p1 < ../fix_html5_uploader.patch;
 
-all: install
+# all other JS packages
+libs/%: %-*.tar.gz
+	mkdir -p libs
+	tar -C libs --no-same-owner -xzf $<
+	[ ! -d $@ ] && mv $@*/ $@ || true
 
-clean:
-	rm -rf $(DOJO_DIR)
-	rm -rf univention-dojo-api-viewer
-
-install: build
-	@# main directory
-	install -m 0755 -d "$(DESTDIR)$(INSTDIR)"
-	@# directories
-	find $(DOJO_DIR) -mindepth 1 -type d | sed 's|$(DOJO_DIR)/||' | while read i; do \
-		install -m 0755 -d "$(DESTDIR)$(INSTDIR)/$$i"; \
-	done
-	@# files .. set execute bit for scripts
-	find $(DOJO_DIR) -type f | sed 's|$(DOJO_DIR)/||' | while read i; do  \
-		mod=0644; \
-		[ "$${i%.sh}" != "$$i" ] && mod=0755; \
-		install -m $$mod "$(DOJO_DIR)/$$i" "$(DESTDIR)$(INSTDIR)/$$i"; \
-	done
