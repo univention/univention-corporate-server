@@ -1,3 +1,10 @@
+univention-updater (8.0.22-1) unstable; urgency=low
+
+  * Install python-udm-legacy-ucd-tcs earlier in the postup.sh. At the
+    end of the script the sources.list is not complete (Bug #27617)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Oct 2012 07:16:33 +0200
+
 univention-updater (8.0.21-1) unstable; urgency=low
 
   * package python-univention-directory-manager-legacy

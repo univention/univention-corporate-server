@@ -86,6 +86,9 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
+# install UDM legacy package containing old policy UDM modules
+install python-univention-directory-manager-legacy-ucd-tcs
+
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
 # Restart apache & Co see Bug #26298
 # FIXME: should be removed for 3.1 (Bug #27925)
@@ -136,9 +139,6 @@ fi
 ERRATA=93 # Last errata included with UCS-3.0-2
 [ 0$(ucr get version/erratalevel) -lt $ERRATA ] && UPDATE=version/erratalevel=$ERRATA
 univention-config-registry set repository/online/errata/start=$((1 + $ERRATA)) $UPDATE >>"$UPDATER_LOG" 2>&1
-
-# install UDM legacy package containing old policy UDM modules
-install python-univention-directory-manager-legacy-ucd-tcs
 
 echo "done."
 date >>"$UPDATER_LOG"
