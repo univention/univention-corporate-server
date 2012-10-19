@@ -1,3 +1,9 @@
+univention-ad-connector (7.0.7-2) unstable; urgency=low
+
+  * Wait 5 seconds before the kill result is checked (Bug #27175)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Oct 2012 16:17:15 +0200
+
 univention-ad-connector (7.0.7-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
