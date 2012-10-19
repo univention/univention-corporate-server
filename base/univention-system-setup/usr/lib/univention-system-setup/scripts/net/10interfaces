@@ -68,8 +68,7 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 	serversystem=1
 fi
 
-# sed -rne 's,^interfaces/([^/]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1\t\2\t\4\5,p' "$profile_file" | while IFS='	' read interface attr var
-sed -rne 's,^interfaces/([^/]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1,p' "$profile_file" | sort -u | while read interface
+while read interface
 do
 	for attr in address broadcast netmask network type; do
 		is_variable_set "interfaces/$interface/$attr"
@@ -204,7 +203,7 @@ do
 			fi
 		fi
 	fi
-done
+done < <(sed -rne 's,^interfaces/([^/]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1,p' "$profile_file" | sort -u)
 
 if [ "$check_ldap_access" = "1" ]; then
 	exit 0
@@ -218,7 +217,6 @@ if [ "$network_only" = 1 ]; then
 	ldap_available=0
 fi
 
-sed -rne 's,^interfaces/([^/_]+)_([0-9]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1\t\2\t\3\t\5\6,p' "$profile_file" |
 while IFS='	' read interface virtual type var
 do
 			if [ -z "$var" ]; then
@@ -235,7 +233,7 @@ do
 					fi
 				fi
 			fi
-done
+done < <(sed -rne 's,^interfaces/([^/_]+)_([0-9]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1\t\2\t\3\t\5\6,p' "$profile_file")
 
 if [ -x /usr/sbin/univention-dnsedit ]; then
 	UNIVENTION_DNSEDIT="/usr/sbin/univention-dnsedit"

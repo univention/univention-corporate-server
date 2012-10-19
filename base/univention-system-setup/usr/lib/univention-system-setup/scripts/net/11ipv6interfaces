@@ -156,15 +156,21 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		else
 			new_prefix=$old_prefix # not changed
 		fi
-		old_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$old_ip/$old_prefix")
-		new_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$new_ip/$new_prefix")
-		new_ip_exploded=$(python -c 'import ipaddr,sys;print ipaddr.IPAddress(sys.argv[1]).exploded' "$new_ip")
-		old_ip_exploded=$(python -c 'import ipaddr,sys;print ipaddr.IPAddress(sys.argv[1]).exploded' "$old_ip")
 		echo `date` : "Secondary changes for interfaces/$device/ipv6/default ($old_ip/$old_prefix to $new_ip/$new_prefix)..." >> /var/log/univention/setup.log
-		if [ -z "$old_ip" ]; then
-			# There was a new interface created
-			continue
+
+		[ -n "$new_ip" ] || continue
+		[ -n "$new_prefix" ] || continue
+		[ -n "$old_ip" ] || continue # There was a new interface created
+
+		old_ip_exploded=$(python -c 'import ipaddr,sys;print ipaddr.IPAddress(sys.argv[1]).exploded' "$old_ip")
+		if [ -n "$old_prefix" ]
+		then
+			old_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$old_ip/$old_prefix")
+		else
+			old_network=
 		fi
+		new_ip_exploded=$(python -c 'import ipaddr,sys;print ipaddr.IPAddress(sys.argv[1]).exploded' "$new_ip")
+		new_network=$(python -c 'import ipaddr,sys;print ipaddr.IPNetwork(sys.argv[1]).network' "$new_ip/$new_prefix")
 
 		# edit LDAP entry
 		if [ "$server_role" = "fatclient" ]; then
