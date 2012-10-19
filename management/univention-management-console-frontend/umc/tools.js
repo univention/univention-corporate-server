@@ -546,12 +546,12 @@ define([
 				if (error.response.data) {
 					// the response contained a valid JSON object
 					status = parseInt(error.response.data.status, 10);
-					message = (error.data.message || '').replace(/\n/g, '<br>');
-					result = error.data.result || null;
+					message = (error.response.data.message || '').replace(/\n/g, '<br>');
+					result = error.response.data.result || null;
 				} else {
-					// no JSON was returned, propably proxy error
+					// no JSON was returned, probably proxy error
 					var r = /<title>(.*)<\/title>/;
-					message = r.test(error.text) ? r.exec(error.text)[1] : this._statusMessages[500];
+					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : this._statusMessages[500];
 				}
 			}
 
