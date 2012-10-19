@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.122-1) unstable; urgency=low
+
+  * moved additional JS libs into univention-dojo; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 19 Oct 2012 16:03:05 +0200
+
 univention-management-console-frontend (2.0.121-1) unstable; urgency=low
 
   * fixed tools.parseError; Bug #28551

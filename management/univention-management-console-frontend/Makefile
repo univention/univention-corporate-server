@@ -38,7 +38,6 @@ buildDir:=$(CURDIR)/build
 tmpDir:=$(CURDIR)/tmp
 themesDir:=$(tmpDir)/dijit/themes
 jsFiles:=$(shell find umc -name "*.js")
-libDir:=$(CURDIR)/libs
 
 .PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(tmpDir)/umc/login.html $(buildDir)/index.html $(buildDir)/debug.html
 
@@ -58,11 +57,10 @@ umc/package.json:
 # temp directory
 $(tmpDir):
 	mkdir -p $@
-	cp -rfs $(dojoDir)/dojo $(dojoDir)/dijit $(dojoDir)/dojox $@
+	cp -rfs $(dojoDir)/* $@
+	@# remove dojo util directory
+	rm -rf $@/util
 	cp -rfs "$(CURDIR)/umc" $@
-	for lib in "$(libDir)/"*.tar.gz; do \
-		tar -C $@ --no-same-owner -xzf "$$lib"; \
-	done
 
 # convert .po to .json files
 i18n:
