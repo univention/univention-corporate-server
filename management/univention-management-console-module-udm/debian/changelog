@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.31-1) unstable; urgency=low
+
+  * Check also for expired, wrong base and not found (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Oct 2012 11:11:03 +0200
+
 univention-management-console-module-udm (3.0.30-1) unstable; urgency=low
 
   * LicenseDialog: Do not show the count for unlimited attributes

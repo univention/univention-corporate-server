@@ -134,6 +134,15 @@ def LDAP_Connection( func ):
 					except univention.admin.uexceptions.licenseInvalid:
 						lo.allow_modify = 0
 						lo.requireLicense()
+					except univention.admin.uexceptions.licenseNotFound:
+						lo.allow_modify = 0
+						lo.requireLicense()
+					except univention.admin.uexceptions.licenseExpired:
+						lo.allow_modify = 0
+						lo.requireLicense()
+					except univention.admin.uexceptions.licenseWrongBaseDn:
+						lo.allow_modify = 0
+						lo.requireLicense()
 
 				po = udm_uldap.position( lo.base )
 			except udm_errors.noObject, e:
