@@ -138,7 +138,7 @@ msgstr "Abbrechen"
 
 #: umc/js/_setup/LanguagePage.js:102
 msgid "Category"
-msgstr ""
+msgstr "Kategorie"
 
 #: umc/js/_setup/CertificatePage.js:69
 msgid "Certificate"
@@ -474,7 +474,7 @@ msgstr "Member-Server"
 
 #: umc/js/_setup/LanguagePage.js:114
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: umc/js/_setup/NetworkPage.js:108
 msgid "Netmask"

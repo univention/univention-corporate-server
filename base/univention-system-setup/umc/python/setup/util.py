@@ -229,7 +229,7 @@ def write_profile(values):
 	cache_file=open(PATH_PROFILE,"w+")
 	for ikey, ival in values.iteritems():
 		newVal = ival
-		if ival == None:
+		if ival is None:
 			newVal = ''
 		cache_file.write('%s="%s"\n\n' % (ikey, newVal))
 	cache_file.close()
