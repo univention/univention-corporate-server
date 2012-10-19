@@ -154,4 +154,14 @@ get_default_network () {
 	-c 'from interfaces import Interfaces;print Interfaces().get_default_ip_address().network'
 }
 
+
+#
+# check whether a package is installed or not
+#
+check_package_status ()
+{
+        echo "$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+}
+
+
 # vim:set sw=4 ts=4 noet:
