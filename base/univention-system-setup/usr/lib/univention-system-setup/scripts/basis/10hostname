@@ -42,7 +42,7 @@ fi
 
 # hostname can only be changed via system-setup scripts on a basesystem
 eval "$(univention-config-registry shell)"
-if [ "$server_role" != "basesystem" ]; then 
+if [ "$server_role" != "basesystem" ]; then
 	exit 1
 fi
 
@@ -52,7 +52,7 @@ fi
 
 ldap_available=1
 if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
-    ldap_available=0
+	ldap_available=0
 fi
 
 new_hostname=$(get_profile_var "hostname")
@@ -62,7 +62,7 @@ fi
 old_hostname=$(univention-config-registry get hostname)
 
 if [ -d "/var/lib/univention-system-setup/hostname.pre" ]; then
-    run-parts /var/lib/univention-system-setup/hostname.pre --arg=$old_hostname --arg=$new_hostname
+	run-parts /var/lib/univention-system-setup/hostname.pre --arg=$old_hostname --arg=$new_hostname
 fi
 
 service_stop nscd heimdal-kdc univention-directory-notifier
@@ -446,7 +446,7 @@ if [ $? = 0 ]; then
 			sleep 1
 			count=$((count+1))
 			if [ $count -gt 20 ]; then
-				continue;
+				continue
 			fi
 		done
 		/usr/sbin/apachectl start

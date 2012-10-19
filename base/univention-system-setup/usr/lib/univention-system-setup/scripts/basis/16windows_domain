@@ -42,7 +42,7 @@ fi
 
 # windows domain can only be changed via system-setup scripts on a basesystem
 eval "$(univention-config-registry shell)"
-if [ "$server_role" != "basesystem" ]; then 
+if [ "$server_role" != "basesystem" ]; then
 	exit 1
 fi
 
@@ -53,7 +53,7 @@ fi
 ldap_available=1
 
 if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
-    ldap_available=0
+	ldap_available=0
 fi
 
 new_windows_domain=`get_profile_var "windows/domain"`

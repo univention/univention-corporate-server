@@ -52,7 +52,7 @@ echo "Now you need to fix up all 'fuzzy' entries in your editor..."
 read answ
 
 if [ -n "$EDITOR" ]; then
-    $EDITOR $pox
+	$EDITOR $pox
 else
 	vim $pox
 fi
@@ -61,8 +61,8 @@ echo "Use this entry? (Y/n)"
 read yn
 
 if [ -z "$yn" -o "$yn" = "y" ]; then
-    echo "Copying po file"
-    cp $pox $po
+	echo "Copying po file"
+	cp $pox $po
 fi
 
 rm -rf ${po}?

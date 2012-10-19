@@ -42,10 +42,10 @@ do
 			check_ldap_access=1
 			shift
 			;;
- 		"--check_ldap_availability")
- 			check_ldap_availability=1
- 			shift
- 			;;
+		"--check_ldap_availability")
+			check_ldap_availability=1
+			shift
+			;;
 		*)
 			shift
 			;;

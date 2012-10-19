@@ -32,10 +32,10 @@ eval "$(univention-config-registry shell ldap/master)"
 nc -z $ldap_master 7389 2> /dev/null
 
 if [ $? = 1 ]; then
-    echo "LDAP master not available"
-    echo "no-ldap" > /var/run/univention-system-setup.ldap
+	echo "LDAP master not available"
+	echo "no-ldap" > /var/run/univention-system-setup.ldap
 else
-    echo "LDAP master available"
-    echo "ldap" > /var/run/univention-system-setup.ldap
+	echo "LDAP master available"
+	echo "ldap" > /var/run/univention-system-setup.ldap
 fi
 

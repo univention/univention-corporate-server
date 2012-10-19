@@ -44,7 +44,7 @@ fi
 
 # domainname can only be changed via system-setup scripts on a basesystem
 eval "$(univention-config-registry shell)"
-if [ "$server_role" != "basesystem" ]; then 
+if [ "$server_role" != "basesystem" ]; then
 	exit 1
 fi
 
@@ -55,7 +55,7 @@ fi
 
 ldap_available=1
 if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
-    ldap_available=0
+	ldap_available=0
 fi
 
 
@@ -66,7 +66,7 @@ fi
 old_domainname=$(univention-config-registry get domainname)
 
 if [ -d "/var/lib/univention-system-setup/domainname.pre" ]; then
-    run-parts /var/lib/univention-system-setup/domainname.pre --arg=$old_domainname --arg=$new_domainname
+	run-parts /var/lib/univention-system-setup/domainname.pre --arg=$old_domainname --arg=$new_domainname
 fi
 
 mkdir -p /var/univention-system-setup/
@@ -579,7 +579,7 @@ if [ $? = 0 ]; then
 			sleep 1
 			count=$((count+1))
 			if [ $count -gt 20 ]; then
-				continue;
+				continue
 			fi
 		done
 		/usr/sbin/apachectl start
@@ -613,7 +613,7 @@ service_stop univention-directory-listener; sleep 1; service_start univention-di
 
 
 if [ -d "/var/lib/univention-system-setup/domainname.post" ]; then
-    run-parts /var/lib/univention-system-setup/domainname.post --arg=$old_domainname --arg=$new_domainname
+	run-parts /var/lib/univention-system-setup/domainname.post --arg=$old_domainname --arg=$new_domainname
 fi
 
 exit 0

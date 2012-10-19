@@ -524,7 +524,7 @@ class mods:
 			else:
 				bkey=key
 			if not self.baseconfig.has_key(key):
- 				if self.result[key]:
+				if self.result[key]:
 					cache_file.write('%s="%s" # new\n\n' % (bkey,self.result[key]))
 			elif self.baseconfig[key] != self.result[key]:
 				cache_file.write('%s="%s" # changed\n\n' % (bkey,self.result[key]))
@@ -825,7 +825,7 @@ try:
 		installer.write_profile()
 
 		ldap_access=False
- 		ldap_availability=True
+		ldap_availability=True
 		for dir in os.listdir('/usr/lib/univention-system-setup/scripts'):
 			directory=os.path.join('/usr/lib/univention-system-setup/scripts', dir)
 			if os.path.exists(directory) and os.path.isdir(directory):
@@ -839,13 +839,13 @@ try:
 		ldap_server_available=testpipe.readlines()[0].strip('\n')
 
 		if ldap_server_available == "LDAP master not available":
- 			ldap_availability=False
- 			error=ldap_popup(None, err_min_y, err_min_x, err_width+2, err_height)
- 			error.draw()
- 			while 1:
- 				c = stdscr.getch()
- 				if error.input(c):
- 					break
+			ldap_availability=False
+			error=ldap_popup(None, err_min_y, err_min_x, err_width+2, err_height)
+			error.draw()
+			while 1:
+				c = stdscr.getch()
+				if error.input(c):
+					break
 
 		if ldap_access and ldap_availability:
 			ldap_subwindow=ldap_access_window(installer.obj[0], installer.obj[0].minY+4, installer.obj[0].minX+3, installer.obj[0].maxWidth-10,installer.obj[0].maxHeight-8)

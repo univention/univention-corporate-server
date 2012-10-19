@@ -33,20 +33,20 @@
 network_only=0
 
 while [ "$#" -gt 0 ]; do
-    case $1 in
-        --network-only)
-			network_only=1
-            shift 1
-            ;;
-        --appliance-mode)
-	# not needed, but dont warn
-            shift 1
-            ;;
-        *)
-            echo "WARNING: Unknown parameter $1"
-			shift 1
-			;;
-    esac
+	case $1 in
+	--network-only)
+		network_only=1
+		shift 1
+		;;
+	--appliance-mode)
+		# not needed, but dont warn
+		shift 1
+		;;
+	*)
+		echo "WARNING: Unknown parameter $1"
+		shift 1
+		;;
+	esac
 done
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
@@ -54,8 +54,7 @@ done
 info_header "$0" "$(gettext "Configure IPv6 network devices")"
 
 # uses $binddn, $bindpwd, $new_ip, and $old_ip
-admin_replace_ip ()
-{
+admin_replace_ip () {
 	admin_module="$1"
 	ldap_attribute="$2"
 	admin_attribute="$3"
@@ -75,7 +74,7 @@ serversystem=0
 eval "$(univention-config-registry shell server/role interfaces/handler)"
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ] || [ "$server_role" = "memberserver" ]; then
-  serversystem=1
+	serversystem=1
 fi
 
 while read match
@@ -105,8 +104,6 @@ do
 				fi
 			fi
 		fi
-	
-		
 	done
 done < <(grep -Eo '^interfaces/[^/]+/ipv6/([^/]+/(address|prefix)|acceptRA)=' "$profile_file")
 
@@ -137,7 +134,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 	bindpwd=`ldap_bindpwd`
 
 	eval "$(univention-config-registry shell)"
-		
+
 	[ "$network_only" = 0 ] || service_stop nscd samba cupsys
 
 	for device in $to_change; do
@@ -155,7 +152,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		fi
 		if ! is_variable_set "interfaces/$device/ipv6/default/prefix"
 		then
- 			new_prefix=$(get_profile_var "interfaces/$device/ipv6/default/prefix")
+			new_prefix=$(get_profile_var "interfaces/$device/ipv6/default/prefix")
 		else
 			new_prefix=$old_prefix # not changed
 		fi
@@ -174,8 +171,8 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 			server_role="client"
 		fi
 		if [ $ldap_available = 1 ]; then
-		    ldap_dn=$(univention-directory-manager "computers/$server_role" list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aAAARecord=$old_ip_exploded))" | grep ^DN | sed -e 's|^DN: ||')
-		    if [ -n "$ldap_dn" ]; then
+			ldap_dn=$(univention-directory-manager "computers/$server_role" list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aAAARecord=$old_ip_exploded))" | grep ^DN | sed -e 's|^DN: ||')
+			if [ -n "$ldap_dn" ]; then
 				#change the ldap entry
 				if [ -n "$new_ip_exploded" ]; then
 					# check reverse zone
@@ -187,9 +184,8 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --append "ip=$new_ip_exploded" --remove "ip=$old_ip_exploded"
 				fi
-		    fi
+			fi
 		fi
-		
 
 		oldvalues="$oldvalues#$device-$old_ip-$old_prefix"
 		newvalues="$newvalues#$device-$new_ip-$new_prefix"
@@ -276,4 +272,3 @@ if [ $ldap_available = 1 -o "$network_only" = 1 ]; then
 else
 	exit 100
 fi
-

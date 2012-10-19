@@ -35,24 +35,24 @@ password_file=""
 dcaccount=""
 
 while [ "$#" -gt 0 ]; do
-    case $1 in
-        --dcaccount)
+	case $1 in
+		--dcaccount)
 			dcaccount="$2"
-            shift 2
-            ;;
-        --password_file)
+			shift 2
+			;;
+		--password_file)
 			password_file="$2"
-            shift 2
-            ;;
-        --help)
-            echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
+			shift 2
+			;;
+		--help)
+			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
 			exit 1
-            ;;
-        *)
-            echo "WARNING: Unknown parameter $1"
-            echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
+			;;
+		*)
+			echo "WARNING: Unknown parameter $1"
+			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
 			exit 1
-    esac
+	esac
 done
 
 SETUP_LOG="/var/log/univention/setup.log"
@@ -218,10 +218,10 @@ progress_next_step $nJoinSteps
 # Cleanup
 rm -f /var/lib/univention-ldap/root.secret
 
-# Rewrite apache2 default sites, workaround for 
+# Rewrite apache2 default sites, workaround for
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=27597
 ucr commit /var/www/ucs-overview/de.html \
-           /var/www/ucs-overview/en.html
+	/var/www/ucs-overview/en.html
 
 # Reset the apache2 startsite
 startsite="$(ucr get apache2/startsite)"

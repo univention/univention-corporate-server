@@ -34,20 +34,20 @@ network_only=0
 appliance_mode=0
 
 while [ "$#" -gt 0 ]; do
-    case $1 in
-        --network-only)
-			network_only=1
-            shift 1
-            ;;
-        --appliance-mode)
-			appliance_mode=1
-            shift 1
-            ;;
-        *)
-            echo "WARNING: Unknown parameter $1"
-			shift 1
-			;;
-    esac
+	case $1 in
+	--network-only)
+		network_only=1
+		shift 1
+		;;
+	--appliance-mode)
+		appliance_mode=1
+		shift 1
+		;;
+	*)
+		echo "WARNING: Unknown parameter $1"
+		shift 1
+		;;
+	esac
 done
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
@@ -65,7 +65,7 @@ dhcp_in_use=0
 eval "$(univention-config-registry shell server/role interfaces/handler)"
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ] || [ "$server_role" = "memberserver" ]; then
-  serversystem=1
+	serversystem=1
 fi
 
 # sed -rne 's,^interfaces/([^/]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1\t\2\t\4\5,p' "$profile_file" | while IFS='	' read interface attr var
@@ -246,78 +246,78 @@ fi
 oldvalues=""
 newvalues=""
 
-save_fallback() {
-  is_variable_set "interfaces/$device/address"
-  if [ $? = 0 ]; then
-    baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$old_ip"
-  else
-    baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$new_ip"
-  fi
+save_fallback () {
+	is_variable_set "interfaces/$device/address"
+	if [ $? = 0 ]; then
+		baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$old_ip"
+	else
+		baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$new_ip"
+	fi
 
-  is_variable_set "interfaces/$device/network"
-  if [ $? = 0 ]; then
-    baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$old_network"
-  else
-    baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$new_network"
-  fi
+	is_variable_set "interfaces/$device/network"
+	if [ $? = 0 ]; then
+		baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$old_network"
+	else
+		baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$new_network"
+	fi
 
-  is_variable_set "interfaces/$device/netmask"
-  if [ $? = 0 ]; then
-    baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$old_netmask"
-  else
-    baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$new_netmask"
-  fi
+	is_variable_set "interfaces/$device/netmask"
+	if [ $? = 0 ]; then
+		baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$old_netmask"
+	else
+		baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$new_netmask"
+	fi
 
-  is_variable_set "interfaces/$device/broadcast"
-  if [ $? = 0 ]; then
-    baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$old_broadcast"
-  else
-    baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$new_broadcast"
-  fi
+	is_variable_set "interfaces/$device/broadcast"
+	if [ $? = 0 ]; then
+		baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$old_broadcast"
+	else
+		baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$new_broadcast"
+	fi
 }
 
-get_old_from_fallback(){
-  old_ip=$(univention-config-registry get interfaces/$device/fallback/address)
-  old_netmask=$(univention-config-registry get interfaces/$device/fallback/netmask)
-  old_network=$(univention-config-registry get interfaces/$device/fallback/network)
-  old_broadcast=$(univention-config-registry get interfaces/$device/fallback/broadcast)
+get_old_from_fallback () {
+	old_ip=$(univention-config-registry get interfaces/$device/fallback/address)
+	old_netmask=$(univention-config-registry get interfaces/$device/fallback/netmask)
+	old_network=$(univention-config-registry get interfaces/$device/fallback/network)
+	old_broadcast=$(univention-config-registry get interfaces/$device/fallback/broadcast)
 }
 
-get_new_from_profile_or_ucr(){
-  is_variable_set "interfaces/$device/address"
-  if [ $? = 0 ]; then
-    new_ip=$(univention-config-registry get interfaces/$device/address)
-  else
-    new_ip=$(get_profile_var "interfaces/$device/address")
-  fi
+get_new_from_profile_or_ucr () {
+	is_variable_set "interfaces/$device/address"
+	if [ $? = 0 ]; then
+		new_ip=$(univention-config-registry get interfaces/$device/address)
+	else
+		new_ip=$(get_profile_var "interfaces/$device/address")
+	fi
 
-  is_variable_set "interfaces/$device/netmask"
-  if [ $? = 0 ]; then
-    new_netmask=$(univention-config-registry get interfaces/$device/netmask)
-  else
-    new_netmask=$(get_profile_var "interfaces/$device/netmask")
-  fi
+	is_variable_set "interfaces/$device/netmask"
+	if [ $? = 0 ]; then
+		new_netmask=$(univention-config-registry get interfaces/$device/netmask)
+	else
+		new_netmask=$(get_profile_var "interfaces/$device/netmask")
+	fi
 
-  is_variable_set "interfaces/$device/network"
-  if [ $? = 0 ]; then
-    new_network=$(univention-config-registry get interfaces/$device/network)
-  else
-    new_network=$(get_profile_var "interfaces/$device/network")
-  fi
+	is_variable_set "interfaces/$device/network"
+	if [ $? = 0 ]; then
+		new_network=$(univention-config-registry get interfaces/$device/network)
+	else
+		new_network=$(get_profile_var "interfaces/$device/network")
+	fi
 
-  is_variable_set "interfaces/$device/broadcast"
-  if [ $? = 0 ]; then
-    new_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
-  else
-    new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
-  fi
+	is_variable_set "interfaces/$device/broadcast"
+	if [ $? = 0 ]; then
+		new_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
+	else
+		new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
+	fi
 }
 
-unset_fallback() {
-  baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/address"
-  baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/netmask"
-  baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/network"
-  baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/broadcast"
+unset_fallback () {
+	baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/address"
+	baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/netmask"
+	baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/network"
+	baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/broadcast"
 }
 
 if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
@@ -326,7 +326,6 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 	bindpwd=`ldap_bindpwd`
 
 	eval "$(univention-config-registry shell)"
-		
 	[ "$network_only" = 0 ] || service_stop nscd samba cupsys
 
 	for device in $to_change; do
@@ -339,7 +338,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		else
 			new_ip="$old_ip"
 		fi
-			
+
 		old_network=$(univention-config-registry get interfaces/$device/network)
 		if ! is_variable_set "interfaces/$device/network"; then
 			new_network=$(get_profile_var "interfaces/$device/network")
@@ -386,12 +385,12 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		fi
 
 		if [ $ldap_available = 1 ]; then
-		    ldap_dn=`univention-directory-manager computers/$server_role list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aRecord=$old_ip))" | sed -ne 's|^DN: ||p;T;q'`
-		    if [ -n "$ldap_dn" ]; then
+			ldap_dn=`univention-directory-manager computers/$server_role list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aRecord=$old_ip))" | sed -ne 's|^DN: ||p;T;q'`
+			if [ -n "$ldap_dn" ]; then
 				#change the ldap entry
 				if [ -z "$new_ip" ]; then
 					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set ip=""
-					mac=`/sbin/ifconfig $device | grep HWaddr | cut  -c 39-55`
+					mac=`/sbin/ifconfig $device | grep HWaddr | cut -c 39-55`
 					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set mac="$mac"
 				fi
 				if [ -n "$new_ip" ]; then
@@ -414,14 +413,13 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 							echo "changetype: modify" >>/var/cache/univention-system-setup/default-network.rename.ldif
 							echo "replace: univentionNetwork" >>/var/cache/univention-system-setup/default-network.rename.ldif
 							echo "univentionNetwork: "$new_network >>/var/cache/univention-system-setup/default-network.rename.ldif
-							ldapmodify -x  -D "$binddn"  -w "$bindpwd" -f /var/cache/univention-system-setup/default-network.rename.ldif
+							ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/default-network.rename.ldif
 							rm /var/cache/univention-system-setup/default-network.rename.ldif
 						fi
 					fi
 				fi
-		    fi
+			fi
 		fi
-		
 
 		oldvalues="$oldvalues#$device-$old_ip-$old_network-$old_netmask"
 		newvalues="$newvalues#$device-$new_ip-$new_network-$new_netmask"
@@ -470,8 +468,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		done
 	fi
 
-	admin_replace_ip ()
-	{
+	admin_replace_ip () {
 		admin_module="$1"
 		ldap_attribute="$2"
 		admin_attribute="$3"
@@ -507,12 +504,12 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 	if [ "$old_pkgdb" = "$old_network" ]; then
 		if [ -n "$new_pkgnetwork" ]; then
-			echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $new_pkgnetwork  >> /var/log/univention/setup.log
+			echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $new_pkgnetwork >> /var/log/univention/setup.log
 			univention-config-registry set pgsql/pkgdb/network=$new_pkgnetwork
-	    else
-			echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $old_pkgdb  >> /var/log/univention/setup.log
+		else
+			echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $old_pkgdb >> /var/log/univention/setup.log
 			univention-config-registry set pgsql/pkgdb/network=$old_pkgdb
-	    fi
+		fi
 	else
 		echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $old_pkgdb >> /var/log/univention/setup.log
 		univention-config-registry set pgsql/pkgdb/network=$old_pkgdb
@@ -601,7 +598,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 	if [ "$network_only" = 0 ]; then
 		# stop the dns server and remove the cache
-		service_stop  univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
+		service_stop univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
 		rm -f /var/cache/bind/*
 		service_start univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
 	fi
@@ -616,4 +613,3 @@ if [ $ldap_available = 1 -o "$network_only" = 1 ]; then
 else
 	exit 100
 fi
-
