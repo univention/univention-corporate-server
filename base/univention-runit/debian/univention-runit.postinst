@@ -30,27 +30,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ ! -L "/etc/service" ]; then
+if [ ! -L "/etc/service" ]
+then
 	rmdir /etc/service
 	ln -s /etc/runit/univention /etc/service
 fi
 
-if grep 'runsvdir' /etc/inittab >/dev/null; then
-	cp /etc/inittab /etc/inittab_univention-runit_postinst
-	grep -v runsvdir /etc/inittab_univention-runit_postinst > /etc/inittab
+if grep -q 'runsvdir' /etc/inittab
+then
+	cp /etc/inittab /etc/inittab_univention-runit_postinst &&
+	grep -v runsvdir /etc/inittab_univention-runit_postinst > /etc/inittab &&
 	rm /etc/inittab_univention-runit_postinst
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-2; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 5.0.0~
+then
 	update-rc.d -f univention-runit remove >/dev/null
 fi
 
 #DEBHELPER#
 
-if [ -z "$2" ]; then
+if [ -z "$2" ]
+then
 	# only start the daemon during the installation
-	/etc/init.d/univention-runit start
+	invoke-rc.d univention-runit start
 fi
 
 exit 0
-

@@ -1,7 +1,15 @@
+univention-runit (5.0.0-1) unstable; urgency=low
+
+  * UCS-3.1 version bump.
+  * Move init shutdown from 25 to 92 (Bug #28817)
+  * postinst: Use invoke-rc.d.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Oct 2012 14:29:31 +0200
+
 univention-runit (4.0.3-3) unstable; urgency=low
 
   * Update version check to drop the old init config levels to ensure that existing
-    init scripts are updated (Bug #26848)	
+    init scripts are updated (Bug #26848)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 27 Apr 2012 10:40:57 +0200
 
@@ -105,7 +113,3 @@ univention-runit (0.1) unstable; urgency=low
   * Initial Release.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 11 Mar 2003 11:09:12 +0200
-
-Local variables:
-mode: debian-changelog
-End:
