@@ -34,6 +34,7 @@ VERSION=2
 
 NAME="univention-virtual-machine-manager-schema"
 
+. /usr/share/univention-lib/base.sh
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -55,62 +56,38 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
 
 
 
-if [ -f /usr/share/pyshared/univention/admin/handlers/computers/managedclient.py ] && [ -f /usr/share/pyshared/univention/admin/handlers/computers/mobileclient.py ] ; then
-	univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-		--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
-		--set name=ManageableBy \
-		--set objectClass="univentionVirtualMachineHostOC" \
-		--set ldapMapping="univentionVirtualMachineManageableBy" \
-		--append module="computers/domaincontroller_master" \
-		--append module="computers/domaincontroller_backup" \
-		--append module="computers/domaincontroller_slave" \
-		--append module="computers/memberserver" \
-		--append module="computers/mobileclient" \
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
+	--set name=ManageableBy \
+	--set objectClass="univentionVirtualMachineHostOC" \
+	--set ldapMapping="univentionVirtualMachineManageableBy" \
+	--append module="computers/domaincontroller_master" \
+	--append module="computers/domaincontroller_backup" \
+	--append module="computers/domaincontroller_slave" \
+	--append module="computers/memberserver" \
+	--set overwritePosition="0" \
+	--set overwriteTab="0" \
+	--set version="2" \
+	--set valueRequired="0" \
+	--set CLIName="ManageableBy" \
+	--set shortDescription="Manageable by" \
+	--set longDescription="Server ist manageable by the following Systems" \
+	--set 'translationShortDescription="de_DE" "Verwaltbar durch"' \
+	--set 'translationLongDescription="de_DE" "Server ist verwaltbar durch die folgenden Systeme"' \
+	--set doNotSearch="0" \
+	--set tabName="UVMM" \
+	--set syntax="ManagementServer" \
+	--set tabAdvanced="1" \
+	--set mayChange="1" \
+	--set multivalue="1" \
+	--set deleteObjectClass="0" \
+	--set tabPosition="1" || die
+
+if [ "$(check_package_status python-univention-directory-manager-legacy-ucd-tcs)"  == "install" ] ; then
+	univention-directory-manager settings/extended_attribute modify \
+		--dn "cn=ManageableBy,cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
 		--append module="computers/managedclient" \
-		--set overwritePosition="0" \
-		--set overwriteTab="0" \
-		--set version="2" \
-		--set valueRequired="0" \
-		--set CLIName="ManageableBy" \
-		--set shortDescription="Manageable by" \
-		--set longDescription="Server ist manageable by the following Systems" \
-		--set 'translationShortDescription="de_DE" "Verwaltbar durch"' \
-		--set 'translationLongDescription="de_DE" "Server ist verwaltbar durch die folgenden Systeme"' \
-		--set doNotSearch="0" \
-		--set tabName="UVMM" \
-		--set syntax="ManagementServer" \
-		--set tabAdvanced="1" \
-		--set mayChange="1" \
-		--set multivalue="1" \
-		--set deleteObjectClass="0" \
-		--set tabPosition="1" || die
-else
-	univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-		--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
-		--set name=ManageableBy \
-		--set objectClass="univentionVirtualMachineHostOC" \
-		--set ldapMapping="univentionVirtualMachineManageableBy" \
-		--append module="computers/domaincontroller_master" \
-		--append module="computers/domaincontroller_backup" \
-		--append module="computers/domaincontroller_slave" \
-		--append module="computers/memberserver" \
-		--set overwritePosition="0" \
-		--set overwriteTab="0" \
-		--set version="2" \
-		--set valueRequired="0" \
-		--set CLIName="ManageableBy" \
-		--set shortDescription="Manageable by" \
-		--set longDescription="Server ist manageable by the following Systems" \
-		--set 'translationShortDescription="de_DE" "Verwaltbar durch"' \
-		--set 'translationLongDescription="de_DE" "Server ist verwaltbar durch die folgenden Systeme"' \
-		--set doNotSearch="0" \
-		--set tabName="UVMM" \
-		--set syntax="ManagementServer" \
-		--set tabAdvanced="1" \
-		--set mayChange="1" \
-		--set multivalue="1" \
-		--set deleteObjectClass="0" \
-		--set tabPosition="1" || die
+		--append module="computers/mobileclient" || die
 fi
 
 
