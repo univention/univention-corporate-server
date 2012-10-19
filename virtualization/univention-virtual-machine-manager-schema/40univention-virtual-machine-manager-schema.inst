@@ -55,8 +55,7 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
 
 
 
-dpkg -l python-univention-directory-manager-legacy-ucd-tcs &> /dev/null
-if [ $? -eq "0" ] ; then
+if [ -f /usr/share/pyshared/univention/admin/handlers/computers/managedclient.py ] && [ -f /usr/share/pyshared/univention/admin/handlers/computers/mobileclient.py ] ; then
 	univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 		--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=ManageableBy \

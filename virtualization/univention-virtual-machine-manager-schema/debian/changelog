@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-schema (3.0.2-1) unstable; urgency=low
+
+  * changed how it's determined if managedclient/mobileclient are
+    available (Bug #27617)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 13:10:21 +0200
+
 univention-virtual-machine-manager-schema (3.0.1-1) unstable; urgency=low
 
   * only add mobileclient/managedclient to ManageableBy extended attribute
