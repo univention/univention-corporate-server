@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.15-4) unstable; urgency=low
+
+  * update UCRV description (Bug #27873)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 19 Oct 2012 14:53:40 +0200
+
 univention-pkgdb (6.0.15-3) unstable; urgency=low
 
   * added DEBHELPER to python-univention-pkgdb.postinst

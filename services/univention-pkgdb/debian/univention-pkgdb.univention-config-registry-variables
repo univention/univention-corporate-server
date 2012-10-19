@@ -1,8 +1,8 @@
 [pgsql/pkgdb/networks]
-Description[de]=Liste von Netwerken aus dem Systme ihre Konfiguration in der pkgdb speichern können
-Description[en]=List of networks from which systems may store their configurations in pkgdb
+Description[de]=Mit Leerzeichen getrennte Liste von CIDR-Netzwerken, aus denen Systeme ihren Softwarebestand in der pkgdb speichern können
+Description[en]=List (space separated) of CIDR networks, from which systems may store their software state in pkgdb
 Type=str
-Categories=service-pkgdb
+Categories=system-swmon
 
 [pkgdb/overwrite/joincheck]
 Description[de]=Der Software-Monitor prüft den Join-Status nicht vor dem Update der Datenbank
