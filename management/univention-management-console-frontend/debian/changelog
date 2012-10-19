@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.121-1) unstable; urgency=low
+
+  * fixed tools.parseError; Bug #28551
+
+ -- Florian Best <best@univention.de>  Fri, 19 Oct 2012 15:20:08 +0200
+
 univention-management-console-frontend (2.0.120-1) unstable; urgency=low
 
   * IE8-fix for TextBox (Bug #28498)

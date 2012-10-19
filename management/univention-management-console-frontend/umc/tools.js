@@ -529,27 +529,36 @@ define([
 		},
 
 		parseError: function(error) {
-			if (error.data) {
-				// the response contained a valid JSON object
-				return {
-					status: parseInt(error.data.status, 10) || error.status,
-					message: (error.data.message || '').replace(/\n/g, '<br>'),
-					result: error.data.result
-				};
+			var status = 500;
+			var message = this._statusMessages[500];
+			var result = null;
+
+			if (error.status !== undefined) {
+				status = error.status;
 			}
+
+			if (error.data && !error.response.data) {
+				error.response.data = error.data;
+			}
+
 			if (error.response) {
-				// no JSON was returned, propably proxy error
-				var r = /<title>(.*)<\/title>/;
-				return {
-					status: error.status,
-					message: r.test(error.text) ? r.exec(error.text)[1] : this._statusMessages[500],
-					result: null
-				};
+				status = error.response.xhr.status;
+				if (error.response.data) {
+					// the response contained a valid JSON object
+					status = parseInt(error.response.data.status, 10);
+					message = (error.data.message || '').replace(/\n/g, '<br>');
+					result = error.data.result || null;
+				} else {
+					// no JSON was returned, propably proxy error
+					var r = /<title>(.*)<\/title>/;
+					message = r.test(error.text) ? r.exec(error.text)[1] : this._statusMessages[500];
+				}
 			}
+
 			return {
-				status: 500,
-				message: this._statusMessages[500],
-				result: null
+				status: status,
+				message: message,
+				result: result
 			};
 		},
 
