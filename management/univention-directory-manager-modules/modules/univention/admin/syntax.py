@@ -399,7 +399,7 @@ class integer(simple):
 	min_length=1
 	max_length=0
 	_re = re.compile('^[0-9]+$')
-	size = 'OneThird'
+	size = 'Half'
 
 	@classmethod
 	def parse(self, text):
