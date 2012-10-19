@@ -31,6 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/base.sh
+
+
 eval "$(univention-config-registry shell hostname domainname server/role)"
 
 univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" \
@@ -48,6 +51,9 @@ univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" 
 
 case "$1" in
 	configure)
+	create_logfile /var/log/univention/virtual-machine-manager-daemon.log "root:adm" 640
+	create_logfile /var/log/univention/virtual-machine-manager-daemon-errors.log "root:adm" 640
+
 	rm -rf /etc/pki/libvirt/clientcert.pem
 	ln -sf /etc/univention/ssl/$hostname.$domainname/cert.pem /etc/pki/libvirt/clientcert.pem
 	rm -rf /etc/pki/libvirt/private/clientkey.pem

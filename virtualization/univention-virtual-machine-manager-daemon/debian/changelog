@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.10-2) unstable; urgency=low
+
+  * create logfiles in postinst (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 10:42:17 +0200
+
 univention-virtual-machine-manager-daemon (2.0.10-1) unstable; urgency=low
 
   * Fix init script order (Bug #19145)

@@ -41,6 +41,7 @@ find /var/log \
 	-type l -prune \
 	-o -path "/var/log/univention" -prune \
 	-o -path "/var/log/samba" -prune \
+	-o -path "/var/log/libvirt" -prune \
 	-o -path "/var/log/nagios3" -prune \
 	-o -not -type d -perm /o+r ! \( \
 		-path "/var/log" \

@@ -32,6 +32,8 @@
 
 . /usr/share/univention-lib/all.sh
 
+#DEBHELPER#
+
 create_logfile /var/log/univention/pkgdb.log "root:adm" 640
 
 exit 0

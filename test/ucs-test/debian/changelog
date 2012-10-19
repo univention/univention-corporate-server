@@ -1,3 +1,10 @@
+ucs-test (3.0.13-1) unstable; urgency=low
+
+  * ignore "/var/log/libvirt" in 26_check_logfiles_general
+    (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 10:45:01 +0200
+
 ucs-test (3.0.12-1) unstable; urgency=low
 
   * Allow root.adm or root.root for /var/log/samba (Bug #11431)

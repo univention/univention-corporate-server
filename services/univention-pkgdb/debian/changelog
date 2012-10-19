@@ -1,3 +1,10 @@
+univention-pkgdb (6.0.15-3) unstable; urgency=low
+
+  * added DEBHELPER to python-univention-pkgdb.postinst
+    (Bug #11431)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 10:48:20 +0200
+
 univention-pkgdb (6.0.15-2) unstable; urgency=low
 
   * moved creation of pkgdb.log from univention-pkgdb.postinst
