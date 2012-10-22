@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.48-1) unstable; urgency=low
+
+  * Fix search functionality (Bug #28798)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 22 Oct 2012 15:32:37 +0200
+
 univention-management-console-module-packages (2.0.47-1) unstable; urgency=low
 
   * Fix whitelist for apps (Bug #27999)

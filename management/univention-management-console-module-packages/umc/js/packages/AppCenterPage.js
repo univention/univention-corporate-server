@@ -37,6 +37,7 @@ define([
 	"dojo/query",
 	"dojo/dom-class",
 	"dojo/store/Memory",
+	"dojo/regexp",
 	"dojox/image/LightboxNano",
 	"umc/dialog",
 	"umc/tools",
@@ -53,7 +54,7 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane"
-], function(declare, lang, array, on, when, query, domClass, Memory, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, GalleryPane) {
+], function(declare, lang, array, on, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, GalleryPane) {
 
 	var _SearchWidget = declare("umc.modules.packages._SearchWidget", [ContainerWidget], {
 
@@ -585,7 +586,13 @@ define([
 		},
 
 		filterApplications: function() {
-			var regex  = new RegExp(this._searchWidget.get('value'), 'i');
+			// sanitize the search pattern
+			var searchPattern = lang.trim(this._searchWidget.get('value'));
+			searchPattern = regexp.escapeString(searchPattern);
+			searchPattern = searchPattern.replace(/\\\*/g, '.*');
+			searchPattern = searchPattern.replace(/ /g, '\\s+');
+
+			var regex  = new RegExp(searchPattern, 'i');
 			var category = this._searchWidget.get('category');
 
 			var query = {
