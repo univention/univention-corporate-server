@@ -772,27 +772,35 @@ def ucs_zone_create(s4connector, object, dns_type):
 				if set(map(mapMX,mx)) != set(map(mapMX,zone['mx'])):
 					zone['mx'] = mx
 	else:
-		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
-
-		position=univention.admin.uldap.position(zoneDN)
+		position=univention.admin.uldap.position( s4connector.property['dns'].ucs_default_dn )
 
 		if dns_type == 'forward_zone':
 			zone= univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position, dn=None, superordinate=None, attributes=[])
+			name_key = 'zone'
 		elif dns_type == 'reverse_zone':
 			zone= univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position, dn=None, superordinate=None, attributes=[])
+			name_key = 'subnet'
+			if zoneName.lower().endswith('.in-addr.arpa'):
+				ip_parts=zoneName[:-13].split('.')
+				ip_parts.reverse()
+				zoneName='.'.join(ip_parts)
+			## elif  zoneName.lower().endswith('.ip6.arpa'):
+			##	ip_parts=zoneName[:-9].split('.')
+			##	zone name conversion missing at this point
 		zone.open()
-		zone['zone']=zoneName
+		zone[name_key]=zoneName
 		if soa['mname'] not in ns:
 			ns.insert(0, soa['mname'])
-		zone['namesever']=ns
+		zone['nameserver']=ns
 		zone['contact']=soa['rname'].replace('.', '@', 1)
 		zone['serial']=soa['serial']
-		zone['refresh']=soa['refresh']
-		zone['retry']=soa['retry']
-		zone['expire']=soa['expire']
-		zone['ttl']=soa['ttl']
-		zone['a']=a
-		zone['mx']=mx
+		zone['refresh']=[ soa['refresh'] ]	## complex UDM syntax
+		zone['retry']=[ soa['retry'] ]		## complex UDM syntax
+		zone['expire']=[ soa['expire'] ]	## complex UDM syntax
+		zone['ttl']=[ soa['ttl'] ]			## complex UDM syntax
+		if dns_type == 'forward_zone':
+			zone['a']=a
+			zone['mx']=mx
 		zone.create()
 
 		

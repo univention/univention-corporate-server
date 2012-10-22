@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.17-5) unstable; urgency=low
+
+  * add support for reverse_zone in ucs_zone_create (Bug #28390)
+  * fix for complex UDM time syntax in ucs_zone_create
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Oct 2012 22:22:52 +0200
+
 univention-s4-connector (7.0.17-4) unstable; urgency=low
 
   * wait after stopping listener before removing the s4-connector
