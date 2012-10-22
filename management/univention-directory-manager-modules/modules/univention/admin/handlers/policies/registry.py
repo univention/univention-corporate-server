@@ -52,7 +52,7 @@ module='policies/registry'
 operations=['add','edit','remove','search']
 
 policy_oc='univentionPolicyRegistry'
-policy_apply_to=["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/managedclient", "computers/mobileclient", "computers/thinclient"]
+policy_apply_to=["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/managedclient", "computers/mobileclient", "computers/thinclient", "computers/ucc"]
 policy_position_dn_prefix="cn=config-registry"
 usewizard=1
 childs=0

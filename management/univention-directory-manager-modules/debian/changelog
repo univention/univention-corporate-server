@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.68-1) unstable; urgency=low
+
+  * Make the UCR policy also apply to UCC systems (Bug #28852)
+
+ -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Mon, 22 Oct 2012 11:02:56 +0200
+
 univention-directory-manager-modules (8.0.67-1) unstable; urgency=low
 
   * modified description of udm legacy package
