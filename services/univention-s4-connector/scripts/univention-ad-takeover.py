@@ -1,7 +1,7 @@
 #!/usr/bin/python2.6
 #
-# Univention Migrate SBS
-#  Migrates a SBS server to the local Samba 4 system
+# Univention AD takeover script
+#  Migrates an AD server to the local UCS Samba 4 DC
 #
 # Copyright 2012-2013 Univention GmbH
 #
