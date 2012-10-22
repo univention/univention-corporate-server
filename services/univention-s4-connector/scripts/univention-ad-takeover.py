@@ -364,11 +364,13 @@ def wait_for_listener_replication(progress_function = None, max_time=20):
 		if t - t_0 > max_time:
 			print
 			print "Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t - t_0)))
+			sys.stdout.flush()
 			return False
 		if progress_function and delta_t >= 1:
 			progress_function()
 	if progress_function and t - t_0 > 3:
 		print
+		sys.stdout.flush()
 	return True
 
 def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=None):
@@ -419,14 +421,16 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 		if t - t_0 > max_time:
 			print
 			print "Warning: S4 Connector not yet up to date. Waited for about %s seconds." % (int(round(t - t_0),))
+			sys.stdout.flush()
+			conn.close()
 			return False
 		if progress_function and delta_t >= 1:
 			progress_function()
 	if progress_function and t - t_0 > 3:
 		print
-	return True
-
+		sys.stdout.flush()
 	conn.close()
+	return True
 
 def check_samba4_started():
 	for i in xrange(5):
@@ -996,19 +1000,22 @@ def run_phaseI(opts, args):
 	p = subprocess.Popen(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"])
 	p.wait()
 
-	# print "Waiting for listener to finish (max. 90 seconds)",
-	# t = t_0 = time.time()
-	# if not wait_for_listener_replication(print_dot, 90):
-	# 	print "Warning: Stopping Listener now anyway."
-	print "Waiting for replication to finish (30 seconds)",
-	for i in xrange(30):
-		time.sleep(1)
-		print_dot()
-	print
+	print "Waiting for listener to finish (max. 90 seconds)",
+	if not wait_for_listener_replication(print_dot, 90):
+		print "Warning: Stopping Listener now anyway."
+
+	## Restart Univention Directory Listener for S4 Connector
+	print "Restarting Univention Directory Listener"
 
 	## Reset S4 Connector and handler state
 	p = subprocess.Popen(["/etc/init.d/univention-directory-listener", "stop"])
 	p.wait()
+
+	for i in xrange(10):
+		time.sleep(1)
+		print_dot()
+	print
+	sys.stdout.flush()
 
 	if os.path.exists("/var/lib/univention-directory-listener/handlers/s4-connector"):
 		os.unlink("/var/lib/univention-directory-listener/handlers/s4-connector")
@@ -1028,7 +1035,7 @@ def run_phaseI(opts, args):
 	p = subprocess.Popen(["/etc/init.d/univention-directory-listener", "start"])
 	p.wait()
 
-	#print "Waiting for directory listener to finish (10 seconds)",
+	#print "Waiting for directory listener to start up (10 seconds)",
 	#for i in xrange(10):
 	#	time.sleep(1)
 	#	print_dot()
@@ -1048,6 +1055,7 @@ def run_phaseI(opts, args):
 			time.sleep(1)
 			print_dot()
 		print
+		sys.stdout.flush()
 
 	## Reset normal relication intervals
 	config_registry.handler_set(["connector/s4/poll/sleep=%s" % old_sleep, "connector/s4/retryrejected=%s" % old_retry])

@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.17-4) unstable; urgency=low
+
+  * wait after stopping listener before removing the s4-connector
+    handler file in univention-ad-takeover.py (Bug #28390)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Oct 2012 22:20:19 +0200
+
 univention-s4-connector (7.0.17-3) unstable; urgency=low
 
   * fix mode of univention-ad-takeover.py (Bug #28390)
