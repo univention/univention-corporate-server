@@ -51,10 +51,12 @@ api-viewer:
 
 univention-dojo: /usr/share/univention-dojo
 	cp -r $< $@
+	cd $@ && patch -p0 < ../Selection.patch
+
 univention-dojo/umc: /usr/share/univention-management-console-frontend-src/umc
 	cp -r $< $@
 
-# this is a workaround: umc.app require()s this file
+# this is a workaround: umc.app require()s this file, so we add an empty one
 univention-dojo/umc/modules/udm/LicenseDialog.js:
 	mkdir -p univention-dojo/umc/modules/udm
 	echo 'define([],function(){});' > $@

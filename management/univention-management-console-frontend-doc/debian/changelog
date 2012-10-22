@@ -1,3 +1,9 @@
+univention-management-console-frontend-doc (6.0.6-1) unstable; urgency=low
+
+  * fixed build errors for new dgrid; Bug #28018
+
+ -- Florian Best <best@univention.de>  Mon, 22 Oct 2012 15:44:52 +0200
+
 univention-management-console-frontend-doc (6.0.5-2) unstable; urgency=low
 
   * version bump to use univention-dojo 6.0.5 (dojo 1.8.1rc3); Bug #28710

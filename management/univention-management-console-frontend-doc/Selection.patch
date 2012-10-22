@@ -1,0 +1,11 @@
+--- dgrid/Selection.js.orig	2012-10-22 13:26:48.519631362 +0200
++++ dgrid/Selection.js	2012-10-22 13:27:01.099630443 +0200
+@@ -20,7 +20,7 @@
+ 	//		If true, the selection object will be cleared when refresh is called.
+ 	deselectOnRefresh: true,
+ 	
+-	//allowSelectAll: Boolean
++	// allowSelectAll: Boolean
+ 	//		If true, allow ctrl/cmd+A to select all rows.
+ 	//		Also consulted by the selector plugin for showing select-all checkbox.
+ 	allowSelectAll: false,
