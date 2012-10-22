@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.125-1) unstable; urgency=low
+
+  * fixed login issues for users that do not see any modules; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 22 Oct 2012 11:45:05 +0200
+
 univention-management-console-frontend (2.0.124-1) unstable; urgency=low
 
   * remove white opacity over dijitButtons's; Bug #28796

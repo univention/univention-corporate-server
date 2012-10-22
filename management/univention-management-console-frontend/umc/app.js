@@ -305,7 +305,7 @@ define([
 					// helper function
 					++ndeps;
 					progressInfo.update(ndeps, moduleName ? _('Loaded module %s', moduleName) : '&nbsp;');
-					if (ndeps == _modules.length) {
+					if (ndeps >= _modules.length) {
 						// all modules have been loaded
 						modulesLoaded.resolve();
 						progressDialog.hide().then(function() {
@@ -341,6 +341,12 @@ define([
 
 					// return deferred that fires when all dependencies are loaded
 				}));
+
+				// resolve the deferred object directly if there are no modules available
+				if (!_modules.length) {
+					incDeps();
+				}
+
 				return modulesLoaded;
 			})).then(lang.hitch(this, function() {
 				// sort the internal list of modules
@@ -637,6 +643,11 @@ define([
 
 				// render all standard categories
 				array.forEach(this.getCategories(), lang.hitch(this, _renderCategory));
+			}
+
+			// show a message in case no module is available
+			if (!this._moduleStore.query().length) {
+				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
 			}
 
 			// set a flag that GUI has been build up
