@@ -36,6 +36,9 @@ Variables: nssldap/idle/timelimit
 Variables: nssldap/tls/checkpeer
 Variables: nssldap/nss_initgroups_ignoreusers
 Variables: nssldap/nss_initgroups_ignoreusers/users
+User: messagebus
+Group: root
+Mode: 0440
 
 Type: file
 File: etc/nsswitch.conf
