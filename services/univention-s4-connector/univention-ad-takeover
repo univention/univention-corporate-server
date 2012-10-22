@@ -30,5 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-/usr/share/univention-s4-connector/univention-ad-takeover.py 2>&1 | tee -a /var/log/univention/univention-ad-takeover.log
+/usr/share/univention-s4-connector/univention-ad-takeover.py "$@" 2>&1 | tee -a /var/log/univention/univention-ad-takeover.log
 
