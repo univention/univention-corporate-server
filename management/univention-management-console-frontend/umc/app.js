@@ -66,6 +66,19 @@ define([
 	var _ucr = {};
 	var _userPreferences = {};
 
+	// helper function for sorting, sort indeces with priority < 0 to be at the end
+	var _cmp = function(x, y) {
+		if (y.priority == x.priority) {
+			return x._orgIndex - y._orgIndex;
+		}
+		return y.priority - x.priority;
+	};
+
+	// helper function that sorts using the favorites position
+	var _cmpFavorites = function(x, y) {
+		return x._favoritePos - y._favoritePos;
+	};
+
 	var _App = declare([ Evented ], {
 		start: function(/*Object*/ props) {
 			// summary:
@@ -266,14 +279,6 @@ define([
 				this._favoritesEnabled = false;
 			}));
 
-			// helper function for sorting, sort indeces with priority < 0 to be at the end
-			var _cmp = function(x, y) {
-				if (y.priority == x.priority) {
-					return x._orgIndex - y._orgIndex;
-				}
-				return y.priority - x.priority;
-			};
-
 			// prompt a dialog showing the progress of loading modules
 			var progressInfo = new ProgressInfo({});
 			var progressDialog = new Dialog({
@@ -398,7 +403,7 @@ define([
 					}
 				};
 			}
-			return this._moduleStore.query(query);
+			return this._moduleStore.query(query, { sort: _cmp } );
 		},
 
 		getModule: function(/*String?*/ id, /*String?*/ flavor, /*String?*/ category) {
@@ -463,6 +468,8 @@ define([
 						return array.indexOf(categories, '$favorites$') >= 0;
 					}
 				}
+			}, {
+				sort: _cmpFavorites
 			});
 
 			// save favorites as a comma separated list
@@ -480,6 +487,7 @@ define([
 			}, false);
 		},
 
+		_favoriteIdx: 0,
 		addFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
 			if (this.getModule(id, flavor, '$favorites$')) {
 				// module has already been added to the favorites
@@ -493,6 +501,8 @@ define([
 
 			// add a module clone for favorite category
 			mod.categories.push('$favorites$');
+			mod._favoritePos = this._favoriteIdx;
+			this._favoriteIdx++;
 			this._moduleStore.put(mod);
 
 			// save settings
@@ -622,7 +632,10 @@ define([
 								test: function(categories) {
 									return array.indexOf(categories, icat.id) >= 0;
 								}
-							}
+							},
+						},
+						queryOptions: {
+							sort: icat.id == '$favorites$' ? _cmpFavorites : _cmp
 						}
 					});
 					titlepane.addChild(gallery);

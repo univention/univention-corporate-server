@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.130-1) unstable; urgency=low
+
+  * fixed sorting of favorites; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 22 Oct 2012 17:18:07 +0200
+
 univention-management-console-frontend (2.0.129-1) unstable; urgency=low
 
   * enable removal of favorites from their original category; Bug #28074
