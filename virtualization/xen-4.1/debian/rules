@@ -146,9 +146,9 @@ binary-common:
 	dh_strip --dbg-package=xen-4.1-dbg
 	dh_compress
 	dh_fixperms
-	dh_installinit -p xen-4.1 --name xencommons -- defaults 19 81
-	dh_installinit -p xen-4.1 --name xend -- defaults 20 80
-	dh_installinit -p xen-4.1 --name xendomains --no-restart-on-upgrade -- defaults 21 79
+	dh_installinit -p xen-4.1 --name xencommons -- defaults 26 74
+	dh_installinit -p xen-4.1 --name xend -- defaults 27 73
+	dh_installinit -p xen-4.1 --name xendomains --no-restart-on-upgrade -- defaults 30 70
 	dh_installudev -p xen-4.1 --name xen-backend
 	dh_installudev -p xen-4.1 --name xend
 	dh_makeshlibs -a -V
