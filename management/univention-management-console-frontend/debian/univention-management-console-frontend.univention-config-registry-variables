@@ -9,3 +9,7 @@ Description[de]=Betreff, der bei Feedback verwendet wird
 Description[en]=Subject used for feedback
 Type=str
 Categories=Management
+
+[umc/web/favorites/default]
+Description[en]=Specifies the default UMC modules for the category "favorites" as a comma separated list in the form "<moduleID>[:<moduleFlavor]", e.g.: udm:users/user,setup,updater
+Description[de]=Definiert die standard UMC-Module für die Kategorie "Favoriten" als Komma separierte Liste in der Form "<moduleID>[:<moduleFlavor]", z.B.: udm:users/user,setup,updater
