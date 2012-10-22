@@ -219,6 +219,7 @@ class Instance( Base ):
 			filename = request.options[ 0 ][ 'tmpfile' ]
 			if not os.path.realpath(filename).startswith(TEMPUPLOADDIR):
 				self.finished(request.id, [{'success': False, 'message': 'invalid file path'}])
+				return
 		else:
 			self.required_options( request, 'license' )
 			lic = request.options[ 'license' ]

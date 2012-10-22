@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.32-1) unstable; urgency=low
+
+  * fixed missing return; Bug #28189
+
+ -- Florian Best <best@univention.de>  Mon, 22 Oct 2012 08:31:34 +0200
+
 univention-management-console-module-udm (3.0.31-1) unstable; urgency=low
 
   * Check also for expired, wrong base and not found (Bug #28186)
