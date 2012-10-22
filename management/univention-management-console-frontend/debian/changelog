@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.124-1) unstable; urgency=low
+
+  * remove white opacity over dijitButtons's; Bug #28796
+
+ -- Florian Best <best@univention.de>  Mon, 22 Oct 2012 11:31:44 +0200
+
 univention-management-console-frontend (2.0.123-1) unstable; urgency=low
 
   * fixed tools.parseError; Bug #28551

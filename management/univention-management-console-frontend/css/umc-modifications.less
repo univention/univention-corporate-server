@@ -404,64 +404,22 @@
   width: inherit; /* DEL */
 }
 
-
-/*==========================================================================
-ORIGINAL DIFF
-
-   -moz-transition-duration: 0.3s;
-   transition-duration: 0.3s;
- }
--.umc .dijitButton .dijitButtonNode,
-+/*.umc .dijitButton .dijitButtonNode,
- .umc .dijitDropDownButton .dijitButtonNode,
- .umc .dijitComboButton .dijitButtonNode,
- .umc .dijitToggleButton .dijitButtonNode {
--  
--
--  border: 1px solid #769dc0;
--  padding: 2px 4px 4px 4px;
--  background-image: url("images/button.png");
--  background-position: center top;
-+/*
-+.umcSubmitButton {
-+       height: 16px;
-+  color: #fff;
-+       font-size: 14px;
-+  padding: 2px 2px 5px 2px;
-+  background-image: url(form/images/button.png);
-+  background-position: left top;
-   background-repeat: repeat-x;
--  background-color: #e0eed5;
--  -moz-border-radius: 4px;
--  border-radius: 4px;
--  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
--  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
--  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-+  background-color: #74be4b;
- }
- .umc .dijitComboButton .dijitArrowButton {
-   border-left-width: 0;
-   padding: 4px 2px 4px 2px;
-   
- 
- }
-*/
-
+/* remove the upstream node completely */
 .umc .dijitButton .dijitButtonNode,
 .umc .dijitDropDownButton .dijitButtonNode,
 .umc .dijitComboButton .dijitButtonNode,
 .umc .dijitToggleButton .dijitButtonNode {
   color: inherit;
-  border: inherit; /* DEL */
+  border: none; /* DEL */
   padding: inherit; /* DEL */
   background-image: none; /* DEL */
   background-position: inherit; /* DEL */
-  background-color: #e0eed5;
-  -moz-border-radius: 4px;
-  border-radius: inherit; /* DEL */
-  -webkit-box-shadow: inherit; /* DEL */
-  -moz-box-shadow: inherit; /* DEL */
-  box-shadow: inherit; /* DEL */
+  background-color: transparent; /* important: make normal buttons transparent */
+  -moz-border-radius: 0;
+  border-radius: 0; /* DEL */
+  -webkit-box-shadow: none; /* DEL */
+  -moz-box-shadow: none; /* DEL */
+  box-shadow: none; /* DEL */
 }
 
 .umcSubmitButton {
@@ -474,9 +432,6 @@ ORIGINAL DIFF
   background-repeat: repeat-x;
   background-color: #74be4b;
 }
-/*======================================================================*/
-
-
 
 .umc .dijitArrowButtonInner {
   background-image: url(form/images/buttonArrows.png);
@@ -538,31 +493,16 @@ ORIGINAL DIFF
   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  background-image: url("form/images/buttonDisabled.png");
-  background-image: -moz-linear-gradient(#ffffff 0%, rgba(255, 255, 255, 0) 40%);
-  background-image: -webkit-linear-gradient(#ffffff 0%, rgba(255, 255, 255, 0) 40%);
-  background-image: -o-linear-gradient(#ffffff 0%, rgba(255, 255, 255, 0) 40%);
-  background-image: -ms-linear-gradient(#ffffff 0%, rgba(255, 255, 255, 0) 40%);
-  _background-image: none;
+  background-image: none /* remove the upstream white transition */;
 }
 
-/* make normal buttons transparent */
-.umc .dijitButton .dijitButtonNode,
-.umc .dijitDropDownButton .dijitButtonNode,
-.umc .dijitComboButton .dijitButtonNode,
-.umc .dijitToggleButton .dijitButtonNode {
-	background-color: transparent;
-}
-
+/* HELPME: why is this needet?? */
 .umc .dijitButtonDisabled .dijitButtonNode,
 .umc .dijitDropDownButtonDisabled .dijitButtonNode,
 .umc .dijitComboButtonDisabled .dijitButtonNode,
 .umc .dijitToggleButtonDisabled .dijitButtonNode {
   margin: -1px !important;
 }
-
-
-
 
 
 /* disable background and border for buttons of MultiInput widgets
@@ -2416,7 +2356,6 @@ p {
 
 /* set opacity to 50% for icons of disabled buttons */
 .umc .dijitButtonDisabled .dijitIcon {
-	/*display: none;*/
 	opacity: 0.5;
 }
 
