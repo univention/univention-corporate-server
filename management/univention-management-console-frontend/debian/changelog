@@ -1,3 +1,15 @@
+univention-management-console-frontend (2.0.129-1) unstable; urgency=low
+
+  * enable removal of favorites from their original category; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 22 Oct 2012 14:27:04 +0200
+
+univention-management-console-frontend (2.0.128-1) unstable; urgency=low
+
+  * disable favorites for too few UMC modules; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 22 Oct 2012 13:27:21 +0200
+
 univention-management-console-frontend (2.0.127-1) unstable; urgency=low
 
   * fixed automatic visibility of the overview page; Bug #28074

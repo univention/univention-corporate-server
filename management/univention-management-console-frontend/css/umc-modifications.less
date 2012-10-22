@@ -2355,7 +2355,7 @@ p {
 
 /* set opacity to 50% for icons of disabled buttons */
 .umc .dijitButtonDisabled .dijitIcon {
-	opacity: 0.5;
+	.opacity(0.5);
 }
 
 /* UMC icons */
@@ -2574,25 +2574,30 @@ p {
 
 /* UMC overview page */
 
-/* add a 'X' (for removing) when hovering favorite items */
+/* add an 'X' (for removing) when hovering favorite items */
 .dgrid.umcOverviewFavorites .umcGalleryItem:hover .umcGalleryStatusIcon {
-	.opacity(40);
+	.opacity(0.4);
 	background-image: url(icons/24x24/delete.png);
 }
 
-.dgrid.umcOverviewFavorites .umcGalleryItem:hover .umcGalleryStatusIcon:active {
-	.opacity(100);
-}
-
 /* add nice star when hovering */
-.dgrid.umcOverviewCategory .umcGalleryItem:hover .umcGalleryStatusIcon {
-	.opacity(40);
-	background-image: url(icons/24x24/star.png);
+.dgrid.umcOverviewCategory .umcGalleryItem:hover {
+	.umcGalleryStatusIcon {
+		.opacity(0.4);
+		background-image: url(icons/24x24/star.png);
+	}
+
+	.umcGalleryStatusIcon.icon24-star {
+		/* if the status icon is already marked with a star, show an 'X' for deletion */
+		background-image: url(icons/24x24/delete.png);
+	}
 }
 
-/* if the status icon is already marked with a star, do not use opacity */
-.dgrid.umcOverviewCategory .umcGalleryItem:hover .umcGalleryStatusIcon.icon24-star {
-	.opacity(100);
+/* change the opacity when clicked on the icon to 100% */
+.dgrid.umcOverviewCategory, .dgrid.umcOverviewFavorites {
+	.umcGalleryItem .umcGalleryStatusIcon:active {
+		.opacity(1);
+	}
 }
 
 

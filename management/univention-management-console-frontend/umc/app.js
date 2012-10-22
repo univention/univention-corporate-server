@@ -634,7 +634,7 @@ define([
 							evt.stopImmediatePropagation();
 
 							var item = gallery.row(evt).data;
-							if (icat.id == '$favorites$') {
+							if (array.indexOf(item.categories, '$favorites$') >= 0) {
 								// for the favorite category, remove the moduel from the favorites
 								this.removeFavoriteModule(item.id, item.flavor);
 							}
@@ -656,12 +656,18 @@ define([
 					this._categoriesContainer.addChild(titlepane);
 				};
 
-				// handle favorites category... query user preferences and
-				// use as fallback the corresponding UCR variable...
-				var favoritesStr = _userPreferences.favorites || _ucr['umc/web/favorites/default'] || '';
-				array.forEach(lang.trim(favoritesStr).split(/\s*,\s*/), function(ientry) {
-					this.addFavoriteModule.apply(this, ientry.split(':'));
-				}, this);
+				if (this._moduleStore.query().length > 4) {
+					// handle favorites category... query user preferences and
+					// use as fallback the corresponding UCR variable...
+					var favoritesStr = _userPreferences.favorites || _ucr['umc/web/favorites/default'] || '';
+					array.forEach(lang.trim(favoritesStr).split(/\s*,\s*/), function(ientry) {
+						this.addFavoriteModule.apply(this, ientry.split(':'));
+					}, this);
+				}
+				else {
+					// disable favorites for modules <= 4 completely
+					this._favoritesEnabled = false;
+				}
 
 				// render all standard categories
 				array.forEach(this.getCategories(), lang.hitch(this, _renderCategory));

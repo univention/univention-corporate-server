@@ -78,10 +78,12 @@
 @dnd-dropseparator-color: #74be4b;
 @arrowbutton-pressed-background-color: #74be4b;
 
-.opacity(@op:100)
+.opacity(@op:1)
 {
-	filter:alpha(opacity=@op);
-	-moz-opacity:@op/100;
-	-khtml-opacity:@op/100;
-	opacity:@op/100;
+	@opPercentage: @op*100;
+	filter: ~"alpha(opacity=(@{opPercentage}))";
+	-ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=(@{opPercentage}))";
+	-moz-opacity:@op;
+	-khtml-opacity:@op;
+	opacity:@op;
 }
