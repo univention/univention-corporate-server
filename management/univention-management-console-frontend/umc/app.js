@@ -102,8 +102,8 @@ define([
 					});*/
 				}));
 
-				tools.status('overview', tools.isTrue(props.overview));
 			}
+			tools.status('overview', tools.isTrue(props.overview));
 
 			if (props.username && props.password && typeof props.username == "string" && typeof props.password == "string") {
 				// username and password are given, try to login directly
@@ -362,8 +362,11 @@ define([
 					idProperty: '$id$'
 				}));
 
-				// disable overview if only one module exists
-				tools.status('overview', (modules.length !== 1) && tools.status('overview'));
+				// make sure that we do not overwrite an explicitely stated value of 'overview'
+				if (getQuery('overview') === undefined) {
+					// disable overview if only one module exists
+					tools.status('overview', modules.length !== 1 && tools.status('overview'));
+				}
 			}));
 
 			// wait for modules, the UCR variables, and user preferences to load
@@ -544,6 +547,25 @@ define([
 			tools.status('hostname', _ucr.hostname);
 
 			if (tools.status('overview')) {
+				// the container for all category panes
+				// NOTE: We add the icon here in the first tab, otherwise the tab heights
+				//	   will not be computed correctly and future tabs will habe display
+				//	   problems.
+				//     -> This could probably be fixed by calling layout() after adding a new tab!
+				this._overviewPage = new Page({
+					title: _('umcOverviewTabTitle'),
+					headerText: _('umcOverviewHeader'),
+					iconClass: tools.getIconClass('univention'),
+					helpText: _('umcOverviewHelpText')
+				});
+
+				// prepare the widget displaying all categories
+				this._categoriesContainer = new ContainerWidget({
+					scrollable: true
+				});
+				this._overviewPage.addChild(this._categoriesContainer);
+				this._tabContainer.addChild(this._overviewPage);
+
 				// check validity of SSL certificates
 				var hostCert = parseInt( _ucr[ 'ssl/validity/host' ], 10 );
 				var rootCert = parseInt( _ucr[ 'ssl/validity/root' ], 10 );
@@ -679,28 +701,6 @@ define([
 				'class': 'umcMainTabContainer'
 			});
 			topContainer.addChild(this._tabContainer);
-
-			if (tools.status('overview')) {
-				// the container for all category panes
-				// NOTE: We add the icon here in the first tab, otherwise the tab heights
-				//	   will not be computed correctly and future tabs will habe display
-				//	   problems.
-				//     -> This could probably be fixed by calling layout() after adding a new tab!
-				this._overviewPage = new Page({
-					title: _('umcOverviewTabTitle'),
-					headerText: _('umcOverviewHeader'),
-					iconClass: tools.getIconClass('univention'),
-					helpText: _('umcOverviewHelpText')
-				});
-
-				// prepare the widget displaying all categories
-				this._categoriesContainer = new ContainerWidget({
-					scrollable: true
-				});
-				this._overviewPage.addChild(this._categoriesContainer);
-				this._tabContainer.addChild(this._overviewPage);
-
-			}
 
 			// the header
 			var header = new ContainerWidget({

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.127-1) unstable; urgency=low
+
+  * fixed automatic visibility of the overview page; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 22 Oct 2012 12:35:40 +0200
+
 univention-management-console-frontend (2.0.126-1) unstable; urgency=low
 
   * fixed submitButton background color; Bug #28796
