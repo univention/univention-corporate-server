@@ -1,3 +1,10 @@
+univention-samba4 (2.0.22-1) unstable; urgency=low
+
+  * If no samba4 DC could be found during a join the LDAP will be
+    searched for one before aborting (Bug #27469)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 23 Oct 2012 09:58:01 +0200
+
 univention-samba4 (2.0.21-1) unstable; urgency=low
 
   * Add samba4/dcerpc/endpoint/drsuapi (for Bug #28390)
