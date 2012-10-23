@@ -1,3 +1,9 @@
+univention-config-registry (8.0.4-9) unstable; urgency=low
+
+  * Force dpkg-divert --local (Bug #28750)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Oct 2012 13:53:15 +0200
+
 univention-config-registry (8.0.4-8) unstable; urgency=low
 
   * Add support for search patterns (Bug #18254, Bug #28563)

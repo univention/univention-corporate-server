@@ -246,7 +246,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 	def install_divert(self):
 		"""Prepare file for diversion."""
 		deb = '%s.debian' % self.to_file
-		self._call_silent('dpkg-divert', '--quiet', '--rename',
+		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local',
 				'--divert', deb,
 				'--add', self.to_file)
 		# Make sure a valid file still exists
@@ -261,7 +261,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 		except EnvironmentError:
 			pass
 		deb = '%s.debian' % self.to_file
-		self._call_silent('dpkg-divert', '--quiet', '--rename',
+		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local',
 				'--divert', deb,
 				'--remove', self.to_file)
 
@@ -683,7 +683,7 @@ class ConfigHandlers:
 						continue
 					if ':' != diversion:  # local diversion
 						continue
-					assert path_from not in to_remove  # no dulicates
+					assert path_from not in to_remove  # no duplicates
 					try:
 						handler = wanted.pop(path_from)
 					except KeyError:
