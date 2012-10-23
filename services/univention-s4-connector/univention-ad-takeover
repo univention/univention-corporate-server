@@ -1146,6 +1146,15 @@ def run_phaseI(opts, args):
 	#	print_dot()
 	#print
 
+	### rotate S4 connector log and start the S4 Connector
+	## careful: the postrotate task restarts the connector!
+	p = subprocess.Popen(["logrotate", "-f", "/etc/logrotate.d/univention-s4-connector"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	while p.poll() == None:
+		log_line = p.stdout.readline().rstrip()
+		if log_line:
+			log.debug(log_line)
+
+	## Ok, just in case, start the Connector explicitely
 	log.info("Starting S4 Connector")
 	p = subprocess.Popen(["/etc/init.d/univention-s4-connector", "start"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:

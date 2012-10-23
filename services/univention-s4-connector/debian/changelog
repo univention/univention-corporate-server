@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.17-11) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - logrotate the connector-s4.log before initial sync
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Oct 2012 19:08:01 +0200
+
 univention-s4-connector (7.0.17-10) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
