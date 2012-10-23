@@ -755,6 +755,17 @@ class UniventionUpdater:
 		self.log.info('Found errata updates %r', result)
 		return result
 
+	def get_component_erratalevel(self, component, version=None):
+		'''
+		Returns the errata level for a component and UCS-version
+		installed on the system.
+		If no version is given, the current_version is taken.
+		'''
+		if version is None:
+			version = self.current_version
+		version = UCS_Version(version)
+		return int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+
 	def get_all_available_errata_component_updates(self):
 		'''
 		Returns a list of all available errata updates for current major.minor version
@@ -774,7 +785,7 @@ class UniventionUpdater:
 			component_versions = {}
 			for version in versions:
 				version_str = UCS_Version.FORMAT % version
-				current_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+				current_level = self.get_component_erratalevel(component, version)
 				component_versions[version_str] = []
 				for el in xrange(current_level + 1, 1000):
 					if self.get_component_repositories(component, [version], errata_level=el):
@@ -1131,7 +1142,7 @@ class UniventionUpdater:
 						patch_names = ['%s-errata%s' % (component, errata_level)]
 					elif not for_mirror_list:
 						# see below for mirror.list handling
-						errata_level = int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+						errata_level = self.get_component_erratalevel(component, version)
 						patch_names += ['%s-errata%d' % (component, x) for x in range(1, errata_level + 1)]
 
 				for patch_name in patch_names:

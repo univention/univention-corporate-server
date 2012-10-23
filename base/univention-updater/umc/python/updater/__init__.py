@@ -525,18 +525,26 @@ class Instance(umcm.Base):
 				""" Convert the result.
 				The result is in a form like this:
 					[
-						('component1', {'2.3': ['2', '3'], '2.4': ['5']} ),
-						('component2', {'3.0': ['2']} ),
+						('component1', {'2.3': [2, 3], '2.4': [5]} ),
+						('component2', {'3.0': [2]} ),
 					]
-				The UMC module needs the number of updates:
-					component1: 3
-					component2: 1
+				The UMC module needs the current and the max possible value:
+					component1: 0, 0 # because not available for current verion
+					component2: 1, 2
 				"""
 				res = {}
-				for (component,versions) in components_errata:
-					if len(versions[max(versions)]) > 0:
-						MODULE.info('components_errata: Found %d updates for %s' %(len(versions[max(versions)]), component))
-						res[component] = len(versions[max(versions)])
+				for (component, versions) in components_errata:
+					current_errata = self.uu.get_component_erratalevel(component)
+					last_errata = 0
+					try:
+						versions = versions[self.uu.ucs_version]
+						last_errata = max(versions)
+					except (KeyError, ValueError):
+						# absolutely no errata for current version
+						# or no new errata for current version
+						pass
+					MODULE.info('components_errata: Found %r updates for %s' % (versions, component))
+					res[component] = [current_errata, last_errata]
 				# Convert the object into a string. This is necessary because such a dict
 				# can not be transferred through a hidden value in java script
 				if res:

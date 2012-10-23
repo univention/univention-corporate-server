@@ -1,3 +1,9 @@
+univention-updater (8.0.24-1) unstable; urgency=low
+
+  * Version shows erratalevel (Bug #26906)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 23 Oct 2012 18:29:22 +0200
+
 univention-updater (8.0.23-1) unstable; urgency=low
 
   * Do not rely on UCR when checking for updates in easy mode (Bug #26278)

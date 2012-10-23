@@ -427,15 +427,15 @@ define([
 					// *** NOTE *** Availability of release updates (and visibility of 'Execute' button) can't be
 					//				processed here since we have to wait for the 'onValuesLoaded' event of the
 					//				combobox.
-					var vtxt = lang.replace(_("The currently installed release version is {ucs_version}"), values);
+					var vtxt;
+					if (values.erratalevel !== 0) {
+						vtxt = lang.replace(_("The currently installed release version is {ucs_version} errata{erratalevel}"), values);
+					} else {
+						vtxt = lang.replace(_("The currently installed release version is {ucs_version}"), values);
+					}
 					this._form.getWidget('ucs_version_text').set('content', vtxt);
 
-					// Text (and button visibility) in EASY mode. We reuse the 'vtxt' variable if the
-					// erratalevel is not yet set.
-					if (values.erratalevel !== 0)
-					{
-						vtxt = lang.replace(_("The currently installed release version is {ucs_version} errata{erratalevel}"), values);
-					}
+					// Text (and button visibility) in EASY mode. We reuse the 'vtxt' variable
 					this._form.getWidget('easy_release_text').set('content', vtxt);
 
 					// easy_update_available -> easy_available_text
@@ -457,79 +457,49 @@ define([
 					// can be aligned at the second sentence.
 
 					var but = this._form._buttons.run_errata_update;
-					var tmp1;
-					var key;
-					var ucs_errata_count = parseInt(values.latest_errata_update, 10) - parseInt(values.erratalevel, 10);
-					if (( ucs_errata_count > 0 ) || ( values.components_errata !== "" ))
-					{
-						// Convert the string back to an object. This is necessary because such a dict
-						// can not be transferred through a hidden value
-						if (values.components_errata !== "" ) {
-							values.components_errata = json.parse(values.components_errata);
-						}
+					var any_errata_available = false;
 
-						tmp1 = _("Errata updates are available for this system.");
-						var tmp2 = '';
-						if (( ucs_errata_count > 0 ) && ( values.components_errata !== "" ))
-						{
-							// Errata Updates for UCS and for components
-							if ( ucs_errata_count > 1 ) {
-								tmp2 = lang.replace(_("For UCS are {errata_count} errata updates available" ), {errata_count: ucs_errata_count});
-							} else {
-								tmp2 = lang.replace(_("For UCS is one errata update available" ), {errata_count: ucs_errata_count});
-							}
-							for (key in values.components_errata)
-							{
-								if ( parseInt(values.components_errata[key], 10) > 1 ) {
-									tmp2 += lang.replace(_(" and for component {component} are {count} errata updates available"), {component: key, count: values.components_errata[key]});
-								} else {
-									tmp2 += lang.replace(_(" and for component {component} is one errata update available"), {component: key, count: values.components_errata[key]});
-								}
-							}
-							tmp2 += '.';
+					// Convert the string back to an object. This is necessary because such a dict
+					// can not be transferred through a hidden value
+					if (values.components_errata !== '' ) {
+						values.components_errata = json.parse(values.components_errata);
+					}
+					var _add_component_errata = function(component, installed_errata, available_errata) {
+						var errata_count = available_errata - installed_errata;
+						if (errata_count > 0) {
+							any_errata_available = true;
 						}
-						else if ( ucs_errata_count > 0 )
-						{
-							// Errata Updates for UCS
-							if ( ucs_errata_count > 1 ) {
-								tmp2 = lang.replace(_("There are {errata_count} errata updates for UCS available." ), {errata_count: ucs_errata_count});
-							} else {
-								tmp2 = lang.replace(_("There is one errata update for UCS available." ), {errata_count: ucs_errata_count});
-							}
+						var ret = component;
+						if (installed_errata !== 0) {
+							ret += ' errata ' + installed_errata;
 						}
-						else
-						{
-							// Errata Updates for components
-							for (key in values.components_errata)
-							{
-								if (tmp2 === undefined) {
-									if ( parseInt(values.components_errata[key], 10) > 1 ) {
-										tmp2 = lang.replace(_("For component {component} are {count} errata updates available"), {component: key, count: values.components_errata[key]});
-									} else {
-										tmp2 = lang.replace(_("For component {component} is one errata update available"), {component: key, count: values.components_errata[key]});
-									}
-								} else {
-									if ( parseInt(values.components_errata[key], 10) > 1 ) {
-										tmp2 += lang.replace(_(" and for component {component} are {count} errata updates available"), {component: key, count: values.components_errata[key]});
-									} else {
-										tmp2 += lang.replace(_(" and for component {component} is one errata update available"), {component: key, count: values.components_errata[key]});
-									}
-								}
-							}
-							tmp2 += '.';
+						ret += ' – ';
+						if (errata_count <= 0) {
+							ret += _('No errata updates available');
+						} else if (errata_count == 1) {
+							ret += _('One errata update available');
+						} else {
+							ret += lang.replace(_('{errata_count} errata updates available'), {errata_count: errata_count});
 						}
-						this._form.getWidget('errata_update_text2').set('content', tmp2);
+						return ret;
+					};
+					var errata_update_text2 = _add_component_errata('UCS', values.erratalevel, values.latest_errata_update);
+					tools.forIn(values.components_errata, function(component, versions) {
+						errata_update_text2 += '<br />' + _add_component_errata(component, versions[0], versions[1]);
+					});
+					this._form.getWidget('errata_update_text2').set('content', errata_update_text2);
 
+					var errata_update_text1;
+					if (any_errata_available) {
 						// Show the Update button
+						errata_update_text1 = _("Errata updates are available for this system.");
 						domClass.toggle(but.domNode, 'dijitHidden', false);
 					}
-					else
-					{
-						tmp1 = _("There are no errata updates available for this system.");
-						this._form.getWidget('errata_update_text2').set('content', '');
+					else {
+						errata_update_text1 = _("There are no errata updates available for this system.");
 						domClass.toggle(but.domNode, 'dijitHidden', true);
 					}
-					this._form.getWidget('errata_update_text1').set('content', tmp1);
+					this._form.getWidget('errata_update_text1').set('content', errata_update_text1);
 
 					var tx1 = '';
 					if (values.components == '0')

@@ -125,7 +125,7 @@ def checkForUpdate(command, component):
 		if not versions:
 			continue
 		version = max(versions)
-		current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+		current_level = updater.get_component_erratalevel(component, version)
 		nextupdate = updater.get_component_repositories(component, [version], errata_level=current_level+1)
 		if nextupdate:
 			return True
@@ -286,7 +286,7 @@ if __name__ == '__main__':
 				version=max(versions)
 
 				try:
-					current_level = int(configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
+					current_level = updater.get_component_erratalevel(component, version)
 					next_level = current_level + 1
 					nextupdate = updater.get_component_repositories(component, [version], errata_level=next_level)
 				except univention.updater.ConfigurationError, e:
