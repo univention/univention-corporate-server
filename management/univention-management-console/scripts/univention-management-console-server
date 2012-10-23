@@ -93,7 +93,9 @@ class UMC_Daemon( DaemonRunner ):
 
 		# default action: start
 		if not self.arguments:
-			self.arguments.append('start')
+			sys.argv.append('start')
+		elif self.arguments:
+			sys.argv[ 1 ] = self.arguments[ 0 ]
 
 		# for daemon runner
 		if self.options.daemon_mode:

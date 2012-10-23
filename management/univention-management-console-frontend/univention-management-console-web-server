@@ -626,7 +626,7 @@ def run_cherrypy():
 
 class UMC_HTTP_Daemon(DaemonRunner):
 	def __init__( self ):
-		unix_socket = str(ucr.get('umc/server/socket/unix', '/var/run/univention-management-console-server.socket'))
+		unix_socket = str(configRegistry.get('umc/server/socket/unix', '/var/run/univention-management-console-server.socket'))
 		self.parser = OptionParser()
 		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
 						   dest = 'daemon_mode', default = True,
