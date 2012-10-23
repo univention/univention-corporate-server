@@ -144,8 +144,8 @@ msgid "All types"
 msgstr "Alle Objekttypen"
 
 #: umc/js/udm/DetailPage.js:593
-msgid "Back to navigation"
-msgstr "Zurück zur Navigation"
+msgid "Back to LDAP directory tree"
+msgstr "Zurück zum LDAP-Verzeichnisbaum"
 
 #: umc/js/udm/DetailPage.js:591
 msgid "Back to search"
@@ -435,10 +435,10 @@ msgstr ""
 
 #: umc/js/udm.js:1222
 msgid ""
-"Please select a container in the navigation bar. The new object will be "
+"Please select a container in the LDAP directory tree. The new object will be "
 "placed at this location."
 msgstr ""
-"Bitte wählen Sie einen Container in der Navigations-Leiste aus. Das neue "
+"Bitte wählen Sie einen Container aus dem LDAP-Verzeichnisbaum aus. Das neue "
 "Objekte wird an dieser Stelle erzeugt."
 
 #: umc/js/udm/DetailPage.js:688

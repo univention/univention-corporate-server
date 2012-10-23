@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.33-1) unstable; urgency=low
+
+  * renamed Navigation into LDAP directory tree; Bug #26511
+
+ -- Florian Best <best@univention.de>  Tue, 23 Oct 2012 09:14:43 +0200
+
 univention-management-console-module-udm (3.0.32-1) unstable; urgency=low
 
   * fixed missing return; Bug #28189

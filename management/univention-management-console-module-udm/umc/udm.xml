@@ -48,7 +48,7 @@
 	  <description>Managing policies</description>
 	</flavor>
 	<flavor icon="udm-navigation" id="navigation">
-	  <name>Navigation</name>
+	  <name>LDAP directory tree</name>
 	  <description>Browsing the LDAP directory</description>
 	</flavor>
 	<flavor icon="udm-self" id="users/self">
