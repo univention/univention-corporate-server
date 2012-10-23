@@ -255,7 +255,8 @@ class ConfigHandlerDiverting(ConfigHandler):
 			self._call_silent('cp', '-p', deb, self.to_file)
 
 	def uninstall_divert(self):
-		"""Undo diversion of file."""
+		"""Undo diversion of file.
+		Returns True because the diversion was removed."""
 		try:
 			os.unlink(self.to_file)
 		except EnvironmentError:
@@ -264,6 +265,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local',
 				'--divert', deb,
 				'--remove', self.to_file)
+		return True
 
 
 class ConfigHandlerMultifile(ConfigHandlerDiverting):
@@ -346,9 +348,12 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 			super(ConfigHandlerMultifile, self).install_divert()
 
 	def uninstall_divert(self):
-		"""Undo diversion of file."""
-		if not self.need_divert():
-			super(ConfigHandlerMultifile, self).uninstall_divert()
+		"""Undo diversion of file.
+		Returns True when the diversion is removed, False when the diversion is
+		still needed."""
+		if self.need_divert():
+			return False
+		return super(ConfigHandlerMultifile, self).uninstall_divert()
 
 
 class ConfigHandlerFile(ConfigHandlerDiverting):
@@ -733,9 +738,10 @@ class ConfigHandlers:
 		return handlers
 
 	def unregister(self, package, ucr):
-		"""Un-register info file for package."""
-		handlers = set()
-		mf_handlers = set()
+		"""Un-register info file for package.
+		Returns set of (then obsolete) handlers."""
+		obsolete_handlers = set()  # Obsolete handlers
+		mf_handlers = set()  # Remaining Multifile handlers
 		fname = os.path.join(INFO_DIR, '%s.info' % package)
 		for section in parseRfc822(open(fname, 'r').read()):
 			try:
@@ -753,23 +759,22 @@ class ConfigHandlers:
 					continue  # skip SubFile w/o MultiFile
 				name = os.path.join(FILE_DIR, sfile)
 				handler.remove_subfile(name)
+				mf_handlers.add(handler)
 			elif typ == 'multifile':
 				mfile = section['Multifile'][0]
 				handler = self._multifiles[mfile]
 				handler.def_count -= 1
+				mf_handlers.add(handler)
 			else:
 				continue
 			if not handler:  # Bug #17913
 				print >> sys.stderr, ("Skipping internal error: no handler " +
 						"for %r in %s" % (section, package))
 				continue
-			handlers.add(handler)
-			handler.uninstall_divert()
-			# regenerate multifile from remaining parts
-			if isinstance(handler, ConfigHandlerMultifile):
-				mf_handlers.add(handler)
+			if handler.uninstall_divert():
+				obsolete_handlers.add(handler)
 
-		for handler in mf_handlers:
+		for handler in mf_handlers - obsolete_handlers:
 			self.call_handler(ucr, handler)
 
 		try:
@@ -777,7 +782,7 @@ class ConfigHandlers:
 			os.unlink(ConfigHandlers.CACHE_FILE)
 		except EnvironmentError:
 			pass
-		return handlers
+		return obsolete_handlers
 
 	def __call__(self, variables, arg):
 		"""Call handlers registered for changes in variables."""

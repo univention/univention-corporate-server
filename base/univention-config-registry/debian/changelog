@@ -1,5 +1,6 @@
 univention-config-registry (8.0.4-9) unstable; urgency=low
 
+  * Fix ucr unregister for Multifile (Bug #26476)
   * Force dpkg-divert --local (Bug #28750)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 12 Oct 2012 13:53:15 +0200
