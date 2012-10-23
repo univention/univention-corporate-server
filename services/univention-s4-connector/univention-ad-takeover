@@ -1136,8 +1136,9 @@ def run_phaseI(opts, args):
 	t = t_0 = time.time()
 	wait_for_s4_connector_replication(ucr, print_dot, 300)
 	delta_t = time.time() - t
+	log.debug("S4 Connector sync took %s seconds." % int(round(delta_t)))
 	if	delta_t < 3:
-		print '>'
+		log.debug("Waiting another 300 seconds for S4 Connector sync.")
 		for i in xrange(300):
 			time.sleep(1)
 			print_dot()
