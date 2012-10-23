@@ -1067,6 +1067,19 @@ def run_phaseI(opts, args):
 	#	p = subprocess.Popen(["/usr/sbin/univention-password_sync_ucs_to_s4", "Administrator"])
 	#	p.wait()
 
+	## RemovelogonHours restrictions from Administrator account
+	msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+				expression="(samaccountname=Administrator)",
+				attrs=["logonHours"])
+	if msgs:
+		obj = msgs[0]
+		if "logonHours" in obj:
+			log.info("Removing logonHours restriction from Administrator account")
+			delta = ldb.Message()
+			delta.dn = obj.dn
+			delta["logonHours"] = ldb.MessageElement([], ldb.FLAG_MOD_DELETE, "logonHours")
+			samdb.modify(delta)
+
 	### Phase I.c: Run S4 Connector
 
 	old_sleep = ucr.get("connector/s4/poll/sleep", "5")
