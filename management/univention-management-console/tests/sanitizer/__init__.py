@@ -38,7 +38,7 @@ from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
 from univention.management.console.log import MODULE
 
-from univention.management.console.modules.decorators import sanitize, simple_response, log
+from univention.management.console.modules.decorators import *
 import univention.management.console.modules.sanitizers as s
 
 class Instance( Base ):
@@ -144,3 +144,23 @@ class Instance( Base ):
 			except:
 				assert False, 'no unicode'
 		return '%r' % (value,)
+
+	@simple_response
+	@log
+	def simple(self, value, foo='default'):
+		return '%r %r' % (value, foo)
+
+	@multi_response
+	@log
+	def multi(self, iterator, *values):
+		assert all(map(lambda v: isinstance(v, dict), iterator))
+		yield '%r %s' % (list(iterator), values)
+
+	@file_upload
+	def upload(self, request):
+		assert request.command == 'UPLOAD'
+		self.finished(request.id, True)
+
+	@multi_response(single_values=True)
+	def single(self, iterator, *values):
+		return '%r' % (values)

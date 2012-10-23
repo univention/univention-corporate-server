@@ -64,9 +64,9 @@ except TypeError, ValueError:
 _thread_http = None
 
 class SessionClient(object):
-	def __init__( self, timeout = 300, ip = None, cookie = False ):
+	def __init__( self, timeout = 300, ip = None, cookie = False, unix = None ):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
-		self.client = umcp.Client()
+		self.client = umcp.Client(unix=unix)
 		self.client.signal_connect( 'authenticated', self._authenticated )
 		self.client.signal_connect( 'response', self._response )
 		try:
@@ -176,6 +176,7 @@ class UMCP_Dispatcher( object ):
 	"""Dispatcher used to exchange the requests between CherryPy and UMC"""
 	sessions = {}
 	_queue_send = Queue.Queue()
+	unix_socket = None
 
 	@classmethod
 	def check_queue(cls):
@@ -218,7 +219,7 @@ class UMCP_Dispatcher( object ):
 				# create new session / umcp client
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
 				try:
-					client = SessionClient(timeout = _session_timeout + 5, ip = queuerequest.ip, cookie = queuerequest.cookie)
+					client = SessionClient(timeout = _session_timeout + 5, ip = queuerequest.ip, cookie = queuerequest.cookie, unix = UMCP_Dispatcher.unix_socket)
 				except Exception, e:
 					CORE.process( 'Failed to create UMC connection: %s' % str(e))
 					response = umcp.Response( queuerequest.request )
@@ -625,6 +626,7 @@ def run_cherrypy():
 
 class UMC_HTTP_Daemon(DaemonRunner):
 	def __init__( self ):
+		unix_socket = str(ucr.get('umc/server/socket/unix', '/var/run/univention-management-console-server.socket'))
 		self.parser = OptionParser()
 		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
 						   dest = 'daemon_mode', default = True,
@@ -637,7 +639,12 @@ class UMC_HTTP_Daemon(DaemonRunner):
 						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-web-server',
 						   help = 'specifies an alternative log file [default: %default]' )
+		self.parser.add_option( '-u', '--unix', action = 'store_const',  dest = 'unix', default = None, const = unix_socket,
+						   help = 'indicate that the UMC server is using a UNIX socket [default: %default]' )
 		( self.options, self.arguments ) = self.parser.parse_args()
+
+		# set the path of the unix socket if enabled
+		UMCP_Dispatcher.unix_socket = self.options.unix
 
 		# cleanup environment
 		os.environ.clear() # supported since python 2.6

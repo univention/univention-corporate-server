@@ -39,3 +39,9 @@ Description[de]=Deaktiviert ein angegebenes UMC-Modul, einzelne Flavor können d
 Description[de]=deactivates a specific UMC module, individual flavors can be deactivated through modulename/flavorname
 Type=bool
 Categories=Management
+
+[umc/server/socket/unix]
+Description[de]=Gibt die UNIX-socket-Datei an, die der UMC-Server benutzt
+Description[en]=gives the UNIX socket path which is used by UMC
+Type=str
+Categories=Management

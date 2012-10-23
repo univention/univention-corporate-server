@@ -47,7 +47,7 @@ case "$1" in
 			check_autostart listener"$NAME" umc/http/autostart
 		fi
 		log_action_msg "Starting $NAME"
-		$DAEMON start
+		$DAEMON --unix start
 		log_action_end_msg 0
 		;;
 	stop)

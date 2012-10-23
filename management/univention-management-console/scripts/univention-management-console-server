@@ -58,6 +58,8 @@ class UMC_Daemon( DaemonRunner ):
 		colon = default_locale.find( ':' )
 		if colon > 0:
 			default_locale = default_locale[ : colon ]
+		unix_socket = str(ucr.get('umc/server/socket/unix', '/var/run/univention-management-console-server.socket'))
+
 		self.parser = OptionParser()
 		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
 						   dest = 'daemon_mode', default = True,
@@ -72,6 +74,10 @@ class UMC_Daemon( DaemonRunner ):
 						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-server',
 						   help = 'specifies an alternative log file [default: %default]' )
+		self.parser.add_option( '-u', '--unix', action = 'store_const',  dest = 'unix', default = None, const = unix_socket,
+						   help = 'if given restrict connections to localhost (using a UNIX socket) [default: %default]' )
+		self.parser.add_option( '-s', '--no-ssl', action = 'store_false',  dest = 'ssl', default = True,
+						   help = 'do not use SSL [default: %default]' )
 		( self.options, self.arguments ) = self.parser.parse_args()
 
 		# cleanup environment
@@ -87,9 +93,7 @@ class UMC_Daemon( DaemonRunner ):
 
 		# default action: start
 		if not self.arguments:
-			sys.argv[ 1 ] = 'start'
-		elif self.arguments:
-			sys.argv[ 1 ] = self.arguments[ 0 ]
+			self.arguments.append('start')
 
 		# for daemon runner
 		if self.options.daemon_mode:
@@ -186,7 +190,7 @@ class UMC_Daemon( DaemonRunner ):
 
 		notifier.init( notifier.GENERIC )
 
-		self.server = Server( port = self.options.port )
+		self.server = Server( port = self.options.port, unix = self.options.unix, ssl = self.options.ssl )
 
 		CORE.process( 'Server started' )
 		notifier.loop()

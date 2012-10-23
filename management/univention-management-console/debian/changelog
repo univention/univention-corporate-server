@@ -1,3 +1,9 @@
+univention-management-console (5.0.48-1) unstable; urgency=low
+
+  * restrict access to UMC server to connections from localhost; Bug #28043
+
+ -- Florian Best <best@univention.de>  Tue, 23 Oct 2012 17:24:53 +0200
+
 univention-management-console (5.0.47-1) unstable; urgency=low
 
   * Remove ununsed syntax verification (Bug #27720)
