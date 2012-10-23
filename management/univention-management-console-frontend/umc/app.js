@@ -272,9 +272,10 @@ define([
 			}));
 
 			// load user settings
-			var userPreferencesDefered = tools.umcpCommand('get/user/preferences', null, false).then(function(res) {
+			var userPreferencesDefered = tools.umcpCommand('get/user/preferences', null, false).then(lang.hitch(this, function(res) {
 				lang.mixin(_userPreferences, res.preferences);
-			}, lang.hitch(this, function() {
+				this._favoritesEnabled = true;
+			}), lang.hitch(this, function() {
 				// user preferences disabled
 				this._favoritesEnabled = false;
 			}));
