@@ -1,3 +1,13 @@
+univention-s4-connector (7.0.17-6) unstable; urgency=low
+
+  * use python logging module in univention-ad-takeover.py
+    allowing for better log control.
+  * replace univention-ad-takeover shell script wrapper by
+    univention-ad-takeover.py script again (reverting 7.0.17-1).
+  * replace TODO messages by regular log messages (Bug #28390)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Oct 2012 15:42:54 +0200
+
 univention-s4-connector (7.0.17-5) unstable; urgency=low
 
   * add support for reverse_zone in ucs_zone_create (Bug #28390)
