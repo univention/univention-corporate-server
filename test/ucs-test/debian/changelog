@@ -1,3 +1,9 @@
+ucs-test (3.0.14-1) unstable; urgency=low
+
+  * removed test 50_samba/21sambaLMPassword (Bug #28747)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 23 Oct 2012 11:37:38 +0200
+
 ucs-test (3.0.13-1) unstable; urgency=low
 
   * ignore "/var/log/libvirt" in 26_check_logfiles_general
