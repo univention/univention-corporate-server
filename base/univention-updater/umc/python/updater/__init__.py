@@ -475,7 +475,7 @@ class Instance(umcm.Base):
 
 			# if nothing is returned -> convert to empty string.
 			what = 'querying available release updates'
-			result['release_update_available']	= self.uu.release_update_available()
+			result['release_update_available'] = self.uu.release_update_available()
 			if result['release_update_available'] is None:
 				result['release_update_available'] = ''
 
@@ -545,13 +545,25 @@ class Instance(umcm.Base):
 					MODULE.info('components_errata: %s' % result['components_errata'])
 
 
-			# it doesn't hurt to include the value of the 'update/available' UCR variable
-			# that has to be honored in easy mode.
 			what = "querying availability for easy mode"
-			result['easy_update_available'] = self.ucr.is_true('update/available',False)
+			result['easy_mode'] = self.ucr.is_true('update/umc/updateprocess/easy', False)
 
-			# ... and the 'easy mode' itself can also be returned this way
-			result['easy_mode'] = self.ucr.is_true('update/umc/updateprocess/easy',False)
+			if result['easy_mode']:
+				# updates/available should reflect the need for an update
+				easy_update_available = self.ucr.is_true('update/available', False)
+				# but dont rely on ucr! update/available is set during univention-upgrade --check
+				# but when was the last time this was run?
+
+				# release update
+				easy_update_available = easy_update_available or result['release_update_available']
+				# errata
+				easy_update_available = easy_update_available or result['erratalevel'] < result['latest_errata_update']
+				easy_update_available = easy_update_available or result.get('components_errata') # may be unset
+				# if no update seems necessary perform a real (expensive) check nonetheless
+				easy_update_available = easy_update_available or self.uu.component_update_available()
+				result['easy_update_available'] = easy_update_available
+			else:
+				result['easy_update_available'] = False
 
 			# Component counts are now part of the general 'status' data.
 			what = "counting components"

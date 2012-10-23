@@ -1,3 +1,9 @@
+univention-updater (8.0.23-1) unstable; urgency=low
+
+  * Do not rely on UCR when checking for updates in easy mode (Bug #26278)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 23 Oct 2012 13:18:35 +0200
+
 univention-updater (8.0.22-1) unstable; urgency=low
 
   * Install python-udm-legacy-ucd-tcs earlier in the postup.sh. At the
