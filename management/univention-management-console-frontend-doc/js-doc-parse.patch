@@ -1,5 +1,5 @@
 diff --git a/config.js b/config.js
-index 62e9ee3..d9cb8fb 100755
+index 62e9ee3..9e955b4 100755
 --- a/config.js
 +++ b/config.js
 @@ -28,7 +28,7 @@ define({
@@ -11,7 +11,7 @@ index 62e9ee3..d9cb8fb 100755
  	],
  
  	show: {
-@@ -41,8 +41,9 @@ define({
+@@ -41,14 +41,18 @@ define({
  	// Configuration data for module ID resolution and path remapping within the parser.
  	// TODO: Document
  	environmentConfig: {
@@ -22,6 +22,15 @@ index 62e9ee3..d9cb8fb 100755
  			dojo: 'dojo',
  			dijit: 'dijit',
  			dojox: 'dojox',
+ 			doh: 'util/doh'
+ 		},
+ 		excludePaths: [
++			/put-selector/,
++			/xstyle/,
++
+ 			// Non-API code
+ 			/\/(?:tests|nls|demos)\//,
+ 
 diff --git a/lib/processor/dojodoc.js b/lib/processor/dojodoc.js
 index 16277fe..f620376 100644
 --- a/lib/processor/dojodoc.js

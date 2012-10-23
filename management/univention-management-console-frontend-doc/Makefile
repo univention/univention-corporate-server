@@ -68,7 +68,7 @@ data: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modul
 	install -m755 -d 'data/1.8'
 	cd $< && \
 		git apply < ../$<.patch && \
-			./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox
+			./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox ../univention-dojo/dgrid
 
 univention-dojo-api-viewer: api-viewer
 	cp -r $< $@
