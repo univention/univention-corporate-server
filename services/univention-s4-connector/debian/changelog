@@ -1,3 +1,12 @@
+univention-s4-connector (7.0.17-10) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - Remove DNS old DNS SPN account in UCS-LDAP
+    - Backup sysvol NTACLs before setting default NTACLs
+    - Add dependency on 'attr' for getfattr
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Oct 2012 18:46:31 +0200
+
 univention-s4-connector (7.0.17-9) unstable; urgency=low
 
   * univention-ad-takeover ((Bug #28390):

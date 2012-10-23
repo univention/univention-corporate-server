@@ -1047,6 +1047,14 @@ def run_phaseI(opts, args):
 				log.info(log_line)
 
 	## create DNS SPN
+	log.debug("Attempting remove of DNS SPN account in UCS-LDAP")
+	p = subprocess.Popen(["univention-directory-manager", "users/user", "delete", "--dn", "uid=dns-%s,cn=users,%s" % (ucr["hostname"], ucr["ldap/base"])], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	while p.poll() == None:
+		log_line = p.stdout.readline().rstrip()
+		if log_line:
+			log.debug(log_line)
+
+	log.debug("Creating new DNS SPN account in Samba4")
 	p = subprocess.Popen(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
@@ -1326,6 +1334,18 @@ def run_phaseIII(opts, args):
 
 	## properly register partitions
 	partitions = takeover_hasInstantiatedNCs(ucr, samdb, ad_server_name, sitename)
+
+	## Backup current NTACLs on sysvol
+	p = subprocess.Popen(["getfattr", "-m", "-", "-d", "-R", sysvol_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	(stdout, stderr) = p.communicate()
+	if stdout:
+		f=open('/var/univention-backup/univention-ad-takeover.sysvol_attr_backup', 'a')
+		f.write("### getfattr output %s\n%s" % (time.strftime("%Y-%m-%d %H:%M:%S"), stdout))
+		f.close()
+	else:
+		log.debug("getfattr did not produce any output")
+	if len(stderr.rstrip().split('\n')) > 1:
+		log.debug(stderr)
 
 	## Re-Set Default NTACLs on sysvol
 	p = subprocess.Popen(["/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py", sysvol_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
