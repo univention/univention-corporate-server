@@ -1,3 +1,11 @@
+univention-management-console-module-udm (3.0.34-1) unstable; urgency=low
+
+  * determine a modules default primary group from itself instead of
+    using a hard-coded special treatment for certain modules
+    (Bug #28461)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 23 Oct 2012 16:59:09 +0200
+
 univention-management-console-module-udm (3.0.33-1) unstable; urgency=low
 
   * renamed Navigation into LDAP directory tree; Bug #26511

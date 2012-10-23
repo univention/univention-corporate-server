@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.69-1) unstable; urgency=low
+
+  * computer.py: automatically load child modules names from
+    imported modules (Bug #28461)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 23 Oct 2012 16:23:56 +0200
+
 univention-directory-manager-modules (8.0.68-1) unstable; urgency=low
 
   * Make the UCR policy also apply to UCC systems (Bug #28852)

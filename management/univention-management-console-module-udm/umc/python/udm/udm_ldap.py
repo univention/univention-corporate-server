@@ -588,7 +588,8 @@ class UDM_Module( object ):
 		return properties
 
 	@property
-	def properties( self ):
+	@LDAP_Connection
+	def properties( self, ldap_connection=None, ldap_position=None ):
 		"""All properties of the UDM module"""
 		props = [ { 'id' : '$dn$', 'type' : 'HiddenInput', 'label' : '', 'searchable' : False } ]
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
@@ -608,7 +609,9 @@ class UDM_Module( object ):
 				else:
 					item[ 'default' ] = str( prop.base_default )
 			elif key == 'primaryGroup': # set default for primaryGroup
-					default_group = self.settings.default_group( self.name )
+					obj = self.module.object(None, ldap_connection, ldap_position, None)
+					obj.open()
+					default_group = obj.get('primaryGroup', None)
 					if default_group is not None:
 						item[ 'default' ] = default_group
 
@@ -812,24 +815,6 @@ class UDM_Settings( object ):
 		self._read_directories()
 
 		return map( lambda x: { 'id' : x, 'label' : ldap_dn2path( x ) }, self.directory.info.get( base, [] ) )
-
-	def default_group( self, module_name ):
-		self._read_groups()
-
-		if self.groups is None:
-			return None
-		if module_name == 'users/user':
-			return self.groups[ 'defaultGroup' ]
-		if module_name in ( 'computers/domaincontroller_slave', ):
-			return self.groups[ 'defaultDomainControllerGroup' ]
-		if module_name in ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup' ):
-			return self.groups[ 'defaultDomainControllerMBGroup' ]
-		if module_name in ( 'computers/memberserver', ):
-			return self.groups[ 'defaultMemberServerGroup' ]
-		if module_name in ( 'computers/mobileclient', 'computers/managedclient', 'computers/macos', 'computers/ubuntu', 'computers/linux'):
-			return self.groups[ 'defaultClientGroup' ]
-		if module_name.startswith( 'computers/' ):
-			return self.groups[ 'defaultComputerGroup' ]
 
 	def resultColumns( self, module_name ):
 		pass

@@ -33,7 +33,7 @@
 
 import os.path
 
-computers =[]
+computers = []
 
 def __walk( root, dir, files ):
  	for file in files:

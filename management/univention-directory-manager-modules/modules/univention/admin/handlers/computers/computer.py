@@ -46,20 +46,10 @@ wizardmenustring=_("Computer")
 wizarddescription=_("Add, edit and delete computers")
 wizardoperations={"add":[_("Add"), _("Add Computer")],"find":[_("Search"), _("Search computer(s)")]}
 
-childmodules=[	"computers/managedclient",
-				"computers/macos",
-				"computers/thinclient",
-				"computers/windows",
-				"computers/domaincontroller_master",
-				"computers/domaincontroller_backup",
-				"computers/domaincontroller_slave",
-				"computers/memberserver",
-				"computers/windows_domaincontroller",
-				"computers/mobileclient",
-				"computers/trustaccount",
-				"computers/ipmanagedclient",
-				"computers/ubuntu",
-				"computers/linux"]
+
+childmodules = []
+for computer in univention.admin.handlers.computers.computers:
+	childmodules.append(computer.module)
 
 childs=0
 short_description=_('Computer')
