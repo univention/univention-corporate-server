@@ -1219,7 +1219,7 @@ define([
 					selectedContainer = items[0];
 				}
 				else {
-					dialog.alert(_('Please select a container in the navigation bar. The new object will be placed at this location.'));
+					dialog.alert(_('Please select a container in the LDAP directory tree. The new object will be placed at this location.'));
 					return;
 				}
 			}

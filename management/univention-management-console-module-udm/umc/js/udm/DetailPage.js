@@ -589,7 +589,7 @@ define([
 
 			var closeLabel = _('Back to search');
 			if ('navigation' == this.moduleFlavor) {
-				closeLabel = _('Back to navigation');
+				closeLabel = _('Back to LDAP directory tree');
 			}
 			if (this.isClosable) {
 				closeLabel = _('Cancel');
