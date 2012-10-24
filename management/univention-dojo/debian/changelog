@@ -1,3 +1,9 @@
+univention-dojo (6.0.9-1) unstable; urgency=low
+
+  * fix dijit Dialog resize; Bug #28790
+
+ -- Florian Best <best@univention.de>  Wed, 24 Oct 2012 11:27:47 +0200
+
 univention-dojo (6.0.8-1) unstable; urgency=low
 
   * moved additional JS libs into univention-dojo; Bug #28074

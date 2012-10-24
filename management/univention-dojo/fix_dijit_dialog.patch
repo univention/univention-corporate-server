@@ -1,0 +1,14 @@
+Make Dialog.resize() work correctly when the Dialog contents have changed size, by first resizing the Dialog and then positioning it.
+Bug #28790 and http://bugs.dojotoolkit.org/ticket/16172
+--- dojo-release-1.8.1rc3-src/dijit/Dialog.js.orig	2012-10-24 11:22:39.239943099 +0200
++++ dojo-release-1.8.1rc3-src/dijit/Dialog.js	2012-10-24 11:23:37.947647672 +0200
+@@ -460,8 +460,8 @@
+ 				if(DialogUnderlay._singleton){	// avoid race condition during show()
+ 					DialogUnderlay._singleton.layout();
+ 				}
+-				this._position();
+ 				this._size();
++				this._position();
+ 			}
+ 		},
+ 
