@@ -712,13 +712,17 @@ define([
 			var vals = this._form.gatherFormValues();
 
 			// get also policy values... can not be handled as standard form entry
-			vals.$policies$ = {};
-			tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
-				var ival = iwidgets.$policy$.get('value');
-				if ('None' != ival) {
-					vals.$policies$[ipolicyType] = ival;
-				}
-			}, this);
+			// explicitely exclude users/self. FIXME: find a way
+			// to receive some udm-module-configuration for that
+			if (this.objectType != 'users/self') {
+				vals.$policies$ = {};
+				tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
+					var ival = iwidgets.$policy$.get('value');
+					if ('None' != ival) {
+						vals.$policies$[ipolicyType] = ival;
+					}
+				}, this);
+			}
 
 			return vals;
 		},

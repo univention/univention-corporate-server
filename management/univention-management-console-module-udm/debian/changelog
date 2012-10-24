@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.35-1) unstable; urgency=low
+
+  * Dont remove policies when updating own password (Bug #28430)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 24 Oct 2012 20:26:35 +0200
+
 univention-management-console-module-udm (3.0.34-1) unstable; urgency=low
 
   * determine a modules default primary group from itself instead of
