@@ -1094,7 +1094,7 @@ def run_phaseI(opts, args):
 	if p.returncode != 0:
 		log.error("Creation of DNS SPN account 'dns-%s' failed. See %s for details." % (ucr["hostname"], LOGFILE_NAME,))
 
-	### Copy UCS Administrator Password to S4 Administrator object
+	### Copy UCS Administrator Password to S4 Administrator object	### disabled, because then the Password in UCS == S4 != AD, which is bad for SYSVOL sync
 	### (Account is disabled in SBS 2008 by default and the password might be unknown)
 	## workaround for samba ndr parsing traceback
 	#p = subprocess.Popen(["samba-tool", "user", "setpassword", "Administrator", "--newpassword=DummyPW123"]) ## will be overwritten in the next step
@@ -1254,6 +1254,9 @@ def run_phaseI(opts, args):
 	if p.returncode != 0:
 		log.error("Start of nscd failed. See %s for details." % (LOGFILE_NAME,))
 
+	## Save AD server IP for Phase III
+	config_registry.handler_set(["univention/ad/takeover/ad/server/ip=%s" % (ad_server_ip) ])
+
 	### Phase II: AD-Side Sync 
 
 	msg=[]
@@ -1274,9 +1277,8 @@ def run_phaseIII(opts, args):
 		ad_server_ip = args[0]
 	if len(args) == 2:
 		ad_server_name = args[1]
-	elif len(args) != 1:
-		parser.print_usage()
-		sys.exit(1)
+	## basically these arguments are ignored and replaced by the values stored in phaseI
+	## TODO: get rid of this strange option/arg combination, phaseI values are enough
 
 	devnull = open('/dev/null', 'w')
 
@@ -1289,6 +1291,25 @@ def run_phaseIII(opts, args):
 	lp = sambaopts.get_loadparm()
 
 	### First plausibility checks
+
+	phaseI_ip = ucr.get("univention/ad/takeover/ad/server/ip")
+	if not phaseI_ip:
+		log.debug("Error: AD server IP not found in UCR. This indicates that phase I was not completed successfully yet.")
+		msg=[]
+		msg.append("")
+		msg.append("Error: Please complete phase I of the takeover before initiating the FSMO takeover.")
+		log.error("\n".join(msg))
+		sys.exit(1)
+
+	if ad_server_ip != phaseI_ip:	## TODO: get rid of this strange option/arg combination, phaseI values are enough
+		msg=[]
+		msg.append("")
+		msg.append("Error: Given AD server IP %s does not match the one recorded in phase I: %s" % (ad_server_ip, phaseI_ip))
+		msg.append("       Start fsmo takeover without giving an AD server IP as argument.")
+		log.error("\n".join(msg))
+		sys.exit(1)
+	else:
+		ad_server_ip = phaseI_ip
 
 	## 1.a check if the given IP was mapped to a host name via UCR in Phase I
 	(rc, phaseI_fqdn, phaseI_name) = check_for_phase_II(ucr, lp, ad_server_ip)
@@ -1320,11 +1341,11 @@ def run_phaseIII(opts, args):
 		else:
 			ad_server_fqdn = ad_server_name
 			ad_server_name = ad_server_fqdn.split('.', 1)[0]
-		if ad_server_name != phaseI_name:
+		if ad_server_name != phaseI_name:	## TODO: get rid of this strange option/arg combination, phaseI values are enough
 			msg=[]
 			msg.append("")
 			msg.append("Error: Given AD server name %s does not match the one recorded for IP %s in phase I: %s" % (ad_server_name, ad_server_ip, phaseI_name))
-			msg.append("       Consider not explicetely passing an AD server name.")
+			msg.append("       Start fsmo takeover without giving an AD server name as argument.")
 			log.error("\n".join(msg))
 			sys.exit(1)
 	else:
@@ -1625,6 +1646,8 @@ def run_phaseIII(opts, args):
 			log.debug(log_line)
 	if p.returncode != 0:
 		log.error("Start of NTP daemon failed. See %s for details." % (LOGFILE_NAME,))
+
+	config_registry.handler_unset(["univention/ad/takeover/ad/server/ip"])
 
 	msg=[]
 	msg.append("")
