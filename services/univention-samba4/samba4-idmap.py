@@ -80,27 +80,32 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 
 	try:
 		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % old_sambaSID, attrs = ["objectSid", "type"])
-		record = res.msgs[0]
+		if not res:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
+					"%s: rename_or_modify_idmap_entry: no mapping for objectSid %s, treating as add", (name, old_sambaSID))
+			add_or_modify_idmap_entry(new_sambaSID, xidNumber, type_string)
+		else:
+			record = res.msgs[0]
 
-		if record["type"][0] != type_string:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
-				"%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string) )
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
-				"%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID) )
-			return False
+			if record["type"][0] != type_string:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+					"%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string) )
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
+					"%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID) )
+				return False
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS,
-			"%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID) )
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS,
+				"%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID) )
 
-		## try a modrdn
-		idmap.rename(str(record.dn), "CN=%s" % new_sambaSID)
-		## and update related attributes
-		msg = ldb.Message()
-		msg.dn = ldb.Dn(idmap, "CN=%s" % new_sambaSID)
-		msg["cn"] = ldb.MessageElement( [ new_sambaSID ] , ldb.FLAG_MOD_REPLACE, "cn")
-		new_objectSid = ndr_pack(security.dom_sid(new_sambaSID))
-		msg["objectSid"] = ldb.MessageElement([ new_objectSid ] , ldb.FLAG_MOD_REPLACE, "objectSid")
-		idmap.modify(msg)
+			## try a modrdn
+			idmap.rename(str(record.dn), "CN=%s" % new_sambaSID)
+			## and update related attributes
+			msg = ldb.Message()
+			msg.dn = ldb.Dn(idmap, "CN=%s" % new_sambaSID)
+			msg["cn"] = ldb.MessageElement( [ new_sambaSID ] , ldb.FLAG_MOD_REPLACE, "cn")
+			new_objectSid = ndr_pack(security.dom_sid(new_sambaSID))
+			msg["objectSid"] = ldb.MessageElement([ new_objectSid ] , ldb.FLAG_MOD_REPLACE, "objectSid")
+			idmap.modify(msg)
 
 	except ldb.LdbError, (enum, estr):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, estr)
@@ -173,19 +178,23 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 
 	try:
 		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs = ["objectSid", "xidNumber", "type"])
-		record = res.msgs[0]
+		if not res:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
+					"%s: remove_idmap_entry: no mapping for objectSid %s, skipping", (name, sambaSID))
+		else:
+			record = res.msgs[0]
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS,
-			"%s: removing entry for %s" % (name, sambaSID) )
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS,
+				"%s: removing entry for %s" % (name, sambaSID) )
 
-		idmap.delete(ldb.Dn(idmap, str(record.dn)))
+			idmap.delete(ldb.Dn(idmap, str(record.dn)))
 
-		if record["xidNumber"][0] != str(xidNumber):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-				"%s: removed entry xidNumber %s did not match object xidNumber %s" % (name, record["xidNumber"][0], xidNumber) )
-		if record["type"][0] != type_string:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-				"%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string) )
+			if record["xidNumber"][0] != str(xidNumber):
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+					"%s: removed entry xidNumber %s did not match object xidNumber %s" % (name, record["xidNumber"][0], xidNumber) )
+			if record["type"][0] != type_string:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+					"%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string) )
 
 	except ldb.LdbError, (enum, estr):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)

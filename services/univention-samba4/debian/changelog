@@ -1,3 +1,9 @@
+univention-samba4 (2.0.23-3) unstable; urgency=low
+
+  * avoid tracebacks due to missing old records in idmap.ldb (Bug #26013)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Oct 2012 21:16:38 +0200
+
 univention-samba4 (2.0.23-2) unstable; urgency=low
 
   * improve modrdn handling in samba4-idmap Listener (Bug #28643)
