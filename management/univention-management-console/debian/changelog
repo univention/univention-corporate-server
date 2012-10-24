@@ -1,3 +1,9 @@
+univention-management-console (5.0.49-1) unstable; urgency=low
+
+  * changed default behavior for using UNIX socket; Bug #28043
+
+ -- Florian Best <best@univention.de>  Wed, 24 Oct 2012 09:12:03 +0200
+
 univention-management-console (5.0.48-1) unstable; urgency=low
 
   * restrict access to UMC server to connections from localhost; Bug #28043
