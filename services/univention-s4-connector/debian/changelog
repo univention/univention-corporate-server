@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.17-12) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - do not run set_sysvol_ntacl.py
+    - improved log levels and messages
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Oct 2012 13:03:31 +0200
+
 univention-s4-connector (7.0.17-11) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):

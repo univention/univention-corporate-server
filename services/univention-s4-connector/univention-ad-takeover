@@ -56,6 +56,8 @@ import univention.admin.config
 import ipaddr
 import logging
 
+LOGFILE_NAME = "/var/log/univention/univention-ad-takeover.log"
+BACKUP_DIR = "/var/univention-backup/univention-ad-takeover"
 samba_dir = '/var/lib/samba'
 samba_private_dir = os.path.join(samba_dir, 'private')
 sysvol_path = os.path.join(samba_dir, 'sysvol')
@@ -207,18 +209,18 @@ def takeover_hasMasterNCs(ucr, samdb, sitename, partitions):
 		obj = msg[0]
 		for partition in partitions:
 			if "hasPartialReplicaNCs" in obj and partition in obj["hasPartialReplicaNCs"]:
-				log.info("Removing hasPartialReplicaNCs on %s for %s" % (ucr["hostname"], partition) )
+				log.debug("Removing hasPartialReplicaNCs on %s for %s" % (ucr["hostname"], partition) )
 				delta = ldb.Message()
 				delta.dn = obj.dn
 				delta["hasPartialReplicaNCs"] = ldb.MessageElement(partition, ldb.FLAG_MOD_DELETE, "hasPartialReplicaNCs")
 				try:
 					samdb.modify(delta)
 				except:
-					log.info("Failed to remove hasPartialReplicaNCs %s from %s" % (partition, ucr["hostname"]) )
-					log.info("Current NTDS object: %s" % obj )
+					log.debug("Failed to remove hasPartialReplicaNCs %s from %s" % (partition, ucr["hostname"]) )
+					log.debug("Current NTDS object: %s" % obj )
 
 			if "msDS-hasMasterNCs" in obj and partition in obj["msDS-hasMasterNCs"]:
-				log.info("Naming context %s already registed in msDS-hasMasterNCs for %s" % (partition, ucr["hostname"]) )
+				log.debug("Naming context %s already registed in msDS-hasMasterNCs for %s" % (partition, ucr["hostname"]) )
 			else:
 				delta = ldb.Message()
 				delta.dn = obj.dn
@@ -226,8 +228,8 @@ def takeover_hasMasterNCs(ucr, samdb, sitename, partitions):
 				try:
 					samdb.modify(delta)
 				except:
-					log.info("Failed to add msDS-hasMasterNCs %s to %s" % (partition, ucr["hostname"]) )
-					log.info("Current NTDS object: %s" % obj )
+					log.debug("Failed to add msDS-hasMasterNCs %s to %s" % (partition, ucr["hostname"]) )
+					log.debug("Current NTDS object: %s" % obj )
 
 def let_samba4_manage_etc_krb5_keytab(ucr, secretsdb):
 
@@ -266,7 +268,7 @@ def sync_time(server):
 		client.sendto( data, ( server, 123 ))
 		data, address = client.recvfrom( 1024 )
 		if data:
-			log.info('NTP Response received from server %s' % server )
+			log.debug('NTP Response received from server %s' % server )
 			t = struct.unpack( '!12I', data )[10]
 			t -= TIME1970
 			offset = time.time() - t
@@ -318,7 +320,7 @@ def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
 		while p.poll() == None:
 			log_line = p.stdout.readline().rstrip()
 			if log_line:
-				log.info(log_line)
+				log.debug(log_line)
 
 def print_dot():
 	sys.stdout.write(".")
@@ -369,7 +371,7 @@ def wait_for_listener_replication(progress_function = None, max_time=20):
 		if t - t_0 > max_time:
 			print
 			sys.stdout.flush()
-			log.warn("Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t - t_0))))
+			log.debug("Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t - t_0))))
 			return False
 		if progress_function and delta_t >= 1:
 			progress_function()
@@ -426,7 +428,7 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 		if t - t_0 > max_time:
 			print
 			sys.stdout.flush()
-			log.warn("Warning: S4 Connector not yet up to date. Waited for about %s seconds." % (int(round(t - t_0),)))
+			log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t - t_0),)))
 			conn.close()
 			return False
 		if progress_function and delta_t >= 1:
@@ -438,6 +440,7 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 	return True
 
 def check_samba4_started():
+	attempt = 1
 	for i in xrange(5):
 		time.sleep(1)
 		p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
@@ -446,6 +449,7 @@ def check_samba4_started():
 			break
 	else:
 		if int(stdout) == 1:
+			attempt = 2
 			p = subprocess.Popen(["/etc/init.d/samba4", "stop"])
 			p.wait()
 			p = subprocess.Popen(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
@@ -453,7 +457,7 @@ def check_samba4_started():
 			p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 			(stdout, stderr) = p.communicate()
 			if int(stdout) > 0:
-				log.error("ERROR: Stray Processes:", int(stdout))
+				log.debug("ERROR: Stray Processes:", int(stdout))
 				p = subprocess.Popen(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 				p.wait()
 			p = subprocess.Popen(["/etc/init.d/samba4", "start"])
@@ -463,11 +467,17 @@ def check_samba4_started():
 			p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 			(stdout, stderr) = p.communicate()
 			if int(stdout) == 1:
-				log.error("ERROR: Stray Processes:", int(stdout))
+				attempt = 3
+				log.debug("ERROR: Stray Processes:", int(stdout))
 				p = subprocess.Popen(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 				p.wait()
 				p = subprocess.Popen(["/etc/init.d/samba4", "start"])
 				p.wait()
+				## and log
+				time.sleep(2)
+				p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
+		(stdout, stderr) = p.communicate()
+		log.debug("Number of Samba 4 processes after %s start/restart attempts: %s" % (attempt, stdout))
 
 def run_phaseI(opts, args):
 
@@ -494,7 +504,7 @@ def run_phaseI(opts, args):
 
 	## 1.a Check that local domainname matches kerberos realm
 	if ucr["domainname"].lower() != ucr["kerberos/realm"].lower():
-		log.error("Mismatching DNS domain and kerberos realm. Please reinstall the server with the same Domain as your AD")
+		log.error("Mismatching DNS domain and kerberos realm. Please reinstall the server with the same Domain as your AD.")
 		sys.exit(1)
 
 	## 1.b ping the given AD server IP
@@ -510,18 +520,18 @@ def run_phaseI(opts, args):
 		## Check if we are in Phase II and the AD server is already switched off:
 		(rc, tmp_fqdn, tmp_name) = check_for_phase_II(ucr, lp, ad_server_ip)
 		if rc == 0:
-			log.error("Error: Server IP %s not reachable" % ad_server_ip)
+			log.error("Error: Server IP %s not reachable." % ad_server_ip)
 		elif rc == 1:
 			msg = []
-			msg.append("Note: The AD Server IP %s not reachable" % ad_server_ip)
-			msg.append("Error: But found the AD DC %s account already in the Samba 4 SAM backend" % tmp_name)
-			msg.append("       Looks like it was switched of to finalize the migration?")
-			msg.append("       If this is true, then restart this script with option --fsmo-takeover")
+			msg.append("Note: The AD Server IP %s not reachable." % ad_server_ip)
+			msg.append("Error: But found the AD DC %s account already in the Samba 4 SAM database." % tmp_name)
+			msg.append("       Looks like it was switched off to finalize the takeover?")
+			msg.append("       If this is true, then restart this script with option --fsmo-takeover to finish the takeover.")
 			log.error("\n".join(msg))
 		elif rc == 2:
 			msg = []
-			msg.append("Error: Server IP %s not reachable" % ad_server_ip)
-			msg.append("Error: It seems that this script was run once already for the first migration step,")
+			msg.append("Error: Server IP %s not reachable." % ad_server_ip)
+			msg.append("Error: It seems that this script was run once already for the first takeover step,")
 			msg.append("       but the server %s cannot be found in the local Samba SAM database." % tmp_name)
 			msg.append("       Don't know how to continue, giving up at this point.")
 			log.error("\n".join(msg))
@@ -569,7 +579,7 @@ def run_phaseI(opts, args):
 		except:
 			msg = []
 			msg.append("Error: DNS lookup for DC at IP %s failed." % ad_server_ip)
-			msg.append("Please retry by passing the AD server name as additional command line argument")
+			msg.append("Please retry by passing the AD server name as additional command line argument.")
 			log.error("\n".join(msg))
 			sys.exit(1)
 
@@ -593,11 +603,11 @@ def run_phaseI(opts, args):
 						msg.append("Local domain: %s" % ucr["domainname"])
 						log.error("\n".join(msg))
 					else:
-						log.error("Please retry by passing the AD server name as additional command line argument")
+						log.error("Please retry by passing the AD server name as additional command line argument.")
 				else:
-					log.error("Please retry by passing the AD server name as additional command line argument")
+					log.error("Please retry by passing the AD server name as additional command line argument.")
 			else:
-				log.error("Please retry by passing the AD server name as additional command line argument")
+				log.error("Please retry by passing the AD server name as additional command line argument.")
 			sys.exit(1)
 		elif len(lines) > 1:
 			log.warn("Warning: Multiple DCs registered for DNS SRV record _kerberos._tcp.dc._msdcs.%s"  % ucr["domainname"])
@@ -621,15 +631,15 @@ def run_phaseI(opts, args):
 							msg.append("Error: More than one of the registered DC FQDNs matches the given AD server IP:")
 							msg.append("       %s" % ad_server_fqdn)
 							msg.append("       %s" % tmp_fqdn)
-							msg.append("Error: Failed to determine DC for IP %s" % ad_server_ip)
-							msg.append("Please retry by passing the AD server name as additional command line argument")
+							msg.append("Error: Failed to determine DC for IP %s." % ad_server_ip)
+							msg.append("Please retry by passing the AD server name as additional command line argument.")
 							log.error("\n".join(msg))
 							sys.exit(1)
 
 			if not ad_server_fqdn:
 				msg = []
 				msg.append("Error: Failed to determine DC for IP %s" % ad_server_ip)
-				msg.append("Please retry by passing the AD server name as additional command line argument")
+				msg.append("Please retry by passing the AD server name as additional command line argument.")
 				log.error("\n".join(msg))
 				sys.exit(1)
 			else:
@@ -642,15 +652,15 @@ def run_phaseI(opts, args):
 					pass
 				elif rc == 1:
 					msg = []
-					msg.append("Error: Account for the AD DC %s is already the Samba 4 SAM backend." % tmp_name)
-					msg.append("       It seems that this script was run once already for the first migration step.")
-					msg.append("       If this is true, then go over to the AD DC to migrate the SYSVOL,")
-					msg.append("       and switch it off before restarting this script with option --fsmo-takeover")
+					msg.append("Error: Account for the AD DC %s is already the Samba 4 SAM database." % tmp_name)
+					msg.append("       It seems that this script was run once already for the first takeover step.")
+					msg.append("       If this is true, then go over to the AD DC to takeover the SYSVOL,")
+					msg.append("       and switch it off before restarting this script with option --fsmo-takeover to finish the takeover.")
 					log.error("\n".join(msg))
 					sys.exit(1)
 				elif rc == 2:
 					msg = []
-					msg.append("Error: It seems that this script was run once already for the first migration step,")
+					msg.append("Error: It seems that this script was run once already for the first takeover step,")
 					msg.append("       but the server %s cannot be found in the local Samba SAM database." % tmp_name)
 					msg.append("       Don't know how to continue, giving up at this point.")
 					log.error("\n".join(msg))
@@ -664,8 +674,8 @@ def run_phaseI(opts, args):
 				log.info("Sucessfull determined AD DC FQDN %s for given IP %s" % (ad_server_fqdn, ad_server_ip))
 			except:
 				msg = []
-				msg.append("Error: Parsing of DNS SRV record failed: '%s'" % lines)
-				msg.append("Please retry by passing the AD server name as additional command line argument")
+				msg.append("Error: Parsing of DNS SRV record failed: '%s'." % lines.rstrip())
+				msg.append("Please retry by passing the AD server name as additional command line argument.")
 				log.error("\n".join(msg))
 				sys.exit(1)
 
@@ -673,7 +683,7 @@ def run_phaseI(opts, args):
 	if char_idx == -1:
 		msg = []
 		msg.append("Error: AD server did not return FQDN for IP %s" % ad_server_ip)
-		msg.append("Please retry by passing the AD server name as additional command line argument")
+		msg.append("Please retry by passing the AD server name as additional command line argument.")
 		log.error("\n".join(msg))
 		sys.exit(1)
 	elif not ad_server_fqdn[char_idx+1:] == ucr["domainname"]:
@@ -716,7 +726,7 @@ def run_phaseI(opts, args):
 			elif not site_container_index and serverReferenceBL_RDNs[i] == "CN=Configuration":
 				config_partition_index = i
 			i = i+1
-		log.info("Located server %s site %s in AD SAM" % (ad_server_fqdn, sitename))
+		log.info("Located server %s at AD site %s in AD SAM database." % (ad_server_fqdn, sitename))
 
 	## OK, we are quite shure that we have the basics right, note the AD server IP and FQDN in UCR for phase II
 	config_registry.handler_set(["hosts/static/%s=%s %s" % (ad_server_ip, ad_server_fqdn, ad_server_name) ])
@@ -738,7 +748,7 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 
 	## Move current Samba directory out of the way
 	if os.path.exists(samba_dir):
@@ -766,20 +776,20 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 
 	## Restart bind9 to use the OpenLDAP backend, just to be sure
 	p = subprocess.Popen(["/etc/init.d/bind9", "restart"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 
 	## Get machine credentials
 	try:
 		machine_secret = open('/etc/machine.secret','r').read().strip()
 	except IOError, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not read machine credentials: %s', str(e))
+		log.error("Error: Could not read machine credentials: %s" % str(e))
 		sys.exit(1)
 
 	## Join into the domain
@@ -790,13 +800,27 @@ def run_phaseI(opts, args):
 		while p.poll() == None:
 			log_line = p.stdout.readline().rstrip()
 			if log_line:
-				log.info(log_line)
+				log.debug(log_line)
 		# log.handlers[0].setFormatter(formatter_orig)
-		if p.returncode != 0:
+		if p.returncode == 0:
+			log.info("Samba domain join successfull.")
+		else:
+			msg = []
+			msg.append("Error: Samba domain join failed.")
+			msg.append("       See %s for details." % LOGFILE_NAME)
+			log.error("\n".join(msg))
 			sys.exit(1)
 	else:
-		log.error("Error: Cannot determine site for server %s" % ad_server_fqdn)
+		log.error("Error: Cannot determine AD site for server %s" % ad_server_fqdn)
 		sys.exit(1)
+
+	## create backup dir
+	if not os.path.exists(BACKUP_DIR):
+		os.mkdir(BACKUP_DIR)
+	elif not os.path.isdir(BACKUP_DIR):
+		log.debug('%s is a file, renaming to %s.bak' % (BACKUP_DIR, BACKUP_DIR))
+		os.rename(BACKUP_DIR, "%s.bak" % BACKUP_DIR)
+		os.mkdir(BACKUP_DIR)
 
 	## Fix some attributes in local SamDB
 	ad_domainsid = None
@@ -808,7 +832,7 @@ def run_phaseI(opts, args):
 		obj = msgs[0]
 		ad_domainsid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
 	if not ad_domainsid:
-		log.error("Error: Could not determine domain SID")
+		log.error("Error: Could not determine new domain SID.")
 		sys.exit(1)
 
 	old_domainsid = None
@@ -817,21 +841,22 @@ def run_phaseI(opts, args):
 	if len(ldap_result) == 1:
 		ucs_object_dn = ldap_result[0][0]
 
-		if os.path.exists("/var/tmp/old_sambasid"):
-			f = open("/var/tmp/old_sambasid", 'r')
+		old_ucs_sambasid_backup_file = "%s/old_sambasid" % BACKUP_DIR
+		if os.path.exists(old_ucs_sambasid_backup_file):
+			f = open(old_ucs_sambasid_backup_file, 'r')
 			old_domainsid = f.read()
 			f.close()
 		else:
 			old_domainsid = ldap_result[0][1]["sambaSID"][0]
-			f = open("/var/tmp/old_sambasid", 'w')
+			f = open(old_ucs_sambasid_backup_file, 'w')
 			f.write("%s" % old_domainsid)
 			f.close()
 	elif len(ldap_result) > 0:
-		log.error('ERROR: Found more than one sambaDomain object with sambaDomainName=%s' % ucr["windows/domain"])
+		log.error('Error: Found more than one sambaDomain object with sambaDomainName=%s' % ucr["windows/domain"])
 	else:
-		log.error('ERROR: Did not find a sambaDomain object with sambaDomainName=%s' % ucr["windows/domain"])
+		log.error('Error: Did not find a sambaDomain object with sambaDomainName=%s' % ucr["windows/domain"])
 
-	log.info("Replacing OLD sambaSID: %s" % old_domainsid)
+	log.debug("Replacing old UCS sambaSID (%s) by AD domain SID (%s)." % (old_domainsid, ad_domainsid))
 	if old_domainsid != ad_domainsid:
 		ml = [("sambaSID", old_domainsid, ad_domainsid)]
 		lo.modify(ucs_object_dn, ml)
@@ -852,7 +877,7 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 	time.sleep(2)
 
 	## Disable replication from Samba4 to AD
@@ -862,14 +887,14 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 
 	## Start Samba
 	p = subprocess.Popen(["/etc/init.d/samba4", "start"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 	check_samba4_started()
 
 	### Phase I.b: Pre-Map SIDs (locale adjustment etc.)
@@ -880,7 +905,7 @@ def run_phaseI(opts, args):
 				expression="(objectClass=organizationalunit)",
 				attrs=["dn"])
 	if msgs:
-		log.info("Creating OUs in the Univention Directory Manager")
+		log.debug("Creating OUs in the Univention Directory Manager")
 	for obj in msgs:
 		container_list.append(obj["dn"].get_linearized())
 
@@ -904,7 +929,7 @@ def run_phaseI(opts, args):
 			while p.poll() == None:
 				log_line = p.stdout.readline().rstrip()
 				if log_line:
-					log.info(log_line)
+					log.debug(log_line)
 	
 	## construct locale mapping
 	# univention.admin.modules.update()
@@ -937,7 +962,9 @@ def run_phaseI(opts, args):
 						while p.poll() == None:
 							log_line = p.stdout.readline().rstrip()
 							if log_line:
-								log.info(log_line)
+								log.debug(log_line)
+						if p.returncode != 0:
+							log.error("Rename failed. See %s for details." % (LOGFILE_NAME,))
 					# filter = univention.admin.filter.expression('username', name)
 					# objs = user_module.lookup(co, lo, filter, scope='domain', base=position.getDomain(), unique=1)
 					# if objs:
@@ -1019,7 +1046,7 @@ def run_phaseI(opts, args):
 					# log.error("Error: Could not find new sambaPrimaryGroupSID for %s" % old_sambaSID_dict[old_sid])
 					pass
 				else:
-					log.error("Error: Unknown sambaPrimaryGroupSID %s" % old_sid)
+					log.debug("Warning: Unknown sambaPrimaryGroupSID %s" % old_sid)
 
 
 	### Pre-Create mail domains for all mail and proxyAddresses:
@@ -1044,7 +1071,9 @@ def run_phaseI(opts, args):
 		while p.poll() == None:
 			log_line = p.stdout.readline().rstrip()
 			if log_line:
-				log.info(log_line)
+				log.debug(log_line)
+		if p.returncode != 0:
+			log.error("Creation of UCS mail/domain %s failed. See %s for details." % (maildomain, LOGFILE_NAME,))
 
 	## create DNS SPN
 	log.debug("Attempting remove of DNS SPN account in UCS-LDAP")
@@ -1059,7 +1088,9 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Creation of DNS SPN account 'dns-%s' failed. See %s for details." % (ucr["hostname"], LOGFILE_NAME,))
 
 	### Copy UCS Administrator Password to S4 Administrator object
 	### (Account is disabled in SBS 2008 by default and the password might be unknown)
@@ -1075,14 +1106,14 @@ def run_phaseI(opts, args):
 	#	p = subprocess.Popen(["/usr/sbin/univention-password_sync_ucs_to_s4", "Administrator"])
 	#	p.wait()
 
-	## RemovelogonHours restrictions from Administrator account
+	## Remove logonHours restrictions from Administrator account, was set in one test environment..
 	msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 				expression="(samaccountname=Administrator)",
 				attrs=["logonHours"])
 	if msgs:
 		obj = msgs[0]
 		if "logonHours" in obj:
-			log.info("Removing logonHours restriction from Administrator account")
+			log.debug("Removing logonHours restriction from Administrator account")
 			delta = ldb.Message()
 			delta.dn = obj.dn
 			delta["logonHours"] = ldb.MessageElement([], ldb.FLAG_MOD_DELETE, "logonHours")
@@ -1097,7 +1128,7 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 
 	log.info("Waiting for listener to finish (max. 90 seconds)")
 	if not wait_for_listener_replication(print_dot, 90):
@@ -1111,7 +1142,7 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 
 	for i in xrange(10):
 		time.sleep(1)
@@ -1138,7 +1169,9 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Start of univention-directory-listener failed. See %s for details." % (LOGFILE_NAME,))
 
 	#print "Waiting for directory listener to start up (10 seconds)",
 	#for i in xrange(10):
@@ -1160,7 +1193,9 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Start of univention-s4-connector failed. See %s for details." % (LOGFILE_NAME,))
 
 	log.info("Waiting for S4 Connector sync (max. 5 minutes)")
 	t = t_0 = time.time()
@@ -1181,7 +1216,9 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Restart of univention-s4-connector failed. See %s for details." % (LOGFILE_NAME,))
 
 	## rebuild idmap
 	p = subprocess.Popen(["/usr/lib/univention-directory-listener/system/samba4-idmap.py", "--direct-resync"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -1189,6 +1226,8 @@ def run_phaseI(opts, args):
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
 			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Resync of samba4-idmap failed. See %s for details." % (LOGFILE_NAME,))
 
 	## Wait for Sync to finish
 	# pattern = re.compile(r"(^.+\n-{38}\ntry to sync \d+ changes from UCS\ndone: .+\nChanges from UCS: (\d+) \((\d+) saved rejected\)\n-{38}\n-{38}\ntry to sync \d+ changes from S4\ndone: .+\nChanges from S4:  (\d+) \((\d+) saved rejected\)\n-{38}\n)", re.MULTILINE)
@@ -1209,16 +1248,19 @@ def run_phaseI(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Start of nscd failed. See %s for details." % (LOGFILE_NAME,))
 
 	### Phase II: AD-Side Sync 
 
 	msg=[]
 	msg.append("")
 	msg.append("Phase I finished.")
-	msg.append("Now the SYSVOL share should be copied manually from \\\\%s\\sysvol to \\\\%s\\sysvol (using robocopy)" % (ad_server_name, ucr['hostname']))
-	msg.append("Once the SYSVOL share is copied successfully, shutdown the Windows server %s" % ad_server_name)
-	msg.append("After shutting down the Windows server %s start this script again with the option --fsmo-takeover" % ad_server_name)
+	msg.append("Now the SYSVOL share should be copied manually from \\\\%s\\sysvol to \\\\%s\\sysvol (using robocopy)." % (ad_server_name, ucr['hostname']))
+	msg.append("Once the SYSVOL share is copied successfully, shutdown the Windows server %s." % ad_server_name)
+	msg.append("After shutting down the Windows server %s the phase II of the takeover is complete." % ad_server_name)
+	msg.append("After completing phase II start this script again with the option --fsmo-takeover to finish the takeover process.")
 	log.info("\n".join(msg))
 	sys.exit(1)
 
@@ -1251,19 +1293,19 @@ def run_phaseIII(opts, args):
 	if rc == 0:
 		msg=[]
 		msg.append("")
-		msg.append("Error: given IP %s was not mapped to a hostname in phase I")
-		msg.append("       Please complete phase I of the migration before initiating the FSMO takeover")
+		msg.append("Error: given IP %s was not mapped to a hostname in phase I.")
+		msg.append("       Please complete phase I of the takeover before initiating the FSMO takeover.")
 		log.error("\n".join(msg))
 		sys.exit(1)
 	elif rc == 1:
-		log.error("OK, Found the AD DC %s account in the local Samba 4 SAM backend" % phaseI_name)
+		log.error("OK, Found the AD DC %s account in the local Samba 4 SAM database." % phaseI_name)
 	elif rc == 2:
 		msg=[]
 		msg.append("")
-		msg.append("Error: It seems that this script was run once already for the first migration step,")
+		msg.append("Error: It seems that this script was run once already for the first takeover step,")
 		msg.append("       but the server %s cannot be found in the local Samba SAM database." % phaseI_name)
 		msg.append("       Don't know how to continue, giving up at this point.")
-		msg.append("       Maybe the steps needed for migration have been finished already?")
+		msg.append("       Maybe the steps needed for takeover have been finished already?")
 		log.error("\n".join(msg))
 		sys.exit(1)
 
@@ -1289,7 +1331,7 @@ def run_phaseIII(opts, args):
 
 	## 1.c Check that local domainname matches kerberos realm
 	if ucr["domainname"].lower() != ucr["kerberos/realm"].lower():
-		log.error("Mismatching DNS domain and kerberos realm. Please reinstall the server with the same Domain as your AD")
+		log.error("Mismatching DNS domain and kerberos realm. Please reinstall the server with the same Domain as your AD.")
 		sys.exit(1)
 
 	## 1.d ping the given AD server IP
@@ -1306,9 +1348,9 @@ def run_phaseIII(opts, args):
 	if rc == 0:
 		msg=[]
 		msg.append("")
-		msg.append("Error: The server IP %s is still reachable" % ad_server_ip)
+		msg.append("Error: The server IP %s is still reachable." % ad_server_ip)
 		msg.append("       Return to the AD DC to migrate the SYSVOL, and then")
-		msg.append("       switch it off before restarting this script with option --fsmo-takeover")
+		msg.append("       switch it off before restarting this script with option --fsmo-takeover again.")
 		log.error("\n".join(msg))
 		sys.exit(1)
 	else:
@@ -1339,7 +1381,7 @@ def run_phaseIII(opts, args):
 			elif not site_container_index and serverReferenceBL_RDNs[i] == "CN=Configuration":
 				config_partition_index = i
 			i = i+1
-		log.info("Located server %s site %s in Samba4 SAM" % (ucr["hostname"], sitename))
+		log.info("Located server %s in AD site %s in Samba4 SAM database." % (ucr["hostname"], sitename))
 
 	## properly register partitions
 	partitions = takeover_hasInstantiatedNCs(ucr, samdb, ad_server_name, sitename)
@@ -1348,8 +1390,10 @@ def run_phaseIII(opts, args):
 	p = subprocess.Popen(["getfattr", "-m", "-", "-d", "-R", sysvol_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	(stdout, stderr) = p.communicate()
 	if stdout:
-		f=open('/var/univention-backup/univention-ad-takeover.sysvol_attr_backup', 'a')
-		f.write("### getfattr output %s\n%s" % (time.strftime("%Y-%m-%d %H:%M:%S"), stdout))
+		now = time.localtime()
+		timestamp = time.strftime("%Y%m%d%H%M%S", now)
+		f=open('%s/sysvol_attr_backup.log-%s' % (BACKUP_DIR, timestamp), 'a')
+		f.write("### getfattr output %s\n%s" % (time.strftime("%Y-%m-%d %H:%M:%S", now), stdout))
 		f.close()
 	else:
 		log.debug("getfattr did not produce any output")
@@ -1357,22 +1401,22 @@ def run_phaseIII(opts, args):
 		log.debug(stderr)
 
 	## Re-Set Default NTACLs on sysvol
-	p = subprocess.Popen(["/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py", sysvol_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	while p.poll() == None:
-		log_line = p.stdout.readline().rstrip()
-		if log_line:
-			log.info(log_line)
+	# p = subprocess.Popen(["/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py", sysvol_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	# while p.poll() == None:
+	# 	log_line = p.stdout.readline().rstrip()
+	# 	if log_line:
+	# 		log.info(log_line)
 
 	## Re-set default fACLs so sysvol-sync can read files and directories
 	p = subprocess.Popen(["setfacl", "-R", "-P", "-m", "g:Authenticated Users:r-x,d:g:Authenticated Users:r-x", sysvol_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 	if p.returncode != 0:
 		log.error("Error: Could not set fACL for %s" % sysvol_path)
 		msg=[]
-		msg.append("Warning: Continuing anyway. Please fix later:")
+		msg.append("Warning: Continuing anyway. Please fix later by running:")
 		msg.append("         setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' %s" % sysvol_path)
 		log.warn("\n".join(msg))
 
@@ -1396,34 +1440,42 @@ def run_phaseIII(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Creation of dns/alias %s for %s failed. See %s for details." % (ad_server_name, local_fqdn, LOGFILE_NAME,))
 
 	## Cleanup necessary to use NETBIOS Alias
 	log.info("Cleaning up:")
 	
-	log.info("Removing AD DC account from local Samba4 SAM database")
+	log.debug("Removing AD DC account from local Samba4 SAM database.")
 	p = subprocess.Popen(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,CN=Domain System Volume (SYSVOL share),CN=File Replication Service,CN=System,%s" % (ad_server_name, ucr["samba4/ldap/base"])], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
 			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Removal of AD DC account %s from Samba4 SAM database failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
 	p = subprocess.Popen(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, ucr["samba4/ldap/base"])], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Removal of AD server objects %s from Samba4 SAM database failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
 	p = subprocess.Popen(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,OU=Domain Controllers,%s" % (ad_server_name, ucr["samba4/ldap/base"])], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 	## Finally, for consistency remove AD DC object from UDM
-	log.info("Removing AD DC account from local Univention Directory Manager")
+	log.debug("Removing AD DC account from local Univention Directory Manager")
 	p = subprocess.Popen(["univention-directory-manager", "computers/windows_domaincontroller", "delete", "--dn", "cn=%s,cn=dc,cn=computers,%s" % (ad_server_name, ucr["ldap/base"]) ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Removal of DC account %s via UDM failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
 
 	## Create NETBIOS Alias
 	f = open('/etc/samba/local.conf', 'a')
@@ -1434,7 +1486,7 @@ def run_phaseIII(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 
 	## Assign AD IP to a virtual network interface
 	## Determine primary network interface, UCS 3.0-2 style:
@@ -1526,7 +1578,13 @@ def run_phaseIII(opts, args):
 		while p.poll() == None:
 			log_line = p.stdout.readline().rstrip()
 			if log_line:
-				log.info(log_line)
+				log.debug(log_line)
+		if p.returncode != 0:
+			msg=[]
+			msg.append("Claiming FSMO role %s failed." % fsmo_role)
+			msg.append("Warning: Continuing anyway. Please fix later by running:")
+			msg.append("         samba-tool fsmo seize --role=%s --force" % fsmo_role)
+			log.error("\n".join(msg))
 
 	## Let things settle
 	time.sleep(3)
@@ -1536,7 +1594,7 @@ def run_phaseIII(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 	check_samba4_started()
 
 	## Restart bind9 to use the OpenLDAP backend, just to be sure
@@ -1544,7 +1602,9 @@ def run_phaseIII(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Start of Bind9 daemon failed. See %s for details." % (LOGFILE_NAME,))
 
 	## re-create /etc/krb5.keytab
 	##  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
@@ -1552,7 +1612,7 @@ def run_phaseIII(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
 
 	## Enable NTP Signing for Windows SNTP clients
 	config_registry.handler_set(["ntp/signed=yes"])
@@ -1560,10 +1620,13 @@ def run_phaseIII(opts, args):
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
-			log.info(log_line)
+			log.debug(log_line)
+	if p.returncode != 0:
+		log.error("Start of NTP daemon failed. See %s for details." % (LOGFILE_NAME,))
+
 	msg=[]
 	msg.append("")
-	msg.append("Phase III finished.")
+	msg.append("Phase III finished, Takeover complete.")
 	log.info("\n".join(msg))
 	sys.exit(0)
 
@@ -1582,7 +1645,7 @@ if __name__ == '__main__':
 	opts, args = parser.parse_args()
 
 	global log
-	logging.basicConfig(filename="/var/log/univention/univention-ad-takeover.log", format='%(asctime)s %(message)s', level=logging.DEBUG)
+	logging.basicConfig(filename=LOGFILE_NAME, format='%(asctime)s %(message)s', level=logging.DEBUG)
 	log = logging.getLogger()
 	console = logging.StreamHandler(sys.stdout)
 	console.setLevel(logging.INFO)
