@@ -40,7 +40,6 @@ import threading
 import univention.config_registry
 from univention.config_registry.interfaces import RE_IFACE
 import time
-import fnmatch
 import re
 import sys
 import apt
@@ -55,6 +54,7 @@ installer_i18n = Translation( 'installer', localedir = '/lib/univention-installe
 if not '/lib/univention-installer/' in sys.path:
 	sys.path.append('/lib/univention-installer/')
 import package_list
+import imp
 
 ucr=univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -603,6 +603,9 @@ def get_components(role=None):
 	# get all package sets that are available for the current system role
 	if not role:
 		role = ucr.get('server/role')
+
+	# reload for correct locale
+	imp.reload(package_list)
 	pkglist = [ jpackage for icategory in package_list.PackageList 
 			for jpackage in icategory['Packages']
 			if 'all' in jpackage['Possible'] or role in jpackage['Possible'] ]
@@ -648,35 +651,35 @@ def is_proxy(proxy):
 
 def is_ipaddr(addr):
 	try:
-		x = ipaddr.IPAddress(addr)
+		ipaddr.IPAddress(addr)
 	except ValueError:
 		return False
 	return True
 
 def is_ipv4addr(addr):
 	try:
-		x = ipaddr.IPv4Address(addr)
+		ipaddr.IPv4Address(addr)
 	except ValueError:
 		return False
 	return True
 
 def is_ipv4netmask(addr_netmask):
 	try:
-		x = ipaddr.IPv4Network(addr_netmask)
+		ipaddr.IPv4Network(addr_netmask)
 	except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
 		return False
 	return True
 
 def is_ipv6addr(addr):
 	try:
-		x = ipaddr.IPv6Address(addr)
+		ipaddr.IPv6Address(addr)
 	except ValueError:
 		return False
 	return True
 
 def is_ipv6netmask(addr_netmask):
 	try:
-		x = ipaddr.IPv6Network(addr_netmask)
+		ipaddr.IPv6Network(addr_netmask)
 	except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
 		return False
 	return True
@@ -765,7 +768,7 @@ def get_available_locales(pattern, category='language_en'):
 							'label': '%s (%s)' % (ilang[1], jcountry[2])
 						})
 				continue
-			except Exception, e:
+			except Exception:
 				pass
 
 		# get the locale code
@@ -782,3 +785,4 @@ def get_available_locales(pattern, category='language_en'):
 			})
 
 	return locales
+
