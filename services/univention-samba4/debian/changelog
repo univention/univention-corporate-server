@@ -1,3 +1,11 @@
+univention-samba4 (2.0.23-1) unstable; urgency=low
+
+  * Don't reset sysvol NTACLs and fACLs to the UCS 3.0 defaults on every
+    run of the Samba 4 join script. Do it only during initial samba domain
+    join (Bug #28894).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Oct 2012 21:01:50 +0200
+
 univention-samba4 (2.0.22-1) unstable; urgency=low
 
   * If no samba4 DC could be found during a join the LDAP will be

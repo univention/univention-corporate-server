@@ -510,15 +510,19 @@ if [ "$samba4_role" = 'DC' ]; then
 		## determine default sysvol parent for this host from univentionService="S4 Connector"
 		set_samba4_sysvol_sync_host
 
-		## set the predefined NTACL which the provision uses on sysvol
-		/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH" 2>/dev/null
+		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+			## set the predefined NTACL which the provision uses on sysvol
+			/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH" 2>/dev/null
+		fi
 
 	fi
 
 	/usr/share/univention-samba4/scripts/create_dns-host_spn.py
 
-	## set default ACLs so sysvol-sync can read files and directories
-	set_default_fACL /var/lib/samba/sysvol
+	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		## set default ACLs so sysvol-sync can read files and directories
+		set_default_fACL /var/lib/samba/sysvol
+	fi
 
 	## activate sysvol replication
 	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
@@ -570,11 +574,13 @@ elif [ "$samba4_role" = "RODC" ]; then
 	## determine default sysvol parent for this host from univentionService="S4 Connector"
 	set_samba4_sysvol_sync_host
 
-	## set the predefined NTACL which the provision uses on sysvol
-	/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	2>/dev/null
+	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		## set the predefined NTACL which the provision uses on sysvol
+		/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	2>/dev/null
 
-	## set default ACLs so sysvol-sync can read files and directories
-	set_default_fACL /var/lib/samba/sysvol
+		## set default ACLs so sysvol-sync can read files and directories
+		set_default_fACL /var/lib/samba/sysvol
+	fi
 
 	## activate sysvol replication
 	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
