@@ -32,7 +32,7 @@ net rpc join -U "$NAME"%univention && \
 
 
 univention-directory-manager users/user modify --binddn "$ADMINISTRATOR_DN" \
-                                 	--bindpw "$ADMINISTRATOR_PASSWORD" \
+                                 	--bindpwd "$ADMINISTRATOR_PASSWORD" \
 									--dn "$USER_DN" \
 									--set "sambaPrivileges=SeMachineAccountPrivilege"
 

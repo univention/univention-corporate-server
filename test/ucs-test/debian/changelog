@@ -1,3 +1,10 @@
+ucs-test (3.0.15-1) unstable; urgency=low
+
+  * changed "udm --bindpw" to "udm --bindpwd" in
+    50_samba/25domain-join-without-admin-rights (Bug #27654)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 24 Oct 2012 15:31:43 +0200
+
 ucs-test (3.0.14-1) unstable; urgency=low
 
   * removed test 50_samba/21sambaLMPassword (Bug #28747)
