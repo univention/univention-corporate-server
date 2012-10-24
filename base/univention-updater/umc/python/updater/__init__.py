@@ -97,24 +97,15 @@ INSTALLERS = {
 		'logfile':	'/var/log/univention/errata-updates.log',
 		'statusfile':	'/var/lib/univention-updater/univention-errata-update.status',
 	},
-	'release':	{
+	'release': {
 		'purpose':	_("Perform release update up to version '%s'"),
 		'command':	"/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
 		'logfile':	'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/univention-updater.status',
 	},
-	# *** IMPORTANT! *** the arg list from our request contains the COMPONENT name but the command
-	#					here must contain the list of DEFAULTPACKAGES!
-	# cmd = '/usr/share/univention-updater/univention-updater-umc-univention-install %s' % (' '.join(pkglist))
-	'component': {
-		'purpose':	_("Install component '%s'"),
-		'command':	"/usr/share/univention-updater/univention-updater-umc-univention-install %s",
-		'logfile':	'/var/log/univention/actualise.log',
-		'statusfile':	'/var/lib/univention-updater/umc-univention-install.status',
-	},
 	'distupgrade': {
 		'purpose':	_("Install all package updates"),
-		'command':	"/usr/share/univention-updater/univention-updater-umc-dist-upgrade",
+		'command':	"/usr/share/univention-updater/univention-updater-umc-dist-upgrade; /usr/share/univention-updater/univention-updater-check",
 		'logfile':	'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/umc-dist-upgrade.status',
 	},

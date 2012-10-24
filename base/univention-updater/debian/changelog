@@ -1,3 +1,9 @@
+univention-updater (8.0.26-1) unstable; urgency=low
+
+  * Checks if updates are available after UMC's dist-upgrade (Bug #27794)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 24 Oct 2012 12:29:38 +0200
+
 univention-updater (8.0.25-1) unstable; urgency=low
 
   * Refresh update info onShow, always use standby (Bug #27460)
