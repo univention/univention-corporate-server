@@ -1,3 +1,9 @@
+univention-xen-gplpv (11.0.369-2) unstable; urgency=low
+
+  * removed old msi package (Bug #26613)
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Oct 2012 10:54:24 +0200
+
 univention-xen-gplpv (11.0.369-1) unstable; urgency=low
 
   * update to version 11.0.369 (Bug #26613) 
