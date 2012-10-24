@@ -537,8 +537,13 @@ define([
 				status = error.status;
 			}
 
-			if (error.data && !error.response.data) {
-				error.response.data = error.data;
+			if (error.data) {
+				if (!error.response) {
+					error.response = {};
+				}
+				if (!error.response.data) {
+					error.response.data = error.data;
+				}
 			}
 
 			if (error.response) {

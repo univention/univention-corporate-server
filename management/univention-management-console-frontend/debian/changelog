@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.134-1) unstable; urgency=low
+
+  * CSS fixes; Bug #28753, Bug #28812
+  * fix parseError; Bug #2855
+
+ -- Florian Best <best@univention.de>  Wed, 24 Oct 2012 16:30:44 +0200
+
 univention-management-console-frontend (2.0.133-1) unstable; urgency=low
 
   * changed default behavior for using UNIX socket; Bug #28043 

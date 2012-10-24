@@ -16,3 +16,7 @@
 .umcLoginDialogFormContainer {
 	height: 195px;
 }
+
+.umc .dijitDialog {
+	border: thin solid #999999;
+}

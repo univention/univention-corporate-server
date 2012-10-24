@@ -297,7 +297,7 @@
 
 .umc .dijitTextBox,
 .umc .dijitTextBox .dijitButtonNode {
-  border-color: #d7d8da !important;
+  border-color: #d7d8da;
 }
 
 
@@ -321,7 +321,7 @@
 
 .umc .dijitTextBoxHover,
 .umc .dijitTextBoxHover .dijitButtonNode {
-  border-color: #999!important; /* important because we override the important from .umc .dijitTextBox */
+  border-color: #999;
 }
 
 /* .umc .dijitTextBoxHover { */
@@ -338,7 +338,7 @@
 
 .umc .dijitTextBoxFocused,
 .umc .dijitTextBoxFocused .dijitButtonNode {
-  border-color: inherit; /* DEL */
+  border-color: #D7D8DA; /* DEL */
 }
 
 .umc .dijitTextBoxFocused {
@@ -353,7 +353,6 @@
 
 
 .umc .dijitComboBox .dijitArrowButtonInner {
-  border-left: 1px solid #d7d8da;
   background-image: url(form/images/commonFormArrows.png);
   background-position: -33px 53%;
   width: 21px;
@@ -367,41 +366,37 @@
 
 .umc .dijitComboBoxOpenOnClickHover .dijitButtonNode,
 .umc .dijitComboBox .dijitDownArrowButtonHover {
-	background-color: inherit; /* DEL */
+	background-color: #EDEDEE; /* DEL */
 }
 
 .umc .dijitComboBoxOpenOnClickHover .dijitButtonNode {
    background-color: #74be4b;
 }
 
-.umc .dijitComboBoxOpenOnClickHover .dijitArrowButtonInner,
-.umc .dijitComboBox .dijitDownArrowButtonHover .dijitArrowButtonInner {
-  background-position: inherit; /* DEL */
-}
 .umc .dijitComboBox .dijitHasDropDownOpen {
-  background-color: inherit; /* DEL */
-  background-position: inherit; /* DEL */
-  padding: inherit; /* DEL */
+  background-color: #EDEDEE; /* DEL */
+  background-position: 100% 0%; /* DEL */
+  padding: 0; /* DEL */
 }
 
 .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner {
-  background-position: inherit; /* DEL */
-  border: inherit; /* DEL */
+  background-position: -33px 53%; /* DEL */
+  border: 0 none; /*DEL*/
 }
 
 .umc .dijitComboBoxOpenOnClickHover .dijitArrowButtonInner, .umc .dijitComboBox .dijitDownArrowButtonHover .dijitArrowButtonInner {
-  background-position: -68px 53%;
+  background-position: -33px 53%;
 }
 
 
 
 
 .dj_borderbox .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner {
-  width: inherit; /* DEL */
+  width: 21px; /* DEL */
 }
 
 .dj_borderbox .umc .dijitComboBoxFocused .dijitHasDropDownOpen .dijitArrowButtonInner {
-  width: inherit; /* DEL */
+  width: 21px; /* DEL */
 }
 
 /* remove the upstream node completely */
@@ -410,7 +405,7 @@
 .umc .dijitComboButton .dijitButtonNode,
 .umc .dijitToggleButton .dijitButtonNode {
   color: inherit;
-  border: none; /* DEL */
+  border: 0 none; /* DEL */
   padding: inherit; /* DEL */
   background-image: none; /* DEL */
   background-position: inherit; /* DEL */
