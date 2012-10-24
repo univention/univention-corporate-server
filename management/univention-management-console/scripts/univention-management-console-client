@@ -213,9 +213,11 @@ if __name__ == '__main__':
 	group.add_option( '-s', '--server', type = 'string', action = 'store',
 					   dest = 'server', default = 'localhost',
 					   help = 'defines the host of the UMC daemon to connect to [default: %default]' )
+	group.add_option( '', '--no-unix', action = 'store_false', dest = 'use_unix_socket', default = True,
+					   help = 'if given do not use a UNIX socket')
 	group.add_option( '-u', '--unix-socket', type = 'string', action = 'store',
-					   dest = 'unix_socket',
-					   help = 'defines the filename of the UNIX socket' )
+					   dest = 'unix_socket', default='/var/run/univention-management-console-server.socket',
+					   help = 'defines the filename of the UNIX socket [default: %default]' )
 	group.add_option( '-U', '--username', type = 'string',
 					   action = 'store', dest = 'username',
 					   help = 'set username for authentication' )
@@ -260,6 +262,10 @@ if __name__ == '__main__':
 			options.password = open(options.password_file).read().strip()
 		if not options.password:
 			options.password = getpass( 'Password:' )
+
+	if not options.use_unix_socket:
+		options.unix_socket = None
+
 	try:
 		client = CLI_Client( options, arguments )
 	except Exception, e:
