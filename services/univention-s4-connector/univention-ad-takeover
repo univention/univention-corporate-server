@@ -47,7 +47,7 @@ import re
 from samba.ndr import ndr_pack, ndr_unpack
 from samba.dcerpc import security
 import univention.admin.uldap
-import univention.admin.uexceptions
+import univention.admin.uexceptions as uexceptions
 import string
 import sqlite3
 import univention.admin.modules
@@ -321,6 +321,120 @@ def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
 			log_line = p.stdout.readline().rstrip()
 			if log_line:
 				log.debug(log_line)
+
+import univention.admin.license
+import univention.admin.filter
+License = univention.admin.license.License
+_license = univention.admin.license._license
+
+def check_license(lo, dn):
+	def mylen(xs):
+		if xs is None:
+			return 0
+		return len(xs)
+	types = (License.CLIENT, License.ACCOUNT, License.DESKTOP, License.GROUPWARE)
+	if dn is None:
+		max = [ _license.licenses[type]
+			for type in types ]
+	else:
+		max = [ lo.get(dn)[_license.keys[type]][0]
+			for type in types ]
+
+	objs = [ lo.searchDn(filter=_license.filters[type])
+		for type in types ]
+	num = [ mylen (obj)
+		for obj in objs]
+	expired = _license.checkObjectCounts(max, num)
+	result = []
+	for i in range(len(types)):
+		t = types[i]
+		m = int(max[i])
+		n = num[i]
+		odn = objs[i]
+		if t == License.ACCOUNT:
+			n -= _license.sysAccountsFound
+			if n < 0: n=0
+		l = _license.names[t]
+		if m:
+			if t == License.ACCOUNT:
+				log.debug("check_license for current UCS %s: %s of %s" % (l, n, m))
+				log.debug("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
+				result.append((l, n, m))
+			elif t == License.CLIENT:
+				log.debug("check_license for current UCS %s: %s of %s" % (l, n, m))
+				result.append((l, n, m))
+	return result
+
+def count_ad_object_numbers(ucr, remote_samdb, ignored_users_list = []):
+	ad_user_accounts = 0
+	ignored_accounts = 0
+	ad_computer_accounts = 0
+	msgs = remote_samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+                                expression="(&(objectClass=user)(!(objectClass=computer))(sAMAccountName=*))",
+                                attrs=["sAMAccountName"])
+	for obj in msgs:
+		for ignored_account in ignored_users_list:
+			if obj["sAMAccountName"][0].lower() == ignored_account.lower():
+				ignored_accounts = ignored_accounts + 1
+				break
+		else:
+			ad_user_accounts = ad_user_accounts + 1
+
+	log.debug("Number of AD user accounts: %s" % ad_user_accounts)
+	log.debug("Number of ignored system accounts: %s" % ignored_accounts)
+
+	msgs = remote_samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+                                expression="(&(objectClass=computer)(sAMAccountName=*))",
+                                attrs=["dn"])
+	if msgs:
+		ad_computer_accounts = len(msgs)
+	log.debug("Number of AD computer accounts: %s" % ad_computer_accounts)
+
+	return (ad_user_accounts, ad_computer_accounts)
+
+def check_ad_object_numbers(ucr, remote_samdb):
+
+	ad_user_accounts, ad_computer_accounts = count_ad_object_numbers(ucr, remote_samdb, _license.sysAccountNames)
+
+	binddn = ucr['ldap/hostdn']
+	with open('/etc/machine.secret', 'r') as pwfile:
+		bindpw = pwfile.readline().strip()
+
+	try:
+		lo = univention.admin.uldap.access(host = ucr['ldap/master'],
+						   port = int(ucr.get('ldap/master/port', '7389')),
+						   base = ucr['ldap/base'],
+						   binddn = binddn,
+						   bindpw = bindpw)
+	except uexceptions.authFail:
+		raise UsageError, "License check with machine credentials failed."
+
+	try:
+		_license.init_select(lo, 'admin')
+		check_array = check_license(lo, None)
+	except uexceptions.base:
+		dns = find_licenses(lo, baseDN, 'admin')
+		dn, expired = choose_license(lo, dns)
+		check_array = check_license(lo, dn)
+
+
+	## some name translation
+	object_names = {'Accounts': 'user', 'Clients': 'computer'}
+	ad_object_count = {'Accounts': ad_user_accounts, 'Clients': ad_computer_accounts}
+	print
+	for object_type, object_name in object_names.items():
+		log.info("Found %s %s objects on the remote server." % (object_name, ad_object_count[object_type]))
+
+	license_sufficient = True
+	for object_type, num, max in check_array:
+		object_name = object_type
+		if object_name in object_names:
+			object_name = object_names[object_name]
+		sum = num + ad_object_count[object_type]
+		if sum > max:
+			license_sufficient = False
+			log.warn("Number of %s objects after takeover would be %s. This would exceed the number of licensed objects (%s)." % (object_name, sum, max))
+	return license_sufficient
 
 def print_dot():
 	sys.stdout.write(".")
@@ -729,6 +843,18 @@ def run_phaseI(opts, args):
 				config_partition_index = i
 			i = i+1
 		log.info("Located server %s at AD site %s in AD SAM database." % (ad_server_fqdn, sitename))
+
+	## 5. Check AD Object Numbers
+	if not check_ad_object_numbers(ucr, remote_samdb):
+
+		log.warn("\nAfter the takeover the Univention Directory Manager will only allow removal of objects until the license restrictions are met.")
+		answer = raw_input("Continue takeover anyway? [y/N]: ")
+
+		if not answer.lower() in ('y', 'yes'):
+			log.info("Ok, stopping as requested.\n")
+			sys.exit(2)
+		else:
+			log.info("Ok, continuing as requested.\n")
 
 	## OK, we are quite shure that we have the basics right, note the AD server IP and FQDN in UCR for phase II
 	config_registry.handler_set(["hosts/static/%s=%s %s" % (ad_server_ip, ad_server_fqdn, ad_server_name) ])
@@ -1230,20 +1356,6 @@ def run_phaseI(opts, args):
 			log.debug(log_line)
 	if p.returncode != 0:
 		log.error("Resync of samba4-idmap failed. See %s for details." % (LOGFILE_NAME,))
-
-	## Wait for Sync to finish
-	# pattern = re.compile(r"(^.+\n-{38}\ntry to sync \d+ changes from UCS\ndone: .+\nChanges from UCS: (\d+) \((\d+) saved rejected\)\n-{38}\n-{38}\ntry to sync \d+ changes from S4\ndone: .+\nChanges from S4:  (\d+) \((\d+) saved rejected\)\n-{38}\n)", re.MULTILINE)
-
-	# changes_from_ucs = changes_from_s4 = 1
-	# while changes_from_ucs > 0 or changes_from_s4 > 0:
-	#	time.sleep(5)
-	#	with open("/var/log/univention/connector-s4-status.log", "r") as f:
-	#		status_log = f.read()
-	#		m = pattern.match(status_log)
-	#		changes_from_ucs = m.group(2)
-	#		rejects_from_ucs = m.group(3)
-	#		changes_from_s4 = m.group(4)
-	#		rejects_from_s4 = m.group(5)
 
 	## Start NSCD again
 	p = subprocess.Popen(["/etc/init.d/nscd", "start"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
