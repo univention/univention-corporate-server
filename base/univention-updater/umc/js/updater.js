@@ -278,6 +278,13 @@ define([
 				msg = msg + "<p>" +
 					_("Please also consider the release notes, changelogs and references posted in the <a href='http://forum.univention.de'>Univention Forum</a>.") +
 					"</p>";
+				msg = msg + "<p><strong>" +
+					_("DO NOT power off the system during the update.") +
+					"</strong> " +
+					_("The update can take a long time and the system may respond slowly. You may be temporarily unable to log in.") +
+					" <strong>" +
+					_("Again, DO NOT power off the system even in these cases!") +
+					"</strong></p>";
 				if (typeof(args.confirm) == 'string')
 				{
 					msg = msg + "<p>" + args.confirm + "</p>";

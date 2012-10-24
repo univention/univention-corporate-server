@@ -267,7 +267,6 @@ class Instance(umcm.Base):
 				entry = {}
 				entry['id'] = rel
 				entry['label'] = 'UCS %s' % rel
-				entry['next_version_blocked_by_component'] = ''
 				result.append(entry)
 			#
 			# appliance_mode=no ; blocking_comp=no  → add "latest version"
@@ -275,7 +274,7 @@ class Instance(umcm.Base):
 			# appliance_mode=yes; blocking_comp=no  → add "latest version"
 			# appliance_mode=yes; blocking_comp=yes → add "latest version"
 			#
-			if len(result) and not(not(appliance_mode) and blocking_component):
+			if len(result) and (appliance_mode or not blocking_component):
 				# UniventionUpdater returns available version in ascending order, so
 				# the last returned entry is the one to be flagged as 'latest' if there's
 				# no blocking component.
@@ -283,7 +282,7 @@ class Instance(umcm.Base):
 
 		except Exception,ex:
 			request.status = FAILURE
-			self.finished(request.id,{},str(ex))
+			self.finished(request.id, [], str(ex))
 			return
 
 		# ----------- DEBUG -----------------
