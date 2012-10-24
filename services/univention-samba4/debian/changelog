@@ -1,3 +1,9 @@
+univention-samba4 (2.0.23-2) unstable; urgency=low
+
+  * improve modrdn handling in samba4-idmap Listener (Bug #28643)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Oct 2012 21:05:14 +0200
+
 univention-samba4 (2.0.23-1) unstable; urgency=low
 
   * Don't reset sysvol NTACLs and fACLs to the UCS 3.0 defaults on every

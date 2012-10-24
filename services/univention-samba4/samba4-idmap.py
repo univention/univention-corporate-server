@@ -47,6 +47,7 @@ name='samba4-idmap'
 description='Update local IDmap entries'
 filter='(&(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))(sambaSID=*))'
 attributes=['sambaSID', 'univentionSamba4SID', 'uidNumber', 'gidNumber']
+modrdn='1'
 
 ### Globals
 lp = LoadParm()
@@ -190,7 +191,7 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
 
 
-def handler(dn, new, old):
+def handler(dn, new, old, operation):
 
 	if new:
 		try:
@@ -217,6 +218,9 @@ def handler(dn, new, old):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 				"%s: entry for %s could not be updated" % (name, new['sambaSID'][0]) )
 	elif old:
+		if operation == 'r':	## modrdn
+			return
+
 		try:
 			if 'sambaSamAccount' in old['objectClass']:
 				xid_attr = 'uidNumber'
@@ -262,7 +266,7 @@ if __name__ == '__main__':
 		def __init__(self,input):
 			LDIFParser.__init__(self,input)
 		def handle(self,dn,entry):
-			handler(dn, entry, {})
+			handler(dn, entry, {}, 'a')
 
 	import StringIO
 	parser=ListenerHandler(StringIO.StringIO(stdout))
