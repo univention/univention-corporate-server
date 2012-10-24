@@ -404,9 +404,6 @@ define([
 			// This delays showing the right panes until we know the value of 'easy_mode'.
 			this._show_updater_panes(false);
 
-			// show standby while loading data
-			this.standby(true);
-
 			this.addChild(this._form);
 			this._form.showWidget('releases', false);
 			this._form.showWidget('ucs_updates_text', false);
@@ -720,7 +717,6 @@ define([
 
 			this.inherited(arguments);
 			this._show_reboot_pane(false);
-			this.refreshPage();
 
 		},
 
@@ -728,8 +724,9 @@ define([
 		onShow: function() {
 
 			this.inherited(arguments);
-			// this is done onJobFinished()
-			// this.refreshPage(true);
+			// show standby while loading data
+			this.standby(true);
+			this.refreshPage(true);
 		},
 
 		// should refresh any data contained here. (can be called from outside when needed)

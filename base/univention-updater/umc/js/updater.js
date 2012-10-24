@@ -71,14 +71,6 @@ define([
 				this.selectChild(this._updates);
 			}));
 
-			// waits for the Progress Page to notify us that a job is finished. This
-			// should immediately refresh the 'Updates' and 'Components' pages.
-			// XXX can remain this way
-			// but it doubles 
-			this._progress.on('jobfinished', lang.hitch(this, function() {
-				this._updates.refreshPage(true);
-			}));
-
 			// waits for the Progress Page to notify us that a job is running
 			this._progress.on('jobstarted', lang.hitch(this, function() {
 				this._switch_to_progress_page();

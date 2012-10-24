@@ -112,8 +112,7 @@ define([
 						// show an alert
 						dialog.alert(_('In order to complete the recently executed action, it is required to reboot the system.'));
 						_closeLogView();
-					}
-					else {
+					} else {
 						// ask user to restart
 						libServer.askRestart(_('For the changes to take effect, it is recommended to perform a restart of the UMC server components.')).then(
 							function() { /* nothing to do */ },
