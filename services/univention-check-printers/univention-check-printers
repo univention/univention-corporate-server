@@ -30,13 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-disabled=''
+eval "$(univention-config-registry shell cups/checkprinters/mail/subject cups/checkprinters/mail/address)"
 
-eval "$(/usr/sbin/univention-config-registry shell cups/checkprinters/mail/subject cups/checkprinters/mail/address)"
+# printer list
+printers="$(LC_ALL=C lpstat -a | awk '{print $1}')"
 
 # search disabled printers
-for printer in $(lpstat -a 2>/dev/null | sed 's/ .*//'); do
-	if ! /usr/sbin/lpc status $printer | grep 'printing is enabled' &>/dev/null ; then
+disabled=""
+for printer in $printers; do
+	if LC_ALL=C lpstat -p $printer | grep -qi 'disabled'; then
 		disabled="$disabled $printer"
 	fi
 done
