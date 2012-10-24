@@ -307,6 +307,7 @@ def update_session(response, sessionid):
 	response.headers['X-UMC-Session-Timeout'] = _session_timeout
 
 def default_error_page(status, message, traceback, version, result = None):
+	""" The default error page for UMCP responses """
 	cherrypy.response.headers['Content-type'] = umcp.MIMETYPE_JSON
 	response = {
 		'status': status,
@@ -317,6 +318,7 @@ def default_error_page(status, message, traceback, version, result = None):
 	return simplejson.dumps(response)
 
 class UMC_HTTPError(cherrypy.HTTPError):
+	""" HTTPError which sets a error result """
 	def __init__(self, status=500, message=None, body=None):
 		cherrypy.HTTPError.__init__(self, status, message)
 		self.body = body
@@ -626,7 +628,6 @@ def run_cherrypy():
 
 class UMC_HTTP_Daemon(DaemonRunner):
 	def __init__( self ):
-		unix_socket = str(configRegistry.get('umc/server/socket/unix', '/var/run/univention-management-console-server.socket'))
 		self.parser = OptionParser()
 		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
 						   dest = 'daemon_mode', default = True,
@@ -639,12 +640,14 @@ class UMC_HTTP_Daemon(DaemonRunner):
 						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-web-server',
 						   help = 'specifies an alternative log file [default: %default]' )
-		self.parser.add_option( '-u', '--unix', action = 'store_const',  dest = 'unix', default = None, const = unix_socket,
-						   help = 'indicate that the UMC server is using a UNIX socket [default: %default]' )
+		self.parser.add_option( '', '--no-unix', action = 'store_false',  dest = 'unix', default = True,
+						   help = 'indicate that the UMC server is not using a UNIX socket' )
 		( self.options, self.arguments ) = self.parser.parse_args()
 
-		# set the path of the unix socket if enabled
-		UMCP_Dispatcher.unix_socket = self.options.unix
+		if self.options.unix:
+			# set the path of the unix socket if enabled
+			unix_socket = str(configRegistry.get('umc/server/socket/unix', '/var/run/univention-management-console-server.socket'))
+			UMCP_Dispatcher.unix_socket = unix_socket
 
 		# cleanup environment
 		os.environ.clear() # supported since python 2.6
