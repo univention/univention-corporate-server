@@ -586,29 +586,31 @@ def run_phaseI(opts, args):
 		log.debug("output of %s\nstdout: '%s'\nstderr: '%s'" % (cmd, stdout.rstrip(), stderr.rstrip()))
 		lines = stdout.rstrip('\n').split('\n')
 		if not stdout:
-			log.error("Error: DNS lookup for DC at IP %s failed." % ad_server_ip)
-			msgs = remote_samdb.search(base="DC=DomainDnsZones,%s" % ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
-                                		expression="(DC=_kerberos._tcp)",
-										attrs=["dn"])
-			if msgs:
-				obj = msgs[0]
-				p = re.compile("DC=_kerberos._tcp,DC=([^,]*),.*")
-				m = p.match(obj["dn"].get_linearized())
-				if len(m.groups()) == 1:
-					remote_domainname = m.group(1)
+			log.debug("Error: DNS lookup for DC at IP %s failed." % ad_server_ip)
+			try:
+				msgs = remote_samdb.search(base="", scope=samba.ldb.SCOPE_BASE,
+											attrs=["defaultNamingContext"])
+				if msgs and "defaultNamingContext" in msgs[0]:
+					obj = msgs[0]
+					remote_domainname = obj["defaultNamingContext"][0].replace('DC=','',1).replace(',DC=','.')
 					if remote_domainname != ucr["domainname"]:
 						msg = []
 						msg.append("Local machine does not seem to be installed with the same domainname as the AD domain!")
-						msg.append("Remote domain lookup returned: %s" % remote_domainname)
 						msg.append("Local domain: %s" % ucr["domainname"])
+						msg.append("Remote domain lookup returned: %s" % remote_domainname)
 						log.error("\n".join(msg))
 					else:
 						log.error("Please retry by passing the AD server name as additional command line argument.")
 				else:
 					log.error("Please retry by passing the AD server name as additional command line argument.")
-			else:
-				log.error("Please retry by passing the AD server name as additional command line argument.")
-			sys.exit(1)
+				sys.exit(1)
+			except ldb.LdbError:
+				msg = []
+				msg.append("Local machine does not seem to be installed with the same domainname as the AD domain!")
+				msg.append("Local domain: %s" % ucr["domainname"])
+				msg.append("Lookup of remote domain failed.")
+				log.error("\n".join(msg))
+				sys.exit(1)
 		elif len(lines) > 1:
 			log.warn("Warning: Multiple DCs registered for DNS SRV record _kerberos._tcp.dc._msdcs.%s"  % ucr["domainname"])
 			local_fqdn_found_in_AD_SRV = False

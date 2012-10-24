@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.17-13) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - improved detection of remote domain name
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Oct 2012 14:01:41 +0200
+
 univention-s4-connector (7.0.17-12) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
