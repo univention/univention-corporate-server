@@ -318,7 +318,7 @@ def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
 	old_position = ','.join(rdn_list)
 
 	if new_position.lower() != old_position.lower():
-		run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "move", "--dn", ucs_object_dn, "--position", new_position])
+		run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "move", "--dn", ucs_object_dn, "--position", new_position], log.debug)
 
 import univention.admin.license
 import univention.admin.filter
@@ -447,6 +447,7 @@ def check_ad_object_numbers(ucr, remote_samdb):
 	for object_type, object_name in object_names.items():
 		log.info("Found %s %s objects on the remote server." % (object_name, ad_object_count[object_type]))
 
+	ad_object_count['Clients'] = ad_computer_accounts - 1	## ignore AD server account, will be removed in phaseIII
 	license_sufficient = True
 	for object_type, num, max in check_array:
 		object_name = object_type
@@ -586,14 +587,14 @@ def check_samba4_started():
 	else:
 		if int(stdout) == 1:
 			attempt = 2
-			run_and_output_to_log(["/etc/init.d/samba4", "stop"])
-			run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"])
+			run_and_output_to_log(["/etc/init.d/samba4", "stop"], log.debug)
+			run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
 			p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 			(stdout, stderr) = p.communicate()
 			if int(stdout) > 0:
 				log.debug("ERROR: Stray Processes:", int(stdout))
-				run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"])
-			run_and_output_to_log(["/etc/init.d/samba4", "start"])
+				run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
+			run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
 			## fallback
 			time.sleep(2)
 			p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
@@ -601,15 +602,15 @@ def check_samba4_started():
 			if int(stdout) == 1:
 				attempt = 3
 				log.debug("ERROR: Stray Processes:", int(stdout))
-				run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"])
-				run_and_output_to_log(["/etc/init.d/samba4", "start"])
+				run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
+				run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
 				## and log
 				time.sleep(2)
 				p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()
 		log.debug("Number of Samba 4 processes after %s start/restart attempts: %s" % (attempt, stdout))
 
-def run_and_output_to_log(cmd, log_function = log.debug):
+def run_and_output_to_log(cmd, log_function):
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
@@ -888,13 +889,13 @@ def run_phaseI(opts, args):
 	log.info("Starting phase I of the takeover process.")
 
 	## OK, we are quite shure that we have the basics right, note the AD server IP and FQDN in UCR for phase II
-	run_and_output_to_log(["univention-config-registry", "set", "hosts/static/%s=%s %s" % (ad_server_ip, ad_server_fqdn, ad_server_name)])
+	run_and_output_to_log(["univention-config-registry", "set", "hosts/static/%s=%s %s" % (ad_server_ip, ad_server_fqdn, ad_server_name)], log.debug)
 
 	## Stop the S4 Connector for phase I
-	run_and_output_to_log(["/etc/init.d/univention-s4-connector", "stop"])
+	run_and_output_to_log(["/etc/init.d/univention-s4-connector", "stop"], log.debug)
 
 	## Stop Samba
-	run_and_output_to_log(["/etc/init.d/samba4", "stop"])
+	run_and_output_to_log(["/etc/init.d/samba4", "stop"], log.debug)
 
 	## Move current Samba directory out of the way
 	if os.path.exists(samba_dir):
@@ -915,15 +916,15 @@ def run_phaseI(opts, args):
 		                         "nameserver1/local=%s" % nameserver1_orig,
 		                         "nameserver1=%s" % ad_server_ip,
 		                         "directory/manager/web/modules/users/user/properties/username/syntax=string",
-		                         "dns/backend=ldap"])
+		                         "dns/backend=ldap"], log.debug)
 
 	ucr.load()
 
 	## Stop the NSCD
-	run_and_output_to_log(["/etc/init.d/nscd", "stop"])
+	run_and_output_to_log(["/etc/init.d/nscd", "stop"], log.debug)
 
 	## Restart bind9 to use the OpenLDAP backend, just to be sure
-	run_and_output_to_log(["/etc/init.d/bind9", "restart"])
+	run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
 
 	## Get machine credentials
 	try:
@@ -947,6 +948,8 @@ def run_phaseI(opts, args):
 			if	t1 - t >=1:
 				print_dot()
 				t = t1
+		print
+		sys.stdout.flush()
 		# log.handlers[0].setFormatter(formatter_orig)
 		if p.returncode == 0:
 			log.info("Samba domain join successfull.")
@@ -1019,17 +1022,17 @@ def run_phaseI(opts, args):
 	add_servicePrincipals(ucr, secretsdb, spn_list)
 
 	## Set Samba domain password settings. Note: rotation of passwords will only work with UCS 3.1, so max password age must be disabled for now.
-	run_and_output_to_log(["samba-tool", "domain", "passwordsettings", "set", "--history-length=3", "--min-pwd-age=0", "--max-pwd-age=0"])
+	run_and_output_to_log(["samba-tool", "domain", "passwordsettings", "set", "--history-length=3", "--min-pwd-age=0", "--max-pwd-age=0"], log.debug)
 	time.sleep(2)
 
 	## Disable replication from Samba4 to AD
-	run_and_output_to_log(["univention-config-registry", "set", "samba4/dcerpc/endpoint/drsuapi=false"])
+	run_and_output_to_log(["univention-config-registry", "set", "samba4/dcerpc/endpoint/drsuapi=false"], log.debug)
 
 	## Temporary workaround, until univention-samba4 smb.conf template supports samba4/service/drsuapi
-	run_and_output_to_log(["sed", "-i", '/-drsuapi/!s/\(\s*dcerpc endpoint servers\s*=\s*.*\)$/\\1 -drsuapi/', "/etc/samba/smb.conf"])
+	run_and_output_to_log(["sed", "-i", '/-drsuapi/!s/\(\s*dcerpc endpoint servers\s*=\s*.*\)$/\\1 -drsuapi/', "/etc/samba/smb.conf"], log.debug)
 
 	## Start Samba
-	run_and_output_to_log(["/etc/init.d/samba4", "start"])
+	run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
 	check_samba4_started()
 
 	### Phase I.b: Pre-Map SIDs (locale adjustment etc.)
@@ -1060,7 +1063,7 @@ def run_phaseI(opts, args):
 			log.warn("Warning: Unmapped container type %s" % container_dn)
 
 		if udm_type:
-			run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "create", "--ignore_exists", "--position", position, "--set" , "name=%s" % ou_name])
+			run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "create", "--ignore_exists", "--position", position, "--set" , "name=%s" % ou_name], log.debug)
 	
 	## construct locale mapping
 	ucs_ad_name_map = { }
@@ -1080,10 +1083,10 @@ def run_phaseI(opts, args):
 				oc = obj["objectClass"]
 				if "group" in oc:
 					ucs_ad_name_map[name] = ad_object_name
-					run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/group/table/%s=%s" % (name, ad_object_name)])
+					run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/group/table/%s=%s" % (name, ad_object_name)], log.debug)
 				elif "user" in oc:
 					ucs_ad_name_map[name] = ad_object_name
-					run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/user/table/%s=%s" % (name, ad_object_name)])
+					run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/user/table/%s=%s" % (name, ad_object_name)], log.debug)
 
 	## construct dict of old UCS sambaSIDs
 	old_sambaSID_dict = {}
@@ -1180,16 +1183,16 @@ def run_phaseI(opts, args):
 						if not domainpart in maildomains:
 							maildomains.append(domainpart)
 	for maildomain in maildomains:
-		returncode = run_and_output_to_log(["univention-directory-manager", "mail/domain", "create", "--ignore_exists", "--position", "cn=domain,cn=mail,%s" % ucr["ldap/base"], "--set" , "name=%s" % maildomain])
+		returncode = run_and_output_to_log(["univention-directory-manager", "mail/domain", "create", "--ignore_exists", "--position", "cn=domain,cn=mail,%s" % ucr["ldap/base"], "--set" , "name=%s" % maildomain], log.debug)
 		if returncode != 0:
 			log.error("Creation of UCS mail/domain %s failed. See %s for details." % (maildomain, LOGFILE_NAME,))
 
 	## create DNS SPN
 	log.debug("Attempting remove of DNS SPN account in UCS-LDAP")
-	run_and_output_to_log(["univention-directory-manager", "users/user", "delete", "--dn", "uid=dns-%s,cn=users,%s" % (ucr["hostname"], ucr["ldap/base"])])
+	run_and_output_to_log(["univention-directory-manager", "users/user", "delete", "--dn", "uid=dns-%s,cn=users,%s" % (ucr["hostname"], ucr["ldap/base"])], log.debug)
 
 	log.debug("Creating new DNS SPN account in Samba4")
-	returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"])
+	returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], log.debug)
 	if returncode != 0:
 		log.error("Creation of DNS SPN account 'dns-%s' failed. See %s for details." % (ucr["hostname"], LOGFILE_NAME,))
 
@@ -1224,8 +1227,8 @@ def run_phaseI(opts, args):
 
 	old_sleep = ucr.get("connector/s4/poll/sleep", "5")
 	old_retry = ucr.get("connector/s4/retryrejected", "10")
-	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=1", "connector/s4/retryrejected=2"])
-	run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"])
+	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=1", "connector/s4/retryrejected=2"], log.debug)
+	run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"], log.debug)
 
 	log.info("Waiting for listener to finish (max. 90 seconds)")
 	if not wait_for_listener_replication(print_dot, 90):
@@ -1235,7 +1238,7 @@ def run_phaseI(opts, args):
 	log.info("Restarting Univention Directory Listener")
 
 	## Reset S4 Connector and handler state
-	run_and_output_to_log(["/etc/init.d/univention-directory-listener", "stop"])
+	run_and_output_to_log(["/etc/init.d/univention-directory-listener", "stop"], log.debug)
 
 	for i in xrange(10):
 		time.sleep(1)
@@ -1258,7 +1261,7 @@ def run_phaseI(opts, args):
 			except Exception, e:
 				log.error("Error removing file: %s" % str(e))
 
-	returncode = run_and_output_to_log(["/etc/init.d/univention-directory-listener", "start"])
+	returncode = run_and_output_to_log(["/etc/init.d/univention-directory-listener", "start"], log.debug)
 	if returncode != 0:
 		log.error("Start of univention-directory-listener failed. See %s for details." % (LOGFILE_NAME,))
 
@@ -1270,11 +1273,11 @@ def run_phaseI(opts, args):
 
 	### rotate S4 connector log and start the S4 Connector
 	## careful: the postrotate task restarts the connector!
-	run_and_output_to_log(["logrotate", "-f", "/etc/logrotate.d/univention-s4-connector"])
+	run_and_output_to_log(["logrotate", "-f", "/etc/logrotate.d/univention-s4-connector"], log.debug)
 
 	## Ok, just in case, start the Connector explicitely
 	log.info("Starting S4 Connector")
-	returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "start"])
+	returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "start"], log.debug)
 	if returncode != 0:
 		log.error("Start of univention-s4-connector failed. See %s for details." % (LOGFILE_NAME,))
 
@@ -1292,23 +1295,23 @@ def run_phaseI(opts, args):
 		sys.stdout.flush()
 
 	## Reset normal relication intervals
-	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=%s" % old_sleep, "connector/s4/retryrejected=%s" % old_retry])
-	returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "restart"])
+	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=%s" % old_sleep, "connector/s4/retryrejected=%s" % old_retry], log.debug)
+	returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "restart"], log.debug)
 	if returncode != 0:
 		log.error("Restart of univention-s4-connector failed. See %s for details." % (LOGFILE_NAME,))
 
 	## rebuild idmap
-	returncode = run_and_output_to_log(["/usr/lib/univention-directory-listener/system/samba4-idmap.py", "--direct-resync"])
+	returncode = run_and_output_to_log(["/usr/lib/univention-directory-listener/system/samba4-idmap.py", "--direct-resync"], log.debug)
 	if returncode != 0:
 		log.error("Resync of samba4-idmap failed. See %s for details." % (LOGFILE_NAME,))
 
 	## Start NSCD again
-	returncode = run_and_output_to_log(["/etc/init.d/nscd", "start"])
+	returncode = run_and_output_to_log(["/etc/init.d/nscd", "start"], log.debug)
 	if returncode != 0:
 		log.error("Start of nscd failed. See %s for details." % (LOGFILE_NAME,))
 
 	## Save AD server IP for Phase III
-	run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/ad/server/ip=%s" % (ad_server_ip) ])
+	run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/ad/server/ip=%s" % (ad_server_ip) ], log.debug)
 
 	### Phase II: AD-Side Sync 
 
@@ -1355,7 +1358,7 @@ def run_phaseIII(opts, args):
 		log.error("\n".join(msg))
 		sys.exit(1)
 
-	if ad_server_ip != phaseI_ip:	## TODO: get rid of this strange option/arg combination, phaseI values are enough
+	if ad_server_ip and ad_server_ip != phaseI_ip:	## TODO: get rid of this strange option/arg combination, phaseI values are enough
 		msg=[]
 		msg.append("")
 		msg.append("Error: Given AD server IP %s does not match the one recorded in phase I: %s" % (ad_server_ip, phaseI_ip))
@@ -1480,10 +1483,10 @@ def run_phaseIII(opts, args):
 		log.debug(stderr)
 
 	## Re-Set Default NTACLs on sysvol
-	# run_and_output_to_log(["/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py", sysvol_path])
+	# run_and_output_to_log(["/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py", sysvol_path], log.debug)
 
 	## Re-set default fACLs so sysvol-sync can read files and directories
-	returncode = run_and_output_to_log(["setfacl", "-R", "-P", "-m", "g:Authenticated Users:r-x,d:g:Authenticated Users:r-x", sysvol_path])
+	returncode = run_and_output_to_log(["setfacl", "-R", "-P", "-m", "g:Authenticated Users:r-x,d:g:Authenticated Users:r-x", sysvol_path], log.debug)
 	if returncode != 0:
 		log.error("Error: Could not set fACL for %s" % sysvol_path)
 		msg=[]
@@ -1495,32 +1498,32 @@ def run_phaseIII(opts, args):
 	run_and_output_to_log(["/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh", "--dc", "--pdc", "--gc", "--site=%s" % sitename], log.info)
 
 	## remove local enty for AD DC from /etc/hosts
-	run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % ad_server_ip ])
+	run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % ad_server_ip ], log.debug)
 
 	## Replace DNS host record for AD Server name by DNS Alias
-	run_and_output_to_log(["univention-directory-manager", "dns/host_record", "delete", "--superordinate", "zoneName=%s,cn=dns,%s" % (ucr["domainname"], ucr["ldap/base"]), "--dn", "relativeDomainName=%s,zoneName=%s,cn=dns,%s" % (ad_server_name, ucr["domainname"], ucr["ldap/base"]) ])
+	run_and_output_to_log(["univention-directory-manager", "dns/host_record", "delete", "--superordinate", "zoneName=%s,cn=dns,%s" % (ucr["domainname"], ucr["ldap/base"]), "--dn", "relativeDomainName=%s,zoneName=%s,cn=dns,%s" % (ad_server_name, ucr["domainname"], ucr["ldap/base"]) ], log.debug)
 
-	returncode = run_and_output_to_log(["univention-directory-manager", "dns/alias", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (ucr["domainname"], ucr["ldap/base"]), "--set", "name=%s" % ad_server_name, "--set", "cname=%s" % local_fqdn])
+	returncode = run_and_output_to_log(["univention-directory-manager", "dns/alias", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (ucr["domainname"], ucr["ldap/base"]), "--set", "name=%s" % ad_server_name, "--set", "cname=%s" % local_fqdn], log.debug)
 	if returncode != 0:
 		log.error("Creation of dns/alias %s for %s failed. See %s for details." % (ad_server_name, local_fqdn, LOGFILE_NAME,))
 
 	## Cleanup necessary to use NETBIOS Alias
-	log.info("Cleaning up:")
+	log.info("Cleaning up.")
 	
 	log.debug("Removing AD DC account from local Samba4 SAM database.")
-	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,CN=Domain System Volume (SYSVOL share),CN=File Replication Service,CN=System,%s" % (ad_server_name, ucr["samba4/ldap/base"])])
+	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,CN=Domain System Volume (SYSVOL share),CN=File Replication Service,CN=System,%s" % (ad_server_name, ucr["samba4/ldap/base"])], log.debug)
 	if returncode != 0:
 		log.error("Removal of AD DC account %s from Samba4 SAM database failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
 
-	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, ucr["samba4/ldap/base"])])
+	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, ucr["samba4/ldap/base"])], log.debug)
 	if returncode != 0:
 		log.error("Removal of AD server objects %s from Samba4 SAM database failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
 
-	run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,OU=Domain Controllers,%s" % (ad_server_name, ucr["samba4/ldap/base"])])
+	run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,OU=Domain Controllers,%s" % (ad_server_name, ucr["samba4/ldap/base"])], log.debug)
 
 	## Finally, for consistency remove AD DC object from UDM
 	log.debug("Removing AD DC account from local Univention Directory Manager")
-	returncode = run_and_output_to_log(["univention-directory-manager", "computers/windows_domaincontroller", "delete", "--dn", "cn=%s,cn=dc,cn=computers,%s" % (ad_server_name, ucr["ldap/base"]) ])
+	returncode = run_and_output_to_log(["univention-directory-manager", "computers/windows_domaincontroller", "delete", "--dn", "cn=%s,cn=dc,cn=computers,%s" % (ad_server_name, ucr["ldap/base"]) ], log.debug)
 	if returncode != 0:
 		log.error("Removal of DC account %s via UDM failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
 
@@ -1529,7 +1532,7 @@ def run_phaseIII(opts, args):
 	f.write('[global]\nnetbios aliases = "%s"\n' % ad_server_name)
 	f.close()
 
-	run_and_output_to_log(["univention-config-registry", "commit", "/etc/samba/smb.conf"])
+	run_and_output_to_log(["univention-config-registry", "commit", "/etc/samba/smb.conf"], log.debug)
 
 	## Assign AD IP to a virtual network interface
 	## Determine primary network interface, UCS 3.0-2 style:
@@ -1561,10 +1564,10 @@ def run_phaseIII(opts, args):
 				                       "interfaces/%s/address=%s" % (new_interface_ucr, ad_server_ip),
 				                       "interfaces/%s/network=%s" % (new_interface_ucr, guess_network),
 				                       "interfaces/%s/netmask=%s" % (new_interface_ucr, guess_netmask),
-				                       "interfaces/%s/broadcast=%s" % (new_interface_ucr, guess_broadcast)])
+				                       "interfaces/%s/broadcast=%s" % (new_interface_ucr, guess_broadcast)], log.debug)
 				samba_interfaces = ucr.get("samba/interfaces")
 				if ucr.is_true("samba/interfaces/bindonly") and samba_interfaces:
-					run_and_output_to_log(["univention-config-registry", "set", "samba/interfaces=%s %s" % (samba_interfaces, new_interface)])
+					run_and_output_to_log(["univention-config-registry", "set", "samba/interfaces=%s %s" % (samba_interfaces, new_interface)], log.debug)
 			else:
 				msg=[]
 				msg.append("Warning: Could not determine primary IPv4 network interface.")
@@ -1585,10 +1588,10 @@ def run_phaseIII(opts, args):
 				run_and_output_to_log(["univention-config-registry", "set",
 				                       "interfaces/%s/ipv6/default/address=%s" % (new_interface_ucr, ad_server_ip),
 				                       "interfaces/%s/ipv6/default/prefix=%s" % (new_interface_ucr, guess_broadcast),
-				                       "interfaces/%s/ipv6/acceptRA=false"])
+				                       "interfaces/%s/ipv6/acceptRA=false"], log.debug)
 				samba_interfaces = ucr.get("samba/interfaces")
 				if ucr.is_true("samba/interfaces/bindonly") and samba_interfaces:
-					run_and_output_to_log(["univention-config-registry", "set", "samba/interfaces=%s %s" % (samba_interfaces, new_interface)])
+					run_and_output_to_log(["univention-config-registry", "set", "samba/interfaces=%s %s" % (samba_interfaces, new_interface)], log.debug)
 			else:
 				msg=[]
 				msg.append("Warning: Could not determine primary IPv6 network interface.")
@@ -1599,27 +1602,27 @@ def run_phaseIII(opts, args):
 	## use OpenLDAP backend until the S4 Connector has run
 	if "nameserver1/local" in ucr:
 		nameserver1_orig = ucr["nameserver1/local"]
-		run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % nameserver1_orig])
+		run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % nameserver1_orig], log.debug)
 		## unset temporary variable
-		run_and_output_to_log(["univention-config-registry", "unset", "nameserver1/local"])
+		run_and_output_to_log(["univention-config-registry", "unset", "nameserver1/local"], log.debug)
 	else:
 		msg=[]
 		msg.append("Warning: Weird, unable to determine previous nameserver1...")
 		msg.append("         Using localhost as fallback, probably that's the right thing to do.")
 		log.warn("\n".join(msg))
-		run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"])
+		run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
 
 	## Use Samba4 as DNS backend
-	run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"])
+	run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"], log.debug)
 
 	## Re-enable replication from Samba4
-	run_and_output_to_log(["univention-config-registry", "unset", "samba4/dcerpc/endpoint/drsuapi"])
+	run_and_output_to_log(["univention-config-registry", "unset", "samba4/dcerpc/endpoint/drsuapi"], log.debug)
 
 	## Claim FSMO roles
 	log.info("Claiming FSMO roles")
 	takeover_hasMasterNCs(ucr, samdb, sitename, partitions)
 	for fsmo_role in ('rid', 'pdc', 'infrastructure', 'schema', 'naming'):
-		returncode = run_and_output_to_log(["samba-tool", "fsmo", "seize", "--role=%s" % fsmo_role, "--force"])
+		returncode = run_and_output_to_log(["samba-tool", "fsmo", "seize", "--role=%s" % fsmo_role, "--force"], log.debug)
 		if returncode != 0:
 			msg=[]
 			msg.append("Claiming FSMO role %s failed." % fsmo_role)
@@ -1631,25 +1634,25 @@ def run_phaseIII(opts, args):
 	time.sleep(3)
 
 	## Restart Samba and make shure the rapid restart did not leave the main process blocking
-	run_and_output_to_log(["/etc/init.d/samba4", "restart"])
+	run_and_output_to_log(["/etc/init.d/samba4", "restart"], log.debug)
 	check_samba4_started()
 
 	## Restart bind9 to use the OpenLDAP backend, just to be sure
-	returncode = run_and_output_to_log(["/etc/init.d/bind9", "restart"])
+	returncode = run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
 	if returncode != 0:
 		log.error("Start of Bind9 daemon failed. See %s for details." % (LOGFILE_NAME,))
 
 	## re-create /etc/krb5.keytab
 	##  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
-	run_and_output_to_log(["/usr/share/univention-samba4/scripts/create-keytab.sh"])
+	run_and_output_to_log(["/usr/share/univention-samba4/scripts/create-keytab.sh"], log.debug)
 
 	## Enable NTP Signing for Windows SNTP clients
-	run_and_output_to_log(["univention-config-registry", "set", "ntp/signed=yes"])
-	returncode = run_and_output_to_log(["/etc/init.d/ntp", "restart"])
+	run_and_output_to_log(["univention-config-registry", "set", "ntp/signed=yes"], log.debug)
+	returncode = run_and_output_to_log(["/etc/init.d/ntp", "restart"], log.debug)
 	if returncode != 0:
 		log.error("Start of NTP daemon failed. See %s for details." % (LOGFILE_NAME,))
 
-	run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"])
+	run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)
 
 	msg=[]
 	msg.append("")

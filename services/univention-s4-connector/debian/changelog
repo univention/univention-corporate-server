@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.17-24) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - fix logging in shell call function
+    - ignore AD server object
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 14:53:42 +0200
+
 univention-s4-connector (7.0.17-23) unstable; urgency=low
 
   * avoid unnecessary warning in password.py (Bug #28907)
