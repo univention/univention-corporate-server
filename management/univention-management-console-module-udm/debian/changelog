@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.43-1) unstable; urgency=low
+
+  * added missing import; Bug #28248
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 25 Oct 2012 18:29:07 +0200
+
 univention-management-console-module-udm (3.0.42-1) unstable; urgency=low
 
   * added missing exception handling; Bug #28248
