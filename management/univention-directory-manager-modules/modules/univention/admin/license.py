@@ -71,11 +71,15 @@ class License( object ):
 			'oxadmin',
 			'krbtgt',
 			'Guest',
-			'dns-%s' % configRegistry.get('ldap/master').split('.')[0],
-			'dns-%s' % configRegistry.get('hostname'),
+			'dns-*',
 			'http-%s' % configRegistry.get('hostname'),
 			'http-proxy-%s' % configRegistry.get('hostname'),
 			'zarafa-%s' % configRegistry.get('hostname'),
+			'SBSMonAcct',				## SBS account
+			'Network Administrator',	## SBS role
+			'Standard User',			## SBS role
+			'WebWorkplaceTools',		## SBS role "Standard User with administration links"
+			'IUSR_WIN-*',				## IIS account
 		)
 		self.sysAccountsFound = 0
 		self.licenses = {
