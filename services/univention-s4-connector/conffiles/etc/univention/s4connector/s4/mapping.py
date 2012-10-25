@@ -265,6 +265,22 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 						),
 			},
 
+			mapping_table = {
+@!@
+user_map = {}
+key_prefix = "connector/s4/mapping/user/table/"
+for key,value in configRegistry.items():
+	if key.startswith(key_prefix):
+		ucs_username = key[len(key_prefix):]
+		user_map[ucs_username] = value
+if user_map:
+	print "\n\t\t\t'uid': ["
+	for key,value in user_map.items():
+		print "\t\t\t\t(u'%s', u'%s')," % (key, value)
+	print "\t\t\t\t]"
+@!@
+			},
+
 		),
 
 	'group': univention.s4connector.property (
@@ -334,6 +350,23 @@ import univention.s4connector.s4.sid_mapping
 univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 @!@
 				},
+
+			mapping_table = {
+@!@
+group_map = {}
+key_prefix = "connector/s4/mapping/group/table/"
+for key,value in configRegistry.items():
+	if key.startswith(key_prefix):
+		ucs_groupname = key[len(key_prefix):]
+		group_map[ucs_groupname] = value
+if group_map:
+	print "\n\t\t\t'cn': ["
+	for key,value in group_map.items():
+		print "\t\t\t\t(u'%s', u'%s')," % (key, value)
+	print "\t\t\t\t]"
+@!@
+			},
+
 		),
 	'dc': univention.s4connector.property (
 			ucs_default_dn='cn=dc,cn=computers,@%@ldap/base@%@',

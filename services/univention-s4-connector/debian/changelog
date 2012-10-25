@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.17-20) unstable; urgency=low
+
+  * merge group and user table patches from Bug #28521 (Bug #28390)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 09:41:30 +0200
+
 univention-s4-connector (7.0.17-19) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
