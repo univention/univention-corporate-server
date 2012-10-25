@@ -270,21 +270,21 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 				ctr4.older_keys = s4_old_keys
 				ctr4.num_older_keys = s4_num_old_keys
 
-		if ctr4.num_old_keys != ctr4.num_keys:
+		if ctr4.num_old_keys != 0 and ctr4.num_old_keys != ctr4.num_keys:
 			# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
 			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_keys = %s" % ctr4.num_keys)
-			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_old_keys = %s" % ctr4.num_old_keys)
 			for k in ctr4.keys:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr4.key.keytype: %s" % k.keytype)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_old_keys = %s" % ctr4.num_old_keys)
 			for k in ctr4.old_keys:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr4.old_key.keytype: %s" % k.keytype)
 
-		if ctr4.num_older_keys != ctr4.num_old_keys:
+		if ctr4.num_older_keys != 0 and ctr4.num_older_keys != ctr4.num_old_keys:
 			# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
 			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_old_keys = %s" % ctr4.num_old_keys)
-			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_older_keys = %s" % ctr4.num_older_keys)
 			for k in ctr4.old_keys:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr4.old_key.keytype: %s" % k.keytype)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_older_keys = %s" % ctr4.num_older_keys)
 			for k in ctr4.older_keys:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr4.older_key.keytype: %s" % k.keytype)
 
@@ -348,12 +348,12 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 				ctr3.old_keys = old_krb['ctr3'].keys
 				ctr3.num_old_keys = old_krb['ctr3'].num_keys
 
-		if ctr3.num_old_keys != ctr3.num_keys:
+		if ctr3.num_old_keys != 0 and ctr3.num_old_keys != ctr3.num_keys:
 			# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
-			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_old_keys = %s" % ctr3.num_old_keys)
 			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_keys = %s" % ctr3.num_keys)
 			for k in ctr4.keys:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_old_keys = %s" % ctr3.num_old_keys)
 			for k in ctr4.old_keys:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.old_key.keytype: %s" % k.keytype)
 
