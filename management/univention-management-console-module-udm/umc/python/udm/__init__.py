@@ -112,6 +112,10 @@ class Instance( Base ):
 		if not isinstance( result, BaseException ):
 			return False
 
+		if isinstance( result, (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout ) ):
+			self.finished( request.id, None, result.args[0], success = False, status = MODULE_ERR_COMMAND_FAILED )
+			return True
+
 		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
 		MODULE.process( 'An internal error occurred: %s' % msg )
 		self.finished( request.id, None, msg, False )
