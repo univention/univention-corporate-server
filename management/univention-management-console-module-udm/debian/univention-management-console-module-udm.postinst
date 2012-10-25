@@ -46,8 +46,9 @@ done
 # not required anymore. syntax postalAddress is directly set in the property descriptions
 ucr unset directory/manager/web/modules/users/user/properties/homePostalAddress/syntax
 
-# autosearch
-univention-config-registry set directory/manager/web/modules/autosearch?1
+# autosearch and size limit
+univention-config-registry set directory/manager/web/modules/autosearch?1 \
+	directory/manager/web/sizelimit?2000
 
 # directory reports
 univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *" \
