@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.73-2) unstable; urgency=low
+
+  * added descriptions for the UCR variable
+    "ldap/replication/preferredpassword" (Bug #18389)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 25 Oct 2012 16:18:23 +0200
+
 univention-directory-manager-modules (8.0.73-1) unstable; urgency=low
 
   * fixed erroneous error message when adding printers to

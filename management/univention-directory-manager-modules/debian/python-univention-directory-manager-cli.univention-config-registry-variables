@@ -15,3 +15,9 @@ Description[de]=Zeitspanne in Sekunden, die der CLI-Client auf ein Socketfile de
 Description[en]=Time span in seconds the CLI client waits for a socket file of the CLI server.
 Type=int
 Categories=service-ldap
+
+[ldap/replication/preferredpassword]
+Description[de]=Wenn diese Variable auf "true" oder "yes" gesetzt ist warten PDCs nach erfolgreicher Passwortänderung im LDAP des Masters nicht auf die Replikation zurück in ihre eigenes LDAP, sondern führen die Änderung lokal auch an ihrer eigenen Kopie des LDAPs durch.
+Description[en]=If this variable is set to "true" or "yes" PDCs will not wait for LDAP replication after a succsessfull password change on the LDAP master, but do the same modification local on their own copy of the LDAP.
+Type=bool
+Categories=service-ldap
