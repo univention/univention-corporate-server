@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.17-17) unstable; urgency=low
+
+  * improved handling of keytype -140L in password.py (Bug #28907)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 08:42:50 +0200
+
 univention-s4-connector (7.0.17-16) unstable; urgency=low
 
   * add license exceed check to univention-ad-takeover (Bug #28822)

@@ -85,7 +85,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
 							except:
-								if k.value == up_blob:	## in all known cases AD uses keytype 4294967156 (=-140L) for this
+								if k.value == up_blob:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
 									ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 key key with invalid keytype %s in %s" % (k.keytype, p.name))
 								else:
 									traceback.print_exc()
@@ -105,7 +105,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
 							except:
-								if k.value == up_blob:	## in all known cases AD uses keytype 4294967156 (=-140L) for this
+								if k.value == up_blob:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
 									ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 key key with invalid keytype %s in %s" % (k.keytype, p.name))
 								else:
 									traceback.print_exc()
@@ -123,7 +123,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 
 	return keys
 
-def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, old_unicodePwd):
+def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 
 	old_krb = {}
 	if old_supplementalCredentials:
@@ -234,7 +234,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 			if len(old_krb['ctr4'].keys) != ctr4.num_keys:
 				cleaned_old_keys = []
 				for key in old_krb['ctr4'].keys:
-					if key.keytype == 4294967156 or key.value == old_unicodePwd:	## in all known cases it was both
+					if key.keytype == 4294967156:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys filtering keytype %s from old_keys" % key.keytype)
 						continue
 					else:	# TODO: can we do something better at this point to make old_keys == num_keys ?
@@ -300,7 +300,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 			if len(old_krb['ctr3'].keys) != ctr3.num_keys:
 				cleaned_ctr3_old_keys = []
 				for key in old_krb['ctr3'].keys:
-					if key.keytype == 4294967156 or key.value == old_unicodePwd:	## in all known cases it was both
+					if key.keytype == 4294967156:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos filtering keytype %s from old_keys" % key.keytype)
 						continue
 					else:	# TODO: can we do something better at this point to make old_keys == num_keys ?
@@ -527,7 +527,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			if supplementalCredentials:
 				modlist.append((ldap.MOD_DELETE, 'supplementalCredentials', supplementalCredentials))
 			if krb5Key:
-				supplementalCredentials_new = calculate_supplementalCredentials(krb5Key, supplementalCredentials, unicodePwd_attr)
+				supplementalCredentials_new = calculate_supplementalCredentials(krb5Key, supplementalCredentials)
 				if supplementalCredentials_new:
 					modlist.append((ldap.MOD_ADD, 'supplementalCredentials', supplementalCredentials_new))
 				else:
