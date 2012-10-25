@@ -194,7 +194,7 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.leavePrinterGroup, _('%s is member of following quota printer groups %s')%(self.info['name'],string.join(group_cn,", "))
 		elif self.info.get( 'setQuota', None ) == '1':
 			for member_cn in self.info['groupMember']:
-				member_dn=self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(univentionPrinterSpoolHost=%s)(cn=%s)(univentionPrinterQuotaSupport=1))' % (self.info['spoolHost'], member_cn))
+				member_dn=self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(univentionPrinterSpoolHost=%s)(cn=%s)(univentionPrinterQuotaSupport=1))' % (self.info['spoolHost'][0], member_cn))
 				if len(member_dn) < 1:
 					raise univention.admin.uexceptions.leavePrinterGroup, _('%s is disabled for quota support. ') % member_cn
 		if self.hasChanged('groupMember'):

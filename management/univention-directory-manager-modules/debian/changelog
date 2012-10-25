@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.73-1) unstable; urgency=low
+
+  * fixed erroneous error message when adding printers to
+    printertgroups with quota support (Bug #19627)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 25 Oct 2012 14:21:32 +0200
+
 univention-directory-manager-modules (8.0.72-1) unstable; urgency=low
 
   * bind attribute "displayName" to options "samba|person" instead
