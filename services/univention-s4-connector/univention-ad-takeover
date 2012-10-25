@@ -1085,8 +1085,10 @@ def run_phaseI(opts, args):
 					ucs_ad_name_map[name] = ad_object_name
 					run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/group/table/%s=%s" % (name, ad_object_name)], log.debug)
 				elif "user" in oc:
-					ucs_ad_name_map[name] = ad_object_name
-					run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/user/table/%s=%s" % (name, ad_object_name)], log.debug)
+					pass
+
+	takeover_ignore_list = ["Gast", "Guest"]
+	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/user/ignorelist=%s,%s" % (ucr["connector/s4/mapping/user/ignorelist"], ','.join(takeover_ignore_list))], log.debug)
 
 	## construct dict of old UCS sambaSIDs
 	old_sambaSID_dict = {}
