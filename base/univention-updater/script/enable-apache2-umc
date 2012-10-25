@@ -42,15 +42,20 @@ if [ "$1" = "--no-restart" ] ; then
 fi
 
 for prog in univention-management-console-server \
-            univention-management-console-web-server \
+			univention-management-console-web-server \
 			apache2 \
             ; do
-
 	if [ -f "/usr/sbin/$prog" ] && [ ! -x "/usr/sbin/$prog" ]; then
 		/usr/sbin/dpkg-statoverride --remove "/usr/sbin/$prog" >/dev/null 2>&1
 		/bin/chmod a+x "/usr/sbin/$prog"
-		[ -z "$NORESTART" ] && "/etc/init.d/$prog" restart >/dev/null 2>&1
-	fi
+		
+	fi		
+
 done
 
+for prog in univention-management-console-server \
+			apache2 \
+			; do
+	[ -z "$NORESTART" ] && "/etc/init.d/$prog" restart
+done
 exit 0

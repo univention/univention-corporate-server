@@ -1,3 +1,11 @@
+univention-system-setup (6.0.43-1) unstable; urgency=low
+
+  * init scripts for UMC server and UMC web server have been
+    merged to one UMC server init script. Do not use
+    the UMC web server init script anymore (Bug #27427)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 25 Oct 2012 15:25:49 +0200
+
 univention-system-setup (6.0.42-1) unstable; urgency=low
 
   * Correct locale for software components (Bug #28556)

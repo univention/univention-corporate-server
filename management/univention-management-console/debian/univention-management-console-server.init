@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Management Console
-#  init script for the UMC server
+#  init script for the UMC server and UMC web Server
 #
 # Copyright 2006-2012 Univention GmbH
 #
@@ -32,61 +32,77 @@
 
 . /lib/lsb/init-functions
 
-DAEMON="/usr/sbin/univention-management-console-server"
-NAME="Univention Management Console Server"
+UMC_DAEMON="/usr/sbin/univention-management-console-server"
+UMC_WEB_DAEMON="/usr/sbin/univention-management-console-web-server"
 
-if [ ! -x "$DAEMON" ]; then
+UMC="Univention Management Console Server"
+UMC_WEB="Univention Management Console Web Server"
+
+
+if [ ! -x "$UMC_DAEMON" ] || [ ! -x "$UMC_WEB_DAEMON" ]; then
 	exit 0
 fi
+
 
 case "$1" in
 	start)
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/server/autostart
+			check_autostart listener"$UMC" umc/server/autostart
+			check_autostart listener"$UMC_WEB" umc/http/autostarat
 		fi
-		log_action_msg "Starting $NAME"
-		$DAEMON start
+		log_action_msg "Starting $UMC and $UMC_WEB"
+		$UMC_DAEMON start
+		$UMC_WEB_DAEMON start
 		log_action_end_msg 0
 		;;
 	stop)
-		log_action_msg "Stopping $NAME"
-		$DAEMON stop
+		log_action_msg "Stopping $UMC and $UMC_WEB"
+		$UMC_DAEMON stop
+		$UMC_WEB_DAEMON stop
 		log_action_end_msg 0
 		;;
 	restart)
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/server/autostart
+			check_autostart listener"$UMC" umc/server/autostart
+			check_autostart listener"$UMC_WEB" umc/http/autostarat
+
 		fi
-		log_action_msg "Restarting $NAME"
-		$DAEMON restart
-		log_action_end_msg 0
-		;;
-	reload)
-		log_action_msg "Reloading $NAME"
-		$DAEMON reload
+		log_action_msg "Restarting $UMC and $UMC_WEB"
+		$UMC_DAEMON restart
+		$UMC_WEB_DAEMON restart
 		log_action_end_msg 0
 		;;
 	crestart)
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/server/autostart
+			check_autostart listener"$UMC" umc/server/autostart
+			check_autostart listener"$UMC_WEB" umc/http/autostarat
+
 		fi
-		log_action_msg "Restarting $NAME (if currently active)"
-		pid="$(cat /var/run/umc-server.pid 2>/dev/null)"
-		if [ -n "$pid" -a -d "/proc/$pid" ]; then
-			$DAEMON crestart
+		log_action_msg "Restarting $UMC and $UMC_WEB (if currently active)"
+		umc_pid="$(cat /var/run/umc-server.pid 2>/dev/null)"
+		if [ -n "$umc_pid" -a -d "/proc/$umc_pid" ]; then
+			$UMC_DAEMON crestart
 			log_action_end_msg 0
 		else
-			log_action_msg "$NAME is not running, no need to restart."
+			log_action_msg "$UMC is not running, no need to restart."
+		fi
+
+		umc_web_pid="$(cat /var/run/umc-web-server.pid 2>/dev/null)"
+		if [ -n "$umc_web_pid" -a -d "/proc/$umc_web_pid" ]; then
+			$UMC_WEB_DAEMON crestart
+			log_action_end_msg 0
+		else
+			log_action_msg "$UMC_WEB is not running, no need to restart."
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-management-console-server {start|stop|restart|reload|crestart}"
+		echo "Usage: /etc/init.d/univention-management-console-server {start|stop|restart|crestart}"
 		exit 1
 		;;
 esac
