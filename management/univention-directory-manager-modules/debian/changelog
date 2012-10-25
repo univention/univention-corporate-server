@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.71-1) unstable; urgency=low
+
+  * fixed translation of invalid policy name error (Bug #28846)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 25 Oct 2012 11:45:43 +0200
+
 univention-directory-manager-modules (8.0.70-1) unstable; urgency=low
 
   * do not return ip addresses which are already in use
