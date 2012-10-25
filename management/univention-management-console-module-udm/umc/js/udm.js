@@ -278,7 +278,6 @@ define([
 				headerText: this.description,
 				helpText: ''
 			});
-			this.addChild(this._searchPage);
 			var titlePane = new ExpandingTitlePane({
 				title: _('Search for %s', this.objectNamePlural),
 				design: 'sidebar'
@@ -696,16 +695,13 @@ define([
 				titlePane.addChild(treePane);
 			}
 
-			this._searchPage.startup();
-
 			// register to onShow as well as onFilterDone events in order on focus to the
 			// input widget when the tab is changed
 			this._searchPage.on('show', lang.hitch(this, '_selectInputText'));
 			this._grid.on('filterDone', lang.hitch(this, '_selectInputText'));
 
 			// register event to update hiding/showing of form fields
-			var objTypeWidget = this._searchForm._widgets.objectType;
-			objTypeWidget.on('valuesLoaded', lang.hitch(this,  '_updateSearch'));
+			this._searchForm.ready().then(lang.hitch(this,  '_updateSearch'));
 
 			// reload the superordinates in case an object has been added, it might be a new superordinate
 			if (superordinates && superordinates.length) {
@@ -790,6 +786,9 @@ define([
 				// create report button
 				this._grid.on('filterDone', lang.hitch(this, '_checkReportButton'));
 			}
+
+			this._searchPage.startup();
+			this.addChild(this._searchPage);
 		},
 
 		_selectInputText: function() {

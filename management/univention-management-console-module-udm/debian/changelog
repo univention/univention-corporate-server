@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.39-1) unstable; urgency=low
+
+  * use Form::ready(), adapted the modules startup handling; Bug #26214
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 25 Oct 2012 16:06:21 +0200
+
 univention-management-console-module-udm (3.0.38-1) unstable; urgency=low
 
   * Fix memory leak (Bug #27432)

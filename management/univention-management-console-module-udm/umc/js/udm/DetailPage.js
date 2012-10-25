@@ -577,9 +577,6 @@ define([
 				this._policyDeferred.resolve();
 			}
 
-			// finished adding sub tabs for now
-			this._tabs.startup();
-
 			// setup detail page, needs to be wrapped by a form (for managing the
 			// form entries) and a BorderContainer (for the footer with buttons)
 			var borderLayout = this.own(new BorderContainer({
@@ -631,7 +628,9 @@ define([
 				moduleStore: this.moduleStore,
 				onSubmit: lang.hitch(this, 'validateChanges')
 			}))[0];
-			this.set('content', this._form);
+			this._policyDeferred.then(lang.hitch(this, function() {
+				this.set('content', this._form);
+			}));
 
 			// set options
 			if ( '$options$' in widgets && !this._multiEdit) {

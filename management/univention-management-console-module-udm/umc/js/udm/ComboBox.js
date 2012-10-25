@@ -164,6 +164,10 @@ define([
 							}
 						}));
 						this._tooManyDeferred.resolve(true);
+
+						// we wait until the info command has been sent ... the user will
+						// during a request see a waiting animation
+						this._readyDeferred.resolve();
 					} else {
 						this._behaveNormally();
 					}
