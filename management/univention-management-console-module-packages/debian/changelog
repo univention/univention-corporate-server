@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.49-1) unstable; urgency=low
+
+  * Fix memory leak (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Oct 2012 17:08:06 +0200
+
 univention-management-console-module-packages (2.0.48-1) unstable; urgency=low
 
   * Fix search functionality (Bug #28798)

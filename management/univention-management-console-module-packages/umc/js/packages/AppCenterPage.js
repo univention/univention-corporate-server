@@ -181,6 +181,7 @@ define([
 			this.inherited(arguments);
 
 			this._progressBar = new ProgressBar();
+			this.own(this._progressBar);
 
 			this._searchWidget = new _SearchWidget({
 				region: 'left'

@@ -62,6 +62,7 @@ define([
 			this.inherited(arguments);
 
 			this._progressBar = new ProgressBar();
+			this.own(this._progressBar);
 
 			this._form = new SearchForm({
 				region: 'top'
