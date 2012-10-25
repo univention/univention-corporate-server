@@ -122,6 +122,7 @@ define([
 
 		renderPages: function(ucr, values) {
 			this._progressBar = new ProgressBar();
+			this.own(this._progressBar);
 			this.standby(true);
 
 			// console.log('joined=' + values.joined);
