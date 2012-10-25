@@ -1187,14 +1187,19 @@ def run_phaseI(opts, args):
 		if returncode != 0:
 			log.error("Creation of UCS mail/domain %s failed. See %s for details." % (maildomain, LOGFILE_NAME,))
 
-	## create DNS SPN
-	log.debug("Attempting remove of DNS SPN account in UCS-LDAP")
+	## re-create DNS SPN account
+	log.debug("Attempting removal of DNS SPN account in UCS-LDAP, will be recreated with new password in the next step.")
 	run_and_output_to_log(["univention-directory-manager", "users/user", "delete", "--dn", "uid=dns-%s,cn=users,%s" % (ucr["hostname"], ucr["ldap/base"])], log.debug)
 
 	log.debug("Creating new DNS SPN account in Samba4")
 	returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], log.debug)
 	if returncode != 0:
 		log.error("Creation of DNS SPN account 'dns-%s' failed. See %s for details." % (ucr["hostname"], LOGFILE_NAME,))
+
+	## remove zarafa and univention-squid-kerberos SPN accounts, recreated later in phaseIII by running the respective joinscripts again
+	log.debug("Attempting removal of Zarafa and Squid SPN accounts in UCS-LDAP, will be recreated later with new password.")
+	for service in ("zarafa", "http", "http-proxy"):
+		run_and_output_to_log(["univention-directory-manager", "users/user", "delete", "--dn", "uid=%s-%s,cn=users,%s" % (service, ucr["hostname"], ucr["ldap/base"])], log.debug)
 
 	### Copy UCS Administrator Password to S4 Administrator object	### disabled, because then the Password in UCS == S4 != AD, which is bad for SYSVOL sync
 	### (Account is disabled in SBS 2008 by default and the password might be unknown)
@@ -1651,6 +1656,13 @@ def run_phaseIII(opts, args):
 	returncode = run_and_output_to_log(["/etc/init.d/ntp", "restart"], log.debug)
 	if returncode != 0:
 		log.error("Start of NTP daemon failed. See %s for details." % (LOGFILE_NAME,))
+
+	## Re-run joinscripts that create an SPN account (lost in old secrets.ldb)
+	for joinscript_name in ("zarafa4ucs-sso", "univention-squid-samba4"):
+		run_and_output_to_log(["sed", "-i", "/^%s v[0-9]* successful/d" % joinscript_name, "/var/univention-join/status"])
+	returncode = run_and_output_to_log(["univention-run-join-scripts"])
+	if returncode != 0:
+		log.error("univention-run-join-scripts failed, please run univention-run-join-scripts manually after the script finished")
 
 	run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)
 
