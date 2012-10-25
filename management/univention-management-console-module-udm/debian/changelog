@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.40-1) unstable; urgency=low
+
+  * added size limit for search result; Bug #28248
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 25 Oct 2012 16:47:20 +0200
+
 univention-management-console-module-udm (3.0.39-1) unstable; urgency=low
 
   * use Form::ready(), adapted the modules startup handling; Bug #26214

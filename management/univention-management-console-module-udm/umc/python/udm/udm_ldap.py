@@ -35,6 +35,7 @@ import copy
 import re
 import operator
 import threading
+import gc
 
 from univention.management.console import Translation
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
@@ -157,6 +158,8 @@ def LDAP_Connection( func ):
 			_ldap_connection = lo
 			_ldap_position = po
 			return ret
+		except (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout), e:
+			raise e
 		except ( LDAPError, udm_errors.base ), e:
 			MODULE.info( 'LDAP operation for user %s has failed' % _user_dn )
 			try:
@@ -175,6 +178,8 @@ def LDAP_Connection( func ):
 				_ldap_connection = lo
 				_ldap_position = po
 				return ret
+			except (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout), e:
+				raise e
 			except udm_errors.base, e:
 				raise LDAP_ConnectionError( str( e ) )
 
@@ -412,14 +417,26 @@ class UDM_Module( object ):
 			filter_s = str( filter )
 
 		MODULE.info( 'Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % ( container, filter_s, superordinate ) )
+		result = None
 		try:
-			return self.module.lookup( None, ldap_connection, filter_s, base = container, superordinate = superordinate, scope = scope )
+			result = self.module.lookup( None, ldap_connection, filter_s, base = container, superordinate = superordinate, scope = scope, sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000')) )
 		except udm_errors.insufficientInformation, e:
 			return []
+		except udm_errors.ldapTimeout, e:
+			raise udm_errors.ldapTimeout( _('The query you have entered timed out. Please narrow down your search by specifiying more query parameters') )
+		except udm_errors.ldapSizelimitExceeded, e:
+			raise udm_errors.ldapSizelimitExceeded( _('The query you have entered yields too many matching entries. Please narrow down your search by specifiying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000') )
 		except ( LDAPError, udm_errors.ldapError ), e:
 			raise e
 		except udm_errors.base, e:
 			raise UDM_Error( get_exception_msg( e ) )
+
+		# call the garbage collector manually as many parallel request may cause the
+		# process to use too much memory
+		MODULE.info('Triggering garbage collection')
+		gc.collect()
+
+		return result
 
 	@LDAP_Connection
 	def get( self, ldap_dn = None, superordinate = None, attributes = [], ldap_connection = None, ldap_position = None ):
