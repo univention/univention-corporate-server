@@ -359,6 +359,7 @@ define([
 			this._detailDialog = new _DetailDialog({
 				moduleStore: this.moduleStore
 			});
+			this.own(this._detailDialog);
 			this._detailDialog.startup();
 		},
 
