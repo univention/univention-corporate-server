@@ -361,7 +361,7 @@ define([
 
 
 			// render all widgets
-			var widgets = render.widgets( properties );
+			var widgets = render.widgets( properties, this );
 
 			// connect to onChange for the options property if it exists
 			if ( '$options$' in widgets ) {
@@ -560,9 +560,9 @@ define([
 						newLayout.unshift(['$policy$', '$addPolicy$']);
 
 						// render the group of properties
-						var widgets = render.widgets(newProperties);
+						var widgets = render.widgets(newProperties, this);
 						this._policyWidgets[ipolicyType] = widgets;
-						var buttons = render.buttons(buttonsConf);
+						var buttons = render.buttons(buttonsConf, this);
 						policiesContainer.addChild(new TitlePane({
 							title: ipolicy.label,
 							description: ipolicy.description,
@@ -612,7 +612,7 @@ define([
 				label: closeLabel,
 				callback: lang.hitch(this, 'onCloseTab'),
 				style: 'float: left'
-			}]);
+			}], this);
 			var footer = new ContainerWidget({
 				'class': 'umcPageFooter',
 				region: 'bottom'

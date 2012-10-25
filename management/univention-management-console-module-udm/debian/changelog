@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.38-1) unstable; urgency=low
+
+  * Fix memory leak (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Oct 2012 15:56:50 +0200
+
 univention-management-console-module-udm (3.0.37-1) unstable; urgency=low
 
   * renamed "LDAP-Verzeichnisbaum" into "LDAP Verzeichnisbaum"; Bug #26511
