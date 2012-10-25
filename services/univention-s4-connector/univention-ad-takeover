@@ -1670,8 +1670,8 @@ def run_phaseIII(opts, args):
 
 	## Re-run joinscripts that create an SPN account (lost in old secrets.ldb)
 	for joinscript_name in ("zarafa4ucs-sso", "univention-squid-samba4"):
-		run_and_output_to_log(["sed", "-i", "/^%s v[0-9]* successful/d" % joinscript_name, "/var/univention-join/status"])
-	returncode = run_and_output_to_log(["univention-run-join-scripts"])
+		run_and_output_to_log(["sed", "-i", "/^%s v[0-9]* successful/d" % joinscript_name, "/var/univention-join/status"], log.debug)
+	returncode = run_and_output_to_log(["univention-run-join-scripts"], log.debug)
 	if returncode != 0:
 		log.error("univention-run-join-scripts failed, please run univention-run-join-scripts manually after the script finished")
 
