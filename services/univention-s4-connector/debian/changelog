@@ -1,4 +1,13 @@
-univention-s4-connector (7.0.17-21) UNRELEASED; urgency=low
+univention-s4-connector (7.0.17-22) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - log ucr set/unset messages to log.debug (Bug #28917)
+    - simplify/unify the shell call code
+    - more log messages
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 14:10:38 +0200
+
+univention-s4-connector (7.0.17-21) unstable; urgency=low
 
   * also handle keytype -140L in older_keys (Bug #28907)
   * improve log messages for unknown keytypes in password.py
