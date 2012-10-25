@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Tue, 25 Sep 2012 15:25:39 +0200\n"
+"POT-Creation-Date: Thu, 25 Oct 2012 16:53:33 +0200\n"
 "PO-Revision-Date: 2011-10-21 17:59+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -32,6 +32,9 @@ msgstr "Domäne {domainname}"
 
 msgid "Groups"
 msgstr "Gruppen"
+
+msgid "LDAP directory tree"
+msgstr "LDAP Verzeichnisbaum"
 
 msgid "Mail"
 msgstr "E-Mail"
@@ -74,9 +77,6 @@ msgstr "Verwaltung von Benutzern"
 
 msgid "Nagios"
 msgstr "Nagios"
-
-msgid "LDAP directory tree"
-msgstr "LDAP Verzeichnisbaum"
 
 msgid "Networks"
 msgstr "Netzwerke"
