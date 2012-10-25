@@ -1,6 +1,8 @@
 [directory/manager/web/sizelimit]
 Description[de]=Maximale Anzahl von UDM-Suchergebnissen, nach der die Suche abgebrochen wird
 Description[en]=Maximal number of UDM search results after which the search will be canceled
+Type=int
+Categories=management-udm
 
 [directory/reports/cleanup/age]
 Description[de]=Zeitspanne in Sekunden, nachdem UDM-Reports automatisch gelöscht wird [12 Stunden]
