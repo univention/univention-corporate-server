@@ -53,6 +53,12 @@ class permissionDenied(base):
 class ldapError(base):
 	message=_('LDAP Error')
 
+class ldapTimeout(base):
+	message=_('The specified timeout for the LDAP search has been exceeded.')
+
+class ldapSizelimitExceeded(base):
+	message=_('The specified size limit for the LDAP search has been exceeded.')
+
 class insufficientInformation(base):
 	message=_('Information provided is not sufficient.')
 

@@ -340,6 +340,10 @@ class access:
 			raise univention.admin.uexceptions.noObject, _err2str(msg)
 		except ldap.INAPPROPRIATE_MATCHING, msg:
 			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
+		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED), msg:
+			raise univention.admin.uexceptions.ldapTimeout, _err2str(msg)
+		except ldap.SIZELIMIT_EXCEEDED, msg:
+			raise univention.admin.uexceptions.ldapSizelimitExceeded, _err2str(msg)
 		except ldap.LDAPError, msg:
 			raise univention.admin.uexceptions.ldapError, _err2str(msg)
 
