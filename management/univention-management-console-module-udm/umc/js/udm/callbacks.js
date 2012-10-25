@@ -69,8 +69,7 @@ define([
 			}
 			else {
 				tools.umcpCommand('udm/network', {
-					networkDN: newVal,
-					increaseCounter: Boolean(widgets.$dn$.get('value'))
+					networkDN: newVal
 				}, true, 'computers/computer').then(function(data) {
 					// got values... update corresponding widgets
 					var vals = data.result;

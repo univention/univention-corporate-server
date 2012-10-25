@@ -575,6 +575,7 @@ class Instance( Base ):
 
 		if not obj:
 			raise UMC_OptionTypeError( 'Could not find network object' )
+		obj.refreshNextIp()
 
 		result = { 'ip' : obj[ 'nextIp' ], 'dnsEntryZoneForward' : obj[ 'dnsEntryZoneForward' ], 'dhcpEntryZone' : obj[ 'dhcpEntryZone' ], 'dnsEntryZoneReverse' : obj['dnsEntryZoneReverse'] }
 		self.finished( request.id, result )

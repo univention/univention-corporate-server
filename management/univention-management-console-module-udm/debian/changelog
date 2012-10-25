@@ -1,3 +1,12 @@
+univention-management-console-module-udm (3.0.36-1) unstable; urgency=low
+
+  * refresh network objects nextIp before transmitting it's value
+  * do not send "increaseCounter" field in udm/network umcp command anymore
+    (it's obsolete)
+  (Bug #28137)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 25 Oct 2012 11:02:10 +0200
+
 univention-management-console-module-udm (3.0.35-1) unstable; urgency=low
 
   * Dont remove policies when updating own password (Bug #28430)

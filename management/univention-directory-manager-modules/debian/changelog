@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.70-1) unstable; urgency=low
+
+  * do not return ip addresses which are already in use
+    (Bug #28137)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 25 Oct 2012 10:46:44 +0200
+
 univention-directory-manager-modules (8.0.69-1) unstable; urgency=low
 
   * computer.py: automatically load child modules names from

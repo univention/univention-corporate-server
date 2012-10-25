@@ -227,6 +227,16 @@ class object(univention.admin.handlers.simpleLdap):
 			# nextIP is not set, no IPrange, then we use the first ip of the network
 			self['nextIp'] = str(network.network + 1) # first useable host address in network
 
+
+	def refreshNextIp(self):
+		start_ip = self['nextIp']
+		while self.lo.search(scope='domain', attr=['aRecord'], filter='(&(aRecord=%s))' % self['nextIp']) or self['nextIp'].split('.')[-1] in ['0', '1', '254']:
+			self.stepIp()
+			if self['nextIp'] == start_ip:
+				raise univention.admin.uexceptions.nextFreeIp
+		self.modify()
+
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
@@ -243,17 +253,22 @@ class object(univention.admin.handlers.simpleLdap):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		next_ip_changed = False
-		next_ip_in_range = False
 
 		if self.hasChanged('ipRange'):
 			network = ipaddr.IPNetwork(self['network'] + '/' + self['netmask'])
 			currentIp = ipaddr.IPAddress(self['nextIp'])
+			if self['ipRange']:
+				self.sort_ipranges()
+				self['nextIp'] = self['ipRange'][0][0]
+			else:
+				self['nextIp'] = str(network.network + 1)
+			if self['nextIp'] != self.oldattr.get('univentionNextIp', ''):
+				next_ip_changed = True
+				
 			ipRange=[]
 			for i in self['ipRange']:
 				firstIP = ipaddr.IPAddress(i[0])
 				lastIP = ipaddr.IPAddress(i[1])
-				if firstIP < currentIp < lastIP:
-					next_ip_in_range = True
 				for j in self['ipRange']:
 					if i != j:
 						otherFirstIP = ipaddr.IPAddress(j[0])
@@ -271,30 +286,32 @@ class object(univention.admin.handlers.simpleLdap):
 					raise univention.admin.uexceptions.rangeInBroadcastAddress, '%s-%s' % (firstIP, lastIP, )
 				ipRange.append(string.join(i, ' '))
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old Range: %s' % self.oldinfo.get('ipRange'))
-			if self.oldinfo.has_key('ipRange') and self['ipRange'] and not self.oldinfo['ipRange'] or not next_ip_in_range:
-				if len(self['ipRange']) > 0 and len(self['ipRange'][0]) > 0:
-					self['nextIp'] = self['ipRange'][0][0]
-				else:
-					self['nextIp'] = ''
-				if not self.oldattr.get('univentionNextIp', '') == self['nextIp']:
-					next_ip_changed = True
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'set nextIP')
-				if self['nextIp'] and ipaddr.IPAddress(self['nextIp']) == network.network: # do not give out all hostbits zero
-					self['nextIp'] = str(ipaddr.IPAddress(self['nextIp']) + 1)
-					next_ip_changed = True
-
 			ml.append(('univentionIpRange', self.oldattr.get('univentionIpRange', ['']), ipRange))
 
+			
+
 		if next_ip_changed:
-			rmel=''
 			for el in ml: # mapping may have set nextIp already, we want our value
 				if el[0] == 'univentionNextIp':
-					rmel = el
-			if rmel:
-				ml.remove(rmel)
+					ml.remove(el)
 			ml.append(('univentionNextIp', self.oldattr.get('univentionNextIp', ''), self['nextIp']))
 
 		return ml
+
+	def sort_ipranges(self):
+		# make sure that the ipRanges are ordered by their start address (smallest first)
+		for i in range( 1, len(self['ipRange']) ):
+			if ipaddr.IPAddress(self['ipRange'][i][0]) < ipaddr.IPAddress(self['ipRange'][i-1][0]):
+				self['ipRange'].insert(i-1, self['ipRange'].pop(i))
+		for i in range( 1, len(self['ipRange']) ):
+			if ipaddr.IPAddress(self['ipRange'][i][0]) < ipaddr.IPAddress(self['ipRange'][i-1][0]):
+				self.sort_ipranges()
+
+		
+			
+		
+	
+
 
 def rewrite(filter, mapping):
 	univention.admin.mapping.mapRewrite(filter, mapping)

@@ -2501,38 +2501,15 @@ class simpleComputer( simpleLdap ):
 							raise_after = univention.admin.uexceptions.ipOverridesNetwork
 						else:
 							#get next IP
-							if not network_object['nextIp']:
-								network_object.stepIp()
-
-							IpAddr=''
-							FirstIp=''		#to prevent an endless loop
-							while not IpAddr:
-								self['ip']=network_object['nextIp']
-								if not FirstIp:
-									FirstIp=self['ip']
-								else:
-									if FirstIp == self['ip']:
-										#next free IP Address not found
-										raise univention.admin.uexceptions.nextFreeIp
-
-								if not self['ip']:
-									raise univention.admin.uexceptions.nextFreeIp
-									return
-
-								if '.' in self['ip'][0] and self['ip'][0].split('.')[-1] in ["0", "1", "254"]:
-									network_object.stepIp()
-									network_object.modify()
-									continue
-
-								network_object.stepIp()
-								network_object.modify()
-								try:
-									IpAddr=univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=self['ip'][ 0 ])
-									self.ip_alredy_requested=1
-									self.alloc.append(('aRecord',IpAddr))
-									self.ip=IpAddr
-								except:
-									pass
+							network_object.refreshNextIp()
+							self['ip'] = network_object['nextIp']
+							try:
+								IpAddr=univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=self['ip'][ 0 ])
+								self.ip_alredy_requested=1
+								self.alloc.append(('aRecord',IpAddr))
+								self.ip=IpAddr
+							except:
+								pass
 
 						self.network_object = network_object
 					if network_object['dnsEntryZoneForward']:
