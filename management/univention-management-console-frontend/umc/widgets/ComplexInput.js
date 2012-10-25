@@ -79,7 +79,7 @@ define([
 			}, this);
 
 			// render the widgets and layout them
-			this._widgets = render.widgets( widgetConfs );
+			this._widgets = render.widgets( widgetConfs, this );
 			this._container = render.layout( [ this._order ], this._widgets );
 
 			// register for value changes

@@ -61,7 +61,7 @@ define([
 			this.inherited(arguments);
 
 			// render the widgets and the layout if no content is given
-			this._widgets = render.widgets( this.widgets );
+			this._widgets = render.widgets( this.widgets, this );
 			this._container = render.layout( this.layout, this._widgets );
 
 			// register for value changes

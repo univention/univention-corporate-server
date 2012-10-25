@@ -344,7 +344,7 @@ define([
 
 
 				// render the widgets
-				var widgets = render.widgets(widgetConfs);
+				var widgets = render.widgets(widgetConfs, this);
 
 				// if we have a button, we need to pass the value and index if the
 				// current element

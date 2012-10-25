@@ -193,8 +193,8 @@ define([
 
 			// render the widgets and the layout if no content is given
 			if (!this.content) {
-				this._widgets = render.widgets(this.widgets);
-				this._buttons = render.buttons(this.buttons || []);
+				this._widgets = render.widgets(this.widgets, this);
+				this._buttons = render.buttons(this.buttons || [], this);
 				this._container = render.layout(this.layout, this._widgets, this._buttons);
 
 				// start processing the layout information

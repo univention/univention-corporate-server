@@ -42,7 +42,7 @@ define([
 ], function(lang, array, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, Button, SubmitButton, ResetButton) {
 	var render = {};
 	lang.mixin(render, {
-		widgets: function(/*Object[]*/ widgetsConf) {
+		widgets: function(/*Object[]*/ widgetsConf, owner) {
 			// summary:
 			//		Renders an array of widget config objects.
 			// returns:
@@ -53,7 +53,7 @@ define([
 			array.forEach(widgetsConf, function(iconf) {
 				// ignore empty elements
 				if (!iconf || typeof iconf != "object") {
-					return true;
+					return;
 				}
 
 				// copy the property 'id' to 'name'
@@ -63,6 +63,9 @@ define([
 				// render the widget
 				var widget = this.widget(conf, widgets);
 				if (widget) {
+					if (owner) {
+						owner.own(widget);
+					}
 					widgets[conf.name] = widget;
 				}
 			}, this);
@@ -144,7 +147,7 @@ define([
 			return widget; // dijit._Widget
 		},
 
-		buttons: function(/*Object[]*/ buttonsConf) {
+		buttons: function(/*Object[]*/ buttonsConf, owner) {
 			// summary:
 			//		Renders an array of button config objects.
 			// returns:
@@ -158,6 +161,9 @@ define([
 			};
 			array.forEach(buttonsConf, function(i) {
 				var btn = this.button(i);
+				if (owner) {
+					owner.own(button);
+				}
 				buttons[i.name] = btn;
 				buttons.$order$.push(btn);
 			}, this);
@@ -237,7 +243,7 @@ define([
 						// make sure the reference to the widget/button exists
 						if (!(widgets && jel in widgets) && !(buttons && jel in buttons)) {
 							console.log(lang.replace("WARNING in render.layout: The widget '{0}' is not defined in the argument 'widgets'. Ignoring error.", [jel]));
-							return true;
+							return;
 						}
 
 						// make sure the widget/button has not been already rendered
@@ -245,7 +251,7 @@ define([
 						var button = buttons ? buttons[jel] : null;
 						if ((widget && widget.$isRendered$) || (button && button.$isRendered$)) {
 							console.log(lang.replace("WARNING in render.layout: The widget '{0}' has been referenced more than once in the layout. Ignoring error.", [jel]));
-							return true;
+							return;
 						}
 
 						if (widget && tools.inheritsFrom(widget, 'umc.widgets.HiddenInput')) {

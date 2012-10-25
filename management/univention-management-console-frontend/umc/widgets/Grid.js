@@ -385,6 +385,7 @@ define([
 							// destroy the tooltip when the widget is destroyed
 							tooltip.connect( btn, 'destroy', 'destroy' );
 						}
+						this.own(btn);
 						return btn;
 					})
 				});
@@ -513,6 +514,7 @@ define([
 
 			// create right-click context menu
 			this._contextMenu = new Menu({});
+			this.own(this._contextMenu);
 
 			// create the grid
 			this._grid = new _Grid({
