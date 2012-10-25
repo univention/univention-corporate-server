@@ -76,7 +76,7 @@ msgid "Nagios"
 msgstr "Nagios"
 
 msgid "LDAP directory tree"
-msgstr "LDAP-Verzeichnisbaum"
+msgstr "LDAP Verzeichnisbaum"
 
 msgid "Networks"
 msgstr "Netzwerke"

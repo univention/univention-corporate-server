@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.37-1) unstable; urgency=low
+
+  * renamed "LDAP-Verzeichnisbaum" into "LDAP Verzeichnisbaum"; Bug #26511
+
+ -- Florian Best <best@univention.de>  Thu, 25 Oct 2012 14:19:37 +0200
+
 univention-management-console-module-udm (3.0.36-1) unstable; urgency=low
 
   * refresh network objects nextIp before transmitting it's value
