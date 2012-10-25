@@ -1603,6 +1603,15 @@ def run_phaseIII(opts, args):
 				msg.append("         Failed to setup a virtual IPv6 network interface with the AD IP address.")
 				log.warn("\n".join(msg))
 
+	## Add record in reverse zone as well, to make nslookup $domainname on XP clients happy..  TODO: IPv6
+	address_parts = ad_server_ip.split('.')
+	ptr_address = address_parts.pop()
+	address_parts.reverse()
+	ptr_zone = "%s.in-addr.arpa" % '.'.join(address_parts)
+	returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--set", "address=%s" % ptr_address, "--set", "ptr_record=%s." % local_fqdn], log.debug)
+	if returncode != 0:
+		log.warn("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
+
 	## Resolve against local Bind9
 	## use OpenLDAP backend until the S4 Connector has run
 	if "nameserver1/local" in ucr:

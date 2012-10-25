@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.17-26) unstable; urgency=low
+
+  * Add reverse DNS record for AD server IP (Bug #28390)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 17:39:55 +0200
+
 univention-s4-connector (7.0.17-25) unstable; urgency=low
 
   * remove and recreate Zarafa and Squid Kerberos service accounts
