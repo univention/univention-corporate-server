@@ -31,13 +31,14 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojo/dom-attr",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_Container",
 	"umc/tools"
-], function(declare, lang, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, tools) {
+], function(declare, lang, Deferred, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, tools) {
 	lang.extend(_WidgetBase, {
 		// isLabelDisplayed: Boolean?
 		//		If specified as true, LabelPane assumes that the widget itself will take
@@ -81,6 +82,18 @@ define([
 
 		labelNodeRight: null,
 
+		_startupDeferred: null,
+
+		constructor: function(params) {
+			this._startupDeferred = new Deferred();
+
+			// lang._mixin() would not work sometimes, leaving this.content empty, see
+			//   https://forge.univention.org/bugzilla/show_bug.cgi?id=26214#c3
+			tools.forIn(params, function(ikey, ival) {
+				this[ikey] = ival;
+			}, this);
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -118,6 +131,12 @@ define([
 			this.inherited(arguments);
 
 			domClass.toggle(this.domNode, 'dijitHidden', this.content.visible === false);
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+
+			this._startupDeferred.resolve();
 		},
 
 		_setLabelAttr: function(label) {

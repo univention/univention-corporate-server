@@ -57,6 +57,13 @@ define([
 
 		umcpCommand: tools.umcpCommand,
 
+		_allReady: null,
+
+		constructor: function() {
+			// initialize with empty list
+			this._allReady = [];
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -93,14 +100,7 @@ define([
 			this._container.placeAt(this.containerNode);
 			this._container.startup();
 
-			// call the _loadValues method by hand
-			array.forEach( this._order, function( iname ) {
-				var iwidget = this._widgets[ iname ];
-				if ( '_loadValues' in iwidget ) {
-					iwidget._loadValues( this._lastDepends );
-				}
-			}, this);
-
+			this._updateAllReady();
 		},
 
 		_getValueAttr: function() {
@@ -127,6 +127,28 @@ define([
 				var iisValid = areValid instanceof Array ? areValid[i] : areValid;
 				this._widgets[ iname ].setValid( iisValid, imessage );
 			}, this );
+		},
+
+		_updateAllReady: function() {
+			// wait for all widgets to be ready
+			this._allReady = [];
+			tools.forIn(this._widgets, function(iname, iwidget) {
+				this._allReady.push(iwidget.ready ? iwidget.ready() : null);
+			}, this);
+		},
+
+		ready: function() {
+			// update the internal list in order to wait until everybody is ready
+			if (!this._allReady.length) {
+				_updateAllReady();
+			}
+			var ret = all(this._allReady);
+
+			// empty list when all widgets are ready
+			ret.then(lang.hitch(this, function() {
+				this._allReady = [];
+			}));
+			return ret;
 		}
 	});
 });

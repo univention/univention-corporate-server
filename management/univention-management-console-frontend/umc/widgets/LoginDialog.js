@@ -88,7 +88,6 @@ define([
 				style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 280px;',
 				content: ''
 			});
-			this._text.placeAt(this.containerNode, 'first');
 
 			// create the language_combobox
 			this._languageBox = new ComboBox({
@@ -100,14 +99,6 @@ define([
 				label: _('Language'),
 				content: this._languageBox
 			});
-			// we need to manually startup the widgets
-			this._languageBox.startup();
-			this._languageLabel.startup();
-			this._languageLabel.placeAt('umc_LoginDialog_FormContainer');
-			// register onchange event
-			this.own(this._languageBox.watch('value', function(name, oldLang, newLang) {
-				i18nTools.setLanguage(newLang);
-			}));
 
 			// automatically resize the DialogUnderlay container
 			this.own(on(win.global, 'resize', lang.hitch(this, function() {
@@ -115,6 +106,26 @@ define([
 					DialogUnderlay._singleton.layout();
 				}
 			})));
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			this._text.placeAt(this.containerNode, 'first');
+			this._languageLabel.placeAt('umc_LoginDialog_FormContainer');
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+
+			// we need to manually startup the widgets
+			this._languageBox.startup();
+			this._languageLabel.startup();
+
+			// register onchange event
+			this.own(this._languageBox.watch('value', function(name, oldLang, newLang) {
+				i18nTools.setLanguage(newLang);
+			}));
 		},
 
 		_initForm: function() {

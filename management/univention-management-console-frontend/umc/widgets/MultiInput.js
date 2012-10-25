@@ -32,13 +32,15 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/Deferred",
+	"dojo/promise/all",
 	"dijit/form/Button",
 	"umc/tools",
 	"umc/render",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/LabelPane"
-], function(declare, lang, array, Button, tools, render, ContainerWidget, _FormWidgetMixin, LabelPane) {
+], function(declare, lang, array, Deferred, all, Button, tools, render, ContainerWidget, _FormWidgetMixin, LabelPane) {
 	return declare("umc.widgets.MultiInput", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:
 		//		Widget for a small list of simple and complex entries. An entry can be one or
@@ -77,6 +79,12 @@ define([
 
 		_lastDepends: null,
 
+		_valuesLoaded: false,
+
+		_readyDeferred: null,
+
+		_startupDeferred: null,
+
 		_createHandler: function(ifunc) {
 			// This handler will be called by all subwidgets of the MultiInput widget.
 			// When the first request comes in, we will execute the function to compute
@@ -106,7 +114,13 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
+			// delete the size class
 			this.sizeClass = null;
+
+			// the _readyDeferred is being resolved as soon as everything has been set up
+			this._readyDeferred = new Deferred();
+
+			this._startupDeferred = new Deferred();
 
 			// check the property 'subtypes'
 			tools.assert(this.subtypes instanceof Array,
@@ -147,6 +161,12 @@ define([
 
 			// add empty element
 			this._appendElements(1);
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+
+			this._startupDeferred.resolve();
 		},
 
 		_loadValues: function(depends) {
@@ -316,6 +336,11 @@ define([
 				return;
 			}
 
+			// initiate a new Deferred object in case there is none already pending
+			if (this._readyDeferred.isFulfilled()) {
+				this._readyDeferred = new Deferred();
+			}
+
 			// remove the 'new' button
 			this._removeNewButton();
 
@@ -403,7 +428,7 @@ define([
 				// add row
 				this._widgets.push(visibleWidgets);
 				this._rowContainers.push(rowContainer);
-				rowContainer.startup();
+				this._startupDeferred.then(lang.hitch(rowContainer, 'startup'));
 				this.addChild(rowContainer);
 
 				// call the _loadValues method by hand
@@ -414,6 +439,21 @@ define([
 					}
 				}, this);
 			}
+
+			// wait for all widgets to be ready
+			var allReady = [];
+			var i, j;
+			for (i = 0; i < this._widgets.length; ++i) {
+				for (j = 0; j < this._widgets[i].length; ++j) {
+					//console.log(lang.replace('### MultiInput: widget[{0}][{1}]: waiting -> ', [i, j]), this._widgets[i][j].ready());
+					allReady.push(this._widgets[i][j].ready ? this._widgets[i][j].ready() : null);
+				}
+			}
+			all(allReady).then(lang.hitch(this, function() {
+				//console.log('### MultiInput: all resolved');
+				this._readyDeferred.resolve();
+				this.onValuesLoaded();
+			}));
 
 			// add the new button
 			if (this._nRenderedElements < this.max) {
@@ -494,6 +534,19 @@ define([
 			if (this._widget) {
 				tools.delegateCall(this, arguments, this._widget);
 			}
+		},
+
+		onValuesLoaded: function(values) {
+			// summary:
+			//		This event is triggered when all values (static and dynamic) have been loaded.
+			// values:
+			//		Array containing all dynamic and static values.
+		},
+
+		// ready:
+		//		Similiar to `umc/widgets/_FormWidgetMixin:ready`.
+		ready: function() {
+			return this._readyDeferred;
 		}
 	});
 });

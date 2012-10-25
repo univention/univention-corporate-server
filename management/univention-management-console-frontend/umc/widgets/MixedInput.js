@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/Deferred",
 	"dojo/json",
 	"dijit/layout/ContentPane",
 	"umc/tools",
@@ -38,7 +39,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox"
-], function(declare, lang, json, ContentPane, tools, _FormWidgetMixin) {
+], function(declare, lang, Deferred, json, ContentPane, tools, _FormWidgetMixin) {
 	return declare("umc.widgets.MixedInput", [ ContentPane, _FormWidgetMixin ], {
 		// umcpCommand:
 		//		Reference to the umcpCommand the widget should use.
@@ -74,6 +75,8 @@ define([
 
 		style: 'padding: 0',
 
+		_readyDeferred: null,
+
 		constructor: function(/*Object*/ props) {
 			// mixin in the 'disabled' property
 			props.disabled = this.disabled;
@@ -94,6 +97,8 @@ define([
 
 			this._userProperties.sizeClass = this.sizeClass;
 			this.sizeClass = null;
+
+			this._readyDeferred = new Deferred();
 		},
 
 		buildRendering: function() {
@@ -133,6 +138,11 @@ define([
 			// only load dynamic values in case all dependencies are fullfilled
 			if (dependList.length != nDepValues) {
 				return;
+			}
+
+			// initiate a new Deferred object in case there is none already pending
+			if (this._readyDeferred.isFulfilled()) {
+				this._readyDeferred = new Deferred();
 			}
 
 			// mixin additional options for the UMCP command
@@ -199,6 +209,7 @@ define([
 			this._widget.startup();
 
 			this.onValuesLoaded();
+			this._readyDeferred.resolve();
 		},
 
 		_setValueAttr: function(newVal) {
@@ -249,6 +260,13 @@ define([
 			if (lang.getObject('_widget.focus', false, this)) {
 				this._widget.focus();
 			}
+		},
+
+		// ready:
+		//		Returns null or a Deferred which resolves as soon as any
+		//		loading activity of the widget is finished.
+		ready: function() {
+			return this._readyDeferred;
 		}
 	});
 });

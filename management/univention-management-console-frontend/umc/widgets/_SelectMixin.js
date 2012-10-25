@@ -34,13 +34,12 @@ define([
 	"dojo/_base/array",
 	"dojo/Deferred",
 	"dojo/when",
-	"dojo/on",
 	"dojo/json",
 	"dojo/Stateful",
 	// TODO: should use dojo/store/
 	"dojo/data/ItemFileWriteStore",
 	"umc/tools"
-], function(declare, lang, array, Deferred, when, on, json, Stateful, ItemFileWriteStore, tools) {
+], function(declare, lang, array, Deferred, when, json, Stateful, ItemFileWriteStore, tools) {
 	return declare("umc.widgets._SelectMixin", Stateful, {
 		// umcpCommand:
 		//		Reference to the umcpCommand the widget should use.
@@ -105,6 +104,8 @@ define([
 
 		_deferredOrValues: null,
 
+		_readyDeferred: null,
+
 		_createStore: function() {
 			return new ItemFileWriteStore({
 				data: {
@@ -128,6 +129,10 @@ define([
 			this.inherited(arguments);
 
 			this._saveInitialValue();
+
+			// the _readyDeferred is being resolved as soon as everything has been set up
+			//console.log('### _SelectMixin ['+this.name+']: initiate _readyDeferred');
+			this._readyDeferred = new Deferred();
 		},
 
 		postCreate: function() {
@@ -149,6 +154,7 @@ define([
 		},
 
 		startup: function() {
+			//console.log('### startup ['+this.name+']');
 			this.inherited(arguments);
 
 			this._loadValues();
@@ -209,13 +215,12 @@ define([
 		_saveInitialValue: function() {
 			// rember the intial value since it will be overridden by the dojo
 			// methods since at initialization time the store is empty
-			try {
-				this._initialValue = this.get('value');
-			}
-			catch (error) {
-				// failed to access 'value', probably too early in the widget construction
-				// (e.g., DOM elements are not ready yet)
-				this._initialValue = this.value;
+			this._initialValue = this.value; // fallback
+			if (this.domNode) {
+				try {
+					this._initialValue = this.get('value');
+				}
+				catch (error) { }
 			}
 		},
 
@@ -382,7 +387,7 @@ define([
 		},
 
 		_loadValues: function(/*Object?*/ _dependValues) {
-			//console.log('###', this.name, ' _loadValues(', _dependValues, ')');
+			//console.log('### _SelectMixin ['+this.name+']: _loadValues _dependValues=', _dependValues);
 			this._valuesLoaded = true;
 
 			// unify `depends` property to be an array
@@ -404,6 +409,7 @@ define([
 
 			// only load dynamic values in case all dependencies are fullfilled
 			if (dependList.length != nDepValues) {
+				//console.log('### _SelectMixin ['+this.name+']: return');
 				return;
 			}
 
@@ -420,7 +426,14 @@ define([
 			// block concurrent events for value loading
 			if (this._deferredOrValues) {
 				// another request is pending
+				//console.log('### _SelectMixin ['+this.name+']: return (2)');
 				return;
+			}
+
+			// initiate a new Deferred object in case there is none already pending
+			if (this._readyDeferred.isFulfilled()) {
+				//console.log('### _SelectMixin ['+this.name+']: re-initiate _readyDeferred');
+				this._readyDeferred = new Deferred();
 			}
 
 			// get dynamic values
@@ -439,9 +452,11 @@ define([
 					this._clearValues();
 					this._setStaticValues();
 					this._setDynamicValues(res);
-					this.onDynamicValuesLoaded(res);
 
 					// values have been loaded
+					//console.log('### _SelectMixin ['+this.name+']: resolved _readyDeferred');
+					this._readyDeferred.resolve(this.getAllItems());
+					this.onDynamicValuesLoaded(res);
 					this.onValuesLoaded(this.getAllItems());
 
 					// unblock value loading
@@ -452,6 +467,8 @@ define([
 					this._setStaticValues();
 
 					// error handler
+					//console.log('### _SelectMixin ['+this.name+']: resolved _readyDeferred');
+					this._readyDeferred.resolve([]);
 					this.onDynamicValuesLoaded([]);
 					this.onValuesLoaded(this.getAllItems());
 
@@ -465,6 +482,8 @@ define([
 				this._setStaticValues();
 
 				// values have been loaded
+				//console.log('### _SelectMixin ['+this.name+']: resolved _readyDeferred');
+				this._readyDeferred.resolve(this.getAllItems());
 				this.onValuesLoaded(this.getAllItems());
 
 				// unblock value loading
@@ -532,6 +551,13 @@ define([
 			if (this._valuesLoaded) {
 				this._loadValues();
 			}
+		},
+
+		// ready:
+		//		Returns null or a Deferred which resolves as soon as any
+		//		loading activity of the widget is finished.
+		ready: function() {
+			return this._readyDeferred;
 		}
 	});
 });

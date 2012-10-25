@@ -26,19 +26,20 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define */
+/*global define require console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/kernel",
 	"dojo/Deferred",
-	"dojo/on",
+	"dojo/promise/all",
 	"dojo/dom-style",
 	"dijit/form/Form",
 	"umc/tools",
 	"umc/render"
-], function(declare, lang, array, Deferred, on, style, Form, tools, render) {
+], function(declare, lang, array, kernel, Deferred, all, style, Form, tools, render) {
 
 	// in order to break circular dependencies (umc.dialog needs a Form and
 	// Form needs umc/dialog), we define umc/dialog as an empty object and
@@ -51,14 +52,7 @@ define([
 		dialog = _dialog;
 	});
 
-	return declare("umc.widgets.Form", [
-			Form
-	/*		dojox.form.manager._Mixin,
-			dojox.form.manager._ValueMixin,
-			dojox.form.manager._EnableMixin,
-			dojox.form.manager._DisplayMixin,
-			dojox.form.manager._ClassMixin*/
-	], {
+	return declare("umc.widgets.Form", [ Form ], {
 		// summary:
 		//		Encapsulates a complete form, offers unified access to elements as
 		//		well as some convenience methods.
@@ -121,12 +115,13 @@ define([
 
 		//'class': 'umcNoBorder',
 
-		_initializingElements: 0,
-
-		_initializedDeferred: null,
+		_allReady: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+
+			// initialize with empty list
+			this._allReady = [];
 
 			// in case no layout is specified and no content, either, create one automatically
 			if ((!this.layout || !this.layout.length) && !this.content) {
@@ -183,8 +178,6 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._initializedDeferred = new Deferred();
-
 			if (this.scrollable) {
 				style.set(this.containerNode, {
 					overflow: 'auto'
@@ -225,48 +218,7 @@ define([
 				}
 			}
 
-
-			// send an event when all dynamic elements have been initialized
-			this._initializingElements = 0;
-			//console.log('# Form.buildRendering()');
-			tools.forIn(this._widgets, function(iname, iwidget) {
-				// only consider elements that load values dynamically
-				//console.log('#  iwidget:', iwidget.name);
-				if ('onValuesLoaded' in iwidget && !(iwidget._valuesLoaded && !iwidget._deferredOrValues)) {
-					// widget values have not been loaded completely so far
-					//console.log('#  -> has event "valuesLoaded"');
-					++this._initializingElements;
-					on.once(iwidget, 'valuesLoaded', lang.hitch(this, function() {
-						//console.log('#  -> valuesLoaded:', iwidget.name, iwidget.get('value'));
-						// decrement the internal counter
-						--this._initializingElements;
-						//console.log('#  _initializingElements:', this._initializingElements);
-
-						// send event when the last element has been initialized
-						if (0 === this._initializingElements) {
-							this._initializedDeferred.resolve();
-						}
-					}));
-				}
-			}, this);
-
-			// maybe all elements are already initialized
-			if (!this._initializingElements) {
-				this._initializedDeferred.resolve();
-			}
-
-		},
-
-		startup: function() {
-			this.inherited(arguments);
-			if (this._container) {
-				// call the containers startup function if necessary
-				this._container.startup();
-			}
-			this._initializedDeferred.then(lang.hitch(this, function() {
-				this.onValuesInitialized();
-				//console.log('# valuesInitialized');
-			}));
+			this._updateAllReady();
 		},
 
 		postCreate: function() {
@@ -317,18 +269,65 @@ define([
 			}, this);
 		},
 
-		// regexp for matching 1D and 2D array-like names
+		startup: function() {
+			//console.log('### Form: startup - container:', this._container);
+			this.inherited(arguments);
+
+			// trigger initial dependencies
+			tools.forIn(this._widgets, function(iname, iwidget) {
+				// check whether the widget has a `depends` field
+				if (!iwidget.depends) {
+					return;
+				}
+
+				if (!iwidget._loadValues) {
+					return;
+				}
+
+				// collect ready-deferreds from all dependencies
+				var depends = tools.stringOrArray(iwidget.depends);
+				var deferreds = array.map(depends, function(jdep) {
+					var jwidget = this.getWidget(jdep);
+					if (jwidget) {
+						jwidget.ready ? jwidget.ready() : null;
+					}
+					else {
+						return null;
+					}
+				}, this);
+
+				// trigger the widget as soon as all its dependencies are resolved
+				all(deferreds).then(lang.hitch(this, function() {
+					var values = this.gatherFormValues();
+					iwidget._loadValues(values);
+				}));
+			}, this);
+
+			// call the containers startup function if necessary
+			if (this._container) {
+				this._container.startup();
+			}
+
+			// send event valuesInitialized when ready
+			this.ready().then(lang.hitch(this, function() {
+				//console.log('### Form: all ready');
+				this.onValuesInitialized();
+			}));
+		},
+
 		gatherFormValues: function() {
+			kernel.deprecated('umc/widgets/Form:gatherFormValues()', 'use umc/widgets/Form:get("value") instead');
+			return this.get('value');
+		},
+
+		_getValueAttr: function() {
 			// gather values from all registered widgets
 			var vals = {};
 			tools.forIn(this._widgets, function(iname, iwidget) {
-				// ignore elements that start with '__'
-				if ('__' != iname.substr(0, 2)) {
-					var val = iwidget.get('value');
-					if (val !== undefined) {
-						// ignore undefined values
-						vals[iname] = val;
-					}
+				var val = iwidget.get('value');
+				if (val !== undefined) {
+					// ignore undefined values
+					vals[iname] = val;
 				}
 			}, this);
 
@@ -395,13 +394,19 @@ define([
 			return widget;
 		},
 
-		_updateDependencies: function(publisherName) {
-			var tmp = [];
-			array.forEach(this._dependencyMap[publisherName], function(i) {
-				tmp.push(i.name);
-			});
+		_updateDependencies: function(/*String*/ publisherName) {
+			// summary:
+			//		This method is called when the value of the specified form widget
+			//		has changed. All widgets that have registered a dependency on
+			//		this particular widget are being update.
+
+			//var tmp = [];
+			//array.forEach(this._dependencyMap[publisherName], function(i) {
+			//	tmp.push(i.name);
+			//});
 			//var json = require("dojo/json");
 			//console.log(lang.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, json.stringify(tmp)]));
+
 			if (publisherName in this._dependencyMap) {
 				var values = this.gatherFormValues();
 				array.forEach(this._dependencyMap[publisherName], function(ireceiver) {
@@ -553,8 +558,31 @@ define([
 					dialog.notify(error_msg);
 				}
 			}));
-		}
+		},
 
+		_updateAllReady: function() {
+			// wait for all widgets to be ready
+			this._allReady = [];
+			//console.log('### Form: iterate over widgets.ready');
+			tools.forIn(this._widgets, function(iname, iwidget) {
+				//console.log('###   ' + iname + ' -> ', iwidget.ready ? iwidget.ready() : null);
+				this._allReady.push(iwidget.ready ? iwidget.ready() : null);
+			}, this);
+		},
+
+		ready: function() {
+			// update the internal list in order to wait until everybody is ready
+			if (!this._allReady.length) {
+				this._updateAllReady();
+			}
+			var ret = all(this._allReady);
+
+			// empty list when all widgets are ready
+			ret.then(lang.hitch(this, function() {
+				this._allReady = [];
+			}));
+			return ret;
+		}
 	});
 });
 

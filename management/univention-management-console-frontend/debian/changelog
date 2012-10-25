@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.139-1) unstable; urgency=low
+
+  * added ready() methods to widgets for asynchronous notification; Bug #26214
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 25 Oct 2012 16:04:27 +0200
+
 univention-management-console-frontend (2.0.137-2) unstable; urgency=low
 
   * removed umc-web-server init script - it has been merged into umc-server
