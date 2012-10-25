@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.140-1) unstable; urgency=low
+
+  * fixed typo; Bug #27432
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 25 Oct 2012 16:23:21 +0200
+
 univention-management-console-frontend (2.0.139-1) unstable; urgency=low
 
   * added ready() methods to widgets for asynchronous notification; Bug #26214

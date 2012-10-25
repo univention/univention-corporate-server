@@ -162,7 +162,7 @@ define([
 			array.forEach(buttonsConf, function(i) {
 				var btn = this.button(i);
 				if (owner) {
-					owner.own(button);
+					owner.own(btn);
 				}
 				buttons[i.name] = btn;
 				buttons.$order$.push(btn);
