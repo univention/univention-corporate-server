@@ -1,7 +1,15 @@
+univention-s4-connector (7.0.17-19) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - map well known user accounts like well known group accounts
+      instead of renaming them (required for Bug #28822)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 09:38:04 +0200
+
 univention-s4-connector (7.0.17-18) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
-    - imporoved counting of AD accounts:
+    - improved counting of AD accounts:
       abstract from locale sepcific names for well known user objects
     - whitespace cleanup
 

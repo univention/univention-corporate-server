@@ -1086,10 +1086,6 @@ def run_phaseI(opts, args):
 					log.debug(log_line)
 	
 	## construct locale mapping
-	# univention.admin.modules.update()
-	# co				= univention.admin.config.config()
-	# position		= univention.admin.uldap.position(ucr['ldap/base'])
-	# user_module		= univention.admin.modules.get("users/user")
 	ucs_ad_name_map = { }
 	for (rid, name) in well_known_domain_rids.items():
 		msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
@@ -1109,22 +1105,8 @@ def run_phaseI(opts, args):
 					ucs_ad_name_map[name] = ad_object_name
 					config_registry.handler_set(["connector/s4/mapping/group/table/%s=%s" % (name, ad_object_name)])
 				elif "user" in oc:
-					ldap_result = lo.search(filter="(&(objectClass=sambaSamAccount)(sambaSID=*)(uid=%s))" % name, attr=["dn"])
-					if ldap_result:
-						log.info("Renaming well known user account %s to %s" % (name, ad_object_name))
-						p = subprocess.Popen(["/usr/sbin/univention-directory-manager", "users/user", "modify", "--dn", ldap_result[0][0], "--set" , "username=%s" % ad_object_name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-						while p.poll() == None:
-							log_line = p.stdout.readline().rstrip()
-							if log_line:
-								log.debug(log_line)
-						if p.returncode != 0:
-							log.error("Rename failed. See %s for details." % (LOGFILE_NAME,))
-					# filter = univention.admin.filter.expression('username', name)
-					# objs = user_module.lookup(co, lo, filter, scope='domain', base=position.getDomain(), unique=1)
-					# if objs:
-					# 	obj = objs[0]
-					# 	obj['username']=unicode( "%s"%ad_object_name, "utf-8" )
-					# 	obj.modify()
+					ucs_ad_name_map[name] = ad_object_name
+					config_registry.handler_set(["connector/s4/mapping/user/table/%s=%s" % (name, ad_object_name)])
 
 	## construct dict of old UCS sambaSIDs
 	old_sambaSID_dict = {}
