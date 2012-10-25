@@ -1,4 +1,4 @@
-univention-management-console-module-udm (3.0.40-1ubuntu1) unstable; urgency=low
+univention-management-console-module-udm (3.0.41-1) unstable; urgency=low
 
   * added missing UCR variable information; Bug #28248
 
