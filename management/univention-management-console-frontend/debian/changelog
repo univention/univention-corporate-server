@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.136-1) unstable; urgency=low
+
+  * fixed closing of DetailPages which contains a Grid; Bug #28797
+
+ -- Florian Best <best@univention.de>  Thu, 25 Oct 2012 13:23:54 +0200
+
 univention-management-console-frontend (2.0.135-1) unstable; urgency=low
 
   * fix parseError; Bug #28551
