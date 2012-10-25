@@ -85,11 +85,14 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
 							except:
-								if k.value == up_blob:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
-									ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 key key with invalid keytype %s in %s" % (k.keytype, p.name))
+								if k.keytype == 4294967156:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
+									if k.value == up_blob:	## the known case
+										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
+									else:					## unknown special case
+										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, p.name))
 								else:
 									traceback.print_exc()
-									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed. Continuing anyway." % k.keytype)
+									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, p.name))
 
 				elif p.name == "Primary:Kerberos-Newer-Keys":
 					krb_blob = binascii.unhexlify(p.data)
@@ -105,11 +108,14 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
 							except:
-								if k.value == up_blob:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
-									ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 key key with invalid keytype %s in %s" % (k.keytype, p.name))
+								if k.keytype == 4294967156:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
+									if k.value == up_blob:	## the known case
+										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
+									else:					## unknown special case
+										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, p.name))
 								else:
 									traceback.print_exc()
-									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed. Continuing anyway." % k.keytype)
+									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, p.name))
 
 		except Exception:
 			import sys
@@ -226,9 +232,11 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 		ctr4.keys = kerberosKey4list
 
 		if old_krb.get('ctr4'):
-			## old_keys -> older_keys
-			ctr4.older_keys = old_krb['ctr4'].old_keys
-			ctr4.num_older_keys = old_krb['ctr4'].num_old_keys
+			## Backup old_keys to s4_old_keys
+			s4_num_old_keys = old_krb['ctr4'].num_old_keys
+			s4_old_keys = []
+			for key in old_krb['ctr4'].old_keys:
+				s4_old_keys.append(key)
 
 			## keys -> old_keys
 			if len(old_krb['ctr4'].keys) != ctr4.num_keys:
@@ -246,11 +254,39 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 				ctr4.old_keys = old_krb['ctr4'].keys
 				ctr4.num_old_keys = old_krb['ctr4'].num_keys
 
+			## s4_old_keys -> older_keys
+			if ctr4.num_old_keys != ctr4.num_older_keys:
+				cleaned_older_keys = []
+				for key in s4_old_keys:
+					if key.keytype == 4294967156:	## in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
+						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys filtering keytype %s from older_keys" % key.keytype)
+						continue
+					else:	# TODO: can we do something better at this point to make old_keys == num_keys ?
+						cleaned_older_keys.append(key)
+					
+				ctr4.older_keys = cleaned_older_keys
+				ctr4.num_older_keys = len(cleaned_older_keys)
+			else:
+				ctr4.older_keys = s4_old_keys
+				ctr4.num_older_keys = s4_num_old_keys
+
 		if ctr4.num_old_keys != ctr4.num_keys:
 			# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
-			ud.debug(ud.LDAP, ud.ALL, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_keys = %s" % ctr4.num_keys)
-			ud.debug(ud.LDAP, ud.ALL, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_old_keys = %s" % ctr4.num_old_keys)
-			ud.debug(ud.LDAP, ud.ALL, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_older_keys = %s" % ctr4.num_older_keys)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_keys = %s" % ctr4.num_keys)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_old_keys = %s" % ctr4.num_old_keys)
+			for k in ctr4.keys:
+				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr4.key.keytype: %s" % k.keytype)
+			for k in ctr4.old_keys:
+				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr4.old_key.keytype: %s" % k.keytype)
+
+		if ctr4.num_older_keys != ctr4.num_old_keys:
+			# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_old_keys = %s" % ctr4.num_old_keys)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys num_older_keys = %s" % ctr4.num_older_keys)
+			for k in ctr4.old_keys:
+				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr4.old_key.keytype: %s" % k.keytype)
+			for k in ctr4.older_keys:
+				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr4.older_key.keytype: %s" % k.keytype)
 
 		krb_Primary_Kerberos_Newer = drsblobs.package_PrimaryKerberosBlob()
 		krb_Primary_Kerberos_Newer.version = 4
@@ -314,8 +350,12 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 
 		if ctr3.num_old_keys != ctr3.num_keys:
 			# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
-			ud.debug(ud.LDAP, ud.ALL, "calculate_supplementalCredentials: Primary:Kerberos num_old_keys = %s" % ctr3.num_old_keys)
-			ud.debug(ud.LDAP, ud.ALL, "calculate_supplementalCredentials: Primary:Kerberos num_keys = %s" % ctr3.num_keys)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_old_keys = %s" % ctr3.num_old_keys)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_keys = %s" % ctr3.num_keys)
+			for k in ctr4.keys:
+				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
+			for k in ctr4.old_keys:
+				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.old_key.keytype: %s" % k.keytype)
 
 		krb = drsblobs.package_PrimaryKerberosBlob()
 		krb.version = 3
