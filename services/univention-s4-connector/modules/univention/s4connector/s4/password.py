@@ -139,18 +139,28 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: parsing %s blob" % p.name)
 			if p.name == "Primary:Kerberos":
 				krb_blob = binascii.unhexlify(p.data)
-				krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
-				assert krb.version == 3
-				old_krb['ctr3'] = krb.ctr
-				for k in krb.ctr.keys:	
-					ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
+				try:
+					krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+					assert krb.version == 3
+					old_krb['ctr3'] = krb.ctr
+					for k in krb.ctr.keys:	
+						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
+				except:
+					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos blob failed. Traceback:")
+					traceback.print_exc()
+					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: Continuing anyway, Primary:Kerberos (DES keys) blob will be missing in supplementalCredentials ctr3.old_keys.")
 			elif p.name == "Primary:Kerberos-Newer-Keys":
 				krb_blob = binascii.unhexlify(p.data)
-				krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
-				assert krb.version == 4
-				old_krb['ctr4'] = krb.ctr
-				for k in krb.ctr.keys:	
-					ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr4.key.keytype: %s" % k.keytype)
+				try:
+					krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+					assert krb.version == 4
+					old_krb['ctr4'] = krb.ctr
+					for k in krb.ctr.keys:	
+						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr4.key.keytype: %s" % k.keytype)
+				except:
+					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos-Newer-Keys blob failed. Traceback:")
+					traceback.print_exc()
+					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: Continuing anyway, Primary:Kerberos-Newer-Keys (AES and DES keys) blob will be missing in supplementalCredentials ctr4.old_keys.")
 
 	krb5_aes256 = ''
 	krb5_aes128 = ''
