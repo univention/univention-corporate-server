@@ -44,11 +44,12 @@ define([
 	"dijit/TitlePane",
 	"dojox/timing/_base",
 	"dojox/html/styles",
+	"dojox/html/entities",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, _window, query, xhr, basexhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, ContainerWidget, ConfirmDialog, Text, _) {
+], function(lang, array, _window, query, xhr, basexhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -529,40 +530,38 @@ define([
 		},
 
 		parseError: function(error) {
-			var status = 500;
-			var message = this._statusMessages[500];
+			var status = error.status !== undefined ? error.status : 500;
+			var message = this._statusMessages[status] || this._statusMessages[500];
 			var result = null;
 
-			if (error.status !== undefined) {
-				status = error.status;
-			}
-
-			if (error.data) {
-				if (!error.response) {
-					error.response = {};
-				}
-				if (!error.response.data) {
-					error.response.data = error.data;
-				}
-			}
+			var r = /<title>(.*)<\/title>/;
 
 			if (error.response) {
-				status = error.response.xhr.status;
+				status = error.response.xhr ? error.response.xhr.status : (error.response.status !== undefined ? error.response.status : status ); // status can be 0
 				if (error.response.data) {
 					// the response contained a valid JSON object
-					status = parseInt(error.response.data.status, 10);
-					message = (error.response.data.message || '').replace(/\n/g, '<br>');
+					status = error.response.data.status && parseInt(error.response.data.status, 10) || status;
+					message = error.response.data.message || '';
 					result = error.response.data.result || null;
 				} else {
 					// no JSON was returned, probably proxy error
-					var r = /<title>(.*)<\/title>/;
-					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : this._statusMessages[500];
+					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : (this._statusMessages[status] || this._statusMessages[500]);
 				}
+			} else if (error.data) {
+				if (error.data.xhr) {
+					status = error.data.xhr.status;
+				} else {
+					status = error.data.status !== undefined ? error.data.status : status;
+				}
+				message = error.data.message || '';
+				result = error.data.result || null;
+			} else if(error.text) {
+				message = r.test(error.text) ? r.exec(error.text)[1] : error.text;
 			}
 
 			return {
-				status: status,
-				message: message,
+				status: parseInt(status, 10),
+				message: entities.encode(String(message)).replace(/\n/g, '<br>'),
 				result: result
 			};
 		},
