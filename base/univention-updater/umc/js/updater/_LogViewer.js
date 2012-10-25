@@ -58,6 +58,8 @@ define([
 		_check_interval:	0,
 		_current_job:		'',
 		_log_position:		0,
+		_max_number_of_lines:	2500, // ~ 200kB if one line ^= 80 chars
+		_all_lines:		[], // hold all past _max_number_of_lines lines
 
 		// FIXME which class should I take here?
 		style:		'border:1px solid #d0d0d0;background-color:#f8f8f8;padding:.3em;',
@@ -135,23 +137,26 @@ define([
 
 		},
 
-		getContentAttr: function() {
-			return this._text.get('content');
-		},
-
 		// set content. Additionally checks if the current scroll position
 		// (before setting content) is at bottom, and if it is -> set
 		// bottom position after setting content too.
-		setContentAttr: function(content) {
-
-			if (content instanceof Array)
-			{
-				// dont forget to add one last line because a 5-elem-array
-				// will only add 4 newlines with join, resulting in an
-				// ugly logfile
-				var newline = "<br/>\n";
-				content = content.join(newline) + newline;
+		// Also checks if the log file exceeds a certain limit
+		setContentAttr: function(lines) {
+			this._all_lines = this._all_lines.concat(lines);
+			var printable_lines = this._all_lines;
+			if (this._lines_exceeded || this._all_lines.length > this._max_number_of_lines) {
+				var lines_exceeded = this._all_lines.length - this._max_number_of_lines;
+				this._lines_exceeded += lines_exceeded;
+				this._all_lines = this._all_lines.slice(lines_exceeded, this._all_lines.length);
+				var logfile_exceeded = '[...] ' + dojo.replace(_('The log file exceeded {max} lines by {exceeded}. Please see the full logfile.'),
+					{
+						max: this._max_number_of_lines,
+						exceeded: this._lines_exceeded
+					}
+				);
+				printable_lines = [logfile_exceeded].concat(this._all_lines);
 			}
+			var content = printable_lines.join('<br />\n');
 			try
 			{
 				var oldpos = this._get_positions();
@@ -167,7 +172,7 @@ define([
 					to_scroll = true;
 				}
 
-				this._text.set('content',(this.getContentAttr() + content));
+				this._text.set('content', content);
 				if (to_scroll)
 				{
 					this.scrollToBottom();
@@ -240,7 +245,9 @@ define([
 
 			this._check_interval = interval;
 			// clean up any stale display and states from last run
-			this.set('content',_("... loading log file ..."));
+			this.set('content', _("... loading log file ..."));
+			this._all_lines = [];
+			this._lines_exceeded = 0;
 
 			this._first_call = 3;
 			this._last_stamp = 0;

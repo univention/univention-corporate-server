@@ -425,7 +425,7 @@ define([
 					//				processed here since we have to wait for the 'onValuesLoaded' event of the
 					//				combobox.
 					var vtxt;
-					if (values.erratalevel !== 0) {
+					if (values.erratalevel !== 0 && values.erratalevel !== '0') {
 						vtxt = lang.replace(_("The currently installed release version is {ucs_version} errata{erratalevel}"), values);
 					} else {
 						vtxt = lang.replace(_("The currently installed release version is {ucs_version}"), values);
@@ -467,7 +467,7 @@ define([
 							any_errata_available = true;
 						}
 						var ret = component;
-						if (installed_errata !== 0) {
+						if (installed_errata !== 0 && installed_errata !== '0') {
 							ret += ' errata ' + installed_errata;
 						}
 						ret += ' – ';

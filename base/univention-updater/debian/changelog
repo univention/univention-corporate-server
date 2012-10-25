@@ -1,3 +1,9 @@
+univention-updater (8.0.28-1) unstable; urgency=low
+
+  * Only the last 2500 lines of a log file are shown (Bug #26279)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Oct 2012 13:05:26 +0200
+
 univention-updater (8.0.27-1) unstable; urgency=low
 
   * Add strong warning to not power off the system during update (Bug #27899)
