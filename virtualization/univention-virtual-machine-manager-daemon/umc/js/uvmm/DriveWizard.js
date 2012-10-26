@@ -110,7 +110,7 @@ define([
 						validator: lang.hitch(this, function(val) {
 							var regExp = /^[^./][^/]*$/;
 							return regExp.test(val) && (!this._volumes || !(val in this._volumes));
-						}), 
+						}),
 						invalidMessage: _('A valid filename cannot contain "/", may not start with "." and may not already exist in the storage pool.'),
 						depends: [ 'pool_new', 'driver_type_new' ],
 						dynamicValue: lang.hitch(this, function(options) {
@@ -141,7 +141,7 @@ define([
 									++i;
 								} while (fname in this._volumes);
 
-								// found one :)
+								// found one
 								return fname;
 							}));
 						})
@@ -200,7 +200,7 @@ define([
 
 		getValues: function() {
 			var _values = this.inherited(arguments);
-			var values = { 
+			var values = {
 				device: _values.driveType,
 				volumeFilename: _values['volumeFilename_' + _values.volumeType] || '',
 				pool: _values['pool_' + _values.volumeType] || '',

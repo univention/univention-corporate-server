@@ -790,16 +790,16 @@ define([
 					return item.state == 'RUNNING' || item.state == 'IDLE' && item.node_available;
 				}
 			}, {
- 				name: 'suspend',
- 				label: _( 'Suspend' ),
- 				// iconClass: 'umcIconPause',
- 				isStandardAction: false,
- 				isMultiAction: true,
- 				callback: lang.hitch(this, '_changeState', 'SUSPEND', 'suspend' ),
- 				canExecute: function(item) {
- 					return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu' && item.node_available;
- 				}
- 			}, /* { FIXME: not yet fully supported
+				name: 'suspend',
+				label: _( 'Suspend' ),
+				// iconClass: 'umcIconPause',
+				isStandardAction: false,
+				isMultiAction: true,
+				callback: lang.hitch(this, '_changeState', 'SUSPEND', 'suspend' ),
+				canExecute: function(item) {
+					return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu' && item.node_available;
+				}
+			}, /* { FIXME: not yet fully supported
 				name: 'restart',
 				label: _( 'Restart' ),
 				isStandardAction: false,

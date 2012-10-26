@@ -142,38 +142,34 @@ def create_storage_volume(conn, domain, disk):
 		else:
 			values['type'] = 'raw'
 		# permissions
-		permissions = '<permissions>\n'
-		found = True
-		for access in ( 'owner', 'group', 'mode' ):
-			value = configRegistry.get( 'uvmm/volume/permissions/%s' % access, None )
-			if value and value.isdigit():
-				permissions += '<%(tag)s>%(value)s</%(tag)s>\n' % {
-						'tag': xml_escape(access),
-						'value': xml_escape(value),
-						}
-				found = True
-		if found:
-			permissions += '</permissions>'
+		permissions = [(access, configRegistry.get('uvmm/volume/permissions/%s' % access, None))
+				for access in ('owner', 'group', 'mode')]
+		permissions = ['\t\t\t<%(tag)s>%(value)s</%(tag)s>' % {
+			'tag': xml_escape(key),
+			'value': xml_escape(value),
+			} for (key, value) in permissions if value and value.isdigit()]
+		if permissions:
+			permissions = '\t\t<permissions>\n%s\n\t\t</permissions>' % ('\n'.join(permissions),)
 		else:
 			permissions = ''
 
 		template = '''
-		<volume>
-			<name>%%(name)s</name>
-			<allocation>0</allocation>
-			<capacity>%%(size)ld</capacity>
-			<target>
-				<format type="%%(type)s"/>
-				%s
-			</target>
-		</volume>
+<volume>
+	<name>%%(name)s</name>
+	<allocation>0</allocation>
+	<capacity>%%(size)ld</capacity>
+	<target>
+		<format type="%%(type)s"/>
+		%s
+	</target>
+</volume>
 		''' % permissions
 	elif pool_type == 'logical':
 		template = '''
-		<volume>
-			<name>%(name)s</name>
-			<capacity>%(size)ld</capacity>
-		</volume>
+<volume>
+	<name>%(name)s</name>
+	<capacity>%(size)ld</capacity>
+</volume>
 		'''
 	else:
 		logger.error("Unsupported storage-pool-type %s for %s:%s" % (pool_type, domain.name, disk.source))

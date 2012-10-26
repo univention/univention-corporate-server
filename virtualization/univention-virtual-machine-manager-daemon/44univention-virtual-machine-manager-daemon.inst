@@ -264,7 +264,7 @@ create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "automatic" "2048MB" "
 
 # http://www.microsoft.com/windowsserver2008/en/us/system-requirements.aspx
 #   Memory
-#  	  Minimum: 512 MB RAM 
+#     Minimum: 512 MB RAM
 #     Maximum: 8 GB (Foundation) or 32 GB (Standard) or 2 TB (Enterprise, Datacenter, and Itanium-Based Systems)
 #   Disc Space
 #     Minimum: 32 GB or greater
@@ -274,7 +274,7 @@ create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64"
 
 # http://technet.microsoft.com/en-us/library/jj200132.aspx
 #   Memory
-#  	  Minimum: 2 GB RAM 
+#     Minimum: 2 GB RAM
 #     Recommended: 8 GB
 #   Disc Space
 #     Minimum: 32 GB or greater

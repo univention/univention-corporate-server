@@ -388,7 +388,7 @@ class Domains( object ):
 			except ValueError:
 				domain_info.domain_type, domain_info.os_type = ( None, None )
 
-		if  domain_info.domain_type is None or domain_info.os_type is None:
+		if domain_info.domain_type is None or domain_info.os_type is None:
 			if profile:
 				domain_info.domain_type, domain_info.os_type = profile.virttech.split( '-' )
 			else:
@@ -471,7 +471,7 @@ class Domains( object ):
 				iface.source = interface[ 'source' ]
 			iface.model = interface[ 'model' ]
 			iface.mac_address = interface.get( 'mac_address', None )
-			# if  domain_info.os_type == 'hvm':
+			# if domain_info.os_type == 'hvm':
 			# 	if domain_info.domain_type == 'xen':
 			# 		iface.model = 'netfront'
 			# 	elif domain_info.domain_type in ( 'kvm', 'qemu' ):

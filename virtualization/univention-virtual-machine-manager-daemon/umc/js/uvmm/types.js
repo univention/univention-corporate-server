@@ -177,14 +177,14 @@ define([
 			var list = [];
 			tools.forIn(self.interfaceModels, function(ikey, ilabel) {
 				if (ikey == 'virtio') {
-				 	 if (options.domain_type == 'kvm') {
+					if (options.domain_type == 'kvm') {
 						list.push({ id: ikey, label: ilabel });
-				 	 }
+					}
 				}
 				else if (ikey == 'netfront') {
-				 	 if (options.domain_type == 'xen') {
+					if (options.domain_type == 'xen') {
 						list.push({ id: ikey, label: ilabel });
-				 	 }
+					}
 				}
 				else {
 					list.push({ id: ikey, label: ilabel });

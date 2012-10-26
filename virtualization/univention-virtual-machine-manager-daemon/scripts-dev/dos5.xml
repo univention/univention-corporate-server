@@ -9,9 +9,9 @@
     <boot dev="hd"/>
   </os>
   <features>
-  	<acpi/>
-	<apic/>
-	<pae/>
+    <acpi/>
+    <apic/>
+    <pae/>
   </features>
   <devices>
     <disk device="disk" type="file">
