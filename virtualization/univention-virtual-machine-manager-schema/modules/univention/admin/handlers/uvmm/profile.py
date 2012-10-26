@@ -30,14 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.admin.filter
-import univention.admin.handlers
-import univention.admin.syntax
-import univention.admin.localization
+import univention.admin
+import univention.admin.mapping
+import univention.admin.filter as udm_filter
+from univention.admin.handlers import simpleLdap
+import univention.admin.syntax as udm_syntax
+from univention.admin.localization import translation
 from univention.admin.layout import Tab, Group
 
-translation=univention.admin.localization.translation('univention.admin.handlers.uvmm')
-_=translation.translate
+
+_ = translation('univention.admin.handlers.uvmm').translate
 
 module = 'uvmm/profile'
 default_containers = ['cn=Profiles,cn=Virtual Machine Manager']
@@ -45,33 +47,40 @@ default_containers = ['cn=Profiles,cn=Virtual Machine Manager']
 childs = 0
 short_description = _('UVMM: Profile')
 long_description = ''
-operations = [ 'search', 'edit', 'add', 'remove' ]
+operations = ['search', 'edit', 'add', 'remove']
 
-class BootDevice( univention.admin.syntax.select ):
+
+class BootDevice(udm_syntax.select):
+	"""Boot device enumeration."""
 	name = 'BootDevice'
 	choices = [
-		('hd', _( 'hard drive' ) ),
-		('cdrom', _( 'CDROM drive' ) ),
-		('network', _( 'Network' ) ),
+		('hd', _('hard drive')),
+		('cdrom', _('CDROM drive')),
+		('network', _('Network')),
 	]
 
-class Architecture( univention.admin.syntax.select ):
+
+class Architecture(udm_syntax.select):
+	"""CPU architecture."""
 	name = 'Architecture'
 	choices = [
-		('automatic', _('Automatic') ),
-		('i686', '32 Bit' ),
-		('x86_64', '64 Bit' ),
+		('automatic', _('Automatic')),
+		('i686', '32 Bit'),
+		('x86_64', '64 Bit'),
 	]
 
-class VirtTech( univention.admin.syntax.select ):
+
+class VirtTech(udm_syntax.select):
+	"""Virtualization technology."""
 	name = 'VirtTech'
 	choices = [
-		( 'kvm-hvm', _( 'Full virtualization (KVM)' ) ),
-		( 'xen-hvm', _( 'Full virtualization (XEN)' ) ),
-		( 'xen-xen', _( 'Paravirtualization (XEN)' )  ),
+		('kvm-hvm', _('Full virtualization (KVM)')),
+		('xen-hvm', _('Full virtualization (XEN)')),
+		('xen-xen', _('Paravirtualization (XEN)')),
 	]
 
-class ClockOffset(univention.admin.syntax.select):
+
+class ClockOffset(udm_syntax.select):
 	"""Setup for Real-Time-Clock. <http://libvirt.org/formatdomain.html#elementsTime>"""
 	name = 'ClockOffset'
 	choices = [
@@ -79,193 +88,217 @@ class ClockOffset(univention.admin.syntax.select):
 		('localtime', _('Local time zone')),
 	]
 
-property_descriptions={
+
+class DriverCache(udm_syntax.select):
+	"""Disk cache strategy. <http://libvirt.org/formatdomain.html#elementsDisks>"""
+	name = 'DriverCache'
+	choices = [
+		('default', _('Hypervisor default')),
+		('none', _('No host cacheing, no forced sync')),
+		('writethrough', _('Read caching, forced sync')),
+		('writeback', _('Read/write caching, no forced sync')),
+		('directsync', _('No host caching, forced sync')),
+		('unsafe', _('Read/write caching, sync filtered out')),
+	]
+
+
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description= _('Name'),
-			long_description= _('Name'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Name'),
+			long_description=_('Name'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 		),
 	'name_prefix': univention.admin.property(
-			short_description= _('Name prefix'),
-			long_description= _('Prefix for the name of virtual machines'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Name prefix'),
+			long_description=_('Prefix for the name of virtual machines'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'arch': univention.admin.property(
-			short_description= _('Architecture'),
-			long_description= _('Architecture of the virtual machine'),
+			short_description=_('Architecture'),
+			long_description=_('Architecture of the virtual machine'),
 			syntax = Architecture,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'virttech': univention.admin.property(
-			short_description= _('Virtualisation Technology'),
-			long_description= _('Virtualisation Technology'),
-			syntax = VirtTech,
-			multivalue=0,
+			short_description=_('Virtualisation Technology'),
+			long_description=_('Virtualisation Technology'),
+			syntax=VirtTech,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'cpus': univention.admin.property(
-			short_description= _('CPUs'),
-			long_description= _('Number of virtual CPUs'),
-			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			short_description=_('CPUs'),
+			long_description=_('Number of virtual CPUs'),
+			syntax=udm_syntax.integer,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'ram': univention.admin.property(
-			short_description= _('Memory'),
-			long_description= _('Amount of memory'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Memory'),
+			long_description=_('Amount of memory'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'diskspace': univention.admin.property(
-			short_description= _('Disk space'),
-			long_description= _('Amount of disk space'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Disk space'),
+			long_description=_('Amount of disk space'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
+		),
+	'drivercache': univention.admin.property(
+			short_description=_('Disk cache'),
+			long_description=_('Disk cache handling on host'),
+			syntax=DriverCache,
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'interface': univention.admin.property(
-			short_description= _('Network interface'),
-			long_description= _('Bridging interface'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Network interface'),
+			long_description=_('Bridging interface'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'vnc': univention.admin.property(
-			short_description= _('Remote access'),
-			long_description= _('Active VNC remote acess'),
-			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			short_description=_('Remote access'),
+			long_description=_('Active VNC remote acess'),
+			syntax=udm_syntax.boolean,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'kblayout': univention.admin.property(
-			short_description= _('Keyboard layout'),
-			long_description= _('Keyboard layout'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Keyboard layout'),
+			long_description=_('Keyboard layout'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'kernel': univention.admin.property(
-			short_description= _('Kernel'),
-			long_description= _('Kernel'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Kernel'),
+			long_description=_('Kernel'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'kernel_parameter': univention.admin.property(
-			short_description= _('Kernel parameter'),
-			long_description= _('Kernel parameter'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Kernel parameter'),
+			long_description=_('Kernel parameter'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'initramfs': univention.admin.property(
-			short_description= _('Initramfs disk'),
-			long_description= _('Initramfs disk'),
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			short_description=_('Initramfs disk'),
+			long_description=_('Initramfs disk'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'advkernelconf': univention.admin.property(
-			short_description= _('Use advanced kernel configuarion'),
-			long_description= _('Manually specify the kernel configuration for paravirtualized machines or use pyGrub as bootloader'),
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
+			short_description=_('Use advanced kernel configuarion'),
+			long_description=_('Manually specify the kernel configuration for paravirtualized machines or use pyGrub as bootloader'),
+			syntax=udm_syntax.TrueFalseUp,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'bootdev': univention.admin.property(
-			short_description= _('Boot devices'),
-			long_description= _('Order of boot devices'),
-			syntax = BootDevice,
-			multivalue=1,
+			short_description=_('Boot devices'),
+			long_description=_('Order of boot devices'),
+			syntax=BootDevice,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'os': univention.admin.property(
-			short_description= _('Operating system'),
-			long_description= _('Operating system'),
-			syntax = univention.admin.syntax.string,
-			multivalue = False,
+			short_description=_('Operating system'),
+			long_description=_('Operating system'),
+			syntax=udm_syntax.string,
+			multivalue=False,
 			options=[],
-			required = False,
-			may_change = True,
-			identifies = False
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'pvdisk': univention.admin.property(
-			short_description = _('Use para-virtual driver for hard drives'),
-			syntax=univention.admin.syntax.boolean,
-			multivalue = False,
-			options = [],
-			required = False,
-			may_change = True,
-			identifies = False
+			short_description=_('Use para-virtual driver for hard drives'),
+			syntax=udm_syntax.boolean,
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'pvinterface': univention.admin.property(
-			short_description = _('Use para-virtual driver for network interface'),
-			syntax=univention.admin.syntax.boolean,
-			multivalue = False,
-			options = [],
-			required = False,
-			may_change = True,
-			identifies = False
+			short_description=_('Use para-virtual driver for network interface'),
+			syntax=udm_syntax.boolean,
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'pvcdrom': univention.admin.property(
-			short_description = _( 'Use para-virtual driver for CDROM drives' ),
-			syntax = univention.admin.syntax.boolean,
-			multivalue = False,
-			options = [],
-			required = False,
-			may_change = True,
-			identifies = False
+			short_description=_( 'Use para-virtual driver for CDROM drives' ),
+			syntax=udm_syntax.boolean,
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'rtcoffset': univention.admin.property(
 			short_description=_('Real Time Clock offset'),
@@ -280,47 +313,53 @@ property_descriptions={
 }
 
 layout = [
-	Tab( _( 'General' ), _( 'Virtual machine profile' ), layout = [
-		Group( _( 'General' ), layout = [
+	Tab(_('General'), _('Virtual machine profile'), layout=[
+		Group(_('General'), layout=[
 			"name",
 			"virttech",
 			"os",
 			"name_prefix",
-			] ),
-		Group( _( 'Virtual hardware' ), layout = [
+			]),
+		Group(_('Virtual hardware'), layout=[
 			"arch",
 			"cpus",
 			"ram",
 			"diskspace",
+			"drivercache",
 			"interface",
 			'rtcoffset',
 			"pvdisk",
 			"pvinterface",
 			"pvcdrom",
-			] ),
-		Group( _( 'Remote access' ), layout = [
+			]),
+		Group(_('Remote access'), layout=[
 			"vnc",
 			"kblayout",
-			] ),
-		Group( _( 'Boot configuration' ), layout = [
+			]),
+		Group(_('Boot configuration'), layout=[
 			"bootdev",
 			"advkernelconf",
 			"kernel",
 			"kernel_parameter",
 			"initramfs",
-			] )
-		] )
+			])
+		])
 	]
 
-def list2str( lst ):
-	return ','.join( lst )
 
-def str2list( value ):
+def list2str(lst):
+	"""Convert list to comma separated string."""
+	return ','.join(lst)
+
+
+def str2list(value):
+	"""Split comma separated string into list."""
 	if value:
-		return value[ 0 ].split( ',' )
+		return value[0].split(',')
 	return []
 
-mapping=univention.admin.mapping.mapping()
+
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('name_prefix', 'univentionVirtualMachineProfileNamePrefix', None, univention.admin.mapping.ListToString)
 mapping.register('arch', 'univentionVirtualMachineProfileArch', None, univention.admin.mapping.ListToString)
@@ -328,6 +367,7 @@ mapping.register('cpus', 'univentionVirtualMachineProfileCPUs', None, univention
 mapping.register('virttech', 'univentionVirtualMachineProfileVirtTech', None, univention.admin.mapping.ListToString)
 mapping.register('ram', 'univentionVirtualMachineProfileRAM', None, univention.admin.mapping.ListToString)
 mapping.register('diskspace', 'univentionVirtualMachineProfileDiskspace', None, univention.admin.mapping.ListToString)
+mapping.register('drivercache', 'univentionVirtualMachineProfileDriverCache', None, univention.admin.mapping.ListToString)
 mapping.register('vnc', 'univentionVirtualMachineProfileVNC', None, univention.admin.mapping.ListToString)
 mapping.register('interface', 'univentionVirtualMachineProfileInterface', None, univention.admin.mapping.ListToString)
 mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, univention.admin.mapping.ListToString)
@@ -342,47 +382,53 @@ mapping.register('pvinterface', 'univentionVirtualMachineProfilePVInterface', No
 mapping.register('pvcdrom', 'univentionVirtualMachineProfilePVCDROM', None, univention.admin.mapping.ListToString)
 mapping.register('rtcoffset', 'univentionVirtualMachineProfileRTCOffset', None, univention.admin.mapping.ListToString)
 
-class object(univention.admin.handlers.simpleLdap):
-	module=module
 
-	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
+class object(simpleLdap):
+	"""UVMM Profile."""
+	module = module
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.co = co
+		self.lo = lo
+		self.dn = dn
+		self.position = position
+		self._exists = 0
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
+		simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 
 	def exists(self):
+		"""Return 1 if object exists in LDAP."""
 		return self._exists
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		"""Create DN for new UVMM Profile."""
+		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', [ 'univentionVirtualMachineProfile' ] ) ]
+		"""Add LDAP objectClass for UVMM Profile."""
+		return [('objectClass', ['univentionVirtualMachineProfile'])]
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-	filter=univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('objectClass', 'univentionVirtualMachineProfile'),
-				])
+	"""Search for UVMM profile objects."""
+	filter_expr = udm_filter.conjunction('&', [
+		udm_filter.expression('objectClass', 'univentionVirtualMachineProfile'),
+		])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
+		filter_p = udm_filter.parse(filter_s)
+		udm_filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+		filter_expr.expressions.append(filter_p)
 
-	res=[]
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
-	return res
+	return [object(co, lo, None, dn)
+			for dn in lo.searchDn(unicode(filter_expr), base, scope, unique, required, timeout, sizelimit)]
 
 
 def identify(dn, attr, canonical=0):
+	"""Return True if LDAP object is a UVMM profile."""
 	return 'univentionVirtualMachineProfile' in attr.get('objectClass', [])

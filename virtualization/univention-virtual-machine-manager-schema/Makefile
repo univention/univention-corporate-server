@@ -1,9 +1,8 @@
 #!/usr/bin/make -f
 #
 # UCS Virtual Machine Manager schema
-#  rules file for the debian package
 #
-# Copyright 2009-2012 Univention GmbH
+# Copyright 2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,13 +29,33 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-%:
-	dh $@
+UVMM_SCHEMA=univention-virtual-machine-manager-schema
+PO_FILES := $(shell find modules -name '*.po')
+MO_FILES := $(foreach po,$(PO_FILES),modules/i18n/$(notdir $(po:.po=))/LC_MESSAGES/$(UVMM_SCHEMA).mo)
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
+.PHONY: build
+build: $(MO_FILES)
 
-override_dh_auto_clean:
-	dh_auto_clean
-	$(RM) debian/*.conffiles
+define build_mo
+modules/i18n/$(1)/LC_MESSAGES/$(UVMM_SCHEMA).mo: modules/univention/admin/handlers/uvmm/$(1).po
+	mkdir -p $$(dir $$@)
+	msgfmt --check --output-file $$@ $$<
+endef
+
+$(foreach po,$(PO_FILES),$(eval $(call build_mo,$(notdir $(po:.po=)))))
+
+.PHONY: clean
+clean::
+	$(RM) $(MO_FILES)
+
+.PHONY: update-po
+update-po: $(PO_FILES)
+$(PO_FILES) : %.po : modules/univention/admin/handlers/uvmm/messages.pot
+	msgmerge -o $@.new $@ $<
+	mv $@.new $@
+modules/univention/admin/handlers/uvmm/messages.pot: $(wildcard modules/univention/admin/handlers/uvmm/*.py)
+	xgettext --output=$@ \
+		--language=Python \
+		--msgid-bugs-address="packages@univention.de" \
+		--copyright-holder="Univention GmbH" \
+		$^

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (3.0.4-1) unstable; urgency=low
+
+  * Add default disk cache stategy to profile (Bug #23445)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Oct 2012 14:50:06 +0200
+
 univention-virtual-machine-manager-schema (3.0.3-1) unstable; urgency=low
 
   * use functon to determine if udm legacy package is installed
