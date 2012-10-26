@@ -544,6 +544,10 @@ msgstr ""
 msgid "Hungarian"
 msgstr "Ungarisch"
 
+#: umc/js/uvmm/types.js:261
+msgid "ISO format (iso)"
+msgstr "ISO Format (iso)"
+
 #: umc/js/_uvmm/types.js:138
 msgid "Icelandic"
 msgstr "Isländisch"

@@ -246,7 +246,11 @@ define([
 				type: options.type || null
 			}).then(function(data) {
 				return array.map(data.result, function(iitem) {
-					return iitem.volumeFilename;
+					return {
+						id: iitem.volumeFilename,
+						type: iitem.driver_type,
+						label: iitem.volumeFilename
+					};
 				});
 			}, function() {
 				// fallback
@@ -254,13 +258,20 @@ define([
 			});
 		},
 		getImageFormat: function(options) {
-			if (!options.domain_type) {
-				return [];
-			}
-			var list = [ { id: 'raw', label: _('Simple format (raw)') } ];
-			if (options.domain_type == 'kvm') {
-				// add qcow2 as pre-selected item
-				list.push({ id: 'qcow2', label: _('Extended format (qcow2)'), preselected: true });
+			ISO = {id: 'iso', label: _('ISO format (iso)')};
+			RAW = {id: 'raw', label: _('Simple format (raw)')};
+			QCOW2 = {id: 'qcow2', label: _('Extended format (qcow2)'), preselected: true};
+			var list = [];
+			if (options.type == 'cdrom') {
+				list.push(ISO);
+			} else if (options.type == 'floppy') {
+				list.push(RAW);
+			} else {
+				list.push(RAW);
+				if (options.domain_type == 'kvm') {
+					// add qcow2 as pre-selected item
+					list.push(QCOW2);
+				}
 			}
 			return list;
 		},

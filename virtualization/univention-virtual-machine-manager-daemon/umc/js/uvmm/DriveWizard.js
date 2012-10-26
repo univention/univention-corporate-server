@@ -96,8 +96,10 @@ define([
 						name: 'driver_type_new',
 						type: 'ComboBox',
 						label: _('Image format'),
+						depends: ['driveType'],
 						dynamicOptions: lang.hitch(this, function(options) {
 							return {
+								type: options.driveType,
 								domain_type: this.domain.domain_type
 							};
 						}),
@@ -175,7 +177,31 @@ define([
 								type: options.driveType
 							};
 						}),
-						dynamicValues: types.getVolumes
+						dynamicValues: types.getVolumes,
+						onChange: dojo.hitch(this, function(newVal) {
+							var volFileWidget = this._pages.drive._form.getWidget('volumeFilename_exists');
+							var drvTypeWidget = this._pages.drive._form.getWidget('driver_type_exists');
+							var items = dojo.filter(volFileWidget.getAllItems(), function(iitem) {
+								return iitem.id == newVal;
+							});
+							if (items.length) {
+								drvTypeWidget.set('value', items[0].type);
+							} else {
+								drvTypeWidget.set('value', 'raw');
+							}
+						})
+					}, {
+						name: 'driver_type_exists',
+						type: 'ComboBox',
+						label: _('Image format'),
+						depends: ['driveType'],
+						dynamicOptions: dojo.hitch(this, function(options) {
+							return {
+								type: options.driveType,
+								domain_type: this.domain.domain_type
+							};
+						}),
+						dynamicValues: types.getImageFormat
 					}, {
 						name: 'volumeFilename_block',
 						type: 'TextBox',
