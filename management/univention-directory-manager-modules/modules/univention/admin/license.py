@@ -314,17 +314,17 @@ class License( object ):
 			if lic_client and lic_account:
 				if self.__cmp_gt( lic_account, lic_client ) and self.__cmp_gt( real_client, lic_client ):
 					disable_add = 1
-				elif self.__cmp_gt( lic_client, lic_account ) and self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS, lic_account ):
+				elif self.__cmp_gt( lic_client, lic_account ) and self.__cmp_gt( int( real_account ) - max(License.SYSACCOUNTS, self.sysAccountsFound), lic_account ):
 					disable_add = 2
 				elif self.__cmp_eq(lic_client, lic_account):
 					if self.__cmp_gt( real_client, lic_client ):
 						disable_add = 1
-					elif self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS, lic_account ):
+					elif self.__cmp_gt( int( real_account ) - max(License.SYSACCOUNTS, self.sysAccountsFound), lic_account ):
 						disable_add = 2
 			else:
 				if lic_client and self.__cmp_gt( real_client, lic_client ):
 					disable_add = 1
-				if lic_account and self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS ,lic_account ):
+				if lic_account and self.__cmp_gt( int( real_account ) - max(License.SYSACCOUNTS, self.sysAccountsFound) ,lic_account ):
 					disable_add = 2
 			if lic_desktop:
 				if real_desktop and self.__cmp_gt( real_desktop, lic_desktop ):
