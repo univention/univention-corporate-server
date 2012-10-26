@@ -1326,7 +1326,12 @@ def domain_define( uri, domain ):
 		try:
 			_domain_backup(old_dom)
 			if old_dom.name() != domain.name: # rename needs undefine
-				old_dom.undefine() # all snapshots are destroyed!
+				try: # all snapshots are destroyed!
+					old_dom.undefineFlags(libvirt.VIR_DOMAIN_UNDEFINE_MANAGED_SAVE | libvirt.VIR_DOMAIN_UNDEFINE_SNAPSHOTS_METADATA) # all snapshots are destroyed!
+				except libvirt.libvirtError, ee:
+					if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
+						raise
+					old_dom.undefine()
 				logger.info('Old domain "%s" removed.' % (domain.uuid,))
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
@@ -1527,7 +1532,12 @@ def domain_undefine(uri, domain, volumes=[]):
 			if e.get_error_code() != libvirt.VIR_ERR_INTERNAL_ERROR:
 				logger.debug(e)
 		del node.domains[domain]
-		dom.undefine()
+		try:
+			dom.undefineFlags(libvirt.VIR_DOMAIN_UNDEFINE_MANAGED_SAVE | libvirt.VIR_DOMAIN_UNDEFINE_SNAPSHOTS_METADATA)
+		except libvirt.libvirtError, ee:
+			if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
+				raise
+			dom.undefine()
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error undefining domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
