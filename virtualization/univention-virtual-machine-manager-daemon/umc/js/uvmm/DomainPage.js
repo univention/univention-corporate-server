@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
@@ -55,7 +56,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
+], function(declare, lang, array, Memory, Observable, entities, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
 	TextBox, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ TabContainer, StandbyMixin ], {
@@ -442,7 +443,7 @@ define([
 				if (data) {
 					this._domain.domainURI = id;
 
-					this.moduleWidget.set( 'title', 'UVMM: ' + this._domain.name );
+					this.moduleWidget.set('title', 'UVMM: ' + entities.encode(this._domain.name));
 
 					// clear form data
 					this._generalForm.clearFormValues();
