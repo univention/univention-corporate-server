@@ -1489,8 +1489,8 @@ def run_phaseIII(opts, args):
 	if len(stderr.rstrip().split('\n')) > 1:
 		log.debug(stderr)
 
-	## Re-Set Default NTACLs on sysvol
-	# run_and_output_to_log(["/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py", sysvol_path], log.debug)
+	## Re-Set Default NTACLs on sysvol directory (only the directory itself)
+	run_and_output_to_log(["/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py", sysvol_path], log.debug)
 
 	## Re-set default fACLs so sysvol-sync can read files and directories
 	returncode = run_and_output_to_log(["setfacl", "-R", "-P", "-m", "g:Authenticated Users:r-x,d:g:Authenticated Users:r-x", sysvol_path], log.debug)
