@@ -48,7 +48,8 @@ define([
 
 		driveType: null, // pre-defined drive will automatically set the drive type and start on page 'drive'
 
-		constructor: function() {
+		constructor: function(kwArgs) {
+			this.domain = kwArgs.domain;
 			lang.mixin(this, {
 				pages: [{
 					name: 'driveType',
