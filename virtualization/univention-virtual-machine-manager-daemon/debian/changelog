@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.12-3) unstable; urgency=low
+
+  * Wait for runnig domain after migration (Bug #25857)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 26 Oct 2012 23:29:41 +0200
+
 univention-virtual-machine-manager-daemon (2.0.12-2) unstable; urgency=low
 
   * Delete snapshots on VM removal (Bug #25181)

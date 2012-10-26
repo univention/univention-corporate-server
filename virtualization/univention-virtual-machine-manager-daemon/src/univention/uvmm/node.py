@@ -1588,8 +1588,10 @@ def domain_migrate(source_uri, domain, target_uri):
 		except KeyError, e:
 			pass
 		#target_node.domains[domain] = Domain(target_dom, node=target_node)
-		for t in range(10):
-			if domain not in source_node.domains and domain in target_node.domains:
+		for t in range(20):
+			if (domain not in source_node.domains and
+					domain in target_node.domains and
+					target_node.domains[domain].pd.state != libvirt.VIR_DOMAIN_PAUSED):
 				break
 			time.sleep(1)
 		else:
