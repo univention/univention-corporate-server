@@ -539,13 +539,13 @@ define([
 			if (error.response) {
 				status = error.response.xhr ? error.response.xhr.status : (error.response.status !== undefined ? error.response.status : status ); // status can be 0
 				if (error.response.data) {
-					// the response contained a valid JSON object
+					// the response contained a valid JSON object, which contents is already html escaped
 					status = error.response.data.status && parseInt(error.response.data.status, 10) || status;
 					message = error.response.data.message || '';
 					result = error.response.data.result || null;
 				} else {
 					// no JSON was returned, probably proxy error
-					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : (this._statusMessages[status] || this._statusMessages[500]);
+					message = r.test(error.response.text) ? entities.encode(r.exec(error.response.text)[1]) : (this._statusMessages[status] || this._statusMessages[500]);
 				}
 			} else if (error.data) {
 				if (error.data.xhr) {
@@ -561,7 +561,7 @@ define([
 
 			return {
 				status: parseInt(status, 10),
-				message: entities.encode(String(message)).replace(/\n/g, '<br>'),
+				message: String(message).replace(/\n/g, '<br>'),
 				result: result
 			};
 		},

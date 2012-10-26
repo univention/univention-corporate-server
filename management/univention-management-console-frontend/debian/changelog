@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.141-1) unstable; urgency=low
+
+  * fix double html encoding; Bug #28928 
+
+ -- Florian Best <best@univention.de>  Fri, 26 Oct 2012 08:18:33 +0200
+
 univention-management-console-frontend (2.0.140-1) unstable; urgency=low
 
   * fixed typo; Bug #27432
