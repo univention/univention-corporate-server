@@ -230,6 +230,7 @@ define([
 					disk.target_dev = null;
 				}
 				disk.paravirtual = values.paravirtual;
+				disk.driver_cache = values.driver_cache;
 				this.moduleStore.put( disk );
 				_cleanup();
 			});
@@ -270,6 +271,13 @@ define([
 					name: 'paravirtual',
 					value: disk.paravirtual === undefined ? false : disk.paravirtual,
 					label: _( 'Paravirtual drive' )
+				}, {
+					name: 'driver_cache',
+					type: ComboBox,
+					value: disk.driver_cache || 'default',
+					label: _('Caching'),
+					description: _('Configure cache behaviour of host.'),
+					staticValues: types.dict2list(types.driverCache)
 				} ],
 				buttons: [{
 					name: 'submit',
@@ -283,7 +291,7 @@ define([
 					label: _('Cancel'),
 					callback: _cleanup
 				}],
-				layout: [ '__message', 'device', 'pool', 'volumeFilename', 'paravirtual' ]
+				layout: ['__message', 'device', 'pool', 'volumeFilename', 'paravirtual', 'driver_cache']
 			});
 
 			// hide pool for block devices
@@ -375,6 +383,7 @@ define([
 
 			var _finished = lang.hitch(this, function(values) {
 				var paravirtual = false;
+				var driver_cache = 'none';
 				var id = this._nextID();
 
 				_cleanup();
@@ -384,9 +393,13 @@ define([
 					} else if ( values.device == 'disk' && this.domain.profileData.pvdisk ) {
 						paravirtual = true;
 					}
+					if (undefined !== this.domain.profileData.drivercache) {
+						driver_cache = this.domain.profileData.drivercache || driver_cache;
+					}
 				}
 				this.moduleStore.add( lang.mixin( {
 					$id$: id,
+					driver_cache: driver_cache,
 					paravirtual: paravirtual
 				}, values ) );
 			});

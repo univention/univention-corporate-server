@@ -71,7 +71,7 @@ define([
 					}, {
 						name: 'volumeType',
 						type: 'ComboBox',
-						depends: 'driveType',
+						depends: ['driveType'],
 						label: _('Drive type'),
 						sortDynamicValues: false,
 						dynamicValues: function(options) {
@@ -209,10 +209,18 @@ define([
 						label: _('Device filename'),
 						required: true,
 						description: _('To bind the drive to a local device the filename of the associated block device must be specified.'),
-						depends: 'driveType',
+						depends: ['driveType'],
 						dynamicValue: function(options) {
 							return types.blockDevicePath[options.driveType] || '';
 						}
+					}, {
+						name: 'driver_cache',
+						type: 'ComboBox',
+						//depends: ['driveType'],
+						label: _('Caching'),
+						description: _('Configure cache behaviour of host.'),
+						staticValues: types.dict2list(types.driverCache),
+						value: lang.getObject('domain.profileData.drivercache', false, this) || 'none'
 					}]
 				}]
 			});
@@ -233,6 +241,7 @@ define([
 				pool: _values['pool_' + _values.volumeType] || '',
 				size: _values['size_' + _values.volumeType] || '',
 				driver_type: _values['driver_type_' + _values.volumeType] || '',
+				driver_cache: _values.driver_cache || '',
 				volumeType: _values.volumeType
 			};
 			return values;

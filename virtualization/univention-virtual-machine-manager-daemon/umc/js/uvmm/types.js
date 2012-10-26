@@ -221,6 +221,14 @@ define([
 			{ id: 'block', label: _('Use a local device') },
 			{ id: 'empty', label: _('No media') }
 		],
+		driverCache: {
+			'default': _('Hypervisor default'),
+			'none': _('No host caching, no forced sync'),
+			'writethrough': _('Read caching, forced sync'),
+			'writeback': _('Read/write caching, no forced sync'),
+			'directsync': _('No host caching, forced sync'),
+			'unsafe': _('Read/write caching, sync filtered out'),
+		},
 		getPools: function(options) {
 			if (!options.nodeURI) {
 				return [];

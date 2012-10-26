@@ -234,6 +234,7 @@ class Domains( object ):
 
 			drive.device = disk[ 'device' ]
 			drive.driver_type = disk[ 'driver_type' ]
+			drive.driver_cache = disk[ 'driver_cache' ]
 
 			# set old values of existing drive
 			if not create_new:

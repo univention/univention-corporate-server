@@ -181,11 +181,12 @@ define([
 					this._profile.profileDN = profileDN;
 
 					// pre-set the form fields
-					this.getWidget('general', 'nodeURI').set('value', this.getWidget('profile', 'nodeURI').get('value'));
+					var nodeURI = this.getWidget('profile', 'nodeURI').get('value');
+					this.getWidget('general', 'nodeURI').set('value', nodeURI);
 					this.getWidget('profile').set('value', profileDN);
 					this.getWidget('domain_type').set('value', this._profile.virttech.split('-')[0]);
 					this.getWidget('name').set('value', this._profile.name_prefix || '');
-					if ( types.getNodeType( this.getWidget('profile', 'nodeURI').get('value') ) == 'xen' ) {
+					if (types.getNodeType(nodeURI) == 'xen') {
 						this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[A-Za-z0-9_\\-.:+]+$' : '.*');
 					} else {
 						this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
