@@ -387,16 +387,19 @@ class Disk(object):
 	DEVICE_DISK = 'disk'
 	DEVICE_CDROM = 'cdrom'
 	DEVICE_FLOPPY = 'floppy'
+	DEVICE_LUN = 'lun'
 
 	TYPE_FILE = 'file'
 	TYPE_BLOCK = 'block'
-	TYPE_RAW = 'raw'
+	TYPE_DIR = 'dir'
+	TYPE_NETWORK = 'network'
 
 	CACHE_DEFAULT = 'default'
 	CACHE_NONE ='none' # off
 	CACHE_WT ='writethrough'
 	CACHE_WB ='writeback'
 	CACHE_UNSAFE ='unsafe'
+	CACHE_DIRECTSYNC ='directsync'
 
 	def __init__(self):
 		self.type = Disk.TYPE_FILE	# disk/@type
@@ -404,7 +407,7 @@ class Disk(object):
 		self.driver = None	# disk/driver/@name
 		self.driver_type = None	# disk/driver/@type
 		self.driver_cache = Disk.CACHE_DEFAULT	# disk/driver/@cache
-		self.source = ''	# disk/source/@file | disk/source/@dev
+		self.source = ''	# disk/source/@file | disk/source/@dev | disk/source/@dir | disk/source/@protocol
 		self.readonly = False	# disk/readonly
 		self.target_dev = ''	# disk/target/@dev
 		self.target_bus = None	# disk/target/@bus

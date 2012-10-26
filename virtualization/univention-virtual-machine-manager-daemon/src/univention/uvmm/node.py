@@ -411,6 +411,10 @@ class Domain(PersistentCached):
 					dev.source = source[0].getAttribute('file')
 				elif dev.type == Disk.TYPE_BLOCK:
 					dev.source = source[0].getAttribute('dev')
+				elif dev.type == Disk.TYPE_DIR:
+					dev.source = source[0].getAttribute('dir')
+				elif dev.type == Disk.TYPE_NETWORK:
+					dev.source = source[0].getAttribute('protocol')
 				else:
 					raise NodeError(_('Unknown disk type: %(type)d'), type=dev.type)
 			target = disk.getElementsByTagName( 'target' )
@@ -1078,9 +1082,13 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_disk_driver = update(domain_devices_disk, 'driver', None, name=disk.driver, type=disk.driver_type, cache=disk.driver_cache)
 		# /domain/devices/disk/source @file @dev
 		if disk.type == Disk.TYPE_FILE:
-			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=disk.source, dev=None)
+			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=disk.source, dev=None, dir=None, protocol=None)
 		elif disk.type == Disk.TYPE_BLOCK:
-			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=disk.source)
+			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=disk.source, dir=None, protocol=None)
+		elif disk.type == Disk.TYPE_DIR:
+			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=disk.source, protocol=None)
+		elif disk.type == Disk.TYPE_NETWORK:
+			domain_devices_disk_source = update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=None, protocol=disk.source)
 		else:
 			raise NodeError(_("Unknown disk/type='%(type)s'"), type=disk.type)
 		# /domain/devices/disk/readonly

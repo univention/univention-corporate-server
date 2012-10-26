@@ -149,7 +149,7 @@ class Domains( object ):
 
 			# disks
 			for disk in json[ 'disks' ]:
-				if disk[ 'type' ] != Disk.TYPE_BLOCK:
+				if disk[ 'type' ] == Disk.TYPE_FILE:
 					disk[ 'volumeFilename' ] = os.path.basename( disk[ 'source' ] )
 					disk[ 'pool' ] = self.get_pool_name( uri, os.path.dirname( disk[ 'source' ] ) )
 				else:
@@ -230,7 +230,7 @@ class Domains( object ):
 		for disk in disks:
 			drive = Disk()
 			# do we create a new disk or just copy data from an already defined drive
-			create_new = disk.get( 'source', None ) == None
+			create_new = disk.get( 'source', None ) is None
 
 			drive.device = disk[ 'device' ]
 			drive.driver_type = disk[ 'driver_type' ]
@@ -281,7 +281,7 @@ class Domains( object ):
 
 			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
 				if drive.device == Disk.DEVICE_CDROM:
-					drive.driver_type = Disk.TYPE_RAW # ISOs need driver/@type='raw'
+					drive.driver_type = 'raw' # ISOs need driver/@type='raw'
 			elif drive.device == Disk.DEVICE_FLOPPY:
 				drive.target_bus = 'fdc'
 			else:
@@ -310,7 +310,7 @@ class Domains( object ):
 					if drive.source is not None and ucr.is_true( 'uvmm/xen/images/tap2', True ):
 						drive.driver = 'tap2'
 						drive.driver_type = 'aio'
-						# if drive.type == Disk.TYPE_RAW:
+						# if drive.type == 'raw':
 						# 	drive.driver_type = 'aio'
 					else:
 						drive.driver = 'file'
