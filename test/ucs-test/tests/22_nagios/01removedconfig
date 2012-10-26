@@ -46,13 +46,13 @@ univention-directory-manager "computers/$server_role" create \
 	--set dnsEntryZoneForward="zoneName=$domainname,cn=dns,$ldap_base $IP" \
 	--option nagios \
 	--binddn="$BINDDN" \
-	--bindpw="$BINDPWD"
+	--bindpwd="$BINDPWD"
 
 udm nagios/service modify \
 	--dn "cn=$NAGIOSSERVICE,cn=nagios,$ldap_base" \
 	--append assignedHosts="cn=$HOSTNAME,cn=computers,$ldap_base" \
 	--binddn="$BINDDN" \
-	--bindpw="$BINDPWD"
+	--bindpwd="$BINDPWD"
 
 # wait am moment for the UD-Listener to commit the changes
 sleep 2
@@ -69,7 +69,7 @@ fi
 udm "computers/$server_role" remove \
 	--dn "cn=$HOSTNAME,cn=computers,$ldap_base" \
 	--binddn="$BINDDN" \
-	--bindpw="$BINDPWD"
+	--bindpwd="$BINDPWD"
 
 # wait a moment agian
 sleep 2

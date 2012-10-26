@@ -39,7 +39,7 @@ USER_NAME="test$SALT"
 USER_PASSWORD="univention"
 if on_master univention-directory-manager users/user create \
 	--binddn="cn=admin,${ldap_base}" \
-	--bindpw="${LDAP_SECRET}" \
+	--bindpwd="${LDAP_SECRET}" \
 	--position "cn=users,${ldap_base}" \
 	--set "password=${USER_PASSWORD}" \
 	--set "username=${USER_NAME}" \
@@ -128,7 +128,7 @@ fi
 info "Cleaning up - delete User ..."
 if univention-directory-manager users/user remove \
 	--binddn="cn=admin,${ldap_base}" \
-	--bindpw="${LDAP_SECRET}" \
+	--bindpwd="${LDAP_SECRET}" \
 	--dn "${USER_DN}"
 then
 	info "OK"

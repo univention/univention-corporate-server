@@ -1,3 +1,9 @@
+ucs-test (3.0.15-2) unstable; urgency=low
+
+  * changed "udm --bindpw" to "udm --bindpwd" in some tests (Bug #28903) 
+
+ -- Tobias Peters <peters@univention.de>  Fri, 26 Oct 2012 09:46:45 +0200
+
 ucs-test (3.0.15-1) unstable; urgency=low
 
   * changed "udm --bindpw" to "udm --bindpwd" in
