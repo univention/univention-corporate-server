@@ -249,6 +249,15 @@ define([
 				}
 			}, this);
 
+			// update all dependencies when all widgets are ready
+			this.ready().then(lang.hitch(this, function() {
+				tools.forIn(this._dependencyMap, function(iname) {
+					if (iname in this._widgets) {
+						this._updateDependencies(iname);
+					}
+				}, this);
+			}));
+
 			// register callbacks for onSubmit and onReset events
 			tools.forIn(['submit', 'reset'], function(ievent) {
 				var orgCallback = lang.getObject(ievent + '.callback', false, this._buttons);
@@ -289,11 +298,9 @@ define([
 				var deferreds = array.map(depends, function(jdep) {
 					var jwidget = this.getWidget(jdep);
 					if (jwidget) {
-						jwidget.ready ? jwidget.ready() : null;
+						return jwidget.ready ? jwidget.ready() : null;
 					}
-					else {
-						return null;
-					}
+					return null;
 				}, this);
 
 				// trigger the widget as soon as all its dependencies are resolved

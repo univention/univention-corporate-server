@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.142-1) unstable; urgency=low
+
+  * added initial update of dependencies; Bug #28797
+
+ -- Florian Best <best@univention.de>  Fri, 26 Oct 2012 13:11:03 +0200
+
 univention-management-console-frontend (2.0.141-1) unstable; urgency=low
 
   * fix double html encoding; Bug #28928 
