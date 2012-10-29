@@ -1,3 +1,11 @@
+univention-management-console (5.0.49-4) unstable; urgency=low
+
+  * use "644" as file permission mode at "install" calls
+    in "dc-umc-module-install" when processing .js/.py files
+    (Bug #28934)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 29 Oct 2012 12:52:47 +0100
+
 univention-management-console (5.0.49-3) unstable; urgency=low
 
   * readded reload command to umc server init script (Bug #27427)

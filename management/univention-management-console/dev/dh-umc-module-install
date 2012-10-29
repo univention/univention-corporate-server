@@ -84,9 +84,10 @@ def do_package( package, core ):
 			if not install_python:
 				print >>sys.stderr, 'error: no python files found in %s' % module.python_path
 				sys,exit( 1 )
-			install_python.insert( 0, 'install' )
 			install_python.append( 'debian/%(package)s/usr/share/pyshared/univention/management/console/modules/%(Module)s' % module )
-			dh_ucs.doIt( *install_python )
+			install_python_command = ['install', '-m', '644']
+			install_python_command.extend(install_python)
+			dh_ucs.doIt( *install_python_command )
 
 			# copy javascript files
 			for srcFile in module.js_files:
@@ -99,7 +100,7 @@ def do_package( package, core ):
 					dh_ucs.doIt( 'install', '-d', destDir )
 
 				# copy the .js file
-				dh_ucs.doIt( 'install', srcFile, destFile )
+				dh_ucs.doIt( 'install', '-m', '644', srcFile, destFile )
 
 			# copy html files
 			for srcFile in module.html_files:
