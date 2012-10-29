@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.45-1) unstable; urgency=low
+
+  * Adapt syntax/choices/info to size limit; Bug #28248, Bug #26556
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Oct 2012 13:29:40 +0100
+
 univention-management-console-module-udm (3.0.44-1) unstable; urgency=low
 
   * resize LicenseDialog; Bug #28790

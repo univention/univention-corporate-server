@@ -121,7 +121,7 @@ define([
 		_checkThreshold: function() {
 			var func = tools.stringOrFunction(this.dynamicValuesInfo, this.umcpCommand);
 			return func(this.getParams()).then(function(result) {
-				return result.size;
+				return result;
 			});
 		},
 
@@ -140,8 +140,9 @@ define([
 			this._searchingNode.childNodes[0].style.backgroundImage = 'url("' + url + 'loading.gif")';
 
 			if (!this.depends) {
-				this._checkThreshold().then(lang.hitch(this, function(size) {
-					this._totalSize = size;
+				this._checkThreshold().then(lang.hitch(this, function(result) {
+					this._sizeLimitExceeded = result.size_limit_exceeded;
+					this._totalSize = result.size;
 					if (this._totalSize > this.threshold) {
 						this._addAdvancedSearchItemAndSaveStore();
 						// handles especially for this widget:
@@ -306,7 +307,13 @@ define([
 			if (this.advancedSearchItem === null) {
 				this.advancedSearchItem = {};
 				this.advancedSearchItem.id = this.advancedSearchString;
-				this.advancedSearchItem.label = _('Advanced Search');
+				var detail;
+				if (this._sizeLimitExceeded) {
+					detail = _('number exceeded configured limit');
+				} else {
+					detail = lang.replace(_('in {size} objects'), {size: this._totalSize});
+				}
+				this.advancedSearchItem.label = _('Advanced Search') + ' (' + detail + ')';
 			}
 			this.store.newItem(this.advancedSearchItem);
 		},

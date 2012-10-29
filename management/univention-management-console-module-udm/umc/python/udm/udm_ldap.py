@@ -33,15 +33,13 @@
 
 import copy
 import re
-import operator
 import threading
 import gc
 
 from univention.management.console import Translation
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 
 import univention.admin as udm
-import univention.admin.handlers as udm_handlers
 import univention.admin.layout as udm_layout
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
@@ -406,7 +404,7 @@ class UDM_Module( object ):
 			raise UDM_Error( get_exception_msg(e) )
 
 	@LDAP_Connection
-	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '', ldap_connection = None, ldap_position = None ):
+	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '', ldap_connection = None, ldap_position = None, limit_size = True ):
 		"""Searches for LDAP objects based on a search pattern"""
 		if container == 'all':
 			container = ldap_position.getBase()
@@ -419,7 +417,11 @@ class UDM_Module( object ):
 		MODULE.info( 'Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % ( container, filter_s, superordinate ) )
 		result = None
 		try:
-			result = self.module.lookup( None, ldap_connection, filter_s, base = container, superordinate = superordinate, scope = scope, sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000')) )
+			if limit_size:
+				sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000'))
+			else:
+				sizelimit = 0
+			result = self.module.lookup( None, ldap_connection, filter_s, base = container, superordinate = superordinate, scope = scope, sizelimit = sizelimit )
 		except udm_errors.insufficientInformation, e:
 			return []
 		except udm_errors.ldapTimeout, e:
@@ -646,7 +648,7 @@ class UDM_Module( object ):
 			obj_options = None
 		else:
 			if udm_object is None:
-				obj = module.get( object_dn )
+				obj = self.get( object_dn )
 			else:
 				obj = udm_object
 			obj_options = getattr( obj, 'options', {} )
@@ -1048,8 +1050,9 @@ def info_syntax_choices( syntax_name, options = {} ):
 				continue
 			filter_s = _create_ldap_filter( syn, options, module )
 			if filter_s is not None:
-				size += len( module.search( filter = filter_s ) )
-		return {'size' : size, 'performs_well' : True}
+				size += len( module.search( filter = filter_s, limit_size = False ) )
+		sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000'))
+		return {'size' : size, 'performs_well' : True, 'size_limit_exceeded' : size > sizelimit}
 	return {'size' : 0, 'performs_well' : False}
 
 @LDAP_Connection
@@ -1060,7 +1063,7 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 
 	if issubclass( syn.__class__, udm_syntax.UDM_Objects ):
 		syn.choices = []
-		def map_choice( obj_list ):
+		def map_choices( obj_list ):
 			result = []
 			for obj in obj_list:
 				obj.open()
@@ -1099,7 +1102,7 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 			else:
 				search_options = {'filter' : filter_s}
 				search_options.update(module_search_options)
-				syn.choices.extend( map_choice( module.search( **search_options ) ) )
+				syn.choices.extend( map_choices( module.search( **search_options ) ) )
 		if isinstance( syn.static_values, ( tuple, list ) ):
 			for value in syn.static_values:
 				syn.choices.insert( 0, value )
@@ -1146,7 +1149,7 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 	elif issubclass( syn.__class__, udm_syntax.ldapDn ) and hasattr( syn, 'searchFilter' ):
 		try:
 			result = ldap_connection.searchDn( filter = syn.searchFilter )
-		except udm_errors.base, e:
+		except udm_errors.base:
 			MODULE.process( 'Failed to initialize syntax class %s' % syntax_name )
 			return
 		syn.choices = []
@@ -1190,8 +1193,8 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 				mod_store, store = split_module_attr( store_pattern )
 				if store == 'dn':
 					id = dn
-				elif obj.has_key( store ):
-					id = obj.get( store )
+				elif store in obj:
+					id = obj[ store ]
 				elif store in obj.oldattr and obj.oldattr[ store ]:
 					id = obj.oldattr[ store ][ 0 ]
 				else:
@@ -1205,7 +1208,7 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 			elif display is None: # if view-only and in case of error
 				label = '%s: %s' % ( module.title, obj[ module.identifies ] )
 			else:
-				if obj.has_key( display ):
+				if display in obj:
 					label = obj[ display ]
 				elif display in obj.oldattr and obj.oldattr[ display ]:
 					label = obj.oldattr[ display ][ 0 ]

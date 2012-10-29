@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-10-25 16:53+0200\n"
+"POT-Creation-Date: 2012-10-29 12:35+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgstr "%s hinzufügen"
 msgid "Add a new %s."
 msgstr "%s neu hinzufügen."
 
-#: umc/js/udm/ComboBox.js:309
+#: umc/js/udm/ComboBox.js:316
 msgid "Advanced Search"
 msgstr "Erweiterte Suche"
 
@@ -160,7 +160,7 @@ msgstr "Abbrechen"
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/udm/LicenseDialog.js:200
+#: umc/js/udm/LicenseDialog.js:201
 msgid "Clients"
 msgstr "Clients"
 
@@ -173,7 +173,7 @@ msgstr "Schließen"
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/udm/LicenseDialog.js:229
+#: umc/js/udm/LicenseDialog.js:230
 msgid "Corporate Clients"
 msgstr "Corporate Clients"
 
@@ -198,7 +198,7 @@ msgstr "Report erstellen"
 msgid "Creating the report ..."
 msgstr "Erstelle den Report ..."
 
-#: umc/js/udm/LicenseDialog.js:195 umc/js/udm/LicenseDialog.js:220
+#: umc/js/udm/LicenseDialog.js:196 umc/js/udm/LicenseDialog.js:221
 msgid "Current license"
 msgstr "Aktuelle Lizenz"
 
@@ -218,11 +218,11 @@ msgstr "DNS-Objekt"
 msgid "DNS objects"
 msgstr "DNS-Objekte"
 
-#: umc/js/udm/LicenseDialog.js:233
+#: umc/js/udm/LicenseDialog.js:234
 msgid "DVS Clients"
 msgstr "DVS Clients"
 
-#: umc/js/udm/LicenseDialog.js:231
+#: umc/js/udm/LicenseDialog.js:232
 msgid "DVS Users"
 msgstr "DVS Benutzer"
 
@@ -248,7 +248,7 @@ msgstr "Zugehörige Objekte löschen."
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/udm/LicenseDialog.js:202
+#: umc/js/udm/LicenseDialog.js:203
 msgid "Desktops"
 msgstr "Desktops"
 
@@ -269,7 +269,7 @@ msgstr "%s bearbeiten"
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/udm/LicenseDialog.js:204 umc/js/udm/LicenseDialog.js:241
+#: umc/js/udm/LicenseDialog.js:205 umc/js/udm/LicenseDialog.js:242
 msgid "Expiry date"
 msgstr "Ablaufdatum"
 
@@ -289,11 +289,11 @@ msgstr "Fehler beim Hochladen des Zertifikates"
 msgid "Inherited"
 msgstr "Ererbt"
 
-#: umc/js/udm/LicenseDialog.js:239
+#: umc/js/udm/LicenseDialog.js:240
 msgid "Key ID"
 msgstr "Key ID"
 
-#: umc/js/udm/LicenseDialog.js:196 umc/js/udm/LicenseDialog.js:221
+#: umc/js/udm/LicenseDialog.js:197 umc/js/udm/LicenseDialog.js:222
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
@@ -325,7 +325,7 @@ msgstr ""
 "\"bearbeiten\" wird ein neuer Reiter mit der entsprechenden Richtlinie "
 "geöffnet."
 
-#: umc/js/udm/LicenseDialog.js:227
+#: umc/js/udm/LicenseDialog.js:228
 msgid "Managed Clients"
 msgstr "Managed Clients"
 
@@ -512,15 +512,19 @@ msgstr ""
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
-#: umc/js/udm/LicenseDialog.js:237
+#: umc/js/udm/ComboBox.js:312
+msgid "number exceeded configured limit"
+msgstr "Anzahl über konfigurierter Grenze"
+
+#: umc/js/udm/LicenseDialog.js:238
 msgid "Server with premium support"
 msgstr "Server mit Premiumsupport"
 
-#: umc/js/udm/LicenseDialog.js:235
+#: umc/js/udm/LicenseDialog.js:236
 msgid "Server with standard support"
 msgstr "Server mit Standardsupport"
 
-#: umc/js/udm/LicenseDialog.js:225
+#: umc/js/udm/LicenseDialog.js:226
 msgid "Servers"
 msgstr "Server"
 
@@ -662,11 +666,11 @@ msgstr "Hochladen"
 msgid "Upload certificate"
 msgstr "Zertifikat hochladen"
 
-#: umc/js/udm/LicenseDialog.js:198 umc/js/udm/LicenseDialog.js:223
+#: umc/js/udm/LicenseDialog.js:199 umc/js/udm/LicenseDialog.js:224
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
-#: umc/js/udm/LicenseDialog.js:206 umc/js/udm/LicenseDialog.js:243
+#: umc/js/udm/LicenseDialog.js:207 umc/js/udm/LicenseDialog.js:244
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
@@ -766,6 +770,10 @@ msgstr "Benutzer"
 #: umc/js/udm.js:167
 msgid "users"
 msgstr "Benutzer"
+
+#: umc/js/udm/ComboBox.js:314
+msgid "in {size} objects"
+msgstr "insgesamt {size} Objekte"
 
 #~ msgid "Continue editing"
 #~ msgstr "Bearbeiten fortführen"
