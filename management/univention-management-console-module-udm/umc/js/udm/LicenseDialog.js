@@ -184,6 +184,7 @@ define([
 				free_license_info = _( '<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>' );
 			}
 
+			var keys, message;
 			if ( this.licenseInfo.licenseVersion === '1' ) {
 
 				// substract system accounts
@@ -191,7 +192,7 @@ define([
 					this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
 				}
 
-				var keys = {
+				keys = {
 					title : _( 'Current license' ),
 					labelBase : _( 'LDAP base' ),
 					base: this.licenseInfo.baseDN,
@@ -207,7 +208,7 @@ define([
 					product: product
 				};
 
-				var message = licenseHtml;
+				message = licenseHtml;
 
 			} else {
 
@@ -216,7 +217,7 @@ define([
 					this.licenseInfo.real.users -= this.licenseInfo.sysAccountsFound;
 				}
 
-				var keys = {
+				keys = {
 					title : _( 'Current license' ),
 					labelBase : _( 'LDAP base' ),
 					base: this.licenseInfo.baseDN,
@@ -244,13 +245,14 @@ define([
 					product: product
 				};
 
-				var message = license_v2Html;
+				message = license_v2Html;
 			}
 
 			this._widgets.message.set( 'content', lang.replace( message, keys ) );
 			this._widgets.ffpu.set( 'content', this.licenseInfo.baseDN == 'Free for personal use edition' ? free_license_info : '' );
 
 			// recenter dialog
+			this._size();
 			this._position();
 		},
 

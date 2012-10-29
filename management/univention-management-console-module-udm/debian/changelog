@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.44-1) unstable; urgency=low
+
+  * resize LicenseDialog; Bug #28790
+
+ -- Florian Best <best@univention.de>  Mon, 29 Oct 2012 08:49:26 +0100
+
 univention-management-console-module-udm (3.0.43-1) unstable; urgency=low
 
   * added missing import; Bug #28248
