@@ -179,7 +179,8 @@ class property:
 		self.configAttributeName=configAttributeName
 		self.templates=[]
 		self.include_in_default_search=include_in_default_search
-		self.threshold = threshold
+		sizelimit = int(configRegistry.get('directory/manager/web/sizelimit', '2000'))
+		self.threshold = min(threshold, sizelimit) # cannot be more than server limit
 
 	def new(self):
 		if self.multivalue:

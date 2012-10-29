@@ -2544,10 +2544,7 @@ class nfsShare(UDM_Objects):
 	udm_modules = ( 'shares/share', )
 	key = 'dn'
 	label = '%(printablename)s'
-
-	@classmethod
-	def udm_filter( self, options ):
-		return 'objectClass=univentionShareNFS'
+	udm_filter = 'objectClass=univentionShareNFS'
 
 class nfsMounts(complex):
 	subsyntaxes=[(_('NFS share'), nfsShare), ('Mount point', string)]

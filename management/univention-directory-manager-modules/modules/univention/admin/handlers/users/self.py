@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab, Group
+from univention.admin.layout import Tab
 import univention.admin.handlers
 import univention.admin.localization
 
@@ -61,3 +61,4 @@ class object( univention.admin.handlers.users.user.object ):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		univention.admin.handlers.users.user.object.__init__( self, co, lo, position, dn, superordinate, attributes )
+

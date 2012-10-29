@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.77-1) unstable; urgency=low
+
+  * limit admin.property's threshold to server limit Bug; #28248, Bug #26556
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Oct 2012 13:35:30 +0100
+
 univention-directory-manager-modules (8.0.76-1) unstable; urgency=low
 
   * respect self.sysAccountsFound in license count (Bug #28944)  
