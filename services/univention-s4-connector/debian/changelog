@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.17-32) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - check for IPv6
+    - nslookup AD server fqdn only if it was passed on the command line
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Oct 2012 18:39:17 +0100
+
 univention-s4-connector (7.0.17-31) unstable; urgency=low
 
   * use standard UDM unmapSubnet function to unmap reverse zone

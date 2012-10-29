@@ -647,8 +647,30 @@ def run_phaseI(opts, args):
 		sys.exit(1)
 
 	## 1.b ping the given AD server IP
+	ad_server_ip_addr = None
+	try:
+		ad_server_ip_addr = ipaddr.IPAddress(ad_server_ip)
+	except ValueError:
+		msg=[]
+		msg.append("Error: Parsing AD server address failed")
+		msg.append("       Failed to setup a virtual network interface with the AD IP address.")
+		log.error("\n".join(msg))
+		sys.exit(1)
+
+	if ad_server_ip_addr.version == 4:
+		ad_server_ldap_uri = "ldap://%s" % ad_server_ip
+	elif ad_server_ip_addr.version == 6:
+		ad_server_ldap_uri = "ldap://[%s]" % ad_server_ip	## For some reason the ldb-clients do not support this currently.
+		## workaround could be: 1. 'ucr set "hosts/static/%s=tmp_ipv6_ad_server" % ad_server_ip' and "echo -n '[global]\nname resolve order = hosts' > /etc/samba/local.conf"
+		log.error("IPv6 is not yet supported by this script.")
+		sys.exit(1)
+
 	print "Pinging AD IP %s: " % ad_server_ip,
-	p1 = subprocess.Popen(["fping", ad_server_ip], stdout=devnull, stderr=devnull)
+	if ad_server_ip_addr.version == 4:
+		cmd = ["fping", ad_server_ip]
+	else:
+		cmd = ["fping6", ad_server_ip]
+	p1 = subprocess.Popen(cmd, stdout=devnull, stderr=devnull)
 	rc= p1.poll()
 	while rc is None:
 		time.sleep(1)
@@ -686,10 +708,10 @@ def run_phaseI(opts, args):
 	ad_join_password = creds.get_password()
 
 	try:
-		remote_samdb = SamDB("ldap://%s" % ad_server_ip, credentials=creds, session_info=system_session(lp), lp=lp)
+		remote_samdb = SamDB(ad_server_ldap_uri, credentials=creds, session_info=system_session(lp), lp=lp)
 	except:
 		msg = []
-		msg.append("Error: Cannot connect to ldap://%s/ as %s\%s" % (ad_server_ip, creds.get_domain(), ad_join_user))
+		msg.append("Error: Cannot connect to %s as %s\%s" % (ad_server_ldap_uri, creds.get_domain(), ad_join_user))
 		msg.append("       Please check the given credentials.")
 		log.error("\n".join(msg))
 		sys.exit(1)
@@ -710,6 +732,18 @@ def run_phaseI(opts, args):
 			ad_server_fqdn = "%s.%s" % (ad_server_name, ucr["domainname"])
 		else:
 			ad_server_fqdn = ad_server_name
+
+		## Check, if there is a DNS Server running at ad_server_ip which is able to resolve ad_server_fqdn
+		cmd = ["dig", "@%s" % ad_server_ip, ad_server_fqdn, "+short"]
+		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(stdout, stderr) = p1.communicate()
+		log.debug("output of %s\nstdout: '%s'\nstderr: '%s'" % (cmd, stdout.rstrip(), stderr.rstrip()))
+		if not stdout.strip('\n') == ad_server_ip:
+			msg = []
+			msg.append("Error: Cannot resolve DNS name %s using DNS server %s" % (ad_server_fqdn, ad_server_ip))
+			msg.append("       Please check DNS name, IP or configuration.")
+			log.error("\n".join(msg))
+			sys.exit(1)
 	else:
 		try:
 			cmd = ["dig", "@%s" % ad_server_ip, "SRV", "_kerberos._tcp.dc._msdcs.%s" % ucr["domainname"], "+short"]
@@ -833,20 +867,7 @@ def run_phaseI(opts, args):
 	else:
 		ad_server_name = ad_server_fqdn.split('.', 1)[0]
 	
-	## 2. Check, if there is a DNS Server running at ad_server_ip which is
-	## able to resolve ad_server_fqdn
-	cmd = ["dig", "@%s" % ad_server_ip, ad_server_fqdn, "+short"]
-	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	(stdout, stderr) = p1.communicate()
-	log.debug("output of %s\nstdout: '%s'\nstderr: '%s'" % (cmd, stdout.rstrip(), stderr.rstrip()))
-	if not stdout.strip('\n') == ad_server_ip:
-		msg = []
-		msg.append("Error: Cannot resolve DNS name %s using DNS server %s" % (ad_server_fqdn, ad_server_ip))
-		msg.append("       Please check DNS name, IP or configuration.")
-		log.error("\n".join(msg))
-		sys.exit(1)
-
-	## 4. Determine Site of given server, important for locale-dependend names like "Standardname-des-ersten-Standorts"
+	## 2. Determine Site of given server, important for locale-dependend names like "Standardname-des-ersten-Standorts"
 	sitename = None
 	msgs = remote_samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 	                           expression="(sAMAccountName=%s$)" % ad_server_name,
@@ -869,10 +890,10 @@ def run_phaseI(opts, args):
 			i = i+1
 		log.info("Located server %s at AD site %s in AD SAM database." % (ad_server_fqdn, sitename))
 
-	## 5. Essential: Sync the time
+	## 3. Essential: Sync the time
 	sync_time(ad_server_ip)
 
-	## 6. Check AD Object Numbers
+	## 4. Check AD Object Numbers
 	if not check_ad_object_numbers(ucr, remote_samdb):
 
 		log.warn("\nAfter the takeover the Univention Directory Manager will only allow removal of objects until the license restrictions are met.")
