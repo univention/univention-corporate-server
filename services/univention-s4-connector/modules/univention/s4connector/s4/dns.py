@@ -780,13 +780,7 @@ def ucs_zone_create(s4connector, object, dns_type):
 		elif dns_type == 'reverse_zone':
 			zone= univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position, dn=None, superordinate=None, attributes=[])
 			name_key = 'subnet'
-			if zoneName.lower().endswith('.in-addr.arpa'):
-				ip_parts=zoneName[:-13].split('.')
-				ip_parts.reverse()
-				zoneName='.'.join(ip_parts)
-			## elif  zoneName.lower().endswith('.ip6.arpa'):
-			##	ip_parts=zoneName[:-9].split('.')
-			##	zone name conversion missing at this point
+			zoneName = univention.admin.handlers.dns.reverse_zone.unmapSubnet(zoneName)
 		zone.open()
 		zone[name_key]=zoneName
 		if soa['mname'] not in ns:
