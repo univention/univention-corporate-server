@@ -162,22 +162,6 @@ define([
 				type: TextBox,
 				name: 'ipv6/gateway',
 				label: _('Gateway (IPv6)')
-			}, {
-				type: MultiInput,
-				subtypes: [{ type: TextBox }],
-				name: 'nameserver',
-				label: _('Domain name server (max. 3)'),
-				max: 3
-			}, {
-				type: MultiInput,
-				subtypes: [{ type: TextBox }],
-				name: 'dns/forwarder',
-				label: _('External name server (max. 3)'),
-				max: 3
-			}, {
-				type: TextBox,
-				name: 'proxy/http',
-				label: _('HTTP proxy')
 			}];
 
 			var layout = [{
@@ -188,7 +172,7 @@ define([
 				layout: ['interfaces_ipv6', 'dynamic_interfaces_ipv6']
 			}, {
 				label: _('Global network settings'),
-				layout: [ ['gateway', 'ipv6/gateway'], 'nameserver', 'dns/forwarder', 'proxy/http']
+				layout: ['gateway', 'ipv6/gateway']
 			}];
 
 			this._form = new Form({
@@ -268,12 +252,13 @@ define([
 					gatewayWidget.set('value', result.gateway);
 				}
 
+/* FIXME:
 				// read nameserver or dns/forwarder
 				var nameserverWidget;
 				if (this._form.getWidget('nameserver').get('visible')) {
 					nameserverWidget = this._form.getWidget('nameserver');
 				} else {
-					// if nameserver is not visable, set dns/forwarder
+					// if nameserver is not visible, set dns/forwarder
 					nameserverWidget = this._form.getWidget('dns/forwarder');
 				}
 				val = nameserverWidget.get('value');
@@ -287,7 +272,7 @@ define([
 					val[2] = result.nameserver_3;
 				}
 				nameserverWidget.set('value', val);
-
+*/
 			}), lang.hitch(this, function() {
 				// switch off standby animation
 				this.standby(false);
@@ -319,8 +304,10 @@ define([
 		},
 			
 		setValues: function(_vals) {
+			var vals = {};
+
 			// save a copy of all original values that may be lists
-			var r = /^(interfaces\/[^\/]+\/|nameserver[1-3]|dns\/forwarder[1-3])$/;
+			var r = /^interfaces\/[^\/]+\/$/;
 			this._orgValues = {};
 			tools.forIn(_vals, function(ikey, ival) {
 				if (r.test(ikey)) {
@@ -329,8 +316,7 @@ define([
 			}, this);
 
 			// copy values that do not change in their name
-			var vals = {};
-			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http'], function(ikey) {
+			array.forEach(['gateway', 'ipv6/gateway'], function(ikey) {
 				vals[ikey] = _vals[ikey];
 			});
 
@@ -340,17 +326,6 @@ define([
 				sortedKeys.push(ikey);
 			});
 			sortedKeys.sort();
-
-			// copy lists of nameservers/forwarders
-			vals.nameserver = [];
-			vals['dns/forwarder'] = [];
-			array.forEach(sortedKeys, function(ikey) {
-				array.forEach(['nameserver', 'dns/forwarder'], function(jname) {
-					if (0 === ikey.indexOf(jname)) {
-						vals[jname].push(_vals[ikey]);
-					}
-				});
-			});
 
 			// copy ipv4 interfaces
 			r = /interfaces\/(([^_\/]+)(_([0-9]+))?)\/(.+)/;
@@ -431,13 +406,6 @@ define([
 				}
 			});
 
-			// only show forwarder for master, backup, and slave
-			this._currentRole = _vals['server/role'];
-			var showForwarder = this._currentRole == 'domaincontroller_master' || this._currentRole == 'domaincontroller_backup' || this._currentRole == 'domaincontroller_slave';
-			this._form.getWidget('dns/forwarder').set('visible', showForwarder);
-
-			// hide domain nameserver on master when using system setup boot
-			this._form.getWidget('nameserver').set('visible', ! ( this.wizard_mode && this._currentRole == 'domaincontroller_master' ) );
 			// set values
 			this._form.setFormValues(vals);
 
@@ -451,15 +419,8 @@ define([
 			var vals = {};
 
 			// copy values that do not change in their name
-			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http'], function(ikey) {
+			array.forEach(['gateway', 'ipv6/gateway'], function(ikey) {
 				vals[ikey] = _vals[ikey];
-			});
-
-			// copy lists of nameservers/forwarders
-			array.forEach(['nameserver', 'dns/forwarder'], function(iname) {
-				array.forEach(_vals[iname], function(jval, j) {
-					vals[iname + (j + 1)] = jval;
-				});
 			});
 
 			// copy ipv4 interfaces
@@ -561,18 +522,6 @@ define([
 				variables: ['ipv6/gateway'],
 				description: _('Gateway (IPv6)'),
 				values: vals['ipv6/gateway']
-			}, {
-				variables: [/nameserver.*/],
-				description: _('Domain name server'),
-				values: vals['nameserver'].join(', ')
-			}, {
-				variables: [/dns\/forwarder.*/],
-				description: _('External name server'),
-				values: vals['dns/forwarder'].join(', ')
-			}, {
-				variables: ['proxy/http'],
-				description: _('HTTP proxy'),
-				values: vals['proxy/http']
 			}, {
 				variables: [/^interfaces\/[^_\/]+(_[0-9]+)?\/(?!ipv6).*/],
 				description: _('IPv4 network devices'),

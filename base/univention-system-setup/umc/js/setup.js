@@ -52,6 +52,7 @@ define([
 	"umc/modules/setup/LanguagePage",
 	"umc/modules/setup/BasisPage",
 	"umc/modules/setup/NetworkPage",
+	"umc/modules/setup/DNSPage",
 	"umc/modules/setup/CertificatePage",
 	"umc/modules/setup/SoftwarePage",
 	"umc/modules/setup/SystemRolePage",
@@ -67,7 +68,7 @@ define([
 
 		// pages: String[]
 		//		List of all setup-pages that are visible.
-		pages: [ 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage', 'SoftwarePage' ],
+		pages: [ 'LanguagePage', 'BasisPage', 'NetworkPage', 'DNSPage', 'CertificatePage', 'SoftwarePage' ],
 
 		// 100% opacity during rendering the module
 		//standbyOpacity: 1,

@@ -1,3 +1,9 @@
+univention-system-setup (6.0.44-2) unstable; urgency=low
+
+  * WIP: split nameserver settings into own page; Bug #28389
+
+ -- Florian Best <best@univention.de>  Mon, 29 Oct 2012 16:38:58 +0100
+
 univention-system-setup (6.0.44-1) unstable; urgency=low
 
   * Fix memory leak (Bug #27432)
