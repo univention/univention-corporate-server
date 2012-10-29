@@ -48,8 +48,8 @@ define([
 
 		driveType: null, // pre-defined drive will automatically set the drive type and start on page 'drive'
 
-		constructor: function(kwArgs) {
-			this.domain = kwArgs.domain;
+		constructor: function(props) {
+			props = props || {};
 			lang.mixin(this, {
 				pages: [{
 					name: 'driveType',
@@ -153,7 +153,7 @@ define([
 						type: 'TextBox',
 						required: true,
 						label: _('Size (default unit MB)'),
-						value: lang.getObject('domain.profileData.diskspace', false, this) || '12.0 GB'
+						value: lang.getObject('domain.profileData.diskspace', false, props) || '12.0 GB'
 					}, {
 						name: 'pool_exists',
 						type: 'ComboBox',
@@ -179,10 +179,10 @@ define([
 							};
 						}),
 						dynamicValues: types.getVolumes,
-						onChange: dojo.hitch(this, function(newVal) {
+						onChange: lang.hitch(this, function(newVal) {
 							var volFileWidget = this._pages.drive._form.getWidget('volumeFilename_exists');
 							var drvTypeWidget = this._pages.drive._form.getWidget('driver_type_exists');
-							var items = dojo.filter(volFileWidget.getAllItems(), function(iitem) {
+							var items = array.filter(volFileWidget.getAllItems(), function(iitem) {
 								return iitem.id == newVal;
 							});
 							if (items.length) {
@@ -196,7 +196,7 @@ define([
 						type: 'ComboBox',
 						label: _('Image format'),
 						depends: ['driveType'],
-						dynamicOptions: dojo.hitch(this, function(options) {
+						dynamicOptions: lang.hitch(this, function(options) {
 							return {
 								type: options.driveType,
 								domain_type: this.domain.domain_type
@@ -276,9 +276,8 @@ define([
 			return nextName;
 		},
 
-		_updateDriveWidgets: function(driveType) {
+		_updateDriveWidgets: function(volumeType) {
 			// update visibility
-			var volumeType = this.getWidget('volumeType').getValue('value');
 			tools.forIn(this._pages.drive._form._widgets, function(iname, iwidget) {
 				var visible = iname.indexOf('_') < 0 || (volumeType && iname.indexOf(volumeType) >= 0);
 				iwidget.set('visible', visible);

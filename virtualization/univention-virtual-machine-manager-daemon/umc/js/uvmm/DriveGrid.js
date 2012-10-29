@@ -86,7 +86,7 @@ define([
 					callback: lang.hitch(this, '_editDrive'),
 					canExecute: lang.hitch( this, function( item ) {
 						if (this.disabled) {
-							return false;
+							return this.domain.domain_type === 'kvm' && (item.device == 'cdrom' || item.device == 'floppy');
 						} else {
 							// when creating an instance drives can not be edited
 							return undefined !== this.domain.domainURI;
@@ -265,7 +265,7 @@ define([
 					type: TextBox,
 					value: disk.volumeFilename,
 					label: _( 'Filename' ),
-					disabled: true
+					disabled: disk.device != 'cdrom' && disk.device != 'floppy'
 				}, {
 					type: CheckBox,
 					name: 'paravirtual',

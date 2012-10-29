@@ -723,8 +723,7 @@ define([
 					label: _('Memory usage'),
 					width: 'adjust',
 					formatter: lang.hitch(this, 'memoryUsageFormatter')
-				}
-	];
+				}];
 			}
 
 			// else type == 'domain'

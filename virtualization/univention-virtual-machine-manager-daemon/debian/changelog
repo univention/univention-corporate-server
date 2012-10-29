@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.13-1) unstable; urgency=low
+
+  * fix image size from profile; Bug #28635
+
+ -- Florian Best <best@univention.de>  Mon, 29 Oct 2012 13:46:51 +0100
+
 univention-virtual-machine-manager-daemon (2.0.12-3) unstable; urgency=low
 
   * Wait for runnig domain after migration (Bug #25857)
