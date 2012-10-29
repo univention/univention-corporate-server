@@ -66,6 +66,7 @@ Type: multifile
 Multifile: etc/pam.d/common-session
 Variables: homedir/create
 Variables: homedir/mount
+Variables: homedir/mount/required
 Variables: quota/userdefault
 Variables: auth/kdeprofile
 Variables: auth/methods
@@ -78,6 +79,7 @@ Multifile: etc/pam.d/common-session
 Subfile: etc/pam.d/common-session.d/10univention-pam_common
 Variables: homedir/create
 Variables: homedir/mount
+Variables: homedir/mount/required
 Variables: auth/kdeprofile
 Variables: auth/methods
 

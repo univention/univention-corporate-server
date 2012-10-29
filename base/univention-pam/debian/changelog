@@ -1,3 +1,9 @@
+univention-pam (6.0.9-1) unstable; urgency=low
+
+  * added UCRV homedir/mount/required (Bug #23637) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Oct 2012 16:08:43 +0100
+
 univention-pam (6.0.8-1) unstable; urgency=low
 
   * added binddn and bindpw to nssldap conf (Bug #28807)

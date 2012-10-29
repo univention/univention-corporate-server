@@ -255,3 +255,21 @@ Description[en]=Defines whether the group members should be re-checked in the LD
 Type=bool
 Categories=system-base
 
+[homedir/create]
+Description[de]=Definiert ob für Benutzer beim Login ein Heimatverzeichnis erstellt werden soll (default: true)
+Description[en]=Defines whether a users home directory should be created (if necessary) during logon (default: true)
+Type=bool
+Categories=system-base
+
+[homedir/mount]
+Description[de]=Definiert ob Heimatverzeichnisse von Benutzern beim Login eingebunden werden sollen (default: true)
+Description[en]=Defines whether a users home directory should be mounted (if necessary) during logon (default: true)
+Type=bool
+Categories=system-base
+
+[homedir/mount/required]
+Description[de]=Definiert ob das Einbinden von Heimatverzeichnissen von Benutzern Voraussetzung für ein erfolgreichen Login ist (default: true)
+Description[en]=Defines whether a successful mount of the users home directory is required for the logon (default: true)
+Type=bool
+Categories=system-base
+
