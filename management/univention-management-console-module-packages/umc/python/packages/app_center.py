@@ -30,33 +30,27 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-import urllib2
-import os.path
-import threading
 
-# for version comparison
 from distutils.version import LooseVersion
+import ConfigParser
+import copy
+import locale
+import os.path
+import re
+import threading
+import traceback
+import urllib2
+
+from ldap import LDAPError
 
 from univention.management.console.log import MODULE
-
 from univention.updater import UniventionUpdater
-uu = UniventionUpdater(False)
-
-import univention.config_registry
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
-
-import util
-from constants import COMPONENT_BASE
-
-import re
-import ConfigParser
-import locale
-import copy
-import traceback
-
 import univention.admin.uexceptions as udm_errors
-from ldap import LDAPError
+import univention.config_registry
+
+from . import util
+from .constants import COMPONENT_BASE
+
 
 class License(object):
 	def __init__(self, license=None):
@@ -503,3 +497,7 @@ class Application(object):
 			MODULE.warn(traceback.format_exc())
 			raise
 
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+uu = UniventionUpdater(False)
