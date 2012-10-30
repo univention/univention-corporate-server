@@ -1,3 +1,12 @@
+univention-management-console-frontend (2.0.143-1) unstable; urgency=low
+
+  * added joinscript for univention-management-console-web-server
+  * restart univention-management-console-web-server in newly
+    added joinscript
+  (Bug #11925)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 30 Oct 2012 16:15:07 +0100
+
 univention-management-console-frontend (2.0.142-2) unstable; urgency=low
 
   * reverted changes made for Bug #27427

@@ -1,8 +1,8 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console
-#  Create UMC ACLs for local user
+# Univention Management Console Web Server
+#  Joinscript
 #
 # Copyright 2006-2012 Univention GmbH
 #
@@ -31,15 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=4
+VERSION=1
 
 . /usr/share/univention-join/joinscripthelper.lib
-. /usr/share/univention-lib/umc.sh
 
 joinscript_init
 
-umc_init
-/etc/init.d/univention-management-console-server restart
+/etc/init.d/univention-management-console-web-server restart
 
 joinscript_save_current_version
 

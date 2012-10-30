@@ -32,6 +32,8 @@
 
 #DEBHELPER#
 
+. /usr/share/univention-lib/base.sh
+
 # add apache modules for redirect to UMC web server
 a2enmod proxy
 a2enmod proxy_connect
@@ -71,5 +73,7 @@ if dpkg --compare-versions "$2" lt-nl 1.0.8-1; then
 	# remove link in apache's sites-enabled
 	rm -f /etc/apache2/sites-enabled/univention-directory-manager
 fi
+
+call_joinscript 34univention-management-console-web-server.inst
 
 exit 0
