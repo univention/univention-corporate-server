@@ -1631,9 +1631,19 @@ def run_phaseIII(opts, args):
 	ptr_address = address_parts.pop()
 	address_parts.reverse()
 	ptr_zone = "%s.in-addr.arpa" % '.'.join(address_parts)
-	returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--set", "address=%s" % ptr_address, "--set", "ptr_record=%s." % local_fqdn], log.debug)
-	if returncode != 0:
-		log.warn("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
+	## check for an existing record.
+	p = subprocess.Popen(["univention-directory-manager", "dns/ptr_record", "list", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--filter", "address=%s" % ptr_address], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	(stdout, stderr) = p.communicate()
+	if len(stdout.rstrip().split('\n')) > 1:
+		## modify existing record.
+		returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "modify", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--dn", "relativeDomainName=%s,zoneName=%s,cn=dns,%s" % (ptr_address, ptr_zone, ucr["ldap/base"]), "--set", "ptr_record=%s." % local_fqdn], log.debug)
+		if returncode != 0:
+			log.warn("Warning: Update of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
+	else:
+		## add new record.
+		returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--set", "address=%s" % ptr_address, "--set", "ptr_record=%s." % local_fqdn], log.debug)
+		if returncode != 0:
+			log.warn("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
 
 	## Resolve against local Bind9
 	## use OpenLDAP backend until the S4 Connector has run
