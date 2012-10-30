@@ -1,4 +1,4 @@
-univention-management-console-frontend-doc (6.0.8-1) unstable; urgency=low
+univention-management-console-frontend-doc (6.0.8-2) unstable; urgency=low
 
   * fix image path; Bug #28969
 
