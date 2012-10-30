@@ -39,6 +39,7 @@ define([
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"dojo/on",
+	"dojo/_base/event",
 	"dojo/aspect",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -58,7 +59,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, window, query, construct, attr, geometry,
-		style, on, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
+		style, on, event, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -272,7 +273,7 @@ define([
 				var item = new MenuItem({
 					label: ilabel,
 					iconClass: iiconClass,
-					onClick: lang.hitch(this, function() {
+					onMouseUp: lang.hitch(this, function() {
 						if (iaction.callback) {
 							iaction.callback([this._contextItemID], [this._contextItem]);
 						}
@@ -348,6 +349,11 @@ define([
 						var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
 						var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
 
+						var btn_name = '_btn_' + (iaction.field || this.moduleStore.idProperty);
+						if (item[btn_name] !== undefined) {
+							return item[btn_name];
+						}
+
 						// by default only create a button with icon
 						var props = { iconClass: iiconClass };
 						if (!props.iconClass) {
@@ -365,28 +371,28 @@ define([
 						// call canExecute to make sure the action can be executed
 						if (iaction.canExecute && !iaction.canExecute(item)) {
 							// the action cannot be executed... return an empty string
-							return '';
-						}
-
-						// return final button
-						var btn = new Button( props );
-						if ( iaction.description ) {
-							var idescription = typeof  iaction.description  == "function" ? iaction.description( item ) : iaction.description;
-							var tooltip = new Tooltip( {
-								label: idescription,
-								connectId: [ btn.domNode ]
-							});
-							if ( iaction.onShowDescription ) {
-								tooltip = lang.mixin( tooltip, { onShow: function( target ) { iaction.onShowDescription( target, item ); } } );
+							item[btn_name] = '';
+						} else {
+							// return final button
+							var btn = new Button( props );
+							if ( iaction.description ) {
+								var idescription = typeof  iaction.description  == "function" ? iaction.description( item ) : iaction.description;
+								var tooltip = new Tooltip( {
+									label: idescription,
+									connectId: [ btn.domNode ]
+								});
+								if ( iaction.onShowDescription ) {
+									tooltip = lang.mixin( tooltip, { onShow: function( target ) { iaction.onShowDescription( target, item ); } } );
+								}
+								if ( iaction.onHideDescription ) {
+									tooltip = lang.mixin( tooltip, { onHide: function() { iaction.onHideDescription( item ); } } );
+								}
+								btn.own(tooltip);
 							}
-							if ( iaction.onHideDescription ) {
-								tooltip = lang.mixin( tooltip, { onHide: function() { iaction.onHideDescription( item ); } } );
-							}
-							// destroy the tooltip when the widget is destroyed
-							tooltip.connect( btn, 'destroy', 'destroy' );
+							this.own(btn);
+							item[btn_name] = btn;
 						}
-						this.own(btn);
-						return btn;
+						return item[btn_name];
 					})
 				});
 			}, this);
@@ -400,6 +406,8 @@ define([
 					field: this.moduleStore.idProperty,
 					name: ' ',
 					editable: false,
+					onClick: function() { console.log('click!') },
+					_onClick: function() { console.log('click!!') },
 					formatter: lang.hitch(this, function(key, rowIndex) {
 						// do not show buttons in case the row is disabled
 						if (this._grid.rowSelectCell.disabled(rowIndex)) {
@@ -409,41 +417,26 @@ define([
 						// get corresponding item
 						var item = this._grid.getItem(rowIndex);
 
-						// create context menu
-						var menu = new Menu({});
-						array.forEach(tmpActions, function(iaction) {
-							// call canExecute to make sure the action can be executed
-							if (iaction.canExecute && !iaction.canExecute(item)) {
-								// the action cannot be executed... return an empty string
-								return true;
-							}
-
-							// get icon and label (these properties may be functions)
-							var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
-							var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
-
-							// add the menu entry
-							menu.addChild(new MenuItem({
-								label: ilabel,
-								iconClass: iiconClass,
-								onClick: lang.hitch(this, function() {
-									if (iaction.callback) {
-										iaction.callback([key], [item]);
-									}
-								})
-							}));
-						}, this);
-
-						// we only need to display the drop-down button if it is populated
-						if (0 === menu.getChildren().length) {
-							return '';
+						// cache dropdown. otherwise the formatter
+						// will generate a new one for every visible
+						// entry every time the grid is scrolled
+						if (item._dropDown !== undefined) {
+							return item._dropDown;
 						}
 
-						// by default only create a button with icon
-						return this.own(new DropDownButton({
+						item._dropDown = new DropDownButton({
 							label: _('more'),
-							dropDown: menu
-						}))[0];
+							onMouseDown: lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex}),
+							_onClick: function() {
+								// dont propagate any event here - otherwise dropDown gets closed.
+								// this has somehting to do with the dropdown losing focus in favor
+								// of the underlying td-node. it triggers _HasDropDown's _onBlur
+							},
+							dropDown: this._contextMenu
+						});
+						this.own(item._dropDown);
+
+						return item._dropDown;
 					})
 				});
 			}

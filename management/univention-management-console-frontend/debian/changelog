@@ -1,3 +1,11 @@
+univention-management-console-frontend (2.0.145-1) unstable; urgency=low
+
+  * Use the very same contextMenu for all more-menus in Grid (Bug #27432)
+  * cache grid's dropDownButtons and standardButtons (Bug #27432)
+  * fix dropDownButton accidently closing menu
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 30 Oct 2012 18:45:58 +0100
+
 univention-management-console-frontend (2.0.144-1) unstable; urgency=low
 
   * fixed Makefile (Bug #11925)
