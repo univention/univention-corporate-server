@@ -1,3 +1,9 @@
+firefox-en (1:10.0.9esr-4) unstable; urgency=low
+
+  * fixed debian/control (Bug #27986) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Oct 2012 15:03:50 +0100
+
 firefox-en (1:10.0.9esr-3) unstable; urgency=low
 
   * Update to Firefox 10.0.9esr (Bug #28727)

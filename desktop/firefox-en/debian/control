@@ -11,7 +11,7 @@ Depends: libstdc++6, ia32-libs [amd64], ia32-libs-gtk [amd64], ttf-dejavu | ttf-
 Conflicts: mozilla-firefox, iceweasel, firefox-de
 Breaks: firefox (<< 1:10)
 Provides: www-browser
-Description: lightweight web browser based on Mozilla (German version)
+Description: lightweight web browser based on Mozilla (English version)
  Firefox is a redesign of the Mozilla browser component, similar to
  Galeon, K-Meleon and Camino, but written using the XUL user interface
  language and designed to be lightweight and cross-platform.
