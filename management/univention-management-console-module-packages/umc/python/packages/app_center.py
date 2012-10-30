@@ -39,6 +39,7 @@ import os.path
 import re
 import threading
 import traceback
+import urllib
 import urllib2
 
 from ldap import LDAPError
@@ -477,22 +478,23 @@ class Application(object):
 	def _send_information(self, action, status):
 		if not self.get('emailrequired'):
 			return
+
 		ucr.load()
-		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+		server = ucr.get('repository/app_center/server',
+		                 'appcenter.software-univention.de')
+		url = 'https://%s/index' % (server, )
+
 		try:
-			url = 'https://%(server)s/index.py?uuid=%(uuid)s&app=%(app)s&action=%(action)s&status=%(status)s&version=%(version)s&role=%(role)s'
-			url = url % {
-				'server' : server,
-				'uuid' : LICENSE.uuid,
-				'app' : self.id,
-				'version' : self.version,
-				'action' : action,
-				'status' : status,
-				'role': ucr.get('server/role'),
-			}
-			#request = urllib2.Request(url, headers={'User-agent' : 'UMC/AppCenter'})
-			#urllib2.urlopen(request)
-			return url
+			values = {'uuid': LICENSE.uuid,
+			          'app': self.id,
+			          'version': self.version,
+			          'action': action,
+			          'status': status,
+			          'role': ucr.get('server/role'),
+			          }
+			request_data = urllib.urlencode(values)
+			request = urllib2.Request(url, request_data)
+			urllib2.urlopen(request)
 		except:
 			MODULE.warn(traceback.format_exc())
 			raise

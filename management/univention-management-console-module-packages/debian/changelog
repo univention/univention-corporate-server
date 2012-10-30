@@ -1,5 +1,6 @@
 univention-management-console-module-packages (2.0.50-1) unstable; urgency=low
 
+  * Improve "_send_information" function
   * Cleanup
   (Bug #28001)
 
