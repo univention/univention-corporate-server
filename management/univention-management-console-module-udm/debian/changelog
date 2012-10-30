@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.46-1) unstable; urgency=low
+
+  * Bundle various umc-commands into one to speed up page load (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 30 Oct 2012 13:23:52 +0100
+
 univention-management-console-module-udm (3.0.45-1) unstable; urgency=low
 
   * Adapt syntax/choices/info to size limit; Bug #28248, Bug #26556

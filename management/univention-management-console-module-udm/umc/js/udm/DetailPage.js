@@ -57,10 +57,11 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/modules/udm/Template",
 	"umc/modules/udm/OverwriteLabel",
+	"umc/modules/udm/UMCPBundle",
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, _ ) {
+], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
 	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -147,6 +148,8 @@ define([
 
 		_multiEdit: false,
 
+		_bundledCommands: null,
+
 		// UDM object type name in singular and plural
 		objectNameSingular: '',
 		objectNamePlural: '',
@@ -175,10 +178,13 @@ define([
 				objectDN: this._multiEdit ? null : this.ldapName || null
 			};
 
+			// udm/objects/properties will be bundled
+			this._bundledCommands = {};
+
 			// prepare parallel queries
 			var commands = {
-				properties: this.umcpCommand('udm/properties', params),
-				layout: this.umcpCommand('udm/layout', params)
+				properties: this.umcpCommandBundle('udm/properties', params),
+				layout: this.umcpCommandBundle('udm/layout', params)
 			};
 			if (!this._multiEdit) {
 				// query policies for normal edit
@@ -460,8 +466,8 @@ define([
 				var commands = [];
 				array.forEach(policies, function(ipolicy) {
 					var params = { objectType: ipolicy.objectType };
-					commands.push(this.umcpCommand('udm/properties', params));
-					commands.push(this.umcpCommand('udm/layout', params));
+					commands.push(this.umcpCommandBundle('udm/properties', params));
+					commands.push(this.umcpCommandBundle('udm/layout', params));
 				}, this);
 
 				// wait until we have results for all queries
@@ -739,6 +745,17 @@ define([
 			});
 		},
 
+		// TODO: this could very well go into tools.
+		// for now, it is only tested to work with udm/object/policies
+		umcpCommandBundle: function(command, params) {
+			if (this._bundledCommands[command] === undefined) {
+				this._bundledCommands[command] = new UMCPBundle(command, this.umcpCommand);
+			}
+			var bundle = this._bundledCommands[command];
+			var deferred = bundle.addParams(params);
+			return deferred;
+		},
+
 		_updatePolicy: function(policyType, policyDN) {
 			// make sure the given policyType exists
 			if (!(policyType in this._policyWidgets)) {
@@ -746,12 +763,12 @@ define([
 			}
 
 			// evaluate the policy with the given policyType and policyDN
-			this.umcpCommand('udm/object/policies', {
+			this.umcpCommandBundle('udm/object/policies', {
 				objectType: this.objectType,
 				policyDN: 'None' == policyDN || !policyDN ? null : policyDN,
 				policyType: policyType,
 				objectDN: this.ldapName || null,
-				container: this.newObjectOptions ? this.newObjectOptions.container : null
+				container: this.newObjectOptions ? this.newObjectOptions.container : null 
 			}).then(lang.hitch(this, function(data) {
 				tools.forIn(this._policyWidgets[policyType], function(iname, iwidget) {
 					if (iname == '$policy$') {

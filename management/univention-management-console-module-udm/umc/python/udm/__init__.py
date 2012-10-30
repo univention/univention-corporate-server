@@ -706,12 +706,15 @@ class Instance( Base ):
 
 		return: <layout data structure (see UDM python modules)>
 		"""
-		module = self._get_module_by_request( request )
-		if request.flavor == 'users/self':
-			object_dn = None
-		else:
-			object_dn = request.options.get( 'objectDN', None )
-		self.finished( request.id, module.get_layout( object_dn ) )
+		ret = []
+		for options in request.options:
+			module = self._get_module_by_request( request, options.get('objectType') )
+			if request.flavor == 'users/self':
+				object_dn = None
+			else:
+				object_dn = options.get( 'objectDN', None )
+			ret.append( module.get_layout( object_dn ) )
+		self.finished(request.id, ret)
 
 	def properties( self, request ):
 		"""Returns the properties of the given object type.
@@ -721,12 +724,23 @@ class Instance( Base ):
 
 		return: [ {}, ... ]
 		"""
-		module = self._get_module_by_request( request )
-		object_dn = request.options.get( 'objectDN' )
-		properties = module.get_properties( object_dn )
-		if request.options.get( 'searchable', False ):
-			properties = filter( lambda prop: prop.get( 'searchable', False ), properties )
-		self.finished( request.id, properties )
+		ret = []
+		bundled = False
+		if isinstance(request.options, list):
+			all_options = request.options
+			bundled = True
+		else:
+			all_options = [request.options]
+		for options in all_options:
+			module = self._get_module_by_request( request, options.get('objectType') )
+			object_dn = options.get( 'objectDN' )
+			properties = module.get_properties( object_dn )
+			if options.get( 'searchable', False ):
+				properties = filter( lambda prop: prop.get( 'searchable', False ), properties )
+			ret.append( properties )
+		if not bundled:
+			ret = ret[0]
+		self.finished( request.id, ret )
 
 	def options( self, request ):
 		"""Returns the options specified for the given object type
@@ -926,17 +940,13 @@ class Instance( Base ):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 		def _thread( request ):
-			object_type = request.options.get( 'objectType' )
-			if not object_type:
-				raise UMC_OptionMissing( 'The object type is missing' )
-			object_dn = request.options.get( 'objectDN' )
-			container = request.options.get( 'container' )
-			policy_type = request.options.get( 'policyType' )
-			policy_dn = request.options.get( 'policyDN' )
-			if not policy_type:
-				raise UMC_OptionMissing( 'The policy type is missing' )
-
-
+			try:
+				object_type = request.options[0].get( 'objectType' )
+				object_dn = request.options[0].get( 'objectDN' )
+				container = request.options[0].get( 'container' )
+			except IndexError:
+				raise UMC_OptionTypeError( 'The given object type is not valid' )
+			obj = None
 			if object_dn:
 				module = UDM_Module( object_type )
 				if module.module is None:
@@ -947,28 +957,34 @@ class Instance( Base ):
 				if module.module is None:
 					raise UMC_OptionTypeError( 'The given object type is not valid' )
 				obj = module.get( container )
-
 			if obj is None:
 				raise UMC_OptionTypeError( 'The object could not be found' )
 
-			policy_module = UDM_Module( policy_type )
-			if policy_module.module is None:
-				raise UMC_OptionTypeError( 'The given policy type is not valid' )
 
-			policy_obj = policy_module.get()
-			policy_obj.clone( obj )
-			# ensure that the object itself is ignored
-			policy_obj.referring_object_position_dn = None
-			policy_obj.policy_result( faked_policy_reference = policy_dn )
+			ret = []
+			for policy_options in request.options:
+				policy_type = policy_options.get( 'policyType' )
+				policy_dn = policy_options.get( 'policyDN' )
 
-			infos = copy.copy( policy_obj.polinfo_more )
-			for key, value in infos.items():
-				if key in policy_obj.polinfo:
-					if isinstance( infos[ key ], ( tuple, list ) ):
-						continue
-					infos[ key ][ 'value' ] = policy_obj.polinfo[ key ]
+				policy_module = UDM_Module( policy_type )
+				if policy_module.module is None:
+					raise UMC_OptionTypeError( 'The given policy type is not valid' )
 
-			return infos
+				policy_obj = policy_module.get()
+				policy_obj.clone( obj )
+				# ensure that the object itself is ignored
+				policy_obj.referring_object_position_dn = None
+				policy_obj.policy_result( faked_policy_reference = policy_dn )
+
+				infos = copy.copy( policy_obj.polinfo_more )
+				for key, value in infos.items():
+					if key in policy_obj.polinfo:
+						if isinstance( infos[ key ], ( tuple, list ) ):
+							continue
+						infos[ key ][ 'value' ] = policy_obj.polinfo[ key ]
+
+				ret.append(infos)
+			return ret
 
 		thread = notifier.threads.Simple( 'ObjectPolicies', notifier.Callback( _thread, request ),
 										  notifier.Callback( self._thread_finished, request ) )
