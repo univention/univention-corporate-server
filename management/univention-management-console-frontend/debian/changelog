@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.144-1) unstable; urgency=low
+
+  * fixed Makefile (Bug #11925)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 30 Oct 2012 17:13:52 +0100
+
 univention-management-console-frontend (2.0.143-1) unstable; urgency=low
 
   * added joinscript for univention-management-console-web-server

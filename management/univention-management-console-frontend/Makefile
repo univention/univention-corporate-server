@@ -146,6 +146,7 @@ install: build
 	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
 	rsync -rpl --exclude ".svn" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
+	mkdir -p "/usr/lib/univention-install/"
 	install -m 755 "$(CURDIR)/34univention-management-console-web-server.inst" "/usr/lib/univention-install/34univention-management-console-web-server.inst"
 
 clean:
