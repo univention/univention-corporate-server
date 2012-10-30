@@ -49,8 +49,8 @@ from univention.updater import UniventionUpdater
 import univention.admin.uexceptions as udm_errors
 import univention.config_registry
 
-from . import util
-from .constants import COMPONENT_BASE
+import util
+from constants import COMPONENT_BASE
 
 
 class License(object):
