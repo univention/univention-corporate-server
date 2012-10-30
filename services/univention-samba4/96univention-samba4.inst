@@ -511,8 +511,8 @@ if [ "$samba4_role" = 'DC' ]; then
 		set_samba4_sysvol_sync_host
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-			## set the predefined NTACL which the provision uses on sysvol
-			/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH" 2>/dev/null
+			## set the default sysvol and GPO NTACLs
+			samba-tool ntacl sysvolreset
 		fi
 
 	fi
@@ -575,8 +575,8 @@ elif [ "$samba4_role" = "RODC" ]; then
 	set_samba4_sysvol_sync_host
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-		## set the predefined NTACL which the provision uses on sysvol
-		/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py "$SYSVOL_PATH"	2>/dev/null
+		## set the default sysvol and GPO NTACLs
+		samba-tool ntacl sysvolreset
 
 		## set default ACLs so sysvol-sync can read files and directories
 		set_default_fACL /var/lib/samba/sysvol

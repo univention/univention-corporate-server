@@ -1,3 +1,10 @@
+univention-samba4 (2.0.24-1) unstable; urgency=low
+
+  * use samba-tool ntacl sysvolreset instead of set_sysvol_ntacl.py
+    (Bug #28737)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Oct 2012 18:28:58 +0100
+
 univention-samba4 (2.0.23-3) unstable; urgency=low
 
   * avoid tracebacks due to missing old records in idmap.ldb (Bug #26013)
