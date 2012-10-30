@@ -38,7 +38,6 @@
 #include <string.h>
 #include <time.h>
 #include <sys/time.h>
-#include <syslog.h>
 
 #include <univention/debug.h>
 
@@ -153,11 +152,6 @@ void univention_debug(enum uv_debug_category id, enum uv_debug_level level, cons
 		vfprintf(univention_debug_file, fmt, ap);
 		va_end(ap);
 		fprintf(univention_debug_file, "\n");
-		if (level == UV_DEBUG_ERROR) {
-			va_start(ap, fmt);
-			vsyslog(LOG_ERR, fmt, ap);
-			va_end(ap);
-		}
 		if (univention_debug_flush == UV_DEBUG_FLUSH) {
 			fflush(univention_debug_file);
 		}

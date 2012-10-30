@@ -1,3 +1,9 @@
+univention-debug (6.0.0-1) unstable; urgency=low
+
+  * do not log ERROR to syslog (Bug #25469) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Oct 2012 15:31:27 +0100
+
 univention-debug (5.0.11-1) unstable; urgency=low
 
   * Add Python binding for new functions (Bug #22552,22160)
