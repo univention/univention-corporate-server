@@ -1,3 +1,9 @@
+univention-system-setup (6.0.45-1) unstable; urgency=low
+
+  * reverted changes made for Bug #27427
+
+ -- Lukas Walter <walter@univention.de>  Tue, 30 Oct 2012 09:34:15 +0100
+
 univention-system-setup (6.0.44-1) unstable; urgency=low
 
   * Fix memory leak (Bug #27432)

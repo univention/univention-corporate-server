@@ -1,3 +1,9 @@
+univention-updater (8.0.30-1) unstable; urgency=low
+
+  * reverted changes made for Bug #27427
+
+ -- Lukas Walter <walter@univention.de>  Tue, 30 Oct 2012 09:35:10 +0100
+
 univention-updater (8.0.29-1) unstable; urgency=low
 
   * init scripts for UMC server and UMC web server have been

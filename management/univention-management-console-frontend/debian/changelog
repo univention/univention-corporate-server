@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.142-2) unstable; urgency=low
+
+  * reverted changes made for Bug #27427
+
+ -- Lukas Walter <walter@univention.de>  Tue, 30 Oct 2012 09:36:43 +0100
+
 univention-management-console-frontend (2.0.142-1) unstable; urgency=low
 
   * added initial update of dependencies; Bug #28797

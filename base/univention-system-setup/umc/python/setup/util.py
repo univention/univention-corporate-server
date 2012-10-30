@@ -405,6 +405,7 @@ def run_scripts( progressParser, restartServer = False ):
 		f.write('=== Restart of UMC server and web server (%s) ===\n' % timestamp())
 		f.flush()
 		subprocess.call(['/etc/init.d/univention-management-console-server', 'restart'], stdout=f, stderr=f)
+		subprocess.call(['/etc/init.d/univention-management-console-web-server', 'restart'], stdout=f, stderr=f)
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()

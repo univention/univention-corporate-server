@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Management Console
-#  init script for the UMC server
+#  init script for the UMC web server
 #
-# Copyright 2006-2012 Univention GmbH
+# Copyright 2011-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,8 +32,8 @@
 
 . /lib/lsb/init-functions
 
-DAEMON="/usr/sbin/univention-management-console-server"
-NAME="Univention Management Console Server"
+DAEMON="/usr/sbin/univention-management-console-web-server"
+NAME="Univention Management Console Web Server"
 
 if [ ! -x "$DAEMON" ]; then
 	exit 0
@@ -44,7 +44,7 @@ case "$1" in
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/server/autostart
+			check_autostart listener"$NAME" umc/http/autostart
 		fi
 		log_action_msg "Starting $NAME"
 		$DAEMON start
@@ -59,25 +59,20 @@ case "$1" in
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/server/autostart
+			check_autostart listener"$NAME" umc/http/autostart
 		fi
 		log_action_msg "Restarting $NAME"
 		$DAEMON restart
-		log_action_end_msg 0
-		;;
-	reload)
-		log_action_msg "Reloading $NAME"
-		$DAEMON reload
 		log_action_end_msg 0
 		;;
 	crestart)
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/server/autostart
+			check_autostart listener"$NAME" umc/http/autostart
 		fi
 		log_action_msg "Restarting $NAME (if currently active)"
-		pid="$(cat /var/run/umc-server.pid 2>/dev/null)"
+		pid="$(cat /var/run/umc-web-server.pid)"
 		if [ -n "$pid" -a -d "/proc/$pid" ]; then
 			$DAEMON crestart
 			log_action_end_msg 0
@@ -86,7 +81,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-management-console-server {start|stop|restart|reload|crestart}"
+		echo "Usage: /etc/init.d/univention-management-console-web-server {start|stop|restart|crestart}"
 		exit 1
 		;;
 esac

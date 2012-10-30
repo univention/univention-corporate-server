@@ -1,3 +1,9 @@
+univention-management-console (5.0.50-2) unstable; urgency=low
+
+  * reverted changes made for Bug #27427
+
+ -- Lukas Walter <walter@univention.de>  Tue, 30 Oct 2012 09:36:08 +0100
+
 univention-management-console (5.0.50-1) unstable; urgency=low
 
   * use "644" as file permission mode at "install" calls
