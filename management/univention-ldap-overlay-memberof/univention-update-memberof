@@ -52,10 +52,10 @@ if cr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroll
 		uniqueMember = result[1].get("uniqueMember", [""])
 		if dn and uniqueMember:
 			try:
-				# delete uniqueMember
-				lo.modify(dn, [("uniqueMember", uniqueMember, [])])
-				# add uniqueMember
-				lo.modify(dn, [("uniqueMember", [], uniqueMember)])
+				# update groups
+				ml = []
+				ml.append((ldap.MOD_REPLACE, "uniqueMember", uniqueMember))
+				lo.modify_s(dn, ml)
 			except Exception, e:
 				sys.stderr.write("E: modifing %s failed error with %s\n" % (dn, e))
 				sys.stderr.write("   please check the membership of this group\n")
