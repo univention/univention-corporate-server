@@ -81,10 +81,10 @@ install: build
 	install -m0755 -d '$(DESTDIR)/usr/share'
 	# univention-dojo-api-viewer
 	install -m0755 -d '$(DESTDIR)/usr/share/univention-doc/src'
-	install -m0755 -d '$(DESTDIR)/var/www/ucs-overview/images/icon'
+	install -m0755 -d '$(DESTDIR)/var/www/ucs-overview/images'
 	rsync -rpl --exclude '.svn' --exclude '.git' univention-management-console-doc '$(DESTDIR)/usr/share/univention-doc/src/'
 	rsync -rpl --exclude '.svn' --exclude '.git' univention-dojo-api-viewer '$(DESTDIR)/usr/share/'
-	install -m0644 icon/dojo-api.png '$(DESTDIR)/var/www/ucs-overview/images/icon/'
+	install -m0644 icon/dojo-api.png '$(DESTDIR)/var/www/ucs-overview/images/'
 	# univention-management-console-frontend-doc
 	rsync -rpl data '$(DESTDIR)/'
 

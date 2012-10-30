@@ -1,3 +1,9 @@
+univention-management-console-frontend-doc (6.0.8-1) unstable; urgency=low
+
+  * fix image path; Bug #28969
+
+ -- Florian Best <best@univention.de>  Tue, 30 Oct 2012 08:27:22 +0100
+
 univention-management-console-frontend-doc (6.0.7-1) unstable; urgency=low
 
   * also parse dgrid; Bug #28018
