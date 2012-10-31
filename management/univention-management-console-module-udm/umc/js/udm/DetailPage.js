@@ -383,10 +383,10 @@ define([
 				// find property identifying the object
 				tools.forIn( widgets, function( name, widget ) {
 					if ( widget.identifies ) {
-						// connect to onChange and modify title using this.parentWidget.set( 'title', ... )
+						// watch value and modify title (escaped)
 						this.own(widget.watch('value', lang.hitch( this, function( attr, oldValue, _value ) {
 							var value = _value instanceof Array ? _value.join( " " ) : _value;
-							this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ': ' + value );
+							this.moduleWidget.set( 'titleDetail', value );
 						} ) ) );
 						return false; // break out of forIn
 					}
