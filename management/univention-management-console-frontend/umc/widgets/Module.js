@@ -33,10 +33,11 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dijit/layout/StackContainer",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/_ModuleMixin",
 	"umc/widgets/StandbyMixin"
-], function(declare, lang, array, StackContainer, tools, _ModuleMixin, StandbyMixin) {
+], function(declare, lang, array, StackContainer, entities, tools, _ModuleMixin, StandbyMixin) {
 	return declare("umc.widgets.Module", [ StackContainer, _ModuleMixin, StandbyMixin ], {
 		// summary:
 		//		Basis class for module classes.
@@ -53,6 +54,15 @@ define([
 
 		resetTitle: function() {
 			this.set( 'title', this.defaultTitle );
+		},
+
+		_setTitleDetailAttr: function(detail) {
+			var title = this.defaultTitle;
+			if (detail) {
+				title += ': ' + entities.encode(detail);
+			}
+			this.set('title', title);
+			this._set('titleDetail', detail);
 		},
 
 		startup: function() {
