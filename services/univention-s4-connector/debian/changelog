@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.17-34) unstable; urgency=low
+
+  * Initialize the UDM modules to ensure the first created object uses
+    the extended attributes (Bug #28981)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2012 10:40:13 +0100
+
 univention-s4-connector (7.0.17-33) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):

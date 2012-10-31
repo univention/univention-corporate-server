@@ -824,6 +824,7 @@ class ucs:
 		# load UCS Modules
 		self.modules={}
 		self.modules_others={}
+		position=univention.admin.uldap.position(self.lo.base)
 		for key in self.property.keys():
 			if self.property[key].ucs_module:
 				self.modules[key]=univention.admin.modules.get(self.property[key].ucs_module)
@@ -832,11 +833,14 @@ class ucs:
 					self.modules[key].identify = self.property[key].identify
 			else:
 				self.modules[key]=None
+			univention.admin.modules.init(self.lo,position,self.modules[key])
 
 			self.modules_others[key]=[]
 			if self.property[key].ucs_module_others:
 				for m in self.property[key].ucs_module_others:
 					self.modules_others[key].append(univention.admin.modules.get(m))
+				for m in self.modules_others[key]:
+					univention.admin.modules.init(self.lo,position,m)
 		
 		# try to resync rejected changes
 		self.resync_rejected_ucs()
