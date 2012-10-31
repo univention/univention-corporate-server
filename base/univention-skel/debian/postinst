@@ -38,6 +38,10 @@ if [ ! -e /etc/univention/skel/.bashrc ]; then
 	test -e /etc/skel/.bashrc && cp /etc/skel/.bashrc /etc/univention/skel
 fi
 
+if [ ! -e /etc/univention/skel/.profile ]; then
+	test -e /etc/skel/.profile && cp /etc/skel/.profile /etc/univention/skel
+fi
+
 univention-config-registry set skel/lock/retry?5 \
 					skel/permissions/directory?0700 \
 					skel/permissions/file?0600
