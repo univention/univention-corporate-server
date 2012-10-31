@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -45,6 +45,19 @@ if [ "$?" = "1" ] ; then
 	echo "HINT: creating nagios service checks has been disabled by nagios/common/servicechecks/autocreate=no"
 	joinscript_save_current_version
 	exit 0
+fi
+
+# update old UNIVENTION_JOINSTATUS checkInterval's Bug #18828
+if [ $JS_LAST_EXECUTED_VERSION -lt 3 ]; then
+	oldCheckInterval="$(udm nagios/service list --filter name=UNIVENTION_JOINSTATUS | grep normalCheckInterval:| awk -F ": " '{print $2}')"
+	oldRetryCheckInterval="$(udm nagios/service list --filter name=UNIVENTION_JOINSTATUS | grep retryCheckInterval:| awk -F ": " '{print $2}')"
+	if [ -n "$oldCheckInterval" -a "$oldCheckInterval" = "1440" ]; then
+		if [ -n "$oldRetryCheckInterval" -a "$oldRetryCheckInterval" = "480" ]; then
+			udm nagios/service modify \
+				--dn "cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base"
+				--set normalCheckInterval="180" --set retryCheckInterval="30"
+		fi
+	fi
 fi
 
 # create nagios container
@@ -104,7 +117,7 @@ univention-directory-manager nagios/service create "$@" --ignore_exists --positi
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NMBD" --set description="Default Service: check if nmbd is functional" --set checkCommand="check_univention_nmbd" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 
-univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_JOINSTATUS" --set description="Default Service: check if system has been joined successfully" --set checkCommand="check_univention_joinstatus" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="1440" --set retryCheckInterval="480" --set maxCheckAttempts="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_JOINSTATUS" --set description="Default Service: check if system has been joined successfully" --set checkCommand="check_univention_joinstatus" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="180" --set retryCheckInterval="30" --set maxCheckAttempts="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 
 joinscript_save_current_version
 

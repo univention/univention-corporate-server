@@ -1,3 +1,9 @@
+univention-nagios (6.0.3-1) unstable; urgency=low
+
+  * fixed check intervals in UNIVENTION_JOINSTATUS (Bug #18828) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 31 Oct 2012 16:04:59 +0100
+
 univention-nagios (6.0.2-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
