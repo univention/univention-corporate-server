@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.150-1) unstable; urgency=low
+
+  * Fix caching of buttons in Grid (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 31 Oct 2012 15:39:44 +0100
+
 univention-management-console-frontend (2.0.149-1) unstable; urgency=low
 
   * Fixed error in ComplexInput introduced with Bug #26214

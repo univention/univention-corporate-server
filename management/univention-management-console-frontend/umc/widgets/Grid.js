@@ -39,7 +39,6 @@ define([
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"dojo/on",
-	"dojo/_base/event",
 	"dojo/aspect",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -59,7 +58,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, window, query, construct, attr, geometry,
-		style, on, event, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
+		style, on, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -349,7 +348,7 @@ define([
 						var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
 						var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
 
-						var btn_name = '_btn_' + (iaction.field || this.moduleStore.idProperty);
+						var btn_name = '_btn_' + (iiconClass || ilabel);
 						if (item[btn_name] !== undefined) {
 							return item[btn_name];
 						}
