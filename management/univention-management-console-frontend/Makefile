@@ -146,7 +146,6 @@ install: build
 	@# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
 	rsync -rpl --exclude ".svn" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
-	mkdir -p "/usr/lib/univention-install/"
 
 clean:
 	rm -rf $(tmpDir) $(buildDir) umc.xml umc/widgets.js umc/{en,de}.json umc/package.json
