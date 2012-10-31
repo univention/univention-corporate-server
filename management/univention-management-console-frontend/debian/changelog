@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.147-1) unstable; urgency=low
+
+  * made umc-web-server joinscript executeable
+  (Bug #11925)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 31 Oct 2012 11:06:50 +0100
+
 univention-management-console-frontend (2.0.146-1) unstable; urgency=low
 
   * fixed Makefile (Bug #11925)
