@@ -37,7 +37,7 @@ import sys
 import time
 from optparse import OptionParser
 import univention.debug as ud
-ud.init('/var/log/univention/admin-cmd.log', ud.FLUSH, ud.FUNCTION)
+ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
 
 import univention.config_registry
 import univention.admin.uldap as uldap

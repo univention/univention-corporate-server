@@ -92,7 +92,7 @@ def get_user_object(user, position, lo, co):
 
 
 def doit(arglist):
-	univention.debug.init('/var/log/univention/admin-cmd.log', 1, 1)
+	univention.debug.init('/var/log/univention/directory-manager-cmd.log', 1, 1)
 	out=[]
 	configRegistry=univention.config_registry.ConfigRegistry()
 	configRegistry.load()

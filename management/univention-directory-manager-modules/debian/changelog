@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.79-1) unstable; urgency=low
+
+  * replaced admin-cmd.log with directory-manager-cmd.log (Bug #13105)
+
+ -- Felix Botner <botner@univention.de>  Wed, 31 Oct 2012 14:26:07 +0100
+
 univention-directory-manager-modules (8.0.78-1) unstable; urgency=low
 
   * The identify filter for container/cn and container/ou does no longer

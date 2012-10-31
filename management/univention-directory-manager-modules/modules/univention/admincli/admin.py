@@ -457,7 +457,7 @@ def _doit(arglist):
 	list_policies=False
 	policies_with_DN=False
 	policyOptions=[]
-	logfile='/var/log/univention/admin-cmd.log'
+	logfile='/var/log/univention/directory-manager-cmd.log'
 	tls=2
 	ignore_exists=0
 	superordinate_dn=''

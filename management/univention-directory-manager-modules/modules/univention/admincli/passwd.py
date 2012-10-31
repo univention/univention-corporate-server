@@ -42,7 +42,7 @@ import univention.admin.objects
 import univention.admin.handlers.users.user
 
 def doit(arglist):
-	univention.debug.init('/var/log/univention/admin-cmd.log', 1, 1)
+	univention.debug.init('/var/log/univention/directory-manager-cmd.log', 1, 1)
 	out=[]
 	opts, args=getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])
 	
