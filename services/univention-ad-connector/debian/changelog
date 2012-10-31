@@ -1,3 +1,10 @@
+univention-ad-connector (7.0.8-1) unstable; urgency=low
+
+  * Remove the LANMAN hash warning because the LM hash is no longer
+    required (Bug #28709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2012 09:12:08 +0100
+
 univention-ad-connector (7.0.7-2) unstable; urgency=low
 
   * Wait 5 seconds before the kill result is checked (Bug #27175)

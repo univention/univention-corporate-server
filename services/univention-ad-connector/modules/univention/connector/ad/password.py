@@ -313,14 +313,12 @@ def password_sync(connector, key, ucs_object):
 		pwd_changed = False
 
  		if lmPwd.upper() != lmPwd_ucs.upper():
-			if lmPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
-				ud.debug(ud.LDAP, ud.WARN, "password_sync: AD connector password daemon retured 0 for the lm hash. Please check the LANMAN hash group policy.")
-			else:
+			if not lmPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
 				pwd_changed = True
 				modlist.append(('sambaLMPassword', lmPwd_ucs, str(lmPwd.upper())))
 		if ntPwd.upper() != ntPwd_ucs.upper():
 			if ntPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
-				ud.debug(ud.LDAP, ud.WARN, "password_sync: AD connector password daemon retured 0 for the nt hash. Please check the LANMAN hash group policy.")
+				ud.debug(ud.LDAP, ud.WARN, "password_sync: AD connector password daemon retured 0 for the nt hash. Please check the AD settings.")
 			else:
 				ud.debug(ud.LDAP, ud.WARN, "password_sync: %s" % ntPwd)
 				pwd_changed = True
