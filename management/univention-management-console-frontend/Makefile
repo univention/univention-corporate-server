@@ -147,7 +147,6 @@ install: build
 	mkdir -p "$(DESTDIR)$(pkgDir)"
 	rsync -rpl --exclude ".svn" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
 	mkdir -p "/usr/lib/univention-install/"
-	install -m 755 "$(CURDIR)/34univention-management-console-web-server.inst" "/usr/lib/univention-install/34univention-management-console-web-server.inst"
 
 clean:
 	rm -rf $(tmpDir) $(buildDir) umc.xml umc/widgets.js umc/{en,de}.json umc/package.json
