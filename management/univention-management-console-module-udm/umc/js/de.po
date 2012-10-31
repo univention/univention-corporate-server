@@ -399,7 +399,7 @@ msgstr ""
 
 #: umc/js/udm/DetailPage.js:324
 msgid "Options describing the basic features of the UDM object"
-msgstr "Optionen für grundlegenden UDM-Objekt-Eigenschaften"
+msgstr "Optionen für grundlegende UDM-Objekt-Eigenschaften"
 
 #: umc/js/udm/OverwriteLabel.js:46
 msgid "Overwrite"

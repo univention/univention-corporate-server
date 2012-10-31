@@ -227,6 +227,11 @@ define([
 			//		Render the form with subtabs containing all object properties that can
 			//		be edited by the user.
 
+			if (_template && _template.length > 0) {
+				_template = _template[0];
+			} else {
+				_template = null;
+			}
 			// create detail page
 			this._tabs = new TabContainer({
 				nested: true,
@@ -336,6 +341,11 @@ define([
 				var option_layout = [];
 				var create = this.ldapName === undefined;
 				array.forEach( option_prop.widgets, function ( option ) {
+					option = lang.clone(option);
+					// special case: bring options from template into the widget
+					if (_template && _template._options) {
+						option.value = _template._options.indexOf(option.id) > -1;
+					}
 					option_widgets.push( lang.mixin( {
 						disabled: create ? false : ! option.editable
 					}, option ) );
@@ -660,10 +670,28 @@ define([
 				});
 
 				// mixin the values set in the template object (if given)
-				if (_template && _template.length > 0) {
-					// remove first the template's LDAP-DN
-					_template = _template[0];
-					delete _template.$dn$;
+				if (_template) {
+					tools.forIn(_template, lang.hitch(this, function(key, value) {
+						// $dn$, $options$, etc of the template
+						// should not be values for the object
+						if ((/^\$.*\$$/).test(key)) {
+							delete _template[key];
+						}
+						if ((/^_.+$/).test(key)) {
+							var specialWidget = this[key + 'Widget'];
+							// TODO: it may be important to solve this generically
+							// by now, only _options will go this path
+							// and _optionsWidget needs a special format
+							var specialValue = {};
+							array.forEach(value, function(val) {
+								specialValue[val] = true;
+							});
+							if (specialWidget) {
+								specialWidget.set('value', specialValue);
+							}
+							delete _template[key];
+						}
+					}));
 					template = lang.mixin(template, _template);
 				}
 
