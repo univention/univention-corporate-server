@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.78-1) unstable; urgency=low
+
+  * The identify filter for container/cn and container/ou does no longer
+    match for the ldap base object (Bug #25737)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2012 09:58:30 +0100
+
 univention-directory-manager-modules (8.0.77-1) unstable; urgency=low
 
   * limit admin.property's threshold to server limit Bug; #28248, Bug #26556

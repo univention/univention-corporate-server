@@ -318,6 +318,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'organizationalUnit'),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionBase')])
 		])
 
 	if filter_s:
@@ -332,4 +333,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 def identify(dn, attr, canonical=0):
 
-	return 'organizationalUnit' in attr.get('objectClass', [])
+	return 'organizationalUnit' in attr.get('objectClass', []) and not 'univentionBase' in attr.get('objectClass', [])
