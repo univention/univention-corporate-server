@@ -83,11 +83,6 @@ childs=0
 short_description=_('User')
 long_description=''
 
-ldap_search_mailhomeserver = univention.admin.syntax.LDAP_Search(
-	filter = '(&(objectClass=univentionHost)(univentionService=IMAP))',
-	attribute = [ 'computers/computer: fqdn' ],
-	value='computers/computer: fqdn' )
-
 
 options={
 	'posix': univention.admin.option(
@@ -562,7 +557,7 @@ property_descriptions={
 	'mailHomeServer': univention.admin.property(
 			short_description=_('Mail home server'),
 			long_description='',
-			syntax=ldap_search_mailhomeserver,
+			syntax=univention.admin.syntax.ldapSearchMailHomeServer(),
 			multivalue=0,
 			options=['mail'],
 			required=0,

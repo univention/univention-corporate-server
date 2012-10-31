@@ -56,11 +56,6 @@ module_search_filter=univention.admin.filter.conjunction('&', [
 	])
 
 
-ldap_search_mailhomeserver = univention.admin.syntax.LDAP_Search(
-	filter = '(&(objectClass=univentionHost)(univentionService=IMAP))',
-	attribute = [ 'computers/computer: fqdn' ],
-	value='computers/computer: fqdn' )
-
 ldap_search_maildomain = univention.admin.syntax.LDAP_Search(
 	filter = '(objectClass=univentionMailDomainname)',
 	attribute = [ 'mail/domain: name' ],
@@ -118,7 +113,7 @@ property_descriptions={
 	'mailHomeServer': univention.admin.property(
 			short_description=_('Mail home server'),
 			long_description='',
-			syntax=ldap_search_mailhomeserver,
+			syntax=univention.admin.syntax.ldapSearchMailHomeServer,
 			multivalue=0,
 			required=1,
 			may_change=1,

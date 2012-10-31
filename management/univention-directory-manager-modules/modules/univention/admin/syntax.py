@@ -2709,6 +2709,17 @@ class policyName(string):
 		raise univention.admin.uexceptions.valueError(_('May only contain letters (except umlauts), digits, space as well as "#", "!", "$", "%", "&" "|", "^", ".", "~", "_", "-". Has to begin with a letter or digit and must not and with space.'))
 
 
+class ldapSearchMailHomeServer(LDAP_Search):
+	def __init__(self):
+		LDAP_Search.__init__(
+			self,
+			filter = '(&(objectClass=univentionHost)(univentionService=IMAP))',
+			attribute = [ 'computers/computer: fqdn' ],
+			value = 'computers/computer: fqdn',
+			addEmptyValue = True
+		)
+
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

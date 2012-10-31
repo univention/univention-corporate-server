@@ -1,3 +1,11 @@
+univention-directory-manager-modules (8.0.80-1) unstable; urgency=low
+
+  * added LDAP syntax mail home servers (Bug #27820)
+  * added default empty value to mail home server LDAP search syntax
+    (Bug #26425)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 31 Oct 2012 16:36:37 +0100
+
 univention-directory-manager-modules (8.0.79-1) unstable; urgency=low
 
   * replaced admin-cmd.log with directory-manager-cmd.log (Bug #13105)
