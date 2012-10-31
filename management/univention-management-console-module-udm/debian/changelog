@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.47-1) unstable; urgency=low
+
+  * Block detail page until form is fully loaded (Bug #28400)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 31 Oct 2012 10:31:08 +0100
+
 univention-management-console-module-udm (3.0.46-1) unstable; urgency=low
 
   * Bundle various umc-commands into one to speed up page load (Bug #27432)

@@ -709,7 +709,7 @@ define([
 
 			// return the policy deferred object to notify the caller that the page
 			// has been set up
-			return this._policyDeferred;
+			return this._form.ready();
 		},
 
 		getValues: function() {
