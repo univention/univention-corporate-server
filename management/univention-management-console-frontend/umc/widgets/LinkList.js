@@ -61,7 +61,7 @@ define([
 					if (!array.every(['module', 'id', 'objectType'], function(ikey) {
 						if (!(ikey in item)) {
 							console.log( 'LinkList: attribute module is missing');
-							return false
+							return false;
 						}
 						return true;
 					})) {

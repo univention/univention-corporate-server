@@ -29,14 +29,14 @@
 
 var profile = (function() {
 	return {
-		resourceTags:{
+		resourceTags: {
 			copyOnly: function(filename, mid) {
 				// copy all .html, .css, and .json files
-				return /\.(html|css|json)$/.test(filename) || mid == 'umc/umc.profile.js';
+				return (/\.(html|css|json)$/).test(filename) || mid == 'umc/umc.profile.js';
 			},
 
 			amd: function(filename, mid) {
-				return mid != 'umc/umc.profile.js' && /\.js$/.test(filename);
+				return mid != 'umc/umc.profile.js' && (/\.js$/).test(filename);
 			}
 		}
 	};

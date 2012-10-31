@@ -48,11 +48,6 @@ define([
 
 		categoriesDisplayed: true,
 
-		_setStyleAttr: function(val) {
-			this.inherited(arguments);
-			console.log('dgrid set style:', val);
-		},
-
 		constructor: function() {
 			this.id = registry.getUniqueId(this.declaredClass.replace(/\./g,"_"));
 			registry.add(this);

@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.149-1) unstable; urgency=low
+
+  * Fixed error in ComplexInput introduced with Bug #26214
+  * Also fixed some things jshint complained about
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 31 Oct 2012 14:20:55 +0100
+
 univention-management-console-frontend (2.0.148-1) unstable; urgency=low
 
   * Add possibility to set details of a module's title (Bug #28146)

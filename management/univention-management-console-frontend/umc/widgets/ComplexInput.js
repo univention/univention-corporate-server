@@ -32,10 +32,11 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/promise/all",
 	"umc/tools",
 	"umc/render",
 	"umc/widgets/ContainerWidget"
-], function(declare, lang, array, tools, render, ContainerWidget) {
+], function(declare, lang, array, all, tools, render, ContainerWidget) {
 	return declare("umc.widgets.ComplexInput", ContainerWidget, {
 		// summary:
 		//		Groups a set of widgets and returns the value of all widgets as a list
@@ -140,7 +141,7 @@ define([
 		ready: function() {
 			// update the internal list in order to wait until everybody is ready
 			if (!this._allReady.length) {
-				_updateAllReady();
+				this._updateAllReady();
 			}
 			var ret = all(this._allReady);
 

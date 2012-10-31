@@ -145,7 +145,7 @@ define([
 					if (ndone >= scopes.length) {
 						deferred.resolve(results);
 					}
-			}
+			};
 
 			array.forEach(scopes, function(iscope, i) {
 				var path = lang.replace('{1}/i18n/{0}/{2}.json', [ language, iscope[0], iscope[1] ]);

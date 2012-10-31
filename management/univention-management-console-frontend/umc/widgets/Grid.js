@@ -406,8 +406,6 @@ define([
 					field: this.moduleStore.idProperty,
 					name: ' ',
 					editable: false,
-					onClick: function() { console.log('click!') },
-					_onClick: function() { console.log('click!!') },
 					formatter: lang.hitch(this, function(key, rowIndex) {
 						// do not show buttons in case the row is disabled
 						if (this._grid.rowSelectCell.disabled(rowIndex)) {

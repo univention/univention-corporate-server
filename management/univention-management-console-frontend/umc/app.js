@@ -290,7 +290,7 @@ define([
 			progressDialog.show();
 
 			// load the modules dynamically
-			var modules = []
+			var modules = [];
 			var modulesDeferred = tools.umcpCommand('get/modules/list', null, false).then(lang.hitch(this, function(data) {
 				// update progress
 				var _modules = lang.getObject('modules', false, data) || [];
@@ -633,7 +633,7 @@ define([
 								test: function(categories) {
 									return array.indexOf(categories, icat.id) >= 0;
 								}
-							},
+							}
 						},
 						queryOptions: {
 							sort: icat.id == '$favorites$' ? _cmpFavorites : _cmp

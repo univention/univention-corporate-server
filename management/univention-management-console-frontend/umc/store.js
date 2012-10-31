@@ -78,7 +78,7 @@ define([
 			else {
 				var singleHandleErrors;
 				if (handleErrors) {
-					singleHandleErrors = new Object();
+					singleHandleErrors = {};
 					singleHandleErrors.onValidationError = function(message, data) {
 						data = data[0].object;
 						return handleErrors.onValidationError(message, data);
