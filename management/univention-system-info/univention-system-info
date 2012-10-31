@@ -184,6 +184,11 @@ if [ -z "$uuid" ]; then
 fi
 
 cd /tmp
+
+if [ -e "$uuid" ]; then mv "$uuid" "$uuid.bak.$(date +%s)"; fi
+if [ -e "$file" ]; then mv "$file" "$file.bak.$(date +%s)"; fi
+if [ -e "$uuid.tar.gz" ]; then mv "$uuid.tar.gz" "$uuid.tar.gz.bak.$(date +%s)"; fi
+
 mv "$TEMPDIR" "$uuid"
 if [ -n "$file" ]; then
 	tar czf "$file" "$uuid" > /dev/null 2>&1
