@@ -1,3 +1,10 @@
+univention-nfs (5.0.7-1) unstable; urgency=low
+
+  * added listener nfs-homes to create homeSharePath 
+    on nfs home servers (Bug #25375) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 01 Nov 2012 12:01:03 +0100
+
 univention-nfs (5.0.6-1) unstable; urgency=low
 
   * don't modify thinclient policies in joinscript

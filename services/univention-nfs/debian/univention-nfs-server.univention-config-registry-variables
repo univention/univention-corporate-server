@@ -15,3 +15,9 @@ Description[de]=Nfs V4 im rpc.nfsd Server Prozess aktivieren/deaktivieren (defau
 Description[en]=Enable/disable nfs v4 for the rpc.nfsd server process (default: false)
 Type=str
 Categories=nfs
+
+[nfs/create/homesharepath]
+Description[de]=Definiert, ob das Listener Modul nfs-home das homeSharePath Verzeichnis von Benutzern anlegen soll (default: yes)
+Description[en]=Defines, whether the listener modul nfs-home shall create the homeSharePath directory for users (default: yes)
+Type=str
+Categories=nfs

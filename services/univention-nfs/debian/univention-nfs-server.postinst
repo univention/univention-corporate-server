@@ -39,7 +39,8 @@ case "$1" in
 
 		univention-config-registry set \
 			nfs/ports?static \
-			nfs/nfsd/nfs4?false
+			nfs/nfsd/nfs4?false \
+			nfs/create/homesharepath?true
 
 		# configure firewall
 		ucr set security/packetfilter/package/univention-nfs/tcp/111/all="ACCEPT" \
