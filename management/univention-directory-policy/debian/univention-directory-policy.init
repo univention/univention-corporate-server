@@ -41,14 +41,21 @@ case "$1" in
 		if [ -z "$ldap_server_port" ]; then
 			ldap_server_port=7389
 		fi
-		if /bin/netcat -q0 -w4 $ldap_server_name $ldap_server_port </dev/null >/dev/null 2>&1; then
-			run-parts /usr/lib/univention-directory-policy >>/var/log/univention/ldap-policy.log 2>&1
-			if [ $? = 0 ]; then
-				log_end_msg 0
-			else
-				log_end_msg 1
+		addition=$(echo "$ldap_server_addition" | sed -e "s/,/ /g")
+		connection=false
+		for host in $ldap_server_name $addition; do
+			if /bin/netcat -q0 -w4 $host $ldap_server_port </dev/null >/dev/null 2>&1; then
+				run-parts /usr/lib/univention-directory-policy >>/var/log/univention/ldap-policy.log 2>&1
+				if [ $? = 0 ]; then
+					log_end_msg 0
+				else
+					log_end_msg 1
+				fi
+				connection=true
+				break
 			fi
-		else
+		done
+		if [ "false" = "$connection" ]; then
 			log_end_msg 1
 		fi
 		;;
