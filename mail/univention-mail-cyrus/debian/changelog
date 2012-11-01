@@ -1,3 +1,9 @@
+univention-mail-cyrus (5.0.3-2) unstable; urgency=low
+
+  * replaced os.system with subprocess (Bug #17928)
+
+ -- Felix Botner <botner@univention.de>  Thu, 01 Nov 2012 16:11:23 +0100
+
 univention-mail-cyrus (5.0.3-1) unstable; urgency=low
 
   * fixed anyone acl for shared folders (Bug #17994) 
