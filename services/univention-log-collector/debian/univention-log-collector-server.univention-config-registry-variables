@@ -1,0 +1,23 @@
+[logcollector/targetdir]
+Description[de]=Definiert das Verzeichnis, in dem die Protokoll-Dateien gesammelt werden
+Description[en]=Defines the directory for the log files
+Type=str
+Categories=system-base
+
+[logcollector/logrotation/keepcount]
+Description[de]=Protokoll-Dateien werden _keepcount_ mal rotiert (default: 99)
+Description[en]=Log files are rotated _keepcount_ times (default: 99)
+Type=str
+Categories=system-base
+
+[logcollector/logrotation/maxsize]
+Description[de]=Protokoll-Dateien werden bei Überschreitung der _maxsize_ Größe rotiert (default: 10M)
+Description[en]=Log files are rotated when they grow bigger than _maxsize_ (default: 10M)
+Type=str
+Categories=system-base
+
+[logcollector/debug/level]
+Description[de]=Logcollector Server debug Level
+Description[en]=logcollector server debug level
+Type=str
+Categories=system-base

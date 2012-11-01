@@ -1,0 +1,11 @@
+[logcollector/debug/level]
+Description[de]=Logcollector Client debug Level
+Description[en]=logcollector client debug level
+Type=str
+Categories=system-base
+
+[logcollector/loghost]
+Description[de]=Definiert den Rechner, auf dem die Protokoll-Dateien gesammelt werden
+Description[en]=Defines the computer, to which the log files will be sent to
+Type=str
+Categories=system-base
