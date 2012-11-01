@@ -1,3 +1,9 @@
+univention-updater (8.0.33-1) unstable; urgency=low
+
+  * mark univention-legacy-kolab-schema as manually installed (Bug #28900)
+
+ -- Felix Botner <botner@univention.de>  Thu, 01 Nov 2012 17:46:35 +0100
+
 univention-updater (8.0.32-1) unstable; urgency=low
 
   * Added univention-remove (Bug #19468)

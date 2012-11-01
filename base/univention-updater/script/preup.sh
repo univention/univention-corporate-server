@@ -270,6 +270,12 @@ if [ "$(dpkg-query -W -f='${Status}\n' php5-curl 2>/dev/null)" = "deinstall ok c
 fi
 # END 3.0-2 remove php5-curl config if package is removed Bug #27666
 
+# BEGIN 3.1 update mark univention-legacy-kolab-schema as manually installed Bug #28900
+if [ "$(dpkg-query -W -f='${Status}\n' univention-legacy-kolab-schema 2>/dev/null)" = "install ok installed" ]; then
+	apt-get unmarkauto univention-legacy-kolab-schema
+fi
+# END 3.1 update mark univention-legacy-kolab-schema as manually installed Bug #28900
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
