@@ -425,6 +425,20 @@ define([
 			}
 		},
 
+		_detail_field_custom_maintainer: function(values) {
+			var maintainer = values.maintainer;
+			var vendor = values.vendor;
+			if (vendor == maintainer) {
+				return null;
+			}
+			var website = values.websitemaintainer;
+			if (maintainer && website) {
+				return '<a href="' + website + '" target="_blank">' + maintainer + '</a>';
+			} else if (maintainer) {
+				return maintainer;
+			}
+		},
+
 		_detail_field_custom_contact: function(values) {
 			var contact = values.contact;
 			if (contact) {
@@ -502,10 +516,19 @@ define([
 		},
 
 		_detail_field_custom_emailrequired: function(values) {
+			var maintainer = values.maintainer && values.maintainer != values.vendor;
 			if (values.emailrequired) {
-				return _('This application will inform the vendor if you (un)install it.');
+				if (maintainer) {
+					return _('This application will inform the maintainer if you (un)install it.');
+				} else {
+					return _('This application will inform the vendor if you (un)install it.');
+				}
 			} else {
-				return _('This application will not inform the vendor if you (un)install it.');
+				if (maintainer) {
+					return _('This application will not inform the maintainer if you (un)install it.');
+				} else {
+					return _('This application will not inform the vendor if you (un)install it.');
+				}
 			}
 		},
 
@@ -522,6 +545,7 @@ define([
 			return ['name',
 				'version',
 				'vendor',
+				'maintainer',
 				'contact',
 				'categories',
 				'longdescription',
@@ -537,7 +561,7 @@ define([
 			var labels = {
 				'name': _("Name"),
 				'vendor': _("Vendor"),
-				'website': _('Website'),
+				'maintainer': _("Maintainer"),
 				'contact': _("Contact"),
 				'categories': _("Section"),
 				'version': _('Version'),

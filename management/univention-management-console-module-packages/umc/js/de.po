@@ -512,6 +512,18 @@ msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
 #: umc/js/packages/AppCenterPage.js:558
+msgid "This application will inform the maintainer if you (un)install it."
+msgstr ""
+"Diese Applikation setzt den Betreuer über eine (De)Installation in "
+"Kenntnis."
+
+#: umc/js/packages/AppCenterPage.js:560
+msgid "This application will not inform the maintainer if you (un)install it."
+msgstr ""
+"Diese Applikation setzt den Betreuer nicht über eine (De)Installation in "
+"Kenntnis."
+
+#: umc/js/packages/AppCenterPage.js:558
 msgid "This application will inform the vendor if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Hersteller über eine (De)Installation in "
@@ -596,8 +608,8 @@ msgid "View Details"
 msgstr "Details anzeigen"
 
 #: umc/js/packages/AppCenterPage.js:592
-msgid "Website"
-msgstr "Webseite"
+msgid "Maintainer"
+msgstr "Betreuer"
 
 #: umc/js/packages/SettingsPage.js:406
 msgid ""
