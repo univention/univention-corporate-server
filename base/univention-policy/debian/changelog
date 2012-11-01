@@ -1,3 +1,9 @@
+univention-policy (5.0.9-1) unstable; urgency=low
+
+  * also check ldap/server/addition in univention_policy_result (Bug #19428) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 01 Nov 2012 15:08:46 +0100
+
 univention-policy (5.0.8-5) unstable; urgency=low
 
   * Add linking exception for Cyrus SASL and OpenSSL (Bug #26440)

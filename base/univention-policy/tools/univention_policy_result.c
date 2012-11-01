@@ -36,7 +36,9 @@
 #include <fcntl.h>
 #include <ldap.h>
 #include <errno.h>
+#include <string.h>
 
+#include <univention/config.h>
 #include <univention/debug.h>
 #include <univention/ldap.h>
 #include "../lib/internal.h"
@@ -108,6 +110,7 @@ static char* read_password_file(char* filename)
 int main(int argc, char* argv[])
 {
 	int rc = 1;
+	int noLdapServer = 1;
 	char *dn;
 	univention_ldap_parameters_t* ldap_parameters;
 	univention_policy_handle_t* handle;
@@ -124,6 +127,7 @@ int main(int argc, char* argv[])
 		switch (c) {
 			case 'h':
 				ldap_parameters->host = strdup(optarg);
+				noLdapServer = 0;
 				break;
 			case 'D':
 				ldap_parameters->binddn = strdup(optarg);
@@ -187,9 +191,34 @@ int main(int argc, char* argv[])
 
 	dn = argv[argc - 1];
 
+	/* if no host/uri is set in ldap_parameters univention_ldap_open uses
+	ldap/server/name. We try ldap/server/addition too, if no host/uri
+	is set */
 	if ((rc = univention_ldap_open(ldap_parameters)) != 0) {
-		fprintf(stderr, "could not open policy for %s\n\n", dn);
-		goto err2;
+
+		int gotConnection = 0;
+		if (noLdapServer) {
+			char *addition = NULL;
+			char *splitPointer = NULL;
+			addition = univention_config_get_string("ldap/server/addition");
+			/* try ldap/server/addition */
+			if (addition) {
+				splitPointer = strtok(addition, " ");
+				while (splitPointer != NULL) {
+					ldap_parameters->host = strdup(splitPointer);
+					if ((rc = univention_ldap_open(ldap_parameters)) == 0) {
+						gotConnection = 1;
+						break;
+					}
+					splitPointer = strtok (NULL, " ");
+				}
+			}
+			free(addition);
+		}
+		if (! gotConnection) {
+			fprintf(stderr, "could not open policy for %s\n\n", dn);
+			goto err2;
+		}
 	}
 
 	timeout.tv_sec = 10;
