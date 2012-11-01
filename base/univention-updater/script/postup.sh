@@ -89,11 +89,6 @@ fi
 # install UDM legacy package containing old policy UDM modules
 install python-univention-directory-manager-legacy-ucd-tcs
 
-# remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
-# Restart apache & Co see Bug #26298
-# FIXME: should be removed for 3.1 (Bug #27925)
-/usr/share/univention-updater/enable-apache2-umc 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
-
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list

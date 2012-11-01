@@ -1,3 +1,9 @@
+univention-updater (8.0.31-1) unstable; urgency=low
+
+  * Remove the UMC restart in postup.sh (Bug #27925)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Nov 2012 11:49:01 +0100
+
 univention-updater (8.0.30-1) unstable; urgency=low
 
   * reverted changes made for Bug #27427
