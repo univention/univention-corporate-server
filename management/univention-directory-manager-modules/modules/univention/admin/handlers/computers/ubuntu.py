@@ -412,7 +412,6 @@ class object(univention.admin.handlers.simpleComputer):
 
 			if realm:
 				ocs.extend(['krb5Principal', 'krb5KDCEntry'])
-				al.append(('krb5PrincipalName', [self.krb5_principal()]))
 				al.append(('krb5MaxLife', '86400'))
 				al.append(('krb5MaxRenew', '604800'))
 				al.append(('krb5KDCFlags', '126'))

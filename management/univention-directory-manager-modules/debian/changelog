@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.81-1) unstable; urgency=low
+
+  * removed "krb5PrincipalName" from ldap addlist (Bug #25172)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 01 Nov 2012 10:42:51 +0100
+
 univention-directory-manager-modules (8.0.80-1) unstable; urgency=low
 
   * added LDAP syntax mail home servers (Bug #27820)
