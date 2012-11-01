@@ -18,6 +18,7 @@ univention-directory-policy/univention-policy-maintenance usr/lib/univention-dir
 bash_completion.d/univention-updater etc/bash_completion.d/
 
 script/univention-install usr/sbin/
+script/univention-remove usr/sbin/
 script/reboot.at var/lib/univention-updater/
 script/univention-updater-check usr/share/univention-updater/
 script/disable-apache2-umc usr/share/univention-updater/
