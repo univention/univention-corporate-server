@@ -184,6 +184,18 @@ msgstr "Fehlernachricht des Servers ausblenden"
 msgid "Information"
 msgstr "Hinweis"
 
+#: umc/widgets/LoginDialog.js:306
+msgid "Please update your Browser"
+msgstr "Bitte aktualisieren Sie Ihren Browser"
+
+#: umc/widgets/LoginDialog.js:307
+msgid "Your Browser is outdated and should be updated. You may continue to "
+"use Univention Management Console but you may experience performance issues "
+"and other problems."
+msgstr "Ihr Browser ist veraltet und sollte aktualisiert werden. Sie können "
+"die Univention Management Console benutzen, aber es kann zu "
+"Geschwindigkeits- und anderen Problemen kommen."
+
 #: umc/widgets/LoginDialog.js:282
 msgid "Insecure Connection"
 msgstr "Unsichere Verbindung"

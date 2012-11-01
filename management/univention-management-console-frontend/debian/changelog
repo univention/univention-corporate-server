@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.151-1) unstable; urgency=low
+
+  * Bug #27432: Warn the user when logging in with an outdated browser (IE 8,
+    FF 3.6)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 01 Nov 2012 13:14:36 +0100
+
 univention-management-console-frontend (2.0.150-1) unstable; urgency=low
 
   * Fix caching of buttons in Grid (Bug #27432)
