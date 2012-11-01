@@ -49,11 +49,11 @@ fi
 
 # update old UNIVENTION_JOINSTATUS checkInterval's Bug #18828
 if [ $JS_LAST_EXECUTED_VERSION -lt 3 ]; then
-	oldCheckInterval="$(udm nagios/service list --filter name=UNIVENTION_JOINSTATUS | grep normalCheckInterval:| awk -F ": " '{print $2}')"
-	oldRetryCheckInterval="$(udm nagios/service list --filter name=UNIVENTION_JOINSTATUS | grep retryCheckInterval:| awk -F ": " '{print $2}')"
+	oldCheckInterval="$(udm nagios/service list "$@" --filter name=UNIVENTION_JOINSTATUS | grep normalCheckInterval:| awk -F ": " '{print $2}')"
+	oldRetryCheckInterval="$(udm nagios/service list "$@" --filter name=UNIVENTION_JOINSTATUS | grep retryCheckInterval:| awk -F ": " '{print $2}')"
 	if [ -n "$oldCheckInterval" -a "$oldCheckInterval" = "1440" ]; then
 		if [ -n "$oldRetryCheckInterval" -a "$oldRetryCheckInterval" = "480" ]; then
-			udm nagios/service modify \
+			univention-directory-manager nagios/service modify "$@" \
 				--dn "cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base"
 				--set normalCheckInterval="180" --set retryCheckInterval="30"
 		fi
