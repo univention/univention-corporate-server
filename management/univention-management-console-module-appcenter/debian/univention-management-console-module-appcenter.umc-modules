@@ -1,5 +1,5 @@
-Module: packages
+Module: appcenter
 Python: umc/python
-Definition: umc/packages.xml
+Definition: umc/appcenter.xml
 Javascript: umc/js
 Icons: umc/icons

@@ -41,9 +41,9 @@ define([
 	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Form",
 	"umc/store",
-	"umc/i18n!umc/modules/packages"
+	"umc/i18n!umc/modules/appcenter"
 ], function(declare, lang, array, dialog, tools, Page, StandbyMixin, Grid, TitlePane, ExpandingTitlePane, Form, store, _) {
-	return declare("umc.modules.packages.SettingsPage", [ Page, StandbyMixin ], {
+	return declare("umc.modules.appcenter.SettingsPage", [ Page, StandbyMixin ], {
 
 		moduleStore: null,
 		_query: { table: 'components' },
@@ -110,7 +110,7 @@ define([
 				layout: formLayout,
 				buttons: formButtons,
 				style: 'margin-bottom:0;',
-				moduleStore: store('server', 'packages/settings'),
+				moduleStore: store('server', 'appcenter/settings'),
 				scrollable: true,
 				onSaved: lang.hitch(this, '_onSavedRepositorySettings')
 			});
@@ -325,7 +325,7 @@ define([
 			// the grid calls multiActions even if nothing is selected?
 			if (args.length) {
 				this.standby(true);
-				tools.umcpCommand('packages/components/put', args).then(
+				tools.umcpCommand('appcenter/components/put', args).then(
 					lang.hitch(this, function() {
 						this.standby(false);
 						this.refresh(); // refresh own grid
@@ -358,7 +358,7 @@ define([
 					'default': true,
 					callback: lang.hitch(this, function() {
 						this.standby(true);
-						tools.umcpCommand('packages/components/del', ids).then(
+						tools.umcpCommand('appcenter/components/del', ids).then(
 								lang.hitch(this, function() {
 									this.standby(false);
 									this.refresh();

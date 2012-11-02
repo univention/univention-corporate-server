@@ -36,13 +36,13 @@ define([
 	"dojo/Deferred",
 	"umc/store",
 	"umc/widgets/TabbedModule",
-	"umc/modules/packages/AppCenterPage",
-	"umc/modules/packages/PackagesPage",
-	"umc/modules/packages/SettingsPage",
-	"umc/modules/packages/DetailsPage",
-	"umc/i18n!umc/modules/packages" // not needed atm
+	"umc/modules/appcenter/AppCenterPage",
+	"umc/modules/appcenter/PackagesPage",
+	"umc/modules/appcenter/SettingsPage",
+	"umc/modules/appcenter/DetailsPage",
+	"umc/i18n!umc/modules/appcenter" // not needed atm
 ], function(declare, lang, array, when, Deferred, store, TabbedModule, AppCenterPage, PackagesPage, SettingsPage, DetailsPage, _) {
-	return declare("umc.modules.packages", [ TabbedModule ], {
+	return declare("umc.modules.appcenter", [ TabbedModule ], {
 
 		idProperty: 'package',
 		_udm_accessible: false,
@@ -65,10 +65,11 @@ define([
 				this._udm_accessible = false;
 			}
 
-			this._componentsStore = store('name', 'packages/components');
+			this._componentsStore = store('name', 'appcenter/components');
+			this._packagesStore = store('package', 'appcenter/packages');
 
 			this._app_center = new AppCenterPage({_udm_accessible: this._udm_accessible});
-			this._packages = new PackagesPage({moduleStore: this.moduleStore});
+			this._packages = new PackagesPage({moduleStore: this._packagesStore});
 			this._components = new SettingsPage({moduleStore: this._componentsStore});
 			this._details = new DetailsPage({moduleStore: this._componentsStore});
 

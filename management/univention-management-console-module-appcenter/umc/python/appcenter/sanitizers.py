@@ -3,7 +3,7 @@ import univention.config_registry
 import univention.management.console as umc
 
 
-_ = umc.Translation('univention-management-console-module-packages').translate
+_ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
 class AnySanitizer(Sanitizer):

@@ -36,9 +36,9 @@ define([
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/TextBox",
-	"umc/i18n!umc/modules/packages"
+	"umc/i18n!umc/modules/appcenter"
 ], function(declare, lang, tools, Form, ComboBox, CheckBox, TextBox, _) {
-	return declare("umc.modules.packages.SearchForm", [ Form ], {
+	return declare("umc.modules.appcenter.SearchForm", [ Form ], {
 
 		postMixInProperties: function() {
 
@@ -53,7 +53,7 @@ define([
 							type: ComboBox,
 							staticValues: [{ id: 'all', label: _("--- all ---") }],
 							sortStaticValues: false,
-							dynamicValues: 'packages/sections',
+							dynamicValues: 'appcenter/packages/sections',
 							onDynamicValuesLoaded: lang.hitch(this, function() {
 								this.allowSearchButton(true);
 							}),

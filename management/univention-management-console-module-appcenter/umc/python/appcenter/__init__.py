@@ -59,7 +59,7 @@ import constants
 import util
 
 
-_ = umc.Translation('univention-management-console-module-packages').translate
+_ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
 class Instance(umcm.Base):
@@ -81,7 +81,7 @@ class Instance(umcm.Base):
 
 	@sanitize(email=EmailSanitizer(required=True))
 	@simple_response
-	def app_center_request_new_license(self, email):
+	def request_new_license(self, email):
 		license = LICENSE.dump_data()
 		if license is None:
 			return False
@@ -98,7 +98,7 @@ class Instance(umcm.Base):
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
-	def app_center_query(self, pattern):
+	def query(self, pattern):
 		try:
 			applications = Application.all(force_reread=True)
 		except (urllib2.HTTPError, urllib2.URLError) as e:
@@ -119,7 +119,7 @@ class Instance(umcm.Base):
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
-	def app_center_get(self, application):
+	def get(self, application):
 		application = Application.find(application)
 		self.package_manager.reopen_cache()
 		return application.to_dict(self.package_manager)
@@ -129,8 +129,8 @@ class Instance(umcm.Base):
 		function=ChoicesSanitizer(['install', 'update'], required=True),
 		application=StringSanitizer(minimum=1, required=True)
 		)
-	def app_center_invoke_dry_run(self, request):
-		MODULE.info('app_center_invoke_dry_run')
+	def invoke_dry_run(self, request):
+		MODULE.info('invoke_dry_run')
 		function = request.options.get('function')
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
@@ -153,7 +153,7 @@ class Instance(umcm.Base):
 	@sanitize(function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
 		application=StringSanitizer(minimum=1, required=True)
 		)
-	def app_center_invoke(self, request, ldap_connection=None, ldap_position=None):
+	def invoke(self, request, ldap_connection=None, ldap_position=None):
 		function = request.options.get('function')
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
@@ -172,7 +172,7 @@ class Instance(umcm.Base):
 				def _finished(thread, result):
 					if isinstance(result, BaseException):
 						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-				thread = notifier.threads.Simple('app_center_invoke',
+				thread = notifier.threads.Simple('invoke',
 					notifier.Callback(_thread, self, application, function), _finished)
 				thread.run()
 		except LockError:
@@ -194,7 +194,7 @@ class Instance(umcm.Base):
 		return txt
 
 	@simple_response
-	def sections(self):
+	def packages_sections(self):
 		""" fills the 'sections' combobox in the search form """
 
 		sections = set()
@@ -205,7 +205,7 @@ class Instance(umcm.Base):
 
 	@sanitize(pattern=PatternSanitizer(required=True))
 	@simple_response
-	def query(self, pattern, section='all', key='package'):
+	def packages_query(self, pattern, section='all', key='package'):
 		""" Query to fill the grid. Structure is fixed here. """
 		result = []
 		for package in self.package_manager.packages():
@@ -222,7 +222,7 @@ class Instance(umcm.Base):
 		return result
 
 	@simple_response
-	def get(self, package):
+	def packages_get(self, package):
 		""" retrieves full properties of one package """
 
 		package = self.package_manager.get_package(package)
@@ -240,7 +240,7 @@ class Instance(umcm.Base):
 		packages=ListSanitizer(StringSanitizer(minimum=1), required=True)
 		)
 	@simple_response
-	def invoke_dry_run(self, packages, function):
+	def packages_invoke_dry_run(self, packages, function):
 		packages = self.package_manager.get_packages(packages)
 		kwargs = {'install' : [], 'remove' : [], 'dry_run' : True}
 		if function == 'install':
@@ -256,7 +256,7 @@ class Instance(umcm.Base):
 			}, required=True),
 		packages=ListSanitizer(StringSanitizer(minimum=1), required=True)
 		)
-	def invoke(self, request):
+	def packages_invoke(self, request):
 		""" executes an installer action """
 		packages = request.options.get('packages')
 		function = request.options.get('function')
@@ -352,7 +352,7 @@ class Instance(umcm.Base):
 		return result
 
 	@simple_response
-	def query_components(self):
+	def components_query(self):
 		"""	Returns components list for the grid in the ComponentsPage.
 		"""
 		# be as current as possible.
@@ -366,7 +366,7 @@ class Instance(umcm.Base):
 
 	@sanitize_list(StringSanitizer())
 	@multi_response(single_values=True)
-	def get_components(self, iterator, component_id):
+	def components_get(self, iterator, component_id):
 		# be as current as possible.
 		self.uu.ucr_reinit()
 		self.ucr.load()
@@ -375,7 +375,7 @@ class Instance(umcm.Base):
 
 	@sanitize_list(DictSanitizer({'object' : advanced_components_sanitizer}))
 	@multi_response
-	def put_components(self, iterator, object):
+	def components_put(self, iterator, object):
 		"""Writes back one or more component definitions.
 		"""
 		# umc.widgets.Form wraps the real data into an array:
@@ -407,20 +407,20 @@ class Instance(umcm.Base):
 				yield self.component_manager.put(object, super_ucr)
 		self.package_manager.update()
 
-	# do the same as put_components (update)
+	# do the same as components_put (update)
 	# but dont allow adding an already existing entry
-	add_components = sanitize_list(DictSanitizer({'object' : add_components_sanitizer}))(put_components)
-	add_components.__name__ = 'add_components'
+	components_add = sanitize_list(DictSanitizer({'object' : add_components_sanitizer}))(components_put)
+	components_add.__name__ = 'components_add'
 
 	@sanitize_list(StringSanitizer())
 	@multi_response(single_values=True)
-	def del_components(self, iterator, component_id):
+	def components_del(self, iterator, component_id):
 		for component_id in iterator:
 			yield self.component_manager.remove(component_id)
 		self.package_manager.update()
 
 	@multi_response
-	def get_settings(self, iterator):
+	def settings_get(self, iterator):
 		# *** IMPORTANT *** Our UCR copy must always be current. This is not only
 		#	to catch up changes made via other channels (ucr command line etc),
 		#	but also to reflect the changes we have made ourselves!
@@ -438,7 +438,7 @@ class Instance(umcm.Base):
 		min_elements=1, max_elements=1 # moduleStore with one element...
 	)
 	@multi_response
-	def put_settings(self, iterator, object):
+	def settings_put(self, iterator, object):
 		# FIXME: returns values although it should yield (multi_response)
 		changed = False
 		# Set values into our UCR copy.

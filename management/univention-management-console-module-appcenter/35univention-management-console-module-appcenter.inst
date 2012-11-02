@@ -1,7 +1,7 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console Module packages
+# Univention Management Console Module appcenter
 #  "Software Management"
 #
 # Copyright 2011-2012 Univention GmbH
@@ -44,11 +44,11 @@ eval "$(ucr shell ldap/base)"
 
 if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
 	# remove previous operation sets as packages-all needs to grant access to lib/server/*
-	udm settings/umc_operationset remove "$@" --dn "cn=packages-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
+	udm settings/umc_operationset remove "$@" --dn "cn=appcenter-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
 fi
 
-umc_operation_create "packages-all" "Manage Software packages" "" "packages/*" "lib/server/*"
-umc_policy_append "default-umc-all" "packages-all"
+umc_operation_create "appcenter-all" "Manage Software packages" "" "appcenter/*" "lib/server/*"
+umc_policy_append "default-umc-all" "appcenter-all"
 
 joinscript_save_current_version
 

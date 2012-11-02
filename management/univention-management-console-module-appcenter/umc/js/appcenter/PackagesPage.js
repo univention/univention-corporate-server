@@ -40,10 +40,10 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/ProgressBar",
 	"umc/modules/lib/server",
-	"umc/modules/packages/SearchForm",
-	"umc/i18n!umc/modules/packages"
+	"umc/modules/appcenter/SearchForm",
+	"umc/i18n!umc/modules/appcenter"
 ], function(declare, lang, array, dialog, tools, Page, StandbyMixin, Grid, ConfirmDialog, ProgressBar, libServer, SearchForm, _) {
-	return declare("umc.modules.packages.PackagesPage", [ Page, StandbyMixin ], {
+	return declare("umc.modules.appcenter.PackagesPage", [ Page, StandbyMixin ], {
 
 		moduleStore: null,
 
@@ -182,7 +182,7 @@ define([
 
 			this._grid.standby(true);
 
-			this.moduleStore.umcpCommand('packages/get', {'package': id}).then(
+			this.moduleStore.umcpCommand('appcenter/packages/get', {'package': id}).then(
 				lang.hitch(this, function(data) {
 
 					this._grid.standby(false);
@@ -380,7 +380,7 @@ define([
 			}
 
 			this.standby(true);
-			tools.umcpCommand('packages/invoke/test', {'function': func, 'packages': ids}).then(lang.hitch(this, function(data) {
+			tools.umcpCommand('appcenter/packages/invoke/test', {'function': func, 'packages': ids}).then(lang.hitch(this, function(data) {
 				this.standby(false);
 				var result = data.result;
 				var txt = '';
@@ -434,7 +434,7 @@ define([
 		// Starts the installer and switches to progress view.
 		_execute_installer: function(func, ids, msg) {
 
-			this.moduleStore.umcpCommand('packages/invoke', {'function': func, 'packages': ids}).then(
+			this.moduleStore.umcpCommand('appcenter/packages/invoke', {'function': func, 'packages': ids}).then(
 				lang.hitch(this, function(data) {
 					if (data.result.not_found.length) {
 						dialog.alert(_('Packages not found: ') + data.result.not_found.join(', '));
@@ -451,7 +451,7 @@ define([
 		_switch_to_progress_bar: function(msg) {
 			this.standby(true, this._progressBar);
 			this._progressBar.reset(msg);
-			this._progressBar.auto('packages/progress',
+			this._progressBar.auto('appcenter/packages/progress',
 				{},
 				lang.hitch(this, '_restartOrReload')
 			);

@@ -41,7 +41,7 @@ define([
 	"dojox/image/LightboxNano",
 	"umc/dialog",
 	"umc/tools",
-	"umc/i18n!umc/modules/packages",
+	"umc/i18n!umc/modules/appcenter",
 	"umc/modules/lib/server",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
@@ -56,7 +56,7 @@ define([
 	"umc/widgets/GalleryPane"
 ], function(declare, lang, array, on, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, GalleryPane) {
 
-	var _SearchWidget = declare("umc.modules.packages._SearchWidget", [ContainerWidget], {
+	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
 		category: null,
 
@@ -160,7 +160,7 @@ define([
 		return txt;
 	};
 
-	return declare("umc.modules.packages.AppCenterPage", [ Page, StandbyMixin ], {
+	return declare("umc.modules.appcenter.AppCenterPage", [ Page, StandbyMixin ], {
 
 		_udm_accessible: false, // license depends on udm
 
@@ -204,9 +204,9 @@ define([
 				getStatusIconClass: function(item) {
 					var iconClass = '';
 					if (item.can_update) {
-						iconClass = tools.getIconClass('packages-can_update', 24, 'umcAppCenter');
+						iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');
 					} else if (item.is_installed) {
-						iconClass = tools.getIconClass('packages-is_installed', 24, 'umcAppCenter');
+						iconClass = tools.getIconClass('appcenter-is_installed', 24, 'umcAppCenter');
 					}
 					return iconClass;
 				}
@@ -238,7 +238,7 @@ define([
 		_show_details: function(app) {
 			this.standby(true);
 
-			tools.umcpCommand('packages/app_center/get', {'application': app.id}).then(
+			tools.umcpCommand('appcenter/get', {'application': app.id}).then(
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					var width = 550;	// mimic the default of dialog.confirm
@@ -416,7 +416,7 @@ define([
 				};
 
 				this.standby(true);
-				tools.umcpCommand('packages/app_center/invoke/test', commandArguments).then(
+				tools.umcpCommand('appcenter/invoke/test', commandArguments).then(
 					lang.hitch(this, function(data) {
 						this.standby(false);
 						var result = data.result;
@@ -479,7 +479,7 @@ define([
 				'application': app.id
 			};
 
-			tools.umcpCommand('packages/app_center/invoke', commandArguments).then(
+			tools.umcpCommand('appcenter/invoke', commandArguments).then(
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					if (data.result) {
@@ -656,7 +656,7 @@ define([
 
 		getApplications: function() {
 			if (!this._applications) {
-				return tools.umcpCommand('packages/app_center/query', {}).then(lang.hitch(function(data) {
+				return tools.umcpCommand('appcenter/query', {}).then(lang.hitch(function(data) {
 					// sort by name
 					this._applications = data.result;
 					this._applications.sort(tools.cmpObjects({
@@ -759,7 +759,7 @@ define([
 					}],
 					autoValidate: true
 				}).then(function(values) {
-					tools.umcpCommand('packages/app_center/request_new_license', values).then(function(data) {
+					tools.umcpCommand('appcenter/request_new_license', values).then(function(data) {
 						// cannot require in the beginning as
 						// udm might be not installed
 						require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
@@ -776,7 +776,7 @@ define([
 		_switch_to_progress_bar: function(msg) {
 			this.standby(true, this._progressBar);
 			this._progressBar.reset(msg);
-			this._progressBar.auto('packages/app_center/progress',
+			this._progressBar.auto('appcenter/progress',
 				{},
 				lang.hitch(this, '_restartOrReload')
 			);

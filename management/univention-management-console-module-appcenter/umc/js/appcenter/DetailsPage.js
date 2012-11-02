@@ -36,9 +36,9 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/TextBox",
 	"umc/widgets/StandbyMixin",
-	"umc/i18n!umc/modules/packages"
+	"umc/i18n!umc/modules/appcenter"
 ], function(declare, lang, Page, Form, CheckBox, TextBox, StandbyMixin, _) {
-	return declare("umc.modules.packages.DetailsPage", [ Page, StandbyMixin ], {
+	return declare("umc.modules.appcenter.DetailsPage", [ Page, StandbyMixin ], {
 		moduleStore: null,
 
 		postMixInProperties: function() {
