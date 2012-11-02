@@ -1,3 +1,9 @@
+univention-updater (8.0.39-1) unstable; urgency=low
+
+  * Depend on univention-errata-level (Bug #26387)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Nov 2012 16:49:03 +0100
+
 univention-updater (8.0.38-1) unstable; urgency=low
 
   * univention-remove: use $* instead of $@ (Bug #19468)

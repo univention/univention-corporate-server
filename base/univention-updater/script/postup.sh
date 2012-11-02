@@ -121,19 +121,12 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
-# For UCS 3.0-2 a reboot is required
+# For UCS 3.1-0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
-# purge univention-shares Bug #24610
-dpkg -P univention-shares >>"$UPDATER_LOG" 2>&1
-if [ -f /etc/cron.d/univention-shares ]; then
-	rm -f /etc/cron.d/univention-shares
-fi
-# end purge univention-shares Bug #24610
-
-ERRATA=93 # Last errata included with UCS-3.0-2
-[ 0$(ucr get version/erratalevel) -lt $ERRATA ] && UPDATE=version/erratalevel=$ERRATA
-univention-config-registry set repository/online/errata/start=$((1 + $ERRATA)) $UPDATE >>"$UPDATER_LOG" 2>&1
+# Set errata component for UCS 3.1-0
+ucr set repository/online/component/3.1-0-errata=enabled \
+		repository/online/component/3.1-0-errata/description="Errata updates for UCS 3.1-0"
 
 echo "done."
 date >>"$UPDATER_LOG"
