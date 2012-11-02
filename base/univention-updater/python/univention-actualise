@@ -266,8 +266,7 @@ def main():
 	try:
 		if check_only:
 			# Only probe for packages to add/remove
-			res=check(configRegistry, dist_upgrade)
-			sys.exit(res)
+			return check(configRegistry, dist_upgrade)
 
 		if ldap_hostdn:
 			logfile = open( LOGNAME, 'a' )
@@ -389,6 +388,7 @@ def update_ucr_updatestatus():
 		dprint('Warning: calling univention-updater-check failed.')
 
 if __name__ == '__main__':
+	res = 0
 	do_ucr_update = False
 	try:
 		lock = univention.updater.tools.updater_lock_acquire()
@@ -415,7 +415,7 @@ if __name__ == '__main__':
 				print 'Failed, aborting.'
 				sys.exit(2)
 
-			main()
+			res = main()
 		except SystemExit, e:
 			if e.args[0] == 0:
 				do_ucr_update = True
@@ -425,3 +425,4 @@ if __name__ == '__main__':
 			print 'WARNING: updater-lock already released!'
 		if do_ucr_update:
 			update_ucr_updatestatus()
+	sys.exit(res)

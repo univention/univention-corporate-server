@@ -1,3 +1,9 @@
+univention-updater (8.0.35-1) unstable; urgency=low
+
+  * Fixed return code handling in univention-actualise (Bug #27171)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Nov 2012 06:34:31 +0100
+
 univention-updater (8.0.34-1) unstable; urgency=low
 
   * Check for hold packages in preup (Bug #19915)
