@@ -10,6 +10,7 @@
 	<command name="packages/app_center/request_new_license" function="app_center_request_new_license" />
 	<command name="packages/app_center/query" function="app_center_query" />
 	<command name="packages/app_center/get" function="app_center_get" />
+	<command name="packages/app_center/invoke/test" function="app_center_invoke_dry_run" />
 	<command name="packages/app_center/invoke" function="app_center_invoke" />
 	<!-- ATTENTION: same progress function as in packages -->
 	<command name="packages/app_center/progress" function="progress"/>

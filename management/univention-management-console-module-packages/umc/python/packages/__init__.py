@@ -125,6 +125,31 @@ class Instance(umcm.Base):
 		return application.to_dict(self.package_manager)
 		return props
 
+	@sanitize(
+		function=ChoicesSanitizer(['install', 'update'], required=True),
+		application=StringSanitizer(minimum=1, required=True)
+		)
+	def app_center_invoke_dry_run(self, request):
+		MODULE.info('app_center_invoke_dry_run')
+		function = request.options.get('function')
+		application_id = request.options.get('application')
+		application = Application.find(application_id)
+
+		if not application:
+			MODULE.info('Application not found')
+			return self.finished(request.id, False)
+		if (function == 'install' and not
+		    application.can_be_installed(self.package_manager)):
+			reason = application.cannot_install_reason(self.package_manager)
+			MODULE.info('Application cannot be installed: %s' % (reason, ))
+			return self.finished(request.id, False)
+		if function == 'update' and not application.can_be_updated():
+			MODULE.info('Application cannot be updated')
+			return self.finished(request.id, False)
+
+		result = application.install_dry_run(self.package_manager, self.component_manager)
+		self.finished(request.id, result)
+
 	@sanitize(function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
 		application=StringSanitizer(minimum=1, required=True)
 		)

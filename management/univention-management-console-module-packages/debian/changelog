@@ -1,5 +1,6 @@
 univention-management-console-module-packages (2.0.53-1) unstable; urgency=low
 
+  * The user has to confirm the process if other packages will be removed
   * Sort python imports
   (Bug #28718)
 

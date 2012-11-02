@@ -438,6 +438,56 @@ class Application(object):
 		self._send_information('uninstall', status)
 		return status == 200
 
+	def install_dry_run(self, package_manager, component_manager):
+		MODULE.info('Invoke install_dry_run')
+		result = None
+		try:
+			ucr.load()
+			server_role = ucr.get('server/role')
+
+			# packages to install
+			to_install = self.get('defaultpackages')
+			MODULE.info('defaultpackages: %s' % (to_install, ))
+			if server_role in ('domaincontroller_master', 'domaincontroller_backup', ):
+				MODULE.info('Running on DC master or DC backup')
+				if self.get('defaultpackagesmaster'):
+					to_install.extend(self.get('defaultpackagesmaster'))
+			# get package objects
+			to_install = package_manager.get_packages(to_install)
+
+			# add the new component
+			component = {
+				'server' : self.get_server(),
+				'prefix' : '',
+				'maintained' : True,
+				'unmaintained' : False,
+				'enabled' : True,
+				'name' : self.component_id,
+				'description' : self.get('description'),
+				'username' : '',
+				'password' : '',
+				'version' : 'current',
+				'localmirror' : 'false',
+				}
+			with util.set_save_commit_load(ucr) as super_ucr:
+				MODULE.info('Add component: %s' % (component, ))
+				component_manager.put(component, super_ucr)
+			package_manager.update()
+
+			# determine the changes
+			result = package_manager.mark(to_install, [], dry_run=True)
+			result = dict(zip(['install', 'remove', 'broken', ], result))
+			MODULE.info('Package changes: %s' % (result, ))
+
+			# remove the newly added component
+			component_manager.remove(self.component_id)
+			MODULE.info('Remove component: %s' % (self.component_id, ))
+			package_manager.update()
+		except:
+			MODULE.warn(traceback.format_exc())
+
+		return result
+
 	def install(self, package_manager, component_manager):
 		try:
 			# remove all existing component versions
