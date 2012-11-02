@@ -94,7 +94,7 @@ class Instance(umcm.Base):
 				filter='(subnet=%s)' % (string.join(request.options.get('ip').split('.')[0:c], '.') )
 				reverseobject = univention.admin.modules.lookup(rmodule, co, lo, scope='sub', superordinate=None, filter=filter)
 				if reverseobject:
-					server['dnsEntryZoneReverse'].append([reverseobject[0].dn, request.options.get('ip')])
+					server['dnsEntryZoneReverse'].append([reverseobject[0].dn, request.options.get('oldip')])
 				
 				server['ip'] = request.options.get('ip')
 

@@ -1,3 +1,10 @@
+univention-management-console-module-ipchange (2.0.3-1) unstable; urgency=low
+
+  * use current ip instead of new one when adding new dns reverse zone
+    (Bug #27937)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 02 Nov 2012 10:48:35 +0100
+
 univention-management-console-module-ipchange (2.0.2-1) unstable; urgency=low
 
   * Remove old syntax definitions (Bug #27720)
