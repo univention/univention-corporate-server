@@ -59,7 +59,6 @@ import univention.admin.handlers.settings.prohibited_username
 
 import univention.debug
 import univention.password
-from univention.admin import configRegistry
 
 translation=univention.admin.localization.translation('univention.admin.handlers.users')
 _=translation.translate
@@ -2432,9 +2431,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 					am_host=share['host']
 					if not self['homeSharePath'] or type(self['homeSharePath']) not in [types.StringType, types.UnicodeType]:
-						am_path=os.path.join(share['path'])
+						raise univention.admin.uexceptions.missingInformation, _('%(homeSharePath)s must be given if %(homeShare)s is given.') % {'homeSharePath' : _('Home share path'), 'homeShare' : _('Home share')}
 					else:
-						am_path=os.path.join(share['path'], self['homeSharePath'])
+						am_path = os.path.abspath(os.path.join(share['path'], self['homeSharePath']))
+						if not am_path.startswith(share['path']):
+							raise univention.admin.uexceptions.valueError, _('%s: Invalid path') % _('Home share path')
 
 					am_old = self.oldattr.get('automountInformation', [''])[0]
 					am_new = '-rw %s:%s' % (am_host, am_path)

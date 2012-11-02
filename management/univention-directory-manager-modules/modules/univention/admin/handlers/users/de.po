@@ -603,9 +603,17 @@ msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
-#: user.py:2448
+#: user.py:2444
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
+
+#: user.py:2434
+msgid "%(homeSharePath)s must be given if %(homeShare)s is given."
+msgstr "%(homeSharePath)s muss gesetzt sein, wenn %(homeShare)s gesetzt wurde."
+
+#: user.py:2438
+msgid "%s: Invalid path"
+msgstr "%s: Ungültige Pfadangabe"
 
 #~ msgid "User preferences"
 #~ msgstr "UMC Benutzer-Einstellungen"

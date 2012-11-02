@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.82-1) unstable; urgency=low
+
+  * homeSharePath must be given if homeShare is given (Bug #28996)
+  * homeSharePath must be relative to homeShare (Bug #28996)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 02 Nov 2012 14:47:06 +0100
+
 univention-directory-manager-modules (8.0.81-1) unstable; urgency=low
 
   * removed "krb5PrincipalName" from ldap addlist (Bug #25172)
