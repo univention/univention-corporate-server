@@ -43,6 +43,7 @@ TYPE=
 USERTMP="$(mktemp -d)"
 trap "rm -rf '$USERTMP'" EXIT
 DCPWD="$USERTMP/dcpwd"
+VERSION_CHECK=true
 
 display_help() {
 	display_header
@@ -57,6 +58,7 @@ display_help() {
 	  -type <type>:            type of computer, e.g. "client"
 	  -ldapbase <ldap base>:   LDAP Base DN, e.g. dc=test,dc=local
 	  -realm <kerberos realm>: Kerberos realm, e.g. TEST.LOCAL
+	  -disableVersionCheck     Disable version check against _dcname_
 
 	  -h | --help | -?:        print this usage message and exit program
 	  --version:               print version information and exit program
@@ -166,6 +168,10 @@ do
 			shift
 			SIMPLEGUI="yes"
 			;;
+		"-disableVersionCheck")
+			shift
+			VERSION_CHECK=false
+			;;
 		"--version")
 			display_version
 			exit 0
@@ -247,6 +253,44 @@ then
 	failed_message "ssh-login for ${DCACCOUNT}@${DCNAME} failed. Maybe you entered a wrong password."
 fi
 
+
+# get master versions
+versions="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr search --brief ^version/)"
+OLDIFS=$IFS
+IFS=$'\n'
+for i in $versions; do
+	key=${i%%: *}
+	value=${i#*: }
+	case "$key" in
+		"version/version")
+			master_version="$value"
+			;;
+		"version/patchlevel")
+			master_patchlevel="$value"
+			;;
+		"version/releasename")
+			master_releasename="$value"
+			;;
+	esac
+done
+IFS=$OLDIFS
+
+# check join constraints
+#  * disable join of newer ucs system against older ucs systems
+if $VERSION_CHECK; then
+
+	mystatus="no"
+	if [ -n "$master_version" -a -n "$master_patchlevel" ]; then
+		vmaster="$master_version$master_patchlevel"
+		vmyself="$version_version$version_patchlevel"
+		mystatus="$(echo "$vmaster" "$vmyself" | awk '{if ($1 >= $2) print "yes"; else print "no"}')"
+	fi
+
+	if [ "no" = "$mystatus" ]; then
+		failed_message "version on ${DCNAME} seems to be lower than version of this system, this constellation is not supported."
+	fi
+fi
+
 echo -e "\033[60Gdone"
 
 if [ -x /etc/init.d/slapd ]; then
@@ -325,7 +369,6 @@ if [ -n "$ldap_position" ]; then
 	args+=(-position "$ldap_position")
 fi
 
-master_version="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr search --brief ^version/version$ | sed -ne 's|^version/version: ||p')"
 
 if [ "${master_version:0:1}" -lt 3 ]; then
 	# UCS 2.x does not support the -binddn parameter
