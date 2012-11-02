@@ -41,7 +41,6 @@ define([
 	"dojox/image/LightboxNano",
 	"umc/dialog",
 	"umc/tools",
-	"umc/i18n!umc/modules/appcenter",
 	"umc/modules/lib/server",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
@@ -53,8 +52,9 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
-	"umc/widgets/GalleryPane"
-], function(declare, lang, array, on, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, _, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, GalleryPane) {
+	"umc/widgets/GalleryPane",
+	"umc/i18n!umc/modules/appcenter"
+], function(declare, lang, array, on, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -673,20 +673,25 @@ define([
 			// query all applications
 			this._applications = null;
 			this.standby(true);
-			when(this.getApplications(), lang.hitch(this, function(applications) {
-				this.standby(false);
-				this._grid.set('store', new Memory({data: applications}));
+			when(this.getApplications(),
+				lang.hitch(this, function(applications) {
+					this.standby(false);
+					this._grid.set('store', new Memory({data: applications}));
 
-				var categories = [];
-				array.forEach(applications, function(application) {
-					array.forEach(application.categories, function(category) {
-						if (array.indexOf(categories, category) < 0) {
-						     categories.push(category);
-						}
+					var categories = [];
+					array.forEach(applications, function(application) {
+						array.forEach(application.categories, function(category) {
+							if (array.indexOf(categories, category) < 0) {
+							     categories.push(category);
+							}
+						});
 					});
-				});
-				this._searchWidget.set('categories', categories.sort());
-			}));
+					this._searchWidget.set('categories', categories.sort());
+				}),
+				lang.hitch(this, function() {
+					this.standby(false);
+				})
+			);
 		},
 
 		filterApplications: function() {

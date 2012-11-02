@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.56-1) unstable; urgency=low
+
+  * End standby if appcenter server is unreachable (Bug #29035)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 02 Nov 2012 18:30:31 +0100
+
 univention-management-console-module-appcenter (2.0.55-1) unstable; urgency=low
 
   * Rename package from univention-management-console-module-packages to
