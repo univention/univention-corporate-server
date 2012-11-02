@@ -68,6 +68,8 @@ define([
 
 		_tooManyDeferred: null,
 
+		_setValueDeferred: null,
+
 		_loadValues: function() {
 			if (this._state == 'normal') {
 				this.inherited(arguments);
@@ -77,6 +79,7 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._tooManyDeferred = new Deferred();
+			this._setValueDeferred = new Deferred();
 		},
 
 		_emptyStore: function() {
@@ -84,9 +87,20 @@ define([
 			this.set('store', this._createStore());
 		},
 
+		_getValueAttr: function() {
+			// return initialValue until setValue is executed
+			// at least once.
+			if (!this._setValueDeferred.isFulfilled()) {
+				return this._initialValue;
+			} else {
+				return this.inherited(arguments);
+			}
+		},
+
 		_setValueAttr: function(newVal) {
 			// save arguments, otherwise those of function(too_many) are used
 			var original_arguments = arguments;
+			this.inherited(arguments);
 			this._tooManyDeferred.then(lang.hitch(this, function(too_many) {
 				// behave normally if:
 				// * all values are loaded (should be included in the third *, but i test it nonetheless
@@ -107,6 +121,7 @@ define([
 							this._addAdvancedSearchItemAndSaveStore();
 						}
 						this.inherited(original_arguments);
+						this._setValueDeferred.resolve();
 						this._lastSearch = this.get('displayedValue');
 					}),
 					lang.hitch(this, function() {
@@ -114,6 +129,7 @@ define([
 					}));
 				} else {
 					this.inherited(original_arguments);
+					this._setValueDeferred.resolve();
 				}
 			}));
 		},
@@ -323,6 +339,7 @@ define([
 			on.once(this, 'valuesloaded', lang.hitch(this, function() {
 				this._tooManyDeferred.resolve(false);
 			}));
+			this._setValueDeferred.resolve();
 			this._loadValues();
 		},
 

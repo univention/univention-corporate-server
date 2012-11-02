@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.50-1) unstable; urgency=low
+
+  * Fix getValue before first successful setValue in ComboBox (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 02 Nov 2012 11:27:50 +0100
+
 univention-management-console-module-udm (3.0.49-1) unstable; urgency=low
 
   * Fix User-Templates not propagating given User-Options (Bug #28899)
