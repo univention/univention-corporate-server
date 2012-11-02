@@ -1,0 +1,30 @@
+xen: handle out-of-pirq condition correctly in PHYSDEVOP_get_free_pirq
+
+This is XSA-13 / CVE-2012-3495
+
+Signed-off-by: Ian Campbell <ian.campbell@citrix.com>
+Signed-off-by: Jan Beulich <JBeulich@suse.com>
+
+diff -r 1225aff05dd2 xen/arch/x86/physdev.c
+--- a/xen/arch/x86/physdev.c	Thu Aug 09 16:48:07 2012 +0100
++++ b/xen/arch/x86/physdev.c	Thu Aug 16 11:07:36 2012 +0100
+@@ -587,11 +587,16 @@ ret_t do_physdev_op(int cmd, XEN_GUEST_H
+             break;
+ 
+         spin_lock(&d->event_lock);
+-        out.pirq = get_free_pirq(d, out.type, 0);
+-        d->arch.pirq_irq[out.pirq] = PIRQ_ALLOCATED;
++        ret = get_free_pirq(d, out.type, 0);
++        if ( ret >= 0 )
++            d->arch.pirq_irq[ret] = PIRQ_ALLOCATED;
+         spin_unlock(&d->event_lock);
+ 
+-        ret = copy_to_guest(arg, &out, 1) ? -EFAULT : 0;
++        if ( ret >= 0 )
++        {
++            out.pirq = ret;
++            ret = copy_to_guest(arg, &out, 1) ? -EFAULT : 0;
++        }
+ 
+         rcu_unlock_domain(d);
+         break;

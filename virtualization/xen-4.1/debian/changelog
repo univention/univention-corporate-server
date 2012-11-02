@@ -1,3 +1,9 @@
+xen-4.1 (4.1.3-3) ucs3-0-0-0; urgency=low
+
+  * Merge remaining security fixes from errata124 for UCS 3.0 (Bug #28147)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 02 Nov 2012 14:43:10 +0100
+
 xen-4.1 (4.1.3-2) ucs3-0-0-0; urgency=low
 
   * Fix init script order (Bug #28813)
