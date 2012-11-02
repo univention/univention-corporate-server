@@ -726,8 +726,10 @@ define([
 					this._form.getWidget( '$location$' ).set( 'content', _( 'Position: <i>%(path)s</i>', { path: path } ) );
 
 					// save the original form data
-					this._receivedObjFormData = this.getValues();
-					this._receivedObjFormData.$policies$ = this._receivedObjOrigData.$policies$;
+					this._form.ready().then(lang.hitch(this, function() {
+						this._receivedObjFormData = this.getValues();
+						this._receivedObjFormData.$policies$ = this._receivedObjOrigData.$policies$;
+					}));
 				}));
 			} else {
 				// hide the type info and ldap path in case of a new object

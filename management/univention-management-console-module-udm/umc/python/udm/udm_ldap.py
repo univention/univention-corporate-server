@@ -75,7 +75,7 @@ def get_exception_msg(e):
 	if getattr(e, 'args', False):
 		if e.args[0] != msg or len(e.args) != 1:
 			for arg in e.args:
-				msg += arg
+				msg += ' ' + arg
 	return msg
 
 def set_credentials( dn, passwd ):

@@ -88,10 +88,13 @@ define([
 		},
 
 		_getValueAttr: function() {
+			if (this._state == 'normal') {
+				return this.inherited(arguments);
+			}
 			// return initialValue until setValue is executed
 			// at least once.
 			if (!this._setValueDeferred.isFulfilled()) {
-				return this._initialValue;
+				return this._initialValue || '';
 			} else {
 				return this.inherited(arguments);
 			}
@@ -127,9 +130,6 @@ define([
 					lang.hitch(this, function() {
 						this._changeState('waiting');
 					}));
-				} else {
-					this.inherited(original_arguments);
-					this._setValueDeferred.resolve();
 				}
 			}));
 		},
@@ -181,10 +181,16 @@ define([
 							}
 						}));
 						this._tooManyDeferred.resolve(true);
-
 						// we wait until the info command has been sent ... the user will
 						// during a request see a waiting animation
-						this._readyDeferred.resolve();
+						if (this._initialValue) {
+							this.set('value', this._initialValue);
+							this._setValueDeferred.then(lang.hitch(this, function() {
+								this._readyDeferred.resolve();
+							}));
+						} else {
+							this._readyDeferred.resolve();
+						}
 					} else {
 						this._behaveNormally();
 					}
@@ -339,7 +345,6 @@ define([
 			on.once(this, 'valuesloaded', lang.hitch(this, function() {
 				this._tooManyDeferred.resolve(false);
 			}));
-			this._setValueDeferred.resolve();
 			this._loadValues();
 		},
 
