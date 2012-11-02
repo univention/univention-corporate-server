@@ -1,0 +1,17 @@
+Source: univention-errata-level
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 7),
+ ucslint
+
+Package: univention-errata-level
+Architecture: all
+Depends: ${misc:Depends}
+Description: UCS - errata level handling
+ This package sets the errata level.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
