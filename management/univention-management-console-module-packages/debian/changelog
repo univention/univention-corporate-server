@@ -1,3 +1,10 @@
+univention-management-console-module-packages (2.0.53-1) unstable; urgency=low
+
+  * Sort python imports
+  (Bug #28718)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 31 Oct 2012 11:28:17 +0100
+
 univention-management-console-module-packages (2.0.52-1) unstable; urgency=low
 
   * Add support for Maintainer and MaintainerWebsite in ini-files (Bug #28940)

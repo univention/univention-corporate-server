@@ -31,12 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# standard library
 from contextlib import contextmanager
 
-from constants import *
-
-import univention.config_registry
+# univention
 from univention.management.console.log import MODULE
+import univention.config_registry
+
+# local application
+from constants import *
 
 
 class Changes(object):

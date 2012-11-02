@@ -31,32 +31,36 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import notifier
-import notifier.threads
-import urllib2
-import urllib
+# standard library
 import locale
 import sys
+import urllib
+import urllib2
 
-import util
+# related third party
+import notifier
+import notifier.threads
 
+# univention
+from univention.lib.package_manager import PackageManager, LockError
+from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response
+from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer
+from univention.updater import UniventionUpdater
+from univention.updater.errors import ConfigurationError
 import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response
-from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer
-from sanitizers import basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
+
+# local application
 from app_center import Application, LICENSE
+from sanitizers import basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
+import constants
+import util
 
-from univention.lib.package_manager import PackageManager, LockError
 
-from univention.management.console.log import MODULE
-
-from univention.updater import UniventionUpdater
-from univention.updater.errors import ConfigurationError
 _ = umc.Translation('univention-management-console-module-packages').translate
 
-import constants
 
 class Instance(umcm.Base):
 	def init(self):

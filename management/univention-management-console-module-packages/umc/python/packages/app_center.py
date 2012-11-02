@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# standard library
 from distutils.version import LooseVersion
 import ConfigParser
 import copy
@@ -42,13 +43,16 @@ import traceback
 import urllib
 import urllib2
 
+# related third party
 from ldap import LDAPError
 
+# univention
 from univention.management.console.log import MODULE
 from univention.updater import UniventionUpdater
 import univention.admin.uexceptions as udm_errors
 import univention.config_registry
 
+# local application
 import util
 from constants import COMPONENT_BASE
 

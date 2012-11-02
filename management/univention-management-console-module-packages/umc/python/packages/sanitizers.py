@@ -1,8 +1,10 @@
+from univention.management.console.modules.sanitizers import Sanitizer, PatternSanitizer, MappingSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
 import univention.config_registry
 import univention.management.console as umc
+
+
 _ = umc.Translation('univention-management-console-module-packages').translate
 
-from univention.management.console.modules.sanitizers import Sanitizer, PatternSanitizer, MappingSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
 
 class AnySanitizer(Sanitizer):
 	def _sanitize(self, value, name, further_args):
