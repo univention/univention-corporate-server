@@ -133,6 +133,35 @@ if [ ! -z "$update_custom_preup" ]; then
 	fi
 fi
 
+# shell-univention-lib is proberly not installed, so use a local function
+is_ucr_true () {
+    local value
+    value="$(/usr/sbin/univention-config-registry get "$1")"
+    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+        1|yes|on|true|enable|enabled) return 0 ;;
+        0|no|off|false|disable|disabled) return 1 ;;
+        *) return 2 ;;
+    esac
+}
+
+## check for hold packages 
+hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
+if [ -n "$hold_packages" ]; then
+	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
+	echo "system!"
+	echo "Please check the following packages and unmark them or set the UCR variable update31/ignore_hold to yes"
+	for hp in $hold_packages; do
+		echo " - $hp"
+	done
+	if is_ucr_true update31/ignore_hold; then
+		echo "WARNING: update31/ignore_hold is set to true. Skipped as requested."
+	else
+		exit 1
+	fi
+fi
+
+##
+
 #################### Bug #22093
 
 get_latest_kernel_pkg () {
