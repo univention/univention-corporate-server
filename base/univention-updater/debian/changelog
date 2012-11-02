@@ -1,3 +1,10 @@
+univention-updater (8.0.36-1) unstable; urgency=low
+
+  * Re-create PXE net installer stack if a repository is created or re-
+    created (Bug #24777)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Nov 2012 10:06:37 +0100
+
 univention-updater (8.0.35-1) unstable; urgency=low
 
   * Fixed return code handling in univention-actualise (Bug #27171)
