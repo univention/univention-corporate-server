@@ -56,6 +56,7 @@ import univention.config_registry
 import util
 from constants import COMPONENT_BASE
 
+LOGFILE = '/var/log/univention/app_install.log'
 
 class License(object):
 	def __init__(self, license=None):
@@ -418,19 +419,22 @@ class Application(object):
 
 			# remove all packages of the component
 			package_manager.set_max_steps(200)
-			package_manager.commit(remove=self.get('defaultpackages'), install=to_keep)
-			package_manager.add_hundred_percent()
+			with open(LOGFILE, 'a') as logfile:
+				logfile.write('\n== UNINSTALLING %s ==\n' % self.name)
+				with package_manager.logging_to(logfile):
+					package_manager.commit(remove=self.get('defaultpackages'), install=to_keep)
+					package_manager.add_hundred_percent()
 
-			# remove all dependencies
-			package_manager.autoremove()
-			package_manager.add_hundred_percent()
+					# remove all dependencies
+					package_manager.autoremove()
+					package_manager.add_hundred_percent()
 
-			# remove all existing component versions
-			for iapp in self.versions:
-				component_manager.remove(iapp.component_id)
+					# remove all existing component versions
+					for iapp in self.versions:
+						component_manager.remove(iapp.component_id)
 
-			# update package information
-			package_manager.update()
+					# update package information
+					package_manager.update()
 
 			status = 200
 		except:
@@ -497,7 +501,7 @@ class Application(object):
 			# add the new repository component for the app
 			ucr.load()
 			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')  # packages need to be installed on backup AND master systems
-			server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+			server = self.get_server()
 			to_install = self.get('defaultpackages')
 			if is_master and self.get('defaultpackagesmaster'):
 				to_install.extend(self.get('defaultpackagesmaster'))
@@ -518,8 +522,11 @@ class Application(object):
 				component_manager.put(data, super_ucr)
 
 			# update and install + dist_upgrade
-			package_manager.update()
-			package_manager.commit(install=to_install, dist_upgrade=True)
+			with open(LOGFILE, 'a') as logfile:
+				logfile.write('\n== INSTALLING %s ==\n' % self.name)
+				with package_manager.logging_to(logfile):
+					package_manager.update()
+					package_manager.commit(install=to_install, dist_upgrade=False)
 
 			# successful installation
 			status = 200
@@ -534,8 +541,7 @@ class Application(object):
 			return
 
 		ucr.load()
-		server = ucr.get('repository/app_center/server',
-		                 'appcenter.software-univention.de')
+		server = self.get_server()
 		url = 'https://%s/index' % (server, )
 
 		try:

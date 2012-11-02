@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.57-1) unstable; urgency=low
+
+  * Add log file for (un)installing apps; Bug #29037
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 02 Nov 2012 20:05:07 +0100
+
 univention-management-console-module-appcenter (2.0.56-1) unstable; urgency=low
 
   * End standby if appcenter server is unreachable (Bug #29035)
