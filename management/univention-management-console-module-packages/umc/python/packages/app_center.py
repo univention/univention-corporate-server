@@ -142,7 +142,7 @@ class Application(object):
 					self._options[k] = v
 
 		# parse boolean values
-		for ikey in ('emailrequired',):
+		for ikey in ('notifyvendor',):
 			if ikey in self._options:
 				self._options[ikey] = config.getboolean('Application', ikey)
 			else:
@@ -359,12 +359,12 @@ class Application(object):
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
 
-		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
+		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 
 		res['can_update'] = self.can_be_updated() and cannot_install_reason == 'installed'
 		res['can_install'] = cannot_install_reason is None
 		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
-		res['allows_using'] = LICENSE.allows_using(self.get('emailrequired'))
+		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
 		res['server'] = self.get_server()
@@ -530,7 +530,7 @@ class Application(object):
 		return status == 200
 
 	def _send_information(self, action, status):
-		if not self.get('emailrequired'):
+		if not self.get('notifyvendor'):
 			return
 
 		ucr.load()

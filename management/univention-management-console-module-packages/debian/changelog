@@ -1,3 +1,9 @@
+univention-management-console-module-packages (2.0.54-1) unstable; urgency=low
+
+  * Rename config option "EmailRequired" to "NotifyVendor" (Bug #28001)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 02 Nov 2012 13:26:19 +0100
+
 univention-management-console-module-packages (2.0.53-1) unstable; urgency=low
 
   * The user has to confirm the process if other packages will be removed
