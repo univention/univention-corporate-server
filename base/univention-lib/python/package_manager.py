@@ -34,9 +34,10 @@
 import sys
 import os
 import time
-import locale
 import subprocess
+import tempfile
 from contextlib import contextmanager
+
 import apt_pkg
 import apt
 import apt.progress
@@ -66,6 +67,7 @@ class ProgressState(object):
 		self.step_handler = step_handler
 		self.error_handler = error_handler
 		self.handle_only_frontend_errors = handle_only_frontend_errors
+		self.logfiles = {}
 		self.hard_reset()
 
 	def reset(self):
@@ -82,18 +84,28 @@ class ProgressState(object):
 	def set_finished(self):
 		self._finished = True
 
+	def log(self, msg):
+		if msg is None:
+			return
+		msg = '%s\n' % str(msg).strip()
+		for log in self.logfiles.values():
+			log.write(msg)
+
 	def info(self, info):
+		self.log(info)
 		self._info = info
 		if self.info_handler:
 			self.info_handler(info)
 
 	def percentage(self, percentage):
+		self.log(percentage)
 		self._percentage = percentage
 		if percentage is not None:
 			if self.step_handler:
 				self.step_handler(self._steps)
 
 	def error(self, error, frontend=True):
+		self.log(error)
 		if frontend:
 			self.info(error)
 			self._errors.append(error)
@@ -124,13 +136,17 @@ class ProgressState(object):
 		return result
 
 class MessageWriter(object):
-	'''Mimics a file object (default: stdout)
+	'''Mimics a file object
 	supports flush and write. Writes no '\\r',
 	writes no empty strings, writes not just spaces.
-	If it writes its tweaking output: '__MSG__:%s\\n' '''
+	If it writes it is handled by progress_state '''
 
-	def __init__(self, progress_state):
+	def __init__(self, progress_state, tmp_file=None):
 		self.progress_state = progress_state
+		self.tmp_file = tmp_file
+
+	def fileno(self):
+		return self.tmp_file.fileno()
 
 	def flush(self):
 		pass
@@ -165,6 +181,17 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 	def __init__(self, progress_state):
 		super(DpkgProgress, self).__init__()
 		self.progress_state = progress_state
+
+	def fork(self):
+		# we better have a real file
+		# when using low-level routines
+		tmp = tempfile.TemporaryFile()
+		msg_writer = MessageWriter(self.progress_state, tmp)
+		p = os.fork()
+		if p == 0:
+			os.dup2(msg_writer.fileno(), sys.stdout.fileno())
+			os.dup2(msg_writer.fileno(), sys.stderr.fileno())
+		return p
 
 	# status == pmstatus
 	def status_change(self, pkg, percent, status):
@@ -233,6 +260,18 @@ class PackageManager(object):
 
 	def is_locked(self):
 		return self.lock_fd is not None
+
+	@contextmanager
+	def logging_to(self, logfile):
+		if logfile.name in self.progress_state.logfiles:
+			# already registered
+			yield
+		else:
+			self.progress_state.logfiles[logfile.name] = logfile
+			try:
+				yield
+			finally:
+				self.progress_state.logfiles.pop(logfile.name)
 
 	@contextmanager
 	def locked(self, reset_status=False, set_finished=False):
