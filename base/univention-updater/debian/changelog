@@ -1,3 +1,11 @@
+univention-updater (8.0.38-1) unstable; urgency=low
+
+  * univention-remove: use $* instead of $@ (Bug #19468)
+  * univention-repository-create: fixed typo and create pxedir if it
+    does not exist (Bug #24777)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Nov 2012 15:37:22 +0100
+
 univention-updater (8.0.37-1) unstable; urgency=low
 
   * Create var and skel directory for apt-mirror (Bug #17835)

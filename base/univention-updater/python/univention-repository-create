@@ -223,6 +223,9 @@ def setup_pxe( options ):
 		print 'Failed to search kernel'
 		return 1
 
+	if not os.path.exists(pxedir):
+		os.mkdir(pxedir)
+
 	cdkernel = os.path.join(bootdir, kernel)
 	cdinitrd = os.path.join(bootdir, '%s.bin' % kernel)
 	if os.path.exists(cdkernel):
@@ -317,7 +320,7 @@ if __name__ == '__main__':
 
 		if not minor_version == '0':
 			print """
-			An UCS repository must always start with the first mayjor version, for example
+			An UCS repository must always start with minor version 0, for example
 			with UCS %(major)s.0. Please synchronize the repository from %(major)s.0 to %(major)s.%(minor)s
 			by using the tool univention-repository-update.
 			""".replace('\t\t\t', '') % {'major': major_version, 'minor': minor_version}

@@ -44,8 +44,8 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 eval "$(ucr shell)"
-echo "***** Starting \"univention-remove $@\" on $(date)" >> "$LOGFILE"
+echo "***** Starting \"univention-remove $*\" on $(date)" >> "$LOGFILE"
 set -e
 set -o pipefail
 $update_commands_update 2>&1 | tee -a "$LOGFILE"
-exec $update_commands_remove_interactive "$@" 2>&1 | tee -a "$LOGFILE"
+exec $update_commands_remove_interactive $* 2>&1 | tee -a "$LOGFILE"
