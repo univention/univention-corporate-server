@@ -1,3 +1,9 @@
+univention-updater (8.0.40-1) unstable; urgency=low
+
+  * Use $* for the echo command only (Bug #19468)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Nov 2012 08:54:45 +0100
+
 univention-updater (8.0.39-1) unstable; urgency=low
 
   * Depend on univention-errata-level (Bug #26387)
