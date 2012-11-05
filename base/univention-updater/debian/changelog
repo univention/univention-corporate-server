@@ -1,3 +1,9 @@
+univention-updater (8.0.45-1) unstable; urgency=low
+
+  * Add link to errata page (Bug #25597)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Nov 2012 19:19:17 +0100
+
 univention-updater (8.0.44-1) unstable; urgency=low
 
   * Limit the errata scope to the current version (Bug #26387)

@@ -242,8 +242,14 @@ define([
 					label:			'',
 					name:			'package_update_text1',
 					// FIXME Manual placement: should be done by the layout framework some day.
-					style:			'width:500px;margin-top:.5em;',
 					content:		_("Package update status not yet checked")
+				},
+				{
+					type:			'Text',
+					label:			'',
+					name:			'erratalink',
+					style:			'width:500px;margin-top:.5em;',
+					content:		''
 				}
 			];
 
@@ -329,7 +335,7 @@ define([
 					layout:
 					[
 						['package_update_text1'],
-						['run_packages_update']
+						['erratalink', 'run_packages_update']
 					]
 				}
 			];
@@ -371,6 +377,9 @@ define([
 				{
 					this.onQuerySuccess('updater/updates/get');
 					var values = this._form.gatherFormValues();
+
+					// first set the link for information about updates
+					this._update_errata_link(values.ucs_version);
 
 					// send event that value have been loaded
 					this.onStatusLoaded(values);
@@ -454,6 +463,14 @@ define([
 				}, this);
 			}));
 
+		},
+
+		_update_errata_link: function(version) {
+			var erratalink = lang.replace('<a href="http://errata.univention.de/overview-{version}.html" target="_blank">{label}</a>', {
+				version: version,
+				label: _('Information about the updates')
+			});
+			this._form.getWidget('erratalink').set('content', erratalink);
 		},
 
 		// Internal function that sets the 'updates available' button and
