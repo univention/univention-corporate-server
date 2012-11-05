@@ -285,7 +285,7 @@ class object(content):
 		self.debug('profile_complete')
 
 		if self.container['module_disabled']:
-			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable'))
+			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable_type'))
 			return True
 
 		if self.check('partitions') | self.check('partition'):
@@ -390,6 +390,10 @@ class object(content):
 
 	def run_profiled(self):
 		self.debug('run_profiled')
+		if self.container['module_disabled']:
+			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable_type'))
+			return {}
+
 		self.act_profile()
 
 		self.debug('run_profiled: creating profile')
@@ -709,7 +713,7 @@ class object(content):
 		auto_part = False
 
 		# disable module if partition table type in profile does not match 'MSDOS' or 'MBR'
-		if self.all_results.get('partitiontable','msdos').lower() not in ('msdos','mbr'):
+		if self.all_results.get('partitiontable_type','msdos').lower() not in ('msdos','mbr'):
 			self.container['module_disabled'] = True
 			return
 
@@ -1775,7 +1779,7 @@ class object(content):
 
 	def result(self):
 		if self.container['module_disabled']:
-			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable'))
+			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable_type'))
 			return {}
 
 		result={}
