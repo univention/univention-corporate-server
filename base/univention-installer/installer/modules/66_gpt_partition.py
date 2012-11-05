@@ -1190,26 +1190,30 @@ class object(content):
 					num_list=self.parent.container['profile']['create'][disk].keys()
 					num_list.sort()
 					for num in num_list:
-						type = self.parent.container['profile']['create'][disk][num]['type']
-						flaglist = self.parent.container['profile']['create'][disk][num]['flag'].split(',')
+						parttype = self.parent.container['profile']['create'][disk][num]['type']
+						flaglist = self.parent.container['profile']['create'][disk][num]['flag']
 						fstype = self.parent.container['profile']['create'][disk][num]['fstype']
 						start = self.parent.container['profile']['create'][disk][num]['start']
 						end = self.parent.container['profile']['create'][disk][num]['end']
+						label = self.parent.container['profile']['create'][disk][num]['label']
+						device = self.get_real_partition_device_name(disk,num)
 
 						# do not create partitions if only_mount is set
-						if type == "only_mount":
-							self.parent.debug('will not create partition %s%s due type == %s' % (disk, num, type))
+						if parttype == "only_mount":
+							self.parent.debug('will not create partition %s%s due type == %s' % (disk, num, parttype))
 							continue
 
-						if not fstype or fstype.lower() in [ 'none' ]:
-							self.run_cmd('/sbin/PartedCreate -d %s -t %s -s %s -e %s 2>&1' % (disk, type, start, end))
-						else:
-							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))
+						self.run_cmd(['/sbin/parted', '--script', disk, 'unit', 'B', 'mkpart', '"%s"' % label, str(start), str(end)])
+						if fstype and not fstype.lower() in ('none',):
+							mkfs_cmd = get_mkfs_cmd(device, fstype)
+							if mkfs_cmd:
+								self.run_cmd(mkfs_cmd)
+							else:
+								self.parent.debug('ERROR: unknown filesystem for %r specified: %r' % (device, fstype))
 						if PARTFLAG_BOOT in flaglist:
 							self.parent.debug('%s%s: boot flag' % (disk, num))
 							self.run_cmd(['/sbin/parted', '-s', str(disk), 'set', str(num), 'boot', 'on'])
 						if PARTFLAG_LVM in flaglist:
-							device = self.get_real_partition_device_name(disk,num)
 							self.parent.debug('%s: lvm flag' % device)
 							ucsvgname = self.parent.container['lvm']['ucsvgname']
 							self.run_cmd(['/sbin/pvcreate', device])
