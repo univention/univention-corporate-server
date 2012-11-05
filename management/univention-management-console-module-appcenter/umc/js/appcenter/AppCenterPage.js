@@ -494,9 +494,17 @@ define([
 			);
 		},
 
+		_detail_field_custom_website: function(values) {
+			var name = values.name;
+			var website = values.website;
+			if (name && website) {
+				return '<a href="' + website + '" target="_blank">' + name + '</a>';
+			}
+		},
+
 		_detail_field_custom_vendor: function(values) {
 			var vendor = values.vendor;
-			var website = values.website;
+			var website = values.websitevendor;
 			if (vendor && website) {
 				return '<a href="' + website + '" target="_blank">' + vendor + '</a>';
 			} else if (vendor) {
@@ -594,7 +602,7 @@ define([
 			}
 		},
 
-		_detail_field_custom_emailrequired: function(values) {
+		_detail_field_custom_notifyvendor: function(values) {
 			var maintainer = values.maintainer && values.maintainer != values.vendor;
 			if (values.notifyvendor) {
 				if (maintainer) {
@@ -623,6 +631,7 @@ define([
 		_detail_field_order: function() {
 			return ['name',
 				'version',
+				'website',
 				'vendor',
 				'maintainer',
 				'contact',
@@ -639,6 +648,7 @@ define([
 		_detail_field_label: function(key) {
 			var labels = {
 				'name': _("Name"),
+				'website': _("Website"),
 				'vendor': _("Vendor"),
 				'maintainer': _("Maintainer"),
 				'contact': _("Contact"),

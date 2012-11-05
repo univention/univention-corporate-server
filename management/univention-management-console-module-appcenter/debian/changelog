@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.60-1) unstable; urgency=low
+
+  * Add WebSite field in app-details; Bug #29036
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Nov 2012 17:38:39 +0100
+
 univention-management-console-module-appcenter (2.0.59-1) unstable; urgency=low
 
   * Send request to license.univention.de (Bug #27998)
