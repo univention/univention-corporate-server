@@ -218,9 +218,11 @@ for file in files:
 				continue
 			if not cmdline.has_key("expert_partition") and temp[0] == "60_expert_partition":
 				continue
-			if 'mbr_partition' in cmdline and temp[0] == "66_gpt_partition":
+			# in interactive mode only one module (65_partition XOR 66_gpt_partition) will be used; selected by kernel cmdline argument
+			# in profile mode each module checks profile and disables itself automatically
+			if not profile and 'mbr_partition' in cmdline and temp[0] == "66_gpt_partition":
 				continue
-			if not 'mbr_partition' in cmdline and temp[0] == "65_partition":
+			if not profile and not 'mbr_partition' in cmdline and temp[0] == "65_partition":
 				continue
 			modules.append(temp[0])
 modules.sort()
