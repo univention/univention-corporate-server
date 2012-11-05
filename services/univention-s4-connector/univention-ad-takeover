@@ -1688,7 +1688,11 @@ def run_phaseIII(opts, args):
 	check_samba4_started()
 
 	log.debug("Creating new DNS SPN account in Samba4")
-	dns_SPN_account_password = samba.generate_random_password(128, 255)
+	p = subprocess.Popen(["makepasswd", "--chars=18"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	(stdout, stderr) = p.communicate()
+	dns_SPN_account_password = stdout.rstrip()
+	if dns_SPN_account_password[0] == '-':	## avoid passing an option
+		dns_SPN_account_password= '#%s' % dns_SPN_account_password
 	dns_SPN_account_name = "dns-%s" % ucr["hostname"]
 	run_and_output_to_log(["samba-tool", "user", "add", dns_SPN_account_name, dns_SPN_account_password], log.debug, print_commandline = False)
 	run_and_output_to_log(["samba-tool", "user", "setexpiry", "--noexpiry", dns_SPN_account_name], log.debug)

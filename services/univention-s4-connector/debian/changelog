@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.17-36) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - work around the unfortunate case where the random password for the
+      dns SPN starts with a dash
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Nov 2012 17:38:32 +0100
+
 univention-s4-connector (7.0.17-35) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
