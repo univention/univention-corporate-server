@@ -491,6 +491,7 @@ class object(content):
 																							  start, end, mpoint, ','.join(flag))
 			self.debug( 'dev_%d="%s"' % (i, self.container['result'][ 'dev_%d' % i ]))
 			i += 1
+		self.container['result']['partitiontable_type'] = 'GPT'
 
 		self.debug('run_profiled: adding profile to results')
 		return self.container['result']
@@ -1815,7 +1816,7 @@ class object(content):
 			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable_type'))
 			return {}
 
-		result={}
+		result={'partitiontable_type': 'GPT'}
 		tmpresult = []
 		partitions = []
 		for disk in self.container['disk']:
