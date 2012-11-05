@@ -217,7 +217,7 @@ class object(content):
 	def debug(self, txt):
 		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
 		line = info[1]
-		content.debug(self, 'PARTITION:%d: %s' % (line,txt))
+		content.debug(self, 'PARTITION-GPT:%d: %s' % (line,txt))
 
 	def profile_prerun(self):
 		self.debug('profile_prerun')
