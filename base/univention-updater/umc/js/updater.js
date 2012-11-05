@@ -170,7 +170,16 @@ define([
 					}
 					if (rem.length)
 					{
-						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be REMOVED"), {count:rem.length}) + "</u></b></td></tr>";
+						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
+						if (rem.length == 1)
+						{
+							txt += lang.replace(_("1 package to be REMOVED"));
+						}
+						else
+						{
+							txt += lang.replace(_("{count} packages to be REMOVED"), {count:rem.length});
+						}
+						txt += "</u></b></td></tr>";
 						array.forEach(rem, function(pkg) {
 							txt += "<tr>\n";
 							txt += "<td style='padding-left:1em;'>" + pkg[0] + "</td>\n";
@@ -180,7 +189,16 @@ define([
 					}
 					if (upd.length)
 					{
-						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be updated"), {count:upd.length}) + "</u></b></td></tr>";
+						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
+						if (upd.length == 1)
+						{
+							txt += lang.replace(_("1 package to be updated"));
+						}
+						else
+						{
+							txt += lang.replace(_("{count} packages to be updated"), {count:upd.length});
+						}
+						txt += "</u></b></td></tr>";
 						array.forEach(upd, function(pkg) {
 							txt += "<tr>\n";
 							txt += "<td style='padding-left:1em;'>" + pkg[0] + "</td>\n";
@@ -190,7 +208,16 @@ define([
 					}
 					if (ins.length)
 					{
-						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>" + lang.replace(_("{count} packages to be installed"), {count:ins.length}) + "</u></b></td></tr>";
+						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
+						if (ins.length == 1)
+						{
+							txt += lang.replace(_("1 package to be installed"));
+						}
+						else
+						{
+							txt += lang.replace(_("{count} packages to be installed"), {count:ins.length});
+						}
+						txt += "</u></b></td></tr>";
 						array.forEach(ins, function(pkg) {
 							txt += "<tr>\n";
 							txt += "<td style='padding-left:1em;'>" + pkg[0] + "</td>\n";

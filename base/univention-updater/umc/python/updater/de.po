@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-11-05 08:50+0100\n"
+"POT-Creation-Date: 2012-11-05 09:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr "Alle Paket-Aktualisierungen installieren"
 msgid "Perform release update up to version '%s'"
 msgstr "Release auf Version '%s' aktualisieren"
 
-#: umc/python/updater/__init__.py:702
+#: umc/python/updater/__init__.py:705
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -33,7 +33,7 @@ msgstr "Unbekannt"
 msgid "latest version"
 msgstr "neueste Version"
 
-#: umc/python/updater/__init__.py:379
+#: umc/python/updater/__init__.py:382
 msgid "unknown"
 msgstr "unbekannt"
 

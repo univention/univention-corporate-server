@@ -173,6 +173,8 @@ define([
 							{
 								this._set_updates_button(false, _("Package update status not yet checked"));
 							}
+
+							this._check_dist_upgrade();
 						}
 						catch(error)
 						{
@@ -238,12 +240,7 @@ define([
 				{
 					type:			'Text',
 					label:			'',
-					name:			'package_update_text1'
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'package_update_text2',
+					name:			'package_update_text1',
 					// FIXME Manual placement: should be done by the layout framework some day.
 					style:			'width:500px;margin-top:.5em;',
 					content:		_("Package update status not yet checked")
@@ -332,7 +329,7 @@ define([
 					layout:
 					[
 						['package_update_text1'],
-						['package_update_text2', 'run_packages_update']
+						['run_packages_update']
 					]
 				}
 			];
@@ -411,38 +408,6 @@ define([
 					var ebu = this._form._buttons.easy_upgrade;
 					domClass.toggle(ebu.domNode, 'dijitHidden', ! ava);
 
-					var tx1 = '';
-					if (values.components == '0')
-					{
-						tx1 = _("There are no components configured for this system.");
-					}
-					else
-					{
-						if (values.components == '1')
-						{
-							tx1 = _("The system knows about 1 component.");
-						}
-						else
-						{
-							tx1 = lang.replace(_("The system knows about {components} components."), values);
-						}
-						tx1 += '<br/>';
-						switch(values.enabled)
-						{
-							case '0':
-								tx1 += _("None of them are currently enabled.");
-								break;
-							case '1':
-								tx1 += _("1 of them is currently enabled.");
-								break;
-							default:
-								tx1 += lang.replace(_("{enabled} of them are currently enabled."), values);
-								break;
-						}
-
-					}
-					this._form.getWidget('package_update_text1').set('content', tx1);
-
 					this._show_reboot_pane(values.reboot_required);
 
 				}
@@ -501,7 +466,7 @@ define([
 				but.set('label', avail ?
 					_("Install package updates") :
 					_("Check for package updates"));
-				this._form.getWidget('package_update_text2').set('content', msg);
+				this._form.getWidget('package_update_text1').set('content', msg);
 			}
 			catch(error)
 			{

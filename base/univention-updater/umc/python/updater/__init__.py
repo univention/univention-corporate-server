@@ -347,6 +347,9 @@ class Instance(umcm.Base):
 						since this must have been done recently by
 						the 'check for update availability' call.
 		"""
+		p0 = subprocess.Popen(['LC_ALL=C apt-get update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		(stdout,stderr) = p0.communicate()
+
 		p1 = subprocess.Popen(['LC_ALL=C apt-get -u dist-upgrade -s'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		(stdout,stderr) = p1.communicate()
 

@@ -1,3 +1,9 @@
+univention-updater (8.0.42-1) unstable; urgency=low
+
+  * More updates for the errata handling (Bug #26387)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Nov 2012 10:45:37 +0100
+
 univention-updater (8.0.41-1) unstable; urgency=low
 
   * Removed more errata tools and files (Bug #26387)
