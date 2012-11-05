@@ -1144,25 +1144,6 @@ class object(content):
 			return  0
 		return ["%s" % dev.strip(), num]
 
-	def customsize2MiB(self, size):
-		size = size.upper().strip()
-		if size[-1] in [ 'K', 'M', 'G' ]:
-			try:
-				newsize = float(size.strip('KMG'))
-			except ValueError:
-				newsize = 0
-			if size[-1] == 'K':
-				result = newsize*1000.0/1024.0/1024.0
-			elif size[-1] == 'M':
-				result = newsize*1000.0*1000.0/1024.0/1024.0
-			elif size[-1] == 'G':
-				result = newsize*1000.0*1000.0*1000.0/1024.0/1024.0
-		else:
-			try:
-				result = float(size)
-			except ValueError:
-				result = 0.0
-		return result
 
 	def act_profile(self):
 		if not self.written:
@@ -1296,7 +1277,7 @@ class object(content):
 				self.parent.debug('prof_write_lvm')
 				for lvname, lv in self.parent.container['profile']['lvmlv']['create'].items():
 					vg = self.parent.container['lvm']['vg'][ lv['vg'] ]
-					size = self.parent.customsize2MiB( lv['end'] ) - self.parent.customsize2MiB( lv['start'] )
+					size = lv['end'] - lv['start']
 					self.parent.debug('creating LV: start=%s  end=%s  size=%s' % (lv['start'], lv['end'], size))
 
 					currentLE = int(size / vg['PEsize'])
