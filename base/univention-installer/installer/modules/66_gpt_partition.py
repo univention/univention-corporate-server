@@ -194,6 +194,20 @@ def get_sanitized_label(label, flags, mpoint, fstype):
 	# truncate label to 36 characters (all non ascii characters are filtered out above)
 	return label[0:36]
 
+def get_mkfs_cmd(device, fstype):
+	fstype = fstype.lower()
+	if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
+		mkfs_cmd = ['/sbin/mkfs.%s' % fstype, device]
+	elif fstype == FSTYPE_EFI:
+		mkfs_cmd = ['/sbin/mkfs.vfat', '-F', '32', device]
+	elif fstype == 'xfs':
+		mkfs_cmd = ['/sbin/mkfs.xfs', '-f', device]
+	elif fstype == 'linux-swap':
+		mkfs_cmd = ['/bin/mkswap', device]
+	else:
+		mkfs_cmd = []
+	return mkfs_cmd
+
 
 class object(content):
 	def __init__(self, max_y, max_x, last=(1,1), file='/tmp/installer.log', cmdline={}):
@@ -752,8 +766,8 @@ class object(content):
 			delete_all_lvmlv = False
 			if key == 'part_delete':
 				delete=self.all_results['part_delete'].replace("'","").split(' ')
-				self.debug('part_delete=%s' % str(delete))
-				self.debug('disklist_usbstorage=%s' % str(disklist_usbstorage))
+				self.debug('part_delete=%r' % (delete,))
+				self.debug('disklist_usbstorage=%r' % (disklist_usbstorage,))
 				for entry in delete:
 					if entry in [ 'all', 'all_usb' ]: # delete all existing partitions (all_usb) or all existing partitions exclusive usb storage devices (all)
 						# PLEASE NOTE:
@@ -1233,16 +1247,8 @@ class object(content):
 							self.parent.debug('will not create fs on partition %s%s due format == %s' % (disk, num, format))
 							continue
 
-						mkfs_cmd = None
-						fstype = fstype.lower()
-						if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
-							mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,self.get_real_partition_device_name(disk,num))
-						elif fstype == FSTYPE_EFI:
-							mkfs_cmd='/sbin/mkfs.vfat -F 32 %s' % (fstype,self.get_real_partition_device_name(disk,num))
-						elif fstype == 'xfs':
-							mkfs_cmd='/sbin/mkfs.xfs -f %s' % self.get_real_partition_device_name(disk,num)
-						elif fstype == 'linux-swap':
-							mkfs_cmd='/bin/mkswap %s' % self.get_real_partition_device_name(disk,num)
+						device = self.get_real_partition_device_name(disk,num)
+						mkfs_cmd = get_mkfs_cmd(device, fstype)
 						if mkfs_cmd:
 							self.run_cmd('%s 2>&1' % mkfs_cmd)
 						else:
@@ -1258,14 +1264,7 @@ class object(content):
 						self.parent.debug('will not create fs on %s due format == %s' % (lvname, format))
 						continue
 
-					mkfs_cmd = None
-					fstype = fstype.lower()
-					if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
-						mkfs_cmd='/sbin/mkfs.%s %s' % (fstype, device)
-					elif fstype == 'xfs':
-						mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
-					elif fstype == 'linux-swap':
-						mkfs_cmd='/bin/mkswap %s' % device
+					mkfs_cmd = get_mkfs_cmd(device, fstype)
 					if mkfs_cmd:
 						self.run_cmd('%s 2>&1' % mkfs_cmd)
 					else:
@@ -3072,17 +3071,7 @@ class object(content):
 							if self.parent.container['disk'][disk]['partitions'][part]['format']:
 								device = self.parent.parent.get_device(disk, part)
 								fstype=self.parent.container['disk'][disk]['partitions'][part]['fstype']
-								if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
-									mkfs_cmd = ['/sbin/mkfs.%s' % fstype, device]
-								elif fstype == FSTYPE_EFI:
-									mkfs_cmd = ['/sbin/mkfs.vfat', '-F', '32', device]
-								elif fstype == 'xfs':
-									mkfs_cmd = ['/sbin/mkfs.xfs', '-f', device]
-								elif fstype == 'linux-swap':
-									mkfs_cmd = ['/bin/mkswap', device]
-								else:
-									mkfs_cmd = ['/bin/true', device]
-								retval = self.run_command(mkfs_cmd)
+								retval = self.run_command(get_mkfs_cmd(device, fstype))
 								if retval:
 									return
 								self.parent.container['disk'][disk]['partitions'][part]['format']=0
@@ -3093,15 +3082,7 @@ class object(content):
 							if vg['lv'][lvname]['format']:
 								device = vg['lv'][lvname]['dev']
 								fstype = vg['lv'][lvname]['fstype']
-								if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
-									mkfs_cmd = ['/sbin/mkfs.%s' % fstype, device]
-								elif fstype == 'xfs':
-									mkfs_cmd = ['/sbin/mkfs.xfs', '-f', device]
-								elif fstype == 'linux-swap':
-									mkfs_cmd = ['/bin/mkswap', device]
-								else:
-									mkfs_cmd = ['/bin/true', device]
-								retval = self.run_command(mkfs_cmd)
+								retval = self.run_command(get_mkfs_cmd(device, fstype))
 								if retval:
 									return
 								vg['lv'][lvname]['format'] = 0
