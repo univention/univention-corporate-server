@@ -682,8 +682,8 @@ class object(content):
 				self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 linux-swap %sM %sM None None' % (diskname, partnum, start, end)
 				dev_i += 1
 				partnum += 1
-				disksize -= PARTSIZE_BOOT
-				sizeused += PARTSIZE_BOOT
+				disksize -= swapsize
+				sizeused += swapsize
 				swapsize_result = swapsize
 				added_swap = True
 
