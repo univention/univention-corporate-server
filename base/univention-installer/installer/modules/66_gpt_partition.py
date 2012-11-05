@@ -108,9 +108,9 @@ PARTTYPE_LVM_VG_FREE = 102
 PARTFLAG_NONE = 'none'
 PARTFLAG_SWAP = 'linux-swap'     # partition is a swap partition
 PARTFLAG_LVM  = 'lvm'            # partition is a LVM PV
-PARTFLAG_BOOT = 'boot'           # partition is a EFI system partition
+PARTFLAG_EFI = 'boot'           # partition is a EFI system partition
 PARTFLAG_BIOS_GRUB = 'bios_grub' # partition is a BIOS boot partition
-VALID_PARTED_FLAGS = [PARTFLAG_LVM, PARTFLAG_BOOT, PARTFLAG_BIOS_GRUB] # flags that are known to parted
+VALID_PARTED_FLAGS = [PARTFLAG_LVM, PARTFLAG_EFI, PARTFLAG_BIOS_GRUB] # flags that are known to parted
 
 # partition index ("num")
 # - indicating partition number if x > 0
@@ -203,7 +203,7 @@ def get_sanitized_label(label, flags, mpoint, fstype):
 		label = ''
 		if PARTFLAG_LVM in flags:
 			label = 'LVMPV'
-		elif PARTFLAG_BOOT in flags:
+		elif PARTFLAG_EFI in flags:
 			label = 'EFI System'
 		elif PARTFLAG_BIOS_GRUB in flags:
 			label = 'BIOS Boot Partition'
@@ -362,7 +362,7 @@ class object(content):
 					return False
 				mpoint_list.append(mpoint)
 
-				if ( PARTFLAG_BOOT in flags or PARTFLAG_BIOS_GRUB in flags):
+				if ( PARTFLAG_EFI in flags or PARTFLAG_BIOS_GRUB in flags):
 					bootable_cnt += 1
 
 				if mpoint == '/boot':
@@ -522,7 +522,7 @@ class object(content):
 				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
 					mpoint = self.container['disk'][disk]['partitions'][part]['mpoint'].strip()
 
-					if ( PARTFLAG_BOOT in self.container['disk'][disk]['partitions'][part]['flag'] or
+					if ( PARTFLAG_EFI in self.container['disk'][disk]['partitions'][part]['flag'] or
 						 PARTFLAG_BIOS_GRUB in self.container['disk'][disk]['partitions'][part]['flag']):
 						bootable_cnt += 1
 
@@ -718,7 +718,7 @@ class object(content):
 			partnum = 1
 
 			for name, size, fstype, mpoint, flag in (('biosgrub', PARTSIZE_BIOS_GRUB, 'None', 'None', PARTFLAG_BIOS_GRUB),
-													 ('efi', PARTSIZE_EFI, FSTYPE_EFI, '/boot/efi', PARTFLAG_BOOT),
+													 ('efi', PARTSIZE_EFI, FSTYPE_EFI, '/boot/efi', PARTFLAG_EFI),
 													 ('/boot', PARTSIZE_BOOT, 'ext4', '/boot', PARTFLAG_NONE)):
 				if not name in added and size < disksize:
 					start = sizeused
@@ -922,7 +922,7 @@ class object(content):
 							elif PARTFLAG_BIOS_GRUB in flags:
 								mpoint = ''
 								parms[1] = '0'
-							elif PARTFLAG_BOOT in flags:
+							elif PARTFLAG_EFI in flags:
 								mpoint = MOUNTPOINT_EFI
 								parms[2] = FSTYPE_EFI
 						if parms[0] == 'only_mount':
@@ -1273,7 +1273,7 @@ class object(content):
 								self.run_cmd(mkfs_cmd)
 							else:
 								self.parent.debug('ERROR: unknown filesystem for %r specified: %r' % (device, fstype))
-						if PARTFLAG_BOOT in flaglist:
+						if PARTFLAG_EFI in flaglist:
 							self.parent.debug('%s%s: boot flag' % (disk, num))
 							self.run_cmd(['/sbin/parted', '-s', str(disk), 'set', str(num), 'boot', 'on'])
 						if PARTFLAG_LVM in flaglist:
@@ -2378,7 +2378,7 @@ class object(content):
 							type = self.get_col('swap', col3)
 						if PARTFLAG_BIOS_GRUB in part['flag']:
 							type = self.get_col('BIOS', col3)
-						if PARTFLAG_BOOT in part['flag']:
+						if PARTFLAG_EFI in part['flag']:
 							type = self.get_col('EFI', col3)
 						mount = self.get_col(part['mpoint'], col5, 'l')
 
@@ -2959,7 +2959,7 @@ class object(content):
 			partition['mpoint'] = mpoint
 
 			# EFI partition will be mounted at /boot/efi with vfat as file system
-			if PARTFLAG_BOOT in flags:
+			if PARTFLAG_EFI in flags:
 				partition['mpoint'] = MOUNTPOINT_EFI
 				partition['fstype'] = FSTYPE_EFI
 
@@ -3199,13 +3199,13 @@ class object(content):
 									   _('Swap'): [PARTFLAG_SWAP, 1],
 									   _('LVM PV'): [PARTFLAG_LVM, 2],
 									   _('BIOS Boot'): [PARTFLAG_BIOS_GRUB, 3],
-									   _('EFI System'): [PARTFLAG_BOOT, 4],
+									   _('EFI System'): [PARTFLAG_EFI, 4],
 									   }
 				else:
 					self.partflags = { _('Data'): [PARTFLAG_NONE, 0],
 									   _('Swap'): [PARTFLAG_SWAP, 1],
 									   _('BIOS Boot'): [PARTFLAG_BIOS_GRUB, 2],
-									   _('EFI System'): [PARTFLAG_BOOT, 3],
+									   _('EFI System'): [PARTFLAG_EFI, 3],
 									   }
 
 
@@ -3311,7 +3311,7 @@ class object(content):
 								format = 1
 								fstype = FSTYPE_LVMPV
 
-							if PARTFLAG_BOOT in flag:
+							if PARTFLAG_EFI in flag:
 								mpoint = MOUNTPOINT_EFI
 								format = 1
 								fstype = FSTYPE_EFI
@@ -3443,7 +3443,7 @@ class object(content):
 					self.get_elem('INP_mpoint').disable()
 					self.get_elem('SEL_fstype').disable()
 
-				if self.get_elem('SEL_partflags').result()[0] in (PARTFLAG_NONE, PARTFLAG_SWAP, PARTFLAG_BOOT, PARTFLAG_LVM):
+				if self.get_elem('SEL_partflags').result()[0] in (PARTFLAG_NONE, PARTFLAG_SWAP, PARTFLAG_EFI, PARTFLAG_LVM):
 					self.get_elem('CB_format').enable()
 				else:
 					self.get_elem('CB_format').disable()
