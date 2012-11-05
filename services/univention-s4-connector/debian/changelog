@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.17-37) unstable; urgency=low
+
+  * Improved warning message in case the NTP connection fails,
+    require interactive confirmation to continue in this case (Bug #29064)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Nov 2012 22:29:45 +0100
+
 univention-s4-connector (7.0.17-36) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):

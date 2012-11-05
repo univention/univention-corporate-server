@@ -290,7 +290,21 @@ def sync_time(server):
 				log.info("\n".join(msg))
 				sys.exit(1)
 	except socket.error:
-		log.warn("Warning: Could not retrive time from %s via NTP" % server)
+		msg = []
+		msg.append("Warning: Could not retrive time from %s via NTP." % server)
+		msg.append("         Possibly a firewall blocks the connection to the NTP port of %s." % server)
+		msg.append("")
+		msg.append("It is required that the system clocks of both systems agree (consider also differing time zones).")
+		log.warn("\n".join(msg))
+
+		answer = raw_input("Continue takeover anyway? [y/N]: ")
+
+		if not answer.lower() in ('y', 'yes'):
+			log.info("Ok, stopping as requested.\n")
+			sys.exit(2)
+		else:
+			log.info("Ok, continuing as requested.\n")
+
 
 def check_for_phase_II(ucr, lp, ad_server_ip):
 	## Check if we are in Phase II and the AD server is already switched off:
