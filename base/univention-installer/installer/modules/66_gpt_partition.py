@@ -70,7 +70,8 @@ def MiB2MB(value):
 
 
 # some autopartitioning config values
-PARTSIZE_BIOS_GRUB = MiB2B(2)		# size of BIOS Boot Partition 2 MiB
+PARTSIZE_EFI = MiB2B(256)           # size of EFI Partition 256 MiB
+PARTSIZE_BIOS_GRUB = MiB2B(4)       # size of BIOS Boot Partition 4 MiB
 PARTSIZE_BOOT = MiB2B(512)          # size of /boot partition: 512 MiB
 PARTSIZE_SYSTEM_MIN = MiB2B(4096)   # minimum free space for system: 4 GiB
 PARTSIZE_SWAP_MIN = MiB2B(512)      # lower swap partition limit 512 MiB
@@ -83,7 +84,7 @@ PARTSIZE_MINIMUM = MiB2B(8)			# minimum partition size
 # ATTENTION: value has to be megabyte aligned!
 # start of first partition ; first 16MiB have to be free to provide some spare space
 EARLIEST_START_OF_FIRST_PARTITION = MiB2B(16)
-RESERVED_SPACE_AT_END_OF_DISK = MiB2B(32)
+RESERVED_SPACE_AT_END_OF_DISK = MiB2B(64)
 # reduce size of each PV by at least this amount of megabytes for LVM overhead
 LVM_OVERHEAD = MiB2B(15)
 
