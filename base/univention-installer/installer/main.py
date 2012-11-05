@@ -444,14 +444,6 @@ class mods:
 				self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-16+count,self.max_x/2-48),self.obj[i].mod_depends()))
 				count=count+1
 
-	def start_profile_mode(self):
-		self.obj[self.current].profile_prerun()
-		if self.obj[self.current].profile_complete():
-			self.obj[self.current].run_profiled()
-			return 1
-		else:
-			return 0
-
 	def result_update(self):
 		self.result.update(self.obj[self.current].get_result())
 		# external result (sorted)
