@@ -1,3 +1,9 @@
+univention-nagios (6.0.3-3) unstable; urgency=low
+
+  * fixed join script (Bug #18828) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Nov 2012 09:52:00 +0100
+
 univention-nagios (6.0.3-2) unstable; urgency=low
 
   * fixed join script (Bug #18828) 

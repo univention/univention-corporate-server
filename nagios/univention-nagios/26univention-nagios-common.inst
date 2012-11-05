@@ -54,7 +54,7 @@ if [ $JS_LAST_EXECUTED_VERSION -lt 3 ]; then
 	if [ -n "$oldCheckInterval" -a "$oldCheckInterval" = "1440" ]; then
 		if [ -n "$oldRetryCheckInterval" -a "$oldRetryCheckInterval" = "480" ]; then
 			univention-directory-manager nagios/service modify "$@" \
-				--dn "cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base"
+				--dn "cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base" \
 				--set normalCheckInterval="180" --set retryCheckInterval="30"
 		fi
 	fi
