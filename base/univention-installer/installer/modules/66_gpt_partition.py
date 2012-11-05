@@ -473,16 +473,17 @@ class object(content):
 		tmpresult.sort(lambda x,y: cmp(x[7], y[7]))  # sort by mountpoint
 		self.debug('run_profiled: tmpresult=%s' % tmpresult)
 		for (entrytype, device, parttype, format, fstype, start, end, mpoint, flag) in tmpresult:
-			if type(start) == type(0) or type(start)==type(0.0):
-				start = MiB2MB(start)
-			if type(end) == type(0) or type(end)==type(0.0):
-				end = MiB2MB(end)
+			start = int(B2MiB(start))
+			end = int(B2MiB(end+1))
 			if mpoint == '':
 				mpoint = 'None'
 			if fstype == '':
 				fstype = 'None'
-			self.container['result'][ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s %s" % (entrytype, device, parttype, format, fstype,
-																						  start, end, mpoint, flag)
+			if not flag:
+				flag = [PARTFLAG_NONE]
+			self.container['result'][ 'dev_%d' % i ] =  "%s %s %s %s %s %sMiB %sMiB %s %s" % (entrytype, device, parttype, format, fstype,
+																							  start, end, mpoint, ','.join(flag))
+			self.debug( 'dev_%d="%s"' % (i, self.container['result'][ 'dev_%d' % i ]))
 			i += 1
 
 		self.debug('run_profiled: adding profile to results')
@@ -974,7 +975,7 @@ class object(content):
 							'format':parms[1],
 							'fstype':parms[2].lower(),
 							'start': start,
-							'end': end, # size does not have to be aligned to megabyte boundaries since size of physical extents will do that
+							'end': align_partition_end(end)+1, # align end of partition to megabyte boundaries
 							'mpoint':parms[5],
 							'flag': parms[6].lower().split(',')
 							}
@@ -1865,7 +1866,7 @@ class object(content):
 		i = 0
 		tmpresult.sort(lambda x,y: cmp(x[7], y[7]))  # sort by mountpoint
 		for (parttype, device, parttype, format, fstype, start, end, mpoint, flag) in tmpresult:
-			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s %s" % (parttype, device, parttype, format, fstype, MiB2MB(start), MiB2MB(end), mpoint, flag)
+			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sMiB %sMiB %s %s" % (parttype, device, parttype, format, fstype, int(B2MiB(start)), int(B2MiB(end)), mpoint, ','.join(flag))
 			i += 1
 		return result
 
