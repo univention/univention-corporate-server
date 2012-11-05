@@ -223,7 +223,7 @@ def get_mkfs_cmd(device, fstype):
 	fstype = fstype.lower()
 	if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 		mkfs_cmd = ['/sbin/mkfs.%s' % fstype, device]
-	elif fstype == FSTYPE_EFI:
+	elif fstype == FSTYPE_EFI.lower():
 		mkfs_cmd = ['/sbin/mkfs.vfat', '-F', '32', device]
 	elif fstype == 'xfs':
 		mkfs_cmd = ['/sbin/mkfs.xfs', '-f', device]
