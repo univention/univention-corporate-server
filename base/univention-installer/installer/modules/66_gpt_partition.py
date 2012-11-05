@@ -853,6 +853,12 @@ class object(content):
 						if parms[0] == 'only_mount':
 							parms[1]=0
 
+						# parms[0] → partition type (with MSDOS valid values are 0 (primary), 1 (logical) and 2 (extended))
+						# GPT does not support logical/extended partitions → these lines will be ignored
+						if parms[0].lower() not in ('0',):
+							self.debug('Ignoring line: partition types other than "0" are invalid with GPT: %r' % key)
+							continue
+
 						temp={	'type':parms[0],
 							'fstype':parms[2].lower(),
 							'start': parms[3],
