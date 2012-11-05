@@ -883,6 +883,8 @@ class object(content):
 							self.debug('Ignoring line: partition types other than "0" are invalid with GPT: %r' % key)
 							continue
 
+						label = get_sanitized_label('', flags, mpoint, parms[2].lower())
+
 						temp={
 							'type':parms[0],
 							'fstype':parms[2].lower(),
@@ -891,6 +893,7 @@ class object(content):
 							'mpoint':mpoint,
 							'format':parms[1],
 							'flag': flags,
+							'label': label,
 							}
 
 						self.debug('Added to create physical container: %s' % temp)
@@ -1203,6 +1206,7 @@ class object(content):
 							self.parent.debug('will not create partition %s%s due type == %s' % (disk, num, parttype))
 							continue
 
+						# WARNING: parted is kind of broken and requires a quoted label as argument → i.e. the value is double quoted
 						self.run_cmd(['/sbin/parted', '--script', disk, 'unit', 'B', 'mkpart', '"%s"' % label, str(start), str(end)])
 						if fstype and not fstype.lower() in ('none',):
 							mkfs_cmd = get_mkfs_cmd(device, fstype)
