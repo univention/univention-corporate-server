@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.83-1) unstable; urgency=low
+
+  * the property threshold is set to the global sizelimit (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Nov 2012 17:10:57 +0100
+
 univention-directory-manager-modules (8.0.82-1) unstable; urgency=low
 
   * homeSharePath must be given if homeShare is given (Bug #28996)
