@@ -93,6 +93,7 @@ LVM_OVERHEAD = MiB2B(15)
 FSTYPE_LVMPV = 'LVMPV'
 FSTYPE_SWAP = 'linux-swap'
 FSTYPE_VFAT = 'vfat'
+FSTYPE_EFI = 'EFI'
 
 # partition types
 PARTTYPE_USED = 10
@@ -1211,6 +1212,8 @@ class object(content):
 						fstype = fstype.lower()
 						if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 							mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,self.get_real_partition_device_name(disk,num))
+						elif fstype == FSTYPE_EFI:
+							mkfs_cmd='/sbin/mkfs.vfat -F 32 %s' % (fstype,self.get_real_partition_device_name(disk,num))
 						elif fstype == 'xfs':
 							mkfs_cmd='/sbin/mkfs.xfs -f %s' % self.get_real_partition_device_name(disk,num)
 						elif fstype == 'linux-swap':
@@ -2867,7 +2870,7 @@ class object(content):
 			# EFI partition will be mounted at /boot/efi with vfat as file system
 			if PARTFLAG_BOOT in flags:
 				partition['mpoint'] = '/boot/efi'
-				partition['fstype'] = FSTYPE_VFAT
+				partition['fstype'] = FSTYPE_EFI
 
 			# LVM PV has no mount point
 			if PARTFLAG_LVM in flags:
@@ -3044,6 +3047,8 @@ class object(content):
 								fstype=self.parent.container['disk'][disk]['partitions'][part]['fstype']
 								if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 									mkfs_cmd = ['/sbin/mkfs.%s' % fstype, device]
+								elif fstype == FSTYPE_EFI:
+									mkfs_cmd = ['/sbin/mkfs.vfat', '-F', '32', device]
 								elif fstype == 'xfs':
 									mkfs_cmd = ['/sbin/mkfs.xfs', '-f', device]
 								elif fstype == 'linux-swap':
@@ -3236,7 +3241,7 @@ class object(content):
 							if PARTFLAG_BOOT in flag:
 								mpoint = '/boot/efi'
 								format = 1
-								fstype = FSTYPE_VFAT
+								fstype = FSTYPE_EFI
 
 							if PARTFLAG_SWAP in flag:
 								mpoint = ''
