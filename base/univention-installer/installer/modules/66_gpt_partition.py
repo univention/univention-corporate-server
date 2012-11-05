@@ -688,17 +688,17 @@ class object(content):
 		for line in data.splitlines():
 			match = regex.match(line)
 			if match:
-				sysmem = int(match.group(1)) * 1024
+				sysmem = int(match.group(1)) * 1024 # value read from "free" is given in KiB and has to be converted to bytes
 		self.debug('AUTOPART-PROFILE: sysmem=%s' % sysmem)
 
 		# calc disk sizes
 		disklist = {}
-		disksizeall = 0.0
+		disksizeall = 0
 		for diskname in self.container['disk'].keys():
 			if diskname in disklist_blacklist:
 				self.debug('AUTOPART-PROFILE: disk %s is blacklisted' % diskname)
 			else:
-				disksize = 0.0
+				disksize = 0
 				for part in self.container['disk'][diskname]['partitions'].values():
 					disksize += part['size']
 				disklist[diskname] = disksize
@@ -707,52 +707,58 @@ class object(content):
 
 		# place partitions
 		dev_i = 0
-		added_boot = False
-		added_swap = False
-		swapsize_result = 0
+		added = set()
+		rootsize = 0
 		disklist_sorted = disklist.keys()
 		disklist_sorted.sort()
 		for diskname in disklist_sorted:
 			disksize = disklist[diskname]
-			sizeused = 0.01
+			sizeused = EARLIEST_START_OF_FIRST_PARTITION
 			partnum = 1
-			# add /boot-partition
-			if disksize > PARTSIZE_BOOT and not added_boot:
-				start = sizeused
-				end = sizeused + PARTSIZE_BOOT
-				self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 ext4 %sM %sM /boot boot' % (diskname, partnum, start, end)
+
+			for name, size, fstype, mpoint, flag in (('biosgrub', PARTSIZE_BIOS_GRUB, 'None', 'None', PARTFLAG_BIOS_GRUB),
+													 ('efi', PARTSIZE_EFI, FSTYPE_EFI, '/boot/efi', PARTFLAG_BOOT),
+													 ('/boot', PARTSIZE_BOOT, 'ext4', '/boot', PARTFLAG_NONE)):
+				if not name in added and size < disksize:
+					start = sizeused
+					end = sizeused + size
+					self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 %s %dMiB %dMiB %s %s' % (diskname, partnum, fstype, B2MiB(start), B2MiB(end), mpoint, flag)
 				dev_i += 1
 				partnum += 1
-				disksize -= PARTSIZE_BOOT
-				sizeused += PARTSIZE_BOOT
-				added_boot = True
+				disksize -= size
+				sizeused += size
+				added.add(name)
 
-			if disksize > PARTSIZE_SWAP_MIN and not added_swap:
+			if not 'swap' in added and PARTSIZE_SWAP_MIN < disksize:
 				swapsize = 2 * sysmem
 				if swapsize > PARTSIZE_SWAP_MAX:
 					swapsize = PARTSIZE_SWAP_MAX
-				while (disksize < swapsize) and (disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + swapsize):
-					swapsize -= 16
+				while (disksize < swapsize) and (disksizeall < PARTSIZE_BIOS_GRUB + PARTSIZE_EFI + PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + swapsize):
+					swapsize -= MiB2B(16)
 					if swapsize < PARTSIZE_SWAP_MIN:
 						swapsize = PARTSIZE_SWAP_MIN
 
-				start = sizeused + 0.01
+				start = sizeused
 				end = sizeused + swapsize
-				self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 linux-swap %sM %sM None None' % (diskname, partnum, start, end)
+				self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 linux-swap %dMiB %dMiB None linux-swap' % (diskname, partnum, B2MiB(start), B2MiB(end))
 				dev_i += 1
 				partnum += 1
 				disksize -= swapsize
 				sizeused += swapsize
-				swapsize_result = swapsize
-				added_swap = True
+				added.add('swap')
+
+			# accumulate size of LVM volumes to get final size of rootfs
+			rootsize += disksize
 
 			# use rest of disk als LVM PV
-			self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 None %sM 0 None lvm' % (diskname, partnum, sizeused+0.01)
+			self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 None %dMiB 0 None lvm' % (diskname, partnum, B2MiB(sizeused))
 			dev_i += 1
 
-		rootsize = (disksizeall - swapsize_result - PARTSIZE_BOOT) * 0.95
-		self.all_results['dev_%d' % dev_i] = 'LVM /dev/vg_ucs/rootfs LVMLV 0 ext4 0 %sM / None' % rootsize
+		self.all_results['dev_%d' % dev_i] = 'LVM /dev/vg_ucs/rootfs LVMLV 0 ext4 0 %dMiB / None' % B2MiB(rootsize)
 		dev_i += 1
+
+		for key in [ x for x in self.all_results.keys() if x.startswith('dev_') ]:
+			self.debug('AUTOPART-PROFILE: %s="%s"' % (key, self.all_results[key]))
 
 #dev_0="LVM /dev/vg_ucs/rootfs LVMLV 0 ext3 0M 7000M / None"
 #dev_1="PHY /dev/sdb2 0 0 ext3 500.01M 596.01M /boot None"
@@ -2015,7 +2021,7 @@ class object(content):
 			for line in data.splitlines():
 				match = regex.match(line)
 				if match:
-					sysmem = int(match.group(1)) * 1024
+					sysmem = int(match.group(1)) * 1024 # value read from "free" is given in KiB and has to be converted to bytes
 			self.parent.debug('AUTOPART: sysmem=%s' % sysmem)
 
 			# create partition on first harddisk for BIOS_BOOT
