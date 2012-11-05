@@ -172,7 +172,36 @@ def calc_next_partition_number(disk):
 			return i
 	raise Exception('too many partitions')
 
+def get_sanitized_position(pos):
+	"""
+	This function converts values with given units to an integer value.
+	All units are interpreted as binary units (factor of 1024):
+	1K==1024, 1KB==1024, 1KiB=1024, and so on for M/G/T
+	"""
+	pos = pos.upper()
+	factor = 1
+	if 'T' in pos:
+		factor = 1024 * 1024 * 1024 * 1024
+	elif 'G' in pos:
+		factor = 1024 * 1024 * 1024
+	elif 'M' in pos:
+		factor = 1024 * 1024
+	elif 'K' in pos:
+		factor = 1024
+	value = pos.strip(' -+KMGTIB')
+	try:
+		if '.' in value:
+			return int(float(value) * factor)
+		else:
+			return int(value, 10) * factor
+	except ValueError:
+		return None
+
 def get_sanitized_label(label, flags, mpoint, fstype):
+	"""
+	This function automatically creates a sanitized label from given information:
+	label, partition flags, mount point or filesystem type (values used in gived order)
+	"""
 	if not label:
 		label = ''
 		if PARTFLAG_LVM in flags:
@@ -880,16 +909,32 @@ class object(content):
 						# parms[0] → partition type (with MSDOS valid values are 0 (primary), 1 (logical) and 2 (extended))
 						# GPT does not support logical/extended partitions → these lines will be ignored
 						if parms[0].lower() not in ('0',):
-							self.debug('Ignoring line: partition types other than "0" are invalid with GPT: %r' % key)
+							self.debug('Ignoring line: partition types other than "0" are invalid with GPT: %r' % (key,))
 							continue
 
 						label = get_sanitized_label('', flags, mpoint, parms[2].lower())
 
+						start = get_sanitized_position(parms[3])
+						end = get_sanitized_position(parms[4])
+						if start is None:
+							self.debug('Ignoring line: partition start cannot be parsed correctly: %r' % parms[3])
+							continue
+						if end is None:
+							self.debug('Ignoring line: partition start cannot be parsed correctly: %r' % parms[4])
+							continue
+						start = align_partition_start(start)
+						end = align_partition_end(end)
+						max_end = align_partition_end(self.container['disk'][disk]['size'])
+						if end == 0:
+							end = max_end
+						elif end > max_end:
+							end = max_end
+
 						temp={
 							'type':parms[0],
 							'fstype':parms[2].lower(),
-							'start': parms[3],
-							'end': parms[4],
+							'start': start,
+							'end': end,
 							'mpoint':mpoint,
 							'format':parms[1],
 							'flag': flags,
