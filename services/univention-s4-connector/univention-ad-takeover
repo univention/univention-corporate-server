@@ -607,10 +607,12 @@ def check_samba4_started():
 				## and log
 				time.sleep(2)
 				p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
-		(stdout, stderr) = p.communicate()
+				(stdout, stderr) = p.communicate()
 		log.debug("Number of Samba 4 processes after %s start/restart attempts: %s" % (attempt, stdout))
 
-def run_and_output_to_log(cmd, log_function):
+def run_and_output_to_log(cmd, log_function, print_commandline = True):
+	if print_commandline and log_function == log.debug:
+		log_function("Calling: %s", ' '.join(cmd))
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while p.poll() == None:
 		log_line = p.stdout.readline().rstrip()
@@ -1211,13 +1213,8 @@ def run_phaseI(opts, args):
 			log.error("Creation of UCS mail/domain %s failed. See %s for details." % (maildomain, LOGFILE_NAME,))
 
 	## re-create DNS SPN account
-	log.debug("Attempting removal of DNS SPN account in UCS-LDAP, will be recreated with new password in the next step.")
+	log.debug("Attempting removal of DNS SPN account in UCS-LDAP, will be recreated later with new password.")
 	run_and_output_to_log(["univention-directory-manager", "users/user", "delete", "--dn", "uid=dns-%s,cn=users,%s" % (ucr["hostname"], ucr["ldap/base"])], log.debug)
-
-	log.debug("Creating new DNS SPN account in Samba4")
-	returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], log.debug)
-	if returncode != 0:
-		log.error("Creation of DNS SPN account 'dns-%s' failed. See %s for details." % (ucr["hostname"], LOGFILE_NAME,))
 
 	## remove zarafa and univention-squid-kerberos SPN accounts, recreated later in phaseIII by running the respective joinscripts again
 	log.debug("Attempting removal of Zarafa and Squid SPN accounts in UCS-LDAP, will be recreated later with new password.")
@@ -1309,14 +1306,14 @@ def run_phaseI(opts, args):
 	if returncode != 0:
 		log.error("Start of univention-s4-connector failed. See %s for details." % (LOGFILE_NAME,))
 
-	log.info("Waiting for S4 Connector sync (max. 5 minutes)")
+	log.info("Waiting for S4 Connector sync (max. 10 minutes)")
 	t = t_0 = time.time()
-	wait_for_s4_connector_replication(ucr, print_dot, 300)
+	wait_for_s4_connector_replication(ucr, print_dot, 600)
 	delta_t = time.time() - t
 	log.debug("S4 Connector sync took %s seconds." % int(round(delta_t)))
 	if	delta_t < 3:
-		log.debug("Waiting another 300 seconds for S4 Connector sync.")
-		for i in xrange(300):
+		log.debug("Waiting another 600 seconds for S4 Connector sync.")
+		for i in xrange(600):
 			time.sleep(1)
 			print_dot()
 		print
@@ -1668,9 +1665,15 @@ def run_phaseIII(opts, args):
 	## Claim FSMO roles
 	log.info("Claiming FSMO roles")
 	takeover_hasMasterNCs(ucr, samdb, sitename, partitions)
-	for fsmo_role in ('rid', 'pdc', 'infrastructure', 'schema', 'naming'):
-		returncode = run_and_output_to_log(["samba-tool", "fsmo", "seize", "--role=%s" % fsmo_role, "--force"], log.debug)
-		if returncode != 0:
+	for fsmo_role in ('pdc', 'rid', 'infrastructure', 'schema', 'naming'):
+		for attempt in xrange(3):
+			if attempt > 0:
+				time.sleep(1)
+				log.debug("trying samba-tool fsmo seize --role=%s --force again:" % fsmo_role)
+			returncode = run_and_output_to_log(["samba-tool", "fsmo", "seize", "--role=%s" % fsmo_role, "--force"], log.debug)
+			if returncode == 0:
+				break
+		else:
 			msg=[]
 			msg.append("Claiming FSMO role %s failed." % fsmo_role)
 			msg.append("Warning: Continuing anyway. Please fix later by running:")
@@ -1683,6 +1686,39 @@ def run_phaseIII(opts, args):
 	## Restart Samba and make shure the rapid restart did not leave the main process blocking
 	run_and_output_to_log(["/etc/init.d/samba4", "restart"], log.debug)
 	check_samba4_started()
+
+	log.debug("Creating new DNS SPN account in Samba4")
+	dns_SPN_account_password = samba.generate_random_password(128, 255)
+	dns_SPN_account_name = "dns-%s" % ucr["hostname"]
+	run_and_output_to_log(["samba-tool", "user", "add", dns_SPN_account_name, dns_SPN_account_password], log.debug, print_commandline = False)
+	run_and_output_to_log(["samba-tool", "user", "setexpiry", "--noexpiry", dns_SPN_account_name], log.debug)
+	delta = ldb.Message()
+	delta.dn = ldb.Dn(samdb, "CN=%s,CN=Users,%s" % (dns_SPN_account_name, ucr["samba4/ldap/base"]))
+	delta["servicePrincipalName"] = ldb.MessageElement("DNS/%s" % local_fqdn, ldb.FLAG_MOD_REPLACE, "servicePrincipalName")
+	samdb.modify(delta)
+
+	dnsKeyVersion = 1	## default
+	msgs = samdb.search(base="CN=%s,CN=Users,%s" % (dns_SPN_account_name, ucr["samba4/ldap/base"]), scope=samba.ldb.SCOPE_BASE,
+	                    attrs=["msDS-KeyVersionNumber"])
+	if msgs:
+		obj = msgs[0]
+		dnsKeyVersion = obj["msDS-KeyVersionNumber"][0]
+
+	secretsdb = samba.Ldb(os.path.join(samba_private_dir, "secrets.ldb"), session_info=system_session(lp), lp=lp)
+	secretsdb.add({"dn": "samAccountName=%s,CN=Principals" % dns_SPN_account_name,
+		"objectClass": "kerberosSecret",
+		"privateKeytab": "dns.keytab",
+		"realm": ucr["kerberos/realm"],
+		"sAMAccountName": dns_SPN_account_name,
+		"secret": dns_SPN_account_password,
+		"servicePrincipalName": "DNS/%s" % local_fqdn,
+		"name": dns_SPN_account_name,
+		"krb5Keytab": "/etc/krb5.keytab",
+		"msDS-KeyVersionNumber": dnsKeyVersion})
+	
+	# returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], log.debug)
+	# if returncode != 0:
+	#	log.error("Creation of DNS SPN account 'dns-%s' failed. See %s for details." % (ucr["hostname"], LOGFILE_NAME,))
 
 	## Restart bind9 to use the OpenLDAP backend, just to be sure
 	returncode = run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
@@ -1734,6 +1770,10 @@ if __name__ == '__main__':
 	console = logging.StreamHandler(sys.stdout)
 	console.setLevel(logging.INFO)
 	log.addHandler(console)
+
+	p = subprocess.Popen(["dpkg-query", "-W", "-f=Version: ${Version}", "univention-s4-connector"], stdout=subprocess.PIPE)
+	(stdout, stderr) = p.communicate()
+	log.debug("\n\nCommandline: %s\n%s" % (' '.join(sys.argv), stdout))
 
 	if not opts.fsmo_takeover:
 		run_phaseI(opts, args)

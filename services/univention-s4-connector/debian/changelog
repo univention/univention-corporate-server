@@ -1,3 +1,13 @@
+univention-s4-connector (7.0.17-35) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - output script arguments and version (Bug #29044)
+    - Try fsmo seize up to three times per role (Bug #29046)
+    - Allow 600 seconds for initial S4 Connector run (Bug #29041)
+    - Postpone dns-SPN account creation to phase III (Bug #29043)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Nov 2012 15:36:10 +0100
+
 univention-s4-connector (7.0.17-34) unstable; urgency=low
 
   * Initialize the UDM modules to ensure the first created object uses
