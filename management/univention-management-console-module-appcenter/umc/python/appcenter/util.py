@@ -180,6 +180,32 @@ class ComponentManager(object):
 	def is_registered(self, component_id):
 		return '%s/%s' % (COMPONENT_BASE, component_id) in self.ucr
 
+	def put_app(self, app):
+		app_data = {
+			'server' : app.get_server(),
+			'prefix' : '',
+			'maintained' : True,
+			'unmaintained' : False,
+			'enabled' : True,
+			'name' : app.component_id,
+			'description' : app.get('description'),
+			'username' : '',
+			'password' : '',
+			'version' : 'current',
+			'localmirror' : 'false',
+		}
+		errata_data = app_data.copy()
+		errata_data['name'] += '-errata'
+		errata_data['description'] = '%s Errata' % app.name
+		with set_save_commit_load(self.ucr) as super_ucr:
+			self.put(app_data, super_ucr)
+			self.put(errata_data, super_ucr)
+
+	def remove_app(self, app):
+		with set_save_commit_load(self.ucr) as super_ucr:
+			self._remove(app.component_id, super_ucr)
+			self._remove(app.component_id + '-errata', super_ucr)
+
 	def put(self, data, super_ucr):
 		"""	Does the real work of writing one component definition back.
 			Will be called for each element in the request array of
@@ -233,17 +259,20 @@ class ComponentManager(object):
 
 		try:
 			with set_save_commit_load(self.ucr) as super_ucr:
-				named_component_base = '%s/%s' % (COMPONENT_BASE, component_id)
-				for var in COMP_PARAMS + ['parts']:
-					# COMP_PARTS (maintained,unmaintained) are special
-					# '' deletes this variable
-					super_ucr.set_registry_var('%s/%s' % (named_component_base, var), '')
-
-				super_ucr.set_registry_var(named_component_base, '')
+				self._remove(component_id, super_ucr)
 
 		except Exception as e:
 			result['status'] = PUT_PROCESSING_ERROR
 			result['message'] = "Parameter error: %s" % str(e)
 
 		return result
+
+	def _remove(self, component_id, super_ucr):
+		named_component_base = '%s/%s' % (COMPONENT_BASE, component_id)
+		for var in COMP_PARAMS + ['parts']:
+			# COMP_PARTS (maintained,unmaintained) are special
+			# '' deletes this variable
+			super_ucr.set_registry_var('%s/%s' % (named_component_base, var), '')
+
+		super_ucr.set_registry_var(named_component_base, '')
 

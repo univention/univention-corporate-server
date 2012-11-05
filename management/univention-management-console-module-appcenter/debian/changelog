@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.58-1) unstable; urgency=low
+
+  * Add errata repository for every app (Bug #29039)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Nov 2012 12:01:11 +0100
+
 univention-management-console-module-appcenter (2.0.57-1) unstable; urgency=low
 
   * Add log file for (un)installing apps; Bug #29037

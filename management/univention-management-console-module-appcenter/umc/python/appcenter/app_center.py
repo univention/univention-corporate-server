@@ -53,7 +53,6 @@ import univention.admin.uexceptions as udm_errors
 import univention.config_registry
 
 # local application
-import util
 from constants import COMPONENT_BASE
 
 LOGFILE = '/var/log/univention/app_install.log'
@@ -431,7 +430,7 @@ class Application(object):
 
 					# remove all existing component versions
 					for iapp in self.versions:
-						component_manager.remove(iapp.component_id)
+						component_manager.remove_app(iapp)
 
 					# update package information
 					package_manager.update()
@@ -460,22 +459,7 @@ class Application(object):
 			to_install = package_manager.get_packages(to_install)
 
 			# add the new component
-			component = {
-				'server' : self.get_server(),
-				'prefix' : '',
-				'maintained' : True,
-				'unmaintained' : False,
-				'enabled' : True,
-				'name' : self.component_id,
-				'description' : self.get('description'),
-				'username' : '',
-				'password' : '',
-				'version' : 'current',
-				'localmirror' : 'false',
-				}
-			with util.set_save_commit_load(ucr) as super_ucr:
-				MODULE.info('Add component: %s' % (component, ))
-				component_manager.put(component, super_ucr)
+			component_manager.put_app(self)
 			package_manager.update()
 
 			# determine the changes
@@ -484,8 +468,8 @@ class Application(object):
 			MODULE.info('Package changes: %s' % (result, ))
 
 			# remove the newly added component
-			component_manager.remove(self.component_id)
 			MODULE.info('Remove component: %s' % (self.component_id, ))
+			component_manager.remove_app(self)
 			package_manager.update()
 		except:
 			MODULE.warn(traceback.format_exc())
@@ -496,37 +480,22 @@ class Application(object):
 		try:
 			# remove all existing component versions
 			for iapp in self.versions:
-				component_manager.remove(iapp.component_id)
+				component_manager.remove_app(iapp)
 
 			# add the new repository component for the app
 			ucr.load()
 			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')  # packages need to be installed on backup AND master systems
-			server = self.get_server()
 			to_install = self.get('defaultpackages')
 			if is_master and self.get('defaultpackagesmaster'):
 				to_install.extend(self.get('defaultpackagesmaster'))
-			data = {
-				'server' : server,
-				'prefix' : '',
-				'maintained' : True,
-				'unmaintained' : False,
-				'enabled' : True,
-				'name' : self.component_id,
-				'description' : self.get('description'),
-				'username' : '',
-				'password' : '',
-				'version' : 'current',
-				'localmirror' : 'false',
-			}
-			with util.set_save_commit_load(ucr) as super_ucr:
-				component_manager.put(data, super_ucr)
+			component_manager.put_app(self)
 
 			# update and install + dist_upgrade
 			with open(LOGFILE, 'a') as logfile:
 				logfile.write('\n== INSTALLING %s ==\n' % self.name)
 				with package_manager.logging_to(logfile):
 					package_manager.update()
-					package_manager.commit(install=to_install, dist_upgrade=False)
+					package_manager.commit(install=to_install, dist_upgrade=True)
 
 			# successful installation
 			status = 200

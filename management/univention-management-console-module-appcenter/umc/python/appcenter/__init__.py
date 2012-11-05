@@ -153,7 +153,7 @@ class Instance(umcm.Base):
 	@sanitize(function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
 		application=StringSanitizer(minimum=1, required=True)
 		)
-	def invoke(self, request, ldap_connection=None, ldap_position=None):
+	def invoke(self, request):
 		function = request.options.get('function')
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
