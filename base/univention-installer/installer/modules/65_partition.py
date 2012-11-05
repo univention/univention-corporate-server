@@ -283,6 +283,11 @@ class object(content):
 
 	def profile_complete(self):
 		self.debug('profile_complete')
+
+		if self.container['module_disabled']:
+			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable'))
+			return True
+
 		if self.check('partitions') | self.check('partition'):
 			return False
 		root_device=None
@@ -573,6 +578,7 @@ class object(content):
 		self.container={}
 		self.container['min_size']=float(1)
 		self.container['debug']=''
+		self.container['module_disabled'] = False
 		self.container['profile']={}
 		disks, problemdisks = self.read_devices()
 		self.container['disk']=disks
@@ -701,6 +707,11 @@ class object(content):
 		self.container['profile']['lvmlv']['create']={}
 		self.container['profile']['lvmlv']['delete']={}
 		auto_part = False
+
+		# disable module if partition table type in profile does not match 'MSDOS' or 'MBR'
+		if self.all_results.get('partitiontable','msdos').lower() not in ('msdos','mbr'):
+			self.container['module_disabled'] = True
+			return
 
 		# create disk list with usb storage devices
 		disklist_usbstorage = self.get_usb_storage_device_list()
@@ -1763,6 +1774,10 @@ class object(content):
 		return device
 
 	def result(self):
+		if self.container['module_disabled']:
+			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable'))
+			return {}
+
 		result={}
 		tmpresult = []
 		partitions = []
