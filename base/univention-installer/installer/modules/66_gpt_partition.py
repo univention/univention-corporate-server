@@ -959,14 +959,24 @@ class object(content):
 					if parms[0] == 'only_mount':
 						parms[1]=0
 					vgname, lvname = device.split('/')[-2:]         # /dev/VolumeGroup/LogicalVolume
+
+					start = get_sanitized_position(parms[3])
+					end = get_sanitized_position(parms[4])
+					if start is None:
+						self.debug('Ignoring line: LVM partition start cannot be parsed correctly: %r' % parms[3])
+						continue
+					if end is None:
+						self.debug('Ignoring line: LVM partition start cannot be parsed correctly: %r' % parms[4])
+						continue
+
 					temp={	'vg': vgname,
 							'type':parms[0],
 							'format':parms[1],
 							'fstype':parms[2].lower(),
-							'start':parms[3],
-							'end':parms[4],
+							'start': start,
+							'end': end, # size does not have to be aligned to megabyte boundaries since size of physical extents will do that
 							'mpoint':parms[5],
-							'flag':parms[6],
+							'flag': parms[6].lower().split(',')
 							}
 					self.debug('Added to create lvm volume: %s' % temp)
 					self.container['profile']['lvmlv']['create'][lvname]=temp
