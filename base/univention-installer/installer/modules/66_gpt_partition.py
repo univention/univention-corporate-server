@@ -111,6 +111,10 @@ PARTFLAG_BOOT = 'boot'           # partition is a EFI system partition
 PARTFLAG_BIOS_GRUB = 'bios_grub' # partition is a BIOS boot partition
 VALID_PARTED_FLAGS = [PARTFLAG_LVM, PARTFLAG_BOOT, PARTFLAG_BIOS_GRUB] # flags that are known to parted
 
+# profile flags
+PROFILE_FLAG_BOOT = 'efi'		 	# partition is a EFI system partition
+PROFILE_FLAG_BIOSBOOT = 'biosboot'	# partition is a BIOS boot partition
+
 # partition index ("num")
 # - indicating partition number if x > 0
 # x == -1 → free space on disk
@@ -841,15 +845,21 @@ class object(content):
 					if not self.container['profile']['create'].has_key(disk):
 						self.container['profile']['create'][disk]={}
 					if len(parms) >= 5:
-						flag = ''
+						flags = []
 						if len(parms) < 6 or parms[5] == 'None' or parms[5] == FSTYPE_SWAP:
 							mpoint = ''
 						else:
 							mpoint = parms[5]
 						if len(parms) >= 7:
-							flag = parms[-1]
-							if flag.lower() == 'none':
-								flag = ''
+							flags = parms[-1].lower().split(',')
+							if 'none' in flags or flags == ['']:
+								flags = []
+							elif PROFILE_FLAG_BIOSBOOT in flags:
+								mpoint = ''
+								parms[1] = '0'
+							elif PROFILE_FLAG_BOOT in flags:
+								mpoint = MOUNTPOINT_EFI
+								parms[2] = FSTYPE_EFI
 						if parms[0] == 'only_mount':
 							parms[1]=0
 
@@ -859,13 +869,14 @@ class object(content):
 							self.debug('Ignoring line: partition types other than "0" are invalid with GPT: %r' % key)
 							continue
 
-						temp={	'type':parms[0],
+						temp={
+							'type':parms[0],
 							'fstype':parms[2].lower(),
 							'start': parms[3],
 							'end': parms[4],
 							'mpoint':mpoint,
 							'format':parms[1],
-							'flag': flag,
+							'flag': flags,
 							}
 
 						self.debug('Added to create physical container: %s' % temp)
