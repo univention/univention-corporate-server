@@ -596,7 +596,7 @@ define([
 
 		_detail_field_custom_emailrequired: function(values) {
 			var maintainer = values.maintainer && values.maintainer != values.vendor;
-			if (values.emailrequired) {
+			if (values.notifyvendor) {
 				if (maintainer) {
 					return _('This application will inform the maintainer if you (un)install it.');
 				} else {
@@ -631,7 +631,7 @@ define([
 				'screenshot',
 				'defaultpackagesmaster',
 				'cannot_install_reason',
-				'emailrequired',
+				'notifyvendor',
 				'allows_using'
 			];
 		},
@@ -645,7 +645,7 @@ define([
 				'categories': _("Section"),
 				'version': _('Version'),
 				'longdescription': _("Description"),
-				'emailrequired': _("Email notification"),
+				'notifyvendor': _("Email notification"),
 				'allows_using': _("UCS License Key"),
 				'defaultpackagesmaster': _("Packages for master system"),
 				'cannot_install_reason': _("Conflicts"),
@@ -740,8 +740,7 @@ define([
 							name: 'help_text',
 							content: '<p>' + _('The installation of applications with Univention App Center requires an individually issued license key with a unique key identification. You are currently using a license key without identification. Please fill in the form and provide a valid email address. Afterwards an updated license will be sent to you in a couple of minutes that can be applied and updated directly in the license dialog.') + '</p>' +
 							'<p>' + _('The UCS system sends your current license key to Univention. The key will be extended by the identification and will be sent back to the provided email address. The license scope remains unchanged.') + '</p>' +
-							'<p>' + _('Right after this form, you will see another dialog where you can upload your new license.') + '</p>' +
-							'<p><strong>' + _('Currently, the automatic license generation system is offline. This will be fixed by the time the Release Candidate of UCS 3.1 is out.') + '</strong></p>' // TODO: remove
+							'<p>' + _('Right after this form, you will see another dialog where you can upload your new license.') + '</p>'
 						},
 						{
 							type: TextBox,
@@ -751,17 +750,6 @@ define([
 							label: _("Email address")
 						}
 					],
-					// TODO: remove buttons, use default ones!
-					buttons: [{
-						name: 'cancel',
-						'default': false,
-						label: _('Cancel')
-					}, {
-						name: 'submit',
-						'default': true,
-						label: _('Submit'),
-						disabled: true
-					}],
 					autoValidate: true
 				}).then(function(values) {
 					tools.umcpCommand('appcenter/request_new_license', values).then(function(data) {
@@ -792,15 +780,7 @@ define([
 			this.updateApplications();
 
 			// TODO: only if necessary? these apps probably will require a restart
-			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
-			function() {
-				// if user confirms, he is redirected to the login page
-				// no need to do anythin fancy here :)
-			},
-			lang.hitch(this, function() {
-				// user canceled -> switch back to initial view
-				//this.standby(false);
-			}));
+			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.'));
 		}
 
 	});

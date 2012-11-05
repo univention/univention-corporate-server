@@ -45,12 +45,14 @@ import urllib2
 
 # related third party
 from ldap import LDAPError
+import ldif
 
 # univention
 from univention.management.console.log import MODULE
 from univention.updater import UniventionUpdater
 import univention.admin.uexceptions as udm_errors
 import univention.config_registry
+import univention.uldap as uldap
 
 # local application
 from constants import COMPONENT_BASE
@@ -66,17 +68,13 @@ class License(object):
 		# but dont be too clever here. just dump
 		# everything we have in LDAP.
 		try:
-			ret = {}
-			import univention.uldap as uldap
 			_lo = uldap.getMachineConnection()
 			data = _lo.search('objectClass=univentionLicense')
 			del _lo
 			# just one license (should be always the case)
 			# return the dictionary without the dn
-			data = data[0][1]
-			# make sure data is dictionary
-			ret.update(data)
-			return ret
+			data = ldif.CreateLDIF(data[0][0], data[0][1])
+			return data
 		except Exception as e:
 			# no udm, no ldap, malformed return value, whatever
 			MODULE.error('getting License from LDAP failed: %s' % e)

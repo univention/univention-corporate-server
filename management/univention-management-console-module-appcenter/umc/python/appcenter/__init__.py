@@ -36,6 +36,7 @@ import locale
 import sys
 import urllib
 import urllib2
+import re
 
 # related third party
 import notifier
@@ -84,17 +85,26 @@ class Instance(umcm.Base):
 	def request_new_license(self, email):
 		license = LICENSE.dump_data()
 		if license is None:
-			return False
+			raise umcm.UMC_CommandError(_('Cannot parse License from LDAP'))
 		data = {}
-		data.update(license)
 		data['email'] = email
+		data['licence'] = license
 		data = urllib.urlencode(data)
-		server = self.ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
-		url = 'https://%(server)s/new_license.py' % {'server' : server}
+		url = 'https://license.univention.de/keyid/conversion/submit'
+		MODULE.info('urllib2.Request(%r, data=%r, headers={"User-agent" : "UMC/AppCenter"})' % (url, data))
 		request = urllib2.Request(url, data=data, headers={'User-agent' : 'UMC/AppCenter'})
-		return [url, data]
-		urllib2.urlopen(request)
-		return True
+		try:
+			urllib2.urlopen(request)
+		except Exception as e:
+			try:
+				# try to parse an html error
+				body = e.read()
+				detail = re.search('<span id="details">(?P<details>.*?)</span>',  body).group(1)
+			except:
+				detail = str(e)
+			raise umcm.UMC_CommandError(_('An error occurred while sending the request: %s') % detail)
+		else:
+			return True
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
