@@ -348,16 +348,21 @@ class object(content):
 		boot_fs=None
 		root_fs_type=None
 		boot_fs_type=None
+		bootable_cnt=0
 		mpoint_list = []
 		for key in self.container['profile']['create'].keys():
 			for minor in self.container['profile']['create'][key].keys():
 				fstype=self.container['profile']['create'][key][minor]['fstype'].strip()
 				mpoint=self.container['profile']['create'][key][minor]['mpoint'].strip()
+				flags=self.container['profile']['create'][key][minor]['mpoint'].strip()
 				self.debug('profile_complete: %s: mpoint=%s  fstype=%s' % (key, mpoint, fstype))
 				if len(mpoint) and mpoint in mpoint_list:
 					self.message="Double mountpoint '%s'" % mpoint
 					return False
 				mpoint_list.append(mpoint)
+
+				if ( PARTFLAG_BOOT in flags or PARTFLAG_BIOS_GRUB in flags):
+					bootable_cnt += 1
 
 				if mpoint == '/boot':
 					boot_device = 'PHY'
@@ -392,6 +397,10 @@ class object(content):
 				root_fs_type=fstype
 				if not fstype.lower() in ALLOWED_ROOT_FSTYPES:
 					root_fs = fstype
+
+		if not bootable_cnt:
+			self.message = 'One partition must contain one the following flags: "bios_grub", "boot". The correct flag depends on your BIOS settings.'
+			return False
 
 		if root_device == None:
 			self.message = 'Missing / as mountpoint'
