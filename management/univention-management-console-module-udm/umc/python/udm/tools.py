@@ -66,7 +66,7 @@ class LicenseImport( ldif.LDIFParser ):
 
 		# check LDAP base
 		if self.base != base or base is None:
-			raise LicenseError( _( "The license can not be applied. The LDAP base does not match (expected %s, found: %s." ) % ( base, self.base ) )
+			raise LicenseError( _( "The license can not be applied. The LDAP base does not match (expected %s, found: %s)." ) % ( base, self.base ) )
 
 	def handle( self, dn, entry ):
 		"""This method is invoked bei LDIFParser.parse for each object

@@ -159,7 +159,9 @@ define([
 				this._checkThreshold().then(lang.hitch(this, function(result) {
 					this._sizeLimitExceeded = result.size_limit_exceeded;
 					this._totalSize = result.size;
-					if (this._totalSize > this.threshold) {
+					if (this._totalSize <= this.threshold) {
+						this._behaveNormally();
+					} else {
 						this._addAdvancedSearchItemAndSaveStore();
 						// handles especially for this widget:
 						// ENTER: search on server
@@ -191,8 +193,6 @@ define([
 						} else {
 							this._readyDeferred.resolve();
 						}
-					} else {
-						this._behaveNormally();
 					}
 				}));
 			} else {

@@ -404,7 +404,7 @@ class UDM_Module( object ):
 			raise UDM_Error( get_exception_msg(e) )
 
 	@LDAP_Connection
-	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '', ldap_connection = None, ldap_position = None, limit_size = True ):
+	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '', ldap_connection = None, ldap_position = None ):
 		"""Searches for LDAP objects based on a search pattern"""
 		if container == 'all':
 			container = ldap_position.getBase()
@@ -417,10 +417,7 @@ class UDM_Module( object ):
 		MODULE.info( 'Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % ( container, filter_s, superordinate ) )
 		result = None
 		try:
-			if limit_size:
-				sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000'))
-			else:
-				sizelimit = 0
+			sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000'))
 			result = self.module.lookup( None, ldap_connection, filter_s, base = container, superordinate = superordinate, scope = scope, sizelimit = sizelimit )
 		except udm_errors.insufficientInformation, e:
 			return []
@@ -1050,9 +1047,11 @@ def info_syntax_choices( syntax_name, options = {} ):
 				continue
 			filter_s = _create_ldap_filter( syn, options, module )
 			if filter_s is not None:
-				size += len( module.search( filter = filter_s, limit_size = False ) )
-		sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000'))
-		return {'size' : size, 'performs_well' : True, 'size_limit_exceeded' : size > sizelimit}
+				try:
+					size += len( module.search( filter = filter_s ) )
+				except udm_errors.ldapSizelimitExceeded:
+					return {'performs_well' : True, 'size_limit_exceeded' : True}
+		return {'size' : size, 'performs_well' : True }
 	return {'size' : 0, 'performs_well' : False}
 
 @LDAP_Connection

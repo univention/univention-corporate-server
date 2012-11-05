@@ -91,10 +91,10 @@ msgstr "Das Ziel fehlt"
 #, python-format
 msgid ""
 "The license can not be applied. The LDAP base does not match (expected %s, "
-"found: %s."
+"found: %s)."
 msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
-"überein (erwartet: %s, gefunden: %s)"
+"überein (erwartet: %s, gefunden: %s)."
 
 #: umc/python/udm/udm_ldap.py:279 umc/python/udm/udm_ldap.py:293
 #, python-format

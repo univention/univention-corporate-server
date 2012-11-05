@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.52-1) unstable; urgency=low
+
+  * Adapt syntax/choices/info to size limit; Bug #28248, Bug #26556
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Nov 2012 17:09:37 +0100
+
 univention-management-console-module-udm (3.0.51-1) unstable; urgency=low
 
   * Fix getValue before first successful setValue in ComboBox (Bug #26556)
