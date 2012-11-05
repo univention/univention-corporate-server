@@ -1459,6 +1459,9 @@ class object(content):
 	def enable_all_vg(self):
 		self.run_cmd(['/sbin/vgchange', '-ay'], True, True)
 
+	def disable_all_vg(self):
+		self.run_cmd(['/sbin/vgchange', '-an'], True, True)
+
 	def read_lvm(self):
 		# read initial LVM status
 		self.container['lvm']['pv'] = {}
@@ -1888,24 +1891,16 @@ class object(content):
 		if not os.path.exists(device):
 			self.debug('ERROR: device %s does not exist!' % device)
 		else:
-			command = ['/sbin/parted', '-s', device, 'mklabel', 'gpt']
-			self.debug('Calling %s' % command)
-			proc = subprocess.Popen(command, bufsize=0, shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			(stdout, stderr) = proc.communicate()
-			self.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
-					   (proc.returncode, command, '\n=> '.join(stderr), '\n=> '.join(stdout)))
+			self.disable_all_vg()
+			self.run_cmd(['/sbin/parted', '-s', device, 'mklabel', 'gpt'])
+			self.enable_all_vg()
 
 	def convert_to_gpt(self, device=None):
 		self.debug('Trying to convert MBR to GPT on device %s' % device)
 		if not os.path.exists(device):
 			self.debug('ERROR: device %s does not exist!' % device)
 		else:
-			command = ['/sbin/sgdisk', '-g', device]
-			self.debug('Calling %s' % command)
-			proc = subprocess.Popen(command, bufsize=0, shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			(stdout, stderr) = proc.communicate()
-			self.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
-					   (proc.returncode, command, '\n=> '.join(stderr), '\n=> '.join(stdout)))
+			self.run_cmd(['/sbin/sgdisk', '-g', device])
 
 	def print_history(self):
 		self.debug("HISTORY")
