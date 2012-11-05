@@ -1,3 +1,9 @@
+univention-updater (8.0.43-1) unstable; urgency=low
+
+  * Fixed german translation (Bug #26387)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Nov 2012 10:51:33 +0100
+
 univention-updater (8.0.42-1) unstable; urgency=low
 
   * More updates for the errata handling (Bug #26387)

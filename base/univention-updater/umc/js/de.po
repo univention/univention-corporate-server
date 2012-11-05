@@ -31,11 +31,11 @@ msgstr "... bitte warten ..."
 
 #: umc/js/updater.js:176
 msgid "1 package to be REMOVED"
-msgstr "1 Pakete wird ENTFERNT"
+msgstr "1 Paket wird ENTFERNT"
 
 #: umc/js/updater.js:214
 msgid "1 package to be installed"
-msgstr "1 Pakete wird NEU installiert"
+msgstr "1 Paket wird NEU installiert"
 
 #: umc/js/updater.js:195
 msgid "1 package to be updated"
@@ -440,7 +440,6 @@ msgid "{count} packages to be REMOVED"
 msgstr "{count} Pakete werden ENTFERNT"
 
 #: umc/js/updater.js:218
-#, fuzzy
 msgid "{count} packages to be installed"
 msgstr "{count} Pakete werden NEU installiert"
 
