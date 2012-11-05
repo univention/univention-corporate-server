@@ -1130,16 +1130,16 @@ class object(content):
 				return '%sp%s' % (dev_match.group(), number)
 			return '%s%s' % (device, number)
 
-		def run_cmd(self, command, debug=True):
-			self.parent.debug('wait for udev to create device file')
-			os.system("udevadm settle || true")
-			self.parent.debug('(profile) run command: %s' % command)
-			p=os.popen(command)
-			output = p.read()
-			p.close()
-			if debug:
-				self.parent.debug('\n=> %s' % output.replace('\n','\n=> '))
-			return output
+		def run_cmd(self, cmd, log_stdout=False, log_stderr=True):
+			self.parent.debug('(profile) run_cmd(%r)' % (cmd,))
+			proc = subprocess.Popen(cmd, bufsize=0, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			(stdout, stderr) = proc.communicate()
+			self.parent.debug('===(exitcode=%d)====' % proc.returncode)
+			if stdout and log_stdout:
+				self.parent.debug('stdout of %r:\n=> %s' % (cmd, '\n=> '.join(stdout.split('\n'))))
+			if stderr and log_stderr:
+				self.parent.debug('stderr of %r:\n=> %s' % (cmd, '\n=> '.join(stderr.split('\n'))))
+			return '%s\n%s' % (stdout, stderr)
 
 		def function(self):
 			if self.action == 'prof_read_lvm':
@@ -1152,11 +1152,11 @@ class object(content):
 					device = entry['vg']
 					if entry['lv']:
 						device += '/%s' % entry['lv']
-					self.run_cmd('/sbin/lvremove -f %s 2>&1' % device)
+					self.run_cmd(['/sbin/lvremove', '-f', device])
 
 				# cleanup all known LVM volume groups
 				for vgname, vg in self.parent.container['lvm']['vg'].items():
-					self.run_cmd('/sbin/vgreduce -a --removemissing %s 2>&1' % vgname)
+					self.run_cmd(['/sbin/vgreduce', '-a', '--removemissing', vgname])
 
 			elif self.action == 'prof_delete':
 				self.parent.debug('prof_delete')
@@ -1170,18 +1170,18 @@ class object(content):
 							self.parent.debug('%s in LVM PV' % device)
 							pv = self.parent.container['lvm']['pv'][device]
 							if pv['vg']:
-								testoutput = self.run_cmd( '/sbin/vgreduce -t %s %s 2>&1' % (pv['vg'], device) )
+								testoutput = self.run_cmd(['/sbin/vgreduce', '-t', pv['vg'], device])
 								if "Can't remove final physical volume" in testoutput:
-									self.run_cmd( '/sbin/vgremove %s 2>&1' % pv['vg'] )
+									self.run_cmd(['/sbin/vgremove', pv['vg']])
 								else:
-									self.run_cmd( '/sbin/vgreduce %s %s 2>&1' % (pv['vg'], device) )
-								self.run_cmd( '/sbin/pvremove -ff %s 2>&1' % device )
+									self.run_cmd(['/sbin/vgreduce', pv['vg'], device])
+								self.run_cmd(['/sbin/pvremove', '-ff', device])
 
-						self.run_cmd('/sbin/parted --script %s p rm %s 2>&1'%(disk,num))
+						self.run_cmd(['/sbin/parted', '--script', str(disk), 'p', 'rm', str(num)])
 
 				# cleanup all known LVM volume groups
 				for vgname, vg in self.parent.container['lvm']['vg'].items():
-					self.run_cmd('/sbin/vgreduce -a --removemissing %s 2>&1' % vgname)
+					self.run_cmd(['/sbin/vgreduce', '-a', '--removemissing', vgname])
 
 			elif self.action == 'prof_write':
 				vgcreated = False
@@ -1207,17 +1207,18 @@ class object(content):
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))
 						if PARTFLAG_BOOT in flaglist:
 							self.parent.debug('%s%s: boot flag' % (disk, num))
-							self.run_cmd('/sbin/parted -s %s set %s boot on' % (disk, num))
+							self.run_cmd(['/sbin/parted', '-s', str(disk), 'set', str(num), 'boot', 'on'])
 						if PARTFLAG_LVM in flaglist:
 							device = self.get_real_partition_device_name(disk,num)
 							self.parent.debug('%s: lvm flag' % device)
 							ucsvgname = self.parent.container['lvm']['ucsvgname']
-							self.run_cmd('/sbin/pvcreate %s 2>&1' % device)
+							self.run_cmd(['/sbin/pvcreate', device])
 							if not vgcreated:
-								self.run_cmd('/sbin/vgcreate --physicalextentsize %sk %s %s 2>&1' % (B2KiB(self.parent.container['lvm']['vg'][ ucsvgname ]['PEsize']), ucsvgname, device))
+								self.run_cmd(['/sbin/vgcreate', '--physicalextentsize',
+											  '%sk' % B2KiB(self.parent.container['lvm']['vg'][ ucsvgname ]['PEsize']),
+											  ucsvgname, device])
 								vgcreated = True
-							self.run_cmd('/sbin/vgextend %s %s 2>&1' % (ucsvgname, device))
-				# cleanup all known LVM volume groups
+							self.run_cmd(['/sbin/vgextend', ucsvgname, device])
 
 			elif self.action == 'prof_write_lvm':
 				self.parent.debug('prof_write_lvm')
@@ -1230,7 +1231,7 @@ class object(content):
 					if size % vg['PEsize']: # number of logical extents has to cover at least "size" bytes
 						currentLE += 1
 
-					self.run_cmd('/sbin/lvcreate -l %d --name "%s" "%s" 2>&1' % (currentLE, lvname, lv['vg'] ))
+					self.run_cmd(['/sbin/lvcreate', '-l', str(currentLE), '--name', lvname, lv['vg']])
 
 			elif self.action == 'prof_format':
 				self.parent.debug('prof_format')
@@ -1250,9 +1251,9 @@ class object(content):
 						device = self.get_real_partition_device_name(disk,num)
 						mkfs_cmd = get_mkfs_cmd(device, fstype)
 						if mkfs_cmd:
-							self.run_cmd('%s 2>&1' % mkfs_cmd)
+							self.run_cmd(mkfs_cmd)
 						else:
-							self.parent.debug('unknown fstype (%s) for %s' % (fstype, self.get_real_partition_device_name(disk,num)))
+							self.parent.debug('ERROR: unknown fstype (%s) for %s' % (fstype, self.get_real_partition_device_name(disk,num)))
 
 				for lvname, lv in self.parent.container['profile']['lvmlv']['create'].items():
 					device = '/dev/%s/%s' % (lv['vg'], lvname)
@@ -1266,14 +1267,14 @@ class object(content):
 
 					mkfs_cmd = get_mkfs_cmd(device, fstype)
 					if mkfs_cmd:
-						self.run_cmd('%s 2>&1' % mkfs_cmd)
+						self.run_cmd(mkfs_cmd)
 					else:
-						self.parent.debug('unknown fstype (%s) for %s' % (fstype, device))
+						self.parent.debug('ERROR: unknown fstype (%s) for %s' % (fstype, device))
 
 			self.stop()
 
 	def run_cmd(self, cmd, log_stdout=False, log_stderr=True):
-		self.debug('run_cmd(%s)' % (cmd,))
+		self.debug('run_cmd(%r)' % (cmd,))
 		(stdout, stderr) = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 		if stdout and log_stdout:
 			self.debug('stdout of %r:\n=> %s' % (cmd, '\n=> '.join(stdout.split('\n'))))
