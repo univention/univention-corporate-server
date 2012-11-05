@@ -14,23 +14,6 @@ Variables: repository/online/sources
 Variables: repository/online/httpmethod
 
 Type: file
-File: etc/apt/sources.list.d/18_ucs-online-errata.list
-Preinst: 18_ucs-online-errata.py
-Postinst: 18_ucs-online-errata.py
-Variables: version/version
-Variables: version/patchlevel
-Variables: version/erratalevel
-Variables: local/repository
-Variables: repository/online
-Variables: repository/online/server
-Variables: repository/online/port
-Variables: repository/online/maintained
-Variables: repository/online/unmaintained
-Variables: repository/online/sources
-Variables: repository/online/httpmethod
-Variables: repository/online/errata/start
-
-Type: file
 File: etc/apt/sources.list.d/20_ucs-online-component.list
 Preinst: 20_ucs-online-component.py
 Postinst: 20_ucs-online-component.py
@@ -48,7 +31,6 @@ Preinst: apt-mirror.py
 Postinst: apt-mirror.py
 Variables: version/version
 Variables: version/patchlevel
-Variables: version/erratalevel
 Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server

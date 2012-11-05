@@ -125,7 +125,7 @@ define([
 					// No matter what has changed: the 'serial' API will reflect it.
 					// These dependencies establish the auto-refresh of the combobox
 					// whenever the form itself has been reloaded.
-					depends:		['ucs_version', 'latest_errata_update', 'erratalevel', 'serial', 'timestamp'],
+					depends:		['ucs_version', 'erratalevel', 'serial', 'timestamp'],
 					dynamicValues:	'updater/updates/query',
 					// FIXME Manual placement: should be done by the layout framework some day.
 					style:			'width:300px;',
@@ -234,27 +234,6 @@ define([
 					type:			'HiddenInput',
 					name:			'erratalevel'
 				},
-				{
-					type:			'HiddenInput',
-					name:			'latest_errata_update'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'components_errata'
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'errata_update_text1',
-					content:		_("... loading data ...")
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'errata_update_text2',
-					// FIXME Manual placement: should be done by the layout framework some day.
-					style:			'width:500px;margin-top:.5em;'
-				},
 				// -------------------- Package updates ------------------------
 				{
 					type:			'Text',
@@ -285,15 +264,6 @@ define([
 						var release = element.get('value');
 						// TODO check updater/installer/running, don't do action if a job is running
 						this.onRunReleaseUpdate(release);
-					}),
-					visible:	false
-				},
-				{
-					name:		'run_errata_update',
-					label:		_('Install errata update'),
-					callback:	lang.hitch(this, function() {
-						// TODO check updater/installer/running, don't do action if a job is running
-						this.onRunErrataUpdate();
 					}),
 					visible:	false
 				},
@@ -358,14 +328,6 @@ define([
 					]
 				},
 				{
-					label:		_("Errata updates"),
-					layout:
-					[
-						['errata_update_text1'],
-						['errata_update_text2' , 'run_errata_update']
-					]
-				},
-				{
 					label:		_("Package updates"),
 					layout:
 					[
@@ -396,8 +358,7 @@ define([
 				reboot: this._form._container.getChildren()[0],
 				easymode: this._form._container.getChildren()[1],
 				release: this._form._container.getChildren()[2],
-				errata: this._form._container.getChildren()[3],
-				packages: this._form._container.getChildren()[4]
+				packages: this._form._container.getChildren()[3]
 			};
 
 			// Before we attach the form to our page, just switch off all title panes.
@@ -449,54 +410,6 @@ define([
 					}
 					var ebu = this._form._buttons.easy_upgrade;
 					domClass.toggle(ebu.domNode, 'dijitHidden', ! ava);
-
-					// Text for errata updates. Stuffed into two different widgets so the button on the right
-					// can be aligned at the second sentence.
-
-					var but = this._form._buttons.run_errata_update;
-					var any_errata_available = false;
-
-					// Convert the string back to an object. This is necessary because such a dict
-					// can not be transferred through a hidden value
-					if (values.components_errata !== '' ) {
-						values.components_errata = json.parse(values.components_errata);
-					}
-					var _add_component_errata = function(component, installed_errata, available_errata) {
-						var errata_count = available_errata - installed_errata;
-						if (errata_count > 0) {
-							any_errata_available = true;
-						}
-						var ret = component;
-						if (installed_errata !== 0 && installed_errata !== '0') {
-							ret += ' errata ' + installed_errata;
-						}
-						ret += ' – ';
-						if (errata_count <= 0) {
-							ret += _('No errata updates available');
-						} else if (errata_count == 1) {
-							ret += _('One errata update available');
-						} else {
-							ret += lang.replace(_('{errata_count} errata updates available'), {errata_count: errata_count});
-						}
-						return ret;
-					};
-					var errata_update_text2 = _add_component_errata('UCS', values.erratalevel, values.latest_errata_update);
-					tools.forIn(values.components_errata, function(component, versions) {
-						errata_update_text2 += '<br />' + _add_component_errata(component, versions[0], versions[1]);
-					});
-					this._form.getWidget('errata_update_text2').set('content', errata_update_text2);
-
-					var errata_update_text1;
-					if (any_errata_available) {
-						// Show the Update button
-						errata_update_text1 = _("Errata updates are available for this system.");
-						domClass.toggle(but.domNode, 'dijitHidden', false);
-					}
-					else {
-						errata_update_text1 = _("There are no errata updates available for this system.");
-						domClass.toggle(but.domNode, 'dijitHidden', true);
-					}
-					this._form.getWidget('errata_update_text1').set('content', errata_update_text1);
 
 					var tx1 = '';
 					if (values.components == '0')
@@ -628,7 +541,7 @@ define([
 		// This function switches the visibilty of all relevant titlepanes used for updates.
 		// Other titlepanes (e.g. reboot) are not affected.
 		_show_updater_panes: function(yes) {
-			array.forEach(['easymode', 'release', 'errata', 'packages'], function(iname) {
+			array.forEach(['easymode', 'release', 'packages'], function(iname) {
 				domClass.toggle(this._titlepanes[iname].domNode, 'dijitHidden', ! yes);
 			}, this);
 		},
@@ -642,7 +555,6 @@ define([
 			} else {
 				domClass.toggle(this._titlepanes.easymode.domNode, 'dijitHidden', ! yes);
 				domClass.toggle(this._titlepanes.release.domNode, 'dijitHidden', yes);
-				domClass.toggle(this._titlepanes.errata.domNode, 'dijitHidden', yes);
 				domClass.toggle(this._titlepanes.packages.domNode, 'dijitHidden', yes);
 			}
 		},

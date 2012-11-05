@@ -1,3 +1,9 @@
+univention-updater (8.0.41-1) unstable; urgency=low
+
+  * Removed more errata tools and files (Bug #26387)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Nov 2012 08:44:57 +0100
+
 univention-updater (8.0.40-1) unstable; urgency=low
 
   * Use $* for the echo command only (Bug #19468)

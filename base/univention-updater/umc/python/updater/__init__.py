@@ -91,12 +91,6 @@ RUN_PARAMETER_ERROR	= 1
 RUN_PROCESSING_ERROR	= 2
 
 INSTALLERS = {
-	'errata': {
-		'purpose':	_("Install all errata updates"),
-		'command':	'/usr/share/univention-updater/univention-errata-update net; /usr/share/univention-updater/univention-errata-components-update net',
-		'logfile':	'/var/log/univention/errata-updates.log',
-		'statusfile':	'/var/lib/univention-updater/univention-errata-update.status',
-	},
 	'release': {
 		'purpose':	_("Perform release update up to version '%s'"),
 		'command':	"/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
@@ -485,64 +479,6 @@ class Instance(umcm.Base):
 			if tmp:
 				result['erratalevel'] = int(tmp)
 
-			# highest errata patchlevel, converted to int, 0 if none.
-			what = 'getting highest available errata patchlevel'
-			tmp = self.uu.get_all_available_errata_updates()
-			spl = 0
-			what = 'iterating over errata updates list'
-			# *** NOTE *** API changed! until now, the function returned
-			#				a string list with elements: ['errata1','errata2' ...]
-			#				but now it is an array of integers!
-			#
-			#	We let the old code intact, just in case the API change
-			#	would be reverted some day.
-			for sa in tmp:
-				what = "examining '%s'" % sa
-				if isinstance(sa,int):
-					if sa > spl:
-						spl = sa
-				else:
-					match = re.search('^errata(\d+)$',sa)
-					if (match):
-						sn = int(match.group(1))
-						if sn > spl:
-							spl = sn
-			result['latest_errata_update'] = spl
-
-			# Get all errata updates for components
-			components_errata = self.uu.get_all_available_errata_component_updates()
-			if components_errata:
-				""" Convert the result.
-				The result is in a form like this:
-					[
-						('component1', {'2.3': [2, 3], '2.4': [5]} ),
-						('component2', {'3.0': [2]} ),
-					]
-				The UMC module needs the current and the max possible value:
-					component1: 0, 0 # because not available for current verion
-					component2: 1, 2
-				"""
-				res = {}
-				for (component, versions) in components_errata:
-					current_errata = self.uu.get_component_erratalevel(component)
-					last_errata = 0
-					try:
-						versions = versions[self.uu.ucs_version]
-						last_errata = max(versions)
-					except (KeyError, ValueError):
-						# absolutely no errata for current version
-						# or no new errata for current version
-						pass
-					MODULE.info('components_errata: Found %r updates for %s' % (versions, component))
-					res[component] = [current_errata, last_errata]
-				# Convert the object into a string. This is necessary because such a dict
-				# can not be transferred through a hidden value in java script
-				if res:
-					# use " instead of ' because of json
-					result['components_errata'] = str(res).replace('\'', '"')
-					MODULE.info('components_errata: %s' % result['components_errata'])
-
-
 			what = "querying availability for easy mode"
 			result['easy_mode'] = self.ucr.is_true('update/umc/updateprocess/easy', False)
 
@@ -554,9 +490,6 @@ class Instance(umcm.Base):
 
 				# release update
 				easy_update_available = easy_update_available or result['release_update_available']
-				# errata
-				easy_update_available = easy_update_available or result['erratalevel'] < result['latest_errata_update']
-				easy_update_available = easy_update_available or result.get('components_errata') # may be unset
 				# if no update seems necessary perform a real (expensive) check nonetheless
 				easy_update_available = easy_update_available or self.uu.component_update_available()
 				result['easy_update_available'] = easy_update_available
@@ -813,7 +746,6 @@ class Instance(umcm.Base):
 		"""	This is the function that invokes any kind of installer. Arguments accepted:
 			job ..... the main thing to do. can be one of:
 				'release' ...... perform a release update
-				'errata' ....... perform a errata update
 				'component' .... install a component by installing its default package(s)
 				'distupgrade' .. update all currently installed packages (distupgrade)
 				'check' ........ check what would be done for 'update' ... do we need this?

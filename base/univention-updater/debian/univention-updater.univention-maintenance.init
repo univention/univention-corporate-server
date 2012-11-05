@@ -136,21 +136,16 @@ case "$1" in
 			mode="local"
 			/usr/share/univention-updater/univention-updater local --silent --check >/dev/null 2>&1
 			upd_local=$?
-			/usr/share/univention-updater/univention-errata-update local --silent --check >/dev/null 2>&1
-			errata_local=$?
 		else
 			mode="net"
 			upd_local=0
-			errata_local=0
 		fi
 		/usr/share/univention-updater/univention-updater net --silent --check >/dev/null 2>&1
 		upd_net=$?
-		/usr/share/univention-updater/univention-errata-update net --silent --check >/dev/null 2>&1
-		errata_net=$?
 		/usr/share/univention-updater/univention-actualise --dist-upgrade --silent --check >/dev/null 2>&1
 		actualise=$?
 
-		if [ "$upd_local$errata_local$upd_net$errata_net$actualise" = 00000 ]; then
+		if [ "$upd_local$upd_net$actualise" = 000 ]; then
 			if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
 				echo -e "\033[32;1mNothing to do for Univention Updater.\033[0m"
 			else
@@ -206,8 +201,6 @@ case "$1" in
 
 				echo -n "  actualise "
 				/usr/share/univention-updater/univention-actualise --dist-upgrade --silent >>"$LOG" 2>&1
-				echo -n "  errata-update "
-				/usr/share/univention-updater/univention-errata-update "$mode" --silent >>"$LOG" 2>&1
 				echo
 			fi
 

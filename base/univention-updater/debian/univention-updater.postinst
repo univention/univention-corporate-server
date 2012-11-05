@@ -89,6 +89,13 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/debug?no \
 		update/available?no \
 		version/erratalevel?0
+
+	if [ -z "$2" ]; then
+		# enable current errata component
+		eval "$(univention-config-registry shell version/version version/patchlevel)"
+		ucr set repository/online/component/${version_version}-${version_patchlevel}-errata="enabled" \
+				repository/online/component/${version_version}-${version_patchlevel}-errata/description="Errata updates for UCS ${version_version}-${version_patchlevel}"
+	fi
 fi
 
 call_joinscript 41univention-updater.inst

@@ -120,14 +120,6 @@ define([
 				});
 			}));
 
-			// invokes the installer from the 'errata update' button (Updates Page)
-			this._updates.on('runerrataupdate', lang.hitch(this, function() {
-				this._call_installer({
-					job:		'errata',
-					confirm:	_("Do you really want to install all available errata updates?")
-				});
-			}));
-
 			// invokes the installer from the 'component update' button (Updates Page)
 			this._updates.on('rundistupgrade', lang.hitch(this, function() {
 				this._confirm_distupgrade();
@@ -167,7 +159,7 @@ define([
 				this.umcpCommand('updater/updates/check').then(lang.hitch(this, function(data) {
 					this.standby(false);
 					// FIXME Lots of manual styling to achieve resonable look
-					var txt = "<div style='overflow:auto;max-height:400px;'><table>\n";
+					var txt = "<div style='overflow:auto;max-height:500px;'><table>\n";
 					var upd = data.result.update;
 					var ins = data.result.install;
 					var rem = data.result.remove;
@@ -211,7 +203,7 @@ define([
 					var dia = new ConfirmDialog({
 						title:			_("Start Upgrade?"),
 						message:		txt,
-						style:			'max-width:600px;',
+						style:			'max-width:650px;',
 						options:
 						[
 							{

@@ -124,6 +124,10 @@ fi
 # For UCS 3.1-0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
+# Move to mirror mode for previous errata component
+# ucr set repository/online/component/3.0-2-errata=false \
+#		repository/online/component/3.0-2-errata/localmirror=true
+
 # Set errata component for UCS 3.1-0
 ucr set repository/online/component/3.1-0-errata=enabled \
 		repository/online/component/3.1-0-errata/description="Errata updates for UCS 3.1-0"
