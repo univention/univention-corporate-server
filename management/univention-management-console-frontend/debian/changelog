@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.152-1) unstable; urgency=low
+
+  * UMC module packages has been renamed to appcenter (Bug #28626)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Nov 2012 14:23:26 +0100
+
 univention-management-console-frontend (2.0.151-1) unstable; urgency=low
 
   * Bug #27432: Warn the user when logging in with an outdated browser (IE 8,
