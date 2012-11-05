@@ -1175,7 +1175,7 @@ class object(content):
 				return '%sp%s' % (dev_match.group(), number)
 			return '%s%s' % (device, number)
 
-		def run_cmd(self, cmd, log_stdout=False, log_stderr=True):
+		def run_cmd(self, cmd, log_stdout=True, log_stderr=True):
 			self.parent.debug('(profile) run_cmd(%r)' % (cmd,))
 			proc = subprocess.Popen(cmd, bufsize=0, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			(stdout, stderr) = proc.communicate()
@@ -1323,7 +1323,7 @@ class object(content):
 
 			self.stop()
 
-	def run_cmd(self, cmd, log_stdout=False, log_stderr=True):
+	def run_cmd(self, cmd, log_stdout=True, log_stderr=True):
 		self.debug('run_cmd(%r)' % (cmd,))
 		proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		(stdout, stderr) = proc.communicate()
