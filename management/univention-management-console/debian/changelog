@@ -1,3 +1,10 @@
+univention-management-console (5.0.52-1) unstable; urgency=low
+
+  * Depend on umc-modules-appcenter, which was renamed from umc-modules-
+    packages (Bug #28626)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Nov 2012 14:35:13 +0100
+
 univention-management-console (5.0.51-1) unstable; urgency=low
 
   * restart UMC server in joinscript (Bug #11925)
