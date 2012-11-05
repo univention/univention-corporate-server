@@ -937,12 +937,13 @@ class object(content):
 						if end is None:
 							self.debug('Ignoring line: partition start cannot be parsed correctly: %r' % parms[4])
 							continue
-						start = align_partition_start(start)
-						end = align_partition_end(end)
 						max_end = align_partition_end(self.container['disk'][disk]['size'])
+
+						start = align_partition_start(start)
 						if end == 0:
 							end = max_end
-						elif end > max_end:
+						end = align_partition_end(end)
+						if end > max_end:
 							end = max_end
 
 						temp={
