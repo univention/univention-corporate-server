@@ -1,3 +1,9 @@
+univention-installer (8.0.24-1) unstable; urgency=low
+
+  * update profile based partitioning for GPT partition tables (Bug #28263)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 05 Nov 2012 18:12:23 +0100
+
 univention-installer (8.0.23-2) unstable; urgency=low
 
   * use */16 netmask for Zeroconf/APIPA-IP-Address (Bug #28467) 
