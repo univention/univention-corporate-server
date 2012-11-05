@@ -43,10 +43,8 @@
 # - this partition module aligns the partitions at SI megabyte boundaries (MiB).
 # - all sizes and start/end points are stored in bytes!
 
-# TODO FIXME add label to popup dialoges
 # TODO FIXME align MB ranges in grid
 # TODO FIXME count GPT partitions ==> maximum is 127
-# TODO FIXME select old MBR module in GRUB
 
 from objects import *
 from local import _
@@ -88,6 +86,9 @@ EARLIEST_START_OF_FIRST_PARTITION = MiB2B(16)
 RESERVED_SPACE_AT_END_OF_DISK = MiB2B(32)
 # reduce size of each PV by at least this amount of megabytes for LVM overhead
 LVM_OVERHEAD = MiB2B(15)
+
+# mount points
+MOUNTPOINT_EFI = '/boot/efi'
 
 # filesystem definitions
 FSTYPE_LVMPV = 'LVMPV'
@@ -1125,7 +1126,6 @@ class object(content):
 				# cleanup all known LVM volume groups
 				for vgname, vg in self.parent.container['lvm']['vg'].items():
 					self.run_cmd('/sbin/vgreduce -a --removemissing %s 2>&1' % vgname)
-#				self.run_cmd('/sbin/vgscan 2>&1')
 
 			elif self.action == 'prof_delete':
 				self.parent.debug('prof_delete')
@@ -1149,8 +1149,6 @@ class object(content):
 						self.run_cmd('/sbin/parted --script %s p rm %s 2>&1'%(disk,num))
 
 				# cleanup all known LVM volume groups
-#				self.run_cmd('/sbin/pvscan 2>&1')
-#				self.run_cmd('/sbin/vgscan 2>&1')
 				for vgname, vg in self.parent.container['lvm']['vg'].items():
 					self.run_cmd('/sbin/vgreduce -a --removemissing %s 2>&1' % vgname)
 
@@ -1186,12 +1184,9 @@ class object(content):
 							self.run_cmd('/sbin/pvcreate %s 2>&1' % device)
 							if not vgcreated:
 								self.run_cmd('/sbin/vgcreate --physicalextentsize %sk %s %s 2>&1' % (B2KiB(self.parent.container['lvm']['vg'][ ucsvgname ]['PEsize']), ucsvgname, device))
-#								self.run_cmd('/sbin/vgscan 2>&1')
 								vgcreated = True
 							self.run_cmd('/sbin/vgextend %s %s 2>&1' % (ucsvgname, device))
 				# cleanup all known LVM volume groups
-##				self.run_cmd('/sbin/pvscan 2>&1')
-##				self.run_cmd('/sbin/vgscan 2>&1')
 
 			elif self.action == 'prof_write_lvm':
 				self.parent.debug('prof_write_lvm')
@@ -1205,7 +1200,6 @@ class object(content):
 						currentLE += 1
 
 					self.run_cmd('/sbin/lvcreate -l %d --name "%s" "%s" 2>&1' % (currentLE, lvname, lv['vg'] ))
-#				self.run_cmd('/sbin/lvscan 2>&1')
 
 			elif self.action == 'prof_format':
 				self.parent.debug('prof_format')
@@ -2749,8 +2743,6 @@ class object(content):
 			label:     partition label
 			"""
 
-			# TODO FIXME what is "end" used for?
-
 			# consistency checks
 			if parttype != PARTTYPE_USED:
 				self.parent.debug('CONSISTENCY CHECK ERROR: requested type is %s but assumed %s' % (type, PARTTYPE_USED))
@@ -2887,7 +2879,7 @@ class object(content):
 
 			# EFI partition will be mounted at /boot/efi with vfat as file system
 			if PARTFLAG_BOOT in flags:
-				partition['mpoint'] = '/boot/efi'
+				partition['mpoint'] = MOUNTPOINT_EFI
 				partition['fstype'] = FSTYPE_EFI
 
 			# LVM PV has no mount point
@@ -3257,7 +3249,7 @@ class object(content):
 								fstype = FSTYPE_LVMPV
 
 							if PARTFLAG_BOOT in flag:
-								mpoint = '/boot/efi'
+								mpoint = MOUNTPOINT_EFI
 								format = 1
 								fstype = FSTYPE_EFI
 
