@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.84-1) unstable; urgency=low
+
+  * New option "Use client driver" for shares/printer (Bug #27340)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 14:14:34 +0100
+
 univention-directory-manager-modules (8.0.83-1) unstable; urgency=low
 
   * the property threshold is set to the global sizelimit (Bug #26556)

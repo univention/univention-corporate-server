@@ -151,6 +151,17 @@ property_descriptions={
 			identifies=0,
 			unique=1
 		),
+	'useClientDriver': univention.admin.property(
+			short_description=_('Use client driver'),
+			long_description='',
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			default='1',
+			identifies=0
+		),
 	'setQuota': univention.admin.property(
 			short_description=_('Enable quota support'),
 			long_description='',
@@ -222,7 +233,7 @@ layout = [
 			'uri',
 			[ 'producer', 'model' ],
 			[ 'location',  'description' ],
-			[ 'setQuota', ],
+			[ 'setQuota', 'useClientDriver' ],
 			[ 'pagePrice', 'jobPrice' ],
 		] ),
 	] ),
@@ -273,6 +284,7 @@ mapping.register( 'uri', 'univentionPrinterURI', mapPrinterURI, unmapPrinterURI 
 mapping.register('model', 'univentionPrinterModel', None, univention.admin.mapping.ListToString)
 mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
 mapping.register('setQuota', 'univentionPrinterQuotaSupport', None, univention.admin.mapping.ListToString)
+mapping.register('useClientDriver', 'univentionPrinterUseClientDriver', None, univention.admin.mapping.ListToString)
 mapping.register('pagePrice', 'univentionPrinterPricePerPage', None, univention.admin.mapping.ListToString)
 mapping.register('jobPrice', 'univentionPrinterPricePerJob', None, univention.admin.mapping.ListToString)
 mapping.register('ACLUsers', 'univentionPrinterACLUsers')
