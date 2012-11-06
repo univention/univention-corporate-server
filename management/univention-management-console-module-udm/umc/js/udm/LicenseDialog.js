@@ -68,7 +68,7 @@ define([
 				label: _( 'Close' ),
 				defaultButton: true,
 				onClick: lang.hitch( this, function() {
-					this.close();
+					this.hide();
 				} )
 				} ) );
 
@@ -122,6 +122,9 @@ define([
 						} else {
 							dialog.alert( _( 'The license has been imported succussfully' ) );
 						}
+					} ),
+					lang.hitch( this, function( response ) {
+						this.standby( false );
 					} ) );
 				} )
 			} ];
@@ -139,10 +142,13 @@ define([
 			});
 			this._container.addChild( _content );
 			this._container.addChild( _buttonContainer );
-			this._container.startup();
+			this.addChild(this._container);
+			this.on('hide', lang.hitch(this, function() {
+				this.destroyRecursive();
+			}));
 
 			// attach layout to dialog
-			this.set( 'content', this._container );
+			// this.set( 'content', this._container );
 			this.set( 'title', _( 'UCS license' ) );
 
 			this.updateLicense();
@@ -254,20 +260,8 @@ define([
 			// recenter dialog
 			this._size();
 			this._position();
-		},
-
-		close: function() {
-			// summary:
-			//		Hides the dialog and destroys it after the fade-out animation.
-			this.hide().then(lang.hitch(this, function() {
-				this.destroyRecursive();
-			}));
-		},
-
-		destroy: function() {
-			this.inherited(arguments);
-			this._container.destroyRecursive();
 		}
+
 	});
 });
 

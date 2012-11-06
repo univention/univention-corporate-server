@@ -1,3 +1,10 @@
+univention-management-console-module-udm (3.0.54-1) unstable; urgency=low
+
+  * Add priority (Bug #26961)
+  * Fix memory leak (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2012 18:49:26 +0100
+
 univention-management-console-module-udm (3.0.53-1) unstable; urgency=low
 
   * Allow importing a FFPU license (Bug #29051)
