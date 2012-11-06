@@ -1,3 +1,9 @@
+univention-samba4 (2.0.25-2) unstable; urgency=low
+
+  * bashism fix (Bug #28583)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 19:32:21 +0100
+
 univention-samba4 (2.0.25-1) unstable; urgency=low
 
   * ensure that samba is re/started before trying samdb authentication

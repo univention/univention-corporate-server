@@ -170,9 +170,9 @@ if [ "$1" = "configure" ]; then
 
 		if [ -x /etc/init.d/samba4 ]; then
 			processes=$(pgrep -cfx '/usr/sbin/samba -D')
-			if [ "$processes" == 0 ]; then
+			if [ "$processes" = 0 ]; then
 				/etc/init.d/samba4 start
-			elif [ "$processes" == 1 ]; then
+			elif [ "$processes" = 1 ]; then
 				pkill -9 -xf '/usr/sbin/samba -D'
 				/etc/init.d/samba4 start
 			else
