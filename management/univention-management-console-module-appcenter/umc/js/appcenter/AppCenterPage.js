@@ -283,28 +283,44 @@ define([
 							name: 'install',
 							label: _("Install"),
 							callback: lang.hitch(this, function() {
-								if (app.licenseagreement) {
-									// before installing, user must agree on license terms
-									var content = '<h1>' + _('License agreement') + '</h1>';
-									content += '<div style="max-height:250px; overflow:auto;">' +
-										formatTxt(app.licenseagreement) +
-										'</div>';
-									dialog.confirm(content, [{
-										name: 'decline',
-										label: _('Cancel'),
-										'default': true
-									}, {
-										name: 'accept',
-										label: _('Accept license')
-									}], _('License agreement')).then(lang.hitch(this, function(response) {
-										if (response == 'accept') {
+								var masterInstallConfirmend = 'yes';
+								if (app.defaultpackagesmaster && app.defaultpackagesmaster.length) {
+									masterInstallConfirmend = dialog.confirm(
+										_('This application requires an extension of the LDAP schema.') + ' ' + 
+										_('Have you prepared your domain as asked in the dialog before?'), [{
+											label: _('No'),
+											name: 'no',
+											'default': true
+										}, {
+											label: _('Yes'),
+											name: 'yes'
+										}]);
+								}
+								when(masterInstallConfirmend, lang.hitch(this, function(answer) {
+									if (answer == 'yes') {
+										if (app.licenseagreement) {
+											// before installing, user must agree on license terms
+											var content = '<h1>' + _('License agreement') + '</h1>';
+											content += '<div style="max-height:250px; overflow:auto;">' +
+												formatTxt(app.licenseagreement) +
+												'</div>';
+											dialog.confirm(content, [{
+												name: 'decline',
+												label: _('Cancel'),
+												'default': true
+											}, {
+												name: 'accept',
+												label: _('Accept license')
+											}], _('License agreement')).then(lang.hitch(this, function(response) {
+												if (response == 'accept') {
+													this._call_installer('install', app);
+												}
+											}));
+										} else {
 											this._call_installer('install', app);
 										}
-									}));
-								}
-								else {
-									this._call_installer('install', app);
-								}
+									}
+								}));
 							})
 						});
 					}
@@ -629,9 +645,9 @@ define([
 		},
 
 		_detail_field_order: function() {
-			return ['name',
-				'version',
+			return [//'name',
 				'website',
+				'version',
 				'vendor',
 				'maintainer',
 				'contact',
@@ -647,7 +663,7 @@ define([
 
 		_detail_field_label: function(key) {
 			var labels = {
-				'name': _("Name"),
+				// 'name': _("Name"),
 				'website': _("Website"),
 				'vendor': _("Vendor"),
 				'maintainer': _("Maintainer"),
@@ -761,18 +777,24 @@ define([
 						}
 					],
 					autoValidate: true
-				}).then(function(values) {
-					tools.umcpCommand('appcenter/request_new_license', values).then(function(data) {
-						// cannot require in the beginning as
-						// udm might be not installed
-						require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
-							if (data.result) {
-								var dlg = new LicenseDialog();
-								dlg.show();
-							}
-						});
-					});
-				});
+				}).then(lang.hitch(this, function(values) {
+					this.standby(true);
+					tools.umcpCommand('appcenter/request_new_license', values).then(
+						lang.hitch(this, function(data) {
+							// cannot require in the beginning as
+							// udm might be not installed
+							this.standby(false);
+							require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
+								if (data.result) {
+									var dlg = new LicenseDialog();
+									dlg.show();
+								}
+							});
+						}),
+						lang.hitch(this, function() {
+							this.standby(false);
+						}));
+				}));
 			}
 		},
 

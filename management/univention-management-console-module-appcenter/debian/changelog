@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.61-1) unstable; urgency=low
+
+  * Confirm that you really prepared your domain for app (Bug #28740)
+  * Add priority (Bug #26961)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2012 19:48:04 +0100
+
 univention-management-console-module-appcenter (2.0.60-1) unstable; urgency=low
 
   * Add WebSite field in app-details; Bug #29036
