@@ -64,9 +64,9 @@ except TypeError, ValueError:
 _thread_http = None
 
 class SessionClient(object):
-	def __init__( self, timeout = 300, ip = None, cookie = False, unix = None ):
+	def __init__( self, timeout = 300, ip = None, cookie = False ):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
-		self.client = umcp.Client(unix=unix)
+		self.client = umcp.Client()
 		self.client.signal_connect( 'authenticated', self._authenticated )
 		self.client.signal_connect( 'response', self._response )
 		try:
@@ -176,7 +176,6 @@ class UMCP_Dispatcher( object ):
 	"""Dispatcher used to exchange the requests between CherryPy and UMC"""
 	sessions = {}
 	_queue_send = Queue.Queue()
-	unix_socket = None
 
 	@classmethod
 	def check_queue(cls):
@@ -219,7 +218,7 @@ class UMCP_Dispatcher( object ):
 				# create new session / umcp client
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
 				try:
-					client = SessionClient(timeout = _session_timeout + 5, ip = queuerequest.ip, cookie = queuerequest.cookie, unix = UMCP_Dispatcher.unix_socket)
+					client = SessionClient(timeout = _session_timeout + 5, ip = queuerequest.ip, cookie = queuerequest.cookie)
 				except Exception, e:
 					CORE.process( 'Failed to create UMC connection: %s' % str(e))
 					response = umcp.Response( queuerequest.request )
@@ -640,14 +639,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-web-server',
 						   help = 'specifies an alternative log file [default: %default]' )
-		self.parser.add_option( '', '--no-unix', action = 'store_false',  dest = 'unix', default = True,
-						   help = 'indicate that the UMC server is not using a UNIX socket' )
 		( self.options, self.arguments ) = self.parser.parse_args()
-
-		if self.options.unix:
-			# set the path of the unix socket if enabled
-			unix_socket = str(configRegistry.get('umc/server/socket/unix', '/var/run/univention-management-console-server.socket'))
-			UMCP_Dispatcher.unix_socket = unix_socket
 
 		# cleanup environment
 		os.environ.clear() # supported since python 2.6

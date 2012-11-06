@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.154-1) unstable; urgency=low
+
+  * revert changes to use UNIX socket; Bug #28043
+
+ -- Florian Best <best@univention.de>  Tue, 06 Nov 2012 14:21:25 +0100
+
 univention-management-console-frontend (2.0.153-1) unstable; urgency=low
 
   * Add Tooltip for Gallery status Icon (Bug #28800)

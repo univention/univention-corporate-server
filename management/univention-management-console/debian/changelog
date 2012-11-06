@@ -1,4 +1,4 @@
-univention-management-console (5.0.53-1) unstable; urgency=low
+univention-management-console (5.0.53-2) unstable; urgency=low
 
   * revert changes to use UNIX socket; Bug #28043
 
