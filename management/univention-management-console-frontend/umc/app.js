@@ -628,6 +628,13 @@ define([
 							}
 							return '';
 						},
+						getStatusIconTooltip: function(item) {
+							if (icat.id == '$favorites$' || array.indexOf(item.categories, '$favorites$') >= 0) {
+								return _('Remove from favorites');
+							} else {
+								return _('Add to favorites');
+							}
+						},
 						query: {
 							categories: {
 								test: function(categories) {

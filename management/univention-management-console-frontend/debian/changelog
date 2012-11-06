@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.153-1) unstable; urgency=low
+
+  * Add Tooltip for Gallery status Icon (Bug #28800)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2012 13:30:19 +0100
+
 univention-management-console-frontend (2.0.152-1) unstable; urgency=low
 
   * UMC module packages has been renamed to appcenter (Bug #28626)

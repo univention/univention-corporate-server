@@ -34,13 +34,15 @@ define([
 	"dojo/_base/array",
 	"dojo/dom-class",
 	"dojo/dom-style",
+	"dojo/dom-construct",
 	"dijit/registry",
 	"umc/tools",
 	"umc/widgets/Tooltip",
+	"umc/widgets/ContainerWidget",
 	"dgrid/OnDemandList",
 	"dgrid/Selection",
 	"put-selector/put"
-], function(declare, lang, array, domClass, domStyle, registry, tools, Tooltip, List, Selection, put) {
+], function(declare, lang, array, domClass, domStyle, domConstruct, registry, tools, Tooltip, ContainerWidget, List, Selection, put) {
 	return declare("umc.widgets.GalleryPane", [ List, Selection ], {
 		baseClass: "",
 
@@ -51,11 +53,16 @@ define([
 		constructor: function() {
 			this.id = registry.getUniqueId(this.declaredClass.replace(/\./g,"_"));
 			registry.add(this);
+			// really a container, no widget
+			// is never shown, just keeps track of
+			// all created tooltips and destroys them
+			this._tooltipContainer = new ContainerWidget({});
 		},
 
 		destroy: function() {
 			this.inherited(arguments);
 			registry.remove(this.id);
+			this._tooltipContainer.destroyRecursive();
 		},
 
 		postCreate: function() {
@@ -92,17 +99,11 @@ define([
 		renderRow: function(item, options) {
 			// create gallery item
 			var div = put("div");
-			div.innerHTML = lang.replace(
-				'<div class="umcGalleryIcon {icon}"></div>' +
-				'<div class="umcGalleryStatusIcon {status}"></div>' +
-				'<div class="umcGalleryName">{name}</div>' +
-				'<div class="umcGalleryDescription">{categories}</div>', {
-					icon: this.getIconClass(item),
-					status: this.getStatusIconClass(item),
-					name: item.name,
-					categories: this.categoriesDisplayed ? item.categories.join(', ') : ''
-				}
-			);
+			var categories = this.categoriesDisplayed ? item.categories.join(', ') : '';
+			domConstruct.create('div', {'class': 'umcGalleryIcon ' + this.getIconClass(item)}, div);
+			var statusIconDiv = domConstruct.create('div', {'class': 'umcGalleryStatusIcon ' + this.getStatusIconClass(item)}, div);
+			domConstruct.create('div', {'class': 'umcGalleryName', 'innerHTML': item.name}, div);
+			domConstruct.create('div', {'class': 'umcGalleryDescription', 'innerHTML': categories}, div);
 			domClass.add(div, 'umcGalleryItem');
 
 			// Tooltip
@@ -110,6 +111,15 @@ define([
 				label: item.description,
 				connectId: [ div ]
 			});
+			this._tooltipContainer.own(tooltip);
+			var statusIconLabel = this.getStatusIconTooltip(item);
+			if (statusIconLabel) {
+				var statusIconTooltip = new Tooltip({
+					label: statusIconLabel,
+					connectId: [ statusIconDiv ]
+				});
+				this._tooltipContainer.own(statusIconTooltip);
+			}
 
 			return div;
 		},
@@ -119,6 +129,10 @@ define([
 		},
 
 		getStatusIconClass: function(item) {
+			return '';
+		},
+
+		getStatusIconTooltip: function(item) {
 			return '';
 		}
 	});
