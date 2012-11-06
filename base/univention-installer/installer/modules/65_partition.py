@@ -721,10 +721,18 @@ class object(content):
 		disklist_usbstorage = self.get_usb_storage_device_list()
 
 		if 'create_partitiontable' in self.all_results:
+			diskchanged = False
 			for dev in re.split('[\s,]+', self.all_results.get('create_partitiontable','')):
 				dev = dev.strip()
 				if dev:
 					self.install_fresh_mbr(dev)
+					diskchanged = True
+			if diskchanged:
+				# rereading partition tables
+				self.debug('read_profile: rereading partition tables after altering some of them')
+				disks, problemdisks = self.read_devices()
+				self.container['disk'] = disks
+				self.container['problemdisk'] = problemdisks
 
 		if 'auto_part' in self.all_results.keys():
 			self.debug('read_profile: auto_part key found: %s' % self.all_results['auto_part'])
