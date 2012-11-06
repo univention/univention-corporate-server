@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-07-02 16:21+0200\n"
+"POT-Creation-Date: 2012-11-06 08:21+0100\n"
 "PO-Revision-Date: 2012-04-23 15:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,48 +12,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:323
+#: umc/python/join/__init__.py:327
 msgid "An unknown error occured while testing join credentials."
 msgstr ""
 "Ein unbekannter Fehler ist beim Prüfen der Benutzerinformationen aufgetreten."
 
-#: umc/python/join/__init__.py:490
+#: umc/python/join/__init__.py:494
 msgid "Another join operation is in progress"
 msgstr "Es wird gerade eine andere Join-Operation ausgeführt"
 
-#: umc/python/join/__init__.py:428
+#: umc/python/join/__init__.py:432
 msgid "Cannot connect to LDAP server for resolving username."
 msgstr ""
 "Eine Verbindung zum LDAP-Server konnte nicht hergestellt werden, um den "
 "Benutzernamen aufzulösen."
 
-#: umc/python/join/__init__.py:324
+#: umc/python/join/__init__.py:328
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/python/join/__init__.py:412
+#: umc/python/join/__init__.py:416
 msgid "Found more than one matching user object."
 msgstr "Es wurde mehr als ein Benutzerobjekt gefunden."
 
-#: umc/python/join/__init__.py:318
+#: umc/python/join/__init__.py:322
 msgid "Host unreachable"
 msgstr "Rechner ist nicht erreichbar"
 
-#: umc/python/join/__init__.py:327
+#: umc/python/join/__init__.py:331
 msgid "Invalid characters"
 msgstr "Ungültige Zeichen"
 
-#: umc/python/join/__init__.py:425
+#: umc/python/join/__init__.py:429
 msgid "The given credentials are not correct."
 msgstr "Die angegebenen Benutzerinformationen sind nicht korrekt."
 
-#: umc/python/join/__init__.py:317
+#: umc/python/join/__init__.py:321
 msgid "The given hostname cannot be resolved or the host is unreachable."
 msgstr ""
 "Der angegebene Rechnername konnte nicht aufgelöst werden oder der Rechner "
 "ist nicht erreichbar."
 
-#: umc/python/join/__init__.py:314
+#: umc/python/join/__init__.py:318
 msgid ""
 "The given user does not exist in LDAP. Please enter a domain administrator "
 "account."
@@ -61,46 +61,46 @@ msgstr ""
 "Der angegebene Benutzer existiert nicht im LDAP-Verzeichnis. Bitte ein Konto "
 "eines Domänen Administrators angeben."
 
-#: umc/python/join/__init__.py:409
+#: umc/python/join/__init__.py:413
 #, python-format
 msgid "The given username \"%s\" does not exist."
 msgstr "Der angegebene Benutzername \"%s\" existiert nicht."
 
-#: umc/python/join/__init__.py:320
+#: umc/python/join/__init__.py:324
 msgid "The given username or password is not correct."
 msgstr "Der angegebene Benutzername oder das Passwort ist nicht korrekt."
 
-#: umc/python/join/__init__.py:255
+#: umc/python/join/__init__.py:258
 #, python-format
 msgid "The hostname contains an invalid character: %s"
 msgstr "Der Rechnername enthält ein ungültiges Zeichen: %s"
 
-#: umc/python/join/__init__.py:253
+#: umc/python/join/__init__.py:256
 #, python-format
 msgid "The username contains an invalid character: %s"
 msgstr "Der Benutzername enthält ein ungültiges Zeichen: %s"
 
-#: umc/python/join/__init__.py:315 umc/python/join/__init__.py:321
+#: umc/python/join/__init__.py:319 umc/python/join/__init__.py:325
 msgid "Wrong credentials"
 msgstr "Falsche Benutzerangaben"
 
-#: umc/python/join/__init__.py:604
+#: umc/python/join/__init__.py:615
 msgid "due"
 msgstr "fällig"
 
-#: umc/python/join/__init__.py:627
+#: umc/python/join/__init__.py:638
 msgid "never run"
 msgstr "noch nie ausgeführt"
 
-#: umc/python/join/__init__.py:612
+#: umc/python/join/__init__.py:623
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/join/__init__.py:603 umc/python/join/__init__.py:628
+#: umc/python/join/__init__.py:614 umc/python/join/__init__.py:639
 msgid "run"
 msgstr "ausführen"
 
-#: umc/python/join/__init__.py:606
+#: umc/python/join/__init__.py:617
 msgid "successful"
 msgstr "erfolgreich"
 

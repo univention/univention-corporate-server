@@ -138,7 +138,6 @@ while [ $# -gt 0 ]
 do
 	case "$1" in
 		"-dcname")
-			shift
 			DCNAME="${2:?missing DC master FQDN}"
 			shift 2 || exit 2
 			;;

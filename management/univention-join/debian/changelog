@@ -1,3 +1,9 @@
+univention-join (5.0.17-1) unstable; urgency=low
+
+  * Fixed commandline parsing in univention-join (Bug #28789)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Nov 2012 08:33:09 +0100
+
 univention-join (5.0.16-1) unstable; urgency=low
 
   * check versions in univention-join (Bug #25824)  
