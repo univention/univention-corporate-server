@@ -228,7 +228,7 @@ msgstr "Der Paket-Aktualisierungsstatus wurde noch nicht geprüft."
 
 #: umc/js/updater/UpdatesPage.js:334
 msgid "Package updates"
-msgstr "Paketaktualisierungen"
+msgstr "Paket-Aktualisierungen"
 
 #: umc/js/updater/UpdatesPage.js:512
 msgid "Package updates are available."

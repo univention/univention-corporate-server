@@ -1,3 +1,9 @@
+univention-join (5.0.18-1) unstable; urgency=low
+
+  * Add priority (Bug #26961)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2012 18:29:23 +0100
+
 univention-join (5.0.17-1) unstable; urgency=low
 
   * Fixed commandline parsing in univention-join (Bug #28789)

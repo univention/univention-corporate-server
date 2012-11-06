@@ -1,3 +1,9 @@
+univention-system-setup (6.0.47-1) unstable; urgency=low
+
+  * Add priority (Bug #26961)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2012 18:27:53 +0100
+
 univention-system-setup (6.0.46-1) unstable; urgency=low
 
   * WIP: refactored NetworkPage; Bug #28389

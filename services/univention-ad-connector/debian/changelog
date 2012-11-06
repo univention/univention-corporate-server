@@ -1,3 +1,9 @@
+univention-ad-connector (7.0.9-1) unstable; urgency=low
+
+  * Add priority (Bug #26961)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2012 18:25:56 +0100
+
 univention-ad-connector (7.0.8-1) unstable; urgency=low
 
   * Remove the LANMAN hash warning because the LM hash is no longer

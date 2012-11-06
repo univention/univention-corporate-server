@@ -1,3 +1,9 @@
+univention-management-console-module-services (2.0.4-1) unstable; urgency=low
+
+  * Add priority (Bug #26961)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2012 18:30:41 +0100
+
 univention-management-console-module-services (2.0.3-1) unstable; urgency=low
 
   * Remove old syntax definitions (Bug #27720)

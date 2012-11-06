@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-  <module id="uvmm" icon="uvmm" version="1.0">
-	<name>Virtual machines (UVMM)</name>
-	<description>Manages virtual machines</description>
-	<categories>
-	  <category name="system"/>
-	</categories>
-	<command name="uvmm/query" function="query">
-	</command>
-	<command name="uvmm/group/query" function="group_query">
-	</command>
-	<command name="uvmm/node/query" function="node_query">
-	</command>
-	<command name="uvmm/domain/query" function="domain_query">
-	</command>
-	<command name="uvmm/domain/get" function="domain_get">
-	</command>
-	<command name="uvmm/domain/add" function="domain_add">
-	</command>
-	<command name="uvmm/domain/put" function="domain_put">
-	</command>
-	<command name="uvmm/domain/state" function="domain_state">
-	</command>
-	<command name="uvmm/domain/migrate" function="domain_migrate">
-	</command>
-	<command name="uvmm/domain/clone" function="domain_clone">
-	</command>
-	<command name="uvmm/domain/remove" function="domain_remove">
-	</command>
-	<command name="uvmm/snapshot/query" function="snapshot_query">
-	</command>
-	<command name="uvmm/snapshot/create" function="snapshot_create">
-	</command>
-	<command name="uvmm/snapshot/remove" function="snapshot_remove">
-	</command>
-	<command name="uvmm/snapshot/revert" function="snapshot_revert">
-	</command>
-	<command name="uvmm/storage/pool/query" function="storage_pool_query">
-	</command>
-	<command name="uvmm/storage/volume/query" function="storage_volume_query">
-	</command>
-	<command name="uvmm/storage/volume/remove" function="storage_volume_remove">
-	</command>
-	<command name="uvmm/storage/volume/usedby" function="storage_volume_usedby">
-	</command>
-	<command name="uvmm/storage/volume/deletable" function="storage_volume_deletable">
-	</command>
-	<command name="uvmm/profile/query" function="profile_query">
-	</command>
-	<command name="uvmm/profile/get" function="profile_get">
-	</command>
-  </module>
+	<module id="uvmm" icon="uvmm" priority="11" version="1.0">
+		<name>Virtual machines (UVMM)</name>
+		<description>Manages virtual machines</description>
+		<categories>
+			<category name="system"/>
+		</categories>
+		<command name="uvmm/query" function="query">
+		</command>
+		<command name="uvmm/group/query" function="group_query">
+		</command>
+		<command name="uvmm/node/query" function="node_query">
+		</command>
+		<command name="uvmm/domain/query" function="domain_query">
+		</command>
+		<command name="uvmm/domain/get" function="domain_get">
+		</command>
+		<command name="uvmm/domain/add" function="domain_add">
+		</command>
+		<command name="uvmm/domain/put" function="domain_put">
+		</command>
+		<command name="uvmm/domain/state" function="domain_state">
+		</command>
+		<command name="uvmm/domain/migrate" function="domain_migrate">
+		</command>
+		<command name="uvmm/domain/clone" function="domain_clone">
+		</command>
+		<command name="uvmm/domain/remove" function="domain_remove">
+		</command>
+		<command name="uvmm/snapshot/query" function="snapshot_query">
+		</command>
+		<command name="uvmm/snapshot/create" function="snapshot_create">
+		</command>
+		<command name="uvmm/snapshot/remove" function="snapshot_remove">
+		</command>
+		<command name="uvmm/snapshot/revert" function="snapshot_revert">
+		</command>
+		<command name="uvmm/storage/pool/query" function="storage_pool_query">
+		</command>
+		<command name="uvmm/storage/volume/query" function="storage_volume_query">
+		</command>
+		<command name="uvmm/storage/volume/remove" function="storage_volume_remove">
+		</command>
+		<command name="uvmm/storage/volume/usedby" function="storage_volume_usedby">
+		</command>
+		<command name="uvmm/storage/volume/deletable" function="storage_volume_deletable">
+		</command>
+		<command name="uvmm/profile/query" function="profile_query">
+		</command>
+		<command name="uvmm/profile/get" function="profile_get">
+		</command>
+	</module>
 </umc>

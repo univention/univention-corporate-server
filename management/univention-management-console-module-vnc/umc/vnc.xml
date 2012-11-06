@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="vnc" icon="vnc" version="1.0">
-	<name>VNC</name>
-	<description>Access to a System via VNC Session</description>
-	<categories>
-		<category name="system"/>
-	</categories>
-	<command name="vnc/status" function="status">
-		<return syntax="Dictionary"/>
-	</command>
-	<command name="vnc/start" function="start">
-		<return syntax="Dictionary"/>
-	</command>
-	<command name="vnc/stop" function="stop">
-		<return syntax="Dictionary"/>
-	</command>
-	<command name="vnc/connect" function="connect">
-		<return syntax="Dictionary"/>
-	</command>
-	<command name="vnc/password" function="set_password">
-		<return syntax="Dictionary"/>
-	</command>
+	<module id="vnc" icon="vnc" priority="4" version="1.0">
+		<name>VNC</name>
+		<description>Access to a System via VNC Session</description>
+		<categories>
+			<category name="system"/>
+		</categories>
+		<command name="vnc/status" function="status">
+			<return syntax="Dictionary"/>
+		</command>
+		<command name="vnc/start" function="start">
+			<return syntax="Dictionary"/>
+		</command>
+		<command name="vnc/stop" function="stop">
+			<return syntax="Dictionary"/>
+		</command>
+		<command name="vnc/connect" function="connect">
+			<return syntax="Dictionary"/>
+		</command>
+		<command name="vnc/password" function="set_password">
+			<return syntax="Dictionary"/>
+		</command>
 	</module>
 </umc>

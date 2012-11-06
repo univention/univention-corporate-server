@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-  <module id="setup" icon="setup" version="1.0">
-	<name>Basic settings</name>
-	<description>Configuration of the basic system settings</description>
-	<categories>
-	  <category name="system"/>
-	</categories>
-	<command name="setup/load" function="load"></command>
-	<command name="setup/validate" function="validate"></command>
-	<command name="setup/save" function="save"></command>
-	<command name="setup/join" function="join"></command>
-	<command name="setup/finished" function="check_finished"></command>
-	<command name="setup/cleanup" function="cleanup"></command>
-	<command name="setup/lang/default_timezone" function="lang_default_timezone"></command>
-	<command name="setup/lang/timezones" function="lang_timezones"></command>
-	<command name="setup/lang/locales" function="lang_locales"></command>
-	<command name="setup/lang/default_keymap" function="lang_default_keymap"></command>
-	<command name="setup/lang/keymaps" function="lang_keymaps"></command>
-	<command name="setup/lang/countrycodes" function="lang_countrycodes"></command>
-	<command name="setup/net/interfaces" function="net_interfaces"></command>
-	<command name="setup/net/dhclient" function="net_dhclient"></command>
-	<command name="setup/software/components" function="software_components"></command>
-	<command name="setup/keymap/save" function="save_keymap"></command>
-
-  </module>
+	<module id="setup" icon="setup" priority="1" version="1.0">
+		<name>Basic settings</name>
+		<description>Configuration of the basic system settings</description>
+		<categories>
+			<category name="system"/>
+		</categories>
+		<command name="setup/load" function="load"></command>
+		<command name="setup/validate" function="validate"></command>
+		<command name="setup/save" function="save"></command>
+		<command name="setup/join" function="join"></command>
+		<command name="setup/finished" function="check_finished"></command>
+		<command name="setup/cleanup" function="cleanup"></command>
+		<command name="setup/lang/default_timezone" function="lang_default_timezone"></command>
+		<command name="setup/lang/timezones" function="lang_timezones"></command>
+		<command name="setup/lang/locales" function="lang_locales"></command>
+		<command name="setup/lang/default_keymap" function="lang_default_keymap"></command>
+		<command name="setup/lang/keymaps" function="lang_keymaps"></command>
+		<command name="setup/lang/countrycodes" function="lang_countrycodes"></command>
+		<command name="setup/net/interfaces" function="net_interfaces"></command>
+		<command name="setup/net/dhclient" function="net_dhclient"></command>
+		<command name="setup/software/components" function="software_components"></command>
+		<command name="setup/keymap/save" function="save_keymap"></command>
+	</module>
 </umc>
