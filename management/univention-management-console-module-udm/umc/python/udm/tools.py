@@ -65,7 +65,7 @@ class LicenseImport( ldif.LDIFParser ):
 			raise LicenseError( _( "More than one object has been found." ) )
 
 		# check LDAP base
-		if self.base != base or base is None:
+		if self.base.lower() not in [base.lower(), 'free for personal use edition']:
 			raise LicenseError( _( "The license can not be applied. The LDAP base does not match (expected %s, found: %s)." ) % ( base, self.base ) )
 
 	def handle( self, dn, entry ):
