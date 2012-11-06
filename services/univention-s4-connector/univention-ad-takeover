@@ -55,6 +55,7 @@ import univention.admin.objects
 import univention.admin.config
 import ipaddr
 import logging
+from univention.admin.handlers.dns.reverse_zone import mapSubnet
 
 LOGFILE_NAME = "/var/log/univention/univention-ad-takeover.log"
 BACKUP_DIR = "/var/univention-backup/univention-ad-takeover"
@@ -634,6 +635,49 @@ def run_and_output_to_log(cmd, log_function, print_commandline = True):
 			log_function(log_line)
 	return p.returncode
 
+def cleanup_failed_join(ucr, ad_server_ip):
+	ucr.load()
+
+	run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % (ad_server_ip,)], log.debug)
+
+	## Restore backup Samba directory
+	if os.path.exists(samba_dir):
+		backup_samba_dir = "%s.before-ad-takeover" % samba_private_dir
+		if os.path.exists(backup_samba_dir):
+			shutil.rmtree(samba_private_dir)
+			os.rename(backup_samba_dir, samba_private_dir)
+			# shutil.copytree(backup_samba_dir, samba_private_dir, symlinks=True)
+
+	## Start Samba again
+	run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
+
+	## Start S4 Connector again
+	run_and_output_to_log(["/etc/init.d/univention-s4-connector", "start"], log.debug)
+
+	## Adjust some UCR settings back
+	if "nameserver1/local" in ucr:
+		nameserver1_orig = ucr["nameserver1/local"]
+		run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % nameserver1_orig], log.debug)
+		## unset temporary variable
+		run_and_output_to_log(["univention-config-registry", "unset", "nameserver1/local"], log.debug)
+	else:
+		msg=[]
+		msg.append("Warning: Weird, unable to determine previous nameserver1...")
+		msg.append("         Using localhost as fallback, probably that's the right thing to do.")
+		log.warn("\n".join(msg))
+		run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
+
+	## Use Samba4 as DNS backend
+	run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"], log.debug)
+
+
+	## Restart bind9 to use the OpenLDAP backend, just to be sure
+	run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
+
+	## Start the NSCD again
+	run_and_output_to_log(["/etc/init.d/nscd", "restart"], log.debug)
+
+
 def run_phaseI(opts, args):
 
 	ad_server_name = None
@@ -714,7 +758,29 @@ def run_phaseI(opts, args):
 			log.error("\n".join(msg))
 		sys.exit(1)
 	else:
+		## Check, if we can reverse resolve ad_server_ip locally
+		cmd = ["dig", "@localhost", "PTR", mapSubnet(ad_server_ip), "+short"]
+		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(stdout, stderr) = p1.communicate()
+		log.debug("output of %s\nstdout: '%s'\nstderr: '%s'" % (cmd, stdout.rstrip(), stderr.rstrip()))
+		if stdout.rstrip() == "%s." % local_fqdn:
+			msg = []
+			msg.append("Error: The given IP %s is registered to the local system %s." % (ad_server_ip, local_fqdn))
+			msg.append("       Possibly the AD takeover procedure already finished sucessfully.")
+			log.error("\n".join(msg))
+			sys.exit(1)
+
 		log.info("Ok, Server IP %s is online." % ad_server_ip)
+
+	## Check if the script was run before
+	backup_samba_dir = "%s.before-ad-takeover" % samba_private_dir
+	if os.path.exists(backup_samba_dir):
+		msg=[]
+		msg.append("Error: Found Samba backup of a previous run of univention-ad-takeover.")
+		msg.append("       The AD takeover procedure should only be completed once.")
+		msg.append("       Move the directory %s to a safe place to continue anyway." % backup_samba_dir)
+		log.error("\n".join(msg))
+		sys.exit(1)
 
 	## 1.c Check, if the given AD Credentials work
 	creds = credopts.get_credentials(lp)
@@ -935,8 +1001,7 @@ def run_phaseI(opts, args):
 	run_and_output_to_log(["/etc/init.d/samba4", "stop"], log.debug)
 
 	## Move current Samba directory out of the way
-	if os.path.exists(samba_dir):
-		backup_samba_dir = "%s.bak" % samba_private_dir
+	if os.path.exists(samba_private_dir):
 		if not os.path.exists(backup_samba_dir):
 			os.rename(samba_private_dir, backup_samba_dir)
 			os.makedirs(samba_private_dir)
@@ -994,7 +1059,11 @@ def run_phaseI(opts, args):
 			msg = []
 			msg.append("Error: Samba domain join failed.")
 			msg.append("       See %s for details." % LOGFILE_NAME)
+			msg.append("")
+			msg.append("Cleaning up failed join:")
 			log.error("\n".join(msg))
+			cleanup_failed_join(ucr, ad_server_ip)
+			log.error("Cleanup finished.")
 			sys.exit(1)
 	else:
 		log.error("Error: Cannot determine AD site for server %s" % ad_server_fqdn)

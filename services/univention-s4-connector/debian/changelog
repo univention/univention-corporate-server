@@ -1,3 +1,12 @@
+univention-s4-connector (7.0.17-38) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - abort if given AD server IP points to local system
+    - abort if samba backup dir exists (both for Bug #29066)
+    - cleanup after failed join
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 16:02:09 +0100
+
 univention-s4-connector (7.0.17-37) unstable; urgency=low
 
   * Improved warning message in case the NTP connection fails,
