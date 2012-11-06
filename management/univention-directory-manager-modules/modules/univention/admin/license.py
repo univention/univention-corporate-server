@@ -263,12 +263,12 @@ class License( object ):
 				self.__countObject( License.CLIENT, lo )
 				self.__countObject( License.DESKTOP, lo )
 				self.__countObject( License.GROUPWARE, lo )
-				lic = ( self.licenses[self.version][License.CLIENT],
-					self.licenses[self.version][License.ACCOUNT],
+				lic = ( self.licenses[self.version][License.ACCOUNT],
+					self.licenses[self.version][License.CLIENT],
 					self.licenses[self.version][License.DESKTOP],
 					self.licenses[self.version][License.GROUPWARE] )
-				real= ( self.real[self.version][License.CLIENT],
-					self.real[self.version][License.ACCOUNT],
+				real= ( self.real[self.version][License.ACCOUNT],
+					self.real[self.version][License.CLIENT],
 					self.real[self.version][License.DESKTOP],
 					self.real[self.version][License.GROUPWARE] )
 			elif self.version == '2':

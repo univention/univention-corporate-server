@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.85-1) unstable; urgency=low
+
+  * Fixed user / client v1 license check (Bug #29079)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Nov 2012 15:43:31 +0100
+
 univention-directory-manager-modules (8.0.84-2) unstable; urgency=low
 
   * Adjusted wording (Bug #27340)
