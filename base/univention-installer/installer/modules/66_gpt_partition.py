@@ -1270,6 +1270,7 @@ class object(content):
 						self.run_cmd(['/sbin/parted', '--script', disk, 'unit', 'B', 'mkpart', '"%s"' % label, str(start), str(end)])
 						if fstype and not fstype.lower() in ('none',):
 							mkfs_cmd = get_mkfs_cmd(device, fstype)
+							self.parent.debug('mkfs_cmd=%r   (%r, %r)' % (mkfs_cmd, device, fstype))
 							if mkfs_cmd:
 								self.run_cmd(mkfs_cmd)
 							else:
@@ -1318,6 +1319,7 @@ class object(content):
 
 						device = self.get_real_partition_device_name(disk,num)
 						mkfs_cmd = get_mkfs_cmd(device, fstype)
+						self.parent.debug('mkfs_cmd=%r   (%r, %r)' % (mkfs_cmd, device, fstype))
 						if mkfs_cmd:
 							self.run_cmd(mkfs_cmd)
 						else:
@@ -1334,6 +1336,7 @@ class object(content):
 						continue
 
 					mkfs_cmd = get_mkfs_cmd(device, fstype)
+					self.parent.debug('mkfs_cmd=%r   (%r, %r)' % (mkfs_cmd, device, fstype))
 					if mkfs_cmd:
 						self.run_cmd(mkfs_cmd)
 					else:
@@ -3137,9 +3140,12 @@ class object(content):
 							if self.parent.container['disk'][disk]['partitions'][part]['format']:
 								device = self.parent.parent.get_device(disk, part)
 								fstype=self.parent.container['disk'][disk]['partitions'][part]['fstype']
-								retval = self.run_command(get_mkfs_cmd(device, fstype))
-								if retval:
-									return
+								mkfs_cmd = get_mkfs_cmd(device, fstype)
+								self.parent.parent.debug('mkfs_cmd=%r   (%r, %r)' % (mkfs_cmd, device, fstype))
+								if mkfs_cmd:
+									retval = self.run_command(mkfs_cmd)
+									if retval:
+										return
 								self.parent.container['disk'][disk]['partitions'][part]['format']=0
 					# create filesystems on logical volumes
 					for vgname in self.parent.container['lvm']['vg'].keys():
@@ -3148,9 +3154,12 @@ class object(content):
 							if vg['lv'][lvname]['format']:
 								device = vg['lv'][lvname]['dev']
 								fstype = vg['lv'][lvname]['fstype']
-								retval = self.run_command(get_mkfs_cmd(device, fstype))
-								if retval:
-									return
+								mkfs_cmd = get_mkfs_cmd(device, fstype)
+								self.parent.parent.debug('mkfs_cmd=%r   (%r, %r)' % (mkfs_cmd, device, fstype))
+								if mkfs_cmd:
+									retval = self.run_command(mkfs_cmd)
+									if retval:
+										return
 								vg['lv'][lvname]['format'] = 0
 
 				self.parent.layout()
