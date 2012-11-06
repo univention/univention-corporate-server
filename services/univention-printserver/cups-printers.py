@@ -50,7 +50,7 @@ ldap_base = listener.baseConfig['ldap/base']
 name='cups-printers'
 description='Manage CUPS printer configuration'
 filter='(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
-attributes=['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName','univentionPrinterPricePerPage','univentionPrinterPricePerJob','univentionPrinterQuotaSupport','univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype',]
+attributes=['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName','univentionPrinterPricePerPage','univentionPrinterPricePerJob','univentionPrinterQuotaSupport','univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype', 'univentionPrinterUseClientDriver',]
 
 EMPTY = ('',)
 
@@ -327,7 +327,8 @@ def handler(dn, new, old):
 			listener.setuid(0)
 
 			if new.get('univentionPrinterSambaName') or \
-					new.get('univentionPrinterACLtype', EMPTY)[0] in ("allow", "deny"):
+					new.get('univentionPrinterACLtype', EMPTY)[0] in ("allow", "deny") or \
+						new.get('univentionPrinterUseClientDriver', EMPTY)[0] == '1':
 
 				# samba permissions
 				perm = ""
@@ -359,6 +360,8 @@ def handler(dn, new, old):
 						if new['univentionPrinterACLtype'][0] == 'deny':
 							print >>fp, 'invalid users = %s' %perm
 
+					if new['univentionPrinterUseClientDriver'][0] == '1':
+						print >>fp, 'use client driver = yes'
 
 					uid = 0
 					gid = 0
