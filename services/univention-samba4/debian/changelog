@@ -1,3 +1,11 @@
+univention-samba4 (2.0.25-3) unstable; urgency=low
+
+  * Revise workaround code for Bug #26641 to check machine.secret
+    only if it differs from secrets.ldb and to restart samba4 only
+    if machine.secret was copied into secrets.ldb (Bug #28583)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 20:20:25 +0100
+
 univention-samba4 (2.0.25-2) unstable; urgency=low
 
   * bashism fix (Bug #28583)

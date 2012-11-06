@@ -190,11 +190,11 @@ if [ "$1" = "configure" ]; then
 		dn="$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(cn=$hostname)(objectClass=computer))" dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p')"
 		if [ -n "$dn" -a -n "$secret" ]; then
 			machine_secret="$(cat /etc/machine.secret)"
-			# try to search with the machine secret in S4 LDAP
-			s_res="$(univention-ldapsearch -s base -h $hostname.$domainname -p 389 -w "$machine_secret" -D "$dn" dn | sed -ne 's|^dn: ||p')"
-			if [ -n "$s_res" ]; then
-				# the password from machine.secret is the valid password, so change the secrets.ldb
-				if [ "$secret" != "$machine_secret" ]; then
+			if [ "$secret" != "$machine_secret" ]; then
+				# try to search with the machine secret in S4 LDAP
+				s_res="$(univention-ldapsearch -s base -h $hostname.$domainname -p 389 -w "$machine_secret" -D "$dn" dn | sed -ne 's|^dn: ||p')"
+				if [ -n "$s_res" ]; then
+					# the password from machine.secret is the valid password, so change the secrets.ldb
 					echo "Set secret for flatname=$windows_domain,cn=Primary Domains"
 					ldbmodify -H //var/lib/samba/private/secrets.ldb <<-%EOF
 dn: flatname=$windows_domain,cn=Primary Domains
@@ -203,9 +203,8 @@ replace: secret
 secret: $machine_secret
 -
 %EOF
+					/etc/init.d/samba4 restart
 				fi
-
-				/etc/init.d/samba4 restart
 			fi
 		fi
 		
