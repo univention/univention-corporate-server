@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
   <categories>
-	<category id="domain">
+	<category priority="50" id="domain">
 	  <name>Domain {domainname}</name>
 	</category>
   </categories>
