@@ -137,8 +137,8 @@ msgid "Printer producer"
 msgstr "Drucker-Hersteller"
 
 #: printer.py:155
-msgid "Use client driver"
-msgstr "Clientseitigen Treiber verwenden"
+msgid "Use Windows client driver"
+msgstr "Clientseitigen Windows Treiber verwenden"
 
 #: printer.py:180 printer.py:224 printer.py:225
 msgid "Access control"

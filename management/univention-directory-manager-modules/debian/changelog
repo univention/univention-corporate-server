@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.84-2) unstable; urgency=low
+
+  * Adjusted wording (Bug #27340)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 14:26:09 +0100
+
 univention-directory-manager-modules (8.0.84-1) unstable; urgency=low
 
   * New option "Use client driver" for shares/printer (Bug #27340)

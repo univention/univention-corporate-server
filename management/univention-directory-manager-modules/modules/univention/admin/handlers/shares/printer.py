@@ -152,7 +152,7 @@ property_descriptions={
 			unique=1
 		),
 	'useClientDriver': univention.admin.property(
-			short_description=_('Use client driver'),
+			short_description=_('Use Windows client driver'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
