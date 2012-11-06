@@ -340,7 +340,7 @@ define([
 
 		setValues: function(values) {
 			// update all pages with the given values
-			this._orgValues = lang.clone(values);
+//			this._orgValues = lang.clone(values); //FIXME: wrong place
 			array.forEach(this._pages, function(ipage) {
 				ipage.setValues(this._orgValues);
 			}, this);
@@ -359,6 +359,7 @@ define([
 			this.standby(true);
 			return this.umcpCommand('setup/load').then(lang.hitch(this, function(data) {
 				// update setup pages with loaded values
+				this._orgValues = lang.clone(data.result);
 				this.setValues(data.result);
 				this.standby(false);
 			}), lang.hitch(this, function() {

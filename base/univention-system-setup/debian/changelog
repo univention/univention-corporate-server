@@ -1,3 +1,9 @@
+univention-system-setup (6.0.46-1) unstable; urgency=low
+
+  * WIP: refactored NetworkPage; Bug #28389
+
+ -- Florian Best <best@univention.de>  Tue, 06 Nov 2012 13:07:30 +0100
+
 univention-system-setup (6.0.45-1) unstable; urgency=low
 
   * reverted changes made for Bug #27427
