@@ -38,8 +38,7 @@ univention-config-registry set \
 	umc/server/autostart?yes \
 	umc/server/upload/max?512 \
 	umc/module/debug/level?1 \
-	umc/module/timeout?600 \
-	umc/server/socket/unix?/var/run/univention-management-console-server.socket
+	umc/module/timeout?600
 
 # remove old baseconfig commands
 /usr/sbin/univention-management-console-acls remove --user root \

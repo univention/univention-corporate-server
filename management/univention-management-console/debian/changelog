@@ -1,3 +1,9 @@
+univention-management-console (5.0.53-1) unstable; urgency=low
+
+  * revert changes to use UNIX socket; Bug #28043
+
+ -- Florian Best <best@univention.de>  Tue, 06 Nov 2012 13:47:27 +0100
+
 univention-management-console (5.0.52-1) unstable; urgency=low
 
   * Depend on umc-modules-appcenter, which was renamed from umc-modules-
