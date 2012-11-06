@@ -191,7 +191,6 @@ done
 let index[$i]=$amount%40
 
 
-
 for ((round_nr=0;round_nr< ${#index[*]};round_nr++))
 do
     create_screenconfig $round_nr
@@ -200,7 +199,6 @@ done
 screenIndex=0
 roundIndex=0
 authIndex=0
-
 #starts the first round, this function works recursively.
 start_round
 

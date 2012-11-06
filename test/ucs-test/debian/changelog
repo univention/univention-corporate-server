@@ -1,3 +1,9 @@
+ucs-test (3.0.16-1) unstable; urgency=low
+
+  * Added test 50_samba/41password_change (Bug #29052)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 06 Nov 2012 17:53:34 +0100
+
 ucs-test (3.0.15-2) unstable; urgency=low
 
   * changed "udm --bindpw" to "udm --bindpwd" in some tests (Bug #28903) 
