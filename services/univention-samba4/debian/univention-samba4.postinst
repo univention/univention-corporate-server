@@ -163,10 +163,22 @@ if [ "$1" = "configure" ]; then
 			univention-config-registry set windows/wins-server?$ldap_master
 		fi
 
-		## New installation, the 
+		## New installation, remove leftover samba3.x rc?.d links 
 		update-rc.d -f samba remove > /dev/null
 
 	elif [ -n "$2" ]; then
+
+		if [ -x /etc/init.d/samba4 ]; then
+			processes=$(pgrep -cfx '/usr/sbin/samba -D')
+			if [ "$processes" == 0 ]; then
+				/etc/init.d/samba4 start
+			elif [ "$processes" == 1 ]; then
+				pkill -9 -xf '/usr/sbin/samba -D'
+				/etc/init.d/samba4 start
+			else
+				/etc/init.d/samba4 restart
+			fi
+		fi
 
 		## Is the password in secrets.ldb the valid password? In some cases
 		## the password from machine.secret is the correct password.
@@ -192,16 +204,11 @@ secret: $machine_secret
 -
 %EOF
 				fi
-			fi
-		fi
-		
-		if [ -r /var/run/samba.pid ]; then
-			processname=$(ps -p $(cat /var/run/samba.pid) -o comm= )
-			if [ "$processname" = 'samba' ]; then
+
 				/etc/init.d/samba4 restart
 			fi
 		fi
-
+		
 		## The following block of code can be removed after ucs3.0-2
 		if dpkg --compare-versions "$2" lt-nl "1.0.154-1"; then
 			if [ "$samba_debug_level" = 2 ]; then

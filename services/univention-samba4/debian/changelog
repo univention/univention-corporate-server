@@ -1,3 +1,11 @@
+univention-samba4 (2.0.25-1) unstable; urgency=low
+
+  * ensure that samba is re/started before trying samdb authentication
+    in postinst (Bug #28583)
+  * stop samba4 in prerm
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 18:41:46 +0100
+
 univention-samba4 (2.0.24-1) unstable; urgency=low
 
   * use samba-tool ntacl sysvolreset instead of set_sysvol_ntacl.py
