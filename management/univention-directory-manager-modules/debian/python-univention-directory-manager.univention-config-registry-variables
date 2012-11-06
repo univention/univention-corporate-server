@@ -99,3 +99,9 @@ Description[de]=Definiert ob ein Benutzername und ein Gruppenname eindeutig sein
 Description[en]=Definies whether a username and a groupname must be uniqueness. That means if there is a user test, then a group with the name test is not allowed (default: true)
 Type=str
 Categories=management-udm
+
+[directory/manager/user/primarygroup/update]
+Description[de]=Definiert ob die Attribute memberUid und uniqueMember an der primären Gruppen eines Benutzer aktualisiert werden, wenn eine Benutzer angelegt wird (default: true)
+Description[en]=Definies whether the memberUid and uniqueMember attributes for the primary group shall be updated when creating a user (default: true)
+Type=str
+Categories=management-udm

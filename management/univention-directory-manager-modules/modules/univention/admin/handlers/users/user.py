@@ -1722,10 +1722,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				grpobj = group_mod.object(None, self.lo, self.position, group)
 				grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check primaryGroup')
-		if not self.exists() and self.info.get('primaryGroup'):
-			grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
-			grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
+		if univention.admin.baseConfig.is_true("directory/manager/user/primarygroup/update", True):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check primaryGroup')
+			if not self.exists() and self.info.get('primaryGroup'):
+				grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
+				grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
 
 	def __rewrite_member_uid( self, group, members = [] ):
 		uids = self.lo.getAttr( group, 'memberUid' )
@@ -1780,11 +1781,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
 				self.lo.modify(self.dn, [('sambaPrimaryGroupSID',oldNumber, primaryGroupSambaNumber[0])])
 
-		new_uid = self.info.get('username')
-		group_mod = univention.admin.modules.get('groups/group')
-		grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
-		grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self.newPrimaryGroupDn, new_uid))
+
+		if univention.admin.baseConfig.is_true("directory/manager/user/primarygroup/update", True):
+			new_uid = self.info.get('username')
+			group_mod = univention.admin.modules.get('groups/group')
+			grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
+			grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self.newPrimaryGroupDn, new_uid))
 
 		self.save()
 

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.86-1) unstable; urgency=low
+
+  * added ucrv directory/manager/user/primarygroup/update to avoid
+    primary group update when creating users (Bug #18247) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Nov 2012 16:50:56 +0100
+
 univention-directory-manager-modules (8.0.85-1) unstable; urgency=low
 
   * Fixed user / client v1 license check (Bug #29079)
