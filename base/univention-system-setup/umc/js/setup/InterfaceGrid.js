@@ -57,21 +57,22 @@ define([
 				columns: [{
 					name: 'interface',
 					label: _('Interface'),
-					width: '20%'
+					width: '15%'
 				}, {
 					name: 'interfaceType',
 					label: _('Type'),
-					width: '20%',
+					width: '15%',
 					formatter: function(value) {
 						return types.interfaceTypes[value] || value;
 					}
 				}, {
-					name: 'ipaddresses',
-					label: _('IP addresses'),
-					formatter: function(values) {
-						return values.join(', <br>');
+					name: 'information',
+					label: _('Information'),
+					formatter: function(iface) {
+						// TODO
+						return _('IP addresses') + ': ' + types.formatIPs(iface.ip4, iface.ip6).join(', <br>');
 					},
-					width: '40%'
+					width: '70%'
 				}],
 				actions: [{
 				// TODO: decide if we show the DHCP query action for every row?!
@@ -137,8 +138,30 @@ define([
 			};
 
 			var _finished = lang.hitch(this, function(values) {
+				// TODO TODO TODO: trigger onChange event!!!!
 				delete values.dhcpquery;
-				values.ipaddresses = types.formatIPs(values.ip4, values.ip6);
+				values.information = values;
+
+				// trigger on change event for gateway and nameserver
+				if (values.gateway !== '') {
+					this.set('gateway', values.gateway);
+				}
+				if (values.nameserver.length) {
+					this.set('nameserver', values.nameserver);
+				}
+
+				if (values.interfaceType === 'eth') {
+
+				} else if (values.interfaceType === 'vlan') {
+					values['interface'] = values['interface'] + ':' + String(values.vlan_id);
+
+				} else if (values.interfaceType === 'bond') {
+					// disable the interfaces which are used by this interface
+					this.setDisabledItem(values.interfaces, true);
+				} else if (values.interfaceType === 'br') {
+
+				}
+
 				if (props.interfaceType) {
 					this.moduleStore.put( values ); // FIXME
 					this.moduleStore.remove(values['interface']);
@@ -158,6 +181,7 @@ define([
 				'interface': props['interface'],
 				interfaceType: props.interfaceType,
 				available_interfaces: this.available_interfaces,
+				existing_interfaces: this.getAllItems(),
 				onCancel: _cleanup,
 				onFinished: _finished
 			};
@@ -173,9 +197,19 @@ define([
 		},
 
 		_removeInterface: function(ids) {
+			// TODO: confirm dialog?
 			array.forEach(ids, function(iid) {
+				var item = this.moduleStore.get(iid);
+				if (item.interfaceType === 'bond') {
+					// enable the interfaces which were blocked by this interface
+					this.setDisabledItem(item.interfaces, false);
+				}
 				this.moduleStore.remove(iid);
 			}, this);
+		},
+
+		onIPChanged: function() {
+			// event stub
 		}
 
 	});

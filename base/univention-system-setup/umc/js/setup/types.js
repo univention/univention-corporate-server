@@ -46,6 +46,10 @@ define([
 		getTypeByDevice: function(device) { // TODO: rename
 			var key = /^([^\d]+)\d$/.exec(device);
 			return key ? key[1] : device;
+		},
+		getNumberByDevice: function(device) {
+			var num = /^[^\d]+(\d+)$/.exec(device);
+			return num ? num[1] : device;
 		}
 	};
 

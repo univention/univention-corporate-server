@@ -82,12 +82,6 @@ define([
 
 			this.moduleStore = new Observable(new Memory({idProperty: 'interface'}));
 
-//			// set all physical devices which exists on the system
-//			this.umcpCommand('setup/net/interfaces').then(lang.hitch(this, function(data) {
-//				this.available_interfaces = data.result;
-//			}));
-//			// TODO: sleep until available_interfaces is set
-
 			this.inherited(arguments);
 		},
 
@@ -103,13 +97,13 @@ define([
 				type: ComboBox,
 				name: 'interfaces/primary',
 				label: _('primary network interface'),
-				value: 'eth0', // FIXME
+				depends: ['interfaces'],
 				dynamicValues: lang.hitch(this, function() {
 					// FIXME: howto trigger dynamicValues update
+					// The primary interface can be of any type
 					return array.map(this._form._widgets.interfaces.getAllItems(), function(item) {
 						return {id: item['interface'], label: item['interface']};
 					});
-					return this.available_interfaces; // FIXME: how about bond, br or vlan?
 				})
 			}, {
 				type: TextBox,
@@ -152,12 +146,14 @@ define([
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
-			// show a note if interfaces changes, TODO: only show it when IP changes
-			this.own(this._form._widgets.interfaces.watch('value', lang.hitch(this, function(name, old, value) {
-				if (this._form._widgets.interfaces.focused) { // FIXME: check if focus exists
-					this._showNote();
-				}
-			})));
+			// show a note if interfaces changes, TODO: only show it when IP changes TODO: remove handle if executed once
+			this.own(this._form._widgets.interfaces.watch('value', lang.hitch(this, '_showNote')))
+			// TODO: focused required??
+//			this.own(this._form._widgets.interfaces.watch('value', lang.hitch(this, function(name, old, value) {
+//				if (this._form._widgets.interfaces.focused) { // FIXME: check if focus exists
+//					this._showNote();
+//				}
+//			})));
 
 			this.addChild(this._form);
 			// FIXME: grid size
@@ -170,7 +166,20 @@ define([
 			this.inherited(arguments);
 			// The grid contains changes if a DHCP request was made
 			this._form._widgets.interfaces.watch('gateway', lang.hitch(this, function(name, old, value) {
+				// set gateway from dhcp request
 				this._form._widgets.gateway.set('value', value);
+			}));
+			this._form._widgets.interfaces.watch('nameserver', lang.hitch(this, function(name, old, value) {
+				// read nameserver or dns/forwarder
+				var nameserverWidget;
+				if (this._form.getWidget('nameserver').get('visible')) {
+					nameserverWidget = this._form.getWidget('nameserver');
+				} else {
+					// if nameserver is not visible, set dns/forwarder
+					nameserverWidget = this._form.getWidget('dns/forwarder');
+				}
+				// set nameserver from dhcp request
+				nameserverWidget.set('value', value);
 			}));
 		},
 
@@ -327,7 +336,8 @@ define([
 			});
 
 			tools.forIn(interfaces, function(device) {
-				interfaces[device].ipaddresses = types.formatIPs(interfaces[device].ip4, interfaces[device].ip6);
+				// hack it! the formatter does not know about itself
+				interfaces[device].information = interfaces[device];
 			});
 
 			vals.interfaces = interfaces;
@@ -416,10 +426,6 @@ define([
 		getSummary: function() {
 			// a list of all components with their labels
 			var allInterfaces = {};
-//			array.forEach(this._form._widgets.interfaces.getAllItems(), function(iitem) {
-//				allInterfaces[iitem.id] = iitem.label;
-//				allInterfaces[iitem.id + '_virtual'] = iitem.label + ' [' + _('virtual') + ']';
-//			}, this);
 
 			allInterfaces = array.map(this._form._widgets.interfaces.getAllItems(), function(item) {
 				return item['interface'];

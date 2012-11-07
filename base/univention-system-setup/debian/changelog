@@ -1,3 +1,9 @@
+univention-system-setup (6.0.48-1) unstable; urgency=low
+
+  * WIP: added support for brinding, bonding and vlan; Bug #28389
+
+ -- Florian Best <best@univention.de>  Wed, 07 Nov 2012 20:02:28 +0100
+
 univention-system-setup (6.0.47-2) unstable; urgency=low
 
   * fixed typo; Bug #28389
