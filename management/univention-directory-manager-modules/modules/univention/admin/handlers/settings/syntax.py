@@ -203,7 +203,7 @@ class object( univention.admin.handlers.simpleLdap ):
 
 	def __check( self ):
 		if self.info.get( 'viewonly', 'FALSE' ) == 'FALSE' and not ( self[ 'value' ] or self[ 'ldapvalue' ] ):
-			raise univention.admin.uexceptions.insufficientInformation( _( 'An LDAP attribute is required that should be used for storing the information' ) )
+			raise univention.admin.uexceptions.insufficientInformation( _( 'An LDAP attribute is required of which the information will be stored.' ) )
 
 	def open( self ):
 		univention.admin.handlers.simpleLdap.open( self )

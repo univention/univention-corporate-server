@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-09 06:52+0200\n"
+"POT-Creation-Date: 2012-11-07 06:38+0100\n"
 "PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -588,7 +588,8 @@ msgstr "Managed Clients"
 
 #: license.py:229
 msgid "Maximum number of managed clients this license allows."
-msgstr "Maximale Anzahl von Managed Clients, die mit dieser Lizenz erlaubt sind."
+msgstr ""
+"Maximale Anzahl von Managed Clients, die mit dieser Lizenz erlaubt sind."
 
 #: license.py:238
 msgid "Users"
@@ -596,7 +597,8 @@ msgstr "Benutzer"
 
 #: license.py:239
 msgid "Maximum number of users this license allows."
-msgstr "Maximale Anzahl von Benutzerkonten, die mit dieser Lizenz erlaubt sind."
+msgstr ""
+"Maximale Anzahl von Benutzerkonten, die mit dieser Lizenz erlaubt sind."
 
 #: license.py:248
 msgid "DVS users"
@@ -604,7 +606,8 @@ msgstr "DVS-Benutzerkonten"
 
 #: license.py:249
 msgid "Maximum number of DVS users this license allows."
-msgstr "Maximale Anzahl von DVS-Benutzerkonten, die mit dieser Lizenz erlaubt sind."
+msgstr ""
+"Maximale Anzahl von DVS-Benutzerkonten, die mit dieser Lizenz erlaubt sind."
 
 #: license.py:258
 msgid "DVS clients"
@@ -620,7 +623,8 @@ msgstr "Corporate Clients"
 
 #: license.py:269
 msgid "Maximum number of corporate clients this license allows."
-msgstr "Maximale Anzahl von Corporate Clients, die mit dieser Lizenz erlaubt sind."
+msgstr ""
+"Maximale Anzahl von Corporate Clients, die mit dieser Lizenz erlaubt sind."
 
 #: license.py:278
 msgid "Version"
@@ -834,11 +838,11 @@ msgstr "Verbindung trennen nach"
 msgid "Refuse machine password change"
 msgstr "Änderung des Rechnerpasswortes ablehnen"
 
-#: sambadomain.py:237
+#: sambadomain.py:235
 msgid "Password"
 msgstr "Passwort"
 
-#: sambadomain.py:242
+#: sambadomain.py:241
 msgid "Connection"
 msgstr "Verbindung"
 
@@ -907,10 +911,10 @@ msgid "Storage"
 msgstr "Speicherung"
 
 #: syntax.py:206
-msgid ""
-"An LDAP attribute is required that should be used for storing the information"
+#, fuzzy
+msgid "An LDAP attribute is required of which the information will be stored."
 msgstr ""
-"Ein LDAP-Attribut wird benötigt in dem die Informationen gespeichert werden."
+"Ein LDAP-Attribut wird benötigt dess Information gespeichert werden soll."
 
 #: umc_operationset.py:50
 msgid "Settings: UMC operation set"
