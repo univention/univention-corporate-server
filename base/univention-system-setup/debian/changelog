@@ -1,3 +1,9 @@
+univention-system-setup (6.0.47-2) unstable; urgency=low
+
+  * fixed typo; Bug #28389
+
+ -- Florian Best <best@univention.de>  Wed, 07 Nov 2012 08:08:46 +0100
+
 univention-system-setup (6.0.47-1) unstable; urgency=low
 
   * Add priority (Bug #26961)
