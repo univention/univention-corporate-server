@@ -421,7 +421,7 @@ define([
 							return item._univention_cache_dropDown;
 						}
 
-						item.univention_cache_dropDown = new DropDownButton({
+						item._univention_cache_dropDown = new DropDownButton({
 							label: _('more'),
 							onMouseDown: lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex}),
 							_onClick: function() {
@@ -431,9 +431,9 @@ define([
 							},
 							dropDown: this._contextMenu
 						});
-						this.own(item.univention_cache_dropDown);
+						this.own(item._univention_cache_dropDown);
 
-						return item.univention_cache_dropDown;
+						return item._univention_cache_dropDown;
 					})
 				});
 			}

@@ -413,9 +413,9 @@ define([
 			if (typeof flavor == "string") {
 				_body.flavor = flavor;
 			}
-			tools.removeRecursive(_body, function(key, value) {
+			tools.removeRecursive(_body, function(key) {
 				// hidden properties or un-jsonable values
-				return key.substr(0, 18) == '_univention_cache_' || typeof value == 'function';
+				return key.substr(0, 18) == '_univention_cache_';
 			});
 			var body = json.stringify(_body);
 
@@ -929,15 +929,11 @@ define([
 
 		removeRecursive: function(obj, func) {
 			// summary:
-			//	Removes recursively from an Object or Array
+			//	Removes recursively from an Object
+			//	walks recursively over Arrays and Objects
 			tools.forIn(obj, function(key, value) {
-				if (func(key, value)) {
-					if (obj.pop) {
-						// Array
-						obj.pop(key);
-					} else {
-						delete obj[key];
-					}
+				if (func(key)) {
+					delete obj[key];
 				} else {
 					// [] instanceof Object is true, but we test for Array because of readability
 					if (value && typeof value != "function" && (value instanceof Array || value instanceof Object)) {
