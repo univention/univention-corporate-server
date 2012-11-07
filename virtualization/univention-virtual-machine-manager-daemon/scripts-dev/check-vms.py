@@ -481,9 +481,14 @@ class StorageVolume(Resource):
         snapshots = []
         lines = stdout.splitlines()  # pylint: disable-msg=E1103
         del lines[:2]  # strip header
-        for line in lines:
-            num, rest = line.split(None, 1)
-            tag, vm_size, date, time, clock = rest.rsplit(None, 4)
+        for line in lines: # %-10s%-20s%7s%20s%15s
+            num = line[0:10].rstrip()
+            tag = line[10:-42]
+            if len(tag) == 20:
+                tag = tag.rstrip()
+            vm_size = line[-42:-35].lstrip()
+            date, time = line[-35:-15].split(None, 1)
+            clock = line[-15:].lstrip()
             record = (num, tag, vm_size, date, time, clock)
             snapshots.append(record)
         return snapshots
