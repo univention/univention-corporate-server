@@ -272,8 +272,8 @@ define([
 			}));
 
 			// load user settings
-			var userPreferencesDefered = tools.umcpCommand('get/user/preferences', null, false).then(lang.hitch(this, function(res) {
-				lang.mixin(_userPreferences, res.preferences);
+			var userPreferencesDefered = tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
+				lang.mixin(_userPreferences, prefs.preferences);
 				this._favoritesEnabled = true;
 			}), lang.hitch(this, function() {
 				// user preferences disabled
@@ -479,13 +479,7 @@ define([
 			}).join(',');
 
 			// store updated favorites
-			tools.umcpCommand('set', {
-				user: {
-					preferences: {
-						favorites: favoritesStr
-					}
-				}
-			}, false);
+			tools.setUserPreference({favorites: favoritesStr});
 		},
 
 		_favoriteIdx: 0,

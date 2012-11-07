@@ -359,6 +359,15 @@ define([
 					confirmDialog.close();
 				}
 			});
+			// user clicked the x on the top right
+			confirmDialog.on('hide', function() {
+				if (!deferred.isFulfilled()) {
+					deferred.cancel({
+						button: null,
+						values: form.gatherFormValues()
+					});
+				}
+			});
 
 			// show the confirmation dialog
 			confirmDialog.show();

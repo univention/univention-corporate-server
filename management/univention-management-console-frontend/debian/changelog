@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.156-1) unstable; urgency=low
+
+  * Be more conservative when removing unwanted keys (Bug #27432)
+  * add convenience function for getting, setting user prefs (for Bug #29081)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Nov 2012 14:41:45 +0100
+
 univention-management-console-frontend (2.0.155-1) unstable; urgency=low
 
   * Remove unwanted keys/values from umcpCommand options (Bug #27432)

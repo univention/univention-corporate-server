@@ -348,7 +348,7 @@ define([
 						var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
 						var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
 
-						var btn_name = '_btn_' + (iiconClass || ilabel);
+						var btn_name = '_univention_cache_btn_' + (iiconClass || ilabel);
 						if (item[btn_name] !== undefined) {
 							return item[btn_name];
 						}
@@ -417,11 +417,11 @@ define([
 						// cache dropdown. otherwise the formatter
 						// will generate a new one for every visible
 						// entry every time the grid is scrolled
-						if (item._dropDown !== undefined) {
-							return item._dropDown;
+						if (item._univention_cache_dropDown !== undefined) {
+							return item._univention_cache_dropDown;
 						}
 
-						item._dropDown = new DropDownButton({
+						item.univention_cache_dropDown = new DropDownButton({
 							label: _('more'),
 							onMouseDown: lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex}),
 							_onClick: function() {
@@ -431,9 +431,9 @@ define([
 							},
 							dropDown: this._contextMenu
 						});
-						this.own(item._dropDown);
+						this.own(item.univention_cache_dropDown);
 
-						return item._dropDown;
+						return item.univention_cache_dropDown;
 					})
 				});
 			}

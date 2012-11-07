@@ -415,7 +415,7 @@ define([
 			}
 			tools.removeRecursive(_body, function(key, value) {
 				// hidden properties or un-jsonable values
-				return key.substr(0, 1) == '_' || typeof value == 'function';
+				return key.substr(0, 18) == '_univention_cache_' || typeof value == 'function';
 			});
 			var body = json.stringify(_body);
 
@@ -911,6 +911,20 @@ define([
 				}
 			}
 			return iconClass;
+		},
+
+		getUserPreferences: function() {
+			var deferred = new Deferred();
+			tools.umcpCommand('get/user/preferences', null, false).then(lang.hitch(this, function(res) {
+				deferred.resolve(res.preferences);
+			}));
+			return deferred;
+		},
+
+		setUserPreference: function(preferences) {
+			tools.umcpCommand('set', {
+				user: {	preferences: preferences }
+			}, false);
 		},
 
 		removeRecursive: function(obj, func) {
