@@ -413,6 +413,10 @@ define([
 			if (typeof flavor == "string") {
 				_body.flavor = flavor;
 			}
+			tools.removeRecursive(_body, function(key, value) {
+				// hidden properties or un-jsonable values
+				return key.substr(0, 1) == '_' || typeof value == 'function';
+			});
 			var body = json.stringify(_body);
 
 			if (longPollingOptions) {
@@ -907,6 +911,26 @@ define([
 				}
 			}
 			return iconClass;
+		},
+
+		removeRecursive: function(obj, func) {
+			// summary:
+			//	Removes recursively from an Object or Array
+			tools.forIn(obj, function(key, value) {
+				if (func(key, value)) {
+					if (obj.pop) {
+						// Array
+						obj.pop(key);
+					} else {
+						delete obj[key];
+					}
+				} else {
+					// [] instanceof Object is true, but we test for Array because of readability
+					if (value && typeof value != "function" && (value instanceof Array || value instanceof Object)) {
+						tools.removeRecursive(value, func);
+					}
+				}
+			});
 		},
 
 		delegateCall: function(/*Object*/ self, /*Arguments*/ args, /*Object*/ that) {

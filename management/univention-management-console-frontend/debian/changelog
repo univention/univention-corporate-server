@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.155-1) unstable; urgency=low
+
+  * Remove unwanted keys/values from umcpCommand options (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Nov 2012 12:26:49 +0100
+
 univention-management-console-frontend (2.0.154-1) unstable; urgency=low
 
   * revert changes to use UNIX socket; Bug #28043

@@ -286,7 +286,7 @@ define([
 				content: progressInfo
 			});
 			progressInfo.updateTitle(_('Loading modules'));
-			progressInfo.updateInfo(_('&nbsp;'));
+			progressInfo.updateInfo('&nbsp;');
 			progressDialog.show();
 
 			// load the modules dynamically
