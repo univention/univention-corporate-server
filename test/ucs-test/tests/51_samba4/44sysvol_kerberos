@@ -1,0 +1,32 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test accessing sysvol with smbclient using kerberos authentification"
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+#----create User
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+password=univention
+trap 'user_remove "$username"' INT TERM EXIT
+user_create "$username" || fail_test 1 "Could not create user $username."
+
+sleep 20
+echo "$password" | kinit --password-file=STDIN "$username"
+sleep 5
+smbclient //$(hostname -f)/sysvol -k -c "ls $domainname/Policies" || fail_test 1 "Could not access Policies on sysvol with Kerberos authentication"
+
+exit $RETVAL
