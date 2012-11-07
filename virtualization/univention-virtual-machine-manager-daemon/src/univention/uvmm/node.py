@@ -1325,7 +1325,7 @@ def domain_define( uri, domain ):
 				try: # all snapshots are destroyed!
 					old_dom.undefineFlags(libvirt.VIR_DOMAIN_UNDEFINE_MANAGED_SAVE | libvirt.VIR_DOMAIN_UNDEFINE_SNAPSHOTS_METADATA) # all snapshots are destroyed!
 				except libvirt.libvirtError, ex:
-					if ex.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
+					if ex.get_error_code() not in (libvirt.VIR_ERR_NO_SUPPORT, libvirt.VIR_ERR_INVALID_ARG):
 						raise
 					old_dom.undefine()
 				logger.info('Old domain "%s" removed.' % (domain.uuid,))
@@ -1529,7 +1529,7 @@ def domain_undefine(uri, domain, volumes=[]):
 		try:
 			dom.undefineFlags(libvirt.VIR_DOMAIN_UNDEFINE_MANAGED_SAVE | libvirt.VIR_DOMAIN_UNDEFINE_SNAPSHOTS_METADATA)
 		except libvirt.libvirtError, ex:
-			if ex.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
+			if ex.get_error_code() not in (libvirt.VIR_ERR_NO_SUPPORT, libvirt.VIR_ERR_INVALID_ARG):
 				raise
 			dom.undefine()
 	except libvirt.libvirtError, ex:
