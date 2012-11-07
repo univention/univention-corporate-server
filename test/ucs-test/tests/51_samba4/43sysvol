@@ -1,0 +1,37 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Accessing sysvol with smbclient"
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+#----create User
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+password=univention
+
+trap 'user_remove "$username"' INT TERM EXIT
+user_create "$username" || fail_test 1 "Could not create user $username."
+
+sleep 10
+
+#Put a file on sysvol as Administrator
+smbclient //localhost/sysvol -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" -c "put /etc/hosts $domainname/t1" || fail_test 1 "Could not put file on sysvol as Administrator"
+#Access the folder Policies on sysvol as a user
+smbclient //localhost/sysvol -U"$username%$password" -c "ls $domainname/Policies" || fail_test 1 "Could not access Policies on sysvol as a user"
+#Put a file in the folder Policies on sysvol as a user
+smbclient //localhost/sysvol -U"$username%$password" -c "put /etc/hosts $domainname/t1" && fail_test 1 "Successfully put a file on sysvol as a user"
+
+exit $RETVAL
