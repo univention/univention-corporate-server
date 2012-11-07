@@ -49,12 +49,13 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/TextBox",
+	"umc/widgets/CheckBox",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, on, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
+], function(declare, lang, array, on, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -215,8 +216,52 @@ define([
 			titlePane.addChild(this._grid);
 			this.addChild(titlePane);
 
-			// load apps
-			this.updateApplications();
+			this.standby(true);
+			tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
+				if (prefs.appcenterSeen === 'yes') {
+					this.standby(false);
+					// load apps
+					this.updateApplications();
+				} else {
+					dialog.confirmForm({
+						title: _('Univention App Center'),
+						widgets: [
+							{
+								type: Text,
+								name: 'help_text',
+								content: '<p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
+								'<p>' + _('For the installation of applications an updated UCS license key with a so-called key identification (Key ID) is required. If your system does not already have such a key, you are asked to request an updated license key directly from Univention upon the first installation of an application. Afterwards the new key can be applied.') + '</p>' +
+								'<p>' + _('Univention always receives a notification upon installation and uninstallation of an application with Univention App Center together with the Key ID. The Key ID is required for the analysis about the usage of applications in Univention App Center and will only be saved and processed by Univention and not provided to a third party.') + '</p>' +
+								'<p>' + _('Depending on the guideline of the respective application vendor notifications will be sent to the vendor upon installation or uninstallation of the application together with the registered email address of the user. An appropriate note can be found in the description of every application.') + '</p>' +
+								'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes  of the respective vendor and is not part of Univention App Center.') + '</p>' +
+								'<p>' + lang.replace(_('You will not see this message again if you let "{0}" unchecked.'), [_("Show this message again")]) + '</p>'
+							},
+							{
+								type: CheckBox,
+								name: 'show_again',
+								label: _("Show this message again")
+							}
+						],
+						buttons: [{
+							name: 'submit',
+							'default': true,
+							label: _('Continue')
+						}]
+					}).then(
+						lang.hitch(this, function(data) {
+							tools.setUserPreference({appcenterSeen: data.show_again ? 'no' : 'yes'});
+							this.standby(false);
+							this.updateApplications();
+						}),
+						lang.hitch(this, function() {
+							this.standby(false);
+							this.updateApplications();
+						})
+					);
+				}
+			}), lang.hitch(this, function() {
+				this.standby(false);
+			}));
 		},
 
 		postCreate: function() {

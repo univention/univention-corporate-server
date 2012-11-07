@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.62-1) unstable; urgency=low
+
+  * Add app center help page on first start (Bug #29081)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Nov 2012 15:55:23 +0100
+
 univention-management-console-module-appcenter (2.0.61-1) unstable; urgency=low
 
   * Confirm that you really prepared your domain for app (Bug #28740)
