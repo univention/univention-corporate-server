@@ -1,3 +1,10 @@
+ucs-test (3.0.16-4) unstable; urgency=low
+
+  * Added test 51_samba4/42file_access_permissions (Bug #29056)
+  * fixed removing of users and shares in some samba and samba4 tests
+
+ -- Tobias Peters <peters@univention.de>  Wed, 07 Nov 2012 15:47:17 +0100
+
 ucs-test (3.0.16-3) unstable; urgency=low
 
   * Added test 51_samba4/41password_change (Bug #29058)

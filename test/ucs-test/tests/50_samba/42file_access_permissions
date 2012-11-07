@@ -24,11 +24,11 @@ username="$(user_randomname)"
 first_password=univention
 second_password="$(random_chars 8 ${_upperletters}${_lowerletters}${_ciphers}äöü)1AÜÄÖ"
 third_password="$(random_chars 8 ${_upperletters}${_lowerletters}${_ciphers}äöü)1AÜÄÖ"
+sharename="$(random_share)"
 
 trap 'user_remove "$username";share_remove $sharename' INT TERM EXIT
 user_create "$username" || fail_test 1 "Could not create user $username."
 
-sharename="$(random_share)"
 share_create "$sharename" /"$sharename"  || fail_test 1 "Could not create share $sharename."
 
 ADMINISTRATOR_DN="$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
