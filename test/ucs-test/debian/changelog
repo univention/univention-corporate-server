@@ -1,3 +1,9 @@
+ucs-test (3.0.16-7) unstable; urgency=low
+
+  * Added test 51_samba4/45dns_records (Bug #29063)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 07 Nov 2012 16:55:27 +0100
+
 ucs-test (3.0.16-6) unstable; urgency=low
 
   * Added test 51_samba4/44sysvol_kerberos (Bug #29061)
