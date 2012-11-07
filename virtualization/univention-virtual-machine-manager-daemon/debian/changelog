@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (2.0.16-1) unstable; urgency=low
 
   * Fix backward compatibility with Xen (Bug #28283)
+  * Handle illegal XML characters (Bug #26681)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 06 Nov 2012 20:07:26 +0100
 

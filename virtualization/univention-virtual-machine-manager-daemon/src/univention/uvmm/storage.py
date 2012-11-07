@@ -37,6 +37,7 @@ This module implements functions to handle storage on nodes. This is independent
 import libvirt
 import logging
 from xml.dom.minidom import getDOMImplementation, parseString
+from xml.parsers.expat import ExpatError
 from helpers import TranslatableException, N_ as _, TimeoutError, timeout
 from protocol import Disk, Data_Pool
 import os.path
@@ -207,7 +208,10 @@ def get_storage_volumes(node, pool_name, type=None):
 		disk = Disk()
 		vol = pool.storageVolLookupByName( name )
 		xml = vol.XMLDesc( 0 )
-		doc = parseString( xml )
+		try:
+			doc = parseString(xml)
+		except ExpatError:
+			continue
 		disk.size = int( doc.getElementsByTagName( 'capacity' )[ 0 ].firstChild.nodeValue )
 		target = doc.getElementsByTagName( 'target' )[ 0 ]
 		disk.source = target.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
@@ -230,7 +234,10 @@ def get_storage_volumes(node, pool_name, type=None):
 def get_all_storage_volumes(domain):
 	"""Retrieve all referenced storage volumes."""
 	volumes = []
-	doc = parseString(domain.XMLDesc(0))
+	try:
+		doc = parseString(domain.XMLDesc(0))
+	except ExpatError:
+		return volumes
 	devices = doc.getElementsByTagName('devices')
 	try:
 		devices = devices[0]

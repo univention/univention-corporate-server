@@ -38,6 +38,7 @@ import libvirt
 import time
 import logging
 from xml.dom.minidom import parseString
+from xml.parsers.expat import ExpatError
 import math
 from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify, ldap_annotation
@@ -331,7 +332,10 @@ class Domain(PersistentCached):
 					for name in domain.snapshotListNames(0):
 						snap = domain.snapshotLookupByName(name, 0)
 						xml = snap.getXMLDesc(0)
-						doc = parseString(xml)
+						try:
+							doc = parseString(xml)
+						except ExpatError:
+							continue
 						ctime = doc.getElementsByTagName('creationTime')[0].firstChild.nodeValue
 						snap_stat = Data_Snapshot()
 						snap_stat.name = name
@@ -354,7 +358,10 @@ class Domain(PersistentCached):
 
 	def xml2obj(self, xml):
 		"""Parse XML into python object."""
-		doc = parseString(xml)
+		try:
+			doc = parseString(xml)
+		except ExpatError:
+			return
 		devices = doc.getElementsByTagName( 'devices' )[ 0 ]
 		self.pd.domain_type = doc.documentElement.getAttribute('type')
 		if not self.pd.domain_type:
