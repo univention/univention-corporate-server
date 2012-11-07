@@ -1800,7 +1800,6 @@ def run_phaseIII(opts, args):
 		"secret": dns_SPN_account_password,
 		"servicePrincipalName": "DNS/%s" % local_fqdn,
 		"name": dns_SPN_account_name,
-		"krb5Keytab": "/etc/krb5.keytab",
 		"msDS-KeyVersionNumber": dnsKeyVersion})
 	
 	# returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], log.debug)
