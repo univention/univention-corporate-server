@@ -1658,7 +1658,7 @@ def run_phaseIII(opts, args):
 			for i in xrange(4):
 				if "interfaces/eth%s/address" % i in ucr:
 					for j in xrange(4):
-						if not "interfaces/eth%s_%s/address" % (i, j) in ucr:
+						if not "interfaces/eth%s_%s/address" % (i, j) in ucr and j > 0:
 							primary_interface = "eth%s" % i
 							new_interface_ucr = "eth%s_%s" % (i, j)
 							new_interface = "eth%s:%s" % (i, j)
@@ -1685,7 +1685,7 @@ def run_phaseIII(opts, args):
 			for i in xrange(4):
 				if "interfaces/eth%s/ipv6/default/address" % i in ucr:
 					for j in xrange(4):
-						if not "interfaces/eth%s_%s/ipv6/default/address" % (i, j) in ucr:
+						if not "interfaces/eth%s_%s/ipv6/default/address" % (i, j) in ucr and j > 0:
 							primary_interface = "eth%s" % i
 							new_interface_ucr = "eth%s_%s" % (i, j)
 							new_interface = "eth%s:%s" % (i, j)
