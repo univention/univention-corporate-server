@@ -1,0 +1,41 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test whether the samba4 replication works"
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+#----create User
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+password=univention
+
+trap 'user_remove "$username"' INT TERM EXIT
+user_create "$username" || fail_test 1 "Could not create user $username."
+
+sleep 10
+
+ADMINISTRATOR_DN="$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
+USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+
+hostname_s4connector="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(univentionService=S4 Connector)" cn | grep "cn:" | sed -ne 's/^cn: //p')"
+
+user_s4connector="$(ldbsearch -H "ldap://$hostname_s4connector.$domainname" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "cn=$username" | grep dn:)"
+
+if [ -z "$user_s4connector" ]; then
+    fail_test 1 "Replication did not work." 
+fi
+
+exit $RETVAL
