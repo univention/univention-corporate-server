@@ -504,15 +504,16 @@ class Application(object):
 		return status == 200
 
 	def _send_information(self, action, status):
-		if not self.get('notifyvendor'):
-			return
-
 		ucr.load()
 		server = self.get_server()
 		url = 'https://%s/index' % (server, )
 
+		if LICENSE.uuid:
+			uuid = LICENSE.uuid
+		else:
+			uuid = '00000000-0000-0000-0000-000000000000'
 		try:
-			values = {'uuid': LICENSE.uuid,
+			values = {'uuid': uuid,
 			          'app': self.id,
 			          'version': self.version,
 			          'action': action,

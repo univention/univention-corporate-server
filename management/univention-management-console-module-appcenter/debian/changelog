@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.63-1) unstable; urgency=low
+
+  * Send a fallback UUID if the licence doesn't have one (Bug #28001)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 07 Nov 2012 16:32:19 +0100
+
 univention-management-console-module-appcenter (2.0.62-1) unstable; urgency=low
 
   * Add app center help page on first start (Bug #29081)
