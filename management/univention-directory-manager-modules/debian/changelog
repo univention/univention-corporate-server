@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.88-1) unstable; urgency=low
+
+  * Fixed translation of insufficientInformation message (Bug #28408)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 07 Nov 2012 07:06:15 +0100
+
 univention-directory-manager-modules (8.0.87-1) unstable; urgency=low
 
   * Fixed insufficientInformation message in handlers/settings/syntax.py

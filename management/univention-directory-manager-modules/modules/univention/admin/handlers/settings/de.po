@@ -911,10 +911,9 @@ msgid "Storage"
 msgstr "Speicherung"
 
 #: syntax.py:206
-#, fuzzy
 msgid "An LDAP attribute is required of which the information will be stored."
 msgstr ""
-"Ein LDAP-Attribut wird benötigt dess Information gespeichert werden soll."
+"Ein LDAP-Attribut wird benötigt dessen Information gespeichert werden soll."
 
 #: umc_operationset.py:50
 msgid "Settings: UMC operation set"
