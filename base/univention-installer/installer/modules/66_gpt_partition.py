@@ -71,7 +71,7 @@ def MiB2MB(value):
 
 # some autopartitioning config values
 PARTSIZE_EFI = MiB2B(256)           # size of EFI Partition 256 MiB
-PARTSIZE_BIOS_GRUB = MiB2B(4)       # size of BIOS Boot Partition 4 MiB
+PARTSIZE_BIOS_GRUB = MiB2B(8)       # size of BIOS Boot Partition 8 MiB
 PARTSIZE_BOOT = MiB2B(512)          # size of /boot partition: 512 MiB
 PARTSIZE_SYSTEM_MIN = MiB2B(4096)   # minimum free space for system: 4 GiB
 PARTSIZE_SWAP_MIN = MiB2B(512)      # lower swap partition limit 512 MiB
