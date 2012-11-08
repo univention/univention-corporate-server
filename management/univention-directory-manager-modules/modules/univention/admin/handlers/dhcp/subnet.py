@@ -111,13 +111,12 @@ def rangeMap( value ):
 	return map( lambda x: ' '.join( x ), value )
 
 def rangeUnmap( value ):
-	return map( lambda x: x.split( ' ' ), value )
+	return map( lambda x: x.split(), value )
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
-mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 
 from .__common import add_dhcp_options, add_dhcp_objectclass
 
@@ -140,6 +139,13 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.insufficientInformation, 'neither dn nor position present'
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
+
+
+	def open(self):
+		univention.admin.handlers.simpleLdap.open(self)
+		self.info['range'] = rangeUnmap( self.oldattr.get('dhcpRange', []) )
+		self.oldinfo['range'] = rangeUnmap( self.oldattr.get('dhcpRange', []) )
+
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('subnet'), mapping.mapValue('subnet', self.info['subnet']), self.position.getDn())
@@ -176,8 +182,9 @@ class object(univention.admin.handlers.simpleLdap):
 				else:
 					raise univention.admin.uexceptions.rangeNotInNetwork, '%s-%s' % (i[0], i[1])
 			#univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo['range'])
-			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', ['']), dhcpRange))
-
+			if '' in dhcpRange:
+				dhcpRange.remove('')
+			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', []), dhcpRange))
 		return add_dhcp_objectclass( self, ml )
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):

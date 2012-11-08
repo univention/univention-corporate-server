@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.89-1) unstable; urgency=low
+
+  * remove dhcpRange attribute from dhcpSubnet if empty (Bug #28660)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 08 Nov 2012 10:46:42 +0100
+
 univention-directory-manager-modules (8.0.88-1) unstable; urgency=low
 
   * Fixed translation of insufficientInformation message (Bug #28408)
