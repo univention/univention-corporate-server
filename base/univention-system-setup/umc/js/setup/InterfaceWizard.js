@@ -40,13 +40,12 @@ define([
 	'umc/widgets/MultiInput',
 	'umc/widgets/ComboBox',
 	'umc/widgets/TextBox',
-	'umc/widgets/Button',
 	'umc/widgets/MultiSelect',
 	'umc/widgets/CheckBox',
 	'umc/widgets/NumberSpinner',
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, when, tools, dialog, Wizard, Form, MultiInput, ComboBox, TextBox, Button, MultiSelect, CheckBox, NumberSpinner, types, _) {
+], function(declare, lang, array, when, tools, dialog, Wizard, Form, MultiInput, ComboBox, TextBox, MultiSelect, CheckBox, NumberSpinner, types, _) {
 
 	return declare("umc.modules.setup.InterfaceWizard", [ Wizard ], {
 
@@ -76,11 +75,12 @@ define([
 			this.physical_interfaces = props.physical_interfaces || [];
 			this.available_interfaces = props.available_interfaces || [];
 
-			var name = (this.interfaceType !== 'vlan' ? this.interfaceType : 'eth');
-			if (!name || !this['interface'] || this['interface'].substr(0, name.length) !== name ) {
-				// name is illegal
-				// TODO: error handling
-			}
+//			var name = (this.interfaceType !== 'vlan' ? this.interfaceType : 'eth');
+//			if (!name || !this['interface'] || this['interface'].substr(0, name.length) !== name ) {
+//				// name is illegal
+//				// TODO: error handling
+//				dialog.alert('illegal name');
+//			}
 
 			lang.mixin(this, {
 				pages: [{
@@ -89,6 +89,12 @@ define([
 					headerText: _('Configure a network interface'),
 					helpText: _('Configure the given interface'),
 					widgets: [{
+						name: 'interfaceType',
+						type: TextBox,
+						disabled: true,
+						visible: false,
+						value: props.interfaceType
+					}, {
 						name: 'interface',
 						type: TextBox,
 						disabled: true,
@@ -144,11 +150,6 @@ define([
 						}),
 						label: _('Autoconfiguration (SLAAC)')
 					}, {
-						type: Button,
-						name: 'dhcpquery',
-						label: 'DHCP-Query', // FIXME: do not display the label two times
-						callback: lang.hitch(this, function() { this._dhcpQuery(this['interface']); })
-					}, {
 						type: CheckBox,
 						name: 'eth_vlan',
 						value: false,
@@ -173,12 +174,17 @@ define([
 						max: 3,
 						visible: false
 					}],
+					buttons: [{
+						name: 'dhcpquery',
+						label: 'DHCP-Query',
+						callback: lang.hitch(this, function() { this._dhcpQuery(this['interface']); })
+					}],
 					layout: [{
 						label: _('Interface'),
 						layout: [ ['interface', 'vlan_id'], 'eth_vlan' ]
 					}, {
 						label: _('IPv4 network devices'),
-						layout: [ ['ip4dynamic', 'dhcpquery'], 'ip4' ]
+						layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
 					}, {
 						label: _('IPv6 network devices'),
 						layout: ['ip6dynamic', 'ip6']
@@ -269,6 +275,8 @@ define([
 					}]
 				}]
 			});
+
+			return this.inherited(arguments);
 		},
 
 		buildRendering: function() {

@@ -36,12 +36,13 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Grid",
+	"umc/widgets/Form",
 	"umc/widgets/ComboBox",
 	"umc/widgets/TextBox",
 	"umc/modules/setup/InterfaceWizard",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, Dialog, dialog, tools, Grid, ComboBox, TextBox, InterfaceWizard, types, _) {
+], function(declare, lang, array, Dialog, dialog, tools, Grid, Form, ComboBox, TextBox, InterfaceWizard, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid ], {
 		moduleStore: null,
 
@@ -156,9 +157,6 @@ define([
 		},
 
 		updateValues: function(values, create) {
-				delete values.dhcpquery;
-				values.information = values;
-
 				// if a DHCP query was done the values for gateway and nameserver are set
 				// so we trigger on change event
 				if (values.gateway !== '') {
@@ -181,6 +179,8 @@ define([
 				} else if (values.interfaceType === 'br') {
 
 				}
+
+				values.information = values;
 
 				if (!create) {
 					this.moduleStore.put( values ); // FIXME: why does put not work? we have to manually remove and add it...
@@ -213,39 +213,71 @@ define([
 				this._showWizard(props);
 				return;
 			}
-			dialog.confirmForm({
-				title: _('Select an interface type'),
-				submit: _('Add interface'),
+
+			var form = null;
+			form = new Form({
 				widgets: [{
 					name: 'interfaceType',
 					label: _('Interface type'),
 					type: ComboBox,
 					value: 'eth',
 					onChange: lang.hitch(this, function(interfaceType) {
-						var name = (interfaceType !== 'vlan' ? interfaceType : 'eth');
-						var num = 0;
-						while(array.some(this.available_interfaces, function(iface) { return iface == name + String(num); })) {
-							num++;
+						if (interfaceType) {
+							var name = (interfaceType !== 'vlan' ? interfaceType : 'eth');
+							var num = 0;
+							while(array.some(array.map(this.get('value'), function(item) { return item['interface']; }), function(iface) { return iface == name + String(num); })) {
+								num++;
+							}
+							form.getWidget('interface').set('interface', name + String(num));
 						}
-						// FIXME this.set('interface', name + String(num));
 					}),
 					staticValues: types.interfaceValues
 				}, {
 					name: 'interface',
 					label: _('Interface'),
-					type: TextBox,
-					validator: lang.hitch(this, function(value) {
-						return true;
-						// FIXME: we need the other values
-//						var name = (this.interfaceType !== 'vlan' ? this.interfaceType : 'eth') || 'eth'; // WTF: sometimes(initial) undefined
-//						return value.substr(0, name.length) === name;
+					type: ComboBox,
+					depends: ['interfaceType'],
+					dynamicValues: lang.hitch(this, function() {
+						var interfaceType = form.getWidget('interfaceType').get('value');
+						if (interfaceType === 'eth') {
+							var available = this.get('value');
+							return array.filter(this.physical_interfaces, function(_iface) { return array.some(available, function(item) { return item['interface'] !== _iface; }); });
+						} else if (interfaceType === 'vlan') {
+							return this.physical_interfaces;
+						} else if(interfaceType === 'br' || interfaceType === 'bond' ) {
+							var num = 0;
+							while(array.some(array.map(this.get('value'), function(item) { return item['interface']; }), function(_iface) { return _iface == interfaceType + String(num); })) {
+								num++;
+							}
+							return [ interfaceType + String(num) ];
+						}
 					})
-				}],
+//					type: TextBox,
+/*					validator: lang.hitch(this, function(value) {
+						if(!form) { return true; }
+						var interfaceType = form.getWidget('interfaceType').get('value');
+						var name = (interfaceType !== 'vlan' ? interfaceType : 'eth');
+						if (interfaceType === 'eth' && !array.some(this.physical_interfaces, function(iface) { return iface === value; })) {
+							dialog.alert(_('The interface must be one of the physical interfaces: ') + this.physical_interfaces.join(', '));
+							return false;
+						} else if(interfaceType === 'bond' && 2 > this.physical_interfaces.length) {
+							dialog.alert(_('There must be at least two physical interfaces to use a bonding interface'));
+							return false;
+						}
+						return new RegExp('^' + name + '[0-9]+$').test(value);
+					})
+*/				}],
 //				layout: [{
 //					label: _('Select an interface type'),
 //					layout: ['interfaceType', 'interface']
 //				}],
 				layout: ['interfaceType', 'interface']
+			});
+
+			dialog.confirmForm({
+				form: form,
+				title: _('Select an interface type'),
+				submit: _('Add interface')
 			}).then(lang.hitch(this, function(formvals) {
 				props = lang.mixin({create: true}, props, formvals);
 				this._showWizard(props);
