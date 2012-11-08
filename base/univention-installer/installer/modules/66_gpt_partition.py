@@ -92,7 +92,7 @@ RESERVED_FOR_GPT = MiB2B(4)                  # amount of space reserved for back
 LVM_OVERHEAD = MiB2B(15)
 
 # mount points
-MOUNTPOINT_EFI = '/boot/efi'
+MOUNTPOINT_EFI = '/boot/grub'
 
 # filesystem definitions
 FSTYPE_NONE = 'none'
