@@ -273,7 +273,7 @@ define([
 
 			// load user settings
 			var userPreferencesDefered = tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
-				lang.mixin(_userPreferences, prefs.preferences);
+				lang.mixin(_userPreferences, prefs);
 				this._favoritesEnabled = true;
 			}), lang.hitch(this, function() {
 				// user preferences disabled
