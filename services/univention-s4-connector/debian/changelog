@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.18-1) unstable; urgency=low
+
+  * Check if the membership object is to be ignored (Bug #28845)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Nov 2012 07:26:20 +0100
+
 univention-s4-connector (7.0.17-40) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):

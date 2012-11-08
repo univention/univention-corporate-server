@@ -1420,7 +1420,7 @@ class s4(univention.s4connector.ucs):
 					
 					key = self.__identify({'dn':member_dn,'attributes':s4_object})
 					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':s4_object})['dn']
-					if not self.lo.get(ucs_dn, attr=['dn']):
+					if not self.lo.get(ucs_dn, attr=['cn']):
 						# s4_members_from_ucs.append(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO,
 								       "group_members_sync_from_ucs: Object exists only in S4 [%s]" % ucs_dn)			
@@ -1674,6 +1674,10 @@ class s4(univention.s4connector.ucs):
 					if not mo_key:
 						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of s4 member, ignore membership: %s" % member_dn)
 						continue # member is an object which will not be synced
+					if self.__ignore_object(mo_key, {'dn':member_dn,'attributes':member_object} ):                                                                                                               
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership" % member_dn)                                                               
+						continue 
+
 					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped s4 member to ucs DN %s" % ucs_dn)
 
