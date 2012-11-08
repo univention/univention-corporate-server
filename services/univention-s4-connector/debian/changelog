@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.19-1) unstable; urgency=low
+
+  * Fixed the membership ignore object handling on the UCS side
+    (Bug #28845)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Nov 2012 08:00:57 +0100
+
 univention-s4-connector (7.0.18-1) unstable; urgency=low
 
   * Check if the membership object is to be ignored (Bug #28845)
