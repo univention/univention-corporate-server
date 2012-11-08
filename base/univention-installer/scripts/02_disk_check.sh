@@ -157,6 +157,10 @@ set | egrep "^dev_" | while read line; do
 	echo "device_end=$device_end"
 	echo "device_mp=$device_mp"
 
+	if [ "$device_fs" = "EFI" ] ; then
+		device_fs="vfat"
+	fi
+
 	if [ "$device_mp" = '/' ]; then
 		python2.6 /sbin/univention-config-registry set installer/device/0/name?$device_num
 		python2.6 /sbin/univention-config-registry set installer/device/0/fs?$device_fs
