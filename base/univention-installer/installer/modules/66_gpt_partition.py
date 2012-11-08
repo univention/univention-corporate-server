@@ -728,6 +728,15 @@ class object(content):
 				disksizeall += disksize
 		self.debug('AUTOPART-PROFILE: disklist=%s' % disklist)
 
+		# define default partitions: add EFI partition if EFI system has been recognized
+		required_partitions = []
+		if self.container['use_efi']:
+			required_partitions.append(('efi', PARTSIZE_EFI, FSTYPE_EFI, MOUNTPOINT_EFI, PARTFLAG_EFI))
+		else:
+			# otherwise add BIOS boot partition for GRUB
+			required_partitions.append(('biosgrub', PARTSIZE_BIOS_GRUB, 'None', 'None', PARTFLAG_BIOS_GRUB))
+		required_partitions.append(('/boot', PARTSIZE_BOOT, 'ext4', '/boot', PARTFLAG_NONE))
+
 		# place partitions
 		dev_i = 0
 		added = set()
@@ -739,9 +748,7 @@ class object(content):
 			sizeused = EARLIEST_START_OF_FIRST_PARTITION
 			partnum = 1
 
-			for name, size, fstype, mpoint, flag in (('biosgrub', PARTSIZE_BIOS_GRUB, 'None', 'None', PARTFLAG_BIOS_GRUB),
-													 ('efi', PARTSIZE_EFI, FSTYPE_EFI, '/boot/efi', PARTFLAG_EFI),
-													 ('/boot', PARTSIZE_BOOT, 'ext4', '/boot', PARTFLAG_NONE)):
+			for name, size, fstype, mpoint, flag in required_partitions:
 				if not name in added and size < disksize:
 					start = sizeused
 					end = sizeused + size
