@@ -406,7 +406,7 @@ class object(content):
 					root_fs = fstype
 
 		if self.container['use_efi'] and not partflag_cnt.get(PARTFLAG_EFI,0):
-			self.message = 'The enhanced firmware interface (EFI) has been detected but none of the configured partitions holds the flag "boot". Without this flag, the installed system is unbootable.'
+			self.message = 'The extensible firmware interface (EFI) has been detected but none of the configured partitions holds the flag "boot". Without this flag, the installed system is unbootable.'
 			return False
 
 		if not self.container['use_efi'] and not partflag_cnt.get(PARTFLAG_BIOS_GRUB,0):
@@ -626,7 +626,7 @@ class object(content):
 			result = self.find_largest_free_space((PARTTYPE_FREE, PARTTYPE_RESERVED), PARTSIZE_EFI, PARTSIZE_EFI_MIN)
 			self.debug('incomplete: find_largest_free_space=%r' % pretty_format(result))
 			if result:
-				msglist = [ _('The enhanced firmware interface (EFI) has been detected'),
+				msglist = [ _('The extensible firmware interface (EFI) has been detected'),
 							_('on your system but no EFI system partition has been'),
 							_('defined. You may continue, but your installation may not'),
 							_('be bootable.'),
@@ -640,10 +640,10 @@ class object(content):
 				self.sub.sub.draw()
 				return 1
 			else:
-				msglist = [ _('The enhanced firmware interface (EFI) has been detected'),
+				msglist = [ _('The extensible firmware interface (EFI) has been detected'),
 							_('on your system but no EFI system partition has been'),
-							_('defined. You may continue, but your installation may not'),
-							_('be bootable.'),
+							_('defined (min. 32MiB). You may continue, but your installation'),
+							_('may not be bootable.'),
 							_('This message is shown only once.'),
 							]
 				self.sub.sub = msg_win(self, self.sub.minY+2, self.sub.minX+2, self.sub.maxWidth, len(msglist)+6, msglist)
@@ -658,7 +658,7 @@ class object(content):
 			if result:
 				msglist = [ _('A BIOS boot partition is missing in your selected'),
 							_('partition setup. Your installation may not be bootable'),
-							_('without further actions.'),
+							_('without further modifications.'),
 							_('This message is shown only once.'),
 							_(''),
 							_('Create BIOS boot partition automatically?'),
@@ -670,8 +670,8 @@ class object(content):
 				return 1
 			else:
 				msglist = [ _('A BIOS boot partition is missing in your selected'),
-							_('partition setup. Your installation may not be bootable'),
-							_('without further actions.'),
+							_('partition setup (min. 4MiB). Your installation may'),
+							_('not be bootable without further modifications.'),
 							_('This message is shown only once.'),
 							]
 				self.sub.sub = msg_win(self, self.sub.minY, self.sub.minX, self.sub.maxWidth, len(msglist)+6, msglist)
