@@ -243,7 +243,7 @@ property_descriptions={
 	'primaryGroup': univention.admin.property(
 			short_description=_('Primary group'),
 			long_description='',
-			syntax=univention.admin.syntax.primaryGroup2,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=0,
 			options=['posix'],
 			required=1,

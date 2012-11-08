@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.90-1) unstable; urgency=low
+
+  * Do not use primaryGroup2 syntax, use GroupDN instead (Bug #26556)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Nov 2012 12:16:14 +0100
+
 univention-directory-manager-modules (8.0.89-1) unstable; urgency=low
 
   * remove dhcpRange attribute from dhcpSubnet if empty (Bug #28623)

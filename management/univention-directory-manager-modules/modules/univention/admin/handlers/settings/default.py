@@ -65,7 +65,7 @@ property_descriptions={
 	'defaultGroup': univention.admin.property(
 			short_description=_('Default Primary Group'),
 			long_description='',
-			syntax=univention.admin.syntax.primaryGroup2,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -76,7 +76,7 @@ property_descriptions={
 	'defaultComputerGroup': univention.admin.property(
 			short_description=_('Default Computer Group'),
 			long_description='',
-			syntax=univention.admin.syntax.primaryGroup2,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -87,7 +87,7 @@ property_descriptions={
 	'defaultDomainControllerGroup': univention.admin.property(
 			short_description=_('Default DC Slave Computer Group'),
 			long_description='',
-			syntax=univention.admin.syntax.primaryGroup2,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -98,7 +98,7 @@ property_descriptions={
 	'defaultDomainControllerMBGroup': univention.admin.property(
 			short_description=_('Default DC Master & Backup Server Group'),
 			long_description='',
-			syntax=univention.admin.syntax.primaryGroup2,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -109,7 +109,7 @@ property_descriptions={
 	'defaultMemberServerGroup': univention.admin.property(
 			short_description=_('Default Member Server Group'),
 			long_description='',
-			syntax=univention.admin.syntax.primaryGroup2,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -120,7 +120,7 @@ property_descriptions={
 	'defaultClientGroup': univention.admin.property(
 			short_description=_('Default Client Computer Group'),
 			long_description='',
-			syntax=univention.admin.syntax.primaryGroup2,
+			syntax=univention.admin.syntax.GroupDN,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],

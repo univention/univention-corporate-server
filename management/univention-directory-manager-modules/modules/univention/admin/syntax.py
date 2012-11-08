@@ -1188,6 +1188,7 @@ class userAttributeList(string):
 	def parse(self, text):
 		return text
 
+# DEPRECATED! Derive from UDM_Objects
 class ldapDn(simple):
 	"""LDAP distinguished name.
 
@@ -1648,10 +1649,12 @@ class KDE_Profile( UDM_Attribute ):
 	udm_module = 'settings/default'
 	attribute = 'defaultKdeProfiles'
 
+# DEPRECATED! Use GroupDN
 class primaryGroup(ldapDn):
 	searchFilter='objectClass=posixGroup'
 	description=_('Primary Group')
 
+# DEPRECATED! Use GroupDN
 class primaryGroup2(ldapDn):
 	searchFilter='objectClass=posixGroup'
 	description=_('Primary Group')
