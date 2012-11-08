@@ -34,8 +34,11 @@ define([
 	"umc/i18n!umc/modules/setup"
 ], function(array, tools, _) {
 	var self = {
-		formatIPs: function(ip4, ip6) { // TODO: rename
-			return array.map(ip4, function(i) { return i[0];}).concat(array.map(ip6, function(i) { return i[0];}));
+		convertNetmask: function(nm) {
+			if (/^[0-9]+$/.test(nm)) {
+				return parseInt(nm, 10);
+			}
+			return array.map(nm.split('.'), function(i) { return parseInt((parseInt(i, 10) + 1) / 32, 10); }).reduce(function(x,y) { return x + y; });
 		},
 		interfaceTypes: {
 			'eth': _('Ethernet'),
@@ -50,19 +53,16 @@ define([
 		getNumberByDevice: function(device) {
 			var num = /^[^\d]+(\d+)$/.exec(device);
 			return num ? num[1] : device;
-		}
+		},
+		interfaceValues: []
 	};
 
-	self['interfaceValues'] = function() {
-		var vals = [];
-		tools.forIn(self.interfaceTypes, function(id, label) {
-			vals.push({
-				id: id,
-				label: label
-			});
+	tools.forIn(self.interfaceTypes, function(id, label) {
+		self.interfaceValues.push({
+			id: id,
+			label: label
 		});
-		return vals;
-	}();
+	});
 
 	return self;
 });

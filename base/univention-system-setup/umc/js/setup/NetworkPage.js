@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/Dialog",
@@ -48,11 +49,11 @@ define([
 	"umc/modules/setup/InterfaceGrid",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, Memory, Observable, Dialog, tools, dialog, store, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceWizard, InterfaceGrid, types, _) {
+], function(declare, lang, array, on, Memory, Observable, Dialog, tools, dialog, store, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceWizard, InterfaceGrid, types, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
-		//		in order to edit UDM objects.
+		//		in order to edit network interfaces.
 
 		// system-setup-boot
 		wizard_mode: false,
@@ -69,11 +70,9 @@ define([
 		// dicts of the original IPv4/v6 values
 		_orgValues: null,
 
-		_noteShowed: false,
-
 		_currentRole: null,
 
-		available_interfaces: [],
+		physical_interfaces: [],
 
 		postMixInProperties: function() {
 			this.title = _('Network');
@@ -97,11 +96,11 @@ define([
 				type: ComboBox,
 				name: 'interfaces/primary',
 				label: _('primary network interface'),
-				depends: ['interfaces'],
+				depends: ['interfaces', 'gateway'],
 				dynamicValues: lang.hitch(this, function() {
 					// FIXME: howto trigger dynamicValues update
 					// The primary interface can be of any type
-					return array.map(this._form._widgets.interfaces.getAllItems(), function(item) {
+					return array.map(this._form._widgets.interfaces.get('value'), function(item) {
 						return {id: item['interface'], label: item['interface']};
 					});
 				})
@@ -146,17 +145,28 @@ define([
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
-			// show a note if interfaces changes, TODO: only show it when IP changes TODO: remove handle if executed once
-			this.own(this._form._widgets.interfaces.watch('value', lang.hitch(this, '_showNote')))
-			// TODO: focused required??
-//			this.own(this._form._widgets.interfaces.watch('value', lang.hitch(this, function(name, old, value) {
-//				if (this._form._widgets.interfaces.focused) { // FIXME: check if focus exists
-//					this._showNote();
-//				}
-//			})));
+			// only show notes in an joined system in productive mode
+			if (!this.wizard_mode) {
+				// show a note if interfaces changes
+				this.own(on.once(this._form._widgets.interfaces, 'changed', lang.hitch(this, function() {
+					// TODO: only show it when IP changes??
+					this.addNote(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
+				})));
+			}
+
+			// update interfaces/primary when there are changes on the interfaces
+			this._form._widgets.interfaces.on('changed', lang.hitch(this, function() {
+				this._form._widgets['interfaces/primary']._loadValues();
+			}));
+
+			// reload interfaces/primary when interfaces is ready
+			this._form._widgets.interfaces.ready().then(lang.hitch(this, function() {
+				this._form._widgets['interfaces/primary']._loadValues();
+			}));
 
 			this.addChild(this._form);
-			// FIXME: grid size
+
+			// FIXME: this is a hack to fix grid width to 100%, is does not work perfect
 			this.on('show', lang.hitch(this, function() {
 				this._form._widgets.interfaces.resize();
 			}));
@@ -181,14 +191,6 @@ define([
 				// set nameserver from dhcp request
 				nameserverWidget.set('value', value);
 			}));
-		},
-
-		_showNote: function() {
-			if (!this._noteShowed) {
-				this._noteShowed = true;
-				// FIXME: typo: severe
-				this.addNote(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
-			}
 		},
 
 		// TODO: reimplement
@@ -227,7 +229,7 @@ define([
 			}, this);
 
 			// set all available interfaces
-			this.available_interfaces = _vals.interfaces;
+			this.physical_interfaces = _vals.interfaces;
 
 			// copy values that do not change in their name
 			var vals = {};
@@ -313,6 +315,7 @@ define([
 					idev.address || '',
 					idev.netmask || ''
 				]);
+				interfaces[idev.device].ip6 = [];
 			});
 
 			// translate to our datastructure
@@ -341,8 +344,8 @@ define([
 			});
 
 			vals.interfaces = interfaces;
-//			vals.interfaces.available_interfaces = this.available_interfaces;
-			this._form._widgets.interfaces.available_interfaces = this.available_interfaces;
+			// set all physical interfaces for the grid here, the info does not exists on grid creation
+			this._form._widgets.interfaces.set('physical_interfaces', this.physical_interfaces);
 
 			// only show forwarder for master, backup, and slave
 			this._currentRole = _vals['server/role'];
@@ -354,8 +357,6 @@ define([
 			// set values
 			this._form.setFormValues(vals);
 
-			// only show notes in an joined system in productive mode
-			this._noteShowed = this.wizard_mode;
 			this.clearNotes();
 		},
 
@@ -377,49 +378,50 @@ define([
 
 			array.forEach(_vals.interfaces, function(iface) {
 				var iname = iface['interface'];
-				if (iface.ip4.length) {
-					// IPv4
-					array.forEach(iface.ip4, function(virtval, i) {
-						var iaddress = virtval[0];
-						var imask = virtval[1];
-						if (i === 0) {
-							// IP address
-							vals['interfaces/' + iname + '/address'] = iaddress;
-							vals['interfaces/' + iname + '/netmask'] = imask;
-						} else {
-							// virtual ip adresses
-							vals['interfaces/' + iname + '_' + (i-1) + '/address'] = iaddress;
-							vals['interfaces/' + iname + '_' + (i-1) + '/netmask'] = imask;
-						}
-					});
-				} else if (iface.ip4dynamic) {
-					// DHCP
-					vals['interfaces/' + iname + '/type'] = 'dynamic';
-				}
+				if (iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') {
+					if (iface.ip4.length) {
+						// IPv4
+						array.forEach(iface.ip4, function(virtval, i) {
+							var iaddress = virtval[0];
+							var imask = virtval[1];
+							if (i === 0) {
+								// IP address
+								vals['interfaces/' + iname + '/address'] = iaddress;
+								vals['interfaces/' + iname + '/netmask'] = imask;
+							} else {
+								// virtual ip adresses
+								vals['interfaces/' + iname + '_' + (i-1) + '/address'] = iaddress;
+								vals['interfaces/' + iname + '_' + (i-1) + '/netmask'] = imask;
+							}
+						});
+					} else if (iface.ip4dynamic) {
+						// DHCP
+						vals['interfaces/' + iname + '/type'] = 'dynamic';
+					}
 
-				// IPV6 SLAAC
-				vals['interfaces/' + iname + '/ipv6/acceptRA'] = iface.ip6dynamic ? 'true' : 'false';
+					// IPv6 SLAAC
+					vals['interfaces/' + iname + '/ipv6/acceptRA'] = iface.ip6dynamic ? 'true' : 'false';
 
-				if (!iface.ip6dynamic) {
-					// IPv6
-					array.forEach(iface.ip6, function(ip6val) {
-						var iaddress = ip6val[0];
-						var iprefix = ip6val[1];
-						var iidentifier = ip6val[2];
-						vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/address'] = iaddress;
-						vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/prefix'] = iprefix;
-					});
+					if (!iface.ip6dynamic) {
+						// IPv6
+						array.forEach(iface.ip6, function(ip6val) {
+							var iaddress = ip6val[0];
+							var iprefix = ip6val[1];
+							var iidentifier = ip6val[2];
+							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/address'] = iaddress;
+							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/prefix'] = iprefix;
+						});
+					}
 				}
 			});
 
-			// FIXME
 			// add empty entries for all original entries that are not used anymore
-/*			tools.forIn(this._orgValues, function(ikey, ival) {
+			tools.forIn(this._orgValues, function(ikey, ival) {
 				if (!(ikey in vals)) {
 					vals[ikey] = '';
 				}
 			});
-*/
+
 			return vals;
 		},
 
@@ -427,7 +429,7 @@ define([
 			// a list of all components with their labels
 			var allInterfaces = {};
 
-			allInterfaces = array.map(this._form._widgets.interfaces.getAllItems(), function(item) {
+			allInterfaces = array.map(this._form._widgets.interfaces.get('value'), function(item) {
 				return item['interface'];
 			});
 

@@ -59,8 +59,8 @@ define([
 		umcpCommand: tools.umcpCommand,
 
 		style: 'width: 650px; height:650px;',
-		available_interfaces: [], // physical interfaces
-		existing_interfaces: [], // interfaces which exists in the grid
+		physical_interfaces: [], // physical interfaces
+		available_interfaces: [], // interfaces which exists in the grid
 
 		// do we modify or create an interface
 		_create: false,
@@ -82,8 +82,8 @@ define([
 
 			this['interface'] = props['interface'] || null;
 			this.interfaceType = props.interfaceType || null;
+			this.physical_interfaces = props.physical_interfaces || [];
 			this.available_interfaces = props.available_interfaces || [];
-			this.existing_interfaces = props.existing_interfaces || [];
 
 			lang.mixin(this, {
 				pages: [{
@@ -114,7 +114,7 @@ define([
 								// TODO: comments
 								var name = (this.interfaceType !== 'vlan' ? this.interfaceType : 'eth');
 								var num = 0;
-								while(array.some(this.existing_interfaces, function(iface) { return iface == name + String(num); })) {
+								while(array.some(this.available_interfaces, function(iface) { return iface == name + String(num); })) {
 									num++;
 								}
 								this.set('interface', name + String(num));
@@ -127,7 +127,7 @@ define([
 //						type: ComboBox,
 // TODO: remove? let the user decide
 //						dynamicValues: lang.hitch(this, function() {
-//							return array.map(this.available_interfaces, function(idev) {
+//							return array.map(this.physical_interfaces, function(idev) {
 //								return {id: idev, label: idev};
 //							});
 //						}),
@@ -166,7 +166,7 @@ define([
 						value: props['interface'],
 						size: 'Half',
 						dynamicValues: lang.hitch(this, function() {
-							return this.getAvailableInterfaces('eth'); // FIXME: what about vlan?
+							return this.getPhysicalInterfaces(true);// 'eth'FIXME: what about vlan?
 						}),
 						label: _('Interface')
 					}, {
@@ -231,7 +231,7 @@ define([
 						type: NumberSpinner,
 						name: 'vlan_id',
 						size: 'Half',
-						value: 2, // some machines does not support 1
+						value: 2, // some machines does not support 1 // TODO: count up if exists
 						constraints: { min: 1, max: 4096 },
 						label: _('Virtual interface ID')
 					}],
@@ -261,12 +261,13 @@ define([
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
 							// mixin of physical interfaces and non physical
-							return array.map(this.available_interfaces.concat(this.getExistingInterfaces()), function(iface) {
-								return {
-									id: iface,
-									label: iface
-								};
-							}, this);
+							return lang.mixin(this.getAvailableInterfaces(true), this.getPhysicalInterfaces(true));
+//							return array.map(this.physical_interfaces.concat(this.getAvailableInterfaces(false)), function(iface) {
+//								return {
+//									id: iface,
+//									label: iface
+//								};
+//							}, this);
 						})
 					}, {
 						name: 'forwarding_delay',
@@ -289,7 +290,7 @@ define([
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
 							// We can only use physical interfaces for this
-							return this.getAvailableInterfaces('bond');
+							return this.getPhysicalInterfaces(true);
 						})
 					}, {
 						name: 'primary',
@@ -297,7 +298,7 @@ define([
 						type: ComboBox,
 						depends: ['interfaces'],
 						dynamicValues: lang.hitch(this, function() {
-							return this.getAvailableInterfaces('bond');
+							return this.getPhysicalInterfaces(true);
 						})
 					}, {
 						name: 'mode',
@@ -334,8 +335,8 @@ define([
 			});
 		},
 
-		getExistingInterfaces: function(format) {
-			return array.map(this.existing_interfaces, function(item) {
+		getAvailableInterfaces: function(format) {
+			return array.map(this.available_interfaces, function(item) {
 				var iface = item['interface'];
 				if (format) {
 					return {
@@ -347,11 +348,13 @@ define([
 			});
 		},
 
-		getAvailableInterfaces: function(type) {
-			// TODO: typespecific
-			return array.map(this.available_interfaces, function(idev) {
-				return {id: idev, label: idev};
-			});
+		getPhysicalInterfaces: function(format) {
+			if (format) {
+				return array.map(this.physical_interfaces, function(idev) {
+					return {id: idev, label: idev};
+				});
+			}
+			return lang.clone(this.physical_interfaces);
 		},
 
 		setValues: function(values) {

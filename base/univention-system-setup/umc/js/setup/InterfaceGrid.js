@@ -47,7 +47,7 @@ define([
 		query: {},
 		sortIndex: null,
 
-		available_interfaces: [],
+		physical_interfaces: [],
 
 		gateway: "",
 		nameserver: [],
@@ -69,23 +69,42 @@ define([
 					name: 'information',
 					label: _('Information'),
 					formatter: function(iface) {
-						// TODO
-						return _('IP addresses') + ': ' + types.formatIPs(iface.ip4, iface.ip6).join(', <br>');
+						var back = '';
+						// This value is a hack. We do not know about which identifier this row has so we added the whole information into iface.information
+						if (iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') {
+							var formatIp = function(ips) {
+								return array.map(ips, function(i) { return i[0] + '/' + types.convertNetmask(i[1]);}).join(', ');
+							};
+							back = _('IP addresses') + ': ';
+							if (iface.ip4dynamic) {
+								back += 'DHCP';
+							} else if (iface.ip4.length){
+								back += formatIp(iface.ip4);
+							}
+							if (iface.ip6dynamic) {
+								back += ', <br>SLAAC';
+							} else if (iface.ip6.length) {
+								back += ', <br>' + formatIp(iface.ip6);
+							}
+						} else if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
+							back = _('Interfaces') + ': ' + iface.interfaces.join(', ');
+						}
+						return back;
 					},
 					width: '70%'
 				}],
 				actions: [{
-				// TODO: decide if we show the DHCP query action for every row?!
-		//					name: 'dhcp_query',
-		//					label: 'DHCP query',
-		//					callback: lang.hitch(this, function() {
-		//						// TODO: interface name
-		//				//		this._dhcpQuery();
-		//					}),
-		//					isMultiAction: false,
-		//					isStandardAction: true,
-		//					isContextAction: true
-		//				}, {
+				// TODO: decide if we show a DHCP query action for every row?!
+//					name: 'dhcp_query',
+//					label: 'DHCP query',
+//					callback: lang.hitch(this, function() {
+//						// TODO: interface name
+//				//		this._dhcpQuery();
+//					}),
+//					isMultiAction: false,
+//					isStandardAction: true,
+//					isContextAction: true
+//				}, {
 					name: 'edit',
 					label: _('Edit'),
 					iconClass: 'umcIconEdit',
@@ -107,17 +126,73 @@ define([
 					iconClass: 'umcIconDelete',
 					isMultiAction: true,
 					isStandardAction: true,
-					callback: lang.hitch(this, '_removeInterface')
+					callback: lang.hitch(this, function(ids) {
+						dialog.confirm(_('Please confirm the removal of the %d selected interfaces!', ids.length), [{
+							label: _('Delete'),
+							callback: lang.hitch(this, '_removeInterface', ids)
+						}, {
+							label: _('Cancel'),
+							'default': true
+						}]);
+					})
 				}]
 			});
 		},
 
 		_getValueAttr: function() { return this.getAllItems(); },
 
-		_setValueAttr: function(values) { // TODO: only on set initial value
+		_setValueAttr: function(values) {
+			// TODO: only on set initial value, i think there was something in the form which does that...
 			tools.forIn(values, function(id, value) {
 				this.moduleStore.add(lang.mixin({'interface': id}, value));
 			}, this);
+			// TODO: this method should delete the whole grid items and add the items from values
+		},
+
+		onChanged: function() {
+			// event stub
+		},
+
+		updateValues: function(values, create) {
+				delete values.dhcpquery;
+				values.information = values;
+
+				// if a DHCP query was done the values for gateway and nameserver are set
+				// so we trigger on change event
+				if (values.gateway !== '') {
+					this.set('gateway', values.gateway);
+				}
+				if (values.nameserver.length) {
+					// TODO: decide if the DHCP query can delete all nameservers by sending an empty nameserver?
+					this.set('nameserver', values.nameserver);
+				}
+
+				if (values.interfaceType === 'eth') {
+
+				} else if (values.interfaceType === 'vlan') {
+					// The interface is build from interface:vlan_id
+					values['interface'] = values['interface'] + ':' + String(values.vlan_id);
+
+				} else if (values.interfaceType === 'bond') {
+					// disable the interfaces which are used by this interface
+					this.setDisabledItem(values.interfaces, true);
+				} else if (values.interfaceType === 'br') {
+
+				}
+
+				if (!create) {
+					this.moduleStore.put( values ); // FIXME: why does put not work? we have to manually remove and add it...
+					this.moduleStore.remove(values['interface']);
+					this.moduleStore.add( values );
+				} else {
+					try {
+						this.moduleStore.add( values );
+					} catch(error) {
+						dialog.alert(_('Interface "%s" already exists', values['interface']));
+						return;
+					}
+				}
+				this.onChanged();
 		},
 
 		_addInterface: function() {
@@ -138,41 +213,7 @@ define([
 			};
 
 			var _finished = lang.hitch(this, function(values) {
-				// TODO TODO TODO: trigger onChange event!!!!
-				delete values.dhcpquery;
-				values.information = values;
-
-				// trigger on change event for gateway and nameserver
-				if (values.gateway !== '') {
-					this.set('gateway', values.gateway);
-				}
-				if (values.nameserver.length) {
-					this.set('nameserver', values.nameserver);
-				}
-
-				if (values.interfaceType === 'eth') {
-
-				} else if (values.interfaceType === 'vlan') {
-					values['interface'] = values['interface'] + ':' + String(values.vlan_id);
-
-				} else if (values.interfaceType === 'bond') {
-					// disable the interfaces which are used by this interface
-					this.setDisabledItem(values.interfaces, true);
-				} else if (values.interfaceType === 'br') {
-
-				}
-
-				if (props.interfaceType) {
-					this.moduleStore.put( values ); // FIXME
-					this.moduleStore.remove(values['interface']);
-					this.moduleStore.add( values );
-				} else {
-					try {
-						this.moduleStore.add( values );
-					} catch(error) {
-						dialog.alert(String(error));
-					}
-				}
+				this.updateValues(values, !props.interfaceType);
 				_cleanup();
 			});
 	
@@ -180,8 +221,8 @@ define([
 				values: props,
 				'interface': props['interface'],
 				interfaceType: props.interfaceType,
-				available_interfaces: this.available_interfaces,
-				existing_interfaces: this.getAllItems(),
+				physical_interfaces: this.physical_interfaces,
+				available_interfaces: this.getAllItems(),
 				onCancel: _cleanup,
 				onFinished: _finished
 			};
@@ -197,7 +238,6 @@ define([
 		},
 
 		_removeInterface: function(ids) {
-			// TODO: confirm dialog?
 			array.forEach(ids, function(iid) {
 				var item = this.moduleStore.get(iid);
 				if (item.interfaceType === 'bond') {
@@ -206,10 +246,7 @@ define([
 				}
 				this.moduleStore.remove(iid);
 			}, this);
-		},
-
-		onIPChanged: function() {
-			// event stub
+			this.onChanged();
 		}
 
 	});
