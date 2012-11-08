@@ -915,14 +915,19 @@ define([
 
 		getUserPreferences: function() {
 			var deferred = new Deferred();
-			tools.umcpCommand('get/user/preferences', null, false).then(lang.hitch(this, function(res) {
-				deferred.resolve(res.preferences);
-			}));
+			tools.umcpCommand('get/user/preferences', null, false).then(
+				function(data) {
+					deferred.resolve(data.preferences);
+				},
+				function(data) {
+					deferred.cancel(data);
+				}
+			);
 			return deferred;
 		},
 
 		setUserPreference: function(preferences) {
-			tools.umcpCommand('set', {
+			return tools.umcpCommand('set', {
 				user: {	preferences: preferences }
 			}, false);
 		},

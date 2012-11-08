@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.158-1) unstable; urgency=low
+
+  * Use Tooltip for status Icon only if favorites are enabled (Bug #28800)
+  * Fix convenience functions for getting, settings user prefs (Bug #29081)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Nov 2012 12:57:39 +0100
+
 univention-management-console-frontend (2.0.157-1) unstable; urgency=low
 
   * Fix removing unwanted keys (Bug #27432)
