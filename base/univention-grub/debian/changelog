@@ -1,4 +1,4 @@
-univention-grub (6.0.0-3) unstable; urgency=low
+univention-grub (6.0.1-1) unstable; urgency=low
 
   * updated dependencies for EFI support (Bug #28672)
 
