@@ -36,10 +36,12 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Grid",
+	"umc/widgets/ComboBox",
+	"umc/widgets/TextBox",
 	"umc/modules/setup/InterfaceWizard",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, Dialog, dialog, tools, Grid, InterfaceWizard, types, _) {
+], function(declare, lang, array, Dialog, dialog, tools, Grid, ComboBox, TextBox, InterfaceWizard, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid ], {
 		moduleStore: null,
 
@@ -205,6 +207,52 @@ define([
 
 		_modifyInterface: function(props) {
 			// Add or modify an interface
+			if (props.interfaceType) {
+				// only edit the existing interace
+				props.create = false;
+				this._showWizard(props);
+				return;
+			}
+			dialog.confirmForm({
+				title: _('Select an interface type'),
+				submit: _('Add interface'),
+				widgets: [{
+					name: 'interfaceType',
+					label: _('Interface type'),
+					type: ComboBox,
+					value: 'eth',
+					onChange: lang.hitch(this, function(interfaceType) {
+						var name = (interfaceType !== 'vlan' ? interfaceType : 'eth');
+						var num = 0;
+						while(array.some(this.available_interfaces, function(iface) { return iface == name + String(num); })) {
+							num++;
+						}
+						// FIXME this.set('interface', name + String(num));
+					}),
+					staticValues: types.interfaceValues
+				}, {
+					name: 'interface',
+					label: _('Interface'),
+					type: TextBox,
+					validator: lang.hitch(this, function(value) {
+						return true;
+						// FIXME: we need the other values
+//						var name = (this.interfaceType !== 'vlan' ? this.interfaceType : 'eth') || 'eth'; // WTF: sometimes(initial) undefined
+//						return value.substr(0, name.length) === name;
+					})
+				}],
+//				layout: [{
+//					label: _('Select an interface type'),
+//					layout: ['interfaceType', 'interface']
+//				}],
+				layout: ['interfaceType', 'interface']
+			}).then(lang.hitch(this, function(formvals) {
+				props = lang.mixin({create: true}, props, formvals);
+				this._showWizard(props);
+			}));
+		},
+
+		_showWizard: function(props) {
 			var _dialog = null, wizard = null;
 
 			var _cleanup = function() {
@@ -213,7 +261,7 @@ define([
 			};
 
 			var _finished = lang.hitch(this, function(values) {
-				this.updateValues(values, !props.interfaceType);
+				this.updateValues(values, props.create);
 				_cleanup();
 			});
 	
@@ -222,14 +270,14 @@ define([
 				'interface': props['interface'],
 				interfaceType: props.interfaceType,
 				physical_interfaces: this.physical_interfaces,
-				available_interfaces: this.getAllItems(),
+				available_interfaces: this.get('value'),
 				onCancel: _cleanup,
 				onFinished: _finished
 			};
 			wizard = new InterfaceWizard(props);
 
 			_dialog = new Dialog({
-				title: props.interfaceType ? _('Edit a network interface') : _('Add a network interface'),
+				title: props.create ? _('Add a network interface') : _('Edit a network interface'),
 				content: wizard
 			});
 			_dialog.own(wizard);

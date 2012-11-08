@@ -160,9 +160,9 @@ define([
 			}));
 
 			// reload interfaces/primary when interfaces is ready
-			this._form._widgets.interfaces.ready().then(lang.hitch(this, function() {
-				this._form._widgets['interfaces/primary']._loadValues();
-			}));
+//			this._form._widgets.interfaces.ready().then(lang.hitch(this, function() {
+//				this._form._widgets['interfaces/primary']._loadValues();
+//			}));
 
 			this.addChild(this._form);
 

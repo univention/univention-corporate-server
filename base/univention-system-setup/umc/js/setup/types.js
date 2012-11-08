@@ -38,6 +38,7 @@ define([
 			if (/^[0-9]+$/.test(nm)) {
 				return parseInt(nm, 10);
 			}
+			// TODO: IE8 does not have .reduce
 			return array.map(nm.split('.'), function(i) { return parseInt((parseInt(i, 10) + 1) / 32, 10); }).reduce(function(x,y) { return x + y; });
 		},
 		interfaceTypes: {

@@ -58,116 +58,42 @@ define([
 
 		umcpCommand: tools.umcpCommand,
 
-		style: 'width: 650px; height:650px;',
-		physical_interfaces: [], // physical interfaces
-		available_interfaces: [], // interfaces which exists in the grid
+		style: 'width: 650px; height: 650px;',
+		physical_interfaces: [], // String[] physical interfaces
+		available_interfaces: [], // object[] the grid items
 
-		// do we modify or create an interface
-		_create: false,
+//		// do we modify or create an interface
+//		_create: false,
 
 		constructor: function(props) {
 			props = props || {};
 			this.values = props.values || {};
 
-			this._create = !props.interfaceType;
+//			this._create = props.create;
 
-			this.watch('interface', function(name, old, iface) {
-				// update the interface widget on every page
-				tools.forIn(this._pages, function(pname, page) {
-					if (page._form._widgets['interface']) {
-						page._form._widgets['interface'].set('value', iface);
-					}
-				}, this);
-			});
-
-			this['interface'] = props['interface'] || null;
-			this.interfaceType = props.interfaceType || null;
+			this['interface'] = props['interface'];
+			this.interfaceType = props.interfaceType;
 			this.physical_interfaces = props.physical_interfaces || [];
 			this.available_interfaces = props.available_interfaces || [];
 
+			var name = (this.interfaceType !== 'vlan' ? this.interfaceType : 'eth');
+			if (!name || !this['interface'] || this['interface'].substr(0, name.length) !== name ) {
+				// name is illegal
+				// TODO: error handling
+			}
+
 			lang.mixin(this, {
 				pages: [{
-					// A page to select the interface type which should be created!
-					name: 'interfaceType',
-					headerText: _('Add interface'),
-					helpText: _('What type of interface should be created?'),
-					widgets: [{
-						name: 'interfaceType',
-						label: _('Interface type'),
-						type: ComboBox,
-						value: 'eth',
-						staticValues: types.interfaceValues,
-						onChange: lang.hitch(this, function(interfaceType) {
-							this.set('interfaceType', interfaceType);
-							if (interfaceType) {
-								// update visibility
-								tools.forIn(this._pages, function(iname, ipage) {
-									tools.forIn(ipage._form._widgets, function(iname, iwidget) {
-										tools.forIn(types.interfaceTypes, function(typename) {
-											// hide every widget which startswith one of the interface types but is not the setted interface type
-											if (iname.indexOf(typename + '_') === 0) {
-												iwidget.set('visible', typename === interfaceType);
-											}
-										}, this);
-									}, this);
-								}, this);
-								// TODO: comments
-								var name = (this.interfaceType !== 'vlan' ? this.interfaceType : 'eth');
-								var num = 0;
-								while(array.some(this.available_interfaces, function(iface) { return iface == name + String(num); })) {
-									num++;
-								}
-								this.set('interface', name + String(num));
-							}
-						})
-					}, {
-						name: 'interface',
-						label: _('Interface'),
-						type: TextBox,
-//						type: ComboBox,
-// TODO: remove? let the user decide
-//						dynamicValues: lang.hitch(this, function() {
-//							return array.map(this.physical_interfaces, function(idev) {
-//								return {id: idev, label: idev};
-//							});
-//						}),
-						validator: lang.hitch(this, function(value) {
-							var name = (this.interfaceType !== 'vlan' ? this.interfaceType : 'eth') || 'eth'; // WTF: sometimes(initial) undefined
-							return value.substr(0, name.length) === name;
-						}),
-						onChange: lang.hitch(this, function(iface) {
-							this.set('interface', iface);
-						})
-					}, {
-						// required for DHCP query
-						name: 'gateway',
-						type: TextBox,
-						visible: false
-					}, {
-						name: 'nameserver',
-						type: MultiInput,
-						subtypes: [{ type: TextBox }],
-						max: 3,
-						visible: false
-					}],
-					layout: [{
-						label: _('Select an interface type'),
-						layout: ['interfaceType', 'interface']
-					}]
-				}, {
 					// A "normal" ethernet interface
 					name: 'eth',
 					headerText: _('Configure a network interface'),
 					helpText: _('Configure the given interface'),
 					widgets: [{
 						name: 'interface',
-						type: ComboBox,
+						type: TextBox,
 						disabled: true,
 						value: props['interface'],
 						size: 'Half',
-						dynamicValues: lang.hitch(this, function() {
-							return this.getPhysicalInterfaces(true);// 'eth'FIXME: what about vlan?
-						}),
 						label: _('Interface')
 					}, {
 						type: MultiInput,
@@ -234,6 +160,18 @@ define([
 						value: 2, // some machines does not support 1 // TODO: count up if exists
 						constraints: { min: 1, max: 4096 },
 						label: _('Virtual interface ID')
+					}, {
+						// required for DHCP query
+						name: 'gateway',
+						type: TextBox,
+						visible: false
+					}, {
+						// required for DHCP query
+						name: 'nameserver',
+						type: MultiInput,
+						subtypes: [{ type: TextBox }],
+						max: 3,
+						visible: false
 					}],
 					layout: [{
 						label: _('Interface'),
@@ -252,7 +190,6 @@ define([
 					// A network bridge (software side switch)
 					name: 'br',
 					headerText: _('Bridge configuration'),
-					helpText: _('configure the bridge interface'),
 					widgets: [{
 						// defines which interfaces should be "bridged" together.
 						// This can also be 0 to create an interface which does not have an connection to "the outside" (e.g. wanted in virtualisation)
@@ -261,7 +198,7 @@ define([
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
 							// mixin of physical interfaces and non physical
-							return lang.mixin(this.getAvailableInterfaces(true), this.getPhysicalInterfaces(true));
+							return lang.mixin(this.getAvailableInterfaces(true), this.getPhysicalInterfaces(true)); // TODO: does this work? remove beneath code
 //							return array.map(this.physical_interfaces.concat(this.getAvailableInterfaces(false)), function(iface) {
 //								return {
 //									id: iface,
@@ -275,7 +212,7 @@ define([
 						value: 0
 					}],
 					layout: [{
-						label: _('Bridge configuration'),
+						label: _('configure the bridge interface'),
 						layout: ['interfaces', 'forwarding_delay']
 					}]
 				}, {
@@ -283,7 +220,6 @@ define([
 					// bond multiple interfaces into one. The used interfaces are not configurable anymore
 					name: 'bond',
 					headerText: _('Bond configuration'),
-					helpText: _('configure the bond interface'),
 					widgets: [{
 						name: 'interfaces',
 						label: _('physical interfaces used for the bond interface'),
@@ -328,11 +264,27 @@ define([
 						}]
 					}],
 					layout: [{
-						label: _('Bond configuration'),
+						label: _('configure the bond interface'),
 						layout: ['interfaces', 'primary', 'mode']
 					}]
 				}]
 			});
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// update visibility of widgets
+			tools.forIn(this._pages, function(iname, ipage) {
+				tools.forIn(ipage._form._widgets, function(iname, iwidget) {
+					tools.forIn(types.interfaceTypes, function(typename) {
+						// hide every widget which startswith one of the interface types but is not the setted interface type
+						if (iname.indexOf(typename + '_') === 0) {
+							iwidget.set('visible', typename === this.interfaceType);
+						}
+					}, this);
+				}, this);
+			}, this);
 		},
 
 		getAvailableInterfaces: function(format) {
@@ -383,8 +335,11 @@ define([
 
 		canFinish: function(values) {
 			var valid = this.interfaceType && this['interface']; // both must be set
+			if (!valid) {
+				dialog.alert(_('You have to specify a valid interface and interfaceType. Please correct your input.'));
+			}
 
-			var interfaceType = this.interfaceType === 'vlan'? 'eth' : this.interfaceType; // The pagename for vlan interfaces is eth
+			var interfaceType = this.interfaceType === 'vlan' ? 'eth' : this.interfaceType; // The pagename for vlan interfaces is eth
 
 			if (interfaceType === 'eth') {
 				if (!(values.ip4.length || values.ip4dynamic || values.ip6.length || values.ip6dynamic)) {
@@ -405,10 +360,10 @@ define([
 		},
 
 		next: function(pageName) {
-			if (!this.interfaceType) {
-				// if no interface type is set it have to be set
-				return 'interfaceType';
-			}
+//			if (!this.interfaceType) {
+//				// if no interface type is set it have to be set
+//				return 'interfaceType';
+//			}
 			if (this.interfaceType === 'vlan') {
 				// The page for vlan interfaces is the same as normal eth interfaces
 				return 'eth';
@@ -416,17 +371,19 @@ define([
 			return this.interfaceType;
 		},
 
-		previous: function(pageName) {
-			return 'interfaceType';
-//			return this.interfaceType ? 'interfaceType' /*should be impossible*/ : 'interfaceType';
-		},
+//		previous: function(pageName) {
+//			return 'interfaceType';
+////			return this.interfaceType ? 'interfaceType' /*should be impossible*/ : 'interfaceType';
+//		},
 
 		hasPrevious: function(currentPage) {
-			return this._create ? currentPage !== 'interfaceType' : false;
+			return false;
+//			return this._create ? currentPage !== 'interfaceType' : false;
 		},
 
 		hasNext: function(currentPage) {
-			return this._create ? currentPage == 'interfaceType': false;
+			return false;
+//			return this._create ? currentPage == 'interfaceType': false;
 		},
 
 		_dhcpQuery: function(interfaceName) {
