@@ -71,6 +71,7 @@ def MiB2MB(value):
 
 # some autopartitioning config values
 PARTSIZE_EFI = MiB2B(256)           # size of EFI Partition 256 MiB
+PARTSIZE_EFI_MIN = MiB2B(32)        # minimum size of EFI Partition 32 MiB
 PARTSIZE_BIOS_GRUB = MiB2B(8)       # size of BIOS Boot Partition 8 MiB
 PARTSIZE_BOOT = MiB2B(512)          # size of /boot partition: 512 MiB
 PARTSIZE_SYSTEM_MIN = MiB2B(4096)   # minimum free space for system: 4 GiB
@@ -94,6 +95,7 @@ LVM_OVERHEAD = MiB2B(15)
 MOUNTPOINT_EFI = '/boot/efi'
 
 # filesystem definitions
+FSTYPE_NONE = 'none'
 FSTYPE_LVMPV = 'LVMPV'
 FSTYPE_SWAP = 'linux-swap'
 FSTYPE_VFAT = 'vfat'
@@ -519,6 +521,60 @@ class object(content):
 			self.sub.sub.exit()
 		return ""
 
+	def find_largest_free_space(self, requested_types, size, min_size):
+		"""
+		Arguments:
+  		  requested_types: list of partition types to search for (e.g. [PARTTYPE_FREE, PARTTYPE_RESERVED])
+		  size:	   requested partition size in bytes (has to be megabyte aligned)
+		  min_size:  if free space of size <size> is not available then try to allocate partition with at least <min_size> bytes
+
+		This function returns a 3-tuple consisting of <finalsize>, <diskname>, <part_start>
+		  finalsize:  value between <min_size> and <size>
+		  diskname:   name of disk on which this free space has been located
+		  part_start: starting byte of located free space
+		"""
+		for type_of_free_space in requested_types:
+			# try to find suitable free disk space
+			for diskname, disk in self.container['disk'].items():
+				for part_start, part in disk['partitions'].items():
+					if part['type'] == type_of_free_space:
+						if part['size'] >= size:
+							return (size, diskname, part_start)
+			# if min_size is equal to size, then do not try to find smaller region
+			if min_size >= size:
+				continue
+			# no free partition found --> try to find largest one in range <min_size> to <size> bytes
+			suitable_free_space = []
+			for diskname, disk in self.container['disk'].items():
+				for part_start, part in disk['partitions'].items():
+					if part['type'] == type_of_free_space:
+						if part['size'] < size and part['size'] >= min_size:
+							suitable_free_space.append((size, diskname, part_start))
+			if suitable_free_space:
+				# at least one region is large enough
+				suitable_free_space = sorted(suitable_free_space, lambda x,y: cmp(x[0], y[0]))
+				size, diskname, part_start = suitable_free_space[-1]
+				return suitable_free_space[-1]
+		return None
+
+	def ask_create_efi_part_callback(self, result):
+		result = self.find_largest_free_space((PARTTYPE_FREE, PARTTYPE_RESERVED), PARTSIZE_EFI, PARTSIZE_EFI_MIN)
+		self.debug('ask_create_efi_part_callback: result=%s' % pretty_format(result))
+		if result:
+			size, diskname, part_start = result
+			self.sub.part_create_generic(diskname, part_start, MOUNTPOINT_EFI, size, FSTYPE_EFI, PARTTYPE_USED, [PARTFLAG_EFI], 1)
+
+
+	def ask_create_biosboot_part_callback(self, result):
+		result = self.find_largest_free_space((PARTTYPE_FREE, PARTTYPE_RESERVED), PARTSIZE_BIOS_GRUB, PARTSIZE_BIOS_GRUB)
+		self.debug('ask_create_biosboot_part_callback: result=%s' % pretty_format(result))
+		if result:
+			size, diskname, part_start = result
+			self.sub.part_create_generic(diskname, part_start, '', size, FSTYPE_NONE, PARTTYPE_USED, [PARTFLAG_BIOS_GRUB], 0)
+
+	def ask_create_efi_or_biosgrub_part_callback(self, result):
+		self.container['warned_missing_efi_or_biosgrub'] = True
+
 	def incomplete(self):
 		self.debug('incomplete')
 		root_device=0
@@ -526,16 +582,16 @@ class object(content):
 		boot_fs=None
 		root_fs_type=None
 		boot_fs_type=None
-		bootable_cnt=0
+		partflag_cnt = {}
 		mpoint_temp = set()
 		for disk in self.container['disk'].keys():
 			for part in self.container['disk'][disk]['partitions']:
 				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
 					mpoint = self.container['disk'][disk]['partitions'][part]['mpoint'].strip()
 
-					if ( PARTFLAG_EFI in self.container['disk'][disk]['partitions'][part]['flag'] or
-						 PARTFLAG_BIOS_GRUB in self.container['disk'][disk]['partitions'][part]['flag']):
-						bootable_cnt += 1
+					for flag in self.container['disk'][disk]['partitions'][part]['flag']:
+						partflag_cnt.setdefault(flag, 0)
+						partflag_cnt[flag] += 1
 
 					if mpoint and mpoint in mpoint_temp:
 						return _("Double mount point '%s'") % mpoint
@@ -566,8 +622,62 @@ class object(content):
 						root_fs = lv['fstype']
 					root_device = 1
 
-		if not bootable_cnt:
-			return _('One partition must be of type "BIOS boot partition" or "EFI system". The correct type depends on your BIOS settings.')
+		if self.container['use_efi'] and not partflag_cnt.get(PARTFLAG_EFI,0) and not self.container['warned_missing_efi_or_biosgrub']:
+			result = self.find_largest_free_space((PARTTYPE_FREE, PARTTYPE_RESERVED), PARTSIZE_EFI, PARTSIZE_EFI_MIN)
+			self.debug('incomplete: find_largest_free_space=%r' % pretty_format(result))
+			if result:
+				msglist = [ _('The enhanced firmware interface (EFI) has been detected'),
+							_('on your system but no EFI system partition has been'),
+							_('defined. You may continue, but your installation may not'),
+							_('be bootable.'),
+							_('This message is shown only once.'),
+							_(''),
+							_('Create small EFI partition automatically?'),
+							]
+				self.sub.sub = yes_no_win(self, self.sub.minY+2, self.sub.minX+2, self.sub.maxWidth, len(msglist)+6, msglist, default='yes',
+										  btn_name_yes=_('Create EFI partition'), btn_name_no=_('Ignore'),
+										  callback_yes=self.ask_create_efi_part_callback, callback_no=self.ask_create_efi_or_biosgrub_part_callback)
+				self.sub.sub.draw()
+				return 1
+			else:
+				msglist = [ _('The enhanced firmware interface (EFI) has been detected'),
+							_('on your system but no EFI system partition has been'),
+							_('defined. You may continue, but your installation may not'),
+							_('be bootable.'),
+							_('This message is shown only once.'),
+							]
+				self.sub.sub = msg_win(self, self.sub.minY+2, self.sub.minX+2, self.sub.maxWidth, len(msglist)+6, msglist)
+				self.sub.sub.draw()
+				self.container['warned_missing_efi_or_biosgrub'] = True
+				return 1
+
+
+		if not self.container['use_efi'] and not partflag_cnt.get(PARTFLAG_BIOS_GRUB,0) and not self.container['warned_missing_efi_or_biosgrub']:
+			result = self.find_largest_free_space((PARTTYPE_FREE, PARTTYPE_RESERVED), PARTSIZE_BIOS_GRUB, PARTSIZE_BIOS_GRUB)
+			self.debug('incomplete: find_largest_free_space=%r' % pretty_format(result))
+			if result:
+				msglist = [ _('A BIOS boot partition is missing in your selected'),
+							_('partition setup. Your installation may not be bootable'),
+							_('without further actions.'),
+							_('This message is shown only once.'),
+							_(''),
+							_('Create BIOS boot partition automatically?'),
+							]
+				self.sub.sub = yes_no_win(self, self.sub.minY, self.sub.minX, self.sub.maxWidth, len(msglist)+6, msglist, default='yes',
+										  btn_name_yes=_('Create partition'), btn_name_no=_('Ignore'),
+										  callback_yes=self.ask_create_biosboot_part_callback, callback_no=self.ask_create_efi_or_biosgrub_part_callback)
+				self.sub.sub.draw()
+				return 1
+			else:
+				msglist = [ _('A BIOS boot partition is missing in your selected'),
+							_('partition setup. Your installation may not be bootable'),
+							_('without further actions.'),
+							_('This message is shown only once.'),
+							]
+				self.sub.sub = msg_win(self, self.sub.minY, self.sub.minX, self.sub.maxWidth, len(msglist)+6, msglist)
+				self.sub.sub.draw()
+				self.container['warned_missing_efi_or_biosgrub'] = True
+				return 1
 
 		if not root_device:
 			#self.move_focus( 1 )
@@ -676,6 +786,7 @@ class object(content):
 		self.container['selected'] = 1
 		self.container['autopartition'] = None
 		self.container['autopart_usbstorage'] = None
+		self.container['warned_missing_efi_or_biosgrub'] = False
 		self.container['lvm'] = {}
 		self.container['lvm']['enabled'] = None
 		self.container['lvm']['lvm1available'] = False
