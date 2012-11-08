@@ -1778,7 +1778,10 @@ class object(content):
 			self.debug('module has been disabled since profile requested following partition table type: %r' % self.all_results.get('partitiontable_type'))
 			return {}
 
-		result={'partitiontable_type': 'GPT'}
+		result={
+			'partitiontable_type': 'GPT',
+			'use_efi': { True: 'yes', False: 'no' }[self.container.get('use_efi',False)]
+			}
 		tmpresult = []
 		partitions = []
 		for disk in self.container['disk']:
