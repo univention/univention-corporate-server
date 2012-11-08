@@ -1,3 +1,10 @@
+univention-ad-connector (7.0.11-2) unstable; urgency=low
+
+  * Fixed the membership ignore object handling on the UCS side
+    (Bug #28845)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Nov 2012 07:59:38 +0100
+
 univention-ad-connector (7.0.10-1) unstable; urgency=low
 
   * Check if the membership object is to be ignored (Bug #28845)
