@@ -33,7 +33,7 @@ if [ -z srv_test ]; then
 fi
 
 #A RECORD
-udm dns/forward_zone modify --dn zoneName=s4joined.dom,cn=dns,dc=s4joined,dc=dom --append a="111.111.111.111"  || fail_test 1 "Could not modify Forward Zone." 
+udm dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --append a="111.111.111.111"  || fail_test 1 "Could not modify Forward Zone." 
 sleep 5
 a_test=$(dig $domainname | grep $domainname | grep A | grep 111.111.111.111)
 if [ -z a_test ]; then

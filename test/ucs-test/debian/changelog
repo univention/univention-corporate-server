@@ -1,3 +1,9 @@
+ucs-test (3.0.16-9) unstable; urgency=low
+
+  * Fixed a typo in test 51_samba4/45dns_records (Bug #29063)
+
+ -- Tobias Peters <peters@univention.de>  Thu, 08 Nov 2012 15:33:19 +0100
+
 ucs-test (3.0.16-8) unstable; urgency=low
 
   * Added test 51_samba4/50replication_drs (Bug #28957)
