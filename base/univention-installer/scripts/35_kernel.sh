@@ -82,6 +82,11 @@ __EOT__
 chmod +x /instmnt/install_kernel.sh
 chroot /instmnt ./install_kernel.sh
 
+export grub_package="grub-pc"
+if [ "$use_efi" = "yes" ] ; then
+	export grub_package="grub-efi"
+fi
+
 # install mdadm if necessary and then grub
 cat >/instmnt/install_mdadm.sh <<__EOT__
 #!/bin/sh
@@ -92,7 +97,7 @@ if [ 0 -eq \$? ]; then
 	apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install mdadm
 fi
 
-apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install univention-grub
+apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install univention-grub ${grub_package}
 __EOT__
 chmod +x /instmnt/install_mdadm.sh
 chroot /instmnt ./install_mdadm.sh
