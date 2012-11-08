@@ -474,11 +474,13 @@ class Application(object):
 
 		return result
 
-	def install(self, package_manager, component_manager):
+	def install(self, package_manager, component_manager, add_component=True):
 		try:
 			# remove all existing component versions
 			for iapp in self.versions:
-				component_manager.remove_app(iapp)
+				# dont remove yourself (if already added)
+				if iapp is not self:
+					component_manager.remove_app(iapp)
 
 			# add the new repository component for the app
 			ucr.load()
@@ -486,13 +488,15 @@ class Application(object):
 			to_install = self.get('defaultpackages')
 			if is_master and self.get('defaultpackagesmaster'):
 				to_install.extend(self.get('defaultpackagesmaster'))
-			component_manager.put_app(self)
 
-			# update and install + dist_upgrade
+			if add_component:
+				component_manager.put_app(self)
+				package_manager.update()
+
+			# install + dist_upgrade
 			with open(LOGFILE, 'a') as logfile:
 				logfile.write('\n== INSTALLING %s ==\n' % self.name)
 				with package_manager.logging_to(logfile):
-					package_manager.update()
 					package_manager.commit(install=to_install, dist_upgrade=True)
 
 			# successful installation

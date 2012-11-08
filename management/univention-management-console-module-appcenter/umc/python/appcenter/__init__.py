@@ -177,7 +177,8 @@ class Instance(umcm.Base):
 					with module.package_manager.locked(reset_status=True, set_finished=True):
 						with module.package_manager.no_umc_restart():
 							if function in ('install', 'update'):
-								return application.install(module.package_manager, module.component_manager)
+								# dont have to add component: already added during dry_run
+								return application.install(module.package_manager, module.component_manager, add_component=False)
 							else:
 								return application.uninstall(module.package_manager, module.component_manager)
 				def _finished(thread, result):
