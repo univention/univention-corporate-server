@@ -2120,6 +2120,7 @@ class object(content):
 				GRUBPART = { 'size': PARTSIZE_EFI,
 							 'flags': [PARTFLAG_EFI],
 							 'format': 1,
+							 'mpoint': MOUNTPOINT_EFI,
 							 'msg': _('Not enough disk space found for EFI system partition!'),
 							 }
 			else:
@@ -2127,6 +2128,7 @@ class object(content):
 				GRUBPART = { 'size': PARTSIZE_BIOS_GRUB,
 							 'flags': [PARTFLAG_BIOS_GRUB],
 							 'format': 0,
+							 'mpoint': '',
 							 'msg': _('Not enough disk space found for BIOS boot partition!'),
 							 }
 
@@ -2145,7 +2147,7 @@ class object(content):
 
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
-				self.part_create_generic(targetdisk, targetpart, '', GRUBPART['size'], '', PARTTYPE_USED, GRUBPART['flags'], GRUBPART['format'], '')
+				self.part_create_generic(targetdisk, targetpart, GRUBPART['mpoint'], GRUBPART['size'], '', PARTTYPE_USED, GRUBPART['flags'], GRUBPART['format'], '')
 			else:
 				msglist = [ GRUBPART['msg'],
 							_('Auto partitioning aborted.') ]
