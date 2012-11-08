@@ -302,6 +302,7 @@ define([
 			// summary:
 			// 		Popup a confirmation dialog containing a `umc.widgets.Form' build from the given widgets
 			// options:
+			// 		Form form: if not given a `umc.widgets.Form' with the igiven widgets and layout will be created.
 			// 		Object[] widgets: the form widgets
 			// 		Object[] layout: the form layout
 			// 		String title: the confirmation dialog title (default: 'Confirmation')
@@ -312,7 +313,7 @@ define([
 			// 		"submit"|"cancel" defaultAction: which default button should be the default? (default: 'submit')
 
 			// create form
-			var form = new Form({
+			var form = options.form || new Form({
 				widgets: options.widgets,
 				layout: options.layout
 			});

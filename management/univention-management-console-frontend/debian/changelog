@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.159-1) unstable; urgency=low
+
+  * dialog.confirmForm adapted to use form from options; Bug #28389
+
+ -- Florian Best <best@univention.de>  Thu, 08 Nov 2012 14:29:54 +0100
+
 univention-management-console-frontend (2.0.158-1) unstable; urgency=low
 
   * Use Tooltip for status Icon only if favorites are enabled (Bug #28800)
