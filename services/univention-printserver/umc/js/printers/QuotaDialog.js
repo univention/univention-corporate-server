@@ -110,6 +110,7 @@ define([
 					{
 						this.onSubmit(this._form.gatherFormValues());
 					}
+					return false;
 				})
 			});
 			this.set('content',this._form);

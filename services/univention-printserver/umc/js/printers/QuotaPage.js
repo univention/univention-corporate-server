@@ -189,6 +189,7 @@ define([
 			if (! this._dialog)
 			{
 				this._dialog = new QuotaDialog();
+				this.own(this._dialog);
 
 				// listen to the events of the dialog
 				this._dialog.on('Submit',lang.hitch(this, function(values) {

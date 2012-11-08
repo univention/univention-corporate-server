@@ -1,3 +1,9 @@
+univention-printserver (6.0.16-1) unstable; urgency=low
+
+  * ported module to Dojo 1.8; Bug #29087
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Nov 2012 16:33:01 +0100
+
 univention-printserver (6.0.15-1) unstable; urgency=low
 
   * Add priority (Bug #26961)

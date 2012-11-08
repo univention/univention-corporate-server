@@ -76,7 +76,7 @@ define([
 
 			var f_layout = [
 				[ 'message' ],
-				[ 'activate', 'deactivate', 'editquota', 'submit' ]
+				[ 'activate', 'deactivate', 'editquota' ]
 			];
 
 			var f_buttons = [
@@ -111,12 +111,6 @@ define([
 					onClick:	lang.hitch(this, function() {
 						this.editQuota(this._printer_id);
 					})
-				},
-				// only to stop the Form class from adding a hidden submit button into
-				// an additional row, thus mangling my layout...
-				{
-					name:		'submit',
-					label:		'nothing'
 				}
 			];
 
@@ -265,7 +259,6 @@ define([
 					this._show_button('activate',res['status'] == 'disabled');
 					this._show_button('deactivate',res['status'] == 'enabled');
 					this._show_button('editquota',res['quota']);
-					this._show_button('submit',false);			// always invisible.
 
 					this.layout();		// whenever you change a non-center region of a BorderLayout...
 				}),

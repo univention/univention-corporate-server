@@ -63,34 +63,34 @@ define([
 
 			this.own(aspect.after(this._pages.overview,'openDetail',lang.hitch(this,function(args) {
 				this._switch_page('detail',args);
-			})));
+			}),true));
 
 			this.own(aspect.after(this._pages.overview,'editQuota',lang.hitch(this, function(args) {
 				this._quota_from_page = 'overview';
 				this._switch_page('quota',args);
-			})));
+			}),true));
 
 			this.own(aspect.after(this._pages.detail,'editQuota',lang.hitch(this, function(args) {
 				this._quota_from_page = 'detail';
 				this._switch_page('quota',args);
-			})));
+			}),true));
 
 			this.own(aspect.after(this._pages.detail,'closeDetail',lang.hitch(this, function(args) {
 				this._switch_page('overview',args);
-			})));
+			}),true));
 
 			this.own(aspect.after(this._pages.quota,'closeQuota',lang.hitch(this, function(args) {
 				this._switch_page(this._quota_from_page,args);
-			})));
+			}),true));
 
 			// ------------- work events: printer management ---------------
 
 			this.own(aspect.after(this._pages.overview,'managePrinter',lang.hitch(this, function(printer,func,callback) {
 				this._manage_printer(printer,func,callback);
-			})));
+			}),true));
 			this.own(aspect.after(this._pages.detail,'managePrinter',lang.hitch(this, function(printer,func,callback) {
 				this._manage_printer(printer,func,callback);
-			})));
+			}),true));
  		},
 
  		startup: function() {
