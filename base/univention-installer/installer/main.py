@@ -55,7 +55,7 @@ read_cmdline = False
 
 if len(sys.argv) > 1:
 
-	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'extension=', 'edition=', 'expert_partition', 'mbr_partition', 'nousbstorage', 'nousbcdrom', 'name=', 'codename=']
+	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'extension=', 'edition=', 'expert_partition', 'mbr_partition', 'nousbstorage', 'nousbcdrom', 'name=', 'codename=', 'use_efi=']
 	try:
 		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
 	except getopt.error, msg:
@@ -108,6 +108,8 @@ if len(sys.argv) > 1:
 			cmdline['nousbstorage'] = True
 		elif opt == '--nousbcdrom':
 			cmdline['nousbcdrom'] = True
+		elif opt == 'use_efi' and val:
+			cmdline['use_efi'] = val
 
 if len(sys.argv) < 1 or read_cmdline:
 	f=open('/proc/cmdline', 'r')
@@ -169,6 +171,8 @@ if len(sys.argv) < 1 or read_cmdline:
 			cmdline['nousbcdrom'] = True
 		elif opt == 'nfsdelay':
 			cmdline['nfsdelay']=val
+		elif opt == 'use_efi':
+			cmdline['use_efi'] = val
 
 		elif next_profile:
 			if not val:
