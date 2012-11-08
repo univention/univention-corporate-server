@@ -52,7 +52,7 @@ for option in options:
 		load_defaultmodules = False
 
 if load_defaultmodules:
-	modules.extend( [ 'ide-generic', 'ide-disk', 'sd_mod', 'dm_mod' ] )
+	modules.extend( [ 'ide-generic', 'ide-disk', 'sd_mod', 'dm_mod', 'efivars' ] )
 
 for m in modules:
 	os.system('/sbin/modprobe %s >/dev/null 2>&1' % m)
