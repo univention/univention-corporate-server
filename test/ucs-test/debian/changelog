@@ -1,3 +1,10 @@
+ucs-test (3.0.17-1) unstable; urgency=low
+
+  * Added checks for the Administrator membership for AD and S4
+    connector (Bug #28845)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Nov 2012 08:05:08 +0100
+
 ucs-test (3.0.16-9) unstable; urgency=low
 
   * Fixed a typo in test 51_samba4/45dns_records (Bug #29063)
