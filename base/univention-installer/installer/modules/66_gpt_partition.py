@@ -349,21 +349,22 @@ class object(content):
 		boot_fs=None
 		root_fs_type=None
 		boot_fs_type=None
-		bootable_cnt=0
+		partflag_cnt = {}
 		mpoint_list = []
 		for key in self.container['profile']['create'].keys():
 			for minor in self.container['profile']['create'][key].keys():
-				fstype=self.container['profile']['create'][key][minor]['fstype'].strip()
-				mpoint=self.container['profile']['create'][key][minor]['mpoint'].strip()
-				flags=self.container['profile']['create'][key][minor]['mpoint'].strip()
-				self.debug('profile_complete: %s: mpoint=%s  fstype=%s' % (key, mpoint, fstype))
+				fstype = self.container['profile']['create'][key][minor]['fstype'].strip()
+				mpoint = self.container['profile']['create'][key][minor]['mpoint'].strip()
+				flags = self.container['profile']['create'][key][minor]['flag']
+				self.debug('profile_complete: %s: mpoint=%s  fstype=%s  flags=%r' % (key, mpoint, fstype, flags))
 				if len(mpoint) and mpoint in mpoint_list:
 					self.message="Double mountpoint '%s'" % mpoint
 					return False
 				mpoint_list.append(mpoint)
 
-				if ( PARTFLAG_EFI in flags or PARTFLAG_BIOS_GRUB in flags):
-					bootable_cnt += 1
+				for flag in flags:
+					partflag_cnt.setdefault(flag, 0)
+					partflag_cnt[flag] += 1
 
 				if mpoint == '/boot':
 					boot_device = 'PHY'
@@ -399,8 +400,12 @@ class object(content):
 				if not fstype.lower() in ALLOWED_ROOT_FSTYPES:
 					root_fs = fstype
 
-		if not bootable_cnt:
-			self.message = 'One partition must contain one the following flags: "bios_grub", "boot". The correct flag depends on your BIOS settings.'
+		if self.container['use_efi'] and not partflag_cnt.get(PARTFLAG_EFI,0):
+			self.message = 'The enhanced firmware interface (EFI) has been detected but none of the configured partitions holds the flag "boot". Without this flag, the installed system is unbootable.'
+			return False
+
+		if not self.container['use_efi'] and not partflag_cnt.get(PARTFLAG_BIOS_GRUB,0):
+			self.message = 'None of the configured partitions holds the flag "bios_grub". Without this flag, the installed system is unbootable.'
 			return False
 
 		if root_device == None:
