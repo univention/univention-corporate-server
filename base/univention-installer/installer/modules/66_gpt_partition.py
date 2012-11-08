@@ -2815,6 +2815,7 @@ class object(content):
 			free_part_start = arg_part
 			free_part_end = self.container['disk'][arg_disk]['partitions'][arg_part]['end']
 			free_part_size = self.container['disk'][arg_disk]['partitions'][arg_part]['size']
+			free_part_type = self.container['disk'][arg_disk]['partitions'][arg_part]['type']
 			self.parent.debug("free_part_start = %15d B" % free_part_start)
 			self.parent.debug("free_part_end   = %15d B" % free_part_end)
 			self.parent.debug("free_part_size  = %15d B" % free_part_size)
@@ -2852,7 +2853,7 @@ class object(content):
 			if (free_part_size - size) >= PARTSIZE_MINIMUM:
 				new_free_part_start = align_partition_start(new_part_start + size)
 				# no need to align free_part_end - it should be aligned by initial import of partition table or by removing a partition
-				self.container['disk'][arg_disk]['partitions'][new_free_part_start] = self.parent.generate_freespace(new_free_part_start, free_part_end, touched=1)
+				self.container['disk'][arg_disk]['partitions'][new_free_part_start] = self.parent.generate_freespace(new_free_part_start, free_part_end, touched=1, parttype=free_part_type)
 			self.rebuild_table( self.container['disk'][arg_disk], arg_disk)
 
 			for flag in flags:
