@@ -635,11 +635,24 @@ class object(content):
 	def profileheader(self):
 		return 'Partitioning'
 
+	def detect_EFI_system(self):
+		efi_found = os.path.isdir('/sys/firmware/efi')
+		self.debug('detect_EFI_system: efi_found=%s' % efi_found)
+		for arguments in (self.all_results, self.cmdline):
+			if 'use_efi' in arguments:
+				self.debug('detect_EFI_system: arguments use_efi=%s' % arguments['use_efi'])
+				if arguments['use_efi'].lower() in ('no',):
+					efi_found = False
+				elif arguments['use_efi'].lower() in ('yes',):
+					efi_found = True
+		return efi_found
+
 	def start(self):
 		''' Initialize data structures, scan devices and read partition information from them '''
 		# self.container['problemdisk'][<devicename>] = set([DISKLABEL_GPT, DISKLABEL_UNKNOWN, ...])
 
 		self.debug('ALL RESULTS=%r' % self.all_results)
+		self.debug('CMDLINE=%r' % self.cmdline)
 
 		self.container={}
 		self.container['debug'] = ''
@@ -661,6 +674,7 @@ class object(content):
 		self.container['lvm']['lvmconfigread'] = False
 		self.container['disk_checked'] = False
 		self.container['partitiontable_checked'] = False
+		self.container['use_efi'] = self.detect_EFI_system()
 
 	def profile_autopart(self, disklist_blacklist = [], part_delete = 'all' ):
 		self.debug('PROFILE BASED AUTOPARTITIONING: full_disk')
