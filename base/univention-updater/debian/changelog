@@ -1,3 +1,9 @@
+univention-updater (8.0.47-1) unstable; urgency=low
+
+  * Link to errata page without patch level (Bug #25597)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Nov 2012 11:07:33 +0100
+
 univention-updater (8.0.46-1) unstable; urgency=low
 
   * Add priority (Bug #26961)

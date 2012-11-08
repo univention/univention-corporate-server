@@ -466,11 +466,20 @@ define([
 		},
 
 		_update_errata_link: function(version) {
-			var erratalink = lang.replace('<a href="http://errata.univention.de/overview-{version}.html" target="_blank">{label}</a>', {
-				version: version,
-				label: _('Information about the updates')
-			});
-			this._form.getWidget('erratalink').set('content', erratalink);
+			var versionWithoutPatchlevel;
+			try {
+				// 3.1-0 -> 3.1
+				versionWithoutPatchlevel = version.match(/(\d\.\d)-\d+/)[1];
+			} catch(e) {
+				console.warn('Malformed version: ', version);
+			}
+			if (versionWithoutPatchlevel) {
+				var erratalink = lang.replace('<a href="http://errata.univention.de/overview-{version}.html" target="_blank">{label}</a>', {
+					version: versionWithoutPatchlevel,
+					label: _('Information about the updates')
+				});
+				this._form.getWidget('erratalink').set('content', erratalink);
+			}
 		},
 
 		// Internal function that sets the 'updates available' button and
