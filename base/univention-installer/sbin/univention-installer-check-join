@@ -56,20 +56,27 @@ if [ -z "$server" ]; then
 	fi
 fi
 
-serverIp="$(host "$server" | grep "$server has address" | awk '{print $NF}')"
-if [ -z "$serverIp" ]; then
+serverIps="$(host "$server" | grep "$server has address" | awk '{print $NF}')"
+if [ -z "$serverIps" ]; then
 	errorAndExit 1 "could not get ip of ucs master"
 fi
 
-ping -c 1 -w 5 -W 5 $serverIp
-if [ ! $? -eq 0 ]; then
-	errorAndExit 2 "coud not connect to $serverIp"
-fi
-
+connection=false
 sshOptions="-o StrictHostKeyChecking=no -o ConnectTimeout=15 -o NumberOfPasswordPrompts=1"
-out="$(sshpass -p "$password" ssh $sshOptions "$user"@"$serverIp" "id '$user'")"
-if [ ! $? -eq 0 ]; then
-	errorAndExit 3 "ssh to $serverIp as $user failed"
+
+for ip in $serverIps; do
+	ping -c 1 -w 5 -W 5 $ip
+	if [ $? -eq 0 ]; then
+		out="$(sshpass -p "$password" ssh $sshOptions "$user"@"$ip" "id '$user'")"
+		if [ $? -eq 0 ]; then
+			connection=true
+			break
+		fi
+	fi
+done
+
+if ! $connection; then
+	errorAndExit 2 "coud not connect to $server ($serverIps)"
 fi
 
 exit 0

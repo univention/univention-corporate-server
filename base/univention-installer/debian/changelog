@@ -1,3 +1,9 @@
+univention-installer (8.0.25-1) unstable; urgency=low
+
+  * fixed ip handling in univention-installer-check-join (Bug #29098) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Nov 2012 09:47:26 +0100
+
 univention-installer (8.0.24-2) unstable; urgency=low
 
   * fixed traceback in interactive installation during formatting
