@@ -446,7 +446,7 @@ define([
 			);
 		},
 
-		_call_installer: function(func, app) {
+		_call_installer: function(func, app, force) {
 			var verb = '';
 			var verb1 = '';
 			switch(func) {
@@ -464,49 +464,30 @@ define([
 				break;
 			}
 
-			var progressMessage = lang.replace(_("Going to {verb} Application '{name}'"),
-			                                   {verb: verb, name: app.name});
+			var confirmationRequired = false;
+			var commandArguments = {
+				'function': func,
+				'application': app.id,
+				'force': force === true
+			};
 
-			if (func === 'uninstall') {
-				this._execute_installer(func, app, progressMessage);
-			} else {
-				var confirmationRequired = false;
-				var commandArguments = {
-					'function': func,
-					'application': app.id
-				};
+			this.standby(true);
+			tools.umcpCommand('appcenter/invoke', commandArguments).then(
+				lang.hitch(this, function(data) {
+					this.standby(false);
+					var result = data.result;
+					var txt = '';
+					var label = '';
+					var headline = '';
+					var buttons = [];
 
-				this.standby(true);
-				tools.umcpCommand('appcenter/invoke/test', commandArguments).then(
-					lang.hitch(this, function(data) {
-						this.standby(false);
-						var result = data.result;
-						var txt = '';
-						var label = '';
-
+					if (!result.can_continue) {
+						confirmationRequired = true;
 						if (result.remove.length) {
-							confirmationRequired = true;
 							label = _('The following packages will be removed:');
 							txt += '<p>' + label + '<ul><li>' + result.remove.join('</li><li>') + '</li></ul></p>';
-						}
-						if (result.broken.length) {
-							confirmationRequired = true;
-							label = _('This operation causes problems in the following packages that cannot be resolved:');
-							txt += '<p>' + label + '<ul><li>' + result.broken.join('</li><li>') + '</li></ul></p>';
-						}
-
-						var headline = '';
-						var buttons = [];
-						if (result.broken.length) {
-							headline = _('You cannot continue');
-							buttons = [{
-								name: 'cancel',
-								'default': true,
-								label: _("Cancel")
-							}];
-						} else {
 							headline = lang.replace(_("Do you really want to {verb} {ids}?"),
-							                        {verb: verb, ids: app.name});
+										{verb: verb, ids: app.name});
 							buttons = [{
 								name: 'cancel',
 								'default': true,
@@ -515,38 +496,29 @@ define([
 								name: 'submit',
 								label: _("Yes"),
 								callback: lang.hitch(this, function() {
-									this._execute_installer(func, app, progressMessage);
+									this._call_installer(func, app, true);
 								})
 							}];
 						}
-
-						if (confirmationRequired) {
-							dialog.confirm('<p><strong>' + headline + '</strong></p>' + txt, buttons);
-						} else {
-							this._execute_installer(func, app, progressMessage);
+						if (result.broken.length) {
+							label = _('This operation causes problems in the following packages that cannot be resolved:');
+							txt += '<p>' + label + '<ul><li>' + result.broken.join('</li><li>') + '</li></ul></p>';
+							headline = _('You cannot continue');
+							buttons = [{
+								name: 'cancel',
+								'default': true,
+								label: _("Cancel")
+							}];
 						}
-					}),
-					lang.hitch(this, function(data) {
-						this.standby(false);
-					})
-				);
-			}
-		},
+					}
 
-		_execute_installer: function(func, app, msg) {
-			this.standby(true);
-			var commandArguments = {
-				'function': func,
-				'application': app.id
-			};
-
-			tools.umcpCommand('appcenter/invoke', commandArguments).then(
-				lang.hitch(this, function(data) {
-					this.standby(false);
-					if (data.result) {
-						this._switch_to_progress_bar(msg);
+					if (confirmationRequired) {
+						dialog.confirm('<p><strong>' + headline + '</strong></p>' + txt, buttons);
 					} else {
-						dialog.alert(_('Application not found: ') + app.id);
+						var progressMessage = lang.replace(_("Going to {verb} Application '{name}'"),
+										   {verb: verb, name: app.name});
+
+						this._switch_to_progress_bar(progressMessage);
 					}
 				}),
 				lang.hitch(this, function(data) {

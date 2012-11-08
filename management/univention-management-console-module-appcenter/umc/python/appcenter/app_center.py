@@ -100,7 +100,6 @@ class License(object):
 try:
 	import univention.admin.filter as udm_filter  # needed for udm_license
 	import univention.admin.license as udm_license
-	import univention.uldap as uldap
 
 	_lo = uldap.getMachineConnection()
 	udm_license.init_select(_lo, 'admin')
@@ -439,7 +438,7 @@ class Application(object):
 		self._send_information('uninstall', status)
 		return status == 200
 
-	def install_dry_run(self, package_manager, component_manager):
+	def install_dry_run(self, package_manager, component_manager, remove_component=True):
 		MODULE.info('Invoke install_dry_run')
 		result = None
 		try:
@@ -465,10 +464,11 @@ class Application(object):
 			result = dict(zip(['install', 'remove', 'broken', ], result))
 			MODULE.info('Package changes: %s' % (result, ))
 
-			# remove the newly added component
-			MODULE.info('Remove component: %s' % (self.component_id, ))
-			component_manager.remove_app(self)
-			package_manager.update()
+			if remove_component:
+				# remove the newly added component
+				MODULE.info('Remove component: %s' % (self.component_id, ))
+				component_manager.remove_app(self)
+				package_manager.update()
 		except:
 			MODULE.warn(traceback.format_exc())
 

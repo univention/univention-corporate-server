@@ -46,7 +46,7 @@ import notifier.threads
 from univention.lib.package_manager import PackageManager, LockError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response
-from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer
+from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer, BooleanSanitizer
 from univention.updater import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.config_registry
@@ -133,44 +133,45 @@ class Instance(umcm.Base):
 		application = Application.find(application)
 		self.package_manager.reopen_cache()
 		return application.to_dict(self.package_manager)
-		return props
 
 	@sanitize(
-		function=ChoicesSanitizer(['install', 'update'], required=True),
-		application=StringSanitizer(minimum=1, required=True)
-		)
-	def invoke_dry_run(self, request):
-		MODULE.info('invoke_dry_run')
-		function = request.options.get('function')
-		application_id = request.options.get('application')
-		application = Application.find(application_id)
-
-		if not application:
-			MODULE.info('Application not found')
-			return self.finished(request.id, False)
-		if (function == 'install' and not
-		    application.can_be_installed(self.package_manager)):
-			reason = application.cannot_install_reason(self.package_manager)
-			MODULE.info('Application cannot be installed: %s' % (reason, ))
-			return self.finished(request.id, False)
-		if function == 'update' and not application.can_be_updated():
-			MODULE.info('Application cannot be updated')
-			return self.finished(request.id, False)
-
-		result = application.install_dry_run(self.package_manager, self.component_manager)
-		self.finished(request.id, result)
-
-	@sanitize(function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
-		application=StringSanitizer(minimum=1, required=True)
+			function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
+			application=StringSanitizer(minimum=1, required=True),
+			force=BooleanSanitizer()
 		)
 	def invoke(self, request):
 		function = request.options.get('function')
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
+		force = request.options.get('force')
 		try:
 			# make sure that the application cane be installed/updated
-			can_continue = application is not None and not (function == 'install' and not application.can_be_installed(self.package_manager)) and not (function == 'update' and not application.can_be_updated())
-			self.finished(request.id, can_continue)
+			can_continue = True
+			result = {
+				'install' : [],
+				'remove' : [],
+				'broken' : [],
+			}
+			if not application:
+				MODULE.info('Application not found: %s' % application_id)
+				can_continue = False
+			elif function == 'install' and not application.can_be_installed(self.package_manager):
+				MODULE.info('Application cannot be installed: %s' % application_id)
+				can_continue = False
+			elif function == 'update' and not application.can_be_updated():
+				MODULE.info('Application cannot be updated: %s' % application_id)
+				can_continue = False
+
+			if can_continue and function in ('install', 'update'):
+				result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=False)
+				if result['broken'] or (result['remove'] and not force):
+					MODULE.info('Remove component: %s' % application_id)
+					self.component_manager.remove_app(application)
+					self.package_manager.update()
+					can_continue = False
+			result['can_continue'] = can_continue
+			self.finished(request.id, result)
+
 			if can_continue:
 				def _thread(module, application, function):
 					with module.package_manager.locked(reset_status=True, set_finished=True):
