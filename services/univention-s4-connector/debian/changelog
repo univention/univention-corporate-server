@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.19-2) unstable; urgency=low
+
+  * Call _ignore_object and not __ignore_object (Bug #28845)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Nov 2012 08:14:51 +0100
+
 univention-s4-connector (7.0.19-1) unstable; urgency=low
 
   * Fixed the membership ignore object handling on the UCS side
