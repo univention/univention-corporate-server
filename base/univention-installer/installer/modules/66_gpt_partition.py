@@ -84,7 +84,9 @@ PARTSIZE_MINIMUM = MiB2B(4)			# minimum partition size
 # ATTENTION: value has to be megabyte aligned!
 # start of first partition ; first 16MiB have to be free to provide some spare space
 EARLIEST_START_OF_FIRST_PARTITION = MiB2B(16)
-RESERVED_SPACE_AT_END_OF_DISK = MiB2B(64)
+RESERVED_SPACE_AT_END_OF_DISK = MiB2B(128)   # free space reserved for automatic partitions (incl. RESERVED_FOR_GPT)
+RESERVED_FOR_GPT = MiB2B(4)                  # amount of space reserved for backup GPT at end of disk
+
 # reduce size of each PV by at least this amount of megabytes for LVM overhead
 LVM_OVERHEAD = MiB2B(15)
 
@@ -100,6 +102,7 @@ FSTYPE_EFI = 'EFI'
 # partition types
 PARTTYPE_USED = 10
 PARTTYPE_FREE = 11
+PARTTYPE_RESERVED = 12
 PARTTYPE_LVM_VG = 100
 PARTTYPE_LVM_LV = 101
 PARTTYPE_LVM_VG_FREE = 102
@@ -973,7 +976,7 @@ class object(content):
 						if end is None:
 							self.debug('Ignoring line: partition start cannot be parsed correctly: %r' % parms[4])
 							continue
-						max_end = align_partition_end(self.container['disk'][disk]['size'])
+						max_end = align_partition_end(self.container['disk'][disk]['max_part_end'])
 
 						start = align_partition_start(start)
 						if end == 0:
@@ -1628,9 +1631,11 @@ class object(content):
 					data = line.split(':')
 					disk_size = int(data[1].strip('B'))
 					if disk_size > RESERVED_SPACE_AT_END_OF_DISK:
-						disk_size -= RESERVED_SPACE_AT_END_OF_DISK
+						max_part_end = disk_size - RESERVED_SPACE_AT_END_OF_DISK
+					else:
+						max_part_end = disk_size
 					parttabletype = data[5]
-					self.debug('DEBUG: disk size = %dB = %fMiB' % (disk_size, B2MiB(disk_size)))
+					self.debug('DEBUG: disk size = %dB = %fMiB    max_part_end = %fMiB' % (disk_size, B2MiB(disk_size), B2MiB(max_part_end)))
 
 					if parttabletype in 'msdos':
 						self.debug('Device %s uses MSDOS partition table' % dev)
@@ -1704,18 +1709,29 @@ class object(content):
 					last_part_end = end
 
 			# check if there is empty space behind last partition entry
-			if ( disk_size - last_part_end) > PARTSIZE_MINIMUM:
+			if ( max_part_end - last_part_end) > PARTSIZE_MINIMUM:
 				if last_part_end == 0:
 					# whole disk is empty
 					free_start = align_partition_start(EARLIEST_START_OF_FIRST_PARTITION)
 				else:
 					# free space after last partition
 					free_start = align_partition_start(last_part_end + 1)
-				free_end = align_partition_end(disk_size - 1)
+				free_end = align_partition_end(max_part_end - 1)
 				partList[free_start] = self.generate_freespace(free_start, free_end)
+
+			# add reserved free space to list of partitions if not used by other partitions
+			reserved_start = max_part_end
+			if last_part_end > max_part_end:
+				reserved_start = last_part_end
+			if (disk_size - reserved_start - RESERVED_FOR_GPT) >= PARTSIZE_MINIMUM:
+				reserved_start = align_partition_start(reserved_start)
+				reserved_end = (disk_size - 1 - RESERVED_FOR_GPT)
+				partList[reserved_start] = self.generate_freespace(reserved_start, reserved_end, parttype=PARTTYPE_RESERVED)
 
 			diskList[dev]={ 'partitions': partList,
 							'size': disk_size,
+							'min_part_start': EARLIEST_START_OF_FIRST_PARTITION,
+							'max_part_end': max_part_end,
 							}
 			p.close()
 
@@ -1732,8 +1748,9 @@ class object(content):
 		return diskList, diskProblemList
 
 
-	def generate_freespace(self, start, end, touched=0):
-		return {'type': PARTTYPE_FREE,
+	def generate_freespace(self, start, end, touched=0, parttype=PARTTYPE_FREE):
+		return {
+			'type': parttype,
 			'touched': touched,
 			'fstype': '---',
 			'size': calc_part_size(start, end),
@@ -2292,7 +2309,7 @@ class object(content):
 				txt = '%s  (%s) %s' % (dev.split('/',2)[-1], _('diskdrive'), '-'*(col1+col2+col3+col4+col5+10))
 				path = self.get_col(txt,col1+col2+col3+col4+col5+4,'l')
 
-				size = self.get_col('%d' % int(B2MiB(disk['size'])),col6)
+				size = self.get_col('%d' % int(B2MiB(disk['max_part_end'])),col6)
 				# save for later use (evaluating inputs)
 				self.part_objects[ len(dict) ] = [ 'disk', dev ]
 				dict.append('%s %s' % (path,size))
