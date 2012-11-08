@@ -1991,13 +1991,29 @@ class object(content):
 					sysmem = int(match.group(1)) * 1024 # value read from "free" is given in KiB and has to be converted to bytes
 			self.parent.debug('AUTOPART: sysmem=%s' % sysmem)
 
+
+			# create EFI system partition if EFI has been detected
+			if self.container['use_efi']:
+				GRUBPART = { 'size': PARTSIZE_EFI,
+							 'flags': [PARTFLAG_EFI],
+							 'format': 1,
+							 'msg': _('Not enough disk space found for EFI system partition!'),
+							 }
+			else:
+				# create BIOS boot partition for GRUB otherwise
+				GRUBPART = { 'size': PARTSIZE_BIOS_GRUB,
+							 'flags': [PARTFLAG_BIOS_GRUB],
+							 'format': 0,
+							 'msg': _('Not enough disk space found for BIOS boot partition!'),
+							 }
+
 			# create partition on first harddisk for BIOS_BOOT
 			targetdisk = None
 			targetpart = None
 			for disk in disklist:
 				for part in self.container['disk'][disk]['partitions'].keys():
 					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREE ]:
-						if int(self.container['disk'][disk]['partitions'][part]['size']) > PARTSIZE_BOOT:
+						if int(self.container['disk'][disk]['partitions'][part]['size']) > GRUBPART['size']:
 							targetdisk = disk
 							targetpart = part
 							break
@@ -2006,9 +2022,9 @@ class object(content):
 
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
-				self.part_create_generic(targetdisk, targetpart, '', PARTSIZE_BIOS_GRUB, '', PARTTYPE_USED, [PARTFLAG_BIOS_GRUB], 0, '')
+				self.part_create_generic(targetdisk, targetpart, '', GRUBPART['size'], '', PARTTYPE_USED, GRUBPART['flags'], GRUBPART['format'], '')
 			else:
-				msglist = [ _('Not enough disk space found for BIOS boot partition!'),
+				msglist = [ GRUBPART['msg'],
 							_('Auto partitioning aborted.') ]
 				self.sub = msg_win(self,self.pos_y+8,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
