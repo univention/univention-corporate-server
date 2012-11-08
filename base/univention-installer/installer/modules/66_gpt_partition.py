@@ -497,6 +497,8 @@ class object(content):
 			self.debug( 'dev_%d="%s"' % (i, self.container['result'][ 'dev_%d' % i ]))
 			i += 1
 		self.container['result']['partitiontable_type'] = 'GPT'
+		self.container['result']['use_efi'] = { True: 'yes', False: 'no' }[self.container.get('use_efi',False)]
+
 
 		self.debug('run_profiled: adding profile to results')
 		return self.container['result']
