@@ -1790,7 +1790,7 @@ class object(content):
 						flag.append(PARTFLAG_SWAP)
 
 					# add free space between partitions
-					if (start - last_part_end) > PARTSIZE_MINIMUM and start > EARLIEST_START_OF_FIRST_PARTITION:
+					if (start - last_part_end) >= PARTSIZE_MINIMUM and start > EARLIEST_START_OF_FIRST_PARTITION:
 						if last_part_end == 0:
 							# free space in front of first partition and enough to use it
 							free_start = align_partition_start(EARLIEST_START_OF_FIRST_PARTITION)
@@ -1798,7 +1798,7 @@ class object(content):
 							# first free byte starts one after last used byte
 							free_start = align_partition_start(last_part_end + 1)
 						free_end = align_partition_end(start - 1)
-						if free_end - free_start > PARTSIZE_MINIMUM:
+						if free_end - free_start >= PARTSIZE_MINIMUM:
 							self.debug('Adding free space: start=%d   last_part_end=%d   free_start=%d   free_end=%d' % (start, last_part_end, free_start, free_end))
 							partList[free_start] = self.generate_freespace(free_start, free_end)
 
@@ -1820,7 +1820,7 @@ class object(content):
 					last_part_end = end
 
 			# check if there is empty space behind last partition entry
-			if ( max_part_end - last_part_end) > PARTSIZE_MINIMUM:
+			if ( max_part_end - last_part_end) >= PARTSIZE_MINIMUM:
 				if last_part_end == 0:
 					# whole disk is empty
 					free_start = align_partition_start(EARLIEST_START_OF_FIRST_PARTITION)
