@@ -1555,7 +1555,7 @@ class ad(univention.connector.ucs):
 					if not mo_key:
 						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of ad member, ignore membership: %s" % member_dn)
 						continue # member is an object which will not be synced
-					if self.__ignore_object(mo_key, {'dn':member_dn,'attributes':member_object} ):
+					if self._ignore_object(mo_key, {'dn':member_dn,'attributes':member_object} ):
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership" % member_dn)
 						continue
 
