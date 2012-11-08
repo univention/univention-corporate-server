@@ -1301,7 +1301,7 @@ class ad(univention.connector.ucs):
 					
 					key = self.__identify({'dn':member_dn,'attributes':ad_object})
 					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':ad_object})['dn']
-					if not self.lo.get(ucs_dn, attr=['dn']):
+					if not self.lo.get(ucs_dn, attr=['cn']):
 						# ad_members_from_ucs.append(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO,
 								       "group_members_sync_from_ucs: Object exists only in AD [%s]" % ucs_dn)			
@@ -1555,6 +1555,10 @@ class ad(univention.connector.ucs):
 					if not mo_key:
 						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of ad member, ignore membership: %s" % member_dn)
 						continue # member is an object which will not be synced
+					if self.__ignore_object(mo_key, {'dn':member_dn,'attributes':member_object} ):
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership" % member_dn)
+						continue
+
 					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped ad member to ucs DN %s" % ucs_dn)
 

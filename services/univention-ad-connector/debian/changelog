@@ -1,3 +1,9 @@
+univention-ad-connector (7.0.10-1) unstable; urgency=low
+
+  * Check if the membership object is to be ignored (Bug #28845)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Nov 2012 07:23:40 +0100
+
 univention-ad-connector (7.0.9-1) unstable; urgency=low
 
   * Add priority (Bug #26961)
