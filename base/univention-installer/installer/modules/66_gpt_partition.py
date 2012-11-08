@@ -129,9 +129,11 @@ ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3','ext4']
 ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
 BLOCKED_FSTYPES_ON_LVM = [FSTYPE_SWAP]
 
+# problems encountered with disks
 DISKLABEL_GPT = 'gpt'
 DISKLABEL_MSDOS = 'msdos'
 DISKLABEL_UNKNOWN = 'unknown'
+PARTITION_GPT_CONFLICT= 'partition_gpt_conflict'
 
 def pretty_format(val):
 	return pprint.PrettyPrinter(indent=4).pformat(val)
@@ -1769,9 +1771,6 @@ class object(content):
 						devices_remove[dev] = 1
 					continue
 
-				if devices_remove.get(dev):
-					continue
-
 				if line and line[0].isdigit():
 					cols = line.split(':')
 					self.debug('cols = %r' % (cols,))
@@ -1784,6 +1783,16 @@ class object(content):
 					flag = []
 					if cols[6]:
 						flag = re.split(',[ \t]+', cols[6])     # flags are separated with comma
+
+					# check if disk uses a MBR and an existing partition blocks disk space required by GPT
+					# GPT uses at least 34 sectors
+					if (start < 34*512) or (end > disk_size-34*512) and DISKLABEL_MSDOS in diskProblemList.get(dev, set()):
+						self.debug('ERROR: Partition size conflicts with GPT if MBR shall get converted!')
+						self.debug('line=%r' % line)
+						self.debug('Removing device %s' % dev)
+						diskProblemList[dev].remove(DISKLABEL_MSDOS)     # remove old problem from list
+						diskProblemList[dev].add(PARTITION_GPT_CONFLICT) # add new problem to list
+						devices_remove[dev] = 1
 
 					# fix fstypes
 					if fstype == 'linux-swap':
@@ -1818,6 +1827,9 @@ class object(content):
 
 					self.debug('partList[%d] = %r' % (start, partList[start],))
 					last_part_end = end
+
+				if devices_remove.get(dev):
+					continue
 
 			# check if there is empty space behind last partition entry
 			if ( max_part_end - last_part_end) >= PARTSIZE_MINIMUM:
@@ -2291,6 +2303,23 @@ class object(content):
 										  callback_yes=self.install_fresh_gpt_interactive, device=dev)
 					self.draw()
 					self.container['problemdisk'][dev].discard(DISKLABEL_UNKNOWN)
+					break
+
+				if PARTITION_GPT_CONFLICT in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors
+					self.parent.debug('show warning to user: disk uses MBR and at least one partition is too large and is conflicting with GPT sectors ==> automatic conversion impossible')
+					msglist = [ _('A MBR has been found on device %s.') % dev,
+								_('Devices with MBR are not supported by the interactive installation.'),
+								_('An automatic conversion of the existing MBR to a GPT is not possible.'),
+								_('At least one partition occupies sectors that shall be used by GPT.'),
+								_('Until this conflict is resolved manually, this device will be ignored.'),
+								'',
+								_('HINT: Further information for an installation'),
+								_('on a device with problematic MBR can be found in the'),
+								_('Support & Knowledge Base: http://sdb.univention.de.'),
+								]
+					self.sub = msg_win(self, self.pos_y+4, self.pos_x, self.width-1, len(msglist)+6, msglist)
+					self.draw()
+					self.container['problemdisk'][dev].discard(PARTITION_GPT_CONFLICT)
 					break
 
 				if DISKLABEL_MSDOS in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors

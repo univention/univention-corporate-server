@@ -1,3 +1,9 @@
+univention-installer (8.0.27-1) unstable; urgency=low
+
+  * detect partitions on MBR disk that would conflict with GPT (Bug #28502)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Nov 2012 16:48:22 +0100
+
 univention-installer (8.0.26-1) unstable; urgency=low
 
   * added EFI support (Bug #28672)
