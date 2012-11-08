@@ -2450,6 +2450,9 @@ class object(content):
 					part = self.container['disk'][dev]['partitions'][part_list[i]]
 					path = self.get_col(' %s' % self.dev_to_part(part, dev),col1,'l')
 
+					if part['type'] == PARTTYPE_RESERVED:
+						continue
+
 					format=self.get_col('',col4,'m')
 					if part['format']:
 						format=self.get_col('X',col4,'m')
