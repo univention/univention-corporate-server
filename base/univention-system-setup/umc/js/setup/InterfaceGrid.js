@@ -146,17 +146,15 @@ define([
 		_getValueAttr: function() { return this.getAllItems(); },
 
 		_setValueAttr: function(values) {
-			
+			// TODO: this method should delete the whole grid items and add the items from values
 		},
 
 		setInitialValue: function(values) {
-			// TODO: only on set initial value, i think there was something in the form which does that...
 			tools.forIn(values, function(id, value) {
 				try {
 					this.moduleStore.add(lang.mixin({'interface': id}, value));
 				} catch(e) {}
 			}, this);
-			// TODO: this method should delete the whole grid items and add the items from values
 		},
 
 		onChanged: function() {
@@ -180,11 +178,30 @@ define([
 					// The interface is build from interface.vlan_id
 					values['interface'] = values['interface'] + '.' + String(values.vlan_id);
 
-				} else if (values.interfaceType === 'bond') {
+				} else if (values.interfaceType === 'bond' || values.interfaceType === 'br') {
+					values.start = true;
 					// disable the interfaces which are used by this interface
-					this.setDisabledItem(values['bond-slaves'], true);
-				} else if (values.interfaceType === 'br') {
+					var key = values.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
+					this.setDisabledItem(values[key], true);
+					// set original values
+					array.forEach(values[key], lang.hitch(this, function(ikey) {
+						var item = this.moduleStore.get(ikey);
+//						item.original = lang.clone(item); // FIXME: RangeError: Maximum call stack size exceeded
+						item.original = item;
 
+						// set values to deactivate the interface values
+						item.ip4 = [];
+						item.ip6 = [];
+						item.ip4dynamic = false;
+						item.ip6dynamic = false;
+						item.type = 'manual';
+						item.start = false;
+
+						// FIXME: put does not overwrite
+						this.moduleStore.put(item);
+						this.moduleStore.remove(item['interface']);
+						this.moduleStore.add(item);
+					}));
 				}
 
 				values.information = values;
@@ -346,10 +363,19 @@ define([
 		_removeInterface: function(ids) {
 			array.forEach(ids, function(iid) {
 				var item = this.moduleStore.get(iid);
-				if (item.interfaceType === 'bond') {
+				if (item.interfaceType === 'bond' || item.interfaceType === 'br') {
 					// enable the interfaces which were blocked by this interface
-					this.setDisabledItem(item['bond-slaves'], false);
+					var key = item.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
+					this.setDisabledItem(item[key], false);
+					// re set original values
+					array.forEach(item[key], lang.hitch(this, function(key) {
+						var item = this.moduleStore.get(key);
+						if (item.original) {
+							this.moduleStore.put(item.original);
+						}
+					}));
 				}
+
 				this.moduleStore.remove(iid);
 			}, this);
 			this.onChanged();

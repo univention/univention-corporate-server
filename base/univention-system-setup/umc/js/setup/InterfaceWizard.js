@@ -86,8 +86,8 @@ define([
 				pages: [{
 					// A "normal" ethernet interface
 					name: 'eth',
-					headerText: _('Configure a network interface'),
-					helpText: _('Configure the given interface'),
+					headerText: _('Interface configuration'),
+					helpText: _('Configure the %s network interface %s', types.interfaceTypes[this.interfaceType], this['interface']),
 					widgets: [{
 						name: 'interfaceType',
 						type: TextBox,
@@ -98,6 +98,7 @@ define([
 						name: 'interface',
 						type: TextBox,
 						disabled: true,
+						visible: false,
 						value: props['interface'],
 						size: 'Half',
 						label: _('Interface')
@@ -197,22 +198,20 @@ define([
 						callback: lang.hitch(this, function() { this._dhcpQuery(this['interface']); })
 					}],
 					layout: [{
-						label: _('Interface'),
-						layout: [ ['interface', 'vlan_id'], 'eth_vlan' ]
-					}, {
 						label: _('IPv4 network devices'),
 						layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
 					}, {
 						label: _('IPv6 network devices'),
 						layout: ['ip6dynamic', 'ip6']
-//					}, {
-//						label: _('Global network settings'),
-//						layout: [ 'vlan' ]
+					}, {
+						label: _('Global network settings'),
+						layout: [ 'vlan_id' ]
 					}]
 				}, {
 					// A network bridge (software side switch)
 					name: 'br',
 					headerText: _('Bridge configuration'),
+					helpText: _('Configure the %s network interface %s', types.interfaceTypes[this.interfaceType], this['interface']),
 					widgets: [{
 						// defines which interfaces should be "bridged" together.
 						// This can also be 0 to create an interface which does not have an connection to "the outside" (e.g. wanted in virtualisation)
@@ -242,10 +241,11 @@ define([
 					// A bonding interface (fallback if one interface falls out)
 					// bond multiple interfaces into one. The used interfaces are not configurable anymore
 					name: 'bond',
-					headerText: _('Bond configuration'),
+					headerText: _('Bonding configuration'),
+					helpText: _('Configure the %s network interface %s', types.interfaceTypes[this.interfaceType], this['interface']),
 					widgets: [{
 						name: 'bond-slaves',
-						label: _('physical interfaces used for the bond interface'),
+						label: _('physical interfaces used for the bonding interface'),
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
 							// We can only use physical interfaces for this
@@ -287,8 +287,11 @@ define([
 						}]
 					}],
 					layout: [{
-						label: _('configure the bond interface'),
-						layout: ['bond-slaves', 'primary', 'bond-mode']
+						label: _('configure the bonding interface'),
+						layout: ['bond-slaves', 'primary']
+					}, {
+						label: _('advanced settings'),
+						layout: ['bond-mode']
 					}]
 				}]
 			});
@@ -359,6 +362,7 @@ define([
 		},
 
 		canFinish: function(values) {
+			// TODO: conflict if two bonds wants to use the same interface
 			var valid = this.interfaceType && this['interface']; // both must be set
 			if (!valid) {
 				dialog.alert(_('You have to specify a valid interface and interfaceType. Please correct your input.'));
@@ -366,11 +370,13 @@ define([
 
 			var interfaceType = this.interfaceType === 'vlan' ? 'eth' : this.interfaceType; // The pagename for vlan interfaces is eth
 
-			if (interfaceType === 'eth') {
-				if (!(values.ip4.length || values.ip4dynamic || values.ip6.length || values.ip6dynamic)) {
-					dialog.alert(_('You have to specify at least one ip address or enable DHCP or SLACC.'));
-					return false;
-				}
+			if (!(values.ip4.length || values.ip4dynamic || values.ip6.length || values.ip6dynamic)) {
+				dialog.alert(_('You have to specify at least one ip address or enable DHCP or SLACC.'));
+				return false;
+			}
+			if (interfaceType === 'bond' && values['bond-slaves'].length < 2) {
+				dialog.alert(_('You have to specify at least two interfaces to use for this bond device'));
+				return false;
 			}
 
 			tools.forIn(this._pages[interfaceType]._form._widgets, function(iname, iwidget) {
