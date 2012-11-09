@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-11-09 10:32+0100\n"
-"PO-Revision-Date: 2012-11-09 10:41+0100\n"
+"PO-Revision-Date: 2012-11-09 12:09+0100\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -2265,12 +2265,12 @@ msgstr ""
 #: installer/modules/66_gpt_partition.py:631
 #: installer/modules/66_gpt_partition.py:645
 msgid "The extensible firmware interface (EFI) has been detected"
-msgstr "Das Extensible Firmware Interface (EFI) wurde auf dem System"
+msgstr "Das Extensible Firmware Interface (EFI) wurde auf dem"
 
 #: installer/modules/66_gpt_partition.py:632
 #: installer/modules/66_gpt_partition.py:646
 msgid "on your system but no EFI system partition has been"
-msgstr "erkannt, aber es wurde keine EFI-System-Partition"
+msgstr "System erkannt, aber es wurde keine EFI-System-Partition"
 
 #: installer/modules/66_gpt_partition.py:633
 msgid "defined. You may continue, but your installation may not"
@@ -2289,11 +2289,11 @@ msgstr "Dieser Hinweis wird nur einmalig angezeigt."
 
 #: installer/modules/66_gpt_partition.py:637
 msgid "Create small EFI partition automatically?"
-msgstr "EFI partition automatisch erstellen?"
+msgstr "EFI-Partition automatisch erstellen?"
 
 #: installer/modules/66_gpt_partition.py:640
 msgid "Create EFI partition"
-msgstr "Neue EFI-Partition erstellen"
+msgstr "EFI-Partition erstellen"
 
 #: installer/modules/66_gpt_partition.py:640
 #: installer/modules/66_gpt_partition.py:669
@@ -2331,7 +2331,7 @@ msgstr "Partition erstellen"
 
 #: installer/modules/66_gpt_partition.py:675
 msgid "partition setup (min. 4MiB). Your installation may"
-msgstr "BIOS-Boot-Partition (mind. 4MiB).Ein Fortfahren ist möglich,"
+msgstr "BIOS-Boot-Partition (mind. 4MiB). Ein Fortfahren ist möglich,"
 
 #: installer/modules/66_gpt_partition.py:676
 msgid "not be bootable without further modifications."

@@ -633,10 +633,10 @@ class object(content):
 							_('defined. You may continue, but your installation may not'),
 							_('be bootable.'),
 							_('This message is shown only once.'),
-							_(''),
+							'',
 							_('Create small EFI partition automatically?'),
 							]
-				self.sub.sub = yes_no_win(self, self.sub.minY+2, self.sub.minX+2, self.sub.maxWidth, len(msglist)+6, msglist, default='yes',
+				self.sub.sub = yes_no_win(self, self.sub.minY, self.sub.minX, self.sub.maxWidth, len(msglist)+6, msglist, default='yes',
 										  btn_name_yes=_('Create EFI partition'), btn_name_no=_('Ignore'),
 										  callback_yes=self.ask_create_efi_part_callback, callback_no=self.ask_create_efi_or_biosgrub_part_callback)
 				self.sub.sub.draw()
@@ -648,7 +648,7 @@ class object(content):
 							_('may not be bootable.'),
 							_('This message is shown only once.'),
 							]
-				self.sub.sub = msg_win(self, self.sub.minY+2, self.sub.minX+2, self.sub.maxWidth, len(msglist)+6, msglist)
+				self.sub.sub = msg_win(self, self.sub.minY, self.sub.minX+2, self.sub.maxWidth, len(msglist)+6, msglist)
 				self.sub.sub.draw()
 				self.container['warned_missing_efi_or_biosgrub'] = True
 				return 1
@@ -662,7 +662,7 @@ class object(content):
 							_('partition setup. Your installation may not be bootable'),
 							_('without further modifications.'),
 							_('This message is shown only once.'),
-							_(''),
+							'',
 							_('Create BIOS boot partition automatically?'),
 							]
 				self.sub.sub = yes_no_win(self, self.sub.minY, self.sub.minX, self.sub.maxWidth, len(msglist)+6, msglist, default='yes',
