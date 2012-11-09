@@ -194,9 +194,9 @@ try:
     print >> profile, "boot_partition='/dev/xdva1'"
     print >> profile, "bootloader_record='/dev/xvda'"
     print >> profile, ''
-    print >> profile, 'packages="univention-s4-connector univention-samba4"'
+    print >> profile, 'packages=""'
     print >> profile, '#components="univention-s4-connector"'
-    print >> profile, '#packages_install="univention-s4-connector"'
+    print >> profile, 'packages_install="univention-s4-connector univention-samba4"'
     print >> profile, 'packages_remove=""'
     print >> profile, ''
     for l in netconf.splitlines():
