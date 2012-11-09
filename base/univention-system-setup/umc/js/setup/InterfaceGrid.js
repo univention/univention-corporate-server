@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/aspect",
 	"dijit/Dialog",
 	"umc/dialog",
 	"umc/tools",
@@ -42,7 +43,7 @@ define([
 	"umc/modules/setup/InterfaceWizard",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, Dialog, dialog, tools, Grid, Form, ComboBox, TextBox, InterfaceWizard, types, _) {
+], function(declare, lang, array, aspect, Dialog, dialog, tools, Grid, Form, ComboBox, TextBox, InterfaceWizard, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid ], {
 		moduleStore: null,
 
@@ -239,6 +240,34 @@ define([
 			}
 
 			var form = null;
+			var dynamicInterfaceTypeValues = lang.hitch(this, function() {
+				// TODO: lookup if interfaces are already in use
+				var d = types.interfaceValuesDict();
+				if (this.physical_interfaces.length < 2) {
+					// We can not use a bonding interface if we don't have two physical interfaces
+					delete d.bond;
+				}
+				if (array.every(this.physical_interfaces, lang.hitch(this, function(iface) {
+					var ifaces = this.get('value');
+					return ifaces.length !== 0 ? array.some(ifaces, function(val) { return iface === val['interface']; }) : false;
+				}))) {
+					// if all physical interfaces are configured we can not configure another
+					delete d.eth;
+				}
+				var arr = [];
+				tools.forIn(d, function(k, v) {
+					arr.push(v);
+				});
+				return arr;
+			});
+
+			var hack = {foo: dynamicInterfaceTypeValues};
+			aspect.after(hack, 'foo', function(ret) { 
+				if (array.every(ret, function(item) { return item.id !== 'eth'; })) {
+					form._widgets.interfaceType.set('value', 'vlan');
+				}
+			});
+
 			form = new Form({
 				widgets: [{
 					name: 'interfaceType',
@@ -255,26 +284,7 @@ define([
 							form.getWidget('interface').set('interface', name + String(num));
 						}
 					}),
-					dynamicValues: lang.hitch(this, function() {
-						// TODO: lookup if interfaces are already in use
-						var d = types.interfaceValuesDict();
-						if (this.physical_interfaces.length < 2) {
-							// We can not use a bonding interface if we don't have two physical interfaces
-							delete d.bond;
-						}
-						if (array.every(this.physical_interfaces, lang.hitch(this, function(iface) {
-							var ifaces = this.get('value');
-							return ifaces.length !== 0 ? array.some(ifaces, function(val) { return iface === val['interface']; }) : false;
-						}))) {
-							// if all physical interfaces are configured we can not configure another
-							delete d.eth;
-						}
-						var arr = [];
-						tools.forIn(d, function(k, v) {
-							arr.push(v);
-						});
-						return arr;
-					})
+					dynamicValues: hack.foo
 				}, {
 					name: 'interface',
 					label: _('Interface'),

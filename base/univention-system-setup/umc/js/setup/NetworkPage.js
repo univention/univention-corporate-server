@@ -222,7 +222,7 @@ define([
 
 		setValues: function(_vals) {
 			// save a copy of all original values that may be lists
-			var r = /^(interfaces\/[^\/]+\/|nameserver[1-3]|dns\/forwarder[1-3])$/;
+			var r = /^(interfaces\/.*|nameserver[1-3]|dns\/forwarder[1-3])$/;
 			this._orgValues = {};
 			tools.forIn(_vals, function(ikey, ival) {
 				if (r.test(ikey)) {

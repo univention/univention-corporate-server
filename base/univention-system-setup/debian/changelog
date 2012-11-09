@@ -1,4 +1,4 @@
-univention-system-setup (6.0.49-1) unstable; urgency=low
+univention-system-setup (6.0.49-2) unstable; urgency=low
 
   * Correctly resize the interface grid (Bug #29116)
 

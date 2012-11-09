@@ -82,6 +82,21 @@ define([
 //				dialog.alert('illegal name');
 //			}
 
+			var ethlayout = [{
+				label: _('IPv4 network devices'),
+				layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
+			}, {
+				label: _('IPv6 network devices'),
+				layout: ['ip6dynamic', 'ip6']
+			}];
+
+			if (this.interfaceType === 'vlan') {
+				ethlayout.push({
+					label: _('Global network settings'),
+					layout: [ 'vlan_id' ]
+				});
+			}
+
 			lang.mixin(this, {
 				pages: [{
 					// A "normal" ethernet interface
@@ -132,6 +147,7 @@ define([
 						}, {
 							type: TextBox,
 							label: _('Netmask'),
+							value: '255.255.255.0',
 							sizeClass: 'Half'
 						}]
 					}, {
@@ -197,16 +213,7 @@ define([
 						label: 'DHCP-Query',
 						callback: lang.hitch(this, function() { this._dhcpQuery(this['interface']); })
 					}],
-					layout: [{
-						label: _('IPv4 network devices'),
-						layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
-					}, {
-						label: _('IPv6 network devices'),
-						layout: ['ip6dynamic', 'ip6']
-					}, {
-						label: _('Global network settings'),
-						layout: [ 'vlan_id' ]
-					}]
+					layout: ethlayout
 				}, {
 					// A network bridge (software side switch)
 					name: 'br',
