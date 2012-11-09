@@ -219,14 +219,8 @@ define([
 						name: 'bridge_ports',
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
-							// mixin of physical interfaces and non physical
-							return lang.mixin(this.getAvailableInterfaces(true), this.getPhysicalInterfaces(true)); // TODO: does this work? remove beneath code
-//							return array.map(this.physical_interfaces.concat(this.getAvailableInterfaces(false)), function(iface) {
-//								return {
-//									id: iface,
-//									label: iface
-//								};
-//							}, this);
+							// mixin of physical interfaces and non physical which are not used by other interfaces yet
+							return this.filterInterfaces(this.getPhysicalInterfaces(false).concat(this.getAvailableInterfaces(false)));
 						})
 					}, {
 						name: 'forwarding_delay',
@@ -249,7 +243,7 @@ define([
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
 							// We can only use physical interfaces for this
-							return this.getPhysicalInterfaces(true);
+							return this.filterInterfaces(this.getPhysicalInterfaces(false));
 						})
 					}, {
 						name: 'primary',
@@ -257,7 +251,7 @@ define([
 						type: ComboBox,
 						depends: ['bond-slaves'],
 						dynamicValues: lang.hitch(this, function() {
-							return this.getPhysicalInterfaces(true);
+							return this._pages.bond._form._widgets['bond-slaves'].get('value');
 						})
 					}, {
 						name: 'bond-mode',
@@ -290,7 +284,7 @@ define([
 						label: _('configure the bonding interface'),
 						layout: ['bond-slaves', 'primary']
 					}, {
-						label: _('advanced settings'),
+						label: _('advanced configuration'),
 						layout: ['bond-mode']
 					}]
 				}]
@@ -335,6 +329,11 @@ define([
 				});
 			}
 			return lang.clone(this.physical_interfaces);
+		},
+
+		filterInterfaces: function(/*String[]*/ interfaces) {
+			// filter interfaces, which are available for use (because no interface already uses one of the interface)
+			return types.filterInterfaces(interfaces, this.available_interfaces);
 		},
 
 		setValues: function(values) {
@@ -407,10 +406,7 @@ define([
 		},
 
 		hasPrevious: function(currentPage) {
-			if (currentPage === null) {
-				return false;
-			}
-			return (currentPage === 'br' || currentPage === 'bond');
+			return currentPage === 'eth' && (this.interfaceType === 'br' || this.interfaceType === 'bond');
 		},
 
 		hasNext: function(currentPage) {

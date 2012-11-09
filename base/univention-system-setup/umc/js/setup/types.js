@@ -74,6 +74,32 @@ define([
 				};
 			});
 			return d;
+		},
+		filterInterfaces: function(/*String[]*/ interfaces, /*Object[]*/ available_interfaces) {
+			// filter interfaces, which are available for use (because no interface already uses one of the interface)
+			return array.filter(array.map(interfaces, function(/*String*/iface) {
+				if (available_interfaces.length && !array.every(available_interfaces, function(/*Object*/item) {
+
+					if (item.interfaceType === 'br' || item.interfaceType === 'bond') {
+						// the interface is a bridge or bonding so it can contain subinterfaces
+						var key = item.interfaceType === 'br' ? 'bridge_ports' : 'bond_slaves';
+						if(item[key] && item[key].length) {
+							return array.every(item[key], function(/*String*/_iface) {
+								return _iface !== item['interface'];
+							});
+						}
+						return true; // no subtypes (bridge)
+					}
+
+					return true; // interface without subinterfaces
+				})) {
+					return null;
+				}
+				return {
+					id: iface,
+					label: iface
+				};
+			}), function(v) { return v !== null; });
 		}
 	};
 

@@ -156,12 +156,13 @@ define([
 
 			// update interfaces/primary when there are changes on the interfaces
 			this._form._widgets.interfaces.on('changed', lang.hitch(this, function() {
-				this._form._widgets['interfaces/primary']._loadValues();
+				this._form._widgets['interfaces/primary'].reloadDynamicValues();
 			}));
 
+			// FIXME: grid does not have .ready
 			// reload interfaces/primary when interfaces is ready
 //			this._form._widgets.interfaces.ready().then(lang.hitch(this, function() {
-//				this._form._widgets['interfaces/primary']._loadValues();
+//				this._form._widgets['interfaces/primary'].reloadDynamicValues();
 //			}));
 
 			this.addChild(this._form);
@@ -379,7 +380,17 @@ define([
 
 			array.forEach(_vals.interfaces, function(iface) {
 				var iname = iface['interface'];
-				if (iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') {
+				if ((iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type === 'manual') {
+					// The device is used in a bridge or bonding
+					vals['interfaces/' + iname + '/type'] = iface.type; //assert type == manual
+					vals['interfaces/' + iname + '/start'] = iface.start; // assert start == false
+
+				} else {
+					if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
+						// for bonding and bridging this must/should be set
+						// for eth and vlan we don't want to overwrite existing settings
+						vals['interfaces/' + iname + '/start'] = iface.start;
+					}
 					if (iface.ip4.length) {
 						// IPv4
 						array.forEach(iface.ip4, function(virtval, i) {

@@ -244,7 +244,7 @@ define([
 					name: 'interfaceType',
 					label: _('Interface type'),
 					type: ComboBox,
-//					value: 'eth',
+					value: 'eth', // FIXME: if eth is not possible use vlan
 					onChange: lang.hitch(this, function(interfaceType) {
 						if (interfaceType) {
 							var name = (interfaceType !== 'vlan' ? interfaceType : 'eth');
@@ -256,6 +256,7 @@ define([
 						}
 					}),
 					dynamicValues: lang.hitch(this, function() {
+						// TODO: lookup if interfaces are already in use
 						var d = types.interfaceValuesDict();
 						if (this.physical_interfaces.length < 2) {
 							// We can not use a bonding interface if we don't have two physical interfaces
