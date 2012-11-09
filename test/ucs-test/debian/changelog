@@ -1,3 +1,10 @@
+ucs-test (3.0.18-2) unstable; urgency=low
+
+  * Added test 50_samba/40password-policies (Bug #29053)
+  * optimized test 51_samba4/40password-policies (Bug #29057)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 09 Nov 2012 14:54:45 +0100
+
 ucs-test (3.0.18-1) unstable; urgency=low
 
   * Added test 51_samba4/42file_access_permissions (Bug #29057)
