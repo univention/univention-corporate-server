@@ -220,7 +220,7 @@ define([
 						label: _('Caching'),
 						description: _('Configure cache behaviour of host.'),
 						staticValues: types.dict2list(types.driverCache),
-						value: lang.getObject('domain.profileData.drivercache', false, this) || 'none'
+						value: lang.getObject('domain.profileData.drivercache', false, props) || 'none'
 					}]
 				}]
 			});
