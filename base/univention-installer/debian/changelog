@@ -1,3 +1,9 @@
+univention-installer (8.0.29-1) unstable; urgency=low
+
+  * fixed traceback in debug output if cdrom cannot be found (Bug #28512)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 09 Nov 2012 12:38:08 +0100
+
 univention-installer (8.0.28-2) unstable; urgency=low
 
   * fixed traceback at "boot partition missing" question dialog (Bug #28502)
