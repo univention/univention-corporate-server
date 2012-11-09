@@ -194,17 +194,17 @@ class UDM_ModuleCache( dict ):
 	lock = threading.Lock()
 
 	@LDAP_Connection
-	def get( self, name, template_object = None, ldap_connection = None, ldap_position = None ):
+	def get( self, name, template_object = None, force_reload = False, ldap_connection = None, ldap_position = None ):
 		UDM_ModuleCache.lock.acquire()
 		try:
-			if name in self:
+			if name in self and not force_reload:
 				return self[ name ]
 
 			self[ name ] = udm_modules.get( name )
 			if self[ name ] is None:
 				return None
 
-			udm_modules.init( ldap_connection, ldap_position, self[ name ], template_object )
+			udm_modules.init( ldap_connection, ldap_position, self[ name ], template_object, force_reload=force_reload )
 
 			return self[ name ]
 		finally:
@@ -215,19 +215,22 @@ _module_cache = UDM_ModuleCache()
 class UDM_Module( object ):
 	"""Wraps UDM modules to provie a simple access to the properties and functions"""
 
-	def __init__( self, module ):
+	def __init__( self, module, force_reload = False ):
 		"""Initializes the object"""
-		self.load( module )
+		self._initialized_with_module = module
+		self.load( force_reload=force_reload )
 		self.settings = UDM_Settings()
 
-	def load( self, module, template_object = None ):
+	def load( self, module = None, template_object = None, force_reload = False ):
 		"""Tries to load an UDM module with the given name. Optional a
 		template object is passed to the init function of the module. As
 		the initialisation of a module is expensive the function uses a
 		cache to ensure that each module is just initialized once."""
 		global _module_cache
 
-		self.module = _module_cache.get( module )
+		if module is None:
+			module = self._initialized_with_module
+		self.module = _module_cache.get( module, force_reload=force_reload )
 
 	def __getitem__( self, key ):
 		props = getattr( self.module, 'property_descriptions', {} )
@@ -273,7 +276,7 @@ class UDM_Module( object ):
 				for ival in value:
 					try:
 						subResults.append( property_obj.syntax.parse( ival ) )
-					except ( udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError ), e:
+					except TypeError as e:
 						raise UMC_OptionTypeError( _( 'The property %s has an invalid value: %s' ) % ( property_obj.short_description, str( e ) ) )
 				if subResults: # empty list represents removing of the attribute (handlers/__init__.py def diff)
 					MODULE.info( 'Setting of property ignored (is empty)' )
@@ -287,7 +290,7 @@ class UDM_Module( object ):
 					continue
 				try:
 					obj[ property_name ] = property_obj.syntax.parse( value )
-				except ( udm_errors.valueInvalidSyntax, udm_errors.valueError ), e:
+				except TypeError as e:
 					raise UMC_OptionTypeError( _( 'The property %s has an invalid value: %s' ) % ( property_obj.short_description, str( e ) ) )
 
 		return obj
