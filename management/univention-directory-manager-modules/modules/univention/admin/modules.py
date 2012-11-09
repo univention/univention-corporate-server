@@ -31,7 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, ldap, types, copy, locale
+import os
+import sys
+import ldap # CLEANUP: unneeded
+import types
+import copy
+import locale
+import imp
 import univention.debug as ud
 import univention.admin
 import univention.admin.uldap
@@ -91,7 +97,12 @@ def get(module):
 		return modules.get(module)
 	return module
 
-def init(lo, position, module, template_object=None):
+def init(lo, position, module, template_object=None, force_reload=False):
+	# you better do a reload if init is called a second time 
+	# especially because update_extended_attributes
+	# called twice will have side-effects
+	if force_reload:
+		imp.reload(module)
 	# reset property descriptions to defaults if possible
 	if hasattr(module,'default_property_descriptions'):
 		module.property_descriptions=copy.deepcopy(module.default_property_descriptions)
@@ -504,6 +515,8 @@ def update_extended_attributes(lo, module, position):
 					for ea_layout in properties4tabs[ tabname ]:
 						try:
 							if ea_layout.position <= tabPosition:
+								# CLEANUP, FIXME: pos is undefined!
+								# does not break because of except:
 								tabPosition = pos-1
 						except:
 							ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
@@ -521,10 +534,10 @@ def update_extended_attributes(lo, module, position):
 			overwriteTabList.append(tab)
 
 	if properties4tabs:
-		lastprio = -1000
+		lastprio = -1000 # CLEANUP: unneeded
 
 		# remove layout of tabs that have been marked for replacement
-		removetab = []
+		removetab = [] # CLEANUP: unneeded
 		for tab in module.layout:
 			if tab.label in overwriteTabList:
 				tab.layout = []

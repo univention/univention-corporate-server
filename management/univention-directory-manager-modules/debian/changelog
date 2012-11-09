@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.91-1) unstable; urgency=low
+
+  * Prepare module.init for being called twice (for Bug #26677)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 09 Nov 2012 11:52:32 +0100
+
 univention-directory-manager-modules (8.0.90-1) unstable; urgency=low
 
   * Do not use primaryGroup2 syntax, use GroupDN instead (Bug #26556)
