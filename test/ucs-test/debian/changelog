@@ -1,3 +1,9 @@
+ucs-test (3.0.18-1) unstable; urgency=low
+
+  * Added test 51_samba4/42file_access_permissions (Bug #29057)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 09 Nov 2012 12:57:28 +0100
+
 ucs-test (3.0.17-1) unstable; urgency=low
 
   * Added checks for the Administrator membership for AD and S4
