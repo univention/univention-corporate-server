@@ -217,19 +217,21 @@ define([
 						// This can also be 0 to create an interface which does not have an connection to "the outside" (e.g. wanted in virtualisation)
 						// There can exists an unlimited amount of interfaces
 						name: 'bridge_ports',
+						label: _('bridge ports'),
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
 							// mixin of physical interfaces and non physical which are not used by other interfaces yet
 							return this.filterInterfaces(this.getPhysicalInterfaces(false).concat(this.getAvailableInterfaces(false)));
 						})
 					}, {
-						name: 'forwarding_delay',
+						name: 'bridge_fd',
+						label: _('forwarding delay'),
 						type: NumberSpinner,
 						value: 0
 					}],
 					layout: [{
 						label: _('configure the bridge interface'),
-						layout: ['bridge_ports', 'forwarding_delay']
+						layout: ['bridge_ports', 'bridge_fd']
 					}]
 				}, {
 					// A bonding interface (fallback if one interface falls out)
@@ -355,7 +357,7 @@ define([
 
 		startup: function() {
 			this.inherited(arguments);
-			// hack a bug
+			// FIXME: remove this when the bug is fixed
 			this._pages.br._form._widgets.bridge_ports.startup();
 			this._pages.bond._form._widgets['bond-slaves'].startup();
 		},

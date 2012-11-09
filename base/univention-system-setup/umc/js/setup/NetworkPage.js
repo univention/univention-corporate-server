@@ -384,12 +384,27 @@ define([
 					// The device is used in a bridge or bonding
 					vals['interfaces/' + iname + '/type'] = iface.type; //assert type == manual
 					vals['interfaces/' + iname + '/start'] = iface.start; // assert start == false
+					// TODO: do we have to remove ip, etc. here?
+					vals['interfaces/' + iname + '/address'] = '';
+					vals['interfaces/' + iname + '/netmask'] = '';
 
 				} else {
 					if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
 						// for bonding and bridging this must/should be set
 						// for eth and vlan we don't want to overwrite existing settings
 						vals['interfaces/' + iname + '/start'] = iface.start;
+						if (iface.interfaceType === 'br') {
+							var bp = iface.bridge_ports.length ? iface.bridge_ports.join(' ') : 'none';
+							vals['interfaces/' + iname + '/options/1'] = 'bridge_ports ' + bp;
+							vals['interfaces/' + iname + '/options/2'] = 'bridge_fd ' + iface.bridge_fd;
+						} else if(iface.interfaceType === 'bond') {
+							vals['interfaces/' + iname + '/options/1'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
+							// FIXME TODO bond-primary ??
+							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
+							vals['interfaces/' + iname + '/options/3'] = 'mimmon ' + iface.mimmon;
+							vals['interfaces/' + iname + '/options/4'] = 'primary ' + iface.primary;
+						}
+
 					}
 					if (iface.ip4.length) {
 						// IPv4
