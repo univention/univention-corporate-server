@@ -45,6 +45,7 @@ import sys
 import apt
 import psutil
 import csv
+import imp
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
@@ -54,7 +55,6 @@ installer_i18n = Translation( 'installer', localedir = '/lib/univention-installe
 if not '/lib/univention-installer/' in sys.path:
 	sys.path.append('/lib/univention-installer/')
 import package_list
-import imp
 
 ucr=univention.config_registry.ConfigRegistry()
 ucr.load()

@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/aspect",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/Dialog",
@@ -49,7 +50,7 @@ define([
 	"umc/modules/setup/InterfaceGrid",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, on, Memory, Observable, Dialog, tools, dialog, store, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceWizard, InterfaceGrid, types, _) {
+], function(declare, lang, array, on, aspect, Memory, Observable, Dialog, tools, dialog, store, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceWizard, InterfaceGrid, types, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -167,10 +168,10 @@ define([
 
 			this.addChild(this._form);
 
-			// FIXME: this is a hack to fix grid width to 100%, is does not work perfect
-			this.on('show', lang.hitch(this, function() {
-				this._form._widgets.interfaces.resize();
-			}));
+			// FIXME: as the grid is a border container it has to be resized manually
+			this.own(aspect.after(this, 'resize', lang.hitch(this, function() {
+					this._form._widgets.interfaces.resize();
+			})));
 		},
 
 		postCreate: function() {
@@ -500,11 +501,11 @@ define([
 				description: _('Gateway (IPv6)'),
 				values: vals['ipv6/gateway']
 			}, {
-				variables: [/nameserver.*/],
+				variables: [(/nameserver.*/)],
 				description: _('Domain name server'),
 				values: vals['nameserver'].join(', ')
 			}, {
-				variables: [/dns\/forwarder.*/],
+				variables: [(/dns\/forwarder.*/)],
 				description: _('External name server'),
 				values: vals['dns/forwarder'].join(', ')
 			}, {
@@ -512,11 +513,11 @@ define([
 				description: _('HTTP proxy'),
 				values: vals['proxy/http']
 			}, {
-				variables: [/^interfaces\/[^_\/]+(_[0-9]+)?\/(?!ipv6).*/],
+				variables: [(/^interfaces\/[^_\/]+(_[0-9]+)?\/(?!ipv6).*/)],
 				description: _('IPv4 network devices'),
 				values: ipv4Str
 			}, {
-				variables: [/^interfaces\/[^\/]+\/ipv6\/.*\/(prefix|address)$/],
+				variables: [(/^interfaces\/[^\/]+\/ipv6\/.*\/(prefix|address)$/)],
 				description: _('IPv6 network devices'),
 				values: ipv6Str
 			}, {

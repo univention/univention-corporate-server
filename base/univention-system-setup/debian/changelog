@@ -1,3 +1,9 @@
+univention-system-setup (6.0.49-1) unstable; urgency=low
+
+  * Correctly resize the interface grid (Bug #29116)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 09 Nov 2012 15:18:59 +0100
+
 univention-system-setup (6.0.48-11) unstable; urgency=low
 
   * WIP: added support for brinding, bonding and vlan; Bug #28389
