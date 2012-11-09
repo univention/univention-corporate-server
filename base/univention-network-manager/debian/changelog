@@ -1,3 +1,9 @@
+univention-network-manager (4.0.7-2) unstable; urgency=low
+
+  * Recommend vlan, bridge, bonding tools (Bug #29115)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Nov 2012 15:11:59 +0100
+
 univention-network-manager (4.0.7-1) unstable; urgency=low
 
   * Don't use 169.254.0.x for the link local address (Bug #28468)
