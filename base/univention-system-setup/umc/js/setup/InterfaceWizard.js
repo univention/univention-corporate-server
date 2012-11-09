@@ -281,13 +281,19 @@ define([
 							id: 6,
 							label: 'balance-alb (6)'
 						}]
+					}, {
+						name: 'miimon',
+						label: _('MII link monitoring frequency'),
+						type: NumberSpinner,
+						constraints: { min: 0 },
+						value: 100
 					}],
 					layout: [{
 						label: _('configure the bonding interface'),
 						layout: ['bond-slaves', 'primary']
 					}, {
 						label: _('advanced configuration'),
-						layout: ['bond-mode']
+						layout: ['bond-mode', 'miimon']
 					}]
 				}]
 			});

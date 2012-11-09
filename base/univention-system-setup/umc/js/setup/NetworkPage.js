@@ -401,7 +401,7 @@ define([
 							vals['interfaces/' + iname + '/options/1'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
 							// FIXME TODO bond-primary ??
 							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
-							vals['interfaces/' + iname + '/options/3'] = 'mimmon ' + iface.mimmon;
+							vals['interfaces/' + iname + '/options/3'] = 'miimon ' + iface.miimon;
 							vals['interfaces/' + iname + '/options/4'] = 'primary ' + iface.primary;
 						}
 
