@@ -1,3 +1,9 @@
+univention-installer (8.0.30-1) unstable; urgency=low
+
+  * fixed interactive auto partitioning (Bug #28372)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 09 Nov 2012 15:43:56 +0100
+
 univention-installer (8.0.29-1) unstable; urgency=low
 
   * fixed traceback in debug output if cdrom cannot be found (Bug #28512)

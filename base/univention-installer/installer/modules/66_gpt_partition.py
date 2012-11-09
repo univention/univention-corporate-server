@@ -1962,13 +1962,13 @@ class object(content):
 				parttype='only_mount'
 				if lv['touched']:
 					parttype = 'LVMLV'
-				flag='None'
+				flag=['None']
 				tmpresult.append( ("LVM", lv['dev'], parttype, format, fstype, start, end, mpoint, flag) )
 		# sort partitions by mountpoint
 		i = 0
 		tmpresult.sort(lambda x,y: cmp(x[7], y[7]))  # sort by mountpoint
 		for (parttype, device, parttype, format, fstype, start, end, mpoint, flag) in tmpresult:
-			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sMiB %sMiB %s %s" % (parttype, device, parttype, format, fstype, int(B2MiB(start)), int(B2MiB(end)), mpoint, ','.join(flag))
+			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sMiB %sMiB %s %s" % (parttype, device, parttype, format, fstype, int(B2MiB(start)), int(B2MiB(end)), mpoint, flag)
 			i += 1
 		return result
 
@@ -2121,6 +2121,7 @@ class object(content):
 							 'flags': [PARTFLAG_EFI],
 							 'format': 1,
 							 'mpoint': MOUNTPOINT_EFI,
+							 'fstype': FSTYPE_EFI,
 							 'msg': _('Not enough disk space found for EFI system partition!'),
 							 }
 			else:
@@ -2129,6 +2130,7 @@ class object(content):
 							 'flags': [PARTFLAG_BIOS_GRUB],
 							 'format': 0,
 							 'mpoint': '',
+							 'fstype': '',
 							 'msg': _('Not enough disk space found for BIOS boot partition!'),
 							 }
 
@@ -2147,7 +2149,7 @@ class object(content):
 
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,label):
-				self.part_create_generic(targetdisk, targetpart, GRUBPART['mpoint'], GRUBPART['size'], '', PARTTYPE_USED, GRUBPART['flags'], GRUBPART['format'], '')
+				self.part_create_generic(targetdisk, targetpart, GRUBPART['mpoint'], GRUBPART['size'], GRUBPART['fstype'], PARTTYPE_USED, GRUBPART['flags'], GRUBPART['format'], '')
 			else:
 				msglist = [ GRUBPART['msg'],
 							_('Auto partitioning aborted.') ]
