@@ -230,11 +230,15 @@ define([
 								type: Text,
 								name: 'help_text',
 								content: '<p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
-								'<p>' + _('For the installation of applications an updated UCS license key with a so-called key identification (Key ID) is required. If your system does not already have such a key, you are asked to request an updated license key directly from Univention upon the first installation of an application. Afterwards the new key can be applied.') + '</p>' +
-								'<p>' + _('Univention always receives a notification upon installation and uninstallation of an application with Univention App Center together with the Key ID. The Key ID is required for the analysis about the usage of applications in Univention App Center and will only be saved and processed by Univention and not provided to a third party.') + '</p>' +
-								'<p>' + _('Depending on the guideline of the respective application vendor notifications will be sent to the vendor upon installation or uninstallation of the application together with the registered email address of the user. An appropriate note can be found in the description of every application.') + '</p>' +
-								'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes  of the respective vendor and is not part of Univention App Center.') + '</p>' +
-								'<p>' + lang.replace(_('You will not see this message again if you let "{0}" unchecked.'), [_("Show this message again")]) + '</p>'
+								'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
+								'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
+									'<ul>' +
+										'<li>' + _('Name of the installed application') + '</li>' +
+										'<li>' + _('Registered email address') + '</li>' +
+									'</ul>' +
+								_('The description of every application includes a respective indication for such cases.') + '</p>' +
+								'<p' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
+								'<p' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>'
 							},
 							{
 								type: CheckBox,

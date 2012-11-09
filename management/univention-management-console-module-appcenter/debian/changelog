@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.66-1) unstable; urgency=low
+
+  * Adapted texts of app center help page (Bug #29081)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 09 Nov 2012 12:52:16 +0100
+
 univention-management-console-module-appcenter (2.0.65-1) unstable; urgency=low
 
   * Optimize number of required updates during install (Bug #28718)
