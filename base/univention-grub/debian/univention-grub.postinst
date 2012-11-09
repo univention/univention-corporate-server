@@ -94,8 +94,7 @@ if [ "$1" = configure -a -z "$2" ];  then
 	else
 		# EFI found
 		/usr/sbin/grub-install
-		( cd /boot/grub ; grub-mkimage -d /usr/lib/grub/x86_64-efi -O x86_64-efi -p "" -o grub_all.efi part_gpt fat iso9660 udf normal chain linux ls search search_fs_file search_fs_uuid search_label help boot configfile echo efi_gop )
-		efibootmgr -c -l grub.efi -L "Univention Corporate Server"
+		efibootmgr -c -l "\\grub.efi" -L "Univention Corporate Server"
 	fi
 	update-grub
 	# grub/boot is set in the installer and need for the initial passing of
