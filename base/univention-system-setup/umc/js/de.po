@@ -824,9 +824,8 @@ msgstr ""
 "Zeitpunkt mit dem UMC-Modul \"Domänenbeitritt\" hinzufügen."
 
 #: umc/js/setup/InterfaceWizard.js:287
-#, fuzzy
-msgid "advanced settings"
-msgstr "Basis-Einstellungen"
+msgid "advanced configuration"
+msgstr "erweiterte Konfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:284
 msgid "configure the bonding interface"
