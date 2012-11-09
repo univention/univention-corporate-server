@@ -72,9 +72,9 @@ define([
 					name: 'information',
 					label: _('Information'),
 					formatter: function(iface) {
+						// This value 'iface' is a hack. We do not know about which identifier this row has so we added the whole information into iface.information
 						var back = '';
-						// This value is a hack. We do not know about which identifier this row has so we added the whole information into iface.information
-						if (iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') {
+						if (((iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type !== 'manual') || (iface.interfaceType === 'bond' || iface.interfaceType === 'br')) {
 							var formatIp = function(ips) {
 								return array.map(ips, function(i) { return i[0] + '/' + types.convertNetmask(i[1]);}).join(', ');
 							};
@@ -89,8 +89,9 @@ define([
 							} else if (iface.ip6.length) {
 								back += ', <br>' + formatIp(iface.ip6);
 							}
-						} else if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
-							back = _('Interfaces') + ': ' + iface.interfaces.join(', ');
+						}
+						if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
+							back += '<br>' + _('Interfaces') + ': ' + iface[iface.interfaceType === 'br' ? 'bridge_ports' : 'bond-slaves'].join(', ');
 						}
 						return back;
 					},
@@ -145,9 +146,15 @@ define([
 		_getValueAttr: function() { return this.getAllItems(); },
 
 		_setValueAttr: function(values) {
+			
+		},
+
+		setInitialValue: function(values) {
 			// TODO: only on set initial value, i think there was something in the form which does that...
 			tools.forIn(values, function(id, value) {
-				this.moduleStore.add(lang.mixin({'interface': id}, value));
+				try {
+					this.moduleStore.add(lang.mixin({'interface': id}, value));
+				} catch(e) {}
 			}, this);
 			// TODO: this method should delete the whole grid items and add the items from values
 		},
@@ -170,12 +177,12 @@ define([
 				if (values.interfaceType === 'eth') {
 
 				} else if (values.interfaceType === 'vlan') {
-					// The interface is build from interface:vlan_id
-					values['interface'] = values['interface'] + ':' + String(values.vlan_id);
+					// The interface is build from interface.vlan_id
+					values['interface'] = values['interface'] + '.' + String(values.vlan_id);
 
 				} else if (values.interfaceType === 'bond') {
 					// disable the interfaces which are used by this interface
-					this.setDisabledItem(values.interfaces, true);
+					this.setDisabledItem(values['bond-slaves'], true);
 				} else if (values.interfaceType === 'br') {
 
 				}
@@ -220,7 +227,7 @@ define([
 					name: 'interfaceType',
 					label: _('Interface type'),
 					type: ComboBox,
-					value: 'eth',
+//					value: 'eth',
 					onChange: lang.hitch(this, function(interfaceType) {
 						if (interfaceType) {
 							var name = (interfaceType !== 'vlan' ? interfaceType : 'eth');
@@ -231,7 +238,25 @@ define([
 							form.getWidget('interface').set('interface', name + String(num));
 						}
 					}),
-					staticValues: types.interfaceValues
+					dynamicValues: lang.hitch(this, function() {
+						var d = types.interfaceValuesDict();
+						if (this.physical_interfaces.length < 2) {
+							// We can not use a bonding interface if we don't have two physical interfaces
+							delete d.bond;
+						}
+						if (array.every(this.physical_interfaces, lang.hitch(this, function(iface) {
+							var ifaces = this.get('value');
+							return ifaces.length !== 0 ? array.some(ifaces, function(val) { return iface === val['interface']; }) : false;
+						}))) {
+							// if all physical interfaces are configured we can not configure another
+							delete d.eth;
+						}
+						var arr = [];
+						tools.forIn(d, function(k, v) {
+							arr.push(v);
+						});
+						return arr;
+					})
 				}, {
 					name: 'interface',
 					label: _('Interface'),
@@ -241,7 +266,7 @@ define([
 						var interfaceType = form.getWidget('interfaceType').get('value');
 						if (interfaceType === 'eth') {
 							var available = this.get('value');
-							return array.filter(this.physical_interfaces, function(_iface) { return array.some(available, function(item) { return item['interface'] !== _iface; }); });
+							return array.filter(this.physical_interfaces, function(_iface) { return array.every(available, function(item) { return item['interface'] !== _iface; }); });
 						} else if (interfaceType === 'vlan') {
 							return this.physical_interfaces;
 						} else if(interfaceType === 'br' || interfaceType === 'bond' ) {
@@ -297,16 +322,17 @@ define([
 				_cleanup();
 			});
 	
-			props = {
+			var propvals = {
 				values: props,
 				'interface': props['interface'],
 				interfaceType: props.interfaceType,
 				physical_interfaces: this.physical_interfaces,
 				available_interfaces: this.get('value'),
+				create: props.create,
 				onCancel: _cleanup,
 				onFinished: _finished
 			};
-			wizard = new InterfaceWizard(props);
+			wizard = new InterfaceWizard(propvals);
 
 			_dialog = new Dialog({
 				title: props.create ? _('Add a network interface') : _('Edit a network interface'),
@@ -322,7 +348,7 @@ define([
 				var item = this.moduleStore.get(iid);
 				if (item.interfaceType === 'bond') {
 					// enable the interfaces which were blocked by this interface
-					this.setDisabledItem(item.interfaces, false);
+					this.setDisabledItem(item['bond-slaves'], false);
 				}
 				this.moduleStore.remove(iid);
 			}, this);

@@ -102,6 +102,23 @@ define([
 						size: 'Half',
 						label: _('Interface')
 					}, {
+						name: 'type',
+						type: ComboBox,
+						visible: false,
+						value: '',
+						staticValues: [{
+							id: '',
+							label: ''
+						}, {
+							id: 'manual',
+							label: 'manual'
+						}]
+					}, {
+						name: 'start', // Autostart the interface?
+						type: CheckBox,
+						value: true,
+						visible: false
+					}, {
 						type: MultiInput,
 						name: 'ip4',
 						label: '',
@@ -200,7 +217,7 @@ define([
 						// defines which interfaces should be "bridged" together.
 						// This can also be 0 to create an interface which does not have an connection to "the outside" (e.g. wanted in virtualisation)
 						// There can exists an unlimited amount of interfaces
-						name: 'interfaces',
+						name: 'bridge_ports',
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
 							// mixin of physical interfaces and non physical
@@ -219,7 +236,7 @@ define([
 					}],
 					layout: [{
 						label: _('configure the bridge interface'),
-						layout: ['interfaces', 'forwarding_delay']
+						layout: ['bridge_ports', 'forwarding_delay']
 					}]
 				}, {
 					// A bonding interface (fallback if one interface falls out)
@@ -227,7 +244,7 @@ define([
 					name: 'bond',
 					headerText: _('Bond configuration'),
 					widgets: [{
-						name: 'interfaces',
+						name: 'bond-slaves',
 						label: _('physical interfaces used for the bond interface'),
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
@@ -238,12 +255,12 @@ define([
 						name: 'primary',
 						label: 'primary interface',
 						type: ComboBox,
-						depends: ['interfaces'],
+						depends: ['bond-slaves'],
 						dynamicValues: lang.hitch(this, function() {
 							return this.getPhysicalInterfaces(true);
 						})
 					}, {
-						name: 'mode',
+						name: 'bond-mode',
 						label: _('Mode'),
 						type: ComboBox,
 						staticValues: [{
@@ -271,7 +288,7 @@ define([
 					}],
 					layout: [{
 						label: _('configure the bond interface'),
-						layout: ['interfaces', 'primary', 'mode']
+						layout: ['bond-slaves', 'primary', 'bond-mode']
 					}]
 				}]
 			});
@@ -337,8 +354,8 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 			// hack a bug
-			this._pages.br._form._widgets.interfaces.startup();
-			this._pages.bond._form._widgets.interfaces.startup();
+			this._pages.br._form._widgets.bridge_ports.startup();
+			this._pages.bond._form._widgets['bond-slaves'].startup();
 		},
 
 		canFinish: function(values) {
@@ -368,30 +385,33 @@ define([
 		},
 
 		next: function(pageName) {
-//			if (!this.interfaceType) {
-//				// if no interface type is set it have to be set
-//				return 'interfaceType';
-//			}
-			if (this.interfaceType === 'vlan') {
-				// The page for vlan interfaces is the same as normal eth interfaces
+			if (pageName === null) {
+				if (this.interfaceType === 'vlan') {
+					// The page for vlan interfaces is the same as normal eth interfaces
+					return 'eth';
+				}
+				return this.interfaceType;
+			} else if(pageName === 'br' || pageName === 'bond') {
 				return 'eth';
 			}
+		},
+
+		previous: function(pageName) {
 			return this.interfaceType;
 		},
 
-//		previous: function(pageName) {
-//			return 'interfaceType';
-////			return this.interfaceType ? 'interfaceType' /*should be impossible*/ : 'interfaceType';
-//		},
-
 		hasPrevious: function(currentPage) {
-			return false;
-//			return this._create ? currentPage !== 'interfaceType' : false;
+			if (currentPage === null) {
+				return false;
+			}
+			return (currentPage === 'br' || currentPage === 'bond');
 		},
 
 		hasNext: function(currentPage) {
-			return false;
-//			return this._create ? currentPage == 'interfaceType': false;
+			if (currentPage === null) {
+				return true;
+			}
+			return (currentPage === 'br' || currentPage === 'bond');
 		},
 
 		_dhcpQuery: function(interfaceName) {

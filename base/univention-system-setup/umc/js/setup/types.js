@@ -43,9 +43,9 @@ define([
 		},
 		interfaceTypes: {
 			'eth': _('Ethernet'),
+			'vlan': _('Virtual LAN'),
 			'bond': _('Bonding'),
-			'br': _('Bridge'),
-			'vlan': _('Virtual LAN')
+			'br': _('Bridge')
 		},
 		getTypeByDevice: function(device) { // TODO: rename
 			var key = /^([^\d]+)\d$/.exec(device);
@@ -55,15 +55,27 @@ define([
 			var num = /^[^\d]+(\d+)$/.exec(device);
 			return num ? num[1] : device;
 		},
-		interfaceValues: []
+		interfaceValues: function() {
+			var arr = [];
+			tools.forIn(self.interfaceTypes, function(id, label) {
+				arr.push({
+					id: id,
+					label: label
+				});
+			});
+			return arr;
+		},
+		interfaceValuesDict: function() {
+			var d = {};
+			tools.forIn(self.interfaceTypes, function(id, label) {
+				d[id] = {
+					id: id,
+					label: label
+				};
+			});
+			return d;
+		}
 	};
-
-	tools.forIn(self.interfaceTypes, function(id, label) {
-		self.interfaceValues.push({
-			id: id,
-			label: label
-		});
-	});
 
 	return self;
 });

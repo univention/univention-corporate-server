@@ -356,6 +356,7 @@ define([
 			this._form.getWidget('nameserver').set('visible', ! ( this.wizard_mode && this._currentRole == 'domaincontroller_master' ) );
 			// set values
 			this._form.setFormValues(vals);
+			this._form._widgets.interfaces.setInitialValue(vals.interfaces);
 
 			this.clearNotes();
 		},
