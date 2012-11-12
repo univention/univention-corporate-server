@@ -1,6 +1,7 @@
 ucs-test (3.0.19-1) unstable; urgency=low
 
   * 00/25: Ignore permissions of socket files (Bug #23527)
+  * 03/6[02]: Fix shell quoting test (Bug #27836)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 12 Nov 2012 10:37:19 +0100
 

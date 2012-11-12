@@ -52,7 +52,8 @@ fi
 echo "Checking quoting..."
 "${UCR}" --keys-only search | while read key
 do
-	key_val="$("${UCR}" shell "$key")"
+	case "$key" in *'.*'*) continue ;; esac
+	key_val="$("${UCR}" shell "^$key\$")"
 	eval "value=${key_val#*=}"
 	[ "${value}" = "$("${UCR}" get "$key")" ] || {
 		echo "$key=${value}" >&2
