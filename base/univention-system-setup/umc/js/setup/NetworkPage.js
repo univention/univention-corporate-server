@@ -32,29 +32,22 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
-	"dojo/aspect",
-	"dojo/store/Memory",
-	"dojo/store/Observable",
-	"dijit/Dialog",
 	"umc/tools",
 	"umc/dialog",
-	"umc/store",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/MultiInput",
+	"umc/widgets/MultiSelect",
 	"umc/widgets/Form",
-	"umc/modules/setup/InterfaceWizard",
-	"umc/modules/setup/InterfaceGrid",
-	"umc/modules/setup/types",
+	"umc/widgets/Button",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, on, aspect, Memory, Observable, Dialog, tools, dialog, store, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceWizard, InterfaceGrid, types, _) {
+], function(declare, lang, array, tools, dialog, Page, StandbyMixin, TextBox, ComboBox, MultiInput, MultiSelect, Form, Button, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
-		//		in order to edit network interfaces.
+		//		in order to edit UDM objects.
 
 		// system-setup-boot
 		wizard_mode: false,
@@ -63,7 +56,6 @@ define([
 		local_mode: false,
 
 		umcpCommand: tools.umcpCommand,
-		moduleStore: null,
 
 		// internal reference to the formular containing all form widgets of an UDM object
 		_form: null,
@@ -71,40 +63,97 @@ define([
 		// dicts of the original IPv4/v6 values
 		_orgValues: null,
 
+		_noteShowed: false,
+
 		_currentRole: null,
 
-		physical_interfaces: [],
-
 		postMixInProperties: function() {
+			this.inherited(arguments);
+
 			this.title = _('Network');
 			this.headerText = _('Network settings');
 			this.helpText = _('In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as name servers, gateways, and HTTP proxies may be specified.');
-
-			this.moduleStore = new Observable(new Memory({idProperty: 'interface'}));
-
-			this.inherited(arguments);
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			var widgets = [{
-				type: InterfaceGrid,
-				name: 'interfaces',
-				label: '',
-				moduleStore: this.moduleStore
+				type: MultiInput,
+				name: 'interfaces_ipv4',
+				label: '', //_('Interfaces'),
+				umcpCommand: this.umcpCommand,
+				subtypes: [{
+					type: ComboBox,
+					label: _('Interface'),
+					dynamicValues: lang.hitch(this, function() {
+						return this.umcpCommand('setup/net/interfaces').then(lang.hitch(this, function(data) {
+							// for ipv4 interfaces, we can have a virtual one, as well
+							var list = [];
+							array.forEach(data.result, function(idev) {
+								var idev2 = {
+									id: idev + '_virtual',
+									label: idev + ' (' + _('virtual') + ')'
+								};
+								list.push(idev, idev2);
+							}, this);
+							return list;
+						}));
+					}),
+					sizeClass: 'OneThird'
+				}, {
+					type: TextBox,
+					label: _('IPv4 address'),
+					sizeClass: 'Half'
+				}, {
+					type: TextBox,
+					label: _('Netmask'),
+					sizeClass: 'Half'
+				}, {
+					type: ComboBox,
+					label: _('Dynamic (DHCP)'),
+					staticValues: [
+						{ id: 'false', label: _('Deactivated') },
+						{ id: 'true', label: _('Activated') }
+					],
+					sizeClass: 'OneThird'
+				}, {
+					type: Button,
+					label: 'DHCP query',
+					callback: lang.hitch(this, '_dhcpQuery')
+				}]
 			}, {
-				type: ComboBox,
-				name: 'interfaces/primary',
-				label: _('primary network interface'),
-				depends: ['interfaces', 'gateway'],
-				dynamicValues: lang.hitch(this, function() {
-					// FIXME: howto trigger dynamicValues update
-					// The primary interface can be of any type
-					return array.map(this._form._widgets.interfaces.get('value'), function(item) {
-						return {id: item['interface'], label: item['interface']};
-					});
-				})
+				type: MultiInput,
+				name: 'interfaces_ipv6',
+				label: '', //_('Interfaces'),
+				umcpCommand: this.umcpCommand,
+				subtypes: [{
+					type: ComboBox,
+					label: _('Interface'),
+					dynamicValues: 'setup/net/interfaces',
+					sizeClass: 'OneThird'
+				}, {
+					type: TextBox,
+					label: _('IPv6 address'),
+					sizeClass: 'One'
+				}, {
+					type: TextBox,
+					label: _('IPv6 prefix'),
+					sizeClass: 'OneThird'
+				}, {
+					type: TextBox,
+					label: _('Identifier'),
+					sizeClass: 'OneThird'
+
+				}]
+			}, {
+				type: MultiSelect,
+				name: 'dynamic_interfaces_ipv6',
+				label: _('Autoconfiguration (SLAAC)'),
+				umcpCommand: this.umcpCommand,
+				dynamicValues: 'setup/net/interfaces',
+				autoHeight: true,
+				sizeClass: 'OneThird'
 			}, {
 				type: TextBox,
 				name: 'gateway',
@@ -132,11 +181,14 @@ define([
 			}];
 
 			var layout = [{
-				label: _('IP network devices'),
-				layout: ['interfaces']
+				label: _('IPv4 network devices'),
+				layout: ['interfaces_ipv4']
+			}, {
+				label: _('IPv6 network devices'),
+				layout: ['interfaces_ipv6', 'dynamic_interfaces_ipv6']
 			}, {
 				label: _('Global network settings'),
-				layout: [ ['gateway', 'ipv6/gateway'], 'interfaces/primary', 'nameserver', 'dns/forwarder', 'proxy/http']
+				layout: [ ['gateway', 'ipv6/gateway'], 'nameserver', 'dns/forwarder', 'proxy/http']
 			}];
 
 			this._form = new Form({
@@ -146,56 +198,102 @@ define([
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
-			// only show notes in an joined system in productive mode
-			if (!this.wizard_mode) {
-				// show a note if interfaces changes
-				this.own(on.once(this._form._widgets.interfaces, 'changed', lang.hitch(this, function() {
-					// TODO: only show it when IP changes??
-					this.addNote(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
+			// add onChange handlers that show the note
+			array.forEach(['interfaces_ipv4', 'interfaces_ipv6'], function(iname) {
+				var iwidget = this._form.getWidget(iname);
+				this.own(iwidget.watch('value', lang.hitch(this, function() {
+					if (iwidget.focused) {
+						this._showNote();
+					}
 				})));
-			}
-
-			// update interfaces/primary when there are changes on the interfaces
-			this._form._widgets.interfaces.on('changed', lang.hitch(this, function() {
-				this._form._widgets['interfaces/primary'].reloadDynamicValues();
-			}));
-
-			// FIXME: grid does not have .ready
-			// reload interfaces/primary when interfaces is ready
-//			this._form._widgets.interfaces.ready().then(lang.hitch(this, function() {
-//				this._form._widgets['interfaces/primary'].reloadDynamicValues();
-//			}));
-
+			}, this);
+			
 			this.addChild(this._form);
-
-			// FIXME: as the grid is a border container it has to be resized manually
-			this.own(aspect.after(this, 'resize', lang.hitch(this, function() {
-					this._form._widgets.interfaces.resize();
-			})));
 		},
 
-		postCreate: function() {
-			this.inherited(arguments);
-			// The grid contains changes if a DHCP request was made
-			this._form._widgets.interfaces.watch('gateway', lang.hitch(this, function(name, old, value) {
-				// set gateway from dhcp request
-				this._form._widgets.gateway.set('value', value);
-			}));
-			this._form._widgets.interfaces.watch('nameserver', lang.hitch(this, function(name, old, value) {
+		_showNote: function() {
+			if (!this._noteShowed) {
+				this._noteShowed = true;
+				this.addNote(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
+			}
+		},
+
+		_dhcpQuery: function(item, idx) {
+			// switch on standby animation
+			this.standby(true);
+
+			// make sure we have an interface selected
+			if (!item || !item[0] || typeof item[0] != "string") {
+				dialog.alert(_('Please choose a network device before querying a DHCP address.'));
+				this.standby(false);
+				return;
+			}
+			if (item[0].indexOf('_virtual') >= 0) {
+				dialog.alert(_('A virtual network device cannot be used for DHCP.'));
+				this.standby(false);
+				return;
+			}
+			this.umcpCommand('setup/net/dhclient', {
+				'interface': item[0]
+			}).then(lang.hitch(this, function(data) {
+				// switch off standby animation
+				this.standby(false);
+
+				var result = data.result;
+				var netmask = result[item[0] + '_netmask'];
+				var address = result[item[0] + '_ip'];
+				if (!address && !netmask) {
+					dialog.alert(_('DHCP query failed.'));
+					return;
+				}
+
+				// set the queried IP and netmask
+				var devicesWidget = this._form.getWidget('interfaces_ipv4');
+				var val = devicesWidget.get('value');
+				if (address) {
+					val[idx][1] = address;
+				}
+				if (netmask) {
+					val[idx][2] = netmask;
+				}
+				// set "Dynamic (DHCP)" to be false if it was not set
+				if ( val[idx][3] === '') {
+					val[idx][3] = 'false';
+				}
+
+				// set gateway
+				devicesWidget.set('value', val);
+				if (result.gateway) {
+					var gatewayWidget = this._form.getWidget('gateway');
+					gatewayWidget.set('value', result.gateway);
+				}
+
 				// read nameserver or dns/forwarder
 				var nameserverWidget;
 				if (this._form.getWidget('nameserver').get('visible')) {
 					nameserverWidget = this._form.getWidget('nameserver');
 				} else {
-					// if nameserver is not visible, set dns/forwarder
+					// if nameserver is not visable, set dns/forwarder
 					nameserverWidget = this._form.getWidget('dns/forwarder');
 				}
-				// set nameserver from dhcp request
-				nameserverWidget.set('value', value);
+				val = nameserverWidget.get('value');
+				if (result.nameserver_1) {
+					val[0] = result.nameserver_1;
+				}
+				if (result.nameserver_2) {
+					val[1] = result.nameserver_2;
+				}
+				if (result.nameserver_3) {
+					val[2] = result.nameserver_3;
+				}
+				nameserverWidget.set('value', val);
+
+			}), lang.hitch(this, function() {
+				// switch off standby animation
+				this.standby(false);
 			}));
 		},
 
-		// TODO: reimplement
 		sortInterfaces: function(x, y) {
 			if (x.id != y.id) {
 				// this is for ipv6 types, the id 'default' should be listed as first device
@@ -219,10 +317,10 @@ define([
 			}
 			return 0;
 		},
-
+			
 		setValues: function(_vals) {
 			// save a copy of all original values that may be lists
-			var r = /^(interfaces\/.*|nameserver[1-3]|dns\/forwarder[1-3])$/;
+			var r = /^(interfaces\/[^\/]+\/|nameserver[1-3]|dns\/forwarder[1-3])$/;
 			this._orgValues = {};
 			tools.forIn(_vals, function(ikey, ival) {
 				if (r.test(ikey)) {
@@ -230,12 +328,9 @@ define([
 				}
 			}, this);
 
-			// set all available interfaces
-			this.physical_interfaces = _vals.interfaces;
-
 			// copy values that do not change in their name
 			var vals = {};
-			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http', 'interfaces/primary'], function(ikey) {
+			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http'], function(ikey) {
 				vals[ikey] = _vals[ikey];
 			});
 
@@ -280,6 +375,17 @@ define([
 				sortedIpv4.push(ival);
 			});
 
+			// translate to our datastructure
+			vals.interfaces_ipv4 = [];
+			array.forEach(sortedIpv4, function(idev) {
+				vals.interfaces_ipv4.push([
+					idev.virtual ? idev.device + '_virtual' : idev.device,
+					idev.address || '',
+					idev.netmask || '',
+					idev.type == 'dynamic' || idev.type == 'dhcp' ? 'true' : 'false'
+				]);
+			});
+
 			// copy ipv6 interfaces
 			r = /interfaces\/([^\/]+)\/ipv6\/([^\/]+)\/(.+)/;
 			var ipv6 = {};
@@ -302,29 +408,13 @@ define([
 			tools.forIn(ipv6, function(ikey, ival) {
 				sortedIpv6.push(ival);
 			});
-//			sortedIpv6.sort(this.sortInterfaces);
+			sortedIpv6.sort(this.sortInterfaces);
 
 			// translate to our datastructure
-			var interfaces = {};
-			vals.ip4dynamic = false;
-			array.forEach(sortedIpv4, function(idev) {
-				interfaces[idev.device] = interfaces[idev.device] || { 'interface': idev.device, interfaceType: types.getTypeByDevice(idev.device) };
-				if (!idev.virtual) {
-					interfaces[idev.device].ip4dynamic = (idev.type == 'dynamic' || idev.type == 'dhcp');
-				}
-				interfaces[idev.device].ip4 = interfaces[idev.device].ip4 || [];
-				interfaces[idev.device].ip4.push([
-					idev.address || '',
-					idev.netmask || ''
-				]);
-				interfaces[idev.device].ip6 = [];
-			});
-
-			// translate to our datastructure
+			vals.interfaces_ipv6 = [];
 			array.forEach(sortedIpv6, function(idev) {
-				interfaces[idev.device] = interfaces[idev.device] || {};
-				interfaces[idev.device].ip6 = interfaces[idev.device].ip6 || [];
-				interfaces[idev.device].ip6.push([
+				vals.interfaces_ipv6.push([
+					idev.device,
 					idev.address || '',
 					idev.prefix || '',
 					idev.id || ''
@@ -333,21 +423,13 @@ define([
 
 			// dynamic ipv6 interfaces
 			r = /interfaces\/([^\/]+)\/ipv6\/acceptRA/;
+			vals.dynamic_interfaces_ipv6 = [];
 			array.forEach(sortedKeys, function(ikey) {
 				var match = ikey.match(r);
-				if (match) {
-					interfaces[match[1]].ip6dynamic = tools.isTrue(_vals[ikey]);
+				if (tools.isTrue(_vals[ikey]) && match) {
+					vals.dynamic_interfaces_ipv6.push(match[1]);
 				}
 			});
-
-			tools.forIn(interfaces, function(device) {
-				// hack it! the formatter does not know about itself
-				interfaces[device].information = interfaces[device];
-			});
-
-			vals.interfaces = interfaces;
-			// set all physical interfaces for the grid here, the info does not exists on grid creation
-			this._form._widgets.interfaces.set('physical_interfaces', this.physical_interfaces);
 
 			// only show forwarder for master, backup, and slave
 			this._currentRole = _vals['server/role'];
@@ -358,17 +440,18 @@ define([
 			this._form.getWidget('nameserver').set('visible', ! ( this.wizard_mode && this._currentRole == 'domaincontroller_master' ) );
 			// set values
 			this._form.setFormValues(vals);
-			this._form._widgets.interfaces.setInitialValue(vals.interfaces);
 
+			// only show notes in an joined system in productive mode
+			this._noteShowed = this.wizard_mode;
 			this.clearNotes();
 		},
 
 		getValues: function() {
-			var _vals = this._form.get('value');
+			var _vals = this._form.gatherFormValues();
 			var vals = {};
 
 			// copy values that do not change in their name
-			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http', 'interfaces/primary'], function(ikey) {
+			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http'], function(ikey) {
 				vals[ikey] = _vals[ikey];
 			});
 
@@ -379,68 +462,46 @@ define([
 				});
 			});
 
-			array.forEach(_vals.interfaces, function(iface) {
-				var iname = iface['interface'];
-				if ((iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type === 'manual') {
-					// The device is used in a bridge or bonding
-					vals['interfaces/' + iname + '/type'] = iface.type; //assert type == manual
-					vals['interfaces/' + iname + '/start'] = iface.start; // assert start == false
-					// TODO: do we have to remove ip, etc. here?
-					vals['interfaces/' + iname + '/address'] = '';
-					vals['interfaces/' + iname + '/netmask'] = '';
-
-				} else {
-					if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
-						// for bonding and bridging this must/should be set
-						// for eth and vlan we don't want to overwrite existing settings
-						vals['interfaces/' + iname + '/start'] = iface.start;
-						if (iface.interfaceType === 'br') {
-							var bp = iface.bridge_ports.length ? iface.bridge_ports.join(' ') : 'none';
-							vals['interfaces/' + iname + '/options/1'] = 'bridge_ports ' + bp;
-							vals['interfaces/' + iname + '/options/2'] = 'bridge_fd ' + iface.bridge_fd;
-						} else if(iface.interfaceType === 'bond') {
-							vals['interfaces/' + iname + '/options/1'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
-							// FIXME TODO bond-primary ??
-							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
-							vals['interfaces/' + iname + '/options/3'] = 'miimon ' + iface.miimon;
-							vals['interfaces/' + iname + '/options/4'] = 'primary ' + iface.primary;
-						}
-
+			// copy ipv4 interfaces
+			var iipv4Virtual = {};  // counter for the virtual interfaces
+			array.forEach(_vals.interfaces_ipv4, function(ival) {
+				var idev = ival[0];
+				var iaddress = ival[1];
+				var imask = ival[2];
+				var idynamic = ival[3] == 'true';
+				var iname = idev;
+				if (iname.indexOf('_virtual') >= 0) {
+					if (!(idev in iipv4Virtual)) {
+						// first virtual interfaces for this device
+						iipv4Virtual[idev] = 0;
 					}
-					if (iface.ip4.length) {
-						// IPv4
-						array.forEach(iface.ip4, function(virtval, i) {
-							var iaddress = virtval[0];
-							var imask = virtval[1];
-							if (i === 0) {
-								// IP address
-								vals['interfaces/' + iname + '/address'] = iaddress;
-								vals['interfaces/' + iname + '/netmask'] = imask;
-							} else {
-								// virtual ip adresses
-								vals['interfaces/' + iname + '_' + (i-1) + '/address'] = iaddress;
-								vals['interfaces/' + iname + '_' + (i-1) + '/netmask'] = imask;
-							}
-						});
-					} else if (iface.ip4dynamic) {
-						// DHCP
+					iname = iname.replace('virtual', iipv4Virtual[idev]);
+					++iipv4Virtual[idev]; // count up the number of virtual interfaces for this device
+				}
+				else {
+					// only real interfaces may use DHCP
+					if (idynamic) {
 						vals['interfaces/' + iname + '/type'] = 'dynamic';
 					}
-
-					// IPv6 SLAAC
-					vals['interfaces/' + iname + '/ipv6/acceptRA'] = iface.ip6dynamic ? 'true' : 'false';
-
-					if (!iface.ip6dynamic) {
-						// IPv6
-						array.forEach(iface.ip6, function(ip6val) {
-							var iaddress = ip6val[0];
-							var iprefix = ip6val[1];
-							var iidentifier = ip6val[2];
-							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/address'] = iaddress;
-							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/prefix'] = iprefix;
-						});
-					}
 				}
+				vals['interfaces/' + iname + '/address'] = iaddress;
+				vals['interfaces/' + iname + '/netmask'] = imask;
+			});
+
+			// copy ipv6 interfaces
+			array.forEach(_vals.interfaces_ipv6, function(ival) {
+				var idev = ival[0];
+				var iaddress = ival[1];
+				var iprefix = ival[2];
+				var iid = ival[3];
+				vals['interfaces/' + idev + '/ipv6/' + iid + '/address'] = iaddress;
+				vals['interfaces/' + idev + '/ipv6/' + iid + '/prefix'] = iprefix;
+			});
+
+			// dynamic ipv6 interfaces
+			//array.forEach(_vals.dynamic_interfaces_ipv6, function(idev) {
+			array.forEach(this._form.getWidget('dynamic_interfaces_ipv6').getAllItems(), function(iitem) {
+				vals['interfaces/' + iitem.id + '/ipv6/acceptRA'] = (array.indexOf(_vals.dynamic_interfaces_ipv6, iitem.id) >= 0) ? 'true' : 'false';
 			});
 
 			// add empty entries for all original entries that are not used anymore
@@ -456,40 +517,40 @@ define([
 		getSummary: function() {
 			// a list of all components with their labels
 			var allInterfaces = {};
-
-			allInterfaces = array.map(this._form._widgets.interfaces.get('value'), function(item) {
-				return item['interface'];
-			});
+			array.forEach(this._form.getWidget('dynamic_interfaces_ipv6').getAllItems(), function(iitem) {
+				allInterfaces[iitem.id] = iitem.label;
+				allInterfaces[iitem.id + '_virtual'] = iitem.label + ' [' + _('virtual') + ']';
+			}, this);
 
 			// list of all IPv4 network devices
-			var vals = this._form.get('value');
-			var ipv4Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return idev.ip4.length;
-			}), function(idev) {
-				if (idev.ip4dynamic) {
-					return idev['interface'] + ': DHCP';
+			var vals = this._form.gatherFormValues();
+			var ipv4Str = '<ul>';
+			array.forEach(vals.interfaces_ipv4, function(idev) {
+				if (idev[1]) {
+					// address is given
+					ipv4Str += '<li>' +
+							idev[1] + '/' + idev[2] +
+							' (' +
+								allInterfaces[idev[0]] +
+								(idev[3] == 'true' ? ', DHCP' : '') +
+							')</li>';
+				} else {
+					// address is not given: must be DHCP
+					ipv4Str += '<li>' +
+							allInterfaces[idev[0]] + ': DHCP' +
+							'</li>';
 				}
-				return idev['interface'] + ': ' + array.map(idev.ip4, function(ip4) {
-					// address/netmask
-					return ip4[0] + '/' + ip4[1];
-				}).join(', ');
 			});
+			ipv4Str += '</ul>';
 
-			ipv4Str = ipv4Str.length ? '<ul><li>' + ipv4Str.join('</li><li>') + '</li></ul>' : '';
-
-			var ipv6Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return idev.ip6 && idev.ip6.length;
-			}), function(idev) {
-				if (idev.ip6dynamic) {
-					return idev['interface'] + ': DHCP';
-				}
-				return idev['interface'] + ': ' + array.map(idev.ip6, function(ip6) {
-					// adress - prefix/identifier
-					return ip6[0] + ' - ' + ip6[1] + '/' + ip6[2];
-				}).join(', '); // TODO: <br> or <li>
+			// list of all IPv6 network devices
+			var ipv6Str = '<ul>';
+			array.forEach(vals.interfaces_ipv6, function(idev) {
+				ipv6Str += '<li>' +
+						idev[1] + ' - ' + idev[2] + '/' + idev[3] +
+						' (' + idev[0] + ')</li>';
 			});
-
-			ipv6Str = ipv6Str.length ? '<ul><li>' + ipv6Str.join('</li><li>') + '</li></ul>' : '';
+			ipv6Str += '</ul>';
 
 			// create a verbose list of all settings
 			return [{
@@ -501,11 +562,11 @@ define([
 				description: _('Gateway (IPv6)'),
 				values: vals['ipv6/gateway']
 			}, {
-				variables: [(/nameserver.*/)],
+				variables: [/nameserver.*/],
 				description: _('Domain name server'),
 				values: vals['nameserver'].join(', ')
 			}, {
-				variables: [(/dns\/forwarder.*/)],
+				variables: [/dns\/forwarder.*/],
 				description: _('External name server'),
 				values: vals['dns/forwarder'].join(', ')
 			}, {
@@ -513,22 +574,17 @@ define([
 				description: _('HTTP proxy'),
 				values: vals['proxy/http']
 			}, {
-				variables: [(/^interfaces\/[^_\/]+(_[0-9]+)?\/(?!ipv6).*/)],
+				variables: [/^interfaces\/[^_\/]+(_[0-9]+)?\/(?!ipv6).*/],
 				description: _('IPv4 network devices'),
 				values: ipv4Str
 			}, {
-				variables: [(/^interfaces\/[^\/]+\/ipv6\/.*\/(prefix|address)$/)],
+				variables: [/^interfaces\/[^\/]+\/ipv6\/.*\/(prefix|address)$/],
 				description: _('IPv6 network devices'),
 				values: ipv6Str
 			}, {
-				variables: ['interfaces/primary'],
-				description: _('primary network interface'),
-				values: vals['interfaces/primary']
-//			}, {
-				// FIXME
-//				variables: [/^interfaces\/[^\/]+\/ipv6\/acceptRA/],
-//				description: _('IPv6 interfaces with autoconfiguration (SLAAC)'),
-//				values: vals['dynamic_interfaces_ipv6'].length ? vals['dynamic_interfaces_ipv6'].join(', ') : _('No device')
+				variables: [/^interfaces\/[^\/]+\/ipv6\/acceptRA/],
+				description: _('IPv6 interfaces with autoconfiguration (SLAAC)'),
+				values: vals['dynamic_interfaces_ipv6'].length ? vals['dynamic_interfaces_ipv6'].join(', ') : _('No device')
 			}];
 		},
 

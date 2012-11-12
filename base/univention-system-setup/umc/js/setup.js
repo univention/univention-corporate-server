@@ -340,7 +340,7 @@ define([
 
 		setValues: function(values) {
 			// update all pages with the given values
-			this._orgValues = lang.clone(values); //FIXME: wrong place
+			this._orgValues = lang.clone(values);
 			array.forEach(this._pages, function(ipage) {
 				ipage.setValues(this._orgValues);
 			}, this);
