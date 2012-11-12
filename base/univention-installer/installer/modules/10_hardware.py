@@ -443,7 +443,7 @@ class object(content):
 
 
 			elif self.action == 'cdrom-prepare':
-				self.parent.debug('preparing cdrom_device=%s' % self.parent.container('cdrom_device','NO DEVICE FOUND'))
+				self.parent.debug('preparing cdrom_device=%s' % self.parent.container.get('cdrom_device','NO DEVICE FOUND'))
 				if self.parent.container.has_key('cdrom_device'):
 					dev=self.parent.container['cdrom_device']
 					if dev.startswith('nfs:'):
