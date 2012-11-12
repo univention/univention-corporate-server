@@ -131,7 +131,7 @@ univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 # Set errata component for UCS 3.1-0
 ucr set repository/online/component/3.1-0-errata=enabled \
 		repository/online/component/3.1-0-errata/description="Errata updates for UCS 3.1-0" \
-		repository/online/component/3.1-0-errata/version="3.1"
+		repository/online/component/3.1-0-errata/version="3.1" >>"$UPDATER_LOG" 2>&1
 
 echo "done."
 date >>"$UPDATER_LOG"

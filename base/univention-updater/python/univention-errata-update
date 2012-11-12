@@ -1,0 +1,152 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention Updater
+#  errata update
+#
+# Copyright 2004-2012 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os
+import sys
+import getopt
+try:
+	import univention.debug as ud
+except ImportError:
+	import univention.debug2 as ud
+import univention.config_registry as ucr
+import time
+import subprocess
+import traceback
+import shlex
+
+import univention.updater
+from univention.updater.commands import cmd_dist_upgrade, cmd_update
+import univention.updater.tools
+
+updater_status = {}
+
+FN_STATUS = '/var/lib/univention-updater/univention-errata-update.status'
+TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_errata_update.list'
+LOGFILE = '/var/log/univention/errata-updates.log'
+
+def dprint(str, fd=[]):
+	""" print message to multiple destinations or stdout """
+	if len(fd) < 1:
+		fd = [sys.stdout]
+	for f in fd:
+		print >>f, str
+		# flush in case someone reads from stream (e.g. univention-upgrade)
+		f.flush()
+
+def usage(fd=sys.stdout):
+	print >> fd, 'univention-errata-update: tool for installing errata updates'
+	print >> fd, 'copyright (c) 2004-2012 Univention GmbH, Germany'
+	print >> fd, ''
+	print >> fd, 'Syntax:'
+	print >> fd, '  univention-errata-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check] [--no-repository-update]'
+	print >> fd, '  univention-errata-update [--help] '
+	print >> fd, ''
+
+def checkForUpdate(command):
+	""" Check for availability of errata updates """
+	if command == 'local':
+		updater = univention.updater.LocalUpdater()
+	elif command == 'net':
+		updater = univention.updater.UniventionUpdater()
+	return updater.errata_update_available()
+
+if __name__ == '__main__':
+	# PATH does not contain */sbin when called from cron
+	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+
+	ud.init(LOGFILE, ud.NO_FLUSH, ud.NO_FUNCTION)
+	fp_debug = open(LOGFILE, 'a+')
+	call_upgrade=True
+	file=''
+	repository_update=True
+
+	dprint( '***** Starting univention-errata-update at %s\n' % time.ctime(), [fp_debug] )
+
+	if len(sys.argv) < 2:
+		usage(sys.stderr)
+		fp_debug.close()
+		sys.exit(1)
+
+	if sys.argv[1] in ['-h', '-?', '--help']:
+		usage(sys.stdout)
+		fp_debug.close()
+		sys.exit(0)
+
+	if sys.argv[1] == 'net':
+		command = 'net'
+	elif sys.argv[1] == 'local':
+		command = 'local'
+	else:
+		usage(sys.stderr)
+		fp_debug.close()
+		sys.exit(1)
+
+	longopts=['file=', 'silent', 'noupdate', 'check', 'no-repository-update' ]
+	try:
+		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
+	except getopt.error, msg:
+		usage(sys.stderr)
+		fp_debug.close()
+		sys.exit(1)
+	for opt, val in opts:
+		if opt == '--file':
+			file=val
+			if command=='net':
+				dprint( "Parameter \"--file\" only valid when running locally.", [fp_debug,sys.stderr] )
+				fp_debug.close()
+				sys.exit(1)
+			if not val:
+				dprint( "Parameter \"--file\" needs an argument.", [fp_debug,sys.stderr] )
+				fp_debug.close()
+				sys.exit(1)
+			file = os.path.abspath( file )
+		if opt == '--no-repository-update':
+			repository_update=False
+		if opt == '--silent':
+			sys.stdout = open(os.path.devnull, 'w+')
+		if opt == '--noupdate':
+			call_upgrade=False
+		elif opt == '--check':
+			try:
+				if checkForUpdate(command):
+					sys.exit(1)	# reversed: 1=update available
+				else:
+					sys.exit(0)	# reversed: 0=no updates
+			except SystemExit:
+				raise
+			except Exception, e:
+				dprint(traceback.format_exc(), [fp_debug])
+				dprint("Failure to query repository: %s" % e)
+				sys.exit(0) # no updates available because of error :-(
+
+	dprint( "This tool is deprecated since UCS 3.1. Please use univention-upgrade.", [fp_debug,sys.stderr] )

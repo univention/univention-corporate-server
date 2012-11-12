@@ -1,3 +1,11 @@
+univention-updater (8.0.48-1) unstable; urgency=low
+
+  * Use updater logfile while activating the errata component (Bug #26387)
+  * Re-added univention-errata-components-update and univention-errata-
+    update (Bug #26387)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Nov 2012 09:35:51 +0100
+
 univention-updater (8.0.47-1) unstable; urgency=low
 
   * Link to errata page without patch level (Bug #25597)
