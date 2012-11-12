@@ -33,14 +33,30 @@
 
 # standard library
 from contextlib import contextmanager
+import urllib2
 
 # univention
 from univention.management.console.log import MODULE
 import univention.config_registry
 
 # local application
-from constants import *
+from constants import COMPONENT_BASE, COMP_PARTS, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
 
+# TODO: this should probably go into univention-lib
+# and hide urllib/urllib2 completely
+# i.e. it should be unnecessary to import them directly
+# in a module
+def install_opener(ucr):
+	proxy_http = ucr.get('proxy/http')
+	if proxy_http:
+		proxy = urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http})
+		opener = urllib2.build_opener(proxy)
+		urllib2.install_opener(opener)
+
+def urlopen(request):
+	# use this in __init__ and app_center
+	# to have the proxy handler installed globally
+	return urllib2.urlopen(request)
 
 class Changes(object):
 	def __init__(self, ucr):
@@ -63,12 +79,12 @@ class Changes(object):
 
 				and the ucr itself would know which string representation to write.
 		"""
-		yesno		= ['no', 'yes']
-		truefalse	= ['False', 'True']
-		enabled		= ['disabled', 'enabled']
-		enable		= ['disable', 'enable']
-		onoff		= ['off', 'on']
-		onezero		= ['0', '1']		# strings here! UCR doesn't know about integers
+		yesno = ['no', 'yes']
+		#truefalse = ['False', 'True']
+		enabled = ['disabled', 'enabled']
+		#enable = ['disable', 'enable']
+		onoff = ['off', 'on']
+		#onezero = ['0', '1']		# strings here! UCR doesn't know about integers
 
 		# array of strings to match against the variable name, associated with the
 		# corresponding bool representation to use. The first match is used.

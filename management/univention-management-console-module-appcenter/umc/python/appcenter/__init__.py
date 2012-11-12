@@ -62,11 +62,13 @@ import util
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
-
 class Instance(umcm.Base):
 	def init(self):
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
+
+		install_opener(self.ucr)
+
 		self.package_manager = PackageManager(
 			info_handler=MODULE.process,
 			step_handler=None,
@@ -91,10 +93,9 @@ class Instance(umcm.Base):
 		data['licence'] = license
 		data = urllib.urlencode(data)
 		url = 'https://license.univention.de/keyid/conversion/submit'
-		MODULE.info('urllib2.Request(%r, data=%r, headers={"User-agent" : "UMC/AppCenter"})' % (url, data))
 		request = urllib2.Request(url, data=data, headers={'User-agent' : 'UMC/AppCenter'})
 		try:
-			urllib2.urlopen(request)
+			util.urlopen(request)
 		except Exception as e:
 			try:
 				# try to parse an html error
@@ -199,7 +200,7 @@ class Instance(umcm.Base):
 			raise umcm.UMC_CommandError(_('No license file available for application: %s') % (application.id))
 
 		# open the license file and replace line breaks with BR-tags
-		fp = urllib2.urlopen(application.get('licensefile'))
+		fp = util.urlopen(application.get('licensefile'))
 		txt = ''.join(fp.readlines()).strip()
 		txt = txt.replace('\n\n\n', '\n<br>\n<br>\n<br>\n')
 		txt = txt.replace('\n\n', '\n<br>\n<br>\n')

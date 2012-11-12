@@ -56,6 +56,7 @@ import univention.uldap as uldap
 
 # local application
 from constants import COMPONENT_BASE
+import util
 
 LOGFILE = '/var/log/univention/app_install.log'
 
@@ -121,7 +122,7 @@ class Application(object):
 	def __init__(self, url):
 		# load config file
 		self._options = {}
-		fp = urllib2.urlopen(url)
+		fp = util.urlopen(url)
 		config = ConfigParser.ConfigParser()
 		config.readfp(fp)
 
@@ -196,7 +197,7 @@ class Application(object):
 	def _fetch_file(self, key, url):
 		try:
 			# open the license file 
-			fp = urllib2.urlopen(url)
+			fp = util.urlopen(url)
 			self._options[key] = ''.join(fp.readlines()).strip()
 		except (urllib2.HTTPError, urllib2.URLError) as e:
 			MODULE.warn('No information for %s available (%s): %s' % (key, e, url))
@@ -237,7 +238,7 @@ class Application(object):
 			try:
 				# open .ini file
 				MODULE.info('opening category translation file: %s' % url)
-				fp = urllib2.urlopen(url)
+				fp = util.urlopen(url)
 				config = ConfigParser.ConfigParser()
 				config.readfp(fp)
 
@@ -273,7 +274,7 @@ class Application(object):
 				cls._all_applications = []
 
 				threads = []
-				for iline in urllib2.urlopen(url):
+				for iline in util.urlopen(url):
 					# parse the server's directory listing
 					m = cls._reg_dir_listing.match(iline)
 					if m:
@@ -526,7 +527,7 @@ class Application(object):
 			          }
 			request_data = urllib.urlencode(values)
 			request = urllib2.Request(url, request_data)
-			urllib2.urlopen(request)
+			util.urlopen(request)
 		except:
 			MODULE.warn(traceback.format_exc())
 			raise
