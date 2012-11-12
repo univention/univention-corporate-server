@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.68-1) unstable; urgency=low
+
+  * Fix proxy usage (Bug #28706)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Nov 2012 17:15:44 +0100
+
 univention-management-console-module-appcenter (2.0.67-1) unstable; urgency=low
 
   * Use proxy information to query appcenter (Bug #28706)

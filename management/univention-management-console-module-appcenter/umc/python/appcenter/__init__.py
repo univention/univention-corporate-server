@@ -67,7 +67,7 @@ class Instance(umcm.Base):
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
 
-		install_opener(self.ucr)
+		util.install_opener(self.ucr)
 
 		self.package_manager = PackageManager(
 			info_handler=MODULE.process,
