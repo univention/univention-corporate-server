@@ -1,3 +1,9 @@
+univention-management-console (5.0.55-1) unstable; urgency=low
+
+  * Fix root UMC ACLs (Bug #28626)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 12 Nov 2012 16:48:03 +0100
+
 univention-management-console (5.0.54-1) unstable; urgency=low
 
   * Add priority (Bug #26961)

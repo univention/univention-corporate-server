@@ -56,7 +56,7 @@ eval "$(ucr shell server/role)"
 			--command 'reboot/*' \
 			--command 'services/*' \
 			--command 'sysinfo/*' \
-			--command 'packages/*' \
+			--command 'appcenter/*' \
 			--command 'updater/*' \
 			--command 'lib/*'
 
