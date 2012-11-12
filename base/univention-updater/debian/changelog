@@ -1,3 +1,10 @@
+univention-updater (8.0.49-1) unstable; urgency=low
+
+  * Pre-update univention-config to ensure ucr is available during the
+    upgrade (Bug #29208)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Nov 2012 21:01:39 +0100
+
 univention-updater (8.0.48-1) unstable; urgency=low
 
   * Use updater logfile while activating the errata component (Bug #26387)

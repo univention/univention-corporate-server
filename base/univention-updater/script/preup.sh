@@ -305,6 +305,22 @@ if [ "$(dpkg-query -W -f='${Status}\n' univention-legacy-kolab-schema 2>/dev/nul
 fi
 # END 3.1 update mark univention-legacy-kolab-schema as manually installed Bug #28900
 
+# Pre-update univention-config to ensure ucr is available during the upgrade:
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=29208
+for pkg in univention-config; do
+	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
+		echo -n "Starting pre-upgrade of $pkg: "
+		$update_commands_install "$pkg" >&3 2>&3
+		if [ ! $? = 0 ]; then
+			echo "failed."
+			echo "ERROR: Failed to upgrade $pkg."
+			exit 1
+		fi
+		echo "done."
+	fi
+done
+
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
