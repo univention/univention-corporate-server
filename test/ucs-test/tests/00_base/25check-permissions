@@ -26,6 +26,7 @@ tmpfile="$(mktemp "/tmp/ucs-test-find-XXXXXXX")"
 find / \
 	\( \
 		-type l \
+		-o -type s \
 		-o -path /proc \
 		-o -path /sys \
 		-o -path /dev \
