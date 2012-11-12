@@ -1,3 +1,9 @@
+univention-installer (8.0.32-1) unstable; urgency=low
+
+  * do not show 66_gpt_partition in expert partition mode (Bug #23990)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 12 Nov 2012 17:12:48 +0100
+
 univention-installer (8.0.31-1) unstable; urgency=low
 
   * fixed traceback in debug output if cdrom cannot be found (Bug #28512)

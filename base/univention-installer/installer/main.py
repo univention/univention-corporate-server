@@ -218,7 +218,7 @@ for file in files:
 		if cmdline.get('mode') != 'setup' and file in ['45_password.py']:
 			continue
 		if temp[0].split('_')[0].isdigit():
-			if cmdline.has_key("expert_partition") and temp[0] == "65_partition":
+			if cmdline.has_key("expert_partition") and (temp[0] == "65_partition" or temp[0] == "66_gpt_partition"):
 				continue
 			if not cmdline.has_key("expert_partition") and temp[0] == "60_expert_partition":
 				continue
