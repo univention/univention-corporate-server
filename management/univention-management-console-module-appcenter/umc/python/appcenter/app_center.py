@@ -49,7 +49,6 @@ import ldif
 
 # univention
 from univention.management.console.log import MODULE
-from univention.updater import UniventionUpdater
 import univention.admin.uexceptions as udm_errors
 import univention.config_registry
 import univention.uldap as uldap
@@ -59,6 +58,8 @@ from constants import COMPONENT_BASE
 import util
 
 LOGFILE = '/var/log/univention/app_install.log'
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
 class License(object):
 	def __init__(self, license=None):
@@ -532,7 +533,3 @@ class Application(object):
 			MODULE.warn(traceback.format_exc())
 			raise
 
-
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
-uu = UniventionUpdater(False)
