@@ -307,6 +307,7 @@ fi
 
 # Pre-update univention-config to ensure ucr is available during the upgrade:
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=29208
+$update_commands_update >&3 2>&3
 for pkg in univention-config; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
 		echo -n "Starting pre-upgrade of $pkg: "
