@@ -321,6 +321,7 @@ def check_for_phase_II(ucr, lp, ad_server_ip):
 			return (1, ad_server_fqdn, ad_server_name)
 		else:
 			return (2, ad_server_fqdn, ad_server_name)
+
 	return (0, None, None)
 
 def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
@@ -678,7 +679,9 @@ def cleanup_failed_join(ucr, ad_server_ip):
 	run_and_output_to_log(["/etc/init.d/nscd", "restart"], log.debug)
 
 
-def run_phaseI(opts, args):
+def run_phaseI(ucr, lp, opts, args):
+
+	global DEVNULL
 
 	ad_server_name = None
 	if len(args) > 0:
@@ -689,15 +692,7 @@ def run_phaseI(opts, args):
 		parser.print_usage()
 		sys.exit(1)
 
-	devnull = open('/dev/null', 'w')
-
-	ucr = config_registry.ConfigRegistry()
-	ucr.load()
 	local_fqdn = '.'.join((ucr["hostname"], ucr["domainname"]))
-
-	# lp = LoadParm()
-	# lp.load('/etc/samba/smb.conf')
-	lp = sambaopts.get_loadparm()
 
 	### First plausibility checks
 
@@ -730,7 +725,7 @@ def run_phaseI(opts, args):
 		cmd = ["fping", ad_server_ip]
 	else:
 		cmd = ["fping6", ad_server_ip]
-	p1 = subprocess.Popen(cmd, stdout=devnull, stderr=devnull)
+	p1 = subprocess.Popen(cmd, stdout=DEVNULL, stderr=DEVNULL)
 	rc= p1.poll()
 	while rc is None:
 		time.sleep(1)
@@ -798,7 +793,7 @@ def run_phaseI(opts, args):
 		log.error("\n".join(msg))
 		sys.exit(1)
 
-	p = subprocess.Popen(["smbclient", "//%s/sysvol" % ad_server_ip, "-U%s%%%s" % (ad_join_user, ad_join_password), '-c', 'quit'], stdout=devnull, stderr=devnull)
+	p = subprocess.Popen(["smbclient", "//%s/sysvol" % ad_server_ip, "-U%s%%%s" % (ad_join_user, ad_join_password), '-c', 'quit'], stdout=DEVNULL, stderr=DEVNULL)
 	if p.wait() != 0:
 		msg = []
 		msg.append("Error: Cannot connect to //%s/sysvol as %s\%s" % (ad_server_ip, creds.get_domain(), ad_join_user))
@@ -1128,7 +1123,9 @@ def run_phaseI(opts, args):
 	add_servicePrincipals(ucr, secretsdb, spn_list)
 
 	## Set Samba domain password settings. Note: rotation of passwords will only work with UCS 3.1, so max password age must be disabled for now.
-	run_and_output_to_log(["samba-tool", "domain", "passwordsettings", "set", "--history-length=3", "--min-pwd-age=0", "--max-pwd-age=0"], log.debug)
+	# run_and_output_to_log(["samba-tool", "domain", "passwordsettings", "set", "--history-length=3", "--min-pwd-age=0", "--max-pwd-age=0"], log.debug)
+	## Avoid password expiry for DCs:
+	run_and_output_to_log(["samba-tool", "user", "setexpiry", "--noexpiry", "--filter", '(&(objectclass=computer)(serverReferenceBL=*))'], log.debug)
 	time.sleep(2)
 
 	## Disable replication from Samba4 to AD
@@ -1426,124 +1423,17 @@ def run_phaseI(opts, args):
 	msg=[]
 	msg.append("")
 	msg.append("Phase I finished.")
-	msg.append("Now the SYSVOL share should be copied manually from \\\\%s\\sysvol to \\\\%s\\sysvol (using robocopy)." % (ad_server_name, ucr['hostname']))
-	msg.append("Once the SYSVOL share is copied successfully, shutdown the Windows server %s." % ad_server_name)
-	msg.append("After shutting down the Windows server %s the phase II of the takeover is complete." % ad_server_name)
-	msg.append("After completing phase II start this script again with the option --fsmo-takeover to finish the takeover process.")
 	log.info("\n".join(msg))
-	sys.exit(1)
+
+	return (ad_server_ip, ad_server_fqdn, ad_server_name)
 
 
-def run_phaseIII(opts, args):
+def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 
-	ad_server_name = None
-	ad_server_ip = None
-	if len(args) > 0:
-		ad_server_ip = args[0]
-	if len(args) == 2:
-		ad_server_name = args[1]
-	## basically these arguments are ignored and replaced by the values stored in phaseI
-	## TODO: get rid of this strange option/arg combination, phaseI values are enough
+	global DEVNULL
 
-	devnull = open('/dev/null', 'w')
-
-	ucr = config_registry.ConfigRegistry()
 	ucr.load()
 	local_fqdn = '.'.join((ucr["hostname"], ucr["domainname"]))
-
-	# lp = LoadParm()
-	# lp.load('/etc/samba/smb.conf')
-	lp = sambaopts.get_loadparm()
-
-	### First plausibility checks
-
-	phaseI_ip = ucr.get("univention/ad/takeover/ad/server/ip")
-	if not phaseI_ip:
-		log.debug("Error: AD server IP not found in UCR. This indicates that phase I was not completed successfully yet.")
-		msg=[]
-		msg.append("")
-		msg.append("Error: Please complete phase I of the takeover before initiating the FSMO takeover.")
-		log.error("\n".join(msg))
-		sys.exit(1)
-
-	if ad_server_ip and ad_server_ip != phaseI_ip:	## TODO: get rid of this strange option/arg combination, phaseI values are enough
-		msg=[]
-		msg.append("")
-		msg.append("Error: Given AD server IP %s does not match the one recorded in phase I: %s" % (ad_server_ip, phaseI_ip))
-		msg.append("       Start fsmo takeover without giving an AD server IP as argument.")
-		log.error("\n".join(msg))
-		sys.exit(1)
-	else:
-		ad_server_ip = phaseI_ip
-
-	## 1.a check if the given IP was mapped to a host name via UCR in Phase I
-	(rc, phaseI_fqdn, phaseI_name) = check_for_phase_II(ucr, lp, ad_server_ip)
-	if rc == 0:
-		msg=[]
-		msg.append("")
-		msg.append("Error: given IP %s was not mapped to a hostname in phase I.")
-		msg.append("       Please complete phase I of the takeover before initiating the FSMO takeover.")
-		log.error("\n".join(msg))
-		sys.exit(1)
-	elif rc == 1:
-		log.error("OK, Found the AD DC %s account in the local Samba 4 SAM database." % phaseI_name)
-	elif rc == 2:
-		msg=[]
-		msg.append("")
-		msg.append("Error: It seems that this script was run once already for the first takeover step,")
-		msg.append("       but the server %s cannot be found in the local Samba SAM database." % phaseI_name)
-		msg.append("       Don't know how to continue, giving up at this point.")
-		msg.append("       Maybe the steps needed for takeover have been finished already?")
-		log.error("\n".join(msg))
-		sys.exit(1)
-
-	## 1.b Check, if a AD DNS domain is given and if it matches the one given before
-	ad_server_fqdn = None
-	if ad_server_name:
-		char_idx = ad_server_name.find(".")
-		if char_idx == -1:
-			ad_server_fqdn = "%s.%s" % (ad_server_name, ucr["domainname"])
-		else:
-			ad_server_fqdn = ad_server_name
-			ad_server_name = ad_server_fqdn.split('.', 1)[0]
-		if ad_server_name != phaseI_name:	## TODO: get rid of this strange option/arg combination, phaseI values are enough
-			msg=[]
-			msg.append("")
-			msg.append("Error: Given AD server name %s does not match the one recorded for IP %s in phase I: %s" % (ad_server_name, ad_server_ip, phaseI_name))
-			msg.append("       Start fsmo takeover without giving an AD server name as argument.")
-			log.error("\n".join(msg))
-			sys.exit(1)
-	else:
-		ad_server_fqdn = phaseI_fqdn
-		ad_server_name = phaseI_name
-
-	## 1.c Check that local domainname matches kerberos realm
-	if ucr["domainname"].lower() != ucr["kerberos/realm"].lower():
-		log.error("Mismatching DNS domain and kerberos realm. Please reinstall the server with the same Domain as your AD.")
-		sys.exit(1)
-
-	## 1.d ping the given AD server IP
-	print "Pinging AD IP %s: " % ad_server_ip,
-	p1 = subprocess.Popen(["fping", ad_server_ip], stdout=devnull, stderr=devnull)
-	rc= p1.poll()
-	while rc is None:
-		sys.stdout.write(".")
-		sys.stdout.flush()
-		time.sleep(1)
-		rc= p1.poll()
-	print
-	sys.stdout.flush()
-	if rc == 0:
-		msg=[]
-		msg.append("")
-		msg.append("Error: The server IP %s is still reachable." % ad_server_ip)
-		msg.append("       Return to the AD DC to migrate the SYSVOL, and then")
-		msg.append("       switch it off before restarting this script with option --fsmo-takeover again.")
-		log.error("\n".join(msg))
-		sys.exit(1)
-	else:
-		log.info("Ok, Server IP %s unreachable." % ad_server_ip)
-
 
 	### Phase III: Promote to FSMO master and DNS server
 
@@ -1861,8 +1751,88 @@ if __name__ == '__main__':
 	(stdout, stderr) = p.communicate()
 	log.debug("\n\nCommandline: %s\n%s" % (' '.join(sys.argv), stdout))
 
-	if not opts.fsmo_takeover:
-		run_phaseI(opts, args)
-	else:
-		run_phaseIII(opts, args)
+	global DEVNULL
+	DEVNULL = open('/dev/null', 'w')
 
+	ucr = config_registry.ConfigRegistry()
+	ucr.load()
+
+	# lp = LoadParm()
+	# lp.load('/etc/samba/smb.conf')
+	lp = sambaopts.get_loadparm()
+
+	if not opts.fsmo_takeover:
+		## Phase I
+		(ad_server_ip, ad_server_fqdn, ad_server_name) = run_phaseI(ucr, lp, opts, args)
+
+		## Phase II
+		ready_for_phaseIII = False
+		while not ready_for_phaseIII:
+			msg = []
+			msg.append("Now the SYSVOL share should be copied manually from \\\\%s\\sysvol to \\\\%s\\sysvol (e.g. using robocopy):" % (ad_server_name, ucr['hostname']))
+			msg.append("")
+			msg.append("\trobocopy /mir /sec /z \\\\%s\\sysvol \\\\%s\\sysvol" % (ad_server_name, ucr['hostname']))
+			msg.append("")
+			msg.append("Once the SYSVOL share is copied successfully, shutdown the Windows server %s." % ad_server_fqdn)
+			log.info("\n".join(msg))
+
+			answer = raw_input("After completing the SYSVOL sync and switching of the AD server, hit return to continue.")
+
+			## 1.d ping the given AD server IP
+			print "Pinging AD IP %s: " % ad_server_ip,
+			p1 = subprocess.Popen(["fping", ad_server_ip], stdout=DEVNULL, stderr=DEVNULL)
+			rc= p1.poll()
+			while rc is None:
+				sys.stdout.write(".")
+				sys.stdout.flush()
+				time.sleep(1)
+				rc= p1.poll()
+			print
+			sys.stdout.flush()
+			if rc == 0:
+				msg=[]
+				msg.append("")
+				msg.append("Error: The server IP %s is still reachable." % ad_server_ip)
+				log.error("\n".join(msg))
+			else:
+				log.info("Ok, Server IP %s unreachable.\n" % ad_server_ip)
+				ready_for_phaseIII = True
+	else:
+		## check if an IP address was recorded in UCR during Phase I
+		ad_server_ip = ucr.get("univention/ad/takeover/ad/server/ip")
+		if not ad_server_ip:
+			log.debug("Error: AD server IP not found in UCR. This indicates that phase I was not completed successfully yet.")
+			msg=[]
+			msg.append("")
+			msg.append("Error: Please complete phase I of the takeover before initiating the FSMO takeover.")
+			log.error("\n".join(msg))
+			sys.exit(1)
+
+		## check if the given IP was mapped to a host name via UCR in Phase I
+		(rc, ad_server_fqdn, ad_server_name) = check_for_phase_II(ucr, lp, ad_server_ip)
+		if rc == 0:
+			msg=[]
+			msg.append("")
+			msg.append("Error: given IP %s was not mapped to a hostname in phase I.")
+			msg.append("       Please complete phase I of the takeover before initiating the FSMO takeover.")
+			log.error("\n".join(msg))
+			sys.exit(1)
+		elif rc == 1:
+			log.error("OK, Found the AD DC %s account in the local Samba 4 SAM database." % ad_server_name)
+		elif rc == 2:
+			msg=[]
+			msg.append("")
+			msg.append("Error: It seems that this script was run once already for the first takeover step,")
+			msg.append("       but the server %s cannot be found in the local Samba SAM database." % ad_server_name)
+			msg.append("       Don't know how to continue, giving up at this point.")
+			msg.append("       Maybe the steps needed for takeover have been finished already?")
+			log.error("\n".join(msg))
+			sys.exit(1)
+
+		## Check that local domainname matches kerberos realm
+		if ucr["domainname"].lower() != ucr["kerberos/realm"].lower():
+			log.error("Mismatching DNS domain and kerberos realm. Please reinstall the server with the same Domain as your AD.")
+			sys.exit(1)
+
+	## Phase III
+	run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name)

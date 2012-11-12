@@ -1,3 +1,13 @@
+univention-s4-connector (7.0.20-2) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - make script ask to continue with phase III
+    - print robocopy commandline
+    - disable password expiry for DCs
+    - don't override the min/max password age and history length
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Nov 2012 14:12:44 +0100
+
 univention-s4-connector (7.0.19-2) unstable; urgency=low
 
   * Call _ignore_object and not __ignore_object (Bug #28845)
