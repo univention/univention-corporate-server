@@ -71,9 +71,9 @@ else
 fi
 
 #create user
-username=`user_randomname`
+username=$(user_randomname)
 password=univention
-share_name=`random_share`
+share_name=$(random_share)
 
 function create_screenconfig
 {
@@ -135,17 +135,17 @@ function calculate_startdelay
     for ((j=0;j<amountPerRound;j++))
     do
         delayArray[$j]=$(($RANDOM%9999+1))
-        delayArray[$j]=`echo "scale=5;${delayArray[j]}/10000" | bc`
-        sum=`echo "scale=5;$sum+${delayArray[$j]}" | bc`
+        delayArray[$j]=$(echo "scale=5;${delayArray[j]}/10000" | bc)
+        sum=$(echo "scale=5;$sum+${delayArray[$j]}" | bc)
     done
 
 	#adjust numbers so that the sum of them equals $startTime,
 	#hence authentifications start in this time interval 
     for ((j=0;j<amountPerRound;j++))
     do
-        delayArray[$j]=`echo "scale=5;${delayArray[$j]}/$sum*$roundTime" | bc`
+        delayArray[$j]=$(echo "scale=5;${delayArray[$j]}/$sum*$roundTime" | bc)
 							      
-        sum2=`echo "scale=5;$sum2+${delayArray[$j]}" | bc`
+        sum2=$(echo "scale=5;$sum2+${delayArray[$j]}" | bc)
     done
 }
 
@@ -155,7 +155,7 @@ rm screenconfig_*
 let i=O
 while [ $i -le $round_dec ]
 do
-kill `screen -ls | grep smbclients_$i | cut -d '.' -f1`
+kill $(screen -ls | grep smbclients_$i | cut -d '.' -f1)
         let i=$i+1
 done
 user_remove "$username"
@@ -163,14 +163,6 @@ share_remove "$share_name"
 }
 
 #Beginning
-
-user_create "$username"
-share_create "$share_name" "/var/$share_name"
-sleep 20
-
-if [ -z `univention-s4search "sAMAccountName=$username" objectsid 2>/dev/null | sed -n 's/^objectSid: \(.*\)/\1/p' | cut -c1,2 | grep "S-"` ]; then
-        fail_fast 1
-fi
 
 if $random;then 
     calculate_startdelay
@@ -196,6 +188,14 @@ do
     create_screenconfig $round_nr
 done
 
+user_create "$username"
+share_create "$share_name" "/var/$share_name"
+sleep 20
+
+if [ -z $(univention-s4search "sAMAccountName=$username" objectsid 2>/dev/null | sed -n 's/^objectSid: \(.*\)/\1/p' | cut -c1,2 | grep "S-") ]; then
+        fail_fast 1
+fi
+
 screenIndex=0
 roundIndex=0
 authIndex=0
@@ -205,15 +205,19 @@ start_round
 #Calculate result
 #needs to be greater than 20 because of the hard coded timeout for one authentification
 sleep 20
-#echo ldap_master:${ldap_master}
-result=`on_master "smbstatus | grep -c $share_name"`
+
+if [ $(ucr get server/role) == "domaincontroller_master" ]; then
+    result="$(smbstatus | grep -c $share_name)"
+else
+    result="$(on_master "smbstatus | grep -c $share_name")"
+fi
+
 echo Result:$result
 
 if [ "$result" != "$amount" ]
 then
 	fail_test 1 "Only $result of $amount authentifications have been successful"
 fi
-
 
 exit $RETVAL
 

@@ -25,6 +25,10 @@ password=univention
 trap 'user_remove "$username"' INT TERM EXIT
 user_create "$username" || fail_test 1 "Could not create user $username."
 
+if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
+    ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
+fi
+
 sleep 10
 
 ADMINISTRATOR_DN="$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"

@@ -1,3 +1,11 @@
+ucs-test (3.0.20-1) unstable; urgency=low
+
+  * resolved the issue that some tests in 51_samba4 failed when the password for 
+    Administrator is not the default one (Bug #29060)
+  * temporarily disabled 51_samba4/40password-policies (Bug #29057)
+
+ -- Tobias Peters <peters@univention.de>  Tue, 13 Nov 2012 17:49:14 +0100
+
 ucs-test (3.0.19-1) unstable; urgency=low
 
   * 00/25: Ignore permissions of socket files (Bug #23527)

@@ -28,7 +28,13 @@ user_create "$username" || fail_test 1 "Could not create user $username."
 sleep 10
 
 #Put a file on sysvol as Administrator
-smbclient //localhost/sysvol -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" -c "put /etc/hosts $domainname/t1" || fail_test 1 "Could not put file on sysvol as Administrator"
+if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
+    smbclient //localhost/sysvol -U"$ADMINISTRATOR_USER%$(cat /root/root.secret)" -c "put /etc/hosts $domainname/t1" || fail_test 1 "Could not put file on sysvol as Administrator"
+    echo secret
+else 
+    smbclient //localhost/sysvol -U"$ADMINISTRATOR_USER%univention" -c "put /etc/hosts $domainname/t1" || fail_test 1 "Could not put file on sysvol as Administrator"
+    echo normale
+fi
 #Access the folder Policies on sysvol as a user
 smbclient //localhost/sysvol -U"$username%$password" -c "ls $domainname/Policies" || fail_test 1 "Could not access Policies on sysvol as a user"
 #Put a file in the folder Policies on sysvol as a user
