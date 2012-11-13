@@ -216,10 +216,8 @@ define([
 			titlePane.addChild(this._grid);
 			this.addChild(titlePane);
 
-			this.standby(true);
 			tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
 				if (prefs.appcenterSeen === 'yes') {
-					this.standby(false);
 					// load apps
 					this.updateApplications();
 				} else {
@@ -254,17 +252,14 @@ define([
 					}).then(
 						lang.hitch(this, function(data) {
 							tools.setUserPreference({appcenterSeen: data.show_again ? 'no' : 'yes'});
-							this.standby(false);
 							this.updateApplications();
 						}),
 						lang.hitch(this, function() {
-							this.standby(false);
 							this.updateApplications();
 						})
 					);
 				}
 			}), lang.hitch(this, function() {
-				this.standby(false);
 				this.updateApplications();
 			}));
 		},
