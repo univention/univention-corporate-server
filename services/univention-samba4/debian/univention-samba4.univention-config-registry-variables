@@ -405,3 +405,9 @@ Description[de]=Aktiviert/deaktiviert den DRSUAPI Server als DCERPC Endpoint
 Description[en]=Enables/disables the DRSUAPI server as DCERPC endpoint
 Type=str
 Categories=service-samba
+
+[samba4/dc]
+Description[de]=Gibt einen bestimmten Server vor, gegen den Samba joinen soll.
+Description[en]=Defines a specific server that samba should join against.
+Type=str
+Categories=service-samba
