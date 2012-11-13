@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-11-09 10:32+0100\n"
-"PO-Revision-Date: 2012-11-09 12:09+0100\n"
+"PO-Revision-Date: 2012-11-13 15:57+0100\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -2366,8 +2366,8 @@ msgstr "Ein MBR wurde auf Gerät %s gefunden."
 
 #: installer/modules/66_gpt_partition.py:2313
 #: installer/modules/66_gpt_partition.py:2330
-msgid "Devices with MBR are not supported by the interactive installation."
-msgstr "Geräte mit MBR werden in der interaktiven Installation nicht unterstützt."
+msgid "Devices with MBR are unsupported in interactive installation."
+msgstr "Geräte mit MBR werden vom interaktiven Installer nicht unterstützt."
 
 #: installer/modules/66_gpt_partition.py:2314
 msgid "An automatic conversion of the existing MBR to a GPT is not possible."

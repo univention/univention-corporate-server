@@ -2329,7 +2329,7 @@ class object(content):
 				if DISKLABEL_MSDOS in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors
 					self.parent.debug('requesting user input: MSDOS parttable found ==> ignore or convert to GPT?')
 					msglist=[ _('A MBR has been found on device %s.') % dev,
-							  _('Devices with MBR are not supported by the interactive installation.'),
+							  _('Devices with MBR are unsupported in interactive installation.'),
 							  _('You can proceed by ignoring this device or by converting'),
 							  _('the existing MBR to GPT immediately.'),
 							  '',
