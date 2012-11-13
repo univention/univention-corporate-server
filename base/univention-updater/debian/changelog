@@ -1,3 +1,10 @@
+univention-updater (8.0.50-2) unstable; urgency=low
+
+  * Use parameter --yes for downloading python-univention-directory-
+    manager-legacy-ucd-tcs (Bug #29212)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Nov 2012 07:43:20 +0100
+
 univention-updater (8.0.50-1) unstable; urgency=low
 
   * Starting a pre-download of python-univention-directory-manager-
