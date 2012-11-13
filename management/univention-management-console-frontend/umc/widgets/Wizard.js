@@ -127,9 +127,8 @@ define([
 			}, this);
 		},
 
-		postCreate: function() {
+		startup: function() {
 			this.inherited(arguments);
-
 			this._next(null);
 		},
 
