@@ -321,6 +321,9 @@ for pkg in univention-config; do
 	fi
 done
 
+# Pre-download python-univention-directory-manager-legacy-ucd-tcs
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=29212
+apt-get install -d python-univention-directory-manager-legacy-ucd-tcs >&3 2>&3
 
 echo ""
 echo "Starting update process, this may take a while."
