@@ -59,9 +59,9 @@ from univention.admin.handlers.dns.reverse_zone import mapSubnet
 
 LOGFILE_NAME = "/var/log/univention/univention-ad-takeover.log"
 BACKUP_DIR = "/var/univention-backup/univention-ad-takeover"
-samba_dir = '/var/lib/samba'
-samba_private_dir = os.path.join(samba_dir, 'private')
-sysvol_path = os.path.join(samba_dir, 'sysvol')
+SAMBA_DIR = '/var/lib/samba'
+SAMBA_PRIVATE_DIR = os.path.join(SAMBA_DIR, 'private')
+SYSVOL_PATH = os.path.join(SAMBA_DIR, 'sysvol')
 
 well_known_sids = {
 	"S-1-0":	"Null Authority",
@@ -313,7 +313,7 @@ def check_for_phase_II(ucr, lp, ad_server_ip):
 		ad_server_fqdn, ad_server_name = ucr["hosts/static/%s" % ad_server_ip].split()
 
 		## Check if the AD server is already in the local SAM db
-		samdb = SamDB(os.path.join(samba_private_dir, "sam.ldb"), session_info=system_session(lp), lp=lp)
+		samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
 		msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 					expression="(sAMAccountName=%s$)" % ad_server_name,
 					attrs=["objectSid"])
@@ -475,9 +475,9 @@ def check_ad_object_numbers(ucr, remote_samdb):
 			log.warn("Number of %s objects after takeover would be %s. This would exceed the number of licensed objects (%s)." % (object_name, sum, max))
 	return license_sufficient
 
-def print_dot():
-	sys.stdout.write(".")
-	sys.stdout.flush()
+def print_progress(output_string = ".", stream = sys.stdout):
+	stream.write(output_string)
+	stream.flush()
 
 def get_stable_last_id(progress_function = None, max_time=20):
 	last_id_cached_value = None
@@ -502,7 +502,7 @@ def get_stable_last_id(progress_function = None, max_time=20):
 			progress_function()
 	return last_id
 
-def wait_for_listener_replication(progress_function = None, max_time=20):
+def wait_for_listener_replication(progress_function = None, max_time=None):
 	notifier_id_cached_value = None
 	static_count = 0
 	t = t_0 = time.time()
@@ -519,15 +519,18 @@ def wait_for_listener_replication(progress_function = None, max_time=20):
 			notifier_id_cached_value = notifier_id
 		else:
 			static_count = static_count + 1
+
 		delta_t = time.time() - t
-		t = t + delta_t
-		if t - t_0 > max_time:
-			print
-			sys.stdout.flush()
-			log.debug("Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t - t_0))))
-			return False
+		if max_time:
+			t = t + delta_t
+			if t - t_0 > max_time:
+				print
+				sys.stdout.flush()
+				log.debug("Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t - t_0))))
+				return False
 		if progress_function and delta_t >= 1:
 			progress_function()
+
 	if progress_function:
 		print
 		sys.stdout.flush()
@@ -540,7 +543,6 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 
 	static_count = 0
 	cache_S4_rejects = None
-	foldername = "/var/lib/univention-connector/s4"
 	t = t_0 = time.time()
 
 	ucr.load()	## load current values
@@ -548,44 +550,43 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 	connector_s4_retryrejected = int(ucr.get("connector/s4/retryrejected", "10"))
 	required_static_count = 5 * connector_s4_retryrejected
 
-	if not max_time:
+	if max_time == "scale10":
 		max_time = 10 * connector_s4_retryrejected * connector_s4_poll_sleep
 		log.info("Waiting for S4 Connector sync (max. %s seconds)" % int(round(max_time)))
 
+	highestCommittedUSN = -1
+	lastUSN = -1
 	while static_count < required_static_count:
 		time.sleep (connector_s4_poll_sleep)
 
-		c.execute('select key from "UCS rejected";')
-		conn.commit()
-		known_files = [ row[0] for row in c.fetchall() ]
+		previous_highestCommittedUSN = highestCommittedUSN
+		samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
+		msgs = samdb.search(base="", scope=samba.ldb.SCOPE_BASE, attrs=["highestCommittedUSN"])
+		highestCommittedUSN = msgs[0]["highestCommittedUSN"][0]
 
-		c.execute('select key from "S4 rejected";')
+		previous_lastUSN = lastUSN
+		c.execute('select value from S4 where key=="lastUSN"')
 		conn.commit()
-		count_S4_rejects = len(c.fetchall())
+		lastUSN = c.fetchone()[0]
 
-		if count_S4_rejects != cache_S4_rejects:
-			cache_S4_rejects = count_S4_rejects
+		if not ( lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN ):
 			static_count = 0
-			continue
-
-		for entry in os.listdir(foldername):
-			filename = os.path.join(foldername, entry)
-			if os.path.isfile(filename):
-				if not filename in known_files:
-					static_count = 0
-					break
 		else:
 			static_count = static_count + 1
+
 		delta_t = time.time() - t
-		t = t + delta_t
-		if t - t_0 > max_time:
-			print
-			sys.stdout.flush()
-			log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t - t_0),)))
-			conn.close()
-			return False
+		if max_time:
+			t = t + delta_t
+			if t - t_0 > max_time:
+				print
+				sys.stdout.flush()
+				log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t - t_0),)))
+				conn.close()
+				return False
 		if progress_function and delta_t >= 1:
-			progress_function()
+			progress_output = "\rSynchronizing [%s / %s]" % (lastUSN, highestCommittedUSN)
+			progress_function(progress_output)
+
 	if progress_function:
 		print
 		sys.stdout.flush()
@@ -642,12 +643,11 @@ def cleanup_failed_join(ucr, ad_server_ip):
 	run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % (ad_server_ip,)], log.debug)
 
 	## Restore backup Samba directory
-	if os.path.exists(samba_dir):
-		backup_samba_dir = "%s.before-ad-takeover" % samba_private_dir
-		if os.path.exists(backup_samba_dir):
-			shutil.rmtree(samba_private_dir)
-			os.rename(backup_samba_dir, samba_private_dir)
-			# shutil.copytree(backup_samba_dir, samba_private_dir, symlinks=True)
+	backup_samba_dir = "%s.before-ad-takeover" % SAMBA_PRIVATE_DIR
+	if os.path.exists(backup_samba_dir):
+		shutil.rmtree(SAMBA_PRIVATE_DIR)
+		os.rename(backup_samba_dir, SAMBA_PRIVATE_DIR)
+		# shutil.copytree(backup_samba_dir, SAMBA_PRIVATE_DIR, symlinks=True)
 
 	## Start Samba again
 	run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
@@ -729,7 +729,7 @@ def run_phaseI(ucr, lp, opts, args):
 	rc= p1.poll()
 	while rc is None:
 		time.sleep(1)
-		print_dot()
+		print_progress()
 		rc= p1.poll()
 	print
 	if rc != 0:
@@ -768,7 +768,7 @@ def run_phaseI(ucr, lp, opts, args):
 		log.info("Ok, Server IP %s is online." % ad_server_ip)
 
 	## Check if the script was run before
-	backup_samba_dir = "%s.before-ad-takeover" % samba_private_dir
+	backup_samba_dir = "%s.before-ad-takeover" % SAMBA_PRIVATE_DIR
 	if os.path.exists(backup_samba_dir):
 		msg=[]
 		msg.append("Error: Found Samba backup of a previous run of univention-ad-takeover.")
@@ -996,13 +996,13 @@ def run_phaseI(ucr, lp, opts, args):
 	run_and_output_to_log(["/etc/init.d/samba4", "stop"], log.debug)
 
 	## Move current Samba directory out of the way
-	if os.path.exists(samba_private_dir):
+	if os.path.exists(SAMBA_PRIVATE_DIR):
 		if not os.path.exists(backup_samba_dir):
-			os.rename(samba_private_dir, backup_samba_dir)
-			os.makedirs(samba_private_dir)
+			os.rename(SAMBA_PRIVATE_DIR, backup_samba_dir)
+			os.makedirs(SAMBA_PRIVATE_DIR)
 		else:
-			shutil.rmtree(samba_private_dir)
-			os.mkdir(samba_private_dir)
+			shutil.rmtree(SAMBA_PRIVATE_DIR)
+			os.mkdir(SAMBA_PRIVATE_DIR)
 
 	## Adjust some UCR settings
 	if "nameserver1/local" in ucr:
@@ -1043,7 +1043,7 @@ def run_phaseI(ucr, lp, opts, args):
 				log.debug(log_line)
 			t1 = time.time()
 			if	t1 - t >=1:
-				print_dot()
+				print_progress()
 				t = t1
 		print
 		sys.stdout.flush()
@@ -1074,7 +1074,7 @@ def run_phaseI(ucr, lp, opts, args):
 
 	## Fix some attributes in local SamDB
 	ad_domainsid = None
-	samdb = SamDB(os.path.join(samba_private_dir, "sam.ldb"), session_info=system_session(lp), lp=lp)
+	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
 	msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_BASE,
 	                    expression="(objectClass=domain)",
 	                    attrs=["objectSid"])
@@ -1115,7 +1115,7 @@ def run_phaseI(ucr, lp, opts, args):
 	takeover_DC_Behavior_Version(ucr, remote_samdb, samdb, ad_server_name, sitename)
 
 	## Fix some attributes in SecretsDB
-	secretsdb = samba.Ldb(os.path.join(samba_private_dir, "secrets.ldb"), session_info=system_session(lp), lp=lp)
+	secretsdb = samba.Ldb(os.path.join(SAMBA_PRIVATE_DIR, "secrets.ldb"), session_info=system_session(lp), lp=lp)
 
 	let_samba4_manage_etc_krb5_keytab(ucr, secretsdb)
 	fqdn = "%s.%s" % (ucr['hostname'], ucr['domainname'])
@@ -1271,7 +1271,7 @@ def run_phaseI(ucr, lp, opts, args):
 
 
 	### Pre-Create mail domains for all mail and proxyAddresses:
-	samdb = SamDB(os.path.join(samba_private_dir, "sam.ldb"), session_info=system_session(lp), lp=lp)
+	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
 	msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 	                    expression="(|(mail=*)(proxyAddresses=*))",
 	                    attrs=["mail", "proxyAddresses"])
@@ -1336,7 +1336,7 @@ def run_phaseI(ucr, lp, opts, args):
 	run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"], log.debug)
 
 	log.info("Waiting for listener to finish (max. 90 seconds)")
-	if not wait_for_listener_replication(print_dot, 90):
+	if not wait_for_listener_replication(print_progress, 90):
 		log.warn("Warning: Stopping Listener now anyway.")
 
 	## Restart Univention Directory Listener for S4 Connector
@@ -1347,7 +1347,7 @@ def run_phaseI(ucr, lp, opts, args):
 
 	for i in xrange(10):
 		time.sleep(1)
-		print_dot()
+		print_progress()
 	print
 	sys.stdout.flush()
 
@@ -1373,7 +1373,7 @@ def run_phaseI(ucr, lp, opts, args):
 	#print "Waiting for directory listener to start up (10 seconds)",
 	#for i in xrange(10):
 	#	time.sleep(1)
-	#	print_dot()
+	#	print_progress()
 	#print
 
 	### rotate S4 connector log and start the S4 Connector
@@ -1386,18 +1386,8 @@ def run_phaseI(ucr, lp, opts, args):
 	if returncode != 0:
 		log.error("Start of univention-s4-connector failed. See %s for details." % (LOGFILE_NAME,))
 
-	log.info("Waiting for S4 Connector sync (max. 10 minutes)")
-	t = t_0 = time.time()
-	wait_for_s4_connector_replication(ucr, print_dot, 600)
-	delta_t = time.time() - t
-	log.debug("S4 Connector sync took %s seconds." % int(round(delta_t)))
-	if	delta_t < 3:
-		log.debug("Waiting another 600 seconds for S4 Connector sync.")
-		for i in xrange(600):
-			time.sleep(1)
-			print_dot()
-		print
-		sys.stdout.flush()
+	log.info("Waiting for S4 Connector sync")
+	wait_for_s4_connector_replication(ucr, print_progress)
 
 	## Reset normal relication intervals
 	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=%s" % old_sleep, "connector/s4/retryrejected=%s" % old_retry], log.debug)
@@ -1441,7 +1431,7 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 
 	## 1. Determine Site of local server, important for locale-dependend names like "Standardname-des-ersten-Standorts"
 	sitename = None
-	samdb = SamDB(os.path.join(samba_private_dir, "sam.ldb"), session_info=system_session(lp), lp=lp)
+	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
 	msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 	                    expression="(sAMAccountName=%s$)" % ucr["hostname"],
 	                    attrs=["serverReferenceBL"])
@@ -1467,7 +1457,7 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 	partitions = takeover_hasInstantiatedNCs(ucr, samdb, ad_server_name, sitename)
 
 	## Backup current NTACLs on sysvol
-	p = subprocess.Popen(["getfattr", "-m", "-", "-d", "-R", sysvol_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	p = subprocess.Popen(["getfattr", "-m", "-", "-d", "-R", SYSVOL_PATH], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	(stdout, stderr) = p.communicate()
 	if stdout:
 		now = time.localtime()
@@ -1480,16 +1470,16 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 	if len(stderr.rstrip().split('\n')) > 1:
 		log.debug(stderr)
 
-	## Re-Set Default NTACLs on sysvol directory (only the directory itself)
-	run_and_output_to_log(["/usr/share/univention-samba4/scripts/set_sysvol_ntacl.py", sysvol_path], log.debug)
+	## Re-Set NTACLs from nTSecurityDescriptor on sysvol policy directories
+	run_and_output_to_log(["samba-tool", "ntacl", "sysvolreset"], log.debug)
 
-	## Re-set default fACLs so sysvol-sync can read files and directories
-	returncode = run_and_output_to_log(["setfacl", "-R", "-P", "-m", "g:Authenticated Users:r-x,d:g:Authenticated Users:r-x", sysvol_path], log.debug)
+	## Re-set default fACLs so sysvol-sync can read files and directories (See Bug#29065)
+	returncode = run_and_output_to_log(["setfacl", "-R", "-P", "-m", "g:Authenticated Users:r-x,d:g:Authenticated Users:r-x", SYSVOL_PATH], log.debug)
 	if returncode != 0:
-		log.error("Error: Could not set fACL for %s" % sysvol_path)
+		log.error("Error: Could not set fACL for %s" % SYSVOL_PATH)
 		msg=[]
 		msg.append("Warning: Continuing anyway. Please fix later by running:")
-		msg.append("         setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' %s" % sysvol_path)
+		msg.append("         setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' %s" % SYSVOL_PATH)
 		log.warn("\n".join(msg))
 
 	## Add DNS records to UDM:
@@ -1509,15 +1499,15 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 	log.info("Cleaning up.")
 	
 	log.debug("Removing AD DC account from local Samba4 SAM database.")
-	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,CN=Domain System Volume (SYSVOL share),CN=File Replication Service,CN=System,%s" % (ad_server_name, ucr["samba4/ldap/base"])], log.debug)
+	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), "CN=%s,CN=Domain System Volume (SYSVOL share),CN=File Replication Service,CN=System,%s" % (ad_server_name, ucr["samba4/ldap/base"])], log.debug)
 	if returncode != 0:
 		log.error("Removal of AD DC account %s from Samba4 SAM database failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
 
-	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, ucr["samba4/ldap/base"])], log.debug)
+	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), "CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, ucr["samba4/ldap/base"])], log.debug)
 	if returncode != 0:
 		log.error("Removal of AD server objects %s from Samba4 SAM database failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
 
-	run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(samba_private_dir, "sam.ldb"), "CN=%s,OU=Domain Controllers,%s" % (ad_server_name, ucr["samba4/ldap/base"])], log.debug)
+	run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), "CN=%s,OU=Domain Controllers,%s" % (ad_server_name, ucr["samba4/ldap/base"])], log.debug)
 
 	## Finally, for consistency remove AD DC object from UDM
 	log.debug("Removing AD DC account from local Univention Directory Manager")
@@ -1681,7 +1671,7 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 		obj = msgs[0]
 		dnsKeyVersion = obj["msDS-KeyVersionNumber"][0]
 
-	secretsdb = samba.Ldb(os.path.join(samba_private_dir, "secrets.ldb"), session_info=system_session(lp), lp=lp)
+	secretsdb = samba.Ldb(os.path.join(SAMBA_PRIVATE_DIR, "secrets.ldb"), session_info=system_session(lp), lp=lp)
 	secretsdb.add({"dn": "samAccountName=%s,CN=Principals" % dns_SPN_account_name,
 		"objectClass": "kerberosSecret",
 		"privateKeytab": "dns.keytab",

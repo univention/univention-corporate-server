@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.22-1) unstable; urgency=low
+
+  * Let wait_for_s4_connector_replication monitor the USN (Bug #28390)
+  * minor coding style cleanup
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Nov 2012 16:05:55 +0100
+
 univention-s4-connector (7.0.21-1) unstable; urgency=low
 
   * Add UCR variable description for group table (Bug #28390).
