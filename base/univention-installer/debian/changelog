@@ -1,3 +1,9 @@
+univention-installer (8.0.33-1) unstable; urgency=low
+
+  * fixed half-configured IPv6 interface during installation (Bug #28473)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 13 Nov 2012 11:40:56 +0100
+
 univention-installer (8.0.32-1) unstable; urgency=low
 
   * do not show 66_gpt_partition in expert partition mode (Bug #23990)

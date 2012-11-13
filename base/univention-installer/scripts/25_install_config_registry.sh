@@ -34,7 +34,13 @@
 . /tmp/progress.lib
 echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Installing Univention base packages")" >&9
 
-cp /etc/univention/base.conf /instmnt/etc/univention/base.conf
+# Bug 28473: disable reconfiguration of interfaces temporary - will be reenabled before reboot
+ucr set --force interfaces/restart/auto=no
+
+# copy UCR settings from installer ramdisk to new system
+for fn in base.conf base-ldap.conf base-forced.conf ; do
+	cp "/etc/univention/$fn" "/instmnt/etc/univention/$fn"
+done
 
 PIPE="yes yes '' |"
 cat >/instmnt/install_config_registry.sh <<__EOT__

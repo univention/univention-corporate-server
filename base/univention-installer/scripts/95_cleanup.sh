@@ -72,6 +72,9 @@ if [ -x /etc/init.d/nfs-common ]; then
 	/etc/init.d/nfs-common stop
 fi
 
+# Bug 28473: reenable automatic configuration of interfaces
+ucr unset --force interfaces/restart/auto
+
 umount -a >/dev/null 2>&1
 echo -n "Sending all processes the TERM signal... "
 killall5 -15 >/dev/null 2>&1
