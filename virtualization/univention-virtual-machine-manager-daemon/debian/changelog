@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (2.0.17-1) unstable; urgency=low
+
+  * DriveWizard: Disable the first page when configurating an existing
+    device (Bug #27817)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 13 Nov 2012 17:04:58 +0100
+
 univention-virtual-machine-manager-daemon (2.0.16-2) unstable; urgency=low
 
   * fixed value of driver cache; Bug #28635

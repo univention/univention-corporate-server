@@ -276,6 +276,14 @@ define([
 			return nextName;
 		},
 
+		hasPrevious: function(pageName) {
+			if (this.driveType) {
+				return false;
+			} else {
+				return this.inherited(arguments);
+			}
+		},
+
 		_updateDriveWidgets: function(volumeType) {
 			// update visibility
 			tools.forIn(this._pages.drive._form._widgets, function(iname, iwidget) {
