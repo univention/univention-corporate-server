@@ -97,9 +97,8 @@ if [ 0 -eq \$? ]; then
 	apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install mdadm
 fi
 
+ucr set grub/efi="${use_efi}"
 apt-get -y -o APT::Status-FD=9 -o APT::Get::AllowUnauthenticated=1 install univention-grub ${grub_package}
-
-ucr set grub/efi=${use_efi}
 __EOT__
 chmod +x /instmnt/install_mdadm.sh
 chroot /instmnt ./install_mdadm.sh
