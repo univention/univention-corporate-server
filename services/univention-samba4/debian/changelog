@@ -1,3 +1,10 @@
+univention-samba4 (2.0.26-3) unstable; urgency=low
+
+  * run sysvol-sync.sh in joinscript before running
+    samba-tool ntacl sysvolreset (Bug #28737)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Nov 2012 17:04:38 +0100
+
 univention-samba4 (2.0.26-2) unstable; urgency=low
 
   * Add variable description for samba4/dc (Bug #27469)
