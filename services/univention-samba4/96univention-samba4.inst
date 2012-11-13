@@ -242,36 +242,32 @@ run_samba_provision() {
 }
 
 samba_domain_join() {
-	success=false
-	samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-						--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-						--keep-existing && success=true
-	if [ $? != 0 ]; then
-		# try again with --server
-		if [ -n "$samba4_dc" ]; then
-			samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
+	local success
+	if [ -n "$samba4_dc" ]; then
+		samba-tool domain join "$domainname" "$samba4_role" -k no -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
+							--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+							--keep-existing && success=true
+	else
+		samba-tool domain join "$domainname" "$samba4_role" -k no -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
+							--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
+							--keep-existing && success=true
+		if [ -z "$success" ]; then
+			# try again with --server
+			cn=($(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
+						"(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn \
+										| sed -n 's/^cn: \(.*\)/\1/p' ))
+			
+			for name in "${cn[@]}"; do
+				samba-tool domain join "$domainname" "$samba4_role" -k no -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$name.$domainname" \
 								--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
 								--keep-existing && success=true
-		fi
-		if ! $success; then
-		     	cn=($(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn \
-					    	     		       | sed -n 's/^cn: \(.*\)/\1/p' ))
-								 								       
-			
-			for name in "${cn[@]}"
-			do			
-				samba-tool domain join "$domainname" "$samba4_role" -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$name.$domainname" \
-								--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-								--keep-existing
-				if [ $? = 0 ]; then
-					success=true
-				   break
+				if [ -n "$success" ]; then
+					break
 				fi
 			done
-
 		fi
 	fi
-	if ! $success; then
+	if [ -z "$success" ]; then
 		echo "Failed to join the domain."
 		exit 1
 	fi

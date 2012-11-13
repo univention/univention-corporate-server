@@ -1,3 +1,11 @@
+univention-samba4 (2.0.26-1) unstable; urgency=low
+
+  * Avoid using Kerberos for samba domain join (Bug #27469).
+  * If samba4/dc is given, try only the given server.
+  * Unify coding style in samba_domain_join function.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Nov 2012 11:38:56 +0100
+
 univention-samba4 (2.0.25-3) unstable; urgency=low
 
   * Revise workaround code for Bug #26641 to check machine.secret
