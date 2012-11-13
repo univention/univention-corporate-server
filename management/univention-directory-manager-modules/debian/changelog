@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.92-1) unstable; urgency=low
+
+  * Fixed univention-license-check output (Bug #29079)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Nov 2012 16:29:03 +0100
+
 univention-directory-manager-modules (8.0.91-1) unstable; urgency=low
 
   * Prepare module.init for being called twice (for Bug #26677)

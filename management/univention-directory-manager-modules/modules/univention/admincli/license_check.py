@@ -157,7 +157,7 @@ def check_license(lo, dn, list_dns, expired):
 				if v == '2' and i == License.SERVERS:
 					# Ignore the server count
 					ignored = True
-				out.append(format(l, n, m, e == expired, _license.compare, ignored))
+				out.append(format(l, n, m, 0, _license.compare, ignored))
 				if list_dns and not max == 'unlimited':
 					for dnout in odn:
 						out.extend( [ "  %s" % dnout, ] )

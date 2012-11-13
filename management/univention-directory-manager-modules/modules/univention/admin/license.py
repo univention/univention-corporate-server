@@ -126,7 +126,7 @@ class License( object ):
 					# Version 1 till UCS 3.1
 					License.ACCOUNT:   'univentionLicenseAccounts',
 					License.CLIENT:    'univentionLicenseClients',
-					License.DESKTOP:   'univentionLicenseuniventionDesktops',
+					License.DESKTOP:   'univentionLicenseUniventionDesktops',
 					License.GROUPWARE: 'univentionLicenseGroupwareAccounts'
 				},
 				'2': {
