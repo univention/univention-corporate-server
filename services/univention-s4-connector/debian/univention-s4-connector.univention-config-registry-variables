@@ -40,12 +40,6 @@ Description[en]=Specifies the amount of debug information to be written to /var/
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/group/language]
-Description[de]=Definiert, welche Abbildung von Standard-Gruppennamen zwischen UCS (Gruppennamen sind dort immer englisch) und Samba 4 genutzt werden soll. Voreingestellt ist das Mapping auf ein deutschsprachiges Samba 4 über den Wert "de".
-Description[en]=Defines which form of standard group names should be used between UCS (group names are always English) and Samba 4. The mapping to a Samba 4 service in German language is preset using the value "de".
-Type=str
-Categories=service-adcon
-
 [con.*/s4/mapping/syncmode]
 Description[de]=Definiert den Sychronisations-Modus, unterstützt werden die Werte "read" (nur lesend von Samba 4 nach UCS), "write" (nur schreiben von UCS nach Samba 4) oder "sync" (bidirektionale Synchronisation).
 Description[en]=Defines the synchronisation mode; "read" (reading only from Samba 4 to UCS), "write" (writing only from UCS to Samba 4) and "sync" (bidirectional synchronisation) are supported. 
@@ -195,3 +189,8 @@ Description[en]=If this variable is set to true, a second S4 connector can be st
 Type=str
 Categories=service-adcon
 
+[con.*/s4/mapping/group/table/.*]
+Description[de]=Eine statische Liste von Zuordnungen von Gruppenamen im UCS-LDAP zu Gruppennamen im Samba 4 Benutzerverzeichnis. Gruppennamen im UCS-LDAP sind immer englisch. Beispielsweise sorgt die Zuordnung "connector/s4/mapping/group/table/'Domain Users'=Domänen-Benutzer" dafür, dass der S4-Connector ein Gruppenobjekt, das in UCS-LDAP den Namen "Domain Users" trägt, mit einem Gruppenobjekt mit dem Namen "Domänen-Benutzer" im Samba 4 Benutzerverzeichnis synchronisiert.
+Description[en]=A static list mapping group names in UCS-LDAP to group names in the Samba 4 user directory. Group names in UCS-LDAP are always English. The mapping "connector/s4/mapping/group/table/'Domain Users'=Domänen-Benutzer" e.g. advises the S4 Connector to synchronize a group object called "Domain Users" in UCS-LDAP with a group object called "Domänen-Benutzer" in the Samba 4 user directory.
+Type=str
+Categories=service-adcon
