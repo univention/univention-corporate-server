@@ -34,6 +34,8 @@
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/ucr.sh
+
 # Update to UCS 3.0: save menu.lst
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.8; then
 	if [ -e /boot/grub/menu.lst ]; then

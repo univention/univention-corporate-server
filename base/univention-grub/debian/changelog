@@ -1,3 +1,9 @@
+univention-grub (6.0.2-2) unstable; urgency=low
+
+  * added missing UCR variable description (Bug #28672)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 13 Nov 2012 13:58:49 +0100
+
 univention-grub (6.0.2-1) unstable; urgency=low
 
   * use grub/efi instead of automatic detection (Bug #28672)
