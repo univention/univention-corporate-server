@@ -238,6 +238,41 @@ def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, arc
 		log('DB-Error in sql_put_sys_on_systems: %r %r %r' % (error, sql_command, parameters, ))
 		raise
 
+def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn):
+	'''insert a system name into the old system-table (or update its data)'''
+	parameters = {'sysname': sysname,
+	              'sysversion': sysversion,
+	              'sysrole': sysrole,
+	              'ldaphostdn': ldaphostdn,
+	              }
+	cursor.execute('SELECT true FROM systems WHERE sysname = %(sysname)s', parameters)
+	if cursor.rowcount == 0:
+		sql_command = '''
+		INSERT INTO systems (sysname,
+		                     sysversion,
+		                     sysrole,
+		                     ldaphostdn,
+		                     scandate)
+		       VALUES(%(sysname)s,
+		              %(sysversion)s,
+		              %(sysrole)s,
+		              %(ldaphostdn)s,
+		              CURRENT_TIMESTAMP)
+		'''
+	else:
+		sql_command = '''
+		UPDATE systems SET sysversion   = %(sysversion)s,
+		                   sysrole      = %(sysrole)s,
+		                   ldaphostdn   = %(ldaphostdn)s,
+		                   scandate     = CURRENT_TIMESTAMP
+		               WHERE sysname = %(sysname)s
+		'''
+	try:
+		cursor.execute(sql_command, parameters)
+	except pgdb.Error, error:
+		log('DB-Error in sql_put_sys_on_systems: %r %r %r' % (error, sql_command, parameters, ))
+		raise
+
 def sql_select(cursor, sqlcmd):
 	'''SQL Selects'''
 	log('SQL: ' + sqlcmd) # TODO: why?
@@ -396,7 +431,11 @@ def action_fill_testdb(connection, cursor, config_registry):
 	architecture = apt_pkg.Config.find("APT::Architecture")
 	log('start fill of testdb ')
 	for sysname in ['testsystem%04d' % (i, ) for i in xrange(1, 1500)]:
-		sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture)
+		try:
+			sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture)
+		except pgdb.DatabaseError:
+			connection.rollback()
+			sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn)
 		scan_and_store_packages(cursor, sysname)
 		connection.commit()
 	log('end of fill testdb')
@@ -414,7 +453,11 @@ def action_scan(connection, cursor, config_registry):
 	apt_pkg.init()
 	architecture = apt_pkg.Config.find("APT::Architecture")
 	log('Starting scan of system %r' % (sysname, ))
-	sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture)
+	try:
+		sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture)
+	except pgdb.DatabaseError:
+		connection.rollback()
+		sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn)
 	scan_and_store_packages(cursor, sysname)
 	connection.commit()
 	log('end of scan for system %r' % (sysname, ))
