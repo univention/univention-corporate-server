@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.162-1) unstable; urgency=low
+
+  * Fix event not triggered when only one language available (Bug #29224)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Nov 2012 14:21:37 +0100
+
 univention-management-console-frontend (2.0.161-1) unstable; urgency=low
 
   * Wizard: Select the first page after all widgets has been initialized

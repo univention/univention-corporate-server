@@ -125,9 +125,9 @@ define([
 			this._languageLabel.startup();
 
 			// register onchange event
-			this.own(this._languageBox.watch('value', function(name, oldLang, newLang) {
+			this._languageBox.on('change', function(newLang) {
 				i18nTools.setLanguage(newLang);
-			}));
+			});
 		},
 
 		_initForm: function() {
