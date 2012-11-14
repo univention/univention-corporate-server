@@ -29,10 +29,6 @@ mkpdir "${_version_version}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
 
-mkpdir "${_version_version}--errata1" maintained "${ARCH}"
-mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
-
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"

@@ -1,3 +1,10 @@
+ucs-test (3.0.21-1) unstable; urgency=low
+
+  * Removed errata tests. Since UCS 3.1 errata updates are released in a
+    normal component (Bug #26387)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Nov 2012 06:41:06 +0100
+
 ucs-test (3.0.20-1) unstable; urgency=low
 
   * resolved the issue that some tests in 51_samba4 failed when the password for 

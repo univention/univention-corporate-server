@@ -28,10 +28,6 @@ mkpdir "${_version_version}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
 
-mkpdir "${_version_version}--errata1" maintained "${ARCH}"
-mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
-
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
@@ -85,11 +81,6 @@ run_tests () { # execute all updater programs
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
 
-	/usr/share/univention-updater/univention-errata-update net 2>&1 | grep -F "$msg"
-	grep -F "status=FAILED" /var/lib/univention-updater/univention-errata-update.status
-	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-errata-update.status
-	ucr search --brief ^update/available
-	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
 }
 
 (

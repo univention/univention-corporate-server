@@ -2,7 +2,7 @@
 ## desc: |
 ##  Update localhost repository at max version
 ##  1. Set version to 99.99-99-999
-##  2. Setup local repository with next major, minor, patch-level, errata
+##  2. Setup local repository with next major, minor, patch-level
 ##  2. Check if updater skips these updates
 ## bugs: [25619]
 ## roles-not: [basesystem]
@@ -27,19 +27,6 @@ mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
 declare -a DOKAY=("${DIR}") DBAD=()
 
-for ((err=999;err<=1000;err+=1))
-do
-	mkpdir "99.99--errata${err}" maintained "${ARCH}"
-	if [ "$err" -le 999 ]
-	then
-		ln -f "${DMASTER:?}/"* "${DIR:?}/"
-		DOKAY+=("${DIR}")
-	else
-		mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
-		mkpkg "${DIR}"
-		DBAD+=("${DIR}")
-	fi
-done
 echo -n " patchlevel..."
 for ((pat=1;pat<=100;pat+=1)) # 0 is master
 do
@@ -69,8 +56,6 @@ echo " done."
 config_repo \
 	version/version=99.99 \
 	version/patchlevel=99 \
-	version/erratalevel=999 \
-	repository/online/errata/start=999 \
 	"repository/online/component/${compname}=no" # Bug #24347
 
 (
@@ -82,7 +67,6 @@ config_repo \
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	test 99.99 = "$(ucr get version/version)"
 	test 99 = "$(ucr get version/patchlevel)"
-	test 999 = "$(ucr get version/erratalevel)"
 	checkdeb "${pkgname}" 1
 
 	echo "Checking /etc/apt/sources.list* for ${#DOKAY[@]} required entries..."

@@ -100,62 +100,6 @@ setup_apache "${repoprefix}"
 		fi
 		ucr set update/available="" # reset the UCR variable
 
-
-		# create new errata update
-		echo "### Create a new errata update (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
-		let ++erratalevel
-		let ++pkversion
-		mkpdir "${_version_version}--errata${erratalevel}" maintained "${ARCH}"
-		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
-		mkpkg "${DIR}"
-		apt-get -qq update
-
-		# an update should be available
-		/usr/share/univention-updater/univention-updater-check
-		ucr search --brief ^update/available
-		test yes = "$(ucr get update/available)"
-		ucr set update/available="" # reset the UCR variable
-
-		# do the update and make sure update/available has been updated
-		echo "### errata update ###"
-		/usr/share/univention-updater/univention-errata-update net
-		ucr search --brief ^update/available
-		test no = "$(ucr get update/available)"
-		ucr set update/available="" # reset the UCR variable
-
-
-		# create new errata update and patchlevel release
-		let ++patchlevel
-		let ++erratalevel
-		let pkversion+=2
-		echo "### Create a new patchlevel release and errata update (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
-		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
-		mkdeb "${pkgname}" $((pkversion-1)) "${ARCH}" "${DIR}"
-		mkpkg "${DIR}"
-		mkpdir "${_version_version}--errata${erratalevel}" maintained "${ARCH}"
-		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
-		mkpkg "${DIR}"
-		apt-get -qq update
-
-		# an update should be available
-		/usr/share/univention-updater/univention-updater-check
-		ucr search --brief ^update/available
-		test yes = "$(ucr get update/available)"
-		ucr set update/available="" # reset the UCR variable
-
-		# do the update and make sure update/available has been updated
-		echo "### Update ###"
-		/usr/share/univention-updater/univention-updater net
-		ucr search --brief ^update/available
-		test yes = "$(ucr get update/available)"
-		ucr set update/available="" # reset the UCR variable
-
-		# do the update and make sure update/available has been updated
-		echo "### errata update ###"
-		/usr/share/univention-updater/univention-errata-update net
-		ucr search --brief ^update/available
-		test no = "$(ucr get update/available)"
-		ucr set update/available="" # reset the UCR variable
 	done
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)

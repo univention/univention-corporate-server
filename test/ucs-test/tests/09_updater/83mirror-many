@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: |
-##  Mirror localhost errata minimum
-##  1. Create minimum mirror with 101 minor and 1001 errata updates, using hard-links
+##  Mirror localhost minimum
+##  1. Create minimum mirror with 101 minor updates, using hard-links
 ##  2. Check if updater aborts on 99 and 999
 ## roles-not: [basesystem]
 ## tags: [basic]
@@ -24,14 +24,7 @@ DMASTER="${DIR}"
 mkpkg "${DIR}"
 declare -a DOKAY=("${DIR}") DBAD=()
 
-echo -n "Creating errata..."
-for ((err=1;err<=1002;err+=1))
-do
-	mkpdir "${major}.${minor}--errata${err}" maintained "${ARCH}"
-	ln -f "${DMASTER:?}/"* "${DIR:?}/"
-	[ "$err" -le 999 ] && DOKAY+=("${DIR}") || DBAD+=("${DIR}")
-done
-echo -n " patchlevel..."
+echo -n "Creating patchlevel..."
 for ((pat=1;pat<=102;pat+=1)) # 0 created by minor
 do
 	mkpdir "${major}.${minor}-${pat}" maintained "${ARCH}"
@@ -72,7 +65,7 @@ config_mirror \
 		test 1 -eq $?
 	done
 	"${FIXED_26249}" || exit 0
-	# for every of the 300 patchlevel+minor+major releases, all 1000 errata are
+	# every of the 300 patchlevel+minor+major releases are
 	# included.  univention-repository-update _interates_ over those 300
 	# releases and generates multiple HTTP-HEAD queries for all _previous_
 	# releases.  Also for all 300 releases apt-mirror is called which _forks_

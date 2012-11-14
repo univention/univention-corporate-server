@@ -28,17 +28,6 @@ mkpkg "${DIR}"
 mksh "${DIR}" preup postup
 BDIR+=("${DIR}")
 
-mkpdir "${major}.${minor}--errata1" maintained "${ARCH}"
-mkdeb "${pkgname}y" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
-BDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}--errata1" maintained all
-mkdeb "${pkgname}l" 2 all "${DIR}"
-mkpkg "${DIR}"
-mksh "${DIR}" preup postup
-BDIR+=("${DIR}")
-
 mkpdir "${major}.${minor}-1" maintained "${ARCH}"
 mkdeb "${pkgname}y" 3 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
@@ -64,17 +53,6 @@ mksh "${DIR}" preup postup
 BDIR+=("${DIR}")
 
 # START
-
-mkpdir "${major}.${minor}--errata1" maintained "${ARCH}"
-mkdeb "${pkgname}y" 5 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
-CDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}--errata1" maintained all
-mkdeb "${pkgname}l" 5 all "${DIR}"
-mkpkg "${DIR}"
-mksh "${DIR}" preup postup
-CDIR+=("${DIR}")
 
 mkpdir "${major}.${minor}-1" maintained "${ARCH}"
 mkdeb "${pkgname}y" 6 "${ARCH}" "${DIR}"
@@ -120,17 +98,6 @@ ADIR+=("${DIR}")
 
 mkpdir "${major}.${minor}-0" maintained all
 mkdeb "${pkgname}l" 9 all "${DIR}"
-mkpkg "${DIR}"
-mksh "${DIR}" preup postup
-ADIR+=("${DIR}")
-
-mkpdir "${major}.${minor}--errata1" maintained "${ARCH}"
-mkdeb "${pkgname}y" 10 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
-ADIR+=("${DIR}")
-
-mkpdir "${major}.${minor}--errata1" maintained all
-mkdeb "${pkgname}l" 10 all "${DIR}"
 mkpkg "${DIR}"
 mksh "${DIR}" preup postup
 ADIR+=("${DIR}")
