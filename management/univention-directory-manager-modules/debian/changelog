@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.93-1) unstable; urgency=low
+
+  * Re-change univentionLicenseUniventionDesktops to
+    univentionLicenseuniventionDesktops (Bug #29079)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Nov 2012 14:19:53 +0100
+
 univention-directory-manager-modules (8.0.92-1) unstable; urgency=low
 
   * Fixed univention-license-check output (Bug #29079)
