@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.22-4) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390): fix modified path of samba-tool
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Nov 2012 14:59:51 +0100
+
 univention-s4-connector (7.0.22-3) unstable; urgency=low
 
   * Adjust check_ad_object_numbers to support v2 licenses (Bug #28390)

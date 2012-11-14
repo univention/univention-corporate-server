@@ -1038,7 +1038,7 @@ def run_phaseI(ucr, lp, opts, args):
 	if sitename:
 		log.info("Starting Samba domain join.")
 		t = t_0 = time.time()
-		p = subprocess.Popen(["/usr/sbin/samba-tool", "domain", "join", ucr["domainname"], "DC", "-U%s%%%s" % (ad_join_user, ad_join_password), "--realm=%s" % ucr["kerberos/realm"], "--machinepass=%s" % machine_secret, "--server=%s" % ad_server_fqdn, "--site=%s" % sitename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		p = subprocess.Popen(["samba-tool", "domain", "join", ucr["domainname"], "DC", "-U%s%%%s" % (ad_join_user, ad_join_password), "--realm=%s" % ucr["kerberos/realm"], "--machinepass=%s" % machine_secret, "--server=%s" % ad_server_fqdn, "--site=%s" % sitename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		# formatter_orig = log.handlers[0].formatter
 		# log.handlers[0].setFormatter(logging.Formatter('%(message)s'))
 		while p.poll() == None:
