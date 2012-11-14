@@ -63,7 +63,7 @@ attributetype ( 1.3.6.1.4.1.10176.1708 NAME ( 'univentionLicenseGroupwareAccount
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
 
-attributetype ( 1.3.6.1.4.1.10176.1709 NAME ( 'univentionLicenseUniventionDesktops' )
+attributetype ( 1.3.6.1.4.1.10176.1709 NAME ( 'univentionLicenseuniventionDesktops' )
 	DESC 'Deprecated: License maximum number of UCS managed desktops'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
@@ -168,7 +168,7 @@ objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
 		univentionLicenseCorporateClients $ univentionLicenseVersion $
 		univentionLicenseAccounts $ univentionLicenseClients $
 		univentionLicenseGroupwareAccounts $
-		univentionLicenseUniventionDesktops $ univentionLicenseType $
+		univentionLicenseuniventionDesktops $ univentionLicenseType $
 		univentionLicensePhysicalServers $ univentionLicenseServerInstances $
 		univentionLicenseThinClients $ univentionLicenseVirtualDesktops $
 		univentionLicenseModule
