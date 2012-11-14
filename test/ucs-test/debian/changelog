@@ -1,3 +1,12 @@
+ucs-test (3.0.22-1) unstable; urgency=low
+
+  * deleted 51_samba4/42file_access_permissions (Bug #29056)
+  * added 51_samba4/47file_access_permissions-unixmode (Bug #29056)
+  * added 51_samba4/46file_access_permissions-samba_share_rules (Bug #29229)
+  * added 51_samba4/48file_access_permissions-fACL (Bug #29228)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 14 Nov 2012 18:08:53 +0100
+
 ucs-test (3.0.21-1) unstable; urgency=low
 
   * Removed errata tests. Since UCS 3.1 errata updates are released in a

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: "Test whether file access permissions set in samba are working"
+## desc: "Test whether fACL's  set in UDM are working"
 ## exposure: safe
 ## packages:
 ## - univention-samba4
@@ -20,48 +20,55 @@ PERSON="false"
 POSIX="true"
 
 username="$(user_randomname)"
+username2="$(user_randomname)"
 first_password=univention
-second_password="$(random_chars 8 ${_upperletters}${_lowerletters}${_ciphers}äöü)1AÄÖÜ"
-third_password="$(random_chars 8 ${_upperletters}${_lowerletters}${_ciphers}äöü)1AÄÖÜ"
-sharename=$(random_share)
+sharename="$(random_share)"
 
-trap 'user_remove "$username";share_remove $sharename' INT TERM EXIT
+trap 'user_remove "$username";user_remove "$username2";share_remove $sharename' INT TERM EXIT
 user_create "$username" || fail_test 1 "Could not create user $username."
+user_create "$username2" || fail_test 1 "Could not create user $username2."
 
 #----create Share
 
 share_create "$sharename" /"$sharename"  || fail_test 1 "Could not create share $sharename."
 
 SHARE_DN=$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')
-udm shares/share modify --dn="$SHARE_DN" --set sambaPublic=1  || fail_test 1 "Could not modify share $sharename."
+udm shares/share modify --dn="$SHARE_DN" --set "directorymode=0777" || fail_test 1 "Could not modify share $sharename."
 
-ADMINISTRATOR_DN="$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
 USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
-sleep 30
+
+#in case passwort is not the default one
+if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
+    ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
+fi
+
+#waiting for user and share to be created
+user_found=1
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    ldbsearch -H "ldap://localhost" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "cn=$username" | grep dn: && user_found=0
+    if [ "$user_found" == 0 ];then
+	smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" && break
+    fi
+    if [ "$i" == 10 ]; then
+	echo "TIMEOUT: The user or share could not be found in samba ldb after $i seconds"
+	break
+    fi
+done
+
 
 #--Tests
 #----Testing general connection
 smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit"  || fail_test 1 "Could not connect to the share."
 
-#----making a folder without permission
-return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder")"
-echo $return_val | grep "NT_STATUS_ACCESS_DENIED" || fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $return_val"
-
-#----changing the folder's directorymode 
-univention-directory-manager shares/share modify --binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD" --dn "$SHARE_DN" --set "directorymode=0777"
-
-#----making a folder
-return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder2")"
+#----making a folder as another user, so that the other user is not the owner which is important for the ACL tests
+return_val="$(smbclient -U "$username2%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder3")"
 echo $return_val | grep "NT_STATUS_NOT_A_DIRECTORY"
 if [ $? != 0 ]  && [ -n "$return_val" ]; then
-    fail_test 1 "Failed to make a folder even though it should work."
-fi
-
-#----making a folder as Administrator, so that the other user is not the owner which is important for the ACL tests
-return_val="$(smbclient -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "//$hostname.$domainname/$sharename" -c "mkdir folder3")"
-echo $return_val | grep "NT_STATUS_NOT_A_DIRECTORY"
-if [ $? != 0 ]  && [ -n "$return_val" ]; then
-    fail_test 1 "Failed to make a folder as Administrator even though it should work."
+    fail_test 1 "Failed to make a folder as a second user even though it should work."
 fi
 
 #----accessing a folder without permission

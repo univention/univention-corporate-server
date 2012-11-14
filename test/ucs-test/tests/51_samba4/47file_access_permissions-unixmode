@@ -1,0 +1,77 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test whether unixmode permissions set with UDM are working"
+## exposure: safe
+## packages:
+## - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+#----create User
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+first_password=univention
+sharename="$(random_share)"
+
+trap 'user_remove "$username";share_remove $sharename' INT TERM EXIT
+user_create "$username" || fail_test 1 "Could not create user $username."
+
+#----create Share
+
+share_create "$sharename" /"$sharename"  || fail_test 1 "Could not create share $sharename."
+
+SHARE_DN="$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+
+USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+
+#in case passwort is not the default one
+if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
+    ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
+fi
+
+#waiting for user and share to be created
+user_found=1
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    ldbsearch -H "ldap://localhost" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "cn=$username" | grep dn: && user_found=0
+    if [ "$user_found" == 0 ];then
+	smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" && break
+    fi
+    if [ "$i" == 10 ]; then
+	echo "TIMEOUT: The user or share could not be found in samba ldb after $i seconds"
+	break
+    fi
+done
+
+#--Tests
+#----Testing general connection
+smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit"  || fail_test 1 "Could not connect to the share."
+
+#----making a folder without permission
+return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder")"
+echo $return_val | grep "NT_STATUS_ACCESS_DENIED" || fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $return_val"
+
+#----changing the folder's directorymode 
+univention-directory-manager shares/share modify --binddn "cn=admin,$ldap_base" --bindpwd "$(cat /etc/ldap.secret)" --dn "$SHARE_DN" --set "directorymode=0777"
+
+#----making a folder
+return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder2")"
+echo $return_val | grep "NT_STATUS_NOT_A_DIRECTORY"
+if [ $? != 0 ]  && [ -n "$return_val" ]; then
+    fail_test 1 "Failed to make a folder even though it should work."
+fi
+
+exit $RETVAL
