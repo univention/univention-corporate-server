@@ -513,11 +513,7 @@ class Application(object):
 		ucr.load()
 		server = self.get_server()
 		url = 'https://%s/index' % (server, )
-
-		if LICENSE.uuid:
-			uuid = LICENSE.uuid
-		else:
-			uuid = '00000000-0000-0000-0000-000000000000'
+		uuid = LICENSE.uuid or'00000000-0000-0000-0000-000000000000'
 		try:
 			values = {'uuid': uuid,
 			          'app': self.id,
@@ -531,5 +527,3 @@ class Application(object):
 			util.urlopen(request)
 		except:
 			MODULE.warn(traceback.format_exc())
-			raise
-

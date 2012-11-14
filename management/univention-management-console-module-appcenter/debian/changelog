@@ -1,3 +1,12 @@
+univention-management-console-module-appcenter (2.0.71-1) unstable; urgency=low
+
+  * Adapt URL of the tracking backend
+  * Catch all errors in _send_information and hide them
+  * Refactoring
+  (Bug #28001)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 14 Nov 2012 11:55:39 +0100
+
 univention-management-console-module-appcenter (2.0.70-1) unstable; urgency=low
 
   * Dont standby while showing app center intro (Bug #29081)
