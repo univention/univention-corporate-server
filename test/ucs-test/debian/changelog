@@ -1,3 +1,10 @@
+ucs-test (3.0.22-2) unstable; urgency=low
+
+  * 51_samba4/40password-policies now fails when it should (Bug #29057)
+  * 51_samba4/41password_change now fails when it should (Bug #29058)
+  
+ -- Tobias Peters <peters@univention.de>  Wed, 14 Nov 2012 18:32:15 +0100
+
 ucs-test (3.0.22-1) unstable; urgency=low
 
   * deleted 51_samba4/42file_access_permissions (Bug #29056)
