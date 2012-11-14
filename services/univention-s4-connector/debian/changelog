@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.22-2) unstable; urgency=low
+
+  * use paged results control in count_ad_object_numbers (Bug #28390)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Nov 2012 11:49:30 +0100
+
 univention-s4-connector (7.0.22-1) unstable; urgency=low
 
   * Let wait_for_s4_connector_replication monitor the USN (Bug #28390)

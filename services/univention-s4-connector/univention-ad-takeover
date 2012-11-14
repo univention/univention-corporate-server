@@ -396,10 +396,14 @@ def count_ad_object_numbers(ucr, remote_samdb, ignored_users_list = []):
 		log.error("Error: Could not determine AD domain SID.")
 		sys.exit(1)
 
+	# page results
+	PAGE_SIZE = 1000
+	controls= [ 'paged_results:1:%s' % PAGE_SIZE ]
+
 	## Count user objects
 	msgs = remote_samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 	                           expression="(&(objectClass=user)(!(objectClass=computer))(sAMAccountName=*))",
-	                           attrs=["sAMAccountName", "objectSid"])
+	                           attrs=["sAMAccountName", "objectSid"], controls=controls)
 	for obj in msgs:
 		sAMAccountName = obj["sAMAccountName"][0]
 
