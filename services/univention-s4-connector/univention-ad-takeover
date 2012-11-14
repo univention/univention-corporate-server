@@ -336,25 +336,25 @@ def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
 	if new_position.lower() != old_position.lower():
 		run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "move", "--dn", ucs_object_dn, "--position", new_position], log.debug)
 
-import univention.admin.license
-import univention.admin.filter
-License = univention.admin.license.License
-_license = univention.admin.license._license
-
 def check_license(lo, dn):
+	import univention.admin.filter
+	global License
+	global _license
+
 	def mylen(xs):
 		if xs is None:
 			return 0
 		return len(xs)
-	types = (License.CLIENT, License.ACCOUNT, License.DESKTOP, License.GROUPWARE)
+	v = _license.version
+	types = _license.licenses[v]
 	if dn is None:
-		max = [ _license.licenses[type]
+		max = [ _license.licenses[v][type]
 			for type in types ]
 	else:
-		max = [ lo.get(dn)[_license.keys[type]][0]
+		max = [ lo.get(dn)[_license.keys[v][type]][0]
 			for type in types ]
 
-	objs = [ lo.searchDn(filter=_license.filters[type])
+	objs = [ lo.searchDn(filter=_license.filters[v][type])
 		for type in types ]
 	num = [ mylen (obj)
 		for obj in objs]
@@ -362,27 +362,23 @@ def check_license(lo, dn):
 	result = []
 	for i in range(len(types)):
 		t = types[i]
-		m = int(max[i])
+		m = max[i]
 		n = num[i]
 		odn = objs[i]
-		if t == License.ACCOUNT:
+		if i == License.USERS or i == License.ACCOUNT:
 			n -= _license.sysAccountsFound
 			if n < 0: n=0
-		l = _license.names[t]
+		l = _license.names[v][i]
 		if m:
-			if t == License.ACCOUNT:
+			if t == License.USERS or t == License.ACCOUNT:
 				log.debug("check_license for current UCS %s: %s of %s" % (l, n, m))
 				log.debug("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
-				result.append((l, n, m))
-			elif t == License.CLIENT:
-				log.debug("check_license for current UCS %s: %s of %s" % (l, n, m))
 				result.append((l, n, m))
 	return result
 
 def count_ad_object_numbers(ucr, remote_samdb, ignored_users_list = []):
 	ad_user_accounts = 0
 	ignored_accounts = 0
-	ad_computer_accounts = 0
 
 	## Determine AD domain sid (yet unknown in phaseI)
 	ad_domainsid = None
@@ -424,19 +420,24 @@ def count_ad_object_numbers(ucr, remote_samdb, ignored_users_list = []):
 	log.debug("Number of AD user accounts: %s" % ad_user_accounts)
 	log.debug("Number of ignored system accounts: %s" % ignored_accounts)
 
-	## Count computer objects
-	msgs = remote_samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
-	                           expression="(&(objectClass=computer)(sAMAccountName=*))",
-	                           attrs=["dn"])
-	if msgs:
-		ad_computer_accounts = len(msgs)
-	log.debug("Number of AD computer accounts: %s" % ad_computer_accounts)
-
-	return (ad_user_accounts, ad_computer_accounts)
+	return ad_user_accounts
 
 def check_ad_object_numbers(ucr, remote_samdb):
 
-	ad_user_accounts, ad_computer_accounts = count_ad_object_numbers(ucr, remote_samdb, _license.sysAccountNames)
+	try:
+		import univention.admin.license
+		GPLversion=False
+	except:
+		GPLversion=True
+	if GPLversion:
+		return GPLversion
+
+	global License
+	global _license
+	License = univention.admin.license.License
+	_license = univention.admin.license._license
+
+	ad_user_accounts = count_ad_object_numbers(ucr, remote_samdb, _license.sysAccountNames)
 
 	binddn = ucr['ldap/hostdn']
 	with open('/etc/machine.secret', 'r') as pwfile:
@@ -461,20 +462,19 @@ def check_ad_object_numbers(ucr, remote_samdb):
 
 
 	## some name translation
-	object_names = {'Accounts': 'user', 'Clients': 'computer'}
-	ad_object_count = {'Accounts': ad_user_accounts, 'Clients': ad_computer_accounts}
+	object_names = {'Accounts': 'user'}
+	ad_object_count = {'Accounts': ad_user_accounts}
 	print
 	for object_type, object_name in object_names.items():
 		log.info("Found %s %s objects on the remote server." % (object_name, ad_object_count[object_type]))
 
-	ad_object_count['Clients'] = ad_computer_accounts - 1	## ignore AD server account, will be removed in phaseIII
 	license_sufficient = True
 	for object_type, num, max in check_array:
 		object_name = object_type
 		if object_name in object_names:
 			object_name = object_names[object_name]
 		sum = num + ad_object_count[object_type]
-		if sum > max:
+		if _license.compare(sum, max) > 0:
 			license_sufficient = False
 			log.warn("Number of %s objects after takeover would be %s. This would exceed the number of licensed objects (%s)." % (object_name, sum, max))
 	return license_sufficient
