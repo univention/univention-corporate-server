@@ -587,8 +587,12 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 				log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t - t_0),)))
 				conn.close()
 				return False
-		if progress_function and delta_t >= 1:
-			progress_output = "\rSynchronizing [%s / %s]" % (lastUSN, highestCommittedUSN)
+		if progress_function and delta_t >= 5:
+			progress_output = "."
+			if lastUSN and lastUSN > 0:
+				progress_output = "\rSynchronizing [%s / %s]" % (lastUSN, highestCommittedUSN)
+			else:
+				progress_output = "."
 			progress_function(progress_output)
 
 	if progress_function:

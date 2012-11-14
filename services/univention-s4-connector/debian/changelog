@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.22-5) unstable; urgency=low
+
+  * univention-ad-takeover/wait_for_s4_connector_replication (Bug #28390):
+    - Output dots during initialization of S4 Connector
+    - Reduce activity frequency to 0.2 Hz
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Nov 2012 16:07:48 +0100
+
 univention-s4-connector (7.0.22-4) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390): fix modified path of samba-tool
