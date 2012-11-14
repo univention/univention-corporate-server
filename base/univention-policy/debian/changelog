@@ -1,3 +1,9 @@
+univention-policy (5.0.9-2) unstable; urgency=low
+
+  * fixed tools/univention_policy_result.c (Bug #19428) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 14 Nov 2012 10:02:40 +0100
+
 univention-policy (5.0.9-1) unstable; urgency=low
 
   * also check ldap/server/addition in univention_policy_result (Bug #19428) 
