@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.94-1) unstable; urgency=low
+
+  * Update description for ldap/replication/preferredpassword
+    (Bug #18389)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Nov 2012 13:36:30 +0100
+
 univention-directory-manager-modules (8.0.93-1) unstable; urgency=low
 
   * Re-change univentionLicenseUniventionDesktops to

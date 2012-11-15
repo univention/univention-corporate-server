@@ -17,7 +17,7 @@ Type=int
 Categories=service-ldap
 
 [ldap/replication/preferredpassword]
-Description[de]=Wenn diese Variable auf "true" oder "yes" gesetzt ist warten PDCs nach erfolgreicher Passwortänderung im LDAP des Masters nicht auf die Replikation zurück in ihre eigenes LDAP, sondern führen die Änderung lokal auch an ihrer eigenen Kopie des LDAPs durch.
-Description[en]=If this variable is set to "true" or "yes" PDCs will not wait for LDAP replication after a succsessfull password change on the LDAP master, but do the same modification local on their own copy of the LDAP.
+Description[de]=Wenn diese Variable auf "true" oder "yes" gesetzt ist, so ändert das Programm /usr/share/univention-directory-manager-tools/univention-passwd das Passwort im LDAP Verzeichnis des Masters und es ändert das Passwort im lokalen LDAP Verzeichnis ohne auf die LDAP Replikation zu warten. Dies ist nützlich für Samba 3 Slave PDC Umgebungen (default: false).
+Description[en]=If this variable is set to "true" or "yes" the tool /usr/share/univention-directory-manager-tools/univention-passwd will change the password in the LDAP master directory and it will also change the password in the local LDAP directory without waiting for the LDAP replication. This is useful for Samba 3 Slave PDC setups (default: false).
 Type=bool
 Categories=service-ldap
