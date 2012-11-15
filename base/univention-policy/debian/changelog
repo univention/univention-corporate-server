@@ -1,3 +1,9 @@
+univention-policy (5.0.9-3) unstable; urgency=low
+
+  * fixed "double free" in lib/ldap.c (Bug #19428)
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Nov 2012 11:28:43 +0100
+
 univention-policy (5.0.9-2) unstable; urgency=low
 
   * fixed tools/univention_policy_result.c (Bug #19428) 
