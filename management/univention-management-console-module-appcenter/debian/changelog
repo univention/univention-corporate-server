@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.74-1) unstable; urgency=low
+
+  * Adapt domain preparation question (Bug #28740)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 15 Nov 2012 16:04:04 +0100
+
 univention-management-console-module-appcenter (2.0.73-1) unstable; urgency=low
 
   * Adapt URL of the tracking backend (Bug #28001)

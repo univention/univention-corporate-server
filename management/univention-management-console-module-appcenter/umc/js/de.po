@@ -258,8 +258,8 @@ msgid "Going to {verb} Application '{name}'"
 msgstr "Im Begriff, die Applikation '{name}' zu {verb}"
 
 #: umc/js/appcenter/AppCenterPage.js:339
-msgid "Have you prepared your domain as asked in the dialog before?"
-msgstr "Haben Sie die Domäne wie zuvor beschrieben vorbereitet?"
+msgid "Was the domain prepared as asked in the dialog before?"
+msgstr "Wurde die Domäne wie zuvor beschrieben vorbereitet?"
 
 #: umc/js/appcenter/AppCenterPage.js:240
 msgid ""

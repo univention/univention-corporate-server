@@ -332,7 +332,7 @@ define([
 								if (app.defaultpackagesmaster && app.defaultpackagesmaster.length) {
 									masterInstallConfirmend = dialog.confirm(
 										_('This application requires an extension of the LDAP schema.') + ' ' + 
-										_('Have you prepared your domain as asked in the dialog before?'), [{
+										_('Was the domain prepared as asked in the dialog before?'), [{
 											label: _('No'),
 											name: 'no',
 											'default': true
