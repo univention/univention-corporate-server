@@ -1,3 +1,13 @@
+univention-s4-connector (7.0.22-8) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - Fix ptr_record creation for non-class-C networks
+    - Fix AD-Server object cleanup (use python, BL search, more logging)
+    - Fix progress indicator frequency calculation
+    - Fix typos
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Nov 2012 16:46:37 +0100
+
 univention-s4-connector (7.0.22-7) unstable; urgency=low
 
   * fix check_ad_object_numbers (Bug #28390)

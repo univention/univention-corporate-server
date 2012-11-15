@@ -55,6 +55,7 @@ import univention.admin.objects
 import univention.admin.config
 import ipaddr
 import logging
+import traceback
 from univention.admin.handlers.dns.reverse_zone import mapSubnet
 
 LOGFILE_NAME = "/var/log/univention/ad-takeover.log"
@@ -506,10 +507,10 @@ def get_stable_last_id(progress_function = None, max_time=20):
 def wait_for_listener_replication(progress_function = None, max_time=None):
 	notifier_id_cached_value = None
 	static_count = 0
-	t = t_0 = time.time()
+	t_last_feedback = t_1 = t_0 = time.time()
 	while static_count < 3:
 		if notifier_id_cached_value:
-			time.sleep (0.7)
+			time.sleep(0.7)
 		last_id = get_stable_last_id(progress_function)
 		with file("/var/lib/univention-directory-listener/notifier_id") as f:
 			notifier_id = f.read().strip()
@@ -521,15 +522,17 @@ def wait_for_listener_replication(progress_function = None, max_time=None):
 		else:
 			static_count = static_count + 1
 
-		delta_t = time.time() - t
+		delta_t = time.time() - t_1
+		t_1 = t_1 + delta_t
 		if max_time:
-			t = t + delta_t
-			if t - t_0 > max_time:
+			if t_1 - t_0 > max_time:
 				print
 				sys.stdout.flush()
-				log.debug("Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t - t_0))))
+				log.debug("Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t_1 - t_0))))
 				return False
-		if progress_function and delta_t >= 1:
+		delta_t_last_feedback = t_1 - t_last_feedback
+		if progress_function and delta_t_last_feedback >= 1:
+			t_last_feedback = t_last_feedback + delta_t_last_feedback
 			progress_function()
 
 	if progress_function:
@@ -544,7 +547,7 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 
 	static_count = 0
 	cache_S4_rejects = None
-	t = t_0 = time.time()
+	t_last_feedback = t_1 = t_0 = time.time()
 
 	ucr.load()	## load current values
 	connector_s4_poll_sleep = int(ucr.get("connector/s4/poll/sleep", "5"))
@@ -558,7 +561,7 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 	highestCommittedUSN = -1
 	lastUSN = -1
 	while static_count < required_static_count:
-		time.sleep (connector_s4_poll_sleep)
+		time.sleep(connector_s4_poll_sleep)
 
 		previous_highestCommittedUSN = highestCommittedUSN
 		samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
@@ -575,16 +578,18 @@ def wait_for_s4_connector_replication(ucr, progress_function = None, max_time=No
 		else:
 			static_count = static_count + 1
 
-		delta_t = time.time() - t
+		delta_t = time.time() - t_1
+		t_1 = t_1 + delta_t
 		if max_time:
-			t = t + delta_t
-			if t - t_0 > max_time:
+			if t_1 - t_0 > max_time:
 				print
 				sys.stdout.flush()
-				log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t - t_0),)))
+				log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t_1 - t_0),)))
 				conn.close()
 				return False
-		if progress_function and delta_t >= 10:
+		delta_t_last_feedback = t_1 - t_last_feedback
+		if progress_function and delta_t_last_feedback >= 10:
+			t_last_feedback = t_last_feedback + delta_t_last_feedback
 			progress_function()
 
 	if progress_function:
@@ -1049,7 +1054,7 @@ def run_phaseI(ucr, lp, opts, args):
 		sys.stdout.flush()
 		# log.handlers[0].setFormatter(formatter_orig)
 		if p.returncode == 0:
-			log.info("Samba domain join successfull.")
+			log.info("Samba domain join successful.")
 		else:
 			msg = []
 			msg.append("Error: Samba domain join failed.")
@@ -1499,16 +1504,36 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 	## Cleanup necessary to use NETBIOS Alias
 	log.info("Cleaning up.")
 	
-	log.debug("Removing AD DC account from local Samba4 SAM database.")
-	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), "CN=%s,CN=Domain System Volume (SYSVOL share),CN=File Replication Service,CN=System,%s" % (ad_server_name, ucr["samba4/ldap/base"])], log.debug)
-	if returncode != 0:
-		log.error("Removal of AD DC account %s from Samba4 SAM database failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
+	backlink_attribute_list = ["serverReferenceBL", "frsComputerReferenceBL", "msDFSR-ComputerReferenceBL"]
+	msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+	                    expression="(sAMAccountName=%s$)" % ad_server_name,
+	                    attrs=backlink_attribute_list)
+	if msgs:
+		obj = msgs[0]
+		for backlink_attribute in backlink_attribute_list:
+			if backlink_attribute in obj:
+				backlink_object = obj[backlink_attribute][0]
+				try:
+					log.info("Removing %s from SAM database." % (backlink_object,))
+					samdb.delete(backlink_object, ["tree_delete:0"])
+				except:
+					log.debug("Removal of AD %s objects %s from Samba4 SAM database failed. See %s for details." % (backlink_attribute, backlink_object, LOGFILE_NAME,))
+					log.debug(traceback.format_exc())
 
-	returncode = run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), "CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, ucr["samba4/ldap/base"])], log.debug)
-	if returncode != 0:
-		log.error("Removal of AD server objects %s from Samba4 SAM database failed. See %s for details." % (ad_server_name, LOGFILE_NAME,))
-
-	run_and_output_to_log(["/usr/bin/ldbdel", "-r", "-H", os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), "CN=%s,OU=Domain Controllers,%s" % (ad_server_name, ucr["samba4/ldap/base"])], log.debug)
+		## Now delete the AD DC account and sub-objects
+		## Cannot use tree_delete on isCriticalSystemObject, perform recursive delete like ldbdel code does it:
+		msgs = samdb.search(base=obj.dn, scope=samba.ldb.SCOPE_SUBTREE,
+							attrs=["dn"])
+		obj_dn_list = [obj.dn for obj in msgs]
+		obj_dn_list.sort(key=len)
+		obj_dn_list.reverse()
+		for obj_dn in obj_dn_list:
+			try:
+				log.info("Removing %s from SAM database." % (obj_dn,))
+				samdb.delete(obj_dn)
+			except:
+				log.error("Removal of AD DC account object %s from Samba4 SAM database failed. See %s for details." % (obj_dn, LOGFILE_NAME,))
+				log.debug(traceback.format_exc())
 
 	## Finally, for consistency remove AD DC object from UDM
 	log.debug("Removing AD DC account from local Univention Directory Manager")
@@ -1587,24 +1612,35 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 				msg.append("         Failed to setup a virtual IPv6 network interface with the AD IP address.")
 				log.warn("\n".join(msg))
 
-	## Add record in reverse zone as well, to make nslookup $domainname on XP clients happy..  TODO: IPv6
-	address_parts = ad_server_ip.split('.')
-	ptr_address = address_parts.pop()
-	address_parts.reverse()
-	ptr_zone = "%s.in-addr.arpa" % '.'.join(address_parts)
-	## check for an existing record.
-	p = subprocess.Popen(["univention-directory-manager", "dns/ptr_record", "list", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--filter", "address=%s" % ptr_address], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	## Add record in reverse zone as well, to make nslookup $domainname on XP clients happy..
+	p = subprocess.Popen(["univention-ipcalc6", "--ip", ad_server_ip, "--netmask", ucr["interfaces/%s/netmask" % primary_interface], "--output", "pointer", "--calcdns"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	(stdout, stderr) = p.communicate()
-	if len(stdout.rstrip().split('\n')) > 1:
-		## modify existing record.
-		returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "modify", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--dn", "relativeDomainName=%s,zoneName=%s,cn=dns,%s" % (ptr_address, ptr_zone, ucr["ldap/base"]), "--set", "ptr_record=%s." % local_fqdn], log.debug)
-		if returncode != 0:
-			log.warn("Warning: Update of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
+	if stdout.rstrip():
+		ptr_address = stdout.rstrip()
+
+	p = subprocess.Popen(["univention-ipcalc6", "--ip", ad_server_ip, "--netmask", ucr["interfaces/%s/netmask" % primary_interface], "--output", "reverse", "--calcdns"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	(stdout, stderr) = p.communicate()
+	if stdout.rstrip():
+		subnet_parts = stdout.rstrip().split('.')
+		subnet_parts.reverse()
+		ptr_zone = "%s.in-addr.arpa" % '.'.join(subnet_parts)
+
+	if ptr_zone and ptr_address:
+		## check for an existing record.
+		p = subprocess.Popen(["univention-directory-manager", "dns/ptr_record", "list", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--filter", "address=%s" % ptr_address], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(stdout, stderr) = p.communicate()
+		if len(stdout.rstrip().split('\n')) > 1:
+			## modify existing record.
+			returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "modify", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--dn", "relativeDomainName=%s,zoneName=%s,cn=dns,%s" % (ptr_address, ptr_zone, ucr["ldap/base"]), "--set", "ptr_record=%s." % local_fqdn], log.debug)
+			if returncode != 0:
+				log.warn("Warning: Update of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
+		else:
+			## add new record.
+			returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--set", "address=%s" % ptr_address, "--set", "ptr_record=%s." % local_fqdn], log.debug)
+			if returncode != 0:
+				log.warn("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
 	else:
-		## add new record.
-		returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (ptr_zone, ucr["ldap/base"]), "--set", "address=%s" % ptr_address, "--set", "ptr_record=%s." % local_fqdn], log.debug)
-		if returncode != 0:
-			log.warn("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
+		log.warn("Warning: Calculation of reverse DNS record %s for %s failed. See %s for details." % (ad_server_ip, local_fqdn, LOGFILE_NAME,))
 
 	## Resolve against local Bind9
 	## use OpenLDAP backend until the S4 Connector has run
@@ -1767,7 +1803,7 @@ if __name__ == '__main__':
 			msg.append("Once the SYSVOL share is copied successfully, shutdown the Windows server %s." % ad_server_fqdn)
 			log.info("\n".join(msg))
 
-			answer = raw_input("After completing the SYSVOL sync and switching of the AD server, hit return to continue.")
+			answer = raw_input("After completing the SYSVOL sync and switching off the AD server, hit return to continue.")
 
 			## 1.d ping the given AD server IP
 			print "Pinging AD IP %s: " % ad_server_ip,
