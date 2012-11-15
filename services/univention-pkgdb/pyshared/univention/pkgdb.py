@@ -369,8 +369,9 @@ def action_remove_system(connection, cursor, sysname):
 	cursor.execute(delete_system  , {'sysname': sysname, })
 	connection.commit()
 
-def scan_and_store_packages(cursor, sysname):
-	'''updates the system <sysname> with the current package state'''
+def scan_and_store_packages(cursor, sysname, fake_null=False):
+	'''updates the system <sysname> with the current package state
+	if <fake_null> is True put '' instead of None in the vername field'''
 	delete_packages = '''
 	DELETE FROM packages_on_systems
 	       WHERE sysname = %(sysname)s
@@ -410,6 +411,8 @@ def scan_and_store_packages(cursor, sysname):
 		              'selectedstate': package.selected_state,
 		              'vername':       None,
 		              }
+		if fake_null:
+			parameters['vername'] = ''
 		if package.current_ver:
 			parameters['inststatus'] = 'i'
 			parameters['vername'] = package.current_ver.ver_str
@@ -433,10 +436,14 @@ def action_fill_testdb(connection, cursor, config_registry):
 	for sysname in ['testsystem%04d' % (i, ) for i in xrange(1, 1500)]:
 		try:
 			sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture)
+			fake_null = False
 		except pgdb.DatabaseError:
+			# assume we are connected to a univention-pkgdb < 6.0.7-1 (old schema)
 			connection.rollback()
+			# retry for old schema
 			sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn)
-		scan_and_store_packages(cursor, sysname)
+			fake_null = True # old schema has NOT NULL, thus we have to use '' instead of None
+		scan_and_store_packages(cursor, sysname, fake_null)
 		connection.commit()
 	log('end of fill testdb')
 	return 0
@@ -455,10 +462,14 @@ def action_scan(connection, cursor, config_registry):
 	log('Starting scan of system %r' % (sysname, ))
 	try:
 		sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture)
+		fake_null = False
 	except pgdb.DatabaseError:
+		# assume we are connected to a univention-pkgdb < 6.0.7-1 (old schema)
 		connection.rollback()
+		# retry for old schema
 		sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn)
-	scan_and_store_packages(cursor, sysname)
+		fake_null = True # old schema has NOT NULL, thus we have to use '' instead of None
+	scan_and_store_packages(cursor, sysname, fake_null)
 	connection.commit()
 	log('end of scan for system %r' % (sysname, ))
 	return 0

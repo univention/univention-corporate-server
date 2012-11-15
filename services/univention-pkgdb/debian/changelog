@@ -1,8 +1,8 @@
-univention-pkgdb (6.0.17-1) unstable; urgency=low
+univention-pkgdb (6.0.17-2) unstable; urgency=low
 
   * support scan into old database schema (without architecture) (Bug #29196)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 13 Nov 2012 13:26:37 +0100
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 15 Nov 2012 11:26:36 +0100
 
 univention-pkgdb (6.0.16-1) unstable; urgency=low
 
