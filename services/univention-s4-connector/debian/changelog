@@ -1,3 +1,13 @@
+univention-s4-connector (7.0.22-6) unstable; urgency=low
+
+  * univention-ad-takeover (Bug #28390):
+    - Output only dots during initialization of S4 Connector
+    - Reduce progress indicator frequency to 0.1 Hz
+    - Change log file name to /var/log/univention/ad-takeover.log
+    - Change backup directory name to /var/univention-backup/ad-takeover
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Nov 2012 12:26:08 +0100
+
 univention-s4-connector (7.0.22-5) unstable; urgency=low
 
   * univention-ad-takeover/wait_for_s4_connector_replication (Bug #28390):
