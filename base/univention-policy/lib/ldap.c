@@ -291,28 +291,17 @@ void univention_ldap_close(univention_ldap_parameters_t* lp)
 		ldap_unbind_ext(lp->ld, NULL, NULL);
 		lp->ld = NULL;
 	}
-	if (lp->uri != NULL)
-		FREE(lp->uri);
-	if (lp->host != NULL)
-		FREE(lp->host);
-	if (lp->base != NULL)
-		FREE(lp->base);
-	if (lp->binddn != NULL)
-		FREE(lp->binddn);
+	FREE(lp->uri);
+	FREE(lp->host);
+	FREE(lp->base);
+	FREE(lp->binddn);
 	/* clear password from memory. */
-	if (lp->bindpw != NULL) {
-		for (c = lp->bindpw; c && *c; c++)
-			*c = '\0';
-		FREE(lp->bindpw);
-	}
-	if (lp->sasl_mech != NULL)
-		FREE(lp->sasl_mech);
-	if (lp->sasl_realm != NULL)
-		FREE(lp->sasl_realm);
-	if (lp->sasl_authcid != NULL)
-		FREE(lp->sasl_authcid);
-	if (lp->sasl_authzid != NULL)
-		FREE(lp->sasl_authzid);
-	if (lp != NULL)
-		FREE(lp);
+	for (c = lp->bindpw; c && *c; c++)
+		*c = '\0';
+	FREE(lp->bindpw);
+	FREE(lp->sasl_mech);
+	FREE(lp->sasl_realm);
+	FREE(lp->sasl_authcid);
+	FREE(lp->sasl_authzid);
+	FREE(lp);
 }

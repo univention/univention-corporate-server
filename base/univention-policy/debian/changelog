@@ -1,3 +1,10 @@
+univention-policy (5.0.9-4) unstable; urgency=low
+
+  * reverted last commit, use FREE in
+    tools/univention_policy_result.c (Bug #19428)
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Nov 2012 11:43:50 +0100
+
 univention-policy (5.0.9-3) unstable; urgency=low
 
   * fixed "double free" in lib/ldap.c (Bug #19428)

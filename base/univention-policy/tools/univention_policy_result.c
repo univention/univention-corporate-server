@@ -210,7 +210,7 @@ int main(int argc, char* argv[])
 						gotConnection = 1;
 						break;
 					}
-					free(ldap_parameters->host);
+					FREE(ldap_parameters->host);
 					splitPointer = strtok (NULL, " ");
 				}
 			}
