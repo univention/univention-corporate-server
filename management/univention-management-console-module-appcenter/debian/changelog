@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.73-1) unstable; urgency=low
+
+  * Adapt URL of the tracking backend (Bug #28001)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 15 Nov 2012 14:25:31 +0100
+
 univention-management-console-module-appcenter (2.0.72-1) unstable; urgency=low
 
   * Adapt app center log file name (Bug #29037)

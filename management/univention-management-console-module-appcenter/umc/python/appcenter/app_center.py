@@ -512,7 +512,7 @@ class Application(object):
 	def _send_information(self, action, status):
 		ucr.load()
 		server = self.get_server()
-		url = 'https://%s/index' % (server, )
+		url = 'https://%s/postinst' % (server, )
 		uuid = LICENSE.uuid or '00000000-0000-0000-0000-000000000000'
 		try:
 			values = {'uuid': uuid,
