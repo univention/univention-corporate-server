@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Browsing the LDAP directory"
-msgstr "Durchsuchen des LDAP-Verzeichnisses"
+msgid "Browsing the LDAP directory tree"
+msgstr "Durchsuchen des LDAP-Verzeichnisbaums"
 
 msgid "Change Password"
 msgstr "Passwort ändern"
@@ -33,8 +33,8 @@ msgstr "Domäne {domainname}"
 msgid "Groups"
 msgstr "Gruppen"
 
-msgid "LDAP directory tree"
-msgstr "LDAP Verzeichnisbaum"
+msgid "LDAP directory"
+msgstr "LDAP-Verzeichnis"
 
 msgid "Mail"
 msgstr "E-Mail"

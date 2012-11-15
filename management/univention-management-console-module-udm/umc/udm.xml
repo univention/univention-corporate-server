@@ -48,8 +48,8 @@
 			<description>Managing policies</description>
 		</flavor>
 		<flavor icon="udm-navigation" priority="2" id="navigation">
-			<name>LDAP directory tree</name>
-			<description>Browsing the LDAP directory</description>
+			<name>LDAP directory</name>
+			<description>Browsing the LDAP directory tree</description>
 		</flavor>
 		<flavor icon="udm-self" priority="1" id="users/self">
 			<name>Change Password</name>
