@@ -360,7 +360,7 @@ def check_license(lo, dn):
 		for obj in objs]
 	expired = _license.checkObjectCounts(max, num)
 	result = []
-	for i in range(len(types)):
+	for i in types.keys():
 		t = types[i]
 		m = max[i]
 		n = num[i]
@@ -370,7 +370,7 @@ def check_license(lo, dn):
 			if n < 0: n=0
 		l = _license.names[v][i]
 		if m:
-			if t == License.USERS or t == License.ACCOUNT:
+			if i == License.USERS or i == License.ACCOUNT:
 				log.debug("check_license for current UCS %s: %s of %s" % (l, n, m))
 				log.debug("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 				result.append((l, n, m))
@@ -462,21 +462,18 @@ def check_ad_object_numbers(ucr, remote_samdb):
 
 
 	## some name translation
-	object_names = {'Accounts': 'user'}
-	ad_object_count = {'Accounts': ad_user_accounts}
+	object_displayname_for_licensetype= {'Accounts': 'user', 'Users': 'user'}
+	ad_object_count_for_licensetype = {'Accounts': ad_user_accounts, 'Users': ad_user_accounts}
 	print
-	for object_type, object_name in object_names.items():
-		log.info("Found %s %s objects on the remote server." % (object_name, ad_object_count[object_type]))
 
 	license_sufficient = True
 	for object_type, num, max in check_array:
-		object_name = object_type
-		if object_name in object_names:
-			object_name = object_names[object_name]
-		sum = num + ad_object_count[object_type]
+		object_displayname = object_displayname_for_licensetype.get(object_type, object_type)
+		log.info("Found %s %s objects on the remote server." % (ad_object_count_for_licensetype[object_type], object_displayname))
+		sum = num + ad_object_count_for_licensetype[object_type]
 		if _license.compare(sum, max) > 0:
 			license_sufficient = False
-			log.warn("Number of %s objects after takeover would be %s. This would exceed the number of licensed objects (%s)." % (object_name, sum, max))
+			log.warn("Number of %s objects after takeover would be %s. This would exceed the number of licensed objects (%s)." % (object_displayname, sum, max))
 	return license_sufficient
 
 def print_progress(output_string = ".", stream = sys.stdout):

@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.22-7) unstable; urgency=low
+
+  * fix check_ad_object_numbers (Bug #28390)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Nov 2012 12:58:53 +0100
+
 univention-s4-connector (7.0.22-6) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
