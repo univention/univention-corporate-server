@@ -35,7 +35,6 @@ __package__='' 	# workaround for PEP 366
 import listener
 import univention.debug
 
-import re
 import os
 import stat
 
@@ -81,9 +80,11 @@ def handler(dn, new, old):
 		except:
 			return
 
-		flags, unc = re.split(' *', automountInformation)
+		unc = automountInformation
+		if " " in automountInformation:
+			flags, unc = automountInformation.split(" ", 1)
 		if ":" in unc:
-			host, path = unc.split(':')
+			host, path = unc.split(':', 1)
 			if host and host == fqdn:
 				if not os.path.exists(path):
 					univention.debug.debug(
