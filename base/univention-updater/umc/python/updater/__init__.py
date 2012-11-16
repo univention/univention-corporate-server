@@ -495,7 +495,7 @@ class Instance(umcm.Base):
 				easy_update_available = easy_update_available or result['release_update_available']
 				# if no update seems necessary perform a real (expensive) check nonetheless
 				easy_update_available = easy_update_available or self.uu.component_update_available()
-				result['easy_update_available'] = easy_update_available
+				result['easy_update_available'] = bool(easy_update_available)
 			else:
 				result['easy_update_available'] = False
 
