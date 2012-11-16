@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.75-1) unstable; urgency=low
+
+  * Resize app detail page after loading dynamic screenshot (Bug #28793)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Nov 2012 13:52:46 +0100
+
 univention-management-console-module-appcenter (2.0.74-1) unstable; urgency=low
 
   * Adapt domain preparation question (Bug #28740)

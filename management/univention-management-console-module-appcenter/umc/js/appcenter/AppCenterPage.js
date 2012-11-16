@@ -429,6 +429,9 @@ define([
 					var lightbox;
 					query('.umcScreenshot', confirmDialog.domNode).forEach(function(imgNode) {
 						lightbox = new Lightbox({ href: imgNode.src }, imgNode);
+						imgNode.onload = function() {
+							confirmDialog.resize();
+						};
 					});
 
 					// connect to 'onConfirm' event to close the dialog in any case
