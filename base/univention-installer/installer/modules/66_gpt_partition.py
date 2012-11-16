@@ -52,6 +52,7 @@ import os, re, curses
 import inspect
 import subprocess
 import pprint
+import struct
 
 def B2KiB(value):
 	return value / 1024.0
@@ -270,6 +271,60 @@ class object(content):
 		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
 		line = info[1]
 		content.debug(self, 'PARTITION-GPT:%d: %s' % (line,txt))
+
+	def fix_boot_flag_in_protective_mbr(self, device):
+		"""
+		This function reads the first 512 bytes of specified device and
+		adds the bootable flag to all partitions with partition type 0xEE.
+		The disk gets changed directly!
+		returns True, if MBR has been modified, otherwise False.
+		"""
+		def parse_entry(mbr, partition_number):
+			partition = struct.unpack('BBBBBBBB8x',mbr[446+partition_number*16:446+(partition_number+1)*16])
+			return { 'flag': partition[0],
+					 'type': partition[4],
+					 'HSCstart': partition[1:4],
+					 'HSCend': partition[5:8] }
+
+		def get_modfied_entry_with_boot_flag(mbr, partition_number):
+			"""
+			Set bootable flag (bit 7) in flag byte in specified MBR partition entry.
+			"""
+			mbr = mbr[:446+partition_number*16] + \
+				  chr(ord(mbr[446+partition_number*16]) | 0x80) + \
+				  mbr[446+partition_number*16+1:]
+			return mbr
+
+		if not os.path.exists(device):
+			self.debug('fix_boot_flag_in_protective_mbr: device %s does not exist' % device)
+			return False
+		# get MBR / 512 bytes of device
+		try:
+			data = open(device, 'r').read(512)
+		except (IOError, OSError), e:
+			self.debug('fix_boot_flag_in_protective_mbr: exception during read on device %s: %s' % (device, str(e)))
+			return False
+
+		# iterate over all partitions
+		changed = False
+		for i in xrange(0, 4):
+			# if partition type is 0xEE...
+			entry = parse_entry(data, i)
+			self.debug('fix_boot_flag_in_protective_mbr: entry[%d]=%s' % (i, str(entry)))
+			if entry['type'] == 0xEE:
+				self.debug('fix_boot_flag_in_protective_mbr: found protective partition')
+				# then set bootable flag
+				data = get_modfied_entry_with_boot_flag(data, i)
+				changed = True
+
+		if changed:
+			try:
+				open(device, 'w').write(data)
+			except (IOError, OSError), e:
+				self.debug('fix_boot_flag_in_protective_mbr: exception during write on device %s: %s' % (device, str(e)))
+				return False
+		return changed
+
 
 	def profile_prerun(self):
 		self.debug('profile_prerun')
@@ -1308,6 +1363,7 @@ class object(content):
 				vgcreated = False
 				self.parent.debug('prof_write')
 				for disk in self.parent.container['profile']['create'].keys():
+					bootable = False
 					num_list=self.parent.container['profile']['create'][disk].keys()
 					num_list.sort()
 					for num in num_list:
@@ -1318,6 +1374,9 @@ class object(content):
 						end = self.parent.container['profile']['create'][disk][num]['end']
 						label = self.parent.container['profile']['create'][disk][num]['label']
 						device = self.get_real_partition_device_name(disk,num)
+
+						if PARTFLAG_BIOS_GRUB in flaglist:
+							bootable = True
 
 						# do not create partitions if only_mount is set
 						if parttype == "only_mount":
@@ -1346,6 +1405,9 @@ class object(content):
 											  ucsvgname, device])
 								vgcreated = True
 							self.run_cmd(['/sbin/vgextend', ucsvgname, device])
+					if bootable:
+						self.parent.fix_boot_flag_in_protective_mbr(disk)
+
 
 			elif self.action == 'prof_write_lvm':
 				self.parent.debug('prof_write_lvm')
@@ -1979,6 +2041,7 @@ class object(content):
 		else:
 			self.disable_all_vg()
 			self.run_cmd(['/sbin/parted', '-s', device, 'mklabel', 'gpt'])
+			self.fix_boot_flag_in_protective_mbr(device)
 			self.enable_all_vg()
 
 	def convert_to_gpt(self, device=None):
@@ -1987,6 +2050,7 @@ class object(content):
 			self.debug('ERROR: device %s does not exist!' % device)
 		else:
 			self.run_cmd(['/sbin/sgdisk', '-g', device])
+			self.fix_boot_flag_in_protective_mbr(device)
 
 	def print_history(self):
 		self.debug("HISTORY")
@@ -3257,6 +3321,15 @@ class object(content):
 						if retval:
 							return
 					self.parent.container['history'] = []
+
+					# fix boot flag in protective MBR that has been mistakenly removed by parted 2.3
+					for diskname, disk in self.parent.container['disk'].items():
+						for partname, part in disk['partitions'].items():
+							device = self.parent.parent.get_device(diskname, partname)
+							self.parent.parent.debug('fix_boot_flag test: device=%s  flag=%r' % (device, part['flag']))
+							if PARTFLAG_BIOS_GRUB in part['flag']:
+								self.parent.parent.fix_boot_flag_in_protective_mbr(diskname)
+
 					self.parent.parent.written = 1
 				elif self.action == 'make_filesystem':
 					self.parent.parent.debug('Create Filesystem')

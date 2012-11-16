@@ -1,3 +1,10 @@
+univention-installer (8.0.36-1) unstable; urgency=low
+
+  * parted does not flag partitions in protective mbr as bootable; solve
+    this in python (Bug #29257)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Nov 2012 14:22:42 +0100
+
 univention-installer (8.0.35-1) unstable; urgency=low
 
   * updated translations (Bug #23990)
