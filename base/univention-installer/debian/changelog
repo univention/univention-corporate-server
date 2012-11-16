@@ -1,6 +1,7 @@
 univention-installer (8.0.37-1) unstable; urgency=low
 
   * fixed flag column in installation profile for LVM volumes (Bug #23990)
+  * fixed wrong profile entries (Bug #29256)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Nov 2012 17:09:44 +0100
 

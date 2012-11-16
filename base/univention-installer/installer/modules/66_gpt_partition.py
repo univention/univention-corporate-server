@@ -413,6 +413,7 @@ class object(content):
 		boot_fs_type=None
 		partflag_cnt = {}
 		mpoint_list = []
+		self.debug('profile_complete: container_profile=\n%s' % pretty_format(self.container['profile']))
 		for key in self.container['profile']['create'].keys():
 			for minor in self.container['profile']['create'][key].keys():
 				fstype = self.container['profile']['create'][key][minor]['fstype'].strip()
@@ -1998,7 +1999,7 @@ class object(content):
 							flag = 'None'
 						parttype='only_mount'
 						if self.container['disk'][disk]['partitions'][part]['touched']:
-							parttype = '1' # GPT contains only "primary" partitions / kept this value to make format similar to old MBR profiles
+							parttype = '0' # GPT contains only "primary" partitions / kept this value to make format similar to old MBR profiles
 						tmpresult.append( ("PHY", device, parttype, format, fstype, start, end, mpoint, flag) )
 		result[ 'disks' ] = ' '.join(partitions)
 
