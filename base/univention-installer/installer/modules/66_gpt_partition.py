@@ -950,6 +950,8 @@ class object(content):
 
 			# accumulate size of LVM volumes to get final size of rootfs
 			rootsize += disksize
+			if (disksize + sizeused > RESERVED_SPACE_AT_END_OF_DISK):
+				rootsize -= RESERVED_SPACE_AT_END_OF_DISK
 
 			# use rest of disk als LVM PV
 			self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 None %dMiB 0 None lvm' % (diskname, partnum, B2MiB(sizeused))

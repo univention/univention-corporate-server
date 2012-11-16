@@ -3,6 +3,8 @@ univention-installer (8.0.36-1) unstable; urgency=low
   * parted does not flag partitions in protective mbr as bootable; solve
     this in python (Bug #29257)
   * updated profiles delivered on DVD to GPT partition table (Bug #29255)
+  * fixed size calculation of LVM LV in profile based auto partitioning
+    (Bug #28263)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Nov 2012 14:22:42 +0100
 
