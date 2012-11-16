@@ -1,3 +1,10 @@
+univention-updater (8.0.51-1) unstable; urgency=low
+
+  * Only use univention-upgrade in univention-updater-Check
+    (Bug #26387)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Nov 2012 15:58:35 +0100
+
 univention-updater (8.0.50-2) unstable; urgency=low
 
   * Use parameter --yes for downloading python-univention-directory-
