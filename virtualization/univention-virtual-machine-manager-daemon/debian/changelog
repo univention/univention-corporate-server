@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.19-1) unstable; urgency=low
+
+  * DriveGrid: Disable the filename textbox for all devices (Bug #27817)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 16 Nov 2012 14:47:52 +0100
+
 univention-virtual-machine-manager-daemon (2.0.18-1) unstable; urgency=low
 
   * Prohibit & and < in Snapshot names (Bug #27189,29254)

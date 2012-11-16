@@ -265,7 +265,7 @@ define([
 					type: TextBox,
 					value: disk.volumeFilename,
 					label: _( 'Filename' ),
-					disabled: disk.device != 'cdrom' && disk.device != 'floppy'
+					disabled: true
 				}, {
 					type: CheckBox,
 					name: 'paravirtual',
