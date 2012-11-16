@@ -1998,7 +1998,7 @@ class object(content):
 							flag = 'None'
 						parttype='only_mount'
 						if self.container['disk'][disk]['partitions'][part]['touched']:
-							parttype=self.container['disk'][disk]['partitions'][part]['type']
+							parttype = '1' # GPT contains only "primary" partitions / kept this value to make format similar to old MBR profiles
 						tmpresult.append( ("PHY", device, parttype, format, fstype, start, end, mpoint, flag) )
 		result[ 'disks' ] = ' '.join(partitions)
 
@@ -2031,8 +2031,8 @@ class object(content):
 		# sort partitions by mountpoint
 		i = 0
 		tmpresult.sort(lambda x,y: cmp(x[7], y[7]))  # sort by mountpoint
-		for (parttype, device, parttype, format, fstype, start, end, mpoint, flag) in tmpresult:
-			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sMiB %sMiB %s %s" % (parttype, device, parttype, format, fstype, int(B2MiB(start)), int(B2MiB(end)), mpoint, flag)
+		for (devtype, device, parttype, format, fstype, start, end, mpoint, flag) in tmpresult:
+			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sMiB %sMiB %s %s" % (devtype, device, parttype, format, fstype, int(B2MiB(start)), int(B2MiB(end)), mpoint, flag)
 			i += 1
 		return result
 

@@ -5,6 +5,7 @@ univention-installer (8.0.36-1) unstable; urgency=low
   * updated profiles delivered on DVD to GPT partition table (Bug #29255)
   * fixed size calculation of LVM LV in profile based auto partitioning
     (Bug #28263)
+  * fixed wrong profile entries (Bug #29256)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Nov 2012 14:22:42 +0100
 
