@@ -27,11 +27,14 @@ trap 'user_remove "$username";share_remove $sharename' INT TERM EXIT
 user_create "$username" || fail_test 1 "Could not create user $username."
 
 #----create Share
-
-share_create "$sharename" /"$sharename"  || fail_test 1 "Could not create share $sharename."
+SHARE_POSITION="cn=shares,$ldap_base"
+udm shares/share create --position="$SHARE_POSITION" \
+    --set name="$sharename" \
+    --set path="/$sharename" \
+    --set directorymode=0777 \
+    --set host="$hostname.$domainname" || fail_fast 1 "could not create share"
 
 SHARE_DN="$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
-udm shares/share modify --dn="$SHARE_DN" --set "directorymode=0777"  || fail_test 1 "Could not modify share $sharename."
 
 USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 

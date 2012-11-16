@@ -28,7 +28,13 @@ user_create "$username" || fail_test 1 "Could not create user $username."
 
 #----create Share
 
-share_create "$sharename" /"$sharename"  || fail_test 1 "Could not create share $sharename."
+#----create Share
+SHARE_POSITION="cn=shares,$ldap_base"
+udm shares/share create --position="$SHARE_POSITION" \
+    --set name="$sharename" \
+    --set path="/$sharename" \
+    --set host="$hostname.$domainname" || fail_fast 1 "could not create share"
+
 
 SHARE_DN="$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
