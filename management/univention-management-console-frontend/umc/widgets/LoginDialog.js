@@ -125,6 +125,10 @@ define([
 			this._languageLabel.startup();
 
 			// register onchange event
+			// watch('value') will not be triggered when
+			// the ComboBox has to take the first choice
+			// while dojo wanted to use another locale
+			// (e.g. because of navigator.language)
 			this._languageBox.on('change', function(newLang) {
 				i18nTools.setLanguage(newLang);
 			});

@@ -90,6 +90,7 @@ define([
 			// create the container for the main content... add css classes to be similar
 			// the dijit/TitlePane container
 			var props = lang.mixin({}, this._userProps, {
+				title: '',
 				region: 'center',
 				gutters: false,
 				'class': 'dijitTitlePaneContentOuter dijitTitlePaneContentInner'
@@ -120,11 +121,10 @@ define([
 		},
 
 		_setTitleAttr: function(newTitle) {
-			this.title = newTitle;
+			this._set('title', newTitle);
 			if (this._titlePane) {
 				this._titlePane.set('content', '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>');
 			}
-			this._set('title', newTitle);
 		}
 	});
 });

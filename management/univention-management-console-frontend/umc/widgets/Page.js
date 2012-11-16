@@ -95,6 +95,12 @@ define([
 		_notes: null,
 		_footerButtons: null,
 
+		_setTitleAttr: function(title) {
+			// dont set html attribute title
+			// (looks weird)
+			this._set('title', title);
+		},
+
 		_setHelpTextAttr: function(newVal) {
 			this.helpText = newVal;
 			if (this._helpTextPane) {

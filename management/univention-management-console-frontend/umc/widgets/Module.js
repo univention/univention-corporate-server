@@ -56,6 +56,12 @@ define([
 			this.set( 'title', this.defaultTitle );
 		},
 
+		_setTitleAttr: function(title) {
+			// dont set html attribute title
+			// (looks weird)
+			this._set('title', title);
+		},
+
 		_setTitleDetailAttr: function(detail) {
 			var title = this.defaultTitle;
 			if (detail) {
