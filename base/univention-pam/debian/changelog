@@ -1,3 +1,9 @@
+univention-pam (6.0.10-2) unstable; urgency=low
+
+  * Removed debug message (Bug #29029)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Nov 2012 23:07:19 +0100
+
 univention-pam (6.0.10-1) unstable; urgency=low
 
   * ldap-group-to-file.py: don't use always the DC Master (Bug #29029)
