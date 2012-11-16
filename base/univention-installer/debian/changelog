@@ -1,3 +1,9 @@
+univention-installer (8.0.36-2) unstable; urgency=low
+
+  * fixed unwanted question in interactive installation (Bug #29258)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Nov 2012 15:22:23 +0100
+
 univention-installer (8.0.36-1) unstable; urgency=low
 
   * parted does not flag partitions in protective mbr as bootable; solve

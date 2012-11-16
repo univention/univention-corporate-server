@@ -3565,6 +3565,8 @@ class object(content):
 							part = dev[2]
 							old_flags = self.parent.container['disk'][path]['partitions'][part]['flag']
 							old_fstype = self.parent.container['disk'][path]['partitions'][part]['fstype']
+							if not old_flags:
+								old_flags = [PARTFLAG_NONE]
 
 							mpoint = self.get_elem('INP_mpoint').result().strip()
 							fstype = self.get_elem('SEL_fstype').result()[0]
