@@ -2026,7 +2026,7 @@ class object(content):
 				parttype='only_mount'
 				if lv['touched']:
 					parttype = 'LVMLV'
-				flag=['None']
+				flag='None'
 				tmpresult.append( ("LVM", lv['dev'], parttype, format, fstype, start, end, mpoint, flag) )
 		# sort partitions by mountpoint
 		i = 0
