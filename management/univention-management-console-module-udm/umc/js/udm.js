@@ -641,10 +641,6 @@ define([
 					}
 					this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
 				})));
-				// in the case of changes, reload the navigation, as well (could have
-				// changes referring to container objects)
-				// TODO: this functionality should be done again
-				//this.own(this.on(this.moduleStore, 'onChange', lang.hitch(this, 'reloadTree'));
 				var treePane = new ContentPane({
 					content: this._tree,
 					region: 'left',
@@ -682,6 +678,7 @@ define([
 
 				// when we right-click anywhere on the tree, make sure we open the menu
 				menu.bindDomNode(this._tree.domNode);
+				this.own(menu);
 
 				// remember on which item the context menu has been opened
 				this.own(aspect.after(menu, '_openMyself', lang.hitch(this, function(e) {
@@ -691,6 +688,10 @@ define([
 						console.warn('this._tree.selectedNode is null');
 					}
 				})));
+				// in the case of changes, reload the navigation, as well (could have
+				// changes referring to container objects)
+				// TODO: uncomment for Bug #29250
+				// this.moduleStore.on('Change', lang.hitch(this, 'reloadTree'));
 
 				titlePane.addChild(treePane);
 			}

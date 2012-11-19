@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.58-1) unstable; urgency=low
+
+  * Fix memory leak (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Nov 2012 18:34:27 +0100
+
 univention-management-console-module-udm (3.0.57-1) unstable; urgency=low
 
   * Shorten name of navigation flavor to "LDAP directory" (Bug #26511)

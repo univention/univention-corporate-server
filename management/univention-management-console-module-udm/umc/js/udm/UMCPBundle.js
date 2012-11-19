@@ -35,7 +35,7 @@ define([
 	"dojo/Deferred",
 	"dojox/timing/_base"
 ], function(kernel, lang, array, Deferred, timing) {
-	UMCPBundle = function(command, umcpCommand) {
+	var UMCPBundle = function(command, umcpCommand) {
 		this.command = command;
 		this.umcpCommand = umcpCommand;
 		this.timer = new timing.Timer(100); // 0.1 sec
