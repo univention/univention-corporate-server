@@ -113,7 +113,7 @@ property_descriptions={
 	'mailHomeServer': univention.admin.property(
 			short_description=_('Mail home server'),
 			long_description='',
-			syntax=univention.admin.syntax.ldapSearchMailHomeServer(),
+			syntax=univention.admin.syntax.mailHomeServer(),
 			multivalue=0,
 			required=1,
 			may_change=1,
