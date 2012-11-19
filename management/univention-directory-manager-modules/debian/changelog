@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.96-1) unstable; urgency=low
+
+  * fixed typo (Bug #27820)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 19 Nov 2012 12:12:45 +0100
+
 univention-directory-manager-modules (8.0.95-1) unstable; urgency=low
 
   * printerGroup: if quota is enabled, check quota status of
