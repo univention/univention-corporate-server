@@ -1,3 +1,9 @@
+univention-join (5.0.19-1) unstable; urgency=low
+
+  * removed obsolete server-join.log log file (Bug #13105) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Nov 2012 09:54:05 +0100
+
 univention-join (5.0.18-1) unstable; urgency=low
 
   * Add priority (Bug #26961)

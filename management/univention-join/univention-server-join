@@ -32,17 +32,14 @@
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
-ADMINOPTIONS=()
-LOGFILE="/var/log/univention/server-join.log"
-if [ "$USER" != "root" ]; then
-	if [ "$HOME" ]; then
-		LOGFILE="$HOME/.univention-server-join.log"
-	else
-		USERTMP="$(mktemp -d)"
-		LOGFILE="$USERTMP/.univention-server-join.log"
-	fi
-	ADMINOPTIONS+=(--logfile "$LOGFILE")
+if [ -d "$HOME" ]; then
+	LOGFILE="$HOME/.univention-server-join.log"
+else
+	USERTMP="$(mktemp -d)"
+	LOGFILE="$USERTMP/.univention-server-join.log"
 fi
+ADMINOPTIONS=()
+ADMINOPTIONS+=(--logfile "$LOGFILE")
 
 display_help() {
 	display_header

@@ -35,7 +35,6 @@
 #DEBHELPER#
 
 create_logfile /var/log/univention/check_join_status.log "root:adm" 640
-create_logfile /var/log/univention/server-join.log "root:adm" 640
 create_logfile /var/log/univention/join.log "root:adm" 640
 
 call_joinscript 20univention-join.inst
