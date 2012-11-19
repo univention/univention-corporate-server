@@ -181,7 +181,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		return [ ( 'objectClass', ['top', 'univentionPrinterGroup'] ) ]
 
-	def _ldap_pre_modify(self):# check for membership in a quota-printerclass
+	def _ldap_modlist(self):# check for membership in a quota-printerclass
 		if self.hasChanged('setQuota') and self.info.get( 'setQuota', '0' ) == '0':
 			printergroups=self.lo.searchDn(filter='(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1))')
 			group_cn=[]
@@ -199,6 +199,7 @@ class object(univention.admin.handlers.simpleLdap):
 					raise univention.admin.uexceptions.leavePrinterGroup, _('%s is disabled for quota support. ') % member_cn
 		if self.hasChanged('groupMember'):
 			self.isValidPrinterObject() # check all members
+		return univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 	def _ldap_pre_remove(self): # check for last member in printerclass on same spoolhost
 		printergroups=self.lo.searchDn(filter='(&(objectClass=univentionPrinterGroup)(univentionPrinterSpoolHost=%s))' % self.info['spoolHost'])

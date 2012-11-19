@@ -1402,7 +1402,7 @@ msgstr "Leere Druckergruppen sind nicht möglich."
 msgid ""
 "Printer groups with quota support can only have members with quota support."
 msgstr ""
-"Einer Druckergruppen mitUnterstützung für Quota können als Mitglieder nur "
+"Einer Druckergruppen mit Unterstützung für Quota können als Mitglieder nur "
 "Drucker mit Quota haben."
 
 #: uexceptions.py:242

@@ -1,3 +1,12 @@
+univention-directory-manager-modules (8.0.95-1) unstable; urgency=low
+
+  * printerGroup: if quota is enabled, check quota status of
+    member printers also when creating new printer groups
+  * fixed typo in german translation
+  (Bug #19627)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 19 Nov 2012 11:28:15 +0100
+
 univention-directory-manager-modules (8.0.94-1) unstable; urgency=low
 
   * Update description for ldap/replication/preferredpassword
