@@ -1,3 +1,9 @@
+univention-mail-cyrus (5.0.4-1) unstable; urgency=low
+
+  * replaced popen with subprocess in cyrus.py listener (Bug #17928) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Nov 2012 12:29:32 +0100
+
 univention-mail-cyrus (5.0.3-2) unstable; urgency=low
 
   * replaced os.system with subprocess (Bug #17928)

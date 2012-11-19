@@ -61,13 +61,11 @@ def create_cyrus_userlogfile(mailaddress):
 
 def create_cyrus_mailbox(new):
 	if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
+		mailAddress = string.lower(new['mailPrimaryAddress'][0])
 		try:
 			listener.setuid(0)
-
-			p = os.popen('/usr/sbin/univention-cyrus-mkdir %s' % (string.lower(new['mailPrimaryAddress'][0])))
-			p.close()
-
-			create_cyrus_userlogfile(string.lower(new['mailPrimaryAddress'][0]))
+			subprocess.call(("/usr/sbin/univention-cyrus-mkdir", mailAddress))
+			create_cyrus_userlogfile(mailAddress)
 		finally:
 			listener.unsetuid()
 
