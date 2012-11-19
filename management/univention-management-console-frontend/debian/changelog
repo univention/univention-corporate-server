@@ -1,3 +1,12 @@
+univention-management-console-frontend (2.0.164-1) unstable; urgency=low
+
+  * Fix disabled menuitems in Grid called nonetheless (Bug #27432)
+  * Fix context menu not closing when onMouseUp (Bug #27432)
+  * Move outdated browser warning to overview because it made the
+    LoginDialog more or less unusable (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Nov 2012 19:43:09 +0100
+
 univention-management-console-frontend (2.0.163-1) unstable; urgency=low
 
   * Dont set HTML annoying title attributes on widgets (Bug #28551)

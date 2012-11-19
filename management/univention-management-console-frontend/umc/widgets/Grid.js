@@ -40,6 +40,7 @@ define([
 	"dojo/dom-style",
 	"dojo/on",
 	"dojo/aspect",
+	"dijit/popup",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
@@ -57,8 +58,8 @@ define([
 	"umc/i18n!umc/app",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
-], function(declare, lang, array, window, query, construct, attr, geometry,
-		style, on, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
+], function(declare, lang, array, win, query, construct, attr, geometry,
+		style, on, aspect, pm, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -204,7 +205,7 @@ define([
 				this._tmpCellHeader = construct.create('div', { 'class': 'dojoxGridHeader dijitOffScreen' });
 				this._tmpCell = construct.create('div', { 'class': 'dojoxGridCell' });
 				construct.place(this._tmpCell, this._tmpCellHeader);
-				construct.place(this._tmpCellHeader, window.body());
+				construct.place(this._tmpCellHeader, win.body());
 			}
 
 			// set the text
@@ -251,14 +252,14 @@ define([
 			//
 
 			// remove all children from context menu
-			 array.forEach(this._contextMenu.getChildren(), function(ichild) {
+			array.forEach(this._contextMenu.getChildren(), function(ichild) {
 				this._contextMenu.removeChild(ichild);
 				ichild.destroyRecursive();
 			}, this);
 			delete this._contextMenu.focusedChild;
 
 			// populate context menu
-			 array.forEach(this.actions, function(iaction) {
+			array.forEach(this.actions, function(iaction) {
 				// make sure we get all context actions
 				if (false === iaction.isContextAction) {
 					return;
@@ -273,8 +274,14 @@ define([
 					label: ilabel,
 					iconClass: iiconClass,
 					onMouseUp: lang.hitch(this, function() {
-						if (iaction.callback) {
+						var canExecute = typeof iaction.canExecute == "function" ? iaction.canExecute(this._contextItem) : true;
+						if (canExecute && iaction.callback) {
 							iaction.callback([this._contextItemID], [this._contextItem]);
+							// usually called onMouseClicked
+							// but when really called onMouseUp
+							// it does not close properly.
+							// so do it manually
+							pm.close(this._contextMenu);
 						}
 					}),
 					_action: iaction
@@ -397,7 +404,7 @@ define([
 			}, this);
 
 			// add additional column for all other actions
-			var tmpActions =  array.filter(this.actions, function(iaction) {
+			var tmpActions = array.filter(this.actions, function(iaction) {
 				return !iaction.isStandardAction && (false !== iaction.isContextAction);
 			});
 			if (tmpActions.length) {
@@ -452,7 +459,7 @@ define([
 			//
 
 			var myActions = [];
-			 array.forEach(actions, lang.hitch(this, function(iaction) {
+			array.forEach(actions, lang.hitch(this, function(iaction) {
 				var jaction = iaction;
 				if (iaction.callback) {
 					jaction = lang.mixin({}, iaction); // shallow copy
@@ -467,7 +474,7 @@ define([
 
 			// render buttons
 			var buttonsCfg = [];
-			 array.forEach(myActions, function(iaction) {
+			array.forEach(myActions, function(iaction) {
 				// make sure we get all standard actions
 				if (false === iaction.isContextAction) {
 					buttonsCfg.push(iaction);
@@ -477,13 +484,13 @@ define([
 			var buttons = render.buttons(buttonsCfg);
 
 			// clear old buttons
-			 array.forEach(this._toolbar.getChildren(), function(ibutton) {
+			array.forEach(this._toolbar.getChildren(), function(ibutton) {
 				this._toolbar.removeChild(ibutton);
 				ibutton.destroyRecursive();
 			}, this);
 
 			// add buttons to toolbar
-			 array.forEach(buttons.$order$, function(ibutton) {
+			array.forEach(buttons.$order$, function(ibutton) {
 				this._toolbar.addChild(ibutton);
 			}, this);
 
@@ -629,7 +636,7 @@ define([
 					this.defaultAction( [ identity ], [ item ] ) : this.defaultAction;
 
 			if ( defaultAction && ! this.disabled ) {
-				 array.forEach( this.actions, function( action ) {
+				array.forEach( this.actions, function( action ) {
 					if ( action.name == defaultAction ) {
 						var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
 						if ( action.callback && isExecutable && !this.getDisabledItem(identity)) {
@@ -643,7 +650,7 @@ define([
 
 		_disableAllItems: function( disable ) {
 			var items = this.getAllItems();
-			 array.forEach( items, lang.hitch( this, function( iitem ) {
+			array.forEach( items, lang.hitch( this, function( iitem ) {
 				var idx = this.getItemIndex( iitem[ this.moduleStore.idProperty ] );
 				if (idx >= 0) {
 					this._grid.rowSelectCell.setDisabled( idx, undefined === disable ? true : disable );
@@ -661,14 +668,14 @@ define([
 			this._updateDisabledItems();
 
 			// disable actions in footer
-			 array.forEach( this._footerCells, lang.hitch( this, function( cell ) {
+			array.forEach( this._footerCells, lang.hitch( this, function( cell ) {
 				var widget = cell.getChildren()[ 0 ];
 				if ( widget instanceof Button || widget instanceof DropDownButton ) {
 					widget.set( 'disabled', value );
 				}
 			} ) );
 			// disable actions in toolbar
-			 array.forEach( this._toolbar.getChildren(), lang.hitch( this, function( widget ) {
+			array.forEach( this._toolbar.getChildren(), lang.hitch( this, function( widget ) {
 				if ( widget instanceof Button ) {
 					widget.set( 'disabled', value );
 				}
@@ -681,7 +688,7 @@ define([
 				return;
 			}
 
-			 array.forEach( this._footerCells, lang.hitch( this, function( cell ) {
+			array.forEach( this._footerCells, lang.hitch( this, function( cell ) {
 				var nSelected = this._grid.selection.getSelectedCount();
 				var widget = cell.getChildren()[ 0 ];
 				if ( widget instanceof Button || widget instanceof DropDownButton ) {
@@ -718,7 +725,7 @@ define([
 			// in case the row is disabled, or in case the action cannot be executed,
 			// disable the context menu items
 			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
-			 array.forEach(this._contextMenu.getChildren(), function(iMenuItem) {
+			array.forEach(this._contextMenu.getChildren(), function(iMenuItem) {
 				var iaction = iMenuItem._action;
 				var idisabled = rowDisabled || (iaction.canExecute && !iaction.canExecute(item));
 				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
@@ -736,7 +743,7 @@ define([
 			}
 
 			// remove all footer cells
-			 array.forEach(this._footerCells, function(icell) {
+			array.forEach(this._footerCells, function(icell) {
 				this._footer.removeChild(icell);
 				icell.destroyRecursive();
 			}, this);
@@ -753,7 +760,7 @@ define([
 			// this method may be called when the grid has not been rendered yet
 			var footerCellWidths = this._getFooterCellWidths();
 			var width = 0;
-			 array.forEach(footerCellWidths, function(i) {
+			array.forEach(footerCellWidths, function(i) {
 				width += i;
 			});
 			if (!width) {
@@ -762,7 +769,7 @@ define([
 
 			// add one div per footer element
 			this._footerCells = [];
-			 array.forEach(footerCellWidths, function(iwidth, i) {
+			array.forEach(footerCellWidths, function(iwidth, i) {
 				// use display:inline-block; we need a hack for IE7 here, see:
 				//   http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
 				var padding = '0 5px';
@@ -783,7 +790,7 @@ define([
 			this._footerCells[0].addChild(this._footerLegend);
 
 			var i = 1;
-			 array.forEach(this.actions, function(iaction) {
+			array.forEach(this.actions, function(iaction) {
 				// get all standard context actions
 				if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
 					return;
@@ -823,12 +830,12 @@ define([
 			}, this);
 
 			// add remaining actions to a combo button
-			var tmpActions =  array.filter(this.actions, function(iaction) {
+			var tmpActions = array.filter(this.actions, function(iaction) {
 				return !iaction.isStandardAction && (false !== iaction.isContextAction) && iaction.isMultiAction;
 			});
 			if (tmpActions.length) {
 				var moreActionsMenu = new Menu({});
-				 array.forEach(tmpActions, function(iaction) {
+				array.forEach(tmpActions, function(iaction) {
 					// get icon and label (these properties may be functions)
 					var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
 					var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
@@ -856,7 +863,7 @@ define([
 				}
 			}
 
-			 array.forEach(this._footerCells, function(icell) {
+			array.forEach(this._footerCells, function(icell) {
 				this._footer.addChild(icell);
 			}, this);
 			this._footer.startup();
@@ -882,12 +889,12 @@ define([
 			style.set(this._footerCells[0].domNode, 'margin-left', margin + 'px');
 
 			// update footer cell widths
-			 array.forEach(this._getFooterCellWidths(), function(iwidth, i) {
+			array.forEach(this._getFooterCellWidths(), function(iwidth, i) {
 				geometry.setContentSize(this._footerCells[i].containerNode, { w: iwidth });
 			}, this);
 		},
 
-		unitialize: function() {
+		uninitialize: function() {
 			// remove the temporary cell from the DOM
 			if (this._tmpCellHeader) {
 				construct.destroy(this._tmpCellHeader);
@@ -943,7 +950,7 @@ define([
 			//		Convenience method to fetch all attributes of an item as dictionary.
 			var values = {};
 			var item = this._grid.getItem(rowIndex);
-			 array.forEach(this._dataStore.getAttributes(item), lang.hitch(this, function(key) {
+			array.forEach(this._dataStore.getAttributes(item), lang.hitch(this, function(key) {
 				values[key] = this._dataStore.getValue(item, key);
 			}));
 			return values;
@@ -991,7 +998,7 @@ define([
 
 			var ids = tools.stringOrArray(_ids);
 			disable = undefined === disable ? true : disable;
-			 array.forEach(ids, function(id) {
+			array.forEach(ids, function(id) {
 				this._disabledIDs[id] = disable;
 			}, this);
 			this._updateDisabledItems();
@@ -1007,7 +1014,7 @@ define([
 			//		Item ID or list of IDs.
 
 			var ids = tools.stringOrArray(_ids);
-			var result =  array.map(ids, function(id) {
+			var result = array.map(ids, function(id) {
 				var idx = this.getItemIndex(id);
 				if (idx >= 0) {
 					return this._grid.rowSelectCell.disabled(idx);
@@ -1040,7 +1047,7 @@ define([
 			var executableItems = [];
 
 			if ( typeof  action  == "string" ) {
-				var tmpActions =  array.filter(this.actions, function(iaction) {
+				var tmpActions = array.filter(this.actions, function(iaction) {
 					return iaction.isMultiAction && iaction.name == action;
 				} );
 				if ( ! tmpActions.length ) {
@@ -1048,7 +1055,7 @@ define([
 				}
 				actionObj = tmpActions[ 0 ];
 			}
-			executableItems =  array.filter( items, function( iitem ) {
+			executableItems = array.filter( items, function( iitem ) {
 				return typeof  actionObj.canExecute  == "function" ? actionObj.canExecute( iitem ) : true;
 			} );
 

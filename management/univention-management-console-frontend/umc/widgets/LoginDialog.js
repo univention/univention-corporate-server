@@ -33,7 +33,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/window",
-	"dojo/has",
 	"dojo/aspect",
 	"dojo/on",
 	"dojo/mouse",
@@ -50,9 +49,8 @@ define([
 	"umc/widgets/StandbyMixin",
 	"umc/i18n/tools",
 	"umc/i18n!umc/app",
-	"dojo/sniff", // has("ie"), has("ff")
 	"dojo/domReady!"
-], function(declare, lang, array, win, has, aspect, on, mouse, dom, query, attr, domClass, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
+], function(declare, lang, array, win, aspect, on, mouse, dom, query, attr, domClass, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
 	return declare("umc.widgets.LoginDialog", [StandbyMixin], {
 		// our own variables
 		_connections: null,
@@ -300,18 +298,6 @@ define([
 					msg += _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', '<a href="https://' + window.location.href.slice(7) + '">') + '</p>';
 				}
 			}
-			if (has('ie') < 9 || has('ff') < 4) {
-				// supported browsers are FF 3.6 and IE 8
-				// they should work with UMC. albeit, they are
-				// VERY slow and escpecially IE 8 may take minutes (!)
-				// to load a heavy UDM object (on a slow computer at least).
-				// IE 8 is also known to cause timeouts when under heavy load
-				// (presumably because of many async requests to the server
-				// during UDM-Form loading)
-				msg += '<p style="margin: 5px 0;"><b>' + _('Please update your Browser') + ': </b>';
-				msg += _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.');
-			}
-
 			// if login failed display a notification
 			msg += '<p class="umc_LoginMessage" style="display: none; color: #ff0000;"></p>';
 
