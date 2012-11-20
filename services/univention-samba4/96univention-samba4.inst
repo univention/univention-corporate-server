@@ -375,6 +375,137 @@ set_samba4_sysvol_sync_host() {
 	fi
 }
 
+create_dns_spn() {
+	spn_account_name="dns-$hostname"
+	spn_account_name_password=$(makepasswd --chars=18)
+
+	spn_secrets_ldif=$(ldbsearch -H /var/lib/samba/private/secrets.ldb "(servicePrincipalName=DNS/$hostname.$domainname)" \
+			| ldapsearch-wrapper | ldapsearch-decode64)
+	previous_spn_secrets_password=$(sed -n 's/^secret: //p' <<<"$spn_secrets_ldif")
+
+	spn_account_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(servicePrincipalName=DNS/$hostname.$domainname)" dn \
+			| ldapsearch-wrapper | sed -n 's/^dn: //p')
+
+	if [ -n "$spn_account_dn" ] && [ -n "$previous_spn_secrets_password" ]; then
+		test_output=$(ldbsearch -k no -H ldap://$(hostname -f) -U"$spn_account_name" \
+			--password="$previous_spn_secrets_password" -b "$spn_account_dn" -s base dn 2>/dev/null \
+			| sed -n 's/^dn: //p')
+		if [ -n "$test_output" ]; then
+			## SPN account password ok, don't touch a running system.
+			return
+		fi
+	fi
+
+	if [ -z "$spn_account_dn" ]; then
+
+		samba-tool user add "$spn_account_name" "$spn_account_name_password"
+
+		samba-tool user setexpiry --noexpiry "$spn_account_name"
+
+		ldbmodify -H /var/lib/samba/private/sam.ldb <<-%EOF
+		dn: CN=$spn_account_name,CN=Users,$samba4_ldap_base
+		changetype: modify
+		replace: servicePrincipalName
+		servicePrincipalName: DNS/$hostname.$domainname
+		%EOF
+	else
+		echo -n "Setting new password for $spn_account_name account: "
+		local password_set
+		for i in 0 1 2 3 4 5 6 7 8 9; do
+			if samba-tool user setpassword dns-slave --newpassword="$spn_account_name_password"; then
+				password_set=1
+				break
+			elif [ "$i" -lt 9 ]; then
+				echo -n "Trying again with new password: "
+				spn_account_name_password=$(makepasswd --chars=18)
+			fi
+		done
+		if [ -z "$password_set" ]; then
+			echo "Error: Failed to set password for $spn_account_name_password"
+			exit 1
+		fi
+
+		samba-tool user setexpiry --noexpiry "$spn_account_name"
+	fi
+
+	# get msDS-KeyVersionNumber
+	msdsKeyVersion=$(ldbsearch -H /var/lib/samba/private/sam.ldb  samAccountName="$spn_account_name" msDS-KeyVersionNumber \
+					| sed -n 's/^msDS-KeyVersionNumber: \(.*\)/\1/p')
+	if [ -z "$msdsKeyVersion" ]; then
+		echo "ERROR: Could not determine msDS-KeyVersionNumber of $spn_account_name account!"
+		exit 1
+	fi
+	
+	spn_secrets_dn=$(sed -n 's/^dn: //p' <<<"$spn_secrets_ldif")
+	if [ -z "$spn_secrets_dn" ]; then
+		ldbadd -H /var/lib/samba/private/secrets.ldb <<-%EOF
+		dn: samAccountName=$spn_account_name,CN=Principals
+		objectClass: kerberosSecret
+		privateKeytab: dns.keytab
+		realm: $kerberos_realm
+		sAMAccountName: $spn_account_name
+		secret: $spn_account_name_password
+		servicePrincipalName: DNS/$hostname.$domainname
+		name: $spn_account_name
+		msDS-KeyVersionNumber: $msdsKeyVersion
+		%EOF
+	else
+		echo -n "Saving password for $spn_account_name account: "
+		ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
+		dn: $spn_secrets_dn
+		changetype: modify
+		replace: secret
+		secret: $spn_account_name_password
+		-
+		replace: msDS-KeyVersionNumber
+		msDS-KeyVersionNumber: $msdsKeyVersion
+		%EOF
+	fi
+}
+
+wait_for_rid_set() {
+	local max_attempts=30
+
+	echo -n "Waiting for RID Pool replication: "
+	local rIDSetReferences
+	local attempt
+	attempt=0
+	while [ -z "$rIDSetReferences" ] && [ "$attempt" -lt "$max_attempts" ]; do
+		if [ "$attempt" != 0 ]; then
+			sleep 1
+			echo -n "."
+		fi
+		attempt=$(($attempt + 1))
+		rIDSetReferences=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(sAMAccountName=$hostname\$)" rIDSetReferences \
+			| ldapsearch-wrapper | sed -n 's/^rIDSetReferences: //p')
+	done
+
+	if [ -z "$rIDSetReferences" ]; then
+		echo
+		echo "Error no rIDSetReferences replicated for $hostname"
+		exit 1
+	fi
+
+	local rIDAllocationPool
+	attempt=0
+	while [ -z "$rIDAllocationPool" ] && [ "$attempt" -lt "$max_attempts" ]; do
+		if [ "$attempt" != 0 ]; then
+			sleep 1
+			echo -n "."
+		fi
+		attempt=$(($attempt + 1))
+		rIDAllocationPool=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$rIDSetReferences" rIDAllocationPool \
+			| ldapsearch-wrapper | sed -n 's/^rIDAllocationPool: //p')
+	done
+
+	if [ -z "$rIDAllocationPool" ]; then
+		echo
+		echo "Error no rIDAllocationPool replicated for $hostname"
+		exit 1
+	fi
+	echo "done."
+}
+
 ### --- END helper functions ---
 
 extract_binddn_and_bindpwd_from_args "$@"
@@ -503,6 +634,8 @@ if [ "$samba4_role" = 'DC' ]; then
 		## Start samba daemon
 		/etc/init.d/samba4 start
 
+		wait_for_rid_set
+
 		## determine default sysvol parent for this host from univentionService="S4 Connector"
 		set_samba4_sysvol_sync_host
 		/usr/share/univention-samba4/scripts/sysvol-sync.sh
@@ -514,7 +647,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	fi
 
-	/usr/share/univention-samba4/scripts/create_dns-host_spn.py
+	create_dns_spn
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 		## set default ACLs so sysvol-sync can read files and directories

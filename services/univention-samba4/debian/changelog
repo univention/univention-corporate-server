@@ -1,3 +1,11 @@
+univention-samba4 (2.0.27-1) unstable; urgency=low
+
+  * Replace create_dns-host_spn.py in join script by more standard shell
+    code (Bug #29217)
+  * Wait for RID pool replication after joining and starting samba
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Nov 2012 21:31:57 +0100
+
 univention-samba4 (2.0.26-3) unstable; urgency=low
 
   * run sysvol-sync.sh in joinscript before running
