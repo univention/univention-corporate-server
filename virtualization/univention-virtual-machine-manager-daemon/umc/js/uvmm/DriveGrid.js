@@ -292,6 +292,7 @@ define([
 
 			// hide pool for block devices
 			form._widgets.pool.set( 'visible', disk.type != 'block' );
+			form._widgets.driver_cache.set('visible', this.domain.domain_type == 'kvm');
 
 			_dialog = new Dialog({
 				title: _('Edit drive'),
@@ -341,7 +342,7 @@ define([
 				} ) );
 
 				deferred = deferred.then( lang.hitch( this, function( action ) {
-					if ( action != 'delete' & action != 'detach' ) { 
+					if ( action != 'delete' && action != 'detach' ) {
 						return;
 					}
 					this.onUpdateProgress( 0, 1 );
