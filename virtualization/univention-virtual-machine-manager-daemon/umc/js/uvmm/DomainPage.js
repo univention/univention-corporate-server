@@ -519,10 +519,7 @@ define([
 					this._advancedForm._widgets.vnc_port.set('visible', Boolean(this._advancedForm._widgets.vnc_port.get('value')));
 
 					// deactivate most input field when domain is running
-					var disabled = false;
-					if ( this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' ) {
-						disabled = true;
-					}
+					var disabled = (this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' || this._domain.state == 'PAUSED' || this._domain.suspended);
 					if ( disabled && ! this.disabled ) {
 						this._generalPage.addNote( _( 'While the virtual instance is running most of the settings can not be changed.' ) );
 					} else if ( ! disabled ) {
