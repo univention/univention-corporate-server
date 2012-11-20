@@ -223,11 +223,11 @@ define([
 		],
 		driverCache: {
 			'default': _('Hypervisor default'),
-			'none': _('No host caching, no forced sync'),
-			'writethrough': _('Read caching, forced sync'),
-			'writeback': _('Read/write caching, no forced sync'),
-			'directsync': _('No host caching, forced sync'),
-			'unsafe': _('Read/write caching, sync filtered out'),
+			'none': _('No host caching, no forced sync (none)'),
+			'writethrough': _('Read caching, forced sync (write-through)'),
+			'writeback': _('Read/write caching, no forced sync (write-back)'),
+			'directsync': _('No host caching, forced sync (direct-sync)'),
+			'unsafe': _('Read/write caching, sync filtered out (unsafe)'),
 		},
 		getPools: function(options) {
 			if (!options.nodeURI) {

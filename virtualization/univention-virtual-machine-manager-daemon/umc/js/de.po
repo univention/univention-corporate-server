@@ -688,12 +688,12 @@ msgid "No %(objPlural)s could be found"
 msgstr "Es konnten keine %(objPlural)s gefunden werden"
 
 #: umc/js/uvmm/types.js:226
-msgid "No host caching, no forced sync"
-msgstr "Kein Host-Caching, kein erzwungenes sync"
+msgid "No host caching, no forced sync (none)"
+msgstr "Kein Host-Caching, kein erzwungenes sync (none)"
 
 #: umc/js/uvmm/types.js:229
-msgid "No host caching, forced sync"
-msgstr "Kein Host-Caching, erzwungenes sync"
+msgid "No host caching, forced sync (direct-sync)"
+msgstr "Kein Host-Caching, erzwungenes sync (direct-sync)"
 
 #: umc/js/uvmm/types.js:222
 msgid "No media"
@@ -815,16 +815,16 @@ msgid "RTC reference"
 msgstr "RTC-Referenz"
 
 #: umc/js/uvmm/types.js:227
-msgid "Read caching, forced sync"
-msgstr "Lese-Caching, erzwungenes sync"
+msgid "Read caching, forced sync (write-through)"
+msgstr "Lese-Caching, erzwungenes sync (write-through)"
 
 #: umc/js/uvmm/types.js:228
-msgid "Read/write caching, no forced sync"
-msgstr "Lese-/Schreib-Caching, kein erzwungenes sync"
+msgid "Read/write caching, no forced sync (write-back)"
+msgstr "Lese-/Schreib-Caching, kein erzwungenes sync (write-back)"
 
 #: umc/js/uvmm/types.js:230
-msgid "Read/write caching, sync filtered out"
-msgstr "Lese-/Schreib-Caching, herausgefiltertes sync"
+msgid "Read/write caching, sync filtered out (unsafe)"
+msgstr "Lese-/Schreib-Caching, herausgefiltertes sync (unsafe)"
 
 #: umc/js/uvmm.js:227
 msgid "Reload"
