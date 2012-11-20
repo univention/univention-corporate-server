@@ -92,7 +92,11 @@ define([
 					isContextAction: true,
 					isStandardAction: true,
 					iconClass: 'umcIconEdit',
-					callback: lang.hitch(this, '_editInterface')
+					callback: lang.hitch(this, '_editInterface'),
+					canExecute: lang.hitch(this, function(item) {
+						// when creating an instance drives can not be edited
+						return !this.disabled && undefined !== this.domain.domainURI;
+					} )
 				}, {
 					name: 'remove',
 					label: _('Remove'),
