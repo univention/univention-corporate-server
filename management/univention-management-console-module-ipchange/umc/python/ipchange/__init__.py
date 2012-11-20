@@ -63,6 +63,8 @@ class Instance(umcm.Base):
 		'''Return a dict with all necessary values for ipchange read from the current
 		status of the system.'''
 
+		result = {'success' : True}
+		message = None
 		MODULE.info('IP Change')
 		if self._username.endswith('$'):
 			server_name='%s' % self._username[:-1]
@@ -76,29 +78,9 @@ class Instance(umcm.Base):
 			cobject = univention.admin.modules.lookup(cmodule, co, lo, scope='sub', superordinate=None, filter=filter)
 
 			if cobject:
-				# change IP
 				server = cobject[0]
-				server.open()
-				MODULE.info('Change IP to %s' % request.options.get('ip'))
 
-				# remove old DNS reverse entries with old IP
-				old_ip = server['ip']
-				for e in server['dnsEntryZoneReverse']:
-					if e[1] == old_ip:
-						server['dnsEntryZoneReverse'].remove(e)
-
-				# do we have a reverse zone for this IP address?
-				rmodule = univention.admin.modules.get('dns/reverse_zone')
-				# ignore all netmask values != 255
-				c = request.options.get('netmask').split('.').count('255')
-				filter='(subnet=%s)' % (string.join(request.options.get('ip').split('.')[0:c], '.') )
-				reverseobject = univention.admin.modules.lookup(rmodule, co, lo, scope='sub', superordinate=None, filter=filter)
-				if reverseobject:
-					server['dnsEntryZoneReverse'].append([reverseobject[0].dn, request.options.get('oldip')])
-				
-				server['ip'] = request.options.get('ip')
-
-				# do we have a reverse zone for this IP address?
+				# do we have a forward zone for this IP address?
 				if request.options.get('oldip') and request.options.get('oldip') != request.options.get('ip'):
 					fmodule = univention.admin.modules.get('dns/forward_zone')
 					filter='(aRecord=%s)' % (request.options.get('oldip'))
@@ -108,12 +90,40 @@ class Instance(umcm.Base):
 						forwardobject['a'].remove(request.options.get('oldip'))
 						forwardobject['a'].append(request.options.get('ip'))
 						forwardobject.modify()
+
+				# remove old DNS reverse entries with old IP
+				server.open()
+				old_ip = server['ip']
+				for e in server['dnsEntryZoneReverse']:
+					if e[1] == old_ip:
+						server['dnsEntryZoneReverse'].remove(e)
+
+				# change IP
+				server['ip'] = request.options.get('ip')
+				MODULE.info('Change IP to %s' % request.options.get('ip'))
 				try:
 					server.modify()
 				except Exception, err:
 					MODULE.warn('Failed to change IP: %s' % traceback.format_exc())
+					result['success'] = False
+					message = 'Failed to change IP'
 
-					self.finished(request.id, {'success': False}, 'Failed to change IP')
+				
+				# do we have a new reverse zone for this IP address?
+				rmodule = univention.admin.modules.get('dns/reverse_zone')
+				# ignore all netmask values != 255
+				c = request.options.get('netmask').split('.').count('255')
+				filter='(subnet=%s)' % (string.join(request.options.get('ip').split('.')[0:c], '.') )
+				reverseobject = univention.admin.modules.lookup(rmodule, co, lo, scope='sub', superordinate=None, filter=filter)
+				if reverseobject:
+					server.open()
+					server['dnsEntryZoneReverse'].append([reverseobject[0].dn, request.options.get('ip')])
+				try:
+					server.modify()
+				except Exception, err:
+					MODULE.warn('Failed to change DNS reverse zone: %s' % traceback.format_exc())
+					result['success'] = False
+					message = 'Failed to change DNS reverse zone'
 
-		self.finished(request.id, {'success': True})
+		self.finished(request.id, result, message)
 

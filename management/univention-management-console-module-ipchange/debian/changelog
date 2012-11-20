@@ -1,3 +1,11 @@
+univention-management-console-module-ipchange (2.0.4-1) unstable; urgency=low
+
+  * actualiase forward zones first
+  * use new ip to determine reverse zone
+  (Bug #27937)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 20 Nov 2012 14:53:29 +0100
+
 univention-management-console-module-ipchange (2.0.3-1) unstable; urgency=low
 
   * use current ip instead of new one when adding new dns reverse zone
