@@ -42,6 +42,8 @@ import threading
 import traceback
 import urllib
 import urllib2
+from HTMLParser import HTMLParser
+import cgi
 
 # related third party
 from ldap import LDAPError
@@ -129,7 +131,7 @@ class Application(object):
 
 		# copy values from config file
 		for k, v in config.items('Application'):
-			self._options[k] = v
+			self._options[k] = cgi.escape(v)
 
 		# overwrite english values with localized translations
 		loc = locale.getlocale()[0]
@@ -271,6 +273,7 @@ class Application(object):
 			# query all applications from the server
 			ucr.load()
 			url = cls.get_metainf_url()
+			parser = HTMLParser()
 			try:
 				cls._all_applications = []
 
@@ -281,6 +284,8 @@ class Application(object):
 					if m:
 						# try to load and parse application's .ini file
 						ifilename = m.group('name')
+						# 'foo%20&amp;%20bar.ini' -> 'foo%20&%20bar.ini'
+						ifilename = parser.unescape(ifilename)
 						iurl = url + '/' + ifilename
 
 						# thread function
