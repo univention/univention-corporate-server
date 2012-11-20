@@ -62,7 +62,7 @@ def ldapbind(basedn):
 	try:
 		bindpw = open('/etc/ldap.secret').read().rstrip('\n')
 	except IOError:
-		fatal('Could no read /etc/ldap.secrer')
+		fatal('Could not read /etc/ldap.secret')
 	conn = ldap.open('localhost', 7389)
 	try:
 		conn.simple_bind_s(binddn, bindpw)
