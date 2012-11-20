@@ -136,9 +136,9 @@ msgstr ""
 
 #: umc/js/uvmm/SnapshotGrid.js:135
 msgid ""
-"A valid snapshot name cannot contain \"/\" and may not start with \".\" ."
+"A valid snapshot name cannot contain \"/\", \"&\" or \"<\", and may not start with \".\" ."
 msgstr ""
-"Ein gültiger Sicherungspunktname darf keine \"/\" enthalten und kann nicht "
+"Ein gültiger Sicherungspunktname darf keine \"/\", \"&\" oder \"<\" enthalten und kann nicht "
 "mit \".\" beginnen."
 
 #: umc/js/uvmm/DriveWizard.js:64 umc/js/uvmm/DriveGrid.js:415
