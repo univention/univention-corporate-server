@@ -506,6 +506,50 @@ wait_for_rid_set() {
 	echo "done."
 }
 
+remove_non_samba4_kerberos_srv_records() {
+
+	ldif=$(univention-ldapsearch -LLLx "(&(objectClass=univentionDomainController)(univentionService=Samba 4))" cn associatedDomain | ldapsearch-wrapper)
+
+	samba4_dcs_fqdn_list=("${hostname}.${domainname}")	## initialize with own fqdn for the initial join of the first Samba4 DC
+	while read -d '' record; do
+		cn=$(sed -n 's/^cn: //p' <<<"$record")
+		associatedDomain=$(sed -n 's/^associatedDomain: //p' <<<"$record")
+		samba4_dcs_fqdn_list+=("${cn}.${associatedDomain}")
+	done < <(echo -e "$ldif\n" | sed 's/^$/\x0/')
+
+	for proto in 'tcp' 'udp'; do
+		ldap_record=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=_kerberos._$proto))" sRVRecord dn \
+			| ldapsearch-wrapper)
+		sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
+		sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
+
+		udm_options=()
+		while read line; do
+			fields=($line)
+			if [ "${#fields[@]}" = 4 ]; then
+				unset found
+				for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
+					if [ "${fields[3]}" = "$fqdn." ]; then
+						found=1
+					fi
+				done
+				if [ -z "$found" ]; then
+					echo "$fqdn is not offering the Service 'Samba 4'"
+					echo "Going to remove dns/srv_record '${fields[@]}' from $sRVRecord_DN"
+					udm_options+=(--remove location="${fields[@]}")
+				fi
+			fi
+		done <<<"$sRVRecord_attrs"
+
+		zoneDN=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
+			| ldapsearch-wrapper | sed -n 's/^dn: //p')
+
+		if [ "${#udm_options[@]}" -gt 0 ]; then
+			univention-directory-manager dns/srv_record modify "$@" --superordinate "$zoneDN" --dn "$sRVRecord_DN" "${udm_options[@]}"
+		fi
+	done
+}
+
 ### --- END helper functions ---
 
 extract_binddn_and_bindpwd_from_args "$@"
@@ -596,6 +640,8 @@ if [ "$samba4_role" = 'DC' ]; then
 
 				# Don't use the default RID pool
 				set_rid_pool 2100 2599
+
+				remove_non_samba4_kerberos_srv_records
 			fi
 
 		else

@@ -1,3 +1,10 @@
+univention-samba4 (2.0.27-2) unstable; urgency=low
+
+  * Remove non-Samba4 Kerberos SRV records after initial provision
+    on the first Samba 4 host in the domain (Bug #29225)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Nov 2012 21:39:59 +0100
+
 univention-samba4 (2.0.27-1) unstable; urgency=low
 
   * Replace create_dns-host_spn.py in join script by more standard shell
