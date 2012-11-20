@@ -85,12 +85,8 @@ define([
 					isStandardAction: true,
 					callback: lang.hitch(this, '_editDrive'),
 					canExecute: lang.hitch( this, function( item ) {
-						if (this.disabled) {
-							return this.domain.domain_type === 'kvm' && (item.device == 'cdrom' || item.device == 'floppy');
-						} else {
-							// when creating an instance drives can not be edited
-							return undefined !== this.domain.domainURI;
-						}
+						// when creating an instance drives can not be edited
+						return !this.disabled && undefined !== this.domain.domainURI;
 					} )
 				}, {
 					name: 'change_medium',

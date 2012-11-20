@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (2.0.20-1) unstable; urgency=low
 
   * Disable editing paused VMs (Bug #25467)
+  * Disable drive edit while VM is running (Bug #23445)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 19 Nov 2012 16:14:25 +0100
 
