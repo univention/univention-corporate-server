@@ -380,7 +380,7 @@ define([
 
 			var _finished = lang.hitch(this, function(values) {
 				var paravirtual = false;
-				var driver_cache = 'none';
+				var driver_cache = values.device == 'disk' ? 'none' : 'default';
 				var id = this._nextID();
 
 				_cleanup();
@@ -390,7 +390,7 @@ define([
 					} else if ( values.device == 'disk' && this.domain.profileData.pvdisk ) {
 						paravirtual = true;
 					}
-					if (undefined !== this.domain.profileData.drivercache) {
+					if (undefined !== this.domain.profileData.drivercache && values.device == 'disk') {
 						driver_cache = this.domain.profileData.drivercache || driver_cache;
 					}
 				}

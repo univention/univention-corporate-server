@@ -213,14 +213,6 @@ define([
 						dynamicValue: function(options) {
 							return types.blockDevicePath[options.driveType] || '';
 						}
-					}, {
-						name: 'driver_cache',
-						type: 'ComboBox',
-						//depends: ['driveType'],
-						label: _('Caching'),
-						description: _('Configure cache behaviour of host.'),
-						staticValues: types.dict2list(types.driverCache),
-						value: lang.getObject('domain.profileData.drivercache', false, props) || 'none'
 					}]
 				}]
 			});
@@ -241,7 +233,6 @@ define([
 				pool: _values['pool_' + _values.volumeType] || '',
 				size: _values['size_' + _values.volumeType] || '',
 				driver_type: _values['driver_type_' + _values.volumeType] || '',
-				driver_cache: _values.driver_cache || '',
 				volumeType: _values.volumeType
 			};
 			return values;
