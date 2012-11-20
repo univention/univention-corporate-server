@@ -1,3 +1,9 @@
+univention-join (5.0.20-1) unstable; urgency=low
+
+  * Fix memory leak (Bug #27432)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Nov 2012 10:25:46 +0100
+
 univention-join (5.0.19-1) unstable; urgency=low
 
   * removed obsolete server-join.log log file (Bug #13105) 

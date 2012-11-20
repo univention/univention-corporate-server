@@ -628,6 +628,7 @@ define([
 			// into columns of footer cells) doesn't make sense here. We let all the callbacks
 			// intact that try to update the footer, but we detach it from the grid so it's
 			// not visible anymore.
+			this.own(this._grid._footer);
 			this._grid.removeChild(this._grid._footer);
 
 			// Now we can add a different layout container here: a 2x1 table with adjacent
@@ -668,6 +669,7 @@ define([
 					}));
 				})
 			});
+			this.own(this._multi_action);
 			for (var i=0; i<this._footers.length; i++)
 			{
 				this._footer.addChild(this._footers[i]);
@@ -846,8 +848,8 @@ define([
 				this.umcpCommand('join/running')
 			])).then(lang.hitch(this, function(results) {
 				// result[i]: [ 0 ] -> success/failure, [ 1 ] -> data
-				this._joined = results[0].result
-				this._job_running = results[1].result
+				this._joined = results[0].result;
+				this._job_running = results[1].result;
 				this.standby(false);
 				this.standbyOpacity = 0.75;  // set it back to semi transparent
 				this._setTitle(this._joined);  // update TitlePane title
