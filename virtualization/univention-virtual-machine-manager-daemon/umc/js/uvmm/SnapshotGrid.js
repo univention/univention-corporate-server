@@ -50,6 +50,7 @@ define([
 
 		constructor: function() {
 			lang.mixin(this, {
+				cache: false,
 				columns: [{
 					name: 'label',
 					label: _('Name')

@@ -53,6 +53,7 @@ define([
 
 		constructor: function() {
 			lang.mixin(this, {
+				cache: false,
 				columns: [{
 					name: 'type',
 					label: _('Type'),

@@ -61,6 +61,7 @@ define([
 
 		constructor: function() {
 			lang.mixin(this, {
+				cache: false,
 				columns: [{
 					name: 'device',
 					label: _('Type'),
