@@ -56,20 +56,15 @@ define([
 			//        in a closed TitlePane
 
 			// iterate over all tabs
-			array.forEach(this.getChildren(), function(ipage) {
-				// find all widgets that inherit from dojox.grid._Grid on the tab
-				if (ipage.getChildren) {
-					array.forEach(ipage.getChildren(), function(iwidget) {
-						if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
-							// hook to changes for 'open'
-							this.own(this.watch('open', function(attr, oldVal, newVal) {
-								if (newVal) {
-									// recall startup when the TitelPane gets shown
-									iwidget.startup();
-								}
-							}));
+			array.forEach(this.getDescendants(), function(iwidget) {
+				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+					// hook to changes for 'open'
+					this.own(this.watch('open', function(attr, oldVal, newVal) {
+						if (newVal) {
+							// recall startup when the TitelPane gets shown
+							iwidget.startup();
 						}
-					}, this);
+					}));
 				}
 			}, this);
 		}

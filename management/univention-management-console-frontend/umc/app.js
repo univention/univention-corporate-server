@@ -677,7 +677,6 @@ define([
 					// register to requests for opening a module
 					gallery.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
 						var item = gallery.row(evt).data;
-						console.log('open module: ', item.id, evt);
 						this.openModule(gallery.row(evt).data);
 					}));
 
