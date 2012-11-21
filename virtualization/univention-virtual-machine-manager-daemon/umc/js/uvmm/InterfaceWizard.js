@@ -59,7 +59,7 @@ define([
 						label: _('Type'),
 						staticValues: types.interfaceTypes,
 						onChange: lang.hitch( this, '_typeDescription' ),
-						value: this.values.type || 'bridge'
+						value: 'bridge'
 					}, {
 						name: 'typeDescription',
 						type: Text,
@@ -78,14 +78,14 @@ define([
 						}),
 						dynamicValues: types.getInterfaceModels,
 						sortDynamicValues: false,
-						value: this.values.model || 'rtl8139'
+						value: 'rtl8139'
 					}, {
 						name: 'source',
 						sizeClass: 'OneThird',
 						type: TextBox,
 						label: _('Source'),
 						description: _('The source is the name of the network interface on the phyiscal server that is configured for bridging. By default it is eth0.'),
-						value: this.values.source || 'eth0',
+						value: 'eth0',
 						required: true
 					}, {
 						name: 'mac_address',
@@ -94,11 +94,28 @@ define([
 						regExp: '^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$',
 						invalidMessage: _('Invalid MAC address. The address should have the form, e.g., "01:23:45:67:89:AB".'),
 						label: _('MAC addresss'),
-						value: this.values.mac_address || ''
+						value: ''
 					}],
 					layout: [ [ 'type', 'model' ], 'typeDescription', [ 'source', 'mac_address' ] ]
 				}]
 			});
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			if (this.values) {
+				// modify an existing interface
+				this._setInitialValues();
+			}
+		},
+
+		_setInitialValues: function() {
+			this.getPage('interface').set('headerText', _('Edit network interface'))
+			this.getWidget('interface', 'type').set('value', this.values.type);
+			this.getWidget('interface', 'model').set('value', this.values.model);
+			this.getWidget('interface', 'source').set('value', this.values.source);
+			this.getWidget('interface', 'mac_address').set('value', this.values.mac_address);
 		},
 
 		_typeDescription: function() {

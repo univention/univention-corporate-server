@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (2.0.21-1) unstable; urgency=low
+
+  * InterfaceWizard: Now the initial values will be loaded properly when
+    editing an existing interface (Bug #29274)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 21 Nov 2012 13:34:26 +0100
+
 univention-virtual-machine-manager-daemon (2.0.20-2) unstable; urgency=low
 
   * Make logging configurabel (Bug #28136)
