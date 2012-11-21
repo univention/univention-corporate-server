@@ -1,1 +1,13 @@
-{"introduction":"Univention Management Console (UMC) is the central web-application for comfortable domain and computer administration in Univention Corporate Server (UCS). UMC allows to manage users, groups or computers, to control services, and to check or adjust system settings. The web-based interface of UMC is described in detail in the current manual of Univention Corporate Server (UCS). You can find the manual and further important information at the given links below. ","manual":"Current manual (PDF)","manualURL":"http://www.univention.de/fileadmin/download/documentation_english/ucs-3.0-manual_en.pdf","add_doc":"Additional documentation for UCS","addDocURL":"http://www.univention.de/en/download/documentation/documentation/","sdb":"Univention support data base (SDB)","wiki":"Univention Wiki","forum":"Univention forum","support":"Univention support","supportURL":"http://www.univention.de/en/about-univention/contact/","titleDoc":"Manual and documentation","titleSup":"Supplementary information","titleAss":"Support and assistance"}
+{
+	"introduction":"Univention Management Console (UMC) is the central web-application for comfortable domain and computer administration in Univention Corporate Server (UCS). UMC allows to manage users, groups or computers, to control services, and to check or adjust system settings. The web-based interface of UMC is described in detail in the current manual of Univention Corporate Server (UCS). You can find the manual and further important information at the given links below. ",
+	"titleDoc":"Manual and documentation",
+	"docURL":"http://docs.univention.de/en/ucs.html",
+	"docLabel":"Online documentation overview",
+	"titleSup":"Supplementary information",
+	"sdb":"Univention support data base (SDB)",
+	"titleAss":"Support and assistance",
+	"wiki":"Univention Wiki",
+	"forum":"Univention forum",
+	"support":"Univention support",
+	"supportURL":"http://www.univention.de/en/about-univention/contact/"
+}

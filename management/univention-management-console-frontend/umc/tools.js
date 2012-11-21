@@ -513,7 +513,7 @@ define([
 			404: _( 'Webfrontend error: The specified request is unknown.' ),
 			406: _( 'Webfrontend error: The specified UMCP command arguments of the request are invalid.' ),
 			407: _( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'),
-			409: _( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'), // hack: umcp defined a validation error as 407, but this is not a good html error code
+			409: _( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'), // hack: umcp defined a validation error as 407, but this is not a good http error code
 
 			411: _( 'Authentication failed, please login again.' ),
 			412: _( 'The account is expired and can not be used anymore.' ),
