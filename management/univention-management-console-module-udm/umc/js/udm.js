@@ -690,8 +690,10 @@ define([
 				})));
 				// in the case of changes, reload the navigation, as well (could have
 				// changes referring to container objects)
-				// TODO: uncomment for Bug #29250
-				// this.moduleStore.on('Change', lang.hitch(this, 'reloadTree'));
+				this.on('objectsaved', lang.hitch(this, function(dn, objectType) {
+					var reload = objectType.substr(0, 9) === 'container';
+					this.resetPathAndReloadTreeOrFilter(reload);
+				}));
 
 				titlePane.addChild(treePane);
 			}
@@ -981,6 +983,7 @@ define([
 
 					// clear the selected objects
 					this.moduleStore.onChange();
+					this.resetPathAndReloadTreeOrFilter(isContainer);
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
@@ -999,6 +1002,15 @@ define([
 			return json.stringify(array.map(path, function(i) {
 				return i.id;
 			}));
+		},
+
+		resetPathAndReloadTreeOrFilter: function(reset) {
+			if (reset) {
+				this._tree.set('path', [ this._tree.model.root ]);
+				this.reloadTree();
+			} else {
+				this.filter();
+			}
 		},
 
 		reloadTree: function() {
@@ -1163,6 +1175,7 @@ define([
 					if (!success) {
 						dialog.alert(message);
 					}
+					this.resetPathAndReloadTreeOrFilter(isContainer);
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
