@@ -144,7 +144,7 @@ define([
 				return;
 			}
 			var id = ids.length ? ids[0] : null;
-			var item = items.length ? items[0] : {};
+			var item = items.length ? items[0] : null;
 
 			var _dialog = null, wizard = null;
 
@@ -176,12 +176,12 @@ define([
 			wizard = new InterfaceWizard({
 				style: 'width: 500px; height:510px;',
 				domain_type: this.domain.domain_type,
-				values: item || {},
+				values: item,
 				onFinished: _finished,
 				onCancel: _cleanup
 			});
 			_dialog = new Dialog({
-				title: _('Add network interface'),
+				title: item ? _('Edit network interface') : _('Add network interface'),
 				content: wizard
 			});
 			_dialog.show();

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.22-1) unstable; urgency=low
+
+  * InterfaceWizard: Fix dialog title (Bug #29274)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 21 Nov 2012 14:10:52 +0100
+
 univention-virtual-machine-manager-daemon (2.0.21-1) unstable; urgency=low
 
   * InterfaceWizard: Now the initial values will be loaded properly when
