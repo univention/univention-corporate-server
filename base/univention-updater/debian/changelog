@@ -1,3 +1,10 @@
+univention-updater (8.0.53-1) unstable; urgency=low
+
+  * Abort the upgrade if the download of python-univention-directory-
+    manager-legacy-ucd-tcs failed (Bug #29212)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Nov 2012 07:35:58 +0100
+
 univention-updater (8.0.52-1) unstable; urgency=low
 
   * Fix easy_mode update recognition (Bug #26278)

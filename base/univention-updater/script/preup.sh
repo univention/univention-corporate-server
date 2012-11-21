@@ -323,7 +323,14 @@ done
 
 # Pre-download python-univention-directory-manager-legacy-ucd-tcs
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=29212
-apt-get install -d --yes python-univention-directory-manager-legacy-ucd-tcs >&3 2>&3
+if dpkg -l "python-univention-directory-manager" 2>&3 | grep ^ii  >&3 ; then
+	if ! apt-get install -d --yes python-univention-directory-manager-legacy-ucd-tcs >&3 2>&3; then	
+		echo "ERROR: Failed to download the package "
+		echo "       python-univention-directory-manager-legacy-ucd-tcs."
+		echo "       Please check your network and repository settings."
+		exit 1
+	fi
+fi
 
 echo ""
 echo "Starting update process, this may take a while."
