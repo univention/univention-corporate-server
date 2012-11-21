@@ -1,3 +1,14 @@
+univention-samba4 (2.0.27-4) unstable; urgency=low
+
+  * Move SPN account creation to 98univention-samba4-dns.inst
+    to avoid waiting time for RID pool replication (Bug #29217)
+  * Put SPN account creation function into separate shell script,
+    might be useful in other cases.
+  * Move function for RID pool replication delay into a shell function
+    library. This allows join scripts to be trimmed down in the future.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Nov 2012 12:40:59 +0100
+
 univention-samba4 (2.0.27-3) unstable; urgency=low
 
   * Avoid exceeding max commandline length (Bug #29225)

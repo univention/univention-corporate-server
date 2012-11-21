@@ -35,6 +35,7 @@ VERSION=2
 joinscript_init
 
 . /usr/share/univention-lib/all.sh
+. /usr/share/univention-samba4/lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
@@ -55,6 +56,11 @@ if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn:
 	exit 1
 fi
 
+univention_samba4_wait_for_rid_set	## Replication of local RID Pool required for SAM account creation
+/usr/share/univention-samba4/scripts/create_spn_account.sh \
+	--samaccountname "dns-$hostname" \
+	--serviceprincipalname "DNS/$hostname.$domainname" \
+	--privatekeytab dns.keytab
 
 # Change the dns/backend to samba4 only whether a S4 Connector is installed in our domain
 s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
