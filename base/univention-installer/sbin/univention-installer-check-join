@@ -56,7 +56,7 @@ if [ -z "$server" ]; then
 	fi
 fi
 
-serverIps="$(host "$server" | grep "$server has address" | awk '{print $NF}')"
+serverIps="$(host "$server" | egrep "$server has (IPv6 )?address" | awk '{print $NF}')"
 if [ -z "$serverIps" ]; then
 	errorAndExit 1 "could not get ip of ucs master"
 fi
@@ -65,18 +65,24 @@ connection=false
 sshOptions="-o StrictHostKeyChecking=no -o ConnectTimeout=15 -o NumberOfPasswordPrompts=1"
 
 for ip in $serverIps; do
+	connectable=false
 	ping -c 1 -w 5 -W 5 $ip
 	if [ $? -eq 0 ]; then
+		connectable=true
+	else
+		ping6 -c 1 -w 5 -W 5 $ip
+		if [ $? -eq 0 ]; then
+			connectable=true
+		fi
+	fi
+	if $connectable; then
 		out="$(sshpass -p "$password" ssh $sshOptions "$user"@"$ip" "id '$user'")"
 		if [ $? -eq 0 ]; then
-			connection=true
-			break
+			exit 0
+		else
+			errorAndExit 3 "invalid login credentials"
 		fi
 	fi
 done
 
-if ! $connection; then
-	errorAndExit 2 "coud not connect to $server ($serverIps)"
-fi
-
-exit 0
+errorAndExit 2 "could not connect to $server ($serverIps)"
