@@ -275,7 +275,6 @@ define([
 				}),
 				lang.hitch(this, function(data) {
 					this._grid.standby(false);
-					dialog.alert(data.message);
 				})
 			);
 		},
@@ -434,18 +433,13 @@ define([
 		// Starts the installer and switches to progress view.
 		_execute_installer: function(func, ids, msg) {
 
-			this.moduleStore.umcpCommand('appcenter/packages/invoke', {'function': func, 'packages': ids}).then(
-				lang.hitch(this, function(data) {
-					if (data.result.not_found.length) {
-						dialog.alert(_('Packages not found: ') + data.result.not_found.join(', '));
-					} else {
-						this._switch_to_progress_bar(msg);
-					}
-				}),
-				lang.hitch(this, function(data) {
-					dialog.alert(data.message);
-				})
-			);
+			this.moduleStore.umcpCommand('appcenter/packages/invoke', {'function': func, 'packages': ids}).then(lang.hitch(this, function(data) {
+				if (data.result.not_found.length) {
+					dialog.alert(_('Packages not found: ') + data.result.not_found.join(', '));
+				} else {
+					this._switch_to_progress_bar(msg);
+				}
+			}));
 		},
 
 		_switch_to_progress_bar: function(msg) {

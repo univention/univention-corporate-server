@@ -683,12 +683,12 @@ define([
 		_detail_field_label: function(key) {
 			var labels = {
 				// 'name': _("Name"),
-				'website': _("Website"),
 				'vendor': _("Vendor"),
 				'maintainer': _("Maintainer"),
 				'contact': _("Contact"),
-				'categories': _("Section"),
+				'website': _("Website"),
 				'version': _('Version'),
+				'categories': _("Section"),
 				'longdescription': _("Description"),
 				'notifyvendor': _("Email notification"),
 				'allows_using': _("UCS License Key"),

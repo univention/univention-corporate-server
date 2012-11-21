@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (2.0.77-1) unstable; urgency=low
+
+  * Reorder app details (Bug #29246)
+  * Dont show meaningless alert dialog in Packages hiding a proper error
+    message
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Nov 2012 11:29:58 +0100
+
 univention-management-console-module-appcenter (2.0.76-1) unstable; urgency=low
 
   * Escape HTML in ini-Files, adapt not_joined message for apps (Bug #27458)
