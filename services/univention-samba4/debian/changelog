@@ -1,3 +1,9 @@
+univention-samba4 (2.0.27-3) unstable; urgency=low
+
+  * Avoid exceeding max commandline length (Bug #29225)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Nov 2012 11:07:11 +0100
+
 univention-samba4 (2.0.27-2) unstable; urgency=low
 
   * Remove non-Samba4 Kerberos SRV records after initial provision

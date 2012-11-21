@@ -523,30 +523,28 @@ remove_non_samba4_kerberos_srv_records() {
 		sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
 		sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
 
-		udm_options=()
-		while read line; do
-			fields=($line)
-			if [ "${#fields[@]}" = 4 ]; then
-				unset found
-				for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
-					if [ "${fields[3]}" = "$fqdn." ]; then
-						found=1
-					fi
-				done
-				if [ -z "$found" ]; then
-					echo "$fqdn is not offering the Service 'Samba 4'"
-					echo "Going to remove dns/srv_record '${fields[@]}' from $sRVRecord_DN"
-					udm_options+=(--remove location="${fields[@]}")
-				fi
-			fi
-		done <<<"$sRVRecord_attrs"
-
 		zoneDN=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
 			| ldapsearch-wrapper | sed -n 's/^dn: //p')
 
-		if [ "${#udm_options[@]}" -gt 0 ]; then
-			univention-directory-manager dns/srv_record modify "$@" --superordinate "$zoneDN" --dn "$sRVRecord_DN" "${udm_options[@]}"
-		fi
+		while read line; do
+			fields=($line)
+			if [ "${#fields[@]}" = 4 ]; then
+				unset offers_samba4_service
+				for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
+					if [ "${fields[3]}" = "$fqdn." ]; then
+						offers_samba4_service=1
+					fi
+				done
+				if [ -z "$offers_samba4_service" ]; then
+					echo "$fqdn is not offering the Service 'Samba 4'"
+					echo "Removing dns/srv_record '$line' from $sRVRecord_DN"
+					univention-directory-manager dns/srv_record modify "$@" \
+								--superordinate "$zoneDN" \
+								--dn "$sRVRecord_DN" \
+								--remove location="$line"
+				fi
+			fi
+		done <<<"$sRVRecord_attrs"
 	done
 }
 
