@@ -1396,9 +1396,11 @@ class object(content):
 								self.run_cmd(mkfs_cmd)
 							else:
 								self.parent.debug('ERROR: unknown filesystem for %r specified: %r' % (device, fstype))
-						if PARTFLAG_EFI in flaglist:
-							self.parent.debug('%s%s: boot flag' % (disk, num))
-							self.run_cmd(['/sbin/parted', '-s', str(disk), 'set', str(num), 'boot', 'on'])
+						for flag in flaglist:
+							if flag not in VALID_PARTED_FLAGS:
+								continue
+							self.parent.debug('%s%s: setting flag %s' % (disk, num, flag))
+							self.run_cmd(['/sbin/parted', '-s', str(disk), 'set', str(num), flag, 'on'])
 						if PARTFLAG_LVM in flaglist:
 							self.parent.debug('%s: lvm flag' % device)
 							ucsvgname = self.parent.container['lvm']['ucsvgname']
