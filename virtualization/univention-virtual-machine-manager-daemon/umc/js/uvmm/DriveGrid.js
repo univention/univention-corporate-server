@@ -163,14 +163,14 @@ define([
 			var old_cdrom = items[ 0 ];
 			var _dialog = null, wizard = null;
 
-			var _cleanup = function() {
+			var _cleanup = lang.hitch(this, function() {
 				_dialog.hide();
 				_dialog.destroyRecursive();
 				wizard.destroyRecursive();
-			};
+				this.filter();
+			});
 
 			var _finished = lang.hitch( this, function( values ) {
-				_cleanup();
 				if ( undefined !== old_cdrom.target_dev ) {
 					values.target_dev = old_cdrom.target_dev;
 				}
@@ -180,6 +180,7 @@ define([
 				this.moduleStore.put( lang.mixin( {
 					$id$: ids[ 0 ]
 				}, values ) );
+				_cleanup();
 			} );
 
 			wizard = new DriveWizard({
@@ -213,11 +214,12 @@ define([
 
 			var _dialog = null, form = null;
 
-			var _cleanup = function() {
+			var _cleanup = lang.hitch(this, function() {
 				_dialog.hide();
 				_dialog.destroyRecursive();
 				form.destroyRecursive();
-			};
+				this.filter();
+			});
 
 			var _saveDrive = lang.hitch(this, function() {
 				var values = form.gatherFormValues();
@@ -368,23 +370,24 @@ define([
 				this.moduleStore.remove( ids[ 0 ] );
 				this.onUpdateProgress( 1, 1 );
 			}
+			this.filter();
 		},
 
 		_addDrive: function() {
 			var _dialog = null, wizard = null;
 
-			var _cleanup = function() {
+			var _cleanup = lang.hitch(this, function() {
 				_dialog.hide();
 				_dialog.destroyRecursive();
 				wizard.destroyRecursive();
-			};
+				this.filter();
+			});
 
 			var _finished = lang.hitch(this, function(values) {
 				var paravirtual = false;
 				var driver_cache = values.device == 'disk' ? 'none' : 'default';
 				var id = this._nextID();
 
-				_cleanup();
 				if ( this.domain.profileData ) {
 					if ( values.device == 'cdrom' && this.domain.profileData.pvcdrom ) {
 						paravirtual = true;
@@ -400,6 +403,7 @@ define([
 					driver_cache: driver_cache,
 					paravirtual: paravirtual
 				}, values ) );
+				_cleanup();
 			});
 
 			wizard = new DriveWizard({

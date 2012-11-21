@@ -136,6 +136,7 @@ define([
 				array.forEach(ids, function(iid) {
 					this.moduleStore.remove(iid);
 				}, this);
+				this.filter();
 			}));
 		},
 
@@ -149,11 +150,12 @@ define([
 
 			var _dialog = null, wizard = null;
 
-			var _cleanup = function() {
+			var _cleanup = lang.hitch(this, function() {
 				_dialog.hide();
 				_dialog.destroyRecursive();
 				wizard.destroyRecursive();
-			};
+				this.filter();
+			});
 
 			var _finished = lang.hitch(this, function(values) {
 				if (id !== null) {
