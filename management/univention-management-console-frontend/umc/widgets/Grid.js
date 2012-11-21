@@ -138,10 +138,15 @@ define([
 		disabled: false,
 
 		// multiActionsAlwaysActive: Boolean
-		//		Be default this option is set to false. In that case a multi
+		//		By default this option is set to false. In that case a multi
 		//		action is disabled if no item is selected. Setting this
 		//		option to true forces multi actions to be always enabled.
 		multiActionsAlwaysActive: false,
+
+		// cache: Boolean (default: true)
+		//      If this option is enabled, the grid take advantage of caching.
+		//      e.g. cache Buttons or DropDown menu
+		cache: true,
 
 		_contextItem: null,
 		_contextItemID: null,
@@ -374,13 +379,15 @@ define([
 							});
 						}
 
+						var btn;
+
 						// call canExecute to make sure the action can be executed
 						if (iaction.canExecute && !iaction.canExecute(item)) {
 							// the action cannot be executed... return an empty string
-							item[btn_name] = '';
+							btn = '';
 						} else {
 							// return final button
-							var btn = new Button( props );
+							btn = new Button( props );
 							if ( iaction.description ) {
 								var idescription = typeof  iaction.description  == "function" ? iaction.description( item ) : iaction.description;
 								var tooltip = new Tooltip( {
@@ -396,9 +403,11 @@ define([
 								btn.own(tooltip);
 							}
 							this.own(btn);
-							item[btn_name] = btn;
+							if (this.cache) {
+								item[btn_name] = btn;
+							}
 						}
-						return item[btn_name];
+						return btn;
 					})
 				});
 			}, this);
@@ -428,7 +437,7 @@ define([
 							return item._univention_cache_dropDown;
 						}
 
-						item._univention_cache_dropDown = new DropDownButton({
+						var button = new DropDownButton({
 							label: _('more'),
 							onMouseDown: lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex}),
 							_onClick: function() {
@@ -438,9 +447,12 @@ define([
 							},
 							dropDown: this._contextMenu
 						});
-						this.own(item._univention_cache_dropDown);
+						this.own(button);
+						if (this.cache) {
+							item._univention_cache_dropDown = button
+						}
 
-						return item._univention_cache_dropDown;
+						return button;
 					})
 				});
 			}

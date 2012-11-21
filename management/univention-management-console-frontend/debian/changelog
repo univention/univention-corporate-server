@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.167-1) unstable; urgency=low
+
+  * Grid: Cache can be disabled (Bug #29249)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 21 Nov 2012 17:59:22 +0100
+
 univention-management-console-frontend (2.0.166-1) unstable; urgency=low
 
   * Fix rendering problems with initially hidden Grids (Bug #29232)
