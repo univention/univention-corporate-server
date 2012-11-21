@@ -1,3 +1,9 @@
+univention-management-console (5.0.56-1) unstable; urgency=low
+
+  * Fix saving of umcProperties on non-master servers; Bug #29236
+
+ -- Florian Best <best@univention.de>  Wed, 21 Nov 2012 12:12:29 +0100
+
 univention-management-console (5.0.55-1) unstable; urgency=low
 
   * Fix root UMC ACLs (Bug #28626)
