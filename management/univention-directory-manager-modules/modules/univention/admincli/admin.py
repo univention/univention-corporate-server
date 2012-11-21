@@ -1082,7 +1082,7 @@ def _doit(arglist):
 			else:
 				out.append('E: dn or filter needed')
 				return out + ["OPERATION FAILED"]
-		except univention.admin.uexceptions.noObject:
+		except (univention.admin.uexceptions.noObject, IndexError):
 			out.append('E: object not found')
 			return out + ["OPERATION FAILED"]
 

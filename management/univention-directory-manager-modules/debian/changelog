@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.99-1) unstable; urgency=low
+
+  * fixed traceback when removing non-existent objects on cli
+    (Bug #27956)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 21 Nov 2012 16:15:27 +0100
+
 univention-directory-manager-modules (8.0.98-2) unstable; urgency=low
 
   * Fix spelling mistake (Bug #27929)

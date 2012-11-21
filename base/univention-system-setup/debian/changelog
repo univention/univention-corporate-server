@@ -1,3 +1,10 @@
+univention-system-setup (6.0.51-1) unstable; urgency=low
+
+  * join script: do not die on failing try to remove old
+    umc operation sets (Bug #27956)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 21 Nov 2012 15:33:23 +0100
+
 univention-system-setup (6.0.50-1) unstable; urgency=low
 
   * Revert changes in NetworkPage; Bug #28389
