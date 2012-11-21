@@ -1,3 +1,9 @@
+univention-samba4 (2.0.27-5) unstable; urgency=low
+
+  * Add copyrigh header to create_spn_account.sh (Bug #29217)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Nov 2012 12:51:23 +0100
+
 univention-samba4 (2.0.27-4) unstable; urgency=low
 
   * Move SPN account creation to 98univention-samba4-dns.inst
