@@ -3,6 +3,8 @@ univention-installer (8.0.39-1) unstable; urgency=low
   * partitioning: fixed missing confirmation dialog in profile mode when
     pressing F12 (Bug #29277)
   * partitioning: set partition types in profile mode (Bug #29281)
+  * partitioning: fixed endless loop in profile mode if profile has been
+    incomplete (Bug #29260)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 21 Nov 2012 14:56:49 +0100
 

@@ -1134,8 +1134,8 @@ class object(content):
 
 						# parms[0] → partition type (with MSDOS valid values are 0 (primary), 1 (logical) and 2 (extended))
 						# GPT does not support logical/extended partitions → these lines will be ignored
-						if parms[0].lower() not in ('0',):
-							self.debug('Ignoring line: partition types other than "0" are invalid with GPT: %r' % (key,))
+						if parms[0].lower() not in ('0', 'only_mount',):
+							self.debug('Ignoring line: partition types other than "0" or "only_mount" are invalid with GPT: %r=%r' % (key, parms,))
 							continue
 
 						label = get_sanitized_label('', flags, mpoint, parms[2].lower())
