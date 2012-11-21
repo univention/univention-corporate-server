@@ -1,3 +1,10 @@
+univention-installer (8.0.39-1) unstable; urgency=low
+
+  * partitioning: fixed missing confirmation dialog in profile mode when
+    pressing F12 (Bug #29277)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 21 Nov 2012 13:43:53 +0100
+
 univention-installer (8.0.38-1) unstable; urgency=low
 
   * added IPv6 support to univention-installer-check-join script

@@ -790,7 +790,8 @@ class object(content):
 		# send the F12 key event to the subwindow
 		if hasattr(self.sub, 'sub'):
 			self.sub.sub.input(276)
-			self.sub.sub.exit()
+			if not hasattr(self.sub.sub, 'sub'):
+				self.sub.sub.exit()
 			return 1
 		if len(self.container['history']) or self.test_changes():
 			self.sub.sub=self.sub.verify_exit(self.sub,self.sub.minY+(self.sub.maxHeight/3)+2,self.sub.minX+(self.sub.maxWidth/8),self.sub.maxWidth,self.sub.maxHeight-18)
