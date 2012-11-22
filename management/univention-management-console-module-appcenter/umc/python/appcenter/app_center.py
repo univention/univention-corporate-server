@@ -54,7 +54,6 @@ from univention.management.console.log import MODULE
 import univention.admin.uexceptions as udm_errors
 import univention.config_registry
 import univention.uldap as uldap
-import univention.admin.handlers.computers.domaincontroller_backup
 
 # local application
 from constants import COMPONENT_BASE
@@ -375,10 +374,11 @@ class Application(object):
 		res['show_ldap_schema_confirmation'] = not res['is_master']
 		if res['is_master']:
 			try:
-				lo = uldap.getAdminConnection()
+				import univention.admin.handlers.computers.domaincontroller_backup
+				lo = uldap.getMachineConnection()
 				res['show_ldap_schema_confirmation'] = 0 < len(univention.admin.handlers.computers.domaincontroller_backup.lookup(None, lo, None))
 				del lo
-			except LDAPError:
+			except (LDAPError, ImportError):
 				res['show_ldap_schema_confirmation'] = True
 		res['server'] = self.get_server()
 		res['server_version'] = ucr.get('version/version')
