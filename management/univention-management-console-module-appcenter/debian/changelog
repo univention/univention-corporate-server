@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.80-1) unstable; urgency=low
+
+  * display ldap schema notification once in every case; Bug Bug #29339
+
+ -- Florian Best <best@univention.de>  Thu, 22 Nov 2012 13:09:57 +0100
+
 univention-management-console-module-appcenter (2.0.79-1) unstable; urgency=low
 
   * changed appcenter icon; Bug #29330

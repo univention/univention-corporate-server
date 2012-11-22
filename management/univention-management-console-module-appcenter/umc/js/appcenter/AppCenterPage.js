@@ -587,7 +587,7 @@ define([
 			if (allows_using && values.cannot_install_reason == 'not_joined') {
 				return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('The system has to join a domain before the application can be installed!');
 			}
-			if (allows_using && can_install && master_packages && master_packages.length && values.show_ldap_schema_confirmation) {
+			if (allows_using && can_install && master_packages && master_packages.length) {
 				// prepare a command with max 50 characters length per line
 				var MAXCHARS = 50;
 				var cmdLine = lang.replace('univention-add-app {id} ', values);
