@@ -110,6 +110,7 @@ class Instance(umcm.Base):
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
 	def query(self, pattern):
+		LICENSE.reload()
 		try:
 			applications = Application.all(force_reread=True)
 		except (urllib2.HTTPError, urllib2.URLError) as e:
@@ -131,6 +132,7 @@ class Instance(umcm.Base):
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):
+		LICENSE.reload()
 		application = Application.find(application)
 		self.package_manager.reopen_cache()
 		return application.to_dict(self.package_manager)

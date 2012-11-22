@@ -44,6 +44,7 @@ import urllib
 import urllib2
 from HTMLParser import HTMLParser
 import cgi
+import imp
 
 # related third party
 from ldap import LDAPError
@@ -63,9 +64,36 @@ LOGFILE = '/var/log/univention/appcenter.log'
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
+try:
+	import univention.admin.filter as udm_filter  # needed for udm_license
+	import univention.admin.license as udm_license
+	_udm_license_available = True
+except ImportError as err:
+	_udm_license_available = False
+	MODULE.warn('Failed to load license information: %s' % err)
+
 class License(object):
-	def __init__(self, license=None):
-		self.license = license
+	def __init__(self):
+		self.license = None
+		self.reload()
+
+	def reload(self, force=False):
+		if self.uuid is not None and not force:
+			# license with uuid has already been found
+			return
+		self.license = None
+		if _udm_license_available:
+			# last time we checked, no uuid was found
+			# but maybe the user installed a new license?
+			imp.reload(udm_license)
+			try:
+				_lo = uldap.getMachineConnection()
+				udm_license.init_select(_lo, 'admin')
+				del _lo
+				self.license = udm_license._license
+			except (LDAPError, udm_errors.base) as err:
+				# no licensing available
+				MODULE.warn('Failed to load license information: %s' % err)
 
 	def dump_data(self):
 		# we could return infos we have in this object itself.
@@ -101,20 +129,7 @@ class License(object):
 	def allows_using(self, email_required):
 		return self.email_known() or not email_required
 
-try:
-	import univention.admin.filter as udm_filter  # needed for udm_license
-	import univention.admin.license as udm_license
-
-	_lo = uldap.getMachineConnection()
-	udm_license.init_select(_lo, 'admin')
-	del _lo
-	LICENSE = License(udm_license._license)
-
-except (ImportError, LDAPError, udm_errors.base) as err:
-	# no licensing available
-	MODULE.warn('Failed to load license information: %s' % err)
-	LICENSE = License()
-
+LICENSE = License()
 
 class Application(object):
 	_reg_comma = re.compile('\s*,\s*')
@@ -362,8 +377,6 @@ class Application(object):
 		res = copy.copy(self._options)
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
-
-		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 
 		res['can_update'] = self.can_be_updated() and cannot_install_reason == 'installed'
 		res['can_install'] = cannot_install_reason is None
