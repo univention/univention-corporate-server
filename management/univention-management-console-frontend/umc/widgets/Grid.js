@@ -143,10 +143,10 @@ define([
 		//		option to true forces multi actions to be always enabled.
 		multiActionsAlwaysActive: false,
 
-		// cache: Boolean (default: true)
+		// cacheRowWidgets: Boolean (default: true)
 		//      If this option is enabled, the grid take advantage of caching.
 		//      e.g. cache Buttons or DropDown menu
-		cache: true,
+		cacheRowWidgets: true,
 
 		_contextItem: null,
 		_contextItemID: null,
@@ -385,6 +385,9 @@ define([
 						if (iaction.canExecute && !iaction.canExecute(item)) {
 							// the action cannot be executed... return an empty string
 							btn = '';
+							if (this.cacheRowWidgets) {
+								item[btn_name] = btn;
+							}
 						} else {
 							// return final button
 							btn = new Button( props );
@@ -403,7 +406,7 @@ define([
 								btn.own(tooltip);
 							}
 							this.own(btn);
-							if (this.cache) {
+							if (this.cacheRowWidgets) {
 								item[btn_name] = btn;
 							}
 						}
@@ -448,7 +451,7 @@ define([
 							dropDown: this._contextMenu
 						});
 						this.own(button);
-						if (this.cache) {
+						if (this.cacheRowWidgets) {
 							item._univention_cache_dropDown = button
 						}
 
