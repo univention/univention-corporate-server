@@ -1,3 +1,9 @@
+univention-updater (8.0.54-1) unstable; urgency=low
+
+  * Remove old UCR template 18_ucs-online-errata.list (Bug #26387)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Nov 2012 17:19:59 +0100
+
 univention-updater (8.0.53-1) unstable; urgency=low
 
   * Abort the upgrade if the download of python-univention-directory-

@@ -113,6 +113,12 @@ fi
 
 #DEBHELPER#
 
+# Remove old UCR template for errata updates
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=26387
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.54-1; then
+	remove_ucr_template /etc/apt/sources.list.d/18_ucs-online-errata.list
+fi
+
 # set the repository server
 eval "$(univention-config-registry shell hostname domainname update/server)"
 if [ -n "$update_server" -a "$update_server" != "http://download.univention.de" ]; then
