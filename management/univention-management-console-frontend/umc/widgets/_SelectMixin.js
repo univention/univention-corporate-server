@@ -400,7 +400,7 @@ define([
 			if (dependList.length && typeof _dependValues == "object" && _dependValues) {
 				// check whether all necessary values are specified
 				array.forEach(dependList, function(dep) {
-					if (_dependValues[dep]) {
+					if (_dependValues[dep] !== undefined) {
 						params[dep] = _dependValues[dep];
 						++nDepValues;
 					}
