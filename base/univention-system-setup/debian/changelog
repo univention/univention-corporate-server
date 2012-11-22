@@ -1,3 +1,9 @@
+univention-system-setup (6.0.53-1) unstable; urgency=low
+
+  * version bump (Bug #27956)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 22 Nov 2012 10:09:25 +0100
+
 univention-system-setup (6.0.52-1) unstable; urgency=low
 
   * version bump (Bug #27956)
