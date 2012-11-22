@@ -366,7 +366,15 @@ define([
 				iconClass: 'umcIconDelete',
 				callback: lang.hitch(this, function(ids) {
 					if (ids.length) {
-						this.removeObjects(ids);
+						var isContainer = false;
+						array.some(ids, lang.hitch(this, function(id) {
+							var item = this._grid.getItem(id);
+							if (item.objectType.substr(0, 9) == 'container') {
+								isContainer = true;
+							}
+							return isContainer;
+						}));
+						this.removeObjects(ids, isContainer);
 					}
 				})
 			}, {
@@ -375,7 +383,17 @@ define([
 				description: _( 'Move objects to a different LDAP position.' ),
 				isMultiAction: true,
 				callback: lang.hitch(this, function(ids) {
-					this.moveObjects(ids);
+					if (ids.length) {
+						var isContainer = false;
+						array.some(ids, lang.hitch(this, function(id) {
+							var item = this._grid.getItem(id);
+							if (item.objectType.substr(0, 9) == 'container') {
+								isContainer = true;
+							}
+							return isContainer;
+						}));
+						this.moveObjects(ids, isContainer);
+					}
 				})
 			}];
 
@@ -691,8 +709,8 @@ define([
 				// in the case of changes, reload the navigation, as well (could have
 				// changes referring to container objects)
 				this.on('objectsaved', lang.hitch(this, function(dn, objectType) {
-					var reload = objectType.substr(0, 9) === 'container';
-					this.resetPathAndReloadTreeOrFilter(reload);
+					var isContainer = objectType.substr(0, 9) === 'container';
+					this.resetPathAndReloadTreeAndFilter(isContainer);
 				}));
 
 				titlePane.addChild(treePane);
@@ -983,7 +1001,7 @@ define([
 
 					// clear the selected objects
 					this.moduleStore.onChange();
-					this.resetPathAndReloadTreeOrFilter(isContainer);
+					this.resetPathAndReloadTreeAndFilter(isContainer);
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
@@ -1004,13 +1022,12 @@ define([
 			}));
 		},
 
-		resetPathAndReloadTreeOrFilter: function(reset) {
+		resetPathAndReloadTreeAndFilter: function(reset) {
 			if (reset) {
 				this._tree.set('path', [ this._tree.model.root ]);
 				this.reloadTree();
-			} else {
-				this.filter();
 			}
+			this.filter();
 		},
 
 		reloadTree: function() {
@@ -1175,7 +1192,7 @@ define([
 					if (!success) {
 						dialog.alert(message);
 					}
-					this.resetPathAndReloadTreeOrFilter(isContainer);
+					this.resetPathAndReloadTreeAndFilter(isContainer);
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
