@@ -1120,14 +1120,24 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 			obj.open()
 			MODULE.info( 'Loading choices from %s: %s' % ( obj.dn, obj.info ) )
 			if syn.is_complex:
-				return map( lambda x: ( x[ syn.key_index ], x[ syn.label_index ] ), obj.info[ syn.attribute ] )
+				try:
+					return map( lambda x: ( x[ syn.key_index ], x[ syn.label_index ] ), obj.info[ syn.attribute ] )
+				except KeyError:
+					# probably syn.attribute not in obj.info
+					# this happens for example in PrinterDriverList
+					# if the ldap schema is not installed
+					# and thus no 'printmodel' attribute is known.
+					return []
 			if syn.label_format is not None:
 				choices = []
 				for value in obj.info[ syn.attribute ]:
 					obj.info[ '$attribute$' ] = value
 					choices.append( ( value, syn.label_format % obj.info ) )
 				return choices
-			return map( lambda x: ( x, x ), obj.info[ syn.attribute ] )
+			try:
+				return map( lambda x: ( x, x ), obj.info[ syn.attribute ] )
+			except KeyError:
+				return []
 
 		module = UDM_Module( syn.udm_module )
 		if module is None:

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.61-1) unstable; urgency=low
+
+  * Catch KeyError when a UDM_Attribute is unknown (Bug #29333)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Nov 2012 21:02:54 +0100
+
 univention-management-console-module-udm (3.0.60-1) unstable; urgency=low
 
   * LDAP-tree: fix reloading if modifying containers in grid (Bug #29250)
