@@ -136,7 +136,6 @@ define([
 				array.forEach(ids, function(iid) {
 					this.moduleStore.remove(iid);
 				}, this);
-				this.filter();
 			}));
 		},
 
@@ -150,12 +149,11 @@ define([
 
 			var _dialog = null, wizard = null;
 
-			var _cleanup = lang.hitch(this, function() {
+			var _cleanup = function() {
 				_dialog.hide();
 				_dialog.destroyRecursive();
 				wizard.destroyRecursive();
-				this.filter();
-			});
+			};
 
 			var _finished = lang.hitch(this, function(values) {
 				if (id !== null) {
@@ -163,6 +161,7 @@ define([
 					this.moduleStore.put(lang.mixin({
 						$id$: id
 					}, values));
+					this.filter();
 				}
 				else {
 					// generate a new pseudo ID

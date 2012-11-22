@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.27-1) unstable; urgency=low
+
+  * Update grids on change (only when needed) (Bug #29250)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Nov 2012 11:32:47 +0100
+
 univention-virtual-machine-manager-daemon (2.0.26-1) unstable; urgency=low
 
   * Fix grid cache (Bug #29249)

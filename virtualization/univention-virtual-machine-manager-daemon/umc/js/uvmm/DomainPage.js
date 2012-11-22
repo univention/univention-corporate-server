@@ -374,9 +374,6 @@ define([
 			});
 			titlePane.addChild(this._snapshotGrid);
 			this._snapshotPage.addChild(titlePane);
-			this._snapshotStore.on('Change', lang.hitch(this, function() {
-				this._snapshotGrid.filter();
-			}));
 
 			// add pages in the correct order
 			this.addChild(this._generalPage);
