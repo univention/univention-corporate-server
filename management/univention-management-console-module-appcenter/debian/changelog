@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.78-1) unstable; urgency=low
+
+  * do not display schema notification on master servers when installing an app
+  	if the server does not have any backup server; Bug #29339
+
+ -- Florian Best <best@univention.de>  Thu, 22 Nov 2012 08:58:16 +0100
+
 univention-management-console-module-appcenter (2.0.77-1) unstable; urgency=low
 
   * Reorder app details (Bug #29246)

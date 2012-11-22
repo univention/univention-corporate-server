@@ -329,7 +329,7 @@ define([
 							label: _("Install"),
 							callback: lang.hitch(this, function() {
 								var masterInstallConfirmend = 'yes';
-								if (app.defaultpackagesmaster && app.defaultpackagesmaster.length) {
+								if (app.defaultpackagesmaster && app.defaultpackagesmaster.length && app.show_ldap_schema_confirmation) {
 									masterInstallConfirmend = dialog.confirm(
 										_('This application requires an extension of the LDAP schema.') + ' ' + 
 										_('Was the domain prepared as asked in the dialog before?'), [{
@@ -342,7 +342,7 @@ define([
 										}]);
 								}
 								when(masterInstallConfirmend, lang.hitch(this, function(answer) {
-									if (answer == 'yes') {
+									if (answer === 'yes') {
 										if (app.licenseagreement) {
 											// before installing, user must agree on license terms
 											var content = '<h1>' + _('License agreement') + '</h1>';
@@ -587,7 +587,7 @@ define([
 			if (allows_using && values.cannot_install_reason == 'not_joined') {
 				return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('The system has to join a domain before the application can be installed!');
 			}
-			if (allows_using && can_install && master_packages && master_packages.length) {
+			if (allows_using && can_install && master_packages && master_packages.length && values.show_ldap_schema_confirmation) {
 				// prepare a command with max 50 characters length per line
 				var MAXCHARS = 50;
 				var cmdLine = lang.replace('univention-add-app {id} ', values);
