@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (2.0.28-1) unstable; urgency=low
 
   * No longer create UCS-2.4 profiles (Bug #29338)
+  * Fix cache value for read-only media (Bug #23445)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 23 Nov 2012 09:42:17 +0100
 
