@@ -77,17 +77,14 @@ define([
 			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
 			//        on an inactive tab.
 
-			// iterate over all tabs
-			array.forEach(this.getChildren(), function(ipage) {
-				// find all widgets that inherit from dojox.grid._Grid on the tab
-				array.forEach(ipage.getDescendants(), function(iwidget) {
-					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
-						// hook to onShow event
-						ipage.on('show', lang.hitch(this, function() {
-							iwidget.startup();
-						}));
-					}
-				}, this);
+			// iterate over all widgets
+			array.forEach(this.getDescendants(), function(iwidget) {
+				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+					// hook to onShow event
+					this.on('show', lang.hitch(this, function() {
+						iwidget.startup();
+					}));
+				}
 			}, this);
 		}
 	});

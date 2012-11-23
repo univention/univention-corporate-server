@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.171-1) unstable; urgency=low
+
+  * Fix rendering problems with initially hidden Grids (Bug #29382)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Nov 2012 18:11:30 +0100
+
 univention-management-console-frontend (2.0.170-1) unstable; urgency=low
 
   * Dependency: A dynamic-values widget should be ready (Bug #29333)
