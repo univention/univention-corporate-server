@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.83-1) unstable; urgency=low
+
+  * Fix reordering app details (Bug #29246)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Nov 2012 11:04:38 +0100
+
 univention-management-console-module-appcenter (2.0.82-1) unstable; urgency=low
 
   * Fix typo (Bug #29363)

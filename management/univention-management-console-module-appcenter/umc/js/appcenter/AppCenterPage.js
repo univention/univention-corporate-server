@@ -664,12 +664,13 @@ define([
 		},
 
 		_detail_field_order: function() {
-			return [//'name',
-				'website',
-				'version',
+			return [
+				//'name',
 				'vendor',
 				'maintainer',
 				'contact',
+				'website',
+				'version',
 				'categories',
 				'longdescription',
 				'screenshot',
@@ -690,11 +691,11 @@ define([
 				'version': _('Version'),
 				'categories': _("Section"),
 				'longdescription': _("Description"),
-				'notifyvendor': _("Email notification"),
-				'allows_using': _("UCS License Key"),
+				'screenshot': _("Screenshot"),
 				'defaultpackagesmaster': _("Packages for master system"),
 				'cannot_install_reason': _("Conflicts"),
-				'screenshot': _("Screenshot")
+				'notifyvendor': _("Email notification"),
+				'allows_using': _("UCS License Key")
 			};
 			return labels[key];
 		},
