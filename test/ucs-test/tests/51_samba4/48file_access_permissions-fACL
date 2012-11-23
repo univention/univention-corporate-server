@@ -40,28 +40,25 @@ SHARE_DN=$(univention-directory-manager shares/share list --filter sambaName="$s
 
 USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
-#in case passwort is not the default one
-if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
-    ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
-fi
-
 #waiting for user and share to be created
-user_found=1
+user1_found=1
+user2_found=1
 i=0
 while true
 do
     let i=$i+1
     sleep 3
-    ldbsearch -H "ldap://localhost" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "cn=$username" | grep dn: && user_found=0
-    if [ "$user_found" == 0 ];then
+    ldbsearch -H "ldap://localhost" -U"$username%$first_password" "cn=$username" | grep dn: && user1_found=0
+    ldbsearch -H "ldap://localhost" -U"$username2%$first_password" "cn=$username2" | grep dn: && user2_found=0
+
+    if [ "$user1_found" == 0 -a "$user2_found" == 0 ];then
 	smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" && break
     fi
     if [ "$i" == 10 ]; then
-	echo "TIMEOUT: The user or share could not be found in samba ldb after $i seconds"
+	echo "TIMEOUT: The user or share could not be found in samba ldb"
 	break
     fi
 done
-
 
 #--Tests
 #----Testing general connection

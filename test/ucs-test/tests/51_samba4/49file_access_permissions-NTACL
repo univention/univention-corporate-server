@@ -20,23 +20,19 @@ PERSON="false"
 POSIX="true"
 
 username="$(user_randomname)"
-username2="$(user_randomname)"
 first_password=univention
 sharename="$(random_share)"
 
-trap 'user_remove "$username";user_remove "$username2";share_remove $sharename' INT TERM EXIT
+trap 'user_remove "$username";share_remove $sharename' INT TERM EXIT
 user_create "$username" || fail_test 1 "Could not create user $username."
-user_create "$username2" || fail_test 1 "Could not create user $username2."
 
 #----create Share
 SHARE_POSITION="cn=shares,$ldap_base"
-#share_create "$sharename" /"$sharename"  || fail_test 1 "Could not create share $sharename."
 udm shares/share create --position="$SHARE_POSITION" \
     --set name="$sharename" \
     --set path="/$sharename" \
     --set directorymode=0777 \
     --set host="$hostname.$domainname" || fail_fast 1 "could not create share"
-
 
 SHARE_DN=$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')
 
@@ -54,7 +50,7 @@ while true
 do
     let i=$i+1
     sleep 3
-    ldbsearch -H "ldap://localhost" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "cn=$username" | grep dn: && user_found=0
+    ldbsearch -H "ldap://localhost" -U"$username%$first_password" "cn=$username" | grep dn: && user_found=0
     if [ "$user_found" == 0 ];then
 	smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" && break
     fi
@@ -64,14 +60,13 @@ do
     fi
 done
 
-
 #--Tests
 
 #----making a folder as Administrator, so that the testuser has no rights to write in it
 return_val="$(smbclient -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "//$hostname.$domainname/$sharename" -c "mkdir folder")"
 echo $return_val | grep "NT_STATUS_NOT_A_DIRECTORY"
 if [ $? != 0 ]  && [ -n "$return_val" ]; then
-    fail_test 1 "Failed to make a folder as a second user even though it should work."
+    fail_test 1 "Failed to make a folder as Administrator even though it should work."
 fi
 
 #----making a folder without permission
@@ -79,7 +74,7 @@ return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/
 echo $return_val | grep "NT_STATUS_ACCESS_DENIED" || fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $return_val"
 
 #get objectSID
-sid="$(ldbsearch -H ldap://localhost -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" cn=$username | grep objectSid: | sed s/"objectSid: "/""/)"
+sid="$(ldbsearch -H ldap://localhost -U"$username%$first_password" cn=$username | grep objectSid: | sed s/"objectSid: "/""/)"
 
 #get and set NTACL
 NTACL_old="$(samba-tool ntacl get /$sharename/folder --as-sddl 2>/dev/null)"

@@ -24,9 +24,45 @@ password=univention
 trap 'user_remove "$username"' INT TERM EXIT
 user_create "$username" || fail_test 1 "Could not create user $username."
 
-sleep 20
-echo "$password" | kinit --password-file=STDIN "$username"
-sleep 5
-smbclient //$(hostname -f)/sysvol -k -c "ls $domainname/Policies" || fail_test 1 "Could not access Policies on sysvol with Kerberos authentication"
+#waiting for user and share to be created
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" | grep dn: && break
+    if [ "$i" == 10 ]; then
+	echo "TIMEOUT: The user or share could not be found in samba ldb"
+	break
+    fi
+done
+#waiting for user and share to be created
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    echo "$password" | kinit --password-file=STDIN "$username" && break
+    if [ "$i" == 10 ]; then
+	fail_test 1 "kinit $username failed"
+	break
+    fi
+done
+
+
+
+
+#waiting for user and share to be created
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    smbclient //$(hostname -f)/sysvol -k -c "ls $domainname/Policies" && break
+    if [ "$i" == 10 ]; then
+       fail_test 1 "Could not access Policies on sysvol with Kerberos authentication"
+       break
+    fi
+done
 
 exit $RETVAL

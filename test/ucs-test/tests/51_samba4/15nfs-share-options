@@ -16,11 +16,11 @@
 # some globals
 share_name="$(random_share)"
 SHARE_POSITION="cn=shares,$ldap_base"
-fqdn=`host "$hostname" | awk {'print $1'}`
+fqdn="$(host "$hostname" | awk {'print $1'})"
 echo "hostname: $hostname"
 echo "fqdn: $fqdn"
 etc="/etc/exports"
-available_options=`udm  shares/share create | grep  --regex "(nfs)" | awk  {'print $1'}`
+available_options="$(udm  shares/share create | grep  --regex "(nfs)" | awk  {'print $1'})"
 
 
 # here we have the udm_option/nfs_value/udm_value
@@ -42,12 +42,21 @@ udm shares/share create --position="$SHARE_POSITION" \
 			--set path="/$share_name" \
 			--set host="$fqdn" || fail_fast 1 "could not create share"
 
-# wait for samba conf file
-sleep 10
+#waiting for share to be replicated
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    if [ -f "$etc" ]; then
+	break
+    fi
+    if [ "$i" == 10 ]; then
+	echo "nfs config file $etc not found"
+	break
+    fi
+done
 
-if [ ! -f "$etc" ]; then
-	fail_fast 1 "nfs config file $etc not found"
-fi
 
 # set samba options via udm and check samba config file
 while read option_line; do
@@ -58,9 +67,9 @@ while read option_line; do
 	echo "$option_line" | grep --regex "^\s*$" > /dev/null
 	if [ 0 -eq "$?" ]; then continue; fi
 
-	udm_option=`echo "$option_line" | awk -F / {'print $1'}`
-	nfs_value=`echo "$option_line" | awk -F / {'print $2'}`
-	udm_value=`echo "$option_line" | awk -F / {'print $3'}`
+	udm_option="$(echo "$option_line" | awk -F / {'print $1'})"
+	nfs_value="$(echo "$option_line" | awk -F / {'print $2'})"
+	udm_value="$(echo "$option_line" | awk -F / {'print $3'})"
 
 	# modify share
 	echo "Debug: Options: $option_line"
@@ -77,7 +86,7 @@ while read option_line; do
 	fi
 
 	# clear this options, later we want to check wether we have alle options tested or not
-	available_options=`echo "$available_options" | sed "s/$udm_option//"`
+	available_options="$(echo "$available_options" | sed "s/$udm_option//")"
 
 done <<<"$options"
 
@@ -86,16 +95,16 @@ sleep 3
 
 # check the nfs conf file
 while read search_line; do
-	udm=`echo "$search_line" | awk -F :DELIMETER: {'print $1'}`
-	nfs=`echo "$search_line" | awk -F :DELIMETER: {'print $2'}`
-	value=`echo "$search_line" | awk -F :DELIMETER: {'print $3'}`
+	udm="$(echo "$search_line" | awk -F :DELIMETER: {'print $1'})"
+	nfs="$(echo "$search_line" | awk -F :DELIMETER: {'print $2'})"
+	value="$(echo "$search_line" | awk -F :DELIMETER: {'print $3'})"
 
 	cat "$etc" | grep --regex '^"/'"$share_name" | grep -q --regex '[ (,"]/*'"$nfs"'[ ),"]' || fail_fast 1 "nfs config file <-> udm settings mismatch udm option: $udm nfs options: $nfs udm value: $value"
 done <<<"$search"
 
 # test if we checked all udm samba options
-available_options=`echo "$available_options" | sed 's/^ *//'`
-available_options=`echo "$available_options" | sed 's/ *$//'`
+available_options="$(echo "$available_options" | sed 's/^ *//')"
+available_options="$(echo "$available_options" | sed 's/ *$//')"
 if [ -n "$available_options" ]; then
 	fail_fast 122 "udm option \"$available_options\" is not covered by this test"
 fi

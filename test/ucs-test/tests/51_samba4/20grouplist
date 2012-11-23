@@ -10,23 +10,34 @@
 
 SAMBA="true"
 MAIL="false"
-KERBEROS="false"
+KERBEROS="true"
 PERSON="false"
-POSIX="false"
+POSIX="true"
 
+username="$(user_randomname)"
+password=univention
 
-NAME=`user_randomname`
+trap 'user_remove "$username"' INT TERM EXIT
+user_create "$username" || fail_test 1 "Could not create user $username."
 
-trap 'user_remove "$NAME"' INT TERM EXIT
-user_create "$NAME"
+#waiting for user replication
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" | grep dn: && break
+    if [ "$i" == 10 ]; then
+	echo "TIMEOUT: The user or share could not be found in samba ldb"
+	break
+    fi
+done
 
-sleep 20 # wait for replication
-
-if samba-tool group list -U "$NAME%univention" | grep -q "Domain Users"
-then
-	echo "***The test trying to display samba-Groups as a user went like it should, everything is ok"
+retval="$(samba-tool group list -U "$username%$password" | grep -q "Domain Users")"
+if [ $? == 0 -a -z "$retval" ];then
+    echo "***The test trying to display samba-Groups as a user went like it should, everything is ok"
 else
-	fail_fast 1 "The test trying to display samba-Groups as a user failed"
+    fail_fast 1 "The test trying to display samba-Groups as a user failed"
 fi
 
 

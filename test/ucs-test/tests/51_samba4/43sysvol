@@ -25,7 +25,19 @@ password=univention
 trap 'user_remove "$username"' INT TERM EXIT
 user_create "$username" || fail_test 1 "Could not create user $username."
 
-sleep 10
+#waiting for user and share to be created
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" | grep dn: && break
+    if [ "$i" == 10 ]; then
+	echo "TIMEOUT: The user or share could not be found in samba ldb"
+	break
+    fi
+done
+
 
 #Put a file on sysvol as Administrator
 if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
