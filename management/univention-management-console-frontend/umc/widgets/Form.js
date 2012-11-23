@@ -117,11 +117,14 @@ define([
 
 		_allReady: null,
 
+		_allReadyNamed: null,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			// initialize with empty list
+			// initialize with empty list and empty object
 			this._allReady = [];
+			this._allReadyNamed = {};
 
 			// in case no layout is specified and no content, either, create one automatically
 			if ((!this.layout || !this.layout.length) && !this.content) {
@@ -416,9 +419,11 @@ define([
 
 			if (publisherName in this._dependencyMap) {
 				var values = this.gatherFormValues();
+				this._updateAllReady(); // fresh _allReadyNamed
+				var readyInfo = this._allReadyNamed;
 				array.forEach(this._dependencyMap[publisherName], function(ireceiver) {
 					if (ireceiver && ireceiver._loadValues) {
-						ireceiver._loadValues(values);
+						ireceiver._loadValues(values, readyInfo);
 					}
 				});
 			}
@@ -570,10 +575,13 @@ define([
 		_updateAllReady: function() {
 			// wait for all widgets to be ready
 			this._allReady = [];
+			this._allReadyNamed = {};
 			//console.log('### Form: iterate over widgets.ready');
 			tools.forIn(this._widgets, function(iname, iwidget) {
 				//console.log('###   ' + iname + ' -> ', iwidget.ready ? iwidget.ready() : null);
-				this._allReady.push(iwidget.ready ? iwidget.ready() : null);
+				var iwidgetReadyDeferred = iwidget.ready ? iwidget.ready() : null;
+				this._allReady.push(iwidgetReadyDeferred);
+				this._allReadyNamed[iname] = iwidgetReadyDeferred;
 			}, this);
 		},
 
@@ -587,6 +595,11 @@ define([
 			// empty list when all widgets are ready
 			ret.then(lang.hitch(this, function() {
 				this._allReady = [];
+				// dont empty _allReadyNamed here
+				// as it is only used internally
+				// and we could introduce a race condition
+				// when ret.then fires at the wrong moment
+				// i.e. when _updateDependencies is called
 			}));
 			return ret;
 		}

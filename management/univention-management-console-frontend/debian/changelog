@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.170-1) unstable; urgency=low
+
+  * Dependency: A dynamic-values widget should be ready (Bug #29333)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Nov 2012 15:15:47 +0100
+
 univention-management-console-frontend (2.0.169-1) unstable; urgency=low
 
   * Empty strings count as fulfilled dependency (Bug #29333)

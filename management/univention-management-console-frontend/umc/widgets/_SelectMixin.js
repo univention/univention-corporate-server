@@ -386,7 +386,7 @@ define([
 			this._setCustomValue();
 		},
 
-		_loadValues: function(/*Object?*/ _dependValues) {
+		_loadValues: function(/*Object?*/ _dependValues, /*Object?*/ _readyInfo) {
 			//console.log('### _SelectMixin ['+this.name+']: _loadValues _dependValues=', _dependValues);
 			this._valuesLoaded = true;
 
@@ -400,7 +400,12 @@ define([
 			if (dependList.length && typeof _dependValues == "object" && _dependValues) {
 				// check whether all necessary values are specified
 				array.forEach(dependList, function(dep) {
-					if (_dependValues[dep] !== undefined) {
+					mayUse = _dependValues[dep]; // '' is false!
+					if (_readyInfo && _readyInfo[dep]) {
+						// if ready(), every value (except undefined - should not happen) is okay
+						mayUse = mayUse !== undefined && _readyInfo[dep].isFulfilled();
+					}
+					if (mayUse) {
 						params[dep] = _dependValues[dep];
 						++nDepValues;
 					}
