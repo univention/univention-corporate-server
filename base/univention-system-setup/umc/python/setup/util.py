@@ -255,7 +255,7 @@ class ProgressState( object ):
 		return ( self._percentage + self.fraction * ( self.step / float( self.steps ) ) ) / self.max * 100
 
 	def __eq__( self, other ):
-		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.errors == other.errors and self.critical == self.critical
+		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.errors == other.errors and self.critical == other.critical
 
 	def __ne__( self, other ):
 		return not self.__eq__( other )
