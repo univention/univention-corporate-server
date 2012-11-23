@@ -1,6 +1,7 @@
-univention-system-setup (6.0.54-1) unstable; urgency=low
+univention-system-setup (6.0.54-2) unstable; urgency=low
 
   * log tracebacks; Bug #28876
+  * fix a little typo in __eq__; Bug #28876
 
  -- Florian Best <best@univention.de>  Fri, 23 Nov 2012 11:49:34 +0100
 
