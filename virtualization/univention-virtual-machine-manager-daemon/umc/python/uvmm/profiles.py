@@ -102,7 +102,7 @@ class Profiles( object ):
 
 			success, data = result
 			if success:
-				profiles = map( lambda item: { 'id' : item[ 0 ], 'label' : item[ 1 ].name }, self._filter_profiles( data[ 0 ] ) )
+				profiles = [{'id': dn, 'label': item.name} for pd in data for (dn, item) in self._filter_profiles(pd)]
 
 				self.finished( request.id, profiles )
 			else:

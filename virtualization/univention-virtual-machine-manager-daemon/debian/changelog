@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (2.0.28-2) unstable; urgency=low
 
   * Fix traceback by error logging (Bug #22098)
+  * Fix profile_query() handling empty results (Bug #29375)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 23 Nov 2012 13:04:35 +0100
 
