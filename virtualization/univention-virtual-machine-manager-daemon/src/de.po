@@ -434,10 +434,8 @@ msgstr "Kein Paket: %(type)s"
 
 #: univention/uvmm/storage.py:76
 #, python-format
-msgid "Error creating storage pool \"%(pool)s\" for \"%(domain)s\": %(error)s"
-msgstr ""
-"Fehler beim Erzeugen des Speicherbereichs \"%(pool)s\" für Domäne \"%(domain)"
-"s\": %(error)s"
+msgid "Error creating storage pool \"%(pool)s\": %(error)s"
+msgstr "Fehler beim Erzeugen des Speicherbereichs \"%(pool)s\": %(error)s"
 
 #: univention/uvmm/storage.py:88 univention/uvmm/storage.py:123
 #, python-format

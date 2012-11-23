@@ -74,7 +74,7 @@ def create_storage_pool(conn, dir, pool_name='default'):
 		p.create( 0 )
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise StorageError(_('Error creating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e.get_error_message())
+		raise StorageError(_('Error creating storage pool "%(pool)s": %(error)s'), pool=pool_name, error=e.get_error_message())
 
 def create_storage_volume(conn, domain, disk):
 	"""Create disk for domain."""
