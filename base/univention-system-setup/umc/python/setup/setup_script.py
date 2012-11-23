@@ -269,6 +269,8 @@ class SetupScript(object):
 		except Exception as e:
 			self.error(str(e))
 			success = False
+			import traceback
+			self.log(traceback.format_exc(e))
 		finally:
 			try:
 				self.down()
