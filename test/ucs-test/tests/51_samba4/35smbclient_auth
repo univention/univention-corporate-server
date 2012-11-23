@@ -2,7 +2,6 @@
 ## desc: Check whether several parallel smbclient authentifications are possible
 ## exposure: safe
 ## packages:
-##  - screen
 ##  - univention-samba4
 ## roles:
 ## - domaincontroller_master
@@ -36,100 +35,75 @@ trap cleanup INT TERM EXIT
 #amount of rounds
 if [ ! -z $smbauth_totalRounds  ] && [ $smbauth_totalRounds -gt 0  ] && [ $smbauth_totalRounds -lt 100 ]
 then 
-	totalRounds=$smbauth_totalRounds
+    totalRounds=$smbauth_totalRounds
 else
-	totalRounds=3 
+    totalRounds=3 
 fi
 
 
 #defines how many authentifications are triggered for one round
 #amountPerRound=8
-if [ ! -z $smbauth_amountPerRound ] && [ $smbauth_amountPerRound -gt 0 ] && [ $smbauth_amountPerRound -lt 100 ]
-then 
-	amountPerRound=$smbauth_amountPerRound
+if [ ! -z $smbauth_amountPerRound ] && [ $smbauth_amountPerRound -gt 0 ] && [ $smbauth_amountPerRound -lt 100 ];then
+    amountPerRound=$smbauth_amountPerRound
 else
-	amountPerRound=8
+    amountPerRound=8
 fi  
 
 #the total number of authentifications
 let amount=$totalRounds*$amountPerRound
 
 #defines the time in which all authentifications in one round are triggered
-if [ ! -z $smbauth_roundTime ] && [ $smbauth_roundTime -gt 0 ] && [ $smbauth_roundTime -lt 100 ]
-then  
-	roundTime=$smbauth_roundTime
+if [ ! -z $smbauth_roundTime ] && [ $smbauth_roundTime -gt 0 ] && [ $smbauth_roundTime -lt 100 ];then
+    roundTime=$smbauth_roundTime
 else
-	roundTime=3
+    roundTime=5
 fi
 
 #delay between each round
-if [ ! -z $smbauth_delay ] && [ $smbauth_delay -gt 0 ] && [ $smbauth_delay -lt 100 ]
-then
-	delay=$smbauth_delay
+if [ ! -z $smbauth_delay ] && [ $smbauth_delay -gt 0 ] && [ $smbauth_delay -lt 100 ];then
+    delay=$smbauth_delay
 else
-	delay=3
+    delay=5
 fi
 
-#create user
-username=$(user_randomname)
+#define user
+username="$(user_randomname)"
 password=univention
-share_name=$(random_share)
 
-function create_screenconfig
+function smbc
 {
-    
-    echo caption always \"%3n %t%? @%u%?%? [%h]%?%=%c\" > screenconfig_$1
-
-    let i=0
-    while [ $i -lt ${index[round_nr]} ]
-    do
-        echo screen $i >> screenconfig_$1
-        let i=$i+1
-    done
-
-	screen -dmS smbclients_$1 -c screenconfig_$1
+    python -c '
+import subprocess,sys,time
+subprocess.Popen(["/usr/bin/smbclient4", "-U%s%%%s" % (sys.argv[1],sys.argv[2]), "//localhost/sysvol"])
+' "$username" "$password"
 }
 
 function start_round
 {
 
-#	echo create new round
-	let i=0
-	while [ $i -lt $amountPerRound  ]
-	do
-    	screen -S smbclients_$screenIndex -p $authIndex -X stuff "smbclient4 -U "$username%$password" //$ldap_master/$share_name"$'\n' &
+    let i=0
+    while [ $i -lt $amountPerRound  ]
+    do
+	smbc > /dev/null
     	echo Nr. $i
-
-	#	if [ $roundIndex != $totalRounds ]; then
-			sleep ${delayArray[$i]}
-	#	fi
+	sleep ${delayArray[$i]}
 
     	let i=$i+1
-		let authIndex=$authIndex+1
-		
-		temp=0
-		let temp=authIndex%40
-		if [ $temp -eq 0 ]
-		then
-			let authIndex=0
-			let screenIndex=$screenIndex+1
-		fi
-	done
+    done
+	
+    let roundIndex=$roundIndex+1
 
-	let roundIndex=$roundIndex+1
-
-	if [ $roundIndex -ne $totalRounds ] 
-	then
-		echo "Wait for $delay seconds"
+    if [ $roundIndex -ne $totalRounds ]; then
+	echo "Wait for $delay seconds"
     	sleep $delay
-		start_round
-	fi
+	start_round
+    fi
 }
 
 function calculate_startdelay
 {
     sum=0
-	sum2=0
+    sum2=0
 
 	#create a random number für every authentification at startup
     for ((j=0;j<amountPerRound;j++))
@@ -144,80 +118,67 @@ function calculate_startdelay
     for ((j=0;j<amountPerRound;j++))
     do
         delayArray[$j]=$(echo "scale=5;${delayArray[$j]}/$sum*$roundTime" | bc)
-							      
+	
         sum2=$(echo "scale=5;$sum2+${delayArray[$j]}" | bc)
     done
 }
 
 function cleanup
 {
-rm screenconfig_*					
-let i=O
-while [ $i -le $round_dec ]
-do
-kill $(screen -ls | grep smbclients_$i | cut -d '.' -f1)
-        let i=$i+1
-done
-user_remove "$username"
-share_remove "$share_name"
+    user_remove "$username"
+    pids=($(ps aux | grep "smbclient4" | grep -v grep | grep "$username" | awk '{print $2}'))
+
+    for pid in ${pids[*]} 
+    do
+	kill -9 "$pid"
+    done
+    stty sane
 }
 
 #Beginning
-
 if $random;then 
     calculate_startdelay
 fi
 
-#calculate how much screen sessions are needed
-#$index is an array which inherits the amount of windows for each session as an int
-#for example: if $amount=92: then index[0]=40 index[1]=40 index[2]=12
-
-let round_dec=$amount/40
-i=0
-while [ $i -lt $round_dec ]
-do
-    index[$i]=40
-    let i=$i+1
-done
-
-let index[$i]=$amount%40
-
-
-for ((round_nr=0;round_nr< ${#index[*]};round_nr++))
-do
-    create_screenconfig $round_nr
-done
-
 user_create "$username"
-share_create "$share_name" "/var/$share_name"
-sleep 20
 
-if [ -z $(univention-s4search "sAMAccountName=$username" objectsid 2>/dev/null | sed -n 's/^objectSid: \(.*\)/\1/p' | cut -c1,2 | grep "S-") ]; then
-        fail_fast 1
-fi
+#waiting for user replcation
+i=0
+while true
+do
+    let i=$i+1
+    sleep 3
+    ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" | grep dn: && break
+    if [ "$i" == 10 ]; then
+	echo "TIMEOUT: The user or share could not be found in samba ldb"
+	break
+    fi
+done
 
-screenIndex=0
 roundIndex=0
-authIndex=0
 #starts the first round, this function works recursively.
 start_round
 
+
 #Calculate result
-#needs to be greater than 20 because of the hard coded timeout for one authentification
-sleep 20
-
-if [ $(ucr get server/role) == "domaincontroller_master" ]; then
-    result="$(smbstatus | grep -c $share_name)"
-else
-    result="$(on_master "smbstatus | grep -c $share_name")"
-fi
-
-echo Result:$result
-
-if [ "$result" != "$amount" ]
-then
-	fail_test 1 "Only $result of $amount authentifications have been successful"
-fi
+result="$(smbstatus | grep -c "$username")"		
+i=0
+while true
+do
+    let i=$i+1
+    sleep 1
+    result="$(smbstatus | grep -c "$username")"		
+    echo "Result: $result"
+    if [ "$result" -ge "$amount" ]; then
+	echo $i
+	echo "Result: $result"
+	break
+    fi
+    if [ "$i" == 40 ]; then
+        fail_test 1 "Only $result of $amount authentifications have been successful"
+	break
+    fi
+done
 
 exit $RETVAL
 

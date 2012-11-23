@@ -13,7 +13,7 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 
-username=`user_randomname`
+username="$(user_randomname)"
 password=univention
 
 # delete user

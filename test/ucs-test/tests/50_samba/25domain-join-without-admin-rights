@@ -17,19 +17,29 @@ MAIL="false"
 KERBEROS="false"
 PERSON="false"
 POSIX="true"
-NAME=`user_randomname`
-trap 'user_remove "$NAME"' INT TERM EXIT
-user_create "$NAME"
+username="$(user_randomname)"
+trap 'user_remove "$username"' INT TERM EXIT
+user_create "$username"
 
-ADMINISTRATOR_DN=$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')
-USER_DN=$(univention-directory-manager users/user list --filter uid="$NAME" | sed -ne 's/^DN: //p')
+#wait for the user to be created
+i=0
+while true
+do
+    let i=$i+1
+    sleep 1
+    net rpc user -U"$username%$univention" | grep "$username" > /dev/null && break
+    if [ $i == 20 ]; then
+	echo "TIMEOUT: The User which has been created in UDM could not be found in samba."
+	break
+    fi
+done
 
-net rpc join -U "$NAME"%univention && \
+
+ADMINISTRATOR_DN="$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
+USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+
+net rpc join -U "$username"%univention && \
 	{ fail_fast 1 "Did a Domain join without the SeMachineAccountPrivilege"; }
-
-#net rpc rights grant -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "$NAME" SeMachineAccountPrivilege || \
-#	{ fail_fast 1 "Couldn't assign SeMachineAccountPrivilege to the user"; }
-
 
 univention-directory-manager users/user modify --binddn "$ADMINISTRATOR_DN" \
                                  	--bindpwd "$ADMINISTRATOR_PASSWORD" \
@@ -38,7 +48,7 @@ univention-directory-manager users/user modify --binddn "$ADMINISTRATOR_DN" \
 
 for i in {0..10}
 do
-	net rpc join -U "$NAME"%univention || \
+	net rpc join -U "$username"%univention || \
 	{ fail_fast 1 "Domain join failed"; }
 done
 

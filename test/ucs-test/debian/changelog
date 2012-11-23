@@ -1,3 +1,9 @@
+ucs-test (3.0.22-7) unstable; urgency=low
+
+  * improved performance and stability for 50_samba tests (Bug #27654)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 23 Nov 2012 17:49:20 +0100
+
 ucs-test (3.0.22-6) unstable; urgency=low
 
   * added 51_samba4/36_printer (Bug #29059) 
