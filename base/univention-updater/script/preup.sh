@@ -118,6 +118,21 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
+if [ "$(dpkg-query -W -f='${Status}\n' univention-kernel-image-2.6.32 2>/dev/null)" = "install ok installed" ]; then
+    paeavail=`grep "^flags" /proc/cpuinfo | grep pae`
+    if [ -n "$paeavail" ]; then
+        echo "You have the univention-kernel-image-2.6.32 installed, which is the meta package for systems"
+	echo "without the Physical Adress Extension needed to support more than 4 GB of memory."
+	echo "Starting with UCS 3.1 the standard kernel for 32 bit CPUs will always use PAE. To upgrade"
+	echo "to this kernel you need to perform the following steps before starting the update:"
+	echo
+	echo "1. univention-install univention-kernel-image-2.6.32-64gb"
+	echo "2. Reboot the system"
+	echo "3. apt-get remove univention-kernel-image-2.6.32"
+        exit 1
+    fi
+fi
+
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
 	if [ -f "$update_custom_preup" ]; then

@@ -1,3 +1,10 @@
+univention-updater (8.0.54-2) unstable; urgency=low
+
+  * Prevent updates if univention-kernel-image-2.6.32 is still installed
+    (Bug #29384)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 26 Nov 2012 14:49:58 +0100
+
 univention-updater (8.0.54-1) unstable; urgency=low
 
   * Remove old UCR template 18_ucs-online-errata.list (Bug #26387)
