@@ -35,6 +35,7 @@ VERSION=4
 joinscript_init
 
 . /usr/share/univention-lib/all.sh
+. /usr/share/univention-samba4/lib/all.sh
 
 LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
 
@@ -478,6 +479,10 @@ if [ "$samba4_role" = 'DC' ]; then
 		## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "${SITE_OPTION[@]}"
 
+		if ! univention_samba4_is_ucr_false dns/register/srv_records/kerberos; then
+			remove_non_samba4_kerberos_srv_records
+		fi
+
 
 		operatingSystem_attribute replace
 
@@ -503,12 +508,14 @@ if [ "$samba4_role" = 'DC' ]; then
 				## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
 
+				if ! univention_samba4_is_ucr_false dns/register/srv_records/kerberos; then
+					remove_non_samba4_kerberos_srv_records
+				fi
+
 				operatingSystem_attribute replace
 
 				# Don't use the default RID pool
 				set_rid_pool 2100 2599
-
-				remove_non_samba4_kerberos_srv_records
 			fi
 
 		else

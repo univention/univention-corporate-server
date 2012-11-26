@@ -1,3 +1,10 @@
+univention-samba4 (2.0.27-6) unstable; urgency=low
+
+  * Remove Kerberos SRV records after initial and secondary provision
+    but only if dns/register/srv_records/kerberos is not false (Bug #29225)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Nov 2012 14:25:37 +0100
+
 univention-samba4 (2.0.27-5) unstable; urgency=low
 
   * Add copyrigh header to create_spn_account.sh (Bug #29217)
