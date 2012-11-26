@@ -1,3 +1,10 @@
+univention-lib (2.0.16-1) unstable; urgency=low
+
+  * base.sh: get_default_netmask() will return a netmask for
+    IPv4 addresses and a prefix for IPv6 addresses (Bug #29216)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 26 Nov 2012 17:07:26 +0100
+
 univention-lib (2.0.15-1) unstable; urgency=low
 
   * Add low-level log support for package_manager (Bug #29037)

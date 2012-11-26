@@ -143,7 +143,7 @@ get_default_ipv6_address () {
 #
 get_default_netmask () {
 	PYTHONPATH=/usr/lib/pymodules/python2.6/univention/config_registry python2.6 2>/dev/null \
-	-c 'from interfaces import Interfaces;print Interfaces().get_default_ip_address().netmask'
+	-c 'from interfaces import Interfaces;import ipaddr;a=Interfaces().get_default_ip_address();print a.netmask if isinstance(a,ipaddr.IPv4Network) else a.prefixlen'
 }
 
 #
