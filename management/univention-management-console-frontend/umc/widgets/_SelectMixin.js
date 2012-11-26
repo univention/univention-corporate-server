@@ -394,7 +394,7 @@ define([
 			if (dependList.length && typeof _dependValues == "object" && _dependValues) {
 				// check whether all necessary values are specified
 				array.forEach(dependList, function(dep) {
-					mayUse = _dependValues[dep]; // '' is false!
+					var mayUse = _dependValues[dep]; // '' is false!
 					if (_readyInfo && _readyInfo[dep]) {
 						// if ready(), every value (except undefined - should not happen) is okay
 						mayUse = mayUse !== undefined && _readyInfo[dep].isFulfilled();
