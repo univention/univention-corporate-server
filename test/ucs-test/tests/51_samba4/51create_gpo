@@ -1,0 +1,82 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Create a GPO with samba-tool "
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## tags: [basic]
+
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+#----create User
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+gponame="$(user_randomname)"
+echo gponame "$gponame"
+#in case password is not the default one
+if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
+    ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
+fi
+
+trap 'samba-tool gpo del "$cn" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD"' INT TERM EXIT
+
+#wait for the samba-share.py Listener to synchronize /etc/samba/shares.conf and /etc/samba/shares.conf.d (Bug #29399)
+i=0
+while true
+do
+    let i=$i+1
+    sleep 1
+    samba-tool user list > /dev/null 2>&1 && break
+    if [ $i == 20 ]; then
+	echo "samba-tool Failure (Bug #29399)" >&2
+	break
+    fi
+done
+
+
+#create the GPO
+samba-tool gpo create "$gponame" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" || echo "WARNING: samba-tool gpo create returned an exit status !=0 but the GPO may be created anyway"
+/usr/share/univention-samba4/scripts/sysvol-sync.sh
+#--local tests
+i=0
+val_s4search=1
+val_sambatool=1
+val_dir=1
+while true
+do
+    cn="$(univention-s4search -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "displayName=$gponame" | grep cn: | sed -ne 's/^cn: //p')" 
+    if [ "$?" == 0 -a -n "$cn" ]; then
+	val_s4search=0
+	ls "/var/lib/samba/sysvol/$domainname/Policies/$cn" > /dev/null 2>&1 && val_dir=0
+	samba-tool gpo listall | grep "$cn" > /dev/null && val_sambatool=0
+    fi
+    if [ "$i" == 20 -o "$val_s4search" == 0 -a "$val_sambatool" == 0 -a "$val_dir" == 0  ]; then
+	break
+    fi
+    let i=$i+1
+    sleep 3
+done
+
+if [ "$val_s4search" != 0 ]; then
+    fail_test 1 "Could not find GPO with univention-s4search"
+fi
+if [ "$val_dir" != 0 ]; then
+    fail_test 1 "Directory for GPO has not been created"
+fi
+if [ "$val_sambatool" != 0 ]; then
+    fail_test 1 "GPO is not listed in samba-tool"
+fi
+
+echo "val_s4search: $val_s4search"
+echo "val_dir: $val_dir"
+echo "val_sambatool: $val_sambatool"
+
+
+exit $RETVAL

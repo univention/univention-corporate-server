@@ -1,3 +1,11 @@
+ucs-test (3.0.22-10) unstable; urgency=low
+
+  * added 51_samba4/51create_gpo (Bug #29328)
+  * added 51_samba4/52replication_sysvol (Bug #29062)
+  * test 51/40: workaround for Bug 29399 (Bug #29057)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 26 Nov 2012 18:57:13 +0100
+
 ucs-test (3.0.22-9) unstable; urgency=low
 
   * improved stability of 51_samba4/41password_change (Bug #29057)

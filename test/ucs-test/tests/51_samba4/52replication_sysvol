@@ -1,0 +1,153 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Testing the sysvol replication"
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## tags: [basic]
+
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+#----create User
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+saveIFS=$IFS
+IFS=$'\n'
+s4hosts=( $(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(univentionService=Samba 4)" cn | grep "cn:" | sed -ne 's/^cn: //p') )
+for s4host_temp in ${s4hosts[@]}
+do
+    ping -c 1 "$s4host_temp.$domainname" > /dev/null
+    if [ "$?" == 0 -a "$s4host_temp" != "$hostname" ]; then
+	s4host=$s4host_temp
+	break	
+
+    fi
+done
+IFS=$saveIFS
+echo "HOSTNAME:$s4host"
+if [ -z "$s4host" ];then
+    fail_fast 77 "Could not find another Samba4 Service in Domain"
+fi
+
+
+gponame="$(user_randomname)"
+echo gponame "$gponame"
+#in case passwort is not the default one
+if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
+    ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
+fi
+
+#wait for the samba-share.py Listener to synchronize /etc/samba/shares.conf and /etc/samba/shares.conf.d (Bug #29399)
+i=0
+while true
+do
+    let i=$i+1
+    sleep 1
+    samba-tool user list > /dev/null 2>&1 && break
+    if [ $i == 20 ]; then
+	echo "samba-tool Failure (Bug #29399)" >&2
+	break
+    fi
+done
+
+
+trap 'samba-tool gpo del "$cn" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD"' INT TERM EXIT
+#create the GPO
+samba-tool gpo create "$gponame" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" || echo "WARNING: samba-tool gpo create returned an exit status !=0 but the GPO may be created anyway"
+#--local tests
+echo "Testing... fails after 300 seconds"
+i=0
+val_s4search=1
+val_sambatool=1
+val_dir=1
+while true
+do
+    cn="$(univention-s4search -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "displayName=$gponame" | grep cn: | sed -ne 's/^cn: //p')" 
+    if [ "$?" == 0 -a -n "$cn" ]; then
+	val_s4search=0
+	ls "/var/lib/samba/sysvol/$domainname/Policies/$cn" > /dev/null 2>&1 && val_dir=0
+	samba-tool gpo listall | grep "$cn" > /dev/null && val_sambatool=0
+    fi
+
+    if [ "$i" == 100 -o "$val_s4search" == 0 -a "$val_sambatool" == 0 -a "$val_dir" == 0  ]; then
+	echo "BREAK: $i"
+	break
+    fi
+    let i=$i+1
+    sleep 3
+done
+echo "val_s4search: $val_s4search"
+echo "val_dir: $val_dir"
+echo "val_sambatool: $val_sambatool"
+
+
+#tests on other DC
+echo "Testing... fails after 300 seconds"
+i=0
+val_s4search_remote=1
+val_sambatool_remote=1
+val_dir_remote=1
+while true
+do
+    cn="$(echo "$BINDPWD" | univention-ssh /dev/stdin root@"$s4host.$domainname" univention-s4search -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "displayName=$gponame" | grep cn: | sed -ne 's/^cn: //p')" 
+    if [ "$?" == 0 -a -n "$cn" ]; then
+	val_s4search_remote=0
+	echo "$BINDPWD" | univention-ssh /dev/stdin root@"$s4host.$domainname"	ls "/var/lib/samba/sysvol/$domainname/Policies/$cn" > /dev/null 2>&1 && val_dir_remote=0
+	echo "$BINDPWD" | univention-ssh /dev/stdin root@"$s4host.$domainname"	samba-tool gpo listall | grep "$cn" > /dev/null && val_sambatool_remote=0
+    fi
+
+    if [ "$i" == 100 -o "$val_s4search_remote" == 0 -a "$val_sambatool_remote" == 0 -a "$val_dir_remote" == 0  ]; then
+	echo "BREAK: $i"
+	break
+    fi
+    let i=$i+1
+    sleep 3
+done
+
+
+#check local tests again, including the time used for the remote tests
+cn="$(univention-s4search -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "displayName=$gponame" | grep cn: | sed -ne 's/^cn: //p')" 
+if [ "$?" == 0 -a -n "$cn" ]; then
+    val_s4search=0
+    ls "/var/lib/samba/sysvol/$domainname/Policies/$cn" > /dev/null 2>&1 && val_dir=0
+    samba-tool gpo listall | grep "$cn" > /dev/null && val_sambatool=0
+fi
+
+#check local result
+if [ "$val_s4search" != 0 ]; then
+    fail_test 1 "Could not find GPO with univention-s4search"
+fi
+if [ "$val_dir" != 0 ]; then
+    fail_test 1 "Directory for GPO has not been created"
+fi
+if [ "$val_sambatool" != 0 ]; then
+    fail_test 1 "GPO is not listed in samba-tool"
+fi
+
+#check remote result
+if [ "$val_s4search_remote" != 0 ]; then
+    fail_test 1 "Could not find GPO with univention-s4search on remote host"
+fi
+if [ "$val_dir_remote" != 0 ]; then
+    fail_test 1 "Directory for GPO has not been created on remote host"
+fi
+if [ "$val_sambatool_remote" != 0 ]; then
+    fail_test 1 "GPO is not listed in samba-tool on remote host"
+fi
+
+echo "val_s4search: $val_s4search"
+echo "val_dir: $val_dir"
+echo "val_sambatool: $val_sambatool"
+
+echo "val_s4search_remote: $val_s4search_remote"
+echo "val_dir_remote: $val_dir_remote"
+echo "val_sambatool_remote: $val_sambatool_remote"
+
+exit $RETVAL
