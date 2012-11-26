@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.175-1) unstable; urgency=low
+
+  * Dependency: Trigger update also on (first) widget.ready (Bug #29333)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Nov 2012 19:24:53 +0100
+
 univention-management-console-frontend (2.0.174-1) unstable; urgency=low
 
   * Fix loading of values; Bug #29238

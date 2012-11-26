@@ -445,14 +445,14 @@ define([
 							onMouseDown: lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex}),
 							_onClick: function() {
 								// dont propagate any event here - otherwise dropDown gets closed.
-								// this has somehting to do with the dropdown losing focus in favor
+								// this has something to do with the dropdown losing focus in favor
 								// of the underlying td-node. it triggers _HasDropDown's _onBlur
 							},
 							dropDown: this._contextMenu
 						});
 						this.own(button);
 						if (this.cacheRowWidgets) {
-							item._univention_cache_dropDown = button
+							item._univention_cache_dropDown = button;
 						}
 
 						return button;

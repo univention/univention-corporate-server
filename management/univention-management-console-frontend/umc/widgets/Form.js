@@ -246,9 +246,18 @@ define([
 			// register all necessary onChange events to handle dependencies
 			tools.forIn(this._dependencyMap, function(iname) {
 				if (iname in this._widgets) {
-					this.own(this._widgets[iname].watch('value', lang.hitch(this, function() {
+					var widget = this.getWidget(iname);
+					this.own(widget.watch('value', lang.hitch(this, function() {
 						this._updateDependencies(iname);
 					})));
+					if (widget.ready) {
+						// needed (only) for initial loading,
+						// so it does not need to be updated
+						// with every new _readyDeferred
+						widget.ready().then(lang.hitch(this, function() {
+							this._updateDependencies(iname);
+						}));
+					}
 				}
 			}, this);
 
