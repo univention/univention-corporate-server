@@ -1,3 +1,9 @@
+ucs-test (3.0.22-9) unstable; urgency=low
+
+  * improved stability of 51_samba4/41password_change (Bug #29057)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 26 Nov 2012 12:42:35 +0100
+
 ucs-test (3.0.22-8) unstable; urgency=low
 
   * added 50_samba/36_printer (Bug #29055)
