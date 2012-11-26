@@ -213,7 +213,7 @@ define([
 		},
 
 		_saveInitialValue: function() {
-			// rember the intial value since it will be overridden by the dojo
+			// remember the intial value since it will be overridden by the dojo
 			// methods since at initialization time the store is empty
 			this._initialValue = this.value; // fallback
 			if (this.domNode) {
@@ -263,7 +263,6 @@ define([
 			//}
 			//this._isAutoValue = false;
 			this._firstValueInList = null;
-			this.set('value', this._initialValue);
 		},
 
 		_convertItems: function(_items) {
@@ -337,10 +336,6 @@ define([
 			// save the store in order for the changes to take effect
 			this.store.save();
 
-			// set the user specified value if we don't have dynamic values
-			if (typeof this.dynamicValues != "string" || !this.dynamicValues) {
-				this._setCustomValue();
-			}
 		},
 
 		_setDynamicValues: function(/*Object[]*/ values) {
@@ -383,7 +378,6 @@ define([
 
 			// save the store in order for the changes to take effect and set the value
 			this.store.save();
-			this._setCustomValue();
 		},
 
 		_loadValues: function(/*Object?*/ _dependValues, /*Object?*/ _readyInfo) {
@@ -457,6 +451,7 @@ define([
 					this._clearValues();
 					this._setStaticValues();
 					this._setDynamicValues(res);
+					this._setCustomValue();
 
 					// values have been loaded
 					//console.log('### _SelectMixin ['+this.name+']: resolved _readyDeferred');
@@ -470,6 +465,7 @@ define([
 					// set only the static values
 					this._clearValues();
 					this._setStaticValues();
+					this._setCustomValue();
 
 					// error handler
 					//console.log('### _SelectMixin ['+this.name+']: resolved _readyDeferred');
@@ -485,6 +481,7 @@ define([
 				// set only the static values
 				this._clearValues();
 				this._setStaticValues();
+				this.set('value', this._initialValue);
 
 				// values have been loaded
 				//console.log('### _SelectMixin ['+this.name+']: resolved _readyDeferred');

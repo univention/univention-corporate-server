@@ -85,6 +85,8 @@ define([
 
 		_startupDeferred: null,
 
+		 _blockChangeEvents: false,
+
 		_createHandler: function(ifunc) {
 			// This handler will be called by all subwidgets of the MultiInput widget.
 			// When the first request comes in, we will execute the function to compute
@@ -182,6 +184,7 @@ define([
 		},
 
 		_setAllValues: function(_valList) {
+			this._blockChangeEvents = true;
 			var valList = _valList;
 			if (!(valList instanceof Array)) {
 				valList = [];
@@ -228,6 +231,7 @@ define([
 					}
 				}
 			}, this);
+			this._blockChangeEvents = false;
 		},
 
 		_setValueAttr: function(_vals) {
@@ -240,7 +244,7 @@ define([
 			vals.push([]);
 
 			// set the values
-			this._setAllValues(vals);
+			this._set('value', this.get('value'));
 		},
 
 		_setDisabledAttr: function ( value ) {
@@ -409,7 +413,9 @@ define([
 
 					// register to value changes
 					this.own(iwidget.watch('value', lang.hitch(this, function() {
-						this._set('value', this.get('value'));
+						if (!this._blockChangeEvents) {
+							this._set('value', this.get('value'));
+						}
 					})));
 				}, this);
 

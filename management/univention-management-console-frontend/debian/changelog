@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.174-1) unstable; urgency=low
+
+  * Fix loading of values; Bug #29238
+
+ -- Florian Best <best@univention.de>  Mon, 26 Nov 2012 17:57:05 +0100
+
 univention-management-console-frontend (2.0.173-1) unstable; urgency=low
 
   * Fix rendering problems with initially hidden Grids (Bug #29390)

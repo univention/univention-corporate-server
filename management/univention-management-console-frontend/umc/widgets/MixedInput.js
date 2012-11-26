@@ -201,6 +201,7 @@ define([
 			if (this._widget._setDynamicValues) {
 				// clear all values and set the dynamic values, they don't need to be reloaded
 				this._widget._clearValues();
+				this.set('value', this._initialValue);
 				this._widget._setDynamicValues(values);
 			}
 			else if (!(values instanceof Array)) {
