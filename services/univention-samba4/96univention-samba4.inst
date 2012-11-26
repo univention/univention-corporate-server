@@ -382,9 +382,11 @@ remove_non_samba4_kerberos_srv_records() {
 
 	samba4_dcs_fqdn_list=("${hostname}.${domainname}")	## initialize with own fqdn for the initial join of the first Samba4 DC
 	while read -d '' record; do
-		cn=$(sed -n 's/^cn: //p' <<<"$record")
-		associatedDomain=$(sed -n 's/^associatedDomain: //p' <<<"$record")
-		samba4_dcs_fqdn_list+=("${cn}.${associatedDomain}")
+		if [ -n "$record" ]; then
+			cn=$(sed -n 's/^cn: //p' <<<"$record")
+			associatedDomain=$(sed -n 's/^associatedDomain: //p' <<<"$record")
+			samba4_dcs_fqdn_list+=("${cn}.${associatedDomain}")
+		fi
 	done < <(echo -e "$ldif\n" | sed 's/^$/\x0/')
 
 	for service in 'kerberos' 'kpasswd'; do
@@ -405,10 +407,11 @@ remove_non_samba4_kerberos_srv_records() {
 					for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
 						if [ "${fields[3]}" = "$fqdn." ]; then
 							offers_samba4_service=1
+							break
 						fi
 					done
 					if [ -z "$offers_samba4_service" ]; then
-						echo "$fqdn is not offering the Service 'Samba 4'"
+						echo "${fields[3]%%.} is not offering the Service 'Samba 4'"
 						echo "Removing dns/srv_record '$line' from $sRVRecord_DN"
 						univention-directory-manager dns/srv_record modify "$@" \
 									--superordinate "$zoneDN" \
