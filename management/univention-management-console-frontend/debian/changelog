@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.173-1) unstable; urgency=low
+
+  * Fix rendering problems with initially hidden Grids (Bug #29390)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Nov 2012 15:09:04 +0100
+
 univention-management-console-frontend (2.0.172-1) unstable; urgency=low
 
   * Fix typo in TimeBox; Bug #29250

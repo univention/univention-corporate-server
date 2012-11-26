@@ -308,6 +308,23 @@ define([
 				inote.destroyRecursive();
 			}, this);
 			this._notes = [];
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+
+			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
+			//        on an inactive tab.
+
+			// iterate over all widgets
+			array.forEach(this.getDescendants(), function(iwidget) {
+				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+					// hook to onShow event
+					this.on('show', lang.hitch(this, function() {
+						iwidget.startup();
+					}));
+				}
+			}, this);
 		}
 	});
 });
