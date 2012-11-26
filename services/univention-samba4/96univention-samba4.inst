@@ -387,34 +387,37 @@ remove_non_samba4_kerberos_srv_records() {
 		samba4_dcs_fqdn_list+=("${cn}.${associatedDomain}")
 	done < <(echo -e "$ldif\n" | sed 's/^$/\x0/')
 
-	for proto in 'tcp' 'udp'; do
-		ldap_record=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=_kerberos._$proto))" sRVRecord dn \
-			| ldapsearch-wrapper)
-		sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
-		sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
+	for service in 'kerberos' 'kpasswd'; do
+		for proto in 'tcp' 'udp'; do
+			ldap_record=$(univention-ldapsearch -LLLx \
+				"(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=_$service._$proto))" sRVRecord dn \
+				| ldapsearch-wrapper)
+			sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
+			sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
 
-		zoneDN=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
-			| ldapsearch-wrapper | sed -n 's/^dn: //p')
+			zoneDN=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
+				| ldapsearch-wrapper | sed -n 's/^dn: //p')
 
-		while read line; do
-			fields=($line)
-			if [ "${#fields[@]}" = 4 ]; then
-				unset offers_samba4_service
-				for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
-					if [ "${fields[3]}" = "$fqdn." ]; then
-						offers_samba4_service=1
+			while read line; do
+				fields=($line)
+				if [ "${#fields[@]}" = 4 ]; then
+					unset offers_samba4_service
+					for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
+						if [ "${fields[3]}" = "$fqdn." ]; then
+							offers_samba4_service=1
+						fi
+					done
+					if [ -z "$offers_samba4_service" ]; then
+						echo "$fqdn is not offering the Service 'Samba 4'"
+						echo "Removing dns/srv_record '$line' from $sRVRecord_DN"
+						univention-directory-manager dns/srv_record modify "$@" \
+									--superordinate "$zoneDN" \
+									--dn "$sRVRecord_DN" \
+									--remove location="$line"
 					fi
-				done
-				if [ -z "$offers_samba4_service" ]; then
-					echo "$fqdn is not offering the Service 'Samba 4'"
-					echo "Removing dns/srv_record '$line' from $sRVRecord_DN"
-					univention-directory-manager dns/srv_record modify "$@" \
-								--superordinate "$zoneDN" \
-								--dn "$sRVRecord_DN" \
-								--remove location="$line"
 				fi
-			fi
-		done <<<"$sRVRecord_attrs"
+			done <<<"$sRVRecord_attrs"
+		done
 	done
 }
 
