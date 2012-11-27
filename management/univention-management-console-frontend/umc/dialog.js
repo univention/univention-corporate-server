@@ -349,13 +349,13 @@ define([
 			confirmDialog.on('confirm', function(response) {
 				if ('submit' === response) {
 					if (form.validate()) {
-						deferred.resolve(form.gatherFormValues());
+						deferred.resolve(form.get('value'));
 						confirmDialog.close();
 					}
 				} else {
 					deferred.cancel({
 						button: response,
-						values: form.gatherFormValues()
+						values: form.get('value')
 					});
 					confirmDialog.close();
 				}
@@ -365,7 +365,7 @@ define([
 				if (!deferred.isFulfilled()) {
 					deferred.cancel({
 						button: null,
-						values: form.gatherFormValues()
+						values: form.get('value')
 					});
 				}
 			});

@@ -214,7 +214,7 @@ define([
 				// this is the query the grid will send automatically at the beginning
 				deferred.resolve([]);
 			}
-			return QueryResults(deferred);
+			return new QueryResults(deferred);
 		},
 
 		// _doingTransaction: Boolean

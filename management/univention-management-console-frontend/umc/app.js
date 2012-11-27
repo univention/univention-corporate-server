@@ -365,7 +365,7 @@ define([
 					// we need a uniqe ID for the store
 					item.$id$ = item.id + ':' + item.flavor;
 				});
-				this._moduleStore = Observable(new Memory({
+				this._moduleStore = new Observable(new Memory({
 					data: modules,
 					idProperty: '$id$'
 				}));
@@ -459,6 +459,7 @@ define([
 			return res[0];
 		},
 
+		_favorites_for_not_existing_modules: {},
 		_saveFavorites: function() {
 			if (!tools.status('setupGui')) {
 				return;
@@ -471,9 +472,13 @@ define([
 						return array.indexOf(categories, '$favorites$') >= 0;
 					}
 				}
-			}, {
-				sort: _cmpFavorites
+//			}, {
+//				sort: _cmpFavorites
 			});
+			tools.forIn(this._favorites_for_not_existing_modules, function(ikey, ivalue) {
+				modules.push(ivalue);
+			});
+			modules.sort(_cmpFavorites);
 
 			// save favorites as a comma separated list
 			var favoritesStr = array.map(modules, function(imod) {
@@ -492,7 +497,15 @@ define([
 			}
 			var mod = this.getModule(id, flavor);
 			if (!mod) {
-				// module does not exist
+				// module does not exist (on this server), we add a dummy module
+				var $id$ = id + ':' + flavor;
+				if (!this._favorites_for_not_existing_modules[$id$]) {
+					this._favorites_for_not_existing_modules[$id$] = {
+						id: id,
+						flavor: flavor,
+						_favoritePos: this._favoriteIdx++
+					};
+				}
 				return;
 			}
 
@@ -510,6 +523,7 @@ define([
 			var mod = this.getModule(id, flavor, '$favorites$');
 			if (!mod) {
 				// module is not part of the favorites
+				delete this._favorites_for_not_existing_modules[id + ':' + flavor];
 				return;
 			}
 
