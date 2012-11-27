@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.17-3) unstable; urgency=low
+
+  * remove obsolete u-pkgdb-clean cronjob (Bug #29196)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 27 Nov 2012 13:44:23 +0100
+
 univention-pkgdb (6.0.17-2) unstable; urgency=low
 
   * support scan into old database schema (without architecture) (Bug #29196)
