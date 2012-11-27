@@ -1,3 +1,10 @@
+univention-samba4 (2.0.27-9) unstable; urgency=low
+
+  * also remove _kerberos-adm._tcp and _ldap._tcp SRV records
+    after initial and secondary provision (Bug #29225)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Nov 2012 11:48:26 +0100
+
 univention-samba4 (2.0.27-8) unstable; urgency=low
 
   * Fix handling of empty ldif and two cosmetical bugs (Bug #29225)

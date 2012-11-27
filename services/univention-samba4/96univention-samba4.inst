@@ -376,7 +376,7 @@ set_samba4_sysvol_sync_host() {
 	fi
 }
 
-remove_non_samba4_kerberos_srv_records() {
+remove_non_samba4_dc_srv_records() {
 
 	ldif=$(univention-ldapsearch -LLLx "(&(objectClass=univentionDomainController)(univentionService=Samba 4))" cn associatedDomain | ldapsearch-wrapper)
 
@@ -389,38 +389,38 @@ remove_non_samba4_kerberos_srv_records() {
 		fi
 	done < <(echo -e "$ldif\n" | sed 's/^$/\x0/')
 
-	for service in 'kerberos' 'kpasswd'; do
-		for proto in 'tcp' 'udp'; do
-			ldap_record=$(univention-ldapsearch -LLLx \
-				"(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=_$service._$proto))" sRVRecord dn \
-				| ldapsearch-wrapper)
-			sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
-			sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
+	relativeDomainName_list=('_kerberos._tcp' '_kerberos._udp' '_kpasswd._tcp' '_kpasswd._udp' '_kerberos-adm._tcp' '_ldap._tcp')
 
-			zoneDN=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
-				| ldapsearch-wrapper | sed -n 's/^dn: //p')
+	for record in "${relativeDomainName_list[@]}"; do
+		ldap_record=$(univention-ldapsearch -LLLx \
+			"(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=$record))" sRVRecord dn \
+			| ldapsearch-wrapper)
+		sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
+		sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
 
-			while read line; do
-				fields=($line)
-				if [ "${#fields[@]}" = 4 ]; then
-					unset offers_samba4_service
-					for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
-						if [ "${fields[3]}" = "$fqdn." ]; then
-							offers_samba4_service=1
-							break
-						fi
-					done
-					if [ -z "$offers_samba4_service" ]; then
-						echo "${fields[3]%%.} is not offering the Service 'Samba 4'"
-						echo "Removing dns/srv_record '$line' from $sRVRecord_DN"
-						univention-directory-manager dns/srv_record modify "$@" \
-									--superordinate "$zoneDN" \
-									--dn "$sRVRecord_DN" \
-									--remove location="$line"
+		zoneDN=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
+			| ldapsearch-wrapper | sed -n 's/^dn: //p')
+
+		while read line; do
+			fields=($line)
+			if [ "${#fields[@]}" = 4 ]; then
+				unset offers_samba4_service
+				for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
+					if [ "${fields[3]}" = "$fqdn." ]; then
+						offers_samba4_service=1
+						break
 					fi
+				done
+				if [ -z "$offers_samba4_service" ]; then
+					echo "${fields[3]%%.} is not offering the Service 'Samba 4'"
+					echo "Removing dns/srv_record '$line' from $sRVRecord_DN"
+					univention-directory-manager dns/srv_record modify "$@" \
+								--superordinate "$zoneDN" \
+								--dn "$sRVRecord_DN" \
+								--remove location="$line"
 				fi
-			done <<<"$sRVRecord_attrs"
-		done
+			fi
+		done <<<"$sRVRecord_attrs"
 	done
 }
 
@@ -486,7 +486,7 @@ if [ "$samba4_role" = 'DC' ]; then
 		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "${SITE_OPTION[@]}"
 
 		if ! univention_samba4_is_ucr_false dns/register/srv_records/kerberos; then
-			remove_non_samba4_kerberos_srv_records
+			remove_non_samba4_dc_srv_records
 		fi
 
 
@@ -515,7 +515,7 @@ if [ "$samba4_role" = 'DC' ]; then
 				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
 
 				if ! univention_samba4_is_ucr_false dns/register/srv_records/kerberos; then
-					remove_non_samba4_kerberos_srv_records
+					remove_non_samba4_dc_srv_records
 				fi
 
 				operatingSystem_attribute replace
