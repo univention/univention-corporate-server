@@ -389,7 +389,7 @@ remove_non_samba4_dc_srv_records() {
 		fi
 	done < <(echo -e "$ldif\n" | sed 's/^$/\x0/')
 
-	relativeDomainName_list=('_kerberos._tcp' '_kerberos._udp' '_kpasswd._tcp' '_kpasswd._udp' '_kerberos-adm._tcp' '_ldap._tcp')
+	relativeDomainName_list=('_kerberos._tcp' '_kerberos._udp' '_kpasswd._tcp' '_kpasswd._udp' '_ldap._tcp')
 
 	for record in "${relativeDomainName_list[@]}"; do
 		ldap_record=$(univention-ldapsearch -LLLx \
