@@ -1,3 +1,9 @@
+univention-updater (8.0.54-3) unstable; urgency=low
+
+  * Limit PAE test to 32 bit (Bug #29384)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 27 Nov 2012 10:02:43 +0100
+
 univention-updater (8.0.54-2) unstable; urgency=low
 
   * Prevent updates if univention-kernel-image-2.6.32 is still installed
