@@ -32,4 +32,6 @@
 
 ucr set version/erratalevel=0
 
+#DEBHELPER#
+
 exit 0
