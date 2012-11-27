@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.177-1) unstable; urgency=low
+
+  * Fix loading of values; Bug #29238
+
+ -- Florian Best <best@univention.de>  Tue, 27 Nov 2012 13:25:42 +0100
+
 univention-management-console-frontend (2.0.176-1) unstable; urgency=low
 
   * Fix saving of favorites on slaves; Bug #29236

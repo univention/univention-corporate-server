@@ -99,7 +99,7 @@ define([
 						// trigger the search if autoSearch is specified and as soon as all form
 						// elements have been initialized
 						if (this.autoSearch) {
-							this.search(this._form.gatherFormValues());
+							this.search(this._form.get('value'));
 						}
 					})
 				});

@@ -78,7 +78,7 @@ define([
 			this.inherited(arguments);
 
 			this.on('submit', lang.hitch(this, function() {
-				this.onSearch(this.gatherFormValues());
+				this.onSearch(this.get('value'));
 			}));
 		},
 

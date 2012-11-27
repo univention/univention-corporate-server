@@ -244,6 +244,7 @@ define([
 			vals.push([]);
 
 			// set the values
+			this._setAllValues(vals);
 			this._set('value', this.get('value'));
 		},
 

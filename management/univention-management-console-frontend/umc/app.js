@@ -269,7 +269,7 @@ define([
 				'update/available',
 				'update/reboot/required'
 			]).then(lang.hitch(this, function(res) {
-				// save the ucr variables in an local variable
+				// save the ucr variables in a local variable
 				lang.mixin(_ucr, res);
 			}));
 

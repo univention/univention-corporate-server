@@ -57,7 +57,7 @@ define([
 		//		Encapsulates a complete form, offers unified access to elements as
 		//		well as some convenience methods.
 		// description:
-		//		This class has some extra assumptions for gatherFormValues().
+		//		This class has some extra assumptions for get('value').
 		//		Elements that start with '__' will be ignored. Elements that have
 		//		a name such as 'myname[1]' or 'myname[2]' will be converted into
 		//		arrays or dicts, respectively. Two-dimensional arrays/dicts are
@@ -261,15 +261,6 @@ define([
 				}
 			}, this);
 
-			// update all dependencies when all widgets are ready
-			this.ready().then(lang.hitch(this, function() {
-				tools.forIn(this._dependencyMap, function(iname) {
-					if (iname in this._widgets) {
-						this._updateDependencies(iname);
-					}
-				}, this);
-			}));
-
 			// register callbacks for onSubmit and onReset events
 			tools.forIn(['submit', 'reset'], function(ievent) {
 				var orgCallback = lang.getObject(ievent + '.callback', false, this._buttons);
@@ -284,7 +275,7 @@ define([
 
 					// if there is a custom callback, call it with all form values
 					if (typeof orgCallback == "function") {
-						orgCallback(this.gatherFormValues());
+						orgCallback(this.get('value'));
 					}
 				}));
 			}, this);
@@ -317,7 +308,7 @@ define([
 
 				// trigger the widget as soon as all its dependencies are resolved
 				all(deferreds).then(lang.hitch(this, function() {
-					var values = this.gatherFormValues();
+					var values = this.get('value');
 					iwidget._loadValues(values);
 				}));
 			}, this);
@@ -331,6 +322,13 @@ define([
 			this.ready().then(lang.hitch(this, function() {
 				//console.log('### Form: all ready');
 				this.onValuesInitialized();
+
+				// update all dependencies when all widgets are ready
+				tools.forIn(this._dependencyMap, function(iname) {
+					if (iname in this._widgets) {
+						this._updateDependencies(iname);
+					}
+				}, this);
 			}));
 		},
 
@@ -360,7 +358,7 @@ define([
 		},
 
 		clearFormValues: function() {
-			// clear all values based on or list of widgets
+			// clear all values based on a list of widgets
 			tools.forIn(this._widgets, function(iname, iwidget) {
 				// value could be a string, an array, or a dict... query first the value
 				// and reset the value accordingly
@@ -384,7 +382,7 @@ define([
 		},
 
 		setFormValues: function(values) {
-			// set all values based on or list of widgets
+			// set all values based on a list of widgets
 			tools.forIn(values, function(iname, ival) {
 				if (this._widgets[iname]) {
 					this._widgets[iname].set('value', ival);
@@ -427,7 +425,7 @@ define([
 			//console.log(lang.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, json.stringify(tmp)]));
 
 			if (publisherName in this._dependencyMap) {
-				var values = this.gatherFormValues();
+				var values = this.get('value');
 				this._updateAllReady(); // fresh _allReadyNamed
 				var readyInfo = this._allReadyNamed;
 				array.forEach(this._dependencyMap[publisherName], function(ireceiver) {
@@ -446,11 +444,11 @@ define([
 			//		ID of the object that should be loaded.
 
 			tools.assert(this.moduleStore, 'In order to load form data from the server, the umc.widgets.Form.moduleStore needs to be set.');
-			tools.assert(itemID, 'The specifid itemID for umc.widgets.Form.load() must valid.');
+			tools.assert(itemID, 'The specifid itemID for umc.widgets.Form.load() must be valid.');
 
 			// query data from server
 			var deferred = this.moduleStore.get(itemID).then(lang.hitch(this, function(data) {
-				var values = this.gatherFormValues();
+				var values = this.get('value');
 				var newValues = {};
 
 				// copy all the fields that exist in the form
@@ -484,7 +482,7 @@ define([
 			tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
 
 			// sending the data to the server
-			var values = this.gatherFormValues();
+			var values = this.get('value');
 			var deferred = null;
 			if (this._loadedID === null || this._loadedID === undefined || this._loadedID === '') {
 				deferred = this.moduleStore.add(values, undefined, this);
