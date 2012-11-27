@@ -1,4 +1,4 @@
-univention-management-console-frontend (2.0.177-1) unstable; urgency=low
+univention-management-console-frontend (2.0.177-2) unstable; urgency=low
 
   * Fix loading of values; Bug #29238
 

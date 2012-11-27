@@ -235,6 +235,7 @@ define([
 		},
 
 		_setCustomValue: function() {
+			this.value = null; // force notification of watch handlers
 			if (null === this._initialValue || undefined === this._initialValue) {
 				// no initial value is given, use the first value in the list
 				this.set('value', this._firstValueInList);
@@ -481,7 +482,7 @@ define([
 				// set only the static values
 				this._clearValues();
 				this._setStaticValues();
-				this.set('value', this._initialValue);
+				this._setCustomValue();
 
 				// values have been loaded
 				//console.log('### _SelectMixin ['+this.name+']: resolved _readyDeferred');
