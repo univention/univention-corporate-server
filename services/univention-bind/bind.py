@@ -59,6 +59,8 @@ RNDC_BIN = "/usr/sbin/rndc"
 SIGNAL = dict([(getattr(signal, _), _) for _ in dir(signal) if
 	_.startswith('SIG') and not _.startswith('SIG_')])
 
+__zone_created_or_removed = False
+
 def initialize():
 	"""Initialize module on first run."""
 	pass
@@ -140,6 +142,8 @@ def _new_zone(ucr, zonename, dn):
 	proxy_zone.write('\tmasters port 7777 { 127.0.0.1; };\n')
 	proxy_zone.write('};\n')
 	proxy_zone.close()
+	global __zone_created_or_removed
+	__zone_created_or_removed = True
 
 
 def _remove_zone(zonename):
@@ -152,6 +156,8 @@ def _remove_zone(zonename):
 	# Remove proxy configuration file
 	if os.path.exists(zonefile + '.proxy'):
 		os.unlink(zonefile + '.proxy')
+	global __zone_created_or_removed
+	__zone_created_or_removed = True
 
 
 def clean():
@@ -253,6 +259,8 @@ def _kill_children(pids, timeout=5):
 
 def postrun():
 	"""Run pending updates."""
+	global __zone_created_or_removed
+
 	listener.setuid(0)
 	try:
 		# Re-create named and proxy inclusion file
@@ -267,9 +275,19 @@ def postrun():
 		named_conf.close()
 		proxy_conf.close()
 
-		ud.debug(ud.LISTENER, ud.INFO, 'DNS: Doing reload')
+		do_reload = True
+		dns_backend = listener.configRegistry.get('dns/backend')
+		if dns_backend == 'samba4':
+			if not __zone_created_or_removed:
+				do_reload = False
+			else:	## reset flag and continue with reload
+				__zone_created_or_removed = False
+		elif dns_backend == 'none':
+				do_reload = False
 
-		if listener.configRegistry.get('dns/backend') in ('samba4', 'none'):
+		if do_reload:
+			ud.debug(ud.LISTENER, ud.INFO, 'DNS: Doing reload')
+		else:
 			ud.debug(ud.LISTENER, ud.INFO, 'DNS: Skip zone reload')
 			return
 
