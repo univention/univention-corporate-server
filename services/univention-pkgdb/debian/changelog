@@ -1,8 +1,8 @@
-univention-pkgdb (6.0.17-3) unstable; urgency=low
+univention-pkgdb (6.0.17-4) unstable; urgency=low
 
-  * remove obsolete u-pkgdb-clean cronjob (Bug #29196)
+  * remove obsolete u-pkgdb-clean cronjob (Bug #29266)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 27 Nov 2012 13:44:23 +0100
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 28 Nov 2012 15:33:12 +0100
 
 univention-pkgdb (6.0.17-2) unstable; urgency=low
 
