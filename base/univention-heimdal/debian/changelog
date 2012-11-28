@@ -1,4 +1,4 @@
-univention-heimdal (6.0.7-1) unstable; urgency=low
+univention-heimdal (6.0.10-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
 
