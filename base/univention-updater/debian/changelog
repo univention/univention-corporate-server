@@ -1,3 +1,9 @@
+univention-updater (8.0.55-1) unstable; urgency=low
+
+  * Add errata-repository in univention-add-app (Bug #29443)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Nov 2012 16:48:12 +0100
+
 univention-updater (8.0.54-3) unstable; urgency=low
 
   * Limit PAE test to 32 bit (Bug #29384)

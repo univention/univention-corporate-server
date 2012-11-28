@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-if [ "$#" -lt 2 -o "$1" = "-h" -o "$1" = "--help" ] ; then
+if [ "$#" -lt 1 -o "$1" = "-h" -o "$1" = "--help" ] ; then
 	(
 	echo
 	echo "$(basename $0) <component> [<package> ...]"
@@ -48,11 +48,18 @@ eval "$(ucr shell)"
 COMP="repository/online/component/$1"
 shift
 univention-config-registry set \
-	"${COMP}=enabled" \
+	"${COMP}/server=${repository_app_center_server:-appcenter.software-univention.de}" \
 	"${COMP}/parts=maintained" \
+	"${COMP}=enabled" \
 	"${COMP}/version=current" \
 	"${COMP}/localmirror=false" \
-	"${COMP}/server=${repository_app_center_server:-appcenter.software-univention.de}"
+	"${COMP}-errata/server=${repository_app_center_server:-appcenter.software-univention.de}" \
+	"${COMP}-errata/parts=maintained" \
+	"${COMP}-errata=enabled" \
+	"${COMP}-errata/version=current" \
+	"${COMP}-errata/localmirror=false"
 
-univention-install "$@"
+if [ "$#" -gt 0 ] ; then
+	univention-install "$@"
+fi
 
