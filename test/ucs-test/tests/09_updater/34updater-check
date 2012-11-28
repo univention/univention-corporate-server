@@ -78,14 +78,10 @@ setup_apache "${repoprefix}"
 		mkpkg "${DIR}"
 		apt-get -qq update
 
-		# an update should be available only if the easy update process is enabled
+		# an update should be available
 		/usr/share/univention-updater/univention-updater-check
 		ucr search --brief ^update/available
-		if [ "true" = "$easy" ]; then
-			test yes = "$(ucr get update/available)"
-		else
-			test no = "$(ucr get update/available)"
-		fi
+		test yes = "$(ucr get update/available)"
 		ucr set update/available="" # reset the UCR variable
 
 		# call univention-actualise and make sure update/available has been updated 
