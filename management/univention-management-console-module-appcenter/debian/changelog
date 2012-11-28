@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.84-1) unstable; urgency=low
+
+  * changed https to http for call to App Center postinst; Bug #28001
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 28 Nov 2012 16:50:59 +0100
+
 univention-management-console-module-appcenter (2.0.83-1) unstable; urgency=low
 
   * Fix reordering app details (Bug #29246)
