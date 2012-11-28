@@ -1,3 +1,9 @@
+univention-installer (8.0.40-1) unstable; urgency=low
+
+  * load graphic drivers for EFI in installer (Bug #28672)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 28 Nov 2012 17:24:16 +0100
+
 univention-installer (8.0.39-1) unstable; urgency=low
 
   * partitioning: fixed missing confirmation dialog in profile mode when
