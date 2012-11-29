@@ -1,3 +1,10 @@
+univention-grub (6.0.3-1) unstable; urgency=low
+
+  * set video mode of installer from 788 (800x600x16) to 789 (800x600x24)
+    (Bug #29445)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 29 Nov 2012 15:22:20 +0100
+
 univention-grub (6.0.2-2) unstable; urgency=low
 
   * added missing UCR variable description (Bug #28672)

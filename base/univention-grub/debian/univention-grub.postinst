@@ -63,7 +63,7 @@ univention-config-registry set grub/timeout?5 \
 	kernel/postinst_hook?"/usr/sbin/update-grub" \
 	grub/quiet?"yes"  \
 	grub/loglevel?"0" \
-	grub/vga?"788"\
+	grub/vga?"789"\
 	grub/gfxmode?"800x600@16" \
 	grub/backgroundimage?"/boot/grub/uniboot.png" \
 	grub/color/normal?"dark-gray/black" \
