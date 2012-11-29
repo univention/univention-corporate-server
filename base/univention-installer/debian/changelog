@@ -1,3 +1,10 @@
+univention-installer (8.0.41-1) unstable; urgency=low
+
+  * set video mode of installer from 788 (800x600x16) to 789 (800x600x24)
+    (Bug #29445)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 29 Nov 2012 12:40:42 +0100
+
 univention-installer (8.0.40-1) unstable; urgency=low
 
   * load graphic drivers for EFI in installer (Bug #28672)
