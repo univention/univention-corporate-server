@@ -1,3 +1,10 @@
+univention-ldap (9.0.20-1) unstable; urgency=low
+
+  * Re-added ldap/database/bdb/set_flags with the autoremove flag
+    (Bug #29474)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Nov 2012 20:28:41 +0100
+
 univention-ldap (9.0.19-1) unstable; urgency=low
 
   * Re-change univentionLicenseUniventionDesktops to
