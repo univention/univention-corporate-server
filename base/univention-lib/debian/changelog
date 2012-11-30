@@ -1,3 +1,9 @@
+univention-lib (2.0.17-1) unstable; urgency=low
+
+  * fixed typo which overwrote _ translate function; Bug #28876
+
+ -- Florian Best <best@univention.de>  Fri, 30 Nov 2012 11:22:30 +0100
+
 univention-lib (2.0.16-1) unstable; urgency=low
 
   * base.sh: get_default_netmask() will return a netmask for

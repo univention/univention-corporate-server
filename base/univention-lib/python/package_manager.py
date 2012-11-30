@@ -506,7 +506,7 @@ class PackageManager(object):
 		# as it reopens the cache
 		broken = []
 		if install or remove:
-			_, _, broken = self.mark(install, remove, dry_run=True)
+			to_be_installed, to_be_removed, broken = self.mark(install, remove, dry_run=True)
 
 		result = False
 		try:
