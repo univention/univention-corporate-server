@@ -1,3 +1,9 @@
+univention-installer (8.0.42-1) unstable; urgency=low
+
+  * reverted last two commits (Bug #28672)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 03 Dec 2012 15:08:12 +0100
+
 univention-installer (8.0.41-1) unstable; urgency=low
 
   * set video mode of installer from 788 (800x600x16) to 789 (800x600x24)
