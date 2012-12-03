@@ -1,3 +1,9 @@
+univention-updater (8.0.56-1) unstable; urgency=low
+
+  * Switch back to updates.software-univention.de (Bug #27966)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 03 Dec 2012 09:19:29 +0100
+
 univention-updater (8.0.55-1) unstable; urgency=low
 
   * Add errata-repository in univention-add-app (Bug #29443)
