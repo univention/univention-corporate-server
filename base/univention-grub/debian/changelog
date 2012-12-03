@@ -1,3 +1,9 @@
+univention-grub (6.0.4-1) unstable; urgency=low
+
+  * gpt support in univention-grub-generate-menu-lst (Bug #29518)
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Dec 2012 14:32:40 +0100
+
 univention-grub (6.0.3-1) unstable; urgency=low
 
   * set video mode of installer from 788 (800x600x16) to 789 (800x600x24)
