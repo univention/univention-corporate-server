@@ -34,8 +34,6 @@
 
 eval "$(univention-config-registry shell)"
 
-. /usr/share/univention-lib/ucr.sh
-
 # Update to UCS 3.0: save menu.lst
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.8; then
 	if [ -e /boot/grub/menu.lst ]; then
@@ -63,7 +61,7 @@ univention-config-registry set grub/timeout?5 \
 	kernel/postinst_hook?"/usr/sbin/update-grub" \
 	grub/quiet?"yes"  \
 	grub/loglevel?"0" \
-	grub/vga?"789"\
+	grub/vga?"788"\
 	grub/gfxmode?"800x600@16" \
 	grub/backgroundimage?"/boot/grub/uniboot.png" \
 	grub/color/normal?"dark-gray/black" \
@@ -87,22 +85,8 @@ if [ "$1" = configure -a -z "$2" ];  then
 	# invoke grub-mkdevicemap (required for KVM machines
 	grub-mkdevicemap $grub_boot
 	# source the update-grub file, so we could use the grub helper functions
-	if ! is_ucr_true grub/efi ; then
-		# no EFI found
-		if [ -n "$grub_boot" ]; then
-			/usr/sbin/grub-install --no-floppy "$grub_boot"
-		fi
-	else
-		# EFI found
-		modprobe efivars
-		# add efivars to /etc/modules
-		if ! ucr get kernel/modules | grep -q "\<efivars\>" ; then
-			ucr set kernel/modules="$(ucr get kernel/modules);efivars"
-		fi
-		# install grub
-		/usr/sbin/grub-install
-		# add EFI boot entry
-		efibootmgr -c -l "\\grub.efi" -L "Univention Corporate Server"
+	if [ -n "$grub_boot" ]; then
+		/usr/sbin/grub-install --no-floppy "$grub_boot"
 	fi
 	update-grub
 	# grub/boot is set in the installer and need for the initial passing of
