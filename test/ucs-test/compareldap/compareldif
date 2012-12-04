@@ -12,44 +12,115 @@ import sys
 import subprocess
 import tempfile
 import os
-import difflib
 
-USAGE = '''%prog [TARGET] TARGET
+USAGE = '''%prog [option] [TARGET] [option] TARGET
 Compares the LDAP directory contents of the TARGETs
 TARGET can be:
  a local LDIF file
  a hostname whose directory will be read using slapcat over ssh.
- If the first TARGET is omitted, the local hosts directory is used instead.'''
+ If the first TARGET is omitted, the local hosts directory is used instead.
+options can be:
+ --file for ldif-filename
+ --host for ldpa-host'''
+
 tmpfiles = []
 
 def main():
 	"""A main()-method with options..."""
 	parser = OptionParser(usage=USAGE,
-                          version="%prog 1.0")
-                      
-	(_, args) = parser.parse_args()
-	
-	try: 
-		if not args or len(args) > 2:
-			parser.error("Wrong number of TARGETS")
-		arguments = [ ('local', 'local ldap', ), ] 
-		for argument in args:
-			if os.access(argument, os.F_OK): # check it argument is a file
-											# then append it as a file
-				arguments.append( ('file', argument) )
-			else:
-				arguments.append( ('host', argument) ) # check it argument is a host
-														# append it as host
-		(_, right_first, ) = arguments[-2] # only for the original name 
-		(_, right_second, ) = arguments[-1] # only for the original name
-	except OSError, error:
-		print >> sys.stderr, "An error accurred with: %s" % (error, )
-		
+							version="%prog 1.0")
+
+	entire_number_of_inputs = 0 # to collect the number of input parameters
+
+	parser.add_option("--file",
+						action="append",
+						dest="filename",
+						type="string",
+						help="ldif file")
+	parser.add_option("--host",
+						action="append",
+						type="string",
+						dest="host",
+						help="ldap host")
+
+	(options, args) = parser.parse_args()
+
+	if args:
+		entire_number_of_inputs += len(args)
+	if options.filename:
+		entire_number_of_inputs += len(options.filename)
+	if options.host:
+		entire_number_of_inputs += len(options.host)
+
+	if not args and not options.filename and not options.host: # in case no arguments were given at all
+		print parser.error("No arguments were given") # exit programm with error
+	if entire_number_of_inputs > 2:
+		print parser.error("Too many arguments were given. Min. one. Max two.") # exit programm with error"""
+
 	try:
-		compare_tmp_files(cleanup(fetch(arguments[-2])), cleanup(fetch(arguments[-1])), right_first, right_second)
+		collect_min_two_arguments = 0 # see while-loop below
+		arguments = [ ('local', 'local ldap', ), ]
+
+		while collect_min_two_arguments < 2:
+		# a while-loop which collects minimim two arguments from args or options
+		# the while-loop increments "collect_min_two_arguments" variable any time it founds an valid argument 
+			if args: # if args is not empty
+				for argument in args:
+					if os.access(argument, os.F_OK): # check it argument is a file
+						arguments.insert(get_inedex_of_argv(sys.argv[1:], argument), ('file', argument) )
+						# insert an argument in the entered position of argv
+						args.remove(argument)
+						collect_min_two_arguments += 1
+					else:
+						arguments.append( ('host', argument) ) # checks if argument is a host
+																# append it as host
+						args.remove(argument)
+						collect_min_two_arguments += 1
+
+			elif options.filename: # in case options.filename is not empty
+				for options_filename in options.filename:
+					if os.access(options_filename, os.F_OK): # checks if options_filename is a file
+						arguments.insert(get_inedex_of_argv(sys.argv[1:], options_filename)-1, ('file', options_filename) ) # then append it as a file
+						# insert an argument in the entered position of argv
+						options.filename.remove(options_filename)
+						collect_min_two_arguments += 1
+					else:
+						parser_error = options_filename + " indistinguishable as a file" # error not a file
+						parser.error(parser_error)
+			elif options.host: # in case options.filename is not empty
+				for options_host in options.host:
+					if os.access(options_host, os.F_OK): # checks if options_host is a file
+						parser_error = options_host + " indistinguishable as a host" # error not a host
+						parser.error(parser_error)
+					else:
+						arguments.insert(get_inedex_of_argv(sys.argv[1:], options_host)-1, ('host', options_host) )
+						# insert an argument in the entered position of argv
+						# append it as host
+						options.host.remove(options_host)
+						collect_min_two_arguments += 1
+
+			if not args and not options.filename and not options.host and collect_min_two_arguments < 2:
+			# if-request: if args,options.filename and options.host are empty
+			# it means there were only one argument given so compare it versus localhost
+				arguments.append( ('host', 'localhost') ) # adds localhost as second argument
+				collect_min_two_arguments += 1 # condition for the termination of the while-loop
+
 	except OSError, error:
 		print >> sys.stderr, "An error accurred with: %s" % (error, )
-		
+
+	try:
+		compare_tmp_files(cleanup(fetch(arguments[-2])), cleanup(fetch(arguments[-1])))
+	except OSError, error:
+		print >> sys.stderr, "An error accurred with: %s" % (error, )
+
+def get_inedex_of_argv(argv, element):
+	"""Returns appropriate index of elemment in argv-list.
+		Retunrs '-1' if no element were found in the argv-list"""
+	for i in xrange(1, len(sys.argv[0:])):
+		if sys.argv[i] == element:
+			return i
+	return -1
+
 def fetch(input_value):
 	"""This method provides a tmp file for each type of argument"""
 	(fetch_type, argument, ) = input_value
@@ -59,14 +130,16 @@ def fetch(input_value):
 		return create_local_tmp_file(argument)
 	if fetch_type == 'host':
 		return create_stdout_tmp_file(argument)
-		
+
 def line_validation(ldifline):
 	"""Check if a ldifline is a valid line
-		returns "False" if ldifline is invalid """
-	
+		returns "False" if ldifline is invalid
+		if line contains any of the entry of the 'attributes_to_ignore' list
+		the return value will be false"""
+
 	attributes_to_ignore = ["entryCSN:", "modifiersName:", "modifyTimestamp:", "creatorsName", "entryUUID",
 							"createTimestamp"]
-	
+
 	if (':' in ldifline and ldifline[0] != '#' or ldifline[0] == ' '):
 		if(attributes_to_ignore[0] not in ldifline
 			and attributes_to_ignore[1] not in ldifline
@@ -88,22 +161,22 @@ def cleanup(tmp_file):
 	attrlist = [] # list of ldap attributes of an ldap object
 	attrtype = None # types of the ldap entries
 	attrname = None # name of the ldap entries
-	do_one_time = True 
-	
+	do_one_time = True
+
 	#print attributes_to_ignore[5]
-	# auxiliary variable for one use only. 
+	# auxiliary variable for one use only.
 	# skips first empty entry of the atttlist[]
 	no_further_value_line = True # auxiliary variable for identification of a continued attribut term
-	comments_continue = None # auxiliary variable for identification 
-							# of a continued attribut term (see the algorithm below)
+	comments_continue = None # auxiliary variable for identification
+	                         # of a continued attribut term (see the algorithm below)
+	comments_break_after_ignored_attribute = False
 	try:
 		ldif_file_to_read = open(tmp_file, 'r') # read the given local ldif file
 		for ldifline in ldif_file_to_read: # reads liny by line
 			if line_validation(ldifline):
-			#if (':' in ldifline and ldifline[0] != '#' or ldifline[0] == ' '):
-				# if a line (without '\n') is not empty it's a valid line if a line 
+				# if a line (without '\n') is not empty it's a valid line if a line
 				# has an ': ' char sequenze and the first char of a line
-				# is not a '#' it's a valid line			
+				# is not a '#' it's a valid line
 				if ldifline[0] != ' ':
 					splitted_line = ldifline.replace('\n','').split(':', 1)
 					if not no_further_value_line:
@@ -131,10 +204,12 @@ def cleanup(tmp_file):
 							else:
 								attrname = ''
 				else:
-					comments_continue = ldifline[1:].rstrip()
-					attrname = attrname + comments_continue
-					no_further_value_line = False
-			elif ldifline in ['\n', '\r\n']: 
+					if not comments_break_after_ignored_attribute:
+						comments_continue = ldifline[1:].rstrip()
+						attrname = attrname + comments_continue
+						no_further_value_line = False
+			elif ldifline in ['\n', '\r\n']:
+				comments_break_after_ignored_attribute = True # to break possible value lines
 				# new LDAP-object
 				attrlist.append((attrtype+':', attrname))
 				attrtype = ''
@@ -146,81 +221,62 @@ def cleanup(tmp_file):
 
 	except IOError:
 		print >> sys.stderr, 'An error occurred with ', ldif_file_to_read, \
-		
+
 	fileheader, abs_path = tempfile.mkstemp() # tempfile co comparee
 	tmp_local_ldif_file = open(abs_path,'w')
 	local_tmp_filepath = tmp_local_ldif_file.name
-		
+
 	for i in xrange(0, len(my_test_list)):
 		line_attrvalue = my_test_list[i]
-		#print line_attrvalue
-		#print "--------------------"
+
 		for j in xrange(0, 1):
-			#line_attrvalue2 = line_attrvalue[j]
 			dn_attribute = line_attrvalue[0][0], line_attrvalue[0][1]
-			#print line_attrvalue[0][0], line_attrvalue[0][1] # dn: attribut
 			tmp_local_ldif_file.write("".join(dn_attribute))
 			tmp_local_ldif_file.write('\n')
 			for z in xrange(0, len(line_attrvalue[1])):
 				line_attrvalue3 = line_attrvalue[1][z]
 				other_attributes = line_attrvalue3[0], line_attrvalue3[1]
-				#print line_attrvalue3[0], line_attrvalue3[1] # other attributes
 				tmp_local_ldif_file.write("".join(other_attributes))
 				tmp_local_ldif_file.write('\n')
-		
-	
-	"""for i in xrange(0, len(attrlist)):
-		line_attrvalue = attrlist[i]
-		if line_attrvalue[0].startswith( ':' ):
-			tmp_local_ldif_file.write('')
-		else:
-			tmp_local_ldif_file.write(line_attrvalue[0])
-		tmp_local_ldif_file.write(line_attrvalue[1])
-			tmp_local_ldif_file.write('\n')"""
-	
+
 	tmp_local_ldif_file.close()
 	os.remove(tmp_file) # removes original (unconverted) tmp_file
-	tmp_file_to_delete(local_tmp_filepath) 
+	tmp_file_to_delete(local_tmp_filepath)
 	# adds a new tmp file to an delete queue in case that it would be no host to compare
 	return local_tmp_filepath
-	
+
 def clean_objects(attrlist):
+	"""The method practically cleans the objects and put on top of every object
+		the related 'dn' attribut. The list with 'cleaned' objects is a return value"""
 	attr_list_object = []
 	new_sorted_attr_list = []
 	for i in xrange(0, len(attrlist)):
 		line_attrvalue_obj = attrlist[i]
-		if line_attrvalue_obj[0] != ':':
+		if line_attrvalue_obj[0] != ':': # for every emty line (signalise a new object to begin)
 			attr_list_object.append((line_attrvalue_obj[0], line_attrvalue_obj[1]))
-			#print line_attrvalue_obj[0], line_attrvalue_obj[1]	
 		else:
-			#print "-----------------------"
-			new_sorted_attr_list.append(sort_objects(attr_list_object))
-			#sort_objects(attr_list_object)
+			new_sorted_attr_list.append(sort_object(attr_list_object))
 			attr_list_object = []
 	return new_sorted_attr_list
-			
-		
-def sort_objects(attrlist):
-	dn_attr = ['Null','Null']
+
+def sort_object(attrlist):
+	"""The function search for an attribut "dn:" and
+		puts it on the top of all attributes of an single object which is given as a parameter.
+		The return value is an object with all of the associated attributes with "dn:"- attribute on top"""
+	dn_attr = ['Null', 'Null']
 	not_dn_attr = []
 	drawn_together = []
-	drawn_together_list = []
 	for i in xrange(0, len(attrlist)):
 		line_attrvalue_obj = attrlist[i]
-		#if "dn:" in line_attrvalue_obj[0]:
 		if "dn:" in line_attrvalue_obj[0][:3]:
-			dn_attr[0] = line_attrvalue_obj[0];
-			dn_attr[1] = line_attrvalue_obj[1];
+			dn_attr[0] = line_attrvalue_obj[0]
+			dn_attr[1] = line_attrvalue_obj[1]
 		else:
 			not_dn_attr.append((line_attrvalue_obj[0], line_attrvalue_obj[1]))
-			
-	#not_dn_attr.sort()
+
 	drawn_together.append((dn_attr[0], dn_attr[1]))
 	not_dn_attr.append(("", ""))
 	drawn_together.append(not_dn_attr)
-	
-	#for val in drawn_together[1]:
-		#print val
 	return drawn_together
 
 def create_tmp_file_from_localhost():
@@ -238,9 +294,9 @@ def create_tmp_file_from_localhost():
 			break
 	stout_temp_filepath = create_tmp_file(linelist_stdout)
 	return stout_temp_filepath
-	
+
 def create_local_tmp_file(ldif_file_name):
-	"""This method creates a tmp file line by line 
+	"""This method creates a tmp file line by line
 		from file (without validation)"""
 	line_list = []
 	try:
@@ -249,12 +305,12 @@ def create_local_tmp_file(ldif_file_name):
 			line_list.append(ldifline)
 	except IOError:
 		print >> sys.stderr, 'An error occurred with ', ldif_file_to_read, \
-		
+
 	temp_filepath = create_tmp_file(line_list)
 	return temp_filepath
-	
+
 def create_stdout_tmp_file(ldap_host_name):
-	"""This method creates a tmp file line by line 
+	"""This method creates a tmp file line by line
 		such as stdout comes (without validation)"""
 	print "Please enter your password to connect to ", ldap_host_name
 	sshprocess = subprocess.Popen(['ssh', 'root@'+ldap_host_name, 'slapcat', '-d0', ], 
@@ -268,27 +324,23 @@ def create_stdout_tmp_file(ldap_host_name):
 			line_list_stdout.append(line)
 		else:
 			break
-	
+
 	if not line_list_stdout: # in case the file does not exists
 		return None
 	else:
 		stout_temp_filepath = create_tmp_file(line_list_stdout)
 		return stout_temp_filepath
 
-	
 def create_tmp_file(entries_list):
 	""" This method creates an tmp file of a given list as parameter"""
 	fileheader, abs_path = tempfile.mkstemp()
 	new_file = open(abs_path,'w')
 	temp_filepath = new_file.name
 	new_file.write("".join(entries_list))
-	#for i in xrange(0, len(entries_list)):
-	#	line_value = entries_list[i]
-	#		new_file.write(line_value)
-		
+
 	new_file.close()
 	return temp_filepath
-	
+
 def tmp_file_to_delete(file_to_delete):
 	"""This method collects all tmp files. In case to delete them all."""
 	tmpfiles.append(file_to_delete)
@@ -297,136 +349,146 @@ def delete_tmp_file():
 	"""Deletes all the file in the list "tmpfiles" """
 	for i in xrange(0, len(tmpfiles)):
 		os.remove(tmpfiles[i])
-	
-def compare_tmp_files(stout_temp_filepath, local_tmp_filepath, original_stdout, original_ldif_file_name):
-	"""Compares two files with a command line order "diff"
-		stdout shows a return value if two 
-		comparative files are equal or not"""
 
-	line_list = []
+def compare_tmp_files(first_temp_filepath, second_temp_filepath):
+	"""Compares two tmp files which are given as parameter" """
+	equal_object(first_temp_filepath, second_temp_filepath, "+", False, True)
+	# check if all objects of the 'first_temp_filepath' are in the 'second_temp_filepath'
+	equal_object(second_temp_filepath, first_temp_filepath, "-", False, True)
+	# check if all objects of the 'second_temp_filepath' are in the 'first_temp_filepath'
+	equal_object(first_temp_filepath, second_temp_filepath, "+", True, False)
+	# check if objects of 'second_temp_filepath' and 'first_temp_filepath' has different attributes
+	# does not matter if 'second_temp_filepath' or 'first_temp_filepath are first or second parameter
+
+	os.remove(first_temp_filepath)
+	# removes tmp file created from first parameter
+	os.remove(second_temp_filepath)
+	# removes tmp file created from second parameter
+
+def equal_object(first_temp_filepath, second_temp_filepath, sign, compare, call):
+	""" The method reads out the temp file and
+		every time when a whole object is located it invokes
+		the method 'search_equal_object' to find an equal or related object in 'second_temp_filepath'"""
+
+	obj_line_list = [] # list for the collection of lines (attributes) of an object
 	try:
-		ldif_stout_tmp_file_to_read = open(stout_temp_filepath, 'r') # read the given tmp local ldif file from stdou
-		for ldifline in ldif_stout_tmp_file_to_read: # reads liny by line
-			if "dn:" in ldifline[:3]:
-				#print ldifline
-				line_list.append(ldifline)
-			elif ldifline in ['\n', '\r\n']: 
-				#print "new object"
-				#print len(line_list)
-				search_equal_object(line_list, local_tmp_filepath, original_stdout, original_ldif_file_name, "+")
-				line_list = []
-			else:
-				#print ldifline
-				line_list.append(ldifline)
-			
-	except IOError:
-		print >> sys.stderr, 'An error occurred with ', ldif_stout_tmp_file_to_read, \
-		
-	
-	
-	"""obj_line_list = []
-	try:
-		ldif_local_tmp_file_to_read = open(local_tmp_filepath, 'r') # read the given tmp local ldif file from stdou
-		for ldifline in ldif_local_tmp_file_to_read: # reads liny by line
-			if "dn:" in ldifline[:3]:
-				#print ldifline
+		ldif_tmp_file_to_read = open(first_temp_filepath, 'r') # read the given tmp local ldif file from stdou
+		for ldifline in ldif_tmp_file_to_read: # reads liny by line
+			if "dn:" in ldifline[:3]: # locate 'dn:' attribute as unique identifier
 				obj_line_list.append(ldifline)
-			elif ldifline in ['\n', '\r\n']:
-				#print "new object"
-				#print len(line_list)
-				search_equal_object(obj_line_list, stout_temp_filepath, original_ldif_file_name, original_stdout, "-")
+			elif ldifline in ['\n', '\r\n']: # locate a blank lines
+				search_equal_object(obj_line_list, second_temp_filepath, sign, compare, call)
 				obj_line_list = []
-			else:
-				#print ldifline
+			else: # other attributes
 				obj_line_list.append(ldifline)
-			
 	except IOError:
-		print >> sys.stderr, 'An error occurred with ', ldif_local_tmp_file_to_read, \
-	"""
+		print >> sys.stderr, 'An error occurred with ', ldif_tmp_file_to_read, \
 
-	"""diffcommand = ['diff', '-u', stout_temp_filepath, '--label', original_stdout, 
-								local_tmp_filepath, '--label', original_ldif_file_name]
-	
-	ssh_processdiff = subprocess.Popen(diffcommand)
-	ssh_processdiff.communicate() # waits for a process to end
-
-	# A subprocess by way of comparison with diff. tmp file of 
-	# stdout LDAP and tmp file of local ldif file will be compared
-	os.remove(stout_temp_filepath)
-	# removes tmp file created from stdout lDAP
-	os.remove(local_tmp_filepath)
-	# removes tmp file created of local ldif input file
-	sys.exit(ssh_processdiff.returncode) # exitcode either 1 or 0	"""
-	
-def search_equal_object(obj_line_list, tmp_filepath, original_stdout, original_ldif_file_name, sign):
-	obj_line_list_file = []
-	object_match = False
+def search_equal_object(obj_line_list, tmp_filepath, sign, compare, call):
+	""" The methos has as first parameter a list with attributes of one object
+		the second parameter is a tmp_filepath to the second temporary file
+		The second temporary file read the file object by object."""
+	obj_line_list_file = [] # list for attributes for every object in tmp_filepath
+	object_match = False # True is the same 'dn:' attribut was found in tmp_filepath
 	try:
 		ldif_local_tmp_file_to_read = open(tmp_filepath, 'r') # read the given tmp local ldif file from stdou
 		for ldifline in ldif_local_tmp_file_to_read: # reads liny by line
-			if "dn:" in ldifline[:3]:
+			if "dn:" in ldifline[:3]: # 'dn:' located
 				obj_line_list_file.append(ldifline)
-				if obj_line_list[0] == ldifline:
-					#print "find match:" 
+				if obj_line_list[0] == ldifline: # if "dn:" attributes are equal
 					object_match = True
 					# "find dn:", ldifline
-			elif ldifline in ['\n', '\r\n']: 
+			elif ldifline in ['\n', '\r\n']: # for a new line (beginning of an new object)
 				if object_match:
-					compare_two_objects(obj_line_list, obj_line_list_file, original_stdout, original_ldif_file_name, sign) # reason: dn: are equals
-					break;
+					if compare:
+						compare_two_objects(obj_line_list, obj_line_list_file, sign)
+						# method 'compare_two_objects()' invokes only
+						# if the same object with the same 'dn:' was found
+						# reason: dn: are equals
+					break
 				# "new object"
 				obj_line_list_file = []
-				
+
 			else:
-				# print ldifline
 				obj_line_list_file.append(ldifline)
-		if not object_match:
-			print ""
-			sign = change_sign(sign)
-			
-			for line in obj_line_list:
-				sys.stdout.write(sign)
-				sys.stdout.write(line)
-			
-			
+
+		if call: # only if objects are not found in comparative file
+			if not object_match:
+				sign = change_sign(sign)
+				for line in obj_line_list:
+					sys.stdout.write(sign)
+					sys.stdout.write(line)
+				print ""
+
 	except IOError:
 		print >> sys.stderr, 'An error occurred with ', ldif_local_tmp_file_to_read, \
-			
-def compare_two_objects(list_with_attributes_object1, list_with_attributes_object2, original_stdout, original_ldif_file_name, sign):
-	
-	not_found_attributes1 = []
-	not_found_attributes2 = []
-	
+
+def compare_two_objects(list_with_attributes_object1, list_with_attributes_object2, sign):
+	""" The method compares two objects with equal 'dn:' attribut in each object
+		The method locates not qual, less or more attributes """
+
+	not_found_attributes1 = [] # attributes which are not found in 'list_with_attributes_object2'
+	not_found_attributes2 = [] # attributes which are not found in 'list_with_attributes_object1'
+
 	for attribute in list_with_attributes_object1:
 		if attribute not in list_with_attributes_object2:
-			not_found_attributes1.append(attribute)
-			
+			not_found_attributes1.append(attribute) # not found in 'list_with_attributes_object2'
+
 	for attribute in list_with_attributes_object2:
 		if attribute not in list_with_attributes_object1:
-			not_found_attributes2.append(attribute)
-	
-	if not_found_attributes1 or not_found_attributes2:
+			not_found_attributes2.append(attribute) # not found in 'list_with_attributes_object1'
 
-		sign = change_sign(sign)
-		sys.stdout.write(" ")
-		sys.stdout.write(list_with_attributes_object1[0])
+	while not_found_attributes1 or not_found_attributes2:
+	# while-loop continues as long as lists are not empty because every attribute should be displayed on the console 
+		for attribute_unaltered in list_with_attributes_object1:
+			if attribute_unaltered in not_found_attributes1: # if attribute gets a sign as prefix
+				splitted_attr_name  = attribute_unaltered.split(': ', 1)
+				splitted_attr_name[0] += ": "
+				# attribute type of the 'not_found_attributes1'
+				for attributes_not_found in not_found_attributes2:
+					splitted_attr_name2  = attributes_not_found.split(': ', 1)
+					splitted_attr_name2[0] += ": "
+					# attribute type of the 'not_found_attributes2'
+					if splitted_attr_name[0] == splitted_attr_name2[0]:
+						#print not_found_attributes1
+						#print not_found_attributes2
+						# only if attribute is not located in
+						sign = change_sign(sign)
+						sys.stdout.write(sign)
+						sys.stdout.write(attribute_unaltered)
+						sign = change_sign(sign)
+						sys.stdout.write(sign)
+						sys.stdout.write(attributes_not_found)
+						not_found_attributes2.remove(attributes_not_found)
+						not_found_attributes1.remove(attribute_unaltered)
+						#sys.exit(1)  #exitcode either 1 or 0
+						break
+			else:  # display an attribute on the console without a prefix
+				sys.stdout.write(" ")
+				sys.stdout.write(attribute_unaltered)
 
-		for attribute in not_found_attributes1:
+		do_one_time = True # only one time change the sign in the for-loop
+		for attribute_unaltered3 in not_found_attributes1:
+			if do_one_time:
+				sign = change_sign(sign)
+				do_one_time = False
 			sys.stdout.write(sign)
-			sys.stdout.write(attribute)
+			sys.stdout.write(attribute_unaltered3)
+		del not_found_attributes1[:] #remove all objects from not_found_attributes1
 
-		sign = change_sign(sign)
-		for attribute2 in not_found_attributes2:
+		for attribute_unaltered4 in not_found_attributes2:
 			sys.stdout.write(sign)
-			sys.stdout.write(attribute2)
+			sys.stdout.write(attribute_unaltered4)
+		del not_found_attributes2[:] #remove all objects from not_found_attributes2
+		print ""
 
-		
 def change_sign(sign):
+	""" The method makes plus out of minus ans minus ot of plus. Changes the value of the parameter"""
 	if (sign == "+"):
 		sign = "-"
 	else:
 		sign = "+"
 	return sign
-	
+
 if __name__ == '__main__':
 	main()
