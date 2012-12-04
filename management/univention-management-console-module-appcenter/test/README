@@ -1,0 +1,3 @@
+The package univention-demo is a simple UMC module that can be used as a test
+application for the Univention App Center.  The package exists already in
+several versions, so that update scenarios can be simulated.
