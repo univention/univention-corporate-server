@@ -159,8 +159,8 @@ def cleanup(tmp_file):
 	if tmp_file == None:
 		delete_tmp_file()
 	attrlist = [] # list of ldap attributes of an ldap object
-	attrtype = None # types of the ldap entries
-	attrname = None # name of the ldap entries
+	attrtype = "" # types of the ldap entries
+	attrname = "" # name of the ldap entries
 	do_one_time = True
 	# auxiliary variable for one use only.
 	# skips first empty entry of the atttlist[]
@@ -215,32 +215,36 @@ def cleanup(tmp_file):
 
 		attrlist.append((attrtype+':', attrname))
 		ldif_file_to_read.close()
-		my_test_list = clean_objects(attrlist)
+		
+		fileheader, abs_path = tempfile.mkstemp() # tempfile co comparee
+		tmp_local_ldif_file = open(abs_path,'w')
+		local_tmp_filepath = tmp_local_ldif_file.name
+		
+		if attrlist[0][0] == ":" and attrlist[0][1] == "":
+			tmp_local_ldif_file.close()
+		else:
+			my_test_list = clean_objects(attrlist)
+			for i in xrange(0, len(my_test_list)):
+				line_attrvalue = my_test_list[i]
+
+				for j in xrange(0, 1):
+					dn_attribute = line_attrvalue[0][0], line_attrvalue[0][1]
+					tmp_local_ldif_file.write("".join(dn_attribute))
+					tmp_local_ldif_file.write('\n')
+					for z in xrange(0, len(line_attrvalue[1])):
+						line_attrvalue3 = line_attrvalue[1][z]
+						other_attributes = line_attrvalue3[0], line_attrvalue3[1]
+						tmp_local_ldif_file.write("".join(other_attributes))
+						tmp_local_ldif_file.write('\n')
+			tmp_local_ldif_file.close()
+
+		os.remove(tmp_file) # removes original (unconverted) tmp_file
+		tmp_file_to_delete(local_tmp_filepath)
+		# adds a new tmp file to an delete queue in case that it would be no host to compare
 
 	except IOError:
 		print >> sys.stderr, 'An error occurred with ', ldif_file_to_read, \
 
-	fileheader, abs_path = tempfile.mkstemp() # tempfile co comparee
-	tmp_local_ldif_file = open(abs_path,'w')
-	local_tmp_filepath = tmp_local_ldif_file.name
-
-	for i in xrange(0, len(my_test_list)):
-		line_attrvalue = my_test_list[i]
-
-		for j in xrange(0, 1):
-			dn_attribute = line_attrvalue[0][0], line_attrvalue[0][1]
-			tmp_local_ldif_file.write("".join(dn_attribute))
-			tmp_local_ldif_file.write('\n')
-			for z in xrange(0, len(line_attrvalue[1])):
-				line_attrvalue3 = line_attrvalue[1][z]
-				other_attributes = line_attrvalue3[0], line_attrvalue3[1]
-				tmp_local_ldif_file.write("".join(other_attributes))
-				tmp_local_ldif_file.write('\n')
-
-	tmp_local_ldif_file.close()
-	os.remove(tmp_file) # removes original (unconverted) tmp_file
-	tmp_file_to_delete(local_tmp_filepath)
-	# adds a new tmp file to an delete queue in case that it would be no host to compare
 	return local_tmp_filepath
 
 def clean_objects(attrlist):
@@ -358,9 +362,9 @@ def compare_tmp_files(first_temp_filepath, second_temp_filepath):
 	# check if objects of 'second_temp_filepath' and 'first_temp_filepath' has different attributes
 	# does not matter if 'second_temp_filepath' or 'first_temp_filepath are first or second parameter
 
-	os.remove(first_temp_filepath)
+	#os.remove(first_temp_filepath)
 	# removes tmp file created from first parameter
-	os.remove(second_temp_filepath)
+	#os.remove(second_temp_filepath)
 	# removes tmp file created from second parameter
 
 def equal_object(first_temp_filepath, second_temp_filepath, sign, compare, call):
@@ -463,7 +467,8 @@ def compare_two_objects(list_with_attributes_object1, list_with_attributes_objec
 		do_one_time_not_found_attributes1 = True # only one time change the sign in the for-loop for
 		                                         #do_one_time_not_found_attributes1
 		do_one_time_not_found_attributes2 = True # only one time change the sign in the for-loop
-
+		#print "Here"
+		#print not_found_attributes1
 		for attribute_unaltered3 in not_found_attributes1:
 			if do_one_time_not_found_attributes1:
 				sign = change_sign(sign)
@@ -471,7 +476,7 @@ def compare_two_objects(list_with_attributes_object1, list_with_attributes_objec
 			sys.stdout.write(sign)
 			sys.stdout.write(attribute_unaltered3)
 		del not_found_attributes1[:] #remove all objects from not_found_attributes1
-
+		#print not_found_attributes2
 		for attribute_unaltered4 in not_found_attributes2:
 
 			if do_one_time_not_found_attributes2:
