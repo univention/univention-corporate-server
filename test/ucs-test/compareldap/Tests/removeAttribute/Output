@@ -18,6 +18,6 @@
  objectClass: domainRelatedObject
  objectClass: domain
  objectClass: univentionBase
--objectClass: univention
  objectClass: msGPO
  msGPOLink: [LDAP://CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=liam,DC=local;0] #KOmmentar sdasdasdsdd
+-objectClass: univention

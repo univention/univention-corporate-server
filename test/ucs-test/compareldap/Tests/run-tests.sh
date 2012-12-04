@@ -11,7 +11,7 @@ do
     then
        echo "OK"
     else
-       diff -u Output <("$PATH_TO_COMPARE_LDIF" InputA.ldif InputB.ldif)
+	echo "FAIL"
     fi
    cd ..
 done

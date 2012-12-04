@@ -24,6 +24,7 @@ options can be:
  --host for ldpa-host'''
 
 tmpfiles = []
+exit_variable = True # variable for exitcode
 
 def main():
 	"""A main()-method with options..."""
@@ -136,7 +137,6 @@ def line_validation(ldifline):
 		returns "False" if ldifline is invalid
 		if line contains any of the entry of the 'attributes_to_ignore' list
 		the return value will be false"""
-
 	attributes_to_ignore = ["entryCSN:", "modifiersName:", "modifyTimestamp:", "creatorsName", "entryUUID",
 							"createTimestamp"]
 
@@ -162,14 +162,12 @@ def cleanup(tmp_file):
 	attrtype = None # types of the ldap entries
 	attrname = None # name of the ldap entries
 	do_one_time = True
-
-	#print attributes_to_ignore[5]
 	# auxiliary variable for one use only.
 	# skips first empty entry of the atttlist[]
 	no_further_value_line = True # auxiliary variable for identification of a continued attribut term
 	comments_continue = None # auxiliary variable for identification
 	                         # of a continued attribut term (see the algorithm below)
-	comments_break_after_ignored_attribute = False
+	#comments_break_after_ignored_attribute = False
 	try:
 		ldif_file_to_read = open(tmp_file, 'r') # read the given local ldif file
 		for ldifline in ldif_file_to_read: # reads liny by line
@@ -186,9 +184,8 @@ def cleanup(tmp_file):
 							attrname = splitted_line[1]
 						else:
 							attrname = ''
-						no_further_value_line = True 
+						no_further_value_line = True
 					else: # it has to be because of the algorithm
-						
 						if do_one_time:
 							attrtype = splitted_line[0] # muss be assigned after append()
 							if len(splitted_line) > 1:
@@ -204,17 +201,18 @@ def cleanup(tmp_file):
 							else:
 								attrname = ''
 				else:
-					if not comments_break_after_ignored_attribute:
-						comments_continue = ldifline[1:].rstrip()
-						attrname = attrname + comments_continue
-						no_further_value_line = False
+					#if not comments_break_after_ignored_attribute:
+					comments_continue = ldifline[1:].strip()
+					attrname = attrname.replace('\r', '')
+					attrname += comments_continue
+					no_further_value_line = False
 			elif ldifline in ['\n', '\r\n']:
-				comments_break_after_ignored_attribute = True # to break possible value lines
+				#comments_break_after_ignored_attribute = True # to break possible value lines
 				# new LDAP-object
 				attrlist.append((attrtype+':', attrname))
 				attrtype = ''
 				attrname = ''
-							
+
 		attrlist.append((attrtype+':', attrname))
 		ldif_file_to_read.close()
 		my_test_list = clean_objects(attrlist)
@@ -313,9 +311,9 @@ def create_stdout_tmp_file(ldap_host_name):
 	"""This method creates a tmp file line by line
 		such as stdout comes (without validation)"""
 	print "Please enter your password to connect to ", ldap_host_name
-	sshprocess = subprocess.Popen(['ssh', 'root@'+ldap_host_name, 'slapcat', '-d0', ], 
+	sshprocess = subprocess.Popen(['ssh', 'root@'+ldap_host_name, 'slapcat', '-d0', ],
 	stdout=subprocess.PIPE)
-	
+
 	line_list_stdout = []
 	while True:
 		line = sshprocess.stdout.readline() # reads an stdout line by line
@@ -419,14 +417,12 @@ def search_equal_object(obj_line_list, tmp_filepath, sign, compare, call):
 					sys.stdout.write(sign)
 					sys.stdout.write(line)
 				print ""
-
 	except IOError:
 		print >> sys.stderr, 'An error occurred with ', ldif_local_tmp_file_to_read, \
 
 def compare_two_objects(list_with_attributes_object1, list_with_attributes_object2, sign):
 	""" The method compares two objects with equal 'dn:' attribut in each object
 		The method locates not qual, less or more attributes """
-
 	not_found_attributes1 = [] # attributes which are not found in 'list_with_attributes_object2'
 	not_found_attributes2 = [] # attributes which are not found in 'list_with_attributes_object1'
 
@@ -450,8 +446,6 @@ def compare_two_objects(list_with_attributes_object1, list_with_attributes_objec
 					splitted_attr_name2[0] += ": "
 					# attribute type of the 'not_found_attributes2'
 					if splitted_attr_name[0] == splitted_attr_name2[0]:
-						#print not_found_attributes1
-						#print not_found_attributes2
 						# only if attribute is not located in
 						sign = change_sign(sign)
 						sys.stdout.write(sign)
@@ -461,22 +455,29 @@ def compare_two_objects(list_with_attributes_object1, list_with_attributes_objec
 						sys.stdout.write(attributes_not_found)
 						not_found_attributes2.remove(attributes_not_found)
 						not_found_attributes1.remove(attribute_unaltered)
-						#sys.exit(1)  #exitcode either 1 or 0
 						break
 			else:  # display an attribute on the console without a prefix
 				sys.stdout.write(" ")
 				sys.stdout.write(attribute_unaltered)
 
-		do_one_time = True # only one time change the sign in the for-loop
+		do_one_time_not_found_attributes1 = True # only one time change the sign in the for-loop for
+		                                         #do_one_time_not_found_attributes1
+		do_one_time_not_found_attributes2 = True # only one time change the sign in the for-loop
+
 		for attribute_unaltered3 in not_found_attributes1:
-			if do_one_time:
+			if do_one_time_not_found_attributes1:
 				sign = change_sign(sign)
-				do_one_time = False
+				do_one_time_not_found_attributes1 = False
 			sys.stdout.write(sign)
 			sys.stdout.write(attribute_unaltered3)
 		del not_found_attributes1[:] #remove all objects from not_found_attributes1
 
 		for attribute_unaltered4 in not_found_attributes2:
+
+			if do_one_time_not_found_attributes2:
+				if not do_one_time_not_found_attributes1:
+					sign = change_sign(sign)
+				do_one_time_not_found_attributes2 = False
 			sys.stdout.write(sign)
 			sys.stdout.write(attribute_unaltered4)
 		del not_found_attributes2[:] #remove all objects from not_found_attributes2
