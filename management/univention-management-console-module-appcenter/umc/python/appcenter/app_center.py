@@ -44,7 +44,6 @@ import urllib
 import urllib2
 from HTMLParser import HTMLParser
 import cgi
-import imp
 
 # related third party
 from ldap import LDAPError
@@ -52,7 +51,6 @@ import ldif
 
 # univention
 from univention.management.console.log import MODULE
-import univention.admin.uexceptions as udm_errors
 import univention.config_registry
 import univention.uldap as uldap
 
@@ -64,36 +62,26 @@ LOGFILE = '/var/log/univention/appcenter.log'
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
-try:
-	import univention.admin.filter as udm_filter  # needed for udm_license
-	import univention.admin.license as udm_license
-	_udm_license_available = True
-except ImportError as err:
-	_udm_license_available = False
-	MODULE.warn('Failed to load license information: %s' % err)
-
 class License(object):
 	def __init__(self):
-		self.license = None
+		self.uuid = None
 		self.reload()
 
 	def reload(self, force=False):
 		if self.uuid is not None and not force:
 			# license with uuid has already been found
 			return
-		self.license = None
-		if _udm_license_available:
-			# last time we checked, no uuid was found
-			# but maybe the user installed a new license?
-			imp.reload(udm_license)
-			try:
-				_lo = uldap.getMachineConnection()
-				udm_license.init_select(_lo, 'admin')
-				del _lo
-				self.license = udm_license._license
-			except (LDAPError, udm_errors.base) as err:
-				# no licensing available
-				MODULE.warn('Failed to load license information: %s' % err)
+		self.uuid = None
+		# last time we checked, no uuid was found
+		# but maybe the user installed a new license?
+		try:
+			_lo = uldap.getMachineConnection(ldap_master=False)
+			data = _lo.search('objectClass=univentionLicense')
+			del _lo
+			self.uuid = data[0][1]['univentionLicenseKeyID'][0]
+		except Exception as e:
+			# no licensing available
+			MODULE.warn('Failed to load license information: %s' % e)
 
 	def dump_data(self):
 		# we could return infos we have in this object itself.
@@ -111,16 +99,6 @@ class License(object):
 			# no udm, no ldap, malformed return value, whatever
 			MODULE.error('getting License from LDAP failed: %s' % e)
 			return None
-
-	@property
-	def uuid(self):
-		try:
-			if self.license.licenseKeyID:
-				return self.license.licenseKeyID
-		except AttributeError:
-			return None
-
-		return None
 
 	def email_known(self):
 		# at least somewhere at univention

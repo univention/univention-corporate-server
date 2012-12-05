@@ -197,6 +197,8 @@ class ComponentManager(object):
 		return '%s/%s' % (COMPONENT_BASE, component_id) in self.ucr
 
 	def put_app(self, app):
+		# ATTENTION: changes made here have to be done
+		# in univention-add-app
 		app_data = {
 			'server' : app.get_server(),
 			'prefix' : '',
