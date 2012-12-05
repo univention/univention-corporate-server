@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.29-1) unstable; urgency=low
+
+  * force boolean value for variable "disabled" in DomainPage; Bug #29577
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Dec 2012 19:33:54 +0100
+
 univention-virtual-machine-manager-daemon (2.0.28-2) unstable; urgency=low
 
   * Fix traceback by error logging (Bug #22098)
