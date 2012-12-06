@@ -96,7 +96,6 @@ if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes"
 	else
 		readcontinue || exit 1
 	fi
-	
 fi
 
 echo ""
@@ -309,12 +308,6 @@ then
 	echo "       before the update can continue."
 	exit 1
 fi
-
-# BEGIN 3.0-2 remove php5-curl config if package is removed Bug #27666 
-if [ "$(dpkg-query -W -f='${Status}\n' php5-curl 2>/dev/null)" = "deinstall ok config-files" ]; then
-	dpkg -P php5-curl >&3 2>&3
-fi
-# END 3.0-2 remove php5-curl config if package is removed Bug #27666
 
 # BEGIN 3.1 update mark univention-legacy-kolab-schema as manually installed Bug #28900
 if [ "$(dpkg-query -W -f='${Status}\n' univention-legacy-kolab-schema 2>/dev/null)" = "install ok installed" ]; then
