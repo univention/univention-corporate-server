@@ -227,7 +227,7 @@ define([
 							{
 								type: Text,
 								name: 'help_text',
-								content: '<p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
+								content: '<div style="width: 535px"><p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
 								'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
 								'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
 									'<ul>' +
@@ -236,7 +236,7 @@ define([
 									'</ul>' +
 								_('The description of every application includes a respective indication for such cases.') + '</p>' +
 								'<p' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
-								'<p' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>'
+								'<p' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p></div>'
 							},
 							{
 								type: CheckBox,
@@ -784,9 +784,9 @@ define([
 						{
 							type: Text,
 							name: 'help_text',
-							content: '<p>' + _('The installation of applications with Univention App Center requires an individually issued license key with a unique key identification. You are currently using a license key without identification. Please fill in the form and provide a valid email address. Afterwards an updated license will be sent to you in a couple of minutes that can be applied and updated directly in the license dialog.') + '</p>' +
+							content: '<div style="width: 535px"><p>' + _('The installation of applications with Univention App Center requires an individually issued license key with a unique key identification. You are currently using a license key without identification. Please fill in the form and provide a valid email address. Afterwards an updated license will be sent to you in a couple of minutes that can be applied and updated directly in the license dialog.') + '</p>' +
 							'<p>' + _('The UCS system sends your current license key to Univention. The key will be extended by the identification and will be sent back to the provided email address. The license scope remains unchanged.') + '</p>' +
-							'<p>' + _('Right after this form, you will see another dialog where you can upload your new license.') + '</p>'
+							'<p>' + _('Right after this form, you will see another dialog where you can upload your new license.') + '</p></div>'
 						},
 						{
 							type: TextBox,
