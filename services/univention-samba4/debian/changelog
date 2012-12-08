@@ -1,3 +1,12 @@
+univention-samba4 (2.0.28-1) unstable; urgency=low
+
+  * Update to Samba 4 RC6 (Bug #29529):
+    * Run ntacl sysvolreset on update
+    * Disable acl:search by default, see
+      https://bugzilla.samba.org/show_bug.cgi?id=9470
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Dec 2012 17:39:43 +0100
+
 univention-samba4 (2.0.27-10) unstable; urgency=low
 
   * currently don't remove _kerberos-adm._tcp, currently only the master
