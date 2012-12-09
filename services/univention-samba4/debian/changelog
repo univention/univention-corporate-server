@@ -1,3 +1,9 @@
+univention-samba4 (2.0.30-1) unstable; urgency=low
+
+  * Cleanup the sysvolreset call (Bug #29529)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 09 Dec 2012 15:32:42 +0100
+
 univention-samba4 (2.0.29-1) unstable; urgency=low
 
   * Run sysvolreset after provision the first S4 DC (Bug #29529)

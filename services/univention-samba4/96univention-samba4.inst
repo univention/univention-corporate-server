@@ -489,11 +489,6 @@ if [ "$samba4_role" = 'DC' ]; then
 			remove_non_samba4_dc_srv_records
 		fi
 
-		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-			## set the default sysvol and GPO NTACLs
-			samba-tool ntacl sysvolreset
-		fi
-
 		operatingSystem_attribute replace
 
 		## Start samba daemon
@@ -568,14 +563,12 @@ if [ "$samba4_role" = 'DC' ]; then
 		set_samba4_sysvol_sync_host
 		/usr/share/univention-samba4/scripts/sysvol-sync.sh
 
-		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-			## set the default sysvol and GPO NTACLs
-			samba-tool ntacl sysvolreset
-		fi
-
 	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		## set the default sysvol and GPO NTACLs
+		samba-tool ntacl sysvolreset
+
 		## set default ACLs so sysvol-sync can read files and directories
 		set_default_fACL /var/lib/samba/sysvol
 	fi
