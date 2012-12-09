@@ -489,6 +489,10 @@ if [ "$samba4_role" = 'DC' ]; then
 			remove_non_samba4_dc_srv_records
 		fi
 
+		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+			## set the default sysvol and GPO NTACLs
+			samba-tool ntacl sysvolreset
+		fi
 
 		operatingSystem_attribute replace
 

@@ -1,3 +1,9 @@
+univention-samba4 (2.0.29-1) unstable; urgency=low
+
+  * Run sysvolreset after provision the first S4 DC (Bug #29529)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 09 Dec 2012 13:52:49 +0100
+
 univention-samba4 (2.0.28-1) unstable; urgency=low
 
   * Update to Samba 4 RC6 (Bug #29529):
