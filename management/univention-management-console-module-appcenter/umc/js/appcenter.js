@@ -35,14 +35,15 @@ define([
 	"dojo/when",
 	"dojo/Deferred",
 	"umc/store",
-	"umc/widgets/TabbedModule",
+	"umc/widgets/Module",
+	"umc/widgets/TabContainer",
 	"umc/modules/appcenter/AppCenterPage",
 	"umc/modules/appcenter/PackagesPage",
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter" // not needed atm
-], function(declare, lang, array, when, Deferred, store, TabbedModule, AppCenterPage, PackagesPage, SettingsPage, DetailsPage, _) {
-	return declare("umc.modules.appcenter", [ TabbedModule ], {
+], function(declare, lang, array, when, Deferred, store, Module, TabContainer, AppCenterPage, PackagesPage, SettingsPage, DetailsPage, _) {
+	return declare("umc.modules.appcenter", [ Module ], {
 
 		idProperty: 'package',
 		_udm_accessible: false,
@@ -68,15 +69,18 @@ define([
 			this._componentsStore = store('name', 'appcenter/components');
 			this._packagesStore = store('package', 'appcenter/packages');
 
+			this._tabContainer = new TabContainer({nested: true}); // simulate a TabbedModule. Weird IE-Bug prevents standby in TabbedModule
+			this.addChild(this._tabContainer);
+
 			this._app_center = new AppCenterPage({_udm_accessible: this._udm_accessible, standby: lang.hitch(this, 'standby')});
 			this._packages = new PackagesPage({moduleStore: this._packagesStore, standby: lang.hitch(this, 'standby')});
 			this._components = new SettingsPage({moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')});
 			this._details = new DetailsPage({moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')});
 
-			this.addChild(this._app_center);
-			this.addChild(this._packages);
-			this.addChild(this._components);
-			this.addChild(this._details);
+			this._tabContainer.addChild(this._app_center);
+			this._tabContainer.addChild(this._packages);
+			this._tabContainer.addChild(this._components);
+			this._tabContainer.addChild(this._details);
 
 			// install default component
 			this._components.on('installcomponent', lang.hitch(this, function(ids) {
@@ -97,7 +101,7 @@ define([
 					}));
 					when(deferred, lang.hitch(this, function() {
 						this.standby(false);
-						this.selectChild(this._packages);
+						this._tabContainer.selectChild(this._packages);
 						this._packages._call_installer('install', pkgs);
 					}));
 				} catch(error) {
@@ -131,7 +135,7 @@ define([
 
 			this.inherited(arguments);
 
-			this.hideChild(this._details);
+			this._tabContainer.hideChild(this._details);
 
 		},
 
@@ -143,12 +147,12 @@ define([
 				what = 'getting FROM selection';
 				var is_selected = from.get('selected');
 				what = 'hiding FROM';
-				this.hideChild(from);
+				this._tabContainer.hideChild(from);
 				what = 'showing TO';
-				this.showChild(to);
+				this._tabContainer.showChild(to);
 				if (is_selected) {
 					what = 'selecting TO';
-					this.selectChild(to);
+					this._tabContainer.selectChild(to);
 				}
 			} catch(error) {
 				console.error("exchangeChild: [" + what + "] " + error.message);
