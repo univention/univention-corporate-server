@@ -46,6 +46,7 @@ define([
 
 		_last_reboot:	false,
 		_update_prohibited: false,
+		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 
 		postMixInProperties: function() {
 

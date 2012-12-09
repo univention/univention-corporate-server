@@ -1,3 +1,9 @@
+univention-updater (8.0.58-1) unstable; urgency=low
+
+  * Fix standby not working on IE (Bug #29587)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 09 Dec 2012 02:04:20 +0100
+
 univention-updater (8.0.57-1) unstable; urgency=low
 
   * updated preup/postup.sh (Bug #29589)

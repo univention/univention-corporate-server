@@ -54,7 +54,7 @@ define([
 
 			this.inherited(arguments);
 
-			this._updates = new UpdatesPage({});
+			this._updates = new UpdatesPage({standby: lang.hitch(this, 'standby')});
 			this._progress = new ProgressPage({});
 
 			this.addChild(this._updates);

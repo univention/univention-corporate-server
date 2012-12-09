@@ -38,10 +38,9 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"umc/widgets/Page",
-	"umc/widgets/StandbyMixin"
-], function(declare, lang, array, Page, StandbyMixin) {
-	return declare("umc.modules.updater.Page", [ Page, StandbyMixin ] , {
+	"umc/widgets/Page"
+], function(declare, lang, array, Page) {
+	return declare("umc.modules.updater.Page", [ Page ] , {
 		buildRendering: function() {
 
 			this.inherited(arguments);
