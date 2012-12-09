@@ -68,10 +68,10 @@ define([
 			this._componentsStore = store('name', 'appcenter/components');
 			this._packagesStore = store('package', 'appcenter/packages');
 
-			this._app_center = new AppCenterPage({_udm_accessible: this._udm_accessible});
-			this._packages = new PackagesPage({moduleStore: this._packagesStore});
-			this._components = new SettingsPage({moduleStore: this._componentsStore});
-			this._details = new DetailsPage({moduleStore: this._componentsStore});
+			this._app_center = new AppCenterPage({_udm_accessible: this._udm_accessible, standby: lang.hitch(this, 'standby')});
+			this._packages = new PackagesPage({moduleStore: this._packagesStore, standby: lang.hitch(this, 'standby')});
+			this._components = new SettingsPage({moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')});
+			this._details = new DetailsPage({moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')});
 
 			this.addChild(this._app_center);
 			this.addChild(this._packages);

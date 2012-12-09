@@ -35,17 +35,17 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
-	"umc/widgets/StandbyMixin",
 	"umc/widgets/Grid",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/ProgressBar",
 	"umc/modules/lib/server",
 	"umc/modules/appcenter/SearchForm",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, dialog, tools, Page, StandbyMixin, Grid, ConfirmDialog, ProgressBar, libServer, SearchForm, _) {
-	return declare("umc.modules.appcenter.PackagesPage", [ Page, StandbyMixin ], {
+], function(declare, lang, array, dialog, tools, Page, Grid, ConfirmDialog, ProgressBar, libServer, SearchForm, _) {
+	return declare("umc.modules.appcenter.PackagesPage", [ Page ], {
 
 		moduleStore: null,
+		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 
 		postMixInProperties: function() {
 			this.inherited(arguments);

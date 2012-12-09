@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.89-1) unstable; urgency=low
+
+  * Fix standby not working on IE (Bug #29587)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 09 Dec 2012 02:03:08 +0100
+
 univention-management-console-module-appcenter (2.0.88-1) unstable; urgency=low
 
   * Fix typo (Bug #29634)

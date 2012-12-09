@@ -226,7 +226,7 @@ class Instance(umcm.Base):
 		for package in self.package_manager.packages():
 			if section == 'all' or package.section == section:
 				toshow = False
-				if pattern.pattern == '.*':
+				if pattern.pattern == '^.*$':
 					toshow = True
 				elif key == 'package' and pattern.search(package.name):
 					toshow = True

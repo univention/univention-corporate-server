@@ -35,17 +35,17 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
-	"umc/widgets/StandbyMixin",
 	"umc/widgets/Grid",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Form",
 	"umc/store",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, dialog, tools, Page, StandbyMixin, Grid, TitlePane, ExpandingTitlePane, Form, store, _) {
-	return declare("umc.modules.appcenter.SettingsPage", [ Page, StandbyMixin ], {
+], function(declare, lang, array, dialog, tools, Page, Grid, TitlePane, ExpandingTitlePane, Form, store, _) {
+	return declare("umc.modules.appcenter.SettingsPage", [ Page ], {
 
 		moduleStore: null,
+		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		_query: { table: 'components' },
 
 		postMixInProperties: function() {

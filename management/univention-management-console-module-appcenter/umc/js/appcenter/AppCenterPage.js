@@ -26,13 +26,12 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console*/
+/*global define require*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
 	"dojo/when",
 	"dojo/query",
 	"dojo/dom-class",
@@ -43,7 +42,6 @@ define([
 	"umc/tools",
 	"umc/modules/lib/server",
 	"umc/widgets/Page",
-	"umc/widgets/StandbyMixin",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
@@ -55,7 +53,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, on, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, libServer, Page, StandbyMixin, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
+], function(declare, lang, array, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -161,9 +159,10 @@ define([
 		return txt;
 	};
 
-	return declare("umc.modules.appcenter.AppCenterPage", [ Page, StandbyMixin ], {
+	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
 		_udm_accessible: false, // license depends on udm
+		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 
 		// the widget's class name as CSS class
 		'class': 'umcAppCenter',
@@ -331,7 +330,7 @@ define([
 								var masterInstallConfirmend = 'yes';
 								if (app.defaultpackagesmaster && app.defaultpackagesmaster.length && app.show_ldap_schema_confirmation) {
 									masterInstallConfirmend = dialog.confirm(
-										_('This application requires an extension of the LDAP schema.') + ' ' + 
+										_('This application requires an extension of the LDAP schema.') + ' ' +
 										_('Was the domain prepared as asked in the dialog before?'), [{
 											label: _('No'),
 											name: 'no',
