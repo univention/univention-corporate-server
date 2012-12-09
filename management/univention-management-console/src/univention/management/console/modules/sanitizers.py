@@ -466,20 +466,25 @@ class PatternSanitizer(SearchSanitizer):
 
 	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
 	  to search case insensitive.
+	:param bool multiline: pattern is compiled with re.MULTILINE flag
+	  to search across multiple lines.
 	'''
-	def __init__(self, ignore_case=True, **kwargs):
+	def __init__(self, ignore_case=True, multiline=True, **kwargs):
 		default = kwargs.get('default')
 		if isinstance(default, basestring):
 			default = re.compile(default)
 		kwargs['default'] = default
 		super(PatternSanitizer, self).__init__(**kwargs)
 		self.ignore_case = ignore_case
+		self.multiline = multiline
 
 	def __deepcopy__(self, memo):
 		new = PatternSanitizer(
-			self.add_asterisks,
 			self.ignore_case,
-			self.max_number_of_asterisks,
+			self.multiline,
+			use_asterisks=self.use_asterisks,
+			add_asterisks=self.add_asterisks,
+			max_number_of_asterisks=self.max_number_of_asterisks,
 			further_arguments=copy.copy(self.further_arguments), # string...
 			required=self.required,
 			default=self.default, # None or non-copyable pattern
@@ -494,6 +499,8 @@ class PatternSanitizer(SearchSanitizer):
 		flags = 0
 		if self.ignore_case:
 			flags = flags | re.IGNORECASE
+		if self.multiline:
+			flags = flags | re.MULTILINE
 		return re.compile('^%s$' % value, flags)
 
 class StringSanitizer(Sanitizer):

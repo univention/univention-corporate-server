@@ -1,3 +1,9 @@
+univention-management-console (5.0.57-1) unstable; urgency=low
+
+  * Fix PatternSanitizer not matching multiliners; Bug #29630
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 09 Dec 2012 02:04:42 +0100
+
 univention-management-console (5.0.56-1) unstable; urgency=low
 
   * Fix saving of umcProperties on non-master servers; Bug #29236
