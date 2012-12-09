@@ -62,6 +62,12 @@ univention_samba4_wait_for_rid_set	## Replication of local RID Pool required for
 	--serviceprincipalname "DNS/$hostname.$domainname" \
 	--privatekeytab dns.keytab
 
+# Reset NTACLs after the connector has synced the accounts
+if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+	## set the default sysvol and GPO NTACLs
+	samba-tool ntacl sysvolreset
+fi
+
 # Change the dns/backend to samba4 only whether a S4 Connector is installed in our domain
 s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
 
