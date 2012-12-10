@@ -1,3 +1,9 @@
+univention-printserver (6.0.17-1) unstable; urgency=low
+
+  * fixed listener (Bug #29674)
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Dec 2012 12:35:27 +0100
+
 univention-printserver (6.0.16-1) unstable; urgency=low
 
   * ported module to Dojo 1.8; Bug #29087

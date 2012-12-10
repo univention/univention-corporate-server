@@ -35,6 +35,7 @@ import listener
 import os
 import time
 import univention.debug as ud
+import univention.config_registry
 ## for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers
 ucr_handlers = configHandlers()
