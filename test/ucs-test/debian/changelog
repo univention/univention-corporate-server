@@ -1,3 +1,9 @@
+ucs-test (3.0.22-13) unstable; urgency=low
+
+  * changed values in 51_samba4/41password_change (Bug #29057)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 10 Dec 2012 19:13:50 +0100
+
 ucs-test (3.0.22-12) unstable; urgency=low
 
   * debugging 51_samba4/41password_change (Bug #29057)
