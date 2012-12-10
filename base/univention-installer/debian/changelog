@@ -1,3 +1,10 @@
+univention-installer (8.0.43-1) unstable; urgency=low
+
+  * Ensure the normal interfaces/restart/auto variable is
+    reset too (Bug #28473)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2012 22:53:54 +0100
+
 univention-installer (8.0.42-1) unstable; urgency=low
 
   * reverted last two commits (Bug #28672)

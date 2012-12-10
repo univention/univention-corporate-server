@@ -74,6 +74,7 @@ fi
 
 # Bug 28473: reenable automatic configuration of interfaces
 ucr unset --force interfaces/restart/auto
+ucr unset interfaces/restart/auto
 
 umount -a >/dev/null 2>&1
 echo -n "Sending all processes the TERM signal... "
