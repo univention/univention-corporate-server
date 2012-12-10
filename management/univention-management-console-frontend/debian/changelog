@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.178-1) unstable; urgency=low
+
+  * do not display undefined as label in LabelPane; Bug #29659
+
+ -- Florian Best <best@univention.de>  Mon, 10 Dec 2012 11:11:51 +0100
+
 univention-management-console-frontend (2.0.177-2) unstable; urgency=low
 
   * Fix loading of values; Bug #29238

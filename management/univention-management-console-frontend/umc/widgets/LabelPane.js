@@ -99,7 +99,7 @@ define([
 
 			// if we have a widget as content and label is not specified, use the widget's
 			// label attribute
-			if (null === this.label) {
+			if (null === this.label || undefined === this.label) {
 				this.label = this.content.label || '';
 			}
 		},
