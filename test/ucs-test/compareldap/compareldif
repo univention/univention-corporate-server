@@ -24,7 +24,7 @@ options can be:
  --host for ldpa-host'''
 
 tmpfiles = []
-exit_variable = True # variable for exitcode
+exitcode = True # variable for exitcode
 
 def main():
 	"""A main()-method with options..."""
@@ -111,6 +111,8 @@ def main():
 
 	try:
 		compare_tmp_files(cleanup(fetch(arguments[-2])), cleanup(fetch(arguments[-1])))
+		if not exitcode: # if exitcode == False the program will terminate with exitcode '1'
+			print sys.exit(1)
 	except OSError, error:
 		print >> sys.stderr, "An error accurred with: %s" % (error, )
 
@@ -362,9 +364,9 @@ def compare_tmp_files(first_temp_filepath, second_temp_filepath):
 	# check if objects of 'second_temp_filepath' and 'first_temp_filepath' has different attributes
 	# does not matter if 'second_temp_filepath' or 'first_temp_filepath are first or second parameter
 
-	#os.remove(first_temp_filepath)
+	os.remove(first_temp_filepath)
 	# removes tmp file created from first parameter
-	#os.remove(second_temp_filepath)
+	os.remove(second_temp_filepath)
 	# removes tmp file created from second parameter
 
 def equal_object(first_temp_filepath, second_temp_filepath, sign, compare, call):
@@ -420,6 +422,7 @@ def search_equal_object(obj_line_list, tmp_filepath, sign, compare, call):
 				for line in obj_line_list:
 					sys.stdout.write(sign)
 					sys.stdout.write(line)
+					set_global_exitcode() # set exitcode to '1'
 				print ""
 	except IOError:
 		print >> sys.stderr, 'An error occurred with ', ldif_local_tmp_file_to_read, \
@@ -459,24 +462,24 @@ def compare_two_objects(list_with_attributes_object1, list_with_attributes_objec
 						sys.stdout.write(attributes_not_found)
 						not_found_attributes2.remove(attributes_not_found)
 						not_found_attributes1.remove(attribute_unaltered)
+						set_global_exitcode() # set exitcode to '1'
 						break
 			else:  # display an attribute on the console without a prefix
 				sys.stdout.write(" ")
 				sys.stdout.write(attribute_unaltered)
+				set_global_exitcode() # set exitcode to '1'
 
 		do_one_time_not_found_attributes1 = True # only one time change the sign in the for-loop for
 		                                         #do_one_time_not_found_attributes1
 		do_one_time_not_found_attributes2 = True # only one time change the sign in the for-loop
-		#print "Here"
-		#print not_found_attributes1
 		for attribute_unaltered3 in not_found_attributes1:
 			if do_one_time_not_found_attributes1:
 				sign = change_sign(sign)
 				do_one_time_not_found_attributes1 = False
 			sys.stdout.write(sign)
 			sys.stdout.write(attribute_unaltered3)
+			set_global_exitcode() # set exitcode to '1'
 		del not_found_attributes1[:] #remove all objects from not_found_attributes1
-		#print not_found_attributes2
 		for attribute_unaltered4 in not_found_attributes2:
 
 			if do_one_time_not_found_attributes2:
@@ -485,8 +488,15 @@ def compare_two_objects(list_with_attributes_object1, list_with_attributes_objec
 				do_one_time_not_found_attributes2 = False
 			sys.stdout.write(sign)
 			sys.stdout.write(attribute_unaltered4)
+			set_global_exitcode() # set exitcode to '1'
 		del not_found_attributes2[:] #remove all objects from not_found_attributes2
 		print ""
+
+def set_global_exitcode():
+	"""function to set a global exit code
+		If the method gets invoked, the global variable 'exitcode' gets the value 'False'"""
+	global exitcode 
+	exitcode = False
 
 def change_sign(sign):
 	""" The method makes plus out of minus ans minus ot of plus. Changes the value of the parameter"""

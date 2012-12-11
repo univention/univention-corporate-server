@@ -1,12 +1,11 @@
 dn: dc=liam,dc=local
 dc: liam
 univentionObjectType: container/dc
+krb5RealmName: LIAM.LOCAL
 nisDomain: liam.local
 associatedDomain: liam.local
-krb5RealmName: LIAM.LOCAL
 univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,dc=li
  am,dc=local
-#kommentrare
 univentionPolicyReference: cn=default-settings,cn=boot,cn=dhcp,cn=policies,dc=
  liam,dc=local
 univentionPolicyReference: cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=l
@@ -19,34 +18,45 @@ univentionPolicyReference: cn=default-users,cn=admin-settings,cn=users,cn=poli
  cies,dc=liam,dc=local
 structuralObjectClass: domain
 entryUUID: 8951c21a-9fef-1031-9f00-af93def3082f
-modifiersName: cn=admin,dc=liam,dc=local
 creatorsName:
-objectClass: top
-objectClass: krb5Realm
+createTimestamp: 20121001084128Z
+objectClass: to
 objectClass: univentionPolicyReference
 objectClass: nisDomainObject
 objectClass: domainRelatedObject
 objectClass: domain
-objectClass: univentionBase
-objectClass: univention
+objectClass: univentionObject
 objectClass: msGPO
 msGPOLink: [LDAP://CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=Sy
  stem,DC=liam,DC=local;0]
- #KOmmentar
- sdasdasdsdd
-createTimestamp: 20121001084128Z
 entryCSN: 20121001084530.371015Z#000000#000#000000
+modifiersName: cn=admin,dc=liam,dc=local
 modifyTimestamp: 20121001084530Z
 
 dn: cn=samba,dc=liam,dc=local
-objectClass: top
-objectClass: organizationalRole
-objectClass: univentionObject
-univentionObjectType: container/cn
 cn: samba
+objectClass: top
+objectClass: univentionObject
+objectClass: univentionObject1234
+objectClass: univentionObject1234567
+univentionObjectType: container/cn
 structuralObjectClass: organizationalRole
 entryUUID: 8953932e-9fef-1031-9f01-af93def3082f
- stem,DC=liam,DC=local;0]
+creatorsName:
+createTimestamp: 20121001084128Z
+entryCSN: 20121001084128.377790Z#000000#000#000000
+modifiersName:
+modifyTimestamp: 20121001084128Z
+
+dn: cn=samba2,dc=liam,dc=local
+cn: samba
+objectClass: top
+objectClass: univentionObject
+objectClass: univentionObject1234
+objectClass: univentionObject1234567
+univentionObjectType: container/cn
+structuralObjectClass: organizationalRole
+entryUUID: 8953932e-9fef-1031-9f01-af93def3082f
 creatorsName:
 createTimestamp: 20121001084128Z
 entryCSN: 20121001084128.377790Z#000000#000#000000
