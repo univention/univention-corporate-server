@@ -34,7 +34,7 @@
 
 case "$1" in
 	install)
-		for module in join packages quota reboot services setup sysinfo top ucr updater
+		for module in join packages quota reboot services setup sysinfo top ucr updater appcenter
 		do
 			dpkg-divert --package univention-demo-configuration --add --rename --divert \
 				/usr/share/univention-management-console/modules/"$module".xml.real \
@@ -45,6 +45,13 @@ case "$1" in
 			/usr/share/univention-management-console-frontend/js/umc/login.html
 		;;
 	upgrade|abort-upgrade)
+		# new diverts (Bug #29595), can be removed after the release of UCS 3.1
+		for module in appcenter
+		do
+			dpkg-divert --package univention-demo-configuration --add --rename --divert \
+				/usr/share/univention-management-console/modules/"$module".xml.real \
+				/usr/share/univention-management-console/modules/"$module".xml
+		done
 		;;
 	*)
 		echo "preinst called with unknown argument \`$1'" >&2

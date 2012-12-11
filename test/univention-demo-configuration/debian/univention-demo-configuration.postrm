@@ -34,7 +34,7 @@
 
 case "$1" in
 	remove|purge|disappear|failed-upgrade|abort-install)
-		for module in join packages quota reboot services setup sysinfo top ucr updater
+		for module in join packages quota reboot services setup sysinfo top ucr updater appcenter
 		do
 			dpkg-divert --package univention-demo-configuration --remove --rename --divert \
 				/usr/share/univention-management-console/modules/"$module".xml.real \

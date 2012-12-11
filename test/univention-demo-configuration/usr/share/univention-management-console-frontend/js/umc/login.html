@@ -3,32 +3,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="background:none">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<style type="text/css">
-			@import url("../../js_$20121502172918$/dojo/resources/dojo.css");
-			@import url("../../css_$20121502172918$/dijit/themes/umc/umc.css");
+			@import url("../dojo/resources/dojo.css");
+			@import url("../dijit/themes/umc/umc.css");
 		</style>
 
 		<!--[if IE 8]>
-		  <link rel="stylesheet" href="../../css_$20121502172918$/dijit/themes/umc/ie/ie8.css" type="text/css" media="screen" title="IE 8 CSS" />
+		  <link rel="stylesheet" href="../dijit/themes/umc/ie/ie8.css" type="text/css" media="screen" title="IE 8 CSS" />
 		<![endif]-->
 
 		<!--[if IE 9]>
-		  <link rel="stylesheet" href="../../css_$20121502172918$/dijit/themes/umc/ie/ie9.css" type="text/css" media="screen" title="IE 9 CSS" />
+		  <link rel="stylesheet" href="../dijit/themes/umc/ie/ie9.css" type="text/css" media="screen" title="IE 9 CSS" />
 		<![endif]-->
 
 		<script type="text/javascript">
 			var dojoConfig = {
-				parseOnLoad: true
+				async: true
 			};
 		</script>
-		<script type="text/javascript" src="../../js_$20121502172918$/dojo/dojo.js"></script>
-		<script type="text/javascript" src="../../js_$20121502172918$/umc/build.js"></script>
+		<script type="text/javascript" src="../dojo/dojo.js"></script>
 		<script type="text/javascript">
-			dojo.require("umc.widgets.SubmitButton");
-
 			var state = "unloaded";
-			dojo.addOnLoad(function() {
-			    state = "loaded";
+			require(["dojo/parser", "umc/widgets/SubmitButton", "dojo/domReady!"], function(parser, ready){
+				parser.parse();
+				state = "loaded";
 			});
 		</script>
 	</head>
@@ -54,7 +53,7 @@
 					</div>
 				</div>
 			</div>
-			<button id="umc_SubmitButton" name="submit" type="submit" data-dojo-type="umc.widgets.SubmitButton"></button>
+			<button id="umc_SubmitButton" name="submit" type="submit" data-dojo-type="umc/widgets/SubmitButton"></button>
 		</form>
 	</body>
 </html>
