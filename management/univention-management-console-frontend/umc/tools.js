@@ -543,7 +543,7 @@ define([
 			if (error.response) {
 				try {
 					status = error.response.xhr ? error.response.xhr.status : (error.response.status !== undefined ? error.response.status : status ); // status can be 0
-				} catch () {
+				} catch (err) {
 					// workaround for Firefox error (Bug #29703)
 					status = 0;
 				}
