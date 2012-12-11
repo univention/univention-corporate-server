@@ -1,3 +1,10 @@
+univention-system-setup (6.0.56-1) unstable; urgency=low
+
+  * Remove system role memberserver from server role selection. It does
+    not work at the moment (Bug #29757)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Dec 2012 23:18:56 +0100
+
 univention-system-setup (6.0.55-1) unstable; urgency=low
 
   * fixed typo for valuesChanged event handler; Bug #29734

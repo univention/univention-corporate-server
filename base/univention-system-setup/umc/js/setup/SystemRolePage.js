@@ -73,7 +73,8 @@ define([
 					{ id: 'domaincontroller_master', label: _('Domain controller master') },
 					{ id: 'domaincontroller_backup', label: _('Domain controller backup') },
 					{ id: 'domaincontroller_slave', label: _('Domain controller slave') },
-					{ id: 'memberserver', label: _('Member server') }
+					// Disable memberserver selection: Bug #29757
+					// { id: 'memberserver', label: _('Member server') }
 					// { id: 'basesystem', label: _('Base system') }
  				]
 			}, {
