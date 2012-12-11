@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.91-1) unstable; urgency=low
+
+  * load fresh copy of UCR otherwise old data gets written (Bug #29758)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 11 Dec 2012 23:22:00 +0100
+
 univention-management-console-module-appcenter (2.0.90-1) unstable; urgency=low
 
   * Really fix standby not working on IE (Bug #29587)

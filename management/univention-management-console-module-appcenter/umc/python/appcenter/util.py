@@ -143,6 +143,7 @@ class Changes(object):
 
 @contextmanager
 def set_save_commit_load(ucr):
+	ucr.load()
 	changes = Changes(ucr)
 	yield changes
 	ucr.save()
