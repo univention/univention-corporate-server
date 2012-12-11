@@ -541,7 +541,12 @@ define([
 			var r = /<title>(.*)<\/title>/;
 
 			if (error.response) {
-				status = error.response.xhr ? error.response.xhr.status : (error.response.status !== undefined ? error.response.status : status ); // status can be 0
+				try {
+					status = error.response.xhr ? error.response.xhr.status : (error.response.status !== undefined ? error.response.status : status ); // status can be 0
+				} catch () {
+					// workaround for Firefox error (Bug #29703)
+					status = 0;
+				}
 				if (error.response.data) {
 					// the response contained a valid JSON object, which contents is already html escaped
 					status = error.response.data.status && parseInt(error.response.data.status, 10) || status;

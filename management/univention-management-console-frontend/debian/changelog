@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.179-1) unstable; urgency=low
+
+  * added workaround for Firefox error in umc/tools::parseError(); Bug #29703
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Dec 2012 11:20:08 +0100
+
 univention-management-console-frontend (2.0.178-1) unstable; urgency=low
 
   * do not display undefined as label in LabelPane; Bug #29657
