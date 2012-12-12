@@ -34,15 +34,17 @@
 
 case "$1" in
 	remove|purge|disappear|failed-upgrade|abort-install)
-		for module in join packages quota reboot services setup sysinfo top ucr updater appcenter
+		# remove all diversions associated with this package
+		LC_ALL=C dpkg-divert --list univention-demo-configuration | sed 's/diversion of \(.*\) to .*/\1/' | while read file
 		do
-			dpkg-divert --package univention-demo-configuration --remove --rename --divert \
-				/usr/share/univention-management-console/modules/"$module".xml.real \
-				/usr/share/univention-management-console/modules/"$module".xml
+			[ -e "$file" ] && rm -f "$file"  # make sure that also config files are removed
+			dpkg-divert --package univention-demo-configuration --remove --rename "$file"
 		done
-		dpkg-divert --package univention-demo-configuration --remove --rename --divert \
-			/usr/share/univention-management-console-frontend/js/umc/login.html.real \
-			/usr/share/univention-management-console-frontend/js/umc/login.html
+
+		# reload services
+		invoke-rc.d apache2 reload
+		invoke-rc.d slapd restart
+		invoke-rc.d univention-management-console-server reload
 		;;
 	upgrade)
 		;;

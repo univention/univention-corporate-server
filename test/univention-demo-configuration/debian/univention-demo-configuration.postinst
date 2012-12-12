@@ -39,6 +39,8 @@ case "$1" in
 		umc_frontend_new_hash
 		invoke-rc.d slapd restart
 		invoke-rc.d univention-management-console-server reload
+		univention-config-registry commit /etc/nagios3/apache2.conf
+		invoke-rc.d apache2 reload
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;

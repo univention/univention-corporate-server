@@ -40,9 +40,14 @@ case "$1" in
 				/usr/share/univention-management-console/modules/"$module".xml.real \
 				/usr/share/univention-management-console/modules/"$module".xml
 		done
-		dpkg-divert --package univention-demo-configuration --add --rename --divert \
-			/usr/share/univention-management-console-frontend/js/umc/login.html.real \
-			/usr/share/univention-management-console-frontend/js/umc/login.html
+		for file in \
+			/usr/share/univention-management-console-frontend/js/umc/login.html \
+			/etc/univention/templates/files/etc/nagios3/apache2.conf
+		do
+			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
+			# copy diverted files such that conf files are not recognized as having been changed
+			cp "$file.real" "$file"
+		done
 		;;
 	upgrade|abort-upgrade)
 		# new diverts (Bug #29595), can be removed after the release of UCS 3.1
@@ -51,6 +56,13 @@ case "$1" in
 			dpkg-divert --package univention-demo-configuration --add --rename --divert \
 				/usr/share/univention-management-console/modules/"$module".xml.real \
 				/usr/share/univention-management-console/modules/"$module".xml
+		done
+		for file in \
+			/etc/univention/templates/files/etc/nagios3/apache2.conf
+		do
+			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
+			# copy diverted files such that conf files are not recognized as having been changed
+			cp "$file.real" "$file"
 		done
 		;;
 	*)
