@@ -46,7 +46,7 @@ case "$1" in
 		do
 			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
 			# copy diverted files such that conf files are not recognized as having been changed
-			cp "$file.real" "$file"
+			[ ! -e "$file" ] && cp "$file.real" "$file"
 		done
 		;;
 	upgrade|abort-upgrade)
@@ -62,7 +62,7 @@ case "$1" in
 		do
 			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
 			# copy diverted files such that conf files are not recognized as having been changed
-			cp "$file.real" "$file"
+			[ ! -e "$file" ] && cp "$file.real" "$file"
 		done
 		;;
 	*)

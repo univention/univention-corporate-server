@@ -42,6 +42,7 @@ case "$1" in
 		done
 
 		# reload services
+		univention-config-registry commit /etc/nagios3/apache2.conf
 		invoke-rc.d apache2 reload
 		invoke-rc.d slapd restart
 		invoke-rc.d univention-management-console-server reload
