@@ -361,9 +361,12 @@ class AptScript(SetupScript):
 	def reopen_cache(self):
 		self.package_manager.reopen_cache()
 
+	def mark_auto(self, auto, *pkgs):
+		self.package_manager.mark_auto(auto, *pkgs)
+
 	def commit(self, install=None, remove=None, msg_if_failed=''):
 		with self.noninteractive():
-			self.package_manager.commit(install, remove, msg_if_failed)
+			self.package_manager.commit(install, remove, msg_if_failed=msg_if_failed)
 
 	def install(self, *pkg_names):
 		with self.noninteractive():
@@ -383,7 +386,7 @@ class AptScript(SetupScript):
 			return self.package_manager.cache[pkg_name]
 		except KeyError:
 			self.error(_('Failed to get package for Role %s') % role_name)
-			return False
+			return None
 
 	def autoremove(self):
 		with self.noninteractive():

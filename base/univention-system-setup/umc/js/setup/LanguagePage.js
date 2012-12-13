@@ -126,7 +126,7 @@ define([
 					return this._localesDeferred.then(function(locales) {
 						return array.map(ids, function(id) {
 							if (typeof id == "string") {
-								return { id: id, label :locales[id] };
+								return { id: id, label: locales[id] };
 							}
 							return id;
 						});

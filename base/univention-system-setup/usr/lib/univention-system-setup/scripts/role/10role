@@ -30,11 +30,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-import sys
 import os.path
 import shutil
 import glob
-import apt_pkg
 
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
 
@@ -90,14 +88,14 @@ class RoleScript(AptScript):
 		self.finish_task()
 
 		if current_server_role_package:
-			self.commit(install=[wanted_server_role_package], remove=[current_server_role_package])
-		else:
-			self.commit(install=[wanted_server_role_package])
+			self.uninstall(current_server_role_package)
+		self.install(wanted_server_role_package)
 
 		self.finish_task()
 
 		# mark these packages as manually installed
-		self.install('univention-pam', 'univention-management-console')
+		self.mark_auto(False, 'univention-pam', 'univention-management-console')
+		self.reopen_cache()
 
 		# apt-get autoremove
 		self.autoremove()
@@ -106,7 +104,6 @@ class RoleScript(AptScript):
 			# reinstall listener on memberserver because the ldap-server package
 			# will remove too much:
 			# https://forge.univention.org/bugzilla/show_bug.cgi?id=26269
-			apt_pkg.config['APT::Get::ReInstall'] = 'true'
 			self.install('univention-directory-listener')
 
 		self.finish_task()

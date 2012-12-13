@@ -1,3 +1,10 @@
+univention-system-setup (6.0.57-1) unstable; urgency=low
+
+  * Add memberserver as system role again (Bug #29759)
+  * Fix setup script for changing roles (Bug #29759)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 13 Dec 2012 21:08:55 +0100
+
 univention-system-setup (6.0.56-1) unstable; urgency=low
 
   * Remove system role memberserver from server role selection. It does
