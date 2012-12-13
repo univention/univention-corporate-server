@@ -59,4 +59,5 @@ if __name__ == "__main__":
 	status = shell.expect(['(?i)success', '(?i)error', pexpect.TIMEOUT,])
 	kpasswd_reported_success = status == 0
 	print 'changed password for %s to %s' % (username, newpassword)
-	print 'ENDE:%r' % (shell.before,)
+	print 'ENDEbefore:%s' % (shell.before,)
+	print 'ENDEafter:%s' % (shell.after,)
