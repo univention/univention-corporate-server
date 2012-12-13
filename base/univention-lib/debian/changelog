@@ -1,3 +1,12 @@
+univention-lib (2.0.18-1) unstable; urgency=low
+
+  * Dont allow unauthenticated packages by default (Bug #29797)
+  * Add function to mark auto-installed package as user-installed (Bug #29805)
+  * Fix setting apt- and dpkg-options (Bug #29805)
+  * Fix installing unwanted packages while uninstalling others (Bug #29636)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 13 Dec 2012 21:01:51 +0100
+
 univention-lib (2.0.17-1) unstable; urgency=low
 
   * fixed typo which overwrote _ translate function; Bug #28876

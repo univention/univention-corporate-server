@@ -309,11 +309,11 @@ class PackageManager(object):
 			self.unlock()
 
 	def _set_apt_pkg_config(self, options):
-		revert_options = {}
-		for option_name, option_value in options.iteritems():
+		revert_options = []
+		for option_name, option_value in options:
 			old_value = apt_pkg.config.get(option_name)
 			apt_pkg.config[option_name] = option_value
-			revert_options[option_name] = old_value
+			revert_options.append((option_name, old_value))
 		return revert_options
 
 	def add_hundred_percent(self):
@@ -347,12 +347,13 @@ class PackageManager(object):
 	@contextmanager
 	def brutal_noninteractive(self):
 		with self.noninteractive():
-			options = {
-					'DPkg::Options::': '--force-overwrite',
-					'DPkg::Options::': '--force-overwrite-dir',
-					'APT::Get::Trivial-Only': 'no',
-					'quiet': '1',
-			}
+			options = [
+				('DPkg::Options::', '--force-overwrite'),
+				('DPkg::Options::', '--force-overwrite-dir'),
+				('APT::Get::AllowUnauthenticated', '1'),
+				('APT::Get::Trivial-Only', 'no'),
+				('quiet', '1'),
+			]
 			revert_options = self._set_apt_pkg_config(options)
 			try:
 				yield
@@ -364,12 +365,11 @@ class PackageManager(object):
 		''' dont ever ask for user input '''
 		old_debian_frontend = os.environ.get('DEBIAN_FRONTEND')
 		os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-		options = {
-				'APT::Get::Assume-Yes': 'true',
-				'APT::Get::force-yes': 'true',
-				'APT::Get::AllowUnauthenticated': '1',
-				'DPkg::Options::': '--force-confold',
-		}
+		options = [
+			('APT::Get::Assume-Yes', 'true'),
+			('APT::Get::force-yes', 'true'),
+			('DPkg::Options::', '--force-confold'),
+		]
 		revert_options = self._set_apt_pkg_config(options)
 		try:
 			yield
@@ -440,6 +440,14 @@ class PackageManager(object):
 		for pkg in self.cache:
 			yield pkg
 
+	def mark_auto(self, auto, *pkgs):
+		'''Immediately sets packages to automatically
+		installed (or not). Calls commit()!'''
+		for pkg in self.get_packages(pkgs):
+			pkg.mark_auto(auto)
+		self.commit()
+		self.reopen_cache()
+
 	def mark(self, install, remove, dry_run=False):
 		'''Marks packages, returns all
 		installed, removed or broken packages.
@@ -464,8 +472,12 @@ class PackageManager(object):
 		for pkg in self.cache.get_changes():
 			if pkg.marked_install or pkg.marked_upgrade:
 				to_be_installed.add(pkg.name)
+				if pkg in remove:
+					broken.add(pkg.name)
 			if pkg.marked_delete:
 				to_be_removed.add(pkg.name)
+				if pkg in install:
+					broken.add(pkg.name)
 			if pkg.is_inst_broken:
 				broken.add(pkg.name)
 		# some actions can change flags in other pkgs,
@@ -572,7 +584,7 @@ class PackageManager(object):
 			pkg = self.cache[pkg_name]
 			if pkg.is_auto_removable:
 				self.progress_state.info(_('Deleting unneeded %s') % pkg.name)
-				# dont autofix. maybe some errors magically
+				# dont auto_fix. maybe some errors magically
 				# disappear if we just remove
 				# enough packages...
 				pkg.mark_delete(auto_fix=False)
