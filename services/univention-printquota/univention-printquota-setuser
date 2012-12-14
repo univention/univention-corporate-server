@@ -38,7 +38,7 @@ import ldap
 from ldap.filter import escape_filter_chars
 import univention.uldap
 import univention.config_registry
-import univention.config_registry.interfaces as interfaces
+from univention.config_registry.interfaces import Interfaces
 
 bc = univention.config_registry.ConfigRegistry()
 bc.load()

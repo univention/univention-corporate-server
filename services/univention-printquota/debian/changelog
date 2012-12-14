@@ -1,3 +1,9 @@
+univention-printquota (5.0.2-1) unstable; urgency=low
+
+  * fixed ucr interface import (Bug #29715)
+
+ -- Felix Botner <botner@univention.de>  Fri, 14 Dec 2012 10:44:49 +0100
+
 univention-printquota (5.0.1-2) unstable; urgency=low
 
   * Change config_registry to configRegistry (Bug #29644)
