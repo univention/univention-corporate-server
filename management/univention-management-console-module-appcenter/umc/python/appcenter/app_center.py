@@ -44,6 +44,7 @@ import urllib
 import urllib2
 from HTMLParser import HTMLParser
 import cgi
+from datetime import datetime
 
 # related third party
 from ldap import LDAPError
@@ -422,22 +423,20 @@ class Application(object):
 
 			# remove all packages of the component
 			package_manager.set_max_steps(200)
-			with open(LOGFILE, 'a') as logfile:
-				logfile.write('\n== UNINSTALLING %s ==\n' % self.name)
-				with package_manager.logging_to(logfile):
-					package_manager.commit(remove=self.get('defaultpackages'), install=to_keep)
-					package_manager.add_hundred_percent()
+			package_manager.log('\n== UNINSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
+			package_manager.commit(remove=self.get('defaultpackages'), install=to_keep)
+			package_manager.add_hundred_percent()
 
-					# remove all dependencies
-					package_manager.autoremove()
-					package_manager.add_hundred_percent()
+			# remove all dependencies
+			package_manager.autoremove()
+			package_manager.add_hundred_percent()
 
-					# remove all existing component versions
-					for iapp in self.versions:
-						component_manager.remove_app(iapp)
+			# remove all existing component versions
+			for iapp in self.versions:
+				component_manager.remove_app(iapp)
 
-					# update package information
-					package_manager.update()
+			# update package information
+			package_manager.update()
 
 			status = 200
 		except:
@@ -459,16 +458,17 @@ class Application(object):
 				MODULE.info('Running on DC master or DC backup')
 				if self.get('defaultpackagesmaster'):
 					to_install.extend(self.get('defaultpackagesmaster'))
-			# get package objects
-			to_install = package_manager.get_packages(to_install)
 
 			# add the new component
 			component_manager.put_app(self)
 			package_manager.update()
 
+			# get package objects
+			to_install = package_manager.get_packages(to_install)
+
 			# determine the changes
 			result = package_manager.mark(to_install, [], dry_run=True)
-			result = dict(zip(['install', 'remove', 'broken', ], result))
+			result = dict(zip(['install', 'remove', 'broken'], result))
 			MODULE.info('Package changes: %s' % (result, ))
 
 			if remove_component:
@@ -501,10 +501,8 @@ class Application(object):
 				package_manager.update()
 
 			# install + dist_upgrade
-			with open(LOGFILE, 'a') as logfile:
-				logfile.write('\n== INSTALLING %s ==\n' % self.name)
-				with package_manager.logging_to(logfile):
-					package_manager.commit(install=to_install, dist_upgrade=True)
+			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
+			package_manager.commit(install=to_install, dist_upgrade=True)
 
 			# successful installation
 			status = 200
