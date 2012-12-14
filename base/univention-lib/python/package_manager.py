@@ -54,7 +54,7 @@ _ = Translation('univention-lib').translate
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 
-PACKAGE_MANAGER_LOG = open('/var/log/univention/package_manager', 'ab')
+PACKAGE_MANAGER_LOG = open('/var/log/univention/package_manager.log', 'ab')
 
 class LockError(Exception):
 	'''Lock error for the package manager.
