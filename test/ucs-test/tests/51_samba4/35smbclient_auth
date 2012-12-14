@@ -70,7 +70,7 @@ def cleanup(username):
 
 def smbclient(username,password,hostname,number,innerDelay):
 	for i in range(number):
-		subprocess.Popen(["/usr/bin/smbclient4", "-U%s%%%s" % (username,password), "//%s/sysvol" % hostname],stdin=subprocess.PIPE)
+		subprocess.Popen(["/usr/bin/smbclient4", "-U%s%%%s" % (username,password), "//%s/netlogon" % hostname],stdin=subprocess.PIPE)
 		time.sleep(innerDelay[i])
 
 def calculateInnerDelay(roundTime,amountPerRound):
@@ -92,16 +92,12 @@ def calculateInnerDelay(roundTime,amountPerRound):
 	return delayArray
 
 def checkResult(hostname):
-	server_role= ucr['server/role']
-	if server_role == "domaincontroller_master" and os.path.isfile('/root/root.secret'):
-		pw_path='/root/root.secret'
-	else:
-		pw_file = file('/tmp/pw_temp','w')
-		pw_file.write('univention')
-		pw_file.close()
-		pw_path = '/tmp/pw_temp'
+	pw_file = file('/tmp/pw_temp','w')
+	pw_file.write('univention')
+	pw_file.close()
+	pw_path = '/tmp/pw_temp'
 
-        output= pexpect.run('univention-ssh %s root@%s "smbstatus | grep -c sysvol"' % (pw_path,hostname))
+        output= pexpect.run('univention-ssh %s root@%s "smbstatus | grep -c netlogon"' % (pw_path,hostname))
 	print output	
 	try:
 		output_int=int(output)

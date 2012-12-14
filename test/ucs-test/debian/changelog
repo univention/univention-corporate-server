@@ -1,3 +1,9 @@
+ucs-test (3.0.22-15) unstable; urgency=low
+
+  *  51/35: added configuration parameter (Bug #28348)
+
+ -- Tobias Peters <peters@univention.de>  Fri, 14 Dec 2012 17:19:41 +0100
+
 ucs-test (3.0.22-14) unstable; urgency=low
 
   * rewrite of 51_samba4/35smbclient_auth in python (Bug #28348)
