@@ -477,7 +477,7 @@ class PackageManager(object):
 				if apt_pkg.config.get('APT::Get::AllowUnauthenticated') != '1':
 					authenticated = False 
 					for origin in pkg.candidate.origins:
-					    authenticated |= origin.trusted
+						authenticated |= origin.trusted
 					if not authenticated:
 						self.progress_state.error('%s: %s' % (pkg.name, _('Untrusted origin')))
 						broken.add(pkg.name)
