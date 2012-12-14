@@ -1,3 +1,9 @@
+univention-lib (2.0.18-2) unstable; urgency=low
+
+  * version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Dec 2012 11:34:57 +0100
+
 univention-lib (2.0.18-1) unstable; urgency=low
 
   * Dont allow unauthenticated packages by default (Bug #29797)

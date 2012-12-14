@@ -1,3 +1,9 @@
+univention-system-setup (6.0.57-2) unstable; urgency=low
+
+  * version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Dec 2012 11:33:41 +0100
+
 univention-system-setup (6.0.57-1) unstable; urgency=low
 
   * Add memberserver as system role again (Bug #29759)
