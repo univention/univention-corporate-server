@@ -474,6 +474,13 @@ class PackageManager(object):
 				to_be_installed.add(pkg.name)
 				if pkg in remove:
 					broken.add(pkg.name)
+				if apt_pkg.config.get('APT::Get::AllowUnauthenticated') != '1':
+					authenticated = False 
+					for origin in pkg.candidate.origins:
+					    authenticated |= origin.trusted
+					if not authenticated:
+						self.progress_state.error('%s: %s' % (pkg.name, _('Untrusted origin')))
+						broken.add(pkg.name)
 			if pkg.marked_delete:
 				to_be_removed.add(pkg.name)
 				if pkg in install:

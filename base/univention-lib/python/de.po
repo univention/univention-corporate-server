@@ -21,6 +21,10 @@ msgstr "Deinstallation unbenutzter Pakete fehlgeschlagen"
 msgid "Deleting unneeded %s"
 msgstr "Deinstalliere unbenutztes Paket %s"
 
+#: python/package_manager.py:482
+msgid "Untrusted origin"
+msgstr "Nicht vertrauenswürdige Quelle"
+
 #: python/package_manager.py:509
 msgid "Failed to install"
 msgstr "Installation fehlgeschlagen"
