@@ -35,7 +35,6 @@ import sys
 import os
 import time
 import subprocess
-import tempfile
 from contextlib import contextmanager
 
 import apt_pkg
@@ -54,6 +53,8 @@ _ = Translation('univention-lib').translate
 # TODO: Solution: Put all the logic in univention-lib
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
+
+PACKAGE_MANAGER_LOG = open('/var/log/univention/package_manager', 'ab')
 
 class LockError(Exception):
 	'''Lock error for the package manager.
@@ -88,6 +89,7 @@ class ProgressState(object):
 		if msg is None:
 			return
 		msg = '%s\n' % str(msg).strip()
+		PACKAGE_MANAGER_LOG.write(msg)
 		for log in self.logfiles.values():
 			log.write(msg)
 
@@ -185,8 +187,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 	def fork(self):
 		# we better have a real file
 		# when using low-level routines
-		tmp = tempfile.TemporaryFile()
-		msg_writer = MessageWriter(self.progress_state, tmp)
+		msg_writer = MessageWriter(self.progress_state, PACKAGE_MANAGER_LOG)
 		p = os.fork()
 		if p == 0:
 			os.dup2(msg_writer.fileno(), sys.stdout.fileno())
@@ -272,6 +273,9 @@ class PackageManager(object):
 				yield
 			finally:
 				self.progress_state.logfiles.pop(logfile.name)
+
+	def log(self, msg):
+		self.progress_state.log(msg)
 
 	@contextmanager
 	def locked(self, reset_status=False, set_finished=False):
