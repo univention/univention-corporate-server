@@ -1,3 +1,9 @@
+univention-samba4 (2.0.31-1) unstable; urgency=low
+
+  * Fix treatment of long DNs in samba3 to samba4 migration (Bug #29335)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 17 Dec 2012 11:01:53 +0100
+
 univention-samba4 (2.0.30-2) unstable; urgency=low
 
   * Call sysvolreset in second s4 join script to ensure the connector

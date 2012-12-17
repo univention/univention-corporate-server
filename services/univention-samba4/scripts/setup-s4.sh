@@ -302,10 +302,10 @@ else
 		done < <(sed 's/^$/\x0/')	## beware: skips last record, but that's ok with usual univention-ldapsearch output
 	}
 
-	ldif_sambaGroupType_5_to_4=$(univention-ldapsearch sambaGroupType=5 dn sambaGroupType | ldif_records create_modify_ldif)
+	ldif_sambaGroupType_5_to_4=$(univention-ldapsearch sambaGroupType=5 dn sambaGroupType | ldapsearch-wrapper | ldif_records create_modify_ldif)
 	reverse_ldif_sambaGroupType_5_to_4="${ldif_sambaGroupType_5_to_4//sambaGroupType: 4/sambaGroupType: 5}"
 
-	ldif_sambaGroupType_2_to_4=$(univention-ldapsearch sambaGroupType=2 dn sambaGroupType | ldif_records create_modify_ldif)
+	ldif_sambaGroupType_2_to_4=$(univention-ldapsearch sambaGroupType=2 dn sambaGroupType | ldapsearch-wrapper | ldif_records create_modify_ldif)
 	reverse_ldif_sambaGroupType_2_to_4="${ldif_sambaGroupType_2_to_4//sambaGroupType: 4/sambaGroupType: 2}"
 
 	reverse_sambaGroupType_change() {
