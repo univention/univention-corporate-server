@@ -1,3 +1,9 @@
+univention-samba4 (2.0.32-1) unstable; urgency=low
+
+  * Don't attempt creation of dns service account on RODCs (Bug #29537)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 17 Dec 2012 11:14:16 +0100
+
 univention-samba4 (2.0.31-1) unstable; urgency=low
 
   * Fix treatment of long DNs in samba3 to samba4 migration (Bug #29335)
