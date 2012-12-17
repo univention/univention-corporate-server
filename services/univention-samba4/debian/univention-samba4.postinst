@@ -204,14 +204,6 @@ secret: $machine_secret
 -
 %EOF
 					/etc/init.d/samba4 restart
-				else
-					# try to search with the Samba4 secret in UCS LDAP
-					s_res="$(univention-ldapsearch -x -s base -h $hostname.$domainname -w "$secret" -D "$ldap_hostdn" dn | sed -ne 's|^dn: ||p')"
-					if [ -n "$s_res" ]; then
-						# the password from secrests.ldb is the valid password, so change the UCS password and machine.secret
-						univention-directory-manager 
-						/etc/init.d/samba4 restart
-					fi
 				fi
 			fi
 		fi
