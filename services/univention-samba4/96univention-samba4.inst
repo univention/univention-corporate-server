@@ -439,7 +439,7 @@ remove_dc_ntds_guid_from_dns() {
 	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
 							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
 
-	univention-directory-manager dns/alias delete \
+	univention-directory-manager dns/alias delete "$@" \
 		--superordinate "zoneName=$domainname,cn=dns,$ldap_base" \
 		--dn "relativeDomainName=$NTDS_objectGUID._msdcs,zoneName=$domainname,cn=dns,$ldap_base"
 }
