@@ -244,14 +244,23 @@ run_samba_provision() {
 
 samba_domain_join() {
 	local success
+	local samba_join_options
+	samba_join_options=("${@}")
+	samba_join_options+=( --kerberos=no )	## don't use kerberos for authentication during join
+	samba_join_options+=( -U"$dcaccount"%"$bindpwd" )
+	samba_join_options+=( --realm="$kerberos_realm" )
+	samba_join_options+=( --machinepass="$(cat /etc/machine.secret)" )
+
+	if [ -n "$SITE_OPTION" ]; then
+		samba_join_options+=( "${SITE_OPTION[@]}" )
+	fi
+
 	if [ -n "$samba4_dc" ]; then
-		samba-tool domain join "$domainname" "$samba4_role" -k no -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$samba4_dc" \
-							--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-							--keep-existing && success=true
+		samba-tool domain join "$domainname" "$samba4_role" --server "$samba4_dc" \
+							"${samba_join_options[@]}" && success=true
 	else
-		samba-tool domain join "$domainname" "$samba4_role" -k no -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" \
-							--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-							--keep-existing && success=true
+		samba-tool domain join "$domainname" "$samba4_role" \
+							"${samba_join_options[@]}" && success=true
 		if [ -z "$success" ]; then
 			# try again with --server
 			cn=($(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
@@ -259,9 +268,8 @@ samba_domain_join() {
 										| sed -n 's/^cn: \(.*\)/\1/p' ))
 			
 			for name in "${cn[@]}"; do
-				samba-tool domain join "$domainname" "$samba4_role" -k no -U"$dcaccount"%"$bindpwd" --realm="$kerberos_realm" --server "$name.$domainname" \
-								--machinepass="$(cat /etc/machine.secret)" "${SITE_OPTION[@]}" \
-								--keep-existing && success=true
+				samba-tool domain join "$domainname" "$samba4_role" --server "$name.$domainname" \
+								"${samba_join_options[@]}" && success=true
 				if [ -n "$success" ]; then
 					break
 				fi
@@ -424,6 +432,18 @@ remove_non_samba4_dc_srv_records() {
 	done
 }
 
+remove_dc_ntds_guid_from_dns() {
+	### determine NTDS_objectGUID
+	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" \
+							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
+	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
+							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
+
+	univention-directory-manager dns/alias delete \
+		--superordinate "zoneName=$domainname,cn=dns,$ldap_base" \
+		--dn "relativeDomainName=$NTDS_objectGUID._msdcs,zoneName=$domainname,cn=dns,$ldap_base"
+}
+
 ### --- END helper functions ---
 
 extract_binddn_and_bindpwd_from_args "$@"
@@ -535,10 +555,19 @@ if [ "$samba4_role" = 'DC' ]; then
 					exit 1
 				fi
 
-				## backup old keytab if samba4 generated it
-				backup_samba4_keytab
 
-				samba_domain_join
+				## Check if this is a re-join
+				if [ -n "$samba4_ldap_base" ] && \
+					ldbsearch -H  /var/lib/samba/private/sam.ldb samAccountName="$hostname\$" \
+						msDS-KeyVersionNumber 2>/dev/null | grep -qi "^msDS-KeyVersionNumber: "
+				then
+					remove_dc_ntds_guid_from_dns
+					## backup old keytab if samba4 generated it
+					backup_samba4_keytab
+					samba_join_options=( --keep-existing )
+				fi
+
+				samba_domain_join "${samba_join_options[@]}"
 
 				## if the key version number increased, merge the old keys into the new keytab
 				merge_backup_samba4_keytab
@@ -610,7 +639,22 @@ elif [ "$samba4_role" = "RODC" ]; then
 		## remove slapd from port 389 on upgrade
 		disable_slapd_on_standard_port
 
-		samba_domain_join
+		## Check if this is a re-join
+		if [ -n "$samba4_ldap_base" ] && \
+			ldbsearch -H  /var/lib/samba/private/sam.ldb samAccountName="$hostname\$" \
+				msDS-KeyVersionNumber 2>/dev/null | grep -qi "^msDS-KeyVersionNumber: "
+		then
+			remove_dc_ntds_guid_from_dns
+			## backup old keytab if samba4 generated it
+			backup_samba4_keytab
+			samba_join_options=( --keep-existing )
+		fi
+
+		samba_domain_join "${samba_join_options[@]}"
+
+		## if the key version number increased, merge the old keys into the new keytab
+		merge_backup_samba4_keytab
+
 	fi
 
 	/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --rodc "${SITE_OPTION[@]}"
@@ -656,7 +700,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 elif [ "$samba4_role" = "MEMBER" ]; then
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-		samba_domain_join
+		samba_domain_join --keep-existing
 	fi
 
 	univention-config-registry set samba/share/netlogon?no \

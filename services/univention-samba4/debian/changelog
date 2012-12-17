@@ -1,3 +1,11 @@
+univention-samba4 (2.0.33-1) unstable; urgency=low
+
+  * Keep existing DC account object during join only if it exists locally
+    (Bug #29083)
+  * Remove old DC NTDS GUID record from DNS during re-join
+
+ -- Arvid Requate <requate@univention.de>  Mon, 17 Dec 2012 13:01:05 +0100
+
 univention-samba4 (2.0.32-1) unstable; urgency=low
 
   * Don't attempt creation of dns service account on RODCs (Bug #29537)
