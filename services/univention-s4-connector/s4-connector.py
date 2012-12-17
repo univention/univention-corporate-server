@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 __package__='' 	# workaround for PEP 366
-import listener, cPickle, time, os
+import listener, cPickle, pickle, time, os
 import univention.debug
 
 name='s4-connector'
@@ -99,6 +99,30 @@ def handler(dn, new, old, command):
 				p.dump(ob)
 				p.clear_memo()
 				f.close()
+
+				tmp_array = []
+				f=open(filename, 'r')
+				tmp_array = cPickle.load(f)
+				f.close()
+
+				tmp_array_len = len(tmp_array)
+				if tmp_array_len != 4:
+					ud.debug(ud.LDAP, ud.WARN, 'replacing broken cPickle in %s (len=%s) with plain pickle' % (filename, tmp_array_len))
+					f=open(filename, 'w')
+					os.chmod(filename, 0600)
+					p=pickle.Pickler(f)
+					p.dump(ob)
+					p.clear_memo()
+					f.close()
+
+					tmp_array = []
+					f=open(filename, 'r')
+					tmp_array = cPickle.load(f)
+					f.close()
+
+					tmp_array_len = len(tmp_array)
+					if tmp_array_len != 4:
+						ud.debug(ud.LDAP, ud.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filename, tmp_array_len))
 
 				if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
 					os.unlink(os.path.join(directory, 'tmp','old_dn'))
