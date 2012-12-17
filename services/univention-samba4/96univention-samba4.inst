@@ -561,7 +561,7 @@ if [ "$samba4_role" = 'DC' ]; then
 					ldbsearch -H  /var/lib/samba/private/sam.ldb samAccountName="$hostname\$" \
 						msDS-KeyVersionNumber 2>/dev/null | grep -qi "^msDS-KeyVersionNumber: "
 				then
-					remove_dc_ntds_guid_from_dns
+					remove_dc_ntds_guid_from_dns "$@"
 					## backup old keytab if samba4 generated it
 					backup_samba4_keytab
 					samba_join_options=( --keep-existing )
@@ -644,7 +644,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 			ldbsearch -H  /var/lib/samba/private/sam.ldb samAccountName="$hostname\$" \
 				msDS-KeyVersionNumber 2>/dev/null | grep -qi "^msDS-KeyVersionNumber: "
 		then
-			remove_dc_ntds_guid_from_dns
+			remove_dc_ntds_guid_from_dns "$@"
 			## backup old keytab if samba4 generated it
 			backup_samba4_keytab
 			samba_join_options=( --keep-existing )

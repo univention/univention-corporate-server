@@ -1,3 +1,9 @@
+univention-samba4 (2.0.33-3) unstable; urgency=low
+
+  * add missing udm call credentials in joinscript (Bug #29083)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 17 Dec 2012 17:54:35 +0100
+
 univention-samba4 (2.0.33-2) unstable; urgency=low
 
   * add missing udm call credentials in joinscript (Bug #29083)
