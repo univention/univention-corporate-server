@@ -432,16 +432,20 @@ remove_non_samba4_dc_srv_records() {
 	done
 }
 
-remove_dc_ntds_guid_from_dns() {
-	### determine NTDS_objectGUID
-	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" \
-							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
-	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
-							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
+remove_dc_ntds_guid_records_from_dns() {
+	local zoneDN
+	zoneDN=$(univention-directory-manager dns/forward_zone list "$@" \
+				--filter zone=$domainname | sed -n 's/^DN: //p')
 
-	univention-directory-manager dns/alias delete "$@" \
-		--superordinate "zoneName=$domainname,cn=dns,$ldap_base" \
-		--dn "relativeDomainName=$NTDS_objectGUID._msdcs,zoneName=$domainname,cn=dns,$ldap_base"
+	univention-directory-manager dns/alias list "$@" \
+		--superordinate "$zoneDN" \
+		--filter "(&(cname="$hostname.$domainname.")(name=*._msdcs))" \
+		| sed -n 's/^DN: //p' | while read recordDN; do
+
+		univention-directory-manager dns/alias delete "$@" \
+			--superordinate "$zoneDN" \
+			--dn "$recordDN"
+	done
 }
 
 ### --- END helper functions ---
@@ -555,13 +559,13 @@ if [ "$samba4_role" = 'DC' ]; then
 					exit 1
 				fi
 
+				remove_dc_ntds_guid_records_from_dns "$@"
 
 				## Check if this is a re-join
 				if [ -n "$samba4_ldap_base" ] && \
 					ldbsearch -H  /var/lib/samba/private/sam.ldb samAccountName="$hostname\$" \
 						msDS-KeyVersionNumber 2>/dev/null | grep -qi "^msDS-KeyVersionNumber: "
 				then
-					remove_dc_ntds_guid_from_dns "$@"
 					## backup old keytab if samba4 generated it
 					backup_samba4_keytab
 					samba_join_options=( --keep-existing )
@@ -639,12 +643,13 @@ elif [ "$samba4_role" = "RODC" ]; then
 		## remove slapd from port 389 on upgrade
 		disable_slapd_on_standard_port
 
+		remove_dc_ntds_guid_records_from_dns "$@"
+
 		## Check if this is a re-join
 		if [ -n "$samba4_ldap_base" ] && \
 			ldbsearch -H  /var/lib/samba/private/sam.ldb samAccountName="$hostname\$" \
 				msDS-KeyVersionNumber 2>/dev/null | grep -qi "^msDS-KeyVersionNumber: "
 		then
-			remove_dc_ntds_guid_from_dns "$@"
 			## backup old keytab if samba4 generated it
 			backup_samba4_keytab
 			samba_join_options=( --keep-existing )

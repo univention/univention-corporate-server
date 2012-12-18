@@ -1,3 +1,10 @@
+univention-samba4 (2.0.33-4) unstable; urgency=low
+
+  * Remove all DC NTDS GUID DNS alias records during join, that are
+    poiniting to the DC FQDN (Bug #29083)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2012 17:33:41 +0100
+
 univention-samba4 (2.0.33-3) unstable; urgency=low
 
   * add missing udm call credentials in joinscript (Bug #29083)
