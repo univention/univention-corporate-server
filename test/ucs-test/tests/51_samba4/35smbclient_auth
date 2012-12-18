@@ -1,9 +1,10 @@
 #!/usr/share/ucs-test/runner python
-## desc: bla
+## desc: Check whether several parallel smbclient authentifications are possible
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ## packages:
+##  - univention-samba4
 ##  - python-pexpect
 ## exposure: safe
 
@@ -21,11 +22,29 @@ import random
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
+echo "univention" > /tmp/pw
+univention-ssh /tmp/pw root@localhost "echo asd"
+
 def initValues():
-	totalRounds=3
-	amountPerRound=10
-	roundTime=5
-	delay=5
+	
+	try:
+		totalRounds=int(os.getenv('smbauth_totalRounds'))
+	except Exception, e:
+		totalRounds=3
+	try:
+		amountPerRound=int(os.getenv('smbauth_amountPerRound'))
+	except Exception, e:
+		amountPerRound=8
+	try:
+		roundTime=int(os.getenv('smbauth_roundTime'))
+	except Exception, e:
+		roundTime=5
+	try:
+		delay=int(os.getenv('smbauth_delay'))
+	except Exception, e:
+		delay=5
+
+
 	parameter=(totalRounds,amountPerRound,roundTime,delay)
 	return parameter
 
@@ -52,7 +71,6 @@ def create_user(username, password):
 				"--set", "username=%s" % username,
 				"--set", "firstname=%s" % username,
 				"--set", "lastname=%s" % username,
-				#				"--set", "mailPrimaryAddress=%s" % mailaddress,
 				"--set", "groups=cn=Administrators,cn=groups,%(ldap/base)s" % ucr,
 				"--position", "cn=users,%(ldap/base)s" % ucr,])
 	return udm.wait() == 0

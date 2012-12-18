@@ -1,9 +1,10 @@
 #!/usr/share/ucs-test/runner python
-## desc: bla
+## desc: Check whether several parallel smbclient authentifications are possible
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ## packages:
+##  - univention-samba
 ##  - python-pexpect
 ## exposure: safe
 
