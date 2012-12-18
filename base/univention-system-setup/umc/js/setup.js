@@ -138,6 +138,9 @@ define([
 			// we are in locale mode if the user is __systemsetup__
 			this.local_mode = tools.status('username') == '__systemsetup__';
 
+			// save current values
+			this._orgValues = lang.clone(values);
+
 			// add the SystemRolePage and HelpPage to the list of pages for the wizard mode
 			if (this.wizard_mode) {
 				// add the SystemRolePage to the list of pages for the wizard mode if the packages have been downloaded
@@ -244,6 +247,7 @@ define([
 					this._pages.push(ipage);
 
 					// connect to valuesChanged callback of every page
+					ipage.setValues(values);
 					ipage.on('valuesChanged', lang.hitch(this, 'updateAllValues'));
 				}, this);
 				// Now we know which pages were loaded, adjust HelpPage text
@@ -310,6 +314,7 @@ define([
 					this._pages.push(ipage);
 
 					// connect to valuesChanged callback of every page
+					ipage.setValues(values);
 					ipage.on('valuesChanged', lang.hitch(this, 'updateAllValues'));
 
 					// hide tab if page is not visible
@@ -326,7 +331,6 @@ define([
 			}
 
 			this.startup();
-			this.setValues(values);
 			this.standby(false);
 		},
 
