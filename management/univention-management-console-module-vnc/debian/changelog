@@ -1,3 +1,9 @@
+univention-management-console-module-vnc (2.0.4-1) unstable; urgency=low
+
+  * Fix setting VNC password (Bug #29612)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 19 Dec 2012 15:21:56 +0100
+
 univention-management-console-module-vnc (2.0.3-1) unstable; urgency=low
 
   * Add priority (Bug #26961)

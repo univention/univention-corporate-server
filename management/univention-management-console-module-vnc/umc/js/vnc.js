@@ -150,10 +150,10 @@ define([
 			var buttons = [{
 				name: 'submit',
 				label: _('Set'),
-				callback: lang.hitch(this, function(data) {
-					// TODO: Check if password value is ''
-					if (this._form.getWidget('password').isValid()) {
-						this.onSetPassword(data.password);
+				callback: lang.hitch(this, function() {
+					var passwordWidget = this._form.getWidget('password');
+					if (passwordWidget.isValid()) {
+						this.onSetPassword(passwordWidget.get('value'));
 					}
 				})
 			}];
