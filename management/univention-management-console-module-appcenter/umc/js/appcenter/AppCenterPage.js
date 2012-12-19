@@ -589,7 +589,7 @@ define([
 			if (allows_using && can_install && master_packages && master_packages.length) {
 				// prepare a command with max 50 characters length per line
 				var MAXCHARS = 50;
-				var cmdLine = lang.replace('univention-add-app {id} ', values);
+				var cmdLine = lang.replace('univention-add-app {component_id} ', values);
 				var cmdLines = [];
 				array.forEach(master_packages, function(icmd) {
 					if (icmd.length + cmdLine.length > MAXCHARS) {

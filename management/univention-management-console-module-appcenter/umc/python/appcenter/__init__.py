@@ -172,6 +172,9 @@ class Instance(umcm.Base):
 					self.component_manager.remove_app(application)
 					self.package_manager.update()
 					can_continue = False
+			elif can_continue and function in ('uninstall',) and not force:
+				result['remove'] = application.uninstall_dry_run(self.package_manager)
+				can_continue = False
 			result['can_continue'] = can_continue
 			self.finished(request.id, result)
 

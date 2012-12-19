@@ -59,7 +59,7 @@ import univention.uldap as uldap
 from constants import COMPONENT_BASE
 import util
 
-LOGFILE = '/var/log/univention/appcenter.log'
+LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/package_manager.log
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -354,6 +354,7 @@ class Application(object):
 	def to_dict(self, package_manager):
 		ucr.load()
 		res = copy.copy(self._options)
+		res['component_id'] = self.component_id
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
 
@@ -480,6 +481,16 @@ class Application(object):
 			MODULE.warn(traceback.format_exc())
 
 		return result
+
+	def uninstall_dry_run(self, package_manager):
+		MODULE.info('Invoke uninstall_dry_run')
+		package_manager.reopen_cache()
+		to_uninstall = package_manager.get_packages(self.get('defaultpackages'))
+		for package in to_uninstall:
+			package.mark_delete()
+		packages = [pkg.name for pkg in package_manager.packages() if pkg.is_auto_removable]
+		package_manager.reopen_cache()
+		return packages
 
 	def install(self, package_manager, component_manager, add_component=True):
 		try:
