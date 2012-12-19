@@ -168,6 +168,9 @@ if [ "$1" = "configure" ]; then
 
 	elif [ -n "$2" ]; then
 
+		chgrp ntp /var/lib/samba/ntp_signd
+		chmod g+x /var/lib/samba/ntp_signd
+
 		if [ -x /etc/init.d/samba4 ]; then
 			processes=$(pgrep -cfx '/usr/sbin/samba -D')
 			if [ "$processes" = 0 ]; then
