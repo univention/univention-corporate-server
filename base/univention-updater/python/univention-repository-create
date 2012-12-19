@@ -48,7 +48,7 @@ configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 _mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-_repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
+_repo_base = "" # this path is set later in __main__ 
 
 def check_preconditions( options ):
 	""" Check for already existing mirror and for debmirror package """
@@ -261,11 +261,23 @@ if __name__ == '__main__':
 		print >>sys.stderr, ex
 		sys.exit(5)
 	try:
-		check_preconditions( options )
-		prepare( options )
 		if not mount( options ):
 			print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
 			sys.exit( 1 )
+
+		#define repository base path with information from image
+		installfile = os.path.join(options.mount_point, '.univention_install')
+                for line in open(installfile).readlines():
+			if line.startswith('VERSION='):
+				version = string.replace(line, 'VERSION=', '')
+				major_version = version.split('.', 1)[0].strip()
+				minor_version = version.split('.', 1)[1].strip()
+				break
+
+		_repo_base = os.path.join( _mirror_base, 'mirror', '%s.' % major_version + '%s' % minor_version, 'maintained', '%s.' % major_version + '%s-0' % minor_version )
+		
+		check_preconditions( options )
+		prepare( options )
 
 		try:
 			copy_repository( options )
@@ -284,14 +296,6 @@ if __name__ == '__main__':
 			ucr.handler_unset( 'repository/local/old' )
 
 		# set start version for synchronsation of repository
-		installfile = os.path.join(_mirror_base, '.univention_install')
-		for line in open(installfile).readlines():
-			if line.startswith('VERSION='):
-				version = string.replace(line, 'VERSION=', '')
-				major_version = version.split('.', 1)[0].strip()
-				minor_version = version.split('.', 1)[1].strip()
-				break
-		
 		if major_version:
 			ucr.handler_set( [ 'repository/mirror/version/start?%s.0-0' % major_version ] )
 

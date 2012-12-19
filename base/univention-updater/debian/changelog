@@ -1,3 +1,10 @@
+univention-updater (8.0.60-1) unstable; urgency=low
+
+  * The repository path used by univention-repository-create is now
+    correctly determined from cdrom/iso information (Bug #29626)
+
+ -- Erik Damrose <edamrose@univention.de>  Wed, 19 Dec 2012 16:08:01 +0100
+
 univention-updater (8.0.59-1) unstable; urgency=low
 
   * Removed deprecated univention-errata-update call from cron file 
