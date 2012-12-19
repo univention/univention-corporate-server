@@ -1,3 +1,9 @@
+ucs-test (3.0.22-17) unstable; urgency=low
+
+  * 51/35: removed a debugging message (Bug #28348)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 19 Dec 2012 17:58:56 +0100
+
 ucs-test (3.0.22-16) unstable; urgency=low
 
   * 51/35 and 50/35: added description (Bug #28348) 

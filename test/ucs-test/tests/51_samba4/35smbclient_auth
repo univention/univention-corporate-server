@@ -22,9 +22,6 @@ import random
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
-echo "univention" > /tmp/pw
-univention-ssh /tmp/pw root@localhost "echo asd"
-
 def initValues():
 	
 	try:
@@ -88,7 +85,7 @@ def cleanup(username):
 
 def smbclient(username,password,hostname,number,innerDelay):
 	for i in range(number):
-		subprocess.Popen(["/usr/bin/smbclient4", "-U%s%%%s" % (username,password), "//%s/netlogon" % hostname],stdin=subprocess.PIPE)
+		subprocess.Popen(["/usr/bin/smbclient4", "-U%s%%%s" % (username,password), "//%s/sysvol" % hostname],stdin=subprocess.PIPE)
 		time.sleep(innerDelay[i])
 
 def calculateInnerDelay(roundTime,amountPerRound):
