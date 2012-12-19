@@ -126,7 +126,10 @@ define([
 					return this._localesDeferred.then(function(locales) {
 						return array.map(ids, function(id) {
 							if (typeof id == "string") {
-								return { id: id, label: locales[id] };
+								// label is the one from server or the id
+								// itself (if locale is not chosable known
+								// as available locale, e.g. "en_US:ISO-8859-1")
+								return { id: id, label: locales[id] || id };
 							}
 							return id;
 						});
