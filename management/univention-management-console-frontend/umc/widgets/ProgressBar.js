@@ -115,7 +115,7 @@ define([
 		},
 
 		auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors) {
-			if (pollErrorMsg !== undefined) {
+			if (pollErrorMsg === undefined) {
 				pollErrorMsg = _('Fetching information from the server failed!');
 			}
 			tools.umcpCommand(umcpCommand,

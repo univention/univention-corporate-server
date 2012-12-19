@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.181-1) unstable; urgency=low
+
+  * Fix ProgressBar not using long polling error message (Bug #29435)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 19 Dec 2012 15:22:43 +0100
+
 univention-management-console-frontend (2.0.180-1) unstable; urgency=low
 
   * fixed catch-block; Bug #29703
