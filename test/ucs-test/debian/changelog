@@ -1,3 +1,9 @@
+ucs-test (3.0.22-18) unstable; urgency=low
+
+  * 51/35: added debugging messages (Bug #28348)
+
+ -- Tobias Peters <peters@univention.de>  Thu, 20 Dec 2012 18:20:43 +0100
+
 ucs-test (3.0.22-17) unstable; urgency=low
 
   * 51/35: removed a debugging message (Bug #28348)

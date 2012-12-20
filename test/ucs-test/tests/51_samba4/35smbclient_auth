@@ -85,6 +85,7 @@ def cleanup(username):
 
 def smbclient(username,password,hostname,number,innerDelay):
 	for i in range(number):
+		print '/usr/bin/smbclient4 -U%s%%%s //%s/sysvol' % (username,password,hostname)
 		subprocess.Popen(["/usr/bin/smbclient4", "-U%s%%%s" % (username,password), "//%s/sysvol" % hostname],stdin=subprocess.PIPE)
 		time.sleep(innerDelay[i])
 
@@ -111,7 +112,6 @@ def checkResult(hostname):
 	pw_file.write('univention')
 	pw_file.close()
 	pw_path = '/tmp/pw_temp'
-
         output= pexpect.run('univention-ssh %s root@%s "smbstatus | grep -c netlogon"' % (pw_path,hostname))
 	print output	
 	try:
@@ -137,6 +137,8 @@ if __name__ == "__main__":
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)
 	time.sleep(10)
+        output= pexpect.run("/usr/bin/smbclient4 -L %s -U%s%%%s" % (hostname,username,password))
+	print output	
 	for index in range(totalRounds):
 		smbclient(username,password,hostname,amountPerRound,innerDelay)    
 	time.sleep(20)
