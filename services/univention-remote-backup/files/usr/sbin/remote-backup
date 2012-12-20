@@ -32,6 +32,7 @@
 
 errors=0
 skippings=0
+BWLIMITKBPS=0
 echo
 
 # source the config file and test variable presence
@@ -123,16 +124,18 @@ for line in `egrep -v "^ *#|^ *$" $CONFFILE`; do
 	dirs=`echo "$line" | cut -f2 -d":" | sed "s/,/ /g"`
 
 	echo "Syncing from $TYPE $host:"
-	if [ $TYPE=client ]; then
-		if ! ping -c1 $host >/dev/null 2>&1; then
-			echo -e "\tSKIP: does not respond"
+	if ! ping -c1 $host >/dev/null 2>&1; then
+		echo -e "\tSKIP: does not respond"
+		if [ $TYPE = client ]; then
 			skippings=$(($skippings+1))
-			continue
+		else
+			errors=$(($errors+1))
 		fi
+		continue
 	fi
 	if [ ! -d "$BACKUPROOT/0/$host" ]; then
 		echo -n -e "\tcreating backup directory... "
-		if mkdir -m 700 "$BACKUPROOT/0/$host" 2>/dev/null; then
+		if mkdir -p -m 700 "$BACKUPROOT/0/$host" >/dev/null; then
 			echo "OK"
 		else
 			echo "ERROR: cannot create dir!"
@@ -147,7 +150,7 @@ for line in `egrep -v "^ *#|^ *$" $CONFFILE`; do
 		fi
 		mountpoint="`echo "$dir" | sed 's|/|_=_|g'`"
 		mkdir -p "$BACKUPROOT/0/$host/$mountpoint"
-		if rsync -e ssh -ar -x --safe-links --delete "$remuser@$host:$dir" "$BACKUPROOT/0/$host/$mountpoint" </dev/null >/dev/null 2>&1; then
+		if rsync -e ssh -ar -x -z --safe-links --delete --bwlimit=$BWLIMITKBPS "$remuser@$host:$dir" "$BACKUPROOT/0/$host/$mountpoint" </dev/null >/dev/null; then
 			echo "OK"
 		else
 			echo "ERROR: rsync error!"

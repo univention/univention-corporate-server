@@ -1,3 +1,13 @@
+univention-remote-backup (5.0.1-0) unstable; urgency=low
+
+  * Server and client backups are now discerned correctly, errors are now
+    handled based on backup type (Bug #25386)
+  * In case of an error remote-backup now writes information to stderr.
+    A new variable BWLIMITKBPS controls the maximum bandwidth used by rsync,
+    default unlimited; rsync now compresses files during transmission (Bug #5318)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 20 Dec 2012 13:29:10 +0100
+
 univention-remote-backup (5.0.0-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
