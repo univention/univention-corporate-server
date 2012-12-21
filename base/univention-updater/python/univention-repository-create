@@ -274,7 +274,7 @@ if __name__ == '__main__':
 				minor_version = version.split('.', 1)[1].strip()
 				break
 
-		_repo_base = os.path.join( _mirror_base, 'mirror', '%s.' % major_version + '%s' % minor_version, 'maintained', '%s.' % major_version + '%s-0' % minor_version )
+		_repo_base = os.path.join( _mirror_base, 'mirror', '%s.%s' % (major_version, minor_version), 'maintained', '%s.%s-0' % (major_version, minor_version) )
 		
 		check_preconditions( options )
 		prepare( options )
