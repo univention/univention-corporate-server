@@ -137,7 +137,7 @@ joinscript_get_last_executed_version () {
 }
 
 joinscript_check_joinstatus () {
-	if [ ! -f "/usr/share/univention-join/.joined" ]; then
+	if [ ! -f "/var/univention-join/joined" ]; then
 		return 1
 	fi
 
