@@ -1,3 +1,12 @@
+univention-apache (5.0.12-1) unstable; urgency=low
+
+  * Added new ucr variable for apache2 SSLCACertificateFile (apache2/ssl/ca)
+    (Bug #26171)
+  * Added new ucr variable for apache2 SSLCertificateChainFile 
+    (apache2/ssl/certificatechainfile) (Bug #29374)
+
+ -- Erik Damrose <edamrose@univention.de>  Fri, 21 Dec 2012 13:15:49 +0100
+
 univention-apache (5.0.11-1) unstable; urgency=low
 
   * Changed link to documentation to docs.univention.de (Bug #29779)

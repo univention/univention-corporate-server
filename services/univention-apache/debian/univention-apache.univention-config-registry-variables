@@ -58,6 +58,18 @@ Description[en]=Path to the PEM-encodet private key (.key) file. The key must be
 Type=str
 Categories=service-apache
 
+[apache2/ssl/ca]
+Description[de]=Pfad zur PEM-codierten Zertifikatsdatei der Zertifizierungsstelle (CACert) für Clientauthentifizierung. Der Schlüssel muss ein RSA oder DSA-Key sein.
+Description[en]=Path to the PEM-encoded certificate authority file used for client authentication. The key must be a RSA or DSA-Key.
+Type=str
+Categories=service-apache
+
+[apache2/ssl/certificatechain]
+Description[de]=Pfad zur Zertifikatskettendatei um einem Clientbrowser zusätzliche Zertifikate mitzuteilen. Die Schlüssel müssen entweder im RSA oder DSA Format sein.
+Description[en]=Path to the certificate chain file to inform client browsers about additional certificates. The keys must be either in RSA or DSA format.
+Type=str
+Categories=service-apache
+
 [apache2/documentroot]
 Description[de]=Wurzelverzeichnis für die Dokumente des Web-Server [/var/www/]
 Description[en]=Root directory for documents of the web server [/var/www/]

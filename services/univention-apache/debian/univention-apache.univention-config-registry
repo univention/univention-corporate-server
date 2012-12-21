@@ -11,6 +11,8 @@ Variables: hostname
 Variables: domainname
 Variables: apache2/ssl/certificate
 Variables: apache2/ssl/key
+Variables: apache2/ssl/ca
+Variables: apache2/ssl/certificatechain
 
 Type: module
 Module: extension.py
