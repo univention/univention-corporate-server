@@ -106,6 +106,12 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.3; the
 	fi
 fi
 
+# update to 3.1-1, revoke list in .der form should now also reside in ssl dir to work with domain backup ssl-sync
+# future calls to make-certificates.sh will place the revoke list correcly, so this is a one time thing
+if [ "$1" = configure -a -n "$2" ] && [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt 7.0.6; then
+	cp /var/www/ucsCA.crl /etc/univention/ssl/ucsCA/crl/
+fi
+
 if [ "$1" = "$configure" -a -z "$2" ]; then
 	# generate root ca request
 	(cd /etc/univention/ssl

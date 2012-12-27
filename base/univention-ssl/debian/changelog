@@ -1,3 +1,9 @@
+univention-ssl (7.0.6-1) unstable; urgency=low
+
+  * Certificate revoke list now correctly syncs to domain backup (Bug #29468)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 21 Dec 2012 16:39:19 +0100
+
 univention-ssl (7.0.5-3) unstable; urgency=low
 
   * Fix errexit (Bug #26572)

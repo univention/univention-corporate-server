@@ -298,8 +298,9 @@ init () {
 	chmod 644 "${CA}/CAcert.pem"
 	#generate empty crl at installation time
 	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD"
-	openssl crl -in "${CA}/crl/crl.pem" -out "/var/www/${CA}.crl" -inform pem -outform der
-
+	openssl crl -in "${CA}/crl/crl.pem" -out "${CA}/crl/${CA}.crl" -inform pem -outform der
+	cp "${CA}/crl/${CA}.crl" /var/www/
+	
 	cd "$OPWD"
 }
 
@@ -390,7 +391,8 @@ revoke_cert () {
 	fi
 	openssl ca -config openssl.cnf -revoke "${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
 	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD"
-	openssl crl -in "${CA}/crl/crl.pem" -out "/var/www/${CA}.crl" -inform pem -outform der
+	openssl crl -in "${CA}/crl/crl.pem" -out "${CA}/crl/${CA}.crl" -inform pem -outform der
+	cp "${CA}/crl/${CA}.crl" /var/www/
 
 	cd "$OPWD"
 }
