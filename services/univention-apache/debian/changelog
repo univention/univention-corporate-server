@@ -1,3 +1,10 @@
+univention-apache (5.0.13-1) unstable; urgency=low
+
+  * Change to overview on non dc master: link to domain master is now 
+    above doc-links (Bug #26858)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 27 Dec 2012 11:04:55 +0100
+
 univention-apache (5.0.12-1) unstable; urgency=low
 
   * Added new ucr variable for apache2 SSLCACertificateFile (apache2/ssl/ca)

@@ -81,12 +81,3 @@ print """
 			<table class="content">
 
 
-@!@
-if not baseConfig.get('server/role', None) == "domaincontroller_master" and baseConfig.has_key('ldap/master'):
-	print'<tr>'
-	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/en.html"><img src="../icon/about.png" alt="" style="border: 0;" /></a></td>'
-	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/en.html">@%@ldap/master@%@</a></td>'
-	print'<td class="overview">Domaincontroller Master of UCS domain @%@domainname@%@</td>'
-	print'</tr>'
-@!@
-
