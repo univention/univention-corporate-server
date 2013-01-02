@@ -1,3 +1,10 @@
+univention-join (5.0.22-1) unstable; urgency=low
+
+  * univention-run-join-scripts does not print its header when called
+    with parameters -dcaccount and -dcpwd (Bug #29432)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 02 Jan 2013 16:51:11 +0100
+
 univention-join (5.0.21-1) unstable; urgency=low
 
   * Updated deprecated file reference (Bug #28991)

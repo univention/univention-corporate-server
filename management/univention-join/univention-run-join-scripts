@@ -106,7 +106,10 @@ do
 	esac
 done
 
-display_header
+# display header only if username and password are not provided #29432
+if [[ -z "$DCACCOUNT" && -z "$DCPWD" ]] ; then
+	display_header
+fi
 
 if [ ! -e /var/univention-join/joined ]; then
     echo "The system hasn't been joined yet. univention-run-join-scripts can only be"
