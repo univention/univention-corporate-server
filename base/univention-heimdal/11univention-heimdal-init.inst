@@ -31,15 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 VERSION=1
-
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
-
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-heimdal-init v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
 eval "$(univention-config-registry shell)"
 
@@ -72,6 +65,6 @@ if [ -e "/var/lib/univention-ldap-listener/handlers/keytab" ]; then
 	rm /var/lib/univention-ldap-listener/handlers/keytab
 fi
 
-test -n "`grep "univention-heimdal-init v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-heimdal-init v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0
