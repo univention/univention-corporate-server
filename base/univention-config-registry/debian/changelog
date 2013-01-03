@@ -1,3 +1,9 @@
+univention-config-registry (8.0.5-1) unstable; urgency=low
+
+  * config-registry.replog now also contains the replaced value (Bug #29855)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Jan 2013 15:27:46 +0100
+
 univention-config-registry (8.0.4-9) unstable; urgency=low
 
   * Fix ucr unregister for Multifile (Bug #26476)

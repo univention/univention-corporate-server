@@ -81,7 +81,7 @@ class UnknownKeyException(Exception):
 		return 'W: Unknown key: "%s"' % self.args
 
 
-def replog(method, scope, ucr, var, value=None):
+def replog(method, scope, ucr, var, old_value, value=None):
 	"""
 	This function writes a new entry to replication logfile if
 	this feature has been enabled.
@@ -100,8 +100,11 @@ def replog(method, scope, ucr, var, value=None):
 		elif scope == ConfigRegistry.SCHEDULE:
 			scope_arg = '--schedule '
 
-		log = '%s: %s %s%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),
-				method, scope_arg, varvalue)
+		if old_value is None:
+			old_value = "[Previously undefined]"
+
+		log = '%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),
+				method, scope_arg, varvalue, old_value)
 		try:
 			if not os.path.isfile(REPLOG_FILE):
 				os.close(os.open(REPLOG_FILE, os.O_CREAT, 0640))
@@ -172,7 +175,7 @@ def handler_set(args, opts=dict(), quiet=False):
 							(key, SCOPE[k[0]])
 				reg[key] = value
 				changed[key] = (old, value)
-				replog('set', current_scope, reg, key, value)
+				replog('set', current_scope, reg, key, old, value)
 			else:
 				if not quiet:
 					if old is not None:
@@ -219,7 +222,7 @@ def handler_unset(args, opts=dict()):
 				del reg[arg]
 				changed[arg] = (oldvalue, '')
 				k = reg.get(arg, None, getscope=True)
-				replog('unset', current_scope, reg, arg)
+				replog('unset', current_scope, reg, arg, oldvalue)
 				if k and k[0] > current_scope:
 					print >> sys.stderr, \
 							'W: %s is still set in scope "%s"' % \
