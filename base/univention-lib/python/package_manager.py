@@ -36,6 +36,8 @@ import os
 import time
 import subprocess
 from contextlib import contextmanager
+import fcntl
+import threading
 
 import apt_pkg
 import apt
@@ -54,8 +56,6 @@ _ = Translation('univention-lib').translate
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 
-PACKAGE_MANAGER_LOG = open('/var/log/univention/package_manager.log', 'ab')
-
 class LockError(Exception):
 	'''Lock error for the package manager.
 	Not to be confused with LockFailedException (apt)
@@ -70,6 +70,32 @@ class ProgressState(object):
 		self.handle_only_frontend_errors = handle_only_frontend_errors
 		self.logfiles = {}
 		self.hard_reset()
+		self.pipe_read, self.pipe_write = os.pipe()
+		self._repeat_check_pipe = True
+		fcntl.fcntl(self.pipe_read, fcntl.F_SETFL, os.O_NONBLOCK)
+
+	def start_checking_pipe(self):
+		self._repeat_check_pipe = True
+		self._check_pipe_thread = threading.Thread(target=self.check_pipe)
+		self._check_pipe_thread.start()
+
+	def stop_checking_pipe(self):
+		self._repeat_check_pipe = False
+		self._check_pipe_thread.join()
+
+	def check_pipe(self):
+		try:
+			output = os.read(self.pipe_read, 2048)
+			for line in output.split('\n'):
+				for subline in line.split('\r'):
+					if subline:
+						self.info(subline)
+		except OSError:
+			# nothing to read
+			pass
+		if self._repeat_check_pipe:
+			time.sleep(1)
+			self.check_pipe()
 
 	def reset(self):
 		self._info = None
@@ -89,7 +115,6 @@ class ProgressState(object):
 		if msg is None:
 			return
 		msg = '%s\n' % str(msg).strip()
-		PACKAGE_MANAGER_LOG.write(msg)
 		for log in self.logfiles.values():
 			log.write(msg)
 
@@ -143,12 +168,8 @@ class MessageWriter(object):
 	writes no empty strings, writes not just spaces.
 	If it writes it is handled by progress_state '''
 
-	def __init__(self, progress_state, tmp_file=None):
+	def __init__(self, progress_state):
 		self.progress_state = progress_state
-		self.tmp_file = tmp_file
-
-	def fileno(self):
-		return self.tmp_file.fileno()
 
 	def flush(self):
 		pass
@@ -187,11 +208,11 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 	def fork(self):
 		# we better have a real file
 		# when using low-level routines
-		msg_writer = MessageWriter(self.progress_state, PACKAGE_MANAGER_LOG)
+		# basically taken from https://bugs.launchpad.net/jockey/+bug/280291
 		p = os.fork()
 		if p == 0:
-			os.dup2(msg_writer.fileno(), sys.stdout.fileno())
-			os.dup2(msg_writer.fileno(), sys.stderr.fileno())
+			os.dup2(self.progress_state.pipe_write, sys.stdout.fileno())
+			os.dup2(self.progress_state.pipe_write, sys.stderr.fileno())
 		return p
 
 	# status == pmstatus
@@ -205,21 +226,20 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 		self.progress_state.error('%s: %s' % (pkg, errormsg), frontend=False)
 
 #	def start_update(self):
-#		self.script.log('SUPDATE')
+#		self.log('SUPDATE')
 #
 #	def finish_update(self):
-#		self.script.log('FUPDATE')
+#		self.log('FUPDATE')
 #
 #	def conffile(self, current, new):
-#		self.script.log('CONFF', current, new)
+#		self.log('CONFF', current, new)
 #
 #	def dpkg_status_change(self, pkg, status):
-#		self.script.log('DPKG', pkg, status)
+#		self.log('DPKG', pkg, status)
 #
 #	def processing(self, pkg, stage):
-#		self.script.log('PROCESS', pkg, status)
+#		self.log('PROCESS', pkg, stage)
 #
-
 class PackageManager(object):
 	def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, handle_only_frontend_errors=False, always_noninteractive=False):
 		self.cache = apt.Cache()
@@ -300,8 +320,12 @@ class PackageManager(object):
 		return out, err
 
 	@contextmanager
-	def no_umc_restart(self):
-		self._shell_command(CMD_DISABLE_EXEC)
+	def no_umc_restart(self, exclude_apache=False):
+		if exclude_apache:
+			cmd_disable_exec = [CMD_DISABLE_EXEC, '--exclude-apache']
+		else:
+			cmd_disable_exec = CMD_DISABLE_EXEC
+		self._shell_command(cmd_disable_exec)
 		try:
 			yield
 		finally:
@@ -347,6 +371,14 @@ class PackageManager(object):
 
 	def reset_status(self):
 		self.progress_state.hard_reset()
+
+	@contextmanager
+	def checking_dpkg_output(self):
+		self.progress_state.start_checking_pipe()
+		try:
+			yield
+		finally:
+			self.progress_state.stop_checking_pipe()
 
 	@contextmanager
 	def brutal_noninteractive(self):
@@ -479,7 +511,7 @@ class PackageManager(object):
 				if pkg in remove:
 					broken.add(pkg.name)
 				if apt_pkg.config.get('APT::Get::AllowUnauthenticated') != '1':
-					authenticated = False 
+					authenticated = False
 					for origin in pkg.candidate.origins:
 						authenticated |= origin.trusted
 					if not authenticated:
@@ -547,11 +579,12 @@ class PackageManager(object):
 
 			# commit marked packages
 			kwargs = {'fetch_progress' : self.fetch_progress, 'install_progress' : self.dpkg_progress}
-			if self.always_noninteractive:
-				with self.noninteractive():
+			with self.checking_dpkg_output():
+				if self.always_noninteractive:
+					with self.noninteractive():
+						result = self.cache.commit(**kwargs)
+				else:
 					result = self.cache.commit(**kwargs)
-			else:
-				result = self.cache.commit(**kwargs)
 			if not result:
 				raise SystemError()
 		except FetchFailedException as e:

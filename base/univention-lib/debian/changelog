@@ -1,3 +1,10 @@
+univention-lib (2.0.21-1) unstable; urgency=low
+
+  * Dont log yourself, instead give control to the calling module (Bug #29239)
+  * Add option to exclude apache when preventing restart (Bug #29810)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Jan 2013 17:13:25 +0100
+
 univention-lib (2.0.20-1) unstable; urgency=low
 
   * Add new packagemanager-log with every bit of information (Bug #29239)
