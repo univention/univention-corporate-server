@@ -385,10 +385,10 @@ fi
 
 # Now that there is a new LDAP master, we can safely use resolve_reference.
 # Change DNS nameserver
-resolve_reference dns/forward_zone nameserver "$old_ldap_master." "$ldap_backup." ""
+resolve_reference dns/forward_zone nameserver "$old_ldap_master." "$hostname.$domainname." ""
 
 # Change nameserver of reverse zone for reverse DNS lookup
-resolve_reference dns/reverse_zone nameserver "$old_ldap_master." "$ldap_backup." ""
+resolve_reference dns/reverse_zone nameserver "$old_ldap_master." "$hostname.$domainname." ""
 
 # Run join scripts
 univention-run-join-scripts

@@ -1,3 +1,10 @@
+univention-ldap (9.0.21-1) unstable; urgency=low
+
+  * backup2master: Set correct forward_zone and reverse_zone nameserver
+    if there is more than one backup controller (Bug #29242)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Jan 2013 16:42:48 +0100
+
 univention-ldap (9.0.20-1) unstable; urgency=low
 
   * Re-added ldap/database/bdb/set_flags with the autoremove flag
