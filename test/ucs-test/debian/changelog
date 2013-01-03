@@ -1,3 +1,10 @@
+ucs-test (3.0.23-1) unstable; urgency=low
+
+  * Added new test 00_base/25check-permissions-etc-secret which looks for 
+    *secret files in /etc that are readable by group "other" (Bug #29477)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Jan 2013 11:20:38 +0100
+
 ucs-test (3.0.22-18) unstable; urgency=low
 
   * 51/35: added debugging messages (Bug #28348)
