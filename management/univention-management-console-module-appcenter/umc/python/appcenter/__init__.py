@@ -181,7 +181,7 @@ class Instance(umcm.Base):
 			if can_continue:
 				def _thread(module, application, function):
 					with module.package_manager.locked(reset_status=True, set_finished=True):
-						with module.package_manager.no_umc_restart():
+						with module.package_manager.no_umc_restart(exclude_apache=True):
 							if function in ('install', 'update'):
 								# dont have to add component: already added during dry_run
 								return application.install(module.package_manager, module.component_manager, add_component=False)
@@ -233,7 +233,7 @@ class Instance(umcm.Base):
 					toshow = True
 				elif key == 'package' and pattern.search(package.name):
 					toshow = True
-				elif key == 'description' and pattern.search(package.candidate.raw_description):
+				elif key == 'description' and package.candidate and pattern.search(package.candidate.raw_description):
 					toshow = True
 				if toshow:
 					result.append(self._package_to_dict(package, full=False))

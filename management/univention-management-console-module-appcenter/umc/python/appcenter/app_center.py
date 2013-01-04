@@ -205,7 +205,7 @@ class Application(object):
 
 	def get_repository_url(self):
 		# univention-repository/3.1/maintained/component/owncloud/all/
-		return 'http://%s/univention-repository/%s/maintained/component/%s' % (
+		return 'https://%s/univention-repository/%s/maintained/component/%s' % (
 			self.get_server(),
 			ucr.get('version/version', ''),
 			self.component_id,
@@ -213,7 +213,7 @@ class Application(object):
 
 	@classmethod
 	def get_metainf_url(cls):
-		return 'http://%s/meta-inf/%s' % (
+		return 'https://%s/meta-inf/%s' % (
 			cls.get_server(),
 			ucr.get('version/version', ''),
 		)
@@ -526,7 +526,7 @@ class Application(object):
 	def _send_information(self, action, status):
 		ucr.load()
 		server = self.get_server()
-		url = 'http://%s/postinst' % (server, )
+		url = 'https://%s/postinst' % (server, )
 		uuid = LICENSE.uuid or '00000000-0000-0000-0000-000000000000'
 		try:
 			values = {'uuid': uuid,
