@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.100-1) unstable; urgency=low
+
+  * Add option to append empty values at the end of LDAP_Search (Bug #29635)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Jan 2013 17:58:01 +0100
+
 univention-directory-manager-modules (8.0.99-1) unstable; urgency=low
 
   * fixed traceback when removing non-existent objects on cli

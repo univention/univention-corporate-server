@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, string, operator
+import re, operator
 import ipaddr
 import inspect
 import univention.debug
@@ -2456,7 +2456,7 @@ class LDAP_Search( select ):
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
-	def __init__( self, syntax_name = None, filter = None, attribute = [], base = '', value = 'dn', viewonly = False, addEmptyValue = False ):
+	def __init__( self, syntax_name = None, filter = None, attribute = [], base = '', value = 'dn', viewonly = False, addEmptyValue = False, appendEmptyValue = False ):
 		"""Creates an syntax object providing a list of choices defined
 		by a LDAP objects
 
@@ -2477,6 +2477,9 @@ class LDAP_Search( select ):
 
 		addEmptyValue: If set to True an empty value is add to the list
 		of choices
+
+		appendEmptyValue: Same as addEmptyValue but added at the end.
+		Used to automatically choose an existing entry in frontend
 	    """
 		self.syntax = syntax_name
 		if filter is not None:
@@ -2491,6 +2494,7 @@ class LDAP_Search( select ):
 		self.name = self.__class__.__name__
 		self.viewonly = viewonly
 		self.addEmptyValue = addEmptyValue
+		self.appendEmptyValue = appendEmptyValue
 
 	@classmethod
 	def parse( self, text ):
@@ -2530,6 +2534,7 @@ class LDAP_Search( select ):
 				self.viewonly = True
 				self.value = 'dn'
 			self.addEmptyValue = ( attrs.get( 'univentionSyntaxAddEmptyValue', [ '0' ] )[ 0 ].upper() in [ 'TRUE', '1' ] )
+			self.appendEmptyValue = ( attrs.get( 'univentionSyntaxAppendEmptyValue', [ '0' ] )[ 0 ].upper() in [ 'TRUE', '1' ] )
 
 	def _prepare( self, lo, filter = None ):
 		if filter is None:
@@ -2719,7 +2724,7 @@ class mailHomeServer(LDAP_Search):
 			filter = '(&(objectClass=univentionHost)(univentionService=IMAP))',
 			attribute = [ 'computers/computer: fqdn' ],
 			value = 'computers/computer: fqdn',
-			addEmptyValue = True
+			appendEmptyValue = True
 		)
 
 
