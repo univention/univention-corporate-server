@@ -1,3 +1,10 @@
+univention-directory-notifier (7.0.7-1) unstable; urgency=low
+
+  * univention-directory-notifier now uses the current joinscript-lib
+    (Bug #28993)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 04 Jan 2013 09:07:24 +0100
+
 univention-directory-notifier (7.0.6-3) unstable; urgency=low
 
   * Add linking exception for OpenSSL (Bug #26440)
