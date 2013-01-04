@@ -1,3 +1,9 @@
+univention-apache (5.0.14-1) unstable; urgency=low
+
+  * univention-apache now uses the current joinscript-lib (Bug #28993)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Jan 2013 17:33:37 +0100
+
 univention-apache (5.0.13-1) unstable; urgency=low
 
   * Change to overview on non dc master: link to domain master is now 
