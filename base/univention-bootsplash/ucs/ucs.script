@@ -55,7 +55,7 @@ fun refresh_callback ()
     logo.image = logo.default.Rotate(progress);
     logo.sprite.SetImage(logo.image);
     progress = progress + 0.03;
-    if (progress >= (Math.Pi * 2)) {
+    if (progress >= (Math.Pi * 2)-0.03) {
         progress = 0;
     }
  
@@ -188,6 +188,7 @@ fun message_callback (text)
 {
   my_image = Image.Text(text, 1, 1, 1);
   message_sprite.SetImage(my_image);
+  bg.sprite.SetImage(resized.bg.image);
 }
 
 Plymouth.SetMessageFunction(message_callback);

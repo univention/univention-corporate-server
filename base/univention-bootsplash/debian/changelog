@@ -1,3 +1,9 @@
+univention-bootsplash (4.0.8-1) unstable; urgency=low
+
+  * Redraw background when printing a message (Bug #29768)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 07 Jan 2013 13:43:42 +0100
+
 univention-bootsplash (4.0.7-1) unstable; urgency=low
 
   * Removed pre dependency to univention-config-registry (Bug #23842)
