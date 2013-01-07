@@ -262,7 +262,7 @@ define([
 			}, this);
 
 			// register callbacks for onSubmit and onReset events
-			tools.forIn(['submit', 'reset'], function(ievent) {
+			array.forEach(['submit', 'reset'], function(ievent) {
 				var orgCallback = lang.getObject(ievent + '.callback', false, this._buttons);
 				if (orgCallback) {
 					this._buttons[ievent].callback = function() { };
